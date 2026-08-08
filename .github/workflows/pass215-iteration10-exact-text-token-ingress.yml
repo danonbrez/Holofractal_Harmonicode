@@ -1,0 +1,212 @@
+name: Pass 215 Iteration 10 Exact Text Token Ingress
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_10_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration10_exact_text_token_ingress_v1.py'
+      - 'tools/pass215_iteration10_exact_text_token_ingress.py'
+      - 'tests/test_hhs_pass215_iteration10_exact_text_token_ingress_v1.py'
+      - 'scripts/run_pass215_iteration10_validation.sh'
+      - 'docs/pass215/ITERATION_10_EXACT_TEXT_TOKEN_INGRESS.md'
+      - 'evidence/pass215/PASS_215_ITERATION_10_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration10-exact-text-token-ingress.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_10_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration10_exact_text_token_ingress_v1.py'
+      - 'tools/pass215_iteration10_exact_text_token_ingress.py'
+      - 'tests/test_hhs_pass215_iteration10_exact_text_token_ingress_v1.py'
+      - 'scripts/run_pass215_iteration10_validation.sh'
+      - 'docs/pass215/ITERATION_10_EXACT_TEXT_TOKEN_INGRESS.md'
+      - 'evidence/pass215/PASS_215_ITERATION_10_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration10-exact-text-token-ingress.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I10_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I10_PROMPT: 'Hello world!'
+
+jobs:
+  iteration10:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I10_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I10_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 9 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_10_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          tokenizer = contract['text_tokenizer']
+          assert inherits['iteration9_closure_head'] == '8a9ca8907edb94d84ce828639145b94a119c2571'
+          assert inherits['iteration9_closure_tree'] == 'cc40fca257d1265882cdc3973205a6962117eb40'
+          assert inherits['iteration9_suite_root_hash216'] == '5f544e489fb05cf6675e6034a9acf552d53e1dd83801c6941384de868d9e4a94'
+          assert inherits['iteration9_evidence_root_hash216'] == '71e36d07d2e5c016cfdae8356eb50abb5d750aefc796a2ad3f413d0391d06261'
+          assert constraints['contracted_utf8_text_tokenization_executed'] is True
+          assert constraints['authenticated_tokenizer_scores_bound'] is True
+          assert constraints['exact_binary32_score_ordering_executed'] is True
+          assert constraints['python_float_score_interpretation_forbidden'] is True
+          assert constraints['sentencepiece_bpe_pair_merge_executed'] is True
+          assert constraints['general_arbitrary_text_tokenizer_conformance_claimed'] is False
+          assert constraints['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert constraints['multi_block_transformer_forward_executed'] is False
+          assert constraints['full_model_forward_executed'] is False
+          assert constraints['output_logits_executed'] is False
+          assert constraints['generation_or_sampling_executed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          assert tokenizer['silent_token_truncation_forbidden'] is True
+          PY
+
+      - name: Run cumulative Iteration 1-10 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration10_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i10"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I10_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute exact text-token ingress process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i10"
+          python tools/pass215_iteration10_exact_text_token_ingress.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I10_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I10_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_10_A.json"
+          python tools/pass215_iteration10_exact_text_token_ingress.py \
+            --validate "$ROOT/PASS_215_ITERATION_10_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_10_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i10"
+          python tools/pass215_iteration10_exact_text_token_ingress.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I10_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I10_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_10_B.json"
+          python tools/pass215_iteration10_exact_text_token_ingress.py \
+            --validate "$ROOT/PASS_215_ITERATION_10_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_10_B_VALIDATION.json"
+          python tools/pass215_iteration10_exact_text_token_ingress.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_10_A.json" "$ROOT/PASS_215_ITERATION_10_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_10_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce exact text-ingress closure and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i10'
+          evidence = json.loads((root / 'PASS_215_ITERATION_10_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_10_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I10_MODEL_SHA256']
+          tokenizer = evidence['authenticated_tokenizer']
+          text = evidence['contracted_text_ingress']
+          embedding = evidence['authenticated_embedding_ingress']
+          execution = evidence['text_derived_coordinate_forward']
+          assert text['input_text'] == os.environ['PASS215_I10_PROMPT']
+          assert text['token_count'] == 4
+          assert len(text['token_ids']) == 4
+          assert tokenizer['tokenizer_score_count'] == tokenizer['vocabulary_size']
+          assert tokenizer['score_float_interpretation_performed'] is False
+          assert embedding['selected_token_ids'] == text['token_ids']
+          assert embedding['embedding_lookup_work'] == {
+              'selected_token_count': 4,
+              'q4_0_blocks_decoded': 36,
+              'exact_embedding_coordinates_materialized': 1152,
+              'source_row_bytes_read': 648,
+          }
+          assert execution['final_output_token_count'] == 4
+          assert execution['final_output_coordinate_count'] == 1152
+          assert execution['causal_controls']['future_edges_materialized'] is False
+          assert execution['causal_controls']['edge_set_exact'] is True
+          claims = evidence['claims']
+          assert claims['contracted_utf8_text_tokenization_executed'] is True
+          assert claims['authenticated_tokenizer_scores_bound'] is True
+          assert claims['exact_binary32_score_ordering_executed'] is True
+          assert claims['sentencepiece_bpe_pair_merge_executed'] is True
+          assert claims['text_derived_token_ids_feed_exact_q4_0_embedding_lookup'] is True
+          assert claims['contracted_text_to_blk0_forward_executed'] is True
+          assert claims['general_arbitrary_text_tokenizer_conformance_claimed'] is False
+          assert claims['multi_block_transformer_forward_executed'] is False
+          assert claims['full_model_forward_executed'] is False
+          assert claims['output_logits_executed'] is False
+          assert claims['generation_or_sampling_executed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['token_ids'] == text['token_ids']
+          print('PASS215_I10_TOKEN_IDS=' + ','.join(str(value) for value in text['token_ids']))
+          print('PASS215_I10_TOKEN_PIECES=' + json.dumps(text['tokens'], ensure_ascii=False, separators=(',', ':')))
+          print('PASS215_I10_NORMALIZED_TEXT=' + text['normalized_text'])
+          print('PASS215_I10_SCORE_STORAGE_ROOT=' + tokenizer['score_storage_bits_root_hash216'])
+          print('PASS215_I10_EXACT_SCORE_ROOT=' + tokenizer['exact_score_root_hash216'])
+          print('PASS215_I10_TOKENIZATION_ROOT=' + text['tokenization_root_hash216'])
+          print('PASS215_I10_EMBEDDING_ROOT=' + embedding['embedding_suite_root_hash216'])
+          print('PASS215_I10_STAGE_SUITE_ROOT=' + execution['executed_stage_suite_root_hash216'])
+          print('PASS215_I10_CAUSAL_ATTENTION_ROOT=' + execution['causal_attention_root_hash216'])
+          print('PASS215_I10_FINAL_OUTPUT_ROOT=' + execution['final_output_root_hash216'])
+          print('PASS215_I10_DAG_ROOT=' + execution['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I10_SUITE_ROOT=' + evidence['exact_text_token_ingress_suite_root_hash216'])
+          print('PASS215_I10_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I10_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 10 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration10-exact-text-token-ingress-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pass215-i10/PASS_215_ITERATION_10_A.json
+            ${{ runner.temp }}/pass215-i10/PASS_215_ITERATION_10_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i10/PASS_215_ITERATION_10_B.json
+            ${{ runner.temp }}/pass215-i10/PASS_215_ITERATION_10_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i10/PASS_215_ITERATION_10_CROSS_PROCESS_VALIDATION.json
+          retention-days: 30
