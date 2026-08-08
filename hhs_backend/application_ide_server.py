@@ -204,19 +204,21 @@ app.add_api_route(
 
 
 async def application_ide_liveness() -> dict[str, Any]:
-    """Return dependency-free process liveness without touching runtime objects."""
+    """Return bounded process liveness plus the committed Pass 174 boot snapshot."""
     boot = dict(pass174.PASS174_BOOT_STATE)
+    boot_authority_ready = bool(boot.get("ready") and boot.get("authority_ready"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V5",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V6",
         "ok": True,
         "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
-        # Runtime authority is intentionally not inferred here. The browser
-        # probes the dedicated bounded authority route independently. This keeps
-        # liveness responsive even while a runtime operation is executing.
-        "authority_ready": False,
-        "runtime_ready": False,
+        # This is a committed startup snapshot, not mutable live-runtime
+        # traversal. Receipt/state identity still comes only from the dedicated
+        # bounded runtime-authority endpoint.
+        "authority_ready": boot_authority_ready,
+        "runtime_ready": boot_authority_ready,
         "runtime_authority_probe_separate": True,
+        "health_authority_source": "PASS174_BOOT_STATE_COMMITTED_SNAPSHOT",
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
@@ -342,6 +344,7 @@ pass174.PASS174_BOOT_STATE.update({
     "health_routes_deduplicated": True,
     "health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS",
     "health_runtime_dependency": False,
+    "health_authority_source": "PASS174_BOOT_STATE_COMMITTED_SNAPSHOT",
     "runtime_services_route": RUNTIME_SERVICES_PATH,
     "runtime_services_route_deduplicated": True,
     "runtime_services_worker_isolated": True,
