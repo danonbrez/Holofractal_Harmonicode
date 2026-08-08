@@ -1,0 +1,58 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_9_IMPLEMENTATION_RECORD_V1",
+  "pass": 215,
+  "iteration": 9,
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "pull_request": 172,
+  "frozen_parent": {
+    "closure_commit": "a1deea46accf94dac0322d215e74a1e6616a4e1b",
+    "closure_tree": "4ec05cb3f6555005220098a55cab1dec0e0dfa61",
+    "stage_suite_root_hash216": "dbcc426e3629a8083f180094405ceffb5ef4da3035b3851ed95f8b7d0c0f3b1a",
+    "causal_attention_root_hash216": "07c9e6cc21f7ed2e199644de322cd4d1bb9e3b2388ffba39baa42596310a4fde",
+    "final_output_root_hash216": "5782d725ab356dbb33207ce59767b8cae1895b7bb859eeb40c2772e9d767a041",
+    "symbolic_dag_root_hash216": "5bf30a850b8ce083c7c01c3a56fd83e18de28ca2c0aeb6d5f439cd384f9122b0",
+    "suite_root_hash216": "a21a7aedf633678510a701f93b39f785ce50c599228a6c194473ae6faea35b71",
+    "evidence_root_hash216": "8ae3bdfb8768c37dfd4c66a491b985b3089378c655a7292ee406bbaa615c8465",
+    "receipt_hash72": "eiQHZ*rGQTWvLkh!RK*>i-0B1e9Wol>oqFKv<UurZ1fNu8oDtU/Do!ar4gjkzmpF2B7cFqrb"
+  },
+  "implemented": [
+    "selected-key GGUF tokenizer metadata reader preserving frozen Iteration 2 parser behavior",
+    "authenticated vocabulary and token-type Hash216 roots",
+    "deterministic ordered special-token then lowest-unused token-ID selection",
+    "source-bound exact Q4_0 token_embd.weight selected-row decoder",
+    "four selected embedding rows totaling 1152 exact rational coordinates",
+    "Iteration 8 causal blk.0 topology driven by authenticated embedding coordinates",
+    "frozen Iteration 8 re-execution and root binding before ingress substitution",
+    "cross-process replay surface"
+  ],
+  "authority_boundary": {
+    "contracted_sequence_length": 4,
+    "authenticated_tokenizer_metadata_bound": true,
+    "authenticated_token_ids_selected": true,
+    "exact_q4_0_token_embedding_lookup_executed": true,
+    "text_tokenization_executed": false,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "multi_block_transformer_forward_executed": false,
+    "full_model_forward_executed": false,
+    "output_logits_executed": false,
+    "dense_forward_replaced": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "contracted_embedding_work": {
+    "embedding_width": 288,
+    "q4_0_row_bytes": 162,
+    "selected_token_count": 4,
+    "q4_0_blocks_decoded": 36,
+    "exact_embedding_coordinates_materialized": 1152,
+    "source_row_bytes_read": 648
+  },
+  "validation": {
+    "dependency_scoped_script": "scripts/run_pass215_iteration9_validation.sh",
+    "registered_workflow": ".github/workflows/pass215-iteration9-authenticated-token-ingress.yml",
+    "real_model_cross_process_validation_required": true,
+    "terminal_roots_pending_exact_head_ci": true
+  }
+}
