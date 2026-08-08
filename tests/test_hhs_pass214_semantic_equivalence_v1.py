@@ -10,7 +10,7 @@ from hhs_backend.runtime.hhs_pass214_reusable_operation_registry_v1 import (
     ReusableOperationRegistryError,
     build_registry,
 )
-from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v1 import (
+from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v2 import (
     PROOF_EXACT_PROJECTION,
     build_semantic_equivalence_reconciliation,
 )
@@ -126,11 +126,17 @@ def test_registry_is_complete_discovery_surface_and_not_execution_authority() ->
 
 
 def test_isolated_candidate_backlog_is_exactly_accounted() -> None:
-    summary = _result()["summary"]
+    result = _result()
+    summary = result["summary"]
     assert summary["projection_surfaces_removed_from_implementation_backlog"] >= 19
+    assert summary["semantic_alias_only_isolated_records_returned_to_backlog"] > 0
     assert 0 <= summary["isolated_candidates_covered_by_proven_reuse_or_promotion"] <= summary["isolated_implementation_backlog_after_projection_filter"]
     assert summary["isolated_candidates_remaining_reusable_extraction_backlog"] == (
         summary["isolated_implementation_backlog_after_projection_filter"]
         - summary["isolated_candidates_covered_by_proven_reuse_or_promotion"]
     )
-    assert len(_result()["unresolved_isolation_backlog"]) == summary["isolated_candidates_remaining_reusable_extraction_backlog"]
+    assert len(result["unresolved_isolation_backlog"]) == summary["isolated_candidates_remaining_reusable_extraction_backlog"]
+    assert all(
+        row["migration_requirement"] == "REQUIRES_REUSABLE_EXTRACTION_OR_ADAPTER"
+        for row in result["unresolved_isolation_backlog"]
+    )
