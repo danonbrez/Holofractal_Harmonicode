@@ -32,6 +32,7 @@
     "contracted_block_order": [0, 1],
     "required_stage_count": 42,
     "required_block_tensor_count": 18,
+    "validated_block_count": 6,
     "embedding_width": 288,
     "feed_forward_width": 768,
     "head_count": 6,
@@ -45,7 +46,8 @@
       "llama.attention.head_count"
     ],
     "authority": "EXACT_GGUF_INTEGER_METADATA_ONLY",
-    "block_count_must_be_at_least": 2,
+    "validated_block_count": 6,
+    "contracted_executed_block_count": 2,
     "python_float_interpretation_forbidden": true
   },
   "sequential_execution": {
@@ -91,20 +93,28 @@
     "migration_active": false
   },
   "validated_source_execution": {
-    "status": "PENDING_EXACT_HEAD_CI",
-    "authenticated_block_count": null,
-    "architecture_root_hash216": null,
-    "blk0_binding_root_hash216": null,
-    "blk1_binding_root_hash216": null,
-    "sequential_link_root_hash216": null,
-    "blk1_stage_suite_root_hash216": null,
-    "blk1_causal_attention_root_hash216": null,
-    "blk1_final_output_root_hash216": null,
-    "full_symbolic_dag_root_hash216": null,
-    "two_block_forward_root_hash216": null,
-    "suite_root_hash216": null,
-    "evidence_root_hash216": null,
-    "receipt_hash72": null
+    "status": "SOURCE_EXECUTION_FROZEN_CLOSURE_HEAD_REPLAY_REQUIRED",
+    "validated_source_head": "cc766135e5c9fc904ab7767ccf0f1f82c2a9c2b3",
+    "validated_source_tree": "20f849a7ef2479597cbc3835b7ae4ea9e9983da7",
+    "workflow_run_id": 31261030988,
+    "workflow_job_id": 93111736044,
+    "cumulative_test_count": 102,
+    "authenticated_block_count": 6,
+    "architecture_root_hash216": "6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52",
+    "blk0_binding_root_hash216": "bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff",
+    "blk1_binding_root_hash216": "3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087",
+    "sequential_link_root_hash216": "ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074",
+    "blk1_stage_suite_root_hash216": "f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0",
+    "blk1_causal_attention_root_hash216": "d780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64",
+    "blk1_final_output_root_hash216": "d88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb",
+    "full_symbolic_dag_root_hash216": "b8f9fdbe81cc718b3c59fcb43dd8ca590d7aaf17802f0a957640c00cf4837cbd",
+    "two_block_forward_root_hash216": "608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff",
+    "suite_root_hash216": "cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8",
+    "evidence_root_hash216": "610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942",
+    "receipt_hash72": "<GT6vip06+KOyycGmt1q79Ahi4m1qhtSc*>+auiGN3xNEHyhYEDD5nBB+*dy)0fD+z+HFS!K",
+    "source_artifact_id": 9022787539,
+    "source_artifact_size_bytes": 88343,
+    "source_artifact_sha256": "9caff114edd752efff4521ef8e4d85bb7dacf92068de538bca39e6030b0265bb"
   },
-  "completion_gate": "Iteration 11 closes only when the authenticated GGUF integer metadata proves a compatible block count and geometry; all 18 blk.0/blk.1 tensors bind exactly; blk.0 reproduces frozen Iteration 10 stage, causal, final-output and DAG roots; blk.1 consumes those exact output coordinate roots in the same DAG; both causal blocks execute with no future edges; two independent process executions reproduce all architecture, binding, sequential-link, blk.1, DAG, suite, evidence and receipt identities on the exact closure head; and all wider authority claims remain false."
+  "completion_gate": "Iteration 11 closes only when the authenticated six-block GGUF geometry and all 18 blk.0/blk.1 tensors remain exactly bound; blk.0 reproduces frozen Iteration 10 stage, causal, final-output and DAG roots; blk.1 consumes those exact output coordinate roots in the same DAG; both causal blocks execute with no future edges; two independent process executions reproduce the frozen architecture, binding, sequential-link, blk.1, DAG, suite, evidence and receipt identities on the exact closure head; and all wider authority claims remain false."
 }
