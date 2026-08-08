@@ -13,10 +13,11 @@ import argparse
 import hashlib
 import json
 import shutil
-import subprocess
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
+
+from hhs_capture_process_utils_v1 import parse_rate, run_checked
 
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageStat
@@ -47,16 +48,6 @@ def require_tool(name: str) -> str:
     if not tool:
         raise RuntimeError(f"required executable not found: {name}")
     return tool
-
-
-def run_checked(command: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        command,
-        check=True,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
 
 
 def select_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
@@ -273,12 +264,6 @@ def encode_video(frame_dir: Path, output: Path, fps: int) -> None:
     )
     if not output.is_file() or output.stat().st_size <= 1024:
         raise RuntimeError("sprite MP4 was not produced or is implausibly small")
-
-
-def parse_rate(value: str) -> Fraction:
-    if not value or value == "0/0":
-        return Fraction(0, 1)
-    return Fraction(value)
 
 
 def inspect_video(path: Path) -> dict[str, Any]:

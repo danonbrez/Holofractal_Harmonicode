@@ -1,0 +1,130 @@
+{
+  "schema": "HHS_PASS_214_SEMANTIC_EQUIVALENCE_REUSE_EVIDENCE_V1",
+  "classification": "PASS_214_SEMANTIC_EQUIVALENCE_REUSE_AND_FIRST_MODULE_PROMOTION_VALIDATED",
+  "base_main_commit": "89a52a879049a637a44ce64a26b1c3f0a00388a5",
+  "branch": "agent/pass214-semantic-equivalence-reuse-v1",
+  "merge_target": "main",
+  "pull_request": 178,
+  "validated_implementation_head": "54295e674d6bae1868bdb66b5d2aff0edaaac1d4",
+  "validated_implementation_tree": "9e28fcb36de76440e2ee5909c2b82c1bf5a4314d",
+  "authority": {
+    "execution_authority_changed": false,
+    "pass213_governed_mutation_authority_preserved": true,
+    "discovery_registry_is_execution_authority": false,
+    "automatic_semantic_promotion": false,
+    "name_similarity_is_equivalence_proof": false,
+    "no_float_canonical_authority_changed": false
+  },
+  "frozen_runtime": {
+    "path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+    "git_blob": "362cd6e892ae66024333b111aec83f12023fdce3",
+    "modified": false
+  },
+  "semantic_reconciliation": {
+    "reconciliation_schema": "HHS_PASS_214_SEMANTIC_EQUIVALENCE_RECONCILIATION_V2",
+    "reconciliation_sha256": "f782328a07dc8748338e7db0d70b8e664be3f905bfb8fc61cf39c09c3a532967",
+    "raw_operation_identities": 19536,
+    "operation_registry_entries": 19536,
+    "registry_identity_count_without_unproven_collapse": 18487,
+    "candidate_groups": 1852,
+    "group_status_counts": {
+      "PROVEN_EQUIVALENT": 137,
+      "PARTIALLY_PROVEN_EQUIVALENT": 100,
+      "UNRESOLVED_REQUIRES_BEHAVIORAL_CONFORMANCE": 1615
+    },
+    "proof_edges": 1292,
+    "proof_edge_types": {
+      "EXACT_NATIVE_REGISTRY_PROJECTION": 19,
+      "IDENTICAL_IMPLEMENTATION_STRUCTURE": 772,
+      "PURE_ARGUMENT_PRESERVING_FORWARDER": 501
+    },
+    "reusable_registry_entries": 306,
+    "migration_action_counts": {
+      "REGISTER_EXACT_PROJECTION": 19,
+      "REGISTER_PROVEN_ALIAS": 287
+    },
+    "known_opcode_family_anchor": {
+      "VM81_SUBSTRATE_OPCODE": 24,
+      "FROZEN_HHS_IR_OPCODE": 20,
+      "PASS079_NATIVE_ABI_OPCODE": 29,
+      "PASS158_LLABI_NFTC_OPCODE": 36,
+      "PASS213_GOVERNED_NATIVE_DISPATCH": 9,
+      "VM81_BASE20_NUMERICAL_ABI": 19,
+      "total_raw_anchor_identities": 137,
+      "all_satisfied": true
+    }
+  },
+  "isolation_accounting": {
+    "pre_promotion_isolated_candidates": 1406,
+    "post_promotion_isolated_candidates": 1402,
+    "projection_surfaces_removed_from_implementation_backlog": 19,
+    "remaining_reusable_extraction_backlog": 1383,
+    "semantic_alias_only_isolated_records_returned_to_backlog": 17,
+    "semantic_alias_proof_alone_removes_implementation_backlog": false
+  },
+  "first_reusable_module_promotion": {
+    "shared_module": "native_projects/hhs_vm81_game_level10/tools/hhs_capture_process_utils_v1.py",
+    "classification": "VM81_SHARED_PRESENTATION_TOOLING_NON_CANONICAL",
+    "promoted_operations": [
+      "parse_rate",
+      "run_checked"
+    ],
+    "former_duplicate_consumers": [
+      "native_projects/hhs_vm81_game_level10/tools/render_sprite_capture.py",
+      "native_projects/hhs_vm81_game_level10/tools/render_terminal_capture.py"
+    ],
+    "raw_identity_delta": -2,
+    "isolated_candidate_delta": -4,
+    "pre_promotion_top_level_promotion_candidates": 2,
+    "post_promotion_top_level_promotion_candidates": 0,
+    "canonical_mutation_authority": "NONE"
+  },
+  "validated_runs": [
+    {
+      "workflow": "Pass 214 Semantic Equivalence Reuse Registry",
+      "run_id": 31259979177,
+      "head": "54295e674d6bae1868bdb66b5d2aff0edaaac1d4",
+      "status": "SUCCESS",
+      "artifact_id": 9022506280,
+      "artifact_digest": "sha256:33a237ee8d76c598656b253f70ecf2a72a285a5e71d165414b6bf938b4f103f8"
+    },
+    {
+      "workflow": "Pass 214 Compound Optimization Benchmark Authority",
+      "run_id": 31259979168,
+      "head": "54295e674d6bae1868bdb66b5d2aff0edaaac1d4",
+      "status": "SUCCESS"
+    },
+    {
+      "workflow": "Pass 214 Iteration 8 Terminal Freeze",
+      "run_id": 31259979183,
+      "head": "54295e674d6bae1868bdb66b5d2aff0edaaac1d4",
+      "status": "SUCCESS"
+    },
+    {
+      "workflow": "VM81 Playable 19-Opcode Platform Game",
+      "run_id": 31259979209,
+      "head": "54295e674d6bae1868bdb66b5d2aff0edaaac1d4",
+      "status": "SUCCESS",
+      "acceptance": [
+        "native build and execution",
+        "ASAN and UBSAN",
+        "terminal modality",
+        "sprite modality",
+        "governed texture modality",
+        "libavfilter holographic modality",
+        "final release evidence assertions"
+      ]
+    }
+  ],
+  "quality_repairs": [
+    "A negative gate found that proven semantic aliases were incorrectly removed from the implementation extraction backlog; V2 keeps isolated alias implementations in backlog until real reuse or promotion occurs.",
+    "Exact VM81 base-20 projections are tracked as projection surfaces rather than duplicate implementations.",
+    "Every coded operation has one read-only discovery registry record; only proven-equivalent clusters share a registry identity."
+  ],
+  "full_graph_retention": {
+    "repository_embeds_full_graph": false,
+    "ci_artifact_is_authoritative_full_graph": true,
+    "reason": "Keep repository evidence compact while retaining exact-head complete reconciliation graph through CI artifact."
+  },
+  "next_action": "Process the 1383 remaining isolated implementation candidates by proof-backed domain priority, beginning with shared Hash72/Hash216, receipt/replay, canonical serialization, VM lifecycle, tensor/transport, compiler/bytecode, workspace, media, and ML/data capability families."
+}

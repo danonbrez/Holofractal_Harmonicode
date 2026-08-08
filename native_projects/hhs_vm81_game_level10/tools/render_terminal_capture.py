@@ -13,11 +13,12 @@ import argparse
 import hashlib
 import json
 import shutil
-import subprocess
 import sys
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
+
+from hhs_capture_process_utils_v1 import parse_rate, run_checked
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -59,22 +60,6 @@ def select_font() -> Path:
         if candidate.is_file():
             return candidate
     raise RuntimeError("DejaVu Sans Mono font was not found")
-
-
-def parse_rate(value: str) -> Fraction:
-    if not value or value == "0/0":
-        return Fraction(0, 1)
-    return Fraction(value)
-
-
-def run_checked(command: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        command,
-        check=True,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
 
 
 def load_frames(input_dir: Path, trace: dict[str, Any]) -> list[tuple[Path, str, bytes]]:
