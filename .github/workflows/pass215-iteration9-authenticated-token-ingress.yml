@@ -8,6 +8,7 @@ on:
     paths:
       - 'contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json'
       - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v2.py'
       - 'tools/pass215_iteration9_authenticated_token_ingress.py'
       - 'tests/test_hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
       - 'scripts/run_pass215_iteration9_validation.sh'
@@ -19,6 +20,7 @@ on:
     paths:
       - 'contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json'
       - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v2.py'
       - 'tools/pass215_iteration9_authenticated_token_ingress.py'
       - 'tests/test_hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
       - 'scripts/run_pass215_iteration9_validation.sh'
@@ -67,6 +69,8 @@ jobs:
           contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json').read_text())
           inherits = contract['inherits']
           constraints = contract['constraints']
+          ingress = contract['token_ingress']
+          repair = contract['repair_forward']
           assert inherits['iteration8_closure_head'] == 'a1deea46accf94dac0322d215e74a1e6616a4e1b'
           assert inherits['iteration8_closure_tree'] == '4ec05cb3f6555005220098a55cab1dec0e0dfa61'
           assert inherits['iteration8_stage_suite_root_hash216'] == 'dbcc426e3629a8083f180094405ceffb5ef4da3035b3851ed95f8b7d0c0f3b1a'
@@ -75,7 +79,13 @@ jobs:
           assert inherits['iteration8_symbolic_dag_root_hash216'] == '5bf30a850b8ce083c7c01c3a56fd83e18de28ca2c0aeb6d5f439cd384f9122b0'
           assert inherits['iteration8_suite_root_hash216'] == 'a21a7aedf633678510a701f93b39f785ce50c599228a6c194473ae6faea35b71'
           assert inherits['iteration8_evidence_root_hash216'] == '8ae3bdfb8768c37dfd4c66a491b985b3089378c655a7292ee406bbaa615c8465'
+          assert repair['raw_sentinel_metadata_preserved'] is True
+          assert repair['inactive_sentinel_selection_forbidden'] is True
+          assert ingress['selection_policy'] == 'ORDERED_UNIQUE_ACTIVE_SPECIAL_TOKEN_IDS_THEN_LOWEST_UNUSED_IDS'
+          assert ingress['validated_selected_token_ids'] == [1, 2, 0, 3]
           assert constraints['authenticated_tokenizer_metadata_bound'] is True
+          assert constraints['raw_special_token_metadata_preserved'] is True
+          assert constraints['inactive_special_token_sentinels_excluded_from_selection'] is True
           assert constraints['authenticated_token_ids_selected'] is True
           assert constraints['exact_q4_0_token_embedding_lookup_executed'] is True
           assert constraints['text_tokenization_executed'] is False
@@ -147,8 +157,10 @@ jobs:
           execution = evidence['token_ingress_coordinate_forward']
           assert tokenizer['vocabulary_size'] > 0
           assert tokenizer['float_metadata_interpreted'] is False
-          assert len(ingress['selected_token_ids']) == 4
-          assert len(set(ingress['selected_token_ids'])) == 4
+          assert tokenizer['inactive_special_ids_are_not_selected'] is True
+          assert set(tokenizer['raw_special_token_ids']) == set(tokenizer['special_token_ids']) | set(tokenizer['inactive_special_token_ids'])
+          assert ingress['selected_token_ids'] == [1, 2, 0, 3]
+          assert all(value not in ingress['selected_token_ids'] for value in tokenizer['inactive_special_token_ids'].values())
           assert len(ingress['selected_tokens']) == 4
           assert ingress['embedding_tensor']['name'] == 'token_embd.weight'
           assert ingress['embedding_tensor']['storage_type'] == 'Q4_0'
@@ -174,6 +186,7 @@ jobs:
           assert execution['rope_controls']['all_nonzero_positions_change_q_and_k_roots'] is True
           claims = evidence['claims']
           assert claims['authenticated_tokenizer_metadata_bound'] is True
+          assert claims['inactive_special_token_sentinels_preserved'] is True
           assert claims['exact_q4_0_token_embedding_lookup_executed'] is True
           assert claims['text_tokenization_executed'] is False
           assert claims['general_arbitrary_sequence_length_transformer_forward_executed'] is False
@@ -188,6 +201,7 @@ jobs:
           assert replay['final_output_root_hash216'] == execution['final_output_root_hash216']
           print('PASS215_I9_SELECTED_TOKEN_IDS=' + ','.join(str(value) for value in ingress['selected_token_ids']))
           print('PASS215_I9_TOKENIZER_ROOT=' + tokenizer['vocabulary_root_hash216'])
+          print('PASS215_I9_SPECIAL_TOKEN_METADATA_ROOT=' + tokenizer['special_token_metadata_root_hash216'])
           print('PASS215_I9_EMBEDDING_ROOT=' + ingress['embedding_suite_root_hash216'])
           print('PASS215_I9_STAGE_SUITE_ROOT=' + execution['executed_stage_suite_root_hash216'])
           print('PASS215_I9_CAUSAL_ATTENTION_ROOT=' + execution['causal_attention_root_hash216'])
