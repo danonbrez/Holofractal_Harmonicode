@@ -21,7 +21,7 @@ test('startup coordinator establishes mobile first paint before loading the publ
   assert.match(coordinator, /mobile_first_paint_precedes_public_module_graph:\s*true/);
 });
 
-test('mobile repair owns one dock, closes stale panels, and exposes editor first', async () => {
+test('mobile first paint initializes visibility without owning canonical input', async () => {
   const repair = await source('mobile-first-paint-fix.mjs');
 
   assert.match(repair, /body\.classList\.add\('visual-ide-active', 'hhs-mobile-first-paint'\)/);
@@ -29,10 +29,11 @@ test('mobile repair owns one dock, closes stale panels, and exposes editor first
   assert.match(repair, /workflow-mobile-tabs/);
   assert.match(repair, /tabs\.hidden = true/);
   assert.match(repair, /tabs\.inert = true/);
-  assert.match(repair, /mobile-explorer-open/);
-  assert.match(repair, /mobile-inspector-open/);
-  assert.match(repair, /setExplorerOpen\(false\)/);
-  assert.match(repair, /event\.stopImmediatePropagation\(\)/);
-  assert.match(repair, /\.ide-file-item, \.ide-editor-tab, #ide-new-file/);
-  assert.match(repair, /enforceVisualIdeSurface/);
+  assert.match(repair, /interactive_input_owner:\s*false/);
+  assert.match(repair, /enforceInitialVisualIdeSurface/);
+  assert.doesNotMatch(repair, /stopImmediatePropagation/);
+  assert.doesNotMatch(repair, /addEventListener\('click'/);
+  assert.doesNotMatch(repair, /attributeFilter:\s*\['class', 'hidden'\]/);
+  assert.match(repair, /legacyTabObserver\.observe\(body, \{ subtree: true, childList: true \}\)/);
+  assert.match(repair, /legacyTabObserver\?\.disconnect\(\)/);
 });
