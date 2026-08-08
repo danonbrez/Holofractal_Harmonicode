@@ -1,0 +1,87 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_11_IMPLEMENTATION_RECORD_V1",
+  "pass": 215,
+  "iteration": 11,
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "pull_request": 172,
+  "frozen_parent": {
+    "closure_commit": "aa7951d8be9ecef963e7d311f2e351b5c729a7e7",
+    "closure_tree": "f2d823a22369ed932c1b2b6b2dc02dc55455a147",
+    "suite_root_hash216": "c495f652c6056ee76353c188b70d58641d4934ba6662817978d96862d3e71d31",
+    "evidence_root_hash216": "8e7accbeb1433d19e4056cb142c87796f891f99d96d02b0b5d4eecb1687f5658",
+    "receipt_hash72": "dXWZm)?0Q2Lf6BLg!>hgEzRXB4IAbO922jV?vPCo7WBkOscF6qfS<X<sFZ-1NugyfpiW<QhS",
+    "closure_artifact_sha256": "89183f168de906d8a9b5c54455a51bdb8ff6e1259d1a045c0477f6b892ce6a2d"
+  },
+  "implemented": [
+    "exact GGUF integer architecture metadata reader for block_count embedding_length feed_forward_length and attention.head_count",
+    "parameterized exact blk.N norm and seven-Q4_0-linear tensor binding using frozen Iteration 4 and Iteration 6 decoders",
+    "parameterized 21-stage four-token causal block executor using frozen Iteration 7 and Iteration 8 symbolic operators",
+    "blk.0 namespace preservation so Iteration 10 stage causal final-output and DAG roots must reproduce exactly before blk.1 is admitted",
+    "single shared hash-consed symbolic DAG across blk.0 and blk.1",
+    "exact coordinate-root sequential link proving blk.1 input equals blk.0 output",
+    "two-block transition-work accounting and causal-edge controls",
+    "independent process replay surface"
+  ],
+  "contracted_workload": {
+    "prompt": "Hello world!",
+    "token_ids": [1, 15043, 3186, 29991],
+    "sequence_length": 4,
+    "block_order": [0, 1],
+    "stage_count": 42,
+    "required_tensor_count": 18,
+    "embedding_width": 288,
+    "feed_forward_width": 768,
+    "head_count": 6,
+    "head_dimension": 48,
+    "total_causal_qk_edges": 120,
+    "two_block_linear_work": {
+      "row_transitions": 23808,
+      "logical_weight_products": 7962624,
+      "logical_accumulation_additions": 7938816
+    }
+  },
+  "authority_boundary": {
+    "contracted_four_token_two_block_sequential_forward_executed": true,
+    "multi_block_transformer_forward_executed": true,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "all_model_blocks_executed": false,
+    "full_model_forward_executed": false,
+    "final_output_norm_executed": false,
+    "output_logits_executed": false,
+    "generation_or_sampling_executed": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "approximate_transcendental_evaluation_performed": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "source_execution": {
+    "status": "PENDING_EXACT_HEAD_CI",
+    "authenticated_block_count": null,
+    "architecture_root_hash216": null,
+    "blk0_binding_root_hash216": null,
+    "blk1_binding_root_hash216": null,
+    "sequential_link_root_hash216": null,
+    "blk1_stage_suite_root_hash216": null,
+    "blk1_causal_attention_root_hash216": null,
+    "blk1_final_output_root_hash216": null,
+    "full_symbolic_dag_root_hash216": null,
+    "two_block_forward_root_hash216": null,
+    "suite_root_hash216": null,
+    "evidence_root_hash216": null,
+    "receipt_hash72": null,
+    "workflow_run_id": null,
+    "workflow_job_id": null,
+    "artifact_id": null,
+    "artifact_sha256": null
+  },
+  "validation": {
+    "dependency_scoped_script": "scripts/run_pass215_iteration11_validation.sh",
+    "registered_workflow": ".github/workflows/pass215-iteration11-sequential-two-block.yml",
+    "independent_cross_process_real_model_replay_required": true,
+    "terminal_roots_pending_exact_head_ci": true
+  },
+  "restart_action": "Run scripts/run_pass215_iteration11_validation.sh and the Iteration 11 exact-head workflow against the authenticated GGUF. If authenticated architecture metadata, blk.1 storage geometry, or frozen blk.0 root reproduction differs, preserve the failed candidate and repair forward from observed evidence rather than weakening the sequentiality or no-float gates."
+}
