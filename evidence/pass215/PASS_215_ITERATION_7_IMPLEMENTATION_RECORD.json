@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_7_IMPLEMENTATION_RECORD_V1",
+  "pass": 215,
+  "iteration": 7,
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "pull_request": 172,
+  "frozen_parent": {
+    "commit": "684a06a54d6b1282fd549f97f99095724f4452cc",
+    "tree": "86b5e7e5e70de09fb5084b76a2f40cb1855352f9",
+    "block_graph_root_hash216": "ab4e9d2310936652fdeb049276e08bbc0b9e803787c91ef96713f49bfb1b7c06",
+    "suite_root_hash216": "ea8c31224dca961ad9afdce8431509cb93f4d74a8209dd714664edc0881dc9b5",
+    "evidence_root_hash216": "85e0a02a70db8330c808a771bf1fbf6084802074b48a4d1b6f990768e23f133a",
+    "receipt_hash72": "D*7BmWaC!cnAcSZGhYBHad*pf!J/xZL2!8Wyto8hczrq32GAD98-n8W0>w/Hp4GGusIBKzZJ"
+  },
+  "implemented": [
+    "hash-consed exact symbolic coordinate DAG",
+    "source-SHA and Iteration-4-descriptor-bound Q4_0 row transition generator",
+    "coordinate-level execution of all 21 frozen blk.0 stages",
+    "exact RMSNorm DAG using real authenticated norm weights",
+    "exact position-zero RoPE identity",
+    "exact QK head dots and attention scaling",
+    "exact single-token softmax identity",
+    "exact residual transitions",
+    "exact closed-form SiLU exp/inverse/product DAG",
+    "288 terminal residual_ffn coordinate roots",
+    "logical linear work accounting",
+    "Q4_0 row semantic control against Iteration 4 exact execution",
+    "cross-process replay surface"
+  ],
+  "authority_boundary": {
+    "sequence_length": 1,
+    "coordinate_level_complete_block_forward_executed": true,
+    "symbolic_coordinate_forward_materialized": true,
+    "general_multi_token_transformer_layer_forward_executed": false,
+    "full_transformer_layer_forward_executed": false,
+    "full_model_forward_executed": false,
+    "dense_forward_replaced": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "validation": {
+    "dependency_scoped_script": "scripts/run_pass215_iteration7_validation.sh",
+    "registered_workflow": ".github/workflows/pass215-iteration7-symbolic-coordinate-forward.yml",
+    "real_model_cross_process_validation_required": true,
+    "terminal_roots_pending_exact_head_ci": true
+  }
+}
