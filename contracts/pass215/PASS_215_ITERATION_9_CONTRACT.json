@@ -3,7 +3,7 @@
   "contract": "HHS-P215-I9-AUTHENTICATED-TOKENIZER-TOKEN-EMBEDDING-INGRESS",
   "pass": 215,
   "iteration": 9,
-  "version": "1.0.0-iteration9",
+  "version": "1.0.1-iteration9-repair1",
   "objective": "Replace Iteration 8 deterministic external hidden-state controls with four authenticated GGUF token IDs and exact Q4_0 token_embd.weight rows, then execute the inherited four-position causal blk.0 symbolic topology while preserving all frozen Iteration 8 roots and withholding text-tokenization, arbitrary-sequence, multi-block, full-model, dense-replacement, runtime-mutation and canonical-mutation authority.",
   "inherits": {
     "iteration8_closure_head": "a1deea46accf94dac0322d215e74a1e6616a4e1b",
@@ -32,10 +32,20 @@
     "token_embedding_tensor": "token_embd.weight",
     "token_embedding_storage": "Q4_0"
   },
+  "repair_forward": {
+    "superseded_behavior": "REJECT_EVERY_OUT_OF_RANGE_SPECIAL_TOKEN_METADATA_SCALAR",
+    "observed_failure": "tokenizer.ggml.padding_token_id may encode an inactive out-of-range sentinel",
+    "repaired_behavior": "PRESERVE_RAW_SPECIAL_TOKEN_METADATA_PARTITION_ACTIVE_IN_RANGE_AND_INACTIVE_OUT_OF_RANGE_THEN_SELECT_ONLY_ACTIVE_IDS",
+    "raw_sentinel_metadata_preserved": true,
+    "inactive_sentinel_selection_forbidden": true,
+    "failed_source_candidate": "e959c12b812b7f05914cecea13c8447d4b390868",
+    "failed_workflow_run_id": 31257791259
+  },
   "token_ingress": {
     "tokenizer_vocabulary_key": "tokenizer.ggml.tokens",
     "token_type_key": "tokenizer.ggml.token_type",
-    "selection_policy": "ORDERED_UNIQUE_SPECIAL_TOKEN_IDS_THEN_LOWEST_UNUSED_IDS",
+    "selection_policy": "ORDERED_UNIQUE_ACTIVE_SPECIAL_TOKEN_IDS_THEN_LOWEST_UNUSED_IDS",
+    "validated_selected_token_ids": [1, 2, 0, 3],
     "selected_token_count": 4,
     "text_tokenization_executed": false,
     "embedding_row_bytes": 162,
@@ -47,6 +57,8 @@
   "constraints": {
     "iteration8_frozen_roots_reexecuted_and_bound": true,
     "authenticated_tokenizer_metadata_bound": true,
+    "raw_special_token_metadata_preserved": true,
+    "inactive_special_token_sentinels_excluded_from_selection": true,
     "authenticated_token_ids_selected": true,
     "exact_q4_0_token_embedding_lookup_executed": true,
     "contracted_four_token_embedding_ingress_executed": true,
@@ -69,7 +81,9 @@
     "iteration8_closure_head_tree_stage_causal_output_dag_suite_evidence_and_receipt_roots_are_bound",
     "authenticated_model_sha256_matches_iterations2_through8",
     "tokenizer_vocabulary_is_materialized_from_authenticated_gguf_metadata_without_float_score_interpretation",
-    "selected_token_ids_are_unique_in_range_and_deterministic",
+    "raw_special_token_metadata_is_preserved_and_partitioned_into_active_and_inactive_ids",
+    "inactive_out_of_range_special_token_sentinels_are_never_selected",
+    "selected_token_ids_are_unique_in_range_deterministic_and_equal_the_frozen_source_selection",
     "token_embd_weight_is_q4_0_with_shape_288_by_authenticated_vocabulary_size",
     "only_four_selected_embedding_rows_are_exactly_decoded",
     "four_exact_embedding_rows_feed_all_twenty_one_blk0_stages",
@@ -77,5 +91,5 @@
     "independent_process_replay_matches_tokenizer_embedding_stage_causal_output_suite_evidence_and_receipt_roots",
     "forbidden_authority_claims_remain_false"
   ],
-  "completion_gate": "Iteration 9 closes only when the authenticated tokenizer vocabulary and selected token IDs are source-bound, exactly four Q4_0 token_embd.weight rows are decoded to 1152 rational coordinates, those embeddings execute the inherited four-token causal blk.0 topology with deterministic cross-process replay, all frozen Iteration 8 identities remain bound, cumulative Iterations 1-9 validation passes, and no text-tokenization/arbitrary-sequence/multi-block/full-model/dense-replacement/runtime-mutation/canonical-mutation/migration authority is promoted."
+  "completion_gate": "Iteration 9 closes only when the authenticated tokenizer vocabulary and selected token IDs are source-bound, raw inactive special-token sentinel metadata is preserved but excluded from selection, exactly four Q4_0 token_embd.weight rows are decoded to 1152 rational coordinates, those embeddings execute the inherited four-token causal blk.0 topology with deterministic cross-process replay, all frozen Iteration 8 identities remain bound, cumulative Iterations 1-9 validation passes, and no text-tokenization/arbitrary-sequence/multi-block/full-model/dense-replacement/runtime-mutation/canonical-mutation/migration authority is promoted."
 }
