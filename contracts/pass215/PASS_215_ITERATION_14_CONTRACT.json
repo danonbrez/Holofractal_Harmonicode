@@ -1,0 +1,58 @@
+{
+  "contract": "HHS-P215-I14-EXACT-AUTOREGRESSIVE-CONTINUATION",
+  "pass": 215,
+  "iteration": 14,
+  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "inherits": {
+    "iteration13_closure_head": "1253bdfaff0eea3688f28ac749df31e4f1613d06",
+    "iteration13_closure_tree": "cdf253c6c08d0bf0184b501f0395667c5e2a04c8",
+    "iteration13_terminal_topology_root_hash216": "cc6cdb8d50769ccc6baff3c55732ea4f6cfa1fe2c9a5b3ff8b9cf0e41f9b03b4",
+    "iteration13_output_norm_value_root_hash216": "5d9db692ebb5b1f2d2ec0507ec4a3d8222620270e67cec8f265a80aeaa4ce063",
+    "iteration13_output_projection_descriptor_root_hash216": "bd555175efd71d0c58892d14df30769c971b0a83231108eec9735e660b3e4ce8",
+    "iteration13_q8_semantic_control_root_hash216": "d7a33b0cd2eae98d4cc2172ed6b2e2ff04c67f29151aabca9f2df097fe3b4622",
+    "iteration13_terminal_norm_root_hash216": "4a6cd80b2eb3d16ab92ae9b58c4cf58a38d7bbda23debff275e743af3bfdc42b",
+    "iteration13_logits_root_hash216": "32fb61d26431c937050d39809b289dbf65c73ecce40b6bd30378e43ecb977ceb",
+    "iteration13_full_symbolic_dag_root_hash216": "095aadfa389728fb0fc53df0acd3632bfe09af75b13ca2d64d576c117ac0ccd5",
+    "iteration13_full_model_forward_root_hash216": "c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac",
+    "iteration13_suite_root_hash216": "046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc",
+    "iteration13_evidence_root_hash216": "ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5",
+    "iteration13_receipt_hash72": "6a0VdJ2YaxDx6m2RFaI8UxEyyxSi!gW1<xA4bB0OIKrAg*phhTeHRkYh0tWfWvcO1g/*(A<Z",
+    "iteration13_closure_artifact_sha256": "38c606cba6f465e8a8edd763da22feb4c464d6bd3a9118a3a45515b925bf4f65"
+  },
+  "contracted_workload": {
+    "model": "ggml-org/tiny-llamas/stories15M-q4_0.gguf",
+    "model_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "prompt": "Hello world!",
+    "prompt_token_ids": [1, 15043, 3186, 29991],
+    "prefix_sequence_length": 4,
+    "vocabulary_size": 32000,
+    "selection_policy": "LEXICOGRAPHIC_MINIMUM_HASH216_LOGIT_ROOT_THEN_TOKEN_ID",
+    "selection_semantics": "EXACT_SYMBOLIC_IDENTITY_TOTAL_ORDER_NOT_NUMERIC_ARGMAX",
+    "generated_token_count": 2,
+    "processed_append_count": 2,
+    "required_cache_policy": "APPEND_ONLY_PER_BLOCK_KV_REUSE_NO_PREFIX_RECOMPUTATION"
+  },
+  "requirements": {
+    "consume_iteration13_final_position_logit_vector": true,
+    "deterministic_exact_token_selection": true,
+    "append_selected_token": true,
+    "reuse_prefix_state": true,
+    "reuse_per_block_kv_cache": true,
+    "process_at_least_two_appended_positions": true,
+    "cross_process_replay": true,
+    "no_float_canonical_authority": true
+  },
+  "constraints": {
+    "numeric_logit_argmax_executed": false,
+    "probabilistic_sampling_executed": false,
+    "general_generation_claimed": false,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "approximate_transcendental_evaluation_performed": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}
