@@ -62,22 +62,38 @@ jobs:
       - name: Install validation dependency
         run: python -m pip install pytest
 
-      - name: Enforce frozen Iteration 10 inheritance and authority boundaries
+      - name: Enforce frozen Iteration 10 inheritance and source-frozen authority boundaries
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_11_CONTRACT.json').read_text())
           inherits = contract['inherits']
+          workload = contract['authenticated_workload']
           constraints = contract['constraints']
           sequence = contract['sequential_execution']
+          source = contract['validated_source_execution']
           assert inherits['iteration10_closure_head'] == 'aa7951d8be9ecef963e7d311f2e351b5c729a7e7'
           assert inherits['iteration10_closure_tree'] == 'f2d823a22369ed932c1b2b6b2dc02dc55455a147'
           assert inherits['iteration10_suite_root_hash216'] == 'c495f652c6056ee76353c188b70d58641d4934ba6662817978d96862d3e71d31'
           assert inherits['iteration10_evidence_root_hash216'] == '8e7accbeb1433d19e4056cb142c87796f891f99d96d02b0b5d4eecb1687f5658'
+          assert workload['validated_block_count'] == 6
           assert sequence['shared_hash_consed_symbolic_dag_required'] is True
           assert sequence['blk1_input_coordinate_roots_must_equal_blk0_output_coordinate_roots'] is True
           assert sequence['total_causal_qk_edges'] == 120
+          assert source['authenticated_block_count'] == 6
+          assert source['architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
+          assert source['blk0_binding_root_hash216'] == 'bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff'
+          assert source['blk1_binding_root_hash216'] == '3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087'
+          assert source['sequential_link_root_hash216'] == 'ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074'
+          assert source['blk1_stage_suite_root_hash216'] == 'f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0'
+          assert source['blk1_causal_attention_root_hash216'] == 'd780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64'
+          assert source['blk1_final_output_root_hash216'] == 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb'
+          assert source['full_symbolic_dag_root_hash216'] == 'b8f9fdbe81cc718b3c59fcb43dd8ca590d7aaf17802f0a957640c00cf4837cbd'
+          assert source['two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert source['suite_root_hash216'] == 'cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8'
+          assert source['evidence_root_hash216'] == '610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942'
+          assert source['receipt_hash72'] == '<GT6vip06+KOyycGmt1q79Ahi4m1qhtSc*>+auiGN3xNEHyhYEDD5nBB+*dy)0fD+z+HFS!K'
           assert constraints['multi_block_transformer_forward_executed'] is True
           assert constraints['all_model_blocks_executed'] is False
           assert constraints['full_model_forward_executed'] is False
@@ -133,7 +149,7 @@ jobs:
             --compare-replay "$ROOT/PASS_215_ITERATION_11_A.json" "$ROOT/PASS_215_ITERATION_11_B.json" \
             --output "$ROOT/PASS_215_ITERATION_11_CROSS_PROCESS_VALIDATION.json"
 
-      - name: Enforce sequential two-block source closure and print terminal roots
+      - name: Enforce frozen sequential two-block identities and print terminal roots
         run: |
           python - <<'PY'
           import json
@@ -147,18 +163,30 @@ jobs:
           bindings = evidence['authenticated_block_tensor_bindings']
           forward = evidence['sequential_two_block_forward']
           assert arch['architecture'] == 'llama'
-          assert arch['block_count'] >= 2
+          assert arch['block_count'] == 6
           assert arch['embedding_length'] == 288
           assert arch['feed_forward_length'] == 768
           assert arch['head_count'] == 6
           assert arch['head_dimension'] == 48
+          assert arch['architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
           assert bindings['required_tensor_count'] == 18
+          assert bindings['block_binding_roots']['blk.0'] == 'bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff'
+          assert bindings['block_binding_roots']['blk.1'] == '3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087'
           assert forward['block_order'] == [0, 1]
           assert forward['stage_count'] == 42
           assert forward['blk1_input_equals_blk0_output'] is True
+          assert forward['blk0_to_blk1_sequential_link_root_hash216'] == 'ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074'
           assert forward['block0']['executed_stage_suite_root_hash216'] == 'a879c3c00ddaee609ea62768ed6de06eb450fa2331eb05f1c8b30c19bfbbb065'
           assert forward['block0']['causal_attention_root_hash216'] == 'e3746a9aab00dec1fd0c64cde4618fbc3b7e19d549a3107d4a5fce363b470ea2'
           assert forward['block0']['final_output_root_hash216'] == '05390b8c68285aa810bb8a1b37ea9f14dbf022709047a75ae402d50db5ca3a87'
+          assert forward['block1']['executed_stage_suite_root_hash216'] == 'f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0'
+          assert forward['block1']['causal_attention_root_hash216'] == 'd780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64'
+          assert forward['block1']['final_output_root_hash216'] == 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb'
+          assert forward['symbolic_dag']['ordered_node_root_hash216'] == 'b8f9fdbe81cc718b3c59fcb43dd8ca590d7aaf17802f0a957640c00cf4837cbd'
+          assert forward['two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert evidence['sequential_two_block_suite_root_hash216'] == 'cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8'
+          assert evidence['evidence_root_hash216'] == '610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942'
+          assert evidence['receipt_hash72'] == '<GT6vip06+KOyycGmt1q79Ahi4m1qhtSc*>+auiGN3xNEHyhYEDD5nBB+*dy)0fD+z+HFS!K'
           assert forward['total_linear_transition_work'] == {
               'row_transitions': 23808,
               'logical_weight_products': 7962624,
@@ -175,6 +203,11 @@ jobs:
           assert claims['canonical_float_interpretation_performed'] is False
           assert replay['cross_process_replay'] is True
           assert replay['semantic_exactness'] is True
+          assert replay['blk1_final_output_root_hash216'] == 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb'
+          assert replay['two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert replay['suite_root_hash216'] == 'cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8'
+          assert replay['evidence_root_hash216'] == '610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942'
+          assert replay['receipt_hash72'] == '<GT6vip06+KOyycGmt1q79Ahi4m1qhtSc*>+auiGN3xNEHyhYEDD5nBB+*dy)0fD+z+HFS!K'
           print('PASS215_I11_BLOCK_COUNT=' + str(arch['block_count']))
           print('PASS215_I11_ARCHITECTURE_ROOT=' + arch['architecture_root_hash216'])
           print('PASS215_I11_BLK0_BINDING_ROOT=' + bindings['block_binding_roots']['blk.0'])
