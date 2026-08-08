@@ -2,23 +2,30 @@
 
 Iteration 15 proved one true greedy append for the authenticated ``Hello world!``
 witness by certifying a strict 32,000-logit magnitude argmax with integer-only
-outward dyadic bounds.  Iteration 16 preserves that authority across three
+outward dyadic bounds. Iteration 16 preserves that authority across three
 consecutive greedy append transitions.
 
-The prefix is symbolically reconstructed once and interval-replayed once.  Both
+The prefix is symbolically reconstructed once and interval-replayed once. Both
 the symbolic KV cache and the certified interval KV cache are then retained and
-extended in place.  At every generation step all 32,000 current logits are
+extended in place. At every generation step all 32,000 current logits are
 certified, the strict true argmax is selected, and only that new token is passed
-through the six blocks at the next absolute position.  No original prefix hidden
+through the six blocks at the next absolute position. No original prefix hidden
 row is recomputed after initialization.
 
-This remains a bounded benchmark witness.  It does not authorize probabilistic
+Iteration 15's direct sine/cosine Taylor contract intentionally stopped at
+|argument| <= 4, enough for the first append at absolute position 4. This
+bounded iteration extends the same rigorous Lagrange-remainder enclosure to
+|argument| <= 8 so positions 5 and 6 remain certifiable without floating point
+or a pi-dependent range-reduction approximation.
+
+This remains a bounded benchmark witness. It does not authorize probabilistic
 sampling, arbitrary-length generation, canonical float interpretation, dense
 forward replacement, runtime mutation, canonical mutation, or migration.
 """
 from __future__ import annotations
 
 from hashlib import sha256
+from math import factorial
 from pathlib import Path
 from typing import Any, Mapping, MutableMapping, Sequence
 
@@ -62,6 +69,7 @@ CERTIFICATION_BITS = i15.CERTIFICATION_BITS
 SELECTION_POLICY = i15.SELECTION_POLICY
 SELECTION_SEMANTICS = i15.SELECTION_SEMANTICS
 CERTIFIED_GREEDY_STEP_COUNT = 3
+TRIG_ARGUMENT_LIMIT = 8
 
 Interval = i15.Interval
 
@@ -72,6 +80,53 @@ class Pass215Iteration16Error(RuntimeError):
 
 class Pass215Iteration16ValidationError(Pass215Iteration16Error):
     pass
+
+
+class MultistepCertifiedDyadicContext(i15.CertifiedDyadicContext):
+    """Iteration-15 dyadic authority with a bounded larger trig domain.
+
+    The sine/cosine Taylor recurrence and explicit Lagrange remainder are
+    unchanged. Only the contracted direct-argument domain is widened from four
+    to eight, which covers absolute positions through six in this iteration.
+    """
+
+    def sin(self, value: Interval) -> Interval:
+        value = self._check(value)
+        self.sin_calls += 1
+        if value == (0, 0):
+            return (0, 0)
+        maximum = max(abs(value[0]), abs(value[1]))
+        if maximum > TRIG_ARGUMENT_LIMIT * self.scale:
+            raise Pass215Iteration16ValidationError("PASS215_I16_SIN_ARGUMENT_OUTSIDE_CONTRACT")
+        square = self.mul(value, value)
+        term = value
+        total = value
+        for index in range(1, i15.TRIG_TAYLOR_TERMS):
+            term = self.mul(term, square)
+            term = self.mul_rat(term, -1, (2 * index) * (2 * index + 1))
+            total = self.add(total, term)
+        degree = 2 * i15.TRIG_TAYLOR_TERMS
+        remainder = self._remainder_bound(maximum, degree, factorial(degree))
+        return self._check((total[0] - remainder, total[1] + remainder))
+
+    def cos(self, value: Interval) -> Interval:
+        value = self._check(value)
+        self.cos_calls += 1
+        if value == (0, 0):
+            return self.point(1)
+        maximum = max(abs(value[0]), abs(value[1]))
+        if maximum > TRIG_ARGUMENT_LIMIT * self.scale:
+            raise Pass215Iteration16ValidationError("PASS215_I16_COS_ARGUMENT_OUTSIDE_CONTRACT")
+        square = self.mul(value, value)
+        term = self.point(1)
+        total = term
+        for index in range(1, i15.TRIG_TAYLOR_TERMS):
+            term = self.mul(term, square)
+            term = self.mul_rat(term, -1, (2 * index - 1) * (2 * index))
+            total = self.add(total, term)
+        degree = 2 * i15.TRIG_TAYLOR_TERMS - 1
+        remainder = self._remainder_bound(maximum, degree, factorial(degree))
+        return self._check((total[0] - remainder, total[1] + remainder))
 
 
 def _reject_floats(value: Any, path: str = "$") -> None:
@@ -150,7 +205,7 @@ def _initialize_interval_state(
     *,
     bits: int,
 ) -> Mapping[str, Any]:
-    ctx = i15.CertifiedDyadicContext(bits)
+    ctx = MultistepCertifiedDyadicContext(bits)
     embeddings = i9._extract_authenticated_embeddings(raw, tokenizer, FROZEN_TOKEN_IDS)
     cache: MutableMapping[int, MutableMapping[str, list[tuple[Interval, ...]]]] = {
         block_index: {"k_rope": [], "v": []} for block_index in i12.BLOCK_INDEXES
@@ -190,7 +245,7 @@ def _append_interval_token(
     tokenizer: Mapping[str, Any],
     bindings: Mapping[int, Mapping[str, Any]],
     terminal_binding: Mapping[str, Any],
-    ctx: i15.CertifiedDyadicContext,
+    ctx: MultistepCertifiedDyadicContext,
     cache: MutableMapping[int, MutableMapping[str, list[tuple[Interval, ...]]]],
     *,
     token_id: int,
@@ -533,7 +588,11 @@ def build_multistep_certified_greedy_evidence(
             "initial_symbolic_node_count": initial_node_count,
             "new_symbolic_nodes_after_prefix": final_node_count - initial_node_count,
         },
-        "certified_interval_executor": interval["context"].manifest(),
+        "certified_interval_executor": {
+            **interval["context"].manifest(),
+            "trig_argument_limit_integer": TRIG_ARGUMENT_LIMIT,
+            "trig_extension_semantics": "SAME_RATIONAL_TAYLOR_RECURRENCE_AND_GLOBAL_LAGRANGE_REMAINDER",
+        },
         "work_geometry": {
             "certification_bits": certification_bits,
             "complete_vocabulary_certifications": CERTIFIED_GREEDY_STEP_COUNT,
