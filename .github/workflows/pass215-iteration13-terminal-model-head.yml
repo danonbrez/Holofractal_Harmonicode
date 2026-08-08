@@ -62,7 +62,7 @@ jobs:
       - name: Install validation dependency
         run: python -m pip install pytest
 
-      - name: Enforce frozen Iteration 12 inheritance and terminal contract
+      - name: Enforce frozen Iteration 12 inheritance and source identities
         run: |
           python - <<'PY'
           import json
@@ -71,6 +71,8 @@ jobs:
           inherits = contract['inherits']
           workload = contract['contracted_workload']
           constraints = contract['constraints']
+          source = contract['validated_source_execution']
+          assert contract['status'] == 'SOURCE_EXECUTION_FROZEN_CLOSURE_HEAD_REPLAY_REQUIRED'
           assert inherits['iteration12_closure_head'] == '7d2bfa13071692db4d9370a29b09711bd1424cd3'
           assert inherits['iteration12_closure_tree'] == '2b22da9ec696f91a8e2e56177d05fd07bb0eadc9'
           assert inherits['iteration12_full_dag_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
@@ -90,6 +92,22 @@ jobs:
               'logical_accumulation_additions': 36736000,
               'q8_block_scale_applications': 1152000,
           }
+          assert source['validated_source_head'] == '576cc0e23907ffa6896f6a885bc15e500d9084bf'
+          assert source['validated_source_tree'] == 'c2e03fbf621344dde688fe276822a806c178c3a0'
+          assert source['cumulative_test_count'] == 126
+          assert source['terminal_topology_root_hash216'] == 'cc6cdb8d50769ccc6baff3c55732ea4f6cfa1fe2c9a5b3ff8b9cf0e41f9b03b4'
+          assert source['output_norm_value_root_hash216'] == '5d9db692ebb5b1f2d2ec0507ec4a3d8222620270e67cec8f265a80aeaa4ce063'
+          assert source['output_projection_descriptor_root_hash216'] == 'bd555175efd71d0c58892d14df30769c971b0a83231108eec9735e660b3e4ce8'
+          assert source['q8_semantic_control_root_hash216'] == 'd7a33b0cd2eae98d4cc2172ed6b2e2ff04c67f29151aabca9f2df097fe3b4622'
+          assert source['terminal_norm_root_hash216'] == '4a6cd80b2eb3d16ab92ae9b58c4cf58a38d7bbda23debff275e743af3bfdc42b'
+          assert source['logits_root_hash216'] == '32fb61d26431c937050d39809b289dbf65c73ecce40b6bd30378e43ecb977ceb'
+          assert source['full_symbolic_dag_root_hash216'] == '095aadfa389728fb0fc53df0acd3632bfe09af75b13ca2d64d576c117ac0ccd5'
+          assert source['full_model_forward_root_hash216'] == 'c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac'
+          assert source['suite_root_hash216'] == '046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc'
+          assert source['evidence_root_hash216'] == 'ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5'
+          assert source['receipt_hash72'] == '6a0VdJ2YaxDx6m2RFaI8UxEyyxSi!gW1<xA4bB0OIKrAg*phhTeHRkYh0tWfWvcO1g/*(A<Z'
+          assert source['cross_process_replay'] is True
+          assert source['semantic_exactness'] is True
           assert constraints['full_model_forward_executed'] is True
           assert constraints['generation_or_sampling_executed'] is False
           assert constraints['autoregressive_continuation_executed'] is False
@@ -145,7 +163,7 @@ jobs:
             --compare-replay "$ROOT/PASS_215_ITERATION_13_A.json" "$ROOT/PASS_215_ITERATION_13_B.json" \
             --output "$ROOT/PASS_215_ITERATION_13_CROSS_PROCESS_VALIDATION.json"
 
-      - name: Enforce terminal topology, exactness, replay and authority boundary
+      - name: Enforce frozen terminal identities, replay and authority boundary
         run: |
           python - <<'PY'
           import json
@@ -168,16 +186,20 @@ jobs:
           assert topology['embedding_width'] == 288
           assert topology['vocabulary_size'] == 32000
           assert topology['output_storage_type'] == 'Q8_0'
+          assert topology['topology_root_hash216'] == 'cc6cdb8d50769ccc6baff3c55732ea4f6cfa1fe2c9a5b3ff8b9cf0e41f9b03b4'
           assert norm['shape'] == [288]
           assert norm['canonical_float_interpretation_performed'] is False
+          assert norm['canonical_value_root_hash216'] == '5d9db692ebb5b1f2d2ec0507ec4a3d8222620270e67cec8f265a80aeaa4ce063'
           assert projection['shape'] == [288, 32000]
           assert projection['storage_type'] == 'Q8_0'
           assert projection['source_bytes'] == 9792000
           assert projection['row_bytes'] == 306
           assert projection['row_count'] == 32000
+          assert projection['descriptor_root_hash216'] == 'bd555175efd71d0c58892d14df30769c971b0a83231108eec9735e660b3e4ce8'
           assert control['exact'] is True
           assert len(control['records']) == 3
           assert all(item['exact'] is True for item in control['records'])
+          assert control['control_root_hash216'] == 'd7a33b0cd2eae98d4cc2172ed6b2e2ff04c67f29151aabca9f2df097fe3b4622'
           assert forward['iteration12_prefix_symbolic_dag_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
           assert forward['logit_token_count'] == 4
           assert forward['vocabulary_size'] == 32000
@@ -193,6 +215,13 @@ jobs:
               'logical_weight_products': 60751872,
               'logical_accumulation_additions': 60552448,
           }
+          assert forward['terminal_norm_root_hash216'] == '4a6cd80b2eb3d16ab92ae9b58c4cf58a38d7bbda23debff275e743af3bfdc42b'
+          assert forward['logits_root_hash216'] == '32fb61d26431c937050d39809b289dbf65c73ecce40b6bd30378e43ecb977ceb'
+          assert forward['symbolic_dag']['ordered_node_root_hash216'] == '095aadfa389728fb0fc53df0acd3632bfe09af75b13ca2d64d576c117ac0ccd5'
+          assert forward['full_model_forward_root_hash216'] == 'c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac'
+          assert evidence['terminal_model_head_suite_root_hash216'] == '046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc'
+          assert evidence['evidence_root_hash216'] == 'ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5'
+          assert evidence['receipt_hash72'] == '6a0VdJ2YaxDx6m2RFaI8UxEyyxSi!gW1<xA4bB0OIKrAg*phhTeHRkYh0tWfWvcO1g/*(A<Z'
           assert claims['all_model_blocks_executed'] is True
           assert claims['authenticated_terminal_output_norm_executed'] is True
           assert claims['authenticated_explicit_q8_output_projection_executed'] is True
@@ -209,12 +238,12 @@ jobs:
           assert claims['migration_active'] is False
           assert replay['cross_process_replay'] is True
           assert replay['semantic_exactness'] is True
-          assert replay['terminal_norm_root_hash216'] == forward['terminal_norm_root_hash216']
-          assert replay['logits_root_hash216'] == forward['logits_root_hash216']
-          assert replay['full_model_forward_root_hash216'] == forward['full_model_forward_root_hash216']
-          assert replay['suite_root_hash216'] == evidence['terminal_model_head_suite_root_hash216']
-          assert replay['evidence_root_hash216'] == evidence['evidence_root_hash216']
-          assert replay['receipt_hash72'] == evidence['receipt_hash72']
+          assert replay['terminal_norm_root_hash216'] == '4a6cd80b2eb3d16ab92ae9b58c4cf58a38d7bbda23debff275e743af3bfdc42b'
+          assert replay['logits_root_hash216'] == '32fb61d26431c937050d39809b289dbf65c73ecce40b6bd30378e43ecb977ceb'
+          assert replay['full_model_forward_root_hash216'] == 'c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac'
+          assert replay['suite_root_hash216'] == '046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc'
+          assert replay['evidence_root_hash216'] == 'ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5'
+          assert replay['receipt_hash72'] == '6a0VdJ2YaxDx6m2RFaI8UxEyyxSi!gW1<xA4bB0OIKrAg*phhTeHRkYh0tWfWvcO1g/*(A<Z'
           print('PASS215_I13_TERMINAL_TOPOLOGY_ROOT=' + topology['topology_root_hash216'])
           print('PASS215_I13_OUTPUT_NORM_VALUE_ROOT=' + norm['canonical_value_root_hash216'])
           print('PASS215_I13_OUTPUT_DESCRIPTOR_ROOT=' + projection['descriptor_root_hash216'])
