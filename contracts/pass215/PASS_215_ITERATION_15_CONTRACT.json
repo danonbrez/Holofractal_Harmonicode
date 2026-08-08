@@ -1,0 +1,73 @@
+{
+  "contract": "HHS-P215-I15-CERTIFIED-EXACT-GREEDY-LOGIT-SELECTION",
+  "pass": 215,
+  "iteration": 15,
+  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "inherits": {
+    "iteration14_closure_head": "9780b711fdcfa6624dc9e787b140920ca3f5f875",
+    "iteration14_closure_tree": "9475d1053c08f4ae6195d28407dffc86b97c6113",
+    "iteration14_generated_token_ids": [29009, 7250],
+    "iteration14_selection_roots": [
+      "1ffdd8c7eaf4adc7f529f435350aa9f4f8b1333ce45e1b009f307fe247a1cffb",
+      "30647ae62a968659b525a99a824ae811185ac1c068e49a5df60a813e3d6ebfac"
+    ],
+    "iteration14_append_forward_roots": [
+      "0dc88bfad85007f7ff6447680c3c12919fd93aee0f5813e3dbc7bfcb41c04d1b",
+      "2823ef988909e3c2b5a816a6e54e514d0e025e96fcb88d26df65151907238181"
+    ],
+    "iteration14_continuation_root_hash216": "21c9ccbe769f818862a4959ee284aafe65af6d0638ce9c05c2ed52c89387b5eb",
+    "iteration14_final_dag_root_hash216": "27c8c282b7afede7873374b6377df1a763ecf50cfbcc5ff422075cc5d2f91891",
+    "iteration14_suite_root_hash216": "04935537843adbd98d76583be748725a63f1a04852aefee753373778b4616da3",
+    "iteration14_evidence_root_hash216": "5ff6c491e72327e602fad54ea8cdab3e989a033fb8c4be3e40348ab8206a5710",
+    "iteration14_receipt_hash72": "Afzln*6<JHol646Lz+3mVuowQB)cS673kS(Hx0z*!nSTBoygeMtJpvfN>8AoznG816seDy3H",
+    "iteration14_closure_artifact_sha256": "ebaedbc8f3ddbd46531081eaa364c0bbb33f1d9f3476d5c0694152478876c18c"
+  },
+  "contracted_workload": {
+    "model": "ggml-org/tiny-llamas/stories15M-q4_0.gguf",
+    "model_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "prompt": "Hello world!",
+    "prompt_token_ids": [1, 15043, 3186, 29991],
+    "prefix_sequence_length": 4,
+    "vocabulary_size": 32000,
+    "certification_bits": 256,
+    "selection_policy": "STRICT_CERTIFIED_DYADIC_INTERVAL_ARGMAX_THEN_TOKEN_ID",
+    "selection_semantics": "TRUE_LOGIT_MAGNITUDE_ORDER_CERTIFIED_BY_OUTWARD_INTEGER_BOUNDS",
+    "greedy_append_count": 1,
+    "required_cache_policy": "APPEND_ONLY_PER_BLOCK_KV_REUSE_NO_PREFIX_RECOMPUTATION"
+  },
+  "requirements": {
+    "reexecute_and_bind_iteration14": true,
+    "replay_authenticated_prefix_with_integer_only_outward_bounds": true,
+    "certify_all_32000_final_position_logit_intervals": true,
+    "require_strict_selected_lower_bound_above_all_competitor_upper_bounds": true,
+    "bind_selected_numeric_interval_to_same_symbolic_logit_coordinate": true,
+    "append_certified_greedy_token": true,
+    "reuse_prefix_state": true,
+    "reuse_per_block_kv_cache": true,
+    "cross_process_replay": true,
+    "no_float_canonical_authority": true
+  },
+  "certified_math": {
+    "representation": "DYADIC_INTERVAL_SCALE_2_POW_256",
+    "rounding": "OUTWARD_INTEGER_ROUNDING",
+    "rmsnorm_rsqrt": "INTEGER_SQRT_RATIO_BOUNDS",
+    "rope_rational_power": "INTEGER_NTH_ROOT_BOUNDS",
+    "exp": "RANGE_REDUCED_RATIONAL_TAYLOR_WITH_EXPLICIT_REMAINDER_BOUND",
+    "sin_cos": "RATIONAL_TAYLOR_WITH_EXPLICIT_LAGRANGE_REMAINDER_BOUND",
+    "linear_q4_q8": "EXACT_BINARY16_RATIONAL_SCALE_TIMES_INTEGER_CODES_OVER_INTERVAL_INPUTS",
+    "point_transcendental_values_authorized": false
+  },
+  "constraints": {
+    "hash_identity_order_used_as_greedy_authority": false,
+    "probabilistic_sampling_executed": false,
+    "general_generation_claimed": false,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "numeric_transcendental_point_evaluation_performed": false,
+    "approximate_transcendental_point_evaluation_performed": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}
