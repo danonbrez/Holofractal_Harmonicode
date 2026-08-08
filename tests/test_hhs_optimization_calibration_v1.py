@@ -161,22 +161,29 @@ def test_deployment_defaults_match_the_recovered_profile() -> None:
 
 
 def test_authoritative_optimization_modules_have_no_float_literals_or_legacy_float_imports() -> None:
-    authoritative_paths = (
+    float_guard_paths = (
         "hhs_backend/runtime/hhs_optimization_calibration_v1.py",
         "hhs_backend/runtime/hhs_pass207_vm81_gpu_runtime_v1.py",
         "hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py",
     )
+    for path in float_guard_paths:
+        tree = ast.parse(_source(path))
+        assert not any(
+            isinstance(node, ast.Constant) and type(node.value) is float
+            for node in ast.walk(tree)
+        ), path
+
     legacy_markers = (
         "hhs_receipt_vector_index_v1",
         "hhs_receipt_vector_cache_v1",
         "hhs_predictive_sandbox_engine_v1",
     )
-    for path in authoritative_paths:
+    legacy_import_guard_paths = (
+        "hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py",
+        "hhs_backend/runtime/hhs_pass207_vm81_gpu_runtime_v1.py",
+        "hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py",
+    )
+    for path in legacy_import_guard_paths:
         source = _source(path)
-        tree = ast.parse(source)
-        assert not any(
-            isinstance(node, ast.Constant) and type(node.value) is float
-            for node in ast.walk(tree)
-        ), path
         for marker in legacy_markers:
             assert marker not in source, (path, marker)
