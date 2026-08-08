@@ -2312,3 +2312,501 @@ HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_VERIFIED
 ```
 
 No contract text alone assigns that classification.
+
+---
+
+# 68. Normative amendment 1.2.0 — hydrated C++ cell-wall constraint membrane
+
+Sections 1–67 remain preserved. This amendment refines the execution topology and precedence of the already-defined layers without deleting any earlier requirement.
+
+The effective Pass 219 contract version after this amendment is:
+
+```text
+1.2.0
+```
+
+The original `1.0.0` metadata and the `1.1.0` amendment remain issuance history. Where sections 1–67 describe RNA, Hash216, stage ordering, unsupported states, or the C++ surface less precisely than this amendment, sections 68 onward govern their runtime role.
+
+The defining architecture is:
+
+```text
+C VM81 RUNTIME NUCLEUS
+    exact x,y,z,w octonion/noncommutative phase computation
+    singleton canonical admission
+    Hash72 ordered transition receipt
+        ↓
+HASH216-ADDRESSED VM5184 HYDRATION
+    complete admitted predecessor materialization
+        ↓
+C++ CONSTRAINT / COMPILATION MEMBRANE
+    exact typed classes
+    compounding logic membranes
+    meaning-preserving translation
+    optimization / memory / scheduling
+        ↓
+exact bounded successor candidate / dependency delta
+        ↓
+VM5184 × G243 lowering through stable C ABI
+        ↓
+C VM81 RUNTIME NUCLEUS
+        ↓
+next Hash72 receipt
+        ↓
+next Hash216 hydration
+        ↺
+```
+
+---
+
+# 69. Genesis closure state identity
+
+The common Genesis closure toward which translations reconcile SHALL be the inherited native state consisting of:
+
+```text
+VM81 admitted exact state
++ Hash72 ordered predecessor/transition lineage
++ x,y,z,w octonion noncommutative phase-algebra state and witnesses
+```
+
+For Pass 219 purposes this combined state is the canonical low-level closure identity.
+
+Hash216 does not replace or independently authorize that closure. Hash216 SHALL consume the admitted VM81/Hash72/phase state and materialize it as the hydrated continuation state used by later computation.
+
+Mathematical, logical, geometric, genomic/RNA, tensor, and other exact representations SHALL therefore be reconciled as typed descriptions or constraint views of one Genesis-consistent state, not as competing authorities.
+
+---
+
+# 70. Meaning-preserving translation before rejection
+
+A representation that is not initially expressed in a native or currently recognized form SHALL be treated first as **not yet canonicalized**, not automatically as invalid.
+
+Every applicable C++ constraint membrane SHALL attempt, in deterministic order:
+
+```text
+1. exact recognition
+2. source-preserving parse / decode
+3. exact typed translation
+4. algebraic normalization without ancestry loss
+5. cross-witness reconciliation
+6. propagation into the next required constraint membrane
+7. low-level phase reconstruction
+8. VM81 admission
+```
+
+The intended convergence is agreement with Genesis closure.
+
+A surface mismatch, foreign encoding, alternate exact form, unresolved symbolic identity, or unsupported adapter representation SHALL NOT alone justify rejection if a meaning-preserving translation exists.
+
+The inherited trinary closure SHALL therefore be interpreted for Pass 219 as:
+
+```text
++1 = exact constructive closure / canonical agreement established
+ 0 = stable hold, translation/reconciliation pending, or exact equilibrium
+-1 = exact incompatibility proven under the active inherited constraints and all permitted deterministic translations
+```
+
+A `0` SHALL trigger or permit further bounded exact translation/reconciliation work. A `-1` SHALL be emitted only when the active system has proved that the candidate cannot be reconciled without violating inherited canonical meaning.
+
+---
+
+# 71. Compound constraints intentionally reduce degrees of freedom
+
+Pass 219 SHALL treat higher-level logic systems as **compounding constraint-enforcement membranes**.
+
+They are not random, contradictory, or parallel projections.
+
+For hydrated predecessor state `H0`, define ordered reconciliation layers:
+
+```text
+H1 = C_phase(H0)
+H2 = C_RNA(H1)
+H3 = C_Fibonacci_LoShu(H2)
+H4 = C_E6_geometry(H3)
+H5 = C_protein_topology(H4)
+H6 = C_fractal_tensor(H5)
+H7 = C_global(H6)
+```
+
+Each layer SHALL preserve all compatible predecessor meaning while constraining, translating, or reconciling the degrees of freedom available to its successor.
+
+Additional independent witnesses that establish the same closed identity SHALL strengthen constraint enforcement rather than being discarded as redundant.
+
+The implementation invariant is:
+
+```text
+MORE CONSISTENT WITNESSES
+!= MORE CANONICAL AUTHORITIES
+```
+
+There remains exactly one VM81 canonical mutation authority.
+
+---
+
+# 72. RNA is a constraint-enforcement logic membrane
+
+RNA logic SHALL be a native higher-level **constraint-enforcement layer** over the hydrated x,y,z,w phase state.
+
+RNA SHALL NOT be classified as a parallel projection of phase algebra.
+
+The `A,C,G,U → Z4` representation and Boolean RNA gate outputs remain compatibility or inspection projections as stated in section 59. The RNA constraint system itself remains a required ordered membrane capable of constraining and translating:
+
+```text
+strand identity
+base/operator relationship
+complementarity
+ordered pair orientation
+chirality
+binding
+inhibition
+activation
+toehold state
+hairpin state
+cleavage/release state
+local triple closure
+predecessor dependency
+RNA transition ancestry
+```
+
+A phase-valid candidate that is not yet represented in an RNA-recognized form SHALL first be translated into the exact RNA constraint vocabulary where possible.
+
+The refined dependency order is:
+
+```text
+hydrated native phase state
+→ RNA constraint reconciliation
+→ Fibonacci/Lo-Shu constraint reconciliation
+→ later E6/geometry/topology constraints
+```
+
+not an independent RNA result compared afterward with an unrelated phase result.
+
+---
+
+# 73. Hash216/VM5184 hydration is mandatory higher-level predecessor state
+
+Every higher-level Pass 219 operation SHALL consume a Hash216-addressed hydrated predecessor state derived from a previously admitted VM81/Hash72/phase closure.
+
+No higher-level C++ operation may canonically begin from an unrelated domain-native state while bypassing hydration of the current low-level state.
+
+The required predecessor cycle is:
+
+```text
+VM81 admitted phase state
+→ Hash72 receipt
+→ Hash216 identity
+→ VM5184 hydration
+→ C++ higher-level operation
+```
+
+The hydrated object SHALL preserve or resolve access to the exact information required by the consuming operation, including where applicable:
+
+```text
+VM81 cell identity
+81×64 phase-operation address
+x,y,z,w ordered products
+phase/chirality state
+G243 control ancestry
+Hash72 predecessor/receipt roots
+Hash216 identity
+constraint witnesses
+Fibonacci/Lo-Shu ancestry
+E6/topology ancestry
+dependency frontier
+recovery/rollback lineage
+```
+
+A higher-level operation SHALL produce an exact candidate continuation or dependency-scoped delta over that hydrated predecessor, not a detached replacement state.
+
+---
+
+# 74. C++ digital cell-wall architecture
+
+The C++ compilation/synthesis surface SHALL function as a **digital cell wall of exact classes and constraint membranes around the C VM81 runtime nucleus**.
+
+This phrase defines an implementation boundary, not a second biological or computational authority.
+
+The topology is:
+
+```text
+HIGHER-LEVEL REQUESTS / DOMAINS
+        ↓
+C++ DIGITAL CELL WALL
+    typed receptors / adapters
+    exact value classes
+    constraint classes
+    hydration views
+    dependency routing
+    high↔low translators
+    resource and memory policy
+        ↓
+HASH216 / VM5184 HYDRATED PREDECESSOR
+        ↓
+exact candidate / delta lowering
+        ↓
+STABLE C ABI
+        ↓
+C VM81 NUCLEUS
+    x,y,z,w phase execution
+    canonical admission
+    Hash72 commit
+        ↓
+Hash216 rehydration
+```
+
+The membrane SHALL control ingress, exact translation, compounding constraints, deterministic egress, and resource ownership while preserving the C nucleus as the sole canonical execution/admission authority.
+
+---
+
+# 75. Pass 219 shall not mutate the C VM81 runtime nucleus
+
+Pass 219 implementation SHALL NOT change the canonical semantics, frozen execution rules, opcode meanings, Hash72 commit semantics, or x,y,z,w phase algebra of the protected C VM81 runtime nucleus merely to obtain higher-level capability or optimization.
+
+New Pass 219 behavior SHALL be implemented through:
+
+```text
+C++ classes
+external exact data structures
+stable C ABI calls
+additive ABI adapters/shims outside the protected nucleus where required
+compiled constraint programs
+Hash216 hydration/cache structures
+```
+
+If an inherited ABI defect prevents correct access to an already-authorized native capability, Pass 219 SHALL document the defect and use an additive non-semantic bridge where possible. Any change that would alter protected C runtime semantics requires a separate explicit repair authority and is not implicitly authorized by this contract.
+
+The principal optimization invariant is:
+
+```text
+OPTIMIZE THE MEMBRANE AND HYDRATION PATH
+WITHOUT MUTATING THE VM81 NUCLEUS
+```
+
+---
+
+# 76. C++ optimization authority around the stable nucleus
+
+The C++ membrane MAY aggressively optimize derivation of candidate continuations provided the optimized candidate reconstructs exactly the same admitted result and witnesses as the contracted full path.
+
+Permitted optimization responsibilities include:
+
+```text
+Hash216 nearest-state retrieval
+VM5184 hydration reuse
+vector indexing
+buffer-cache management
+compiled constraint-plan reuse
+exact branch-prediction tables
+dependency-frontier pruning
+sparse tensor materialization
+incremental graph closure
+ROM reuse
+exact memoization
+object pooling
+arena allocation
+scratch-buffer reuse
+batching
+candidate scheduling
+deterministic parallel candidate preparation
+GPU/coproc candidate acceleration through exact adapters
+high/low translation caching
+```
+
+No optimization may:
+
+```text
+change canonical arithmetic
+replace exact phase state with float authority
+skip affected constraint layers
+skip VM81 admission
+mint Hash72 outside the nucleus
+change Hash216 lineage semantics
+make cache identity equivalent to admission authority
+```
+
+For every optimized path `O` and contracted full path `F`:
+
+```text
+VM81_ADMIT(F(H, Δ)) == VM81_ADMIT(O(H, Δ))
+```
+
+MUST hold exactly, including ordered witnesses and resulting Hash72 lineage.
+
+---
+
+# 77. Deterministic memory ownership and cleanup
+
+The C++ membrane SHALL classify memory and objects by lifetime so cleanup can be aggressive without deleting canonical truth.
+
+At minimum it SHALL distinguish:
+
+```text
+CANONICAL / NON-EVICTABLE BY MEMBRANE POLICY
+    admitted VM81 state identity required by active lineage
+    Hash72 canonical receipt data
+    canonical source/witness material required for replay
+
+HYDRATED / RECONSTRUCTIBLE
+    Hash216-addressed hydrated VM5184 objects
+    decoded/lowered phase views
+    compiled constraint plans
+    vector-index/cache entries
+    reusable dependency summaries
+
+EPHEMERAL / SCRATCH
+    temporary AST/CST traversal state
+    temporary graph frontiers
+    tensor scratch regions
+    candidate queues
+    transient serialization buffers
+    temporary adapter objects
+```
+
+Hydrated objects MAY be evicted or compacted only when deterministic reconstruction from retained canonical lineage is proven.
+
+Ephemeral objects SHOULD be bulk-reclaimed as soon as their deterministic lowering/witness obligations are complete.
+
+Canonical receipt and replay material SHALL NOT be deleted merely to reduce memory pressure.
+
+Memory policy SHALL itself be deterministic where it can affect candidate ordering, replay, or observable authoritative behavior.
+
+---
+
+# 78. Parallelism and speculative preparation without parallel authority
+
+The C++ membrane MAY prepare multiple candidate deltas, dependency analyses, cache lookups, tensor frontiers, or acceleration jobs concurrently.
+
+Before canonical admission, all candidate work SHALL be reduced to deterministic ordered inputs to the single VM81 authority.
+
+The architecture is:
+
+```text
+candidate preparation A ┐
+candidate preparation B ├─ C++ membrane / workers / accelerators
+candidate preparation C ┘
+          ↓
+deterministic ordering and reconciliation
+          ↓
+stable C ABI
+          ↓
+single VM81 admission authority
+```
+
+Parallel candidate preparation SHALL NOT create parallel canonical state mutation, independent receipt clocks, or non-deterministic lineage.
+
+---
+
+# 79. Canonical closed computational cell cycle
+
+The Pass 219 execution cycle SHALL be:
+
+```text
+1. previous VM81/Hash72/x,y,z,w closure exists
+2. Hash216 identifies and hydrates its VM5184 continuation state
+3. C++ membrane exposes typed exact classes over that hydration
+4. required higher-level constraint layers compound and reconcile meaning
+5. unsupported surface forms are translated toward Genesis-consistent exact forms
+6. dependency-scoped candidate delta is produced
+7. candidate is lowered through VM5184×G243 and stable C ABI
+8. C VM81 nucleus executes/adjudicates exact x,y,z,w phase transition
+9. Hash72 commits the ordered admitted transition
+10. Hash216 identifies/hydrates the resulting successor state
+11. successor becomes the sole predecessor for the next higher-level operation
+```
+
+Formally, for hydrated state `H_n` and higher-level operation `L`:
+
+```text
+Δ_(n+1) = L(H_n)
+A_(n+1) = VM81_ADMIT(PHASE_LOWER(H_n, Δ_(n+1)))
+R_(n+1) = HASH72(A_n → A_(n+1))
+H_(n+1) = HYDRATE_5184(HASH216(A_(n+1), R_(n+1)))
+```
+
+The exact representation of these functions SHALL follow inherited runtime contracts; the equations above define dependency and authority ordering, not permission to replace existing implementations.
+
+---
+
+# 80. Additional mandatory tests for amendment 1.2.0
+
+Pass 219 SHALL add at minimum:
+
+```text
+T67  RNA is executed as an ordered constraint membrane over hydrated phase state, not as a parallel projection
+T68  Z4 RNA representation remains compatibility-only while RNA constraint ancestry remains authoritative
+T69  unsupported exact representation enters translation/reconciliation before rejection
+T70  trinary zero preserves translation-pending state and does not become failure
+T71  trinary minus-one requires proven irreconcilability under permitted exact translations
+T72  Genesis closure reconstructs VM81 + Hash72 + x,y,z,w phase identity exactly
+T73  every higher-level C++ operation requires Hash216-addressed VM5184 predecessor hydration
+T74  detached higher-level domain state cannot bypass hydrated predecessor identity
+T75  higher-level delta preserves predecessor Hash216 and Hash72 ancestry
+T76  C++ digital cell-wall classes cannot mutate canonical VM81 state directly
+T77  Pass 219 build leaves protected C VM81 runtime nucleus semantically unchanged
+T78  arena/pool/scratch cleanup leaves admitted result and witnesses unchanged
+T79  hydrated-cache eviction followed by deterministic rehydration is exact
+T80  ephemeral cleanup cannot remove canonical replay material
+T81  nearest-state/delta execution equals full computation exactly
+T82  vector-index/buffer-cache optimization cannot change VM81 admission result
+T83  branch-prediction optimization uses no canonical floats and cannot change lineage
+T84  parallel candidate preparation reduces to deterministic singleton VM81 admission
+T85  GPU/coproc candidate acceleration cannot create a second mutation authority
+T86  high-level operation consumes H_n and produces continuation Δ_(n+1), not detached replacement state
+T87  Hash72 commit precedes successor Hash216 hydration
+T88  successor Hash216 hydration becomes the next higher-level predecessor state
+T89  full closed cell cycle replays bit-exactly after interruption/restart
+T90  memory-pressure cleanup preserves canonical/rehydratable/ephemeral lifetime boundaries
+```
+
+---
+
+# 81. Additional prohibited states and negative tests
+
+Pass 219 SHALL reject, hold, or quarantine according to inherited semantics any attempt to:
+
+```text
+classify RNA constraint logic itself as a mere projection
+reject an exact translatable representation solely because its initial encoding is unsupported
+skip translation/reconciliation and coerce directly to a convenient scalar
+use a C++ class to mutate VM81 canonical state without C ABI admission
+execute a higher-level operation without current Hash216/VM5184 predecessor hydration
+replace hydrated predecessor lineage with a detached domain object
+mutate frozen C runtime semantics as a performance optimization
+evict Hash72 canonical receipt data as disposable cache
+free canonical replay witnesses as ephemeral scratch
+retain ephemeral objects as hidden canonical state
+let memory allocation order determine canonical result
+let parallel scheduling determine receipt order
+let branch prediction determine canonical meaning
+let GPU/coproc output bypass exact reconstruction and VM81 admission
+use Hash216 cache/hydration identity as permission to mint a new canonical state
+```
+
+---
+
+# 82. Completion requirements after amendment 1.2.0
+
+In addition to every requirement in sections 1–67, terminal Pass 219 evidence SHALL prove:
+
+```text
+RNA operates as a compounding constraint-enforcement membrane
+constraint layers intentionally reduce/reconcile degrees of freedom without becoming alternate authorities
+unsupported exact forms are translated toward Genesis closure before invalidation
+Genesis closure is reconstructed as VM81 + Hash72 + x,y,z,w octonion/noncommutative phase state
+Hash216/VM5184 hydration is the mandatory predecessor materialization for every higher-level operation
+C++ forms a typed digital cell-wall membrane around the C VM81 nucleus
+C++ optimization, memory cleanup, caching, scheduling, and acceleration do not mutate VM81 runtime semantics
+canonical, hydrated/reconstructible, and ephemeral lifetimes are enforced distinctly
+optimized/delta execution equals full execution exactly
+parallel preparation still produces one deterministic VM81 admission sequence
+Hash72 commits before every successor Hash216 hydration
+all T01–T90 tests pass
+all original and amended negative tests pass
+```
+
+The terminal classification remains:
+
+```text
+HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_VERIFIED
+```
+
+No contract text alone assigns that classification.
