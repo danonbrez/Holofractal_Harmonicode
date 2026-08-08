@@ -12,7 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from hhs_backend.runtime.hhs_pass214_reusable_operation_registry_v1 import build_registry
-from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v1 import (
+from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v2 import (
     build_semantic_equivalence_reconciliation,
     load_and_validate_reconciliation,
     write_reconciliation,
