@@ -1,0 +1,241 @@
+name: Pass 215 Iteration 13 Terminal Model Head
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_13_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration13_terminal_model_head_v1.py'
+      - 'tools/pass215_iteration13_terminal_model_head.py'
+      - 'tests/test_hhs_pass215_iteration13_terminal_model_head_v1.py'
+      - 'scripts/run_pass215_iteration13_validation.sh'
+      - 'docs/pass215/ITERATION_13_TERMINAL_MODEL_HEAD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_13_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration13-terminal-model-head.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_13_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration13_terminal_model_head_v1.py'
+      - 'tools/pass215_iteration13_terminal_model_head.py'
+      - 'tests/test_hhs_pass215_iteration13_terminal_model_head_v1.py'
+      - 'scripts/run_pass215_iteration13_validation.sh'
+      - 'docs/pass215/ITERATION_13_TERMINAL_MODEL_HEAD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_13_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration13-terminal-model-head.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I13_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I13_PROMPT: 'Hello world!'
+
+jobs:
+  iteration13:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I13_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I13_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 12 inheritance and terminal contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_13_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          workload = contract['contracted_workload']
+          constraints = contract['constraints']
+          assert inherits['iteration12_closure_head'] == '7d2bfa13071692db4d9370a29b09711bd1424cd3'
+          assert inherits['iteration12_closure_tree'] == '2b22da9ec696f91a8e2e56177d05fd07bb0eadc9'
+          assert inherits['iteration12_full_dag_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
+          assert inherits['iteration12_all_block_forward_root_hash216'] == '0b0ca3bb2a28be60de6a5e783ba583bc3cc0ef3be5211be98ea08bf687139c4e'
+          assert inherits['iteration12_suite_root_hash216'] == '77e585b4d7604da8222b9d070a6b26e27a3a9bac7a86f5247882cfee6cfcf5a0'
+          assert inherits['iteration12_evidence_root_hash216'] == '4eab17d68688073ca47c1fba115ed1fee5f78484538bf4ef8fcf462ae21581f0'
+          assert workload['terminal_norm_tensor'] == 'output_norm.weight'
+          assert workload['output_projection_tensor'] == 'output.weight'
+          assert workload['output_projection_storage_type'] == 'Q8_0'
+          assert workload['output_projection_tied_to_embedding'] is False
+          assert workload['vocabulary_size'] == 32000
+          assert workload['q8_blocks_per_row'] == 9
+          assert workload['q8_row_bytes'] == 306
+          assert workload['terminal_projection_work'] == {
+              'row_transitions': 128000,
+              'logical_weight_products': 36864000,
+              'logical_accumulation_additions': 36736000,
+              'q8_block_scale_applications': 1152000,
+          }
+          assert constraints['full_model_forward_executed'] is True
+          assert constraints['generation_or_sampling_executed'] is False
+          assert constraints['autoregressive_continuation_executed'] is False
+          assert constraints['canonical_float_interpretation_performed'] is False
+          assert constraints['dense_forward_replaced'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-13 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration13_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i13"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I13_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute terminal model head process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i13"
+          python tools/pass215_iteration13_terminal_model_head.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I13_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I13_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_13_A.json"
+          python tools/pass215_iteration13_terminal_model_head.py \
+            --validate "$ROOT/PASS_215_ITERATION_13_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_13_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i13"
+          python tools/pass215_iteration13_terminal_model_head.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I13_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I13_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_13_B.json"
+          python tools/pass215_iteration13_terminal_model_head.py \
+            --validate "$ROOT/PASS_215_ITERATION_13_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_13_B_VALIDATION.json"
+          python tools/pass215_iteration13_terminal_model_head.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_13_A.json" "$ROOT/PASS_215_ITERATION_13_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_13_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce terminal topology, exactness, replay and authority boundary
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i13'
+          evidence = json.loads((root / 'PASS_215_ITERATION_13_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_13_CROSS_PROCESS_VALIDATION.json').read_text())
+          topology = evidence['authenticated_terminal_topology']
+          norm = evidence['authenticated_output_norm']
+          projection = evidence['authenticated_output_projection']
+          control = evidence['exact_q8_semantic_control']
+          forward = evidence['terminal_model_head_forward']
+          claims = evidence['claims']
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I13_MODEL_SHA256']
+          assert topology['terminal_norm_tensor'] == 'output_norm.weight'
+          assert topology['output_projection_tensor'] == 'output.weight'
+          assert topology['output_projection_tied_to_embedding'] is False
+          assert topology['explicit_output_projection'] is True
+          assert topology['embedding_width'] == 288
+          assert topology['vocabulary_size'] == 32000
+          assert topology['output_storage_type'] == 'Q8_0'
+          assert norm['shape'] == [288]
+          assert norm['canonical_float_interpretation_performed'] is False
+          assert projection['shape'] == [288, 32000]
+          assert projection['storage_type'] == 'Q8_0'
+          assert projection['source_bytes'] == 9792000
+          assert projection['row_bytes'] == 306
+          assert projection['row_count'] == 32000
+          assert control['exact'] is True
+          assert len(control['records']) == 3
+          assert all(item['exact'] is True for item in control['records'])
+          assert forward['iteration12_prefix_symbolic_dag_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
+          assert forward['logit_token_count'] == 4
+          assert forward['vocabulary_size'] == 32000
+          assert forward['logit_coordinate_count'] == 128000
+          assert forward['projection_transition_work'] == {
+              'row_transitions': 128000,
+              'logical_weight_products': 36864000,
+              'logical_accumulation_additions': 36736000,
+              'q8_block_scale_applications': 1152000,
+          }
+          assert forward['total_linear_transition_work_including_six_blocks'] == {
+              'row_transitions': 199424,
+              'logical_weight_products': 60751872,
+              'logical_accumulation_additions': 60552448,
+          }
+          assert claims['all_model_blocks_executed'] is True
+          assert claims['authenticated_terminal_output_norm_executed'] is True
+          assert claims['authenticated_explicit_q8_output_projection_executed'] is True
+          assert claims['output_logits_executed'] is True
+          assert claims['contracted_four_token_full_model_forward_executed'] is True
+          assert claims['full_model_forward_executed'] is True
+          assert claims['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert claims['generation_or_sampling_executed'] is False
+          assert claims['autoregressive_continuation_executed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert claims['runtime_mutation_authority_promoted'] is False
+          assert claims['canonical_mutation_authorized'] is False
+          assert claims['migration_active'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['terminal_norm_root_hash216'] == forward['terminal_norm_root_hash216']
+          assert replay['logits_root_hash216'] == forward['logits_root_hash216']
+          assert replay['full_model_forward_root_hash216'] == forward['full_model_forward_root_hash216']
+          assert replay['suite_root_hash216'] == evidence['terminal_model_head_suite_root_hash216']
+          assert replay['evidence_root_hash216'] == evidence['evidence_root_hash216']
+          assert replay['receipt_hash72'] == evidence['receipt_hash72']
+          print('PASS215_I13_TERMINAL_TOPOLOGY_ROOT=' + topology['topology_root_hash216'])
+          print('PASS215_I13_OUTPUT_NORM_VALUE_ROOT=' + norm['canonical_value_root_hash216'])
+          print('PASS215_I13_OUTPUT_DESCRIPTOR_ROOT=' + projection['descriptor_root_hash216'])
+          print('PASS215_I13_Q8_CONTROL_ROOT=' + control['control_root_hash216'])
+          print('PASS215_I13_TERMINAL_NORM_ROOT=' + forward['terminal_norm_root_hash216'])
+          print('PASS215_I13_LOGITS_ROOT=' + forward['logits_root_hash216'])
+          print('PASS215_I13_FULL_DAG_ROOT=' + forward['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I13_FULL_MODEL_FORWARD_ROOT=' + forward['full_model_forward_root_hash216'])
+          print('PASS215_I13_SUITE_ROOT=' + evidence['terminal_model_head_suite_root_hash216'])
+          print('PASS215_I13_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I13_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 13 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration13-terminal-model-head-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pass215-i13/PASS_215_ITERATION_13_A.json
+            ${{ runner.temp }}/pass215-i13/PASS_215_ITERATION_13_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i13/PASS_215_ITERATION_13_B.json
+            ${{ runner.temp }}/pass215-i13/PASS_215_ITERATION_13_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i13/PASS_215_ITERATION_13_CROSS_PROCESS_VALIDATION.json
+          retention-days: 30
