@@ -39,11 +39,16 @@ def main() -> None:
     summary = loaded["summary"]
     print(json.dumps(summary, indent=2, sort_keys=True))
     print(f"PASS214_EQ_SOURCE_COMMIT={summary['source_commit']}")
+    print(f"PASS214_EQ_RAW_IDENTITIES={summary['raw_operation_identities']}")
+    print(f"PASS214_EQ_OPERATION_REGISTRY_ENTRIES={summary['operation_registry_entries']}")
+    print(f"PASS214_EQ_REGISTRY_IDENTITIES={summary['registry_identity_count_without_unproven_collapse']}")
     print(f"PASS214_EQ_CANDIDATE_GROUPS={summary['candidate_groups']}")
     print(f"PASS214_EQ_PROOF_EDGES={summary['proof_edges']}")
     print(f"PASS214_EQ_REUSE_ENTRIES={summary['reusable_registry_entries']}")
-    print(f"PASS214_EQ_ISOLATED_COVERED={summary['isolated_candidates_covered_by_proven_clusters']}")
+    print(f"PASS214_EQ_ISOLATED_COVERED={summary['isolated_candidates_covered_by_proven_reuse_or_promotion']}")
+    print(f"PASS214_EQ_ISOLATED_REMAINING={summary['isolated_candidates_remaining_reusable_extraction_backlog']}")
     print(f"PASS214_EQ_REGISTRY_BINDINGS={len(registry.list_bindings())}")
+    print(f"PASS214_EQ_REGISTRY_OPERATIONS={len(registry.list_operations())}")
     print(f"PASS214_EQ_SHA256={loaded['reconciliation_sha256']}")
     print("PASS214_SEMANTIC_EQUIVALENCE_RECONCILIATION_OK")
 
