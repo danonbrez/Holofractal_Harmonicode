@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_15_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P215-I15-CERTIFIED-EXACT-GREEDY-LOGIT-SELECTION",
+  "status": "IMPLEMENTED_SOURCE_EXECUTION_PENDING",
+  "parent_closure_head": "9780b711fdcfa6624dc9e787b140920ca3f5f875",
+  "parent_closure_tree": "9475d1053c08f4ae6195d28407dffc86b97c6113",
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "merge_target": "main",
+  "pull_request": 172,
+  "implemented_surfaces": [
+    "hhs_backend/runtime/hhs_pass215_iteration15_certified_greedy_logit_v1.py",
+    "tools/pass215_iteration15_certified_greedy_logit.py",
+    "tests/test_hhs_pass215_iteration15_certified_greedy_logit_v1.py",
+    "scripts/run_pass215_iteration15_validation.sh",
+    "contracts/pass215/PASS_215_ITERATION_15_CONTRACT.json",
+    "docs/pass215/ITERATION_15_CERTIFIED_GREEDY_LOGIT.md",
+    ".github/workflows/pass215-iteration15-certified-greedy-logit.yml"
+  ],
+  "selection_policy": "STRICT_CERTIFIED_DYADIC_INTERVAL_ARGMAX_THEN_TOKEN_ID",
+  "selection_semantics": "TRUE_LOGIT_MAGNITUDE_ORDER_CERTIFIED_BY_OUTWARD_INTEGER_BOUNDS",
+  "certification_bits": 256,
+  "greedy_append_count": 1,
+  "prefix_recomputation_authorized": false,
+  "kv_cache_reuse_required": true,
+  "source_execution": null,
+  "exact_head_terminal_validation": null,
+  "next_action": "Run cumulative validation and authenticated 32,000-logit interval certification. If strict separation succeeds, freeze the produced greedy token and semantic identities, commit restart state, and exact-head replay that closure commit."
+}
