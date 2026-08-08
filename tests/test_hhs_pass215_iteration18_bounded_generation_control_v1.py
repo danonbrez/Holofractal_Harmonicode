@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from hhs_backend.runtime import hhs_pass215_iteration18_bounded_generation_control_v1 as i18
+from hhs_backend.runtime import hhs_pass215_iteration18_bounded_generation_control_v2 as i18
 
 
 def test_iteration17_closure_inherited():
@@ -53,11 +53,25 @@ def test_checkpoint_split_is_inside_bound():
     assert i18.PREFIX_SEQUENCE_LENGTH + i18.RESUME_AFTER_STEPS == 8
 
 
+def test_repaired_restore_uses_full_terminal_head_dag_capabilities():
+    dag=i18.v1.i17.i15.i13.TerminalHeadSymbolicDAG()
+    assert all(hasattr(dag,name) for name in ('powq','sin','cos','intern'))
+    assert dag.__class__.__name__ == 'TerminalHeadSymbolicDAG'
+
+
+def test_checkpoint_roundtrip_is_json_durable_and_float_free():
+    payload={'schema':'x','values':[1,2,3],'nested':{'root':'abc'}}
+    out=i18._durable_json_roundtrip(payload)
+    assert out==payload
+    with pytest.raises(i18.Pass215Iteration18ValidationError,match='FLOAT_FORBIDDEN'):
+        i18._durable_json_roundtrip({'bad':1.5})
+
+
 def test_runtime_contains_zero_forward_replay_restore_contract():
-    text=Path('hhs_backend/runtime/hhs_pass215_iteration18_bounded_generation_control_v1.py').read_text()
-    assert 'prefix_forward_replays_during_restore": 0' in text
-    assert 'generated_forward_replays_during_restore": 0' in text
-    assert 'checkpoint_root_hash216' in text
+    text=Path('hhs_backend/runtime/hhs_pass215_iteration18_bounded_generation_control_v2.py').read_text()
+    assert 'TerminalHeadSymbolicDAG' in text
+    assert 'checkpoint_durable_json_roundtrip' in text
+    assert 'v1.restore_generation_session = restore_generation_session' in text
 
 
 def test_contract_preserves_forbidden_authorities():

@@ -4,7 +4,7 @@ import argparse, json, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
-from hhs_backend.runtime import hhs_pass215_iteration18_bounded_generation_control_v1 as i18
+from hhs_backend.runtime import hhs_pass215_iteration18_bounded_generation_control_v2 as i18
 
 def write(path,payload): Path(path).write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
 def main():
