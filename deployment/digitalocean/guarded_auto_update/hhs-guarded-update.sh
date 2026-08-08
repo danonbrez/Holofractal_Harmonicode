@@ -131,15 +131,16 @@ cleanup_candidate() {
 }
 
 sync_installed_assets() {
-  [[ "$SYNC_SELF" == "1" ]] || return 0
-  local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
-  [[ -d "$source" ]] || return 0
-  log "Synchronizing guarded updater assets"
-  install -d -m 0755 /usr/local/lib/hhs-guarded-update
-  install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
-  install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
-  install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
-  install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  if [[ "$SYNC_SELF" == "1" ]]; then
+    local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
+    [[ -d "$source" ]] || fail "Guarded updater source missing: deployment/digitalocean/guarded_auto_update"
+    log "Synchronizing guarded updater assets"
+    install -d -m 0755 /usr/local/lib/hhs-guarded-update
+    install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
+    install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
+    install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
+    install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  fi
 
   if [[ "$SYNC_PRIMARY_SERVICE" == "1" ]]; then
     local primary_source="$REPO_ROOT/$PRIMARY_SERVICE_SOURCE"
