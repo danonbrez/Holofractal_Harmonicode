@@ -51,3 +51,16 @@ test('final FastAPI composition installs event-loop-native bounded Pass 175 stat
   assert.match(source, /"pass175_materialized_status_worker_isolated": True/);
   assert.doesNotMatch(source, /async def final_pass175_(?:authority|bounded)_status\(\)[\s\S]{0,200}get_runtime\(\)/);
 });
+
+test('final FastAPI composition owns both bounded health routes after federation', async () => {
+  const source = await readFile(serverUrl, 'utf8');
+  assert.match(source, /FINAL_HEALTH_PATHS = frozenset\(\{"\/health", "\/api\/health"\}\)/);
+  assert.match(source, /if str\(getattr\(route, "path", ""\)\) not in FINAL_HEALTH_PATHS/);
+  assert.match(source, /"\/health",\s*application_ide_liveness/);
+  assert.match(source, /"\/api\/health",\s*application_ide_liveness/);
+  assert.match(source, /name="hhs-full-ide-health"/);
+  assert.match(source, /name="hhs-full-ide-api-health"/);
+  assert.match(source, /"health_routes_deduplicated": True/);
+  assert.match(source, /"health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS"/);
+  assert.doesNotMatch(source, /if not _has_exact_route\("\/api\/health"\)/);
+});
