@@ -68,12 +68,16 @@ jobs:
           s = d['summary']
           print('SOURCE_COMMIT', s['source_commit'])
           print('RAW_IDENTITIES', s['raw_operation_identities'])
+          print('OPERATION_REGISTRY_ENTRIES', s['operation_registry_entries'])
+          print('REGISTRY_IDENTITIES_WITHOUT_UNPROVEN_COLLAPSE', s['registry_identity_count_without_unproven_collapse'])
           print('CANDIDATE_GROUPS', s['candidate_groups'])
           print('GROUP_STATUS', json.dumps(s['group_status_counts'], sort_keys=True))
           print('PROOF_EDGES', s['proof_edges'])
           print('REUSABLE_REGISTRY_ENTRIES', s['reusable_registry_entries'])
           print('MIGRATION_ACTIONS', json.dumps(s['migration_action_counts'], sort_keys=True))
-          print('ISOLATED_COVERED', s['isolated_candidates_covered_by_proven_clusters'])
+          print('PROJECTION_SURFACES_FILTERED', s['projection_surfaces_removed_from_implementation_backlog'])
+          print('ISOLATED_COVERED', s['isolated_candidates_covered_by_proven_reuse_or_promotion'])
+          print('ISOLATED_REMAINING', s['isolated_candidates_remaining_reusable_extraction_backlog'])
           print('RECONCILIATION_SHA256', d['reconciliation_sha256'])
           PY
       - name: Retain reconciliation artifact
