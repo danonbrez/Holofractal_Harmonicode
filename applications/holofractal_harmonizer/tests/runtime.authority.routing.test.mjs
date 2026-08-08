@@ -24,8 +24,6 @@ test('final FastAPI composition retains one bounded production authority route',
   assert.match(source, /if str\(getattr\(route, "path", ""\)\) != RUNTIME_AUTHORITY_STATUS_PATH/);
   assert.match(source, /production\.production_runtime_authority_status/);
   assert.match(source, /name="hhs-production-runtime-authority-status"/);
-  assert.match(source, /runtime = production\._runtime_authority_status\(\)/);
-  assert.match(source, /authority_ready = bool\(runtime\.get\("ok"\)\)/);
   assert.match(source, /"runtime_readiness_uses_committed_live_projection": True/);
   assert.match(source, /"runtime_authority_route_deduplicated": True/);
 });
@@ -52,7 +50,7 @@ test('final FastAPI composition installs event-loop-native bounded Pass 175 stat
   assert.doesNotMatch(source, /async def final_pass175_(?:authority|bounded)_status\(\)[\s\S]{0,200}get_runtime\(\)/);
 });
 
-test('final FastAPI composition owns both bounded health routes after federation', async () => {
+test('final health route is pure process liveness and never traverses runtime objects', async () => {
   const source = await readFile(serverUrl, 'utf8');
   assert.match(source, /FINAL_HEALTH_PATHS = frozenset\(\{"\/health", "\/api\/health"\}\)/);
   assert.match(source, /if str\(getattr\(route, "path", ""\)\) not in FINAL_HEALTH_PATHS/);
@@ -61,6 +59,24 @@ test('final FastAPI composition owns both bounded health routes after federation
   assert.match(source, /name="hhs-full-ide-health"/);
   assert.match(source, /name="hhs-full-ide-api-health"/);
   assert.match(source, /"health_routes_deduplicated": True/);
-  assert.match(source, /"health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS"/);
+  assert.match(source, /"health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS"/);
+  assert.match(source, /"runtime_object_traversal_performed": False/);
+  assert.match(source, /"service_registry_traversal_performed": False/);
+  assert.match(source, /"runtime_authority_probe_separate": True/);
+  const healthBody = source.match(/async def application_ide_liveness\(\)[\s\S]*?\n\n# Health has accumulated/)?.[0] || '';
+  assert.doesNotMatch(healthBody, /_runtime_authority_status|authority_status\(|service_registry\.services/);
   assert.doesNotMatch(source, /if not _has_exact_route\("\/api\/health"\)/);
+});
+
+test('final runtime service catalog is isolated from the FastAPI event loop', async () => {
+  const source = await readFile(serverUrl, 'utf8');
+  assert.match(source, /RUNTIME_SERVICES_PATH = "\/api\/runtime\/services"/);
+  assert.match(source, /def _runtime_services_projection\(\)/);
+  assert.match(source, /runtime_api\.runtime_emulator\.service_registry\.services\(\)/);
+  assert.match(source, /async def final_runtime_services\(\)/);
+  assert.match(source, /return await asyncio\.to_thread\(_runtime_services_projection\)/);
+  assert.match(source, /if str\(getattr\(route, "path", ""\)\) != RUNTIME_SERVICES_PATH/);
+  assert.match(source, /name="hhs-final-runtime-services"/);
+  assert.match(source, /"runtime_services_route_deduplicated": True/);
+  assert.match(source, /"runtime_services_worker_isolated": True/);
 });
