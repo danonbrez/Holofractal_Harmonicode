@@ -1,14 +1,15 @@
 """Pass 214 semantic-equivalence reconciliation over the cumulative operation census.
 
-This module is additive and evidence-oriented.  It proves only relationships
+This module is additive and evidence-oriented. It proves only relationships
 that can be established mechanically from repository-visible mappings or exact
-implementation structure.  Name similarity alone never collapses operations.
+implementation structure. Name similarity alone never collapses operations.
+Every coded operation also receives a stable discovery-registry identity; only
+proven equivalence clusters share such an identity.
 """
 from __future__ import annotations
 
 import ast
 from collections import defaultdict
-from dataclasses import dataclass
 from hashlib import sha256
 import json
 from pathlib import Path, PurePosixPath
@@ -41,6 +42,11 @@ EXECUTABLE_KIND_PREFIXES = (
 )
 NON_BINDING_FAMILIES = {
     "ABI_DECLARATION_SURFACE", "FORMAL_SPECIFICATION", "BUILD_INTEGRATION",
+}
+EXPLICIT_OPERATION_FAMILIES = {
+    "VM81_SUBSTRATE_OPCODE", "FROZEN_HHS_IR_OPCODE", "PASS158_LLABI_NFTC_OPCODE",
+    "PASS079_NATIVE_ABI_OPCODE", "PASS213_GOVERNED_NATIVE_DISPATCH",
+    "VM81_BASE20_NUMERICAL_ABI", "DECLARATIVE_CAPABILITY_REGISTRY",
 }
 
 
@@ -92,7 +98,13 @@ def _pure_forward_target(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str | 
         call = stmt.value
     if call is None or any(k.arg is None for k in call.keywords):
         return None
+
     names = _arg_names(node.args)
+    if names and names[0] in {"self", "cls"} and isinstance(call.func, ast.Attribute):
+        owner = call.func.value
+        if isinstance(owner, ast.Name) and owner.id == names[0]:
+            names = names[1:]
+
     call_names: list[str] = []
     for arg in call.args:
         if not isinstance(arg, ast.Name):
@@ -204,7 +216,11 @@ def _implementation_evidence(
     out: dict[str, dict[str, Any]] = {}
     for path, rows in by_path.items():
         suffix = PurePosixPath(path).suffix.lower()
-        if suffix not in {".py", ".pyi", ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".inc", ".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx", ".rs", ".java", ".kt", ".kts", ".swift"}:
+        if suffix not in {
+            ".py", ".pyi", ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".inc",
+            ".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx", ".rs", ".java",
+            ".kt", ".kts", ".swift",
+        }:
             continue
         text = _read(root, path, max_source_bytes)
         if text is None:
@@ -245,11 +261,24 @@ def _executable(row: Mapping[str, Any]) -> bool:
     if str(row.get("family")) in NON_BINDING_FAMILIES:
         return False
     kind = str(row.get("kind", ""))
-    return kind.startswith(EXECUTABLE_KIND_PREFIXES) or str(row.get("family")) in {
-        "VM81_SUBSTRATE_OPCODE", "FROZEN_HHS_IR_OPCODE", "PASS158_LLABI_NFTC_OPCODE",
-        "PASS079_NATIVE_ABI_OPCODE", "PASS213_GOVERNED_NATIVE_DISPATCH",
-        "VM81_BASE20_NUMERICAL_ABI", "CALLABLE_OPERATION",
-    }
+    return kind.startswith(EXECUTABLE_KIND_PREFIXES) or str(row.get("family")) in EXPLICIT_OPERATION_FAMILIES | {"CALLABLE_OPERATION"}
+
+
+def _top_level_promotable(row: Mapping[str, Any]) -> bool:
+    if str(row.get("family")) in EXPLICIT_OPERATION_FAMILIES:
+        return True
+    kind = str(row.get("kind", ""))
+    raw_name = str(row.get("raw_name", ""))
+    leaf = raw_name.split(".")[-1]
+    if leaf.startswith("_"):
+        return False
+    if kind == "PYTHON_METHOD":
+        return False
+    if kind == "PYTHON_FUNCTION":
+        return "." not in raw_name
+    if kind in {"JAVASCRIPT_FUNCTION", "JAVASCRIPT_ARROW_FUNCTION", "JAVASCRIPT_ARROW", "TYPESCRIPT_FUNCTION", "C_FUNCTION", "CPP_FUNCTION", "RUST_FUNCTION", "SHELL_FUNCTION"}:
+        return "." not in raw_name
+    return False
 
 
 def _binding_priority(row: Mapping[str, Any]) -> tuple[int, int, str, int]:
@@ -338,9 +367,18 @@ def build_semantic_equivalence_reconciliation(
             if projection:
                 target = _normalize(str(projection).split(":")[-1])
                 projections[target].append(str(row["operation_key"]))
-                targets = [x for x in members if str(x["normalized_semantic_name"]) == target and str(x["family"]) == "VM81_SUBSTRATE_OPCODE"]
+                targets = [
+                    x for x in members
+                    if str(x["normalized_semantic_name"]) == target
+                    and str(x["family"]) == "VM81_SUBSTRATE_OPCODE"
+                ]
                 for target_row in targets:
-                    add_proof(str(row["operation_key"]), str(target_row["operation_key"]), PROOF_EXACT_PROJECTION, {"exact_projection": projection})
+                    add_proof(
+                        str(row["operation_key"]),
+                        str(target_row["operation_key"]),
+                        PROOF_EXACT_PROJECTION,
+                        {"exact_projection": projection},
+                    )
         if len(projections) > 1:
             conflicts.append({"type": "DIFFERENT_EXACT_PROJECTIONS", "values": sorted(projections)})
 
@@ -352,7 +390,10 @@ def build_semantic_equivalence_reconciliation(
         for (digest, sig), bucket in by_impl.items():
             if len(bucket) > 1:
                 for other in bucket[1:]:
-                    add_proof(bucket[0], other, PROOF_IDENTICAL_IMPLEMENTATION, {"implementation_digest": digest, "signature_digest": sig})
+                    add_proof(
+                        bucket[0], other, PROOF_IDENTICAL_IMPLEMENTATION,
+                        {"implementation_digest": digest, "signature_digest": sig},
+                    )
 
         target_keys = {str(row["operation_key"]): row for row in members}
         for row in members:
@@ -361,7 +402,10 @@ def build_semantic_equivalence_reconciliation(
             target = ev.get("pure_forward_target") if ev else None
             if not target:
                 continue
-            target_rows = [x for x in members if _normalize(str(x["raw_name"]).split(".")[-1]) == target]
+            target_rows = [
+                x for x in members
+                if _normalize(str(x["raw_name"]).split(".")[-1]) == target
+            ]
             for target_row in target_rows:
                 target_key = str(target_row["operation_key"])
                 if target_key in target_keys and target_key != key:
@@ -383,15 +427,14 @@ def build_semantic_equivalence_reconciliation(
         else:
             status = "UNRESOLVED_REQUIRES_BEHAVIORAL_CONFORMANCE"
 
-        group_record = {
+        groups.append({
             "normalized_semantic_name": semantic_name,
             "status": status,
             "member_operation_keys": sorted(keys),
             "proven_equivalence_clusters": proven_clusters,
             "proofs": proofs,
             "conflicts": conflicts,
-        }
-        groups.append(group_record)
+        })
 
         for cluster in proven_clusters:
             rows = [by_key[x] for x in cluster]
@@ -399,12 +442,13 @@ def build_semantic_equivalence_reconciliation(
             preferred = min(executable, key=_binding_priority) if executable else None
             has_shared = any(str(x["reuse_status"]) == "SHARED_MODULE" for x in rows)
             isolated = [x for x in rows if str(x["reuse_status"]) == "ISOLATED_IMPLEMENTATION_CANDIDATE"]
-            if has_shared and isolated:
-                action = "REUSE_EXISTING_SHARED_MODULE"
-            elif len(isolated) >= 2 and not has_shared:
-                action = "PROMOTE_TO_SHARED_MODULE_CANDIDATE"
-            elif any(x.get("exact_projection") for x in rows):
+            has_exact_projection = any(x.get("exact_projection") for x in rows)
+            if has_exact_projection:
                 action = "REGISTER_EXACT_PROJECTION"
+            elif has_shared and isolated:
+                action = "REUSE_EXISTING_SHARED_MODULE"
+            elif len(isolated) >= 2 and all(_top_level_promotable(x) for x in isolated):
+                action = "PROMOTE_TO_SHARED_MODULE_CANDIDATE"
             else:
                 action = "REGISTER_PROVEN_ALIAS"
             registry_entries.append({
@@ -425,14 +469,73 @@ def build_semantic_equivalence_reconciliation(
                 "isolated_member_operation_keys": sorted(str(x["operation_key"]) for x in isolated),
             })
 
+    registry_entries.sort(key=lambda x: (x["normalized_semantic_name"], x["cluster_id"]))
+    cluster_by_operation: dict[str, dict[str, Any]] = {}
+    for entry in registry_entries:
+        for key in entry["member_operation_keys"]:
+            if key in cluster_by_operation:
+                raise OperationCensusError(f"OPERATION_IN_MULTIPLE_PROVEN_CLUSTERS:{key}")
+            cluster_by_operation[str(key)] = entry
+
+    candidate_names = {str(x["normalized_semantic_name"]) for x in groups}
+    operation_registry_entries: list[dict[str, Any]] = []
+    for row in records:
+        key = str(row["operation_key"])
+        cluster = cluster_by_operation.get(key)
+        if cluster is not None:
+            registry_id = str(cluster["cluster_id"])
+            registry_status = "PROVEN_EQUIVALENCE_SHARED_IDENTITY"
+            migration_requirement = str(cluster["migration_action"])
+        else:
+            registry_id = "hhs.operation." + key[:24]
+            registry_status = (
+                "UNRESOLVED_MULTI_IDENTITY_DISTINCT_IDENTITY"
+                if str(row["normalized_semantic_name"]) in candidate_names
+                else "SINGLETON_DISTINCT_IDENTITY"
+            )
+            migration_requirement = (
+                "REQUIRES_REUSABLE_EXTRACTION_OR_ADAPTER"
+                if str(row["reuse_status"]) == "ISOLATED_IMPLEMENTATION_CANDIDATE"
+                else "NONE"
+            )
+        if row.get("exact_projection"):
+            migration_requirement = "PROJECTION_SURFACE_NOT_IMPLEMENTATION_BACKLOG"
+        operation_registry_entries.append({
+            "registry_id": registry_id,
+            "registry_status": registry_status,
+            "operation_key": key,
+            "normalized_semantic_name": row["normalized_semantic_name"],
+            "raw_name": row["raw_name"],
+            "kind": row["kind"],
+            "family": row["family"],
+            "authority": row["authority"],
+            "reuse_status": row["reuse_status"],
+            "python_exposure": row["python_exposure"],
+            "path": row["path"],
+            "line": row["line"],
+            "pass_number": row["pass_number"],
+            "migration_requirement": migration_requirement,
+        })
+    operation_registry_entries.sort(key=lambda x: (x["registry_id"], x["path"], int(x["line"]), x["operation_key"]))
+
     status_counts: dict[str, int] = defaultdict(int)
     for group in groups:
         status_counts[str(group["status"])] += 1
     migration_counts: dict[str, int] = defaultdict(int)
     covered_isolated: set[str] = set()
+    projection_isolated: set[str] = set()
     for entry in registry_entries:
         migration_counts[str(entry["migration_action"])] += 1
-        covered_isolated.update(str(x) for x in entry["isolated_member_operation_keys"])
+        if entry["migration_action"] in {"REUSE_EXISTING_SHARED_MODULE", "PROMOTE_TO_SHARED_MODULE_CANDIDATE"}:
+            covered_isolated.update(str(x) for x in entry["isolated_member_operation_keys"])
+    for row in records:
+        if row.get("exact_projection") and str(row["reuse_status"]) == "ISOLATED_IMPLEMENTATION_CANDIDATE":
+            projection_isolated.add(str(row["operation_key"]))
+
+    isolated_total = int(census["summary"]["reuse_accounting"]["isolated_implementation_candidates"])
+    implementation_backlog = max(0, isolated_total - len(projection_isolated))
+    remaining_backlog = max(0, implementation_backlog - len(covered_isolated))
+    registry_identity_count = len({str(x["registry_id"]) for x in operation_registry_entries})
 
     result = {
         "schema": SCHEMA,
@@ -443,6 +546,8 @@ def build_semantic_equivalence_reconciliation(
             "name_similarity_is_never_equivalence_proof": True,
             "proofs_are_repository_visible_and_deterministic": True,
             "unresolved_groups_remain_distinct": True,
+            "every_coded_operation_has_registry_identity": True,
+            "shared_registry_identity_requires_proven_equivalence": True,
             "registry_is_discovery_and_reuse_surface_not_execution_authority": True,
             "frozen_runtime_modified": False,
             "automatic_runtime_rewrite": False,
@@ -451,6 +556,8 @@ def build_semantic_equivalence_reconciliation(
             "source_commit": census["summary"]["source_commit"],
             "source_tree": census["summary"]["source_tree"],
             "raw_operation_identities": census["summary"]["coverage"]["raw_operation_identities"],
+            "operation_registry_entries": len(operation_registry_entries),
+            "registry_identity_count_without_unproven_collapse": registry_identity_count,
             "candidate_groups": len(groups),
             "group_status_counts": dict(sorted(status_counts.items())),
             "proof_edges": proof_edge_count,
@@ -459,16 +566,26 @@ def build_semantic_equivalence_reconciliation(
             "pure_forwarder_proof_edges": forwarder_pairs,
             "reusable_registry_entries": len(registry_entries),
             "migration_action_counts": dict(sorted(migration_counts.items())),
-            "isolated_implementation_candidates_total": census["summary"]["reuse_accounting"]["isolated_implementation_candidates"],
-            "isolated_candidates_covered_by_proven_clusters": len(covered_isolated),
+            "isolated_implementation_candidates_total": isolated_total,
+            "projection_surfaces_removed_from_implementation_backlog": len(projection_isolated),
+            "isolated_implementation_backlog_after_projection_filter": implementation_backlog,
+            "isolated_candidates_covered_by_proven_reuse_or_promotion": len(covered_isolated),
+            "isolated_candidates_remaining_reusable_extraction_backlog": remaining_backlog,
             "known_opcode_family_anchors": census["summary"]["known_opcode_family_anchors"],
             "frozen_runtime": census["summary"]["frozen_runtime"],
         },
         "semantic_groups": groups,
-        "reusable_operation_registry_entries": sorted(registry_entries, key=lambda x: (x["normalized_semantic_name"], x["cluster_id"])),
+        "reusable_operation_registry_entries": registry_entries,
+        "operation_registry_entries": operation_registry_entries,
+        "unresolved_isolation_backlog": [
+            x for x in operation_registry_entries
+            if x["migration_requirement"] == "REQUIRES_REUSABLE_EXTRACTION_OR_ADAPTER"
+        ],
     }
     if not result["summary"]["known_opcode_family_anchors"]["all_satisfied"]:
         raise OperationCensusError("SEMANTIC_RECONCILIATION_KNOWN_FAMILY_ANCHOR_FAILURE")
+    if result["summary"]["operation_registry_entries"] != result["summary"]["raw_operation_identities"]:
+        raise OperationCensusError("OPERATION_REGISTRY_COVERAGE_MISMATCH")
     result["reconciliation_sha256"] = _digest(result)
     return result
 
@@ -488,4 +605,6 @@ def load_and_validate_reconciliation(path: Path) -> dict[str, Any]:
         raise OperationCensusError("SEMANTIC_RECONCILIATION_SCHEMA_MISMATCH")
     if not data["summary"]["known_opcode_family_anchors"]["all_satisfied"]:
         raise OperationCensusError("SEMANTIC_RECONCILIATION_ANCHOR_FAILURE")
+    if data["summary"]["operation_registry_entries"] != data["summary"]["raw_operation_identities"]:
+        raise OperationCensusError("SEMANTIC_RECONCILIATION_REGISTRY_COVERAGE_FAILURE")
     return data
