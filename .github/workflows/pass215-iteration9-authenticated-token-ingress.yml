@@ -1,0 +1,211 @@
+name: Pass 215 Iteration 9 Authenticated Token Ingress
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'tools/pass215_iteration9_authenticated_token_ingress.py'
+      - 'tests/test_hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'scripts/run_pass215_iteration9_validation.sh'
+      - 'evidence/pass215/PASS_215_ITERATION_9_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration9-authenticated-token-ingress.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'tools/pass215_iteration9_authenticated_token_ingress.py'
+      - 'tests/test_hhs_pass215_iteration9_authenticated_token_ingress_v1.py'
+      - 'scripts/run_pass215_iteration9_validation.sh'
+      - 'evidence/pass215/PASS_215_ITERATION_9_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration9-authenticated-token-ingress.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I9_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration9:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I9_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I9_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 8 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          assert inherits['iteration8_closure_head'] == 'a1deea46accf94dac0322d215e74a1e6616a4e1b'
+          assert inherits['iteration8_closure_tree'] == '4ec05cb3f6555005220098a55cab1dec0e0dfa61'
+          assert inherits['iteration8_stage_suite_root_hash216'] == 'dbcc426e3629a8083f180094405ceffb5ef4da3035b3851ed95f8b7d0c0f3b1a'
+          assert inherits['iteration8_causal_attention_root_hash216'] == '07c9e6cc21f7ed2e199644de322cd4d1bb9e3b2388ffba39baa42596310a4fde'
+          assert inherits['iteration8_final_output_root_hash216'] == '5782d725ab356dbb33207ce59767b8cae1895b7bb859eeb40c2772e9d767a041'
+          assert inherits['iteration8_symbolic_dag_root_hash216'] == '5bf30a850b8ce083c7c01c3a56fd83e18de28ca2c0aeb6d5f439cd384f9122b0'
+          assert inherits['iteration8_suite_root_hash216'] == 'a21a7aedf633678510a701f93b39f785ce50c599228a6c194473ae6faea35b71'
+          assert inherits['iteration8_evidence_root_hash216'] == '8ae3bdfb8768c37dfd4c66a491b985b3089378c655a7292ee406bbaa615c8465'
+          assert constraints['authenticated_tokenizer_metadata_bound'] is True
+          assert constraints['authenticated_token_ids_selected'] is True
+          assert constraints['exact_q4_0_token_embedding_lookup_executed'] is True
+          assert constraints['text_tokenization_executed'] is False
+          assert constraints['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert constraints['multi_block_transformer_forward_executed'] is False
+          assert constraints['full_model_forward_executed'] is False
+          assert constraints['output_logits_executed'] is False
+          assert constraints['numeric_transcendental_evaluation_performed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-9 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration9_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i9"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I9_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute authenticated token ingress process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i9"
+          python tools/pass215_iteration9_authenticated_token_ingress.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I9_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_9_A.json"
+          python tools/pass215_iteration9_authenticated_token_ingress.py \
+            --validate "$ROOT/PASS_215_ITERATION_9_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_9_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i9"
+          python tools/pass215_iteration9_authenticated_token_ingress.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I9_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_9_B.json"
+          python tools/pass215_iteration9_authenticated_token_ingress.py \
+            --validate "$ROOT/PASS_215_ITERATION_9_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_9_B_VALIDATION.json"
+          python tools/pass215_iteration9_authenticated_token_ingress.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_9_A.json" "$ROOT/PASS_215_ITERATION_9_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_9_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce authenticated token-ingress closure and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i9'
+          evidence = json.loads((root / 'PASS_215_ITERATION_9_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_9_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I9_MODEL_SHA256']
+          tokenizer = evidence['authenticated_tokenizer']
+          ingress = evidence['authenticated_token_ingress']
+          execution = evidence['token_ingress_coordinate_forward']
+          assert tokenizer['vocabulary_size'] > 0
+          assert tokenizer['float_metadata_interpreted'] is False
+          assert len(ingress['selected_token_ids']) == 4
+          assert len(set(ingress['selected_token_ids'])) == 4
+          assert len(ingress['selected_tokens']) == 4
+          assert ingress['embedding_tensor']['name'] == 'token_embd.weight'
+          assert ingress['embedding_tensor']['storage_type'] == 'Q4_0'
+          assert ingress['embedding_tensor']['row_bytes'] == 162
+          assert ingress['embedding_lookup_work'] == {
+              'selected_token_count': 4,
+              'q4_0_blocks_decoded': 36,
+              'exact_embedding_coordinates_materialized': 1152,
+              'source_row_bytes_read': 648,
+          }
+          assert execution['final_output_token_count'] == 4
+          assert execution['final_output_coordinate_count'] == 1152
+          assert execution['linear_transition_work'] == {
+              'row_transitions': 11904,
+              'logical_weight_products': 3981312,
+              'logical_accumulation_additions': 3969408,
+          }
+          assert execution['attention_transition_work']['causal_qk_edges'] == 60
+          assert execution['causal_controls']['future_edges_materialized'] is False
+          assert execution['causal_controls']['edge_set_exact'] is True
+          assert execution['causal_controls']['softmax_denominators_use_causal_terms_only'] is True
+          assert execution['rope_controls']['position_zero_exact_identity'] is True
+          assert execution['rope_controls']['all_nonzero_positions_change_q_and_k_roots'] is True
+          claims = evidence['claims']
+          assert claims['authenticated_tokenizer_metadata_bound'] is True
+          assert claims['exact_q4_0_token_embedding_lookup_executed'] is True
+          assert claims['text_tokenization_executed'] is False
+          assert claims['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert claims['multi_block_transformer_forward_executed'] is False
+          assert claims['full_model_forward_executed'] is False
+          assert claims['output_logits_executed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert claims['numeric_transcendental_evaluation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['embedding_suite_root_hash216'] == ingress['embedding_suite_root_hash216']
+          assert replay['final_output_root_hash216'] == execution['final_output_root_hash216']
+          print('PASS215_I9_SELECTED_TOKEN_IDS=' + ','.join(str(value) for value in ingress['selected_token_ids']))
+          print('PASS215_I9_TOKENIZER_ROOT=' + tokenizer['vocabulary_root_hash216'])
+          print('PASS215_I9_EMBEDDING_ROOT=' + ingress['embedding_suite_root_hash216'])
+          print('PASS215_I9_STAGE_SUITE_ROOT=' + execution['executed_stage_suite_root_hash216'])
+          print('PASS215_I9_CAUSAL_ATTENTION_ROOT=' + execution['causal_attention_root_hash216'])
+          print('PASS215_I9_FINAL_OUTPUT_ROOT=' + execution['final_output_root_hash216'])
+          print('PASS215_I9_DAG_ROOT=' + execution['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I9_SUITE_ROOT=' + evidence['token_ingress_suite_root_hash216'])
+          print('PASS215_I9_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I9_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 9 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration9-authenticated-token-ingress-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pass215-i9/PASS_215_ITERATION_9_A.json
+            ${{ runner.temp }}/pass215-i9/PASS_215_ITERATION_9_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i9/PASS_215_ITERATION_9_B.json
+            ${{ runner.temp }}/pass215-i9/PASS_215_ITERATION_9_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i9/PASS_215_ITERATION_9_CROSS_PROCESS_VALIDATION.json
+          retention-days: 30
