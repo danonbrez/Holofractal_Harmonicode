@@ -45,7 +45,7 @@ Two independent local processes reproduced the following exact identities:
 
 | Measure | Exact value |
 | --- | ---: |
-| Cumulative controls | 212 |
+| Cumulative controls | 213 |
 | Earlier checkpoint canonical bytes | 413,411,982 |
 | Later checkpoint canonical bytes | 475,300,933 |
 | Earlier referenced / unique chunks | 249 / 247 |

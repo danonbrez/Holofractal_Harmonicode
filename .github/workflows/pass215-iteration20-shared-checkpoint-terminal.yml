@@ -7,10 +7,15 @@ on:
     branches: [main]
     paths:
       - 'hhs_backend/runtime/hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py'
+      - 'hhs_backend/runtime/hhs_pass215_iteration*.py'
       - 'tools/pass215_iteration20_shared_checkpoint_terminal.py'
+      - 'tools/pass215_iteration*.py'
       - 'tests/test_hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py'
+      - 'tests/test_hhs_pass215_iteration*.py'
       - 'scripts/run_pass215_iteration20_validation.sh'
+      - 'scripts/run_pass215_iteration*_validation.sh'
       - 'contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json'
+      - 'contracts/pass215/PASS_215_ITERATION_*_CONTRACT.json'
       - 'evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json'
       - 'evidence/pass215/PASS_215_ITERATION_20_SOURCE_EVIDENCE.json'
       - 'docs/pass215/ITERATION_20_SHARED_CHECKPOINT_TERMINAL_CLOSURE.md'
@@ -73,7 +78,9 @@ jobs:
           assert c['constraints']['unbounded_or_general_generation_claimed'] is False
           PY
       - name: Run cumulative Iteration 1-20 dependency-scoped validation
-        run: bash scripts/run_pass215_iteration20_validation.sh
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"; mkdir -p "$ROOT"
+          PASS215_I20_TEST_COUNT_FILE="$ROOT/CUMULATIVE_TEST_COUNT.txt" bash scripts/run_pass215_iteration20_validation.sh
       - name: Download and verify authenticated open transformer
         run: |
           ROOT="$RUNNER_TEMP/pass215-i20"; mkdir -p "$ROOT"
@@ -117,8 +124,9 @@ jobs:
           assert transition['pass216_status']=='RESERVED_NUMBER_NO_PASS'
           assert transition['next_implemented_pass']==217
           assert replay['cross_process_replay'] and replay['semantic_exactness']
+          measured_count=int((root/'CUMULATIVE_TEST_COUNT.txt').read_text().strip())
           summary={
-            'cumulative_test_count': contract['source_execution']['cumulative_test_count'],
+            'cumulative_test_count': measured_count,
             'selected_token_ids': control['selected_token_ids'],
             'selected_tokens': control['selected_tokens'],
             'termination_reason': control['termination_reason'],
@@ -159,6 +167,7 @@ jobs:
             ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_CROSS_PROCESS_VALIDATION.json
             ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_SOURCE_IDENTITIES.json
             evidence/pass215/PASS_215_ITERATION_20_SOURCE_EVIDENCE.json
+            ${{ runner.temp }}/pass215-i20/CUMULATIVE_TEST_COUNT.txt
             ${{ runner.temp }}/pass215-i20/VALIDATED_HEAD.txt
             ${{ runner.temp }}/pass215-i20/VALIDATED_TREE.txt
           if-no-files-found: error

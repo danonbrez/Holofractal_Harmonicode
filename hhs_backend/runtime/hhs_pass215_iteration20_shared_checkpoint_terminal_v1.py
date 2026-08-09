@@ -20,6 +20,7 @@ the reserved boundary explicitly.
 from __future__ import annotations
 
 import base64
+import binascii
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -191,6 +192,33 @@ def _blob_metadata(blobs: Mapping[str, Mapping[str, Any]]) -> Mapping[str, Any]:
     }
 
 
+def _validated_compressed_blob(record: Mapping[str, Any]) -> bytes:
+    if record.get("codec") != "zlib-9":
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_CODEC_INVALID"
+        )
+    encoded = record.get("data_b64")
+    if not isinstance(encoded, str):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_ENCODING_INVALID"
+        )
+    try:
+        compressed = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_ENCODING_INVALID"
+        ) from exc
+    if len(compressed) != int(record.get("compressed_bytes", -1)):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_SIZE_INVALID"
+        )
+    if sha256(compressed).hexdigest() != record.get("compressed_sha256"):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_HASH_INVALID"
+        )
+    return compressed
+
+
 def _referenced_digests(manifest: Mapping[str, Any]) -> tuple[str, ...]:
     return tuple(
         str(digest)
@@ -333,7 +361,9 @@ def _reuse_metrics(
     union = earlier_unique | later_unique
 
     def compressed_bytes(digests: Iterable[str]) -> int:
-        return sum(int(blobs[digest]["compressed_bytes"]) for digest in digests)
+        return sum(
+            len(_validated_compressed_blob(blobs[digest])) for digest in digests
+        )
 
     earlier_bytes = compressed_bytes(earlier_unique)
     later_bytes = compressed_bytes(later_unique)
@@ -509,12 +539,13 @@ def reconstruct_iteration18_checkpoint(
         raw_chunks: list[bytes] = []
         for digest in component["chunk_refs"]:
             record = blobs[digest]
-            compressed = base64.b64decode(record["data_b64"], validate=True)
-            if sha256(compressed).hexdigest() != record["compressed_sha256"]:
+            compressed = _validated_compressed_blob(record)
+            try:
+                raw_chunk = zlib.decompress(compressed)
+            except zlib.error as exc:
                 raise Pass215Iteration20ValidationError(
-                    "PASS215_I20_COMPRESSED_BLOB_HASH_INVALID"
-                )
-            raw_chunk = zlib.decompress(compressed)
+                    "PASS215_I20_COMPRESSED_BLOB_DECODE_INVALID"
+                ) from exc
             if (
                 len(raw_chunk) != int(record["raw_bytes"])
                 or sha256(raw_chunk).hexdigest() != digest

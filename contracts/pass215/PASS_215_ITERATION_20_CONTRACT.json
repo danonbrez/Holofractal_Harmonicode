@@ -78,7 +78,7 @@
     "pass217_and_pass219_may_consume_pass215_terminal_closure": true
   },
   "source_execution": {
-    "cumulative_test_count": 212,
+    "cumulative_test_count": 213,
     "selected_token_ids": [
       450,
       6575,

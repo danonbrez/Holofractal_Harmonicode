@@ -113,6 +113,21 @@ def test_shared_store_byte_accounting_is_exact(synthetic_bundle):
     assert metrics["separate_stores_compressed_blob_bytes"] - metrics["shared_store_compressed_blob_bytes"] == metrics["shared_store_savings_bytes"]
 
 
+def test_compressed_byte_metrics_are_derived_from_validated_payloads(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    tampered = copy.deepcopy(bundle)
+    digest = next(iter(tampered["content_store"]["blobs"]))
+    tampered["content_store"]["blobs"][digest]["compressed_bytes"] += 1
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="COMPRESSED_BLOB_SIZE_INVALID",
+    ):
+        i20._reuse_metrics(
+            tampered["checkpoint_manifests"],
+            tampered["content_store"]["blobs"],
+        )
+
+
 def test_bundle_tamper_fails_closed(synthetic_bundle):
     _, _, bundle, _ = synthetic_bundle
     tampered = copy.deepcopy(bundle)
@@ -180,11 +195,16 @@ def test_output_projection_pruning_is_evaluated_but_not_authorized():
 
 def test_pass215_terminal_completion_is_bounded():
     contract = json.loads(Path("contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json").read_text())
+    record = json.loads(Path("evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json").read_text())
     completion = contract["pass_completion"]
     assert completion["pass215_contracted_benchmark_implementation_complete"] is True
     assert completion["terminal_iteration"] == 20
     assert completion["bounded_profile_only"] is True
     assert completion["broader_generation_authority_promoted"] is False
+    assert record["contract"] == contract["contract"]
+    assert record["source_execution"] == contract["source_execution"]
+    assert record["pass_completion"] == completion
+    assert record["downstream_transition"] == contract["downstream_transition"]
 
 
 def test_pass216_is_reserved_and_pass217_is_next():
@@ -221,5 +241,10 @@ def test_tool_script_and_workflow_are_wired_to_iteration20():
     workflow = Path(".github/workflows/pass215-iteration20-shared-checkpoint-terminal.yml")
     assert "hhs_pass215_iteration20_shared_checkpoint_terminal_v1" in tool
     assert "run_pass215_iteration19_validation.sh" in script
+    assert "PASS215_ITERATION20_CUMULATIVE_TEST_COUNT" in script
+    assert "IMPLEMENTATION_RECORD_SOURCE_INVALID" in script
     assert "PASS215_ITERATION20_VALIDATION_OK" in script
     assert workflow.exists()
+    workflow_text = workflow.read_text()
+    assert "hhs_backend/runtime/hhs_pass215_iteration*.py" in workflow_text
+    assert "PASS215_I20_TEST_COUNT_FILE" in workflow_text
