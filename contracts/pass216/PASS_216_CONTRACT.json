@@ -1,5 +1,5 @@
 {
-  "schema": "HHS_PASS_216_CONTRACT_V1",
+  "schema": "HHS_PASS_216_CONTRACT_V2",
   "contract": "HHS-P216-OPTIMIZATION-COMPRESSION-HYDRATION-ACCELERATION",
   "pass": 216,
   "status": "CONTRACTED_PARENT_TERMINAL_BINDING_PENDING",
@@ -28,6 +28,37 @@
     "binding_rule": "Implementation may begin only after these final closure fields are bound to the successful Pass 215 Iteration 20 exact-head terminal replay. No Pass 215 source or evidence is to be rewritten to establish this binding."
   },
   "purpose": "Reduce storage, memory movement, hydration work, transition work, repeated computation, cache misses, and runtime overhead for the already validated Pass 215 deterministic transformer workflow while preserving every authoritative output bit and frozen semantic commitment.",
+  "strict_mode_lifecycle": {
+    "global_strict_mode_role": "TEMPORARY_PASS214_PASS215_DEVELOPMENT_PROOF_REGIME",
+    "global_strict_mode_default_before_pass214": false,
+    "global_strict_mode_required_during_pass214_pass215_proof_epoch": true,
+    "global_strict_mode_after_successful_pass215_terminal_closure": false,
+    "sunset_rule": "Successful Pass 215 terminal closure ends global strict-mode replay as a normal development or runtime requirement.",
+    "unchanged_identity_rule": "An unchanged authenticated identity inherits its already-proven authority and MUST NOT require re-execution merely to reconfirm determinism.",
+    "changed_identity_rule": "A changed authenticated identity requires exact validation only across the changed transition boundary and its reachable dependency closure.",
+    "global_strict_replay_after_sunset_allowed_only_for": [
+      "EXPLICIT_MANUAL_AUDIT_REQUEST",
+      "PARENT_OR_REFERENCE_IDENTITY_CORRUPTION",
+      "DEPENDENCY_BOUNDARY_CANNOT_BE_PROVEN",
+      "SCOPED_EQUIVALENCE_FAILURE_REQUIRING_DIAGNOSTIC_ESCALATION"
+    ],
+    "performance_runtime_rule": "Pass 216 optimization measurements MUST use the normal optimized execution path rather than the temporary Pass 214/215 global-strict proof path unless the optimization specifically targets strict-mode machinery."
+  },
+  "historical_performance_baseline_policy": {
+    "pre_pass213_performance_benchmarks_exist": true,
+    "reuse_existing_pre_pass213_benchmarks": true,
+    "regenerate_existing_pre_pass213_benchmarks_by_default": false,
+    "role": "INHERITED_PERFORMANCE_BASELINE_AND_OPTIMIZATION_CAPABILITY_REFERENCE",
+    "interpretation": "Pre-Pass-213 benchmark evidence establishes the system's prior optimized operating characteristics and demonstrates the effect of the established optimization stack before the temporary Pass 214/215 global-strict proof regime.",
+    "pass214_pass215_strict_results_role": "DETERMINISM_AND_EQUIVALENCE_PROOF_BASELINE_NOT_NORMAL_PERFORMANCE_TARGET",
+    "comparison_rule": "Pass 216 SHALL compare new optimization deltas against the relevant inherited pre-Pass-213 optimized benchmarks and the frozen Pass 215 semantic reference as separate axes: performance ancestry versus semantic exactness.",
+    "new_baseline_measurement_required_only_if": [
+      "NO_EXISTING_BENCHMARK_COVERS_THE_CHANGED_SURFACE",
+      "HARDWARE_OR_RUNTIME_ENVIRONMENT_REQUIRES_A_NEW_DECLARED_COMPARISON CLASS",
+      "EXISTING_BENCHMARK_ARTIFACT_IS_MISSING_OR_UNUSABLE",
+      "THE OPTIMIZATION INTRODUCES_A_NEW_COST_METRIC_NOT_PREVIOUSLY_RECORDED"
+    ]
+  },
   "non_goals": {
     "new_model_semantics": false,
     "new_generation_authority": false,
@@ -38,7 +69,8 @@
     "floating_point_canonical_authority": false,
     "relaxation_of_strict_argmax": false,
     "redefinition_of_pass215_reference_outputs": false,
-    "resource_heavy_cumulative_revalidation_as_default": false
+    "resource_heavy_cumulative_revalidation_as_default": false,
+    "continuation_of_global_strict_mode_as_normal_operation": false
   },
   "frozen_reference_policy": {
     "pass215_terminal_artifact_is_reference_fixture": true,
@@ -54,11 +86,13 @@
     ]
   },
   "validation_policy": {
-    "mode": "DEPENDENCY_SCOPED_EQUIVALENCE_AND_PERFORMANCE_VALIDATION",
+    "mode": "NORMAL_OPERATION_DEPENDENCY_SCOPED_EQUIVALENCE_AND_PERFORMANCE_VALIDATION",
+    "global_strict_mode_enabled": false,
     "cumulative_strict_workflow_replay_required": false,
     "rerun_unaffected_pass215_workflows": false,
     "rerun_unaffected_pass215_tests": false,
     "download_authenticated_model_for_unaffected_iterations": false,
+    "unchanged_authenticated_surface_execution_required": false,
     "changed_surface_exactness_required": true,
     "changed_surface_negative_tests_required": true,
     "changed_surface_deterministic_replay_required": true,
@@ -67,7 +101,7 @@
     "reference_commitment_equality_required": true,
     "repair_forward": true,
     "freeze_validated_evidence": true,
-    "validation_failure_rule": "Fail closed on any semantic mismatch. Repair only the impacted optimization surface and its dependency-scoped witnesses."
+    "validation_failure_rule": "Fail closed on any semantic mismatch. Repair only the impacted optimization surface and its dependency-scoped witnesses. Escalate to broader replay only when the scoped boundary cannot isolate the failure."
   },
   "authoritative_equivalence": {
     "require_exact_selected_token_ids": true,
@@ -167,7 +201,7 @@
     "reused_unique_chunk_count": 36,
     "incremental_new_unique_chunk_count": 242,
     "shared_store_unique_chunk_count": 489,
-    "note": "These are candidate terminal values from the Pass 215 Iteration 20 source execution and become frozen Pass 216 baseline values only after exact-head Iteration 20 closure is bound above."
+    "note": "These are candidate terminal values from the Pass 215 Iteration 20 source execution and become frozen Pass 216 semantic-reference values only after exact-head Iteration 20 closure is bound above. They are not substituted for the inherited pre-Pass-213 optimized performance benchmarks."
   },
   "authoritative_cost_metrics": {
     "numeric_policy": "INTEGER_OR_EXACT_RATIONAL_ONLY",
@@ -194,14 +228,15 @@
     "hardware_counter_policy": "INTEGER_CPU_CYCLES_CACHE_COUNTERS_AND_BRANCH_COUNTERS_MAY_BE_RECORDED_AS_ENVIRONMENT_SPECIFIC_SECONDARY_EVIDENCE"
   },
   "promotion_rule": {
-    "semantic_equivalence": "MANDATORY",
-    "optimization_gain": "AT_LEAST_ONE_PREDECLARED_AUTHORITATIVE_COST_METRIC_MUST_IMPROVE_EXACTLY_OR_THE_CANDIDATE_IS_RECORDED_AS_NO_GAIN_AND_NOT_PROMOTED",
+    "semantic_equivalence": "MANDATORY_FOR_CHANGED_AUTHORITATIVE_SURFACES",
+    "unchanged_surface_revalidation": "NOT_REQUIRED_WHEN_AUTHENTICATED_IDENTITY_IS_UNCHANGED",
+    "optimization_gain": "AT_LEAST_ONE_PREDECLARED AUTHORITATIVE COST METRIC MUST IMPROVE EXACTLY OR THE CANDIDATE IS RECORDED AS NO_GAIN AND NOT PROMOTED",
     "tradeoffs": "Any worsening metric must be disclosed explicitly and accepted only when the contracted objective metric improves and no resource guardrail is violated.",
     "no_gain_is_valid_result": true,
     "benchmark_overclaim_forbidden": true
   },
   "iteration_strategy": [
-    "I1_FREEZE_PASS215_TERMINAL_REFERENCE_AND_LOW_COST_PROFILER",
+    "I1_BIND_PASS215_TERMINAL_SEMANTIC_REFERENCE_AND_INDEX_PREPASS213_PERFORMANCE_BASELINES",
     "I2_EXACT_MULTI_CHECKPOINT_STORAGE_DEDUP_AND_COMPRESSION",
     "I3_INCREMENTAL_CONTENT_ADDRESSED_HYDRATION_ENGINE",
     "I4_HASH216_VECTOR_CACHE_LOOKUP_AND_BRANCH_ORDER_OPTIMIZATION",
@@ -211,9 +246,11 @@
     "I8_COMPOSED_OPTIMIZATION_ABLATION_AND_TERMINAL_PERFORMANCE_CLOSURE"
   ],
   "resource_policy": {
-    "default_validation_profile": "FAST_DEPENDENCY_SCOPED",
+    "default_validation_profile": "NORMAL_OPTIMIZED_EXECUTION_WITH_DEPENDENCY_SCOPED_EQUIVALENCE",
+    "global_strict_mode": false,
     "repeat_expensive_parent_proofs": false,
     "preserve_and_reuse_existing_authenticated_artifacts": true,
+    "reuse_pre_pass213_performance_benchmarks": true,
     "prefer_cached_model_and_reference_fixtures": true,
     "avoid_duplicate_cross_process_runs_when_persistence_is_unchanged": true,
     "avoid_full_vocabulary_projection_when_the_changed_surface_does_not_touch_projection_or_argmax": true,
@@ -229,7 +266,8 @@
     "arbitrary_prompt_or_model_generality_promoted": false,
     "training_authority_promoted": false,
     "gpu_requirement_promoted": false,
-    "runtime_mutation_outside_optimization_scope_authorized": false
+    "runtime_mutation_outside_optimization_scope_authorized": false,
+    "global_strict_mode_continued_as_default": false
   },
-  "closure_policy": "Each Pass 216 iteration freezes only its new optimization evidence and impacted exact-equivalence witnesses. Do not rerun unaffected Pass 215 closure workflows. Final Pass 216 closure composes the promoted optimizations, reproduces the frozen Pass 215 authoritative outputs from the terminal reference fixture, records exact resource deltas and ablations, and freezes one terminal optimization receipt."
+  "closure_policy": "Each Pass 216 iteration freezes only its new optimization evidence and impacted exact-equivalence witnesses. Unchanged authenticated identities inherit their prior authority without re-execution. Do not rerun unaffected Pass 215 closure workflows. Final Pass 216 closure composes the promoted optimizations on the normal optimized execution path, reproduces the frozen Pass 215 authoritative outputs from the terminal reference fixture, compares resource behavior against the applicable inherited pre-Pass-213 performance baselines, records exact resource deltas and ablations, and freezes one terminal optimization receipt."
 }
