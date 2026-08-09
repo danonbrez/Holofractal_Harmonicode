@@ -18,10 +18,7 @@ export function useFetchLatencyTelemetry() {
 
   return useSyncExternalStore(
     fetchLatencyTelemetry.subscribe,
-    () => ({
-      endpoints: fetchLatencyTelemetry.getAll(),
-      inFlight: fetchLatencyTelemetry.getInFlightCount(),
-    }),
-    () => ({ endpoints: [], inFlight: 0 }),
+    fetchLatencyTelemetry.getSnapshot,
+    fetchLatencyTelemetry.getServerSnapshot,
   )
 }

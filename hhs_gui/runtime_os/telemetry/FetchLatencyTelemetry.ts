@@ -12,6 +12,12 @@ export interface EndpointLatencySnapshot {
   lastFetchedAt: number
 }
 
+export interface FetchTelemetrySnapshot {
+  endpoints: readonly EndpointLatencySnapshot[]
+  inFlight: number
+  updatedAt: number
+}
+
 interface MutableEndpointStats {
   url: string
   tier: LatencyTier
@@ -25,10 +31,16 @@ interface FetchInstrumentationState {
   originalFetch: typeof window.fetch
   activeMonitor: FetchLatencyTelemetry
   inflight: Map<string, Promise<Response>>
+  activeRequests: number
 }
 
 const FETCH_STATE_KEY = "__hhsFrontendFetchLatencyState_v1__"
 const SAMPLE_LIMIT = 60
+const EMPTY_SNAPSHOT: FetchTelemetrySnapshot = Object.freeze({
+  endpoints: Object.freeze([]) as readonly EndpointLatencySnapshot[],
+  inFlight: 0,
+  updatedAt: 0,
+})
 
 export const TIER_THRESHOLDS = Object.freeze({
   T01_IN: 500,
@@ -91,11 +103,15 @@ function coalesceIdentity(input: RequestInfo | URL, init: RequestInit | undefine
 export class FetchLatencyTelemetry {
   private readonly listeners = new Set<() => void>()
   private readonly stats = new Map<string, MutableEndpointStats>()
+  private snapshot: FetchTelemetrySnapshot = EMPTY_SNAPSHOT
 
   public readonly subscribe = (listener: () => void): (() => void) => {
     this.listeners.add(listener)
     return () => this.listeners.delete(listener)
   }
+
+  public readonly getSnapshot = (): FetchTelemetrySnapshot => this.snapshot
+  public readonly getServerSnapshot = (): FetchTelemetrySnapshot => EMPTY_SNAPSHOT
 
   public instrument(): void {
     if (typeof window === "undefined" || typeof window.fetch !== "function") return
@@ -103,6 +119,7 @@ export class FetchLatencyTelemetry {
     const existing = currentState()
     if (existing) {
       existing.activeMonitor = this
+      this.publish()
       return
     }
 
@@ -110,6 +127,7 @@ export class FetchLatencyTelemetry {
       originalFetch: window.fetch.bind(window),
       activeMonitor: this,
       inflight: new Map<string, Promise<Response>>(),
+      activeRequests: 0,
     }
     ;(window as unknown as Record<string, unknown>)[FETCH_STATE_KEY] = state
 
@@ -126,6 +144,9 @@ export class FetchLatencyTelemetry {
       }
 
       const startedAt = performance.now()
+      activeState.activeRequests += 1
+      activeState.activeMonitor.publish()
+
       const request = activeState.originalFetch(input, init)
         .then((response) => {
           activeState.activeMonitor.record(url, performance.now() - startedAt, response.status)
@@ -137,6 +158,8 @@ export class FetchLatencyTelemetry {
         })
         .finally(() => {
           if (isGet) activeState.inflight.delete(key)
+          activeState.activeRequests = Math.max(0, activeState.activeRequests - 1)
+          activeState.activeMonitor.publish()
         })
 
       if (isGet) {
@@ -147,19 +170,15 @@ export class FetchLatencyTelemetry {
     }
   }
 
-  public getInFlightCount(): number {
-    return currentState()?.inflight.size ?? 0
-  }
-
   public getAll(): EndpointLatencySnapshot[] {
     return [...this.stats.values()]
-      .map((stats) => this.snapshot(stats))
+      .map((stats) => this.endpointSnapshot(stats))
       .sort((a, b) => b.p95Ms - a.p95Ms)
   }
 
   public get(url: string): EndpointLatencySnapshot | undefined {
     const stats = this.stats.get(url)
-    return stats ? this.snapshot(stats) : undefined
+    return stats ? this.endpointSnapshot(stats) : undefined
   }
 
   private record(url: string, elapsedMs: number, status: number): void {
@@ -180,10 +199,19 @@ export class FetchLatencyTelemetry {
     const sorted = [...stats.samples].sort((a, b) => a - b)
     stats.tier = nextTier(stats.tier, percentile(sorted, 0.95))
     this.stats.set(url, stats)
+  }
+
+  private publish(): void {
+    const state = currentState()
+    this.snapshot = Object.freeze({
+      endpoints: Object.freeze(this.getAll()),
+      inFlight: state?.activeRequests ?? 0,
+      updatedAt: Date.now(),
+    })
     for (const listener of this.listeners) listener()
   }
 
-  private snapshot(stats: MutableEndpointStats): EndpointLatencySnapshot {
+  private endpointSnapshot(stats: MutableEndpointStats): EndpointLatencySnapshot {
     const sorted = [...stats.samples].sort((a, b) => a - b)
     const total = stats.samples.reduce((sum, sample) => sum + sample, 0)
     return {
