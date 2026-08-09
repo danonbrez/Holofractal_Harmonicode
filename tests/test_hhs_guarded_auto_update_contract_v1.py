@@ -63,12 +63,14 @@ def test_timer_and_service_are_bounded() -> None:
     assert "NoNewPrivileges=true" in service
 
 
-def test_installer_bootstraps_in_dry_run_mode() -> None:
+def test_installer_supports_safe_external_bootstrap_and_explicit_promotion() -> None:
     installer = read("install.sh")
     example = read("hhs-guarded-update.env.example")
+    assert "SOURCE_ROOT=${SOURCE_ROOT:-$REPO_ROOT}" in installer
+    assert "HHS_INSTALL_ENABLE_PROMOTION" in installer
+    assert "HHS_UPDATE_DRY_RUN=0" in installer
     assert "HHS_UPDATE_DRY_RUN=1" in installer
     assert "HHS_UPDATE_DRY_RUN=1" in example
-    assert "set HHS_UPDATE_DRY_RUN=0" in installer
 
 
 def test_github_merge_gate_is_label_and_trust_scoped() -> None:
@@ -80,3 +82,22 @@ def test_github_merge_gate_is_label_and_trust_scoped() -> None:
     assert '"OWNER","MEMBER","COLLABORATOR"' in workflow
     assert "gh pr merge" in workflow
     assert "--merge --delete-branch" in workflow
+
+
+def test_digitalocean_push_deployment_requires_exact_main_identity() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(
+        encoding="utf-8"
+    )
+    required = [
+        "branches: [main]",
+        "HHS_DIGITALOCEAN_SSH_PRIVATE_KEY",
+        "TARGET_SHA: ${{ github.sha }}",
+        "git rev-parse origin/main",
+        "HHS_INSTALL_ENABLE_PROMOTION=1",
+        "last-success.json",
+        'payload.get("candidate_sha") != expected',
+        "hhs-guarded-update.timer",
+        "HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED",
+    ]
+    for token in required:
+        assert token in workflow

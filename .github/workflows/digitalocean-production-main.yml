@@ -1,0 +1,192 @@
+name: DigitalOcean Production Exact Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/digitalocean-production-main.yml"
+      - "deployment/digitalocean/guarded_auto_update/**"
+      - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hhs-digitalocean-production-main-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-deployment-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out deployment candidate
+        uses: actions/checkout@v4
+      - name: Validate guarded deployment contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n \
+            deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
+            deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
+            deployment/digitalocean/guarded_auto_update/install.sh
+          python3 - <<'PY'
+          import runpy
+          namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")
+          tests = sorted(
+              (name, value)
+              for name, value in namespace.items()
+              if name.startswith("test_") and callable(value)
+          )
+          for name, test in tests:
+              test()
+              print(f"{name}: PASS")
+          PY
+
+  deploy-exact-main:
+    if: github.event_name != 'pull_request'
+    needs: validate-deployment-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '137.184.223.84' }}
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      TARGET_SHA: ${{ github.sha }}
+
+    steps:
+      - name: Require DigitalOcean SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${HHS_SSH_PRIVATE_KEY}" ]]; then
+            echo "::error::Missing repository secret HHS_DIGITALOCEAN_SSH_PRIVATE_KEY. Production cannot prove or promote exact main without host authority."
+            exit 2
+          fi
+          [[ -n "${HHS_PRODUCTION_HOST}" ]]
+          [[ -n "${HHS_PRODUCTION_USER}" ]]
+
+      - name: Configure pinned SSH target
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          ssh-keyscan -T 15 -H "${HHS_PRODUCTION_HOST}" > "$HOME/.ssh/known_hosts"
+          test -s "$HOME/.ssh/known_hosts"
+
+      - name: Bootstrap guarded updater and promote exact main
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 027
+
+          APP_ROOT=/opt/hhs/app
+          STATE_ROOT=/var/lib/hhs-guarded-update
+          TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
+
+          [[ $EUID -eq 0 ]] || { echo "production deployment requires root SSH authority" >&2; exit 10; }
+          [[ -d "$APP_ROOT/.git" ]] || { echo "repository missing at $APP_ROOT" >&2; exit 11; }
+
+          cd "$APP_ROOT"
+          remote=$(git remote get-url origin)
+          case "$remote" in
+            *danonbrez/Holofractal_Harmonicode* ) ;;
+            * ) echo "unexpected origin: $remote" >&2; exit 12 ;;
+          esac
+
+          if [[ -n "$(git status --porcelain --untracked-files=normal)" ]]; then
+            echo "live checkout is dirty; refusing to erase host-local work" >&2
+            git status --short >&2
+            exit 13
+          fi
+
+          branch=$(git branch --show-current)
+          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 14; }
+
+          git fetch --prune origin main
+          remote_sha=$(git rev-parse origin/main)
+          [[ "$remote_sha" == "$TARGET_SHA" ]] || {
+            echo "origin/main moved while deployment was starting: expected $TARGET_SHA got $remote_sha" >&2
+            exit 15
+          }
+          git cat-file -e "$TARGET_SHA^{commit}"
+
+          bootstrap_root=$(mktemp -d /tmp/hhs-production-bootstrap.XXXXXX)
+          cleanup() {
+            git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
+          }
+          trap cleanup EXIT
+
+          git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
+          REPO_ROOT="$APP_ROOT" \
+          SOURCE_ROOT="$bootstrap_root" \
+          HHS_INSTALL_ENABLE_PROMOTION=1 \
+            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"
+
+          deadline=$((SECONDS + 5100))
+          promoted=0
+          while (( SECONDS < deadline )); do
+            deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
+            if [[ "$deployed_sha" == "$TARGET_SHA" ]] \
+              && systemctl is-active --quiet hhs.service \
+              && curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/tmp/hhs-exact-main-status.json; then
+              promoted=1
+              break
+            fi
+            if systemctl is-failed --quiet hhs-guarded-update.service; then
+              journalctl -u hhs-guarded-update.service -n 250 --no-pager >&2 || true
+              exit 16
+            fi
+            sleep 3
+          done
+
+          [[ "$promoted" == "1" ]] || {
+            echo "timed out waiting for exact-main promotion" >&2
+            journalctl -u hhs-guarded-update.service -n 250 --no-pager >&2 || true
+            exit 17
+          }
+
+          python3 - "$STATE_ROOT/last-success.json" "$TARGET_SHA" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          receipt_path = Path(sys.argv[1])
+          expected = sys.argv[2]
+          payload = json.loads(receipt_path.read_text(encoding="utf-8"))
+          if payload.get("candidate_sha") != expected:
+              raise SystemExit(f"promotion receipt SHA mismatch: {payload.get('candidate_sha')} != {expected}")
+          if payload.get("outcome") != "PROMOTED":
+              raise SystemExit(f"unexpected promotion outcome: {payload.get('outcome')}")
+          print(json.dumps(payload, sort_keys=True))
+          PY
+
+          deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
+          [[ "$deployed_sha" == "$TARGET_SHA" ]]
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-guarded-update.timer
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
+          printf 'HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED=%s\n' "$TARGET_SHA"
+          REMOTE
+
+      - name: Verify public HTTPS is reachable
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json
+          test -s /tmp/hhs-public-system-status.json
