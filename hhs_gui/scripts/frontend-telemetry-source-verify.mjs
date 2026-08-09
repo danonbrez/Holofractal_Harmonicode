@@ -15,38 +15,37 @@ const required = {
     "input instanceof Request",
     "authorization",
     "response.clone()",
-    "inflight",
+    "getSnapshot",
   ],
   "runtime_os/telemetry/useFrontendTelemetry.ts": [
     "useSyncExternalStore",
     "frameTelemetryMonitor.acquire()",
-    "fetchLatencyTelemetry.instrument()",
+    "fetchLatencyTelemetry.getSnapshot",
   ],
-  "runtime_os/workspace/FrontendTelemetryBadge.tsx": [
-    "hhs-frontend-telemetry",
-    "Frontend-only telemetry",
+  "runtime_os/workspace/RuntimeDiagnosticsDrawer.tsx": [
+    "GET /api/runtime/services",
+    "requires_authority",
+    "Observed API latency",
+    "Read-only projection of existing runtime authority",
   ],
   "runtime_os/core/CanonicalRuntimeIDE.tsx": [
-    "FrontendTelemetryBadge",
-    "pointer-events-none",
+    "RuntimeDiagnosticsDrawer",
+    "transportState=\"ON_DEMAND\"",
   ],
 }
 
 for (const [relativePath, needles] of Object.entries(required)) {
-  const absolutePath = path.join(root, relativePath)
-  const source = fs.readFileSync(absolutePath, "utf8")
+  const source = fs.readFileSync(path.join(root, relativePath), "utf8")
   for (const needle of needles) {
     if (!source.includes(needle)) throw new Error(`${relativePath} missing required source marker: ${needle}`)
   }
 }
 
 for (const relativePath of Object.keys(required)) {
-  if (relativePath.includes("telemetry") || relativePath.includes("FrontendTelemetryBadge")) {
-    const source = fs.readFileSync(path.join(root, relativePath), "utf8")
-    if (source.includes("hhs_backend") || source.includes("pass217_genesis")) {
-      throw new Error(`${relativePath} crosses the frontend/backend authority boundary`)
-    }
+  const source = fs.readFileSync(path.join(root, relativePath), "utf8")
+  if (source.includes("pass217_genesis") || source.includes("/api/runtime/services/dispatch")) {
+    throw new Error(`${relativePath} crosses the Iteration 3 read-only authority boundary`)
   }
 }
 
-console.log("frontend telemetry source verification: PASS")
+console.log("frontend telemetry + registry diagnostics source verification: PASS")

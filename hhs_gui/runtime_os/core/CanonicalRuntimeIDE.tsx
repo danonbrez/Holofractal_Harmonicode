@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { HHSProductWorkspace } from "../workspace/HHSProductWorkspace"
-import { FrontendTelemetryBadge } from "../workspace/FrontendTelemetryBadge"
+import { RuntimeDiagnosticsDrawer } from "../workspace/RuntimeDiagnosticsDrawer"
 import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"
 import type { RuntimeOS } from "./RuntimeOS"
 
@@ -21,8 +21,8 @@ export const CanonicalRuntimeIDE: React.FC<CanonicalRuntimeIDEProps> = ({ runtim
         runtimeOS={runtimeClient as unknown as RuntimeOS}
         transportState="ON_DEMAND"
       />
-      <div className="pointer-events-none fixed bottom-3 right-3 z-[70] max-w-[calc(100vw-1.5rem)]">
-        <FrontendTelemetryBadge />
+      <div className="fixed bottom-3 right-3 z-[70] max-w-[calc(100vw-1.5rem)]">
+        <RuntimeDiagnosticsDrawer />
       </div>
     </div>
   )
