@@ -180,6 +180,16 @@ def content_defined_chunks(raw: bytes) -> tuple[bytes, ...]:
     return tuple(chunks)
 
 
+def _chunker_descriptor() -> Mapping[str, Any]:
+    return {
+        "algorithm": "GEAR64_CONTENT_DEFINED_V1",
+        "minimum_bytes": CHUNK_MIN_BYTES,
+        "target_bytes": CHUNK_TARGET_BYTES,
+        "maximum_bytes": CHUNK_MAX_BYTES,
+        "target_mask": CHUNK_TARGET_MASK,
+    }
+
+
 def _blob_metadata(blobs: Mapping[str, Mapping[str, Any]]) -> Mapping[str, Any]:
     return {
         digest: {
@@ -192,7 +202,9 @@ def _blob_metadata(blobs: Mapping[str, Mapping[str, Any]]) -> Mapping[str, Any]:
     }
 
 
-def _validated_compressed_blob(record: Mapping[str, Any]) -> bytes:
+def _decode_validated_blob(
+    record: Mapping[str, Any], *, expected_digest: str | None = None
+) -> tuple[bytes, bytes]:
     if record.get("codec") != "zlib-9":
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_COMPRESSED_BLOB_CODEC_INVALID"
@@ -216,6 +228,45 @@ def _validated_compressed_blob(record: Mapping[str, Any]) -> bytes:
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_COMPRESSED_BLOB_HASH_INVALID"
         )
+    raw_bytes = int(record.get("raw_bytes", -1))
+    if raw_bytes < 0 or raw_bytes > CHUNK_MAX_BYTES:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_RAW_BLOB_SIZE_INVALID"
+        )
+    decoder = zlib.decompressobj()
+    try:
+        raw = decoder.decompress(compressed, raw_bytes + 1)
+    except zlib.error as exc:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_STREAM_INVALID"
+        ) from exc
+    if len(raw) > raw_bytes or decoder.unconsumed_tail:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_RAW_BLOB_SIZE_INVALID"
+        )
+    try:
+        raw += decoder.flush()
+    except zlib.error as exc:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_STREAM_INVALID"
+        ) from exc
+    if not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_STREAM_INVALID"
+        )
+    if len(raw) != raw_bytes:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_RAW_BLOB_SIZE_INVALID"
+        )
+    if expected_digest is not None and sha256(raw).hexdigest() != expected_digest:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_RAW_BLOB_ADDRESS_INVALID"
+        )
+    return compressed, raw
+
+
+def _validated_compressed_blob(record: Mapping[str, Any]) -> bytes:
+    compressed, _ = _decode_validated_blob(record)
     return compressed
 
 
@@ -327,13 +378,7 @@ def _encode_checkpoint_manifest(
         "file_sha256": checkpoint["file_sha256"],
         "component_names": list(COMPONENT_NAMES),
         "base_checkpoint_fields": base_fields,
-        "chunker": {
-            "algorithm": "GEAR64_CONTENT_DEFINED_V1",
-            "minimum_bytes": CHUNK_MIN_BYTES,
-            "target_bytes": CHUNK_TARGET_BYTES,
-            "maximum_bytes": CHUNK_MAX_BYTES,
-            "target_mask": CHUNK_TARGET_MASK,
-        },
+        "chunker": _chunker_descriptor(),
         "transport_codec": "zlib-9",
         "components": components,
         "checkpoint_content_store_root_hash216": checkpoint_store_root,
@@ -362,7 +407,8 @@ def _reuse_metrics(
 
     def compressed_bytes(digests: Iterable[str]) -> int:
         return sum(
-            len(_validated_compressed_blob(blobs[digest])) for digest in digests
+            len(_decode_validated_blob(blobs[digest], expected_digest=digest)[0])
+            for digest in digests
         )
 
     earlier_bytes = compressed_bytes(earlier_unique)
@@ -461,6 +507,16 @@ def _verify_bundle(bundle: Mapping[str, Any]) -> None:
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_BUNDLE_SCHEMA_OR_CONTRACT_INVALID"
         )
+    content_store = bundle.get("content_store")
+    if (
+        not isinstance(content_store, Mapping)
+        or content_store.get("content_address")
+        != "SHA256_UNCOMPRESSED_CHUNK_BYTES"
+        or content_store.get("transport_codec") != "zlib-9"
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CONTENT_STORE_ENCODING_INVALID"
+        )
     body = dict(bundle)
     root = body.pop("shared_checkpoint_bundle_root_hash216", None)
     if root != _hash216("pass215-i20-shared-checkpoint-bundle", body):
@@ -486,6 +542,57 @@ def _verify_bundle(bundle: Mapping[str, Any]) -> None:
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_REUSE_METRICS_INVALID"
         )
+
+
+def _validate_manifest_encoding(manifest: Mapping[str, Any]) -> None:
+    if (
+        manifest.get("chunker") != _chunker_descriptor()
+        or manifest.get("transport_codec") != "zlib-9"
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_MANIFEST_ENCODING_INVALID"
+        )
+
+
+def _decode_manifest_component(
+    component: Mapping[str, Any],
+    blobs: Mapping[str, Mapping[str, Any]],
+) -> bytes:
+    chunk_refs = tuple(str(digest) for digest in component["chunk_refs"])
+    raw_chunks: list[bytes] = []
+    referenced_compressed_bytes = 0
+    for digest in chunk_refs:
+        record = blobs[digest]
+        compressed, raw_chunk = _decode_validated_blob(
+            record, expected_digest=digest
+        )
+        referenced_compressed_bytes += len(compressed)
+        raw_chunks.append(raw_chunk)
+
+    raw_component = b"".join(raw_chunks)
+    if (
+        len(raw_component) != int(component["canonical_bytes"])
+        or sha256(raw_component).hexdigest() != component["canonical_sha256"]
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPONENT_IDENTITY_INVALID"
+        )
+
+    canonical_chunks = content_defined_chunks(raw_component)
+    canonical_refs = tuple(sha256(chunk).hexdigest() for chunk in canonical_chunks)
+    if tuple(raw_chunks) != canonical_chunks or chunk_refs != canonical_refs:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPONENT_CHUNK_BOUNDARIES_INVALID"
+        )
+    if (
+        int(component.get("referenced_chunk_count", -1)) != len(canonical_refs)
+        or int(component.get("referenced_compressed_bytes", -1))
+        != referenced_compressed_bytes
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPONENT_CHUNK_ACCOUNTING_INVALID"
+        )
+    return raw_component
 
 
 def reconstruct_iteration18_checkpoint(
@@ -514,6 +621,14 @@ def reconstruct_iteration18_checkpoint(
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_COMPONENT_ORDER_INVALID"
         )
+    if (
+        tuple(component.get("name") for component in manifest["components"])
+        != COMPONENT_NAMES
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPONENT_ORDER_INVALID"
+        )
+    _validate_manifest_encoding(manifest)
 
     blobs = bundle["content_store"]["blobs"]
     referenced = sorted(set(_referenced_digests(manifest)))
@@ -536,32 +651,7 @@ def reconstruct_iteration18_checkpoint(
 
     components: dict[str, Any] = {}
     for component in manifest["components"]:
-        raw_chunks: list[bytes] = []
-        for digest in component["chunk_refs"]:
-            record = blobs[digest]
-            compressed = _validated_compressed_blob(record)
-            try:
-                raw_chunk = zlib.decompress(compressed)
-            except zlib.error as exc:
-                raise Pass215Iteration20ValidationError(
-                    "PASS215_I20_COMPRESSED_BLOB_DECODE_INVALID"
-                ) from exc
-            if (
-                len(raw_chunk) != int(record["raw_bytes"])
-                or sha256(raw_chunk).hexdigest() != digest
-            ):
-                raise Pass215Iteration20ValidationError(
-                    "PASS215_I20_RAW_BLOB_ADDRESS_INVALID"
-                )
-            raw_chunks.append(raw_chunk)
-        raw_component = b"".join(raw_chunks)
-        if (
-            len(raw_component) != int(component["canonical_bytes"])
-            or sha256(raw_component).hexdigest() != component["canonical_sha256"]
-        ):
-            raise Pass215Iteration20ValidationError(
-                "PASS215_I20_COMPONENT_IDENTITY_INVALID"
-            )
+        raw_component = _decode_manifest_component(component, blobs)
         components[str(component["name"])] = json.loads(
             raw_component.decode("utf-8")
         )

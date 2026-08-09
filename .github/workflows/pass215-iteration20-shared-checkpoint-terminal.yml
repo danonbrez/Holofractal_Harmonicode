@@ -16,6 +16,7 @@ on:
       - 'scripts/run_pass215_iteration*_validation.sh'
       - 'contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json'
       - 'contracts/pass215/PASS_215_ITERATION_*_CONTRACT.json'
+      - 'contracts/pass215/PASS_215_BENCHMARK_PROFILE.json'
       - 'evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json'
       - 'evidence/pass215/PASS_215_ITERATION_20_SOURCE_EVIDENCE.json'
       - 'docs/pass215/ITERATION_20_SHARED_CHECKPOINT_TERMINAL_CLOSURE.md'

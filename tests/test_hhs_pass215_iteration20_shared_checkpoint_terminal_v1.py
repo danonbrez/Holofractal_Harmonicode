@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import base64
 import copy
+from hashlib import sha256
 import json
 from pathlib import Path
+import zlib
 
 import pytest
 
@@ -128,6 +131,74 @@ def test_compressed_byte_metrics_are_derived_from_validated_payloads(synthetic_b
         )
 
 
+def test_compressed_byte_metrics_reject_trailing_zlib_bytes(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    tampered = copy.deepcopy(bundle)
+    digest = next(iter(tampered["content_store"]["blobs"]))
+    record = tampered["content_store"]["blobs"][digest]
+    compressed = base64.b64decode(record["data_b64"]) + b"trailing-bytes"
+    record["data_b64"] = base64.b64encode(compressed).decode("ascii")
+    record["compressed_bytes"] = len(compressed)
+    record["compressed_sha256"] = sha256(compressed).hexdigest()
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="COMPRESSED_BLOB_STREAM_INVALID",
+    ):
+        i20._reuse_metrics(
+            tampered["checkpoint_manifests"],
+            tampered["content_store"]["blobs"],
+        )
+
+
+def test_restore_recomputes_canonical_chunk_boundaries(synthetic_bundle):
+    earlier, _, _, _ = synthetic_bundle
+    component_name = "symbolic_dag"
+    raw_component = i20._json_bytes(earlier[component_name])
+    arbitrary_chunks = tuple(
+        raw_component[offset:offset + 600_000]
+        for offset in range(0, len(raw_component), 600_000)
+    )
+    blobs = {}
+    chunk_refs = []
+    referenced_compressed_bytes = 0
+    for raw_chunk in arbitrary_chunks:
+        digest = sha256(raw_chunk).hexdigest()
+        compressed = zlib.compress(raw_chunk, level=i20.ZLIB_LEVEL)
+        blobs[digest] = {
+            "codec": "zlib-9",
+            "raw_bytes": len(raw_chunk),
+            "compressed_bytes": len(compressed),
+            "compressed_sha256": sha256(compressed).hexdigest(),
+            "data_b64": base64.b64encode(compressed).decode("ascii"),
+        }
+        chunk_refs.append(digest)
+        referenced_compressed_bytes += len(compressed)
+    component = {
+        "name": component_name,
+        "canonical_bytes": len(raw_component),
+        "canonical_sha256": sha256(raw_component).hexdigest(),
+        "chunk_refs": chunk_refs,
+        "referenced_chunk_count": len(chunk_refs),
+        "referenced_compressed_bytes": referenced_compressed_bytes,
+    }
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="COMPONENT_CHUNK_BOUNDARIES_INVALID",
+    ):
+        i20._decode_manifest_component(component, blobs)
+
+
+def test_restore_requires_frozen_manifest_chunker_parameters(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    manifest = copy.deepcopy(bundle["checkpoint_manifests"][0])
+    manifest["chunker"]["maximum_bytes"] += 1
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="MANIFEST_ENCODING_INVALID",
+    ):
+        i20._validate_manifest_encoding(manifest)
+
+
 def test_bundle_tamper_fails_closed(synthetic_bundle):
     _, _, bundle, _ = synthetic_bundle
     tampered = copy.deepcopy(bundle)
@@ -240,6 +311,8 @@ def test_tool_script_and_workflow_are_wired_to_iteration20():
     script = Path("scripts/run_pass215_iteration20_validation.sh").read_text()
     workflow = Path(".github/workflows/pass215-iteration20-shared-checkpoint-terminal.yml")
     assert "hhs_pass215_iteration20_shared_checkpoint_terminal_v1" in tool
+    assert "run_pass215_iteration1_validation.sh" in script
+    assert "run_pass215_iteration2_validation.sh" in script
     assert "run_pass215_iteration19_validation.sh" in script
     assert "PASS215_ITERATION20_CUMULATIVE_TEST_COUNT" in script
     assert "IMPLEMENTATION_RECORD_SOURCE_INVALID" in script
@@ -247,4 +320,5 @@ def test_tool_script_and_workflow_are_wired_to_iteration20():
     assert workflow.exists()
     workflow_text = workflow.read_text()
     assert "hhs_backend/runtime/hhs_pass215_iteration*.py" in workflow_text
+    assert "contracts/pass215/PASS_215_BENCHMARK_PROFILE.json" in workflow_text
     assert "PASS215_I20_TEST_COUNT_FILE" in workflow_text

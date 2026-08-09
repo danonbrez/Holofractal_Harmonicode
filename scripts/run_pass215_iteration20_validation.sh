@@ -5,6 +5,8 @@ VALIDATION_LOG="$(mktemp)"
 trap 'rm -f "$VALIDATION_LOG"' EXIT
 
 {
+  bash scripts/run_pass215_iteration1_validation.sh
+  bash scripts/run_pass215_iteration2_validation.sh
   bash scripts/run_pass215_iteration19_validation.sh
   python -m py_compile \
     hhs_backend/runtime/hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py \
