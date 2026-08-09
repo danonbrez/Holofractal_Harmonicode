@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_19_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P215-I19-CONTENT-ADDRESSED-CHECKPOINT-COMPACTION",
+  "status": "IMPLEMENTED_SOURCE_EXECUTION_PENDING",
+  "parent_closure_head": "d89919b1010df0dda46e18cb43b4a6ef913a5615",
+  "parent_closure_tree": "2a74f697278e754b44998df4d5a3598750643a4a",
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "merge_target": "main",
+  "pull_request": 172,
+  "implemented_surfaces": [
+    "hhs_backend/runtime/hhs_pass215_iteration19_content_addressed_checkpoint_v1.py",
+    "hhs_backend/runtime/hhs_pass215_iteration19_content_addressed_checkpoint_v2.py",
+    "tools/pass215_iteration19_content_addressed_checkpoint.py",
+    "tests/test_hhs_pass215_iteration19_content_addressed_checkpoint_v1.py",
+    "scripts/run_pass215_iteration19_validation.sh",
+    "contracts/pass215/PASS_215_ITERATION_19_CONTRACT.json",
+    "evidence/pass215/PASS_215_ITERATION_19_IMPLEMENTATION_RECORD.json",
+    "docs/pass215/ITERATION_19_CONTENT_ADDRESSED_CHECKPOINT.md",
+    "docs/pass215/ITERATION_19_RESTART_RECORD.md",
+    ".github/workflows/pass215-iteration19-content-addressed-checkpoint.yml"
+  ],
+  "frozen_parent": {
+    "checkpoint_canonical_bytes": 475300933,
+    "checkpoint_root_hash216": "bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f",
+    "generation_control_root_hash216": "309a4e102b6f78338a63c086f536f4d3d62429c77709fa4f9fa9b25d3a6ac509",
+    "suite_root_hash216": "bccf558e206bc996d4647533cf310838e1f13cec1322f98c5f22ab5c1ad190d1",
+    "evidence_root_hash216": "b89fd35e60428680ac785fa5637f64a2027e4e5c0a1f17f32b88521c7cfb75f9",
+    "receipt_hash72": "!ZRAyYb(82+PgZuXyX3!zi4J514L3O+!EUr+aX4ID3tIWThWjg!qa+t)(EPnSk1taEz5!mH5"
+  },
+  "representation": {
+    "component_order": "LEXICOGRAPHIC",
+    "fixed_chunk_bytes": 1048576,
+    "content_address": "SHA256_UNCOMPRESSED_CHUNK_BYTES",
+    "transport_codec": "ZLIB_LEVEL_9",
+    "string_intern_min_utf8_bytes": 16,
+    "string_intern_min_occurrences": 2,
+    "minimum_compaction_factor": "2/1",
+    "transport_compression_is_numerical_authority": false
+  },
+  "source_execution": null,
+  "exact_head_terminal_validation": null,
+  "next_action": "Run the authenticated Iteration 19 source workflow, bind measured compact-checkpoint roots and sizes, freeze one restart-state commit, then exact-head replay it without a post-validation commit."
+}
