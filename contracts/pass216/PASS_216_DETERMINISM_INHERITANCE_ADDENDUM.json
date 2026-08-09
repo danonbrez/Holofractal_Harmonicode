@@ -1,0 +1,63 @@
+{
+  "schema": "HHS_PASS_216_DETERMINISM_INHERITANCE_ADDENDUM_V1",
+  "contract": "HHS-P216-DETERMINISM-INHERITANCE-AND-STRICT-MODE-SUNSET",
+  "pass": 216,
+  "status": "AUTHORITATIVE_CONTRACT_ADDENDUM",
+  "applies_to": "contracts/pass216/PASS_216_CONTRACT.json",
+  "purpose": "Clarify that deterministic replay is an inherited standing property of the cumulative HHS pass system and that the Pass 214/215 global-strict regime was a temporary whole-stack development proof rather than the origin of determinism.",
+  "standing_pass_system_authority": {
+    "deterministic_replay_predates_pass214": true,
+    "deterministic_replay_predates_pass215": true,
+    "cumulative_pass_inheritance_is_authoritative": true,
+    "merge_to_main_requires_authenticated_transition_evidence": true,
+    "sha256_authenticated_merge_lineage_is_a_standing_requirement": true,
+    "hash_and_receipt_identity_carries_unchanged_authority_forward": true,
+    "interpretation": "The repository already contains many independently proven deterministic replay layers because accepted pass transitions are authenticated and merge-gated. Pass 214 and Pass 215 therefore validate cumulative integration of the existing deterministic system rather than establishing determinism for the first time."
+  },
+  "pass214_pass215_role": {
+    "classification": "TEMPORARY_GLOBAL_STRICT_INTEGRATION_PROOF_EPOCH",
+    "global_strict_mode_was_permanent_architecture": false,
+    "global_strict_mode_was_normal_optimized_runtime": false,
+    "global_strict_mode_was_required_to_reprove_unchanged_prior_layers_indefinitely": false,
+    "role": [
+      "PROVE_CUMULATIVE_INHERITANCE_ACROSS_THE_CURRENT_FULL_STACK",
+      "PROVE_NEW_PASS214_AND_PASS215_SURFACES_COMPOSE_WITH_PRIOR_AUTHORITY",
+      "PROVE_BIT_EXACT_REPEATABILITY_OF_THE_TRANSFORMER_WORKFLOW",
+      "PROVE_RESTART_AND_REPLAY_BEHAVIOR_UNDER_THE_TEMPORARY_STRICT_REGIME"
+    ]
+  },
+  "pass216_operating_rule": {
+    "global_strict_mode_default": false,
+    "unchanged_authenticated_identity_requires_reexecution": false,
+    "unchanged_authenticated_identity_requires_only_identity_verification": true,
+    "changed_transition_requires_dependency_scoped_exact_validation": true,
+    "unaffected_ancestor_layers_are_inherited_without_replay": true,
+    "normal_optimized_runtime_is_the_performance_measurement_path": true,
+    "pre_pass213_performance_benchmarks_are_reused": true,
+    "pass215_terminal_outputs_are_semantic_reference_fixtures": true,
+    "pass215_terminal_outputs_are_not_a_requirement_to_reexecute_the_entire_parent_workflow": true
+  },
+  "strict_mode_escalation": {
+    "allowed_only_when": [
+      "AN_AUTHENTICATED_IDENTITY_CHANGED_AND_THE_DEPENDENCY_BOUNDARY_CANNOT_BE_PROVEN_SMALLER",
+      "A_SCOPED_EQUIVALENCE_WITNESS_FAILS",
+      "A_REFERENCE_ARTIFACT_OR_HASH_CHAIN_IS_MISSING_CORRUPT_OR_INCONSISTENT",
+      "AN_EXPLICIT_MANUAL_FULL_AUDIT_IS_REQUESTED"
+    ],
+    "forbidden_as_default_reason": [
+      "A_PASS_NUMBER_ADVANCED",
+      "AN_UNRELATED_FILE_CHANGED",
+      "A_PREVIOUSLY_VALIDATED_IDENTITY_IS_UNCHANGED",
+      "A_NEW_OPTIMIZATION_ITERATION_STARTED"
+    ]
+  },
+  "validation_cost_principle": "Validation work must be proportional to the newly changed authenticated transition, not to the historical size of the inherited system.",
+  "optimization_principle": "Pass 216 spends resources on compression, hydration acceleration, cache reuse, memory movement reduction, transition reduction, and runtime optimization rather than repeatedly recomputing already merged deterministic proofs.",
+  "supersession": {
+    "supersedes_any_interpretation_that_pass215_is_the_first_determinism_proof": true,
+    "supersedes_any_interpretation_that_global_strict_mode_is_permanent_after_pass215": true,
+    "does_not_supersede_pass215_semantic_identities": true,
+    "does_not_relax_exactness_for_changed_authoritative_transitions": true,
+    "does_not_remove_sha256_hash216_hash72_or_receipt_authentication": true
+  }
+}
