@@ -1,6 +1,7 @@
 """FastAPI routes for the production governed HHS assistant interface."""
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
@@ -18,6 +19,11 @@ def _service() -> Any:
         )
         _SERVICE = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
     return _SERVICE
+
+
+async def _async_service() -> Any:
+    """Construct the production assistant without blocking the FastAPI event loop."""
+    return await asyncio.to_thread(_service)
 
 
 class CreateThreadRequest(BaseModel):
@@ -42,12 +48,20 @@ class ExecuteToolRequest(BaseModel):
 
 @router.get("/status")
 async def assistant_status() -> Dict[str, Any]:
-    return _service().status()
+    service = await _async_service()
+    status = await asyncio.to_thread(service.status)
+    if status.get("online") and status.get("ok"):
+        return status
+    # A fresh production process has an intentionally empty provider-health cache.
+    # Prime it once through the bounded health path so /status reports the actual
+    # installation-ready native/Gemma provider instead of remaining degraded.
+    return await service.health()
 
 
 @router.get("/health")
 async def assistant_health() -> Dict[str, Any]:
-    return await _service().health()
+    service = await _async_service()
+    return await service.health()
 
 
 @router.get("/tools")
