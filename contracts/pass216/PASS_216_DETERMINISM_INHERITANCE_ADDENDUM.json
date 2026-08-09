@@ -1,5 +1,5 @@
 {
-  "schema": "HHS_PASS_216_DETERMINISM_INHERITANCE_ADDENDUM_V2",
+  "schema": "HHS_PASS_216_DETERMINISM_INHERITANCE_ADDENDUM_V3",
   "contract": "HHS-P216-DETERMINISM-INHERITANCE-NATIVE-MATHEMATICAL-TRUTH-AND-STRICT-MODE-SUNSET",
   "pass": 216,
   "status": "AUTHORITATIVE_CONTRACT_ADDENDUM",
@@ -120,6 +120,16 @@
   },
   "validation_cost_principle": "Validation work must be proportional to the newly changed authenticated transition or triggered truth gate, not to the historical size of the inherited system.",
   "optimization_principle": "Pass 216 spends resources on compression, hydration acceleration, cache reuse, memory movement reduction, transition reduction, and runtime optimization rather than repeatedly recomputing already merged deterministic proofs or re-proving inherited native mathematical truths.",
+  "successor_inheritance": {
+    "pass216_contract_alignment_is_complete": true,
+    "pass216_runtime_optimization_implementation_is_not_claimed": true,
+    "pass216_runtime_optimization_implementation_is_not_a_pass217_predecessor_gate": true,
+    "pass217_must_reuse_unchanged_validated_iteration1_through_3_work": true,
+    "pass217_must_reconcile_only_changed_predecessor_bindings_and_their_reachable_artifacts": true,
+    "pass219_must_inherit_unchanged_pass215_pass216_and_pass217_authority": true,
+    "later_pass_number_alone_reopens_prior_truth_gates": false,
+    "rule": "A successor updates and validates only the smallest authenticated boundary changed by predecessor alignment. Already validated implementation, evidence, mathematical truths, and artifacts remain inherited when their identities and dependencies are unchanged."
+  },
   "supersession": {
     "supersedes_any_interpretation_that_pass215_is_the_first_determinism_proof": true,
     "supersedes_any_interpretation_that_global_strict_mode_is_permanent_after_pass215": true,

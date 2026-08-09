@@ -1,8 +1,16 @@
 {
-  "schema": "HHS_PASS_216_CONTRACT_V2",
+  "schema": "HHS_PASS_216_CONTRACT_V3",
   "contract": "HHS-P216-OPTIMIZATION-COMPRESSION-HYDRATION-ACCELERATION",
   "pass": 216,
-  "status": "CONTRACTED_PARENT_TERMINAL_BINDING_PENDING",
+  "status": "CONTRACT_COMPLETE_PARENT_TERMINAL_ALIGNED",
+  "completion_boundary": {
+    "contract_layer_complete": true,
+    "parent_alignment_complete": true,
+    "runtime_optimization_implementation_claimed": false,
+    "pass216_runtime_implementation_required_before_pass217_continuation": false,
+    "pass217_continuation_requires_this_contract_on_main": true,
+    "interpretation": "Pass 216 is complete as the reserved-number contract and inheritance-alignment layer. Its optimization roadmap remains available for dependency-scoped implementation, but that future work is not a predecessor gate for Pass 217 and must not cause Pass 217 or Pass 219 to repeat unchanged authenticated work."
+  },
   "authorization": {
     "authorized_date": "2026-08-09",
     "scope": "Optimize the Pass 215 validated deterministic workflow without expanding its semantic authority.",
@@ -13,19 +21,25 @@
   },
   "parent_binding": {
     "required_parent": "PASS_215_ITERATION_20_TERMINAL_CLOSURE",
-    "candidate_head": "15f8326aa9d5241480965dd123d4078d208b1ae6",
-    "candidate_status": "SOURCE_EXECUTION_VALIDATED_EXACT_HEAD_REPLAY_IN_PROGRESS_AT_CONTRACT_AUTHORING",
+    "contract_authoring_candidate_head": "15f8326aa9d5241480965dd123d4078d208b1ae6",
+    "candidate_status": "SUPERSEDED_BY_SUCCESSFUL_EXACT_HEAD_TERMINAL_CLOSURE",
     "candidate_pass215_terminal_completion_root_hash216": "3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a",
     "candidate_suite_root_hash216": "3be955aecac999e945cdf48df63e0be13d2c353de8e20c6869a2364c2ba72234",
     "candidate_evidence_root_hash216": "5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e",
     "candidate_receipt_hash72": "rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM",
-    "final_closure_head": null,
-    "final_closure_tree": null,
-    "final_closure_run": null,
-    "final_closure_job": null,
-    "final_closure_artifact_id": null,
-    "final_closure_artifact_sha256": null,
-    "binding_rule": "Implementation may begin only after these final closure fields are bound to the successful Pass 215 Iteration 20 exact-head terminal replay. No Pass 215 source or evidence is to be rewritten to establish this binding."
+    "final_closure_head": "b85ea7c340976a20a78f9c7d8d89a688a1b4f8fc",
+    "final_closure_tree": "17127e80a3f4852aeaedd1b807971fb4b4fba229",
+    "final_closure_run": 31325831364,
+    "final_closure_job": 93275935886,
+    "final_closure_cumulative_controls": 240,
+    "final_closure_artifact_id": 9041918679,
+    "final_closure_artifact_name": "pass215-iteration20-shared-checkpoint-terminal",
+    "final_closure_artifact_bytes": 260003642,
+    "final_closure_artifact_sha256": "9e71ff3f48cd4da24c34854f8eadfa57f26d7c6ef5bddd1026c89e2ace63bf55",
+    "main_merge_commit": "cc7a0d67d7d9e4bd1e800f62d5ef577cb4ab1086",
+    "main_head_at_alignment": "07fd48d7919f2406585ab682ca901c945c5f99d0",
+    "binding_status": "SUCCESSFUL_EXACT_HEAD_REPLAY_BOUND_AND_MAIN_LINEAGE_VERIFIED",
+    "binding_rule": "Satisfied by the successful Pass 215 Iteration 20 exact-head terminal replay and its retained artifact. Pass 215 source and evidence remain frozen; this Pass 216 binding supersedes only the prior downstream numbering decision."
   },
   "purpose": "Reduce storage, memory movement, hydration work, transition work, repeated computation, cache misses, and runtime overhead for the already validated Pass 215 deterministic transformer workflow while preserving every authoritative output bit and frozen semantic commitment.",
   "strict_mode_lifecycle": {
@@ -184,7 +198,7 @@
       "standalone_application_modules_as_final_architecture": false
     }
   },
-  "pass215_terminal_baseline_candidates": {
+  "pass215_terminal_frozen_baseline": {
     "selected_token_ids": [450, 6575, 471, 528, 2827, 322, 278],
     "termination_reason": "MAX_NEW_TOKENS",
     "earlier_checkpoint_canonical_bytes": 413411982,
@@ -201,7 +215,7 @@
     "reused_unique_chunk_count": 36,
     "incremental_new_unique_chunk_count": 242,
     "shared_store_unique_chunk_count": 489,
-    "note": "These are candidate terminal values from the Pass 215 Iteration 20 source execution and become frozen Pass 216 semantic-reference values only after exact-head Iteration 20 closure is bound above. They are not substituted for the inherited pre-Pass-213 optimized performance benchmarks."
+    "note": "These exact values were reproduced by the bound Pass 215 Iteration 20 exact-head terminal replay and are frozen Pass 216 semantic-reference values. They do not replace the inherited pre-Pass-213 optimized performance benchmarks."
   },
   "authoritative_cost_metrics": {
     "numeric_policy": "INTEGER_OR_EXACT_RATIONAL_ONLY",
@@ -234,6 +248,33 @@
     "tradeoffs": "Any worsening metric must be disclosed explicitly and accepted only when the contracted objective metric improves and no resource guardrail is violated.",
     "no_gain_is_valid_result": true,
     "benchmark_overclaim_forbidden": true
+  },
+  "downstream_alignment": {
+    "status": "PASS215_AND_PASS216_RECONCILED_FOR_PASS217_CONTINUATION",
+    "pass217_candidate_branch": "agent/pass217-genesis-inventory-iteration1",
+    "pass217_candidate_head_at_alignment": "947be39fd67700f307ff80d96c3a10c3acaa29cc",
+    "pass217_candidate_tree_at_alignment": "f8d0af49e3574ea77657a79507601ae96f75918c",
+    "pass217_candidate_scope": "ITERATIONS_1_THROUGH_3_NON_PROMOTIONAL_CANDIDATE",
+    "pass217_candidate_workflow_runs": {
+      "iteration1": 31320258623,
+      "iteration2": 31320258634,
+      "iteration3": 31320258621
+    },
+    "pass217_candidate_validation_status": "SUCCESSFUL_NON_PROMOTIONAL_REUSE_INPUT",
+    "reuse_existing_pass217_iteration1_3_code_and_candidate_surfaces": true,
+    "redevelop_unchanged_pass217_iteration1_3_surfaces": false,
+    "promote_stale_predecessor_bindings_without_reconciliation": false,
+    "pass217_required_reconciliation": [
+      "INTEGRATE_THE_MAIN_LINEAGE_CONTAINING_PASS215_AND_PASS216",
+      "REPLACE_STALE_PREDECESSOR_AUTHORITY_BINDINGS_WITH_THE_BOUND_LINEAGE",
+      "REGENERATE_ONLY_ARTIFACTS_WHOSE_AUTHENTICATED_INPUT_IDENTITY_CHANGED",
+      "RUN_DEPENDENCY_SCOPED_EXACT_VALIDATION_FOR_THE_CHANGED_ALIGNMENT_BOUNDARY",
+      "PRESERVE_UNCHANGED_ITERATION1_THROUGH_3_IMPLEMENTATION_AND_EVIDENCE_SURFACES"
+    ],
+    "pass219_inheritance_rule": "Pass 219 must consume the promoted Pass 217 outputs together with the bound Pass 215 terminal authority and this Pass 216 inheritance contract. It must not recreate unchanged Pass 215 proofs, Pass 216 contract decisions, or Pass 217 preparation artifacts.",
+    "repeat_pass215_terminal_workflow_by_default": false,
+    "repeat_pass216_contract_development": false,
+    "repeat_unchanged_pass217_preparation_in_pass219": false
   },
   "iteration_strategy": [
     "I1_BIND_PASS215_TERMINAL_SEMANTIC_REFERENCE_AND_INDEX_PREPASS213_PERFORMANCE_BASELINES",
@@ -269,5 +310,6 @@
     "runtime_mutation_outside_optimization_scope_authorized": false,
     "global_strict_mode_continued_as_default": false
   },
-  "closure_policy": "Each Pass 216 iteration freezes only its new optimization evidence and impacted exact-equivalence witnesses. Unchanged authenticated identities inherit their prior authority without re-execution. Do not rerun unaffected Pass 215 closure workflows. Final Pass 216 closure composes the promoted optimizations on the normal optimized execution path, reproduces the frozen Pass 215 authoritative outputs from the terminal reference fixture, compares resource behavior against the applicable inherited pre-Pass-213 performance baselines, records exact resource deltas and ablations, and freezes one terminal optimization receipt."
+  "contract_alignment_closure_policy": "The Pass 216 reserved-number contract layer is complete when this parent binding and downstream no-repeat alignment are merged to main. That closure does not claim runtime optimization implementation and does not block Pass 217 continuation.",
+  "optimization_closure_policy": "Any later Pass 216 optimization implementation freezes only its new optimization evidence and impacted exact-equivalence witnesses. Unchanged authenticated identities inherit their prior authority without re-execution. Do not rerun unaffected Pass 215 closure workflows. A composed optimization closure must reproduce the frozen Pass 215 authoritative outputs from the terminal reference fixture, compare resource behavior against the applicable inherited pre-Pass-213 performance baselines, record exact resource deltas and ablations, and freeze one terminal optimization receipt."
 }

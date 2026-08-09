@@ -1,6 +1,6 @@
 # Pass 216 — Optimization, Compression, and Hydration Acceleration
 
-Pass 216 is a performance-only successor to the deterministic Pass 215 transformer workflow.
+Pass 216 is the reserved-number contract and inheritance-alignment successor to the deterministic Pass 215 transformer workflow. It also defines an optional performance-optimization roadmap.
 
 Its purpose is not to prove the model again. Pass 215 already establishes the reference computation and its exact semantic commitments. Pass 216 treats the authenticated Pass 215 terminal closure as an immutable reference fixture and asks one question: **how much of the same computation and state movement can be avoided, reused, compressed, or hydrated incrementally without changing a single authoritative output bit?**
 
@@ -8,15 +8,20 @@ Its purpose is not to prove the model again. Pass 215 already establishes the re
 
 Pass 215 Iteration 20 currently contains a downstream reservation marking Pass 216 as `RESERVED_NUMBER_NO_PASS`. The explicit Pass 216 authorization on 2026-08-09 supersedes that downstream numbering decision only. It does not rewrite or weaken Pass 215, its Iteration 20 contract, its exact output identities, its strict-argmax policy, or its evidence.
 
-At contract authoring time the Iteration 20 terminal candidate is:
+The contract-authoring candidate has now been superseded by the successful Iteration 20 exact-head closure:
 
-- candidate head: `15f8326aa9d5241480965dd123d4078d208b1ae6`
-- candidate Pass 215 terminal completion Hash216: `3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a`
-- candidate suite Hash216: `3be955aecac999e945cdf48df63e0be13d2c353de8e20c6869a2364c2ba72234`
-- candidate evidence Hash216: `5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e`
-- candidate receipt Hash72: `rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM`
+- exact validated head: `b85ea7c340976a20a78f9c7d8d89a688a1b4f8fc`
+- exact validated tree: `17127e80a3f4852aeaedd1b807971fb4b4fba229`
+- main merge commit: `cc7a0d67d7d9e4bd1e800f62d5ef577cb4ab1086`
+- run/job: `31325831364` / `93275935886`
+- retained artifact: `9041918679`, `260003642` bytes
+- artifact SHA-256: `9e71ff3f48cd4da24c34854f8eadfa57f26d7c6ef5bddd1026c89e2ace63bf55`
+- Pass 215 terminal completion Hash216: `3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a`
+- suite Hash216: `3be955aecac999e945cdf48df63e0be13d2c353de8e20c6869a2364c2ba72234`
+- evidence Hash216: `5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e`
+- receipt Hash72: `rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM`
 
-Pass 216 implementation begins only after the successful Iteration 20 exact-head terminal replay is bound into `contracts/pass216/PASS_216_CONTRACT.json`.
+That binding is complete in `contracts/pass216/PASS_216_CONTRACT.json`. This completes the Pass 216 contract/alignment layer; it does not claim runtime optimization implementation and it does not block Pass 217 continuation after merge.
 
 ## The governing rule
 
@@ -51,9 +56,9 @@ This changes the validation *strategy*, not the exactness requirement.
 
 ## Frozen Pass 215 performance baseline
 
-Iteration 20 source execution currently supplies the following candidate baseline. These values become frozen Pass 216 baselines only after terminal closure binding:
+The successful Iteration 20 exact-head replay supplies the following frozen Pass 216 semantic baseline:
 
-| Metric | Candidate baseline |
+| Metric | Frozen baseline |
 |---|---:|
 | Earlier checkpoint canonical bytes | `413,411,982` |
 | Later checkpoint canonical bytes | `475,300,933` |
@@ -147,7 +152,23 @@ The evidence must distinguish:
 
 A regression in a non-objective resource metric must be disclosed. No optimization is described as an acceleration solely because one wall-clock sample happened to be faster.
 
-## Proposed iteration sequence
+## Pass 217 and Pass 219 no-repeat alignment
+
+Pass 217 Iterations 1–3 already exist as validated non-promotional candidate work at head `947be39fd67700f307ff80d96c3a10c3acaa29cc`, tree `f8d0af49e3574ea77657a79507601ae96f75918c`. Their implementation and unchanged artifacts are reusable inputs.
+
+Continuing Pass 217 requires predecessor reconciliation, not redevelopment:
+
+1. integrate the main lineage containing the Pass 215 terminal merge and this Pass 216 alignment;
+2. replace the stale predecessor authority bindings;
+3. regenerate only artifacts whose authenticated input identity changed;
+4. run exact validation over that changed boundary and its reachable dependency closure;
+5. preserve unchanged Iterations 1–3 code, proofs, and candidate surfaces.
+
+The existing candidate remains non-promotional until this reconciliation succeeds. The alignment does not itself select canonical Genesis, create a physical Golay ROM, mint a transition receipt, start migration, or begin Pass 219 runtime implementation.
+
+Pass 219 must then inherit the bound Pass 215 terminal authority, this Pass 216 contract and addendum, and the promoted Pass 217 outputs. It must not repeat unchanged Pass 215 proof work, Pass 216 contract work, or Pass 217 preparation work.
+
+## Optional optimization iteration sequence
 
 1. **I1 — Terminal reference + low-cost profiler.** Bind the final Pass 215 Iteration 20 closure and expose exact cost counters without replaying Pass 215.
 2. **I2 — Multi-checkpoint storage dedup/compression.** Improve on the Iteration 20 shared-store baseline.
@@ -158,11 +179,23 @@ A regression in a non-objective resource metric must be disclosed. No optimizati
 7. **I7 — Exact output-projection exclusion certificates, if provable.** Reduce candidate work without weakening strict argmax.
 8. **I8 — Composed optimization ablation and terminal performance closure.** Combine only proven improvements and freeze the final resource deltas.
 
-This sequence is an optimization roadmap, not permission to add new generation semantics.
+This sequence is an optional optimization roadmap, not permission to add new generation semantics and not a predecessor gate for Pass 217.
 
-## Pass 216 completion condition
+## Pass 216 contract-alignment completion
 
-Pass 216 closes when the promoted optimization stack:
+The reserved-number Pass 216 contract and alignment layer is complete when:
+
+- the successful Pass 215 exact-head closure and retained artifact are bound;
+- the inherited mathematical-truth and scoped integrity-gate rules are frozen;
+- Pass 217 Iterations 1–3 are identified as reusable non-promotional candidate work;
+- Pass 217 and Pass 219 no-repeat inheritance rules are frozen;
+- the exact alignment head passes the lightweight contract validation and is merged to `main`.
+
+This completion does not claim any Pass 216 runtime optimization implementation.
+
+## Optional optimization-stack completion condition
+
+Any later Pass 216 optimization stack closes when it:
 
 - reproduces the frozen Pass 215 authoritative outputs and terminal commitments;
 - demonstrates exact, quantified savings in contracted storage/work/hydration metrics;
