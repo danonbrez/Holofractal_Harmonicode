@@ -211,10 +211,19 @@ function updateRuntimePanels() {
 
 function updateAssistantSurface() {
   repairAssistantInput();
-  if (current.assistantReady) return;
+  const provider = $('#provider-status');
+  if (current.assistantReady) {
+    const assistant = current.assistant || {};
+    setText('#provider-status', 'ASSISTANT ONLINE');
+    setText(
+      '#backend-id',
+      assistant.effective_mode || assistant.selected_provider_id || assistant.provider_id || 'HHS provider',
+    );
+    if (provider && provider.className !== 'status online') provider.className = 'status online';
+    return;
+  }
   setText('#provider-status', current.reachable ? 'ASSISTANT DEGRADED' : 'ASSISTANT API OFFLINE');
   setText('#backend-id', current.reachable ? 'provider unavailable' : 'backend unreachable');
-  const provider = $('#provider-status');
   if (provider && provider.className !== 'status degraded') provider.className = 'status degraded';
 }
 
