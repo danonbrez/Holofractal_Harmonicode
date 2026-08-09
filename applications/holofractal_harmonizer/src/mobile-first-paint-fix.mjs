@@ -7,7 +7,6 @@ const registry = document.querySelector('#registry-nav');
 const inspector = document.querySelector('#inspector');
 const navToggle = document.querySelector('#nav-toggle');
 const inspectToggle = document.querySelector('#inspect-toggle');
-const mobileDock = document.querySelector('.ide-mobile-dock');
 
 body.classList.add('visual-ide-active', 'hhs-mobile-first-paint');
 if (ideLayout && !ideLayout.dataset.mobilePane) ideLayout.dataset.mobilePane = 'editor';
@@ -49,11 +48,14 @@ style.textContent = `
 if (!document.querySelector(`#${style.id}`)) document.head.append(style);
 
 function suppressLegacyMobileTabs() {
+  let suppressed = 0;
   document.querySelectorAll('.workflow-mobile-tabs').forEach((tabs) => {
+    suppressed += 1;
     if (!tabs.hidden) tabs.hidden = true;
     if (!tabs.inert) tabs.inert = true;
     if (tabs.getAttribute('aria-hidden') !== 'true') tabs.setAttribute('aria-hidden', 'true');
   });
+  return suppressed;
 }
 
 function setExplorerOpen(open) {
@@ -82,8 +84,7 @@ function setInspectorOpen(open) {
   }
 }
 
-function enforceVisualIdeSurface() {
-  if (!body.classList.contains('visual-ide-active')) return;
+function enforceInitialVisualIdeSurface() {
   if (ideView?.hidden) ideView.hidden = false;
   for (const selector of ['#assistant-view', '#workspace-view', '#spatial-view', '#api-view']) {
     const view = document.querySelector(selector);
@@ -91,68 +92,33 @@ function enforceVisualIdeSurface() {
   }
 }
 
-navToggle?.addEventListener('click', (event) => {
-  event.preventDefault();
-  event.stopImmediatePropagation();
-  setExplorerOpen(!registry?.classList.contains('open'));
-}, { capture: true });
+// This module owns first paint only. Canonical interaction ownership belongs to
+// gui-reliability.mjs and visual-ide.mjs after their listeners are installed.
+// Do not intercept clicks here: capture-phase stopImmediatePropagation previously
+// prevented those canonical handlers from running while still allowing CSS active
+// state changes, producing highlighted controls with no completed action.
+enforceInitialVisualIdeSurface();
 
-inspectToggle?.addEventListener('click', (event) => {
-  event.preventDefault();
-  event.stopImmediatePropagation();
-  setInspectorOpen(!inspector?.classList.contains('open'));
-}, { capture: true });
-
-mobileDock?.addEventListener('click', (event) => {
-  const button = event.target.closest('button[data-mobile-pane]');
-  if (!button) return;
-  event.preventDefault();
-  event.stopImmediatePropagation();
-
-  const pane = button.dataset.mobilePane || 'editor';
-  mobileDock.querySelectorAll('button[data-mobile-pane]').forEach((candidate) => {
-    candidate.classList.toggle('active', candidate === button);
+let legacyTabObserver = null;
+if (!suppressLegacyMobileTabs()) {
+  let observerScheduled = false;
+  legacyTabObserver = new MutationObserver(() => {
+    if (observerScheduled) return;
+    observerScheduled = true;
+    queueMicrotask(() => {
+      observerScheduled = false;
+      if (suppressLegacyMobileTabs() > 0) {
+        legacyTabObserver?.disconnect();
+        legacyTabObserver = null;
+      }
+    });
   });
-
-  if (pane === 'explorer') {
-    setExplorerOpen(true);
-    return;
-  }
-
-  setExplorerOpen(false);
-  setInspectorOpen(false);
-  if (ideLayout) ideLayout.dataset.mobilePane = pane;
-}, { capture: true });
-
-document.addEventListener('click', (event) => {
-  if (!mobile.matches) return;
-  if (event.target.closest('.ide-file-item, .ide-editor-tab, #ide-new-file')) {
-    queueMicrotask(() => setExplorerOpen(false));
-  }
-}, { capture: true });
-
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape') return;
-  setExplorerOpen(false);
-  setInspectorOpen(false);
-});
-
-let observerScheduled = false;
-const observer = new MutationObserver(() => {
-  if (observerScheduled) return;
-  observerScheduled = true;
-  queueMicrotask(() => {
-    observerScheduled = false;
-    suppressLegacyMobileTabs();
-    enforceVisualIdeSurface();
-  });
-});
-observer.observe(body, {
-  subtree: true,
-  childList: true,
-  attributes: true,
-  attributeFilter: ['class', 'hidden'],
-});
+  legacyTabObserver.observe(body, { subtree: true, childList: true });
+  window.setTimeout(() => {
+    legacyTabObserver?.disconnect();
+    legacyTabObserver = null;
+  }, 15_000);
+}
 
 const handleViewportChange = () => {
   if (!mobile.matches) {
@@ -162,13 +128,11 @@ const handleViewportChange = () => {
 };
 mobile.addEventListener?.('change', handleViewportChange);
 
-suppressLegacyMobileTabs();
-enforceVisualIdeSurface();
-
 window.HHSMobileFirstPaintFix = Object.freeze({
   schema: 'HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V1',
+  interactive_input_owner: false,
   setExplorerOpen,
   setInspectorOpen,
-  enforceVisualIdeSurface,
+  enforceInitialVisualIdeSurface,
   suppressLegacyMobileTabs,
 });
