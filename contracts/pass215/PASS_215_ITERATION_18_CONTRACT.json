@@ -2,7 +2,7 @@
   "contract": "HHS-P215-I18-BOUNDED-CERTIFIED-GENERATION-CONTROL",
   "pass": 215,
   "iteration": 18,
-  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "status": "SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED",
   "inherits": {
     "iteration17_closure_head": "3d46b0eb233c6f450fa7d939e8b864a6651d3465",
     "iteration17_closure_tree": "687db9f718d2b54c3962ecc8bbb62f49090407c9",
@@ -34,6 +34,29 @@
     "emit_chained_per_token_hash72_receipts": true,
     "cross_process_replay": true,
     "no_float_canonical_authority": true
+  },
+  "source_authority": {
+    "validated_head": "f99a1b1e3f66e65a812c335d1e878d4bb67e899a",
+    "validated_tree": "d364d2c1fff020ade99ad8f6500ede85df2be09b",
+    "workflow_run": 31284766350,
+    "workflow_job": 93171553267,
+    "cumulative_test_count": 179,
+    "selected_token_ids": [450, 6575, 471, 528, 2827, 322, 278],
+    "termination_reason": "MAX_NEW_TOKENS",
+    "checkpoint_after_completed_steps": 4,
+    "checkpoint_canonical_bytes": 475300933,
+    "checkpoint_root_hash216": "bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f",
+    "restore_prefix_forward_replays": 0,
+    "restore_generated_forward_replays": 0,
+    "generation_control_root_hash216": "309a4e102b6f78338a63c086f536f4d3d62429c77709fa4f9fa9b25d3a6ac509",
+    "suite_root_hash216": "bccf558e206bc996d4647533cf310838e1f13cec1322f98c5f22ab5c1ad190d1",
+    "evidence_root_hash216": "b89fd35e60428680ac785fa5637f64a2027e4e5c0a1f17f32b88521c7cfb75f9",
+    "receipt_hash72": "!ZRAyYb(82+PgZuXyX3!zi4J514L3O+!EUr+aX4ID3tIWThWjg!qa+t)(EPnSk1taEz5!mH5",
+    "artifact_id": 9029578676,
+    "artifact_size_bytes": 150749123,
+    "artifact_sha256": "7cf428973e708b6a734ef972f4c8884000b720e2bd427e621873e322e95279e8",
+    "cross_process_replay": true,
+    "semantic_exactness": true
   },
   "constraints": {
     "probabilistic_sampling_executed": false,
