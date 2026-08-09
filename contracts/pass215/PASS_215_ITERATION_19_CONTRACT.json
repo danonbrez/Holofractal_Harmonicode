@@ -3,7 +3,7 @@
   "contract": "HHS-P215-I19-CONTENT-ADDRESSED-CHECKPOINT-COMPACTION",
   "pass": 215,
   "iteration": 19,
-  "status": "IMPLEMENTATION_AUTHORIZED_SOURCE_VALIDATION_PENDING",
+  "status": "SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED",
   "inherits": {
     "iteration18_closure_head": "d89919b1010df0dda46e18cb43b4a6ef913a5615",
     "iteration18_closure_tree": "2a74f697278e754b44998df4d5a3598750643a4a",
@@ -48,6 +48,20 @@
     "cross_process_replay_required": true,
     "exact_head_terminal_replay_required": true
   },
+  "source_execution": {
+    "validated_head": "3e1229dca7459e0295656da2d4ab994b5172d7fa",
+    "validated_tree": "6ebb0800b9e3482fba00610730edaa80f78348ba",
+    "workflow_run": 31286618977,
+    "workflow_job": 93176509414,
+    "cumulative_test_count": 193,
+    "compact_checkpoint_canonical_bytes": 73354677,
+    "compact_checkpoint_root_hash216": "e45ffd5dc94d01b4461b65e8d940b53869676ea74e30b9b4f2d83b7d20a85630",
+    "content_store_root_hash216": "a89677a460972945360e1a202b0ba2cf05a96b8a349427d9c03ba7298e043c06",
+    "compaction_root_hash216": "172cc452b779ccd39e693d7d08139015567919511c7fb5e2d11588be907539b3",
+    "suite_root_hash216": "99d7efc2c94c0d721658d64a171d615d2f961cb442dd277fca91f78cb9e96e5b",
+    "evidence_root_hash216": "3d35ca6574aa2dbb5d1b73988dd530cd2445e9d342e229afc40b8e5000323ddc",
+    "receipt_hash72": "aq!(yVgK>!wu2j6D1KWd>tC0l8hgQG*y<NI((gPXvwSFaQBJyGxas7jR1Dg(LEJKhk?tT7Ty"
+  },
   "constraints": {
     "probabilistic_sampling_executed": false,
     "unbounded_or_general_generation_claimed": false,
@@ -60,5 +74,5 @@
     "canonical_mutation_authorized": false,
     "migration_active": false
   },
-  "closure_policy": "Source execution must bind measured compact-checkpoint identities into repository-visible restart state. One final freeze commit is then exact-head replayed. No post-validation commit may be created after terminal exact-head success."
+  "closure_policy": "Source execution is frozen. Replay the final restart-state commit through the dedicated Iteration 19 workflow. If the exact-head run reproduces the source identities, do not create a post-validation commit."
 }
