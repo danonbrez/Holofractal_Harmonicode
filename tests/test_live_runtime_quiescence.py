@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
+import hhs_backend.runtime.live_fastapi_workflow_v1 as workflow_module
 from hhs_backend.runtime.live_fastapi_workflow_v1 import (
     LiveFastAPIRuntimeWorkflow,
     _env_enabled,
@@ -68,6 +69,14 @@ class _FakeCognition:
         return {"enabled": self.enabled, "calls": self.calls}
 
 
+def _isolate_unrelated_agent_index_hooks(monkeypatch):
+    monkeypatch.setattr(
+        workflow_module,
+        "install_agent_index_hooks",
+        lambda _cognition: None,
+    )
+
+
 def test_auto_tick_flags_default_disabled(monkeypatch):
     monkeypatch.delenv("HHS_RUNTIME_AUTO_TICK", raising=False)
     monkeypatch.delenv("HHS_COGNITION_AUTO_TICK", raising=False)
@@ -83,6 +92,7 @@ def test_explicit_auto_tick_opt_in(monkeypatch):
 
 
 def test_server_style_auto_start_request_is_quiescent_without_env(monkeypatch):
+    _isolate_unrelated_agent_index_hooks(monkeypatch)
     monkeypatch.delenv("HHS_RUNTIME_AUTO_TICK", raising=False)
     monkeypatch.delenv("HHS_COGNITION_AUTO_TICK", raising=False)
     cognition = _FakeCognition()
@@ -111,6 +121,7 @@ def test_server_style_auto_start_request_is_quiescent_without_env(monkeypatch):
 
 
 def test_continuous_tick_requires_explicit_env_opt_in(monkeypatch):
+    _isolate_unrelated_agent_index_hooks(monkeypatch)
     monkeypatch.setenv("HHS_RUNTIME_AUTO_TICK", "1")
     monkeypatch.delenv("HHS_COGNITION_AUTO_TICK", raising=False)
     workflow = LiveFastAPIRuntimeWorkflow(
