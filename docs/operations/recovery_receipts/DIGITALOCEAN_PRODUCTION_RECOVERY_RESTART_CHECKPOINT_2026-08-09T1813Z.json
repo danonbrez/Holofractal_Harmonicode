@@ -1,0 +1,119 @@
+{
+  "schema": "HHS_DIGITALOCEAN_PRODUCTION_RECOVERY_RESTART_CHECKPOINT_V1",
+  "recorded_at_utc": "2026-08-09T18:13:00Z",
+  "purpose": "Restartable checkpoint for the canonical DigitalOcean production recovery before further browser-lifecycle repair.",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/canonicalize-production-recovery",
+  "merge_target": "main",
+  "pull_request": 180,
+  "pull_request_state": "draft_open",
+  "source_parent": {
+    "commit": "932006c8e924d2859e7dceac95bf3e3e3710fa4f",
+    "tree": "4034071accf1da770337922ed4707e746c222d61",
+    "message": "Start Pass 176 before deferred projections"
+  },
+  "base_at_pr_snapshot": "66c614ae1de0c1b1651451e2c406307a8dee83ed",
+  "implemented_scope": [
+    "Default production runtime and cognition auto-ticks disabled; continuous idle work is explicit opt-in.",
+    "Production service freezes HHS_RUNTIME_AUTO_TICK=0 and HHS_COGNITION_AUTO_TICK=0.",
+    "IP-certificate renewal keeps Nginx online, serves a dedicated HTTP-01 webroot, and reloads only after successful deployment.",
+    "Deployment-health reconciliation is idempotent, bounded, and non-reentrant; runtime authority readiness is independent of assistant-provider latency.",
+    "Pass 176 controller is registered before the public graph and before legacy Pass 196-203 projection imports.",
+    "Pass 196-203 projections are deferred until canonical public boot/receipt/service-registry readiness rather than blocking first interaction.",
+    "Browser smoke expectations were corrected so inactive Assistant content is hidden until navigation and full-IDE readiness is bound to the Pass 176 INTERACTIVE lifecycle rather than transient DOM timing."
+  ],
+  "changed_files": [
+    ".github/workflows/hhs-production-https-mobile-closure.yml",
+    ".github/workflows/pass196-integrated-environment.yml",
+    "applications/holofractal_harmonizer/src/deployment-health.mjs",
+    "applications/holofractal_harmonizer/src/pass176-early-bootstrap.mjs",
+    "applications/holofractal_harmonizer/src/production-startup-coordinator.mjs",
+    "applications/holofractal_harmonizer/src/visual-ide-state.mjs",
+    "applications/holofractal_harmonizer/tests/deployment.health.quiescence.test.mjs",
+    "applications/holofractal_harmonizer/tests/pass176.early.bootstrap.test.mjs",
+    "applications/holofractal_harmonizer/tests/production.integration.test.mjs",
+    "applications/holofractal_harmonizer/tests/production.startup.coordinator.test.mjs",
+    "applications/holofractal_harmonizer/ux_lab/full_application_smoke.py",
+    "deploy/digitalocean/hhs-pass196-integrated-environment.service",
+    "docs/operations/recovery_receipts/DIGITALOCEAN_PRODUCTION_RECOVERY_2026-08-09.md",
+    "hhs_backend/production_visual_server.py",
+    "hhs_backend/runtime/live_fastapi_workflow_v1.py",
+    "scripts/complete_hhs_production_https_mobile.sh",
+    "tests/test_live_runtime_quiescence.py",
+    "tests/test_production_visual_server.py"
+  ],
+  "production_recovery_evidence": {
+    "public_ip": "137.184.223.84",
+    "certificate_reissued": true,
+    "certificate_valid_from_utc": "2026-08-09T02:34:25Z",
+    "certificate_valid_until_utc": "2026-08-15T18:34:24Z",
+    "critical_public_css_and_startup_javascript_http_200": true,
+    "local_root_and_css_http_200_after_application_startup": true,
+    "live_recovery_complete": true,
+    "repository_closure_complete": false
+  },
+  "exact_head_ci": {
+    "green": [
+      {"workflow": "HHS Production HTTPS Mobile Closure", "run_id": 31294968249},
+      {"workflow": "Pass 196 Integrated Environment", "run_id": 31294968236},
+      {"workflow": "Pass 161 Finalization", "run_id": 31294968229},
+      {"workflow": "Pass 197 A/B Hydration Calibration", "run_id": 31294968246},
+      {"workflow": "Pass 198 Operation Calibration Registry", "run_id": 31294968247},
+      {"workflow": "Pass 199 Distributed Calibration Fabric", "run_id": 31294968245},
+      {"workflow": "Pass 200A Proof-Carrying Shadow Optimization", "run_id": 31294968238},
+      {"workflow": "Pass 200B Governed Canary Admission", "run_id": 31294968157},
+      {"workflow": "Pass 200C Guarded Active Admission", "run_id": 31294968239},
+      {"workflow": "Pass 201 Public API Federation", "run_id": 31294968241},
+      {"workflow": "HHS Visual IDE A-B Usability", "run_id": 31294968204},
+      {"workflow": "Native Storybook Reel Studio", "run_id": 31294968203}
+    ],
+    "red": [
+      {
+        "workflow": "Verify Pass 176 Frozen IDE Stabilization",
+        "run_id": 31294968197,
+        "known_state": "Static/core Node matrix is 143/143 green and dependency-scoped Python matrix is 25 passed, 1 skipped. Browser reaches Pass 176 controller and INTERACTIVE authority but times out waiting for jobs.active.length === 0. The optional workspace-authority-bind job has a 30000 ms bounded timeout while the smoke grants the same 30000 ms, creating a deterministic boundary race; prior production diagnostics also recorded workspace initialization deferred with Illegal invocation."
+      },
+      {
+        "workflow": "Validate Full Application IDE",
+        "run_id": 31294968218,
+        "known_state": "Global startup starvation is repaired: browser reaches Pass 176 INTERACTIVE in approximately 14 seconds and Pong completes successfully. Remaining failure is post-boot calculator preview readiness after project switching; investigate iframe/preview bridge readiness rather than global boot."
+      },
+      {
+        "workflow": "Validate HHS Pass 161 Production Harmonizer",
+        "run_id": 31294968195,
+        "known_state": "Native/backend authority validation and terminal Pass 161 browser/workflow-first integration are green. Failure is isolated to the Chromium browser verification step for the deployed application entrypoint/executable registry; continue from the API/navigation/runtime-controller phase rather than CSS or server boot."
+      },
+      {
+        "workflow": "Pass 203 Integrated Mainframe",
+        "run_id": 31294968181,
+        "known_state": "Exact failure has not yet been analyzed in this recovery iteration. Treat as an unresolved deferred-projection compatibility gate before merge."
+      }
+    ],
+    "skipped": [
+      {"workflow": "Guarded Continuous Integration", "run_id": 31294968202, "reason": "workflow policy skip"}
+    ],
+    "external_non_authoritative_status": "Vercel reports failure due build-rate-limit/upgrade-to-Pro status; this is not an HHS authoritative production closure gate."
+  },
+  "next_actions": [
+    "Inspect the Pass 203 failure before changing source; determine whether deferred projection ordering requires one dependency contract adjustment or only a stale test expectation.",
+    "For Pass 176, preserve bounded-job quiescence but remove the exact 30000 ms test-vs-job deadline race. Separately trace the workspace-authority-bind Illegal invocation; fix the underlying request/session binding if reproducible rather than hiding it with retries.",
+    "For Full Application IDE, bind calculator verification to an explicit preview iframe/load/ready signal after project materialization instead of assuming the first post-switch DOM sample is populated.",
+    "For Production Harmonizer, continue from the Chromium API-surface/runtime-service-controller transition; do not reopen CSS, TLS, or first-paint repairs unless new evidence points there.",
+    "Rerun only the impacted red workflows after each repair, then run one final exact-head browser/deployment matrix.",
+    "Keep PR 180 draft and do not merge or deploy the branch until the red browser/projection gates are green."
+  ],
+  "restart_instructions": {
+    "first_read": "docs/operations/recovery_receipts/DIGITALOCEAN_PRODUCTION_RECOVERY_RESTART_CHECKPOINT_2026-08-09T1813Z.json",
+    "production_incident_record": "docs/operations/recovery_receipts/DIGITALOCEAN_PRODUCTION_RECOVERY_2026-08-09.md",
+    "resume_branch": "agent/canonicalize-production-recovery",
+    "resume_pr": 180,
+    "do_not_repeat": [
+      "TLS certificate root-cause investigation",
+      "CSS deletion/path investigation",
+      "runtime idle-auto-tick diagnosis",
+      "deployment-health mutation feedback-loop diagnosis",
+      "early Pass 176 vs static Pass 196-203 import-order diagnosis"
+    ]
+  },
+  "closure_boundary": "Checkpoint only. Live production recovery is complete, but repository merge closure is intentionally blocked on the remaining exact-head browser/projection failures."
+}
