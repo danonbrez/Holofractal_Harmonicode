@@ -1,0 +1,246 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_4_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P215-I4-EXACT-Q4-0-LINEAR-OPERATOR-EXECUTION-TRANSITION-COMPLEXITY",
+  "pass": 215,
+  "iteration": 4,
+  "status": "IMPLEMENTED_TERMINAL_COMPARISON_AUTHORITY_VALIDATED_AWAITING_FINAL_RESTART_RECORD_HEAD_REPLAY",
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "pull_request": 172,
+  "base_main": "a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a",
+  "validated_implementation_head_before_closure_records": "1bc8b04dd47f702e3bd4b9bc498961dd0b687415",
+  "validated_implementation_tree_before_closure_records": "cf87c39a74a1356bade7e745863d994a16047d08",
+  "closure_document_commit": "5cfe5c57bf2ee619927b6e978df69cf6c4651074",
+  "frozen_authority": {
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "frozen_profile_git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e",
+    "primitive_work_accounting_addendum_git_blob_sha1": "0a2f1448f565fb3eebfb50845c44404b68e93b8b",
+    "comparison_mapping_addendum_git_blob_sha1": "17fc5927c96f944d89a9e06cc2a684ae47e97c56"
+  },
+  "inherited_controls": {
+    "iteration2_real_model_evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+    "iteration2_canonical_tensor_bytes": 18335232,
+    "iteration2_pass212_incidence_fraction_exact": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "iteration3_real_model_evidence_root_hash216": "61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021",
+    "iteration3_selected_reversible_bytes": 11686284,
+    "iteration3_selected_gain_bytes": 6648948,
+    "iteration3_transformer_layer_dictionary_gain_bytes": 0,
+    "embedding_output_storage_gain_excluded_from_iteration4_execution_gain": true
+  },
+  "authenticated_workload": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "file_size_bytes": 19077344,
+    "gguf_version": 3,
+    "architecture": "llama",
+    "container_tensor_count": 57,
+    "target_layer": 0
+  },
+  "execution_scope": {
+    "operator_count": 7,
+    "operator_names": [
+      "blk.0.attn_q.weight",
+      "blk.0.attn_k.weight",
+      "blk.0.attn_v.weight",
+      "blk.0.attn_output.weight",
+      "blk.0.ffn_gate.weight",
+      "blk.0.ffn_up.weight",
+      "blk.0.ffn_down.weight"
+    ],
+    "source_tensor_bytes": 559872,
+    "quantization_blocks": 31104,
+    "logical_weights": 995328,
+    "independent_linear_slices_not_composed_full_layer": true
+  },
+  "q4_0_exact_semantics": {
+    "block_elements": 32,
+    "block_bytes": 18,
+    "scale_storage_bytes": 2,
+    "packed_code_bytes": 16,
+    "binary16_scale_decoded_to_exact_rational_with_integer_bits_only": true,
+    "binary16_nan_infinity_fail_closed": true,
+    "low_nibble_positions": [0, 15],
+    "high_nibble_positions": [16, 31],
+    "quant_integer_offset": -8,
+    "canonical_float_interpretation_performed": false
+  },
+  "terminal_execution": {
+    "suite_output_root_hash216": "14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb",
+    "evidence_root_hash216": "0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf",
+    "receipt_hash72": "2SrZvFdR/*41!b++dH9qxM1IrUZMuwuRZmpNw4yl8>QYI(LA9B65A<auqlwyWoi97onfMeMc",
+    "dense_reference_primitive_work_units": 3014112,
+    "factored_reference_primitive_work_units": 2049888,
+    "primitive_work_units_avoided_by_factoring": 964224,
+    "dense_to_factored_total_primitive_work_ratio_exact": {
+      "numerator": 31397,
+      "denominator": 21353
+    },
+    "dense_exact_rational_scale_multiplications": 995328,
+    "factored_exact_rational_scale_multiplications": 31104,
+    "rational_scale_multiplications_avoided_by_factoring": 964224,
+    "dense_to_factored_rational_scale_multiplication_ratio_exact": {
+      "numerator": 32,
+      "denominator": 1
+    },
+    "single_region_continuation_primitive_work_units": 11911,
+    "single_region_full_recompute_primitive_work_units": 2049888,
+    "single_region_full_to_continuation_ratio_exact": {
+      "numerator": 2049888,
+      "denominator": 11911
+    },
+    "multi_region_continuation_primitive_work_units": 47644,
+    "multi_region_full_recompute_primitive_work_units": 2049888,
+    "multi_region_full_to_continuation_ratio_exact": {
+      "numerator": 512472,
+      "denominator": 11911
+    },
+    "semantic_exactness": true
+  },
+  "frozen_workload_mode_primitive_work_units": {
+    "cold": 2112096,
+    "warm": 2049888,
+    "exact_repetition": 7,
+    "shared_structure": 2049888,
+    "single_region_mutation": 11911,
+    "multi_region_mutation": 47644,
+    "novel_content": 2049888,
+    "contradictory_content": 2049888,
+    "no_reuse_control": 2049888,
+    "interruption_recovery": 14,
+    "cross_process_replay": 0
+  },
+  "frozen_profile_comparison_bindings": {
+    "dense_reference": {
+      "source": "aggregate_execution.dense_reference_work",
+      "primitive_work_units": 3014112,
+      "status": "EXECUTED"
+    },
+    "exact_integer_reference": {
+      "source": "aggregate_execution.factored_reference_work",
+      "primitive_work_units": 2049888,
+      "status": "EXECUTED"
+    },
+    "pass213_compiled_rom_only": {
+      "source": "frozen_workload_modes.warm.work",
+      "primitive_work_units": 2049888,
+      "status": "EXECUTED_BENCHMARK_ANALOG_ONLY",
+      "runtime_authority": false
+    },
+    "compiled_rom_plus_cache_layers": {
+      "source": "frozen_workload_modes.exact_repetition.work",
+      "primitive_work_units": 7,
+      "status": "EXECUTED_BENCHMARK_ANALOG_ONLY",
+      "runtime_authority": false
+    },
+    "compiled_rom_plus_continuation_delta": {
+      "source": "frozen_workload_modes.single_region_mutation.work",
+      "primitive_work_units": 11911,
+      "status": "EXECUTED_BENCHMARK_ANALOG_ONLY",
+      "runtime_authority": false
+    },
+    "compiled_rom_plus_multimodal_ml": {
+      "status": "NOT_APPLICABLE"
+    },
+    "complete_inherited_hhs_stack": {
+      "status": "PARTIAL_ITERATION4_SUBSET_ONLY"
+    },
+    "complete_stack_with_ablations": {
+      "status": "EXECUTED_ITERATION4_SUBSET_ABLATIONS"
+    }
+  },
+  "recovery": {
+    "checkpoint_bytes": 136052,
+    "checkpoint_sha256": "558230ce4651c9dde2a0f1d5c0f67f1bc8f6896a81bed4f793029856eb590628",
+    "checkpoint_root_hash216": "41dba751838bb27503d4579e1c6abae58318fc23b517f4c1cce0e6a1f0be04c8",
+    "restored_entry_count": 7,
+    "primitive_recovery_work_units": 14,
+    "governance_semantic_compare_count": 7,
+    "semantic_exactness": true
+  },
+  "coverage": {
+    "frozen_profile_comparison_count": 8,
+    "frozen_optimization_class_disposition_count": 29,
+    "pass214_stage_disposition_count": 10,
+    "all_A0_through_A9_present": true,
+    "A8_internal_evidence_disposition": "READY_FOR_REQUIRED_EXTERNAL_CROSS_PROCESS_CI_REPLAY",
+    "A8_external_cross_process_validation_succeeded": true,
+    "json_float_number_count": 0
+  },
+  "cross_process_replay": {
+    "separate_process_invocations": true,
+    "process_a_equals_process_b_complete_evidence": true,
+    "valid": true,
+    "identical_evidence_root_hash216": "0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf",
+    "identical_suite_output_root_hash216": "14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb",
+    "identical_receipt_hash72": "2SrZvFdR/*41!b++dH9qxM1IrUZMuwuRZmpNw4yl8>QYI(LA9B65A<auqlwyWoi97onfMeMc"
+  },
+  "repair_forward_lineage": [
+    {
+      "stage": "FIRST_GREEN_EXECUTION",
+      "run": 31221256596,
+      "head": "4cfb8241edd81dd773cb939e1e249d0e4bd8b449",
+      "artifact_id": 9010454608,
+      "artifact_sha256": "62435438054ad16b505a7ed99f58658852737515a3065b6f13c393ed67ff00f9",
+      "disposition": "EXECUTION_OUTPUTS_VALID_AGGREGATE_WORK_TOTALS_SUPERSEDED_BY_PRIMITIVE_ACCOUNTING_ADDENDUM"
+    },
+    {
+      "stage": "PRIMITIVE_WORK_AUTHORITY",
+      "run": 31221568421,
+      "head": "e2ec4ae66df6f0c28f56df996580e4ee787eedeb",
+      "artifact_id": 9010567877,
+      "artifact_sha256": "3fbc59d6daa3fd38d2a95025438351442332442512128ecf87d4f44323bb50c4",
+      "disposition": "PRIMITIVE_WORK_VALID_COMPARISON_PROJECTION_SUPERSEDED_BY_COMPARISON_MAPPING_ADDENDUM"
+    },
+    {
+      "stage": "TERMINAL_COMPARISON_AUTHORITY",
+      "run": 31222181816,
+      "job": 93008912750,
+      "head": "1bc8b04dd47f702e3bd4b9bc498961dd0b687415",
+      "tree": "cf87c39a74a1356bade7e745863d994a16047d08",
+      "artifact_id": 9010778255,
+      "artifact_sha256": "d69d05ab3f385f5f04dfe14dc45a45a718cc2f56356123046ec1291e37c83ddf",
+      "test_count": 35,
+      "conclusion": "success"
+    }
+  ],
+  "claim_boundary": {
+    "authenticated_real_open_transformer_execution_measured": true,
+    "seven_blk0_linear_operators_executed": true,
+    "dense_exact_rational_reference_executed": true,
+    "q4_0_factored_exact_kernel_executed": true,
+    "dense_factored_semantic_exactness": true,
+    "linear_continuation_delta_executed": true,
+    "exact_output_cache_replay_executed": true,
+    "interruption_recovery_executed": true,
+    "external_cross_process_replay_validated": true,
+    "full_transformer_layer_forward_executed": false,
+    "rmsnorm_execution_claimed": false,
+    "attention_softmax_execution_claimed": false,
+    "silu_execution_claimed": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "pass213_compiled_rom_runtime_mutation_performed": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "arbitrary_compression_claimed": false
+  },
+  "authority": {
+    "benchmark_authority_promoted": true,
+    "pass215_authorized": true,
+    "pass213_gates_preserved": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "remaining_before_iteration4_repository_freeze": [
+    "commit ITERATION_4_RESTART_RECORD.md as the final Iteration 4 source mutation",
+    "require registered terminal authority workflow to succeed on that exact restart-record head",
+    "update draft PR 172 metadata only after exact-head success"
+  ]
+}

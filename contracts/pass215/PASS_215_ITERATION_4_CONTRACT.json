@@ -1,0 +1,256 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_4_CONTRACT_V1",
+  "contract": "HHS-P215-I4-EXACT-Q4-0-LINEAR-OPERATOR-EXECUTION-TRANSITION-COMPLEXITY",
+  "pass": 215,
+  "iteration": 4,
+  "version": "1.0.0-iteration4",
+  "inherits": {
+    "base_main": "a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "frozen_profile_git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e",
+    "iteration2_real_model_evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+    "iteration2_raw_canonical_tensor_bytes": 18335232,
+    "iteration2_raw_canonical_incidence": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "iteration3_validated_head": "310e1b39bf19f3be9571926a498f5481f69fe2a7",
+    "iteration3_validated_tree": "5ca253004d0519436ed6c37db3ca951be9a16e4f",
+    "iteration3_real_model_evidence_root_hash216": "61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021",
+    "iteration3_receipt_hash72": "+XV/)UKf1oM2)Y>uURQQ?KG(KURR<*5vl2zFqc6Gj6)xNFx/yzsyd!R!HIBJ4dVkCMEAYui)",
+    "iteration3_raw_compared_bytes": 18335232,
+    "iteration3_selected_reversible_bytes": 11686284,
+    "iteration3_selected_gain_bytes": 6648948,
+    "iteration3_transformer_layer_dictionary_gain_bytes": 0
+  },
+  "objective": "Execute the seven quantized linear operators of one authenticated real transformer block using an exact dense rational reference and an algebraically equivalent Q4_0 block-factored kernel; measure generator or transition complexity, immutable descriptor reuse, exact-output cache reuse, continuation or delta work, interruption recovery, and cross-process replay without claiming a complete transformer-layer forward or operational Pass 213 mutation authority.",
+  "real_workload": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "target_layer": 0,
+    "operators": [
+      {
+        "name": "blk.0.attn_q.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 288]
+      },
+      {
+        "name": "blk.0.attn_k.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 288]
+      },
+      {
+        "name": "blk.0.attn_v.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 288]
+      },
+      {
+        "name": "blk.0.attn_output.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 288]
+      },
+      {
+        "name": "blk.0.ffn_gate.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 768]
+      },
+      {
+        "name": "blk.0.ffn_up.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [288, 768]
+      },
+      {
+        "name": "blk.0.ffn_down.weight",
+        "storage_type": "Q4_0",
+        "shape_ggml_ne0_ne1": [768, 288]
+      }
+    ],
+    "operator_suite_is_independent_linear_slices_not_composed_full_layer": true,
+    "embedding_and_output_weight_dictionary_gain_excluded_from_execution_gain": true
+  },
+  "q4_0_exact_semantics": {
+    "block_elements": 32,
+    "block_bytes": 18,
+    "scale_storage_bytes": 2,
+    "packed_code_bytes": 16,
+    "scale_storage_encoding": "IEEE_754_BINARY16_BITS_DECODED_TO_EXACT_RATIONAL_WITH_INTEGER_BIT_OPERATIONS_ONLY",
+    "scale_nan_or_infinity": "FAIL_CLOSED",
+    "code_mapping": "FOR_EACH_PACKED_BYTE_J_0_TO_15_LOW_NIBBLE_IS_ELEMENT_J_HIGH_NIBBLE_IS_ELEMENT_J_PLUS_16",
+    "quant_integer": "NIBBLE_MINUS_8",
+    "weight_value": "EXACT_RATIONAL_SCALE_TIMES_QUANT_INTEGER",
+    "canonical_python_float_use": false
+  },
+  "deterministic_input_vectors": {
+    "baseline": "x_i=((17*i+23)%37)-18",
+    "novel_content": "x_i=((29*i+11)%53)-26",
+    "adverse_or_contradictory_numeric_control": "x_i=(1+(i%13)) IF i EVEN ELSE -(1+(i%13))",
+    "single_region_mutation": {
+      "index": "INPUT_WIDTH//3",
+      "delta": 7
+    },
+    "multi_region_mutation": {
+      "indices": [
+        0,
+        "INPUT_WIDTH//4",
+        "INPUT_WIDTH//2",
+        "INPUT_WIDTH-1"
+      ],
+      "deltas": [3, -5, 7, -11]
+    },
+    "runtime_randomness_forbidden": true
+  },
+  "predeclared_execution_candidates": [
+    "DENSE_EXACT_RATIONAL_REFERENCE_V1",
+    "Q4_0_FACTORED_EXACT_BLOCK_KERNEL_V1",
+    "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1",
+    "EXACT_INPUT_OUTPUT_CACHE_V1",
+    "LINEAR_CONTINUATION_DELTA_V1",
+    "NO_REUSE_FACTORED_CONTROL_V1"
+  ],
+  "candidate_semantics": {
+    "DENSE_EXACT_RATIONAL_REFERENCE_V1": "Decode each quantized weight to an exact rational and perform a direct exact matrix-vector reference evaluation.",
+    "Q4_0_FACTORED_EXACT_BLOCK_KERNEL_V1": "For each 32-element block compute the integer dot product first and multiply the resulting integer once by the exact rational block scale; output must equal the dense reference exactly.",
+    "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1": "Predecode immutable source-bound block scale rationals and quant integers for benchmark reuse only; this is not Pass 213 operational compiled-ROM mutation authority.",
+    "EXACT_INPUT_OUTPUT_CACHE_V1": "Content-address exact tensor identity plus exact input vector identity to reuse a previously validated exact output; cache hits require output-root equality.",
+    "LINEAR_CONTINUATION_DELTA_V1": "For an input mutation compute W times the exact sparse delta and add it to a validated parent output; compare against full recomputation exactly.",
+    "NO_REUSE_FACTORED_CONTROL_V1": "Force full block decode and factored evaluation with all reusable state disabled."
+  },
+  "required_work_counters": [
+    "source_tensor_bytes",
+    "source_quantization_blocks",
+    "logical_weights",
+    "block_decodes",
+    "quant_integer_products",
+    "quant_integer_additions",
+    "exact_rational_scale_multiplications",
+    "exact_rational_accumulation_additions",
+    "compiled_descriptor_builds",
+    "compiled_descriptor_hits",
+    "exact_output_cache_hits",
+    "exact_output_cache_misses",
+    "changed_input_coordinates",
+    "delta_weight_products",
+    "delta_output_accumulations",
+    "full_output_rows_recomputed",
+    "continuation_output_rows_updated",
+    "semantic_compare_count",
+    "checkpoint_bytes",
+    "recovery_work_units"
+  ],
+  "required_metric_axes": [
+    "semantic_exactness",
+    "generator_transition_complexity",
+    "capacity_bytes",
+    "executed_work_units",
+    "governance_work_units",
+    "recovery_work_units",
+    "physical_compression_incidence",
+    "cold_warm_reuse_delta",
+    "interruption_recovery_delta",
+    "cross_process_replay_delta"
+  ],
+  "frozen_workload_mode_mapping": {
+    "cold": "BUILD_DESCRIPTORS_AND_EXECUTE_BASELINE",
+    "warm": "REUSE_DESCRIPTORS_AND_EXECUTE_BASELINE",
+    "exact_repetition": "EXACT_OUTPUT_CACHE_REPLAY",
+    "shared_structure": "REUSE_IMMUTABLE_BLOCK_DESCRIPTORS_WITH_NOVEL_INPUT",
+    "single_region_mutation": "ONE_COORDINATE_LINEAR_CONTINUATION_DELTA",
+    "multi_region_mutation": "FOUR_COORDINATE_LINEAR_CONTINUATION_DELTA",
+    "novel_content": "FULL_EXECUTION_OF_PREDECLARED_NOVEL_VECTOR",
+    "contradictory_content": "FULL_EXECUTION_OF_PREDECLARED_ALTERNATING_SIGN_ADVERSE_VECTOR",
+    "no_reuse_control": "FORCED_NO_REUSE_FACTORED_EXECUTION",
+    "interruption_recovery": "SERIALIZE_VALIDATE_RESTORE_REUSABLE_EXECUTION_STATE_AND_REPLAY",
+    "cross_process_replay": "REEXECUTE_AUTHENTICATED_WORKLOAD_IN_SEPARATE_PROCESS_AND_REQUIRE_IDENTICAL_CANONICAL_RESULT_ROOT"
+  },
+  "pass214_stage_mapping": {
+    "A0": "DENSE_EXACT_RATIONAL_REFERENCE",
+    "A1": "ISOLATED_Q4_0_FACTORED_KERNEL",
+    "A2": "PAIRWISE_FACTORED_PLUS_COMPILED_DESCRIPTOR_AND_OUTPUT_CACHE",
+    "A3": "CONTINUATION_DELTA_SUBSYSTEM",
+    "A4": "PARTIAL_COMPLETE_INHERITED_STACK_COMPARISON_WITH_DEFERRED_CLASSES_EXPLICITLY_RECORDED",
+    "A5": "ABLATE_DESCRIPTOR_CACHE_OUTPUT_CACHE_AND_CONTINUATION_REUSE",
+    "A6": "NO_REUSE_AND_ADVERSE_INPUT_CONTROLS",
+    "A7": "INTERRUPTION_CHECKPOINT_RECOVERY_REPLAY",
+    "A8": "CROSS_PROCESS_DETERMINISTIC_REPLAY",
+    "A9": "OPTIONAL_ACCELERATOR_NO_ACCELERATOR_NOT_APPLICABLE_IN_ITERATION_4_CPU_REFERENCE_SCOPE"
+  },
+  "frozen_profile_comparison_mapping": {
+    "dense_reference": "DENSE_EXACT_RATIONAL_REFERENCE_V1",
+    "exact_integer_reference": "Q4_0_FACTORED_EXACT_BLOCK_KERNEL_V1_WITH_EXACT_INTEGER_INNER_DOTS",
+    "pass213_compiled_rom_only": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_BENCHMARK_ANALOG_ONLY_NO_RUNTIME_AUTHORITY",
+    "compiled_rom_plus_cache_layers": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_PLUS_EXACT_INPUT_OUTPUT_CACHE_V1",
+    "compiled_rom_plus_continuation_delta": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_PLUS_LINEAR_CONTINUATION_DELTA_V1",
+    "compiled_rom_plus_multimodal_ml": "NOT_APPLICABLE_TO_SINGLE_TEXT_TRANSFORMER_LINEAR_OPERATOR_SLICE_RECORDED_NOT_SILENTLY_DROPPED",
+    "complete_inherited_hhs_stack": "PARTIAL_ITERATION_4_EXECUTION_SUBSET_ONLY_REMAINING_REQUIRED_OPTIMIZATION_CLASSES_DEFERRED",
+    "complete_stack_with_ablations": "ITERATION_4_EXECUTION_SUBSET_WITH_DESCRIPTOR_CACHE_OUTPUT_CACHE_AND_CONTINUATION_ABLATIONS"
+  },
+  "optimization_class_disposition_policy": "EVERY_FROZEN_PASS215_OPTIMIZATION_CLASS_MUST_APPEAR_IN_EVIDENCE_AS_EXECUTED_NOT_APPLICABLE_OPTIONAL_EXPERIMENTAL_OR_DEFERRED_TO_A_LATER_PASS215_ITERATION; ABSENCE IS INVALID",
+  "required_validation": [
+    "authenticated_source_sha256_matches_iteration2_and_iteration3_workload",
+    "all_seven_target_tensor_names_shapes_types_and_byte_ranges_match_contract",
+    "binary16_scale_decoder_uses_integer_bit_operations_and_returns_exact_rational",
+    "binary16_nan_and_infinity_fail_closed",
+    "q4_0_nibble_mapping_matches_contract",
+    "dense_reference_and_factored_kernel_outputs_match_exactly",
+    "compiled_descriptor_execution_matches_uncached_factored_execution_exactly",
+    "exact_output_cache_replay_matches_parent_output_root",
+    "single_region_continuation_matches_full_recomputation_exactly",
+    "multi_region_continuation_matches_full_recomputation_exactly",
+    "novel_and_adverse_vectors_execute_without_reuse_claim_inflation",
+    "interruption_checkpoint_recovery_replay_matches_exactly",
+    "cross_process_replay_result_root_matches_exactly",
+    "iteration2_zero_incidence_control_preserved",
+    "iteration3_transformer_layer_zero_dictionary_gain_control_preserved",
+    "embedding_output_dictionary_gain_excluded_from_operator_execution_gain",
+    "all_frozen_profile_comparisons_have_explicit_dispositions",
+    "all_frozen_optimization_classes_have_explicit_dispositions",
+    "all_A0_through_A9_stages_have_explicit_dispositions",
+    "evidence_contains_no_json_float_numbers",
+    "evidence_hash216_and_hash72_receipt_validate_independently"
+  ],
+  "negative_controls": [
+    "SOURCE_SHA256_MISMATCH",
+    "TARGET_TENSOR_MISSING_OR_GEOMETRY_MISMATCH",
+    "Q4_0_BLOCK_LENGTH_INVALID",
+    "BINARY16_NAN_OR_INFINITY_SCALE",
+    "DENSE_FACTORED_OUTPUT_MISMATCH",
+    "COMPILED_DESCRIPTOR_SOURCE_ROOT_MISMATCH",
+    "OUTPUT_CACHE_KEY_OR_ROOT_TAMPERING",
+    "CONTINUATION_PARENT_ROOT_MISMATCH",
+    "CONTINUATION_DELTA_TAMPERING",
+    "CHECKPOINT_TAMPERING",
+    "ITERATION2_CONTROL_ROOT_MISMATCH",
+    "ITERATION3_CONTROL_ROOT_MISMATCH",
+    "FROZEN_PROFILE_COMPARISON_MISSING",
+    "FROZEN_OPTIMIZATION_CLASS_DISPOSITION_MISSING",
+    "PASS214_STAGE_DISPOSITION_MISSING",
+    "JSON_FLOAT_NUMBER_PRESENT",
+    "FORBIDDEN_RUNTIME_OR_CANONICAL_AUTHORITY_ESCALATION"
+  ],
+  "constraints": {
+    "frozen_pass214_profile_mutation_forbidden": true,
+    "post_hoc_candidate_redefinition_forbidden": true,
+    "canonical_float_interpretation_forbidden": true,
+    "source_weight_mutation_forbidden": true,
+    "lossy_dequantization_forbidden": true,
+    "embedding_output_storage_gain_may_not_be_counted_as_transformer_execution_gain": true,
+    "full_transformer_layer_forward_executed": false,
+    "rmsnorm_execution_claimed": false,
+    "attention_softmax_execution_claimed": false,
+    "silu_execution_claimed": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "pass213_compiled_rom_runtime_mutation_performed": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "arbitrary_compression_claimed": false,
+    "evidence_float_numbers_forbidden": true
+  },
+  "completion_gate": "Iteration 4 completes only when the authenticated real blk.0 seven-operator Q4_0 suite is executed through both dense exact rational and block-factored kernels with exact output equality, all frozen modes profile comparisons and A0-A9 stages have explicit dispositions, continuation cache recovery and cross-process replay are validated, work-count evidence is retained, Iteration 2 and Iteration 3 controls remain unchanged, and no nonlinear full-layer runtime or canonical mutation authority is claimed."
+}
