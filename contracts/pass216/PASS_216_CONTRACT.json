@@ -217,7 +217,7 @@
     "prefer_cached_model_and_reference_fixtures": true,
     "avoid_duplicate_cross_process_runs_when_persistence_is_unchanged": true,
     "avoid_full_vocabulary_projection_when_the_changed_surface_does_not_touch_projection_or_argmax": true,
-    "avoid_full_checkpoint_reconstruction_when_the_changed surface can be proven by authenticated chunk or manifest equivalence": false
+    "avoid_full_checkpoint_reconstruction_when_authenticated_chunk_or_manifest_equivalence_is_sufficient": true
   },
   "constraints": {
     "canonical_float_interpretation_performed": false,
