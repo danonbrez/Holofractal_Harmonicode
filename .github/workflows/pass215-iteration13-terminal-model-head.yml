@@ -37,7 +37,35 @@ env:
   PASS215_I13_PROMPT: 'Hello world!'
 
 jobs:
+  prepare-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency:
+      group: pass215-shared-model-stories15m-q4_0
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore shared Pass 215 model cache
+        id: restore-pass215-model-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/pass215-model-cache
+          key: pass215-shared-model-stories15m-q4_0-6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04
+      - name: Populate shared Pass 215 model cache
+        if: steps.restore-pass215-model-cache.outputs.cache-hit != 'true'
+        run: |
+          bash scripts/fetch_pass215_authenticated_open_transformer.sh \
+            --cache-dir "$RUNNER_TEMP/pass215-model-cache" \
+            --expected-sha256 "$PASS215_I13_MODEL_SHA256"
+      - name: Upload workflow-scoped Pass 215 model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-shared-model-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pass215-model-cache/stories15M-q4_0.gguf
+          if-no-files-found: error
+          retention-days: 1
   iteration13:
+    needs: prepare-model
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
@@ -121,14 +149,19 @@ jobs:
       - name: Run cumulative Iteration 1-13 dependency-scoped validation
         run: bash scripts/run_pass215_iteration13_validation.sh
 
-      - name: Download and verify authenticated open transformer
+      - name: Download prepared Pass 215 model artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass215-shared-model-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pass215-model-cache
+
+      - name: Materialize authenticated open transformer
         run: |
           ROOT="$RUNNER_TEMP/pass215-i13"
-          mkdir -p "$ROOT"
-          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
-            -o "$ROOT/stories15M-q4_0.gguf" \
-            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
-          echo "$PASS215_I13_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+          bash scripts/fetch_pass215_authenticated_open_transformer.sh \
+            --cache-dir "$RUNNER_TEMP/pass215-model-cache" \
+            --target-dir "$ROOT" \
+            --expected-sha256 "$PASS215_I13_MODEL_SHA256"
 
       - name: Execute terminal model head process A
         run: |
