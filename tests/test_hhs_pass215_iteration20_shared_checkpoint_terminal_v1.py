@@ -150,10 +150,30 @@ def test_compressed_byte_metrics_reject_trailing_zlib_bytes(synthetic_bundle):
         )
 
 
+def test_compressed_byte_metrics_require_canonical_zlib9(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    tampered = copy.deepcopy(bundle)
+    digest = next(iter(tampered["content_store"]["blobs"]))
+    record = tampered["content_store"]["blobs"][digest]
+    raw = zlib.decompress(base64.b64decode(record["data_b64"]))
+    compressed = zlib.compress(raw, level=0)
+    record["data_b64"] = base64.b64encode(compressed).decode("ascii")
+    record["compressed_bytes"] = len(compressed)
+    record["compressed_sha256"] = sha256(compressed).hexdigest()
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="COMPRESSED_BLOB_CANONICAL_ENCODING_INVALID",
+    ):
+        i20._reuse_metrics(
+            tampered["checkpoint_manifests"],
+            tampered["content_store"]["blobs"],
+        )
+
+
 def test_restore_recomputes_canonical_chunk_boundaries(synthetic_bundle):
-    earlier, _, _, _ = synthetic_bundle
+    _, later, bundle, _ = synthetic_bundle
     component_name = "symbolic_dag"
-    raw_component = i20._json_bytes(earlier[component_name])
+    raw_component = i20._json_bytes(later[component_name])
     arbitrary_chunks = tuple(
         raw_component[offset:offset + 600_000]
         for offset in range(0, len(raw_component), 600_000)
@@ -187,6 +207,69 @@ def test_restore_recomputes_canonical_chunk_boundaries(synthetic_bundle):
     ):
         i20._decode_manifest_component(component, blobs)
 
+    tampered = copy.deepcopy(bundle)
+    later_manifest = tampered["checkpoint_manifests"][1]
+    component_index = next(
+        index
+        for index, value in enumerate(later_manifest["components"])
+        if value["name"] == component_name
+    )
+    later_manifest["components"][component_index] = component
+    tampered_blobs = tampered["content_store"]["blobs"]
+    tampered_blobs.update(blobs)
+    referenced = {
+        digest
+        for manifest in tampered["checkpoint_manifests"]
+        for digest in i20._referenced_digests(manifest)
+    }
+    tampered["content_store"]["blobs"] = {
+        digest: tampered_blobs[digest] for digest in referenced
+    }
+    later_subset = {
+        digest: tampered["content_store"]["blobs"][digest]
+        for digest in set(i20._referenced_digests(later_manifest))
+    }
+    later_manifest["checkpoint_content_store_root_hash216"] = i20._hash216(
+        "pass215-i20-checkpoint-content-store",
+        {
+            "checkpoint_root_hash216": later_manifest[
+                "iteration18_checkpoint_root_hash216"
+            ],
+            "components": later_manifest["components"],
+            "blob_metadata": i20._blob_metadata(later_subset),
+        },
+    )
+    manifest_body = dict(later_manifest)
+    manifest_body.pop("checkpoint_manifest_root_hash216")
+    later_manifest["checkpoint_manifest_root_hash216"] = i20._hash216(
+        "pass215-i20-sequential-checkpoint-manifest", manifest_body
+    )
+    tampered["reuse_metrics"] = i20._reuse_metrics(
+        tampered["checkpoint_manifests"], tampered["content_store"]["blobs"]
+    )
+    shared_binding = {
+        "checkpoint_manifest_roots": [
+            manifest["checkpoint_manifest_root_hash216"]
+            for manifest in tampered["checkpoint_manifests"]
+        ],
+        "blob_metadata": i20._blob_metadata(tampered["content_store"]["blobs"]),
+    }
+    tampered["shared_content_store_root_hash216"] = i20._hash216(
+        "pass215-i20-shared-checkpoint-content-store", shared_binding
+    )
+    bundle_body = dict(tampered)
+    bundle_body.pop("shared_checkpoint_bundle_root_hash216")
+    tampered["shared_checkpoint_bundle_root_hash216"] = i20._hash216(
+        "pass215-i20-shared-checkpoint-bundle", bundle_body
+    )
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="COMPONENT_CHUNK_BOUNDARIES_INVALID",
+    ):
+        i20.reconstruct_iteration18_checkpoint(
+            tampered, i20.EARLIER_CHECKPOINT_STEPS
+        )
+
 
 def test_restore_requires_frozen_manifest_chunker_parameters(synthetic_bundle):
     _, _, bundle, _ = synthetic_bundle
@@ -197,6 +280,52 @@ def test_restore_requires_frozen_manifest_chunker_parameters(synthetic_bundle):
         match="MANIFEST_ENCODING_INVALID",
     ):
         i20._validate_manifest_encoding(manifest)
+
+
+def test_restore_requires_frozen_manifest_schema(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    manifest = copy.deepcopy(bundle["checkpoint_manifests"][0])
+    manifest["schema"] = "forged"
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="CHECKPOINT_MANIFEST_SCHEMA_INVALID",
+    ):
+        i20._validate_checkpoint_manifest(manifest)
+
+
+def test_bundle_rejects_unreferenced_store_bytes(synthetic_bundle):
+    _, _, bundle, _ = synthetic_bundle
+    tampered = copy.deepcopy(bundle)
+    raw = b"unreferenced canonical blob"
+    digest = sha256(raw).hexdigest()
+    compressed = zlib.compress(raw, level=i20.ZLIB_LEVEL)
+    tampered["content_store"]["blobs"][digest] = {
+        "codec": "zlib-9",
+        "raw_bytes": len(raw),
+        "compressed_bytes": len(compressed),
+        "compressed_sha256": sha256(compressed).hexdigest(),
+        "data_b64": base64.b64encode(compressed).decode("ascii"),
+    }
+    shared_binding = {
+        "checkpoint_manifest_roots": [
+            manifest["checkpoint_manifest_root_hash216"]
+            for manifest in tampered["checkpoint_manifests"]
+        ],
+        "blob_metadata": i20._blob_metadata(tampered["content_store"]["blobs"]),
+    }
+    tampered["shared_content_store_root_hash216"] = i20._hash216(
+        "pass215-i20-shared-checkpoint-content-store", shared_binding
+    )
+    body = dict(tampered)
+    body.pop("shared_checkpoint_bundle_root_hash216")
+    tampered["shared_checkpoint_bundle_root_hash216"] = i20._hash216(
+        "pass215-i20-shared-checkpoint-bundle", body
+    )
+    with pytest.raises(
+        i20.Pass215Iteration20ValidationError,
+        match="CONTENT_STORE_COVERAGE_INVALID",
+    ):
+        i20._verify_bundle(tampered)
 
 
 def test_bundle_tamper_fails_closed(synthetic_bundle):

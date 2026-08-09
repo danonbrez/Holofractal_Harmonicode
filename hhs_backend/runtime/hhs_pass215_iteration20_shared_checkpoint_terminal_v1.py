@@ -262,6 +262,10 @@ def _decode_validated_blob(
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_RAW_BLOB_ADDRESS_INVALID"
         )
+    if compressed != zlib.compress(raw, level=ZLIB_LEVEL):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_COMPRESSED_BLOB_CANONICAL_ENCODING_INVALID"
+        )
     return compressed, raw
 
 
@@ -389,9 +393,9 @@ def _encode_checkpoint_manifest(
     return manifest
 
 
-def _reuse_metrics(
+def _reuse_metrics_from_sizes(
     manifests: Sequence[Mapping[str, Any]],
-    blobs: Mapping[str, Mapping[str, Any]],
+    compressed_sizes: Mapping[str, int],
 ) -> Mapping[str, Any]:
     if len(manifests) != 2:
         raise Pass215Iteration20ValidationError(
@@ -406,10 +410,7 @@ def _reuse_metrics(
     union = earlier_unique | later_unique
 
     def compressed_bytes(digests: Iterable[str]) -> int:
-        return sum(
-            len(_decode_validated_blob(blobs[digest], expected_digest=digest)[0])
-            for digest in digests
-        )
+        return sum(int(compressed_sizes[digest]) for digest in digests)
 
     earlier_bytes = compressed_bytes(earlier_unique)
     later_bytes = compressed_bytes(later_unique)
@@ -441,6 +442,22 @@ def _reuse_metrics(
     }
 
 
+def _reuse_metrics(
+    manifests: Sequence[Mapping[str, Any]],
+    blobs: Mapping[str, Mapping[str, Any]],
+) -> Mapping[str, Any]:
+    referenced = {
+        digest for manifest in manifests for digest in _referenced_digests(manifest)
+    }
+    compressed_sizes = {
+        digest: len(
+            _decode_validated_blob(blobs[digest], expected_digest=digest)[0]
+        )
+        for digest in referenced
+    }
+    return _reuse_metrics_from_sizes(manifests, compressed_sizes)
+
+
 def build_shared_checkpoint_bundle(
     checkpoints: Sequence[Mapping[str, Any]],
 ) -> tuple[Mapping[str, Any], Mapping[str, Any]]:
@@ -461,7 +478,13 @@ def build_shared_checkpoint_bundle(
         _encode_checkpoint_manifest(checkpoint, shared_blobs)
         for checkpoint in ordered
     ]
-    metrics = _reuse_metrics(manifests, shared_blobs)
+    metrics = _reuse_metrics_from_sizes(
+        manifests,
+        {
+            digest: int(record["compressed_bytes"])
+            for digest, record in shared_blobs.items()
+        },
+    )
     if (
         int(metrics["reused_unique_chunk_count"]) <= 0
         or int(metrics["reused_compressed_blob_bytes"]) <= 0
@@ -501,7 +524,9 @@ def build_shared_checkpoint_bundle(
     return bundle, metrics
 
 
-def _verify_bundle(bundle: Mapping[str, Any]) -> None:
+def _verify_bundle(
+    bundle: Mapping[str, Any],
+) -> Mapping[int, Mapping[str, Any]]:
     _reject_floats(bundle)
     if bundle.get("schema") != BUNDLE_SCHEMA or bundle.get("contract") != CONTRACT:
         raise Pass215Iteration20ValidationError(
@@ -524,7 +549,26 @@ def _verify_bundle(bundle: Mapping[str, Any]) -> None:
             "PASS215_I20_SHARED_BUNDLE_ROOT_INVALID"
         )
     manifests = bundle["checkpoint_manifests"]
-    blobs = bundle["content_store"]["blobs"]
+    if (
+        not isinstance(manifests, Sequence)
+        or isinstance(manifests, (str, bytes))
+        or len(manifests) != 2
+        or tuple(int(manifest.get("completed_steps", -1)) for manifest in manifests)
+        != (EARLIER_CHECKPOINT_STEPS, LATER_CHECKPOINT_STEPS)
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_SEQUENCE_INVALID"
+        )
+    for manifest in manifests:
+        _validate_checkpoint_manifest(manifest)
+    blobs = bundle["content_store"].get("blobs")
+    referenced_digests = {
+        digest for manifest in manifests for digest in _referenced_digests(manifest)
+    }
+    if not isinstance(blobs, Mapping) or set(blobs) != referenced_digests:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CONTENT_STORE_COVERAGE_INVALID"
+        )
     shared_binding = {
         "checkpoint_manifest_roots": [
             manifest["checkpoint_manifest_root_hash216"] for manifest in manifests
@@ -542,6 +586,13 @@ def _verify_bundle(bundle: Mapping[str, Any]) -> None:
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_REUSE_METRICS_INVALID"
         )
+    reconstructed = {
+        int(manifest["completed_steps"]): _reconstruct_manifest_checkpoint(
+            manifest, blobs
+        )
+        for manifest in manifests
+    }
+    return reconstructed
 
 
 def _validate_manifest_encoding(manifest: Mapping[str, Any]) -> None:
@@ -551,6 +602,45 @@ def _validate_manifest_encoding(manifest: Mapping[str, Any]) -> None:
     ):
         raise Pass215Iteration20ValidationError(
             "PASS215_I20_MANIFEST_ENCODING_INVALID"
+        )
+
+
+def _validate_checkpoint_manifest(manifest: Mapping[str, Any]) -> None:
+    if (
+        manifest.get("schema") != MANIFEST_SCHEMA
+        or manifest.get("contract") != CONTRACT
+        or manifest.get("iteration18_checkpoint_schema") != i18.CHECKPOINT_SCHEMA
+        or manifest.get("iteration18_checkpoint_contract") != i18.CONTRACT
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_MANIFEST_SCHEMA_INVALID"
+        )
+    base_fields = manifest.get("base_checkpoint_fields")
+    if not isinstance(base_fields, Mapping):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_MANIFEST_BASE_INVALID"
+        )
+    if (
+        int(manifest.get("completed_steps", -1))
+        != int(base_fields.get("completed_steps", -2))
+        or manifest.get("file_sha256") != base_fields.get("file_sha256")
+        or tuple(manifest.get("component_names", ())) != COMPONENT_NAMES
+        or tuple(
+            component.get("name") for component in manifest.get("components", ())
+        )
+        != COMPONENT_NAMES
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_MANIFEST_BASE_INVALID"
+        )
+    _validate_manifest_encoding(manifest)
+    manifest_body = dict(manifest)
+    manifest_root = manifest_body.pop("checkpoint_manifest_root_hash216", None)
+    if manifest_root != _hash216(
+        "pass215-i20-sequential-checkpoint-manifest", manifest_body
+    ):
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_MANIFEST_ROOT_INVALID"
         )
 
 
@@ -595,42 +685,10 @@ def _decode_manifest_component(
     return raw_component
 
 
-def reconstruct_iteration18_checkpoint(
-    bundle: Mapping[str, Any], completed_steps: int
+def _reconstruct_manifest_checkpoint(
+    manifest: Mapping[str, Any],
+    blobs: Mapping[str, Mapping[str, Any]],
 ) -> Mapping[str, Any]:
-    _verify_bundle(bundle)
-    completed_steps = int(completed_steps)
-    manifests = [
-        manifest for manifest in bundle["checkpoint_manifests"]
-        if int(manifest["completed_steps"]) == completed_steps
-    ]
-    if len(manifests) != 1:
-        raise Pass215Iteration20ValidationError(
-            "PASS215_I20_CHECKPOINT_MANIFEST_NOT_UNIQUE"
-        )
-    manifest = manifests[0]
-    manifest_body = dict(manifest)
-    manifest_root = manifest_body.pop("checkpoint_manifest_root_hash216", None)
-    if manifest_root != _hash216(
-        "pass215-i20-sequential-checkpoint-manifest", manifest_body
-    ):
-        raise Pass215Iteration20ValidationError(
-            "PASS215_I20_CHECKPOINT_MANIFEST_ROOT_INVALID"
-        )
-    if tuple(manifest["component_names"]) != COMPONENT_NAMES:
-        raise Pass215Iteration20ValidationError(
-            "PASS215_I20_COMPONENT_ORDER_INVALID"
-        )
-    if (
-        tuple(component.get("name") for component in manifest["components"])
-        != COMPONENT_NAMES
-    ):
-        raise Pass215Iteration20ValidationError(
-            "PASS215_I20_COMPONENT_ORDER_INVALID"
-        )
-    _validate_manifest_encoding(manifest)
-
-    blobs = bundle["content_store"]["blobs"]
     referenced = sorted(set(_referenced_digests(manifest)))
     subset = {digest: blobs[digest] for digest in referenced if digest in blobs}
     if len(subset) != len(referenced):
@@ -663,6 +721,28 @@ def reconstruct_iteration18_checkpoint(
     ]
     _validate_iteration18_checkpoint(parent)
     return parent
+
+
+def reconstruct_iteration18_checkpoints(
+    bundle: Mapping[str, Any],
+) -> tuple[Mapping[str, Any], Mapping[str, Any]]:
+    reconstructed = _verify_bundle(bundle)
+    return (
+        reconstructed[EARLIER_CHECKPOINT_STEPS],
+        reconstructed[LATER_CHECKPOINT_STEPS],
+    )
+
+
+def reconstruct_iteration18_checkpoint(
+    bundle: Mapping[str, Any], completed_steps: int
+) -> Mapping[str, Any]:
+    completed_steps = int(completed_steps)
+    reconstructed = _verify_bundle(bundle)
+    if completed_steps not in reconstructed:
+        raise Pass215Iteration20ValidationError(
+            "PASS215_I20_CHECKPOINT_MANIFEST_NOT_UNIQUE"
+        )
+    return reconstructed[completed_steps]
 
 
 def _semantic_checkpoint_root(checkpoint: Mapping[str, Any]) -> str:
@@ -718,11 +798,8 @@ def execute_shared_checkpoint_terminal_benchmark(
     bundle, metrics = build_shared_checkpoint_bundle(
         (earlier_checkpoint, later_checkpoint)
     )
-    reconstructed_earlier = reconstruct_iteration18_checkpoint(
-        bundle, EARLIER_CHECKPOINT_STEPS
-    )
-    reconstructed_later = reconstruct_iteration18_checkpoint(
-        bundle, LATER_CHECKPOINT_STEPS
+    reconstructed_earlier, reconstructed_later = reconstruct_iteration18_checkpoints(
+        bundle
     )
     if reconstructed_earlier != earlier_checkpoint:
         raise Pass215Iteration20ValidationError(

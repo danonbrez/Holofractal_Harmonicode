@@ -34,7 +34,7 @@ The restart-state commit must contain only the new Iteration 20 runtime, tool, t
 - zero restore replays at both checkpoints;
 - `pass216_status=RESERVED_NUMBER_NO_PASS` and `next_implemented_pass=217`.
 
-The authenticated two-process source execution is frozen with 237 cumulative controls, 36 reused unique chunks, 28,375,966 reused compressed bytes, 125,510,422 later incremental compressed bytes, shared-store root `b7a9eb1678f263f20c5b61c0d9d3f01b76b152e2786b7e887ecb8265cbe454da`, Pass 215 completion root `3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a`, evidence root `5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e`, and receipt `rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM`.
+The authenticated two-process source execution is frozen with 240 cumulative controls, 36 reused unique chunks, 28,375,966 reused compressed bytes, 125,510,422 later incremental compressed bytes, shared-store root `b7a9eb1678f263f20c5b61c0d9d3f01b76b152e2786b7e887ecb8265cbe454da`, Pass 215 completion root `3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a`, evidence root `5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e`, and receipt `rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM`.
 
 ## Closure procedure
 
