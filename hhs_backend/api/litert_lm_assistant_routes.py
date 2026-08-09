@@ -52,10 +52,14 @@ async def assistant_status() -> Dict[str, Any]:
     status = await asyncio.to_thread(service.status)
     if status.get("online") and status.get("ok"):
         return status
-    # A fresh production process has an intentionally empty provider-health cache.
-    # Prime it once through the bounded health path so /status reports the actual
-    # installation-ready native/Gemma provider instead of remaining degraded.
-    return await service.health()
+
+    # The repository-native provider has no external network liveness dependency:
+    # its health path closes over the local installation contract and model registry.
+    # Prime only that fallback here so the cheap UI status route cannot inherit the
+    # configured Gemma/LiteRT provider timeout. The normal production status method
+    # then recomputes provider selection and its Hash72 root from the cached result.
+    await service._provider_health("native", service.native_service, force=False)
+    return await asyncio.to_thread(service.status)
 
 
 @router.get("/health")
