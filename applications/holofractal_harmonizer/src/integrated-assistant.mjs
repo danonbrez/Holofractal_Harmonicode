@@ -7,6 +7,7 @@ let providerTimer = null;
 let focusTimer = null;
 let refreshPromise = null;
 let lastRefreshAt = 0;
+let explorerAssistantBound = false;
 const REFRESH_COOLDOWN_MS = 5000;
 
 function syncCommandState() {
@@ -143,13 +144,19 @@ function mountPersistentLauncher() {
   document.body.append(button);
 }
 
-function rebindExplorerAssistant() {
-  const original = $('#assistant-home');
-  if (!original || original.dataset.hhsIntegratedAssistantBound === 'true') return;
-  const replacement = original.cloneNode(true);
-  replacement.dataset.hhsIntegratedAssistantBound = 'true';
-  original.replaceWith(replacement);
-  replacement.onclick = openIntegratedAssistant;
+function bindExplorerAssistant() {
+  if (explorerAssistantBound) return;
+  explorerAssistantBound = true;
+  document.addEventListener('click', (event) => {
+    const launcher = event.target?.closest?.('#assistant-home');
+    if (!launcher) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    launcher.dataset.hhsIntegratedAssistantBound = 'true';
+    openIntegratedAssistant();
+  }, true);
+  const current = $('#assistant-home');
+  if (current) current.dataset.hhsIntegratedAssistantBound = 'true';
 }
 
 function bindKeyboard() {
@@ -185,7 +192,7 @@ export function initIntegratedAssistant() {
   if (initialized && window.HHSIntegratedAssistant) return window.HHSIntegratedAssistant;
   initialized = true;
   moveAssistantIntoDrawer();
-  rebindExplorerAssistant();
+  bindExplorerAssistant();
   mountDesktopCommand();
   mountMobileCommand();
   mountPersistentLauncher();
@@ -201,6 +208,7 @@ export function initIntegratedAssistant() {
     get isOpen() { return assistantOpen; },
     assistant_remains_advisory: true,
     ide_remains_primary_surface: true,
+    explorer_launcher_delegated: true,
     status_refresh_deduplicated: true,
     status_refresh_cooldown_ms: REFRESH_COOLDOWN_MS,
   });
