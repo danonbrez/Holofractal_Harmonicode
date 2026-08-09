@@ -1,0 +1,52 @@
+name: Pass 216 Contract Alignment
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass216/**'
+      - 'docs/pass216/**'
+      - 'tests/test_pass216_contract_alignment.py'
+      - 'scripts/run_pass216_contract_alignment_validation.sh'
+      - '.github/workflows/pass216-contract-alignment.yml'
+  push:
+    branches:
+      - main
+      - agent/pass216-optimization-compression-hydration-acceleration
+    paths:
+      - 'contracts/pass216/**'
+      - 'docs/pass216/**'
+      - 'tests/test_pass216_contract_alignment.py'
+      - 'scripts/run_pass216_contract_alignment_validation.sh'
+      - '.github/workflows/pass216-contract-alignment.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  alignment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate bound parent and downstream no-repeat rules
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass216-contract-alignment"
+          bash scripts/run_pass216_contract_alignment_validation.sh \
+            | tee "$RUNNER_TEMP/pass216-contract-alignment/validation.log"
+      - name: Retain alignment validation log
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass216-contract-alignment-${{ github.run_id }}
+          path: ${{ runner.temp }}/pass216-contract-alignment/validation.log
+          if-no-files-found: error
