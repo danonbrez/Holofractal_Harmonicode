@@ -1,0 +1,91 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_7_CONTRACT_V1",
+  "contract": "HHS-P215-I7-EXACT-SYMBOLIC-COORDINATE-BLOCK-FORWARD",
+  "pass": 215,
+  "iteration": 7,
+  "version": "1.0.0-iteration7",
+  "objective": "Execute the frozen authenticated Iteration 6 sequence-length-one blk.0 dependency graph at coordinate level as a deterministic hash-addressed exact symbolic DAG, using immutable source-bound Q4_0 row transition generators and exact closed-form nonlinear transitions, and materialize all 288 terminal coordinate roots without numerical transcendental approximation or runtime/canonical mutation.",
+  "inherits": {
+    "iteration6_validated_head": "684a06a54d6b1282fd549f97f99095724f4452cc",
+    "iteration6_validated_tree": "86b5e7e5e70de09fb5084b76a2f40cb1855352f9",
+    "iteration6_block_graph_root_hash216": "ab4e9d2310936652fdeb049276e08bbc0b9e803787c91ef96713f49bfb1b7c06",
+    "iteration6_suite_root_hash216": "ea8c31224dca961ad9afdce8431509cb93f4d74a8209dd714664edc0881dc9b5",
+    "iteration6_evidence_root_hash216": "85e0a02a70db8330c808a771bf1fbf6084802074b48a4d1b6f990768e23f133a",
+    "iteration6_receipt_hash72": "D*7BmWaC!cnAcSZGhYBHad*pf!J/xZL2!8Wyto8hczrq32GAD98-n8W0>w/Hp4GGusIBKzZJ",
+    "iteration6_artifact_sha256": "a20b7e75d506943f22bd3d14a5f3b3f92885a88132f978290e827ae4155f6495",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e"
+  },
+  "authenticated_workload": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "block": "blk.0",
+    "sequence_length": 1,
+    "embedding_width": 288,
+    "ffn_width": 768,
+    "head_count": 6,
+    "head_dimension": 48
+  },
+  "execution_model": {
+    "coordinate_representation": "HASH_ADDRESSED_EXACT_SYMBOLIC_DAG",
+    "q4_0_linear_transition": "SOURCE_SHA_AND_IMMUTABLE_DESCRIPTOR_BOUND_FACTORED_ROW_GENERATOR",
+    "q4_0_row_semantic_form": "sum_j(exact_q4_weight[row,j]*input[j])",
+    "nonlinear_semantics": "ITERATION5_EXACT_CLOSED_FORM_SYMBOLIC",
+    "rope_position": 0,
+    "single_token_softmax": "EXACT_IDENTITY",
+    "terminal_coordinate_count": 288,
+    "parameter_count_is_not_execution_cost": true
+  },
+  "contracted_linear_work": {
+    "row_transitions": 2976,
+    "logical_weight_products_represented": 995328,
+    "logical_accumulation_additions_represented": 992352,
+    "expanded_dense_expression_tree_required": false
+  },
+  "constraints": {
+    "authenticated_iteration6_block_graph_inherited_unchanged": true,
+    "coordinate_level_complete_block_forward_executed": true,
+    "symbolic_coordinate_forward_materialized": true,
+    "complete_sequence_length_one_blk0_forward_executed": true,
+    "final_288_coordinate_roots_materialized": true,
+    "factored_q4_0_symbolic_row_transitions_executed": true,
+    "exact_closed_form_nonlinear_transitions_executed": true,
+    "general_multi_token_transformer_layer_forward_executed": false,
+    "full_transformer_layer_forward_executed": false,
+    "full_model_forward_executed": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "approximate_transcendental_evaluation_performed": false,
+    "canonical_float_interpretation_forbidden": true,
+    "evidence_float_numbers_forbidden": true,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false,
+    "source_weight_mutation_forbidden": true,
+    "arbitrary_compression_claimed": false,
+    "fifty_billion_desktop_feasibility_claimed": false
+  },
+  "exact_controls": [
+    "Q4_0_FACTORED_ROW_SEMANTICS_MATCH_ITERATION4_EXACT_EXECUTION_ON_SELECTED_REAL_ROWS",
+    "ROPE_POSITION_ZERO_IS_EXACT_IDENTITY",
+    "SINGLE_TOKEN_SOFTMAX_IS_EXACT_IDENTITY",
+    "ITERATION6_GRAPH_SUITE_EVIDENCE_AND_RECEIPT_ROOTS_ARE_BOUND",
+    "CROSS_PROCESS_FINAL_COORDINATE_ROOT_REPLAY"
+  ],
+  "required_validation": [
+    "iteration6_exact_head_tree_graph_suite_evidence_receipt_and_artifact_are_bound",
+    "authenticated_model_sha256_matches_iterations2_through6",
+    "all_twenty_one_graph_stages_are_executed_in_contracted_order",
+    "all_2976_q4_0_row_transitions_are_source_and_descriptor_bound",
+    "logical_linear_work_counts_match_contracted_geometry",
+    "both_rmsnorm_stages_use_real_exact_norm_weights",
+    "silu_is_materialized_as_exact_closed_form_symbolic_exp_inverse_and_product",
+    "terminal_residual_ffn_contains_exactly_288_coordinate_roots",
+    "evidence_contains_no_json_float_numbers",
+    "independent_process_replay_matches_final_output_suite_evidence_and_receipt_roots",
+    "multi_token_full_model_dense_replacement_and_runtime_canonical_mutation_claims_remain_false"
+  ],
+  "completion_gate": "Iteration 7 closes only when the exact Iteration 6 frozen roots remain bound, the authenticated real model produces deterministic coordinate roots through all 21 blk.0 stages, the terminal residual_ffn exposes exactly 288 symbolic coordinate roots, the factored Q4_0 row semantics are checked against Iteration 4 exact rational execution, contracted logical work counts close, independent-process replay matches all terminal roots, cumulative Iterations 1-7 validation passes, and no multi-token/full-model/dense-replacement/runtime-mutation/canonical-mutation/migration claim is promoted."
+}

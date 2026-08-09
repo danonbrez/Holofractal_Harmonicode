@@ -1,0 +1,174 @@
+name: Pass 215 Iteration 20 Shared Checkpoint Terminal Closure
+
+on:
+  push:
+    branches: [agent/pass215-iteration20-terminal-closure]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py'
+      - 'hhs_backend/runtime/hhs_pass215_iteration*.py'
+      - 'tools/pass215_iteration20_shared_checkpoint_terminal.py'
+      - 'tools/pass215_iteration*.py'
+      - 'tests/test_hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py'
+      - 'tests/test_hhs_pass215_iteration*.py'
+      - 'scripts/run_pass215_iteration20_validation.sh'
+      - 'scripts/run_pass215_iteration*_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json'
+      - 'contracts/pass215/PASS_215_ITERATION_*_CONTRACT.json'
+      - 'contracts/pass215/PASS_215_BENCHMARK_PROFILE.json'
+      - 'evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json'
+      - 'evidence/pass215/PASS_215_ITERATION_20_SOURCE_EVIDENCE.json'
+      - 'docs/pass215/ITERATION_20_SHARED_CHECKPOINT_TERMINAL_CLOSURE.md'
+      - 'docs/pass215/ITERATION_20_RESTART_RECORD.md'
+      - '.github/workflows/pass215-iteration20-shared-checkpoint-terminal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  iteration20:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PASS215_I20_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_I20_PROMPT: 'Hello world!'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I20_VALIDATED_HEAD=$(git rev-parse HEAD)"
+          echo "PASS215_I20_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 19 parent and terminal handoff
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json').read_text())
+          assert c['inherits']['iteration19_closure_head']=='04745e6592f2d3bb8f227cc2dec61e25a66145d8'
+          assert c['inherits']['iteration19_closure_tree']=='4fb5ead812c564b423f7a13155988e5384c53d0e'
+          assert c['inherits']['iteration19_closure_run']==31288268305
+          assert c['inherits']['iteration19_content_store_root_hash216']=='a89677a460972945360e1a202b0ba2cf05a96b8a349427d9c03ba7298e043c06'
+          assert c['requirements']['unchanged_chunks_must_be_reused_across_checkpoint_generations'] is True
+          assert c['requirements']['incremental_later_compressed_blob_bytes_must_be_quantified_exactly'] is True
+          assert c['requirements']['validation_must_recompute_reuse_completion_suite_evidence_and_receipt_commitments'] is True
+          assert c['output_projection_pruning_assessment']['status']=='EVALUATED_NOT_AUTHORIZED'
+          assert c['output_projection_pruning_assessment']['candidates_pruned']==0
+          assert c['pass_completion']['pass215_contracted_benchmark_implementation_complete'] is True
+          assert c['pass_completion']['terminal_iteration']==20
+          assert c['downstream_transition']['pass216_status']=='RESERVED_NUMBER_NO_PASS'
+          assert c['downstream_transition']['pass216_implementation_required'] is False
+          assert c['downstream_transition']['pass216_execution_required'] is False
+          assert c['downstream_transition']['pass216_artifacts_required'] is False
+          assert c['downstream_transition']['next_implemented_pass']==217
+          assert c['source_execution'] is not None
+          assert c['constraints']['canonical_float_interpretation_performed'] is False
+          assert c['constraints']['unbounded_or_general_generation_claimed'] is False
+          PY
+      - name: Run cumulative Iteration 1-20 dependency-scoped validation
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"; mkdir -p "$ROOT"
+          PASS215_I20_TEST_COUNT_FILE="$ROOT/CUMULATIVE_TEST_COUNT.txt" bash scripts/run_pass215_iteration20_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"; mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 -o "$ROOT/stories15M-q4_0.gguf" 'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I20_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Execute shared-checkpoint terminal process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"
+          python tools/pass215_iteration20_shared_checkpoint_terminal.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I20_PROMPT" --expected-sha256 "$PASS215_I20_MODEL_SHA256" --bundle-output "$ROOT/PASS_215_ITERATION_20_A_SHARED_BUNDLE.json" --output "$ROOT/PASS_215_ITERATION_20_A.json"
+          python tools/pass215_iteration20_shared_checkpoint_terminal.py --validate "$ROOT/PASS_215_ITERATION_20_A.json" --output "$ROOT/PASS_215_ITERATION_20_A_VALIDATION.json"
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"
+          python tools/pass215_iteration20_shared_checkpoint_terminal.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I20_PROMPT" --expected-sha256 "$PASS215_I20_MODEL_SHA256" --output "$ROOT/PASS_215_ITERATION_20_B.json"
+          python tools/pass215_iteration20_shared_checkpoint_terminal.py --validate "$ROOT/PASS_215_ITERATION_20_B.json" --output "$ROOT/PASS_215_ITERATION_20_B_VALIDATION.json"
+          python tools/pass215_iteration20_shared_checkpoint_terminal.py --compare-replay "$ROOT/PASS_215_ITERATION_20_A.json" "$ROOT/PASS_215_ITERATION_20_B.json" --output "$ROOT/PASS_215_ITERATION_20_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce frozen source identities and emit terminal summary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'pass215-i20'
+          evidence=json.loads((root/'PASS_215_ITERATION_20_A.json').read_text())
+          replay=json.loads((root/'PASS_215_ITERATION_20_CROSS_PROCESS_VALIDATION.json').read_text())
+          contract=json.loads(Path('contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json').read_text())
+          checkpoints=evidence['sequential_checkpoints']; metrics=checkpoints['reuse_metrics']
+          control=evidence['bounded_generation_control']; transition=evidence['downstream_transition']
+          assert control['selected_token_ids']==[450,6575,471,528,2827,322,278]
+          assert control['termination_reason']=='MAX_NEW_TOKENS'
+          assert checkpoints['later_checkpoint_root_hash216']=='bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f'
+          assert metrics['reused_unique_chunk_count'] > 0
+          assert metrics['reused_compressed_blob_bytes'] > 0
+          assert metrics['incremental_later_compressed_blob_bytes'] < metrics['later_standalone_compressed_blob_bytes']
+          assert metrics['shared_store_savings_bytes'] > 0
+          assert checkpoints['earlier_restore_prefix_forward_replays']==0
+          assert checkpoints['earlier_restore_generated_forward_replays']==0
+          assert checkpoints['later_restore_prefix_forward_replays']==0
+          assert checkpoints['later_restore_generated_forward_replays']==0
+          assert evidence['output_projection_pruning_assessment']['candidates_pruned']==0
+          assert evidence['pass_completion']['pass215_contracted_benchmark_implementation_complete'] is True
+          assert transition['pass216_status']=='RESERVED_NUMBER_NO_PASS'
+          assert transition['next_implemented_pass']==217
+          assert replay['cross_process_replay'] and replay['semantic_exactness']
+          measured_count=int((root/'CUMULATIVE_TEST_COUNT.txt').read_text().strip())
+          summary={
+            'cumulative_test_count': measured_count,
+            'selected_token_ids': control['selected_token_ids'],
+            'selected_tokens': control['selected_tokens'],
+            'termination_reason': control['termination_reason'],
+            'earlier_checkpoint_canonical_bytes': checkpoints['earlier_checkpoint_canonical_bytes'],
+            'later_checkpoint_canonical_bytes': checkpoints['later_checkpoint_canonical_bytes'],
+            'earlier_checkpoint_root_hash216': checkpoints['earlier_checkpoint_root_hash216'],
+            'later_checkpoint_root_hash216': checkpoints['later_checkpoint_root_hash216'],
+            'checkpoint_manifest_roots_hash216': checkpoints['checkpoint_manifest_roots_hash216'],
+            'shared_content_store_root_hash216': checkpoints['shared_content_store_root_hash216'],
+            'shared_checkpoint_bundle_root_hash216': checkpoints['shared_checkpoint_bundle_root_hash216'],
+            **metrics,
+            'sequential_checkpoint_reuse_root_hash216': checkpoints['sequential_checkpoint_reuse_root_hash216'],
+            'pass215_terminal_completion_root_hash216': evidence['pass215_terminal_completion_root_hash216'],
+            'suite_root_hash216': evidence['shared_checkpoint_terminal_suite_root_hash216'],
+            'evidence_root_hash216': evidence['evidence_root_hash216'],
+            'receipt_hash72': evidence['receipt_hash72'],
+            'pass216_status': transition['pass216_status'],
+            'next_implemented_pass': transition['next_implemented_pass'],
+            'cross_process_replay': replay['cross_process_replay'],
+            'semantic_exactness': replay['semantic_exactness']}
+          expected=contract['source_execution']
+          assert summary==expected, {'actual':summary,'expected':expected}
+          (root/'PASS_215_ITERATION_20_SOURCE_IDENTITIES.json').write_text(json.dumps(summary,indent=2,sort_keys=True,ensure_ascii=False)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True,ensure_ascii=False))
+          PY
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i20"; git rev-parse HEAD > "$ROOT/VALIDATED_HEAD.txt"; git rev-parse HEAD^{tree} > "$ROOT/VALIDATED_TREE.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration20-shared-checkpoint-terminal
+          path: |
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_A.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_A_SHARED_BUNDLE.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_B.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i20/PASS_215_ITERATION_20_SOURCE_IDENTITIES.json
+            evidence/pass215/PASS_215_ITERATION_20_SOURCE_EVIDENCE.json
+            ${{ runner.temp }}/pass215-i20/CUMULATIVE_TEST_COUNT.txt
+            ${{ runner.temp }}/pass215-i20/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i20/VALIDATED_TREE.txt
+          if-no-files-found: error

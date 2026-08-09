@@ -1,0 +1,202 @@
+name: Pass 215 Iteration 8 Multi-Token Causal Attention
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_8_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration8_multi_token_causal_attention_v1.py'
+      - 'tools/pass215_iteration8_multi_token_causal_attention.py'
+      - 'tests/test_hhs_pass215_iteration8_multi_token_causal_attention_v1.py'
+      - 'scripts/run_pass215_iteration8_validation.sh'
+      - 'evidence/pass215/PASS_215_ITERATION_8_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration8-multi-token-causal-attention.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_8_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration8_multi_token_causal_attention_v1.py'
+      - 'tools/pass215_iteration8_multi_token_causal_attention.py'
+      - 'tests/test_hhs_pass215_iteration8_multi_token_causal_attention_v1.py'
+      - 'scripts/run_pass215_iteration8_validation.sh'
+      - 'evidence/pass215/PASS_215_ITERATION_8_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration8-multi-token-causal-attention.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I8_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration8:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I8_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I8_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 7 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_8_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          assert inherits['iteration7_closure_head'] == '5308b37a00232b5ddff058a6dbc048795c279ee8'
+          assert inherits['iteration7_closure_tree'] == '956ac4ad178e179d602192d907362ad176624bd0'
+          assert inherits['iteration7_stage_suite_root_hash216'] == '7f38ddf3447fde09b3ce91e54198ae43ba0fbcc72738ea668657d2bcef1cb30b'
+          assert inherits['iteration7_final_output_root_hash216'] == '268426ee9d97b92c0d43c651bfddb5c99a0a9d109b953b881782681d45719244'
+          assert inherits['iteration7_symbolic_dag_root_hash216'] == '5371aa51686d039f83ffb6f94fb297c29758c8f08db3e715c6d5abc62cb39b09'
+          assert inherits['iteration7_suite_root_hash216'] == '61bc64a3dbb0dd9c44bceef66404c2c5c5d5b246a000f9c23c189f9179535b85'
+          assert inherits['iteration7_evidence_root_hash216'] == '4b9951e2df79cf5685673b6558fbb5440cdf1b04dfe10989785fd5ac69166c33'
+          assert constraints['contracted_sequence_length_four_blk0_forward_executed'] is True
+          assert constraints['multi_token_symbolic_coordinate_forward_materialized'] is True
+          assert constraints['nonzero_position_rope_executed_symbolically'] is True
+          assert constraints['causal_attention_mask_enforced_by_edge_construction'] is True
+          assert constraints['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert constraints['full_model_forward_executed'] is False
+          assert constraints['dense_forward_replaced'] is False
+          assert constraints['numeric_transcendental_evaluation_performed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-8 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration8_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i8"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I8_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute multi-token causal forward process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i8"
+          python tools/pass215_iteration8_multi_token_causal_attention.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I8_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_8_A.json"
+          python tools/pass215_iteration8_multi_token_causal_attention.py \
+            --validate "$ROOT/PASS_215_ITERATION_8_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_8_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i8"
+          python tools/pass215_iteration8_multi_token_causal_attention.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I8_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_8_B.json"
+          python tools/pass215_iteration8_multi_token_causal_attention.py \
+            --validate "$ROOT/PASS_215_ITERATION_8_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_8_B_VALIDATION.json"
+          python tools/pass215_iteration8_multi_token_causal_attention.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_8_A.json" "$ROOT/PASS_215_ITERATION_8_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_8_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce multi-token causal closure and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i8'
+          evidence = json.loads((root / 'PASS_215_ITERATION_8_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_8_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I8_MODEL_SHA256']
+          assert evidence['forward_geometry']['sequence_length'] == 4
+          execution = evidence['multi_token_coordinate_forward']
+          assert execution['final_output_token_count'] == 4
+          assert execution['final_output_coordinate_count'] == 1152
+          assert len(execution['final_output_token_roots']) == 4
+          linear = execution['linear_transition_work']
+          assert linear == {
+              'row_transitions': 11904,
+              'logical_weight_products': 3981312,
+              'logical_accumulation_additions': 3969408,
+          }
+          attention = execution['attention_transition_work']
+          assert attention['causal_qk_edges'] == 60
+          assert attention['qk_dot_logical_products'] == 2880
+          assert attention['qk_dot_logical_additions'] == 2820
+          assert attention['softmax_shifted_exponentials'] == 36
+          assert attention['weighted_value_logical_products'] == 2880
+          assert attention['weighted_value_logical_additions'] == 1728
+          assert attention['rope_nonzero_position_pair_rotations_q_and_k'] == 864
+          causal = execution['causal_controls']
+          assert causal['future_edges_materialized'] is False
+          assert causal['edge_set_exact'] is True
+          assert causal['softmax_denominators_use_causal_terms_only'] is True
+          assert causal['singleton_softmax_exact_identity'] is True
+          rope = execution['rope_controls']
+          assert rope['position_zero_exact_identity'] is True
+          assert rope['all_nonzero_positions_change_q_and_k_roots'] is True
+          claims = evidence['claims']
+          assert claims['contracted_sequence_length_four_blk0_forward_executed'] is True
+          assert claims['cross_token_qk_scores_materialized'] is True
+          assert claims['exact_causal_softmax_ratios_materialized'] is True
+          assert claims['general_arbitrary_sequence_length_transformer_forward_executed'] is False
+          assert claims['token_embedding_lookup_executed'] is False
+          assert claims['full_model_forward_executed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert claims['numeric_transcendental_evaluation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['final_output_root_hash216'] == execution['final_output_root_hash216']
+          assert replay['causal_attention_root_hash216'] == execution['causal_attention_root_hash216']
+          print('PASS215_I8_STAGE_SUITE_ROOT=' + execution['executed_stage_suite_root_hash216'])
+          print('PASS215_I8_CAUSAL_ATTENTION_ROOT=' + execution['causal_attention_root_hash216'])
+          print('PASS215_I8_FINAL_OUTPUT_ROOT=' + execution['final_output_root_hash216'])
+          print('PASS215_I8_DAG_ROOT=' + execution['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I8_SUITE_ROOT=' + evidence['multi_token_attention_suite_root_hash216'])
+          print('PASS215_I8_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I8_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 8 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration8-multi-token-causal-attention-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pass215-i8/PASS_215_ITERATION_8_A.json
+            ${{ runner.temp }}/pass215-i8/PASS_215_ITERATION_8_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i8/PASS_215_ITERATION_8_B.json
+            ${{ runner.temp }}/pass215-i8/PASS_215_ITERATION_8_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i8/PASS_215_ITERATION_8_CROSS_PROCESS_VALIDATION.json
+          retention-days: 30

@@ -1,0 +1,116 @@
+name: Pass 215 Iteration 2 Open Transformer Container
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_2_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration2_open_transformer_container_v1.py'
+      - 'tools/pass215_iteration2_open_transformer_container.py'
+      - 'tests/test_hhs_pass215_iteration2_open_transformer_container_v1.py'
+      - 'scripts/run_pass215_iteration2_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/**'
+      - '.github/workflows/pass215-iteration2-open-transformer-container.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_2_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration2_open_transformer_container_v1.py'
+      - 'tools/pass215_iteration2_open_transformer_container.py'
+      - 'tests/test_hhs_pass215_iteration2_open_transformer_container_v1.py'
+      - 'scripts/run_pass215_iteration2_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/**'
+      - '.github/workflows/pass215-iteration2-open-transformer-container.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I2_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Validate frozen Pass 214 instrument binding
+        run: |
+          test "$(git hash-object contracts/pass215/PASS_215_BENCHMARK_PROFILE.json)" = "b458d674a75a4cfc64a32b9203dd693e3603576e"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_2_CONTRACT.json').read_text())
+          assert contract['inherits']['pass214_authority_root_hash216'] == 'c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8'
+          assert contract['inherits']['pass215_benchmark_profile_root_hash216'] == 'a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e'
+          assert contract['constraints']['runtime_mutation_authority_promoted'] is False
+          assert contract['constraints']['canonical_mutation_authorized'] is False
+          PY
+      - name: Run cumulative Pass 215 Iteration 1-2 validation
+        run: bash scripts/run_pass215_iteration2_validation.sh
+      - name: Download and verify real open quantized transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i2"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 3 --retry-delay 2 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I2_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Measure real GGUF weight incidence
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i2"
+          python tools/pass215_iteration2_open_transformer_container.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I2_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_2_REAL_GGUF_EVIDENCE.json"
+          python tools/pass215_iteration2_open_transformer_container.py \
+            --validate "$ROOT/PASS_215_ITERATION_2_REAL_GGUF_EVIDENCE.json" \
+            --output "$ROOT/PASS_215_ITERATION_2_REAL_GGUF_VALIDATION.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i2'
+          evidence = json.loads((root / 'PASS_215_ITERATION_2_REAL_GGUF_EVIDENCE.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I2_MODEL_SHA256']
+          assert evidence['source']['expected_sha256_verified'] is True
+          assert evidence['container']['format'] == 'GGUF'
+          assert evidence['claims']['real_open_transformer_measured'] is True
+          assert evidence['claims']['real_open_transformer_weight_bytes_measured'] is True
+          assert evidence['claims']['canonical_float_interpretation_performed'] is False
+          assert evidence['claims']['fifty_billion_desktop_feasibility_claimed'] is False
+          assert evidence['authority']['runtime_mutation_authority_promoted'] is False
+          assert evidence['authority']['canonical_mutation_authorized'] is False
+          assert evidence['accounting']['tensor_payload_bytes'] > 0
+          assert evidence['accounting']['canonical_quantized_or_integer_tensor_bytes'] > 0
+          assert evidence['storage_stream_measurement']['semantic_exactness'] is True
+          assert evidence['canonical_quantized_stream_measurement']['semantic_exactness'] is True
+          PY
+      - name: Retain Iteration 2 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration2-${{ github.run_id }}
+          path: |
+            contracts/pass215/PASS_215_BENCHMARK_PROFILE.json
+            contracts/pass215/PASS_215_ITERATION_1_CONTRACT.json
+            contracts/pass215/PASS_215_ITERATION_2_CONTRACT.json
+            docs/pass215/**
+            ${{ runner.temp }}/pass215-i2/*.json
+          if-no-files-found: error

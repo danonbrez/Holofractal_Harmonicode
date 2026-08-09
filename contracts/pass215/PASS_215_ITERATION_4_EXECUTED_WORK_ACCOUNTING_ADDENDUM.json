@@ -1,0 +1,37 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM_V1",
+  "contract": "HHS-P215-I4-EXACT-Q4-0-LINEAR-OPERATOR-EXECUTION-TRANSITION-COMPLEXITY",
+  "purpose": "Repair-forward the aggregate executed-work formula after the first green hosted gate showed that descriptive capacity counters and one attribution alias were being summed as if they were additional primitive operations. No candidate, vector, tensor, output, authority, or semantic-exactness rule changes.",
+  "first_green_pre_repair_run": 31221256596,
+  "first_green_pre_repair_head": "4cfb8241edd81dd773cb939e1e249d0e4bd8b449",
+  "preserve_pre_repair_evidence": true,
+  "post_hoc_candidate_redefinition": false,
+  "primitive_executed_work_unit_keys": [
+    "block_decodes",
+    "quant_integer_products",
+    "quant_integer_additions",
+    "exact_rational_scale_multiplications",
+    "exact_rational_accumulation_additions",
+    "compiled_descriptor_builds",
+    "compiled_descriptor_hits",
+    "exact_output_cache_hits",
+    "exact_output_cache_misses",
+    "changed_input_coordinates",
+    "delta_output_accumulations",
+    "recovery_work_units"
+  ],
+  "excluded_capacity_or_attribution_keys": {
+    "source_tensor_bytes": "capacity_axis_not_executed_operation",
+    "source_quantization_blocks": "source_population_not_additional_operation",
+    "logical_weights": "source_population_not_additional_operation",
+    "delta_weight_products": "attribution_alias_of_quant_integer_products_not_second_multiplication",
+    "full_output_rows_recomputed": "coverage_annotation_not_additional_operation",
+    "continuation_output_rows_updated": "coverage_annotation_not_additional_operation",
+    "semantic_compare_count": "governance_validation_axis_not_execution_axis",
+    "checkpoint_bytes": "capacity_axis_not_executed_operation"
+  },
+  "governance_work_remains_separately_reported": true,
+  "capacity_metrics_remain_separately_reported": true,
+  "all_raw_work_counters_remain_retained": true,
+  "completion_rule": "Authoritative Iteration 4 work-ratio claims must use primitive_executed_work_units_total under this addendum while retaining the original raw counters and the first-green pre-repair artifact for auditability."
+}

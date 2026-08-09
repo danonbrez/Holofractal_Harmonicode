@@ -1,0 +1,32 @@
+{
+  "authority_boundary": {
+    "canonical_float_interpretation_performed": false,
+    "canonical_mutation_authorized": false,
+    "coordinate_level_complete_block_forward_executed": false,
+    "dense_forward_replaced": false,
+    "full_transformer_layer_forward_executed": false,
+    "migration_active": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "runtime_mutation_authority_promoted": false,
+    "symbolic_coordinate_forward_materialized": false
+  },
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "implemented": [
+    "exact IEEE binary32 and bfloat16 storage-bit to rational decoders",
+    "exact binding of blk.0.attn_norm.weight and blk.0.ffn_norm.weight",
+    "reused Iteration 4 Q4_0 compiler for all seven blk.0 linear descriptors",
+    "21-node authenticated transformer-block dependency graph",
+    "frozen Iteration 5 nonlinear semantic bindings",
+    "Hash216 graph/suite/evidence roots and Hash72 receipt chain",
+    "independent-process replay surface",
+    "dependency-scoped cumulative validation"
+  ],
+  "iteration": 6,
+  "next_action": "Run cumulative Iterations 1-6 validation and authenticated two-process block-graph replay on exact committed head. Repair forward if and only if the Iteration 6 gate exposes a dependency-scoped defect.",
+  "parent_frozen_head": "e384058b1dedbcf7e67ca6bfc9d5c3c8531be58b",
+  "parent_frozen_tree": "45674a23be7b7994b153a53454aec38104fb12df",
+  "pass": 215,
+  "pull_request": 172,
+  "schema": "HHS_PASS_215_ITERATION_6_IMPLEMENTATION_RECORD_V1",
+  "validation_status": "PENDING_REGISTERED_ITERATION6_WORKFLOW"
+}

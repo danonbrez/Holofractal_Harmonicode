@@ -1,0 +1,144 @@
+name: Pass 215 Iteration 19 Content Addressed Checkpoint
+
+on:
+  push:
+    branches: [agent/pass215-transformer-ingestion-benchmark]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_iteration19_content_addressed_checkpoint_v1.py'
+      - 'hhs_backend/runtime/hhs_pass215_iteration19_content_addressed_checkpoint_v2.py'
+      - 'tools/pass215_iteration19_content_addressed_checkpoint.py'
+      - 'tests/test_hhs_pass215_iteration19_content_addressed_checkpoint_v1.py'
+      - 'scripts/run_pass215_iteration19_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_19_CONTRACT.json'
+      - 'evidence/pass215/PASS_215_ITERATION_19_IMPLEMENTATION_RECORD.json'
+      - 'docs/pass215/ITERATION_19_CONTENT_ADDRESSED_CHECKPOINT.md'
+      - 'docs/pass215/ITERATION_19_RESTART_RECORD.md'
+      - '.github/workflows/pass215-iteration19-content-addressed-checkpoint.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  iteration19:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PASS215_I19_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_I19_PROMPT: 'Hello world!'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I19_VALIDATED_HEAD=$(git rev-parse HEAD)"
+          echo "PASS215_I19_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 18 inheritance and compaction authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass215/PASS_215_ITERATION_19_CONTRACT.json').read_text())
+          assert c['inherits']['iteration18_closure_head']=='d89919b1010df0dda46e18cb43b4a6ef913a5615'
+          assert c['inherits']['iteration18_checkpoint_canonical_bytes']==475300933
+          assert c['inherits']['iteration18_checkpoint_root_hash216']=='bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f'
+          assert c['requirements']['reconstruct_iteration18_checkpoint_root_exactly'] is True
+          assert c['requirements']['minimum_compaction_factor_numerator']==2
+          assert c['requirements']['restore_without_prefix_or_generated_forward_replay'] is True
+          assert c['constraints']['canonical_float_interpretation_performed'] is False
+          assert c['constraints']['unbounded_or_general_generation_claimed'] is False
+          PY
+      - name: Run cumulative Iteration 1-19 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration19_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i19"; mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 -o "$ROOT/stories15M-q4_0.gguf" 'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I19_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Execute content-addressed checkpoint process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i19"
+          python tools/pass215_iteration19_content_addressed_checkpoint.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I19_PROMPT" --expected-sha256 "$PASS215_I19_MODEL_SHA256" --checkpoint-output "$ROOT/PASS_215_ITERATION_19_A_CHECKPOINT.json" --output "$ROOT/PASS_215_ITERATION_19_A.json"
+          python tools/pass215_iteration19_content_addressed_checkpoint.py --validate "$ROOT/PASS_215_ITERATION_19_A.json" --output "$ROOT/PASS_215_ITERATION_19_A_VALIDATION.json"
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i19"
+          python tools/pass215_iteration19_content_addressed_checkpoint.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I19_PROMPT" --expected-sha256 "$PASS215_I19_MODEL_SHA256" --checkpoint-output "$ROOT/PASS_215_ITERATION_19_B_CHECKPOINT.json" --output "$ROOT/PASS_215_ITERATION_19_B.json"
+          python tools/pass215_iteration19_content_addressed_checkpoint.py --validate "$ROOT/PASS_215_ITERATION_19_B.json" --output "$ROOT/PASS_215_ITERATION_19_B_VALIDATION.json"
+          python tools/pass215_iteration19_content_addressed_checkpoint.py --compare-replay "$ROOT/PASS_215_ITERATION_19_A.json" "$ROOT/PASS_215_ITERATION_19_B.json" --output "$ROOT/PASS_215_ITERATION_19_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce compaction semantics and emit source identities
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'pass215-i19'
+          e=json.loads((root/'PASS_215_ITERATION_19_A.json').read_text())
+          r=json.loads((root/'PASS_215_ITERATION_19_CROSS_PROCESS_VALIDATION.json').read_text())
+          c=e['content_addressed_checkpoint']; g=e['bounded_generation_control']; p=e['iteration18_semantic_reproduction']
+          assert g['selected_token_ids']==[450,6575,471,528,2827,322,278]
+          assert g['termination_reason']=='MAX_NEW_TOKENS' and g['final_cache_sequence_length']==11
+          assert c['iteration18_checkpoint_canonical_bytes']==475300933
+          assert c['compact_checkpoint_canonical_bytes']*2 <= c['iteration18_checkpoint_canonical_bytes']
+          assert c['iteration18_checkpoint_root_hash216']=='bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f'
+          assert c['restore_prefix_forward_replays']==0 and c['restore_generated_forward_replays']==0
+          assert p['generation_control_root_hash216']=='309a4e102b6f78338a63c086f536f4d3d62429c77709fa4f9fa9b25d3a6ac509'
+          assert p['suite_root_hash216']=='bccf558e206bc996d4647533cf310838e1f13cec1322f98c5f22ab5c1ad190d1'
+          assert r['cross_process_replay'] and r['semantic_exactness']
+          summary={
+            'selected_token_ids':g['selected_token_ids'],
+            'selected_tokens':g['selected_tokens'],
+            'termination_reason':g['termination_reason'],
+            'iteration18_checkpoint_canonical_bytes':c['iteration18_checkpoint_canonical_bytes'],
+            'compact_checkpoint_canonical_bytes':c['compact_checkpoint_canonical_bytes'],
+            'compaction_ratio_numerator':c['compaction_ratio_numerator'],
+            'compaction_ratio_denominator':c['compaction_ratio_denominator'],
+            'packed_payload_bytes':c['packed_payload_bytes'],
+            'unique_compressed_blob_bytes':c['unique_compressed_blob_bytes'],
+            'string_table_entries':c['string_table_entries'],
+            'interned_occurrences':c['interned_occurrences'],
+            'interned_utf8_bytes_avoided':c['interned_utf8_bytes_avoided'],
+            'referenced_chunk_count':c['referenced_chunk_count'],
+            'unique_chunk_count':c['unique_chunk_count'],
+            'iteration18_checkpoint_root_hash216':c['iteration18_checkpoint_root_hash216'],
+            'compact_checkpoint_root_hash216':c['compact_checkpoint_root_hash216'],
+            'content_store_root_hash216':c['content_store_root_hash216'],
+            'compaction_root_hash216':c['compaction_root_hash216'],
+            'iteration18_generation_control_root_hash216':p['generation_control_root_hash216'],
+            'iteration18_suite_root_hash216':p['suite_root_hash216'],
+            'terminal_token_receipt_hash72':g['terminal_token_receipt_hash72'],
+            'suite_root_hash216':e['content_addressed_checkpoint_suite_root_hash216'],
+            'evidence_root_hash216':e['evidence_root_hash216'],
+            'receipt_hash72':e['receipt_hash72']}
+          (root/'PASS_215_ITERATION_19_SOURCE_IDENTITIES.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i19"; git rev-parse HEAD > "$ROOT/VALIDATED_HEAD.txt"; git rev-parse HEAD^{tree} > "$ROOT/VALIDATED_TREE.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration19-content-addressed-checkpoint
+          path: |
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_A.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_A_CHECKPOINT.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_B.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i19/PASS_215_ITERATION_19_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i19/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i19/VALIDATED_TREE.txt
+          if-no-files-found: error
