@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react"
+import { runtimeApplicationRegistry } from "../core/RuntimeApplicationRegistry"
 import { useFetchLatencyTelemetry, useFrameTelemetry } from "../telemetry/useFrontendTelemetry"
 
 type Json = Record<string, unknown>
@@ -45,11 +46,36 @@ export const RuntimeDiagnosticsDrawer: React.FC = () => {
   const [registry, setRegistry] = useState<RegistrySummary | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [applicationQuery, setApplicationQuery] = useState("")
 
   const runtimeEndpoints = useMemo(
     () => network.endpoints.filter((endpoint) => endpoint.url.includes("/api/")),
     [network.endpoints],
   )
+
+  const applications = useMemo(
+    () => runtimeApplicationRegistry.all().slice().sort((a, b) => a.title.localeCompare(b.title)),
+    [],
+  )
+
+  const applicationAuthorityCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const application of applications) {
+      counts.set(application.authority, (counts.get(application.authority) ?? 0) + 1)
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  }, [applications])
+
+  const filteredApplications = useMemo(() => {
+    const query = applicationQuery.trim().toLowerCase()
+    if (!query) return applications
+    return applications.filter((application) => [
+      application.id,
+      application.title,
+      application.authority,
+      application.description ?? "",
+    ].join(" ").toLowerCase().includes(query))
+  }, [applicationQuery, applications])
 
   const loadRegistry = async (): Promise<void> => {
     if (loading) return
@@ -73,6 +99,10 @@ export const RuntimeDiagnosticsDrawer: React.FC = () => {
     if (next && !registry && !loading) void loadRegistry()
   }
 
+  const singletonCount = applications.filter((application) => application.singleton).length
+  const mobileCount = applications.filter((application) => application.mobileSupported).length
+  const experimentalCount = applications.filter((application) => application.experimental).length
+
   return (
     <aside data-testid="hhs-runtime-diagnostics" className="pointer-events-auto w-[min(440px,calc(100vw-1.5rem))] font-mono text-[10px]">
       <button
@@ -92,7 +122,7 @@ export const RuntimeDiagnosticsDrawer: React.FC = () => {
         <div className="mt-2 max-h-[70vh] overflow-auto rounded-xl border border-cyan-950 bg-neutral-950/98 p-3 text-neutral-300 shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between gap-3 border-b border-neutral-900 pb-2">
             <div>
-              <div className="font-semibold text-cyan-200">Frontend + Service Registry diagnostics</div>
+              <div className="font-semibold text-cyan-200">Frontend + Registry diagnostics</div>
               <div className="mt-0.5 text-[9px] text-neutral-600">Read-only projection of existing runtime authority</div>
             </div>
             <button
@@ -139,6 +169,48 @@ export const RuntimeDiagnosticsDrawer: React.FC = () => {
                 </div>
               </>
             ) : !loading && !error ? <div className="text-neutral-600">Registry inventory has not been loaded.</div> : null}
+          </section>
+
+          <section className="mt-3 border-t border-neutral-900 pt-3">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-neutral-500">Application Registry</span>
+              <span className="text-neutral-700">frontend lazy modules</span>
+            </div>
+            <div className="grid grid-cols-4 gap-1.5">
+              <div className="rounded border border-neutral-900 p-2">apps <span className="float-right text-cyan-300">{applications.length}</span></div>
+              <div className="rounded border border-neutral-900 p-2">mobile <span className="float-right">{mobileCount}</span></div>
+              <div className="rounded border border-neutral-900 p-2">single <span className="float-right">{singletonCount}</span></div>
+              <div className="rounded border border-neutral-900 p-2">exp <span className="float-right">{experimentalCount}</span></div>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {applicationAuthorityCounts.map(([authority, count]) => (
+                <span key={authority} className="rounded border border-neutral-900 bg-black/30 px-1.5 py-1 text-neutral-500">{authority} {count}</span>
+              ))}
+            </div>
+            <input
+              value={applicationQuery}
+              onChange={(event) => setApplicationQuery(event.target.value)}
+              placeholder="filter applications"
+              aria-label="Filter registered applications"
+              className="mt-2 w-full rounded border border-neutral-900 bg-black/40 px-2 py-1.5 text-neutral-300 outline-none placeholder:text-neutral-700 focus:border-cyan-950"
+            />
+            <div className="mt-2 space-y-1">
+              {filteredApplications.map((application) => (
+                <div key={application.id} className="rounded border border-neutral-900 px-2 py-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="truncate text-neutral-300">{application.title}</span>
+                    <span className="text-neutral-600">{application.authority}</span>
+                  </div>
+                  <div className="mt-0.5 flex items-center gap-1.5 text-[9px] text-neutral-700">
+                    <span className="truncate" title={application.id}>{application.id}</span>
+                    {application.mobileSupported ? <span>mobile</span> : null}
+                    {application.singleton ? <span>singleton</span> : null}
+                    {application.experimental ? <span>experimental</span> : null}
+                  </div>
+                </div>
+              ))}
+              {filteredApplications.length === 0 ? <div className="text-neutral-700">No registered applications match the filter.</div> : null}
+            </div>
           </section>
 
           <section className="mt-3 border-t border-neutral-900 pt-3">

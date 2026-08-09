@@ -27,6 +27,9 @@ const required = {
     "requires_authority",
     "Observed API latency",
     "Read-only projection of existing runtime authority",
+    "runtimeApplicationRegistry.all()",
+    "Application Registry",
+    "frontend lazy modules",
   ],
   "runtime_os/core/CanonicalRuntimeIDE.tsx": [
     "RuntimeDiagnosticsDrawer",
@@ -44,8 +47,8 @@ for (const [relativePath, needles] of Object.entries(required)) {
 for (const relativePath of Object.keys(required)) {
   const source = fs.readFileSync(path.join(root, relativePath), "utf8")
   if (source.includes("pass217_genesis") || source.includes("/api/runtime/services/dispatch")) {
-    throw new Error(`${relativePath} crosses the Iteration 3 read-only authority boundary`)
+    throw new Error(`${relativePath} crosses the Iteration 4 read-only authority boundary`)
   }
 }
 
-console.log("frontend telemetry + registry diagnostics source verification: PASS")
+console.log("frontend telemetry + service/application registry diagnostics source verification: PASS")
