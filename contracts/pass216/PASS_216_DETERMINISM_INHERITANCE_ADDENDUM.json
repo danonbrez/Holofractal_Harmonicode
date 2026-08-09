@@ -1,10 +1,10 @@
 {
-  "schema": "HHS_PASS_216_DETERMINISM_INHERITANCE_ADDENDUM_V1",
-  "contract": "HHS-P216-DETERMINISM-INHERITANCE-AND-STRICT-MODE-SUNSET",
+  "schema": "HHS_PASS_216_DETERMINISM_INHERITANCE_ADDENDUM_V2",
+  "contract": "HHS-P216-DETERMINISM-INHERITANCE-NATIVE-MATHEMATICAL-TRUTH-AND-STRICT-MODE-SUNSET",
   "pass": 216,
   "status": "AUTHORITATIVE_CONTRACT_ADDENDUM",
   "applies_to": "contracts/pass216/PASS_216_CONTRACT.json",
-  "purpose": "Clarify that deterministic replay is an inherited standing property of the cumulative HHS pass system and that the Pass 214/215 global-strict regime was a temporary whole-stack development proof rather than the origin of determinism.",
+  "purpose": "Establish that deterministic replay and every previously proven native mathematical claim are inherited authoritative truths of the cumulative HHS pass system unless a relevant SHA-256 deterministic integrity gate is triggered, and clarify that the Pass 214/215 global-strict regime was a temporary whole-stack development proof rather than a requirement to re-prove unchanged truths.",
   "standing_pass_system_authority": {
     "deterministic_replay_predates_pass214": true,
     "deterministic_replay_predates_pass215": true,
@@ -13,6 +13,70 @@
     "sha256_authenticated_merge_lineage_is_a_standing_requirement": true,
     "hash_and_receipt_identity_carries_unchanged_authority_forward": true,
     "interpretation": "The repository already contains many independently proven deterministic replay layers because accepted pass transitions are authenticated and merge-gated. Pass 214 and Pass 215 therefore validate cumulative integration of the existing deterministic system rather than establishing determinism for the first time."
+  },
+  "native_mathematical_truth_authority": {
+    "term": "HHS_AUTHORITATIVE_MATHEMATICAL_TRUTH",
+    "definition": "Any native mathematical claim, invariant, identity, mapping, closure relation, exact numerical rule, opcode semantic, reversible transformation, reconstruction identity, or other formal proposition whose required proof or executable witness has passed the HHS deterministic authentication gates and entered the authoritative cumulative lineage.",
+    "status_after_authenticated_merge": "UNDENIABLE_TRUTH_UNLESS_RELEVANT_DETERMINISTIC_GATE_TRIGGERS",
+    "reproof_required_when_authenticated_identity_is_unchanged": false,
+    "recomputation_required_because_a_later_pass_executes": false,
+    "recomputation_required_because_an_unrelated_surface_changes": false,
+    "recomputation_required_because_an_optimization_iteration_begins": false,
+    "inheritance_rule": "A proven native mathematical truth remains authoritative through all later passes while its authenticated identity and required dependency identities remain unchanged.",
+    "covered_claim_classes": [
+      "EXACT_INTEGER_AND_RATIONAL_IDENTITIES",
+      "SYMBOLIC_ALGEBRAIC_INVARIANTS",
+      "MODULAR_AND_LATTICE_IDENTITIES",
+      "VM81_AND_VM5184_ADDRESSING_IDENTITIES",
+      "HASH72_AND_HASH216_COMMITMENT_RULES",
+      "EXACT_OPCODE_SEMANTICS",
+      "REVERSIBLE_TRANSITION_AND_INVERSE_DELTA_RULES",
+      "EXACT_COMPRESSION_AND_RECONSTRUCTION_IDENTITIES",
+      "DETERMINISTIC_HYDRATION_AND_REPLAY_IDENTITIES",
+      "PROVEN_CONSTRAINT_AND_CLOSURE_RELATIONS",
+      "PROVEN_ERROR_DETECTION_AND_CORRECTION_RELATIONS",
+      "PROVEN_AUTHENTICATED_STATE_TRANSITION_RULES"
+    ]
+  },
+  "sha256_deterministic_truth_gate": {
+    "default_state": "CLOSED",
+    "reopen_only_when": [
+      "THE_AUTHENTICATED_SOURCE_IDENTITY_OF_THE_CLAIM_CHANGES",
+      "A_REQUIRED_DEPENDENCY_IDENTITY_CHANGES",
+      "A_SHA256_HASH216_HASH72_OR_RECEIPT_COMMITMENT_MISMATCHES",
+      "A_DETERMINISTIC_REPLAY_INVERSE_OR_RECONSTRUCTION_WITNESS_FAILS",
+      "AN_ERROR_DETECTION_OR_ERROR_CORRECTION_LAYER_REPORTS_DIVERGENCE",
+      "AN_AUTHENTICATED_ROM_CHECKPOINT_OR_REFERENCE_ARTIFACT_IS_MISSING_CORRUPT_OR_INCONSISTENT",
+      "AN_EXPLICIT_SUPERSESSION_CONTRACT_REPLACES_THE_PRIOR_CLAIM"
+    ],
+    "scope_rule": "Triggering the gate reopens only the affected mathematical claim or state transition and its reachable authenticated dependency closure. All unaffected proven truths remain inherited and closed.",
+    "full_system_reproof_required_by_default": false
+  },
+  "integrity_preservation_and_recovery": {
+    "hash216_5184_hydration_rom_role": "AUTHENTICATED_REUSABLE_STATE_AND_RECOVERY_SOURCE",
+    "automatic_error_detection_role": "DETECT_DIVERGENCE_BEFORE_PROMOTION",
+    "automatic_error_correction_role": "RECOVER_AUTHENTICATED_STATE_WHERE_THE_PROVEN_RECOVERY_RELATION_APPLIES",
+    "pqc_security_role": "PROTECT_AND_AUTHENTICATE_STATE_LINEAGE_ACCORDING_TO_THE_PROVEN_PQC_CONTRACTS",
+    "altered_data_must_be_detectable_by_applicable_integrity_layers": true,
+    "altered_data_must_not_be_silently_promoted": true,
+    "recoverable_state_should_be_restored_from_authenticated_authority_instead_of_recomputed_from_genesis": true,
+    "recovery_sources": [
+      "HASH216_5184_HYDRATION_ROM",
+      "AUTHENTICATED_CHECKPOINT",
+      "CONTENT_ADDRESSED_STORE",
+      "ERROR_CORRECTION_WITNESS",
+      "INVERSE_DELTA_OR_REVERSIBLE_STATE_WITNESS",
+      "OTHER_PREVIOUSLY_PROVEN_AUTHENTICATED_SOURCE"
+    ],
+    "recovery_sequence": [
+      "DETECT_IDENTITY_OR_INTEGRITY_DIVERGENCE",
+      "REJECT_DIVERGENT_STATE",
+      "ISOLATE_SMALLEST_AFFECTED_DEPENDENCY_CLOSURE",
+      "RESTORE_FROM_AUTHENTICATED_RECOVERY_SOURCE",
+      "VALIDATE_ONLY_THE_RESTORED_OR_CHANGED_BOUNDARY",
+      "PRESERVE_ALL_UNAFFECTED_AUTHORITATIVE_MATHEMATICAL_TRUTHS"
+    ],
+    "principle": "The combined authenticated hydration ROM, error-detection and correction layers, reversible state machinery, and PQC-protected lineage make continuous re-proof of unchanged truths unnecessary: divergence is detected, isolated, and recovered through the applicable previously proven mechanism."
   },
   "pass214_pass215_role": {
     "classification": "TEMPORARY_GLOBAL_STRICT_INTEGRATION_PROOF_EPOCH",
@@ -30,6 +94,7 @@
     "global_strict_mode_default": false,
     "unchanged_authenticated_identity_requires_reexecution": false,
     "unchanged_authenticated_identity_requires_only_identity_verification": true,
+    "unchanged_native_mathematical_truth_requires_reproof": false,
     "changed_transition_requires_dependency_scoped_exact_validation": true,
     "unaffected_ancestor_layers_are_inherited_without_replay": true,
     "normal_optimized_runtime_is_the_performance_measurement_path": true,
@@ -39,25 +104,28 @@
   },
   "strict_mode_escalation": {
     "allowed_only_when": [
-      "AN_AUTHENTICATED_IDENTITY_CHANGED_AND_THE_DEPENDENCY_BOUNDARY_CANNOT_BE_PROVEN_SMALLER",
+      "A_RELEVANT_SHA256_DETERMINISTIC_TRUTH_GATE_TRIGGERS",
+      "A_CHANGED_AUTHENTICATED_IDENTITY_HAS_NO_SMALLER_PROVABLE_DEPENDENCY_BOUNDARY",
       "A_SCOPED_EQUIVALENCE_WITNESS_FAILS",
-      "A_REFERENCE_ARTIFACT_OR_HASH_CHAIN_IS_MISSING_CORRUPT_OR_INCONSISTENT",
+      "AN_AUTHENTICATED_REFERENCE_OR_RECOVERY_SOURCE_IS_MISSING_CORRUPT_OR_INCONSISTENT",
       "AN_EXPLICIT_MANUAL_FULL_AUDIT_IS_REQUESTED"
     ],
     "forbidden_as_default_reason": [
       "A_PASS_NUMBER_ADVANCED",
       "AN_UNRELATED_FILE_CHANGED",
       "A_PREVIOUSLY_VALIDATED_IDENTITY_IS_UNCHANGED",
+      "A_PREVIOUSLY_PROVEN_NATIVE_MATHEMATICAL_CLAIM_IS_REFERENCED",
       "A_NEW_OPTIMIZATION_ITERATION_STARTED"
     ]
   },
-  "validation_cost_principle": "Validation work must be proportional to the newly changed authenticated transition, not to the historical size of the inherited system.",
-  "optimization_principle": "Pass 216 spends resources on compression, hydration acceleration, cache reuse, memory movement reduction, transition reduction, and runtime optimization rather than repeatedly recomputing already merged deterministic proofs.",
+  "validation_cost_principle": "Validation work must be proportional to the newly changed authenticated transition or triggered truth gate, not to the historical size of the inherited system.",
+  "optimization_principle": "Pass 216 spends resources on compression, hydration acceleration, cache reuse, memory movement reduction, transition reduction, and runtime optimization rather than repeatedly recomputing already merged deterministic proofs or re-proving inherited native mathematical truths.",
   "supersession": {
     "supersedes_any_interpretation_that_pass215_is_the_first_determinism_proof": true,
     "supersedes_any_interpretation_that_global_strict_mode_is_permanent_after_pass215": true,
+    "supersedes_any_interpretation_that_unchanged_native_mathematical_truths_require_continuous_reproof": true,
     "does_not_supersede_pass215_semantic_identities": true,
     "does_not_relax_exactness_for_changed_authoritative_transitions": true,
-    "does_not_remove_sha256_hash216_hash72_or_receipt_authentication": true
+    "does_not_remove_sha256_hash216_hash72_receipt_error_correction_or_pqc_authentication": true
   }
 }
