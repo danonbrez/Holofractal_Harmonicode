@@ -1,0 +1,235 @@
+{
+  "schema": "HHS_PASS_216_CONTRACT_V1",
+  "contract": "HHS-P216-OPTIMIZATION-COMPRESSION-HYDRATION-ACCELERATION",
+  "pass": 216,
+  "status": "CONTRACTED_PARENT_TERMINAL_BINDING_PENDING",
+  "authorization": {
+    "authorized_date": "2026-08-09",
+    "scope": "Optimize the Pass 215 validated deterministic workflow without expanding its semantic authority.",
+    "supersedes": "PASS_215_ITERATION_20_CONTRACT.downstream_transition.pass216_status=RESERVED_NUMBER_NO_PASS",
+    "supersession_scope": "DOWNSTREAM_PASS_NUMBERING_ONLY",
+    "pass215_semantics_modified": false,
+    "pass215_frozen_identities_modified": false
+  },
+  "parent_binding": {
+    "required_parent": "PASS_215_ITERATION_20_TERMINAL_CLOSURE",
+    "candidate_head": "15f8326aa9d5241480965dd123d4078d208b1ae6",
+    "candidate_status": "SOURCE_EXECUTION_VALIDATED_EXACT_HEAD_REPLAY_IN_PROGRESS_AT_CONTRACT_AUTHORING",
+    "candidate_pass215_terminal_completion_root_hash216": "3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a",
+    "candidate_suite_root_hash216": "3be955aecac999e945cdf48df63e0be13d2c353de8e20c6869a2364c2ba72234",
+    "candidate_evidence_root_hash216": "5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e",
+    "candidate_receipt_hash72": "rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM",
+    "final_closure_head": null,
+    "final_closure_tree": null,
+    "final_closure_run": null,
+    "final_closure_job": null,
+    "final_closure_artifact_id": null,
+    "final_closure_artifact_sha256": null,
+    "binding_rule": "Implementation may begin only after these final closure fields are bound to the successful Pass 215 Iteration 20 exact-head terminal replay. No Pass 215 source or evidence is to be rewritten to establish this binding."
+  },
+  "purpose": "Reduce storage, memory movement, hydration work, transition work, repeated computation, cache misses, and runtime overhead for the already validated Pass 215 deterministic transformer workflow while preserving every authoritative output bit and frozen semantic commitment.",
+  "non_goals": {
+    "new_model_semantics": false,
+    "new_generation_authority": false,
+    "new_prompt_or_model_generality": false,
+    "probabilistic_sampling": false,
+    "training_or_weight_update": false,
+    "lossy_authoritative_compression": false,
+    "floating_point_canonical_authority": false,
+    "relaxation_of_strict_argmax": false,
+    "redefinition_of_pass215_reference_outputs": false,
+    "resource_heavy_cumulative_revalidation_as_default": false
+  },
+  "frozen_reference_policy": {
+    "pass215_terminal_artifact_is_reference_fixture": true,
+    "pass215_terminal_roots_are_immutable": true,
+    "reexecute_full_pass215_baseline_by_default": false,
+    "maximum_default_full_pass215_replays_per_pass216_iteration": 0,
+    "baseline_comparison_method": "COMPARE_OPTIMIZED_OUTPUTS_AND_COMMITMENTS_AGAINST_AUTHENTICATED_FROZEN_PASS215_REFERENCE_FIXTURES",
+    "full_parent_replay_allowed_only_if": [
+      "PARENT_REFERENCE_ARTIFACT_MISSING_OR_CORRUPT",
+      "OPTIMIZATION_DIRECTLY_CHANGES_THE_PARENT_SURFACE_BEING_VALIDATED_AND_NO_SMALLER_EQUIVALENCE_WITNESS_EXISTS",
+      "DEPENDENCY_SCOPED_EQUIVALENCE_WITNESS_FAILS",
+      "EXPLICIT_MANUAL_AUDIT_REQUEST"
+    ]
+  },
+  "validation_policy": {
+    "mode": "DEPENDENCY_SCOPED_EQUIVALENCE_AND_PERFORMANCE_VALIDATION",
+    "cumulative_strict_workflow_replay_required": false,
+    "rerun_unaffected_pass215_workflows": false,
+    "rerun_unaffected_pass215_tests": false,
+    "download_authenticated_model_for_unaffected_iterations": false,
+    "changed_surface_exactness_required": true,
+    "changed_surface_negative_tests_required": true,
+    "changed_surface_deterministic_replay_required": true,
+    "cross_process_replay_required_only_when_serialization_cache_or_persistence_changes": true,
+    "full_vocabulary_reexecution_required_only_when_output_projection_or_argmax_candidate_authority_changes": true,
+    "reference_commitment_equality_required": true,
+    "repair_forward": true,
+    "freeze_validated_evidence": true,
+    "validation_failure_rule": "Fail closed on any semantic mismatch. Repair only the impacted optimization surface and its dependency-scoped witnesses."
+  },
+  "authoritative_equivalence": {
+    "require_exact_selected_token_ids": true,
+    "require_exact_selected_tokens": true,
+    "require_exact_termination_reason": true,
+    "require_exact_pass215_terminal_completion_root_hash216": true,
+    "require_exact_inherited_suite_and_evidence_commitments_where_their_semantics_are_unchanged": true,
+    "require_zero_prefix_forward_replay_on_checkpoint_restore": true,
+    "require_zero_generated_forward_replay_on_checkpoint_restore": true,
+    "allow_alternate_internal_representation": true,
+    "alternate_representation_rule": "Any optimized representation must reconstruct or execute to the same authoritative Pass 215 state and outputs before it can be promoted."
+  },
+  "optimization_domains": {
+    "exact_storage_compression": {
+      "enabled": true,
+      "allowed_methods": [
+        "CONTENT_ADDRESSED_DEDUPLICATION",
+        "CONTENT_DEFINED_CHUNKING",
+        "FIELD_AWARE_CHUNKING",
+        "STRING_AND_SYMBOL_INTERNING",
+        "EXACT_DELTA_ENCODING",
+        "EXACT_DICTIONARY_ENCODING",
+        "EXACT_GENERATOR_PLUS_EXCEPTION_REPRESENTATION_WHERE_PROVEN_REVERSIBLE",
+        "STRUCTURAL_DAG_COMMON_SUBEXPRESSION_STORAGE",
+        "IMMUTABLE_BLOB_REUSE_ACROSS_CHECKPOINTS",
+        "DETERMINISTIC_TRANSPORT_COMPRESSION"
+      ],
+      "lossy_authoritative_methods_allowed": false,
+      "arbitrary_model_weight_compression_claim_allowed": false
+    },
+    "hydration_acceleration": {
+      "enabled": true,
+      "requirements": [
+        "HYDRATE_FROM_NEAREST_AUTHENTICATED_CONTENT_ADDRESSED_STATE",
+        "LOAD_ONLY_CHANGED_OR_MISSING_CONTENT",
+        "REUSE_UNCHANGED_CHECKPOINT_CHUNKS",
+        "REUSE_VALIDATED_KV_DAG_VECTOR_AND_ROM_STATE_WHEN_IDENTITY_MATCHES",
+        "PERSIST_MANIFEST_AND_CONTENT_LOOKUP_INDEXES",
+        "FAIL_CLOSED_ON_CONTENT_OR_PARENT_IDENTITY_MISMATCH",
+        "MEASURE_EXACT_INCREMENTAL_BYTES_AND_WORK"
+      ]
+    },
+    "execution_acceleration": {
+      "enabled": true,
+      "allowed_methods": [
+        "EXACT_MEMOIZATION",
+        "COMMON_SUBEXPRESSION_ELIMINATION",
+        "KERNEL_FUSION_WITH_EXACT_OUTPUT_EQUIVALENCE",
+        "DELTA_CONTINUATION",
+        "PREFIX_AND_STATE_REUSE",
+        "INTEGER_OR_SYMBOLIC_LAYOUT_OPTIMIZATION",
+        "SIMD_OR_NATIVE_INTEGER_KERNELS_WITH_BIT_EXACT_EQUIVALENCE",
+        "BRANCH_AND_LOOKUP_REORDERING",
+        "READ_AHEAD_AND_PREFETCH_WITHOUT_SEMANTIC_REORDERING",
+        "ZERO_COPY_OR_MEMORY_MAPPED_IMMUTABLE_BLOBS",
+        "COMPILED_ROM_DESCRIPTOR_REUSE"
+      ]
+    },
+    "vector_cache_and_branch_prediction": {
+      "enabled": true,
+      "requirements": [
+        "HASH216_IDENTITY_REMAINS_AUTHORITATIVE",
+        "CACHE_HIT_MUST_RETURN_PREVIOUSLY_VALIDATED_EXACT_STATE",
+        "CACHE_MISS_MUST_FALL_BACK_TO_EXACT_EXECUTION",
+        "PREDICTION_MAY_CHANGE_WORK_ORDER_NOT_AUTHORITATIVE_RESULT",
+        "NO_FLOATS_IN_AUTHORITATIVE_INDEXING_SCORING_OR_SELECTION"
+      ]
+    },
+    "output_projection_optimization": {
+      "enabled": true,
+      "strict_argmax_preserved": true,
+      "candidate_pruning_allowed_only_with_exact_exclusion_certificate": true,
+      "heuristic_candidate_pruning_allowed": false,
+      "fallback": "FULL_VOCABULARY_CERTIFICATION"
+    },
+    "runtime_surface_consolidation": {
+      "enabled": true,
+      "preferred_implementation": "REUSABLE_LOW_LEVEL_C_OR_CPP_PRIMITIVES_WITH_STABLE_ABI",
+      "python_role": "ORCHESTRATION_TEST_AND_REFERENCE_BINDING_ONLY_WHERE_PRACTICAL",
+      "standalone_application_modules_as_final_architecture": false
+    }
+  },
+  "pass215_terminal_baseline_candidates": {
+    "selected_token_ids": [450, 6575, 471, 528, 2827, 322, 278],
+    "termination_reason": "MAX_NEW_TOKENS",
+    "earlier_checkpoint_canonical_bytes": 413411982,
+    "later_checkpoint_canonical_bytes": 475300933,
+    "earlier_checkpoint_root_hash216": "151113337a143adb29eecfa9cb1f4df41b6458953afb2c5258b97dff5f3643b4",
+    "later_checkpoint_root_hash216": "bff3f18e1324caacdbd610b833b3ebd6ebe35e525821c0ffad349fc81ad9474f",
+    "earlier_standalone_compressed_blob_bytes": 133299554,
+    "later_standalone_compressed_blob_bytes": 153886388,
+    "reused_compressed_blob_bytes": 28375966,
+    "incremental_later_compressed_blob_bytes": 125510422,
+    "separate_stores_compressed_blob_bytes": 287185942,
+    "shared_store_compressed_blob_bytes": 258809976,
+    "shared_store_savings_bytes": 28375966,
+    "reused_unique_chunk_count": 36,
+    "incremental_new_unique_chunk_count": 242,
+    "shared_store_unique_chunk_count": 489,
+    "note": "These are candidate terminal values from the Pass 215 Iteration 20 source execution and become frozen Pass 216 baseline values only after exact-head Iteration 20 closure is bound above."
+  },
+  "authoritative_cost_metrics": {
+    "numeric_policy": "INTEGER_OR_EXACT_RATIONAL_ONLY",
+    "metrics": [
+      "CANONICAL_BYTES_READ",
+      "CANONICAL_BYTES_WRITTEN",
+      "UNIQUE_COMPRESSED_BLOB_BYTES",
+      "INCREMENTAL_HYDRATION_BYTES",
+      "REUSED_BYTES",
+      "CHUNKS_REFERENCED",
+      "CHUNKS_LOADED",
+      "CHUNKS_REUSED",
+      "PRIMITIVE_WORK_UNITS",
+      "SYMBOLIC_TRANSITION_COUNT",
+      "HASH216_LOOKUP_PROBES",
+      "CACHE_HITS",
+      "CACHE_MISSES",
+      "ALLOCATED_BYTES",
+      "PEAK_RESIDENT_BYTES",
+      "CHECKPOINT_RESTORE_FORWARD_REPLAYS",
+      "INTEGER_NANOSECONDS"
+    ],
+    "wall_clock_policy": "INTEGER_NANOSECONDS_MAY_BE_RECORDED_AS_OBSERVATIONAL_PERFORMANCE_EVIDENCE_BUT_DO_NOT_DEFINE_SEMANTIC_AUTHORITY",
+    "hardware_counter_policy": "INTEGER_CPU_CYCLES_CACHE_COUNTERS_AND_BRANCH_COUNTERS_MAY_BE_RECORDED_AS_ENVIRONMENT_SPECIFIC_SECONDARY_EVIDENCE"
+  },
+  "promotion_rule": {
+    "semantic_equivalence": "MANDATORY",
+    "optimization_gain": "AT_LEAST_ONE_PREDECLARED_AUTHORITATIVE_COST_METRIC_MUST_IMPROVE_EXACTLY_OR_THE_CANDIDATE_IS_RECORDED_AS_NO_GAIN_AND_NOT_PROMOTED",
+    "tradeoffs": "Any worsening metric must be disclosed explicitly and accepted only when the contracted objective metric improves and no resource guardrail is violated.",
+    "no_gain_is_valid_result": true,
+    "benchmark_overclaim_forbidden": true
+  },
+  "iteration_strategy": [
+    "I1_FREEZE_PASS215_TERMINAL_REFERENCE_AND_LOW_COST_PROFILER",
+    "I2_EXACT_MULTI_CHECKPOINT_STORAGE_DEDUP_AND_COMPRESSION",
+    "I3_INCREMENTAL_CONTENT_ADDRESSED_HYDRATION_ENGINE",
+    "I4_HASH216_VECTOR_CACHE_LOOKUP_AND_BRANCH_ORDER_OPTIMIZATION",
+    "I5_EXACT_RUNTIME_KERNEL_FUSION_DELTA_AND_STATE_REUSE",
+    "I6_COMPILED_ROM_AND_IMMUTABLE_BLOB_LOAD_PATH_ACCELERATION",
+    "I7_EXACT_OUTPUT_PROJECTION_EXCLUSION_CERTIFICATES_IF_PROVABLE",
+    "I8_COMPOSED_OPTIMIZATION_ABLATION_AND_TERMINAL_PERFORMANCE_CLOSURE"
+  ],
+  "resource_policy": {
+    "default_validation_profile": "FAST_DEPENDENCY_SCOPED",
+    "repeat_expensive_parent_proofs": false,
+    "preserve_and_reuse_existing_authenticated_artifacts": true,
+    "prefer_cached_model_and_reference_fixtures": true,
+    "avoid_duplicate_cross_process_runs_when_persistence_is_unchanged": true,
+    "avoid_full_vocabulary_projection_when_the_changed_surface_does_not_touch_projection_or_argmax": true,
+    "avoid_full_checkpoint_reconstruction_when_the_changed surface can be proven by authenticated chunk or manifest equivalence": false
+  },
+  "constraints": {
+    "canonical_float_interpretation_performed": false,
+    "lossy_authoritative_compression_performed": false,
+    "pass215_reference_outputs_mutated": false,
+    "strict_argmax_weakened": false,
+    "probabilistic_sampling_promoted": false,
+    "unbounded_generation_promoted": false,
+    "arbitrary_prompt_or_model_generality_promoted": false,
+    "training_authority_promoted": false,
+    "gpu_requirement_promoted": false,
+    "runtime_mutation_outside_optimization_scope_authorized": false
+  },
+  "closure_policy": "Each Pass 216 iteration freezes only its new optimization evidence and impacted exact-equivalence witnesses. Do not rerun unaffected Pass 215 closure workflows. Final Pass 216 closure composes the promoted optimizations, reproduces the frozen Pass 215 authoritative outputs from the terminal reference fixture, records exact resource deltas and ablations, and freezes one terminal optimization receipt."
+}
