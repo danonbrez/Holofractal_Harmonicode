@@ -1,6 +1,7 @@
 """FastAPI routes for the production governed HHS assistant interface."""
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
@@ -18,6 +19,11 @@ def _service() -> Any:
         )
         _SERVICE = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
     return _SERVICE
+
+
+async def _async_service() -> Any:
+    """Construct the production assistant without blocking the FastAPI event loop."""
+    return await asyncio.to_thread(_service)
 
 
 class CreateThreadRequest(BaseModel):
@@ -42,12 +48,24 @@ class ExecuteToolRequest(BaseModel):
 
 @router.get("/status")
 async def assistant_status() -> Dict[str, Any]:
-    return _service().status()
+    service = await _async_service()
+    status = await asyncio.to_thread(service.status)
+    if status.get("online") and status.get("ok"):
+        return status
+
+    # The repository-native provider has no external network liveness dependency:
+    # its health path closes over the local installation contract and model registry.
+    # Prime only that fallback here so the cheap UI status route cannot inherit the
+    # configured Gemma/LiteRT provider timeout. The normal production status method
+    # then recomputes provider selection and its Hash72 root from the cached result.
+    await service._provider_health("native", service.native_service, force=False)
+    return await asyncio.to_thread(service.status)
 
 
 @router.get("/health")
 async def assistant_health() -> Dict[str, Any]:
-    return await _service().health()
+    service = await _async_service()
+    return await service.health()
 
 
 @router.get("/tools")

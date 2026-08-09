@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -48,6 +49,11 @@ async def invoke(app, path: str) -> tuple[int, dict[bytes, bytes], dict[str, Any
         if item["type"] == "http.response.body"
     )
     return start["status"], dict(start["headers"]), json.loads(body)
+
+
+def test_production_gateway_defaults_runtime_clocks_to_quiescent():
+    assert os.environ.get("HHS_RUNTIME_AUTO_TICK") == "0"
+    assert os.environ.get("HHS_COGNITION_AUTO_TICK") == "0"
 
 
 def test_production_status_catalog_matches_deployed_routes():

@@ -13,6 +13,7 @@ HHS_CERT_NAME="${HHS_CERT_NAME:-hhs-production-ip}"
 HHS_CERTBOT="${HHS_CERTBOT:-/opt/certbot/bin/certbot}"
 HHS_BACKEND="${HHS_BACKEND:-http://127.0.0.1:8080}"
 HHS_HEALTH_PATH="${HHS_HEALTH_PATH:-/api/health}"
+HHS_ACME_WEBROOT="${HHS_ACME_WEBROOT:-/var/www/letsencrypt}"
 HHS_TIMER_SCHEDULE="${HHS_TIMER_SCHEDULE:-*-*-* 00,06,12,18:17:00}"
 HHS_SKIP_FRONTEND_DEPLOY="${HHS_SKIP_FRONTEND_DEPLOY:-0}"
 HHS_RUN_RENEW_DRY_RUN="${HHS_RUN_RENEW_DRY_RUN:-0}"
@@ -88,6 +89,10 @@ find_hhs_nginx_site() {
   readlink -f "${candidate}"
 }
 
+prepare_acme_webroot() {
+  install -d -m 0755 "${HHS_ACME_WEBROOT}/.well-known/acme-challenge"
+}
+
 write_nginx_configuration() {
   local site_file="$1"
   local backup
@@ -108,7 +113,15 @@ server {
     listen [::]:80;
     server_name ${HHS_IP};
 
-    return 308 https://${HHS_IP}\$request_uri;
+    location ^~ /.well-known/acme-challenge/ {
+        root ${HHS_ACME_WEBROOT};
+        default_type text/plain;
+        try_files \$uri =404;
+    }
+
+    location / {
+        return 308 https://${HHS_IP}\$request_uri;
+    }
 }
 
 server {
@@ -155,31 +168,37 @@ NGINX
   systemctl is-active --quiet nginx || fail "Nginx failed to remain active after TLS reload"
 }
 
+verify_acme_webroot() {
+  local token="hhs-acme-selftest-$$"
+  local challenge_file="${HHS_ACME_WEBROOT}/.well-known/acme-challenge/${token}"
+  printf 'HHS_ACME_WEBROOT_OK\n' >"${challenge_file}"
+  trap 'rm -f "${challenge_file}"' RETURN
+
+  curl --max-time 5 -fsS \
+    -H "Host: ${HHS_IP}" \
+    "http://127.0.0.1/.well-known/acme-challenge/${token}" \
+    | grep -qx 'HHS_ACME_WEBROOT_OK' \
+    || fail "Nginx is not serving the ACME webroot challenge path"
+
+  rm -f "${challenge_file}"
+  trap - RETURN
+}
+
 configure_renewal() {
-  cat >/usr/local/sbin/hhs-certbot-pre-renew <<'SH'
-#!/bin/sh
-set -eu
-systemctl stop nginx
-SH
-
-  cat >/usr/local/sbin/hhs-certbot-post-renew <<'SH'
-#!/bin/sh
-set -eu
-nginx -t
-systemctl start nginx
-SH
-
-  chmod 0755 /usr/local/sbin/hhs-certbot-pre-renew /usr/local/sbin/hhs-certbot-post-renew
+  # Webroot renewal requires Nginx to stay online for the HTTP-01 challenge.
+  # Remove the obsolete stop/start hooks that caused production renewal to fail
+  # with connection refused while Certbot was attempting validation.
+  rm -f /usr/local/sbin/hhs-certbot-pre-renew /usr/local/sbin/hhs-certbot-post-renew
 
   cat >/etc/systemd/system/hhs-certbot-renew.service <<SYSTEMD
 [Unit]
 Description=Renew HHS short-lived IP certificate
-Wants=network-online.target
-After=network-online.target
+Wants=network-online.target nginx.service
+After=network-online.target nginx.service
 
 [Service]
 Type=oneshot
-ExecStart=${HHS_CERTBOT} renew --quiet --cert-name ${HHS_CERT_NAME} --pre-hook /usr/local/sbin/hhs-certbot-pre-renew --post-hook /usr/local/sbin/hhs-certbot-post-renew
+ExecStart=${HHS_CERTBOT} renew --quiet --cert-name ${HHS_CERT_NAME} --deploy-hook "/usr/bin/systemctl reload nginx"
 ExecStartPost=/usr/bin/systemctl is-active --quiet nginx
 SYSTEMD
 
@@ -232,18 +251,40 @@ deploy_frontend_repair() {
 
 verify_public_surface() {
   local https_root="https://${HHS_IP}"
+  local asset
 
-  curl -fsSI "http://${HHS_IP}/" | grep -Eqi '^HTTP/[0-9.]+ 308|^location: https://' \
+  curl --max-time 10 -fsSI "http://${HHS_IP}/" | grep -Eqi '^HTTP/[0-9.]+ 308|^location: https://' \
     || fail "HTTP did not redirect to HTTPS"
 
-  curl -fsS "${https_root}${HHS_HEALTH_PATH}" >/tmp/hhs-production-health.json
+  curl --max-time 10 -fsSI "${https_root}/" >/tmp/hhs-production-root-headers.txt \
+    || fail "HTTPS root did not respond successfully"
+
+  curl --max-time 10 -fsS "${https_root}${HHS_HEALTH_PATH}" >/tmp/hhs-production-health.json
   [[ -s /tmp/hhs-production-health.json ]] || fail "HTTPS health response was empty"
 
-  curl -fsS "${https_root}/src/sha256.mjs?production-closure=1" \
+  for asset in \
+    styles.css \
+    ux-default.css \
+    production-integration.css \
+    visual-ide.css \
+    harmonic-studio-theme.css \
+    integrated-workbench.css \
+    integrated-assistant.css \
+    intuitive-ide.css \
+    application-studio.css
+  do
+    curl --max-time 10 -fsSI "${https_root}/src/${asset}" >/dev/null \
+      || fail "critical stylesheet unavailable over HTTPS: ${asset}"
+  done
+
+  curl --max-time 10 -fsSI "${https_root}/src/production-startup-coordinator.mjs" >/dev/null \
+    || fail "critical startup JavaScript unavailable over HTTPS"
+
+  curl --max-time 10 -fsS "${https_root}/src/sha256.mjs?production-closure=1" \
     | grep -q 'fallbackSha256' \
     || fail "SHA-256 fallback is not served over HTTPS"
 
-  curl -fsS "${https_root}/src/mobile-first-paint-fix.mjs?production-closure=1" \
+  curl --max-time 10 -fsS "${https_root}/src/mobile-first-paint-fix.mjs?production-closure=1" \
     | grep -q 'HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V1' \
     || fail "mobile first-paint repair is not served over HTTPS"
 
@@ -275,11 +316,15 @@ main() {
   note "Admitting HTTP and HTTPS through the host firewall"
   configure_firewall
 
-  note "Configuring Nginx HTTPS and WebSocket proxy"
+  note "Preparing ACME webroot"
+  prepare_acme_webroot
+
+  note "Configuring Nginx HTTPS, ACME challenge, and WebSocket proxy"
   local site_file
   site_file="$(find_hhs_nginx_site)"
   printf 'Active HHS Nginx site: %s\n' "${site_file}"
   write_nginx_configuration "${site_file}"
+  verify_acme_webroot
 
   note "Configuring short-lived certificate renewal"
   configure_renewal
@@ -293,10 +338,9 @@ main() {
   deploy_frontend_repair
 
   if [[ "${HHS_RUN_RENEW_DRY_RUN}" == "1" ]]; then
-    note "Running Certbot renewal dry run"
+    note "Running Certbot renewal dry run with Nginx online"
     "${HHS_CERTBOT}" renew --dry-run --cert-name "${HHS_CERT_NAME}" \
-      --pre-hook /usr/local/sbin/hhs-certbot-pre-renew \
-      --post-hook /usr/local/sbin/hhs-certbot-post-renew
+      --deploy-hook "/usr/bin/systemctl reload nginx"
   fi
 
   note "Verifying public production surface"

@@ -18,6 +18,12 @@ import time
 from collections.abc import Awaitable, Callable
 from typing import Any
 
+# Production is quiescent unless an operator explicitly opts into continuous
+# runtime or cognition work. setdefault preserves deliberate opt-in while also
+# protecting deployments from stale or incomplete service-file environments.
+os.environ.setdefault("HHS_RUNTIME_AUTO_TICK", "0")
+os.environ.setdefault("HHS_COGNITION_AUTO_TICK", "0")
+
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
 from hhs_backend.visual_server import app as authoritative_app
 

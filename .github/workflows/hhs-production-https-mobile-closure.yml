@@ -40,6 +40,19 @@ jobs:
           node-version: '22'
       - name: Validate production closure shell
         run: bash -n scripts/complete_hhs_production_https_mobile.sh
+      - name: Enforce online ACME renewal policy
+        run: |
+          grep -F 'HHS_ACME_WEBROOT=' scripts/complete_hhs_production_https_mobile.sh
+          grep -F 'location ^~ /.well-known/acme-challenge/' scripts/complete_hhs_production_https_mobile.sh
+          grep -F -- '--deploy-hook' scripts/complete_hhs_production_https_mobile.sh
+          if grep -Fq 'systemctl stop nginx' scripts/complete_hhs_production_https_mobile.sh; then
+            echo 'production renewal must not stop nginx' >&2
+            exit 1
+          fi
+          if grep -Fq -- '--pre-hook' scripts/complete_hhs_production_https_mobile.sh; then
+            echo 'webroot renewal must not use a pre-hook that can remove HTTP-01 reachability' >&2
+            exit 1
+          fi
       - name: Validate browser modules
         run: |
           node --check applications/holofractal_harmonizer/src/sha256.mjs

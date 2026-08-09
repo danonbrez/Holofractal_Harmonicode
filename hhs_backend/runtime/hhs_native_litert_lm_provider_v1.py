@@ -8,6 +8,7 @@ thread, policy, receipt, and provider-result ingress paths remain unchanged.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import re
@@ -131,14 +132,23 @@ class HHSNativeLiteRTLMTransport:
         except Exception as exc:
             reasoner_error = f"{type(exc).__name__}: {exc}"
 
-        try:
-            word2vec_status = dict(self._word2vec().status())
-        except Exception as exc:
-            word2vec_error = f"{type(exc).__name__}: {exc}"
+        if self.require_word2vec or self._word2vec_service is not None:
+            try:
+                word2vec_status = dict(self._word2vec().status())
+            except Exception as exc:
+                word2vec_error = f"{type(exc).__name__}: {exc}"
+                word2vec_status = {
+                    "offline_ready": False,
+                    "active_model_id": None,
+                    "installed_models": 0,
+                }
+        else:
             word2vec_status = {
                 "offline_ready": False,
                 "active_model_id": None,
                 "installed_models": 0,
+                "probe_skipped": True,
+                "classification": "HHS_PASS_166_WORD2VEC_OPTIONAL_UNPROBED",
             }
 
         word2vec_ready = bool(
@@ -191,7 +201,7 @@ class HHSNativeLiteRTLMTransport:
         return status
 
     async def list_models(self) -> Dict[str, Any]:
-        status = self._require_ready()
+        status = await asyncio.to_thread(self._require_ready)
         return {
             "object": "list",
             "data": [{
@@ -485,7 +495,7 @@ class HHSNativeLiteRTLMTransport:
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         del response_format
-        self._require_ready()
+        await asyncio.to_thread(self._require_ready)
         message_list = [dict(message) for message in messages]
         query = _last_user_content(message_list).strip()
         if not query:

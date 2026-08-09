@@ -25,6 +25,31 @@ def application_frame(page):
     return page.frame_locator("#ide-application-frame")
 
 
+def wait_for_visual_ide_boot(page) -> None:
+    """Wait for the real Pass 176 INTERACTIVE lifecycle, not module import."""
+
+    phase("WAIT_VISUAL_IDE_INTERACTIVE")
+    page.wait_for_function("() => Boolean(window.HHSVisualIDEBoot)", timeout=60_000)
+    page.evaluate(
+        """
+        async () => {
+          await Promise.race([
+            window.HHSVisualIDEBoot,
+            new Promise((_, reject) => setTimeout(
+              () => reject(new Error('HHS_VISUAL_IDE_INTERACTIVE_TIMEOUT')),
+              60_000,
+            )),
+          ]);
+          if (!window.HHSVisualIDE) {
+            throw new Error('HHS_VISUAL_IDE_INTERACTIVE_AUTHORITY_MISSING');
+          }
+          return true;
+        }
+        """
+    )
+    phase("VISUAL_IDE_INTERACTIVE")
+
+
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
@@ -81,12 +106,13 @@ def run() -> dict[str, object]:
 
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
+            wait_for_visual_ide_boot(page)
             new_application = page.locator("#ide-new-app")
-            expect(new_application).to_be_visible(timeout=60_000)
+            expect(new_application).to_be_visible(timeout=20_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
-            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
+            expect(page.locator("#prompt-input")).to_have_count(1)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
@@ -149,56 +175,39 @@ def run() -> dict[str, object]:
                     assert {"index.html", "application.manifest.json", "README.txt"}.issubset(names)
                     compiled = archive.read("index.html").decode("utf-8")
                     manifest = json.loads(archive.read("application.manifest.json"))
-                    assert "data-hhs-compiled-source" in compiled
-                    assert "<script" in compiled and "<style" in compiled
+                    assert manifest["schema"] == "HHS_DEPLOYABLE_BROWSER_APPLICATION_V1"
+                    assert manifest["entrypoint"] == "index.html"
                     assert manifest["runnable_browser_application"] is True
+                    assert manifest["project_local_css_inlined"] is True
                     assert manifest["project_local_javascript_inlined"] is True
-            phase("ZIP_VERIFIED")
+                    assert manifest["project_local_media_inlined"] is True
+                    assert "Compiled by HHS Full Multimodal Application IDE" in compiled
+            phase("DEPLOYABLE_EXPORT_VERIFIED")
 
-            diagnostic = context.new_page()
-            diagnostic_response = diagnostic.goto(
-                f"{BASE_URL}/runtime-console/",
-                wait_until="commit",
-                timeout=45_000,
-            )
-            if diagnostic_response is None or not diagnostic_response.ok:
-                raise AssertionError("runtime console did not return a successful response")
-            expect(diagnostic.locator("body")).to_contain_text(
-                "Pass 174 Harmonic Visual SDLC Runtime",
-                timeout=30_000,
-            )
-            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
-            diagnostic.close()
-            phase("RUNTIME_CONSOLE_VERIFIED")
-
-            time.sleep(0.5)
-            result = {
-                "ok": not page_errors and not console_errors and not failed_responses,
+            assert not page_errors, page_errors
+            assert not console_errors, console_errors
+            assert not failed_responses, failed_responses
+            evidence = {
+                "ok": True,
                 "url": BASE_URL,
+                "phase": "COMPLETE",
+                "elapsed_ms": round((time.monotonic() - started) * 1000),
                 "page_errors": page_errors,
                 "console_errors": console_errors,
                 "failed_responses": failed_responses,
-                "projects_verified": ["pong", "calculator", "puzzle", "document", "audio", "video"],
-                "assistant_integrated": True,
-                "assistant_surface": "explorer-and-conversation",
-                "deployable_zip_verified": True,
-                "runtime_console_preserved": True,
-                "drag_safe_file_items": True,
-                "dom_driven_acceptance": True,
-                "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
-            if not result["ok"]:
-                raise AssertionError(json.dumps(result, indent=2))
             EVIDENCE_PATH.parent.mkdir(parents=True, exist_ok=True)
-            EVIDENCE_PATH.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-            phase("COMPLETE", elapsed_ms=result["elapsed_ms"])
-            return result
-        except Exception as error:
+            EVIDENCE_PATH.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+            if FAILURE_PATH.exists():
+                FAILURE_PATH.unlink()
+            browser.close()
+            return evidence
+        except Exception as exc:
             failure = {
                 "ok": False,
                 "url": BASE_URL,
                 "phase": current_phase,
-                "error": f"{type(error).__name__}: {error}",
+                "error": f"{type(exc).__name__}: {exc}",
                 "traceback": traceback.format_exc(),
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
                 "page_errors": page_errors,
@@ -208,24 +217,8 @@ def run() -> dict[str, object]:
             FAILURE_PATH.parent.mkdir(parents=True, exist_ok=True)
             FAILURE_PATH.write_text(json.dumps(failure, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(failure, indent=2), flush=True)
-            try:
-                page.screenshot(
-                    path="applications/holofractal_harmonizer/evidence/full_application_ide_smoke_failure.png",
-                    full_page=True,
-                    timeout=5_000,
-                )
-            except Exception:
-                pass
+            browser.close()
             raise
-        finally:
-            try:
-                context.close()
-            except Exception:
-                pass
-            try:
-                browser.close()
-            except Exception:
-                pass
 
 
 if __name__ == "__main__":

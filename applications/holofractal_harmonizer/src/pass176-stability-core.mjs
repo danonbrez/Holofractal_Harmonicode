@@ -183,11 +183,14 @@ function abortError(reason = 'HHS_P176_JOB_ABORTED') {
   return error;
 }
 
+const defaultSetTimer = (...args) => globalThis.setTimeout(...args);
+const defaultClearTimer = (...args) => globalThis.clearTimeout(...args);
+
 export class BoundedJobManager {
   #jobs = new Map();
   #sequence = 0;
 
-  constructor({ setTimer = setTimeout, clearTimer = clearTimeout, now = () => Date.now() } = {}) {
+  constructor({ setTimer = defaultSetTimer, clearTimer = defaultClearTimer, now = () => Date.now() } = {}) {
     this.setTimer = setTimer;
     this.clearTimer = clearTimer;
     this.now = now;
