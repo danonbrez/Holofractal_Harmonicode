@@ -3,13 +3,34 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
-VENV_DIR="${HHS_LITERT_LM_VENV_DIR:-${ROOT_DIR}/.hhs/litert-lm/venv}"
+CACHE_ROOT="${HHS_LITERT_LM_CACHE_ROOT:-${HOME:-/tmp}/.cache/hhs/litert-lm}"
+VENV_DIR="${HHS_LITERT_LM_VENV_DIR:-${CACHE_ROOT}/venv}"
 REQ_FILE="${HHS_LITERT_LM_REQUIREMENTS:-${ROOT_DIR}/requirements-litert-lm.txt}"
 LOCAL_BIN="${VENV_DIR}/bin/litert-lm"
 MODE="${1:---install}"
+BOOTSTRAP_LOCK_FILE="${HHS_LITERT_LM_BOOTSTRAP_LOCK_FILE:-${CACHE_ROOT}/bootstrap.lock}"
+BOOTSTRAP_LOCK_TIMEOUT_SECONDS="${HHS_LITERT_LM_BOOTSTRAP_LOCK_TIMEOUT_SECONDS:-90}"
 
 log() {
   printf '%s\n' "[HHS] $*" >&2
+}
+
+prepare_persistent_paths() {
+  mkdir -p "$CACHE_ROOT"
+  export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${CACHE_ROOT}/xdg}"
+  export HF_HOME="${HF_HOME:-${CACHE_ROOT}/huggingface}"
+  export HUGGINGFACE_HUB_CACHE="${HUGGINGFACE_HUB_CACHE:-${HF_HOME}/hub}"
+  mkdir -p "$XDG_CACHE_HOME" "$HF_HOME" "$HUGGINGFACE_HUB_CACHE"
+}
+
+with_bootstrap_lock() {
+  mkdir -p "$(dirname "$BOOTSTRAP_LOCK_FILE")"
+  exec {lock_fd}>"$BOOTSTRAP_LOCK_FILE"
+  if ! flock -w "$BOOTSTRAP_LOCK_TIMEOUT_SECONDS" "$lock_fd"; then
+    log "timed out waiting for bootstrap lock (${BOOTSTRAP_LOCK_TIMEOUT_SECONDS}s): $BOOTSTRAP_LOCK_FILE"
+    return 75
+  fi
+  "$@"
 }
 
 check_python() {
@@ -54,6 +75,7 @@ install_local() {
 
   log "Installing repository-local LiteRT-LM runtime"
   log "Environment: $VENV_DIR"
+  mkdir -p "$(dirname "$VENV_DIR")"
   "$PYTHON_BIN" -m venv "$VENV_DIR"
   "$VENV_DIR/bin/python" -m pip install --upgrade pip
   "$VENV_DIR/bin/python" -m pip install --requirement "$REQ_FILE"
@@ -67,28 +89,42 @@ install_local() {
   printf '%s\n' "$LOCAL_BIN"
 }
 
+prepare_persistent_paths
+
+mode_print_bin() {
+  if resolve_existing; then
+    return 0
+  fi
+  install_local
+}
+
+mode_verify() {
+  BIN="$(resolve_existing)" || {
+    log "LiteRT-LM is not installed"
+    return 127
+  }
+  "$BIN" --version
+}
+
+mode_install() {
+  if BIN="$(resolve_existing)"; then
+    log "Using LiteRT-LM executable: $BIN"
+    "$BIN" --version >&2
+    printf '%s\n' "$BIN"
+  else
+    install_local
+  fi
+}
+
 case "$MODE" in
   --print-bin)
-    if resolve_existing; then
-      exit 0
-    fi
-    install_local
+    with_bootstrap_lock mode_print_bin
     ;;
   --verify)
-    BIN="$(resolve_existing)" || {
-      log "LiteRT-LM is not installed"
-      exit 127
-    }
-    "$BIN" --version
+    with_bootstrap_lock mode_verify
     ;;
   --install)
-    if BIN="$(resolve_existing)"; then
-      log "Using LiteRT-LM executable: $BIN"
-      "$BIN" --version >&2
-      printf '%s\n' "$BIN"
-    else
-      install_local
-    fi
+    with_bootstrap_lock mode_install
     ;;
   *)
     log "usage: $0 [--install|--verify|--print-bin]"
