@@ -4,86 +4,88 @@
 
 ```text
 pass: 217
-iteration: 2
-classification: HHS_PASS_217_ITERATION_2_SCHEMA_REFERENCE_PROFILE_FROZEN
+iteration: 3
+classification: HHS_PASS_217_ITERATION_3_NON_PROMOTIONAL_GENESIS_CANDIDATE_VERIFIED
 branch: agent/pass217-genesis-inventory-iteration1
 remote PR: 179
 merge target: main
 frozen main commit: 66c614ae1de0c1b1651451e2c406307a8dee83ed
 frozen main tree: 4d8c87797d8844b8868f6b412ba45f936731c6c4
-Iteration 1 remote parent: d87f84b4171e9e4085014015ccad4d278b992feb
-Iteration 1 tree: f5b1c416afe07d6a1f1abe50447142f5a1ca2c26
-validated Iteration 2 implementation commit: 40b750db763b08d02dd45afb05848e2a4953721b
-validated Iteration 2 implementation tree: b1cf971ee6c2954e04131af599701ef2135b819d
+Iteration 2 remote parent: bd20174c78127b0fffe9134bc10eac9a6d5445a2
+Iteration 2 tree: f6b5899ae0c77529dcf32400c817b8334e3faf4d
+Iteration 2 bundle root: 7c26c890eabbe8f4b506186ea738f0a4f2efed3391d02b73477a859edcf031f9
+validated Iteration 3 implementation commit: 0ff00c72367e2a07043dc5bbc47c68de9757bf32
+validated Iteration 3 implementation tree: b5ca450e88fb9832f3026e09d62ac21956e9093d
 restart checkpoint: the commit containing this record
 ```
 
 ## Changed files
 
 ```text
-.github/workflows/pass217-iteration2-machine-contracts.yml
-contracts/pass217/address_map.schema.json
-contracts/pass217/checksums.sha256
-contracts/pass217/golay_profile.schema.json
-contracts/pass217/hash216.schema.json
-contracts/pass217/hash72.schema.json
-contracts/pass217/invariants.json
-contracts/pass217/machine_contract.json
-contracts/pass217/reference_vectors.json
-contracts/pass217/rom_manifest.schema.json
-contracts/pass217/vector_store.schema.json
-docs/pass217/ITERATION_2_MACHINE_CONTRACTS.md
+.github/workflows/pass217-iteration3-genesis-candidate.yml
+contracts/pass217/genesis_candidate_manifest.schema.json
+contracts/pass217/genesis_candidate_reference_vectors.json
+docs/pass217/ITERATION_3_GENESIS_CANDIDATE.md
 docs/pass217/RESTART_RECORD.md
-evidence/pass217/PASS_217_ITERATION_2_MACHINE_CONTRACTS.json
-hhs_backend/runtime/hhs_pass217_machine_contracts_v1.py
-scripts/run_pass217_iteration2_validation.sh
-tests/test_hhs_pass217_machine_contracts_v1.py
-tools/pass217_iteration2_machine_contracts.py
+evidence/pass217/PASS_217_ITERATION_3_ADDRESS_MAPS.bin
+evidence/pass217/PASS_217_ITERATION_3_CHECKSUMS.sha256
+evidence/pass217/PASS_217_ITERATION_3_GENESIS_CANDIDATE_MANIFEST.json
+evidence/pass217/PASS_217_ITERATION_3_LOGICAL_GENESIS_CANDIDATE.bin
+hhs_backend/runtime/hhs_pass217_genesis_candidate_v1.py
+scripts/run_pass217_iteration3_validation.sh
+tests/test_hhs_pass217_genesis_candidate_v1.py
+tools/pass217_iteration3_genesis_candidate.py
 ```
 
 ## Implemented state
 
-- Canonical machine contract, invariant registry, and six required JSON
-  schemas are present.
-- All generated JSON and checksum/evidence bytes rebuild deterministically.
-- Nine inherited candidate sources are bound to exact frozen-base Git objects
-  with explicit reuse, compatibility, defer, or rejection dispositions.
-- The inherited canonical Hash72 alphabet is selected; an alternate local
-  alphabet cannot override it.
-- All 5,184 VM5184 addresses round-trip across cell/operation, phase-pair, and
-  Hash72 matrix views.
-- G243 projection remains exact and inherited.
-- The ordered phase registry and pointwise Lo Shu nucleus are frozen.
-- Hash216 `previous/next/receipt` structural layout and 216 positional
-  commitments are deterministic but non-authoritative.
-- Extended Golay `[24,12,8]` sizes and bounded error/erasure policy are frozen;
-  placeholder hooks are not promoted as codecs.
-- Vector similarity remains candidate discovery only and cannot bypass VM81.
+- A deterministic 5,184-bit, 648-byte logical Genesis candidate is present.
+- The candidate derives only from the frozen Pass 175 phase table, tiled Lo Shu
+  identity, and Iteration 2 address contract.
+- Candidate serialization is explicit LSB0 across 81 ascending 64-bit shards.
+- Every shard is exactly balanced at 32 one bits and 32 zero bits.
+- The complete image contains 2,592 one bits and 2,592 zero bits.
+- A compact 31,104-byte address artifact stores all 5,184 six-byte records.
+- Cell/operation, phase-pair, Hash72-coordinate, and inverse views round-trip.
+- All 1,259,712 G243 projections round-trip through the stored exact formula.
+- The central 3x3 Lo Shu–phase nucleus is checked pointwise at cells
+  30,31,32,39,40,41,48,49,50.
+- Six inherited sources are bound to exact Iteration 2 Git objects.
+- The alternate Hash72 alphabet in the tiled Lo Shu source remains rejected.
+- Iteration 2 artifacts are byte unchanged.
+- Candidate and address tampering fail closed.
 
 ## Validation state
 
-Completed before the implementation checkpoint:
+Completed against the Iteration 3 implementation tree:
 
 ```text
-Iteration 1 baseline validation: passed
 Iteration 1 tests: 10 passed
-Iteration 2 focused tests: 14 passed
-Iteration 2 bundle generation/rebuild: passed
+Iteration 2 tests: 14 passed
+Iteration 3 tests: 15 passed
+cumulative tests: 39 passed
+candidate generation/rebuild: passed
+all 5,184 candidate bits: passed
+all 5,184 address records: passed
+all 1,259,712 G243 projections: passed
 Python compilation: passed
-validation command: bash scripts/run_pass217_iteration2_validation.sh
-Iteration 1 test wall time: 35.762 seconds
-Iteration 2 test wall time: 0.286 seconds
-validation result: PASS217_ITERATION2_VALIDATION_OK
+protected runtime check: passed
+physical Golay artifact absence check: passed
+validation command: bash scripts/run_pass217_iteration3_validation.sh
+Iteration 1 test wall time: 37.167 seconds
+Iteration 2 test wall time: 0.256 seconds
+Iteration 3 test wall time: 1.075 seconds
+validation result: PASS217_ITERATION3_VALIDATION_OK
 ```
 
 Frozen generated roots:
 
 ```text
-bundle root:                 7c26c890eabbe8f4b506186ea738f0a4f2efed3391d02b73477a859edcf031f9
-exhaustive address-map root: c5f859161fa99daaaefc63ec540c2595045c27e8193c702d5e58970e16412a07
-Hash72 matrix root:          6c0b2e9e354e8d7eb17a746d01c157b19aa95b58296884126cdf5bef7998e286
-Hash216 commitment root:     e6f650eb244f99c026b7fa64ccab7e320c6d0ece62865c0039a48cde1baf4543
-ordered phase surface root:  29ac857ee06dba02b1c90c68262d0f004633f9363119d12fa49e3e7d3fb822e7
+Iteration 3 bundle root:     7eb5cf33cb14fb9a61fb071a2801dae7a67997b92691a9820e5d058227302656
+candidate SHA-256:           97379c7ae7cdaebd8031a3a3fb58559c967b361b360c7db34ec096acabfc8fe8
+candidate shard root:        0dcf8f31c4aa75b73514f5ff6fbe2c4c7b8da28931e2d3e5e05cf719bf2e0366
+address-map SHA-256:         2f8d8a23114b87f2dbe91f3d302ef089b750f9d91f533d744a4524e907717f5f
+Iteration 2 semantic map:    c5f859161fa99daaaefc63ec540c2595045c27e8193c702d5e58970e16412a07
 Lo Shu nucleus root:         da7b33fa1a419e00ce81eeeeb5f1c435acd6ae7b95d355e3a1749a6a238e3164
 ```
 
@@ -109,10 +111,13 @@ PYTHONDONTWRITEBYTECODE=1
 ## Authority and blockers
 
 ```text
+logical Genesis candidate generated: true
+address-map artifact generated: true
+canonical Genesis selected: false
+logical Genesis ROM generated: false
+canonical authority promoted: false
 protected C runtime modified: false
 runtime mutation performed: false
-canonical authority promoted: false
-logical Genesis ROM generated: false
 Golay physical ROM generated: false
 Golay codec implemented: false
 migration active: false
@@ -126,11 +131,12 @@ HOLD_FOR_PASS_215_216_AUTHORITATIVE_RECONCILIATION
 ```
 
 Pass 215 remains unmerged and no Pass 216 branch is repository-visible.  The
-hold blocks Iteration 3 authority promotion.  It does not invalidate the
-completed Iteration 2 schema/reference-vector freeze.
+hold blocks canonical selection and runtime promotion.  It does not invalidate
+the deterministic Iteration 3 candidate or address-map evidence.
 
 ## Next action
 
-After exact-head checkpointing and remote CI, preserve this bundle.  Begin
-Iteration 3 only after the predecessor gate is reconciled or an explicit
-bounded authority permits a non-promotional Genesis candidate build.
+After exact-head remote CI and artifact retention, preserve this checkpoint.
+Iteration 4 may add non-promotional Hash72 manifold and immutable-nucleus
+validators.  Canonical admission remains blocked until predecessor
+reconciliation closes the inheritance gate.
