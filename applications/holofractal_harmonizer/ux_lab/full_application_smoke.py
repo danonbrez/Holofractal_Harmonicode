@@ -25,6 +25,31 @@ def application_frame(page):
     return page.frame_locator("#ide-application-frame")
 
 
+def wait_for_visual_ide_boot(page) -> None:
+    """Wait for the real Pass 176 INTERACTIVE lifecycle, not module import."""
+
+    phase("WAIT_VISUAL_IDE_INTERACTIVE")
+    page.wait_for_function("() => Boolean(window.HHSVisualIDEBoot)", timeout=60_000)
+    page.evaluate(
+        """
+        async () => {
+          await Promise.race([
+            window.HHSVisualIDEBoot,
+            new Promise((_, reject) => setTimeout(
+              () => reject(new Error('HHS_VISUAL_IDE_INTERACTIVE_TIMEOUT')),
+              60_000,
+            )),
+          ]);
+          if (!window.HHSVisualIDE) {
+            throw new Error('HHS_VISUAL_IDE_INTERACTIVE_AUTHORITY_MISSING');
+          }
+          return true;
+        }
+        """
+    )
+    phase("VISUAL_IDE_INTERACTIVE")
+
+
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
@@ -81,16 +106,20 @@ def run() -> dict[str, object]:
 
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
+            # Application controls initialize before visual-IDE hydration. Waiting
+            # only for #ide-new-app can therefore observe a transient pre-hydration
+            # DOM and race the Pass 176 lifecycle. HHSVisualIDEBoot resolves only
+            # after the ordered boot reaches INTERACTIVE.
+            wait_for_visual_ide_boot(page)
             new_application = page.locator("#ide-new-app")
-            expect(new_application).to_be_visible(timeout=60_000)
+            expect(new_application).to_be_visible(timeout=20_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            # The Visual IDE is the active workspace at boot. The Assistant pane
-            # must remain mounted but hidden until its navigation control is used;
-            # requiring it visible here contradicts the tab ownership contract
-            # and the explicit Assistant navigation check later in this smoke.
+            # Workflow-first progressive disclosure keeps the application IDE
+            # active. The assistant remains mounted but hidden until explicitly
+            # selected by its navigation control.
             expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
-            expect(page.locator("#prompt-input")).to_be_hidden(timeout=20_000)
+            expect(page.locator("#prompt-input")).to_have_count(1)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
