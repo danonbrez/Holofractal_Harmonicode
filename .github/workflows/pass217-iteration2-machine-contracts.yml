@@ -1,0 +1,64 @@
+name: Pass 217 Iteration 2 Machine Contracts
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_machine_contracts_v1.py'
+      - 'tools/pass217_iteration2_machine_contracts.py'
+      - 'tests/test_hhs_pass217_machine_contracts_v1.py'
+      - 'scripts/run_pass217_iteration2_validation.sh'
+      - 'contracts/pass217/**'
+      - 'evidence/pass217/PASS_217_ITERATION_2_MACHINE_CONTRACTS.json'
+      - 'docs/pass217/**'
+      - '.github/workflows/pass217-iteration2-machine-contracts.yml'
+  push:
+    branches:
+      - main
+      - agent/pass217-genesis-inventory-iteration1
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_machine_contracts_v1.py'
+      - 'tools/pass217_iteration2_machine_contracts.py'
+      - 'tests/test_hhs_pass217_machine_contracts_v1.py'
+      - 'scripts/run_pass217_iteration2_validation.sh'
+      - 'contracts/pass217/**'
+      - 'evidence/pass217/PASS_217_ITERATION_2_MACHINE_CONTRACTS.json'
+      - 'docs/pass217/**'
+      - '.github/workflows/pass217-iteration2-machine-contracts.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  exact-schema-reference-freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate cumulative Iterations 1 and 2
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass217-iteration2"
+          bash scripts/run_pass217_iteration2_validation.sh \
+            | tee "$RUNNER_TEMP/pass217-iteration2/validation.log"
+      - name: Retain Iteration 2 contract evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass217-iteration2-machine-contracts-${{ github.run_id }}
+          path: |
+            contracts/pass217/machine_contract.json
+            contracts/pass217/invariants.json
+            contracts/pass217/reference_vectors.json
+            contracts/pass217/checksums.sha256
+            evidence/pass217/PASS_217_ITERATION_2_MACHINE_CONTRACTS.json
+            ${{ runner.temp }}/pass217-iteration2/validation.log
+          if-no-files-found: error
