@@ -90,6 +90,27 @@ test('bounded jobs deduplicate command aliases by canonical key', async () => {
   assert.equal(jobs.snapshot().active.length, 0);
 });
 
+test('bounded jobs preserve the host timer receiver', async () => {
+  const originalSetTimeout = globalThis.setTimeout;
+  const originalClearTimeout = globalThis.clearTimeout;
+  globalThis.setTimeout = function setTimeoutReceiverGuard(callback, delay, ...args) {
+    assert.equal(this, globalThis);
+    return originalSetTimeout.call(globalThis, callback, delay, ...args);
+  };
+  globalThis.clearTimeout = function clearTimeoutReceiverGuard(handle) {
+    assert.equal(this, globalThis);
+    return originalClearTimeout.call(globalThis, handle);
+  };
+  try {
+    const jobs = new BoundedJobManager();
+    assert.equal(await jobs.run('host-timer-receiver', async () => 'complete', { timeoutMs: 100 }), 'complete');
+    assert.equal(jobs.snapshot().active.length, 0);
+  } finally {
+    globalThis.setTimeout = originalSetTimeout;
+    globalThis.clearTimeout = originalClearTimeout;
+  }
+});
+
 test('bounded jobs settle on timeout even when executor ignores AbortSignal', async () => {
   const jobs = new BoundedJobManager();
   const ignored = jobs.run('ignored-signal', () => new Promise(() => {}), { timeoutMs: 20 });
