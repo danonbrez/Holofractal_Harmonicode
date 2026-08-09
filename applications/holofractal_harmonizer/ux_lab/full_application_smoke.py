@@ -106,18 +106,11 @@ def run() -> dict[str, object]:
 
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
-            # Application controls initialize before visual-IDE hydration. Waiting
-            # only for #ide-new-app can therefore observe a transient pre-hydration
-            # DOM and race the Pass 176 lifecycle. HHSVisualIDEBoot resolves only
-            # after the ordered boot reaches INTERACTIVE.
             wait_for_visual_ide_boot(page)
             new_application = page.locator("#ide-new-app")
             expect(new_application).to_be_visible(timeout=20_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            # Workflow-first progressive disclosure keeps the application IDE
-            # active. The assistant remains mounted but hidden until explicitly
-            # selected by its navigation control.
             expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
             expect(page.locator("#prompt-input")).to_have_count(1)
             current_phase = "APPLICATION_STUDIO_READY"
@@ -182,9 +175,13 @@ def run() -> dict[str, object]:
                     assert {"index.html", "application.manifest.json", "README.txt"}.issubset(names)
                     compiled = archive.read("index.html").decode("utf-8")
                     manifest = json.loads(archive.read("application.manifest.json"))
-                    assert manifest["format"] == "HHS_DEPLOYABLE_WEB_APPLICATION_V1"
-                    assert "application/x-hhs-project+json" in compiled
-                    assert "HHS_DEPLOYABLE_WEB_APPLICATION_V1" in compiled
+                    assert manifest["schema"] == "HHS_DEPLOYABLE_BROWSER_APPLICATION_V1"
+                    assert manifest["entrypoint"] == "index.html"
+                    assert manifest["runnable_browser_application"] is True
+                    assert manifest["project_local_css_inlined"] is True
+                    assert manifest["project_local_javascript_inlined"] is True
+                    assert manifest["project_local_media_inlined"] is True
+                    assert "Compiled by HHS Full Multimodal Application IDE" in compiled
             phase("DEPLOYABLE_EXPORT_VERIFIED")
 
             assert not page_errors, page_errors
