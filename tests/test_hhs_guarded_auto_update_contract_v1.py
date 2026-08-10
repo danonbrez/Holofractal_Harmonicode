@@ -14,6 +14,7 @@ def read(name: str) -> str:
 def test_shell_assets_parse() -> None:
     scripts = [
         DEPLOY / "hhs-guarded-update.sh",
+        DEPLOY / "build-runtime-os.sh",
         DEPLOY / "validate-candidate.sh",
         DEPLOY / "install.sh",
         ROOT / "bin" / "post_compile",
@@ -34,21 +35,42 @@ def test_updater_is_fail_closed_and_fast_forward_only() -> None:
         "HHS_EXPECTED_REPOSITORY",
         "sync_installed_assets",
         "ROLLBACK_COMMAND",
+        "build-runtime-os.sh",
     ]
     for token in required:
         assert token in source
 
 
-def test_candidate_gate_covers_integrated_runtime() -> None:
+def test_candidate_gate_covers_runtime_os_and_integrated_runtime() -> None:
     source = read("validate-candidate.sh")
     required = [
         "bin/post_compile",
+        "build-runtime-os.sh",
         "test_hhs_full_application_ide_root_v1.py",
         "application.studio.test.mjs",
-        "hhs_backend.application_ide_server:app",
+        "hhs_backend.runtime_os_application_server:app",
         "/api/system/status",
+        "/api/interface/status",
+        "HHS Visual Runtime OS Workspace",
         "/api/runtime/repository/status",
         "/api/runtime/workspace/session",
+    ]
+    for token in required:
+        assert token in source
+
+
+def test_runtime_os_builder_is_source_driven_and_fail_closed() -> None:
+    source = read("build-runtime-os.sh")
+    required = [
+        "command -v node",
+        "command -v npm",
+        "package-lock.json",
+        "npm ci --no-audit --no-fund",
+        "npm run typecheck",
+        "npm run build",
+        "dist/index.html",
+        "dist/assets",
+        "HHS Visual Runtime OS Workspace",
     ]
     for token in required:
         assert token in source
@@ -95,7 +117,7 @@ def test_github_merge_gate_is_label_and_trust_scoped() -> None:
     assert "--merge --delete-branch" in workflow
 
 
-def test_digitalocean_push_deployment_requires_exact_main_identity() -> None:
+def test_digitalocean_push_deployment_requires_exact_main_identity_and_runtime_os() -> None:
     workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(
         encoding="utf-8"
     )
@@ -109,6 +131,9 @@ def test_digitalocean_push_deployment_requires_exact_main_identity() -> None:
         'payload.get("candidate_sha") != expected',
         "hhs-guarded-update.timer",
         "HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED",
+        "/api/interface/status",
+        "HHS Visual Runtime OS Workspace",
+        "legacy_harmonizer_is_public_root",
     ]
     for token in required:
         assert token in workflow
