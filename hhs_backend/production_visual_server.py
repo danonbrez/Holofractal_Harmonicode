@@ -12,8 +12,10 @@ The ASGI gateway:
   status handler on the serving event loop; and
 * delays the isolated probe briefly after the main cold import.
 
-Frontend selection changes HTTP projection only; backend/pass authority remains
-owned by the inherited HHS runtime.
+The inherited bootstrap gateway's legacy Harmonizer HTML/JavaScript rewriting
+is deliberately disabled here. The Runtime OS owns its own frontend transport
+and telemetry. Frontend selection changes HTTP projection only; backend/pass
+authority remains owned by the inherited HHS runtime.
 """
 from __future__ import annotations
 
@@ -39,7 +41,7 @@ PRODUCTION_STATUS_PATHS = (
 
 
 class ProductionRuntimeBootstrapGateway(RuntimeBootstrapGateway):
-    """Serve known expensive status routes from stale-while-revalidate state."""
+    """Serve expensive status reads from cache without rewriting Runtime OS HTML."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -51,6 +53,21 @@ class ProductionRuntimeBootstrapGateway(RuntimeBootstrapGateway):
         if time.monotonic() < self._probe_allowed_at:
             return
         super()._ensure_probe()
+
+    async def _transform_response(
+        self,
+        scope: dict[str, Any],
+        receive: Callable[[], Awaitable[dict[str, Any]]],
+        send: Callable[[dict[str, Any]], Awaitable[None]],
+    ) -> None:
+        """Pass Runtime OS HTML/assets through unchanged.
+
+        ``RuntimeBootstrapGateway`` historically injected a Pass 161 browser
+        coordinator and rewrote the old Harmonizer production-integration
+        module. Neither transformation belongs in the TypeScript Runtime OS.
+        Status caching remains implemented by ``__call__`` below.
+        """
+        await self.downstream(scope, receive, send)
 
     async def __call__(
         self,
