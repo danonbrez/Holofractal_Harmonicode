@@ -4,7 +4,13 @@ umask 027
 
 ROOT=${1:-$(pwd)}
 GUI_ROOT="$ROOT/hhs_gui"
-OUTPUT_ROOT=${HHS_RUNTIME_OS_BUILD_ROOT:-$GUI_ROOT/dist}
+if [[ -n "${HHS_RUNTIME_OS_BUILD_ROOT:-}" ]]; then
+  OUTPUT_ROOT=$HHS_RUNTIME_OS_BUILD_ROOT
+elif [[ "$(realpath -m "$ROOT")" == "/opt/hhs/app" ]]; then
+  OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist
+else
+  OUTPUT_ROOT="$GUI_ROOT/dist"
+fi
 
 cd "$ROOT"
 
