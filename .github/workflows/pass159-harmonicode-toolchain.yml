@@ -110,6 +110,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Historical closure reuse requires ancestry from the committed Pass
+          # 159 anchor to current cumulative main. A shallow checkout cannot
+          # distinguish "anchor unavailable" from a genuine non-ancestor.
+          fetch-depth: 0
+      - name: Verify complete historical ancestry is available
+        run: |
+          test "$(git rev-parse --is-shallow-repository)" = "false"
       - name: Materialize main-closure tooling
         working-directory: native_projects/hhs_pass159_harmonicode_toolchain
         run: make materialize
