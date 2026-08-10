@@ -9,6 +9,7 @@ SYSTEMD_UNITS=${HHS_SYSTEMD_UNITS:-hhs.service}
 STATE_ROOT=${HHS_UPDATE_STATE_ROOT:-/var/lib/hhs-guarded-update}
 LOCK_FILE=${HHS_UPDATE_LOCK_FILE:-/run/lock/hhs-guarded-update.lock}
 VALIDATOR_REL=${HHS_VALIDATOR_RELATIVE_PATH:-deployment/digitalocean/guarded_auto_update/validate-candidate.sh}
+DRIFT_RECONCILER=${HHS_HOST_DRIFT_RECONCILER:-$REPO_ROOT/deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh}
 VALIDATE_TIMEOUT=${HHS_VALIDATE_TIMEOUT_SECONDS:-3600}
 HEALTH_TIMEOUT=${HHS_HEALTH_TIMEOUT_SECONDS:-180}
 HEALTH_INTERVAL=${HHS_HEALTH_INTERVAL_SECONDS:-2}
@@ -16,7 +17,7 @@ HEALTH_URLS=${HHS_HEALTH_URLS:-http://127.0.0.1:8080/api/system/status}
 EXPECTED_REPOSITORY=${HHS_EXPECTED_REPOSITORY:-danonbrez/Holofractal_Harmonicode}
 KEEP_CANDIDATES=${HHS_KEEP_CANDIDATES:-3}
 POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh}
-ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile}
+ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh}
 SYNC_SELF=${HHS_UPDATE_SYNC_SELF:-1}
 DRY_RUN=${HHS_UPDATE_DRY_RUN:-0}
 
@@ -127,17 +128,36 @@ cleanup_candidate() {
   fi
 }
 
+reconcile_host_drift() {
+  local mode=$1
+  local status
+  status=$(git -C "$REPO_ROOT" status --porcelain=v1 --untracked-files=normal)
+  [[ -n "$status" ]] || return 0
+  [[ -f "$DRIFT_RECONCILER" ]] || fail "Host drift reconciler missing: $DRIFT_RECONCILER"
+  log "Preserving and reconciling host drift in $mode mode"
+  HHS_REPO_ROOT="$REPO_ROOT" \
+  HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
+  HHS_RUNTIME_OUTPUT_DIR="${HHS_RUNTIME_OUTPUT_DIR:-/var/lib/hhs/data/runtime}" \
+  HHS_HOST_DRIFT_MODE="$mode" \
+    bash "$DRIFT_RECONCILER" "$REPO_ROOT"
+}
+
 sync_installed_assets() {
   [[ "$SYNC_SELF" == "1" ]] || return 0
   local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
+  local hhs_service="$REPO_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
   [[ -d "$source" ]] || return 0
-  log "Synchronizing guarded updater assets"
+  log "Synchronizing guarded updater and canonical production service assets"
   install -d -m 0755 /usr/local/lib/hhs-guarded-update
   install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
   install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
   install -m 0755 "$source/build-runtime-os.sh" /usr/local/lib/hhs-guarded-update/build-runtime-os.sh
+  install -m 0755 "$source/preserve-host-drift.sh" /usr/local/lib/hhs-guarded-update/preserve-host-drift.sh
   install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  if [[ -f "$hhs_service" ]]; then
+    install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service
+  fi
 }
 
 rollback_live_checkout() {
@@ -193,8 +213,14 @@ actual_repository=$(normalize_repository "$remote_url")
 [[ "$actual_repository" == "$EXPECTED_REPOSITORY" ]] || \
   fail "Remote repository mismatch: expected $EXPECTED_REPOSITORY, found $actual_repository"
 
-[[ -z "$(git -C "$REPO_ROOT" status --porcelain --untracked-files=normal)" ]] || \
-  fail "Live checkout is dirty; refusing automated mutation"
+# Preserve host-local source edits before restoring committed source authority.
+# Runtime-generated untracked files remain in place until the service is stopped
+# immediately before promotion, preventing a live process from writing to a
+# deleted inode during candidate validation.
+reconcile_host_drift source
+if ! git -C "$REPO_ROOT" diff-index --quiet HEAD -- || ! git -C "$REPO_ROOT" diff --cached --quiet; then
+  fail "Tracked live checkout drift remains after reconciliation"
+fi
 
 current_branch=$(git -C "$REPO_ROOT" branch --show-current)
 [[ "$current_branch" == "$BRANCH" ]] || \
@@ -237,9 +263,21 @@ if [[ "$DRY_RUN" == "1" ]]; then
   exit 0
 fi
 
+log "Stopping live units for final host-state reconciliation"
+stop_units
+if ! reconcile_host_drift final; then
+  log "Final host drift reconciliation failed; restoring unchanged live service"
+  start_units || true
+  fail "final host drift reconciliation failed"
+fi
+remaining=$(git -C "$REPO_ROOT" status --porcelain=v1 --untracked-files=normal)
+if [[ -n "$remaining" ]]; then
+  start_units || true
+  fail "Live checkout remains dirty immediately before promotion"
+fi
+
 PROMOTION_STARTED=1
 log "Promoting $CANDIDATE_SHA over $PREVIOUS_SHA"
-stop_units
 if ! git -C "$REPO_ROOT" merge --ff-only "$CANDIDATE_SHA"; then
   rollback_live_checkout "fast-forward merge failed"
   exit 1
