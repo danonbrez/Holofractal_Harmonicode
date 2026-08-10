@@ -1,19 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+import sys
 
 from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
     build_initial_inherited_authority_reachability,
     continuation_context_facts,
 )
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
-from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
-    ContinuationLease,
-    Hash72ReceiptChainWorkload,
-    PredictiveContinuationEngine,
-    ResourceContract,
-    _hash,
-)
 from hhs_runtime.hhs_pass217_runtime_route_composer_v1 import build_bound_route_surface
 from hhs_runtime.hhs_semantic_composition_cache_v1 import SemanticCompositionCache
 
@@ -23,6 +17,14 @@ def _decisions(record):
 
 
 def _pass111_bundle():
+    from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
+        ContinuationLease,
+        Hash72ReceiptChainWorkload,
+        PredictiveContinuationEngine,
+        ResourceContract,
+        _hash,
+    )
+
     dependency = _hash("pass217_bridge_dependency", {"version": 1})
     capability = _hash("pass217_bridge_capability", {"status": "CANONICAL_EXECUTABLE"})
     workload = Hash72ReceiptChainWorkload(
@@ -54,6 +56,12 @@ def _pass111_bundle():
         "continuation_lease_root_hash72": lease.root_hash72,
         "resource_contract": asdict(contract),
     }
+
+
+def test_stage_bridge_does_not_eager_import_pass111_or_fastapi_projection() -> None:
+    assert "hhs_runtime.hhs_pass111_predictive_continuation_cache_v1" not in sys.modules
+    assert "native_projects.hhs_ide_workspace.hhs_unified_runtime_api_v1" not in sys.modules
+    assert "fastapi" not in sys.modules
 
 
 def test_first_real_stage_slice_traverses_pass43_and_pass44(tmp_path) -> None:
