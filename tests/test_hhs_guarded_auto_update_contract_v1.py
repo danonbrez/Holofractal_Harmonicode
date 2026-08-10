@@ -275,7 +275,7 @@ def test_exact_main_promotion_has_one_updater_owner_and_timer_is_follower() -> N
     installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
     assert claim < workflow_stop < ownership_witness < git_fetch < drift < handoff < installer_call
     assert "flock -w 10 8" in workflow
-    assert "PROMOTION_HANDOFF == \"0\"" in workflow
+    assert '$PROMOTION_HANDOFF" == "0"' in workflow
     assert "systemctl start hhs-guarded-update.timer" in workflow
 
 
