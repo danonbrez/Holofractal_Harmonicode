@@ -5,6 +5,7 @@ not create runtime state, replace backend authority, or modify pass semantics.
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -12,7 +13,10 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
+RUNTIME_OS_SOURCE_ROOT = ROOT_DIR / "hhs_gui"
+RUNTIME_OS_ROOT = Path(
+    os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT") or (RUNTIME_OS_SOURCE_ROOT / "dist")
+).expanduser().resolve()
 RUNTIME_OS_INDEX = RUNTIME_OS_ROOT / "index.html"
 RUNTIME_OS_ASSETS = RUNTIME_OS_ROOT / "assets"
 DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"
@@ -74,6 +78,7 @@ def project_runtime_os(
                 "interface": "HHS_VISUAL_RUNTIME_OS_WORKSPACE",
                 "frontend_stack": "typescript-react-vite",
                 "asset_root": str(RUNTIME_OS_ROOT),
+                "source_root": str(RUNTIME_OS_SOURCE_ROOT),
                 "public_root": "/",
                 "frontend_is_runtime_authority": False,
                 "legacy_harmonizer_is_public_root": False,
@@ -107,6 +112,7 @@ __all__ = [
     "RUNTIME_OS_ASSETS",
     "RUNTIME_OS_INDEX",
     "RUNTIME_OS_ROOT",
+    "RUNTIME_OS_SOURCE_ROOT",
     "project_runtime_os",
     "require_runtime_os_build",
 ]
