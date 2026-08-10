@@ -12,6 +12,7 @@ STATE_ROOT=${STATE_ROOT:-/var/lib/hhs-guarded-update}
 ENABLE_PROMOTION=${HHS_INSTALL_ENABLE_PROMOTION:-0}
 BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
+OWNERSHIP_TIMEOUT=${HHS_UPDATE_OWNERSHIP_TIMEOUT_SECONDS:-900}
 NATIVE_BUILD='bash bin/post_compile'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
@@ -46,6 +47,36 @@ bash -n \
   "$SOURCE/install.sh"
 python3 -m py_compile "$SOURCE/runtime-os-bundle.py"
 
+# The periodic timer is a follower, never a concurrent deployment owner.
+# Stop it before changing updater assets or environment. If a timer-launched
+# oneshot is already running, let that guarded transaction reach its own
+# terminal state instead of SIGTERMing it during a possible final promotion.
+systemctl stop hhs-guarded-update.timer 2>/dev/null || true
+deadline=$((SECONDS + OWNERSHIP_TIMEOUT))
+while :; do
+  updater_state=$(systemctl show hhs-guarded-update.service -p ActiveState --value 2>/dev/null || printf 'inactive')
+  case "$updater_state" in
+    inactive|failed|unknown|"") break ;;
+  esac
+  if (( SECONDS >= deadline )); then
+    echo "Timed out waiting for the existing guarded updater owner to finish (state=$updater_state)." >&2
+    systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
+    journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
+    exit 7
+  fi
+  sleep 2
+done
+systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+
+# An earlier guarded transaction is allowed to finish, but exact-main takeover
+# may proceed only if the production service is still/restored online.
+if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service; then
+  echo "hhs.service is not active after prior guarded updater ownership ended; refusing a second promotion." >&2
+  systemctl status hhs.service --no-pager --full >&2 || true
+  journalctl -u hhs.service -n 250 --no-pager >&2 || true
+  exit 8
+fi
+
 install -d -m 0755 "$INSTALL_ROOT" /etc/hhs "$BUNDLE_ROOT" "$BUNDLE_ROOT/incoming" "$BUNDLE_ROOT/releases"
 install -d -m 0750 "$STATE_ROOT" "$STATE_ROOT/candidates" "$STATE_ROOT/host-drift"
 install -m 0755 "$SOURCE/hhs-guarded-update.sh" "$INSTALL_ROOT/hhs-guarded-update.sh"
@@ -59,7 +90,7 @@ install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guard
 if [[ "$ENABLE_PROMOTION" == "1" ]]; then
   [[ -f "$CANONICAL_HHS_SERVICE" ]] || {
     echo "Canonical HHS production service missing: $CANONICAL_HHS_SERVICE" >&2
-    exit 7
+    exit 9
   }
   install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
 fi
@@ -171,13 +202,24 @@ if ! git config --system --get-all safe.directory | grep -Fxq "$REPO_ROOT"; then
 fi
 
 systemctl daemon-reload
-systemctl enable --now hhs-guarded-update.timer
+systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+
+# Run exactly one synchronous updater while the timer is stopped. Type=oneshot
+# makes systemctl start return only after validation/promotion/rollback reaches
+# a terminal result. The periodic follower is re-enabled only after success.
 if ! systemctl start hhs-guarded-update.service; then
-  echo "HHS guarded updater failed during installation; emitting exact service diagnostics." >&2
+  echo "HHS guarded updater failed during exclusive installation/promotion; timer remains stopped." >&2
   systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
   journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
-  exit 8
+  exit 10
 fi
+
+systemctl enable hhs-guarded-update.timer >/dev/null
+systemctl start hhs-guarded-update.timer
+systemctl is-active --quiet hhs-guarded-update.timer || {
+  echo "Guarded updater promotion succeeded but periodic follower timer did not activate." >&2
+  exit 11
+}
 
 cat <<EOF_SUMMARY
 Guarded continuous deployment installed.
@@ -192,6 +234,7 @@ Drift archive:$STATE_ROOT/host-drift
 Bundle root:  $BUNDLE_ROOT
 Bundle SHA:   ${BUNDLE_SHA:-not-pinned}
 Promotion:    $([[ "$ENABLE_PROMOTION" == "1" ]] && printf enabled || printf dry-run)
+Ownership:    exclusive synchronous service; timer resumed after success
 
 Inspect:
   systemctl status hhs-guarded-update.timer --no-pager
