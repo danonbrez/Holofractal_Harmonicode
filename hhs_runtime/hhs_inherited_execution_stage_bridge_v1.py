@@ -1,19 +1,20 @@
 """Bridge proven inherited optimization stages into the Pass 217 composer.
 
-This module does not reimplement the inherited authorities.  It calls their
-existing repository-native implementations and converts the resulting observed
-receipts into `ACTIVE_IN_PATH` traversal witnesses for the cumulative authority
-model.
+This module does not reimplement inherited authorities. It calls their existing
+repository-native implementations and converts observed receipts into
+`ACTIVE_IN_PATH` traversal witnesses for the cumulative authority model.
 
-Checkpoint scope:
+Current bridge scope:
 - Pass 043 conformance decision cache: already traversed by every composed
-  preflight; this bridge exposes its concrete cache-entry witness.
+  preflight; expose its concrete cache-entry witness.
 - Pass 044 semantic composition cache: actually load/validate/reuse or store the
   compact dependency-rooted composition entry.
 - Pass 111 predictive continuation cache: mechanically `NOT_APPLICABLE` only
-  when no continuation contract markers are present.  If markers are present,
-  no state is fabricated; reachability remains unresolved and fails closed
-  until the real Pass 111 resume path is attached.
+  when no continuation contract markers are present. When a complete Pass 111
+  cache/lease/resource contract is present, reconstruct the inherited workload,
+  validate the cache and roots, replay the one-ninth tail through the original
+  production step function, and admit only from the existing resume receipt.
+  Partial, ambiguous, stale, or corrupted continuation context fails closed.
 """
 
 from __future__ import annotations
@@ -21,10 +22,17 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from threading import RLock
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from hhs_runtime.hhs_cumulative_execution_authority_v1 import (
     build_authority_reachability,
+)
+from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
+    ContinuationError,
+    ContinuationLease,
+    Hash72ReceiptChainWorkload,
+    PredictiveContinuationEngine,
+    ResourceContract,
 )
 from hhs_runtime.hhs_semantic_composition_cache_v1 import (
     SemanticCompositionCache,
@@ -45,6 +53,8 @@ CONTINUATION_MARKERS = frozenset(
         "continuation_cache_root_hash72",
         "continuation_lease",
         "continuation_lease_root_hash72",
+        "resource_contract",
+        "resource_contract_root_hash72",
         "suspension_coordinate",
         "pending_step_start",
         "pending_step_end",
@@ -54,6 +64,9 @@ CONTINUATION_MARKERS = frozenset(
         "maximum_replay_steps",
         "maximum_continuation_steps",
     }
+)
+_REQUIRED_CONTINUATION_BUNDLE_KEYS = frozenset(
+    {"continuation_cache", "continuation_lease", "resource_contract"}
 )
 
 _SEMANTIC_LOCK = RLock()
@@ -86,15 +99,32 @@ def _find_keys(value: Any, targets: frozenset[str], found: set[str]) -> None:
             _find_keys(child, targets, found)
 
 
+def _find_continuation_bundles(value: Any, found: List[Mapping[str, Any]]) -> None:
+    if isinstance(value, Mapping):
+        keys = {str(key) for key in value}
+        if _REQUIRED_CONTINUATION_BUNDLE_KEYS.issubset(keys):
+            found.append(value)
+        for child in value.values():
+            _find_continuation_bundles(child, found)
+    elif isinstance(value, (list, tuple)):
+        for child in value:
+            _find_continuation_bundles(child, found)
+
+
 def continuation_context_facts(payload: Optional[Mapping[str, Any]]) -> Dict[str, Any]:
+    payload_dict = dict(payload or {})
     found: set[str] = set()
-    _find_keys(dict(payload or {}), CONTINUATION_MARKERS, found)
+    bundles: List[Mapping[str, Any]] = []
+    _find_keys(payload_dict, CONTINUATION_MARKERS, found)
+    _find_continuation_bundles(payload_dict, bundles)
     markers = sorted(found)
     return {
         "schema": "HHS_PASS217_CONTINUATION_APPLICABILITY_FACTS_V1",
         "continuation_context_present": bool(markers),
         "observed_markers": markers,
         "marker_count": len(markers),
+        "complete_contract_bundle_count": len(bundles),
+        "complete_contract_bundle_unique": len(bundles) == 1,
     }
 
 
@@ -216,6 +246,169 @@ def observe_semantic_composition_cache(
     }
 
 
+def _exact_int(mapping: Mapping[str, Any], key: str, *, minimum: int = 0) -> int:
+    value = mapping.get(key)
+    if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
+        raise ValueError(f"REJECT_PASS111_CONTINUATION_INTEGER_FIELD:{key}")
+    return value
+
+
+def _continuation_failure(reason: str, facts: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "observed": False,
+        "path": [
+            "kernel_runtime_autocomposer",
+            "predictive_continuation_cache",
+        ],
+        "traversal_witness": {
+            "schema": "HHS_PASS217_PREDICTIVE_CONTINUATION_TRAVERSAL_V1",
+            "status": "REJECT_PREDICTIVE_CONTINUATION_TRAVERSAL",
+            "reason": reason,
+            "applicability_facts": dict(facts),
+        },
+        "witness_root": "",
+    }
+
+
+def observe_predictive_continuation_cache(
+    payload: Optional[Mapping[str, Any]],
+    *,
+    facts: Optional[Mapping[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Traverse the original Pass 111 cache validation and tail-replay path."""
+
+    payload_dict = dict(payload or {})
+    applicability = dict(facts or continuation_context_facts(payload_dict))
+    bundles: List[Mapping[str, Any]] = []
+    _find_continuation_bundles(payload_dict, bundles)
+    if len(bundles) != 1:
+        return _continuation_failure(
+            "REJECT_PASS111_CONTINUATION_CONTRACT_BUNDLE_COUNT", applicability
+        )
+
+    bundle = bundles[0]
+    cache = bundle.get("continuation_cache")
+    lease_payload = bundle.get("continuation_lease")
+    resource_payload = bundle.get("resource_contract")
+    if not isinstance(cache, Mapping):
+        return _continuation_failure(
+            "REJECT_PASS111_CONTINUATION_CACHE_MISSING", applicability
+        )
+    if not isinstance(lease_payload, Mapping):
+        return _continuation_failure(
+            "REJECT_PASS111_CONTINUATION_LEASE_MISSING", applicability
+        )
+    if not isinstance(resource_payload, Mapping):
+        return _continuation_failure(
+            "REJECT_PASS111_RESOURCE_CONTRACT_MISSING", applicability
+        )
+
+    try:
+        operation_id = str(cache.get("operation_id") or "").strip()
+        dependency_root = str(cache.get("dependency_root_hash72") or "").strip()
+        capability_root = str(
+            cache.get("capability_admission_root_hash72") or ""
+        ).strip()
+        if not operation_id or not dependency_root or not capability_root:
+            raise ValueError("REJECT_PASS111_CONTINUATION_IDENTITY_MISSING")
+
+        resource = ResourceContract(
+            maximum_useful_steps_per_cycle=_exact_int(
+                resource_payload,
+                "maximum_useful_steps_per_cycle",
+                minimum=1,
+            ),
+            safety_reserve_steps=_exact_int(
+                resource_payload,
+                "safety_reserve_steps",
+                minimum=0,
+            ),
+        )
+        if str(cache.get("resource_contract_root_hash72") or "") != resource.root_hash72:
+            raise ValueError("REJECT_PASS111_RESOURCE_CONTRACT_ROOT_MISMATCH")
+
+        workload = Hash72ReceiptChainWorkload(
+            operation_id,
+            dependency_root,
+            capability_root,
+        )
+        engine = PredictiveContinuationEngine(
+            workload,
+            _exact_int(cache, "pending_step_end", minimum=1),
+            resource,
+        )
+        lease = ContinuationLease(
+            operation_id=str(lease_payload.get("operation_id") or ""),
+            dependency_root_hash72=str(
+                lease_payload.get("dependency_root_hash72") or ""
+            ),
+            capability_admission_root_hash72=str(
+                lease_payload.get("capability_admission_root_hash72") or ""
+            ),
+            maximum_replay_steps=_exact_int(
+                lease_payload,
+                "maximum_replay_steps",
+                minimum=0,
+            ),
+            maximum_continuation_steps=_exact_int(
+                lease_payload,
+                "maximum_continuation_steps",
+                minimum=0,
+            ),
+        )
+        expected_lease_root = str(
+            bundle.get("continuation_lease_root_hash72")
+            or lease_payload.get("continuation_lease_root_hash72")
+            or ""
+        ).strip()
+        if expected_lease_root and expected_lease_root != lease.root_hash72:
+            raise ValueError("REJECT_PASS111_CONTINUATION_LEASE_ROOT_MISMATCH")
+
+        admission = engine.replay_tail(cache, lease)
+        if admission.get("resume_status") != "ADMITTED_FOR_CONTINUATION":
+            raise ValueError("REJECT_PASS111_RESUME_NOT_ADMITTED")
+        admission_root = str(admission.get("resume_admission_root_hash72") or "")
+        if not admission_root:
+            raise ValueError("REJECT_PASS111_RESUME_ADMISSION_ROOT_MISSING")
+
+        return {
+            "observed": True,
+            "path": [
+                "kernel_runtime_autocomposer",
+                "predictive_continuation_cache",
+            ],
+            "traversal_witness": {
+                "schema": "HHS_PASS217_PREDICTIVE_CONTINUATION_TRAVERSAL_V1",
+                "status": "ADMIT_PREDICTIVE_CONTINUATION_TRAVERSAL",
+                "continuation_cache_root_hash72": cache.get(
+                    "continuation_cache_root_hash72"
+                ),
+                "resource_contract_root_hash72": resource.root_hash72,
+                "continuation_lease_root_hash72": lease.root_hash72,
+                "resume_admission_root_hash72": admission_root,
+                "resume_status": admission.get("resume_status"),
+                "production_path": admission.get("production_path"),
+                "replay_work_steps": admission.get("replay_work_steps"),
+                "useful_progress_steps_added": admission.get(
+                    "useful_progress_steps_added"
+                ),
+                "cached_suspension_state_root_hash72": admission.get(
+                    "cached_suspension_state_root_hash72"
+                ),
+                "replayed_suspension_state_root_hash72": admission.get(
+                    "replayed_suspension_state_root_hash72"
+                ),
+                "continuity_vector": dict(admission.get("continuity_vector") or {}),
+                "applicability_facts": applicability,
+            },
+            "witness_root": admission_root,
+        }
+    except ContinuationError as exc:
+        return _continuation_failure(exc.code, applicability)
+    except (KeyError, TypeError, ValueError) as exc:
+        return _continuation_failure(str(exc), applicability)
+
+
 def build_initial_inherited_authority_reachability(
     preflight: Mapping[str, Any],
     surface: Mapping[str, Any],
@@ -223,7 +416,7 @@ def build_initial_inherited_authority_reachability(
     *,
     semantic_cache: Optional[SemanticCompositionCache] = None,
 ) -> Dict[str, Any]:
-    """Build the first production reachability slice from real stage traversals."""
+    """Build the current production reachability slice from real traversals."""
 
     active = {
         "conformance_decision_cache": conformance_decision_cache_proof(preflight),
@@ -245,6 +438,11 @@ def build_initial_inherited_authority_reachability(
                 "operation payload"
             ),
         }
+    else:
+        active["predictive_continuation_cache"] = observe_predictive_continuation_cache(
+            payload,
+            facts=continuation,
+        )
 
     record = build_authority_reachability(
         str(preflight.get("operation") or surface.get("symbol") or "operation"),
@@ -264,5 +462,6 @@ __all__ = [
     "continuation_context_facts",
     "conformance_decision_cache_proof",
     "observe_semantic_composition_cache",
+    "observe_predictive_continuation_cache",
     "build_initial_inherited_authority_reachability",
 ]
