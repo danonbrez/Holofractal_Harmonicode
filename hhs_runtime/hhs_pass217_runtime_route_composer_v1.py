@@ -2,19 +2,22 @@
 
 The Pass 042 conformance graph already defines API routes as kernel-derived
 surfaces, but the production service-registry endpoints predate that declaration
-set.  This module adds an additive, source-keyed binding for those live routes
+set. This module adds an additive, source-keyed binding for those live routes
 without rebuilding the entire default service registry on every request.
 
 The shared HHS IO ingress boundary calls this module before recording or reusing
-a request.  A bound route therefore cannot reach its handler merely because an
+a request. A bound route therefore cannot reach its handler merely because an
 IO receipt/cache path exists; it must first pass the inherited Pass 043 runtime
-composer.
+composer and the currently connected inherited optimization-authority slice.
 """
 
 from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional
 
+from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
+    build_initial_inherited_authority_reachability,
+)
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
 
@@ -82,21 +85,25 @@ def build_bound_route_surface(source: str) -> Dict[str, Any]:
                 "HHS_KERNEL_DERIVATION_WITNESS_V1",
                 "HHS_SURFACE_REACHABILITY_WITNESS_V1",
                 "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
+                "HHS_CUMULATIVE_EXECUTION_AUTHORITY_REACHABILITY_V1",
             ],
             "validators": [
                 "validate_api_route_kernel_derivation",
                 "validate_pass217_cumulative_route_composition",
+                "validate_authority_reachability",
             ],
             "guards": [
                 "runtime_constraint_enforcement",
                 "zero_bypass_runtime_interposer",
                 "io_gateway",
                 "kernel_runtime_autocomposer",
+                "cumulative_execution_authority_reachability",
             ],
             "rejection_codes": [
                 "REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT",
                 "REJECT_UNDERIVED_RUNTIME_SURFACE",
                 "REJECT_RUNTIME_ROUTE_WITHOUT_CUMULATIVE_COMPOSITION",
+                "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY",
             ],
             "mutation_policy": binding["mutation_policy"],
             "persistence_policy": binding["persistence_policy"],
@@ -107,11 +114,45 @@ def build_bound_route_surface(source: str) -> Dict[str, Any]:
     return surface
 
 
+def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "schema": "HHS_CUMULATIVE_EXECUTION_AUTHORITY_REACHABILITY_SUMMARY_V1",
+        "admitted": bool(record.get("admitted")),
+        "status": record.get("status"),
+        "required_authority_count": record.get("required_authority_count"),
+        "accepted_state_counts": dict(record.get("accepted_state_counts") or {}),
+        "reachability_root_hash72": record.get("reachability_root_hash72"),
+        "checkpoint_scope": list(record.get("checkpoint_scope") or []),
+        "continuation_applicability_facts": dict(
+            record.get("continuation_applicability_facts") or {}
+        ),
+        "decisions": [
+            {
+                "authority_id": row.get("authority_id"),
+                "state": row.get("state"),
+                "accepted": bool(row.get("accepted")),
+                "reasons": list(row.get("reasons") or []),
+                "witness_root": (row.get("proof") or {}).get("witness_root"),
+                "traversal_witness": (row.get("proof") or {}).get(
+                    "traversal_witness"
+                ),
+                "mechanically_proven": (row.get("proof") or {}).get(
+                    "mechanically_proven"
+                ),
+            }
+            for row in record.get("decisions", []) or []
+        ],
+        "blockers": list(record.get("blockers") or []),
+        "optional_available_forbidden": True,
+    }
+
+
 def compose_bound_route_ingress(
     source: str,
     payload: Optional[Mapping[str, Any]] = None,
     *,
     cache: Optional[Dict[str, Dict[str, Any]]] = None,
+    semantic_cache: Any = None,
 ) -> Optional[Dict[str, Any]]:
     """Return None for unbound sources; fail closed for bound route preflight."""
 
@@ -119,6 +160,7 @@ def compose_bound_route_ingress(
     binding = SERVICE_ROUTE_BINDINGS.get(key)
     if binding is None:
         return None
+    payload_dict = dict(payload or {})
     surface = build_bound_route_surface(key)
     symbol = str(binding["symbol"])
     preflight = execute_surface_preflight(
@@ -126,22 +168,42 @@ def compose_bound_route_ingress(
         operation=symbol,
         cache=cache,
     )
+    authority_record = None
+    if preflight.get("ok"):
+        authority_record = build_initial_inherited_authority_reachability(
+            preflight,
+            surface,
+            payload_dict,
+            semantic_cache=semantic_cache,
+        )
+    authority_summary = (
+        _compact_authority_reachability(authority_record)
+        if authority_record is not None
+        else None
+    )
     pipeline = dict(
         (preflight.get("composition_plan") or {}).get("pipeline") or {}
     )
     witness = dict(
         (preflight.get("composition_plan") or {}).get("witness") or {}
     )
+    admitted = bool(preflight.get("ok")) and bool(
+        authority_record and authority_record.get("admitted")
+    )
     decision = {
         "schema": SCHEMA,
         "version": VERSION,
-        "ok": bool(preflight.get("ok")),
-        "status": preflight.get("status"),
+        "ok": admitted,
+        "status": (
+            "ADMIT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION"
+            if admitted
+            else "REJECT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION"
+        ),
         "source": key,
         "route": binding["route"],
         "surface_id": surface.get("surface_id"),
         "operation": symbol,
-        "request_payload_keys": sorted(str(k) for k in dict(payload or {})),
+        "request_payload_keys": sorted(str(k) for k in payload_dict),
         "derivation_complete": bool(surface.get("derivation_complete")),
         "conformance_root_hash72": preflight.get("conformance_root_hash72"),
         "pipeline_root_hash72": pipeline.get("pipeline_root_hash72"),
@@ -150,10 +212,14 @@ def compose_bound_route_ingress(
         "expanded_metadata_persisted": bool(
             preflight.get("expanded_metadata_persisted")
         ),
-        "propagation_allowed": bool(preflight.get("ok")),
+        "kernel_runtime_composition_admitted": bool(preflight.get("ok")),
+        "inherited_execution_authority_reachability": authority_summary,
+        "propagation_allowed": admitted,
     }
-    if not decision["ok"]:
+    if not preflight.get("ok"):
         decision["reason"] = "REJECT_RUNTIME_ROUTE_WITHOUT_CUMULATIVE_COMPOSITION"
+    elif not admitted:
+        decision["reason"] = "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY"
     return decision
 
 
