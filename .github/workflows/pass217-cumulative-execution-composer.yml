@@ -1,0 +1,50 @@
+name: Pass 217 Cumulative Execution Composer
+
+on:
+  push:
+    branches:
+      - agent/pass217-cumulative-execution-composer
+    paths:
+      - 'hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py'
+      - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
+      - 'tests/test_hhs_pass217_cumulative_execution_composer_v1.py'
+      - '.github/workflows/pass217-cumulative-execution-composer.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py'
+      - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
+      - 'tests/test_hhs_pass217_cumulative_execution_composer_v1.py'
+      - '.github/workflows/pass217-cumulative-execution-composer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile changed runtime surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+            hhs_runtime/hhs_lazy_service_registry_v1.py \
+            tests/test_hhs_pass217_cumulative_execution_composer_v1.py
+
+      - name: Run cumulative-composer checkpoint tests
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass217_cumulative_execution_composer_v1.py
