@@ -137,3 +137,124 @@ Checkpoints 1–5 do **not** claim that all inherited optimization authorities a
 ## Exact next action
 
 Checkpoint 6: trace and connect the next compound optimization group from the Pass 214/215 authority set, prioritizing the retrieval/reuse chain (`reusable_pattern_cache`, `vector_shortlist`, `exact_compatibility_filtering`, `exact_delta_cost_reranking`, followed by content-addressed/incremental reuse). Reuse the exact repository-native callables frozen by Pass 214. Do not declare a class `ACTIVE_IN_PATH` from module existence alone; require an observed traversal/root. Where an operation has no search/reuse candidate domain, emit a mechanical `NOT_APPLICABLE` proof rather than performing artificial work. Validate and update this restart record before moving on.
+
+---
+
+## Stop checkpoint — 2026-08-10 09:05 America/New_York
+
+Development was explicitly stopped after Checkpoint 5. No Checkpoint 6 implementation was started. Repository searches performed after Checkpoint 5 were inspection only and produced no repository changes.
+
+### Exact repository state at stop
+
+- Repository: `danonbrez/Holofractal_Harmonicode`
+- Branch: `agent/pass217-cumulative-execution-composer`
+- Intended merge target: `main`
+- Exact base commit: `07e514ac88b786c121d8308135fee19b9d30877d`
+- Pre-stop-checkpoint branch HEAD: `336ff1f8dc7d09f370ae8ef3a15cd16d19750aab`
+- Latest validated implementation head: `d2004ebcf54ad20736d7d1a3fea05af55c8a634c`
+- Compare state at pre-stop HEAD: `ahead`, 29 commits ahead of the base, 0 behind the base.
+- This restart/status document update is documentation-only and creates the final stop-checkpoint commit after the pre-stop HEAD above.
+
+### Files created or modified relative to the exact base
+
+Added:
+
+- `.github/workflows/pass217-cumulative-execution-composer.yml`
+- `docs/pass217/PASS_217_CUMULATIVE_EXECUTION_COMPOSER_RESTART.md`
+- `hhs_runtime/hhs_cumulative_execution_authority_v1.py`
+- `hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py`
+- `hhs_runtime/hhs_pass217_runtime_route_composer_v1.py`
+- `tests/test_hhs_cumulative_execution_authority_v1.py`
+- `tests/test_hhs_inherited_execution_stage_bridge_v1.py`
+- `tests/test_hhs_pass217_cumulative_execution_composer_v1.py`
+- `tests/test_hhs_pass217_runtime_route_composer_v1.py`
+
+Modified:
+
+- `hhs_runtime/hhs_io_gateway_v1.py`
+- `hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py`
+- `hhs_runtime/hhs_lazy_service_registry_v1.py`
+- `native_projects/hhs_ide_workspace/__init__.py`
+
+### Committed versus uncommitted changes
+
+- All implementation, tests, workflow changes, lazy-import repair, and restart documentation are committed on `agent/pass217-cumulative-execution-composer`.
+- There are no known uncommitted repository changes. Repository writes in this workstream were made through the connected GitHub API, so there is no authoritative local-only working tree containing additional completed work.
+- No safely completed work remains to be committed.
+
+### Implementation completed
+
+1. Mandatory Pass 043 kernel-derived composition preflight before lazy service execution.
+2. Fail-closed three-state inherited optimization authority model: `ACTIVE_IN_PATH`, mechanically proven `NOT_APPLICABLE`, or later-contract `EXPLICITLY_SUPERSEDED`; `OPTIONAL_AVAILABLE` forbidden.
+3. Production composition binding for `GET /api/runtime/services`, `GET /api/runtime/services/status`, and `POST /api/runtime/services/dispatch` at the shared IO boundary.
+4. Real Pass 043 conformance-decision-cache traversal witnesses.
+5. Real Pass 044 semantic-composition-cache traversal witnesses with dependency-root validation and compact reconstruction residue.
+6. Real Pass 111 predictive-continuation activation for complete continuation contracts, including resource/lease validation and one-ninth-tail production replay.
+7. Repair of the eager `native_projects.hhs_ide_workspace` package dependency inversion so low-level runtime imports do not initialize the high-level FastAPI projection.
+8. Dependency-scoped tests and workflow coverage for the completed checkpoints.
+
+### Commands already executed
+
+The authoritative dependency-scoped GitHub Actions workflow executed the following command family; its final validated Checkpoint 5 run used these exact commands:
+
+```text
+python -m pip install --disable-pip-version-check pytest
+
+python -m py_compile \
+  hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+  hhs_runtime/hhs_lazy_service_registry_v1.py \
+  hhs_runtime/hhs_cumulative_execution_authority_v1.py \
+  hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py \
+  hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
+  hhs_runtime/hhs_io_gateway_v1.py \
+  tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
+  tests/test_hhs_cumulative_execution_authority_v1.py \
+  tests/test_hhs_inherited_execution_stage_bridge_v1.py \
+  tests/test_hhs_pass217_runtime_route_composer_v1.py
+
+python -m pytest -q \
+  tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
+  tests/test_hhs_cumulative_execution_authority_v1.py \
+  tests/test_hhs_inherited_execution_stage_bridge_v1.py \
+  tests/test_hhs_pass217_runtime_route_composer_v1.py
+```
+
+Repository branch/file creation and commits were performed through the connected GitHub API rather than local shell `git` commands. A local/container GitHub-access attempt failed because direct GitHub network access was unavailable; the exact failed local shell invocation is not reproduced here because it was not retained verbatim and is not being fabricated.
+
+### Validations completed
+
+- Checkpoint 1: workflow run `31354829734` — `SUCCESS`.
+- Checkpoint 2: workflow run `31355052609`, job `93353078780` — `SUCCESS`.
+- Checkpoint 3: workflow run `31355330668`, job `93353835996` — `SUCCESS`.
+- Checkpoint 4: workflow run `31355776730`, job `93355060485` — `SUCCESS`.
+- Checkpoint 5 initial attempt: workflow run `31355952315`, job `93355556434` — `FAILURE` during test collection due to eager FastAPI import through `native_projects.hhs_ide_workspace.__init__`.
+- Checkpoint 5 repaired exact implementation head `d2004ebcf54ad20736d7d1a3fea05af55c8a634c`: workflow run `31356115574`, job `93356017137` — `SUCCESS`; compile and all scoped test suites passed.
+- The stop-checkpoint documentation commit itself changes no runtime/test code and was not subjected to another validation rerun by explicit stop instruction.
+
+### Validations still required
+
+No additional validation is authorized in this stop response. Before eventual merge/closure, later work still needs:
+
+- dependency-scoped validation for any future Checkpoint 6+ code changes;
+- publication/validation of the service route bindings in global Pass 042 surface-map discovery;
+- real traversal or mechanical disposition for the remaining Pass 214/215 authorities;
+- production bypass-negative coverage for every applicable inherited authority;
+- final Pass 217 cumulative-utilization closure gate;
+- merge readiness/integration validation against the then-current `main`;
+- merge to `main` and verification of `main` after merge.
+
+### Current blockers and failed operations
+
+- Direct GitHub access from the local/container environment failed; connected GitHub API operations were used instead.
+- Checkpoint 5 run `31355952315` / job `93355556434` failed because importing Pass 111 pulled in FastAPI through an eager package `__init__`; repaired by commits `cd805d7570eddf5838dfb1fe9d70346d40e69fea` and `f11fdfa76dcfbec28f721e749ab374d685d598c9`, then validated green.
+- One workflow-log fetch attempted while its job was still in progress returned GitHub `404 BlobNotFound`; the completed job log was later retrieved successfully. No retry is required now.
+- Inherited historical workflows, including the Pass 205 base workflow and a Pass 174 boot-resilience workflow, may auto-trigger and report unrelated failures/no relevant jobs on this branch. They are not the dependency-scoped validation authority for this workstream and were not chased further.
+- Checkpoint 6 retrieval/reuse implementation is intentionally not started; repository-name searches after Checkpoint 5 were inspection only.
+
+### Exact next implementation action after restart
+
+Resume at Checkpoint 6 only. Starting from this branch, first map the Pass 214/215 retrieval/reuse authorities to their exact repository-native callables without broad rescanning: `reusable_pattern_cache`, `vector_shortlist`, `exact_compatibility_filtering`, and `exact_delta_cost_reranking`. Then implement one bounded authority slice with observed traversal/root witnesses, using mechanical `NOT_APPLICABLE` where no candidate/search domain exists. Commit that slice before any broader development, run only its dependency-scoped validation, and update this restart document before proceeding further.
+
+### Repository-visible restart/status document
+
+- `docs/pass217/PASS_217_CUMULATIVE_EXECUTION_COMPOSER_RESTART.md` — created and repeatedly updated throughout Checkpoints 1–5; this section is the explicit stop checkpoint requested on 2026-08-10.
