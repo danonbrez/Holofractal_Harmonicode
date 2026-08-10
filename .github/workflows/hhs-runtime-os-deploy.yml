@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - "hhs_gui/**"
+      - "hhs_backend/runtime_os_projection.py"
       - "hhs_backend/runtime_os_visual_server.py"
+      - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
       - "hhs_backend/cached_visual_server.py"
       - "hhs_backend/visual_server.py"
@@ -19,12 +21,15 @@ on:
       - "tests/test_production_visual_server.py"
       - "tests/test_hhs_pass205_*"
       - "bin/post_compile"
+      - "Procfile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
   pull_request:
     branches: [main]
     paths:
       - "hhs_gui/**"
+      - "hhs_backend/runtime_os_projection.py"
       - "hhs_backend/runtime_os_visual_server.py"
+      - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
       - "hhs_backend/cached_visual_server.py"
       - "hhs_backend/visual_server.py"
@@ -38,6 +43,7 @@ on:
       - "tests/test_production_visual_server.py"
       - "tests/test_hhs_pass205_*"
       - "bin/post_compile"
+      - "Procfile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
   workflow_dispatch:
 
@@ -128,7 +134,9 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile \
+            hhs_backend/runtime_os_projection.py \
             hhs_backend/runtime_os_visual_server.py \
+            hhs_backend/runtime_os_application_server.py \
             hhs_backend/cached_visual_server.py \
             hhs_backend/production_visual_server.py \
             tests/test_runtime_os_production_root.py \
@@ -137,15 +145,20 @@ jobs:
       - name: Enforce Runtime OS public-root authority
         run: |
           set -euo pipefail
-          grep -F 'RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"' hhs_backend/runtime_os_visual_server.py
-          grep -F 'PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"' hhs_backend/runtime_os_visual_server.py
+          grep -F 'RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"' hhs_backend/runtime_os_projection.py
+          grep -F 'DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"' hhs_backend/runtime_os_projection.py
           grep -F 'from hhs_backend.runtime_os_visual_server import app as authoritative_app' hhs_backend/production_visual_server.py
           grep -F 'hhs_backend.production_visual_server:app' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'hhs_backend.runtime_os_application_server:app' Procfile
           if grep -Fq 'from hhs_backend.visual_server import app as authoritative_app' hhs_backend/production_visual_server.py; then
             echo 'DigitalOcean production gateway still bypasses the Runtime OS projection' >&2
             exit 1
           fi
-          if grep -Fq 'legacy_harmonizer_is_public_root": True' hhs_backend/runtime_os_visual_server.py; then
+          if grep -Fq 'hhs_backend.application_ide_server:app' Procfile; then
+            echo 'Procfile still bypasses the Runtime OS application projection' >&2
+            exit 1
+          fi
+          if grep -Fq 'legacy_harmonizer_is_public_root": True' hhs_backend/runtime_os_projection.py; then
             echo 'Legacy Harmonizer was re-promoted to production root' >&2
             exit 1
           fi
