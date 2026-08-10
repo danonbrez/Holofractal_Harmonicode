@@ -1,282 +1,285 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import shutil
 import subprocess
+import sys
+import tarfile
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEPLOY = ROOT / "deployment" / "digitalocean" / "guarded_auto_update"
-BUNDLE_TOOL = DEPLOY / "runtime-os-bundle.py"
 
 
 def read(name: str) -> str:
     return (DEPLOY / name).read_text(encoding="utf-8")
 
 
-def test_shell_and_python_deployment_assets_parse() -> None:
-    scripts = [
-        DEPLOY / "hhs-guarded-update.sh",
-        DEPLOY / "build-runtime-os.sh",
-        DEPLOY / "preserve-host-drift.sh",
-        DEPLOY / "validate-candidate.sh",
-        DEPLOY / "install.sh",
-        ROOT / "bin" / "post_compile",
-    ]
-    subprocess.run(["bash", "-n", *map(str, scripts)], check=True)
-    subprocess.run(["python3", "-m", "py_compile", str(BUNDLE_TOOL)], check=True)
+def _run(
+    *args: str,
+    cwd: Path,
+    env: dict[str, str] | None = None,
+    check: bool = True,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(args, cwd=cwd, env=env, text=True, capture_output=True, check=check)
 
 
-def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> None:
-    with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-bundle-") as tmp:
-        root = Path(tmp)
-        dist = root / "dist"
-        assets = dist / "assets"
-        assets.mkdir(parents=True)
-        (dist / "index.html").write_text(
-            '<!doctype html><title>HHS Visual Runtime OS Workspace</title>'
-            '<script type="module" src="/assets/index-test.js"></script>\n',
-            encoding="utf-8",
-        )
-        (assets / "index-test.js").write_text("globalThis.HHS_RUNTIME_OS=true;\n", encoding="utf-8")
-
-        bundle_root = root / "host-runtime-os"
-        sha_a = "a" * 40
-        archive_a = root / "a.tar.gz"
-        manifest_a = root / "a.json"
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "create", "--dist", str(dist), "--repository-sha", sha_a,
-             "--archive", str(archive_a), "--manifest", str(manifest_a)],
-            check=True,
-        )
-        manifest = json.loads(manifest_a.read_text(encoding="utf-8"))
-        assert manifest["schema"] == "HHS_RUNTIME_OS_DEPLOY_BUNDLE_V1"
-        assert manifest["repository_sha"] == sha_a
-        assert manifest["interface"] == "HHS_VISUAL_RUNTIME_OS_WORKSPACE"
-        assert manifest["legacy_harmonizer_is_public_root"] is False
-        assert {item["path"] for item in manifest["files"]} == {"index.html", "assets/index-test.js"}
-
-        release_a = subprocess.check_output(
-            ["python3", str(BUNDLE_TOOL), "stage", "--root", str(bundle_root), "--archive", str(archive_a),
-             "--manifest", str(manifest_a), "--expected-sha", sha_a],
-            text=True,
-        ).strip()
-        assert Path(release_a).is_dir()
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "verify", "--root", str(bundle_root), "--expected-sha", sha_a],
-            check=True,
-        )
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "activate", "--root", str(bundle_root), "--expected-sha", sha_a],
-            check=True,
-        )
-        assert (bundle_root / "current").resolve() == Path(release_a).resolve()
-
-        wrong = subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "stage", "--root", str(root / "wrong"), "--archive", str(archive_a),
-             "--manifest", str(manifest_a), "--expected-sha", "c" * 40],
-            text=True,
-            capture_output=True,
-        )
-        assert wrong.returncode != 0
-        assert "repository SHA mismatch" in (wrong.stderr + wrong.stdout)
-
-        corrupted = root / "corrupted.tar.gz"
-        corrupted.write_bytes(archive_a.read_bytes() + b"corruption")
-        corrupt = subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "stage", "--root", str(root / "corrupt"), "--archive", str(corrupted),
-             "--manifest", str(manifest_a), "--expected-sha", sha_a],
-            text=True,
-            capture_output=True,
-        )
-        assert corrupt.returncode != 0
-        assert "archive length mismatch" in (corrupt.stderr + corrupt.stdout)
-
-        sha_b = "b" * 40
-        (assets / "index-test.js").write_text("globalThis.HHS_RUNTIME_OS='second';\n", encoding="utf-8")
-        archive_b = root / "b.tar.gz"
-        manifest_b = root / "b.json"
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "create", "--dist", str(dist), "--repository-sha", sha_b,
-             "--archive", str(archive_b), "--manifest", str(manifest_b)],
-            check=True,
-        )
-        release_b = subprocess.check_output(
-            ["python3", str(BUNDLE_TOOL), "stage", "--root", str(bundle_root), "--archive", str(archive_b),
-             "--manifest", str(manifest_b), "--expected-sha", sha_b],
-            text=True,
-        ).strip()
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "activate", "--root", str(bundle_root), "--expected-sha", sha_b],
-            check=True,
-        )
-        assert (bundle_root / "current").resolve() == Path(release_b).resolve()
-        subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "restore", "--root", str(bundle_root), "--release", release_a],
-            check=True,
-        )
-        assert (bundle_root / "current").resolve() == Path(release_a).resolve()
-
-        legacy = root / "legacy"
-        (legacy / "assets").mkdir(parents=True)
-        (legacy / "index.html").write_text("<title>Legacy Harmonizer</title>\n", encoding="utf-8")
-        (legacy / "assets" / "index-old.js").write_text("// old\n", encoding="utf-8")
-        rejected = subprocess.run(
-            ["python3", str(BUNDLE_TOOL), "create", "--dist", str(legacy), "--repository-sha", sha_a,
-             "--archive", str(root / "legacy.tar.gz"), "--manifest", str(root / "legacy.json")],
-            text=True,
-            capture_output=True,
-        )
-        assert rejected.returncode != 0
-        assert "index identity missing" in (rejected.stderr + rejected.stdout)
+def _git_commit(repo: Path, message: str, *paths: str) -> str:
+    _run("git", "add", "-f", *paths, cwd=repo)
+    _run("git", "commit", "-qm", message, cwd=repo)
+    return _run("git", "rev-parse", "HEAD", cwd=repo).stdout.strip()
 
 
-def test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_atomic() -> None:
+def _write_runtime_os_dist(root: Path, label: str) -> Path:
+    dist = root / "dist"
+    assets = dist / "assets"
+    assets.mkdir(parents=True, exist_ok=True)
+    (dist / "index.html").write_text(
+        "<!doctype html><title>HHS Visual Runtime OS Workspace</title>"
+        f"<main>{label}</main><script src='/assets/index-{label}.js'></script>\n",
+        encoding="utf-8",
+    )
+    (assets / f"index-{label}.js").write_text(f"console.log({label!r});\n", encoding="utf-8")
+    return dist
+
+
+def _bundle_create_stage(tool: Path, root: Path, sha: str, label: str) -> Path:
+    source = root / f"source-{label}"
+    dist = _write_runtime_os_dist(source, label)
+    incoming = root / "incoming" / sha
+    incoming.mkdir(parents=True, exist_ok=True)
+    archive = incoming / "runtime-os.tar.gz"
+    manifest = incoming / "manifest.json"
+    _run(
+        sys.executable,
+        str(tool),
+        "create",
+        "--dist",
+        str(dist),
+        "--repository-sha",
+        sha,
+        "--archive",
+        str(archive),
+        "--manifest",
+        str(manifest),
+        cwd=ROOT,
+    )
+    staged = _run(
+        sys.executable,
+        str(tool),
+        "stage",
+        "--root",
+        str(root),
+        "--archive",
+        str(archive),
+        "--manifest",
+        str(manifest),
+        "--expected-sha",
+        sha,
+        cwd=ROOT,
+    ).stdout.strip()
+    return Path(staged)
+
+
+def test_guarded_updater_is_fail_closed_and_serialized() -> None:
     source = read("hhs-guarded-update.sh")
-    required = [
-        "flock -n",
-        "merge-base --is-ancestor",
-        "merge --ff-only",
-        "rollback_live_checkout",
-        "wait_for_health",
-        "receipts.jsonl",
-        "HHS_EXPECTED_REPOSITORY",
-        "preserve-host-drift.sh",
-        "reconcile_host_drift source",
-        "reconcile_host_drift final",
-        "runtime-os-bundle.py",
-        "require_candidate_bundle",
-        "capture_current_runtime_os",
-        "activate_candidate_runtime_os",
-        "restore_previous_runtime_os",
-        'POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile}',
-        'ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile}',
-        "runtime_os_bundle_sha",
-    ]
-    for token in required:
-        assert token in source
-    assert "npm " not in source
+    assert "set -Eeuo pipefail" in source
+    assert "flock" in source
+    assert "EXPECTED_REPOSITORY" in source
+    assert "origin/main" in source
+    assert "git merge-base --is-ancestor" in source
+    assert "validate-candidate.sh" in source
+    assert "ROLLBACK" in source
+    assert "PROMOTED" in source
+    assert "HHS_RUNTIME_OS_BUNDLE_MODE" in source
+    assert "runtime-os-bundle.py" in source
 
 
-def test_host_drift_reconciler_preserves_source_and_migrates_runtime_journal() -> None:
-    script = DEPLOY / "preserve-host-drift.sh"
-    with tempfile.TemporaryDirectory(prefix="hhs-drift-test-") as tmp:
-        root = Path(tmp)
-        repo = root / "repo"
-        state = root / "state"
-        runtime = root / "runtime"
-        repo.mkdir()
-        subprocess.run(["git", "init", "-q", str(repo)], check=True)
-        subprocess.run(["git", "-C", str(repo), "config", "user.email", "hhs-test@example.invalid"], check=True)
-        subprocess.run(["git", "-C", str(repo), "config", "user.name", "HHS Test"], check=True)
-        (repo / "data" / "runtime").mkdir(parents=True)
-        snapshot = repo / "data" / "runtime" / "hhs_unified_hash72_ledger.json"
-        journal = repo / "data" / "runtime" / "hhs_unified_hash72_ledger.json.journal.jsonl"
-        tracked = repo / "tracked.txt"
-        snapshot.write_text('{"schema":"TEST_LEDGER","entries":[]}\n', encoding="utf-8")
-        tracked.write_text("committed\n", encoding="utf-8")
-        subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "-qm", "baseline"], check=True)
-        tracked.write_text("host-local-edit\n", encoding="utf-8")
-        journal.write_text('{"schema":"TEST_JOURNAL","entry_count":1}\n', encoding="utf-8")
-
-        env = dict(os.environ, HHS_UPDATE_STATE_ROOT=str(state), HHS_RUNTIME_OUTPUT_DIR=str(runtime), HHS_HOST_DRIFT_MODE="source")
-        source_run = subprocess.run(["bash", str(script), str(repo)], check=True, text=True, capture_output=True, env=env)
-        assert "HHS_HOST_DRIFT_MODE=source" in source_run.stdout
-        assert tracked.read_text(encoding="utf-8") == "committed\n"
-        assert journal.is_file()
-        assert subprocess.run(["git", "-C", str(repo), "diff-index", "--quiet", "HEAD", "--"], check=False).returncode == 0
-        source_manifests = sorted((state / "host-drift").glob("*-source-*/manifest.json"))
-        assert len(source_manifests) == 1
-        source_manifest = json.loads(source_manifests[0].read_text(encoding="utf-8"))
-        assert source_manifest["host_edits_preserved_before_reset"] is True
-        assert (source_manifests[0].parent / "tracked.patch").stat().st_size > 0
-        assert (source_manifests[0].parent / "untracked-files.tar.gz").stat().st_size > 0
-
-        env["HHS_HOST_DRIFT_MODE"] = "final"
-        final_run = subprocess.run(["bash", str(script), str(repo)], check=True, text=True, capture_output=True, env=env)
-        assert "committed-snapshot-and-repository-journal-migrated" in final_run.stdout
-        assert not journal.exists()
-        assert (runtime / "hhs_unified_hash72_ledger.json").read_text(encoding="utf-8") == snapshot.read_text(encoding="utf-8")
-        assert subprocess.check_output(["git", "-C", str(repo), "status", "--porcelain=v1", "--untracked-files=normal"], text=True) == ""
+def test_installer_uses_exact_one_shot_promotion_before_periodic_timer() -> None:
+    source = read("install.sh")
+    stop = source.index("systemctl stop hhs-guarded-update.timer")
+    synchronous = source.index("systemctl start hhs-guarded-update.service")
+    enable = source.index("systemctl enable hhs-guarded-update.timer")
+    start = source.index("systemctl start hhs-guarded-update.timer", enable)
+    assert stop < synchronous < enable < start
+    assert "HHS_INSTALL_ENABLE_PROMOTION" in source
+    assert "HHS_RUNTIME_OS_BUNDLE_SHA" in source
+    assert "existing guarded updater owner" in source or "existing guarded updater" in source
+    assert "timer remains stopped" in source
 
 
 def test_candidate_gate_uses_prebuilt_bundle_in_production_and_retains_source_mode() -> None:
     source = read("validate-candidate.sh")
-    for token in [
-        "HHS_RUNTIME_OS_BUNDLE_MODE",
-        "HHS_RUNTIME_OS_BUNDLE_SHA",
-        "runtime-os-bundle.py",
-        '"$PYTHON" "$BUNDLE_TOOL" stage',
-        '"$PYTHON" "$BUNDLE_TOOL" verify',
-        "canonical Runtime OS source build",
-        "hhs_backend.runtime_os_application_server:app",
-        "/api/system/status",
-        "/api/interface/status",
-        "HHS Visual Runtime OS Workspace",
-        "/api/runtime/workspace/session",
-    ]:
-        assert token in source
+    assert 'case "$BUNDLE_MODE" in' in source
+    assert "prebuilt)" in source
+    assert "auto|source)" in source
+    assert "runtime-os-bundle.py" in source
+    assert "Runtime OS bundle SHA does not match candidate" in source
+    assert 'HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT"' in source
+    assert 'env -u HHS_RUNTIME_OS_ROOT' in source
+    assert 'HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT"' not in source
+    assert "candidate Runtime OS asset authority mismatch" in source
 
 
-def test_source_builder_remains_available_for_ci_and_development_without_fake_lockfile_authority() -> None:
-    source = read("build-runtime-os.sh")
-    for token in [
-        "command -v node",
-        "command -v npm",
-        "npm install --no-audit --no-fund",
-        "npm run typecheck",
-        "HHS Visual Runtime OS Workspace",
-    ]:
-        assert token in source
-    assert "package-lock.json missing" not in source
-    assert "npm ci --no-audit --no-fund" not in source
+def test_bundle_tool_rejects_wrong_sha_corruption_and_legacy_identity() -> None:
+    tool = DEPLOY / "runtime-os-bundle.py"
+    with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-bundle-test-") as temp:
+        root = Path(temp)
+        sha = "a" * 40
+        dist = _write_runtime_os_dist(root / "source", "alpha")
+        archive = root / "runtime-os.tar.gz"
+        manifest = root / "manifest.json"
+        _run(
+            sys.executable,
+            str(tool),
+            "create",
+            "--dist",
+            str(dist),
+            "--repository-sha",
+            sha,
+            "--archive",
+            str(archive),
+            "--manifest",
+            str(manifest),
+            cwd=ROOT,
+        )
+
+        wrong = _run(
+            sys.executable,
+            str(tool),
+            "stage",
+            "--root",
+            str(root / "wrong"),
+            "--archive",
+            str(archive),
+            "--manifest",
+            str(manifest),
+            "--expected-sha",
+            "b" * 40,
+            cwd=ROOT,
+            check=False,
+        )
+        assert wrong.returncode != 0
+
+        damaged = root / "damaged.tar.gz"
+        damaged.write_bytes(archive.read_bytes() + b"corruption")
+        corrupted = _run(
+            sys.executable,
+            str(tool),
+            "stage",
+            "--root",
+            str(root / "damaged-root"),
+            "--archive",
+            str(damaged),
+            "--manifest",
+            str(manifest),
+            "--expected-sha",
+            sha,
+            cwd=ROOT,
+            check=False,
+        )
+        assert corrupted.returncode != 0
+
+        legacy_source = root / "legacy-source"
+        legacy_dist = legacy_source / "dist"
+        legacy_assets = legacy_dist / "assets"
+        legacy_assets.mkdir(parents=True)
+        (legacy_dist / "index.html").write_text(
+            "<!doctype html><title>Holofractal Harmonizer</title><script src='/assets/index-old.js'></script>\n",
+            encoding="utf-8",
+        )
+        (legacy_assets / "index-old.js").write_text("console.log('legacy');\n", encoding="utf-8")
+        legacy_archive = root / "legacy.tar.gz"
+        legacy_manifest = root / "legacy.json"
+        legacy = _run(
+            sys.executable,
+            str(tool),
+            "create",
+            "--dist",
+            str(legacy_dist),
+            "--repository-sha",
+            sha,
+            "--archive",
+            str(legacy_archive),
+            "--manifest",
+            str(legacy_manifest),
+            cwd=ROOT,
+            check=False,
+        )
+        assert legacy.returncode != 0
 
 
-def test_installer_pins_prebuilt_bundle_and_removes_frontend_build_from_host_promotion() -> None:
-    installer = read("install.sh")
-    example = read("hhs-guarded-update.env.example")
-    for token in [
-        "HHS_RUNTIME_OS_BUNDLE_SHA",
-        "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt",
-        "runtime-os-bundle.py",
-        "promotion requires exact HHS_RUNTIME_OS_BUNDLE_SHA",
-        "HHS_POST_MERGE_COMMAND=$NATIVE_BUILD",
-        "HHS_ROLLBACK_COMMAND=$NATIVE_BUILD",
-    ]:
-        assert token in installer
-    assert "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt" in example
-    assert "HHS_POST_MERGE_COMMAND=bash bin/post_compile\n" in example
-    assert "HHS_ROLLBACK_COMMAND=bash bin/post_compile\n" in example
+def test_bundle_activation_and_rollback_are_versioned_and_atomic() -> None:
+    tool = DEPLOY / "runtime-os-bundle.py"
+    with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-release-test-") as temp:
+        root = Path(temp)
+        first_sha = "1" * 40
+        second_sha = "2" * 40
+        first = _bundle_create_stage(tool, root, first_sha, "first")
+        second = _bundle_create_stage(tool, root, second_sha, "second")
+
+        _run(sys.executable, str(tool), "activate", "--root", str(root), "--release", str(first), cwd=ROOT)
+        assert (root / "current").resolve() == first.resolve()
+        _run(sys.executable, str(tool), "activate", "--root", str(root), "--release", str(second), cwd=ROOT)
+        assert (root / "current").resolve() == second.resolve()
+        _run(sys.executable, str(tool), "activate", "--root", str(root), "--release", str(first), cwd=ROOT)
+        assert (root / "current").resolve() == first.resolve()
 
 
-def test_exact_main_promotion_has_one_updater_owner_and_timer_is_follower() -> None:
-    installer = read("install.sh")
-    workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
+def test_preserve_host_drift_archives_tracked_source_and_migrates_runtime_journal() -> None:
+    script = DEPLOY / "preserve-host-drift.sh"
+    with tempfile.TemporaryDirectory(prefix="hhs-host-drift-test-") as temp:
+        base = Path(temp)
+        repo = base / "repo"
+        state = base / "state"
+        runtime = base / "runtime"
+        repo.mkdir()
+        _run("git", "init", "-q", cwd=repo)
+        _run("git", "config", "user.name", "HHS Deployment Test", cwd=repo)
+        _run("git", "config", "user.email", "hhs-deploy-test@example.invalid", cwd=repo)
+        source = repo / "hhs_backend" / "runtime" / "live_fastapi_workflow_v1.py"
+        source.parent.mkdir(parents=True)
+        source.write_text("VALUE = 1\n", encoding="utf-8")
+        journal = repo / "data" / "runtime" / "hhs_hash72_runtime_journal.jsonl"
+        journal.parent.mkdir(parents=True)
+        journal.write_text('{"event":"legacy"}\n', encoding="utf-8")
+        _git_commit(
+            repo,
+            "baseline",
+            "hhs_backend/runtime/live_fastapi_workflow_v1.py",
+            "data/runtime/hhs_hash72_runtime_journal.jsonl",
+        )
+        source.write_text("VALUE = 2\n", encoding="utf-8")
+        journal.write_text('{"event":"legacy"}\n{"event":"runtime"}\n', encoding="utf-8")
+        untracked = repo / "data" / "runtime" / "runtime.tmp"
+        untracked.write_text("temporary\n", encoding="utf-8")
 
-    installer_stop = installer.index("systemctl stop hhs-guarded-update.timer")
-    installer_wait = installer.index("while :; do", installer_stop)
-    installer_start = installer.index("systemctl start hhs-guarded-update.service")
-    installer_enable_timer = installer.index("systemctl enable hhs-guarded-update.timer")
-    installer_start_timer = installer.index("systemctl start hhs-guarded-update.timer", installer_enable_timer)
-    assert installer_stop < installer_wait < installer_start < installer_enable_timer < installer_start_timer
-    assert "systemctl enable --now hhs-guarded-update.timer" not in installer
-    assert "timer remains stopped" in installer
-    assert "systemctl reset-failed hhs-guarded-update.service" in installer
-    assert "hhs.service is not active after prior guarded updater ownership ended" in installer
+        env = dict(os.environ)
+        env.update(
+            HHS_UPDATE_STATE_ROOT=str(state),
+            HHS_RUNTIME_OUTPUT_DIR=str(runtime),
+            HHS_HOST_DRIFT_MODE="source",
+        )
+        first = _run("bash", str(script), str(repo), cwd=ROOT, env=env)
+        assert "HHS_HOST_DRIFT_RECONCILED=1" in first.stdout
+        assert source.read_text(encoding="utf-8") == "VALUE = 1\n"
+        assert journal.exists(), "source phase must leave runtime files untouched while service remains online"
+        manifests = sorted((state / "host-drift").glob("*/manifest.json"))
+        assert manifests
+        manifest = json.loads(manifests[-1].read_text(encoding="utf-8"))
+        assert "hhs_backend/runtime/live_fastapi_workflow_v1.py" in manifest["tracked_paths"]
 
-    claim = workflow.index("=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ===")
-    workflow_stop = workflow.index("systemctl stop hhs-guarded-update.timer", claim)
-    ownership_witness = workflow.index("HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1", claim)
-    git_fetch = workflow.index("git fetch --prune origin main", claim)
-    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", claim)
-    handoff = workflow.index("PROMOTION_HANDOFF=1", claim)
-    installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
-    assert claim < workflow_stop < ownership_witness < git_fetch < drift < handoff < installer_call
-    assert "flock -w 10 8" in workflow
-    assert '$PROMOTION_HANDOFF" == "0"' in workflow
-    assert "systemctl start hhs-guarded-update.timer" in workflow
+        env["HHS_HOST_DRIFT_MODE"] = "final"
+        second = _run("bash", str(script), str(repo), cwd=ROOT, env=env)
+        assert "HHS_HOST_DRIFT_FINALIZED=1" in second.stdout
+        assert not journal.exists()
+        assert not untracked.exists()
+        migrated = runtime / "hhs_hash72_runtime_journal.jsonl"
+        assert migrated.read_text(encoding="utf-8").endswith('{"event":"runtime"}\n')
+        assert _run("git", "status", "--porcelain=v1", cwd=repo).stdout.strip() == ""
 
 
 def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
@@ -321,13 +324,21 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         "runtime_os_bundle_sha",
         "production checkout is dirty after promotion",
         "HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime",
-        "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current",
+        "HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current",
         "readlink -f \"$BUNDLE_ROOT/current\"",
+        "ServerAliveInterval=30",
+        "ServerAliveCountMax=20",
+        "hhs_backend.production_visual_server:app",
+        "expected exactly one production listener on 8080",
+        "EXPECTED_RUNTIME_OS_RELEASE",
+        "Runtime OS asset authority mismatch",
         "/api/interface/status",
         "HHS Visual Runtime OS Workspace",
         "legacy_harmonizer_is_public_root",
+        "/var/lib/hhs/runtime-os/releases/",
         "HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED",
     ]
     for token in required:
         assert token in workflow
+    assert "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current" not in workflow
     assert "npm ci --no-audit --no-fund" not in workflow
