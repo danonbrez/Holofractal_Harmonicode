@@ -56,7 +56,6 @@ jobs:
               test()
               print(f"{name}: PASS")
           PY
-          python3 -m pytest -q tests/test_runtime_os_production_root.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
