@@ -10,7 +10,7 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONHASHSEED=0 \
   python -m unittest -v tests.test_hhs_pass217_hash72_manifold_nucleus_v1
 
 PYTHONDONTWRITEBYTECODE=1 PYTHONHASHSEED=0 \
-  python tools/pass217_iteration4_hash72_manifold_nucleus.py \
+  python -m tools.pass217_iteration4_hash72_manifold_nucleus \
     --repository-root . \
     --inspect evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json
 

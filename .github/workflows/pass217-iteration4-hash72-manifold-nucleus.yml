@@ -49,6 +49,7 @@ jobs:
           python-version: '3.12'
       - name: Validate reconciled Hash72 manifold and immutable nucleus
         run: |
+          set -o pipefail
           mkdir -p "$RUNNER_TEMP/pass217-iteration4"
           bash scripts/run_pass217_iteration4_validation.sh \
             | tee "$RUNNER_TEMP/pass217-iteration4/validation.log"
