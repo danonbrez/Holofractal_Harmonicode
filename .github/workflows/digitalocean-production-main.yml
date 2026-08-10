@@ -91,8 +91,6 @@ jobs:
         run: |
           set -euo pipefail
           pushd hhs_gui >/dev/null
-          # hhs_gui currently has no committed lockfile. Use the same install
-          # path already validated by the canonical Runtime OS CI workflow.
           npm install --no-audit --no-fund
           npm run typecheck
           npm run build
@@ -163,35 +161,81 @@ jobs:
           APP_ROOT=/opt/hhs/app
           STATE_ROOT=/var/lib/hhs-guarded-update
           BUNDLE_ROOT=/var/lib/hhs/runtime-os
+          LOCK_FILE=/run/lock/hhs-guarded-update.lock
+          OWNERSHIP_TIMEOUT=900
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
+          PROMOTION_HANDOFF=0
+          TIMER_CLAIMED=0
+          bootstrap_root=""
+
+          cleanup() {
+            if [[ -n "$bootstrap_root" ]]; then
+              git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
+            fi
+            if [[ "$TIMER_CLAIMED" == "1" && "$PROMOTION_HANDOFF" == "0" ]]; then
+              # No updater transaction was handed off. Restore periodic checks
+              # only if the live service is still healthy.
+              if systemctl is-active --quiet hhs.service; then
+                systemctl start hhs-guarded-update.timer >/dev/null 2>&1 || true
+              fi
+            fi
+          }
+          trap cleanup EXIT
 
           [[ $EUID -eq 0 ]] || { echo "production deployment requires root SSH authority" >&2; exit 10; }
           [[ -d "$APP_ROOT/.git" ]] || { echo "repository missing at $APP_ROOT" >&2; exit 11; }
           [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/runtime-os.tar.gz" ]] || { echo "Runtime OS archive missing" >&2; exit 12; }
           [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/manifest.json" ]] || { echo "Runtime OS manifest missing" >&2; exit 13; }
+          command -v flock >/dev/null || { echo "flock is required for deployment ownership" >&2; exit 14; }
+
+          echo "=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ==="
+          systemctl stop hhs-guarded-update.timer 2>/dev/null || true
+          TIMER_CLAIMED=1
+          deadline=$((SECONDS + OWNERSHIP_TIMEOUT))
+          while :; do
+            updater_state=$(systemctl show hhs-guarded-update.service -p ActiveState --value 2>/dev/null || printf 'inactive')
+            case "$updater_state" in
+              inactive|failed|unknown|"") break ;;
+            esac
+            if (( SECONDS >= deadline )); then
+              echo "existing guarded updater did not finish before exclusive deployment timeout (state=$updater_state)" >&2
+              systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
+              journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
+              exit 15
+            fi
+            sleep 2
+          done
+          systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+          systemctl is-active --quiet hhs.service || {
+            echo "hhs.service is not active after previous updater owner terminated" >&2
+            systemctl status hhs.service --no-pager --full >&2 || true
+            journalctl -u hhs.service -n 250 --no-pager >&2 || true
+            exit 16
+          }
+          install -d -m 0755 "$(dirname "$LOCK_FILE")"
+          exec 8>"$LOCK_FILE"
+          flock -w 10 8 || { echo "guarded updater lock remained held after service termination" >&2; exit 17; }
+          flock -u 8
+          echo "HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1"
 
           cd "$APP_ROOT"
           remote=$(git remote get-url origin)
           case "$remote" in
             *danonbrez/Holofractal_Harmonicode* ) ;;
-            * ) echo "unexpected origin: $remote" >&2; exit 14 ;;
+            * ) echo "unexpected origin: $remote" >&2; exit 18 ;;
           esac
           branch=$(git branch --show-current)
-          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 15; }
+          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 19; }
 
           git fetch --prune origin main
           remote_sha=$(git rev-parse origin/main)
           [[ "$remote_sha" == "$TARGET_SHA" ]] || {
             echo "origin/main moved while deployment was starting: expected $TARGET_SHA got $remote_sha" >&2
-            exit 16
+            exit 20
           }
           git cat-file -e "$TARGET_SHA^{commit}"
 
           bootstrap_root=$(mktemp -d /tmp/hhs-production-bootstrap.XXXXXX)
-          cleanup() {
-            git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
-          }
-          trap cleanup EXIT
           git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
 
           HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
@@ -202,37 +246,18 @@ jobs:
           if ! git -C "$APP_ROOT" diff-index --quiet HEAD -- || ! git -C "$APP_ROOT" diff --cached --quiet; then
             echo "tracked host drift remains after audited reconciliation" >&2
             git -C "$APP_ROOT" status --short >&2
-            exit 17
+            exit 21
           fi
 
+          # install.sh repeats ownership verification and then runs exactly one
+          # synchronous Type=oneshot promotion while the timer remains stopped.
+          PROMOTION_HANDOFF=1
           REPO_ROOT="$APP_ROOT" \
           SOURCE_ROOT="$bootstrap_root" \
           HHS_RUNTIME_OS_BUNDLE_SHA="$TARGET_SHA" \
           HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" \
           HHS_INSTALL_ENABLE_PROMOTION=1 \
             bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"
-
-          deadline=$((SECONDS + 5100))
-          promoted=0
-          while (( SECONDS < deadline )); do
-            deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
-            if [[ "$deployed_sha" == "$TARGET_SHA" ]] \
-              && systemctl is-active --quiet hhs.service \
-              && curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/tmp/hhs-exact-main-status.json; then
-              promoted=1
-              break
-            fi
-            if systemctl is-failed --quiet hhs-guarded-update.service; then
-              journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
-              exit 18
-            fi
-            sleep 3
-          done
-          [[ "$promoted" == "1" ]] || {
-            echo "timed out waiting for exact-main promotion" >&2
-            journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
-            exit 19
-          }
 
           python3 - "$STATE_ROOT/last-success.json" "$TARGET_SHA" <<'PY'
           import json, sys
@@ -251,7 +276,7 @@ jobs:
           [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
             echo "production checkout is dirty after promotion" >&2
             git -C "$APP_ROOT" status --short >&2
-            exit 20
+            exit 22
           }
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
