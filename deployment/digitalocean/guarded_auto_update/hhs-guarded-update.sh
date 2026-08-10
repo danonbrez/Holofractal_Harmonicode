@@ -15,7 +15,7 @@ HEALTH_INTERVAL=${HHS_HEALTH_INTERVAL_SECONDS:-2}
 HEALTH_URLS=${HHS_HEALTH_URLS:-http://127.0.0.1:8080/api/system/status}
 EXPECTED_REPOSITORY=${HHS_EXPECTED_REPOSITORY:-danonbrez/Holofractal_Harmonicode}
 KEEP_CANDIDATES=${HHS_KEEP_CANDIDATES:-3}
-POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile}
+POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh}
 ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile}
 SYNC_SELF=${HHS_UPDATE_SYNC_SELF:-1}
 DRY_RUN=${HHS_UPDATE_DRY_RUN:-0}
@@ -135,6 +135,7 @@ sync_installed_assets() {
   install -d -m 0755 /usr/local/lib/hhs-guarded-update
   install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
   install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
+  install -m 0755 "$source/build-runtime-os.sh" /usr/local/lib/hhs-guarded-update/build-runtime-os.sh
   install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
 }
