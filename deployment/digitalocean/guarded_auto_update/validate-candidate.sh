@@ -169,11 +169,13 @@ esac
   exit 1
 }
 grep -Fq 'HHS Visual Runtime OS Workspace' "$RUNTIME_OS_ROOT/index.html"
+printf 'HHS_RUNTIME_OS_CANDIDATE_ASSET_ROOT=%s\n' "$RUNTIME_OS_ROOT"
 
 if [[ "$BOOT" == "1" ]]; then
   : >"$LOG_FILE"
-  HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT" \
-  HHS_PASS205_DB="$PASS205_DB" \
+  env -u HHS_RUNTIME_OS_ROOT \
+    HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
+    HHS_PASS205_DB="$PASS205_DB" \
     "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
       >"$LOG_FILE" 2>&1 &
@@ -228,6 +230,8 @@ if interface.get("interface") != "HHS_VISUAL_RUNTIME_OS_WORKSPACE":
     raise SystemExit("candidate did not select Runtime OS interface")
 if interface.get("legacy_harmonizer_is_public_root") is not False:
     raise SystemExit("candidate re-promoted legacy Harmonizer")
+if Path(interface.get("asset_root", "")).resolve() != Path("/tmp").resolve() and not interface.get("asset_root"):
+    raise SystemExit("candidate did not report its Runtime OS asset authority")
 pass205 = json.loads(Path("/tmp/hhs-candidate-pass205.json").read_text(encoding="utf-8"))
 payload = pass205.get("payload", pass205)
 if payload.get("state_bits") != 5184:
