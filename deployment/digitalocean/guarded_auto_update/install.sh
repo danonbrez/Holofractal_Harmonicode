@@ -10,10 +10,12 @@ INSTALL_ROOT=${INSTALL_ROOT:-/usr/local/lib/hhs-guarded-update}
 ENV_FILE=${ENV_FILE:-/etc/hhs/guarded-update.env}
 STATE_ROOT=${STATE_ROOT:-/var/lib/hhs-guarded-update}
 ENABLE_PROMOTION=${HHS_INSTALL_ENABLE_PROMOTION:-0}
+RECOVERY_MODE=${HHS_INSTALL_RECOVERY_MODE:-0}
 BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
 OWNERSHIP_TIMEOUT=${HHS_UPDATE_OWNERSHIP_TIMEOUT_SECONDS:-900}
-NATIVE_BUILD='bash bin/post_compile'
+PRODUCTION_HEALTH_TIMEOUT=${HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS:-600}
+NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
 [[ $EUID -eq 0 ]] || {
@@ -30,6 +32,10 @@ LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/g
 }
 [[ "$ENABLE_PROMOTION" == "0" || "$ENABLE_PROMOTION" == "1" ]] || {
   echo "HHS_INSTALL_ENABLE_PROMOTION must be 0 or 1" >&2
+  exit 5
+}
+[[ "$RECOVERY_MODE" == "0" || "$RECOVERY_MODE" == "1" ]] || {
+  echo "HHS_INSTALL_RECOVERY_MODE must be 0 or 1" >&2
   exit 5
 }
 if [[ "$ENABLE_PROMOTION" == "1" ]]; then
@@ -68,13 +74,43 @@ while :; do
 done
 systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
 
-# An earlier guarded transaction is allowed to finish, but exact-main takeover
-# may proceed only if the production service is still/restored online.
+# Exact-main takeover normally requires the live service to remain online.
+# Recovery is deliberately narrower: it is allowed only after the immediately
+# preceding guarded transaction recorded ROLLBACK_HEALTH_FAILED and only when
+# no process is already listening on the production port.
 if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service; then
-  echo "hhs.service is not active after prior guarded updater ownership ended; refusing a second promotion." >&2
-  systemctl status hhs.service --no-pager --full >&2 || true
-  journalctl -u hhs.service -n 250 --no-pager >&2 || true
-  exit 8
+  if [[ "$RECOVERY_MODE" != "1" ]]; then
+    echo "hhs.service is not active after prior guarded updater ownership ended; refusing a second promotion." >&2
+    systemctl status hhs.service --no-pager --full >&2 || true
+    journalctl -u hhs.service -n 250 --no-pager >&2 || true
+    exit 8
+  fi
+  if ss -H -ltn 'sport = :8080' | grep -q .; then
+    echo "Recovery mode refused because another listener already owns port 8080." >&2
+    ss -H -ltnp 'sport = :8080' >&2 || true
+    exit 8
+  fi
+  RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
+import json
+import os
+from pathlib import Path
+path = Path(os.environ["RECEIPT_LOG_VALUE"])
+if not path.is_file():
+    raise SystemExit("Recovery mode requires an existing guarded-update receipt log")
+records = []
+for line in path.read_text(encoding="utf-8").splitlines():
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        records.append(json.loads(line))
+    except json.JSONDecodeError:
+        continue
+if not records or records[-1].get("outcome") != "ROLLBACK_HEALTH_FAILED":
+    raise SystemExit(f"Recovery mode requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
+print("HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1")
+PY
+  echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
 fi
 
 install -d -m 0755 "$INSTALL_ROOT" /etc/hhs "$BUNDLE_ROOT" "$BUNDLE_ROOT/incoming" "$BUNDLE_ROOT/releases"
@@ -104,7 +140,7 @@ HHS_EXPECTED_REPOSITORY=danonbrez/Holofractal_Harmonicode
 HHS_SYSTEMD_UNITS=hhs.service
 HHS_HEALTH_URLS=http://127.0.0.1:8080/api/system/status
 HHS_VALIDATE_TIMEOUT_SECONDS=3600
-HHS_HEALTH_TIMEOUT_SECONDS=180
+HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT
 HHS_VALIDATE_NATIVE=1
 HHS_VALIDATE_NODE_TESTS=1
 HHS_VALIDATE_BOOT=1
@@ -128,6 +164,7 @@ else
   NATIVE_BUILD_VALUE="$NATIVE_BUILD" \
   LEGACY_RUNTIME_OS_BUILD_VALUE="$LEGACY_RUNTIME_OS_BUILD" \
   ENABLE_PROMOTION_VALUE="$ENABLE_PROMOTION" \
+  PRODUCTION_HEALTH_TIMEOUT_VALUE="$PRODUCTION_HEALTH_TIMEOUT" \
   python3 - <<'PY'
 from pathlib import Path
 import os
@@ -140,6 +177,7 @@ bundle_sha = os.environ["BUNDLE_SHA_VALUE"]
 bundle_root = os.environ["BUNDLE_ROOT_VALUE"]
 bundle_tool = os.environ["BUNDLE_TOOL_VALUE"]
 promotion = os.environ["ENABLE_PROMOTION_VALUE"] == "1"
+health_timeout = str(max(600, int(os.environ["PRODUCTION_HEALTH_TIMEOUT_VALUE"])))
 
 values = {}
 order = []
@@ -158,8 +196,9 @@ if promotion:
     values["HHS_RUNTIME_OS_BUNDLE_ROOT"] = bundle_root
     values["HHS_RUNTIME_OS_BUNDLE_TOOL"] = bundle_tool
     values["HHS_RUNTIME_OS_BUNDLE_SHA"] = bundle_sha
-    values["HHS_POST_MERGE_COMMAND"] = native if values.get("HHS_POST_MERGE_COMMAND") in {None, legacy_combined} else values["HHS_POST_MERGE_COMMAND"]
-    values["HHS_ROLLBACK_COMMAND"] = native if values.get("HHS_ROLLBACK_COMMAND") in {None, legacy_combined} else values["HHS_ROLLBACK_COMMAND"]
+    values["HHS_HEALTH_TIMEOUT_SECONDS"] = health_timeout
+    values["HHS_POST_MERGE_COMMAND"] = native
+    values["HHS_ROLLBACK_COMMAND"] = native
 
 emitted = set()
 result = []
@@ -172,6 +211,7 @@ for key, literal in order:
     result.append(f"{key}={values[key]}")
     emitted.add(key)
 for key in (
+    "HHS_HEALTH_TIMEOUT_SECONDS",
     "HHS_RUNTIME_OS_BUNDLE_MODE",
     "HHS_RUNTIME_OS_BUNDLE_ROOT",
     "HHS_RUNTIME_OS_BUNDLE_TOOL",
@@ -211,6 +251,11 @@ if ! systemctl start hhs-guarded-update.service; then
   echo "HHS guarded updater failed during exclusive installation/promotion; timer remains stopped." >&2
   systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
   journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
+  echo "=== HHS PRODUCTION SERVICE DIAGNOSTICS ===" >&2
+  systemctl status hhs.service --no-pager --full >&2 || true
+  systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
+  ss -ltnp | grep ':8080' >&2 || true
+  journalctl -u hhs.service -n 400 --no-pager >&2 || true
   exit 10
 fi
 
@@ -234,6 +279,7 @@ Drift archive:$STATE_ROOT/host-drift
 Bundle root:  $BUNDLE_ROOT
 Bundle SHA:   ${BUNDLE_SHA:-not-pinned}
 Promotion:    $([[ "$ENABLE_PROMOTION" == "1" ]] && printf enabled || printf dry-run)
+Recovery:     $([[ "$RECOVERY_MODE" == "1" ]] && printf enabled || printf normal)
 Ownership:    exclusive synchronous service; timer resumed after success
 
 Inspect:

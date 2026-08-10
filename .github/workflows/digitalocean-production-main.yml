@@ -175,6 +175,7 @@ jobs:
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
           PROMOTION_HANDOFF=0
           TIMER_CLAIMED=0
+          RECOVERY_MODE=0
           bootstrap_root=""
 
           cleanup() {
@@ -212,13 +213,38 @@ jobs:
             fi
             sleep 2
           done
+
+          if ! systemctl is-active --quiet hhs.service; then
+            if ss -H -ltn 'sport = :8080' | grep -q .; then
+              echo "hhs.service is inactive but port 8080 is owned by another listener; refusing recovery." >&2
+              ss -H -ltnp 'sport = :8080' >&2 || true
+              exit 16
+            fi
+            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          path = Path(os.environ['RECEIPT_LOG_VALUE'])
+          if not path.is_file():
+              raise SystemExit('exact-main recovery requires guarded-update receipts')
+          records = []
+          for line in path.read_text(encoding='utf-8').splitlines():
+              line = line.strip()
+              if not line:
+                  continue
+              try:
+                  records.append(json.loads(line))
+              except json.JSONDecodeError:
+                  continue
+          if not records or records[-1].get('outcome') != 'ROLLBACK_HEALTH_FAILED':
+              raise SystemExit(f"exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
+          print('HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1')
+          PY
+            RECOVERY_MODE=1
+            echo "HHS_EXACT_MAIN_RECOVERY_MODE=1"
+          fi
+
           systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
-          systemctl is-active --quiet hhs.service || {
-            echo "hhs.service is not active after previous updater owner terminated" >&2
-            systemctl status hhs.service --no-pager --full >&2 || true
-            journalctl -u hhs.service -n 250 --no-pager >&2 || true
-            exit 16
-          }
           install -d -m 0755 "$(dirname "$LOCK_FILE")"
           exec 8>"$LOCK_FILE"
           flock -w 10 8 || { echo "guarded updater lock remained held after service termination" >&2; exit 17; }
@@ -257,12 +283,21 @@ jobs:
           fi
 
           PROMOTION_HANDOFF=1
-          REPO_ROOT="$APP_ROOT" \
-          SOURCE_ROOT="$bootstrap_root" \
-          HHS_RUNTIME_OS_BUNDLE_SHA="$TARGET_SHA" \
-          HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" \
-          HHS_INSTALL_ENABLE_PROMOTION=1 \
-            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"
+          if ! REPO_ROOT="$APP_ROOT" \
+            SOURCE_ROOT="$bootstrap_root" \
+            HHS_RUNTIME_OS_BUNDLE_SHA="$TARGET_SHA" \
+            HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" \
+            HHS_INSTALL_ENABLE_PROMOTION=1 \
+            HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE" \
+            HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600 \
+              bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"; then
+            echo "=== EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS ===" >&2
+            systemctl status hhs.service --no-pager --full >&2 || true
+            systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
+            ss -ltnp | grep ':8080' >&2 || true
+            journalctl -u hhs.service -n 500 --no-pager >&2 || true
+            exit 24
+          fi
 
           python3 - "$STATE_ROOT/last-success.json" "$TARGET_SHA" <<'PY'
           import json, sys
@@ -287,6 +322,7 @@ jobs:
           systemctl is-active --quiet hhs-guarded-update.timer
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
           systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
