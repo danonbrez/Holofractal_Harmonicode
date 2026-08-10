@@ -8,7 +8,8 @@ service is dispatched.
 
 Pass 217 restoration rule: production lazy dispatch is not permitted to jump
 from registration directly to the service handler. Every dispatched service
-must traverse the inherited Pass 043 kernel-derived runtime composer first.
+must traverse the inherited Pass 043 kernel-derived runtime composer and the
+currently connected inherited optimization-authority slice first.
 """
 
 from __future__ import annotations
@@ -20,6 +21,9 @@ from typing import Any, Dict, List, Mapping, Optional
 
 import hhs_runtime.hhs_service_registry_v1 as registry_module
 from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
+from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
+    build_initial_inherited_authority_reachability,
+)
 from hhs_runtime.hhs_service_registry_v1 import (
     HHSServiceRegistry,
     HHSServiceRegistryError,
@@ -150,6 +154,39 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
             "compact_residue": preflight.get("compact_residue"),
         }
 
+    @staticmethod
+    def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]:
+        return {
+            "schema": "HHS_LIVE_SERVICE_AUTHORITY_REACHABILITY_SUMMARY_V1",
+            "admitted": bool(record.get("admitted")),
+            "status": record.get("status"),
+            "required_authority_count": record.get("required_authority_count"),
+            "accepted_state_counts": dict(record.get("accepted_state_counts") or {}),
+            "reachability_root_hash72": record.get("reachability_root_hash72"),
+            "checkpoint_scope": list(record.get("checkpoint_scope") or []),
+            "continuation_applicability_facts": dict(
+                record.get("continuation_applicability_facts") or {}
+            ),
+            "decisions": [
+                {
+                    "authority_id": row.get("authority_id"),
+                    "state": row.get("state"),
+                    "accepted": bool(row.get("accepted")),
+                    "reasons": list(row.get("reasons") or []),
+                    "witness_root": (row.get("proof") or {}).get("witness_root"),
+                    "traversal_witness": (row.get("proof") or {}).get(
+                        "traversal_witness"
+                    ),
+                    "mechanically_proven": (row.get("proof") or {}).get(
+                        "mechanically_proven"
+                    ),
+                }
+                for row in record.get("decisions", []) or []
+            ],
+            "blockers": list(record.get("blockers") or []),
+            "optional_available_forbidden": True,
+        }
+
     def dispatch(
         self,
         service_name: str,
@@ -157,11 +194,12 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
         *,
         zero_bypass_interposition_token: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        """Dispatch only after the inherited Pass 043 composer admits the path."""
+        """Dispatch only after inherited composition and reachability admit it."""
 
         if service_name not in self._services:
             raise HHSServiceRegistryError(f"unknown service: {service_name}")
 
+        payload_dict = dict(payload or {})
         spec = self._services[service_name]
         surface = self._composition_surface(service_name)
         operation = spec.function or service_name
@@ -175,7 +213,7 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
             return {
                 "schema": "HHS_SERVICE_DISPATCH_COMPOSITION_REJECTION_V1",
                 "service": spec.to_dict(),
-                "payload": dict(payload or {}),
+                "payload": payload_dict,
                 "kernel_runtime_composition_preflight": preflight_summary,
                 "propagation_allowed": False,
                 "execution_allowed": False,
@@ -183,12 +221,32 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
                 "reason": "REJECT_SERVICE_HANDLER_WITHOUT_KERNEL_DERIVED_COMPOSITION",
             }
 
+        authority_record = build_initial_inherited_authority_reachability(
+            preflight,
+            surface,
+            payload_dict,
+        )
+        authority_summary = self._compact_authority_reachability(authority_record)
+        if not authority_record.get("admitted"):
+            return {
+                "schema": "HHS_SERVICE_DISPATCH_AUTHORITY_REACHABILITY_REJECTION_V1",
+                "service": spec.to_dict(),
+                "payload": payload_dict,
+                "kernel_runtime_composition_preflight": preflight_summary,
+                "inherited_execution_authority_reachability": authority_summary,
+                "propagation_allowed": False,
+                "execution_allowed": False,
+                "bypass_attempt": True,
+                "reason": "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY",
+            }
+
         record = super().dispatch(
             service_name,
-            payload,
+            payload_dict,
             zero_bypass_interposition_token=zero_bypass_interposition_token,
         )
         record["kernel_runtime_composition_preflight"] = preflight_summary
+        record["inherited_execution_authority_reachability"] = authority_summary
 
         if record.get("execution_allowed") is False:
             return record
@@ -206,6 +264,9 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
             "composition_root_hash72": preflight_summary.get(
                 "composition_root_hash72"
             ),
+            "inherited_authority_reachability_root_hash72": authority_summary.get(
+                "reachability_root_hash72"
+            ),
             "service_dispatch_tip_hash72": previous_tip,
             "expanded_metadata_persisted": False,
         }
@@ -222,6 +283,9 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
             "prior_service_dispatch_tip_hash72": previous_tip,
             "composition_root_hash72": preflight_summary.get(
                 "composition_root_hash72"
+            ),
+            "inherited_authority_reachability_root_hash72": authority_summary.get(
+                "reachability_root_hash72"
             ),
         }
         return record
