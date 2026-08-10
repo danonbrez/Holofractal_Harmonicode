@@ -7,10 +7,11 @@
 - Merge target: `main`
 - Base commit: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Base role: authoritative `main` at workstream start
-- Latest validated implementation head before this restart-record commit: `317f456a8f0d54ba51523683064e499c9c385014`
+- Latest validated implementation head before this restart-record commit: `1ae47ba002cd6fc704013da4d65c9cd4d0fcfa30`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
 - Checkpoint 1 validation run: `31354829734` — `SUCCESS`
 - Checkpoint 2 validation run: `31355052609` — dependency-scoped job `93353078780` — `SUCCESS`
+- Checkpoint 3 validation run: `31355330668` — dependency-scoped job `93353835996` — `SUCCESS`
 
 ## Problem being repaired
 
@@ -74,22 +75,48 @@ Fail-closed behavior validated at exact head `317f456a8f0d54ba51523683064e499c9c
 - floating-point authority evidence is rejected;
 - a fully witnessed accepted authority set validates successfully.
 
+## Checkpoint 3 — completed and validated
+
+Checkpoint 3 binds the three production service-registry API sources to kernel-derived route composition at the shared canonical IO ingress boundary:
+
+- `GET /api/runtime/services`
+- `GET /api/runtime/services/status`
+- `POST /api/runtime/services/dispatch`
+
+Repository-visible commits:
+
+1. `24d4fbcd3845ac3c741ed518b43f38dd5f2d02eb` — add `hhs_runtime/hhs_pass217_runtime_route_composer_v1.py` with explicit source-to-route/invariant bindings.
+2. `56342b02dafdfb8fa64d4590c3e753bc07d7b74a` — enforce route composition in `HHSIOGateway` before runtime access, IO receipt creation, or receipt-backed read reuse.
+3. `56f56eb27aeb620b8f109f269606e30bb24b50d1` — add route derivation, mutation-policy, fail-before-runtime, and cache-reuse/no-bypass tests.
+4. `1ae47ba002cd6fc704013da4d65c9cd4d0fcfa30` — extend dependency-scoped validation over route and IO enforcement.
+
+Validated behavior:
+
+- all three service API route bindings are Pass 042-compatible, invariant-derived API surfaces;
+- service list/status routes inherit guarded-execution, invariant-derived admissibility, zero-bypass, and surface-reachability invariants;
+- dispatch additionally inherits ledger-continuity and explicit-mutation-ownership invariants;
+- a route-composition rejection occurs before runtime state is read and leaves IO history empty;
+- receipt-backed GET reuse still traverses the route composer on the current request;
+- the second identical GET may reuse its immutable IO receipt while using the current request's fresh/cached composition proof;
+- expanded composition metadata is not persisted;
+- exact-head dependency-scoped compile/tests pass at `1ae47ba002cd6fc704013da4d65c9cd4d0fcfa30`.
+
 ## Validation note
 
-An inherited `.github/workflows/pass205-repair-validation-base.yml` workflow also triggers on branch pushes and reports failure with no jobs. It is not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow is the dependency-scoped authority for these checkpoints and has passed both validated heads listed above.
+Inherited historical relay/base workflows also trigger on some branch pushes and may report immediate failure with no relevant jobs. They are not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow is the dependency-scoped authority and has passed all three validated checkpoint heads above.
 
 ## Deliberately not yet claimed
 
-Checkpoints 1–2 do **not** claim that all inherited optimization authorities are already traversed in every applicable production path. Specifically still pending:
+Checkpoints 1–3 do **not** claim that all inherited optimization authorities are already traversed in every applicable production path. Specifically still pending:
 
+- publish the new service route bindings into the global Pass 042 surface-map discovery set rather than only deriving them at the shared IO boundary;
 - populate live `ACTIVE_IN_PATH` witnesses from actual inherited cache/vector/continuation/delta/hydration/ROM/representation/recovery/native stages rather than synthetic test records;
 - mechanically derive `NOT_APPLICABLE` from operation facts at the canonical composer boundary;
 - accept `EXPLICITLY_SUPERSEDED` only from repository-bound later-pass contracts;
-- route-level enforcement for `/api/runtime/services`, `/api/runtime/services/status`, and other production entrypoints that do not dispatch a service handler;
-- production bypass-negative tests proving that omission of an applicable inherited authority blocks execution;
+- production bypass-negative tests proving omission of an applicable inherited optimization authority blocks execution;
 - Pass 217 closure gating on cumulative utilization reachability;
 - merge to `main`.
 
 ## Exact next action
 
-Checkpoint 3: bind the production runtime service API surfaces into kernel-derived composition so `/api/runtime/services`, `/api/runtime/services/status`, and `/api/runtime/services/dispatch` cannot bypass the composer. Prefer a shared route/IO boundary rather than hand-wiring three independent policies. Add dependency-scoped positive and bypass-negative tests, validate, and update this restart record before wiring deeper Pass 214/215 optimization stages.
+Checkpoint 4: connect the first real inherited optimization stages into the composer with observed traversal witnesses, beginning with Pass 44 semantic composition caching and Pass 111 predictive continuation caching. Preserve applicability boundaries: semantic composition is expected on derived composition planning; predictive continuation is active only when a predecessor/continuation state is mechanically present and otherwise must carry a mechanical `NOT_APPLICABLE` proof. Add these witnesses to the three-state authority record rather than declaring capabilities active merely because their modules exist.
