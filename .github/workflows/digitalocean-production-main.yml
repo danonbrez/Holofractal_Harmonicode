@@ -32,6 +32,7 @@ jobs:
           set -euo pipefail
           bash -n \
             deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
+            deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
           python3 - <<'PY'
@@ -180,13 +181,40 @@ jobs:
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
+          curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-exact-main-interface.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE':
+              raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False:
+              raise SystemExit(payload)
+          PY
           printf 'HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED=%s\n' "$TARGET_SHA"
           REMOTE
 
-      - name: Verify public HTTPS is reachable
+      - name: Verify public HTTPS Runtime OS is reachable
         shell: bash
         run: |
           set -euo pipefail
           curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
             "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/interface/status" >/tmp/hhs-public-interface-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/" >/tmp/hhs-public-runtime-os.html
           test -s /tmp/hhs-public-system-status.json
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-runtime-os.html
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-public-interface-status.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE':
+              raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False:
+              raise SystemExit(payload)
+          print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
+          PY
