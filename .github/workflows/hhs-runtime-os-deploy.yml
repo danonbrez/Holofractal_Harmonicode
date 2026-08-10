@@ -152,9 +152,19 @@ jobs:
           grep -F 'DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"' hhs_backend/runtime_os_projection.py
           grep -F 'from hhs_backend.runtime_os_visual_server import app as authoritative_app' hhs_backend/production_visual_server.py
           grep -F 'hhs_backend.production_visual_server:app' deploy/digitalocean/hhs-pass196-integrated-environment.service
-          grep -F 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT"' deployment/digitalocean/guarded_auto_update/validate-candidate.sh
+          grep -F 'env -u HHS_RUNTIME_OS_ROOT' deployment/digitalocean/guarded_auto_update/validate-candidate.sh
           grep -F 'OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist' deployment/digitalocean/guarded_auto_update/build-runtime-os.sh
           grep -F 'hhs_backend.runtime_os_application_server:app' Procfile
+          if grep -Fq 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist' deploy/digitalocean/hhs-pass196-integrated-environment.service; then
+            echo 'Production service still points at the secondary generated Runtime OS tree' >&2
+            exit 1
+          fi
+          if grep -Fq 'HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT"' deployment/digitalocean/guarded_auto_update/validate-candidate.sh; then
+            echo 'Candidate validation still uses the non-authoritative Runtime OS environment name' >&2
+            exit 1
+          fi
           if grep -Fq 'from hhs_backend.visual_server import app as authoritative_app' hhs_backend/production_visual_server.py; then
             echo 'DigitalOcean production gateway still bypasses the Runtime OS projection' >&2
             exit 1
@@ -176,7 +186,7 @@ jobs:
         run: |
           timeout 180s python - <<'PY'
           from pathlib import Path
-          from hhs_backend.runtime_os_projection import API_FALLBACK_PATH
+          from hhs_backend.runtime_os_projection import API_FALLBACK_PATH, LEGACY_PUBLIC_ROOT_NAMES
           from hhs_backend.runtime_os_visual_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT, app
 
           assert RUNTIME_OS_ROOT == Path('hhs_gui/dist').resolve()
@@ -200,8 +210,9 @@ jobs:
               raise SystemExit(f'missing inherited production routes: {missing}')
           if PUBLIC_MOUNT_NAME not in names:
               raise SystemExit('Runtime OS public root mount missing')
-          if 'hhs-visual-home' in names:
-              raise SystemExit('legacy Harmonizer root still mounted')
+          root_authorities = [name for name in names if name in LEGACY_PUBLIC_ROOT_NAMES]
+          if root_authorities != [PUBLIC_MOUNT_NAME]:
+              raise SystemExit(f'expected exactly one Runtime OS public-root authority, got {root_authorities}')
           root_index = names.index(PUBLIC_MOUNT_NAME)
           for path in required:
               route_index = paths.index(path)

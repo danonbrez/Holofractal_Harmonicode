@@ -169,11 +169,13 @@ esac
   exit 1
 }
 grep -Fq 'HHS Visual Runtime OS Workspace' "$RUNTIME_OS_ROOT/index.html"
+printf 'HHS_RUNTIME_OS_CANDIDATE_ASSET_ROOT=%s\n' "$RUNTIME_OS_ROOT"
 
 if [[ "$BOOT" == "1" ]]; then
   : >"$LOG_FILE"
-  HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT" \
-  HHS_PASS205_DB="$PASS205_DB" \
+  env -u HHS_RUNTIME_OS_ROOT \
+    HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
+    HHS_PASS205_DB="$PASS205_DB" \
     "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
       >"$LOG_FILE" 2>&1 &
@@ -210,8 +212,9 @@ if [[ "$BOOT" == "1" ]]; then
   curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log
   curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html || fail_with_log
 
-  "$PYTHON" - <<'PY'
+  EXPECTED_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" "$PYTHON" - <<'PY'
 import json
+import os
 from pathlib import Path
 for path in (
     "/tmp/hhs-candidate-status.json",
@@ -228,6 +231,12 @@ if interface.get("interface") != "HHS_VISUAL_RUNTIME_OS_WORKSPACE":
     raise SystemExit("candidate did not select Runtime OS interface")
 if interface.get("legacy_harmonizer_is_public_root") is not False:
     raise SystemExit("candidate re-promoted legacy Harmonizer")
+expected_asset_root = Path(os.environ["EXPECTED_RUNTIME_OS_ASSET_ROOT"]).resolve()
+actual_asset_root = Path(str(interface.get("asset_root", ""))).resolve()
+if actual_asset_root != expected_asset_root:
+    raise SystemExit(
+        f"candidate Runtime OS asset authority mismatch: actual={actual_asset_root} expected={expected_asset_root}"
+    )
 pass205 = json.loads(Path("/tmp/hhs-candidate-pass205.json").read_text(encoding="utf-8"))
 payload = pass205.get("payload", pass205)
 if payload.get("state_bits") != 5184:

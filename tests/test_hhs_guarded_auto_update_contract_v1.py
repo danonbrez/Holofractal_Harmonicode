@@ -212,12 +212,16 @@ def test_candidate_gate_uses_prebuilt_bundle_in_production_and_retains_source_mo
         '"$PYTHON" "$BUNDLE_TOOL" verify',
         "canonical Runtime OS source build",
         "hhs_backend.runtime_os_application_server:app",
+        'HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT"',
+        'env -u HHS_RUNTIME_OS_ROOT',
+        "candidate Runtime OS asset authority mismatch",
         "/api/system/status",
         "/api/interface/status",
         "HHS Visual Runtime OS Workspace",
         "/api/runtime/workspace/session",
     ]:
         assert token in source
+    assert 'HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT"' not in source
 
 
 def test_source_builder_remains_available_for_ci_and_development_without_fake_lockfile_authority() -> None:
@@ -321,13 +325,21 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         "runtime_os_bundle_sha",
         "production checkout is dirty after promotion",
         "HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime",
-        "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current",
+        "HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current",
         "readlink -f \"$BUNDLE_ROOT/current\"",
+        "ServerAliveInterval=30",
+        "ServerAliveCountMax=20",
+        "hhs_backend.production_visual_server:app",
+        "expected exactly one production listener on 8080",
+        "EXPECTED_RUNTIME_OS_RELEASE",
+        "Runtime OS asset authority mismatch",
         "/api/interface/status",
         "HHS Visual Runtime OS Workspace",
         "legacy_harmonizer_is_public_root",
+        "/var/lib/hhs/runtime-os/releases/",
         "HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED",
     ]
     for token in required:
         assert token in workflow
+    assert "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current" not in workflow
     assert "npm ci --no-audit --no-fund" not in workflow
