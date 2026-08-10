@@ -7,7 +7,6 @@ PYTHON=${HHS_VALIDATE_PYTHON:-python3}
 NATIVE=${HHS_VALIDATE_NATIVE:-1}
 NODE_TESTS=${HHS_VALIDATE_NODE_TESTS:-1}
 BOOT=${HHS_VALIDATE_BOOT:-1}
-BROWSER=${HHS_VALIDATE_BROWSER:-0}
 PORT=${HHS_CANDIDATE_PORT:-18080}
 STAGE_TIMEOUT=${HHS_VALIDATE_STAGE_TIMEOUT_SECONDS:-900}
 BOOT_TIMEOUT=${HHS_CANDIDATE_BOOT_TIMEOUT_SECONDS:-120}
@@ -29,11 +28,16 @@ git status --short
 
 run_stage "shell syntax" bash -n \
   deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
+  deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
   deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
   deployment/digitalocean/guarded_auto_update/install.sh
 
 python_files=()
 for path in \
+  hhs_backend/runtime_os_projection.py \
+  hhs_backend/runtime_os_visual_server.py \
+  hhs_backend/runtime_os_application_server.py \
+  hhs_backend/production_visual_server.py \
   hhs_backend/application_ide_server.py \
   hhs_backend/production_ide_server.py \
   hhs_backend/api/repository_history_routes.py \
@@ -42,8 +46,8 @@ for path in \
   hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py \
   hhs_python/runtime/hhs_pass205_continuation_bridge.py \
   scripts/pass205_production_validation.py \
-  tests/test_hhs_pass205_continuation_runtime_v1.py \
-  applications/holofractal_harmonizer/ux_lab/full_application_smoke.py; do
+  tests/test_runtime_os_production_root.py \
+  tests/test_hhs_pass205_continuation_runtime_v1.py; do
   [[ -f "$path" ]] && python_files+=("$path")
 done
 if ((${#python_files[@]})); then
@@ -113,20 +117,31 @@ if [[ "$NODE_TESTS" == "1" && -d applications/holofractal_harmonizer && -x "$(co
     [[ -f "$path" ]] && node_tests+=("$path")
   done
   if ((${#node_tests[@]})); then
-    run_stage "application studio tests" node --test "${node_tests[@]}"
+    run_stage "inherited application studio tests" node --test "${node_tests[@]}"
   fi
   popd >/dev/null
 fi
 
+# The promoted service serves hhs_gui/dist directly. Candidate validation must
+# therefore build the exact TypeScript source before the candidate can pass.
+run_stage \
+  "canonical Runtime OS production build" \
+  bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh "$ROOT"
+
 if [[ "$BOOT" == "1" ]]; then
   : >"$LOG_FILE"
-  HHS_PASS205_DB="$PASS205_DB" "$PYTHON" -m uvicorn hhs_backend.application_ide_server:app \
+  HHS_PASS205_DB="$PASS205_DB" "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
     --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
     >"$LOG_FILE" 2>&1 &
   server_pid=$!
   cleanup() {
     kill "$server_pid" 2>/dev/null || true
     wait "$server_pid" 2>/dev/null || true
+  }
+  fail_with_log() {
+    cat "$LOG_FILE" >&2 || true
+    cleanup
+    exit 1
   }
   trap cleanup EXIT
 
@@ -141,21 +156,22 @@ if [[ "$BOOT" == "1" ]]; then
     fi
     sleep 1
   done
-  if [[ "$ready" != "1" ]]; then
-    cat "$LOG_FILE" >&2
-    exit 1
-  fi
+  [[ "$ready" == "1" ]] || fail_with_log
 
-  curl --fail --silent "http://127.0.0.1:${PORT}/" >/tmp/hhs-candidate-root.html
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html
+  curl --fail --silent "http://127.0.0.1:${PORT}/" >/tmp/hhs-candidate-root.html || fail_with_log
+  grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-candidate-root.html || fail_with_log
+  curl --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
+  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json || fail_with_log
+  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json || fail_with_log
+  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log
+  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html || fail_with_log
+
   "$PYTHON" - <<'PY'
 import json
 from pathlib import Path
 for path in (
     "/tmp/hhs-candidate-status.json",
+    "/tmp/hhs-candidate-interface.json",
     "/tmp/hhs-candidate-repository.json",
     "/tmp/hhs-candidate-workspace.json",
     "/tmp/hhs-candidate-pass205.json",
@@ -163,6 +179,11 @@ for path in (
     value = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise SystemExit(f"non-object candidate response: {path}")
+interface = json.loads(Path("/tmp/hhs-candidate-interface.json").read_text(encoding="utf-8"))
+if interface.get("interface") != "HHS_VISUAL_RUNTIME_OS_WORKSPACE":
+    raise SystemExit("candidate did not select Runtime OS interface")
+if interface.get("legacy_harmonizer_is_public_root") is not False:
+    raise SystemExit("candidate re-promoted legacy Harmonizer")
 pass205 = json.loads(Path("/tmp/hhs-candidate-pass205.json").read_text(encoding="utf-8"))
 payload = pass205.get("payload", pass205)
 if payload.get("state_bits") != 5184:
@@ -175,11 +196,6 @@ studio = Path("/tmp/hhs-candidate-pass205-studio.html").read_text(encoding="utf-
 if "VM5184 × G243" not in studio or "Advance committed state" not in studio:
     raise SystemExit("Pass 205 visual studio surface incomplete")
 PY
-
-  if [[ "$BROWSER" == "1" && -f applications/holofractal_harmonizer/ux_lab/full_application_smoke.py ]]; then
-    HHS_FULL_APPLICATION_IDE_URL="http://127.0.0.1:${PORT}" \
-      run_stage "browser acceptance" "$PYTHON" applications/holofractal_harmonizer/ux_lab/full_application_smoke.py
-  fi
 
   cleanup
   trap - EXIT
