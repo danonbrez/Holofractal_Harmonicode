@@ -5,6 +5,7 @@ umask 027
 REPO_ROOT=${REPO_ROOT:-/opt/hhs/app}
 SOURCE_ROOT=${SOURCE_ROOT:-$REPO_ROOT}
 SOURCE="$SOURCE_ROOT/deployment/digitalocean/guarded_auto_update"
+CANONICAL_HHS_SERVICE="$SOURCE_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
 INSTALL_ROOT=${INSTALL_ROOT:-/usr/local/lib/hhs-guarded-update}
 ENV_FILE=${ENV_FILE:-/etc/hhs/guarded-update.env}
 STATE_ROOT=${STATE_ROOT:-/var/lib/hhs-guarded-update}
@@ -41,6 +42,14 @@ install -m 0755 "$SOURCE/build-runtime-os.sh" "$INSTALL_ROOT/build-runtime-os.sh
 install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidate.sh"
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+
+if [[ "$ENABLE_PROMOTION" == "1" ]]; then
+  [[ -f "$CANONICAL_HHS_SERVICE" ]] || {
+    echo "Canonical HHS production service missing: $CANONICAL_HHS_SERVICE" >&2
+    exit 6
+  }
+  install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
+fi
 
 if [[ ! -f "$ENV_FILE" ]]; then
   cat >"$ENV_FILE" <<EOF_ENV
