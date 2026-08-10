@@ -16,6 +16,7 @@ RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
 RUNTIME_OS_INDEX = RUNTIME_OS_ROOT / "index.html"
 RUNTIME_OS_ASSETS = RUNTIME_OS_ROOT / "assets"
 DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"
+API_FALLBACK_PATH = "/api/{unmatched_path:path}"
 
 LEGACY_PUBLIC_ROOT_NAMES = {
     "hhs-canonical-visual-runtime-os",
@@ -45,15 +46,23 @@ def project_runtime_os(
     """Replace inherited public-root UI mounts with the built Runtime OS.
 
     Non-root applications such as `/runtime-console`, `/storybook-reel`, and
-    `/probability-hydration` are intentionally left intact. Every API and
-    WebSocket route remains registered before the final SPA mount.
+    `/probability-hydration` are intentionally left intact. The inherited
+    unknown-API fallback is temporarily deferred so projection-owned API routes
+    are registered before it, then restored before the final SPA mount.
     """
     require_runtime_os_build()
+
+    deferred_api_fallbacks = [
+        route
+        for route in app.router.routes
+        if str(getattr(route, "path", "")) == API_FALLBACK_PATH
+    ]
 
     app.router.routes = [
         route
         for route in app.router.routes
         if getattr(route, "name", None) not in LEGACY_PUBLIC_ROOT_NAMES
+        and str(getattr(route, "path", "")) != API_FALLBACK_PATH
     ]
 
     if not any(str(getattr(route, "path", "")) == "/api/interface/status" for route in app.router.routes):
@@ -78,6 +87,11 @@ def project_runtime_os(
             name="hhs-runtime-os-interface-status",
         )
 
+    # Unknown API paths must remain fail-closed, but only after every known API
+    # route has been registered. The SPA mount follows it and therefore cannot
+    # turn `/api/...` mistakes into index.html responses.
+    app.router.routes.extend(deferred_api_fallbacks)
+
     app.mount(
         "/",
         StaticFiles(directory=str(RUNTIME_OS_ROOT), html=True),
@@ -87,6 +101,7 @@ def project_runtime_os(
 
 
 __all__ = [
+    "API_FALLBACK_PATH",
     "DEFAULT_PUBLIC_MOUNT_NAME",
     "LEGACY_PUBLIC_ROOT_NAMES",
     "RUNTIME_OS_ASSETS",
