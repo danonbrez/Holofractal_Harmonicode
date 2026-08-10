@@ -38,6 +38,7 @@ def test_procfile_selects_full_runtime_os_application_projection():
 
 def test_runtime_os_projection_replaces_only_legacy_public_root():
     from hhs_backend import runtime_os_visual_server
+    from hhs_backend.runtime_os_projection import LEGACY_PUBLIC_ROOT_NAMES
 
     assert runtime_os_visual_server.RUNTIME_OS_ROOT == Path("hhs_gui/dist").resolve()
     assert runtime_os_visual_server.RUNTIME_OS_INDEX.is_file()
@@ -54,18 +55,7 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
     root_mounts = [
         route
         for route in routes
-        if str(getattr(route, "path", "")) == "/"
-        and getattr(route, "name", None) in {
-            "hhs-canonical-visual-runtime-os",
-            "hhs-visual-home",
-            "hhs-production-harmonizer",
-            "hhs-production-harmonizer-index",
-            "hhs-pass174-visual-ide",
-            "hhs-full-application-ide",
-            "hhs-full-application-ide-index",
-            runtime_os_visual_server.PUBLIC_MOUNT_NAME,
-            "hhs-runtime-os-application-home",
-        }
+        if getattr(route, "name", None) in LEGACY_PUBLIC_ROOT_NAMES
     ]
     assert len(root_mounts) == 1
     assert root_mounts[0].name == runtime_os_visual_server.PUBLIC_MOUNT_NAME
