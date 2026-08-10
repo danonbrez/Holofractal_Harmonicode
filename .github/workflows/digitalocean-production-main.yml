@@ -91,7 +91,9 @@ jobs:
         run: |
           set -euo pipefail
           pushd hhs_gui >/dev/null
-          npm ci --no-audit --no-fund
+          # hhs_gui currently has no committed lockfile. Use the same install
+          # path already validated by the canonical Runtime OS CI workflow.
+          npm install --no-audit --no-fund
           npm run typecheck
           npm run build
           popd >/dev/null
