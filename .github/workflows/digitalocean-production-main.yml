@@ -8,8 +8,14 @@ on:
     paths:
       - ".github/workflows/digitalocean-production-main.yml"
       - "hhs_gui/**"
+      - "hhs_backend/runtime_os_projection.py"
+      - "hhs_backend/runtime_os_visual_server.py"
+      - "hhs_backend/runtime_os_application_server.py"
+      - "hhs_backend/production_visual_server.py"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "tests/test_runtime_os_production_root.py"
       - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
   workflow_dispatch:
 
@@ -50,6 +56,7 @@ jobs:
               test()
               print(f"{name}: PASS")
           PY
+          python3 -m pytest -q tests/test_runtime_os_production_root.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
@@ -152,6 +159,9 @@ jobs:
             -i "$HOME/.ssh/hhs-production" \
             -o BatchMode=yes \
             -o ConnectTimeout=15 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=20 \
+            -o TCPKeepAlive=yes \
             -o StrictHostKeyChecking=yes \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
             "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
@@ -173,8 +183,6 @@ jobs:
               git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
             fi
             if [[ "$TIMER_CLAIMED" == "1" && "$PROMOTION_HANDOFF" == "0" ]]; then
-              # No updater transaction was handed off. Restore periodic checks
-              # only if the live service is still healthy.
               if systemctl is-active --quiet hhs.service; then
                 systemctl start hhs-guarded-update.timer >/dev/null 2>&1 || true
               fi
@@ -249,8 +257,6 @@ jobs:
             exit 21
           fi
 
-          # install.sh repeats ownership verification and then runs exactly one
-          # synchronous Type=oneshot promotion while the timer remains stopped.
           PROMOTION_HANDOFF=1
           REPO_ROOT="$APP_ROOT" \
           SOURCE_ROOT="$bootstrap_root" \
@@ -281,20 +287,33 @@ jobs:
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
-          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
           test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
+
+          listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
+          [[ "$listener_count" -eq 1 ]] || {
+            echo "expected exactly one production listener on 8080, found $listener_count" >&2
+            ss -H -ltnp 'sport = :8080' >&2 || true
+            exit 23
+          }
+
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
           curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
           grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
-          python3 - <<'PY'
-          import json
+          EXPECTED_RUNTIME_OS_RELEASE="$release" python3 - <<'PY'
+          import json, os
           from pathlib import Path
           payload = json.loads(Path('/tmp/hhs-exact-main-interface.json').read_text(encoding='utf-8'))
           if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
           if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          actual = Path(str(payload.get('asset_root', ''))).resolve()
+          expected = Path(os.environ['EXPECTED_RUNTIME_OS_RELEASE']).resolve()
+          if actual != expected:
+              raise SystemExit(f'Runtime OS asset authority mismatch: actual={actual} expected={expected}')
           PY
 
           latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
@@ -324,5 +343,7 @@ jobs:
           payload = json.loads(Path('/tmp/hhs-public-interface-status.json').read_text(encoding='utf-8'))
           if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
           if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          if '/var/lib/hhs/runtime-os/releases/' not in str(payload.get('asset_root', '')):
+              raise SystemExit(f"public interface is not serving a versioned Runtime OS release: {payload}")
           print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
           PY
