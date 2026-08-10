@@ -264,8 +264,9 @@ jobs:
               mounted = page.locator('[data-testid="hhs-canonical-runtime-ide"]').count()
               product_workspace = page.locator('[data-testid="hhs-product-workspace"]').count()
               registry_programmer = page.locator('[data-testid="registry-visual-programmer"]').count()
-              visual_program_button = page.get_by_role('button', name='Visual Program').count()
-              workspace_button = page.get_by_role('button', name='Workspace').count()
+              product_nav = page.locator('[data-testid="hhs-product-workspace"] > nav')
+              visual_program_button = product_nav.get_by_role('button', name='Visual Program', exact=True).count()
+              workspace_button = product_nav.get_by_role('button', name='Workspace', exact=True).count()
               title = page.title()
               boot_state = page.locator('html').get_attribute('data-hhs-mounted')
               record = {
