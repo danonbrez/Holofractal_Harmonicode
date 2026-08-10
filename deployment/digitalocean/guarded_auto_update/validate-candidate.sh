@@ -13,6 +13,11 @@ BOOT_TIMEOUT=${HHS_CANDIDATE_BOOT_TIMEOUT_SECONDS:-120}
 LOG_FILE=${HHS_CANDIDATE_LOG_FILE:-/tmp/hhs-candidate-${PORT}.log}
 PASS205_DB=${HHS_PASS205_CANDIDATE_DB:-/tmp/hhs-pass205-candidate-${PORT}.sqlite3}
 PASS205_EVIDENCE=${HHS_PASS205_CANDIDATE_EVIDENCE:-/tmp/PASS205_PRODUCTION_VALIDATION_RECEIPT.json}
+BUNDLE_MODE=${HHS_RUNTIME_OS_BUNDLE_MODE:-auto}
+BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
+BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
+BUNDLE_TOOL=${HHS_RUNTIME_OS_BUNDLE_TOOL:-$ROOT/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py}
+RUNTIME_OS_ROOT=""
 
 cd "$ROOT"
 
@@ -29,10 +34,11 @@ git status --short
 run_stage "shell syntax" bash -n \
   deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
   deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
+  deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
   deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
   deployment/digitalocean/guarded_auto_update/install.sh
 
-python_files=()
+python_files=(deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)
 for path in \
   hhs_backend/runtime_os_projection.py \
   hhs_backend/runtime_os_visual_server.py \
@@ -50,9 +56,7 @@ for path in \
   tests/test_hhs_pass205_continuation_runtime_v1.py; do
   [[ -f "$path" ]] && python_files+=("$path")
 done
-if ((${#python_files[@]})); then
-  run_stage "python compilation" "$PYTHON" -m py_compile "${python_files[@]}"
-fi
+run_stage "python compilation" "$PYTHON" -m py_compile "${python_files[@]}"
 
 if [[ "$NATIVE" == "1" && -f bin/post_compile ]]; then
   run_stage "native authority build" bash bin/post_compile
@@ -122,17 +126,57 @@ if [[ "$NODE_TESTS" == "1" && -d applications/holofractal_harmonizer && -x "$(co
   popd >/dev/null
 fi
 
-# The promoted service serves hhs_gui/dist directly. Candidate validation must
-# therefore build the exact TypeScript source before the candidate can pass.
-run_stage \
-  "canonical Runtime OS production build" \
-  bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh "$ROOT"
+candidate_sha=$(git rev-parse HEAD)
+case "$BUNDLE_MODE" in
+  prebuilt)
+    [[ -n "$BUNDLE_SHA" ]] || { echo "HHS_RUNTIME_OS_BUNDLE_SHA is required in prebuilt mode" >&2; exit 1; }
+    [[ "$BUNDLE_SHA" == "$candidate_sha" ]] || {
+      echo "Runtime OS bundle SHA does not match candidate: $BUNDLE_SHA != $candidate_sha" >&2
+      exit 1
+    }
+    [[ -f "$BUNDLE_TOOL" ]] || { echo "Runtime OS bundle tool missing: $BUNDLE_TOOL" >&2; exit 1; }
+    incoming="$BUNDLE_ROOT/incoming/$BUNDLE_SHA"
+    archive="$incoming/runtime-os.tar.gz"
+    manifest="$incoming/manifest.json"
+    [[ -s "$archive" && -s "$manifest" ]] || {
+      echo "prebuilt Runtime OS bundle missing for $BUNDLE_SHA under $incoming" >&2
+      exit 1
+    }
+    printf '==> verified prebuilt Runtime OS bundle\n'
+    RUNTIME_OS_ROOT=$(
+      "$PYTHON" "$BUNDLE_TOOL" stage \
+        --root "$BUNDLE_ROOT" \
+        --archive "$archive" \
+        --manifest "$manifest" \
+        --expected-sha "$BUNDLE_SHA"
+    )
+    "$PYTHON" "$BUNDLE_TOOL" verify --root "$BUNDLE_ROOT" --expected-sha "$BUNDLE_SHA" >/dev/null
+    ;;
+  auto|source)
+    run_stage \
+      "canonical Runtime OS source build" \
+      bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh "$ROOT"
+    RUNTIME_OS_ROOT="$ROOT/hhs_gui/dist"
+    ;;
+  *)
+    echo "unsupported HHS_RUNTIME_OS_BUNDLE_MODE: $BUNDLE_MODE" >&2
+    exit 1
+    ;;
+esac
+
+[[ -s "$RUNTIME_OS_ROOT/index.html" && -d "$RUNTIME_OS_ROOT/assets" ]] || {
+  echo "validated Runtime OS root is incomplete: $RUNTIME_OS_ROOT" >&2
+  exit 1
+}
+grep -Fq 'HHS Visual Runtime OS Workspace' "$RUNTIME_OS_ROOT/index.html"
 
 if [[ "$BOOT" == "1" ]]; then
   : >"$LOG_FILE"
-  HHS_PASS205_DB="$PASS205_DB" "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
-    --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
-    >"$LOG_FILE" 2>&1 &
+  HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT" \
+  HHS_PASS205_DB="$PASS205_DB" \
+    "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
+      --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
+      >"$LOG_FILE" 2>&1 &
   server_pid=$!
   cleanup() {
     kill "$server_pid" 2>/dev/null || true
@@ -201,4 +245,4 @@ PY
   trap - EXIT
 fi
 
-printf 'Candidate validation passed at %s\n' "$(git rev-parse HEAD)"
+printf 'Candidate validation passed at %s with Runtime OS %s\n' "$candidate_sha" "$RUNTIME_OS_ROOT"
