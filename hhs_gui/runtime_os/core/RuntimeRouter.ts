@@ -174,12 +174,18 @@ export class RuntimeRouter {
 
     public navigate(
         path: string,
-        applicationId: string,
+        applicationId?: string,
         parameters?: Record<
             string,
             unknown
         >
     ): RuntimeRoute {
+
+        const resolvedApplicationId =
+            applicationId
+            ?? this.applicationIdFromPath(path)
+            ?? this.state.currentRoute?.applicationId
+            ?? "runtime_console"
 
         const route: RuntimeRoute = {
 
@@ -188,7 +194,8 @@ export class RuntimeRouter {
 
             path,
 
-            applicationId,
+            applicationId:
+                resolvedApplicationId,
 
             parameters,
 
@@ -211,6 +218,16 @@ export class RuntimeRouter {
         return route
     }
 
+    private applicationIdFromPath(path: string): string | undefined {
+        const match = /^\/apps\/([^/?#]+)/.exec(path)
+        if (!match) return undefined
+        try {
+            return decodeURIComponent(match[1])
+        } catch {
+            return match[1]
+        }
+    }
+
     /**
      * ---------------------------------------------------
      * Route History
@@ -221,6 +238,7 @@ export class RuntimeRouter {
         RuntimeRoute[] {
 
         return [
+
             ...this.routeHistory
         ]
     }
