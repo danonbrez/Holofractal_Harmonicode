@@ -67,10 +67,12 @@ def test_runtime_os_builder_is_source_driven_and_fail_closed() -> None:
         "package-lock.json",
         "npm ci --no-audit --no-fund",
         "npm run typecheck",
-        "npm run build",
-        "dist/index.html",
-        "dist/assets",
+        'npm run build -- --outDir "$OUTPUT_ROOT" --emptyOutDir',
+        "OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist",
+        '$OUTPUT_ROOT/index.html',
+        '$OUTPUT_ROOT/assets',
         "HHS Visual Runtime OS Workspace",
+        '/etc/systemd/system/hhs.service',
     ]
     for token in required:
         assert token in source
@@ -96,7 +98,7 @@ def test_timer_and_service_are_bounded() -> None:
     assert "NoNewPrivileges=true" in service
 
 
-def test_installer_supports_safe_external_bootstrap_and_explicit_promotion() -> None:
+def test_installer_supports_safe_external_bootstrap_and_runtime_os_migration() -> None:
     installer = read("install.sh")
     example = read("hhs-guarded-update.env.example")
     assert "SOURCE_ROOT=${SOURCE_ROOT:-$REPO_ROOT}" in installer
@@ -104,6 +106,11 @@ def test_installer_supports_safe_external_bootstrap_and_explicit_promotion() -> 
     assert "HHS_UPDATE_DRY_RUN=0" in installer
     assert "HHS_UPDATE_DRY_RUN=1" in installer
     assert "HHS_UPDATE_DRY_RUN=1" in example
+    assert "CANONICAL_HHS_SERVICE" in installer
+    assert "RUNTIME_OS_POST_MERGE" in installer
+    assert "HHS_POST_MERGE_COMMAND=bash bin/post_compile" in installer
+    assert "build-runtime-os.sh" in installer
+    assert "build-runtime-os.sh" in example
 
 
 def test_github_merge_gate_is_label_and_trust_scoped() -> None:
