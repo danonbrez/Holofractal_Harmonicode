@@ -9,6 +9,7 @@ INSTALL_ROOT=${INSTALL_ROOT:-/usr/local/lib/hhs-guarded-update}
 ENV_FILE=${ENV_FILE:-/etc/hhs/guarded-update.env}
 STATE_ROOT=${STATE_ROOT:-/var/lib/hhs-guarded-update}
 ENABLE_PROMOTION=${HHS_INSTALL_ENABLE_PROMOTION:-0}
+RUNTIME_OS_POST_MERGE='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
 [[ $EUID -eq 0 ]] || {
   echo "Run as root on the DigitalOcean host." >&2
@@ -27,11 +28,16 @@ ENABLE_PROMOTION=${HHS_INSTALL_ENABLE_PROMOTION:-0}
   exit 5
 }
 
-bash -n "$SOURCE/hhs-guarded-update.sh" "$SOURCE/validate-candidate.sh" "$SOURCE/install.sh"
+bash -n \
+  "$SOURCE/hhs-guarded-update.sh" \
+  "$SOURCE/build-runtime-os.sh" \
+  "$SOURCE/validate-candidate.sh" \
+  "$SOURCE/install.sh"
 
 install -d -m 0755 "$INSTALL_ROOT" /etc/hhs
 install -d -m 0750 "$STATE_ROOT" "$STATE_ROOT/candidates"
 install -m 0755 "$SOURCE/hhs-guarded-update.sh" "$INSTALL_ROOT/hhs-guarded-update.sh"
+install -m 0755 "$SOURCE/build-runtime-os.sh" "$INSTALL_ROOT/build-runtime-os.sh"
 install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidate.sh"
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
@@ -52,11 +58,32 @@ HHS_VALIDATE_BOOT=1
 HHS_VALIDATE_BROWSER=0
 HHS_CANDIDATE_PORT=18080
 HHS_KEEP_CANDIDATES=3
-HHS_POST_MERGE_COMMAND=bash bin/post_compile
+HHS_POST_MERGE_COMMAND=$RUNTIME_OS_POST_MERGE
 HHS_ROLLBACK_COMMAND=bash bin/post_compile
 HHS_UPDATE_SYNC_SELF=1
 HHS_UPDATE_DRY_RUN=1
 EOF_ENV
+else
+  # Migrate only the historical repository default. Explicit operator-customized
+  # post-merge commands remain untouched.
+  if grep -Fxq 'HHS_POST_MERGE_COMMAND=bash bin/post_compile' "$ENV_FILE"; then
+    python3 - "$ENV_FILE" "$RUNTIME_OS_POST_MERGE" <<'PY'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+replacement = sys.argv[2]
+lines = path.read_text(encoding="utf-8").splitlines()
+path.write_text(
+    "\n".join(
+        f"HHS_POST_MERGE_COMMAND={replacement}"
+        if line == "HHS_POST_MERGE_COMMAND=bash bin/post_compile"
+        else line
+        for line in lines
+    ) + "\n",
+    encoding="utf-8",
+)
+PY
+  fi
 fi
 
 if [[ "$ENABLE_PROMOTION" == "1" ]]; then
