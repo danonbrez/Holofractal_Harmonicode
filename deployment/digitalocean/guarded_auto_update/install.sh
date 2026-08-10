@@ -117,7 +117,12 @@ fi
 
 systemctl daemon-reload
 systemctl enable --now hhs-guarded-update.timer
-systemctl start hhs-guarded-update.service
+if ! systemctl start hhs-guarded-update.service; then
+  echo "HHS guarded updater failed during installation; emitting exact service diagnostics." >&2
+  systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
+  journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
+  exit 7
+fi
 
 cat <<EOF_SUMMARY
 Guarded continuous deployment installed.
