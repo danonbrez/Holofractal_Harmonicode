@@ -27,10 +27,6 @@ command -v npm >/dev/null || {
   echo "Runtime OS package.json missing: $GUI_ROOT/package.json" >&2
   exit 1
 }
-[[ -f "$GUI_ROOT/package-lock.json" ]] || {
-  echo "Runtime OS package-lock.json missing: $GUI_ROOT/package-lock.json" >&2
-  exit 1
-}
 
 if [[ "$LIVE_ROOT" == "/opt/hhs/app" ]]; then
   [[ $EUID -eq 0 ]] || {
@@ -50,7 +46,11 @@ if [[ "$OUTPUT_ROOT" != "$GUI_ROOT/dist" ]]; then
 fi
 
 pushd "$GUI_ROOT" >/dev/null
-npm ci --no-audit --no-fund
+# This frontend currently has no committed lockfile. Match the already-proven
+# Runtime OS CI path instead of pretending npm ci has a lockfile authority that
+# does not exist. If a lockfile is deliberately added later, that can become a
+# separately reviewed reproducibility contract.
+npm install --no-audit --no-fund
 npm run typecheck
 npm run build -- --outDir "$OUTPUT_ROOT" --emptyOutDir
 popd >/dev/null

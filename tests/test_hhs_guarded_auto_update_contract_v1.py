@@ -73,7 +73,6 @@ def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> Non
         )
         assert (bundle_root / "current").resolve() == Path(release_a).resolve()
 
-        # A wrong repository identity cannot reuse a valid bundle.
         wrong = subprocess.run(
             ["python3", str(BUNDLE_TOOL), "stage", "--root", str(root / "wrong"), "--archive", str(archive_a),
              "--manifest", str(manifest_a), "--expected-sha", "c" * 40],
@@ -83,7 +82,6 @@ def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> Non
         assert wrong.returncode != 0
         assert "repository SHA mismatch" in (wrong.stderr + wrong.stdout)
 
-        # Archive mutation is detected before extraction.
         corrupted = root / "corrupted.tar.gz"
         corrupted.write_bytes(archive_a.read_bytes() + b"corruption")
         corrupt = subprocess.run(
@@ -95,8 +93,6 @@ def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> Non
         assert corrupt.returncode != 0
         assert "archive length mismatch" in (corrupt.stderr + corrupt.stdout)
 
-        # A second exact release can become current, then rollback can atomically
-        # restore the previously verified release without npm or a source build.
         sha_b = "b" * 40
         (assets / "index-test.js").write_text("globalThis.HHS_RUNTIME_OS='second';\n", encoding="utf-8")
         archive_b = root / "b.tar.gz"
@@ -122,7 +118,6 @@ def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> Non
         )
         assert (bundle_root / "current").resolve() == Path(release_a).resolve()
 
-        # Legacy/incomplete HTML is rejected at bundle creation.
         legacy = root / "legacy"
         (legacy / "assets").mkdir(parents=True)
         (legacy / "index.html").write_text("<title>Legacy Harmonizer</title>\n", encoding="utf-8")
@@ -225,10 +220,18 @@ def test_candidate_gate_uses_prebuilt_bundle_in_production_and_retains_source_mo
         assert token in source
 
 
-def test_source_builder_remains_available_for_ci_and_development() -> None:
+def test_source_builder_remains_available_for_ci_and_development_without_fake_lockfile_authority() -> None:
     source = read("build-runtime-os.sh")
-    for token in ["command -v node", "command -v npm", "npm ci --no-audit --no-fund", "npm run typecheck", "HHS Visual Runtime OS Workspace"]:
+    for token in [
+        "command -v node",
+        "command -v npm",
+        "npm install --no-audit --no-fund",
+        "npm run typecheck",
+        "HHS Visual Runtime OS Workspace",
+    ]:
         assert token in source
+    assert "package-lock.json missing" not in source
+    assert "npm ci --no-audit --no-fund" not in source
 
 
 def test_installer_pins_prebuilt_bundle_and_removes_frontend_build_from_host_promotion() -> None:
@@ -279,7 +282,7 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
     required = [
         "actions/setup-node@v4",
         "node-version: '22'",
-        "npm ci --no-audit --no-fund",
+        "npm install --no-audit --no-fund",
         "runtime-os-bundle.py create",
         "runtime-os-bundle.py stage",
         "scp -i",
@@ -299,3 +302,4 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
     ]
     for token in required:
         assert token in workflow
+    assert "npm ci --no-audit --no-fund" not in workflow
