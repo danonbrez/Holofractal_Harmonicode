@@ -74,10 +74,25 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
         assert route_index < root_index
 
 
+def test_digitalocean_service_uses_external_generated_asset_tree():
+    service = Path("deploy/digitalocean/hhs-pass196-integrated-environment.service").read_text(
+        encoding="utf-8"
+    )
+    builder = Path(
+        "deployment/digitalocean/guarded_auto_update/build-runtime-os.sh"
+    ).read_text(encoding="utf-8")
+
+    assert "Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist" in service
+    assert 'elif [[ "$(realpath -m "$ROOT")" == "/opt/hhs/app" ]]' in builder
+    assert "OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist" in builder
+    assert 'npm run build -- --outDir "$OUTPUT_ROOT" --emptyOutDir' in builder
+
+
 def test_legacy_harmonizer_remains_inherited_source_not_public_authority():
     legacy_root = Path("applications/holofractal_harmonizer")
     assert (legacy_root / "index.html").is_file()
 
     projection = Path("hhs_backend/runtime_os_projection.py").read_text(encoding="utf-8")
     assert '"legacy_harmonizer_is_public_root": False' in projection
-    assert 'RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"' in projection
+    assert 'os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT")' in projection
+    assert 'RUNTIME_OS_SOURCE_ROOT = ROOT_DIR / "hhs_gui"' in projection
