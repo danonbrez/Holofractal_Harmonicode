@@ -53,6 +53,20 @@ def parse_json_text(text: str | None):
     return json.loads(text)
 
 
+def require_complete_history() -> None:
+    shallow = git("rev-parse", "--is-shallow-repository").stdout.strip().lower()
+    if shallow == "true":
+        raise SystemExit(
+            json.dumps(
+                {
+                    "classification": "HHS_PASS_159_MAIN_CLOSURE_FULL_HISTORY_REQUIRED",
+                    "remediation": "Checkout authoritative main with fetch-depth: 0 before historical closure ancestry validation.",
+                },
+                sort_keys=True,
+            )
+        )
+
+
 def is_ancestor(ancestor: str, descendant: str) -> bool:
     if len(ancestor) != 40 or len(descendant) != 40:
         return False
@@ -89,6 +103,7 @@ ref = os.environ.get("GITHUB_REF", "")
 sha = os.environ.get("GITHUB_SHA", "")
 if ref != "refs/heads/main" or len(sha) != 40:
     raise SystemExit("authoritative main context required")
+require_complete_history()
 
 # The downloaded evidence artifact intentionally places the pre-main receipt in
 # the working tree. Read it before consulting committed terminal receipts via
@@ -171,6 +186,7 @@ if (
                     "functional_changes": [],
                     "terminal_receipt_reused_byte_exact": True,
                     "deterministic_revalidation": True,
+                    "full_history_verified": True,
                 },
                 sort_keys=True,
             )
