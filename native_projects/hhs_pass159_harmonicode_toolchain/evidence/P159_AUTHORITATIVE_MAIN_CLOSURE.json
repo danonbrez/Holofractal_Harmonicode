@@ -1,5 +1,5 @@
 {
-  "authoritative_main_commit": "62dd932a9632789a234e933d76c8e8c5b970a702",
+  "authoritative_main_commit": "c855351f701e9d529c948707a0fb5acee1f0a7a4",
   "checks": {
     "authoritative_main": true,
     "cross_architecture": true,
@@ -69,7 +69,7 @@
     "serialization": 18,
     "vm81": 81
   },
-  "main_closure_root": "92d4dac1b0eee73b5ad8555925420fb366bf2937841cbdc24193bbbf549a012c",
+  "main_closure_root": "817b86e904c5aacb267547aeee0f1b12d819e2789babeefe9fbaf7a2f6069593",
   "omega_159": true,
   "pre_main_evidence_root": "8e3468d7b5b0a8c43402bb19d156caad8df06cd2d49e3b625211182262cb3aa5",
   "schema": "P159_AUTHORITATIVE_MAIN_CLOSURE_V1"
