@@ -1,15 +1,19 @@
 """Production HHS visual server with authoritative status caching.
 
-The canonical application remains ``hhs_backend.visual_server:app``.  This
-module supplies the deployment-facing ASGI gateway that:
+The deployment-facing application preserves the complete HHS backend/runtime
+surface and serves the TypeScript/React/Vite Runtime OS as its public root via
+:mod:`hhs_backend.runtime_os_visual_server`.
+
+The ASGI gateway:
 
 * prewarms the real Pass 196-201 status routes sequentially;
 * serves direct status reads from the persistent cache;
 * returns an explicit warming projection instead of executing an expensive
-  status handler on the serving event loop;
-* delays the isolated probe briefly after the main cold import; and
-* retains the browser bootstrap injection and event-driven readiness behavior
-  implemented by :mod:`hhs_backend.cached_visual_server`.
+  status handler on the serving event loop; and
+* delays the isolated probe briefly after the main cold import.
+
+Frontend selection changes HTTP projection only; backend/pass authority remains
+owned by the inherited HHS runtime.
 """
 from __future__ import annotations
 
@@ -19,7 +23,7 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
-from hhs_backend.visual_server import app as authoritative_app
+from hhs_backend.runtime_os_visual_server import app as authoritative_app
 
 PRODUCTION_STATUS_PATHS = (
     "/api/runtime/authority/status",
