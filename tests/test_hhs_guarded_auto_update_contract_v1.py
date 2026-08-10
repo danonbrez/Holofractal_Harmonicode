@@ -16,6 +16,7 @@ def test_shell_assets_parse() -> None:
         DEPLOY / "hhs-guarded-update.sh",
         DEPLOY / "validate-candidate.sh",
         DEPLOY / "install.sh",
+        ROOT / "bin" / "post_compile",
     ]
     subprocess.run(["bash", "-n", *map(str, scripts)], check=True)
 
@@ -51,6 +52,16 @@ def test_candidate_gate_covers_integrated_runtime() -> None:
     ]
     for token in required:
         assert token in source
+
+
+def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
+    source = (ROOT / "bin" / "post_compile").read_text(encoding="utf-8")
+    assert 'HHS_POST_COMPILE_PYTHON' in source
+    assert 'HHS_VALIDATE_PYTHON' in source
+    assert 'python3' in source
+    assert 'command -v "$PYTHON_BIN"' in source
+    assert '"$PYTHON_BIN" tools/install_production_language_assets.py' in source
+    assert '\npython tools/install_production_language_assets.py' not in source
 
 
 def test_timer_and_service_are_bounded() -> None:
