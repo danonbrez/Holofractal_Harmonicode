@@ -1,0 +1,64 @@
+name: Pass 217 Iteration 4 Hash72 Manifold and Nucleus
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_hash72_manifold_nucleus_v1.py'
+      - 'tools/pass217_iteration4_hash72_manifold_nucleus.py'
+      - 'tests/test_hhs_pass217_hash72_manifold_nucleus_v1.py'
+      - 'scripts/run_pass217_iteration4_validation.sh'
+      - 'contracts/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.schema.json'
+      - 'evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json'
+      - 'docs/pass217/ITERATION_4_HASH72_MANIFOLD_NUCLEUS.md'
+      - 'docs/pass217/ITERATION_4_RESTART_RECORD.md'
+      - '.github/workflows/pass217-iteration4-hash72-manifold-nucleus.yml'
+  push:
+    branches:
+      - main
+      - agent/pass217-iteration4-reconcile
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_hash72_manifold_nucleus_v1.py'
+      - 'tools/pass217_iteration4_hash72_manifold_nucleus.py'
+      - 'tests/test_hhs_pass217_hash72_manifold_nucleus_v1.py'
+      - 'scripts/run_pass217_iteration4_validation.sh'
+      - 'contracts/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.schema.json'
+      - 'evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json'
+      - 'docs/pass217/ITERATION_4_HASH72_MANIFOLD_NUCLEUS.md'
+      - 'docs/pass217/ITERATION_4_RESTART_RECORD.md'
+      - '.github/workflows/pass217-iteration4-hash72-manifold-nucleus.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  dependency-scoped-hash72-nucleus:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate reconciled Hash72 manifold and immutable nucleus
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/pass217-iteration4"
+          bash scripts/run_pass217_iteration4_validation.sh \
+            | tee "$RUNNER_TEMP/pass217-iteration4/validation.log"
+      - name: Retain Iteration 4 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass217-iteration4-hash72-nucleus-${{ github.run_id }}
+          path: |
+            contracts/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.schema.json
+            evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json
+            ${{ runner.temp }}/pass217-iteration4/validation.log
+          if-no-files-found: error
