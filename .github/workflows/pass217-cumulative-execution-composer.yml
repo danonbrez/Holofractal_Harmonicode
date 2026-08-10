@@ -9,8 +9,10 @@ on:
       - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
       - 'hhs_runtime/hhs_cumulative_execution_authority_v1.py'
       - 'hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
+      - 'native_projects/hhs_ide_workspace/__init__.py'
       - 'tests/test_hhs_pass217_cumulative_execution_composer_v1.py'
       - 'tests/test_hhs_cumulative_execution_authority_v1.py'
       - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
@@ -24,8 +26,10 @@ on:
       - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
       - 'hhs_runtime/hhs_cumulative_execution_authority_v1.py'
       - 'hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
+      - 'native_projects/hhs_ide_workspace/__init__.py'
       - 'tests/test_hhs_pass217_cumulative_execution_composer_v1.py'
       - 'tests/test_hhs_cumulative_execution_authority_v1.py'
       - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
@@ -58,8 +62,10 @@ jobs:
             hhs_runtime/hhs_lazy_service_registry_v1.py \
             hhs_runtime/hhs_cumulative_execution_authority_v1.py \
             hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py \
+            hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
+            native_projects/hhs_ide_workspace/__init__.py \
             tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
             tests/test_hhs_cumulative_execution_authority_v1.py \
             tests/test_hhs_inherited_execution_stage_bridge_v1.py \
