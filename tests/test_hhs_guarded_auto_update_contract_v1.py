@@ -238,24 +238,33 @@ def test_source_builder_remains_available_for_ci_and_development_without_fake_lo
     assert "npm ci --no-audit --no-fund" not in source
 
 
-def test_installer_pins_prebuilt_bundle_and_removes_frontend_build_from_host_promotion() -> None:
+def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_receipt() -> None:
     installer = read("install.sh")
     example = read("hhs-guarded-update.env.example")
+    stable_build = "make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
     for token in [
         "HHS_RUNTIME_OS_BUNDLE_SHA",
         "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt",
         "runtime-os-bundle.py",
         "promotion requires exact HHS_RUNTIME_OS_BUNDLE_SHA",
+        "HHS_INSTALL_RECOVERY_MODE",
+        "ROLLBACK_HEALTH_FAILED",
+        "Recovery mode refused because another listener already owns port 8080",
+        "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
+        "HHS_PRODUCTION_SERVICE_DIAGNOSTICS",
         "HHS_POST_MERGE_COMMAND=$NATIVE_BUILD",
         "HHS_ROLLBACK_COMMAND=$NATIVE_BUILD",
+        "HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT",
     ]:
         assert token in installer
     assert "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt" in example
-    assert "HHS_POST_MERGE_COMMAND=bash bin/post_compile\n" in example
-    assert "HHS_ROLLBACK_COMMAND=bash bin/post_compile\n" in example
+    assert "HHS_HEALTH_TIMEOUT_SECONDS=600\n" in example
+    assert f"HHS_POST_MERGE_COMMAND={stable_build}\n" in example
+    assert f"HHS_ROLLBACK_COMMAND={stable_build}\n" in example
+    assert "bash bin/post_compile\n" not in example
 
 
-def test_exact_main_promotion_has_one_updater_owner_and_timer_is_follower() -> None:
+def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_gated_recovery() -> None:
     installer = read("install.sh")
     workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
 
@@ -272,15 +281,23 @@ def test_exact_main_promotion_has_one_updater_owner_and_timer_is_follower() -> N
 
     claim = workflow.index("=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ===")
     workflow_stop = workflow.index("systemctl stop hhs-guarded-update.timer", claim)
+    recovery = workflow.index("HHS_EXACT_MAIN_RECOVERY_MODE=1", claim)
     ownership_witness = workflow.index("HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1", claim)
     git_fetch = workflow.index("git fetch --prune origin main", claim)
     drift = workflow.index("HHS_HOST_DRIFT_MODE=source", claim)
     handoff = workflow.index("PROMOTION_HANDOFF=1", claim)
     installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
-    assert claim < workflow_stop < ownership_witness < git_fetch < drift < handoff < installer_call
-    assert "flock -w 10 8" in workflow
-    assert '$PROMOTION_HANDOFF" == "0"' in workflow
-    assert "systemctl start hhs-guarded-update.timer" in workflow
+    assert claim < workflow_stop < recovery < ownership_witness < git_fetch < drift < handoff < installer_call
+    for token in [
+        "ROLLBACK_HEALTH_FAILED",
+        'HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE"',
+        "HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600",
+        "EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS",
+        "flock -w 10 8",
+        '$PROMOTION_HANDOFF" == "0"',
+        "systemctl start hhs-guarded-update.timer",
+    ]:
+        assert token in workflow
 
 
 def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
@@ -294,11 +311,13 @@ def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
 def test_timer_and_service_are_bounded() -> None:
     timer = read("hhs-guarded-update.timer")
     service = read("hhs-guarded-update.service")
+    production_service = (ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service").read_text(encoding="utf-8")
     assert "OnUnitActiveSec=5min" in timer
     assert "RandomizedDelaySec=30s" in timer
     assert "TimeoutStartSec=90min" in service
     assert "Type=oneshot" in service
     assert "NoNewPrivileges=true" in service
+    assert "Environment=HHS_COGNITION_AUTO_TICK=0" in production_service
 
 
 def test_github_merge_gate_is_label_and_trust_scoped() -> None:
@@ -326,6 +345,7 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         "production checkout is dirty after promotion",
         "HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime",
         "HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current",
+        "HHS_COGNITION_AUTO_TICK=0",
         "readlink -f \"$BUNDLE_ROOT/current\"",
         "ServerAliveInterval=30",
         "ServerAliveCountMax=20",
