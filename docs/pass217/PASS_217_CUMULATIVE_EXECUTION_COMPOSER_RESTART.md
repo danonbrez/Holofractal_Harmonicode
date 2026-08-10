@@ -7,16 +7,16 @@
 - Merge target: `main`
 - Base commit: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Base role: authoritative `main` at workstream start
-- Latest validated implementation head before this restart-record commit: `2246d43026bea2071c9b34ab41784b157696103d`
+- Latest validated implementation head before this restart-record commit: `317f456a8f0d54ba51523683064e499c9c385014`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Validation run: `31354829734`
-- Validation result: `SUCCESS`
+- Checkpoint 1 validation run: `31354829734` — `SUCCESS`
+- Checkpoint 2 validation run: `31355052609` — dependency-scoped job `93353078780` — `SUCCESS`
 
 ## Problem being repaired
 
 Inherited capabilities remain implemented, registered, and historically validated, but current live execution can bypass compound inherited execution layers by calling lower-level handlers directly. Capability preservation is therefore stronger than capability utilization.
 
-The repair makes inherited execution composition mandatory rather than optional. An inherited core execution capability must eventually resolve for each operation to exactly one of:
+The repair makes inherited execution composition mandatory rather than optional. An inherited core execution capability must resolve for each operation to exactly one of:
 
 - `ACTIVE_IN_PATH`
 - `NOT_APPLICABLE`
@@ -35,13 +35,6 @@ Repository-visible commits:
 3. `65f6994ac9cf35570ea289b757099318b2fc74ee` — add targeted positive, negative, ordering, cache, and ledger-binding tests.
 4. `2246d43026bea2071c9b34ab41784b157696103d` — add dependency-scoped validation workflow.
 
-Changed files:
-
-- `hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py`
-- `hhs_runtime/hhs_lazy_service_registry_v1.py`
-- `tests/test_hhs_pass217_cumulative_execution_composer_v1.py`
-- `.github/workflows/pass217-cumulative-execution-composer.yml`
-
 Validated behavior:
 
 - a kernel-derived direct surface is admitted by the inherited Pass 043 composer;
@@ -53,25 +46,50 @@ Validated behavior:
 - changed Python files compile;
 - targeted checkpoint tests pass in GitHub Actions.
 
+## Checkpoint 2 — completed and validated
+
+Checkpoint 2 adds a fail-closed inherited optimization-authority reachability model sourced from the Pass 214-frozen Pass 215 optimization profile.
+
+Repository-visible commits:
+
+1. `722136b2a04e2e63831383a180e87a491e7d0b16` — add `hhs_runtime/hhs_cumulative_execution_authority_v1.py`.
+2. `0bfcdc9b7ffbb11f6736c5f4fd99789dcb7a6f89` — add authority-state, negative, supersession, no-float, and no-optional tests.
+3. `317f456a8f0d54ba51523683064e499c9c385014` — extend the scoped workflow over the new authority model.
+
+The authority inventory is loaded from `contracts/pass215/PASS_215_BENCHMARK_PROFILE.json`. Runtime comparison controls (`dense_reference`, `exact_integer_reference`) are excluded from the per-operation optimization traversal set; `OPTIONAL` accelerator batching and `EXPERIMENTAL` GPU execution are not promoted into inherited core requirements.
+
+Accepted states are exactly:
+
+- `ACTIVE_IN_PATH`: requires an observed traversal, a path containing the exact authority id, a traversal witness, and a witness root;
+- `NOT_APPLICABLE`: requires a mechanical predicate, observed facts, an explicit reason, and `mechanically_proven=true`;
+- `EXPLICITLY_SUPERSEDED`: requires a later pass than the Pass 214 profile authority, a distinct replacement authority, an explicit contract, a validation root, and proven semantic equality.
+
+Fail-closed behavior validated at exact head `317f456a8f0d54ba51523683064e499c9c385014`:
+
+- missing authority disposition is rejected rather than inferred irrelevant;
+- ambiguous dual disposition is rejected;
+- weak/non-mechanical `NOT_APPLICABLE` is rejected;
+- stale or unvalidated supersession is rejected;
+- nested `OPTIONAL_AVAILABLE` is rejected;
+- floating-point authority evidence is rejected;
+- a fully witnessed accepted authority set validates successfully.
+
 ## Validation note
 
-An inherited `.github/workflows/pass205-repair-validation-base.yml` workflow was also triggered by a branch push and reported failure with no jobs. It is not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow completed successfully against exact head `2246d43026bea2071c9b34ab41784b157696103d`.
+An inherited `.github/workflows/pass205-repair-validation-base.yml` workflow also triggers on branch pushes and reports failure with no jobs. It is not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow is the dependency-scoped authority for these checkpoints and has passed both validated heads listed above.
 
 ## Deliberately not yet claimed
 
-Checkpoint 1 does **not** claim that all inherited optimization authorities are now active in every applicable live path. Specifically still pending:
+Checkpoints 1–2 do **not** claim that all inherited optimization authorities are already traversed in every applicable production path. Specifically still pending:
 
-- the three-state inherited optimization authority reachability classifier and fail-closed validator;
-- mechanical `NOT_APPLICABLE` proofs;
-- validated later-pass supersession records for `EXPLICITLY_SUPERSEDED`;
-- activation witnesses for Pass 214/215 required cache, vector, continuation, delta, hydration/ROM, representation, recovery, and native-dispatch layers;
+- populate live `ACTIVE_IN_PATH` witnesses from actual inherited cache/vector/continuation/delta/hydration/ROM/representation/recovery/native stages rather than synthetic test records;
+- mechanically derive `NOT_APPLICABLE` from operation facts at the canonical composer boundary;
+- accept `EXPLICITLY_SUPERSEDED` only from repository-bound later-pass contracts;
 - route-level enforcement for `/api/runtime/services`, `/api/runtime/services/status`, and other production entrypoints that do not dispatch a service handler;
-- production bypass-negative tests demonstrating that an applicable inherited authority omitted from a live path blocks execution;
-- Pass 217 closure gating on utilization reachability;
+- production bypass-negative tests proving that omission of an applicable inherited authority blocks execution;
+- Pass 217 closure gating on cumulative utilization reachability;
 - merge to `main`.
 
 ## Exact next action
 
-Implement Checkpoint 2 as a small additive authority-reachability module that consumes the inherited Pass 214/215 optimization profile and emits only `ACTIVE_IN_PATH`, `NOT_APPLICABLE`, or `EXPLICITLY_SUPERSEDED`. The validator must reject any applicable inherited core authority lacking a concrete traversal witness and must reject `OPTIONAL_AVAILABLE` outright. Integrate only already-observable traversal witnesses first; do not invent `ACTIVE_IN_PATH` states for capabilities that have not yet been wired.
-
-After dependency-scoped tests pass, update this restart record before proceeding to route-level and deeper optimization-path integration.
+Checkpoint 3: bind the production runtime service API surfaces into kernel-derived composition so `/api/runtime/services`, `/api/runtime/services/status`, and `/api/runtime/services/dispatch` cannot bypass the composer. Prefer a shared route/IO boundary rather than hand-wiring three independent policies. Add dependency-scoped positive and bypass-negative tests, validate, and update this restart record before wiring deeper Pass 214/215 optimization stages.
