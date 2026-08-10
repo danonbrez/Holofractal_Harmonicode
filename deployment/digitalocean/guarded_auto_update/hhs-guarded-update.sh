@@ -18,6 +18,9 @@ KEEP_CANDIDATES=${HHS_KEEP_CANDIDATES:-3}
 POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile}
 ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile}
 SYNC_SELF=${HHS_UPDATE_SYNC_SELF:-1}
+SYNC_PRIMARY_SERVICE=${HHS_UPDATE_SYNC_PRIMARY_SERVICE:-1}
+PRIMARY_SERVICE_SOURCE=${HHS_PRIMARY_SERVICE_SOURCE:-deploy/digitalocean/hhs-pass196-integrated-environment.service}
+PRIMARY_SERVICE_TARGET=${HHS_PRIMARY_SERVICE_TARGET:-hhs.service}
 DRY_RUN=${HHS_UPDATE_DRY_RUN:-0}
 
 CANDIDATE_ROOT="$STATE_ROOT/candidates"
@@ -128,15 +131,24 @@ cleanup_candidate() {
 }
 
 sync_installed_assets() {
-  [[ "$SYNC_SELF" == "1" ]] || return 0
-  local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
-  [[ -d "$source" ]] || return 0
-  log "Synchronizing guarded updater assets"
-  install -d -m 0755 /usr/local/lib/hhs-guarded-update
-  install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
-  install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
-  install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
-  install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  if [[ "$SYNC_SELF" == "1" ]]; then
+    local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
+    [[ -d "$source" ]] || fail "Guarded updater source missing: deployment/digitalocean/guarded_auto_update"
+    log "Synchronizing guarded updater assets"
+    install -d -m 0755 /usr/local/lib/hhs-guarded-update
+    install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
+    install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
+    install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
+    install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  fi
+
+  if [[ "$SYNC_PRIMARY_SERVICE" == "1" ]]; then
+    local primary_source="$REPO_ROOT/$PRIMARY_SERVICE_SOURCE"
+    local primary_target="/etc/systemd/system/$PRIMARY_SERVICE_TARGET"
+    [[ -f "$primary_source" ]] || fail "Primary service definition missing: $PRIMARY_SERVICE_SOURCE"
+    log "Synchronizing production service $PRIMARY_SERVICE_SOURCE -> $PRIMARY_SERVICE_TARGET"
+    install -m 0644 "$primary_source" "$primary_target"
+  fi
 }
 
 rollback_live_checkout() {
