@@ -251,6 +251,34 @@ def test_installer_pins_prebuilt_bundle_and_removes_frontend_build_from_host_pro
     assert "HHS_ROLLBACK_COMMAND=bash bin/post_compile\n" in example
 
 
+def test_exact_main_promotion_has_one_updater_owner_and_timer_is_follower() -> None:
+    installer = read("install.sh")
+    workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
+
+    installer_stop = installer.index("systemctl stop hhs-guarded-update.timer")
+    installer_wait = installer.index("while :; do", installer_stop)
+    installer_start = installer.index("systemctl start hhs-guarded-update.service")
+    installer_enable_timer = installer.index("systemctl enable hhs-guarded-update.timer")
+    installer_start_timer = installer.index("systemctl start hhs-guarded-update.timer", installer_enable_timer)
+    assert installer_stop < installer_wait < installer_start < installer_enable_timer < installer_start_timer
+    assert "systemctl enable --now hhs-guarded-update.timer" not in installer
+    assert "timer remains stopped" in installer
+    assert "systemctl reset-failed hhs-guarded-update.service" in installer
+    assert "hhs.service is not active after prior guarded updater ownership ended" in installer
+
+    claim = workflow.index("=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ===")
+    workflow_stop = workflow.index("systemctl stop hhs-guarded-update.timer", claim)
+    ownership_witness = workflow.index("HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1", claim)
+    git_fetch = workflow.index("git fetch --prune origin main", claim)
+    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", claim)
+    handoff = workflow.index("PROMOTION_HANDOFF=1", claim)
+    installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
+    assert claim < workflow_stop < ownership_witness < git_fetch < drift < handoff < installer_call
+    assert "flock -w 10 8" in workflow
+    assert "PROMOTION_HANDOFF == \"0\"" in workflow
+    assert "systemctl start hhs-guarded-update.timer" in workflow
+
+
 def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
     source = (ROOT / "bin" / "post_compile").read_text(encoding="utf-8")
     assert 'HHS_POST_COMPILE_PYTHON' in source
