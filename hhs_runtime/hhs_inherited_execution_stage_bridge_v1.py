@@ -11,10 +11,11 @@ Current bridge scope:
   compact dependency-rooted composition entry.
 - Pass 111 predictive continuation cache: mechanically `NOT_APPLICABLE` only
   when no continuation contract markers are present. When a complete Pass 111
-  cache/lease/resource contract is present, reconstruct the inherited workload,
-  validate the cache and roots, replay the one-ninth tail through the original
-  production step function, and admit only from the existing resume receipt.
-  Partial, ambiguous, stale, or corrupted continuation context fails closed.
+  cache/lease/resource contract is present, lazily load the inherited Pass 111
+  runtime, reconstruct its workload, validate the cache and roots, replay the
+  one-ninth tail through the original production step function, and admit only
+  from the existing resume receipt. Partial, ambiguous, stale, or corrupted
+  continuation context fails closed.
 """
 
 from __future__ import annotations
@@ -26,13 +27,6 @@ from typing import Any, Dict, List, Mapping, Optional
 
 from hhs_runtime.hhs_cumulative_execution_authority_v1 import (
     build_authority_reachability,
-)
-from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
-    ContinuationError,
-    ContinuationLease,
-    Hash72ReceiptChainWorkload,
-    PredictiveContinuationEngine,
-    ResourceContract,
 )
 from hhs_runtime.hhs_semantic_composition_cache_v1 import (
     SemanticCompositionCache,
@@ -284,6 +278,23 @@ def observe_predictive_continuation_cache(
     if len(bundles) != 1:
         return _continuation_failure(
             "REJECT_PASS111_CONTINUATION_CONTRACT_BUNDLE_COUNT", applicability
+        )
+
+    # Pass 111 is intentionally imported only on its applicable path. Ordinary
+    # requests must not reactivate the historical Pass 074 workspace/FastAPI
+    # import chain merely to prove that continuation is not applicable.
+    try:
+        from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
+            ContinuationError,
+            ContinuationLease,
+            Hash72ReceiptChainWorkload,
+            PredictiveContinuationEngine,
+            ResourceContract,
+        )
+    except Exception as exc:
+        return _continuation_failure(
+            f"REJECT_PASS111_RUNTIME_IMPORT:{type(exc).__name__}",
+            applicability,
         )
 
     bundle = bundles[0]
