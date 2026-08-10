@@ -15,6 +15,7 @@ on:
       - "hhs_backend/api/**"
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
+      - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/pass205_state/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
@@ -37,6 +38,7 @@ on:
       - "hhs_backend/api/**"
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
+      - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/pass205_state/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
@@ -145,10 +147,13 @@ jobs:
       - name: Enforce Runtime OS public-root authority
         run: |
           set -euo pipefail
-          grep -F 'RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"' hhs_backend/runtime_os_projection.py
+          grep -F 'RUNTIME_OS_SOURCE_ROOT = ROOT_DIR / "hhs_gui"' hhs_backend/runtime_os_projection.py
+          grep -F 'os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT")' hhs_backend/runtime_os_projection.py
           grep -F 'DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"' hhs_backend/runtime_os_projection.py
           grep -F 'from hhs_backend.runtime_os_visual_server import app as authoritative_app' hhs_backend/production_visual_server.py
           grep -F 'hhs_backend.production_visual_server:app' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist' deployment/digitalocean/guarded_auto_update/build-runtime-os.sh
           grep -F 'hhs_backend.runtime_os_application_server:app' Procfile
           if grep -Fq 'from hhs_backend.visual_server import app as authoritative_app' hhs_backend/production_visual_server.py; then
             echo 'DigitalOcean production gateway still bypasses the Runtime OS projection' >&2
@@ -170,13 +175,14 @@ jobs:
           HHS_RUNTIME_STATUS_PROBE: "0"
         run: |
           timeout 180s python - <<'PY'
-          from hhs_backend.runtime_os_visual_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT, app
           from pathlib import Path
+          from hhs_backend.runtime_os_projection import API_FALLBACK_PATH
+          from hhs_backend.runtime_os_visual_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT, app
 
           assert RUNTIME_OS_ROOT == Path('hhs_gui/dist').resolve()
           routes = list(app.router.routes)
-          paths = {str(getattr(route, 'path', '')) for route in routes}
-          names = {str(getattr(route, 'name', '')) for route in routes}
+          paths = [str(getattr(route, 'path', '')) for route in routes]
+          names = [str(getattr(route, 'name', '')) for route in routes]
           required = {
               '/api/system/status',
               '/api/interface/status',
@@ -189,18 +195,23 @@ jobs:
               '/api/public/status',
               '/ws/runtime',
           }
-          missing = sorted(required - paths)
+          missing = sorted(required - set(paths))
           if missing:
               raise SystemExit(f'missing inherited production routes: {missing}')
           if PUBLIC_MOUNT_NAME not in names:
               raise SystemExit('Runtime OS public root mount missing')
           if 'hhs-visual-home' in names:
               raise SystemExit('legacy Harmonizer root still mounted')
-          root_index = next(i for i, route in enumerate(routes) if getattr(route, 'name', None) == PUBLIC_MOUNT_NAME)
+          root_index = names.index(PUBLIC_MOUNT_NAME)
           for path in required:
-              route_index = next(i for i, route in enumerate(routes) if str(getattr(route, 'path', '')) == path)
+              route_index = paths.index(path)
               if route_index >= root_index:
                   raise SystemExit(f'route shadowed by Runtime OS SPA mount: {path}')
+          if API_FALLBACK_PATH in paths:
+              interface_index = paths.index('/api/interface/status')
+              fallback_index = paths.index(API_FALLBACK_PATH)
+              if not interface_index < fallback_index < root_index:
+                  raise SystemExit('projection-owned API route/fallback/root ordering is invalid')
           PY
 
       - name: Run dependency-scoped production-root regressions
