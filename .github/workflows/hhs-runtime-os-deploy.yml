@@ -210,14 +210,7 @@ jobs:
               raise SystemExit(f'missing inherited production routes: {missing}')
           if PUBLIC_MOUNT_NAME not in names:
               raise SystemExit('Runtime OS public root mount missing')
-          legacy = sorted(name for name in names if name in LEGACY_PUBLIC_ROOT_NAMES and name != PUBLIC_MOUNT_NAME)
-          if legacy:
-              raise SystemExit(f'legacy/duplicate public roots still mounted: {legacy}')
-          root_authorities = [
-              name
-              for path, name in zip(paths, names)
-              if path == '/' and name in LEGACY_PUBLIC_ROOT_NAMES
-          ]
+          root_authorities = [name for name in names if name in LEGACY_PUBLIC_ROOT_NAMES]
           if root_authorities != [PUBLIC_MOUNT_NAME]:
               raise SystemExit(f'expected exactly one Runtime OS public-root authority, got {root_authorities}')
           root_index = names.index(PUBLIC_MOUNT_NAME)
