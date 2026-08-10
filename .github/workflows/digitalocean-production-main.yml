@@ -33,6 +33,7 @@ jobs:
           bash -n \
             deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
             deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
+            deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
           python3 - <<'PY'
@@ -109,12 +110,6 @@ jobs:
             * ) echo "unexpected origin: $remote" >&2; exit 12 ;;
           esac
 
-          if [[ -n "$(git status --porcelain --untracked-files=normal)" ]]; then
-            echo "live checkout is dirty; refusing to erase host-local work" >&2
-            git status --short >&2
-            exit 13
-          fi
-
           branch=$(git branch --show-current)
           [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 14; }
 
@@ -133,6 +128,20 @@ jobs:
           trap cleanup EXIT
 
           git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
+
+          # Host-local edits are evidence, not deployment authority. Preserve
+          # them in root-owned state before restoring tracked source to HEAD.
+          HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
+          HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime \
+          HHS_HOST_DRIFT_MODE=source \
+            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh" "$APP_ROOT"
+          git -C "$APP_ROOT" update-index -q --refresh || true
+          if ! git -C "$APP_ROOT" diff-index --quiet HEAD -- || ! git -C "$APP_ROOT" diff --cached --quiet; then
+            echo "tracked host drift remains after audited reconciliation" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 13
+          fi
+
           REPO_ROOT="$APP_ROOT" \
           SOURCE_ROOT="$bootstrap_root" \
           HHS_INSTALL_ENABLE_PROMOTION=1 \
@@ -178,8 +187,15 @@ jobs:
 
           deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
           [[ "$deployed_sha" == "$TARGET_SHA" ]]
+          [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
+            echo "production checkout is dirty after promotion" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 18
+          }
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current'
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
           curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
@@ -193,6 +209,12 @@ jobs:
           if payload.get('legacy_harmonizer_is_public_root') is not False:
               raise SystemExit(payload)
           PY
+
+          latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
+          if [[ -n "$latest_drift_manifest" ]]; then
+            printf 'HHS_DIGITALOCEAN_HOST_DRIFT_MANIFEST=%s\n' "$latest_drift_manifest"
+            sha256sum "$latest_drift_manifest"
+          fi
           printf 'HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED=%s\n' "$TARGET_SHA"
           REMOTE
 
