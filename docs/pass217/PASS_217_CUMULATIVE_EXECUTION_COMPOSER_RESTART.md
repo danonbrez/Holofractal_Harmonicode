@@ -7,11 +7,12 @@
 - Merge target: `main`
 - Base commit: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Base role: authoritative `main` at workstream start
-- Latest validated implementation head before this restart-record commit: `1ae47ba002cd6fc704013da4d65c9cd4d0fcfa30`
+- Latest validated implementation head before this restart-record commit: `5a088ec739b28c8778395f23a23f2773636673be`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
 - Checkpoint 1 validation run: `31354829734` — `SUCCESS`
 - Checkpoint 2 validation run: `31355052609` — dependency-scoped job `93353078780` — `SUCCESS`
 - Checkpoint 3 validation run: `31355330668` — dependency-scoped job `93353835996` — `SUCCESS`
+- Checkpoint 4 validation run: `31355776730` — dependency-scoped job `93355060485` — `SUCCESS`
 
 ## Problem being repaired
 
@@ -101,22 +102,47 @@ Validated behavior:
 - expanded composition metadata is not persisted;
 - exact-head dependency-scoped compile/tests pass at `1ae47ba002cd6fc704013da4d65c9cd4d0fcfa30`.
 
+## Checkpoint 4 — completed and validated
+
+Checkpoint 4 connects the first real inherited optimization stages into the mandatory composer instead of merely proving that their modules exist.
+
+Repository-visible commits:
+
+1. `5a163c21b178feaad20fa4bfab78b8cec2406b2a` — add `hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py`.
+2. `76169e1479cf4fa93f9810934cceaa1746bd5fb0` — add real-stage traversal and continuation-applicability tests.
+3. `1297af9ac6a79fefabed6b3ad1eedf2fc6c4ccb4` — require the real inherited authority slice on production service API routes.
+4. `044ea3d240133ddd82299b39538c7435e7cb839a` — require the same authority slice before direct lazy service-handler execution and ledger-bind its reachability root.
+5. `991ba4b809568066514e14ec6750bd00674a0c57` — add service-handler authority rejection/order/binding tests.
+6. `90bd06d5dd0f1ddb6bffd7fa66589c89af7c5e60` — extend route tests over real inherited optimization reachability.
+7. `5a088ec739b28c8778395f23a23f2773636673be` — extend the dependency-scoped workflow over the stage bridge and all updated production gates.
+
+Validated live authority slice:
+
+- `conformance_decision_cache` — `ACTIVE_IN_PATH` using the actual Pass 043 `get_or_build_decision` cache entry and its Hash72 cache-entry root;
+- `semantic_composition_cache` — `ACTIVE_IN_PATH` by actually traversing the inherited Pass 044 dependency-rooted semantic composition cache, validating hits, replacing stale entries, preserving the compact reconstruction recipe, and retaining `expanded_payload_persisted=false`;
+- `predictive_continuation_cache` — `NOT_APPLICABLE` only when the operation payload contains no exact Pass 111 continuation-contract marker.
+
+Continuation-bearing requests are deliberately fail-closed at this checkpoint. If any exact Pass 111 continuation marker is observed, `predictive_continuation_cache` is considered applicable but remains without a disposition, so the three-state gate rejects the route/service before execution. No synthetic `ACTIVE_IN_PATH` witness is fabricated.
+
+Checkpoint 4 dependency-scoped validation at exact head `5a088ec739b28c8778395f23a23f2773636673be` passed compilation and all four scoped test suites in workflow run `31355776730`, job `93355060485`.
+
 ## Validation note
 
-Inherited historical relay/base workflows also trigger on some branch pushes and may report immediate failure with no relevant jobs. They are not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow is the dependency-scoped authority and has passed all three validated checkpoint heads above.
+Inherited historical relay/base workflows also trigger on some branch pushes and may report immediate failure with no relevant jobs. They are not the validation authority for this workstream. The dedicated Pass 217 cumulative-composer workflow is the dependency-scoped authority and has passed all four validated checkpoint heads above.
 
 ## Deliberately not yet claimed
 
-Checkpoints 1–3 do **not** claim that all inherited optimization authorities are already traversed in every applicable production path. Specifically still pending:
+Checkpoints 1–4 do **not** claim that all inherited optimization authorities are already traversed in every applicable production path. Specifically still pending:
 
+- wire the real Pass 111 predictive-continuation resume/admission path so continuation-bearing requests can become `ACTIVE_IN_PATH` rather than intentionally blocked;
 - publish the new service route bindings into the global Pass 042 surface-map discovery set rather than only deriving them at the shared IO boundary;
-- populate live `ACTIVE_IN_PATH` witnesses from actual inherited cache/vector/continuation/delta/hydration/ROM/representation/recovery/native stages rather than synthetic test records;
-- mechanically derive `NOT_APPLICABLE` from operation facts at the canonical composer boundary;
+- continue populating live `ACTIVE_IN_PATH` witnesses from the remaining Pass 214/215 cache/vector/delta/hydration/ROM/representation/recovery/native stages;
+- mechanically derive `NOT_APPLICABLE` only from operation facts at the canonical composer boundary;
 - accept `EXPLICITLY_SUPERSEDED` only from repository-bound later-pass contracts;
-- production bypass-negative tests proving omission of an applicable inherited optimization authority blocks execution;
-- Pass 217 closure gating on cumulative utilization reachability;
+- add production bypass-negative tests proving omission of any applicable inherited optimization authority blocks execution;
+- gate Pass 217 closure on complete cumulative utilization reachability;
 - merge to `main`.
 
 ## Exact next action
 
-Checkpoint 4: connect the first real inherited optimization stages into the composer with observed traversal witnesses, beginning with Pass 44 semantic composition caching and Pass 111 predictive continuation caching. Preserve applicability boundaries: semantic composition is expected on derived composition planning; predictive continuation is active only when a predecessor/continuation state is mechanically present and otherwise must carry a mechanical `NOT_APPLICABLE` proof. Add these witnesses to the three-state authority record rather than declaring capabilities active merely because their modules exist.
+Checkpoint 5: attach the actual Pass 111 predictive continuation machinery when a continuation contract is present. Reuse the existing `PredictiveContinuationEngine`, `ContinuationLease`, cache validation, one-ninth-tail replay, and resume admission rather than creating a parallel continuation implementation. The composer must emit `ACTIVE_IN_PATH` only after a real Pass 111 cache/lease validation and replay/admission witness succeeds. Requests with no continuation context remain mechanically `NOT_APPLICABLE`; malformed/incomplete continuation context must fail closed. Validate, then update this restart record again before broadening to the remaining Pass 214/215 authorities.
