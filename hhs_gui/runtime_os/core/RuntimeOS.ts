@@ -6,7 +6,7 @@
  */
 
 import { RuntimeSocketManager, RuntimeSocketEvent } from "./RuntimeSocketManager"
-import { RuntimeStateStore } from "./RuntimeStateStore"
+import { RuntimeStateStore } from "../state/RuntimeStateStore"
 import { runtimeApplicationRegistry } from "./RuntimeApplicationRegistry"
 import { RuntimeWindowManager } from "./RuntimeWindowManager"
 import { RuntimeWorkspace } from "./RuntimeWorkspace"
@@ -185,7 +185,6 @@ export class RuntimeOS {
 
         this.socketManager.shutdown()
         this.session.terminate()
-        this.store.reset()
         this.windowManager.reset()
         this.destroyed = true
         console.log("[RuntimeOS] destroyed")
