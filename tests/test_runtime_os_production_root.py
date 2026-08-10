@@ -83,9 +83,11 @@ def test_digitalocean_service_uses_external_generated_asset_tree():
     ).read_text(encoding="utf-8")
 
     assert "Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist" in service
-    assert 'elif [[ "$(realpath -m "$ROOT")" == "/opt/hhs/app" ]]' in builder
+    assert 'LIVE_ROOT=$(realpath -m "$ROOT")' in builder
+    assert '[[ "$LIVE_ROOT" == "/opt/hhs/app" ]]' in builder
     assert "OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist" in builder
     assert 'npm run build -- --outDir "$OUTPUT_ROOT" --emptyOutDir' in builder
+    assert 'install -m 0644 "$CANONICAL_SERVICE" /etc/systemd/system/hhs.service' in builder
 
 
 def test_legacy_harmonizer_remains_inherited_source_not_public_authority():
