@@ -11,6 +11,7 @@ from hhs_runtime.hhs_pass217_runtime_route_composer_v1 import (
     build_bound_route_surface,
     compose_bound_route_ingress,
 )
+from hhs_runtime.hhs_semantic_composition_cache_v1 import SemanticCompositionCache
 
 
 def test_all_service_routes_are_kernel_derived() -> None:
@@ -26,15 +27,23 @@ def test_all_service_routes_are_kernel_derived() -> None:
         assert "HHS-I012" in surface["invariant_ids"]
         assert "HHS-I014" in surface["invariant_ids"]
         assert "kernel_runtime_autocomposer" in surface["guards"]
+        assert "cumulative_execution_authority_reachability" in surface["guards"]
 
 
-def test_route_composer_reuses_conformance_decision_but_still_traverses() -> None:
+def test_route_composer_reuses_inherited_cache_layers_but_still_traverses(tmp_path) -> None:
     cache = {}
+    semantic_cache = SemanticCompositionCache(tmp_path / "route-cache.json")
     first = compose_bound_route_ingress(
-        "api.runtime.services", {"method": "GET"}, cache=cache
+        "api.runtime.services",
+        {"method": "GET"},
+        cache=cache,
+        semantic_cache=semantic_cache,
     )
     second = compose_bound_route_ingress(
-        "api.runtime.services", {"method": "GET"}, cache=cache
+        "api.runtime.services",
+        {"method": "GET"},
+        cache=cache,
+        semantic_cache=semantic_cache,
     )
 
     assert first is not None and first["ok"] is True
@@ -45,6 +54,15 @@ def test_route_composer_reuses_conformance_decision_but_still_traverses() -> Non
     assert second["composition_root_hash72"]
     assert second["pipeline_root_hash72"]
     assert second["expanded_metadata_persisted"] is False
+    authorities = {
+        row["authority_id"]: row
+        for row in second["inherited_execution_authority_reachability"]["decisions"]
+    }
+    assert authorities["conformance_decision_cache"]["state"] == "ACTIVE_IN_PATH"
+    assert authorities["conformance_decision_cache"]["traversal_witness"]["cache_hit"] is True
+    assert authorities["semantic_composition_cache"]["state"] == "ACTIVE_IN_PATH"
+    assert authorities["semantic_composition_cache"]["traversal_witness"]["cache_hit"] is True
+    assert authorities["predictive_continuation_cache"]["state"] == "NOT_APPLICABLE"
     assert compose_bound_route_ingress("unbound.source", {}, cache=cache) is None
 
 
@@ -55,6 +73,27 @@ def test_dispatch_route_is_declared_as_controlled_mutation() -> None:
     assert surface["persistence_policy"] == "CANONICAL_MUTATION_RECEIPT"
     assert "HHS-I006" in surface["invariant_ids"]
     assert "HHS-I013" in surface["invariant_ids"]
+
+
+def test_continuation_bearing_route_fails_closed_until_pass111_is_wired(tmp_path) -> None:
+    decision = compose_bound_route_ingress(
+        "api.runtime.services.dispatch",
+        {
+            "service": "example",
+            "payload": {"continuation_cache_root_hash72": "root:continuation"},
+        },
+        cache={},
+        semantic_cache=SemanticCompositionCache(tmp_path / "route-cache.json"),
+    )
+
+    assert decision is not None
+    assert decision["ok"] is False
+    assert decision["propagation_allowed"] is False
+    assert decision["kernel_runtime_composition_admitted"] is True
+    assert decision["reason"] == "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY"
+    authority = decision["inherited_execution_authority_reachability"]
+    assert authority["admitted"] is False
+    assert authority["continuation_applicability_facts"]["continuation_context_present"] is True
 
 
 def test_io_gateway_rejects_bound_route_before_runtime_access(monkeypatch) -> None:
