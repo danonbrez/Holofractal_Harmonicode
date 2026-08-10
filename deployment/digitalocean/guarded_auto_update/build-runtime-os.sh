@@ -4,9 +4,10 @@ umask 027
 
 ROOT=${1:-$(pwd)}
 GUI_ROOT="$ROOT/hhs_gui"
+LIVE_ROOT=$(realpath -m "$ROOT")
 if [[ -n "${HHS_RUNTIME_OS_BUILD_ROOT:-}" ]]; then
   OUTPUT_ROOT=$HHS_RUNTIME_OS_BUILD_ROOT
-elif [[ "$(realpath -m "$ROOT")" == "/opt/hhs/app" ]]; then
+elif [[ "$LIVE_ROOT" == "/opt/hhs/app" ]]; then
   OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist
 else
   OUTPUT_ROOT="$GUI_ROOT/dist"
@@ -30,6 +31,19 @@ command -v npm >/dev/null || {
   echo "Runtime OS package-lock.json missing: $GUI_ROOT/package-lock.json" >&2
   exit 1
 }
+
+if [[ "$LIVE_ROOT" == "/opt/hhs/app" ]]; then
+  [[ $EUID -eq 0 ]] || {
+    echo "DigitalOcean production Runtime OS build must run as root" >&2
+    exit 1
+  }
+  CANONICAL_SERVICE="$ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+  [[ -f "$CANONICAL_SERVICE" ]] || {
+    echo "Canonical HHS service missing: $CANONICAL_SERVICE" >&2
+    exit 1
+  }
+  install -m 0644 "$CANONICAL_SERVICE" /etc/systemd/system/hhs.service
+fi
 
 if [[ "$OUTPUT_ROOT" != "$GUI_ROOT/dist" ]]; then
   install -d -m 0755 "$(dirname "$OUTPUT_ROOT")" "$OUTPUT_ROOT"
