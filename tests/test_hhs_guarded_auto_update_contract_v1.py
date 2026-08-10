@@ -251,7 +251,7 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         "ROLLBACK_HEALTH_FAILED",
         "Recovery mode refused because another listener already owns port 8080",
         "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
-        "HHS_PRODUCTION_SERVICE_DIAGNOSTICS",
+        "HHS PRODUCTION SERVICE DIAGNOSTICS",
         "HHS_POST_MERGE_COMMAND=$NATIVE_BUILD",
         "HHS_ROLLBACK_COMMAND=$NATIVE_BUILD",
         "HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT",
