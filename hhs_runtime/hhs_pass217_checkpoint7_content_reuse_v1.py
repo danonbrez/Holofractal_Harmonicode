@@ -22,7 +22,7 @@ from __future__ import annotations
 import base64
 import binascii
 from hashlib import sha256
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
+from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from hhs_runtime.hhs_cumulative_execution_authority_v1 import (
     ACTIVE_IN_PATH,
@@ -242,6 +242,11 @@ def observe_content_addressed_source_reuse(
         )
         if source.source_hash != expected_source_hash:
             raise ValueError("REJECT_PASS165_CONTENT_REUSE_SOURCE_HASH_MISMATCH")
+        if source.provenance != provenance or source.authorization_scope != authorization_scope:
+            raise ValueError("REJECT_PASS165_CONTENT_REUSE_SCOPE_OR_PROVENANCE_MISMATCH")
+        normalized_declared = declared_media_type.upper() if declared_media_type else None
+        if source.declared_media_type != normalized_declared:
+            raise ValueError("REJECT_PASS165_CONTENT_REUSE_DECLARED_MEDIA_MISMATCH")
 
         try:
             prior_receipt = service.get_ingestion_receipt(source.source_hash)
