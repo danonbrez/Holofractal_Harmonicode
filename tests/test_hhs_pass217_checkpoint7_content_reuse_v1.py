@@ -180,6 +180,31 @@ def test_partial_content_reuse_context_is_applicable_and_fails_closed(tmp_path) 
     ]["reason"]
 
 
+def test_content_reuse_rejects_cross_authorization_scope(tmp_path) -> None:
+    service = MultimodalLearningService()
+    source_text = "scope-bound repeated source"
+    _seed(service, source_text)
+    request = _request(source_text, authorization_scope="DIFFERENT_SCOPE")
+    decision = compose_bound_route_ingress(
+        "api.runtime.services.dispatch",
+        {
+            "service": "example",
+            "content_addressed_source_reuse": request,
+        },
+        cache={},
+        semantic_cache=SemanticCompositionCache(tmp_path / "semantic.json"),
+        source_reuse_service=service,
+    )
+
+    assert decision is not None and decision["ok"] is False
+    content = _decisions(decision)["content_addressed_source_reuse"]
+    assert content["state"] is None
+    assert "REJECT_ACTIVE_AUTHORITY_NOT_OBSERVED" in content["reasons"]
+    assert "REJECT_PASS165_CONTENT_REUSE_SCOPE_OR_PROVENANCE_MISMATCH" in content[
+        "traversal_witness"
+    ]["reason"]
+
+
 def test_incremental_tokenization_marker_fails_closed_without_proven_callable(tmp_path) -> None:
     service = MultimodalLearningService()
     source_text = "alpha alpha beta beta"
