@@ -3,24 +3,24 @@
 ## Restart identity
 
 - Workstream: Pass 217 prerequisite — mandatory inherited execution composition and utilization reachability
-- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 6
+- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 7
 - Branch: `agent/pass217-cumulative-execution-composer`
 - Merge target: `main`
 - Workstream base / merge base: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Current live `main` observed before this restart update: `bbe3cec241af3d7d6fb26f8f4c6b134f6a4ea486`
-- Latest validated implementation head before this restart-record update: `bea55a0a481aaee56e7253f656cb26faceddc8b0`
+- Latest validated implementation head before this restart-record update: `71a827d55da4774031ec493a93d97ba5e051790e`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Checkpoint 6 validation run: `31486763564` — job `93763831800` — `SUCCESS`
+- Checkpoint 7 validation run: `31493307824` — job `93784769816` — `SUCCESS`
 
-At validated implementation head `bea55a0a...`, comparison against current `main @ bbe3ce...` is intentionally `diverged`: 34 workstream commits ahead, 107 current-main commits behind, with merge base still `07e514ac...`. No rebase/merge was attempted in Checkpoint 6 because final integration is a later bounded action after cumulative closure work.
+The restart-record commit itself is documentation-only. The exact implementation authority remains the validated head above.
 
 ## Binding execution rule
 
 Inherited capabilities are not considered utilized merely because their modules are present or importable. Every required inherited execution capability must resolve mechanically for the current operation to exactly one of:
 
 - `ACTIVE_IN_PATH` — the inherited callable actually traversed and emitted a concrete witness/root;
-- `NOT_APPLICABLE` — operation facts mechanically prove the capability has no candidate domain;
-- `EXPLICITLY_SUPERSEDED` — a repository-bound later-pass contract explicitly replaces the authority.
+- `NOT_APPLICABLE` — operation facts mechanically prove the capability has no applicable execution domain;
+- `EXPLICITLY_SUPERSEDED` — a repository-bound later-pass contract explicitly replaces the authority and proves the replacement.
 
 `OPTIONAL_AVAILABLE` is forbidden for inherited core execution capabilities. Partial or malformed applicability context fails closed; it is not downgraded to `NOT_APPLICABLE`.
 
@@ -46,13 +46,13 @@ Checkpoint 4 connected the first real inherited execution stages:
 
 Validation run `31355776730`, job `93355060485`, succeeded.
 
-Checkpoint 5 activated the actual Pass 111 predictive-continuation machinery for complete continuation contracts, including resource/lease validation and one-ninth-tail replay through `Hash72ReceiptChainWorkload.execute_step`. The first attempt (`31355952315` / `93355556434`) exposed an eager FastAPI dependency inversion. Commits `cd805d7570eddf5838dfb1fe9d70346d40e69fea` and `f11fdfa76dcfbec28f721e749ab374d685d598c9` repaired that boundary instead of adding an unrelated dependency. The repaired exact implementation head `d2004ebcf54ad20736d7d1a3fea05af55c8a634c` validated successfully in run `31356115574`, job `93356017137`.
+Checkpoint 5 activated the actual Pass 111 predictive-continuation machinery for complete continuation contracts, including resource/lease validation and one-ninth-tail replay through `Hash72ReceiptChainWorkload.execute_step`. The repaired exact implementation head `d2004ebcf54ad20736d7d1a3fea05af55c8a634c` validated successfully in run `31356115574`, job `93356017137`.
 
-The explicit stop/restart checkpoint after Checkpoint 5 is commit `f4117f23bdb13e32539802323076ec9e85bf09e9`. It correctly recorded Checkpoint 6 as unstarted at that time.
+The explicit stop/restart checkpoint after Checkpoint 5 is commit `f4117f23bdb13e32539802323076ec9e85bf09e9`.
 
 ## Checkpoint 6 — completed and validated
 
-Checkpoint 6 maps the requested inherited retrieval/reuse group into repository-native callable authority and connects one real production-route traversal slice:
+Checkpoint 6 mapped and traversed the inherited retrieval/reuse chain:
 
 ```text
 reusable_pattern_cache
@@ -61,145 +61,153 @@ reusable_pattern_cache
     → exact_delta_cost_reranking
 ```
 
-### Repository-native callable mapping
+Repository-native mapping:
 
-1. `reusable_pattern_cache`
-   - Origin: Pass 086.
-   - Callable: `native_projects.hhs_bifurcation_calibration.hhs_pass086_deterministic_multimodal_pattern_admission_v1.run`.
-   - Active proof requires execution of the existing deterministic pattern-admission path, nonempty `semantic_cache_entries`, `cache_authority == false`, replay verification, and a concrete pattern-admission/result root.
+- `reusable_pattern_cache` → Pass 086 `hhs_pass086_deterministic_multimodal_pattern_admission_v1.run`;
+- `vector_shortlist` → Pass 205 `Pass205ContinuationRuntime.retrieve`;
+- `exact_compatibility_filtering` → the same Pass 205 `retrieve` call;
+- `exact_delta_cost_reranking` → the same Pass 205 `retrieve` call.
 
-2. `vector_shortlist`
-   - Origin: Pass 205.
-   - Callable: `hhs_backend.runtime.hhs_pass205_continuation_runtime_v1.Pass205ContinuationRuntime.retrieve`.
-   - The existing production retrieval computes vector-distance shortlist candidates. Approximate similarity remains observational and cannot become authority.
+The Pass 205 stages are separate authority witnesses emitted from one real inherited retrieval traversal, not reimplementations. A dedicated real traversal created native continuation snapshots, rejected a deliberately incompatible schema candidate, and selected the exact target at delta cost zero. No candidate domain receives mechanical `NOT_APPLICABLE`; partial/malformed candidate context fails closed.
 
-3. `exact_compatibility_filtering`
-   - Origin: Pass 205.
-   - Same production `retrieve` call.
-   - The inherited runtime rejects incompatible candidate snapshots against exact schema and constraint roots before shortlist admission and reports rejected candidates.
+Checkpoint 6 exact implementation head: `bea55a0a481aaee56e7253f656cb26faceddc8b0`; workflow run `31486763564`, job `93763831800`, `SUCCESS`.
 
-4. `exact_delta_cost_reranking`
-   - Origin: Pass 205.
-   - Same production `retrieve` call.
-   - The inherited runtime reranks the compatible shortlist by exact state delta cost and persists/returns the selected-parent retrieval root.
+Checkpoint 6 restart-record commit: `edb976b06072bef1fd12c827a01d42034402cd61`.
 
-The three Pass 205 stages are exposed as distinct authority witnesses from one real inherited `retrieve()` invocation; they are not three reimplementations of the retrieval algorithm.
+## Checkpoint 7 — completed and validated
 
-### Mechanical applicability
+Checkpoint 7 continues the frozen Pass 214/215 authority order with:
 
-Checkpoint 6 adds exact payload facts rather than keyword heuristics:
+```text
+content_addressed_source_reuse
+    → incremental_tokenization applicability boundary
+```
 
-- no Pass 086 pattern-admission workload candidate domain → `reusable_pattern_cache = NOT_APPLICABLE`;
-- no Pass 205 target-state retrieval candidate domain → `vector_shortlist`, `exact_compatibility_filtering`, and `exact_delta_cost_reranking = NOT_APPLICABLE`;
-- a present but partial/malformed pattern or retrieval marker is applicable context and fails closed instead of receiving `NOT_APPLICABLE`.
+### `content_addressed_source_reuse`
 
-### Real traversal slice
+Repository-native authority:
 
-The dedicated test constructs repository-native state rather than mocking the optimization chain:
+- origin: Pass 165;
+- module: `hhs_runtime.pass165.ingestion`;
+- callable: `MultimodalLearningService.ingest_source`;
+- active path: the already-committed-source branch that returns `P165_CONTENT_ADDRESSED_SOURCE_REUSED` and `reused == true`.
 
-- creates a real Pass 205 continuation runtime in temporary SQLite state;
-- advances real continuation snapshots through the native Pass 205 ABI;
-- creates one deliberately schema-incompatible vector candidate;
-- builds a real Pass 086 reusable-pattern workload;
-- submits both domains through `POST /api/runtime/services/dispatch` and the canonical Pass 217 route composer;
-- observes all four Checkpoint 6 authorities as `ACTIVE_IN_PATH` with concrete roots;
-- verifies the incompatible candidate is rejected with `SCHEMA_ROOT_MISMATCH`;
-- verifies the exact reranker selects the exact target snapshot with delta cost `0`;
-- verifies the Pass 086 cache remains non-authoritative and replay-verified.
+The Pass 217 bridge does not create a new ingestion/learning epoch merely to prove reuse. It first derives the exact source SHA-256 and checks the existing Pass 165 receipt. If no committed receipt exists, content-addressed reuse is mechanically `NOT_APPLICABLE` for that operation and actual ingestion remains the handler's responsibility.
 
-### Checkpoint 6 repository-visible commits
+When a committed source exists, the bridge calls the inherited Pass 165 `ingest_source` surface and admits `ACTIVE_IN_PATH` only when all of the following hold:
 
-1. `9739fc2da9f5c41c2c1b1be4cca5694cb5c1b50c` — add `hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py`.
-2. `f7e1c2129ba02c5d25bdc217ac1d51bca9a5f3de` — add dedicated Checkpoint 6 traversal, `NOT_APPLICABLE`, and fail-closed tests.
-3. `3e372e40b896b7e0622176aded2d57ad901bb27c` — wire Checkpoint 6 into the production route composer while preserving the validated Pass 043/044/111 bridge.
-4. `bea55a0a481aaee56e7253f656cb26faceddc8b0` — extend the dependency-scoped workflow over Checkpoint 6 plus the inherited Pass 086/205 callable surfaces.
+- the inherited reuse branch is actually taken;
+- the existing receipt Hash72 is preserved;
+- source SHA-256 identity is preserved;
+- provenance, authorization scope, and declared media identity match the committed source;
+- ingestion epoch does not advance;
+- VM81 state Hash72 does not change;
+- source count does not change;
+- weight count does not change.
 
-### Checkpoint 6 validation
+This makes reuse observable without promoting a preflight cache hit into mutation authority.
 
-Exact implementation head: `bea55a0a481aaee56e7253f656cb26faceddc8b0`.
+### `incremental_tokenization`
+
+The repository scan found a proven deterministic full-source tokenizer in Pass 165, `MultimodalTokenizer.tokenize`, but did not establish a repository-native incremental changed-region tokenizer callable.
+
+Checkpoint 7 therefore preserves the authority boundary instead of relabeling full tokenization:
+
+- no predecessor source/token-stream or changed-region tokenization contract → mechanical `NOT_APPLICABLE`;
+- any explicit incremental-tokenization marker (`parent_source_hash`, `parent_token_stream_root`, changed-region/source-span data, token delta, or equivalent declared marker) makes the capability applicable;
+- applicable incremental context currently fails closed with `REJECT_INCREMENTAL_TOKENIZATION_INHERITED_CALLABLE_UNPROVEN` until an inherited incremental callable is proven and connected.
+
+This is deliberately not an `ACTIVE_IN_PATH` claim for incremental tokenization.
+
+### Checkpoint 7 repository-visible commits
+
+1. `8a634b6bdb0fb5e9099442b532d1436a9b6522da` — add `hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py`.
+2. `c01a022ac86dc17e8fed7de2edbd1592465f3415` — add dedicated Checkpoint 7 tests.
+3. `5075011739832cfadbbdc32d9e7e3b311da580c9` — wire Checkpoint 7 into the production route composer.
+4. `eb60c65d179af8a27025056ad6eba459d9bd8fe2` — extend dependency-scoped validation over Checkpoint 7 and Pass 165.
+5. `509c097289ebf6af8091092a6b23cec43b6a171a` — preserve Checkpoint 6 assertions under the larger cumulative authority scope.
+6. `8024425efd57ae55467933f6fc0b40e86019beb2` — harden source reuse against provenance/authorization/media identity substitution.
+7. `71a827d55da4774031ec493a93d97ba5e051790e` — add the cross-authorization negative case; exact validated implementation head.
+
+### Checkpoint 7 validation
 
 Hosted validation authority:
 
-- workflow run: `31486763564`;
-- job: `93763831800` (`dependency-scoped-validation`);
+- workflow: `Pass 217 Cumulative Execution Composer`;
+- run: `31493307824`;
+- job: `93784769816` (`dependency-scoped-validation`);
+- exact head: `71a827d55da4774031ec493a93d97ba5e051790e`;
 - conclusion: `SUCCESS`;
 - checkout: success;
 - Python setup and targeted pytest dependency: success;
-- compile of the cumulative-composer surfaces, new Checkpoint 6 bridge/test, Pass 086 callable, Pass 205 runtime, and Pass 205 native bridge: success;
-- cumulative-composer dependency-scoped pytest set including Checkpoint 6: success.
+- compile of cumulative-composer, Checkpoint 6/7, Pass 165, Pass 086, Pass 205, and route surfaces: success;
+- cumulative dependency-scoped pytest set: success.
 
-The real traversal test uses the existing Pass 205 native bridge; the bridge builds/loads its native C library under the hosted Ubuntu runner as required. No float authority or alternate Python retrieval implementation was introduced.
+Validated Checkpoint 7 behavior includes:
 
-## Files added or modified by Checkpoint 6
+- ordinary operations mechanically dispose both new classes as `NOT_APPLICABLE` when neither domain exists;
+- a real already-committed Pass 165 source traverses `content_addressed_source_reuse` as `ACTIVE_IN_PATH` with the existing receipt root;
+- the reuse preflight cannot mutate ingestion epoch or VM81 state;
+- an uncommitted source is mechanically outside the reuse domain and is not ingested by preflight;
+- malformed source-reuse context fails closed;
+- same-content cross-authorization reuse fails closed;
+- incremental-tokenization context fails closed rather than being falsely satisfied by full-source tokenization.
+
+## Files added or modified by Checkpoint 7
 
 Added:
 
-- `hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py`
-- `tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py`
+- `hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py`
+- `tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py`
 
 Modified:
 
 - `hhs_runtime/hhs_pass217_runtime_route_composer_v1.py`
+- `tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py`
 - `.github/workflows/pass217-cumulative-execution-composer.yml`
 - this restart record
 
-The prior validated execution-stage bridge was deliberately not rewritten:
+Inherited Pass 165 source was exercised as-is and was not modified.
 
-- `hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py` remains the preserved Pass 043/044/111 slice.
+## Current cumulative connected authority scope
 
-## Commands executed by the Checkpoint 6 validation authority
+The production route composer now mechanically disposes these nine required inherited classes on every bound service-route operation:
 
 ```text
-python -m pip install --disable-pip-version-check pytest
-
-python -m py_compile \
-  hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
-  hhs_runtime/hhs_lazy_service_registry_v1.py \
-  hhs_runtime/hhs_cumulative_execution_authority_v1.py \
-  hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py \
-  hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py \
-  hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
-  hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
-  hhs_runtime/hhs_io_gateway_v1.py \
-  hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py \
-  hhs_python/runtime/hhs_pass205_continuation_bridge.py \
-  native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py \
-  native_projects/hhs_ide_workspace/__init__.py \
-  tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
-  tests/test_hhs_cumulative_execution_authority_v1.py \
-  tests/test_hhs_inherited_execution_stage_bridge_v1.py \
-  tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
-  tests/test_hhs_pass217_runtime_route_composer_v1.py
-
-python -m pytest -q \
-  tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
-  tests/test_hhs_cumulative_execution_authority_v1.py \
-  tests/test_hhs_inherited_execution_stage_bridge_v1.py \
-  tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
-  tests/test_hhs_pass217_runtime_route_composer_v1.py
+conformance_decision_cache
+semantic_composition_cache
+predictive_continuation_cache
+reusable_pattern_cache
+vector_shortlist
+exact_compatibility_filtering
+exact_delta_cost_reranking
+content_addressed_source_reuse
+incremental_tokenization
 ```
 
-Repository writes were performed through the connected GitHub API. The local/container environment still cannot resolve `github.com`, and `gh` is not installed, so no uncommitted local repository state is authoritative.
+An accepted operation has no `OPTIONAL_AVAILABLE` state in this scope.
 
 ## Deliberately not yet claimed
 
-Checkpoint 6 completes only the requested bounded retrieval/reuse group. It does **not** claim full Pass 217 cumulative closure. Still pending:
+Checkpoint 7 does **not** claim full Pass 217 cumulative closure. Still pending:
 
-- continue the remaining Pass 214/215 authority traversal beyond the four Checkpoint 6 classes, beginning with the next content-addressed/incremental reuse and then delta/hydration/ROM/representation/recovery/native-dispatch layers as applicable;
+- continue the remaining Pass 214/215 authority traversal beginning with `sparse_5184_projection`, then dependency/delta/residual/hydration/ROM/representation/recovery/index/storage/learning/routing/native-dispatch authorities as applicable;
+- locate and connect a repository-native incremental-tokenization callable if one is proven in the inherited system, or retain fail-closed applicable handling until explicit supersession/implementation resolves it;
 - publish the production service route bindings into global Pass 042 surface-map discovery rather than deriving them only at the shared IO boundary;
-- add bypass-negative tests proving omission of every applicable inherited authority blocks execution;
-- preserve mechanical `NOT_APPLICABLE` and repository-bound `EXPLICITLY_SUPERSEDED` semantics for the remaining authorities;
+- add systematic bypass-negative tests proving omission of every applicable inherited authority blocks execution;
 - gate Pass 217 closure on complete cumulative utilization reachability;
-- perform final integration against the then-current `main`, resolve the known branch divergence without discarding either lineage, merge, and verify `main`.
+- perform final integration against the then-current `main`, resolve branch divergence without discarding either lineage, merge, and verify `main`.
 
 ## Exact next bounded action
 
-Proceed with the remaining Pass 217 closure sequence, not another Checkpoint 6 rewrite:
+Continue Pass 217 Iteration 5 with the next frozen authority slice after `incremental_tokenization`:
 
-1. continue Pass 214/215 authority traversal from the next unconnected inherited optimization class after `exact_delta_cost_reranking`;
-2. publish/validate the service routes through global Pass 042 discovery;
-3. add systematic applicable-authority bypass-negative tests;
-4. implement the Pass 217 cumulative-utilization closure gate;
-5. only then perform final current-`main` integration/merge and verify the merged state.
+```text
+sparse_5184_projection
+    → dependency_complete_frontier
+    → residual_only_processing
+```
 
-Do not rerun unchanged historical proof suites merely because `main` has advanced. Validate only impacted dependencies until final integration requires the single bounded merge/replay gate.
+Map those classes to their exact repository-native callables first. Implement one real traversal through the canonical composer, emit mechanical `NOT_APPLICABLE` only from operation facts, fail closed on partial applicable context, run only dependency-scoped validation, commit the bounded slice, and update this restart record before proceeding to later hydration/ROM/recovery authorities.
+
+Do not rerun unchanged historical proof suites merely because `main` has advanced. Final current-main integration remains a later bounded stage after cumulative closure prerequisites are complete.
