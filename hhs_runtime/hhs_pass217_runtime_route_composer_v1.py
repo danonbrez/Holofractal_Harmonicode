@@ -15,11 +15,11 @@ from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional
 
-from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
-    build_initial_inherited_authority_reachability,
-)
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
+from hhs_runtime.hhs_pass217_checkpoint6_retrieval_reuse_v1 import (
+    build_checkpoint6_inherited_authority_reachability,
+)
 
 
 VERSION = "PASS_217_RUNTIME_ROUTE_COMPOSITION_BINDING_V1"
@@ -126,6 +126,18 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "continuation_applicability_facts": dict(
             record.get("continuation_applicability_facts") or {}
         ),
+        "pattern_cache_applicability_facts": dict(
+            record.get("pattern_cache_applicability_facts") or {}
+        ),
+        "retrieval_reuse_applicability_facts": dict(
+            record.get("retrieval_reuse_applicability_facts") or {}
+        ),
+        "checkpoint6_native_callable_map": {
+            str(key): dict(value)
+            for key, value in dict(
+                record.get("checkpoint6_native_callable_map") or {}
+            ).items()
+        },
         "decisions": [
             {
                 "authority_id": row.get("authority_id"),
@@ -138,6 +150,10 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
                 ),
                 "mechanically_proven": (row.get("proof") or {}).get(
                     "mechanically_proven"
+                ),
+                "predicate": (row.get("proof") or {}).get("predicate"),
+                "observed_facts": dict(
+                    (row.get("proof") or {}).get("observed_facts") or {}
                 ),
             }
             for row in record.get("decisions", []) or []
@@ -153,6 +169,8 @@ def compose_bound_route_ingress(
     *,
     cache: Optional[Dict[str, Dict[str, Any]]] = None,
     semantic_cache: Any = None,
+    retrieval_runtime: Any = None,
+    pattern_repo_root: Any = None,
 ) -> Optional[Dict[str, Any]]:
     """Return None for unbound sources; fail closed for bound route preflight."""
 
@@ -170,11 +188,13 @@ def compose_bound_route_ingress(
     )
     authority_record = None
     if preflight.get("ok"):
-        authority_record = build_initial_inherited_authority_reachability(
+        authority_record = build_checkpoint6_inherited_authority_reachability(
             preflight,
             surface,
             payload_dict,
             semantic_cache=semantic_cache,
+            retrieval_runtime=retrieval_runtime,
+            pattern_repo_root=pattern_repo_root,
         )
     authority_summary = (
         _compact_authority_reachability(authority_record)
