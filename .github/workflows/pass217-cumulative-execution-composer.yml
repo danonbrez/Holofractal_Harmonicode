@@ -18,6 +18,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
+      - 'hhs_runtime/pass145/__init__.py'
       - 'hhs_runtime/pass145/canonical.py'
       - 'hhs_runtime/pass145/database.py'
       - 'hhs_runtime/pass165/ingestion.py'
@@ -55,6 +56,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
+      - 'hhs_runtime/pass145/__init__.py'
       - 'hhs_runtime/pass145/canonical.py'
       - 'hhs_runtime/pass145/database.py'
       - 'hhs_runtime/pass165/ingestion.py'
@@ -111,6 +113,7 @@ jobs:
             hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
+            hhs_runtime/pass145/__init__.py \
             hhs_runtime/pass145/canonical.py \
             hhs_runtime/pass145/database.py \
             hhs_runtime/pass165/ingestion.py \
