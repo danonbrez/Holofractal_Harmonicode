@@ -1,0 +1,89 @@
+name: Pass 218 219 R03 R04 VM81 Bridge
+
+on:
+  push:
+    branches:
+      - agent/pass218-219-r03-r04-vm81-bridge
+    paths:
+      - 'hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py'
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py'
+      - 'HHS_PASS_218_APPEND_ONLY_CAUSAL_ATTRIBUTION_COUNTEREXAMPLE_MEMORY_AMENDMENT_2_3_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_VM81_ETHICAL_ADMISSION_BRIDGE_AMENDMENT_1_5_0.md'
+      - 'docs/pass219/PASS_218_219_R03_R04_VM81_BRIDGE_RESTART.md'
+      - '.github/workflows/pass218-219-r03-r04-vm81-bridge.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py'
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py'
+      - 'HHS_PASS_218_APPEND_ONLY_CAUSAL_ATTRIBUTION_COUNTEREXAMPLE_MEMORY_AMENDMENT_2_3_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_VM81_ETHICAL_ADMISSION_BRIDGE_AMENDMENT_1_5_0.md'
+      - 'docs/pass219/PASS_218_219_R03_R04_VM81_BRIDGE_RESTART.md'
+      - '.github/workflows/pass218-219-r03-r04-vm81-bridge.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify immutable integration base
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor b0656a92ab29507f81eae760e070f74e49db83f4 HEAD
+          echo "PASS217_218_219_INTEGRATION_BASE_ANCESTOR=1"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test requirements
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+
+      - name: Compile new Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py \
+            hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py \
+            tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
+
+      - name: Assert no floating-point literals in new authority-adjacent Python
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = [
+              Path("hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py"),
+              Path("hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py"),
+          ]
+          for path in paths:
+              tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+              floats = [
+                  node.value for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f"{path}: float literals present: {floats}"
+          print("NO_FLOAT_LITERAL_AUTHORITY_PATH=1")
+          PY
+
+      - name: Run inherited and refined narrative gates
+        run: |
+          python -m pytest -q \
+            hhs_runtime/test_narrative_alignment_reasoning_engine_v1.py \
+            tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
+
+      - name: Re-run inherited native Pass 219 membrane
+        run: make -C native_projects/hhs_pass219_ethical_scope_membrane clean test
