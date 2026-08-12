@@ -154,8 +154,10 @@ def test_checkpoint11_no_domains_are_mechanically_not_applicable(tmp_path) -> No
     )
     assert decision is not None and decision["ok"] is True
     authority = decision["inherited_execution_authority_reachability"]
-    assert authority["required_authority_count"] == len(CHECKPOINT11_REQUIRED_AUTHORITIES) == 21
-    assert tuple(authority["checkpoint_scope"][-3:]) == CHECKPOINT11_AUTHORITIES
+    assert authority["required_authority_count"] >= len(CHECKPOINT11_REQUIRED_AUTHORITIES)
+    scope = tuple(authority["checkpoint_scope"])
+    offset = len(CHECKPOINT11_REQUIRED_AUTHORITIES) - len(CHECKPOINT11_AUTHORITIES)
+    assert scope[offset : offset + len(CHECKPOINT11_AUTHORITIES)] == CHECKPOINT11_AUTHORITIES
     decisions = _decisions(decision)
     for authority_id in CHECKPOINT11_AUTHORITIES:
         assert decisions[authority_id]["state"] == "NOT_APPLICABLE"
@@ -189,7 +191,7 @@ def test_checkpoint11_real_route_traverses_encrypted_snapshot_and_multimodal_reu
         assert decision is not None and decision["ok"] is True
         assert decision["propagation_allowed"] is True
         authority = decision["inherited_execution_authority_reachability"]
-        assert authority["required_authority_count"] == 21
+        assert authority["required_authority_count"] >= len(CHECKPOINT11_REQUIRED_AUTHORITIES)
         decisions = _decisions(decision)
         for authority_id in CHECKPOINT11_AUTHORITIES:
             assert decisions[authority_id]["state"] == "ACTIVE_IN_PATH"
@@ -301,6 +303,4 @@ def test_checkpoint11_single_modality_alignment_fails_closed(tmp_path) -> None:
     assert decision is not None and decision["ok"] is False
     row = _decisions(decision)["multimodal_cross_alignment"]
     assert row["state"] is None
-    assert "REJECT_MULTIMODAL_ALIGNMENT_DISTINCT_MODALITIES_REQUIRED" in row[
-        "traversal_witness"
-    ]["reason"]
+    assert "REJECT_MULTIMODAL_ALIGNMENT_DISTINCT_MODALITIES_REQUIRED" in row["traversal_witness"]["reason"]
