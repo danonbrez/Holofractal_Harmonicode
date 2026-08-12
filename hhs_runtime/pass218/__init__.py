@@ -16,6 +16,18 @@ from .genesis import (
     RelationStatus,
     repository_asset_manifest,
 )
+from .grammar import (
+    GrammarRule,
+    GrammarRuleSet,
+    PASS218_GRAMMAR_COMPILER_VERSION,
+    compile_grammar_rules,
+)
+from .hydration import (
+    NarrativeBeat,
+    NarrativeBeatHydrator,
+    NarrativeHydrationCandidate,
+    PASS218_NARRATIVE_HYDRATOR_VERSION,
+)
 
 __all__ = [
     "CurriculumCursor",
@@ -30,4 +42,12 @@ __all__ = [
     "Pass166Word2VecAdapter",
     "RelationStatus",
     "repository_asset_manifest",
+    "GrammarRule",
+    "GrammarRuleSet",
+    "PASS218_GRAMMAR_COMPILER_VERSION",
+    "compile_grammar_rules",
+    "NarrativeBeat",
+    "NarrativeBeatHydrator",
+    "NarrativeHydrationCandidate",
+    "PASS218_NARRATIVE_HYDRATOR_VERSION",
 ]
