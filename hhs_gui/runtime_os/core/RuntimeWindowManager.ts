@@ -20,6 +20,16 @@ export interface RuntimeWindow {
     created_at_ns?: number
 }
 
+export interface RuntimeWindowCreateRequest {
+    id?: string
+    title: string
+    applicationId: string
+    width?: number
+    height?: number
+    x?: number
+    y?: number
+}
+
 export interface RuntimeWindowManagerMetrics {
     windows: number
     focusedWindow?: string
@@ -49,6 +59,22 @@ export class RuntimeWindowManager {
         this.windows.set(normalized.id, normalized)
         this.focusWindow(normalized.id)
         console.log("[RuntimeWindowManager] open", normalized.id)
+    }
+
+    public createWindow(request: RuntimeWindowCreateRequest): RuntimeWindow {
+        const definition = runtimeApplicationRegistry.get(request.applicationId)
+        const preset = definition?.windowPreset
+        const runtimeWindow: RuntimeWindow = {
+            id: request.id ?? `${request.applicationId}_${Date.now()}_${this.windows.size}`,
+            title: request.title,
+            applicationId: request.applicationId,
+            width: request.width ?? preset?.width ?? 720,
+            height: request.height ?? preset?.height ?? 520,
+            x: request.x ?? 96 + (this.windows.size % 8) * 28,
+            y: request.y ?? 72 + (this.windows.size % 8) * 28,
+        }
+        this.openWindow(runtimeWindow)
+        return this.getWindow(runtimeWindow.id) ?? runtimeWindow
     }
 
     public closeWindow(id: string): void {
@@ -94,6 +120,41 @@ export class RuntimeWindowManager {
     public maximizeWindow(id: string): void {
         const window = this.windows.get(id)
         if (window) window.maximized = true
+    }
+
+    public tileWindows(
+        viewportWidth = typeof globalThis !== "undefined" ? globalThis.innerWidth : 1280,
+        viewportHeight = typeof globalThis !== "undefined" ? globalThis.innerHeight : 800,
+    ): void {
+        const visible = [...this.windows.values()].filter(window => !window.minimized)
+        if (visible.length === 0) return
+
+        const columns = Math.max(1, Math.ceil(Math.sqrt(visible.length)))
+        const rows = Math.max(1, Math.ceil(visible.length / columns))
+        const usableWidth = Math.max(640, viewportWidth)
+        const usableHeight = Math.max(420, viewportHeight - 48)
+        const tileWidth = Math.max(320, Math.floor(usableWidth / columns))
+        const tileHeight = Math.max(220, Math.floor(usableHeight / rows))
+
+        visible.forEach((window, index) => {
+            const column = index % columns
+            const row = Math.floor(index / columns)
+            window.x = column * tileWidth
+            window.y = 48 + row * tileHeight
+            window.width = tileWidth
+            window.height = tileHeight
+            window.maximized = false
+        })
+    }
+
+    public cascadeWindows(originX = 72, originY = 64, offset = 32): void {
+        const visible = [...this.windows.values()].filter(window => !window.minimized)
+        visible.forEach((window, index) => {
+            window.x = originX + index * offset
+            window.y = originY + index * offset
+            window.maximized = false
+        })
+        if (visible.length > 0) this.focusWindow(visible[visible.length - 1].id)
     }
 
     private normalizeWindow(runtimeWindow: RuntimeWindow): RuntimeWindow {

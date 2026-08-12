@@ -7,8 +7,15 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/digitalocean-production-main.yml"
+      - "hhs_gui/**"
+      - "hhs_backend/runtime_os_projection.py"
+      - "hhs_backend/runtime_os_visual_server.py"
+      - "hhs_backend/runtime_os_application_server.py"
+      - "hhs_backend/production_visual_server.py"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "tests/test_runtime_os_production_root.py"
       - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
   workflow_dispatch:
 
@@ -22,7 +29,7 @@ concurrency:
 jobs:
   validate-deployment-contract:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out deployment candidate
         uses: actions/checkout@v4
@@ -32,8 +39,11 @@ jobs:
           set -euo pipefail
           bash -n \
             deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
+            deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
+            deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
+          python3 -m py_compile deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py
           python3 - <<'PY'
           import runpy
           namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")
@@ -59,6 +69,17 @@ jobs:
       TARGET_SHA: ${{ github.sha }}
 
     steps:
+      - name: Check out exact main source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Set up canonical frontend build runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: Require DigitalOcean SSH authority
         shell: bash
         run: |
@@ -69,6 +90,35 @@ jobs:
           fi
           [[ -n "${HHS_PRODUCTION_HOST}" ]]
           [[ -n "${HHS_PRODUCTION_USER}" ]]
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+
+      - name: Build and seal exact Runtime OS bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          pushd hhs_gui >/dev/null
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          popd >/dev/null
+
+          BUNDLE_ARCHIVE="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.tar.gz"
+          BUNDLE_MANIFEST="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.manifest.json"
+          VERIFY_ROOT="$RUNNER_TEMP/hhs-runtime-os-verify"
+          python3 deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py create \
+            --dist hhs_gui/dist \
+            --repository-sha "$TARGET_SHA" \
+            --archive "$BUNDLE_ARCHIVE" \
+            --manifest "$BUNDLE_MANIFEST"
+          release=$(python3 deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py stage \
+            --root "$VERIFY_ROOT" \
+            --archive "$BUNDLE_ARCHIVE" \
+            --manifest "$BUNDLE_MANIFEST" \
+            --expected-sha "$TARGET_SHA")
+          python3 deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py verify \
+            --root "$VERIFY_ROOT" --expected-sha "$TARGET_SHA" >/dev/null
+          grep -Fq 'HHS Visual Runtime OS Workspace' "$release/index.html"
+          sha256sum "$BUNDLE_ARCHIVE" "$BUNDLE_MANIFEST"
 
       - name: Configure pinned SSH target
         shell: bash
@@ -80,6 +130,26 @@ jobs:
           ssh-keyscan -T 15 -H "${HHS_PRODUCTION_HOST}" > "$HOME/.ssh/known_hosts"
           test -s "$HOME/.ssh/known_hosts"
 
+      - name: Transfer exact Runtime OS bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUNDLE_ARCHIVE="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.tar.gz"
+          BUNDLE_MANIFEST="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.manifest.json"
+          REMOTE_INCOMING="/var/lib/hhs/runtime-os/incoming/${TARGET_SHA}"
+          ssh -i "$HOME/.ssh/hhs-production" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "install -d -m 0755 '${REMOTE_INCOMING}' && rm -f '${REMOTE_INCOMING}/runtime-os.tar.gz.tmp' '${REMOTE_INCOMING}/manifest.json.tmp'"
+          scp -i "$HOME/.ssh/hhs-production" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "$BUNDLE_ARCHIVE" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}:${REMOTE_INCOMING}/runtime-os.tar.gz.tmp"
+          scp -i "$HOME/.ssh/hhs-production" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "$BUNDLE_MANIFEST" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}:${REMOTE_INCOMING}/manifest.json.tmp"
+          ssh -i "$HOME/.ssh/hhs-production" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "mv '${REMOTE_INCOMING}/runtime-os.tar.gz.tmp' '${REMOTE_INCOMING}/runtime-os.tar.gz' && mv '${REMOTE_INCOMING}/manifest.json.tmp' '${REMOTE_INCOMING}/manifest.json' && chmod 0644 '${REMOTE_INCOMING}/runtime-os.tar.gz' '${REMOTE_INCOMING}/manifest.json'"
+
       - name: Bootstrap guarded updater and promote exact main
         shell: bash
         run: |
@@ -88,6 +158,9 @@ jobs:
             -i "$HOME/.ssh/hhs-production" \
             -o BatchMode=yes \
             -o ConnectTimeout=15 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=20 \
+            -o TCPKeepAlive=yes \
             -o StrictHostKeyChecking=yes \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
             "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
@@ -96,80 +169,143 @@ jobs:
 
           APP_ROOT=/opt/hhs/app
           STATE_ROOT=/var/lib/hhs-guarded-update
+          BUNDLE_ROOT=/var/lib/hhs/runtime-os
+          LOCK_FILE=/run/lock/hhs-guarded-update.lock
+          OWNERSHIP_TIMEOUT=900
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
+          PROMOTION_HANDOFF=0
+          TIMER_CLAIMED=0
+          RECOVERY_MODE=0
+          bootstrap_root=""
+
+          cleanup() {
+            if [[ -n "$bootstrap_root" ]]; then
+              git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
+            fi
+            if [[ "$TIMER_CLAIMED" == "1" && "$PROMOTION_HANDOFF" == "0" ]]; then
+              if systemctl is-active --quiet hhs.service; then
+                systemctl start hhs-guarded-update.timer >/dev/null 2>&1 || true
+              fi
+            fi
+          }
+          trap cleanup EXIT
 
           [[ $EUID -eq 0 ]] || { echo "production deployment requires root SSH authority" >&2; exit 10; }
           [[ -d "$APP_ROOT/.git" ]] || { echo "repository missing at $APP_ROOT" >&2; exit 11; }
+          [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/runtime-os.tar.gz" ]] || { echo "Runtime OS archive missing" >&2; exit 12; }
+          [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/manifest.json" ]] || { echo "Runtime OS manifest missing" >&2; exit 13; }
+          command -v flock >/dev/null || { echo "flock is required for deployment ownership" >&2; exit 14; }
+
+          echo "=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ==="
+          systemctl stop hhs-guarded-update.timer 2>/dev/null || true
+          TIMER_CLAIMED=1
+          deadline=$((SECONDS + OWNERSHIP_TIMEOUT))
+          while :; do
+            updater_state=$(systemctl show hhs-guarded-update.service -p ActiveState --value 2>/dev/null || printf 'inactive')
+            case "$updater_state" in
+              inactive|failed|unknown|"") break ;;
+            esac
+            if (( SECONDS >= deadline )); then
+              echo "existing guarded updater did not finish before exclusive deployment timeout (state=$updater_state)" >&2
+              systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
+              journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
+              exit 15
+            fi
+            sleep 2
+          done
+
+          if ! systemctl is-active --quiet hhs.service; then
+            if ss -H -ltn 'sport = :8080' | grep -q .; then
+              echo "hhs.service is inactive but port 8080 is owned by another listener; refusing recovery." >&2
+              ss -H -ltnp 'sport = :8080' >&2 || true
+              exit 16
+            fi
+            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          path = Path(os.environ['RECEIPT_LOG_VALUE'])
+          if not path.is_file():
+              raise SystemExit('exact-main recovery requires guarded-update receipts')
+          records = []
+          for line in path.read_text(encoding='utf-8').splitlines():
+              line = line.strip()
+              if not line:
+                  continue
+              try:
+                  records.append(json.loads(line))
+              except json.JSONDecodeError:
+                  continue
+          if not records or records[-1].get('outcome') != 'ROLLBACK_HEALTH_FAILED':
+              raise SystemExit(f"exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
+          print('HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1')
+          PY
+            RECOVERY_MODE=1
+            echo "HHS_EXACT_MAIN_RECOVERY_MODE=1"
+          fi
+
+          systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+          install -d -m 0755 "$(dirname "$LOCK_FILE")"
+          exec 8>"$LOCK_FILE"
+          flock -w 10 8 || { echo "guarded updater lock remained held after service termination" >&2; exit 17; }
+          flock -u 8
+          echo "HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1"
 
           cd "$APP_ROOT"
           remote=$(git remote get-url origin)
           case "$remote" in
             *danonbrez/Holofractal_Harmonicode* ) ;;
-            * ) echo "unexpected origin: $remote" >&2; exit 12 ;;
+            * ) echo "unexpected origin: $remote" >&2; exit 18 ;;
           esac
-
-          if [[ -n "$(git status --porcelain --untracked-files=normal)" ]]; then
-            echo "live checkout is dirty; refusing to erase host-local work" >&2
-            git status --short >&2
-            exit 13
-          fi
-
           branch=$(git branch --show-current)
-          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 14; }
+          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 19; }
 
           git fetch --prune origin main
           remote_sha=$(git rev-parse origin/main)
           [[ "$remote_sha" == "$TARGET_SHA" ]] || {
             echo "origin/main moved while deployment was starting: expected $TARGET_SHA got $remote_sha" >&2
-            exit 15
+            exit 20
           }
           git cat-file -e "$TARGET_SHA^{commit}"
 
           bootstrap_root=$(mktemp -d /tmp/hhs-production-bootstrap.XXXXXX)
-          cleanup() {
-            git -C "$APP_ROOT" worktree remove --force "$bootstrap_root" >/dev/null 2>&1 || rm -rf "$bootstrap_root"
-          }
-          trap cleanup EXIT
-
           git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
-          REPO_ROOT="$APP_ROOT" \
-          SOURCE_ROOT="$bootstrap_root" \
-          HHS_INSTALL_ENABLE_PROMOTION=1 \
-            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"
 
-          deadline=$((SECONDS + 5100))
-          promoted=0
-          while (( SECONDS < deadline )); do
-            deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
-            if [[ "$deployed_sha" == "$TARGET_SHA" ]] \
-              && systemctl is-active --quiet hhs.service \
-              && curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/tmp/hhs-exact-main-status.json; then
-              promoted=1
-              break
-            fi
-            if systemctl is-failed --quiet hhs-guarded-update.service; then
-              journalctl -u hhs-guarded-update.service -n 250 --no-pager >&2 || true
-              exit 16
-            fi
-            sleep 3
-          done
+          HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
+          HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime \
+          HHS_HOST_DRIFT_MODE=source \
+            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh" "$APP_ROOT"
+          git -C "$APP_ROOT" update-index -q --refresh || true
+          if ! git -C "$APP_ROOT" diff-index --quiet HEAD -- || ! git -C "$APP_ROOT" diff --cached --quiet; then
+            echo "tracked host drift remains after audited reconciliation" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 21
+          fi
 
-          [[ "$promoted" == "1" ]] || {
-            echo "timed out waiting for exact-main promotion" >&2
-            journalctl -u hhs-guarded-update.service -n 250 --no-pager >&2 || true
-            exit 17
-          }
+          PROMOTION_HANDOFF=1
+          if ! REPO_ROOT="$APP_ROOT" \
+            SOURCE_ROOT="$bootstrap_root" \
+            HHS_RUNTIME_OS_BUNDLE_SHA="$TARGET_SHA" \
+            HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" \
+            HHS_INSTALL_ENABLE_PROMOTION=1 \
+            HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE" \
+            HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600 \
+              bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"; then
+            echo "=== EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS ===" >&2
+            systemctl status hhs.service --no-pager --full >&2 || true
+            systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
+            ss -ltnp | grep ':8080' >&2 || true
+            journalctl -u hhs.service -n 500 --no-pager >&2 || true
+            exit 24
+          fi
 
           python3 - "$STATE_ROOT/last-success.json" "$TARGET_SHA" <<'PY'
-          import json
-          import sys
+          import json, sys
           from pathlib import Path
-
-          receipt_path = Path(sys.argv[1])
+          payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           expected = sys.argv[2]
-          payload = json.loads(receipt_path.read_text(encoding="utf-8"))
-          if payload.get("candidate_sha") != expected:
-              raise SystemExit(f"promotion receipt SHA mismatch: {payload.get('candidate_sha')} != {expected}")
+          if payload.get("candidate_sha") != expected or payload.get("runtime_os_bundle_sha") != expected:
+              raise SystemExit(f"promotion receipt identity mismatch: {payload}")
           if payload.get("outcome") != "PROMOTED":
               raise SystemExit(f"unexpected promotion outcome: {payload.get('outcome')}")
           print(json.dumps(payload, sort_keys=True))
@@ -177,16 +313,72 @@ jobs:
 
           deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
           [[ "$deployed_sha" == "$TARGET_SHA" ]]
+          [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
+            echo "production checkout is dirty after promotion" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 22
+          }
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
+          systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
+          release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
+            --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
+          test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
+
+          listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
+          [[ "$listener_count" -eq 1 ]] || {
+            echo "expected exactly one production listener on 8080, found $listener_count" >&2
+            ss -H -ltnp 'sport = :8080' >&2 || true
+            exit 23
+          }
+
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
+          curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
+          EXPECTED_RUNTIME_OS_RELEASE="$release" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-exact-main-interface.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          actual = Path(str(payload.get('asset_root', ''))).resolve()
+          expected = Path(os.environ['EXPECTED_RUNTIME_OS_RELEASE']).resolve()
+          if actual != expected:
+              raise SystemExit(f'Runtime OS asset authority mismatch: actual={actual} expected={expected}')
+          PY
+
+          latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
+          if [[ -n "$latest_drift_manifest" ]]; then
+            printf 'HHS_DIGITALOCEAN_HOST_DRIFT_MANIFEST=%s\n' "$latest_drift_manifest"
+            sha256sum "$latest_drift_manifest"
+          fi
           printf 'HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED=%s\n' "$TARGET_SHA"
+          printf 'HHS_DIGITALOCEAN_RUNTIME_OS_RELEASE=%s\n' "$release"
           REMOTE
 
-      - name: Verify public HTTPS is reachable
+      - name: Verify public HTTPS Runtime OS is reachable
         shell: bash
         run: |
           set -euo pipefail
           curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
             "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/interface/status" >/tmp/hhs-public-interface-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/" >/tmp/hhs-public-runtime-os.html
           test -s /tmp/hhs-public-system-status.json
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-runtime-os.html
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-public-interface-status.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          if '/var/lib/hhs/runtime-os/releases/' not in str(payload.get('asset_root', '')):
+              raise SystemExit(f"public interface is not serving a versioned Runtime OS release: {payload}")
+          print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
+          PY
