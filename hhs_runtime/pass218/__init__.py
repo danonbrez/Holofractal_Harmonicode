@@ -28,6 +28,16 @@ from .hydration import (
     NarrativeHydrationCandidate,
     PASS218_NARRATIVE_HYDRATOR_VERSION,
 )
+from .transaction import (
+    DeterministicStructuralStore,
+    PASS218_SOURCE_TRANSACTION_VERSION,
+    Pass218TransactionError,
+    Pass218TransactionStateError,
+    Pass218TransactionValidationError,
+    SourceTransaction,
+    StructuralStoreReceipt,
+    TransactionPhase,
+)
 
 __all__ = [
     "CurriculumCursor",
@@ -50,4 +60,12 @@ __all__ = [
     "NarrativeBeatHydrator",
     "NarrativeHydrationCandidate",
     "PASS218_NARRATIVE_HYDRATOR_VERSION",
+    "DeterministicStructuralStore",
+    "PASS218_SOURCE_TRANSACTION_VERSION",
+    "Pass218TransactionError",
+    "Pass218TransactionStateError",
+    "Pass218TransactionValidationError",
+    "SourceTransaction",
+    "StructuralStoreReceipt",
+    "TransactionPhase",
 ]
