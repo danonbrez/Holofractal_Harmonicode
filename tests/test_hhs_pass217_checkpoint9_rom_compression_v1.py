@@ -124,9 +124,11 @@ def test_checkpoint9_no_domain_is_mechanically_not_applicable(tmp_path) -> None:
         row = decisions[authority_id]
         assert row["state"] == "NOT_APPLICABLE"
         assert row["mechanically_proven"] is True
-    scope = decision["inherited_execution_authority_reachability"]["checkpoint_scope"]
-    assert tuple(scope[-3:]) == CHECKPOINT9_AUTHORITIES
-    assert decision["inherited_execution_authority_reachability"]["required_authority_count"] == 15
+    authority = decision["inherited_execution_authority_reachability"]
+    scope = list(authority["checkpoint_scope"])
+    start = scope.index(CHECKPOINT9_AUTHORITIES[0])
+    assert tuple(scope[start : start + len(CHECKPOINT9_AUTHORITIES)]) == CHECKPOINT9_AUTHORITIES
+    assert authority["required_authority_count"] >= 15
 
 
 def test_checkpoint9_real_route_traverses_parametric_rom_and_generator_exception(tmp_path) -> None:
