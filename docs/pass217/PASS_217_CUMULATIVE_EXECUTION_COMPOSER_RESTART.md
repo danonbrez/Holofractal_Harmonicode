@@ -3,16 +3,17 @@
 ## Restart identity
 
 - Workstream: Pass 217 prerequisite — mandatory inherited execution composition and utilization reachability
-- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 9
+- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 10
 - Branch: `agent/pass217-cumulative-execution-composer`
 - Merge target: `main`
 - Workstream base / merge base: `07e514ac88b786c121d8308135fee19b9d30877d`
-- Current live `main` observed before this restart update: `191c36164425ed263b940f551409f9404c7c3fd8`
-- Latest validated implementation head before this restart-record update: `221ffc516ba1be6b4a840da875a62ae118645761`
+- Current live `main` observed before this restart update: `b32b10d6346b84f590d74014181450bfe531374f`
+- Latest validated implementation head before this restart-record update: `1ecc8bd2ad873cc800534882dff236466f299687`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Checkpoint 9 validation run: `31556963841` — job `93991247483` — `SUCCESS`
+- Checkpoint 10 validation run: `31587507009` — job `94084657284` — `SUCCESS`
+- Exact targeted result: `57 passed, 1 warning in 63.67s`
 
-At validated implementation head `221ffc51...`, comparison against current `main @ 191c3616...` is intentionally `diverged`: 53 workstream commits ahead, 113 current-main commits behind, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No rebase or merge was attempted because final integration remains a later bounded action after cumulative closure prerequisites.
+At validated implementation head `1ecc8bd2...`, comparison against current `main @ b32b10d6...` is intentionally `diverged`: 64 workstream commits ahead, 114 current-main commits behind, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No rebase or merge was attempted because final integration remains a later bounded action after cumulative closure prerequisites.
 
 The restart-record commit itself is documentation-only. The exact implementation authority remains the validated head above.
 
@@ -25,6 +26,8 @@ Inherited capabilities are not considered utilized merely because their modules 
 - `EXPLICITLY_SUPERSEDED` — a repository-bound later-pass contract explicitly replaces the authority and proves the replacement.
 
 `OPTIONAL_AVAILABLE` is forbidden for inherited core execution capabilities. Partial or malformed applicability context fails closed; it is not downgraded to `NOT_APPLICABLE`.
+
+Authoritative indexing/scoring/selection remains exact integer/rational/symbolic authority. IEEE floating-point state must not acquire canonical authority.
 
 ## Preserved validated foundation — Checkpoints 1–8
 
@@ -69,152 +72,222 @@ Pass 165 `MultimodalLearningService.project_5184` supplies the exact 81×64 / 5,
 
 ## Checkpoint 9 — completed and validated
 
-Checkpoint 9 connects the next frozen authority slice:
+Checkpoint 9 connected:
 
 ```text
 parametric_admission
-    → compiled_rom_reuse
-    → generator_exception_compression
+→ compiled_rom_reuse
+→ generator_exception_compression
 ```
 
-### `parametric_admission`
-
 Repository-native operational authority:
 
-- origin: Pass 213 Iteration 4;
-- module: `hhs_backend.runtime.hhs_pass213_parametric_delta_v1`;
-- callable: `create_parametric_admission`;
-- runtime authority: true.
+- `parametric_admission` → Pass 213 Iteration 4 `create_parametric_admission`;
+- `compiled_rom_reuse` → Pass 213 `CompiledROMStore.lookup_operation`;
+- `generator_exception_compression` → Pass 212 `FullHydrationRecoveryRuntime._compress` with `_decompress` replay verification.
 
-The inherited callable binds a candidate to an authenticated compiled-ROM base entry and exact opening timestamp boundary, computes exact changed fields, re-evaluates only constraints depending on those fields, reuses authenticated baseline witnesses for unaffected constraints, computes a delta root, and emits a boundary-bound VM81 admission root plus authentication tag.
+The parametric path binds exact changed fields to dependency-scoped constraint re-evaluation and authenticated unaffected-witness reuse. Compiled-ROM reuse is the actual immutable operation lookup, not the Pass 215 descriptor benchmark analog. Generator/exception compression uses the complete 50,388,480-bit hydration envelope, 9,720 local 5,184-bit leaves, 2,430 seed bytes plus exact sparse XOR exceptions, and rejects raw fallback as a false compression claim.
 
-Checkpoint 9 admits `ACTIVE_IN_PATH` only after:
+Exact implementation head `221ffc516ba1be6b4a840da875a62ae118645761` validated in run `31556963841`, job `93991247483`. Checkpoint 9 restart commit: `255225ec72476f35d60a52610315966c7f0376be`.
 
-- request template Hash216 matches the supplied template;
-- request base-entry Hash216 matches the supplied compiled-ROM entry;
-- request opening-boundary Hash216 matches the supplied exact boundary;
-- validation key is present and sufficiently sized;
-- the inherited `create_parametric_admission` call succeeds;
-- the returned admission validates against the same template, base entry, opening boundary, and key;
-- VM81 admission root and authentication tag are concrete.
+## Checkpoint 10 — completed and validated
 
-The validated test changes only `operands.x`, proving constraint `c_x` is re-evaluated while unchanged `context.mode` constraint `c_mode` reuses its authenticated baseline witness.
+Checkpoint 10 connects the next frozen authority slice:
 
-### `compiled_rom_reuse`
+```text
+physical_recovery
+    → receipt_vector_indexing
+    → sql_context_graph
+```
 
-Repository-native operational authority:
-
-- origin: Pass 213 Iteration 1;
-- module: `hhs_backend.runtime.hhs_pass213_compiled_rom_v1`;
-- callable: `CompiledROMStore.lookup_operation`;
-- runtime authority: true.
-
-This is explicitly distinct from the Pass 215 Iteration 4 immutable compiled-block descriptor benchmark analog. Checkpoint 9 does not promote the benchmark analog into runtime authority.
-
-The bridge requires exact binding of:
-
-- operation ID;
-- expected compiled-ROM entry Hash216;
-- expected compiled-ROM inventory root Hash216.
-
-The inherited store is measured before and after lookup. `ACTIVE_IN_PATH` requires that lookup returns the expected authenticated entry while entry count and inventory root remain unchanged. The traversal witness records VM81 cell, opcode slot, G243 control, and native dispatch identity from the inherited compiled record.
-
-### `generator_exception_compression`
+### `physical_recovery`
 
 Repository-native operational authority:
 
 - origin: Pass 212;
 - module: `hhs_backend.runtime.hhs_pass212_full_hydration_recovery_v1`;
-- compression callable: `FullHydrationRecoveryRuntime._compress`;
-- replay callable: `FullHydrationRecoveryRuntime._decompress`;
+- callable: `FullHydrationRecoveryRuntime.recover_payload`;
 - runtime authority: true.
 
-The inherited codec operates over the complete hydration envelope:
+The inherited runtime validates the protected-payload root/receipt, verifies present physical-shard hashes, reconstructs admissible missing shards using the two-parity GF(256) stripe code, recomputes parity and recovered shard identities, and returns exact recovered bytes.
 
-```text
-40 × 243 × 5,184 = 50,388,480 bits = 6,298,560 bytes
-```
+Checkpoint 10 request binding includes:
 
-There are 9,720 local 5,184-bit leaves. The strict affine codec stores two generator bits per leaf — 19,440 bits / 2,430 seed bytes — plus exact sparse XOR exception positions. If the state is outside that efficient domain, the inherited runtime falls back to raw packed bytes rather than making a false compression claim.
+- protected root Hash216;
+- explicit missing shard references;
+- expected recovered byte length;
+- expected recovered SHA-256 byte-integrity projection.
 
-Checkpoint 9's authority path constructs an exact inherited affine-generated hydration state from a declared uniform seed, applies declared exact exception positions through the inherited exception operator, calls the real `_compress`, then calls the real `_decompress` and requires bit-exact state replay.
+The preflight constructs an ephemeral erasure view by replacing only requested shard payloads with `None`; the original protected payload is not mutated. `ACTIVE_IN_PATH` requires real inherited `recover_payload` traversal and exact byte-length/SHA equality.
 
-`ACTIVE_IN_PATH` is admitted only when:
+The validated route test protects a real payload, erases one actual data shard, recovers it through the inherited runtime, and proves exact payload SHA equality.
 
-- exception positions are exact integers, in range, and strictly ascending;
-- the inherited codec selects `AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR`;
-- raw fallback is not used;
-- decompression reproduces the exact original 50,388,480-bit state;
-- recovered codec and exception count match;
-- exception count exactly matches the declared positions;
-- compressed payload is strictly smaller than the raw hydration state.
+### `receipt_vector_indexing`
 
-The validated real route case used three exact exceptions and proved the 2,430-byte affine seed basis, strict compression, and replay equality. No float authority or approximate compression path was introduced.
+The repository scan identified a genuine inherited authority defect before activation. The existing `hhs_runtime/hhs_receipt_vector_index_v1.py` used:
+
+- `List[float]` canonical vector coordinates;
+- `ord(ch) / 127.0` character coordinates;
+- float witness bits;
+- `math.sqrt` Euclidean distance;
+- `float("inf")` empty-vector sentinel;
+- `time.time()` floating timestamp.
+
+That implementation conflicted with the frozen Pass 215 profile (`floats_forbidden`) and Pass 216 vector-cache/branch-prediction requirement `NO_FLOATS_IN_AUTHORITATIVE_INDEXING_SCORING_OR_SELECTION`.
+
+Checkpoint 10 repaired the inherited surface rather than falsely declaring the float implementation `ACTIVE_IN_PATH`.
+
+Repaired exact representation:
+
+- character coordinate: `ord(ch)`;
+- witness-bit coordinate: `127 * bit`;
+- distance: sum of squared exact integer coordinate differences;
+- empty-vector sentinel: finite 256-bit integer maximum;
+- observational insertion timestamp: `time.time_ns()` integer;
+- deterministic tie-breaker: receipt Hash72 identity;
+- canonical index root: SHA-256 over exact semantic index contents, excluding observational timestamp.
+
+This preserves historical ranking geometry exactly up to a positive constant scale: multiplying all old normalized coordinates by 127 yields the new integer coordinates, and squared distance is monotonic with Euclidean distance. No `sqrt` or floating state is needed for ordering.
+
+The repaired index also requires validated receipts for insertion, rejects float/noninteger query vectors, detects conflicting reuse of an existing receipt identity, supports exact receipt lookup, and exposes `index_root_hash216()`.
+
+Checkpoint 10 active traversal binds:
+
+- receipt Hash72;
+- state Hash72;
+- exact integer witness flags;
+- exact route trace;
+- expected pre-index Hash216 root.
+
+It calls real `HHSReceiptVectorIndex.insert_receipt`, verifies exact lookup, integer-only vector coordinates and nanosecond timestamp, zero self-distance, and emits the post-index root as its concrete witness.
+
+### `sql_context_graph`
+
+Repository-native operational authority:
+
+- origin: Pass 145 transactional knowledge database;
+- later contract alignment: Pass 194 SQL context-graph authority;
+- module: `hhs_runtime.pass145.database`;
+- callable: `HHS145Database.get_object`;
+- root: `HHS145Database.database_root`;
+- integrity: `HHS145Database.integrity_check`;
+- preflight mutation authority: false.
+
+Pass 194 explicitly inherits the Pass 145 database foundation for its SQL relational context graph. The Checkpoint 10 bridge therefore traverses the real transactional SQLite object/relation graph rather than inventing a new graph store.
+
+Request binding includes:
+
+- object ID;
+- expected object Hash72;
+- expected database root Hash72;
+- exact expected relation count;
+- exact expected relation types.
+
+The bridge requires integrity before the read, calls `get_object`, validates object/relation identity, then requires integrity after the read with unchanged:
+
+- database root;
+- transaction sequence;
+- receipt tip.
+
+The validated route test seeds two real SQL objects plus one `PAIRED_WITH` relation through `HHS145Database.mutate`, then proves the preflight graph read is non-mutating.
+
+### Import-boundary repairs discovered by cumulative validation
+
+The first complete Checkpoint 10 workflow run `31586969780` compiled successfully and executed 57 tests, but ended with `56 passed, 1 failed`: the preserved lazy-import test observed Pass111 already loaded during pytest collection.
+
+This exposed an inherited dependency leak rather than a Checkpoint 10 semantic failure.
+
+First repair:
+
+- `hhs_runtime/pass145/canonical.py` previously imported Pass111 `_hash` at module import time;
+- the import was moved inside `hash72()` so Pass111 authority remains unchanged but is resolved only when Hash72 work is actually requested.
+
+A second run `31587255829` still produced `56 passed, 1 failed`, proving another import edge remained.
+
+Second repair:
+
+- `hhs_runtime/pass145/__init__.py` eagerly imported `HHS145Service` whenever any Pass145 submodule was imported;
+- `HHS145Service` imports Pass125/126 and their inherited runtime ancestry;
+- package exports were converted to lazy PEP 562 `__getattr__` resolution while preserving public `HHS145Service`, `HHS145Database`, and `Pass145Error` import compatibility.
+
+No lazy-import test was weakened, reordered, skipped, or removed. The final run proves the package/database import path no longer eagerly activates Pass111 while actual Pass145 hashing still resolves the inherited Pass111 helper when needed.
 
 ### Mechanical applicability and fail-closed behavior
 
-For each Checkpoint 9 class:
+For each Checkpoint 10 class:
 
-- no exact request domain → `NOT_APPLICABLE` with operation facts;
-- a present but malformed request → applicable and fail closed;
-- missing internal authority binding for an applicable request → fail closed, not `NOT_APPLICABLE`.
+- no exact request domain → mechanically `NOT_APPLICABLE`;
+- present but malformed request → applicable and fail closed;
+- present request without required bound runtime/data object → fail closed;
+- no capability is downgraded to N/A merely because its binding is missing.
 
 Validated negative cases include:
 
-- parametric request without a bound template/base/boundary/key;
-- compiled-ROM request without a bound store;
-- out-of-range generator/exception position.
+- physical recovery request without a protected payload;
+- SQL graph lookup with a mismatched expected database root;
+- direct float vectors supplied to receipt-vector scoring/search.
 
-### Checkpoint 9 repository-visible commits
+### Checkpoint 10 repository-visible commits
 
-1. `4be01397c2a700dba0d939d97d696b38a8a97464` — add `hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py`.
-2. `6c0c238c9fca03eada07a93386207a330f3a0f0f` — wire Checkpoint 9 into the production route composer.
-3. `24a72d033f0b70bf3498357b2b44052d6e4a8d47` — add dedicated Checkpoint 9 traversal and negative tests.
-4. `221ffc516ba1be6b4a840da875a62ae118645761` — extend the dependency-scoped workflow over Checkpoints 8/9 plus inherited Pass 212/213 runtime authority; exact validated implementation head.
+1. `534287da610b62cae6f61643970e24cd4238afba` — repair receipt vector index to exact integer authority.
+2. `493f47095e566d8027f633d8cf9899da57a4cf71` — add `hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py`.
+3. `6808686aa540e9ea4bc4c4074f6271b92fdfe62b` — wire Checkpoint 10 into the production route composer.
+4. `283a7d51701646594a614f1478ca1ea634c8860e` — add dedicated Checkpoint 10 real traversal and negative tests.
+5. `c1337800028c4a89d96f2bcfb55bc30455f6eba6` — preserve Checkpoint 9 assertions under the larger cumulative scope.
+6. `a8b5299278712a3396f6211bb5e71c8c2ee6058d` — extend the dependency-scoped workflow over Checkpoint 10; first exact candidate gate, exposing the Pass145 eager-import defect.
+7. `337b54d2702ff3abe4655e54d118e80482f27430` — make Pass145 canonical Hash72 helper import lazy.
+8. `22551102823aa87e0684737b59ac61a2781d5307` — validate the first import repair; second exact candidate gate, exposing the eager Pass145 package export.
+9. `984f94514d3cc1ccf6e8f5ae76130650e7bbb00a` — convert Pass145 package exports to lazy resolution.
+10. `1ecc8bd2ad873cc800534882dff236466f299687` — validate the complete Checkpoint 10 slice; exact validated implementation head.
 
-### Checkpoint 9 validation
+### Checkpoint 10 validation
 
 Hosted validation authority:
 
 - workflow: `Pass 217 Cumulative Execution Composer`;
-- run: `31556963841`;
-- job: `93991247483` (`dependency-scoped-validation`);
-- exact head: `221ffc516ba1be6b4a840da875a62ae118645761`;
+- run: `31587507009`;
+- job: `94084657284` (`dependency-scoped-validation`);
+- exact head: `1ecc8bd2ad873cc800534882dff236466f299687`;
 - conclusion: `SUCCESS`;
-- checkout: success;
-- Python setup and targeted pytest dependency: success;
+- exact checkout: success;
+- Python setup / targeted pytest install: success;
 - compile stage: success;
-- cumulative-composer pytest stage: success.
+- cumulative dependency-scoped pytest: `57 passed, 1 warning in 63.67s`.
 
-The workflow now directly compiles and/or exercises:
+The warning is the pre-existing pytest configuration warning for unknown `asyncio_mode`; it did not affect validation outcome.
 
-- Checkpoint 8 and Checkpoint 9 bridges;
-- Pass 212 full hydration generator/exception codec;
-- Pass 213 compiled-ROM runtime;
-- Pass 213 parametric delta/admission runtime;
-- dedicated Checkpoint 8 and Checkpoint 9 test files;
-- all prior cumulative-composer dependency-scoped tests.
+The workflow directly compiles and/or exercises:
 
-No exact pytest count is claimed here because the workflow job summary was used as validation authority and no test-count extraction was required.
+- repaired exact-integer receipt vector index;
+- Checkpoint 10 bridge;
+- production route composer;
+- Pass145 package initializer, canonical helper, and transactional database;
+- Pass212 physical recovery runtime;
+- all Checkpoint 6–10 bridges and targeted tests;
+- all preserved cumulative composer/authority/import-boundary tests.
 
-## Files added or modified by Checkpoint 9
+## Files added or modified by Checkpoint 10
 
 Added:
 
-- `hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py`
-- `tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py`
+- `hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py`
+- `tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py`
 
 Modified:
 
+- `hhs_runtime/hhs_receipt_vector_index_v1.py`
 - `hhs_runtime/hhs_pass217_runtime_route_composer_v1.py`
+- `hhs_runtime/pass145/canonical.py`
+- `hhs_runtime/pass145/__init__.py`
+- `tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py`
 - `.github/workflows/pass217-cumulative-execution-composer.yml`
 - this restart record
 
-The inherited Pass 212 and Pass 213 runtime sources were exercised as-is and were not modified.
+Pass212 recovery and Pass145 database execution sources were exercised as inherited authority and were not rewritten for Checkpoint 10.
 
 ## Current cumulative connected authority scope
 
-The production route composer now mechanically disposes these fifteen required inherited classes on every bound service-route operation:
+The production route composer now mechanically disposes these eighteen required inherited classes on every bound service-route operation:
 
 ```text
 conformance_decision_cache
@@ -232,15 +305,18 @@ residual_only_processing
 parametric_admission
 compiled_rom_reuse
 generator_exception_compression
+physical_recovery
+receipt_vector_indexing
+sql_context_graph
 ```
 
 An admitted operation has no `OPTIONAL_AVAILABLE` state in this scope.
 
 ## Deliberately not yet claimed
 
-Checkpoint 9 does **not** claim full Pass 217 cumulative closure. Still pending:
+Checkpoint 10 does **not** claim full Pass 217 cumulative closure. Still pending:
 
-- continue remaining Pass 214/215 authority traversal after `generator_exception_compression`;
+- continue remaining frozen Pass 215 authority traversal after `sql_context_graph`;
 - preserve the unresolved incremental-tokenization fail-closed boundary unless an inherited callable or explicit supersession is proven;
 - publish production service route bindings into global Pass 042 surface-map discovery rather than deriving them only at the shared IO boundary;
 - add systematic bypass-negative tests proving omission of every applicable inherited authority blocks execution;
@@ -249,14 +325,27 @@ Checkpoint 9 does **not** claim full Pass 217 cumulative closure. Still pending:
 
 ## Exact next bounded action
 
-Continue Pass 217 Iteration 5 with the next frozen authority slice after `generator_exception_compression`:
+The frozen Pass 215 profile orders the next required classes immediately after `sql_context_graph` as:
 
 ```text
-physical_recovery
-    → receipt_vector_indexing
-    → sql_context_graph
+encrypted_vector_store
+    → snapshot_reuse
+    → multimodal_cross_alignment
 ```
 
-Map each class to exact inherited repository-native authority first. Distinguish operational recovery/index/context-graph callables from benchmark observations. Implement one real traversal wherever inherited authority is proven; emit mechanical `NOT_APPLICABLE` only from operation facts; fail closed on partial applicable context; preserve repository-bound `EXPLICITLY_SUPERSEDED` semantics; run only dependency-scoped validation; commit the bounded slice; update this restart record before proceeding to encrypted-vector-store/snapshot/learning/routing/native-dispatch authorities.
+Continue Pass 217 Iteration 5 with exactly that slice.
+
+Required process:
+
+1. Deep-map each class to exact inherited repository-native operational authority before implementation.
+2. Distinguish encrypted authoritative storage from plain/local cache analogs and benchmark observations.
+3. Distinguish true snapshot reuse from mere serialization or checkpoint existence.
+4. Distinguish multimodal cross-alignment from independent per-modality projection.
+5. Implement real inherited traversal where authority is proven.
+6. Emit mechanical `NOT_APPLICABLE` only from exact operation facts.
+7. Fail closed for partial/applicable context or missing bindings.
+8. Preserve `EXPLICITLY_SUPERSEDED` only for repository-bound later contracts that explicitly replace the authority.
+9. Run only dependency-scoped validation and repair forward.
+10. Commit the bounded slice and update this restart record before proceeding to `bounded_learning_replay → moving_tensor_routing → native_dispatch` and later interruption recovery.
 
 Do not rerun unchanged historical proof suites merely because `main` advances. Final current-main integration remains a later bounded stage after cumulative closure prerequisites are complete.
