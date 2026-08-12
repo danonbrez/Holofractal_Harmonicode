@@ -17,6 +17,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
@@ -33,6 +34,21 @@ on:
       - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_common_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_kernel_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
+      - 'native/pass213/hhs_pass213_secure_arena.c'
+      - 'native/pass213/hhs_pass213_native_dispatch.c'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py'
       - 'native_projects/hhs_ide_workspace/__init__.py'
@@ -45,6 +61,7 @@ on:
       - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
   pull_request:
@@ -63,6 +80,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
@@ -79,6 +97,21 @@ on:
       - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_common_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_kernel_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
+      - 'native/pass213/hhs_pass213_secure_arena.c'
+      - 'native/pass213/hhs_pass213_native_dispatch.c'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py'
       - 'native_projects/hhs_ide_workspace/__init__.py'
@@ -91,6 +124,7 @@ on:
       - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
       - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
 
@@ -128,6 +162,7 @@ jobs:
             hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py \
             hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
             hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
+            hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
             hhs_runtime/pass145/__init__.py \
@@ -144,6 +179,19 @@ jobs:
             hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py \
             hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
             hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py \
+            hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py \
+            hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py \
+            hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py \
+            hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py \
+            hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py \
+            hhs_backend/runtime/hhs_pass213_native_dispatch_common_v1.py \
+            hhs_backend/runtime/hhs_pass213_native_dispatch_kernel_v1.py \
+            hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py \
+            hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py \
+            hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py \
+            hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py \
+            hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py \
+            hhs_backend/runtime/hhs_pass213_secure_memory_v1.py \
             hhs_python/runtime/hhs_pass205_continuation_bridge.py \
             native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py \
             native_projects/hhs_ide_workspace/__init__.py \
@@ -156,6 +204,7 @@ jobs:
             tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
             tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
+            tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
 
       - name: Run cumulative-composer checkpoint tests
@@ -170,4 +219,5 @@ jobs:
             tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
             tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
+            tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
