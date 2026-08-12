@@ -1,26 +1,19 @@
 """Pass 217 production-route binding for mandatory cumulative composition.
 
-The Pass 042 conformance graph already defines API routes as kernel-derived
-surfaces, but the production service-registry endpoints predate that declaration
-set. This module adds an additive, source-keyed binding for those live routes
-without rebuilding the entire default service registry on every request.
-
 The shared HHS IO ingress boundary calls this module before recording or reusing
-a request. A bound route therefore cannot reach its handler merely because an
-IO receipt/cache path exists; it must first pass the inherited Pass 043 runtime
+a request. A bound route therefore cannot reach its handler merely because an IO
+receipt/cache path exists; it must first pass the inherited Pass 043 runtime
 composer and the currently connected inherited optimization-authority slice.
 """
-
 from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional
 
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
-from hhs_runtime.hhs_pass217_checkpoint11_storage_snapshot_alignment_v1 import (
-    build_checkpoint11_inherited_authority_reachability,
+from hhs_runtime.hhs_pass217_checkpoint12_learning_tensor_native_v1 import (
+    build_checkpoint12_inherited_authority_reachability,
 )
-
 
 VERSION = "PASS_217_RUNTIME_ROUTE_COMPOSITION_BINDING_V1"
 SCHEMA = "HHS_PASS217_RUNTIME_ROUTE_COMPOSITION_PREFLIGHT_V1"
@@ -43,14 +36,7 @@ SERVICE_ROUTE_BINDINGS: Dict[str, Dict[str, Any]] = {
     "api.runtime.services.dispatch": {
         "route": "POST /api/runtime/services/dispatch",
         "symbol": "runtime.services.dispatch",
-        "invariant_ids": [
-            "HHS-I005",
-            "HHS-I006",
-            "HHS-I011",
-            "HHS-I012",
-            "HHS-I013",
-            "HHS-I014",
-        ],
+        "invariant_ids": ["HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I013", "HHS-I014"],
         "mutation_policy": "CONTROLLED_RUNTIME_MUTATION",
         "persistence_policy": "CANONICAL_MUTATION_RECEIPT",
     },
@@ -62,60 +48,32 @@ def is_bound_route_source(source: str) -> bool:
 
 
 def build_bound_route_surface(source: str) -> Dict[str, Any]:
-    """Build the Pass 042-compatible surface for one bound production route."""
-
     key = str(source)
     binding = SERVICE_ROUTE_BINDINGS.get(key)
     if binding is None:
         raise KeyError(key)
     route = str(binding["route"])
     symbol = str(binding["symbol"])
-    surface = derive_surface_conformance(
-        {
-            "surface_id": f"api_route:{route}",
-            "surface_type": "API_ROUTE",
-            "module": "hhs_backend.api.runtime_routes",
-            "symbol": symbol,
-            "invariant_ids": list(binding["invariant_ids"]),
-            "contract_schemas": [
-                "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1",
-                "HHS_PASS217_CUMULATIVE_EXECUTION_ROUTE_CONTRACT_V1",
-            ],
-            "witness_schemas": [
-                "HHS_KERNEL_DERIVATION_WITNESS_V1",
-                "HHS_SURFACE_REACHABILITY_WITNESS_V1",
-                "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
-                "HHS_CUMULATIVE_EXECUTION_AUTHORITY_REACHABILITY_V1",
-            ],
-            "validators": [
-                "validate_api_route_kernel_derivation",
-                "validate_pass217_cumulative_route_composition",
-                "validate_authority_reachability",
-            ],
-            "guards": [
-                "runtime_constraint_enforcement",
-                "zero_bypass_runtime_interposer",
-                "io_gateway",
-                "kernel_runtime_autocomposer",
-                "cumulative_execution_authority_reachability",
-            ],
-            "rejection_codes": [
-                "REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT",
-                "REJECT_UNDERIVED_RUNTIME_SURFACE",
-                "REJECT_RUNTIME_ROUTE_WITHOUT_CUMULATIVE_COMPOSITION",
-                "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY",
-            ],
-            "mutation_policy": binding["mutation_policy"],
-            "persistence_policy": binding["persistence_policy"],
-            "boundedness_policy": "PASS_043_BOUNDED_METADATA_LIFECYCLE_V1",
-            "declared_operations": [symbol],
-        }
-    )
-    return surface
+    return derive_surface_conformance({
+        "surface_id": f"api_route:{route}",
+        "surface_type": "API_ROUTE",
+        "module": "hhs_backend.api.runtime_routes",
+        "symbol": symbol,
+        "invariant_ids": list(binding["invariant_ids"]),
+        "contract_schemas": ["HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1", "HHS_PASS217_CUMULATIVE_EXECUTION_ROUTE_CONTRACT_V1"],
+        "witness_schemas": ["HHS_KERNEL_DERIVATION_WITNESS_V1", "HHS_SURFACE_REACHABILITY_WITNESS_V1", "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1", "HHS_CUMULATIVE_EXECUTION_AUTHORITY_REACHABILITY_V1"],
+        "validators": ["validate_api_route_kernel_derivation", "validate_pass217_cumulative_route_composition", "validate_authority_reachability"],
+        "guards": ["runtime_constraint_enforcement", "zero_bypass_runtime_interposer", "io_gateway", "kernel_runtime_autocomposer", "cumulative_execution_authority_reachability"],
+        "rejection_codes": ["REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT", "REJECT_UNDERIVED_RUNTIME_SURFACE", "REJECT_RUNTIME_ROUTE_WITHOUT_CUMULATIVE_COMPOSITION", "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY"],
+        "mutation_policy": binding["mutation_policy"],
+        "persistence_policy": binding["persistence_policy"],
+        "boundedness_policy": "PASS_043_BOUNDED_METADATA_LIFECYCLE_V1",
+        "declared_operations": [symbol],
+    })
 
 
 def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]:
-    return {
+    summary = {
         "schema": "HHS_CUMULATIVE_EXECUTION_AUTHORITY_REACHABILITY_SUMMARY_V1",
         "admitted": bool(record.get("admitted")),
         "status": record.get("status"),
@@ -123,38 +81,6 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "accepted_state_counts": dict(record.get("accepted_state_counts") or {}),
         "reachability_root_hash72": record.get("reachability_root_hash72"),
         "checkpoint_scope": list(record.get("checkpoint_scope") or []),
-        "continuation_applicability_facts": dict(record.get("continuation_applicability_facts") or {}),
-        "pattern_cache_applicability_facts": dict(record.get("pattern_cache_applicability_facts") or {}),
-        "retrieval_reuse_applicability_facts": dict(record.get("retrieval_reuse_applicability_facts") or {}),
-        "content_reuse_applicability_facts": dict(record.get("content_reuse_applicability_facts") or {}),
-        "checkpoint8_applicability_facts": dict(record.get("checkpoint8_applicability_facts") or {}),
-        "checkpoint9_applicability_facts": dict(record.get("checkpoint9_applicability_facts") or {}),
-        "checkpoint10_applicability_facts": dict(record.get("checkpoint10_applicability_facts") or {}),
-        "checkpoint11_applicability_facts": dict(record.get("checkpoint11_applicability_facts") or {}),
-        "checkpoint6_native_callable_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint6_native_callable_map") or {}).items()
-        },
-        "checkpoint7_authority_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint7_authority_map") or {}).items()
-        },
-        "checkpoint8_authority_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint8_authority_map") or {}).items()
-        },
-        "checkpoint9_authority_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint9_authority_map") or {}).items()
-        },
-        "checkpoint10_authority_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint10_authority_map") or {}).items()
-        },
-        "checkpoint11_authority_map": {
-            str(key): dict(value)
-            for key, value in dict(record.get("checkpoint11_authority_map") or {}).items()
-        },
         "decisions": [
             {
                 "authority_id": row.get("authority_id"),
@@ -172,6 +98,22 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "blockers": list(record.get("blockers") or []),
         "optional_available_forbidden": True,
     }
+    for key in (
+        "continuation_applicability_facts", "pattern_cache_applicability_facts",
+        "retrieval_reuse_applicability_facts", "content_reuse_applicability_facts",
+        "checkpoint8_applicability_facts", "checkpoint9_applicability_facts",
+        "checkpoint10_applicability_facts", "checkpoint11_applicability_facts",
+        "checkpoint12_applicability_facts",
+    ):
+        summary[key] = dict(record.get(key) or {})
+    for key in (
+        "checkpoint6_native_callable_map", "checkpoint7_authority_map",
+        "checkpoint8_authority_map", "checkpoint9_authority_map",
+        "checkpoint10_authority_map", "checkpoint11_authority_map",
+        "checkpoint12_authority_map",
+    ):
+        summary[key] = {str(k): dict(v) for k, v in dict(record.get(key) or {}).items()}
+    return summary
 
 
 def compose_bound_route_ingress(
@@ -198,9 +140,12 @@ def compose_bound_route_ingress(
     encrypted_vector_store: Any = None,
     snapshot_reuse_runtime: Any = None,
     multimodal_alignment_service: Any = None,
+    bounded_learning_service: Any = None,
+    moving_tensor_state: Any = None,
+    moving_tensor_root_key: Optional[bytes] = None,
+    moving_tensor_trusted_anchor: Any = None,
+    native_dispatch_authority: Any = None,
 ) -> Optional[Dict[str, Any]]:
-    """Return None for unbound sources; fail closed for bound route preflight."""
-
     key = str(source)
     binding = SERVICE_ROUTE_BINDINGS.get(key)
     if binding is None:
@@ -211,10 +156,8 @@ def compose_bound_route_ingress(
     preflight = execute_surface_preflight(surface, operation=symbol, cache=cache)
     authority_record = None
     if preflight.get("ok"):
-        authority_record = build_checkpoint11_inherited_authority_reachability(
-            preflight,
-            surface,
-            payload_dict,
+        authority_record = build_checkpoint12_inherited_authority_reachability(
+            preflight, surface, payload_dict,
             semantic_cache=semantic_cache,
             retrieval_runtime=retrieval_runtime,
             pattern_repo_root=pattern_repo_root,
@@ -234,6 +177,11 @@ def compose_bound_route_ingress(
             encrypted_vector_store=encrypted_vector_store,
             snapshot_reuse_runtime=snapshot_reuse_runtime,
             multimodal_alignment_service=multimodal_alignment_service,
+            bounded_learning_service=bounded_learning_service,
+            moving_tensor_state=moving_tensor_state,
+            moving_tensor_root_key=moving_tensor_root_key,
+            moving_tensor_trusted_anchor=moving_tensor_trusted_anchor,
+            native_dispatch_authority=native_dispatch_authority,
         )
     authority_summary = _compact_authority_reachability(authority_record) if authority_record is not None else None
     pipeline = dict((preflight.get("composition_plan") or {}).get("pipeline") or {})
@@ -274,16 +222,7 @@ def runtime_route_composer_self_test() -> Dict[str, Any]:
     return {
         "schema": "HHS_PASS217_RUNTIME_ROUTE_COMPOSER_SELF_TEST_V1",
         "version": VERSION,
-        "ok": bool(
-            first
-            and first.get("ok")
-            and second
-            and second.get("ok")
-            and second.get("cache_hit")
-            and dispatch
-            and dispatch.get("ok")
-            and compose_bound_route_ingress("unbound.source", {}, cache=cache) is None
-        ),
+        "ok": bool(first and first.get("ok") and second and second.get("ok") and second.get("cache_hit") and dispatch and dispatch.get("ok") and compose_bound_route_ingress("unbound.source", {}, cache=cache) is None),
         "first": first,
         "second": second,
         "dispatch": dispatch,
