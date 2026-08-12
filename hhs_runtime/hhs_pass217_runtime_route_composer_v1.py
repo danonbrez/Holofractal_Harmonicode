@@ -7,12 +7,13 @@ composer and the currently connected inherited optimization-authority slice.
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
 
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
-from hhs_runtime.hhs_pass217_checkpoint12_learning_tensor_native_v1 import (
-    build_checkpoint12_inherited_authority_reachability,
+from hhs_runtime.hhs_pass217_checkpoint13_interruption_recovery_v1 import (
+    build_checkpoint13_inherited_authority_reachability,
 )
 
 VERSION = "PASS_217_RUNTIME_ROUTE_COMPOSITION_BINDING_V1"
@@ -103,14 +104,14 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "retrieval_reuse_applicability_facts", "content_reuse_applicability_facts",
         "checkpoint8_applicability_facts", "checkpoint9_applicability_facts",
         "checkpoint10_applicability_facts", "checkpoint11_applicability_facts",
-        "checkpoint12_applicability_facts",
+        "checkpoint12_applicability_facts", "checkpoint13_applicability_facts",
     ):
         summary[key] = dict(record.get(key) or {})
     for key in (
         "checkpoint6_native_callable_map", "checkpoint7_authority_map",
         "checkpoint8_authority_map", "checkpoint9_authority_map",
         "checkpoint10_authority_map", "checkpoint11_authority_map",
-        "checkpoint12_authority_map",
+        "checkpoint12_authority_map", "checkpoint13_authority_map",
     ):
         summary[key] = {str(k): dict(v) for k, v in dict(record.get(key) or {}).items()}
     return summary
@@ -145,6 +146,13 @@ def compose_bound_route_ingress(
     moving_tensor_root_key: Optional[bytes] = None,
     moving_tensor_trusted_anchor: Any = None,
     native_dispatch_authority: Any = None,
+    interruption_recovery_database_path: str | Path | None = None,
+    interruption_recovery_ledger_key: Optional[bytes] = None,
+    interruption_recovery_anchor_state_root_hash216: Optional[str] = None,
+    interruption_recovery_anchor_receipt_hash72: Optional[str] = None,
+    interruption_recovery_protected_store: Any = None,
+    interruption_recovery_native_kernel: Any = None,
+    interruption_recovery_tensor_state: Any = None,
 ) -> Optional[Dict[str, Any]]:
     key = str(source)
     binding = SERVICE_ROUTE_BINDINGS.get(key)
@@ -156,7 +164,7 @@ def compose_bound_route_ingress(
     preflight = execute_surface_preflight(surface, operation=symbol, cache=cache)
     authority_record = None
     if preflight.get("ok"):
-        authority_record = build_checkpoint12_inherited_authority_reachability(
+        authority_record = build_checkpoint13_inherited_authority_reachability(
             preflight, surface, payload_dict,
             semantic_cache=semantic_cache,
             retrieval_runtime=retrieval_runtime,
@@ -182,6 +190,13 @@ def compose_bound_route_ingress(
             moving_tensor_root_key=moving_tensor_root_key,
             moving_tensor_trusted_anchor=moving_tensor_trusted_anchor,
             native_dispatch_authority=native_dispatch_authority,
+            interruption_recovery_database_path=interruption_recovery_database_path,
+            interruption_recovery_ledger_key=interruption_recovery_ledger_key,
+            interruption_recovery_anchor_state_root_hash216=interruption_recovery_anchor_state_root_hash216,
+            interruption_recovery_anchor_receipt_hash72=interruption_recovery_anchor_receipt_hash72,
+            interruption_recovery_protected_store=interruption_recovery_protected_store,
+            interruption_recovery_native_kernel=interruption_recovery_native_kernel,
+            interruption_recovery_tensor_state=interruption_recovery_tensor_state,
         )
     authority_summary = _compact_authority_reachability(authority_record) if authority_record is not None else None
     pipeline = dict((preflight.get("composition_plan") or {}).get("pipeline") or {})
