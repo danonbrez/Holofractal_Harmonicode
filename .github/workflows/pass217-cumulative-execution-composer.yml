@@ -16,12 +16,19 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
       - 'hhs_runtime/pass145/canonical.py'
       - 'hhs_runtime/pass145/database.py'
+      - 'hhs_runtime/pass163/vmrc.py'
       - 'hhs_runtime/pass165/ingestion.py'
+      - 'hhs_runtime/pass174/runtime.py'
+      - 'hhs_runtime/pass174/storage.py'
+      - 'hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'hhs_backend/runtime/pass197_exact_v1.py'
+      - 'hhs_backend/runtime/pass197_state_v1.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
       - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
@@ -37,6 +44,7 @@ on:
       - 'tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py'
       - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
   pull_request:
@@ -54,12 +62,19 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
       - 'hhs_runtime/pass145/canonical.py'
       - 'hhs_runtime/pass145/database.py'
+      - 'hhs_runtime/pass163/vmrc.py'
       - 'hhs_runtime/pass165/ingestion.py'
+      - 'hhs_runtime/pass174/runtime.py'
+      - 'hhs_runtime/pass174/storage.py'
+      - 'hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'hhs_backend/runtime/pass197_exact_v1.py'
+      - 'hhs_backend/runtime/pass197_state_v1.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
       - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
@@ -75,6 +90,7 @@ on:
       - 'tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py'
       - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
 
@@ -94,8 +110,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install targeted test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+      - name: Install targeted test dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography
 
       - name: Compile changed runtime surfaces
         run: |
@@ -111,12 +127,19 @@ jobs:
             hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py \
             hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py \
             hhs_runtime/hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
+            hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
             hhs_runtime/pass145/__init__.py \
             hhs_runtime/pass145/canonical.py \
             hhs_runtime/pass145/database.py \
+            hhs_runtime/pass163/vmrc.py \
             hhs_runtime/pass165/ingestion.py \
+            hhs_runtime/pass174/runtime.py \
+            hhs_runtime/pass174/storage.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
             hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py \
             hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py \
             hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
@@ -132,6 +155,7 @@ jobs:
             tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py \
             tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
+            tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
 
       - name: Run cumulative-composer checkpoint tests
@@ -145,4 +169,5 @@ jobs:
             tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py \
             tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
+            tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
