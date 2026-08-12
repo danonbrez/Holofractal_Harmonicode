@@ -38,6 +38,15 @@ from .transaction import (
     StructuralStoreReceipt,
     TransactionPhase,
 )
+from .staging import (
+    ClosedTransactionVectorVM5184Adapter,
+    NonAuthoritativeVectorStageStore,
+    PASS218_VECTOR_VM5184_STAGER_VERSION,
+    Pass218VectorStageError,
+    Pass218VectorStageStateError,
+    Pass218VectorStageValidationError,
+    VectorVM5184StageCandidate,
+)
 
 __all__ = [
     "CurriculumCursor",
@@ -68,4 +77,11 @@ __all__ = [
     "SourceTransaction",
     "StructuralStoreReceipt",
     "TransactionPhase",
+    "ClosedTransactionVectorVM5184Adapter",
+    "NonAuthoritativeVectorStageStore",
+    "PASS218_VECTOR_VM5184_STAGER_VERSION",
+    "Pass218VectorStageError",
+    "Pass218VectorStageStateError",
+    "Pass218VectorStageValidationError",
+    "VectorVM5184StageCandidate",
 ]
