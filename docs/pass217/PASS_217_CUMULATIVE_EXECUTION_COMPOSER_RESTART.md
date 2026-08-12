@@ -3,33 +3,33 @@
 ## Restart identity
 
 - Workstream: Pass 217 prerequisite — mandatory inherited execution composition and utilization reachability
-- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 13
+- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Closure Hardening Checkpoint 14
 - Branch: `agent/pass217-cumulative-execution-composer`
 - Merge target: `main`
 - Workstream base / merge base: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Current live `main`: `b32b10d6346b84f590d74014181450bfe531374f`
-- Exact validated Checkpoint 13 implementation head: `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c`
+- Exact validated Checkpoint 14 implementation head: `861e921d187bfcf30e33aa41563b3d81c4a35557`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Validation run: `31609115751`
-- Validation job: `94155606002`
+- Validation run: `31611201588`
+- Validation job: `94162678611`
 - Conclusion: `SUCCESS`
-- Exact targeted result: `72 passed, 1 warning in 86.82s`
+- Exact targeted result: `78 passed, 1 warning in 165.62s`
 
-At the exact validated head, the workstream is intentionally diverged from `main`: 83 workstream commits ahead / 114 current-main commits behind, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No rebase or merge was attempted because final current-main integration remains a later bounded closure action.
+At exact validated head `861e921d...`, comparison against current `main @ b32b10d6...` is intentionally `diverged`: **91 workstream commits ahead / 114 current-main commits behind**, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No merge or rebase was attempted because full cumulative closure is still blocked by one required capability gap described below.
 
 The restart-record commit itself is documentation-only. The exact implementation authority remains the validated head above.
 
 ## Binding execution rule
 
-Every required inherited execution capability must resolve mechanically for each bound operation to exactly one of:
+Every REQUIRED inherited execution capability must resolve mechanically for each bound operation to exactly one of:
 
 - `ACTIVE_IN_PATH` — the inherited callable was actually traversed and emitted a concrete witness/root;
 - `NOT_APPLICABLE` — operation facts mechanically prove that no applicable execution domain exists;
 - `EXPLICITLY_SUPERSEDED` — a repository-bound later contract explicitly replaces the authority and proves the replacement.
 
-`OPTIONAL_AVAILABLE` is forbidden for required inherited authority. A partial or malformed applicable context fails closed and is never downgraded to `NOT_APPLICABLE`.
+`OPTIONAL_AVAILABLE` is forbidden for required inherited authority. Partial or malformed applicable context fails closed and is never downgraded to `NOT_APPLICABLE`.
 
-Authoritative indexing, scoring, state identity, replay, tensor routing, interruption recovery, and native dispatch remain exact integer/rational/symbolic authority. Floating-point compatibility or observational projections cannot acquire canonical authority.
+Authoritative indexing, scoring, state identity, replay, tensor routing, interruption recovery, native dispatch, and closure identity remain exact integer/rational/symbolic authority. Floating-point compatibility or observations cannot acquire canonical authority.
 
 ## Frozen validated checkpoint lineage
 
@@ -48,153 +48,211 @@ Authoritative indexing, scoring, state identity, replay, tensor routing, interru
 | 11 | encrypted vector store + snapshot reuse + multimodal alignment | `21f90c9ef5169d27e65e167b41357e24bde116bc` | `31590541609` / `94094229459` |
 | 12 | bounded learning replay + moving tensor routing + native dispatch | `02fc031dedc11cf8ec87d650f5b26f86abda672d` | `31595190819` / `94108894571` |
 | 13 | persistent native interruption recovery | `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c` | `31609115751` / `94155606002` |
+| 14 | Pass042 publication + 25-way bypass negatives + cumulative closure artifact | `861e921d187bfcf30e33aa41563b3d81c4a35557` | `31611201588` / `94162678611` |
 
-Checkpoint 7 still does **not** claim active changed-region incremental tokenization. No repository-native incremental-delta tokenizer has been proven or explicitly superseded; explicit incremental domains therefore continue to fail closed.
+## Checkpoint 14 — closure hardening completed and validated
 
-## Checkpoint 13 — completed and validated
-
-Checkpoint 13 connects the final REQUIRED Pass 215 optimization-profile class:
-
-```text
-interruption_recovery
-```
-
-### Authority selection
-
-The deep scan distinguished three superficially similar mechanisms:
-
-1. Pass 197 snapshot/checkpoint reuse — already connected as `snapshot_reuse`; not sufficient for interrupted native execution authority.
-2. Pass 165 deterministic full learning replay — already connected as `bounded_learning_replay`; not an in-flight native continuation boundary.
-3. Pass 213 Iteration 11 final-evidence pause hook — proves a recovery boundary was crossed but leaves the same `GovernedNativeDispatchAuthority` instance alive, so it is evidence alignment rather than the runtime recovery authority.
-
-The operational recovery authority is the Pass 213 Iteration 10 persistent authenticated dispatch ledger plus governed authority reconstruction:
+Checkpoint 14 implements the structural closure sequence:
 
 ```text
-NativeDispatchLedger.__init__
-→ NativeDispatchLedger.verify_chain
-→ NativeDispatchLedger.latest
-→ DispatchRuntimeState reconstruction
-→ GovernedNativeDispatchAuthority.__init__
-→ GovernedNativeDispatchAuthority.execute
+Pass 042 global surface-map publication
+→ systematic REQUIRED-authority bypass-negative enforcement
+→ terminal cumulative utilization/reachability closure artifact
 ```
 
-Repository-native modules:
+It deliberately does **not** declare universal cumulative closure while the required changed-region incremental-tokenization capability remains unproven.
 
-- `hhs_backend.runtime.hhs_pass213_native_dispatch_ledger_v1`
-- `hhs_backend.runtime.hhs_pass213_native_dispatch_authority_v1`
-- `hhs_backend.runtime.hhs_pass213_native_dispatch_common_v1`
+### 1. Canonical Pass 217 route declarations
 
-The ledger is SQLite WAL with `synchronous=FULL`, authenticated per-event HMAC, Hash216 event roots, ordered Hash72 receipt verification, prior-receipt continuity, and prior/successor-state continuity. Reopening the ledger executes `verify_chain()` before it can become recovery authority.
+New module:
 
-### Exact recovery model
+`hhs_runtime/hhs_pass217_surface_bindings_v1.py`
 
-An applicable recovery domain requires:
-
-- an already-existing persistent dispatch-ledger database;
-- the inherited ledger root key supplied internally, not through user payload;
-- exact anchor state Hash216 and anchor receipt Hash72;
-- a real protected compiled-ROM store;
-- a real `NativeDispatchKernel` loaded against the native C dispatch library;
-- a verified Pass 213 `MovingTensorState`;
-- the exact persisted recovery sequence;
-- exact boundary receipt Hash72, successor-state Hash216, ledger-event Hash216, and tensor Hash216;
-- one complete next `NativeDispatchRequest`;
-- exact uninterrupted-control request root, result root, successor-state root, receipt, and result values.
-
-Recovery does **not** accept the prior process-local `GovernedNativeDispatchAuthority` or prior `DispatchRuntimeState` as continuation input.
-
-Instead, it reopens the durable ledger, validates the whole chain, obtains the latest authenticated receipt, and reconstructs:
+This dependency-light module is now the single declaration authority for the already-bound production routes:
 
 ```text
-next_sequence              = latest.sequence + 1
-current_state_root_hash216 = latest.successor_state_root_hash216
-previous_receipt_hash72    = latest.receipt_hash72
-kernel_policy_hash216      = latest.kernel_policy_hash216
-kernel_measurement_hash216 = latest.kernel_measurement_hash216
-lineage_root_hash216       = latest.lineage_root_hash216
-last_timestamp_ns          = latest.timestamp_ns
-tensor_state               = separately verified exact tensor object
+GET  /api/runtime/services          → runtime.services.list
+GET  /api/runtime/services/status   → runtime.services.status
+POST /api/runtime/services/dispatch → runtime.services.dispatch
 ```
 
-`GovernedNativeDispatchAuthority.__init__` then independently verifies that reconstructed state against the reopened ledger frontier before successor execution.
+Each declaration carries its exact kernel invariants, mutation/persistence policy, cumulative route contract, runtime-composition witnesses, authority-reachability witness, validators, guards, and rejection codes.
 
-### Real interruption/recovery test
+`hhs_runtime/hhs_pass217_runtime_route_composer_v1.py` now derives its bound route surface from this same declaration module rather than maintaining a duplicate route description.
 
-The dedicated positive test creates two deterministic native-dispatch chains:
+### 2. Global Pass 042 surface-map publication
+
+`hhs_runtime/hhs_kernel_conformance_surface_map_v1.py` now imports the Pass 217 declarations into the canonical `_api_route_surfaces()` discovery path.
+
+This means the routes are visible through the same global Pass 042 surface map used by conformance discovery rather than existing only inside the Pass 217 shared-IO preflight path.
+
+Validated publication evidence proves:
+
+- the complete Pass 042 surface map validates;
+- API route count expands from the inherited 21 routes to 24;
+- all 3 Pass 217 routes are globally published;
+- global publication and the production route composer agree on route identity, symbol, invariants, contracts, witnesses, validators, guards, rejection codes, mutation policy, persistence policy, boundedness policy, and declared operation;
+- each route remains kernel-derived.
+
+### 3. Systematic applicable-authority bypass-negative matrix
+
+New closure module:
+
+`hhs_runtime/hhs_pass217_cumulative_closure_v1.py`
+
+`build_required_authority_bypass_negative_matrix()` tests every one of the 25 REQUIRED inherited classes individually.
+
+The matrix constructs an explicitly labeled **synthetic ACTIVE gate fixture** for all 25 classes, verifies that the all-present baseline passes the generic reachability gate, then removes exactly one authority at a time.
+
+Every one of the 25 omission cases must reject with:
 
 ```text
-uninterrupted control:
-sequence 1 → sequence 2
-
-recovery chain:
-sequence 1 → close original ledger handle / discard prior authority frontier
-           → reopen persistent ledger
-           → reconstruct state
-           → sequence 2
+<authority_id>:REJECT_INHERITED_AUTHORITY_DISPOSITION_MISSING
 ```
 
-Both chains use the inherited protected compiled-ROM admission, moving tensor, native C kernel, ledger authority, and identical second `NativeDispatchRequest`.
-
-The recovered second execution is accepted only when all of these equal the uninterrupted control exactly:
-
-- request root Hash216;
-- result root Hash216;
-- successor-state Hash216;
-- receipt Hash72;
-- result values.
-
-The validated native continuation computes exact `(10, 20) → (30,)`, advances the recovered ledger from count `1 → 2`, and verifies the reopened two-event receipt/state chain after the composer closes its recovery handle.
-
-The traversal witness explicitly records:
+The artifact explicitly records:
 
 ```text
-persistent_ledger_reopened=true
-prior_process_authority_reused=false
-prior_process_runtime_state_reused=false
-uninterrupted_control_equal=true
-snapshot_reuse_used=false
-full_history_replay_used=false
-pass213_iteration11_pause_hook_used=false
-canonical_runtime_mutated=true
+synthetic_gate_fixtures_only=true
+synthetic_fixtures_count_as_runtime_traversal_evidence=false
 ```
 
-### Negative boundaries
+These fixtures prove the generic bypass gate mechanics only. They do not replace any Checkpoint 1–13 real runtime traversal witness.
 
-Dedicated Checkpoint 13 tests prove:
+Validated result:
 
-- no recovery domain → mechanically `NOT_APPLICABLE`;
-- recovery on a read-only GET/service-list surface → fail closed before mutation;
-- stale expected boundary state → fail closed against the authenticated persisted frontier;
-- stale-boundary rejection leaves the durable ledger at its original count and chain-valid state.
+```text
+required_authority_count = 25
+omission_case_count = 25
+all_applicable_required_authority_omissions_blocked = true
+```
 
-A missing persisted ledger, ledger key, protected store, native kernel, tensor state, malformed next request, or mismatched uninterrupted control is likewise an applicable-domain failure and cannot be converted to N/A.
+### 4. Frozen-profile coverage
 
-## Checkpoint 13 repository-visible commits
+`build_required_authority_profile_coverage()` compares the connected Checkpoint 13 required-authority set with the frozen Pass 215 benchmark profile inventory.
 
-1. `15573aeaaed1d5b6d7a63497cf4f64512cad0629` — add the persistent interruption-recovery bridge.
-2. `b04b2395e75b0c6b3481170f7bbd16f373b953f3` — wire Checkpoint 13 into the production route composer.
-3. `a33c4f2a908e04e3f40d0bb02f187b499fc44e81` — add true ledger-reopen/control-equality and negative tests.
-4. `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c` — extend the dependency-scoped workflow through Checkpoint 13 and validate the bounded slice; exact validated implementation head.
+Validated result:
 
-## Checkpoint 13 validation
+```text
+profile_required_authority_count   = 25
+connected_required_authority_count = 25
+authority_sets_equal               = true
+missing_connected_authority_ids    = []
+unexpected_connected_authority_ids = []
+optional_profile_classes_promoted_to_core     = false
+experimental_profile_classes_promoted_to_core = false
+```
 
-Hosted validation authority:
+`accelerator_batching` therefore remains OPTIONAL and `gpu_execution` remains EXPERIMENTAL.
 
-- workflow: `Pass 217 Cumulative Execution Composer`;
-- run: `31609115751`;
-- job: `94155606002` (`dependency-scoped-validation`);
-- exact head: `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c`;
-- conclusion: `SUCCESS`;
-- checkout: success;
-- Python/dependencies: success;
-- compile stage: success;
-- cumulative dependency-scoped pytest: `72 passed, 1 warning in 86.82s`.
+### 5. Terminal cumulative closure artifact
 
-The warning remains the existing pytest configuration warning for unknown `asyncio_mode`; it does not affect validation authority.
+`build_cumulative_utilization_reachability_closure()` emits a Hash72-rooted terminal structural closure artifact over:
 
-## Current cumulative required authority scope
+- global Pass 042 publication evidence;
+- the 25-way bypass-negative matrix;
+- exact frozen-profile coverage;
+- known applicable ACTIVE-path gaps.
 
-The production route composer now mechanically disposes these **25 required inherited classes**:
+The structural part now resolves successfully:
+
+```text
+structural_closure_hardening_complete = true
+```
+
+But universal applicable utilization closure is deliberately blocked:
+
+```text
+universal_applicable_utilization_reachability_complete = false
+closure_ready = false
+status = BLOCK_PASS217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE
+blockers = [
+  PASS217_INCREMENTAL_TOKENIZATION_APPLICABLE_ACTIVE_PATH_UNPROVEN
+]
+current_known_applicable_active_gap_authority_ids = [incremental_tokenization]
+```
+
+This is a real closure result, not a validation failure: the artifact proves that the structural gate is complete while refusing to erase the remaining required capability gap.
+
+## Incremental-tokenization boundary — still binding
+
+Checkpoint 7 remains authoritative here.
+
+`hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py` establishes that:
+
+- Pass 165 `MultimodalTokenizer.tokenize` is a deterministic **full-source** tokenizer;
+- no repository-native changed-region/delta tokenizer had been proven at that checkpoint;
+- a full-source tokenizer may not be relabeled as incremental;
+- an explicit incremental-tokenization domain fails closed rather than becoming N/A.
+
+Applicable markers include:
+
+```text
+incremental_tokenization
+parent_source_hash
+parent_token_stream_root
+source_version_parent
+changed_regions
+changed_source_spans
+token_delta
+```
+
+A current repository scan also found Pass 215 Iterations 14–16 autoregressive token/KV continuation. Those surfaces concern append-only model-generation continuation and symbolic logits; they are **not** source changed-region incremental tokenization and must not be misclassified to clear this blocker.
+
+Pass 217 cannot close until one of the following is proven:
+
+1. a repository-native exact incremental source/token-delta callable is found, validated, and connected; or
+2. a later repository-bound contract explicitly supersedes the required authority with an exact replacement and proves that supersession.
+
+## Checkpoint 14 repository-visible commits
+
+1. `2a644170bf3dc9b97fe1fbd75cfb12f9144f93a5` — add canonical Pass 217 production service-route declarations.
+2. `6925d6c83be6402be7e595da9562428270949d36` — unify route composer with the canonical declarations.
+3. `f88f7d41b249c9b56ab6bea3cc697df3046f3dc1` — publish Pass 217 routes through global Pass 042 surface discovery.
+4. `927909a3bdf9253830920b62c220ffd71395138d` — add cumulative closure-hardening authority and Hash72 closure artifact.
+5. `2a28f83b46a79fe1e106261399910b2736b95ef4` — add publication, profile, 25-way bypass-negative, and closure-artifact tests.
+6. `af47d27174df01c85569bb8df1d314e9b6766a49` — first exact closure-hardening workflow candidate.
+7. `861e921d187bfcf30e33aa41563b3d81c4a35557` — add the targeted `fastapi` dependency required by full Pass 042 default service discovery; exact validated implementation head.
+
+## Validation history for Checkpoint 14
+
+### First exact candidate
+
+- head: `af47d27174df01c85569bb8df1d314e9b6766a49`
+- run: `31610775927`
+- job: `94161245286`
+- compile stage: success
+- pytest: `4 failed, 74 passed, 1 warning in 91.98s`
+
+All four failures had the same cause:
+
+```text
+build_surface_map
+→ make_default_service_registry
+→ live_kernel_event_bridge_v1
+→ runtime_ws
+→ ModuleNotFoundError: No module named 'fastapi'
+```
+
+No inherited runtime assertion or bypass-negative assertion failed. Because Checkpoint 14 intentionally exercises full canonical Pass 042 discovery, the repair was to install the missing targeted runtime dependency rather than weaken the test or bypass service discovery.
+
+### Exact repaired candidate
+
+- head: `861e921d187bfcf30e33aa41563b3d81c4a35557`
+- workflow: `Pass 217 Cumulative Execution Composer`
+- run: `31611201588`
+- job: `94162678611`
+- conclusion: `SUCCESS`
+- checkout: success
+- Python/dependencies: success
+- compile stage: success
+- cumulative dependency-scoped pytest: `78 passed, 1 warning in 165.62s`
+
+The warning remains the pre-existing pytest configuration warning for unknown `asyncio_mode`; it does not affect validation authority.
+
+## Current cumulative REQUIRED authority scope
+
+The cumulative composer structurally covers these 25 frozen REQUIRED classes:
 
 ```text
 conformance_decision_cache
@@ -224,50 +282,38 @@ native_dispatch
 interruption_recovery
 ```
 
-An admitted operation has no `OPTIONAL_AVAILABLE` state in this required scope.
-
-## Frozen profile boundary after Checkpoint 13
-
-The Pass 215 frozen profile classifies:
-
-```text
-accelerator_batching = OPTIONAL
-gpu_execution = EXPERIMENTAL
-```
-
-Neither is promoted into mandatory cumulative authority. Checkpoint 13 therefore completes the REQUIRED optimization-class sequence frozen for Pass 215.
-
-This does **not** yet equal full Pass 217 cumulative closure because utilization-reachability closure work remains.
+The structural inventory is exact, and all 25 are individually non-bypassable when applicable. The only class still lacking a proven ACTIVE path for its explicit applicable domain is `incremental_tokenization`.
 
 ## Deliberately not yet claimed
 
-Still pending before final Pass 217 cumulative closure:
+Pass 217 cumulative closure is **not** complete yet.
 
-1. preserve the unresolved incremental-tokenization fail-closed boundary unless a repository-native incremental callable or explicit supersession is proven;
-2. publish the production service-route bindings into global Pass 042 surface-map discovery instead of deriving them only at shared IO ingress;
-3. add systematic bypass-negative tests proving omission of every applicable required inherited authority blocks propagation;
-4. emit a terminal cumulative utilization/reachability closure artifact over all 25 required classes and frozen exceptions;
-5. perform one final dependency-scoped/integration replay gate against the closure candidate;
-6. integrate the workstream with then-current `main`, preserve concurrent Pass 218/219 alignment work, resolve the diverged lineages without discarding either, merge, and verify `main`.
+Still pending:
+
+1. deep-scan and resolve the required `incremental_tokenization` applicable ACTIVE path without relabeling unrelated autoregressive/KV continuation;
+2. if an exact repository-native source delta tokenizer exists, connect it with positive, malformed, stale-parent, changed-span, and full-recompute equality tests;
+3. if no callable exists, determine whether a repository-bound later pass explicitly supersedes the frozen requirement; absence alone is not supersession;
+4. rerun only the impacted cumulative closure gate after that repair;
+5. once the closure artifact changes to `closure_ready=true`, perform the final current-main integration stage while preserving concurrent Pass 218/219 alignment work;
+6. merge and verify `main` only after that final gate.
 
 ## Exact next bounded action
 
-Continue Pass 217 Iteration 5 with **cumulative closure hardening**, beginning with production surface discovery and bypass-negative enforcement:
+Continue Pass 217 Iteration 5 with **incremental-tokenization resolution**:
 
 ```text
-Pass 042 global surface-map publication
-→ systematic applicable-authority bypass negatives
-→ terminal utilization/reachability closure artifact
+deep repository scan for exact changed-region/source-token delta authority
+→ prove callable or explicit supersession
+→ connect ACTIVE traversal / supersession witness
+→ full-tokenization equality + stale-parent negatives
+→ regenerate cumulative closure artifact
 ```
 
-Required process:
+Required constraints:
 
-1. Deep-scan the Pass 042 global surface discovery/registry authority and publish the three already-bound service routes without creating a parallel map.
-2. Prove the global discovery result and shared IO ingress resolve to the same route identities, invariants, guards, mutation/persistence policies, and cumulative-composer witness requirements.
-3. Add parameterized bypass-negative coverage over all applicable required authority classes so omission/corruption of an applicable traversal cannot propagate.
-4. Preserve `NOT_APPLICABLE` only where operation facts mechanically prove absence.
-5. Preserve `accelerator_batching` as OPTIONAL and `gpu_execution` as EXPERIMENTAL.
-6. Do not weaken the incremental-tokenization fail-closed boundary.
-7. Commit and validate the bounded closure-hardening slice before current-main integration.
-
-Do not rerun unchanged historical proof suites solely because `main` advances. Do not merge/rebase the workstream until the cumulative closure artifact and final integration gate are complete.
+- Do not treat Pass 215 autoregressive token/KV continuation as source incremental tokenization.
+- Do not treat Pass 165 full-source tokenization as incremental.
+- Preserve exact source identity, parent-token-stream identity, changed-span coordinates, and deterministic equality with full recomputation.
+- No floating-point canonical authority.
+- Missing, stale, malformed, or incomplete incremental context fails closed.
+- Do not merge/rebase with current `main` until the cumulative closure artifact is genuinely admitted.
