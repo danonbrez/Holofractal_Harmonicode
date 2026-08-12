@@ -12,10 +12,15 @@ on:
       - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass165/ingestion.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
+      - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py'
       - 'native_projects/hhs_ide_workspace/__init__.py'
@@ -24,6 +29,8 @@ on:
       - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
       - 'tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
   pull_request:
@@ -37,10 +44,15 @@ on:
       - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
+      - 'hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass165/ingestion.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
+      - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py'
       - 'native_projects/hhs_ide_workspace/__init__.py'
@@ -49,6 +61,8 @@ on:
       - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
       - 'tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py'
+      - 'tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
 
@@ -81,10 +95,15 @@ jobs:
             hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py \
             hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
             hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py \
+            hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py \
+            hhs_runtime/hhs_pass217_checkpoint9_rom_compression_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
             hhs_runtime/pass165/ingestion.py \
             hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py \
+            hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py \
+            hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
+            hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py \
             hhs_python/runtime/hhs_pass205_continuation_bridge.py \
             native_projects/hhs_bifurcation_calibration/hhs_pass086_deterministic_multimodal_pattern_admission_v1.py \
             native_projects/hhs_ide_workspace/__init__.py \
@@ -93,6 +112,8 @@ jobs:
             tests/test_hhs_inherited_execution_stage_bridge_v1.py \
             tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
             tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py \
+            tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py \
+            tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
 
       - name: Run cumulative-composer checkpoint tests
@@ -103,4 +124,6 @@ jobs:
             tests/test_hhs_inherited_execution_stage_bridge_v1.py \
             tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
             tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py \
+            tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py \
+            tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
