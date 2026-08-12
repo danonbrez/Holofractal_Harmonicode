@@ -1,22 +1,22 @@
-"""Pass 217 Checkpoint 7 content-addressed reuse authority composition.
+"""Pass 217 Checkpoint 7 content-addressed reuse and incremental tokenization.
 
-Checkpoint 7 extends the validated Checkpoint 6 authority slice with the next
-Pass 214/215 classes:
+Checkpoint 7 connects two Pass 214/215 REQUIRED classes:
 
-* content_addressed_source_reuse -> Pass 165 ``MultimodalLearningService.ingest_source``
-  only on an already committed source identity, where the inherited callable
-  takes its content-addressed reuse branch and performs no new canonical commit;
-* incremental_tokenization -> mechanically NOT_APPLICABLE only when no
-  predecessor/delta-tokenization domain exists.  Pass 165's proven tokenizer is
-  deterministic full-source tokenization; it is not relabeled as an incremental
-  tokenizer.  A claimed incremental-tokenization domain therefore fails closed
-  until an inherited incremental callable is proven and connected.
+* ``content_addressed_source_reuse`` -> Pass 165
+  ``MultimodalLearningService.ingest_source`` on an already committed identity;
+* ``incremental_tokenization`` -> the Pass 165 repair extension
+  ``hhs_runtime.pass165.incremental_tokenization.incremental_tokenize``.
 
-No source is newly committed by this preflight bridge.  New/uncommitted source
-identities are mechanically outside the content-reuse domain and remain for the
-actual service handler.  Partial or malformed reuse context fails closed.
+The incremental path is exact and text-domain bounded.  It requires an already
+committed parent source/token stream, derives the smallest whole-line changed
+region, reuses unchanged parent observations, lexically scans only changed child
+lines, rebases shifted suffix observations, recomputes child token identities
+under the child source hash, and proves equality against the original full Pass
+165 tokenizer.  Stale parents, malformed spans, modality/scope changes, partial
+context, or equality failure all fail closed.
+
+No source is newly committed by this preflight bridge.
 """
-
 from __future__ import annotations
 
 import base64
@@ -36,8 +36,9 @@ from hhs_runtime.hhs_pass217_checkpoint6_retrieval_reuse_v1 import (
 )
 
 
-VERSION = "PASS_217_CUMULATIVE_EXECUTION_COMPOSER_CHECKPOINT_7_V1"
+VERSION = "PASS_217_CUMULATIVE_EXECUTION_COMPOSER_CHECKPOINT_7_V2"
 CONTENT_SOURCE_REQUEST_SCHEMA = "HHS_PASS217_CONTENT_ADDRESSED_SOURCE_REUSE_REQUEST_V1"
+INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA = "HHS_PASS217_INCREMENTAL_TOKENIZATION_REQUEST_V1"
 CHECKPOINT7_AUTHORITIES = (
     "content_addressed_source_reuse",
     "incremental_tokenization",
@@ -67,12 +68,26 @@ CHECKPOINT7_AUTHORITY_MAP: Dict[str, Dict[str, Any]] = {
     },
     "incremental_tokenization": {
         "origin_pass": 165,
+        "repair_extension_pass": 217,
+        "module": "hhs_runtime.pass165.incremental_tokenization",
+        "symbol": "incremental_tokenize",
         "reference_module": "hhs_runtime.pass165.ingestion",
         "reference_symbol": "MultimodalTokenizer.tokenize",
-        "reference_callable_role": "deterministic full-source tokenization",
-        "incremental_delta_callable_proven": False,
-        "full_source_tokenizer_may_not_be_reclassified_as_incremental": True,
-        "applicable_without_proven_callable": "FAIL_CLOSED",
+        "callable_role": (
+            "exact changed-line source tokenization with unchanged observation reuse, "
+            "suffix span/path rebasing, and child-source token identity recomputation"
+        ),
+        "incremental_delta_callable_proven": True,
+        "full_source_equivalence_validator": (
+            "hhs_runtime.pass165.incremental_tokenization.validate_incremental_equivalence"
+        ),
+        "changed_region_granularity": "WHOLE_UTF8_TEXT_LINES",
+        "text_modalities_only": True,
+        "parent_committed_receipt_required": True,
+        "parent_token_stream_root_required": True,
+        "declared_changed_spans_must_equal_derived_spans": True,
+        "mutation_permitted_in_preflight": False,
+        "floating_point_authority": False,
     },
 }
 
@@ -111,6 +126,18 @@ def _content_candidates(payload: Optional[Mapping[str, Any]]) -> List[Mapping[st
     return _unique_mappings(found)
 
 
+def _incremental_candidates(payload: Optional[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+    body = dict(payload or {})
+    found: List[Mapping[str, Any]] = []
+    for mapping in _walk_mappings(body):
+        named = mapping.get("incremental_tokenization")
+        if isinstance(named, Mapping):
+            found.append(named)
+        if mapping.get("schema") == INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA:
+            found.append(mapping)
+    return _unique_mappings(found)
+
+
 def _incremental_markers(payload: Optional[Mapping[str, Any]]) -> tuple[str, ...]:
     found: set[str] = set()
     for mapping in _walk_mappings(dict(payload or {})):
@@ -124,9 +151,15 @@ def _incremental_markers(payload: Optional[Mapping[str, Any]]) -> tuple[str, ...
 def content_reuse_context_facts(payload: Optional[Mapping[str, Any]]) -> Dict[str, Any]:
     candidates = _content_candidates(payload)
     exact = [row for row in candidates if row.get("schema") == CONTENT_SOURCE_REQUEST_SCHEMA]
+    incremental_candidates = _incremental_candidates(payload)
+    incremental_exact = [
+        row
+        for row in incremental_candidates
+        if row.get("schema") == INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA
+    ]
     markers = _incremental_markers(payload)
     return {
-        "schema": "HHS_PASS217_CONTENT_REUSE_APPLICABILITY_FACTS_V1",
+        "schema": "HHS_PASS217_CONTENT_REUSE_APPLICABILITY_FACTS_V2",
         "content_source_domain_present": bool(candidates),
         "candidate_bundle_count": len(candidates),
         "exact_request_schema_count": len(exact),
@@ -134,8 +167,14 @@ def content_reuse_context_facts(payload: Optional[Mapping[str, Any]]) -> Dict[st
         "exact_request_unique": len(candidates) == 1 and len(exact) == 1,
         "incremental_tokenization_domain_present": bool(markers),
         "incremental_tokenization_markers": list(markers),
-        "incremental_delta_callable_proven": False,
+        "incremental_candidate_bundle_count": len(incremental_candidates),
+        "incremental_exact_request_schema_count": len(incremental_exact),
+        "incremental_exact_request_unique": (
+            len(incremental_candidates) == 1 and len(incremental_exact) == 1
+        ),
+        "incremental_delta_callable_proven": True,
         "request_schema": CONTENT_SOURCE_REQUEST_SCHEMA,
+        "incremental_request_schema": INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA,
     }
 
 
@@ -161,13 +200,37 @@ def _decode_source_bytes(request: Mapping[str, Any]) -> bytes:
     return raw
 
 
+def _decode_version_bytes(request: Mapping[str, Any], prefix: str) -> bytes:
+    text_key = f"{prefix}_source_text"
+    b64_key = f"{prefix}_source_bytes_b64"
+    has_text = text_key in request
+    has_b64 = b64_key in request
+    if has_text == has_b64:
+        raise ValueError(f"REJECT_INCREMENTAL_{prefix.upper()}_SOURCE_ENCODING_AMBIGUOUS_OR_MISSING")
+    if has_text:
+        text = request.get(text_key)
+        if not isinstance(text, str) or not text:
+            raise ValueError(f"REJECT_INCREMENTAL_{prefix.upper()}_SOURCE_TEXT_INVALID")
+        return text.encode("utf-8")
+    encoded = request.get(b64_key)
+    if not isinstance(encoded, str) or not encoded:
+        raise ValueError(f"REJECT_INCREMENTAL_{prefix.upper()}_SOURCE_BASE64_INVALID")
+    try:
+        raw = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError(f"REJECT_INCREMENTAL_{prefix.upper()}_SOURCE_BASE64_INVALID") from exc
+    if not raw:
+        raise ValueError(f"REJECT_INCREMENTAL_{prefix.upper()}_SOURCE_BYTES_EMPTY")
+    return raw
+
+
 def _active_failure(authority_id: str, reason: str, facts: Mapping[str, Any]) -> Dict[str, Any]:
     info = CHECKPOINT7_AUTHORITY_MAP[authority_id]
     return {
         "observed": False,
         "path": ["kernel_runtime_autocomposer", authority_id],
         "traversal_witness": {
-            "schema": "HHS_PASS217_CHECKPOINT7_TRAVERSAL_FAILURE_V1",
+            "schema": "HHS_PASS217_CHECKPOINT7_TRAVERSAL_FAILURE_V2",
             "status": "REJECT_CHECKPOINT7_INHERITED_TRAVERSAL",
             "authority_id": authority_id,
             "reason": str(reason),
@@ -192,13 +255,7 @@ def observe_content_addressed_source_reuse(
     facts: Optional[Mapping[str, Any]] = None,
     source_reuse_service: Any = None,
 ) -> Dict[str, Any]:
-    """Traverse Pass 165's existing-source reuse branch without new mutation.
-
-    Returns an ACTIVE proof when the source already has a committed Pass 165
-    receipt.  Returns a mechanical NOT_APPLICABLE proof when the exact source
-    hash is absent from the committed store.  Malformed context returns an
-    unobserved ACTIVE proof so cumulative reachability fails closed.
-    """
+    """Traverse Pass 165's existing-source reuse branch without new mutation."""
 
     applicability = dict(facts or content_reuse_context_facts(payload))
     candidates = _content_candidates(payload)
@@ -344,6 +401,173 @@ def observe_content_addressed_source_reuse(
         )
 
 
+def observe_incremental_tokenization(
+    payload: Optional[Mapping[str, Any]],
+    *,
+    facts: Optional[Mapping[str, Any]] = None,
+    source_reuse_service: Any = None,
+) -> Dict[str, Any]:
+    """Traverse exact Pass 165 changed-line incremental tokenization."""
+
+    applicability = dict(facts or content_reuse_context_facts(payload))
+    candidates = _incremental_candidates(payload)
+    if len(candidates) != 1:
+        return _active_failure(
+            "incremental_tokenization",
+            "REJECT_INCREMENTAL_TOKENIZATION_REQUEST_BUNDLE_COUNT",
+            applicability,
+        )
+    request = candidates[0]
+    if request.get("schema") != INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA:
+        return _active_failure(
+            "incremental_tokenization",
+            "REJECT_INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA",
+            applicability,
+        )
+
+    try:
+        from hhs_runtime.pass165.incremental_tokenization import (
+            incremental_tokenize,
+            validate_incremental_equivalence,
+        )
+
+        parent_bytes = _decode_version_bytes(request, "parent")
+        child_bytes = _decode_version_bytes(request, "child")
+        parent_hash = sha256(parent_bytes).hexdigest()
+        child_hash = sha256(child_bytes).hexdigest()
+        if request.get("parent_source_hash") != parent_hash:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PARENT_SOURCE_HASH_MISMATCH")
+        expected_child_hash = request.get("expected_child_source_hash")
+        if expected_child_hash is not None and expected_child_hash != child_hash:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHILD_SOURCE_HASH_MISMATCH")
+        parent_token_root = request.get("parent_token_stream_root")
+        if not isinstance(parent_token_root, str) or len(parent_token_root) != 64:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PARENT_TOKEN_ROOT_REQUIRED")
+        declared_spans = request.get("changed_source_spans")
+        if not isinstance(declared_spans, Mapping):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHANGED_SPANS_REQUIRED")
+        if set(declared_spans) != {"parent", "child"}:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHANGED_SPANS_SCHEMA")
+        for name in ("parent", "child"):
+            span = declared_spans.get(name)
+            if (
+                not isinstance(span, (list, tuple))
+                or len(span) != 2
+                or any(not isinstance(value, int) or isinstance(value, bool) for value in span)
+                or span[0] < 0
+                or span[1] < span[0]
+            ):
+                raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHANGED_SPAN_INVALID")
+
+        provenance = request.get("provenance")
+        authorization_scope = request.get("authorization_scope")
+        declared_media_type = request.get("declared_media_type")
+        if not isinstance(provenance, str) or not provenance:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PROVENANCE_MISSING")
+        if not isinstance(authorization_scope, str) or not authorization_scope:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_AUTHORIZATION_MISSING")
+        if declared_media_type is not None and not isinstance(declared_media_type, str):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_MEDIA_TYPE_INVALID")
+
+        service = _load_source_reuse_service(source_reuse_service)
+        before = service.status()
+        receipt = service.get_ingestion_receipt(parent_hash)
+        if receipt.get("token_root") != parent_token_root:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PARENT_RECEIPT_TOKEN_ROOT_MISMATCH")
+        parent_result = service.analyze(
+            parent_bytes,
+            declared_media_type=declared_media_type,
+            provenance=provenance,
+            authorization_scope=authorization_scope,
+        )
+        if parent_result.source.source_hash != parent_hash:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PARENT_RESULT_HASH_MISMATCH")
+        if parent_result.token_stream_root != parent_token_root:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_STALE_PARENT_TOKEN_ROOT")
+        child_source = service.capture_source(
+            child_bytes,
+            declared_media_type=declared_media_type,
+            provenance=provenance,
+            authorization_scope=authorization_scope,
+        )
+        if child_source.source_hash != child_hash:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHILD_CAPTURE_HASH_MISMATCH")
+        result = incremental_tokenize(
+            parent_result.source,
+            parent_result.tokens,
+            child_source,
+        )
+        if list(result.parent_changed_span) != list(declared_spans["parent"]):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_PARENT_CHANGED_SPAN_MISMATCH")
+        if list(result.child_changed_span) != list(declared_spans["child"]):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHILD_CHANGED_SPAN_MISMATCH")
+        expected_child_root = request.get("expected_child_token_stream_root")
+        if expected_child_root is not None and expected_child_root != result.child_token_stream_root:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_CHILD_TOKEN_ROOT_MISMATCH")
+        equivalence = validate_incremental_equivalence(result, child_source)
+        if equivalence.get("equal") is not True:
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_FULL_REFERENCE_MISMATCH")
+        after = service.status()
+        if before.get("ingestion_epoch") != after.get("ingestion_epoch"):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_MUTATED_INGESTION_EPOCH")
+        if before.get("sources") != after.get("sources"):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_MUTATED_SOURCE_COUNT")
+        if before.get("weights") != after.get("weights"):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_MUTATED_WEIGHT_COUNT")
+        if (before.get("vm81") or {}).get("state_hash72") != (after.get("vm81") or {}).get("state_hash72"):
+            raise ValueError("REJECT_INCREMENTAL_TOKENIZATION_MUTATED_VM81_STATE")
+
+        info = CHECKPOINT7_AUTHORITY_MAP["incremental_tokenization"]
+        return {
+            "observed": True,
+            "path": [
+                "kernel_runtime_autocomposer",
+                "incremental_tokenization",
+                f"{info['module']}.{info['symbol']}",
+                info["full_source_equivalence_validator"],
+            ],
+            "traversal_witness": {
+                "schema": "HHS_PASS217_INCREMENTAL_TOKENIZATION_TRAVERSAL_V1",
+                "status": "ADMIT_INCREMENTAL_TOKENIZATION_TRAVERSAL",
+                "repository_native_callable": dict(info),
+                "parent_source_hash": parent_hash,
+                "child_source_hash": child_hash,
+                "parent_receipt_hash72": receipt.get("receipt_hash72"),
+                "parent_token_stream_root": parent_token_root,
+                "child_token_stream_root": result.child_token_stream_root,
+                "parent_changed_span": list(result.parent_changed_span),
+                "child_changed_span": list(result.child_changed_span),
+                "parent_changed_line_range": list(result.parent_changed_line_range),
+                "child_changed_line_range": list(result.child_changed_line_range),
+                "common_prefix_line_count": result.common_prefix_line_count,
+                "common_suffix_line_count": result.common_suffix_line_count,
+                "reused_parent_observation_count": result.reused_parent_observation_count,
+                "retokenized_child_token_count": result.retokenized_child_token_count,
+                "lexically_scanned_child_bytes": result.lexically_scanned_child_bytes,
+                "child_total_bytes": result.child_total_bytes,
+                "byte_shift_after_change": result.byte_shift_after_change,
+                "line_shift_after_change": result.line_shift_after_change,
+                "incremental_witness_root_hash216": result.witness_root_hash216,
+                "full_reference_token_stream_root": equivalence["full_token_stream_root"],
+                "equivalence_root_hash216": equivalence["equivalence_root_hash216"],
+                "incremental_equals_full_tokenization": True,
+                "unchanged_regions_lexically_rescanned_by_incremental_callable": False,
+                "full_reference_used_for_equality_validation": True,
+                "preflight_mutation_performed": False,
+                "ingestion_epoch_unchanged": True,
+                "vm81_state_unchanged": True,
+                "applicability_facts": applicability,
+            },
+            "witness_root": result.witness_root_hash216,
+        }
+    except Exception as exc:
+        return _active_failure(
+            "incremental_tokenization",
+            f"REJECT_INCREMENTAL_TOKENIZATION_TRAVERSAL:{type(exc).__name__}:{exc}",
+            applicability,
+        )
+
+
 def _import_prior_decisions(
     record: Mapping[str, Any],
     active: Dict[str, Mapping[str, Any]],
@@ -421,10 +645,10 @@ def build_checkpoint7_inherited_authority_reachability(
             ),
         }
     else:
-        active["incremental_tokenization"] = _active_failure(
-            "incremental_tokenization",
-            "REJECT_INCREMENTAL_TOKENIZATION_INHERITED_CALLABLE_UNPROVEN",
-            facts,
+        active["incremental_tokenization"] = observe_incremental_tokenization(
+            payload,
+            facts=facts,
+            source_reuse_service=source_reuse_service,
         )
 
     operation_id = str(preflight.get("operation") or surface.get("symbol") or "operation")
@@ -459,11 +683,13 @@ def build_checkpoint7_inherited_authority_reachability(
 __all__ = [
     "VERSION",
     "CONTENT_SOURCE_REQUEST_SCHEMA",
+    "INCREMENTAL_TOKENIZATION_REQUEST_SCHEMA",
     "CHECKPOINT7_AUTHORITIES",
     "CHECKPOINT7_REQUIRED_AUTHORITIES",
     "CHECKPOINT7_AUTHORITY_MAP",
     "INCREMENTAL_TOKENIZATION_MARKERS",
     "content_reuse_context_facts",
     "observe_content_addressed_source_reuse",
+    "observe_incremental_tokenization",
     "build_checkpoint7_inherited_authority_reachability",
 ]
