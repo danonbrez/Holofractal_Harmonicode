@@ -3,22 +3,21 @@
 ## Restart identity
 
 - Workstream: Pass 217 prerequisite — mandatory inherited execution composition and utilization reachability
-- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 12
+- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 13
 - Branch: `agent/pass217-cumulative-execution-composer`
 - Merge target: `main`
 - Workstream base / merge base: `07e514ac88b786c121d8308135fee19b9d30877d`
 - Current live `main`: `b32b10d6346b84f590d74014181450bfe531374f`
-- Exact validated Checkpoint 12 implementation head: `02fc031dedc11cf8ec87d650f5b26f86abda672d`
-- Post-validation duplicate-cleanup head before this restart update: `1958f92debc3191fc3340a9dbdaa05ca386d1e6e`
+- Exact validated Checkpoint 13 implementation head: `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Validation run: `31595190819`
-- Validation job: `94108894571`
+- Validation run: `31609115751`
+- Validation job: `94155606002`
 - Conclusion: `SUCCESS`
-- Exact targeted result: `67 passed, 1 warning in 80.04s`
+- Exact targeted result: `72 passed, 1 warning in 86.82s`
 
-At the exact validated head, the workstream was intentionally diverged from `main`: 77 commits ahead / 114 behind, merge base `07e514ac88b786c121d8308135fee19b9d30877d`. The immediate post-validation cleanup head is 78 ahead / 114 behind with the same merge base. No merge or rebase was attempted; final current-main integration remains a later bounded closure stage.
+At the exact validated head, the workstream is intentionally diverged from `main`: 83 workstream commits ahead / 114 current-main commits behind, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No rebase or merge was attempted because final current-main integration remains a later bounded closure action.
 
-Commit `1958f92debc3191fc3340a9dbdaa05ca386d1e6e` removes an unused duplicate Checkpoint 12 bridge that coexisted at the validated head. The production route composer and workflow use `hhs_pass217_checkpoint12_learning_tensor_native_v1.py`; the validated implementation authority remains `02fc031d...` and the duplicate cleanup does not replace its semantics.
+The restart-record commit itself is documentation-only. The exact implementation authority remains the validated head above.
 
 ## Binding execution rule
 
@@ -30,7 +29,7 @@ Every required inherited execution capability must resolve mechanically for each
 
 `OPTIONAL_AVAILABLE` is forbidden for required inherited authority. A partial or malformed applicable context fails closed and is never downgraded to `NOT_APPLICABLE`.
 
-Authoritative indexing, scoring, state identity, replay, tensor routing, and dispatch remain exact integer/rational/symbolic authority. Floating-point compatibility or observational projections cannot acquire canonical authority.
+Authoritative indexing, scoring, state identity, replay, tensor routing, interruption recovery, and native dispatch remain exact integer/rational/symbolic authority. Floating-point compatibility or observational projections cannot acquire canonical authority.
 
 ## Frozen validated checkpoint lineage
 
@@ -48,152 +47,154 @@ Authoritative indexing, scoring, state identity, replay, tensor routing, and dis
 | 10 | physical recovery + exact receipt index + SQL context graph | `1ecc8bd2ad873cc800534882dff236466f299687` | `31587507009` / `94084657284` |
 | 11 | encrypted vector store + snapshot reuse + multimodal alignment | `21f90c9ef5169d27e65e167b41357e24bde116bc` | `31590541609` / `94094229459` |
 | 12 | bounded learning replay + moving tensor routing + native dispatch | `02fc031dedc11cf8ec87d650f5b26f86abda672d` | `31595190819` / `94108894571` |
+| 13 | persistent native interruption recovery | `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c` | `31609115751` / `94155606002` |
 
 Checkpoint 7 still does **not** claim active changed-region incremental tokenization. No repository-native incremental-delta tokenizer has been proven or explicitly superseded; explicit incremental domains therefore continue to fail closed.
 
-## Checkpoint 12 — completed and validated
+## Checkpoint 13 — completed and validated
 
-Checkpoint 12 connects:
+Checkpoint 13 connects the final REQUIRED Pass 215 optimization-profile class:
 
 ```text
-bounded_learning_replay
-    → moving_tensor_routing
-    → native_dispatch
+interruption_recovery
 ```
 
-### `bounded_learning_replay`
+### Authority selection
 
-Repository-native operational authority:
+The deep scan distinguished three superficially similar mechanisms:
 
-- origin: Pass 165;
-- module: `hhs_runtime.pass165.ingestion`;
-- callable: `MultimodalLearningService.replay_ingestion`;
-- preflight mutation authority: false.
+1. Pass 197 snapshot/checkpoint reuse — already connected as `snapshot_reuse`; not sufficient for interrupted native execution authority.
+2. Pass 165 deterministic full learning replay — already connected as `bounded_learning_replay`; not an in-flight native continuation boundary.
+3. Pass 213 Iteration 11 final-evidence pause hook — proves a recovery boundary was crossed but leaves the same `GovernedNativeDispatchAuthority` instance alive, so it is evidence alignment rather than the runtime recovery authority.
 
-The inherited replay callable creates a fresh `MultimodalLearningService(vm81=VMRCRuntime())`, re-ingests each committed history record from its exact source bytes, declared media type, provenance, and authorization scope, and requires every replayed receipt Hash72 to equal the recorded receipt. It then requires the fresh replay weight root and VM81 state Hash72 to equal the source service.
+The operational recovery authority is the Pass 213 Iteration 10 persistent authenticated dispatch ledger plus governed authority reconstruction:
 
-Checkpoint 12 requires an applicable request to bind:
+```text
+NativeDispatchLedger.__init__
+→ NativeDispatchLedger.verify_chain
+→ NativeDispatchLedger.latest
+→ DispatchRuntimeState reconstruction
+→ GovernedNativeDispatchAuthority.__init__
+→ GovernedNativeDispatchAuthority.execute
+```
 
-- a positive exact committed-history record count;
-- expected exact weight-root SHA-256;
-- expected VM81 state Hash72.
+Repository-native modules:
 
-`ACTIVE_IN_PATH` requires the actual inherited replay call to return `P165_REPLAY_RECEIPT`, exact record count, identical weight root, identical VM81 state, and `deterministic_replay=true`. The source service status, history, weight root, and VM81 state must remain unchanged by preflight.
+- `hhs_backend.runtime.hhs_pass213_native_dispatch_ledger_v1`
+- `hhs_backend.runtime.hhs_pass213_native_dispatch_authority_v1`
+- `hhs_backend.runtime.hhs_pass213_native_dispatch_common_v1`
 
-The real route test first commits a genuine Pass 165 learning epoch and then proves replay against that committed history.
+The ledger is SQLite WAL with `synchronous=FULL`, authenticated per-event HMAC, Hash216 event roots, ordered Hash72 receipt verification, prior-receipt continuity, and prior/successor-state continuity. Reopening the ledger executes `verify_chain()` before it can become recovery authority.
 
-### `moving_tensor_routing`
+### Exact recovery model
 
-Repository-native operational authority:
+An applicable recovery domain requires:
 
-- origin: Pass 213 Iteration 8;
-- module: `hhs_backend.runtime.hhs_pass213_moving_tensor_v1`;
-- route callable: `MovingTensorState.physical_cell`;
-- inverse callable: `MovingTensorState.logical_position_from_physical`;
-- keyed replay validator: `MovingTensorState.validate_with_key`;
-- preflight mutation authority: false.
+- an already-existing persistent dispatch-ledger database;
+- the inherited ledger root key supplied internally, not through user payload;
+- exact anchor state Hash216 and anchor receipt Hash72;
+- a real protected compiled-ROM store;
+- a real `NativeDispatchKernel` loaded against the native C dispatch library;
+- a verified Pass 213 `MovingTensorState`;
+- the exact persisted recovery sequence;
+- exact boundary receipt Hash72, successor-state Hash216, ledger-event Hash216, and tensor Hash216;
+- one complete next `NativeDispatchRequest`;
+- exact uninterrupted-control request root, result root, successor-state root, receipt, and result values.
 
-The supplied moving tensor must be a real trusted-anchor-bound `MovingTensorState` with its exact Hash216 root, Hash72 receipt, domain size, Lo Shu/Sudoku/Fibonacci coordinate state, closure proof, and root key binding intact.
+Recovery does **not** accept the prior process-local `GovernedNativeDispatchAuthority` or prior `DispatchRuntimeState` as continuation input.
 
-Checkpoint 12 requires:
+Instead, it reopens the durable ledger, validates the whole chain, obtains the latest authenticated receipt, and reconstructs:
 
-- expected tensor root Hash216;
-- expected exact tensor domain size;
-- expected tensor receipt Hash72;
-- 1–256 unique exact logical positions;
-- bound root key and trusted timestamp anchor.
+```text
+next_sequence              = latest.sequence + 1
+current_state_root_hash216 = latest.successor_state_root_hash216
+previous_receipt_hash72    = latest.receipt_hash72
+kernel_policy_hash216      = latest.kernel_policy_hash216
+kernel_measurement_hash216 = latest.kernel_measurement_hash216
+lineage_root_hash216       = latest.lineage_root_hash216
+last_timestamp_ns          = latest.timestamp_ns
+tensor_state               = separately verified exact tensor object
+```
 
-The bridge validates tensor structure and keyed replay, calls `physical_cell` for every requested logical position, calls the inverse route for every physical cell, requires exact round-trip identity and no physical collisions in the requested set, and verifies the tensor mapping is unchanged. `floating_projection()` is never used as routing authority.
+`GovernedNativeDispatchAuthority.__init__` then independently verifies that reconstructed state against the reopened ledger frontier before successor execution.
 
-The validated route exercises positions `0`, `1`, `5183`, and `5184` in the full hydration domain.
+### Real interruption/recovery test
 
-### `native_dispatch`
+The dedicated positive test creates two deterministic native-dispatch chains:
 
-Repository-native operational authority:
+```text
+uninterrupted control:
+sequence 1 → sequence 2
 
-- origin: Pass 213 Iteration 10;
-- authority: `GovernedNativeDispatchAuthority.execute`;
-- kernel bridge: `NativeDispatchKernel.execute`;
-- native source: `native/pass213/hhs_pass213_native_dispatch.c`;
-- protected compiled-ROM source: `NativeProtectedCompiledROMStore`;
-- receipt authority: `NativeDispatchLedger`;
-- canonical mutation authority: true.
+recovery chain:
+sequence 1 → close original ledger handle / discard prior authority frontier
+           → reopen persistent ledger
+           → reconstruct state
+           → sequence 2
+```
 
-This class is not satisfied by a Python descriptor, a compiled-ROM lookup, a benchmark label, or a mocked kernel. The validated traversal constructs and protects a real compiled `hhs.native.u64.add.v1` entry, compiles the inherited native secure-arena and dispatch C sources, loads the C dispatch library through the inherited ctypes kernel, and executes through the governed singleton authority.
+Both chains use the inherited protected compiled-ROM admission, moving tensor, native C kernel, ledger authority, and identical second `NativeDispatchRequest`.
 
-An applicable request must bind:
+The recovered second execution is accepted only when all of these equal the uninterrupted control exactly:
 
-- exact expected ledger count before execution;
-- exact expected parent Hash216 state;
-- a complete inherited `NativeDispatchRequest` mapping;
-- an explicitly supplied governed native-dispatch authority.
+- request root Hash216;
+- result root Hash216;
+- successor-state Hash216;
+- receipt Hash72;
+- result values.
 
-Native dispatch is rejected unless the bound route surface declares `CONTROLLED_RUNTIME_MUTATION`. This prevents a native-dispatch domain from executing through GET/status surfaces.
+The validated native continuation computes exact `(10, 20) → (30,)`, advances the recovered ledger from count `1 → 2`, and verifies the reopened two-event receipt/state chain after the composer closes its recovery handle.
 
-`ACTIVE_IN_PATH` requires:
+The traversal witness explicitly records:
 
-- exact parent/tensor/timestamp/access-set/policy validation by the inherited authority;
-- protected compiled-entry lookup;
-- moving-tensor route commitment;
-- actual `NativeDispatchKernel.execute` C call;
-- exact result root and successor-state root;
-- ledger count advancing exactly once;
-- persisted ledger receipt matching the returned receipt;
-- runtime state advancing to the receipt successor;
-- `singleton_vm81_admission=true`;
-- `physical_route_exposed=false`.
+```text
+persistent_ledger_reopened=true
+prior_process_authority_reused=false
+prior_process_runtime_state_reused=false
+uninterrupted_control_equal=true
+snapshot_reuse_used=false
+full_history_replay_used=false
+pass213_iteration11_pause_hook_used=false
+canonical_runtime_mutated=true
+```
 
-The real test dispatches exact unsigned operands `(7, 9)` and receives native result `(16,)`, with ledger count `0 → 1` and runtime `next_sequence 1 → 2`.
+### Negative boundaries
 
-## Checkpoint 12 negative boundaries
+Dedicated Checkpoint 13 tests prove:
 
-Dedicated tests prove:
+- no recovery domain → mechanically `NOT_APPLICABLE`;
+- recovery on a read-only GET/service-list surface → fail closed before mutation;
+- stale expected boundary state → fail closed against the authenticated persisted frontier;
+- stale-boundary rejection leaves the durable ledger at its original count and chain-valid state.
 
-- no CP12 domains → all three are mechanically `NOT_APPLICABLE`;
-- learning-replay domain without a bound service → fail closed;
-- moving-tensor domain without the root-key/anchor binding → fail closed;
-- native-dispatch domain on the read-only service-list route → fail closed before native execution.
+A missing persisted ledger, ledger key, protected store, native kernel, tensor state, malformed next request, or mismatched uninterrupted control is likewise an applicable-domain failure and cannot be converted to N/A.
 
-No missing binding is converted into N/A.
+## Checkpoint 13 repository-visible commits
 
-## Checkpoint 12 repository-visible commits
+1. `15573aeaaed1d5b6d7a63497cf4f64512cad0629` — add the persistent interruption-recovery bridge.
+2. `b04b2395e75b0c6b3481170f7bbd16f373b953f3` — wire Checkpoint 13 into the production route composer.
+3. `a33c4f2a908e04e3f40d0bb02f187b499fc44e81` — add true ledger-reopen/control-equality and negative tests.
+4. `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c` — extend the dependency-scoped workflow through Checkpoint 13 and validate the bounded slice; exact validated implementation head.
 
-1. `56e33a5d10ba5f5c70c130e97e6d4f50838f6280` — add `hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py`.
-2. `498da8f6b01e1f18f5b0ae5044500acd0cbc3cad` — wire Checkpoint 12 into the production route composer.
-3. `6cce998cfae5705ab591143d5efe247721a2e11b` — add real Checkpoint 12 replay/tensor/native-C traversal and negative tests.
-4. `0b28e1055af78c8ed752d2596ff87bbfd0daeacc` — preserve Checkpoint 11 historical assertions under cumulative expansion.
-5. `02fc031dedc11cf8ec87d650f5b26f86abda672d` — extend the dependency-scoped workflow over the Pass 213 tensor/native stack and validate the complete Checkpoint 12 slice; exact validated implementation head.
-6. `1958f92debc3191fc3340a9dbdaa05ca386d1e6e` — remove an unused duplicate CP12 bridge after validation; production imports remain bound to the validated `learning_tensor_native_v1` bridge.
-
-## Checkpoint 12 validation
+## Checkpoint 13 validation
 
 Hosted validation authority:
 
 - workflow: `Pass 217 Cumulative Execution Composer`;
-- run: `31595190819`;
-- job: `94108894571` (`dependency-scoped-validation`);
-- exact head: `02fc031dedc11cf8ec87d650f5b26f86abda672d`;
+- run: `31609115751`;
+- job: `94155606002` (`dependency-scoped-validation`);
+- exact head: `ce4a6cb9a81a53bfab95ffd4497fba3436e4ba5c`;
 - conclusion: `SUCCESS`;
 - checkout: success;
 - Python/dependencies: success;
 - compile stage: success;
-- cumulative dependency-scoped pytest: `67 passed, 1 warning in 80.04s`.
+- cumulative dependency-scoped pytest: `72 passed, 1 warning in 86.82s`.
 
-The warning is the existing pytest configuration warning for unknown `asyncio_mode`; it does not affect validation authority.
-
-The workflow compiles and/or exercises the CP6–12 cumulative composer plus:
-
-- Pass 165 governed learning/replay;
-- Pass 213 moving tensor, boundary, geometry, closure, and trusted-anchor stack;
-- Pass 213 protected native compiled-ROM and secure-memory stack;
-- Pass 213 governed dispatch common/kernel/ledger/authority surfaces;
-- `native/pass213/hhs_pass213_secure_arena.c`;
-- `native/pass213/hhs_pass213_native_dispatch.c`;
-- dedicated CP12 real native traversal tests.
+The warning remains the existing pytest configuration warning for unknown `asyncio_mode`; it does not affect validation authority.
 
 ## Current cumulative required authority scope
 
-The production route composer now mechanically disposes these **24 required inherited classes**:
+The production route composer now mechanically disposes these **25 required inherited classes**:
 
 ```text
 conformance_decision_cache
@@ -220,49 +221,53 @@ multimodal_cross_alignment
 bounded_learning_replay
 moving_tensor_routing
 native_dispatch
+interruption_recovery
 ```
 
 An admitted operation has no `OPTIONAL_AVAILABLE` state in this required scope.
 
-## Frozen profile boundary after Checkpoint 12
+## Frozen profile boundary after Checkpoint 13
 
-The current Pass 215 benchmark profile still classifies:
+The Pass 215 frozen profile classifies:
 
 ```text
 accelerator_batching = OPTIONAL
-interruption_recovery = REQUIRED
 gpu_execution = EXPERIMENTAL
 ```
 
-Therefore accelerator batching and GPU execution must **not** be promoted into mandatory cumulative runtime authority merely to increase coverage. The only remaining required optimization-class authority after Checkpoint 12 is `interruption_recovery`.
+Neither is promoted into mandatory cumulative authority. Checkpoint 13 therefore completes the REQUIRED optimization-class sequence frozen for Pass 215.
+
+This does **not** yet equal full Pass 217 cumulative closure because utilization-reachability closure work remains.
 
 ## Deliberately not yet claimed
 
-Checkpoint 12 does **not** claim full Pass 217 cumulative closure. Still pending:
+Still pending before final Pass 217 cumulative closure:
 
-1. deep-map and connect the remaining required `interruption_recovery` authority, distinguishing genuine interrupted execution continuation/recovery from CP11 snapshot reuse and ordinary deterministic replay;
-2. preserve the unresolved incremental-tokenization fail-closed boundary unless a repository-native incremental callable or explicit supersession is proven;
-3. publish production service route bindings into global Pass 042 surface-map discovery instead of deriving them only at shared IO ingress;
-4. add systematic bypass-negative tests proving omission of every applicable required inherited authority blocks propagation;
-5. gate Pass 217 closure on complete cumulative utilization reachability;
-6. integrate the workstream with then-current `main`, resolve both lineages without discarding concurrent Pass 218/219 work, merge, and verify `main`.
+1. preserve the unresolved incremental-tokenization fail-closed boundary unless a repository-native incremental callable or explicit supersession is proven;
+2. publish the production service-route bindings into global Pass 042 surface-map discovery instead of deriving them only at shared IO ingress;
+3. add systematic bypass-negative tests proving omission of every applicable required inherited authority blocks propagation;
+4. emit a terminal cumulative utilization/reachability closure artifact over all 25 required classes and frozen exceptions;
+5. perform one final dependency-scoped/integration replay gate against the closure candidate;
+6. integrate the workstream with then-current `main`, preserve concurrent Pass 218/219 alignment work, resolve the diverged lineages without discarding either, merge, and verify `main`.
 
 ## Exact next bounded action
 
-Continue Pass 217 Iteration 5 with the remaining required frozen optimization class:
+Continue Pass 217 Iteration 5 with **cumulative closure hardening**, beginning with production surface discovery and bypass-negative enforcement:
 
 ```text
-interruption_recovery
+Pass 042 global surface-map publication
+→ systematic applicable-authority bypass negatives
+→ terminal utilization/reachability closure artifact
 ```
 
 Required process:
 
-1. Deep-scan exact inherited repository-native interruption/resume callables and contracts.
-2. Distinguish true interrupted-operation continuation from Pass 197 checkpoint reuse, Pass 165 replay, and benchmark-only interruption observations already used elsewhere.
-3. Prefer an authority that captures an in-flight/native/compiled operation boundary and resumes from exact repository-visible state with equality proof.
-4. Implement a real traversal if operational authority is proven; otherwise retain fail-closed applicability rather than inventing an active witness.
-5. Add dedicated negative tests for stale/malformed/missing recovery state.
-6. Run dependency-scoped validation only.
-7. Commit the bounded slice and update this restart record before surface-map/bypass/closure work.
+1. Deep-scan the Pass 042 global surface discovery/registry authority and publish the three already-bound service routes without creating a parallel map.
+2. Prove the global discovery result and shared IO ingress resolve to the same route identities, invariants, guards, mutation/persistence policies, and cumulative-composer witness requirements.
+3. Add parameterized bypass-negative coverage over all applicable required authority classes so omission/corruption of an applicable traversal cannot propagate.
+4. Preserve `NOT_APPLICABLE` only where operation facts mechanically prove absence.
+5. Preserve `accelerator_batching` as OPTIONAL and `gpu_execution` as EXPERIMENTAL.
+6. Do not weaken the incremental-tokenization fail-closed boundary.
+7. Commit and validate the bounded closure-hardening slice before current-main integration.
 
-Do not rerun unchanged historical proof suites solely because `main` advances. Do not merge/rebase the workstream until cumulative closure prerequisites are complete.
+Do not rerun unchanged historical proof suites solely because `main` advances. Do not merge/rebase the workstream until the cumulative closure artifact and final integration gate are complete.
