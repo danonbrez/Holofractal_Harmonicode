@@ -17,8 +17,8 @@ from typing import Any, Dict, Mapping, Optional
 
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
-from hhs_runtime.hhs_pass217_checkpoint8_sparse_delta_v1 import (
-    build_checkpoint8_inherited_authority_reachability,
+from hhs_runtime.hhs_pass217_checkpoint9_rom_compression_v1 import (
+    build_checkpoint9_inherited_authority_reachability,
 )
 
 
@@ -138,6 +138,9 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "checkpoint8_applicability_facts": dict(
             record.get("checkpoint8_applicability_facts") or {}
         ),
+        "checkpoint9_applicability_facts": dict(
+            record.get("checkpoint9_applicability_facts") or {}
+        ),
         "checkpoint6_native_callable_map": {
             str(key): dict(value)
             for key, value in dict(
@@ -151,6 +154,10 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "checkpoint8_authority_map": {
             str(key): dict(value)
             for key, value in dict(record.get("checkpoint8_authority_map") or {}).items()
+        },
+        "checkpoint9_authority_map": {
+            str(key): dict(value)
+            for key, value in dict(record.get("checkpoint9_authority_map") or {}).items()
         },
         "decisions": [
             {
@@ -188,6 +195,11 @@ def compose_bound_route_ingress(
     source_reuse_service: Any = None,
     projection_service: Any = None,
     delta_compiled_tensor: Any = None,
+    parametric_template: Any = None,
+    parametric_base_entry: Any = None,
+    parametric_opening_boundary: Any = None,
+    parametric_validation_key: Optional[bytes] = None,
+    compiled_rom_store: Any = None,
 ) -> Optional[Dict[str, Any]]:
     """Return None for unbound sources; fail closed for bound route preflight."""
 
@@ -205,7 +217,7 @@ def compose_bound_route_ingress(
     )
     authority_record = None
     if preflight.get("ok"):
-        authority_record = build_checkpoint8_inherited_authority_reachability(
+        authority_record = build_checkpoint9_inherited_authority_reachability(
             preflight,
             surface,
             payload_dict,
@@ -215,6 +227,11 @@ def compose_bound_route_ingress(
             source_reuse_service=source_reuse_service,
             projection_service=projection_service,
             delta_compiled_tensor=delta_compiled_tensor,
+            parametric_template=parametric_template,
+            parametric_base_entry=parametric_base_entry,
+            parametric_opening_boundary=parametric_opening_boundary,
+            parametric_validation_key=parametric_validation_key,
+            compiled_rom_store=compiled_rom_store,
         )
     authority_summary = (
         _compact_authority_reachability(authority_record)
