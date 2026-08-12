@@ -17,8 +17,8 @@ from typing import Any, Dict, Mapping, Optional
 
 from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import derive_surface_conformance
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
-from hhs_runtime.hhs_pass217_checkpoint10_recovery_index_graph_v1 import (
-    build_checkpoint10_inherited_authority_reachability,
+from hhs_runtime.hhs_pass217_checkpoint11_storage_snapshot_alignment_v1 import (
+    build_checkpoint11_inherited_authority_reachability,
 )
 
 
@@ -123,32 +123,17 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
         "accepted_state_counts": dict(record.get("accepted_state_counts") or {}),
         "reachability_root_hash72": record.get("reachability_root_hash72"),
         "checkpoint_scope": list(record.get("checkpoint_scope") or []),
-        "continuation_applicability_facts": dict(
-            record.get("continuation_applicability_facts") or {}
-        ),
-        "pattern_cache_applicability_facts": dict(
-            record.get("pattern_cache_applicability_facts") or {}
-        ),
-        "retrieval_reuse_applicability_facts": dict(
-            record.get("retrieval_reuse_applicability_facts") or {}
-        ),
-        "content_reuse_applicability_facts": dict(
-            record.get("content_reuse_applicability_facts") or {}
-        ),
-        "checkpoint8_applicability_facts": dict(
-            record.get("checkpoint8_applicability_facts") or {}
-        ),
-        "checkpoint9_applicability_facts": dict(
-            record.get("checkpoint9_applicability_facts") or {}
-        ),
-        "checkpoint10_applicability_facts": dict(
-            record.get("checkpoint10_applicability_facts") or {}
-        ),
+        "continuation_applicability_facts": dict(record.get("continuation_applicability_facts") or {}),
+        "pattern_cache_applicability_facts": dict(record.get("pattern_cache_applicability_facts") or {}),
+        "retrieval_reuse_applicability_facts": dict(record.get("retrieval_reuse_applicability_facts") or {}),
+        "content_reuse_applicability_facts": dict(record.get("content_reuse_applicability_facts") or {}),
+        "checkpoint8_applicability_facts": dict(record.get("checkpoint8_applicability_facts") or {}),
+        "checkpoint9_applicability_facts": dict(record.get("checkpoint9_applicability_facts") or {}),
+        "checkpoint10_applicability_facts": dict(record.get("checkpoint10_applicability_facts") or {}),
+        "checkpoint11_applicability_facts": dict(record.get("checkpoint11_applicability_facts") or {}),
         "checkpoint6_native_callable_map": {
             str(key): dict(value)
-            for key, value in dict(
-                record.get("checkpoint6_native_callable_map") or {}
-            ).items()
+            for key, value in dict(record.get("checkpoint6_native_callable_map") or {}).items()
         },
         "checkpoint7_authority_map": {
             str(key): dict(value)
@@ -166,6 +151,10 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
             str(key): dict(value)
             for key, value in dict(record.get("checkpoint10_authority_map") or {}).items()
         },
+        "checkpoint11_authority_map": {
+            str(key): dict(value)
+            for key, value in dict(record.get("checkpoint11_authority_map") or {}).items()
+        },
         "decisions": [
             {
                 "authority_id": row.get("authority_id"),
@@ -173,16 +162,10 @@ def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]
                 "accepted": bool(row.get("accepted")),
                 "reasons": list(row.get("reasons") or []),
                 "witness_root": (row.get("proof") or {}).get("witness_root"),
-                "traversal_witness": (row.get("proof") or {}).get(
-                    "traversal_witness"
-                ),
-                "mechanically_proven": (row.get("proof") or {}).get(
-                    "mechanically_proven"
-                ),
+                "traversal_witness": (row.get("proof") or {}).get("traversal_witness"),
+                "mechanically_proven": (row.get("proof") or {}).get("mechanically_proven"),
                 "predicate": (row.get("proof") or {}).get("predicate"),
-                "observed_facts": dict(
-                    (row.get("proof") or {}).get("observed_facts") or {}
-                ),
+                "observed_facts": dict((row.get("proof") or {}).get("observed_facts") or {}),
             }
             for row in record.get("decisions", []) or []
         ],
@@ -212,6 +195,9 @@ def compose_bound_route_ingress(
     receipt_vector_index: Any = None,
     receipt_vector_receipt: Any = None,
     sql_context_db: Any = None,
+    encrypted_vector_store: Any = None,
+    snapshot_reuse_runtime: Any = None,
+    multimodal_alignment_service: Any = None,
 ) -> Optional[Dict[str, Any]]:
     """Return None for unbound sources; fail closed for bound route preflight."""
 
@@ -222,14 +208,10 @@ def compose_bound_route_ingress(
     payload_dict = dict(payload or {})
     surface = build_bound_route_surface(key)
     symbol = str(binding["symbol"])
-    preflight = execute_surface_preflight(
-        surface,
-        operation=symbol,
-        cache=cache,
-    )
+    preflight = execute_surface_preflight(surface, operation=symbol, cache=cache)
     authority_record = None
     if preflight.get("ok"):
-        authority_record = build_checkpoint10_inherited_authority_reachability(
+        authority_record = build_checkpoint11_inherited_authority_reachability(
             preflight,
             surface,
             payload_dict,
@@ -249,30 +231,19 @@ def compose_bound_route_ingress(
             receipt_vector_index=receipt_vector_index,
             receipt_vector_receipt=receipt_vector_receipt,
             sql_context_db=sql_context_db,
+            encrypted_vector_store=encrypted_vector_store,
+            snapshot_reuse_runtime=snapshot_reuse_runtime,
+            multimodal_alignment_service=multimodal_alignment_service,
         )
-    authority_summary = (
-        _compact_authority_reachability(authority_record)
-        if authority_record is not None
-        else None
-    )
-    pipeline = dict(
-        (preflight.get("composition_plan") or {}).get("pipeline") or {}
-    )
-    witness = dict(
-        (preflight.get("composition_plan") or {}).get("witness") or {}
-    )
-    admitted = bool(preflight.get("ok")) and bool(
-        authority_record and authority_record.get("admitted")
-    )
+    authority_summary = _compact_authority_reachability(authority_record) if authority_record is not None else None
+    pipeline = dict((preflight.get("composition_plan") or {}).get("pipeline") or {})
+    witness = dict((preflight.get("composition_plan") or {}).get("witness") or {})
+    admitted = bool(preflight.get("ok")) and bool(authority_record and authority_record.get("admitted"))
     decision = {
         "schema": SCHEMA,
         "version": VERSION,
         "ok": admitted,
-        "status": (
-            "ADMIT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION"
-            if admitted
-            else "REJECT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION"
-        ),
+        "status": "ADMIT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION" if admitted else "REJECT_RUNTIME_ROUTE_CUMULATIVE_EXECUTION",
         "source": key,
         "route": binding["route"],
         "surface_id": surface.get("surface_id"),
@@ -283,9 +254,7 @@ def compose_bound_route_ingress(
         "pipeline_root_hash72": pipeline.get("pipeline_root_hash72"),
         "composition_root_hash72": witness.get("composition_root_hash72"),
         "cache_hit": bool((preflight.get("cache") or {}).get("cache_hit")),
-        "expanded_metadata_persisted": bool(
-            preflight.get("expanded_metadata_persisted")
-        ),
+        "expanded_metadata_persisted": bool(preflight.get("expanded_metadata_persisted")),
         "kernel_runtime_composition_admitted": bool(preflight.get("ok")),
         "inherited_execution_authority_reachability": authority_summary,
         "propagation_allowed": admitted,
@@ -299,21 +268,9 @@ def compose_bound_route_ingress(
 
 def runtime_route_composer_self_test() -> Dict[str, Any]:
     cache: Dict[str, Dict[str, Any]] = {}
-    first = compose_bound_route_ingress(
-        "api.runtime.services",
-        {"method": "GET"},
-        cache=cache,
-    )
-    second = compose_bound_route_ingress(
-        "api.runtime.services",
-        {"method": "GET"},
-        cache=cache,
-    )
-    dispatch = compose_bound_route_ingress(
-        "api.runtime.services.dispatch",
-        {"service": "example"},
-        cache=cache,
-    )
+    first = compose_bound_route_ingress("api.runtime.services", {"method": "GET"}, cache=cache)
+    second = compose_bound_route_ingress("api.runtime.services", {"method": "GET"}, cache=cache)
+    dispatch = compose_bound_route_ingress("api.runtime.services.dispatch", {"service": "example"}, cache=cache)
     return {
         "schema": "HHS_PASS217_RUNTIME_ROUTE_COMPOSER_SELF_TEST_V1",
         "version": VERSION,
