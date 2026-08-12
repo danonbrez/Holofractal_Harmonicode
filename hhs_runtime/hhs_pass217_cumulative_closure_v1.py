@@ -1,20 +1,18 @@
-"""Pass 217 cumulative utilization/reachability closure hardening.
+"""Pass 217 cumulative utilization/reachability closure authority.
 
-This module closes the structural gaps after Checkpoint 13 without inventing
-runtime capability evidence.  It proves three separate properties:
+This module proves four independent closure properties:
 
-1. the production service routes are published through the canonical Pass 042
-   global surface-map discovery path;
-2. the cumulative reachability gate rejects omission of every REQUIRED inherited
-   authority when that authority is modeled as applicable/ACTIVE;
-3. the connected authority inventory exactly matches the frozen Pass 215 REQUIRED
-   optimization classes (excluding reference-only comparison controls).
+1. production service routes are published through canonical Pass 042 global
+   surface discovery;
+2. omission of every REQUIRED inherited authority is individually fail-closed;
+3. the connected authority inventory exactly matches the frozen Pass 215
+   REQUIRED optimization classes;
+4. the previously unresolved ``incremental_tokenization`` class now has a real
+   repository-native changed-region callable, committed-parent binding, exact
+   changed-span verification, and full Pass 165 tokenizer equality validation.
 
-The bypass matrix uses explicitly labeled synthetic ACTIVE proofs only to test the
-fail-closed gate mechanics.  Those fixtures are never counted as runtime traversal
-evidence.  Full Pass 217 cumulative utilization closure remains blocked while the
-required ``incremental_tokenization`` class has no repository-native incremental
-delta callable or explicit later-pass supersession for an applicable delta domain.
+Synthetic ACTIVE proofs in the bypass matrix test only the generic disposition
+gate and are never treated as runtime traversal evidence.
 """
 from __future__ import annotations
 
@@ -36,7 +34,7 @@ from hhs_runtime.hhs_pass217_surface_bindings_v1 import (
     service_route_surface_declarations,
 )
 
-VERSION = "PASS_217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE_V1"
+VERSION = "PASS_217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE_V2"
 SCHEMA = "HHS_PASS217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE_V1"
 BYPASS_SCHEMA = "HHS_PASS217_REQUIRED_AUTHORITY_BYPASS_NEGATIVE_MATRIX_V1"
 PUBLICATION_SCHEMA = "HHS_PASS217_GLOBAL_SURFACE_PUBLICATION_EVIDENCE_V1"
@@ -85,12 +83,7 @@ def _active_gate_fixture(authority_id: str) -> Dict[str, Any]:
 
 
 def build_required_authority_bypass_negative_matrix() -> Dict[str, Any]:
-    """Prove every applicable REQUIRED authority is individually non-bypassable.
-
-    The all-ACTIVE baseline and omission variants are synthetic gate fixtures.
-    They validate only the generic disposition gate; Checkpoints 1-13 remain the
-    authority for real repository-native traversal evidence.
-    """
+    """Prove every applicable REQUIRED authority is individually non-bypassable."""
 
     required = tuple(CHECKPOINT13_REQUIRED_AUTHORITIES)
     active = {authority_id: _active_gate_fixture(authority_id) for authority_id in required}
@@ -217,6 +210,21 @@ def build_global_surface_publication_evidence() -> Dict[str, Any]:
     }
 
 
+def _incremental_active_contract_proven(incremental: Mapping[str, Any]) -> bool:
+    return bool(
+        incremental.get("incremental_delta_callable_proven") is True
+        and incremental.get("module") == "hhs_runtime.pass165.incremental_tokenization"
+        and incremental.get("symbol") == "incremental_tokenize"
+        and incremental.get("full_source_equivalence_validator")
+        == "hhs_runtime.pass165.incremental_tokenization.validate_incremental_equivalence"
+        and incremental.get("parent_committed_receipt_required") is True
+        and incremental.get("parent_token_stream_root_required") is True
+        and incremental.get("declared_changed_spans_must_equal_derived_spans") is True
+        and incremental.get("mutation_permitted_in_preflight") is False
+        and incremental.get("floating_point_authority") is False
+    )
+
+
 def build_required_authority_profile_coverage() -> Dict[str, Any]:
     inventory = load_inherited_core_authorities()
     profile_required = tuple(
@@ -226,6 +234,7 @@ def build_required_authority_profile_coverage() -> Dict[str, Any]:
     profile_set = set(profile_required)
     connected_set = set(connected_required)
     incremental = dict(CHECKPOINT7_AUTHORITY_MAP["incremental_tokenization"])
+    incremental_proven = _incremental_active_contract_proven(incremental)
     return {
         "schema": PROFILE_SCHEMA,
         "version": VERSION,
@@ -244,9 +253,10 @@ def build_required_authority_profile_coverage() -> Dict[str, Any]:
             "experimental_profile_classes_promoted_to_core"
         ),
         "incremental_tokenization": incremental,
-        "incremental_tokenization_applicable_active_path_proven": bool(
-            incremental.get("incremental_delta_callable_proven")
-        ),
+        "incremental_tokenization_applicable_active_path_proven": incremental_proven,
+        "incremental_tokenization_full_reference_equivalence_required": True,
+        "incremental_tokenization_parent_commit_binding_required": True,
+        "incremental_tokenization_declared_span_verification_required": True,
     }
 
 
