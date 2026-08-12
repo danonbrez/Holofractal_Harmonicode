@@ -164,7 +164,7 @@ def test_source_checksum_mismatch_is_rejected_and_buffer_is_purged() -> None:
 
 def test_tampered_hash216_quarantines_source_and_never_commits() -> None:
     candidate = _candidate()
-    candidate["hash216"] = candidate["hash216"][:-1] + "x"
+    candidate["hash216"] = candidate["hash216"][:-1] + " "
     store = DeterministicStructuralStore()
     tx = SourceTransaction.begin(candidate, _source(), store=store)
     with pytest.raises(Pass218TransactionValidationError, match="P218_CANDIDATE_HASH216_INVALID"):
