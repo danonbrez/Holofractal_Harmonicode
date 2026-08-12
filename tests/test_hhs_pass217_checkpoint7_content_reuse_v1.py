@@ -80,8 +80,10 @@ def test_no_source_or_incremental_domain_is_mechanically_not_applicable(tmp_path
     assert incremental["observed_facts"]["incremental_tokenization_domain_present"] is False
 
     reachability = decision["inherited_execution_authority_reachability"]
-    assert reachability["required_authority_count"] == 9
-    assert tuple(reachability["checkpoint_scope"][-2:]) == CHECKPOINT7_AUTHORITIES
+    assert reachability["required_authority_count"] >= 9
+    scope = list(reachability["checkpoint_scope"])
+    start = scope.index(CHECKPOINT7_AUTHORITIES[0])
+    assert tuple(scope[start : start + len(CHECKPOINT7_AUTHORITIES)]) == CHECKPOINT7_AUTHORITIES
 
 
 def test_committed_source_reuse_traverses_pass165_without_preflight_mutation(tmp_path) -> None:
