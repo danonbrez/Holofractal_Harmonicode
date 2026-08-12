@@ -1,17 +1,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from hashlib import sha256
 
 import pytest
 
 import hhs_runtime.hhs_io_gateway_v1 as io_module
+from hhs_backend.runtime import hhs_pass215_iteration4_exact_linear_execution_v1 as i4
 from hhs_runtime.hhs_io_gateway_v1 import HHSIOGateway, HHSIOGatewayError
+from hhs_runtime.hhs_pass217_checkpoint8_sparse_delta_v1 import (
+    CHECKPOINT8_AUTHORITIES,
+    LINEAR_DELTA_REQUEST_SCHEMA,
+    SPARSE_PROJECTION_REQUEST_SCHEMA,
+)
 from hhs_runtime.hhs_pass217_runtime_route_composer_v1 import (
     SERVICE_ROUTE_BINDINGS,
     build_bound_route_surface,
     compose_bound_route_ingress,
 )
 from hhs_runtime.hhs_semantic_composition_cache_v1 import SemanticCompositionCache
+from hhs_runtime.pass165.ingestion import MultimodalLearningService
 
 
 def test_all_service_routes_are_kernel_derived() -> None:
@@ -63,6 +71,8 @@ def test_route_composer_reuses_inherited_cache_layers_but_still_traverses(tmp_pa
     assert authorities["semantic_composition_cache"]["state"] == "ACTIVE_IN_PATH"
     assert authorities["semantic_composition_cache"]["traversal_witness"]["cache_hit"] is True
     assert authorities["predictive_continuation_cache"]["state"] == "NOT_APPLICABLE"
+    for authority_id in CHECKPOINT8_AUTHORITIES:
+        assert authorities[authority_id]["state"] == "NOT_APPLICABLE"
     assert compose_bound_route_ingress("unbound.source", {}, cache=cache) is None
 
 
@@ -194,3 +204,150 @@ def test_receipt_backed_get_reuse_cannot_skip_current_route_composer(monkeypatch
     assert second["kernel_runtime_route_composition_preflight"]["composition_root_hash72"] == "composition-2"
     assert second["kernel_runtime_route_composition_preflight"]["cache_hit"] is True
     assert events.index("composer:1") < events.index("runtime")
+
+
+def _checkpoint8_compiled_tensor():
+    source_sha256 = sha256(b"pass217-checkpoint8-route-fixture").hexdigest()
+    descriptor_root = i4.hash216(
+        "pass217-checkpoint8-route-descriptor",
+        i4.canonical_bytes({"source_sha256": source_sha256, "shape": [64, 2]}),
+    )
+    row0 = (
+        i4.CompiledBlock(1, 1, tuple(1 for _ in range(32))),
+        i4.CompiledBlock(1, 2, tuple(2 for _ in range(32))),
+    )
+    row1 = (
+        i4.CompiledBlock(-1, 2, tuple((index % 7) - 3 for index in range(32))),
+        i4.CompiledBlock(3, 4, tuple((index % 5) - 2 for index in range(32))),
+    )
+    return i4.CompiledTensor(
+        name="pass217.checkpoint8.route.weight",
+        ne0=64,
+        ne1=2,
+        source_sha256=source_sha256,
+        source_bytes=72,
+        blocks_per_row=2,
+        rows=(row0, row1),
+        descriptor_root_hash216=descriptor_root,
+    )
+
+
+def test_checkpoint8_real_route_traverses_projection_frontier_and_residual(tmp_path) -> None:
+    compiled = _checkpoint8_compiled_tensor()
+    parent_input = tuple(((index * 7) % 19) - 9 for index in range(compiled.ne0))
+    parent_output, _ = i4.execute_factored(
+        compiled,
+        parent_input,
+        descriptors_are_reused=True,
+    )
+    child_input = list(parent_input)
+    child_input[3] += 5
+    child_input[40] -= 7
+    delta = {
+        "schema": LINEAR_DELTA_REQUEST_SCHEMA,
+        "tensor_name": compiled.name,
+        "descriptor_root_hash216": compiled.descriptor_root_hash216,
+        "source_sha256": compiled.source_sha256,
+        "parent_input": list(parent_input),
+        "parent_output": [
+            {"numerator": numerator, "denominator": denominator}
+            for numerator, denominator in parent_output
+        ],
+        "child_input": child_input,
+    }
+    projection = {
+        "schema": SPARSE_PROJECTION_REQUEST_SCHEMA,
+        "source_text": "alpha beta alpha beta dependency frontier residual",
+        "declared_media_type": "TEXT",
+        "provenance": "pass217-checkpoint8",
+        "authorization_scope": "P217_CHECKPOINT8",
+    }
+
+    decision = compose_bound_route_ingress(
+        "api.runtime.services.dispatch",
+        {
+            "service": "example",
+            "sparse_5184_projection": projection,
+            "linear_continuation_delta": delta,
+        },
+        cache={},
+        semantic_cache=SemanticCompositionCache(tmp_path / "checkpoint8-semantic.json"),
+        projection_service=MultimodalLearningService(),
+        delta_compiled_tensor=compiled,
+    )
+    assert decision is not None and decision["ok"] is True
+    decisions = {
+        row["authority_id"]: row
+        for row in decision["inherited_execution_authority_reachability"]["decisions"]
+    }
+    for authority_id in CHECKPOINT8_AUTHORITIES:
+        assert decisions[authority_id]["state"] == "ACTIVE_IN_PATH"
+        assert decisions[authority_id]["witness_root"]
+
+    projection_witness = decisions["sparse_5184_projection"]["traversal_witness"]
+    assert projection_witness["projection_coordinates"] == 5184
+    assert projection_witness["projection_bytes"] == 648
+    assert projection_witness["projection_popcount"] > 0
+
+    frontier = decisions["dependency_complete_frontier"]["traversal_witness"]
+    residual = decisions["residual_only_processing"]["traversal_witness"]
+    assert frontier["changed_input_coordinates"] == [3, 40]
+    assert frontier["affected_q4_block_frontier"] == [0, 1]
+    assert frontier["dependency_complete"] is True
+    assert residual["delta_weight_products"] == compiled.ne1 * 2
+    assert residual["full_output_rows_recomputed"] == 0
+    assert residual["continuation_output_rows_updated"] == compiled.ne1
+    assert residual["residual_only"] is True
+
+    full_child, _ = i4.execute_factored(
+        compiled,
+        tuple(child_input),
+        descriptors_are_reused=True,
+    )
+    expected_root = i4.output_root(compiled.name, child_input, full_child)
+    assert decisions["residual_only_processing"]["witness_root"] == expected_root
+    assert (
+        decisions["dependency_complete_frontier"]["witness_root"]
+        == decisions["residual_only_processing"]["witness_root"]
+    )
+
+
+def test_checkpoint8_applicable_delta_without_tensor_fails_closed(tmp_path) -> None:
+    compiled = _checkpoint8_compiled_tensor()
+    parent_input = tuple(0 for _ in range(compiled.ne0))
+    parent_output, _ = i4.execute_factored(
+        compiled,
+        parent_input,
+        descriptors_are_reused=True,
+    )
+    child_input = list(parent_input)
+    child_input[1] = 1
+    delta = {
+        "schema": LINEAR_DELTA_REQUEST_SCHEMA,
+        "tensor_name": compiled.name,
+        "descriptor_root_hash216": compiled.descriptor_root_hash216,
+        "source_sha256": compiled.source_sha256,
+        "parent_input": list(parent_input),
+        "parent_output": [
+            {"numerator": numerator, "denominator": denominator}
+            for numerator, denominator in parent_output
+        ],
+        "child_input": child_input,
+    }
+    decision = compose_bound_route_ingress(
+        "api.runtime.services.dispatch",
+        {"service": "example", "linear_continuation_delta": delta},
+        cache={},
+        semantic_cache=SemanticCompositionCache(tmp_path / "checkpoint8-fail.json"),
+    )
+    assert decision is not None and decision["ok"] is False
+    decisions = {
+        row["authority_id"]: row
+        for row in decision["inherited_execution_authority_reachability"]["decisions"]
+    }
+    for authority_id in ("dependency_complete_frontier", "residual_only_processing"):
+        assert decisions[authority_id]["state"] is None
+        assert "REJECT_ACTIVE_AUTHORITY_NOT_OBSERVED" in decisions[authority_id]["reasons"]
+        assert "REJECT_PASS215_LINEAR_DELTA_COMPILED_TENSOR_MISSING" in decisions[
+            authority_id
+        ]["traversal_witness"]["reason"]
