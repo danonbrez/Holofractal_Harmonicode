@@ -5,12 +5,14 @@ on:
     branches:
       - agent/pass217-cumulative-execution-composer
     paths:
+      - 'hhs_runtime/hhs_kernel_conformance_surface_map_v1.py'
       - 'hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py'
       - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
       - 'hhs_runtime/hhs_cumulative_execution_authority_v1.py'
       - 'hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py'
       - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_receipt_vector_index_v1.py'
+      - 'hhs_runtime/hhs_pass217_surface_bindings_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
@@ -19,6 +21,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint13_interruption_recovery_v1.py'
+      - 'hhs_runtime/hhs_pass217_cumulative_closure_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
@@ -64,18 +67,21 @@ on:
       - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'tests/test_hhs_pass217_checkpoint13_interruption_recovery_v1.py'
+      - 'tests/test_hhs_pass217_cumulative_closure_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
   pull_request:
     branches:
       - main
     paths:
+      - 'hhs_runtime/hhs_kernel_conformance_surface_map_v1.py'
       - 'hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py'
       - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
       - 'hhs_runtime/hhs_cumulative_execution_authority_v1.py'
       - 'hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py'
       - 'hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py'
       - 'hhs_runtime/hhs_receipt_vector_index_v1.py'
+      - 'hhs_runtime/hhs_pass217_surface_bindings_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py'
@@ -84,6 +90,7 @@ on:
       - 'hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'hhs_runtime/hhs_pass217_checkpoint13_interruption_recovery_v1.py'
+      - 'hhs_runtime/hhs_pass217_cumulative_closure_v1.py'
       - 'hhs_runtime/hhs_pass217_runtime_route_composer_v1.py'
       - 'hhs_runtime/hhs_io_gateway_v1.py'
       - 'hhs_runtime/pass145/__init__.py'
@@ -129,6 +136,7 @@ on:
       - 'tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py'
       - 'tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py'
       - 'tests/test_hhs_pass217_checkpoint13_interruption_recovery_v1.py'
+      - 'tests/test_hhs_pass217_cumulative_closure_v1.py'
       - 'tests/test_hhs_pass217_runtime_route_composer_v1.py'
       - '.github/workflows/pass217-cumulative-execution-composer.yml'
 
@@ -154,12 +162,14 @@ jobs:
       - name: Compile changed runtime surfaces
         run: |
           python -m py_compile \
+            hhs_runtime/hhs_kernel_conformance_surface_map_v1.py \
             hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
             hhs_runtime/hhs_lazy_service_registry_v1.py \
             hhs_runtime/hhs_cumulative_execution_authority_v1.py \
             hhs_runtime/hhs_inherited_execution_stage_bridge_v1.py \
             hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py \
             hhs_runtime/hhs_receipt_vector_index_v1.py \
+            hhs_runtime/hhs_pass217_surface_bindings_v1.py \
             hhs_runtime/hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
             hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py \
             hhs_runtime/hhs_pass217_checkpoint8_sparse_delta_v1.py \
@@ -168,6 +178,7 @@ jobs:
             hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             hhs_runtime/hhs_pass217_checkpoint13_interruption_recovery_v1.py \
+            hhs_runtime/hhs_pass217_cumulative_closure_v1.py \
             hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
             hhs_runtime/pass145/__init__.py \
@@ -211,6 +222,7 @@ jobs:
             tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             tests/test_hhs_pass217_checkpoint13_interruption_recovery_v1.py \
+            tests/test_hhs_pass217_cumulative_closure_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
 
       - name: Run cumulative-composer checkpoint tests
@@ -227,4 +239,5 @@ jobs:
             tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
             tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
             tests/test_hhs_pass217_checkpoint13_interruption_recovery_v1.py \
+            tests/test_hhs_pass217_cumulative_closure_v1.py \
             tests/test_hhs_pass217_runtime_route_composer_v1.py
