@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - agent/pass217-cumulative-execution-composer
+      - main
     paths:
       - '.github/workflows/pass217-current-main-integration.yml'
       - 'hhs_runtime/**'
@@ -57,7 +58,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install integration-scoped dependencies
-        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi
+        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi uvicorn
 
       - name: Compile integration surfaces
         run: |
