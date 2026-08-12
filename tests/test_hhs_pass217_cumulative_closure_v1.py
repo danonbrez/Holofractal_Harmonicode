@@ -101,8 +101,18 @@ def test_required_profile_inventory_exactly_matches_connected_checkpoint13_scope
     assert profile["unexpected_connected_authority_ids"] == []
     assert profile["optional_profile_classes_promoted_to_core"] is False
     assert profile["experimental_profile_classes_promoted_to_core"] is False
-    assert profile["incremental_tokenization"]["incremental_delta_callable_proven"] is False
-    assert profile["incremental_tokenization_applicable_active_path_proven"] is False
+    incremental = profile["incremental_tokenization"]
+    assert incremental["incremental_delta_callable_proven"] is True
+    assert incremental["module"] == "hhs_runtime.pass165.incremental_tokenization"
+    assert incremental["symbol"] == "incremental_tokenize"
+    assert incremental["parent_committed_receipt_required"] is True
+    assert incremental["parent_token_stream_root_required"] is True
+    assert incremental["declared_changed_spans_must_equal_derived_spans"] is True
+    assert incremental["floating_point_authority"] is False
+    assert profile["incremental_tokenization_applicable_active_path_proven"] is True
+    assert profile["incremental_tokenization_full_reference_equivalence_required"] is True
+    assert profile["incremental_tokenization_parent_commit_binding_required"] is True
+    assert profile["incremental_tokenization_declared_span_verification_required"] is True
 
 
 def test_surface_publication_evidence_is_complete() -> None:
@@ -115,19 +125,18 @@ def test_surface_publication_evidence_is_complete() -> None:
     assert all(row["ok"] for row in evidence["routes"])
 
 
-def test_terminal_closure_artifact_is_structurally_hardened_but_honestly_blocked() -> None:
+def test_terminal_closure_artifact_is_admitted_after_incremental_authority_connection() -> None:
     closure = build_cumulative_utilization_reachability_closure()
     assert closure["required_authority_count"] == 25
     assert closure["structural_closure_hardening_complete"] is True
-    assert closure["universal_applicable_utilization_reachability_complete"] is False
-    assert closure["closure_ready"] is False
-    assert closure["status"] == "BLOCK_PASS217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE"
-    assert closure["blockers"] == [
-        "PASS217_INCREMENTAL_TOKENIZATION_APPLICABLE_ACTIVE_PATH_UNPROVEN"
-    ]
-    assert closure["current_known_applicable_active_gap_authority_ids"] == [
-        "incremental_tokenization"
-    ]
+    assert closure["universal_applicable_utilization_reachability_complete"] is True
+    assert closure["closure_ready"] is True
+    assert closure["status"] == "ADMIT_PASS217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE"
+    assert closure["blockers"] == []
+    assert closure["current_known_applicable_active_gap_authority_ids"] == []
     assert closure["synthetic_bypass_fixtures_are_runtime_evidence"] is False
+    assert closure["required_authority_profile_coverage"][
+        "incremental_tokenization_applicable_active_path_proven"
+    ] is True
     assert isinstance(closure["closure_root_hash72"], str)
     assert len(closure["closure_root_hash72"]) == 72
