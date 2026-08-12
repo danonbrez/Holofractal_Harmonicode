@@ -4,6 +4,11 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.hhs_wordnet_relation_enforcer_v1 import load_wordnet_relations
@@ -11,7 +16,7 @@ from hhs_runtime.pass218 import CurriculumCursor, CurriculumSource, CurriculumSt
 
 
 def main() -> None:
-    repository_root = Path(__file__).resolve().parents[1]
+    repository_root = REPOSITORY_ROOT
     relation_db = load_wordnet_relations(
         [repository_root / "hhs_runtime" / "WordnetAntonyms.csv"], require_all=False
     )
