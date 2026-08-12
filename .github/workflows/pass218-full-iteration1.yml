@@ -1,0 +1,43 @@
+name: Pass 218 Full Iteration 1
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration1-genesis-curriculum
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  genesis-curriculum:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependency
+        run: python -m pip install --upgrade pytest
+      - name: Compile Pass 218 Iteration 1
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile tools/pass218_iteration1_evidence.py
+      - name: Enforce no authoritative float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py'))
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [node for node in ast.walk(tree) if isinstance(node, ast.Constant) and isinstance(node.value, float)]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I1_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+      - name: Run Iteration 1 tests
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+      - name: Preserve inherited Pass 218 reference crawler evidence
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+      - name: Emit repository-native Iteration 1 evidence
+        run: python tools/pass218_iteration1_evidence.py
