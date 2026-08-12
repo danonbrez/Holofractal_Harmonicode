@@ -3,37 +3,36 @@
 ## Restart identity
 
 - Workstream: Pass 217 prerequisite — mandatory inherited execution composition and utilization reachability
-- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 11
+- Current iteration: Pass 217 Iteration 5 — Cumulative Execution Composer, Checkpoint 12
 - Branch: `agent/pass217-cumulative-execution-composer`
 - Merge target: `main`
 - Workstream base / merge base: `07e514ac88b786c121d8308135fee19b9d30877d`
-- Current live `main` observed before this restart update: `b32b10d6346b84f590d74014181450bfe531374f`
-- Latest validated implementation head before this restart-record update: `21f90c9ef5169d27e65e167b41357e24bde116bc`
+- Current live `main`: `b32b10d6346b84f590d74014181450bfe531374f`
+- Exact validated Checkpoint 12 implementation head: `02fc031dedc11cf8ec87d650f5b26f86abda672d`
+- Post-validation duplicate-cleanup head before this restart update: `1958f92debc3191fc3340a9dbdaa05ca386d1e6e`
 - Validation workflow: `Pass 217 Cumulative Execution Composer`
-- Checkpoint 11 validation run: `31590541609`
-- Checkpoint 11 validation job: `94094229459`
+- Validation run: `31595190819`
+- Validation job: `94108894571`
 - Conclusion: `SUCCESS`
-- Exact targeted result: `62 passed, 1 warning in 72.59s`
+- Exact targeted result: `67 passed, 1 warning in 80.04s`
 
-At validated implementation head `21f90c9e...`, comparison against `main @ b32b10d6...` is intentionally `diverged`: 70 workstream commits ahead and 114 current-main commits behind, with merge base still `07e514ac88b786c121d8308135fee19b9d30877d`. No rebase or merge was attempted because final integration remains a later bounded action after cumulative closure prerequisites.
+At the exact validated head, the workstream was intentionally diverged from `main`: 77 commits ahead / 114 behind, merge base `07e514ac88b786c121d8308135fee19b9d30877d`. The immediate post-validation cleanup head is 78 ahead / 114 behind with the same merge base. No merge or rebase was attempted; final current-main integration remains a later bounded closure stage.
 
-The restart-record commit itself is documentation-only. The exact implementation authority remains the validated head above.
+Commit `1958f92debc3191fc3340a9dbdaa05ca386d1e6e` removes an unused duplicate Checkpoint 12 bridge that coexisted at the validated head. The production route composer and workflow use `hhs_pass217_checkpoint12_learning_tensor_native_v1.py`; the validated implementation authority remains `02fc031d...` and the duplicate cleanup does not replace its semantics.
 
 ## Binding execution rule
 
-Inherited capabilities are not considered utilized merely because their modules are present or importable. Every required inherited execution capability must resolve mechanically for the current operation to exactly one of:
+Every required inherited execution capability must resolve mechanically for each bound operation to exactly one of:
 
-- `ACTIVE_IN_PATH` — the inherited callable actually traversed and emitted a concrete witness/root;
-- `NOT_APPLICABLE` — operation facts mechanically prove the capability has no applicable execution domain;
-- `EXPLICITLY_SUPERSEDED` — a repository-bound later-pass contract explicitly replaces the authority and proves the replacement.
+- `ACTIVE_IN_PATH` — the inherited callable was actually traversed and emitted a concrete witness/root;
+- `NOT_APPLICABLE` — operation facts mechanically prove that no applicable execution domain exists;
+- `EXPLICITLY_SUPERSEDED` — a repository-bound later contract explicitly replaces the authority and proves the replacement.
 
-`OPTIONAL_AVAILABLE` is forbidden for inherited core execution capabilities. Partial or malformed applicability context fails closed; it is not downgraded to `NOT_APPLICABLE`.
+`OPTIONAL_AVAILABLE` is forbidden for required inherited authority. A partial or malformed applicable context fails closed and is never downgraded to `NOT_APPLICABLE`.
 
-Authoritative indexing, scoring, selection, state identity, and replay remain exact integer/rational/symbolic authority. Floating-point compatibility projections cannot acquire canonical authority.
+Authoritative indexing, scoring, state identity, replay, tensor routing, and dispatch remain exact integer/rational/symbolic authority. Floating-point compatibility or observational projections cannot acquire canonical authority.
 
-## Preserved validated checkpoint lineage
-
-The following exact implementation checkpoints remain frozen evidence and are not rerun merely because later checkpoints extend the cumulative scope:
+## Frozen validated checkpoint lineage
 
 | Checkpoint | Connected slice | Exact validated head | Run / job |
 |---|---|---|---|
@@ -44,196 +43,157 @@ The following exact implementation checkpoints remain frozen evidence and are no
 | 5 | real Pass111 predictive continuation | `d2004ebcf54ad20736d7d1a3fea05af55c8a634c` | `31356115574` / `93356017137` |
 | 6 | pattern cache + vector shortlist + compatibility + delta rerank | `bea55a0a481aaee56e7253f656cb26faceddc8b0` | `31486763564` / `93763831800` |
 | 7 | Pass165 content-addressed reuse + incremental-tokenization boundary | `71a827d55da4774031ec493a93d97ba5e051790e` | `31493307824` / `93784769816` |
-| 8 | sparse 5184 projection + dependency frontier + residual processing | `c6055c4258ce193ae089258a9fbfc5b6ec172309` | `31556155721` / `93988896468` |
+| 8 | sparse 5184 projection + dependency frontier + residual-only processing | `c6055c4258ce193ae089258a9fbfc5b6ec172309` | `31556155721` / `93988896468` |
 | 9 | parametric admission + compiled ROM + generator/exception compression | `221ffc516ba1be6b4a840da875a62ae118645761` | `31556963841` / `93991247483` |
 | 10 | physical recovery + exact receipt index + SQL context graph | `1ecc8bd2ad873cc800534882dff236466f299687` | `31587507009` / `94084657284` |
 | 11 | encrypted vector store + snapshot reuse + multimodal alignment | `21f90c9ef5169d27e65e167b41357e24bde116bc` | `31590541609` / `94094229459` |
+| 12 | bounded learning replay + moving tensor routing + native dispatch | `02fc031dedc11cf8ec87d650f5b26f86abda672d` | `31595190819` / `94108894571` |
 
-Checkpoint 7 deliberately does **not** claim active incremental changed-region tokenization. No proven repository-native incremental-delta tokenizer has yet displaced that fail-closed boundary.
+Checkpoint 7 still does **not** claim active changed-region incremental tokenization. No repository-native incremental-delta tokenizer has been proven or explicitly superseded; explicit incremental domains therefore continue to fail closed.
 
-## Checkpoint 11 — completed and validated
+## Checkpoint 12 — completed and validated
 
-Checkpoint 11 connects:
+Checkpoint 12 connects:
 
 ```text
-encrypted_vector_store
-    → snapshot_reuse
-    → multimodal_cross_alignment
+bounded_learning_replay
+    → moving_tensor_routing
+    → native_dispatch
 ```
 
-The mapping follows the repository’s inherited authority structure rather than the Pass 214 benchmark wrapper. Pass 194 explicitly inherits Pass 174 encrypted persistent vector storage, Pass 163 snapshot/VMRC foundations, and Pass 165 multimodal ingress. Pass 214 freezes the optimization-class witness definitions but explicitly does not become production runtime authority.
-
-### `encrypted_vector_store`
-
-Repository-native operational authority:
-
-- origin: Pass 174;
-- later contract alignment: Pass 194;
-- persistent module: `hhs_runtime.pass174.storage`;
-- persistent class: `PersistentEncryptedVectorStore`;
-- inherited retrieval implementation: `EncryptedVectorStore.retrieve`;
-- persistence/status authority: `PersistentEncryptedVectorStore.storage_status`;
-- authenticated encryption: AES-GCM.
-
-Checkpoint 11 does not treat plain vector presence as storage authority. An applicable request must bind:
-
-- operation key;
-- expected persisted object identity;
-- expected vector-store root;
-- expected recovered snapshot SHA-256 byte projection;
-- expected output Hash72;
-- legacy-foundation root;
-- Genesis identity.
-
-`ACTIVE_IN_PATH` requires a real retrieval from an already-populated persistent store and verifies:
-
-- pre-retrieval store root equals the expected root;
-- persistent status reports `AES_GCM`;
-- `plaintext_persisted` is false;
-- the retrieved object identity matches;
-- output Hash72 matches;
-- decrypted 648-byte snapshot SHA-256 matches;
-- embedded Hash216 array verifies;
-- store root, object count, and quarantine count are unchanged after retrieval.
-
-The bridge therefore proves authenticated encrypted **reuse**, not merely encrypted object creation.
-
-### `snapshot_reuse`
-
-Repository-native operational authority:
-
-- origin: Pass 197;
-- inherited snapshot foundation: Pass 163;
-- later contract alignment: Pass 194;
-- module: `hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1`;
-- callable: `Pass197ABHydrationCalibration.run(..., resume=True)`.
-
-Pass 214 freezes `snapshot_reuse` specifically through the Pass 197 checkpoint/resume path. Checkpoint 11 therefore requires a **pre-existing authenticated checkpoint** before traversal; constructing a new serialization object does not qualify.
-
-An applicable request binds:
-
-- exact calibration configuration;
-- expected configuration Hash72;
-- expected checkpoint Hash72;
-- expected completed-state count;
-- expected state-root Hash72;
-- expected report Hash72.
-
-The bridge reads the existing checkpoint bytes, validates schema/config/checkpoint identity, calls the real inherited resume path, and admits `ACTIVE_IN_PATH` only when:
-
-- completed states are actually present before the call;
-- the resumed run reproduces the expected state/report roots;
-- the report closes successfully;
-- the checkpoint bytes remain exactly unchanged;
-- checkpoint identity and completed-state set remain unchanged.
-
-The dedicated real-route test primes a minimal exact one-state Pass 197 calibration, then routes the second invocation through the cumulative composer and proves the completed state is reused rather than recomputed into a new checkpoint identity.
-
-### `multimodal_cross_alignment`
+### `bounded_learning_replay`
 
 Repository-native operational authority:
 
 - origin: Pass 165;
-- later contract alignment: Pass 194;
 - module: `hhs_runtime.pass165.ingestion`;
-- callable: `MultimodalLearningService.analyze`;
-- shared projection callable: `MultimodalLearningService.project_5184`.
+- callable: `MultimodalLearningService.replay_ingestion`;
+- preflight mutation authority: false.
 
-Pass 214 freezes `multimodal_cross_alignment` as the common multimodal corpus traversing the Pass 165 ingress/projection system. Checkpoint 11 binds that concept conservatively: **common exact projection geometry does not imply semantic equivalence between modalities**.
+The inherited replay callable creates a fresh `MultimodalLearningService(vm81=VMRCRuntime())`, re-ingests each committed history record from its exact source bytes, declared media type, provenance, and authorization scope, and requires every replayed receipt Hash72 to equal the recorded receipt. It then requires the fresh replay weight root and VM81 state Hash72 to equal the source service.
 
-An applicable request must contain 2–8 exact source payloads with:
+Checkpoint 12 requires an applicable request to bind:
 
-- declared modality;
-- base64 source bytes;
-- expected source SHA-256;
-- common authorization scope;
-- provenance.
+- a positive exact committed-history record count;
+- expected exact weight-root SHA-256;
+- expected VM81 state Hash72.
 
-At least two distinct declared and detected modalities are required. Each source traverses the actual Pass 165 `analyze` path. `ACTIVE_IN_PATH` requires:
+`ACTIVE_IN_PATH` requires the actual inherited replay call to return `P165_REPLAY_RECEIPT`, exact record count, identical weight root, identical VM81 state, and `deterministic_replay=true`. The source service status, history, weight root, and VM81 state must remain unchanged by preflight.
 
-- exact source SHA preservation;
-- declared/detected modality agreement;
-- common registered projector version;
-- exact `81 × 64 = 5,184` coordinate geometry;
-- exact 648-byte projection per source;
-- concrete per-source projection Hash72;
-- unchanged service state before/after preflight.
+The real route test first commits a genuine Pass 165 learning epoch and then proves replay against that committed history.
 
-The witness explicitly records:
+### `moving_tensor_routing`
 
-```text
-semantic_equivalence_claimed = false
-alignment_claim = COMMON_EXACT_PROJECTION_GEOMETRY_ONLY
-```
+Repository-native operational authority:
 
-The real-route test uses TEXT and IMAGE inputs. A TEXT/TEXT-only alignment request is rejected because it does not establish a cross-modality domain.
+- origin: Pass 213 Iteration 8;
+- module: `hhs_backend.runtime.hhs_pass213_moving_tensor_v1`;
+- route callable: `MovingTensorState.physical_cell`;
+- inverse callable: `MovingTensorState.logical_position_from_physical`;
+- keyed replay validator: `MovingTensorState.validate_with_key`;
+- preflight mutation authority: false.
 
-## Mechanical applicability and fail-closed behavior
+The supplied moving tensor must be a real trusted-anchor-bound `MovingTensorState` with its exact Hash216 root, Hash72 receipt, domain size, Lo Shu/Sudoku/Fibonacci coordinate state, closure proof, and root key binding intact.
 
-For every Checkpoint 11 authority:
+Checkpoint 12 requires:
 
-- absent exact request domain → mechanically `NOT_APPLICABLE`;
-- malformed request → applicable and fail closed;
-- applicable request without the required bound runtime → fail closed;
-- missing runtime bindings are never converted into `NOT_APPLICABLE`;
-- no benchmark observation is promoted to runtime authority merely because Pass 214 measured it.
+- expected tensor root Hash216;
+- expected exact tensor domain size;
+- expected tensor receipt Hash72;
+- 1–256 unique exact logical positions;
+- bound root key and trusted timestamp anchor.
 
-Dedicated negative tests cover missing encrypted-store runtime, missing snapshot runtime, missing multimodal service, and a nominal alignment request lacking distinct modalities.
+The bridge validates tensor structure and keyed replay, calls `physical_cell` for every requested logical position, calls the inverse route for every physical cell, requires exact round-trip identity and no physical collisions in the requested set, and verifies the tensor mapping is unchanged. `floating_projection()` is never used as routing authority.
 
-## Checkpoint 11 repository-visible commits
+The validated route exercises positions `0`, `1`, `5183`, and `5184` in the full hydration domain.
 
-1. `4735a0880aae33e05079eae9001213e77b7fb8d1` — add `hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py`.
-2. `30e4c9241beb03693d1715ebd2808ed7f05ce0a6` — wire Checkpoint 11 into the production route composer.
-3. `eb8a78997207b037c35661d5e0930ddcc3c2c5b9` — add dedicated Checkpoint 11 real traversal and negative tests.
-4. `a15179c4c9ae05eda3e55d5e7a11338a91eb5ec2` — preserve Checkpoint 10 assertions under the larger cumulative scope.
-5. `21f90c9ef5169d27e65e167b41357e24bde116bc` — extend the dependency-scoped workflow over Pass 163/165/174/197 and validate the complete Checkpoint 11 slice; exact validated implementation head.
+### `native_dispatch`
 
-## Checkpoint 11 validation
+Repository-native operational authority:
+
+- origin: Pass 213 Iteration 10;
+- authority: `GovernedNativeDispatchAuthority.execute`;
+- kernel bridge: `NativeDispatchKernel.execute`;
+- native source: `native/pass213/hhs_pass213_native_dispatch.c`;
+- protected compiled-ROM source: `NativeProtectedCompiledROMStore`;
+- receipt authority: `NativeDispatchLedger`;
+- canonical mutation authority: true.
+
+This class is not satisfied by a Python descriptor, a compiled-ROM lookup, a benchmark label, or a mocked kernel. The validated traversal constructs and protects a real compiled `hhs.native.u64.add.v1` entry, compiles the inherited native secure-arena and dispatch C sources, loads the C dispatch library through the inherited ctypes kernel, and executes through the governed singleton authority.
+
+An applicable request must bind:
+
+- exact expected ledger count before execution;
+- exact expected parent Hash216 state;
+- a complete inherited `NativeDispatchRequest` mapping;
+- an explicitly supplied governed native-dispatch authority.
+
+Native dispatch is rejected unless the bound route surface declares `CONTROLLED_RUNTIME_MUTATION`. This prevents a native-dispatch domain from executing through GET/status surfaces.
+
+`ACTIVE_IN_PATH` requires:
+
+- exact parent/tensor/timestamp/access-set/policy validation by the inherited authority;
+- protected compiled-entry lookup;
+- moving-tensor route commitment;
+- actual `NativeDispatchKernel.execute` C call;
+- exact result root and successor-state root;
+- ledger count advancing exactly once;
+- persisted ledger receipt matching the returned receipt;
+- runtime state advancing to the receipt successor;
+- `singleton_vm81_admission=true`;
+- `physical_route_exposed=false`.
+
+The real test dispatches exact unsigned operands `(7, 9)` and receives native result `(16,)`, with ledger count `0 → 1` and runtime `next_sequence 1 → 2`.
+
+## Checkpoint 12 negative boundaries
+
+Dedicated tests prove:
+
+- no CP12 domains → all three are mechanically `NOT_APPLICABLE`;
+- learning-replay domain without a bound service → fail closed;
+- moving-tensor domain without the root-key/anchor binding → fail closed;
+- native-dispatch domain on the read-only service-list route → fail closed before native execution.
+
+No missing binding is converted into N/A.
+
+## Checkpoint 12 repository-visible commits
+
+1. `56e33a5d10ba5f5c70c130e97e6d4f50838f6280` — add `hhs_runtime/hhs_pass217_checkpoint12_learning_tensor_native_v1.py`.
+2. `498da8f6b01e1f18f5b0ae5044500acd0cbc3cad` — wire Checkpoint 12 into the production route composer.
+3. `6cce998cfae5705ab591143d5efe247721a2e11b` — add real Checkpoint 12 replay/tensor/native-C traversal and negative tests.
+4. `0b28e1055af78c8ed752d2596ff87bbfd0daeacc` — preserve Checkpoint 11 historical assertions under cumulative expansion.
+5. `02fc031dedc11cf8ec87d650f5b26f86abda672d` — extend the dependency-scoped workflow over the Pass 213 tensor/native stack and validate the complete Checkpoint 12 slice; exact validated implementation head.
+6. `1958f92debc3191fc3340a9dbdaa05ca386d1e6e` — remove an unused duplicate CP12 bridge after validation; production imports remain bound to the validated `learning_tensor_native_v1` bridge.
+
+## Checkpoint 12 validation
 
 Hosted validation authority:
 
 - workflow: `Pass 217 Cumulative Execution Composer`;
-- run: `31590541609`;
-- job: `94094229459` (`dependency-scoped-validation`);
-- exact head: `21f90c9ef5169d27e65e167b41357e24bde116bc`;
+- run: `31595190819`;
+- job: `94108894571` (`dependency-scoped-validation`);
+- exact head: `02fc031dedc11cf8ec87d650f5b26f86abda672d`;
 - conclusion: `SUCCESS`;
-- exact checkout: success;
-- Python setup: success;
-- targeted dependency installation (`pytest`, `cryptography`): success;
+- checkout: success;
+- Python/dependencies: success;
 - compile stage: success;
-- cumulative dependency-scoped pytest: `62 passed, 1 warning in 72.59s`.
+- cumulative dependency-scoped pytest: `67 passed, 1 warning in 80.04s`.
 
 The warning is the existing pytest configuration warning for unknown `asyncio_mode`; it does not affect validation authority.
 
-The workflow directly compiles and/or exercises:
+The workflow compiles and/or exercises the CP6–12 cumulative composer plus:
 
-- Checkpoint 11 bridge and route composer;
-- Pass 163 VMRC snapshot geometry;
-- Pass 165 multimodal ingress/projection;
-- Pass 174 encrypted vector runtime and persistent SQLite/AES-GCM store;
-- Pass 197 exact checkpoint/resume calibration runtime;
-- dedicated Checkpoint 11 tests;
-- all preserved cumulative composer tests through Checkpoint 10.
+- Pass 165 governed learning/replay;
+- Pass 213 moving tensor, boundary, geometry, closure, and trusted-anchor stack;
+- Pass 213 protected native compiled-ROM and secure-memory stack;
+- Pass 213 governed dispatch common/kernel/ledger/authority surfaces;
+- `native/pass213/hhs_pass213_secure_arena.c`;
+- `native/pass213/hhs_pass213_native_dispatch.c`;
+- dedicated CP12 real native traversal tests.
 
-## Files added or modified by Checkpoint 11
+## Current cumulative required authority scope
 
-Added:
-
-- `hhs_runtime/hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py`
-- `tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py`
-
-Modified:
-
-- `hhs_runtime/hhs_pass217_runtime_route_composer_v1.py`
-- `tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py`
-- `.github/workflows/pass217-cumulative-execution-composer.yml`
-- this restart record
-
-Pass 163, Pass 165, Pass 174, and Pass 197 operational runtime sources were exercised as inherited authority and were not rewritten for Checkpoint 11.
-
-## Current cumulative connected authority scope
-
-The production route composer now mechanically disposes these **21 required inherited classes** on every bound service-route operation:
+The production route composer now mechanically disposes these **24 required inherited classes**:
 
 ```text
 conformance_decision_cache
@@ -257,47 +217,52 @@ sql_context_graph
 encrypted_vector_store
 snapshot_reuse
 multimodal_cross_alignment
+bounded_learning_replay
+moving_tensor_routing
+native_dispatch
 ```
 
 An admitted operation has no `OPTIONAL_AVAILABLE` state in this required scope.
 
+## Frozen profile boundary after Checkpoint 12
+
+The current Pass 215 benchmark profile still classifies:
+
+```text
+accelerator_batching = OPTIONAL
+interruption_recovery = REQUIRED
+gpu_execution = EXPERIMENTAL
+```
+
+Therefore accelerator batching and GPU execution must **not** be promoted into mandatory cumulative runtime authority merely to increase coverage. The only remaining required optimization-class authority after Checkpoint 12 is `interruption_recovery`.
+
 ## Deliberately not yet claimed
 
-Checkpoint 11 does **not** claim full Pass 217 cumulative closure. Still pending:
+Checkpoint 12 does **not** claim full Pass 217 cumulative closure. Still pending:
 
-- `bounded_learning_replay`;
-- `moving_tensor_routing`;
-- `native_dispatch`;
-- required `interruption_recovery` after the remaining execution slice;
-- preserve the unresolved incremental-tokenization fail-closed boundary unless a repository-native callable or explicit supersession is proven;
-- publish the production service bindings into global Pass 042 discovery rather than deriving them only at the shared IO boundary;
-- systematic bypass-negative validation proving every applicable required authority blocks execution when omitted;
-- final cumulative utilization reachability gate;
-- current-main lineage integration, conflict resolution without discarding either lineage, merge, and verification on `main`.
-
-The frozen Pass 215 profile classifies `accelerator_batching` as `OPTIONAL` and `gpu_execution` as `EXPERIMENTAL`. Neither is promoted into mandatory cumulative runtime authority merely because Pass 214 includes accelerator batching in its ablation census.
+1. deep-map and connect the remaining required `interruption_recovery` authority, distinguishing genuine interrupted execution continuation/recovery from CP11 snapshot reuse and ordinary deterministic replay;
+2. preserve the unresolved incremental-tokenization fail-closed boundary unless a repository-native incremental callable or explicit supersession is proven;
+3. publish production service route bindings into global Pass 042 surface-map discovery instead of deriving them only at shared IO ingress;
+4. add systematic bypass-negative tests proving omission of every applicable required inherited authority blocks propagation;
+5. gate Pass 217 closure on complete cumulative utilization reachability;
+6. integrate the workstream with then-current `main`, resolve both lineages without discarding concurrent Pass 218/219 work, merge, and verify `main`.
 
 ## Exact next bounded action
 
-Continue Pass 217 Iteration 5 with:
+Continue Pass 217 Iteration 5 with the remaining required frozen optimization class:
 
 ```text
-bounded_learning_replay
-    → moving_tensor_routing
-    → native_dispatch
+interruption_recovery
 ```
 
 Required process:
 
-1. Deep-map each class to exact inherited repository-native operational authority before implementation.
-2. For `bounded_learning_replay`, distinguish actual governed replay/weight-update execution from benchmark evidence or ordinary ingestion replay.
-3. For `moving_tensor_routing`, distinguish exact state-dependent routing from static route tables or UI routing.
-4. For `native_dispatch`, distinguish actual native ABI/runtime execution from Python wrappers, descriptor metadata, and benchmark-only native labels.
-5. Implement one real inherited traversal wherever operational authority is proven.
-6. Emit mechanical `NOT_APPLICABLE` only from exact operation facts.
-7. Fail closed on partial applicable contexts or missing runtime bindings.
-8. Preserve the frozen profile classification: do not promote `accelerator_batching` or experimental GPU execution into mandatory authority.
-9. Run dependency-scoped validation only and repair forward.
-10. Commit the bounded slice and update this restart record before the remaining interruption-recovery and closure stages.
+1. Deep-scan exact inherited repository-native interruption/resume callables and contracts.
+2. Distinguish true interrupted-operation continuation from Pass 197 checkpoint reuse, Pass 165 replay, and benchmark-only interruption observations already used elsewhere.
+3. Prefer an authority that captures an in-flight/native/compiled operation boundary and resumes from exact repository-visible state with equality proof.
+4. Implement a real traversal if operational authority is proven; otherwise retain fail-closed applicability rather than inventing an active witness.
+5. Add dedicated negative tests for stale/malformed/missing recovery state.
+6. Run dependency-scoped validation only.
+7. Commit the bounded slice and update this restart record before surface-map/bypass/closure work.
 
-Do not rerun unchanged historical proof suites merely because `main` advances. Final current-main integration remains a later bounded stage after cumulative closure prerequisites are complete.
+Do not rerun unchanged historical proof suites solely because `main` advances. Do not merge/rebase the workstream until cumulative closure prerequisites are complete.
