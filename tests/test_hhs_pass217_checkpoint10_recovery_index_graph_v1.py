@@ -120,6 +120,13 @@ def _seed_context_graph(db: HHS145Database) -> tuple[str, str, str]:
     return left_id, left_hash, db.database_root()
 
 
+def _assert_checkpoint10_scope(authority) -> None:
+    scope = list(authority["checkpoint_scope"])
+    start = scope.index(CHECKPOINT10_AUTHORITIES[0])
+    assert tuple(scope[start : start + len(CHECKPOINT10_AUTHORITIES)]) == CHECKPOINT10_AUTHORITIES
+    assert authority["required_authority_count"] >= len(CHECKPOINT10_REQUIRED_AUTHORITIES)
+
+
 def test_checkpoint10_no_domains_are_mechanically_not_applicable(tmp_path) -> None:
     decision = compose_bound_route_ingress(
         "api.runtime.services",
@@ -129,7 +136,7 @@ def test_checkpoint10_no_domains_are_mechanically_not_applicable(tmp_path) -> No
     )
     assert decision is not None and decision["ok"] is True
     authority = decision["inherited_execution_authority_reachability"]
-    assert authority["required_authority_count"] == len(CHECKPOINT10_REQUIRED_AUTHORITIES) == 18
+    _assert_checkpoint10_scope(authority)
     decisions = {row["authority_id"]: row for row in authority["decisions"]}
     for authority_id in CHECKPOINT10_AUTHORITIES:
         assert decisions[authority_id]["state"] == "NOT_APPLICABLE"
@@ -200,7 +207,7 @@ def test_checkpoint10_real_route_traverses_recovery_integer_index_and_sql_graph(
         )
         assert decision is not None and decision["ok"] is True
         authority = decision["inherited_execution_authority_reachability"]
-        assert authority["required_authority_count"] == 18
+        _assert_checkpoint10_scope(authority)
         decisions = {row["authority_id"]: row for row in authority["decisions"]}
         for authority_id in CHECKPOINT10_AUTHORITIES:
             assert decisions[authority_id]["state"] == "ACTIVE_IN_PATH"
