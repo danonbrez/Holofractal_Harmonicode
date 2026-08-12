@@ -1,0 +1,101 @@
+name: Pass 217 Current Main Integration
+
+on:
+  push:
+    branches:
+      - agent/pass217-cumulative-execution-composer
+    paths:
+      - '.github/workflows/pass217-current-main-integration.yml'
+      - 'hhs_runtime/**'
+      - 'hhs_backend/**'
+      - 'native_projects/hhs_pass219_ethical_scope_membrane/**'
+      - 'tests/test_hhs_pass217_*.py'
+      - 'tests/test_hhs_cumulative_execution_authority_v1.py'
+      - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
+      - 'tests/test_hhs_pass165_incremental_tokenization_v1.py'
+      - 'tests/test_runtime_os_production_root.py'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass217-current-main-integration.yml'
+      - 'hhs_runtime/**'
+      - 'hhs_backend/**'
+      - 'native_projects/hhs_pass219_ethical_scope_membrane/**'
+      - 'tests/test_hhs_pass217_*.py'
+      - 'tests/test_hhs_cumulative_execution_authority_v1.py'
+      - 'tests/test_hhs_inherited_execution_stage_bridge_v1.py'
+      - 'tests/test_hhs_pass165_incremental_tokenization_v1.py'
+      - 'tests/test_runtime_os_production_root.py'
+
+permissions:
+  contents: read
+
+jobs:
+  integration-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact integration candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify both validated lineages are ancestors
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor be71da59c9b8b7c7e055c03da703ca301849cfff HEAD
+          git merge-base --is-ancestor b32b10d6346b84f590d74014181450bfe531374f HEAD
+          echo "PASS217_VALIDATED_ANCESTOR=1"
+          echo "PASS218_219_MAIN_ANCESTOR=1"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install integration-scoped dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi
+
+      - name: Compile integration surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass217_cumulative_closure_v1.py \
+            hhs_runtime/hhs_pass217_runtime_route_composer_v1.py \
+            hhs_runtime/hhs_pass217_checkpoint7_content_reuse_v1.py \
+            hhs_runtime/pass165/incremental_tokenization.py \
+            hhs_runtime/hhs_narrative_alignment_reasoning_engine_v1.py \
+            hhs_runtime/test_narrative_alignment_reasoning_engine_v1.py \
+            hhs_backend/runtime_os_projection.py \
+            hhs_backend/runtime_os_visual_server.py \
+            hhs_backend/runtime_os_application_server.py \
+            tests/test_runtime_os_production_root.py
+
+      - name: Run admitted Pass 217 cumulative gate
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass165_incremental_tokenization_v1.py \
+            tests/test_hhs_pass217_cumulative_execution_composer_v1.py \
+            tests/test_hhs_cumulative_execution_authority_v1.py \
+            tests/test_hhs_inherited_execution_stage_bridge_v1.py \
+            tests/test_hhs_pass217_checkpoint6_retrieval_reuse_v1.py \
+            tests/test_hhs_pass217_checkpoint7_content_reuse_v1.py \
+            tests/test_hhs_pass217_checkpoint8_sparse_delta_v1.py \
+            tests/test_hhs_pass217_checkpoint9_rom_compression_v1.py \
+            tests/test_hhs_pass217_checkpoint10_recovery_index_graph_v1.py \
+            tests/test_hhs_pass217_checkpoint11_storage_snapshot_alignment_v1.py \
+            tests/test_hhs_pass217_checkpoint12_learning_tensor_native_v1.py \
+            tests/test_hhs_pass217_checkpoint13_interruption_recovery_v1.py \
+            tests/test_hhs_pass217_cumulative_closure_v1.py \
+            tests/test_hhs_pass217_runtime_route_composer_v1.py
+
+      - name: Run Pass 218 narrative alignment gate
+        run: python -m pytest -q hhs_runtime/test_narrative_alignment_reasoning_engine_v1.py
+
+      - name: Run Pass 219 native ethical membrane gate
+        run: make -C native_projects/hhs_pass219_ethical_scope_membrane clean test
+
+      - name: Run preserved Runtime OS production-root gate
+        run: python -m pytest -q tests/test_runtime_os_production_root.py
