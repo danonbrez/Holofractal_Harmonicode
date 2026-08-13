@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import type { RuntimeOS } from "../core/RuntimeOS"
+import { ApprovalStatusPanel } from "./ApprovalStatusPanel"
 import { AuthorityOperationsPanel } from "./AuthorityOperationsPanel"
 import { HHSWorkspaceShell } from "./HHSWorkspaceShell"
 import { RegistryVisualProgrammer } from "./RegistryVisualProgrammer"
@@ -37,9 +38,9 @@ export interface HHSProductWorkspaceProps {
  * Product composition for the public Runtime OS.
  *
  * The registry canvas is the primary object-oriented programming surface.
- * The conventional workspace and Pass 218 authority-observability surface
- * remain mounted on demand, so inactive modules do not consume resources and
- * canonical authority stays entirely backend-owned.
+ * The conventional workspace and Pass 218 authority surfaces remain mounted
+ * on demand, so inactive modules do not consume resources and canonical
+ * authority stays entirely backend-owned.
  */
 export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   runtimeOS,
@@ -129,42 +130,20 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
               assistant {assistantOnline ? assistantMode.toLowerCase() : "offline"}
             </button>
             <div className="grid grid-cols-3 gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
-              <button
-                type="button"
-                onClick={() => setSurface("program")}
-                className={`min-h-9 rounded-lg px-3 text-xs ${surface === "program" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}
-              >
-                Visual Program
-              </button>
-              <button
-                type="button"
-                onClick={() => setSurface("workspace")}
-                className={`min-h-9 rounded-lg px-3 text-xs ${surface === "workspace" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}
-              >
-                Workspace
-              </button>
-              <button
-                type="button"
-                onClick={() => setSurface("authority")}
-                className={`min-h-9 rounded-lg px-3 text-xs ${surface === "authority" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}
-              >
-                Authority
-              </button>
+              <button type="button" onClick={() => setSurface("program")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "program" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Visual Program</button>
+              <button type="button" onClick={() => setSurface("workspace")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "workspace" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Workspace</button>
+              <button type="button" onClick={() => setSurface("authority")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "authority" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Authority</button>
             </div>
           </div>
         </div>
       </nav>
 
       {healthError ? (
-        <div className="m-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">
-          Execution authority health request failed: {healthError}
-        </div>
+        <div className="m-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">Execution authority health request failed: {healthError}</div>
       ) : null}
 
       {sessionError ? (
-        <div className="m-3 rounded-xl border border-amber-900 bg-amber-950/30 p-3 text-xs text-amber-200">
-          Workspace session unavailable: {sessionError}. Registry services and application modules remain independently callable.
-        </div>
+        <div className="m-3 rounded-xl border border-amber-900 bg-amber-950/30 p-3 text-xs text-amber-200">Workspace session unavailable: {sessionError}. Registry services and application modules remain independently callable.</div>
       ) : null}
 
       {surface === "program" ? (
@@ -177,13 +156,12 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
           onExternalResult={recordExternalResult}
         />
       ) : surface === "workspace" ? (
-        <HHSWorkspaceShell
-          runtimeOS={runtimeOS}
-          transportState={transportState}
-          transportError={transportError}
-        />
+        <HHSWorkspaceShell runtimeOS={runtimeOS} transportState={transportState} transportError={transportError} />
       ) : (
-        <AuthorityOperationsPanel />
+        <>
+          <ApprovalStatusPanel />
+          <AuthorityOperationsPanel />
+        </>
       )}
     </section>
   )
