@@ -184,5 +184,6 @@ def test_i15_dedicated_suites_run_from_cumulative_gate() -> None:
         "-q",
         "tests/pass218/test_pass218_iteration15_one_time_consumption.py",
         "tests/pass218/test_pass218_iteration15_runtime_control.py",
+        "tests/pass218/test_pass218_iteration15_parallel_reservation.py",
     ])
     assert result == pytest.ExitCode.OK
