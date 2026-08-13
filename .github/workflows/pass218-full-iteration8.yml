@@ -31,6 +31,7 @@ jobs:
           python -m py_compile tools/pass218_iteration5_evidence.py
           python -m py_compile tools/pass218_iteration6_evidence.py
           python -m py_compile tools/pass218_iteration7_evidence.py
+          python -m py_compile tools/pass218_iteration8_evidence.py
       - name: Enforce no authoritative float literals
         run: |
           python - <<'PY'
@@ -69,3 +70,5 @@ jobs:
         run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
       - name: Preserve Runtime OS production-root acceptance
         run: pytest -q tests/test_runtime_os_production_root.py
+      - name: Emit repository-native Iteration 8 lifecycle evidence
+        run: python tools/pass218_iteration8_evidence.py
