@@ -104,7 +104,7 @@ def __getattr__(name: str):
     elif name in _COMMIT_EXPORTS:
         module = import_module(".commit_boundary", __name__)
     elif name in _PERSISTENCE_EXPORTS:
-        module = import_module(".persistence", __name__)
+        module = import_module(".persistence_compat", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
