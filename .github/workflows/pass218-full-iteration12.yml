@@ -112,3 +112,4 @@ jobs:
           name: pass218-iteration12-production-maintenance-evidence
           path: .i12-evidence
           if-no-files-found: warn
+          include-hidden-files: true
