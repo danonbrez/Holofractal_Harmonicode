@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-11 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-12 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -184,6 +184,32 @@ _OPERATIONAL_LIFECYCLE_EXPORTS = frozenset({
     "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
     "Pass218OperationallyHardenedRuntimeLifecycle",
 })
+_AUTHORITY_MAINTENANCE_EXPORTS = frozenset({
+    "ALERT_SEVERITIES",
+    "CREDENTIAL_ROTATION_PLAN_SCHEMA",
+    "MAINTENANCE_KINDS",
+    "MAINTENANCE_POLICY_SCHEMA",
+    "MEMBER_REPLACEMENT_PLAN_SCHEMA",
+    "OPERATIONAL_ALERT_RECEIPT_SCHEMA",
+    "PASS218_AUTHORITY_MAINTENANCE_VERSION",
+    "RECOVERY_STATUS_SCHEMA",
+    "SNAPSHOT_RETENTION_RECEIPT_SCHEMA",
+    "Pass218AuthorityMaintenanceError",
+    "Pass218AuthorityMaintenanceStateError",
+    "Pass218AuthorityMaintenanceValidationError",
+    "Pass218BoundedRecoveryController",
+    "Pass218MaintenancePolicy",
+    "seal_credential_rotation_plan",
+    "seal_member_replacement_plan",
+    "seal_operational_alert_receipt",
+    "seal_snapshot_retention_receipt",
+    "validate_credential_rotation_plan",
+    "validate_maintenance_policy",
+    "validate_member_replacement_plan",
+    "validate_operational_alert_receipt",
+    "validate_recovery_status",
+    "validate_snapshot_retention_receipt",
+})
 
 
 def __getattr__(name: str):
@@ -209,6 +235,8 @@ def __getattr__(name: str):
         module = import_module(".operational_hardening_i11", __name__)
     elif name in _OPERATIONAL_LIFECYCLE_EXPORTS:
         module = import_module(".lifecycle_i11", __name__)
+    elif name in _AUTHORITY_MAINTENANCE_EXPORTS:
+        module = import_module(".authority_maintenance_i12", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -230,6 +258,7 @@ def __dir__() -> list[str]:
         | _DISTRIBUTED_LIFECYCLE_EXPORTS
         | _OPERATIONAL_HARDENING_EXPORTS
         | _OPERATIONAL_LIFECYCLE_EXPORTS
+        | _AUTHORITY_MAINTENANCE_EXPORTS
     )
 
 
@@ -380,4 +409,28 @@ __all__ = [
     "OPERATIONAL_LIFECYCLE_STATUS_SCHEMA",
     "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
     "Pass218OperationallyHardenedRuntimeLifecycle",
+    "ALERT_SEVERITIES",
+    "CREDENTIAL_ROTATION_PLAN_SCHEMA",
+    "MAINTENANCE_KINDS",
+    "MAINTENANCE_POLICY_SCHEMA",
+    "MEMBER_REPLACEMENT_PLAN_SCHEMA",
+    "OPERATIONAL_ALERT_RECEIPT_SCHEMA",
+    "PASS218_AUTHORITY_MAINTENANCE_VERSION",
+    "RECOVERY_STATUS_SCHEMA",
+    "SNAPSHOT_RETENTION_RECEIPT_SCHEMA",
+    "Pass218AuthorityMaintenanceError",
+    "Pass218AuthorityMaintenanceStateError",
+    "Pass218AuthorityMaintenanceValidationError",
+    "Pass218BoundedRecoveryController",
+    "Pass218MaintenancePolicy",
+    "seal_credential_rotation_plan",
+    "seal_member_replacement_plan",
+    "seal_operational_alert_receipt",
+    "seal_snapshot_retention_receipt",
+    "validate_credential_rotation_plan",
+    "validate_maintenance_policy",
+    "validate_member_replacement_plan",
+    "validate_operational_alert_receipt",
+    "validate_recovery_status",
+    "validate_snapshot_retention_receipt",
 ]
