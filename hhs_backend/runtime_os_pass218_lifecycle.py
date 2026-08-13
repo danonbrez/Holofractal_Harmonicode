@@ -1,10 +1,13 @@
-"""Runtime-OS binding for the Pass 218 Iteration 9/10 lifecycle gate.
+"""Runtime-OS binding for the Pass 218 Iteration 9/10/11 lifecycle gate.
 
-The existing single-host deployment remains on the validated Iteration-9 local
-fence unless distributed authority is configured. When an etcd endpoint is
-present, or distributed authority is explicitly required, the same Runtime-OS
-lifespan mounts Iteration 10 and requires both local and cross-host fencing
-before Pass-218 ingress can open.
+Single-host deployments retain the validated Iteration-9 local fence. A single
+configured etcd endpoint uses Iteration 10. A configured multi-member endpoint
+set uses Iteration 11 and requires HTTPS server verification plus an explicit
+client certificate/key before Pass-218 ingress can open.
+
+Misconfigured or explicitly required distributed authority never silently falls
+back to a weaker writer mode. The web surface remains available for diagnostics
+while canonical ingestion stays fail-closed.
 """
 from __future__ import annotations
 
@@ -24,6 +27,14 @@ from hhs_runtime.pass218.distributed_ownership import (
 )
 from hhs_runtime.pass218.lifecycle_i9 import Pass218MultiprocessRuntimeLifecycle
 from hhs_runtime.pass218.lifecycle_i10 import Pass218DistributedRuntimeLifecycle
+from hhs_runtime.pass218.lifecycle_i11 import Pass218OperationallyHardenedRuntimeLifecycle
+from hhs_runtime.pass218.operational_hardening_i11 import (
+    DEFAULT_CLUSTER_NAME,
+    EtcdV3MutualTLSEndpointPoolClient,
+    Pass218EtcdClusterAuthority,
+    Pass218EtcdClusterConfig,
+    Pass218EtcdClusterMonitor,
+)
 
 PASS218_RUNTIME_STATUS_PATH = "/api/runtime/pass218/lifecycle/status"
 PASS218_APP_STATE_KEY = "hhs_pass218_runtime_lifecycle"
@@ -53,6 +64,16 @@ def _positive_env_int(name: str, default: int) -> int:
     return value
 
 
+def _cluster_endpoints_from_env() -> tuple[str, ...]:
+    raw = os.environ.get("HHS_PASS218_ETCD_ENDPOINTS", "").strip()
+    if not raw:
+        return ()
+    endpoints = tuple(part.strip() for part in raw.split(",") if part.strip())
+    if not endpoints:
+        raise ValueError("HHS_PASS218_ETCD_ENDPOINTS is empty")
+    return endpoints
+
+
 def _has_exact_route(app: Any, path: str) -> bool:
     return any(
         str(getattr(route, "path", "")) == path
@@ -60,11 +81,81 @@ def _has_exact_route(app: Any, path: str) -> bool:
     )
 
 
+def _build_i11_lifecycle(
+    state_root: str | os.PathLike[str],
+    endpoints: tuple[str, ...],
+) -> Pass218OperationallyHardenedRuntimeLifecycle:
+    config = Pass218EtcdClusterConfig.build(
+        endpoints,
+        ca_file=os.environ.get("HHS_PASS218_ETCD_CA_FILE", ""),
+        client_cert_file=os.environ.get("HHS_PASS218_ETCD_CLIENT_CERT_FILE", ""),
+        client_key_file=os.environ.get("HHS_PASS218_ETCD_CLIENT_KEY_FILE", ""),
+        cluster_name=os.environ.get(
+            "HHS_PASS218_ETCD_CLUSTER_NAME",
+            DEFAULT_CLUSTER_NAME,
+        ),
+        timeout_seconds=_positive_env_int(
+            "HHS_PASS218_ETCD_TIMEOUT_SECONDS",
+            DEFAULT_ETCD_TIMEOUT_SECONDS,
+        ),
+    )
+    namespace = os.environ.get(
+        "HHS_PASS218_ETCD_NAMESPACE",
+        DEFAULT_ETCD_NAMESPACE,
+    ).strip()
+    authorization = os.environ.get("HHS_PASS218_ETCD_AUTHORIZATION") or None
+    authority = Pass218EtcdClusterAuthority(
+        config,
+        namespace=namespace,
+        lease_ttl_seconds=_positive_env_int(
+            "HHS_PASS218_ETCD_LEASE_TTL_SECONDS",
+            DEFAULT_ETCD_LEASE_TTL_SECONDS,
+        ),
+        authorization=authorization,
+    )
+    # The authority owns an endpoint-pool client already; use that exact client
+    # for diagnostic quorum probes so transport preference and TLS identity are
+    # consistent with canonical I10 operations.
+    if not isinstance(authority.client, EtcdV3MutualTLSEndpointPoolClient):
+        raise RuntimeError("Pass218 I11 endpoint-pool client missing")
+    monitor = Pass218EtcdClusterMonitor(
+        config,
+        authority.client,
+        namespace=namespace,
+    )
+    return Pass218OperationallyHardenedRuntimeLifecycle(
+        state_root,
+        distributed_authority=authority,
+        cluster_monitor=monitor,
+    )
+
+
 def _build_pass218_lifecycle(
     state_root: str | os.PathLike[str],
 ) -> Pass218MultiprocessRuntimeLifecycle:
     endpoint = os.environ.get("HHS_PASS218_ETCD_ENDPOINT", "").strip()
+    cluster_endpoints = _cluster_endpoints_from_env()
     distributed_required = _env_true("HHS_PASS218_DISTRIBUTED_REQUIRED")
+    operational_required = _env_true("HHS_PASS218_OPERATIONAL_HARDENING_REQUIRED")
+
+    if cluster_endpoints:
+        try:
+            return _build_i11_lifecycle(state_root, cluster_endpoints)
+        except Exception:
+            # A requested multi-member authority may never degrade to an I10
+            # single endpoint or I9 local writer because of configuration error.
+            return Pass218DistributedRuntimeLifecycle(
+                state_root,
+                distributed_authority=Pass218UnavailableDistributedAuthority(),
+            )
+
+    if operational_required:
+        # I11 was explicitly requested but no cluster endpoint set was provided.
+        return Pass218DistributedRuntimeLifecycle(
+            state_root,
+            distributed_authority=Pass218UnavailableDistributedAuthority(),
+        )
+
     if not endpoint and not distributed_required:
         return Pass218MultiprocessRuntimeLifecycle(state_root)
 
@@ -95,8 +186,6 @@ def _build_pass218_lifecycle(
             ca_file=(os.environ.get("HHS_PASS218_ETCD_CA_FILE") or None),
         )
     except Exception:
-        # Misconfigured distributed mode must not silently fall back to local
-        # writer authority. Keep the web service diagnostic-only and fail closed.
         authority = Pass218UnavailableDistributedAuthority()
     return Pass218DistributedRuntimeLifecycle(
         state_root,
@@ -114,8 +203,8 @@ async def _distributed_keepalive_loop(
         try:
             await asyncio.to_thread(lifecycle.renew_distributed_authority)
         except Exception:
-            # renew_distributed_authority itself closes ingress and records the
-            # exact failure. The diagnostic web surface remains available.
+            # I10/I11 renewal closes ingress and records the exact failure.
+            # The diagnostic web surface remains available.
             continue
 
 
