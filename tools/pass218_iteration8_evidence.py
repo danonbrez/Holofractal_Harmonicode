@@ -37,18 +37,12 @@ def _authorization(proof, *, sequence: int, label: str):
         grant_sequence=sequence,
     )
     journal = PromotionAuthorizationJournal()
-    authorization = journal.authorize(proof, grant)
-    return journal, authorization
+    return journal, journal.authorize(proof, grant)
 
 
 def main() -> None:
     grammar_path = REPOSITORY_ROOT / "hhs_runtime" / "Grammar Correction.csv"
-    narrative_path = (
-        REPOSITORY_ROOT
-        / "creative_writing"
-        / "novels"
-        / "THE_SMALLEST_PERMISSION.md"
-    )
+    narrative_path = REPOSITORY_ROOT / "creative_writing" / "novels" / "THE_SMALLEST_PERMISSION.md"
     relation_db = load_wordnet_relations(
         [REPOSITORY_ROOT / "hhs_runtime" / "WordnetAntonyms.csv"],
         require_all=False,
@@ -89,8 +83,7 @@ def main() -> None:
             sequence=1,
             label="iteration8-first-canonical-admission",
         )
-        boundary1 = lifecycle.canonical_boundary()
-        prepared1 = boundary1.prepare(
+        prepared1 = lifecycle.canonical_boundary().prepare(
             authorization=authorization1,
             staged_candidate=staged,
             authorization_journal=journal1,
@@ -105,25 +98,27 @@ def main() -> None:
         generation0_manifest = lifecycle.store._load_manifest()
         generation0_checkpoint_sha256 = committed1["checkpoint_sha256"]
 
-        # Crash-style restart: instantiate a fresh lifecycle without calling
-        # shutdown on the first process. Authority must come only from I7 data.
+        # Crash-style restart from persisted authority. Freeze these equality
+        # facts now, before the same restarted lifecycle is intentionally
+        # advanced by the later durability-failure scenario.
         crash_restart = Pass218RuntimeLifecycle(store_root)
         crash_restart_status = crash_restart.startup()
         crash_restart_receipt = crash_restart.target.committed_receipt(
             authorization1["authorization_hash72"]
         )
+        crash_restart_root_exact = crash_restart.target.root_hash72() == generation0_root
+        crash_restart_snapshot_exact = crash_restart.target.snapshot_bytes() == generation0_snapshot
+        crash_restart_receipt_exact = crash_restart_receipt == generation0_receipt
 
-        # A second authorized commit deliberately fails after the I6 atomic
-        # mutation but before the I7 manifest swap. The gate must stay closed
-        # until the already-committed target is durably checkpointed, with no
-        # second canonical commit or authorization needed for the retry.
+        # Commit a second authorized transition, then deliberately interrupt
+        # persistence before manifest publication. The canonical mutation is
+        # real, therefore ingress must remain closed until durability is retried.
         journal2, authorization2 = _authorization(
             proof,
             sequence=2,
             label="iteration8-second-canonical-admission",
         )
-        boundary2 = crash_restart.canonical_boundary()
-        prepared2 = boundary2.prepare(
+        prepared2 = crash_restart.canonical_boundary().prepare(
             authorization=authorization2,
             staged_candidate=staged,
             authorization_journal=journal2,
@@ -148,19 +143,19 @@ def main() -> None:
         )
         generation1_manifest = crash_restart.store._load_manifest()
         generation1_root = crash_restart.target.root_hash72()
+        durability_retry_root_unchanged = crash_restart.target.root_hash72() == second_root_before_retry
+        durability_retry_receipt_unchanged = second_receipt_before_retry == second_receipt_after_retry
 
-        # Corrupt only the active generation. I7 recovery must reject it and
-        # bind the immediately previous sealed generation (generation 0).
-        active_path = (
-            crash_restart.store.generations
-            / generation1_manifest["active_generation"]
-        )
+        # Corrupt only generation 1. Restart must reject it and recover the
+        # immediately previous sealed generation 0.
+        active_path = crash_restart.store.generations / generation1_manifest["active_generation"]
         active_path.write_bytes(b"{corrupt")
         fallback_restart = Pass218RuntimeLifecycle(store_root)
         fallback_status = fallback_restart.startup()
 
         generation_files = sorted(
-            path for path in crash_restart.store.generations.glob("checkpoint-*.json")
+            path
+            for path in crash_restart.store.generations.glob("checkpoint-*.json")
             if path.is_file()
         )
         persisted_bytes = b"\n".join(path.read_bytes() for path in generation_files)
@@ -193,9 +188,9 @@ def main() -> None:
             "generation0_root_hash72": generation0_root,
             "crash_restart_state": crash_restart_status["state"],
             "crash_restart_ingestion_enabled": crash_restart_status["ingestion_enabled"],
-            "crash_restart_root_exact": crash_restart.target.root_hash72() == generation0_root,
-            "crash_restart_snapshot_exact": crash_restart.target.snapshot_bytes() == generation0_snapshot,
-            "crash_restart_receipt_exact": crash_restart_receipt == generation0_receipt,
+            "crash_restart_root_exact": crash_restart_root_exact,
+            "crash_restart_snapshot_exact": crash_restart_snapshot_exact,
+            "crash_restart_receipt_exact": crash_restart_receipt_exact,
             "crash_restart_new_authorization_minted": crash_restart_status[
                 "restart_new_authorization_minted"
             ],
@@ -208,8 +203,8 @@ def main() -> None:
             "durability_failure_commit_count": blocked_status["canonical_commit_count"],
             "durability_retry_state": retry_result["state"],
             "durability_retry_gate_reopened": crash_restart.ingestion_enabled,
-            "durability_retry_root_unchanged": crash_restart.target.root_hash72() == second_root_before_retry,
-            "durability_retry_receipt_unchanged": second_receipt_before_retry == second_receipt_after_retry,
+            "durability_retry_root_unchanged": durability_retry_root_unchanged,
+            "durability_retry_receipt_unchanged": durability_retry_receipt_unchanged,
             "generation1_manifest_sequence": generation1_manifest["generation_sequence"],
             "generation1_previous_checkpoint_sha256": generation1_manifest[
                 "previous_checkpoint_sha256"
