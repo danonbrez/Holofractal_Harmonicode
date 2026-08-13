@@ -41,9 +41,9 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-5 depend on the heavier inherited Pass 175 runtime through the
-# staging surface. Keep them lazy so importing validated Iterations 1-3 does not
-# acquire optional dependencies merely because the cumulative package grew.
+# Iterations 4-6 depend on heavier inherited runtimes. Keep them lazy so
+# importing validated Iterations 1-3 does not acquire optional dependencies
+# merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
     "ClosedTransactionVectorVM5184Adapter",
     "NonAuthoritativeVectorStageStore",
@@ -65,6 +65,19 @@ _PROMOTION_EXPORTS = frozenset({
     "PromotionProof",
     "PromotionProofMembrane",
 })
+_COMMIT_EXPORTS = frozenset({
+    "CANONICAL_ADMISSION_STATUS",
+    "INHERITED_VM81_AUTHORITY",
+    "PASS217_VECTOR_ENTRY_SCHEMA",
+    "PASS217_VECTOR_SCHEMA_PATH",
+    "PASS218_CANONICAL_COMMIT_VERSION",
+    "Pass217VM81CanonicalTarget",
+    "Pass218CanonicalCommitBoundary",
+    "Pass218CanonicalCommitError",
+    "Pass218CanonicalCommitStateError",
+    "Pass218CanonicalCommitValidationError",
+    "PreparedCanonicalAdmission",
+})
 
 
 def __getattr__(name: str):
@@ -72,6 +85,8 @@ def __getattr__(name: str):
         module = import_module(".staging", __name__)
     elif name in _PROMOTION_EXPORTS:
         module = import_module(".promotion", __name__)
+    elif name in _COMMIT_EXPORTS:
+        module = import_module(".commit_boundary", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -80,7 +95,9 @@ def __getattr__(name: str):
 
 
 def __dir__() -> list[str]:
-    return sorted(set(globals()) | _STAGING_EXPORTS | _PROMOTION_EXPORTS)
+    return sorted(
+        set(globals()) | _STAGING_EXPORTS | _PROMOTION_EXPORTS | _COMMIT_EXPORTS
+    )
 
 
 __all__ = [
@@ -129,4 +146,15 @@ __all__ = [
     "PromotionAuthorizationJournal",
     "PromotionProof",
     "PromotionProofMembrane",
+    "CANONICAL_ADMISSION_STATUS",
+    "INHERITED_VM81_AUTHORITY",
+    "PASS217_VECTOR_ENTRY_SCHEMA",
+    "PASS217_VECTOR_SCHEMA_PATH",
+    "PASS218_CANONICAL_COMMIT_VERSION",
+    "Pass217VM81CanonicalTarget",
+    "Pass218CanonicalCommitBoundary",
+    "Pass218CanonicalCommitError",
+    "Pass218CanonicalCommitStateError",
+    "Pass218CanonicalCommitValidationError",
+    "PreparedCanonicalAdmission",
 ]
