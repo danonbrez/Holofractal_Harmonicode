@@ -311,7 +311,7 @@ jobs:
           data=json.load(open('.i12-evidence/member-list-before.json'))
           for member in data['members']:
               if member.get('name') == 'etcd3':
-                  print(member['ID'])
+                  print(f"{int(member['ID']):x}")
                   break
           else:
               raise SystemExit('etcd3 member not found')
