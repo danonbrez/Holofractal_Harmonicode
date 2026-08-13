@@ -100,8 +100,12 @@ class Pass218MultiprocessRuntimeLifecycle(Pass218RuntimeLifecycle):
 
         self._ownership_state = "PRIMARY"
         self._ownership_error_code = None
-        base = super().startup()
-        if not base["ingestion_enabled"]:
+        super().startup()
+        # Use the inherited lifecycle's internal gate rather than the virtual
+        # status projection. Iteration 10 intentionally narrows the public
+        # status gate with a second distributed fence, and that projection must
+        # not retroactively make a healthy Iteration-9 local restore look failed.
+        if not self._ingestion_enabled:
             self._ownership_state = "PRIMARY_RECOVERY_BLOCKED"
         return self.status()
 
