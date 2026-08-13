@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-8 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-9 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -101,6 +101,27 @@ _LIFECYCLE_EXPORTS = frozenset({
     "Pass218RuntimeLifecycleError",
     "Pass218RuntimeLifecycleNotReady",
 })
+_OWNERSHIP_EXPORTS = frozenset({
+    "OWNERSHIP_LOCK_FILENAME",
+    "OWNERSHIP_LOCK_STRATEGY",
+    "OWNERSHIP_RECORD_FILENAME",
+    "OWNERSHIP_RECORD_SCHEMA",
+    "OWNERSHIP_SCOPE",
+    "PASS218_OWNERSHIP_VERSION",
+    "Pass218CanonicalOwnershipLease",
+    "Pass218OwnershipBusy",
+    "Pass218OwnershipError",
+    "Pass218OwnershipFenceLost",
+    "Pass218OwnershipValidationError",
+    "default_owner_id",
+    "seal_ownership_record",
+    "validate_ownership_record",
+})
+_MULTIPROCESS_LIFECYCLE_EXPORTS = frozenset({
+    "MULTIPROCESS_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
+    "Pass218MultiprocessRuntimeLifecycle",
+})
 
 
 def __getattr__(name: str):
@@ -114,6 +135,10 @@ def __getattr__(name: str):
         module = import_module(".persistence_compat", __name__)
     elif name in _LIFECYCLE_EXPORTS:
         module = import_module(".lifecycle", __name__)
+    elif name in _OWNERSHIP_EXPORTS:
+        module = import_module(".ownership", __name__)
+    elif name in _MULTIPROCESS_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i9", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -129,6 +154,8 @@ def __dir__() -> list[str]:
         | _COMMIT_EXPORTS
         | _PERSISTENCE_EXPORTS
         | _LIFECYCLE_EXPORTS
+        | _OWNERSHIP_EXPORTS
+        | _MULTIPROCESS_LIFECYCLE_EXPORTS
     )
 
 
@@ -208,4 +235,21 @@ __all__ = [
     "Pass218RuntimeLifecycle",
     "Pass218RuntimeLifecycleError",
     "Pass218RuntimeLifecycleNotReady",
+    "OWNERSHIP_LOCK_FILENAME",
+    "OWNERSHIP_LOCK_STRATEGY",
+    "OWNERSHIP_RECORD_FILENAME",
+    "OWNERSHIP_RECORD_SCHEMA",
+    "OWNERSHIP_SCOPE",
+    "PASS218_OWNERSHIP_VERSION",
+    "Pass218CanonicalOwnershipLease",
+    "Pass218OwnershipBusy",
+    "Pass218OwnershipError",
+    "Pass218OwnershipFenceLost",
+    "Pass218OwnershipValidationError",
+    "default_owner_id",
+    "seal_ownership_record",
+    "validate_ownership_record",
+    "MULTIPROCESS_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
+    "Pass218MultiprocessRuntimeLifecycle",
 ]

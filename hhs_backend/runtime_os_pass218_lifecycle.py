@@ -1,10 +1,10 @@
-"""Runtime-OS binding for the Pass 218 Iteration 8 lifecycle gate.
+"""Runtime-OS binding for the Pass 218 Iteration 9 lifecycle gate.
 
 This module composes the existing application lifespan rather than replacing
 it. The web service may remain available in a degraded diagnostic state when a
-persisted Pass-218 generation is invalid, but Pass-218 ingestion remains closed
-until the durable canonical state is restored or a valid first-boot empty state
-is established.
+persisted Pass-218 generation is invalid or when another process owns canonical
+writer authority, but Pass-218 ingestion remains closed until durable canonical
+state is restored under the current Iteration-9 fencing epoch.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from pathlib import Path
 import tempfile
 from typing import Any
 
-from hhs_runtime.pass218.lifecycle import Pass218RuntimeLifecycle
+from hhs_runtime.pass218.lifecycle_i9 import Pass218MultiprocessRuntimeLifecycle
 
 PASS218_RUNTIME_STATUS_PATH = "/api/runtime/pass218/lifecycle/status"
 PASS218_APP_STATE_KEY = "hhs_pass218_runtime_lifecycle"
@@ -42,13 +42,13 @@ def install_pass218_runtime_os_lifecycle(
     app: Any,
     *,
     state_root: str | os.PathLike[str] | None = None,
-) -> Pass218RuntimeLifecycle:
-    """Install exactly one lifecycle wrapper and diagnostic status route."""
+) -> Pass218MultiprocessRuntimeLifecycle:
+    """Install exactly one fenced lifecycle wrapper and diagnostic status route."""
     existing = getattr(app.state, PASS218_APP_STATE_KEY, None)
-    if isinstance(existing, Pass218RuntimeLifecycle):
+    if isinstance(existing, Pass218MultiprocessRuntimeLifecycle):
         return existing
 
-    lifecycle = Pass218RuntimeLifecycle(
+    lifecycle = Pass218MultiprocessRuntimeLifecycle(
         resolve_pass218_state_root() if state_root is None else state_root
     )
     setattr(app.state, PASS218_APP_STATE_KEY, lifecycle)
