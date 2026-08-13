@@ -17,10 +17,12 @@ from hhs_runtime.pass218.approval_i14 import (
     evaluate_maintenance_release,
     validate_maintenance_release,
     validate_operator_record,
+    validate_release_revocations,
 )
 
 PASS218_I14_STATUS_PATH = "/api/runtime/pass218/authority/approval/status"
 PASS218_I14_EVALUATE_PATH = "/api/runtime/pass218/authority/approval/evaluate"
+PASS218_I14_REVOCATION_PATH = "/api/runtime/pass218/authority/approval/revocations/record"
 PASS218_I14_PREFLIGHT_PATH = "/api/runtime/pass218/authority/approval/preflight"
 PASS218_I14_STATE_KEY = "hhs_pass218_multi_party_approval_i14"
 
@@ -67,6 +69,7 @@ class Pass218ApprovalControlPlane:
             )
         )
         self.release_journal = self.state_root / "i14" / "release-journal.jsonl"
+        self.revocation_journal = self.state_root / "i14" / "revocation-journal.jsonl"
         self.release_journal.parent.mkdir(parents=True, exist_ok=True)
         self.registry = registry or self._load_registry()
 
@@ -79,12 +82,27 @@ class Pass218ApprovalControlPlane:
             raise Pass218ApprovalValidationError("P218_I14_OPERATOR_REGISTRY_INVALID")
         return Pass218OperatorRegistry(validate_operator_record(item) for item in records)
 
+    @staticmethod
+    def _journal_count(path: Path) -> int:
+        if not path.is_file():
+            return 0
+        return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+
     def status(self) -> dict[str, Any]:
         records = self.registry.records()
         role_counts = {
             role: sum(1 for record in records if role in record["roles"] and record.get("enabled") is True)
             for role in ("PREPARER", "APPROVER", "EXECUTOR")
         }
+        preparers = {record["operator_id"] for record in records if "PREPARER" in record["roles"] and record.get("enabled") is True}
+        approvers = {record["operator_id"] for record in records if "APPROVER" in record["roles"] and record.get("enabled") is True}
+        executors = {record["operator_id"] for record in records if "EXECUTOR" in record["roles"] and record.get("enabled") is True}
+        separation_possible = any(
+            len(approvers - {preparer, executor}) >= self.policy.required_distinct_approvers
+            for preparer in preparers
+            for executor in executors
+            if executor != preparer
+        )
         return {
             "schema": "HHS-P218-I14-APPROVAL-CONTROL-STATUS-V1",
             "policy": self.policy.record(),
@@ -93,12 +111,12 @@ class Pass218ApprovalControlPlane:
             "configured_operator_count": len(records),
             "role_counts": role_counts,
             "approval_threshold": self.policy.required_distinct_approvers,
-            "release_possible_from_registry": (
-                role_counts["PREPARER"] >= 1
-                and role_counts["APPROVER"] >= self.policy.required_distinct_approvers
-                and role_counts["EXECUTOR"] >= 1
-            ),
+            "release_possible_from_registry": separation_possible,
+            "recorded_release_count": self._journal_count(self.release_journal),
+            "recorded_revocation_count": self._journal_count(self.revocation_journal),
             "empty_registry_is_fail_closed": True,
+            "self_revocation_only": True,
+            "preflight_rechecks_recorded_revocations": True,
             "maintenance_remains_external": True,
             "canonical_authority_minted": False,
             "canonical_mutation_permitted": False,
@@ -111,12 +129,27 @@ class Pass218ApprovalControlPlane:
             raise Pass218ApprovalRejected("P218_I14_I13_ACTION_NOT_FOUND")
         return action
 
+    def _append_jsonl(self, path: Path, value: Mapping[str, Any]) -> None:
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(dict(value), sort_keys=True, separators=(",", ":")) + "\n")
+
     def _append_release(self, release: Mapping[str, Any]) -> None:
-        with self.release_journal.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps({
-                "schema": "HHS-P218-I14-RELEASE-JOURNAL-V1",
-                "release": dict(release),
-            }, sort_keys=True, separators=(",", ":")) + "\n")
+        self._append_jsonl(self.release_journal, {
+            "schema": "HHS-P218-I14-RELEASE-JOURNAL-V1",
+            "release": dict(release),
+        })
+
+    def _revocations_for_release(self, release_hash: str) -> list[dict[str, Any]]:
+        if not self.revocation_journal.is_file():
+            return []
+        statements: list[dict[str, Any]] = []
+        for line in self.revocation_journal.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            item = json.loads(line)
+            if item.get("release_record_hash72") == release_hash and isinstance(item.get("revocation_statement"), Mapping):
+                statements.append(dict(item["revocation_statement"]))
+        return statements
 
     def evaluate(self, payload: Mapping[str, Any]) -> dict[str, Any]:
         action_hash = str(payload.get("action_record_hash72") or "").strip()
@@ -135,11 +168,42 @@ class Pass218ApprovalControlPlane:
         self._append_release(release)
         return release
 
+    def record_revocation(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        raw_release = payload.get("release")
+        statement = payload.get("revocation_statement")
+        if not isinstance(raw_release, Mapping) or not isinstance(statement, Mapping):
+            raise Pass218ApprovalValidationError("P218_I14_RELEASE_AND_REVOCATION_REQUIRED")
+        release = validate_maintenance_release(raw_release, now_epoch_seconds=_now())
+        revoked = validate_release_revocations(
+            release=release,
+            revocation_statements=[statement],
+            registry=self.registry,
+            policy=self.policy,
+            now_epoch_seconds=_now(),
+        )
+        target = next(iter(revoked))
+        receipt = {
+            "schema": "HHS-P218-I14-RECORDED-REVOCATION-V1",
+            "release_record_hash72": release["record_hash72"],
+            "action_record_hash72": release["action_record_hash72"],
+            "revoked_approval_message_hash72": target,
+            "revocation_statement": dict(statement),
+            "recorded_epoch_seconds": _now(),
+            "preflight_invalidation_required": True,
+            "maintenance_remains_external": True,
+            "canonical_authority_minted": False,
+            "canonical_mutation_permitted": False,
+            "action_authority_minted": False,
+        }
+        self._append_jsonl(self.revocation_journal, receipt)
+        return {key: value for key, value in receipt.items() if key != "revocation_statement"}
+
     def preflight(self, payload: Mapping[str, Any]) -> dict[str, Any]:
         raw_release = payload.get("release")
         if not isinstance(raw_release, Mapping):
             raise Pass218ApprovalValidationError("P218_I14_RELEASE_REQUIRED")
-        release = validate_maintenance_release(raw_release, now_epoch_seconds=_now())
+        now = _now()
+        release = validate_maintenance_release(raw_release, now_epoch_seconds=now)
         current = self.i13_control.status()
         if current.get("health") == "BLOCKED":
             raise Pass218ApprovalRejected("P218_I14_PREFLIGHT_RUNTIME_BLOCKED")
@@ -156,6 +220,21 @@ class Pass218ApprovalControlPlane:
             for item in self.i13_control.journal.records()
         ):
             raise Pass218ApprovalRejected("P218_I14_PREFLIGHT_ACTION_ALREADY_COMPLETED")
+        revocations = self._revocations_for_release(release["record_hash72"])
+        supplied = payload.get("revocation_statements") or []
+        if not isinstance(supplied, list):
+            raise Pass218ApprovalValidationError("P218_I14_PREFLIGHT_REVOCATIONS_INVALID")
+        revocations.extend(item for item in supplied if isinstance(item, Mapping))
+        if revocations:
+            revoked = validate_release_revocations(
+                release=release,
+                revocation_statements=revocations,
+                registry=self.registry,
+                policy=self.policy,
+                now_epoch_seconds=now,
+            )
+            if revoked:
+                raise Pass218ApprovalRejected("P218_I14_PREFLIGHT_APPROVAL_REVOKED")
         return {
             "schema": "HHS-P218-I14-MAINTENANCE-PREFLIGHT-V1",
             "ok": True,
@@ -167,6 +246,7 @@ class Pass218ApprovalControlPlane:
             "separation_of_duties_satisfied": True,
             "current_quorum_satisfied": True,
             "current_writer_fence_satisfied": True,
+            "recorded_revocations_rechecked": True,
             "maintenance_remains_external": True,
             "canonical_authority_minted": False,
             "canonical_mutation_permitted": False,
@@ -199,6 +279,14 @@ def install_pass218_i14_approval_control_plane(
                 raise HTTPException(status_code=409, detail=str(exc)) from exc
         app.add_api_route(PASS218_I14_EVALUATE_PATH, evaluate_approval, methods=["POST"], include_in_schema=True, name="hhs-pass218-approval-evaluate-i14")
 
+    if not _has_route(app, PASS218_I14_REVOCATION_PATH):
+        async def record_revocation(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
+            try:
+                return control.record_revocation(payload)
+            except (Pass218ApprovalRejected, Pass218ApprovalValidationError) as exc:
+                raise HTTPException(status_code=409, detail=str(exc)) from exc
+        app.add_api_route(PASS218_I14_REVOCATION_PATH, record_revocation, methods=["POST"], include_in_schema=True, name="hhs-pass218-approval-revocation-i14")
+
     if not _has_route(app, PASS218_I14_PREFLIGHT_PATH):
         async def approval_preflight(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
             try:
@@ -213,6 +301,7 @@ def install_pass218_i14_approval_control_plane(
 __all__ = [
     "PASS218_I14_EVALUATE_PATH",
     "PASS218_I14_PREFLIGHT_PATH",
+    "PASS218_I14_REVOCATION_PATH",
     "PASS218_I14_STATE_KEY",
     "PASS218_I14_STATUS_PATH",
     "Pass218ApprovalControlPlane",
