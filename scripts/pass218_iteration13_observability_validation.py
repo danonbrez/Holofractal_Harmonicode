@@ -80,8 +80,19 @@ def main() -> int:
     )
     status = control.status()
     validate_authority_observability_status(status)
-    if status["health"] != "READY":
-        raise RuntimeError("P218_I13_REAL_EVIDENCE_STATUS_NOT_READY")
+    if status["health"] == "BLOCKED" or status["critical_alert_count"] != 0:
+        raise RuntimeError("P218_I13_REAL_EVIDENCE_STATUS_BLOCKED")
+    alert_codes = {item["code"] for item in status["alerts"]}
+    allowed_real_evidence_alerts = {"P218_I13_CERT_EXPIRY_NEAR"}
+    unexpected_alerts = alert_codes - allowed_real_evidence_alerts
+    if unexpected_alerts:
+        raise RuntimeError(
+            "P218_I13_REAL_EVIDENCE_UNEXPECTED_ALERTS:" + ",".join(sorted(unexpected_alerts))
+        )
+    if status["health"] == "DEGRADED" and alert_codes != allowed_real_evidence_alerts:
+        raise RuntimeError("P218_I13_REAL_EVIDENCE_DEGRADED_WITHOUT_EXPECTED_CERT_ALERT")
+    if status["health"] == "READY" and alert_codes:
+        raise RuntimeError("P218_I13_REAL_EVIDENCE_READY_WITH_ALERTS")
     if status["distributed_fence_epoch"] != i12["bounded_recovery"]["recovered_fence"]:
         raise RuntimeError("P218_I13_RECOVERED_FENCE_PROJECTION_MISMATCH")
     if status["cluster_reachable_member_count"] != 3:
@@ -119,6 +130,8 @@ def main() -> int:
         "i12_member_ids": i12["member_replacement"]["member_ids"],
         "i13_initial_status_hash72": status["record_hash72"],
         "i13_initial_health": status["health"],
+        "i13_initial_alert_codes": sorted(alert_codes),
+        "i13_certificate_warning_is_observability_evidence": "P218_I13_CERT_EXPIRY_NEAR" in alert_codes,
         "i13_action_hash72": action["record_hash72"],
         "i13_run_receipt_hash72": receipt["record_hash72"],
         "i13_final_status_hash72": final_status["record_hash72"],
