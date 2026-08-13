@@ -24,11 +24,6 @@ jobs:
           ETCD_INITIAL_CLUSTER_STATE: new
         ports:
           - 2379:2379
-        options: >-
-          --health-cmd "ETCDCTL_API=3 etcdctl endpoint health --endpoints=http://127.0.0.1:2379"
-          --health-interval 2s
-          --health-timeout 2s
-          --health-retries 20
     env:
       HHS_PASS218_I10_ETCD_TEST_ENDPOINT: http://127.0.0.1:2379
       HHS_PASS218_I10_ETCD_TEST_NAMESPACE: /hhs/pass218/i10/ci/${{ github.run_id }}
@@ -43,17 +38,31 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import time
+          import urllib.error
           import urllib.request
-          request = urllib.request.Request(
-              'http://127.0.0.1:2379/v3/kv/range',
-              data=json.dumps({'key': 'aA=='}).encode('utf-8'),
-              headers={'Content-Type': 'application/json'},
-              method='POST',
-          )
-          with urllib.request.urlopen(request, timeout=3) as response:
-              payload = json.loads(response.read().decode('utf-8'))
-          assert isinstance(payload, dict)
-          print('PASS218_I10_ETCD_V3_REACHABLE=1')
+
+          error = None
+          for attempt in range(30):
+              request = urllib.request.Request(
+                  'http://127.0.0.1:2379/v3/kv/range',
+                  data=json.dumps({'key': 'aA=='}).encode('utf-8'),
+                  headers={'Content-Type': 'application/json'},
+                  method='POST',
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=3) as response:
+                      payload = json.loads(response.read().decode('utf-8'))
+                  assert isinstance(payload, dict)
+                  print('PASS218_I10_ETCD_V3_REACHABLE=1')
+                  break
+              except (OSError, urllib.error.URLError, TimeoutError, AssertionError, json.JSONDecodeError) as exc:
+                  error = exc
+                  if attempt == 29:
+                      raise
+                  time.sleep(1)
+          else:
+              raise RuntimeError('etcd v3 authority did not become reachable') from error
           PY
       - name: Compile cumulative Pass 218 and Runtime OS surfaces
         run: |
