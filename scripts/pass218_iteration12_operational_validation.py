@@ -12,11 +12,16 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import time
 from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
@@ -41,7 +46,6 @@ from hhs_runtime.pass218.operational_hardening_i11 import (
     Pass218EtcdClusterMonitor,
 )
 
-ROOT = Path.cwd()
 PKI = ROOT / ".i12-pki"
 DATA = ROOT / ".i12-data"
 EVIDENCE = ROOT / ".i12-evidence"
@@ -56,13 +60,18 @@ ETCD_IMAGE = "quay.io/coreos/etcd:v3.5.21"
 
 
 def run(*args: str, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
+    completed = subprocess.run(
         args,
-        check=check,
+        check=False,
         text=True,
         stdout=subprocess.PIPE if capture else None,
         stderr=subprocess.STDOUT if capture else None,
     )
+    if check and completed.returncode != 0:
+        if capture and completed.stdout:
+            print(completed.stdout, end="" if completed.stdout.endswith("\n") else "\n")
+        completed.check_returncode()
+    return completed
 
 
 def docker_exec(member: str, *args: str, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess[str]:
@@ -299,16 +308,21 @@ def prove_learner_replacement() -> dict[str, Any]:
     old_id = int(old_member["ID"])
     old_hex = f"{old_id:x}"
 
-    add = etcdctl(
+    etcdctl(
         "etcd1",
         "member", "add", "etcd3new",
         "--peer-urls=https://etcd3new:2380",
         "--learner",
-        "-w", "json",
         capture=True,
     )
-    add_payload = json.loads(add.stdout or "{}")
-    learner_id = int(add_payload["member"]["ID"])
+    after_add = json.loads(etcdctl("etcd1", "member", "list", "-w", "json", capture=True).stdout or "{}")
+    learner_member = next(
+        member
+        for member in after_add["members"]
+        if "https://etcd3new:2380" in member.get("peerURLs", [])
+    )
+    assert learner_member.get("isLearner") is True
+    learner_id = int(learner_member["ID"])
     learner_hex = f"{learner_id:x}"
 
     cluster = (
