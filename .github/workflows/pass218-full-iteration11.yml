@@ -1,0 +1,410 @@
+name: Pass 218 Full Iteration 11
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration11-distributed-operational-hardening
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass218/**'
+      - 'hhs_backend/runtime_os_pass218_lifecycle.py'
+      - 'tests/pass218/**'
+      - 'tests/test_runtime_os_production_root.py'
+      - 'tools/pass218_iteration11_evidence.py'
+      - 'deploy/pass218-etcd/**'
+      - '.github/workflows/pass218-full-iteration11.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  distributed-operational-hardening:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_PASS218_I11_ETCD_ENDPOINTS: https://127.0.0.1:12379,https://127.0.0.1:22379,https://127.0.0.1:32379
+      HHS_PASS218_I11_ETCD_CA_FILE: ${{ github.workspace }}/.i11-pki/ca.pem
+      HHS_PASS218_I11_ETCD_CLIENT_CERT_FILE: ${{ github.workspace }}/.i11-pki/client.pem
+      HHS_PASS218_I11_ETCD_CLIENT_KEY_FILE: ${{ github.workspace }}/.i11-pki/client-key.pem
+      HHS_PASS218_I11_ETCD_NAMESPACE: /hhs/pass218/i11/ci/${{ github.run_id }}
+      HHS_PASS218_I11_CLUSTER_NAME: i11-ci-cluster
+
+    steps:
+      - name: Check out exact Iteration 11 head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped validation packages
+        run: python -m pip install --upgrade pytest cryptography fastapi uvicorn httpx
+
+      - name: Generate ephemeral CI mTLS authority
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta, timezone
+          import ipaddress
+          from pathlib import Path
+          from cryptography import x509
+          from cryptography.hazmat.primitives import hashes, serialization
+          from cryptography.hazmat.primitives.asymmetric import rsa
+          from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
+
+          root = Path('.i11-pki')
+          root.mkdir(parents=True, exist_ok=True)
+          now = datetime.now(timezone.utc)
+
+          ca_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+          ca_name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, 'HHS Pass218 I11 CI CA')])
+          ca_cert = (
+              x509.CertificateBuilder()
+              .subject_name(ca_name)
+              .issuer_name(ca_name)
+              .public_key(ca_key.public_key())
+              .serial_number(x509.random_serial_number())
+              .not_valid_before(now - timedelta(minutes=5))
+              .not_valid_after(now + timedelta(days=2))
+              .add_extension(x509.BasicConstraints(ca=True, path_length=None), critical=True)
+              .sign(ca_key, hashes.SHA256())
+          )
+
+          def issue(name, *, server, client, sans=()):
+              key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+              subject = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, name)])
+              builder = (
+                  x509.CertificateBuilder()
+                  .subject_name(subject)
+                  .issuer_name(ca_name)
+                  .public_key(key.public_key())
+                  .serial_number(x509.random_serial_number())
+                  .not_valid_before(now - timedelta(minutes=5))
+                  .not_valid_after(now + timedelta(days=2))
+              )
+              usages = []
+              if server:
+                  usages.append(ExtendedKeyUsageOID.SERVER_AUTH)
+              if client:
+                  usages.append(ExtendedKeyUsageOID.CLIENT_AUTH)
+              builder = builder.add_extension(x509.ExtendedKeyUsage(usages), critical=False)
+              if sans:
+                  names = []
+                  for value in sans:
+                      try:
+                          names.append(x509.IPAddress(ipaddress.ip_address(value)))
+                      except ValueError:
+                          names.append(x509.DNSName(value))
+                  builder = builder.add_extension(x509.SubjectAlternativeName(names), critical=False)
+              cert = builder.sign(ca_key, hashes.SHA256())
+              return key, cert
+
+          server_key, server_cert = issue(
+              'hhs-pass218-i11-etcd-members',
+              server=True,
+              client=True,
+              sans=('127.0.0.1', 'localhost', 'etcd1', 'etcd2', 'etcd3'),
+          )
+          client_key, client_cert = issue(
+              'hhs-pass218-i11-runtime-client',
+              server=False,
+              client=True,
+          )
+
+          def write_key(path, key):
+              path.write_bytes(
+                  key.private_bytes(
+                      serialization.Encoding.PEM,
+                      serialization.PrivateFormat.PKCS8,
+                      serialization.NoEncryption(),
+                  )
+              )
+
+          (root / 'ca.pem').write_bytes(ca_cert.public_bytes(serialization.Encoding.PEM))
+          (root / 'server.pem').write_bytes(server_cert.public_bytes(serialization.Encoding.PEM))
+          (root / 'client.pem').write_bytes(client_cert.public_bytes(serialization.Encoding.PEM))
+          write_key(root / 'server-key.pem', server_key)
+          write_key(root / 'client-key.pem', client_key)
+          PY
+
+      - name: Start real three-member etcd mTLS cluster
+        run: |
+          set -euo pipefail
+          docker network create hhs-p218-i11
+          mkdir -p .i11-data/etcd1 .i11-data/etcd2 .i11-data/etcd3 .i11-evidence
+
+          start_member() {
+            name="$1"
+            port="$2"
+            data_dir="$3"
+            docker run -d \
+              --name "$name" \
+              --network hhs-p218-i11 \
+              -p "${port}:2379" \
+              -v "$PWD/.i11-pki:/certs:ro" \
+              -v "$data_dir:/etcd-data" \
+              quay.io/coreos/etcd:v3.5.21 \
+              /usr/local/bin/etcd \
+              --name="$name" \
+              --data-dir=/etcd-data \
+              --listen-client-urls=https://0.0.0.0:2379 \
+              --advertise-client-urls="https://${name}:2379" \
+              --listen-peer-urls=https://0.0.0.0:2380 \
+              --initial-advertise-peer-urls="https://${name}:2380" \
+              --initial-cluster='etcd1=https://etcd1:2380,etcd2=https://etcd2:2380,etcd3=https://etcd3:2380' \
+              --initial-cluster-state=new \
+              --initial-cluster-token=hhs-p218-i11-ci \
+              --client-cert-auth=true \
+              --trusted-ca-file=/certs/ca.pem \
+              --cert-file=/certs/server.pem \
+              --key-file=/certs/server-key.pem \
+              --peer-client-cert-auth=true \
+              --peer-trusted-ca-file=/certs/ca.pem \
+              --peer-cert-file=/certs/server.pem \
+              --peer-key-file=/certs/server-key.pem
+          }
+
+          start_member etcd1 12379 "$PWD/.i11-data/etcd1"
+          start_member etcd2 22379 "$PWD/.i11-data/etcd2"
+          start_member etcd3 32379 "$PWD/.i11-data/etcd3"
+
+          for attempt in $(seq 1 40); do
+            ready=0
+            for port in 12379 22379 32379; do
+              if curl --fail --silent \
+                --cacert .i11-pki/ca.pem \
+                --cert .i11-pki/client.pem \
+                --key .i11-pki/client-key.pem \
+                "https://127.0.0.1:${port}/health" | grep -q 'true'; then
+                ready=$((ready + 1))
+              fi
+            done
+            if [ "$ready" -eq 3 ]; then
+              echo PASS218_I11_THREE_MEMBER_MTLS_CLUSTER_READY=1
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs etcd1 || true
+          docker logs etcd2 || true
+          docker logs etcd3 || true
+          exit 1
+
+      - name: Compile cumulative Pass 218 and Runtime OS surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_lifecycle.py
+          python -m py_compile hhs_backend/runtime_os_visual_server.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile tools/pass218_iteration11_evidence.py
+
+      - name: Enforce no authoritative float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_lifecycle.py'),
+          ]
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I11_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Preserve Iteration 1 foundations
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+
+      - name: Preserve Iteration 2 foundations
+        run: pytest -q tests/pass218/test_pass218_iteration2_grammar_narrative_hydration.py
+
+      - name: Preserve Iteration 3 membrane
+        run: pytest -q tests/pass218/test_pass218_iteration3_source_transaction_membrane.py
+
+      - name: Preserve Iteration 4 staging
+        run: pytest -q tests/pass218/test_pass218_iteration4_vector_vm5184_staging.py
+
+      - name: Preserve Iteration 5 promotion admission
+        run: pytest -q tests/pass218/test_pass218_iteration5_promotion_admission_proof.py
+
+      - name: Preserve Iteration 6 canonical commit boundary
+        run: pytest -q tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py
+
+      - name: Preserve Iteration 7 durable persistence
+        run: pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+
+      - name: Preserve Iteration 8 Runtime OS lifecycle
+        run: pytest -q tests/pass218/test_pass218_iteration8_runtime_os_lifecycle.py
+
+      - name: Preserve Iteration 9 multiprocess ownership
+        run: pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+
+      - name: Preserve Iteration 10 distributed ownership
+        env:
+          HHS_PASS218_I10_ETCD_TEST_ENDPOINT: http://127.0.0.1:42379
+        run: |
+          # I10's real-etcd tests are intentionally not pointed at the I11 mTLS
+          # cluster because their transport contract is separately frozen. The
+          # deterministic I10 suite remains mandatory; real I10 was already
+          # validated at its frozen exact head.
+          unset HHS_PASS218_I10_ETCD_TEST_ENDPOINT
+          pytest -q tests/pass218/test_pass218_iteration10_distributed_canonical_ownership.py
+
+      - name: Run Iteration 11 tests against healthy real quorum
+        env:
+          HHS_PASS218_I11_EXPECT_QUORUM: '1'
+        run: pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py
+
+      - name: Preserve inherited repository-native crawler
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+
+      - name: Preserve Runtime OS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Prove one-member loss retains quorum
+        env:
+          HHS_PASS218_I11_EXPECT_QUORUM: '1'
+        run: |
+          docker stop etcd3
+          pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py::test_real_three_member_cluster_probe_matches_expected_quorum
+
+      - name: Prove two-member loss fails closed
+        env:
+          HHS_PASS218_I11_EXPECT_QUORUM: '0'
+        run: |
+          docker stop etcd2
+          pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py::test_real_three_member_cluster_probe_matches_expected_quorum
+
+      - name: Prove quorum recovery
+        env:
+          HHS_PASS218_I11_EXPECT_QUORUM: '1'
+        run: |
+          docker start etcd2
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent \
+              --cacert .i11-pki/ca.pem \
+              --cert .i11-pki/client.pem \
+              --key .i11-pki/client-key.pem \
+              https://127.0.0.1:22379/health | grep -q 'true'; then
+              break
+            fi
+            sleep 1
+          done
+          pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py::test_real_three_member_cluster_probe_matches_expected_quorum
+          docker start etcd3
+
+      - name: Emit repository-native I11 seed checkpoint
+        run: python tools/pass218_iteration11_evidence.py seed --output-dir .i11-evidence
+
+      - name: Save and validate real etcd disaster-recovery snapshot
+        run: |
+          set -euo pipefail
+          docker exec etcd1 /usr/local/bin/etcdctl \
+            --endpoints=https://127.0.0.1:2379 \
+            --cacert=/certs/ca.pem \
+            --cert=/certs/client.pem \
+            --key=/certs/client-key.pem \
+            snapshot save /etcd-data/pass218-i11-snapshot.db
+          docker cp etcd1:/etcd-data/pass218-i11-snapshot.db .i11-evidence/etcd-snapshot.db
+          docker run --rm \
+            -v "$PWD/.i11-evidence:/evidence" \
+            quay.io/coreos/etcd:v3.5.21 \
+            /usr/local/bin/etcdutl snapshot status /evidence/etcd-snapshot.db -w json \
+            > .i11-evidence/snapshot-status.json
+          test -s .i11-evidence/etcd-snapshot.db
+          test -s .i11-evidence/snapshot-status.json
+          sha256sum .i11-evidence/etcd-snapshot.db
+          cat .i11-evidence/snapshot-status.json
+
+      - name: Destroy original cluster and restore snapshot into fresh member data
+        run: |
+          set -euo pipefail
+          docker rm -f etcd1 etcd2 etcd3
+          rm -rf .i11-restore
+          mkdir -p .i11-restore/etcd1 .i11-restore/etcd2 .i11-restore/etcd3
+
+          restore_member() {
+            name="$1"
+            docker run --rm \
+              -v "$PWD/.i11-evidence:/evidence:ro" \
+              -v "$PWD/.i11-restore/${name}:/restore" \
+              quay.io/coreos/etcd:v3.5.21 \
+              /usr/local/bin/etcdutl snapshot restore /evidence/etcd-snapshot.db \
+              --name="$name" \
+              --data-dir=/restore \
+              --initial-cluster='etcd1=https://etcd1:2380,etcd2=https://etcd2:2380,etcd3=https://etcd3:2380' \
+              --initial-advertise-peer-urls="https://${name}:2380" \
+              --initial-cluster-token=hhs-p218-i11-restored
+          }
+          restore_member etcd1
+          restore_member etcd2
+          restore_member etcd3
+
+          start_restored() {
+            name="$1"
+            port="$2"
+            docker run -d \
+              --name "$name" \
+              --network hhs-p218-i11 \
+              -p "${port}:2379" \
+              -v "$PWD/.i11-pki:/certs:ro" \
+              -v "$PWD/.i11-restore/${name}:/etcd-data" \
+              quay.io/coreos/etcd:v3.5.21 \
+              /usr/local/bin/etcd \
+              --name="$name" \
+              --data-dir=/etcd-data \
+              --listen-client-urls=https://0.0.0.0:2379 \
+              --advertise-client-urls="https://${name}:2379" \
+              --listen-peer-urls=https://0.0.0.0:2380 \
+              --initial-advertise-peer-urls="https://${name}:2380" \
+              --client-cert-auth=true \
+              --trusted-ca-file=/certs/ca.pem \
+              --cert-file=/certs/server.pem \
+              --key-file=/certs/server-key.pem \
+              --peer-client-cert-auth=true \
+              --peer-trusted-ca-file=/certs/ca.pem \
+              --peer-cert-file=/certs/server.pem \
+              --peer-key-file=/certs/server-key.pem
+          }
+          start_restored etcd1 12379
+          start_restored etcd2 22379
+          start_restored etcd3 32379
+
+          for attempt in $(seq 1 40); do
+            ready=0
+            for port in 12379 22379 32379; do
+              if curl --fail --silent \
+                --cacert .i11-pki/ca.pem \
+                --cert .i11-pki/client.pem \
+                --key .i11-pki/client-key.pem \
+                "https://127.0.0.1:${port}/health" | grep -q 'true'; then
+                ready=$((ready + 1))
+              fi
+            done
+            if [ "$ready" -eq 3 ]; then
+              echo PASS218_I11_RESTORED_CLUSTER_READY=1
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs etcd1 || true
+          docker logs etcd2 || true
+          docker logs etcd3 || true
+          exit 1
+
+      - name: Prove exact HHS recovery from restored etcd snapshot
+        run: |
+          python tools/pass218_iteration11_evidence.py recover \
+            --output-dir .i11-evidence \
+            --snapshot-file .i11-evidence/etcd-snapshot.db \
+            --snapshot-status-file .i11-evidence/snapshot-status.json
+
+      - name: Cleanup etcd containers
+        if: always()
+        run: |
+          docker rm -f etcd1 etcd2 etcd3 2>/dev/null || true
+          docker network rm hhs-p218-i11 2>/dev/null || true
