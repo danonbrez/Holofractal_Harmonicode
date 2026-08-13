@@ -1,11 +1,11 @@
 """Pass 218 Iteration 14 multi-party maintenance approval membrane.
 
-I14 is downstream of I9-I13.  It reuses the inherited Pass 146 signed-envelope
+I14 is downstream of I9-I13. It reuses the inherited Pass 146 signed-envelope
 primitive to prove possession of explicitly registered operator identities, then
-enforces threshold approval, separation of duties, expiry, revocation, current
-quorum, and exact distributed-fence binding.  Its terminal product is a sealed
-release receipt for an external I12 maintenance workflow.  I14 itself performs
-no maintenance operation and cannot change canonical state or authority.
+enforces threshold approval, separation of duties, expiry, self-revocation,
+current quorum, and exact distributed-fence binding. Its terminal product is a
+sealed release receipt for an external I12 maintenance workflow. I14 itself
+performs no maintenance operation and cannot change canonical state or authority.
 """
 from __future__ import annotations
 
@@ -153,6 +153,8 @@ class Pass218ApprovalPolicy:
             "quorum_required": True,
             "registered_identity_required": True,
             "pass146_signed_statement_required": True,
+            "self_revocation_only": True,
+            "preflight_revocation_recheck_required": True,
             "maintenance_remains_external": True,
             **_exclusions(),
         })
@@ -169,7 +171,15 @@ def validate_approval_policy(record: Mapping[str, Any]) -> dict[str, Any]:
     )
     if value.get("preparer_counts_as_approver") is not False or value.get("executor_counts_as_approver") is not False:
         raise Pass218ApprovalValidationError("P218_I14_SEPARATION_POLICY_INVALID")
-    for key in ("fence_epoch_binding_required", "quorum_required", "registered_identity_required", "pass146_signed_statement_required", "maintenance_remains_external"):
+    for key in (
+        "fence_epoch_binding_required",
+        "quorum_required",
+        "registered_identity_required",
+        "pass146_signed_statement_required",
+        "self_revocation_only",
+        "preflight_revocation_recheck_required",
+        "maintenance_remains_external",
+    ):
         if value.get(key) is not True:
             raise Pass218ApprovalValidationError("P218_I14_POLICY_INVARIANT_" + key.upper())
     _assert_exclusions(value)
@@ -264,12 +274,12 @@ def validate_operator_statement(envelope: Mapping[str, Any], *, registry: Pass21
     action = _require_text(data.get("action"), "P218_I14_ACTION_INVALID").upper()
     if action not in MAINTENANCE_ACTIONS:
         raise Pass218ApprovalRejected("P218_I14_ACTION_NOT_MAINTENANCE")
-    approved = _require_nonnegative_int(data.get("statement_epoch_seconds"), "P218_I14_STATEMENT_EPOCH_INVALID")
+    statement_epoch = _require_nonnegative_int(data.get("statement_epoch_seconds"), "P218_I14_STATEMENT_EPOCH_INVALID")
     expires = _require_nonnegative_int(data.get("expires_epoch_seconds"), "P218_I14_STATEMENT_EXPIRY_INVALID")
     now = _require_nonnegative_int(now_epoch_seconds, "P218_I14_NOW_INVALID")
-    if expires <= approved or expires <= now or approved > now:
+    if expires <= statement_epoch or expires <= now or statement_epoch > now:
         raise Pass218ApprovalRejected("P218_I14_STATEMENT_EXPIRED_OR_NOT_YET_VALID")
-    if expires - approved > policy.approval_ttl_seconds:
+    if expires - statement_epoch > policy.approval_ttl_seconds:
         raise Pass218ApprovalRejected("P218_I14_STATEMENT_TTL_EXCEEDED")
     _require_hash72(data.get("action_record_hash72"), "P218_I14_ACTION_HASH_INVALID")
     _require_positive_int(data.get("distributed_fence_epoch"), "P218_I14_FENCE_INVALID")
@@ -282,6 +292,46 @@ def validate_operator_statement(envelope: Mapping[str, Any], *, registry: Pass21
         "operator": registered,
         "message_hash72": _require_hash72(envelope.get("message_hash72"), "P218_I14_MESSAGE_HASH_INVALID"),
     }
+
+
+def _validate_revocations_for_bindings(*, revocation_statements: Sequence[Mapping[str, Any]], approval_owner_by_hash: Mapping[str, str], action_hash: str, action: str, preparer_id: str, fence: int, registry: Pass218OperatorRegistry, policy: Pass218ApprovalPolicy, now: int) -> set[str]:
+    revoked: set[str] = set()
+    for raw in revocation_statements:
+        item = validate_operator_statement(raw, registry=registry, expected_kind="REVOKE", policy=policy, now_epoch_seconds=now)
+        data = item["data"]
+        target = data["revoked_message_hash72"]
+        owner = approval_owner_by_hash.get(target)
+        if owner is None:
+            raise Pass218ApprovalRejected("P218_I14_REVOCATION_TARGET_NOT_COUNTED_APPROVAL")
+        if data["operator_id"] != owner:
+            raise Pass218ApprovalRejected("P218_I14_REVOCATION_NOT_SELF_AUTHORED")
+        if (
+            data["action_record_hash72"] != action_hash
+            or data["action"] != action
+            or data["prepared_by_operator_id"] != preparer_id
+            or data["distributed_fence_epoch"] != fence
+        ):
+            raise Pass218ApprovalRejected("P218_I14_REVOCATION_BINDING_MISMATCH")
+        revoked.add(target)
+    return revoked
+
+
+def validate_release_revocations(*, release: Mapping[str, Any], revocation_statements: Sequence[Mapping[str, Any]], registry: Pass218OperatorRegistry, policy: Pass218ApprovalPolicy, now_epoch_seconds: int) -> set[str]:
+    value = validate_maintenance_release(release, now_epoch_seconds=now_epoch_seconds)
+    hashes = list(value["approval_message_hash72s"])
+    owners = list(value["approver_operator_ids"])
+    owner_by_hash = dict(zip(hashes, owners, strict=True))
+    return _validate_revocations_for_bindings(
+        revocation_statements=revocation_statements,
+        approval_owner_by_hash=owner_by_hash,
+        action_hash=value["action_record_hash72"],
+        action=value["action"],
+        preparer_id=value["prepared_by_operator_id"],
+        fence=value["distributed_fence_epoch"],
+        registry=registry,
+        policy=policy,
+        now=_require_nonnegative_int(now_epoch_seconds, "P218_I14_NOW_INVALID"),
+    )
 
 
 def evaluate_maintenance_release(*, action_record: Mapping[str, Any], current_status: Mapping[str, Any], preparer_statement: Mapping[str, Any], approval_statements: Sequence[Mapping[str, Any]], executor_statement: Mapping[str, Any], revocation_statements: Sequence[Mapping[str, Any]], registry: Pass218OperatorRegistry, policy: Pass218ApprovalPolicy, now_epoch_seconds: int) -> dict[str, Any]:
@@ -302,22 +352,43 @@ def evaluate_maintenance_release(*, action_record: Mapping[str, Any], current_st
     if pdata["action_record_hash72"] != action_hash or pdata["action"] != action or pdata["distributed_fence_epoch"] != fence:
         raise Pass218ApprovalRejected("P218_I14_PREPARER_BINDING_MISMATCH")
 
-    revoked: set[str] = set()
-    for raw in revocation_statements:
-        item = validate_operator_statement(raw, registry=registry, expected_kind="REVOKE", policy=policy, now_epoch_seconds=now)
-        revoked.add(item["data"]["revoked_message_hash72"])
-
-    valid: list[dict[str, Any]] = []
-    approvers: set[str] = set()
+    candidates: list[dict[str, Any]] = []
+    owner_by_hash: dict[str, str] = {}
     for raw in approval_statements:
         item = validate_operator_statement(raw, registry=registry, expected_kind="APPROVE", policy=policy, now_epoch_seconds=now)
         data = item["data"]
         operator_id = data["operator_id"]
+        if operator_id == preparer_id:
+            continue
+        if (
+            data["prepared_by_operator_id"] != preparer_id
+            or data["action_record_hash72"] != action_hash
+            or data["action"] != action
+            or data["distributed_fence_epoch"] != fence
+        ):
+            continue
+        owner_by_hash[item["message_hash72"]] = operator_id
+        candidates.append(item)
+
+    revoked = _validate_revocations_for_bindings(
+        revocation_statements=revocation_statements,
+        approval_owner_by_hash=owner_by_hash,
+        action_hash=action_hash,
+        action=action,
+        preparer_id=preparer_id,
+        fence=fence,
+        registry=registry,
+        policy=policy,
+        now=now,
+    )
+
+    valid: list[dict[str, Any]] = []
+    approvers: set[str] = set()
+    for item in candidates:
         if item["message_hash72"] in revoked:
             continue
-        if operator_id == preparer_id or operator_id in approvers:
-            continue
-        if data["prepared_by_operator_id"] != preparer_id or data["action_record_hash72"] != action_hash or data["action"] != action or data["distributed_fence_epoch"] != fence:
+        operator_id = item["data"]["operator_id"]
+        if operator_id in approvers:
             continue
         approvers.add(operator_id)
         valid.append(item)
@@ -350,8 +421,8 @@ def evaluate_maintenance_release(*, action_record: Mapping[str, Any], current_st
         "action": action,
         "prepared_by_operator_id": preparer_id,
         "preparer_message_hash72": prepared["message_hash72"],
-        "approver_operator_ids": sorted(counted_approvers),
-        "approval_message_hash72s": sorted(item["message_hash72"] for item in valid),
+        "approver_operator_ids": [item["data"]["operator_id"] for item in valid],
+        "approval_message_hash72s": [item["message_hash72"] for item in valid],
         "executor_operator_id": executor_id,
         "executor_message_hash72": executor["message_hash72"],
         "required_distinct_approvers": policy.required_distinct_approvers,
@@ -390,6 +461,8 @@ def validate_maintenance_release(record: Mapping[str, Any], *, now_epoch_seconds
     hashes = value.get("approval_message_hash72s")
     if not isinstance(approvers, list) or not isinstance(hashes, list) or len(approvers) != len(hashes) or len(set(approvers)) != len(approvers):
         raise Pass218ApprovalValidationError("P218_I14_RELEASE_APPROVER_SET_INVALID")
+    for item in hashes:
+        _require_hash72(item, "P218_I14_RELEASE_APPROVAL_HASH_INVALID")
     required = _require_positive_int(value.get("required_distinct_approvers"), "P218_I14_APPROVAL_THRESHOLD_INVALID")
     if len(approvers) < required or value.get("valid_distinct_approvers") != len(approvers):
         raise Pass218ApprovalValidationError("P218_I14_RELEASE_APPROVAL_QUORUM_INVALID")
@@ -422,4 +495,5 @@ __all__ = [
     "validate_maintenance_release",
     "validate_operator_record",
     "validate_operator_statement",
+    "validate_release_revocations",
 ]
