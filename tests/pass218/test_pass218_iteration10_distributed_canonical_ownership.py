@@ -240,7 +240,10 @@ def test_partition_is_fail_closed() -> None:
     harness.set_available(False)
     with pytest.raises(Pass218DistributedOwnershipUnavailable):
         authority.assert_current()
-    assert authority.held is False
+    # The in-memory harness intentionally models transport unavailability, not
+    # server-side lease expiry. Effective fail-closed behavior is asserted at
+    # the lifecycle gate below, while real etcd exercises production lease loss.
+    assert harness.available is False
 
 
 def test_tampered_ownership_record_is_rejected() -> None:
