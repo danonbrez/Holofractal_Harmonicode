@@ -103,7 +103,7 @@ jobs:
           pytest -q tests/test_runtime_os_production_root.py
 
       - name: Run real learner-based maintenance sequence
-        run: python scripts/pass218_iteration12_operational_validation.py
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration12_operational_validation.py
 
       - name: Upload Iteration 12 operational evidence
         if: always()
