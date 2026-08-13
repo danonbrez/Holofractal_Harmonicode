@@ -8,6 +8,7 @@ from pathlib import Path
 import time
 from typing import Any, Mapping
 
+from hhs_runtime.pass218.consumption_recovery_i15 import repair_consumption_indexes
 from hhs_runtime.pass218.execution_i15 import (
     Pass218ExecutionStateError,
     Pass218ExecutionValidationError,
@@ -32,6 +33,7 @@ class Pass218ExecutionControlPlane:
         self.i14_control = i14_control
         root = Path(state_root)
         self.journal = Pass218ReleaseConsumptionJournal(root / "i15" / "consumption")
+        self.recovered_action_index_count = repair_consumption_indexes(self.journal)
         self.reconciliation_root = root / "i14" / "execution-reconciliations"
         self.reconciliation_root.mkdir(parents=True, exist_ok=True)
 
@@ -58,6 +60,13 @@ class Pass218ExecutionControlPlane:
                 return validate_maintenance_run_receipt(record)
         return None
 
+    def _validate_existing_i13_run(self, existing: Mapping[str, Any], attestation: Mapping[str, Any]) -> dict[str, Any]:
+        if existing.get("outcome") != attestation.get("outcome"):
+            raise Pass218ExecutionValidationError("P218_I15_EXISTING_I13_OUTCOME_MISMATCH")
+        if bool(existing.get("external_operation_executed")) != bool(attestation.get("external_operation_executed")):
+            raise Pass218ExecutionValidationError("P218_I15_EXISTING_I13_EXECUTION_FLAG_MISMATCH")
+        return dict(existing)
+
     def _existing_reconciliation(self, release_hash: str) -> dict[str, Any] | None:
         path = self._reconciliation_path(release_hash)
         if not path.is_file():
@@ -73,6 +82,8 @@ class Pass218ExecutionControlPlane:
             **journal,
             "reconciled_release_count": reconciled,
             "terminal_pending_reconciliation_count": max(0, terminal - reconciled),
+            "recovered_action_index_count": self.recovered_action_index_count,
+            "durable_claim_repairs_secondary_index": True,
             "i14_preflight_required_before_claim": True,
             "claim_is_external_execution_start_boundary": True,
             "post_claim_retry_reuses_release": False,
@@ -91,16 +102,13 @@ class Pass218ExecutionControlPlane:
         if not isinstance(revocations, list):
             raise Pass218ExecutionValidationError("P218_I15_REVOCATIONS_INVALID")
         preflight = self.i14_control.preflight({"release": dict(release), "revocation_statements": revocations})
+        self.recovered_action_index_count += repair_consumption_indexes(self.journal)
         return self.journal.claim_release(release=release, preflight=preflight, claimed_epoch_ns=time.time_ns())
 
     def _ensure_i13_run(self, claim: Mapping[str, Any], attestation: Mapping[str, Any]) -> dict[str, Any]:
         existing = self._existing_i13_run(str(claim["action_record_hash72"]))
         if existing is not None:
-            if existing.get("outcome") != attestation.get("outcome"):
-                raise Pass218ExecutionValidationError("P218_I15_EXISTING_I13_OUTCOME_MISMATCH")
-            if bool(existing.get("external_operation_executed")) != bool(attestation.get("external_operation_executed")):
-                raise Pass218ExecutionValidationError("P218_I15_EXISTING_I13_EXECUTION_FLAG_MISMATCH")
-            return existing
+            return self._validate_existing_i13_run(existing, attestation)
         try:
             return self.i13_control.record_run({
                 "action_record_hash72": claim["action_record_hash72"],
@@ -115,7 +123,7 @@ class Pass218ExecutionControlPlane:
             existing = self._existing_i13_run(str(claim["action_record_hash72"]))
             if existing is None:
                 raise
-            return existing
+            return self._validate_existing_i13_run(existing, attestation)
 
     def reconcile_release(self, release_hash: str) -> dict[str, Any]:
         existing = self._existing_reconciliation(release_hash)
