@@ -308,19 +308,38 @@ def prove_learner_replacement() -> dict[str, Any]:
     old_id = int(old_member["ID"])
     old_hex = f"{old_id:x}"
 
-    etcdctl(
-        "etcd1",
-        "member", "add", "etcd3new",
-        "--peer-urls=https://etcd3new:2380",
-        "--learner",
-        capture=True,
-    )
-    after_add = json.loads(etcdctl("etcd1", "member", "list", "-w", "json", capture=True).stdout or "{}")
-    learner_member = next(
-        member
-        for member in after_add["members"]
-        if "https://etcd3new:2380" in member.get("peerURLs", [])
-    )
+    learner_member: dict[str, Any] | None = None
+    last_add_output = ""
+    for _ in range(30):
+        monitor.require_quorum_ready()
+        add = etcdctl(
+            "etcd1",
+            "member", "add", "etcd3new",
+            "--peer-urls=https://etcd3new:2380",
+            "--learner",
+            check=False,
+            capture=True,
+        )
+        last_add_output = add.stdout or ""
+        current = json.loads(etcdctl("etcd1", "member", "list", "-w", "json", capture=True).stdout or "{}")
+        learner_member = next(
+            (
+                member
+                for member in current["members"]
+                if "https://etcd3new:2380" in member.get("peerURLs", [])
+            ),
+            None,
+        )
+        if learner_member is not None:
+            break
+        if add.returncode != 0 and "unhealthy cluster" in last_add_output:
+            time.sleep(1)
+            continue
+        if add.returncode != 0:
+            raise subprocess.CalledProcessError(add.returncode, add.args, output=last_add_output)
+        raise RuntimeError("P218_I12_LEARNER_ADD_COMMITTED_WITHOUT_MEMBER_RECORD")
+    if learner_member is None:
+        raise RuntimeError("P218_I12_LEARNER_ADD_STRICT_RECONFIG_TIMEOUT: " + last_add_output.strip())
     assert learner_member.get("isLearner") is True
     learner_id = int(learner_member["ID"])
     learner_hex = f"{learner_id:x}"
