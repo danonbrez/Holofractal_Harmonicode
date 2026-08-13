@@ -107,6 +107,7 @@ def main() -> None:
         primary.shutdown()
 
         takeover_status = standby.attempt_ownership_takeover()
+        takeover_ownership_record = standby.ownership.read_persisted_record()
         restored_receipt = standby.target.committed_receipt(
             authorization["authorization_hash72"]
         )
@@ -151,7 +152,7 @@ def main() -> None:
             "canonical_root_hash72": root_hash72,
             "takeover_state": takeover_status["state"],
             "takeover_fence_epoch": takeover_status["ownership_fence_epoch"],
-            "takeover_previous_owner": standby.ownership.read_persisted_record()["previous_owner_id"],
+            "takeover_previous_owner": takeover_ownership_record["previous_owner_id"],
             "takeover_root_exact": takeover_root_exact,
             "takeover_snapshot_exact": takeover_snapshot_exact,
             "takeover_receipt_exact": takeover_receipt_exact,
