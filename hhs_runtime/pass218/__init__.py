@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-10 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-11 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -157,6 +157,33 @@ _DISTRIBUTED_LIFECYCLE_EXPORTS = frozenset({
     "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
     "Pass218DistributedRuntimeLifecycle",
 })
+_OPERATIONAL_HARDENING_EXPORTS = frozenset({
+    "CLUSTER_PROBE_SCHEMA",
+    "DEFAULT_CLUSTER_NAME",
+    "DISASTER_RECOVERY_MANIFEST_SCHEMA",
+    "MINIMUM_PRODUCTION_MEMBER_COUNT",
+    "OPERATIONAL_AUTHORITY_SCOPE",
+    "OPERATIONAL_CLUSTER_BACKEND",
+    "PASS218_OPERATIONAL_HARDENING_VERSION",
+    "EtcdV3MutualTLSEndpointPoolClient",
+    "Pass218DisasterRecoveryValidationError",
+    "Pass218EtcdClusterAuthority",
+    "Pass218EtcdClusterConfig",
+    "Pass218EtcdClusterMonitor",
+    "Pass218OperationalConfigurationError",
+    "Pass218OperationalHardeningError",
+    "Pass218OperationalIdentityMismatch",
+    "Pass218OperationalQuorumUnavailable",
+    "restore_target_from_disaster_recovery_manifest",
+    "seal_disaster_recovery_manifest",
+    "validate_cluster_probe",
+    "validate_disaster_recovery_manifest",
+})
+_OPERATIONAL_LIFECYCLE_EXPORTS = frozenset({
+    "OPERATIONAL_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
+    "Pass218OperationallyHardenedRuntimeLifecycle",
+})
 
 
 def __getattr__(name: str):
@@ -178,6 +205,10 @@ def __getattr__(name: str):
         module = import_module(".distributed_ownership", __name__)
     elif name in _DISTRIBUTED_LIFECYCLE_EXPORTS:
         module = import_module(".lifecycle_i10", __name__)
+    elif name in _OPERATIONAL_HARDENING_EXPORTS:
+        module = import_module(".operational_hardening_i11", __name__)
+    elif name in _OPERATIONAL_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i11", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -197,6 +228,8 @@ def __dir__() -> list[str]:
         | _MULTIPROCESS_LIFECYCLE_EXPORTS
         | _DISTRIBUTED_OWNERSHIP_EXPORTS
         | _DISTRIBUTED_LIFECYCLE_EXPORTS
+        | _OPERATIONAL_HARDENING_EXPORTS
+        | _OPERATIONAL_LIFECYCLE_EXPORTS
     )
 
 
@@ -324,4 +357,27 @@ __all__ = [
     "DISTRIBUTED_LIFECYCLE_STATUS_SCHEMA",
     "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
     "Pass218DistributedRuntimeLifecycle",
+    "CLUSTER_PROBE_SCHEMA",
+    "DEFAULT_CLUSTER_NAME",
+    "DISASTER_RECOVERY_MANIFEST_SCHEMA",
+    "MINIMUM_PRODUCTION_MEMBER_COUNT",
+    "OPERATIONAL_AUTHORITY_SCOPE",
+    "OPERATIONAL_CLUSTER_BACKEND",
+    "PASS218_OPERATIONAL_HARDENING_VERSION",
+    "EtcdV3MutualTLSEndpointPoolClient",
+    "Pass218DisasterRecoveryValidationError",
+    "Pass218EtcdClusterAuthority",
+    "Pass218EtcdClusterConfig",
+    "Pass218EtcdClusterMonitor",
+    "Pass218OperationalConfigurationError",
+    "Pass218OperationalHardeningError",
+    "Pass218OperationalIdentityMismatch",
+    "Pass218OperationalQuorumUnavailable",
+    "restore_target_from_disaster_recovery_manifest",
+    "seal_disaster_recovery_manifest",
+    "validate_cluster_probe",
+    "validate_disaster_recovery_manifest",
+    "OPERATIONAL_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
+    "Pass218OperationallyHardenedRuntimeLifecycle",
 ]
