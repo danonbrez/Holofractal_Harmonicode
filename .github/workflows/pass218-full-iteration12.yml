@@ -41,6 +41,30 @@ jobs:
           python -m py_compile hhs_backend/runtime_os_pass218_lifecycle.py
           python -m py_compile scripts/pass218_iteration12_operational_validation.py
 
+      - name: Validate Iteration 12 cumulative package exports
+        run: |
+          python - <<'PY'
+          from hhs_runtime.pass218 import (
+              PASS218_AUTHORITY_MAINTENANCE_VERSION,
+              Pass218BoundedRecoveryController,
+              Pass218MaintenancePolicy,
+              seal_credential_rotation_plan,
+              seal_member_replacement_plan,
+              seal_operational_alert_receipt,
+              seal_snapshot_retention_receipt,
+          )
+          assert PASS218_AUTHORITY_MAINTENANCE_VERSION == 'HHS-P218-PRODUCTION-AUTHORITY-MAINTENANCE-I12-V1'
+          assert Pass218MaintenancePolicy is not None
+          assert Pass218BoundedRecoveryController is not None
+          assert all(callable(value) for value in (
+              seal_credential_rotation_plan,
+              seal_member_replacement_plan,
+              seal_operational_alert_receipt,
+              seal_snapshot_retention_receipt,
+          ))
+          print('PASS218_I12_PACKAGE_EXPORTS=1')
+          PY
+
       - name: Enforce no authoritative float literals
         run: |
           python - <<'PY'
