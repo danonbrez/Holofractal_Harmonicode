@@ -83,6 +83,161 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
         assert route_index < root_index
 
 
+def test_runtime_os_application_installs_pass218_i16_consumption_membrane():
+    from hhs_backend import runtime_os_application_server
+
+    routes = list(runtime_os_application_server.app.router.routes)
+    route_paths = {str(getattr(route, "path", "")) for route in routes}
+    for required in {
+        "/api/runtime/pass218/authority/maintenance-consumption/status",
+        "/api/runtime/pass218/authority/maintenance-consumption/claim",
+        "/api/runtime/pass218/authority/maintenance-consumption/attest",
+        "/api/runtime/pass218/authority/maintenance-consumption/reconcile",
+        "/api/runtime/pass218/authority/maintenance-consumption/distributed/status",
+        "/api/runtime/pass218/authority/maintenance-consumption/distributed/synchronize",
+    }:
+        assert required in route_paths
+
+    assert (
+        runtime_os_application_server.PASS218_I15_CONSUMPTION_CONTROL_PLANE
+        is runtime_os_application_server.PASS218_I16_CONSUMPTION_CONTROL_PLANE
+    )
+    status = runtime_os_application_server.PASS218_I16_CONSUMPTION_CONTROL_PLANE.status()
+    assert status["canonical_authority_minted"] is False
+    assert status["canonical_mutation_permitted"] is False
+    assert status["action_authority_minted"] is False
+
+
+def test_pass218_i16_failover_anti_replay_smoke():
+    from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+    from hhs_runtime.pass218.distributed_consumption_i16 import (
+        Pass218DistributedConsumptionReplayRejected,
+        Pass218InMemoryDistributedConsumptionLedger,
+        synchronize_distributed_claims_to_local,
+    )
+    from hhs_runtime.pass218.distributed_ownership import (
+        Pass218InMemoryConsensusHarness,
+        Pass218InMemoryDistributedAuthority,
+    )
+    from hhs_runtime.pass218.execution_i15 import (
+        Pass218ReleaseConsumptionJournal,
+        seal_release_claim,
+    )
+    import tempfile
+
+    def h72(label: str) -> str:
+        return hash72_digest({"domain": "HHS-P218-I16-PRODUCTION-ROOT-SMOKE"}, {"label": label})
+
+    harness = Pass218InMemoryConsensusHarness()
+    first = Pass218InMemoryDistributedAuthority(
+        harness,
+        owner_id="i16-smoke-owner-a",
+        host_id="i16-smoke-host-a",
+        lease_ttl_seconds=9,
+    )
+    first_record = first.acquire()
+    assert first_record is not None and first_record["fence_epoch"] == 1
+
+    action_hash = h72("action")
+    release = {
+        "schema": "HHS-P218-I14-MAINTENANCE-RELEASE-V1",
+        "version": "HHS-P218-MULTI-PARTY-MAINTENANCE-APPROVAL-I14-V1",
+        "policy_hash72": h72("policy"),
+        "action_record_hash72": action_hash,
+        "action": "PREPARE_CREDENTIAL_ROTATION",
+        "prepared_by_operator_id": "prep",
+        "preparer_message_hash72": h72("prep"),
+        "approver_operator_ids": ["alice", "bob"],
+        "approval_message_hash72s": [h72("alice"), h72("bob")],
+        "executor_operator_id": "exec",
+        "executor_message_hash72": h72("exec"),
+        "required_distinct_approvers": 2,
+        "valid_distinct_approvers": 2,
+        "distributed_fence_epoch": 1,
+        "current_status_hash72": h72("status"),
+        "released_epoch_seconds": 1_800_000_000,
+        "expires_epoch_seconds": 1_800_000_600,
+        "approval_quorum_satisfied": True,
+        "separation_of_duties_satisfied": True,
+        "pass146_statement_integrity_satisfied": True,
+        "current_quorum_satisfied": True,
+        "current_writer_fence_satisfied": True,
+        "external_maintenance_preconditions_satisfied": True,
+        "maintenance_remains_external": True,
+        "canonical_authority_minted": False,
+        "canonical_mutation_permitted": False,
+        "canonical_learning_commit_invoked": False,
+        "truth_promotion": False,
+        "action_authority_minted": False,
+        "verbatim_source_retained": False,
+        "pass165_source_retaining_path_invoked": False,
+        "authoritative_float_weights": False,
+    }
+    release["record_hash72"] = hash72_digest({"domain": release["schema"]}, release)
+    preflight = {
+        "schema": "HHS-P218-I14-MAINTENANCE-PREFLIGHT-V1",
+        "ok": True,
+        "release_record_hash72": release["record_hash72"],
+        "action_record_hash72": action_hash,
+        "distributed_fence_epoch": 1,
+        "current_status_hash72": h72("preflight"),
+        "approval_quorum_satisfied": True,
+        "separation_of_duties_satisfied": True,
+        "current_quorum_satisfied": True,
+        "current_writer_fence_satisfied": True,
+        "recorded_revocations_rechecked": True,
+        "maintenance_remains_external": True,
+    }
+    claim = seal_release_claim(
+        release=release,
+        preflight=preflight,
+        claimed_epoch_ns=1_800_000_000_000_000_000,
+    )
+    Pass218InMemoryDistributedConsumptionLedger(first).consume_claim(claim)
+
+    harness.expire_owner()
+    replacement = Pass218InMemoryDistributedAuthority(
+        harness,
+        owner_id="i16-smoke-owner-b",
+        host_id="i16-smoke-host-b",
+        lease_ttl_seconds=9,
+    )
+    replacement_record = replacement.acquire()
+    assert replacement_record is not None and replacement_record["fence_epoch"] == 2
+    replacement_ledger = Pass218InMemoryDistributedConsumptionLedger(replacement)
+
+    with tempfile.TemporaryDirectory() as directory:
+        journal = Pass218ReleaseConsumptionJournal(directory)
+        assert synchronize_distributed_claims_to_local(journal, replacement_ledger) == 1
+        restored = journal.claim_for_release(release["record_hash72"])
+        assert restored is not None
+        assert restored["record_hash72"] == claim["record_hash72"]
+
+    second_release = dict(release)
+    second_release["distributed_fence_epoch"] = 2
+    second_release["policy_hash72"] = h72("policy-2")
+    second_release["current_status_hash72"] = h72("status-2")
+    second_release["record_hash72"] = hash72_digest(
+        {"domain": second_release["schema"]},
+        {key: value for key, value in second_release.items() if key != "record_hash72"},
+    )
+    second_preflight = dict(preflight)
+    second_preflight["release_record_hash72"] = second_release["record_hash72"]
+    second_preflight["distributed_fence_epoch"] = 2
+    second_preflight["current_status_hash72"] = h72("preflight-2")
+    second_claim = seal_release_claim(
+        release=second_release,
+        preflight=second_preflight,
+        claimed_epoch_ns=1_800_000_000_000_000_001,
+    )
+    try:
+        replacement_ledger.consume_claim(second_claim)
+    except Pass218DistributedConsumptionReplayRejected:
+        pass
+    else:
+        raise AssertionError("I16 failed to preserve prepared-action anti-replay across failover")
+
+
 def test_digitalocean_service_uses_one_versioned_runtime_os_release():
     service = Path("deploy/digitalocean/hhs-pass196-integrated-environment.service").read_text(
         encoding="utf-8"
