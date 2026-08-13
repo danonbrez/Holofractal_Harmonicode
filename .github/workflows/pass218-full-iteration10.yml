@@ -1,0 +1,117 @@
+name: Pass 218 Full Iteration 10
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration10-distributed-canonical-ownership
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  distributed-canonical-ownership:
+    runs-on: ubuntu-24.04
+    services:
+      etcd:
+        image: quay.io/coreos/etcd:v3.5.21
+        env:
+          ETCD_NAME: default
+          ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+          ETCD_ADVERTISE_CLIENT_URLS: http://127.0.0.1:2379
+          ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+          ETCD_INITIAL_ADVERTISE_PEER_URLS: http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER: default=http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER_STATE: new
+        ports:
+          - 2379:2379
+        options: >-
+          --health-cmd "ETCDCTL_API=3 etcdctl endpoint health --endpoints=http://127.0.0.1:2379"
+          --health-interval 2s
+          --health-timeout 2s
+          --health-retries 20
+    env:
+      HHS_PASS218_I10_ETCD_TEST_ENDPOINT: http://127.0.0.1:2379
+      HHS_PASS218_I10_ETCD_TEST_NAMESPACE: /hhs/pass218/i10/ci/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pytest cryptography fastapi uvicorn httpx
+      - name: Verify real etcd v3 authority is reachable
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          request = urllib.request.Request(
+              'http://127.0.0.1:2379/v3/kv/range',
+              data=json.dumps({'key': 'aA=='}).encode('utf-8'),
+              headers={'Content-Type': 'application/json'},
+              method='POST',
+          )
+          with urllib.request.urlopen(request, timeout=3) as response:
+              payload = json.loads(response.read().decode('utf-8'))
+          assert isinstance(payload, dict)
+          print('PASS218_I10_ETCD_V3_REACHABLE=1')
+          PY
+      - name: Compile cumulative Pass 218 and Runtime OS surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_lifecycle.py
+          python -m py_compile hhs_backend/runtime_os_visual_server.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile tools/pass218_iteration1_evidence.py
+          python -m py_compile tools/pass218_iteration2_evidence.py
+          python -m py_compile tools/pass218_iteration3_evidence.py
+          python -m py_compile tools/pass218_iteration4_evidence.py
+          python -m py_compile tools/pass218_iteration5_evidence.py
+          python -m py_compile tools/pass218_iteration6_evidence.py
+          python -m py_compile tools/pass218_iteration7_evidence.py
+          python -m py_compile tools/pass218_iteration8_evidence.py
+          python -m py_compile tools/pass218_iteration9_evidence.py
+          python -m py_compile tools/pass218_iteration10_evidence.py
+      - name: Enforce no authoritative float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_lifecycle.py'),
+          ]
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I10_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+      - name: Preserve Iteration 1 exact foundations
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+      - name: Preserve Iteration 2 grammar and hydration foundations
+        run: pytest -q tests/pass218/test_pass218_iteration2_grammar_narrative_hydration.py
+      - name: Preserve Iteration 3 source transaction membrane
+        run: pytest -q tests/pass218/test_pass218_iteration3_source_transaction_membrane.py
+      - name: Preserve Iteration 4 vector and VM5184 staging
+        run: pytest -q tests/pass218/test_pass218_iteration4_vector_vm5184_staging.py
+      - name: Preserve Iteration 5 promotion admission proof
+        run: pytest -q tests/pass218/test_pass218_iteration5_promotion_admission_proof.py
+      - name: Preserve Iteration 6 canonical commit boundary
+        run: pytest -q tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py
+      - name: Preserve Iteration 7 durable canonical persistence
+        run: pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+      - name: Preserve Iteration 8 Runtime OS lifecycle
+        run: pytest -q tests/pass218/test_pass218_iteration8_runtime_os_lifecycle.py
+      - name: Preserve Iteration 9 multiprocess ownership
+        run: pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+      - name: Run Iteration 10 distributed ownership tests with real etcd
+        run: pytest -q tests/pass218/test_pass218_iteration10_distributed_canonical_ownership.py
+      - name: Preserve inherited Pass 218 reference crawler evidence
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+      - name: Preserve Runtime OS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+      - name: Emit repository-native Iteration 10 distributed evidence
+        run: python tools/pass218_iteration10_evidence.py
