@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-7 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-8 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -94,6 +94,13 @@ _PERSISTENCE_EXPORTS = frozenset({
     "validate_checkpoint",
     "validate_manifest",
 })
+_LIFECYCLE_EXPORTS = frozenset({
+    "PASS218_RUNTIME_LIFECYCLE_VERSION",
+    "RUNTIME_LIFECYCLE_STATUS_SCHEMA",
+    "Pass218RuntimeLifecycle",
+    "Pass218RuntimeLifecycleError",
+    "Pass218RuntimeLifecycleNotReady",
+})
 
 
 def __getattr__(name: str):
@@ -105,6 +112,8 @@ def __getattr__(name: str):
         module = import_module(".commit_boundary", __name__)
     elif name in _PERSISTENCE_EXPORTS:
         module = import_module(".persistence_compat", __name__)
+    elif name in _LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -119,6 +128,7 @@ def __dir__() -> list[str]:
         | _PROMOTION_EXPORTS
         | _COMMIT_EXPORTS
         | _PERSISTENCE_EXPORTS
+        | _LIFECYCLE_EXPORTS
     )
 
 
@@ -193,4 +203,9 @@ __all__ = [
     "seal_manifest",
     "validate_checkpoint",
     "validate_manifest",
+    "PASS218_RUNTIME_LIFECYCLE_VERSION",
+    "RUNTIME_LIFECYCLE_STATUS_SCHEMA",
+    "Pass218RuntimeLifecycle",
+    "Pass218RuntimeLifecycleError",
+    "Pass218RuntimeLifecycleNotReady",
 ]
