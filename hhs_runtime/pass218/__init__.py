@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-6 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-7 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -78,6 +78,22 @@ _COMMIT_EXPORTS = frozenset({
     "Pass218CanonicalCommitValidationError",
     "PreparedCanonicalAdmission",
 })
+_PERSISTENCE_EXPORTS = frozenset({
+    "CHECKPOINT_SCHEMA",
+    "DurableRestoreResult",
+    "MANIFEST_SCHEMA",
+    "PASS218_PERSISTENCE_VERSION",
+    "Pass218DurableCanonicalStore",
+    "Pass218PersistenceError",
+    "Pass218PersistenceStateError",
+    "Pass218PersistenceValidationError",
+    "RESTORE_SCHEMA",
+    "restore_target_from_checkpoint",
+    "seal_checkpoint",
+    "seal_manifest",
+    "validate_checkpoint",
+    "validate_manifest",
+})
 
 
 def __getattr__(name: str):
@@ -87,6 +103,8 @@ def __getattr__(name: str):
         module = import_module(".promotion", __name__)
     elif name in _COMMIT_EXPORTS:
         module = import_module(".commit_boundary", __name__)
+    elif name in _PERSISTENCE_EXPORTS:
+        module = import_module(".persistence", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -96,7 +114,11 @@ def __getattr__(name: str):
 
 def __dir__() -> list[str]:
     return sorted(
-        set(globals()) | _STAGING_EXPORTS | _PROMOTION_EXPORTS | _COMMIT_EXPORTS
+        set(globals())
+        | _STAGING_EXPORTS
+        | _PROMOTION_EXPORTS
+        | _COMMIT_EXPORTS
+        | _PERSISTENCE_EXPORTS
     )
 
 
@@ -157,4 +179,18 @@ __all__ = [
     "Pass218CanonicalCommitStateError",
     "Pass218CanonicalCommitValidationError",
     "PreparedCanonicalAdmission",
+    "CHECKPOINT_SCHEMA",
+    "DurableRestoreResult",
+    "MANIFEST_SCHEMA",
+    "PASS218_PERSISTENCE_VERSION",
+    "Pass218DurableCanonicalStore",
+    "Pass218PersistenceError",
+    "Pass218PersistenceStateError",
+    "Pass218PersistenceValidationError",
+    "RESTORE_SCHEMA",
+    "restore_target_from_checkpoint",
+    "seal_checkpoint",
+    "seal_manifest",
+    "validate_checkpoint",
+    "validate_manifest",
 ]
