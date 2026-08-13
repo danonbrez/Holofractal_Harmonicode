@@ -1,0 +1,98 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_3_CONTRACT_V1",
+  "contract": "HHS-P215-I3-REVERSIBLE-QUANTIZATION-BLOCK-DECOMPOSITION-STRUCTURE-ATTRIBUTION",
+  "pass": 215,
+  "iteration": 3,
+  "version": "1.0.0-iteration3",
+  "inherits": {
+    "base_main": "a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "frozen_profile_git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e",
+    "iteration2_validated_head": "cbb477de7acf7461916f13ca3d670b511cb483c2",
+    "iteration2_validated_tree": "4803cd565e1b97990706b183fd18a34fa03a710f",
+    "iteration2_real_model_evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+    "iteration2_receipt_hash72": "eazJ?HQncuTLTNwn9-UO!PSBI2I)GHgBuN/h75y2Iyi0Nkkd845iC+u/xb?o(CBRQ56DqKLz",
+    "iteration2_raw_canonical_incidence": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "iteration2_raw_canonical_tensor_bytes": 18335232
+  },
+  "objective": "Decompose supported GGUF quantization blocks into exact scale or metadata bytes and packed code bytes, prove byte-exact reconstruction, attribute repeated structure per tensor and transformer layer, and compare predeclared reversible dictionary candidates against the frozen Iteration 2 raw-weight baseline without redefining the benchmark instrument.",
+  "supported_real_workload_block_layouts": {
+    "Q4_0": {
+      "block_elements": 32,
+      "block_bytes": 18,
+      "scale_bytes": 2,
+      "code_bytes": 16
+    },
+    "Q8_0": {
+      "block_elements": 32,
+      "block_bytes": 34,
+      "scale_bytes": 2,
+      "code_bytes": 32
+    }
+  },
+  "predeclared_reversible_candidates": [
+    "RAW_BLOCK_STREAM",
+    "WHOLE_BLOCK_DICTIONARY_V1",
+    "SPLIT_SCALE_CODE_DICTIONARY_V1"
+  ],
+  "dictionary_format": {
+    "magic_bytes": 4,
+    "item_size_u16_bytes": 2,
+    "value_count_u64_bytes": 8,
+    "unique_count_u64_bytes": 8,
+    "index_width_u8_bytes": 1,
+    "header_bytes": 23,
+    "unique_value_order": "FIRST_OCCURRENCE",
+    "index_endianness": "LITTLE",
+    "index_width_rule": "ZERO_IF_ONE_UNIQUE_ELSE_MINIMUM_UNSIGNED_BYTES",
+    "selection_rule": "MINIMUM_ENCODED_BYTES_RAW_WINS_TIES"
+  },
+  "required_measurements": [
+    "exact_block_count_by_tensor_and_type",
+    "exact_scale_bytes_and_code_bytes",
+    "unique_and_repeated_scale_values",
+    "unique_and_repeated_code_blocks",
+    "unique_and_repeated_full_blocks",
+    "whole_block_dictionary_encoded_bytes",
+    "split_scale_code_dictionary_encoded_bytes",
+    "selected_reversible_representation_bytes",
+    "selected_gain_or_overhead_vs_raw_bytes",
+    "per_tensor_structure_attribution",
+    "per_layer_structure_attribution",
+    "global_structure_attribution",
+    "exact_reconstruction_sha256_equality",
+    "inherited_pass212_measurement_on_decomposed_scale_and_code_streams",
+    "unsupported_quantized_layout_passthrough_accounting",
+    "opaque_float_storage_exclusion"
+  ],
+  "constraints": {
+    "frozen_pass214_profile_mutation_forbidden": true,
+    "canonical_float_interpretation_forbidden": true,
+    "source_weight_mutation_forbidden": true,
+    "lossy_dequantization_forbidden": true,
+    "post_hoc_candidate_redefinition_forbidden": true,
+    "unsupported_quantized_layouts_fail_closed_or_passthrough_without_structure_claim": true,
+    "dictionary_round_trip_required": true,
+    "tensor_round_trip_required": true,
+    "evidence_float_numbers_forbidden": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "arbitrary_compression_claimed": false
+  },
+  "real_workload": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04"
+  },
+  "completion_gate": "Iteration 3 completes only when the authenticated real GGUF is decomposed and reconstructed exactly, all predeclared candidate costs are retained, unsupported bytes are explicitly accounted, evidence validates independently, and the frozen authority boundary remains unchanged."
+}

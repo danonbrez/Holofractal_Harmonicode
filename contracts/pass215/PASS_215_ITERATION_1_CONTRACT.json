@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_1_CONTRACT_V1",
+  "pass": 215,
+  "iteration": 1,
+  "title": "Exact Quantized Transformer Ingestion and Admission Incidence",
+  "base_main_commit": "a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a",
+  "inherits": {
+    "pre_pass_foundation": true,
+    "passes_001_through_214": true,
+    "pass214_main_closure_commit": "063bcc1426b5bba106e139cb7dba1c540df090df",
+    "pass214_main_closure_tree": "9b21320cc72f3c77c79a9d76b083fe8b0c97f9d5",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "pass214_terminal_receipt_hash72": "!(KTNH1zFC/ikVVJ1qCp8OKfOX8IoP<O8-/Df(NcNLYbY<<i+ICL5g2luJlws)AOvyX9XvJD"
+  },
+  "frozen_instrument": {
+    "path": "contracts/pass215/PASS_215_BENCHMARK_PROFILE.json",
+    "git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e",
+    "post_hoc_redefinition_forbidden": true,
+    "profile_content_must_not_be_modified": true
+  },
+  "objective": [
+    "ingest quantized transformer tensor bytes without floating-point canonical authority",
+    "preserve exact tensor byte identity and deterministic tensor ordering",
+    "measure byte-weighted incidence in generator-only, generator-plus-exceptions, and raw-fallback tiers",
+    "verify exact reconstruction of every admitted full hydration window",
+    "report incomplete tensor tails conservatively as raw fallback",
+    "bind all measurements to the frozen Pass 214 benchmark profile and Pass 214 terminal authority",
+    "keep Pass 213 runtime mutation authority and canonical mutation disabled"
+  ],
+  "supported_quantized_dtypes": [
+    "qint4",
+    "quint4",
+    "int8",
+    "uint8",
+    "int16",
+    "uint16",
+    "int32",
+    "uint32"
+  ],
+  "admission_tiers": {
+    "TIER_1_GENERATOR_SEED_EXACT": "Pass 212 affine generator codec with zero exceptions",
+    "TIER_2_GENERATOR_PLUS_EXCEPTIONS": "Pass 212 affine generator codec with one or more exact sparse XOR exceptions",
+    "TIER_3_RAW_FALLBACK": "Pass 212 raw packed fallback or incomplete hydration tail"
+  },
+  "required_measurements": [
+    "tensor_count",
+    "source_bytes",
+    "full_hydration_window_count",
+    "tail_fallback_bytes",
+    "tier_1_bytes",
+    "tier_2_bytes",
+    "tier_3_bytes",
+    "admitted_bytes",
+    "physical_payload_bytes",
+    "generator_seed_units",
+    "exception_units",
+    "raw_fallback_units",
+    "semantic_exactness",
+    "incidence_fraction_exact",
+    "physical_ratio_exact"
+  ],
+  "constraints": {
+    "floats_forbidden_in_canonical_input_and_evidence": true,
+    "zero_padding_for_incidence_forbidden": true,
+    "tail_bytes_must_fall_back_raw": true,
+    "arbitrary_compression_claim_forbidden": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false,
+    "pass213_live_admission_required_before_canonical_mutation": true
+  },
+  "iteration_1_non_claims": [
+    "does not claim a real open transformer has yet been measured",
+    "does not claim 50B desktop feasibility",
+    "does not replace dense forward execution yet",
+    "does not implement exact nonlinear transformer operators yet",
+    "does not authorize canonical runtime mutation"
+  ]
+}

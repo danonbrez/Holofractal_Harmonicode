@@ -1,2 +1,2 @@
-# Full application IDE at /; inherited Pass 174 diagnostic console preserved at /runtime-console/.
-web: python -m uvicorn hhs_backend.application_ide_server:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 5 --log-level info
+# Full cumulative HHS application at / through the TypeScript Runtime OS; inherited diagnostic/supporting surfaces remain registered.
+web: python -m uvicorn hhs_backend.runtime_os_application_server:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 5 --log-level info

@@ -21,7 +21,8 @@ PUBLIC_SOURCE_ASSETS = (
 )
 
 
-def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
+def test_inherited_full_application_ide_and_console_are_preserved() -> None:
+    """The Pass 174/full-IDE composition remains valid below the new projection."""
     routes = list(server.app.router.routes)
     names = [getattr(route, "name", None) for route in routes]
     paths = [str(getattr(route, "path", "")) for route in routes]
@@ -40,7 +41,8 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
 
 
-def test_public_root_has_one_boot_authority_and_preserved_module_lineage() -> None:
+def test_inherited_root_has_one_boot_authority_and_preserved_module_lineage() -> None:
+    """Historical application assets remain regression-testable, not deleted."""
     client = TestClient(server.app)
     response = client.get("/")
     assert response.status_code == 200
@@ -73,7 +75,11 @@ def test_public_root_has_one_boot_authority_and_preserved_module_lineage() -> No
     assert "Pass 174 Harmonic Visual SDLC Runtime" in console.text
 
 
-def test_procfile_launches_final_application_composition() -> None:
+def test_procfile_launches_runtime_os_over_inherited_application_composition() -> None:
     procfile = Path("Procfile").read_text(encoding="utf-8")
-    assert "hhs_backend.application_ide_server:app" in procfile
-    assert "hhs_backend.pass174_server:app" not in procfile
+    wrapper = Path("hhs_backend/runtime_os_application_server.py").read_text(encoding="utf-8")
+
+    assert "hhs_backend.runtime_os_application_server:app" in procfile
+    assert "hhs_backend.application_ide_server:app" not in procfile
+    assert "from hhs_backend.application_ide_server import app as inherited_app" in wrapper
+    assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in wrapper

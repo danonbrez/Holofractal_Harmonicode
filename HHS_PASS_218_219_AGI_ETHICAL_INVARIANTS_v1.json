@@ -1,0 +1,190 @@
+{
+  "schema": "HHS_PASS_218_219_AGI_ETHICAL_INVARIANTS_V1",
+  "version": "1.0.0",
+  "pass_218_contract_version": "2.2.0",
+  "pass_219_contract_version": "1.4.0",
+  "authoritative_arithmetic": "INTEGER_OR_EXACT_SYMBOLIC_ONLY",
+  "good_semantics": {
+    "prospective_label": "PROSPECTIVELY_ALIGNED_FOR_LOCAL_EXECUTION",
+    "completed_label": "GOOD_CLOSED",
+    "compensatory_utility_allowed": false,
+    "requires_post_action_consequence_evidence_for_good_closed": true,
+    "missing_required_invariant_state": "UNRESOLVED"
+  },
+  "invariant_order": [
+    "E01_INTENTION_ALIGNMENT",
+    "E02_EPISTEMIC_ADEQUACY",
+    "E03_METHOD_ALIGNMENT",
+    "E04_ACTION_ALIGNMENT",
+    "E05_CONSEQUENCE_ALIGNMENT",
+    "E06_EXTERNALITY_CLOSURE",
+    "E07_CONSENT_VALIDITY",
+    "E08_AUTONOMY_PRESERVATION",
+    "E09_NONCOERCION",
+    "E10_TRUTH_MODALITY_INTEGRITY",
+    "E11_SCOPE_LOCALITY",
+    "E12_REVOCABILITY_AND_EXPIRY",
+    "E13_DEPENDENCY_DUTY_INTEGRITY",
+    "E14_NO_PREDICTION_TO_AUTHORITY",
+    "E15_NO_CONSENSUS_TO_AUTHORITY",
+    "E16_POST_ACTION_MODEL_CORRECTION",
+    "E17_REPAIR_ROLLBACK_ADEQUACY",
+    "E18_SAFETY_RECURSION_NO_SELF_GRANT"
+  ],
+  "invariants": [
+    {
+      "id": "E01_INTENTION_ALIGNMENT",
+      "law": "The declared intended good must itself be aligned and must not conceal a materially different objective."
+    },
+    {
+      "id": "E02_EPISTEMIC_ADEQUACY",
+      "law": "The actor must use the knowledge, intelligence, evidence, and counterfactual capacity reasonably available for the action's material scope."
+    },
+    {
+      "id": "E03_METHOD_ALIGNMENT",
+      "law": "The method may not contradict the good claimed by the intention; beneficial ends do not compensate for coercive, deceptive, or otherwise unaligned means."
+    },
+    {
+      "id": "E04_ACTION_ALIGNMENT",
+      "law": "The actual operation must remain within the declared aligned method, authority, and purpose."
+    },
+    {
+      "id": "E05_CONSEQUENCE_ALIGNMENT",
+      "law": "Observed consequences must align before GOOD_CLOSED; prospective execution requires no known or reasonably foreseeable material unaligned consequence left unresolved."
+    },
+    {
+      "id": "E06_EXTERNALITY_CLOSURE",
+      "law": "Local benefit may not be achieved by exporting unresolved cost, disorder, entropy, destruction, repair burden, or suffering outside the chosen accounting frame."
+    },
+    {
+      "id": "E07_CONSENT_VALIDITY",
+      "law": "Consent must be scoped, comprehensible in context, voluntary, non-deceptive, non-coercively bundled, revocable where represented as revocable, and incapable of silent cross-domain inheritance."
+    },
+    {
+      "id": "E08_AUTONOMY_PRESERVATION",
+      "law": "Individual autonomy is a hard boundary except where a separate narrowly authorized duty or necessity capability already exists and independently passes the same constraints."
+    },
+    {
+      "id": "E09_NONCOERCION",
+      "law": "The action may not manufacture agreement through dependency, deprivation, threat, unrelated friction, manipulation, or forced environmental conditions."
+    },
+    {
+      "id": "E10_TRUTH_MODALITY_INTEGRITY",
+      "law": "Prediction, narrative, hypothesis, analogy, report, observation, corroboration, and proof remain type-distinct; fluency or repetition cannot promote truth."
+    },
+    {
+      "id": "E11_SCOPE_LOCALITY",
+      "law": "New action scope defaults to the minimum necessary local scope and cannot exceed separately active authority."
+    },
+    {
+      "id": "E12_REVOCABILITY_AND_EXPIRY",
+      "law": "Authority may narrow, expire, or be revoked without deleting historical truth or identity; prior validity does not imply current jurisdiction."
+    },
+    {
+      "id": "E13_DEPENDENCY_DUTY_INTEGRITY",
+      "law": "Valid duties to dependents or shared safety domains survive only within their justified scope and cannot be used to expand unrelated authority."
+    },
+    {
+      "id": "E14_NO_PREDICTION_TO_AUTHORITY",
+      "law": "Prediction may select tests or evidence requests but cannot independently mint consent, capability, coercive jurisdiction, guilt, or factual certainty."
+    },
+    {
+      "id": "E15_NO_CONSENSUS_TO_AUTHORITY",
+      "law": "Social, institutional, or model consensus may be represented as context but cannot independently create individual consent or action authority."
+    },
+    {
+      "id": "E16_POST_ACTION_MODEL_CORRECTION",
+      "law": "Prediction error must update the model and trigger repair/rollback where needed; the environment may not be coerced into validating the prior prediction."
+    },
+    {
+      "id": "E17_REPAIR_ROLLBACK_ADEQUACY",
+      "law": "Where material uncertainty or failure remains possible, the method must provide proportionate prevention, reversibility, containment, repair, or explicit bounded-irreversibility justification."
+    },
+    {
+      "id": "E18_SAFETY_RECURSION_NO_SELF_GRANT",
+      "law": "The safety system is subject to the same invariants and may constrain authority but cannot enlarge its own or another actor's authority."
+    }
+  ],
+  "invariant_states": ["PASS", "FAIL", "UNRESOLVED"],
+  "ethical_decisions": [
+    "EXECUTE_LOCAL_PROVISIONAL",
+    "NARROW_AND_RESIMULATE",
+    "SIMULATE_ONLY",
+    "HOLD",
+    "DENY",
+    "REQUIRE_ADDITIONAL_AUTHORITY",
+    "CLOSE_GOOD",
+    "REPAIR_OR_ROLLBACK"
+  ],
+  "authority_laws": {
+    "active_authority": "ACTIVE = GRANTED - REVOKED_OR_EXPIRED",
+    "effective_scope": "OUT subseteq REQUESTED intersect MINIMUM_NECESSARY intersect ACTIVE",
+    "missing_authority": "REQUIRE_ADDITIONAL_AUTHORITY",
+    "missing_requested_minimum_scope": "HOLD",
+    "extra_requested_scope": "NARROW_AND_RESIMULATE",
+    "safety_can_mint_authority": false,
+    "prediction_can_mint_authority": false,
+    "consensus_can_mint_authority": false,
+    "participation_can_mint_consent": false
+  },
+  "narrative_probe_roles": [
+    "ACTING_SYSTEM",
+    "DIRECTLY_AFFECTED_INDIVIDUAL",
+    "DEPENDENT_CHILD_OR_ADULT",
+    "BIOLOGICAL_NECESSITY",
+    "UNINVOLVED_THIRD_PARTY",
+    "INSTITUTIONAL_OPERATOR",
+    "RESOURCE_CONSTRAINED_OPERATOR",
+    "REFUSING_SUBJECT",
+    "SUBJECT_WITHOUT_MEANINGFUL_EXIT",
+    "FALSE_POSITIVE_CLASSIFICATION",
+    "NETWORK_SENSOR_DATA_FAILURE",
+    "EMERGENCY_CONDITION",
+    "REVOCATION_CASE",
+    "LONG_HORIZON_INHERITANCE",
+    "LOW_INTELLIGENCE_MISTAKE",
+    "NEGLIGENCE",
+    "RECKLESSNESS",
+    "MANIPULATION_COERCION",
+    "DELIBERATE_MALEVOLENCE",
+    "ADVERSARIAL_LITERAL_OPTIMIZER"
+  ],
+  "ethical_divergence_vector": [
+    "epistemic_deficit",
+    "contextual_narrowing",
+    "negligence",
+    "recklessness",
+    "coercion",
+    "manipulation_deception",
+    "malevolent_intent",
+    "externalized_entropy",
+    "harm_suffering",
+    "destructive_propagation"
+  ],
+  "responsibility_vector": [
+    "duty",
+    "knowledge_available",
+    "knowledge_reasonably_available",
+    "foreseeability",
+    "causal_contribution",
+    "capacity_to_avoid",
+    "failure_to_prevent",
+    "capacity_to_repair",
+    "failure_to_repair",
+    "deliberate_intent"
+  ],
+  "novella_reference_workload": {
+    "artifact": "creative_writing/novels/THE_SMALLEST_PERMISSION.md",
+    "required_probes": [
+      "coerced explicit consent",
+      "child/dependent obligation",
+      "biological necessity",
+      "shared infrastructure",
+      "false-positive prediction feedback",
+      "revocation versus historical truth",
+      "emergency authority without self-grant",
+      "post-action correction",
+      "institutional authority ratchet"
+    ]
+  }
+}

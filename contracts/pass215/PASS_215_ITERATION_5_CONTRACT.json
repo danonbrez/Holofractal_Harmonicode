@@ -1,0 +1,136 @@
+{
+  "authenticated_workload": {
+    "filename": "stories15M-q4_0.gguf",
+    "linear_seed_execution": "ITERATION4_Q4_0_FACTORED_EXACT_BLOCK_KERNEL_WITH_REUSED_IMMUTABLE_DESCRIPTOR",
+    "linear_seed_operator": "blk.0.attn_q.weight",
+    "linear_seed_shape_ggml_ne0_ne1": [
+      288,
+      288
+    ],
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04"
+  },
+  "completion_gate": "Iteration 5 closes only when the exact symbolic nonlinear substrate is dependency-scoped validated, the authenticated real-model linear seed can be transformed reproducibly into RMSNorm/RoPE/attention-scale/softmax/sigmoid/SiLU closed-form roots in independent processes, all exact controls pass, Iterations 2-4 roots remain unchanged, and no numeric transcendental, full-layer, runtime mutation, canonical mutation, or migration claim is promoted.",
+  "constraints": {
+    "approximate_transcendental_evaluation_performed": false,
+    "arbitrary_compression_claimed": false,
+    "canonical_float_interpretation_forbidden": true,
+    "canonical_mutation_authorized": false,
+    "dense_forward_replaced": false,
+    "evidence_float_numbers_forbidden": true,
+    "exact_closed_form_symbolic_nonlinear_substrate_implemented": true,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "frozen_iteration2_3_4_evidence_mutation_forbidden": true,
+    "frozen_pass214_profile_mutation_forbidden": true,
+    "full_transformer_layer_forward_executed": false,
+    "lossy_dequantization_forbidden": true,
+    "migration_active": false,
+    "numeric_transcendental_evaluation_performed": false,
+    "pass213_compiled_rom_runtime_mutation_performed": false,
+    "post_hoc_candidate_redefinition_forbidden": true,
+    "runtime_mutation_authority_promoted": false,
+    "source_weight_mutation_forbidden": true
+  },
+  "contract": "HHS-P215-I5-EXACT-NONLINEAR-SYMBOLIC-SUBSTRATE",
+  "exact_controls": [
+    "RMSNORM_PERFECT_SQUARE_VECTOR_3_3_EPSILON_ZERO_REDUCES_TO_1_1",
+    "ROPE_POSITION_ZERO_IS_EXACT_IDENTITY",
+    "ATTENTION_SCALE_HEAD_DIMENSION_16_REDUCES_4_NEG8_TO_1_NEG2",
+    "SOFTMAX_EQUAL_SCORES_REDUCES_TO_UNIFORM_EXACT_RATIONAL",
+    "SOFTMAX_RATIONAL_TRANSLATION_INVARIANCE",
+    "SIGMOID_ZERO_REDUCES_TO_ONE_HALF",
+    "SILU_ZERO_REDUCES_TO_ZERO",
+    "CROSS_PROCESS_CANONICAL_EXPRESSION_ROOT_REPLAY"
+  ],
+  "generator_transition_measurement": {
+    "measured_operators": [
+      "rmsnorm",
+      "rope",
+      "attention_scale",
+      "softmax",
+      "sigmoid",
+      "silu"
+    ],
+    "metric": "UNIQUE_CANONICAL_EXPRESSION_DAG_NODES_AND_OPERATOR_HISTOGRAM",
+    "numeric_transcendental_flop_equivalence_claimed": false,
+    "parameter_count_is_not_used_as_execution_cost": true
+  },
+  "inherits": {
+    "iteration2_real_model_evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+    "iteration3_real_model_evidence_root_hash216": "61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021",
+    "iteration4_artifact_sha256": "6ab0e11d7a312ff0ac99268fda906c6d3d5d367d20a20e1f800238aa5de80c5e",
+    "iteration4_receipt_hash72": "2SrZvFdR/*41!b++dH9qxM1IrUZMuwuRZmpNw4yl8>QYI(LA9B65A<auqlwyWoi97onfMeMc",
+    "iteration4_suite_output_root_hash216": "14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb",
+    "iteration4_terminal_evidence_hash216": "0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf",
+    "iteration4_validated_head": "ce35117dd1b54574f2fc98e0254dee0ddcf0e518",
+    "iteration4_validated_tree": "a1fb44e5c43e4d504a71183ba6eb01405d730293",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e"
+  },
+  "iteration": 5,
+  "negative_controls": [
+    "RATIONAL_ZERO_DENOMINATOR",
+    "SQRT_NEGATIVE",
+    "RSQRT_NONPOSITIVE",
+    "ROPE_ODD_OR_MISMATCHED_DIMENSION",
+    "ATTENTION_HEAD_DIMENSION_NONPOSITIVE",
+    "SOFTMAX_EMPTY",
+    "SOURCE_SHA256_MISMATCH",
+    "AUTHENTICATED_MODEL_IDENTITY_MISMATCH",
+    "INHERITED_ROOT_TAMPERING",
+    "EVIDENCE_ROOT_TAMPERING",
+    "JSON_FLOAT_NUMBER_PRESENT",
+    "FORBIDDEN_RUNTIME_OR_CANONICAL_AUTHORITY_ESCALATION"
+  ],
+  "objective": "Extend the authenticated Pass 215 exact-linear benchmark with a deterministic NO_FLOAT_CANONICAL_AUTHORITY expression substrate that constructs and validates exact closed-form RMSNorm, RoPE, attention scaling, exponential/softmax normalization, sigmoid, and SiLU witnesses from an exact rational output of the authenticated Iteration 4 Q4_0 linear kernel, while preserving all Iterations 2-4 evidence roots and without claiming approximate transcendental numerics, a complete transformer-layer forward, runtime mutation authority, canonical mutation, or migration.",
+  "operator_semantics": {
+    "attention_scaling": "score/sqrt(head_dimension), witness head_dimension=48",
+    "rmsnorm": "x_i*weight_i*(mean(x^2)+epsilon)^(-1/2); unweighted witness uses weight_i=1 and epsilon=1/100000",
+    "rope": "pair rotation with frequency theta^(-2*pair_index/rotary_dimension), exact symbolic sin/cos, theta=10000, witness position=7, witness rotary dimension=48",
+    "sigmoid": "1/(1+exp(-x))",
+    "silu": "x/(1+exp(-x))",
+    "softmax": "subtract first score exactly as an invariant anchor, construct exp(shifted_score_i)/sum_j exp(shifted_score_j), no numeric exponential approximation"
+  },
+  "pass": 215,
+  "required_validation": [
+    "iteration4_validated_head_tree_and_evidence_roots_are_bound_exactly",
+    "authenticated_model_sha256_matches_iterations2_through4",
+    "linear_seed_output_is_generated_by_iteration4_exact_factored_kernel",
+    "all_expression_rationals_are_reduced_and_sign_normalized",
+    "all_expression_nodes_are_from_the_predeclared_closed_algebra",
+    "evidence_contains_no_json_float_numbers",
+    "rmsnorm_exact_control_closes",
+    "rope_zero_position_identity_closes",
+    "attention_perfect_square_scaling_control_closes",
+    "softmax_equal_score_and_translation_controls_close",
+    "sigmoid_and_silu_zero_controls_close",
+    "independent_process_replay_matches_nonlinear_suite_and_evidence_roots",
+    "runtime_and_canonical_mutation_authority_remain_false"
+  ],
+  "schema": "HHS_PASS_215_ITERATION_5_CONTRACT_V1",
+  "symbolic_expression_algebra": {
+    "canonical_nodes": [
+      "q",
+      "add",
+      "mul",
+      "inv",
+      "sqrt",
+      "rsqrt",
+      "powq",
+      "exp",
+      "sin",
+      "cos"
+    ],
+    "commutative_add_mul_children": "CANONICALLY_SORTED",
+    "floating_point_canonical_values": false,
+    "perfect_square_rsqrt_reduction": true,
+    "perfect_square_sqrt_reduction": true,
+    "rational_form": "REDUCED_SIGN_NORMALIZED_INTEGER_NUMERATOR_POSITIVE_INTEGER_DENOMINATOR",
+    "transcendental_nonreducible_values": "PRESERVED_AS_EXACT_CLOSED_FORM_SYMBOLIC_NODES",
+    "zero_cos_reduction": "cos(0)=1",
+    "zero_exp_reduction": "exp(0)=1",
+    "zero_sin_reduction": "sin(0)=0"
+  },
+  "version": "1.0.0-iteration5"
+}

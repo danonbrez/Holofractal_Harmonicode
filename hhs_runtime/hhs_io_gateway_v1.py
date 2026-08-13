@@ -16,6 +16,12 @@ Repeated read-only requests may reuse an immutable, previously committed IO
 record when the source, payload identity, and complete runtime-state projection
 are unchanged. Reuse accelerates transport; it never creates alternate
 authority and never mutates the committed record.
+
+Pass 217 restoration rule:
+Production route sources explicitly bound by the cumulative route composer must
+traverse the inherited Pass 043 kernel-derived composition preflight before an
+IO ingress record may be created or reused. Receipt-backed IO reuse therefore
+cannot become a bypass around kernel-derived route composition.
 """
 
 from __future__ import annotations
@@ -31,6 +37,7 @@ import uuid
 
 from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
 from hhs_runtime.hhs_hash72_kernel_authority_v1 import make_hash72_kernel_witness
+from hhs_runtime.hhs_pass217_runtime_route_composer_v1 import compose_bound_route_ingress
 from hhs_runtime.hhs_unified_hash72_ledger_v1 import (
     append_payload,
     unified_ledger_summary,
@@ -102,6 +109,7 @@ class HHSIOGateway:
         self._witness_cache: "OrderedDict[str, Tuple[str, Dict[str, Any]]]" = OrderedDict()
         self._read_record_cache: "OrderedDict[Tuple[Any, ...], Dict[str, Any]]" = OrderedDict()
         self._active_read_context: Dict[Tuple[str, str], int] = {}
+        self._route_composition_cache: Dict[str, Dict[str, Any]] = {}
         self._witness_cache_limit = max(16, int(os.environ.get("HHS_IO_WITNESS_CACHE_SIZE", "512")))
         self._read_cache_limit = max(16, int(os.environ.get("HHS_IO_READ_CACHE_SIZE", "512")))
         self._history_limit = max(32, int(os.environ.get("HHS_IO_HISTORY_SIZE", "2048")))
@@ -183,11 +191,32 @@ class HHSIOGateway:
             self._active_read_context[key] = count - 1
         return True
 
+    def _route_composition_preflight(
+        self,
+        direction: str,
+        source: str,
+        payload: Mapping[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        if direction != "INGRESS":
+            return None
+        preflight = compose_bound_route_ingress(
+            source,
+            payload,
+            cache=self._route_composition_cache,
+        )
+        if preflight is not None and not preflight.get("ok"):
+            raise HHSIOGatewayError(
+                "REJECT_RUNTIME_ROUTE_WITHOUT_CUMULATIVE_COMPOSITION:"
+                + str(source)
+            )
+        return preflight
+
     def _reused_record(
         self,
         record: Dict[str, Any],
         *,
         cache_key: Tuple[Any, ...],
+        route_preflight: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         current_ledger = unified_ledger_summary()
         reused = dict(record)
@@ -200,6 +229,12 @@ class HHSIOGateway:
             "current_ledger_tip_hash72": current_ledger.get("tip_hash72"),
             "authority_rule": "IMMUTABLE_RECEIPT_REUSE_ONLY_WHEN_SOURCE_PAYLOAD_AND_RUNTIME_STATE_MATCH",
         }
+        if route_preflight is not None:
+            # This is the current request's composition proof, not the cached
+            # request's proof. The immutable IO record is otherwise unchanged.
+            reused["kernel_runtime_route_composition_preflight"] = dict(
+                route_preflight
+            )
         self._remember_history(reused)
         return reused
 
@@ -213,6 +248,14 @@ class HHSIOGateway:
             raise HHSIOGatewayError(f"unauthorized IO direction: {direction}")
 
         payload_dict = dict(payload or {})
+        # Mandatory route composition precedes receipt creation and receipt-backed
+        # read reuse. A cache hit can avoid transport work but cannot avoid the
+        # inherited kernel-derived route composer.
+        route_preflight = self._route_composition_preflight(
+            direction,
+            source,
+            payload_dict,
+        )
         runtime_state = self._runtime_state()
         runtime_token = self._runtime_token(runtime_state)
         payload_digest, payload_witness = self._payload_identity(payload_dict)
@@ -234,7 +277,11 @@ class HHSIOGateway:
                 cached_record = self._lru_get(self._read_record_cache, cache_key)
                 if cached_record is not None:
                     self._cache_hits += 1
-                    return self._reused_record(cached_record, cache_key=cache_key)
+                    return self._reused_record(
+                        cached_record,
+                        cache_key=cache_key,
+                        route_preflight=route_preflight,
+                    )
                 self._cache_misses += 1
 
         audit = assert_runtime_authorized(
@@ -254,6 +301,10 @@ class HHSIOGateway:
             "runtime_step": runtime_state.get("step"),
             "authority_audit": audit,
         }
+        if route_preflight is not None:
+            pre_record["kernel_runtime_route_composition_preflight"] = dict(
+                route_preflight
+            )
         ledger = append_payload(
             f"IO_{direction}",
             f"HHSIOGateway.{direction.lower()}.{source}",
@@ -276,6 +327,10 @@ class HHSIOGateway:
             ledger_hash72=str(ledger.get("ledger_hash72") or ""),
         ).to_dict()
         record["runtime_contract"] = runtime_packet
+        if route_preflight is not None:
+            record["kernel_runtime_route_composition_preflight"] = dict(
+                route_preflight
+            )
 
         with self._lock:
             if reusable_read:
@@ -368,11 +423,12 @@ class HHSIOGateway:
                 "schema": READ_CACHE_SCHEMA,
                 "witness_entries": len(self._witness_cache),
                 "read_record_entries": len(self._read_record_cache),
+                "route_composition_entries": len(self._route_composition_cache),
                 "hits": self._cache_hits,
                 "misses": self._cache_misses,
                 "ledger_warm_status": self._ledger_warm_status,
             },
-            "sealed_runtime_rule": "Only Hash72 receipt-chain records or receipt-backed validated vector-cache records are authorized.",
+            "sealed_runtime_rule": "Only Hash72 receipt-chain records or receipt-backed validated vector-cache records are authorized; bound production routes additionally require kernel-derived cumulative composition before ingress or read reuse.",
         }
 
 

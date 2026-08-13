@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_5_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P215-I5-EXACT-NONLINEAR-SYMBOLIC-SUBSTRATE",
+  "pass": 215,
+  "iteration": 5,
+  "status": "SOURCE_CHECKPOINT_IMPLEMENTED_PENDING_EXACT_HEAD_REGISTERED_WORKFLOW",
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "pull_request": 172,
+  "parent_validated_head": "ce35117dd1b54574f2fc98e0254dee0ddcf0e518",
+  "parent_validated_tree": "a1fb44e5c43e4d504a71183ba6eb01405d730293",
+  "frozen_iteration4": {
+    "suite_output_root_hash216": "14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb",
+    "terminal_evidence_hash216": "0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf",
+    "artifact_sha256": "6ab0e11d7a312ff0ac99268fda906c6d3d5d367d20a20e1f800238aa5de80c5e",
+    "receipt_hash72": "2SrZvFdR/*41!b++dH9qxM1IrUZMuwuRZmpNw4yl8>QYI(LA9B65A<auqlwyWoi97onfMeMc"
+  },
+  "implemented": {
+    "exact_rational_canonicalization": true,
+    "exact_rmsnorm_closed_form": true,
+    "exact_rope_closed_form": true,
+    "exact_attention_scaling": true,
+    "exact_softmax_closed_form": true,
+    "exact_sigmoid_closed_form": true,
+    "exact_silu_closed_form": true,
+    "authenticated_iteration4_linear_seed_bridge": true,
+    "expression_dag_generator_complexity": true,
+    "cross_process_replay": true,
+    "hash216_evidence": true,
+    "hash72_receipt_chain": true
+  },
+  "local_precommit_validation": {
+    "module_py_compile": true,
+    "test_py_compile": true,
+    "isolated_symbolic_tests_passed": 12,
+    "contract_json_valid": true,
+    "repository_cumulative_validation": "REQUIRES_REGISTERED_GITHUB_RUNNER_OR_FULL_REPOSITORY_CHECKOUT"
+  },
+  "authority": {
+    "pass215_benchmark_authority_active": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "claim_boundary": {
+    "numeric_transcendental_evaluation_performed": false,
+    "approximate_transcendental_evaluation_performed": false,
+    "full_transformer_layer_forward_executed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_performed": false,
+    "canonical_mutation_performed": false
+  },
+  "next_gate": "COMPLETE_THE_ITERATION5_SOURCE_CHECKPOINT_THEN_REQUIRE_REGISTERED_ITERATION5_WORKFLOW_SUCCESS_ON_THAT_EXACT_HEAD"
+}

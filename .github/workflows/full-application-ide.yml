@@ -5,12 +5,16 @@ on:
     branches: [main]
     paths:
       - 'Procfile'
+      - 'hhs_gui/**'
       - 'applications/holofractal_harmonizer/**'
       - 'applications/pass174_visual_ide/**'
+      - 'hhs_backend/runtime_os_projection.py'
+      - 'hhs_backend/runtime_os_application_server.py'
       - 'hhs_backend/application_ide_server.py'
       - 'hhs_backend/production_ide_server.py'
       - 'hhs_backend/pass174_server.py'
       - 'hhs_backend/api/repository_history_routes.py'
+      - 'tests/test_runtime_os_production_root.py'
       - 'tests/test_hhs_full_application_ide_root_v1.py'
       - 'tests/test_hhs_repository_history_surface_v1.py'
       - '.github/workflows/full-application-ide.yml'
@@ -18,12 +22,16 @@ on:
     branches: [main]
     paths:
       - 'Procfile'
+      - 'hhs_gui/**'
       - 'applications/holofractal_harmonizer/**'
       - 'applications/pass174_visual_ide/**'
+      - 'hhs_backend/runtime_os_projection.py'
+      - 'hhs_backend/runtime_os_application_server.py'
       - 'hhs_backend/application_ide_server.py'
       - 'hhs_backend/production_ide_server.py'
       - 'hhs_backend/pass174_server.py'
       - 'hhs_backend/api/repository_history_routes.py'
+      - 'tests/test_runtime_os_production_root.py'
       - 'tests/test_hhs_full_application_ide_root_v1.py'
       - 'tests/test_hhs_repository_history_surface_v1.py'
       - '.github/workflows/full-application-ide.yml'
@@ -38,8 +46,8 @@ concurrency:
 
 jobs:
   validate-full-application-ide:
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     env:
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
@@ -80,7 +88,7 @@ jobs:
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Validate executable application templates and browser compiler
+      - name: Retain inherited application-template regressions
         working-directory: applications/holofractal_harmonizer
         run: |
           timeout 60s node --check src/application-templates.mjs
@@ -95,56 +103,136 @@ jobs:
             tests/integrated.workbench.test.mjs \
             tests/project.lifecycle.test.mjs
 
-      - name: Validate final server composition and repository lineage
+      - name: Build canonical TypeScript Runtime OS
+        working-directory: hhs_gui
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Validate inherited server composition and repository lineage
         run: |
           timeout 60s python -m py_compile \
+            hhs_backend/runtime_os_projection.py \
+            hhs_backend/runtime_os_application_server.py \
             hhs_backend/application_ide_server.py \
             hhs_backend/production_ide_server.py \
-            hhs_backend/api/repository_history_routes.py \
-            applications/holofractal_harmonizer/ux_lab/full_application_smoke.py
+            hhs_backend/api/repository_history_routes.py
           timeout 300s pytest -q \
             tests/test_hhs_full_application_ide_root_v1.py \
             tests/test_hhs_repository_history_surface_v1.py
 
+      - name: Verify full Runtime OS route ordering before browser boot
+        run: |
+          timeout 180s python - <<'PY'
+          from fastapi.testclient import TestClient
+          from hhs_backend.runtime_os_application_server import PUBLIC_MOUNT_NAME, app
+          from hhs_backend.runtime_os_projection import API_FALLBACK_PATH
+
+          routes = list(app.router.routes)
+          paths = [str(getattr(route, 'path', '')) for route in routes]
+          names = [str(getattr(route, 'name', '')) for route in routes]
+
+          assert '/api/interface/status' in paths
+          assert API_FALLBACK_PATH in paths
+          assert PUBLIC_MOUNT_NAME in names
+
+          interface_index = paths.index('/api/interface/status')
+          fallback_index = paths.index(API_FALLBACK_PATH)
+          root_index = names.index(PUBLIC_MOUNT_NAME)
+          assert interface_index < fallback_index < root_index
+
+          client = TestClient(app)
+          root = client.get('/')
+          assert root.status_code == 200, root.text[:500]
+          assert 'HHS Visual Runtime OS Workspace' in root.text
+
+          interface = client.get('/api/interface/status')
+          assert interface.status_code == 200, interface.text
+          payload = interface.json()
+          assert payload['interface'] == 'HHS_VISUAL_RUNTIME_OS_WORKSPACE'
+          assert payload['legacy_harmonizer_is_public_root'] is False
+
+          unknown_api = client.get('/api/this-route-must-remain-unknown')
+          assert unknown_api.status_code == 404, unknown_api.text
+
+          runtime_console = client.get('/runtime-console/')
+          assert runtime_console.status_code == 200, runtime_console.text[:500]
+          assert 'Pass 174 Harmonic Visual SDLC Runtime' in runtime_console.text
+          PY
+
       - name: Install bounded Chromium runtime
         run: timeout 600s python -m playwright install --with-deps chromium
 
-      - name: Boot and browser-verify the exact Heroku entrypoint
+      - name: Boot and browser-verify the exact public entrypoint
         run: |
           set -euo pipefail
-          python -m uvicorn hhs_backend.application_ide_server:app \
+          python -m uvicorn hhs_backend.runtime_os_application_server:app \
             --host 127.0.0.1 --port 8766 --workers 1 --log-level info \
-            > /tmp/hhs-full-application-ide.log 2>&1 &
+            > /tmp/hhs-runtime-os-application.log 2>&1 &
           SERVER_PID=$!
           cleanup() {
             kill "$SERVER_PID" 2>/dev/null || true
             wait "$SERVER_PID" 2>/dev/null || true
           }
-          trap cleanup EXIT
+          finish() {
+            code=$?
+            if [ "$code" -ne 0 ]; then
+              echo '=== HHS RUNTIME OS SERVER LOG ==='
+              cat /tmp/hhs-runtime-os-application.log || true
+            fi
+            cleanup
+            trap - EXIT
+            exit "$code"
+          }
+          trap finish EXIT
+
           ready=0
           for attempt in $(seq 1 120); do
-            if curl -fsS http://127.0.0.1:8766/ > /tmp/hhs-full-ide.html; then
+            code=$(curl -sS -o /tmp/hhs-runtime-os.html -w '%{http_code}' http://127.0.0.1:8766/ || true)
+            if [ "$code" = "200" ]; then
               ready=1
               break
             fi
             sleep 1
           done
           if [ "$ready" -ne 1 ]; then
-            cat /tmp/hhs-full-application-ide.log
+            echo 'Runtime OS public root did not become ready' >&2
             exit 1
           fi
-          grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-full-ide.html
-          grep -q 'application-studio.css' /tmp/hhs-full-ide.html
-          grep -q 'visual-ide.mjs' /tmp/hhs-full-ide.html
-          curl -fsS http://127.0.0.1:8766/runtime-console/ | grep -q 'Pass 174 Harmonic Visual SDLC Runtime'
-          curl -fsS http://127.0.0.1:8766/api/assistant/status > /tmp/hhs-assistant-status.json
-          curl -fsS http://127.0.0.1:8766/api/runtime/repository/status > /tmp/hhs-repository-status.json
-          curl -fsS http://127.0.0.1:8766/api/runtime/workspace/session > /tmp/hhs-workspace-session.json
-          curl -fsS http://127.0.0.1:8766/api/v1/pass174/deployment/status?wait_for_terminal=false > /tmp/hhs-pass174-status.json
+
+          probe_json() {
+            label="$1"
+            url="$2"
+            output="$3"
+            code=$(curl -sS -o "$output" -w '%{http_code}' "$url" || true)
+            echo "$label HTTP $code"
+            if [ "$code" != "200" ]; then
+              cat "$output" 2>/dev/null || true
+              return 1
+            fi
+          }
+
+          grep -q 'HHS Visual Runtime OS Workspace' /tmp/hhs-runtime-os.html
+          grep -q '/assets/index-' /tmp/hhs-runtime-os.html
+          probe_json interface http://127.0.0.1:8766/api/interface/status /tmp/hhs-interface-status.json
+          probe_json assistant http://127.0.0.1:8766/api/assistant/status /tmp/hhs-assistant-status.json
+          probe_json repository http://127.0.0.1:8766/api/runtime/repository/status /tmp/hhs-repository-status.json
+          probe_json workspace http://127.0.0.1:8766/api/runtime/workspace/session /tmp/hhs-workspace-session.json
+          probe_json pass174 'http://127.0.0.1:8766/api/v1/pass174/deployment/status?wait_for_terminal=false' /tmp/hhs-pass174-status.json
+          runtime_console_code=$(curl -sS -o /tmp/hhs-runtime-console.html -w '%{http_code}' http://127.0.0.1:8766/runtime-console/ || true)
+          echo "runtime-console HTTP $runtime_console_code"
+          test "$runtime_console_code" = "200"
+          grep -q 'Pass 174 Harmonic Visual SDLC Runtime' /tmp/hhs-runtime-console.html
+
           python - <<'PY'
           import json
           from pathlib import Path
           for path in [
+              '/tmp/hhs-interface-status.json',
               '/tmp/hhs-assistant-status.json',
               '/tmp/hhs-repository-status.json',
               '/tmp/hhs-workspace-session.json',
@@ -153,17 +241,66 @@ jobs:
               payload = json.loads(Path(path).read_text())
               if not isinstance(payload, dict):
                   raise SystemExit(f'non-object response: {path}')
-          repository = json.loads(Path('/tmp/hhs-repository-status.json').read_text())
-          if repository.get('ide_default_surface') != 'FULL_INTEGRATED_DEVELOPMENT_ENVIRONMENT':
-              raise SystemExit(repository)
+          interface = json.loads(Path('/tmp/hhs-interface-status.json').read_text())
+          if interface.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE':
+              raise SystemExit(interface)
+          if interface.get('legacy_harmonizer_is_public_root') is not False:
+              raise SystemExit(interface)
           PY
-          HHS_FULL_APPLICATION_IDE_URL=http://127.0.0.1:8766 \
-            timeout 300s python applications/holofractal_harmonizer/ux_lab/full_application_smoke.py
-          cat applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
 
-      - name: Verify public-root contract and representative applications
+          timeout 180s python - <<'PY'
+          import json
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as pw:
+              browser = pw.chromium.launch(headless=True)
+              page = browser.new_page(viewport={"width": 1365, "height": 900})
+              response = page.goto('http://127.0.0.1:8766/', wait_until='domcontentloaded', timeout=120000)
+              assert response is not None and response.ok, response
+              page.wait_for_selector('[data-testid="hhs-canonical-runtime-ide"]', timeout=120000)
+              page.wait_for_selector('[data-testid="hhs-product-workspace"]', timeout=120000)
+              page.wait_for_selector('[data-testid="registry-visual-programmer"]', timeout=120000)
+              mounted = page.locator('[data-testid="hhs-canonical-runtime-ide"]').count()
+              product_workspace = page.locator('[data-testid="hhs-product-workspace"]').count()
+              registry_programmer = page.locator('[data-testid="registry-visual-programmer"]').count()
+              product_nav = page.locator('[data-testid="hhs-product-workspace"] > nav')
+              visual_program_button = product_nav.get_by_role('button', name='Visual Program', exact=True).count()
+              workspace_button = product_nav.get_by_role('button', name='Workspace', exact=True).count()
+              title = page.title()
+              boot_state = page.locator('html').get_attribute('data-hhs-mounted')
+              record = {
+                  'ok': all([
+                      mounted == 1,
+                      product_workspace == 1,
+                      registry_programmer == 1,
+                      visual_program_button == 1,
+                      workspace_button == 1,
+                      boot_state == 'true',
+                  ]),
+                  'title': title,
+                  'canonical_runtime_ide_count': mounted,
+                  'product_workspace_count': product_workspace,
+                  'registry_visual_programmer_count': registry_programmer,
+                  'visual_program_button_count': visual_program_button,
+                  'workspace_button_count': workspace_button,
+                  'hhs_mounted': boot_state,
+                  'legacy_harmonizer_required': False,
+              }
+              Path('/tmp/hhs-runtime-os-browser.json').write_text(json.dumps(record, indent=2) + '\n')
+              browser.close()
+              if not record['ok']:
+                  raise SystemExit(record)
+          PY
+          cat /tmp/hhs-runtime-os-browser.json
+
+      - name: Verify public-root contract and inherited application availability
         run: |
-          grep -q 'hhs_backend.application_ide_server:app' Procfile
+          grep -q 'hhs_backend.runtime_os_application_server:app' Procfile
+          if grep -q 'hhs_backend.application_ide_server:app' Procfile; then
+            echo 'Procfile bypasses Runtime OS public projection' >&2
+            exit 1
+          fi
           grep -q "'pong'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q "'calculator'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q "'puzzle'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
@@ -171,12 +308,11 @@ jobs:
           grep -q "'audio'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q "'video'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q 'HHS_DEPLOYABLE_BROWSER_APPLICATION_V1' applications/holofractal_harmonizer/src/deployable-app-compiler.mjs
-          grep -q '"ok": true' applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
 
-      - name: Upload browser acceptance evidence
+      - name: Upload Runtime OS browser acceptance evidence
         uses: actions/upload-artifact@v4
         with:
-          name: full-application-ide-smoke
-          path: applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
+          name: full-runtime-os-application-smoke
+          path: /tmp/hhs-runtime-os-browser.json
           if-no-files-found: error
           retention-days: 30

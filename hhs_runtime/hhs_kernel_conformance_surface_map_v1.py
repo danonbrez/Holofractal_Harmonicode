@@ -19,6 +19,7 @@ from hhs_runtime.hhs_hash72_kernel_authority_v1 import make_hash72_kernel_witnes
 from hhs_runtime.hhs_kernel_invariant_registry_v1 import build_default_invariant_registry
 from hhs_runtime.hhs_kernel_conformance_decision_v1 import evaluate_surface
 from hhs_runtime.hhs_kernel_conformance_registration_interposer_v1 import build_ownership_declaration
+from hhs_runtime.hhs_pass217_surface_bindings_v1 import service_route_surface_declarations
 
 VERSION = "PASS_042_KERNEL_DERIVED_CONFORMANCE_SURFACE_MAP_V1"
 MAP_SCHEMA = "HHS_KERNEL_CONFORMANCE_SURFACE_MAP_V1"
@@ -186,6 +187,9 @@ def _api_route_surfaces() -> List[Dict[str, Any]]:
                 "semantic_cache.refresh_composition_index" if symbol == "gui_mutation.allowlist" else "",
             ]),
         }))
+    surfaces.extend(
+        _canonical_surface(record) for record in service_route_surface_declarations()
+    )
     return surfaces
 
 

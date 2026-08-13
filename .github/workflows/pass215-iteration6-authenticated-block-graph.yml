@@ -1,0 +1,172 @@
+name: Pass 215 Iteration 6 Authenticated Block Graph
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_6_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration6_authenticated_block_graph_v1.py'
+      - 'tools/pass215_iteration6_authenticated_block_graph.py'
+      - 'tests/test_hhs_pass215_iteration6_authenticated_block_graph_v1.py'
+      - 'scripts/run_pass215_iteration6_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_6_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration6-authenticated-block-graph.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_6_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration6_authenticated_block_graph_v1.py'
+      - 'tools/pass215_iteration6_authenticated_block_graph.py'
+      - 'tests/test_hhs_pass215_iteration6_authenticated_block_graph_v1.py'
+      - 'scripts/run_pass215_iteration6_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_6_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration6-authenticated-block-graph.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I6_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration6:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I6_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 5 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_6_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          assert inherits['iteration5_validated_head'] == 'e384058b1dedbcf7e67ca6bfc9d5c3c8531be58b'
+          assert inherits['iteration5_validated_tree'] == '45674a23be7b7994b153a53454aec38104fb12df'
+          assert inherits['iteration5_nonlinear_suite_root_hash216'] == '26c5ac1697094d1680dbdd829fe1c2492746bf9dbad41a389aa6d1bfed3184cc'
+          assert inherits['iteration5_evidence_root_hash216'] == 'f2e5c94e053e14e8060f6bf3da15ebb9b50d3059f7834205c3b776653bb41d00'
+          assert inherits['iteration5_receipt_hash72'] == 'Z9XYF<Nsxk/5uv7-wcggO4G-Fva6JNNrUsI6uy*p7lHnrz0A6DmuuzSsOjJXw1JvDZ2OA4K1'
+          assert constraints['authenticated_complete_blk0_dependency_graph_composed'] is True
+          assert constraints['coordinate_level_complete_block_forward_executed'] is False
+          assert constraints['symbolic_coordinate_forward_materialized'] is False
+          assert constraints['full_transformer_layer_forward_executed'] is False
+          assert constraints['numeric_transcendental_evaluation_performed'] is False
+          assert constraints['canonical_float_interpretation_forbidden'] is True
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+      - name: Run cumulative Iteration 1-6 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration6_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i6"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 3 --retry-delay 2 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I6_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Compose authenticated block graph process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i6"
+          python tools/pass215_iteration6_authenticated_block_graph.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I6_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_6_A.json"
+          python tools/pass215_iteration6_authenticated_block_graph.py \
+            --validate "$ROOT/PASS_215_ITERATION_6_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_6_A_VALIDATION.json"
+      - name: Compose independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i6"
+          python tools/pass215_iteration6_authenticated_block_graph.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I6_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_6_B.json"
+          python tools/pass215_iteration6_authenticated_block_graph.py \
+            --validate "$ROOT/PASS_215_ITERATION_6_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_6_B_VALIDATION.json"
+          python tools/pass215_iteration6_authenticated_block_graph.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_6_A.json" "$ROOT/PASS_215_ITERATION_6_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_6_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce graph closure claims and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i6'
+          evidence = json.loads((root / 'PASS_215_ITERATION_6_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_6_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I6_MODEL_SHA256']
+          bindings = evidence['authenticated_block_tensor_bindings']
+          assert bindings['required_tensor_count'] == 9
+          assert bindings['all_required_tensors_bound'] is True
+          assert len(bindings['norm_tensors']) == 2
+          assert len(bindings['linear_tensors']) == 7
+          graph = evidence['block_graph']
+          assert len(graph['nodes']) == 21
+          assert graph['embedding_width'] == 288
+          assert graph['ffn_width'] == 768
+          assert graph['head_count'] == 6
+          assert graph['head_dimension'] == 48
+          claims = evidence['claims']
+          assert claims['authenticated_complete_blk0_dependency_graph_composed'] is True
+          assert claims['real_norm_weights_exactly_decoded_from_ieee_bits'] is True
+          assert claims['all_seven_q4_0_linear_descriptors_compiled'] is True
+          assert claims['complete_block_tensor_set_authenticated'] is True
+          assert claims['coordinate_level_complete_block_forward_executed'] is False
+          assert claims['symbolic_coordinate_forward_materialized'] is False
+          assert claims['full_transformer_layer_forward_executed'] is False
+          assert claims['numeric_transcendental_evaluation_performed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['block_graph_suite_root_hash216'] == evidence['block_graph_suite_root_hash216']
+          assert replay['evidence_root_hash216'] == evidence['evidence_root_hash216']
+          assert replay['receipt_hash72'] == evidence['receipt_hash72']
+          print('PASS215_I6_BLOCK_GRAPH_ROOT=' + graph['graph_root_hash216'])
+          print('PASS215_I6_SUITE_ROOT=' + evidence['block_graph_suite_root_hash216'])
+          print('PASS215_I6_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I6_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+      - name: Retain Iteration 6 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration6-${{ github.run_id }}
+          path: |
+            contracts/pass215/PASS_215_ITERATION_6_CONTRACT.json
+            docs/pass215/**
+            evidence/pass215/PASS_215_ITERATION_6_IMPLEMENTATION_RECORD.json
+            ${{ runner.temp }}/pass215-i6/*.json
+          if-no-files-found: error

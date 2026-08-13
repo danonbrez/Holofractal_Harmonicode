@@ -5,6 +5,12 @@ HHS Kernel Runtime Auto-Composer v1
 Pass 043 derives runtime pipeline plans from the Pass 042 kernel-conformance
 surface graph. Runtime behavior is composed from invariant ancestry rather than
 hand-wired local policy.
+
+Pass 217 restoration note:
+Direct runtime surfaces may execute the same Pass 043 preflight without
+rebuilding the full default service registry. This is additive: the Pass 043
+composition semantics remain authoritative, while live dispatch can now prove
+that the composer was actually traversed before a handler is called.
 """
 
 from __future__ import annotations
@@ -31,6 +37,15 @@ def _hash72(label: str, payload: Any) -> str:
 
 def _surface_index(surface_map: Mapping[str, Any]) -> Dict[str, Dict[str, Any]]:
     return {str(s.get("surface_id")): dict(s) for s in surface_map.get("surfaces", []) or []}
+
+
+def _surface_conformance_root(surface: Mapping[str, Any], explicit_root: Optional[str] = None) -> str:
+    if explicit_root:
+        return str(explicit_root)
+    inherited = surface.get("derivation_hash72") or surface.get("conformance_root_hash72")
+    if inherited:
+        return str(inherited)
+    return _hash72("HHS_DIRECT_SURFACE_CONFORMANCE_ROOT_V1", dict(surface))
 
 
 def derive_runtime_pipeline(surface: Mapping[str, Any], *, operation: str = "self_test") -> Dict[str, Any]:
@@ -133,6 +148,65 @@ def compose_surface_pipeline(surface_id: str, *, operation: str = "self_test", s
     }
 
 
+def execute_surface_preflight(
+    surface: Mapping[str, Any],
+    *,
+    operation: str = "self_test",
+    conformance_root_hash72: Optional[str] = None,
+    cache: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """Execute the Pass 043 composer against one already-registered surface.
+
+    This is the mandatory live-dispatch entry point used by the Pass 217
+    restoration. It deliberately does not discover or import another registry;
+    callers provide the conformance-owned surface they are about to execute.
+    """
+
+    cache = cache if cache is not None else {}
+    surface_record = dict(surface)
+    root = _surface_conformance_root(surface_record, conformance_root_hash72)
+    cached = get_or_build_decision(
+        surface_record,
+        conformance_root_hash72=root,
+        cache=cache,
+    )
+    pipeline = derive_runtime_pipeline(surface_record, operation=operation)
+    decision = validate_composition_plan(pipeline)
+    witness = build_composition_witness(pipeline)
+    plan = {
+        "schema": PLAN_SCHEMA,
+        "version": VERSION,
+        "surface_id": surface_record.get("surface_id"),
+        "operation": operation,
+        "surface_map_root_hash72": root,
+        "pipeline": pipeline,
+        "decision": decision,
+        "witness": witness,
+        "composition_allowed": bool(decision.get("ok")),
+    }
+    residue = compact_validation_residue(
+        plan,
+        source_id=f"composition:{surface_record.get('surface_id')}:{operation}",
+    )
+    residue = evict_expanded_metadata(residue)
+    reconstruction = verify_residue_reconstruction(residue, plan)
+    ok = bool(plan.get("composition_allowed")) and bool(reconstruction.get("ok"))
+    return {
+        "schema": "HHS_COMPOSED_PREFLIGHT_DECISION_V1",
+        "version": VERSION,
+        "ok": ok,
+        "status": "ADMIT_KERNEL_DERIVED_RUNTIME_PREFLIGHT" if ok else "REJECT_KERNEL_DERIVED_RUNTIME_PREFLIGHT",
+        "surface_id": surface_record.get("surface_id"),
+        "operation": operation,
+        "conformance_root_hash72": root,
+        "cache": cached,
+        "composition_plan": plan,
+        "compact_residue": residue,
+        "reconstruction": reconstruction,
+        "expanded_metadata_persisted": False,
+    }
+
+
 def execute_composed_preflight(surface_id: str, *, operation: str = "self_test", surface_map: Optional[Mapping[str, Any]] = None, cache: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
     cache = cache if cache is not None else {}
     if surface_map is None:
@@ -142,23 +216,12 @@ def execute_composed_preflight(surface_id: str, *, operation: str = "self_test",
     surface = index.get(str(surface_id))
     if not surface:
         return {"schema": "HHS_COMPOSED_PREFLIGHT_DECISION_V1", "ok": False, "status": "REJECT_UNKNOWN_SURFACE"}
-    cached = get_or_build_decision(surface, conformance_root_hash72=str(surface_map.get("conformance_root_hash72")), cache=cache)
-    plan = compose_surface_pipeline(surface_id, operation=operation, surface_map=surface_map)
-    residue = compact_validation_residue(plan, source_id=f"composition:{surface_id}:{operation}")
-    residue = evict_expanded_metadata(residue)
-    reconstruction = verify_residue_reconstruction(residue, plan)
-    return {
-        "schema": "HHS_COMPOSED_PREFLIGHT_DECISION_V1",
-        "version": VERSION,
-        "ok": plan.get("composition_allowed") and reconstruction.get("ok"),
-        "surface_id": surface_id,
-        "operation": operation,
-        "cache": cached,
-        "composition_plan": plan,
-        "compact_residue": residue,
-        "reconstruction": reconstruction,
-        "expanded_metadata_persisted": False,
-    }
+    return execute_surface_preflight(
+        surface,
+        operation=operation,
+        conformance_root_hash72=str(surface_map.get("conformance_root_hash72") or ""),
+        cache=cache,
+    )
 
 
 def kernel_runtime_autocomposer_self_test() -> Dict[str, Any]:

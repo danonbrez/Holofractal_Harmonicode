@@ -1,0 +1,60 @@
+name: Pass 217 Iteration 1 Inherited Authority Freeze
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_inherited_authority_freeze_v1.py'
+      - 'tools/pass217_iteration1_inherited_authority_freeze.py'
+      - 'tests/test_hhs_pass217_inherited_authority_freeze_v1.py'
+      - 'scripts/run_pass217_iteration1_validation.sh'
+      - 'contracts/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.schema.json'
+      - 'evidence/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.json'
+      - 'docs/pass217/**'
+      - '.github/workflows/pass217-iteration1-inherited-authority-freeze.yml'
+  push:
+    branches:
+      - main
+      - agent/pass217-genesis-inventory-iteration1
+    paths:
+      - 'hhs_backend/runtime/hhs_pass217_inherited_authority_freeze_v1.py'
+      - 'tools/pass217_iteration1_inherited_authority_freeze.py'
+      - 'tests/test_hhs_pass217_inherited_authority_freeze_v1.py'
+      - 'scripts/run_pass217_iteration1_validation.sh'
+      - 'contracts/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.schema.json'
+      - 'evidence/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.json'
+      - 'docs/pass217/**'
+      - '.github/workflows/pass217-iteration1-inherited-authority-freeze.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  exact-base-and-capability-freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate the exact inherited freeze
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass217-iteration1"
+          bash scripts/run_pass217_iteration1_validation.sh \
+            | tee "$RUNNER_TEMP/pass217-iteration1/validation.log"
+      - name: Retain Iteration 1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass217-iteration1-inherited-freeze-${{ github.run_id }}
+          path: |
+            evidence/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.json
+            ${{ runner.temp }}/pass217-iteration1/validation.log
+          if-no-files-found: error

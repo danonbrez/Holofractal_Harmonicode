@@ -1,0 +1,130 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_2_IMPLEMENTATION_RECORD_V1",
+  "pass": 215,
+  "iteration": 2,
+  "status": "IMPLEMENTED_AND_REAL_GGUF_MEASURED",
+  "inherits": {
+    "iteration1_validated_head": "b26780c495288a2dcf4a27c89cf1fbddec0ebc4e",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "frozen_profile_git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e"
+  },
+  "implementation": {
+    "contract": "contracts/pass215/PASS_215_ITERATION_2_CONTRACT.json",
+    "runtime": "hhs_backend/runtime/hhs_pass215_iteration2_open_transformer_container_v1.py",
+    "cli": "tools/pass215_iteration2_open_transformer_container.py",
+    "tests": "tests/test_hhs_pass215_iteration2_open_transformer_container_v1.py",
+    "validation_script": "scripts/run_pass215_iteration2_validation.sh",
+    "workflow": ".github/workflows/pass215-iteration2-open-transformer-container.yml",
+    "formats": ["GGUF_V2_V3", "SAFETENSORS"],
+    "canonical_float_interpretation": false
+  },
+  "repair_forward": {
+    "failed_run": 31200949057,
+    "failure": "Direct CLI execution did not insert the repository root into sys.path, causing ModuleNotFoundError before parser execution.",
+    "repair_commit": "a07c958ebf589978a752080f8c317fe9f029894f",
+    "repair": "Use the same repository-root bootstrap already proven by the Iteration 1 CLI.",
+    "frozen_instrument_changed": false,
+    "external_artifact_changed": false
+  },
+  "validation": {
+    "successful_run": 31201031243,
+    "cumulative_tests_passed": 14,
+    "unrelated_pytest_warning_count": 1,
+    "frozen_profile_blob_exact": true,
+    "external_sha256_verified": true,
+    "public_cli_generation": true,
+    "independent_evidence_validation": true,
+    "artifact_id": 9002815167,
+    "artifact_sha256": "92e9b495453356b7ed1c033ce2a0a928bf8e9a8a4bf14b0d7829698efbe5875c"
+  },
+  "real_open_transformer": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "file_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "file_bytes": 19077344,
+    "format": "GGUF",
+    "gguf_version": 3,
+    "architecture": "llama",
+    "alignment": 32,
+    "tensor_data_start": 727136,
+    "tensor_count": 57,
+    "storage_type_counts": {
+      "Q4_0": 43,
+      "Q8_0": 1,
+      "F32": 13
+    },
+    "tensor_payload_bytes": 18350208,
+    "canonical_quantized_or_integer_tensor_bytes": 18335232,
+    "opaque_float_tensor_bytes": 14976,
+    "container_non_tensor_bytes": 727136,
+    "canonical_tensor_fraction_exact": {
+      "numerator": 15916,
+      "denominator": 15929
+    }
+  },
+  "whole_tensor_storage_measurement": {
+    "source_bytes": 18350208,
+    "full_hydration_window_count": 2,
+    "tail_fallback_bytes": 5753088,
+    "tier_1_bytes": 0,
+    "tier_2_bytes": 0,
+    "tier_3_bytes": 18350208,
+    "admitted_bytes": 0,
+    "incidence_fraction_exact": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "codec_payload_bytes": 18350208,
+    "protected_storage_bytes": 18453888,
+    "physical_source_storage_ratio_exact": {
+      "numerator": 15929,
+      "denominator": 16019
+    },
+    "semantic_exactness": true
+  },
+  "canonical_quantized_stream_measurement": {
+    "source_bytes": 18335232,
+    "full_hydration_window_count": 2,
+    "tail_fallback_bytes": 5738112,
+    "tier_1_bytes": 0,
+    "tier_2_bytes": 0,
+    "tier_3_bytes": 18335232,
+    "admitted_bytes": 0,
+    "incidence_fraction_exact": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "codec_payload_bytes": 18335232,
+    "protected_storage_bytes": 18438912,
+    "physical_source_storage_ratio_exact": {
+      "numerator": 7958,
+      "denominator": 8003
+    },
+    "semantic_exactness": true
+  },
+  "evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+  "receipt_hash72": "eazJ?HQncuTLTNwn9-UO!PSBI2I)GHgBuN/h75y2Iyi0Nkkd845iC+u/xb?o(CBRQ56DqKLz",
+  "claim_boundary": {
+    "real_open_transformer_measured": true,
+    "real_open_transformer_weight_bytes_measured": true,
+    "canonical_quantized_subset_bit_exact_reproduction": true,
+    "full_network_canonical_reproduction": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "arbitrary_compression_claimed": false
+  },
+  "authority": {
+    "benchmark_authority_promoted": true,
+    "pass215_authorized": true,
+    "pass213_gates_preserved": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "interpretation": "Raw Q4_0/Q8_0 transformer weight bytes did not enter the inherited affine-seed or sparse-exception compression tiers. This is an empirical zero-incidence result for raw stored quantized weights under the frozen Pass 214 instrument; it is not evidence against other Pass 215 transformer structures such as block-aware symbolic ingestion, activations, transitions, operator graphs, or continuation reuse, which require separate predeclared measurements."
+}

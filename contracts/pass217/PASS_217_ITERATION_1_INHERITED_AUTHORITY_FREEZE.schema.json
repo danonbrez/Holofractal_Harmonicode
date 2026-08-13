@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/contracts/pass217/PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE.schema.json",
+  "title": "HHS Pass 217 Iteration 1 Inherited Authority Freeze",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "classification",
+    "pass",
+    "iteration",
+    "base",
+    "contracts",
+    "protected_authority",
+    "repository_tree_inventory",
+    "cumulative_operation_inventory",
+    "numbered_pass_inventory",
+    "pass219_preparation_inventory",
+    "inheritance_gate",
+    "claim_boundary",
+    "next_action",
+    "freeze_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "HHS_PASS_217_ITERATION_1_INHERITED_AUTHORITY_FREEZE_V1"
+    },
+    "classification": {
+      "const": "HHS_PASS_217_ITERATION_1_BASE_AND_CAPABILITY_INVENTORY_FROZEN"
+    },
+    "pass": {"const": 217},
+    "iteration": {"const": 1},
+    "base": {
+      "type": "object",
+      "required": ["branch_role", "commit", "tree", "subject", "merge_target"]
+    },
+    "contracts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["path", "git_blob", "sha256", "size_bytes"]
+      }
+    },
+    "protected_authority": {"type": "object"},
+    "repository_tree_inventory": {"type": "object"},
+    "cumulative_operation_inventory": {"type": "object"},
+    "numbered_pass_inventory": {"type": "object"},
+    "pass219_preparation_inventory": {"type": "object"},
+    "inheritance_gate": {"type": "object"},
+    "claim_boundary": {"type": "object"},
+    "next_action": {"type": "string", "minLength": 1},
+    "freeze_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

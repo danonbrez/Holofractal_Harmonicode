@@ -1,0 +1,139 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_3_IMPLEMENTATION_RECORD_V1",
+  "pass": 215,
+  "iteration": 3,
+  "contract": "HHS-P215-I3-REVERSIBLE-QUANTIZATION-BLOCK-DECOMPOSITION-STRUCTURE-ATTRIBUTION",
+  "validated_source_head": "7b75c8f458d4c1c6ce72526f0d76993a16fcb24d",
+  "validated_source_tree": "58698dc28fb91f7fd365cdab6c882c8fdf1b4fda",
+  "workflow": {
+    "name": "Pass 215 Iteration 3 Quantization Block Structure",
+    "run_id": 31204252315,
+    "job_id": 92951335970,
+    "conclusion": "success",
+    "cumulative_tests_passed": 21,
+    "artifact_id": 9004066249,
+    "artifact_sha256": "321b3907ccf65a2249dc1c0adbe6397d2c216eda4ffd17be5f970728dd330472"
+  },
+  "source": {
+    "repo_id": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04"
+  },
+  "iteration2_baseline": {
+    "evidence_root_hash216": "0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70",
+    "canonical_quantized_bytes": 18335232,
+    "pass212_admitted_bytes": 0
+  },
+  "iteration3_result": {
+    "supported_tensor_count": 44,
+    "supported_block_count": 762624,
+    "raw_compared_bytes": 18335232,
+    "selected_reversible_bytes": 11686284,
+    "selected_gain_bytes_vs_raw": 6648948,
+    "selected_fraction_of_raw_exact": {
+      "numerator": 324619,
+      "denominator": 509312
+    },
+    "gain_fraction_of_raw_exact": {
+      "numerator": 184693,
+      "denominator": 509312
+    },
+    "source_to_selected_ratio_exact": {
+      "numerator": 509312,
+      "denominator": 324619
+    },
+    "scale_stream_bytes": 1525248,
+    "code_stream_bytes": 16809984,
+    "scale_stream_pass212_admitted_bytes": 0,
+    "code_stream_pass212_admitted_bytes": 0,
+    "unsupported_passthrough_bytes": 0,
+    "opaque_float_storage_bytes_excluded": 14976,
+    "semantic_exactness": true
+  },
+  "representation_selection": {
+    "RAW_BLOCK_STREAM": 42,
+    "WHOLE_BLOCK_DICTIONARY_V1": 2,
+    "SPLIT_SCALE_CODE_DICTIONARY_V1": 0
+  },
+  "q4_0": {
+    "tensor_count": 43,
+    "block_count": 474624,
+    "source_bytes": 8543232,
+    "selected_bytes": 6255041,
+    "gain_bytes": 2288191,
+    "selected_raw_tensor_count": 42,
+    "selected_whole_dictionary_tensor_count": 1,
+    "selected_split_dictionary_tensor_count": 0
+  },
+  "q8_0": {
+    "tensor_count": 1,
+    "block_count": 288000,
+    "source_bytes": 9792000,
+    "selected_bytes": 5431243,
+    "gain_bytes": 4360757,
+    "selected_whole_dictionary_tensor_count": 1
+  },
+  "positive_tensors": [
+    {
+      "name": "token_embd.weight",
+      "storage_type": "Q4_0",
+      "source_bytes": 5184000,
+      "selected_representation": "WHOLE_BLOCK_DICTIONARY_V1",
+      "selected_bytes": 2895809,
+      "gain_bytes": 2288191,
+      "block_count": 288000,
+      "unique_full_blocks": 112877,
+      "repeated_full_block_occurrences": 175123,
+      "unique_scale_values": 7936,
+      "repeated_scale_occurrences": 280064,
+      "unique_code_blocks": 91676,
+      "repeated_code_occurrences": 196324
+    },
+    {
+      "name": "output.weight",
+      "storage_type": "Q8_0",
+      "source_bytes": 9792000,
+      "selected_representation": "WHOLE_BLOCK_DICTIONARY_V1",
+      "selected_bytes": 5431243,
+      "gain_bytes": 4360757,
+      "block_count": 288000,
+      "unique_full_blocks": 134330,
+      "repeated_full_block_occurrences": 153670,
+      "unique_scale_values": 4561,
+      "repeated_scale_occurrences": 283439,
+      "unique_code_blocks": 131500,
+      "repeated_code_occurrences": 156500
+    }
+  ],
+  "transformer_layer_result": {
+    "layer_count": 6,
+    "tensor_count": 42,
+    "per_layer_tensor_count": 7,
+    "per_layer_source_bytes": 559872,
+    "per_layer_selected_gain_bytes": 0,
+    "code_repeat_occurrences": 0,
+    "whole_block_repeat_occurrences": 0,
+    "interpretation": "Exact scale values repeat inside transformer layers, but packed code blocks and full quantization blocks do not repeat sufficiently for either predeclared dictionary candidate to beat raw storage."
+  },
+  "evidence_root_hash216": "61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021",
+  "receipt_hash72": "+XV/)UKf1oM2)Y>uURQQ?KG(KURR<*5vl2zFqc6Gj6)xNFx/yzsyd!R!HIBJ4dVkCMEAYui)",
+  "authority": {
+    "benchmark_authority_promoted": true,
+    "pass215_authorized": true,
+    "pass213_gates_preserved": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  },
+  "claim_boundary": {
+    "block_dictionary_compression_claimed_for_measured_weight_subset": true,
+    "pass212_generator_admission_claimed": false,
+    "dictionary_representation_is_runtime_authority": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "arbitrary_compression_claimed": false
+  }
+}

@@ -1,0 +1,232 @@
+name: Pass 215 Iteration 15 Certified Greedy Logit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_15_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration15_certified_greedy_logit_v1.py'
+      - 'tools/pass215_iteration15_certified_greedy_logit.py'
+      - 'tests/test_hhs_pass215_iteration15_certified_greedy_logit_v1.py'
+      - 'scripts/run_pass215_iteration15_validation.sh'
+      - 'docs/pass215/ITERATION_15_CERTIFIED_GREEDY_LOGIT.md'
+      - 'evidence/pass215/PASS_215_ITERATION_15_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration15-certified-greedy-logit.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_15_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration15_certified_greedy_logit_v1.py'
+      - 'tools/pass215_iteration15_certified_greedy_logit.py'
+      - 'tests/test_hhs_pass215_iteration15_certified_greedy_logit_v1.py'
+      - 'scripts/run_pass215_iteration15_validation.sh'
+      - 'docs/pass215/ITERATION_15_CERTIFIED_GREEDY_LOGIT.md'
+      - 'evidence/pass215/PASS_215_ITERATION_15_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration15-certified-greedy-logit.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I15_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I15_PROMPT: 'Hello world!'
+  PASS215_I15_CERTIFICATION_BITS: '256'
+
+jobs:
+  iteration15:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I15_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I15_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 14 inheritance and comparator authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_15_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          workload = contract['contracted_workload']
+          math = contract['certified_math']
+          constraints = contract['constraints']
+          assert contract['status'] in {
+              'SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION',
+              'SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED',
+              'EXACT_HEAD_FROZEN',
+          }
+          assert inherits['iteration14_closure_head'] == '9780b711fdcfa6624dc9e787b140920ca3f5f875'
+          assert inherits['iteration14_closure_tree'] == '9475d1053c08f4ae6195d28407dffc86b97c6113'
+          assert inherits['iteration14_generated_token_ids'] == [29009, 7250]
+          assert inherits['iteration14_continuation_root_hash216'] == '21c9ccbe769f818862a4959ee284aafe65af6d0638ce9c05c2ed52c89387b5eb'
+          assert inherits['iteration14_final_dag_root_hash216'] == '27c8c282b7afede7873374b6377df1a763ecf50cfbcc5ff422075cc5d2f91891'
+          assert inherits['iteration14_suite_root_hash216'] == '04935537843adbd98d76583be748725a63f1a04852aefee753373778b4616da3'
+          assert inherits['iteration14_evidence_root_hash216'] == '5ff6c491e72327e602fad54ea8cdab3e989a033fb8c4be3e40348ab8206a5710'
+          assert workload['prompt_token_ids'] == [1, 15043, 3186, 29991]
+          assert workload['vocabulary_size'] == 32000
+          assert workload['certification_bits'] == 256
+          assert workload['selection_policy'] == 'STRICT_CERTIFIED_DYADIC_INTERVAL_ARGMAX_THEN_TOKEN_ID'
+          assert workload['selection_semantics'] == 'TRUE_LOGIT_MAGNITUDE_ORDER_CERTIFIED_BY_OUTWARD_INTEGER_BOUNDS'
+          assert workload['greedy_append_count'] == 1
+          assert math['representation'] == 'DYADIC_INTERVAL_SCALE_2_POW_256'
+          assert math['rounding'] == 'OUTWARD_INTEGER_ROUNDING'
+          assert math['point_transcendental_values_authorized'] is False
+          assert constraints['hash_identity_order_used_as_greedy_authority'] is False
+          assert constraints['probabilistic_sampling_executed'] is False
+          assert constraints['general_generation_claimed'] is False
+          assert constraints['canonical_float_interpretation_performed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-15 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration15_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i15"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I15_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute certified greedy process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i15"
+          python tools/pass215_iteration15_certified_greedy_logit.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I15_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I15_MODEL_SHA256" \
+            --certification-bits "$PASS215_I15_CERTIFICATION_BITS" \
+            --output "$ROOT/PASS_215_ITERATION_15_A.json"
+          python tools/pass215_iteration15_certified_greedy_logit.py \
+            --validate "$ROOT/PASS_215_ITERATION_15_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_15_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i15"
+          python tools/pass215_iteration15_certified_greedy_logit.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I15_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I15_MODEL_SHA256" \
+            --certification-bits "$PASS215_I15_CERTIFICATION_BITS" \
+            --output "$ROOT/PASS_215_ITERATION_15_B.json"
+          python tools/pass215_iteration15_certified_greedy_logit.py \
+            --validate "$ROOT/PASS_215_ITERATION_15_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_15_B_VALIDATION.json"
+          python tools/pass215_iteration15_certified_greedy_logit.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_15_A.json" "$ROOT/PASS_215_ITERATION_15_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_15_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce certified greedy semantics and emit source identities
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i15'
+          evidence = json.loads((root / 'PASS_215_ITERATION_15_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_15_CROSS_PROCESS_VALIDATION.json').read_text())
+          comparison = evidence['certified_logit_comparison']
+          append = evidence['certified_greedy_append']
+          claims = evidence['claims']
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I15_MODEL_SHA256']
+          assert evidence['iteration14_semantic_reexecution']['exact'] is True
+          assert comparison['candidate_count'] == 32000
+          assert comparison['interval_leaf_count'] == 32000
+          assert comparison['certification_bits'] == 256
+          assert comparison['strict_interval_separation'] is True
+          assert comparison['certified_true_argmax'] is True
+          assert comparison['strict_margin_lower_bound']['numerator'] > 0
+          assert comparison['strict_margin_lower_bound']['denominator'] == 1 << 256
+          assert comparison['numeric_logit_magnitude_ordering_performed'] is True
+          assert comparison['numeric_logit_point_values_materialized'] is False
+          assert comparison['canonical_float_interpretation_performed'] is False
+          assert append['appended_token_id'] == comparison['selected_token_id']
+          assert append['prefix_recomputed'] is False
+          assert append['kv_cache_reused'] is True
+          assert append['prefix_hidden_rows_recomputed'] == 0
+          assert append['prior_kv_token_rows_reused'] == 24
+          assert append['new_kv_token_rows_materialized'] == 6
+          assert claims['true_logit_magnitude_argmax_certified'] is True
+          assert claims['exact_greedy_token_selection_executed'] is True
+          assert claims['one_step_true_greedy_autoregressive_continuation_executed'] is True
+          assert claims['hash_identity_order_used_as_greedy_authority'] is False
+          assert claims['probabilistic_sampling_executed'] is False
+          assert claims['general_generation_claimed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['certified_true_argmax'] is True
+          assert replay['selected_token_id'] == comparison['selected_token_id']
+          summary = {
+              'selected_token_id': comparison['selected_token_id'],
+              'selected_token': comparison['selected_token'],
+              'selected_symbolic_logit_root_hash216': comparison['selected_symbolic_logit_root_hash216'],
+              'strongest_competitor_token_id': comparison['strongest_competitor_token_id'],
+              'strongest_competitor_token': comparison['strongest_competitor_token'],
+              'strict_margin_lower_bound': comparison['strict_margin_lower_bound'],
+              'complete_logit_interval_suite_root_hash216': comparison['complete_logit_interval_suite_root_hash216'],
+              'selection_root_hash216': comparison['selection_root_hash216'],
+              'append_forward_root_hash216': append['append_forward_root_hash216'],
+              'final_symbolic_dag_root_hash216': append['final_symbolic_dag']['ordered_node_root_hash216'],
+              'greedy_forward_root_hash216': evidence['certified_greedy_forward_root_hash216'],
+              'suite_root_hash216': evidence['certified_greedy_logit_suite_root_hash216'],
+              'evidence_root_hash216': evidence['evidence_root_hash216'],
+              'receipt_hash72': evidence['receipt_hash72'],
+          }
+          (root / 'PASS_215_ITERATION_15_SOURCE_IDENTITIES.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i15"
+          printf '%s\n' "$(git rev-parse HEAD)" > "$ROOT/VALIDATED_HEAD.txt"
+          printf '%s\n' "$(git rev-parse HEAD^{tree})" > "$ROOT/VALIDATED_TREE.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration15-certified-greedy-logit
+          path: |
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_A.json
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_B.json
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i15/PASS_215_ITERATION_15_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i15/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i15/VALIDATED_TREE.txt
+          if-no-files-found: error

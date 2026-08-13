@@ -1,0 +1,174 @@
+name: Pass 215 Iteration 7 Symbolic Coordinate Forward
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_7_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration7_symbolic_coordinate_forward_v1.py'
+      - 'tools/pass215_iteration7_symbolic_coordinate_forward.py'
+      - 'tests/test_hhs_pass215_iteration7_symbolic_coordinate_forward_v1.py'
+      - 'scripts/run_pass215_iteration7_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_7_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration7-symbolic-coordinate-forward.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_7_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration7_symbolic_coordinate_forward_v1.py'
+      - 'tools/pass215_iteration7_symbolic_coordinate_forward.py'
+      - 'tests/test_hhs_pass215_iteration7_symbolic_coordinate_forward_v1.py'
+      - 'scripts/run_pass215_iteration7_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_7_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration7-symbolic-coordinate-forward.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I7_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration7:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I7_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 6 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_7_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          assert inherits['iteration6_validated_head'] == '684a06a54d6b1282fd549f97f99095724f4452cc'
+          assert inherits['iteration6_validated_tree'] == '86b5e7e5e70de09fb5084b76a2f40cb1855352f9'
+          assert inherits['iteration6_block_graph_root_hash216'] == 'ab4e9d2310936652fdeb049276e08bbc0b9e803787c91ef96713f49bfb1b7c06'
+          assert inherits['iteration6_suite_root_hash216'] == 'ea8c31224dca961ad9afdce8431509cb93f4d74a8209dd714664edc0881dc9b5'
+          assert inherits['iteration6_evidence_root_hash216'] == '85e0a02a70db8330c808a771bf1fbf6084802074b48a4d1b6f990768e23f133a'
+          assert constraints['coordinate_level_complete_block_forward_executed'] is True
+          assert constraints['symbolic_coordinate_forward_materialized'] is True
+          assert constraints['general_multi_token_transformer_layer_forward_executed'] is False
+          assert constraints['full_model_forward_executed'] is False
+          assert constraints['dense_forward_replaced'] is False
+          assert constraints['numeric_transcendental_evaluation_performed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-7 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration7_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i7"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 3 --retry-delay 2 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I7_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute symbolic coordinate forward process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i7"
+          python tools/pass215_iteration7_symbolic_coordinate_forward.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I7_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_7_A.json"
+          python tools/pass215_iteration7_symbolic_coordinate_forward.py \
+            --validate "$ROOT/PASS_215_ITERATION_7_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_7_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i7"
+          python tools/pass215_iteration7_symbolic_coordinate_forward.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I7_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_7_B.json"
+          python tools/pass215_iteration7_symbolic_coordinate_forward.py \
+            --validate "$ROOT/PASS_215_ITERATION_7_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_7_B_VALIDATION.json"
+          python tools/pass215_iteration7_symbolic_coordinate_forward.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_7_A.json" "$ROOT/PASS_215_ITERATION_7_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_7_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce coordinate closure claims and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i7'
+          evidence = json.loads((root / 'PASS_215_ITERATION_7_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_7_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I7_MODEL_SHA256']
+          execution = evidence['symbolic_coordinate_forward']
+          assert execution['final_output_coordinate_count'] == 288
+          assert len(execution['final_output_coordinate_roots']) == 288
+          work = execution['linear_transition_work']
+          assert work['row_transitions'] == 2976
+          assert work['logical_weight_products'] == 995328
+          assert work['logical_accumulation_additions'] == 992352
+          claims = evidence['claims']
+          assert claims['coordinate_level_complete_block_forward_executed'] is True
+          assert claims['symbolic_coordinate_forward_materialized'] is True
+          assert claims['complete_sequence_length_one_blk0_forward_executed'] is True
+          assert claims['general_multi_token_transformer_layer_forward_executed'] is False
+          assert claims['full_model_forward_executed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert claims['numeric_transcendental_evaluation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['final_output_root_hash216'] == execution['final_output_root_hash216']
+          print('PASS215_I7_STAGE_SUITE_ROOT=' + execution['executed_stage_suite_root_hash216'])
+          print('PASS215_I7_FINAL_OUTPUT_ROOT=' + execution['final_output_root_hash216'])
+          print('PASS215_I7_DAG_ROOT=' + execution['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I7_SUITE_ROOT=' + evidence['symbolic_forward_suite_root_hash216'])
+          print('PASS215_I7_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I7_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 7 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration7-${{ github.run_id }}
+          path: |
+            contracts/pass215/PASS_215_ITERATION_7_CONTRACT.json
+            evidence/pass215/PASS_215_ITERATION_7_IMPLEMENTATION_RECORD.json
+            ${{ runner.temp }}/pass215-i7/*.json
+          if-no-files-found: error

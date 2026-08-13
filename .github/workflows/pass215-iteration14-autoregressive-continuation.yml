@@ -1,0 +1,230 @@
+name: Pass 215 Iteration 14 Autoregressive Continuation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_14_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration14_autoregressive_continuation_v1.py'
+      - 'tools/pass215_iteration14_autoregressive_continuation.py'
+      - 'tests/test_hhs_pass215_iteration14_autoregressive_continuation_v1.py'
+      - 'scripts/run_pass215_iteration14_validation.sh'
+      - 'docs/pass215/ITERATION_14_AUTOREGRESSIVE_CONTINUATION.md'
+      - 'docs/pass215/ITERATION_14_RESTART_RECORD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_14_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration14-autoregressive-continuation.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_14_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration14_autoregressive_continuation_v1.py'
+      - 'tools/pass215_iteration14_autoregressive_continuation.py'
+      - 'tests/test_hhs_pass215_iteration14_autoregressive_continuation_v1.py'
+      - 'scripts/run_pass215_iteration14_validation.sh'
+      - 'docs/pass215/ITERATION_14_AUTOREGRESSIVE_CONTINUATION.md'
+      - 'docs/pass215/ITERATION_14_RESTART_RECORD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_14_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration14-autoregressive-continuation.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I14_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I14_PROMPT: 'Hello world!'
+
+jobs:
+  iteration14:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I14_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I14_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 13 inheritance and authority boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_14_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          workload = contract['contracted_workload']
+          constraints = contract['constraints']
+          assert contract['status'] in {
+              'SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION',
+              'SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED',
+              'EXACT_HEAD_FROZEN',
+          }
+          assert inherits['iteration13_closure_head'] == '1253bdfaff0eea3688f28ac749df31e4f1613d06'
+          assert inherits['iteration13_closure_tree'] == 'cdf253c6c08d0bf0184b501f0395667c5e2a04c8'
+          assert inherits['iteration13_full_model_forward_root_hash216'] == 'c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac'
+          assert inherits['iteration13_suite_root_hash216'] == '046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc'
+          assert inherits['iteration13_evidence_root_hash216'] == 'ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5'
+          assert workload['prompt_token_ids'] == [1, 15043, 3186, 29991]
+          assert workload['selection_policy'] == 'LEXICOGRAPHIC_MINIMUM_HASH216_LOGIT_ROOT_THEN_TOKEN_ID'
+          assert workload['selection_semantics'] == 'EXACT_SYMBOLIC_IDENTITY_TOTAL_ORDER_NOT_NUMERIC_ARGMAX'
+          assert workload['generated_token_count'] == 2
+          assert workload['processed_append_count'] == 2
+          assert constraints['numeric_logit_argmax_executed'] is False
+          assert constraints['probabilistic_sampling_executed'] is False
+          assert constraints['general_generation_claimed'] is False
+          assert constraints['canonical_float_interpretation_performed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-14 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration14_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i14"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I14_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute autoregressive continuation process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i14"
+          python tools/pass215_iteration14_autoregressive_continuation.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I14_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I14_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_14_A.json"
+          python tools/pass215_iteration14_autoregressive_continuation.py \
+            --validate "$ROOT/PASS_215_ITERATION_14_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_14_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i14"
+          python tools/pass215_iteration14_autoregressive_continuation.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I14_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I14_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_14_B.json"
+          python tools/pass215_iteration14_autoregressive_continuation.py \
+            --validate "$ROOT/PASS_215_ITERATION_14_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_14_B_VALIDATION.json"
+          python tools/pass215_iteration14_autoregressive_continuation.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_14_A.json" "$ROOT/PASS_215_ITERATION_14_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_14_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce continuation semantics and emit frozen source identities
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i14'
+          evidence = json.loads((root / 'PASS_215_ITERATION_14_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_14_CROSS_PROCESS_VALIDATION.json').read_text())
+          parent = evidence['iteration13_semantic_reexecution']
+          continuation = evidence['generated_continuation']
+          claims = evidence['claims']
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I14_MODEL_SHA256']
+          assert parent['exact'] is True
+          assert parent['iteration13_full_model_forward_root_hash216'] == 'c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac'
+          assert parent['iteration13_full_dag_root_hash216'] == '095aadfa389728fb0fc53df0acd3632bfe09af75b13ca2d64d576c117ac0ccd5'
+          assert continuation['generated_token_count'] == 2
+          assert len(continuation['generated_token_ids']) == 2
+          assert continuation['processed_append_count'] == 2
+          assert continuation['prefix_sequence_length'] == 4
+          assert continuation['final_cache_sequence_length'] == 6
+          assert continuation['prefix_recomputed_for_appends'] is False
+          assert continuation['kv_cache_reused'] is True
+          assert continuation['continuation_work']['prefix_hidden_rows_recomputed'] == 0
+          assert continuation['continuation_work']['prior_kv_token_rows_reused'] == 54
+          assert continuation['continuation_work']['new_kv_token_rows_materialized'] == 12
+          assert continuation['continuation_work']['linear_transition_work'] == {
+              'row_transitions': 35712,
+              'logical_weight_products': 11943936,
+              'logical_accumulation_additions': 11908224,
+          }
+          assert continuation['continuation_work']['terminal_projection_work'] == {
+              'row_transitions': 64000,
+              'logical_weight_products': 18432000,
+              'logical_accumulation_additions': 18368000,
+              'q8_block_scale_applications': 576000,
+          }
+          assert all(record['prefix_recomputed'] is False for record in continuation['append_records'])
+          assert all(record['candidate_count'] == 32000 for record in continuation['selection_records'])
+          assert all(record['numeric_argmax_performed'] is False for record in continuation['selection_records'])
+          assert claims['exact_deterministic_symbolic_token_selection_executed'] is True
+          assert claims['autoregressive_continuation_executed'] is True
+          assert claims['multi_step_generated_continuation_executed'] is True
+          assert claims['prefix_state_reused_without_recomputation'] is True
+          assert claims['kv_cache_reused_across_appended_tokens'] is True
+          assert claims['numeric_logit_argmax_executed'] is False
+          assert claims['probabilistic_sampling_executed'] is False
+          assert claims['general_generation_claimed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['generated_token_ids'] == continuation['generated_token_ids']
+          summary = {
+              'generated_token_ids': continuation['generated_token_ids'],
+              'generated_tokens': continuation['generated_tokens'],
+              'selection_roots': [x['selection_root_hash216'] for x in continuation['selection_records']],
+              'append_forward_roots': [x['append_forward_root_hash216'] for x in continuation['append_records']],
+              'continuation_root_hash216': continuation['continuation_root_hash216'],
+              'final_symbolic_dag_root_hash216': continuation['final_symbolic_dag']['ordered_node_root_hash216'],
+              'suite_root_hash216': evidence['autoregressive_continuation_suite_root_hash216'],
+              'evidence_root_hash216': evidence['evidence_root_hash216'],
+              'receipt_hash72': evidence['receipt_hash72'],
+          }
+          (root / 'PASS_215_ITERATION_14_SOURCE_IDENTITIES.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i14"
+          printf '%s\n' "$(git rev-parse HEAD)" > "$ROOT/VALIDATED_HEAD.txt"
+          printf '%s\n' "$(git rev-parse HEAD^{tree})" > "$ROOT/VALIDATED_TREE.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration14-autoregressive-continuation
+          path: |
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_A.json
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_B.json
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i14/PASS_215_ITERATION_14_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i14/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i14/VALIDATED_TREE.txt
+          if-no-files-found: error

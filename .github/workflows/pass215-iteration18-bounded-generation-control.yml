@@ -1,0 +1,110 @@
+name: Pass 215 Iteration 18 Bounded Generation Control
+
+on:
+  push:
+    branches: [agent/pass215-transformer-ingestion-benchmark]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_iteration18_bounded_generation_control_v1.py'
+      - 'tools/pass215_iteration18_bounded_generation_control.py'
+      - 'tests/test_hhs_pass215_iteration18_bounded_generation_control_v1.py'
+      - 'scripts/run_pass215_iteration18_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_18_CONTRACT.json'
+      - 'evidence/pass215/PASS_215_ITERATION_18_IMPLEMENTATION_RECORD.json'
+      - 'docs/pass215/ITERATION_18_BOUNDED_GENERATION_CONTROL.md'
+      - 'docs/pass215/ITERATION_18_RESTART_RECORD.md'
+      - '.github/workflows/pass215-iteration18-bounded-generation-control.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  iteration18:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PASS215_I18_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_I18_PROMPT: 'Hello world!'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I18_VALIDATED_HEAD=$(git rev-parse HEAD)"
+          echo "PASS215_I18_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 17 inheritance and bounded generation authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass215/PASS_215_ITERATION_18_CONTRACT.json').read_text())
+          assert c['inherits']['iteration17_closure_head']=='3d46b0eb233c6f450fa7d939e8b864a6651d3465'
+          assert c['contracted_workload']['max_new_tokens']==7
+          assert c['contracted_workload']['max_context_tokens']==11
+          assert c['contracted_workload']['resume_after_completed_steps']==4
+          assert c['requirements']['restore_without_prefix_or_generated_forward_replay'] is True
+          assert c['constraints']['probabilistic_sampling_executed'] is False
+          assert c['constraints']['unbounded_or_general_generation_claimed'] is False
+          PY
+      - name: Run cumulative Iteration 1-18 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration18_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i18"; mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 -o "$ROOT/stories15M-q4_0.gguf" 'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I18_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Execute bounded checkpoint-resume process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i18"
+          python tools/pass215_iteration18_bounded_generation_control.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I18_PROMPT" --expected-sha256 "$PASS215_I18_MODEL_SHA256" --checkpoint-output "$ROOT/PASS_215_ITERATION_18_A_CHECKPOINT.json" --output "$ROOT/PASS_215_ITERATION_18_A.json"
+          python tools/pass215_iteration18_bounded_generation_control.py --validate "$ROOT/PASS_215_ITERATION_18_A.json" --output "$ROOT/PASS_215_ITERATION_18_A_VALIDATION.json"
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i18"
+          python tools/pass215_iteration18_bounded_generation_control.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I18_PROMPT" --expected-sha256 "$PASS215_I18_MODEL_SHA256" --checkpoint-output "$ROOT/PASS_215_ITERATION_18_B_CHECKPOINT.json" --output "$ROOT/PASS_215_ITERATION_18_B.json"
+          python tools/pass215_iteration18_bounded_generation_control.py --validate "$ROOT/PASS_215_ITERATION_18_B.json" --output "$ROOT/PASS_215_ITERATION_18_B_VALIDATION.json"
+          python tools/pass215_iteration18_bounded_generation_control.py --compare-replay "$ROOT/PASS_215_ITERATION_18_A.json" "$ROOT/PASS_215_ITERATION_18_B.json" --output "$ROOT/PASS_215_ITERATION_18_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce bounded generation semantics and emit source identities
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'pass215-i18'; e=json.loads((root/'PASS_215_ITERATION_18_A.json').read_text()); r=json.loads((root/'PASS_215_ITERATION_18_CROSS_PROCESS_VALIDATION.json').read_text()); c=e['bounded_generation_control']; q=e['resume_checkpoint']
+          assert c['selected_token_ids']==[450,6575,471,528,2827,322,278]
+          assert c['termination_reason']=='MAX_NEW_TOKENS' and c['final_cache_sequence_length']==11
+          assert q['checkpoint_after_completed_steps']==4 and q['prefix_forward_replays_during_restore']==0 and q['generated_forward_replays_during_restore']==0
+          assert all(s['certified_true_argmax'] and s['strict_interval_separation'] for s in c['steps'])
+          assert r['cross_process_replay'] and r['semantic_exactness']
+          summary={'selected_token_ids':c['selected_token_ids'],'selected_tokens':c['selected_tokens'],'termination_reason':c['termination_reason'],'checkpoint_root_hash216':q['checkpoint_root_hash216'],'checkpoint_canonical_bytes':q['checkpoint_canonical_bytes'],'token_proof_roots':[s['proof_root_hash216'] for s in c['steps']],'token_receipts':[s['proof_receipt_hash72'] for s in c['steps']],'generation_control_root_hash216':c['generation_control_root_hash216'],'terminal_token_receipt_hash72':c['per_token_proof_receipt_chain_terminal_hash72'],'suite_root_hash216':e['bounded_generation_control_suite_root_hash216'],'evidence_root_hash216':e['evidence_root_hash216'],'receipt_hash72':e['receipt_hash72']}
+          (root/'PASS_215_ITERATION_18_SOURCE_IDENTITIES.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n'); print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i18"; git rev-parse HEAD > "$ROOT/VALIDATED_HEAD.txt"; git rev-parse HEAD^{tree} > "$ROOT/VALIDATED_TREE.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration18-bounded-generation-control
+          path: |
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_A.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_A_CHECKPOINT.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_B.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i18/PASS_215_ITERATION_18_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i18/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i18/VALIDATED_TREE.txt
+          if-no-files-found: error

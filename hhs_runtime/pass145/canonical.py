@@ -7,8 +7,6 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import _hash as inherited_hash72
-
 
 def _normalize(value: Any) -> Any:
     if isinstance(value, Fraction):
@@ -37,12 +35,22 @@ def canonical_json(value: Any) -> str:
 
 
 def hash72(label: str, value: Any) -> str:
-    """Use the inherited deterministic Hash72-facing helper.
+    """Use the inherited deterministic Hash72-facing helper lazily.
 
-    The helper is already part of the Pass 111+ receipt substrate.  Pass 145
-    never introduces a competing truth hash.  SHA-256 is retained only for
-    byte-integrity interoperability and is always explicitly labeled.
+    The helper is already part of the Pass 111+ receipt substrate. Pass 145
+    never introduces a competing truth hash. Importing Pass 145 storage or
+    canonicalization surfaces must not eagerly activate predictive-continuation
+    machinery, so the inherited helper is resolved only when an actual Hash72
+    operation is requested.
+
+    SHA-256 is retained only for byte-integrity interoperability and is always
+    explicitly labeled.
     """
+
+    from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import (
+        _hash as inherited_hash72,
+    )
+
     return inherited_hash72(label, _normalize(value))
 
 
@@ -57,7 +65,7 @@ def utc_now() -> str:
 def stable_id(prefix: str, label: str, value: Any, width: int = 24) -> str:
     """Collision-resistant database identifier derived from canonical evidence.
 
-    Hash72 remains the semantic/root witness.  SHA-256 is used only as an
+    Hash72 remains the semantic/root witness. SHA-256 is used only as an
     interoperable storage-address projection over the full canonical payload;
     it cannot overwrite or substitute the authoritative Hash72 fields.
     """

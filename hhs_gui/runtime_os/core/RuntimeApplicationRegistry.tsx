@@ -29,6 +29,17 @@ export interface RuntimeApplicationDefinition {
   experimental?: boolean
 }
 
+/**
+ * Compatibility projection used by inherited Runtime OS command surfaces.
+ * The canonical registry definition remains authoritative; these aliases are
+ * derived views only and do not create a second application registry.
+ */
+export interface RuntimeApplication extends RuntimeApplicationDefinition {
+  name: string
+  applicationType: RuntimeApplicationAuthority
+  route: string
+}
+
 export class RuntimeApplicationRegistry {
   private readonly applications = new Map<string, RuntimeApplicationDefinition>()
 
@@ -49,6 +60,23 @@ export class RuntimeApplicationRegistry {
 
   public all(): RuntimeApplicationDefinition[] {
     return [...this.applications.values()]
+  }
+
+  public getApplications(): RuntimeApplication[] {
+    return this.all().map((application) => ({
+      ...application,
+      name: application.title,
+      applicationType: application.authority,
+      route: `/apps/${encodeURIComponent(application.id)}`,
+    }))
+  }
+
+  public mountApplication(id: string): RuntimeApplicationDefinition {
+    const definition = this.get(id)
+    if (!definition) {
+      throw new Error(`Unregistered HHS runtime application: ${id}`)
+    }
+    return definition
   }
 
   public byAuthority(authority: RuntimeApplicationAuthority): RuntimeApplicationDefinition[] {

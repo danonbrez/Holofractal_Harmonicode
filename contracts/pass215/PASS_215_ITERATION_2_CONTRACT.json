@@ -1,0 +1,59 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_2_CONTRACT_V1",
+  "pass": 215,
+  "iteration": 2,
+  "title": "Real open-transformer container ingestion and quantized-weight incidence",
+  "inherits": {
+    "iteration1_head": "b26780c495288a2dcf4a27c89cf1fbddec0ebc4e",
+    "pass214_authority_root_hash216": "c1d7875acd45f02da75101f5953541b6e1ce8ea3bb2cac39645004ab2509aeb8",
+    "pass215_benchmark_profile_root_hash216": "a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e",
+    "pass213_gate_preservation_root_hash216": "214106621723b579ffe4813c74d5df98a7e14387293b8ecc3e1edc81bf066092",
+    "frozen_profile_git_blob_sha1": "b458d674a75a4cfc64a32b9203dd693e3603576e"
+  },
+  "objective": [
+    "Parse Safetensors and GGUF containers without interpreting floating-point values as canonical numeric authority.",
+    "Preserve exact tensor names, dimensions, storage types, byte ranges, hashes, container ordering, and quantization block metadata.",
+    "Measure whole-container tensor-storage incidence and canonical quantized/integer-only incidence through the inherited Pass 212 exact codec.",
+    "Measure at least one real public open-transformer quantized weight artifact under the frozen Pass 214 instrument.",
+    "Keep measurement authority unable to promote runtime or canonical mutation authority."
+  ],
+  "required_formats": ["SAFETENSORS", "GGUF_V2_V3"],
+  "real_workload": {
+    "repository": "ggml-org/tiny-llamas",
+    "revision": "main",
+    "filename": "stories15M-q4_0.gguf",
+    "format": "GGUF",
+    "expected_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "published_size_bytes": 19100000,
+    "purpose": "First real quantized transformer weight-incidence measurement; exact downloaded byte length remains evidence-derived."
+  },
+  "measurement_rules": {
+    "tensor_payload_only": true,
+    "container_metadata_excluded_from_weight_incidence": true,
+    "whole_tensor_stream_crosses_tensor_boundaries": true,
+    "incomplete_final_hydration_window_is_raw_fallback": true,
+    "float_semantic_tensor_bytes_excluded_from_canonical_quantized_stream": true,
+    "float_storage_may_be_hashed_and_counted_as_opaque_storage": true,
+    "exact_reconstruction_required_for_every_complete_hydration_window": true,
+    "post_hoc_profile_redefinition_forbidden": true
+  },
+  "constraints": {
+    "canonical_float_interpretation_forbidden": true,
+    "arbitrary_compression_claimed": false,
+    "dense_forward_replaced": false,
+    "exact_nonlinear_transformer_operators_implemented": false,
+    "fifty_billion_desktop_feasibility_claimed": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false,
+    "pass213_live_admission_required_before_canonical_mutation": true
+  },
+  "acceptance": [
+    "Safetensors fixture parsing preserves exact byte ranges and rejects malformed/overlapping tensor ranges.",
+    "GGUF fixture parsing preserves tensor block types, offsets, sizes, and rejects unsupported or malformed layouts fail-closed.",
+    "No evidence object contains a Python/JSON floating-point number.",
+    "Real GGUF file SHA-256 matches the predeclared external artifact digest before measurement.",
+    "Real model evidence records tensor bytes, quantized/integer bytes, opaque float bytes, storage incidence, canonical quantized incidence, Hash216 evidence root, and Hash72 receipt.",
+    "Frozen Pass 214 profile blob remains unchanged."
+  ]
+}

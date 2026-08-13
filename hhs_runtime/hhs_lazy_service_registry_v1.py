@@ -5,6 +5,11 @@ an emulator. That makes kernel boot depend on every optional service import.
 This adapter preserves the complete registered descriptor surface and the
 existing conformance interposer, but resolves each callable only when that
 service is dispatched.
+
+Pass 217 restoration rule: production lazy dispatch is not permitted to jump
+from registration directly to the service handler. Every dispatched service
+must traverse the inherited Pass 043 kernel-derived runtime composer and the
+currently connected inherited optimization-authority slice first.
 """
 
 from __future__ import annotations
@@ -16,11 +21,16 @@ from typing import Any, Dict, List, Mapping, Optional
 
 import hhs_runtime.hhs_service_registry_v1 as registry_module
 from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
+from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
+    build_initial_inherited_authority_reachability,
+)
 from hhs_runtime.hhs_service_registry_v1 import (
     HHSServiceRegistry,
     HHSServiceRegistryError,
     HHSServiceSpec,
 )
+from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
+from hhs_runtime.hhs_unified_hash72_ledger_v1 import append_payload
 
 VERSION = "HHS_DESCRIPTOR_FIRST_LAZY_SERVICE_REGISTRY_V1"
 _BUILD_LOCK = threading.RLock()
@@ -28,6 +38,10 @@ _BUILD_LOCK = threading.RLock()
 
 class HHSLazyServiceRegistry(HHSServiceRegistry):
     """Registry whose descriptors are validated now and callables resolve later."""
+
+    def __init__(self, controller: Optional[HHSRuntimeController] = None):
+        super().__init__(controller=controller)
+        self._composition_decision_cache: Dict[str, Dict[str, Any]] = {}
 
     def register_function(
         self,
@@ -101,6 +115,180 @@ class HHSLazyServiceRegistry(HHSServiceRegistry):
             contract_exempt_reason=contract_exempt_reason,
         )
         return self.register(spec, handler)
+
+    def _composition_surface(self, service_name: str) -> Dict[str, Any]:
+        spec = self._services[service_name]
+        surface = spec.to_dict()
+        surface.update(
+            {
+                "surface_id": f"service:{service_name}",
+                "surface_type": "SERVICE",
+                "symbol": spec.function,
+                "declared_operations": sorted({service_name, spec.function}),
+                "derivation_complete": bool(
+                    spec.conformance_decision.get("derivation_complete")
+                ),
+            }
+        )
+        return surface
+
+    @staticmethod
+    def _compact_preflight(preflight: Mapping[str, Any]) -> Dict[str, Any]:
+        plan = dict(preflight.get("composition_plan") or {})
+        pipeline = dict(plan.get("pipeline") or {})
+        witness = dict(plan.get("witness") or {})
+        cache = dict(preflight.get("cache") or {})
+        return {
+            "schema": "HHS_LIVE_SERVICE_COMPOSITION_PREFLIGHT_SUMMARY_V1",
+            "ok": bool(preflight.get("ok")),
+            "status": preflight.get("status"),
+            "surface_id": preflight.get("surface_id"),
+            "operation": preflight.get("operation"),
+            "conformance_root_hash72": preflight.get("conformance_root_hash72"),
+            "pipeline_root_hash72": pipeline.get("pipeline_root_hash72"),
+            "composition_root_hash72": witness.get("composition_root_hash72"),
+            "cache_hit": bool(cache.get("cache_hit")),
+            "expanded_metadata_persisted": bool(
+                preflight.get("expanded_metadata_persisted")
+            ),
+            "compact_residue": preflight.get("compact_residue"),
+        }
+
+    @staticmethod
+    def _compact_authority_reachability(record: Mapping[str, Any]) -> Dict[str, Any]:
+        return {
+            "schema": "HHS_LIVE_SERVICE_AUTHORITY_REACHABILITY_SUMMARY_V1",
+            "admitted": bool(record.get("admitted")),
+            "status": record.get("status"),
+            "required_authority_count": record.get("required_authority_count"),
+            "accepted_state_counts": dict(record.get("accepted_state_counts") or {}),
+            "reachability_root_hash72": record.get("reachability_root_hash72"),
+            "checkpoint_scope": list(record.get("checkpoint_scope") or []),
+            "continuation_applicability_facts": dict(
+                record.get("continuation_applicability_facts") or {}
+            ),
+            "decisions": [
+                {
+                    "authority_id": row.get("authority_id"),
+                    "state": row.get("state"),
+                    "accepted": bool(row.get("accepted")),
+                    "reasons": list(row.get("reasons") or []),
+                    "witness_root": (row.get("proof") or {}).get("witness_root"),
+                    "traversal_witness": (row.get("proof") or {}).get(
+                        "traversal_witness"
+                    ),
+                    "mechanically_proven": (row.get("proof") or {}).get(
+                        "mechanically_proven"
+                    ),
+                }
+                for row in record.get("decisions", []) or []
+            ],
+            "blockers": list(record.get("blockers") or []),
+            "optional_available_forbidden": True,
+        }
+
+    def dispatch(
+        self,
+        service_name: str,
+        payload: Optional[Mapping[str, Any]] = None,
+        *,
+        zero_bypass_interposition_token: Optional[Mapping[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Dispatch only after inherited composition and reachability admit it."""
+
+        if service_name not in self._services:
+            raise HHSServiceRegistryError(f"unknown service: {service_name}")
+
+        payload_dict = dict(payload or {})
+        spec = self._services[service_name]
+        surface = self._composition_surface(service_name)
+        operation = spec.function or service_name
+        preflight = execute_surface_preflight(
+            surface,
+            operation=operation,
+            cache=self._composition_decision_cache,
+        )
+        preflight_summary = self._compact_preflight(preflight)
+        if not preflight.get("ok"):
+            return {
+                "schema": "HHS_SERVICE_DISPATCH_COMPOSITION_REJECTION_V1",
+                "service": spec.to_dict(),
+                "payload": payload_dict,
+                "kernel_runtime_composition_preflight": preflight_summary,
+                "propagation_allowed": False,
+                "execution_allowed": False,
+                "bypass_attempt": True,
+                "reason": "REJECT_SERVICE_HANDLER_WITHOUT_KERNEL_DERIVED_COMPOSITION",
+            }
+
+        authority_record = build_initial_inherited_authority_reachability(
+            preflight,
+            surface,
+            payload_dict,
+        )
+        authority_summary = self._compact_authority_reachability(authority_record)
+        if not authority_record.get("admitted"):
+            return {
+                "schema": "HHS_SERVICE_DISPATCH_AUTHORITY_REACHABILITY_REJECTION_V1",
+                "service": spec.to_dict(),
+                "payload": payload_dict,
+                "kernel_runtime_composition_preflight": preflight_summary,
+                "inherited_execution_authority_reachability": authority_summary,
+                "propagation_allowed": False,
+                "execution_allowed": False,
+                "bypass_attempt": True,
+                "reason": "REJECT_INHERITED_EXECUTION_AUTHORITY_REACHABILITY",
+            }
+
+        record = super().dispatch(
+            service_name,
+            payload_dict,
+            zero_bypass_interposition_token=zero_bypass_interposition_token,
+        )
+        record["kernel_runtime_composition_preflight"] = preflight_summary
+        record["inherited_execution_authority_reachability"] = authority_summary
+
+        if record.get("execution_allowed") is False:
+            return record
+
+        previous_tip = (record.get("unified_ledger") or {}).get("tip_hash72")
+        binding_payload = {
+            "schema": "HHS_CUMULATIVE_COMPOSITION_BINDING_V1",
+            "service_name": service_name,
+            "surface_id": preflight_summary.get("surface_id"),
+            "operation": operation,
+            "conformance_root_hash72": preflight_summary.get(
+                "conformance_root_hash72"
+            ),
+            "pipeline_root_hash72": preflight_summary.get("pipeline_root_hash72"),
+            "composition_root_hash72": preflight_summary.get(
+                "composition_root_hash72"
+            ),
+            "inherited_authority_reachability_root_hash72": authority_summary.get(
+                "reachability_root_hash72"
+            ),
+            "service_dispatch_tip_hash72": previous_tip,
+            "expanded_metadata_persisted": False,
+        }
+        ledger = append_payload(
+            "RUNTIME_COMPOSITION",
+            f"HHSLazyServiceRegistry.dispatch.{service_name}",
+            binding_payload,
+        )
+        record["composition_ledger_binding"] = {
+            "schema": "HHS_CUMULATIVE_COMPOSITION_LEDGER_BINDING_V1",
+            "entry_count": ledger.get("entry_count"),
+            "tip_hash72": ledger.get("tip_hash72"),
+            "ledger_hash72": ledger.get("ledger_hash72"),
+            "prior_service_dispatch_tip_hash72": previous_tip,
+            "composition_root_hash72": preflight_summary.get(
+                "composition_root_hash72"
+            ),
+            "inherited_authority_reachability_root_hash72": authority_summary.get(
+                "reachability_root_hash72"
+            ),
+        }
+        return record
 
 
 def make_lazy_default_service_registry(

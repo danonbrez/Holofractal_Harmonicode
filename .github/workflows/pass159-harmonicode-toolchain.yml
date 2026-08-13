@@ -10,6 +10,11 @@ on:
     branches:
       - agent/pass159-harmonicode-toolchain
       - main
+    paths:
+      - 'native_projects/hhs_pass159_harmonicode_toolchain/**'
+      - '!native_projects/hhs_pass159_harmonicode_toolchain/evidence/**'
+      - '.github/workflows/pass159-harmonicode-toolchain.yml'
+      - 'Makefile'
   workflow_dispatch:
 
 permissions:
@@ -21,6 +26,9 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+      - name: Verify idempotent historical main closure semantics
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: python3 tests/test_close_main_idempotence.py
       - name: Materialize and complete Pass 159 verification
         working-directory: native_projects/hhs_pass159_harmonicode_toolchain
         run: make verify
@@ -102,6 +110,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Historical closure reuse requires ancestry from the committed Pass
+          # 159 anchor to current cumulative main. A shallow checkout cannot
+          # distinguish "anchor unavailable" from a genuine non-ancestor.
+          fetch-depth: 0
+      - name: Verify complete historical ancestry is available
+        run: |
+          test "$(git rev-parse --is-shallow-repository)" = "false"
       - name: Materialize main-closure tooling
         working-directory: native_projects/hhs_pass159_harmonicode_toolchain
         run: make materialize
@@ -131,7 +147,7 @@ jobs:
             native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json \
             native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_AUTHORITATIVE_MAIN_CLOSURE.json
           if git diff --cached --quiet; then
-            echo 'Terminal receipt already committed.'
+            echo 'Terminal receipt already committed; historical closure anchor remains valid.'
           else
             git commit -m 'Record Pass 159 authoritative main closure'
             git push origin HEAD:main

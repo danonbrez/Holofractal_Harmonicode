@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM_V1",
+  "contract": "HHS-P215-I4-EXACT-Q4-0-LINEAR-OPERATOR-EXECUTION-TRANSITION-COMPLEXITY",
+  "purpose": "Repair-forward the frozen-profile comparison projection after artifact audit found that the dense_reference comparison record inherited the cold compiled-descriptor mode work total instead of the separately executed dense exact rational reference total. Operator execution, candidates, deterministic vectors, source tensors, outputs, primitive counters, continuation results, and authority boundaries are unchanged.",
+  "first_primitive_work_green_run": 31221568421,
+  "first_primitive_work_green_head": "e2ec4ae66df6f0c28f56df996580e4ee787eedeb",
+  "preserve_prior_evidence": true,
+  "post_hoc_candidate_redefinition": false,
+  "required_comparison_bindings": {
+    "dense_reference": {
+      "source": "aggregate_execution.dense_reference_work",
+      "candidate": "DENSE_EXACT_RATIONAL_REFERENCE_V1"
+    },
+    "exact_integer_reference": {
+      "source": "aggregate_execution.factored_reference_work",
+      "candidate": "Q4_0_FACTORED_EXACT_BLOCK_KERNEL_V1_WITH_EXACT_INTEGER_INNER_DOTS"
+    },
+    "pass213_compiled_rom_only": {
+      "source": "frozen_workload_modes.warm.work",
+      "candidate": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_BENCHMARK_ANALOG_ONLY_NO_RUNTIME_AUTHORITY"
+    },
+    "compiled_rom_plus_cache_layers": {
+      "source": "frozen_workload_modes.exact_repetition.work",
+      "candidate": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_PLUS_EXACT_INPUT_OUTPUT_CACHE_V1"
+    },
+    "compiled_rom_plus_continuation_delta": {
+      "source": "frozen_workload_modes.single_region_mutation.work",
+      "candidate": "IMMUTABLE_COMPILED_BLOCK_DESCRIPTOR_V1_PLUS_LINEAR_CONTINUATION_DELTA_V1"
+    }
+  },
+  "required_dense_reference_primitive_work_units": 3014112,
+  "required_exact_integer_reference_primitive_work_units": 2049888,
+  "required_dense_to_factored_total_primitive_work_ratio_exact": {
+    "numerator": 31397,
+    "denominator": 21353
+  },
+  "required_suite_output_root_hash216_unchanged": "14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb",
+  "completion_rule": "Iteration 4 comparison authority closes only when a regenerated evidence bundle binds dense_reference to the dense exact rational work record, exact_integer_reference to the factored exact work record, preserves the suite output root, independently validates both process executions, and passes cross-process replay."
+}

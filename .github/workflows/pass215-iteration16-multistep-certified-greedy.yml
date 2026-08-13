@@ -1,0 +1,185 @@
+name: Pass 215 Iteration 16 Multi-Step Certified Greedy
+
+on:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_iteration16_multistep_certified_greedy_v1.py'
+      - 'tools/pass215_iteration16_multistep_certified_greedy.py'
+      - 'tests/test_hhs_pass215_iteration16_multistep_certified_greedy_v1.py'
+      - 'scripts/run_pass215_iteration16_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_16_CONTRACT.json'
+      - 'evidence/pass215/PASS_215_ITERATION_16_IMPLEMENTATION_RECORD.json'
+      - 'docs/pass215/ITERATION_16_MULTISTEP_CERTIFIED_GREEDY.md'
+      - '.github/workflows/pass215-iteration16-multistep-certified-greedy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  iteration16:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PASS215_I16_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_I16_PROMPT: 'Hello world!'
+      PASS215_I16_CERTIFICATION_BITS: '256'
+      PASS215_I16_GREEDY_STEPS: '3'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I16_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I16_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 15 inheritance and multi-step authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c = json.loads(Path('contracts/pass215/PASS_215_ITERATION_16_CONTRACT.json').read_text())
+          assert c['inherits']['iteration15_closure_head'] == '7d58d29fa9690f4239b8e8f3ad30f34736f47f84'
+          assert c['inherits']['iteration15_closure_tree'] == 'd556c1bb07e62cefba8f45df9c6cf8978645cdc8'
+          assert c['inherits']['iteration15_selected_token_id'] == 450
+          assert c['contracted_workload']['certification_bits'] == 256
+          assert c['contracted_workload']['certified_greedy_step_count'] == 3
+          assert c['requirements']['forbid_prefix_replay_after_initialization'] is True
+          assert c['constraints']['probabilistic_sampling_executed'] is False
+          assert c['constraints']['unbounded_or_general_generation_claimed'] is False
+          assert c['constraints']['canonical_float_interpretation_performed'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-16 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration16_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i16"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I16_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute multi-step certified greedy process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i16"
+          python tools/pass215_iteration16_multistep_certified_greedy.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I16_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I16_MODEL_SHA256" \
+            --certification-bits "$PASS215_I16_CERTIFICATION_BITS" \
+            --greedy-steps "$PASS215_I16_GREEDY_STEPS" \
+            --output "$ROOT/PASS_215_ITERATION_16_A.json"
+          python tools/pass215_iteration16_multistep_certified_greedy.py \
+            --validate "$ROOT/PASS_215_ITERATION_16_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_16_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i16"
+          python tools/pass215_iteration16_multistep_certified_greedy.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I16_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I16_MODEL_SHA256" \
+            --certification-bits "$PASS215_I16_CERTIFICATION_BITS" \
+            --greedy-steps "$PASS215_I16_GREEDY_STEPS" \
+            --output "$ROOT/PASS_215_ITERATION_16_B.json"
+          python tools/pass215_iteration16_multistep_certified_greedy.py \
+            --validate "$ROOT/PASS_215_ITERATION_16_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_16_B_VALIDATION.json"
+          python tools/pass215_iteration16_multistep_certified_greedy.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_16_A.json" "$ROOT/PASS_215_ITERATION_16_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_16_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce multi-step certified semantics and emit source identities
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i16'
+          evidence = json.loads((root / 'PASS_215_ITERATION_16_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_16_CROSS_PROCESS_VALIDATION.json').read_text())
+          chain = evidence['multistep_certified_greedy']
+          steps = chain['steps']
+          claims = evidence['claims']
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I16_MODEL_SHA256']
+          assert len(steps) == 3
+          assert chain['selected_token_ids'][0] == 450
+          assert steps[0]['selection_root_hash216'] == 'aac3225975c44b9b761dd131afedfc01123a3c5da187f76bd9de5c9bf2abee94'
+          assert steps[0]['symbolic_append']['iteration15_compatible_append_root_hash216'] == 'f1757269ee3ed98a67434c799a89750da26dcaa11be9ce688a093d52febb5a75'
+          assert all(step['strict_interval_separation'] is True for step in steps)
+          assert all(step['certified_true_argmax'] is True for step in steps)
+          assert chain['prefix_replays_after_initialization'] == 0
+          assert chain['final_cache_sequence_length'] == 7
+          assert claims['three_consecutive_true_logit_argmax_selections_executed'] is True
+          assert claims['three_consecutive_true_greedy_appends_executed'] is True
+          assert claims['unbounded_or_general_generation_claimed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          summary = {
+              'selected_token_ids': chain['selected_token_ids'],
+              'selected_tokens': chain['selected_tokens'],
+              'step_roots': [step['step_root_hash216'] for step in steps],
+              'selection_roots': [step['selection_root_hash216'] for step in steps],
+              'append_roots': [step['symbolic_append']['append_forward_root_hash216'] for step in steps],
+              'strict_margins': [step['strict_margin_lower_bound'] for step in steps],
+              'chain_root_hash216': chain['chain_root_hash216'],
+              'final_interval_suite_root_hash216': steps[-1]['produced_interval_suite_root_hash216'],
+              'final_symbolic_dag_root_hash216': chain['final_symbolic_dag']['ordered_node_root_hash216'],
+              'suite_root_hash216': evidence['multistep_certified_greedy_suite_root_hash216'],
+              'evidence_root_hash216': evidence['evidence_root_hash216'],
+              'receipt_hash72': evidence['receipt_hash72'],
+          }
+          (root / 'PASS_215_ITERATION_16_SOURCE_IDENTITIES.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i16"
+          printf '%s\n' "$(git rev-parse HEAD)" > "$ROOT/VALIDATED_HEAD.txt"
+          printf '%s\n' "$(git rev-parse HEAD^{tree})" > "$ROOT/VALIDATED_TREE.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration16-multistep-certified-greedy
+          path: |
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_A.json
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_B.json
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i16/PASS_215_ITERATION_16_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i16/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i16/VALIDATED_TREE.txt
+          if-no-files-found: error
