@@ -2,16 +2,25 @@
 
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
-public-root visual mount, installs the Pass-218 durable lifecycle gate, and
-projects the same backend through ``hhs_gui/dist``. Supporting surfaces such as
-``/runtime-console`` remain intact.
+public-root visual mount, installs the Pass-218 durable lifecycle gate plus the
+I13 diagnostic/operator authority control plane, and projects the same backend
+through ``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console``
+remain intact.
 """
 from __future__ import annotations
 
 from hhs_backend.application_ide_server import app as inherited_app
+from hhs_backend.runtime_os_pass218_authority_i13 import (
+    PASS218_AUTHORITY_ACTION_PREPARE_PATH,
+    PASS218_AUTHORITY_ALERTS_PATH,
+    PASS218_AUTHORITY_RUN_RECORD_PATH,
+    PASS218_AUTHORITY_STATUS_PATH,
+    install_pass218_authority_control_plane,
+)
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
     install_pass218_runtime_os_lifecycle,
+    resolve_pass218_state_root,
 )
 from hhs_backend.runtime_os_projection import (
     RUNTIME_OS_ASSETS,
@@ -30,9 +39,19 @@ app.description = (
     "the TypeScript/React/Vite Runtime OS."
 )
 PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)
+PASS218_AUTHORITY_CONTROL_PLANE = install_pass218_authority_control_plane(
+    app,
+    PASS218_RUNTIME_OS_LIFECYCLE,
+    state_root=resolve_pass218_state_root(),
+)
 project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)
 
 __all__ = [
+    "PASS218_AUTHORITY_ACTION_PREPARE_PATH",
+    "PASS218_AUTHORITY_ALERTS_PATH",
+    "PASS218_AUTHORITY_CONTROL_PLANE",
+    "PASS218_AUTHORITY_RUN_RECORD_PATH",
+    "PASS218_AUTHORITY_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
