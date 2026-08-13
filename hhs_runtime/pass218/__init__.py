@@ -41,7 +41,7 @@ from .transaction import (
     TransactionPhase,
 )
 
-# Iterations 4-9 depend on heavier inherited runtimes. Keep them lazy so
+# Iterations 4-10 depend on heavier inherited runtimes. Keep them lazy so
 # importing validated Iterations 1-3 does not acquire optional dependencies
 # merely because the cumulative package grew.
 _STAGING_EXPORTS = frozenset({
@@ -122,6 +122,41 @@ _MULTIPROCESS_LIFECYCLE_EXPORTS = frozenset({
     "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
     "Pass218MultiprocessRuntimeLifecycle",
 })
+_DISTRIBUTED_OWNERSHIP_EXPORTS = frozenset({
+    "DEFAULT_ETCD_ACQUIRE_ATTEMPTS",
+    "DEFAULT_ETCD_LEASE_TTL_SECONDS",
+    "DEFAULT_ETCD_NAMESPACE",
+    "DEFAULT_ETCD_TIMEOUT_SECONDS",
+    "DISTRIBUTED_AUTHORITY_SCOPE",
+    "DISTRIBUTED_CHECKPOINT_RECORD_SCHEMA",
+    "DISTRIBUTED_CONSENSUS_BACKEND",
+    "DISTRIBUTED_OWNERSHIP_RECORD_SCHEMA",
+    "PASS218_DISTRIBUTED_OWNERSHIP_VERSION",
+    "EtcdV3HTTPClient",
+    "Pass218DistributedAuthorityProtocol",
+    "Pass218DistributedCheckpointConflict",
+    "Pass218DistributedOwnershipBusy",
+    "Pass218DistributedOwnershipError",
+    "Pass218DistributedOwnershipFenceLost",
+    "Pass218DistributedOwnershipUnavailable",
+    "Pass218DistributedOwnershipValidationError",
+    "Pass218EtcdDistributedAuthority",
+    "Pass218InMemoryConsensusHarness",
+    "Pass218InMemoryDistributedAuthority",
+    "Pass218UnavailableDistributedAuthority",
+    "default_distributed_host_id",
+    "default_distributed_owner_id",
+    "seal_distributed_checkpoint_record",
+    "seal_distributed_ownership_record",
+    "target_from_distributed_checkpoint",
+    "validate_distributed_checkpoint_record",
+    "validate_distributed_ownership_record",
+})
+_DISTRIBUTED_LIFECYCLE_EXPORTS = frozenset({
+    "DISTRIBUTED_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
+    "Pass218DistributedRuntimeLifecycle",
+})
 
 
 def __getattr__(name: str):
@@ -139,6 +174,10 @@ def __getattr__(name: str):
         module = import_module(".ownership", __name__)
     elif name in _MULTIPROCESS_LIFECYCLE_EXPORTS:
         module = import_module(".lifecycle_i9", __name__)
+    elif name in _DISTRIBUTED_OWNERSHIP_EXPORTS:
+        module = import_module(".distributed_ownership", __name__)
+    elif name in _DISTRIBUTED_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i10", __name__)
     else:
         raise AttributeError(name)
     value = getattr(module, name)
@@ -156,6 +195,8 @@ def __dir__() -> list[str]:
         | _LIFECYCLE_EXPORTS
         | _OWNERSHIP_EXPORTS
         | _MULTIPROCESS_LIFECYCLE_EXPORTS
+        | _DISTRIBUTED_OWNERSHIP_EXPORTS
+        | _DISTRIBUTED_LIFECYCLE_EXPORTS
     )
 
 
@@ -252,4 +293,35 @@ __all__ = [
     "MULTIPROCESS_LIFECYCLE_STATUS_SCHEMA",
     "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
     "Pass218MultiprocessRuntimeLifecycle",
+    "DEFAULT_ETCD_ACQUIRE_ATTEMPTS",
+    "DEFAULT_ETCD_LEASE_TTL_SECONDS",
+    "DEFAULT_ETCD_NAMESPACE",
+    "DEFAULT_ETCD_TIMEOUT_SECONDS",
+    "DISTRIBUTED_AUTHORITY_SCOPE",
+    "DISTRIBUTED_CHECKPOINT_RECORD_SCHEMA",
+    "DISTRIBUTED_CONSENSUS_BACKEND",
+    "DISTRIBUTED_OWNERSHIP_RECORD_SCHEMA",
+    "PASS218_DISTRIBUTED_OWNERSHIP_VERSION",
+    "EtcdV3HTTPClient",
+    "Pass218DistributedAuthorityProtocol",
+    "Pass218DistributedCheckpointConflict",
+    "Pass218DistributedOwnershipBusy",
+    "Pass218DistributedOwnershipError",
+    "Pass218DistributedOwnershipFenceLost",
+    "Pass218DistributedOwnershipUnavailable",
+    "Pass218DistributedOwnershipValidationError",
+    "Pass218EtcdDistributedAuthority",
+    "Pass218InMemoryConsensusHarness",
+    "Pass218InMemoryDistributedAuthority",
+    "Pass218UnavailableDistributedAuthority",
+    "default_distributed_host_id",
+    "default_distributed_owner_id",
+    "seal_distributed_checkpoint_record",
+    "seal_distributed_ownership_record",
+    "target_from_distributed_checkpoint",
+    "validate_distributed_checkpoint_record",
+    "validate_distributed_ownership_record",
+    "DISTRIBUTED_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
+    "Pass218DistributedRuntimeLifecycle",
 ]
