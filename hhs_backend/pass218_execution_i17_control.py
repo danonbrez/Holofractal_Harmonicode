@@ -238,6 +238,7 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
             return {
                 "schema": "HHS-P218-I17-HANDOFF-RESERVATION-V1",
                 "dispatch": existing,
+                "reservation_created": False,
                 "terminal_result_present": result is not None,
                 "redispatch_permitted": False,
                 "canonical_authority_minted": False,
@@ -252,6 +253,7 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
         return {
             "schema": "HHS-P218-I17-HANDOFF-RESERVATION-V1",
             "dispatch": dispatch,
+            "reservation_created": True,
             "terminal_result_present": False,
             "redispatch_permitted": False,
             "canonical_authority_minted": False,
@@ -303,8 +305,8 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
         claim = self._claim_for_release(dispatch["release_record_hash72"])
         if existing_result is not None:
             return self._finalize_result(claim, existing_result)
-        if reserved["terminal_result_present"] is False and self.execution_ledger.dispatch_for_claim(claim["record_hash72"])["record_hash72"] != dispatch["record_hash72"]:
-            raise Pass218ExternalExecutionValidationError("P218_I17_DISPATCH_RESERVATION_MISMATCH")
+        if reserved.get("reservation_created") is not True:
+            raise Pass218ExternalExecutionResultUnknown("P218_I17_DISPATCH_ALREADY_STARTED_RESULT_REQUIRED")
         try:
             raw_result = self.external_executor.execute(dispatch)
         except Pass218ExternalExecutionResultUnknown:
