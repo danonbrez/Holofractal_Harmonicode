@@ -177,3 +177,12 @@ def test_i15_restart_repairs_missing_action_index_before_second_release(tmp_path
             preflight=_preflight(second, "second"),
             claimed_epoch_ns=1_800_000_000_000_000_001,
         )
+
+
+def test_i15_dedicated_suites_run_from_cumulative_gate() -> None:
+    result = pytest.main([
+        "-q",
+        "tests/pass218/test_pass218_iteration15_one_time_consumption.py",
+        "tests/pass218/test_pass218_iteration15_runtime_control.py",
+    ])
+    assert result == pytest.ExitCode.OK
