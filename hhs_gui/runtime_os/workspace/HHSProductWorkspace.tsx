@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react"
 import type { RuntimeOS } from "../core/RuntimeOS"
+import { AuthorityOperationsPanel } from "./AuthorityOperationsPanel"
 import { HHSWorkspaceShell } from "./HHSWorkspaceShell"
 import { RegistryVisualProgrammer } from "./RegistryVisualProgrammer"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
 type Json = Record<string, any>
-type ProductSurface = "program" | "workspace"
+type ProductSurface = "program" | "workspace" | "authority"
 
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
@@ -36,8 +37,9 @@ export interface HHSProductWorkspaceProps {
  * Product composition for the public Runtime OS.
  *
  * The registry canvas is the primary object-oriented programming surface.
- * The conventional workspace remains fully available and is mounted on demand,
- * so no functionality is removed and inactive modules do not consume resources.
+ * The conventional workspace and Pass 218 authority-observability surface
+ * remain mounted on demand, so inactive modules do not consume resources and
+ * canonical authority stays entirely backend-owned.
  */
 export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   runtimeOS,
@@ -126,7 +128,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
               <span className={`h-2 w-2 rounded-full ${assistantOnline ? "bg-emerald-400" : "bg-red-400"}`} />
               assistant {assistantOnline ? assistantMode.toLowerCase() : "offline"}
             </button>
-            <div className="grid grid-cols-2 gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
+            <div className="grid grid-cols-3 gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
               <button
                 type="button"
                 onClick={() => setSurface("program")}
@@ -140,6 +142,13 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
                 className={`min-h-9 rounded-lg px-3 text-xs ${surface === "workspace" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}
               >
                 Workspace
+              </button>
+              <button
+                type="button"
+                onClick={() => setSurface("authority")}
+                className={`min-h-9 rounded-lg px-3 text-xs ${surface === "authority" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}
+              >
+                Authority
               </button>
             </div>
           </div>
@@ -167,12 +176,14 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
           executeWorkspaceOperation={executeWorkspaceOperation}
           onExternalResult={recordExternalResult}
         />
-      ) : (
+      ) : surface === "workspace" ? (
         <HHSWorkspaceShell
           runtimeOS={runtimeOS}
           transportState={transportState}
           transportError={transportError}
         />
+      ) : (
+        <AuthorityOperationsPanel />
       )}
     </section>
   )
