@@ -85,6 +85,7 @@ def main() -> None:
         authorization_journal=journal,
     )
     prepare_record = prepared.to_record()
+    prepare_target_unmutated = target.root_hash72() == target_root_before
 
     failure_target = Pass217VM81CanonicalTarget()
     failure_boundary = Pass218CanonicalCommitBoundary(target=failure_target)
@@ -156,7 +157,7 @@ def main() -> None:
         "prepared_vm81_projection_exact": (
             prepared.shadow_runtime.snapshot().to_bytes() == prepared.projection_bytes
         ),
-        "prepare_target_unmutated": target.root_hash72() == target_root_before,
+        "prepare_target_unmutated": prepare_target_unmutated,
         "injected_failure_class": injected_failure_class,
         "failed_commit_root_unchanged": failure_target.root_hash72() == failure_root_before,
         "failed_commit_snapshot_unchanged": (
