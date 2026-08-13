@@ -1,0 +1,134 @@
+name: Pass 218 Full Iteration 13
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration13-authority-observability-orchestration
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass218/**'
+      - 'hhs_backend/runtime_os_pass218_authority_i13.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'hhs_gui/**'
+      - 'scripts/pass218_iteration12_operational_validation.py'
+      - 'scripts/pass218_iteration13_observability_validation.py'
+      - 'tests/pass218/**'
+      - 'docs/pass218/**'
+      - '.github/workflows/pass218-full-iteration13.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  authority-observability-orchestration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      HHS_PASS218_I12_NAMESPACE: /hhs/pass218/i13/ci/${{ github.run_id }}
+
+    steps:
+      - name: Check out Iteration 13 candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: hhs_gui/package-lock.json
+
+      - name: Install dependency-scoped Python packages
+        run: python -m pip install --upgrade pytest cryptography fastapi uvicorn httpx
+
+      - name: Compile cumulative Pass 218 and I13 backend surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_lifecycle.py
+          python -m py_compile hhs_backend/runtime_os_pass218_authority_i13.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration12_operational_validation.py
+          python -m py_compile scripts/pass218_iteration13_observability_validation.py
+
+      - name: Enforce no authoritative float literals in I13
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          for path in (
+              Path('hhs_runtime/pass218/observability_i13.py'),
+              Path('hhs_backend/runtime_os_pass218_authority_i13.py'),
+          ):
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I13_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Preserve Iterations 1 through 13
+        run: |
+          pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+          pytest -q tests/pass218/test_pass218_iteration2_grammar_narrative_hydration.py
+          pytest -q tests/pass218/test_pass218_iteration3_source_transaction_membrane.py
+          pytest -q tests/pass218/test_pass218_iteration4_vector_vm5184_staging.py
+          pytest -q tests/pass218/test_pass218_iteration5_promotion_admission_proof.py
+          pytest -q tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py
+          pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+          pytest -q tests/pass218/test_pass218_iteration8_runtime_os_lifecycle.py
+          pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+          pytest -q tests/pass218/test_pass218_iteration10_distributed_canonical_ownership.py
+          pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py
+          pytest -q tests/pass218/test_pass218_iteration12_production_authority_maintenance.py
+          pytest -q tests/pass218/test_pass218_iteration13_authority_observability_orchestration.py
+          pytest -q tests/pass218/test_pass218_iteration13_runtime_os_control_plane.py
+
+      - name: Preserve crawler and RuntimeOS production root
+        run: |
+          pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+          pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Install RuntimeOS dependencies
+        working-directory: hhs_gui
+        run: npm ci
+
+      - name: Typecheck and build RuntimeOS authority surface
+        working-directory: hhs_gui
+        run: npm run build:strict
+
+      - name: Verify authority UI is source-visible and preparatory only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          panel = Path('hhs_gui/runtime_os/workspace/AuthorityOperationsPanel.tsx').read_text('utf-8')
+          workspace = Path('hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx').read_text('utf-8')
+          assert '/api/runtime/pass218/authority/status' in panel
+          assert '/api/runtime/pass218/authority/actions/prepare' in panel
+          assert 'canonical authority' in panel.lower()
+          assert 'Authority' in workspace
+          assert 'AuthorityOperationsPanel' in workspace
+          print('PASS218_I13_RUNTIME_OS_AUTHORITY_UI=1')
+          PY
+
+      - name: Re-prove real I12 operational substrate
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration12_operational_validation.py
+
+      - name: Project real I12 evidence through I13
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration13_observability_validation.py
+
+      - name: Upload I12 and I13 operational evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration13-authority-observability-evidence
+          path: |
+            .i12-evidence
+            .i13-evidence
+          if-no-files-found: warn
+          include-hidden-files: true
