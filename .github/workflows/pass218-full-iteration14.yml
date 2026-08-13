@@ -86,6 +86,7 @@ jobs:
           pytest -q tests/pass218/test_pass218_iteration13_runtime_os_control_plane.py
           pytest -q tests/pass218/test_pass218_iteration14_multi_party_approval.py
           pytest -q tests/pass218/test_pass218_iteration14_runtime_os_status.py
+          pytest -q tests/pass218/test_pass218_iteration14_persistent_revocation.py
 
       - name: Re-prove inherited Pass 146 signed-envelope surface
         run: pytest -q tests/test_hhs_pass146_boundary_constructed_network_security_v1.py
@@ -110,11 +111,15 @@ jobs:
           panel = Path('hhs_gui/runtime_os/workspace/ApprovalStatusPanel.tsx').read_text('utf-8')
           workspace = Path('hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx').read_text('utf-8')
           server = Path('hhs_backend/runtime_os_application_server.py').read_text('utf-8')
+          approval = Path('hhs_backend/runtime_os_pass218_approval_i14.py').read_text('utf-8')
           assert '/api/runtime/pass218/authority/approval/status' in panel
           assert 'ApprovalStatusPanel' in workspace
           assert 'install_pass218_i14_approval_control_plane' in server
+          assert '/api/runtime/pass218/authority/approval/revocations/record' in approval
+          assert 'preflight_rechecks_recorded_revocations' in approval
           assert '/evaluate' not in panel
           assert '/preflight' not in panel
+          assert '/revocations/record' not in panel
           print('PASS218_I14_RUNTIME_OS_READ_ONLY_PROJECTION=1')
           PY
 
