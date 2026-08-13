@@ -69,12 +69,8 @@ def _require_positive_int(value: Any, code: str) -> int:
 
 
 def _require_hash72(value: Any, code: str) -> str:
-    if not isinstance(value, str) or len(value) != 72:
+    if not isinstance(value, str) or len(value) != 72 or not validate_hash72(value):
         raise Pass218DistributedConsumptionValidationError(code)
-    try:
-        validate_hash72(value)
-    except Exception as exc:
-        raise Pass218DistributedConsumptionValidationError(code) from exc
     return value
 
 
