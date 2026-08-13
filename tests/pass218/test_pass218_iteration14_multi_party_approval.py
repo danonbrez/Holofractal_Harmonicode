@@ -209,14 +209,36 @@ def test_i14_expired_approval_fails_closed(registry: Pass218OperatorRegistry) ->
         evaluate_maintenance_release(**values)
 
 
-def test_i14_revocation_removes_approval_from_quorum(registry: Pass218OperatorRegistry) -> None:
+def test_i14_self_revocation_removes_approval_from_quorum(registry: Pass218OperatorRegistry) -> None:
     values = valid_inputs(registry)
     action_hash = values["action_record"]["record_hash72"]
     revoked_hash = values["approval_statements"][0]["message_hash72"]
     values["revocation_statements"] = [
-        statement(registry, "carol", "REVOKE", action_hash, revoked_message_hash72=revoked_hash, message_label="revoke-alice")
+        statement(registry, "alice", "REVOKE", action_hash, revoked_message_hash72=revoked_hash, message_label="alice-revokes-alice")
     ]
     with pytest.raises(Pass218ApprovalRejected, match="APPROVAL_QUORUM_NOT_MET"):
+        evaluate_maintenance_release(**values)
+
+
+def test_i14_one_approver_cannot_revoke_another_approver(registry: Pass218OperatorRegistry) -> None:
+    values = valid_inputs(registry)
+    action_hash = values["action_record"]["record_hash72"]
+    revoked_hash = values["approval_statements"][0]["message_hash72"]
+    values["revocation_statements"] = [
+        statement(registry, "carol", "REVOKE", action_hash, revoked_message_hash72=revoked_hash, message_label="carol-cannot-revoke-alice")
+    ]
+    with pytest.raises(Pass218ApprovalRejected, match="REVOCATION_NOT_SELF_AUTHORED"):
+        evaluate_maintenance_release(**values)
+
+
+def test_i14_revocation_must_match_action_fence_and_preparer(registry: Pass218OperatorRegistry) -> None:
+    values = valid_inputs(registry)
+    action_hash = values["action_record"]["record_hash72"]
+    revoked_hash = values["approval_statements"][0]["message_hash72"]
+    values["revocation_statements"] = [
+        statement(registry, "alice", "REVOKE", action_hash, fence=FENCE + 1, revoked_message_hash72=revoked_hash, message_label="wrong-fence")
+    ]
+    with pytest.raises(Pass218ApprovalRejected, match="REVOCATION_BINDING_MISMATCH"):
         evaluate_maintenance_release(**values)
 
 
