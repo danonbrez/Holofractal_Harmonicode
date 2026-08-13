@@ -27,6 +27,7 @@ jobs:
           python -m py_compile tools/pass218_iteration4_evidence.py
           python -m py_compile tools/pass218_iteration5_evidence.py
           python -m py_compile tools/pass218_iteration6_evidence.py
+          python -m py_compile tools/pass218_iteration7_evidence.py
       - name: Enforce no authoritative float literals
         run: |
           python - <<'PY'
@@ -59,3 +60,5 @@ jobs:
         run: pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
       - name: Preserve inherited Pass 218 reference crawler evidence
         run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+      - name: Emit repository-native Iteration 7 evidence
+        run: python tools/pass218_iteration7_evidence.py
