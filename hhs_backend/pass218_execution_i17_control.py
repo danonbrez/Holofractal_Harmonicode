@@ -1,12 +1,18 @@
 """Pass 218 Iteration 17 external-execution coordinator.
 
 The coordinator inherits I16 distributed claim convergence, then requires a
-second distributed reservation before any external maintenance call.  A
-terminal external result must also be durable in the I17 distributed ledger
-before the inherited I15 attestation/reconciliation surfaces may close.
+second distributed reservation before any external maintenance call. A terminal
+external result must also be durable in the I17 distributed ledger before the
+inherited I15 attestation/reconciliation surfaces may close.
+
+RuntimeOS may reserve the handoff and accept an HMAC-authenticated external
+result, but it never performs the maintenance operation itself. A server-side
+executor adapter may optionally be injected for non-browser orchestration.
 """
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import time
 from typing import Any, Mapping
@@ -16,6 +22,7 @@ from hhs_runtime.pass218.approval_i14 import (
     validate_maintenance_release,
     validate_operator_statement,
 )
+from hhs_runtime.pass218.commit_boundary import _canonical_bytes
 from hhs_runtime.pass218.distributed_execution_i17 import (
     PASS218_DISTRIBUTED_EXECUTION_VERSION,
     Pass218DistributedExecutionLedgerProtocol,
@@ -42,7 +49,9 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
         state_root: str,
         distributed_ledger: Any,
         execution_ledger: Pass218DistributedExecutionLedgerProtocol | None,
-        external_executor: Pass218ExternalExecutorProtocol | None,
+        external_executor: Pass218ExternalExecutorProtocol | None = None,
+        external_executor_id: str | None = None,
+        result_shared_secret: str | None = None,
     ) -> None:
         super().__init__(
             i13_control,
@@ -52,6 +61,13 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
         )
         self.execution_ledger = execution_ledger
         self.external_executor = external_executor
+        configured_id = external_executor.executor_id if external_executor is not None else external_executor_id
+        self.external_executor_id = configured_id.strip() if isinstance(configured_id, str) and configured_id.strip() else None
+        self.result_shared_secret = (
+            result_shared_secret.encode("utf-8")
+            if isinstance(result_shared_secret, str) and result_shared_secret
+            else None
+        )
         self.last_i17_error_code: str | None = None
         self.finalized_from_distributed_total = 0
 
@@ -118,12 +134,14 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
                 else None
             ),
         )
+        existing = self.journal.attestation_for_release(claim_value["release_record_hash72"])
         stored = self.journal.record_attestation(
             release_hash=claim_value["release_record_hash72"],
             attestation=attestation,
         )
         reconciliation = self.reconcile_release(claim_value["release_record_hash72"])
-        self.finalized_from_distributed_total += 1
+        if existing is None:
+            self.finalized_from_distributed_total += 1
         return {
             "schema": "HHS-P218-I17-EXTERNAL-EXECUTION-CLOSURE-V1",
             "result": result_value,
@@ -151,11 +169,9 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
             if claim is None:
                 raise Pass218ExecutionStateError("P218_I17_DISTRIBUTED_RESULT_LOCAL_CLAIM_MISSING")
             existing = self.journal.attestation_for_release(dispatch["release_record_hash72"])
+            self._finalize_result(claim, result)
             if existing is None:
-                self._finalize_result(claim, result)
                 finalized += 1
-            else:
-                self.reconcile_release(dispatch["release_record_hash72"])
         return finalized
 
     def status(self) -> dict[str, Any]:
@@ -190,10 +206,10 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
             "schema": "HHS-P218-I17-EXECUTION-CONTROL-STATUS-V1",
             "distributed_execution_version": PASS218_DISTRIBUTED_EXECUTION_VERSION,
             **projection,
-            "external_executor_configured": self.external_executor is not None,
-            "external_executor_id": (
-                self.external_executor.executor_id if self.external_executor is not None else None
-            ),
+            "external_executor_configured": self.external_executor_id is not None,
+            "external_executor_id": self.external_executor_id,
+            "authenticated_result_ingress_configured": self.result_shared_secret is not None,
+            "browser_executes_maintenance": False,
             "distributed_reservation_precedes_external_call": self.execution_ledger is not None,
             "distributed_result_precedes_local_attestation": self.execution_ledger is not None,
             "redispatch_after_unknown_forbidden": True,
@@ -205,44 +221,105 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
             "action_authority_minted": False,
         }
 
-    def dispatch_external(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+    def reserve_external(self, payload: Mapping[str, Any]) -> dict[str, Any]:
         if self.execution_ledger is None:
             raise Pass218ExternalExecutionUnavailable("P218_I17_DISTRIBUTED_EXECUTION_REQUIRED")
-        if self.external_executor is None:
-            raise Pass218ExternalExecutionUnavailable("P218_I17_EXTERNAL_EXECUTOR_NOT_CONFIGURED")
+        if self.external_executor_id is None:
+            raise Pass218ExternalExecutionUnavailable("P218_I17_EXTERNAL_EXECUTOR_ID_NOT_CONFIGURED")
         release_hash = str(payload.get("release_record_hash72") or "").strip()
         claim = self._claim_for_release(release_hash)
         statement = payload.get("executor_statement")
         if not isinstance(statement, Mapping):
             raise Pass218ExternalExecutionValidationError("P218_I17_EXECUTOR_STATEMENT_REQUIRED")
         self._validate_executor_statement(claim, statement)
-        existing_dispatch = self.execution_ledger.dispatch_for_claim(claim["record_hash72"])
-        if existing_dispatch is not None:
-            existing_result = self.execution_ledger.result_for_claim(claim["record_hash72"])
-            if existing_result is not None:
-                return self._finalize_result(claim, existing_result)
-            raise Pass218ExternalExecutionResultUnknown("P218_I17_DISPATCH_ALREADY_STARTED_RESULT_REQUIRED")
+        existing = self.execution_ledger.dispatch_for_claim(claim["record_hash72"])
+        if existing is not None:
+            result = self.execution_ledger.result_for_claim(claim["record_hash72"])
+            return {
+                "schema": "HHS-P218-I17-HANDOFF-RESERVATION-V1",
+                "dispatch": existing,
+                "terminal_result_present": result is not None,
+                "redispatch_permitted": False,
+                "canonical_authority_minted": False,
+                "canonical_mutation_permitted": False,
+                "action_authority_minted": False,
+            }
         dispatch = self.execution_ledger.reserve_dispatch(
             claim,
-            executor_id=self.external_executor.executor_id,
+            executor_id=self.external_executor_id,
             dispatched_epoch_ns=time.time_ns(),
         )
+        return {
+            "schema": "HHS-P218-I17-HANDOFF-RESERVATION-V1",
+            "dispatch": dispatch,
+            "terminal_result_present": False,
+            "redispatch_permitted": False,
+            "canonical_authority_minted": False,
+            "canonical_mutation_permitted": False,
+            "action_authority_minted": False,
+        }
+
+    def submit_external_result(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        if self.execution_ledger is None:
+            raise Pass218ExternalExecutionUnavailable("P218_I17_DISTRIBUTED_EXECUTION_REQUIRED")
+        if self.result_shared_secret is None:
+            raise Pass218ExternalExecutionUnavailable("P218_I17_RESULT_INGRESS_NOT_CONFIGURED")
+        release_hash = str(payload.get("release_record_hash72") or "").strip()
+        claim = self._claim_for_release(release_hash)
+        dispatch = self.execution_ledger.dispatch_for_claim(claim["record_hash72"])
+        if dispatch is None:
+            raise Pass218ExecutionStateError("P218_I17_DISPATCH_NOT_RESERVED")
+        raw_result = payload.get("result")
+        if not isinstance(raw_result, Mapping):
+            raise Pass218ExternalExecutionValidationError("P218_I17_RESULT_PAYLOAD_REQUIRED")
+        signature = str(payload.get("result_hmac_sha256") or "").strip().lower()
+        signed = _canonical_bytes({
+            "dispatch_record_hash72": dispatch["record_hash72"],
+            "result": dict(raw_result),
+        })
+        expected = hmac.new(self.result_shared_secret, signed, hashlib.sha256).hexdigest()
+        if not signature or not hmac.compare_digest(signature, expected):
+            raise Pass218ExternalExecutionValidationError("P218_I17_RESULT_HMAC_INVALID")
+        completed_epoch_ns = raw_result.get("completed_epoch_ns")
+        if not isinstance(completed_epoch_ns, int) or isinstance(completed_epoch_ns, bool) or completed_epoch_ns < 1:
+            raise Pass218ExternalExecutionValidationError("P218_I17_COMPLETED_EPOCH_REQUIRED")
+        result = self.execution_ledger.record_result(
+            dispatch,
+            raw_result,
+            completed_epoch_ns=completed_epoch_ns,
+        )
+        self.last_i17_error_code = None
+        return self._finalize_result(claim, result)
+
+    def dispatch_external(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        """Optional server-internal orchestration; never installed as a browser route."""
+        if self.execution_ledger is None:
+            raise Pass218ExternalExecutionUnavailable("P218_I17_DISTRIBUTED_EXECUTION_REQUIRED")
+        if self.external_executor is None:
+            raise Pass218ExternalExecutionUnavailable("P218_I17_EXTERNAL_EXECUTOR_NOT_CONFIGURED")
+        reserved = self.reserve_external(payload)
+        dispatch = reserved["dispatch"]
+        existing_result = self.execution_ledger.result_for_claim(dispatch["claim_record_hash72"])
+        claim = self._claim_for_release(dispatch["release_record_hash72"])
+        if existing_result is not None:
+            return self._finalize_result(claim, existing_result)
+        if reserved["terminal_result_present"] is False and self.execution_ledger.dispatch_for_claim(claim["record_hash72"])["record_hash72"] != dispatch["record_hash72"]:
+            raise Pass218ExternalExecutionValidationError("P218_I17_DISPATCH_RESERVATION_MISMATCH")
         try:
             raw_result = self.external_executor.execute(dispatch)
         except Pass218ExternalExecutionResultUnknown:
             self.last_i17_error_code = "P218_I17_EXTERNAL_EXECUTOR_RESULT_UNKNOWN"
             raise
+        completed = raw_result.get("completed_epoch_ns") if isinstance(raw_result, Mapping) else None
+        if not isinstance(completed, int) or isinstance(completed, bool) or completed < 1:
+            completed = time.time_ns()
         result = self.execution_ledger.record_result(
             dispatch,
             raw_result,
-            completed_epoch_ns=time.time_ns(),
+            completed_epoch_ns=completed,
         )
         self.last_i17_error_code = None
-        return {
-            "schema": "HHS-P218-I17-DISPATCH-AND-CLOSE-V1",
-            "dispatch": dispatch,
-            **self._finalize_result(claim, result),
-        }
+        return self._finalize_result(claim, result)
 
     def recover_external_result(self, payload: Mapping[str, Any]) -> dict[str, Any]:
         if self.execution_ledger is None:
@@ -264,17 +341,16 @@ class Pass218FencedExternalExecutionControlPlane(Pass218DistributedExecutionCont
         recovered = self.external_executor.recover(dispatch)
         if recovered is None:
             raise Pass218ExternalExecutionResultUnknown("P218_I17_EXTERNAL_EXECUTOR_RESULT_STILL_UNKNOWN")
+        completed = recovered.get("completed_epoch_ns") if isinstance(recovered, Mapping) else None
+        if not isinstance(completed, int) or isinstance(completed, bool) or completed < 1:
+            completed = time.time_ns()
         result = self.execution_ledger.record_result(
             dispatch,
             recovered,
-            completed_epoch_ns=time.time_ns(),
+            completed_epoch_ns=completed,
         )
         self.last_i17_error_code = None
-        return {
-            "schema": "HHS-P218-I17-RECOVER-AND-CLOSE-V1",
-            "dispatch": dispatch,
-            **self._finalize_result(claim, result),
-        }
+        return self._finalize_result(claim, result)
 
     def attest(self, payload: Mapping[str, Any]) -> dict[str, Any]:
         if self.execution_ledger is None:
