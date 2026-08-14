@@ -33,6 +33,7 @@ def test_procfile_selects_full_runtime_os_application_projection():
     assert "hhs_backend.runtime_os_application_server:app" in procfile
     assert "hhs_backend.application_ide_server:app" not in procfile
     assert "from hhs_backend.application_ide_server import app as inherited_app" in application_source
+    assert "install_pass218_i17_execution_control_plane" in application_source
     assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in application_source
 
 
@@ -83,7 +84,7 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
         assert route_index < root_index
 
 
-def test_runtime_os_application_installs_pass218_i16_consumption_membrane():
+def test_runtime_os_application_installs_pass218_i17_execution_membrane():
     from hhs_backend import runtime_os_application_server
 
     routes = list(runtime_os_application_server.app.router.routes)
@@ -95,14 +96,19 @@ def test_runtime_os_application_installs_pass218_i16_consumption_membrane():
         "/api/runtime/pass218/authority/maintenance-consumption/reconcile",
         "/api/runtime/pass218/authority/maintenance-consumption/distributed/status",
         "/api/runtime/pass218/authority/maintenance-consumption/distributed/synchronize",
+        "/api/runtime/pass218/authority/maintenance-execution/status",
     }:
         assert required in route_paths
 
     assert (
         runtime_os_application_server.PASS218_I15_CONSUMPTION_CONTROL_PLANE
         is runtime_os_application_server.PASS218_I16_CONSUMPTION_CONTROL_PLANE
+        is runtime_os_application_server.PASS218_I17_EXECUTION_CONTROL_PLANE
     )
-    status = runtime_os_application_server.PASS218_I16_CONSUMPTION_CONTROL_PLANE.status()
+    status = runtime_os_application_server.PASS218_I17_EXECUTION_CONTROL_PLANE.status()
+    assert status["browser_executes_maintenance"] is False
+    assert status["redispatch_after_unknown_forbidden"] is True
+    assert status["successor_recovery_only"] is True
     assert status["canonical_authority_minted"] is False
     assert status["canonical_mutation_permitted"] is False
     assert status["action_authority_minted"] is False
