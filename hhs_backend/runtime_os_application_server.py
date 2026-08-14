@@ -7,10 +7,10 @@ diagnostic/operator authority control plane, the I14 multi-party approval
 plane, the cumulative I15-I19 maintenance execution, closure, and
 postcondition-verification membrane, the I20 governed Pass-166 relational
 model binding, the I21 governed relational-candidate query membrane, the I22
-governed semantic-graph candidate membrane, and the I23 governed contextual-
-state hydration membrane, then projects the same backend through
-``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console`` remain
-intact.
+governed semantic-graph candidate membrane, the I23 governed contextual-state
+hydration membrane, and the I24 governed narrative-beat transition candidate
+membrane, then projects the same backend through ``hhs_gui/dist``. Supporting
+surfaces such as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -69,6 +69,11 @@ from hhs_backend.runtime_os_pass218_contextual_state_i23 import (
     PASS218_I23_CANDIDATES_PATH,
     PASS218_I23_STATUS_PATH,
     install_pass218_i23_contextual_state_control,
+)
+from hhs_backend.runtime_os_pass218_narrative_beat_i24 import (
+    PASS218_I24_CANDIDATES_PATH,
+    PASS218_I24_STATUS_PATH,
+    install_pass218_i24_narrative_beat_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -129,8 +134,12 @@ PASS218_I23_CONTEXTUAL_STATE_CONTROL_PLANE = install_pass218_i23_contextual_stat
     app,
     PASS218_I22_SEMANTIC_GRAPH_CONTROL_PLANE,
 )
+PASS218_I24_NARRATIVE_BEAT_CONTROL_PLANE = install_pass218_i24_narrative_beat_control(
+    app,
+    PASS218_I23_CONTEXTUAL_STATE_CONTROL_PLANE,
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I23 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I24 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -175,6 +184,9 @@ __all__ = [
     "PASS218_I23_CANDIDATES_PATH",
     "PASS218_I23_CONTEXTUAL_STATE_CONTROL_PLANE",
     "PASS218_I23_STATUS_PATH",
+    "PASS218_I24_CANDIDATES_PATH",
+    "PASS218_I24_NARRATIVE_BEAT_CONTROL_PLANE",
+    "PASS218_I24_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
