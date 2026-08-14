@@ -33,7 +33,7 @@ def test_procfile_selects_full_runtime_os_application_projection():
     assert "hhs_backend.runtime_os_application_server:app" in procfile
     assert "hhs_backend.application_ide_server:app" not in procfile
     assert "from hhs_backend.application_ide_server import app as inherited_app" in application_source
-    assert "install_pass218_i17_execution_control_plane" in application_source
+    assert "install_pass218_i18_terminal_closure_control_plane" in application_source
     assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in application_source
 
 
@@ -67,7 +67,6 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
         if getattr(route, "name", None) == runtime_os_visual_server.PUBLIC_MOUNT_NAME
     )
 
-    # Backend/pass routes remain reachable before the SPA root mount.
     for required in {
         "/api/system/status",
         "/api/assistant/status",
@@ -84,7 +83,7 @@ def test_runtime_os_projection_replaces_only_legacy_public_root():
         assert route_index < root_index
 
 
-def test_runtime_os_application_installs_pass218_i17_execution_membrane():
+def test_runtime_os_application_installs_pass218_i18_terminal_closure_membrane():
     from hhs_backend import runtime_os_application_server
 
     routes = list(runtime_os_application_server.app.router.routes)
@@ -97,6 +96,8 @@ def test_runtime_os_application_installs_pass218_i17_execution_membrane():
         "/api/runtime/pass218/authority/maintenance-consumption/distributed/status",
         "/api/runtime/pass218/authority/maintenance-consumption/distributed/synchronize",
         "/api/runtime/pass218/authority/maintenance-execution/status",
+        "/api/runtime/pass218/authority/maintenance-closure/status",
+        "/api/runtime/pass218/authority/maintenance-closure/synchronize",
     }:
         assert required in route_paths
 
@@ -104,11 +105,15 @@ def test_runtime_os_application_installs_pass218_i17_execution_membrane():
         runtime_os_application_server.PASS218_I15_CONSUMPTION_CONTROL_PLANE
         is runtime_os_application_server.PASS218_I16_CONSUMPTION_CONTROL_PLANE
         is runtime_os_application_server.PASS218_I17_EXECUTION_CONTROL_PLANE
+        is runtime_os_application_server.PASS218_I18_CLOSURE_CONTROL_PLANE
     )
-    status = runtime_os_application_server.PASS218_I17_EXECUTION_CONTROL_PLANE.status()
+    status = runtime_os_application_server.PASS218_I18_CLOSURE_CONTROL_PLANE.status()
     assert status["browser_executes_maintenance"] is False
     assert status["redispatch_after_unknown_forbidden"] is True
     assert status["successor_recovery_only"] is True
+    assert status["successor_repairs_terminal_evidence_without_redispatch"] is True
+    assert status["legacy_attest_route_rebound_to_distributed_i17_result"] is status["distributed_closure_configured"]
+    assert status["legacy_reconcile_route_rebound_to_distributed_closure"] is status["distributed_closure_configured"]
     assert status["canonical_authority_minted"] is False
     assert status["canonical_mutation_permitted"] is False
     assert status["action_authority_minted"] is False
@@ -263,8 +268,6 @@ def test_digitalocean_service_uses_one_versioned_runtime_os_release():
     assert 'env -u HHS_RUNTIME_OS_ROOT' in validator
     assert 'HHS_RUNTIME_OS_ROOT="$RUNTIME_OS_ROOT"' not in validator
 
-    # Source builds may still exist for CI/development, but production service
-    # authority is never bound to that secondary generated directory.
     assert 'LIVE_ROOT=$(realpath -m "$ROOT")' in builder
     assert 'OUTPUT_ROOT=/var/lib/hhs/runtime-os/dist' in builder
 
