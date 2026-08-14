@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -142,6 +141,7 @@ def test_i20_activates_exact_installed_model_once_and_exposes_i1_provider(tmp_pa
     first = binding.synchronize()
     assert first["relational_candidate_provider_ready"] is True
     assert first["activation_invocation_count"] == 1
+    assert first["verification_invocation_count"] == 1
     assert first["binding_write_count"] == 1
     assert first["truth_promotion"] is False
     assert first["action_authority_minted"] is False
@@ -157,10 +157,11 @@ def test_i20_activates_exact_installed_model_once_and_exposes_i1_provider(tmp_pa
     second = binding.synchronize()
     assert second["binding_hash72"] == first["binding_hash72"]
     assert second["activation_invocation_count"] == 1
+    assert second["verification_invocation_count"] == 1
     assert second["binding_write_count"] == 1
 
 
-def test_i20_restart_reuses_binding_across_new_legitimate_writer_fence(tmp_path: Path) -> None:
+def test_i20_restart_reuses_exact_receipts_across_new_legitimate_writer_fence(tmp_path: Path) -> None:
     service, installed = _installed_service(tmp_path, active=False)
     first = _binding(
         tmp_path,
@@ -170,7 +171,11 @@ def test_i20_restart_reuses_binding_across_new_legitimate_writer_fence(tmp_path:
     )
     first_status = first.synchronize()
     raw = json.loads(first.binding_path.read_text("utf-8"))
+    first_activation_receipt = dict(raw["pass166_activation_receipt"])
+    first_verification_receipt = dict(raw["pass166_verification_receipt"])
     assert raw["binding_created_under_authority"]["distributed_fence_epoch"] == 7
+    assert service.get_operation(first_activation_receipt["operation_id"])["stage"] == "ACTIVATION"
+    assert service.get_operation(first_verification_receipt["operation_id"])["stage"] == "COMPATIBILITY_VALIDATION"
 
     restarted = _binding(
         tmp_path,
@@ -181,8 +186,12 @@ def test_i20_restart_reuses_binding_across_new_legitimate_writer_fence(tmp_path:
     restarted_status = restarted.synchronize()
     assert restarted_status["binding_hash72"] == first_status["binding_hash72"]
     assert restarted_status["activation_invocation_count"] == 0
+    assert restarted_status["verification_invocation_count"] == 0
+    assert restarted_status["binding_write_count"] == 0
     replayed = json.loads(restarted.binding_path.read_text("utf-8"))
     assert replayed["binding_created_under_authority"]["distributed_fence_epoch"] == 7
+    assert replayed["pass166_activation_receipt"] == first_activation_receipt
+    assert replayed["pass166_verification_receipt"] == first_verification_receipt
 
 
 def test_i20_preexisting_pass166_activation_can_be_bound_without_redispatch(tmp_path: Path) -> None:
@@ -191,6 +200,7 @@ def test_i20_preexisting_pass166_activation_can_be_bound_without_redispatch(tmp_
     status = binding.synchronize()
     assert status["relational_candidate_provider_ready"] is True
     assert status["activation_invocation_count"] == 0
+    assert status["verification_invocation_count"] == 1
     assert status["binding_write_count"] == 1
 
 
