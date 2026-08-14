@@ -79,6 +79,10 @@ The POST surface can only assemble a bounded graph from I21 revisable evidence a
 - RuntimeOS production-root acceptance;
 - broader PR-triggered inherited matrix remains terminal-green or any new failure is classified and repaired.
 
+## Validation trigger checkpoint
+
+The Iteration 22 workflow is now present in this branch ancestry. This documentation-only checkpoint triggers exact-head push validation without changing runtime semantics, candidate semantics, or authority.
+
 ## Restart instruction
 
 Resume from the current remote head of `agent/pass218-full-iteration22-governed-semantic-graph-candidates`. Inspect exact-head CI before modifying files. If validation is incomplete, append repairs on I22 only. Never resume by modifying frozen I21 in place, and do not merge Pass 218 without explicit closure authorization.
