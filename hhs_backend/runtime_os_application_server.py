@@ -4,10 +4,10 @@ All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
 public-root visual mount, installs the Pass-218 durable lifecycle gate, the I13
 diagnostic/operator authority control plane, the I14 multi-party approval
-plane, and the cumulative I15-I19 maintenance execution, closure, and
-postcondition-verification membrane, then projects the same backend through
-``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console`` remain
-intact.
+plane, the cumulative I15-I19 maintenance execution, closure, and
+postcondition-verification membrane, and the I20 governed Pass-166 relational
+model binding, then projects the same backend through ``hhs_gui/dist``.
+Supporting surfaces such as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -45,6 +45,10 @@ from hhs_backend.runtime_os_pass218_postcondition_i19 import (
     PASS218_I19_STATUS_PATH,
     PASS218_I19_SYNCHRONIZE_PATH,
     install_pass218_i19_postcondition_control_plane,
+)
+from hhs_backend.runtime_os_pass218_model_i20 import (
+    PASS218_I20_STATUS_PATH,
+    install_pass218_i20_model_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -85,9 +89,15 @@ PASS218_I19_POSTCONDITION_CONTROL_PLANE = install_pass218_i19_postcondition_cont
     PASS218_I14_APPROVAL_CONTROL_PLANE,
     state_root=resolve_pass218_state_root(),
 )
+PASS218_I20_MODEL_CONTROL_PLANE = install_pass218_i20_model_control(
+    app,
+    PASS218_RUNTIME_OS_LIFECYCLE,
+    PASS218_I19_POSTCONDITION_CONTROL_PLANE,
+    state_root=resolve_pass218_state_root(),
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 membrane. The I18 installer itself remains inherited and
-# importable but is not installed separately.
+# cumulative I19 maintenance membrane. I20 is a separate cognition/model
+# binding and does not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I16_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -120,6 +130,8 @@ __all__ = [
     "PASS218_I19_POSTCONDITION_CONTROL_PLANE",
     "PASS218_I19_STATUS_PATH",
     "PASS218_I19_SYNCHRONIZE_PATH",
+    "PASS218_I20_MODEL_CONTROL_PLANE",
+    "PASS218_I20_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
