@@ -1,12 +1,11 @@
 """Pass 218 Iteration 20 governed Pass 166 model activation binding.
 
-Iteration 20 does not turn a language model into truth or action authority.  It
-binds one exact, already-installed Pass 166 Word2Vec model to the Pass 218
-relational-cognition plane after the inherited RuntimeOS writer authority is
-current.  The binding is nonverbatim, restartable, and idempotent.  A model may
-be activated through the inherited Pass 166 VM81 admission surface only when
-explicitly enabled by the host configuration; browser callers never receive
-that activation capability.
+Iteration 20 does not turn a language model into truth or action authority. It
+binds one exact, installed Pass 166 Word2Vec model to the Pass 218 relational-
+cognition plane after inherited RuntimeOS writer authority is current. The
+binding is nonverbatim, restartable, and idempotent. A model may be activated
+through the inherited Pass 166 VM81 admission surface only when explicitly
+enabled by host configuration; browser callers never receive that capability.
 """
 from __future__ import annotations
 
@@ -33,7 +32,12 @@ class Pass166ModelServiceProtocol(Protocol):
     def status(self) -> dict[str, Any]: ...
     def inspect(self, model_id: str) -> dict[str, Any]: ...
     def verify(self, model_id: str) -> dict[str, Any]: ...
-    def activate(self, model_id: str, *, expected_pass165_frontier: str | None = None) -> dict[str, Any]: ...
+    def activate(
+        self,
+        model_id: str,
+        *,
+        expected_pass165_frontier: str | None = None,
+    ) -> dict[str, Any]: ...
     def get_operation(self, operation_id: str) -> dict[str, Any]: ...
 
 
@@ -87,7 +91,9 @@ def _receipt_identity(receipt: Mapping[str, Any]) -> dict[str, str]:
     operation_hash216 = str(receipt.get("operation_hash216") or "").strip()
     receipt_hash72 = str(receipt.get("receipt_hash72") or "").strip()
     if not operation_id or not operation_hash216 or not receipt_hash72:
-        raise Pass218I20ModelBindingError("P218_I20_P166_ACTIVATION_RECEIPT_INCOMPLETE")
+        raise Pass218I20ModelBindingError(
+            "P218_I20_P166_ACTIVATION_RECEIPT_INCOMPLETE"
+        )
     return {
         "operation_id": operation_id,
         "operation_hash216": operation_hash216,
@@ -153,18 +159,28 @@ class Pass218Pass166ModelBinding:
     def _authority_snapshot(self) -> dict[str, Any]:
         status = self.lifecycle.status()
         if not bool(status.get("authority_ready")):
-            raise Pass218I20ModelBindingError("P218_I20_CURRENT_WRITER_AUTHORITY_REQUIRED")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_CURRENT_WRITER_AUTHORITY_REQUIRED"
+            )
         if self.postcondition_control is not None:
             postcondition = self.postcondition_control.status()
             if bool(postcondition.get("distributed_postcondition_configured")):
-                pending = postcondition.get("successful_closure_pending_verification_count")
+                pending = postcondition.get(
+                    "successful_closure_pending_verification_count"
+                )
                 if pending is None:
-                    raise Pass218I20ModelBindingError("P218_I20_I19_POSTCONDITION_STATUS_UNAVAILABLE")
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_I19_POSTCONDITION_STATUS_UNAVAILABLE"
+                    )
                 if int(pending) != 0:
-                    raise Pass218I20ModelBindingError("P218_I20_I19_EFFECT_VERIFICATION_PENDING")
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_I19_EFFECT_VERIFICATION_PENDING"
+                    )
         target = getattr(self.lifecycle, "target", None)
         if target is None or not hasattr(target, "root_hash72"):
-            raise Pass218I20ModelBindingError("P218_I20_CANONICAL_TARGET_REQUIRED")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_CANONICAL_TARGET_REQUIRED"
+            )
         canonical_root = str(target.root_hash72())
         if not canonical_root:
             raise Pass218I20ModelBindingError("P218_I20_CANONICAL_ROOT_REQUIRED")
@@ -174,15 +190,21 @@ class Pass218Pass166ModelBinding:
             "distributed_host_id": status.get("distributed_host_id"),
             "distributed_fence_epoch": status.get("distributed_fence_epoch"),
             "local_owner_id": status.get("owner_id"),
-            "local_fence_epoch": status.get("ownership_fence_epoch", status.get("fence_epoch")),
-            "split_brain_writer_permitted": bool(status.get("split_brain_writer_permitted", False)),
+            "local_fence_epoch": status.get(
+                "ownership_fence_epoch", status.get("fence_epoch")
+            ),
+            "split_brain_writer_permitted": bool(
+                status.get("split_brain_writer_permitted", False)
+            ),
         }
 
     def _inspect_model(self) -> dict[str, Any]:
         inspected = self.service.inspect(self.configuration.model_id)
         model = inspected.get("model")
         if not isinstance(model, Mapping):
-            raise Pass218I20ModelBindingError("P218_I20_P166_INSTALLED_MODEL_REQUIRED")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_INSTALLED_MODEL_REQUIRED"
+            )
         model_root = _require_hex64(
             str(model.get("canonical_model_root") or ""),
             "P218_I20_P166_MODEL_ROOT_INVALID",
@@ -192,9 +214,13 @@ class Pass218Pass166ModelBinding:
             "P218_I20_P166_INDEX_ROOT_INVALID",
         )
         if model_root != self.configuration.expected_model_root:
-            raise Pass218I20ModelBindingError("P218_I20_P166_MODEL_ROOT_MISMATCH")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_MODEL_ROOT_MISMATCH"
+            )
         if index_root != self.configuration.expected_index_root:
-            raise Pass218I20ModelBindingError("P218_I20_P166_INDEX_ROOT_MISMATCH")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_INDEX_ROOT_MISMATCH"
+            )
         return dict(model)
 
     def _read_binding(self) -> dict[str, Any] | None:
@@ -210,7 +236,9 @@ class Pass218Pass166ModelBinding:
             body,
         )
         if supplied != expected:
-            raise Pass218I20ModelBindingError("P218_I20_BINDING_HASH72_MISMATCH")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_BINDING_HASH72_MISMATCH"
+            )
         return raw
 
     def _activation_receipt(
@@ -221,21 +249,29 @@ class Pass218Pass166ModelBinding:
         if existing_binding is not None:
             receipt = existing_binding.get("pass166_activation_receipt")
             if not isinstance(receipt, Mapping):
-                raise Pass218I20ModelBindingError("P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED")
-            record = self.service.get_operation(str(receipt.get("operation_id") or ""))
+                raise Pass218I20ModelBindingError(
+                    "P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED"
+                )
+            record = self.service.get_operation(
+                str(receipt.get("operation_id") or "")
+            )
             identity = _receipt_identity(record)
             if identity != dict(receipt):
-                raise Pass218I20ModelBindingError("P218_I20_P166_ACTIVATION_RECEIPT_MISMATCH")
+                raise Pass218I20ModelBindingError(
+                    "P218_I20_P166_ACTIVATION_RECEIPT_MISMATCH"
+                )
             return identity
         terminal = model.get("terminal_receipt")
         if not isinstance(terminal, Mapping) or str(terminal.get("stage")) != "ACTIVATION":
-            raise Pass218I20ModelBindingError("P218_I20_PREEXISTING_ACTIVATION_RECEIPT_REQUIRED")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_PREEXISTING_ACTIVATION_RECEIPT_REQUIRED"
+            )
         return _receipt_identity(terminal)
 
     def synchronize(self) -> dict[str, Any]:
         """Verify or perform the single governed activation and seal its binding."""
         try:
-            authority = self._authority_snapshot()
+            current_authority = self._authority_snapshot()
             model = self._inspect_model()
             existing_binding = self._read_binding()
             service_status = self.service.status()
@@ -243,25 +279,45 @@ class Pass218Pass166ModelBinding:
             activation_receipt: dict[str, str] | None = None
 
             if active_model_id not in (None, self.configuration.model_id):
-                raise Pass218I20ModelBindingError("P218_I20_DIFFERENT_P166_MODEL_ALREADY_ACTIVE")
+                raise Pass218I20ModelBindingError(
+                    "P218_I20_DIFFERENT_P166_MODEL_ALREADY_ACTIVE"
+                )
             if active_model_id is None:
                 if not self.configuration.activate_if_needed:
-                    raise Pass218I20ModelBindingError("P218_I20_P166_MODEL_NOT_ACTIVE")
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_P166_MODEL_NOT_ACTIVE"
+                    )
                 result = self.service.activate(
                     self.configuration.model_id,
-                    expected_pass165_frontier=str(service_status.get("pass165_frontier") or "") or None,
+                    expected_pass165_frontier=(
+                        str(service_status.get("pass165_frontier") or "") or None
+                    ),
                 )
                 receipt = result.get("receipt")
                 if not isinstance(receipt, Mapping):
-                    raise Pass218I20ModelBindingError("P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED")
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED"
+                    )
                 activation_receipt = _receipt_identity(receipt)
                 self.activation_invocation_count += 1
                 model = self._inspect_model()
             self.service.verify(self.configuration.model_id)
 
             if activation_receipt is None:
-                activation_receipt = self._activation_receipt(model, existing_binding)
+                activation_receipt = self._activation_receipt(
+                    model,
+                    existing_binding,
+                )
 
+            creation_authority = (
+                existing_binding.get("binding_created_under_authority")
+                if existing_binding is not None
+                else current_authority
+            )
+            if not isinstance(creation_authority, Mapping):
+                raise Pass218I20ModelBindingError(
+                    "P218_I20_BINDING_AUTHORITY_PROVENANCE_INVALID"
+                )
             body = {
                 "schema": PASS218_I20_BINDING_SCHEMA,
                 "version": PASS218_I20_MODEL_BINDING_VERSION,
@@ -271,7 +327,7 @@ class Pass218Pass166ModelBinding:
                 "manifest_root": str(model.get("manifest_root") or ""),
                 "package_digest": str(model.get("package_digest") or ""),
                 "pass166_activation_receipt": activation_receipt,
-                "binding_created_under_authority": authority,
+                "binding_created_under_authority": dict(creation_authority),
                 "relational_cognition_provider": True,
                 "distributional_relations_are_revisable_candidates": True,
                 "browser_model_activation_permitted": False,
@@ -290,12 +346,10 @@ class Pass218Pass166ModelBinding:
                 ),
             }
             if existing_binding is not None:
-                stable_existing = {
-                    key: existing_binding.get(key)
-                    for key in record
-                }
-                if stable_existing != record:
-                    raise Pass218I20ModelBindingError("P218_I20_BINDING_REPLACEMENT_REQUIRES_NEW_ITERATION")
+                if dict(existing_binding) != record:
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_BINDING_REPLACEMENT_REQUIRES_NEW_ITERATION"
+                    )
             else:
                 _atomic_write(self.binding_path, record)
                 self.binding_write_count += 1
@@ -312,7 +366,9 @@ class Pass218Pass166ModelBinding:
     def exact_provider(self) -> Any:
         """Return the existing I1 exact adapter only after I20 binding is ready."""
         if not self._ready:
-            raise Pass218I20ModelBindingError("P218_I20_MODEL_PROVIDER_NOT_READY")
+            raise Pass218I20ModelBindingError(
+                "P218_I20_MODEL_PROVIDER_NOT_READY"
+            )
         from hhs_runtime.pass218.genesis import Pass166Word2VecAdapter
 
         return Pass166Word2VecAdapter(
@@ -328,7 +384,9 @@ class Pass218Pass166ModelBinding:
             self._ready = False
             self.last_error_code = self._code(exc)
         service_status = self.service.status()
-        active_exact = service_status.get("active_model_id") == self.configuration.model_id
+        active_exact = (
+            service_status.get("active_model_id") == self.configuration.model_id
+        )
         return {
             "schema": PASS218_I20_STATUS_SCHEMA,
             "version": PASS218_I20_MODEL_BINDING_VERSION,
@@ -339,8 +397,12 @@ class Pass218Pass166ModelBinding:
             "pass166_active_model_id": service_status.get("active_model_id"),
             "pass166_model_active_exact": active_exact,
             "binding_present": binding is not None,
-            "binding_hash72": None if binding is None else binding.get("binding_hash72"),
-            "relational_candidate_provider_ready": bool(self._ready and binding is not None and active_exact),
+            "binding_hash72": (
+                None if binding is None else binding.get("binding_hash72")
+            ),
+            "relational_candidate_provider_ready": bool(
+                self._ready and binding is not None and active_exact
+            ),
             "activation_invocation_count": self.activation_invocation_count,
             "binding_write_count": self.binding_write_count,
             "i20_error_code": self.last_error_code,
