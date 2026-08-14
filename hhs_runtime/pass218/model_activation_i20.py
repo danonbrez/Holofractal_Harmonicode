@@ -86,14 +86,15 @@ def _require_hex64(value: str, code: str) -> str:
     return normalized
 
 
-def _receipt_identity(receipt: Mapping[str, Any]) -> dict[str, str]:
+def _receipt_identity(
+    receipt: Mapping[str, Any],
+    code: str,
+) -> dict[str, str]:
     operation_id = str(receipt.get("operation_id") or "").strip()
     operation_hash216 = str(receipt.get("operation_hash216") or "").strip()
     receipt_hash72 = str(receipt.get("receipt_hash72") or "").strip()
     if not operation_id or not operation_hash216 or not receipt_hash72:
-        raise Pass218I20ModelBindingError(
-            "P218_I20_P166_ACTIVATION_RECEIPT_INCOMPLETE"
-        )
+        raise Pass218I20ModelBindingError(code)
     return {
         "operation_id": operation_id,
         "operation_hash216": operation_hash216,
@@ -146,6 +147,7 @@ class Pass218Pass166ModelBinding:
         self.configuration = configuration.validated()
         self.last_error_code: str | None = None
         self.activation_invocation_count = 0
+        self.verification_invocation_count = 0
         self.binding_write_count = 0
         self._ready = False
 
@@ -241,35 +243,106 @@ class Pass218Pass166ModelBinding:
             )
         return raw
 
+    def _validated_stored_receipt(
+        self,
+        existing_binding: Mapping[str, Any],
+        *,
+        field: str,
+        stage: str,
+        required_code: str,
+        mismatch_code: str,
+    ) -> tuple[dict[str, str], dict[str, Any]]:
+        stored = existing_binding.get(field)
+        if not isinstance(stored, Mapping):
+            raise Pass218I20ModelBindingError(required_code)
+        record = self.service.get_operation(str(stored.get("operation_id") or ""))
+        identity = _receipt_identity(record, required_code)
+        if identity != dict(stored) or str(record.get("stage") or "") != stage:
+            raise Pass218I20ModelBindingError(mismatch_code)
+        return identity, record
+
     def _activation_receipt(
         self,
         model: Mapping[str, Any],
         existing_binding: Mapping[str, Any] | None,
     ) -> dict[str, str]:
         if existing_binding is not None:
-            receipt = existing_binding.get("pass166_activation_receipt")
-            if not isinstance(receipt, Mapping):
-                raise Pass218I20ModelBindingError(
-                    "P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED"
-                )
-            record = self.service.get_operation(
-                str(receipt.get("operation_id") or "")
+            identity, _ = self._validated_stored_receipt(
+                existing_binding,
+                field="pass166_activation_receipt",
+                stage="ACTIVATION",
+                required_code="P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED",
+                mismatch_code="P218_I20_P166_ACTIVATION_RECEIPT_MISMATCH",
             )
-            identity = _receipt_identity(record)
-            if identity != dict(receipt):
-                raise Pass218I20ModelBindingError(
-                    "P218_I20_P166_ACTIVATION_RECEIPT_MISMATCH"
-                )
             return identity
         terminal = model.get("terminal_receipt")
-        if not isinstance(terminal, Mapping) or str(terminal.get("stage")) != "ACTIVATION":
+        if (
+            not isinstance(terminal, Mapping)
+            or str(terminal.get("stage") or "") != "ACTIVATION"
+        ):
             raise Pass218I20ModelBindingError(
                 "P218_I20_PREEXISTING_ACTIVATION_RECEIPT_REQUIRED"
             )
-        return _receipt_identity(terminal)
+        return _receipt_identity(
+            terminal,
+            "P218_I20_P166_ACTIVATION_RECEIPT_INCOMPLETE",
+        )
+
+    def _verification_receipt(
+        self,
+        existing_binding: Mapping[str, Any] | None,
+    ) -> dict[str, str]:
+        if existing_binding is not None:
+            identity, record = self._validated_stored_receipt(
+                existing_binding,
+                field="pass166_verification_receipt",
+                stage="COMPATIBILITY_VALIDATION",
+                required_code="P218_I20_P166_VERIFICATION_RECEIPT_REQUIRED",
+                mismatch_code="P218_I20_P166_VERIFICATION_RECEIPT_MISMATCH",
+            )
+            body = record.get("body")
+            if (
+                not isinstance(body, Mapping)
+                or body.get("model_id") != self.configuration.model_id
+                or body.get("canonical_model_root")
+                != self.configuration.expected_model_root
+                or body.get("index_root") != self.configuration.expected_index_root
+                or body.get("verified") is not True
+            ):
+                raise Pass218I20ModelBindingError(
+                    "P218_I20_P166_VERIFICATION_RECEIPT_MISMATCH"
+                )
+            return identity
+        result = self.service.verify(self.configuration.model_id)
+        receipt = result.get("receipt")
+        if not isinstance(receipt, Mapping):
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_VERIFICATION_RECEIPT_REQUIRED"
+            )
+        if str(receipt.get("stage") or "") != "COMPATIBILITY_VALIDATION":
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_VERIFICATION_RECEIPT_MISMATCH"
+            )
+        body = receipt.get("body")
+        if (
+            not isinstance(body, Mapping)
+            or body.get("model_id") != self.configuration.model_id
+            or body.get("canonical_model_root")
+            != self.configuration.expected_model_root
+            or body.get("index_root") != self.configuration.expected_index_root
+            or body.get("verified") is not True
+        ):
+            raise Pass218I20ModelBindingError(
+                "P218_I20_P166_VERIFICATION_RECEIPT_MISMATCH"
+            )
+        self.verification_invocation_count += 1
+        return _receipt_identity(
+            receipt,
+            "P218_I20_P166_VERIFICATION_RECEIPT_INCOMPLETE",
+        )
 
     def synchronize(self) -> dict[str, Any]:
-        """Verify or perform the single governed activation and seal its binding."""
+        """Perform/verify one governed activation and seal a restart-stable binding."""
         try:
             current_authority = self._authority_snapshot()
             model = self._inspect_model()
@@ -283,6 +356,10 @@ class Pass218Pass166ModelBinding:
                     "P218_I20_DIFFERENT_P166_MODEL_ALREADY_ACTIVE"
                 )
             if active_model_id is None:
+                if existing_binding is not None:
+                    raise Pass218I20ModelBindingError(
+                        "P218_I20_BOUND_P166_MODEL_NO_LONGER_ACTIVE"
+                    )
                 if not self.configuration.activate_if_needed:
                     raise Pass218I20ModelBindingError(
                         "P218_I20_P166_MODEL_NOT_ACTIVE"
@@ -298,16 +375,19 @@ class Pass218Pass166ModelBinding:
                     raise Pass218I20ModelBindingError(
                         "P218_I20_P166_ACTIVATION_RECEIPT_REQUIRED"
                     )
-                activation_receipt = _receipt_identity(receipt)
+                activation_receipt = _receipt_identity(
+                    receipt,
+                    "P218_I20_P166_ACTIVATION_RECEIPT_INCOMPLETE",
+                )
                 self.activation_invocation_count += 1
                 model = self._inspect_model()
-            self.service.verify(self.configuration.model_id)
 
             if activation_receipt is None:
                 activation_receipt = self._activation_receipt(
                     model,
                     existing_binding,
                 )
+            verification_receipt = self._verification_receipt(existing_binding)
 
             creation_authority = (
                 existing_binding.get("binding_created_under_authority")
@@ -327,6 +407,7 @@ class Pass218Pass166ModelBinding:
                 "manifest_root": str(model.get("manifest_root") or ""),
                 "package_digest": str(model.get("package_digest") or ""),
                 "pass166_activation_receipt": activation_receipt,
+                "pass166_verification_receipt": verification_receipt,
                 "binding_created_under_authority": dict(creation_authority),
                 "relational_cognition_provider": True,
                 "distributional_relations_are_revisable_candidates": True,
@@ -404,6 +485,7 @@ class Pass218Pass166ModelBinding:
                 self._ready and binding is not None and active_exact
             ),
             "activation_invocation_count": self.activation_invocation_count,
+            "verification_invocation_count": self.verification_invocation_count,
             "binding_write_count": self.binding_write_count,
             "i20_error_code": self.last_error_code,
             "browser_model_activation_permitted": False,
