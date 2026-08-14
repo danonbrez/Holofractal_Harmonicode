@@ -6,11 +6,14 @@ public-root visual mount, installs the Pass-218 durable lifecycle gate, the I13
 diagnostic/operator authority control plane, the I14 multi-party approval
 plane, the cumulative I15-I19 maintenance execution, closure, and
 postcondition-verification membrane, the I20 governed Pass-166 relational
-model binding, and the I21 governed relational-candidate query membrane, then
-projects the same backend through ``hhs_gui/dist``. Supporting surfaces such
-as ``/runtime-console`` remain intact.
+model binding, the I21 governed relational-candidate query membrane, and the
+I22 governed semantic-graph candidate membrane, then projects the same backend
+through ``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console``
+remain intact.
 """
 from __future__ import annotations
+
+from pathlib import Path
 
 from hhs_backend.application_ide_server import app as inherited_app
 from hhs_backend.runtime_os_pass218_authority_i13 import (
@@ -56,6 +59,11 @@ from hhs_backend.runtime_os_pass218_relations_i21 import (
     PASS218_I21_STATUS_PATH,
     install_pass218_i21_relational_control,
 )
+from hhs_backend.runtime_os_pass218_semantic_graph_i22 import (
+    PASS218_I22_CANDIDATES_PATH,
+    PASS218_I22_STATUS_PATH,
+    install_pass218_i22_semantic_graph_control,
+)
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
     install_pass218_runtime_os_lifecycle,
@@ -69,6 +77,7 @@ from hhs_backend.runtime_os_projection import (
 )
 
 PUBLIC_MOUNT_NAME = "hhs-runtime-os-application-home"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 app = inherited_app
 app.title = "HHS Runtime OS Application Environment"
@@ -105,9 +114,14 @@ PASS218_I21_RELATIONAL_CONTROL_PLANE = install_pass218_i21_relational_control(
     app,
     PASS218_I20_MODEL_CONTROL_PLANE,
 )
+PASS218_I22_SEMANTIC_GRAPH_CONTROL_PLANE = install_pass218_i22_semantic_graph_control(
+    app,
+    PASS218_I21_RELATIONAL_CONTROL_PLANE,
+    repository_root=REPOSITORY_ROOT,
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20 and I21 are separate cognition
-# planes and do not inherit or widen maintenance execution authority.
+# cumulative I19 maintenance membrane. I20-I22 are separate cognition planes
+# and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I16_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -145,9 +159,13 @@ __all__ = [
     "PASS218_I21_CANDIDATES_PATH",
     "PASS218_I21_RELATIONAL_CONTROL_PLANE",
     "PASS218_I21_STATUS_PATH",
+    "PASS218_I22_CANDIDATES_PATH",
+    "PASS218_I22_SEMANTIC_GRAPH_CONTROL_PLANE",
+    "PASS218_I22_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
+    "REPOSITORY_ROOT",
     "RUNTIME_OS_ASSETS",
     "RUNTIME_OS_INDEX",
     "RUNTIME_OS_ROOT",
