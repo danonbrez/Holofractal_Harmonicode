@@ -169,15 +169,7 @@ def main() -> int:
             "pass166_operation_count_after_restart": second_operation_count,
             "restart_redispatch": False,
             "restart_reverification_receipt_emitted": False,
-            "relational_candidates": [
-                {
-                    "token": item.token,
-                    "rank": item.rank,
-                    "sign": item.sign,
-                    "evidence_hash72": item.evidence_hash72,
-                }
-                for item in relations
-            ],
+            "relational_candidates": [item.to_record() for item in relations],
             "browser_model_activation_permitted": False,
             "canonical_learning_commit_invoked": False,
             "truth_promotion": False,
