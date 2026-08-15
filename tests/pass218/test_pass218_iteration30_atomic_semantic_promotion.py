@@ -23,6 +23,9 @@ from hhs_runtime.pass218.atomic_semantic_promotion_i30 import (
     Pass218I30PromotionStateError,
     Pass218I30PromotionValidationError,
 )
+from hhs_runtime.pass218.hash216_vm5184_transition_i28 import (
+    PASS218_I28_VM5184_MAPPING_VERSION,
+)
 from hhs_runtime.pass218.hash216_vm5184_validation_i29 import (
     PASS218_I29_VALIDATION_SCHEMA,
 )
@@ -122,8 +125,6 @@ def relation(rank: int, family: str, relation_type: str, status: int) -> dict:
         "exact_status_preserved": True,
         "provenance_preserved": True,
         "perspective_order_preserved": True,
-        # These lexical hints prove I30 does not retain upstream token-bearing
-        # presentation fields in the promoted semantic graph.
         "source_token": "DO_NOT_PERSIST_SOURCE_TOKEN",
         "target_token": "DO_NOT_PERSIST_TARGET_TOKEN",
     }
@@ -219,7 +220,7 @@ def expected_words(relations: list[dict]) -> list[int]:
     words = [0] * 81
     for rank, row in enumerate(relations, start=1):
         projection = {
-            "mapping_version": "HHS-P218-I28-RELATION-CELL-MAPPING-V1",
+            "mapping_version": PASS218_I28_VM5184_MAPPING_VERSION,
             "perspective_order_rank": rank,
             "source_id_hash72": row["source_id_hash72"],
             "target_id_hash72": row["target_id_hash72"],
