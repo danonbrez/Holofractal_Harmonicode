@@ -1899,7 +1899,10 @@ static void print_closure_summary(VM81 *vm) {
 // DEMO
 // ============================================================
 
-static void load_demo(VM81 *vm) {
+static void load_demo(
+    VM81 *vm,
+    int enable_legacy_float_layers
+) {
 
     vm->program_len = 0;
 
@@ -1921,8 +1924,10 @@ static void load_demo(VM81 *vm) {
     vm->program[vm->program_len++] =
         (Instruction){ OP_GATE_APB,     0,0,0,  17,0 };
 
-    vm->program[vm->program_len++] =
-        (Instruction){ OP_GATE_IDENTITY, 10,11,12, 25,0 };
+    if (enable_legacy_float_layers) {
+        vm->program[vm->program_len++] =
+            (Instruction){ OP_GATE_IDENTITY, 10,11,12, 25,0 };
+    }
 
     vm->program[vm->program_len++] =
         (Instruction){ OP_CONSTRAIN,    1,4,40, 19,0 };
@@ -1942,8 +1947,10 @@ static void load_demo(VM81 *vm) {
     vm->program[vm->program_len++] =
         (Instruction){ OP_LOAD,        60,0,12,  5,0 };
 
-    vm->program[vm->program_len++] =
-        (Instruction){ OP_GATE_IDENTITY, 10,11,12, 26,0 };
+    if (enable_legacy_float_layers) {
+        vm->program[vm->program_len++] =
+            (Instruction){ OP_GATE_IDENTITY, 10,11,12, 26,0 };
+    }
 
     // Strong relax — should push the K=1 constraint below
     // CONSTRAINT_CLOSURE_THRESHOLD.
@@ -1967,6 +1974,7 @@ typedef struct {
     int trace;
     int halt_on_orbit;
     int verify;
+    int enable_legacy_float_layers;
 
 } Options;
 
@@ -2006,6 +2014,7 @@ int main(int argc, char **argv) {
     opt.trace = 1;
     opt.halt_on_orbit = 0;
     opt.verify = 0;
+    opt.enable_legacy_float_layers = 0;
 
     for (int i = 1; i < argc; i++) {
 
@@ -2033,25 +2042,33 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[i], "--trace")) {
             opt.trace = 1;
         }
+        else if (!strcmp(argv[i], "--legacy-float-layers")) {
+            opt.enable_legacy_float_layers = 1;
+        }
     }
 
     VM81 vm;
     vm81_init(&vm, opt.seed, opt.mode);
 
-    load_demo(&vm);
+    load_demo(&vm, opt.enable_legacy_float_layers);
 
     run_vm(&vm, &opt);
     hhs_run_bridge_demo(&vm);
 
-    // Layered extension pass after locked runtime execution.
-    // This does not rewrite receipt history.
-    hhs_tensor_seed_from_xyzw(&vm);
-    hhs_genomic_map(&vm);
-    hhs_manifold_step(&vm, vm.xyzw[0]);
+    if (opt.enable_legacy_float_layers) {
+
+        // Layered extension pass after locked runtime execution.
+        // This does not rewrite receipt history.
+        hhs_tensor_seed_from_xyzw(&vm);
+        hhs_genomic_map(&vm);
+        hhs_manifold_step(&vm, vm.xyzw[0]);
+    }
 
     if (opt.verify) {
-        double mrec = hhs_calc_m_reciprocal(vm.xyzw[0]);
-        printf("\nVERIFY m-reciprocal probe: %.12f\n", mrec);
+        if (opt.enable_legacy_float_layers) {
+            double mrec = hhs_calc_m_reciprocal(vm.xyzw[0]);
+            printf("\nVERIFY m-reciprocal probe: %.12f\n", mrec);
+        }
 
         hhs_apply_ouroboros_closure(&vm);
         printf(
@@ -2073,9 +2090,9 @@ int main(int argc, char **argv) {
 // HHS PYTHON->VM BRIDGE LAYER
 // Append below the canonical runtime freeze.
 // This layer is additive-only and does not mutate the frozen substrate.
-// The file as a whole is not exact/integer-only: inherited substrate helpers
-// below still use double/sin/log/exp/pow, so no-float claims apply only to the
-// selected VM-native bridge paths and not to the complete runtime artifact.
+// Legacy floating-point helper paths remain available only behind the explicit
+// --legacy-float-layers opt-in. The default bridge demo stays on the exact
+// VM-native path and does not invoke those helper layers.
 // ============================================================================
 
 // ============================================================
@@ -2293,32 +2310,46 @@ static void hhs_vm_native_add(
     uint64_t b,
     uint64_t *out
 ) {
+    const uint8_t src_a = 78;
+    const uint8_t src_b = 79;
+    const uint8_t dst = 80;
 
-    // VM-native arithmetic is modeled as side-effecting cell updates whose
-    // results are then read back from fixed cells, not as direct register math.
-    Instruction ins = {
-        OP_ADD,
-        (uint8_t)(a % GRID_SIZE),
-        (uint8_t)(b % GRID_SIZE),
+    Instruction load_a = {
+        OP_LOAD,
+        (uint8_t)(a % 72),
         0,
+        src_a,
+        29,
+        0
+    };
+
+    Instruction load_b = {
+        OP_LOAD,
+        (uint8_t)(b % 72),
+        0,
+        src_b,
+        30,
+        0
+    };
+
+    Instruction add = {
+        OP_ADD,
+        src_a,
+        src_b,
+        dst,
         31,
         7
     };
 
     uint32_t witness = 0;
-
     double id_res = 0.0;
     int id_has = 0;
 
-    apply_instruction(
-        vm,
-        &ins,
-        &witness,
-        &id_res,
-        &id_has
-    );
+    apply_instruction(vm, &load_a, &witness, &id_res, &id_has);
+    apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
+    apply_instruction(vm, &add, &witness, &id_res, &id_has);
 
-    *out = vm->cells[0];
+    *out = vm->cells[dst];
 }
 
 static void hhs_vm_native_mul(
@@ -2327,32 +2358,46 @@ static void hhs_vm_native_mul(
     uint64_t b,
     uint64_t *out
 ) {
+    const uint8_t src_a = 78;
+    const uint8_t src_b = 79;
+    const uint8_t dst = 80;
 
-    // VM-native arithmetic is modeled as side-effecting cell updates whose
-    // results are then read back from fixed cells, not as direct register math.
-    Instruction ins = {
+    Instruction load_a = {
+        OP_LOAD,
+        (uint8_t)(a % 72),
+        0,
+        src_a,
+        29,
+        0
+    };
+
+    Instruction load_b = {
+        OP_LOAD,
+        (uint8_t)(b % 72),
+        0,
+        src_b,
+        30,
+        0
+    };
+
+    Instruction mul = {
         OP_MULXY,
-        (uint8_t)(a % GRID_SIZE),
-        (uint8_t)(b % GRID_SIZE),
-        1,
+        src_a,
+        src_b,
+        dst,
         32,
         9
     };
 
     uint32_t witness = 0;
-
     double id_res = 0.0;
     int id_has = 0;
 
-    apply_instruction(
-        vm,
-        &ins,
-        &witness,
-        &id_res,
-        &id_has
-    );
+    apply_instruction(vm, &load_a, &witness, &id_res, &id_has);
+    apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
+    apply_instruction(vm, &mul, &witness, &id_res, &id_has);
 
-    *out = vm->cells[1];
+    *out = vm->cells[dst];
 }
 
 // ============================================================
@@ -2581,15 +2626,13 @@ static int hhs_execute_ir_block(
     HHS_VM_Frame *frame
 ) {
 
-    if (frame->current_block >= prog->block_count)
-        return 0;
+    while (frame->current_block < prog->block_count) {
 
-    HHS_IR_Block *blk =
-        &prog->blocks[frame->current_block];
+        HHS_IR_Block *blk =
+            &prog->blocks[frame->current_block];
 
-    while (
-        frame->current_node < blk->node_count
-    ) {
+        if (frame->current_node >= blk->node_count)
+            break;
 
         HHS_IR_Node *node =
             &blk->nodes[frame->current_node];
@@ -2611,7 +2654,7 @@ static int hhs_execute_ir_block(
         frame->current_node++;
     }
 
-    return 1;
+    return frame->current_block < prog->block_count;
 }
 
 // ============================================================
@@ -2662,24 +2705,71 @@ static int hhs_execute_ir(
 // DEMO IR PROGRAM
 // ============================================================
 
-static HHS_IR_Node DEMO_NODES[] = {
-
-    { IR_CONST, 0,0,0, 5, 0,0,0 },
-    { IR_CONST, 1,0,0, 7, 0,0,0 },
-
+static HHS_IR_Node DEMO_BLOCK0[] = {
+    { IR_CONST, 0,0,0, 4, 0,0,0 },
+    { IR_CONST, 1,0,0, 5, 0,0,0 },
     { IR_ADD,   2,0,1, 0, 0,0,0 },
+    { IR_COMPARE_EQ, 0,2,2, 0, 0,0,0 },
+    { IR_BRANCH, 0,0,0, 2, 0,0,0 },
+    { IR_CONST, 6,0,0, 99, 0,0,0 },
+    { IR_RETURN, 0,0,0, 0, 0,0,0 }
+};
 
+static HHS_IR_Node DEMO_BLOCK1[] = {
+    { IR_CONST, 6,0,0, 88, 0,0,0 },
+    { IR_RETURN, 0,0,0, 0, 0,0,0 }
+};
+
+static HHS_IR_Node DEMO_BLOCK2[] = {
+    { IR_CALL,  0,0,0, 4, 0,0,0 },
     { IR_MUL,   3,2,1, 0, 0,0,0 },
+    { IR_JUMP,  0,0,0, 3, 0,0,0 },
+    { IR_CONST, 6,0,0, 77, 0,0,0 }
+};
 
-    { IR_QGU,   4,3,1, 9, 0,0,0 },
+static HHS_IR_Node DEMO_BLOCK3[] = {
+    { IR_QGU,   4,2,1, 9, 0,0,0 },
+    { IR_HASH72_PROJECT, 0,0,0,0,0,0,0 },
+    { IR_RETURN, 0,0,0, 0, 0,0,0 }
+};
 
-    { IR_HASH72_PROJECT, 0,0,0,0,0,0,0 }
+static HHS_IR_Node DEMO_BLOCK4[] = {
+    { IR_CONST, 5,0,0, 11, 0,0,0 },
+    { IR_RETURN, 0,0,0, 0, 0,0,0 }
 };
 
 static HHS_IR_Block DEMO_BLOCKS[] = {
     {
-        DEMO_NODES,
-        sizeof(DEMO_NODES)
+        DEMO_BLOCK0,
+        sizeof(DEMO_BLOCK0)
+            / sizeof(HHS_IR_Node),
+        0,
+        0
+    },
+    {
+        DEMO_BLOCK1,
+        sizeof(DEMO_BLOCK1)
+            / sizeof(HHS_IR_Node),
+        0,
+        0
+    },
+    {
+        DEMO_BLOCK2,
+        sizeof(DEMO_BLOCK2)
+            / sizeof(HHS_IR_Node),
+        0,
+        0
+    },
+    {
+        DEMO_BLOCK3,
+        sizeof(DEMO_BLOCK3)
+            / sizeof(HHS_IR_Node),
+        0,
+        0
+    },
+    {
+        DEMO_BLOCK4,
+        sizeof(DEMO_BLOCK4)
             / sizeof(HHS_IR_Node),
         0,
         0
@@ -2688,7 +2778,8 @@ static HHS_IR_Block DEMO_BLOCKS[] = {
 
 static HHS_IR_Program DEMO_PROGRAM = {
     DEMO_BLOCKS,
-    1,
+    sizeof(DEMO_BLOCKS)
+        / sizeof(HHS_IR_Block),
     {0},
     0
 };
@@ -2707,11 +2798,14 @@ static void hhs_run_bridge_demo(VM81 *vm) {
 
     hhs_frame_init(&frame);
 
-    hhs_execute_ir(
+    if (!hhs_execute_ir(
         vm,
         &DEMO_PROGRAM,
         &frame
-    );
+    )) {
+        printf("BRIDGE DEMO FAILED\n");
+        return;
+    }
 
     printf(
         "R0=%llu\n",
@@ -2741,6 +2835,18 @@ static void hhs_run_bridge_demo(VM81 *vm) {
         "R4=%llu\n",
         (unsigned long long)
         frame.registers[4]
+    );
+
+    printf(
+        "R5=%llu\n",
+        (unsigned long long)
+        frame.registers[5]
+    );
+
+    printf(
+        "R6=%llu\n",
+        (unsigned long long)
+        frame.registers[6]
     );
 
     printf(
