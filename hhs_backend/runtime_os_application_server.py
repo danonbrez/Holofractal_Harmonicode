@@ -18,10 +18,11 @@ I31 fenced verbatim-purge receipt membrane, the I32 fenced source-closure
 membrane, the I33 authoritative curriculum-advance membrane, the I34
 authoritative manifest-bound source-ingress membrane, the I35 manifest-bound
 semantic/source-transaction ingress membrane, the I36 manifest-bound
-non-authoritative vector/VM5184 staging membrane, and the I37 manifest-bound
-non-authoritative frozen-I5 promotability-proof membrane, then projects the
-same backend through ``hhs_gui/dist``. Supporting surfaces such as
-``/runtime-console`` remain intact.
+non-authoritative vector/VM5184 staging membrane, the I37 manifest-bound
+non-authoritative frozen-I5 promotability-proof membrane, and the I38
+manifest-bound frozen-I5 explicit promotion-authority/authorization membrane,
+then projects the same backend through ``hhs_gui/dist``. Supporting surfaces
+such as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -150,6 +151,11 @@ from hhs_backend.runtime_os_pass218_manifest_promotion_admission_proof_i37 impor
     PASS218_I37_PROVE_PATH,
     PASS218_I37_STATUS_PATH,
     install_pass218_i37_manifest_promotion_admission_proof_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_promotion_authorization_i38 import (
+    PASS218_I38_AUTHORIZE_PATH,
+    PASS218_I38_STATUS_PATH,
+    install_pass218_i38_manifest_promotion_authorization_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -294,8 +300,16 @@ PASS218_I37_MANIFEST_PROMOTION_ADMISSION_PROOF_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I38_MANIFEST_PROMOTION_AUTHORIZATION_CONTROL_PLANE = (
+    install_pass218_i38_manifest_promotion_authorization_control(
+        app,
+        PASS218_I37_MANIFEST_PROMOTION_ADMISSION_PROOF_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I37 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I38 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -382,6 +396,9 @@ __all__ = [
     "PASS218_I37_MANIFEST_PROMOTION_ADMISSION_PROOF_CONTROL_PLANE",
     "PASS218_I37_PROVE_PATH",
     "PASS218_I37_STATUS_PATH",
+    "PASS218_I38_AUTHORIZE_PATH",
+    "PASS218_I38_MANIFEST_PROMOTION_AUTHORIZATION_CONTROL_PLANE",
+    "PASS218_I38_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
