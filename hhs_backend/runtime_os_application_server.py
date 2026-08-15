@@ -9,9 +9,10 @@ postcondition-verification membrane, the I20 governed Pass-166 relational
 model binding, the I21 governed relational-candidate query membrane, the I22
 governed semantic-graph candidate membrane, the I23 governed contextual-state
 hydration membrane, the I24 governed narrative-beat transition candidate
-membrane, and the I25 governed perspective/context hydration membrane, then
-projects the same backend through ``hhs_gui/dist``. Supporting surfaces such
-as ``/runtime-console`` remain intact.
+membrane, the I25 governed perspective/context hydration membrane, and the I26
+governed grounded-relational-manifold candidate membrane, then projects the
+same backend through ``hhs_gui/dist``. Supporting surfaces such as
+``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -81,6 +82,11 @@ from hhs_backend.runtime_os_pass218_perspective_context_i25 import (
     PASS218_I25_STATUS_PATH,
     install_pass218_i25_perspective_context_control,
 )
+from hhs_backend.runtime_os_pass218_grounded_manifold_i26 import (
+    PASS218_I26_CANDIDATES_PATH,
+    PASS218_I26_STATUS_PATH,
+    install_pass218_i26_grounded_manifold_control,
+)
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
     install_pass218_runtime_os_lifecycle,
@@ -148,8 +154,12 @@ PASS218_I25_PERSPECTIVE_CONTEXT_CONTROL_PLANE = install_pass218_i25_perspective_
     app,
     PASS218_I24_NARRATIVE_BEAT_CONTROL_PLANE,
 )
+PASS218_I26_GROUNDED_MANIFOLD_CONTROL_PLANE = install_pass218_i26_grounded_manifold_control(
+    app,
+    PASS218_I25_PERSPECTIVE_CONTEXT_CONTROL_PLANE,
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I25 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I26 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -200,6 +210,9 @@ __all__ = [
     "PASS218_I25_CANDIDATES_PATH",
     "PASS218_I25_PERSPECTIVE_CONTEXT_CONTROL_PLANE",
     "PASS218_I25_STATUS_PATH",
+    "PASS218_I26_CANDIDATES_PATH",
+    "PASS218_I26_GROUNDED_MANIFOLD_CONTROL_PLANE",
+    "PASS218_I26_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
