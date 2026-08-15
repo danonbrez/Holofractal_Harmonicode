@@ -255,7 +255,7 @@ permissions, learning authority, or model authority.
 7. `docs/pass218/PASS_218_ITERATION_30_RESTART.md`
    - this restart record
 
-## Pre-validation commit chain
+## Commit chain and validation repair
 
 From frozen I29 `ec45c89bcb95384f3eda5075659c5ebc2e686c43`:
 
@@ -271,8 +271,20 @@ From frozen I29 `ec45c89bcb95384f3eda5075659c5ebc2e686c43`:
    - repository-native evidence harness
 6. `a1e2fb4c24e31f9e0190f80e355510bd75dc6231`
    - bounded I30 workflow
+7. `9b573679335e38c56e5a1561f115df21e8d0d49a`
+   - initial restart record / first exact-head validation candidate
+8. `f5a4150da5e165676f4a5c15e269a3ef22289c04`
+   - repair the focused-test fixture to use the exact frozen I28 mapping version
+     `HHS-P218-I28-VM5184-RELATION-CELL-MAP-V1` rather than a stale duplicated
+     literal. The runtime correctly rejected the stale fixture with
+     `P218_I30_NATIVE_STATE_ROOT_MISMATCH`; no production promotion semantics
+     were weakened or reinterpreted.
+9. this restart-record update records that bounded repair before the next exact
+   validation candidate is frozen.
 
-This restart record is the seventh bounded file/commit.
+The bounded I30 file set remains exactly seven files. Repair-forward history may
+therefore contain nine commits while preserving the same seven-file iteration
+scope.
 
 ## Validation required before freeze
 
