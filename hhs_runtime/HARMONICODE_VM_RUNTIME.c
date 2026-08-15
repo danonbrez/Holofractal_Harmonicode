@@ -1970,6 +1970,8 @@ typedef struct {
 
 } Options;
 
+static void hhs_run_bridge_demo(VM81 *vm);
+
 static void run_vm(VM81 *vm, Options *opt) {
 
     for (int i = 0;
@@ -2039,6 +2041,7 @@ int main(int argc, char **argv) {
     load_demo(&vm);
 
     run_vm(&vm, &opt);
+    hhs_run_bridge_demo(&vm);
 
     // Layered extension pass after locked runtime execution.
     // This does not rewrite receipt history.
@@ -2070,6 +2073,9 @@ int main(int argc, char **argv) {
 // HHS PYTHON->VM BRIDGE LAYER
 // Append below the canonical runtime freeze.
 // This layer is additive-only and does not mutate the frozen substrate.
+// The file as a whole is not exact/integer-only: inherited substrate helpers
+// below still use double/sin/log/exp/pow, so no-float claims apply only to the
+// selected VM-native bridge paths and not to the complete runtime artifact.
 // ============================================================================
 
 // ============================================================
@@ -2187,6 +2193,8 @@ typedef struct {
 
     uint8_t halted;
 
+    uint8_t control_transferred;
+
     uint32_t last_compare;
 
 } HHS_VM_Frame;
@@ -2217,6 +2225,7 @@ static void hhs_frame_init(HHS_VM_Frame *f) {
 
     f->sp = 0;
     f->halted = 0;
+    f->control_transferred = 0;
     f->current_block = 0;
     f->current_node = 0;
 }
@@ -2285,6 +2294,8 @@ static void hhs_vm_native_add(
     uint64_t *out
 ) {
 
+    // VM-native arithmetic is modeled as side-effecting cell updates whose
+    // results are then read back from fixed cells, not as direct register math.
     Instruction ins = {
         OP_ADD,
         (uint8_t)(a % GRID_SIZE),
@@ -2317,6 +2328,8 @@ static void hhs_vm_native_mul(
     uint64_t *out
 ) {
 
+    // VM-native arithmetic is modeled as side-effecting cell updates whose
+    // results are then read back from fixed cells, not as direct register math.
     Instruction ins = {
         OP_MULXY,
         (uint8_t)(a % GRID_SIZE),
@@ -2452,6 +2465,7 @@ static int hhs_execute_ir_node(
             if (frame->last_compare) {
                 frame->current_block = (uint32_t)node->imm;
                 frame->current_node = 0;
+                frame->control_transferred = 1;
             }
 
             break;
@@ -2460,6 +2474,7 @@ static int hhs_execute_ir_node(
 
             frame->current_block = (uint32_t)node->imm;
             frame->current_node = 0;
+            frame->control_transferred = 1;
 
             break;
 
@@ -2472,12 +2487,13 @@ static int hhs_execute_ir_node(
                 frame->current_block;
 
             frame->stack[frame->sp++] =
-                frame->current_node;
+                frame->current_node + 1U;
 
             frame->current_block =
                 (uint32_t)node->imm;
 
             frame->current_node = 0;
+            frame->control_transferred = 1;
 
             break;
 
@@ -2493,6 +2509,8 @@ static int hhs_execute_ir_node(
 
             frame->current_block =
                 (uint32_t)frame->stack[--frame->sp];
+
+            frame->control_transferred = 1;
 
             break;
 
@@ -2584,10 +2602,13 @@ static int hhs_execute_ir_block(
             return 0;
         }
 
-        frame->current_node++;
-
         if (frame->halted)
             return 1;
+
+        if (frame->control_transferred)
+            return 1;
+
+        frame->current_node++;
     }
 
     return 1;
@@ -2611,6 +2632,14 @@ static int hhs_execute_ir(
                 frame))
         {
             return 0;
+        }
+
+        if (frame->halted)
+            break;
+
+        if (frame->control_transferred) {
+            frame->control_transferred = 0;
+            continue;
         }
 
         if (
