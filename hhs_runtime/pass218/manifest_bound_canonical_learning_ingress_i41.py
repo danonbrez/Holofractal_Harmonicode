@@ -13,6 +13,7 @@ state is created here.
 """
 from __future__ import annotations
 
+from hashlib import sha256
 import json
 import os
 from pathlib import Path
@@ -90,6 +91,13 @@ def _valid_sha256(value: object) -> bool:
         and len(value) == 64
         and all(ch in "0123456789abcdef" for ch in value)
     )
+
+
+def _path_safe_hash72_name(value: str) -> str:
+    """Project a validated Hash72 identity into one filesystem-safe component."""
+    if not validate_hash72(value):
+        raise Pass218I41StateError("P218_I41_PATH_HASH72_INVALID")
+    return sha256(value.encode("utf-8")).hexdigest()
 
 
 def _verify_i41_candidate(candidate: Mapping[str, Any], receipt: Mapping[str, Any] | None = None) -> dict[str, Any]:
@@ -254,8 +262,10 @@ class Pass218I41CanonicalLearningIngressStore:
                 raise Pass218I41StateError("P218_I41_ACTIVE_BINDING_CONFLICT")
             return existing
         ordinal = int(checked["manifest_binding"]["curriculum_position"])
-        receipt_path = self.receipt_root / f"{ordinal:08d}-{checked['i41_receipt_hash72']}.json"
-        candidate_path = self.candidate_root / f"{checked_candidate['learning_ingress_candidate_hash72']}.json"
+        receipt_name = _path_safe_hash72_name(str(checked["i41_receipt_hash72"]))
+        candidate_name = _path_safe_hash72_name(str(checked_candidate["learning_ingress_candidate_hash72"]))
+        receipt_path = self.receipt_root / f"{ordinal:08d}-{receipt_name}.json"
+        candidate_path = self.candidate_root / f"{candidate_name}.json"
         _atomic_write_json(receipt_path, checked)
         _atomic_write_json(candidate_path, checked_candidate)
         state_body = {
