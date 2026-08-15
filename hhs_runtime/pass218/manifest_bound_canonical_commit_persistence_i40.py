@@ -1,17 +1,18 @@
 """Pass 218 Iteration 40 manifest-bound atomic canonical commit and persistence.
 
 I40 begins only from the exact durable I39 noncanonical prepare binding plus its
-frozen I38/I37/I36 lineage. Because I39 intentionally persists only the
-serializable I6 prepare proof, I40 deterministically reconstructs the live
-``PreparedCanonicalAdmission`` by re-running frozen I6 ``prepare`` against the
-same durable authorization and I4 candidate, and requires the resulting record
-to equal I39 bit-for-bit before any canonical mutation is permitted.
+frozen I38/I37/I36 lineage. I39 intentionally persisted the serializable I6
+prepare proof rather than the live ``PreparedCanonicalAdmission`` object. I40
+therefore reconstructs that object by re-running frozen I6 ``prepare`` from the
+same durable authorization and I4 candidate and requires the resulting record
+to equal I39 bit-for-bit before canonical mutation is permitted.
 
 Only then may frozen I6 perform its atomic canonical Pass-217/VM81 commit. The
-result is immediately sealed by frozen I7 durable canonical persistence and
-then restored as an independent restart proof. I40 stops before canonical
-learning, truth/action authority, later semantic promotion/purge/closure,
-curriculum advancement, model activation, or any authoritative float state.
+committed target is immediately sealed by the frozen I7 compatibility-backed
+durable store and restored as an independent restart proof. I40 stops before
+canonical learning, truth/action authority, semantic promotion/purge/closure,
+curriculum advancement, model activation, or authoritative floating-point
+state.
 """
 from __future__ import annotations
 
@@ -40,7 +41,12 @@ from hhs_runtime.pass218.manifest_bound_canonical_prepare_i39 import (
     _verify_i39_receipt,
     _verify_predecessors,
 )
-from hhs_runtime.pass218.persistence import (
+# Use the frozen I7 compatibility surface deliberately. Frozen I6's validated
+# receipt bytes retain the historical outer COMMIT-PAYLOAD schema because its
+# commit payload expansion overwrites the intended receipt label. I7's frozen
+# compatibility adapter admits exactly that historical label or the intended
+# label while independently validating every authoritative receipt field/hash.
+from hhs_runtime.pass218.persistence_compat import (
     PASS218_PERSISTENCE_VERSION,
     Pass218DurableCanonicalStore,
     Pass218PersistenceError,
@@ -54,6 +60,9 @@ PASS218_I40_STATE_SCHEMA = "HHS-P218-I40-MANIFEST-BOUND-CANONICAL-COMMIT-PERSIST
 PASS218_I40_STATUS_SCHEMA = "HHS-P218-I40-MANIFEST-BOUND-CANONICAL-COMMIT-PERSISTENCE-STATUS-V1"
 PASS218_I40_COMPLETE_STATUS = "MANIFEST_BOUND_CANONICAL_COMMIT_PERSISTENCE_INGRESS_COMPLETE"
 PASS218_I40_PENDING_STATUS = "MANIFEST_BOUND_CANONICAL_COMMIT_PERSISTENCE_PENDING"
+
+_I6_INTENDED_RECEIPT_SCHEMA = "HHS-P218-I6-CANONICAL-COMMIT-RECEIPT-V1"
+_I6_FROZEN_OUTER_SCHEMA = "HHS-P218-I6-CANONICAL-COMMIT-PAYLOAD-V1"
 
 
 class Pass218I40CanonicalPersistenceError(RuntimeError):
@@ -136,14 +145,28 @@ def _verify_i6_commit_receipt(
     i39_receipt: Mapping[str, Any],
     i39_prepare: Mapping[str, Any],
 ) -> dict[str, Any]:
+    """Bind the frozen I6 receipt to I39 without rewriting historical bytes.
+
+    The actual frozen I6 receipt has the validated historical outer payload
+    label. The intended receipt label is also admitted because frozen I7's
+    compatibility adapter admits exactly those two labels. ``admission_status``
+    is intentionally *not* required as a top-level I6 receipt field: frozen I6
+    commits it inside the receipt-hash payload, while frozen I7 independently
+    proves the canonical admitted entry itself is ``VM81_ADMITTED``.
+    """
+
     value = _copy(dict(receipt))
-    if value.get("schema") != "HHS-P218-I6-CANONICAL-COMMIT-RECEIPT-V1":
+    if value.get("schema") not in {
+        _I6_INTENDED_RECEIPT_SCHEMA,
+        _I6_FROZEN_OUTER_SCHEMA,
+    }:
         raise Pass218I40I6Error("P218_I40_I6_COMMIT_RECEIPT_SCHEMA_INVALID")
     if value.get("boundary_version") != PASS218_CANONICAL_COMMIT_VERSION:
         raise Pass218I40I6Error("P218_I40_I6_BOUNDARY_VERSION_INVALID")
     prepare_record = i39_prepare.get("i6_prepare_record")
     if not isinstance(prepare_record, Mapping):
         raise Pass218I40BindingError("P218_I40_I39_PREPARE_RECORD_MISSING")
+
     exact = {
         "authorization_hash72": i39_receipt["i5_authorization_hash72"],
         "prepare_hash72": i39_receipt["i6_prepare_hash72"],
@@ -158,6 +181,7 @@ def _verify_i6_commit_receipt(
     for field, expected in exact.items():
         if value.get(field) != expected:
             raise Pass218I40I6Error("P218_I40_I6_COMMIT_BINDING_MISMATCH:" + field)
+
     for field in (
         "authorization_hash72",
         "prepare_hash72",
@@ -179,6 +203,7 @@ def _verify_i6_commit_receipt(
         + str(value["receipt_hash72"])
     ):
         raise Pass218I40I6Error("P218_I40_I6_COMMIT_HASH216_ORDER_INVALID")
+
     for field in (
         "candidate_entry_id_sha256",
         "admitted_entry_id_sha256",
@@ -188,10 +213,9 @@ def _verify_i6_commit_receipt(
             raise Pass218I40I6Error("P218_I40_I6_COMMIT_SHA256_INVALID:" + field)
     if value.get("state") != "CANONICAL_COMMITTED":
         raise Pass218I40I6Error("P218_I40_I6_COMMIT_STATE_INVALID")
-    if value.get("admission_status") != "VM81_ADMITTED":
-        raise Pass218I40I6Error("P218_I40_I6_ADMISSION_STATUS_INVALID")
     if value.get("vm81_commit_count") != THREADS:
         raise Pass218I40I6Error("P218_I40_I6_VM81_COMMIT_COUNT_INVALID")
+
     for field in (
         "canonical_vector_store_mutation_invoked",
         "canonical_vm81_commit_invoked",
@@ -214,11 +238,18 @@ def _verify_i6_commit_receipt(
     return value
 
 
-def _verify_i40_binding(envelope: Mapping[str, Any], receipt: Mapping[str, Any]) -> dict[str, Any]:
+def _verify_i40_binding(
+    envelope: Mapping[str, Any],
+    receipt: Mapping[str, Any],
+) -> dict[str, Any]:
     value = _copy(dict(envelope))
     if value.get("schema") != PASS218_I40_BINDING_SCHEMA:
         raise Pass218I40StateError("P218_I40_BINDING_SCHEMA_INVALID")
-    body = {key: item for key, item in value.items() if key != "manifest_bound_commit_persistence_hash72"}
+    body = {
+        key: item
+        for key, item in value.items()
+        if key != "manifest_bound_commit_persistence_hash72"
+    }
     expected = hash72_digest({"domain": PASS218_I40_BINDING_SCHEMA}, body)
     if expected != value.get("manifest_bound_commit_persistence_hash72"):
         raise Pass218I40StateError("P218_I40_BINDING_HASH_MISMATCH")
@@ -261,6 +292,7 @@ def _verify_i40_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
         + str(value["i40_receipt_hash72"])
     ):
         raise Pass218I40StateError("P218_I40_HASH216_ORDER_INVALID")
+
     for field in (
         "i39_prepare_bound",
         "manifest_binding_propagated",
@@ -298,9 +330,15 @@ def _verify_i40_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
         raise Pass218I40StateError("P218_I40_RECEIPT_VM81_LENGTH_INVALID")
     if not _valid_sha256(value.get("i7_checkpoint_sha256")):
         raise Pass218I40StateError("P218_I40_RECEIPT_CHECKPOINT_SHA256_INVALID")
+
     body = {
-        key: item for key, item in value.items()
-        if key not in {"i40_receipt_hash72", "i40_hash216", "i40_hash216_semantics"}
+        key: item
+        for key, item in value.items()
+        if key not in {
+            "i40_receipt_hash72",
+            "i40_hash216",
+            "i40_hash216_semantics",
+        }
     }
     expected = hash72_digest({"domain": PASS218_I40_RECEIPT_SCHEMA}, body)
     if expected != value.get("i40_receipt_hash72"):
@@ -316,7 +354,9 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
         self.receipt_root = self.root / "receipts"
         self.binding_root = self.root / "bindings"
         self.state_path = self.root / "state.json"
-        self.i7_store = Pass218DurableCanonicalStore(self.root / "durable-canonical-i7")
+        self.i7_store = Pass218DurableCanonicalStore(
+            self.root / "durable-canonical-i7"
+        )
 
     def active_record(self) -> dict[str, Any] | None:
         if not self.state_path.exists():
@@ -324,8 +364,11 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
         state = _load_json(self.state_path)
         if state.get("schema") != PASS218_I40_STATE_SCHEMA:
             raise Pass218I40StateError("P218_I40_STATE_SCHEMA_INVALID")
-        body = {key: item for key, item in state.items() if key != "state_root_hash72"}
-        if hash72_digest({"domain": PASS218_I40_STATE_SCHEMA}, body) != state.get("state_root_hash72"):
+        state_body = {
+            key: item for key, item in state.items() if key != "state_root_hash72"
+        }
+        expected = hash72_digest({"domain": PASS218_I40_STATE_SCHEMA}, state_body)
+        if expected != state.get("state_root_hash72"):
             raise Pass218I40StateError("P218_I40_STATE_ROOT_MISMATCH")
         receipt_path = self.root / str(state.get("active_receipt_path", ""))
         binding_path = self.root / str(state.get("active_binding_path", ""))
@@ -335,7 +378,9 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
         if receipt["i40_receipt_hash72"] != state.get("active_i40_receipt_hash72"):
             raise Pass218I40StateError("P218_I40_STATE_RECEIPT_MISMATCH")
         binding = _verify_i40_binding(_load_json(binding_path), receipt)
-        if binding["manifest_bound_commit_persistence_hash72"] != state.get("active_binding_hash72"):
+        if binding["manifest_bound_commit_persistence_hash72"] != state.get(
+            "active_binding_hash72"
+        ):
             raise Pass218I40StateError("P218_I40_STATE_BINDING_MISMATCH")
         return receipt
 
@@ -348,7 +393,11 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
             _load_json(self.root / str(state["active_binding_path"])), receipt
         )
 
-    def commit(self, receipt: Mapping[str, Any], binding: Mapping[str, Any]) -> dict[str, Any]:
+    def commit(
+        self,
+        receipt: Mapping[str, Any],
+        binding: Mapping[str, Any],
+    ) -> dict[str, Any]:
         checked = _verify_i40_receipt(receipt)
         checked_binding = _verify_i40_binding(binding, checked)
         existing = self.active_record()
@@ -356,9 +405,14 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
             if existing != checked or self.active_binding() != checked_binding:
                 raise Pass218I40StateError("P218_I40_ACTIVE_BINDING_CONFLICT")
             return existing
+
         ordinal = int(checked["manifest_binding"]["curriculum_position"])
-        receipt_path = self.receipt_root / f"{ordinal:08d}-{checked['i40_receipt_hash72']}.json"
-        binding_path = self.binding_root / f"{checked['manifest_bound_commit_persistence_hash72']}.json"
+        receipt_path = self.receipt_root / (
+            f"{ordinal:08d}-{checked['i40_receipt_hash72']}.json"
+        )
+        binding_path = self.binding_root / (
+            f"{checked['manifest_bound_commit_persistence_hash72']}.json"
+        )
         _atomic_write_json(receipt_path, checked)
         _atomic_write_json(binding_path, checked_binding)
         state_body = {
@@ -367,13 +421,17 @@ class Pass218I40ManifestBoundCanonicalPersistenceStore:
             "status": PASS218_I40_COMPLETE_STATUS,
             "i39_receipt_hash72": checked["i39_receipt_hash72"],
             "active_i40_receipt_hash72": checked["i40_receipt_hash72"],
-            "active_binding_hash72": checked["manifest_bound_commit_persistence_hash72"],
+            "active_binding_hash72": checked[
+                "manifest_bound_commit_persistence_hash72"
+            ],
             "active_receipt_path": receipt_path.relative_to(self.root).as_posix(),
             "active_binding_path": binding_path.relative_to(self.root).as_posix(),
         }
         state = {
             **state_body,
-            "state_root_hash72": hash72_digest({"domain": PASS218_I40_STATE_SCHEMA}, state_body),
+            "state_root_hash72": hash72_digest(
+                {"domain": PASS218_I40_STATE_SCHEMA}, state_body
+            ),
         }
         _atomic_write_json(self.state_path, state)
         persisted = self.active_record()
@@ -413,7 +471,11 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
         return text.split(":", 1)[0] if text else exc.__class__.__name__
 
     def _active_lineage(self) -> tuple[
-        dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]
+        dict[str, Any],
+        dict[str, Any],
+        dict[str, Any],
+        dict[str, Any],
+        dict[str, Any],
     ]:
         i39_receipt = self.i39_store.active_record()
         i39_prepare = self.i39_store.active_prepare()
@@ -423,14 +485,27 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
         i37_proof = self.i37_store.active_proof()
         i36_receipt = self.i36_store.active_record()
         i36_stage = self.i36_store.active_stage()
-        if not all(isinstance(value, Mapping) for value in (
-            i39_receipt, i39_prepare, i38_receipt, i38_envelope,
-            i37_receipt, i37_proof, i36_receipt, i36_stage,
-        )):
-            raise Pass218I40BindingError("P218_I40_COMPLETE_PREDECESSOR_LINEAGE_REQUIRED")
+        values = (
+            i39_receipt,
+            i39_prepare,
+            i38_receipt,
+            i38_envelope,
+            i37_receipt,
+            i37_proof,
+            i36_receipt,
+            i36_stage,
+        )
+        if not all(isinstance(value, Mapping) for value in values):
+            raise Pass218I40BindingError(
+                "P218_I40_COMPLETE_PREDECESSOR_LINEAGE_REQUIRED"
+            )
+
         checked_i39 = _verify_i39_receipt(i39_receipt)
         checked_i39_prepare = _verify_i39_prepare(i39_prepare, checked_i39)
-        if checked_i39.get("schema") != PASS218_I39_RECEIPT_SCHEMA or checked_i39.get("status") != PASS218_I39_COMPLETE_STATUS:
+        if (
+            checked_i39.get("schema") != PASS218_I39_RECEIPT_SCHEMA
+            or checked_i39.get("status") != PASS218_I39_COMPLETE_STATUS
+        ):
             raise Pass218I40BindingError("P218_I40_I39_COMPLETE_STATE_REQUIRED")
         i38, authorization, i4_stage, _ = _verify_predecessors(
             i38_receipt=i38_receipt,
@@ -444,21 +519,24 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
             raise Pass218I40BindingError("P218_I40_I39_I38_RECEIPT_MISMATCH")
         if checked_i39["manifest_binding"] != i38["manifest_binding"]:
             raise Pass218I40BindingError("P218_I40_MANIFEST_LINEAGE_MISMATCH")
-        if checked_i39["manifest_bound_i4_stage_hash72"] != i36_receipt["manifest_bound_i4_stage_hash72"]:
+        if (
+            checked_i39["manifest_bound_i4_stage_hash72"]
+            != i36_receipt["manifest_bound_i4_stage_hash72"]
+        ):
             raise Pass218I40BindingError("P218_I40_I39_I36_STAGE_MISMATCH")
+
         if self.i39_status_provider is not None:
             status = dict(self.i39_status_provider())
             if status.get("status") != PASS218_I39_COMPLETE_STATUS:
                 raise Pass218I40BindingError("P218_I40_I39_STATUS_NOT_COMPLETE")
-            if status.get("active_i39_receipt_hash72") != checked_i39["i39_receipt_hash72"]:
-                raise Pass218I40BindingError("P218_I40_I39_STATUS_RECEIPT_MISMATCH")
-        return (
-            checked_i39,
-            checked_i39_prepare,
-            i38,
-            authorization,
-            i4_stage,
-        )
+            if (
+                status.get("active_i39_receipt_hash72")
+                != checked_i39["i39_receipt_hash72"]
+            ):
+                raise Pass218I40BindingError(
+                    "P218_I40_I39_STATUS_RECEIPT_MISMATCH"
+                )
+        return checked_i39, checked_i39_prepare, i38, authorization, i4_stage
 
     def _build_binding_and_receipt(
         self,
@@ -472,17 +550,34 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
         prepare_reconstructed: bool,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         commit = _verify_i6_commit_receipt(
-            commit_receipt, i39_receipt=i39, i39_prepare=i39_prepare
+            commit_receipt,
+            i39_receipt=i39,
+            i39_prepare=i39_prepare,
         )
-        if checkpoint.get("canonical_target_record", {}).get("canonical_root_hash72") != commit["target_root_after_hash72"]:
-            raise Pass218I40I7Error("P218_I40_I7_CANONICAL_ROOT_BINDING_MISMATCH")
+        target_record = checkpoint.get("canonical_target_record")
+        if not isinstance(target_record, Mapping):
+            raise Pass218I40I7Error("P218_I40_I7_TARGET_RECORD_MISSING")
+        if target_record.get("canonical_root_hash72") != commit[
+            "target_root_after_hash72"
+        ]:
+            raise Pass218I40I7Error(
+                "P218_I40_I7_CANONICAL_ROOT_BINDING_MISMATCH"
+            )
         if checkpoint.get("vm81_snapshot_sha256") != commit["projection_sha256"]:
-            raise Pass218I40I7Error("P218_I40_I7_VM81_PROJECTION_BINDING_MISMATCH")
-        if manifest.get("canonical_root_hash72") != commit["target_root_after_hash72"]:
+            raise Pass218I40I7Error(
+                "P218_I40_I7_VM81_PROJECTION_BINDING_MISMATCH"
+            )
+        if manifest.get("canonical_root_hash72") != commit[
+            "target_root_after_hash72"
+        ]:
             raise Pass218I40I7Error("P218_I40_I7_MANIFEST_ROOT_BINDING_MISMATCH")
-        if restore_record.get("canonical_root_hash72") != commit["target_root_after_hash72"]:
+        if restore_record.get("canonical_root_hash72") != commit[
+            "target_root_after_hash72"
+        ]:
             raise Pass218I40I7Error("P218_I40_I7_RESTORE_ROOT_BINDING_MISMATCH")
-        if restore_record.get("checkpoint_sha256") != checkpoint.get("checkpoint_sha256"):
+        if restore_record.get("checkpoint_sha256") != checkpoint.get(
+            "checkpoint_sha256"
+        ):
             raise Pass218I40I7Error("P218_I40_I7_RESTORE_CHECKPOINT_MISMATCH")
 
         binding_body = {
@@ -490,7 +585,9 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
             "version": PASS218_I40_VERSION,
             "i39_receipt_hash72": i39["i39_receipt_hash72"],
             "i39_hash216": i39["i39_hash216"],
-            "manifest_bound_i6_prepare_hash72": i39["manifest_bound_i6_prepare_hash72"],
+            "manifest_bound_i6_prepare_hash72": i39[
+                "manifest_bound_i6_prepare_hash72"
+            ],
             "manifest_binding": _copy(i39["manifest_binding"]),
             "i6_commit_receipt": _copy(commit),
             "i7_checkpoint_sha256": checkpoint["checkpoint_sha256"],
@@ -504,18 +601,24 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
             "action_authority_minted": False,
             "verbatim_source_retained": False,
         }
-        binding_hash72 = hash72_digest({"domain": PASS218_I40_BINDING_SCHEMA}, binding_body)
+        binding_hash72 = hash72_digest(
+            {"domain": PASS218_I40_BINDING_SCHEMA}, binding_body
+        )
         binding = {
             **binding_body,
             "manifest_bound_commit_persistence_hash72": binding_hash72,
         }
         validation_hash72 = hash72_digest(
-            {"domain": "HHS-P218-I40-MANIFEST-BOUND-CANONICAL-COMMIT-PERSISTENCE-VALIDATION-V1"},
+            {
+                "domain": "HHS-P218-I40-MANIFEST-BOUND-CANONICAL-COMMIT-PERSISTENCE-VALIDATION-V1"
+            },
             {
                 "i39_receipt_hash72": i39["i39_receipt_hash72"],
                 "i6_prepare_hash72": commit["prepare_hash72"],
                 "i6_commit_receipt_hash72": commit["receipt_hash72"],
-                "i6_target_root_after_hash72": commit["target_root_after_hash72"],
+                "i6_target_root_after_hash72": commit[
+                    "target_root_after_hash72"
+                ],
                 "i7_checkpoint_hash72": checkpoint["checkpoint_hash72"],
                 "i7_manifest_hash72": manifest["manifest_hash72"],
                 "i7_restore_hash72": restore_record["restore_hash72"],
@@ -531,7 +634,9 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
             "status": PASS218_I40_COMPLETE_STATUS,
             "i39_receipt_hash72": i39["i39_receipt_hash72"],
             "i39_hash216": i39["i39_hash216"],
-            "manifest_bound_i6_prepare_hash72": i39["manifest_bound_i6_prepare_hash72"],
+            "manifest_bound_i6_prepare_hash72": i39[
+                "manifest_bound_i6_prepare_hash72"
+            ],
             "manifest_binding": _copy(i39["manifest_binding"]),
             "i5_authorization_hash72": i39["i5_authorization_hash72"],
             "i4_entry_id_sha256": i39["i4_entry_id_sha256"],
@@ -541,7 +646,9 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
             "i6_commit_hash72": commit["commit_hash72"],
             "i6_commit_receipt_hash72": commit["receipt_hash72"],
             "i6_commit_hash216": commit["commit_hash216"],
-            "i6_target_root_before_hash72": commit["target_root_before_hash72"],
+            "i6_target_root_before_hash72": commit[
+                "target_root_before_hash72"
+            ],
             "i6_target_root_after_hash72": commit["target_root_after_hash72"],
             "i6_admitted_entry_id_sha256": commit["admitted_entry_id_sha256"],
             "i6_vm81_commit_count": commit["vm81_commit_count"],
@@ -587,7 +694,11 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
         receipt = {
             **body,
             "i40_receipt_hash72": receipt_hash72,
-            "i40_hash216": i39["i39_receipt_hash72"] + checkpoint["checkpoint_hash72"] + receipt_hash72,
+            "i40_hash216": (
+                i39["i39_receipt_hash72"]
+                + checkpoint["checkpoint_hash72"]
+                + receipt_hash72
+            ),
             "i40_hash216_semantics": [
                 "I39_MANIFEST_BOUND_NONCANONICAL_PREPARE_RECEIPT",
                 "I7_DURABLE_CANONICAL_CHECKPOINT",
@@ -607,19 +718,24 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
                 self.last_error_code = None
                 return existing
 
-            # If I7 durability already exists but the final I40 binding write was
-            # interrupted, recover directly from frozen I7 without repeating I6.
+            # If frozen I7 durability already exists but the final I40 binding
+            # write was interrupted, recover directly from I7 without repeating
+            # the canonical I6 mutation.
             if self.store.i7_store.manifest_path.exists():
                 try:
                     restored = self.store.i7_store.restore()
                     self.i7_restore_invocation_count += 1
                 except Pass218PersistenceError as exc:
-                    raise Pass218I40I7Error("P218_I40_I7_RECOVERY_FAILED:" + str(exc)) from exc
+                    raise Pass218I40I7Error(
+                        "P218_I40_I7_RECOVERY_FAILED:" + str(exc)
+                    ) from exc
                 commit_receipt = restored.target.committed_receipt(
                     str(authorization["authorization_hash72"])
                 )
                 if commit_receipt is None:
-                    raise Pass218I40I7Error("P218_I40_I7_EXPECTED_COMMIT_RECEIPT_MISSING")
+                    raise Pass218I40I7Error(
+                        "P218_I40_I7_EXPECTED_COMMIT_RECEIPT_MISSING"
+                    )
                 binding, receipt = self._build_binding_and_receipt(
                     i39=i39,
                     i39_prepare=i39_prepare,
@@ -643,11 +759,13 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
                 )
                 self.i6_prepare_reconstruction_count += 1
             except Pass218CanonicalCommitError as exc:
-                raise Pass218I40I6Error("P218_I40_I6_PREPARE_RECONSTRUCTION_FAILED:" + str(exc)) from exc
-            reconstructed = prepared.to_record()
-            expected_prepare = i39_prepare.get("i6_prepare_record")
-            if reconstructed != expected_prepare:
-                raise Pass218I40I6Error("P218_I40_I6_PREPARE_RECONSTRUCTION_MISMATCH")
+                raise Pass218I40I6Error(
+                    "P218_I40_I6_PREPARE_RECONSTRUCTION_FAILED:" + str(exc)
+                ) from exc
+            if prepared.to_record() != i39_prepare.get("i6_prepare_record"):
+                raise Pass218I40I6Error(
+                    "P218_I40_I6_PREPARE_RECONSTRUCTION_MISMATCH"
+                )
 
             try:
                 commit_receipt = boundary.commit(
@@ -656,7 +774,9 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
                 )
                 self.i6_commit_invocation_count += 1
             except Pass218CanonicalCommitError as exc:
-                raise Pass218I40I6Error("P218_I40_I6_CANONICAL_COMMIT_FAILED:" + str(exc)) from exc
+                raise Pass218I40I6Error(
+                    "P218_I40_I6_CANONICAL_COMMIT_FAILED:" + str(exc)
+                ) from exc
             commit_receipt = _verify_i6_commit_receipt(
                 commit_receipt,
                 i39_receipt=i39,
@@ -669,16 +789,22 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
                 restored = self.store.i7_store.restore()
                 self.i7_restore_invocation_count += 1
             except Pass218PersistenceError as exc:
-                raise Pass218I40I7Error("P218_I40_I7_PERSISTENCE_FAILED:" + str(exc)) from exc
+                raise Pass218I40I7Error(
+                    "P218_I40_I7_PERSISTENCE_FAILED:" + str(exc)
+                ) from exc
             if restored.target.root_hash72() != boundary.target.root_hash72():
                 raise Pass218I40I7Error("P218_I40_I7_RESTORED_ROOT_MISMATCH")
             if restored.target.snapshot_bytes() != boundary.target.snapshot_bytes():
-                raise Pass218I40I7Error("P218_I40_I7_RESTORED_VM81_IMAGE_MISMATCH")
+                raise Pass218I40I7Error(
+                    "P218_I40_I7_RESTORED_VM81_IMAGE_MISMATCH"
+                )
             restored_receipt = restored.target.committed_receipt(
                 str(authorization["authorization_hash72"])
             )
             if restored_receipt != commit_receipt:
-                raise Pass218I40I7Error("P218_I40_I7_RESTORED_COMMIT_RECEIPT_MISMATCH")
+                raise Pass218I40I7Error(
+                    "P218_I40_I7_RESTORED_COMMIT_RECEIPT_MISMATCH"
+                )
 
             binding, receipt = self._build_binding_and_receipt(
                 i39=i39,
@@ -709,19 +835,29 @@ class Pass218I40ManifestBoundCanonicalCommitPersistence:
         return {
             "schema": PASS218_I40_STATUS_SCHEMA,
             "version": PASS218_I40_VERSION,
-            "status": PASS218_I40_COMPLETE_STATUS if active is not None else PASS218_I40_PENDING_STATUS,
+            "status": (
+                PASS218_I40_COMPLETE_STATUS
+                if active is not None
+                else PASS218_I40_PENDING_STATUS
+            ),
             "predecessor_state_ready": predecessor_ready,
             "active_i39_receipt_hash72": active_i39_receipt_hash72,
-            "active_i40_receipt_hash72": None if active is None else active["i40_receipt_hash72"],
-            "canonical_root_hash72": None if active is None else active["i6_target_root_after_hash72"],
-            "i7_checkpoint_sha256": None if active is None else active["i7_checkpoint_sha256"],
+            "active_i40_receipt_hash72": (
+                None if active is None else active["i40_receipt_hash72"]
+            ),
+            "canonical_root_hash72": (
+                None if active is None else active["i6_target_root_after_hash72"]
+            ),
+            "i7_checkpoint_sha256": (
+                None if active is None else active["i7_checkpoint_sha256"]
+            ),
             "i6_prepare_reconstruction_count_current_process": self.i6_prepare_reconstruction_count,
             "i6_commit_invocation_count_current_process": self.i6_commit_invocation_count,
             "i7_checkpoint_invocation_count_current_process": self.i7_checkpoint_invocation_count,
             "i7_restore_invocation_count_current_process": self.i7_restore_invocation_count,
-            "canonical_vector_store_mutation_invoked": False if active is None else True,
-            "canonical_vm81_commit_invoked": False if active is None else True,
-            "pass218_i7_durable_persistence_invoked": False if active is None else True,
+            "canonical_vector_store_mutation_invoked": active is not None,
+            "canonical_vm81_commit_invoked": active is not None,
+            "pass218_i7_durable_persistence_invoked": active is not None,
             "canonical_learning_commit_invoked": False,
             "truth_promotion": False,
             "action_authority_minted": False,
