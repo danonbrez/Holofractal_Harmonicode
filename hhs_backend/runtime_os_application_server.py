@@ -15,9 +15,10 @@ formal/analogical differentiation candidate membrane, the I28 governed
 Hash216/VM5184 transition-candidate membrane, the I29 governed transition
 validation membrane, the I30 fenced atomic semantic-promotion membrane, the
 I31 fenced verbatim-purge receipt membrane, the I32 fenced source-closure
-membrane, the I33 authoritative curriculum-advance membrane, and the I34
-authoritative manifest-bound source-ingress membrane, then projects the same
-backend through ``hhs_gui/dist``. Supporting surfaces such as
+membrane, the I33 authoritative curriculum-advance membrane, the I34
+authoritative manifest-bound source-ingress membrane, and the I35
+manifest-bound semantic/source-transaction ingress membrane, then projects the
+same backend through ``hhs_gui/dist``. Supporting surfaces such as
 ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
@@ -132,6 +133,11 @@ from hhs_backend.runtime_os_pass218_manifest_source_ingress_i34 import (
     PASS218_I34_BIND_PATH,
     PASS218_I34_STATUS_PATH,
     install_pass218_i34_manifest_source_ingress_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_semantic_source_transaction_i35 import (
+    PASS218_I35_INGEST_PATH,
+    PASS218_I35_STATUS_PATH,
+    install_pass218_i35_manifest_semantic_transaction_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -252,8 +258,16 @@ PASS218_I34_MANIFEST_SOURCE_INGRESS_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I35_MANIFEST_SEMANTIC_SOURCE_TRANSACTION_CONTROL_PLANE = (
+    install_pass218_i35_manifest_semantic_transaction_control(
+        app,
+        PASS218_I34_MANIFEST_SOURCE_INGRESS_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I34 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I35 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -331,6 +345,9 @@ __all__ = [
     "PASS218_I34_BIND_PATH",
     "PASS218_I34_MANIFEST_SOURCE_INGRESS_CONTROL_PLANE",
     "PASS218_I34_STATUS_PATH",
+    "PASS218_I35_INGEST_PATH",
+    "PASS218_I35_MANIFEST_SEMANTIC_SOURCE_TRANSACTION_CONTROL_PLANE",
+    "PASS218_I35_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
