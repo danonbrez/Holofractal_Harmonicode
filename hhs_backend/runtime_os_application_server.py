@@ -10,10 +10,11 @@ model binding, the I21 governed relational-candidate query membrane, the I22
 governed semantic-graph candidate membrane, the I23 governed contextual-state
 hydration membrane, the I24 governed narrative-beat transition candidate
 membrane, the I25 governed perspective/context hydration membrane, the I26
-governed grounded-relational-manifold candidate membrane, and the I27 governed
-formal/analogical differentiation candidate membrane, then projects the same
-backend through ``hhs_gui/dist``. Supporting surfaces such as
-``/runtime-console`` remain intact.
+governed grounded-relational-manifold candidate membrane, the I27 governed
+formal/analogical differentiation candidate membrane, and the I28 governed
+Hash216/VM5184 transition-candidate membrane, then projects the same backend
+through ``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console``
+remain intact.
 """
 from __future__ import annotations
 
@@ -93,6 +94,11 @@ from hhs_backend.runtime_os_pass218_formal_analogical_i27 import (
     PASS218_I27_STATUS_PATH,
     install_pass218_i27_differentiation_control,
 )
+from hhs_backend.runtime_os_pass218_hash216_vm5184_i28 import (
+    PASS218_I28_CANDIDATES_PATH,
+    PASS218_I28_STATUS_PATH,
+    install_pass218_i28_transition_control,
+)
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
     install_pass218_runtime_os_lifecycle,
@@ -168,8 +174,12 @@ PASS218_I27_DIFFERENTIATION_CONTROL_PLANE = install_pass218_i27_differentiation_
     app,
     PASS218_I26_GROUNDED_MANIFOLD_CONTROL_PLANE,
 )
+PASS218_I28_TRANSITION_CONTROL_PLANE = install_pass218_i28_transition_control(
+    app,
+    PASS218_I27_DIFFERENTIATION_CONTROL_PLANE,
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I27 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I28 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -226,6 +236,9 @@ __all__ = [
     "PASS218_I27_CANDIDATES_PATH",
     "PASS218_I27_DIFFERENTIATION_CONTROL_PLANE",
     "PASS218_I27_STATUS_PATH",
+    "PASS218_I28_CANDIDATES_PATH",
+    "PASS218_I28_STATUS_PATH",
+    "PASS218_I28_TRANSITION_CONTROL_PLANE",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
