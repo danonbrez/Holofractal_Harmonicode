@@ -2,27 +2,12 @@
 
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
-public-root visual mount, installs the Pass-218 durable lifecycle gate, the I13
-diagnostic/operator authority control plane, the I14 multi-party approval
-plane, the cumulative I15-I19 maintenance execution, closure, and
-postcondition-verification membrane, the I20 governed Pass-166 relational
-model binding, the I21 governed relational-candidate query membrane, the I22
-governed semantic-graph candidate membrane, the I23 governed contextual-state
-hydration membrane, the I24 governed narrative-beat transition candidate
-membrane, the I25 governed perspective/context hydration membrane, the I26
-governed grounded-relational-manifold candidate membrane, the I27 governed
-formal/analogical differentiation candidate membrane, the I28 governed
-Hash216/VM5184 transition-candidate membrane, the I29 governed transition
-validation membrane, the I30 fenced atomic semantic-promotion membrane, the
-I31 fenced verbatim-purge receipt membrane, the I32 fenced source-closure
-membrane, the I33 authoritative curriculum-advance membrane, the I34
-authoritative manifest-bound source-ingress membrane, the I35 manifest-bound
-semantic/source-transaction ingress membrane, the I36 manifest-bound
-non-authoritative vector/VM5184 staging membrane, the I37 manifest-bound
-non-authoritative frozen-I5 promotability-proof membrane, the I38
-manifest-bound frozen-I5 explicit promotion-authority/authorization membrane,
-and the I39 manifest-bound frozen-I6 noncanonical VM81 prepare membrane, then
-projects the same backend through ``hhs_gui/dist``. Supporting surfaces such
+public-root visual mount and cumulatively installs the governed Pass-218
+RuntimeOS control planes through I40. I39 remains the manifest-bound frozen-I6
+noncanonical VM81 prepare membrane; I40 consumes that exact durable prepare,
+performs the frozen-I6 atomic canonical Pass-217/VM81 admission, seals it with
+frozen-I7 durable persistence, and verifies restart restoration before the
+same backend is projected through ``hhs_gui/dist``. Supporting surfaces such
 as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
@@ -162,6 +147,11 @@ from hhs_backend.runtime_os_pass218_manifest_canonical_prepare_i39 import (
     PASS218_I39_PREPARE_PATH,
     PASS218_I39_STATUS_PATH,
     install_pass218_i39_manifest_canonical_prepare_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_canonical_commit_persistence_i40 import (
+    PASS218_I40_COMMIT_PATH,
+    PASS218_I40_STATUS_PATH,
+    install_pass218_i40_manifest_canonical_commit_persistence_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -323,8 +313,18 @@ PASS218_I39_MANIFEST_CANONICAL_PREPARE_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I40_MANIFEST_CANONICAL_COMMIT_PERSISTENCE_CONTROL_PLANE = (
+    install_pass218_i40_manifest_canonical_commit_persistence_control(
+        app,
+        PASS218_I39_MANIFEST_CANONICAL_PREPARE_CONTROL_PLANE,
+        PASS218_I38_MANIFEST_PROMOTION_AUTHORIZATION_CONTROL_PLANE,
+        PASS218_I36_MANIFEST_VECTOR_VM5184_STAGING_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I39 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I40 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -417,6 +417,9 @@ __all__ = [
     "PASS218_I39_MANIFEST_CANONICAL_PREPARE_CONTROL_PLANE",
     "PASS218_I39_PREPARE_PATH",
     "PASS218_I39_STATUS_PATH",
+    "PASS218_I40_COMMIT_PATH",
+    "PASS218_I40_MANIFEST_CANONICAL_COMMIT_PERSISTENCE_CONTROL_PLANE",
+    "PASS218_I40_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
