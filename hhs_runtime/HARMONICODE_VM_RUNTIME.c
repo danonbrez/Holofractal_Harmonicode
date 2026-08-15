@@ -2054,6 +2054,7 @@ int main(int argc, char **argv) {
 
     run_vm(&vm, &opt);
     hhs_run_bridge_demo(&vm);
+    print_closure_summary(&vm);
 
     if (opt.enable_legacy_float_layers) {
 
@@ -2079,8 +2080,6 @@ int main(int argc, char **argv) {
             vm.xyzw[3]
         );
     }
-
-    print_closure_summary(&vm);
 
     printf("\nFINAL HASH72:\n%s\n",
            vm.last_receipt.state_h72);
@@ -2310,51 +2309,10 @@ static void hhs_vm_native_add(
     uint64_t b,
     uint64_t *out
 ) {
-    const uint8_t value_a =
-        (uint8_t)(a % 72);
-    const uint8_t value_b =
-        (uint8_t)(b % 72);
-
-    const uint8_t src_a = 78;
-    const uint8_t src_b = 79;
-    const uint8_t dst = 80;
-
-    Instruction load_a = {
-        OP_LOAD,
-        value_a,
-        0,
-        src_a,
-        29,
-        0
-    };
-
-    Instruction load_b = {
-        OP_LOAD,
-        value_b,
-        0,
-        src_b,
-        30,
-        0
-    };
-
-    Instruction add = {
-        OP_ADD,
-        src_a,
-        src_b,
-        dst,
-        31,
-        7
-    };
-
-    uint32_t witness = 0;
-    double id_res = 0.0;
-    int id_has = 0;
-
-    apply_instruction(vm, &load_a, &witness, &id_res, &id_has);
-    apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
-    apply_instruction(vm, &add, &witness, &id_res, &id_has);
-
-    *out = wrap72((int)value_a + (int)value_b);
+    (void)vm;
+    if (!out)
+        return;
+    *out = wrap72((int)(a % 72) + (int)(b % 72));
 }
 
 static void hhs_vm_native_mul(
@@ -2363,51 +2321,10 @@ static void hhs_vm_native_mul(
     uint64_t b,
     uint64_t *out
 ) {
-    const uint8_t value_a =
-        (uint8_t)(a % 72);
-    const uint8_t value_b =
-        (uint8_t)(b % 72);
-
-    const uint8_t src_a = 78;
-    const uint8_t src_b = 79;
-    const uint8_t dst = 80;
-
-    Instruction load_a = {
-        OP_LOAD,
-        value_a,
-        0,
-        src_a,
-        29,
-        0
-    };
-
-    Instruction load_b = {
-        OP_LOAD,
-        value_b,
-        0,
-        src_b,
-        30,
-        0
-    };
-
-    Instruction mul = {
-        OP_MULXY,
-        src_a,
-        src_b,
-        dst,
-        32,
-        9
-    };
-
-    uint32_t witness = 0;
-    double id_res = 0.0;
-    int id_has = 0;
-
-    apply_instruction(vm, &load_a, &witness, &id_res, &id_has);
-    apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
-    apply_instruction(vm, &mul, &witness, &id_res, &id_has);
-
-    *out = wrap72((int)value_a * (int)value_b);
+    (void)vm;
+    if (!out)
+        return;
+    *out = wrap72((int)(a % 72) * (int)(b % 72));
 }
 
 // ============================================================
@@ -2627,47 +2544,6 @@ static int hhs_execute_ir_node(
 }
 
 // ============================================================
-// BLOCK EXECUTION
-// ============================================================
-
-static int hhs_execute_ir_block(
-    VM81 *vm,
-    HHS_IR_Program *prog,
-    HHS_VM_Frame *frame
-) {
-
-    while (frame->current_block < prog->block_count) {
-
-        HHS_IR_Block *blk =
-            &prog->blocks[frame->current_block];
-
-        if (frame->current_node >= blk->node_count)
-            break;
-
-        HHS_IR_Node *node =
-            &blk->nodes[frame->current_node];
-
-        if (!hhs_execute_ir_node(
-                vm,
-                frame,
-                node))
-        {
-            return 0;
-        }
-
-        if (frame->halted)
-            return 1;
-
-        if (frame->control_transferred)
-            return 1;
-
-        frame->current_node++;
-    }
-
-    return frame->current_block < prog->block_count;
-}
-
-// ============================================================
 // PROGRAM EXECUTION
 // ============================================================
 
@@ -2676,35 +2552,35 @@ static int hhs_execute_ir(
     HHS_IR_Program *prog,
     HHS_VM_Frame *frame
 ) {
-
     while (!frame->halted) {
-
-        if (!hhs_execute_ir_block(
-                vm,
-                prog,
-                frame))
-        {
+        if (frame->current_block >= prog->block_count)
             return 0;
+
+        HHS_IR_Block *blk = &prog->blocks[frame->current_block];
+
+        if (frame->current_node >= blk->node_count) {
+            if (frame->current_block + 1 >= prog->block_count) {
+                frame->halted = 1;
+            } else {
+                frame->current_block++;
+                frame->current_node = 0;
+            }
+            continue;
         }
+
+        HHS_IR_Node *node = &blk->nodes[frame->current_node];
+        uint32_t old_block = frame->current_block;
+        uint32_t old_node = frame->current_node;
+
+        if (!hhs_execute_ir_node(vm, frame, node))
+            return 0;
 
         if (frame->halted)
             break;
 
-        if (frame->control_transferred) {
-            frame->control_transferred = 0;
-            continue;
-        }
-
-        if (
-            frame->current_block + 1
-            >= prog->block_count
-        ) {
-            frame->halted = 1;
-        }
-        else {
-
-            frame->current_block++;
-            frame->current_node = 0;
+        if (frame->current_block == old_block &&
+            frame->current_node == old_node) {
+            frame->current_node++;
         }
     }
 
