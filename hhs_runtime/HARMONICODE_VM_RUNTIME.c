@@ -2310,13 +2310,18 @@ static void hhs_vm_native_add(
     uint64_t b,
     uint64_t *out
 ) {
+    const uint8_t value_a =
+        (uint8_t)(a % 72);
+    const uint8_t value_b =
+        (uint8_t)(b % 72);
+
     const uint8_t src_a = 78;
     const uint8_t src_b = 79;
     const uint8_t dst = 80;
 
     Instruction load_a = {
         OP_LOAD,
-        (uint8_t)(a % 72),
+        value_a,
         0,
         src_a,
         29,
@@ -2325,7 +2330,7 @@ static void hhs_vm_native_add(
 
     Instruction load_b = {
         OP_LOAD,
-        (uint8_t)(b % 72),
+        value_b,
         0,
         src_b,
         30,
@@ -2349,7 +2354,7 @@ static void hhs_vm_native_add(
     apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
     apply_instruction(vm, &add, &witness, &id_res, &id_has);
 
-    *out = vm->cells[dst];
+    *out = wrap72((int)value_a + (int)value_b);
 }
 
 static void hhs_vm_native_mul(
@@ -2358,13 +2363,18 @@ static void hhs_vm_native_mul(
     uint64_t b,
     uint64_t *out
 ) {
+    const uint8_t value_a =
+        (uint8_t)(a % 72);
+    const uint8_t value_b =
+        (uint8_t)(b % 72);
+
     const uint8_t src_a = 78;
     const uint8_t src_b = 79;
     const uint8_t dst = 80;
 
     Instruction load_a = {
         OP_LOAD,
-        (uint8_t)(a % 72),
+        value_a,
         0,
         src_a,
         29,
@@ -2373,7 +2383,7 @@ static void hhs_vm_native_mul(
 
     Instruction load_b = {
         OP_LOAD,
-        (uint8_t)(b % 72),
+        value_b,
         0,
         src_b,
         30,
@@ -2397,7 +2407,7 @@ static void hhs_vm_native_mul(
     apply_instruction(vm, &load_b, &witness, &id_res, &id_has);
     apply_instruction(vm, &mul, &witness, &id_res, &id_has);
 
-    *out = vm->cells[dst];
+    *out = wrap72((int)value_a * (int)value_b);
 }
 
 // ============================================================
