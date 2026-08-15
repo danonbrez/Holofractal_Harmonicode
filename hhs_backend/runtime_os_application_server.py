@@ -3,12 +3,12 @@
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
 public-root visual mount and cumulatively installs the governed Pass-218
-RuntimeOS control planes through I40. I39 remains the manifest-bound frozen-I6
-noncanonical VM81 prepare membrane; I40 consumes that exact durable prepare,
-performs the frozen-I6 atomic canonical Pass-217/VM81 admission, seals it with
-frozen-I7 durable persistence, and verifies restart restoration before the
-same backend is projected through ``hhs_gui/dist``. Supporting surfaces such
-as ``/runtime-console`` remain intact.
+RuntimeOS control planes through I41. I40 performs and durably restores the
+exact frozen-I6 canonical Pass-217/VM81 admission; I41 binds that exact durable
+canonical identity into a non-authoritative I30-target learning-ingress
+candidate without synthesizing I27-I29 lineage or invoking I30. The same
+backend is projected through ``hhs_gui/dist``. Supporting surfaces such as
+``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -152,6 +152,11 @@ from hhs_backend.runtime_os_pass218_manifest_canonical_commit_persistence_i40 im
     PASS218_I40_COMMIT_PATH,
     PASS218_I40_STATUS_PATH,
     install_pass218_i40_manifest_canonical_commit_persistence_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_canonical_learning_ingress_i41 import (
+    PASS218_I41_ADMIT_PATH,
+    PASS218_I41_STATUS_PATH,
+    install_pass218_i41_manifest_canonical_learning_ingress_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -323,8 +328,17 @@ PASS218_I40_MANIFEST_CANONICAL_COMMIT_PERSISTENCE_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I41_MANIFEST_CANONICAL_LEARNING_INGRESS_CONTROL_PLANE = (
+    install_pass218_i41_manifest_canonical_learning_ingress_control(
+        app,
+        PASS218_I40_MANIFEST_CANONICAL_COMMIT_PERSISTENCE_CONTROL_PLANE,
+        PASS218_I30_ATOMIC_PROMOTION_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I40 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I41 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -420,6 +434,9 @@ __all__ = [
     "PASS218_I40_COMMIT_PATH",
     "PASS218_I40_MANIFEST_CANONICAL_COMMIT_PERSISTENCE_CONTROL_PLANE",
     "PASS218_I40_STATUS_PATH",
+    "PASS218_I41_ADMIT_PATH",
+    "PASS218_I41_MANIFEST_CANONICAL_LEARNING_INGRESS_CONTROL_PLANE",
+    "PASS218_I41_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
