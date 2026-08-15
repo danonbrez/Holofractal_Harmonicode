@@ -16,13 +16,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
-from typing import Any, Mapping, Protocol, Sequence
+from typing import Any, Mapping, Protocol
 
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.core.hash72_validator_v1 import validate_hash72
-from hhs_runtime.pass218.narrative_beat_i24 import (
-    Pass218I24BeatRequest,
-)
+from hhs_runtime.pass218.narrative_beat_i24 import Pass218I24BeatRequest
 
 PASS218_I25_PERSPECTIVE_CONTEXT_VERSION = "HHS-P218-I25-PERSPECTIVE-CONTEXT-V1"
 PASS218_I25_PERSPECTIVE_CONTEXT_SCHEMA = (
@@ -322,14 +320,18 @@ class Pass218I25PerspectiveContextHydrator:
             "context_id": request.context_id,
             "curriculum_identity_hash72": request.curriculum_identity_hash72,
             "curriculum_position": request.curriculum_position,
-            "source_id": request.source_id,
-            "source_checksum_sha256": request.source_checksum_sha256,
-            "source_authority": request.source_authority,
-            "rights_class": request.rights_class,
-            "evidence_id": request.evidence_id,
-            "evidence_type": request.evidence_type,
-            "evidence_epistemic_status": request.evidence_epistemic_status,
-            "evidence_payload_hash72": request.evidence_payload_hash72,
+            "source_identity": {
+                "source_id": request.source_id,
+                "source_checksum_sha256": request.source_checksum_sha256,
+                "source_authority": request.source_authority,
+                "rights_class": request.rights_class,
+            },
+            "evidence": {
+                "evidence_id": request.evidence_id,
+                "evidence_type": request.evidence_type,
+                "epistemic_status": request.evidence_epistemic_status,
+                "payload_hash72": request.evidence_payload_hash72,
+            },
             "attention_tokens": list(request.attention_tokens),
             "top_k": request.top_k,
             "attention_radius": request.attention_radius,
