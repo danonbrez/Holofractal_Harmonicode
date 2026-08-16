@@ -69,11 +69,11 @@ class FibonacciCompressionWitness:
 
 def build_witness(depth: int) -> FibonacciCompressionWitness:
     values = fibonacci_prefix(depth)
-    transitions = [Fraction(values[index], values[index + 1]) for index in range(1, depth)]
+    transitions = [Fraction(values[index], values[index + 1]) for index in range(depth)]
     cumulative = Fraction(1, 1)
     for transition in transitions:
         cumulative *= transition
-    expected_cumulative = Fraction(1, values[depth]) if depth > 0 else Fraction(1, 1)
+    expected_cumulative = Fraction(1, values[depth])
     if cumulative != expected_cumulative:
         raise AssertionError("Pass 192 telescoping invariant failed")
     witness = FibonacciCompressionWitness(
