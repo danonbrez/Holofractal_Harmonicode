@@ -3,7 +3,7 @@
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
 public-root visual mount and cumulatively installs the governed Pass-218
-RuntimeOS control planes through I45. I40 performs and durably restores the
+RuntimeOS control planes through I46. I40 performs and durably restores the
 exact frozen-I6 canonical Pass-217/VM81 admission; I41 binds that exact durable
 canonical identity into a non-authoritative I30-target learning-ingress
 candidate without synthesizing I27-I29 lineage or invoking I30. I42 consumes a
@@ -21,8 +21,13 @@ that exact durable I44 promotion, derives the frozen-I31 purge binding from the
 durable I44/I30 identities, invokes frozen I31 exactly once or adopts the exact
 already-committed purge on restart, proves the I30 semantic generation is
 unchanged, and stops at VERBATIM_PURGE_RECEIPTED_PENDING_CLOSURE without
-invoking I32 or advancing curriculum. The same backend is projected through
-``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console`` remain intact.
+invoking I32 or advancing curriculum. I46 consumes that exact durable I45
+purge, walks the bound I44/I43/I42 lineage back to the exact I34 nonverbatim
+source identity, derives the frozen-I32 closure internally, invokes I32 exactly
+once or restart-adopts the exact durable closure, proves I30 unchanged, and
+stops at SOURCE_CLOSED_PENDING_CURRICULUM_ADVANCE without invoking I33. The
+same backend is projected through ``hhs_gui/dist``. Supporting surfaces such as
+``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -191,6 +196,11 @@ from hhs_backend.runtime_os_pass218_manifest_i31_verbatim_purge_i45 import (
     PASS218_I45_PURGE_PATH,
     PASS218_I45_STATUS_PATH,
     install_pass218_i45_manifest_bound_i31_verbatim_purge_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_i32_source_closure_i46 import (
+    PASS218_I46_CLOSE_PATH,
+    PASS218_I46_STATUS_PATH,
+    install_pass218_i46_manifest_bound_i32_source_closure_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -409,8 +419,21 @@ PASS218_I45_MANIFEST_BOUND_I31_VERBATIM_PURGE_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I46_MANIFEST_BOUND_I32_SOURCE_CLOSURE_CONTROL_PLANE = (
+    install_pass218_i46_manifest_bound_i32_source_closure_control(
+        app,
+        PASS218_I45_MANIFEST_BOUND_I31_VERBATIM_PURGE_CONTROL_PLANE,
+        PASS218_I44_MANIFEST_BOUND_I30_ATOMIC_PROMOTION_CONTROL_PLANE,
+        PASS218_I43_MANIFEST_BOUND_I30_PROMOTION_REQUEST_AUTHORIZATION_CONTROL_PLANE,
+        PASS218_I42_MANIFEST_SEMANTIC_CROSS_LINEAGE_EQUALITY_CONTROL_PLANE,
+        PASS218_I34_MANIFEST_SOURCE_INGRESS_CONTROL_PLANE,
+        PASS218_I32_SOURCE_CLOSURE_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I45 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I46 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -521,6 +544,9 @@ __all__ = [
     "PASS218_I45_MANIFEST_BOUND_I31_VERBATIM_PURGE_CONTROL_PLANE",
     "PASS218_I45_PURGE_PATH",
     "PASS218_I45_STATUS_PATH",
+    "PASS218_I46_CLOSE_PATH",
+    "PASS218_I46_MANIFEST_BOUND_I32_SOURCE_CLOSURE_CONTROL_PLANE",
+    "PASS218_I46_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
