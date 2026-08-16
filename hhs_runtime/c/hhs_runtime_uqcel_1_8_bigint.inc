@@ -1,5 +1,4 @@
 #include "../include/hhs_runtime_uqcel_1_8.h"
-#include "../include/hhs_hash216_bytes.h"
 #include <string.h>
 
 static const uint8_t HHS_EXACT_UQCEL_SOURCE_SHA256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES] = {
@@ -13,6 +12,73 @@ static uint32_t hhs_exact_uqcel_version_word(void) {
     return (HHS_EXACT_UQCEL_VERSION_MAJOR << 16) |
            (HHS_EXACT_UQCEL_VERSION_MINOR << 8) |
            HHS_EXACT_UQCEL_VERSION_PATCH;
+}
+
+/* ============================================================
+ * PRIVATE CANONICAL HASH72 / HASH216 COPY
+ *
+ * These helpers intentionally copy the inherited canonical byte-mixing
+ * algorithm under UQCEL-private static names.  This keeps the historical
+ * hhs_runtime_abi.c one-file link contract intact while producing exactly the
+ * same receipt bytes as hhs_runtime/src/hhs_hash216.c when that implementation
+ * is linked.  Equivalence is covered by Pass 219 tests.
+ * ============================================================
+ */
+
+static uint64_t hhs_exact_uqcel_hash_mix64(uint64_t value) {
+    value ^= value >> 33U;
+    value *= UINT64_C(0xff51afd7ed558ccd);
+    value ^= value >> 33U;
+    value *= UINT64_C(0xc4ceb9fe1a85ec53);
+    value ^= value >> 33U;
+    return value;
+}
+
+static uint64_t hhs_exact_uqcel_fold_bytes(const void *data, size_t size) {
+    const uint8_t *bytes = (const uint8_t *)data;
+    uint64_t state = UINT64_C(0x179971179971);
+    size_t i;
+    for (i = 0U; i < size; ++i) {
+        state ^= ((uint64_t)bytes[i] << ((i % 8U) * 8U));
+        state = hhs_exact_uqcel_hash_mix64(state + (uint64_t)i + UINT64_C(1));
+    }
+    return state;
+}
+
+static char hhs_exact_uqcel_hash72_symbol(uint64_t value) {
+    return HHS_EXACT_HASH72_ALPHABET[value % HHS_EXACT_HASH72_LEN];
+}
+
+static void hhs_exact_uqcel_hash72_bytes(
+    const void *data,
+    size_t size,
+    char out_hash72[HHS_EXACT_HASH72_STRLEN]
+) {
+    uint64_t state = hhs_exact_uqcel_fold_bytes(data, size);
+    size_t i;
+    for (i = 0U; i < HHS_EXACT_HASH72_LEN; ++i) {
+        state = hhs_exact_uqcel_hash_mix64(
+            state + UINT64_C(0x9E3779B97F4A7C15) * ((uint64_t)i + UINT64_C(1))
+        );
+        out_hash72[i] = hhs_exact_uqcel_hash72_symbol(state);
+    }
+    out_hash72[HHS_EXACT_HASH72_LEN] = '\0';
+}
+
+static void hhs_exact_uqcel_hash216_bytes(
+    const void *data,
+    size_t size,
+    char out_hash216[HHS_EXACT_UQCEL_HASH216_STRLEN]
+) {
+    uint64_t state = hhs_exact_uqcel_fold_bytes(data, size);
+    size_t i;
+    for (i = 0U; i < HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN; ++i) {
+        state = hhs_exact_uqcel_hash_mix64(
+            state + UINT64_C(0x517cc1b727220a95) * ((uint64_t)i + UINT64_C(1))
+        );
+        out_hash216[i] = hhs_exact_uqcel_hash72_symbol(state);
+    }
+    out_hash216[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
 }
 
 /* ============================================================
