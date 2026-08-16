@@ -64,7 +64,7 @@ These relations are not asserted to exhaust the native UCE. They are the explici
 
 For positive odd `p,q`:
 
-```harmarmonicode
+```harmonicode
 epsilon_L = Mod(((p-a^2)*(q-a^2))/b^4,b^2)
 ```
 
