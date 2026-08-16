@@ -3,7 +3,7 @@
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
 public-root visual mount and cumulatively installs the governed Pass-218
-RuntimeOS control planes through I43. I40 performs and durably restores the
+RuntimeOS control planes through I44. I40 performs and durably restores the
 exact frozen-I6 canonical Pass-217/VM81 admission; I41 binds that exact durable
 canonical identity into a non-authoritative I30-target learning-ingress
 candidate without synthesizing I27-I29 lineage or invoking I30. I42 consumes a
@@ -12,9 +12,13 @@ and proves exact shared manifest/source identity equality without granting or
 invoking I30 authority. I43 then accepts a transient frozen-I30 promotion
 request, requires its embedded I29 request to fingerprint exactly to I42,
 independently replays I29, and seals the separate exact I30 authority grant as
-AUTHORIZED_PENDING_I30_INVOCATION without calling the I30 promoter. The same
-backend is projected through ``hhs_gui/dist``. Supporting surfaces such as
-``/runtime-console`` remain intact.
+AUTHORIZED_PENDING_I30_INVOCATION without calling the I30 promoter. I44 consumes
+that durable I43 authorization plus the exact transient I30 request, invokes
+frozen I30 once when its durable store is empty or adopts the exact authorized
+already-committed I30 generation after restart, verifies the atomic VM5184
+promotion, and stops at ATOMIC_PROMOTION_COMMITTED_PENDING_I31 without invoking
+I31/I32 or advancing curriculum. The same backend is projected through
+``hhs_gui/dist``. Supporting surfaces such as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
 
@@ -173,6 +177,11 @@ from hhs_backend.runtime_os_pass218_manifest_i30_promotion_request_authorization
     PASS218_I43_AUTHORIZE_PATH,
     PASS218_I43_STATUS_PATH,
     install_pass218_i43_manifest_bound_i30_promotion_request_authorization_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_i30_atomic_promotion_i44 import (
+    PASS218_I44_PROMOTE_PATH,
+    PASS218_I44_STATUS_PATH,
+    install_pass218_i44_manifest_bound_i30_atomic_promotion_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -373,8 +382,17 @@ PASS218_I43_MANIFEST_BOUND_I30_PROMOTION_REQUEST_AUTHORIZATION_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I44_MANIFEST_BOUND_I30_ATOMIC_PROMOTION_CONTROL_PLANE = (
+    install_pass218_i44_manifest_bound_i30_atomic_promotion_control(
+        app,
+        PASS218_I43_MANIFEST_BOUND_I30_PROMOTION_REQUEST_AUTHORIZATION_CONTROL_PLANE,
+        PASS218_I30_ATOMIC_PROMOTION_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I43 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I44 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -479,6 +497,9 @@ __all__ = [
     "PASS218_I43_AUTHORIZE_PATH",
     "PASS218_I43_MANIFEST_BOUND_I30_PROMOTION_REQUEST_AUTHORIZATION_CONTROL_PLANE",
     "PASS218_I43_STATUS_PATH",
+    "PASS218_I44_MANIFEST_BOUND_I30_ATOMIC_PROMOTION_CONTROL_PLANE",
+    "PASS218_I44_PROMOTE_PATH",
+    "PASS218_I44_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
