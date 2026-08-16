@@ -11,7 +11,8 @@
 - Main concurrently advanced during I46 validation to VM81 exact-ABI repair merge `284bf652d9635cc0c940f79dfe6aff6f8b787c3c`; I46 has not merged, rebased onto, or overwritten that independent main lineage.
 - Frozen I45 PR: #255 remains the unmerged predecessor boundary.
 - I46 draft PR: #256 remains open, draft, and unmerged.
-- Pre-final-validation candidate: `b5c3ccbca847a598361064c4b82862337362bbe8`
+- Last semantic/test candidate before workflow-integrity repair: `44683308f601be0d58052c4cb5c04a577f95c06a`.
+- Workflow-integrity repair commit: `2c3c71463247074b79c9e0e9bdb1b25b35b77dc2`.
 
 ## Iteration boundary
 
@@ -48,8 +49,16 @@ Frozen I45, I44, I43, I42, I34, I32, I31, I30, and I33 implementation files are 
 7. `e471f265c75887ae6694ab630b1a622e9a929a26` — initial seven-file restart checkpoint and remote-validation boundary.
 8. `757336867d4ddbb8f68ad463318f90bf9ce7c6e9` — diagnostic-only workflow repair that surfaces focused pytest failure output as a GitHub annotation; no runtime semantics changed.
 9. `b5c3ccbca847a598361064c4b82862337362bbe8` — focused-test fixture repair to import and use frozen `PASS218_I30_TARGET_SCOPE` exactly. The preceding failed run proved the fixture's hard-coded target surface was invalid and was rejected by frozen I44 before I46 execution; no frozen runtime validation was weakened.
+10. `44683308f601be0d58052c4cb5c04a577f95c06a` — restart documentation checkpoint before the first complete inherited-regression attempt.
+11. `2c3c71463247074b79c9e0e9bdb1b25b35b77dc2` — validation-integrity repair only: fixes the frozen-I34 test filename, explicitly checks out the PR head SHA for true exact-head validation instead of the GitHub PR merge ref, and enables `workflow_dispatch` so a separately constructed synthetic merge can be validated by its own commit. No runtime, frozen pass, fixture, or semantic implementation changed.
 
-The first exact-head I46 run on `e471f265c75887ae6694ab630b1a622e9a929a26` passed compilation and the global no-authoritative-float gate, then stopped at the focused I46 fixture with `P218_I44_RECEIPT_TARGET_INVALID`. The repair-forward fixture commit corrects only that test construction error. Independent RuntimeOS production-root and full application/IDE acceptance are green on the repaired `b5c3ccbc...` candidate while the final I46-specific job is awaiting runner execution.
+## Validation findings so far
+
+Run `31950767708` / job `95173762091` was triggered by PR #256 while its visible head remained `44683308f601be0d58052c4cb5c04a577f95c06a`. The workflow label said "exact" but `actions/checkout` had no explicit `ref`, so GitHub checked out PR merge ref `e823abc91dbeb07950436c58295c6e78cd60ca52` (I46 head merged synthetically into current `main` `284bf652d9635cc0c940f79dfe6aff6f8b787c3c`). That run is therefore evidence for the synthetic composition only up to the point reached, not a valid exact-head freeze run.
+
+On that merge-ref checkout, compilation, the global no-authoritative-float gate, focused I46 tests, and frozen I45/I44/I43/I42/I41/I40 regressions all passed. The job then exited with pytest code 4 because the workflow referenced nonexistent `tests/pass218/test_pass218_iteration34_manifest_bound_source_ingress.py`; the actual frozen test is `tests/pass218/test_pass218_iteration34_manifest_source_ingress.py`. This was a workflow path error, not an I46 or frozen-I34 semantic failure. Later regression/evidence steps were skipped by job failure.
+
+The workflow-integrity repair corrects both defects before final freeze validation. No green result from the pre-repair PR merge-ref run is being misrepresented as exact-head terminal validation.
 
 ## Validation plan
 
@@ -58,10 +67,10 @@ The first exact-head I46 run on `e471f265c75887ae6694ab630b1a622e9a929a26` passe
 - Focused I46 fresh exactly-one-I32 invocation, restart adoption without duplicate I32, durable replay, unrelated manifest-source rejection, source-payload non-persistence, erasure-claim boundary, and API override rejection.
 - Frozen I45/I44/I43/I42/I41/I40/I34/I33/I32/I31/I30/I29/I27/I7/I6/I9 regressions.
 - Pass205 native continuation, Pass166 Word2Vec, repository-native crawler, and RuntimeOS production-root acceptance.
-- Deterministic I46 evidence on exact head and a separately constructed synthetic merge that preserves the concurrent VM81 exact-ABI repair from current `main`; payload SHA-256 must match before freeze.
+- Deterministic I46 evidence on true exact head and a separately constructed synthetic merge that preserves the concurrent VM81 exact-ABI repair from current `main`; payload SHA-256 must match before freeze.
 - Full TypeScript RuntimeOS/browser application acceptance and final terminal check matrix.
 - Exact I45→I46 compare must retain merge base `64f3a8acea92775f015400eac7e1e07f0707acfb`, report zero behind, and contain only the seven listed I46 files. Repair-forward commits are append-only; history is not rewritten.
 
 ## Current state
 
-The complete seven-file I46 candidate is repository-visible and restartable. The next action is final exact-head validation on the documentation-updated candidate; if green, construct and validate a synthetic merge with current `main`, compare deterministic evidence payloads, record the final review/check matrix, and freeze. No merge to `main`, rebase, production deployment, I33 curriculum advancement, or overwrite of the concurrent VM81 repair is authorized by this iteration request.
+The complete seven-file I46 candidate is repository-visible and restartable. The next action is true exact-head validation on the documentation-updated candidate produced by this checkpoint; if green, construct and validate a separate synthetic merge with current `main`, compare deterministic evidence payloads, record the final review/check matrix, and freeze. No merge to `main`, rebase, production deployment, I33 curriculum advancement, or overwrite of the concurrent VM81 repair is authorized by this iteration request.
