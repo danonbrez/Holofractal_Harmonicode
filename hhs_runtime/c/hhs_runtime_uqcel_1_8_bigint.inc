@@ -1,5 +1,5 @@
 #include "../include/hhs_runtime_uqcel_1_8.h"
-#include "../include/hhs_hash216.h"
+#include "../include/hhs_hash216_bytes.h"
 #include <string.h>
 
 static const uint8_t HHS_EXACT_UQCEL_SOURCE_SHA256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES] = {
