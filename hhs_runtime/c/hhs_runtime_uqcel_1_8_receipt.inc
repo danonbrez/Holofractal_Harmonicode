@@ -115,9 +115,9 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
 ) {
     HHSExactStatus validation_status;
     HHSExactStatus material_status;
-    char change[HHS_HASH72_BYTES_STRLEN];
-    char receipt[HHS_HASH72_BYTES_STRLEN];
-    char identity[HHS_HASH216_BYTES_STRLEN];
+    char change[HHS_EXACT_HASH72_STRLEN];
+    char receipt[HHS_EXACT_HASH72_STRLEN];
+    char identity[HHS_EXACT_UQCEL_HASH216_STRLEN];
     uint8_t frame_bytes[HHS_EXACT_VM81_FRAME_BYTES];
     size_t frame_length = 0U;
     uint8_t material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES];
@@ -141,14 +141,14 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
         frame_length != HHS_EXACT_VM81_FRAME_BYTES)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
-    hhs_hash72_compute_bytes(frame_bytes, frame_length, change);
+    hhs_exact_uqcel_hash72_bytes(frame_bytes, frame_length, change);
     memcpy(out_admission->change_hash72, change, HHS_EXACT_HASH72_STRLEN);
 
     material_status = hhs_exact_uqcel_receipt_material(
         input, out_admission, material, sizeof(material), &material_length);
     if (material_status != HHS_EXACT_STATUS_OK)
         return material_status;
-    hhs_hash72_compute_bytes(material, material_length, receipt);
+    hhs_exact_uqcel_hash72_bytes(material, material_length, receipt);
     memcpy(out_admission->receipt_hash72, receipt, HHS_EXACT_HASH72_STRLEN);
 
     memcpy(out_admission->hash216_triplet, input->previous_hash72, HHS_EXACT_HASH72_LEN);
@@ -158,7 +158,7 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
            out_admission->receipt_hash72, HHS_EXACT_HASH72_LEN);
     out_admission->hash216_triplet[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
 
-    hhs_hash216_compute_bytes(
+    hhs_exact_uqcel_hash216_bytes(
         out_admission->hash216_triplet,
         HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN,
         identity);
