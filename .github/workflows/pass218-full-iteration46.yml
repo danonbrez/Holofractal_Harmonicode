@@ -22,13 +22,25 @@ permissions:
 
 jobs:
   manifest-bound-i32-source-closure:
+    name: manifest-bound-i32-source-closure (${{ matrix.target }})
     runs-on: ubuntu-24.04
     timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - exact
+          - synthetic
     steps:
-      - name: Check out exact Iteration 46 candidate
+      - name: Check out explicit Iteration 46 validation target
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ matrix.target == 'synthetic' && github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.event.pull_request.head.sha || github.sha }}
+
+      - name: Record validation target identity
+        run: |
+          printf 'PASS218_I46_VALIDATION_TARGET=%s\n' '${{ matrix.target }}'
+          git rev-parse HEAD
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -150,7 +162,7 @@ jobs:
       - name: Upload I46 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass218-iteration46-manifest-bound-i32-source-closure-evidence
+          name: pass218-iteration46-${{ matrix.target }}-manifest-bound-i32-source-closure-evidence
           path: .i46-evidence
           if-no-files-found: error
           include-hidden-files: true
