@@ -217,10 +217,6 @@ void hhs_runtime_step(
 
     state->step++;
 
-    // --------------------------------------------------------------------
-    // Tensor coupling
-    // --------------------------------------------------------------------
-
     if (tensor) {
 
         state->tensor = *tensor;
@@ -234,10 +230,6 @@ void hhs_runtime_step(
         state->flux.constraint_flux +=
             tensor->constraint;
     }
-
-    // --------------------------------------------------------------------
-    // Closure logic
-    // --------------------------------------------------------------------
 
     if (state->flux.orientation_flux == 0) {
 
@@ -274,10 +266,6 @@ void hhs_runtime_step(
             W_CONVERGED;
     }
 
-    // --------------------------------------------------------------------
-    // Orbit logic
-    // --------------------------------------------------------------------
-
     if ((state->step % 144) == 0) {
 
         state->orbit_id++;
@@ -285,10 +273,6 @@ void hhs_runtime_step(
         state->witness_flags |=
             W_ORBIT_DETECTED;
     }
-
-    // --------------------------------------------------------------------
-    // Generate deterministic pseudo-cell layer
-    // --------------------------------------------------------------------
 
     uint8_t cells[72];
 
@@ -312,10 +296,6 @@ void hhs_runtime_step(
         cells,
         state->state_hash72
     );
-
-    // --------------------------------------------------------------------
-    // Receipt projection
-    // --------------------------------------------------------------------
 
     for (size_t i = 0; i < 72; i++) {
 
@@ -492,6 +472,7 @@ size_t hhs_sizeof_graph_edge(void) {
 
     return sizeof(HHSGraphEdge);
 }
+
 // ============================================================================
 // HASH72 u^72 DIGITAL DNA RING STATE MACHINE
 // ============================================================================
@@ -526,9 +507,6 @@ void hhs_hash72_ring_init(HHSHash72RingState* ring) {
         ring->rotation_profile[i] = 0;
     }
 
-    /* closure state: sum(0..71) = 2556 = 36 mod 72, so dimension 71 is
-       initialized with compensatory offset 36 to place the Digital DNA ring
-       at the u^72 zero-sum closure required for propagation authority. */
     ring->positions[71] = hhs_wrap72((int64_t)ring->positions[71] + 36);
     ring->rotation_profile[71] = 0;
 
@@ -561,9 +539,6 @@ uint8_t hhs_hash72_ring_rotate(
     uint8_t i = hhs_wrap72((int64_t)index);
     uint8_t j = hhs_wrap72((int64_t)i + 1);
 
-    /* Toroidal compensatory propagation: rotate dimension i by delta and
-       dimension i+1 by -delta. This preserves sum(V(S_i)) == 0 mod 72 while
-       recording the non-commutative rotation profile as Digital DNA identity. */
     ring->positions[i] = hhs_wrap72((int64_t)ring->positions[i] + delta);
     ring->positions[j] = hhs_wrap72((int64_t)ring->positions[j] - delta);
 
@@ -589,11 +564,6 @@ void hhs_hash72_tensor_project(
 
     memset(out_tensor81, 0xff, 81);
 
-    /* 72 symbols project to the 9x9 tensor boundary cells only.
-       Boundary count is 81 - 7*7 = 32 in literal 9x9 geometry, so the HHS
-       projection uses repeated toroidal boundary passes with fixed basis
-       coordinates. This preserves bijective inversion through the position
-       index stored by each boundary visit rather than collapsing symbols. */
     size_t k = 0;
     for (size_t row = 0; row < 9 && k < HHS_HASH72_LEN; row++) {
         for (size_t col = 0; col < 9 && k < HHS_HASH72_LEN; col++) {
@@ -647,7 +617,6 @@ uint8_t hhs_hash72_reverse_state(
 size_t hhs_sizeof_hash72_ring_state(void) {
     return sizeof(HHSHash72RingState);
 }
-
 
 // ============================================================================
 // SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE PRIMITIVE
@@ -717,10 +686,6 @@ uint8_t hhs_srcg_step(HHSSRCGState* gate) {
         return 0;
     }
 
-    /* Coupling tensor for SelfSolve_AB_Gate:
-       AB/A and BA/B preserve reciprocal coupling witnesses.  sqrt(AB)/sqrt(BA)
-       is treated as the symmetric identity shell.  This primitive deliberately
-       keeps A and B paired rather than flattening them into independent scalars. */
     double AB = A * B;
     double BA = B * A;
     double left = AB / A;
@@ -759,3 +724,9 @@ size_t hhs_sizeof_srcg_state(void) {
     return sizeof(HHSSRCGState);
 }
 
+/*
+ * Exact ABI v1.1 is additive.  The legacy v1 definitions above remain
+ * byte-for-byte compatible for existing callers; new authoritative callers
+ * use the integer/modular exact extension compiled into this same library.
+ */
+#include "hhs_runtime_exact_abi.c"
