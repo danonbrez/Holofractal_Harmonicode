@@ -12,6 +12,7 @@ extern "C" {
 #define HHS_EXACT_PASS192_FIB_VERSION_PATCH 0U
 #define HHS_EXACT_PASS192_FIB_MAX_DEPTH 4096U
 #define HHS_EXACT_PASS192_FIB_LO_SHU_CELLS 9U
+#define HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS 5U
 #define HHS_EXACT_PASS192_FIB_SHARED_SCHEDULES 1U
 #define HHS_EXACT_PASS192_FIB_OUTER_MODULUS 1259713U
 #define HHS_EXACT_PASS192_FIB_MAX_DESCRIPTOR_BYTES 2048U
@@ -25,6 +26,7 @@ typedef struct HHSExactPass192FibonacciCompressionV1 {
     uint32_t version;
     uint32_t depth;
     uint32_t lo_shu_cell_count;
+    uint32_t magnitude_row_count;
     uint32_t shared_schedule_count;
     uint32_t expanded_schedule_count;
     uint32_t outer_modulus;
