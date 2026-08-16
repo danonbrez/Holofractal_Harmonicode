@@ -1,6 +1,6 @@
 # HARMONICODE Axiom and Projection Registry
 
-Status: repository reference registry; normative Pass 219 requirements are in amendment 1.6.0 and Appendices D–F.
+Status: repository reference registry; normative Pass 219 requirements are in amendments 1.6.0–1.7.0 and Appendices D–G.
 
 ## 1. Automatically shared foundational axiom classes
 
@@ -90,3 +90,43 @@ External scientific/biological correspondence is never promoted to a native theo
 ## 7. Extension rule
 
 New registry entries are append-only/versioned. A discovered counterexample to an injectivity, reversibility, or preservation claim requires a repair-forward version change and evidence; the domain must not be silently narrowed after the fact to erase the counterexample.
+
+## 8. UQCEL projection records — amendment 1.7.0
+
+The Universal Quantization Constraint Enforcement Law adds the following typed projection records.
+
+| Projection ID | Source | Target | Preservation class | Reverse inference | Authority / validation |
+|---|---|---|---|---|---|
+| `PI-LOSHU-NUMERAL-v1` | Lo Shu tensor polynomial `L_H` | conventional integer numeral view | exact polynomial evaluation for registered `a^2,b^2,c^2` projection | exact for registered fixed polynomials | amendment 1.7.0 + UQCEL tests |
+| `PI-U-PHASE-v1` | native `u` source state | cyclic phase-ring state `u_phase` | `N72` phase closure | requires native source/reconstruction witness | inherited `u^72` authority + Appendix G |
+| `PI-U-QUANT-v1` | native `u` source state | dyadic metric state `u_q` | exact symbolic/rational scale relation | not inferred from scalar magnitude alone | amendment 1.7.0 + reference oracle |
+| `PI-QR-XY-YX-v1` | odd reciprocity input pair `(p,q)` | ordered `xy/yx` orientation | reciprocity parity/orientation | input pair or equivalent witness required | amendment 1.7.0 + exhaustive odd residue audit |
+| `PI-QR-U72-v1` | ordered `xy/yx` reciprocity orientation | `ZERO_L/N36 mod N72` phase address | exact half-cycle orientation | exact for the registered two-lane subdomain | exact ABI + UQCEL audit |
+
+### 8.1 `u_phase` and `u_q` are not scalar aliases
+
+The notation derives from one native source symbol but the projections remain type-distinct:
+
+```text
+u_phase^N72 = a^2
+```
+
+and:
+
+```text
+u_q^N5256 * (b^2)^N66 = a^2
+```
+
+are different typed constraints. Neither may overwrite the other.
+
+### 8.2 UQCEL status classes
+
+Repository evidence must distinguish:
+
+```text
+SUBSTRATE_COMPATIBLE
+ADMISSION_GATE_IMPLEMENTED
+ADMISSION_GATE_ENFORCED
+```
+
+The initial 1.7.0 audit establishes only the first class unless a later canonical VM81 admission-gate implementation is separately validated.
