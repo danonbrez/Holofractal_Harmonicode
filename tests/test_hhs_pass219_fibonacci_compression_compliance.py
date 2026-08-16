@@ -15,9 +15,10 @@ from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
     HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1,
 )
 from hhs_runtime.pass219_fibonacci_compression_reference_v1 import (
+    MAGNITUDES,
     OUTER_HYDRATION_MODULUS,
     build_witness,
-    expanded_cell_schedules,
+    expanded_cell_magnitude_schedules,
     fibonacci_prefix,
     reference_invariants,
     source_membrane_depth,
@@ -42,7 +43,7 @@ def _read_big(raw: bytes, cursor: int) -> tuple[int, int]:
     return value, cursor + length
 
 
-def _parse_descriptor(raw: bytes) -> dict[str, int]:
+def _parse_descriptor(raw: bytes) -> dict[str, object]:
     assert raw.startswith(DOMAIN)
     cursor = len(DOMAIN)
     names = (
@@ -51,14 +52,20 @@ def _parse_descriptor(raw: bytes) -> dict[str, int]:
         "seed1",
         "depth",
         "cells",
+        "magnitude_count",
         "shared",
         "outer_modulus",
         "membrane_modulus",
         "membrane_residue",
     )
-    values: dict[str, int] = {}
+    values: dict[str, object] = {}
     for name in names:
         values[name], cursor = _read_u32(raw, cursor)
+    magnitudes: list[int] = []
+    for _ in range(int(values["magnitude_count"])):
+        magnitude, cursor = _read_u32(raw, cursor)
+        magnitudes.append(magnitude)
+    values["magnitudes"] = tuple(magnitudes)
     values["f_depth"], cursor = _read_big(raw, cursor)
     values["f_next"], cursor = _read_big(raw, cursor)
     assert cursor == len(raw)
@@ -74,6 +81,8 @@ def test_pass192_reference_is_bound_to_native_uce_membrane_depth() -> None:
     assert witness.cumulative_scale == Fraction(1, 144)
     assert witness.membrane_modulus == 11
     assert witness.membrane_residue == 10
+    assert witness.magnitude_rows == (1, 2, 3, 5, 8)
+    assert witness.expanded_schedule_count == 45
     assert all(reference_invariants().values())
 
 
@@ -88,24 +97,32 @@ def test_exact_c_descriptor_reconstructs_pass192_terminal_and_membrane_witness()
     assert metadata["membrane_preserved"] is True
     assert metadata["outer_modulus_preserved"] is True
     assert metadata["lo_shu_cell_count"] == 9
+    assert metadata["magnitude_row_count"] == 5
     assert metadata["shared_schedule_count"] == 1
-    assert metadata["expanded_schedule_count"] == 9
+    assert metadata["expanded_schedule_count"] == 45
     assert parsed["seed0"] == 1 and parsed["seed1"] == 2
     assert parsed["depth"] == 10
+    assert parsed["magnitudes"] == MAGNITUDES
     assert parsed["f_depth"] == 144 and parsed["f_next"] == 233
     assert parsed["membrane_modulus"] == 11
     assert parsed["membrane_residue"] == 10
     assert parsed["outer_modulus"] == OUTER_HYDRATION_MODULUS
 
 
-def test_compressed_shared_schedule_is_lossless_and_smaller_than_naive_cell_expansion() -> None:
+def test_compressed_shared_schedule_is_lossless_and_smaller_than_naive_coordinate_expansion() -> None:
     depth = source_membrane_depth()
     compact = compress_pass192_fibonacci(depth)["descriptor"]
-    schedules = expanded_cell_schedules(depth)
-    assert len(schedules) == 9
-    assert all(schedule == fibonacci_prefix(depth) for schedule in schedules)
+    schedules = expanded_cell_magnitude_schedules(depth)
+    assert len(schedules) == 45
+    prefix = fibonacci_prefix(depth)
+    assert all(schedule == prefix for _, _, schedule in schedules)
+    assert {magnitude for _, magnitude, _ in schedules} == set(MAGNITUDES)
+    assert {cell for cell, _, _ in schedules} == set(range(9))
+
     naive = bytearray()
-    for schedule in schedules:
+    for cell, magnitude, schedule in schedules:
+        naive.extend(cell.to_bytes(1, "big"))
+        naive.extend(magnitude.to_bytes(1, "big"))
         for value in schedule:
             encoded = value.to_bytes(max(1, (value.bit_length() + 7) // 8), "big")
             naive.extend(len(encoded).to_bytes(2, "big"))
@@ -119,7 +136,8 @@ def test_outer_hydration_modulus_is_namespace_not_destructive_local_reduction() 
     assert descriptor["f_depth"] == 144
     assert descriptor["f_next"] == 233
     assert descriptor["membrane_residue"] == 10
-    assert descriptor["f_depth"] != descriptor["f_depth"] % 1  # local value is not a modulus-zero alias
+    assert int(descriptor["f_depth"]) % OUTER_HYDRATION_MODULUS == 144
+    assert int(descriptor["f_next"]) % OUTER_HYDRATION_MODULUS == 233
 
 
 def test_canonical_pass219_admission_composes_fibonacci_before_commit_and_lineage() -> None:
@@ -140,6 +158,8 @@ def test_canonical_pass219_admission_composes_fibonacci_before_commit_and_lineag
     fib = admission["fibonacci"]
     assert fib["depth"] == 10
     assert fib["lo_shu_cell_count"] == 9
+    assert fib["magnitude_row_count"] == 5
+    assert fib["expanded_schedule_count"] == 45
     assert fib["shared_schedule_count"] == 1
     assert fib["compression_applied"] is True
     assert admission["base_receipt_hash72"] == low_level["admission"]["receipt_hash72"]
