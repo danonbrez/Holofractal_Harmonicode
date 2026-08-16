@@ -8,6 +8,7 @@ from hhs_runtime.pass219_native_universal_constraint_v1 import (
 )
 
 FIBONACCI_SEED = (1, 2)
+MAGNITUDES = (1, 2, 3, 5, 8)
 LO_SHU_CELL_COUNT = 9
 OUTER_HYDRATION_MODULUS = 1_259_713
 PASS192_MAX_DEPTH = 4096
@@ -50,7 +51,9 @@ class FibonacciCompressionWitness:
     membrane_modulus: int
     membrane_residue: int
     lo_shu_cell_count: int
+    magnitude_rows: tuple[int, ...]
     shared_schedule_count: int
+    expanded_schedule_count: int
     outer_modulus: int
 
     def valid(self) -> bool:
@@ -62,7 +65,9 @@ class FibonacciCompressionWitness:
             and self.membrane_residue == self.depth
             and self.depth % self.membrane_modulus == self.membrane_residue
             and self.lo_shu_cell_count == LO_SHU_CELL_COUNT
+            and self.magnitude_rows == MAGNITUDES
             and self.shared_schedule_count == 1
+            and self.expanded_schedule_count == LO_SHU_CELL_COUNT * len(MAGNITUDES)
             and self.outer_modulus == OUTER_HYDRATION_MODULUS
         )
 
@@ -85,7 +90,9 @@ def build_witness(depth: int) -> FibonacciCompressionWitness:
         membrane_modulus=depth + 1,
         membrane_residue=depth % (depth + 1),
         lo_shu_cell_count=LO_SHU_CELL_COUNT,
+        magnitude_rows=MAGNITUDES,
         shared_schedule_count=1,
+        expanded_schedule_count=LO_SHU_CELL_COUNT * len(MAGNITUDES),
         outer_modulus=OUTER_HYDRATION_MODULUS,
     )
     if not witness.valid():
@@ -93,33 +100,42 @@ def build_witness(depth: int) -> FibonacciCompressionWitness:
     return witness
 
 
-def expanded_cell_schedules(depth: int) -> tuple[tuple[int, ...], ...]:
+def expanded_cell_magnitude_schedules(
+    depth: int,
+) -> tuple[tuple[int, int, tuple[int, ...]], ...]:
     schedule = fibonacci_prefix(depth)
-    return tuple(schedule for _ in range(LO_SHU_CELL_COUNT))
+    return tuple(
+        (cell, magnitude, schedule)
+        for cell in range(LO_SHU_CELL_COUNT)
+        for magnitude in MAGNITUDES
+    )
 
 
 def reference_invariants() -> dict[str, bool]:
     depth = source_membrane_depth()
     witness = build_witness(depth)
+    expanded = expanded_cell_magnitude_schedules(depth)
     return {
         "source_depth": depth == 10,
         "terminal_pair": witness.f_depth == 144 and witness.f_next == 233,
         "transition": witness.transition == Fraction(144, 233),
         "cumulative": witness.cumulative_scale == Fraction(1, 144),
         "membrane": witness.membrane_modulus == 11 and witness.membrane_residue == 10,
-        "dedup": len(expanded_cell_schedules(depth)) == 9 and witness.shared_schedule_count == 1,
+        "magnitude_rows": witness.magnitude_rows == (1, 2, 3, 5, 8),
+        "dedup": len(expanded) == 45 and witness.shared_schedule_count == 1,
         "outer_namespace": witness.outer_modulus == 1_259_713,
     }
 
 
 __all__ = [
     "FIBONACCI_SEED",
+    "MAGNITUDES",
     "LO_SHU_CELL_COUNT",
     "OUTER_HYDRATION_MODULUS",
     "FibonacciCompressionWitness",
     "source_membrane_depth",
     "fibonacci_prefix",
     "build_witness",
-    "expanded_cell_schedules",
+    "expanded_cell_magnitude_schedules",
     "reference_invariants",
 ]
