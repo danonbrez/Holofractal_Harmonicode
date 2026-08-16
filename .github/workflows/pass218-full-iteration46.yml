@@ -65,7 +65,21 @@ jobs:
           PY
 
       - name: Run focused I46 manifest-bound I32 closure tests
-        run: pytest -q tests/pass218/test_pass218_iteration46_manifest_bound_i32_source_closure.py
+        run: |
+          python - <<'PY'
+          import subprocess
+          command = [
+              'pytest', '-q', '--tb=short',
+              'tests/pass218/test_pass218_iteration46_manifest_bound_i32_source_closure.py',
+          ]
+          completed = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          print(completed.stdout)
+          if completed.returncode:
+              detail = completed.stdout[-12000:]
+              detail = detail.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+              print(f'::error title=I46 focused test failure::{detail}')
+          raise SystemExit(completed.returncode)
+          PY
 
       - name: Preserve frozen I45 manifest-bound I31 purge semantics
         run: pytest -q tests/pass218/test_pass218_iteration45_manifest_bound_i31_verbatim_purge.py
