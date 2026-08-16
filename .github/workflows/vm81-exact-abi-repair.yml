@@ -1,0 +1,81 @@
+name: VM81 Exact ABI Repair
+
+on:
+  push:
+    branches:
+      - agent/vm81-kernel-exact-phase-hash72-repair
+    paths:
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/c/hhs_runtime_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_python/runtime/hhs_exact_ctypes_bridge.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - '.github/workflows/vm81-exact-abi-repair.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/c/hhs_runtime_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_python/runtime/hhs_exact_ctypes_bridge.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - '.github/workflows/vm81-exact-abi-repair.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-abi-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Strict-compile exact ABI source
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
+            hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -Ihhs_runtime/include \
+            -o /tmp/libhhs_runtime_exact.so
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_runtime_exact_abi.h \
+            hhs_runtime/c/hhs_runtime_exact_abi.c
+
+      - name: Build legacy-compatible shared runtime with exact extension
+        run: |
+          set -euo pipefail
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_abi_validate|hhs_exact_phase_product|hhs_exact_vm81_frame_import_le|hhs_x86_64_ingress_exact|hhs_x86_64_egress_exact'
+
+      - name: Run exact ABI and x86_64 compatibility tests
+        run: python -m pytest -q tests/test_hhs_exact_runtime_abi_v1.py
+
+      - name: Verify repaired VM81 kernel
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace
+
+      - name: Verify inherited Pass 214 adapter boundary
+        run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
+
+      - name: Verify inherited Pass 186 SysV AMD64 ABI
+        run: make -C native_projects/hhs_pass186_x64_vm81_q144 clean test
