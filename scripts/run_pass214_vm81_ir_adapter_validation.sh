@@ -10,14 +10,19 @@ python -m py_compile \
 
 python -m pytest -q tests/test_hhs_pass214_vm81_ir_adapter_v1.py
 
-# Preserve the inherited frozen C substrate exactly. This is the Git blob
-# identity recorded by main before the additive adapter repair.
+# Repair-forward authorization: Pass 214 still freezes the VM81 substrate
+# against accidental mutation, but the authorized substrate is now the exact
+# integer/modular kernel established by PR #254 rather than the superseded
+# approximate v7.2 blob.
 actual_blob="$(git hash-object hhs_runtime/HARMONICODE_VM_RUNTIME.c)"
-expected_blob="362cd6e892ae66024333b111aec83f12023fdce3"
+expected_blob="81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
 test "$actual_blob" = "$expected_blob"
 
-# No adapter is permitted to re-enter the frozen mutation primitives below
-# the Pass 213 governed singleton VM81 admission boundary.
+# The new exact ABI must be present without permitting the Python adapter to
+# re-enter kernel mutation primitives below the governed singleton boundary.
+test -f hhs_runtime/include/hhs_runtime_exact_abi.h
+test -f hhs_runtime/c/hhs_runtime_exact_abi.c
+
 if grep -Eq 'apply_instruction\(|vm81_step\(' \
     hhs_backend/runtime/hhs_pass214_vm81_ir_adapter_v1.py; then
   echo "PASS214_VM81_IR_ADAPTER_DIRECT_MUTATION_BYPASS" >&2

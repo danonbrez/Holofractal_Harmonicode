@@ -17,7 +17,10 @@ from hhs_backend.runtime.hhs_pass214_vm81_ir_adapter_v1 import (
 
 ROOT = Path(__file__).resolve().parents[1]
 FROZEN_RUNTIME = ROOT / "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
-FROZEN_RUNTIME_GIT_BLOB_SHA1 = "362cd6e892ae66024333b111aec83f12023fdce3"
+# Repair-forward authority: the frozen substrate is the exact integer/modular
+# VM81 kernel admitted by PR #254.  This remains a literal Git-blob freeze;
+# only the authorized blob identity changed from the superseded v7.2 runtime.
+FROZEN_RUNTIME_GIT_BLOB_SHA1 = "81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
 
 H_ENTRY = "1" * 64
 H_PARENT = "2" * 64
