@@ -1,6 +1,6 @@
 # Pass 219 Harmonicode Foundational Axioms / Projection Theorems — Restart Record
 
-Status: `1.8.0 NATIVE UNIVERSAL CONSTRAINT ENFORCEMENT IMPLEMENTATION IN PROGRESS`
+Status: `1.8.0 NATIVE UNIVERSAL CONSTRAINT ENFORCEMENT IMPLEMENTED / VALIDATED / DRAFT PR OPEN / UNMERGED`
 
 Repository: `danonbrez/Holofractal_Harmonicode`
 
@@ -12,106 +12,237 @@ Branch: `agent/pass219-harmonicode-foundational-axioms-projection-theorems`
 
 Iteration start head: `e895ad63ef63b6e58183577b8fcb34761f3d17d8`
 
+Validated 1.8.0 implementation head: `27d334c4ad58d1c52b24a0f64d650117e2b62047`
+
 Merge target: `main`
 
 Draft PR: `#257`
 
 Deployment: none authorized or attempted.
 
-## Validated predecessor state
+## 1. Native authority implemented
 
-Amendment 1.7.0 formalized the Lo Shu–Dyadic Quadratic-Reciprocity Universal Quantization Constraint Enforcement Law (UQCEL) and proved compatibility with the merged exact VM81/phase ABI over its tested domain.
+The native Universal Constraint Envelope (UCE) is the source constraint program quantized by the 1.7.0 UQCEL law. The canonical machine fixture is:
 
-Exact predecessor gates:
+`contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode`
 
-```text
-Pass 219 Universal Quantization Constraint Audit
-run 31957251117 — SUCCESS
-
-Pass 217 Current Main Integration
-run 31957251126 — SUCCESS
-```
-
-Predecessor classification:
+SHA-256:
 
 ```text
-SUBSTRATE_COMPATIBLE = PROVEN FOR TESTED DOMAIN
-ADMISSION_GATE_IMPLEMENTED = NO
-ADMISSION_GATE_ENFORCED = NO
+7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42
 ```
 
-## Newly authorized 1.8.0 scope
-
-The native equation being quantized by UQCEL is the Universal Constraint Envelope supplied for this iteration:
-
-```harmonicode
-P^2/{(t^3-t=(P^3-P/(P^2-pq)=(t^3-t)/Delta=P^2(MOD)(pq))=m^2-m)-(({{b^4,c^4,c^2-u^72},{c^2,5/u^((s==(b^(2c^2)c^b^4)^2)/(72P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,(72*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+Delta)-P^2)/(t^3-t)*u^72}
-
-where Delta/P=Sqrt(pq+u^72)^x^2
-```
-
-This expression is authoritative source syntax and SHALL be preserved lexically in the new append-only contract/fixture. It SHALL be parsed as a typed `ConstraintJoin`, not as one untyped scalar equality.
-
-The implementation target is:
+Authority order:
 
 ```text
-native Universal Constraint Envelope
--> typed exact witness record
--> UQCEL quantization witness
--> exact ABI validation
--> VM81 admission/rejection
--> Hash72 receipt material
+native HARMONICODE Universal Constraint Envelope
+-> typed ConstraintJoin / projection selection
+-> UQCEL Lo Shu + dyadic + QR quantization witness
+-> exact C ABI admission record
+-> VM81 candidate admission / fail-closed rejection
+-> Hash72 change + receipt material
 -> Hash216 previous/change/receipt lineage
 ```
 
-## Inherited constraints that must remain unchanged
+The UCE remains upstream of UQCEL. UQCEL quantizes the UCE; it does not replace the source equation.
 
-- shared foundational axiom classes remain formal deduction, symbolic logic, higher-dimensional tensor algebra, and Euclidean geometry;
-- native ordered basis `(x,y,z,w,xy,yx,zw,wz)` remains noncommutative and authoritative;
-- `u_phase^72 = 1` remains the inherited cyclic phase projection;
-- `u_q` remains a distinct dyadic quantization-metric projection;
-- Lo Shu polynomial numerals remain the canonical fixed-numeral representation for UQCEL;
-- existing exact ABI v1 layouts and legacy ABI v1 layouts must not be resized or reordered;
-- x86_64 ingress/egress must remain byte-exact and backwards compatible;
-- no float/double/transcendental approximation may write canonical state;
-- exact arithmetic must fail closed on overflow or unsupported domain rather than silently approximate;
-- canonical mutation authority remains the single VM81 admission path;
-- Hash72/Hash216 remain receipt/lineage authorities;
-- Pass 218 activation/indexed-reuse gates remain inherited.
+## 2. Exact enforceable profile
 
-## Planned repository changes
+The first enforceable profile is:
 
-Append-only normative layer:
+`HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1`
 
-- `HHS_PASS_219_APPEND_ONLY_NATIVE_UNIVERSAL_CONSTRAINT_ENFORCEMENT_AMENDMENT_1_8_0.md`
-- `docs/pass219/APPENDIX_H_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE.md`
+It enforces with canonical minimal big-endian BigUInt arithmetic:
 
-Exact additive ABI/runtime:
+```text
+source envelope hash exact
+P > 0
+p > 0, q > 0, p/q odd
+Delta >= 0
+P^2 = p*q + Delta
+A = P^2
+B = P^2
+A*B = P^4
+Lo Shu/UQCEL constants exact
+QR parity -> ordered x*y / y*x
+xy -> phase 0 / tag 0x5859
+yx -> phase 36 / tag 0x5958
+valid VM5184 address
+```
 
-- extend `hhs_runtime/include/hhs_runtime_exact_abi.h` only additively;
-- extend `hhs_runtime/c/hhs_runtime_exact_abi.c` only additively;
-- extend `hhs_python/runtime/hhs_exact_ctypes_bridge.py` only additively;
-- add an exact Universal Constraint / UQCEL witness record and fail-closed validator/admission result;
-- preserve all existing exact ABI entry points and binary layouts.
+No input is narrowed to float/double or a single machine-word scalar. Tests include `P > 2^130`.
 
-Tests/workflow:
+The candidate 648-byte VM81 frame is zeroed before validation and copied to committed output only for `ADMIT`.
 
-- extend UQCEL tests with native-envelope admissibility and negative cases;
-- verify ordered `xy/yx` reciprocity orientation through the admission result;
-- verify P/p/q/Delta integer closure and symmetric `A=B=P^2` projection where declared;
-- verify exact Lo Shu/U72 quantization constants;
-- verify rejection on constraint mismatch, type mismatch, and checked-arithmetic overflow;
-- verify unchanged 648-byte VM81 frame and x86_64 byte round-trips;
-- run the dedicated UQCEL workflow and broader integration gate.
+## 3. Full symbolic profile remains fail-closed
 
-## Claim boundary for this iteration
+`HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1` is registered but returns `UNSUPPORTED_DOMAIN` while these residuals remain unresolved:
 
-The first enforceable ABI profile will admit the exact integer/symmetric subdomain explicitly represented by the witness record. Unsupported symbolic branches of the full source envelope SHALL return a typed `UNRESOLVED/UNSUPPORTED_DOMAIN` result and SHALL NOT be approximated or falsely classified as valid.
+```text
+T_M_HARMONIC
+TENSOR_S_F_AT_BT
+DELTA_P_ROOT
+MOD_F_U
+```
 
-The source envelope remains broader than any one finite ABI record. The ABI record is an exact projection with declared domain and loss fields, consistent with amendment 1.6.0 projection rules.
+Residual mask: `0xF`.
 
-## Next action
+The 1.8 implementation therefore does not claim that every `t,m,s,f,At,Bt,Delta/P` clause in the native source has already been lowered. Unsupported symbolic state is unresolved, not approximated and not admitted.
 
-Inspect inherited exact/BigInt facilities, define the additive record and error/status model, implement the exact validator/admission gate, add negative/replay tests, and freeze only after dependency-scoped CI is terminal.
+## 4. Additive ABI surface
 
-Do not merge PR #257 or deploy production without separate explicit authorization.
+New exact calls:
+
+```text
+hhs_exact_uqcel_version
+hhs_exact_uqcel_source_sha256
+hhs_exact_uqcel_validate
+hhs_exact_uqcel_receipt_material
+hhs_exact_vm81_admit_uqcel
+```
+
+The previously validated exact ABI v1.1 header/source are preserved byte-for-byte under frozen base paths:
+
+```text
+hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h
+Git blob: 8b9e76a17f3fe05403312a7a643af34db3792b6e
+
+hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc
+Git blob: 9d4c35d83b395ae372f5e7b5ddbd0e242600a1ad
+```
+
+The public exact ABI files are additive include aggregators over the frozen v1.1 base plus UQCEL 1.8. Legacy v1 layouts and x86_64 byte ingress/egress remain unchanged.
+
+## 5. Hash72 / Hash216 lineage
+
+Admission results emit:
+
+```text
+previous Hash72
+change Hash72
+receipt Hash72
+216-character previous/change/receipt triplet
+Hash216 identity
+```
+
+A compatibility issue was found during validation: including the canonical Hash216 typed header in the legacy ABI translation unit collided with the historical legacy `HHSHash72` typedef. Repair-forward added conflict-free byte adapters without changing either inherited type.
+
+A second validation exposed that historical one-file consumers compiling only `hhs_runtime/c/hhs_runtime_abi.c` would gain a new external hash linker dependency. Repair-forward removed that dependency by embedding a UQCEL-private static copy of the inherited canonical byte-mixing algorithm. Tests prove its emitted Hash72/Hash216 values equal the canonical linked implementation. The canonical linked implementation and additive byte adapters remain unchanged.
+
+## 6. Negative/fail-closed coverage
+
+The 1.8 gate explicitly rejects or marks unsupported:
+
+- source-expression hash mismatch;
+- non-canonical BigUInt leading-zero encoding;
+- BigUInt transport bound overflow;
+- `P^2 != p*q + Delta`;
+- `A != P^2` or `B != P^2`;
+- `A*B != P^4`;
+- even/nonpositive QR inputs;
+- wrong `xy/yx` orientation;
+- invalid previous Hash72 lineage;
+- invalid VM5184 address/basis;
+- unresolved full-symbolic profile.
+
+Rejected or unsupported candidates leave the committed VM81 frame equal to 648 zero bytes.
+
+## 7. Terminal validation evidence for implementation head
+
+Validated implementation head:
+
+```text
+27d334c4ad58d1c52b24a0f64d650117e2b62047
+```
+
+Terminal gates:
+
+```text
+Pass 219 Universal Quantization Constraint Audit
+run 31959231529 — SUCCESS
+- strict C11 -Wall -Wextra -Werror compile
+- integrated shared ABI build
+- UQCEL/hash symbol exports
+- 36 UQCEL/exact-ABI tests
+- historical standalone hhs_runtime_abi.c C ABI smoke
+- standalone VM81 exact verification
+
+VM81 Exact ABI Repair
+run 31959231549 — SUCCESS
+
+VM81 Native Development Level 0-1
+run 31959231543 — SUCCESS
+- direct C ABI
+- linked Hash72/Hash216
+- typed status/rejection
+- immutable vector resolver
+- reproducible native build/evidence
+
+Validate HHS Runtime OS Production Root
+run 31959231507 — SUCCESS
+
+Pass 217 Current Main Integration
+run 31959231545 — SUCCESS
+- admitted Pass 217 cumulative gate
+- Pass 218 narrative alignment gate
+- Pass 219 native ethical membrane gate
+- preserved Runtime OS production-root gate
+
+Pass 158 Low-Level ABI NFT API
+run 31959231528 — SUCCESS
+
+Pass 157 PPF-MPTC
+run 31959231539 — SUCCESS
+
+Pass 156.1 LSHPVS
+run 31959231525 — SUCCESS
+```
+
+The standalone VM81 verification retained:
+
+```text
+VERIFY exact-kernel invariants: PASS
+VM81 frame: 5184 bits / 648 bytes
+Hash72: 72 positions / 72 glyphs / 5184 positional coordinates
+```
+
+## 8. Final classification
+
+```text
+NATIVE_UCE_SOURCE_FROZEN = YES
+UQCEL_SUBSTRATE_COMPATIBLE = YES
+ADMISSION_GATE_IMPLEMENTED = YES
+ENFORCED_FOR_UQCEL_PROFILE = YES
+BIGINT_EXACT_PROFILE = YES
+QR_XY_YX_ORIENTATION_ENFORCED = YES
+HASH72_HASH216_LINEAGE_EMITTED = YES
+LEGACY_EXACT_ABI_V1_1_BLOBS_PRESERVED = YES
+X86_64_INGRESS_EGRESS_COMPATIBLE = YES
+FULL_SYMBOLIC_UCE_EVALUATED = NO
+FULL_SYMBOLIC_UCE_FAILS_CLOSED = YES
+GLOBAL_LEGACY_INTERPOSITION = NO
+PRODUCTION_DEPLOYED = NO
+```
+
+`ENFORCED_FOR_UQCEL_PROFILE` means an operation declaring the new UQCEL profile cannot commit its VM81 candidate through `hhs_exact_vm81_admit_uqcel` unless every represented required constraint succeeds. This does not silently interpose the new profile over legacy callers that did not declare it.
+
+## 9. Repository lineage
+
+At validated implementation head, comparison to authoritative base was:
+
+```text
+base: 284bf652d9635cc0c940f79dfe6aff6f8b787c3c
+merge base: exact base
+status: ahead / 0 behind
+40 commits
+```
+
+The high commit count is source-oriented GitHub contents/API history; the effective PR diff remains the review authority.
+
+## 10. Next action / merge state
+
+Implementation work for the 1.8 integer/symmetric UCE admission profile is complete.
+
+Remaining future Pass 219 work is to lower the explicitly recorded full-symbolic residual clauses exactly and widen the typed profile without weakening the admitted 1.8 subdomain.
+
+PR #257 remains draft and unmerged. Do not merge or deploy without separate explicit authorization.
