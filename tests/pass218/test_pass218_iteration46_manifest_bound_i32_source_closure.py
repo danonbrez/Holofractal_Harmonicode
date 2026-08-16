@@ -19,6 +19,7 @@ from hhs_runtime.pass218.atomic_semantic_promotion_i30 import (
     PASS218_I30_PENDING_PURGE_STATUS,
     PASS218_I30_PROMOTED_OBJECT_SCHEMA,
     PASS218_I30_PROMOTION_VERSION,
+    PASS218_I30_TARGET_SCOPE,
     Pass218I30AtomicSemanticStore,
 )
 from hhs_runtime.pass218.manifest_bound_i30_atomic_promotion_i44 import (
@@ -196,7 +197,7 @@ def make_i44_store(
         "version": "HHS-P218-I44-MANIFEST-BOUND-I30-ATOMIC-PROMOTION-V1",
         "scope": "PASS218_MANIFEST_BOUND_I30_ATOMIC_PROMOTION",
         "status": PASS218_I44_PROMOTED_PENDING_I31_STATUS,
-        "target_surface": "PASS218_CANONICAL_SEMANTIC_OBJECT_STORE",
+        "target_surface": PASS218_I30_TARGET_SCOPE,
         "i43_receipt_hash72": i43_receipt["i43_receipt_hash72"],
         "i43_authorization_proof_hash72": i43_receipt[
             "manifest_bound_i30_request_authorization_hash72"
@@ -246,7 +247,7 @@ def make_i44_store(
         "scope": "PASS218_MANIFEST_BOUND_I30_ATOMIC_PROMOTION",
         "status": PASS218_I44_COMPLETE_STATUS,
         "promotion_status": PASS218_I44_PROMOTED_PENDING_I31_STATUS,
-        "target_surface": "PASS218_CANONICAL_SEMANTIC_OBJECT_STORE",
+        "target_surface": PASS218_I30_TARGET_SCOPE,
         "i43_receipt_hash72": i43_receipt["i43_receipt_hash72"],
         "i43_authorization_proof_hash72": i43_receipt[
             "manifest_bound_i30_request_authorization_hash72"
