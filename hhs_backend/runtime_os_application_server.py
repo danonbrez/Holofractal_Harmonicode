@@ -3,7 +3,7 @@
 All Pass 174+ application/server composition remains inherited from
 :mod:`hhs_backend.application_ide_server`. This final layer removes only its
 public-root visual mount and cumulatively installs the governed Pass-218
-RuntimeOS control planes through I47. I40 performs and durably restores the
+RuntimeOS control planes through I48. I40 performs and durably restores the
 exact frozen-I6 canonical Pass-217/VM81 admission; I41 binds that exact durable
 canonical identity into a non-authoritative I30-target learning-ingress
 candidate without synthesizing I27-I29 lineage or invoking I30. I42 consumes a
@@ -30,7 +30,11 @@ consumes that exact durable I46/I32 closure, invokes frozen I33 exactly once or
 restart-adopts its exact durable advance, proves the I30 semantic generation
 and canonical root unchanged, and stops before next-source ingress, stage
 advancement, VM81 mutation, canonical learning, truth/action authority, or
-model activation. The same backend is projected through ``hhs_gui/dist``.
+model activation. I48 consumes only an exact terminal I47 completion, proves
+the authoritative frozen-I33 cursor exactly exhausts its manifest, re-verifies
+I30 unchanged, and seals durable curriculum-completion metadata without
+invoking I33, ingesting another source, advancing a stage, or minting Pass-219
+handoff authority. The same backend is projected through ``hhs_gui/dist``.
 Supporting surfaces such as ``/runtime-console`` remain intact.
 """
 from __future__ import annotations
@@ -210,6 +214,11 @@ from hhs_backend.runtime_os_pass218_manifest_i33_curriculum_advance_i47 import (
     PASS218_I47_ADVANCE_PATH,
     PASS218_I47_STATUS_PATH,
     install_pass218_i47_manifest_bound_i33_curriculum_advance_control,
+)
+from hhs_backend.runtime_os_pass218_manifest_curriculum_completion_i48 import (
+    PASS218_I48_SEAL_PATH,
+    PASS218_I48_STATUS_PATH,
+    install_pass218_i48_manifest_bound_curriculum_completion_control,
 )
 from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
@@ -450,8 +459,17 @@ PASS218_I47_MANIFEST_BOUND_I33_CURRICULUM_ADVANCE_CONTROL_PLANE = (
         state_root=resolve_pass218_state_root(),
     )
 )
+PASS218_I48_MANIFEST_BOUND_CURRICULUM_COMPLETION_CONTROL_PLANE = (
+    install_pass218_i48_manifest_bound_curriculum_completion_control(
+        app,
+        PASS218_I47_MANIFEST_BOUND_I33_CURRICULUM_ADVANCE_CONTROL_PLANE,
+        PASS218_I33_CURRICULUM_ADVANCE_CONTROL_PLANE,
+        PASS218_RUNTIME_OS_LIFECYCLE,
+        state_root=resolve_pass218_state_root(),
+    )
+)
 # Frozen predecessor control-plane names remain compatibility aliases to the
-# cumulative I19 maintenance membrane. I20-I47 are separate cognition planes
+# cumulative I19 maintenance membrane. I20-I48 are separate cognition planes
 # and do not inherit or widen maintenance execution authority.
 PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
@@ -568,6 +586,9 @@ __all__ = [
     "PASS218_I47_ADVANCE_PATH",
     "PASS218_I47_MANIFEST_BOUND_I33_CURRICULUM_ADVANCE_CONTROL_PLANE",
     "PASS218_I47_STATUS_PATH",
+    "PASS218_I48_MANIFEST_BOUND_CURRICULUM_COMPLETION_CONTROL_PLANE",
+    "PASS218_I48_SEAL_PATH",
+    "PASS218_I48_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
