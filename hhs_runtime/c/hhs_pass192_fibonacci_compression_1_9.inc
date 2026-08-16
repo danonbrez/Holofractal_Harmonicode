@@ -7,6 +7,10 @@ typedef struct HHSExactFibBig {
     size_t length;
 } HHSExactFibBig;
 
+static const uint32_t HHS_EXACT_PASS192_FIB_MAGNITUDES[HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS] = {
+    1U, 2U, 3U, 5U, 8U
+};
+
 static uint32_t hhs_exact_pass192_fib_version_word(void) {
     return (HHS_EXACT_PASS192_FIB_VERSION_MAJOR << 16) |
            (HHS_EXACT_PASS192_FIB_VERSION_MINOR << 8) |
@@ -114,6 +118,7 @@ HHSExactStatus hhs_exact_pass192_fibonacci_compress(
     HHSExactFibBig fd;
     HHSExactFibBig fd1;
     size_t cursor = 0U;
+    size_t magnitude_index;
 
     if (out_descriptor == NULL || out_length == NULL || out_compression == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -122,8 +127,10 @@ HHSExactStatus hhs_exact_pass192_fibonacci_compress(
     out_compression->version = hhs_exact_pass192_fib_version_word();
     out_compression->depth = depth;
     out_compression->lo_shu_cell_count = HHS_EXACT_PASS192_FIB_LO_SHU_CELLS;
+    out_compression->magnitude_row_count = HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS;
     out_compression->shared_schedule_count = HHS_EXACT_PASS192_FIB_SHARED_SCHEDULES;
-    out_compression->expanded_schedule_count = HHS_EXACT_PASS192_FIB_LO_SHU_CELLS;
+    out_compression->expanded_schedule_count =
+        HHS_EXACT_PASS192_FIB_LO_SHU_CELLS * HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS;
     out_compression->outer_modulus = HHS_EXACT_PASS192_FIB_OUTER_MODULUS;
 
     if (depth > HHS_EXACT_PASS192_FIB_MAX_DEPTH || depth == UINT32_MAX)
@@ -140,11 +147,12 @@ HHSExactStatus hhs_exact_pass192_fibonacci_compress(
     out_compression->outer_modulus_preserved = 1U;
 
     /*
-     * Lossless compressed descriptor.  The seeds plus depth reconstruct every
-     * F_n, every F_n/F_(n+1) transition, every cumulative 1/F_n scale, and
-     * every local n mod (n+1)=n membrane witness.  F_depth/F_(depth+1) are
-     * retained as terminal verification witnesses; the outer hydration modulus
-     * is recorded as a namespace identity and is never applied destructively.
+     * Lossless compressed descriptor. One recurrence schedule is shared by all
+     * nine Lo Shu cells and all five exact magnitude rows. Cell and magnitude
+     * identities remain explicit, while seed+depth reconstruct every F_n,
+     * F_n/F_(n+1), cumulative 1/F_n scale, and n mod (n+1)=n membrane witness.
+     * The outer hydration modulus is an identity namespace and is not applied
+     * destructively to local Fibonacci or membrane values.
      */
     if (!hhs_exact_uqcel_append(out_descriptor, capacity, &cursor, domain, sizeof(domain) - 1U) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, out_compression->version) ||
@@ -152,11 +160,23 @@ HHSExactStatus hhs_exact_pass192_fibonacci_compress(
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, 2U) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, depth) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, HHS_EXACT_PASS192_FIB_LO_SHU_CELLS) ||
+        !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, HHS_EXACT_PASS192_FIB_SHARED_SCHEDULES) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, HHS_EXACT_PASS192_FIB_OUTER_MODULUS) ||
         !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, depth + 1U) ||
-        !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, depth) ||
-        !hhs_exact_fib_append_big(out_descriptor, capacity, &cursor, &fd) ||
+        !hhs_exact_uqcel_append_u32(out_descriptor, capacity, &cursor, depth)) {
+        *out_length = cursor;
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    }
+    for (magnitude_index = 0U; magnitude_index < HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS; ++magnitude_index) {
+        if (!hhs_exact_uqcel_append_u32(
+                out_descriptor, capacity, &cursor,
+                HHS_EXACT_PASS192_FIB_MAGNITUDES[magnitude_index])) {
+            *out_length = cursor;
+            return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+        }
+    }
+    if (!hhs_exact_fib_append_big(out_descriptor, capacity, &cursor, &fd) ||
         !hhs_exact_fib_append_big(out_descriptor, capacity, &cursor, &fd1)) {
         *out_length = cursor;
         return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
@@ -186,7 +206,11 @@ HHSExactStatus hhs_exact_pass192_fibonacci_validate_descriptor(
     if (descriptor_length != expected_length || memcmp(descriptor, expected, expected_length) != 0)
         return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
     if (!metadata.compression_applied || !metadata.shared_schedule_deduplicated ||
-        !metadata.membrane_preserved || !metadata.outer_modulus_preserved)
+        !metadata.membrane_preserved || !metadata.outer_modulus_preserved ||
+        metadata.lo_shu_cell_count != HHS_EXACT_PASS192_FIB_LO_SHU_CELLS ||
+        metadata.magnitude_row_count != HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS ||
+        metadata.expanded_schedule_count !=
+            HHS_EXACT_PASS192_FIB_LO_SHU_CELLS * HHS_EXACT_PASS192_FIB_MAGNITUDE_ROWS)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return HHS_EXACT_STATUS_OK;
 }
