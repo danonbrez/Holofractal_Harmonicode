@@ -115,9 +115,9 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
 ) {
     HHSExactStatus validation_status;
     HHSExactStatus material_status;
-    HHSHash72 change;
-    HHSHash72 receipt;
-    HHSHash216 identity;
+    char change[HHS_HASH72_BYTES_STRLEN];
+    char receipt[HHS_HASH72_BYTES_STRLEN];
+    char identity[HHS_HASH216_BYTES_STRLEN];
     uint8_t frame_bytes[HHS_EXACT_VM81_FRAME_BYTES];
     size_t frame_length = 0U;
     uint8_t material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES];
@@ -141,15 +141,15 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
         frame_length != HHS_EXACT_VM81_FRAME_BYTES)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
-    hhs_hash72_compute(frame_bytes, frame_length, &change);
-    memcpy(out_admission->change_hash72, change.value, HHS_EXACT_HASH72_STRLEN);
+    hhs_hash72_compute_bytes(frame_bytes, frame_length, change);
+    memcpy(out_admission->change_hash72, change, HHS_EXACT_HASH72_STRLEN);
 
     material_status = hhs_exact_uqcel_receipt_material(
         input, out_admission, material, sizeof(material), &material_length);
     if (material_status != HHS_EXACT_STATUS_OK)
         return material_status;
-    hhs_hash72_compute(material, material_length, &receipt);
-    memcpy(out_admission->receipt_hash72, receipt.value, HHS_EXACT_HASH72_STRLEN);
+    hhs_hash72_compute_bytes(material, material_length, receipt);
+    memcpy(out_admission->receipt_hash72, receipt, HHS_EXACT_HASH72_STRLEN);
 
     memcpy(out_admission->hash216_triplet, input->previous_hash72, HHS_EXACT_HASH72_LEN);
     memcpy(out_admission->hash216_triplet + HHS_EXACT_HASH72_LEN,
@@ -158,11 +158,11 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
            out_admission->receipt_hash72, HHS_EXACT_HASH72_LEN);
     out_admission->hash216_triplet[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
 
-    hhs_hash216_compute(
+    hhs_hash216_compute_bytes(
         out_admission->hash216_triplet,
         HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN,
-        &identity);
-    memcpy(out_admission->hash216_identity, identity.value, HHS_EXACT_UQCEL_HASH216_STRLEN);
+        identity);
+    memcpy(out_admission->hash216_identity, identity, HHS_EXACT_UQCEL_HASH216_STRLEN);
 
     if (validation_status == HHS_EXACT_STATUS_OK &&
         out_admission->decision == HHS_EXACT_UQCEL_DECISION_ADMIT) {
