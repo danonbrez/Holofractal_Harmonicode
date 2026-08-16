@@ -1,6 +1,6 @@
 # HARMONICODE Axiom and Projection Registry
 
-Status: repository reference registry; normative Pass 219 requirements are in amendments 1.6.0–1.7.0 and Appendices D–G.
+Status: repository reference registry; normative Pass 219 requirements are in amendments 1.6.0–1.8.0 and Appendices D–H.
 
 ## 1. Automatically shared foundational axiom classes
 
@@ -105,8 +105,6 @@ The Universal Quantization Constraint Enforcement Law adds the following typed p
 
 ### 8.1 `u_phase` and `u_q` are not scalar aliases
 
-The notation derives from one native source symbol but the projections remain type-distinct:
-
 ```text
 u_phase^N72 = a^2
 ```
@@ -117,16 +115,47 @@ and:
 u_q^N5256 * (b^2)^N66 = a^2
 ```
 
-are different typed constraints. Neither may overwrite the other.
+are type-distinct constraints. Neither may overwrite the other.
 
-### 8.2 UQCEL status classes
+## 9. Native Universal Constraint Envelope records — amendment 1.8.0
 
-Repository evidence must distinguish:
+The Universal Constraint Envelope is the native source program quantized by UQCEL. The following records make that authority order explicit.
+
+| Projection ID | Source | Target | Preservation class | Reverse inference | Authority / validation |
+|---|---|---|---|---|---|
+| `PI-UCE-SOURCE-v1` | native UCE source expression | canonical ASCII machine fixture + SHA-256 identity | lexical nesting/order and source identity | exact only for the frozen fixture | amendment 1.8.0 + Appendix H |
+| `PI-UCE-INTEGER-SYMMETRIC-v1` | typed native UCE | exact BigUInt tuple `(P,p,q,Delta,A,B)` with `P²=pq+Delta`, `A=B=P²`, `AB=P⁴` | represented integer/symmetric constraints | not sufficient for full native identity | exact UCE oracle + ABI tests |
+| `PI-UCE-UQCEL-ADMISSION-v1` | integer/symmetric UCE projection + UQCEL witness + VM81 candidate | `ADMIT/REJECT` result and committed/zero VM81 frame | exact represented constraints and ordered QR phase | admission receipt/reconstruction witness required | exact ABI 1.8 gate |
+| `PI-UCE-H216-LINEAGE-v1` | previous Hash72 + candidate/change + admission receipt material | 216-character previous/change/receipt triplet + Hash216 identity | ordered transition lineage | inherited Hash216 schema | exact ABI 1.8 receipt tests |
+| `PI-UCE-FULL-SYMBOLIC-v1` | complete native UCE | future full typed AST/evaluator | not implemented in 1.8 | none | MUST return `UNSUPPORTED_DOMAIN` while residual mask is nonzero |
+
+### 9.1 BigInt and no-float authority
+
+`PI-UCE-INTEGER-SYMMETRIC-v1` uses canonical minimal big-endian non-negative integer views inherited from the Pass 133/211 BigInt authority. ABI byte bounds are transport limits, not conversion to machine floating point or `uint64_t` scalar authority.
+
+### 9.2 Constraint gate classification
+
+After the 1.8 implementation passes dependency-scoped validation, repository evidence SHALL distinguish:
 
 ```text
-SUBSTRATE_COMPATIBLE
-ADMISSION_GATE_IMPLEMENTED
-ADMISSION_GATE_ENFORCED
+SUBSTRATE_COMPATIBLE = YES
+ADMISSION_GATE_IMPLEMENTED = YES
+ENFORCED_FOR_UQCEL_PROFILE = YES
+FULL_SYMBOLIC_UCE_EVALUATED = NO
+GLOBAL_LEGACY_INTERPOSITION = NO
 ```
 
-The initial 1.7.0 audit establishes only the first class unless a later canonical VM81 admission-gate implementation is separately validated.
+`ENFORCED_FOR_UQCEL_PROFILE` means calls declaring the new UQCEL profile cannot commit a candidate VM81 frame without satisfying the registered gate. It does not mean all legacy execution surfaces are silently intercepted.
+
+### 9.3 Full-symbolic residuals
+
+The unresolved full-source clauses are explicitly represented by the residual mask:
+
+```text
+T_M_HARMONIC
+TENSOR_S_F_AT_BT
+DELTA_P_ROOT
+MOD_F_U
+```
+
+Returning `UNSUPPORTED_DOMAIN` for that profile is mandatory fail-closed behavior until a later append-only implementation lowers those clauses exactly.
