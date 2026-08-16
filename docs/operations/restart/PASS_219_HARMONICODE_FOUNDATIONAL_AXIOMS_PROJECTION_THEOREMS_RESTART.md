@@ -1,6 +1,6 @@
 # Pass 219 Harmonicode Foundational Axioms / Projection Theorems — Restart Record
 
-Status: `1.7.0 UQCEL FORMALIZED / SUBSTRATE AUDIT GREEN / DRAFT PR OPEN / UNMERGED`
+Status: `1.8.0 NATIVE UNIVERSAL CONSTRAINT ENFORCEMENT IMPLEMENTATION IN PROGRESS`
 
 Repository: `danonbrez/Holofractal_Harmonicode`
 
@@ -10,211 +10,108 @@ Base tree: `82701e220d59cec1accc190a07e33575e190f3f3`
 
 Branch: `agent/pass219-harmonicode-foundational-axioms-projection-theorems`
 
+Iteration start head: `e895ad63ef63b6e58183577b8fcb34761f3d17d8`
+
 Merge target: `main`
 
 Draft PR: `#257`
 
 Deployment: none authorized or attempted.
 
-## Completed scope through amendment 1.7.0
+## Validated predecessor state
 
-The branch preserves the 1.5 native RNA/ABI amendment, the 1.6 HARMONICODE foundational-axiom/projection amendment, and now adds the Lo Shu–Dyadic Quadratic-Reciprocity Universal Quantization Constraint Enforcement Law (UQCEL) as amendment 1.7.0.
+Amendment 1.7.0 formalized the Lo Shu–Dyadic Quadratic-Reciprocity Universal Quantization Constraint Enforcement Law (UQCEL) and proved compatibility with the merged exact VM81/phase ABI over its tested domain.
 
-The shared foundational axiom classes with conventional STEM remain exactly:
-
-1. first-principles formal deduction;
-2. symbolic logic;
-3. higher-dimensional tensor algebra;
-4. Euclidean geometry.
-
-All additional conventional mathematical, biological, or machine semantics remain explicit typed projections unless separately promoted by a native HARMONICODE proof/contract.
-
-## New 1.7.0 normative files
-
-- `HHS_PASS_219_APPEND_ONLY_LO_SHU_DYADIC_QUADRATIC_RECIPROCITY_QUANTIZATION_AMENDMENT_1_7_0.md`
-- `docs/pass219/APPENDIX_G_UNIVERSAL_QUANTIZATION_CONSTRAINT_ENFORCEMENT_LAW.md`
-- `docs/whitepapers/HARMONICODE_LO_SHU_DYADIC_QUADRATIC_RECIPROCITY_PHASE_RING_THEOREM.md`
-
-Reference/audit implementation:
-
-- `hhs_runtime/pass219_quantization_constraint_reference_v1.py`
-- `tests/test_hhs_pass219_quantization_constraint_law.py`
-- `.github/workflows/pass219-universal-quantization-constraint-audit.yml`
-
-Registry extension:
-
-- `docs/HARMONICODE_AXIOM_AND_PROJECTION_REGISTRY.md` now registers `PI-LOSHU-NUMERAL-v1`, `PI-U-PHASE-v1`, `PI-U-QUANT-v1`, `PI-QR-XY-YX-v1`, and `PI-QR-U72-v1`.
-
-## Core 1.7.0 formalization
-
-The native Lo Shu polynomial surface is:
-
-```harmonicode
-L_H = {
-  {b^4, c^4, b^2},
-  {c^2, b^2+c^2, b^4+c^2},
-  {b^6, a^2, b^2*c^2}
-}
-```
-
-The fixed derived polynomial numerals include:
-
-```harmonicode
-N12   = c^2*b^4
-N36   = b^4*c^4
-N72   = b^6*c^4
-N73   = b^6*c^4+a^2
-N6    = b^2*c^2
-N66   = b^6*c^4-b^2*c^2
-N5256 = (b^6*c^4)*(b^6*c^4+a^2)
-ZERO_L = c^2-c^2
-```
-
-The metric projection closes as:
-
-```harmonicode
-u_q^N5256 * (b^2)^N66 = a^2
-```
-
-while the inherited cyclic phase projection remains:
-
-```harmonicode
-u_phase^N72 = a^2.
-```
-
-These are type-distinct projection constraints and are joined, not scalarized.
-
-Quadratic reciprocity is lifted as:
-
-```harmonicode
-epsilon_L(p,q)=Mod(((p-a^2)*(q-a^2))/b^4,b^2)
-ZERO_L -> xy -> ZERO_L mod N72
-a^2    -> yx -> N36 mod N72.
-```
-
-The UQCEL object is:
+Exact predecessor gates:
 
 ```text
-ConstraintJoin(
-  LoShuNumeralSurface,
-  DyadicMetricRelation,
-  U72PhaseClosure,
-  QuadraticReciprocityPhaseLift,
-  VM81OrderedPhaseWitness,
-  Hash72Hash216Lineage
-).
+Pass 219 Universal Quantization Constraint Audit
+run 31957251117 — SUCCESS
+
+Pass 217 Current Main Integration
+run 31957251126 — SUCCESS
 ```
 
-## Important inherited compatibility resolution
-
-Pass 191 freezes the phase closure `u^72=1`. Amendment 1.7.0 does not replace it.
-
-Instead:
+Predecessor classification:
 
 ```text
-u_phase = cyclic phase-ring projection
-u_q     = dyadic quantization-metric projection.
-```
-
-This preserves the inherited phase closure while allowing the exact metric relation to derive the non-unit scalar quantization scale.
-
-## Validation already completed
-
-Implementation/audit head:
-
-```text
-003625f6409ab272c36261681273d36a9783392d
-```
-
-Dedicated UQCEL workflow:
-
-```text
-run: 31957132760
-job: 95189354682
-conclusion: SUCCESS
-```
-
-The workflow built the exact shared ABI and executed:
-
-```text
-python -m pytest -q tests/test_hhs_pass219_quantization_constraint_law.py
-```
-
-Result:
-
-```text
-10 passed, 1 non-fatal pytest configuration warning
-```
-
-Validated audit domains:
-
-- exact Lo Shu polynomial projection and magic-sum closure;
-- exact `N12/N36/N72/N73/N66/N5256` projection values;
-- exact rational primitive metric exponent `-11/12`;
-- exact full-cycle base-`b^2` exponent `-66`;
-- exact metric power `5256`;
-- exhaustive odd residue-pair quadratic-reciprocity classification over the `N72` residue range;
-- exact ABI `x*y -> xy/ZERO_L` and `y*x -> yx/N36` correspondence;
-- `xy/yx` witness preservation across all 81 VM81 cells;
-- exhaustive 5,184 VM81 ordered-phase address round trip;
-- inherited quarter-cycle phase boundedness;
-- no approximate numeric authority in the UQCEL reference/oracle.
-
-The PR synthetic merge commit tested by that run was:
-
-```text
-1ae2ff82bd57872442a777a0d3fb60afa917e10a
-```
-
-and its tree SHA was exactly the implementation-head tree:
-
-```text
-32f5003a3f8ec5a680b09c6ae601e5894a98f01b
-```
-
-so the synthetic-merge execution and branch-head content were byte-identical for the audited tree.
-
-## Current repository status before this restart-record-only successor
-
-Registry successor:
-
-```text
-6e24cca93470f057039e36fdf75b3afa3b55a3b3
-```
-
-This successor changes only the projection registry relative to the audited implementation tree. GitHub automatically scheduled a fresh dedicated UQCEL audit and Pass 217 integration run for that successor. Final exact-head run IDs are to be recorded in PR #257 metadata/comment after they become terminal so the branch head does not move again merely to record CI output.
-
-## What has NOT been implemented
-
-The result classification is currently:
-
-```text
-SUBSTRATE_COMPATIBLE = PROVEN FOR THE TESTED DOMAIN
+SUBSTRATE_COMPATIBLE = PROVEN FOR TESTED DOMAIN
 ADMISSION_GATE_IMPLEMENTED = NO
 ADMISSION_GATE_ENFORCED = NO
 ```
 
-The exact C VM81 kernel has not been modified in this iteration to make UQCEL a mandatory mutation/admission gate.
+## Newly authorized 1.8.0 scope
 
-That separation is deliberate. The requested safe sequence is:
+The native equation being quantized by UQCEL is the Universal Constraint Envelope supplied for this iteration:
 
-```text
-FORMALIZE
--> AUDIT EXISTING IMPLEMENTATION
--> ONLY THEN DESIGN/IMPLEMENT CANONICAL ENFORCEMENT.
+```harmonicode
+P^2/{(t^3-t=(P^3-P/(P^2-pq)=(t^3-t)/Delta=P^2(MOD)(pq))=m^2-m)-(({{b^4,c^4,c^2-u^72},{c^2,5/u^((s==(b^(2c^2)c^b^4)^2)/(72P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,(72*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+Delta)-P^2)/(t^3-t)*u^72}
+
+where Delta/P=Sqrt(pq+u^72)^x^2
 ```
 
-## Required next implementation step if authorized
+This expression is authoritative source syntax and SHALL be preserved lexically in the new append-only contract/fixture. It SHALL be parsed as a typed `ConstraintJoin`, not as one untyped scalar equality.
 
-A later iteration may promote UQCEL from tested correspondence to canonical enforcement by adding a stable exact ABI record and VM81 admission check with:
+The implementation target is:
 
-- explicit applicability/domain classification;
-- exact Lo Shu/metric/phase/QR fields;
-- fail-closed error codes;
-- rollback/reverse witness;
-- Hash72 receipt encoding;
-- Hash216 predecessor/change/receipt lineage;
-- post-Pass218 indexed-reuse behavior;
-- negative tests and dependency-scoped performance evidence.
+```text
+native Universal Constraint Envelope
+-> typed exact witness record
+-> UQCEL quantization witness
+-> exact ABI validation
+-> VM81 admission/rejection
+-> Hash72 receipt material
+-> Hash216 previous/change/receipt lineage
+```
 
-Do not merge PR #257 or modify the canonical VM81 admission path without separate explicit authorization.
+## Inherited constraints that must remain unchanged
+
+- shared foundational axiom classes remain formal deduction, symbolic logic, higher-dimensional tensor algebra, and Euclidean geometry;
+- native ordered basis `(x,y,z,w,xy,yx,zw,wz)` remains noncommutative and authoritative;
+- `u_phase^72 = 1` remains the inherited cyclic phase projection;
+- `u_q` remains a distinct dyadic quantization-metric projection;
+- Lo Shu polynomial numerals remain the canonical fixed-numeral representation for UQCEL;
+- existing exact ABI v1 layouts and legacy ABI v1 layouts must not be resized or reordered;
+- x86_64 ingress/egress must remain byte-exact and backwards compatible;
+- no float/double/transcendental approximation may write canonical state;
+- exact arithmetic must fail closed on overflow or unsupported domain rather than silently approximate;
+- canonical mutation authority remains the single VM81 admission path;
+- Hash72/Hash216 remain receipt/lineage authorities;
+- Pass 218 activation/indexed-reuse gates remain inherited.
+
+## Planned repository changes
+
+Append-only normative layer:
+
+- `HHS_PASS_219_APPEND_ONLY_NATIVE_UNIVERSAL_CONSTRAINT_ENFORCEMENT_AMENDMENT_1_8_0.md`
+- `docs/pass219/APPENDIX_H_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE.md`
+
+Exact additive ABI/runtime:
+
+- extend `hhs_runtime/include/hhs_runtime_exact_abi.h` only additively;
+- extend `hhs_runtime/c/hhs_runtime_exact_abi.c` only additively;
+- extend `hhs_python/runtime/hhs_exact_ctypes_bridge.py` only additively;
+- add an exact Universal Constraint / UQCEL witness record and fail-closed validator/admission result;
+- preserve all existing exact ABI entry points and binary layouts.
+
+Tests/workflow:
+
+- extend UQCEL tests with native-envelope admissibility and negative cases;
+- verify ordered `xy/yx` reciprocity orientation through the admission result;
+- verify P/p/q/Delta integer closure and symmetric `A=B=P^2` projection where declared;
+- verify exact Lo Shu/U72 quantization constants;
+- verify rejection on constraint mismatch, type mismatch, and checked-arithmetic overflow;
+- verify unchanged 648-byte VM81 frame and x86_64 byte round-trips;
+- run the dedicated UQCEL workflow and broader integration gate.
+
+## Claim boundary for this iteration
+
+The first enforceable ABI profile will admit the exact integer/symmetric subdomain explicitly represented by the witness record. Unsupported symbolic branches of the full source envelope SHALL return a typed `UNRESOLVED/UNSUPPORTED_DOMAIN` result and SHALL NOT be approximated or falsely classified as valid.
+
+The source envelope remains broader than any one finite ABI record. The ABI record is an exact projection with declared domain and loss fields, consistent with amendment 1.6.0 projection rules.
+
+## Next action
+
+Inspect inherited exact/BigInt facilities, define the additive record and error/status model, implement the exact validator/admission gate, add negative/replay tests, and freeze only after dependency-scoped CI is terminal.
+
+Do not merge PR #257 or deploy production without separate explicit authorization.
