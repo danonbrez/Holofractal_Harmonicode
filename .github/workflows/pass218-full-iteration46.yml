@@ -15,6 +15,7 @@ on:
       - 'tests/test_runtime_os_production_root.py'
       - 'scripts/pass218_iteration46_manifest_i32_source_closure_validation.py'
       - '.github/workflows/pass218-full-iteration46.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,6 +27,8 @@ jobs:
     steps:
       - name: Check out exact Iteration 46 candidate
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -100,7 +103,7 @@ jobs:
         run: pytest -q tests/pass218/test_pass218_iteration40_manifest_bound_canonical_commit_persistence.py
 
       - name: Preserve frozen I34 manifest source identity semantics
-        run: pytest -q tests/pass218/test_pass218_iteration34_manifest_bound_source_ingress.py
+        run: pytest -q tests/pass218/test_pass218_iteration34_manifest_source_ingress.py
 
       - name: Preserve frozen I33 curriculum authority separation
         run: pytest -q tests/pass218/test_pass218_iteration33_curriculum_advance.py
