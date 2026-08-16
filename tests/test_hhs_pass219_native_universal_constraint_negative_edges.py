@@ -21,6 +21,26 @@ def _git_blob_sha(path: Path) -> str:
     return hashlib.sha1(header + raw).hexdigest()
 
 
+def _canonical_hash72(raw: bytes) -> str:
+    lib = uqcel_mod._LIB
+    lib.hhs_hash72_compute_bytes.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
+    lib.hhs_hash72_compute_bytes.restype = None
+    source = ctypes.create_string_buffer(raw)
+    output = ctypes.create_string_buffer(73)
+    lib.hhs_hash72_compute_bytes(source, len(raw), output)
+    return output.raw[:72].decode("ascii")
+
+
+def _canonical_hash216(raw: bytes) -> str:
+    lib = uqcel_mod._LIB
+    lib.hhs_hash216_compute_bytes.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
+    lib.hhs_hash216_compute_bytes.restype = None
+    source = ctypes.create_string_buffer(raw)
+    output = ctypes.create_string_buffer(217)
+    lib.hhs_hash216_compute_bytes(source, len(raw), output)
+    return output.raw[:216].decode("ascii")
+
+
 def test_even_quadratic_reciprocity_input_fails_closed() -> None:
     P = 4
     p = 2
@@ -115,6 +135,27 @@ def test_invalid_previous_hash72_cannot_commit_candidate_frame() -> None:
     assert result["status"] == HHS_EXACT_STATUS_CONSTRAINT_REJECTED
     assert result["admitted"] is False
     assert result["committed_frame"] == bytes(648)
+
+
+def test_private_uqcel_receipt_hashes_match_canonical_linked_hashes() -> None:
+    raw_frame = bytes((index * 17 + 3) & 0xFF for index in range(648))
+    result = HHSUQCELRuntimeBridge.admit_vm81(
+        raw_frame,
+        P=5,
+        p=3,
+        q=7,
+        delta=4,
+        A=25,
+        B=25,
+        cell81=41,
+        left_basis8=1,
+        right_basis8=0,
+    )
+    admission = result["admission"]
+    assert result["admitted"] is True
+    assert admission["change_hash72"] == _canonical_hash72(raw_frame)
+    triplet = admission["hash216_triplet"].encode("ascii")
+    assert admission["hash216_identity"] == _canonical_hash216(triplet)
 
 
 def test_frozen_exact_v1_1_sources_are_original_git_blobs() -> None:
