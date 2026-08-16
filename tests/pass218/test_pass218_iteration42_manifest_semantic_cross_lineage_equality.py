@@ -479,7 +479,7 @@ def test_i42_rejects_existing_i30_promotion(tmp_path: Path) -> None:
 
 
 def test_i42_persists_no_transient_request_or_verbatim_source(tmp_path: Path) -> None:
-    source = b"I42 forbidden verbatim payload 5fa2d1 must never enter durable equality state."
+    source = b"I42 binds the I41 manifest source identity to independently validated I29 semantics."
     marker = "i42 transient request marker 8c1e77 must not persist"
     lifecycle, authority, i41 = make_i41(tmp_path, source)
     runtime = make_i42(tmp_path, lifecycle, i41, FakeI29Validator())
