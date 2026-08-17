@@ -37,7 +37,19 @@ extern "C" {
 #define HHS_UQCEL_RESIDUAL_TENSOR_S_F_AT_BT UINT64_C(0x0002)
 #define HHS_UQCEL_RESIDUAL_DELTA_P_ROOT UINT64_C(0x0004)
 #define HHS_UQCEL_RESIDUAL_MOD_F_U UINT64_C(0x0008)
-#define HHS_UQCEL_RESIDUAL_FULL_SOURCE UINT64_C(0x000F)
+#define HHS_UQCEL_RESIDUAL_DIAGNOSTIC_SOURCE UINT64_C(0x000F)
+#define HHS_UQCEL_RESIDUAL_MONOLITHIC_EQUALITY_CHAIN UINT64_C(0x0010)
+#define HHS_UQCEL_RESIDUAL_FULL_SOURCE UINT64_C(0x001F)
+
+/*
+ * ABI compatibility note (Pass 219 1.15 repair-forward clarification):
+ * InputV1.A and InputV1.B are integer/symmetric compatibility-projection
+ * witnesses for HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1. They do not
+ * define the source-level A/B symbols of the full symbolic monolithic UCE.
+ * For the full source equation, A denotes the complete LHS and B the complete
+ * RHS; neither is definitionally P^2.
+ */
+#define HHS_EXACT_UQCEL_V1_AB_COMPATIBILITY_PROJECTION 1U
 
 typedef enum HHSExactUQCELProfile {
     HHS_EXACT_UQCEL_PROFILE_NONE = 0,
