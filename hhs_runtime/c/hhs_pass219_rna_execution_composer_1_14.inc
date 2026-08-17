@@ -84,6 +84,7 @@ static void hhs_exact_pass219_rna_execution_select_genesis(
     out_plan->route = HHS_EXACT_PASS219_RNA_EXECUTION_ROUTE_GENESIS_REPLAY;
     out_plan->effective_bypass_reason = effective_reason;
     out_plan->genesis_replay_required = 1U;
+    out_plan->genesis_replay_count = 1U;
 }
 
 uint32_t hhs_exact_pass219_rna_execution_composer_version(void) {
@@ -149,6 +150,7 @@ HHSExactStatus hhs_exact_pass219_rna_execution_compose(
             out_plan->effective_bypass_reason = HHS_EXACT_PASS219_RNA_BYPASS_NONE;
             out_plan->inherited_indexed_capability_selected = 1U;
             out_plan->authenticated_predecessor_reused = 1U;
+            out_plan->indexed_reuse_count = 1U;
             return HHS_EXACT_STATUS_OK;
         }
 
@@ -216,7 +218,9 @@ HHSExactStatus hhs_exact_pass219_rna_execution_prepare_candidate(
         plan->effective_bypass_reason != HHS_EXACT_PASS219_RNA_BYPASS_NONE ||
         plan->inherited_indexed_capability_selected != 1U ||
         plan->authenticated_predecessor_reused != 1U ||
+        plan->indexed_reuse_count != 1U ||
         plan->genesis_replay_required != 0U ||
+        plan->genesis_replay_count != 0U ||
         plan->current_dependency_frontier_verified != 1U ||
         retrieval->classification != HHS_EXACT_RNA_STATE_RETRIEVAL_OK)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
