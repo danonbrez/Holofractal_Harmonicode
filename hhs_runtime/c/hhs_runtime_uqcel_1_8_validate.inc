@@ -117,6 +117,21 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_METRIC, HHS_EXACT_UQCEL_REASON_BIGINT_ENCODING);
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_METRIC;
 
+    /*
+     * Pass 219 1.15 semantic repair-forward boundary:
+     * the V1 A/B fields are integer/symmetric compatibility witnesses, not
+     * the full-symbolic source A/B terms. The full source defines A as the
+     * complete LHS and B as the complete RHS of one monolithic equality chain.
+     * Until that exact chain has a dedicated lowering/evaluator, do not run
+     * the compatibility A=P^2/B=P^2 checks and do not reinterpret them as
+     * full-symbolic evidence. The aggregate monolithic residual remains set.
+     */
+    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
+        out_admission->decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN;
+        out_admission->reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL;
+        return HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN;
+    }
+
     if (!hhs_exact_big_square_view(&input->P, &p_squared) ||
         !hhs_exact_big_mul_view(&input->p, &input->q, &pq) ||
         !hhs_exact_big_add_buffer_view(&pq, &input->delta, &pq_plus_delta))
@@ -180,12 +195,6 @@ HHSExactStatus hhs_exact_uqcel_validate(
 
     if ((out_admission->satisfied_mask & out_admission->required_mask) != out_admission->required_mask)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-
-    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
-        out_admission->decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN;
-        out_admission->reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL;
-        return HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN;
-    }
 
     out_admission->decision = HHS_EXACT_UQCEL_DECISION_ADMIT;
     out_admission->reject_reason = HHS_EXACT_UQCEL_REASON_NONE;
