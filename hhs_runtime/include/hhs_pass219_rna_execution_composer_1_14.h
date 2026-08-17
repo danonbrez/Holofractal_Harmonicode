@@ -40,7 +40,9 @@ typedef struct HHSExactPass219RNAExecutionPlanV1 {
     uint32_t indexed_lookup_observed;
     uint32_t inherited_indexed_capability_selected;
     uint32_t authenticated_predecessor_reused;
+    uint32_t indexed_reuse_count;
     uint32_t genesis_replay_required;
+    uint32_t genesis_replay_count;
     uint32_t dependency_scoped_recompute_required;
     uint32_t recovery_recompute_required;
     uint32_t unaffected_reuse_preserved;
