@@ -131,7 +131,26 @@ def test_full_symbolic_profile_is_unresolved_not_approximately_admitted() -> Non
     assert result["admitted"] is False
     assert admission["decision"] == 3
     assert admission["reject_reason"] == 9
-    assert admission["residual_mask"] == 0xF
+    assert admission["residual_mask"] == 0x1F
+    assert admission["residual_mask"] & 0x10 == 0x10
+    assert result["committed_frame"] == bytes(648)
+
+
+def test_full_symbolic_a_b_are_lhs_rhs_not_integer_symmetric_aliases() -> None:
+    result = _call(
+        4,
+        3,
+        5,
+        profile=HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1,
+        A=17,
+        B=19,
+    )
+    admission = result["admission"]
+    assert result["status"] == HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN
+    assert result["admitted"] is False
+    assert admission["decision"] == 3
+    assert admission["reject_reason"] == 9
+    assert admission["residual_mask"] & 0x10 == 0x10
     assert result["committed_frame"] == bytes(648)
 
 
