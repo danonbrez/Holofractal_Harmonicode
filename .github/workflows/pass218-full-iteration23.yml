@@ -1,0 +1,110 @@
+name: Pass 218 Full Iteration 23
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration23-contextual-state-hydration-candidates
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass218/contextual_state_i23.py'
+      - 'hhs_backend/runtime_os_pass218_contextual_state_i23.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'tests/pass218/test_pass218_iteration23_contextual_state_hydration.py'
+      - 'scripts/pass218_iteration23_contextual_state_validation.py'
+      - 'docs/pass218/PASS_218_ITERATION_23_RESTART.md'
+      - '.github/workflows/pass218-full-iteration23.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contextual-state-hydration-candidates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Iteration 23 head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped validation packages
+        run: python -m pip install --upgrade pytest fastapi httpx cryptography uvicorn
+
+      - name: Compile cumulative Pass 218 and I20-I23 bindings
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_model_i20.py
+          python -m py_compile hhs_backend/runtime_os_pass218_relations_i21.py
+          python -m py_compile hhs_backend/runtime_os_pass218_semantic_graph_i22.py
+          python -m py_compile hhs_backend/runtime_os_pass218_contextual_state_i23.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration22_semantic_graph_validation.py
+          python -m py_compile scripts/pass218_iteration23_contextual_state_validation.py
+          python -m py_compile tests/pass218/test_pass218_iteration23_contextual_state_hydration.py
+
+      - name: Enforce global Pass 218 and cognition backend no-authoritative-float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_model_i20.py'),
+              Path('hhs_backend/runtime_os_pass218_relations_i21.py'),
+              Path('hhs_backend/runtime_os_pass218_semantic_graph_i22.py'),
+              Path('hhs_backend/runtime_os_pass218_contextual_state_i23.py'),
+          ]
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node
+                  for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant)
+                  and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I23_GLOBAL_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Run focused I23 contextual-state tests
+        run: pytest -q tests/pass218/test_pass218_iteration23_contextual_state_hydration.py
+
+      - name: Preserve frozen I22 semantic-graph semantics
+        run: pytest -q tests/pass218/test_pass218_iteration22_semantic_graph_candidates.py
+
+      - name: Preserve frozen I21 relational-candidate semantics
+        run: pytest -q tests/pass218/test_pass218_iteration21_relational_candidate_consumption.py
+
+      - name: Preserve frozen I20 governed activation semantics
+        run: pytest -q tests/pass218/test_pass218_iteration20_pass166_model_activation.py
+
+      - name: Preserve I1 Genesis relational-curriculum semantics
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+
+      - name: Preserve Pass 166 Word2Vec runtime semantics
+        run: pytest -q tests/test_hhs_pass166_word2vec_v1.py
+
+      - name: Preserve repository-native creative-writing crawler boundary
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+
+      - name: Emit deterministic I23 contextual-state evidence
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration23_contextual_state_validation.py
+
+      - name: Preserve RuntimeOS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Upload I23 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration23-contextual-state-hydration-candidate-evidence
+          path: .i23-evidence
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30

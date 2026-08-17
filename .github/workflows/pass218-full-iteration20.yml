@@ -1,0 +1,170 @@
+name: Pass 218 Full Iteration 20
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration20-governed-pass166-model-activation
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass218/model_activation_i20.py'
+      - 'hhs_backend/runtime_os_pass218_model_i20.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'scripts/pass218_iteration20_model_activation_validation.py'
+      - 'tests/pass218/test_pass218_iteration20_pass166_model_activation.py'
+      - 'docs/pass218/PASS_218_ITERATION_20_RESTART.md'
+      - '.github/workflows/pass218-full-iteration20.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  governed-pass166-model-activation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+    steps:
+      - name: Check out Iteration 20 candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped Python packages
+        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi pydantic uvicorn httpx
+
+      - name: Compile cumulative Pass 218 and I20 bindings
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_model_i20.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration20_model_activation_validation.py
+          python -m py_compile tests/pass218/test_pass218_iteration20_pass166_model_activation.py
+
+      - name: Enforce global Pass 218 and I20 backend no-authoritative-float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_model_i20.py'),
+              Path('hhs_backend/runtime_os_application_server.py'),
+          ]
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I20_GLOBAL_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Run focused I20 governed activation and restart tests
+        run: pytest -q tests/pass218/test_pass218_iteration20_pass166_model_activation.py
+
+      - name: Preserve Pass 166 Word2Vec runtime semantics
+        run: pytest -q tests/test_hhs_pass166_word2vec_v1.py
+
+      - name: Emit I20 governed activation evidence
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration20_model_activation_validation.py
+
+      - name: Preserve RuntimeOS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Upload I20 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration20-governed-pass166-model-activation-evidence
+          path: .i20-evidence
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
+
+  inherited-distributed-membrane:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      etcd:
+        image: quay.io/coreos/etcd:v3.5.21
+        env:
+          ETCD_NAME: default
+          ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+          ETCD_ADVERTISE_CLIENT_URLS: http://127.0.0.1:2379
+          ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+          ETCD_INITIAL_ADVERTISE_PEER_URLS: http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER: default=http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER_STATE: new
+        ports:
+          - 2379:2379
+    env:
+      HHS_PASS218_I10_ETCD_TEST_ENDPOINT: http://127.0.0.1:2379
+      HHS_PASS218_I10_ETCD_TEST_NAMESPACE: /hhs/pass218/i20/ci/${{ github.run_id }}
+    steps:
+      - name: Check out Iteration 20 candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install distributed validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi uvicorn httpx
+
+      - name: Verify real etcd v3 authority is reachable
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          import urllib.error
+          import urllib.request
+
+          error = None
+          for attempt in range(30):
+              request = urllib.request.Request(
+                  'http://127.0.0.1:2379/v3/kv/range',
+                  data=json.dumps({'key': 'aA=='}).encode('utf-8'),
+                  headers={'Content-Type': 'application/json'},
+                  method='POST',
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=3) as response:
+                      payload = json.loads(response.read().decode('utf-8'))
+                  assert isinstance(payload, dict)
+                  print('PASS218_I20_INHERITED_ETCD_V3_REACHABLE=1')
+                  break
+              except (OSError, urllib.error.URLError, TimeoutError, AssertionError, json.JSONDecodeError) as exc:
+                  error = exc
+                  if attempt == 29:
+                      raise
+                  time.sleep(1)
+          else:
+              raise RuntimeError('etcd v3 authority did not become reachable') from error
+          PY
+
+      - name: Re-prove distributed ownership through I19 effect verification
+        run: |
+          pytest -q \
+            tests/pass218/test_pass218_iteration10_distributed_canonical_ownership.py \
+            tests/pass218/test_pass218_iteration16_distributed_consumption.py \
+            tests/pass218/test_pass218_iteration16_etcd_cas.py \
+            tests/pass218/test_pass218_iteration17_fenced_external_execution.py \
+            tests/pass218/test_pass218_iteration18_distributed_terminal_closure.py \
+            tests/pass218/test_pass218_iteration19_distributed_postcondition.py \
+            tests/pass218/test_pass218_iteration19_runtime_os_binding.py
+
+      - name: Re-prove real-etcd I19 terminal postcondition membrane
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration19_real_etcd_validation.py
+
+      - name: Confirm inherited membrane and I20 authority separation
+        run: |
+          echo 'PASS218_I20_INHERITED_I19_EFFECT_VERIFICATION_PRESERVED=1'
+          echo 'PASS218_I20_MAINTENANCE_AUTHORITY_NOT_WIDENED=1'

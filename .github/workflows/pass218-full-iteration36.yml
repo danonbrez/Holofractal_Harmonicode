@@ -1,0 +1,189 @@
+name: Pass 218 Full Iteration 36
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration36-manifest-bound-vector-vm5184-staging-ingress
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass218/manifest_bound_vector_vm5184_staging_i36.py'
+      - 'hhs_backend/runtime_os_pass218_manifest_vector_vm5184_staging_i36.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'tests/pass218/test_pass218_iteration36_manifest_bound_vector_vm5184_staging.py'
+      - 'scripts/pass218_iteration36_manifest_vector_vm5184_staging_validation.py'
+      - 'docs/pass218/PASS_218_ITERATION_36_RESTART.md'
+      - '.github/workflows/pass218-full-iteration36.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  manifest-bound-vector-vm5184-staging-ingress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out exact Iteration 36 head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped validation packages
+        run: python -m pip install --upgrade pytest fastapi httpx cryptography uvicorn
+
+      - name: Compile cumulative Pass 218 and I20-I36 bindings
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_model_i20.py
+          python -m py_compile hhs_backend/runtime_os_pass218_relations_i21.py
+          python -m py_compile hhs_backend/runtime_os_pass218_semantic_graph_i22.py
+          python -m py_compile hhs_backend/runtime_os_pass218_contextual_state_i23.py
+          python -m py_compile hhs_backend/runtime_os_pass218_narrative_beat_i24.py
+          python -m py_compile hhs_backend/runtime_os_pass218_perspective_context_i25.py
+          python -m py_compile hhs_backend/runtime_os_pass218_grounded_manifold_i26.py
+          python -m py_compile hhs_backend/runtime_os_pass218_formal_analogical_i27.py
+          python -m py_compile hhs_backend/runtime_os_pass218_hash216_vm5184_i28.py
+          python -m py_compile hhs_backend/runtime_os_pass218_hash216_vm5184_validation_i29.py
+          python -m py_compile hhs_backend/runtime_os_pass218_atomic_semantic_promotion_i30.py
+          python -m py_compile hhs_backend/runtime_os_pass218_verbatim_purge_i31.py
+          python -m py_compile hhs_backend/runtime_os_pass218_source_closure_i32.py
+          python -m py_compile hhs_backend/runtime_os_pass218_curriculum_advance_i33.py
+          python -m py_compile hhs_backend/runtime_os_pass218_manifest_source_ingress_i34.py
+          python -m py_compile hhs_backend/runtime_os_pass218_manifest_semantic_source_transaction_i35.py
+          python -m py_compile hhs_backend/runtime_os_pass218_manifest_vector_vm5184_staging_i36.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration36_manifest_vector_vm5184_staging_validation.py
+          python -m py_compile tests/pass218/test_pass218_iteration36_manifest_bound_vector_vm5184_staging.py
+
+      - name: Enforce global Pass 218 and cognition backend no-authoritative-float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_model_i20.py'),
+              Path('hhs_backend/runtime_os_pass218_relations_i21.py'),
+              Path('hhs_backend/runtime_os_pass218_semantic_graph_i22.py'),
+              Path('hhs_backend/runtime_os_pass218_contextual_state_i23.py'),
+              Path('hhs_backend/runtime_os_pass218_narrative_beat_i24.py'),
+              Path('hhs_backend/runtime_os_pass218_perspective_context_i25.py'),
+              Path('hhs_backend/runtime_os_pass218_grounded_manifold_i26.py'),
+              Path('hhs_backend/runtime_os_pass218_formal_analogical_i27.py'),
+              Path('hhs_backend/runtime_os_pass218_hash216_vm5184_i28.py'),
+              Path('hhs_backend/runtime_os_pass218_hash216_vm5184_validation_i29.py'),
+              Path('hhs_backend/runtime_os_pass218_atomic_semantic_promotion_i30.py'),
+              Path('hhs_backend/runtime_os_pass218_verbatim_purge_i31.py'),
+              Path('hhs_backend/runtime_os_pass218_source_closure_i32.py'),
+              Path('hhs_backend/runtime_os_pass218_curriculum_advance_i33.py'),
+              Path('hhs_backend/runtime_os_pass218_manifest_source_ingress_i34.py'),
+              Path('hhs_backend/runtime_os_pass218_manifest_semantic_source_transaction_i35.py'),
+              Path('hhs_backend/runtime_os_pass218_manifest_vector_vm5184_staging_i36.py'),
+          ]
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node
+                  for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant)
+                  and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I36_GLOBAL_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Run focused I36 manifest-bound vector VM5184 staging tests
+        run: pytest -q tests/pass218/test_pass218_iteration36_manifest_bound_vector_vm5184_staging.py
+
+      - name: Preserve frozen I35 manifest-bound semantic source-transaction semantics
+        run: pytest -q tests/pass218/test_pass218_iteration35_manifest_bound_semantic_source_transaction.py
+
+      - name: Preserve frozen I4 vector VM5184 staging semantics
+        run: pytest -q tests/pass218/test_pass218_iteration4_vector_vm5184_staging.py
+
+      - name: Preserve frozen I34 manifest-bound source-ingress semantics
+        run: pytest -q tests/pass218/test_pass218_iteration34_manifest_source_ingress.py
+
+      - name: Preserve frozen I3 source-transaction semantics
+        run: pytest -q tests/pass218/test_pass218_iteration3_source_transaction_membrane.py
+
+      - name: Preserve frozen I2 structural hydration semantics
+        run: pytest -q tests/pass218/test_pass218_iteration2_grammar_narrative_hydration.py
+
+      - name: Preserve frozen I33 authoritative curriculum-advance semantics
+        run: pytest -q tests/pass218/test_pass218_iteration33_curriculum_advance.py
+
+      - name: Preserve frozen I32 source-closure semantics
+        run: pytest -q tests/pass218/test_pass218_iteration32_source_closure.py
+
+      - name: Preserve frozen I31 purge-receipt semantics
+        run: pytest -q tests/pass218/test_pass218_iteration31_verbatim_purge.py
+
+      - name: Preserve frozen I30 atomic-promotion semantics
+        run: pytest -q tests/pass218/test_pass218_iteration30_atomic_semantic_promotion.py
+
+      - name: Preserve frozen I29 validation semantics
+        run: pytest -q tests/pass218/test_pass218_iteration29_hash216_vm5184_validation.py
+
+      - name: Preserve frozen I28 transition construction semantics
+        run: pytest -q tests/pass218/test_pass218_iteration28_hash216_vm5184_transition.py
+
+      - name: Preserve canonical writer-fence semantics
+        run: pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+
+      - name: Preserve frozen I27 differentiation semantics
+        run: pytest -q tests/pass218/test_pass218_iteration27_formal_analogical_differentiation.py
+
+      - name: Preserve frozen I26 grounded-manifold semantics
+        run: pytest -q tests/pass218/test_pass218_iteration26_grounded_relational_manifold.py
+
+      - name: Preserve frozen I25 perspective-context semantics
+        run: pytest -q tests/pass218/test_pass218_iteration25_perspective_context_hydration.py
+
+      - name: Preserve frozen I24 narrative-beat semantics
+        run: pytest -q tests/pass218/test_pass218_iteration24_narrative_beat_candidates.py
+
+      - name: Preserve frozen I23 contextual-state semantics
+        run: pytest -q tests/pass218/test_pass218_iteration23_contextual_state_hydration.py
+
+      - name: Preserve frozen I22 semantic-graph semantics
+        run: pytest -q tests/pass218/test_pass218_iteration22_semantic_graph_candidates.py
+
+      - name: Preserve frozen I21 relational-candidate semantics
+        run: pytest -q tests/pass218/test_pass218_iteration21_relational_candidate_consumption.py
+
+      - name: Preserve frozen I20 governed activation semantics
+        run: pytest -q tests/pass218/test_pass218_iteration20_pass166_model_activation.py
+
+      - name: Preserve I1 Genesis relational-curriculum and cursor semantics
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+
+      - name: Preserve inherited Pass205 native continuation ABI
+        run: pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+
+      - name: Preserve Pass 166 Word2Vec runtime semantics
+        run: pytest -q tests/test_hhs_pass166_word2vec_v1.py
+
+      - name: Preserve repository-native creative-writing crawler boundary
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+
+      - name: Emit deterministic I36 manifest-bound vector VM5184 staging evidence
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration36_manifest_vector_vm5184_staging_validation.py
+
+      - name: Preserve RuntimeOS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Upload I36 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration36-manifest-bound-vector-vm5184-staging-evidence
+          path: .i36-evidence
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30

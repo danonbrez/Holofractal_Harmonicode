@@ -27,6 +27,7 @@ Environment=HHS_PASS200B_STATE_ROOT=/var/lib/hhs/pass200b
 Environment=HHS_PASS200C_STATE_ROOT=/var/lib/hhs/pass200c
 Environment=HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204
 Environment=HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3
+Environment=HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218
 Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
 Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json

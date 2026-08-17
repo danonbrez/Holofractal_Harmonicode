@@ -1,0 +1,115 @@
+name: Pass 218 Full Iteration 12
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration12-production-authority-maintenance
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass218/**'
+      - 'tests/pass218/**'
+      - 'scripts/pass218_iteration12_operational_validation.py'
+      - 'deploy/pass218-etcd/**'
+      - 'docs/pass218/**'
+      - '.github/workflows/pass218-full-iteration12.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  production-authority-maintenance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_PASS218_I12_NAMESPACE: /hhs/pass218/i12/ci/${{ github.run_id }}
+
+    steps:
+      - name: Check out Iteration 12 candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped validation packages
+        run: python -m pip install --upgrade pytest cryptography fastapi uvicorn httpx
+
+      - name: Compile cumulative Pass 218 surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_lifecycle.py
+          python -m py_compile scripts/pass218_iteration12_operational_validation.py
+
+      - name: Validate Iteration 12 cumulative package exports
+        run: |
+          python - <<'PY'
+          from hhs_runtime.pass218 import (
+              PASS218_AUTHORITY_MAINTENANCE_VERSION,
+              Pass218BoundedRecoveryController,
+              Pass218MaintenancePolicy,
+              seal_credential_rotation_plan,
+              seal_member_replacement_plan,
+              seal_operational_alert_receipt,
+              seal_snapshot_retention_receipt,
+          )
+          assert PASS218_AUTHORITY_MAINTENANCE_VERSION == 'HHS-P218-PRODUCTION-AUTHORITY-MAINTENANCE-I12-V1'
+          assert Pass218MaintenancePolicy is not None
+          assert Pass218BoundedRecoveryController is not None
+          assert all(callable(value) for value in (
+              seal_credential_rotation_plan,
+              seal_member_replacement_plan,
+              seal_operational_alert_receipt,
+              seal_snapshot_retention_receipt,
+          ))
+          print('PASS218_I12_PACKAGE_EXPORTS=1')
+          PY
+
+      - name: Enforce no authoritative float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py'))
+          paths.append(Path('scripts/pass218_iteration12_operational_validation.py'))
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [
+                  node for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I12_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Preserve Iterations 1 through 12
+        run: |
+          pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+          pytest -q tests/pass218/test_pass218_iteration2_grammar_narrative_hydration.py
+          pytest -q tests/pass218/test_pass218_iteration3_source_transaction_membrane.py
+          pytest -q tests/pass218/test_pass218_iteration4_vector_vm5184_staging.py
+          pytest -q tests/pass218/test_pass218_iteration5_promotion_admission_proof.py
+          pytest -q tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py
+          pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+          pytest -q tests/pass218/test_pass218_iteration8_runtime_os_lifecycle.py
+          pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+          pytest -q tests/pass218/test_pass218_iteration10_distributed_canonical_ownership.py
+          pytest -q tests/pass218/test_pass218_iteration11_distributed_operational_hardening.py
+          pytest -q tests/pass218/test_pass218_iteration12_production_authority_maintenance.py
+
+      - name: Preserve inherited crawler and Runtime OS acceptance
+        run: |
+          pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+          pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Run real learner-based maintenance sequence
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration12_operational_validation.py
+
+      - name: Upload Iteration 12 operational evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration12-production-maintenance-evidence
+          path: .i12-evidence
+          if-no-files-found: warn
+          include-hidden-files: true

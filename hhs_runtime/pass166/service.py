@@ -200,10 +200,11 @@ class Word2VecService:
         vm81, incoming = self._pass165._vm81, self._pass165._vm81.state_hash72
         for item in objects:
             vm81.register_parameter(type="P166_WORD2VEC_DENSE_VECTOR_REFERENCE", value={"lexical_object_id": item.lexical_object_id, "canonical_vector_identity": item.canonical_vector_identity, "dimension": item.dimensionality}, domain="LANGUAGE_MODALITY_VECTOR_STORE", phase=int(item.lexical_object_id[:8], 16) % 72, operator="IMMUTABLE_VECTOR_REFERENCE", constraints=("P166_EXACT_QUANTIZATION", "P166_SOURCE_PRESERVED", "P165_5184_PROJECTION"), provenance=item.provenance_root)
+        activation_input = vm81.state_hash72
         digest = sha256(bytes.fromhex(model_root)).digest()
-        candidate = vm81.submit_candidate(thread=61, writes={digest[index] % 81: 1 for index in range(16)}, operation="VMRC_COMMIT", expected_input_hash72=incoming, dependency_root=model_root, capability_scope="P166_MODEL_ACTIVATION", source_architecture="P166_REFERENCE_CPU", target_architecture="VM81")
+        candidate = vm81.submit_candidate(thread=61, writes={digest[index] % 81: 1 for index in range(16)}, operation="VMRC_COMMIT", expected_input_hash72=activation_input, dependency_root=model_root, capability_scope="P166_MODEL_ACTIVATION", source_architecture="P166_REFERENCE_CPU", target_architecture="VM81")
         result = vm81.execute(candidate)
-        return {"incoming_hash72": incoming, "outgoing_hash72": vm81.state_hash72, "vm81_commit_receipt": result["commit"]["receipt"]}
+        return {"incoming_hash72": incoming, "activation_input_hash72": activation_input, "outgoing_hash72": vm81.state_hash72, "vm81_commit_receipt": result["commit"]["receipt"]}
 
     def install(self, model_id: str, *, accept_license: bool, activate: bool = True, offline_ready: bool = True, replace_existing: bool = False, expected_pass165_frontier: str | None = None) -> dict[str, Any]:
         with self._lock:

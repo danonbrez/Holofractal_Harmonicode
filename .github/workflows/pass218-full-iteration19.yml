@@ -1,0 +1,134 @@
+name: Pass 218 Full Iteration 19
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration19-distributed-postcondition-verification
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass218/distributed_postcondition_i19.py'
+      - 'hhs_backend/pass218_execution_i19_control.py'
+      - 'hhs_backend/runtime_os_pass218_postcondition_i19.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'scripts/pass218_iteration19_postcondition_validation.py'
+      - 'scripts/pass218_iteration19_real_etcd_validation.py'
+      - 'tests/pass218/test_pass218_iteration19_distributed_postcondition.py'
+      - 'tests/pass218/test_pass218_iteration19_runtime_os_binding.py'
+      - 'tests/conftest.py'
+      - 'docs/pass218/PASS_218_ITERATION_19_RESTART.md'
+      - '.github/workflows/pass218-full-iteration19.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  distributed-postcondition-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      etcd:
+        image: quay.io/coreos/etcd:v3.5.21
+        env:
+          ETCD_NAME: default
+          ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+          ETCD_ADVERTISE_CLIENT_URLS: http://127.0.0.1:2379
+          ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+          ETCD_INITIAL_ADVERTISE_PEER_URLS: http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER: default=http://127.0.0.1:2380
+          ETCD_INITIAL_CLUSTER_STATE: new
+        ports:
+          - 2379:2379
+    env:
+      HHS_PASS218_I10_ETCD_TEST_ENDPOINT: http://127.0.0.1:2379
+      HHS_PASS218_I10_ETCD_TEST_NAMESPACE: /hhs/pass218/i19/ci/${{ github.run_id }}
+
+    steps:
+      - name: Check out Iteration 19 candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped Python packages
+        run: python -m pip install --upgrade pytest cryptography fastapi uvicorn httpx
+
+      - name: Verify real etcd v3 authority is reachable
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          import urllib.error
+          import urllib.request
+
+          error = None
+          for attempt in range(30):
+              request = urllib.request.Request(
+                  'http://127.0.0.1:2379/v3/kv/range',
+                  data=json.dumps({'key': 'aA=='}).encode('utf-8'),
+                  headers={'Content-Type': 'application/json'},
+                  method='POST',
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=3) as response:
+                      payload = json.loads(response.read().decode('utf-8'))
+                  assert isinstance(payload, dict)
+                  print('PASS218_I19_ETCD_V3_REACHABLE=1')
+                  break
+              except (OSError, urllib.error.URLError, TimeoutError, AssertionError, json.JSONDecodeError) as exc:
+                  error = exc
+                  if attempt == 29:
+                      raise
+                  time.sleep(1)
+          else:
+              raise RuntimeError('etcd v3 authority did not become reachable') from error
+          PY
+
+      - name: Compile I19 and cumulative application bindings
+        run: |
+          python -m py_compile hhs_runtime/pass218/distributed_postcondition_i19.py
+          python -m py_compile hhs_backend/pass218_execution_i19_control.py
+          python -m py_compile hhs_backend/runtime_os_pass218_postcondition_i19.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration19_postcondition_validation.py
+          python -m py_compile scripts/pass218_iteration19_real_etcd_validation.py
+
+      - name: Enforce no authoritative float literals in I19
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          for path in (
+              Path('hhs_runtime/pass218/distributed_postcondition_i19.py'),
+              Path('hhs_backend/pass218_execution_i19_control.py'),
+              Path('hhs_backend/runtime_os_pass218_postcondition_i19.py'),
+          ):
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [node for node in ast.walk(tree) if isinstance(node, ast.Constant) and isinstance(node.value, float)]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I19_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Run focused I19 postcondition tests
+        run: pytest -q tests/pass218/test_pass218_iteration19_distributed_postcondition.py
+
+      - name: Verify I19 RuntimeOS binding remains non-executing
+        run: pytest -q tests/pass218/test_pass218_iteration19_runtime_os_binding.py
+
+      - name: Prove deterministic I19 failover postcondition verification
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration19_postcondition_validation.py
+
+      - name: Prove real-etcd I19 failover postcondition verification
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration19_real_etcd_validation.py
+
+      - name: Upload I19 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration19-postcondition-evidence
+          path: .i19-evidence
+          if-no-files-found: warn
+          include-hidden-files: true

@@ -1,0 +1,123 @@
+name: Pass 218 Full Iteration 40
+
+on:
+  push:
+    branches:
+      - agent/pass218-full-iteration40-manifest-bound-canonical-commit-persistence-ingress
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass218/manifest_bound_canonical_commit_persistence_i40.py'
+      - 'hhs_backend/runtime_os_pass218_manifest_canonical_commit_persistence_i40.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'tests/pass218/test_pass218_iteration40_manifest_bound_canonical_commit_persistence.py'
+      - 'scripts/pass218_iteration40_manifest_canonical_commit_persistence_validation.py'
+      - 'docs/pass218/PASS_218_ITERATION_40_RESTART.md'
+      - '.github/workflows/pass218-full-iteration40.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  manifest-bound-canonical-commit-persistence-ingress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out exact Iteration 40 head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped validation packages
+        run: python -m pip install --upgrade pytest fastapi httpx cryptography uvicorn
+
+      - name: Compile cumulative Pass 218 and I39-I40 bindings
+        run: |
+          python -m py_compile hhs_runtime/pass218/*.py
+          python -m py_compile hhs_backend/runtime_os_pass218_manifest_canonical_prepare_i39.py
+          python -m py_compile hhs_backend/runtime_os_pass218_manifest_canonical_commit_persistence_i40.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile scripts/pass218_iteration40_manifest_canonical_commit_persistence_validation.py
+          python -m py_compile tests/pass218/test_pass218_iteration40_manifest_bound_canonical_commit_persistence.py
+
+      - name: Enforce global Pass 218 and I39-I40 no-authoritative-float literals
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = sorted(Path('hhs_runtime/pass218').glob('*.py')) + [
+              Path('hhs_backend/runtime_os_pass218_manifest_canonical_prepare_i39.py'),
+              Path('hhs_backend/runtime_os_pass218_manifest_canonical_commit_persistence_i40.py'),
+          ]
+          assert paths
+          for path in paths:
+              tree = ast.parse(path.read_text('utf-8'))
+              floats = [node for node in ast.walk(tree) if isinstance(node, ast.Constant) and isinstance(node.value, float)]
+              assert not floats, f'{path}: authoritative float literal(s) found'
+          print('PASS218_I40_GLOBAL_NO_FLOAT_LITERAL_AUTHORITY=1')
+          PY
+
+      - name: Run focused I40 manifest-bound canonical commit persistence tests
+        run: pytest -q tests/pass218/test_pass218_iteration40_manifest_bound_canonical_commit_persistence.py
+
+      - name: Preserve frozen I39 manifest-bound canonical prepare semantics
+        run: pytest -q tests/pass218/test_pass218_iteration39_manifest_bound_canonical_prepare.py
+
+      - name: Preserve frozen I38 manifest-bound promotion authorization semantics
+        run: pytest -q tests/pass218/test_pass218_iteration38_manifest_bound_promotion_authorization.py
+
+      - name: Preserve frozen I37 manifest-bound promotability proof semantics
+        run: pytest -q tests/pass218/test_pass218_iteration37_manifest_bound_promotion_admission_proof.py
+
+      - name: Preserve frozen I36 manifest-bound VM5184 staging semantics
+        run: pytest -q tests/pass218/test_pass218_iteration36_manifest_bound_vector_vm5184_staging.py
+
+      - name: Preserve frozen I7 durable canonical persistence semantics
+        run: pytest -q tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+
+      - name: Preserve frozen I6 atomic canonical commit semantics
+        run: pytest -q tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py
+
+      - name: Preserve frozen I5 promotion admission semantics
+        run: pytest -q tests/pass218/test_pass218_iteration5_promotion_admission_proof.py
+
+      - name: Preserve canonical writer-fence semantics
+        run: pytest -q tests/pass218/test_pass218_iteration9_multiprocess_canonical_ownership.py
+
+      - name: Preserve I33 curriculum authority semantics
+        run: pytest -q tests/pass218/test_pass218_iteration33_curriculum_advance.py
+
+      - name: Preserve I30 canonical semantic-promotion separation
+        run: pytest -q tests/pass218/test_pass218_iteration30_atomic_semantic_promotion.py
+
+      - name: Preserve I1 Genesis curriculum semantics
+        run: pytest -q tests/pass218/test_pass218_iteration1_genesis_curriculum.py
+
+      - name: Preserve inherited Pass205 native continuation ABI
+        run: pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+
+      - name: Preserve Pass 166 Word2Vec runtime semantics
+        run: pytest -q tests/test_hhs_pass166_word2vec_v1.py
+
+      - name: Preserve repository-native creative-writing crawler boundary
+        run: pytest -q tests/pass218/test_repository_native_creative_writing_crawler.py
+
+      - name: Emit deterministic I40 canonical commit persistence evidence
+        run: PYTHONPATH="$PWD" python scripts/pass218_iteration40_manifest_canonical_commit_persistence_validation.py
+
+      - name: Preserve RuntimeOS production-root acceptance
+        run: pytest -q tests/test_runtime_os_production_root.py
+
+      - name: Upload I40 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass218-iteration40-manifest-bound-canonical-commit-persistence-evidence
+          path: .i40-evidence
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30

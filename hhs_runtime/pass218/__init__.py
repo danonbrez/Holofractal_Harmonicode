@@ -1,0 +1,436 @@
+"""Pass 218 cumulative relational-curriculum implementation surfaces."""
+
+from importlib import import_module
+
+from .curriculum import (
+    CurriculumCursor,
+    CurriculumManifest,
+    CurriculumSource,
+    CurriculumStage,
+    Pass218CurriculumOrderError,
+    build_curriculum_manifest,
+)
+from .genesis import (
+    ExactDistributionalRelation,
+    GenesisSeed,
+    GenesisSeedBuilder,
+    Pass166Word2VecAdapter,
+    RelationStatus,
+    repository_asset_manifest,
+)
+from .grammar import (
+    GrammarRule,
+    GrammarRuleSet,
+    PASS218_GRAMMAR_COMPILER_VERSION,
+    compile_grammar_rules,
+)
+from .hydration import (
+    NarrativeBeat,
+    NarrativeBeatHydrator,
+    NarrativeHydrationCandidate,
+    PASS218_NARRATIVE_HYDRATOR_VERSION,
+)
+from .transaction import (
+    DeterministicStructuralStore,
+    PASS218_SOURCE_TRANSACTION_VERSION,
+    Pass218TransactionError,
+    Pass218TransactionStateError,
+    Pass218TransactionValidationError,
+    SourceTransaction,
+    StructuralStoreReceipt,
+    TransactionPhase,
+)
+
+# Iterations 4-12 depend on heavier inherited runtimes. Keep them lazy so
+# importing validated Iterations 1-3 does not acquire optional dependencies
+# merely because the cumulative package grew.
+_STAGING_EXPORTS = frozenset({
+    "ClosedTransactionVectorVM5184Adapter",
+    "NonAuthoritativeVectorStageStore",
+    "PASS218_VECTOR_VM5184_STAGER_VERSION",
+    "Pass218VectorStageError",
+    "Pass218VectorStageStateError",
+    "Pass218VectorStageValidationError",
+    "VectorVM5184StageCandidate",
+})
+_PROMOTION_EXPORTS = frozenset({
+    "PASS218_PROMOTION_MEMBRANE_VERSION",
+    "PROMOTION_SCOPE",
+    "Pass218PromotionError",
+    "Pass218PromotionStateError",
+    "Pass218PromotionValidationError",
+    "PromotionAuthorityGrant",
+    "PromotionAuthorization",
+    "PromotionAuthorizationJournal",
+    "PromotionProof",
+    "PromotionProofMembrane",
+})
+_COMMIT_EXPORTS = frozenset({
+    "CANONICAL_ADMISSION_STATUS",
+    "INHERITED_VM81_AUTHORITY",
+    "PASS217_VECTOR_ENTRY_SCHEMA",
+    "PASS217_VECTOR_SCHEMA_PATH",
+    "PASS218_CANONICAL_COMMIT_VERSION",
+    "Pass217VM81CanonicalTarget",
+    "Pass218CanonicalCommitBoundary",
+    "Pass218CanonicalCommitError",
+    "Pass218CanonicalCommitStateError",
+    "Pass218CanonicalCommitValidationError",
+    "PreparedCanonicalAdmission",
+})
+_PERSISTENCE_EXPORTS = frozenset({
+    "CHECKPOINT_SCHEMA",
+    "DurableRestoreResult",
+    "MANIFEST_SCHEMA",
+    "PASS218_PERSISTENCE_VERSION",
+    "Pass218DurableCanonicalStore",
+    "Pass218PersistenceError",
+    "Pass218PersistenceStateError",
+    "Pass218PersistenceValidationError",
+    "RESTORE_SCHEMA",
+    "restore_target_from_checkpoint",
+    "seal_checkpoint",
+    "seal_manifest",
+    "validate_checkpoint",
+    "validate_manifest",
+})
+_LIFECYCLE_EXPORTS = frozenset({
+    "PASS218_RUNTIME_LIFECYCLE_VERSION",
+    "RUNTIME_LIFECYCLE_STATUS_SCHEMA",
+    "Pass218RuntimeLifecycle",
+    "Pass218RuntimeLifecycleError",
+    "Pass218RuntimeLifecycleNotReady",
+})
+_OWNERSHIP_EXPORTS = frozenset({
+    "OWNERSHIP_LOCK_FILENAME",
+    "OWNERSHIP_LOCK_STRATEGY",
+    "OWNERSHIP_RECORD_FILENAME",
+    "OWNERSHIP_RECORD_SCHEMA",
+    "OWNERSHIP_SCOPE",
+    "PASS218_OWNERSHIP_VERSION",
+    "Pass218CanonicalOwnershipLease",
+    "Pass218OwnershipBusy",
+    "Pass218OwnershipError",
+    "Pass218OwnershipFenceLost",
+    "Pass218OwnershipValidationError",
+    "default_owner_id",
+    "seal_ownership_record",
+    "validate_ownership_record",
+})
+_MULTIPROCESS_LIFECYCLE_EXPORTS = frozenset({
+    "MULTIPROCESS_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
+    "Pass218MultiprocessRuntimeLifecycle",
+})
+_DISTRIBUTED_OWNERSHIP_EXPORTS = frozenset({
+    "DEFAULT_ETCD_ACQUIRE_ATTEMPTS",
+    "DEFAULT_ETCD_LEASE_TTL_SECONDS",
+    "DEFAULT_ETCD_NAMESPACE",
+    "DEFAULT_ETCD_TIMEOUT_SECONDS",
+    "DISTRIBUTED_AUTHORITY_SCOPE",
+    "DISTRIBUTED_CHECKPOINT_RECORD_SCHEMA",
+    "DISTRIBUTED_CONSENSUS_BACKEND",
+    "DISTRIBUTED_OWNERSHIP_RECORD_SCHEMA",
+    "PASS218_DISTRIBUTED_OWNERSHIP_VERSION",
+    "EtcdV3HTTPClient",
+    "Pass218DistributedAuthorityProtocol",
+    "Pass218DistributedCheckpointConflict",
+    "Pass218DistributedOwnershipBusy",
+    "Pass218DistributedOwnershipError",
+    "Pass218DistributedOwnershipFenceLost",
+    "Pass218DistributedOwnershipUnavailable",
+    "Pass218DistributedOwnershipValidationError",
+    "Pass218EtcdDistributedAuthority",
+    "Pass218InMemoryConsensusHarness",
+    "Pass218InMemoryDistributedAuthority",
+    "Pass218UnavailableDistributedAuthority",
+    "default_distributed_host_id",
+    "default_distributed_owner_id",
+    "seal_distributed_checkpoint_record",
+    "seal_distributed_ownership_record",
+    "target_from_distributed_checkpoint",
+    "validate_distributed_checkpoint_record",
+    "validate_distributed_ownership_record",
+})
+_DISTRIBUTED_LIFECYCLE_EXPORTS = frozenset({
+    "DISTRIBUTED_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
+    "Pass218DistributedRuntimeLifecycle",
+})
+_OPERATIONAL_HARDENING_EXPORTS = frozenset({
+    "CLUSTER_PROBE_SCHEMA",
+    "DEFAULT_CLUSTER_NAME",
+    "DISASTER_RECOVERY_MANIFEST_SCHEMA",
+    "MINIMUM_PRODUCTION_MEMBER_COUNT",
+    "OPERATIONAL_AUTHORITY_SCOPE",
+    "OPERATIONAL_CLUSTER_BACKEND",
+    "PASS218_OPERATIONAL_HARDENING_VERSION",
+    "EtcdV3MutualTLSEndpointPoolClient",
+    "Pass218DisasterRecoveryValidationError",
+    "Pass218EtcdClusterAuthority",
+    "Pass218EtcdClusterConfig",
+    "Pass218EtcdClusterMonitor",
+    "Pass218OperationalConfigurationError",
+    "Pass218OperationalHardeningError",
+    "Pass218OperationalIdentityMismatch",
+    "Pass218OperationalQuorumUnavailable",
+    "restore_target_from_disaster_recovery_manifest",
+    "seal_disaster_recovery_manifest",
+    "validate_cluster_probe",
+    "validate_disaster_recovery_manifest",
+})
+_OPERATIONAL_LIFECYCLE_EXPORTS = frozenset({
+    "OPERATIONAL_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
+    "Pass218OperationallyHardenedRuntimeLifecycle",
+})
+_AUTHORITY_MAINTENANCE_EXPORTS = frozenset({
+    "ALERT_SEVERITIES",
+    "CREDENTIAL_ROTATION_PLAN_SCHEMA",
+    "MAINTENANCE_KINDS",
+    "MAINTENANCE_POLICY_SCHEMA",
+    "MEMBER_REPLACEMENT_PLAN_SCHEMA",
+    "OPERATIONAL_ALERT_RECEIPT_SCHEMA",
+    "PASS218_AUTHORITY_MAINTENANCE_VERSION",
+    "RECOVERY_STATUS_SCHEMA",
+    "SNAPSHOT_RETENTION_RECEIPT_SCHEMA",
+    "Pass218AuthorityMaintenanceError",
+    "Pass218AuthorityMaintenanceStateError",
+    "Pass218AuthorityMaintenanceValidationError",
+    "Pass218BoundedRecoveryController",
+    "Pass218MaintenancePolicy",
+    "seal_credential_rotation_plan",
+    "seal_member_replacement_plan",
+    "seal_operational_alert_receipt",
+    "seal_snapshot_retention_receipt",
+    "validate_credential_rotation_plan",
+    "validate_maintenance_policy",
+    "validate_member_replacement_plan",
+    "validate_operational_alert_receipt",
+    "validate_recovery_status",
+    "validate_snapshot_retention_receipt",
+})
+
+
+def __getattr__(name: str):
+    if name in _STAGING_EXPORTS:
+        module = import_module(".staging", __name__)
+    elif name in _PROMOTION_EXPORTS:
+        module = import_module(".promotion", __name__)
+    elif name in _COMMIT_EXPORTS:
+        module = import_module(".commit_boundary", __name__)
+    elif name in _PERSISTENCE_EXPORTS:
+        module = import_module(".persistence_compat", __name__)
+    elif name in _LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle", __name__)
+    elif name in _OWNERSHIP_EXPORTS:
+        module = import_module(".ownership", __name__)
+    elif name in _MULTIPROCESS_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i9", __name__)
+    elif name in _DISTRIBUTED_OWNERSHIP_EXPORTS:
+        module = import_module(".distributed_ownership", __name__)
+    elif name in _DISTRIBUTED_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i10", __name__)
+    elif name in _OPERATIONAL_HARDENING_EXPORTS:
+        module = import_module(".operational_hardening_i11", __name__)
+    elif name in _OPERATIONAL_LIFECYCLE_EXPORTS:
+        module = import_module(".lifecycle_i11", __name__)
+    elif name in _AUTHORITY_MAINTENANCE_EXPORTS:
+        module = import_module(".authority_maintenance_i12", __name__)
+    else:
+        raise AttributeError(name)
+    value = getattr(module, name)
+    globals()[name] = value
+    return value
+
+
+def __dir__() -> list[str]:
+    return sorted(
+        set(globals())
+        | _STAGING_EXPORTS
+        | _PROMOTION_EXPORTS
+        | _COMMIT_EXPORTS
+        | _PERSISTENCE_EXPORTS
+        | _LIFECYCLE_EXPORTS
+        | _OWNERSHIP_EXPORTS
+        | _MULTIPROCESS_LIFECYCLE_EXPORTS
+        | _DISTRIBUTED_OWNERSHIP_EXPORTS
+        | _DISTRIBUTED_LIFECYCLE_EXPORTS
+        | _OPERATIONAL_HARDENING_EXPORTS
+        | _OPERATIONAL_LIFECYCLE_EXPORTS
+        | _AUTHORITY_MAINTENANCE_EXPORTS
+    )
+
+
+__all__ = [
+    "CurriculumCursor",
+    "CurriculumManifest",
+    "CurriculumSource",
+    "CurriculumStage",
+    "Pass218CurriculumOrderError",
+    "build_curriculum_manifest",
+    "ExactDistributionalRelation",
+    "GenesisSeed",
+    "GenesisSeedBuilder",
+    "Pass166Word2VecAdapter",
+    "RelationStatus",
+    "repository_asset_manifest",
+    "GrammarRule",
+    "GrammarRuleSet",
+    "PASS218_GRAMMAR_COMPILER_VERSION",
+    "compile_grammar_rules",
+    "NarrativeBeat",
+    "NarrativeBeatHydrator",
+    "NarrativeHydrationCandidate",
+    "PASS218_NARRATIVE_HYDRATOR_VERSION",
+    "DeterministicStructuralStore",
+    "PASS218_SOURCE_TRANSACTION_VERSION",
+    "Pass218TransactionError",
+    "Pass218TransactionStateError",
+    "Pass218TransactionValidationError",
+    "SourceTransaction",
+    "StructuralStoreReceipt",
+    "TransactionPhase",
+    "ClosedTransactionVectorVM5184Adapter",
+    "NonAuthoritativeVectorStageStore",
+    "PASS218_VECTOR_VM5184_STAGER_VERSION",
+    "Pass218VectorStageError",
+    "Pass218VectorStageStateError",
+    "Pass218VectorStageValidationError",
+    "VectorVM5184StageCandidate",
+    "PASS218_PROMOTION_MEMBRANE_VERSION",
+    "PROMOTION_SCOPE",
+    "Pass218PromotionError",
+    "Pass218PromotionStateError",
+    "Pass218PromotionValidationError",
+    "PromotionAuthorityGrant",
+    "PromotionAuthorization",
+    "PromotionAuthorizationJournal",
+    "PromotionProof",
+    "PromotionProofMembrane",
+    "CANONICAL_ADMISSION_STATUS",
+    "INHERITED_VM81_AUTHORITY",
+    "PASS217_VECTOR_ENTRY_SCHEMA",
+    "PASS217_VECTOR_SCHEMA_PATH",
+    "PASS218_CANONICAL_COMMIT_VERSION",
+    "Pass217VM81CanonicalTarget",
+    "Pass218CanonicalCommitBoundary",
+    "Pass218CanonicalCommitError",
+    "Pass218CanonicalCommitStateError",
+    "Pass218CanonicalCommitValidationError",
+    "PreparedCanonicalAdmission",
+    "CHECKPOINT_SCHEMA",
+    "DurableRestoreResult",
+    "MANIFEST_SCHEMA",
+    "PASS218_PERSISTENCE_VERSION",
+    "Pass218DurableCanonicalStore",
+    "Pass218PersistenceError",
+    "Pass218PersistenceStateError",
+    "Pass218PersistenceValidationError",
+    "RESTORE_SCHEMA",
+    "restore_target_from_checkpoint",
+    "seal_checkpoint",
+    "seal_manifest",
+    "validate_checkpoint",
+    "validate_manifest",
+    "PASS218_RUNTIME_LIFECYCLE_VERSION",
+    "RUNTIME_LIFECYCLE_STATUS_SCHEMA",
+    "Pass218RuntimeLifecycle",
+    "Pass218RuntimeLifecycleError",
+    "Pass218RuntimeLifecycleNotReady",
+    "OWNERSHIP_LOCK_FILENAME",
+    "OWNERSHIP_LOCK_STRATEGY",
+    "OWNERSHIP_RECORD_FILENAME",
+    "OWNERSHIP_RECORD_SCHEMA",
+    "OWNERSHIP_SCOPE",
+    "PASS218_OWNERSHIP_VERSION",
+    "Pass218CanonicalOwnershipLease",
+    "Pass218OwnershipBusy",
+    "Pass218OwnershipError",
+    "Pass218OwnershipFenceLost",
+    "Pass218OwnershipValidationError",
+    "default_owner_id",
+    "seal_ownership_record",
+    "validate_ownership_record",
+    "MULTIPROCESS_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_MULTIPROCESS_LIFECYCLE_VERSION",
+    "Pass218MultiprocessRuntimeLifecycle",
+    "DEFAULT_ETCD_ACQUIRE_ATTEMPTS",
+    "DEFAULT_ETCD_LEASE_TTL_SECONDS",
+    "DEFAULT_ETCD_NAMESPACE",
+    "DEFAULT_ETCD_TIMEOUT_SECONDS",
+    "DISTRIBUTED_AUTHORITY_SCOPE",
+    "DISTRIBUTED_CHECKPOINT_RECORD_SCHEMA",
+    "DISTRIBUTED_CONSENSUS_BACKEND",
+    "DISTRIBUTED_OWNERSHIP_RECORD_SCHEMA",
+    "PASS218_DISTRIBUTED_OWNERSHIP_VERSION",
+    "EtcdV3HTTPClient",
+    "Pass218DistributedAuthorityProtocol",
+    "Pass218DistributedCheckpointConflict",
+    "Pass218DistributedOwnershipBusy",
+    "Pass218DistributedOwnershipError",
+    "Pass218DistributedOwnershipFenceLost",
+    "Pass218DistributedOwnershipUnavailable",
+    "Pass218DistributedOwnershipValidationError",
+    "Pass218EtcdDistributedAuthority",
+    "Pass218InMemoryConsensusHarness",
+    "Pass218InMemoryDistributedAuthority",
+    "Pass218UnavailableDistributedAuthority",
+    "default_distributed_host_id",
+    "default_distributed_owner_id",
+    "seal_distributed_checkpoint_record",
+    "seal_distributed_ownership_record",
+    "target_from_distributed_checkpoint",
+    "validate_distributed_checkpoint_record",
+    "validate_distributed_ownership_record",
+    "DISTRIBUTED_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_DISTRIBUTED_LIFECYCLE_VERSION",
+    "Pass218DistributedRuntimeLifecycle",
+    "CLUSTER_PROBE_SCHEMA",
+    "DEFAULT_CLUSTER_NAME",
+    "DISASTER_RECOVERY_MANIFEST_SCHEMA",
+    "MINIMUM_PRODUCTION_MEMBER_COUNT",
+    "OPERATIONAL_AUTHORITY_SCOPE",
+    "OPERATIONAL_CLUSTER_BACKEND",
+    "PASS218_OPERATIONAL_HARDENING_VERSION",
+    "EtcdV3MutualTLSEndpointPoolClient",
+    "Pass218DisasterRecoveryValidationError",
+    "Pass218EtcdClusterAuthority",
+    "Pass218EtcdClusterConfig",
+    "Pass218EtcdClusterMonitor",
+    "Pass218OperationalConfigurationError",
+    "Pass218OperationalHardeningError",
+    "Pass218OperationalIdentityMismatch",
+    "Pass218OperationalQuorumUnavailable",
+    "restore_target_from_disaster_recovery_manifest",
+    "seal_disaster_recovery_manifest",
+    "validate_cluster_probe",
+    "validate_disaster_recovery_manifest",
+    "OPERATIONAL_LIFECYCLE_STATUS_SCHEMA",
+    "PASS218_OPERATIONAL_LIFECYCLE_VERSION",
+    "Pass218OperationallyHardenedRuntimeLifecycle",
+    "ALERT_SEVERITIES",
+    "CREDENTIAL_ROTATION_PLAN_SCHEMA",
+    "MAINTENANCE_KINDS",
+    "MAINTENANCE_POLICY_SCHEMA",
+    "MEMBER_REPLACEMENT_PLAN_SCHEMA",
+    "OPERATIONAL_ALERT_RECEIPT_SCHEMA",
+    "PASS218_AUTHORITY_MAINTENANCE_VERSION",
+    "RECOVERY_STATUS_SCHEMA",
+    "SNAPSHOT_RETENTION_RECEIPT_SCHEMA",
+    "Pass218AuthorityMaintenanceError",
+    "Pass218AuthorityMaintenanceStateError",
+    "Pass218AuthorityMaintenanceValidationError",
+    "Pass218BoundedRecoveryController",
+    "Pass218MaintenancePolicy",
+    "seal_credential_rotation_plan",
+    "seal_member_replacement_plan",
+    "seal_operational_alert_receipt",
+    "seal_snapshot_retention_receipt",
+    "validate_credential_rotation_plan",
+    "validate_maintenance_policy",
+    "validate_member_replacement_plan",
+    "validate_operational_alert_receipt",
+    "validate_recovery_status",
+    "validate_snapshot_retention_receipt",
+]
