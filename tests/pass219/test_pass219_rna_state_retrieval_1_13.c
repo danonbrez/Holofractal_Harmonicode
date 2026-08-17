@@ -59,7 +59,7 @@ static HHSExactPass219TranscriptionWitnessV1 make_witness(void) {
     assert(hhs_exact_pass219_rna_strand_add_domain(&strand, &b) == HHS_EXACT_STATUS_OK);
     assert(hhs_exact_pass219_rna_program_init(113U, &program) == HHS_EXACT_STATUS_OK);
     assert(hhs_exact_pass219_rna_rule_init(
-        1U, HHS_EXACT_PASS219_RNA_RULE_ACTIVATION, 10U, 20U, &rule) == HHS_EXACT_STATUS_OK);
+        1U, HHS_EXACT_PASS219_RNA_RULE_INHIBITION, 10U, 20U, &rule) == HHS_EXACT_STATUS_OK);
     assert(hhs_exact_pass219_rna_program_add_rule(&program, &rule) == HHS_EXACT_STATUS_OK);
     assert(hhs_exact_pass219_rna_program_execute(
         &strand, &program, &lineage, &witness) == HHS_EXACT_STATUS_OK);
