@@ -5,6 +5,7 @@
 - Frozen parent branch: `agent/pass219-iteration114-canonical-indexed-continuation-composer`
 - Frozen parent head: `8aa01a9bc3f47dafd41ef2dbc8f12c8a37d459c0`
 - Active branch: `agent/pass219-iteration115-monolithic-uqcel-residual-boundary`
+- Stacked draft PR: `#264`
 - Merge target for stacked review: frozen I114 branch
 - Main is not a direct merge target for this iteration.
 
@@ -36,7 +37,7 @@ The historical V1 integer/symmetric ABI fields named `A` and `B` remain compatib
 - added a Revision 5 white-paper addendum containing the verbatim equation and corrected A/B semantics;
 - extended the dedicated Pass 219 UQCEL workflow to run the new boundary test.
 
-## Changed files before this restart commit
+## Changed files before final restart update
 
 1. `.github/workflows/pass219-universal-quantization-constraint-audit.yml`
 2. `HHS_PASS_219_APPEND_ONLY_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_AMENDMENT_1_15_0.md`
@@ -46,33 +47,36 @@ The historical V1 integer/symmetric ABI fields named `A` and `B` remain compatib
 6. `tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py`
 7. `tests/test_hhs_pass219_native_universal_constraint_enforcement.py`
 8. `whitepapers/HHS_PASS219_REV5_MONOLITHIC_UQCEL_RESIDUAL_ADDENDUM.md`
+9. `docs/operations/restart/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_RESTART.md`
 
-## Validation state
+## Dependency-scoped validation
 
-Local execution was not used as repository authority in this connector session. The branch is prepared for the repository-hosted dependency-scoped UQCEL workflow.
-
-Required validation:
+Implementation checkpoint `5004f3327e9051e06ef6828ddba43bf385edd296` passed the dedicated repository-hosted gate:
 
 ```text
 Pass 219 Universal Quantization Constraint Audit
-- strict C11 compile
-- integrated c-abi build
-- UQCEL/Fibonacci export check
-- inherited Pass 192 oracle
-- monolithic residual source/hash/ordering tests
-- UQCEL enforcement + negative-edge regressions
-- exact runtime ABI regression
-- historical public C ABI smoke
-- standalone VM81 verify
+run: 32079256356
+job: 95538824967
+result: SUCCESS
 ```
 
-## Remaining work
+Successful stages:
 
-1. Open a stacked draft PR against frozen I114.
-2. Wait for the dedicated UQCEL workflow on the exact PR head.
-3. Repair forward only if the new I115 delta fails.
-4. Freeze the exact validated head and record workflow run/job IDs.
-5. Do not merge without separate explicit authorization.
+```text
+strict C11 additive exact ABI compile
+integrated c-abi build
+UQCEL/Fibonacci symbol export verification
+inherited Pass 192 Fibonacci oracle
+UQCEL correspondence/enforcement/monolithic-residual/Fibonacci audits
+historical standalone public C ABI smoke
+standalone VM81 exact verification
+```
+
+PR #264 is open, draft, and mergeable. No merge or deployment is authorized by this iteration.
+
+## Finalization rule
+
+This documentation update moves the branch beyond the validated implementation checkpoint. The PR-triggered UQCEL gate must complete successfully again on the exact documentation-inclusive head before I115 is declared frozen.
 
 ## Full-symbolic implementation boundary
 
@@ -86,3 +90,7 @@ MONOLITHIC_AGGREGATE_RESIDUAL_REQUIRED = YES
 FULL_SYMBOLIC_RESULT = UNSUPPORTED_DOMAIN
 VM81_COMMIT_ON_FULL_SYMBOLIC_UNRESOLVED = NO
 ```
+
+## Next action
+
+Wait for the exact documentation-inclusive head workflow. If green, freeze that head and retain PR #264 as draft/unmerged pending separate explicit merge authorization.
