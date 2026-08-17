@@ -6,7 +6,9 @@ on:
       - 'HHS_PASS_219_APPEND_ONLY_LO_SHU_DYADIC_QUADRATIC_RECIPROCITY_QUANTIZATION_AMENDMENT_1_7_0.md'
       - 'HHS_PASS_219_APPEND_ONLY_NATIVE_UNIVERSAL_CONSTRAINT_ENFORCEMENT_AMENDMENT_1_8_0.md'
       - 'HHS_PASS_219_APPEND_ONLY_NESTED_MODULAR_FIBONACCI_COMPRESSION_AMENDMENT_1_9_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_AMENDMENT_1_15_0.md'
       - 'contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex'
       - 'docs/pass219/APPENDIX_G_UNIVERSAL_QUANTIZATION_CONSTRAINT_ENFORCEMENT_LAW.md'
       - 'docs/pass219/APPENDIX_H_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE.md'
       - 'docs/pass219/APPENDIX_I_NESTED_MODULAR_FIBONACCI_COMPRESSION.md'
@@ -28,6 +30,7 @@ on:
       - 'hhs_python/runtime/hhs_uqcel_ctypes_bridge.py'
       - 'hhs_python/runtime/hhs_pass219_composed_ctypes_bridge.py'
       - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py'
       - 'tests/test_hhs_pass219_quantization_constraint_law.py'
       - 'tests/test_hhs_pass219_native_universal_constraint_enforcement.py'
       - 'tests/test_hhs_pass219_native_universal_constraint_negative_edges.py'
@@ -64,9 +67,10 @@ jobs:
           grep -E 'hhs_exact_uqcel_version|hhs_exact_uqcel_source_sha256|hhs_exact_uqcel_validate|hhs_exact_uqcel_receipt_material|hhs_exact_vm81_admit_uqcel|hhs_exact_pass192_fibonacci_version|hhs_exact_pass192_fibonacci_compress|hhs_exact_pass192_fibonacci_validate_descriptor|hhs_exact_pass219_admit_composed|hhs_hash72_compute_bytes|hhs_hash216_compute_bytes'
       - name: Run inherited Pass 192 Fibonacci contract oracle
         run: python -m pytest -q tests/pass192_193/test_pass192_193_contract_invariants.py
-      - name: Run UQCEL correspondence, enforcement, and Fibonacci composition audits
+      - name: Run UQCEL correspondence, enforcement, monolithic residual, and Fibonacci composition audits
         run: >-
           python -m pytest -q
+          tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
           tests/test_hhs_pass219_quantization_constraint_law.py
           tests/test_hhs_pass219_native_universal_constraint_enforcement.py
           tests/test_hhs_pass219_native_universal_constraint_negative_edges.py
