@@ -4,4 +4,5 @@
 #include "hhs_runtime_uqcel_1_8.h"
 #include "hhs_pass192_fibonacci_compression_1_9.h"
 #include "hhs_pass219_rna_transcription_1_10.h"
+#include "hhs_pass219_rna_rule_grammar_1_11.h"
 #endif
