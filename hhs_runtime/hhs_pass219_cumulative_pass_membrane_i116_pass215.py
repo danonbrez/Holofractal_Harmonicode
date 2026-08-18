@@ -1,12 +1,13 @@
 """Pass 219 I116 additive Pass 215 terminal-closure membrane extension.
 
 Pass 215's accepted authority is the bounded Iteration-20 shared-checkpoint
-terminal benchmark. This extension authenticates that frozen closure and binds
-its later accepted final head/tree/artifact identity through the already-wired
-Pass 216 successor record. It does not rerun the 120-minute model benchmark,
-promote general generation authority, or reinterpret Pass 215's historical
-"Pass 216 reserved" handoff as a current claim that the later Pass 216
-alignment layer does not exist.
+terminal benchmark. This extension authenticates both frozen Pass 215 records
+independently against the accepted terminal constants, then binds the later
+accepted final head/tree/artifact identity through the already-wired Pass 216
+successor record. It does not rerun the 120-minute model benchmark, promote
+general generation authority, or reinterpret Pass 215's historical "Pass 216
+reserved" handoff as a current claim that the later Pass 216 alignment layer
+does not exist.
 """
 
 from __future__ import annotations
@@ -51,6 +52,7 @@ PASS215_SELECTED_TOKEN_IDS = (450, 6575, 471, 528, 2827, 322, 278)
 PASS215_RECEIPT_HASH72 = "rimw6Mf!E(*xCD5DK1/WGTK)*WRAl<RWjBQyi!qSI+rXW>H0L9AtWuu/3Cs5HKZ!B)JCwUTM"
 PASS215_TERMINAL_COMPLETION_ROOT = "3dfb034753309c5f45f56f9bec5bf2178b1eb74974264cc306e46c8d6551f76a"
 PASS215_EVIDENCE_ROOT = "5a8a17e10b1dc10db2912bc2df40aa67306fc520439716eab47596dc1e8aac1e"
+PASS215_SUITE_ROOT = "3be955aecac999e945cdf48df63e0be13d2c353de8e20c6869a2364c2ba72234"
 PASS215_SHARED_CONTENT_STORE_ROOT = "b7a9eb1678f263f20c5b61c0d9d3f01b76b152e2786b7e887ecb8265cbe454da"
 PASS215_SHARED_BUNDLE_ROOT = "14953737a095ee9365386e436706cedd7a77328a04eb4dc3d5e45935cd367c8a"
 PASS215_SEQUENTIAL_REUSE_ROOT = "52980a2e4b7890d136e549a4812dd859cc75e0ea4f442872dc99392e261ed7c0"
@@ -83,6 +85,31 @@ def _load_json(path: Path) -> Dict[str, Any]:
     if _contains_float(value):
         raise RuntimeError("PASS215_FLOAT_AUTHORITY_DRIFT")
     return value
+
+
+def _verify_terminal_source(source: Dict[str, Any], *, prefix: str) -> None:
+    expected = {
+        "cumulative_test_count": 240,
+        "selected_token_ids": list(PASS215_SELECTED_TOKEN_IDS),
+        "termination_reason": "MAX_NEW_TOKENS",
+        "shared_content_store_root_hash216": PASS215_SHARED_CONTENT_STORE_ROOT,
+        "shared_checkpoint_bundle_root_hash216": PASS215_SHARED_BUNDLE_ROOT,
+        "reused_unique_chunk_count": 36,
+        "reused_compressed_blob_bytes": 28_375_966,
+        "incremental_later_compressed_blob_bytes": 125_510_422,
+        "later_standalone_compressed_blob_bytes": 153_886_388,
+        "shared_store_savings_bytes": 28_375_966,
+        "sequential_checkpoint_reuse_root_hash216": PASS215_SEQUENTIAL_REUSE_ROOT,
+        "pass215_terminal_completion_root_hash216": PASS215_TERMINAL_COMPLETION_ROOT,
+        "suite_root_hash216": PASS215_SUITE_ROOT,
+        "evidence_root_hash216": PASS215_EVIDENCE_ROOT,
+        "receipt_hash72": PASS215_RECEIPT_HASH72,
+        "cross_process_replay": True,
+        "semantic_exactness": True,
+    }
+    for field, expected_value in expected.items():
+        if source.get(field) != expected_value:
+            raise RuntimeError(prefix + ":" + field)
 
 
 def pass215_membrane_source_evidence() -> Dict[str, Any]:
@@ -119,36 +146,7 @@ def pass215_membrane_source_evidence() -> Dict[str, Any]:
         raise RuntimeError("PASS215_CERTIFICATION_BITS_DRIFT")
 
     source = contract["source_execution"]
-    if source.get("cumulative_test_count") != 240:
-        raise RuntimeError("PASS215_CONTROL_COUNT_DRIFT")
-    if tuple(source.get("selected_token_ids", ())) != PASS215_SELECTED_TOKEN_IDS:
-        raise RuntimeError("PASS215_TOKEN_CHAIN_DRIFT")
-    if source.get("termination_reason") != "MAX_NEW_TOKENS":
-        raise RuntimeError("PASS215_TERMINATION_DRIFT")
-    if source.get("reused_unique_chunk_count") != 36:
-        raise RuntimeError("PASS215_REUSE_COUNT_DRIFT")
-    if source.get("reused_compressed_blob_bytes") != 28_375_966:
-        raise RuntimeError("PASS215_REUSED_BYTES_DRIFT")
-    if source.get("incremental_later_compressed_blob_bytes") != 125_510_422:
-        raise RuntimeError("PASS215_INCREMENTAL_BYTES_DRIFT")
-    if source.get("later_standalone_compressed_blob_bytes") != 153_886_388:
-        raise RuntimeError("PASS215_LATER_STANDALONE_BYTES_DRIFT")
-    if source.get("shared_store_savings_bytes") != 28_375_966:
-        raise RuntimeError("PASS215_SHARED_SAVINGS_DRIFT")
-    if source.get("shared_content_store_root_hash216") != PASS215_SHARED_CONTENT_STORE_ROOT:
-        raise RuntimeError("PASS215_SHARED_STORE_ROOT_DRIFT")
-    if source.get("shared_checkpoint_bundle_root_hash216") != PASS215_SHARED_BUNDLE_ROOT:
-        raise RuntimeError("PASS215_SHARED_BUNDLE_ROOT_DRIFT")
-    if source.get("sequential_checkpoint_reuse_root_hash216") != PASS215_SEQUENTIAL_REUSE_ROOT:
-        raise RuntimeError("PASS215_REUSE_ROOT_DRIFT")
-    if source.get("pass215_terminal_completion_root_hash216") != PASS215_TERMINAL_COMPLETION_ROOT:
-        raise RuntimeError("PASS215_TERMINAL_ROOT_DRIFT")
-    if source.get("evidence_root_hash216") != PASS215_EVIDENCE_ROOT:
-        raise RuntimeError("PASS215_EVIDENCE_ROOT_DRIFT")
-    if source.get("receipt_hash72") != PASS215_RECEIPT_HASH72:
-        raise RuntimeError("PASS215_RECEIPT_DRIFT")
-    if source.get("cross_process_replay") is not True or source.get("semantic_exactness") is not True:
-        raise RuntimeError("PASS215_REPLAY_EXACTNESS_DRIFT")
+    _verify_terminal_source(source, prefix="PASS215_CONTRACT_SOURCE_DRIFT")
 
     pruning = contract["output_projection_pruning_assessment"]
     if pruning.get("status") != "EVALUATED_NOT_AUTHORIZED" or pruning.get("candidates_pruned") != 0:
@@ -175,26 +173,10 @@ def pass215_membrane_source_evidence() -> Dict[str, Any]:
 
     if record.get("schema") != "HHS_PASS_215_ITERATION_20_IMPLEMENTATION_RECORD_V1":
         raise RuntimeError("PASS215_IMPLEMENTATION_RECORD_SCHEMA_DRIFT")
+    if record.get("contract") != "HHS-P215-I20-SHARED-CHECKPOINT-TERMINAL-CLOSURE":
+        raise RuntimeError("PASS215_IMPLEMENTATION_RECORD_IDENTITY_DRIFT")
     record_source = record["source_execution"]
-    for field in (
-        "cumulative_test_count",
-        "selected_token_ids",
-        "termination_reason",
-        "shared_content_store_root_hash216",
-        "shared_checkpoint_bundle_root_hash216",
-        "reused_unique_chunk_count",
-        "reused_compressed_blob_bytes",
-        "incremental_later_compressed_blob_bytes",
-        "shared_store_savings_bytes",
-        "sequential_checkpoint_reuse_root_hash216",
-        "pass215_terminal_completion_root_hash216",
-        "evidence_root_hash216",
-        "receipt_hash72",
-        "cross_process_replay",
-        "semantic_exactness",
-    ):
-        if record_source.get(field) != source.get(field):
-            raise RuntimeError("PASS215_RECORD_CONTRACT_MISMATCH:" + field)
+    _verify_terminal_source(record_source, prefix="PASS215_IMPLEMENTATION_RECORD_SOURCE_DRIFT")
 
     parent = pass216_contract["parent_binding"]
     if parent.get("final_closure_head") != PASS215_FINAL_HEAD:
