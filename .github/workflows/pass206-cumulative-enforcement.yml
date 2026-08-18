@@ -56,6 +56,7 @@ jobs:
           done
           cp /tmp/pass206-before/CORE_SUCCESSOR_REPAIR_LINEAGE.json artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json
           cp /tmp/pass206-before/VALIDATION_MATRIX.json artifacts/pass206/VALIDATION_MATRIX.json
+          cp /tmp/pass206-before/PASS_206_COMPLETION_RECEIPT.json artifacts/pass206/PASS_206_COMPLETION_RECEIPT.json 2>/dev/null || true
           python - <<'PY'
           import json
           from pathlib import Path
@@ -69,15 +70,15 @@ jobs:
               'PASS_206_COMPLETE',
           }
           PY
-      - name: Compile Pass 206 enforcement surface
-        run: python -m py_compile hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py tests/pass206/test_pass206_cumulative_enforcement_v1.py
+      - name: Compile Pass 206 enforcement and completion surfaces
+        run: python -m py_compile hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py tests/pass206/*.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install dependency-scoped packages
         run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy jsonschema
-      - name: Run Pass 206 positive and negative enforcement tests
-        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/pass206/test_pass206_cumulative_enforcement_v1.py
+      - name: Run Pass 206 positive, negative, and completion tests
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/pass206
       - name: Emit Pass 206 enforcement decision
         run: PYTHONPATH="$PWD" python hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py | tee /tmp/pass206-enforcement-decision.json
       - name: Compile cumulative exact ABI

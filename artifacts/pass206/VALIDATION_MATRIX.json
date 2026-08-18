@@ -1,160 +1,41 @@
 {
-  "artifact_sha256": "1f4da9ca815d99f76c30e26076435cc277c3912ce1658cb5ddb6876f5358406b",
+  "artifact_sha256": "ec6aaaeb917abb0bc1f8c1c54e2c721b175e841b603094eb6e687751bb6b79df",
   "canonical_main_verified": false,
   "checks": [
-    {
-      "name": "contract_index_generated",
-      "status": "PASS"
-    },
-    {
-      "name": "constraint_index_generated",
-      "status": "PASS"
-    },
-    {
-      "count": 10,
-      "name": "core_file_sha256_frozen",
-      "status": "PASS"
-    },
-    {
-      "count": 180,
-      "name": "abi_opcode_schema_index_generated",
-      "status": "PASS"
-    },
-    {
-      "expected": false,
-      "name": "core_files_modified_by_pass206_repair",
-      "status": "PASS"
-    },
-    {
-      "approved_successor_count": 1,
-      "name": "approved_post_baseline_core_repair_lineage",
-      "repair_merge": "284bf652d9635cc0c940f79dfe6aff6f8b787c3c",
-      "status": "PASS"
-    },
-    {
-      "name": "enforcement_implementation_present",
-      "status": "PASS",
-      "surface": "hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py"
-    },
-    {
-      "name": "positive_negative_enforcement_tests",
-      "status": "PASS"
-    },
-    {
-      "exact_job": 95840408861,
-      "name": "dependency_scoped_runtime_validation",
-      "run": 32176768793,
-      "status": "PASS",
-      "synthetic_job": 95840408810
-    },
-    {
-      "name": "freeze_reproducibility_validation",
-      "run": 32176768735,
-      "status": "PASS"
-    },
-    {
-      "exact_job": 95841688861,
-      "name": "final_pass206_enforcement",
-      "run": 32177179707,
-      "status": "PASS",
-      "synthetic_job": 95841688933
-    },
-    {
-      "exact_job": 95841688783,
-      "name": "final_pass207_successor_replay",
-      "run": 32177179679,
-      "status": "PASS",
-      "synthetic_job": 95841688711
-    },
-    {
-      "exact_job": 95841689451,
-      "name": "final_pass208_successor_replay",
-      "run": 32177179760,
-      "status": "PASS",
-      "synthetic_job": 95841689361
-    },
-    {
-      "exact_job": 95841688895,
-      "name": "final_pass209_successor_replay",
-      "run": 32177179700,
-      "status": "PASS",
-      "synthetic_job": 95841688883
-    },
-    {
-      "exact_job": 95841688995,
-      "name": "final_pass210_successor_replay",
-      "run": 32177179722,
-      "status": "PASS",
-      "synthetic_job": 95841688919
-    },
-    {
-      "exact_job": 95841689040,
-      "name": "final_pass211_successor_replay",
-      "run": 32177179783,
-      "status": "PASS",
-      "synthetic_job": 95841688992
-    },
-    {
-      "exact_job": 95841689103,
-      "name": "final_pass212_successor_replay",
-      "run": 32177179691,
-      "status": "PASS",
-      "synthetic_job": 95841689012
-    },
-    {
-      "exact_job": 95841688914,
-      "name": "final_pass213_successor_replay",
-      "run": 32177179718,
-      "status": "PASS",
-      "synthetic_job": 95841688945
-    },
-    {
-      "exact_job": 95841688635,
-      "name": "final_pass214_successor_replay",
-      "run": 32177179686,
-      "status": "PASS",
-      "synthetic_job": 95841688807
-    },
-    {
-      "exact_job": 95841688941,
-      "name": "final_pass215_successor_replay",
-      "run": 32177179703,
-      "status": "PASS",
-      "synthetic_job": 95841689179
-    },
-    {
-      "exact_job": 95841688968,
-      "name": "final_pass216_217_218_cumulative_replay",
-      "run": 32177179709,
-      "status": "PASS",
-      "synthetic_job": 95841688796
-    },
-    {
-      "name": "final_freeze_reproducibility",
-      "run": 32177179710,
-      "status": "PASS"
-    },
-    {
-      "name": "final_cumulative_integration_and_replay",
-      "status": "PASS"
-    },
-    {
-      "name": "canonical_main_verification",
-      "promotion_authorized": false,
-      "status": "PENDING"
-    },
-    {
-      "name": "completion_receipt_emitted",
-      "status": "PENDING"
-    }
+    {"name": "contract_index_generated", "status": "PASS"},
+    {"name": "constraint_index_generated", "status": "PASS"},
+    {"count": 10, "name": "core_file_sha256_frozen", "status": "PASS"},
+    {"count": 180, "name": "abi_opcode_schema_index_generated", "status": "PASS"},
+    {"expected": false, "name": "core_files_modified_by_pass206_repair", "status": "PASS"},
+    {"approved_successor_count": 1, "name": "approved_post_baseline_core_repair_lineage", "repair_merge": "284bf652d9635cc0c940f79dfe6aff6f8b787c3c", "status": "PASS"},
+    {"name": "enforcement_implementation_present", "status": "PASS", "surface": "hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py"},
+    {"name": "positive_negative_enforcement_tests", "status": "PASS"},
+    {"exact_job": 95840408861, "name": "dependency_scoped_runtime_validation", "run": 32176768793, "status": "PASS", "synthetic_job": 95840408810},
+    {"name": "freeze_reproducibility_validation", "run": 32176768735, "status": "PASS"},
+    {"exact_job": 95841688861, "name": "final_pass206_enforcement", "run": 32177179707, "status": "PASS", "synthetic_job": 95841688933},
+    {"exact_job": 95841688783, "name": "final_pass207_successor_replay", "run": 32177179679, "status": "PASS", "synthetic_job": 95841688711},
+    {"exact_job": 95841689451, "name": "final_pass208_successor_replay", "run": 32177179760, "status": "PASS", "synthetic_job": 95841689361},
+    {"exact_job": 95841688895, "name": "final_pass209_successor_replay", "run": 32177179700, "status": "PASS", "synthetic_job": 95841688883},
+    {"exact_job": 95841688995, "name": "final_pass210_successor_replay", "run": 32177179722, "status": "PASS", "synthetic_job": 95841688919},
+    {"exact_job": 95841689040, "name": "final_pass211_successor_replay", "run": 32177179783, "status": "PASS", "synthetic_job": 95841688992},
+    {"exact_job": 95841689103, "name": "final_pass212_successor_replay", "run": 32177179691, "status": "PASS", "synthetic_job": 95841689012},
+    {"exact_job": 95841688914, "name": "final_pass213_successor_replay", "run": 32177179718, "status": "PASS", "synthetic_job": 95841688945},
+    {"exact_job": 95841688635, "name": "final_pass214_successor_replay", "run": 32177179686, "status": "PASS", "synthetic_job": 95841688807},
+    {"exact_job": 95841688941, "name": "final_pass215_successor_replay", "run": 32177179703, "status": "PASS", "synthetic_job": 95841689179},
+    {"exact_job": 95841688968, "name": "final_pass216_217_218_cumulative_replay", "run": 32177179709, "status": "PASS", "synthetic_job": 95841688796},
+    {"name": "final_freeze_reproducibility", "run": 32177179710, "status": "PASS"},
+    {"name": "final_cumulative_integration_and_replay", "status": "PASS"},
+    {"name": "canonical_main_verification", "promotion_authorized": false, "status": "PENDING"},
+    {"name": "completion_receipt_emitted", "receipt_artifact_sha256": "c25d3db3f6d20aef54092d4fda7663370ec855e8841df691b7ef1bf6d9db2c24", "status": "PASS"}
   ],
   "completion_claimed": false,
   "development_candidate": "373bdc20bcc6aad089a947a57dbba555fea03c91",
+  "development_completion_receipt_emitted": true,
   "development_final_replay_complete": true,
   "development_implementation_complete": true,
   "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
-  "next_required_stage": "EMIT_DEVELOPMENT_COMPLETION_RECEIPT_WITH_CANONICAL_MAIN_VERIFICATION_PENDING",
+  "next_required_stage": "PASS219_DEVELOPMENT_MEMBRANE_EXPOSURE; CANONICAL_MAIN_VERIFY_REMAINS_SEPARATELY_PENDING",
   "pass": 206,
   "schema": "HHS_PASS_206_VALIDATION_MATRIX_V1",
-  "stage": "FINAL_CUMULATIVE_VALIDATED_CANONICAL_MAIN_VERIFICATION_PENDING"
+  "stage": "DEVELOPMENT_COMPLETE_CANONICAL_MAIN_VERIFICATION_PENDING"
 }
