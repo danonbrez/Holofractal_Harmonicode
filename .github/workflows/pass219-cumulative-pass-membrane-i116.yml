@@ -12,6 +12,9 @@ on:
       - 'hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.h'
       - 'hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.hpp'
       - 'hhs_runtime/c/hhs_pass219_inherited_pass217_1_16.inc'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass216_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass216_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass216_1_16.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116.py'
@@ -19,6 +22,8 @@ on:
       - 'tests/pass219/test_pass219_inherited_pass218_1_16.cpp'
       - 'tests/pass219/test_pass219_inherited_pass217_1_16.c'
       - 'tests/pass219/test_pass219_inherited_pass217_1_16.cpp'
+      - 'tests/pass219/test_pass219_inherited_pass216_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass216_1_16.cpp'
       - 'tests/pass219/test_pass219_inherited_pass217_frozen_i4_evidence_i116.py'
       - 'tests/pass219/test_pass219_cumulative_pass_membrane_i116.py'
       - 'docs/operations/restart/PASS_219_CUMULATIVE_PASS_MEMBRANE_WIRING_1_16_RESTART.md'
@@ -31,7 +36,7 @@ jobs:
   cumulative-inherited-membrane:
     name: cumulative-inherited-membrane (${{ matrix.target }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -56,10 +61,16 @@ jobs:
           git merge-base --is-ancestor c34956f2982020d7b16513e31cae3f40d91e9326 HEAD
           git merge-base --is-ancestor b0656a92ab29507f81eae760e070f74e49db83f4 HEAD
           git merge-base --is-ancestor be71da59c9b8b7c7e055c03da703ca301849cfff HEAD
+          git merge-base --is-ancestor f10e453c5d7c7467cf5e57f6452958491fe763ad HEAD
+          git merge-base --is-ancestor 0ad2759a4379376244589aa3ee241e51d779df26 HEAD
           test -f hhs_runtime/pass218/manifest_bound_curriculum_completion_seal_i48.py
           test -f hhs_backend/runtime_os_pass218_manifest_curriculum_completion_i48.py
           test -f hhs_runtime/hhs_pass217_cumulative_closure_v1.py
           test -f evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json
+          test -f contracts/pass216/PASS_216_CONTRACT.json
+          test -f contracts/pass216/PASS_216_DETERMINISM_INHERITANCE_ADDENDUM.json
+          test "$(git rev-parse HEAD:contracts/pass216/PASS_216_CONTRACT.json)" = 9e04e4aca8b127e009c0343ceb5e78092de40c43
+          test "$(git rev-parse HEAD:contracts/pass216/PASS_216_DETERMINISM_INHERITANCE_ADDENDUM.json)" = 3e4121afe2f5750283f5ef350c0afa416eb2addd
 
       - name: Reject approximate authority in I116 membrane
         run: |
@@ -72,6 +83,9 @@ jobs:
               pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.h'),
               pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.hpp'),
               pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass217_1_16.inc'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass216_1_16.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass216_1_16.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass216_1_16.inc'),
               pathlib.Path('hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116.py'),
           ]
           pattern = re.compile(r'\b(float|double)\b')
@@ -125,6 +139,24 @@ jobs:
             -o /tmp/pass219-i116/test-217-cpp
           /tmp/pass219-i116/test-217-cpp
 
+      - name: Run Pass 216 C alignment conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass216_1_16.c \
+            /tmp/pass219-i116/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116/test-216-c
+          /tmp/pass219-i116/test-216-c
+
+      - name: Run Pass 216 C++17 non-authority alignment conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass216_1_16.cpp \
+            /tmp/pass219-i116/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116/test-216-cpp
+          /tmp/pass219-i116/test-216-cpp
+
       - name: Preserve frozen I114 execution-composer ABI
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -144,6 +176,9 @@ jobs:
 
       - name: Run I116 cumulative kernel-composer registration test
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass_membrane_i116.py
+
+      - name: Preserve Pass 216 contract-alignment semantics
+        run: PYTHONPATH="$PWD" python tests/test_pass216_contract_alignment.py
 
       - name: Preserve admitted Pass 217 cumulative closure semantics
         run: pytest -q --tb=short tests/test_hhs_pass217_cumulative_closure_v1.py
