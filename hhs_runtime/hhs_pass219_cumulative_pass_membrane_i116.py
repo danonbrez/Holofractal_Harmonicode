@@ -1,8 +1,11 @@
 """Pass 219 I116 cumulative membrane registration, beginning with Pass 218.
 
-This module does not reimplement Pass 218.  It registers the exact C ABI
-binding that consumes an already-verified I48 terminal completion witness and
-exposes only inherited continuation identity through the Pass 219 membrane.
+This module does not reimplement Pass 218. It registers the exact C ABI binding
+for an already-verified I48 terminal completion witness. The current stacked
+I116 branch does not yet contain the merged Pass 218 I48 implementation from
+canonical main, so the repository-level Pass 218 classification remains an
+inherited integration defect until the histories are reconciled without
+rewriting either frozen lineage.
 """
 
 from __future__ import annotations
@@ -13,7 +16,7 @@ from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_prefl
 
 VERSION = "PASS_219_CUMULATIVE_PASS_MEMBRANE_1_16"
 PASS_NUMBER = 218
-CLASSIFICATION = "WIRED"
+CLASSIFICATION = "INHERITED_INTEGRATION_DEFECT"
 SURFACE_ID = "validator:pass219.inherited.pass218.completion"
 BIND_SYMBOL = "hhs_exact_pass219_bind_pass218_completion"
 
@@ -80,7 +83,11 @@ def pass218_membrane_manifest() -> Dict[str, Any]:
         "pass219_handoff_authority_minted": False,
         "cxx_mutation_authority": False,
         "vm81_mutation_authority": "NOT_GRANTED_BY_THIS_BINDING",
-        "next_pass_to_census": 217,
+        "canonical_pass218_i48_present_on_active_branch": False,
+        "canonical_main_with_pass218_i48": "d4b893521782d7f7590c74034c4634bfdba83874",
+        "frozen_pass219_i115_parent": "f0e8fd3a871bd0e8ac0668d3d210f74c22061676",
+        "required_repair": "NON_REWRITING_HISTORY_RECONCILIATION",
+        "next_pass_to_census": None,
     }
 
 
