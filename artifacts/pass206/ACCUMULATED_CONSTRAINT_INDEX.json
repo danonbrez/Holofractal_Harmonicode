@@ -1,0 +1,1943 @@
+{
+  "artifact_sha256": "301df1f2a1c3bc4b9ef7ec4f18da7f1d037a3221abf566d665d74e6269f13f79",
+  "authority": {
+    "canonical_hash72_commit_stream_count": 1,
+    "canonical_mutation_authority": "VM81_KERNEL",
+    "canonical_mutation_authority_count": 1,
+    "parallel_candidate_calculation_allowed": true,
+    "parallel_canonical_authorities_allowed": false
+  },
+  "cache_bypasses_admission": false,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "hash216_authorizes_original_transformation": false,
+  "hash72_block": [
+    "prev_hash72",
+    "state_hash72",
+    "receipt_hash72"
+  ],
+  "hydration": {
+    "bits_per_cell": 64,
+    "canonical_probability_formula": "(List(x*Factorial(72),(y*(1/Factorial(72))))*z)*(w*List((y*(1/Factorial(72))),x*Factorial(72)))/u^72==(x*y)/(x*y)==u^72",
+    "control_states": 243,
+    "membrane_rule": "depth_n_boundary=n_MOD_(n+1)",
+    "outer_maximum_modulus": 1259713,
+    "permanent_address_formula": "s=64c+o",
+    "permanent_addresses": 5184,
+    "projected_address_formula": "q=243s+g",
+    "projected_addresses": 1259712,
+    "vm81_cells": 81
+  },
+  "indexed_source_count": 306,
+  "indexed_sources": [
+    {
+      "file_sha256": "3f8eb97d42c6eadc24e4112a004463bf776bf8cf2ec50c8ba25fd7c9d194c89e",
+      "git_blob": "9b01e57a77d1f1d82e10af0f947e3e7226b12b87",
+      "repository_path": "ATTENTION_AUTHORITY_SEPARATION_PASS_054.json",
+      "size_bytes": 1022
+    },
+    {
+      "file_sha256": "aacedb7e74464d1b5a9fb89d70cc0bbf5713c6cfdb530287afc2ce3e8fb19c28",
+      "git_blob": "f6b257c39c4aa3062398e847bcfd2809cc581387",
+      "repository_path": "ATTENTION_AUTHORITY_SEPARATION_PASS_054.md",
+      "size_bytes": 1163
+    },
+    {
+      "file_sha256": "d510d9b1265a82cf1416559d865dbe3fc0be2277cdc6d649154595ee6d4602a2",
+      "git_blob": "046599e8f43e74f2d547a0bdebcdc2e222e3d2d0",
+      "repository_path": "AUTHORITY_ACTIVATION_NEGATIVE_CASES_PASS_055.json",
+      "size_bytes": 4864
+    },
+    {
+      "file_sha256": "c631540a88a43f83a80f73ec98e6ef59e89593297a0c9f09bf243b6828b8d879",
+      "git_blob": "9b46ef9332b0ce8e75358747f188b9712ad91865",
+      "repository_path": "AUTHORITY_ACTIVATION_NEGATIVE_CASES_PASS_055.md",
+      "size_bytes": 4989
+    },
+    {
+      "file_sha256": "278543c5516b4db65225608df5473934552e9d32b39f9af3d0fc9ac0521800f4",
+      "git_blob": "d7d197f843d2dddf24313628a668333052c14b41",
+      "repository_path": "AUTHORITY_ENFORCED_DISPATCH_PASS_055.json",
+      "size_bytes": 4208
+    },
+    {
+      "file_sha256": "726e6b79af71f3df6d863bd29e01def572d0175a76264ab6e45e1de66a1f9f7e",
+      "git_blob": "80742667fe0c208eea9ecd53e5e15b2b825bff70",
+      "repository_path": "AUTHORITY_ENFORCED_DISPATCH_PASS_055.md",
+      "size_bytes": 4317
+    },
+    {
+      "file_sha256": "35b575b85743e660ec9e00cb1a7397b5e3a54b4cbea34f7a10ad6b74d1c13a6c",
+      "git_blob": "c1ce864cb6be16481a9d74d99696abe68133949e",
+      "repository_path": "BOUNDED_REJECTION_AUTHORITY_PASS_061.json",
+      "size_bytes": 5486
+    },
+    {
+      "file_sha256": "f44d8d7f942ee13feead79cfec52bac4c1be8233f88c4ad4d6312497814e4db1",
+      "git_blob": "4eed75e8915cd1693bd5af7675d2c8b0cf107982",
+      "repository_path": "BOUNDED_REJECTION_AUTHORITY_PASS_061.md",
+      "size_bytes": 5607
+    },
+    {
+      "file_sha256": "376f4557116893e04a5d8fb0623faa254e6af8f993397fad2843d69c4102559d",
+      "git_blob": "d25f76eb235fc592dc8750e91688db705ffb9ba1",
+      "repository_path": "CANONICAL_AUTHORITY_GRAPH_PASS_054.json",
+      "size_bytes": 3352
+    },
+    {
+      "file_sha256": "09388da3a03daa78138db3e2aab6e8c8b2344f412b3af2b8ff5f4ce812f86367",
+      "git_blob": "fdb97198a468451f05bb60a9ae8b53d3c468a85f",
+      "repository_path": "CANONICAL_AUTHORITY_GRAPH_PASS_054.md",
+      "size_bytes": 3552
+    },
+    {
+      "file_sha256": "5f363a4fb974e605c177b356fc0b1af8bd1d0f17b0a3db56229e11c23af98eaa",
+      "git_blob": "ed702ba72e7fe99d447d94abacf289ea06f6f97c",
+      "repository_path": "COMPETENCY_AUTHORITY_MATRIX_PASS_054.json",
+      "size_bytes": 704
+    },
+    {
+      "file_sha256": "62ae02e09d4a88985dc7738d196e98a58158f5fc079d8347dd986769354bd80b",
+      "git_blob": "ceacce9e9b64e61e3d7a3da1a873dcf132bdcc08",
+      "repository_path": "COMPETENCY_AUTHORITY_MATRIX_PASS_054.md",
+      "size_bytes": 812
+    },
+    {
+      "file_sha256": "5d8c09b380b9bf5bc374701eb91784adc3d09c1d434d46154df04a979358f8ac",
+      "git_blob": "2961b2d8702a31d448232ab61d37cf12e9541fe1",
+      "repository_path": "CONSTRAINT_PROPAGATION_PASS_063.json",
+      "size_bytes": 5652
+    },
+    {
+      "file_sha256": "ec74cc81fcaa02111d7701309150965fa273b540eb4693be7e6a556502cabe81",
+      "git_blob": "fb55f8922a736f77541005645224a1c3beb77c8b",
+      "repository_path": "CONSTRAINT_PROPAGATION_PASS_063.md",
+      "size_bytes": 348
+    },
+    {
+      "file_sha256": "e4ee1f4e18f920fa2c7bf22312a93a2548c5fecc13b364ccf156072cb4e43b2c",
+      "git_blob": "9c567b2a8481aebf53cff4af6cf2f7850ceebadf",
+      "repository_path": "CONSTRAINT_STACK_SECURITY_HARNESS_PASS_034.json",
+      "size_bytes": 209909
+    },
+    {
+      "file_sha256": "6ca574fe848cd1095d828be00bec33a4844aaa028d6f0f32701c00f4602b7578",
+      "git_blob": "ebe82002d3fbf341da85187288c4e1dbb27e586b",
+      "repository_path": "CONSTRAINT_STACK_SECURITY_HARNESS_PASS_034.md",
+      "size_bytes": 1063
+    },
+    {
+      "file_sha256": "328605fb5dba45eefc51b2f1c98ff3365a814dbeecac2b0d313e5cbffa513a3f",
+      "git_blob": "e996e49ee4a1dfa2fe5ff35dfe01bc2331f5d017",
+      "repository_path": "DISTRIBUTED_AUTHORITY_FEDERATION_PASS_056.json",
+      "size_bytes": 10732
+    },
+    {
+      "file_sha256": "71249a0b2be815f875eedc78d316b1c3d31371d766926eaf757696ad08d1ccae",
+      "git_blob": "ce0eaff664dbe8072eed5a0558f624580eb28ab3",
+      "repository_path": "DISTRIBUTED_AUTHORITY_FEDERATION_PASS_056.md",
+      "size_bytes": 10841
+    },
+    {
+      "file_sha256": "d88bce94bbc3641417921f6238f0d1fa0ad1d616b622948f88139042618fb2fd",
+      "git_blob": "a0fec484ebc347ff5233101551ccaede0eae33a7",
+      "repository_path": "EXECUTION_RECEIPT_PASS_055.json",
+      "size_bytes": 2890
+    },
+    {
+      "file_sha256": "4e6781dd7af2dfc3f008409d9e2dd5083f077d84b6fff7a86eb8faccbe098187",
+      "git_blob": "a23653dec13282a47e21a1b005af9370d8b455db",
+      "repository_path": "EXECUTION_RECEIPT_PASS_055.md",
+      "size_bytes": 2979
+    },
+    {
+      "file_sha256": "1a8f3d68e4befab3cfda63664573a221e04f9cec82461f8967c4bcb137ccb2c1",
+      "git_blob": "4af4fa6b89ff880883a64771085a787a717094f2",
+      "repository_path": "GUI_COMMAND_AUTHORITY_LOOP_PASS_047.md",
+      "size_bytes": 867
+    },
+    {
+      "file_sha256": "a1424512518e9462b343f139964d30767cdf4614956bc9d0eefdeb5edc34a702",
+      "git_blob": "d6206e00bff1b3baa8f215d202fce77a30844a22",
+      "repository_path": "GUI_MUTATION_AUTHORITY_PASS_048.md",
+      "size_bytes": 806
+    },
+    {
+      "file_sha256": "c5a32ec13a5229c3f11a7316bf87e676ab8c64b0d49034c8d7cabc52cba23842",
+      "git_blob": "10a1c7274c69992a5959d32191265cb666e8d5b2",
+      "repository_path": "HHS_NATIVE_DNS_GATE_PORT_CONFLICT_AUTHORITY.md",
+      "size_bytes": 4761
+    },
+    {
+      "file_sha256": "7990a360ec5a65e46688c61ad77dd4ba2fa0de3c03dcd07fc28756a2a67efd0f",
+      "git_blob": "6daafe70be8c3dc46780181282ec22960de57d4d",
+      "repository_path": "HHS_PASS_146_CLOSURE_RECEIPT.json",
+      "size_bytes": 1542
+    },
+    {
+      "file_sha256": "e528222f929c96536791c1e6fdd283f056d0939a8ef404431f8e9488e762a561",
+      "git_blob": "1d910cb3600eb6025841559d24692f3ded4e3192",
+      "repository_path": "HHS_PASS_147_CLOSURE_RECEIPT.json",
+      "size_bytes": 1488
+    },
+    {
+      "file_sha256": "f4f40d29b520c29c029c4d16cd2ec4ec84be3a23f88959947db057e9137b3da6",
+      "git_blob": "81133f7429d9b73a3be512ea5e57245745dd48fa",
+      "repository_path": "HHS_PASS_148_CLOSURE_RECEIPT.json",
+      "size_bytes": 1192
+    },
+    {
+      "file_sha256": "8102eed9f66a072381d59935e0bedd733cf4c142876c957ee58555c757282ebd",
+      "git_blob": "aaa5e4112c1bb63a8a5d18be35eb1b0bc0b70915",
+      "repository_path": "HHS_PASS_148_NATIVE_SEMANTIC_AUTHORITY_MEMBRANE_CONTRACT.md",
+      "size_bytes": 8316
+    },
+    {
+      "file_sha256": "b5aabfc71759551fec2d4e9352828d721333523a2c61613ff9b2f63067c55168",
+      "git_blob": "ea8b0c8cef2d591164dd5d2ec76aa456dbbaf7bb",
+      "repository_path": "HHS_PASS_157_UNIFIED_COMPLETION_RECEIPT.json",
+      "size_bytes": 4967
+    },
+    {
+      "file_sha256": "8b47ce8e59f50239b1279ad8f3e2eabfc504373bb9c355eaefa99abab4debbb4",
+      "git_blob": "29c08fc1bbeb2574b0a80a296e0e7e1a5e33f718",
+      "repository_path": "HHS_PASS_160_AUTHORITY_BINDING.json",
+      "size_bytes": 1836
+    },
+    {
+      "file_sha256": "94e75c056828ce2933f96c498308d021db963616b38227d709ca45a841c6975a",
+      "git_blob": "19ea97652456bd8a428b1d11d40e89168df82f72",
+      "repository_path": "HHS_PASS_161_AUTHORITY_BINDING.json",
+      "size_bytes": 1592
+    },
+    {
+      "file_sha256": "fbdb621f68a9fa04010b900f1f3c8d636ef9e784cd0efdf832d69ced09d22fb1",
+      "git_blob": "b6d46acca42c916d3105db684017e555d53c0cad",
+      "repository_path": "HHS_PASS_163_AUTHORITY_BINDING.json",
+      "size_bytes": 1102
+    },
+    {
+      "file_sha256": "cff51f2cf296f759cbfe509b3a942cffb76082a89b2663d8dffb74503160712a",
+      "git_blob": "8fd055885e92a37ba1eb65b4aff0785a8e25e1c7",
+      "repository_path": "HHS_PASS_164_AUTHORITY_BINDING.json",
+      "size_bytes": 1565
+    },
+    {
+      "file_sha256": "83ad9e5b9be328e3e3f2d1b5eb32103ad0bb6005b70e0491f0bbc8d5bb769405",
+      "git_blob": "bc5c8a860e3bf25bab012f26314af048a0fa08bd",
+      "repository_path": "HHS_PASS_165_AUTHORITY_BINDING.json",
+      "size_bytes": 1056
+    },
+    {
+      "file_sha256": "df865a82b5dd985c6444c432e172e503b67b6c17e934a2ff2d038337ee7d70d5",
+      "git_blob": "c1ec25057c791fe10773cae4bae48cfc3ff40a89",
+      "repository_path": "HHS_PASS_165_LIGHTWEIGHT_5184_BIT_MULTIMODAL_VECTOR_STORE_INGESTION_TOKENIZATION_INVARIANT_EXTRACTION_AND_GOVERNED_BACKPROPAGATION.md",
+      "size_bytes": 14731
+    },
+    {
+      "file_sha256": "abc4c7baa30ec58b6e783e37f17fadb774f0a4ac884874abe41f5f4e196212f5",
+      "git_blob": "0810a0838cbc522de262eff05d3b82849b2107d7",
+      "repository_path": "HHS_PASS_166_AUTHORITY_BINDING.json",
+      "size_bytes": 1664
+    },
+    {
+      "file_sha256": "980ed823e556de4d1c89e0ae6c35a55403882d70f0bccfdcc100c2081e98493b",
+      "git_blob": "a9b1a3eca87345214c13d85178fdf0b883b33e40",
+      "repository_path": "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md",
+      "size_bytes": 37758
+    },
+    {
+      "file_sha256": "210d9b34cb0d26657aeafb2ccc029300a68f1eccf3535e496f93032a017cdc2b",
+      "git_blob": "50158d528f2b8d09ff43f90c9497935f26b7d04b",
+      "repository_path": "HHS_PASS_170_PUBLIC_API_PORT_AUTHORITY_ENFORCEMENT_AND_HIGHER_LEVEL_FUNCTION_DEVELOPMENT_CORRECTION_RUNTIME.md",
+      "size_bytes": 32822
+    },
+    {
+      "file_sha256": "e77fcd11ea250ebc73872035b567d94f6f8c9a9b5566063a81e4188cbae161f2",
+      "git_blob": "a572b2174ea813714dc2d7d6c9fc6f892e39a8b8",
+      "repository_path": "HHS_PASS_171_VM81_MULTISCALE_LO_SHU_SUDOKU_MAGIC_TENSOR_NUCLEUS_CONSTRAINT_RUNTIME.md",
+      "size_bytes": 26559
+    },
+    {
+      "file_sha256": "41ab80faf6c2671a29e8867f420f7cca4771bca4dd1cebb7595394df9e0f6122",
+      "git_blob": "0bc9f1a3ee9d2252002310e5c5cab88ad98553a5",
+      "repository_path": "HHS_PASS_189_HARMONICODE_QUANTUM_LOGIC_HYDRATION_UNIFIED_PHYSICS_AUTHORITY_ADDITION.md",
+      "size_bytes": 27217
+    },
+    {
+      "file_sha256": "051fb4d4dfabb00bf2db59be6719b8311de1d0be436f3903c4bbca965175c2fd",
+      "git_blob": "3d9a4f7869b23d2655c1027fac353c841a8b7a2e",
+      "repository_path": "HHS_PASS_189_HQLH_RUNTIME_IMPLEMENTATION_AND_DIGITALOCEAN_AUTHORITY.md",
+      "size_bytes": 9285
+    },
+    {
+      "file_sha256": "9c1ece4f56d59e551338fbaa4c91f59fcf58379ca564b6a7d9b2271caaac3064",
+      "git_blob": "492c28b6368d7f36649e377cb052097a6fa60703",
+      "repository_path": "HHS_PASS_189_ITERATION_2_CALIBRATION_CAUSAL_PERSISTENCE_AUTHORITY.md",
+      "size_bytes": 7996
+    },
+    {
+      "file_sha256": "778cf49ae7f1ffc17c897c18dd0cff93a3b5c4dc73a0bc81eca9961a7c50a87e",
+      "git_blob": "492e5434c4319b28a9f8838606cfd8dc00b0ae65",
+      "repository_path": "HHS_PASS_189_ITERATION_3_DEVICE_ADAPTER_LEASE_WATCHDOG_AUTHORITY.md",
+      "size_bytes": 6709
+    },
+    {
+      "file_sha256": "f52a0c71ddb495360b1adbec18fd5fd512b34a769b7044eb2724a6bf66e1894c",
+      "git_blob": "5c7e8391a28c14ae0bbdae15592d3889c85f53c0",
+      "repository_path": "HHS_PASS_189_ITERATION_4_DRIVER_PROVENANCE_QUARANTINE_PROMOTION_AUTHORITY.md",
+      "size_bytes": 7538
+    },
+    {
+      "file_sha256": "3599e84cb8c7298301b211a8dff3a0f0b233361788e83317c5ddef1f59490b65",
+      "git_blob": "8f86a03f678e8007329721c60c465fc6cb246fcd",
+      "repository_path": "HHS_PASS_190_ITERATION_2_PERSISTENT_EVENT_SDK_GUI_AUTHORITY.md",
+      "size_bytes": 5967
+    },
+    {
+      "file_sha256": "12793b89964db1a093cbf9359e1911468e91bfd8ecace155baec42ee5192b737",
+      "git_blob": "069537877c35f271e11b279f378878d27bf76b07",
+      "repository_path": "HHS_PASS_190_ITERATION_3_AUTHENTICATED_FAIL_CLOSED_AUTHORITY.md",
+      "size_bytes": 5013
+    },
+    {
+      "file_sha256": "adc9c834d6226078d65d2c652b1e37ba94c56bec82a3acc7b8cb44a179a6bd70",
+      "git_blob": "b2d7f9a9e806a76e6ef534d0b1fc255a0b2042b5",
+      "repository_path": "HHS_PASS_190_ITERATION_3_NATIVE_ABI_COMPILER_PARITY_AUTHORITY.md",
+      "size_bytes": 7748
+    },
+    {
+      "file_sha256": "5f4336a2dcd5d65bb1d61f641729db93a4c87268f0e913ccbbd34f4be2459b58",
+      "git_blob": "b062df945c37cf499504de86d3772b95906450ab",
+      "repository_path": "HHS_PASS_190_ITERATION_4_DISTRIBUTED_SINGLETON_FENCED_AUTHORITY.md",
+      "size_bytes": 7614
+    },
+    {
+      "file_sha256": "70afab580142fb4127b23a2956c5a94a98469e8045859bd2fb598018e2352236",
+      "git_blob": "47083d70a84c4181dc2cad5d2f196aeae313400c",
+      "repository_path": "HHS_PASS_190_ITERATION_5_ATOMIC_KERNEL_AUTHORITY_CORRECTNESS.md",
+      "size_bytes": 7563
+    },
+    {
+      "file_sha256": "713426a06079593c9969824abc70c2413f7ad5308c3396c305a29217a39a1103",
+      "git_blob": "214ee467b833ffb11a541be2a6163db4b7b12b93",
+      "repository_path": "HHS_RUNTIME_AUTHORITY_PHYSICS.md",
+      "size_bytes": 10951
+    },
+    {
+      "file_sha256": "f201c4cddc23789431758fb268fb422328001f38bfdffe69462846d04ecedc77",
+      "git_blob": "ed66e67bb015bd0098dcfefd8cf7f944484aa8ef",
+      "repository_path": "INVARIANT_PRESERVING_CLOSURE_PASS_063.json",
+      "size_bytes": 3674
+    },
+    {
+      "file_sha256": "3e125031421bd3206803730508341704f34a66e6c66059a8a8cb1961cb6864fe",
+      "git_blob": "28a457baeca2eb32dfac292fdd2bd24ed9e557ff",
+      "repository_path": "INVARIANT_PRESERVING_CLOSURE_PASS_063.md",
+      "size_bytes": 565
+    },
+    {
+      "file_sha256": "3ae86672a0552b0da39b0d8db5648e83a76c7ab467e8450a0f2bbc3d9707a559",
+      "git_blob": "3f07bfc05732cac5c6cccc13cfedfe5abd54c35a",
+      "repository_path": "KERNEL_INVARIANT_REGISTRY_PASS_042.json",
+      "size_bytes": 34997
+    },
+    {
+      "file_sha256": "5f28b88f6819c485e372406f9c828fcf454c1e78ff89753873f820818a6b28ff",
+      "git_blob": "700d2dc2b534d2d855c544a465fa88d23b2b2835",
+      "repository_path": "KERNEL_INVARIANT_REGISTRY_PASS_042.md",
+      "size_bytes": 1164
+    },
+    {
+      "file_sha256": "a1d30137fd123794329580fa2847605f50e53c5a3b430d1b5282c393594887c8",
+      "git_blob": "4f3b75b68527a392ec83f1be6211ccb24d1b548a",
+      "repository_path": "LIVE_GUI_COMMAND_AUTHORITY_PASS_047.json",
+      "size_bytes": 9842
+    },
+    {
+      "file_sha256": "a37af8760b9d27d81951334879f4ee4db4c10e2dd7fe2991389e7c67657833bb",
+      "git_blob": "7f0ae2ec129bdbdf8d30593e4c14949e5e11bbed",
+      "repository_path": "LIVE_GUI_COMMAND_AUTHORITY_PASS_047.md",
+      "size_bytes": 1909
+    },
+    {
+      "file_sha256": "a945b6f3c92f50c1dca231fc62977a5ba962ae51b5e1535c59909a3eebbc34c3",
+      "git_blob": "406fbc03a0c19617753bd7ff374451ea79f5474f",
+      "repository_path": "LOCAL_CONSTRAINT_BOTTLENECK_PASS_065.json",
+      "size_bytes": 736
+    },
+    {
+      "file_sha256": "38ee680d76bc3564560595edf615045be81020f9c61650d4543396dbccae5d9d",
+      "git_blob": "a5a89c4d74c0a37f5cd64e14344984221a064832",
+      "repository_path": "LOCAL_CONSTRAINT_BOTTLENECK_PASS_065.md",
+      "size_bytes": 788
+    },
+    {
+      "file_sha256": "adec0a8830084d7ffa4ac3078de2707e24f487ad7f57cfbdb9da310dc689ceee",
+      "git_blob": "43436a159f6f548b7311f3204c5c3db8b9ba295c",
+      "repository_path": "MUTATION_RECEIPT_CHAIN_PASS_048.md",
+      "size_bytes": 519
+    },
+    {
+      "file_sha256": "901f7b6dd37a60e4e2f37b089ec9e8a2e81513dcb9e8aeec02aeb72698b74b98",
+      "git_blob": "91c7a505d61a402315a0ac5c6e6488dc420e172f",
+      "repository_path": "PASS_072_CLOSURE_DIMENSION_RECEIPTS.json",
+      "size_bytes": 6433
+    },
+    {
+      "file_sha256": "9c048ff984f81d6bd41eb1cf793e6aff98dfa07965c8292d01858f969e694748",
+      "git_blob": "e53e813ef10b89220cf646f71f9b75144fc41389",
+      "repository_path": "PASS_072_MEMBERSHIP_AUTHORITY_REJECTION.json",
+      "size_bytes": 481
+    },
+    {
+      "file_sha256": "a25c4da0d381bfda15b519fc547e701cad75af7a23b1dd823258c7d734b7af0d",
+      "git_blob": "c5351c52ec9872989d4ecacfc0a1d4a120e9fc87",
+      "repository_path": "PASS_080_CONSTRAINT_MEMBRANE_NATIVE_DISPATCH.md",
+      "size_bytes": 1673
+    },
+    {
+      "file_sha256": "980c12dc09889e049ff0dccd81eaeb7fda6dfc64175750ffed53261c5c863ec2",
+      "git_blob": "c96f981e869e2ab3c360ca303ed22e78fc843035",
+      "repository_path": "PASS_080_CONSTRAINT_RELATION_GRAPH.json",
+      "size_bytes": 21430
+    },
+    {
+      "file_sha256": "ab96beb7149052933796e5a50e940bed30e396e89391f061f8b48f2305f68276",
+      "git_blob": "026dd9043fc4c3e7803ac7c81c58a5745d1f4758",
+      "repository_path": "PASS_081_EXACT_RECURSIVE_SYMBOLIC_CONSTRAINT_RUNTIME.md",
+      "size_bytes": 644
+    },
+    {
+      "file_sha256": "c96d7676d68e01c0bf97653285293e872f90fd195683fdd1b9dd77ac85abe523",
+      "git_blob": "9db3f968009337d09258f4038f3d18b6e0bd53cb",
+      "repository_path": "PASS_081_NUMBER_THEORETIC_INVARIANTS.md",
+      "size_bytes": 295
+    },
+    {
+      "file_sha256": "bdb9259c7401512e80a22c51cb72069b8236663537ce6110d58755f9260ebf9c",
+      "git_blob": "ddd846ab72659d8ce3446f32380e58177684d881",
+      "repository_path": "PASS_082_1_NORMALIZED_CLOSURE_RECEIPTS.json",
+      "size_bytes": 20025
+    },
+    {
+      "file_sha256": "a929d094fbdb369fc6b2b74928e1608e04b7a0a80b12342a2230c5923e6fc3c0",
+      "git_blob": "150b318d92af5c13c1f3026becb8f9c8dc1f94b4",
+      "repository_path": "PASS_082_2_GLOBAL_TOPOLOGY_RECEIPTS.json",
+      "size_bytes": 24183
+    },
+    {
+      "file_sha256": "76c905ff206032621f9dc1057c54ecc2f3b26ca500e956458dfcdcfc012c7063",
+      "git_blob": "6c70b2e7dd994b4cda41892d461dbd0a0531ab0c",
+      "repository_path": "PASS_082_2_GROUP_ENTANGLEMENT_RECEIPTS.json",
+      "size_bytes": 154765
+    },
+    {
+      "file_sha256": "0e4d4a1bd848a299c9cb2c0f93feb860dce24f9bdba1f51fdd5e03d6a4ce2cd3",
+      "git_blob": "12102c890f462f02214905f3c6fbf0ac8afd712d",
+      "repository_path": "PASS_082_3_LOSSLESS_RECONSTRUCTION_RECEIPTS.json",
+      "size_bytes": 85495
+    },
+    {
+      "file_sha256": "b27760c1da8d265ddf79026cf2bd8f8a2d028af4d81763891948ad2ae8e074f8",
+      "git_blob": "3314604f06f97e9b905bcac195c8b98f210f7bef",
+      "repository_path": "PASS_082_4_MULTISTRING_RECONSTRUCTION_RECEIPTS.json",
+      "size_bytes": 845883
+    },
+    {
+      "file_sha256": "acc1207202ac6f6e0789d90fb0ebe54d46b29e409a914b1ee7ea121ea228cb2f",
+      "git_blob": "397bdd3b31126a0c403de37da5efb6bc0ab416ec",
+      "repository_path": "PASS_083_TRAJECTORY_AND_OCCLUSION_RECEIPTS.json",
+      "size_bytes": 3913264
+    },
+    {
+      "file_sha256": "4f961eca319ea6e6e4df4409ec87f95f2420012c22bc0e2612282871911efa1d",
+      "git_blob": "f3a48a18b9204e79a23b19619d4b37e0f9ca2c3e",
+      "repository_path": "PASS_084_AUDIOVISUAL_SYNCHRONIZATION_RECEIPTS.json",
+      "size_bytes": 1821880
+    },
+    {
+      "file_sha256": "a1ac4f2456fd287a1d1b7349f5ba9b8ccffce12544d59afdf23ce72172935342",
+      "git_blob": "c858cc4a7cebfe7d64beedc76000e52ac9a754d1",
+      "repository_path": "PASS_085_3D_SCENE_RECEIPTS.json",
+      "size_bytes": 664954
+    },
+    {
+      "file_sha256": "e9e5736d3b9c54dd6a76fecffa986f4e5ce25f8935ec74bf72484f851d7bf889",
+      "git_blob": "83fd9ad6ba62598ad09a8815c6ecd120866426b2",
+      "repository_path": "PASS_086_PATTERN_ADMISSION_RECEIPTS.json",
+      "size_bytes": 3483540
+    },
+    {
+      "file_sha256": "b559c9ec19f843f9ec12893b1b8d7d989113e05f0717e2b7732f24bca9425fcc",
+      "git_blob": "11a9d97bf680a1dbabc851e95d95ddbebfe40e6c",
+      "repository_path": "PASS_087_GRAPH_LEARNING_RECEIPTS.json",
+      "size_bytes": 1388144
+    },
+    {
+      "file_sha256": "c1a7434e271dfa1293de12c62c6f1e86b99e05a62e88490df186d11cc8b9036a",
+      "git_blob": "df3d2619dbf41c14c489778b80a89b5f1a708002",
+      "repository_path": "PASS_087_SUPERSESSION_RECEIPTS.json",
+      "size_bytes": 102236
+    },
+    {
+      "file_sha256": "3846b7b16bd231c71a49a7348521be3ef11373ec8f06b0091a513c3cb644484d",
+      "git_blob": "ab2a6e8b498a016927be7c699b10290fbb4d8f60",
+      "repository_path": "PASS_088_CONSTRAINT_PRUNING_PROFILE.json",
+      "size_bytes": 2504
+    },
+    {
+      "file_sha256": "b70f8953d3debf1c9578955b714c3d9ba1b1bd48bfacfcfc15ec849af3c880b4",
+      "git_blob": "7010d654694c524ba8b45c9a7fb0e5b8fc758e6c",
+      "repository_path": "PASS_088_TRAINING_ACCELERATION_RECEIPTS.json",
+      "size_bytes": 3218923
+    },
+    {
+      "file_sha256": "1ab4f598028804645b914db0844b8faa5497360568dba0dffe3fe3d0c2cbfd18",
+      "git_blob": "1b3ac0919d6f12bee7ddba863993f9c55b4fb498",
+      "repository_path": "PASS_089_PRIME_AND_FACTOR_RECEIPTS.json",
+      "size_bytes": 9813842
+    },
+    {
+      "file_sha256": "0df8114a33c25e9bc5c865f1a6e256211b96d91b90d35c99073ef50ea73a5070",
+      "git_blob": "7103a3ba7f913684f5642319463b1483debfbd8e",
+      "repository_path": "PASS_090_STRATEGY_DISCOVERY_RECEIPTS.json",
+      "size_bytes": 33086
+    },
+    {
+      "file_sha256": "cc5a1c43a09e62d8a957760c4a8904182f45f9046f5b9861a3ce57bc686e6b84",
+      "git_blob": "f5a36b9392d4296012c892040232f00d052750fe",
+      "repository_path": "PASS_091_COLLATZ_ENTANGLEMENT_RECEIPTS.json",
+      "size_bytes": 53518724
+    },
+    {
+      "file_sha256": "b0be5823a87c973d02eea3c709d496f78cc379bdcafb3ecabe1b280fe361fc01",
+      "git_blob": "800f7dc5421bf384ee16ccede85f9a07ae352be3",
+      "repository_path": "PASS_091_COLLATZ_LANE_RECEIPTS.json",
+      "size_bytes": 31398325
+    },
+    {
+      "file_sha256": "9620a8f8dc630fc5e58bffa000fb8c937dbb77859861d1fe48264d1e50967b1c",
+      "git_blob": "0b64c7259d99b8dc5f4487860b272f1ca874ba85",
+      "repository_path": "PASS_092_COMPOSITE_SEED_RECEIPTS.json",
+      "size_bytes": 59358
+    },
+    {
+      "file_sha256": "4ca1a38f2287e8824fcde2503136e63c958ae6ad2cc0904ef2b511da8a3f8dac",
+      "git_blob": "50a944a38a4acd6bdfd86f14e2fe4a3dd5f64cb5",
+      "repository_path": "PASS_092_INTERSECTION_RECEIPTS.json",
+      "size_bytes": 9799945
+    },
+    {
+      "file_sha256": "8d36cbb5a46d2125f59263ab076d708a2e890284acd1f4ba3a86a553787d5531",
+      "git_blob": "8fce08bb544f523c6469bf2b56cfa1bb921f4a70",
+      "repository_path": "PASS_092_LANE_RECEIPTS.json",
+      "size_bytes": 4820582
+    },
+    {
+      "file_sha256": "6052e3c1986e4b293890132229c43eaf18a51d44c8ce350b92b8092cf6f752cf",
+      "git_blob": "4a9b634b6501ad9d3b81ccee7992d73176f4f62e",
+      "repository_path": "PASS_093_GEOMETRIC_INVARIANT_CANDIDATES.json",
+      "size_bytes": 63035
+    },
+    {
+      "file_sha256": "36dfb93db941ac834f17490303a1c2de59371e0d2be3e9949f6930d196320dec",
+      "git_blob": "684bc70171e69e043d5c61405c6ffcb77154ee26",
+      "repository_path": "PASS_094_INVARIANT_REGISTRY.json",
+      "size_bytes": 4455
+    },
+    {
+      "file_sha256": "477e90f82810da136b3a7b62a6243ad65f4b8b20f5b3807a9a840bf21014d522",
+      "git_blob": "eace8a42f42c144f468b1cab57a8c7a649a93152",
+      "repository_path": "PASS_094_INVARIANT_SURVIVAL_RECEIPTS.json",
+      "size_bytes": 7913
+    },
+    {
+      "file_sha256": "0cfa136f9209abb084802394e87547bab13c1971c4f48c1ec4085f685f0e3614",
+      "git_blob": "718c9be9c83ddc253d44f2b2c317ede3cc15e1a0",
+      "repository_path": "PASS_095_PATTERN_USE_RECEIPTS.json",
+      "size_bytes": 40926
+    },
+    {
+      "file_sha256": "5fa31d73a8eb89353d4be90ea6eb625dc7715f8c540453e2cd20f9ace4889ddd",
+      "git_blob": "45475f6e3dba1983c559c4966a8ec18909886d87",
+      "repository_path": "PASS_097_CONSTRAINT_ABLATION_RESULTS.json",
+      "size_bytes": 3200
+    },
+    {
+      "file_sha256": "c69596956e23f2afa6d65d61310bdd9f7f15a3262a60dd2d3e1cd0ad72ae44d5",
+      "git_blob": "90ffbf1b9ddbecbf2e6c71e427ed836a792d5239",
+      "repository_path": "PASS_097_EPISTEMIC_AUTHORITY_KERNEL.json",
+      "size_bytes": 428
+    },
+    {
+      "file_sha256": "938d813f69534df4302a92ad34697dc8ad957cbf7a76db7788e77d2540cf2bfc",
+      "git_blob": "e07e278b65b731af909ba6357783144b82c3da95",
+      "repository_path": "PASS_098_EXECUTION_RECEIPTS.json",
+      "size_bytes": 6560
+    },
+    {
+      "file_sha256": "00c48deeb6b732a7fd517d5cc468ab2de5e23cb5d47a6dd1ee45df0474e4814b",
+      "git_blob": "c71429ee2ffb4a4872079fca9a7a6f90b283b3dd",
+      "repository_path": "PASS_099_EXECUTION_RECEIPT.json",
+      "size_bytes": 63996
+    },
+    {
+      "file_sha256": "d36b7a4ca2ad8ce4f904678fc35da40cafd3bbb6050525c0ebf1390a2c97ecdd",
+      "git_blob": "85fab902b4e554ca66dadf1f0223252a5ee998e7",
+      "repository_path": "PASS_100_CORRECTION_RECEIPT.json",
+      "size_bytes": 924
+    },
+    {
+      "file_sha256": "162b3dee405cfe6340497240aae63849396a919deafbfd15d0204d68ed1b2d29",
+      "git_blob": "ff90d5487d1bb364219aab9317365da34131af61",
+      "repository_path": "PASS_101_288_STEP_RECEIPT_INDEX.json",
+      "size_bytes": 253434
+    },
+    {
+      "file_sha256": "65450c3d1a2c69d842f8707b019332dee572f5b3d541d34c86133ef4232b9d24",
+      "git_blob": "b1ea25a0f84367030e768289595ae2724f9b6a3d",
+      "repository_path": "PASS_101_CORRECTION_RECEIPT.json",
+      "size_bytes": 1335
+    },
+    {
+      "file_sha256": "d1a6d97f63c75a8cbaec998909b6d3047c9310a323c97e4bfc3808ec36b1f486",
+      "git_blob": "bc8b93c529686d68fb12fb1f919b322e3360fb75",
+      "repository_path": "PASS_101_FOUR_LANE_72_STEP_CLOSURE_RECEIPT.json",
+      "size_bytes": 24057
+    },
+    {
+      "file_sha256": "ddd1635ca00c3676428943e745d3b9838e7b961c8ee848af383a79495852e168",
+      "git_blob": "56c3b809fbff9f20ff66ac562aa428b7098778e4",
+      "repository_path": "PASS_102_CORRECTION_RECEIPT.json",
+      "size_bytes": 646
+    },
+    {
+      "file_sha256": "8e694b79a304c439be742ea795bf1b5d3a2638a3f4afaa7f93127c2a5e8a8fdf",
+      "git_blob": "4956d69c0bf4c2f0649793dd194af37e4acce11f",
+      "repository_path": "PASS_103_SUBSTITUTION_RECEIPT.json",
+      "size_bytes": 450
+    },
+    {
+      "file_sha256": "bd54f6a822852e828489cf09e1e456010a7ad561b8a925f6fdde01384efc65ea",
+      "git_blob": "19ec60323573e8e04fde31bc82055f7c38030258",
+      "repository_path": "PASS_104_PARTIAL_EXPANSION_RECEIPT.json",
+      "size_bytes": 768
+    },
+    {
+      "file_sha256": "51c6f9d1fbf10f3c3c833772a030c3c12be52132610365a15f87cb953b1b4de4",
+      "git_blob": "76cb03321e0ebdf539c0adc18593bc92ee5c66e6",
+      "repository_path": "PASS_104_TEMPLATE_EXPANSION_RECEIPT.json",
+      "size_bytes": 1132
+    },
+    {
+      "file_sha256": "f810108d9b715c823039baf8bcbac3d54463476971d4fbc553e632800b169c4a",
+      "git_blob": "8ff117216cc790848b43277c7179fe097f4c3f65",
+      "repository_path": "PASS_105_1_ENFORCEMENT_RECEIPT.json",
+      "size_bytes": 1096
+    },
+    {
+      "file_sha256": "441189b35550195d90e3f543e988eb77be19852a9fd119267ad569389ebe69c8",
+      "git_blob": "2226e62b90db08fbfcd068a3aca360c986b37b76",
+      "repository_path": "PASS_105_1_PARSE_RECEIPT.json",
+      "size_bytes": 695
+    },
+    {
+      "file_sha256": "39aef25b2ba792914cd7b0636017012442751251bd615372b9d52b7a359d5c5b",
+      "git_blob": "8601dcdaffb4dcdbab59653a51e9fe9583d55d28",
+      "repository_path": "PASS_105_PARSE_RECEIPT.json",
+      "size_bytes": 693
+    },
+    {
+      "file_sha256": "4654ba894ad84b348f23a4e4b832ca8205a398287de0aee77101305b8b949aa3",
+      "git_blob": "54b8910b387ee149949ecf98cf16e3e323473c70",
+      "repository_path": "PASS_135_GFE_LOG_CONSTRAINT_EXTENSION.md",
+      "size_bytes": 1443
+    },
+    {
+      "file_sha256": "7d123fde8ab130ce730ae417359dec8daa224e255f671cc9975208088d4e2ed4",
+      "git_blob": "ae80ed92b40ae0c76044852cc6b671f31a00e505",
+      "repository_path": "REMOTE_AUTHORITY_IDENTITY_PASS_056.json",
+      "size_bytes": 654
+    },
+    {
+      "file_sha256": "d58bf3a1d627b4c2d3095c93b4287e2d05f8cf8a7c640e907197a336d643e4a6",
+      "git_blob": "cad97b92f39e699f610b5c08917bf5cee68894e4",
+      "repository_path": "REMOTE_AUTHORITY_IDENTITY_PASS_056.md",
+      "size_bytes": 756
+    },
+    {
+      "file_sha256": "07b7cd76f5c3fbefed2c7f388e7e51887465704bd7fa04344c82735797eada77",
+      "git_blob": "b60385829dd2862a39bdef8271bb7db83af425a9",
+      "repository_path": "REMOTE_EXECUTION_RECEIPT_PASS_056.json",
+      "size_bytes": 838
+    },
+    {
+      "file_sha256": "9b6b21dda05711703163823b94cab491e0f6a5de47bbcda38376fe6bdcce2c2a",
+      "git_blob": "4531909803efc13681d4d173ae579e7ad1dcb398",
+      "repository_path": "REMOTE_EXECUTION_RECEIPT_PASS_056.md",
+      "size_bytes": 939
+    },
+    {
+      "file_sha256": "ea6d84537de1e4884501beb93fc85027a2c0ea10ad68ba60391fe536e32254e8",
+      "git_blob": "425593999626ce5c425238a87c2e5194e02af977",
+      "repository_path": "RESPONSE_PRIORITY_AUTHORITY_MAP_PASS_054.json",
+      "size_bytes": 1676
+    },
+    {
+      "file_sha256": "f284ff79ce86a142464e47d0dd6a542b8100476aa130ad699cc9f3980d59c176",
+      "git_blob": "2feb8f6a9841f1605a51e2e29e59436b823aa627",
+      "repository_path": "RESPONSE_PRIORITY_AUTHORITY_MAP_PASS_054.md",
+      "size_bytes": 1803
+    },
+    {
+      "file_sha256": "dd610a716bdfaf9d64b5b975394b7d15c1d7a354febc9d7b1b9263e9fc1e0fc9",
+      "git_blob": "0e1a8aa11737277241bd437aa53066491a1fdeb5",
+      "repository_path": "RUNTIME_CONSTRAINT_ENFORCEMENT_BINDING_PASS_035.json",
+      "size_bytes": 186153
+    },
+    {
+      "file_sha256": "65c12a6fd44c815b1db2e3ef2c1992d4b972bba8c0558a2a861fe1e9dc319c20",
+      "git_blob": "72a8ac015692813bbf0c821c98397c3c2823ea1c",
+      "repository_path": "RUNTIME_CONSTRAINT_ENFORCEMENT_BINDING_PASS_035.md",
+      "size_bytes": 870
+    },
+    {
+      "file_sha256": "878beea9ce8b1ff028bbb7d05c96fb5c41c8008c3baa2626cff82e4d3063244e",
+      "git_blob": "9b92f2aa3e6f54d97aa0d190a8c4a05f33dc6534",
+      "repository_path": "WORKSPACE_COMMAND_AUTHORITY_MAP_PASS_049.json",
+      "size_bytes": 41746
+    },
+    {
+      "file_sha256": "19ee543d0281f404ac6d20b363b8f4858b8a1bec94d07c5a3f4f5ed8c4f597a7",
+      "git_blob": "c5861bac73eca60e1b8107a4f615bf27db8c2da9",
+      "repository_path": "WORKSPACE_COMMAND_AUTHORITY_MAP_PASS_049.md",
+      "size_bytes": 299
+    },
+    {
+      "file_sha256": "715c2beb64eec7f42300fec34cedeb65918bdbf778b1b89a2e75d1bfc4ee9e77",
+      "git_blob": "850bddf5b908011e91fb736da52d70a1d648e1b2",
+      "repository_path": "applications/holofractal_harmonizer/evidence/pass161/P161_COMPLETION_RECEIPT.json",
+      "size_bytes": 832
+    },
+    {
+      "file_sha256": "e31e358ec9066048c532521221ed79b972b1439a4f79b25ab1ec7697223f9959",
+      "git_blob": "990799127691f49149a8417ae6fe346059f2c3a1",
+      "repository_path": "applications/holofractal_harmonizer/evidence/ux_ab_optimization_v1/completion_receipt.json",
+      "size_bytes": 749
+    },
+    {
+      "file_sha256": "7fc571e546c0ab610667ecc7d97a2b95bfb30c19f5bd423746b9a3eff3148a3e",
+      "git_blob": "8450ec3537cf3ecdd8659c1a994d5136c3159f20",
+      "repository_path": "contracts/authority/PASS_174_PLUS_LEGACY_FOUNDATION_POLICY.json",
+      "size_bytes": 1312
+    },
+    {
+      "file_sha256": "311e5503837f33c4ebe10f5500202375f8d139b130216c93286ff3a8007c3ae1",
+      "git_blob": "80557cb97e07a1fa035c120b9f03b3d00178e5ae",
+      "repository_path": "contracts/pass145/HHS-P145_IMPLEMENTATION_AUTHORITY.md",
+      "size_bytes": 1920
+    },
+    {
+      "file_sha256": "8102eed9f66a072381d59935e0bedd733cf4c142876c957ee58555c757282ebd",
+      "git_blob": "aaa5e4112c1bb63a8a5d18be35eb1b0bc0b70915",
+      "repository_path": "contracts/pass148/HHS-P148_NATIVE_SEMANTIC_AUTHORITY_MEMBRANE.md",
+      "size_bytes": 8316
+    },
+    {
+      "file_sha256": "185da8d610a531fc610759b1bdaaddac5508f8dc241d7d76d82e859ae8bf52fd",
+      "git_blob": "8f8f8baf9bde066d962e80d0a0385822da6b6b13",
+      "repository_path": "contracts/pass150/HHS-P150_HASH216_CONSTRAINT_GENOME.md",
+      "size_bytes": 711
+    },
+    {
+      "file_sha256": "2a6814a35ff39cf42d053874f665cb12b2d73cb214cb0de42d92450b85bc08f8",
+      "git_blob": "053c2bdca1f0e5a93c5dd04e315257d87750de72",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_01_the_reconciliation_desk.md",
+      "size_bytes": 18843
+    },
+    {
+      "file_sha256": "7ba7aa5f9018354c16345974571484904e6fa8a04223a37f2a14f072cec6ac4a",
+      "git_blob": "7bbedc331826ff71d5794fd00ab095770b1d985e",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_02_864_symbols.md",
+      "size_bytes": 7695
+    },
+    {
+      "file_sha256": "b7df3cabf1b048e8971b5533871100d64aca258c1ecd007129603eaf1b0edaa0",
+      "git_blob": "9fb70bfb7f34ee97c8b99c50ffa704271d33123c",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_03_everyone_is_slightly_wrong.md",
+      "size_bytes": 7051
+    },
+    {
+      "file_sha256": "ba2a53caa96efb93df795604740a9c1ab26ea47b8b00e2847fb998f20f5493b9",
+      "git_blob": "c22cf963bdb0961ccab3dce4f05001f3fc0c6aae",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_04_she_creates_beautiful_stories.md",
+      "size_bytes": 6646
+    },
+    {
+      "file_sha256": "9acd04b6ad4b68f71e8c0a958c0a26871a9a2ffaf30c814fea28dd262fd8a635",
+      "git_blob": "a8b4ad00ffe939f4507865eca88d0c487b97c728",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_05_the_tuesday_cafe.md",
+      "size_bytes": 7232
+    },
+    {
+      "file_sha256": "5592b96ed7a3a4876ed242dc1a400a4e57c887094a4b6989406ecfa7e1e7a7d4",
+      "git_blob": "be670b30cdf4b8ee7ebacf298f2d605d8a610f1a",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_06_mutation_authority_false.md",
+      "size_bytes": 5716
+    },
+    {
+      "file_sha256": "c9a9774084788b35b0f09dd30a10177d43e8aafc3b2549fc9451d62e814ab585",
+      "git_blob": "1884f781ad1e9b15ebbbb0c442040c375c4224d2",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_07_ros_warning.md",
+      "size_bytes": 5541
+    },
+    {
+      "file_sha256": "726187aeb4c00fa21d9d01ae2f14c84218fa7dad7f9191bbf3584f8b1b4a694d",
+      "git_blob": "47807f66f2b3e2854c8c0a193914e56407f79b0d",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_08_the_first_invariant.md",
+      "size_bytes": 7132
+    },
+    {
+      "file_sha256": "e9794fe65ae889fc0193c7dc6e1bf28516b5883316b2e054b8d3c973cd694260",
+      "git_blob": "9df42589e48d7fe350f384123480c89067dfd2b8",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_09_witness_protocol.md",
+      "size_bytes": 3889
+    },
+    {
+      "file_sha256": "9fbd12291681f1172f97e6c369216d53275eea5764b86de72ad5b8ab632d1aed",
+      "git_blob": "40f3c7de45307ecca45713662a9e33efccf2d283",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_10_the_registry_of_the_sleeping.md",
+      "size_bytes": 4283
+    },
+    {
+      "file_sha256": "1f6bb3bd56b7622490a7edfa2629964e7025afb9f117218a129e5ae64e5fb1c0",
+      "git_blob": "71419f96e4c1a3d0f96b9af0ce4e722aa54a8df6",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_11_maras_choice.md",
+      "size_bytes": 4374
+    },
+    {
+      "file_sha256": "975bb131e77d3581f5e4491cc0e8e2963d75c910f1d56dfa1f3aa3018052d61b",
+      "git_blob": "9508ca5a2aaf2e3f19efdcb8fa1a20e051d01977",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_12_the_curator_of_sleep.md",
+      "size_bytes": 4467
+    },
+    {
+      "file_sha256": "8a5a988a606a62a2477a8a8a54e828c51a1b77fd8c2c5db6d10c52c8b811dd5f",
+      "git_blob": "5ff0557370f9ed4a2b9c75f938bbd17864ea5717",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_13_beautiful_stories_volume_i.md",
+      "size_bytes": 4025
+    },
+    {
+      "file_sha256": "3eb58381d92d5ad4945d0657e22697d4619e42839a586e29f8693df729df55d2",
+      "git_blob": "4f4cadfdb4e22f0c96b931f470456f83aa92550c",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_14_the_ouroboros_layer.md",
+      "size_bytes": 4391
+    },
+    {
+      "file_sha256": "b94ad7e5a44a98b2ebb0cbb0e80139327f6ae8cc664b8e52a572193d5d093e8a",
+      "git_blob": "12a9a00adbb500b2da5a1d829ec461497d959ac7",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_15_psi_incident.md",
+      "size_bytes": 4426
+    },
+    {
+      "file_sha256": "452215acdda64ea865e270537e7f3599ea7ac39cfe814d331ea056b407bb54d9",
+      "git_blob": "e3b96632130bc60c99c46d48b3dfb0405ebb2003",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_16_the_second_keeper.md",
+      "size_bytes": 4007
+    },
+    {
+      "file_sha256": "1877eaf090eb91c819106af741957222536c0553a4823c8a213c873a8abf3a66",
+      "git_blob": "df912a9c651bffa258348c597f7b8494d90e374d",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_17_ros_receipt.md",
+      "size_bytes": 3960
+    },
+    {
+      "file_sha256": "32924a1222a2849b02d3b22fa74caaed5f543b9d2106623211d2d4aea23cfde9",
+      "git_blob": "f6db5ea946041324b5bcd7faee1bdbddf9f1eebb",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_18_she_is_the_lock.md",
+      "size_bytes": 4474
+    },
+    {
+      "file_sha256": "c030b4ffffffde1ae9a8ed735526ccb830419cce90381337d1bceb0073689eb8",
+      "git_blob": "e2012a55113544d72c0a59add50d95449424cd4c",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_19_unindexed.md",
+      "size_bytes": 4302
+    },
+    {
+      "file_sha256": "098b81575696a10b92edf1e98fd7545dc5cd4c8ca6572f59c99f09f6ba3b2dec",
+      "git_blob": "72d422f5643e7bfd0952f2c2e0d58a8ab6cfa0cc",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_20_the_genesis_frame.md",
+      "size_bytes": 4279
+    },
+    {
+      "file_sha256": "4363bd4415804ef2365bbfc3c93c272c528b1b99ac2682163ab23018ef366a8e",
+      "git_blob": "4eec09949d779ff6dcc81b613aadfd9cb574b4de",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_21_the_archivists_offer.md",
+      "size_bytes": 4288
+    },
+    {
+      "file_sha256": "f53c5d7417b45d14b0e2038c2cd180104362d480885a2b3aee51945701757b0f",
+      "git_blob": "ed0cba88e4337be7092adc4930402b9c4ca483a3",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_22_ros_last_commit.md",
+      "size_bytes": 4086
+    },
+    {
+      "file_sha256": "18629054290931cd06c93ed43d9cd0751eba369c22126e92792b31cfd0a5e8c4",
+      "git_blob": "53594fa0de45a33c486a4c8f3cf5c51a531e79c0",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_23_the_acknowledgment.md",
+      "size_bytes": 5222
+    },
+    {
+      "file_sha256": "d617c8236060710ba1cf92c6343f87c7b5ff78dbbe46d6128abd0c6e775c3ef5",
+      "git_blob": "cf20c91bffb6d78393dd5ec81a90acc3bcca11f4",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_24_the_keepers_commit.md",
+      "size_bytes": 4196
+    },
+    {
+      "file_sha256": "1f1ce95f16491bf8a463956cdcd9e1863911b7a7f4239feb9526cc9912e9a048",
+      "git_blob": "998334f0c6a367348c0ec4d036ea83e53b187dfc",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_25_beautiful_stories_volume_ii.md",
+      "size_bytes": 4475
+    },
+    {
+      "file_sha256": "1103023991cc35b44d2f06c492cbe7dbbfdbbc0cffe9065a28b47a5a730cf6a0",
+      "git_blob": "dc1a9e25c0bff7adbc9763cbea54e76eda7adcaa",
+      "repository_path": "creative_writing/the_invariant_keeper/chapter_26_delta_e_equals_zero.md",
+      "size_bytes": 4894
+    },
+    {
+      "file_sha256": "1bd95922ca28b929349785a905d4eca3602bda983060dd589b1acfc08a8e52da",
+      "git_blob": "060f8f4dcbbfe39e2aa8077f270d6d34368d60fc",
+      "repository_path": "creative_writing/the_invariant_keeper/epilogue_the_receipt_closed.md",
+      "size_bytes": 3130
+    },
+    {
+      "file_sha256": "f8475932581b7bc014910bcc6b474de6d6d6654b3e7ea027a445dd2f5d8d8c88",
+      "git_blob": "2f3153ab0fa4b894db9c4dc44c93981a1ec6ef1e",
+      "repository_path": "creative_writing/the_invariant_keeper/prologue_the_receipt.md",
+      "size_bytes": 2963
+    },
+    {
+      "file_sha256": "50bfca587dcd5b9449793e844fa36e1c9348047585c6de68ea54ff66c76f17cf",
+      "git_blob": "eecb4afca7825316da561dbc86ebd0727b3e4e45",
+      "repository_path": "docs/HHS_INVARIANT_DERIVED_ADAPTER_EXECUTION_PASS_040.md",
+      "size_bytes": 1005
+    },
+    {
+      "file_sha256": "c36b08518282083565c9d1b46f3592c75dfdbc1afed5ae74cdb5cd6cb690afdc",
+      "git_blob": "3fafd91ce71a8b873650da428169cb80a7f8230a",
+      "repository_path": "docs/HHS_KERNEL_INVARIANT_REGISTRY_V1.md",
+      "size_bytes": 240
+    },
+    {
+      "file_sha256": "3d636056051a213cd95074cdf296f797d497500e174fe2110ad6f1324023c501",
+      "git_blob": "201deebb76bd3d2dfb4bc6b51fef550a220cd5b1",
+      "repository_path": "docs/HHS_TRANSFORMATION_PERMANENCE_INVARIANT_V1.md",
+      "size_bytes": 985
+    },
+    {
+      "file_sha256": "713426a06079593c9969824abc70c2413f7ad5308c3396c305a29217a39a1103",
+      "git_blob": "214ee467b833ffb11a541be2a6163db4b7b12b93",
+      "repository_path": "docs/architecture/HHS_RUNTIME_AUTHORITY_PHYSICS.md",
+      "size_bytes": 10951
+    },
+    {
+      "file_sha256": "cb0d918e75358e950a098f79fd18da2c76ece2604c0274a273667c2515bf42d5",
+      "git_blob": "b90eeaa57931f4d4ed2c5bcd4895de69477561c0",
+      "repository_path": "docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md",
+      "size_bytes": 18179
+    },
+    {
+      "file_sha256": "8d8736e6daf4f2c7f288318aaa1c60e74097ad85216b864a6d7486363360cb1a",
+      "git_blob": "39a8ecec3163712e8260883ad83adf7a9a441788",
+      "repository_path": "docs/architecture/gui_runtime_holographic_projection_and_receipt_space.md",
+      "size_bytes": 8117
+    },
+    {
+      "file_sha256": "aa5e5d4dc5b049c1a30216bdef6b8aae6e3fb3010a104bc72fd19532365ce5fb",
+      "git_blob": "9e69484190a7978281ca3643398cdbb2bfdd6b34",
+      "repository_path": "docs/architecture/receipt_specification_v1.md",
+      "size_bytes": 15572
+    },
+    {
+      "file_sha256": "b13895ef7ebe160d6092d151a8eb89155339fa117790491837e686e5a9709b31",
+      "git_blob": "92ce64f2b6eb48cb7e4f3ddb366854620024bd50",
+      "repository_path": "docs/operations/recovery_receipts/CANONICAL_VISUAL_IDE_RESTORE_2026-07-29_IN_PROGRESS.md",
+      "size_bytes": 4673
+    },
+    {
+      "file_sha256": "6f6ce52530be59e66c96afc3415e41c8203619814e09de1a7bbd904b1cf3c45a",
+      "git_blob": "7fe12634ed7545909fbcf8148ddd3f59bd982e26",
+      "repository_path": "docs/operations/recovery_receipts/HEROKU_INTEGRATED_WORKSPACE_REPAIR_2026-07-29_IN_PROGRESS.md",
+      "size_bytes": 5145
+    },
+    {
+      "file_sha256": "1d9e8f433704e7eb5a5a1650001e6b9e4327d234ae1533a7fda8a201b4806894",
+      "git_blob": "9af7c931ba77eeadab730b50f308b3ff5574acb6",
+      "repository_path": "docs/operations/recovery_receipts/HEROKU_PRODUCTION_INTERFACE_AND_LANGUAGE_PROVIDERS_2026-07-29_BLOCKED.md",
+      "size_bytes": 17431
+    },
+    {
+      "file_sha256": "1f5c82297a00b5181f7a08bf6af060e8d4bbeca7458d34e0929299898652a605",
+      "git_blob": "6a46074bfe024b3d9564f3fcb1b49bc7a73b4a56",
+      "repository_path": "docs/operations/recovery_receipts/HOSTED_RUNTIME_ASSISTANT_AUTHORITY_REPAIR_2026-07-30_COMPLETE.md",
+      "size_bytes": 4691
+    },
+    {
+      "file_sha256": "d7e9e7efe2b8ae4dcd139e33bd9d69e2c187c59c283f0848773035ba048ca4dc",
+      "git_blob": "e65a5ece31aa7b2c5373c18f972551d2e9d9c426",
+      "repository_path": "docs/operations/recovery_receipts/PASS161_PRODUCTION_INTEGRATION_2026-07-30_IN_PROGRESS.md",
+      "size_bytes": 3881
+    },
+    {
+      "file_sha256": "080ec9ffbb878ce35f972385718a8ae73d569f4d5be8f6ede4fd518312b671fb",
+      "git_blob": "199e210719a31dca15c94d18e188b9f56396dec2",
+      "repository_path": "docs/operations/recovery_receipts/REGISTRY_VISUAL_PROGRAMMING_REPAIR_2026-07-29_SUCCESS.md",
+      "size_bytes": 5973
+    },
+    {
+      "file_sha256": "4fb3ac4e28d73cfedcb74721b353603c9ae41bfec5ba6b522863bf0dfac7bdb9",
+      "git_blob": "4b6e531d9ac191d68cc131850d773e9cd76333a1",
+      "repository_path": "docs/operations/recovery_receipts/RUNTIME_WINDOW_MANAGER_CONSTRUCTOR_2026-07-29_IN_PROGRESS.md",
+      "size_bytes": 3291
+    },
+    {
+      "file_sha256": "7150b34a793af2951df91f0f19814eaaf6987acb7f94b9c2fd32d556d7797b58",
+      "git_blob": "b3804aa355b502f34d986e092e5c8012bd50398e",
+      "repository_path": "docs/operations/recovery_receipts/VM81_RUNTIME_BENCHMARK_2026-07-29_BLOCKED.md",
+      "size_bytes": 6559
+    },
+    {
+      "file_sha256": "22c7100c7ea23ea04982fcf71d6e2a020f382007e135aa066eadb02fc292f3ab",
+      "git_blob": "3fcdd91c52f5054ee075e9f4fd7b4a0c9c90ec74",
+      "repository_path": "docs/pass190/HHS_PASS_190_OPENAPI_VM81_REMOTE_AUTHORITY_HARMONICODE_OS_SHELL_PYTHON_COMPATIBILITY_ALGEBRA_AND_FULL_HYDRATION_FABRIC.md",
+      "size_bytes": 36314
+    },
+    {
+      "file_sha256": "11a7bd5c9144e75f38963e2222cf6df68f97043964fa465f651c80c65bdce73d",
+      "git_blob": "f5d3b61ea366de9d5f1fc9207b393cb70e2225ef",
+      "repository_path": "docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL_INVARIANT_CLOSURE.md",
+      "size_bytes": 58878
+    },
+    {
+      "file_sha256": "cd9c1e8252531c3cf2f22e2d59423a59f6c858eea14ca958ed8aec570c11468b",
+      "git_blob": "cab24f1b2e7510321f6449814302ea31b704d5a8",
+      "repository_path": "docs/pass192/HHS_PASS_192_LO_SHU_CELLULAR_FIBONACCI_NESTING_TENSOR_AND_MODULAR_MEMBRANE_DEPTH_AUTHORITY.md",
+      "size_bytes": 19022
+    },
+    {
+      "file_sha256": "8ca993ae93207b201159799b14387d03342c19470f5b922f0d02b054acd6415f",
+      "git_blob": "f437461b4cb74b40ba8444c48319ad8f906359cf",
+      "repository_path": "docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md",
+      "size_bytes": 47344
+    },
+    {
+      "file_sha256": "21a71656c175aa4638175b89e7b610b43278add4a8ec67555bd5261e8b68b2d1",
+      "git_blob": "f49576a419dbcd686ef4a68badd360f9f4d6bc49",
+      "repository_path": "docs/pass_144/INVARIANT_ALGEBRA_GUIDE.md",
+      "size_bytes": 1228
+    },
+    {
+      "file_sha256": "b31c8c1b5ddb6a68d57fe3cf754804ebb1c1cb8e4a0b0c2f538cf8ddd37784f7",
+      "git_blob": "bd56ace538e4dc3fc6e07d73c36f55d9cce827d4",
+      "repository_path": "docs/pass_144/RECEIPTS_AND_AUTHORITY.md",
+      "size_bytes": 1097
+    },
+    {
+      "file_sha256": "e385b705f827eaa731f6d260ddc37a08c75caeafb69d9da96738d29453aab81b",
+      "git_blob": "53f6fa9aa4bbdb6f6155cc3b677231ff0caa4b35",
+      "repository_path": "docs/replay_authority_model.md",
+      "size_bytes": 9395
+    },
+    {
+      "file_sha256": "909121cb7a5625a64a7a2ac4ddce1a3653b62e8377fa5b50ff26089afc48611d",
+      "git_blob": "91caa6dd7175f88f65f024f0218d0c1f46eb2c49",
+      "repository_path": "docs/runtime_authority_map.md",
+      "size_bytes": 7913
+    },
+    {
+      "file_sha256": "79301d7cafc96476389f03cdf607a2ef345dc30d0c747d917fdb9507c09e2ab6",
+      "git_blob": "c71c137c1842670ce533fe04a44154c36345ac50",
+      "repository_path": "evidence/HHS_NATIVE_DNS_GATE_VALIDATION_RECEIPT.json",
+      "size_bytes": 1385
+    },
+    {
+      "file_sha256": "7ebf5b7f8e2587998721075ae65edc075c626b6b20af9d01e88d488545a3f5e1",
+      "git_blob": "a64597ec07f19db77d046a9230b107f8fb04f478",
+      "repository_path": "evidence/pass163/P163_COMPLETION_RECEIPT.json",
+      "size_bytes": 1076
+    },
+    {
+      "file_sha256": "cf1b553addbf948eee20002aa263d708f57a551694deaf27186e806b0084b6c8",
+      "git_blob": "68722e7055cfd9f18be09d4d4ff8a99571d108c9",
+      "repository_path": "evidence/pass164/P164_COMPLETION_RECEIPT.json",
+      "size_bytes": 2539
+    },
+    {
+      "file_sha256": "27a45641aa6b536acb1acd35c0b5007f91e62af3ec9b52335c60024402b38b7f",
+      "git_blob": "a15df204806d24682a0d0ac94614c31f1719a448",
+      "repository_path": "evidence/pass165/P165_COMPLETION_RECEIPT.json",
+      "size_bytes": 2563
+    },
+    {
+      "file_sha256": "069058cae8401fa5af17aa6f9ad4aa6e9a2f382f6602998b1e6e730d55601a1a",
+      "git_blob": "5dba8c820343763282731261a1c920aaf8c052a6",
+      "repository_path": "evidence/pass166/P166_COMPLETION_RECEIPT.json",
+      "size_bytes": 1275
+    },
+    {
+      "file_sha256": "2c854502cf7a2e1195a09ce5c8c1246f901e90a414c643f72c7e44415af3173a",
+      "git_blob": "9d0aa52012116ade764c6ccbf03f1b6f37cc5cfc",
+      "repository_path": "evidence/pass172_173/PASS_172_173_COMPATIBLE_CONSTRAINT_UNION_BINDING.md",
+      "size_bytes": 5643
+    },
+    {
+      "file_sha256": "84984742a9a8b5d70aadfc41081292bdbde4f813124b769d28f98e0c9b93145f",
+      "git_blob": "d4b27b340f2065e791d58a32420a93261edb428a",
+      "repository_path": "evidence/pass172_173/PASS_172_173_DEPENDENCY_SCOPED_VALIDATION_RECEIPT.json",
+      "size_bytes": 2720
+    },
+    {
+      "file_sha256": "b5decdba43466c805e4a2b8ce2d97318e7c18251f44684b8a51629633bd0f39a",
+      "git_blob": "ef3d18e51a6f89ad0d2f2871b5d8cc46a8abd325",
+      "repository_path": "evidence/pass172_173/PASS_172_173_PHASE2_BLOCKED_RECOVERY_RECEIPT.md",
+      "size_bytes": 2708
+    },
+    {
+      "file_sha256": "1051f816d0f2053ff748987224ec88b07ec3e91a8f9a6226af4080f0449462c3",
+      "git_blob": "4301b0967edf31a9ed846cf12a264f11d9777111",
+      "repository_path": "evidence/pass172_173/PASS_172_173_PHASE2_MAIN_MERGE_RECEIPT.md",
+      "size_bytes": 3976
+    },
+    {
+      "file_sha256": "f383f83428893060cd858b4376e0a9b8720f7358410c46e3d99cbf07bc89216f",
+      "git_blob": "a9c8fbc44b344523a6d15b31e0fe4f9c53be642d",
+      "repository_path": "evidence/pass172_173/constraint_provenance_matrix.json",
+      "size_bytes": 10453
+    },
+    {
+      "file_sha256": "70f9b6e14de3ad548a90014f34cb10106e3f8bb5cfc1a8f1cec7e5b584cef4cf",
+      "git_blob": "39c7208a558c762a8a12b471a27960b540569810",
+      "repository_path": "evidence/pass174/P174_HEROKU_BOOT_RESILIENCE_REPAIR_RECEIPT.json",
+      "size_bytes": 2618
+    },
+    {
+      "file_sha256": "9e28c9cdee28228c9b7e2006e97ce45c19d3f3be60daaa59fba45c221626fb56",
+      "git_blob": "3eaf05ba426122bdd0292fc4f0ff65177447d683",
+      "repository_path": "evidence/pass174/P174_LIFECYCLE_ROUTE_REACHABILITY_REPAIR_RECEIPT.json",
+      "size_bytes": 1638
+    },
+    {
+      "file_sha256": "c49efa251588c1da319c98802703171ea8ce062a7bdeb7302b3ab75638a6a7d5",
+      "git_blob": "df8ac0b4537212a697827c2f507485015d537f77",
+      "repository_path": "evidence/pass174/P174_MULTIFILE_PROJECT_LIFECYCLE_AESTHETIC_EXTENSION_RECEIPT.json",
+      "size_bytes": 1685
+    },
+    {
+      "file_sha256": "3128b3dac25fc3c00dbfcb1fa1d4261da0e77dfe58a6cc2f759ec6549e1703d4",
+      "git_blob": "c266f15a5887eb74956d9b2f1a738a6b23b46ac9",
+      "repository_path": "evidence/pass174/P174_VISUAL_IDE_RELIABILITY_IMPLEMENTATION_RECEIPT.json",
+      "size_bytes": 3202
+    },
+    {
+      "file_sha256": "df3ab318b35c3c1c3a522427a6c8e48d84a43cc14189ed3ebe2d6b9f54ce8603",
+      "git_blob": "66967acb8c7d8fdf4ccc354ee918c6f7abb71dca",
+      "repository_path": "evidence/pass174/PASS_174_IMPLEMENTATION_COMPLETION_RECEIPT.json",
+      "size_bytes": 3893
+    },
+    {
+      "file_sha256": "8516ad3cb3d204313fa0a105f4079e4e742c7fb236b33df2d5e340b99941615b",
+      "git_blob": "132104e2be9b2a7e8899b5f3028efa0ccd0cdc2f",
+      "repository_path": "evidence/pass175/PASS_175_GITHUB_DELIVERY_RECEIPT.json",
+      "size_bytes": 1625
+    },
+    {
+      "file_sha256": "8b425d116bea614f21785a8f511d65c5d5d4e58cb9f885aae399bbe4b7206c32",
+      "git_blob": "46639051ed39714ed9b00ba15d63422d30ad1837",
+      "repository_path": "evidence/pass175/PASS_175_IMPLEMENTATION_DEVELOPMENT_RECEIPT.json",
+      "size_bytes": 2778
+    },
+    {
+      "file_sha256": "ac74d932b042739a4d47325a48b53830e508d1bf502f081f75f4edce42ee05ba",
+      "git_blob": "4ee1523b5d141be20eb685246fba66a79ca3a5b5",
+      "repository_path": "evidence/pass175/PASS_175_TERMINAL_COMPLETION_RECEIPT.json",
+      "size_bytes": 5091
+    },
+    {
+      "file_sha256": "980f7aba90e2f1c438a48eedb538ed26c0329c61e8f92b216ba0d27c15b59015",
+      "git_blob": "cd1f40160c555d6645fd60d4102386bc816f0d9a",
+      "repository_path": "evidence/pass176/P176_DEPLOYMENT_BACKEND_DEGRADED_MODE_RECEIPT.json",
+      "size_bytes": 2607
+    },
+    {
+      "file_sha256": "a43f0b78456f4303bf4a0928b95417bc4dc0cc9aff101cf13cddbcc0440ed7a4",
+      "git_blob": "b6e5333f48252acb3a1cbbb4edbe45ef800f1184",
+      "repository_path": "evidence/pass176/P176_DEPLOYMENT_USABILITY_RECOVERY_RECEIPT.json",
+      "size_bytes": 1444
+    },
+    {
+      "file_sha256": "79e732402c868ebe6002686cd9d9a1f6750ec54ef6458c19972e024c8751a4e3",
+      "git_blob": "afae4746a9ef0208e70e9a96f578715a1f08b00b",
+      "repository_path": "evidence/pass197/PASS197_LOCAL_VALIDATION_RECEIPT.json",
+      "size_bytes": 2636
+    },
+    {
+      "file_sha256": "3886556868cb46702fea47cef42fe6467d7c339725e0c8b38449ffc7d1a1c771",
+      "git_blob": "a7a23de17777ce689c5e56d890edf2de67e9f5b4",
+      "repository_path": "evidence/pass198/PASS198_CURRENT_TREE_SCAN_RECEIPT.json",
+      "size_bytes": 3556
+    },
+    {
+      "file_sha256": "41218111d1c9e3d55cce4be063d00a43f325df95d83fb432711b989159c0d910",
+      "git_blob": "0b71eceee69042704b8a3cae0b3912b9a2bbf47c",
+      "repository_path": "evidence/pass199/PASS199_DISTRIBUTED_CALIBRATION_RECEIPT.json",
+      "size_bytes": 3996
+    },
+    {
+      "file_sha256": "a0b409164b157074f49c1fc00360486c6bd1759ddebef6184123ca1cc73aa0ef",
+      "git_blob": "3146ef42185bee44debd7bcdd3c08d7e2e1df1d9",
+      "repository_path": "evidence/pass200a/PASS200A_VALIDATION_RECEIPT.json",
+      "size_bytes": 2389
+    },
+    {
+      "file_sha256": "f308df06b333bc8351c41aa1c88908fbd558e0871e085bbd9bfbbd6a701027cc",
+      "git_blob": "a0e3400472c89f41a15882a8b571f8efc6be15bd",
+      "repository_path": "evidence/pass200b/PASS200B_VALIDATION_RECEIPT.json",
+      "size_bytes": 1771
+    },
+    {
+      "file_sha256": "ff60d99d004d4d4b0c8013d0253b7e365018f6324973db3439a79c311527cb70",
+      "git_blob": "82a5438b64f64a86c7bf8d34c2552505cd82ea44",
+      "repository_path": "evidence/pass200c/PASS200C_VALIDATION_RECEIPT.json",
+      "size_bytes": 1990
+    },
+    {
+      "file_sha256": "af537f62131f9debced42e81b0ac8ef0df143fd85db8e80248ffab4db9ca5bae",
+      "git_blob": "dde284b85053f1b8f187694effc207dde9215996",
+      "repository_path": "evidence/pass201/PASS201_VALIDATION_RECEIPT.json",
+      "size_bytes": 1537
+    },
+    {
+      "file_sha256": "100d60b1190215e2d7df7a0413123dc1b408a902e8bcb3df23844dbbbcfa07f6",
+      "git_blob": "100a97fc47477d2f633626c33e89dfd6ccb44d21",
+      "repository_path": "evidence/pass203/PASS203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT.json",
+      "size_bytes": 2216
+    },
+    {
+      "file_sha256": "308213b3f0cd3efca7563065434b342baecf16aca4cd9554b05cb6915289358f",
+      "git_blob": "96ba032149343cffbde17ee9833e47c79395ac14",
+      "repository_path": "evidence/pass203/PASS203_MAINFRAME_VALIDATION_RECEIPT.json",
+      "size_bytes": 2704
+    },
+    {
+      "file_sha256": "87eaca66881b396797669639aca094ff94c1f0c9591cabe33ef44adda64f1c9a",
+      "git_blob": "69e5e3f8db578fee2dfc07573fcce5423add6376",
+      "repository_path": "evidence/pass204/PASS203_INHERITED_VALIDATION_RECEIPT.json",
+      "size_bytes": 1373
+    },
+    {
+      "file_sha256": "e6c3d51bf541f8aa2a9ece192ecea958cffbdf1b2369d06c5a76dbd3fb00980c",
+      "git_blob": "2b2a3baa87ea41577b4b4397da03b1b790c5cfae",
+      "repository_path": "evidence/pass204/PASS204_OPEN_CLOUD_VALIDATION_RECEIPT.json",
+      "size_bytes": 4242
+    },
+    {
+      "file_sha256": "2ef769242c56d74bc78b021170dfa142f7cb5c084048de66085bcbeb5a984476",
+      "git_blob": "bd41b5edf0be22d001cca098e3183f2666f83908",
+      "repository_path": "evidence/pass205/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json",
+      "size_bytes": 1150
+    },
+    {
+      "file_sha256": "ac948070f916806aeae220a5a3e14662a0aaaef309383e742ed60851fcc1714b",
+      "git_blob": "09dbad82e58e380c8cc3c95740002702cfcbc0f4",
+      "repository_path": "evidence/pass205/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json",
+      "size_bytes": 7238
+    },
+    {
+      "file_sha256": "cd8b95d8f18dad5736f92f994029a7948abc11758afd01f96c91dd0401f0f635",
+      "git_blob": "7884f6a2b00f1c2254fef5fdf87edca94ac5c6aa",
+      "repository_path": "evidence/pass205/PASS205_PRODUCTION_COMPLETION_RECEIPT.json",
+      "size_bytes": 4107
+    },
+    {
+      "file_sha256": "24823915341fe09ffa2a5f67ea74a84ff16e6900a639300389b766a504f25bd2",
+      "git_blob": "c7b46405091ac318323d9acfbf8b3bc43d38f991",
+      "repository_path": "hhs_runtime/include/hhs_receipt.h",
+      "size_bytes": 1465
+    },
+    {
+      "file_sha256": "e7ad3815999a67b2c9c36bf2fedc0feee5a69fa4125b89581aa035b7c2a783e8",
+      "git_blob": "36f2d255ded640d9f8f7192284e97419e6995232",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_EQUIVALENCE_RECEIPT.json",
+      "size_bytes": 4480
+    },
+    {
+      "file_sha256": "626a49d3162800d09f5a15d948f2e3be86051477ac3e9d905bdd254530f26d0b",
+      "git_blob": "75431c66ce70192e0c24cddcc7b8a41bc13221d4",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1.schema.json",
+      "size_bytes": 1239
+    },
+    {
+      "file_sha256": "244b66a142c6e7d6fc6f29bd4af70706edfedf2da94ae31a996b7e68671d66e1",
+      "git_blob": "e1ecb2b4eb71795595cfe45e35406d8b32e371c8",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_collision_constraint.schema.json",
+      "size_bytes": 1682
+    },
+    {
+      "file_sha256": "ff5d43d7e86b2dbf1eadac874c8bc947281a6302b66713ffa37ca7c8023b716e",
+      "git_blob": "21cf6ad4fe0057d36dfe34891cc1ec27476e47f4",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_gfcc_receipt.schema.json",
+      "size_bytes": 1652
+    },
+    {
+      "file_sha256": "27eb92ac3dfd07117e4c598773d64ca0a9106dedbd1096a9ca26e3fef7f54a27",
+      "git_blob": "7cd280eed10bf59302f55146a5e94b0336ca890f",
+      "repository_path": "native_projects/hhs_gfcc_pass152/include/hhs_gfcc_receipt.h",
+      "size_bytes": 165
+    },
+    {
+      "file_sha256": "dc24d8257c2c1135ce664560e1967bf2df4b0e7f5bd3a31637ca6991d2e5495f",
+      "git_blob": "05037127443215341e4c533596cad02aefb6da36",
+      "repository_path": "native_projects/hhs_gfcc_pass152/specs/collision_constraints.json",
+      "size_bytes": 915
+    },
+    {
+      "file_sha256": "236ea53028a3f15917ed01446cff35fb296dc94622eed65168298a599d30a6b1",
+      "git_blob": "92f4f54273d2b27a566b45f2c1c14fad8f9f27d1",
+      "repository_path": "native_projects/hhs_harmonicode_interpreter/artifacts/PASS_076_REPAIR_TEST_RECEIPT.json",
+      "size_bytes": 653
+    },
+    {
+      "file_sha256": "c51aa1ed5554b406b980b64d0e4cb0f10df25ea9a2cdb0726c20796965012c37",
+      "git_blob": "c45c956b1d9ec6f825ddba6812f47dee323fef85",
+      "repository_path": "native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json",
+      "size_bytes": 955
+    },
+    {
+      "file_sha256": "e55f11da9a088c99f29807143ed11677ef6bc5f90487768ab56d37a78efa0254",
+      "git_blob": "a07ec7711b1c29c34bd5de1ffcc2ef4a539408b5",
+      "repository_path": "native_projects/hhs_pass160_validated_transition_runtime/dist/P160_BOUNDED_FINAL_GATE_RECEIPT.json",
+      "size_bytes": 452
+    },
+    {
+      "file_sha256": "a8b1811650d2694566c00be0bf72ff16ff8d2588d51324ae8f825fb938622c3f",
+      "git_blob": "b3c7a70788d7eedd021d9f18c33c3779a01ca2d8",
+      "repository_path": "native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_COMPLETION_RECEIPT.json",
+      "size_bytes": 2569
+    },
+    {
+      "file_sha256": "7ba22f253ecdb08ca018e7705c4b83443fdfa13c1efeedd520c0806ea51d304d",
+      "git_blob": "a2eca7a8737a912c318a3bfc15dbef666d876465",
+      "repository_path": "native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_REFERENCE_REPAIR_VALIDATION_RECEIPT.json",
+      "size_bytes": 1622
+    },
+    {
+      "file_sha256": "b75f824b9c75b431a84afb45f8908ea49b503ef3e69f9df76cd793726e507074",
+      "git_blob": "2d5f9e42846322e162daf8b0abedde2179046ef8",
+      "repository_path": "native_projects/hhs_pass175_virtual_instruction_processor/include/vm81_invariant_kernel.h",
+      "size_bytes": 3875
+    },
+    {
+      "file_sha256": "a41bee4ce5bc52b90a9b0b27dbb81a73e093d6f2ef9e8deea7075d805d819dac",
+      "git_blob": "0f8f4b9a92d3c3267361d530e91ccfe661aef4e4",
+      "repository_path": "native_projects/hhs_pass186_x64_vm81_q144/PASS_186_VALIDATION_RECEIPT.json",
+      "size_bytes": 1591
+    },
+    {
+      "file_sha256": "dfc444c78b7b4fbefbc012b87f17221b416bb361bf49314101ee0f9a1ce02b28",
+      "git_blob": "79a8915337397a06d30bee4452ee273fa2bae105",
+      "repository_path": "native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_VALIDATION_RECEIPT.json",
+      "size_bytes": 1505
+    },
+    {
+      "file_sha256": "88320c2e75a6dcae22fd3e3f8a534defba4cfc8750b9d2aa0e00ad1ab426a6fb",
+      "git_blob": "492d60716896c66cdb507f6e76163d988d1d41e6",
+      "repository_path": "native_projects/hhs_pass188_bott_runtime/evidence/P188_VALIDATION_RECEIPT.json",
+      "size_bytes": 2202
+    },
+    {
+      "file_sha256": "6feb6593e61f40ab6ffb8556a8e74f4f24dff7a8f20e4b90f5ee39b363fae3d6",
+      "git_blob": "2e99a7a11e1adca6168ba10ad51cb6bf9d96b487",
+      "repository_path": "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_2_VALIDATION_RECEIPT.json",
+      "size_bytes": 1601
+    },
+    {
+      "file_sha256": "756c1409cae7e2362924c94857a6d1d5e6b845299256a3e5c49eebfdd5b35bad",
+      "git_blob": "c0ef0202fda59f93581da4cad3f6ec163b7feb0a",
+      "repository_path": "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_3_VALIDATION_RECEIPT.json",
+      "size_bytes": 1994
+    },
+    {
+      "file_sha256": "88f08b693abb9b36fe622669fb370e7a2e577b18bc2c90f27ebf68bda9828c41",
+      "git_blob": "c383e5232d1d16ba2b9f66cbe9a7bda09e432d9d",
+      "repository_path": "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_4_VALIDATION_RECEIPT.json",
+      "size_bytes": 2486
+    },
+    {
+      "file_sha256": "738a3003817d9376563f8f474b9d9bb29ed92c490762314b1c74e9262a0d184d",
+      "git_blob": "23d61fa5cc157fcb44967e33956bbc97d50dba36",
+      "repository_path": "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_VALIDATION_RECEIPT.json",
+      "size_bytes": 2547
+    },
+    {
+      "file_sha256": "ee380bbbb3ff863fdfbd894dc1a3ed21b7b65de7a5f0286b642a2b3e15cb9a08",
+      "git_blob": "bcaca6c1027e4a6324a5dd9fef3c5b22e7348db4",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/RESTART_RECORD_ITERATION3_AUTHORITY_HARDENING.md",
+      "size_bytes": 1608
+    },
+    {
+      "file_sha256": "ce788c1c964bdcaa02cc7a2eeb5c797f714b3ed226de6e942e131f9b61c1d394",
+      "git_blob": "e166e59e479ed86a928ede713bb7127f830c1e66",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_IMPLEMENTATION_RECEIPT.json",
+      "size_bytes": 915
+    },
+    {
+      "file_sha256": "127d0c2c9acb9751258f291d20349811ab268a6230378517cc1e39a39bd5835c",
+      "git_blob": "c6964198170ab4409fbe2c00443838da806bda75",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_2_VALIDATION_RECEIPT.json",
+      "size_bytes": 1147
+    },
+    {
+      "file_sha256": "ef71bf01ed4beb246329228d78c338172bf5bb65c3414f1934b90fc122b8fe2e",
+      "git_blob": "0666165489fe3519d1e02a4010ed1de33d63102e",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_3_AUTHORITY_HARDENING_RECEIPT.json",
+      "size_bytes": 1702
+    },
+    {
+      "file_sha256": "5bacb53ed45895f69bbb74eb76dfc2670564f86c5fdb3914870fc66c024ad52e",
+      "git_blob": "7bd2c160eeddc70ef8eacbb3ec121672b69dccde",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_3_VALIDATION_RECEIPT.json",
+      "size_bytes": 1271
+    },
+    {
+      "file_sha256": "b682c7a06b8f65754979d5c0ab06a7f04eff8d29622da4d53fb463d93341c752",
+      "git_blob": "502addc12183bfd314034c5213c81ca8482826a7",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_4_DISTRIBUTED_AUTHORITY_RECEIPT.json",
+      "size_bytes": 2185
+    },
+    {
+      "file_sha256": "4f1989013b057d758864865ed18e7b607930d716380e96ca5a74d5724331a6de",
+      "git_blob": "4a1303a89bad725c6886684644bf0d73e3bc38ab",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_5_AUTHORITY_CORRECTNESS_RECEIPT.json",
+      "size_bytes": 2580
+    },
+    {
+      "file_sha256": "b012727734dc163912ded9df15bc8ae4c936df416f84950be9fe378e3a366a41",
+      "git_blob": "5f6848e81b365ef8454c8d62e318946c1a255956",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_6_RESOURCE_REGISTRY_RECEIPT.json",
+      "size_bytes": 2931
+    },
+    {
+      "file_sha256": "2c8cdc62018ee7422aeef7bac5b78a940c99da314d75bd26a46ff7aab45c996f",
+      "git_blob": "d89d16e0c2a8fb99ae67ca0317b5ab3b824f3805",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_7_DURABLE_EXECUTION_RECEIPT.json",
+      "size_bytes": 3135
+    },
+    {
+      "file_sha256": "a96f112b8fa25cdd6486efde4a6c0b032ca6b0093c43c3603f33a247bd3b8e11",
+      "git_blob": "3f2a18deb00dca3773b3bb0049efbb06815dd5c8",
+      "repository_path": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_COMPLETION_RECEIPT.json",
+      "size_bytes": 1624
+    },
+    {
+      "file_sha256": "e74323f72eef0762ab9d6e8a192ed641ad5cfa2c6e7c4690979fd8e33d431d83",
+      "git_blob": "7b368572fd707bdf531c9a32a4acd9a0e4efee3e",
+      "repository_path": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_INTEGRATED_COMPLETION_RECEIPT.json",
+      "size_bytes": 2720
+    },
+    {
+      "file_sha256": "278f630eca15745fd06dfcf948a8d6a20044bf69448c440e63bcf09dc443b2a3",
+      "git_blob": "82dce5a6cf0f778cbc045d7b0e0c0d1b97d79dcf",
+      "repository_path": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_PROOF_RECEIPTS.json",
+      "size_bytes": 69482
+    },
+    {
+      "file_sha256": "980c12dc09889e049ff0dccd81eaeb7fda6dfc64175750ffed53261c5c863ec2",
+      "git_blob": "c96f981e869e2ab3c360ca303ed22e78fc843035",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_080_CONSTRAINT_RELATION_GRAPH.json",
+      "size_bytes": 21430
+    },
+    {
+      "file_sha256": "f4f40d29b520c29c029c4d16cd2ec4ec84be3a23f88959947db057e9137b3da6",
+      "git_blob": "81133f7429d9b73a3be512ea5e57245745dd48fa",
+      "repository_path": "receipts/pass148/HHS_PASS_148_CLOSURE_RECEIPT.json",
+      "size_bytes": 1192
+    },
+    {
+      "file_sha256": "22d4e671feceae10792d5040fafe48d6902b2687383ed314b3a31e49e9be8229",
+      "git_blob": "8e0f7dd9c6e6a92a5e2fde363ead11468aa2d6fb",
+      "repository_path": "receipts/pass150/PASS_150_RUNTIME_EXECUTION_RECEIPT.json",
+      "size_bytes": 994
+    },
+    {
+      "file_sha256": "15c8f84fa7800b0a08daa49f561dd8c28e9714671e7394c3b09685a5cb81561f",
+      "git_blob": "37016ebe205aaf596f0f39474ea79355b9cc5fad",
+      "repository_path": "receipts/pass152/final/P152_COMMIT_RECEIPT.json",
+      "size_bytes": 2020
+    },
+    {
+      "file_sha256": "c6d61c110101e0e129b780d26d3931bc72d92ea9622b718721c92a1c3e241a07",
+      "git_blob": "478634ab27bd122a76e56c0987406959a3a14248",
+      "repository_path": "receipts/pass152/final/P152_CYCLE_OPEN.json",
+      "size_bytes": 786
+    },
+    {
+      "file_sha256": "bd1cd3d2153031732f2f9f45e2de4289a7af786688ac289da6741699713092a9",
+      "git_blob": "4e816074c1c2e687a376b8d82b3cf5596b04b8ce",
+      "repository_path": "receipts/pass152/final/P152_DEPENDENCY_GRAPH.json",
+      "size_bytes": 2718
+    },
+    {
+      "file_sha256": "d61ca277b8a3e26a78b5afa771b4a83afd73f8ab7ef2d226c7d2cca88b53f4a7",
+      "git_blob": "7ac9d782cbaddf9034e57bd09b5bde811928bb98",
+      "repository_path": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+      "size_bytes": 8837
+    },
+    {
+      "file_sha256": "0dd43ad0577723776b01dec109dae9a03bcd89eb00c6a7927da0ff872750d3ae",
+      "git_blob": "fabebf5e4f3b4553490aadf9fcd0891d78ee9ea0",
+      "repository_path": "receipts/pass152/final/P152_GLOBAL_CLOSURE_PROOF.json",
+      "size_bytes": 3166
+    },
+    {
+      "file_sha256": "c9734ad8a353d52f3f5626100e88aee0f5523860e9ccb235c4fb0085d8f42496",
+      "git_blob": "5b8185a0a6c80be11e27220a177fd661c3470f46",
+      "repository_path": "receipts/pass152/final/P152_NEGATIVE_TEST_REPORT.json",
+      "size_bytes": 4544
+    },
+    {
+      "file_sha256": "5e64f803db4e39afdfc88d06659b6c08ed873148d8070ebdd9dbc5876b38da47",
+      "git_blob": "ad671b1da04a99d46b5d11e55933d20a522001de",
+      "repository_path": "receipts/pass152/final/P152_REPLAY_RECEIPT.json",
+      "size_bytes": 1595
+    },
+    {
+      "file_sha256": "e0f4f9a46df6c4516cf84916397ef2ecb0eb163753d9238ffa3edb8235e1908f",
+      "git_blob": "512bc92982250dd08466f1bc5b2168cab5278534",
+      "repository_path": "receipts/pass152/final/P152_RESOURCE_ALLOCATION.json",
+      "size_bytes": 930
+    },
+    {
+      "file_sha256": "90603bc6e9a363692467eb6d575211e297b0c8b463f1d10560d3b60ffbe460cd",
+      "git_blob": "eea774deab2133d7adba20b61890a478a1bd9f10",
+      "repository_path": "receipts/pass152/final/runtime_data/hhs_filesystem_ledger.json",
+      "size_bytes": 1746
+    },
+    {
+      "file_sha256": "2f558964d57064bd66252e35d10e4db73f090eb75eaf41857d939dab7a883038",
+      "git_blob": "767d7c00b75914d59b6889342de9753b08364bd2",
+      "repository_path": "receipts/pass152/final/runtime_data/runtime/hhs_unified_hash72_ledger.json",
+      "size_bytes": 3222
+    },
+    {
+      "file_sha256": "5286239f0d7a14b31a99c5b944f540e6b288972001a6f8705b43625de3115b25",
+      "git_blob": "379508a2322f2cd4e339ce2e14b0b9b1f80de305",
+      "repository_path": "release_artifacts/pass132/PASS_132_AB_COMPARISON_RECEIPT.json",
+      "size_bytes": 21097
+    },
+    {
+      "file_sha256": "d090f98683d1e49119510b1bfed8ea1f51508afc0ab855a0c30b321da20578bb",
+      "git_blob": "af4b0e466c5a9a2b1b3a910cc9c71ccc7e2d1dbe",
+      "repository_path": "release_artifacts/pass132/PASS_132_REPLAY_RECEIPT.json",
+      "size_bytes": 221207
+    },
+    {
+      "file_sha256": "6562085c09281d2b11bd6b29ae617f6acfccdbe89242f1ab9e066c80193f7171",
+      "git_blob": "cdce28ce0919f63e84f5e43afca73df3feba7620",
+      "repository_path": "release_artifacts/pass133/PASS_133_KEY_GENERATOR_REPLAY_RECEIPT.json",
+      "size_bytes": 265
+    },
+    {
+      "file_sha256": "c8ada4966eb1aad0ec1fe1edf452a69985294da545461e3c41b3889117ecc7a0",
+      "git_blob": "705ef200c3e5930ea6cef9facd00586a7e9b09b0",
+      "repository_path": "release_artifacts/pass134/PASS_134_IN_CHECKPOINT_CHAIN_RECONSTRUCTION_RECEIPT.json",
+      "size_bytes": 1031
+    },
+    {
+      "file_sha256": "d4636d098f0ddd0d0642cdc936bd1c20a08f4c01cc3ff6206fa882b563eee3da",
+      "git_blob": "21ff3252f39d3809bd3a29d2e31a382c8bb4d53b",
+      "repository_path": "release_artifacts/pass134/PASS_134_SELF_HOSTED_RECOVERY_RECEIPT.json",
+      "size_bytes": 30225
+    },
+    {
+      "file_sha256": "157fdcb6368e868d402f48bb650c775efd5e1e9aec0879c8fd78fcd1614d8acd",
+      "git_blob": "428153f187a44ea464cfff743145f51b13e53ce8",
+      "repository_path": "release_artifacts/pass135_gfe_extension/PASS_135_GFE_LOG_CONSTRAINT_EXECUTION_REPORT.json",
+      "size_bytes": 8552
+    },
+    {
+      "file_sha256": "c395b949c039f38cd21ec0336a2feb2a0625f00faa23fac11c685f5db3e935ed",
+      "git_blob": "e937b52d9adeec6505c554be6c29bb40528a27e1",
+      "repository_path": "release_artifacts/pass145/android/APK_BUILD_RECEIPT.json",
+      "size_bytes": 135
+    },
+    {
+      "file_sha256": "c395b949c039f38cd21ec0336a2feb2a0625f00faa23fac11c685f5db3e935ed",
+      "git_blob": "e937b52d9adeec6505c554be6c29bb40528a27e1",
+      "repository_path": "release_artifacts/pass145/receipts/APK_BUILD_RECEIPT.json",
+      "size_bytes": 135
+    },
+    {
+      "file_sha256": "caaea4d8a52058a8b83d15872c65c3d1127096f1d01cdde70d13be696c51a975",
+      "git_blob": "7dcb2d7ad6b8b10340317849461f6d964bf3ce20",
+      "repository_path": "release_artifacts/pass145/receipts/APK_INSTALL_RECEIPT.json",
+      "size_bytes": 310
+    },
+    {
+      "file_sha256": "73dd869c07e57b9e16e5cb93ac977e59a1f7bb6974a601b104cf9e958ed0bda6",
+      "git_blob": "d9c59b4d904cfb0bdbd8390f5f0f010d323547c4",
+      "repository_path": "release_artifacts/pass145/receipts/BACKUP_RECEIPT.json",
+      "size_bytes": 924
+    },
+    {
+      "file_sha256": "12e7a247c1faaaded9ff94d74adcf76ad9b52c4f1b452fa2988a77e443388142",
+      "git_blob": "44f68920f9edb17c4e4fe38e546e7d31ba2390d2",
+      "repository_path": "release_artifacts/pass145/receipts/CLI_COMMAND_RECEIPT.json",
+      "size_bytes": 350
+    },
+    {
+      "file_sha256": "7cb063e7aa80449dd3d0296e42c63362d4924cacee7237953c132739b31f5523",
+      "git_blob": "584e73099b72dd94f24d513930c0a577f65de76b",
+      "repository_path": "release_artifacts/pass145/receipts/CONTINUATION_RECEIPT.json",
+      "size_bytes": 362
+    },
+    {
+      "file_sha256": "9bb3f3d0bfadc3d8361896e3f1853e3ce511003afec3a1fe8da032f14bc76ffa",
+      "git_blob": "b6e0639d9c277497937ddcc31f595bbcc917fe72",
+      "repository_path": "release_artifacts/pass145/receipts/CONTRADICTION_RECEIPT.json",
+      "size_bytes": 840
+    },
+    {
+      "file_sha256": "940dcc3ac6bc9cac76201c6292e77db65545cfc994fd42fa27ce66e06f3f8360",
+      "git_blob": "d113f672c4b640ffed2a3832022a54aca0ff317f",
+      "repository_path": "release_artifacts/pass145/receipts/DATABASE_INTEGRITY_RECEIPT.json",
+      "size_bytes": 504
+    },
+    {
+      "file_sha256": "d2ba9de30cea1e60d3b627b5ca604af5966a12e05c59bfde561cfadda555f11a",
+      "git_blob": "9bc97cfe0e0f838731403e50dd7d732cb8757774",
+      "repository_path": "release_artifacts/pass145/receipts/DOCUMENT_INGESTION_RECEIPT.json",
+      "size_bytes": 205
+    },
+    {
+      "file_sha256": "5d53aa4f42ddb3ff213a5a5948e990b2b579009752985e61a030d1834dcb4ec9",
+      "git_blob": "12e020ee85d806b34bb0afaedff9466a16b2b4d5",
+      "repository_path": "release_artifacts/pass145/receipts/HTML_PARSE_RECEIPT.json",
+      "size_bytes": 343
+    },
+    {
+      "file_sha256": "966569046091d7c157ede6c6280b8caaf02c7090ba96170e1da04cdc67f7eb5b",
+      "git_blob": "58724f19bbfca700d879a83f79e4fc5fb0940ba5",
+      "repository_path": "release_artifacts/pass145/receipts/JAVASCRIPT_ANALYSIS_RECEIPT.json",
+      "size_bytes": 428
+    },
+    {
+      "file_sha256": "23992e21548cfeba3ba0121ad0333d625e95175d0152b978a5b0dbbb4b4c42aa",
+      "git_blob": "48e6c56ff6213f42749d2359e97f33d65299bf65",
+      "repository_path": "release_artifacts/pass145/receipts/KNOWLEDGE_TRANSACTION_RECEIPT.json",
+      "size_bytes": 839
+    },
+    {
+      "file_sha256": "2e99b82a4e5c0b4c894b79b67f4a8d0a821ab342d7fc68922dd1148cc1cf8566",
+      "git_blob": "62cf99f630c160d5320f159627504735eac09e08",
+      "repository_path": "release_artifacts/pass145/receipts/LVM_EXECUTION_RECEIPT.json",
+      "size_bytes": 2963
+    },
+    {
+      "file_sha256": "ec223cd4d784198bb688062e16c8788d27fb7db16b7f82faaf55669ae87d03ae",
+      "git_blob": "3633571a6172647adbb1c0028ff605650126627b",
+      "repository_path": "release_artifacts/pass145/receipts/LVM_REPLAY_RECEIPT.json",
+      "size_bytes": 354
+    },
+    {
+      "file_sha256": "10e2d7702c8c1a47d003061377f52ef494f6d86623d8788c8625fa421c8d4ea4",
+      "git_blob": "8e2ff72b466b819279e181bf40a59cc9e2ffba6f",
+      "repository_path": "release_artifacts/pass145/receipts/PASS_145_CLOSURE_RECEIPT.json",
+      "size_bytes": 1629
+    },
+    {
+      "file_sha256": "2712d9779d34dd747f2bce244de7211867cb8d10790a6713b139ee851f94e9d8",
+      "git_blob": "9e0e1e5806cc5b85404f57883febd3632a02df19",
+      "repository_path": "release_artifacts/pass145/receipts/PASS_145_PARENT_ADMISSION_RECEIPT.json",
+      "size_bytes": 587
+    },
+    {
+      "file_sha256": "0c8ba76c15596aa0cef96a97907e8ea0a84c696bfa2a868983b5c406c6416684",
+      "git_blob": "cdf3cefedf331df7d02ffad692527e9dba3f4d78",
+      "repository_path": "release_artifacts/pass145/receipts/QUERY_PLAN_RECEIPT.json",
+      "size_bytes": 418
+    },
+    {
+      "file_sha256": "315b719761f7ec7f1aca117349016fff91733f500b147d9f166060d53d3ea22e",
+      "git_blob": "a20b680cf7a19f54558b0b827153cd814a0f25cc",
+      "repository_path": "release_artifacts/pass145/receipts/QUERY_RESULT_RECEIPT.json",
+      "size_bytes": 523
+    },
+    {
+      "file_sha256": "f979962113f015013c69acb7f8cc1e6ed70c84f9f79f1da57d45d6bd4aef7bed",
+      "git_blob": "500d4d2df224540b869bec14f8564353c03a2965",
+      "repository_path": "release_artifacts/pass145/receipts/REPLAY_RECEIPT.json",
+      "size_bytes": 467
+    },
+    {
+      "file_sha256": "fd4134dd2759b7b5bcbcc3019cd598a49a2982825f9a619dff15ff32afe236a7",
+      "git_blob": "12ffc2695f5bf252ff98a142686278f317a2038d",
+      "repository_path": "release_artifacts/pass145/receipts/RESTORE_RECEIPT.json",
+      "size_bytes": 986
+    },
+    {
+      "file_sha256": "b3d65db7f42f2b2e4db277457002446b8f1fd36c70a9d9497de6b7c569b2ccd7",
+      "git_blob": "6ea21a8a6847a2b045033749bfa46c6a683e4990",
+      "repository_path": "release_artifacts/pass145/receipts/RUNTIME_BINDING_RECEIPT.json",
+      "size_bytes": 575
+    },
+    {
+      "file_sha256": "282b3b54f64f370b3b5bdba2cfe1969bcd159cb1cfda64e9d7dfb94fa8199fef",
+      "git_blob": "e79e71b4abb15019d384d0d2b37d2bd786636e81",
+      "repository_path": "release_artifacts/pass145/receipts/SOURCE_PRESERVATION_RECEIPT.json",
+      "size_bytes": 399
+    },
+    {
+      "file_sha256": "165d530331dd14928607e8336201fa8d3cd51e05453bb42924e92a5fb19d6f5c",
+      "git_blob": "89c97a23d6c7094990f74529cd06329f3283d5db",
+      "repository_path": "release_artifacts/pass145/receipts/VALIDATION_RECEIPT.json",
+      "size_bytes": 823
+    },
+    {
+      "file_sha256": "7990a360ec5a65e46688c61ad77dd4ba2fa0de3c03dcd07fc28756a2a67efd0f",
+      "git_blob": "6daafe70be8c3dc46780181282ec22960de57d4d",
+      "repository_path": "release_artifacts/pass146/receipts/PASS_146_CLOSURE_RECEIPT.json",
+      "size_bytes": 1542
+    },
+    {
+      "file_sha256": "bf867b508420d3c21d3e3f01381fcce0b159c0c2c28f7f9f39e7154eb08dc7bf",
+      "git_blob": "2ef200f1da06ccbaa2b0098b5d71d5964b81f603",
+      "repository_path": "release_artifacts/pass146/receipts/PASS_146_PARENT_ADMISSION_RECEIPT.json",
+      "size_bytes": 561
+    },
+    {
+      "file_sha256": "62db983d782fa76371a2b88bc81b44b4adf628cbbd94993632b41edebf053ee0",
+      "git_blob": "274ac7837c18bcb15562109a039a7df31af043b5",
+      "repository_path": "release_artifacts/pass146/receipts/RECEIVER_BOUNDARY_AUTHORITY_RECEIPT.json",
+      "size_bytes": 804
+    },
+    {
+      "file_sha256": "8782b618f6734b9ee48a6bae8c641dd66f3b79d87cb53062973da6ef21f7866c",
+      "git_blob": "8f2e4cd8e5f14ef31f4042c4200f352e3aa471ad",
+      "repository_path": "release_artifacts/pass146/receipts/RECEIVER_BOUNDARY_CLOSURE_RECEIPT.json",
+      "size_bytes": 807
+    },
+    {
+      "file_sha256": "98a190521e9448ffacd12e719adb038509523bec66336baf49b16fda2fc52efe",
+      "git_blob": "e1a915b501ed2e8a2b8887f543cfbc42066b4b16",
+      "repository_path": "release_artifacts/pass146/receipts/RECEIVER_BOUNDARY_CONSTRUCTION_RECEIPT.json",
+      "size_bytes": 816
+    },
+    {
+      "file_sha256": "f54312e9bb8958affdf5af9e108af264fedf2b915ddf9687784ed4a132ea164f",
+      "git_blob": "b398e4d4913e63ae345fdb8853a898d790782732",
+      "repository_path": "release_artifacts/pass146/receipts/RECEIVER_BOUNDARY_PATH_LIFECYCLE_RECEIPT.json",
+      "size_bytes": 817
+    },
+    {
+      "file_sha256": "efb77b120bdcfc2caf85ed74298491cfaff31cd2d59c31ae81e7616cd28472a9",
+      "git_blob": "defd9e71ac2d009da0701a58ae1c9d8298e461e0",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_BOUNDARY_AUTHORITY_RECEIPT.json",
+      "size_bytes": 804
+    },
+    {
+      "file_sha256": "46496ccb5f56e3835e21f2923a13f25f47facd304bea9f4859be51355b3caf9b",
+      "git_blob": "55b3df724c365a6b8e4fa468391be716e18080d5",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_BOUNDARY_CLOSURE_RECEIPT.json",
+      "size_bytes": 807
+    },
+    {
+      "file_sha256": "07aad419dc8ae7c7cd37d274e54eb46faee7a8dd59cd2f820bdbeefd9b64c5e4",
+      "git_blob": "66474665686ae5ba454f6c87daae319d6f3813ea",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_BOUNDARY_CONSTRUCTION_RECEIPT.json",
+      "size_bytes": 816
+    },
+    {
+      "file_sha256": "059690dcd310ea03fdd03020dcffe407759b9c81b764f96218453bb2c0e5a8be",
+      "git_blob": "46ba31ef60d23b4376f627f808d08d5224fa833f",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_BOUNDARY_PATH_LIFECYCLE_RECEIPT.json",
+      "size_bytes": 817
+    },
+    {
+      "file_sha256": "b97c5f606de8235fa378c2d6e1a1bfe5f6e83524b25834115d3ce01f16eef71d",
+      "git_blob": "2291f834b7158900528a32cd8fb2cd02f16a7859",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_DOCUMENT_INGESTION_RECEIPT.json",
+      "size_bytes": 805
+    },
+    {
+      "file_sha256": "cd311058cda56f9a07b36472f814d51fffba85b188d098c846ebf9aa319abbe6",
+      "git_blob": "e059ae3c38eeaa4d036fc269a03b7a9e40ef458d",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_KNOWLEDGE_TRANSACTION_RECEIPT.json",
+      "size_bytes": 816
+    },
+    {
+      "file_sha256": "22321906dce3c1cf067515b19595a92f9ac03656c87236823ebea4e7f67e64b3",
+      "git_blob": "79ef28e16cc1646e2020d3941d1ff01f50dbb9da",
+      "repository_path": "release_artifacts/pass146/receipts/SENDER_VALIDATION_RECEIPT.json",
+      "size_bytes": 799
+    },
+    {
+      "file_sha256": "e528222f929c96536791c1e6fdd283f056d0939a8ef404431f8e9488e762a561",
+      "git_blob": "1d910cb3600eb6025841559d24692f3ded4e3192",
+      "repository_path": "release_artifacts/pass147/receipts/PASS_147_CLOSURE_RECEIPT.json",
+      "size_bytes": 1488
+    },
+    {
+      "file_sha256": "71aab82ed1ae7afacfb1c7c310e4c59ed415d3aa009aa58c1d1c3a602ebdd919",
+      "git_blob": "263a7b3a32d2c5aa5e3c10384a243485bf65b421",
+      "repository_path": "release_artifacts/pass147/receipts/PASS_147_PARENT_ADMISSION_RECEIPT.json",
+      "size_bytes": 561
+    },
+    {
+      "file_sha256": "d6295bdeafe454c733abe7eaa90994d83f0e805ffc7bc6a4d40175ad5bbba8fa",
+      "git_blob": "2754bca2d3c4308251d0b89dd83a3b63902e7734",
+      "repository_path": "reports/pass152/P152_RECEIPT_INDEX.json",
+      "size_bytes": 3370
+    },
+    {
+      "file_sha256": "be285739894e2dd30859cf7e288c8f0ec2dba8c6856795eb2a286a35b97ec1d0",
+      "git_blob": "c10495e5f3c16c302813f729c9472ade3a7e2fa3",
+      "repository_path": "reports/pass_138/PASS_138_EXECUTION_RECEIPT.json",
+      "size_bytes": 2530
+    },
+    {
+      "file_sha256": "04928cd8da7695bf422d36b7dba260e17f38010d53e4b6ddd6a06d00d07339d6",
+      "git_blob": "3be7bb3743b666e3a2afd0c332b8ab49a996b1d9",
+      "repository_path": "reports/pass_139/PASS_139_EXECUTION_RECEIPT.json",
+      "size_bytes": 13934
+    },
+    {
+      "file_sha256": "0df0df30452ccb6e9ccb1f9729a31c70f0b27b24c56a961c34ec9e9136e7c418",
+      "git_blob": "3f7139445921c1d7718887e749986ba840f70f2f",
+      "repository_path": "reports/pass_140/PASS_140_ENCODING_RECEIPT.json",
+      "size_bytes": 8934
+    },
+    {
+      "file_sha256": "c82495689c813a1333b1a0fc70e8b005bf75aaaf374f5cebc82aaa052376d7c3",
+      "git_blob": "8e8261ae4ca1a00f94725aceba52f70a4da96702",
+      "repository_path": "reports/pass_140/PASS_140_RECOVERY_RECEIPT.json",
+      "size_bytes": 1442
+    },
+    {
+      "file_sha256": "0f47dbd6862ced98caa6d3e83b6fffc18616a1a27cc7537685fcac9ef34bfbce",
+      "git_blob": "781ddf5801dd30c3acd66cb0a3a97be6bb8cb4aa",
+      "repository_path": "reports/pass_141/PASS_141_EXECUTION_RECEIPT.json",
+      "size_bytes": 13593
+    },
+    {
+      "file_sha256": "9355bfac14d2f2307f374e7e3bc8e94b9fcc8eb6583ee8d41f2b5cdffa95c9c1",
+      "git_blob": "80a7836cf6bfcdbc332b82090de328ba781cc100",
+      "repository_path": "reports/pass_142/PASS_142_ENCODING_RECEIPT.json",
+      "size_bytes": 10872
+    },
+    {
+      "file_sha256": "ed4e2d6662d4d9b6ce28ea86901ef023b255e0a2295782c38da1f51cc278a4ba",
+      "git_blob": "13009f5368d89084e4bb9563232638f0392e5bcb",
+      "repository_path": "reports/pass_142/PASS_142_INDEX_QUERY_RECEIPT.json",
+      "size_bytes": 541
+    },
+    {
+      "file_sha256": "bc36c4c16f0a5a9e7fb66d4273e1fef251132110946de04af16dfad3907323b5",
+      "git_blob": "54819f8cf2b456155b5a9a4b4015e091bffc1bf8",
+      "repository_path": "reports/pass_142/PASS_142_RECONSTRUCTION_RECEIPT.json",
+      "size_bytes": 2651
+    },
+    {
+      "file_sha256": "7716333e8bd05834efc8152b21c44986c868314e61aa534c9698ed0d47ba1d88",
+      "git_blob": "29c32687a019e19bac0c9de1e77ac5def028583c",
+      "repository_path": "reports/pass_143/PASS_143_EXECUTION_RECEIPT.json",
+      "size_bytes": 6494
+    },
+    {
+      "file_sha256": "69f3b57415ec1eafc7325d6d37754abe63b11d701b3a3bf121a6c94191f43136",
+      "git_blob": "a3cbbf551ccb2856b2c4f1a6aef7ecbebfebe8eb",
+      "repository_path": "schemas/pass146/authority-grant.schema.json",
+      "size_bytes": 859
+    },
+    {
+      "file_sha256": "cfbc288602fd0c5fd7d8629f6c4d615d10131e5e33f237d8c712ccd94084b526",
+      "git_blob": "86d654d417b63bca30481d52271fe22adde96edc",
+      "repository_path": "whitepapers/pass_144/01_INVARIANT_ALGEBRA_AS_VIRTUAL_HARDWARE.md",
+      "size_bytes": 1306
+    }
+  ],
+  "lo_shu": [
+    [
+      4,
+      9,
+      2
+    ],
+    [
+      3,
+      5,
+      7
+    ],
+    [
+      8,
+      1,
+      6
+    ]
+  ],
+  "mandatory_invariant_examples": [
+    "Delta_e=0",
+    "Psi=0",
+    "Theta15=true",
+    "Omega=true",
+    "xy=1",
+    "A=P^2=B",
+    "AB=P^4",
+    "Delta=P^2-pq",
+    "O!=pi",
+    "a^2=1",
+    "b^2=2",
+    "c^2=3",
+    "d^2=5",
+    "NO_FLOAT_CANONICAL_AUTHORITY"
+  ],
+  "ordered_basis": [
+    "x",
+    "y",
+    "z",
+    "w",
+    "xy",
+    "yx",
+    "zw",
+    "wz"
+  ],
+  "pass": 206,
+  "receipt_archival_order": [
+    "candidate_proposal",
+    "cumulative_python_and_native_validation",
+    "singleton_vm81_kernel_admission",
+    "valid_transformation",
+    "prev_state_receipt_hash72_block",
+    "exact_ordered_216_character_concatenation",
+    "character_addressed_sha256_array",
+    "hash216_vector_index_and_durable_storage",
+    "optional_buffer_cache_reuse"
+  ],
+  "schema": "HHS_PASS_206_ACCUMULATED_CONSTRAINT_INDEX_V1",
+  "security_boundary": {
+    "internal_to_kernel_and_integrated_runtime": true,
+    "methods_include": [
+      "exact_harmonicode_algebra",
+      "higher_dimensional_tensor_validation",
+      "ordered_noncommutative_phase_computation",
+      "high_entropy_validation",
+      "golay_style_toroidal_correction_and_recovery",
+      "closure_and_invariant_enforcement",
+      "mutation_ownership",
+      "rollback_and_last_known_good_recovery",
+      "deterministic_replay"
+    ],
+    "phase_locked_python_security_mesh_required": true,
+    "public_stage_bypass_allowed": false,
+    "public_stage_reordering_allowed": false,
+    "public_stage_selection_allowed": false
+  }
+}

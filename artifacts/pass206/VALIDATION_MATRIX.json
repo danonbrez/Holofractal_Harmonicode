@@ -1,0 +1,45 @@
+{
+  "artifact_sha256": "8a2b25e354ead27a1549bd269362ae30db3d20b2ed5abcdcbd0d1f2596a1fbaa",
+  "checks": [
+    {
+      "name": "contract_index_generated",
+      "status": "PASS"
+    },
+    {
+      "name": "constraint_index_generated",
+      "status": "PASS"
+    },
+    {
+      "count": 10,
+      "name": "core_file_sha256_frozen",
+      "status": "PASS"
+    },
+    {
+      "count": 180,
+      "name": "abi_opcode_schema_index_generated",
+      "status": "PASS"
+    },
+    {
+      "expected": false,
+      "name": "core_files_modified",
+      "status": "PASS"
+    },
+    {
+      "name": "enforcement_implementation_present",
+      "status": "PENDING"
+    },
+    {
+      "name": "dependency_scoped_runtime_validation",
+      "status": "PENDING"
+    },
+    {
+      "name": "final_cumulative_integration_and_replay",
+      "status": "PENDING"
+    }
+  ],
+  "completion_claimed": false,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "schema": "HHS_PASS_206_VALIDATION_MATRIX_V1",
+  "stage": "FREEZE_PRE_ENFORCEMENT"
+}

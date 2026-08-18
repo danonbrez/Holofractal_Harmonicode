@@ -1,0 +1,1094 @@
+{
+  "artifact_sha256": "1ca5b87caff3f87cbfe26fc041c7dc67dcb970e2233238b72a8d0319a867ab93",
+  "entries": [
+    {
+      "file_sha256": "2f7095c4077a15768815c4911aee610bd1478c4c07a31f244cfe853e83dbbae7",
+      "git_blob": "fb50c5a08794f188009291e2b9879c379b696381",
+      "repository_path": "ADAPTER_CAPABILITY_MAP_PASS_050.json",
+      "size_bytes": 8802
+    },
+    {
+      "file_sha256": "2de2b26e7aca0c44290217edf3d30fd80cdff2a08efa71a4732169cd6fd61210",
+      "git_blob": "e212c1f6b19f6cd993ef3aeb8ac724a77204d669",
+      "repository_path": "CAPABILITY_CONTRACT_REGISTRY_PASS_051.json",
+      "size_bytes": 627
+    },
+    {
+      "file_sha256": "8e7ff2c62f6f5eb93cdb071a96cab7499db549260343b9c9c2b43f99c0cc4272",
+      "git_blob": "43b03d6c9205628c470039714f32ae7045da7c79",
+      "repository_path": "CAPABILITY_LEASE_LIFECYCLE_PASS_055.json",
+      "size_bytes": 4495
+    },
+    {
+      "file_sha256": "37c51bad2e5b0837f196c7e5690ba5e240ae7dd32814dcd583cc84ef515cc875",
+      "git_blob": "27a5c25e73e33d77ba0881355aa2727a32fb9265",
+      "repository_path": "CAPABILITY_PROVIDER_INTEGRATION_REPORT_PASS_051.json",
+      "size_bytes": 1589
+    },
+    {
+      "file_sha256": "41da4729a97e7d92e2cc718d6c137067b06b480ba55f222f191cc056f1181042",
+      "git_blob": "bbf9f54120c360fc191aeee4e27627932a809e70",
+      "repository_path": "CAPABILITY_PROVIDER_REGISTRY_PASS_051.json",
+      "size_bytes": 22782
+    },
+    {
+      "file_sha256": "c3f6e2b56adffd5d73566f0abc9216a66cfed1ed375379ca91bebc9b89af681a",
+      "git_blob": "bcb31fac64e45b6dc7a9767197b064f78f643ede",
+      "repository_path": "CONTRACT_SCHEMA_REGISTRY_PASS_030.json",
+      "size_bytes": 80130
+    },
+    {
+      "file_sha256": "03858920e8f75a7c415a6ef6400f0839b9bd45f446c5e9420d5ffb06e2445633",
+      "git_blob": "c4eaf7c74db2d08e35d87f53b73fc5efa6088180",
+      "repository_path": "DELEGATED_CAPABILITY_SUBLEASE_PASS_056.json",
+      "size_bytes": 1193
+    },
+    {
+      "file_sha256": "0ef4d415aa02c22dceb6cd9f69a6203f8271ce19b4f72e7d03d7fdf137eae447",
+      "git_blob": "c7333b61f1bea0ac7666b099603393983010a656",
+      "repository_path": "EXACT_AGENT_ACTIVATION_PROBABILITIES_PASS_067.json",
+      "size_bytes": 23299
+    },
+    {
+      "file_sha256": "6ac1aefe755fb7ef91268c307ac3aa3396c40a6da59e9c71eb0201bb5a80155c",
+      "git_blob": "82e467bfcfc534973956fc470159a4ad527c8a49",
+      "repository_path": "HHS_PASS_148_CAPABILITY_MANIFEST.json",
+      "size_bytes": 28394
+    },
+    {
+      "file_sha256": "3ac7d34a1e41bb9c6b380b3f721f72dfc35ca592f96660f939dc262745d8b106",
+      "git_blob": "770ee6a634325c17c41efc6f89ed51fbd38602f7",
+      "repository_path": "HHS_PASS_148_DERIVATION_SCHEMA.json",
+      "size_bytes": 1399
+    },
+    {
+      "file_sha256": "1ee51fd37adaba57f5155e0aeb04e7cba2b62d52fd93d5f5e1b387f102f213a5",
+      "git_blob": "7f27321702c2813ce07845f9f9caee5229ffd470",
+      "repository_path": "HHS_PASS_148_PROMOTION_SCHEMA.json",
+      "size_bytes": 1233
+    },
+    {
+      "file_sha256": "dd92135fb9e2981719484ea3398d1e03385dd3dc0f7d526236b92dd0025a0a01",
+      "git_blob": "0ddc27a9706c37f8981a6e9e623d53a6fb254d8a",
+      "repository_path": "HHS_PASS_148_PROPOSITION_SCHEMA.json",
+      "size_bytes": 2466
+    },
+    {
+      "file_sha256": "d92ea0ccc6ecad41c572403faea206a029cad5df8da0de5e5326349549b6871a",
+      "git_blob": "56a1286c4a5a68bde54078691124c947fb7055ab",
+      "repository_path": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR.json",
+      "size_bytes": 2562
+    },
+    {
+      "file_sha256": "814eedfdcc5cf1f15d850fe4f4cdef55fa209d096ec9a4826090fe9e285bb44d",
+      "git_blob": "2bc0730ca9467e6881f87c237f3bdb9f117b47c3",
+      "repository_path": "PASS_078_1_NATIVE_ABI_DECLARATION_DISPOSITIONS.json",
+      "size_bytes": 27125
+    },
+    {
+      "file_sha256": "bbb4a27847ed080f7ce5bca38b928f641b85a20ff621c9e5fcdaad850c4f80f9",
+      "git_blob": "3365a2ef9a309da99181bd18652389cd4ebaae47",
+      "repository_path": "PASS_078_NATIVE_CAPABILITY_MANIFEST.json",
+      "size_bytes": 40178
+    },
+    {
+      "file_sha256": "3109daf4f37a3b37a0d39a71e1cdd66473b02119c0f3ed564e1c1ec3d369c35b",
+      "git_blob": "8b92add1304db6fb4a524c67258f561f0145ba80",
+      "repository_path": "PASS_079_NATIVE_OPCODE_REGISTRY.json",
+      "size_bytes": 51479
+    },
+    {
+      "file_sha256": "bb0cbdee8055a20dfe5a7e7aa9705bf87b4beab44e03b5b27187f5bcc135541d",
+      "git_blob": "68c335009b60e9e332b1b81c4bb71b56dc176a5a",
+      "repository_path": "PASS_080_OPCODE_MEMBRANE_CONTRACT_REGISTRY.json",
+      "size_bytes": 84203
+    },
+    {
+      "file_sha256": "2589c1aaaa725bd21504b1cbf76f78100569d0f931cc3eccde18270d6da91a6e",
+      "git_blob": "efb65e994b52d255a078c4a342b452c23bcc130a",
+      "repository_path": "PASS_093_COMPLEXITY_DISTINGUISHABILITY_FRONTIERS.json",
+      "size_bytes": 354
+    },
+    {
+      "file_sha256": "0fb990f625b252e5212cfd90abee9f303643bc50a24614238ccd1e61d710275b",
+      "git_blob": "cc4a52bb02ae330faf8a9a9ab6a1948249ea756f",
+      "repository_path": "PASS_097_CAPABILITY_BOUNDARIES.json",
+      "size_bytes": 239
+    },
+    {
+      "file_sha256": "19b306c29e5158355ac3343be589034748eab1cceaf0c1455ec8b659c647b68e",
+      "git_blob": "fb3d9c93b62f329e3d508dd9b1cb350eaabd1289",
+      "repository_path": "PASS_105_3_REACHABILITY_ORPHAN_CLOSURE_REPORT.json",
+      "size_bytes": 420
+    },
+    {
+      "file_sha256": "7a698f7689bc2831deef7093b0543a81ae56fdbeee02aaab395fd2ed7346f7b9",
+      "git_blob": "46c6897c718719e92455424d317eef6427510c8b",
+      "repository_path": "PASS_106_HASH72_CAPABILITY_TRUTH_ADMISSION.json",
+      "size_bytes": 28294
+    },
+    {
+      "file_sha256": "a44c151674ecca7a0c2c23e9155060814a757f89b11bc23f1b63b4180314f1e2",
+      "git_blob": "bab2847e7e1a3fc2be5d2fb7bff789ae38015ab8",
+      "repository_path": "PLUGIN_CAPABILITY_PLANS_PASS_024.json",
+      "size_bytes": 560394
+    },
+    {
+      "file_sha256": "d150950676464cd508500b7563a58f75444dee3ed6694e45b2ed798e42e8c4d9",
+      "git_blob": "8ef9c69cfb614733b32731d74df94e9ba8900570",
+      "repository_path": "REVOCABLE_CAPABILITY_LEASES_PASS_055.json",
+      "size_bytes": 4532
+    },
+    {
+      "file_sha256": "e1a6a9e8f9c0161dbbf410bc196b49f8a7213e3a9d75e402541c98be13bf1656",
+      "git_blob": "7dc2093a022c9543169a149a1e78f1642d2ed3a1",
+      "repository_path": "RUNTIME_REACHABILITY_MANIFEST.json",
+      "size_bytes": 8483229
+    },
+    {
+      "file_sha256": "c8608c13d2c6e0c6365f0d7053149ba10c108848b455d892e471058b66d912bd",
+      "git_blob": "907a7d6bd2ac01a191794ddfe1aa92d6cd7a8c32",
+      "repository_path": "UNIVERSAL_CAPABILITY_FABRIC_PASS_051.json",
+      "size_bytes": 53727
+    },
+    {
+      "file_sha256": "226ef4643c6ce736251302549923c1d982ccd7fcc2a72c5bc2c4598d28d6ab62",
+      "git_blob": "47ecf085a394868503169724f6207fc4be647884",
+      "repository_path": "WITNESSED_PROBABILISTIC_ACTIVATIONS_PASS_067.json",
+      "size_bytes": 33585
+    },
+    {
+      "file_sha256": "e2970bc12977c361afda35730267e51186ad9f6b21844fa0c022cad19a1ef167",
+      "git_blob": "866dc10f3f8b48763a236f07c79a5eaf42669625",
+      "repository_path": "WORKSPACE_OBJECT_SCHEMA_REGISTRY_PASS_049.json",
+      "size_bytes": 16626
+    },
+    {
+      "file_sha256": "60fbb54c59e504561e7e85f8289b39d9fda71c770db998165acd6b42149866fa",
+      "git_blob": "7a01f619436a3efd8873b277402b7618fd38a928",
+      "repository_path": "applications/holofractal_harmonizer/schemas/pass161.schemas.json",
+      "size_bytes": 796
+    },
+    {
+      "file_sha256": "c70cf1b8fab1fcfc6ba605b1576f586fe7da519a2b40f540eb7d7ddee6a65fc8",
+      "git_blob": "bef3d70ca6d47cea6fac0726b98381eb57ae697b",
+      "repository_path": "applications/holofractal_harmonizer/tests/gui.reliability.contract.json",
+      "size_bytes": 523
+    },
+    {
+      "file_sha256": "e79e171074be28617d3c4e3c8f7b3c890629be18f10910aa263f22e0475eb4a3",
+      "git_blob": "ea948f1d27959238cd4c50ad8136a45e74fcb3da",
+      "repository_path": "applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py",
+      "size_bytes": 19065
+    },
+    {
+      "file_sha256": "717a50ce66a28044c30b5cc6c68ed2adb1f1fc5646042736c26e78754cc2d7e3",
+      "git_blob": "cda132e4ab73e2cb2e828c76d89b6282be2dff17",
+      "repository_path": "contracts/nfv/HHS_NFV_CONVOLUTION_CHAMBER_SCHEMA.json",
+      "size_bytes": 790
+    },
+    {
+      "file_sha256": "498abc16a477216e5055e66bad27d975c28d79b0cf59079e03a8b58c66bab970",
+      "git_blob": "07ad94b7463cdd5f1f59327bcdc07d332a50ed63",
+      "repository_path": "contracts/nfv/HHS_NFV_HARMONIC_FIELD_SCHEMA.json",
+      "size_bytes": 711
+    },
+    {
+      "file_sha256": "9cde5f66653b5856e796beb5829bf1f8b852c2323fa22b0beb37db737af39375",
+      "git_blob": "fb5274e4fe8f5677a5b2a3274adf623782d523a5",
+      "repository_path": "contracts/nfv/HHS_NFV_OBJECT_SCHEMA.json",
+      "size_bytes": 1638
+    },
+    {
+      "file_sha256": "4e01a651288d4863626195d58817c1d6096c318cab45311277acad79686129c1",
+      "git_blob": "3e114c74150d75f408e89b6802c6515a67298e1a",
+      "repository_path": "evidence/pass172_173/implementation_traceability.json",
+      "size_bytes": 6867
+    },
+    {
+      "file_sha256": "9e28c9cdee28228c9b7e2006e97ce45c19d3f3be60daaa59fba45c221626fb56",
+      "git_blob": "3eaf05ba426122bdd0292fc4f0ff65177447d683",
+      "repository_path": "evidence/pass174/P174_LIFECYCLE_ROUTE_REACHABILITY_REPAIR_RECEIPT.json",
+      "size_bytes": 1638
+    },
+    {
+      "file_sha256": "3128b3dac25fc3c00dbfcb1fa1d4261da0e77dfe58a6cc2f759ec6549e1703d4",
+      "git_blob": "c266f15a5887eb74956d9b2f1a738a6b23b46ac9",
+      "repository_path": "evidence/pass174/P174_VISUAL_IDE_RELIABILITY_IMPLEMENTATION_RECEIPT.json",
+      "size_bytes": 3202
+    },
+    {
+      "file_sha256": "df0fe12fa30d57a2ba02de3825eb7baefae16e06fadbefc73126f8242ae0eb50",
+      "git_blob": "daf039186a515211b24e0a31f2cccb5f9b101952",
+      "repository_path": "evidence/pass175/PASS_175_RUNTIME_ABI_FIRST_HYDRATION_BENCHMARK.json",
+      "size_bytes": 3937
+    },
+    {
+      "file_sha256": "a43f0b78456f4303bf4a0928b95417bc4dc0cc9aff101cf13cddbcc0440ed7a4",
+      "git_blob": "b6e5333f48252acb3a1cbbb4edbe45ef800f1184",
+      "repository_path": "evidence/pass176/P176_DEPLOYMENT_USABILITY_RECOVERY_RECEIPT.json",
+      "size_bytes": 1444
+    },
+    {
+      "file_sha256": "6ee384411640da75475bf3c912dcde46adb4a029bd68eb59da6b2ce00405308e",
+      "git_blob": "f9c067842ff03a795d61848c0088608d8c7f2f22",
+      "repository_path": "hhs_backend/api/probability_hydration_routes.py",
+      "size_bytes": 6601
+    },
+    {
+      "file_sha256": "c0b3ceaa483b5e7b661d4dd221c69cdf7091c1f821833bdc5119828b9982f960",
+      "git_blob": "6875508676db9f2284c4392bb02359f7b8843594",
+      "repository_path": "hhs_backend/runtime/hhs_capability_contract_v1.py",
+      "size_bytes": 4198
+    },
+    {
+      "file_sha256": "ad22fb64713217a98d4f12463ab41022d633a3761cd8c1c9c8e7ece9e76568f5",
+      "git_blob": "cfac0b71f07f5392e056b666cb6940c4cb343284",
+      "repository_path": "hhs_backend/runtime/hhs_capability_fallback_plan_v1.py",
+      "size_bytes": 3056
+    },
+    {
+      "file_sha256": "c6d3a22e38f929aa65f259a0c50ccdd5020e95e3a5cc92b1c1f2167031a52c76",
+      "git_blob": "53d950c4a5bb4eb0ed6ff3c0b3b6e7caa067ee75",
+      "repository_path": "hhs_backend/runtime/hhs_capability_lease_issuer_v1.py",
+      "size_bytes": 477
+    },
+    {
+      "file_sha256": "136c8daf4a2945ee370b369c2ccaa80ea0b90994e44b2589f8da92de0d95d7a2",
+      "git_blob": "cfe0585fd6ade24a8d5e6e090ca28b370dc83bdb",
+      "repository_path": "hhs_backend/runtime/hhs_capability_lease_registry_v1.py",
+      "size_bytes": 483
+    },
+    {
+      "file_sha256": "3af053fa4887a5bd2a917163e001189fdb2a812d165445f39849dd78e3eb98ef",
+      "git_blob": "a3e1b569f7e64129e36b615845f39f0778a49080",
+      "repository_path": "hhs_backend/runtime/hhs_capability_lease_revocation_v1.py",
+      "size_bytes": 489
+    },
+    {
+      "file_sha256": "a22dcbcc0b644fda6b56a672dc7a9b9a501f830d7d564f020792eb0cb9d88be7",
+      "git_blob": "ed498d128eecfd9a9f497a702751de131b02cfb0",
+      "repository_path": "hhs_backend/runtime/hhs_capability_policy_gate_v1.py",
+      "size_bytes": 2598
+    },
+    {
+      "file_sha256": "b1d45cfc639ae22394191da9509a229ba729f76749450f1f3cc86d72bb80eb5d",
+      "git_blob": "f99d466d17a57c87f5cf886deb074471a52435f2",
+      "repository_path": "hhs_backend/runtime/hhs_capability_provider_registry_v1.py",
+      "size_bytes": 7826
+    },
+    {
+      "file_sha256": "20506c2e0c96324cea236c48c3e69438436533de932d45358d9417fb70360e55",
+      "git_blob": "d18ce9870d2695d4a1a62c6f9e7d2530015b6214",
+      "repository_path": "hhs_backend/runtime/hhs_capability_resolution_v1.py",
+      "size_bytes": 5592
+    },
+    {
+      "file_sha256": "b8c89ca79d62b65a33bed3205d8b4ff172effac57bbd676b5b214958cb82c8fd",
+      "git_blob": "c20911e7b9c1ed2b1220b76e6eab226b33853cb5",
+      "repository_path": "hhs_backend/runtime/hhs_delegated_capability_sublease_v1.py",
+      "size_bytes": 519
+    },
+    {
+      "file_sha256": "f29dea29687700fdfde52665346d43415e1958392d31ebca3db15ccd439a0513",
+      "git_blob": "07af67dad93005c5647646a3b5c5ed9ee5886106",
+      "repository_path": "hhs_backend/runtime/hhs_exact_agent_activation_probability_v1.py",
+      "size_bytes": 150
+    },
+    {
+      "file_sha256": "b957318ec022e027888ae3572b4c0b6baa9fe3676b4f23166d308374aae1ba6d",
+      "git_blob": "1692c5cd28a891d85d4bc7615a9310a0da9b466d",
+      "repository_path": "hhs_backend/runtime/hhs_modality_adapter_capability_map_v1.py",
+      "size_bytes": 3847
+    },
+    {
+      "file_sha256": "12523abbebee809d1e9aa8500e10ea28731db2a3209c39a4253d4bdd6925c524",
+      "git_blob": "963ba904e04484a835743295fc935443ec0a0e27",
+      "repository_path": "hhs_backend/runtime/hhs_pass204_native_abi_executor_v1.py",
+      "size_bytes": 5345
+    },
+    {
+      "file_sha256": "f29dea29687700fdfde52665346d43415e1958392d31ebca3db15ccd439a0513",
+      "git_blob": "07af67dad93005c5647646a3b5c5ed9ee5886106",
+      "repository_path": "hhs_backend/runtime/hhs_probabilistic_algorithm_activation_gate_v1.py",
+      "size_bytes": 150
+    },
+    {
+      "file_sha256": "151c934e33f1b8c7c64a3280b847539240d96ae86a354902cfd70b6815968e24",
+      "git_blob": "193996aa448de3aaf4c2f797b47d840d0bc362f2",
+      "repository_path": "hhs_backend/runtime/hhs_revocable_capability_lease_v1.py",
+      "size_bytes": 486
+    },
+    {
+      "file_sha256": "82e65fa3dc614db0706c8da93a8d69b8672a86d4e921d7b715b5f0d0b44710db",
+      "git_blob": "c2f763584b6acfd7b0f3d2b53bfb776bc1ac3fd0",
+      "repository_path": "hhs_backend/runtime/hhs_universal_capability_fabric_v1.py",
+      "size_bytes": 4362
+    },
+    {
+      "file_sha256": "f29dea29687700fdfde52665346d43415e1958392d31ebca3db15ccd439a0513",
+      "git_blob": "07af67dad93005c5647646a3b5c5ed9ee5886106",
+      "repository_path": "hhs_backend/runtime/hhs_witnessed_probability_draw_v1.py",
+      "size_bytes": 150
+    },
+    {
+      "file_sha256": "6cc9b5219c8801340099d72fc5d6a224e4cdb5c67ec912f492c55bd03a7b3ab1",
+      "git_blob": "71ebdc98c78f3175a71d89614a1619e1807c7034",
+      "repository_path": "hhs_backend/runtime/runtime_event_schema.py",
+      "size_bytes": 16884
+    },
+    {
+      "file_sha256": "6fab341f5f27fe5e741b04871cf3f8a79e426873fc890a460b55533b7136c1bc",
+      "git_blob": "fb5a203e0d7b54512367fdb7552e707357d57efa",
+      "repository_path": "hhs_installer/schema.py",
+      "size_bytes": 9103
+    },
+    {
+      "file_sha256": "10496cc45eb50eccc70e45df845984295c1565a4f56d8844922fcc4b59f2f0a5",
+      "git_blob": "6effb98330a78036460d50d5e18833710346bffd",
+      "repository_path": "hhs_python/runtime/hhs_event_schema.py",
+      "size_bytes": 13250
+    },
+    {
+      "file_sha256": "d3459b767724d8596a434e5684ba0abbd2551656485335d08e825850947e42dc",
+      "git_blob": "631697361b8c307564464f641c0888649cdfda52",
+      "repository_path": "hhs_python/runtime/hhs_runtime_observability_manifold.py",
+      "size_bytes": 19330
+    },
+    {
+      "file_sha256": "4da093cbf0f180ea98c5fdef5ffff04997e3b8df3b1e00c3aef247c0eb97bca9",
+      "git_blob": "12c0eda0cf51c2fb07fe8689458433fceea88651",
+      "repository_path": "hhs_python/runtime/hhs_semantic_readability_oracle.py",
+      "size_bytes": 17592
+    },
+    {
+      "file_sha256": "196e190ba5ca472d8929418cbe743ddca5393e33d8ab56a9d267e81f337f5e44",
+      "git_blob": "f6cf389d4e2aea0835477557d7684f40ff159a5f",
+      "repository_path": "hhs_runtime/c/hhs_runtime_abi.h",
+      "size_bytes": 14598
+    },
+    {
+      "file_sha256": "c73da56fee2133d92863350190f30a32ebf21deb941b9bb4db1a75afbe267d15",
+      "git_blob": "d04befe55cc8dc6502c3b9869de3c26a498f8fee",
+      "repository_path": "hhs_runtime/hhs_contract_schema_registry_v1.py",
+      "size_bytes": 28751
+    },
+    {
+      "file_sha256": "73848403b702e3fb89a214ded75ae1d2d3da99f37b3ac963a606b42ac9366458",
+      "git_blob": "0f0de5acddebb760b13edbc8704a2a46e14d7767",
+      "repository_path": "hhs_runtime/hhs_pass105_3_reachability_orphan_closure_v1.py",
+      "size_bytes": 927
+    },
+    {
+      "file_sha256": "57567809272242207438d286daf1b406c436fdf8adc05c467592e7ebdbc0aa2d",
+      "git_blob": "2dd6d4f059f6940828811fa8b7286297b8a15978",
+      "repository_path": "hhs_runtime/hhs_pass106_hash72_capability_truth_v1.py",
+      "size_bytes": 22613
+    },
+    {
+      "file_sha256": "39aa67f9cdbea013cd226c8a40ec3b6845d6a7d8816552cb908caf96c5909475",
+      "git_blob": "0ab67a3fb67f97cb0c3981cdc36c663300740fae",
+      "repository_path": "hhs_runtime/hhs_phase_stabilization_feedback_loop_v1.py",
+      "size_bytes": 15677
+    },
+    {
+      "file_sha256": "9a705932709196cf67ec8f184985f437db4867513391ae4d1bc184ef63f17b05",
+      "git_blob": "de48a06ec2aca625449a34fd718c32b89a504e41",
+      "repository_path": "hhs_runtime/hhs_plugin_capability_planner_v1.py",
+      "size_bytes": 18155
+    },
+    {
+      "file_sha256": "10cb9e2f1409db198c1492fe2876854cacd11d94d1a865baf928138812becb94",
+      "git_blob": "47ba50771a8230f5f0251ff38a1d284421edf13b",
+      "repository_path": "hhs_runtime/hhs_runtime_reachability_audit_v1.py",
+      "size_bytes": 26232
+    },
+    {
+      "file_sha256": "e17b1138e0e620394ba49294652417ef3a7c32a40f2bcb1b8981453104b6918c",
+      "git_blob": "912ff6acf7edbf36c65529b9aaad7aaa276bc115",
+      "repository_path": "hhs_runtime/pass165/durability.py",
+      "size_bytes": 8568
+    },
+    {
+      "file_sha256": "9aed804871cc4b48c416a1e1e7238d7ebd79a7550b6150084f1c19a23060e167",
+      "git_blob": "c5c09fc145a2e40f7ba477f93209f9b43138fd6a",
+      "repository_path": "hhs_runtime/runtime_event_schema.py",
+      "size_bytes": 9540
+    },
+    {
+      "file_sha256": "6e866566c22df6d3d5b2ef96faccbeb43186c32db1f6715a19c40186137b0cc1",
+      "git_blob": "7c70adbd1c3733551ab9e4a188549ba4cefe9834",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_ARTIFACT_LINEAGE_CERTIFICATE_V1.schema.json",
+      "size_bytes": 1430
+    },
+    {
+      "file_sha256": "04f59aa932991506e580af9560a99fa41d5163dd69c49c353109a1c260f086a1",
+      "git_blob": "7af49f5b959430847be5a8da5c8b90f4cb90d13f",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_COMPILER_TARGET_CONTRACT_V1.schema.json",
+      "size_bytes": 2956
+    },
+    {
+      "file_sha256": "a20fe60cc522e06f4809be3688fdc5696354c6c22ac7dab9488d5c0df80bad12",
+      "git_blob": "48587117753429613566cb6c3814f84e23301d12",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_FOREIGN_NUMERIC_BOUNDARY_V1.schema.json",
+      "size_bytes": 722
+    },
+    {
+      "file_sha256": "626a49d3162800d09f5a15d948f2e3be86051477ac3e9d905bdd254530f26d0b",
+      "git_blob": "75431c66ce70192e0c24cddcc7b8a41bc13221d4",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1.schema.json",
+      "size_bytes": 1239
+    },
+    {
+      "file_sha256": "244b66a142c6e7d6fc6f29bd4af70706edfedf2da94ae31a996b7e68671d66e1",
+      "git_blob": "e1ecb2b4eb71795595cfe45e35406d8b32e371c8",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_collision_constraint.schema.json",
+      "size_bytes": 1682
+    },
+    {
+      "file_sha256": "89768334f1c52ab2db3c471d5c1bde8daae4316ce7c006a6bec0caa19ec234b1",
+      "git_blob": "815e2003d34bd21e285622755edbc729d949ddd1",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_delta369.schema.json",
+      "size_bytes": 778
+    },
+    {
+      "file_sha256": "9cc56d77845f769c59692acf2a3c4c3fe43362742b0e714d99bbf457f675c641",
+      "git_blob": "ae526f3aaed3a0d3e3c0d53370cf0e921a25f1cd",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_gfcc.schema.json",
+      "size_bytes": 3396
+    },
+    {
+      "file_sha256": "ff5d43d7e86b2dbf1eadac874c8bc947281a6302b66713ffa37ca7c8023b716e",
+      "git_blob": "21cf6ad4fe0057d36dfe34891cc1ec27476e47f4",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_gfcc_receipt.schema.json",
+      "size_bytes": 1652
+    },
+    {
+      "file_sha256": "7b2e3324770624a2b029df9776e5c78575f4634e528e377b7a1b1af73815825a",
+      "git_blob": "abb210e33ce744ca53177344e1f9bf448a4cc772",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_hash216_index.schema.json",
+      "size_bytes": 1016
+    },
+    {
+      "file_sha256": "b981ed311ac73e1a8068f337750d117da7e07a8c27efc02773da4a34b0a9138b",
+      "git_blob": "da50fdbaf36b277b2828b25ace825fdca10a651d",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_hash72_projection.schema.json",
+      "size_bytes": 975
+    },
+    {
+      "file_sha256": "75535fde050dc863d8b1f52c4f7bf620f2c3c20a5b7d132f4606d044909709a5",
+      "git_blob": "bf2927f12eb2317da7594a2c7757605b45ac324c",
+      "repository_path": "native_projects/hhs_gfcc_pass152/contracts/hhs_vm81_fractal.schema.json",
+      "size_bytes": 2035
+    },
+    {
+      "file_sha256": "3b47d49b9e196fa04f45b3f7ccb9edc421500e0feb4c4e407a73b3d19df75fe7",
+      "git_blob": "1a3455277c6eae5327e7aef49a2cc59e2c445281",
+      "repository_path": "native_projects/hhs_harmonicode_language/artifacts/PASS_075_TEST_CAPABILITY_CATALOG.json",
+      "size_bytes": 1512
+    },
+    {
+      "file_sha256": "7f19413c12b52e90f5dbb62a8c4e36ce230d6c0d604057f58d17468737ad1c45",
+      "git_blob": "7df3100ce9826b416dbe46d4a059a034c69cc783",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/api/hash216_projection_scheduler.py",
+      "size_bytes": 29070
+    },
+    {
+      "file_sha256": "d1718d959023df771ab6e5b9bfa6ed85a4730c22808c2779d385136031c88c66",
+      "git_blob": "c55ef4dc56471a1837259345de7241d49d568db8",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/api/pass158_gui_projection_runtime.py",
+      "size_bytes": 10464
+    },
+    {
+      "file_sha256": "748fbe6a9844f8ffde0b8142c27e0284805c520436361f400cab3135d67cb098",
+      "git_blob": "191da2f2c2b4751d043ca3e82eee057fb00b686b",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/api/pass158_service.py",
+      "size_bytes": 6651
+    },
+    {
+      "file_sha256": "69cf6572c3567b8605c527ac5f97157b8a2cce6b083f1ac81770ca9e7173ddc0",
+      "git_blob": "4b3301a7e5962d9e49bf51d5dc827a3c1f6587f2",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/api/pass158_service_core.py",
+      "size_bytes": 23560
+    },
+    {
+      "file_sha256": "bfe3e2d61cb62b997fcd09c48d258557b973c49d6f56aba740f0c5881f41f1ae",
+      "git_blob": "c21c488952fad35e5a76b261a4f494af549c2e1a",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/bindings/cpp/hhs158.hpp",
+      "size_bytes": 2881
+    },
+    {
+      "file_sha256": "a72abc693c49d4d438a6e79e6263a1c615f10f16c1467387caa26e9fb0e701e3",
+      "git_blob": "5f4c5f9a40c8eeb191e3de17ff2bba3a8630b2e2",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/bindings/python/hhs_pass158.py",
+      "size_bytes": 359
+    },
+    {
+      "file_sha256": "8f6ea104e2e399f32d7423e7399c2397d555e1dd2ea7e64386cb71e03e79b703",
+      "git_blob": "06644843acdde791fb5d92a37b8a9395b9e1b89f",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/bindings/python/hhs_pass158_core.py",
+      "size_bytes": 27054
+    },
+    {
+      "file_sha256": "2680d48045895c095d533c67e4a699440c66fcf659cb9737c5abcb0386cf1c5d",
+      "git_blob": "90676b3a528b040ce05a2ce5181e1bf21660a7be",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/bindings/wasm/native_receipt_bridge.py",
+      "size_bytes": 2351
+    },
+    {
+      "file_sha256": "a7dfa9467f2c367040c34c87bd379fa7ec5f1c3019ddc6ea1a76dcdafd0f11bc",
+      "git_blob": "1dd9ee289284e7caa0aab8ff29d711e45ddc44e4",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/examples/pass158/game_engine_integration.py",
+      "size_bytes": 1396
+    },
+    {
+      "file_sha256": "782727a5d11d6dffba01df074cfd2f9d0642564b6f7f1e9ff10758c431397334",
+      "git_blob": "44cbff5cca232d5194241b1f8bbc2a40b974cde5",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/examples/pass158/python_symbolic_constraint.py",
+      "size_bytes": 630
+    },
+    {
+      "file_sha256": "a44e22fb77b388da082dfe93c6299da20f7bdd585656f2cf4bbc97136ac523bd",
+      "git_blob": "7a0af80dce76830bc2694c6ed50bc59d574b4a95",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/examples/pass158/scientific_calculator_bridge.py",
+      "size_bytes": 1045
+    },
+    {
+      "file_sha256": "62a611be6882379eccd2773a754e2868292d24b47abe0e30b1e37cd149868bd9",
+      "git_blob": "8038dc1ab652e78eb0efc58df6a648019ed464e2",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/include/hhs_pass158_api.h",
+      "size_bytes": 6454
+    },
+    {
+      "file_sha256": "c8abc9c8de71a5f7ee03774945c3e1af5bcf1bf45c4ec15e54d91966cfca776e",
+      "git_blob": "74907dc7046aa775425c09576caf092e2cf3a397",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/include/hhs_pass158_opcodes.h",
+      "size_bytes": 2257
+    },
+    {
+      "file_sha256": "1a4ce8c63213c82502124945077dc42f3abf26224e11176c5fe2d9d67b2b3b76",
+      "git_blob": "312af89c95a8322632db19c9d97ca1f2e88c1d0a",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/include/hhs_pass158_status.h",
+      "size_bytes": 3404
+    },
+    {
+      "file_sha256": "c7dad45eb7fc36837c29b4d6a80827eae8a096075b9b1190d6973df8a08f652d",
+      "git_blob": "bb64df6264c0eb5ef341509c78514b4dbd91717d",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/include/hhs_pass158_types.h",
+      "size_bytes": 9226
+    },
+    {
+      "file_sha256": "088d9c62e882a2f3f902fc301b0677300b0cc983e7f36debade4a49ee498a341",
+      "git_blob": "82c81c0693bde6c599914e9a71a1c24000641914",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/manifests/pass158/application_manifest.json",
+      "size_bytes": 804
+    },
+    {
+      "file_sha256": "d5e9e258e9247e528c08072009446a8caac0da2b03b83fde6a88e14964aaa63d",
+      "git_blob": "8ae753bc857e178260b5c5315a9a6a7137b7aa6c",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/schemas/pass158/nft_definition.schema.json",
+      "size_bytes": 1489
+    },
+    {
+      "file_sha256": "1201cedcd13e9b19e29835d6ddc27df7b40df4f0a4aa1a6143f87ac28546e27e",
+      "git_blob": "eeff86528261d0169eae1cd7adf320c925413225",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/src/hhs_pass158_internal.h",
+      "size_bytes": 7135
+    },
+    {
+      "file_sha256": "86f26115e1605b6ccbaf3578be919b79de8ad38580a4b2a396cea7012bce72e5",
+      "git_blob": "e17f7d6f79356e2b01b597f61fdc410a427188ee",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tests/test_hash216_projection_scheduler.py",
+      "size_bytes": 10471
+    },
+    {
+      "file_sha256": "edd9b01488c8156aebb1e160c9f54e5e66cad5015d0e0b30b3591f374f905cb3",
+      "git_blob": "b2087f5a1c48e31c573f57969ee3ab2999918f6c",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tests/test_pass158_gui_projection_runtime.py",
+      "size_bytes": 4145
+    },
+    {
+      "file_sha256": "494efbcf4fc67ddcd0d0d2f537fb178f431a5a4dae799d8d29c87de517c95e37",
+      "git_blob": "0e2dc8c8ccae750a762813d05d9e12d83583098d",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tests/test_pass158_python.py",
+      "size_bytes": 3751
+    },
+    {
+      "file_sha256": "07593358fdfa55424bfe50aa6cc5d5c6e5019fc8710d61852becddf2f8788385",
+      "git_blob": "43dd01ac3ac69cd0ef5a95dc9bbab4ae96e782b1",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tests/test_pass158_service.py",
+      "size_bytes": 7940
+    },
+    {
+      "file_sha256": "8016e85443d2d8a64adfc34a781319e95b992f5ea0be7100071010622d965c90",
+      "git_blob": "3a3a2096ec86474c96e3c24ee783308fae6c33e7",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tools/generate_evidence.py",
+      "size_bytes": 10320
+    },
+    {
+      "file_sha256": "fa0230265e2c3b36a22d33d9896ce7b6ca87d3b109ff48da8276c4d8b4e5a55d",
+      "git_blob": "51c7a35dcff3cd24a660a059573c4042709312ac",
+      "repository_path": "native_projects/hhs_pass158_llabi_nftc_api/tools/package_release.py",
+      "size_bytes": 2946
+    },
+    {
+      "file_sha256": "4c5bba83912be81f3e180bfa67f1a5a639a2df476e54d743ebbaa0c8b730b8bb",
+      "git_blob": "b666f3ea16385895247e7bce8c9f136fcee6d12a",
+      "repository_path": "native_projects/hhs_pass163_vmrc/schemas/hhs_p163_vmrc.schema.json",
+      "size_bytes": 4545
+    },
+    {
+      "file_sha256": "fe7c60986d7d0161ff2cb801c1ed94234e948ee04f5f062b9b7f689913662cdd",
+      "git_blob": "c0db398507bbd01f9a90974b3560b30633cac01a",
+      "repository_path": "native_projects/hhs_pass164_gcmsl/schemas/hhs_p164_gcmsl.schema.json",
+      "size_bytes": 9966
+    },
+    {
+      "file_sha256": "6a0ecd572e00ca9820718a3920970e3bafba3fd17f5839c421319f38f4ec73f7",
+      "git_blob": "6457a2774c72ba3c59010d92ba208b6042085cb9",
+      "repository_path": "native_projects/hhs_pass165_mmvs/schemas/hhs_p165_mmvs.schema.json",
+      "size_bytes": 1469
+    },
+    {
+      "file_sha256": "b9cf271bff43307bae8198fb720d48cef3b2dd74cccbafd6d2dba07e00fc51bc",
+      "git_blob": "14564c15db900d2fb73fb26ddcbf4530857e76c5",
+      "repository_path": "native_projects/hhs_pass166_word2vec/schemas/hhs_p166_word2vec.schema.json",
+      "size_bytes": 1074
+    },
+    {
+      "file_sha256": "601417c209b642560b18fa9692ff6be9ee7bfa389a13d83a690c7941a0274397",
+      "git_blob": "9fa3761c4ed121dfc8d6c665104018f0a6b4bbaf",
+      "repository_path": "native_projects/hhs_pass183_probability_hydration/include/hhs_p183.h",
+      "size_bytes": 2727
+    },
+    {
+      "file_sha256": "2aefd5927465a4d6de3ee59b8ff9beba5c140bdc98428e4fa147be3ed92d63c7",
+      "git_blob": "37ce8eafaa1beb4614e6ab41e2cd5b0904bb0376",
+      "repository_path": "native_projects/hhs_pass186_x64_vm81_q144/include/hhs_pass186_x64_vm81_q144_abi.h",
+      "size_bytes": 3395
+    },
+    {
+      "file_sha256": "e9671c5ab0f77a7f977af4af677971b722ebddca298c3f9d9cb2c3b59a81b30a",
+      "git_blob": "c1a743b584dc4652e1300d8fc9886afeda45d8a9",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/native/generated/HHS_NATIVE_ABI_MANIFEST_V1.json",
+      "size_bytes": 2600
+    },
+    {
+      "file_sha256": "b470e41782bb106cb6bd7408349d871deaa04da0bcb350a1400660ef8cb32d6b",
+      "git_blob": "04bdb4da479ead98ef72b7c23458eb447be2ec6f",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/native/include/hhs_pass190_abi.h",
+      "size_bytes": 3017
+    },
+    {
+      "file_sha256": "941cf047f33431fc37f9e497a2ec840ac8bf9f11fe9117783783e26ee6c85f1a",
+      "git_blob": "8b0f5616591dad913a84b1e89c5f063bd0f3ba45",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/python/hhs_pass190_capability.py",
+      "size_bytes": 7586
+    },
+    {
+      "file_sha256": "2a831d49ca01ecfc20ff30b21646ec8607a26f75ac18e764182845aa9c7da67a",
+      "git_blob": "479f77d02cef339c14669be9e01056e2d03f9be5",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/tools/generate_native_abi.py",
+      "size_bytes": 4211
+    },
+    {
+      "file_sha256": "6d6a1737e2353eefa936cda7f33316eb7a735d9493c577af09983cca292cf010",
+      "git_blob": "7fbb72d49d2c43c6fc385b766c7d4109424937ea",
+      "repository_path": "native_projects/hhs_pass190_operation_fabric/tools/issue_capability.py",
+      "size_bytes": 1718
+    },
+    {
+      "file_sha256": "befc78d558afa34ea765f01d35c49dfdba9b1ecf457d1d1d7f085f8407802e78",
+      "git_blob": "2fd341ac20487b73ca41fd84c17da854bc0804d9",
+      "repository_path": "native_projects/hhs_vm81_native_development/c/hhs_vm81_native_dev_abi.h",
+      "size_bytes": 2241
+    },
+    {
+      "file_sha256": "814eedfdcc5cf1f15d850fe4f4cdef55fa209d096ec9a4826090fe9e285bb44d",
+      "git_blob": "2bc0730ca9467e6881f87c237f3bdb9f117b47c3",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_078_1_NATIVE_ABI_DECLARATION_DISPOSITIONS.json",
+      "size_bytes": 27125
+    },
+    {
+      "file_sha256": "bbb4a27847ed080f7ce5bca38b928f641b85a20ff621c9e5fcdaad850c4f80f9",
+      "git_blob": "3365a2ef9a309da99181bd18652389cd4ebaae47",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_078_NATIVE_CAPABILITY_MANIFEST.json",
+      "size_bytes": 40178
+    },
+    {
+      "file_sha256": "3109daf4f37a3b37a0d39a71e1cdd66473b02119c0f3ed564e1c1ec3d369c35b",
+      "git_blob": "8b92add1304db6fb4a524c67258f561f0145ba80",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_079_NATIVE_OPCODE_REGISTRY.json",
+      "size_bytes": 51479
+    },
+    {
+      "file_sha256": "bb0cbdee8055a20dfe5a7e7aa9705bf87b4beab44e03b5b27187f5bcc135541d",
+      "git_blob": "68c335009b60e9e332b1b81c4bb71b56dc176a5a",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_080_OPCODE_MEMBRANE_CONTRACT_REGISTRY.json",
+      "size_bytes": 84203
+    },
+    {
+      "file_sha256": "2b526f65faf530c7544a6d3632e43ff119e264bcbb9e6932e3b7357acc6ba22a",
+      "git_blob": "e1e4fb963690317952401b514ecda9d595c73986",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/hhs_pass078_1_native_abi_reconciliation_v1.py",
+      "size_bytes": 7550
+    },
+    {
+      "file_sha256": "f89d0c54d082652037e8b9c43f9c2986b2cc6cb85b4c7ba21cfdfd8d48bc743c",
+      "git_blob": "f9bbd4aa1897db41d7a1146f16533b7f238f6772",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/hhs_pass079_native_opcode_registry_v1.py",
+      "size_bytes": 6383
+    },
+    {
+      "file_sha256": "2f8a8c7014bb86086b7b030aeda8bf275c149d12cc9e31806f1538ddf4f2c475",
+      "git_blob": "9658b88d21f98adac50ffbeb819cc545cc1def89",
+      "repository_path": "python/hhs_gfcc/schema.py",
+      "size_bytes": 1347
+    },
+    {
+      "file_sha256": "4878aa0a49928aea0eca1236827f0582cc7664e2859c79a760afb88500dcd451",
+      "git_blob": "5bb733132c8cb1cae09e25c446ccc0aa65dee697",
+      "repository_path": "release_artifacts/pass132/PASS_132_CEUAC_SCHEMA_VALIDATION.json",
+      "size_bytes": 3567
+    },
+    {
+      "file_sha256": "c22e9cff9093b9ea7ace4ef85662f007d538d0eea433430b52fbeef4373a55e5",
+      "git_blob": "99044d2b7e30708464ea871ba8a013d90c2541f2",
+      "repository_path": "release_artifacts/pass135/PASS_135_CEUAC_SCHEMA_VALIDATION.json",
+      "size_bytes": 229
+    },
+    {
+      "file_sha256": "a9a1c25988753a285b38141a74ebc70919042c2b2ddff4867260334efd2c42fa",
+      "git_blob": "fa3e57bc71d574e40a54bf3b5eed38ed453e8677",
+      "repository_path": "release_artifacts/pass145/manifests/PASS_145_APK_CAPABILITY_MANIFEST.json",
+      "size_bytes": 1388
+    },
+    {
+      "file_sha256": "51cfbea5833fd3bd7cf566b536a343cfb563d16aba9daf75fc34309aecda1252",
+      "git_blob": "f59471ecad34c72c86536634fbf11441c598b597",
+      "repository_path": "release_artifacts/pass146/manifests/PASS_146_CAPABILITY_MANIFEST.json",
+      "size_bytes": 1718
+    },
+    {
+      "file_sha256": "472ccb6ceddef403bd388d9187b41f8f23459b8e7d4f9f9f5a8162b5d46044bc",
+      "git_blob": "0c682291f3d824bb6ad446c17aa408d8528952cf",
+      "repository_path": "release_artifacts/pass146/reports/PASS_146_CAPABILITIES.json",
+      "size_bytes": 1844
+    },
+    {
+      "file_sha256": "fb926e12d6522e1a5e2d939b441a92c4719203bfa12e6f5f80c309d75e94b746",
+      "git_blob": "2a7df10eaa0e129d16f895b8d347a0459f69bd97",
+      "repository_path": "release_artifacts/pass147/manifests/PASS_147_CAPABILITY_MANIFEST.json",
+      "size_bytes": 2377
+    },
+    {
+      "file_sha256": "df41932033efbcd12697650cce968c9cf4db10ecbc72835738076994a93beef4",
+      "git_blob": "9887b7de2960fb99335069a87a2026e0843ba022",
+      "repository_path": "release_artifacts/pass147/manifests/PASS_147_PUBLIC_CAPABILITY_CATALOG.json",
+      "size_bytes": 76753
+    },
+    {
+      "file_sha256": "dbd85196cbaa528747b1de9670ef422eacd1a8508d7ae6e41bc738dfd01a511c",
+      "git_blob": "92e0ece262ced124bf024f9852d7a15123d4ca5c",
+      "repository_path": "release_artifacts/pass147/manifests/PASS_147_PUBLIC_CAPABILITY_GRAPH.json",
+      "size_bytes": 40585
+    },
+    {
+      "file_sha256": "bbb7daababfae2cd50ecdc31afe7dfcd7284c59c9cdd41f4fc1bc9d46ed31d65",
+      "git_blob": "1ac2b4db15bd0dc49ef9887d6b37355f634ccdd1",
+      "repository_path": "release_artifacts/pass147/manifests/PASS_147_PUBLIC_SCHEMAS.json",
+      "size_bytes": 403
+    },
+    {
+      "file_sha256": "fa507535c0dd5d27deac4caaea46c1cad77004db38b31bdaacc2fc5c572920e4",
+      "git_blob": "3520cb004ae8d167e57960dad2c26a58ebeb6f67",
+      "repository_path": "reports/pass_144/PASS_143_PARENT_IMMUTABILITY_BASELINE.json",
+      "size_bytes": 527243
+    },
+    {
+      "file_sha256": "a8253a35ef92106fd8130225325194e22614e506c2addcb64a13b6c9f51d981d",
+      "git_blob": "ee68834a1900b761ce2d7c79a615b6cb59582af1",
+      "repository_path": "reports/pass_144/PASS_144_PARENT_IMMUTABILITY_REPORT.json",
+      "size_bytes": 1243
+    },
+    {
+      "file_sha256": "1408deaf71b99c41a38b5488ce72418500e9825a1eb7329f649a380f65a058a3",
+      "git_blob": "72ab4bec863df4cc546924ef012e9586e4584831",
+      "repository_path": "schemas/manifold-ledger.v1.json",
+      "size_bytes": 1479
+    },
+    {
+      "file_sha256": "1b9be1b8d258d64906f6343ef34be627d05cc9791eb55cab72ca4f63d59a5ade",
+      "git_blob": "3063b40fe0d922de3865b1503c43675e32b6f40e",
+      "repository_path": "schemas/pass145/claim.schema.json",
+      "size_bytes": 839
+    },
+    {
+      "file_sha256": "72b78cf13da1f2256c4f8fa627e7cdaf580860fee1e5c64067bfe85a4f863511",
+      "git_blob": "e98f071c500d22e083b5e6041481801d44efff75",
+      "repository_path": "schemas/pass145/extension.schema.json",
+      "size_bytes": 702
+    },
+    {
+      "file_sha256": "afcc8b05a1ba2c231289a9240914ff542215414119bb22d1c696a77f85953a94",
+      "git_blob": "3537cd43111fc34cacc7c2743c76d0868958d4a6",
+      "repository_path": "schemas/pass145/lvm.schema.json",
+      "size_bytes": 623
+    },
+    {
+      "file_sha256": "3209f6e2491f1857a7e8342fe4061fa5728202feb0c231f509a8fb961124e327",
+      "git_blob": "a1868c349644fbe79698b507d85950dacd7fc693",
+      "repository_path": "schemas/pass145/query-plan.schema.json",
+      "size_bytes": 575
+    },
+    {
+      "file_sha256": "c1a08bc5eda706afe9b67b6e16795424eb5cce8a73e7e85362ca902734c3dd1a",
+      "git_blob": "67ba5e2647b7809a85db8d66545e594ff3061558",
+      "repository_path": "schemas/pass145/source.schema.json",
+      "size_bytes": 835
+    },
+    {
+      "file_sha256": "69f3b57415ec1eafc7325d6d37754abe63b11d701b3a3bf121a6c94191f43136",
+      "git_blob": "a3cbbf551ccb2856b2c4f1a6aef7ecbebfebe8eb",
+      "repository_path": "schemas/pass146/authority-grant.schema.json",
+      "size_bytes": 859
+    },
+    {
+      "file_sha256": "2e4d77b6d8275bd80333e2524bcd0ff8c28b23883fcd6d4bf1309183267e8a67",
+      "git_blob": "d0509647dcaf788845b95c9ca5fd342cc5c9bf7e",
+      "repository_path": "schemas/pass146/boundary-contract.schema.json",
+      "size_bytes": 1284
+    },
+    {
+      "file_sha256": "6cd75295e82c8996cf547a2f6d8a9488afe7045bc7379630caa80d39bd9a82a5",
+      "git_blob": "3ef43c64b3da9fa245a5c2d9a3d6428f07c3e822",
+      "repository_path": "schemas/pass146/peer-trust.schema.json",
+      "size_bytes": 588
+    },
+    {
+      "file_sha256": "7e02822a92d8adcd0d63189be43fd8c0f9801db1a5ed75ddc758f60d6465ae87",
+      "git_blob": "4afadbfe566f92229b85a5e06dc991350c28ef5c",
+      "repository_path": "schemas/pass146/signed-propagation-unit.schema.json",
+      "size_bytes": 1314
+    },
+    {
+      "file_sha256": "1ce3c4a5394f3bb445051476fd8ec508f09c93f0cade86f616830c5106647edc",
+      "git_blob": "1aac5d5b3dfed53c6d2f9718876afdb549cc0584",
+      "repository_path": "schemas/pass147/external-agent-execution.schema.json",
+      "size_bytes": 520
+    },
+    {
+      "file_sha256": "bc98aecfcbcfc419f64a8a2c6a83798922f78a61e4cc1411a46889e3054c3d96",
+      "git_blob": "472d2ac2792f348dbddd476c57438aa1edcbbb98",
+      "repository_path": "schemas/pass147/external-agent-profile.schema.json",
+      "size_bytes": 662
+    },
+    {
+      "file_sha256": "148918b822454c3c96a469464a7bdc32c0c627373df40d301822cf63dd1147fd",
+      "git_blob": "d7ec75ca05d4b0915f909b0bb736bb2af8f1de57",
+      "repository_path": "schemas/pass147/public-capability.schema.json",
+      "size_bytes": 860
+    },
+    {
+      "file_sha256": "3ac7d34a1e41bb9c6b380b3f721f72dfc35ca592f96660f939dc262745d8b106",
+      "git_blob": "770ee6a634325c17c41efc6f89ed51fbd38602f7",
+      "repository_path": "schemas/pass148/derivation.schema.json",
+      "size_bytes": 1399
+    },
+    {
+      "file_sha256": "4a2f5e67af78076f45a20d8e03dc1fe665e19618e3a86cc08cfa799adbc4ba3e",
+      "git_blob": "0bf8b3b8780c9277d832c800a47fb8c43f81bf99",
+      "repository_path": "schemas/pass148/openapi.json",
+      "size_bytes": 14424
+    },
+    {
+      "file_sha256": "1ee51fd37adaba57f5155e0aeb04e7cba2b62d52fd93d5f5e1b387f102f213a5",
+      "git_blob": "7f27321702c2813ce07845f9f9caee5229ffd470",
+      "repository_path": "schemas/pass148/promotion.schema.json",
+      "size_bytes": 1233
+    },
+    {
+      "file_sha256": "dd92135fb9e2981719484ea3398d1e03385dd3dc0f7d526236b92dd0025a0a01",
+      "git_blob": "0ddc27a9706c37f8981a6e9e623d53a6fb254d8a",
+      "repository_path": "schemas/pass148/proposition.schema.json",
+      "size_bytes": 2466
+    },
+    {
+      "file_sha256": "5ab05f13fe79a1352462981d81b874ef786c72b112ed71dbdf6989479669bd68",
+      "git_blob": "712a8686e81878768b875128ce1c0077669caefd",
+      "repository_path": "schemas/pass150/HHS_PASS150_RECORD.schema.json",
+      "size_bytes": 386
+    },
+    {
+      "file_sha256": "1d3bdcdf072d4de003cd8fbb299747a501fc3777806961970780ab2ab5c378d2",
+      "git_blob": "d424942daa50a25c49cdf9290aefd53e3479737f",
+      "repository_path": "schemas/pass151/HHS_PASS_151_CONTEXT_CLASSIFICATION_SCHEMA.json",
+      "size_bytes": 700
+    },
+    {
+      "file_sha256": "c06c9b51e16f59094a56f5879af4e94258b66de0f86cae811a46ead8f984b770",
+      "git_blob": "fc9f64c9ae86614df68486b1da19fe564be86a13",
+      "repository_path": "schemas/pass151/HHS_PASS_151_SEMANTIC_REQUEST_SCHEMA.json",
+      "size_bytes": 640
+    },
+    {
+      "file_sha256": "057f854b759ee0006b2b9399b1729160d2eb04aa97f04c739e6ba937f338dcf3",
+      "git_blob": "ecb21948c0a6bdbb09d1298370c74a1ad524193e",
+      "repository_path": "schemas/pass151/HHS_PASS_151_SEMANTIC_RESPONSE_SCHEMA.json",
+      "size_bytes": 472
+    },
+    {
+      "file_sha256": "184656fb96b0e873d5651e7fdfb5735df4ba18d37bcd5e62d1a51dceaa2a71ea",
+      "git_blob": "e76d634aaba8069222a2ccb947137d5ac10e64f9",
+      "repository_path": "schemas/pass172/environment_probe.schema.json",
+      "size_bytes": 902
+    },
+    {
+      "file_sha256": "4e9698c7ac91ae92965d208f4fd57b9c621f22ea3e19854f3f7ae9f524b5f2cd",
+      "git_blob": "b0674c6f8110b4a99ab0e365f647f7830aa7a4e8",
+      "repository_path": "schemas/pass172/installation_request.schema.json",
+      "size_bytes": 1840
+    },
+    {
+      "file_sha256": "454c9c2f1170a965a6c5c9be8828f02f533f0cc574e04c4878b58c3e4b7410f6",
+      "git_blob": "40d88e3b7ab63be1263b823c600816eee3df9973",
+      "repository_path": "schemas/pass172/offline_bundle.schema.json",
+      "size_bytes": 1036
+    },
+    {
+      "file_sha256": "36ca6d236cc965cde88bd76e90cd911a281820f858f1147c3205cd3b76673fc6",
+      "git_blob": "76a5d74538c8f8cb8eb91b10d89ce016cb7555d6",
+      "repository_path": "schemas/pass173/coverage_matrix.schema.json",
+      "size_bytes": 2136
+    },
+    {
+      "file_sha256": "73e38f82e371f8d27f5bb0b6d9bbaac7625c655dfa5e8121a8674288531c38ef",
+      "git_blob": "c9a1de60ef2434a7c884b29839aaf5b33f465984",
+      "repository_path": "schemas/pass174/runtime.schema.json",
+      "size_bytes": 4541
+    },
+    {
+      "file_sha256": "934074f8cf1f35abdd26dfbb0e36e22e8f95c72f5b2eb663b58e03758669d15d",
+      "git_blob": "74e82e5135b59749a1acd325003192c0f19d3ac3",
+      "repository_path": "tests/pass172/test_schema.py",
+      "size_bytes": 1886
+    },
+    {
+      "file_sha256": "fbdcf7bea5a27099131607124f709c157b845d7b704af4187db3a9907f3e490b",
+      "git_blob": "51287f80529575728bf38a13e577ffeb29f05984",
+      "repository_path": "tests/test_hhs_capability_gui_source_pass051_v1.py",
+      "size_bytes": 1486
+    },
+    {
+      "file_sha256": "f1dcf2abd01c89afd68cfaba3eac07353760056b5d5528fdd19609d81865bd9f",
+      "git_blob": "bfa33fcfbc0107573b4c084cf5783b6b1d0a26bf",
+      "repository_path": "tests/test_hhs_capability_lease_pass055_v1.py",
+      "size_bytes": 497
+    },
+    {
+      "file_sha256": "b492859f82a1b3718d1c2cd00cff6931b6d896b513b6456cdd7eb851ff03021b",
+      "git_blob": "dc86678bb47e00d7a941a3530fd149373aa9f99f",
+      "repository_path": "tests/test_hhs_contract_schema_kernel_ownership_pass042_v1.py",
+      "size_bytes": 398
+    },
+    {
+      "file_sha256": "2332f5f2e83be688b9f2de516b8be8fb6386fb66fdd9f0e0ccffe6abdda478c5",
+      "git_blob": "8dbfbd8be608541d4341a3a5503646c4b844ca9d",
+      "repository_path": "tests/test_hhs_contract_schema_registry_v1.py",
+      "size_bytes": 1875
+    },
+    {
+      "file_sha256": "66bc909aa62d5aaaadc74e4692b36300e5e16b194d620aa34c56dd4b514322fb",
+      "git_blob": "d311dadbd82475cb390ec44ccfa7080179240f68",
+      "repository_path": "tests/test_hhs_pass078_1_native_abi_reconciliation_v1.py",
+      "size_bytes": 1863
+    },
+    {
+      "file_sha256": "345cade57fbfb80aedf49087eba640e34cead984de5c030b8d64f4c3867821b4",
+      "git_blob": "91e48f732f81d8bf172d35dbbfb9a81598c03272",
+      "repository_path": "tests/test_hhs_pass079_native_opcode_registry_v1.py",
+      "size_bytes": 2120
+    },
+    {
+      "file_sha256": "a6b78e91b0363002ea3029c653b99e90a9b2875ed7e53c22b86c6a3361c836c5",
+      "git_blob": "3e704796fe89cafbc819a0fa2bb4ac743145e634",
+      "repository_path": "tests/test_hhs_pass105_3_native_project_reachability_closure_v1.py",
+      "size_bytes": 1505
+    },
+    {
+      "file_sha256": "18ef6bfe65922c9f6e64919fa29b2a2a8744a0718ac3ff60529d4486ca5cedd4",
+      "git_blob": "8842a532eca6b99b4216823c31befee2cc2541aa",
+      "repository_path": "tests/test_hhs_pass106_hash72_capability_truth_v1.py",
+      "size_bytes": 3134
+    },
+    {
+      "file_sha256": "42750a9a879de8a7493c8f00507593967d5ea2c1a903ae37400aae8545a60c17",
+      "git_blob": "456c1177d5d60187e358144f6efb880a8e0c918f",
+      "repository_path": "tests/test_hhs_pass174_lifecycle_route_reachability_v1.py",
+      "size_bytes": 1916
+    },
+    {
+      "file_sha256": "baa0444a5554b27fd69c4177790e7e11433b4c794974505b92c540cd146f0c3f",
+      "git_blob": "f699ab4568c599c797bd22f4a139f54dd2e377f3",
+      "repository_path": "tests/test_hhs_plugin_capability_planner_v1.py",
+      "size_bytes": 1903
+    },
+    {
+      "file_sha256": "606578ada4ef4d32ba96cc10894d4c305d4df0c17110e8e416d74990fcfd2b22",
+      "git_blob": "92f3e6622fc6b86a1b3c048e43d7db0d6ba41301",
+      "repository_path": "tests/test_hhs_runtime_reachability_audit_v1.py",
+      "size_bytes": 1575
+    },
+    {
+      "file_sha256": "c6ad9c686d318927372b962a82ef62cf38d57b9ad46d02271e6e0a10b8020edd",
+      "git_blob": "b38d49e879c1ab0562f8560219b4713071d3d667",
+      "repository_path": "tests/test_hhs_runtime_reachability_kernel_derivation_pass042_v1.py",
+      "size_bytes": 272
+    },
+    {
+      "file_sha256": "b74f2a361af277d96e2d07cbb4c5d270cac6d9dce95c84fb880342318ef94560",
+      "git_blob": "f4ac97abdb62958fde38f069faa4bf19d905d56b",
+      "repository_path": "tests/test_hhs_universal_capability_fabric_pass051_v1.py",
+      "size_bytes": 4275
+    },
+    {
+      "file_sha256": "187d02f83de1766342d7f43f29e804c3b0f38ac1d521eb0c17f0531790d8cb4c",
+      "git_blob": "78535622f3277a465a7699108ba99fa7553743a8",
+      "repository_path": "tests/test_pass144_documentation_immutability.py",
+      "size_bytes": 1192
+    },
+    {
+      "file_sha256": "e6b2183fd94af1ef4f0e5aa274872f89e66c22351691cb96b2e1f142428323dd",
+      "git_blob": "a8d29d302e630e8fc13c96cc019b999d7999f632",
+      "repository_path": "tests/test_pass176_frozen_ide_stabilization.py",
+      "size_bytes": 6007
+    },
+    {
+      "file_sha256": "0d56ffa64649c229e0624174f26a853c678ea9e5416a70f65e1b495490191f70",
+      "git_blob": "4d06bf3e966de5ade7564140a0080bf701dc9df1",
+      "repository_path": "tests/test_pass183_probability_hydration.py",
+      "size_bytes": 9521
+    },
+    {
+      "file_sha256": "e81ca943da13fa7d8ed452dfe3fa77a628d850155347beab55933a1a379c8e80",
+      "git_blob": "c1ef68fcc3a3ba2f2d2be76e47719293458292fe",
+      "repository_path": "tools/pass175_runtime_abi_hydration_benchmark.py",
+      "size_bytes": 21456
+    },
+    {
+      "file_sha256": "0c8d1e461a8f35efd35e7a9fd413c1e3664e05f96a17a80139d21f49370f2ea3",
+      "git_blob": "1b0f473628b7b905fd1e4c161a393bf13e938dd5",
+      "repository_path": "tools/verify_pass144_parent_immutability.py",
+      "size_bytes": 2158
+    }
+  ],
+  "entry_count": 180,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "policy": {
+    "abi_signature_drift": false,
+    "opcode_renumbering_or_rebinding": false,
+    "schema_identity_drift_without_explicit_successor_contract": false
+  },
+  "schema": "HHS_PASS_206_ABI_OPCODE_SCHEMA_FREEZE_MANIFEST_V1"
+}

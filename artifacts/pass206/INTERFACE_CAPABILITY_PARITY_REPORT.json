@@ -1,0 +1,46 @@
+{
+  "artifact_sha256": "546e7a13d4455969c831bd402b79e1667dd8862443055ca799b9f83ec28fffa4",
+  "canonical_documents": [
+    {
+      "file_sha256": "c71563765bacf2b33a613016dd35223ed65f4305ed15617ef855c8ec504bf5f9",
+      "git_blob": "a03d1872fc174c57dd8b51497d10ae80feb73f3e",
+      "present_at_baseline": true,
+      "repository_path": "ARCHITECTURE.md",
+      "size_bytes": 16734
+    },
+    {
+      "file_sha256": "ab5b88b0d4412286f30f9b0ead1aa23407df22cbdfa223ed770945f659b75199",
+      "git_blob": "4d86a3a338c42153bf115d3d13d82b5f8b8d67bc",
+      "present_at_baseline": true,
+      "repository_path": "RUNTIME_FLOW.md",
+      "size_bytes": 11984
+    },
+    {
+      "file_sha256": "7e8a01291f7150dc9b9858b9caf376aa2fd4fcca4301ab2b1bc3e5703568f39f",
+      "git_blob": "994332aa797365c2f5a2d64efe6f5a7dce8be05d",
+      "present_at_baseline": true,
+      "repository_path": "AGENTS.md",
+      "size_bytes": 7614
+    },
+    {
+      "file_sha256": "f8d99a75434d2a81eeb3e3462c61e60a6aac142e44c084111274bab53119a8aa",
+      "git_blob": "7a787fb6e4dafa98b9b63d34fc2c503a5bbbad57",
+      "present_at_baseline": true,
+      "repository_path": "GLOSSARY.md",
+      "size_bytes": 8142
+    },
+    {
+      "file_sha256": "cb0d918e75358e950a098f79fd18da2c76ece2604c0274a273667c2515bf42d5",
+      "git_blob": "b90eeaa57931f4d4ed2c5bcd4895de69477561c0",
+      "present_at_baseline": true,
+      "repository_path": "docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md",
+      "size_bytes": 18179
+    }
+  ],
+  "final_interface_workflow_parity_validation_pending": true,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "required_interpretation": "ONE_CUMULATIVE_HHS_RUNTIME_IMAGE",
+  "schema": "HHS_PASS_206_INTERFACE_CAPABILITY_PARITY_REPORT_V1",
+  "status": "STATIC_PRE_ENFORCEMENT_PARITY_BASELINE_CAPTURED"
+}
