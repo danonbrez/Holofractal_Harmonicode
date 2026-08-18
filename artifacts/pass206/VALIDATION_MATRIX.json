@@ -1,5 +1,5 @@
 {
-  "artifact_sha256": "8a2b25e354ead27a1549bd269362ae30db3d20b2ed5abcdcbd0d1f2596a1fbaa",
+  "artifact_sha256": "21b4ee39ada71c8c4fb705c43d675eec24e61150ed2734b7184135fb715e716a",
   "checks": [
     {
       "name": "contract_index_generated",
@@ -21,25 +21,57 @@
     },
     {
       "expected": false,
-      "name": "core_files_modified",
+      "name": "core_files_modified_by_pass206_repair",
+      "status": "PASS"
+    },
+    {
+      "approved_successor_count": 1,
+      "name": "approved_post_baseline_core_repair_lineage",
+      "repair_merge": "284bf652d9635cc0c940f79dfe6aff6f8b787c3c",
       "status": "PASS"
     },
     {
       "name": "enforcement_implementation_present",
-      "status": "PENDING"
+      "status": "PASS",
+      "surface": "hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py"
     },
     {
+      "name": "positive_negative_enforcement_tests",
+      "status": "PASS"
+    },
+    {
+      "exact_job": 95840408861,
       "name": "dependency_scoped_runtime_validation",
-      "status": "PENDING"
+      "run": 32176768793,
+      "status": "PASS",
+      "synthetic_job": 95840408810
+    },
+    {
+      "name": "freeze_reproducibility_validation",
+      "run": 32176768735,
+      "status": "PASS"
+    },
+    {
+      "name": "pass207_successor_preservation",
+      "status": "PASS"
+    },
+    {
+      "name": "pass208_successor_preservation",
+      "status": "PASS"
     },
     {
       "name": "final_cumulative_integration_and_replay",
+      "status": "PENDING"
+    },
+    {
+      "name": "completion_receipt_emitted",
       "status": "PENDING"
     }
   ],
   "completion_claimed": false,
   "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "next_required_stage": "FINAL_CUMULATIVE_INTEGRATION_AND_REPLAY",
   "pass": 206,
   "schema": "HHS_PASS_206_VALIDATION_MATRIX_V1",
-  "stage": "FREEZE_PRE_ENFORCEMENT"
+  "stage": "ENFORCEMENT_VALIDATED_FINAL_CUMULATIVE_PENDING"
 }
