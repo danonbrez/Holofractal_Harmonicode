@@ -1,0 +1,101 @@
+name: Pass 219 Cumulative Pass 207 Membrane I117
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass207_1_17.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass207_1_17.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass207_1_17.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i117_pass207.py'
+      - 'tests/pass219/test_pass219_inherited_pass207_1_17.c'
+      - 'tests/pass219/test_pass219_inherited_pass207_1_17.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass207_membrane_i117.py'
+      - 'docs/operations/restart/PASS_219_I117_PASS207_MEMBRANE_RESTART.md'
+      - 'docs/operations/restart/PASS_219_I117_VALIDATION_PROBE.md'
+      - '.github/workflows/pass219-cumulative-pass207-membrane-i117.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass207-membrane:
+    name: inherited-pass207-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    env:
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 207 lineage and accepted source identities
+        run: |
+          git merge-base --is-ancestor 1d3aabde365b68d967de85166c65feb5447175a5 HEAD
+          git merge-base --is-ancestor 406eee3d68ec6c06017374085a46c9992d5778e3 HEAD
+          git merge-base --is-ancestor b350afea4f7d5a45ba8b8b0bb9740e40731cdb97 HEAD
+          git merge-base --is-ancestor cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9 HEAD
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:contracts/pass207/PASS_207_CONTRACT.json)" = 727660f3b48c87a78d7e274a5b71ded1bf6e4910
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:artifacts/pass207/GPU_DRIVER_PLUGIN_MANIFEST.json)" = 2f8bb40210b77430a3e6861338d99d06b2ab5596
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver.h)" = d73b80f53f8843a8c015ebdd735ee419f0877ae0
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver.c)" = d812005e5be19383472193a7a9cdc50efbe96277
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver_part1.inc)" = 97bef9b58357f44e4801b35de1cda2fea3a726d3
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver_part2.inc)" = ca8245293cfecc2d73afc063af512e7ff6322a02
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver_part3.inc)" = c76665697aa3417a1cc8789c794dcebf0219c282
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver_part4.inc)" = 85f8acf834487ff6dc6fa062bebc509b2ab526b7
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_runtime/c/hhs_pass207_gpu_driver_part5.inc)" = dbc87a68e0ecdccceb37bb0f6f99bd9491489a0b
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_python/runtime/hhs_pass207_gpu_driver_native.py)" = f66249e67b6a70b2e5d6bdd42e57e814043fe4d1
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_python/runtime/hhs_pass207_gpu_driver_bridge.py)" = 53e409665471f126925e6119f9f20ead3978766b
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:hhs_backend/runtime/hhs_pass207_vm81_gpu_runtime_v1.py)" = 66a1f25489cde4748fe034bb4b050aef74942a49
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:docs/pass207/RESTART_RECORD.md)" = af3c4d8ec508de5f5e99431df22ed65f58021205
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:.github/workflows/pass207-vm81-gpu-hyperthreads.yml)" = 5f6ff36b68cf02ec43b6a65b0493afbb56cee7d4
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:tests/test_hhs_pass207_gpu_driver_v1.c)" = 326546d25004e5789a526ac83aadb22b17b57c7d
+          test "$(git rev-parse 406eee3d68ec6c06017374085a46c9992d5778e3:tests/test_hhs_pass207_gpu_driver_v1.py)" = 88ad4fec4f883f284858d4850e429245438fe98d
+      - name: Reject approximate authority tokens in Pass 207 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass207_1_17.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass207_1_17.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass207_1_17.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i117-pass207
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i117-pass207/exact.o
+      - name: Run Pass 207 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass207_1_17.c /tmp/pass219-i117-pass207/exact.o -o /tmp/pass219-i117-pass207/c && /tmp/pass219-i117-pass207/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass207_1_17.cpp /tmp/pass219-i117-pass207/exact.o -o /tmp/pass219-i117-pass207/cpp && /tmp/pass219-i117-pass207/cpp
+      - name: Preserve Pass 208-218 and I114 C ABI
+        run: |
+          for pass in 208 209 210 211 212 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i117-pass207/exact.o -o /tmp/pass219-i117-pass207/test-${pass} && /tmp/pass219-i117-pass207/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i117-pass207/exact.o -o /tmp/pass219-i117-pass207/i114 && /tmp/pass219-i117-pass207/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy jsonschema
+      - name: Run Pass 207 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass207_membrane_i117.py
+      - name: Exercise current Pass 207 GPU hyperthread driver
+        run: |
+          mkdir -p hhs_runtime/builds
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic -fPIC -shared hhs_runtime/c/hhs_pass207_gpu_driver.c -Ihhs_runtime/c -ldl -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic tests/test_hhs_pass207_gpu_driver_v1.c hhs_runtime/c/hhs_pass207_gpu_driver.c -Ihhs_runtime/c -ldl -o /tmp/test_hhs_pass207_gpu_driver && /tmp/test_hhs_pass207_gpu_driver
+          PYTHONPATH="$PWD" python -m py_compile hhs_python/runtime/hhs_pass207_gpu_driver_native.py hhs_python/runtime/hhs_pass207_gpu_driver_bridge.py hhs_backend/runtime/hhs_pass207_vm81_gpu_runtime_v1.py
+          PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass207_gpu_driver_v1.py
+      - name: Preserve Pass 208 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass208_membrane_i116.py

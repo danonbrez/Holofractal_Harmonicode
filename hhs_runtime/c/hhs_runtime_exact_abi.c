@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 208 inherited GPU branch-manifold binding. */
+/* Additive exact ABI aggregate through Pass 207 inherited GPU hyperthread-driver binding. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -20,3 +20,4 @@
 #include "hhs_pass219_inherited_pass210_1_16.inc"
 #include "hhs_pass219_inherited_pass209_1_16.inc"
 #include "hhs_pass219_inherited_pass208_1_16.inc"
+#include "hhs_pass219_inherited_pass207_1_17.inc"
