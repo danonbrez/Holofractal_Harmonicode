@@ -14,18 +14,20 @@ def main() -> None:
     manifest = pass218_membrane_manifest()
 
     assert PASS_NUMBER == 218
-    assert CLASSIFICATION == "WIRED"
+    assert CLASSIFICATION == "INHERITED_INTEGRATION_DEFECT"
     assert declaration["symbol"] == BIND_SYMBOL
     assert declaration["declared_operations"] == [BIND_SYMBOL]
     assert declaration["mutation_policy"] == "NO_EXTERNAL_STATE_MUTATION"
     assert declaration["persistence_policy"] == "INHERITED_COMPLETION_IDENTITY_ONLY"
-    assert manifest["classification"] == "WIRED"
+    assert manifest["classification"] == "INHERITED_INTEGRATION_DEFECT"
     assert manifest["pass_number"] == 218
     assert tuple(manifest["capabilities"]) == PASS218_CAPABILITIES
     assert manifest["receipt_semantics_preserved"] is True
     assert manifest["pass219_handoff_authority_minted"] is False
     assert manifest["cxx_mutation_authority"] is False
-    assert manifest["next_pass_to_census"] == 217
+    assert manifest["canonical_pass218_i48_present_on_active_branch"] is False
+    assert manifest["required_repair"] == "NON_REWRITING_HISTORY_RECONCILIATION"
+    assert manifest["next_pass_to_census"] is None
 
     cache = {}
     first = preflight_pass218_membrane(cache=cache)
