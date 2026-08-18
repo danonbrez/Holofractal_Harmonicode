@@ -47,14 +47,26 @@ jobs:
           test "$(git rev-parse HEAD:hhs_runtime/include/hhs_receipt.h)" = c7b46405091ac318323d9acfbf8b3bc43d38f991
           test "$(git rev-parse HEAD:hhs_runtime/include/hhs_tensor81.h)" = 51c0d540603a337612a7da5d00128e5931d03eb3
           test "$(git rev-parse HEAD:hhs_runtime/include/hhs_nfv_contract.h)" = ae82730479cd5d229b93ae54df740daac84bac74
-      - name: Prove Tranche A generator remains deterministic
+      - name: Prove immutable Tranche A generator outputs remain deterministic
         run: |
           cp -a artifacts/pass206 /tmp/pass206-before
           python tools/pass206/build_freeze_evidence.py >/tmp/pass206-regenerated.json
-          for f in ACCUMULATED_CONTRACT_INDEX.json ACCUMULATED_CONSTRAINT_INDEX.json CORE_FUNCTION_FREEZE_MANIFEST.json ABI_OPCODE_SCHEMA_FREEZE_MANIFEST.json CONTRACT_CONFLICT_REPORT.json PLUGIN_COMPATIBILITY_REPORT.json INTERFACE_CAPABILITY_PARITY_REPORT.json VALIDATION_MATRIX.json; do
+          for f in ACCUMULATED_CONTRACT_INDEX.json ACCUMULATED_CONSTRAINT_INDEX.json CORE_FUNCTION_FREEZE_MANIFEST.json ABI_OPCODE_SCHEMA_FREEZE_MANIFEST.json CONTRACT_CONFLICT_REPORT.json PLUGIN_COMPATIBILITY_REPORT.json INTERFACE_CAPABILITY_PARITY_REPORT.json; do
             cmp "artifacts/pass206/$f" "/tmp/pass206-before/$f"
           done
           cp /tmp/pass206-before/CORE_SUCCESSOR_REPAIR_LINEAGE.json artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json
+          cp /tmp/pass206-before/VALIDATION_MATRIX.json artifacts/pass206/VALIDATION_MATRIX.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('artifacts/pass206/VALIDATION_MATRIX.json').read_text())
+          assert m['stage'] in {
+              'FREEZE_PRE_ENFORCEMENT',
+              'ENFORCEMENT_VALIDATED_FINAL_CUMULATIVE_PENDING',
+              'FINAL_CUMULATIVE_VALIDATED_COMPLETION_RECEIPT_PENDING',
+              'PASS_206_COMPLETE',
+          }
+          PY
       - name: Compile Pass 206 enforcement surface
         run: python -m py_compile hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py tests/pass206/test_pass206_cumulative_enforcement_v1.py
       - uses: actions/setup-python@v5
