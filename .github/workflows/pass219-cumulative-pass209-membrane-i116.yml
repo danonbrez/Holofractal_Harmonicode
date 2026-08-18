@@ -1,0 +1,86 @@
+name: Pass 219 Cumulative Pass 209 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass209_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass209_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass209_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass209.py'
+      - 'tests/pass219/test_pass219_inherited_pass209_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass209_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass209_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass209-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass209-membrane:
+    name: inherited-pass209-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 209 lineage and accepted source identities
+        run: |
+          git merge-base --is-ancestor 4a6a9f4551fec8490b5305b4f84754d0234ff9f7 HEAD
+          git merge-base --is-ancestor f14a03d1d7dee552efd8133b01dda63063b4a32e HEAD
+          git merge-base --is-ancestor c05cf860e4be5a0865813529baf9ad99e50dbe02 HEAD
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:docs/pass209/RESTART_RECORD.md)" = c0810c39f1aaeaf350512811b7390770986d223f
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:hhs_backend/runtime_bootstrap_cache.py)" = 7efcf952aede8894162d54ecb0575a5aecd7cb83
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:hhs_backend/runtime_status_probe.py)" = 5fcce879fe4a435da743e64d35e48c0132416d4f
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:hhs_backend/cached_visual_server.py)" = c8b81218a84dc25ddc6b4d2b28b696085edbf707
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:hhs_backend/production_visual_server.py)" = 4b2c4c0d8fa6bc75acd57a29cf1fbbd2bff3b25b
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:deploy/digitalocean/hhs-pass196-integrated-environment.service)" = d0ef21446e56602c2cea242622dbcc707fb59c1b
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:tests/test_runtime_bootstrap_gateway.py)" = 97f515056afb71fed25314402d74894ee4534170
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:tests/test_production_visual_server.py)" = 9de2afc05a3814167f69e7dcefedc738c6c93cfe
+          test "$(git rev-parse c05cf860e4be5a0865813529baf9ad99e50dbe02:.github/workflows/pass196-integrated-environment.yml)" = c0816b71a7e4fd61ea6ad2025f1fdf6f84b16b24
+          test "$(git rev-parse HEAD:contracts/pass210/PASS_210_CONTRACT.json)" = ac46a61f568b0443794f854cf84e5a3cfc1bf908
+      - name: Reject approximate authority tokens in Pass 209 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass209_1_16.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass209_1_16.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass209_1_16.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i116-pass209
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass209/exact.o
+      - name: Run Pass 209 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass209_1_16.c /tmp/pass219-i116-pass209/exact.o -o /tmp/pass219-i116-pass209/c && /tmp/pass219-i116-pass209/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass209_1_16.cpp /tmp/pass219-i116-pass209/exact.o -o /tmp/pass219-i116-pass209/cpp && /tmp/pass219-i116-pass209/cpp
+      - name: Preserve Pass 210-218 and I114 C ABI
+        run: |
+          for pass in 210 211 212 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass209/exact.o -o /tmp/pass219-i116-pass209/test-${pass} && /tmp/pass219-i116-pass209/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass209/exact.o -o /tmp/pass219-i116-pass209/i114 && /tmp/pass219-i116-pass209/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy
+      - name: Run Pass 209 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass209_membrane_i116.py
+      - name: Exercise current Pass 209 bootstrap runtime
+        run: |
+          PYTHONPATH="$PWD" python -m py_compile hhs_backend/runtime_bootstrap_cache.py hhs_backend/runtime_status_probe.py hhs_backend/cached_visual_server.py hhs_backend/production_visual_server.py
+          PYTHONPATH="$PWD" pytest -q --tb=short tests/test_runtime_bootstrap_gateway.py tests/test_production_visual_server.py
+      - name: Preserve Pass 210 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass210_membrane_i116.py
