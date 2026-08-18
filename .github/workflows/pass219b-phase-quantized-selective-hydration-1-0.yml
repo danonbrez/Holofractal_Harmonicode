@@ -1,0 +1,108 @@
+name: Pass 219B Phase Quantized Selective Hydration 1.0
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration118-pass206-membrane-staging
+    paths:
+      - 'hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219b_phase_quantized_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c'
+      - 'tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp'
+      - 'docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md'
+      - 'docs/operations/restart/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0_RESTART.md'
+      - '.github/workflows/pass219b-phase-quantized-selective-hydration-1-0.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  phase-quantized-selective-hydration:
+    name: phase-quantized-selective-hydration (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen Pass 219 I118 ancestry
+        run: git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+
+      - name: Reject approximate arithmetic in Pass 219B module
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219b_phase_quantized_hydration_1_0.inc'),
+          ]
+          for path in paths:
+              text = path.read_text('utf-8')
+              match = re.search(r'\b(float|double)\b', text)
+              if match:
+                  raise SystemExit(f'forbidden approximate token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Reject new canonical authority exports
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          text = pathlib.Path('hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h').read_text('utf-8')
+          exports = '\n'.join(line for line in text.splitlines() if 'HHS_EXACT_API' in line)
+          bad = re.search(r'\b(commit|admit|persist|write_hash72|emit_hash72)\b', exports)
+          if bad:
+              raise SystemExit(f'forbidden Pass 219B authority export: {bad.group(1)}')
+          PY
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219b
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b/exact.o
+
+      - name: Run Pass 219B C conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/pass219b-c
+          /tmp/pass219b/pass219b-c
+
+      - name: Run Pass 219B C++ conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/pass219b-cpp
+          /tmp/pass219b/pass219b-cpp
+
+      - name: Preserve native RNA 1.10 C and C++ ABI
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/rna110-c
+          /tmp/pass219b/rna110-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.cpp \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/rna110-cpp
+          /tmp/pass219b/rna110-cpp
+
+      - name: Preserve inherited Pass 206 I118 binding
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.c \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/i118-c
+          /tmp/pass219b/i118-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.cpp \
+            /tmp/pass219b/exact.o -o /tmp/pass219b/i118-cpp
+          /tmp/pass219b/i118-cpp
