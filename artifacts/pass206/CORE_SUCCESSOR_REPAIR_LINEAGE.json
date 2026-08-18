@@ -1,0 +1,33 @@
+{
+  "approved_successor_count": 1,
+  "approved_successors": [
+    {
+      "abi_signature_drift": false,
+      "approved_current_git_blob": "6a3ed4a10c5d83fa77bb4d118819fc230d32248a",
+      "baseline_file_sha256": "354b713650919712575910b8041bf456c3e9475119b22c9b06836923705f33cf",
+      "baseline_git_blob": "0d5be0fb55e618c49192113d1d34272b0428a029",
+      "canonical_authority_change": false,
+      "repair_documentation_head": "609334999fd8aafdb4325865acf074b74fdb54d3",
+      "repair_merge_commit": "284bf652d9635cc0c940f79dfe6aff6f8b787c3c",
+      "repair_pr": 254,
+      "repository_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "semantic_boundary": "LEGACY_V1_LAYOUT_PRESERVED_EXACT_V1_1_EXTENSION_LINKED_ADDITIVELY",
+      "validated_implementation_head": "3235f9066219bf2e665503d9f94aa11701d4c20e",
+      "validation_job": 95152163266,
+      "validation_run": 31941882432
+    }
+  ],
+  "artifact_sha256": "29d0fa640d9a75b6520738826df3e17b769fc4129db4771c8720b7039b4f3440",
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "policy": "BASELINE_IDENTITY_PLUS_EXPLICIT_VALIDATED_REPAIR_SUCCESSOR",
+  "required_current_policy": {
+    "listed_successor_must_equal_approved_current_git_blob": true,
+    "pass206_repair_may_modify_frozen_core": false,
+    "repair_merge_must_be_ancestor": true,
+    "unlisted_frozen_core_must_equal_baseline_blob": true
+  },
+  "schema": "HHS_PASS_206_CORE_SUCCESSOR_REPAIR_LINEAGE_V1",
+  "sealed_predecessor": "2fe770d68f6e1da172d2c7992a90e31d69577b90",
+  "unchanged_core_count": 9
+}

@@ -1,0 +1,91 @@
+name: Pass 206 Cumulative Enforcement Repair
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'artifacts/pass206/**'
+      - 'hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py'
+      - 'tests/pass206/**'
+      - 'docs/pass206/**'
+      - '.github/workflows/pass206-cumulative-enforcement.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pass206-enforcement:
+    name: pass206-enforcement (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    env:
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove Pass 206 grounding, repair lineage, and sealed successor ancestry
+        run: |
+          git merge-base --is-ancestor 918121aeb6d1c55aa8fbd5d60b15f03c4eb22423 HEAD
+          git merge-base --is-ancestor 284bf652d9635cc0c940f79dfe6aff6f8b787c3c HEAD
+          git merge-base --is-ancestor 2fe770d68f6e1da172d2c7992a90e31d69577b90 HEAD
+          test "$(git rev-parse HEAD:hhs_runtime/c/hhs_pass205_continuation.c)" = 4eec6d600bf1dfc544132ec287b6c0968e5a08d3
+          test "$(git rev-parse HEAD:hhs_runtime/c/hhs_pass205_continuation.h)" = 87ec2b092acc4d23fa15353e987ed9b72062a208
+          test "$(git rev-parse HEAD:hhs_python/runtime/hhs_pass205_continuation_bridge.py)" = d91e4a0905d450d28397a2ec02952c36624f69ac
+          test "$(git rev-parse HEAD:hhs_runtime/c/hhs_runtime_abi.c)" = 6a3ed4a10c5d83fa77bb4d118819fc230d32248a
+          test "$(git rev-parse HEAD:hhs_runtime/c/hhs_runtime_abi.h)" = f6cf389d4e2aea0835477557d7684f40ff159a5f
+          test "$(git rev-parse HEAD:hhs_runtime/include/HARMONICODE_VM_RUNTIME.h)" = c2321319c507cacbc86f517244d68b497c937f6b
+          test "$(git rev-parse HEAD:hhs_runtime/include/hhs_hash216.h)" = 0d00c5cb0fb0daa953e9e12c480b6f3aafddb0cc
+          test "$(git rev-parse HEAD:hhs_runtime/include/hhs_receipt.h)" = c7b46405091ac318323d9acfbf8b3bc43d38f991
+          test "$(git rev-parse HEAD:hhs_runtime/include/hhs_tensor81.h)" = 51c0d540603a337612a7da5d00128e5931d03eb3
+          test "$(git rev-parse HEAD:hhs_runtime/include/hhs_nfv_contract.h)" = ae82730479cd5d229b93ae54df740daac84bac74
+      - name: Prove Tranche A generator remains deterministic
+        run: |
+          cp -a artifacts/pass206 /tmp/pass206-before
+          python tools/pass206/build_freeze_evidence.py >/tmp/pass206-regenerated.json
+          for f in ACCUMULATED_CONTRACT_INDEX.json ACCUMULATED_CONSTRAINT_INDEX.json CORE_FUNCTION_FREEZE_MANIFEST.json ABI_OPCODE_SCHEMA_FREEZE_MANIFEST.json CONTRACT_CONFLICT_REPORT.json PLUGIN_COMPATIBILITY_REPORT.json INTERFACE_CAPABILITY_PARITY_REPORT.json VALIDATION_MATRIX.json; do
+            cmp "artifacts/pass206/$f" "/tmp/pass206-before/$f"
+          done
+          cp /tmp/pass206-before/CORE_SUCCESSOR_REPAIR_LINEAGE.json artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json
+      - name: Compile Pass 206 enforcement surface
+        run: python -m py_compile hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py tests/pass206/test_pass206_cumulative_enforcement_v1.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy jsonschema
+      - name: Run Pass 206 positive and negative enforcement tests
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/pass206/test_pass206_cumulative_enforcement_v1.py
+      - name: Emit Pass 206 enforcement decision
+        run: PYTHONPATH="$PWD" python hhs_runtime/hhs_pass206_cumulative_enforcement_v1.py | tee /tmp/pass206-enforcement-decision.json
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass206-enforcement
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass206-enforcement/exact.o
+      - name: Preserve Pass 207 C and C++ membrane
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass207_1_17.c /tmp/pass206-enforcement/exact.o -o /tmp/pass206-enforcement/p207-c && /tmp/pass206-enforcement/p207-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass207_1_17.cpp /tmp/pass206-enforcement/exact.o -o /tmp/pass206-enforcement/p207-cpp && /tmp/pass206-enforcement/p207-cpp
+      - name: Preserve current Pass 207 membrane and GPU driver
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass207_membrane_i117.py
+          mkdir -p hhs_runtime/builds
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic -fPIC -shared hhs_runtime/c/hhs_pass207_gpu_driver.c -Ihhs_runtime/c -ldl -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic tests/test_hhs_pass207_gpu_driver_v1.c hhs_runtime/c/hhs_pass207_gpu_driver.c -Ihhs_runtime/c -ldl -o /tmp/pass206-enforcement/p207-native && /tmp/pass206-enforcement/p207-native
+          PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass207_gpu_driver_v1.py
+      - name: Preserve Pass 208 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass208_membrane_i116.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass206-enforcement-${{ matrix.target }}
+          path: |
+            /tmp/pass206-enforcement-decision.json
+            /tmp/pass206-regenerated.json
