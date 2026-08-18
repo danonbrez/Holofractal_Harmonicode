@@ -152,7 +152,8 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
         for token in (
             "from hhs_backend.visual_server import app as inherited_app",
             "app = inherited_app",
-            "backend/pass authority remains owned by the inherited HHS runtime",
+            "Canonical HHS backend/pass authority projected through",
+            "Runtime execution remains owned by the inherited HHS backend.",
         ):
             if token not in runtime_os_bridge:
                 raise RuntimeError("PASS209_RUNTIME_OS_BACKEND_PRESERVATION_DRIFT:" + token)
