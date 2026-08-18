@@ -1,10 +1,11 @@
 name: Pass 219 Cumulative Pass Membrane I116
 
 on:
-  push:
+  pull_request:
     branches:
       - agent/pass219-iteration116-reconciled-main
     paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
       - 'hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.h'
       - 'hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.hpp'
       - 'hhs_runtime/c/hhs_pass219_inherited_pass218_1_16.inc'
@@ -16,19 +17,32 @@ on:
       - 'tests/pass219/test_pass219_cumulative_pass_membrane_i116.py'
       - 'docs/operations/restart/PASS_219_CUMULATIVE_PASS_MEMBRANE_WIRING_1_16_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass-membrane-i116.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   inherited-pass218-membrane:
+    name: inherited-pass218-membrane (${{ matrix.target }})
     runs-on: ubuntu-24.04
     timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - exact
+          - synthetic
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out explicit reconciliation validation target
+        uses: actions/checkout@v4
         with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.base.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
           fetch-depth: 0
+
+      - name: Record validation target
+        run: |
+          printf 'PASS219_I116_VALIDATION_TARGET=%s\n' '${{ matrix.target }}'
+          git rev-parse HEAD
 
       - name: Prove non-rewriting reconciliation ancestry
         run: |
