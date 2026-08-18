@@ -14,7 +14,7 @@ static const char P209_SERVICE_BLOB[] = "d0ef21446e56602c2cea242622dbcc707fb59c1
 static const char P209_GATEWAY_TEST_BLOB[] = "97f515056afb71fed25314402d74894ee4534170";
 static const char P209_PRODUCTION_TEST_BLOB[] = "9de2afc05a3814167f69e7dcefedc738c6c93cfe";
 static const char P209_WORKFLOW_BLOB[] = "c0816b71a7e4fd61ea6ad2025f1fdf6f84b16b24";
-static const char P210_CONTRACT_BLOB[] = "ac46a61f568b0443794f854cf84e5a3cfc1bf908";
+static const char P209_SUCCESSOR_P210_CONTRACT_BLOB[] = "ac46a61f568b0443794f854cf84e5a3cfc1bf908";
 
 static uint32_t p209_version_word(void) {
     return (HHS_EXACT_PASS219_INHERITED_PASS209_VERSION_MAJOR << 16) |
@@ -74,7 +74,7 @@ HHSExactStatus hhs_exact_pass219_bind_pass209_runtime_bootstrap_gateway(
         !p209_git(witness->gateway_test_git_blob, P209_GATEWAY_TEST_BLOB) ||
         !p209_git(witness->production_test_git_blob, P209_PRODUCTION_TEST_BLOB) ||
         !p209_git(witness->validation_workflow_git_blob, P209_WORKFLOW_BLOB) ||
-        !p209_git(witness->pass210_contract_git_blob, P210_CONTRACT_BLOB))
+        !p209_git(witness->pass210_contract_git_blob, P209_SUCCESSOR_P210_CONTRACT_BLOB))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     memset(out_binding, 0, sizeof(*out_binding));
