@@ -1,0 +1,156 @@
+name: Pass 219 Cumulative Pass 215 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass215_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass215_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass215_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass215.py'
+      - 'tests/pass219/test_pass219_inherited_pass215_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass215_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass215_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass215-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass215-membrane:
+    name: inherited-pass215-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - exact
+          - synthetic
+    steps:
+      - name: Check out explicit validation target
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.base.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Record validation target
+        run: |
+          printf 'PASS219_I116_PASS215_VALIDATION_TARGET=%s\n' '${{ matrix.target }}'
+          git rev-parse HEAD
+
+      - name: Prove inherited ancestry and frozen Pass 215 file identities
+        run: |
+          git merge-base --is-ancestor 863b3845116b73ddd70c479f8266e4334b4196bc HEAD
+          git merge-base --is-ancestor b85ea7c340976a20a78f9c7d8d89a688a1b4f8fc HEAD
+          git merge-base --is-ancestor cc7a0d67d7d9e4bd1e800f62d5ef577cb4ab1086 HEAD
+          test -f contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json
+          test -f evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json
+          test -f hhs_backend/runtime/hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py
+          test -f docs/pass215/ITERATION_20_RESTART_RECORD.md
+          test "$(git rev-parse HEAD:contracts/pass215/PASS_215_ITERATION_20_CONTRACT.json)" = 9110c6404c7e1a727d2440acb6d6c3b242e090e9
+          test "$(git rev-parse HEAD:evidence/pass215/PASS_215_ITERATION_20_IMPLEMENTATION_RECORD.json)" = 26179a42cc7b629a437bf9ffda2c192fb5bf2e63
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py)" = e1fd0f7feb3f417d6737b5afebaaf84ea7b94ff8
+          test "$(git rev-parse HEAD:docs/pass215/ITERATION_20_RESTART_RECORD.md)" = b61b491109b60d0055440b414c218355ce89a3dd
+
+      - name: Reject approximate authority tokens in Pass 215 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass215_1_16.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass215_1_16.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass215_1_16.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text('utf-8'))
+              if match:
+                  raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile cumulative exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-i116-pass215
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o
+
+      - name: Run Pass 215 C terminal-closure conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass215_1_16.c \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-215-c
+          /tmp/pass219-i116-pass215/test-215-c
+
+      - name: Run Pass 215 C++17 non-authority membrane conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass215_1_16.cpp \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-215-cpp
+          /tmp/pass219-i116-pass215/test-215-cpp
+
+      - name: Preserve Pass 216 C alignment ABI
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass216_1_16.c \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-216-c
+          /tmp/pass219-i116-pass215/test-216-c
+
+      - name: Preserve Pass 217 C closure ABI
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass217_1_16.c \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-217-c
+          /tmp/pass219-i116-pass215/test-217-c
+
+      - name: Preserve Pass 218 C completion ABI
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass218_1_16.c \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-218-c
+          /tmp/pass219-i116-pass215/test-218-c
+
+      - name: Preserve frozen I114 execution-composer ABI
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_execution_composer_1_14.c \
+            /tmp/pass219-i116-pass215/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-i116-pass215/test-i114-c
+          /tmp/pass219-i116-pass215/test-i114-c
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped Python packages
+        run: python -m pip install --upgrade pytest
+
+      - name: Run Pass 215 membrane registration and successor binding
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass215_membrane_i116.py
+
+      - name: Preserve frozen Pass 215 terminal identity-only runtime tests
+        run: |
+          PYTHONPATH="$PWD" pytest -q --tb=short \
+            tests/test_hhs_pass215_iteration20_shared_checkpoint_terminal_v1.py \
+            -k 'iteration19_exact_head_closure_is_frozen or iteration19_content_identities_are_frozen or authenticated_workload_and_frozen_chain_are_unchanged or sequential_checkpoint_points_bind_iteration19_parent or content_defined_chunker_constants_are_integer_only'
+
+      - name: Preserve Pass 216 successor alignment over Pass 215 terminal identity
+        run: PYTHONPATH="$PWD" python tests/test_pass216_contract_alignment.py
