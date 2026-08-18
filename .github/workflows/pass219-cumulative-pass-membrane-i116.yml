@@ -19,6 +19,7 @@ on:
       - 'tests/pass219/test_pass219_inherited_pass218_1_16.cpp'
       - 'tests/pass219/test_pass219_inherited_pass217_1_16.c'
       - 'tests/pass219/test_pass219_inherited_pass217_1_16.cpp'
+      - 'tests/pass219/test_pass219_inherited_pass217_frozen_i4_evidence_i116.py'
       - 'tests/pass219/test_pass219_cumulative_pass_membrane_i116.py'
       - 'docs/operations/restart/PASS_219_CUMULATIVE_PASS_MEMBRANE_WIRING_1_16_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass-membrane-i116.yml'
@@ -147,8 +148,8 @@ jobs:
       - name: Preserve admitted Pass 217 cumulative closure semantics
         run: pytest -q --tb=short tests/test_hhs_pass217_cumulative_closure_v1.py
 
-      - name: Preserve frozen Pass 217 I4 Hash72 and nucleus semantics
-        run: pytest -q --tb=short tests/test_hhs_pass217_hash72_manifold_nucleus_v1.py
+      - name: Authenticate frozen Pass 217 I4 evidence across later runtime evolution
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/pass219/test_pass219_inherited_pass217_frozen_i4_evidence_i116.py
 
       - name: Preserve frozen Pass 218 I48 terminal completion semantics
         run: pytest -q --tb=short tests/pass218/test_pass218_iteration48_manifest_bound_curriculum_completion_seal.py
