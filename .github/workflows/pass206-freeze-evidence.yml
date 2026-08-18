@@ -17,7 +17,7 @@ on:
       - '.github/workflows/pass206-freeze-evidence.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   freeze-evidence:
@@ -96,3 +96,12 @@ jobs:
           path: |
             artifacts/pass206/*.json
             /tmp/pass206-freeze-summary.json
+      - name: Commit validated freeze artifacts on staging push
+        if: github.event_name == 'push' && github.ref_name == 'agent/pass219-iteration118-pass206-repair-staging'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/pass206/*.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Pass 206 tranche A: freeze exact baseline identities [pass206-freeze-generated]'
+          git push origin HEAD:${{ github.ref_name }}
