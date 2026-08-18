@@ -109,6 +109,7 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
         if token not in cache:
             raise RuntimeError("PASS209_CACHE_GUARD_DRIFT:" + token)
 
+    probe_normalized = " ".join(probe.split())
     for token in (
         "invokes status routes sequentially",
         "never mutates canonical runtime state",
@@ -116,7 +117,7 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
         "async def run",
         "HHS_RUNTIME_STATUS_PROBE_RECORD_V1",
     ):
-        if token not in probe:
+        if token not in probe_normalized:
             raise RuntimeError("PASS209_PROBE_GUARD_DRIFT:" + token)
 
     for token in (
