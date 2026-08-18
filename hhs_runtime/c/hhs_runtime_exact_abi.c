@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 212 inherited recovery binding. */
+/* Additive exact ABI aggregate through Pass 211 inherited BigInt/HFC binding. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -16,3 +16,4 @@
 #include "hhs_pass219_inherited_pass214_1_16.inc"
 #include "hhs_pass219_inherited_pass213_1_16.inc"
 #include "hhs_pass219_inherited_pass212_1_16.inc"
+#include "hhs_pass219_inherited_pass211_1_16.inc"
