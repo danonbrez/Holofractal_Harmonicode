@@ -35,7 +35,7 @@ jobs:
       - name: Check out explicit validation target
         uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.target == 'exact' && github.event.pull_request.base.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
           fetch-depth: 0
 
       - name: Record validation target
