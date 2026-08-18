@@ -1,6 +1,7 @@
 #include "hhs_pass219_inherited_pass217_1_16.hpp"
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include <iostream>
 
