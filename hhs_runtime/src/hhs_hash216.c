@@ -11,6 +11,7 @@
 //
 
 #include "../include/hhs_hash216.h"
+#include "../include/hhs_hash216_bytes.h"
 
 #include <string.h>
 #include <stdint.h>
@@ -275,4 +276,33 @@ int hhs_hash216_equal(
             b->value,
             HHS_HASH216_LEN
         ) == 0;
+}
+
+/* ============================================================
+ * CONFLICT-FREE BYTE ADAPTERS
+ * ============================================================
+ */
+
+void hhs_hash72_compute_bytes(
+    const void *data,
+    size_t size,
+    char out_hash72[HHS_HASH72_BYTES_STRLEN]
+) {
+    HHSHash72 hash;
+    if (out_hash72 == NULL)
+        return;
+    hhs_hash72_compute(data, size, &hash);
+    memcpy(out_hash72, hash.value, HHS_HASH72_BYTES_STRLEN);
+}
+
+void hhs_hash216_compute_bytes(
+    const void *data,
+    size_t size,
+    char out_hash216[HHS_HASH216_BYTES_STRLEN]
+) {
+    HHSHash216 hash;
+    if (out_hash216 == NULL)
+        return;
+    hhs_hash216_compute(data, size, &hash);
+    memcpy(out_hash216, hash.value, HHS_HASH216_BYTES_STRLEN);
 }

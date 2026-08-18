@@ -1,0 +1,77 @@
+name: Pass 219 Native RNA Transcription ABI 1.10
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration110-native-rna-transcription-abi
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.hpp'
+      - 'hhs_runtime/c/hhs_pass219_rna_transcription_1_10.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_rna_transcription_1_10.c'
+      - 'tests/pass219/test_pass219_rna_transcription_1_10.cpp'
+      - '.github/workflows/pass219-native-rna-transcription-abi-1-10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-rna-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject floating authority in Pass 219 RNA delta
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_transcription_1_10.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_rna_transcription_1_10.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              text = path.read_text()
+              match = pattern.search(text)
+              if match:
+                  raise SystemExit(f'floating authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-rna
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-rna/hhs_runtime_exact_abi.o
+
+      - name: Run C conformance suite
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219-rna/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna/test-c
+          /tmp/pass219-rna/test-c
+
+      - name: Run C++17 ABI view suite
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.cpp \
+            /tmp/pass219-rna/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna/test-cpp
+          /tmp/pass219-rna/test-cpp
+
+      - name: Install regression test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run inherited Pass 219 composer regression subset
+        run: |
+          python -m pytest -q tests/test_hhs_pass219_fibonacci_compression_compliance.py

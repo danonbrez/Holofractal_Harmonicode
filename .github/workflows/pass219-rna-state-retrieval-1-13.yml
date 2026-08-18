@@ -1,0 +1,105 @@
+name: Pass 219 RNA State Retrieval ABI 1.13
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration113-authenticated-indexed-prior-state-retrieval
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rna_state_retrieval_1_13.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_state_retrieval_1_13.hpp'
+      - 'hhs_runtime/c/hhs_pass219_rna_state_retrieval_1_13.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_rna_state_retrieval_1_13.c'
+      - 'tests/pass219/test_pass219_rna_state_retrieval_1_13.cpp'
+      - '.github/workflows/pass219-rna-state-retrieval-1-13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authenticated-indexed-prior-state:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject approximate numeric authority in I113 delta
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_state_retrieval_1_13.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_state_retrieval_1_13.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_rna_state_retrieval_1_13.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text())
+              if match:
+                  raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-rna-retrieval
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o
+
+      - name: Run 1.13 C authenticated retrieval conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_state_retrieval_1_13.c \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-c
+          /tmp/pass219-rna-retrieval/test-c
+
+      - name: Run 1.13 C++17 non-authority retrieval conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_state_retrieval_1_13.cpp \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-cpp
+          /tmp/pass219-rna-retrieval/test-cpp
+
+      - name: Run frozen 1.12 C lowering regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-112-c
+          /tmp/pass219-rna-retrieval/test-112-c
+
+      - name: Run frozen 1.12 C++ lowering regression
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.cpp \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-112-cpp
+          /tmp/pass219-rna-retrieval/test-112-cpp
+
+      - name: Run frozen 1.11 C rule regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-111-c
+          /tmp/pass219-rna-retrieval/test-111-c
+
+      - name: Run frozen 1.10 C admission regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-retrieval/test-110-c
+          /tmp/pass219-rna-retrieval/test-110-c
