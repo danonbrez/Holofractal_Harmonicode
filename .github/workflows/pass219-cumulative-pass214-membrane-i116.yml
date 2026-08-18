@@ -1,0 +1,119 @@
+name: Pass 219 Cumulative Pass 214 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass214_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass214_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass214_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py'
+      - 'tests/pass219/test_pass219_inherited_pass214_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass214_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass214-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass214-membrane:
+    name: inherited-pass214-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - exact
+          - synthetic
+    steps:
+      - name: Check out explicit validation target
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.base.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Record validation target
+        run: |
+          printf 'PASS219_I116_PASS214_VALIDATION_TARGET=%s\n' '${{ matrix.target }}'
+          git rev-parse HEAD
+
+      - name: Prove inherited ancestry and frozen Pass 214 identities
+        run: |
+          git merge-base --is-ancestor e97b5cb7fffbd9ef89154621d8fad0ae66528fd5 HEAD
+          git merge-base --is-ancestor 1114a50c677f3f205d5858bc09b1249d3d365842 HEAD
+          git merge-base --is-ancestor 063bcc1426b5bba106e139cb7dba1c540df090df HEAD
+          git merge-base --is-ancestor 54295e674d6bae1868bdb66b5d2aff0edaaac1d4 HEAD
+          git merge-base --is-ancestor cf18b65bd1e3d7a3dce0081b97e1d4ff89b2c7d0 HEAD
+          git merge-base --is-ancestor 2b753167522c0829a4f7e23eb4378d824c82eafe HEAD
+          test "$(git rev-parse HEAD:HHS_PASS_214_REPOSITORY_WIDE_COMPOUND_OPTIMIZATION_BENCHMARK_AUTHORITY.md)" = 20424f170e66fa5b822f38019f303b15a1e64fd5
+          test "$(git rev-parse HEAD:contracts/pass214/PASS_214_CONTRACT.json)" = c123c9c25685ea0dcd34f90fa67bbd9d65d766f2
+          test "$(git rev-parse HEAD:evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json)" = b8c565f4b443b139249dfded44a1b36c70b43e70
+          test "$(git rev-parse HEAD:evidence/pass214/PASS_214_SEMANTIC_EQUIVALENCE_REUSE_V1.json)" = 60ff714c1de5976bfb428ccf33c82f8a208d8fe4
+          test "$(git rev-parse HEAD:contracts/pass215/PASS_215_ITERATION_1_CONTRACT.json)" = 6ce1a0ea7ed2ca61597398b1197387fec8e3505d
+          test "$(git rev-parse HEAD:contracts/pass215/PASS_215_BENCHMARK_PROFILE.json)" = b458d674a75a4cfc64a32b9203dd693e3603576e
+          test "$(git rev-parse HEAD:scripts/run_pass214_vm81_ir_adapter_validation.sh)" = 4abd1387926c214ee8b07867aae05a1545ff7efe
+          test "$(git rev-parse HEAD:tests/test_hhs_pass214_vm81_ir_adapter_v1.py)" = 8120feb77ad1c2adef05ef9857a779df6c9b8414
+          test "$(git rev-parse HEAD:hhs_runtime/HARMONICODE_VM_RUNTIME.c)" = 81d9699b2d28d5d6a09ea4763653f3ba9eda9e15
+
+      - name: Reject approximate authority tokens in Pass 214 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass214_1_16.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass214_1_16.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass214_1_16.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text('utf-8'))
+              if match:
+                  raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile cumulative exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-i116-pass214
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass214/hhs_runtime_exact_abi.o
+
+      - name: Run Pass 214 C benchmark-authority conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass214_1_16.c /tmp/pass219-i116-pass214/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass214/test-214-c
+          /tmp/pass219-i116-pass214/test-214-c
+
+      - name: Run Pass 214 C++17 non-authority membrane conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass214_1_16.cpp /tmp/pass219-i116-pass214/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass214/test-214-cpp
+          /tmp/pass219-i116-pass214/test-214-cpp
+
+      - name: Preserve Pass 215-218 and I114 C ABI
+        run: |
+          for pass in 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass214/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass214/test-${pass}-c
+            /tmp/pass219-i116-pass214/test-${pass}-c
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass214/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass214/test-i114-c
+          /tmp/pass219-i116-pass214/test-i114-c
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped cumulative Python packages
+        run: python -m pip install --upgrade pytest fastapi httpx cryptography uvicorn
+
+      - name: Run Pass 214 membrane registration and successor binding
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py
+
+      - name: Validate current exact VM81 adapter rebind
+        run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
+
+      - name: Preserve Pass 215 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass215_membrane_i116.py
