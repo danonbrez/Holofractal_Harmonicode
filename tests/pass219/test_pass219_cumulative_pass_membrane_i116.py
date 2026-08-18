@@ -1,17 +1,25 @@
 from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i116 import (
     BIND_SYMBOL,
     CLASSIFICATION,
+    PASS216_BIND_SYMBOL,
+    PASS216_CAPABILITIES,
+    PASS216_CLASSIFICATION,
+    PASS216_NUMBER,
     PASS217_BIND_SYMBOL,
     PASS217_CAPABILITIES,
     PASS217_CLASSIFICATION,
     PASS217_NUMBER,
     PASS218_CAPABILITIES,
     PASS_NUMBER,
+    pass216_membrane_manifest,
+    pass216_membrane_source_evidence,
+    pass216_membrane_surface_declaration,
     pass217_membrane_manifest,
     pass217_membrane_source_evidence,
     pass217_membrane_surface_declaration,
     pass218_membrane_manifest,
     pass218_membrane_surface_declaration,
+    preflight_pass216_membrane,
     preflight_pass217_membrane,
     preflight_pass218_membrane,
 )
@@ -98,6 +106,50 @@ def main() -> None:
     assert manifest217["genesis_rom_promotion_claimed_by_membrane"] is False
     assert manifest217["next_pass_to_census"] == 216
     _assert_preflight(declaration217, PASS217_BIND_SYMBOL, preflight_pass217_membrane)
+
+    evidence216 = pass216_membrane_source_evidence()
+    contract = evidence216["contract"]
+    addendum = evidence216["addendum"]
+    assert contract["status"] == "CONTRACT_COMPLETE_PARENT_TERMINAL_ALIGNED"
+    assert contract["completion_boundary"]["contract_layer_complete"] is True
+    assert contract["completion_boundary"]["parent_alignment_complete"] is True
+    assert contract["completion_boundary"]["runtime_optimization_implementation_claimed"] is False
+    assert addendum["sha256_deterministic_truth_gate"]["default_state"] == "CLOSED"
+    assert addendum["sha256_deterministic_truth_gate"]["full_system_reproof_required_by_default"] is False
+    assert addendum["pass216_operating_rule"]["global_strict_mode_default"] is False
+    assert addendum["pass216_operating_rule"]["unchanged_authenticated_identity_requires_reexecution"] is False
+    assert addendum["pass216_operating_rule"]["changed_transition_requires_dependency_scoped_exact_validation"] is True
+    assert addendum["successor_inheritance"]["pass219_must_inherit_unchanged_pass215_pass216_and_pass217_authority"] is True
+
+    declaration216 = pass216_membrane_surface_declaration()
+    manifest216 = pass216_membrane_manifest()
+    assert PASS216_NUMBER == 216
+    assert PASS216_CLASSIFICATION == "WIRED"
+    assert declaration216["symbol"] == PASS216_BIND_SYMBOL
+    assert declaration216["declared_operations"] == [PASS216_BIND_SYMBOL]
+    assert declaration216["mutation_policy"] == "NO_EXTERNAL_STATE_MUTATION"
+    assert declaration216["persistence_policy"] == "INHERITED_CONTRACT_ALIGNMENT_IDENTITY_ONLY"
+    assert manifest216["classification"] == "WIRED"
+    assert manifest216["pass_number"] == 216
+    assert tuple(manifest216["capabilities"]) == PASS216_CAPABILITIES
+    assert manifest216["contract_alignment_complete"] is True
+    assert manifest216["parent_alignment_complete"] is True
+    assert manifest216["pass215_final_head"] == "b85ea7c340976a20a78f9c7d8d89a688a1b4f8fc"
+    assert manifest216["pass215_artifact_sha256"] == "9e71ff3f48cd4da24c34854f8eadfa57f26d7c6ef5bddd1026c89e2ace63bf55"
+    assert manifest216["pass216_published_head"] == "0ad2759a4379376244589aa3ee241e51d779df26"
+    assert manifest216["pass216_published_tree"] == "b9ff48b17f1e3c8272cd8c5c7b4381df69d4c7e9"
+    assert manifest216["pass216_merge_commit"] == "f10e453c5d7c7467cf5e57f6452958491fe763ad"
+    assert manifest216["contract_git_blob"] == "9e04e4aca8b127e009c0343ceb5e78092de40c43"
+    assert manifest216["addendum_git_blob"] == "3e4121afe2f5750283f5ef350c0afa416eb2addd"
+    assert manifest216["truth_gate_default_state"] == "CLOSED"
+    assert manifest216["global_strict_mode_default"] is False
+    assert manifest216["dependency_scoped_exact_validation"] is True
+    assert manifest216["unchanged_identity_requires_reexecution"] is False
+    assert manifest216["runtime_optimization_implementation_claimed"] is False
+    assert manifest216["runtime_optimization_roadmap_complete"] is False
+    assert manifest216["cxx_mutation_authority"] is False
+    assert manifest216["next_pass_to_census"] == 215
+    _assert_preflight(declaration216, PASS216_BIND_SYMBOL, preflight_pass216_membrane)
 
 
 if __name__ == "__main__":
