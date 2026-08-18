@@ -1,6 +1,6 @@
 # Pass 219 Iteration 1.16 — Cumulative Pass Membrane Wiring Restart Record
 
-Status: PASS 218 MEMBRANE WIRED / FINAL-HEAD VALIDATION PENDING — DEVELOPMENT-ONLY / UNMERGED TO MAIN
+Status: PASS 218 FROZEN WIRED / PASS 217 WIRED CANDIDATE / FINAL PASS 217 VALIDATION PENDING — DEVELOPMENT-ONLY / UNMERGED TO MAIN
 
 Repository: `danonbrez/Holofractal_Harmonicode`
 
@@ -10,11 +10,11 @@ Repository: `danonbrez/Holofractal_Harmonicode`
 - Canonical Pass 218 merge: `cc60b5741de32eb95566f7ba4977e7f1a15368ec`.
 - Frozen Pass 218 I48 head: `bc8edd58f44da334781448272ae11165bfec681d`.
 - Frozen Pass 219 I115 head: `f0e8fd3a871bd0e8ac0668d3d210f74c22061676`.
-- Original I116 checkpoint head before reconciliation: `c34956f2982020d7b16513e31cae3f40d91e9326`.
+- Original pre-reconciliation I116 checkpoint: `c34956f2982020d7b16513e31cae3f40d91e9326`.
 - Development reconciliation branch: `agent/pass219-iteration116-reconciled-main`.
-- Non-rewriting reconciliation merge: `b65cb3748abfb2558ef6f481dfede7c1da799344`.
+- Non-rewriting two-parent reconciliation merge: `b65cb3748abfb2558ef6f481dfede7c1da799344`.
 - Reconciliation PR: `#265`, merged only into the development reconciliation branch.
-- Canonical `main` was not mutated by this reconciliation.
+- Canonical `main` remains unmodified by Pass 219 I116.
 - No rebase, force-push, squash, deployment, or frozen-history rewrite was performed.
 
 ## Governing cumulative rule
@@ -25,15 +25,7 @@ Pass 219 is an additive continuation of the single inherited system:
 Pass 001 -> Pass 002 -> ... -> Pass 218 -> Pass 219
 ```
 
-Every numbered pass remains a mandatory inherited capability. Similar or related modules are not authorization to discard, collapse, replace, or bypass an inherited pass.
-
-The cumulative membrane census proceeds deterministically in reverse pass order:
-
-```text
-Pass 218 -> Pass 217 -> ... -> Pass 001
-```
-
-Each pass receives one current classification:
+Each inherited pass is classified from its current Pass 219 membrane reachability as exactly one of:
 
 ```text
 WIRED
@@ -42,151 +34,225 @@ MISSING_MEMBRANE_EXPOSURE
 INHERITED_INTEGRATION_DEFECT
 ```
 
-A pass is `WIRED` only when its required capability is implemented, inherited in the active tree, compositionally reachable through Pass 219, and its validated semantics remain preserved.
+A pass is `WIRED` only when its required accepted capability is present in the active tree, compositionally reachable through Pass 219, and its validated semantics are preserved without widening authority. The census proceeds deterministically:
 
-## Pass 218 census result
+```text
+Pass 218 -> Pass 217 -> ... -> Pass 001
+```
 
-Pass 218 I48 is the terminal inherited boundary for the first census slice. It establishes:
+## Pass 218 — frozen WIRED
+
+Pass 218 I48 establishes the terminal curriculum-completion boundary:
 
 - `MANIFEST_BOUND_CURRICULUM_COMPLETION_SEALED`;
 - exact I47/I33/I30 identity binding;
-- authoritative manifest exhaustion;
-- final-cursor exhaustion;
-- deterministic ordered curriculum identity;
+- authoritative manifest/final-cursor exhaustion;
+- deterministic curriculum identity;
 - Hash72/Hash216 continuation identity;
 - unchanged I30 semantic-generation identity;
 - restart-safe completion sealing;
 - no Pass 219 handoff authority minted by I48;
 - no VM81 authorization invoked by I48.
 
-Authoritative inherited implementation surfaces:
+I116 exposes that already-verified state through:
 
-- `hhs_runtime/pass218/manifest_bound_curriculum_completion_seal_i48.py`
-- `hhs_backend/runtime_os_pass218_manifest_curriculum_completion_i48.py`
-- `docs/pass218/PASS_218_ITERATION_48_RESTART.md`
+- `hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.h`;
+- `hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.hpp`;
+- `hhs_runtime/c/hhs_pass219_inherited_pass218_1_16.inc`;
+- exact ABI aggregate wiring;
+- `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116.py`.
 
-## Resolved inherited integration defect
+The C++ membrane is non-mutating. The binding cannot mint Pass 219 handoff authority or VM81 authority.
 
-The original frozen Pass 219 I115/I116 stack was rooted before the canonical Pass 218 I1-I48 merge. The original I116 tree therefore lacked the terminal Pass 218 implementation even though canonical `main` contained it.
+### Pass 218 reconciliation and validation
 
-That defect was classified correctly as:
+The original I116 stack predated the canonical Pass 218 I1-I48 merge, so Pass 218 was initially correctly classified `INHERITED_INTEGRATION_DEFECT`. PR #265 reconciled current-main history and exact original I116 history without rewriting either lineage.
 
-```text
-Pass 218 = INHERITED_INTEGRATION_DEFECT
-```
+Pre-promotion validation:
 
-The defect was repaired without rewriting either history by creating a development branch from current `main` and merging the exact original I116 checkpoint into it through PR #265.
+- PR `#266`, closed unmerged;
+- run `32093083433`;
+- exact job `95579023027` — SUCCESS;
+- synthetic job `95579023105` — SUCCESS.
 
-Reconciliation proof:
+Final Pass 218 promoted head:
 
-```text
-main d4b89352...        original I116 c34956f...
-        \                 /
-         \               /
-          b65cb374... reconciliation merge
-```
+`2fd8300124e1ecf30c465a1a4d08db0f669ba848`
 
-Repository comparison after reconciliation proves the development head is zero behind both current-main history and the exact original I116 checkpoint history.
+Final validation:
 
-## Pass 218 Pass-219 membrane implementation
+- PR `#267`, closed unmerged;
+- run `32093250831`;
+- exact job `95579516646` — SUCCESS;
+- synthetic job `95579516553` — SUCCESS.
 
-I116 adds a non-mutating completion-binding membrane:
+Both final targets passed ancestry proof, no-authoritative-float scan, strict C11 build, Pass 218 C/C++ conformance, frozen I114 execution-composer regression, kernel-composer registration, and frozen Pass 218 I48 dependency-scoped regression.
 
-- `hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.h`
-- `hhs_runtime/include/hhs_pass219_inherited_pass218_1_16.hpp`
-- `hhs_runtime/c/hhs_pass219_inherited_pass218_1_16.inc`
-- aggregate exact ABI wiring in `hhs_runtime/include/hhs_runtime_exact_abi.h`
-- aggregate exact ABI wiring in `hhs_runtime/c/hhs_runtime_exact_abi.c`
-- `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116.py`
-- focused C/C++/Python tests under `tests/pass219/`
-
-The C ABI consumes only an already-verified Pass 218 terminal witness and validates:
-
-- exact manifest/completed-source count closure;
-- Hash72 field shape;
-- exact `I47 || I33 || I48` Hash216 ordering;
-- exact SHA-256 continuation identities;
-- terminal completion and manifest exhaustion flags;
-- absence of Pass 219 handoff-authority escalation;
-- absence of VM81-authority escalation.
-
-The C++ class `hhs::rna::InheritedPass218Completion` exposes the inherited binding without mutation methods. Canonical mutation authority remains outside this read/validate-only Pass 218 completion binding.
-
-## Validation evidence before WIRED promotion
-
-Validation-only PR: `#266`.
-
-Workflow: `Pass 219 Cumulative Pass Membrane I116`.
-
-Run: `32093083433`.
-
-Exact job: `95579023027` — SUCCESS.
-Synthetic job: `95579023105` — SUCCESS.
-
-Both targets passed:
-
-1. non-rewriting ancestry proof for `d4b89352...` and `c34956f...`;
-2. direct presence of canonical Pass 218 I48 implementation/runtime/restart surfaces;
-3. I116 no-authoritative-float token gate;
-4. strict C11 `-Wall -Wextra -Werror -pedantic` compilation of the reconciled exact ABI;
-5. I116 C completion-binding positive/negative conformance;
-6. I116 C++17 non-authority membrane conformance;
-7. frozen I114 execution-composer ABI regression;
-8. Pass 219 kernel auto-composer registration/preflight;
-9. frozen Pass 218 I48 terminal completion regression.
-
-The validation probe changes no runtime semantics and is not intended for canonical main.
-
-## Pass 218 classification
-
-Following successful exact/synthetic reconciliation validation, the repository-level Pass 218 membrane classification is promoted to:
+Classification:
 
 ```text
 Pass 218 = WIRED
 ```
 
-The classification means that the terminal Pass 218 capability set is now inherited in the active Pass 219 development tree, exposed through the stable Pass 219 C/C++ membrane, compositionally reachable through the inherited kernel auto-composer, and validated without widening canonical authority.
+## Pass 217 — authoritative inherited boundary
 
-It does not mean that Pass 218 itself minted Pass 219 authority, nor that Pass 219 may bypass the inherited C VM81/kernel mutation boundary.
+The authoritative Pass 217 record extends beyond the earlier Iteration-4 validation-only checkpoint.
 
-## I116 implementation history
+### Frozen Iteration 4 identity
 
-Original stacked checkpoint commits remain preserved exactly, including:
+Accepted I4 validates the exact Hash72 order-72 manifold and immutable central Lo Shu/phase nucleus. The frozen evidence is:
 
-- `1c0e5f9751269fbc0e245764d8be1d286e435ebc` — Pass 218 completion witness/binding C ABI.
-- `0957097797e0d566611a24efa191b0dd40a3875e` — exact completion-binding validation.
-- `04656e61793b72b8b4ea11c26341f993a7be7edb` — non-authoritative C++ membrane class.
-- `9ce0e597f7b07a738fd47b403bb094ec817f4f94` — exact ABI implementation aggregation.
-- `9ba6f4367bae5c3898587cc9d6b3a10677678168` — exact ABI header aggregation.
-- `0b3892a18f07aa9eb28ec8defb957500b3e35e3b` — focused C tests.
-- `2dd9d7e9ab59ce8a2497bdbc9bdd03fcd814e987` — C++ wrapper tests.
-- `99450734e3af4e76a65d197967d1eb3250f6ba3f` — cumulative membrane registration.
-- `faf430731dbd443ca73bd7a2863bf06a1809cc11` — registration/preflight test.
-- `8152b846e05a1ed64e21b4884a1f418af51a9362` — truthful pre-reconciliation defect classification.
-- `a65dd390337a7b06ce5de01eeb887d84cae89be4` — blocker-classification test.
-- `c34956f2982020d7b16513e31cae3f40d91e9326` — original I116 restart checkpoint.
+`evidence/pass217/PASS_217_ITERATION_4_HASH72_MANIFOLD_NUCLEUS.json`
 
-Reconciliation/finalization commits are additive descendants of the two-parent development merge and do not replace these identities.
+Frozen identities:
 
-## Final-head validation state
+- candidate SHA-256: `97379c7ae7cdaebd8031a3a3fb58559c967b361b360c7db34ec096acabfc8fe8`;
+- address-map SHA-256: `2f8d8a23114b87f2dbe91f3d302ef089b750f9d91f533d744a4524e907717f5f`;
+- Hash72 matrix root: `6c0b2e9e354e8d7eb17a746d01c157b19aa95b58296884126cdf5bef7998e286`;
+- Hash72 manifold root: `c757bae150d9ab94485c680ec3143e715b674d35f445a72c6fb4ea2def6f7884`;
+- nucleus identity root: `da7b33fa1a419e00ce81eeeeb5f1c435acd6ae7b95d355e3a1749a6a238e3164`;
+- nucleus support root: `ac46211412784990e08e5cf0b80df5db381aad612a7ccd8aa816815a105b0294`;
+- I4 evidence record root: `5c996cda648db2074a144ab8b9b0834ef442ee8bc2b2c7ed91885bc38aa6d03f`;
+- historical protected-runtime blob recorded by I4: `362cd6e892ae66024333b111aec83f12023fdce3`.
 
-The pre-promotion reconciled head is terminal green under run `32093083433`.
+I4 itself explicitly did not promote canonical Genesis authority, did not generate a logical Genesis ROM, did not mint Hash72/Hash216 transitions, and did not mutate runtime state.
 
-The classification/test/restart-record promotion commits require one final exact/synthetic rerun before I116 Pass-218 wiring is frozen. Until that rerun succeeds, the implementation is logically WIRED but the I116 final head is not yet frozen.
+### Admitted cumulative execution closure
+
+Later Pass 217 Iteration 5 / Cumulative Execution Composer Checkpoint 15 closes the cumulative execution reachability work:
+
+- exact validated Checkpoint-15 implementation head: `be71da59c9b8b7c7e055c03da703ca301849cfff`;
+- validation run `31617830210`, job `94184957915` — SUCCESS;
+- terminal status `ADMIT_PASS217_CUMULATIVE_UTILIZATION_REACHABILITY_CLOSURE`;
+- required authority count `25`;
+- blockers `[]`;
+- all 25 required authority omissions fail closed;
+- exact incremental-tokenization active path proven;
+- global Pass 042 surface publication complete;
+- optional accelerator batching remains optional;
+- GPU execution remains experimental.
+
+The admitted Pass 217 cumulative execution composer was integrated into canonical history through `b0656a92ab29507f81eae760e070f74e49db83f4`.
+
+## Pass 217 Pass-219 membrane implementation
+
+I116 adds:
+
+- `hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.h`;
+- `hhs_runtime/include/hhs_pass219_inherited_pass217_1_16.hpp`;
+- `hhs_runtime/c/hhs_pass219_inherited_pass217_1_16.inc`;
+- exact ABI aggregate export/composition;
+- Pass 217 registration in `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116.py`;
+- C/C++ conformance tests;
+- frozen-I4 evidence authentication test;
+- expanded exact/synthetic I116 workflow.
+
+The stable C ABI binds:
+
+- admitted 25-authority cumulative closure;
+- all-required-authorities non-bypassability;
+- current Pass 042 route publication;
+- exact incremental-tokenization authority;
+- frozen I4 Hash72-manifold identity;
+- frozen I4 immutable-nucleus identity;
+- exact Checkpoint-15 and integration Git identities.
+
+The binding is read/validate-only:
+
+```text
+cxx_mutation_authority = 0
+vm81_mutation_authority = 0
+genesis_rom_promotion_claimed = 0
+```
+
+C++ class: `hhs::rna::InheritedPass217Closure`.
+
+## Pass 217 first validation and repair-forward finding
+
+Validation-only PR `#268` tested implementation head `4b65025d09bf8ec201ac21c2d6e5660655ed579f`.
+
+Run `32093794102`:
+
+- exact job `95581103050` — FAILURE;
+- synthetic job `95581103017` — FAILURE.
+
+Before the failure, both targets passed:
+
+1. non-rewriting ancestry proof including `b0656a92...` and `be71da59...`;
+2. I116 no-authoritative-float scan;
+3. strict C11 exact-ABI compilation;
+4. frozen Pass 218 C/C++ regression;
+5. new Pass 217 C conformance;
+6. new Pass 217 C++ conformance;
+7. frozen I114 execution-composer regression.
+
+The failure occurred only when the first Python registration implementation called the historical I4 `validate_record(ROOT)` against the modern cumulative tree. The historical validator intentionally requires the *current* `HARMONICODE_VM_RUNTIME.c` blob to equal I4's 2026-08-09 protected-runtime blob. Later accepted passes legitimately changed that runtime, producing:
+
+```text
+PASS217_ITERATION4_PROTECTED_RUNTIME_DRIFT
+```
+
+This is not a failure of the frozen I4 proof or the current admitted Pass 217 cumulative composer. It is an invalid attempt to replay a historical current-tree guard against a later accepted tree.
+
+## Repair-forward historical-evidence rule
+
+Commit `951bb8006cd5c970d9f5327647e898dd3cd328a7` repairs only the I116 registration surface.
+
+I116 now treats the two temporal authorities correctly and separately:
+
+```text
+frozen I4 evidence/root
+        +
+current admitted Pass217 cumulative closure
+        -> Pass219 inherited Pass217 membrane
+```
+
+For frozen I4, I116:
+
+- loads the checked-in frozen evidence;
+- recomputes its canonical JSON record root;
+- requires exact frozen candidate/address-map/manifold/nucleus roots;
+- requires the historical protected-runtime blob to remain recorded in the frozen evidence;
+- preserves I4's no-promotion/no-mutation claim boundary;
+- does **not** require today's evolved runtime blob to equal the historical I4 runtime blob.
+
+For current Pass 217, I116 independently reconstructs `build_cumulative_utilization_reachability_closure()` and requires the admitted 25-authority zero-blocker closure.
+
+A dedicated I116 test now authenticates the frozen I4 evidence across later runtime evolution instead of rerunning the obsolete current-runtime-identity condition.
+
+## Current candidate state
+
+Current implementation chain includes the historical-evidence repair, dedicated frozen-I4 evidence test, and repaired workflow. The next exact/synthetic run is the Pass 217 freeze gate.
+
+If both targets pass, classify:
+
+```text
+Pass 217 = WIRED
+```
+
+and continue the deterministic census with Pass 216.
 
 ## Exact next action
 
-1. Run the same exact/synthetic I116 gate against the final promoted development head.
-2. If green, record the final head and freeze the Pass 218 membrane slice of I116.
-3. Close the validation-only probe PR without merging its marker.
-4. Begin the deterministic Pass 217 census from the frozen I116 Pass-218 checkpoint.
-5. Inspect only authoritative Pass 217 contract/restart surfaces and the Pass 219 membrane surfaces needed to determine reachability.
-6. Repair forward any proven Pass 217 membrane gap; do not broadly revalidate unrelated frozen passes.
+1. Close validation-only PR #268 without merging its marker.
+2. Create a fresh validation-only probe from the current reconciled I116 head.
+3. Require both exact and synthetic targets to pass:
+   - ancestry proof;
+   - no-authoritative-float gate;
+   - strict C11 exact ABI build;
+   - Pass 218 C/C++ conformance;
+   - Pass 217 C/C++ conformance;
+   - frozen I114 regression;
+   - I116 cumulative kernel-composer registration;
+   - current admitted Pass 217 cumulative-closure tests;
+   - frozen I4 evidence-root authentication test;
+   - frozen Pass 218 I48 regression.
+4. On success, freeze Pass 217 as `WIRED`, close the probe unmerged, and begin Pass 216.
 
 ## Deployment / canonical merge
 
 - No deployment performed.
-- No canonical `main` merge performed for Pass 219.
+- No Pass 219 merge to canonical `main` performed.
 - No rebase or force-push performed.
 - Frozen I115 and original I116 identities remain unchanged.
-- Development continues on `agent/pass219-iteration116-reconciled-main` until a separately authorized canonical merge stage.
+- Development continues on `agent/pass219-iteration116-reconciled-main` until separately authorized canonical integration.
