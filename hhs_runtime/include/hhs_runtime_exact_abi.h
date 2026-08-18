@@ -20,4 +20,5 @@
 #include "hhs_pass219_inherited_pass209_1_16.h"
 #include "hhs_pass219_inherited_pass208_1_16.h"
 #include "hhs_pass219_inherited_pass207_1_17.h"
+#include "hhs_pass219_inherited_pass206_1_18.h"
 #endif
