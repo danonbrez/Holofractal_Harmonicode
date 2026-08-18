@@ -1,0 +1,83 @@
+name: Pass 219 Cumulative Pass 212 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass212_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass212_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass212_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass212.py'
+      - 'tests/pass219/test_pass219_inherited_pass212_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass212_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass212_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass212-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass212-membrane:
+    name: inherited-pass212-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 212 lineage and source identities
+        run: |
+          git merge-base --is-ancestor 0bb1e456621a11a4d10d7a1bdcb95fef87cb31c4 HEAD
+          git merge-base --is-ancestor adc6737d12a371625413c63068de5a898fed0c0f HEAD
+          git merge-base --is-ancestor 3fc3ec4596062a1f7e37de19165cfe0e6ed88483 HEAD
+          test "$(git rev-parse HEAD:contracts/pass212/PASS_212_CONTRACT.json)" = 12f2c577e02f4436ee776366a1994ece5a765fca
+          test "$(git rev-parse HEAD:docs/pass212/RESTART_RECORD.md)" = c2f2ef336de57a2897397e01e820c69e724fa1cc
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py)" = 2688cf46e2f3084589d4ad961d53e89c33b40a7c
+          test "$(git rev-parse HEAD:hhs_backend/api/pass212_full_hydration_recovery_routes.py)" = 0699e1c720f88f47d1d8e4562cb9a73f6a3c0372
+          test "$(git rev-parse HEAD:evidence/pass212/PASS_212_FULL_HYDRATION_REFERENCE_VECTORS.json)" = c27a29e5268bba4361741ed304c31fa293a9e0ae
+          test "$(git rev-parse HEAD:scripts/run_pass212_full_hydration_validation.sh)" = 923303154fa4703b897aad59c0b1b0411a52a276
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py)" = df7ee51a72991a10bdb25e1342d17cd26a826b9c
+      - name: Reject approximate authority tokens in Pass 212 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass212_1_16.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass212_1_16.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass212_1_16.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i116-pass212
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass212/exact.o
+      - name: Run Pass 212 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass212_1_16.c /tmp/pass219-i116-pass212/exact.o -o /tmp/pass219-i116-pass212/c && /tmp/pass219-i116-pass212/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass212_1_16.cpp /tmp/pass219-i116-pass212/exact.o -o /tmp/pass219-i116-pass212/cpp && /tmp/pass219-i116-pass212/cpp
+      - name: Preserve Pass 213-218 and I114 C ABI
+        run: |
+          for pass in 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass212/exact.o -o /tmp/pass219-i116-pass212/test-${pass} && /tmp/pass219-i116-pass212/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass212/exact.o -o /tmp/pass219-i116-pass212/i114 && /tmp/pass219-i116-pass212/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy
+      - name: Run Pass 212 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass212_membrane_i116.py
+      - name: Exercise current full-hydration recovery runtime
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass212_full_hydration_recovery_v1.py
+      - name: Authenticate frozen Pass 212 evidence replay
+        run: PYTHONPATH="$PWD" python tools/generate_pass212_full_hydration_evidence.py --check
+      - name: Preserve Pass 213 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass213_membrane_i116.py

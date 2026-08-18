@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate: frozen v1.1 base + Pass 219 UQCEL 1.8 + Pass 192 Fibonacci composition 1.9 + Pass 219 RNA transcription 1.10 + Pass 219 RNA rule grammar 1.11 + Pass 219 stable VM81 admission lowering 1.12 + Pass 219 authenticated indexed prior-state retrieval 1.13 + Pass 219 canonical indexed-continuation execution composer 1.14 + Pass 219 cumulative inherited Pass 218 completion binding 1.16 + Pass 217 cumulative utilization/reachability closure binding 1.16 + Pass 216 contract/inheritance-alignment binding 1.16 + Pass 215 terminal shared-checkpoint closure binding 1.16 + Pass 214 repository-wide benchmark/reuse/exact-kernel binding 1.16 + Pass 213 authenticated compiled-ROM/governed-dispatch binding 1.16. */
+/* Additive exact ABI aggregate through Pass 212 inherited recovery binding. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -15,3 +15,4 @@
 #include "hhs_pass219_inherited_pass215_1_16.inc"
 #include "hhs_pass219_inherited_pass214_1_16.inc"
 #include "hhs_pass219_inherited_pass213_1_16.inc"
+#include "hhs_pass219_inherited_pass212_1_16.inc"
