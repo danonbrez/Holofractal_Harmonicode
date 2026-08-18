@@ -241,8 +241,8 @@ def pass207_membrane_source_evidence() -> Dict[str, Any]:
 
     for token in (
         "5,184 stable logical lanes per batch",
-        "GPU output is always a candidate",
-        "verified against the exact CPU reference",
+        "GPU output is always a candidate and is verified",
+        "against the exact CPU reference before it can be returned as verified",
     ):
         if token not in native:
             raise RuntimeError("PASS207_NATIVE_BRIDGE_DRIFT:" + token)
