@@ -121,12 +121,12 @@ def pass200c_membrane_source_evidence() -> Dict[str, Any]:
     _require(
         CONTRACT_PATH,
         "HHS-P200C-CANARY-EVIDENCE-ACTIVE-GUARD-VM81-H72",
-        "three independent approvals",
+        "Active admission requires exactly three approvals",
         "singleton VM81 activation receipt",
         "exact result, witness, and replay equality",
         "automatic reference restoration",
         "candidate cannot authorize itself",
-        "Frozen-constraint promotion remains disabled",
+        "frozen-constraint promotion remains disabled",
     )
     _require(
         RUNTIME_V1_PATH,
