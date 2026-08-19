@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HHS Pass 219B I4 — Galaxy Z Fold7 WebGPU Tuning</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;background:#101114;color:#eef}main{max-width:1080px;margin:auto;padding:18px}button{font:inherit;padding:11px 15px;margin:4px;border-radius:8px}pre{white-space:pre-wrap;background:#191b21;padding:12px;border-radius:8px;overflow:auto}.ok{color:#9f9}.bad{color:#f99}.muted{color:#aaa}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:6px;border-bottom:1px solid #30333b;text-align:right}th:first-child,td:first-child{text-align:left}code{color:#cdf}</style>
+</head>
+<body><main>
+<h1>Pass 219B I4 — Galaxy Z Fold7 / SM-F966U WebGPU Tuning</h1>
+<p>Adaptive physical-GPU benchmark for the Samsung Galaxy Z Fold7 (SM-F966U). It tunes only from WebGPU-exposed features and limits; no undocumented Adreno assumptions are authoritative.</p>
+<p class="muted">Tests flat-lane versus branch-tiled dispatch, workgroup sizes, persistent buffers, batched sub-quantum slices, and equal-volume depth-2 factorizations. Integer-only WGSL; original branch identity preserved.</p>
+<button id="run">Run Fold7 tuning benchmark</button><button id="download" disabled>Download JSON</button>
+<div id="status"></div><div id="tables"></div><pre id="out"></pre>
+<script type="module">
+const DEVICE={manufacturer:'Samsung',model:'Galaxy Z Fold7',code:'SM-F966U',soc:'Snapdragon 8 Elite for Galaxy',gpuVendor:'Qualcomm'};
+const PHASE=81,FAMILIES=2,LANES=5184,SAMPLES=8,Q=PHASE*PHASE,DENSE_BRANCHES=Q*FAMILIES,DENSE_LANES=DENSE_BRANCHES*LANES;
+const ITERATIONS=8,WARMUPS=2,REPS=7,START1=37,START2=53;
+const SCALE_CASES=[[1,1],[1,3],[3,3],[3,9],[9,9],[27,27],[81,81]];
+const FACTOR_CASES=[[1,81],[3,27],[9,9],[27,3],[81,1]];
+const $=id=>document.getElementById(id);let finalResult=null;
+function median(a){const b=[...a].sort((x,y)=>x-y);return b[(b.length-1)>>1];}
+function denseMap(){return Uint32Array.from({length:DENSE_BRANCHES},(_,i)=>i);}
+function selectedMap(s1,s2){const a=[];for(let i=0;i<s1;i++){const o1=(START1+i)%PHASE;for(let j=0;j<s2;j++){const o2=(START2+j)%PHASE;const combo=o1*PHASE+o2;for(let f=0;f<FAMILIES;f++)a.push(combo*FAMILIES+f);}}return new Uint32Array(a);}
+function batchFactor(M){if(M<=9)return 512;if(M<=81)return 128;if(M<=729)return 16;return 1;}
+function shaderFlat(WG){return `
+struct Params{branchCount:u32,iterations:u32,rowWidth:u32,totalThreads:u32};
+@group(0) @binding(0)var<storage,read> branchMap:array<u32>;
+@group(0) @binding(1)var<storage,read_write> samples:array<u32>;
+@group(0) @binding(2)var<uniform> p:Params;
+fn mixWord(branch:u32,lane:u32,iters:u32)->u32{var x:u32=branch^(lane*0x9E3779B9u)^0xA5A55A5Au;var i:u32=0u;loop{if(i>=iters){break;}x=x^(x>>16u);x=x*0x7FEB352Du;x=x^(x>>15u);x=x*0x846CA68Bu;x=x^(x>>16u);i=i+1u;}return x;}
+@compute @workgroup_size(${WG},1,1)
+fn main(@builtin(global_invocation_id)gid:vec3<u32>){let linear=gid.y*p.rowWidth+gid.x;if(linear>=p.totalThreads){return;}let localBranch=linear/${LANES}u;let lane=linear%${LANES}u;let originalBranch=branchMap[localBranch];let v=mixWord(originalBranch,lane,p.iterations);if(lane<${SAMPLES}u){samples[localBranch*${SAMPLES}u+lane]=v;}}
+`;}
+function shaderTiled(WG){return `
+struct Params{branchCount:u32,iterations:u32,rowWidth:u32,totalThreads:u32};
+@group(0) @binding(0)var<storage,read> branchMap:array<u32>;
+@group(0) @binding(1)var<storage,read_write> samples:array<u32>;
+@group(0) @binding(2)var<uniform> p:Params;
+var<workgroup> sharedBranch:u32;
+fn mixWord(branch:u32,lane:u32,iters:u32)->u32{var x:u32=branch^(lane*0x9E3779B9u)^0xA5A55A5Au;var i:u32=0u;loop{if(i>=iters){break;}x=x^(x>>16u);x=x*0x7FEB352Du;x=x^(x>>15u);x=x*0x846CA68Bu;x=x^(x>>16u);i=i+1u;}return x;}
+@compute @workgroup_size(${WG},1,1)
+fn main(@builtin(workgroup_id)wid:vec3<u32>,@builtin(local_invocation_id)lid:vec3<u32>){let localBranch=wid.x;if(localBranch>=p.branchCount){return;}if(lid.x==0u){sharedBranch=branchMap[localBranch];}workgroupBarrier();var lane:u32=lid.x;loop{if(lane>=${LANES}u){break;}let v=mixWord(sharedBranch,lane,p.iterations);if(lane<${SAMPLES}u){samples[localBranch*${SAMPLES}u+lane]=v;}lane=lane+${WG}u;}}
+`;}
+function equality(denseSamples,selectedSamples,map){for(let local=0;local<map.length;local++){const orig=map[local];for(let lane=0;lane<SAMPLES;lane++){if(selectedSamples[local*SAMPLES+lane]!==denseSamples[orig*SAMPLES+lane])return false;}}return true;}
+async function main(){
+ if(!navigator.gpu)throw new Error('WebGPU unavailable');
+ const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});if(!adapter)throw new Error('No WebGPU adapter');
+ const timestamp=adapter.features.has('timestamp-query');
+ const device=await adapter.requestDevice({requiredFeatures:timestamp?['timestamp-query']:[]});
+ const L=device.limits;const maxWG=Math.min(Number(L.maxComputeInvocationsPerWorkgroup),Number(L.maxComputeWorkgroupSizeX));
+ const wgCandidates=[32,64,128,256,512].filter(v=>v<=maxWG);
+ const maxBranches=DENSE_BRANCHES,maxSampleBytes=maxBranches*SAMPLES*4;
+ const mapBuf=device.createBuffer({size:maxBranches*4,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST});
+ const sampleBuf=device.createBuffer({size:maxSampleBytes,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC});
+ const readBuf=device.createBuffer({size:maxSampleBytes,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
+ const paramBuf=device.createBuffer({size:16,usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST});
+ const querySet=timestamp?device.createQuerySet({type:'timestamp',count:2}):null;
+ const resolveBuf=timestamp?device.createBuffer({size:16,usage:GPUBufferUsage.QUERY_RESOLVE|GPUBufferUsage.COPY_SRC}):null;
+ const timeBuf=timestamp?device.createBuffer({size:16,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ}):null;
+ const pipelines=new Map();
+ for(const wg of wgCandidates){for(const kind of ['flat','tiled']){const code=kind==='flat'?shaderFlat(wg):shaderTiled(wg);const module=device.createShaderModule({code});const pipeline=device.createComputePipeline({layout:'auto',compute:{module,entryPoint:'main'}});pipelines.set(`${kind}:${wg}`,pipeline);}}
+ const maxGroups=Number(L.maxComputeWorkgroupsPerDimension);
+ function geometry(kind,wg,branchCount){if(kind==='tiled'){if(branchCount>maxGroups)throw new Error(`tiled branch count ${branchCount} > max workgroups ${maxGroups}`);return{gx:branchCount,gy:1,rowWidth:wg,totalThreads:branchCount*LANES};}const totalThreads=branchCount*LANES,totalGroups=Math.ceil(totalThreads/wg),gx=Math.min(totalGroups,maxGroups),gy=Math.ceil(totalGroups/gx);if(gy>maxGroups)throw new Error('flat dispatch exceeds WebGPU workgroup dimensions');return{gx,gy,rowWidth:gx*wg,totalThreads};}
+ async function dispatch(kind,wg,map,batch,readSamples){
+   const pipeline=pipelines.get(`${kind}:${wg}`),branchCount=map.length,g=geometry(kind,wg,branchCount),sampleBytes=branchCount*SAMPLES*4;
+   const host0=performance.now();device.queue.writeBuffer(mapBuf,0,map);device.queue.writeBuffer(paramBuf,0,new Uint32Array([branchCount,ITERATIONS,g.rowWidth,g.totalThreads]));
+   const enc=device.createCommandEncoder();const pass=enc.beginComputePass(timestamp?{timestampWrites:{querySet,beginningOfPassWriteIndex:0,endOfPassWriteIndex:1}}:{});
+   pass.setPipeline(pipeline);pass.setBindGroup(0,device.createBindGroup({layout:pipeline.getBindGroupLayout(0),entries:[{binding:0,resource:{buffer:mapBuf}},{binding:1,resource:{buffer:sampleBuf}},{binding:2,resource:{buffer:paramBuf}}]}));
+   for(let i=0;i<batch;i++)pass.dispatchWorkgroups(g.gx,g.gy,1);pass.end();
+   if(timestamp){enc.resolveQuerySet(querySet,0,2,resolveBuf,0);enc.copyBufferToBuffer(resolveBuf,0,timeBuf,0,16);}if(readSamples)enc.copyBufferToBuffer(sampleBuf,0,readBuf,0,sampleBytes);
+   const submit0=performance.now();device.queue.submit([enc.finish()]);await device.queue.onSubmittedWorkDone();const submit1=performance.now();
+   let gpuTotalNs=null,samples=null;if(timestamp){await timeBuf.mapAsync(GPUMapMode.READ);const q=new BigUint64Array(timeBuf.getMappedRange());gpuTotalNs=Number(q[1]-q[0]);timeBuf.unmap();}
+   if(readSamples){await readBuf.mapAsync(GPUMapMode.READ,0,sampleBytes);samples=new Uint32Array(readBuf.getMappedRange(0,sampleBytes).slice(0));readBuf.unmap();}
+   const host1=performance.now();return{gpuTotalNs,gpuPerDispatchNs:gpuTotalNs===null?null:Math.floor(gpuTotalNs/batch),submitWallPerDispatchNs:Math.floor((submit1-submit0)*1e6/batch),hostTotalPerDispatchNs:Math.floor((host1-host0)*1e6/batch),samples,batch};
+ }
+ async function measure(kind,wg,map){const M=map.length/FAMILIES,batch=batchFactor(M);for(let i=0;i<WARMUPS;i++)await dispatch(kind,wg,map,batch,false);const gpu=[],wall=[],host=[];for(let i=0;i<REPS;i++){const r=await dispatch(kind,wg,map,batch,false);if(r.gpuPerDispatchNs!==null)gpu.push(r.gpuPerDispatchNs);wall.push(r.submitWallPerDispatchNs);host.push(r.hostTotalPerDispatchNs);}const sample=(await dispatch(kind,wg,map,1,true)).samples;return{gpuMedianNs:gpu.length?median(gpu):null,submitWallMedianNs:median(wall),hostTotalMedianNs:median(host),batchFactor:batch,samples:sample};}
+ $('status').textContent='Auto-tuning workgroup size and dispatch strategy…';
+ const tuneMap=selectedMap(27,27),tuning=[];
+ for(const wg of wgCandidates){for(const kind of ['flat','tiled']){const m=await measure(kind,wg,tuneMap);tuning.push({kind,workgroupSize:wg,M:729,gpuMedianNs:m.gpuMedianNs,submitWallMedianNs:m.submitWallMedianNs,hostTotalMedianNs:m.hostTotalMedianNs,batchFactor:m.batchFactor});}}
+ const usable=tuning.filter(x=>x.gpuMedianNs!==null&&x.gpuMedianNs>0);const best=(usable.length?usable:tuning).reduce((a,b)=>((b.gpuMedianNs??b.submitWallMedianNs)<(a.gpuMedianNs??a.submitWallMedianNs)?b:a));
+ const chosen={kind:best.kind,workgroupSize:best.workgroupSize};
+ $('status').textContent=`Chosen ${chosen.kind} / workgroup ${chosen.workgroupSize}. Running dense reference…`;
+ const dMap=denseMap(),dense=await measure(chosen.kind,chosen.workgroupSize,dMap);
+ const baselineWG=wgCandidates.includes(256)?256:wgCandidates[wgCandidates.length-1];const baseline=await measure('flat',baselineWG,dMap);
+ const results=[];
+ for(const [s1,s2] of SCALE_CASES){$('status').textContent=`Scaling ${s1} × ${s2}…`;const map=selectedMap(s1,s2),m=await measure(chosen.kind,chosen.workgroupSize,map),M=s1*s2;results.push({s1,s2,materializedCombinations:M,branches:map.length,laneDispatches:map.length*LANES,idealReduction:Q/M,gpuMedianNs:m.gpuMedianNs,submitWallMedianNs:m.submitWallMedianNs,hostTotalMedianNs:m.hostTotalMedianNs,batchFactor:m.batchFactor,observedGpuSpeedup:(dense.gpuMedianNs&&m.gpuMedianNs)?dense.gpuMedianNs/m.gpuMedianNs:null,exactSelectedSampleEquality:equality(dense.samples,m.samples,map)});}
+ const factorization=[];
+ for(const [s1,s2] of FACTOR_CASES){$('status').textContent=`Equal-volume factorization ${s1} × ${s2}…`;const map=selectedMap(s1,s2),m=await measure(chosen.kind,chosen.workgroupSize,map);factorization.push({s1,s2,M:s1*s2,gpuMedianNs:m.gpuMedianNs,submitWallMedianNs:m.submitWallMedianNs,hostTotalMedianNs:m.hostTotalMedianNs,batchFactor:m.batchFactor,exactSelectedSampleEquality:equality(dense.samples,m.samples,map)});}
+ let info={};try{info=adapter.info||await adapter.requestAdapterInfo?.()||{};}catch{}
+ const limits={};for(const k of ['maxComputeInvocationsPerWorkgroup','maxComputeWorkgroupSizeX','maxComputeWorkgroupSizeY','maxComputeWorkgroupSizeZ','maxComputeWorkgroupsPerDimension','maxComputeWorkgroupStorageSize','maxStorageBufferBindingSize','maxBufferSize'])limits[k]=Number(L[k]);
+ finalResult={schema:'HHS_PASS_219B_ANDROID_WEBGPU_FOLD7_TUNING_V1',generatedAt:new Date().toISOString(),targetDevice:DEVICE,adapterInfo:{vendor:info.vendor||'',architecture:info.architecture||'',device:info.device||'',description:info.description||''},features:{timestampQuery:timestamp,subgroups:adapter.features.has('subgroups')},limits,phaseOriginsPerLayer:PHASE,depth:2,potentialPhaseCombinations:Q,branchFamilies:FAMILIES,lanesPerBranch:LANES,denseBranches:DENSE_BRANCHES,denseLaneDispatches:DENSE_LANES,iterations:ITERATIONS,warmups:WARMUPS,repetitions:REPS,selectedStartOrigin1:START1,selectedStartOrigin2:START2,bufferMode:'persistent',timingMode:'batched sub-quantum normalization',workgroupCandidates:wgCandidates,tuning,chosen,dense:{gpuMedianNs:dense.gpuMedianNs,submitWallMedianNs:dense.submitWallMedianNs,hostTotalMedianNs:dense.hostTotalMedianNs,batchFactor:dense.batchFactor},flatBaseline:{workgroupSize:baselineWG,gpuMedianNs:baseline.gpuMedianNs,submitWallMedianNs:baseline.submitWallMedianNs,hostTotalMedianNs:baseline.hostTotalMedianNs,batchFactor:baseline.batchFactor},results,factorization,claimBoundary:{hardwareGpuMeasured:true,repositoryPass208KernelMeasured:false,userReportedDeviceIdentity:true,adapterLimitsMeasured:true,originalBranchIdentityPreserved:true,integerOnlyKernel:true,exactSelectedSampleEqualityMeasured:true,fullLaneEqualityMeasured:false,authoritativeStateChanged:false}};
+ $('out').textContent=JSON.stringify(finalResult,null,2);
+ const rows=results.map(r=>`<tr><td>${r.s1}×${r.s2}</td><td>${r.materializedCombinations}</td><td>${r.gpuMedianNs===null?'—':(r.gpuMedianNs/1e6).toFixed(4)}</td><td>${r.observedGpuSpeedup===null?'—':r.observedGpuSpeedup.toFixed(2)+'×'}</td><td>${r.batchFactor}</td><td class="${r.exactSelectedSampleEquality?'ok':'bad'}">${r.exactSelectedSampleEquality}</td></tr>`).join('');
+ $('tables').innerHTML=`<p><b>Chosen:</b> ${chosen.kind}, workgroup ${chosen.workgroupSize}. Dense tuned GPU ${(dense.gpuMedianNs/1e6).toFixed(3)} ms; flat baseline ${(baseline.gpuMedianNs/1e6).toFixed(3)} ms.</p><table><thead><tr><th>s1×s2</th><th>M</th><th>GPU ms</th><th>Speedup</th><th>Batch</th><th>Equal</th></tr></thead><tbody>${rows}</tbody></table>`;
+ $('status').innerHTML='<span class="ok">Complete.</span>';$('download').disabled=false;
+ for(const b of [mapBuf,sampleBuf,readBuf,paramBuf,resolveBuf,timeBuf])if(b)b.destroy();if(querySet)querySet.destroy();
+}
+$('run').onclick=async()=>{try{$('run').disabled=true;await main();}catch(e){$('status').innerHTML=`<span class="bad">${e.stack||e}</span>`;}finally{$('run').disabled=false;}};
+$('download').onclick=()=>{if(!finalResult)return;const b=new Blob([JSON.stringify(finalResult,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='pass219b_fold7_webgpu_tuning_result.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+</script></main></body></html>
