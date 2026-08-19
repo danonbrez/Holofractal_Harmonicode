@@ -1,0 +1,119 @@
+name: Pass 219B Fold7 Hardware Tuning I4
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219b-iteration3-fused-depth2-phase-scaling
+    paths:
+      - 'benchmarks/pass219b/pass219b_android_webgpu_fold7_tuning.html'
+      - 'benchmarks/pass219b/analyze_pass219b_fold7_tuning.py'
+      - 'docs/pass219/PASS_219B_FOLD7_ADRENO_HARDWARE_TUNING_I4.md'
+      - 'docs/operations/restart/PASS_219B_FOLD7_ADRENO_HARDWARE_TUNING_I4_RESTART.md'
+      - '.github/workflows/pass219b-fold7-hardware-tuning-i4.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: fold7-tuning-boundary (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen Pass 219B I3 ancestry
+        run: git merge-base --is-ancestor 5f9988b0bcd4632c7c0bd277cc9158cb8c00a929 HEAD
+
+      - name: Validate Fold7 hardware metadata and tuning boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('benchmarks/pass219b/pass219b_android_webgpu_fold7_tuning.html')
+          s=p.read_text(encoding='utf-8')
+          required=[
+            "Galaxy Z Fold7", "SM-F966U", "Snapdragon 8 Elite for Galaxy",
+            "shaderFlat", "shaderTiled", "var<workgroup> sharedBranch",
+            "timestamp-query", "batchFactor", "persistent",
+            "FACTOR_CASES=[[1,81],[3,27],[9,9],[27,3],[81,1]]",
+            "originalBranch=branchMap[localBranch]",
+            "authoritativeStateChanged:false",
+          ]
+          for token in required:
+              assert token in s, token
+          forbidden=["commit_hash72", "vm81_commit", "canonical_mutation_authority:1"]
+          for token in forbidden:
+              assert token not in s, token
+          PY
+
+      - name: JavaScript syntax check
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('benchmarks/pass219b/pass219b_android_webgpu_fold7_tuning.html').read_text(encoding='utf-8')
+          m=re.search(r'<script type="module">(.*)</script>',s,re.S)
+          assert m
+          Path('/tmp/pass219b_fold7_i4.mjs').write_text(m.group(1),encoding='utf-8')
+          PY
+          node --check /tmp/pass219b_fold7_i4.mjs
+
+      - name: Validate exact-rational analyzer fixture
+        run: |
+          cat > /tmp/fold7_fixture.json <<'JSON'
+          {
+            "schema":"HHS_PASS_219B_ANDROID_WEBGPU_FOLD7_TUNING_V1",
+            "targetDevice":{"manufacturer":"Samsung","model":"Galaxy Z Fold7","code":"SM-F966U"},
+            "adapterInfo":{"vendor":"qualcomm","architecture":"adreno-8xx"},
+            "features":{"timestampQuery":true},
+            "limits":{"maxComputeInvocationsPerWorkgroup":256},
+            "chosen":{"kind":"tiled","workgroupSize":256},
+            "dense":{"gpuMedianNs":11534336},
+            "flatBaseline":{"gpuMedianNs":12000000},
+            "results":[
+              {"materializedCombinations":1,"gpuMedianNs":34521,"idealReduction":6561,"batchFactor":512,"exactSelectedSampleEquality":true},
+              {"materializedCombinations":729,"gpuMedianNs":1310720,"idealReduction":9,"batchFactor":16,"exactSelectedSampleEquality":true},
+              {"materializedCombinations":6561,"gpuMedianNs":11534336,"idealReduction":1,"batchFactor":1,"exactSelectedSampleEquality":true}
+            ],
+            "factorization":[
+              {"M":81,"gpuMedianNs":174000,"exactSelectedSampleEquality":true},
+              {"M":81,"gpuMedianNs":175000,"exactSelectedSampleEquality":true},
+              {"M":81,"gpuMedianNs":176000,"exactSelectedSampleEquality":true},
+              {"M":81,"gpuMedianNs":175500,"exactSelectedSampleEquality":true},
+              {"M":81,"gpuMedianNs":174500,"exactSelectedSampleEquality":true}
+            ],
+            "claimBoundary":{"authoritativeStateChanged":false}
+          }
+          JSON
+          python benchmarks/pass219b/analyze_pass219b_fold7_tuning.py /tmp/fold7_fixture.json /tmp/fold7_analysis.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/fold7_analysis.json',encoding='utf-8'))
+          assert d['schema']=='HHS_PASS_219B_I4_FOLD7_TUNING_ANALYSIS_V1'
+          assert d['target_device']['code']=='SM-F966U'
+          assert d['chosen']['kind']=='tiled'
+          assert d['all_selected_samples_equal'] is True
+          assert d['authoritative_state_changed'] is False
+          assert d['equal_volume_factorization_M81']['case_count']==5
+          PY
+
+      - name: Preserve frozen Pass 219B I1 exact ABI
+        run: |
+          mkdir -p /tmp/pass219b-i4
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i4/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i4/exact.o -o /tmp/pass219b-i4/i1-c
+          /tmp/pass219b-i4/i1-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i4/exact.o -o /tmp/pass219b-i4/i1-cpp
+          /tmp/pass219b-i4/i1-cpp
