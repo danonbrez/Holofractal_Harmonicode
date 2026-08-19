@@ -1,0 +1,90 @@
+name: Pass 219 I119 Validation Base
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-i119-validation-base
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass205-membrane:
+    name: inherited-pass205-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    env:
+      HHS_PASS205_DB: ${{ runner.temp }}/pass205-i119.sqlite3
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen I118, current-main, and Pass 205 accepted ancestry
+        run: |
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 7be753b36d5b4c7a370b6435ddb027b6b05965d8 HEAD
+          git merge-base --is-ancestor c717ab9e0437e1f407bbd3b22ed1fdd14bcd29b6 HEAD
+          git merge-base --is-ancestor 8e6cded890b86e36a2acd2162acf91d1cb4331ac HEAD
+          git merge-base --is-ancestor 16d17c1db690116fdc5f5b63ef7a097548685885 HEAD
+
+      - name: Prove Pass 205 frozen source and receipt blobs
+        run: |
+          test "$(git rev-parse HEAD:hhs_runtime/c/hhs_pass205_continuation.c)" = "4eec6d600bf1dfc544132ec287b6c0968e5a08d3"
+          test "$(git rev-parse HEAD:hhs_python/runtime/hhs_pass205_continuation_bridge.py)" = "d91e4a0905d450d28397a2ec02952c36624f69ac"
+          test "$(git rev-parse HEAD:evidence/pass205/PASS205_PRODUCTION_COMPLETION_RECEIPT.json)" = "7884f6a2b00f1c2254fef5fdf87edca94ac5c6aa"
+
+      - name: Reject approximate authority tokens in Pass 205 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass205_1_19.inc'),
+          ]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i119-pass205
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i119-pass205/exact.o
+
+      - name: Run Pass 205 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/c && /tmp/pass219-i119-pass205/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/cpp && /tmp/pass219-i119-pass205/cpp
+
+      - name: Preserve Pass 206 and Pass 219B exact ABI successors
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass206_1_18.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass206-c && /tmp/pass219-i119-pass205/pass206-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass206_1_18.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass206-cpp && /tmp/pass219-i119-pass205/pass206-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_universal_phase_locality_1_0.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass219b-c && /tmp/pass219-i119-pass205/pass219b-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass219b-cpp && /tmp/pass219-i119-pass205/pass219b-cpp
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run Pass 205 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py
+
+      - name: Preserve Pass 205 production runtime
+        run: PYTHONPATH="$PWD" python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+
+      - name: Preserve Pass 206 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass206_membrane_i118.py
