@@ -125,3 +125,5 @@ jobs:
           path: evidence/pass205-ci/*.json
           if-no-files-found: error
           retention-days: 30
+
+# Pass 219 I119 validation trigger only; no Pass-205 workflow semantics changed.
