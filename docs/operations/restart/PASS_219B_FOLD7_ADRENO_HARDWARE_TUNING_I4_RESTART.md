@@ -6,6 +6,7 @@
 - Frozen Pass 219B I3 parent: `5f9988b0bcd4632c7c0bd277cc9158cb8c00a929`
 - Branch: `agent/pass219b-iteration4-fold7-adreno-hardware-tuning`
 - Review target: `agent/pass219b-iteration3-fused-depth2-phase-scaling`
+- Draft PR: `#300`
 - Canonical `main`: untouched
 - Production wiring: not authorized / not performed
 
@@ -66,7 +67,7 @@ No new or changed:
 
 The HTML test is physical-GPU evidence only and is not the repository Pass 208 production kernel.
 
-## Validation
+## Repository validation
 
 Dedicated workflow:
 
@@ -74,22 +75,25 @@ Dedicated workflow:
 Pass 219B Fold7 Hardware Tuning I4
 ```
 
-Configured exact/synthetic gates:
+Initial implementation head `76fd77cf9d6ac9130013d278e4574b3331ef84c3` was terminal green under run `32202526395`:
 
-- prove frozen I3 ancestry;
-- validate device metadata and authority boundary;
-- extract module JavaScript and run `node --check`;
-- execute an exact-rational analyzer fixture;
-- preserve frozen Pass 219B I1 C/C++ exact ABI.
+```text
+exact job     95919125675  SUCCESS
+synthetic job 95919125579  SUCCESS
+```
 
-## Validation state
+Both jobs proved frozen I3 ancestry, validated Fold7 metadata and the no-authority boundary, extracted the module JavaScript and passed `node --check`, executed the exact-rational analyzer fixture, and preserved the frozen Pass 219B I1 C/C++ exact ABI.
+
+This restart update is documentation-only and must itself receive the same exact/synthetic gate before the final repository-validation freeze is claimed.
+
+## Current state
 
 - Source implementation: complete.
 - Repository-visible branch: complete.
-- Dedicated PR workflow: pending PR creation.
+- Initial exact/synthetic validation: terminal green.
 - Physical Fold7 I4 result: pending operator device execution.
 - No production wiring or merge authorized.
 
 ## Next action
 
-Open a stacked draft PR against frozen I3, require exact and synthetic CI success, then run `pass219b_android_webgpu_fold7_tuning.html` on the Fold7 and analyze the exported JSON with `analyze_pass219b_fold7_tuning.py`.
+Require the documentation-inclusive head to pass the exact/synthetic I4 gate, then run `pass219b_android_webgpu_fold7_tuning.html` on the Fold7 and analyze the exported JSON with `analyze_pass219b_fold7_tuning.py`.
