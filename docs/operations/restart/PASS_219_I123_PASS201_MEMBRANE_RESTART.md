@@ -1,6 +1,6 @@
 # Pass 219 Iteration 1.23 — inherited Pass 201 membrane restart record
 
-Status: **IMPLEMENTATION CHECKPOINT — VALIDATION PENDING**
+Status: **FROZEN — PASS 201 WIRED**
 
 ## Lineage
 
@@ -9,13 +9,15 @@ Status: **IMPLEMENTATION CHECKPOINT — VALIDATION PENDING**
 - exact frozen I122 predecessor: `a8d08be6d16722df6f42f1f88eef2a83f895107e`
 - canonical main at start: `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
 - branch created directly from frozen I122
+- terminal-green implementation head before this documentation seal: `69f4035f185459a13a7904a289424c65e9fe5a5b`
+- implementation head: 13 commits ahead / 0 behind frozen I122, merge base exactly frozen I122
 - canonical main is not modified by this tranche
 
 ## Census result
 
 `MISSING_MEMBRANE_EXPOSURE`
 
-No inherited Pass 201 implementation defect has been identified. The accepted Pass 201 public API federation remains present, inherited, and source-identical at frozen I122.
+No inherited Pass 201 implementation defect was found. The accepted Pass 201 public API federation remains present, inherited, source-identical, and production-valid on the cumulative tree.
 
 ## Accepted Pass 201 history
 
@@ -29,7 +31,7 @@ No inherited Pass 201 implementation defect has been identified. The accepted Pa
 - evidence artifact: `8844926215`
 - artifact digest: `sha256:903bd1196a08ba4f1976348e190a59122e35b907fce1dc197062caaa2397499f`
 
-The accepted merge is a single-parent squash integration from the original base. Therefore I123 proves ancestry through `0e3f8a49...` and proves the merge base of the evidence branch head with the cumulative head is exactly `0da486d8...`; it does not assert false direct ancestry from the evidence branch head.
+The accepted merge is a single-parent squash integration from the original base. I123 proves ancestry through `0e3f8a49...` and proves the merge base of the evidence branch head with the cumulative head is exactly `0da486d8...`; it does not assert false direct ancestry from the evidence branch head.
 
 ## Historical closure
 
@@ -100,19 +102,66 @@ Modified:
 
 No accepted Pass 201 runtime, route, workflow, contract, regression, or production-validator source is modified.
 
-## Validation pending
+## Terminal-green implementation validation
 
-Required closure gates:
+Dedicated I123 membrane:
 
-1. dedicated I123 exact/synthetic matrix with full git history;
-2. accepted squash lineage proof and historical blob checks;
-3. frozen-I122 source identity checks;
-4. strict C11/C++17 exact-ABI conformance and fail-closed negatives;
-5. kernel-derived seven-operation membrane preflight;
-6. current Pass 201 federation regression;
-7. current Pass 201 production validator;
-8. frozen Pass 202 successor membrane preservation;
-9. VM81 exact ABI, UQCEL, and Pass219B preservation triggered by aggregate ABI registration;
-10. historical Pass 201 workflow replay if selected by path filters.
+- run `32268740377`
+- exact job `96119658663` — SUCCESS
+- synthetic job `96119658478` — SUCCESS
 
-After terminal-green validation, update this record to `FROZEN — PASS 201 WIRED`, run the documentation-inclusive I123 seal, prove exact/synthetic tree equality, and leave the draft PR unmerged. Next reverse-census target: Pass 200C / Pass 200 series, strictly from the frozen I123 checkpoint.
+Both jobs proved squash-aware lineage, historical source blobs, frozen-I122 source identity, no approximate/new authority exports, strict C11/C++17 conformance, seven-operation membrane preflight, the inherited Pass 201 regression, the production validator, and frozen Pass 202 successor preservation.
+
+Historical Pass 201 Public API Federation:
+
+- run `32268740712`
+- job `96119660283` — SUCCESS
+- independently compiled the accepted surfaces, ran the federation tests and production validator, validated JavaScript/wiring/claim boundaries, and uploaded fresh evidence.
+
+VM81 Exact ABI:
+
+- run `32268740736`
+- job `96119659787` — SUCCESS
+
+Universal Quantization Constraint Audit:
+
+- run `32268740615`
+- job `96119659307` — SUCCESS
+
+Pass219B Universal Phase Locality I5:
+
+- run `32268741015`
+- exact job `96119660979` — SUCCESS
+- synthetic job `96119660757` — SUCCESS
+
+Frozen I122 Pass 202 membrane:
+
+- run `32268740501`
+- exact job `96119658686` — SUCCESS
+- synthetic job `96119658964` — SUCCESS
+
+Frozen I121 Pass 203 membrane:
+
+- run `32268740674`
+- exact job `96119659484` — SUCCESS
+- synthetic job `96119659482` — SUCCESS
+
+Frozen I120 Pass 204 membrane:
+
+- run `32268740586`
+- exact job `96119659074` — SUCCESS
+- synthetic job `96119658880` — SUCCESS
+
+No repair-forward commit was required for I123. The initial implementation checkpoint passed its dependency-scoped validation as written.
+
+## Freeze state
+
+Pass 201 is frozen `WIRED` because the accepted implementation already existed, the missing cumulative Pass 219 membrane exposure is now present, the accepted squash lineage and immutable source identity are bound, router/OpenAPI closure and deterministic catalog behavior remain valid, the tool surface remains bounded and non-authoritative, Pass 202 successor continuity is preserved, and all required implementation gates are terminal green.
+
+PR `#309` remains validation-only, draft, and unmerged. Canonical main remains untouched. No integration authority is granted by this freeze.
+
+## Final seal and next target
+
+This documentation-inclusive commit is the final I123 seal candidate. Only the documentation-affected dedicated I123 exact/synthetic gate must be revalidated unless it reveals lineage or source-identity drift.
+
+After final seal success, the next reverse-census target is Pass 200C / the Pass 200 series, strictly from the frozen I123 checkpoint.
