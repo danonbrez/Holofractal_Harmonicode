@@ -43,8 +43,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install targeted test dependency
-        run: python -m pip install 'pytest<9'
+      - name: Install inherited runtime test dependencies
+        run: python -m pip install -r requirements.txt
 
       - name: Synthesize current main for push validation
         if: github.event_name == 'push' && matrix.target == 'synthetic'
