@@ -1,19 +1,20 @@
 # Pass 219 Iteration 1.19 — inherited Pass 205 membrane restart record
 
-Status: **DEVELOPMENT VALIDATED — DOCUMENTATION-INCLUSIVE SEAL PENDING**
+Status: **FROZEN — PASS 205 WIRED**
 
-## Development lineage
+## Frozen lineage
 
 - repository: `danonbrez/Holofractal_Harmonicode`
 - branch: `agent/pass219-iteration119-pass205-membrane`
 - branch base / canonical main at start: `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
 - exact frozen Pass 219 I118 semantic predecessor: `e87bc42b17c03ff98f691838b8d573a5bdf46ff2`
-- validated development head: `8bba876979d93eccda987bb3d915ef203a8b1b31`
-- validated GitHub synthetic merge: `6b42491bf2c10d5ca5318bbca845e883d265e781`
-- exact-head tree: `d99ab4f110c434f80525b2c34e1863d9d5ffa0b1`
-- synthetic-merge tree: `d99ab4f110c434f80525b2c34e1863d9d5ffa0b1`
-- the exact development head was 18 commits ahead and 0 behind canonical `main`; merge base was exactly `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`.
-- canonical `main` is not modified by this development tranche.
+- development validation head: `8bba876979d93eccda987bb3d915ef203a8b1b31`
+- development synthetic merge: `6b42491bf2c10d5ca5318bbca845e883d265e781`
+- development tree identity: `d99ab4f110c434f80525b2c34e1863d9d5ffa0b1`
+- documentation-inclusive validated seal predecessor: `4831314ab1f497767f5b1c908fb6743dd8fa7013`
+- seal synthetic merge: `96b950ee7f2bf0fc02f7b668394953e7db037d84`
+- seal tree identity: `7901a53eebad02d985eaa280a4e86cf38c2c28ea`
+- canonical `main` remains untouched by I119.
 
 ## Reverse-census result
 
@@ -41,18 +42,18 @@ The old open draft PR `#152` is not accepted Pass-205 history and is not importe
 
 ## I119 additive exposure
 
-New exact C witness/binding:
+Exact C witness/binding:
 
 - `HHSExactPass205DeterministicContinuationWitnessV1`
 - `HHSExactPass219InheritedPass205BindingV1`
 - `hhs_exact_pass219_inherited_pass205_version`
 - `hhs_exact_pass219_bind_pass205_deterministic_continuation`
 
-New read-only C++ wrapper:
+Read-only C++ wrapper:
 
 - `hhs::rna::InheritedPass205DeterministicContinuation`
 
-New kernel-derived membrane:
+Kernel-derived membrane:
 
 - `hhs_runtime.hhs_pass219_cumulative_pass_membrane_i119_pass205`
 - six declared read-only validation operations
@@ -94,45 +95,48 @@ I119 introduces:
 
 The membrane itself is `NO_EXTERNAL_STATE_MUTATION` and `INHERITED_EVIDENCE_IDENTITY_ONLY`.
 
-## Development validation evidence
-
-### Exact/synthetic cumulative successor preservation
+## Development validation
 
 Pass 219B Universal Phase Locality I5 run `32246117651`:
 
 - exact job `96046891466` — **SUCCESS**
 - synthetic job `96046891755` — **SUCCESS**
 
-Both jobs proved frozen ancestry, strict cumulative C11 exact-ABI compilation, Pass 219B I5 and I1 C/C++ regression, inherited RNA regression, and Pass 206 I118 C/C++ preservation with the I119 aggregate present.
-
-### Direct I119 positive/negative conformance
-
 VM81 Exact ABI Repair run `32246117741`, job `96046892267` — **SUCCESS**.
 
-The workflow's exact-ABI pytest step executed `tests/test_hhs_exact_runtime_abi_v1.py`, including the new I119 cumulative regression. Result:
+The exact-ABI pytest step executed the I119 cumulative C/C++ and Python membrane regression and reported:
 
 `9 passed, 1 warning`
 
-That regression:
+Development exact head `8bba876979d93eccda987bb3d915ef203a8b1b31` and GitHub synthetic merge `6b42491bf2c10d5ca5318bbca845e883d265e781` shared exact Git tree `d99ab4f110c434f80525b2c34e1863d9d5ffa0b1`, proving byte-identical repository contents for the direct conformance execution.
 
-- strict-compiles the cumulative exact ABI;
-- compiles and executes the I119 Pass-205 C positive/negative conformance binary;
-- compiles and executes the read-only C++ wrapper conformance binary;
-- executes the kernel-derived Pass-205 membrane preflight.
+## Documentation-inclusive seal validation
 
-The same workflow then verified the inherited VM81 kernel, Pass 214 adapter, and Pass 186 SysV AMD64 ABI.
+Pass 219B Universal Phase Locality I5 run `32246411443`:
 
-GitHub checked out synthetic merge `6b42491bf2c10d5ca5318bbca845e883d265e781`. Its Git tree is exactly equal to the exact development head tree:
+- exact job `96047799290` — **SUCCESS**
+- synthetic job `96047799053` — **SUCCESS**
 
-`d99ab4f110c434f80525b2c34e1863d9d5ffa0b1`
+Both jobs passed frozen lineage, approximate-authority rejection, frozen Pass219B evidence/contract validation, cumulative exact-ABI compilation, Pass219B I1 preservation, inherited RNA preservation, and Pass206 I118 membrane preservation.
 
-Therefore the direct conformance suite executed byte-identical repository contents to exact development head `8bba876979d93eccda987bb3d915ef203a8b1b31`; the difference is commit topology only, not file content.
+VM81 Exact ABI Repair run `32246411489`, job `96047799854` — **SUCCESS**.
 
-### Frozen-source diff boundary
+The job passed:
 
-The validated branch changes no accepted Pass-205 implementation, persistence, API, native bridge, or accelerator source file. The frozen Pass-205 native and Python bridge blobs remain exactly the Pass-206 freeze identities above.
+- strict cumulative exact-ABI compile;
+- legacy-compatible shared runtime build;
+- direct exact-ABI regression containing the I119 C positive/negative conformance, read-only C++ conformance, and Python membrane preflight;
+- repaired VM81 kernel verification;
+- Pass214 VM81 IR adapter regression;
+- Pass186 SysV AMD64 ABI regression.
 
-Validation probe PRs `#304` and `#305` were closed unmerged and grant no authority. PR `#303` remains the sole development PR and remains draft/unmerged.
+Seal predecessor `4831314ab1f497767f5b1c908fb6743dd8fa7013` and synthetic merge `96b950ee7f2bf0fc02f7b668394953e7db037d84` shared exact Git tree `7901a53eebad02d985eaa280a4e86cf38c2c28ea`.
+
+## Frozen-source boundary
+
+The I119 lineage changes no accepted Pass-205 implementation, persistence, API, native bridge, or accelerator source file. The frozen Pass-205 native and Python bridge blobs remain exactly the Pass-206 freeze identities above.
+
+Validation probe PRs `#304` and `#305` are closed unmerged and grant no authority. PR `#303` remains the sole development PR and remains draft/unmerged.
 
 ## Changed files
 
@@ -159,17 +163,10 @@ Cumulative registration / regression extensions:
 
 No accepted Pass-205 runtime implementation file is modified.
 
-## Documentation-inclusive seal gate
+## Final record validation
 
-The development implementation is validated. The documentation-inclusive seal must now rerun only the impacted cumulative gates on the new documentation head:
+This frozen-status documentation commit is followed by a no-semantics-change aggregate comment trigger. The final checkpoint is not considered closed until the triggered Pass219B exact/synthetic and VM81 exact-ABI gates are terminal green. Their final run identities are recorded on PR `#303`, so the repository can freeze the validated final checkpoint without another status-document mutation.
 
-1. Pass 219B exact and synthetic cumulative exact-ABI / Pass-206 preservation;
-2. VM81 exact-ABI regression including direct I119 C/C++ negative cases and membrane preflight;
-3. branch-vs-main lineage remains ahead-only with no divergence;
-4. exact/synthetic Git-tree equality remains true while canonical `main` is unchanged.
+## Next reverse-census target
 
-Until those documentation-inclusive checks are terminal green, this restart record does not claim the final I119 freeze.
-
-## Next action
-
-Trigger the documentation-inclusive seal gates without changing executable semantics. If terminal green, record the final seal head and run/job identities, mark Pass 205 `WIRED`, leave PR `#303` open/draft/unmerged, and advance the reverse census to Pass 204.
+After final record validation, the next target is **Pass 204**, strictly from the final frozen I119 checkpoint. Canonical `main` remains untouched until separately authorized.
