@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   inherited-pass205-membrane:
@@ -113,3 +114,24 @@ jobs:
 
       - name: Preserve Pass 206 successor membrane
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass206_membrane_i118.py
+
+      - name: Emit I119 validation receipt to PR 303
+        if: always() && github.event_name == 'push'
+        uses: actions/github-script@v7
+        env:
+          I119_TARGET: ${{ matrix.target }}
+          I119_STATUS: ${{ job.status }}
+        with:
+          script: |
+            const body = [
+              `I119 PUSH VALIDATION ${process.env.I119_TARGET.toUpperCase()}: ${process.env.I119_STATUS.toUpperCase()}`,
+              `head: ${context.sha}`,
+              `run: ${context.runId}`,
+              `workflow: ${context.workflow}`
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 303,
+              body
+            });
