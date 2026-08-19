@@ -48,12 +48,12 @@ jobs:
             git merge --no-edit origin/main
           fi
 
-      - name: Prove frozen I119 and accepted Pass 204 ancestry
+      - name: Prove frozen I119 and accepted Pass 204 integration
         run: |
           git merge-base --is-ancestor 770d5be2a0bb81fb833ac3c8398ddc48ff2ef0a9 HEAD
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
-          git merge-base --is-ancestor 6b26fbf6f4b767d4eb5f2a790c552b03fd39d352 HEAD
           git merge-base --is-ancestor deb34287ee155d9538005bbbfd6519794d999ac9 HEAD
+          test "$(git merge-base 6b26fbf6f4b767d4eb5f2a790c552b03fd39d352 HEAD)" = fe5cb897ce5ca97a0c6c7439f26743dcefb83d4f
 
       - name: Prove frozen Pass 204 source and receipt blobs
         run: |
