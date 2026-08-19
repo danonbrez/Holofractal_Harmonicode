@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 203 inherited mainframe/renderer binding and Pass 219B universal phase locality. */
+/* Additive exact ABI aggregate through Pass 202 inherited guarded-deployment binding and Pass 219B universal phase locality. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -25,5 +25,6 @@
 #include "hhs_pass219_inherited_pass205_1_19.inc"
 #include "hhs_pass219_inherited_pass204_1_20.inc"
 #include "hhs_pass219_inherited_pass203_1_21.inc"
+#include "hhs_pass219_inherited_pass202_1_22.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
