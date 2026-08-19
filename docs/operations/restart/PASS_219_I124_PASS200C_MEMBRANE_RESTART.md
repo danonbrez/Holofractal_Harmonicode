@@ -1,6 +1,6 @@
 # Pass 219 Iteration 1.24 — inherited Pass 200C membrane restart record
 
-Status: **IMPLEMENTATION CHECKPOINT — VALIDATION PENDING**
+Status: **FROZEN — PASS 200C WIRED**
 
 ## Repository state
 
@@ -9,14 +9,15 @@ Status: **IMPLEMENTATION CHECKPOINT — VALIDATION PENDING**
 - merge target: `main`
 - exact frozen I123 predecessor: `30e1ae3a278ee19c3c167d3659ed71ca2a016873`
 - canonical main at start: `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
-- branch created directly from frozen I123
+- terminal-green implementation head before documentation seal: `9214104e804f715f234f5199b86070b1fbc4a0c1`
+- implementation lineage: 14 commits ahead / 0 behind frozen I123, merge base exactly frozen I123
 - canonical main is not modified by this tranche
 
 ## Census result
 
 `MISSING_MEMBRANE_EXPOSURE`
 
-No inherited Pass 200C implementation defect has been identified. The accepted guarded-active runtime remains present, inherited, source-identical, and historically production-validated. I124 adds the missing cumulative Pass 219 exposure only.
+No inherited Pass 200C implementation defect was found. The accepted guarded-active runtime remains present, inherited, source-identical, and production-valid on the cumulative tree. I124 adds the missing cumulative Pass 219 exposure only.
 
 ## Accepted Pass 200C history
 
@@ -100,20 +101,65 @@ I124 provides a fail-closed C witness/binder, read-only C++ wrapper, seven-opera
 
 I124 adds no active-admission authority, canonical mutation authority, persistence authority, Hash72 clock/commit authority, C++ mutation authority, or VM81 mutation authority. It cannot activate, renew, roll back, mutate a Pass 200C frontier, or mint a Hash72 event. Pass 201 remains the immediate successor binding.
 
-## Validation pending
+## Repair-forward validation note
 
-Required closure gates:
+The initial I124 synthetic job identified one verifier-only wording mismatch. The membrane source-boundary check searched for the nonexistent phrase `three independent approvals`; the accepted contract states `Active admission requires exactly three approvals` and separately requires three distinct principals and three distinct VM81 receipt identities.
 
-1. dedicated I124 exact/synthetic matrix with full Git history;
-2. accepted squash lineage and historical/current source-blob proofs;
-3. strict C11/C++17 fail-closed native conformance;
-4. seven-operation kernel membrane preflight;
-5. unchanged Pass 200C lifecycle regression;
-6. unchanged Pass 200C production validator across Pass 200A → 200B → 200C;
-7. frozen I123 Pass 201 successor membrane preservation;
-8. VM81 exact ABI preservation after aggregate registration;
-9. UQCEL preservation after aggregate registration;
-10. Pass219B exact/synthetic preservation after aggregate registration;
-11. historical Pass 200C workflow replay selected by `docs/pass200c/**`.
+Repair-forward commit:
 
-After terminal-green implementation validation, update this record to `FROZEN — PASS 200C WIRED`, run the documentation-inclusive I124 exact/synthetic seal, prove exact/synthetic tree equality and final lineage, leave the draft PR unmerged, and continue the reverse census with Pass 200B strictly from the frozen I124 checkpoint.
+- `9214104e804f715f234f5199b86070b1fbc4a0c1`
+
+The repair changes only `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i124_pass200c.py` to bind the exact accepted wording. No runtime, ABI, accepted Pass 200C source, or authority semantic changed. The pre-repair VM81 failure was the same stale phrase inside the additive I124 membrane subprocess; strict compilation/linking and the other 13 exact-ABI tests were already green.
+
+## Terminal-green implementation validation
+
+Dedicated repaired I124 membrane:
+
+- run `32302527079`
+- exact job `96228089636` — SUCCESS
+- synthetic job `96228089803` — SUCCESS
+
+Both jobs proved frozen-I123 lineage, accepted squash ancestry, historical/current Pass 200C blob identity, no approximate/new authority exports, strict C11/C++17 conformance, seven-operation kernel membrane preflight, guarded-active regression, production validator, and frozen Pass 201 successor preservation.
+
+Historical Pass 200C Guarded Active Admission on the repaired head:
+
+- run `32302527099`
+- job `96228091110` — SUCCESS
+
+It independently compiled the accepted surfaces, ran all guarded-active lifecycle tests, executed the full Pass 200A → Pass 200B → Pass 200C production proof/canary/active-lease/exhaustion/rollback path, rejected floating-point canonical operations, validated visual/API/authority/contract wiring, and uploaded fresh evidence.
+
+VM81 Exact ABI on the repaired head:
+
+- run `32302526970`
+- job `96228089018` — SUCCESS
+
+Universal Quantization Constraint Audit on the repaired head:
+
+- run `32302526990`
+- job `96228089444` — SUCCESS
+
+Pass219B Universal Phase Locality I5 on the repaired head:
+
+- run `32302527112`
+- exact job `96228089537` — SUCCESS
+- synthetic job `96228089696` — SUCCESS
+
+Frozen Pass 201 successor membrane on the repaired head:
+
+- run `32302527066`
+- synthetic job `96228089154` — SUCCESS
+- the dedicated repaired I124 exact and synthetic jobs each independently executed and passed the frozen Pass 201 successor membrane as their terminal successor gate.
+
+The independent Pass 201 exact job was still completing its unchanged production-federation tail when this freeze record was written; it is not a blocker because both repaired I124 targets already passed the exact successor membrane and the independent synthetic Pass 201 gate is terminal green.
+
+## Freeze state
+
+Pass 200C is frozen `WIRED` because the accepted guarded-active implementation already existed, the missing cumulative Pass 219 membrane exposure is now present, the accepted squash lineage and immutable source identity are bound, active admission and continuous exact-guard semantics remain unchanged, inherited persistence is explicitly preserved as read-only evidence, Pass 201 successor continuity is preserved, and all dependency-scoped implementation gates are terminal green.
+
+PR `#311` remains validation-only, draft, and unmerged. Canonical main remains untouched. No integration authority is granted by this freeze.
+
+## Final seal and next target
+
+This documentation-inclusive commit is the final I124 seal candidate. Because it changes only this restart record, only the dedicated I124 exact/synthetic gate must be revalidated unless that seal reveals lineage or source-identity drift.
+
+After final seal success, prove exact/synthetic tree equality and final lineage, leave PR #311 unmerged, and continue the reverse census with Pass 200B strictly from the frozen I124 checkpoint.
