@@ -3,11 +3,12 @@
 ## Base and target
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
-- Current authoritative main at start: `d4b893521782d7f7590c74034c4634bfdba83874`
+- Authoritative main at start: `d4b893521782d7f7590c74034c4634bfdba83874`
 - Frozen Pass 219 I118: `e87bc42b17c03ff98f691838b8d573a5bdf46ff2`
 - Frozen Pass 219B I4 parent: `e7ebe4e52b0d9aed304dde25de35589c9668fa1e`
 - Branch: `agent/pass219b-iteration5-universal-phase-local-invariant`
-- Intended final merge target: `main`
+- Final merge target: `main`
+- PR: `#301`
 
 Lineage reconciliation before mutation:
 
@@ -84,14 +85,34 @@ Exact/synthetic matrix validates:
 - inherited RNA 1.10 C/C++ regression;
 - inherited Pass 206 I118 C/C++ regression.
 
+## Completed stacked validation
+
+Initial I5 head:
+
+`f066ceea60294439811f511b6a4e3b5f2c8acbc4`
+
+Dedicated run:
+
+`32233193893`
+
+- exact job `96007314008` — SUCCESS
+- synthetic job `96007314381` — SUCCESS
+
+That run proved the I5 implementation against exact frozen I4 and its synthetic merge.
+
+PR `#301` has now been retargeted from frozen I4 directly to `main`. Because current `main` is the exact ancestor of the entire Pass 219/I118/219B stack, no rebasing or history rewrite is required.
+
+This documentation update intentionally creates a new final-integration head so the same dedicated workflow runs again with `main` as the PR base and validates the direct canonical synthetic merge candidate.
+
 ## Current state
 
 - Implementation: complete.
 - Repository-visible commits: complete.
-- I5 PR validation: pending.
-- Final direct integration validation against `main`: pending.
-- Canonical main merge: explicitly authorized by user but must occur only after terminal-green exact/synthetic validation.
+- Stacked I5 exact/synthetic validation: terminal green.
+- Direct PR base: `main`.
+- Final direct integration exact/synthetic validation: pending on this documentation-inclusive head.
+- Canonical main merge: explicitly authorized by user and may proceed only after the direct-main exact/synthetic run is terminal green.
 
 ## Next action
 
-Open a stacked I5 PR against frozen I4, require both jobs terminal green, then open/validate a direct integration PR from the exact I5 head to `main`. If the final direct integration remains ancestry-clean and terminal green, fast-forward/merge to main, verify main equals the validated I5 head or validated merge result, and close superseded stacked PRs only after canonical verification.
+Require both direct-main jobs terminal green. Reconfirm that `main` remains the merge base and is still zero commits ahead of this I5 head. Then mark PR `#301` ready, merge with the exact expected head SHA, verify canonical `main`, and close superseded stacked PRs only after canonical verification.
