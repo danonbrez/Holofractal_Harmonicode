@@ -1,6 +1,9 @@
 name: Pass 219 Cumulative Pass 205 Membrane I119
 
 on:
+  push:
+    branches:
+      - agent/pass219-iteration119-pass205-membrane
   pull_request:
     branches: [main]
     paths:
@@ -36,8 +39,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
           fetch-depth: 0
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
 
       - name: Prove frozen I118, current-main, and Pass 205 accepted ancestry
         run: |
