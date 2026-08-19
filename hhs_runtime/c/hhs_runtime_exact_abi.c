@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 204 inherited open-cloud binding and Pass 219B universal phase locality. */
+/* Additive exact ABI aggregate through Pass 204 inherited open-cloud binding and Pass 219B universal phase locality. I120 final frozen-record validation trigger; executable include order unchanged. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
