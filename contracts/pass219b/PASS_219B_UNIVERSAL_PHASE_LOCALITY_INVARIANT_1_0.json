@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS_219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_V1",
   "version": "1.0.0",
-  "status": "CANDIDATE_FOR_MAIN",
+  "status": "CANONICAL_MAIN_INVARIANT",
   "scope": "all HHS phase-quantized candidate, lookup, cache, hydration, and accelerator realization paths that possess exact pre-expansion selectors",
   "definitions": {
     "Q": "product(q_l)",
@@ -48,5 +48,10 @@
     "form": "T(M) = a + b*M",
     "authority": false,
     "note": "performance model is empirical and hardware/kernel specific; only exact selector geometry and equality constraints are invariant"
+  },
+  "canonicalization": {
+    "initial_main_integration_merge": "22c235e74ea9726d3d2d5245056021d3c17994cd",
+    "validated_i5_head": "828d075072e741055a964f68b875dc8f4ea247e5",
+    "integration_pr": 301
   }
 }
