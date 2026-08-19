@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 201 inherited public-API federation binding and Pass 219B universal phase locality. */
+/* Additive exact ABI aggregate through Pass 200C inherited guarded-active admission binding and Pass 219B universal phase locality. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -27,5 +27,6 @@
 #include "hhs_pass219_inherited_pass203_1_21.inc"
 #include "hhs_pass219_inherited_pass202_1_22.inc"
 #include "hhs_pass219_inherited_pass201_1_23.inc"
+#include "hhs_pass219_inherited_pass200c_1_24.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
