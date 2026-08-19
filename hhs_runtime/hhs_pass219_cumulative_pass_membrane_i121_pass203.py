@@ -1,12 +1,4 @@
-"""Pass 219 I121 inherited Pass 203 integrated-mainframe membrane.
-
-This layer exposes the accepted Pass 203 hydrated-function mainframe and
-high-fidelity native renderer through the cumulative Pass 219 membrane without
-redefining their execution, renderer, UI, persistence, VM81, Hash72, or Hash216
-authority. Historical Pass 203 catalog counts remain historical closure evidence;
-Pass 204's standalone replay proves that later repository growth remains
-compatible without pretending the historical catalog cardinality is timeless.
-"""
+"""Pass 219 I121 read-only membrane for the accepted Pass 203 mainframe and renderer."""
 from __future__ import annotations
 
 import hashlib
@@ -25,23 +17,24 @@ PASS203_CENSUS_CLASSIFICATION = "MISSING_MEMBRANE_EXPOSURE"
 PASS203_BIND_SYMBOL = "hhs_exact_pass219_bind_pass203_integrated_mainframe"
 PASS203_SURFACE_ID = "validator:pass219.inherited.pass203.integrated-mainframe"
 
-PASS203_CONTRACT_PATH = Path("HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md")
-PASS203_RESTART_PATH = Path("docs/pass203/RESTART_RECORD.md")
-PASS203_MAINFRAME_RECEIPT_PATH = Path("evidence/pass203/PASS203_MAINFRAME_VALIDATION_RECEIPT.json")
-PASS203_RENDER_RECEIPT_PATH = Path("evidence/pass203/PASS203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT.json")
-PASS203_PASS204_REPLAY_PATH = Path("evidence/pass204/PASS203_INHERITED_VALIDATION_RECEIPT.json")
-PASS203_RUNTIME_PATH = Path("hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py")
-PASS203_WORKER_PATH = Path("hhs_backend/runtime/hhs_pass203_function_worker_v1.py")
-PASS203_STORYBOOK_FUNCTIONS_PATH = Path("hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py")
-PASS203_ROUTES_PATH = Path("hhs_backend/api/pass203_mainframe_routes.py")
-PASS203_RENDERER_PATH = Path("hhs_backend/runtime/hhs_storybook_reel_v3.py")
-PASS203_RENDERER_ROUTES_PATH = Path("hhs_backend/api/storybook_reel_routes.py")
-PASS203_MAINFRAME_UI_PATH = Path("applications/holofractal_harmonizer/src/pass203-mainframe.mjs")
-PASS203_RENDERER_UI_PATH = Path("applications/storybook_reel_studio/pass203-high-fidelity-controls.js")
-PASS203_MAINFRAME_TEST_PATH = Path("tests/test_hhs_pass203_hydrated_mainframe_v1.py")
-PASS203_RENDERER_TEST_PATH = Path("tests/test_hhs_pass203_high_fidelity_render_v1.py")
-PASS203_MAINFRAME_WORKFLOW_PATH = Path(".github/workflows/pass203-hydrated-mainframe.yml")
-PASS203_RENDERER_WORKFLOW_PATH = Path(".github/workflows/storybook-reel-studio.yml")
+P = Path
+PASS203_CONTRACT_PATH = P("HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md")
+PASS203_RESTART_PATH = P("docs/pass203/RESTART_RECORD.md")
+PASS203_MAINFRAME_RECEIPT_PATH = P("evidence/pass203/PASS203_MAINFRAME_VALIDATION_RECEIPT.json")
+PASS203_RENDER_RECEIPT_PATH = P("evidence/pass203/PASS203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT.json")
+PASS203_PASS204_REPLAY_PATH = P("evidence/pass204/PASS203_INHERITED_VALIDATION_RECEIPT.json")
+PASS203_RUNTIME_PATH = P("hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py")
+PASS203_WORKER_PATH = P("hhs_backend/runtime/hhs_pass203_function_worker_v1.py")
+PASS203_STORYBOOK_FUNCTIONS_PATH = P("hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py")
+PASS203_ROUTES_PATH = P("hhs_backend/api/pass203_mainframe_routes.py")
+PASS203_RENDERER_PATH = P("hhs_backend/runtime/hhs_storybook_reel_v3.py")
+PASS203_RENDERER_ROUTES_PATH = P("hhs_backend/api/storybook_reel_routes.py")
+PASS203_MAINFRAME_UI_PATH = P("applications/holofractal_harmonizer/src/pass203-mainframe.mjs")
+PASS203_RENDERER_UI_PATH = P("applications/storybook_reel_studio/pass203-high-fidelity-controls.js")
+PASS203_MAINFRAME_TEST_PATH = P("tests/test_hhs_pass203_hydrated_mainframe_v1.py")
+PASS203_RENDERER_TEST_PATH = P("tests/test_hhs_pass203_high_fidelity_render_v1.py")
+PASS203_MAINFRAME_WORKFLOW_PATH = P(".github/workflows/pass203-hydrated-mainframe.yml")
+PASS203_RENDERER_WORKFLOW_PATH = P(".github/workflows/storybook-reel-studio.yml")
 
 BASE_COMMIT = "8bd57b5843648efb52092568fae3501eeeefeda0"
 VALIDATED_HEAD = "b1bb5ca1908b6e02a037ea412801286867be74b3"
@@ -103,70 +96,41 @@ def _load(path: Path) -> Dict[str, Any]:
 
 def _git_blob(path: Path) -> str:
     data = (ROOT / path).read_bytes()
-    header = f"blob {len(data)}\0".encode("ascii")
-    return hashlib.sha1(header + data).hexdigest()
+    return hashlib.sha1(f"blob {len(data)}\0".encode("ascii") + data).hexdigest()
+
+
+def _require_map(actual: Dict[str, Any], expected: Dict[str, Any], prefix: str) -> None:
+    for key, value in expected.items():
+        if actual.get(key) != value:
+            raise RuntimeError(f"{prefix}:{key}")
 
 
 def pass203_membrane_source_evidence() -> Dict[str, Any]:
     mainframe = _load(PASS203_MAINFRAME_RECEIPT_PATH)
     renderer = _load(PASS203_RENDER_RECEIPT_PATH)
     replay = _load(PASS203_PASS204_REPLAY_PATH)
-    contract = _text(PASS203_CONTRACT_PATH)
-    restart = _text(PASS203_RESTART_PATH)
-    runtime = _text(PASS203_RUNTIME_PATH)
-    worker = _text(PASS203_WORKER_PATH)
-    renderer_source = _text(PASS203_RENDERER_PATH)
-    routes = _text(PASS203_ROUTES_PATH)
-    renderer_routes = _text(PASS203_RENDERER_ROUTES_PATH)
-    mainframe_ui = _text(PASS203_MAINFRAME_UI_PATH)
-    renderer_ui = _text(PASS203_RENDERER_UI_PATH)
-    mainframe_workflow = _text(PASS203_MAINFRAME_WORKFLOW_PATH)
-    successor = pass204_membrane_source_evidence()
-
     for path, expected in EXPECTED_BLOBS.items():
         actual = _git_blob(path)
         if actual != expected:
             raise RuntimeError(f"PASS203_FROZEN_BLOB_DRIFT:{path}:{actual}")
 
-    if mainframe.get("schema") != "HHS_PASS_203_VALIDATION_RECEIPT_V1":
-        raise RuntimeError("PASS203_MAINFRAME_RECEIPT_SCHEMA_DRIFT")
+    if mainframe.get("schema") != "HHS_PASS_203_VALIDATION_RECEIPT_V1" or mainframe.get("closed") is not True:
+        raise RuntimeError("PASS203_MAINFRAME_RECEIPT_DRIFT")
     if mainframe.get("classification") != "HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME_VERIFIED":
         raise RuntimeError("PASS203_MAINFRAME_CLASSIFICATION_DRIFT")
     if mainframe.get("contract") != "HHS-P203-UNIVERSAL-HYDRATED-FUNCTION-MAINFRAME-VM81-H72-H216":
         raise RuntimeError("PASS203_MAINFRAME_CONTRACT_DRIFT")
-    if mainframe.get("closed") is not True:
-        raise RuntimeError("PASS203_MAINFRAME_CLOSURE_DRIFT")
-    if mainframe.get("catalog_sha256") != MAINFRAME_CATALOG_SHA256:
-        raise RuntimeError("PASS203_MAINFRAME_CATALOG_DIGEST_DRIFT")
-    if mainframe.get("status_hash72") != MAINFRAME_STATUS_HASH72 or len(MAINFRAME_STATUS_HASH72) != 72:
-        raise RuntimeError("PASS203_MAINFRAME_STATUS_HASH72_DRIFT")
-
-    summary = mainframe.get("summary") or {}
-    expected_summary = {
-        "catalog_count": 2902,
-        "hydrated_count": 688,
-        "callable_count": 688,
-        "unbound_internal_count": 2214,
-        "governed_operation_count": 42,
-        "public_route_count": 464,
-        "openapi_path_count": 435,
-    }
-    for key, expected in expected_summary.items():
-        if summary.get(key) != expected:
-            raise RuntimeError("PASS203_HISTORICAL_SUMMARY_DRIFT:" + key)
-    kinds = summary.get("kind_counts") or {}
-    expected_kinds = {
-        "PYTHON_FUNCTION": 2644,
-        "NATIVE_ABI": 211,
-        "GOVERNED_OPERATION": 42,
-        "MAINFRAME_ADAPTER": 5,
-    }
-    for key, expected in expected_kinds.items():
-        if kinds.get(key) != expected:
-            raise RuntimeError("PASS203_KIND_COUNT_DRIFT:" + key)
-
-    claim = mainframe.get("claim_boundary") or {}
-    required_claim = {
+    if mainframe.get("catalog_sha256") != MAINFRAME_CATALOG_SHA256 or mainframe.get("status_hash72") != MAINFRAME_STATUS_HASH72:
+        raise RuntimeError("PASS203_MAINFRAME_IDENTITY_DRIFT")
+    _require_map(mainframe.get("summary") or {}, {
+        "catalog_count": 2902, "hydrated_count": 688, "callable_count": 688,
+        "unbound_internal_count": 2214, "governed_operation_count": 42,
+        "public_route_count": 464, "openapi_path_count": 435,
+    }, "PASS203_HISTORICAL_SUMMARY_DRIFT")
+    _require_map((mainframe.get("summary") or {}).get("kind_counts") or {}, {
+        "PYTHON_FUNCTION": 2644, "NATIVE_ABI": 211, "GOVERNED_OPERATION": 42, "MAINFRAME_ADAPTER": 5,
+    }, "PASS203_KIND_COUNT_DRIFT")
+    _require_map(mainframe.get("claim_boundary") or {}, {
         "all_discovered_functions_indexed": True,
         "all_hydrated_functions_callable": True,
         "unbound_functions_fail_closed": True,
@@ -174,285 +138,132 @@ def pass203_membrane_source_evidence() -> Dict[str, Any]:
         "unrestricted_subprocess_available": False,
         "assistant_plan_is_execution_authority": False,
         "bounded_pagination_preserved": True,
-    }
-    for key, expected in required_claim.items():
-        if claim.get(key) is not expected:
-            raise RuntimeError("PASS203_CLAIM_BOUNDARY_DRIFT:" + key)
+    }, "PASS203_CLAIM_BOUNDARY_DRIFT")
 
-    if renderer.get("schema") != "HHS_PASS_203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT_V1":
-        raise RuntimeError("PASS203_RENDERER_RECEIPT_SCHEMA_DRIFT")
+    if renderer.get("schema") != "HHS_PASS_203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT_V1" or renderer.get("closed") is not True:
+        raise RuntimeError("PASS203_RENDERER_RECEIPT_DRIFT")
     if renderer.get("classification") != "HHS_PASS_203_HIGH_FIDELITY_NATIVE_RENDER_SUBAUTHORITY_VERIFIED":
         raise RuntimeError("PASS203_RENDERER_CLASSIFICATION_DRIFT")
     if renderer.get("contract") != "HHS-P203-HIGH-FIDELITY-NATIVE-RENDER-PARAMETER-AUTHORITY-VM81-H72-H216":
         raise RuntimeError("PASS203_RENDERER_CONTRACT_DRIFT")
-    if renderer.get("closed") is not True or renderer.get("all_prior_passes_inherited") is not True:
-        raise RuntimeError("PASS203_RENDERER_CLOSURE_DRIFT")
-    if renderer.get("catalog_hash72") != RENDERER_CATALOG_HASH72 or len(RENDERER_CATALOG_HASH72) != 72:
-        raise RuntimeError("PASS203_RENDERER_CATALOG_HASH72_DRIFT")
-    if renderer.get("filter_graph_sha256") != RENDERER_FILTER_GRAPH_SHA256:
-        raise RuntimeError("PASS203_RENDERER_FILTER_GRAPH_DRIFT")
-
-    render_summary = renderer.get("summary") or {}
-    expected_render = {
-        "parameter_count": 415,
-        "style_parameter_count": 30,
-        "native_layer_parameter_count": 10,
-        "render_parameter_count": 21,
-        "compiled_native_constant_record_count": 346,
-        "quality_profile_count": 5,
-        "validated_output_width": 1440,
-        "validated_output_height": 2560,
-        "texture_flags": 31,
-        "sprite_overlay_flags": 31,
-    }
-    for key, expected in expected_render.items():
-        if render_summary.get(key) != expected:
-            raise RuntimeError("PASS203_RENDERER_SUMMARY_DRIFT:" + key)
-
-    renderer_claim = renderer.get("claim_boundary") or {}
-    required_renderer_claim = {
+    if renderer.get("all_prior_passes_inherited") is not True or renderer.get("catalog_hash72") != RENDERER_CATALOG_HASH72 or renderer.get("filter_graph_sha256") != RENDERER_FILTER_GRAPH_SHA256:
+        raise RuntimeError("PASS203_RENDERER_IDENTITY_DRIFT")
+    _require_map(renderer.get("summary") or {}, {
+        "parameter_count": 415, "style_parameter_count": 30, "native_layer_parameter_count": 10,
+        "render_parameter_count": 21, "compiled_native_constant_record_count": 346,
+        "quality_profile_count": 5, "validated_output_width": 1440, "validated_output_height": 2560,
+        "texture_flags": 31, "sprite_overlay_flags": 31,
+    }, "PASS203_RENDERER_SUMMARY_DRIFT")
+    _require_map(renderer.get("claim_boundary") or {}, {
         "all_mutable_parameters_publicly_enumerated": True,
         "compiled_constants_public_and_read_only": True,
         "frontend_is_authority": False,
         "logical_frame_is_output_quality_ceiling": False,
         "native_frame_identity_preserved": True,
         "native_layers_publicly_selectable": True,
-    }
-    for key, expected in required_renderer_claim.items():
-        if renderer_claim.get(key) is not expected:
-            raise RuntimeError("PASS203_RENDERER_CLAIM_DRIFT:" + key)
+    }, "PASS203_RENDERER_CLAIM_DRIFT")
 
-    if replay.get("schema") != "HHS_PASS_204_INHERITED_PASS_203_REPLAY_RECEIPT_V1":
-        raise RuntimeError("PASS203_PASS204_REPLAY_SCHEMA_DRIFT")
-    if replay.get("classification") != mainframe.get("classification"):
-        raise RuntimeError("PASS203_PASS204_REPLAY_CLASSIFICATION_DRIFT")
-    if replay.get("contract") != mainframe.get("contract"):
-        raise RuntimeError("PASS203_PASS204_REPLAY_CONTRACT_DRIFT")
-    if replay.get("closed") is not True or replay.get("standalone_replay") is not True:
-        raise RuntimeError("PASS203_PASS204_STANDALONE_REPLAY_DRIFT")
-    replay_summary = replay.get("summary") or {}
-    replay_catalog = replay_summary.get("catalog_count")
-    replay_callable = replay_summary.get("callable_count")
-    replay_hydrated = replay_summary.get("hydrated_count")
-    replay_unbound = replay_summary.get("unbound_internal_count")
-    if not isinstance(replay_catalog, int) or replay_catalog < 2902:
+    if replay.get("schema") != "HHS_PASS_204_INHERITED_PASS_203_REPLAY_RECEIPT_V1" or replay.get("closed") is not True or replay.get("standalone_replay") is not True:
+        raise RuntimeError("PASS203_PASS204_REPLAY_DRIFT")
+    if replay.get("classification") != mainframe.get("classification") or replay.get("contract") != mainframe.get("contract"):
+        raise RuntimeError("PASS203_PASS204_REPLAY_IDENTITY_DRIFT")
+    rs = replay.get("summary") or {}
+    if not isinstance(rs.get("catalog_count"), int) or rs["catalog_count"] < 2902:
         raise RuntimeError("PASS203_DYNAMIC_CATALOG_REGRESSION")
-    if replay_callable != 688 or replay_hydrated != 688:
+    if rs.get("callable_count") != 688 or rs.get("hydrated_count") != 688:
         raise RuntimeError("PASS203_DYNAMIC_CALLABLE_SET_DRIFT")
-    if replay_unbound != replay_catalog - replay_callable:
+    if rs.get("unbound_internal_count") != rs["catalog_count"] - rs["callable_count"]:
         raise RuntimeError("PASS203_DYNAMIC_FAIL_CLOSED_PARTITION_DRIFT")
 
-    required_source_fragments = {
-        "runtime": (
-            "raw host-language eval and unrestricted",
-            "ABI_BINDING_REQUIRED",
-            "requires_vm81_authority",
-        ),
-        "worker": (
-            "Isolated bounded Python function worker for Pass 203",
-        ),
-        "renderer": (
-            "Pass 203 cumulative high-fidelity native storybook render authority",
-        ),
-        "routes": (
-            "/api/runtime/mainframe",
-        ),
-        "renderer_routes": (
-            "cumulative Pass 203 native storybook and game renderer",
-        ),
-        "mainframe_ui": (
-            "/api/runtime/mainframe",
-        ),
-        "renderer_ui": (
-            "/api/runtime/storybook-reel",
-        ),
+    fragments = {
+        PASS203_RUNTIME_PATH: ("raw host-language eval and unrestricted", "ABI_BINDING_REQUIRED", "requires_vm81_authority"),
+        PASS203_WORKER_PATH: ("Isolated bounded Python function worker for Pass 203",),
+        PASS203_RENDERER_PATH: ("Pass 203 cumulative high-fidelity native storybook render authority",),
+        PASS203_ROUTES_PATH: ("/api/runtime/mainframe", "assistant_plan_is_execution_authority"),
+        PASS203_RENDERER_ROUTES_PATH: ("cumulative Pass 203 native storybook and game renderer",),
+        PASS203_MAINFRAME_UI_PATH: ("/api/runtime/mainframe",),
+        PASS203_RENDERER_UI_PATH: ("/api/runtime/storybook-reel",),
+        PASS203_CONTRACT_PATH: ("arbitrary native symbol invocation", "unrestricted shell or subprocess commands"),
+        PASS203_RESTART_PATH: ("Pass 203 is the complete HHS version through this pass", "Parent version: Pass 202 guarded continuous integration and DigitalOcean deployment"),
+        PASS203_MAINFRAME_WORKFLOW_PATH: ("Run inherited Pass 201 federation tests", "Run inherited Pass 202 guarded deployment contract tests"),
     }
-    source_texts = {
-        "runtime": runtime,
-        "worker": worker,
-        "renderer": renderer_source,
-        "routes": routes,
-        "renderer_routes": renderer_routes,
-        "mainframe_ui": mainframe_ui,
-        "renderer_ui": renderer_ui,
-    }
-    for group, fragments in required_source_fragments.items():
-        for fragment in fragments:
-            if fragment not in source_texts[group]:
-                raise RuntimeError(f"PASS203_SOURCE_BOUNDARY_DRIFT:{group}:{fragment}")
+    for path, values in fragments.items():
+        text = _text(path)
+        for value in values:
+            if value not in text:
+                raise RuntimeError(f"PASS203_SOURCE_BOUNDARY_DRIFT:{path}:{value}")
 
-    if "Pass 203 is the complete HHS version through this pass" not in restart:
-        raise RuntimeError("PASS203_RESTART_CUMULATIVE_RULE_DRIFT")
-    if "Parent version: Pass 202 guarded continuous integration and DigitalOcean deployment" not in restart:
-        raise RuntimeError("PASS203_PASS202_RESTART_INHERITANCE_DRIFT")
-    if "Pass 201 public federation regression" not in mainframe_workflow:
-        raise RuntimeError("PASS203_PASS201_WORKFLOW_INHERITANCE_DRIFT")
-    if "Pass 202 guarded deployment" not in mainframe_workflow:
-        raise RuntimeError("PASS203_PASS202_WORKFLOW_INHERITANCE_DRIFT")
-    if "arbitrary host-language evaluation" not in contract:
-        raise RuntimeError("PASS203_CONTRACT_EXECUTION_BOUNDARY_DRIFT")
-
-    successor_receipt = successor.get("receipt") or {}
-    if successor_receipt.get("contract") != "HHS-P204-UNIVERSAL-EXECUTABLE-DECLARATIONS-OPEN-CLOUD-SANDBOX-VM81-H72-H216":
+    successor = pass204_membrane_source_evidence()
+    if (successor.get("receipt") or {}).get("contract") != "HHS-P204-UNIVERSAL-EXECUTABLE-DECLARATIONS-OPEN-CLOUD-SANDBOX-VM81-H72-H216":
         raise RuntimeError("PASS203_PASS204_SUCCESSOR_DRIFT")
-
     return {
-        "mainframe_receipt": mainframe,
-        "renderer_receipt": renderer,
-        "pass204_replay_receipt": replay,
-        "pass204_successor": successor,
-        "base_commit": BASE_COMMIT,
-        "validated_head": VALIDATED_HEAD,
-        "merge_commit": MERGE_COMMIT,
+        "mainframe_receipt": mainframe, "renderer_receipt": renderer,
+        "pass204_replay_receipt": replay, "pass204_successor": successor,
+        "base_commit": BASE_COMMIT, "validated_head": VALIDATED_HEAD, "merge_commit": MERGE_COMMIT,
         "final_mainframe_workflow_run": FINAL_MAINFRAME_WORKFLOW_RUN,
         "final_mainframe_artifact_id": FINAL_MAINFRAME_ARTIFACT_ID,
         "final_mainframe_artifact_digest": FINAL_MAINFRAME_ARTIFACT_DIGEST,
         "final_storybook_workflow_run": FINAL_STORYBOOK_WORKFLOW_RUN,
         "final_storybook_artifact_id": FINAL_STORYBOOK_ARTIFACT_ID,
         "final_storybook_artifact_digest": FINAL_STORYBOOK_ARTIFACT_DIGEST,
-        "mainframe_receipt_blob": MAINFRAME_RECEIPT_BLOB,
-        "renderer_receipt_blob": RENDERER_RECEIPT_BLOB,
+        "mainframe_receipt_blob": MAINFRAME_RECEIPT_BLOB, "renderer_receipt_blob": RENDERER_RECEIPT_BLOB,
         "pass204_replay_receipt_blob": PASS204_REPLAY_RECEIPT_BLOB,
         "source_blobs": {str(path): value for path, value in EXPECTED_BLOBS.items()},
     }
 
 
 def validate_pass203_historical_mainframe_identity() -> Dict[str, Any]:
-    source = pass203_membrane_source_evidence()
-    summary = source["mainframe_receipt"]["summary"]
-    return {
-        "ok": True,
-        "classification": source["mainframe_receipt"]["classification"],
-        "validated_head": source["validated_head"],
-        "merge_commit": source["merge_commit"],
-        "historical_catalog_count": summary["catalog_count"],
-        "historical_callable_count": summary["callable_count"],
-    }
+    s = pass203_membrane_source_evidence(); q = s["mainframe_receipt"]["summary"]
+    return {"ok": True, "classification": s["mainframe_receipt"]["classification"], "validated_head": s["validated_head"], "merge_commit": s["merge_commit"], "historical_catalog_count": q["catalog_count"], "historical_callable_count": q["callable_count"]}
 
 
 def validate_pass203_fail_closed_execution_boundary() -> Dict[str, Any]:
-    receipt = pass203_membrane_source_evidence()["mainframe_receipt"]
-    claim = receipt["claim_boundary"]
-    summary = receipt["summary"]
-    return {
-        "ok": True,
-        "historical_unbound_count": summary["unbound_internal_count"],
-        "unbound_functions_fail_closed": claim["unbound_functions_fail_closed"],
-        "arbitrary_host_eval_available": claim["arbitrary_host_eval_available"],
-        "unrestricted_subprocess_available": claim["unrestricted_subprocess_available"],
-        "assistant_plan_is_execution_authority": claim["assistant_plan_is_execution_authority"],
-    }
+    r = pass203_membrane_source_evidence()["mainframe_receipt"]
+    return {"ok": True, "historical_unbound_count": r["summary"]["unbound_internal_count"], **{k: r["claim_boundary"][k] for k in ("unbound_functions_fail_closed", "arbitrary_host_eval_available", "unrestricted_subprocess_available", "assistant_plan_is_execution_authority")}}
 
 
 def validate_pass203_renderer_subauthority() -> Dict[str, Any]:
-    receipt = pass203_membrane_source_evidence()["renderer_receipt"]
-    return {
-        "ok": True,
-        "classification": receipt["classification"],
-        "summary": receipt["summary"],
-        "claim_boundary": receipt["claim_boundary"],
-    }
+    r = pass203_membrane_source_evidence()["renderer_receipt"]
+    return {"ok": True, "classification": r["classification"], "summary": r["summary"], "claim_boundary": r["claim_boundary"]}
 
 
 def validate_pass203_public_projection() -> Dict[str, Any]:
     pass203_membrane_source_evidence()
-    return {
-        "ok": True,
-        "mainframe_api": "/api/runtime/mainframe",
-        "renderer_api": "/api/runtime/storybook-reel",
-        "mainframe_ui_bound": True,
-        "renderer_ui_bound": True,
-        "frontend_is_authority": False,
-    }
+    return {"ok": True, "mainframe_api": "/api/runtime/mainframe", "renderer_api": "/api/runtime/storybook-reel", "mainframe_ui_bound": True, "renderer_ui_bound": True, "frontend_is_authority": False}
 
 
 def validate_pass203_dynamic_replay_compatibility() -> Dict[str, Any]:
-    source = pass203_membrane_source_evidence()
-    historical = source["mainframe_receipt"]["summary"]
-    replay = source["pass204_replay_receipt"]["summary"]
-    return {
-        "ok": True,
-        "historical_catalog_count": historical["catalog_count"],
-        "replay_catalog_count": replay["catalog_count"],
-        "historical_callable_count": historical["callable_count"],
-        "replay_callable_count": replay["callable_count"],
-        "standalone_replay": source["pass204_replay_receipt"]["standalone_replay"],
-        "dynamic_catalog_growth_compatible": True,
-    }
+    s = pass203_membrane_source_evidence(); h = s["mainframe_receipt"]["summary"]; r = s["pass204_replay_receipt"]["summary"]
+    return {"ok": True, "historical_catalog_count": h["catalog_count"], "replay_catalog_count": r["catalog_count"], "historical_callable_count": h["callable_count"], "replay_callable_count": r["callable_count"], "standalone_replay": True, "dynamic_catalog_growth_compatible": True}
 
 
 def validate_pass202_inheritance() -> Dict[str, Any]:
     pass203_membrane_source_evidence()
-    return {
-        "ok": True,
-        "parent_pass": 202,
-        "parent_boundary": "guarded continuous integration and DigitalOcean deployment",
-        "workflow_regression_bound": True,
-    }
+    return {"ok": True, "parent_pass": 202, "parent_boundary": "guarded continuous integration and DigitalOcean deployment", "workflow_regression_bound": True}
 
 
 def validate_pass204_successor_binding() -> Dict[str, Any]:
-    successor = pass203_membrane_source_evidence()["pass204_successor"]
-    return {
-        "ok": True,
-        "successor_pass": 204,
-        "successor_contract": successor["receipt"]["contract"],
-        "successor_classification": successor["receipt"]["classification"],
-    }
+    s = pass203_membrane_source_evidence()["pass204_successor"]
+    return {"ok": True, "successor_pass": 204, "successor_contract": s["receipt"]["contract"], "successor_classification": s["receipt"]["classification"]}
 
 
 def validate_pass203_no_new_authority() -> Dict[str, Any]:
     pass203_membrane_source_evidence()
-    return {
-        "ok": True,
-        "i121_new_execution_authority": False,
-        "i121_new_canonical_mutation_authority": False,
-        "i121_new_persistence_authority": False,
-        "i121_new_hash72_clock": False,
-        "cxx_mutation_authority": False,
-        "vm81_mutation_authority": False,
-    }
+    return {"ok": True, "i121_new_execution_authority": False, "i121_new_canonical_mutation_authority": False, "i121_new_persistence_authority": False, "i121_new_hash72_clock": False, "cxx_mutation_authority": False, "vm81_mutation_authority": False}
 
 
 def pass203_surface_declaration() -> Dict[str, Any]:
     pass203_membrane_source_evidence()
     return {
-        "surface_id": PASS203_SURFACE_ID,
-        "surface_type": "VALIDATOR",
+        "surface_id": PASS203_SURFACE_ID, "surface_type": "VALIDATOR",
         "module": "hhs_runtime.hhs_pass219_cumulative_pass_membrane_i121_pass203",
         "symbol": "validate_pass203_historical_mainframe_identity",
         "invariant_ids": ["HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I014"],
-        "contract_schemas": [
-            "HHS_PASS_203_VALIDATION_RECEIPT_V1",
-            "HHS_PASS_203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT_V1",
-            "HHS_PASS_204_INHERITED_PASS_203_REPLAY_RECEIPT_V1",
-        ],
-        "witness_schemas": [
-            "HHSExactPass203IntegratedMainframeWitnessV1",
-            "HHSExactPass219InheritedPass203BindingV1",
-        ],
+        "contract_schemas": ["HHS_PASS_203_VALIDATION_RECEIPT_V1", "HHS_PASS_203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT_V1", "HHS_PASS_204_INHERITED_PASS_203_REPLAY_RECEIPT_V1"],
+        "witness_schemas": ["HHSExactPass203IntegratedMainframeWitnessV1", "HHSExactPass219InheritedPass203BindingV1"],
         "validators": [PASS203_BIND_SYMBOL, "validate_pass203_historical_mainframe_identity"],
-        "guards": [
-            "pass203_historical_receipts_exact",
-            "pass203_unbound_functions_fail_closed",
-            "pass203_no_arbitrary_host_eval",
-            "pass203_no_unrestricted_subprocess",
-            "pass203_renderer_frontend_not_authority",
-            "pass203_compiled_constants_read_only",
-            "pass203_dynamic_catalog_replay_preserved",
-            "pass203_pass202_inheritance_preserved",
-            "pass203_pass204_successor_preserved",
-        ],
-        "rejection_codes": [
-            "REJECT_PASS203_HISTORICAL_IDENTITY_DRIFT",
-            "REJECT_PASS203_FAIL_CLOSED_BOUNDARY_DRIFT",
-            "REJECT_PASS203_HOST_EXECUTION_ESCAPE",
-            "REJECT_PASS203_RENDERER_AUTHORITY_ESCALATION",
-            "REJECT_PASS203_PUBLIC_PROJECTION_DRIFT",
-            "REJECT_PASS203_DYNAMIC_REPLAY_REGRESSION",
-            "REJECT_PASS203_PASS202_INHERITANCE_DRIFT",
-            "REJECT_PASS203_PASS204_SUCCESSOR_DRIFT",
-        ],
+        "guards": ["pass203_historical_receipts_exact", "pass203_unbound_functions_fail_closed", "pass203_no_host_execution_escape", "pass203_renderer_frontend_not_authority", "pass203_dynamic_catalog_replay_preserved", "pass203_pass202_inheritance_preserved", "pass203_pass204_successor_preserved"],
+        "rejection_codes": ["REJECT_PASS203_HISTORICAL_IDENTITY_DRIFT", "REJECT_PASS203_FAIL_CLOSED_BOUNDARY_DRIFT", "REJECT_PASS203_HOST_EXECUTION_ESCAPE", "REJECT_PASS203_RENDERER_AUTHORITY_ESCALATION", "REJECT_PASS203_PUBLIC_PROJECTION_DRIFT", "REJECT_PASS203_DYNAMIC_REPLAY_REGRESSION", "REJECT_PASS203_PASS202_INHERITANCE_DRIFT", "REJECT_PASS203_PASS204_SUCCESSOR_DRIFT"],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
         "persistence_policy": "INHERITED_PASS203_RUNTIME_STATE_READ_ONLY_BINDING",
         "boundedness_policy": "PASS_203_VERIFIED_MAINFRAME_AND_RENDERER_EXPOSURE_ONLY",
@@ -461,56 +272,24 @@ def pass203_surface_declaration() -> Dict[str, Any]:
 
 
 def pass203_membrane_manifest() -> Dict[str, Any]:
-    source = pass203_membrane_source_evidence()
-    mainframe = source["mainframe_receipt"]
-    renderer = source["renderer_receipt"]
-    replay = source["pass204_replay_receipt"]
+    s = pass203_membrane_source_evidence(); m = s["mainframe_receipt"]; r = s["renderer_receipt"]; p = s["pass204_replay_receipt"]
     return {
-        "schema": "HHS_PASS219_CUMULATIVE_PASS_MEMBRANE_ENTRY_V1",
-        "version": VERSION,
-        "pass_number": PASS203_NUMBER,
-        "classification": PASS203_CLASSIFICATION,
-        "census_classification": PASS203_CENSUS_CLASSIFICATION,
-        "pass219_c_abi_surface": PASS203_BIND_SYMBOL,
-        "pass219_cpp_class": "hhs::rna::InheritedPass203IntegratedMainframe",
-        "historical_catalog_count": mainframe["summary"]["catalog_count"],
-        "historical_callable_count": mainframe["summary"]["callable_count"],
-        "historical_unbound_count": mainframe["summary"]["unbound_internal_count"],
-        "renderer_record_count": renderer["summary"]["parameter_count"],
-        "pass204_replay_catalog_count": replay["summary"]["catalog_count"],
-        "pass204_standalone_replay_bound": replay["standalone_replay"],
-        "fail_closed_binding_gaps_bound": True,
-        "renderer_subauthority_bound": True,
-        "renderer_frontend_is_authority": False,
-        "pass202_inheritance_bound": True,
-        "pass204_successor_bound": True,
-        "pass219_new_execution_authority": False,
-        "pass219_new_canonical_mutation_authority": False,
-        "pass219_new_persistence_authority": False,
-        "pass219_new_hash72_clock": False,
-        "cxx_mutation_authority": False,
-        "vm81_mutation_authority": False,
-        "validated_head": source["validated_head"],
-        "merge_commit": source["merge_commit"],
-        "mainframe_receipt_blob": source["mainframe_receipt_blob"],
-        "renderer_receipt_blob": source["renderer_receipt_blob"],
-        "pass204_replay_receipt_blob": source["pass204_replay_receipt_blob"],
-        "source_blobs": source["source_blobs"],
-        "surface": pass203_surface_declaration(),
+        "schema": "HHS_PASS219_CUMULATIVE_PASS_MEMBRANE_ENTRY_V1", "version": VERSION,
+        "pass_number": 203, "classification": "WIRED", "census_classification": PASS203_CENSUS_CLASSIFICATION,
+        "pass219_c_abi_surface": PASS203_BIND_SYMBOL, "pass219_cpp_class": "hhs::rna::InheritedPass203IntegratedMainframe",
+        "historical_catalog_count": m["summary"]["catalog_count"], "historical_callable_count": m["summary"]["callable_count"], "historical_unbound_count": m["summary"]["unbound_internal_count"],
+        "renderer_record_count": r["summary"]["parameter_count"], "pass204_replay_catalog_count": p["summary"]["catalog_count"], "pass204_standalone_replay_bound": p["standalone_replay"],
+        "fail_closed_binding_gaps_bound": True, "renderer_subauthority_bound": True, "renderer_frontend_is_authority": False,
+        "pass202_inheritance_bound": True, "pass204_successor_bound": True,
+        "pass219_new_execution_authority": False, "pass219_new_canonical_mutation_authority": False, "pass219_new_persistence_authority": False, "pass219_new_hash72_clock": False, "cxx_mutation_authority": False, "vm81_mutation_authority": False,
+        "validated_head": s["validated_head"], "merge_commit": s["merge_commit"], "mainframe_receipt_blob": s["mainframe_receipt_blob"], "renderer_receipt_blob": s["renderer_receipt_blob"], "pass204_replay_receipt_blob": s["pass204_replay_receipt_blob"],
+        "source_blobs": s["source_blobs"], "surface": pass203_surface_declaration(),
     }
 
 
 def preflight_pass203_membrane() -> Dict[str, Any]:
-    declaration = pass203_surface_declaration()
-    rows = [execute_surface_preflight(declaration, operation=operation) for operation in REQUIRED_OPERATIONS]
-    ok = all(row.get("ok") is True for row in rows)
-    return {
-        "schema": "HHS_PASS219_I121_PASS203_MEMBRANE_PREFLIGHT_V1",
-        "ok": ok,
-        "surface_id": PASS203_SURFACE_ID,
-        "operations": rows,
-        "manifest": pass203_membrane_manifest(),
-    }
+    d = pass203_surface_declaration(); rows = [execute_surface_preflight(d, operation=o) for o in REQUIRED_OPERATIONS]
+    return {"schema": "HHS_PASS219_I121_PASS203_MEMBRANE_PREFLIGHT_V1", "ok": all(row.get("ok") is True for row in rows), "surface_id": PASS203_SURFACE_ID, "operations": rows, "manifest": pass203_membrane_manifest()}
 
 
 if __name__ == "__main__":
