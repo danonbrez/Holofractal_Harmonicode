@@ -1,0 +1,119 @@
+name: Pass 219B Universal Phase Locality I5
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219b-iteration4-fold7-adreno-hardware-tuning
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219b_universal_phase_locality_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp'
+      - 'contracts/pass219b/PASS_219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_1_0.json'
+      - 'artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json'
+      - 'docs/pass219/PASS_219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_I5.md'
+      - 'docs/operations/restart/PASS_219B_UNIVERSAL_PHASE_LOCALITY_I5_RESTART.md'
+      - '.github/workflows/pass219b-universal-phase-locality-i5.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  invariant:
+    name: universal-phase-locality (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen lineage
+        run: |
+          git merge-base --is-ancestor d4b893521782d7f7590c74034c4634bfdba83874 HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor e7ebe4e52b0d9aed304dde25de35589c9668fa1e HEAD
+
+      - name: Reject approximate arithmetic and authority exports
+        run: |
+          ! grep -REn '\b(float|double)\b' \
+            hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.h \
+            hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.hpp \
+            hhs_runtime/c/hhs_pass219b_universal_phase_locality_1_0.inc
+          ! grep -En 'HHS_EXACT_API.*(commit|admit|persist)' \
+            hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.h
+
+      - name: Validate frozen Fold7 evidence and contract
+        run: |
+          python - <<'PY'
+          import json
+          c=json.load(open('contracts/pass219b/PASS_219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_1_0.json', encoding='utf-8'))
+          e=json.load(open('artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json', encoding='utf-8'))
+          assert c['definitions']['Q'] == 'product(q_l)'
+          assert c['definitions']['M'] == 'product(s_l)'
+          assert e['targetDevice']['code'] == 'SM-F966U'
+          assert e['potentialPhaseCombinations'] == 6561
+          assert e['denseLaneDispatches'] == 68024448
+          assert e['dense']['gpuMedianNs'] == 11534336
+          assert e['results'][0]['materializedCombinations'] == 1
+          assert e['results'][0]['gpuMedianNs'] == 3584
+          assert all(r['exactSelectedSampleEquality'] for r in e['results'])
+          assert all(r['exactSelectedSampleEquality'] for r in e['factorization'])
+          vals=[r['gpuMedianNs'] for r in e['factorization']]
+          assert max(vals)-min(vals) == 512
+          assert e['claimBoundary']['authoritativeStateChanged'] is False
+          assert e['claimBoundary']['repositoryPass208KernelMeasured'] is False
+          PY
+
+      - name: Compile cumulative exact ABI and I5 tests
+        run: |
+          mkdir -p /tmp/pass219b-i5
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i5/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.c \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/i5-c
+          /tmp/pass219b-i5/i5-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/i5-cpp
+          /tmp/pass219b-i5/i5-cpp
+
+      - name: Preserve Pass 219B I1 exact semantics
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/i1-c
+          /tmp/pass219b-i5/i1-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/i1-cpp
+          /tmp/pass219b-i5/i1-cpp
+
+      - name: Preserve inherited RNA and Pass 206 membranes
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/rna-c
+          /tmp/pass219b-i5/rna-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.cpp \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/rna-cpp
+          /tmp/pass219b-i5/rna-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.c \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/p206-c
+          /tmp/pass219b-i5/p206-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.cpp \
+            /tmp/pass219b-i5/exact.o -o /tmp/pass219b-i5/p206-cpp
+          /tmp/pass219b-i5/p206-cpp
