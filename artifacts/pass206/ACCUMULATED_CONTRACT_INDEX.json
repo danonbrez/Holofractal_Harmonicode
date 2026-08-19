@@ -1,0 +1,340 @@
+{
+  "artifact_sha256": "364cbcae3a53e4d1d4b0353d187d0d41ab3130de52fd780261aa1e1c903ea3a4",
+  "entries": [
+    {
+      "file_sha256": "2de2b26e7aca0c44290217edf3d30fd80cdff2a08efa71a4732169cd6fd61210",
+      "git_blob": "e212c1f6b19f6cd993ef3aeb8ac724a77204d669",
+      "repository_path": "CAPABILITY_CONTRACT_REGISTRY_PASS_051.json",
+      "size_bytes": 627
+    },
+    {
+      "file_sha256": "bd04cb2f72dd6e2b993ebc76b916489719ddfa0ef5d25c607f59fd2de0f9540b",
+      "git_blob": "c31eac73fcf93ed0028ae074d44cfdab47234dc0",
+      "repository_path": "CLOSED_BRANCH_CONTRACTS_PASS_065.json",
+      "size_bytes": 3079
+    },
+    {
+      "file_sha256": "c3f6e2b56adffd5d73566f0abc9216a66cfed1ed375379ca91bebc9b89af681a",
+      "git_blob": "bcb31fac64e45b6dc7a9767197b064f78f643ede",
+      "repository_path": "CONTRACT_SCHEMA_REGISTRY_PASS_030.json",
+      "size_bytes": 80130
+    },
+    {
+      "file_sha256": "878cfad02c3d530efde25484be8147b7d41132297a8a7051aeb405aaacb57103",
+      "git_blob": "9b1597e8e36c138e673d81748de74de3850df893",
+      "repository_path": "DOCUMENT_PROVIDER_CONTRACTS_PASS_052.json",
+      "size_bytes": 6532
+    },
+    {
+      "file_sha256": "87b290362107b15b96ac4e62829124e382b1041001964efffdbddb31420e5694",
+      "git_blob": "fddf9d95ef51033fd555faa7ee2c39029a7b041e",
+      "repository_path": "FEDERATED_TRANSACTION_CONTRACT_PASS_059.json",
+      "size_bytes": 801
+    },
+    {
+      "file_sha256": "e7d3070e6a1fc33ef49bae63813e212d1ea0094f3a8baa8c891bb186692f7f97",
+      "git_blob": "4091565e34957469011d2e2161dfa1ff8824ae74",
+      "repository_path": "FEDERATION_DOMAIN_CONTRACT_PASS_056.json",
+      "size_bytes": 832
+    },
+    {
+      "file_sha256": "f417234e1ea44c58474a70c8abb6a3b75193ec0c37aab61fd7ce899b9c9fdd55",
+      "git_blob": "820410cefaddf0b0e1cb69ff8fa496dc661d3a69",
+      "repository_path": "GLOBAL_RECIPROCAL_CONTRACT_TOPOLOGY_PASS_062.json",
+      "size_bytes": 19806
+    },
+    {
+      "file_sha256": "3863ddfa89e8812b88f1d350e5ce0e0e3f8d0e92dd77b58306f61209e56168fe",
+      "git_blob": "907bbce03f6de693da26b6023643966660a71d93",
+      "repository_path": "HHS_PASS_175_CONTRACT_MANIFEST.json",
+      "size_bytes": 947
+    },
+    {
+      "file_sha256": "e070ac004ef186fcea79bcf2527e5ea74713c678b9d9658e858225a296d43ad5",
+      "git_blob": "8c416cb671e3817f03077062afd68649fe1a8aa8",
+      "repository_path": "HHS_PASS_175_PRECONTRACT_BENCHMARK_RESULTS.json",
+      "size_bytes": 4415
+    },
+    {
+      "file_sha256": "a3fd48bcb3523275125c2f90583e629bd155a2b18cb132ef3de6a086986e3df5",
+      "git_blob": "7086190a62633af72f55a47a977a8bf9f8223d32",
+      "repository_path": "LOCAL_RECIPROCAL_CONTRACT_PAIRS_PASS_062.json",
+      "size_bytes": 10365
+    },
+    {
+      "file_sha256": "8a9d5516d00f67ade6c2adb8cc569ee5baea8641d733dc1ea9e6f5b37342d8e4",
+      "git_blob": "11bfa3c0f647a37477dc9b62dea89e1323b8515e",
+      "repository_path": "PASS_078_PLASTIC_E6_GEOMETRY_CONTRACT.json",
+      "size_bytes": 35821
+    },
+    {
+      "file_sha256": "714f7fdcc49c504274239b0ee9d89a0c5ecce50365497663e1018e0adba98b6a",
+      "git_blob": "468163ed55739a169fd6e586e9f54b11aab2b146",
+      "repository_path": "PASS_078_WAVE_MECHANICS_CONTRACT.json",
+      "size_bytes": 986
+    },
+    {
+      "file_sha256": "bb0cbdee8055a20dfe5a7e7aa9705bf87b4beab44e03b5b27187f5bcc135541d",
+      "git_blob": "68c335009b60e9e332b1b81c4bb71b56dc176a5a",
+      "repository_path": "PASS_080_OPCODE_MEMBRANE_CONTRACT_REGISTRY.json",
+      "size_bytes": 84203
+    },
+    {
+      "file_sha256": "2a6ee32ee87b64c2e4c862c525d6cba3dc975584a68ea12ed5c4720efbe6a186",
+      "git_blob": "b1b0ddc4867dd01fda4165ec368937db464f3ca4",
+      "repository_path": "PASS_094_TRANSLATION_CONTRACT_REGISTRY.json",
+      "size_bytes": 10120
+    },
+    {
+      "file_sha256": "35724a602bfcab1cc96318f4f003b88b0023ece355fa00866c2f17f775cd7fda",
+      "git_blob": "0127f02e24823c62426d225a78e311e4b57b2fb9",
+      "repository_path": "PASS_096_TRANSLATION_REGISTER_CONTRACTS.json",
+      "size_bytes": 9817
+    },
+    {
+      "file_sha256": "0cc7ae1e95b933ee25bf5bdfe7f3138c991f9d2e815a569ef9323fe2f144be9f",
+      "git_blob": "13d85cc43197bb9c09c5bed3489df216d4e674d0",
+      "repository_path": "POSITIVE_NEGATIVE_CONTRACT_BALANCE_PASS_062.json",
+      "size_bytes": 181
+    },
+    {
+      "file_sha256": "0d50a9c88a72e061e90570ac65fd7d4b2ec97a9ea01cb86d9d481206101bc3fc",
+      "git_blob": "3a84e8f4faf413b1b645ba9de6698158642225dd",
+      "repository_path": "REJECTION_ROLE_CONTRACTS_PASS_061.json",
+      "size_bytes": 901
+    },
+    {
+      "file_sha256": "77bf487269352955f424910249ede317e02b9390651faac87dbcec5a18e99192",
+      "git_blob": "0c95f4b214cf26383b31e341398701b44a993c3b",
+      "repository_path": "SPECIALIZED_ROLE_CONTRACTS_PASS_054.json",
+      "size_bytes": 1664
+    },
+    {
+      "file_sha256": "2d2be0a227b5467c19a31be864345a9c0d0fa4395fa0af2e985c7a563b41002c",
+      "git_blob": "b99c8b703b6a9c77427becc0c42b0c65c6cf913f",
+      "repository_path": "TOPOLOGICAL_CONTRACTION_PASS_062.json",
+      "size_bytes": 1107
+    },
+    {
+      "file_sha256": "c70cf1b8fab1fcfc6ba605b1576f586fe7da519a2b40f540eb7d7ddee6a65fc8",
+      "git_blob": "bef3d70ca6d47cea6fac0726b98381eb57ae697b",
+      "repository_path": "applications/holofractal_harmonizer/tests/gui.reliability.contract.json",
+      "size_bytes": 523
+    },
+    {
+      "file_sha256": "7fc571e546c0ab610667ecc7d97a2b95bfb30c19f5bd423746b9a3eff3148a3e",
+      "git_blob": "8450ec3537cf3ecdd8659c1a994d5136c3159f20",
+      "repository_path": "contracts/authority/PASS_174_PLUS_LEGACY_FOUNDATION_POLICY.json",
+      "size_bytes": 1312
+    },
+    {
+      "file_sha256": "d6d261f56c31bbc1cfece302cee990782cc39ca75cb2df1749d2156c577927e0",
+      "git_blob": "7ce9926a5349be511f788d3ffea4be96bbabf385",
+      "repository_path": "contracts/nfv/HHS_NFV_CI_EVIDENCE.json",
+      "size_bytes": 1234
+    },
+    {
+      "file_sha256": "717a50ce66a28044c30b5cc6c68ed2adb1f1fc5646042736c26e78754cc2d7e3",
+      "git_blob": "cda132e4ab73e2cb2e828c76d89b6282be2dff17",
+      "repository_path": "contracts/nfv/HHS_NFV_CONVOLUTION_CHAMBER_SCHEMA.json",
+      "size_bytes": 790
+    },
+    {
+      "file_sha256": "a8b89bc8d39a07c3da9d7b31c3363023bea95d830d58944b15828a90084678fb",
+      "git_blob": "43a8d8ffa04650fb77e00024215253a9e3615e1f",
+      "repository_path": "contracts/nfv/HHS_NFV_DEPENDENCY_EDGE_REGISTRY.json",
+      "size_bytes": 1064
+    },
+    {
+      "file_sha256": "b5e0bb8a397a03f5b4a38b3dac218ab5250136c0611e5aefe772bdcd11091b7c",
+      "git_blob": "acdc2de003528565be273b815dadc41688c5cef8",
+      "repository_path": "contracts/nfv/HHS_NFV_FOURIER_PROFILE.json",
+      "size_bytes": 623
+    },
+    {
+      "file_sha256": "8b5e4b196bddc21af36166417c93230549703d9d9c6546f21640cfa56dba57bc",
+      "git_blob": "d5cc16c7d017d3f1f12142e343dcd4a2b70bb7b5",
+      "repository_path": "contracts/nfv/HHS_NFV_FREQUENCY_COLOR_PROFILE.json",
+      "size_bytes": 684
+    },
+    {
+      "file_sha256": "498abc16a477216e5055e66bad27d975c28d79b0cf59079e03a8b58c66bab970",
+      "git_blob": "07ad94b7463cdd5f1f59327bcdc07d332a50ed63",
+      "repository_path": "contracts/nfv/HHS_NFV_HARMONIC_FIELD_SCHEMA.json",
+      "size_bytes": 711
+    },
+    {
+      "file_sha256": "9cde5f66653b5856e796beb5829bf1f8b852c2323fa22b0beb37db737af39375",
+      "git_blob": "fb5274e4fe8f5677a5b2a3274adf623782d523a5",
+      "repository_path": "contracts/nfv/HHS_NFV_OBJECT_SCHEMA.json",
+      "size_bytes": 1638
+    },
+    {
+      "file_sha256": "3e0769c8abe81509a0f6927e1f8c86cfebee1a0ed614860e7e2416ec1c9be836",
+      "git_blob": "d881935cdf7ff3be47ec22f31a7dc185a2b43b4f",
+      "repository_path": "contracts/nfv/HHS_NFV_PHASE_CANCELLATION_PROFILE.json",
+      "size_bytes": 766
+    },
+    {
+      "file_sha256": "b193e70bb7f8a9e4f7ebf01b86e0628824d65faaf95f5959191d7903b416ae50",
+      "git_blob": "07cc6d4cf8f3e778ca205a7bee17c99a5b865bf1",
+      "repository_path": "contracts/nfv/HHS_NFV_SERIALIZATION_PROFILE.json",
+      "size_bytes": 984
+    },
+    {
+      "file_sha256": "9f932bd13ea2dba4910c0814347b5a33e0cc87715b44cd5e3bfa3ad25ef04e8e",
+      "git_blob": "406c9f38c0379a3cf440a00ba2630e9c0b19a284",
+      "repository_path": "contracts/pass132/PASS_132_CANONICAL_WORKLOAD_SOURCES.json",
+      "size_bytes": 441
+    },
+    {
+      "file_sha256": "17e3c7237ed49fd1e9786669cd6624951a061761127d92dcd0e243f2d55fb678",
+      "git_blob": "120d380b66bccfa3d632c4c812c8a8f72d4ba489",
+      "repository_path": "contracts/pass132/PASS_132_RECONSTRUCTED_SOURCE_IDENTITY_ERRATUM.json",
+      "size_bytes": 660
+    },
+    {
+      "file_sha256": "268d68662052df9d1a22eb9801881b5120cc33873482a2ff796000ed1c70f79f",
+      "git_blob": "cccadf9b6a80896121bd428d4583bbf6835c0c79",
+      "repository_path": "contracts/pass133/PASS_133_CONTRACT.json",
+      "size_bytes": 631
+    },
+    {
+      "file_sha256": "d5a9c14072b22ac53044dcfe6b1e20ac0a609e54dcadfab058defc7475001855",
+      "git_blob": "6c422b44dce0e7c56f32d5708080261fbc6db517",
+      "repository_path": "contracts/pass134/PASS_134_CONTRACT.json",
+      "size_bytes": 847
+    },
+    {
+      "file_sha256": "70dcc6d54d2d0d8c56b9e82b8c83cb8ccc3e32e1b08a3e1fabd3ecebd488838e",
+      "git_blob": "40936b8614026ccc8b4be1092bcd124fa47edb5d",
+      "repository_path": "contracts/pass135/PASS_135_CONTRACT.json",
+      "size_bytes": 783
+    },
+    {
+      "file_sha256": "b176f4c3f733ebbe3613e88d6c07ad96cab04669343cb431354c5603f3e75f72",
+      "git_blob": "fcb8a3485696c1637d63d35b2f14fa4447addc3c",
+      "repository_path": "contracts/pass146/PASS_146_CONTRACT.json",
+      "size_bytes": 1011
+    },
+    {
+      "file_sha256": "ba7f53adb457ebbb538ef61728ca21b7865d077963c4ffc05e7cc9e40bb2efd3",
+      "git_blob": "6acd0add233113803a983796c8f53bea3c3ca95f",
+      "repository_path": "contracts/pass147/PASS_147_CONTRACT.json",
+      "size_bytes": 928
+    },
+    {
+      "file_sha256": "62194bce032e100b3f41fc10eda1ab419ea82ef626ad815b1da050407873d718",
+      "git_blob": "dcb3748086d7dae28e7bd907470117437e962699",
+      "repository_path": "contracts/pass153/HHS_PASS_153_MODEL_TOOL_DEPLOYMENT_MANIFEST.json",
+      "size_bytes": 1488
+    },
+    {
+      "file_sha256": "4c345870502100809bf7fb9458f7151984910abce57da37a615642189597ff03",
+      "git_blob": "48e7045ed28222a33162b9c00e16baca2a4e445a",
+      "repository_path": "evidence/pass175/PASS_175_COMBINED_PRECONTRACT_EVIDENCE.json",
+      "size_bytes": 12721
+    },
+    {
+      "file_sha256": "6083d1e62f0d89d56d94b8cb20748281fc920d64a4029308da85512e264f5675",
+      "git_blob": "d4600bdfb02bde633ed59bdc61d14d107b92c7f7",
+      "repository_path": "evidence/pass192_193/PASS_192_193_PRECONTRACT_VALIDATION.json",
+      "size_bytes": 1333
+    },
+    {
+      "file_sha256": "2b163f1ce844ca26316bd75039a4c627b315b75e7b0de760cc835d2c9d4cb081",
+      "git_blob": "eb0416c786e5a70b83f5356f8a4189167cae183b",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_REGISTERED_TARGET_CONTRACT.json",
+      "size_bytes": 3650
+    },
+    {
+      "file_sha256": "2b163f1ce844ca26316bd75039a4c627b315b75e7b0de760cc835d2c9d4cb081",
+      "git_blob": "eb0416c786e5a70b83f5356f8a4189167cae183b",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/contracts/HHS_PORTABLE_BYTECODE_V1.target-contract.json",
+      "size_bytes": 3650
+    },
+    {
+      "file_sha256": "04f59aa932991506e580af9560a99fa41d5163dd69c49c353109a1c260f086a1",
+      "git_blob": "7af49f5b959430847be5a8da5c8b90f4cb90d13f",
+      "repository_path": "native_projects/hhs_compiler_artifact_pipeline/schemas/HHS_COMPILER_TARGET_CONTRACT_V1.schema.json",
+      "size_bytes": 2956
+    },
+    {
+      "file_sha256": "22741f9c031b4de37699097afdcd639e4860a530f9905501988d55191587d02b",
+      "git_blob": "1267fae4250c9e2f87508583d5ad15922cfd6b7a",
+      "repository_path": "native_projects/hhs_pass156_1_lshpvs/specs/HHS_PASS_156_1_LSHPVS_IMPLEMENTATION_CONTRACT.json",
+      "size_bytes": 808
+    },
+    {
+      "file_sha256": "7f4cf0ea58cc3fa8d37b8eaa3d63f8afb5e66ff4846e7ff3945f80eabc12c60b",
+      "git_blob": "4f4fb9612a13a71ba84d03f6189095ed1efc62b4",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json",
+      "size_bytes": 1276
+    },
+    {
+      "file_sha256": "5aace5e3dbc184a4c6db8d34af9caefd5f4ce3fbe54cdcb87e804bc94c2c57bd",
+      "git_blob": "f726553f4b93cf6383be1c0e3261dffaf03a5145",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json",
+      "size_bytes": 8289
+    },
+    {
+      "file_sha256": "da32e572eddb5257bd68a4d4a61dff348d363897a3abdc507ffeaf716dfb0118",
+      "git_blob": "364af21c069b72044f9ccd5e71de1f190d8d3f3c",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_MP4_HOLOGRAPHIC_PLAYBACK_OVERLAY_CONTRACT.json",
+      "size_bytes": 6164
+    },
+    {
+      "file_sha256": "448477a076a5e27294ba53178c0d7433038dc0bc21fb964a78abd5591def3b6e",
+      "git_blob": "8108a1909b585839d08fa6059af24daa22a18aa9",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json",
+      "size_bytes": 2752
+    },
+    {
+      "file_sha256": "fd9afe6fbf0a9af901b8413a78ba7777b6440850b3133026844654e3fc4a74a1",
+      "git_blob": "4804c3f98aa78612d70f2084d9ea8037a3b1c76c",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json",
+      "size_bytes": 5532
+    },
+    {
+      "file_sha256": "16b86bdcca92185cc14785c8b9157e59d69259af23924750998c5b24d3d466c7",
+      "git_blob": "140b6b244bb92cd2db67e615ffa07efacf1ed681",
+      "repository_path": "native_projects/hhs_vm81_game_level10/specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json",
+      "size_bytes": 4057
+    },
+    {
+      "file_sha256": "8a9d5516d00f67ade6c2adb8cc569ee5baea8641d733dc1ea9e6f5b37342d8e4",
+      "git_blob": "11bfa3c0f647a37477dc9b62dea89e1323b8515e",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_078_PLASTIC_E6_GEOMETRY_CONTRACT.json",
+      "size_bytes": 35821
+    },
+    {
+      "file_sha256": "714f7fdcc49c504274239b0ee9d89a0c5ecce50365497663e1018e0adba98b6a",
+      "git_blob": "468163ed55739a169fd6e586e9f54b11aab2b146",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_078_WAVE_MECHANICS_CONTRACT.json",
+      "size_bytes": 986
+    },
+    {
+      "file_sha256": "bb0cbdee8055a20dfe5a7e7aa9705bf87b4beab44e03b5b27187f5bcc135541d",
+      "git_blob": "68c335009b60e9e332b1b81c4bb71b56dc176a5a",
+      "repository_path": "native_projects/hhs_vm81_native_exposure/artifacts/PASS_080_OPCODE_MEMBRANE_CONTRACT_REGISTRY.json",
+      "size_bytes": 84203
+    },
+    {
+      "file_sha256": "69acb3ed984267f97d43d8842e5efb2b71e54af8449cf68ab53c4a13773da388",
+      "git_blob": "34ccd42ca951b0c37146a2f317162b52da7d4ae6",
+      "repository_path": "release_artifacts/pass147/manifests/PASS_147_PUBLIC_API_CONTRACTS.json",
+      "size_bytes": 9595
+    },
+    {
+      "file_sha256": "2e4d77b6d8275bd80333e2524bcd0ff8c28b23883fcd6d4bf1309183267e8a67",
+      "git_blob": "d0509647dcaf788845b95c9ca5fd342cc5c9bf7e",
+      "repository_path": "schemas/pass146/boundary-contract.schema.json",
+      "size_bytes": 1284
+    }
+  ],
+  "entry_count": 55,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "schema": "HHS_PASS_206_ACCUMULATED_CONTRACT_INDEX_V1",
+  "scope": "repository-visible contract JSON surfaces at the exact grounding baseline"
+}

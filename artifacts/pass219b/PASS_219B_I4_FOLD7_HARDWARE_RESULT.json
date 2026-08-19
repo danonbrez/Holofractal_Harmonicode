@@ -1,0 +1,87 @@
+{
+  "schema": "HHS_PASS_219B_ANDROID_WEBGPU_FOLD7_TUNING_V1",
+  "generatedAt": "2026-08-19T08:10:54.811Z",
+  "targetDevice": {
+    "manufacturer": "Samsung",
+    "model": "Galaxy Z Fold7",
+    "code": "SM-F966U",
+    "soc": "Snapdragon 8 Elite for Galaxy",
+    "gpuVendor": "Qualcomm"
+  },
+  "adapterInfo": {
+    "vendor": "qualcomm",
+    "architecture": "adreno-8xx",
+    "device": "",
+    "description": ""
+  },
+  "features": {
+    "timestampQuery": true,
+    "subgroups": true
+  },
+  "limits": {
+    "maxComputeInvocationsPerWorkgroup": 256,
+    "maxComputeWorkgroupSizeX": 256,
+    "maxComputeWorkgroupSizeY": 256,
+    "maxComputeWorkgroupSizeZ": 64,
+    "maxComputeWorkgroupsPerDimension": 65535,
+    "maxComputeWorkgroupStorageSize": 16384,
+    "maxStorageBufferBindingSize": 134217728,
+    "maxBufferSize": 268435456
+  },
+  "phaseOriginsPerLayer": 81,
+  "depth": 2,
+  "potentialPhaseCombinations": 6561,
+  "branchFamilies": 2,
+  "lanesPerBranch": 5184,
+  "denseBranches": 13122,
+  "denseLaneDispatches": 68024448,
+  "iterations": 8,
+  "warmups": 2,
+  "repetitions": 7,
+  "selectedStartOrigin1": 37,
+  "selectedStartOrigin2": 53,
+  "bufferMode": "persistent",
+  "timingMode": "batched sub-quantum normalization",
+  "workgroupCandidates": [32, 64, 128, 256],
+  "tuning": [
+    {"kind":"flat","workgroupSize":32,"M":729,"gpuMedianNs":2809856,"submitWallMedianNs":2881249,"hostTotalMedianNs":2900000,"batchFactor":16},
+    {"kind":"tiled","workgroupSize":32,"M":729,"gpuMedianNs":2670592,"submitWallMedianNs":2756250,"hostTotalMedianNs":2768750,"batchFactor":16},
+    {"kind":"flat","workgroupSize":64,"M":729,"gpuMedianNs":1404928,"submitWallMedianNs":1493749,"hostTotalMedianNs":1506250,"batchFactor":16},
+    {"kind":"tiled","workgroupSize":64,"M":729,"gpuMedianNs":1335296,"submitWallMedianNs":1412499,"hostTotalMedianNs":1424999,"batchFactor":16},
+    {"kind":"flat","workgroupSize":128,"M":729,"gpuMedianNs":1282048,"submitWallMedianNs":1356249,"hostTotalMedianNs":1368750,"batchFactor":16},
+    {"kind":"tiled","workgroupSize":128,"M":729,"gpuMedianNs":1290240,"submitWallMedianNs":1356249,"hostTotalMedianNs":1375000,"batchFactor":16},
+    {"kind":"flat","workgroupSize":256,"M":729,"gpuMedianNs":1282048,"submitWallMedianNs":1349999,"hostTotalMedianNs":1368750,"batchFactor":16},
+    {"kind":"tiled","workgroupSize":256,"M":729,"gpuMedianNs":1286144,"submitWallMedianNs":1362500,"hostTotalMedianNs":1375000,"batchFactor":16}
+  ],
+  "chosen": {"kind":"flat","workgroupSize":128},
+  "dense": {"gpuMedianNs":11534336,"submitWallMedianNs":13099999,"hostTotalMedianNs":13400000,"batchFactor":1},
+  "flatBaseline": {"workgroupSize":256,"gpuMedianNs":11534336,"submitWallMedianNs":13099999,"hostTotalMedianNs":13300000,"batchFactor":1},
+  "results": [
+    {"s1":1,"s2":1,"materializedCombinations":1,"branches":2,"laneDispatches":10368,"idealReduction":6561,"gpuMedianNs":3584,"submitWallMedianNs":5664,"hostTotalMedianNs":6250,"batchFactor":512,"observedGpuSpeedup":3218.285714285714,"exactSelectedSampleEquality":true},
+    {"s1":1,"s2":3,"materializedCombinations":3,"branches":6,"laneDispatches":31104,"idealReduction":2187,"gpuMedianNs":7168,"submitWallMedianNs":9765,"hostTotalMedianNs":10351,"batchFactor":512,"observedGpuSpeedup":1609.142857142857,"exactSelectedSampleEquality":true},
+    {"s1":3,"s2":3,"materializedCombinations":9,"branches":18,"laneDispatches":93312,"idealReduction":729,"gpuMedianNs":17664,"submitWallMedianNs":20507,"hostTotalMedianNs":21093,"batchFactor":512,"observedGpuSpeedup":652.9855072463768,"exactSelectedSampleEquality":true},
+    {"s1":3,"s2":9,"materializedCombinations":27,"branches":54,"laneDispatches":279936,"idealReduction":243,"gpuMedianNs":49152,"submitWallMedianNs":62500,"hostTotalMedianNs":64062,"batchFactor":128,"observedGpuSpeedup":234.66666666666666,"exactSelectedSampleEquality":true},
+    {"s1":9,"s2":9,"materializedCombinations":81,"branches":162,"laneDispatches":839808,"idealReduction":81,"gpuMedianNs":143872,"submitWallMedianNs":153906,"hostTotalMedianNs":155468,"batchFactor":128,"observedGpuSpeedup":80.17081850533808,"exactSelectedSampleEquality":true},
+    {"s1":27,"s2":27,"materializedCombinations":729,"branches":1458,"laneDispatches":7558272,"idealReduction":9,"gpuMedianNs":1282048,"submitWallMedianNs":1356249,"hostTotalMedianNs":1368750,"batchFactor":16,"observedGpuSpeedup":8.996805111821086,"exactSelectedSampleEquality":true},
+    {"s1":81,"s2":81,"materializedCombinations":6561,"branches":13122,"laneDispatches":68024448,"idealReduction":1,"gpuMedianNs":11534336,"submitWallMedianNs":13000000,"hostTotalMedianNs":13400000,"batchFactor":1,"observedGpuSpeedup":1,"exactSelectedSampleEquality":true}
+  ],
+  "factorization": [
+    {"s1":1,"s2":81,"M":81,"gpuMedianNs":143872,"submitWallMedianNs":154687,"hostTotalMedianNs":156250,"batchFactor":128,"exactSelectedSampleEquality":true},
+    {"s1":3,"s2":27,"M":81,"gpuMedianNs":143872,"submitWallMedianNs":153906,"hostTotalMedianNs":155468,"batchFactor":128,"exactSelectedSampleEquality":true},
+    {"s1":9,"s2":9,"M":81,"gpuMedianNs":143872,"submitWallMedianNs":153906,"hostTotalMedianNs":156250,"batchFactor":128,"exactSelectedSampleEquality":true},
+    {"s1":27,"s2":3,"M":81,"gpuMedianNs":143872,"submitWallMedianNs":155468,"hostTotalMedianNs":157812,"batchFactor":128,"exactSelectedSampleEquality":true},
+    {"s1":81,"s2":1,"M":81,"gpuMedianNs":144384,"submitWallMedianNs":163281,"hostTotalMedianNs":166406,"batchFactor":128,"exactSelectedSampleEquality":true}
+  ],
+  "claimBoundary": {
+    "hardwareGpuMeasured": true,
+    "repositoryPass208KernelMeasured": false,
+    "userReportedDeviceIdentity": true,
+    "adapterLimitsMeasured": true,
+    "originalBranchIdentityPreserved": true,
+    "integerOnlyKernel": true,
+    "exactSelectedSampleEqualityMeasured": true,
+    "fullLaneEqualityMeasured": false,
+    "authoritativeStateChanged": false
+  },
+  "source_sha256": "8325f5c7707e8ba3eec4ed72cc13b611f653f3f9ee2e9406061ce04a6ec379df"
+}

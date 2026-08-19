@@ -1,0 +1,92 @@
+name: Pass 219 Cumulative Pass 208 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass208_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass208_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass208_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass208.py'
+      - 'tests/pass219/test_pass219_inherited_pass208_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass208_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass208_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass208-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass208-membrane:
+    name: inherited-pass208-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    env:
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 208 lineage and accepted source identities
+        run: |
+          git merge-base --is-ancestor 60aea411df00f6abbe53a9963d634cdb493e213a HEAD
+          git merge-base --is-ancestor 6cc968b9f95d63e1a8701d32008969477caf894f HEAD
+          git merge-base --is-ancestor cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9 HEAD
+          git merge-base --is-ancestor c05cf860e4be5a0865813529baf9ad99e50dbe02 HEAD
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:contracts/pass208/PASS_208_CONTRACT.json)" = b77413b816a32e61a3b1336b16bc6c4ecb0f4efa
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py)" = 54e1e2089cdaeb4e3c613a5139c08cc226061afd
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:hhs_backend/api/pass208_gpu_manifold_routes.py)" = 936bb542379db613805cd709482da7f1932c33e2
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:docs/pass208/RESTART_RECORD.md)" = b3faee9ba0e666ff34cc1e3e0bd205788edca46b
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:.github/workflows/pass208-digitalocean-gpu-manifold.yml)" = 41146f3d09fd95008cee0d5cf3a52bfb359c364d
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:tests/test_hhs_pass208_gpu_branch_manifold_v1.py)" = cd060b56ec8c505af67deaa3196e5c886502a416
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:tests/test_hhs_pass208_digitalocean_gpu_deployment_v1.py)" = a593eeda7925a37c801b96627bb5e390183daa2e
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:deployment/digitalocean/gpu/hhs-gpu-preflight.sh)" = ae9e778b25f19e2263f975ef1edb9bc831684942
+          test "$(git rev-parse cbeabffff4e70db6207f8c349dd88ea8b7bd6ea9:deployment/digitalocean/gpu/validate-json-spec-package.py)" = 78268251e20de4b8c896b7e58f192b557b92ec50
+      - name: Reject approximate authority tokens in Pass 208 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass208_1_16.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass208_1_16.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass208_1_16.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i116-pass208
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass208/exact.o
+      - name: Run Pass 208 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass208_1_16.c /tmp/pass219-i116-pass208/exact.o -o /tmp/pass219-i116-pass208/c && /tmp/pass219-i116-pass208/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass208_1_16.cpp /tmp/pass219-i116-pass208/exact.o -o /tmp/pass219-i116-pass208/cpp && /tmp/pass219-i116-pass208/cpp
+      - name: Preserve Pass 209-218 and I114 C ABI
+        run: |
+          for pass in 209 210 211 212 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass208/exact.o -o /tmp/pass219-i116-pass208/test-${pass} && /tmp/pass219-i116-pass208/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass208/exact.o -o /tmp/pass219-i116-pass208/i114 && /tmp/pass219-i116-pass208/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy jsonschema
+      - name: Run Pass 208 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass208_membrane_i116.py
+      - name: Exercise current Pass 208 GPU branch manifold
+        run: |
+          PYTHONPATH="$PWD" python -m py_compile hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py hhs_backend/api/pass208_gpu_manifold_routes.py deployment/digitalocean/gpu/validate-json-spec-package.py
+          PYTHONPATH="$PWD" python -c 'from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))'
+          PYTHONPATH="$PWD" python -c 'from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))'
+          PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass207_gpu_driver_v1.py tests/test_hhs_pass208_gpu_branch_manifold_v1.py tests/test_hhs_pass208_digitalocean_gpu_deployment_v1.py
+      - name: Preserve Pass 209 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass209_membrane_i116.py

@@ -1,0 +1,27 @@
+{
+  "alternate_authority_allowed": false,
+  "artifact_sha256": "4c06daa6237ebcd9c77cf2b9f189d26cd892d67e06c7802227e44c23d67bcfe4",
+  "core_modification_allowed": false,
+  "final_runtime_compatibility_validation_pending": true,
+  "full_backward_compatibility_required": true,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "required_declarations": [
+    "stable_identity_and_version",
+    "exact_inputs_and_outputs",
+    "ordered_source_and_native_bytes",
+    "dependencies_and_feature_gates",
+    "existing_abi_opcode_bindings",
+    "vm81_routes_and_admission",
+    "local_and_global_constraints",
+    "state_and_mutation_ownership",
+    "hash72_receipt_behavior",
+    "hash216_archival_and_continuation",
+    "replay_reversal_repair_recovery",
+    "persistence_and_migration",
+    "user_and_machine_surface_projection"
+  ],
+  "reusable_plug_and_play_object_required": true,
+  "schema": "HHS_PASS_206_PLUGIN_COMPATIBILITY_REPORT_V1",
+  "status": "STATIC_PRE_ENFORCEMENT_COMPATIBILITY_BASELINE_CAPTURED"
+}

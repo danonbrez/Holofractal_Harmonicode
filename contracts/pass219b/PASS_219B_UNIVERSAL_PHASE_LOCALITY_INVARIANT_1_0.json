@@ -1,0 +1,52 @@
+{
+  "schema": "HHS_PASS_219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_V1",
+  "version": "1.0.0",
+  "status": "CANDIDATE_FOR_MAIN",
+  "scope": "all HHS phase-quantized candidate, lookup, cache, hydration, and accelerator realization paths that possess exact pre-expansion selectors",
+  "definitions": {
+    "Q": "product(q_l)",
+    "M": "product(s_l)",
+    "exact_work_reduction": "Q/M",
+    "potential_phase_volume": "Q",
+    "materialized_phase_volume": "M"
+  },
+  "invariants": [
+    "1 <= s_l <= q_l for every selected phase dimension",
+    "when exact selectors are available before expansion and M < Q, local realization is mandatory",
+    "dense realization is forbidden under an exact selector unless an explicit audit/ablation route is selected",
+    "when exact selectors are unavailable, dense reference realization remains permitted",
+    "selected candidates preserve their original dense identity namespace",
+    "phase-local outputs require exact selected-result equality before downstream authoritative transition",
+    "phase-local planning and realization have zero VM81 mutation, persistence, and Hash72 authority",
+    "overflow or malformed selector geometry fails closed",
+    "runtime timing measurements never participate in canonical authority"
+  ],
+  "routes": {
+    "LOCAL": "exact selector available; realize base_units * M",
+    "DENSE_REQUIRED": "selector unavailable; realize base_units * Q",
+    "AUDIT_DENSE": "explicit audit/ablation reference; realize base_units * Q"
+  },
+  "current_exact_abi_bound": {
+    "max_depth": 9,
+    "reason": "uint64 exact product bound with explicit overflow rejection; future wider exact product ABI must be additive"
+  },
+  "hardware_evidence": {
+    "device": "Samsung Galaxy Z Fold7 SM-F966U",
+    "soc": "Snapdragon 8 Elite for Galaxy",
+    "adapter": "qualcomm/adreno-8xx",
+    "dense_lane_dispatches": 68024448,
+    "dense_gpu_median_ns": 11534336,
+    "single_combination_gpu_median_ns": 3584,
+    "single_combination_observed_speedup": 3218.285714285714,
+    "M81_gpu_median_ns": 143872,
+    "M729_gpu_median_ns": 1282048,
+    "factorization_M81_max_min_ns": 512,
+    "factorization_M81_relative_spread_basis_points_approx": 36,
+    "evidence_file": "artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json"
+  },
+  "observational_model": {
+    "form": "T(M) = a + b*M",
+    "authority": false,
+    "note": "performance model is empirical and hardware/kernel specific; only exact selector geometry and equality constraints are invariant"
+  }
+}

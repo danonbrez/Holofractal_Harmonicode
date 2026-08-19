@@ -1,0 +1,129 @@
+name: Pass 219B Phase Locality Benchmarks I2
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219b-phase-quantized-selective-hydration-i1
+    paths:
+      - 'benchmarks/pass219b/**'
+      - 'docs/pass219/PASS_219B_PHASE_LOCALITY_BENCHMARK_I2.md'
+      - 'docs/operations/restart/PASS_219B_PHASE_LOCALITY_BENCHMARK_I2_RESTART.md'
+      - '.github/workflows/pass219b-phase-locality-benchmarks-i2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: phase-locality-benchmark (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    env:
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen Pass 219B I1 ancestry
+        run: |
+          git merge-base --is-ancestor 9d6d00e3f76ce84d0f6874d9e136c468a9faff7e HEAD
+
+      - name: Compile cumulative exact ABI and C++ benchmark
+        run: |
+          mkdir -p /tmp/pass219b-i2 artifacts/pass219b/i2
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i2/exact.o
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219b/pass219b_phase_locality_benchmark.cpp \
+            /tmp/pass219b-i2/exact.o -o /tmp/pass219b-i2/phase-bench
+
+      - name: Measure vector shortlist cache address and materialization
+        run: |
+          /tmp/pass219b-i2/phase-bench artifacts/pass219b/i2/phase_locality_cpp.json
+          cat artifacts/pass219b/i2/phase_locality_cpp.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219b/i2/phase_locality_cpp.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['surface_phase_cells'] == 419904
+          assert d['vector_shortlist']['work_reduction_x1000'] == 81000
+          assert d['vector_shortlist']['exact_result_equal'] is True
+          assert d['cache_exact_lookup']['exact_result_equal'] is True
+          assert d['materialization']['capacity_reduction_x1000'] == 81000
+          assert d['materialization']['exact_selected_equal'] is True
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Build inherited Pass 205 and Pass 207 native runtimes
+        run: |
+          python -c 'from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))'
+          python -c 'from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))'
+
+      - name: Measure actual Pass 208 CPU-reference candidate expansion
+        run: |
+          PYTHONPATH="$PWD" python benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py \
+            artifacts/pass219b/i2/pass208_cpu_reference.json
+          cat artifacts/pass219b/i2/pass208_cpu_reference.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219b/i2/pass208_cpu_reference.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['backend'] == 'CPU_REFERENCE'
+          assert d['physical_gpu'] is False
+          assert d['baseline_branch_count'] == 162
+          assert d['phase_selected_branch_count'] == 2
+          assert d['work_reduction_x1000'] == 81000
+          assert d['child_state_projection_equal'] is True
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Preserve Pass 219B I1 and inherited accelerator semantics
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i2/exact.o -o /tmp/pass219b-i2/i1-c
+          /tmp/pass219b-i2/i1-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i2/exact.o -o /tmp/pass219b-i2/i1-cpp
+          /tmp/pass219b-i2/i1-cpp
+          PYTHONPATH="$PWD" pytest -q --tb=short \
+            tests/test_hhs_pass207_gpu_driver_v1.py \
+            tests/test_hhs_pass208_gpu_branch_manifold_v1.py
+
+      - name: Publish benchmark summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          c=json.load(open('artifacts/pass219b/i2/phase_locality_cpp.json', encoding='utf-8'))
+          g=json.load(open('artifacts/pass219b/i2/pass208_cpu_reference.json', encoding='utf-8'))
+          def sx(v): return f"{v/1000:.3f}x"
+          print('## Pass 219B I2 measured results')
+          print(f"- Vector shortlist: {sx(c['vector_shortlist']['wall_speedup_x1000'])} median wall speedup; 81x fewer candidates")
+          print(f"- Local exact cache: {sx(c['cache_exact_lookup']['wall_speedup_x1000'])} median wall speedup versus hash lookup")
+          print(f"- Selective phase materialization: {sx(c['materialization']['wall_speedup_x1000'])} median wall speedup; 81x fewer bytes/cells")
+          print(f"- Pass 208 CPU_REFERENCE: {sx(g['wall_speedup_x1000'])} median wall speedup; 81x fewer logical lane dispatches")
+          print('- Physical GPU timing: NOT MEASURED on GitHub-hosted runner')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219b-i2-${{ matrix.target }}-benchmarks
+          path: artifacts/pass219b/i2/*.json
+          if-no-files-found: error

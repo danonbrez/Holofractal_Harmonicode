@@ -1,0 +1,107 @@
+name: Pass 206 Freeze Evidence Generation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration118-pass206-repair-staging
+    paths:
+      - 'tools/pass206/build_freeze_evidence.py'
+      - '.github/workflows/pass206-freeze-evidence.yml'
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'tools/pass206/build_freeze_evidence.py'
+      - 'artifacts/pass206/**'
+      - 'docs/pass206/**'
+      - '.github/workflows/pass206-freeze-evidence.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  freeze-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prove Pass 206 grounding and non-rewriting development ancestry
+        run: |
+          git merge-base --is-ancestor 918121aeb6d1c55aa8fbd5d60b15f03c4eb22423 HEAD
+          git merge-base --is-ancestor 2fe770d68f6e1da172d2c7992a90e31d69577b90 HEAD
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass206/PASS_206_CONTRACT.json').read_text())
+          assert c['pass']==206
+          assert c['classification']=='CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED'
+          assert c['grounding_baseline']=='918121aeb6d1c55aa8fbd5d60b15f03c4eb22423'
+          assert c['core_function_policy']['alter_core_functions'] is False
+          assert c['authority']['canonical_mutation_authority_count']==1
+          assert c['authority']['canonical_mutation_authority']=='VM81_KERNEL'
+          PY
+      - name: Generate exact baseline freeze evidence
+        run: |
+          rm -rf artifacts/pass206
+          python tools/pass206/build_freeze_evidence.py | tee /tmp/pass206-freeze-summary.json
+      - name: Validate generated evidence structure and content hashes
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          names=[
+            'ACCUMULATED_CONTRACT_INDEX.json','ACCUMULATED_CONSTRAINT_INDEX.json',
+            'CORE_FUNCTION_FREEZE_MANIFEST.json','ABI_OPCODE_SCHEMA_FREEZE_MANIFEST.json',
+            'CONTRACT_CONFLICT_REPORT.json','PLUGIN_COMPATIBILITY_REPORT.json',
+            'INTERFACE_CAPABILITY_PARITY_REPORT.json','VALIDATION_MATRIX.json']
+          for name in names:
+              p=Path('artifacts/pass206')/name
+              assert p.is_file(), name
+              value=json.loads(p.read_text())
+              stored=value.pop('artifact_sha256')
+              actual=hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+              assert actual==stored,(name,actual,stored)
+          freeze=json.loads(Path('artifacts/pass206/CORE_FUNCTION_FREEZE_MANIFEST.json').read_text())
+          assert freeze['entry_count']==10
+          required={'repository_path','file_sha256','language','symbol_or_callable_identity','signature_or_schema_identity','abi_version','opcode_number','source_span_identity','semantic_category','bindings','receipt_replay_obligations'}
+          for entry in freeze['entries']:
+              assert required <= set(entry), entry['repository_path']
+              assert len(entry['file_sha256'])==64
+              assert entry['freeze_policy']=='BYTE_FOR_BYTE_AT_GROUNDING_BASELINE'
+          matrix=json.loads(Path('artifacts/pass206/VALIDATION_MATRIX.json').read_text())
+          assert matrix['stage']=='FREEZE_PRE_ENFORCEMENT'
+          assert matrix['completion_claimed'] is False
+          PY
+      - name: Prove generator did not modify inherited runtime or contract
+        run: |
+          test -z "$(git status --porcelain -- hhs_runtime hhs_python hhs_backend contracts/pass206/PASS_206_CONTRACT.json)"
+      - name: Display exact frozen core hashes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          f=json.loads(Path('artifacts/pass206/CORE_FUNCTION_FREEZE_MANIFEST.json').read_text())
+          print('FREEZE_MANIFEST_SHA256',f['artifact_sha256'])
+          for e in f['entries']:
+              print('CORE_SHA256',e['repository_path'],e['file_sha256'],e['git_blob'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass206-freeze-evidence
+          path: |
+            artifacts/pass206/*.json
+            /tmp/pass206-freeze-summary.json
+      - name: Commit validated freeze artifacts on staging push
+        if: github.event_name == 'push' && github.ref_name == 'agent/pass219-iteration118-pass206-repair-staging'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/pass206/*.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Pass 206 tranche A: freeze exact baseline identities [pass206-freeze-generated]'
+          git push origin HEAD:${{ github.ref_name }}

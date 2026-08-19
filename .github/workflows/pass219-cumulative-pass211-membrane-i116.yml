@@ -1,0 +1,83 @@
+name: Pass 219 Cumulative Pass 211 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass211_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass211_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass211_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass211.py'
+      - 'tests/pass219/test_pass219_inherited_pass211_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass211_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass211_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass211-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass211-membrane:
+    name: inherited-pass211-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 211 lineage and source identities
+        run: |
+          git merge-base --is-ancestor 52f2b15d04235a02eb865a8920e99e7b6412f7e5 HEAD
+          git merge-base --is-ancestor 5c877eeae86e1fd929e30a2c418f705f12921265 HEAD
+          git merge-base --is-ancestor b80759e60bd78357d9d650aa23c99460f3952fd3 HEAD
+          test "$(git rev-parse HEAD:contracts/pass211/PASS_211_CONTRACT.json)" = 685c6d1544cbae6966e84c0d05b6bf4b8687d903
+          test "$(git rev-parse HEAD:docs/pass211/RESTART_RECORD.md)" = 7065102a60501c797407fe7a40cdf760ab6a11b3
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass211_bigint_hfc_carrier_v1.py)" = 0d11f3607c81b442b76dcd455b5c47450c9ed7e9
+          test "$(git rev-parse HEAD:hhs_backend/api/pass211_bigint_hfc_routes.py)" = a3df09c2593fc0c3d1c331b103b86826cb1a7084
+          test "$(git rev-parse HEAD:evidence/pass211/PASS_211_BIGINT_HFC_REFERENCE_VECTORS.json)" = fa8807d66a28a5e38c0294cdac34e214dc39a8b6
+          test "$(git rev-parse HEAD:scripts/run_pass211_bigint_hfc_validation.sh)" = 4ae19dab0dd9d0b70398b6b433f92e799a6baf38
+          test "$(git rev-parse HEAD:contracts/pass212/PASS_212_CONTRACT.json)" = 12f2c577e02f4436ee776366a1994ece5a765fca
+      - name: Reject approximate authority tokens in Pass 211 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass211_1_16.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass211_1_16.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass211_1_16.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i116-pass211
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass211/exact.o
+      - name: Run Pass 211 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass211_1_16.c /tmp/pass219-i116-pass211/exact.o -o /tmp/pass219-i116-pass211/c && /tmp/pass219-i116-pass211/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass211_1_16.cpp /tmp/pass219-i116-pass211/exact.o -o /tmp/pass219-i116-pass211/cpp && /tmp/pass219-i116-pass211/cpp
+      - name: Preserve Pass 212-218 and I114 C ABI
+        run: |
+          for pass in 212 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass211/exact.o -o /tmp/pass219-i116-pass211/test-${pass} && /tmp/pass219-i116-pass211/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass211/exact.o -o /tmp/pass219-i116-pass211/i114 && /tmp/pass219-i116-pass211/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy
+      - name: Run Pass 211 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass211_membrane_i116.py
+      - name: Exercise current Pass 211 BigInt/HFC runtime
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass211_bigint_hfc_carrier_v1.py
+      - name: Authenticate frozen Pass 211 evidence replay
+        run: PYTHONPATH="$PWD" python tools/generate_pass211_bigint_hfc_evidence.py --check
+      - name: Preserve Pass 212 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass212_membrane_i116.py

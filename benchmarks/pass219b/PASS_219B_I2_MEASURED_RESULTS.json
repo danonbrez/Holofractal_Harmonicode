@@ -1,0 +1,105 @@
+{
+  "schema": "HHS_PASS_219B_I2_MEASURED_RESULTS_V1",
+  "source_head": "8f8796d8d81c01733ca3036092e78caa9d5fe33e",
+  "workflow": {
+    "run_id": 32199024631,
+    "exact_job_id": 95908724331,
+    "synthetic_job_id": 95908724284,
+    "exact_artifact": {
+      "id": 9346835558,
+      "sha256": "335e9a9cf1749dc9de33b3ca8309496bab183f24d08e6bc3fc8ffb1fcb818b3c"
+    },
+    "synthetic_artifact": {
+      "id": 9346835904,
+      "sha256": "22073d8009d3d398e65d2a8018a51f628ed8177cabb6f3b787f6c11ea2b89ec9"
+    }
+  },
+  "deterministic_work_reduction_x1000": 81000,
+  "exact": {
+    "vector_shortlist": {
+      "dense_candidates_examined": 6718464,
+      "phase_candidates_examined": 82944,
+      "dense_median_ns": 16566660,
+      "phase_median_ns": 156176,
+      "wall_speedup_x1000": 106076,
+      "exact_result_equal": true
+    },
+    "cache_exact_lookup": {
+      "queries": 200000,
+      "hash_map_median_ns": 971906,
+      "phase_address_median_ns": 263598,
+      "wall_speedup_x1000": 3687,
+      "exact_result_equal": true
+    },
+    "materialization": {
+      "full_cells": 419904,
+      "selected_cells": 5184,
+      "full_bytes": 47029248,
+      "selected_bytes": 580608,
+      "full_median_ns": 9307120,
+      "selected_median_ns": 127532,
+      "wall_speedup_x1000": 72978,
+      "exact_selected_equal": true
+    },
+    "pass208_cpu_reference": {
+      "baseline_branch_count": 162,
+      "phase_selected_branch_count": 2,
+      "baseline_logical_lane_dispatches": 839808,
+      "phase_logical_lane_dispatches": 10368,
+      "baseline_median_ns": 978299976,
+      "phase_median_ns": 12992039,
+      "wall_speedup_x1000": 75299,
+      "baseline_cache_resident_bytes": 3569184,
+      "phase_cache_resident_bytes": 44064,
+      "child_state_projection_equal": true,
+      "physical_gpu": false
+    }
+  },
+  "synthetic": {
+    "vector_shortlist": {
+      "dense_candidates_examined": 6718464,
+      "phase_candidates_examined": 82944,
+      "dense_median_ns": 15408350,
+      "phase_median_ns": 140241,
+      "wall_speedup_x1000": 109870,
+      "exact_result_equal": true
+    },
+    "cache_exact_lookup": {
+      "queries": 200000,
+      "hash_map_median_ns": 1176405,
+      "phase_address_median_ns": 222914,
+      "wall_speedup_x1000": 5277,
+      "exact_result_equal": true
+    },
+    "materialization": {
+      "full_cells": 419904,
+      "selected_cells": 5184,
+      "full_bytes": 47029248,
+      "selected_bytes": 580608,
+      "full_median_ns": 11258131,
+      "selected_median_ns": 149267,
+      "wall_speedup_x1000": 75422,
+      "exact_selected_equal": true
+    },
+    "pass208_cpu_reference": {
+      "baseline_branch_count": 162,
+      "phase_selected_branch_count": 2,
+      "baseline_logical_lane_dispatches": 839808,
+      "phase_logical_lane_dispatches": 10368,
+      "baseline_median_ns": 992528845,
+      "phase_median_ns": 13038450,
+      "wall_speedup_x1000": 76123,
+      "baseline_cache_resident_bytes": 3569184,
+      "phase_cache_resident_bytes": 44064,
+      "child_state_projection_equal": true,
+      "physical_gpu": false
+    }
+  },
+  "claim_boundary": {
+    "wall_clock_results_are_runner_specific": true,
+    "physical_gpu_speedup_measured": false,
+    "pass208_candidate_root_identity_compared": false,
+    "pass208_candidate_root_reason": "phase preselection re-numbers the subset while branch_candidate_root216 binds local branch_ordinal",
+    "authoritative_state_changed": false
+  }
+}

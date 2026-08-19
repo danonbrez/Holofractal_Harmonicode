@@ -1,0 +1,84 @@
+name: Pass 219 Cumulative Pass 210 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass210_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass210_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass210_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass210.py'
+      - 'tests/pass219/test_pass219_inherited_pass210_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass210_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass210_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass210-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass210-membrane:
+    name: inherited-pass210-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+      - name: Prove frozen Pass 210 lineage and source identities
+        run: |
+          git merge-base --is-ancestor 6a9cb0c058e4eafc3fd4e5403d4e297e4eb84c7c HEAD
+          git merge-base --is-ancestor 0d1433d30f9fe811dc42a3155afeafa089aa72ff HEAD
+          git merge-base --is-ancestor a8cd64e76828fd911e7e6e27ffd9ad02c7d74355 HEAD
+          test "$(git rev-parse HEAD:contracts/pass210/PASS_210_CONTRACT.json)" = ac46a61f568b0443794f854cf84e5a3cfc1bf908
+          test "$(git rev-parse HEAD:docs/pass210/RESTART_RECORD.md)" = 3dee1ac8eb16a9bd151514ddbc4490b51d6d1df8
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass210_holographic_frame_compression_v1.py)" = bb85330627cd58a1cb57ab47f3d5520d8b1157b1
+          test "$(git rev-parse HEAD:hhs_backend/api/pass210_holographic_frame_compression_routes.py)" = 6569f8f689ab48aa4239e0e2214ec1d27485dd35
+          test "$(git rev-parse HEAD:evidence/pass210/PASS_210_HFC_REFERENCE_VECTORS.json)" = 221afe26a8d9fd5ddc475c60e2a516aad414d7cd
+          test "$(git rev-parse HEAD:scripts/run_pass210_hfc_validation.sh)" = 939cdc583f3f245282c80217fcc1b132d2471783
+          test "$(git rev-parse HEAD:contracts/pass211/PASS_211_CONTRACT.json)" = 685c6d1544cbae6966e84c0d05b6bf4b8687d903
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass211_bigint_hfc_carrier_v1.py)" = 0d11f3607c81b442b76dcd455b5c47450c9ed7e9
+      - name: Reject approximate authority tokens in Pass 210 stable ABI
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          for p in [pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass210_1_16.h'),pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass210_1_16.hpp'),pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass210_1_16.inc')]:
+              m=re.search(r'\b(float|double)\b',p.read_text('utf-8'))
+              if m: raise SystemExit(f'forbidden authority token {m.group(1)!r} in {p}')
+          PY
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i116-pass210
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass210/exact.o
+      - name: Run Pass 210 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass210_1_16.c /tmp/pass219-i116-pass210/exact.o -o /tmp/pass219-i116-pass210/c && /tmp/pass219-i116-pass210/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass210_1_16.cpp /tmp/pass219-i116-pass210/exact.o -o /tmp/pass219-i116-pass210/cpp && /tmp/pass219-i116-pass210/cpp
+      - name: Preserve Pass 211-218 and I114 C ABI
+        run: |
+          for pass in 211 212 213 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass210/exact.o -o /tmp/pass219-i116-pass210/test-${pass} && /tmp/pass219-i116-pass210/test-${pass}
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass210/exact.o -o /tmp/pass219-i116-pass210/i114 && /tmp/pass219-i116-pass210/i114
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency-scoped packages
+        run: python -m pip install --upgrade pytest pytest-asyncio fastapi pydantic httpx cryptography uvicorn sympy
+      - name: Run Pass 210 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass210_membrane_i116.py
+      - name: Exercise current Pass 210 HFC runtime
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/test_hhs_pass210_holographic_frame_compression_v1.py tests/test_hhs_pass210_holographic_frame_compression_api_v1.py
+      - name: Authenticate frozen Pass 210 evidence replay
+        run: PYTHONPATH="$PWD" python tools/generate_pass210_hfc_evidence.py --check
+      - name: Preserve Pass 211 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass211_membrane_i116.py

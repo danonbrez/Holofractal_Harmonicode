@@ -1,0 +1,130 @@
+name: Pass 219 RNA Execution Composer ABI 1.14
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration114-canonical-indexed-continuation-composer
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rna_execution_composer_1_14.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_execution_composer_1_14.hpp'
+      - 'hhs_runtime/c/hhs_pass219_rna_execution_composer_1_14.inc'
+      - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_rna_execution_composer_1_14.c'
+      - 'tests/pass219/test_pass219_rna_execution_composer_1_14.cpp'
+      - 'tests/pass219/test_pass219_execution_composer_registration_v1.py'
+      - '.github/workflows/pass219-rna-execution-composer-1-14.yml'
+      - 'docs/operations/restart/PASS_219_RNA_EXECUTION_COMPOSER_ABI_1_14_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-indexed-continuation-composer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject approximate numeric authority in I114 delta
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_execution_composer_1_14.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_execution_composer_1_14.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_rna_execution_composer_1_14.inc'),
+              pathlib.Path('hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text())
+              if match:
+                  raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-rna-composer
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o
+
+      - name: Run 1.14 C execution composer conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_execution_composer_1_14.c \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-c
+          /tmp/pass219-rna-composer/test-c
+
+      - name: Run 1.14 C++17 non-authority composer conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_execution_composer_1_14.cpp \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-cpp
+          /tmp/pass219-rna-composer/test-cpp
+
+      - name: Prove registration through inherited kernel auto-composer
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_execution_composer_registration_v1.py
+
+      - name: Run frozen 1.13 C retrieval regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_state_retrieval_1_13.c \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-113-c
+          /tmp/pass219-rna-composer/test-113-c
+
+      - name: Run frozen 1.13 C++ retrieval regression
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_state_retrieval_1_13.cpp \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-113-cpp
+          /tmp/pass219-rna-composer/test-113-cpp
+
+      - name: Run frozen 1.12 C lowering regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-112-c
+          /tmp/pass219-rna-composer/test-112-c
+
+      - name: Run frozen 1.12 C++ lowering regression
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.cpp \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-112-cpp
+          /tmp/pass219-rna-composer/test-112-cpp
+
+      - name: Run frozen 1.11 C rule regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-111-c
+          /tmp/pass219-rna-composer/test-111-c
+
+      - name: Run frozen 1.10 C admission regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219-rna-composer/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-composer/test-110-c
+          /tmp/pass219-rna-composer/test-110-c

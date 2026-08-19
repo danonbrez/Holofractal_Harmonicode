@@ -1,0 +1,17 @@
+{
+  "artifact_sha256": "39bff3605e0471c1d2ee1d4388a24d859663b9bfd18f2ebf1e97243755a1606a",
+  "checks": {
+    "cache_cannot_bypass_admission": true,
+    "core_modification_forbidden": true,
+    "hash216_not_original_mutation_authority": true,
+    "parallel_canonical_authorities_forbidden": true,
+    "single_hash72_commit_stream": true,
+    "single_vm81_canonical_authority": true
+  },
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "schema": "HHS_PASS_206_CONTRACT_CONFLICT_REPORT_V1",
+  "scope_limit": "Static index/freeze analysis only; runtime enforcement and final cumulative replay remain pending.",
+  "status": "NO_STATIC_CONFLICTS_DETECTED_WITHIN_INDEXED_PASS206_SCOPE",
+  "unresolved_conflicts": []
+}

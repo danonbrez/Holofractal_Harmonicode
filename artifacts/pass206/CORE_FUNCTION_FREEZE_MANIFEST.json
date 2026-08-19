@@ -1,0 +1,244 @@
+{
+  "artifact_sha256": "d60f6191c3fd77d8255e629dc73a7050d4093fe94845ff1bc63bd81d2dfa6da2",
+  "core_function_policy": {
+    "alter_core_functions": false,
+    "fallback_authority_allowed": false,
+    "mode": "FREEZE_AND_ENFORCE",
+    "required_identity_fields": [
+      "repository_path",
+      "file_sha256",
+      "language",
+      "symbol_or_callable_identity",
+      "signature_or_schema_identity",
+      "abi_version",
+      "opcode_number",
+      "source_span_identity",
+      "semantic_category",
+      "bindings",
+      "receipt_replay_obligations"
+    ],
+    "separate_repair_contract_required_for_core_change": true
+  },
+  "core_modification_allowed": false,
+  "entries": [
+    {
+      "abi_version": "PASS205_NATIVE_CONTINUATION_BASELINE",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_pass205_continuation.h",
+        "hhs_python/runtime/hhs_pass205_continuation_bridge.py"
+      ],
+      "file_sha256": "bc8d08aaf4c67ec24f90aaa12c7540a93b43bf2abc559e79f5fa31a2bdd48443",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "4eec6d600bf1dfc544132ec287b6c0968e5a08d3",
+      "language": "C11",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "parent_bound_hash72_receipt",
+        "hash216_continuation_identity",
+        "deterministic_replay"
+      ],
+      "repository_path": "hhs_runtime/c/hhs_pass205_continuation.c",
+      "semantic_category": "SINGLETON_VM81_CONTINUATION_IMPLEMENTATION",
+      "signature_or_schema_identity": "HHSPass205 native continuation implementation",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "hhs_pass205_* continuation/native transition family"
+    },
+    {
+      "abi_version": "PASS205_NATIVE_CONTINUATION_BASELINE",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_pass205_continuation.c",
+        "hhs_python/runtime/hhs_pass205_continuation_bridge.py"
+      ],
+      "file_sha256": "476915ca64f80c41e1dde47375c7336129a43cafae600de4c38ff3bb81ea6308",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "87ec2b092acc4d23fa15353e987ed9b72062a208",
+      "language": "C11_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "stable_struct_layout",
+        "stable_q_addressing",
+        "stable_receipt_binding"
+      ],
+      "repository_path": "hhs_runtime/c/hhs_pass205_continuation.h",
+      "semantic_category": "SINGLETON_VM81_CONTINUATION_ABI",
+      "signature_or_schema_identity": "Pass205 continuation public native ABI",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HHSPass205State/Delta/Frontier/Projection/Token ABI"
+    },
+    {
+      "abi_version": "PASS205_PYTHON_NATIVE_BRIDGE_BASELINE",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_pass205_continuation.h"
+      ],
+      "file_sha256": "0884e2d1fcfa2990b5f3d8066fb0d41289f038280aa1fc997ddffe1071d2c303",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "d91e4a0905d450d28397a2ec02952c36624f69ac",
+      "language": "PYTHON",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "native_bytes_retained",
+        "singleton_vm81_admission",
+        "deterministic_replay"
+      ],
+      "repository_path": "hhs_python/runtime/hhs_pass205_continuation_bridge.py",
+      "semantic_category": "PYTHON_NATIVE_AUTHORITY_BRIDGE",
+      "signature_or_schema_identity": "Python-to-native Pass205 bridge surface",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "Pass205 native continuation ctypes bridge"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_RUNTIME_ABI",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_runtime_abi.h"
+      ],
+      "file_sha256": "354b713650919712575910b8041bf456c3e9475119b22c9b06836923705f33cf",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "0d5be0fb55e618c49192113d1d34272b0428a029",
+      "language": "C11",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "abi_signature_stability"
+      ],
+      "repository_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "semantic_category": "NATIVE_RUNTIME_ABI_IMPLEMENTATION",
+      "signature_or_schema_identity": "cumulative native runtime ABI implementation",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HHS runtime ABI implementation"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_RUNTIME_ABI",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_runtime_abi.c"
+      ],
+      "file_sha256": "196e190ba5ca472d8929418cbe743ddca5393e33d8ab56a9d267e81f337f5e44",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "f6cf389d4e2aea0835477557d7684f40ff159a5f",
+      "language": "C11_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "abi_signature_stability",
+        "opcode_binding_stability"
+      ],
+      "repository_path": "hhs_runtime/c/hhs_runtime_abi.h",
+      "semantic_category": "NATIVE_RUNTIME_ABI",
+      "signature_or_schema_identity": "cumulative native runtime ABI declaration set",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HHS runtime ABI declarations"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_VM_RUNTIME",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "VM81_KERNEL"
+      ],
+      "file_sha256": "31a3873bf3afaa3acdcf5225d1b78f820219361ec5051b6830529902b1326c6f",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "c2321319c507cacbc86f517244d68b497c937f6b",
+      "language": "C_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "single_canonical_authority",
+        "stage_order_preserved"
+      ],
+      "repository_path": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+      "semantic_category": "VM81_RUNTIME_SURFACE",
+      "signature_or_schema_identity": "VM runtime declaration surface",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HARMONICODE VM runtime public surface"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_HASH216",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_pass205_continuation.c"
+      ],
+      "file_sha256": "267936d9cb436f8a70edd9c15ce24f2cf7f1d28384e7b3989de152a5cf734ab0",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "0d00c5cb0fb0daa953e9e12c480b6f3aafddb0cc",
+      "language": "C_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "hash216_after_receipt_closure",
+        "hash216_not_mutation_authority"
+      ],
+      "repository_path": "hhs_runtime/include/hhs_hash216.h",
+      "semantic_category": "HASH216_ARCHIVAL_IDENTITY",
+      "signature_or_schema_identity": "Hash216 native identity ABI",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HHSHash216/hash216 compute surface"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_HASH72_RECEIPT",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "hhs_runtime/c/hhs_pass205_continuation.c"
+      ],
+      "file_sha256": "24823915341fe09ffa2a5f67ea74a84ff16e6900a639300389b766a504f25bd2",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "c7b46405091ac318323d9acfbf8b3bc43d38f991",
+      "language": "C_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "single_hash72_commit_stream",
+        "parent_bound_receipt"
+      ],
+      "repository_path": "hhs_runtime/include/hhs_receipt.h",
+      "semantic_category": "HASH72_COMMIT_RECEIPT",
+      "signature_or_schema_identity": "Hash72 receipt native ABI",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "HHSHash72/receipt surface"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_TENSOR81",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "VM81_KERNEL"
+      ],
+      "file_sha256": "4aa771ec483d2671e3bb3a3580195265a9cb2779039baf0f0487558231ad0cc7",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "51c0d540603a337612a7da5d00128e5931d03eb3",
+      "language": "C_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "81_cell_identity",
+        "5184_address_identity"
+      ],
+      "repository_path": "hhs_runtime/include/hhs_tensor81.h",
+      "semantic_category": "VM81_TENSOR_GEOMETRY",
+      "signature_or_schema_identity": "81-cell tensor declaration surface",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "Tensor81 native surface"
+    },
+    {
+      "abi_version": "GROUNDING_BASELINE_NFV_CONTRACT",
+      "baseline_commit": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+      "bindings": [
+        "cumulative_validation"
+      ],
+      "file_sha256": "f2381add325e292f32c4d8545436bda0c789c56ce2512d8b4e4d2e3e279fc42f",
+      "freeze_policy": "BYTE_FOR_BYTE_AT_GROUNDING_BASELINE",
+      "git_blob": "ae82730479cd5d229b93ae54df740daac84bac74",
+      "language": "C_HEADER",
+      "opcode_number": null,
+      "receipt_replay_obligations": [
+        "constraint_order_preserved",
+        "no_bypass"
+      ],
+      "repository_path": "hhs_runtime/include/hhs_nfv_contract.h",
+      "semantic_category": "NATIVE_CONSTRAINT_CONTRACT",
+      "signature_or_schema_identity": "native constraint/validation declaration surface",
+      "source_span_identity": "ENTIRE_FILE_SHA256",
+      "symbol_or_callable_identity": "native NFV contract surface"
+    }
+  ],
+  "entry_count": 10,
+  "grounding_baseline": "918121aeb6d1c55aa8fbd5d60b15f03c4eb22423",
+  "pass": 206,
+  "schema": "HHS_PASS_206_CORE_FUNCTION_FREEZE_MANIFEST_V1",
+  "separate_repair_contract_required_for_core_change": true
+}

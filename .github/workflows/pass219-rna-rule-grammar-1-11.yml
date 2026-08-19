@@ -1,0 +1,87 @@
+name: Pass 219 RNA Rule Grammar ABI 1.11
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration111-rna-rule-grammar-abi
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rna_rule_grammar_1_11.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_rule_grammar_1_11.hpp'
+      - 'hhs_runtime/c/hhs_pass219_rna_rule_grammar_1_11.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_rna_rule_grammar_1_11.c'
+      - 'tests/pass219/test_pass219_rna_rule_grammar_1_11.cpp'
+      - '.github/workflows/pass219-rna-rule-grammar-1-11.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rna-rule-grammar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject floating authority in Pass 219 RNA rule delta
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_rule_grammar_1_11.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_rna_rule_grammar_1_11.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_rna_rule_grammar_1_11.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text())
+              if match:
+                  raise SystemExit(f'floating authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-rna-rule
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o
+
+      - name: Run 1.11 C rule conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
+            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-rule/test-c
+          /tmp/pass219-rna-rule/test-c
+
+      - name: Run 1.11 C++17 class conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_rule_grammar_1_11.cpp \
+            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-rule/test-cpp
+          /tmp/pass219-rna-rule/test-cpp
+
+      - name: Run frozen 1.10 C admission regression
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-rule/test-110-c
+          /tmp/pass219-rna-rule/test-110-c
+
+      - name: Run frozen 1.10 C++ admission regression
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.cpp \
+            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219-rna-rule/test-110-cpp
+          /tmp/pass219-rna-rule/test-110-cpp

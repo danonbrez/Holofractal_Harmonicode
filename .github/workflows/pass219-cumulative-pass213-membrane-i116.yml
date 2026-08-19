@@ -1,0 +1,121 @@
+name: Pass 219 Cumulative Pass 213 Membrane I116
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219-iteration116-reconciled-main
+    paths:
+      - 'docs/operations/restart/PASS_219_I116_VALIDATION_PROBE.md'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass213_1_16.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass213_1_16.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass213_1_16.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass213.py'
+      - 'tests/pass219/test_pass219_inherited_pass213_1_16.c'
+      - 'tests/pass219/test_pass219_inherited_pass213_1_16.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass213_membrane_i116.py'
+      - '.github/workflows/pass219-cumulative-pass213-membrane-i116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass213-membrane:
+    name: inherited-pass213-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - exact
+          - synthetic
+    steps:
+      - name: Check out explicit validation target
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Record validation target
+        run: |
+          printf 'PASS219_I116_PASS213_VALIDATION_TARGET=%s\n' '${{ matrix.target }}'
+          git rev-parse HEAD
+
+      - name: Prove inherited ancestry and frozen Pass 213 identities
+        run: |
+          git merge-base --is-ancestor dfdfadbf54c33e2eb4e507764a093070bd3dd856 HEAD
+          git merge-base --is-ancestor 86ec461818682fc87232740758769602e8f9fe05 HEAD
+          git merge-base --is-ancestor 383ef8741f904ff1b770dd428530824640fbc83b HEAD
+          test "$(git rev-parse HEAD:contracts/pass213/PASS_213_CONTRACT.json)" = 4787901cb2e52e594431a92ae3a40e2cd87623ec
+          test "$(git rev-parse HEAD:docs/pass213/RESTART_RECORD.md)" = 46bd8c51272bb09105ae1c4599113bc6236f6e10
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass213_final_evidence_v1.py)" = 089290d4b1baff61d8848e655d1fb4c3ef31bfb4
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py)" = aea2ab6e7a2287fd066d99e0a2bb2c0481deb6e4
+          test "$(git rev-parse HEAD:native/pass213/hhs_pass213_native_dispatch.c)" = a1dd0f29e1d4f166e1c9bae4ca14c8c2b5ebe75f
+          test "$(git rev-parse HEAD:native/pass213/hhs_pass213_secure_arena.c)" = d92c36d904b77810b54593e60235491fc300d85d
+
+      - name: Reject approximate authority tokens in Pass 213 stable membrane ABI
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass213_1_16.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219_inherited_pass213_1_16.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219_inherited_pass213_1_16.inc'),
+          ]
+          pattern = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              match = pattern.search(path.read_text('utf-8'))
+              if match:
+                  raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile cumulative exact C ABI with strict warnings
+        run: |
+          mkdir -p /tmp/pass219-i116-pass213
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i116-pass213/hhs_runtime_exact_abi.o
+
+      - name: Run Pass 213 C closure conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass213_1_16.c /tmp/pass219-i116-pass213/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass213/test-213-c
+          /tmp/pass219-i116-pass213/test-213-c
+
+      - name: Run Pass 213 C++17 read-only membrane conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass213_1_16.cpp /tmp/pass219-i116-pass213/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass213/test-213-cpp
+          /tmp/pass219-i116-pass213/test-213-cpp
+
+      - name: Preserve Pass 214-218 and I114 C ABI
+        run: |
+          for pass in 214 215 216 217 218; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass${pass}_1_16.c /tmp/pass219-i116-pass213/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass213/test-${pass}-c
+            /tmp/pass219-i116-pass213/test-${pass}-c
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_execution_composer_1_14.c /tmp/pass219-i116-pass213/hhs_runtime_exact_abi.o -o /tmp/pass219-i116-pass213/test-i114-c
+          /tmp/pass219-i116-pass213/test-i114-c
+
+      - name: Build inherited Pass 213 native libraries with warnings as errors
+        run: |
+          gcc -std=c11 -shared -fPIC -O2 -Wall -Wextra -Werror native/pass213/hhs_pass213_secure_arena.c -o /tmp/libhhs_pass213_secure_arena.so
+          gcc -std=c11 -shared -fPIC -O2 -Wall -Wextra -Werror native/pass213/hhs_pass213_native_dispatch.c -o /tmp/libhhs_pass213_native_dispatch.so
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped cumulative Python packages
+        run: python -m pip install --upgrade pytest fastapi httpx cryptography uvicorn
+
+      - name: Run Pass 213 membrane and kernel-derived governed-execution preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass213_membrane_i116.py
+
+      - name: Exercise inherited governed singleton-VM81 native dispatch
+        run: PYTHONPATH="$PWD" pytest -q --tb=short tests/test_pass213_governed_native_dispatch_v1.py
+
+      - name: Exercise bounded full-hydration recovery and replay evidence
+        run: TMPDIR=/tmp PYTHONPATH="$PWD" pytest -q --tb=short tests/test_pass213_final_evidence_v1.py
+
+      - name: Preserve Pass 214 successor membrane and gate-preservation binding
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py
