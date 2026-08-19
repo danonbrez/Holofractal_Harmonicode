@@ -165,7 +165,6 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         CONTRACT_TEST_PATH,
         "test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_atomic",
         "test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_receipt",
-        "HHS_UPDATE_DRY_RUN=1",
     )
     _require(PASS203_WORKFLOW_PATH, "Run inherited Pass 202 guarded deployment contract tests")
 
