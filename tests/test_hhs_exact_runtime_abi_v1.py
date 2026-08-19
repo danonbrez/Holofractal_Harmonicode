@@ -291,3 +291,40 @@ def test_pass219_i122_pass202_binding_and_membrane_conformance() -> None:
         [sys.executable, "tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py"],
         cwd=ROOT, check=True, env=env,
     )
+
+
+def test_pass219_i123_pass201_binding_and_membrane_conformance() -> None:
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(ROOT)
+    with tempfile.TemporaryDirectory(prefix="hhs-i123-") as temp_dir:
+        temp = Path(temp_dir)
+        exact_obj = temp / "exact.o"
+        c_bin = temp / "pass201-c"
+        cpp_bin = temp / "pass201-cpp"
+        subprocess.run(
+            [
+                "gcc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic",
+                "-Ihhs_runtime/include", "-c", "hhs_runtime/c/hhs_runtime_exact_abi.c",
+                "-o", str(exact_obj),
+            ], cwd=ROOT, check=True, env=env,
+        )
+        subprocess.run(
+            [
+                "gcc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic",
+                "-Ihhs_runtime/include", "tests/pass219/test_pass219_inherited_pass201_1_23.c",
+                str(exact_obj), "-o", str(c_bin),
+            ], cwd=ROOT, check=True, env=env,
+        )
+        subprocess.run([str(c_bin)], cwd=ROOT, check=True, env=env)
+        subprocess.run(
+            [
+                "g++", "-std=c++17", "-Wall", "-Wextra", "-Werror", "-pedantic",
+                "-Ihhs_runtime/include", "tests/pass219/test_pass219_inherited_pass201_1_23.cpp",
+                str(exact_obj), "-o", str(cpp_bin),
+            ], cwd=ROOT, check=True, env=env,
+        )
+        subprocess.run([str(cpp_bin)], cwd=ROOT, check=True, env=env)
+    subprocess.run(
+        [sys.executable, "tests/pass219/test_pass219_cumulative_pass201_membrane_i123.py"],
+        cwd=ROOT, check=True, env=env,
+    )
