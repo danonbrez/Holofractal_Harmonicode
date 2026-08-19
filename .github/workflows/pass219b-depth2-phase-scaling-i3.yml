@@ -1,0 +1,126 @@
+name: Pass 219B Fused Depth-2 Phase Scaling I3
+
+on:
+  pull_request:
+    branches:
+      - agent/pass219b-iteration2-phase-locality-benchmarks
+    paths:
+      - 'benchmarks/pass219b/pass219b_depth2_scaling_reference.cpp'
+      - 'benchmarks/pass219b/pass219b_android_webgpu_depth2.html'
+      - 'benchmarks/pass219b/analyze_pass219b_depth2_android.py'
+      - 'docs/pass219/PASS_219B_FUSED_DEPTH2_PHASE_SCALING_I3.md'
+      - 'docs/operations/restart/PASS_219B_FUSED_DEPTH2_PHASE_SCALING_I3_RESTART.md'
+      - '.github/workflows/pass219b-depth2-phase-scaling-i3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  depth2-reference:
+    name: fused-depth2-reference (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen Pass 219B I2 ancestry
+        run: git merge-base --is-ancestor df4a6cdd61052eb27efb342e8c21c45909462d8b HEAD
+
+      - name: Compile and run depth-2 exact reference
+        run: |
+          mkdir -p /tmp/pass219b-i3 artifacts/pass219b/i3
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            benchmarks/pass219b/pass219b_depth2_scaling_reference.cpp \
+            -o /tmp/pass219b-i3/depth2-reference
+          /tmp/pass219b-i3/depth2-reference artifacts/pass219b/i3/depth2_reference.json
+          cat artifacts/pass219b/i3/depth2_reference.json
+
+      - name: Validate multiplicative scaling law and identity preservation
+        run: |
+          python - <<'PY'
+          import json
+          p='artifacts/pass219b/i3/depth2_reference.json'
+          d=json.load(open(p,encoding='utf-8'))
+          assert d['phase_origins_per_layer'] == 81
+          assert d['potential_phase_combinations'] == 6561
+          assert d['dense_branches'] == 13122
+          assert d['lanes_per_branch'] == 5184
+          assert d['dense_lane_dispatches'] == 68024448
+          assert d['scaling_law'] == 'R = 6561 / (s1*s2)'
+          assert d['all_identity_checks_passed'] is True
+          assert d['authoritative_state_changed'] is False
+          expected={(1,1):6561000,(1,3):2187000,(3,3):729000,(3,9):243000,(9,9):81000,(27,27):9000,(81,81):1000}
+          for row in d['cases']:
+              key=(row['s1'],row['s2'])
+              assert row['ideal_reduction_x1000'] == expected[key]
+              assert row['original_branch_identity_preserved'] is True
+          PY
+
+      - name: Validate Android WebGPU harness boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('benchmarks/pass219b/pass219b_android_webgpu_depth2.html')
+          s=p.read_text(encoding='utf-8')
+          for token in [
+              "Q=PHASE*PHASE",
+              "DENSE_LANES=DENSE_BRANCHES*LANES",
+              "exactSelectedSampleEquality",
+              "originalBranchIdentityPreserved:true",
+              "repositoryPass208KernelMeasured:false",
+              "authoritativeStateChanged:false",
+              "[[1,1],[1,3],[3,3],[3,9],[9,9],[27,27],[81,81]]",
+          ]:
+              assert token in s, token
+          assert 'navigator.gpu' in s
+          assert 'timestamp-query' in s
+          PY
+
+      - name: Validate exact-rational result analyzer
+        run: |
+          python -m py_compile benchmarks/pass219b/analyze_pass219b_depth2_android.py
+          python - <<'PY'
+          import json, pathlib, subprocess, sys, tempfile
+          fixture={
+            'schema':'HHS_PASS_219B_ANDROID_WEBGPU_FUSED_DEPTH2_V1',
+            'potentialPhaseCombinations':6561,
+            'claimBoundary':{'hardwareGpuMeasured':True},
+            'results':[
+              {'s1':1,'s2':1,'materializedCombinations':1,'gpuMedianNs':200,'observedSpeedup':4,'exactSelectedSampleEquality':True},
+              {'s1':3,'s2':3,'materializedCombinations':9,'gpuMedianNs':1000,'observedSpeedup':1,'exactSelectedSampleEquality':True},
+              {'s1':81,'s2':81,'materializedCombinations':6561,'gpuMedianNs':656200,'observedSpeedup':1,'exactSelectedSampleEquality':True},
+            ]
+          }
+          with tempfile.TemporaryDirectory() as td:
+              p=pathlib.Path(td)/'r.json';p.write_text(json.dumps(fixture),encoding='utf-8')
+              subprocess.run([sys.executable,'benchmarks/pass219b/analyze_pass219b_depth2_android.py',str(p)],check=True)
+              out=json.loads((pathlib.Path(td)/'r_analysis.json').read_text(encoding='utf-8'))
+              assert out['all_selected_sample_equal'] is True
+              assert out['affine_fit'] is not None
+          PY
+
+      - name: Preserve Pass 219B I1 exact ABI
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i3/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i3/exact.o -o /tmp/pass219b-i3/i1-c
+          /tmp/pass219b-i3/i1-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i3/exact.o -o /tmp/pass219b-i3/i1-cpp
+          /tmp/pass219b-i3/i1-cpp
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219b-i3-${{ matrix.target }}-depth2-reference
+          path: artifacts/pass219b/i3/depth2_reference.json
+          if-no-files-found: error
