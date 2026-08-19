@@ -1,5 +1,7 @@
 # Pass 219 I120 — inherited Pass 204 open-cloud mainframe exposure
 
+Status: **FROZEN — WIRED**
+
 Pass 219 Iteration 1.20 exposes the already accepted Pass 204 universal executable-declaration / safe open-cloud mainframe through the cumulative exact ABI and kernel-derived pass membrane. It does not redefine Pass 204 execution, persistence, sandboxing, recall, native ABI, routing, or authority semantics.
 
 ## Census classification
@@ -11,13 +13,15 @@ Pass 204 is not classified as an inherited implementation defect.
 Accepted Pass 204 evidence:
 
 - implementation PR: `#147`;
-- final validated Pass 204 head: `6b26fbf6f4b767d4eb5f2a790c552b03fd39d352`;
-- canonical historical merge: `deb34287ee155d9538005bbbfd6519794d999ac9`;
-- final dedicated workflow: `Pass 204 Open Cloud Mainframe` run `30810922316` — success;
+- evidence-bound validated Pass 204 branch head: `6b26fbf6f4b767d4eb5f2a790c552b03fd39d352`;
+- accepted historical squash-style merge: `deb34287ee155d9538005bbbfd6519794d999ac9`;
+- final dedicated historical workflow: `Pass 204 Open Cloud Mainframe` run `30810922316` — success;
 - evidence artifact: `8854791111`;
 - Pass 204 validation receipt blob: `2b2a3baa87ea41577b4b4397da03b1b790c5cfae`.
 
 The accepted receipt closes the catalog at 2,939 indexed / hydrated / callable declarations with zero binding gaps, 470 public routes, 441 OpenAPI paths, immediate canonical core-native ABI completion, durable project-native ABI admission, and verified capability-free session recall.
+
+PR #147 used squash-style integration, so the validated branch head is not required to be a present-day mainline ancestor. I120 instead proves the accepted merge commit is inherited, proves the branch head shares the recorded Pass 204 base, and binds the accepted runtime by exact source/receipt Git blob identity.
 
 ## I120 additive surfaces
 
@@ -91,3 +95,24 @@ I120 validates the inherited Pass 204 implementation by Git blob identity:
 - historical Pass 204 workflow: `174ff0397529c13ad13f591b6bc2243bb2ce64cb`
 
 No accepted Pass 204 runtime, worker, native adapter, route, persistence, or historical test source is modified by I120.
+
+## Validation
+
+Validated implementation/repair head: `2b1cfb478f6c6ac95a0b6ac5558a600352d22b9b`.
+
+Terminal-green evidence:
+
+- dedicated I120 exact/synthetic run `32248132997`
+  - exact `96053031072` — SUCCESS
+  - synthetic `96053030785` — SUCCESS
+- VM81 exact-ABI run `32248132755`
+  - job `96053030260` — SUCCESS
+- Pass 219B cumulative preservation run `32248132947`
+  - exact `96053031064` — SUCCESS
+  - synthetic `96053030609` — SUCCESS
+- Pass 204 hosted production replay `32248133043`
+  - job `96053031122` — SUCCESS
+
+The first I120 dedicated workflow attempt used an invalid ancestry expectation for the historical squash-integrated branch head and failed before compilation. The workflow-only repair at `2b1cfb47…` corrected the validation model; it changed no Pass 204 or I120 executable runtime semantics.
+
+PR #306 remains draft and unmerged. Canonical `main` remains untouched.
