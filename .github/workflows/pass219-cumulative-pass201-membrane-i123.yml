@@ -1,0 +1,111 @@
+name: Pass 219 Cumulative Pass 201 Membrane I123
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration123-pass201-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass201_1_23.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass201_1_23.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass201_1_23.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i123_pass201.py'
+      - 'tests/pass219/test_pass219_inherited_pass201_1_23.c'
+      - 'tests/pass219/test_pass219_inherited_pass201_1_23.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass201_membrane_i123.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'docs/pass201/PASS_219_I123_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I123_PASS201_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass201-membrane-i123.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass201-membrane:
+    name: inherited-pass201-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I122 and accepted Pass 201 integration
+        run: |
+          git merge-base --is-ancestor a8d08be6d16722df6f42f1f88eef2a83f895107e HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58 HEAD
+          test "$(git merge-base f7fbd3007c7e08d5566e5176eb4eed955f44b739 HEAD)" = 0da486d86b55074baadd4a3e5cffb5f87893526b
+
+      - name: Prove historical Pass 201 source identities
+        run: |
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:HHS_PASS_201_PUBLIC_API_FEDERATION.md)" = 88a34ca711b2b85dc8fa157a71125ce6d31919a8
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:.github/workflows/pass201-public-api-federation.yml)" = 0171e64ba9ef1228c05852fc51c375abed21abdd
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py)" = 99a5b966b2885a24b5d3d1a47b39b3eb7060d211
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:hhs_backend/runtime/hhs_pass201_public_api_federation.py)" = 5b07f7369e702afef69358081d3ab67519dc91e1
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:hhs_backend/api/public_api_registry_routes.py)" = 84e5acdcbea9c5f85ac38a1b792733c52b232edb
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:tests/test_hhs_pass201_public_api_federation_v1.py)" = da90ba15304e4fd73b987151b01c7db459f2f93c
+          test "$(git rev-parse 0e3f8a49b4a9b1e5b9b79e0dc73adebeef933f58:scripts/pass201_public_api_validation.py)" = 0489ccba5d6d1b5a7ceda04c13621091ece8f3c7
+
+      - name: Prove frozen I122 Pass 201 source identities
+        run: |
+          test "$(git hash-object HHS_PASS_201_PUBLIC_API_FEDERATION.md)" = 88a34ca711b2b85dc8fa157a71125ce6d31919a8
+          test "$(git hash-object .github/workflows/pass201-public-api-federation.yml)" = 0171e64ba9ef1228c05852fc51c375abed21abdd
+          test "$(git hash-object hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py)" = 99a5b966b2885a24b5d3d1a47b39b3eb7060d211
+          test "$(git hash-object hhs_backend/runtime/hhs_pass201_public_api_federation.py)" = 5b07f7369e702afef69358081d3ab67519dc91e1
+          test "$(git hash-object hhs_backend/api/public_api_registry_routes.py)" = 84e5acdcbea9c5f85ac38a1b792733c52b232edb
+          test "$(git hash-object tests/test_hhs_pass201_public_api_federation_v1.py)" = da90ba15304e4fd73b987151b01c7db459f2f93c
+          test "$(git hash-object scripts/pass201_public_api_validation.py)" = 0489ccba5d6d1b5a7ceda04c13621091ece8f3c7
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          ! grep -E '\b(float|double)\b|<math\.h>|sqrt\(|sin\(|cos\(|pow\(|log\(|exp\(' hhs_runtime/include/hhs_pass219_inherited_pass201_1_23.h hhs_runtime/c/hhs_pass219_inherited_pass201_1_23.inc
+          grep -q 'pass219_new_public_execution_authority != 0U' hhs_runtime/c/hhs_pass219_inherited_pass201_1_23.inc
+          grep -q 'vm81_mutation_authority != 0U' hhs_runtime/c/hhs_pass219_inherited_pass201_1_23.inc
+
+      - name: Compile cumulative exact ABI and Pass 201 conformance
+        run: |
+          mkdir -p /tmp/hhs-i123
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/hhs-i123/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass201_1_23.c /tmp/hhs-i123/exact.o -o /tmp/hhs-i123/pass201-c
+          /tmp/hhs-i123/pass201-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass201_1_23.cpp /tmp/hhs-i123/exact.o -o /tmp/hhs-i123/pass201-cpp
+          /tmp/hhs-i123/pass201-cpp
+
+      - name: Run kernel-derived Pass 201 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass201_membrane_i123.py
+
+      - name: Run inherited Pass 201 public API federation regression
+        run: python -m unittest -v tests.test_hhs_pass201_public_api_federation_v1
+
+      - name: Run Pass 201 production validator
+        run: PYTHONPATH=. python scripts/pass201_public_api_validation.py --evidence /tmp/PASS201_VALIDATION_RECEIPT.json
+
+      - name: Preserve frozen Pass 202 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py
