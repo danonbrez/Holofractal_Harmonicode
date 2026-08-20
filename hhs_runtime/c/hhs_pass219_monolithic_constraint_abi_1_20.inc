@@ -2,12 +2,28 @@
 
 #include <string.h>
 
+static const char HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE[] =
+    "P^2/{(t^3-t=(P\302\263-P/(P\302\262-pq)=(t\302\263-t)/\342\210\206=P\302\262(MOD)(pq))=m^2-m)-"
+    "(({{b^4,c^4,c^2-u^72},{c^2,5/u^((s==(b^(2c^2)c^b^4)^2)/(72P^2)),"
+    "((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},"
+    "{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,(72*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])"
+    "==(AB/(pq+\342\210\206)-P^2)/(t^3-t)*u^72} where \342\210\206/P=\342\210\232(pq+u\342\201\267\302\262)^x\302\262";
+
 static const char HHS_EXACT_PASS219_MONOLITHIC_SOURCE[] =
     "P^2/{(t^3-t=(P^3-P/(P^2-pq)=(t^3-t)/Delta=P^2(MOD)(pq))=m^2-m)-"
     "(({{b^4,c^4,c^2-u^72},{c^2,5/u^((s==(b^(2c^2)c^b^4)^2)/(72P^2)),"
     "((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},"
     "{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,(72*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])"
     "==(AB/(pq+Delta)-P^2)/(t^3-t)*u^72} where Delta/P=Sqrt(pq+u^72)^x^2\n";
+
+static const uint8_t HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SHA256[
+    HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES
+] = {
+    0xacU, 0x14U, 0x37U, 0x98U, 0x14U, 0x6dU, 0x89U, 0xa3U,
+    0xfeU, 0x93U, 0x2fU, 0x39U, 0xccU, 0xb4U, 0xd6U, 0x12U,
+    0xe4U, 0xfbU, 0x3eU, 0x45U, 0xc4U, 0x71U, 0xabU, 0xc1U,
+    0xa8U, 0xbbU, 0xbeU, 0xbbU, 0x0fU, 0x9cU, 0x0aU, 0x6aU
+};
 
 static const uint8_t HHS_EXACT_PASS219_MONOLITHIC_MACHINE_SHA256[
     HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES
@@ -46,9 +62,12 @@ static const HHSExactPass219FamilySpanConst HHS_EXACT_PASS219_FAMILY_SPANS[
     {328U, 353U, HHS_EXACT_PASS219_FAMILY_DELTA_ROOT}
 };
 
+_Static_assert(sizeof(HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE) - 1U ==
+               HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH,
+               "native verbatim monolithic source length drift");
 _Static_assert(sizeof(HHS_EXACT_PASS219_MONOLITHIC_SOURCE) - 1U ==
                HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH,
-               "verbatim monolithic HARMONICODE source length drift");
+               "machine monolithic HARMONICODE source length drift");
 _Static_assert(sizeof(HHS_EXACT_PASS219_FAMILY_SPANS) /
                sizeof(HHS_EXACT_PASS219_FAMILY_SPANS[0]) ==
                HHS_EXACT_PASS219_MONOLITHIC_FAMILY_COUNT,
@@ -128,59 +147,9 @@ static int hhs_exact_pass219_monolithic_ordered_xy_bound(
            xy.ordered_tag != yx.ordered_tag;
 }
 
-uint32_t hhs_exact_pass219_monolithic_version(void) {
-    return hhs_exact_pass219_monolithic_version_word();
-}
-
-HHSExactStatus hhs_exact_pass219_monolithic_descriptor(
-    HHSExactPass219MonolithicDescriptorV1 *out_descriptor
-) {
-    if (out_descriptor == NULL)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    memset(out_descriptor, 0, sizeof(*out_descriptor));
-    out_descriptor->struct_size = (uint32_t)sizeof(*out_descriptor);
-    out_descriptor->version = hhs_exact_pass219_monolithic_version_word();
-    out_descriptor->source_length = HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH;
-    out_descriptor->equality_edge_count = HHS_EXACT_PASS219_MONOLITHIC_EDGE_COUNT;
-    out_descriptor->binding_edge_count = HHS_EXACT_PASS219_MONOLITHIC_BINDING_EDGE_COUNT;
-    out_descriptor->constraint_edge_count = HHS_EXACT_PASS219_MONOLITHIC_CONSTRAINT_EDGE_COUNT;
-    out_descriptor->semantic_family_count = HHS_EXACT_PASS219_MONOLITHIC_FAMILY_COUNT;
-    out_descriptor->required_stage_mask = HHS_EXACT_PASS219_STAGE_REQUIRED;
-    out_descriptor->required_family_mask = HHS_EXACT_PASS219_FAMILY_REQUIRED;
-    out_descriptor->monolithic_admission_only = 1U;
-    out_descriptor->source_structure_preserved = 1U;
-    out_descriptor->pass159_constraint_graph_required = 1U;
-    out_descriptor->vm81_proof_required = 1U;
-    out_descriptor->floating_point_authority = 0U;
-    out_descriptor->vm81_mutation_authority = 0U;
-    out_descriptor->hash72_commit_authority = 0U;
-    memcpy(out_descriptor->machine_source_sha256,
-           HHS_EXACT_PASS219_MONOLITHIC_MACHINE_SHA256,
-           sizeof(out_descriptor->machine_source_sha256));
-    memcpy(out_descriptor->frozen_tex_sha256,
-           HHS_EXACT_PASS219_MONOLITHIC_TEX_SHA256,
-           sizeof(out_descriptor->frozen_tex_sha256));
-    return HHS_EXACT_STATUS_OK;
-}
-
-HHSExactStatus hhs_exact_pass219_monolithic_source(
-    uint8_t *out_bytes,
-    size_t capacity,
-    size_t *out_length
-) {
-    if (out_length != NULL)
-        *out_length = HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH;
-    if (out_bytes == NULL)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (capacity < HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH)
-        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
-    memcpy(out_bytes,
-           HHS_EXACT_PASS219_MONOLITHIC_SOURCE,
-           HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH);
-    return HHS_EXACT_STATUS_OK;
-}
-
-HHSExactStatus hhs_exact_pass219_monolithic_edge(
+static HHSExactStatus hhs_exact_pass219_monolithic_scan_edge(
+    const char *source,
+    size_t source_length,
     uint32_t ordinal,
     HHSExactPass219MonolithicEdgeV1 *out_edge
 ) {
@@ -190,13 +159,13 @@ HHSExactStatus hhs_exact_pass219_monolithic_edge(
     uint16_t bracket_depth = 0U;
     size_t i;
 
-    if (out_edge == NULL)
+    if (source == NULL || out_edge == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (ordinal >= HHS_EXACT_PASS219_MONOLITHIC_EDGE_COUNT)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    for (i = 0U; i < HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH; ++i) {
-        const char ch = HHS_EXACT_PASS219_MONOLITHIC_SOURCE[i];
+    for (i = 0U; i < source_length; ++i) {
+        const char ch = source[i];
         if (ch == '(')
             ++paren_depth;
         else if (ch == ')') {
@@ -217,8 +186,7 @@ HHSExactStatus hhs_exact_pass219_monolithic_edge(
             --bracket_depth;
         } else if (ch == '=') {
             const uint8_t is_constraint =
-                (uint8_t)(i + 1U < HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH &&
-                          HHS_EXACT_PASS219_MONOLITHIC_SOURCE[i + 1U] == '=');
+                (uint8_t)(i + 1U < source_length && source[i + 1U] == '=');
             if (found == ordinal) {
                 memset(out_edge, 0, sizeof(*out_edge));
                 out_edge->struct_size = (uint32_t)sizeof(*out_edge);
@@ -240,6 +208,101 @@ HHSExactStatus hhs_exact_pass219_monolithic_edge(
         }
     }
     return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+}
+
+uint32_t hhs_exact_pass219_monolithic_version(void) {
+    return hhs_exact_pass219_monolithic_version_word();
+}
+
+HHSExactStatus hhs_exact_pass219_monolithic_descriptor(
+    HHSExactPass219MonolithicDescriptorV1 *out_descriptor
+) {
+    if (out_descriptor == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(out_descriptor, 0, sizeof(*out_descriptor));
+    out_descriptor->struct_size = (uint32_t)sizeof(*out_descriptor);
+    out_descriptor->version = hhs_exact_pass219_monolithic_version_word();
+    out_descriptor->source_length = HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH;
+    out_descriptor->native_source_length = HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH;
+    out_descriptor->equality_edge_count = HHS_EXACT_PASS219_MONOLITHIC_EDGE_COUNT;
+    out_descriptor->binding_edge_count = HHS_EXACT_PASS219_MONOLITHIC_BINDING_EDGE_COUNT;
+    out_descriptor->constraint_edge_count = HHS_EXACT_PASS219_MONOLITHIC_CONSTRAINT_EDGE_COUNT;
+    out_descriptor->semantic_family_count = HHS_EXACT_PASS219_MONOLITHIC_FAMILY_COUNT;
+    out_descriptor->required_stage_mask = HHS_EXACT_PASS219_STAGE_REQUIRED;
+    out_descriptor->required_family_mask = HHS_EXACT_PASS219_FAMILY_REQUIRED;
+    out_descriptor->monolithic_admission_only = 1U;
+    out_descriptor->source_structure_preserved = 1U;
+    out_descriptor->pass159_constraint_graph_required = 1U;
+    out_descriptor->vm81_proof_required = 1U;
+    out_descriptor->floating_point_authority = 0U;
+    out_descriptor->vm81_mutation_authority = 0U;
+    out_descriptor->hash72_commit_authority = 0U;
+    memcpy(out_descriptor->native_source_sha256,
+           HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SHA256,
+           sizeof(out_descriptor->native_source_sha256));
+    memcpy(out_descriptor->machine_source_sha256,
+           HHS_EXACT_PASS219_MONOLITHIC_MACHINE_SHA256,
+           sizeof(out_descriptor->machine_source_sha256));
+    memcpy(out_descriptor->frozen_tex_sha256,
+           HHS_EXACT_PASS219_MONOLITHIC_TEX_SHA256,
+           sizeof(out_descriptor->frozen_tex_sha256));
+    return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_pass219_monolithic_native_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    if (out_length != NULL)
+        *out_length = HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH;
+    if (out_bytes == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (capacity < HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH)
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    memcpy(out_bytes,
+           HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE,
+           HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH);
+    return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_pass219_monolithic_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    if (out_length != NULL)
+        *out_length = HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH;
+    if (out_bytes == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (capacity < HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH)
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    memcpy(out_bytes,
+           HHS_EXACT_PASS219_MONOLITHIC_SOURCE,
+           HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH);
+    return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_pass219_monolithic_native_edge(
+    uint32_t ordinal,
+    HHSExactPass219MonolithicEdgeV1 *out_edge
+) {
+    return hhs_exact_pass219_monolithic_scan_edge(
+        HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE,
+        HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH,
+        ordinal,
+        out_edge);
+}
+
+HHSExactStatus hhs_exact_pass219_monolithic_edge(
+    uint32_t ordinal,
+    HHSExactPass219MonolithicEdgeV1 *out_edge
+) {
+    return hhs_exact_pass219_monolithic_scan_edge(
+        HHS_EXACT_PASS219_MONOLITHIC_SOURCE,
+        HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH,
+        ordinal,
+        out_edge);
 }
 
 HHSExactStatus hhs_exact_pass219_monolithic_family_span(
