@@ -11,6 +11,16 @@ static void fill_hash(char* out, std::size_t length, char symbol) {
     out[length] = '\0';
 }
 
+static bool hash216_valid(const std::array<char, HHS_HASH216_BYTES_STRLEN>& hash) {
+    if (hash[HHS_HASH216_BYTES_LEN] != '\0')
+        return false;
+    for (std::size_t i = 0; i < HHS_HASH216_BYTES_LEN; ++i) {
+        if (std::strchr(HHS_EXACT_HASH72_ALPHABET, hash[i]) == nullptr)
+            return false;
+    }
+    return true;
+}
+
 static bool build_state(HHSExactPass219OctonionStateV1& state) {
     return hhs_exact_pass219_octonion_expand(0U, 1U, 0U, 1U, &state) ==
                HHS_EXACT_STATUS_OK &&
@@ -144,12 +154,16 @@ int main(int argc, char** argv) {
         membrane.contradictions().size() != expected_pair_count)
         return 11;
 
-    for (char symbol : global.lane_hash216_fabric) {
-        if (std::strchr(HHS_EXACT_HASH72_ALPHABET, symbol) == nullptr)
+    for (const auto& equation : membrane.contradictions()) {
+        if (!hash216_valid(equation.equation_hash216))
             return 12;
     }
-    if (global.contradiction_graph_hash216[HHS_HASH216_BYTES_LEN] != '\0')
-        return 13;
+    for (char symbol : global.lane_hash216_fabric) {
+        if (std::strchr(HHS_EXACT_HASH72_ALPHABET, symbol) == nullptr)
+            return 13;
+    }
+    if (!hash216_valid(global.contradiction_graph_hash216))
+        return 14;
 
     if (!has_phase_contradiction(
             membrane,
@@ -159,7 +173,7 @@ int main(int argc, char** argv) {
             membrane,
             OrthogonalGlyphMembrane::Glyph::zw,
             OrthogonalGlyphMembrane::Glyph::wz))
-        return 14;
+        return 15;
 
     if (has_phase_contradiction(
             membrane,
@@ -169,15 +183,17 @@ int main(int argc, char** argv) {
             membrane,
             OrthogonalGlyphMembrane::Glyph::Delta,
             OrthogonalGlyphMembrane::Glyph::a2))
-        return 15;
+        return 16;
 
     const auto fabric_before = global.lane_hash216_fabric;
     const auto graph_before = global.contradiction_graph_hash216;
+    const auto first_equation_before = membrane.contradictions().front().equation_hash216;
     if (membrane.compute_parallel() != HHS_EXACT_STATUS_OK)
-        return 16;
-    if (fabric_before != membrane.global().lane_hash216_fabric ||
-        graph_before != membrane.global().contradiction_graph_hash216)
         return 17;
+    if (fabric_before != membrane.global().lane_hash216_fabric ||
+        graph_before != membrane.global().contradiction_graph_hash216 ||
+        first_equation_before != membrane.contradictions().front().equation_hash216)
+        return 18;
 
     std::uint8_t bad_delta_byte = 2U;
     HHSExactBigUIntView bad_delta{
@@ -187,15 +203,15 @@ int main(int argc, char** argv) {
     };
     OrthogonalGlyphMembrane bad_delta_membrane(state, bad_delta);
     if (bad_delta_membrane.status() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 18;
+        return 19;
 
     HHSExactPass219OctonionStateV1 bad_state{};
     if (hhs_exact_pass219_octonion_expand(0U, 0U, 0U, 0U, &bad_state) !=
         HHS_EXACT_STATUS_OK)
-        return 19;
+        return 20;
     OrthogonalGlyphMembrane bad_state_membrane(bad_state, delta);
     if (bad_state_membrane.status() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 20;
+        return 21;
 
     OrthogonalGlyphMembrane mismatch_membrane(state, delta);
     auto mismatch_proof = build_proof(state, 0U);
@@ -203,15 +219,15 @@ int main(int argc, char** argv) {
     if (mismatch_membrane.assign_lane(
             OrthogonalGlyphMembrane::Glyph::P,
             mismatch_proof) != HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 21;
+        return 22;
 
     OrthogonalGlyphMembrane incomplete_membrane(state, delta);
     if (incomplete_membrane.assign_lane(
             OrthogonalGlyphMembrane::Glyph::P,
             proofs[0]) != HHS_EXACT_STATUS_OK)
-        return 22;
-    if (incomplete_membrane.compute_parallel() != HHS_EXACT_STATUS_INVALID_ARGUMENT)
         return 23;
+    if (incomplete_membrane.compute_parallel() != HHS_EXACT_STATUS_INVALID_ARGUMENT)
+        return 24;
 
     std::puts("PASS219_ORTHOGONAL_GLYPH_MEMBRANE_1_21_OK");
     return 0;
