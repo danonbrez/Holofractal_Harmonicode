@@ -91,11 +91,7 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
             "phase_carrier_sum_basis_1_I": deepcopy(phase_step["output"]["sum"]),
             "membrane_residue": inherited["derived"]["membrane_residue"],
         },
-        "global_tensor_binding": {
-            "symbol": "N",
-            "source_sha256": PARENT_MONOLITHIC_SHA256,
-            "indivisible": True,
-        },
+        "global_tensor_binding": {"symbol": "N", "source_sha256": PARENT_MONOLITHIC_SHA256, "indivisible": True},
         "phase_quantization_binding": {
             "symbol": "D",
             "source": PHASE_QUANTIZATION_OBJECT,
@@ -139,55 +135,39 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
     root = body.pop("proof_root_hash72", None)
     if root != _hash("hhs_pass219b_global_relation_bridge_v3", body):
         raise GlobalZeroSumClosureError("proof root mismatch")
-    if body.get("schema") != SCHEMA or body.get("pass_id") != PASS_ID:
-        raise GlobalZeroSumClosureError("proof schema/pass mismatch")
-    if body.get("status") != "ADDITIVE_GLOBAL_RELATION_BRIDGE_PROVED":
-        raise GlobalZeroSumClosureError("status mismatch")
+    if body.get("schema") != SCHEMA or body.get("pass_id") != PASS_ID or body.get("status") != "ADDITIVE_GLOBAL_RELATION_BRIDGE_PROVED":
+        raise GlobalZeroSumClosureError("proof identity/status mismatch")
 
     family = body["closure_family"]
     P = _fraction(family["P"])
-    if _fraction(family["delta"]) != 1:
-        raise GlobalZeroSumClosureError("delta mismatch")
-    if _fraction(family["p"]) != P - 1 or _fraction(family["q"]) != P + 1:
-        raise GlobalZeroSumClosureError("symmetric center mismatch")
-    if _fraction(family["P_squared_minus_pq"]) != 1:
-        raise GlobalZeroSumClosureError("P^2-pq mismatch")
-    if _fraction(family["xy_projection"]) != 1 or _fraction(family["zw_projection"]) != 1:
-        raise GlobalZeroSumClosureError("ordered unit projection mismatch")
-    if _fraction(family["x_plus_y_plus_z_plus_w"]) != 0:
-        raise GlobalZeroSumClosureError("center zero-sum mismatch")
-    if family["phase_carrier_sum_basis_1_I"] != [0, 0]:
-        raise GlobalZeroSumClosureError("phase zero-sum mismatch")
+    if _fraction(family["delta"]) != 1 or _fraction(family["p"]) != P - 1 or _fraction(family["q"]) != P + 1:
+        raise GlobalZeroSumClosureError("zero-sum family mismatch")
+    if _fraction(family["P_squared_minus_pq"]) != 1 or _fraction(family["xy_projection"]) != 1 or _fraction(family["zw_projection"]) != 1:
+        raise GlobalZeroSumClosureError("unit projection mismatch")
+    if _fraction(family["x_plus_y_plus_z_plus_w"]) != 0 or family["phase_carrier_sum_basis_1_I"] != [0, 0]:
+        raise GlobalZeroSumClosureError("zero-sum mismatch")
     if _fraction(family["membrane_residue"]) != 1:
         raise GlobalZeroSumClosureError("membrane mismatch")
 
-    if body["global_tensor_binding"] != {
-        "symbol": "N", "source_sha256": PARENT_MONOLITHIC_SHA256, "indivisible": True
-    }:
+    if body["global_tensor_binding"] != {"symbol": "N", "source_sha256": PARENT_MONOLITHIC_SHA256, "indivisible": True}:
         raise GlobalZeroSumClosureError("N binding mismatch")
-
-    phase = body["phase_quantization_binding"]
-    if phase != {
-        "symbol": "D",
-        "source": PHASE_QUANTIZATION_OBJECT,
+    expected_phase = {
+        "symbol": "D", "source": PHASE_QUANTIZATION_OBJECT,
         "source_sha256": PHASE_QUANTIZATION_SHA256,
         "recursive_relation": "N/D^4=D^4",
         "structural_projection_registered": True,
         "scalar_cancellation_allowed": False,
-    }:
+    }
+    if body["phase_quantization_binding"] != expected_phase:
         raise GlobalZeroSumClosureError("D binding mismatch")
     if sha256(PHASE_QUANTIZATION_OBJECT.encode("utf-8")).hexdigest() != PHASE_QUANTIZATION_SHA256:
         raise GlobalZeroSumClosureError("D bytes mismatch")
 
     expected_hydration = {
-        "lo_shu_sudoku_qudit_bound": True,
-        "cell_count81": 81,
-        "lo_shu_group_count41": 41,
-        "trit_count3": 3,
-        "vm5184_slot_count": 5184,
-        "hydration_state_count": HYDRATION_STATE_COUNT,
-        "phase_origin_count81": 81,
-        "phase_projected_state_count": PHASE_PROJECTED_STATE_COUNT,
+        "lo_shu_sudoku_qudit_bound": True, "cell_count81": 81,
+        "lo_shu_group_count41": 41, "trit_count3": 3,
+        "vm5184_slot_count": 5184, "hydration_state_count": HYDRATION_STATE_COUNT,
+        "phase_origin_count81": 81, "phase_projected_state_count": PHASE_PROJECTED_STATE_COUNT,
     }
     if body["hydration_bridge"] != expected_hydration:
         raise GlobalZeroSumClosureError("hydration bridge mismatch")
@@ -208,10 +188,8 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
 
     request, inherited = _replay_pass129(P)
     phase_step = _step(inherited, "FOUR_PHASE_CARRIER_ZERO_SUM")
-    if _fraction(inherited["derived"]["p"]) != _fraction(family["p"]):
-        raise GlobalZeroSumClosureError("Pass129 p replay mismatch")
-    if _fraction(inherited["derived"]["q"]) != _fraction(family["q"]):
-        raise GlobalZeroSumClosureError("Pass129 q replay mismatch")
+    if _fraction(inherited["derived"]["p"]) != _fraction(family["p"]) or _fraction(inherited["derived"]["q"]) != _fraction(family["q"]):
+        raise GlobalZeroSumClosureError("Pass129 center replay mismatch")
     if _fraction(request["xyzw_sum"]) != 0 or phase_step["output"]["sum"] != [0, 0]:
         raise GlobalZeroSumClosureError("Pass129 closure replay mismatch")
     if body["inherited_pass129"] != {
@@ -220,23 +198,12 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
     }:
         raise GlobalZeroSumClosureError("Pass129 receipt replay mismatch")
 
-    return {
-        "status": "ADDITIVE_GLOBAL_RELATION_BRIDGE_VALIDATED",
-        "proof_root_hash72": root,
-        "legacy_full_symbolic_v1_preserved_unsupported": True,
-    }
+    return {"status": "ADDITIVE_GLOBAL_RELATION_BRIDGE_VALIDATED", "proof_root_hash72": root, "legacy_full_symbolic_v1_preserved_unsupported": True}
 
 
 __all__ = [
-    "SCHEMA",
-    "PASS_ID",
-    "CLOSURE_EXTENSION_SHA256",
-    "PARENT_MONOLITHIC_SHA256",
-    "PHASE_QUANTIZATION_OBJECT",
-    "PHASE_QUANTIZATION_SHA256",
-    "HYDRATION_STATE_COUNT",
-    "PHASE_PROJECTED_STATE_COUNT",
-    "GlobalZeroSumClosureError",
-    "prove_global_zero_sum_closure",
-    "verify_global_zero_sum_closure",
+    "SCHEMA", "PASS_ID", "CLOSURE_EXTENSION_SHA256", "PARENT_MONOLITHIC_SHA256",
+    "PHASE_QUANTIZATION_OBJECT", "PHASE_QUANTIZATION_SHA256", "HYDRATION_STATE_COUNT",
+    "PHASE_PROJECTED_STATE_COUNT", "GlobalZeroSumClosureError",
+    "prove_global_zero_sum_closure", "verify_global_zero_sum_closure",
 ]
