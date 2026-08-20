@@ -1,0 +1,121 @@
+name: Pass 219 Cumulative Pass 200B Membrane I125
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration125-pass200b-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass200b_1_25.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i125_pass200b.py'
+      - 'tests/pass219/test_pass219_inherited_pass200b_1_25.c'
+      - 'tests/pass219/test_pass219_inherited_pass200b_1_25.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass200b_membrane_i125.py'
+      - 'docs/pass200b/PASS_219_I125_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I125_PASS200B_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass200b-membrane-i125.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass200b-membrane:
+    name: inherited-pass200b-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I124 and accepted Pass 200B integration
+        run: |
+          git merge-base --is-ancestor 18ca57da270785483679e36a4d861c2002c69323 HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor eb7dd08b8bc52451c2e179b68949097ade5499af HEAD
+          test "$(git merge-base 07f12ba91d78d28f0d9f73ec54e3167d4f1fa5b3 HEAD)" = "483a18b618dbe51b31025eeb15a8a6435e4040c5"
+
+      - name: Prove historical Pass 200B source identities
+        run: |
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md)" = "1e442f002bd0936090a5b7154150021e0a543948"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:.github/workflows/pass200b-governed-canary-admission.yml)" = "e0b2335d509839f9175c5e6a08eef6bbbd18d437"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py)" = "8034383ec6dcad463c45296c9eeb241f3e1123c5"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py)" = "67e79a10250bfa3e9678937d28ed4bc22fed9937"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:hhs_backend/api/pass200b_canary_routes.py)" = "abb2bee87c7ad12e0d3e441840bdb0643d425b05"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:tests/test_hhs_pass200b_governed_canary_admission_v1.py)" = "ad843727f95b517c6f9c77b2338434c6605ba5d0"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs)" = "def9ff882023c310ffd1ab3ff0d040115f2a76b2"
+          test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:docs/pass200b/RESTART_RECORD.md)" = "435fd4f65b0d9f423e3ec6ec1a155f4d35948c13"
+
+      - name: Prove frozen I124 Pass 200B source identities
+        run: |
+          test "$(git hash-object HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md)" = "1e442f002bd0936090a5b7154150021e0a543948"
+          test "$(git hash-object .github/workflows/pass200b-governed-canary-admission.yml)" = "e0b2335d509839f9175c5e6a08eef6bbbd18d437"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py)" = "8034383ec6dcad463c45296c9eeb241f3e1123c5"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py)" = "67e79a10250bfa3e9678937d28ed4bc22fed9937"
+          test "$(git hash-object hhs_backend/api/pass200b_canary_routes.py)" = "abb2bee87c7ad12e0d3e441840bdb0643d425b05"
+          test "$(git hash-object tests/test_hhs_pass200b_governed_canary_admission_v1.py)" = "ad843727f95b517c6f9c77b2338434c6605ba5d0"
+          test "$(git hash-object applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs)" = "def9ff882023c310ffd1ab3ff0d040115f2a76b2"
+          test "$(git hash-object docs/pass200b/RESTART_RECORD.md)" = "435fd4f65b0d9f423e3ec6ec1a155f4d35948c13"
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass200b_1_25.inc
+          ! grep -Eq 'admit_canary|build_approval|execute_canary|rollback_canary|persist.*frontier|mint.*hash72' \
+            hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.hpp
+
+      - name: Compile cumulative exact ABI and Pass 200B conformance
+        run: |
+          mkdir -p /tmp/pass219-i125-pass200b
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i125-pass200b/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200b_1_25.c \
+            /tmp/pass219-i125-pass200b/exact.o \
+            -o /tmp/pass219-i125-pass200b/pass200b-c
+          /tmp/pass219-i125-pass200b/pass200b-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200b_1_25.cpp \
+            /tmp/pass219-i125-pass200b/exact.o \
+            -o /tmp/pass219-i125-pass200b/pass200b-cpp
+          /tmp/pass219-i125-pass200b/pass200b-cpp
+
+      - name: Run kernel-derived Pass 200B membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass200b_membrane_i125.py
+
+      - name: Run inherited Pass 200B governed-canary regression
+        run: python -m unittest -v tests.test_hhs_pass200b_governed_canary_admission_v1
+
+      - name: Preserve frozen Pass 200C successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass200c_membrane_i124.py
