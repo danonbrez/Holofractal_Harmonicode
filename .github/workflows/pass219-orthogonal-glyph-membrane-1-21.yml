@@ -14,6 +14,8 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/src/hhs_hash216.c'
       - 'hhs_runtime/include/hhs_hash216_bytes.h'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+      - 'native_projects/hhs_pass189_hqlh_runtime/**'
       - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
       - 'tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
@@ -46,17 +48,33 @@ jobs:
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
           git merge-base --is-ancestor 85c237023e778e655f38f6363bab7f08907fa9b2 HEAD
 
-      - name: Enforce exact membrane authority
+      - name: Enforce source-defined exact membrane authority
         run: |
           ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
             hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          ! grep -F 'canonical_a2' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          ! grep -F 'lane_count * lane_width' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
           grep -F 'lane_count == 24U' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
-          grep -F 'lane_count * lane_width == hydration_fabric_size' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
-          grep -F 'canonical_proof = false' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
-          grep -F 'requires_vm81_authority = true' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
-          grep -F 'xy = zw = a² = ∆' HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_AMENDMENT_1_21_0.md
+          grep -F 'vm_thread_count * vm_cells_per_thread == vm_fabric_positions' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'source_structure_thread_count == 49U' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'hhs_exact_pass219_octonion_from_vm81' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'hhs_exact_vm5184_address_encode' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'hhs188_transition_projected' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'hhs189_encode_context' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'native_shared_invariant_proven = false' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'canonical_proof = false' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'requires_vm81_authority = true' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
 
-      - name: Compile cumulative exact C substrate
+      - name: Compile cumulative exact and inherited hydration substrates
         run: |
           mkdir -p /tmp/pass219-orthogonal-1-21
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -67,18 +85,33 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/src/hhs_hash216.c \
             -o /tmp/pass219-orthogonal-1-21/hash216.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c \
+            -o /tmp/pass219-orthogonal-1-21/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S \
+            -o /tmp/pass219-orthogonal-1-21/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c \
+            -o /tmp/pass219-orthogonal-1-21/pass189.o
 
-      - name: Compile and run C++ parallel membrane conformance
+      - name: Compile and run full VM81 octonion hydration membrane
         run: |
           g++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
             -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp \
             /tmp/pass219-orthogonal-1-21/exact.o \
             /tmp/pass219-orthogonal-1-21/hash216.o \
+            /tmp/pass219-orthogonal-1-21/pass188.o \
+            /tmp/pass219-orthogonal-1-21/pass188-x86.o \
+            /tmp/pass219-orthogonal-1-21/pass189.o \
             -o /tmp/pass219-orthogonal-1-21/test-membrane
           /tmp/pass219-orthogonal-1-21/test-membrane
 
-      - name: Prove every lane stores the full verbatim equation
+      - name: Prove every glyph lane retains the full verbatim program
         run: |
           /tmp/pass219-orthogonal-1-21/test-membrane --dump-source \
             > /tmp/pass219-orthogonal-1-21/lane-source.harmonicode
@@ -88,7 +121,7 @@ jobs:
             'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
             '/tmp/pass219-orthogonal-1-21/lane-source.harmonicode' | sha256sum -c -
 
-      - name: Preserve monolithic and octonion substrates
+      - name: Preserve monolithic and ordered-octonion substrates
         run: |
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
