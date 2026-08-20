@@ -31,11 +31,36 @@ class Pass200AProofCarryingOptimizationAuthority(
     """Canonical production projection with current-proof bundle binding.
 
     The immutable bundle is created only from the Pass198 document re-read from
-    the registry immediately before persistence.  Caller snapshots are not a
-    proof authority.  This preserves stale/revoked-proof rejection while
-    ensuring a newly created bundle carries the exact current
-    ``COMPILER_CANDIDATE`` proof Hash72.
+    the registry immediately before persistence. Caller snapshots are not a
+    proof authority. The same live registry row is rechecked before every
+    compiler-shadow use so revoked or replaced proofs fail closed.
     """
+
+    def _current_proof(self, bundle: Mapping[str, Any]) -> dict[str, Any]:
+        matches = [
+            item
+            for item in self.distributed.pass198.list_simplifications(OPERATION_ID)
+            if item.get("simplification_id") == bundle.get("simplification_id")
+        ]
+        if len(matches) != 1:
+            raise Pass200AError("bundle source simplification is missing or ambiguous")
+        current = matches[0]
+        if current.get("status") != "COMPILER_CANDIDATE":
+            raise Pass200AError(
+                "bundle source proof is no longer the current compiler candidate: "
+                f"{current.get('status')}"
+            )
+        if current.get("proof_hash72") != bundle.get("proof_hash72"):
+            raise Pass200AError(
+                "bundle source proof Hash72 no longer matches current proof: "
+                f"bundle={bundle.get('proof_hash72')} current={current.get('proof_hash72')} "
+                f"updated_event={current.get('updated_event_hash72')}"
+            )
+        if current.get("source_operation_identity") != bundle.get("source_operation_identity"):
+            raise Pass200AError("bundle source operation identity drift")
+        if current.get("candidate_operation_identity") != bundle.get("candidate_operation_identity"):
+            raise Pass200AError("bundle candidate operation identity drift")
+        return dict(current)
 
     def _record_bundle(
         self,
