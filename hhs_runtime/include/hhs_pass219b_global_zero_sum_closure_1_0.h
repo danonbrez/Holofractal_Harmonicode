@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MAJOR 1U
-#define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MINOR 2U
+#define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MINOR 3U
 #define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_PATCH 0U
 #define HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES 32U
 #define HHS_EXACT_PASS219B_ZERO_SUM_UNIT_PERIMETER_COUNT 8U
@@ -35,7 +35,7 @@ extern "C" {
 #define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_PHASE_QUANTIZATION UINT64_C(0x0100)
 #define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_LO_SHU_QUDIT UINT64_C(0x0200)
 #define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_VM81_HYDRATION UINT64_C(0x0400)
-#define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_RECURSIVE_CLOSURE UINT64_C(0x0800)
+#define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_UQCEL_V1_PRESERVED UINT64_C(0x0800)
 #define HHS_EXACT_PASS219B_ZERO_SUM_PROOF_REQUIRED UINT64_C(0x0FFF)
 
 typedef struct HHSExactPass219BGlobalZeroSumClosureV1 {
@@ -55,8 +55,7 @@ typedef struct HHSExactPass219BGlobalZeroSumClosureV1 {
     uint8_t phase_quantization_bound;
     uint8_t lo_shu_sudoku_qudit_bound;
     uint8_t vm81_hydration_geometry_bound;
-    uint8_t recursive_closure_proven;
-    uint8_t global_relation_bridge_proven;
+    uint8_t legacy_full_symbolic_v1_preserved;
     uint8_t global_enforcement_required;
     uint8_t canonical_mutation_authority;
     uint8_t canonical_persistence_authority;
@@ -76,79 +75,75 @@ typedef struct HHSExactPass219BGlobalZeroSumClosureV1 {
 } HHSExactPass219BGlobalZeroSumClosureV1;
 
 /*
- * Candidate-bound composition witness.  Unlike the theorem metadata above,
- * this object is populated only by executing inherited exact runtime surfaces:
- * Pass-219 ordered phase/trinary/coordinate logic, Pass-219B I1 phase
- * quantization, Pass-219B I5 locality verification, and UQCEL relation
- * admission.  It owns no canonical mutation authority.
+ * New additive I6 full-context input.  It does not resize or reinterpret
+ * HHSExactUQCELInputV1.  N-source identity and D-source identity are carried
+ * independently from the inherited UQCEL quantization subprojection.
  */
+typedef struct HHSExactPass219BGlobalRelationInputV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    HHSExactBigUIntView P;
+    HHSExactBigUIntView p;
+    HHSExactBigUIntView q;
+    HHSExactBigUIntView delta;
+    uint8_t cell81;
+    uint8_t left_basis8;
+    uint8_t right_basis8;
+    uint8_t phase_origin81;
+    int8_t lo_shu_group;
+    uint8_t reserved0;
+    uint16_t g243;
+    uint8_t global_tensor_source_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES];
+    uint8_t phase_quantization_source_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES];
+    char previous_hash72[HHS_EXACT_HASH72_STRLEN];
+} HHSExactPass219BGlobalRelationInputV1;
+
 typedef struct HHSExactPass219BGlobalRelationHydrationWitnessV1 {
     uint32_t struct_size;
     uint32_t version;
-    int8_t lo_shu_group;
-    uint8_t phase_origin81;
-    uint16_t g243;
     uint16_t vm5184_address;
+    uint8_t global_tensor_source_verified;
+    uint8_t phase_quantization_source_verified;
+    uint8_t zero_sum_family_verified;
+    uint8_t uqcel_integer_projection_verified;
+    uint8_t legacy_full_symbolic_v1_preserved;
     uint8_t coordinate_roundtrip_verified;
     uint8_t native_phase_verified;
     uint8_t trinary_gate_verified;
     uint8_t phase_cell_verified;
     uint8_t phase_locality_verified;
-    uint8_t uqcel_relation_verified;
-    uint8_t rna_composed_verified;
     uint8_t global_relation_bridge_verified;
     uint8_t canonical_mutation_authority;
     uint8_t canonical_persistence_authority;
     uint8_t canonical_hash72_authority;
-    uint8_t reserved0[5];
+    uint8_t reserved1[3];
     HHSExactPass219HydrationCoordinateV1 coordinate;
     HHSExactPass219NativePhaseWitnessV1 native_phase;
     HHSExactPass219TrinaryPhaseGateV1 trinary_gate;
     HHSExactPass219BPhaseCellV1 phase_cell;
     HHSExactPass219BPhaseLocalityPlanV1 locality_plan;
-    HHSExactUQCELAdmissionV1 uqcel;
+    HHSExactUQCELAdmissionV1 uqcel_integer_projection;
+    HHSExactUQCELAdmissionV1 legacy_full_symbolic_probe;
 } HHSExactPass219BGlobalRelationHydrationWitnessV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219b_global_zero_sum_version(void);
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_source_sha256(
     uint8_t out_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES]
 );
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_tensor_source_sha256(
     uint8_t out_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES]
 );
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_phase_quantization_source_sha256(
     uint8_t out_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES]
 );
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_prove(
     HHSExactPass219BGlobalZeroSumClosureV1 *out_proof
 );
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_verify(
     const HHSExactPass219BGlobalZeroSumClosureV1 *proof
 );
-
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_relation_hydration_verify(
-    const HHSExactUQCELInputV1 *input,
-    int8_t lo_shu_group,
-    uint16_t g243,
-    uint8_t phase_origin81,
-    HHSExactPass219BGlobalRelationHydrationWitnessV1 *out_witness
-);
-
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_relation_hydration_admit(
-    const HHSExactUQCELInputV1 *input,
-    const HHSExactVM81Frame *candidate_frame,
-    int8_t lo_shu_group,
-    uint16_t g243,
-    uint8_t phase_origin81,
-    HHSExactPass219Hash216IndexResolverV1 index_resolver,
-    void *index_context,
-    HHSExactVM81Frame *out_committed_frame,
-    HHSExactPass219RNAAdmissionV1 *out_rna_admission,
+    const HHSExactPass219BGlobalRelationInputV1 *input,
     HHSExactPass219BGlobalRelationHydrationWitnessV1 *out_witness
 );
 
