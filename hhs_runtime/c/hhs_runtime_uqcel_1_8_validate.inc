@@ -1,3 +1,5 @@
+#include "../include/hhs_pass219b_global_zero_sum_closure_1_0.h"
+
 static int hhs_exact_uqcel_lo_shu_selfcheck(void) {
     static const uint8_t matrix[9] = {4U, 9U, 2U, 3U, 5U, 7U, 8U, 1U, 6U};
     static const uint8_t lines[8][3] = {
@@ -68,6 +70,7 @@ HHSExactStatus hhs_exact_uqcel_validate(
     HHSExactBigBuffer ab;
     HHSExactBigBuffer p_fourth;
     HHSExactPhaseProduct product;
+    HHSExactPass219BGlobalZeroSumClosureV1 zero_sum_proof;
     uint8_t p_mod4;
     uint8_t q_mod4;
     uint8_t qr_bit;
@@ -85,6 +88,8 @@ HHSExactStatus hhs_exact_uqcel_validate(
     if (input->profile != HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1 &&
         input->profile != HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1)
         return HHS_EXACT_STATUS_RANGE_ERROR;
+    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1)
+        out_admission->required_mask = HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED;
 
     if (memcmp(input->source_envelope_sha256, HHS_EXACT_UQCEL_SOURCE_SHA256,
                HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES) != 0)
@@ -92,6 +97,16 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_SOURCE, HHS_EXACT_UQCEL_REASON_SOURCE_HASH);
     out_admission->source_hash_match = 1U;
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_SOURCE;
+
+    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
+        if (hhs_exact_pass219b_global_zero_sum_prove(&zero_sum_proof) != HHS_EXACT_STATUS_OK ||
+            hhs_exact_pass219b_global_zero_sum_verify(&zero_sum_proof) != HHS_EXACT_STATUS_OK)
+            return hhs_exact_uqcel_reject(
+                out_admission,
+                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
+                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE;
+    }
 
     if (!hhs_exact_big_view_valid(&input->P, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
         !hhs_exact_big_view_valid(&input->p, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
@@ -118,15 +133,19 @@ HHSExactStatus hhs_exact_uqcel_validate(
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_METRIC;
 
     /*
-     * Pass 219 1.15 semantic repair-forward boundary:
-     * the V1 A/B fields are integer/symmetric compatibility witnesses, not
-     * the full-symbolic source A/B terms. The full source defines A as the
-     * complete LHS and B as the complete RHS of one monolithic equality chain.
-     * Until that exact chain has a dedicated lowering/evaluator, do not run
-     * the compatibility A=P^2/B=P^2 checks and do not reinterpret them as
-     * full-symbolic evidence. The aggregate monolithic residual remains set.
+     * Pass 219 1.15 semantic repair-forward boundary plus Pass 219B I6:
+     * the V1 A/B fields remain integer/symmetric compatibility witnesses, not
+     * the full-symbolic source A/B terms. Full-symbolic requests now bind the
+     * exact global zero-sum closure theorem before reaching the unresolved
+     * monolithic residual. The zero-sum theorem is necessary but not sufficient:
+     * it cannot clear the aggregate monolithic equality-chain residual.
      */
     if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
+        if ((out_admission->satisfied_mask & HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE) == 0U)
+            return hhs_exact_uqcel_reject(
+                out_admission,
+                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
+                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
         out_admission->decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN;
         out_admission->reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL;
         return HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN;
