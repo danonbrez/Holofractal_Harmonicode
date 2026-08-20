@@ -10,9 +10,9 @@ from hhs_runtime.hhs_pass129_invariant_delta_rational_projection_algebra_v1 impo
     canonical_pass129_request,
 )
 
-SCHEMA = "HHS_PASS219B_GLOBAL_RELATION_BRIDGE_PROOF_V2"
-PASS_ID = "PASS_219B_I6_REPAIR_FORWARD"
-CLOSURE_EXTENSION_SHA256 = "8b64f49e534a8363d70d34a04ec829139fa0e697f870ca223db13bc1275c68fb"
+SCHEMA = "HHS_PASS219B_GLOBAL_RELATION_BRIDGE_PROOF_V3"
+PASS_ID = "PASS_219B_I6_ADDITIVE_STRUCTURAL_BRIDGE"
+CLOSURE_EXTENSION_SHA256 = "PENDING_CONTRACT_REPAIR"
 PARENT_MONOLITHIC_SHA256 = "9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944"
 PHASE_QUANTIZATION_OBJECT = (
     "NcalcMatrixPower((List(List(x,w,(y*x)),List((w*z),x+y+z+w,(z*w)),"
@@ -40,11 +40,11 @@ def _step(proof: dict[str, Any], rule: str) -> dict[str, Any]:
 
 
 def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
-    """Prove the typed N <-> D^4 <-> Lo Shu/VM81 closure bridge.
+    """Prove the additive typed N <-> D^4 <-> hydration closure bridge.
 
-    N is the frozen global constraint Tensor relation and D is the frozen
-    phase-quantization Tensor relation. The proof preserves both definitions
-    structurally and never rewrites N/D^4=D^4 as scalar cancellation.
+    I6 does not widen or reinterpret HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1.
+    The inherited UQCEL V1 full-symbolic profile remains the registered residual
+    transport boundary while I6 adds a separate structural projection above it.
     """
 
     if sha256(PHASE_QUANTIZATION_OBJECT.encode("utf-8")).hexdigest() != PHASE_QUANTIZATION_SHA256:
@@ -89,7 +89,7 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
     result: dict[str, Any] = {
         "schema": SCHEMA,
         "pass_id": PASS_ID,
-        "status": "GLOBAL_RELATION_BRIDGE_PROVED",
+        "status": "ADDITIVE_GLOBAL_RELATION_BRIDGE_PROVED",
         "closure_family": {
             "P": inherited["derived"]["P"],
             "p": inherited["derived"]["p"],
@@ -110,9 +110,9 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
             "the registered ordered projections have xy=1, zw=1, x+y+z+w=0",
             "the three-way membrane closes to the same unit residue 1",
             "I+I^2+I^3+I^4 is represented by (0,1)+(-1,0)+(0,-1)+(1,0)=(0,0)",
-            "N is the frozen global relation Tensor; D is the frozen phase-quantization relation",
-            "N/D^4=D^4 is a typed recursive closure relation, not scalar division",
-            "candidate admission is completed only when Lo Shu/Sudoku qudit and exact VM81/5184 projection bind the same state",
+            "N is the frozen global relation Tensor; D is the frozen phase-quantization Tensor",
+            "N/D^4=D^4 is a typed recursive structural relation and is never scalar-cancelled",
+            "I6 registers a new structural projection and does not redefine inherited UQCEL V1",
         ],
         "global_tensor_binding": {
             "symbol": "N",
@@ -128,7 +128,7 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
             "unit_perimeter_cells": 8,
             "center": "x+y+z+w=0/u^72",
             "recursive_relation": "N/D^4=D^4",
-            "recursive_relation_structurally_proven": True,
+            "structural_projection_registered": True,
             "scalar_cancellation_allowed": False,
         },
         "hydration_bridge": {
@@ -142,11 +142,13 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
             "phase_projected_state_count": PHASE_PROJECTED_STATE_COUNT,
             "candidate_vm5184_address_required": True,
         },
-        "global_enforcement": {
-            "necessary_for_full_symbolic_uqcel": True,
-            "global_relation_bridge_proven": True,
-            "full_symbolic_is_structural_membership_proof": True,
-            "compatibility_profile_is_not_full_proof": True,
+        "projection_authority": {
+            "i6_projection_id": "PI-UCE-N-D-HYDRATION-I6-v1",
+            "i6_projection_is_additive": True,
+            "uqcel_integer_symmetric_reused_as_subprojection": True,
+            "legacy_full_symbolic_v1_preserved_unsupported": True,
+            "legacy_full_symbolic_residual_mask": "HHS_UQCEL_RESIDUAL_FULL_SOURCE",
+            "projection_equality_is_not_native_identity": True,
             "canonical_mutation_authority": False,
             "canonical_hash72_authority": False,
             "canonical_persistence_authority": False,
@@ -154,7 +156,6 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
         "source_identity": {
             "parent_monolithic_sha256": PARENT_MONOLITHIC_SHA256,
             "phase_quantization_sha256": PHASE_QUANTIZATION_SHA256,
-            "closure_extension_sha256": CLOSURE_EXTENSION_SHA256,
         },
         "inherited_pass129": {
             "proof_root_hash72": inherited["proof_root_hash72"],
@@ -165,18 +166,18 @@ def prove_global_zero_sum_closure(*, center_P: Any = 4) -> dict[str, Any]:
             "phase_zero_sum_step_root_hash72": phase_step["step_root_hash72"],
         },
     }
-    result["proof_root_hash72"] = _hash("hhs_pass219b_global_relation_bridge_v2", result)
+    result["proof_root_hash72"] = _hash("hhs_pass219b_global_relation_bridge_v3", result)
     return result
 
 
 def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
     body = deepcopy(proof)
     root = body.pop("proof_root_hash72", None)
-    if root != _hash("hhs_pass219b_global_relation_bridge_v2", body):
+    if root != _hash("hhs_pass219b_global_relation_bridge_v3", body):
         raise GlobalZeroSumClosureError("proof root mismatch")
     if body.get("schema") != SCHEMA or body.get("pass_id") != PASS_ID:
         raise GlobalZeroSumClosureError("proof schema/pass mismatch")
-    if body.get("status") != "GLOBAL_RELATION_BRIDGE_PROVED":
+    if body.get("status") != "ADDITIVE_GLOBAL_RELATION_BRIDGE_PROVED":
         raise GlobalZeroSumClosureError("status mismatch")
 
     family = body["closure_family"]
@@ -184,10 +185,8 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
     p = _read_fraction(family["p"])
     q = _read_fraction(family["q"])
     delta = _read_fraction(family["delta"])
-    if delta != 1:
-        raise GlobalZeroSumClosureError("delta mismatch")
-    if p != P - 1 or q != P + 1:
-        raise GlobalZeroSumClosureError("symmetric center family mismatch")
+    if delta != 1 or p != P - 1 or q != P + 1:
+        raise GlobalZeroSumClosureError("zero-sum center family mismatch")
     if _read_fraction(family["P_squared_minus_pq"]) != 1:
         raise GlobalZeroSumClosureError("P^2-pq mismatch")
     if _read_fraction(family["xy_projection"]) != 1 or _read_fraction(family["zw_projection"]) != 1:
@@ -221,12 +220,11 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
         raise GlobalZeroSumClosureError("phase center projection mismatch")
     if phase.get("recursive_relation") != "N/D^4=D^4":
         raise GlobalZeroSumClosureError("recursive relation mismatch")
-    if phase.get("recursive_relation_structurally_proven") is not True:
-        raise GlobalZeroSumClosureError("recursive relation not structurally proven")
+    if phase.get("structural_projection_registered") is not True:
+        raise GlobalZeroSumClosureError("structural projection missing")
     if phase.get("scalar_cancellation_allowed") is not False:
         raise GlobalZeroSumClosureError("scalar cancellation was introduced")
 
-    hydration = body["hydration_bridge"]
     expected_hydration = {
         "lo_shu_sudoku_qudit_bound": True,
         "cell_count81": 81,
@@ -238,30 +236,29 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
         "phase_projected_state_count": PHASE_PROJECTED_STATE_COUNT,
         "candidate_vm5184_address_required": True,
     }
-    if hydration != expected_hydration:
+    if body["hydration_bridge"] != expected_hydration:
         raise GlobalZeroSumClosureError("hydration bridge mismatch")
 
-    enforcement = body["global_enforcement"]
-    if enforcement != {
-        "necessary_for_full_symbolic_uqcel": True,
-        "global_relation_bridge_proven": True,
-        "full_symbolic_is_structural_membership_proof": True,
-        "compatibility_profile_is_not_full_proof": True,
+    expected_authority = {
+        "i6_projection_id": "PI-UCE-N-D-HYDRATION-I6-v1",
+        "i6_projection_is_additive": True,
+        "uqcel_integer_symmetric_reused_as_subprojection": True,
+        "legacy_full_symbolic_v1_preserved_unsupported": True,
+        "legacy_full_symbolic_residual_mask": "HHS_UQCEL_RESIDUAL_FULL_SOURCE",
+        "projection_equality_is_not_native_identity": True,
         "canonical_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_persistence_authority": False,
-    }:
-        raise GlobalZeroSumClosureError("global enforcement/authority mismatch")
+    }
+    if body["projection_authority"] != expected_authority:
+        raise GlobalZeroSumClosureError("projection authority mismatch")
 
     if body["source_identity"] != {
         "parent_monolithic_sha256": PARENT_MONOLITHIC_SHA256,
         "phase_quantization_sha256": PHASE_QUANTIZATION_SHA256,
-        "closure_extension_sha256": CLOSURE_EXTENSION_SHA256,
     }:
         raise GlobalZeroSumClosureError("source identity mismatch")
 
-    # Reconstruct the inherited exact proof from the submitted center rather
-    # than trusting mutable/re-hashable claims embedded in this proof object.
     engine, request = canonical_pass129_request(center_P=P)
     inherited = engine.prove(request)
     validation = engine.validate(request, inherited)
@@ -287,6 +284,7 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
     if phase_step["output"]["sum"] != [0, 0]:
         raise GlobalZeroSumClosureError("inherited phase replay mismatch")
 
+    recorded = body["inherited_pass129"]
     expected_inherited = {
         "proof_root_hash72": inherited["proof_root_hash72"],
         "validation": validation["status"],
@@ -295,11 +293,26 @@ def verify_global_zero_sum_closure(proof: dict[str, Any]) -> dict[str, Any]:
         "membrane_step_root_hash72": membrane_step["step_root_hash72"],
         "phase_zero_sum_step_root_hash72": phase_step["step_root_hash72"],
     }
-    if body["inherited_pass129"] != expected_inherited:
-        raise GlobalZeroSumClosureError("inherited Pass129 proof binding mismatch")
+    if recorded != expected_inherited:
+        raise GlobalZeroSumClosureError("inherited Pass129 replay evidence mismatch")
 
     return {
-        "schema": "HHS_PASS219B_GLOBAL_RELATION_BRIDGE_VALIDATION_V2",
-        "status": "GLOBAL_RELATION_BRIDGE_VALIDATED",
+        "status": "ADDITIVE_GLOBAL_RELATION_BRIDGE_VALIDATED",
         "proof_root_hash72": root,
+        "legacy_full_symbolic_v1_preserved_unsupported": True,
     }
+
+
+__all__ = [
+    "SCHEMA",
+    "PASS_ID",
+    "CLOSURE_EXTENSION_SHA256",
+    "PARENT_MONOLITHIC_SHA256",
+    "PHASE_QUANTIZATION_OBJECT",
+    "PHASE_QUANTIZATION_SHA256",
+    "HYDRATION_STATE_COUNT",
+    "PHASE_PROJECTED_STATE_COUNT",
+    "GlobalZeroSumClosureError",
+    "prove_global_zero_sum_closure",
+    "verify_global_zero_sum_closure",
+]
