@@ -24,6 +24,8 @@ EXTENSION = ROOT / "contracts" / "pass219" / "PASS_219_GLOBAL_RECURSIVE_ZERO_SUM
 MONOLITHIC = ROOT / "contracts" / "pass219" / "PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex"
 UQCEL_HEADER = ROOT / "hhs_runtime" / "include" / "hhs_runtime_uqcel_1_8.h"
 UQCEL_VALIDATOR = ROOT / "hhs_runtime" / "c" / "hhs_runtime_uqcel_1_8_validate.inc"
+I6_HEADER = ROOT / "hhs_runtime" / "include" / "hhs_pass219b_global_zero_sum_closure_1_0.h"
+I6_RUNTIME = ROOT / "hhs_runtime" / "c" / "hhs_pass219b_global_zero_sum_closure_1_0.inc"
 
 
 def _f(fd: dict[str, int]) -> Fraction:
@@ -143,14 +145,44 @@ def test_hydration_bridge_is_required() -> None:
     _assert_tamper_rejected("hydration_bridge.vm5184_slot_count", 5183)
 
 
-def test_full_symbolic_uqcel_is_structural_bridge_not_unsupported_residual() -> None:
+def test_runtime_bridge_composes_inherited_surfaces_instead_of_asserting_flags() -> None:
+    header = I6_HEADER.read_text(encoding="utf-8")
+    runtime = I6_RUNTIME.read_text(encoding="utf-8")
+
+    assert '#include "hhs_pass219b_universal_phase_locality_1_0.h"' in header
+    assert "HHSExactPass219BGlobalRelationHydrationWitnessV1" in header
+    assert "hhs_exact_pass219b_global_relation_hydration_verify" in header
+    assert "hhs_exact_pass219b_global_relation_hydration_admit" in header
+
+    for inherited_call in (
+        "hhs_exact_pass219_coordinate_from_pass189",
+        "hhs_exact_pass219_coordinate_to_pass189",
+        "hhs_exact_pass219_native_phase_witness",
+        "hhs_exact_pass219_trinary_phase_gate",
+        "hhs_exact_pass219b_phase_cell",
+        "hhs_exact_pass219b_phase_locality_plan",
+        "hhs_exact_pass219b_phase_locality_verify_realization",
+        "hhs_exact_uqcel_validate",
+        "hhs_exact_pass219_rna_admit_composed",
+    ):
+        assert inherited_call in runtime
+
+    assert "out_witness->canonical_mutation_authority = 0U" in runtime
+    assert "out_witness->canonical_persistence_authority = 0U" in runtime
+    assert "out_witness->canonical_hash72_authority = 0U" in runtime
+
+
+def test_full_symbolic_uqcel_is_local_relation_membrane_not_full_hydration_prover() -> None:
     header = UQCEL_HEADER.read_text(encoding="utf-8")
     validator = UQCEL_VALIDATOR.read_text(encoding="utf-8")
     assert "HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE" in header
     assert "HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY" in header
     assert "HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE" in header
     assert "HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED UINT64_C(0x1F9F)" in header
-    assert "hhs_exact_pass219b_global_tensor_source_sha256" in validator
+    assert "HHS_EXACT_UQCEL_FULL_SYMBOLIC_SOURCE_SHA256" in validator
+    assert "hhs_exact_pass219b_global_zero_sum_prove" not in validator
+    assert "hhs_exact_pass219b_global_relation_hydration_verify" not in validator
+    assert "Full 41x3x5184x81" in validator
     assert "out_admission->residual_mask = 0U;" in validator
     assert "HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN" not in validator
     assert "HHS_UQCEL_CONSTRAINT_AB_SYMMETRIC" in validator
