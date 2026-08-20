@@ -101,6 +101,13 @@ HHSExactStatus hhs_exact_pass219_pass159_prove_monolithic(
     out_proof->floating_point_authority = 0U;
     out_proof->vm81_mutation_authority = 0U;
     out_proof->hash72_commit_authority = 0U;
+    out_proof->pass159_vmir_effectful = 0U;
+    out_proof->pass159_vm81_execution_observed = 0U;
+    out_proof->pass159_replay_reexecuted = 0U;
+    out_proof->pass159_step_counter_authoritative = 0U;
+    out_proof->candidate_binding_supported = 0U;
+    out_proof->canonical_vm81_proof_observed = 0U;
+    out_proof->candidate_vm81_proof_required = 1U;
 
     if (hhs_exact_pass219_monolithic_native_source(
             out_proof->source_bytes,
@@ -285,40 +292,42 @@ HHSExactStatus hhs_exact_pass219_pass159_prove_monolithic(
     if (compare_result.fallback_used != 0U)
         out_proof->fallback_used = compare_result.fallback_used;
 
-    out_proof->vm81_execution_verified =
+    /*
+     * Repository census result: current Pass159 is a foundation pipeline.
+     * Its VMIR is a fixed EXACT_PROGRAM artifact, interpreter/executable
+     * receipts report a fixed three steps, and replay re-wraps receipt identity.
+     * Preserve those observed receipt fields above for diagnostics, but do not
+     * reinterpret them as canonical candidate-bound VM81 execution evidence.
+     */
+    out_proof->source_pipeline_verified =
+        out_proof->source_exact == 1U &&
+        out_proof->frontend_chain_complete == 1U &&
+        out_proof->vmir_complete == 1U &&
+        out_proof->interpret_ok == 1U &&
+        out_proof->replay_ok == 1U &&
         out_proof->receipt_status_ok == 1U &&
         out_proof->replay_receipt_status_ok == 1U &&
-        out_proof->vm81_steps > 0U &&
-        out_proof->replay_vm81_steps > 0U &&
         out_proof->receipt_hash72_valid == 1U &&
         out_proof->replay_hash72_valid == 1U &&
         out_proof->semantic_root_equal == 1U &&
         out_proof->interpreter_compiler_match == 1U &&
         out_proof->fallback_used == 0U &&
         out_proof->committed == 0U &&
-        out_proof->replay_committed == 0U
+        out_proof->replay_committed == 0U &&
+        (out_proof->completed_stage_mask &
+         HHS_EXACT_PASS219_PASS159_SOURCE_PIPELINE_REQUIRED) ==
+            HHS_EXACT_PASS219_PASS159_SOURCE_PIPELINE_REQUIRED
             ? 1U
             : 0U;
 
-    if (out_proof->vm81_execution_verified == 1U)
-        out_proof->completed_stage_mask |= HHS_EXACT_PASS219_STAGE_VM81_PROOF;
+    out_proof->vm81_execution_verified = 0U;
+    out_proof->native_shared_invariant_proven = 0U;
+    out_proof->canonical_vm81_proof_observed = 0U;
 
-    out_proof->native_shared_invariant_proven =
-        out_proof->source_exact == 1U &&
-        out_proof->frontend_chain_complete == 1U &&
-        out_proof->vmir_complete == 1U &&
-        out_proof->interpret_ok == 1U &&
-        out_proof->replay_ok == 1U &&
-        out_proof->vm81_execution_verified == 1U &&
-        (out_proof->completed_stage_mask & HHS_EXACT_PASS219_STAGE_REQUIRED) ==
-            HHS_EXACT_PASS219_STAGE_REQUIRED
-            ? 1U
-            : 0U;
-
-    status = out_proof->native_shared_invariant_proven == 1U
+    status = out_proof->source_pipeline_verified == 1U
         ? HHS159_STATUS_OK
-        : HHS159_STATUS_AUTHORITY_REJECTED;
-    exact_status = out_proof->native_shared_invariant_proven == 1U
+        : HHS159_STATUS_INVALID_STATE;
+    exact_status = out_proof->source_pipeline_verified == 1U
         ? HHS_EXACT_STATUS_OK
         : HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
