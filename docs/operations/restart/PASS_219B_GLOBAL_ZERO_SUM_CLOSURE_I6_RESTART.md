@@ -173,6 +173,12 @@ A workflow failure is a pass-system enforcement result and must be treated as ev
 
 Earlier I6 candidate commits introduced parallel evaluators and alternate admission/commit semantics. Those commits remain visible in branch history under the repository's repair-forward policy, but their files and behavior are absent from the current tree. Frozen history has not been rewritten, rebased, squashed, or force-pushed.
 
+## Current checkpoint
+
+```text
+head after final-tree reduction: b0544bb0737677e14b128efc0acf052e8c37e67e
+```
+
 ## Remaining validation
 
 ```text
