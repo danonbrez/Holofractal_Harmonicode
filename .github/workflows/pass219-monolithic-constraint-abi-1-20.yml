@@ -11,6 +11,7 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.cpp'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
       - 'contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode'
       - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex'
       - '.github/workflows/pass219-monolithic-constraint-abi-1-20.yml'
@@ -41,6 +42,9 @@ jobs:
       - name: Verify frozen verbatim source identities
         run: |
           printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
             '7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42' \
             'contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode' | sha256sum -c -
           printf '%s  %s\n' \
@@ -62,13 +66,19 @@ jobs:
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-monolithic-1-20/exact.o
 
-      - name: Run C conformance and byte-for-byte source round trip
+      - name: Run C conformance and byte-for-byte source round trips
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
             /tmp/pass219-monolithic-1-20/exact.o \
             -o /tmp/pass219-monolithic-1-20/test-c
           /tmp/pass219-monolithic-1-20/test-c
+          /tmp/pass219-monolithic-1-20/test-c --dump-native-source > /tmp/pass219-monolithic-1-20/native.harmonicode
+          cmp /tmp/pass219-monolithic-1-20/native.harmonicode \
+              contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            '/tmp/pass219-monolithic-1-20/native.harmonicode' | sha256sum -c -
           /tmp/pass219-monolithic-1-20/test-c --dump-source > /tmp/pass219-monolithic-1-20/source.harmonicode
           cmp /tmp/pass219-monolithic-1-20/source.harmonicode \
               contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode
