@@ -18,6 +18,8 @@ on:
       - 'tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
       - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
+      - 'HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_AMENDMENT_1_21_0.md'
+      - 'docs/operations/restart/PASS_219_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_1_21_RESTART.md'
       - '.github/workflows/pass219-orthogonal-glyph-membrane-1-21.yml'
   workflow_dispatch:
 
@@ -52,6 +54,7 @@ jobs:
           grep -F 'lane_count * lane_width == hydration_fabric_size' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
           grep -F 'canonical_proof = false' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
           grep -F 'requires_vm81_authority = true' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'xy = zw = a² = ∆' HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_AMENDMENT_1_21_0.md
 
       - name: Compile cumulative exact C substrate
         run: |
