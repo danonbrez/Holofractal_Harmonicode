@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 219B global zero-sum closure. */
+/* Additive exact ABI aggregate through Pass 219B I6 structural N/D hydration closure. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -24,22 +24,4 @@
 #include "hhs_pass219_inherited_pass206_1_18.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
-
-/*
- * Preserve the pre-repair I6 admission body for forensic lineage, but do not
- * expose it as the public ABI symbol.  On ELF/Mach-O the renamed body is hidden;
- * on Windows it is not marked for DLL export because it has no HHS_EXACT_API.
- */
-#if defined(_WIN32)
-#define hhs_exact_pass219b_global_relation_hydration_admit \
-    hhs_exact_pass219b_global_relation_hydration_admit_legacy_i6_1_2
-#else
-#define hhs_exact_pass219b_global_relation_hydration_admit \
-    __attribute__((visibility("hidden"))) \
-    hhs_exact_pass219b_global_relation_hydration_admit_legacy_i6_1_2
-#endif
 #include "hhs_pass219b_global_zero_sum_closure_1_0.inc"
-#undef hhs_exact_pass219b_global_relation_hydration_admit
-
-/* Public ABI replacement: no VM81 copy before full composed validation. */
-#include "hhs_pass219b_global_relation_hydration_admit_1_3.inc"
