@@ -139,6 +139,7 @@ HHSExactStatus hhs_exact_uqcel_validate(
      * exact global zero-sum closure theorem before reaching the unresolved
      * monolithic residual. The zero-sum theorem is necessary but not sufficient:
      * it cannot clear the aggregate monolithic equality-chain residual.
+     * The aggregate monolithic residual remains set.
      */
     if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
         if ((out_admission->satisfied_mask & HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE) == 0U)
