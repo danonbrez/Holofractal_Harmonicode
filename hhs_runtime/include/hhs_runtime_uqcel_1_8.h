@@ -32,8 +32,10 @@ extern "C" {
 #define HHS_UQCEL_CONSTRAINT_QR_PHASE UINT64_C(0x0100)
 #define HHS_UQCEL_CONSTRAINT_VM5184 UINT64_C(0x0200)
 #define HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE UINT64_C(0x0400)
+#define HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY UINT64_C(0x0800)
+#define HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE UINT64_C(0x1000)
 #define HHS_UQCEL_CONSTRAINT_CORE_REQUIRED UINT64_C(0x03FF)
-#define HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED UINT64_C(0x07FF)
+#define HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED UINT64_C(0x1F9F)
 
 #define HHS_UQCEL_RESIDUAL_T_M_HARMONIC UINT64_C(0x0001)
 #define HHS_UQCEL_RESIDUAL_TENSOR_S_F_AT_BT UINT64_C(0x0002)
@@ -44,12 +46,19 @@ extern "C" {
 #define HHS_UQCEL_RESIDUAL_FULL_SOURCE UINT64_C(0x001F)
 
 /*
- * ABI compatibility note (Pass 219 1.15 repair-forward clarification):
- * InputV1.A and InputV1.B are integer/symmetric compatibility-projection
+ * ABI compatibility note:
+ * InputV1.A and InputV1.B remain integer/symmetric compatibility-projection
  * witnesses for HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1. They do not
- * define the source-level A/B symbols of the full symbolic monolithic UCE.
- * For the full source equation, A denotes the complete LHS and B the complete
- * RHS; neither is definitionally P^2.
+ * define the source-level A/B symbols of the full symbolic global constraint
+ * Tensor. For full symbolic admission, A denotes the complete LHS and B the
+ * complete RHS of N; the V1 byte fields are transport-compatible placeholders
+ * and are not interpreted as A=P^2 or B=P^2.
+ *
+ * Pass 219B I6 repair-forward semantics:
+ * N is the byte-frozen global constraint Tensor relation.
+ * D is the byte-frozen phase-quantization Tensor relation.
+ * N/D^4=D^4 is a typed recursive closure relation binding the same candidate
+ * to the zero-sum, Lo Shu/Sudoku qudit, and VM81/5184 hydration projection.
  */
 #define HHS_EXACT_UQCEL_V1_AB_COMPATIBILITY_PROJECTION 1U
 
@@ -77,7 +86,9 @@ typedef enum HHSExactUQCELRejectReason {
     HHS_EXACT_UQCEL_REASON_QR_PHASE = 7,
     HHS_EXACT_UQCEL_REASON_VM5184 = 8,
     HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL = 9,
-    HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE = 10
+    HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE = 10,
+    HHS_EXACT_UQCEL_REASON_CENTER_DELTA_SYMMETRY = 11,
+    HHS_EXACT_UQCEL_REASON_GLOBAL_RELATION_BRIDGE = 12
 } HHSExactUQCELRejectReason;
 
 typedef struct HHSExactBigUIntView {
