@@ -28,7 +28,6 @@ CANARY_ROUTES_PATH = P("hhs_backend/api/pass200b_canary_routes.py")
 CONTRACT_TEST_PATH = P("tests/test_hhs_pass200b_governed_canary_admission_v1.py")
 VISUAL_PANEL_PATH = P("applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs")
 RESTART_PATH = P("docs/pass200b/RESTART_RECORD.md")
-PASS200C_MEMBRANE_PATH = P("hhs_runtime/hhs_pass219_cumulative_pass_membrane_i124_pass200c.py")
 
 PRIMARY_BASE = "483a18b618dbe51b31025eeb15a8a6435e4040c5"
 VALIDATED_EXECUTABLE_HEAD = "f13eed02531e77737562b23fb207962c0744ed0d"
@@ -83,14 +82,7 @@ def _git_blob(path: Path) -> str:
 
 
 def _git(*args: str) -> str:
-    completed = subprocess.run(
-        ["git", *args],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
+    completed = subprocess.run(["git", *args], cwd=ROOT, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     return completed.stdout.strip()
 
 
@@ -116,54 +108,13 @@ def pass200b_membrane_source_evidence() -> Dict[str, Any]:
         if current != expected:
             raise RuntimeError(f"PASS200B_FROZEN_I124_BLOB_DRIFT:{path}:{current}")
 
-    _require(
-        CONTRACT_PATH,
-        "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72",
-        "Exactly two approvals are present",
-        "one singleton VM81 activation receipt per canary frontier",
-        "n MOD canary_denominator < canary_numerator",
-        "selected\nAND exact_result_match\nAND witness_match\nAND replay_match",
-        "candidate cannot authorize itself",
-        "unrestricted active and frozen-constraint promotion remain disabled",
-    )
-    _require(
-        RUNTIME_V1_PATH,
-        "SINGLETON_CANARY_FRONTIER_ACTIVATED",
-        "EXACT_CANARY_MISMATCH",
-        "promotion approvals require two distinct principals",
-        '"automatic_active_promotion": False',
-        '"automatic_frozen_constraint_promotion": False',
-    )
-    _require(
-        PRODUCTION_PATH,
-        "Canonical production projection for Pass 200B governed canary admission",
-        "Pass200BGovernedCanaryAuthority",
-    )
-    _require(
-        CANARY_ROUTES_PATH,
-        "runtime_controller.authorized_tick",
-        "vm81:compiler-promotion-authority",
-        "vm81:runtime-promotion-authority",
-    )
-    _require(
-        WORKFLOW_PATH,
-        "Run canary lifecycle, rollback, restart, and tamper tests",
-        "Execute production proof, bounded canary, exhaustion, and rollback",
-        "Reject floating-point canonical operations",
-        "Verify authority, API, and visual wiring",
-    )
-    _require(
-        VISUAL_PANEL_PATH,
-        "The panel cannot manufacture approvals",
-    )
-    _require(
-        RESTART_PATH,
-        "Successful integrated run: `30775726043`",
-        "Validated executable head: `f13eed02531e77737562b23fb207962c0744ed0d`",
-        "ID: `8841987422`",
-        "sha256:b95a8091ba8ce19301ee4b3a1ab51a994503940fe6293c752d24e63f22eb1cd8",
-        "Candidate execution cannot approve or admit itself",
-    )
+    _require(CONTRACT_PATH, "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72", "Exactly two approvals are present", "one singleton VM81 activation receipt per canary frontier", "n MOD canary_denominator < canary_numerator", "selected\nAND exact_result_match\nAND witness_match\nAND replay_match", "candidate cannot authorize itself", "unrestricted active and frozen-constraint promotion remain disabled")
+    _require(RUNTIME_V1_PATH, "SINGLETON_CANARY_FRONTIER_ACTIVATED", "EXACT_CANARY_MISMATCH", "promotion approvals require two distinct principals", '"automatic_active_promotion": False', '"automatic_frozen_constraint_promotion": False')
+    _require(PRODUCTION_PATH, "Canonical production projection for Pass 200B governed canary admission", "Pass200BGovernedCanaryAuthority")
+    _require(CANARY_ROUTES_PATH, "runtime_controller.authorized_tick", "vm81:compiler-promotion-authority", "vm81:runtime-promotion-authority")
+    _require(WORKFLOW_PATH, "Run canary lifecycle, rollback, restart, and tamper tests", "Execute production proof, bounded canary, exhaustion, and rollback", "Reject floating-point canonical operations", "Verify authority, API, and visual wiring")
+    _require(VISUAL_PANEL_PATH, "The panel cannot manufacture approvals")
+    _require(RESTART_PATH, "Successful integrated run: `30775726043`", "Validated executable head: `f13eed02531e77737562b23fb207962c0744ed0d`", "ID: `8841987422`", "sha256:b95a8091ba8ce19301ee4b3a1ab51a994503940fe6293c752d24e63f22eb1cd8", "Candidate execution cannot approve or admit itself")
 
     successor = pass200c_membrane_source_evidence()
     return {
@@ -175,7 +126,7 @@ def pass200b_membrane_source_evidence() -> Dict[str, Any]:
         "historical_blobs": {str(path): value for path, value in HISTORICAL_BLOBS.items()},
         "historical_closure": dict(HISTORICAL_CLOSURE),
         "canonical_successful_run": 30775726043,
-        "receipt_updated_successful_run": 30776025874,
+        "receipt_updated_successful_run": 30776064744,
         "artifact_id": 8841987422,
         "artifact_digest": "sha256:b95a8091ba8ce19301ee4b3a1ab51a994503940fe6293c752d24e63f22eb1cd8",
         "pass200c_successor": successor,
@@ -184,100 +135,37 @@ def pass200b_membrane_source_evidence() -> Dict[str, Any]:
 
 def validate_pass200b_squash_identity() -> Dict[str, Any]:
     s = pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        "pull_request": 139,
-        "primary_base": s["primary_base"],
-        "validated_executable_head": s["validated_executable_head"],
-        "evidence_head": s["evidence_head"],
-        "accepted_merge": s["accepted_merge"],
-        "squash_aware": True,
-        "historical_source_blobs_unchanged_at_frozen_i124": True,
-    }
+    return {"ok": True, "pull_request": 139, "primary_base": s["primary_base"], "validated_executable_head": s["validated_executable_head"], "evidence_head": s["evidence_head"], "accepted_merge": s["accepted_merge"], "squash_aware": True, "historical_source_blobs_unchanged_at_frozen_i124": True}
 
 
 def validate_pass200b_pass200a_shadow_gate() -> Dict[str, Any]:
     s = pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        **s["historical_closure"],
-        "pass200a_closed_proof_required": True,
-        "compiler_candidate_required": True,
-        "shadow_mode_required": True,
-        "persisted_exact_shadow_match_required": True,
-        "candidate_activation_before_canary": False,
-    }
+    return {"ok": True, **s["historical_closure"], "pass200a_closed_proof_required": True, "compiler_candidate_required": True, "shadow_mode_required": True, "persisted_exact_shadow_match_required": True, "candidate_activation_before_canary": False}
 
 
 def validate_pass200b_dual_approval_and_activation() -> Dict[str, Any]:
     pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        "approval_count": 2,
-        "required_capabilities": ["COMPILER_PROMOTION_APPROVE", "RUNTIME_PROMOTION_APPROVE"],
-        "distinct_principals_required": True,
-        "distinct_vm81_receipts_required": True,
-        "bundle_frontier_expiry_receipt_binding": True,
-        "separate_singleton_vm81_activation_receipt": True,
-        "candidate_self_authorization": False,
-    }
+    return {"ok": True, "approval_count": 2, "required_capabilities": ["COMPILER_PROMOTION_APPROVE", "RUNTIME_PROMOTION_APPROVE"], "distinct_principals_required": True, "distinct_vm81_receipts_required": True, "bundle_frontier_expiry_receipt_binding": True, "separate_singleton_vm81_activation_receipt": True, "candidate_self_authorization": False}
 
 
 def validate_pass200b_bounded_exact_canary() -> Dict[str, Any]:
     pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        "max_invocation_limit": 64,
-        "deterministic_integer_selection": True,
-        "selection_rule": "n MOD canary_denominator < canary_numerator",
-        "exact_result_required": True,
-        "exact_witness_required": True,
-        "exact_replay_required": True,
-        "floating_point_canonical_operation": False,
-        "automatic_active_promotion": False,
-        "frozen_constraint_promotion": False,
-    }
+    return {"ok": True, "max_invocation_limit": 64, "deterministic_integer_selection": True, "selection_rule": "n MOD canary_denominator < canary_numerator", "exact_result_required": True, "exact_witness_required": True, "exact_replay_required": True, "floating_point_canonical_operation": False, "automatic_active_promotion": False, "frozen_constraint_promotion": False}
 
 
 def validate_pass200b_persistence_and_rollback() -> Dict[str, Any]:
     pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        "inherited_durable_state": True,
-        "inherited_hash72_event_history": True,
-        "persisted_frontier_tamper_rejected": True,
-        "event_chain_tamper_rejected": True,
-        "mismatch_restores_reference": True,
-        "expiry_restores_reference": True,
-        "exhaustion_restores_reference": True,
-        "explicit_rollback_restores_reference": True,
-        "candidate_canonical_commit": False,
-    }
+    return {"ok": True, "inherited_durable_state": True, "inherited_hash72_event_history": True, "persisted_frontier_tamper_rejected": True, "event_chain_tamper_rejected": True, "mismatch_restores_reference": True, "expiry_restores_reference": True, "exhaustion_restores_reference": True, "explicit_rollback_restores_reference": True, "candidate_canonical_commit": False}
 
 
 def validate_pass200c_successor_binding() -> Dict[str, Any]:
     successor = pass200b_membrane_source_evidence()["pass200c_successor"]
-    return {
-        "ok": True,
-        "successor_pass": 200,
-        "successor_variant": "C",
-        "successor_accepted_merge": successor["accepted_merge"],
-        "successor_guarded_active_boundary_preserved": True,
-        "successor_preserved": True,
-    }
+    return {"ok": True, "successor_pass": 200, "successor_variant": "C", "successor_accepted_merge": successor["accepted_merge"], "successor_guarded_active_boundary_preserved": True, "successor_preserved": True}
 
 
 def validate_pass200b_no_new_authority() -> Dict[str, Any]:
     pass200b_membrane_source_evidence()
-    return {
-        "ok": True,
-        "i125_new_canary_admission_authority": False,
-        "i125_new_canonical_mutation_authority": False,
-        "i125_new_persistence_authority": False,
-        "i125_new_hash72_clock": False,
-        "cxx_mutation_authority": False,
-        "vm81_mutation_authority": False,
-    }
+    return {"ok": True, "i125_new_canary_admission_authority": False, "i125_new_canonical_mutation_authority": False, "i125_new_persistence_authority": False, "i125_new_hash72_clock": False, "cxx_mutation_authority": False, "vm81_mutation_authority": False}
 
 
 def pass200b_surface_declaration() -> Dict[str, Any]:
@@ -291,24 +179,8 @@ def pass200b_surface_declaration() -> Dict[str, Any]:
         "contract_schemas": ["HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72"],
         "witness_schemas": ["HHSExactPass200BGovernedCanaryWitnessV1", "HHSExactPass219InheritedPass200BBindingV1"],
         "validators": [PASS200B_BIND_SYMBOL, "validate_pass200b_squash_identity"],
-        "guards": [
-            "pass200b_squash_identity",
-            "pass200b_immutable_source_identity",
-            "pass200b_pass200a_shadow_gate",
-            "pass200b_dual_approval_activation",
-            "pass200b_bounded_integer_exact_comparison",
-            "pass200b_reference_restoration",
-            "pass200b_pass200c_successor_preserved",
-        ],
-        "rejection_codes": [
-            "REJECT_PASS200B_SQUASH_IDENTITY_DRIFT",
-            "REJECT_PASS200B_SOURCE_IDENTITY_DRIFT",
-            "REJECT_PASS200B_PASS200A_GATE_DRIFT",
-            "REJECT_PASS200B_APPROVAL_ACTIVATION_DRIFT",
-            "REJECT_PASS200B_EXACT_CANARY_DRIFT",
-            "REJECT_PASS200B_ROLLBACK_PERSISTENCE_DRIFT",
-            "REJECT_PASS200B_PASS200C_SUCCESSOR_DRIFT",
-        ],
+        "guards": ["pass200b_squash_identity", "pass200b_immutable_source_identity", "pass200b_pass200a_shadow_gate", "pass200b_dual_approval_activation", "pass200b_bounded_integer_exact_comparison", "pass200b_reference_restoration", "pass200b_pass200c_successor_preserved"],
+        "rejection_codes": ["REJECT_PASS200B_SQUASH_IDENTITY_DRIFT", "REJECT_PASS200B_SOURCE_IDENTITY_DRIFT", "REJECT_PASS200B_PASS200A_GATE_DRIFT", "REJECT_PASS200B_APPROVAL_ACTIVATION_DRIFT", "REJECT_PASS200B_EXACT_CANARY_DRIFT", "REJECT_PASS200B_ROLLBACK_PERSISTENCE_DRIFT", "REJECT_PASS200B_PASS200C_SUCCESSOR_DRIFT"],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
         "persistence_policy": "INHERITED_PASS200B_DURABLE_STATE_READ_ONLY_BINDING",
         "boundedness_policy": "PASS_200B_VERIFIED_GOVERNED_CANARY_EXPOSURE_ONLY",
@@ -356,13 +228,7 @@ def pass200b_membrane_manifest() -> Dict[str, Any]:
 def preflight_pass200b_membrane() -> Dict[str, Any]:
     declaration = pass200b_surface_declaration()
     rows = [execute_surface_preflight(declaration, operation=operation) for operation in REQUIRED_OPERATIONS]
-    return {
-        "schema": "HHS_PASS219_I125_PASS200B_MEMBRANE_PREFLIGHT_V1",
-        "ok": all(row.get("ok") is True for row in rows),
-        "surface_id": PASS200B_SURFACE_ID,
-        "operations": rows,
-        "manifest": pass200b_membrane_manifest(),
-    }
+    return {"schema": "HHS_PASS219_I125_PASS200B_MEMBRANE_PREFLIGHT_V1", "ok": all(row.get("ok") is True for row in rows), "surface_id": PASS200B_SURFACE_ID, "operations": rows, "manifest": pass200b_membrane_manifest()}
 
 
 if __name__ == "__main__":
