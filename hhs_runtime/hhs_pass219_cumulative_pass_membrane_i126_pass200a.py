@@ -364,7 +364,16 @@ def pass200a_membrane_manifest() -> Dict[str, Any]:
 
 
 def execute_pass200a_membrane_preflight() -> Dict[str, Any]:
-    return execute_surface_preflight(pass200a_surface_declaration())
+    declaration = pass200a_surface_declaration()
+    rows = [execute_surface_preflight(declaration, operation=operation) for operation in REQUIRED_OPERATIONS]
+    return {
+        "schema": "HHS_PASS219_I126_PASS200A_PREFLIGHT_V1",
+        "version": VERSION,
+        "ok": all(bool(row.get("ok")) for row in rows),
+        "surface_id": PASS200A_SURFACE_ID,
+        "operation_count": len(rows),
+        "operations": rows,
+    }
 
 
 OPERATIONS = {
