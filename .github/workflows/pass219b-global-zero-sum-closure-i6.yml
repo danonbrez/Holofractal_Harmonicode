@@ -8,14 +8,11 @@ on:
       - 'contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode'
       - 'hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h'
       - 'hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc'
-      - 'hhs_runtime/c/hhs_pass219b_global_relation_hydration_admit_1_3.inc'
       - 'hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py'
       - 'hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py'
       - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc'
-      - 'hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h'
-      - 'hhs_runtime/c/hhs_pass192_fibonacci_compression_1_9.inc'
       - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'
       - 'hhs_runtime/c/hhs_pass219_rna_transcription_1_10.inc'
       - 'hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h'
@@ -26,16 +23,14 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.py'
       - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.c'
-      - 'tests/pass219/test_pass219b_i6_commit_order_v1.c'
       - 'tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py'
       - 'tests/pass219/test_pass219_rna_transcription_1_10.c'
       - 'tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c'
       - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
       - 'tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py'
       - 'docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md'
-      - 'docs/whitepapers/HARMONICODE_I6_DEFERRED_COMMIT_AUTHORITY_ADDENDUM.md'
+      - 'docs/whitepapers/HARMONICODE_I6_PASS_ENFORCEMENT_CORRECTION.md'
       - 'docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md'
-      - 'docs/operations/restart/PASS_219B_I6_DEFERRED_COMMIT_REPAIR_CHECKPOINT.md'
       - '.github/workflows/pass219b-global-zero-sum-closure-i6.yml'
 
 permissions:
@@ -60,14 +55,21 @@ jobs:
         run: |
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
 
+      - name: Enforce frozen UQCEL 1.8 and Pass 219 1.15 boundary
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf -- \
+            hhs_runtime/include/hhs_runtime_uqcel_1_8.h \
+            hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc \
+            hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc \
+            tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+
       - name: Reject approximate arithmetic and new authority
         run: |
           ! grep -REn '\b(float|double|long double)\b' \
             hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h \
             hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc \
-            hhs_runtime/c/hhs_pass219b_global_relation_hydration_admit_1_3.inc \
             hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py
-          ! grep -En 'HHS_EXACT_API.*(commit|persist|emit_hash72)' \
+          ! grep -En 'HHS_EXACT_API.*(commit|persist|emit_hash72|admit)' \
             hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
 
       - name: Install proof-test dependency
@@ -81,7 +83,7 @@ jobs:
             tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py \
             tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py
 
-      - name: Compile cumulative exact ABI and inherited-composition gates
+      - name: Compile cumulative exact ABI and structural I6 gate
         run: |
           mkdir -p /tmp/pass219b-i6
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
@@ -90,10 +92,6 @@ jobs:
             tests/pass219/test_pass219b_global_zero_sum_closure_v1.c \
             /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/i6-c
           /tmp/pass219b-i6/i6-c
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
-            tests/pass219/test_pass219b_i6_commit_order_v1.c \
-            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/i6-order-c
-          /tmp/pass219b-i6/i6-order-c
 
       - name: Preserve Pass 219B I1 and I5 exact semantics
         run: |
