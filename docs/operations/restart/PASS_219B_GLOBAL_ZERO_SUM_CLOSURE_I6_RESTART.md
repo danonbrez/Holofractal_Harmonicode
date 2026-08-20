@@ -1,370 +1,166 @@
-# Pass 219B I6 — Global Recursive Relation / Hydration Closure Restart Record
+# Pass 219B I6 — Global N/D Zero-Sum Hydration Projection Restart Record
 
-## Repository state
+## Repository authority
 
 ```text
 repository: danonbrez/Holofractal_Harmonicode
-authoritative base: f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf
+authoritative base/main: f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf
 branch: agent/pass219b-iteration6-global-zero-sum-closure
-merge target: main
 PR: #316
-canonical main mutation authorized by current request: no
+merge target: main
+merge authorization: NOT GRANTED
 ```
 
-The branch remains an ancestry-preserving repair-forward descendant of canonical Pass 219B I5 main. No frozen history was rewritten.
+## Enforcement interpretation
 
-## Classification
+Repository workflow failures are pass-system enforcement results. They SHALL be treated as evidence that the candidate tree violates an inherited pass constraint.
 
-`SEMANTIC_REPAIR_FORWARD — GLOBAL_RELATION_BRIDGE_LOWERING`
+Previous I6 records that classified zero-step failures as generic Actions infrastructure failures are superseded by this restart record.
 
-The first I6 implementation classified the zero-sum theorem as necessary but left `N/D^4=D^4` and the monolithic relation as unresolved. That interpretation was corrected after the source semantics were clarified:
+Current classification until a complete green exact/synthetic gate exists:
 
 ```text
-N = the already-defined global constraint Tensor equation
-D = the already-defined phase-quantization Tensor equation
+PASS_CONSTRAINT_VIOLATION_REPAIR_IN_PROGRESS
+NOT_VALIDATED_GREEN
+NOT_FROZEN
+NOT_MERGEABLE_BY_POLICY_EVEN_IF_GITHUB_REPORTS_MERGEABLE
 ```
 
-The purpose of the global equation is to formalize how native ordered `x,y,z,w` relates to the higher HHS variables and to the Lo Shu/Sudoku qudit organization of VM81 runtime hydration.
+## Violation identified and repaired
 
-Therefore `N/D^4=D^4` is a typed recursive closure relation between two registered objects, not an unfinished scalar equation requiring independent term-by-term solution.
-
-## Source identities
-
-Global relation Tensor `N`:
+The rejected I6 candidate had violated append-only inheritance by:
 
 ```text
-contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex
-SHA-256:
+modifying hhs_runtime_uqcel_1_8.h semantics/layout
+modifying hhs_runtime_uqcel_1_8_validate.inc full-symbolic behavior
+modifying hhs_runtime_uqcel_1_8_receipt.inc commit behavior
+modifying the frozen Pass219 1.15 residual-boundary test
+shadowing/replacing an inherited public admission implementation
+adding an alternate I6 commit path
+claiming FULL_SYMBOLIC_V1 ADMIT despite the registered UQCEL V1 residual boundary
+```
+
+Those changes were repair-forward removed from the current tree.
+
+The following inherited files now match canonical I5 `main` and are explicitly protected by the I6 workflow:
+
+```text
+hhs_runtime/include/hhs_runtime_uqcel_1_8.h
+hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc
+hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc
+tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+```
+
+## Correct I6 architecture
+
+I6 is now a new additive structural projection rather than a UQCEL V1 rewrite.
+
+Projection registration:
+
+```text
+PI-UCE-N-D-HYDRATION-I6-v1
+```
+
+Source objects:
+
+```text
+N SHA-256:
 9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944
-```
 
-Phase-quantization Tensor `D`:
-
-```text
-NcalcMatrixPower((List(List(x,w,(y*x)),List((w*z),x+y+z+w,(z*w)),List((x*y),z,y))/List(List(I,I^3,I^2),List(I^2,0,I^4),List(I^4,I,I^3))),4)
-SHA-256:
+D SHA-256:
 5c4080c9bc87edf358d27c942b55f93e7f5997d6474102cb3a09c1c55ee6a132
 ```
 
-I6 repair-forward closure fixture:
-
-```text
-contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode
-SHA-256:
-8b64f49e534a8363d70d34a04ec829139fa0e697f870ca223db13bc1275c68fb
-```
-
-## Exact closure theorem
-
-Inherited Pass 129 proves:
-
-```text
-q-P=delta
-P-p=delta
-=> p=P-delta
-=> q=P+delta
-=> P^2-pq=delta^2.
-```
-
-The common residue also requires:
-
-```text
-P^2-pq=delta.
-```
-
-With nonzero exact rational residue:
-
-```text
-delta=1
-p=P-1
-q=P+1
-P^2-pq=1.
-```
-
-The same proof package binds:
-
-```text
-pi(xy)=1
-pi(zw)=1
-x+y+z+w=0
-I+I^2+I^3+I^4=0.
-```
-
-The carrier sum uses exact integer coefficient pairs:
-
-```text
-I   = ( 0, 1)
-I^2 = (-1, 0)
-I^3 = ( 0,-1)
-I^4 = ( 1, 0)
-sum = (0,0).
-```
-
-## Global recursive relation
-
-The I6 contract preserves:
-
-```text
-DENOMINATOR_MAGNITUDE_PROJECTION =
-((1,1,1),(1,x+y+z+w=0/u^72,1),(1,1,1))
-
-1=u^72
-
-N/D^4=D^4.
-```
-
-Interpretation:
+Native recursive relation:
 
 ```text
 N/D^4=D^4
 ```
 
-is a typed recursive closure relation. It SHALL NOT be transformed into:
+No scalar cancellation or `N=D^8` rewrite is permitted.
+
+Exact zero-sum family:
 
 ```text
-N=D^8
+Delta=1
+p=P-1
+q=P+1
+P^2-pq=1
+pi(xy)=1
+pi(zw)=1
+x+y+z+w=0
+I+I^2+I^3+I^4=0
 ```
 
-and no `D^4` cancellation, ordered-product commutation, or scalar replacement is permitted.
-
-## Hydration bridge
-
-The static proof binds the registered hydration geometry:
-
-```text
-cell count:                 81
-Lo Shu groups:              41
-trits:                       3
-hydration slots:          5184
-hydration states:    51,648,192
-phase origins:              81
-phase-projected states:
-4,183,503,552
-```
-
-The runtime bridge is:
-
-```text
-ordered x,y,z,w
--> N global relation Tensor
--> D^4 phase quantization
--> zero-sum closure
--> Lo Shu/Sudoku qudit
--> cell81 + ordered basis pair
--> exact VM5184 address
--> inherited VM81 admission/commit authority.
-```
-
-## Full-symbolic UQCEL repair
-
-The legacy compatibility profile remains unchanged:
-
-```text
-HHS_UQCEL_CONSTRAINT_CORE_REQUIRED = 0x03FF
-```
-
-Full-symbolic no longer requires the compatibility-only:
-
-```text
-A=P^2
-B=P^2
-A*B=P^4
-```
-
-checks.
-
-Instead it requires:
-
-```text
-HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE = 0x0400
-HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY    = 0x0800
-HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE   = 0x1000
-HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED   = 0x1F9F
-```
-
-For the full-symbolic profile, `source_envelope_sha256` is the exact `N` source identity. The old `hhs_exact_uqcel_source_sha256` remains the compatibility-profile source identity.
-
-A full-symbolic candidate must prove:
+Runtime projection chain:
 
 ```text
 N source identity
-canonical BigInt transport
-Lo Shu invariant
-registered exact metric
-P^2=pq+delta
-delta=1
-p=P-1
-q=P+1
-ordered QR phase
-valid VM5184 address
-zero-sum closure
-global N/D/Lo-Shu/VM81 bridge.
++ D source identity
++ Pass129 closure
++ inherited UQCEL INTEGER_SYMMETRIC_V1 quantization subprojection
++ mandatory probe that inherited FULL_SYMBOLIC_V1 remains UNSUPPORTED_DOMAIN
++ Pass219 ordered phase witness
++ Pass189/219 coordinate forward/inverse
++ Pass219 trinary gate
++ Pass219B I1 phase-origin projection
++ Pass219B I5 exact locality verification
+= HHSExactPass219BGlobalRelationHydrationWitnessV1
 ```
 
-On success:
+I6 exports no commit/admit/persist/Hash72 authority.
+
+## Current changed-tree scope
+
+Expected current-tree delta from canonical I5 is limited to:
 
 ```text
-decision = ADMIT
-residual_mask = 0
-frame_committed = 0
-```
-
-for validation alone.
-
-Actual mutation remains:
-
-```text
-hhs_exact_vm81_admit_uqcel(...)
-```
-
-and only that inherited path may produce:
-
-```text
-frame_committed = 1.
-```
-
-## Authority boundary
-
-The bridge proof object remains:
-
-```text
-canonical_mutation_authority = 0
-canonical_persistence_authority = 0
-canonical_hash72_authority = 0.
-```
-
-No floats or doubles participate in the exact proof/admission path.
-
-## Negative enforcement
-
-The I6 tests reject:
-
-```text
-tampered center zero sum
-tampered phase zero sum
-tampered D identity
-missing recursive closure
-missing global relation bridge
-non-unit/asymmetric center family
-wrong N source identity
-scalar-cancellation semantics
-hydration geometry mismatch
-direct proof-layer mutation authority
-premature zero-sum satisfaction before candidate-family binding.
-```
-
-The positive C gate deliberately uses full-symbolic `A/B` placeholder bytes unequal to `P^2` and still requires successful admission through the global bridge, proving that the full path cannot regress to the old compatibility substitution.
-
-The same gate then invokes `hhs_exact_vm81_admit_uqcel` and requires an exact committed VM81 frame.
-
-## Review hardening
-
-The three review findings on PR #316 are addressed and resolved:
-
-```text
-1. candidate-bound zero-sum satisfaction
-   - the zero-sum bit is not set by the argument-free theorem object;
-   - it is set only after the submitted P,p,q,delta family is proven.
-
-2. replay-hard verification
-   - the Python verifier reconstructs Pass 129 from submitted P;
-   - it re-runs prove/validate/replay and rechecks p,q,delta, membrane,
-     xy, zw, center sum, phase sum, source identities, receipt roots, and
-     zero direct mutation/persistence/Hash72 authority.
-
-3. inherited dependency trigger
-   - the I6 workflow path filter includes both the Pass-129 prover and its
-     regression test so inherited proof changes cannot silently skip I6.
-```
-
-Latest candidate-binding commits before this restart update:
-
-```text
-cedabbf07dde8a8c0fe93bab7d437d78134682b7
-6f248f31e0db54dd5934f51e9116d87306a2c9f2
-```
-
-## Files changed in the repair
-
-Core repair-forward files:
-
-```text
-contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode
-hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
-hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc
-hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py
-hhs_runtime/include/hhs_runtime_uqcel_1_8.h
-hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc
-tests/pass219/test_pass219b_global_zero_sum_closure_v1.py
-tests/pass219/test_pass219b_global_zero_sum_closure_v1.c
-tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
 .github/workflows/pass219b-global-zero-sum-closure-i6.yml
+contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode
+docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md
 docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md
-this restart record
+docs/whitepapers/HARMONICODE_I6_PASS_ENFORCEMENT_CORRECTION.md
+hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc
+hhs_runtime/c/hhs_runtime_exact_abi.c
+hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py
+hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
+hhs_runtime/include/hhs_runtime_exact_abi.h
+tests/pass219/test_pass219b_global_zero_sum_closure_v1.c
+tests/pass219/test_pass219b_global_zero_sum_closure_v1.py
 ```
 
-Inherited exact ABI aggregate includes remain additive; no canonical authority was moved.
+No frozen UQCEL file should appear in the final PR diff.
 
-## Historical validation
+## Validation required
 
-The pre-clarification I6 head had terminal-green exact/synthetic jobs, proving the zero-sum theorem and compatibility regressions. Those green jobs do **not** validate this semantic repair because the full-symbolic outcome changed from `UNSUPPORTED_DOMAIN` to structural `ADMIT`.
-
-The repair-forward head therefore requires a fresh exact/synthetic I6 gate.
-
-## Current Actions blocker
-
-The documentation-independent repaired heads have repeatedly triggered GitHub Actions, but the repository Actions execution layer is presently failing before any workflow step starts.
-
-Most recent head before this restart update:
-
-```text
-6f248f31e0db54dd5934f51e9116d87306a2c9f2
-```
-
-Dedicated I6 run:
-
-```text
-run: 32400359160
-exact job:     96526832340 — FAILURE, steps=null, no logs
-synthetic job: 96526832112 — FAILURE, steps=null, no logs
-```
-
-The same commit simultaneously produced the same immediate failure pattern across Pass 217, Pass 218, RNA 1.10/1.11/1.12/1.13/1.14, VM81 Exact ABI Repair, Universal Quantization Constraint Audit, and Pass 219B I5 workflows. Guarded Continuous Integration was skipped. No executable step output exists for the I6 jobs.
-
-A prior targeted rerun of the earlier repaired I6 run also terminated with `steps=null` and no logs. Therefore the current evidence class is:
-
-```text
-ACTIONS_EXECUTION_BLOCKED
-NOT_A_TEST_FAILURE
-NOT_VALIDATED_GREEN
-```
-
-No merge to `main` is permitted while this validation blocker remains.
-
-## Required final gate
-
-When GitHub Actions executes normally again, the documentation-inclusive head must pass:
+The I6 exact and synthetic workflows must both pass all of:
 
 ```text
 canonical I5 ancestry
-no float/double authority
-no new direct commit/persist/Hash72 API
-byte-frozen N source identity
-byte-frozen D source identity
-Pass-129 exact closure family and negatives
-strict cumulative C11 exact ABI compilation
-candidate-bound zero-sum satisfaction negative
-full-symbolic structural bridge admission
-full-symbolic VM81 commit through inherited authority
-historical 1.15 source/AB semantic preservation
-Pass 219B I1 regression
-Pass 219B I5 regression
+frozen UQCEL 1.8/1.15 git-diff equality
+no float/double canonical authority
+no new public commit/admit/persist/Hash72 API
+byte-frozen N identity
+byte-frozen D identity
+Pass129 proof validation and deterministic replay
+zero-sum family positive and negative cases
+legacy FULL_SYMBOLIC_V1 residual preservation
+strict cumulative C11 compilation
+I6 structural C gate
+Pass219B I1 regression
+Pass219B I5 regression
 RNA 1.10 regression
-Pass 206 I118 regression
+Pass206 inherited regression
 exact PR head
-synthetic merge candidate.
+synthetic PR merge candidate
 ```
+
+Any workflow failure is a new constraint violation to investigate and repair. Do not classify it as a generic runner error.
 
 ## Next action
 
-Do not mutate runtime semantics merely to retrigger a broken runner. Once Actions can allocate jobs with real steps/logs, run the exact and synthetic I6 gate on the current documentation-inclusive head. If both are green, record exact run/job evidence in PR #316, mark the PR ready for review, and freeze the head. Do not merge `main` without separate explicit authorization.
+1. Inspect the pass-enforcement result for the current repaired head.
+2. If any workflow fails, identify the violated inherited constraint and repair forward.
+3. If exact and synthetic I6 plus required inherited workflows become green, record exact run/job evidence here and in PR #316.
+4. Only then mark the PR ready/frozen.
+5. Do not merge `main` without separate explicit user authorization.
