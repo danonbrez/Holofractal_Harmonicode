@@ -175,6 +175,11 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_source(
     size_t *out_length
 );
 
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_native_edge(
+    uint32_t ordinal,
+    HHSExactPass219MonolithicEdgeV1 *out_edge
+);
+
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_edge(
     uint32_t ordinal,
     HHSExactPass219MonolithicEdgeV1 *out_edge
