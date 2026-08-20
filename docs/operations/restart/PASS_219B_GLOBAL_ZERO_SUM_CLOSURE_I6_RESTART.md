@@ -176,7 +176,7 @@ Earlier I6 candidate commits introduced parallel evaluators and alternate admiss
 ## Current checkpoint
 
 ```text
-head after final-tree reduction: b0544bb0737677e14b128efc0acf052e8c37e67e
+head after final-tree reduction: 97a2f304d0a24a48ff1c397d7dd6f2371e6b952f
 ```
 
 ## Remaining validation
