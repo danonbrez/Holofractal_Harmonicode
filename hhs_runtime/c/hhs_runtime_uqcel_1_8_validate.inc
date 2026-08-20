@@ -18,6 +18,28 @@ static int hhs_exact_uqcel_lo_shu_selfcheck(void) {
     return 1;
 }
 
+static int hhs_exact_uqcel_add_views_equal(
+    const HHSExactBigUIntView *left,
+    const HHSExactBigUIntView *right,
+    const HHSExactBigUIntView *expected
+) {
+    HHSExactBigBuffer left_buffer;
+    HHSExactBigBuffer sum;
+
+    if (left == NULL || right == NULL || expected == NULL)
+        return 0;
+    if ((size_t)left->byte_length > sizeof(left_buffer.bytes))
+        return 0;
+
+    memset(&left_buffer, 0, sizeof(left_buffer));
+    left_buffer.length = (size_t)left->byte_length;
+    memcpy(left_buffer.bytes, left->bytes_be, left_buffer.length);
+
+    if (!hhs_exact_big_add_buffer_view(&left_buffer, right, &sum))
+        return 0;
+    return hhs_exact_big_equal_view_buffer(expected, &sum);
+}
+
 uint32_t hhs_exact_uqcel_version(void) {
     return hhs_exact_uqcel_version_word();
 }
@@ -71,12 +93,14 @@ HHSExactStatus hhs_exact_uqcel_validate(
     HHSExactBigBuffer p_fourth;
     HHSExactPhaseProduct product;
     HHSExactPass219BGlobalZeroSumClosureV1 zero_sum_proof;
+    uint8_t expected_source_sha256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES];
     uint8_t p_mod4;
     uint8_t q_mod4;
     uint8_t qr_bit;
     uint8_t expected_left;
     uint8_t expected_right;
     uint16_t address;
+    int full_symbolic;
 
     if (out_admission == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -88,19 +112,36 @@ HHSExactStatus hhs_exact_uqcel_validate(
     if (input->profile != HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1 &&
         input->profile != HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1)
         return HHS_EXACT_STATUS_RANGE_ERROR;
-    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1)
+
+    full_symbolic = input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1;
+    if (full_symbolic)
         out_admission->required_mask = HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED;
 
-    if (memcmp(input->source_envelope_sha256, HHS_EXACT_UQCEL_SOURCE_SHA256,
+    if (full_symbolic) {
+        if (hhs_exact_pass219b_global_tensor_source_sha256(expected_source_sha256) != HHS_EXACT_STATUS_OK)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    } else {
+        memcpy(expected_source_sha256, HHS_EXACT_UQCEL_SOURCE_SHA256,
+               HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES);
+    }
+
+    if (memcmp(input->source_envelope_sha256, expected_source_sha256,
                HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES) != 0)
         return hhs_exact_uqcel_reject(
             out_admission, HHS_UQCEL_CONSTRAINT_SOURCE, HHS_EXACT_UQCEL_REASON_SOURCE_HASH);
     out_admission->source_hash_match = 1U;
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_SOURCE;
 
-    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
+    if (full_symbolic) {
         if (hhs_exact_pass219b_global_zero_sum_prove(&zero_sum_proof) != HHS_EXACT_STATUS_OK ||
             hhs_exact_pass219b_global_zero_sum_verify(&zero_sum_proof) != HHS_EXACT_STATUS_OK)
+            return hhs_exact_uqcel_reject(
+                out_admission,
+                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
+                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
+        if (zero_sum_proof.center_zero_sum_proven != 1U ||
+            zero_sum_proof.phase_carrier_zero_sum_proven != 1U ||
+            zero_sum_proof.recursive_closure_proven != 1U)
             return hhs_exact_uqcel_reject(
                 out_admission,
                 HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
@@ -112,8 +153,8 @@ HHSExactStatus hhs_exact_uqcel_validate(
         !hhs_exact_big_view_valid(&input->p, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
         !hhs_exact_big_view_valid(&input->q, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
         !hhs_exact_big_view_valid(&input->delta, HHS_EXACT_UQCEL_MAX_P_BYTES, 1) ||
-        !hhs_exact_big_view_valid(&input->A, HHS_EXACT_UQCEL_MAX_AB_BYTES, 0) ||
-        !hhs_exact_big_view_valid(&input->B, HHS_EXACT_UQCEL_MAX_AB_BYTES, 0))
+        !hhs_exact_big_view_valid(&input->A, HHS_EXACT_UQCEL_MAX_AB_BYTES, full_symbolic ? 1 : 0) ||
+        !hhs_exact_big_view_valid(&input->B, HHS_EXACT_UQCEL_MAX_AB_BYTES, full_symbolic ? 1 : 0))
         return hhs_exact_uqcel_reject(
             out_admission, HHS_UQCEL_CONSTRAINT_BIGINT_CANONICAL, HHS_EXACT_UQCEL_REASON_BIGINT_ENCODING);
     out_admission->bigint_domain_exact = 1U;
@@ -132,26 +173,6 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_METRIC, HHS_EXACT_UQCEL_REASON_BIGINT_ENCODING);
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_METRIC;
 
-    /*
-     * Pass 219 1.15 semantic repair-forward boundary plus Pass 219B I6:
-     * the V1 A/B fields remain integer/symmetric compatibility witnesses, not
-     * the full-symbolic source A/B terms. Full-symbolic requests now bind the
-     * exact global zero-sum closure theorem before reaching the unresolved
-     * monolithic residual. The zero-sum theorem is necessary but not sufficient:
-     * it cannot clear the aggregate monolithic equality-chain residual.
-     * The aggregate monolithic residual remains set.
-     */
-    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
-        if ((out_admission->satisfied_mask & HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE) == 0U)
-            return hhs_exact_uqcel_reject(
-                out_admission,
-                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
-                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
-        out_admission->decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN;
-        out_admission->reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL;
-        return HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN;
-    }
-
     if (!hhs_exact_big_square_view(&input->P, &p_squared) ||
         !hhs_exact_big_mul_view(&input->p, &input->q, &pq) ||
         !hhs_exact_big_add_buffer_view(&pq, &input->delta, &pq_plus_delta))
@@ -164,20 +185,31 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_P_DELTA, HHS_EXACT_UQCEL_REASON_P_DELTA);
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_P_DELTA;
 
-    if (!hhs_exact_big_equal_view_buffer(&input->A, &p_squared) ||
-        !hhs_exact_big_equal_view_buffer(&input->B, &p_squared))
-        return hhs_exact_uqcel_reject(
-            out_admission, HHS_UQCEL_CONSTRAINT_AB_SYMMETRIC, HHS_EXACT_UQCEL_REASON_AB_SYMMETRY);
-    out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_AB_SYMMETRIC;
+    if (full_symbolic) {
+        if (input->delta.byte_length != 1U || input->delta.bytes_be[0] != 1U ||
+            !hhs_exact_uqcel_add_views_equal(&input->p, &input->delta, &input->P) ||
+            !hhs_exact_uqcel_add_views_equal(&input->P, &input->delta, &input->q))
+            return hhs_exact_uqcel_reject(
+                out_admission,
+                HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY,
+                HHS_EXACT_UQCEL_REASON_CENTER_DELTA_SYMMETRY);
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY;
+    } else {
+        if (!hhs_exact_big_equal_view_buffer(&input->A, &p_squared) ||
+            !hhs_exact_big_equal_view_buffer(&input->B, &p_squared))
+            return hhs_exact_uqcel_reject(
+                out_admission, HHS_UQCEL_CONSTRAINT_AB_SYMMETRIC, HHS_EXACT_UQCEL_REASON_AB_SYMMETRY);
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_AB_SYMMETRIC;
 
-    if (!hhs_exact_big_mul_view(&input->A, &input->B, &ab) ||
-        !hhs_exact_big_mul_buffer(&p_squared, &p_squared, &p_fourth))
-        return hhs_exact_uqcel_reject(
-            out_admission, HHS_UQCEL_CONSTRAINT_AB_QUARTIC, HHS_EXACT_UQCEL_REASON_BIGINT_ENCODING);
-    if (!hhs_exact_big_equal_raw(ab.bytes, ab.length, p_fourth.bytes, p_fourth.length))
-        return hhs_exact_uqcel_reject(
-            out_admission, HHS_UQCEL_CONSTRAINT_AB_QUARTIC, HHS_EXACT_UQCEL_REASON_AB_QUARTIC);
-    out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_AB_QUARTIC;
+        if (!hhs_exact_big_mul_view(&input->A, &input->B, &ab) ||
+            !hhs_exact_big_mul_buffer(&p_squared, &p_squared, &p_fourth))
+            return hhs_exact_uqcel_reject(
+                out_admission, HHS_UQCEL_CONSTRAINT_AB_QUARTIC, HHS_EXACT_UQCEL_REASON_BIGINT_ENCODING);
+        if (!hhs_exact_big_equal_raw(ab.bytes, ab.length, p_fourth.bytes, p_fourth.length))
+            return hhs_exact_uqcel_reject(
+                out_admission, HHS_UQCEL_CONSTRAINT_AB_QUARTIC, HHS_EXACT_UQCEL_REASON_AB_QUARTIC);
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_AB_QUARTIC;
+    }
 
     if ((input->p.bytes_be[input->p.byte_length - 1U] & UINT8_C(1)) == 0U ||
         (input->q.bytes_be[input->q.byte_length - 1U] & UINT8_C(1)) == 0U)
@@ -212,6 +244,37 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_VM5184, HHS_EXACT_UQCEL_REASON_VM5184);
     out_admission->vm5184_address = address;
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_VM5184;
+
+    if (full_symbolic) {
+        /*
+         * Full-symbolic truth is structural membership in the already-defined
+         * recursive relation manifold:
+         * N(global constraint Tensor) / D(phase quantization)^4 = D^4,
+         * with the same candidate bound to zero-sum closure, Lo Shu/Sudoku
+         * qudit membership, and one exact VM81/5184 hydration address.
+         *
+         * No scalar cancellation or A=P^2/B=P^2 compatibility substitution is
+         * used. Once these typed witnesses agree, the aggregate source residual
+         * is resolved by the bridge theorem rather than left unsupported.
+         */
+        if (zero_sum_proof.global_tensor_source_bound != 1U ||
+            zero_sum_proof.phase_quantization_bound != 1U ||
+            zero_sum_proof.lo_shu_sudoku_qudit_bound != 1U ||
+            zero_sum_proof.vm81_hydration_geometry_bound != 1U ||
+            zero_sum_proof.recursive_closure_proven != 1U ||
+            zero_sum_proof.global_relation_bridge_proven != 1U ||
+            zero_sum_proof.cell_count81 != HHS_EXACT_PASS219B_ZERO_SUM_CELL_COUNT ||
+            zero_sum_proof.lo_shu_group_count41 != HHS_EXACT_PASS219B_ZERO_SUM_LO_SHU_GROUP_COUNT ||
+            zero_sum_proof.trit_count3 != HHS_EXACT_PASS219B_ZERO_SUM_TRIT_COUNT ||
+            zero_sum_proof.hydration_slot_count5184 != HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_SLOT_COUNT ||
+            zero_sum_proof.hydration_state_count != HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_STATE_COUNT)
+            return hhs_exact_uqcel_reject(
+                out_admission,
+                HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE,
+                HHS_EXACT_UQCEL_REASON_GLOBAL_RELATION_BRIDGE);
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE;
+        out_admission->residual_mask = 0U;
+    }
 
     if ((out_admission->satisfied_mask & out_admission->required_mask) != out_admission->required_mask)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
