@@ -146,7 +146,6 @@ HHSExactStatus hhs_exact_uqcel_validate(
                 out_admission,
                 HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
                 HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
-        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE;
     }
 
     if (!hhs_exact_big_view_valid(&input->P, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
@@ -193,7 +192,15 @@ HHSExactStatus hhs_exact_uqcel_validate(
                 out_admission,
                 HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY,
                 HHS_EXACT_UQCEL_REASON_CENTER_DELTA_SYMMETRY);
+
+        /*
+         * The zero-sum theorem is only satisfied for this request after the
+         * submitted P,p,q,delta family has been checked against the inherited
+         * exact closure family. The argument-free theorem object alone cannot
+         * satisfy a candidate-state admission bit.
+         */
         out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY;
+        out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE;
     } else {
         if (!hhs_exact_big_equal_view_buffer(&input->A, &p_squared) ||
             !hhs_exact_big_equal_view_buffer(&input->B, &p_squared))
