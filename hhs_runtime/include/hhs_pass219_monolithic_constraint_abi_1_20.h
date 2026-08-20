@@ -13,6 +13,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_MONOLITHIC_VERSION_PATCH 0U
 
 #define HHS_EXACT_PASS219_MONOLITHIC_SOURCE_LENGTH 354U
+#define HHS_EXACT_PASS219_MONOLITHIC_NATIVE_SOURCE_LENGTH 348U
 #define HHS_EXACT_PASS219_MONOLITHIC_EDGE_COUNT 10U
 #define HHS_EXACT_PASS219_MONOLITHIC_BINDING_EDGE_COUNT 5U
 #define HHS_EXACT_PASS219_MONOLITHIC_CONSTRAINT_EDGE_COUNT 5U
@@ -72,6 +73,7 @@ typedef struct HHSExactPass219MonolithicDescriptorV1 {
     uint32_t struct_size;
     uint32_t version;
     uint32_t source_length;
+    uint32_t native_source_length;
     uint32_t equality_edge_count;
     uint32_t binding_edge_count;
     uint32_t constraint_edge_count;
@@ -85,6 +87,7 @@ typedef struct HHSExactPass219MonolithicDescriptorV1 {
     uint32_t floating_point_authority;
     uint32_t vm81_mutation_authority;
     uint32_t hash72_commit_authority;
+    uint8_t native_source_sha256[HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES];
     uint8_t machine_source_sha256[HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES];
     uint8_t frozen_tex_sha256[HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES];
 } HHSExactPass219MonolithicDescriptorV1;
@@ -158,6 +161,12 @@ HHS_EXACT_API uint32_t hhs_exact_pass219_monolithic_version(void);
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_descriptor(
     HHSExactPass219MonolithicDescriptorV1 *out_descriptor
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_native_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_monolithic_source(
