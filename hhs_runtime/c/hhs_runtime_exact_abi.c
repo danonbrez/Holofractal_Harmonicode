@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 219B I6 structural N/D hydration closure. */
+/* Additive exact ABI aggregate through Pass 219B universal phase locality. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -24,4 +24,3 @@
 #include "hhs_pass219_inherited_pass206_1_18.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
-#include "hhs_pass219b_global_zero_sum_closure_1_0.inc"
