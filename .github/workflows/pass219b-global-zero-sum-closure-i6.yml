@@ -12,11 +12,22 @@ on:
       - 'hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py'
       - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
+      - 'hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h'
+      - 'hhs_runtime/c/hhs_pass192_fibonacci_compression_1_9.inc'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'
+      - 'hhs_runtime/c/hhs_pass219_rna_transcription_1_10.inc'
+      - 'hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219b_phase_quantized_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219b_universal_phase_locality_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219b_universal_phase_locality_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.py'
       - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.c'
       - 'tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py'
+      - 'tests/pass219/test_pass219_rna_transcription_1_10.c'
+      - 'tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
       - 'tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py'
       - 'docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md'
       - 'docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md'
@@ -64,7 +75,7 @@ jobs:
             tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py \
             tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py
 
-      - name: Compile cumulative exact ABI and full-symbolic VM81 commit gate
+      - name: Compile cumulative exact ABI and inherited-composition gate
         run: |
           mkdir -p /tmp/pass219b-i6
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
