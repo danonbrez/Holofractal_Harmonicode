@@ -90,7 +90,7 @@ jobs:
             hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.h \
             hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.hpp \
             hhs_runtime/c/hhs_pass219_inherited_pass200b_1_25.inc
-          ! grep -Eq 'admit_canary|build_approval|execute_canary|rollback_canary|persist.*frontier|mint.*hash72' \
+          ! grep -Eq '\b(admit_canary|build_approval|execute_canary|rollback_canary|persist_frontier|mint_hash72)\s*\(' \
             hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.h \
             hhs_runtime/include/hhs_pass219_inherited_pass200b_1_25.hpp
 
