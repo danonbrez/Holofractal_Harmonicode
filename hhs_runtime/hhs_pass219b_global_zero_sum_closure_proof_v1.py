@@ -11,7 +11,7 @@ from hhs_runtime.hhs_pass129_invariant_delta_rational_projection_algebra_v1 impo
 SCHEMA = "HHS_PASS219B_GLOBAL_RELATION_BRIDGE_PROOF_V3"
 PASS_ID = "PASS_219B_I6_ADDITIVE_STRUCTURAL_BRIDGE"
 CLOSURE_EXTENSION_SHA256 = "28d89e625af38f7fbc2e2df61050043a6716c803458f2b5e6912a62f384ceb2d"
-PARENT_MONOLITHIC_SHA256 = "9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b5...".replace("...", "69" + "44")
+PARENT_MONOLITHIC_SHA256 = "9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944"
 PHASE_QUANTIZATION_OBJECT = (
     "NcalcMatrixPower((List(List(x,w,(y*x)),List((w*z),x+y+z+w,(z*w)),"
     "List((x*y),z,y))/List(List(I,I^3,I^2),List(I^2,0,I^4),"
@@ -42,8 +42,10 @@ def _replay_pass129(center_P: Any) -> tuple[dict[str, Any], dict[str, Any]]:
     proof = engine.prove(request)
     validation = engine.validate(request, proof)
     replay = engine.replay(request, proof)
-    if validation["status"] != "VALID" or replay["status"] != "REPLAY_MATCH":
-        raise GlobalZeroSumClosureError("inherited Pass129 validation/replay failed")
+    if validation["status"] != "PASS_129_PROOF_VALIDATED":
+        raise GlobalZeroSumClosureError("inherited Pass129 validation failed")
+    if replay["status"] != "PASS_129_DETERMINISTIC_REPLAY_VALIDATED":
+        raise GlobalZeroSumClosureError("inherited Pass129 replay failed")
     return request, proof
 
 
