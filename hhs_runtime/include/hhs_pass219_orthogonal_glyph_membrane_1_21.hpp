@@ -85,6 +85,7 @@ public:
         bool phase_contradiction{false};
         bool decision_contradiction{false};
         bool candidate_state_contradiction{false};
+        std::array<char, HHS_HASH216_BYTES_STRLEN> equation_hash216{};
     };
 
     struct GlobalComputation final {
@@ -118,8 +119,7 @@ public:
             status_ = HHS_EXACT_STATUS_INVARIANT_FAILURE;
             return;
         }
-        if (octonion_state_.xy != canonical_a2 ||
-            octonion_state_.zw != canonical_a2) {
+        if (octonion_state_.xy != canonical_a2 || octonion_state_.zw != canonical_a2) {
             status_ = HHS_EXACT_STATUS_INVARIANT_FAILURE;
             return;
         }
@@ -273,12 +273,9 @@ private:
         const HHSExactPass219OctonionStateV1& left,
         const HHSExactPass219OctonionStateV1& right
     ) noexcept {
-        return left.struct_size == right.struct_size &&
-               left.version == right.version &&
-               left.x == right.x && left.y == right.y &&
-               left.z == right.z && left.w == right.w &&
-               left.xy == right.xy && left.yx == right.yx &&
-               left.zw == right.zw && left.wz == right.wz;
+        return left.struct_size == right.struct_size && left.version == right.version &&
+               left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w &&
+               left.xy == right.xy && left.yx == right.yx && left.zw == right.zw && left.wz == right.wz;
     }
 
     static void append_u16(std::vector<std::uint8_t>& out, std::uint16_t value) {
@@ -317,8 +314,7 @@ private:
         const Lane& current = lanes_[index];
         result.glyph = current.glyph;
         result.hydration = current.hydration;
-        result.status = hhs_exact_pass219_monolithic_verify_proof(
-            &current.proof, &result.verification);
+        result.status = hhs_exact_pass219_monolithic_verify_proof(&current.proof, &result.verification);
         if (result.status != HHS_EXACT_STATUS_OK)
             return result;
 
@@ -327,8 +323,7 @@ private:
         result.intrinsic_phase = phase.second;
 
         std::vector<std::uint8_t> material;
-        material.reserve(
-            current.equation.size() + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN + 64U);
+        material.reserve(current.equation.size() + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN + 64U);
         material.push_back(static_cast<std::uint8_t>(current.glyph));
         append_u16(material, current.hydration.lane_ordinal);
         append_u16(material, current.hydration.begin);
@@ -352,10 +347,36 @@ private:
             material.end(),
             current.proof.candidate_state_hash216,
             current.proof.candidate_state_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
-
-        hhs_hash216_compute_bytes(
-            material.data(), material.size(), result.lane_hash216.data());
+        hhs_hash216_compute_bytes(material.data(), material.size(), result.lane_hash216.data());
         return result;
+    }
+
+    void hash_contradiction_equation(
+        ContradictionEquation& equation,
+        const LaneComputation& left_result,
+        const LaneComputation& right_result
+    ) const {
+        std::vector<std::uint8_t> material;
+        material.reserve(HHS_HASH216_BYTES_LEN * 2U + 48U);
+        material.push_back(static_cast<std::uint8_t>(equation.left));
+        material.push_back(static_cast<std::uint8_t>(equation.right));
+        append_u16(material, equation.left_lane);
+        append_u16(material, equation.right_lane);
+        material.insert(
+            material.end(),
+            left_result.lane_hash216.begin(),
+            left_result.lane_hash216.begin() + HHS_HASH216_BYTES_LEN);
+        material.insert(
+            material.end(),
+            right_result.lane_hash216.begin(),
+            right_result.lane_hash216.begin() + HHS_HASH216_BYTES_LEN);
+        append_u64(material, equation.edge_state_xor);
+        append_u32(material, equation.family_state_xor);
+        append_u32(material, equation.stage_state_xor);
+        material.push_back(equation.phase_contradiction ? 1U : 0U);
+        material.push_back(equation.decision_contradiction ? 1U : 0U);
+        material.push_back(equation.candidate_state_contradiction ? 1U : 0U);
+        hhs_hash216_compute_bytes(material.data(), material.size(), equation.equation_hash216.data());
     }
 
     void build_global_computation() {
@@ -363,8 +384,7 @@ private:
         global_ = GlobalComputation{};
         global_.status = HHS_EXACT_STATUS_OK;
         global_.invariant_xy_zw_a2_delta = invariant_closed_ &&
-            octonion_state_.xy == canonical_a2 &&
-            octonion_state_.zw == canonical_a2;
+            octonion_state_.xy == canonical_a2 && octonion_state_.zw == canonical_a2;
         global_.all_lanes_computed = true;
         global_.canonical_proof = false;
         global_.requires_vm81_authority = true;
@@ -379,13 +399,12 @@ private:
                 ++global_.proof_packet_complete_lane_count;
             std::memcpy(
                 global_.lane_hash216_fabric.data() + i * lane_width,
-                result.lane_hash216.data(), lane_width);
+                result.lane_hash216.data(),
+                lane_width);
         }
 
         for (std::size_t left_index = 0; left_index < lane_count; ++left_index) {
-            for (std::size_t right_index = left_index + 1U;
-                 right_index < lane_count;
-                 ++right_index) {
+            for (std::size_t right_index = left_index + 1U; right_index < lane_count; ++right_index) {
                 const LaneComputation& left_result = lane_results_[left_index];
                 const LaneComputation& right_result = lane_results_[right_index];
                 const Lane& left_lane = lanes_[left_index];
@@ -397,21 +416,15 @@ private:
                 equation.left_lane = static_cast<std::uint16_t>(left_index);
                 equation.right_lane = static_cast<std::uint16_t>(right_index);
                 equation.edge_state_xor =
-                    (left_result.verification.edge_satisfied_mask ^
-                     right_result.verification.edge_satisfied_mask) |
-                    (left_result.verification.edge_failed_mask ^
-                     right_result.verification.edge_failed_mask) |
-                    (left_result.verification.edge_unresolved_mask ^
-                     right_result.verification.edge_unresolved_mask);
+                    (left_result.verification.edge_satisfied_mask ^ right_result.verification.edge_satisfied_mask) |
+                    (left_result.verification.edge_failed_mask ^ right_result.verification.edge_failed_mask) |
+                    (left_result.verification.edge_unresolved_mask ^ right_result.verification.edge_unresolved_mask);
                 equation.family_state_xor =
-                    left_result.verification.resolved_family_mask ^
-                    right_result.verification.resolved_family_mask;
+                    left_result.verification.resolved_family_mask ^ right_result.verification.resolved_family_mask;
                 equation.stage_state_xor =
-                    left_result.verification.completed_stage_mask ^
-                    right_result.verification.completed_stage_mask;
+                    left_result.verification.completed_stage_mask ^ right_result.verification.completed_stage_mask;
                 equation.phase_contradiction =
-                    left_result.intrinsic_phase_defined &&
-                    right_result.intrinsic_phase_defined &&
+                    left_result.intrinsic_phase_defined && right_result.intrinsic_phase_defined &&
                     left_result.intrinsic_phase != right_result.intrinsic_phase;
                 equation.decision_contradiction =
                     left_result.verification.decision != right_result.verification.decision;
@@ -421,26 +434,24 @@ private:
                         right_lane.proof.candidate_state_hash216,
                         HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN) != 0;
 
-                if (equation.edge_state_xor != 0U ||
-                    equation.family_state_xor != 0U ||
-                    equation.stage_state_xor != 0U ||
-                    equation.phase_contradiction ||
-                    equation.decision_contradiction ||
-                    equation.candidate_state_contradiction) {
+                if (equation.edge_state_xor != 0U || equation.family_state_xor != 0U ||
+                    equation.stage_state_xor != 0U || equation.phase_contradiction ||
+                    equation.decision_contradiction || equation.candidate_state_contradiction) {
                     global_.emergent_edge_mask |= equation.edge_state_xor;
                     global_.emergent_family_mask |= equation.family_state_xor;
                     global_.emergent_stage_mask |= equation.stage_state_xor;
+                    hash_contradiction_equation(equation, left_result, right_result);
                     contradictions_.push_back(equation);
                 }
             }
         }
 
-        global_.emergent_equation_count =
-            static_cast<std::uint32_t>(contradictions_.size());
+        global_.emergent_equation_count = static_cast<std::uint32_t>(contradictions_.size());
 
         std::vector<std::uint8_t> graph_material;
         graph_material.reserve(
-            global_.lane_hash216_fabric.size() + contradictions_.size() * 32U + 32U);
+            global_.lane_hash216_fabric.size() +
+            contradictions_.size() * HHS_HASH216_BYTES_LEN + 32U);
         graph_material.insert(
             graph_material.end(),
             global_.lane_hash216_fabric.begin(),
@@ -453,20 +464,12 @@ private:
         append_u64(graph_material, global_.emergent_edge_mask);
         append_u32(graph_material, global_.emergent_family_mask);
         append_u32(graph_material, global_.emergent_stage_mask);
-
         for (const ContradictionEquation& equation : contradictions_) {
-            graph_material.push_back(static_cast<std::uint8_t>(equation.left));
-            graph_material.push_back(static_cast<std::uint8_t>(equation.right));
-            append_u16(graph_material, equation.left_lane);
-            append_u16(graph_material, equation.right_lane);
-            append_u64(graph_material, equation.edge_state_xor);
-            append_u32(graph_material, equation.family_state_xor);
-            append_u32(graph_material, equation.stage_state_xor);
-            graph_material.push_back(equation.phase_contradiction ? 1U : 0U);
-            graph_material.push_back(equation.decision_contradiction ? 1U : 0U);
-            graph_material.push_back(equation.candidate_state_contradiction ? 1U : 0U);
+            graph_material.insert(
+                graph_material.end(),
+                equation.equation_hash216.begin(),
+                equation.equation_hash216.begin() + HHS_HASH216_BYTES_LEN);
         }
-
         hhs_hash216_compute_bytes(
             graph_material.data(),
             graph_material.size(),
