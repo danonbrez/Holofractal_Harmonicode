@@ -1,0 +1,101 @@
+name: Pass 219 Orthogonal Glyph Membrane 1.21
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp'
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/include/hhs_hash216_bytes.h'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp'
+      - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
+      - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
+      - '.github/workflows/pass219-orthogonal-glyph-membrane-1-21.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  orthogonal-glyph-membrane:
+    name: orthogonal-glyph-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove additive lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 85c237023e778e655f38f6363bab7f08907fa9b2 HEAD
+
+      - name: Enforce exact membrane authority
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'lane_count == 24U' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'lane_count * lane_width == hydration_fabric_size' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'canonical_proof = false' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'requires_vm81_authority = true' hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+
+      - name: Compile cumulative exact C substrate
+        run: |
+          mkdir -p /tmp/pass219-orthogonal-1-21
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-orthogonal-1-21/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/src/hhs_hash216.c \
+            -o /tmp/pass219-orthogonal-1-21/hash216.o
+
+      - name: Compile and run C++ parallel membrane conformance
+        run: |
+          g++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp \
+            /tmp/pass219-orthogonal-1-21/exact.o \
+            /tmp/pass219-orthogonal-1-21/hash216.o \
+            -o /tmp/pass219-orthogonal-1-21/test-membrane
+          /tmp/pass219-orthogonal-1-21/test-membrane
+
+      - name: Prove every lane stores the full verbatim equation
+        run: |
+          /tmp/pass219-orthogonal-1-21/test-membrane --dump-source \
+            > /tmp/pass219-orthogonal-1-21/lane-source.harmonicode
+          cmp /tmp/pass219-orthogonal-1-21/lane-source.harmonicode \
+              contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            '/tmp/pass219-orthogonal-1-21/lane-source.harmonicode' | sha256sum -c -
+
+      - name: Preserve monolithic and octonion substrates
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
+            /tmp/pass219-orthogonal-1-21/exact.o \
+            -o /tmp/pass219-orthogonal-1-21/test-monolithic
+          /tmp/pass219-orthogonal-1-21/test-monolithic
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            /tmp/pass219-orthogonal-1-21/exact.o \
+            -o /tmp/pass219-orthogonal-1-21/test-octonion
+          /tmp/pass219-orthogonal-1-21/test-octonion
