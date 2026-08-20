@@ -31,14 +31,28 @@ class Pass200AProofCarryingOptimizationAuthority(
 ):
     """Canonical production projection with monotonic current-proof binding.
 
-    A Pass198 ``SIMPLIFICATION_REVERIFIED`` event may legitimately extend a
-    compiler-candidate proof with another closed calibration run and therefore
-    change its aggregate ``proof_hash72`` without changing authority status.
-    Such proof evolution is accepted only when it is an intact, monotonic
-    descendant of the immutable Pass200A bundle evidence. Revocation, operation
-    identity drift, evidence loss, or an unbound hash replacement still fails
-    closed.
+    Pass198 re-verification may legitimately extend a compiler-candidate proof
+    with another closed calibration run. Persisted envelopes are ordered by
+    their durable identifier, so production identity comparison is likewise
+    canonicalized by identifier rather than declaration order.
     """
+
+    def _production_acceptance(
+        self,
+        envelopes: Sequence[Mapping[str, Any]],
+    ) -> dict[str, Any]:
+        acceptance = super()._production_acceptance(envelopes)
+        observed_ids = sorted(str(item.get("envelope_id") or "") for item in envelopes)
+        expected_ids = sorted(str(item["envelope_id"]) for item in DEFAULT_HOLDOUTS)
+        exact_holdout_ids = observed_ids == expected_ids
+        acceptance["exact_holdout_ids"] = exact_holdout_ids
+        acceptance["production_holdout_closed"] = bool(
+            self.production_profile
+            and exact_holdout_ids
+            and acceptance.get("totals_match") is True
+            and len(envelopes) == 4
+        )
+        return acceptance
 
     def _current_proof(self, bundle: Mapping[str, Any]) -> dict[str, Any]:
         registry = self.distributed.pass198
