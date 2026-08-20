@@ -1,0 +1,92 @@
+name: Pass 219B Global Zero Sum Closure I6
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode'
+      - 'hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc'
+      - 'hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.py'
+      - 'tests/pass219/test_pass219b_global_zero_sum_closure_v1.c'
+      - 'docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md'
+      - 'docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md'
+      - '.github/workflows/pass219b-global-zero-sum-closure-i6.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  zero-sum-closure:
+    name: global-zero-sum-closure (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove canonical ancestry
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+
+      - name: Reject approximate arithmetic and new authority
+        run: |
+          ! grep -REn '\b(float|double|long double)\b' \
+            hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h \
+            hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc \
+            hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py
+          ! grep -En 'HHS_EXACT_API.*(commit|persist|emit_hash72)' \
+            hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
+
+      - name: Validate frozen closure extension and symbolic proof family
+        run: |
+          python -m pytest -q tests/pass219/test_pass219b_global_zero_sum_closure_v1.py \
+            tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py
+
+      - name: Compile cumulative exact ABI and I6 C gate
+        run: |
+          mkdir -p /tmp/pass219b-i6
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i6/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_global_zero_sum_closure_v1.c \
+            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/i6-c
+          /tmp/pass219b-i6/i6-c
+
+      - name: Preserve existing monolithic residual boundary
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+
+      - name: Preserve Pass 219B I1 and I5 exact semantics
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/i1-c
+          /tmp/pass219b-i6/i1-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.c \
+            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/i5-c
+          /tmp/pass219b-i6/i5-c
+
+      - name: Preserve inherited RNA and Pass 206 membranes
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/rna-c
+          /tmp/pass219b-i6/rna-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.c \
+            /tmp/pass219b-i6/exact.o -o /tmp/pass219b-i6/p206-c
+          /tmp/pass219b-i6/p206-c
