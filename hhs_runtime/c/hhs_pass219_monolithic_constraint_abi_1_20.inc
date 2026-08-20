@@ -234,6 +234,7 @@ HHSExactStatus hhs_exact_pass219_monolithic_descriptor(
     out_descriptor->source_structure_preserved = 1U;
     out_descriptor->pass159_constraint_graph_required = 1U;
     out_descriptor->vm81_proof_required = 1U;
+    out_descriptor->raw_packet_can_prove = 0U;
     out_descriptor->floating_point_authority = 0U;
     out_descriptor->vm81_mutation_authority = 0U;
     out_descriptor->hash72_commit_authority = 0U;
@@ -337,6 +338,7 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
     int proof_hashes_valid;
     int explicit_failure;
     int unresolved;
+    int packet_complete;
 
     if (proof == NULL || out_verification == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -356,6 +358,7 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
     out_verification->edge_satisfied_mask = proof->edge_satisfied_mask & all_edges;
     out_verification->edge_failed_mask = proof->edge_failed_mask & all_edges;
     out_verification->edge_unresolved_mask = proof->edge_unresolved_mask & all_edges;
+    out_verification->requires_vm81_authority = 1U;
     out_verification->floating_point_authority = 0U;
     out_verification->vm81_mutation_authority = 0U;
     out_verification->hash72_commit_authority = 0U;
@@ -404,26 +407,27 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
         proof->all_values_exact != 1U ||
         proof->one_candidate_state != 1U;
 
+    packet_complete =
+        !explicit_failure && !unresolved &&
+        (proof->edge_satisfied_mask & all_edges) == all_edges &&
+        proof->lhs_rhs_equal == 1U;
+
+    out_verification->proof_packet_complete = (uint8_t)packet_complete;
+
     if (explicit_failure) {
         out_verification->decision = HHS_EXACT_PASS219_MONOLITHIC_REJECTED;
         out_verification->monolithic_chain_ok = 0U;
         return HHS_EXACT_STATUS_OK;
     }
 
-    if (unresolved) {
-        out_verification->decision = HHS_EXACT_PASS219_MONOLITHIC_UNRESOLVED;
-        out_verification->monolithic_chain_ok = 0U;
-        return HHS_EXACT_STATUS_OK;
-    }
-
-    if ((proof->edge_satisfied_mask & all_edges) != all_edges ||
-        proof->lhs_rhs_equal != 1U) {
-        out_verification->decision = HHS_EXACT_PASS219_MONOLITHIC_REJECTED;
-        out_verification->monolithic_chain_ok = 0U;
-        return HHS_EXACT_STATUS_OK;
-    }
-
-    out_verification->decision = HHS_EXACT_PASS219_MONOLITHIC_PROVEN;
-    out_verification->monolithic_chain_ok = 1U;
+    /*
+     * A caller-populated packet is diagnostic evidence, not VM81 proof
+     * authority. Even a structurally complete packet remains unresolved here.
+     * HHS_EXACT_PASS219_MONOLITHIC_PROVEN is reserved for the inherited
+     * Pass159 -> VM81 proof adapter after it independently verifies the graph,
+     * exact values, receipt and replay identity.
+     */
+    out_verification->decision = HHS_EXACT_PASS219_MONOLITHIC_UNRESOLVED;
+    out_verification->monolithic_chain_ok = 0U;
     return HHS_EXACT_STATUS_OK;
 }
