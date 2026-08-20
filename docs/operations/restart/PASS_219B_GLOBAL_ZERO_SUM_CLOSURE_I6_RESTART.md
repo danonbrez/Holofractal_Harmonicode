@@ -249,12 +249,40 @@ non-unit/asymmetric center family
 wrong N source identity
 scalar-cancellation semantics
 hydration geometry mismatch
-direct proof-layer mutation authority.
+direct proof-layer mutation authority
+premature zero-sum satisfaction before candidate-family binding.
 ```
 
 The positive C gate deliberately uses full-symbolic `A/B` placeholder bytes unequal to `P^2` and still requires successful admission through the global bridge, proving that the full path cannot regress to the old compatibility substitution.
 
 The same gate then invokes `hhs_exact_vm81_admit_uqcel` and requires an exact committed VM81 frame.
+
+## Review hardening
+
+The three review findings on PR #316 are addressed and resolved:
+
+```text
+1. candidate-bound zero-sum satisfaction
+   - the zero-sum bit is not set by the argument-free theorem object;
+   - it is set only after the submitted P,p,q,delta family is proven.
+
+2. replay-hard verification
+   - the Python verifier reconstructs Pass 129 from submitted P;
+   - it re-runs prove/validate/replay and rechecks p,q,delta, membrane,
+     xy, zw, center sum, phase sum, source identities, receipt roots, and
+     zero direct mutation/persistence/Hash72 authority.
+
+3. inherited dependency trigger
+   - the I6 workflow path filter includes both the Pass-129 prover and its
+     regression test so inherited proof changes cannot silently skip I6.
+```
+
+Latest candidate-binding commits before this restart update:
+
+```text
+cedabbf07dde8a8c0fe93bab7d437d78134682b7
+6f248f31e0db54dd5934f51e9116d87306a2c9f2
+```
 
 ## Files changed in the repair
 
@@ -283,9 +311,39 @@ The pre-clarification I6 head had terminal-green exact/synthetic jobs, proving t
 
 The repair-forward head therefore requires a fresh exact/synthetic I6 gate.
 
+## Current Actions blocker
+
+The documentation-independent repaired heads have repeatedly triggered GitHub Actions, but the repository Actions execution layer is presently failing before any workflow step starts.
+
+Most recent head before this restart update:
+
+```text
+6f248f31e0db54dd5934f51e9116d87306a2c9f2
+```
+
+Dedicated I6 run:
+
+```text
+run: 32400359160
+exact job:     96526832340 — FAILURE, steps=null, no logs
+synthetic job: 96526832112 — FAILURE, steps=null, no logs
+```
+
+The same commit simultaneously produced the same immediate failure pattern across Pass 217, Pass 218, RNA 1.10/1.11/1.12/1.13/1.14, VM81 Exact ABI Repair, Universal Quantization Constraint Audit, and Pass 219B I5 workflows. Guarded Continuous Integration was skipped. No executable step output exists for the I6 jobs.
+
+A prior targeted rerun of the earlier repaired I6 run also terminated with `steps=null` and no logs. Therefore the current evidence class is:
+
+```text
+ACTIONS_EXECUTION_BLOCKED
+NOT_A_TEST_FAILURE
+NOT_VALIDATED_GREEN
+```
+
+No merge to `main` is permitted while this validation blocker remains.
+
 ## Required final gate
 
-The final documentation-inclusive head must pass:
+When GitHub Actions executes normally again, the documentation-inclusive head must pass:
 
 ```text
 canonical I5 ancestry
@@ -295,6 +353,7 @@ byte-frozen N source identity
 byte-frozen D source identity
 Pass-129 exact closure family and negatives
 strict cumulative C11 exact ABI compilation
+candidate-bound zero-sum satisfaction negative
 full-symbolic structural bridge admission
 full-symbolic VM81 commit through inherited authority
 historical 1.15 source/AB semantic preservation
@@ -308,4 +367,4 @@ synthetic merge candidate.
 
 ## Next action
 
-Run/freeze the exact and synthetic I6 workflow on this documentation-inclusive head. If both are green, record the workflow/job evidence in PR #316 and mark the PR ready for review. Do not merge `main` without separate explicit authorization.
+Do not mutate runtime semantics merely to retrigger a broken runner. Once Actions can allocate jobs with real steps/logs, run the exact and synthetic I6 gate on the current documentation-inclusive head. If both are green, record exact run/job evidence in PR #316, mark the PR ready for review, and freeze the head. Do not merge `main` without separate explicit authorization.
