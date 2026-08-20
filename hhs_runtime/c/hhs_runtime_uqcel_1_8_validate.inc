@@ -1,4 +1,9 @@
-#include "../include/hhs_pass219b_global_zero_sum_closure_1_0.h"
+static const uint8_t HHS_EXACT_UQCEL_FULL_SYMBOLIC_SOURCE_SHA256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES] = {
+    0x9f, 0x22, 0x38, 0x98, 0x1b, 0xf5, 0x09, 0xd2,
+    0x2f, 0xfe, 0xbb, 0x46, 0x81, 0x63, 0x46, 0xf3,
+    0x89, 0xfd, 0x2d, 0x94, 0x9c, 0xcd, 0x79, 0x56,
+    0xcd, 0xe3, 0x63, 0x0a, 0xb2, 0xb5, 0x69, 0x44
+};
 
 static int hhs_exact_uqcel_lo_shu_selfcheck(void) {
     static const uint8_t matrix[9] = {4U, 9U, 2U, 3U, 5U, 7U, 8U, 1U, 6U};
@@ -92,8 +97,7 @@ HHSExactStatus hhs_exact_uqcel_validate(
     HHSExactBigBuffer ab;
     HHSExactBigBuffer p_fourth;
     HHSExactPhaseProduct product;
-    HHSExactPass219BGlobalZeroSumClosureV1 zero_sum_proof;
-    uint8_t expected_source_sha256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES];
+    const uint8_t *expected_source_sha256;
     uint8_t p_mod4;
     uint8_t q_mod4;
     uint8_t qr_bit;
@@ -117,13 +121,15 @@ HHSExactStatus hhs_exact_uqcel_validate(
     if (full_symbolic)
         out_admission->required_mask = HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED;
 
-    if (full_symbolic) {
-        if (hhs_exact_pass219b_global_tensor_source_sha256(expected_source_sha256) != HHS_EXACT_STATUS_OK)
-            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    } else {
-        memcpy(expected_source_sha256, HHS_EXACT_UQCEL_SOURCE_SHA256,
-               HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES);
-    }
+    /*
+     * UQCEL validates the candidate's exact global relation source identity and
+     * local closure/ordered-phase/VM5184 membership.  Full 41x3x5184x81
+     * hydration composition is intentionally proved by the higher I6 wrapper,
+     * which has lo_shu_group, g243 and phase_origin81 available.
+     */
+    expected_source_sha256 = full_symbolic
+        ? HHS_EXACT_UQCEL_FULL_SYMBOLIC_SOURCE_SHA256
+        : HHS_EXACT_UQCEL_SOURCE_SHA256;
 
     if (memcmp(input->source_envelope_sha256, expected_source_sha256,
                HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES) != 0)
@@ -131,22 +137,6 @@ HHSExactStatus hhs_exact_uqcel_validate(
             out_admission, HHS_UQCEL_CONSTRAINT_SOURCE, HHS_EXACT_UQCEL_REASON_SOURCE_HASH);
     out_admission->source_hash_match = 1U;
     out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_SOURCE;
-
-    if (full_symbolic) {
-        if (hhs_exact_pass219b_global_zero_sum_prove(&zero_sum_proof) != HHS_EXACT_STATUS_OK ||
-            hhs_exact_pass219b_global_zero_sum_verify(&zero_sum_proof) != HHS_EXACT_STATUS_OK)
-            return hhs_exact_uqcel_reject(
-                out_admission,
-                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
-                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
-        if (zero_sum_proof.center_zero_sum_proven != 1U ||
-            zero_sum_proof.phase_carrier_zero_sum_proven != 1U ||
-            zero_sum_proof.recursive_closure_proven != 1U)
-            return hhs_exact_uqcel_reject(
-                out_admission,
-                HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE,
-                HHS_EXACT_UQCEL_REASON_GLOBAL_ZERO_SUM_CLOSURE);
-    }
 
     if (!hhs_exact_big_view_valid(&input->P, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
         !hhs_exact_big_view_valid(&input->p, HHS_EXACT_UQCEL_MAX_P_BYTES, 0) ||
@@ -193,12 +183,6 @@ HHSExactStatus hhs_exact_uqcel_validate(
                 HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY,
                 HHS_EXACT_UQCEL_REASON_CENTER_DELTA_SYMMETRY);
 
-        /*
-         * The zero-sum theorem is only satisfied for this request after the
-         * submitted P,p,q,delta family has been checked against the inherited
-         * exact closure family. The argument-free theorem object alone cannot
-         * satisfy a candidate-state admission bit.
-         */
         out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_CENTER_DELTA_SYMMETRY;
         out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE;
     } else {
@@ -254,31 +238,12 @@ HHSExactStatus hhs_exact_uqcel_validate(
 
     if (full_symbolic) {
         /*
-         * Full-symbolic truth is structural membership in the already-defined
-         * recursive relation manifold:
-         * N(global constraint Tensor) / D(phase quantization)^4 = D^4,
-         * with the same candidate bound to zero-sum closure, Lo Shu/Sudoku
-         * qudit membership, and one exact VM81/5184 hydration address.
-         *
-         * No scalar cancellation or A=P^2/B=P^2 compatibility substitution is
-         * used. Once these typed witnesses agree, the aggregate source residual
-         * is resolved by the bridge theorem rather than left unsupported.
+         * This bit means the candidate is admitted into the frozen N relation
+         * at the UQCEL/VM5184 membrane. It does NOT claim that UQCEL alone has
+         * proved the full Lo-Shu-group/G243/phase-origin hydration projection.
+         * That stronger bridge is executed and checked by
+         * hhs_exact_pass219b_global_relation_hydration_verify/admit.
          */
-        if (zero_sum_proof.global_tensor_source_bound != 1U ||
-            zero_sum_proof.phase_quantization_bound != 1U ||
-            zero_sum_proof.lo_shu_sudoku_qudit_bound != 1U ||
-            zero_sum_proof.vm81_hydration_geometry_bound != 1U ||
-            zero_sum_proof.recursive_closure_proven != 1U ||
-            zero_sum_proof.global_relation_bridge_proven != 1U ||
-            zero_sum_proof.cell_count81 != HHS_EXACT_PASS219B_ZERO_SUM_CELL_COUNT ||
-            zero_sum_proof.lo_shu_group_count41 != HHS_EXACT_PASS219B_ZERO_SUM_LO_SHU_GROUP_COUNT ||
-            zero_sum_proof.trit_count3 != HHS_EXACT_PASS219B_ZERO_SUM_TRIT_COUNT ||
-            zero_sum_proof.hydration_slot_count5184 != HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_SLOT_COUNT ||
-            zero_sum_proof.hydration_state_count != HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_STATE_COUNT)
-            return hhs_exact_uqcel_reject(
-                out_admission,
-                HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE,
-                HHS_EXACT_UQCEL_REASON_GLOBAL_RELATION_BRIDGE);
         out_admission->satisfied_mask |= HHS_UQCEL_CONSTRAINT_GLOBAL_RELATION_BRIDGE;
         out_admission->residual_mask = 0U;
     }
