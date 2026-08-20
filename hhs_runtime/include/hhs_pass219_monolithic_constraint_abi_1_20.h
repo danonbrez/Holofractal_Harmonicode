@@ -84,6 +84,7 @@ typedef struct HHSExactPass219MonolithicDescriptorV1 {
     uint32_t source_structure_preserved;
     uint32_t pass159_constraint_graph_required;
     uint32_t vm81_proof_required;
+    uint32_t raw_packet_can_prove;
     uint32_t floating_point_authority;
     uint32_t vm81_mutation_authority;
     uint32_t hash72_commit_authority;
@@ -151,7 +152,10 @@ typedef struct HHSExactPass219MonolithicVerificationV1 {
     uint8_t source_identity_valid;
     uint8_t ordered_xy_bound;
     uint8_t proof_identity_valid;
+    uint8_t proof_packet_complete;
+    uint8_t requires_vm81_authority;
     uint8_t monolithic_chain_ok;
+    uint16_t reserved0;
     uint32_t floating_point_authority;
     uint32_t vm81_mutation_authority;
     uint32_t hash72_commit_authority;
