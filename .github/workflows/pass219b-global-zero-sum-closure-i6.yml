@@ -50,6 +50,10 @@ jobs:
           ! grep -En 'HHS_EXACT_API.*(commit|persist|emit_hash72)' \
             hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
 
+      - name: Install proof-test dependency
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+
       - name: Validate frozen closure extension and symbolic proof family
         run: |
           python -m pytest -q tests/pass219/test_pass219b_global_zero_sum_closure_v1.py \
