@@ -163,13 +163,6 @@ HHSExactStatus hhs_exact_pass219b_global_zero_sum_prove(
 
     out_proof->phase_sum_real = (int8_t)phase_real;
     out_proof->phase_sum_imag = (int8_t)phase_imag;
-
-    /*
-     * These runtime-facing flags are now derived from inherited exact
-     * implementations rather than asserted as an independent proof island.
-     * Pass-129 unit-delta/xy/zw/u^72 entries remain theorem bindings; the
-     * submitted P,p,q,delta family is checked independently by UQCEL.
-     */
     out_proof->center_zero_sum_proven = phase_cell.center_closure_preserved;
     out_proof->phase_carrier_zero_sum_proven = 1U;
     out_proof->pass129_unit_delta_theorem_bound = 1U;
@@ -199,12 +192,11 @@ HHSExactStatus hhs_exact_pass219b_global_zero_sum_prove(
     out_proof->hydration_slot_count5184 = HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_SLOT_COUNT;
     out_proof->hydration_state_count = HHS_EXACT_PASS219B_ZERO_SUM_HYDRATION_STATE_COUNT;
     out_proof->phase_projected_state_count = HHS_EXACT_PASS219B_ZERO_SUM_PHASE_PROJECTED_STATE_COUNT;
-
     out_proof->canonical_mutation_authority = 0U;
     out_proof->canonical_persistence_authority = 0U;
     out_proof->canonical_hash72_authority = 0U;
-
     out_proof->proof_mask = HHS_EXACT_PASS219B_ZERO_SUM_PROOF_REQUIRED;
+
     memcpy(out_proof->global_tensor_source_sha256,
            HHS_EXACT_PASS219B_GLOBAL_TENSOR_SOURCE_SHA256,
            HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES);
@@ -375,6 +367,86 @@ HHSExactStatus hhs_exact_pass219b_global_relation_hydration_verify(
     return HHS_EXACT_STATUS_OK;
 }
 
+static HHSExactStatus hhs_exact_pass219b_hydration_receipt_extension(
+    const HHSExactPass219BGlobalRelationHydrationWitnessV1 *witness,
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    static const uint8_t domain[] = "HHS-P219B-I6-N-D-HYDRATION-BRIDGE-V1";
+    size_t cursor = 0U;
+    size_t i;
+
+    if (witness == NULL || out_bytes == NULL || out_length == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (witness->coordinate_roundtrip_verified != 1U ||
+        witness->native_phase_verified != 1U ||
+        witness->trinary_gate_verified != 1U ||
+        witness->phase_cell_verified != 1U ||
+        witness->phase_locality_verified != 1U ||
+        witness->uqcel_relation_verified != 1U ||
+        witness->global_relation_bridge_verified != 1U ||
+        witness->canonical_mutation_authority != 0U ||
+        witness->canonical_persistence_authority != 0U ||
+        witness->canonical_hash72_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    if (!hhs_exact_uqcel_append(out_bytes, capacity, &cursor, domain, sizeof(domain) - 1U) ||
+        !hhs_exact_uqcel_append_u32(out_bytes, capacity, &cursor, witness->version) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor,
+                                HHS_EXACT_PASS219B_GLOBAL_TENSOR_SOURCE_SHA256,
+                                HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor,
+                                HHS_EXACT_PASS219B_PHASE_QUANTIZATION_SHA256,
+                                HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor,
+                                HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256,
+                                HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->coordinate.cell81, 1U) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->coordinate.lo_shu_group_offset41, 1U) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->coordinate.operation64, 1U) ||
+        !hhs_exact_uqcel_append_u16(out_bytes, capacity, &cursor, witness->coordinate.g243) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->coordinate.trit, 1U) ||
+        !hhs_exact_uqcel_append_u16(out_bytes, capacity, &cursor, witness->coordinate.slot5184) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->phase_origin81, 1U) ||
+        !hhs_exact_uqcel_append_u64(out_bytes, capacity, &cursor, witness->phase_cell.projection_index) ||
+        !hhs_exact_uqcel_append_u16(out_bytes, capacity, &cursor, witness->vm5184_address) ||
+        !hhs_exact_uqcel_append_u16(out_bytes, capacity, &cursor,
+                                    witness->native_phase.ordered_product.ordered_tag) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->trinary_gate.identity, 1U) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &witness->trinary_gate.center_relation, 1U) ||
+        !hhs_exact_uqcel_append_u64(out_bytes, capacity, &cursor,
+                                    witness->locality_plan.potential_phase_volume) ||
+        !hhs_exact_uqcel_append_u64(out_bytes, capacity, &cursor,
+                                    witness->locality_plan.materialized_phase_volume) ||
+        !hhs_exact_uqcel_append_u64(out_bytes, capacity, &cursor,
+                                    witness->locality_plan.required_realized_units) ||
+        !hhs_exact_uqcel_append(out_bytes, capacity, &cursor,
+                                &witness->phase_cell.outer_count, 1U)) {
+        *out_length = cursor;
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    }
+
+    for (i = 0U; i < witness->phase_cell.outer_count; ++i) {
+        const HHSExactPass219BOuterPhaseCellV1 *outer = &witness->phase_cell.outer[i];
+        uint8_t direction = (uint8_t)(outer->direction > 0 ? 1U : 0U);
+        if (!hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->perimeter_index, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->ring, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->ring_step, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->phase_basis, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->rotation_family, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &direction, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->phase_position81, 1U) ||
+            !hhs_exact_uqcel_append(out_bytes, capacity, &cursor, &outer->relation_role, 1U)) {
+            *out_length = cursor;
+            return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+        }
+    }
+
+    *out_length = cursor;
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219b_global_relation_hydration_admit(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
@@ -387,7 +459,25 @@ HHSExactStatus hhs_exact_pass219b_global_relation_hydration_admit(
     HHSExactPass219RNAAdmissionV1 *out_rna_admission,
     HHSExactPass219BGlobalRelationHydrationWitnessV1 *out_witness
 ) {
+    static const uint8_t composed_domain[] =
+        "HHS-P219B-I6-N-D-HYDRATION-P192-COMPOSED-V1";
     HHSExactStatus status;
+    HHSExactUQCELAdmissionV1 committed_admission;
+    uint8_t hydration_extension[1024];
+    size_t hydration_extension_length = 0U;
+    uint8_t descriptor[HHS_EXACT_PASS192_FIB_MAX_DESCRIPTOR_BYTES];
+    size_t descriptor_length = 0U;
+    uint8_t base_material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES];
+    size_t base_material_length = 0U;
+    uint8_t material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES +
+                     HHS_EXACT_PASS192_FIB_MAX_DESCRIPTOR_BYTES + 1536U];
+    size_t material_length = 0U;
+    char receipt[HHS_EXACT_HASH72_STRLEN];
+    char identity[HHS_EXACT_UQCEL_HASH216_STRLEN];
+    uint32_t composed_version =
+        (HHS_EXACT_PASS219_COMPOSED_VERSION_MAJOR << 16) |
+        (HHS_EXACT_PASS219_COMPOSED_VERSION_MINOR << 8) |
+        HHS_EXACT_PASS219_COMPOSED_VERSION_PATCH;
 
     if (input == NULL || candidate_frame == NULL || index_resolver == NULL ||
         out_committed_frame == NULL || out_rna_admission == NULL || out_witness == NULL)
@@ -395,39 +485,115 @@ HHSExactStatus hhs_exact_pass219b_global_relation_hydration_admit(
 
     memset(out_committed_frame, 0, sizeof(*out_committed_frame));
     memset(out_rna_admission, 0, sizeof(*out_rna_admission));
+    memset(&committed_admission, 0, sizeof(committed_admission));
 
     status = hhs_exact_pass219b_global_relation_hydration_verify(
         input, lo_shu_group, g243, phase_origin81, out_witness);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
-    status = hhs_exact_pass219_rna_admit_composed(
-        input, candidate_frame, lo_shu_group, g243,
-        index_resolver, index_context,
-        out_committed_frame, out_rna_admission);
+    status = hhs_exact_pass219b_hydration_receipt_extension(
+        out_witness, hydration_extension, sizeof(hydration_extension),
+        &hydration_extension_length);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
-    if (out_rna_admission->composed.uqcel.decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
-        out_rna_admission->composed.uqcel.frame_committed != 1U ||
-        out_rna_admission->coordinate.cell81 != out_witness->coordinate.cell81 ||
-        out_rna_admission->coordinate.lo_shu_group != out_witness->coordinate.lo_shu_group ||
-        out_rna_admission->coordinate.operation64 != out_witness->coordinate.operation64 ||
-        out_rna_admission->coordinate.g243 != out_witness->coordinate.g243 ||
-        out_rna_admission->coordinate.trit != out_witness->coordinate.trit ||
-        out_rna_admission->coordinate.slot5184 != out_witness->coordinate.slot5184 ||
-        out_rna_admission->native_phase.left_basis != out_witness->native_phase.left_basis ||
-        out_rna_admission->native_phase.right_basis != out_witness->native_phase.right_basis ||
-        out_rna_admission->native_phase.ordered_source_preserved != 1U ||
-        out_rna_admission->trinary_gate.trit != out_witness->trinary_gate.trit ||
-        out_rna_admission->trinary_gate.ordered_left_right_preserved != 1U)
-        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    /*
+     * Canonical mutation is still the one inherited VM81 finalizer.  The I6
+     * wrapper merely supplies a prevalidated full hydration witness and binds
+     * its exact bytes into that finalizer's receipt before the frame copy.
+     */
+    status = hhs_exact_vm81_finalize_uqcel(
+        input, candidate_frame, &out_witness->uqcel,
+        HHS_EXACT_STATUS_OK,
+        hydration_extension, hydration_extension_length,
+        out_committed_frame, &committed_admission);
+    if (status != HHS_EXACT_STATUS_OK || committed_admission.frame_committed != 1U)
+        return status == HHS_EXACT_STATUS_OK ? HHS_EXACT_STATUS_INVARIANT_FAILURE : status;
+
+    out_rna_admission->struct_size = (uint32_t)sizeof(*out_rna_admission);
+    out_rna_admission->version = hhs_exact_pass219_rna_version();
+    out_rna_admission->native_phase = out_witness->native_phase;
+    out_rna_admission->trinary_gate = out_witness->trinary_gate;
+    out_rna_admission->coordinate = out_witness->coordinate;
+    out_rna_admission->composed.struct_size =
+        (uint32_t)sizeof(out_rna_admission->composed);
+    out_rna_admission->composed.version = composed_version;
+    out_rna_admission->composed.uqcel = committed_admission;
+
+    status = hhs_exact_pass192_fibonacci_compress(
+        HHS_EXACT_PASS219_UCE_FIBONACCI_DEPTH,
+        descriptor, sizeof(descriptor), &descriptor_length,
+        &out_rna_admission->composed.fibonacci);
+    if (status != HHS_EXACT_STATUS_OK ||
+        hhs_exact_pass192_fibonacci_validate_descriptor(
+            HHS_EXACT_PASS219_UCE_FIBONACCI_DEPTH,
+            descriptor, descriptor_length) != HHS_EXACT_STATUS_OK)
+        return status == HHS_EXACT_STATUS_OK ? HHS_EXACT_STATUS_INVARIANT_FAILURE : status;
+
+    status = hhs_exact_uqcel_receipt_material(
+        input, &out_rna_admission->composed.uqcel,
+        base_material, sizeof(base_material), &base_material_length);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    if (!hhs_exact_uqcel_append(material, sizeof(material), &material_length,
+                                composed_domain, sizeof(composed_domain) - 1U) ||
+        !hhs_exact_uqcel_append_u32(material, sizeof(material), &material_length,
+                                    composed_version) ||
+        !hhs_exact_uqcel_append_u32(material, sizeof(material), &material_length,
+                                    (uint32_t)base_material_length) ||
+        !hhs_exact_uqcel_append(material, sizeof(material), &material_length,
+                                base_material, base_material_length) ||
+        !hhs_exact_uqcel_append_u32(material, sizeof(material), &material_length,
+                                    (uint32_t)hydration_extension_length) ||
+        !hhs_exact_uqcel_append(material, sizeof(material), &material_length,
+                                hydration_extension, hydration_extension_length) ||
+        !hhs_exact_uqcel_append_u32(material, sizeof(material), &material_length,
+                                    (uint32_t)descriptor_length) ||
+        !hhs_exact_uqcel_append(material, sizeof(material), &material_length,
+                                descriptor, descriptor_length))
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+
+    hhs_exact_uqcel_hash72_bytes(material, material_length, receipt);
+    memcpy(out_rna_admission->composed.final_receipt_hash72,
+           receipt, HHS_EXACT_HASH72_STRLEN);
+    memcpy(out_rna_admission->composed.final_hash216_triplet,
+           input->previous_hash72, HHS_EXACT_HASH72_LEN);
+    memcpy(out_rna_admission->composed.final_hash216_triplet + HHS_EXACT_HASH72_LEN,
+           committed_admission.change_hash72, HHS_EXACT_HASH72_LEN);
+    memcpy(out_rna_admission->composed.final_hash216_triplet +
+           (2U * HHS_EXACT_HASH72_LEN),
+           out_rna_admission->composed.final_receipt_hash72,
+           HHS_EXACT_HASH72_LEN);
+    out_rna_admission->composed.final_hash216_triplet[
+        HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
+    hhs_exact_uqcel_hash216_bytes(
+        out_rna_admission->composed.final_hash216_triplet,
+        HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN, identity);
+    memcpy(out_rna_admission->composed.final_hash216_identity,
+           identity, HHS_EXACT_UQCEL_HASH216_STRLEN);
+
+    status = hhs_exact_pass219_hash216_transition_init(
+        input->previous_hash72,
+        out_rna_admission->composed.uqcel.change_hash72,
+        out_rna_admission->composed.final_receipt_hash72,
+        out_rna_admission->composed.final_hash216_identity,
+        &out_rna_admission->transition);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_exact_pass219_hash216_resolve_indexes(
+        &out_rna_admission->transition, index_resolver, index_context);
+    if (status != HHS_EXACT_STATUS_OK ||
+        hhs_exact_pass219_hash216_indexes_complete(
+            &out_rna_admission->transition) != HHS_EXACT_STATUS_OK)
+        return status == HHS_EXACT_STATUS_OK ? HHS_EXACT_STATUS_INVARIANT_FAILURE : status;
 
     if (memcmp(out_committed_frame, candidate_frame, sizeof(*candidate_frame)) != 0)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     out_witness->rna_composed_verified = 1U;
-    out_witness->uqcel = out_rna_admission->composed.uqcel;
+    out_witness->uqcel = committed_admission;
     out_witness->global_relation_bridge_verified = 1U;
     return HHS_EXACT_STATUS_OK;
 }
