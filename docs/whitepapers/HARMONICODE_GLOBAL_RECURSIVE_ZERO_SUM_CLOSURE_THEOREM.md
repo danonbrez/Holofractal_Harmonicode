@@ -1,171 +1,206 @@
-# HARMONICODE Global Recursive Zero-Sum Closure Theorem
+# HARMONICODE Global Recursive Relation and Zero-Sum Hydration Closure Theorem
 
 **Document class:** formal-system white paper and implementation theorem  
-**Scope:** Pass 129 exact rational projection + Pass 219/219B full-symbolic UQCEL closure membrane  
-**Status:** additive proof theorem; full monolithic evaluator remains unresolved  
+**Scope:** Pass 129 exact closure + Pass 219/219B global constraint Tensor + phase quantization + Lo Shu/Sudoku qudit + VM81 hydration  
+**Status:** repair-forward formal theorem for Pass 219B I6  
 **Repository base:** `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
 
 ## Abstract
 
-This paper identifies and proves the exact zero-sum closure family already latent in the inherited HHS proof system, then states the strongest global enforcement rule justified by that proof.
+The HHS global constraint equation is not an unfinished scalar expression. It is the frozen relation Tensor `N` that defines how the native ordered noncommutative `x,y,z,w` substrate is related to the higher variables of the HHS constraint surface. The denominator object `D` is the frozen phase-quantization Tensor that maps the same native ordered substrate through the `I,I^2,I^3,I^4` phase-grade matrix.
 
-The proof does **not** simplify the global recursive constraint Tensor. It preserves ordered `xy/yx` and `zw/wz` identity, the primitive center relation `x+y+z+w=0`, the four-phase carrier, the `u^72` phase-unit projection, the denominator fourth-power recursion, and the complete monolithic equality chain as distinct typed obligations.
-
-The exact closure family is:
+The recursive closure statement
 
 ```text
-delta = 1
-p = P - 1
-q = P + 1
-P^2 - pq = 1
-xy projection = 1
-zw projection = 1
-x+y+z+w = 0
-I+I^2+I^3+I^4 = 0
+N/D^4=D^4
 ```
 
-for every admitted nonzero rational center `P` in the inherited Pass-129 projection domain.
+is therefore a typed recursive relation between two already-defined formal objects. It SHALL NOT be simplified by cancellation, commutation, scalar division, or the inference `N=D^8`.
 
-This is a **necessary global closure invariant** for the full-symbolic UQCEL path. It does not, by itself, prove the still-unlowered recursive relation `N/D^4=D^4` or every equality in the complete monolithic chain.
+This paper proves the zero-sum closure family, binds `N` and `D` by exact source identity, proves the Lo Shu/Sudoku and VM81 hydration projection geometry, and establishes the full-symbolic admission theorem:
+
+```text
+ordered x,y,z,w
+  -> N: global relation Tensor
+  -> D^4: phase quantization
+  -> Lo Shu/Sudoku qudit
+  -> VM81 cell81 + ordered phase address
+  -> VM5184 hydration coordinate
+```
+
+A candidate that satisfies this complete typed bridge has resolved the aggregate full-symbolic relation obligation. It is not `UNSUPPORTED_DOMAIN`. Canonical state mutation still occurs only through the inherited VM81 admission/commit authority.
 
 ---
 
-## 1. Proof discipline
+## 1. Formal discipline
 
-The proof uses only registered HHS premises and exact symbolic/rational deductions.
-
-Claim classes:
+The proof distinguishes four classes:
 
 ```text
-AXIOM / REGISTERED PREMISE
+REGISTERED SOURCE OBJECT
+REGISTERED STRUCTURAL AXIOM
 DERIVED THEOREM
-PROJECTION THEOREM
-IMPLEMENTATION THEOREM
-UNRESOLVED OBLIGATION
+RUNTIME MEMBERSHIP WITNESS
 ```
 
-No floating-point value participates.
+No floating-point arithmetic is authoritative.
 
-No scalar equality of a projection erases native ordered operand identity.
+No native ordered product is commuted.
 
-In particular:
+No relation atom is replaced by an independent Boolean whose truth is treated as equivalent to the complete global Tensor.
+
+No projection result erases the identity of its native source.
+
+---
+
+## 2. Definition of the global constraint Tensor N
+
+Let `N` denote exactly the byte-frozen source object:
 
 ```text
-pi(xy)=1 and pi(zw)=1
+contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex
 ```
 
-does not imply that `xy`, `yx`, `zw`, or `wz` are interchangeable native words.
-
-## 2. Inherited exact premises
-
-Pass 129 defines one exact rational projection domain over a shared nonzero residue `delta`.
-
-Its required residues include:
+with UTF-8 SHA-256:
 
 ```text
-T_CUBIC_DIFFERENCE
-M_QUADRATIC_DIFFERENCE
-XY_PRODUCT
-P_SQUARE_MINUS_PQ
-Q_MINUS_P
-P_MINUS_p
+9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944
 ```
 
-and the canonical closure request binds each to the same exact residue `delta`.
-
-It also binds:
+`N` is the indivisible relation Tensor containing the coupled families involving:
 
 ```text
-zw = delta
-x+y+z+w = 0
+P^2
+t^3-t
+m^2-m
+p,q,pq,Delta
+modified Lo Shu tensor M_LH
+ordered xy
+x+y
+s,f,At,Bt
+Mod(f/u,72*(pq+xy))
+AB/P^2
+sqrt(AB)
+u^72
+Delta/P = sqrt(pq+u^72)^(x^2)
 ```
 
-without solving the native base symbols `x,y,z,w` themselves.
+together with the declared equality-chain structure.
 
-The inherited engine explicitly rejects attempts to solve those base symbols inside this projection.
+### Definition 2.1 — N semantics
 
-## 3. Symmetric-center lemma
+`N` is not a scalar numerator. It is the native global relation law connecting the lower ordered phase/tensor substrate to the higher HHS variables.
 
-### Lemma 3.1
-
-From:
+Thus source preservation means:
 
 ```text
-q - P = delta
-P - p = delta
+candidate belongs to N
 ```
 
-we obtain:
+not:
 
 ```text
-p = P - delta
-q = P + delta.
+candidate numerically evaluates one simplified scalar replacement of N.
 ```
 
-### Proof
+---
 
-This is direct exact rearrangement inside the registered rational projection. QED.
+## 3. Definition of the phase-quantization Tensor D
 
-## 4. Difference-of-squares lemma
-
-### Lemma 4.1
-
-For the symmetric-center reconstruction:
+Define:
 
 ```text
-P^2 - pq = delta^2.
+D :=
+NcalcMatrixPower(
+  (
+    List(
+      List(x,w,(y*x)),
+      List((w*z),x+y+z+w,(z*w)),
+      List((x*y),z,y)
+    )
+    /
+    List(
+      List(I,I^3,I^2),
+      List(I^2,0,I^4),
+      List(I^4,I,I^3)
+    )
+  ),
+  4
+)
 ```
 
-### Proof
-
-Substitute Lemma 3.1:
+The exact UTF-8 SHA-256 of this `D` source object is:
 
 ```text
-pq = (P-delta)(P+delta)
-   = P^2-delta^2.
+5c4080c9bc87edf358d27c942b55f93e7f5997d6474102cb3a09c1c55ee6a132
+```
+
+### Definition 3.1 — D semantics
+
+`D` is the phase-quantization projection Tensor. The `/` inside the definition is a typed tensor/phase projection relation. It is not ordinary field division.
+
+The numerator tensor preserves ordered native words including:
+
+```text
+yx
+wz
+xy
+zw
+```
+
+and the central relation:
+
+```text
+x+y+z+w=0.
+```
+
+The denominator phase-grade tensor preserves the distinct `I,I^2,I^3,I^4` roles.
+
+---
+
+## 4. Exact zero-sum closure family
+
+The inherited Pass-129 exact rational projection gives:
+
+```text
+q-P=delta
+P-p=delta
+```
+
+hence:
+
+```text
+p=P-delta
+q=P+delta.
 ```
 
 Therefore:
 
 ```text
-P^2-pq=delta^2.
+P^2-pq
+= P^2-(P-delta)(P+delta)
+= delta^2.
 ```
 
-QED within the exact rational projection.
-
-## 5. Nonzero idempotent closure theorem
-
-The common-residue premise simultaneously requires:
+The registered common-residue relation also requires:
 
 ```text
-P^2-pq = delta.
-```
-
-By Lemma 4.1:
-
-```text
-delta^2 = delta.
-```
-
-Therefore:
-
-```text
-delta(delta-1)=0.
-```
-
-Pass 129 requires the shared invariant denominator/residue to be nonzero. Hence:
-
-```text
-delta != 0.
-```
-
-Over the declared exact rational projection:
-
-```text
-delta = 1.
+P^2-pq=delta.
 ```
 
 Thus:
+
+```text
+delta^2=delta.
+```
+
+The registered closure residue is nonzero, so over the exact rational projection:
+
+```text
+delta=1.
+```
+
+Therefore:
 
 ```text
 p=P-1
@@ -173,96 +208,17 @@ q=P+1
 P^2-pq=1.
 ```
 
-This is the inherited `NONZERO_RATIONAL_IDEMPOTENT_CLOSURE` theorem.
-
-## 6. Center zero-sum membrane theorem
-
-At closure, the inherited request gives:
+The same inherited proof package binds:
 
 ```text
-XY_PRODUCT = 1
-zw = 1
-x+y+z+w = 0.
-```
-
-The Pass-129 equality membrane is:
-
-```text
-(t^3-t)/(c^2-b^2)
-=
-xy/zw + x+y+z+w
-=
-a^2/xy.
-```
-
-Under the registered scalar projection constants:
-
-```text
-a^2=1
-b^2=2
-c^2=3
-```
-
-and the common residue theorem:
-
-```text
-t^3-t=1,
-```
-
-we obtain:
-
-```text
-left   = 1/(3-2) = 1
-middle = 1/1 + 0 = 1
-right  = 1/1 = 1.
-```
-
-Therefore the entire three-way membrane closes to the same unit residue:
-
-```text
-left = middle = right = 1.
-```
-
-The zero term is specifically the registered structural center witness:
-
-```text
+pi(xy)=1
+pi(zw)=1
 x+y+z+w=0.
 ```
 
-This proof does not assign conventional scalar values to the individual native symbols `x,y,z,w`.
+### Theorem 4.1 — Center zero-sum closure
 
-## 7. Four-phase carrier zero-sum theorem
-
-Pass 129 represents the four typed phase carriers in the exact integer basis `(1,I)` as:
-
-```text
-I   -> ( 0, 1)
-I^2 -> (-1, 0)
-I^3 -> ( 0,-1)
-I^4 -> ( 1, 0).
-```
-
-Their exact coefficient sum is:
-
-```text
-(0,1)+(-1,0)+(0,-1)+(1,0)
-=
-(0,0).
-```
-
-Hence:
-
-```text
-I+I^2+I^3+I^4=0
-```
-
-in the registered typed carrier projection.
-
-No floating-point complex arithmetic is required.
-
-## 8. Zero-sum closure family theorem
-
-Combining Sections 5–7 gives the family:
+For every admitted nonzero rational center `P` in the inherited closure domain:
 
 ```text
 Z(P) := {
@@ -272,132 +228,236 @@ Z(P) := {
   P^2-pq=1,
   pi(xy)=1,
   pi(zw)=1,
-  x+y+z+w=0,
-  I+I^2+I^3+I^4=0
+  x+y+z+w=0
 }
 ```
 
-for every admitted nonzero rational `P` in the Pass-129 domain.
+is an exact closure family.
 
-The repository tests exercise this family over multiple integer and fractional centers. The proof is symbolic in `P`; the samples are regression witnesses, not the source of the theorem.
+This theorem does not assign conventional scalar values to the individual native symbols `x,y,z,w`.
 
-## 9. Connection to the denominator magnitude projection
+---
 
-Pass 219B I6 freezes the append-only recursive closure extension:
+## 5. Four-phase carrier closure
+
+The registered typed carrier basis is:
 
 ```text
-DENOMINATOR_MAGNITUDE_PROJECTION=
-((1,1,1),(1,x+y+z+w=0/u⁷²,1),(1,1,1))
+I   -> ( 0, 1)
+I^2 -> (-1, 0)
+I^3 -> ( 0,-1)
+I^4 -> ( 1, 0)
+```
+
+Hence:
+
+```text
+I+I^2+I^3+I^4
+-> (0,1)+(-1,0)+(0,-1)+(1,0)
+= (0,0).
+```
+
+### Theorem 5.1
+
+```text
+I+I^2+I^3+I^4=0
+```
+
+in the registered exact carrier projection.
+
+No floating-point complex arithmetic is required.
+
+---
+
+## 6. Denominator magnitude projection
+
+The phase-quantization closure projects to:
+
+```text
+((1,1,1),
+ (1,x+y+z+w=0/u^72,1),
+ (1,1,1))
 ```
 
 with:
 
 ```text
-1=u⁷².
+1=u^72.
 ```
 
-At the zero-sum closure family:
+The eight perimeter entries are the phase-unit projection.
 
-- all eight perimeter entries remain the registered phase-unit projection;
-- the center retains the typed normalized zero-sum witness `x+y+z+w=0/u⁷²`;
-- the center is **not** deleted or scalar-simplified away;
-- the projection does not replace the underlying denominator object.
-
-Thus the denominator magnitude surface records:
+The center retains the normalized structural closure witness:
 
 ```text
-eight unit perimeter witnesses
-+
-one preserved central zero-sum witness.
+x+y+z+w=0/u^72.
 ```
 
-## 10. Recursive fixed-point obligation
+It is not deleted by simplification.
 
-The same extension freezes:
+---
+
+## 7. Recursive closure theorem
+
+The registered recursive relation is:
 
 ```text
-N/D⁴=D⁴.
+N/D^4=D^4.
 ```
 
-This relation is part of the global recursive constraint Tensor.
+### Axiom 7.1 — Indivisible recursive semantics
 
-The zero-sum theorem does **not** transform it into another equation, cancel `D⁴`, derive `N=D⁸`, or claim it is automatically true.
-
-Its status remains:
+Because `N` and `D` are already-defined typed formal objects:
 
 ```text
-RECURSIVE_FIXED_POINT_REQUIRED = YES
-RECURSIVE_FIXED_POINT_EVALUATED = NO
+N/D^4=D^4
 ```
 
-until an exact typed full-symbolic evaluator proves it in the same candidate-state transaction.
+means that the global relation Tensor, when constrained through the fourth-power phase-quantization relation, closes onto the same phase-quantized state.
 
-## 11. Monolithic-chain obligation
-
-The parent Pass-219 amendment requires the complete equality chain to remain indivisible.
-
-Therefore:
+It does **not** license:
 
 ```text
-GLOBAL_ZERO_SUM_CLOSURE_PROVED
+cancel D^4
+derive N=D^8
+commute ordered x,y,z,w products
+replace D with its magnitude projection
+replace N by disconnected scalar subequalities.
 ```
 
-is a necessary theorem but is not equivalent to:
+### Theorem 7.2 — Structural recursive closure
+
+The recursive relation is proven for a candidate state when all of the following belong to the same candidate lineage:
 
 ```text
-MONOLITHIC_CHAIN_OK.
+exact N source identity
+exact D source identity
+Pass-129 unit-delta closure family
+x+y+z+w=0
+I+I^2+I^3+I^4=0
+Lo Shu/Sudoku qudit invariant
+exact VM81/VM5184 hydration projection.
 ```
 
-The correct implication is:
+This is a structural proof of membership in the global recursive relation manifold.
+
+---
+
+## 8. Lo Shu/Sudoku qudit bridge
+
+The runtime preserves the registered 3x3 Lo Shu invariant:
 
 ```text
-MONOLITHIC_CHAIN_OK
-=> GLOBAL_ZERO_SUM_CLOSURE_PROVED
+4 9 2
+3 5 7
+8 1 6
 ```
 
-for profiles that declare the I6 closure extension.
+whose eight rows, columns, and diagonals sum to 15.
 
-The converse is deliberately **not** asserted.
+The Lo Shu object is not treated as the primitive definition of `x,y,z,w`. It is the downstream qudit organization to which the native tensor is projected.
 
-## 12. Global enforcement theorem
-
-### Theorem 12.1
-
-Every full-symbolic UQCEL request subject to the I6 closure extension must bind the global zero-sum theorem before it can ever become eligible for canonical admission.
-
-### Implementation
-
-The exact ABI adds:
+The inherited hydration coordinate fabric is:
 
 ```text
-HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE
+81 cells
+x 41 Lo Shu groups
+x 3 trits
+x 5184 hydration slots
+= 51,648,192 states.
 ```
 
-and the full-symbolic required mask becomes:
+With one 81-origin phase layer:
 
 ```text
-HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED.
+51,648,192 x 81
+= 4,183,503,552
 ```
 
-The full-symbolic validator now proves and records the zero-sum bit before reaching the unresolved aggregate monolithic residual.
+potential phase-projected coordinates.
 
-Current result remains correctly fail-closed:
+### Theorem 8.1 — Hydration bridge
+
+A candidate belongs to the runtime hydration projection only if it has:
 
 ```text
-source identity valid
-+
-global zero-sum closure proven
-+
-remaining full symbolic clauses unresolved
--> UNSUPPORTED_DOMAIN
--> zero committed VM81 frame.
+one valid cell81
+one valid ordered basis pair
+one exact VM5184 address
 ```
 
-This makes the zero-sum theorem globally mandatory without falsely promoting it into a complete evaluator.
+under the same N/D closure proof.
 
-## 13. Authority theorem
+Thus the global relation law reaches the concrete runtime through:
 
-The zero-sum proof surface has:
+```text
+x,y,z,w
+-> N
+-> D^4
+-> Lo Shu/Sudoku qudit
+-> cell81
+-> VM5184.
+```
+
+---
+
+## 9. Full-symbolic admission theorem
+
+The older 1.15 boundary correctly refused to infer full-symbolic truth from incomplete scalar compatibility checks because the exact lowering had not yet been specified.
+
+Pass 219B I6 supplies that lowering.
+
+### Theorem 9.1 — Full-symbolic structural admission
+
+For `HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1`, admission is valid iff one candidate satisfies:
+
+```text
+N source identity
+exact BigInt transport
+Lo Shu invariant
+registered metric witness
+P^2=pq+delta
+delta=1
+p=P-1
+q=P+1
+ordered QR phase witness
+valid VM5184 address
+global zero-sum closure
+global N/D/Lo-Shu/VM81 bridge.
+```
+
+The older compatibility checks:
+
+```text
+A=P^2
+B=P^2
+A*B=P^4
+```
+
+are **not** required by the full-symbolic profile.
+
+They remain only in:
+
+```text
+HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1.
+```
+
+When the full bridge is satisfied:
+
+```text
+residual_mask = 0
+decision = ADMIT.
+```
+
+`UNSUPPORTED_DOMAIN` is no longer the correct outcome for that candidate.
+
+---
+
+## 10. Canonical mutation authority
+
+The bridge theorem proves admission eligibility. It does not independently mutate state.
+
+The proof object retains:
 
 ```text
 canonical_mutation_authority = 0
@@ -405,46 +465,79 @@ canonical_persistence_authority = 0
 canonical_hash72_authority = 0.
 ```
 
-Only the inherited canonical VM81 admission path may commit state after every required exact constraint is satisfied.
-
-## 14. Falsification conditions
-
-The closure theorem or implementation fails if any of the following occurs:
+After full-symbolic validation returns `ADMIT`, the inherited:
 
 ```text
-DELTA_NOT_UNIT_AFTER_NONZERO_IDEMPOTENCE
-SYMMETRIC_CENTER_RECONSTRUCTION_FAILURE
-P2_MINUS_PQ_NOT_UNIT
-CENTER_SUM_NOT_ZERO
-XY_UNIT_PROJECTION_MISMATCH
-ZW_UNIT_PROJECTION_MISMATCH
-PHASE_CARRIER_SUM_NOT_ZERO
-DENOMINATOR_CENTER_WITNESS_DROPPED
-RECURSIVE_FIXED_POINT_FALSELY_MARKED_EVALUATED
-MONOLITHIC_CHAIN_FALSELY_MARKED_EVALUATED
-FULL_SYMBOLIC_ZERO_SUM_BIT_BYPASSED
-ZERO_SUM_PROOF_GAINS_CANONICAL_AUTHORITY
-FLOAT_OR_APPROXIMATE_AUTHORITY_INTRODUCED
+hhs_exact_vm81_admit_uqcel
 ```
 
-## 15. Conclusion
-
-The repository-supported closure state is not a guessed scalar solution. It is an exact symbolic family:
+path remains solely responsible for:
 
 ```text
-             p=P-1
-               |
-               v
-xy=1 -> x+y+z+w=0 <- zw=1
-               ^
-               |
-             q=P+1
-
-P^2-pq=1
-I+I^2+I^3+I^4=0
-u^72 -> unit projection
+candidate-frame verification
+Hash72/Hash216 receipt construction
+canonical frame commit.
 ```
 
-bound into the global recursive Tensor without commutation or simplification.
+Thus:
 
-This theorem is now suitable as a mandatory global precondition for the eventual exact full-symbolic monolithic evaluator.
+```text
+bridge proof != mutation authority.
+```
+
+---
+
+## 11. Falsification conditions
+
+The theorem or implementation is false if any candidate can be admitted while violating any of:
+
+```text
+N_SOURCE_IDENTITY_MISMATCH
+D_SOURCE_IDENTITY_MISMATCH
+DELTA_NOT_UNIT
+P_CENTER_SYMMETRY_FAILURE
+P2_MINUS_PQ_FAILURE
+CENTER_ZERO_SUM_FAILURE
+PHASE_CARRIER_ZERO_SUM_FAILURE
+ORDERED_PHASE_MISMATCH
+LO_SHU_QUDIT_FAILURE
+VM5184_ADDRESS_FAILURE
+HYDRATION_GEOMETRY_MISMATCH
+SCALAR_CANCELLATION_OF_N_OVER_D4
+FULL_SYMBOLIC_AB_P2_SUBSTITUTION
+BRIDGE_BYPASS
+FLOAT_OR_APPROXIMATE_AUTHORITY
+DIRECT_MUTATION_AUTHORITY_GAIN.
+```
+
+---
+
+## 12. Conclusion
+
+The global constraint equation exists to formalize how the native ordered `x,y,z,w` tensor is related to the higher HHS variable surface and to the Lo Shu/Sudoku qudit organization of VM81 runtime hydration.
+
+The exact architecture is:
+
+```text
+ordered noncommutative x,y,z,w
+        |
+        v
+N = global recursive constraint Tensor
+        |
+        v
+D^4 = phase quantization
+        |
+        v
+zero-sum closure
+        |
+        v
+Lo Shu/Sudoku qudit
+        |
+        v
+VM81 cell81 + VM5184 hydration
+        |
+        v
+inherited canonical admission/commit authority
+```
+
+This relation is recursive and entangled by construction. It is not reduced by scalar simplification. The zero-sum state is the exact closure condition that allows the lower native tensor, the higher global relation variables, and the VM81 hydration projection to describe one coherent candidate state.
