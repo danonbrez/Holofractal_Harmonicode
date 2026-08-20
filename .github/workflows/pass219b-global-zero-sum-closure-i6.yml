@@ -33,7 +33,9 @@ on:
       - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
       - 'tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py'
       - 'docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md'
+      - 'docs/whitepapers/HARMONICODE_I6_DEFERRED_COMMIT_AUTHORITY_ADDENDUM.md'
       - 'docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md'
+      - 'docs/operations/restart/PASS_219B_I6_DEFERRED_COMMIT_REPAIR_CHECKPOINT.md'
       - '.github/workflows/pass219b-global-zero-sum-closure-i6.yml'
 
 permissions:
