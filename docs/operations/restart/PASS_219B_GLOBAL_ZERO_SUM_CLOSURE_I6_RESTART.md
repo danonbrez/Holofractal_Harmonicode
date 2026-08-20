@@ -1,4 +1,4 @@
-# Pass 219B I6 — Global N/D Zero-Sum Hydration Projection Restart Record
+# Pass 219B I6 — Existing Runtime Equation Conformance Restart Record
 
 ## Repository authority
 
@@ -11,156 +11,171 @@ merge target: main
 merge authorization: NOT GRANTED
 ```
 
-## Enforcement interpretation
+Pass 219B I6 is not a new runtime feature. The supplied Pass 219 equation is a conformance statement over logic already implemented and executed by the inherited HHS runtime.
 
-Repository workflow failures are pass-system enforcement results. They SHALL be treated as evidence that the candidate tree violates an inherited pass constraint.
+## Correct task interpretation
 
-Previous I6 records that classified zero-step failures as generic Actions infrastructure failures are superseded by this restart record.
-
-Current classification until a complete green exact/synthetic gate exists:
+The required method is:
 
 ```text
-PASS_CONSTRAINT_VIOLATION_REPAIR_IN_PROGRESS
-NOT_VALIDATED_GREEN
-NOT_FROZEN
-NOT_MERGEABLE_BY_POLICY_EVEN_IF_GITHUB_REPORTS_MERGEABLE
+reason algebraically from inherited HHS relations
+→ identify the same equation in the repository
+→ replay the repository's existing exact proof/search evidence
+→ verify the state through the inherited runtime/kernel authority
+→ add only regression/enforcement tests
 ```
 
-## Violation identified and repaired
-
-The rejected I6 candidate had violated append-only inheritance by:
+I6 SHALL NOT add:
 
 ```text
-modifying hhs_runtime_uqcel_1_8.h semantics/layout
-modifying hhs_runtime_uqcel_1_8_validate.inc full-symbolic behavior
-modifying hhs_runtime_uqcel_1_8_receipt.inc commit behavior
-modifying the frozen Pass219 1.15 residual-boundary test
-shadowing/replacing an inherited public admission implementation
-adding an alternate I6 commit path
-claiming FULL_SYMBOLIC_V1 ADMIT despite the registered UQCEL V1 residual boundary
+a second equation evaluator
+a parallel symbolic prover
+a new admission membrane
+a new VM81 commit path
+a shadow/replacement public ABI symbol
+a new Hash72/Hash216 authority
+a new state-assignment authority
 ```
 
-Those changes were repair-forward removed from the current tree.
+## Existing equation identity
 
-The following inherited files now match canonical I5 `main` and are explicitly protected by the I6 workflow:
+Pass 219 canonical source:
 
 ```text
-hhs_runtime/include/hhs_runtime_uqcel_1_8.h
-hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc
-hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc
-tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+hhs_runtime/pass219_native_universal_constraint_v1.py
+CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE
 ```
 
-## Correct I6 architecture
-
-I6 is now a new additive structural projection rather than a UQCEL V1 rewrite.
-
-Projection registration:
+Pass 191 existing manifold source:
 
 ```text
-PI-UCE-N-D-HYDRATION-I6-v1
+native_projects/hhs_pass191_dyadic_quartic_phase_lattice/
+  hhs_pass191_manifold_kernel_v1.py
+MANIFOLD_SOURCE
 ```
 
-Source objects:
+The sources are identical after presentation-only normalization:
 
 ```text
-N SHA-256:
-9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944
-
-D SHA-256:
-5c4080c9bc87edf358d27c942b55f93e7f5997d6474102cb3a09c1c55ee6a132
+P³   -> P^3
+P²   -> P^2
+t³   -> t^3
+∆    -> Delta
+√    -> Sqrt
+u⁷²  -> u^72
+x²   -> x^2
 ```
 
-Native recursive relation:
+No algebraic simplification, reordering, cancellation, commutation, or scalar substitution is used in this identity check.
+
+## Existing algebraic enforcement
+
+Pass 129 already enforces the shared exact residue relations and deterministic replay. Its native proof path derives:
 
 ```text
-N/D^4=D^4
+p = P - Delta
+q = P + Delta
+P^2 - pq = Delta^2
+P^2 - pq = Delta
+Delta != 0
+=> Delta^2 = Delta
+=> Delta = 1 over the registered exact rational projection
 ```
 
-No scalar cancellation or `N=D^8` rewrite is permitted.
+It also enforces the existing three-way membrane and exact four-phase carrier zero sum. Pass 130 consumes the Pass 129 proof as `ADMISSION_ONLY` constraints and explicitly does not assign state.
 
-Exact zero-sum family:
+## Existing Pass 191 manifold execution
+
+Pass 191 already executes the same source over the inherited Pass 189 contextual fabric.
+
+Frozen completion evidence:
 
 ```text
-Delta=1
-p=P-1
-q=P+1
-P^2-pq=1
-pi(xy)=1
-pi(zw)=1
-x+y+z+w=0
-I+I^2+I^3+I^4=0
+contextual states visited: 51,648,192
+exact chain hits:          837
+frontier size:             16
+manifold checksum FNV1a64: 5f89e7e466d337ed
 ```
 
-Runtime projection chain:
+The exact authority path in the frozen receipt is:
 
 ```text
-N source identity
-+ D source identity
-+ Pass129 closure
-+ inherited UQCEL INTEGER_SYMMETRIC_V1 quantization subprojection
-+ mandatory probe that inherited FULL_SYMBOLIC_V1 remains UNSUPPORTED_DOMAIN
-+ Pass219 ordered phase witness
-+ Pass189/219 coordinate forward/inverse
-+ Pass219 trinary gate
-+ Pass219B I1 phase-origin projection
-+ Pass219B I5 exact locality verification
-= HHSExactPass219BGlobalRelationHydrationWitnessV1
+PASS_189_HQLH_51648192_CONTEXTUAL_FABRIC
+→ PASS_191_EXACT_MANIFOLD_RESIDUAL_KERNEL
+→ PASS_186_X86_64_Q144_NONCOMMUTATIVE_ABI
+→ PASS_175_HASH216_VM5184_G243_HYDRATION
+→ PASS_174_SINGLETON_VM81_COMMIT_AUTHORITY
+→ HASH72_DETERMINISTIC_REPLAY
 ```
 
-I6 exports no commit/admit/persist/Hash72 authority.
+The existing integrated Pass 191 engine verifies that the retained frontier is committed only by the inherited Pass 175/174 singleton VM81 authority, every committed candidate has Hash216 identity, reciprocal order is retained, there is one Hash72 commit stream, and deterministic replay succeeds.
 
-## Current changed-tree scope
+## I6 final-tree scope
 
-Expected current-tree delta from canonical I5 is limited to:
+The final I6 tree is intended to differ from canonical I5 only by:
 
 ```text
 .github/workflows/pass219b-global-zero-sum-closure-i6.yml
-contracts/pass219/PASS_219_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_1_16_0.harmonicode
-docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md
-docs/whitepapers/HARMONICODE_GLOBAL_RECURSIVE_ZERO_SUM_CLOSURE_THEOREM.md
-docs/whitepapers/HARMONICODE_I6_PASS_ENFORCEMENT_CORRECTION.md
-hhs_runtime/c/hhs_pass219b_global_zero_sum_closure_1_0.inc
-hhs_runtime/c/hhs_runtime_exact_abi.c
-hhs_runtime/hhs_pass219b_global_zero_sum_closure_proof_v1.py
-hhs_runtime/include/hhs_pass219b_global_zero_sum_closure_1_0.h
-hhs_runtime/include/hhs_runtime_exact_abi.h
-tests/pass219/test_pass219b_global_zero_sum_closure_v1.c
 tests/pass219/test_pass219b_global_zero_sum_closure_v1.py
+docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md
 ```
 
-No frozen UQCEL file should appear in the final PR diff.
+All attempted I6 runtime/ABI/prover/theorem implementations have been removed from the current tree. The aggregate exact ABI C source and header are restored byte-for-byte to canonical I5.
 
-## Validation required
+## I6 conformance test
 
-The I6 exact and synthetic workflows must both pass all of:
+`tests/pass219/test_pass219b_global_zero_sum_closure_v1.py` now:
+
+1. proves the Pass 219 source is the existing Pass 191 `MANIFOLD_SOURCE` under presentation-only normalization;
+2. reuses `lo_shu_manifold_reduction()` to verify the existing exact Lo Shu result;
+3. calls `verify_integrated_manifold_search()` on the frozen Pass 191 proof-search evidence;
+4. requires all 51,648,192 contextual states and all 837 exact chain hits;
+5. requires the exact inherited authority path above;
+6. requires `HHS_PASS_175_CANDIDATES_VM81_COMMITTED` with singleton VM81 authority;
+7. requires `HHS_PASS_175_DETERMINISTIC_REPLAY_VERIFIED` and one Hash72 commit stream;
+8. requires all retained frontier certificates to have zero chain residuals and existing exact checks true;
+9. tampers with one frozen candidate and requires the inherited verifier to reject it;
+10. verifies no second I6 runtime/prover files exist.
+
+The test does not implement an equation solver.
+
+## Workflow enforcement
+
+`.github/workflows/pass219b-global-zero-sum-closure-i6.yml` runs exact-head and synthetic-merge jobs and enforces:
 
 ```text
 canonical I5 ancestry
-frozen UQCEL 1.8/1.15 git-diff equality
-no float/double canonical authority
-no new public commit/admit/persist/Hash72 API
-byte-frozen N identity
-byte-frozen D identity
-Pass129 proof validation and deterministic replay
-zero-sum family positive and negative cases
-legacy FULL_SYMBOLIC_V1 residual preservation
-strict cumulative C11 compilation
-I6 structural C gate
-Pass219B I1 regression
-Pass219B I5 regression
-RNA 1.10 regression
-Pass206 inherited regression
-exact PR head
-synthetic PR merge candidate
+zero runtime/kernel delta from PR base
+frozen UQCEL/Pass219 1.15 boundary
+Pass219 -> Pass191 source identity
+frozen Pass191 proof-search replay
+51,648,192 visited
+837 exact chain hits
+singleton VM81 authority
+Hash216 + one Hash72 commit stream
+deterministic replay
+inherited Pass219 monolithic-boundary regression
+inherited Pass129 exact algebra/replay regression
 ```
 
-Any workflow failure is a new constraint violation to investigate and repair. Do not classify it as a generic runner error.
+A workflow failure is a pass-system enforcement result and must be treated as evidence that the candidate tree violates an inherited constraint. Do not classify it as generic runner noise and do not rerun an unchanged violating head.
 
-## Next action
+## Repair-forward history
 
-1. Inspect the pass-enforcement result for the current repaired head.
-2. If any workflow fails, identify the violated inherited constraint and repair forward.
-3. If exact and synthetic I6 plus required inherited workflows become green, record exact run/job evidence here and in PR #316.
-4. Only then mark the PR ready/frozen.
-5. Do not merge `main` without separate explicit user authorization.
+Earlier I6 candidate commits introduced parallel evaluators and alternate admission/commit semantics. Those commits remain visible in branch history under the repository's repair-forward policy, but their files and behavior are absent from the current tree. Frozen history has not been rewritten, rebased, squashed, or force-pushed.
+
+Latest completed implementation checkpoint before this restart update:
+
+```text
+05af1ae15dd5c01746e6748f92e59d59aeb75a7f
+```
+
+## Remaining validation
+
+```text
+1. Confirm final base-to-head diff contains only workflow + test + restart record.
+2. Inspect newly triggered exact and synthetic I6 enforcement jobs.
+3. If rejected, identify the next inherited constraint violation and repair forward.
+4. If both are green, record exact run/job evidence and freeze the I6 checkpoint.
+5. Do not merge main without separate explicit authorization.
+```
