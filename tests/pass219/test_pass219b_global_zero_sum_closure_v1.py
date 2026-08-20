@@ -83,44 +83,64 @@ def test_zero_center_is_excluded_by_inherited_four_phase_normalization_domain() 
         prove_global_zero_sum_closure(center_P=0)
 
 
-def test_tampered_center_sum_proof_rejected() -> None:
+def _assert_tamper_rejected(path: str, value) -> None:
     proof = prove_global_zero_sum_closure(center_P=4)
     bad = copy.deepcopy(proof)
-    bad["closure_family"]["x_plus_y_plus_z_plus_w"] = {"numerator": 1, "denominator": 1}
+    obj = bad
+    keys = path.split(".")
+    for key in keys[:-1]:
+        obj = obj[key]
+    obj[keys[-1]] = value
+    bad_without_root = copy.deepcopy(bad)
+    bad_without_root.pop("proof_root_hash72", None)
+    from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import _hash
+    bad["proof_root_hash72"] = _hash("hhs_pass219b_global_relation_bridge_v2", bad_without_root)
     with pytest.raises(GlobalZeroSumClosureError):
         verify_global_zero_sum_closure(bad)
 
 
-def test_tampered_phase_sum_proof_rejected() -> None:
-    proof = prove_global_zero_sum_closure(center_P=4)
-    bad = copy.deepcopy(proof)
-    bad["closure_family"]["phase_carrier_sum_basis_1_I"] = [1, 0]
-    with pytest.raises(GlobalZeroSumClosureError):
-        verify_global_zero_sum_closure(bad)
+def test_tampered_center_sum_proof_rejected_after_rehash() -> None:
+    _assert_tamper_rejected("closure_family.x_plus_y_plus_z_plus_w", {"numerator": 1, "denominator": 1})
+
+
+def test_tampered_phase_sum_proof_rejected_after_rehash() -> None:
+    _assert_tamper_rejected("closure_family.phase_carrier_sum_basis_1_I", [1, 0])
+
+
+def test_tampered_p_rejected_after_rehash_and_inherited_replay() -> None:
+    _assert_tamper_rejected("closure_family.p", {"numerator": 9, "denominator": 1})
+
+
+def test_tampered_q_rejected_after_rehash_and_inherited_replay() -> None:
+    _assert_tamper_rejected("closure_family.q", {"numerator": 8, "denominator": 1})
+
+
+def test_tampered_membrane_rejected_after_rehash_and_inherited_replay() -> None:
+    _assert_tamper_rejected("closure_family.membrane_residue", {"numerator": 2, "denominator": 1})
+
+
+def test_tampered_inherited_pass129_receipt_rejected_after_rehash() -> None:
+    _assert_tamper_rejected("inherited_pass129.proof_root_hash72", "0" * 72)
+
+
+def test_proof_layer_cannot_gain_mutation_authority_after_rehash() -> None:
+    _assert_tamper_rejected("global_enforcement.canonical_mutation_authority", True)
+
+
+def test_proof_layer_cannot_gain_hash72_authority_after_rehash() -> None:
+    _assert_tamper_rejected("global_enforcement.canonical_hash72_authority", True)
 
 
 def test_recursive_relation_cannot_be_rewritten_as_scalar_cancellation() -> None:
-    proof = prove_global_zero_sum_closure(center_P=4)
-    bad = copy.deepcopy(proof)
-    bad["phase_quantization_binding"]["scalar_cancellation_allowed"] = True
-    with pytest.raises(GlobalZeroSumClosureError):
-        verify_global_zero_sum_closure(bad)
+    _assert_tamper_rejected("phase_quantization_binding.scalar_cancellation_allowed", True)
 
 
 def test_phase_quantization_identity_is_required() -> None:
-    proof = prove_global_zero_sum_closure(center_P=4)
-    bad = copy.deepcopy(proof)
-    bad["phase_quantization_binding"]["source_sha256"] = "00" * 32
-    with pytest.raises(GlobalZeroSumClosureError):
-        verify_global_zero_sum_closure(bad)
+    _assert_tamper_rejected("phase_quantization_binding.source_sha256", "00" * 32)
 
 
 def test_hydration_bridge_is_required() -> None:
-    proof = prove_global_zero_sum_closure(center_P=4)
-    bad = copy.deepcopy(proof)
-    bad["hydration_bridge"]["vm5184_slot_count"] = 5183
-    with pytest.raises(GlobalZeroSumClosureError):
-        verify_global_zero_sum_closure(bad)
+    _assert_tamper_rejected("hydration_bridge.vm5184_slot_count", 5183)
 
 
 def test_full_symbolic_uqcel_is_structural_bridge_not_unsupported_residual() -> None:
