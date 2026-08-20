@@ -107,13 +107,23 @@ HHSExactStatus hhs_exact_uqcel_receipt_material(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_vm81_admit_uqcel(
+/*
+ * Single internal VM81 commit finalizer.  Legacy public admission and the I6
+ * full-symbolic hydration composer both use this same mutation primitive.
+ * `receipt_extension` is empty for legacy paths; I6 supplies an exact typed
+ * hydration witness so its phase/group/G243 projection is cryptographically
+ * bound into the receipt before the frame is copied.
+ */
+static HHSExactStatus hhs_exact_vm81_finalize_uqcel(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
+    const HHSExactUQCELAdmissionV1 *validated_admission,
+    HHSExactStatus validation_status,
+    const uint8_t *receipt_extension,
+    size_t receipt_extension_length,
     HHSExactVM81Frame *out_committed_frame,
     HHSExactUQCELAdmissionV1 *out_admission
 ) {
-    HHSExactStatus validation_status;
     HHSExactStatus material_status;
     char change[HHS_EXACT_HASH72_STRLEN];
     char receipt[HHS_EXACT_HASH72_STRLEN];
@@ -123,11 +133,15 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
     uint8_t material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES];
     size_t material_length = 0U;
 
-    if (input == NULL || candidate_frame == NULL || out_committed_frame == NULL || out_admission == NULL)
+    if (input == NULL || candidate_frame == NULL || validated_admission == NULL ||
+        out_committed_frame == NULL || out_admission == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (receipt_extension_length != 0U && receipt_extension == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
 
     memset(out_committed_frame, 0, sizeof(*out_committed_frame));
-    validation_status = hhs_exact_uqcel_validate(input, out_admission);
+    memcpy(out_admission, validated_admission, sizeof(*out_admission));
+    out_admission->frame_committed = 0U;
 
     if (!hhs_exact_hash72_text_valid(input->previous_hash72)) {
         out_admission->decision = HHS_EXACT_UQCEL_DECISION_REJECT;
@@ -148,6 +162,16 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
         input, out_admission, material, sizeof(material), &material_length);
     if (material_status != HHS_EXACT_STATUS_OK)
         return material_status;
+    if (receipt_extension_length != 0U) {
+        if (!hhs_exact_uqcel_append_u32(
+                material, sizeof(material), &material_length,
+                (uint32_t)receipt_extension_length) ||
+            !hhs_exact_uqcel_append(
+                material, sizeof(material), &material_length,
+                receipt_extension, receipt_extension_length))
+            return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    }
+
     hhs_exact_uqcel_hash72_bytes(material, material_length, receipt);
     memcpy(out_admission->receipt_hash72, receipt, HHS_EXACT_HASH72_STRLEN);
 
@@ -171,4 +195,42 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
         return HHS_EXACT_STATUS_OK;
     }
     return validation_status;
+}
+
+HHSExactStatus hhs_exact_vm81_admit_uqcel(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactUQCELAdmissionV1 *out_admission
+) {
+    HHSExactStatus validation_status;
+    HHSExactUQCELAdmissionV1 staged_admission;
+
+    if (input == NULL || candidate_frame == NULL || out_committed_frame == NULL || out_admission == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+    memset(&staged_admission, 0, sizeof(staged_admission));
+
+    /*
+     * V1 full-symbolic input does not carry lo_shu_group, G243, or phase origin.
+     * It therefore cannot be the canonical full-hydration commit entry point.
+     * Preserve the historical direct-call boundary while I6 provides the
+     * supported composed admission with those coordinates explicitly present.
+     */
+    if (input->profile == HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1) {
+        hhs_exact_uqcel_init_admission(input, &staged_admission);
+        staged_admission.required_mask = HHS_UQCEL_CONSTRAINT_FULL_SYMBOLIC_REQUIRED;
+        staged_admission.decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN;
+        staged_admission.reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL;
+        staged_admission.residual_mask = HHS_UQCEL_RESIDUAL_FULL_SOURCE;
+        return hhs_exact_vm81_finalize_uqcel(
+            input, candidate_frame, &staged_admission,
+            HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN,
+            NULL, 0U, out_committed_frame, out_admission);
+    }
+
+    validation_status = hhs_exact_uqcel_validate(input, &staged_admission);
+    return hhs_exact_vm81_finalize_uqcel(
+        input, candidate_frame, &staged_admission, validation_status,
+        NULL, 0U, out_committed_frame, out_admission);
 }
