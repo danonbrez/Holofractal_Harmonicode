@@ -1,59 +1,70 @@
 # HARMONICODE Global Recursive Relation and Zero-Sum Hydration Closure Theorem
 
 **Document class:** formal-system white paper and implementation theorem  
-**Scope:** Pass 129 exact closure + Pass 219/219B global constraint Tensor + phase quantization + Lo Shu/Sudoku qudit + VM81 hydration  
-**Status:** repair-forward formal theorem for Pass 219B I6  
+**Scope:** Pass 129 exact closure + Pass 219 global constraint Tensor + Pass 219B phase quantization/locality + Lo Shu/Sudoku qudit + VM81 hydration  
+**Status:** Pass 219B I6 additive structural projection theorem  
 **Repository base:** `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
 
 ## Abstract
 
-The HHS global constraint equation is not an unfinished scalar expression. It is the frozen relation Tensor `N` that defines how the native ordered noncommutative `x,y,z,w` substrate is related to the higher variables of the HHS constraint surface. The denominator object `D` is the frozen phase-quantization Tensor that maps the same native ordered substrate through the `I,I^2,I^3,I^4` phase-grade matrix.
+The HHS global constraint equation is the frozen relation Tensor `N` that binds the native ordered noncommutative `x,y,z,w` substrate to the higher HHS variable surface. The denominator object `D` is the registered phase-quantization Tensor over the same ordered substrate and the `I,I^2,I^3,I^4` phase-grade matrix.
 
-The recursive closure statement
+The recursive statement
 
 ```text
 N/D^4=D^4
 ```
 
-is therefore a typed recursive relation between two already-defined formal objects. It SHALL NOT be simplified by cancellation, commutation, scalar division, or the inference `N=D^8`.
+is a typed structural relation between those registered objects. It is not ordinary scalar division and SHALL NOT be transformed into `N=D^8`, scalar cancellation, commuted ordered products, or independent Boolean equalities.
 
-This paper proves the zero-sum closure family, binds `N` and `D` by exact source identity, proves the Lo Shu/Sudoku and VM81 hydration projection geometry, and establishes the full-symbolic admission theorem:
+Pass 219B I6 proves an **additive structural projection** connecting the exact zero-sum closure family to the inherited Lo Shu/Sudoku and VM81 hydration machinery. It does **not** resize, reinterpret, shadow, or replace inherited UQCEL V1. In particular, the registered `HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1` residual boundary remains intact until a separately versioned exact lowering serializes its remaining native residual classes.
+
+The resulting authority order is:
 
 ```text
-ordered x,y,z,w
-  -> N: global relation Tensor
-  -> D^4: phase quantization
-  -> Lo Shu/Sudoku qudit
-  -> VM81 cell81 + ordered phase address
-  -> VM5184 hydration coordinate
+native global relation N
+        ↓
+registered structural N/D relation
+        ↓
+Pass-129 zero-sum closure witness
+        ↓
+inherited UQCEL integer/symmetric quantization subprojection
+        ↓
+Pass-219 ordered phase + hydration coordinate
+        ↓
+Pass-219B I1 phase projection
+        ↓
+Pass-219B I5 phase-locality verification
+        ↓
+I6 structural hydration witness
 ```
 
-A candidate that satisfies this complete typed bridge has resolved the aggregate full-symbolic relation obligation. It is not `UNSUPPORTED_DOMAIN`. Canonical state mutation still occurs only through the inherited VM81 admission/commit authority.
+The I6 witness has zero VM81 mutation, persistence, and Hash72 authority.
 
 ---
 
 ## 1. Formal discipline
 
-The proof distinguishes four classes:
+The proof distinguishes:
 
 ```text
-REGISTERED SOURCE OBJECT
-REGISTERED STRUCTURAL AXIOM
-DERIVED THEOREM
-RUNTIME MEMBERSHIP WITNESS
+NATIVE SOURCE OBJECT
+REGISTERED STRUCTURAL RELATION
+PROJECTION THEOREM
+IMPLEMENTATION THEOREM
+TRANSPORT PROFILE
+CANONICAL MUTATION AUTHORITY
 ```
 
-No floating-point arithmetic is authoritative.
+These classes are not interchangeable.
 
-No native ordered product is commuted.
+A projection equality is not native identity unless a reverse uniqueness proof is separately registered. A transport profile that cannot serialize every native term does not invalidate a structural relation proved elsewhere in the inherited graph.
 
-No relation atom is replaced by an independent Boolean whose truth is treated as equivalent to the complete global Tensor.
-
-No projection result erases the identity of its native source.
+No floating-point arithmetic is authoritative. No ordered product is commuted. No relation atom is substituted for the complete global Tensor.
 
 ---
 
-## 2. Definition of the global constraint Tensor N
+## 2. Global constraint Tensor `N`
 
 Let `N` denote exactly the byte-frozen source object:
 
@@ -61,53 +72,23 @@ Let `N` denote exactly the byte-frozen source object:
 contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex
 ```
 
-with UTF-8 SHA-256:
+with SHA-256:
 
 ```text
 9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944
 ```
 
-`N` is the indivisible relation Tensor containing the coupled families involving:
+`N` contains the coupled relation surface involving the declared variables and ordered tensor terms, including `P`, `p`, `q`, `Delta`, `t`, `m`, `s`, `f`, `At`, `Bt`, `u^72`, `xy`, and the modified Lo Shu tensor terms.
 
-```text
-P^2
-t^3-t
-m^2-m
-p,q,pq,Delta
-modified Lo Shu tensor M_LH
-ordered xy
-x+y
-s,f,At,Bt
-Mod(f/u,72*(pq+xy))
-AB/P^2
-sqrt(AB)
-u^72
-Delta/P = sqrt(pq+u^72)^(x^2)
-```
+### Definition 2.1 — Indivisibility
 
-together with the declared equality-chain structure.
-
-### Definition 2.1 — N semantics
-
-`N` is not a scalar numerator. It is the native global relation law connecting the lower ordered phase/tensor substrate to the higher HHS variables.
-
-Thus source preservation means:
-
-```text
-candidate belongs to N
-```
-
-not:
-
-```text
-candidate numerically evaluates one simplified scalar replacement of N.
-```
+`N` is a single global relation Tensor. Its constituent relations may be projected into typed witnesses, but those witnesses SHALL NOT be treated as independent replacements for `N`.
 
 ---
 
-## 3. Definition of the phase-quantization Tensor D
+## 3. Phase-quantization Tensor `D`
 
-Define:
+Define the registered phase-quantization object:
 
 ```text
 D :=
@@ -129,32 +110,19 @@ NcalcMatrixPower(
 )
 ```
 
-The exact UTF-8 SHA-256 of this `D` source object is:
+with source SHA-256:
 
 ```text
 5c4080c9bc87edf358d27c942b55f93e7f5997d6474102cb3a09c1c55ee6a132
 ```
 
-### Definition 3.1 — D semantics
+The `/` operator in this object is a typed tensor/phase projection relation. It is not ordinary field division.
 
-`D` is the phase-quantization projection Tensor. The `/` inside the definition is a typed tensor/phase projection relation. It is not ordinary field division.
-
-The numerator tensor preserves ordered native words including:
-
-```text
-yx
-wz
-xy
-zw
-```
-
-and the central relation:
+The numerator preserves ordered words including `yx`, `wz`, `xy`, and `zw`, plus the center relation:
 
 ```text
 x+y+z+w=0.
 ```
-
-The denominator phase-grade tensor preserves the distinct `I,I^2,I^3,I^4` roles.
 
 ---
 
@@ -163,44 +131,44 @@ The denominator phase-grade tensor preserves the distinct `I,I^2,I^3,I^4` roles.
 The inherited Pass-129 exact rational projection gives:
 
 ```text
-q-P=delta
-P-p=delta
+q-P=Delta
+P-p=Delta
 ```
 
-hence:
+so:
 
 ```text
-p=P-delta
-q=P+delta.
+p=P-Delta
+q=P+Delta.
 ```
 
 Therefore:
 
 ```text
 P^2-pq
-= P^2-(P-delta)(P+delta)
-= delta^2.
+= P^2-(P-Delta)(P+Delta)
+= Delta^2.
 ```
 
 The registered common-residue relation also requires:
 
 ```text
-P^2-pq=delta.
+P^2-pq=Delta.
+```
+
+Hence:
+
+```text
+Delta^2=Delta.
+```
+
+The registered closure residue is nonzero, therefore over the exact rational projection:
+
+```text
+Delta=1.
 ```
 
 Thus:
-
-```text
-delta^2=delta.
-```
-
-The registered closure residue is nonzero, so over the exact rational projection:
-
-```text
-delta=1.
-```
-
-Therefore:
 
 ```text
 p=P-1
@@ -208,7 +176,7 @@ q=P+1
 P^2-pq=1.
 ```
 
-The same inherited proof package binds:
+The same inherited proof binds:
 
 ```text
 pi(xy)=1
@@ -218,11 +186,11 @@ x+y+z+w=0.
 
 ### Theorem 4.1 — Center zero-sum closure
 
-For every admitted nonzero rational center `P` in the inherited closure domain:
+For every admitted nonzero rational center `P` in the inherited Pass-129 domain:
 
 ```text
 Z(P) := {
-  delta=1,
+  Delta=1,
   p=P-1,
   q=P+1,
   P^2-pq=1,
@@ -234,13 +202,13 @@ Z(P) := {
 
 is an exact closure family.
 
-This theorem does not assign conventional scalar values to the individual native symbols `x,y,z,w`.
+This does not assign ordinary scalar values to the native symbols `x,y,z,w` themselves.
 
 ---
 
 ## 5. Four-phase carrier closure
 
-The registered typed carrier basis is:
+The registered exact carrier basis is:
 
 ```text
 I   -> ( 0, 1)
@@ -249,7 +217,7 @@ I^3 -> ( 0,-1)
 I^4 -> ( 1, 0)
 ```
 
-Hence:
+so:
 
 ```text
 I+I^2+I^3+I^4
@@ -265,13 +233,11 @@ I+I^2+I^3+I^4=0
 
 in the registered exact carrier projection.
 
-No floating-point complex arithmetic is required.
-
 ---
 
 ## 6. Denominator magnitude projection
 
-The phase-quantization closure projects to:
+The denominator magnitude projection is registered as:
 
 ```text
 ((1,1,1),
@@ -285,179 +251,183 @@ with:
 1=u^72.
 ```
 
-The eight perimeter entries are the phase-unit projection.
-
-The center retains the normalized structural closure witness:
-
-```text
-x+y+z+w=0/u^72.
-```
-
-It is not deleted by simplification.
+The eight perimeter cells project to the phase unit while the center retains the normalized zero-sum closure witness. This projection does not replace `D`.
 
 ---
 
-## 7. Recursive closure theorem
+## 7. Recursive structural closure
 
-The registered recursive relation is:
+The native recursive relation is:
 
 ```text
 N/D^4=D^4.
 ```
 
-### Axiom 7.1 — Indivisible recursive semantics
+### Axiom 7.1 — No scalarization
 
-Because `N` and `D` are already-defined typed formal objects:
-
-```text
-N/D^4=D^4
-```
-
-means that the global relation Tensor, when constrained through the fourth-power phase-quantization relation, closes onto the same phase-quantized state.
-
-It does **not** license:
+The relation SHALL NOT authorize:
 
 ```text
 cancel D^4
 derive N=D^8
-commute ordered x,y,z,w products
-replace D with its magnitude projection
-replace N by disconnected scalar subequalities.
+commute xy with yx
+commute zw with wz
+replace D by its magnitude projection
+replace N by disconnected subequalities.
 ```
 
-### Theorem 7.2 — Structural recursive closure
+### Theorem 7.2 — Structural closure condition
 
-The recursive relation is proven for a candidate state when all of the following belong to the same candidate lineage:
+A structural projection witness may bind the recursive relation when the same candidate lineage preserves:
 
 ```text
 exact N source identity
 exact D source identity
-Pass-129 unit-delta closure family
-x+y+z+w=0
-I+I^2+I^3+I^4=0
-Lo Shu/Sudoku qudit invariant
-exact VM81/VM5184 hydration projection.
+Pass-129 zero-sum closure family
+ordered phase identity
+Lo Shu/Sudoku qudit membership
+exact VM81/VM5184 hydration coordinate
+phase-origin projection
+exact phase-locality realization.
 ```
 
-This is a structural proof of membership in the global recursive relation manifold.
+This theorem establishes structural membership in the registered relation manifold. It does not claim native identity between the projection witness and the full source object.
 
 ---
 
-## 8. Lo Shu/Sudoku qudit bridge
+## 8. Hydration bijection and Lo Shu/Sudoku bridge
 
-The runtime preserves the registered 3x3 Lo Shu invariant:
+The inherited Pass-219 coordinate transform preserves:
 
 ```text
-4 9 2
-3 5 7
-8 1 6
+(operation64, g243) <-> (trit3, slot5184)
 ```
 
-whose eight rows, columns, and diagonals sum to 15.
-
-The Lo Shu object is not treated as the primitive definition of `x,y,z,w`. It is the downstream qudit organization to which the native tensor is projected.
-
-The inherited hydration coordinate fabric is:
+with:
 
 ```text
-81 cells
-x 41 Lo Shu groups
-x 3 trits
-x 5184 hydration slots
-= 51,648,192 states.
+64*243 = 3*5184 = 15,552.
 ```
 
-With one 81-origin phase layer:
+Lifting the local bijection over the inherited `81*41` outer coordinates yields:
 
 ```text
-51,648,192 x 81
-= 4,183,503,552
+81*41*3*5184 = 51,648,192
+```
+
+hydration addresses.
+
+Pass 219B I1 adds an exact 81-origin phase projection:
+
+```text
+51,648,192*81 = 4,183,503,552
 ```
 
 potential phase-projected coordinates.
 
-### Theorem 8.1 — Hydration bridge
-
-A candidate belongs to the runtime hydration projection only if it has:
+The I6 witness uses the inherited runtime calls for:
 
 ```text
-one valid cell81
-one valid ordered basis pair
-one exact VM5184 address
+ordered phase witness
+Pass189/219 coordinate forward transform
+Pass189/219 coordinate inverse transform
+trinary phase gate
+I1 phase cell
+I5 phase-locality plan and realization verification.
 ```
 
-under the same N/D closure proof.
-
-Thus the global relation law reaches the concrete runtime through:
-
-```text
-x,y,z,w
--> N
--> D^4
--> Lo Shu/Sudoku qudit
--> cell81
--> VM5184.
-```
+It does not duplicate those algorithms.
 
 ---
 
-## 9. Full-symbolic admission theorem
+## 9. Projection registration
 
-The older 1.15 boundary correctly refused to infer full-symbolic truth from incomplete scalar compatibility checks because the exact lowering had not yet been specified.
-
-Pass 219B I6 supplies that lowering.
-
-### Theorem 9.1 — Full-symbolic structural admission
-
-For `HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1`, admission is valid iff one candidate satisfies:
+I6 registers the additive projection:
 
 ```text
-N source identity
-exact BigInt transport
-Lo Shu invariant
-registered metric witness
-P^2=pq+delta
-delta=1
-p=P-1
-q=P+1
-ordered QR phase witness
-valid VM5184 address
-global zero-sum closure
-global N/D/Lo-Shu/VM81 bridge.
+projection_id = PI-UCE-N-D-HYDRATION-I6-v1
 ```
 
-The older compatibility checks:
+### Source type
 
 ```text
-A=P^2
-B=P^2
-A*B=P^4
+typed global constraint N
++ phase quantization D
++ exact hydration coordinate
 ```
 
-are **not** required by the full-symbolic profile.
-
-They remain only in:
+### Target type
 
 ```text
-HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1.
+HHSExactPass219BGlobalRelationHydrationWitnessV1
 ```
 
-When the full bridge is satisfied:
+### Forward rule
 
 ```text
-residual_mask = 0
-decision = ADMIT.
+Pass129 exact closure
+→ inherited UQCEL integer/symmetric quantization subprojection
+→ Pass219 ordered phase/coordinate/trinary gate
+→ Pass219B I1 phase projection
+→ Pass219B I5 exact locality verification
+→ I6 structural witness.
 ```
 
-`UNSUPPORTED_DOMAIN` is no longer the correct outcome for that candidate.
+### Reverse rule
+
+```text
+NONE.
+```
+
+No native-identity claim is made. The structural witness does not serialize every term of the complete native global Tensor.
 
 ---
 
-## 10. Canonical mutation authority
+## 10. Inherited UQCEL V1 boundary
 
-The bridge theorem proves admission eligibility. It does not independently mutate state.
+This distinction is normative.
 
-The proof object retains:
+The inherited files:
+
+```text
+hhs_runtime/include/hhs_runtime_uqcel_1_8.h
+hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc
+hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc
+tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+```
+
+remain unchanged by I6.
+
+`HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1` is reused only as its registered quantization subprojection.
+
+`HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1` remains the inherited residual transport boundary and therefore continues to return:
+
+```text
+status = HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN
+decision = HHS_EXACT_UQCEL_DECISION_UNSUPPORTED_DOMAIN
+reject_reason = HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL
+residual_mask = HHS_UQCEL_RESIDUAL_FULL_SOURCE
+```
+
+until a separately versioned exact lowering serializes the residual classes registered by Pass 219 1.8/1.15.
+
+This does **not** mean `N/D^4=D^4` is undefined or unproven as a structural relation. It means the older UQCEL V1 transport is intentionally narrower than the complete native global relation.
+
+### Corollary 10.1
+
+```text
+structural N/D closure proof
+!=
+legacy UQCEL V1 full-symbolic serialization completeness.
+```
+
+The two claims live at different typed layers.
+
+---
+
+## 11. Authority theorem
+
+The I6 structural witness has:
 
 ```text
 canonical_mutation_authority = 0
@@ -465,79 +435,59 @@ canonical_persistence_authority = 0
 canonical_hash72_authority = 0.
 ```
 
-After full-symbolic validation returns `ADMIT`, the inherited:
+I6 exports no new `commit`, `persist`, `emit_hash72`, or admission API.
 
-```text
-hhs_exact_vm81_admit_uqcel
-```
-
-path remains solely responsible for:
-
-```text
-candidate-frame verification
-Hash72/Hash216 receipt construction
-canonical frame commit.
-```
-
-Thus:
-
-```text
-bridge proof != mutation authority.
-```
+Canonical mutation remains exclusively in the already-authorized inherited VM81/kernel admission graph. I6 therefore cannot become a second mutation authority and cannot shadow an inherited public symbol.
 
 ---
 
-## 11. Falsification conditions
+## 12. Enforcement theorem
 
-The theorem or implementation is false if any candidate can be admitted while violating any of:
+The pass-system validation must reject an I6 candidate if any of the following occurs:
 
 ```text
-N_SOURCE_IDENTITY_MISMATCH
-D_SOURCE_IDENTITY_MISMATCH
-DELTA_NOT_UNIT
-P_CENTER_SYMMETRY_FAILURE
-P2_MINUS_PQ_FAILURE
-CENTER_ZERO_SUM_FAILURE
-PHASE_CARRIER_ZERO_SUM_FAILURE
-ORDERED_PHASE_MISMATCH
-LO_SHU_QUDIT_FAILURE
-VM5184_ADDRESS_FAILURE
-HYDRATION_GEOMETRY_MISMATCH
-SCALAR_CANCELLATION_OF_N_OVER_D4
-FULL_SYMBOLIC_AB_P2_SUBSTITUTION
-BRIDGE_BYPASS
-FLOAT_OR_APPROXIMATE_AUTHORITY
-DIRECT_MUTATION_AUTHORITY_GAIN.
+N source identity changes
+D source identity changes
+zero-sum family is inconsistent
+xy/yx or zw/wz order is collapsed
+Lo Shu/Sudoku membership is lost
+Pass189/219 coordinate roundtrip fails
+I1 phase source/center preservation fails
+I5 exact locality verification fails
+UQCEL V1 ABI/layout/semantics change
+legacy FULL_SYMBOLIC_V1 stops reporting its registered residual boundary
+I6 gains mutation, persistence, or Hash72 authority
+an inherited public implementation is macro-shadowed or replaced
+projection equality is promoted to native identity
+floating-point authority is introduced.
 ```
+
+A failing pass-enforcement workflow is therefore evidence that the candidate tree violates at least one registered pass constraint and must be investigated as such.
 
 ---
 
-## 12. Conclusion
+## 13. Conclusion
 
-The global constraint equation exists to formalize how the native ordered `x,y,z,w` tensor is related to the higher HHS variable surface and to the Lo Shu/Sudoku qudit organization of VM81 runtime hydration.
+The purpose of the global equation is to formalize how native ordered `x,y,z,w` relations participate in the higher HHS variable surface and how that surface projects into Lo Shu/Sudoku organization and VM81 hydration.
 
-The exact architecture is:
+The corrected I6 architecture is:
 
 ```text
 ordered noncommutative x,y,z,w
-        |
-        v
-N = global recursive constraint Tensor
-        |
-        v
-D^4 = phase quantization
-        |
-        v
-zero-sum closure
-        |
-        v
-Lo Shu/Sudoku qudit
-        |
-        v
-VM81 cell81 + VM5184 hydration
-        |
-        v
-inherited canonical admission/commit authority
+        ↓
+N = indivisible global constraint Tensor
+        ↕ registered recursive relation N/D^4=D^4
+D = phase-quantization Tensor
+        ↓
+Pass-129 zero-sum closure
+        ↓
+inherited quantization subprojection
+        ↓
+Lo Shu/Sudoku + exact hydration coordinate
+        ↓
+I1 phase projection + I5 locality verification
+        ↓
+I6 additive structural witness
 ```
 
-This relation is recursive and entangled by construction. It is not reduced by scalar simplification. The zero-sum state is the exact closure condition that allows the lower native tensor, the higher global relation variables, and the VM81 hydration projection to describe one coherent candidate state.
+The relation is recursive and entangled by construction. The I6 witness proves the typed structural bridge without simplifying the equation, weakening inherited constraints, reinterpreting UQCEL V1, or creating a second canonical authority.
