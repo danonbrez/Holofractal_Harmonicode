@@ -112,12 +112,21 @@ The existing integrated Pass 191 engine verifies that the retained frontier is c
 
 ## I6 final-tree scope
 
-The final I6 tree is intended to differ from canonical I5 only by:
+Verified base-to-head delta from canonical I5 contains exactly:
 
 ```text
 .github/workflows/pass219b-global-zero-sum-closure-i6.yml
 tests/pass219/test_pass219b_global_zero_sum_closure_v1.py
 docs/operations/restart/PASS_219B_GLOBAL_ZERO_SUM_CLOSURE_I6_RESTART.md
+```
+
+Comparison at checkpoint `e9ddfc23e92ad0f8d6c5d53de6c1afea38f2ca6a`:
+
+```text
+ahead: 87
+behind: 0
+merge base: f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf
+runtime/kernel files changed in final tree: 0
 ```
 
 All attempted I6 runtime/ABI/prover/theorem implementations have been removed from the current tree. The aggregate exact ABI C source and header are restored byte-for-byte to canonical I5.
@@ -164,18 +173,11 @@ A workflow failure is a pass-system enforcement result and must be treated as ev
 
 Earlier I6 candidate commits introduced parallel evaluators and alternate admission/commit semantics. Those commits remain visible in branch history under the repository's repair-forward policy, but their files and behavior are absent from the current tree. Frozen history has not been rewritten, rebased, squashed, or force-pushed.
 
-Latest completed implementation checkpoint before this restart update:
-
-```text
-05af1ae15dd5c01746e6748f92e59d59aeb75a7f
-```
-
 ## Remaining validation
 
 ```text
-1. Confirm final base-to-head diff contains only workflow + test + restart record.
-2. Inspect newly triggered exact and synthetic I6 enforcement jobs.
-3. If rejected, identify the next inherited constraint violation and repair forward.
-4. If both are green, record exact run/job evidence and freeze the I6 checkpoint.
-5. Do not merge main without separate explicit authorization.
+1. Inspect newly triggered exact and synthetic I6 enforcement jobs.
+2. If rejected, identify the next inherited constraint violation and repair forward.
+3. If both are green, record exact run/job evidence and freeze the I6 checkpoint.
+4. Do not merge main without separate explicit authorization.
 ```
