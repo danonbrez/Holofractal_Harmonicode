@@ -137,13 +137,15 @@ int main(void) {
 
     /*
      * P^2=pq+1 alone is insufficient. The same full-symbolic candidate must
-     * belong to the exact center family p=P-1, q=P+1.
+     * belong to the exact center family p=P-1, q=P+1, and the zero-sum bit may
+     * not be satisfied before that candidate binding succeeds.
      */
     input.P = view1(badP);
     input.p = view1(badp);
     input.q = view1(badq);
     assert(hhs_exact_uqcel_validate(&input, &admission) == HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
     assert(admission.reject_reason == HHS_EXACT_UQCEL_REASON_CENTER_DELTA_SYMMETRY);
+    assert((admission.satisfied_mask & HHS_UQCEL_CONSTRAINT_GLOBAL_ZERO_SUM_CLOSURE) == 0U);
 
     input.P = view1(P);
     input.p = view1(p);
