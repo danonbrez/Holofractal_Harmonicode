@@ -55,6 +55,46 @@ jobs:
           grep -F 'hhs159_compare_interpreter_compiler' \
             hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
 
+      - name: Census inherited Pass159 execution semantics
+        if: matrix.target == 'exact'
+        run: |
+          gzip -dc native_projects/hhs_pass159_harmonicode_toolchain/src/hhs159_core.c.gz \
+            > /tmp/hhs159_core.inspect.c
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('/tmp/hhs159_core.inspect.c').read_text()
+          names = [
+              'hhs159_frontend_to_vmir',
+              'hhs159_lower_vmir',
+              'hhs159_interpret',
+              'hhs159_interpreter_replay',
+              'hhs159_compare_interpreter_compiler',
+              'hhs159_execute',
+          ]
+          for name in names:
+              marker = name + '('
+              pos = text.find(marker)
+              if pos < 0:
+                  print(f'=== {name}: NOT FOUND ===')
+                  continue
+              start = text.rfind('\n', 0, pos) + 1
+              brace = text.find('{', pos)
+              if brace < 0:
+                  print(f'=== {name}: NO BODY ===')
+                  continue
+              depth = 0
+              end = brace
+              for i in range(brace, len(text)):
+                  if text[i] == '{': depth += 1
+                  elif text[i] == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = i + 1
+                          break
+              print(f'=== {name} ===')
+              print(text[start:end])
+          PY
+
       - name: Build and verify inherited Pass159 toolchain
         run: |
           cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
