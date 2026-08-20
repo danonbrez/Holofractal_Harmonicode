@@ -1,14 +1,14 @@
 #ifndef HHS_PASS219B_GLOBAL_ZERO_SUM_CLOSURE_1_0_H
 #define HHS_PASS219B_GLOBAL_ZERO_SUM_CLOSURE_1_0_H
 
-#include "hhs_runtime_exact_abi_v1_1_base.h"
+#include "hhs_pass219b_universal_phase_locality_1_0.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MAJOR 1U
-#define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MINOR 1U
+#define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_MINOR 2U
 #define HHS_EXACT_PASS219B_ZERO_SUM_VERSION_PATCH 0U
 #define HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES 32U
 #define HHS_EXACT_PASS219B_ZERO_SUM_UNIT_PERIMETER_COUNT 8U
@@ -75,6 +75,40 @@ typedef struct HHSExactPass219BGlobalZeroSumClosureV1 {
     uint8_t closure_extension_sha256[HHS_EXACT_PASS219B_ZERO_SUM_SOURCE_SHA256_BYTES];
 } HHSExactPass219BGlobalZeroSumClosureV1;
 
+/*
+ * Candidate-bound composition witness.  Unlike the theorem metadata above,
+ * this object is populated only by executing inherited exact runtime surfaces:
+ * Pass-219 ordered phase/trinary/coordinate logic, Pass-219B I1 phase
+ * quantization, Pass-219B I5 locality verification, and UQCEL relation
+ * admission.  It owns no canonical mutation authority.
+ */
+typedef struct HHSExactPass219BGlobalRelationHydrationWitnessV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    int8_t lo_shu_group;
+    uint8_t phase_origin81;
+    uint16_t g243;
+    uint16_t vm5184_address;
+    uint8_t coordinate_roundtrip_verified;
+    uint8_t native_phase_verified;
+    uint8_t trinary_gate_verified;
+    uint8_t phase_cell_verified;
+    uint8_t phase_locality_verified;
+    uint8_t uqcel_relation_verified;
+    uint8_t rna_composed_verified;
+    uint8_t global_relation_bridge_verified;
+    uint8_t canonical_mutation_authority;
+    uint8_t canonical_persistence_authority;
+    uint8_t canonical_hash72_authority;
+    uint8_t reserved0[5];
+    HHSExactPass219HydrationCoordinateV1 coordinate;
+    HHSExactPass219NativePhaseWitnessV1 native_phase;
+    HHSExactPass219TrinaryPhaseGateV1 trinary_gate;
+    HHSExactPass219BPhaseCellV1 phase_cell;
+    HHSExactPass219BPhaseLocalityPlanV1 locality_plan;
+    HHSExactUQCELAdmissionV1 uqcel;
+} HHSExactPass219BGlobalRelationHydrationWitnessV1;
+
 HHS_EXACT_API uint32_t hhs_exact_pass219b_global_zero_sum_version(void);
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_source_sha256(
@@ -95,6 +129,27 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_prove(
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_zero_sum_verify(
     const HHSExactPass219BGlobalZeroSumClosureV1 *proof
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_relation_hydration_verify(
+    const HHSExactUQCELInputV1 *input,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t phase_origin81,
+    HHSExactPass219BGlobalRelationHydrationWitnessV1 *out_witness
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_global_relation_hydration_admit(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t phase_origin81,
+    HHSExactPass219Hash216IndexResolverV1 index_resolver,
+    void *index_context,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactPass219RNAAdmissionV1 *out_rna_admission,
+    HHSExactPass219BGlobalRelationHydrationWitnessV1 *out_witness
 );
 
 #ifdef __cplusplus
