@@ -11,7 +11,9 @@ static void dump_failure(
         "exact=%d pass159=%d stages=0x%08x source=%u frontend=%u vmir=%u "
         "interpret=%u replay=%u receipt_ok=%u replay_receipt_ok=%u "
         "steps=%llu replay_steps=%llu h72=%u replay_h72=%u semeq=%u "
-        "compare=%u fallback=%u committed=%u replay_committed=%u vm81=%u proven=%u\n",
+        "compare=%u fallback=%u committed=%u replay_committed=%u "
+        "pipeline=%u vm81=%u proven=%u effectful=%u observed=%u replay_exec=%u "
+        "step_auth=%u candidate=%u canonical=%u required=%u\n",
         (int)exact_status,
         (int)proof->pass159_status,
         proof->completed_stage_mask,
@@ -31,8 +33,16 @@ static void dump_failure(
         proof->fallback_used,
         proof->committed,
         proof->replay_committed,
+        proof->source_pipeline_verified,
         proof->vm81_execution_verified,
-        proof->native_shared_invariant_proven);
+        proof->native_shared_invariant_proven,
+        proof->pass159_vmir_effectful,
+        proof->pass159_vm81_execution_observed,
+        proof->pass159_replay_reexecuted,
+        proof->pass159_step_counter_authoritative,
+        proof->candidate_binding_supported,
+        proof->canonical_vm81_proof_observed,
+        proof->candidate_vm81_proof_required);
 }
 
 int main(void) {
@@ -51,13 +61,16 @@ int main(void) {
         proof.version != hhs_exact_pass219_pass159_proof_version())
         return 2;
     if (proof.pass159_status != 0 ||
-        proof.completed_stage_mask != HHS_EXACT_PASS219_STAGE_REQUIRED)
+        (proof.completed_stage_mask & HHS_EXACT_PASS219_PASS159_SOURCE_PIPELINE_REQUIRED) !=
+            HHS_EXACT_PASS219_PASS159_SOURCE_PIPELINE_REQUIRED ||
+        (proof.completed_stage_mask & HHS_EXACT_PASS219_STAGE_VM81_PROOF) != 0U)
         return 3;
     if (proof.source_exact != 1U ||
         proof.frontend_chain_complete != 1U ||
         proof.vmir_complete != 1U ||
         proof.interpret_ok != 1U ||
-        proof.replay_ok != 1U)
+        proof.replay_ok != 1U ||
+        proof.source_pipeline_verified != 1U)
         return 4;
     if (proof.receipt_status_ok != 1U ||
         proof.replay_receipt_status_ok != 1U ||
@@ -72,8 +85,17 @@ int main(void) {
         proof.vm81_mutation_authority != 0U || proof.hash72_commit_authority != 0U ||
         proof.floating_point_authority != 0U)
         return 7;
-    if (proof.vm81_execution_verified != 1U ||
-        proof.native_shared_invariant_proven != 1U)
+
+    /* Current Pass159 receipt/replay is foundation evidence, not VM81 proof. */
+    if (proof.vm81_execution_verified != 0U ||
+        proof.native_shared_invariant_proven != 0U ||
+        proof.pass159_vmir_effectful != 0U ||
+        proof.pass159_vm81_execution_observed != 0U ||
+        proof.pass159_replay_reexecuted != 0U ||
+        proof.pass159_step_counter_authoritative != 0U ||
+        proof.candidate_binding_supported != 0U ||
+        proof.canonical_vm81_proof_observed != 0U ||
+        proof.candidate_vm81_proof_required != 1U)
         return 8;
 
     if (hhs_exact_pass219_monolithic_native_source(
@@ -90,6 +112,6 @@ int main(void) {
         proof.replay_hash216[HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN] != '\0')
         return 10;
 
-    puts("PASS219_PASS159_VM81_PROOF_BRIDGE_1_21_2_OK");
+    puts("PASS219_PASS159_SOURCE_PIPELINE_1_21_2_OK_VM81_PROOF_REQUIRED");
     return 0;
 }
