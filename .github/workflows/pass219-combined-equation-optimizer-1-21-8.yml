@@ -74,6 +74,10 @@ jobs:
           ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
             hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py \
             tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py
+          grep -F 'execution_receipt_count_reduction_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+          grep -F 'source_occurrence_provenance_preserved": True' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
           grep -F 'projection_substitution_authorized": False' \
             hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
           grep -F 'algebraic_cancellation_authorized": False' \
@@ -98,8 +102,16 @@ jobs:
           value = json.loads(Path('/tmp/pass219-i1218.json').read_text())
           assert value['ok'] is True
           assert value['denominator_occurrences'] == 2
-          assert value['planned_denominator_evaluations'] == 1
-          assert value['candidate_projection_orbit_representatives'] == 3
+          assert value['denominator_source_occurrence_witnesses_required'] == 2
+          assert value['denominator_memoized_value_nodes_candidate'] == 1
+          assert value['baseline_denominator_value_evaluations'] == 2
+          assert value['candidate_denominator_value_evaluations'] == 1
+          assert value['candidate_denominator_value_evaluations_avoided'] == 1
+          assert value['source_occurrence_provenance_preserved'] is True
+          assert value['execution_receipt_count_reduction_authorized'] is False
+          assert value['candidate_projection_general_evaluations'] == 3
+          assert value['candidate_projection_exact_phase_witness_checks'] == 6
+          assert value['final_projection_cells_verified'] == 9
           assert value['projection_substitution_authorized'] is False
           assert value['algebraic_cancellation_authorized'] is False
           assert value['canonical_monolithic_proof'] is False
