@@ -12,6 +12,7 @@ on:
       - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_topology_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_pass159_frontend_1_21_8.c'
+      - 'tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c'
       - 'tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py'
       - '.github/workflows/pass219-combined-equation-optimizer-1-21-8.yml'
       - 'docs/operations/restart/PASS_219_COMBINED_EQUATION_OPTIMIZER_1_21_8_RESTART.md'
@@ -121,6 +122,16 @@ jobs:
             -Wl,-rpath,/tmp/pass159-i1218-build \
             -o /tmp/pass159-i1218-frontend
           /tmp/pass159-i1218-frontend
+
+      - name: Localize combined versus numerator Pass159 identities
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c \
+            -L/tmp/pass159-i1218-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-i1218-build \
+            -o /tmp/pass159-i1218-identity-census
+          /tmp/pass159-i1218-identity-census | tee /tmp/pass159-i1218-identity-census.txt
 
       - name: Preserve Pass219B ordered two-ring grammar
         run: |
