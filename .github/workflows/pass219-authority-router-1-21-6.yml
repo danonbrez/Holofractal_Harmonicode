@@ -49,7 +49,8 @@ jobs:
           ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
             hhs_runtime/include/hhs_pass219_authority_router_1_21_6.h \
             hhs_runtime/c/hhs_pass219_authority_router_1_21_6.inc
-          ! grep -F 'CANONICAL_PROVEN' hhs_runtime/include/hhs_pass219_authority_router_1_21_6.h
+          ! grep -F 'HHS_EXACT_PASS219_AUTHORITY_ROUTE_CANONICAL_PROVEN' \
+            hhs_runtime/include/hhs_pass219_authority_router_1_21_6.h
           grep -F 'canonical_proven_decision_available = 0U' \
             hhs_runtime/c/hhs_pass219_authority_router_1_21_6.inc
           grep -F 'pass191_canonical_monolithic_authority = 0U' \
