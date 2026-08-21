@@ -11,9 +11,10 @@ static const uint8_t HHS219_GLOBAL_MEMBRANE_SOURCE_SHA256[
     0xdeU, 0xa6U, 0x83U, 0xf6U, 0x80U, 0x20U, 0xcfU, 0x53U
 };
 
+/* Zero-based UTF-8 byte offsets of the five literal `==` gate occurrences. */
 static const uint32_t HHS219_GLOBAL_MEMBRANE_GATE_OFFSETS[
     HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT
-] = {90U, 234U, 260U, 268U, 279U};
+] = {96U, 240U, 266U, 274U, 285U};
 
 static uint32_t hhs219_global_membrane_version_word(void) {
     return (HHS_EXACT_PASS219_GLOBAL_MEMBRANE_VERSION_MAJOR << 16U) |
