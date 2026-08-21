@@ -7,7 +7,7 @@
 
 static const uint32_t EXPECTED_GATE_OFFSETS[
     HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT
-] = {90U, 234U, 260U, 268U, 279U};
+] = {96U, 240U, 266U, 274U, 285U};
 
 static void fill_valid_input(
     HHSExactPass219GlobalMembraneInputV1 *input,
