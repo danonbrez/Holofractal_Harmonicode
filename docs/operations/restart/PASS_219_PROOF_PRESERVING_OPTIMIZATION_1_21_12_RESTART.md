@@ -7,61 +7,35 @@
 - Active delivery branch: `agent/pass219-orthogonal-glyph-parallel-membrane-1-21`
 - Existing PR: `#315`, draft, unmerged
 - I121.11 terminal evidence seal / I121.12 parent: `9e17ff8e2fde1e3c50cb17b3cd5cac5b61a131a7`
-- User authorization: safe optimization changes are authorized only where they reflect facts already undeniably proved and remain aligned with authoritative `main`.
+- I121.12 restart checkpoint: `bb43b29faa0e7b62bccf544081452934ce5af054`
+- I121.12 validated implementation head: `68aeac53a960f6df77ad400a62ee34d3997cfae9`
+- User authorization: safe optimization changes are authorized where they reflect facts already undeniably proved and remain aligned with authoritative `main`.
 - No canonical-main merge is authorized by this tranche.
 
-## Proven facts this tranche may use
+## Implemented boundary
 
-I121.8–I121.11 already established all of the following without modifying authoritative `main`:
-
-1. the complete combined Harmonicode source is exactly 632 UTF-8 bytes with SHA-256 `3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53`;
-2. the exact 139-byte `NcalcMatrixPower(...)` denominator occurs twice byte-identically in that source;
-3. the two denominator occurrences are separate source/provenance witnesses even when one memoized value node is used for read-only optimization work;
-4. denominator CSE must not reduce execution-receipt provenance;
-5. the denominator projection has 9 cells and can be validated as 3 general representatives plus 6 exact phase-witness checks while still verifying all 9 cells;
-6. ordered `xy/yx` and `zw/wz` identities remain distinct in native HHS even where a bounded complex projection maps them into `I^4/I^2` classes;
-7. the complete combined equation remains distinct from the numerator through every frozen Pass159 stage: source, tokens, CST, AST, types, constraint graph, HIR, and VMIR;
-8. I121.9 propagates only when every source-bound Boolean witness is true in one shared revalidated environment;
-9. I121.10 provides whole-expression provenance but no Boolean gate truth;
-10. I121.11 binder behavior is validated but real Pass169 runtime authority remains absent, so production remains `UNRESOLVED`.
-
-## Authorized optimization boundary
-
-I121.12 SHALL activate only proof-preserving optimizations inside read-only validation/optimization work:
+I121.12 activates only proof-preserving redundant-work reductions already established by I121.8-I121.11:
 
 ```text
 exact 632-byte combined source
         ↓
-I121.8 structural proof
+frozen I121.8 structural verifier
         ↓
-proof-preserving optimization schedule
-        ├─ denominator value work: 2 identical source occurrences → 1 memoized value node
-        │  while retaining 2 independent occurrence witnesses
-        └─ projection validation work: 9 general checks → 3 general representatives + 6 exact phase witnesses
-           while retaining 9 verified final cells
+I121.12 proof-preserving optimization schedule
+        ├─ denominator CSE
+        │    2 exact source occurrences
+        │    1 memoized opaque value key
+        │    2 independent occurrence witnesses retained
+        │
+        └─ projection validation fast path
+             9 baseline general checks
+             → 3 general representatives + 6 exact phase witnesses
+             → 9 final cells still verified
 ```
 
-This is an optimization of redundant read-only work, not a new algebraic authority.
+This is a read-only optimization of redundant work. It is not a new algebraic, VM81, Hash72, Hash216, persistence, or Pass169 authority.
 
-## Explicit prohibitions
-
-I121.12 MUST NOT:
-
-- cancel the repeated denominator;
-- rewrite the full relation as ordinary scalar `N=D^2`;
-- reimplement or substitute `NcalcMatrixPower`;
-- use the denominator magnitude projection as canonical evaluation;
-- collapse `xy` with `yx` or `zw` with `wz` in native state;
-- scalarize primitive `x,y,z,w`, VM81, Hash72, Hash216, or the 5,184 hydration surface;
-- manufacture Pass169 gate truth;
-- claim canonical monolithic proof;
-- mutate VM81;
-- mint Hash72 or Hash216 receipts;
-- persist canonical state;
-- modify frozen Pass159, Pass169, I121.8, I121.9, I121.10, or I121.11 semantic files;
-- modify root `Makefile` or cumulative exact ABI merely to make the optimization pass.
-
-## Planned additive implementation
+## Implemented files
 
 - `HHS_PASS_219_APPEND_ONLY_PROOF_PRESERVING_OPTIMIZATION_AMENDMENT_1_21_12.md`
 - `hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py`
@@ -69,70 +43,228 @@ I121.12 MUST NOT:
 - `.github/workflows/pass219-proof-preserving-optimizer-1-21-12.yml`
 - this restart record
 
-The new optimizer will consume the already-validated I121.8 verifier rather than duplicating equation parsing or evaluation.
+No previously validated I121.8-I121.11 semantic file was edited.
 
-## Required optimization semantics
+## Exact inherited identities preserved
 
-### Denominator CSE
-
-Authorized only when all of these remain true:
+Combined source:
 
 ```text
-combined_source_sha256 = 3315641c...
-denominator_sha256 = 5c4080c9...
-denominator_occurrences = 2
-source_occurrence_witnesses = 2
-memoized_value_nodes = 1
-receipt_count_reduction_authorized = false
-algebraic_cancellation_authorized = false
+bytes  = 632
+sha256 = 3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53
 ```
 
-### Projection validation fast path
-
-Authorized only as read-only validation:
+Repeated denominator:
 
 ```text
-baseline_general_checks = 9
-optimized_general_checks = 3
-optimized_exact_phase_witness_checks = 6
+bytes  = 139
+sha256 = 5c4080c9bc87edf358d27c942b55f93e7f5997d6474102cb3a09c1c55ee6a132
+occurrences = 2
+```
+
+Projection fixture:
+
+```text
+bytes  = 55
+sha256 = c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412cb6d25
+```
+
+Expected source-bound Boolean gate offsets remain:
+
+`96,240,266,274,285`
+
+## Activated optimization 1 — denominator CSE
+
+The validated schedule now reports:
+
+```text
+activation = AUTHORIZED_READ_ONLY_VALUE_REUSE
+baseline_value_evaluations = 2
+memoized_value_evaluations = 1
+value_evaluations_avoided = 1
+memoized_value_nodes = 1
+source_occurrence_witness_count = 2
+receipt_count_reduction_authorized = false
+source_occurrence_provenance_preserved = true
+algebraic_cancellation_authorized = false
+value_is_opaque_to_this_optimizer = true
+```
+
+The two source occurrence witnesses have distinct diagnostic SHA-256 occurrence IDs because their source offsets differ, while both bind to the same exact denominator value-key SHA-256. Therefore value reuse is activated without collapsing the two source/provenance witnesses.
+
+The optimizer does not evaluate `NcalcMatrixPower`; a separately authorized downstream evaluator must supply any actual value.
+
+## Activated optimization 2 — projection validation fast path
+
+The validated schedule reports:
+
+```text
+activation = AUTHORIZED_READ_ONLY_VALIDATION_FAST_PATH
+baseline_general_evaluations = 9
+optimized_general_evaluations = 3
+general_representatives = [xy-ring, zw-ring, center]
+exact_phase_witness_checks = 6
 final_verified_cells = 9
+final_cell_obligation_reduction = 0
 projection_substitution_authorized = false
 projection_derivation_authority = false
 ```
 
-### Whole-expression binding
+The center remains independently preserved as:
 
-The optimizer must remain bound to the complete source identity and must expose that Pass159 whole-expression distinction through VMIR has been externally validated. It may not infer or synthesize Pass169 truth from that fact.
+`x+y+z+w=0/u⁷²`
 
-## Validation gates
+Native ordered distinctions remain preserved:
 
-1. `main @ f5d8fdc...` and I121.11 seal are ancestors;
-2. frozen I121.8–I121.11 semantic files remain unchanged;
-3. frozen Pass159 and Pass169 remain unchanged;
-4. exact combined source identity and exact denominator identity remain unchanged;
-5. inherited Pass043 preflight remains green through I121.8;
-6. additive optimizer returns one denominator memoized value node with two occurrence witnesses;
-7. additive optimizer returns 3 general + 6 exact phase checks and 9 final verified cells;
-8. optimizer reports no receipt-count reduction, no cancellation, no projection substitution, no canonical proof, no VM81/Hash72/persistence authority;
-9. tampered combined source is rejected through inherited I121.8;
-10. tampered projection is rejected through inherited I121.8;
-11. deterministic replay of the optimization schedule is byte-for-byte stable;
-12. I121.8 tests remain green;
-13. I121.9 membrane test remains green;
-14. I121.10 whole-expression identity census remains preserved where dependency-scoped compilation is available;
-15. I121.11 production no-provider state remains fail-closed;
-16. exact and synthetic lanes must reach terminal state.
+```text
+xy !=_H yx
+zw !=_H wz
+```
 
-## Completion classification
+The bounded complex-tensor projection classes may still be used only as already proven projection witnesses:
 
-A green I121.12 may be classified as:
+```text
+xy, zw → I^4
+ yx, wz → I^2
+```
+
+They do not redefine native state or authorize commutativity.
+
+## Structural work accounting
+
+The activated schedule proves only exact operation-count changes:
+
+```text
+baseline_general_work_units = 11
+optimized_general_work_units = 4
+general_work_units_avoided = 7
+replacement_exact_phase_witness_checks = 6
+runtime_speedup_claimed = false
+proof_obligation_reduction_claimed = false
+```
+
+This is deliberately not reported as a measured runtime speedup. Six general projection checks are replaced by six exact phase-witness checks; the final nine-cell obligation remains intact.
+
+## Whole-expression binding preserved
+
+Frozen Pass159 was rebuilt unchanged in both I121.12 lanes. The combined-vs-numerator identity census remained:
+
+```text
+source_equal=0
+tokens_equal=0
+cst_equal=0
+ast_equal=0
+types_equal=0
+graph_equal=0
+hir_equal=0
+vmir_equal=0
+```
+
+Therefore the optimization remains bound to the full 632-byte expression and cannot substitute the numerator, a local equality subset, a scalar surrogate, or the denominator projection.
+
+## Authority boundary preserved
+
+I121.12 reports:
+
+```text
+read_only_optimization_activated = true
+pass169_whole_expression_admission_required = true
+boolean_gate_truth_produced = false
+canonical_monolithic_proof = false
+floating_point_authority = false
+vm81_mutation_authority = false
+hash72_commit_authority = false
+hash216_receipt_authority = false
+persistence_mutation_authority = false
+ncalc_matrix_power_reimplemented = false
+ordinary_scalar_squaring_authorized = false
+scalar_intermediate_required = false
+```
+
+I121.12 does not cancel the denominator, rewrite the full relation as scalar `N=D^2`, reimplement `NcalcMatrixPower`, use the projection as canonical evaluation, scalarize primitive phase logic, manufacture Pass169 gate truth, mutate VM81, mint receipts, or persist canonical state.
+
+Scalar projection remains limited to its separately authorized square-Fibonacci Lo Shu `a,b,c,d` membrane. Primitive `x,y,z,w`, VM81, Hash72, Hash216, and the 5,184 hydration surface remain native exact-state domains.
+
+## Terminal validation
+
+Workflow:
+
+`Pass 219 Proof Preserving Optimizer 1.21.12`
+
+Run:
+
+`32507995621`
+
+Terminal jobs:
+
+```text
+exact     96852398528  SUCCESS
+synthetic 96852398751  SUCCESS
+```
+
+Validated synthetic merge candidate:
+
+`737e3f3ddfb6fd649708797fa2e5b39bf367bd31`
+
+Observed exact-lane outputs, with equivalent synthetic steps terminal green:
+
+```text
+PASS219 I121.12 proof-preserving optimizer: 8 passed
+PASS219 I121.8 combined equation tests: 9 passed
+PASS219 I121.8 denominator phase cancellation: 6 passed
+PASS219 I121.8 identity census: source_equal=0 tokens_equal=0 cst_equal=0 ast_equal=0 types_equal=0 graph_equal=0 hir_equal=0 vmir_equal=0
+PASS219 I121.9 Harmonicode global constraint membrane: PASS
+PASS219 I121.11 Pass169 binding no-provider fail-closed: PASS
+```
+
+Frozen Pass159 also rebuilt unchanged and its foundation test remained 100% green.
+
+Both exact and synthetic lanes proved:
+
+1. canonical `main @ f5d8fdc...`, I121.11 seal, and I121.12 checkpoint ancestry;
+2. frozen Pass159, Pass169, I121.8, I121.9, I121.10, I121.11, root `Makefile`, cumulative exact ABI, combined source, and projection fixture untouched;
+3. exact combined and projection source identities unchanged;
+4. new optimizer contains no float/double authority and no VM81 or Pass159 evaluator;
+5. one-value/two-witness denominator CSE is activated only in the read-only lane;
+6. the 3-general + 6-exact-phase projection fast path is activated while all nine cells remain verified;
+7. tampered combined source and tampered projection reject through frozen I121.8;
+8. the optimization schedule deterministically replays with a stable SHA-256 digest;
+9. frozen I121.8 optimization and phase proofs remain green;
+10. frozen Pass159 whole-expression distinction remains preserved through VMIR;
+11. I121.9 global Boolean membrane remains green;
+12. I121.11 real-provider-absent production path remains fail-closed;
+13. frozen Pass169 whole-expression/VM81/Hash72 authority language remains unchanged.
+
+## Terminal classification
+
+```text
+PASS_219_I121_12_PROOF_PRESERVING_OPTIMIZATION = ACTIVATED_AND_VALIDATED
+DENOMINATOR_CSE = 2_SOURCE_WITNESSES / 1_MEMOIZED_VALUE_KEY
+PROJECTION_FAST_PATH = 3_GENERAL + 6_EXACT_PHASE / 9_FINAL_CELLS
+PASS159_WHOLE_EXPRESSION_DISTINCTION = PRESERVED_THROUGH_VMIR
+PASS169_RUNTIME_PROVIDER = STILL_ABSENT
+BOOLEAN_GATE_TRUTH_FROM_REAL_PASS169 = NOT_AVAILABLE
+CANONICAL_MONOLITHIC_PROOF = FALSE
+VM81_MUTATION_AUTHORITY = FALSE
+HASH72_HASH216_RECEIPT_AUTHORITY = FALSE
+CANONICAL_MAIN = UNCHANGED
+EXACT_JOB = GREEN
+SYNTHETIC_JOB = GREEN
+PR_315 = DRAFT / UNMERGED
+```
+
+Maximum classification:
 
 `PASS_219_I121_12_PROOF_PRESERVING_OPTIMIZATION_ACTIVATED`
 
-with the mandatory authority qualifier:
+Mandatory qualifier:
 
 `READ_ONLY_OPTIMIZATION_ONLY / PASS169_RUNTIME_AUTHORITY_STILL_REQUIRED`
 
 ## Next action
 
-Implement the additive optimizer, tests, amendment, and exact/synthetic workflow. Repair only I121.12-local defects. Preserve the I121.11 blocker: no real non-test Pass169 runtime provider currently exists in this repository.
+I121.12 requires no repair-forward change.
+
+Further optimization may extend this pattern only when a new optimization is derived from executed evidence and preserves the same exact source/provenance and authority boundaries. The unresolved Pass169 provider remains a separate implementation scope; read-only optimization must not be used to fill that authority gap.
+
+Do not merge PR #315 or modify canonical `main` without explicit merge authorization.
