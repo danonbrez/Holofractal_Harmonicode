@@ -11,6 +11,7 @@ on:
       - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_topology_1_21_8.py'
+      - 'tests/pass219/test_pass219_combined_equation_pass159_frontend_1_21_8.c'
       - '.github/workflows/pass219-combined-equation-optimizer-1-21-8.yml'
       - 'docs/operations/restart/PASS_219_COMBINED_EQUATION_OPTIMIZER_1_21_8_RESTART.md'
   workflow_dispatch:
@@ -22,7 +23,7 @@ jobs:
   combined-equation-optimizer:
     name: combined-equation-optimizer (${{ matrix.target }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
@@ -38,6 +39,7 @@ jobs:
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
           git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
           git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
 
       - name: Prove frozen runtime dependencies are untouched
         run: |
@@ -48,7 +50,8 @@ jobs:
             hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
             HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
             docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md \
-            hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h
+            hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h \
+            native_projects/hhs_pass159_harmonicode_toolchain
 
       - name: Verify exact source identities
         run: |
@@ -96,6 +99,23 @@ jobs:
           assert value['canonical_monolithic_proof'] is False
           assert value['pass169_whole_expression_admission_required'] is True
           PY
+
+      - name: Build inherited Pass159 frontend
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i1218-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i1218-build --parallel 2
+
+      - name: Run full combined source through Pass159 frontend only
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_combined_equation_pass159_frontend_1_21_8.c \
+            -L/tmp/pass159-i1218-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-i1218-build \
+            -o /tmp/pass159-i1218-frontend
+          /tmp/pass159-i1218-frontend
 
       - name: Preserve Pass219B ordered two-ring grammar
         run: |
