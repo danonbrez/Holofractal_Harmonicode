@@ -201,18 +201,15 @@ static int hhs219_program_valid(const HHSExactPass219VM81ProgramV1 *program) {
          ~HHS_EXACT_PASS219_MONOLITHIC_ALL_EDGE_MASK) != 0U)
         return 0;
 
+    /*
+     * 1.21.3 can prove source structure and effectful exact-kernel execution,
+     * but it cannot establish semantic completion of the full symbolic chain.
+     * A caller is therefore never allowed to assert that completion bit.
+     */
     if (program->source_structure_complete > 1U ||
         program->effectful_lowering_complete > 1U ||
-        program->source_semantics_complete > 1U ||
+        program->source_semantics_complete != 0U ||
         program->full_symbolic_identity_required != 1U)
-        return 0;
-
-    if (program->source_semantics_complete == 1U &&
-        (program->source_structure_complete != 1U ||
-         program->effectful_lowering_complete != 1U ||
-         program->semantic_family_coverage_mask != HHS_EXACT_PASS219_FAMILY_REQUIRED ||
-         program->equality_edge_coverage_mask !=
-             HHS_EXACT_PASS219_MONOLITHIC_ALL_EDGE_MASK))
         return 0;
 
     memset(seen_cells, 0, sizeof(seen_cells));
