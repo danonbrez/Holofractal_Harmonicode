@@ -1,15 +1,13 @@
 """Pass 219 I121.8 combined-equation test and optimization surface.
 
-This module is deliberately read-only and candidate-only.  It does not replace
-Pass169 whole-expression authority, evaluate NcalcMatrixPower independently, or
-rewrite the supplied HARMONICODE equation algebraically.
+Read-only, candidate-only structural optimization for the complete supplied
+combined equation.  No canonical Pass169/VM81 authority is replaced.
 
-The optimization proved here is structural common-subexpression reuse: the exact
-same denominator MatrixPower source occurs twice in the combined equation, so a
-future admitted runtime may compute that immutable exact subexpression once and
-reuse its result for the LHS denominator and RHS comparison.  The user-supplied
-3x3 denominator magnitude projection is bound as an expected projection witness,
-not substituted for canonical evaluation.
+Two optimizations are investigated without changing source semantics:
+1. memoize the byte-identical NcalcMatrixPower denominator value once while
+   preserving both source occurrences and their required provenance/witnesses;
+2. use exact ring/phase witnesses for six outer projection checks while still
+   verifying all nine projected cells.
 """
 from __future__ import annotations
 
@@ -60,9 +58,7 @@ SURFACE_SYMBOL = "verify_combined_equation_optimizer"
 
 
 def _repo_root(root: str | Path | None = None) -> Path:
-    if root is not None:
-        return Path(root).resolve()
-    return Path(__file__).resolve().parents[2]
+    return Path(root).resolve() if root is not None else Path(__file__).resolve().parents[2]
 
 
 def _sha256_text(value: str) -> str:
@@ -102,6 +98,7 @@ def combined_optimizer_surface_declaration() -> Dict[str, Any]:
             "zero_bypass_runtime_interposer",
             "kernel_runtime_autocomposer",
             "pass169_whole_expression_authority_gate",
+            "source_occurrence_provenance_gate",
             "no_algebraic_cancellation_gate",
             "no_projection_substitution_gate",
             "ordered_noncommutative_product_gate",
@@ -151,7 +148,6 @@ def verify_combined_equation_optimizer(
 ) -> Dict[str, Any]:
     preflight = preflight_combined_optimizer(cache=cache)
     repo = _repo_root(root)
-
     numerator = _read_exact(repo / NUMERATOR_PATH)
     combined = combined_override if combined_override is not None else _read_exact(repo / COMBINED_PATH)
     projection = projection_override if projection_override is not None else _read_exact(repo / PROJECTION_PATH)
@@ -168,6 +164,15 @@ def verify_combined_equation_optimizer(
         raise ValueError("REJECT_I1218_COMBINED_HASH_DRIFT")
     if combined.count(DENOMINATOR_SOURCE) != 2:
         raise ValueError("REJECT_I1218_DENOMINATOR_OCCURRENCE_DRIFT")
+
+    first_offset = combined.find(DENOMINATOR_SOURCE)
+    second_offset = combined.find(DENOMINATOR_SOURCE, first_offset + 1)
+    if first_offset < 0 or second_offset <= first_offset:
+        raise ValueError("REJECT_I1218_DENOMINATOR_OCCURRENCE_DRIFT")
+    if combined[first_offset:first_offset + len(DENOMINATOR_SOURCE)] != DENOMINATOR_SOURCE:
+        raise ValueError("REJECT_I1218_FIRST_DENOMINATOR_SPAN_DRIFT")
+    if combined[second_offset:second_offset + len(DENOMINATOR_SOURCE)] != DENOMINATOR_SOURCE:
+        raise ValueError("REJECT_I1218_SECOND_DENOMINATOR_SPAN_DRIFT")
 
     if NUMERATOR_MATRIX_SOURCE not in DENOMINATOR_SOURCE or PHASE_MATRIX_SOURCE not in DENOMINATOR_SOURCE:
         raise ValueError("REJECT_I1218_MATRIX_SOURCE_DRIFT")
@@ -197,7 +202,12 @@ def verify_combined_equation_optimizer(
         "denominator_source_bytes": DENOMINATOR_BYTES,
         "denominator_source_sha256": DENOMINATOR_SHA256,
         "denominator_occurrences": 2,
+        "denominator_occurrence_offsets": [first_offset, second_offset],
+        "denominator_source_occurrence_witnesses_required": 2,
+        "denominator_memoized_value_nodes_candidate": 1,
         "common_subexpression_identity_verified": True,
+        "source_occurrence_provenance_preserved": True,
+        "execution_receipt_count_reduction_authorized": False,
         "perimeter_clockwise": list(PERIMETER_CLOCKWISE),
         "xy_ring": list(XY_RING),
         "zw_ring": list(ZW_RING),
@@ -208,14 +218,16 @@ def verify_combined_equation_optimizer(
         "projection_outer_unit_cells": 8,
         "projection_center_cells": 1,
         "projection_unit_definition": "1=u⁷²",
-        "baseline_denominator_evaluations": 2,
-        "planned_denominator_evaluations": 1,
-        "duplicate_denominator_evaluations_eliminated": 1,
+        "baseline_denominator_value_evaluations": 2,
+        "candidate_denominator_value_evaluations": 1,
+        "candidate_denominator_value_evaluations_avoided": 1,
         "compute_denominator_once_candidate": True,
-        "reuse_same_denominator_identity_on_lhs_and_rhs": True,
-        "baseline_projection_cell_checks": 9,
+        "reuse_same_denominator_value_on_lhs_and_rhs": True,
+        "baseline_projection_general_evaluations": 9,
+        "candidate_projection_general_evaluations": 3,
+        "candidate_projection_exact_phase_witness_checks": 6,
+        "final_projection_cells_verified": 9,
         "candidate_projection_orbit_representatives": 3,
-        "candidate_projection_checks_eliminated": 6,
         "projection_representatives": ["xy-ring", "zw-ring", "center"],
         "projection_fast_path_candidate_only": True,
         "projection_derivation_authority": False,
