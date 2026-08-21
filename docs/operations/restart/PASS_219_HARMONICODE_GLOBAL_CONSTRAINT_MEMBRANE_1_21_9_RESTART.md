@@ -61,7 +61,7 @@ The complete source has 16 literal `=` characters and 11 equality tokens when ea
 - `tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c`
 - `tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp`
 - cumulative exact ABI include updates in `hhs_runtime/include/hhs_runtime_exact_abi.h` and `hhs_runtime/c/hhs_runtime_exact_abi.c`
-- `.github/workflows/pass219-harmonicode-global-constraint-membrane-1-21-9.yml` once added
+- `.github/workflows/pass219-harmonicode-global-constraint-membrane-1-21-9.yml`
 - this restart record
 
 ## Runtime boundary
@@ -85,7 +85,13 @@ Pass169 whole-expression authority remains required.
 
 ## Current implementation checkpoint
 
-Current implementation has been committed incrementally through the C ABI, C implementation, cumulative ABI wiring, C/C++ conformance tests, amendment, and C++ wrapper. CI workflow and terminal exact/synthetic validation remain to be completed.
+I121.9 implementation is repository-visible through workflow-definition commit:
+
+`f0c3ed93fa0242707faabcfd520a82b91a2d22a7`
+
+The implementation includes the C ABI, exact C implementation, cumulative ABI wiring, C++ wrapper, C/C++ conformance tests, amendment, and exact/synthetic workflow. The current restart update exists to create a subsequent PR synchronize event after the new workflow definition is present, so the newly added workflow can be registered and executed by GitHub Actions.
+
+No semantic source was changed after `f0c3ed93fa0242707faabcfd520a82b91a2d22a7` in this checkpoint update.
 
 ## Required validation
 
@@ -106,4 +112,4 @@ Current implementation has been committed incrementally through the C ABI, C imp
 
 ## Next action
 
-Add the I121.9 exact/synthetic CI workflow, run it through PR #315, repair only I121.9 branch-local defects if any, then append terminal validation evidence here. Do not modify frozen Pass159/Pass169 or canonical `main` to make I121.9 pass.
+Inspect the I121.9 exact/synthetic workflow triggered by this checkpoint. Repair only I121.9 branch-local defects if any, then append terminal validation evidence here. Do not modify frozen Pass159/Pass169 or canonical `main` to make I121.9 pass.
