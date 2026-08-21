@@ -95,8 +95,8 @@ jobs:
         env:
           PYTHONHASHSEED: '0'
         run: |
-          python tests/pass219/test_pass219_i121_validation_membrane_v1.py
-          python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+          PYTHONPATH=. python tests/pass219/test_pass219_i121_validation_membrane_v1.py
+          PYTHONPATH=. python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
 
       - name: Diagnostic cumulative exact ABI compilation
         run: |
