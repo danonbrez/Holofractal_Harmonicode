@@ -155,6 +155,7 @@ HHSExactStatus hhs_exact_pass219_octonion_channel_phase(
     uint8_t basis,
     uint8_t *out_phase
 ) {
+    HHSExactStatus status;
     if (state == NULL || out_phase == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (state->struct_size < sizeof(*state) ||
@@ -162,6 +163,9 @@ HHSExactStatus hhs_exact_pass219_octonion_channel_phase(
         return HHS_EXACT_STATUS_VERSION_MISMATCH;
     if (basis >= HHS_EXACT_PHASE_BASIS_COUNT)
         return HHS_EXACT_STATUS_RANGE_ERROR;
+    status = hhs_exact_pass219_octonion_validate_state(state);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
     return hhs_exact_pass219_state_phase_unchecked(state, basis, out_phase);
 }
 
@@ -183,6 +187,10 @@ HHSExactStatus hhs_exact_pass219_octonion_multiply(
     if (left_basis >= HHS_EXACT_PHASE_BASIS_COUNT ||
         right_basis >= HHS_EXACT_PHASE_BASIS_COUNT)
         return HHS_EXACT_STATUS_RANGE_ERROR;
+
+    status = hhs_exact_pass219_octonion_validate_state(state);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
 
     status = hhs_exact_pass219_state_phase_unchecked(state, left_basis, &left_phase);
     if (status != HHS_EXACT_STATUS_OK)
