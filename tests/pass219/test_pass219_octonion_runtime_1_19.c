@@ -101,7 +101,9 @@ static void assert_vm81_projection_uses_exact_kernel_fold(void) {
 static void assert_negative_cases_fail_closed(void) {
     HHSExactPass219OctonionStateV1 state;
     HHSExactPass219OctonionSurfaceV1 surface;
+    HHSExactPass219OctonionProductV1 product;
     HHSExactPass219OctonionDescriptorV1 descriptor;
+    uint8_t phase = 0U;
 
     assert(hhs_exact_pass219_octonion_descriptor(&descriptor) == HHS_EXACT_STATUS_OK);
     assert(descriptor.ordered_basis_count == 8U);
@@ -115,6 +117,15 @@ static void assert_negative_cases_fail_closed(void) {
     assert(hhs_exact_pass219_octonion_surface(1U, 2U, 3U, 4U, &surface) == HHS_EXACT_STATUS_OK);
     surface.state.yx = surface.state.xy;
     assert(hhs_exact_pass219_octonion_validate_surface(&surface) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    assert(hhs_exact_pass219_octonion_multiply(
+               &surface.state,
+               HHS_EXACT_PHASE_Y,
+               HHS_EXACT_PHASE_X,
+               &product) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    assert(hhs_exact_pass219_octonion_channel_phase(
+               &surface.state,
+               HHS_EXACT_PHASE_YX,
+               &phase) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 }
 
 int main(void) {
