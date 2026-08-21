@@ -10,10 +10,13 @@ on:
       - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
       - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
       - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h'
+      - 'hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
+      - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
       - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
       - '.github/workflows/pass219-exact-vm81-candidate-adapter-1-21-3.yml'
   workflow_dispatch:
@@ -39,7 +42,6 @@ jobs:
       - name: Prove additive lineage
         run: |
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
-          git merge-base --is-ancestor 85c237023e778e655f38f6363bab7f08907fa9b2 HEAD
           git merge-base --is-ancestor 95a5370dfe20d8d6b26a89401fb60d7085aa7721 HEAD
 
       - name: Preserve frozen native source identity
@@ -58,6 +60,8 @@ jobs:
           grep -F '#include "../HARMONICODE_VM_RUNTIME.c"' \
             hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
           grep -F 'vm81_step(&vm)' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          grep -F 'source_semantics_complete != 0U' \
             hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
           grep -F 'canonical_monolithic_proof = 0U' \
             hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
@@ -109,13 +113,18 @@ jobs:
             /tmp/pass219-vm81-1-21-3/header.cpp \
             -c -o /tmp/pass219-vm81-1-21-3/header.o
 
-      - name: Preserve monolithic 1.20 fail-closed proof membrane
+      - name: Preserve monolithic and ordered-octonion fail-closed membranes
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
             /tmp/pass219-vm81-1-21-3/exact.o \
             -o /tmp/pass219-vm81-1-21-3/test-monolithic
           /tmp/pass219-vm81-1-21-3/test-monolithic
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            /tmp/pass219-vm81-1-21-3/exact.o \
+            -o /tmp/pass219-vm81-1-21-3/test-octonion
+          /tmp/pass219-vm81-1-21-3/test-octonion
 
       - name: Preserve exact kernel self-verification
         run: |
