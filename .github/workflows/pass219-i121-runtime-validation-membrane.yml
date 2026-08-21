@@ -1,0 +1,134 @@
+name: Pass 219 I121 Runtime Validation Membrane
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py'
+      - 'hhs_runtime/include/hhs_pass219_authority_router_1_21_6.h'
+      - 'hhs_runtime/c/hhs_pass219_authority_router_1_21_6.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_i121_validation_membrane_v1.py'
+      - 'tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py'
+      - 'tests/pass219/test_pass219_authority_router_1_21_6.c'
+      - 'tests/pass219/test_pass219_authority_router_1_21_6.cpp'
+      - 'Makefile'
+      - '.github/workflows/pass219-i121-runtime-validation-membrane.yml'
+      - 'docs/operations/restart/PASS_219_I121_RUNTIME_VALIDATION_MEMBRANE_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-validation-membrane:
+    name: runtime-validation-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          git merge-base --is-ancestor a1a55a4f621ff3678f5af81119439e9558cf9db4 HEAD
+          git merge-base --is-ancestor d95fa6116a46b42594e9849e46cce50216d55d68 HEAD
+
+      - name: Prove frozen runtime dependencies and Makefile are untouched
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
+            Makefile \
+            hhs_runtime/hhs_runtime_constraint_enforcement_binding_v1.py \
+            hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py \
+            hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            native_projects/hhs_pass191_dyadic_quartic_phase_lattice
+
+      - name: Require read-only kernel-derived validation declarations
+        run: |
+          grep -F 'surface_type": "VALIDATOR"' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          grep -F 'mutation_policy": "NO_EXTERNAL_STATE_MUTATION"' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          grep -F 'persistence_policy": "NO_PERSISTENCE_MUTATION"' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          grep -F 'runtime_constraint_enforcement' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          grep -F 'zero_bypass_runtime_interposer' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          grep -F 'kernel_runtime_autocomposer' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' hhs_runtime/hhs_pass219_i121_validation_membrane_v1.py
+
+      - name: Enter inherited Pass043 validation membrane
+        env:
+          PYTHONHASHSEED: '0'
+        run: |
+          python -m hhs_runtime.hhs_pass219_i121_validation_membrane_v1 > /tmp/pass219-i121-validation-membrane.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/pass219-i121-validation-membrane.json').read_text())
+          assert value['ok'] is True
+          assert value['classification'] == 'KERNEL_DERIVED_READ_ONLY_VALIDATION'
+          assert value['canonical_monolithic_proof'] is False
+          assert value['pass169_whole_expression_admission_required'] is True
+          assert value['vm81_mutation_authority'] is False
+          assert value['hash72_commit_authority'] is False
+          preflight = value['preflight']
+          assert preflight['runtime_constraint_enforcement_required'] is True
+          assert preflight['zero_bypass_interposer_required'] is True
+          assert preflight['kernel_runtime_autocomposer_required'] is True
+          PY
+
+      - name: Diagnostic membrane regression after admitted preflight
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTHONHASHSEED: '0'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_i121_validation_membrane_v1.py
+
+      - name: Diagnostic inherited Pass191 regression after admitted preflight
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          PYTHONHASHSEED: '0'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+
+      - name: Diagnostic exact ABI compilation after admitted preflight
+        run: |
+          mkdir -p /tmp/pass219-i121-validation
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i121-validation/exact.o
+
+      - name: Diagnostic authority-router C and C++ conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_authority_router_1_21_6.c \
+            /tmp/pass219-i121-validation/exact.o \
+            -o /tmp/pass219-i121-validation/router-c
+          /tmp/pass219-i121-validation/router-c
+          g++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_authority_router_1_21_6.cpp \
+            /tmp/pass219-i121-validation/exact.o \
+            -o /tmp/pass219-i121-validation/router-cpp
+          /tmp/pass219-i121-validation/router-cpp
+
+      - name: Preserve Pass169 whole-expression authority boundary
+        run: |
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'lowers the accepted graph through the Pass 159 compiler surfaces' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
