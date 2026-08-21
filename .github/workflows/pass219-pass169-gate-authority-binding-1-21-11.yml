@@ -1,0 +1,226 @@
+name: Pass 219 Pass169 Gate Authority Binding 1.21.11
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_219_APPEND_ONLY_PASS169_GATE_AUTHORITY_BINDING_AMENDMENT_1_21_11.md'
+      - 'hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h'
+      - 'hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c'
+      - 'tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c'
+      - 'tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c'
+      - '.github/workflows/pass219-pass169-gate-authority-binding-1-21-11.yml'
+      - 'docs/operations/restart/PASS_219_PASS169_GATE_AUTHORITY_BINDING_1_21_11_RESTART.md'
+      - 'hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pass169-gate-authority-binding:
+    name: pass169-gate-authority-binding (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical and validated lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor 27c329ce4b93dad675530b976dcb87247b4257b7 HEAD
+          git merge-base --is-ancestor d486304b36c43932b6cf716fa2a11a0faf02c18c HEAD
+          git merge-base --is-ancestor 2401a0c44b8456275e84cf00df60cb91a8b462e5 HEAD
+
+      - name: Prove frozen Pass159 and Pass169 remain untouched
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
+            native_projects/hhs_pass159_harmonicode_toolchain \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            Makefile
+
+      - name: Prove I121.9 I121.10 and exact ABI remain frozen
+        run: |
+          git diff --exit-code d486304b36c43932b6cf716fa2a11a0faf02c18c HEAD -- \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.hpp \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp \
+            hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            tests/pass219/test_pass219_pass159_global_witness_producer_1_21_10.c \
+            .github/workflows/pass219-pass159-global-witness-provenance-1-21-10.yml \
+            hhs_runtime/include/hhs_runtime_exact_abi.h \
+            hhs_runtime/c/hhs_runtime_exact_abi.c
+
+      - name: Verify exact combined source and gate offsets
+        run: |
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          assert len(source) == 632
+          offsets = []
+          start = 0
+          while True:
+              index = source.find(b'==', start)
+              if index < 0:
+                  break
+              offsets.append(index)
+              start = index + 2
+          assert offsets == [96, 240, 266, 274, 285], offsets
+          assert source.count(b'=') == 16
+          assert source.count(b'==') == 5
+          assert source.count(b'=') - source.count(b'==') == 11
+          PY
+
+      - name: Prove frozen Pass169 anchor is contract authorization only
+        run: |
+          python - <<'PY'
+          import subprocess
+          anchor = '62e296024b27ff3209e3ef2ac4a2d565e03296ca'
+          files = subprocess.check_output(
+              ['git', 'show', '--format=', '--name-only', anchor], text=True
+          ).splitlines()
+          files = [item for item in files if item]
+          assert files == [
+              'HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md'
+          ], files
+          PY
+          grep -F 'This contract authorizes implementation. It does not by itself prove' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'emits Hash72 execution receipts' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'supports deterministic replay, reversal, repair, and divergence localization' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+
+      - name: Enter inherited Pass043 validation membrane
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: .
+        run: |
+          python -m hhs_runtime.hhs_pass219_i121_validation_membrane_v1 > /tmp/i12111-preflight.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/i12111-preflight.json').read_text())
+          assert value['ok'] is True
+          assert value['canonical_monolithic_proof'] is False
+          assert value['pass169_whole_expression_admission_required'] is True
+          assert value['vm81_mutation_authority'] is False
+          assert value['hash72_commit_authority'] is False
+          PY
+
+      - name: Enforce fail-closed non-evaluating I121.11 production surface
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c
+          ! grep -En 'NcalcMatrixPower|hhs_vm_(init|reset|step|run)|hhs159_(lex|parse|build|lower|interpret|execute)|SHA256\(' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F '__attribute__((weak))' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F 'out_descriptor->test_fixture_is_authority = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F 'out_descriptor->pass159_can_substitute_for_pass169 = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F 'out_descriptor->candidate_vm81_can_substitute_for_pass169 = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F 'PASS_219_I121_11_BINDER_IMPLEMENTED_VALIDATED_PENDING_REAL_PASS169_RUNTIME_PROVIDER' \
+            HHS_PASS_219_APPEND_ONLY_PASS169_GATE_AUTHORITY_BINDING_AMENDMENT_1_21_11.md
+
+      - name: Build frozen Pass159 unchanged
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i12111-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i12111-build --parallel 2
+          ctest --test-dir /tmp/pass159-i12111-build --output-on-failure
+
+      - name: Compile cumulative exact ABI unchanged
+        run: |
+          mkdir -p /tmp/pass219-i12111
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i12111/exact.o
+
+      - name: Run production no-provider fail-closed binding
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I12111_EXPECT_PROVIDER=0 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
+            /tmp/pass219-i12111/exact.o \
+            -L/tmp/pass159-i12111-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i12111-build \
+            -o /tmp/pass219-i12111/no-provider
+          /tmp/pass219-i12111/no-provider \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Run test-only provider binding plumbing
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I12111_EXPECT_PROVIDER=1 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
+            /tmp/pass219-i12111/exact.o \
+            -L/tmp/pass159-i12111-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i12111-build \
+            -o /tmp/pass219-i12111/test-provider
+          /tmp/pass219-i12111/test-provider \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Preserve I121.8 whole-expression Pass159 distinction
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c \
+            -L/tmp/pass159-i12111-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-i12111-build \
+            -o /tmp/pass219-i12111/identity-census
+          /tmp/pass219-i12111/identity-census | tee /tmp/pass219-i12111/identity-census.txt
+          grep -F 'source_equal=0 tokens_equal=0 cst_equal=0 ast_equal=0 types_equal=0 graph_equal=0 hir_equal=0 vmir_equal=0' \
+            /tmp/pass219-i12111/identity-census.txt
+
+      - name: Re-run I121.9 global membrane conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            /tmp/pass219-i12111/exact.o \
+            -o /tmp/pass219-i12111/i1219
+          /tmp/pass219-i12111/i1219
