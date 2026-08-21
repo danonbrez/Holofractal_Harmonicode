@@ -190,6 +190,37 @@ int main(int argc, char **argv) {
         verification.decision != HHS_EXACT_PASS219_MONOLITHIC_REJECTED)
         return 21;
 
+    if (!build_proof(&proof))
+        return 22;
+    proof.proof_hash216[7] = '\0';
+    if (hhs_exact_pass219_monolithic_verify_proof(&proof, &verification) != HHS_EXACT_STATUS_OK ||
+        verification.decision != HHS_EXACT_PASS219_MONOLITHIC_REJECTED ||
+        verification.proof_identity_valid != 0U ||
+        verification.proof_packet_complete != 0U)
+        return 23;
+
+    if (!build_proof(&proof))
+        return 24;
+    proof.edge_failed_mask = UINT64_C(1) << 63U;
+    if (hhs_exact_pass219_monolithic_verify_proof(&proof, &verification) != HHS_EXACT_STATUS_OK ||
+        verification.decision != HHS_EXACT_PASS219_MONOLITHIC_REJECTED ||
+        verification.proof_packet_complete != 0U)
+        return 25;
+
+    if (!build_proof(&proof))
+        return 26;
+    proof.completed_stage_mask |= UINT32_C(0x80000000);
+    if (hhs_exact_pass219_monolithic_verify_proof(&proof, &verification) != HHS_EXACT_STATUS_OK ||
+        verification.decision != HHS_EXACT_PASS219_MONOLITHIC_REJECTED)
+        return 27;
+
+    if (!build_proof(&proof))
+        return 28;
+    proof.resolved_family_mask |= UINT32_C(0x80000000);
+    if (hhs_exact_pass219_monolithic_verify_proof(&proof, &verification) != HHS_EXACT_STATUS_OK ||
+        verification.decision != HHS_EXACT_PASS219_MONOLITHIC_REJECTED)
+        return 29;
+
     puts("PASS219_MONOLITHIC_CONSTRAINT_ABI_1_20_OK");
     return 0;
 }
