@@ -10,6 +10,7 @@ on:
       - 'contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode'
       - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
+      - 'tests/pass219/test_pass219_combined_equation_topology_1_21_8.py'
       - '.github/workflows/pass219-combined-equation-optimizer-1-21-8.yml'
       - 'docs/operations/restart/PASS_219_COMBINED_EQUATION_OPTIMIZER_1_21_8_RESTART.md'
   workflow_dispatch:
@@ -81,6 +82,7 @@ jobs:
         run: |
           python -m hhs_runtime.core_sandbox.hhs_pass219_combined_equation_optimizer_1_21_8 > /tmp/pass219-i1218.json
           python tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py
+          python tests/pass219/test_pass219_combined_equation_topology_1_21_8.py
           python - <<'PY'
           import json
           from pathlib import Path
