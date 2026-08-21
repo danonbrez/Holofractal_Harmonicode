@@ -44,11 +44,13 @@ bytes  = 632
 sha256 = 3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53
 ```
 
-The five `==` occurrences are source-bound at zero-based byte offsets:
+The five `==` occurrences are source-bound at zero-based UTF-8 byte offsets:
 
 ```text
-90, 234, 260, 268, 279
+96, 240, 266, 274, 285
 ```
+
+The initial I121.9 draft used Unicode code-point positions (`90,234,260,268,279`). Before accepting any CI evidence, that was classified as a branch-local source-span defect and repaired forward in the C verifier, C test, C++ wrapper, amendment, workflow, and this restart record. Harmonicode provenance is byte-exact, so only the UTF-8 byte offsets above are admissible.
 
 The complete source has 16 literal `=` characters and 11 equality tokens when each `==` is counted once.
 
@@ -85,20 +87,18 @@ Pass169 whole-expression authority remains required.
 
 ## Current implementation checkpoint
 
-I121.9 implementation is repository-visible through workflow-definition commit:
+The exact/synthetic workflow is present and registered. The semantic implementation was repaired forward to use exact UTF-8 gate byte offsets through workflow update commit:
 
-`f0c3ed93fa0242707faabcfd520a82b91a2d22a7`
+`c25874e3f33cd6c5f3f51e9c285ae1f1ffa47d9e`
 
-The implementation includes the C ABI, exact C implementation, cumulative ABI wiring, C++ wrapper, C/C++ conformance tests, amendment, and exact/synthetic workflow. The current restart update exists to create a subsequent PR synchronize event after the new workflow definition is present, so the newly added workflow can be registered and executed by GitHub Actions.
-
-No semantic source was changed after `f0c3ed93fa0242707faabcfd520a82b91a2d22a7` in this checkpoint update.
+This restart commit changes documentation only after that repaired semantic checkpoint.
 
 ## Required validation
 
 1. canonical main / Pass169 / Pass159 ancestry;
 2. frozen main dependencies untouched;
 3. I121.8 source/optimizer semantic files unchanged from the green I121.8 head;
-4. exact 632-byte source SHA and five gate offsets;
+4. exact 632-byte source SHA and five UTF-8 byte gate offsets;
 5. cumulative exact ABI compiles with strict C11 warnings-as-errors;
 6. C membrane conformance passes;
 7. C++ wrapper conformance passes;
@@ -112,4 +112,4 @@ No semantic source was changed after `f0c3ed93fa0242707faabcfd520a82b91a2d22a7` 
 
 ## Next action
 
-Inspect the I121.9 exact/synthetic workflow triggered by this checkpoint. Repair only I121.9 branch-local defects if any, then append terminal validation evidence here. Do not modify frozen Pass159/Pass169 or canonical `main` to make I121.9 pass.
+Inspect the I121.9 exact/synthetic workflow for the repaired UTF-8-offset head. Repair only I121.9 branch-local defects if any, then append terminal validation evidence here. Do not modify frozen Pass159/Pass169 or canonical `main` to make I121.9 pass.
