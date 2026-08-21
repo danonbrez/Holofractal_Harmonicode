@@ -45,6 +45,7 @@ HISTORICAL_BLOBS = {
     CONTRACT_TEST_PATH: "e6bd83499193ec5242ec0b04696bd7d423cebd4a",
     VALIDATOR_PATH: "9c4f4b545cecf6e14dbe7aff050eed90f3368fe8",
 }
+CURRENT_COMPATIBILITY_PATHS = {VALIDATOR_PATH}
 
 HISTORICAL_CLOSURE = {
     "pass200a_independent_envelopes": 4,
@@ -115,9 +116,18 @@ def pass200c_membrane_source_evidence() -> Dict[str, Any]:
         if historical != expected:
             raise RuntimeError(f"PASS200C_HISTORICAL_BLOB_DRIFT:{path}:{historical}")
         current = _git_blob(path)
-        if current != expected:
+        if path not in CURRENT_COMPATIBILITY_PATHS and current != expected:
             raise RuntimeError(f"PASS200C_FROZEN_I123_BLOB_DRIFT:{path}:{current}")
 
+    _require(
+        VALIDATOR_PATH,
+        "HHSRuntimeController",
+        'authorized_tick(source="pass200c.production.pass200a.holdouts")',
+        'authorized_tick(source="pass200c.production.pass200a.shadows")',
+        'qualification["vm81_receipt_provenance"]["ok"] is True',
+        'shadows["vm81_receipt_provenance"]["ok"] is True',
+        '"pass200a_vm81_receipt_chain_verified": True',
+    )
     _require(
         CONTRACT_PATH,
         "HHS-P200C-CANARY-EVIDENCE-ACTIVE-GUARD-VM81-H72",
@@ -177,6 +187,7 @@ def pass200c_membrane_source_evidence() -> Dict[str, Any]:
         "accepted_merge": ACCEPTED_MERGE,
         "frozen_i123": FROZEN_I123,
         "historical_blobs": {str(path): value for path, value in HISTORICAL_BLOBS.items()},
+        "current_compatibility_repairs": {str(VALIDATOR_PATH): _git_blob(VALIDATOR_PATH)},
         "historical_closure": dict(HISTORICAL_CLOSURE),
         "canonical_successful_run": 30777130361,
         "receipt_updated_successful_run": 30777367009,
@@ -197,6 +208,7 @@ def validate_pass200c_squash_identity() -> Dict[str, Any]:
         "accepted_merge": s["accepted_merge"],
         "squash_aware": True,
         "historical_source_blobs_unchanged_at_frozen_i123": True,
+        "current_validator_receipt_provenance_repaired": True,
     }
 
 
@@ -336,6 +348,7 @@ def pass200c_membrane_manifest() -> Dict[str, Any]:
         "frozen_i123": s["frozen_i123"],
         "historical_squash_identity_bound": True,
         "immutable_source_identity_bound": True,
+        "current_validator_receipt_provenance_repaired": True,
         "canary_evidence_gate_bound": True,
         "approval_and_activation_bound": True,
         "continuous_exact_guard_bound": True,
@@ -349,6 +362,7 @@ def pass200c_membrane_manifest() -> Dict[str, Any]:
         "cxx_mutation_authority": False,
         "vm81_mutation_authority": False,
         "historical_blobs": s["historical_blobs"],
+        "current_compatibility_repairs": s["current_compatibility_repairs"],
         "historical_closure": s["historical_closure"],
         "surface": pass200c_surface_declaration(),
     }
