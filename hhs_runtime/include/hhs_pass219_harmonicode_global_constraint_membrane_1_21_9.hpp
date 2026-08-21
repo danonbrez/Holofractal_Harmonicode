@@ -45,8 +45,9 @@ public:
         bool cross_layer_revalidation_complete,
         bool local_symbol_shadowing_detected = false
     ) noexcept {
+        /* Zero-based UTF-8 byte offsets in the exact 632-byte source. */
         static constexpr std::array<std::uint32_t, kGateCount> kGateOffsets{
-            90U, 234U, 260U, 268U, 279U
+            96U, 240U, 266U, 274U, 285U
         };
 
         Evaluation evaluation{};
