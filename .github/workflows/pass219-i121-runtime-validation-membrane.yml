@@ -89,17 +89,13 @@ jobs:
 
       - name: Diagnostic membrane regression after admitted preflight
         env:
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
           PYTHONHASHSEED: '0'
-        run: |
-          python -m pytest -q tests/pass219/test_pass219_i121_validation_membrane_v1.py
+        run: python tests/pass219/test_pass219_i121_validation_membrane_v1.py
 
       - name: Diagnostic inherited Pass191 regression after admitted preflight
         env:
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
           PYTHONHASHSEED: '0'
-        run: |
-          python -m pytest -q tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+        run: python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
 
       - name: Diagnostic exact ABI compilation after admitted preflight
         run: |
