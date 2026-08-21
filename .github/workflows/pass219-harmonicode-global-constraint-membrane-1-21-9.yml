@@ -86,7 +86,7 @@ jobs:
                   break
               offsets.append(index)
               start = index + 2
-          assert offsets == [90, 234, 260, 268, 279], offsets
+          assert offsets == [96, 240, 266, 274, 285], offsets
           assert source.count(b'=') == 16
           assert source.count(b'==') == 5
           assert source.count(b'=') - source.count(b'==') == 11
