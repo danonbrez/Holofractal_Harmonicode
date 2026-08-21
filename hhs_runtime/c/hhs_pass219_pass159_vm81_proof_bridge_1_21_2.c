@@ -12,7 +12,8 @@ static int hhs219_pass159_hash216_valid(const char *value) {
     if (value == NULL || value[HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN] != '\0')
         return 0;
     for (i = 0U; i < HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN; ++i) {
-        if (strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
+        if (value[i] == '\0' ||
+            strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
             return 0;
     }
     return 1;
@@ -23,7 +24,8 @@ static int hhs219_pass159_hash72_valid(const char *value) {
     if (value == NULL || value[HHS_EXACT_HASH72_LEN] != '\0')
         return 0;
     for (i = 0U; i < HHS_EXACT_HASH72_LEN; ++i) {
-        if (strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
+        if (value[i] == '\0' ||
+            strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
             return 0;
     }
     return 1;
@@ -293,11 +295,14 @@ HHSExactStatus hhs_exact_pass219_pass159_prove_monolithic(
         out_proof->fallback_used = compare_result.fallback_used;
 
     /*
-     * Repository census result: current Pass159 is a foundation pipeline.
-     * Its VMIR is a fixed EXACT_PROGRAM artifact, interpreter/executable
-     * receipts report a fixed three steps, and replay re-wraps receipt identity.
-     * Preserve those observed receipt fields above for diagnostics, but do not
-     * reinterpret them as canonical candidate-bound VM81 execution evidence.
+     * Canonical main authority alignment:
+     * Pass159's merged toolchain is inherited foundation authority for source,
+     * typed graph, VMIR and receipt construction. The receipt fields accessed
+     * through hhs159_internal.h are diagnostic observations only: they are not
+     * a public-ABI grant of candidate-bound VM81 proof authority. Current
+     * Pass159 VMIR remains a fixed EXACT_PROGRAM foundation artifact and replay
+     * re-wraps receipt identity, so no internal field below may self-promote to
+     * canonical VM81 execution/proof evidence.
      */
     out_proof->source_pipeline_verified =
         out_proof->source_exact == 1U &&
