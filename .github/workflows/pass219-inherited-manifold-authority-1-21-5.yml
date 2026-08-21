@@ -1,0 +1,75 @@
+name: Pass 219 Inherited Manifold Authority 1.21.5
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py'
+      - 'tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'hhs_runtime/pass219_native_universal_constraint_v1.py'
+      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
+      - 'HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md'
+      - 'hhs_runtime/include/hhs_pass219_main_authority_composition_1_21_4.h'
+      - 'hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c'
+      - 'docs/operations/restart/PASS_219_INHERITED_MANIFOLD_AUTHORITY_1_21_5_RESTART.md'
+      - '.github/workflows/pass219-inherited-manifold-authority-1-21-5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-manifold-authority:
+    name: inherited-manifold-authority (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          git merge-base --is-ancestor a1a55a4f621ff3678f5af81119439e9558cf9db4 HEAD
+          git merge-base --is-ancestor d95fa6116a46b42594e9849e46cce50216d55d68 HEAD
+
+      - name: Preserve native source identity and no alternate evaluator
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py
+          ! grep -En 'Fraction|isqrt|sqrt\(|eval\(|exec\(' \
+            hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py
+          grep -F 'verify_integrated_manifold_search' \
+            hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py
+          grep -F 'canonical_monolithic_proof": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py
+          grep -F 'pass169_whole_expression_admission_required": True' \
+            hhs_runtime/core_sandbox/hhs_pass219_inherited_manifold_authority_1_21_5.py
+
+      - name: Run inherited Pass191 authority bridge and negative conformance
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+
+      - name: Preserve Pass169 whole-expression authority boundary
+        run: |
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'lowers the accepted graph through the Pass 159 compiler surfaces' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
