@@ -109,3 +109,15 @@ def test_i121_preflight_rejects_undeclared_operation() -> None:
     )
     assert result["ok"] is False
     assert result["status"] == "REJECT_KERNEL_DERIVED_RUNTIME_PREFLIGHT"
+
+
+def run_dependency_free_conformance() -> None:
+    test_i121_validator_surfaces_are_kernel_derived_and_read_only()
+    test_i121_validation_preflight_traverses_inherited_enforcement_path()
+    test_i121_frozen_pass191_evidence_is_verified_only_after_preflight()
+    test_i121_preflight_rejects_incomplete_surface_instead_of_bypassing()
+    test_i121_preflight_rejects_undeclared_operation()
+
+
+if __name__ == "__main__":
+    run_dependency_free_conformance()
