@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - 'Makefile'
       - 'hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h'
       - 'hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c'
       - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
@@ -82,6 +83,24 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
             -o /tmp/pass219-vm81-1-21-3/adapter.o
+
+      - name: Prove runtime library tracks exact ABI aggregate changes
+        run: |
+          make clean
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass219_octonion_version|hhs_exact_pass219_monolithic_version'
+          touch hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc
+          if make -q c-abi; then
+            echo 'exact ABI dependency change did not invalidate libhhs_runtime.so'
+            exit 1
+          else
+            status=$?
+            test "$status" -eq 1
+          fi
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass219_octonion_version|hhs_exact_pass219_monolithic_version'
 
       - name: Run source lowering exact VM81 execution replay and negative gates
         run: |
