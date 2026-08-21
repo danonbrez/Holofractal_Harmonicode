@@ -34,10 +34,12 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
           fetch-depth: 0
 
-      - name: Prove additive lineage
+      - name: Prove canonical main authority lineage
         run: |
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
-          git merge-base --is-ancestor 85c237023e778e655f38f6363bab7f08907fa9b2 HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
 
       - name: Enforce exact read-only bridge authority
         run: |
