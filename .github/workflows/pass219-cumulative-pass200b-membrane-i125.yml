@@ -13,6 +13,10 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i125_pass200b.py'
+      - 'hhs_runtime/hhs_vm81_receipt_provenance_v1.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py'
+      - '.github/workflows/pass200b-governed-canary-admission.yml'
       - 'tests/pass219/test_pass219_inherited_pass200b_1_25.c'
       - 'tests/pass219/test_pass219_inherited_pass200b_1_25.cpp'
       - 'tests/pass219/test_pass219_cumulative_pass200b_membrane_i125.py'
@@ -73,16 +77,19 @@ jobs:
           test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs)" = "def9ff882023c310ffd1ab3ff0d040115f2a76b2"
           test "$(git rev-parse eb7dd08b8bc52451c2e179b68949097ade5499af:docs/pass200b/RESTART_RECORD.md)" = "435fd4f65b0d9f423e3ec6ec1a155f4d35948c13"
 
-      - name: Prove frozen I124 Pass 200B source identities
+      - name: Prove frozen core identities and I126 workflow compatibility repair
         run: |
           test "$(git hash-object HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md)" = "1e442f002bd0936090a5b7154150021e0a543948"
-          test "$(git hash-object .github/workflows/pass200b-governed-canary-admission.yml)" = "e0b2335d509839f9175c5e6a08eef6bbbd18d437"
           test "$(git hash-object hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py)" = "8034383ec6dcad463c45296c9eeb241f3e1123c5"
           test "$(git hash-object hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py)" = "67e79a10250bfa3e9678937d28ed4bc22fed9937"
           test "$(git hash-object hhs_backend/api/pass200b_canary_routes.py)" = "abb2bee87c7ad12e0d3e441840bdb0643d425b05"
           test "$(git hash-object tests/test_hhs_pass200b_governed_canary_admission_v1.py)" = "ad843727f95b517c6f9c77b2338434c6605ba5d0"
           test "$(git hash-object applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs)" = "def9ff882023c310ffd1ab3ff0d040115f2a76b2"
           test "$(git hash-object docs/pass200b/RESTART_RECORD.md)" = "435fd4f65b0d9f423e3ec6ec1a155f4d35948c13"
+          grep -Fq 'HHSRuntimeController' .github/workflows/pass200b-governed-canary-admission.yml
+          grep -Fq 'pass200b.production.pass200a.holdouts' .github/workflows/pass200b-governed-canary-admission.yml
+          grep -Fq 'pass200b.production.pass200a.shadows' .github/workflows/pass200b-governed-canary-admission.yml
+          grep -Fq 'pass200a_vm81_receipt_chain_verified' .github/workflows/pass200b-governed-canary-admission.yml
 
       - name: Reject approximate arithmetic and new authority exports
         run: |
