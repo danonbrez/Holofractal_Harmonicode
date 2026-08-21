@@ -42,17 +42,17 @@ true  -> the demarcated equation is eligible to pass the enclosing membrane
 
 Eligibility is not sufficient for final propagation. The global rules in Sections 3 and 4 must also hold.
 
-The complete I121.8 source contains exactly five `==` gate occurrences at zero-based byte offsets:
+The complete I121.8 source contains exactly five `==` gate occurrences at zero-based UTF-8 byte offsets:
 
 ```text
-90
-234
-260
-268
-279
+96
+240
+266
+274
+285
 ```
 
-Each occurrence retains independent source provenance even when value computation is shared by an optimization.
+Each occurrence retains independent source provenance even when value computation is shared by an optimization. These are byte offsets in the exact 632-byte UTF-8 source, not Unicode code-point positions.
 
 The complete source also contains 11 equality tokens when each `==` is counted as one token, and 16 literal `=` characters. Inherited Pass169 `=` binding/named-relation semantics remain intact; I121.9 does not reinterpret those bindings as five additional Boolean gates.
 
@@ -211,7 +211,7 @@ The inherited Pass169 whole-expression path remains required after I121.9 witnes
 I121.9 is implementation-validated only when exact and synthetic CI prove at least:
 
 1. exact 632-byte source SHA identity;
-2. exactly five source-bound `==` gate witnesses at the frozen offsets;
+2. exactly five source-bound `==` gate witnesses at the frozen UTF-8 byte offsets;
 3. all-five-true/shared-environment/final-revalidation input propagates the whole equation;
 4. each individual false gate rejects the whole equation;
 5. mismatched global environment identity fails closed;
