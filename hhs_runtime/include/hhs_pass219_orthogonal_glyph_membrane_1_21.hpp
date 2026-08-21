@@ -113,7 +113,9 @@ public:
         std::uint64_t equality_edge_difference_mask{};
         std::uint32_t family_difference_mask{};
         std::uint32_t stage_difference_mask{};
+        std::uint32_t verification_difference_mask{};
         bool candidate_state_identity_difference{false};
+        bool proof_identity_difference{false};
         std::array<char, HHS_HASH216_BYTES_STRLEN> equation_hash216{};
     };
 
@@ -332,6 +334,43 @@ private:
                a.xy == b.xy && a.yx == b.yx && a.zw == b.zw && a.wz == b.wz;
     }
 
+    static bool same_proof_identity(
+        const HHSExactPass219MonolithicProofV1& a,
+        const HHSExactPass219MonolithicProofV1& b
+    ) noexcept {
+        if (a.struct_size != b.struct_size || a.version != b.version ||
+            a.completed_stage_mask != b.completed_stage_mask ||
+            a.resolved_family_mask != b.resolved_family_mask ||
+            a.edge_satisfied_mask != b.edge_satisfied_mask ||
+            a.edge_failed_mask != b.edge_failed_mask ||
+            a.edge_unresolved_mask != b.edge_unresolved_mask ||
+            a.all_values_exact != b.all_values_exact ||
+            a.one_candidate_state != b.one_candidate_state ||
+            a.lhs_rhs_equal != b.lhs_rhs_equal ||
+            !same_octonion_state(a.octonion_state, b.octonion_state))
+            return false;
+        if (std::memcmp(a.source_sha256, b.source_sha256,
+                        HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES) != 0 ||
+            std::memcmp(a.source_hash216, b.source_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.ast_hash216, b.ast_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.constraint_graph_hash216, b.constraint_graph_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.vmir_hash216, b.vmir_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.candidate_state_hash216, b.candidate_state_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.proof_hash216, b.proof_hash216,
+                        HHS_EXACT_PASS219_MONOLITHIC_HASH216_STRLEN) != 0 ||
+            std::memcmp(a.family_witness_hash216, b.family_witness_hash216,
+                        sizeof(a.family_witness_hash216)) != 0 ||
+            std::memcmp(a.receipt_hash72, b.receipt_hash72,
+                        HHS_EXACT_HASH72_STRLEN) != 0)
+            return false;
+        return true;
+    }
+
     static void append_u16(std::vector<std::uint8_t>& out, std::uint16_t value) {
         out.push_back(static_cast<std::uint8_t>(value & 0xFFU));
         out.push_back(static_cast<std::uint8_t>((value >> 8U) & 0xFFU));
@@ -345,6 +384,112 @@ private:
     static void append_u64(std::vector<std::uint8_t>& out, std::uint64_t value) {
         for (std::uint32_t shift = 0U; shift < 64U; shift += 8U)
             out.push_back(static_cast<std::uint8_t>((value >> shift) & 0xFFU));
+    }
+
+    static void append_projection(
+        std::vector<std::uint8_t>& out,
+        const ExactProjection& projection
+    ) {
+        append_u32(out, projection.byte_length);
+        out.insert(
+            out.end(), projection.bytes_be.begin(),
+            projection.bytes_be.begin() + projection.byte_length);
+    }
+
+    static void append_proof_identity(
+        std::vector<std::uint8_t>& out,
+        const HHSExactPass219MonolithicProofV1& proof
+    ) {
+        append_u32(out, proof.struct_size);
+        append_u32(out, proof.version);
+        append_u32(out, proof.completed_stage_mask);
+        append_u32(out, proof.resolved_family_mask);
+        append_u64(out, proof.edge_satisfied_mask);
+        append_u64(out, proof.edge_failed_mask);
+        append_u64(out, proof.edge_unresolved_mask);
+        out.insert(out.end(), proof.source_sha256,
+                   proof.source_sha256 + HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES);
+        out.push_back(proof.all_values_exact);
+        out.push_back(proof.one_candidate_state);
+        out.push_back(proof.lhs_rhs_equal);
+        append_u32(out, proof.octonion_state.struct_size);
+        append_u32(out, proof.octonion_state.version);
+        out.push_back(proof.octonion_state.x);
+        out.push_back(proof.octonion_state.y);
+        out.push_back(proof.octonion_state.z);
+        out.push_back(proof.octonion_state.w);
+        out.push_back(proof.octonion_state.xy);
+        out.push_back(proof.octonion_state.yx);
+        out.push_back(proof.octonion_state.zw);
+        out.push_back(proof.octonion_state.wz);
+        out.insert(out.end(), proof.source_hash216,
+                   proof.source_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        out.insert(out.end(), proof.ast_hash216,
+                   proof.ast_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        out.insert(out.end(), proof.constraint_graph_hash216,
+                   proof.constraint_graph_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        out.insert(out.end(), proof.vmir_hash216,
+                   proof.vmir_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        out.insert(out.end(), proof.candidate_state_hash216,
+                   proof.candidate_state_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        out.insert(out.end(), proof.proof_hash216,
+                   proof.proof_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        for (std::size_t family = 0U;
+             family < HHS_EXACT_PASS219_MONOLITHIC_FAMILY_COUNT;
+             ++family) {
+            out.insert(
+                out.end(), proof.family_witness_hash216[family],
+                proof.family_witness_hash216[family] +
+                    HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        }
+        out.insert(out.end(), proof.receipt_hash72,
+                   proof.receipt_hash72 + HHS_EXACT_HASH72_LEN);
+    }
+
+    static void append_verification_identity(
+        std::vector<std::uint8_t>& out,
+        const HHSExactPass219MonolithicVerificationV1& verification
+    ) {
+        append_u32(out, verification.struct_size);
+        append_u32(out, verification.version);
+        append_u32(out, verification.decision);
+        append_u32(out, verification.completed_stage_mask);
+        append_u32(out, verification.resolved_family_mask);
+        append_u32(out, verification.missing_stage_mask);
+        append_u32(out, verification.missing_family_mask);
+        append_u64(out, verification.edge_satisfied_mask);
+        append_u64(out, verification.edge_failed_mask);
+        append_u64(out, verification.edge_unresolved_mask);
+        out.push_back(verification.source_identity_valid);
+        out.push_back(verification.ordered_xy_bound);
+        out.push_back(verification.proof_identity_valid);
+        out.push_back(verification.proof_packet_complete);
+        out.push_back(verification.requires_vm81_authority);
+        out.push_back(verification.monolithic_chain_ok);
+        append_u32(out, verification.floating_point_authority);
+        append_u32(out, verification.vm81_mutation_authority);
+        append_u32(out, verification.hash72_commit_authority);
+    }
+
+    static std::uint32_t verification_difference(
+        const HHSExactPass219MonolithicVerificationV1& left,
+        const HHSExactPass219MonolithicVerificationV1& right
+    ) noexcept {
+        std::uint32_t mask = 0U;
+        if (left.decision != right.decision) mask |= UINT32_C(1) << 0U;
+        if (left.source_identity_valid != right.source_identity_valid) mask |= UINT32_C(1) << 1U;
+        if (left.ordered_xy_bound != right.ordered_xy_bound) mask |= UINT32_C(1) << 2U;
+        if (left.proof_identity_valid != right.proof_identity_valid) mask |= UINT32_C(1) << 3U;
+        if (left.proof_packet_complete != right.proof_packet_complete) mask |= UINT32_C(1) << 4U;
+        if (left.requires_vm81_authority != right.requires_vm81_authority) mask |= UINT32_C(1) << 5U;
+        if (left.monolithic_chain_ok != right.monolithic_chain_ok) mask |= UINT32_C(1) << 6U;
+        if (left.missing_stage_mask != right.missing_stage_mask) mask |= UINT32_C(1) << 7U;
+        if (left.missing_family_mask != right.missing_family_mask) mask |= UINT32_C(1) << 8U;
+        if (left.floating_point_authority != right.floating_point_authority ||
+            left.vm81_mutation_authority != right.vm81_mutation_authority ||
+            left.hash72_commit_authority != right.hash72_commit_authority)
+            mask |= UINT32_C(1) << 9U;
+        return mask;
     }
 
     bool build_source_topology() noexcept {
@@ -561,7 +706,7 @@ private:
         }
 
         std::vector<std::uint8_t> material;
-        material.reserve(20000U);
+        material.reserve(24000U);
         material.push_back(static_cast<std::uint8_t>(lane_state.glyph));
         material.insert(material.end(), lane_state.equation.begin(), lane_state.equation.end());
         material.insert(material.end(), frame_bytes.begin(), frame_bytes.end());
@@ -579,21 +724,8 @@ private:
                 material.end(), thread.thread_hash216.begin(),
                 thread.thread_hash216.begin() + HHS_HASH216_BYTES_LEN);
         }
-        material.insert(
-            material.end(), lane_state.assignment.proof.source_hash216,
-            lane_state.assignment.proof.source_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
-        material.insert(
-            material.end(), lane_state.assignment.proof.ast_hash216,
-            lane_state.assignment.proof.ast_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
-        material.insert(
-            material.end(), lane_state.assignment.proof.constraint_graph_hash216,
-            lane_state.assignment.proof.constraint_graph_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
-        material.insert(
-            material.end(), lane_state.assignment.proof.vmir_hash216,
-            lane_state.assignment.proof.vmir_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
-        material.insert(
-            material.end(), lane_state.assignment.proof.candidate_state_hash216,
-            lane_state.assignment.proof.candidate_state_hash216 + HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN);
+        append_proof_identity(material, lane_state.assignment.proof);
+        append_verification_identity(material, result.verification);
         hhs_hash216_compute_bytes(material.data(), material.size(), result.lane_hash216.data());
         result.status = HHS_EXACT_STATUS_OK;
         return result;
@@ -605,7 +737,7 @@ private:
         const LaneComputation& right
     ) const {
         std::vector<std::uint8_t> material;
-        material.reserve(HHS_HASH216_BYTES_LEN * 2U + 64U);
+        material.reserve(HHS_HASH216_BYTES_LEN * 2U + 96U);
         material.push_back(static_cast<std::uint8_t>(equation.left));
         material.push_back(static_cast<std::uint8_t>(equation.right));
         append_u64(material, equation.vm_thread_difference_mask);
@@ -614,7 +746,9 @@ private:
         append_u64(material, equation.equality_edge_difference_mask);
         append_u32(material, equation.family_difference_mask);
         append_u32(material, equation.stage_difference_mask);
+        append_u32(material, equation.verification_difference_mask);
         material.push_back(equation.candidate_state_identity_difference ? 1U : 0U);
+        material.push_back(equation.proof_identity_difference ? 1U : 0U);
         material.insert(material.end(), left.lane_hash216.begin(), left.lane_hash216.begin() + HHS_HASH216_BYTES_LEN);
         material.insert(material.end(), right.lane_hash216.begin(), right.lane_hash216.begin() + HHS_HASH216_BYTES_LEN);
         hhs_hash216_compute_bytes(material.data(), material.size(), equation.equation_hash216.data());
@@ -678,11 +812,18 @@ private:
                 equation.stage_difference_mask =
                     lane_results_[i].verification.completed_stage_mask ^
                     lane_results_[j].verification.completed_stage_mask;
+                equation.verification_difference_mask = verification_difference(
+                    lane_results_[i].verification,
+                    lane_results_[j].verification);
                 equation.candidate_state_identity_difference =
                     std::memcmp(
                         lanes_[i].assignment.proof.candidate_state_hash216,
                         lanes_[j].assignment.proof.candidate_state_hash216,
                         HHS_EXACT_PASS219_MONOLITHIC_HASH216_LEN) != 0;
+                equation.proof_identity_difference =
+                    !same_proof_identity(
+                        lanes_[i].assignment.proof,
+                        lanes_[j].assignment.proof);
 
                 const bool contradiction =
                     equation.vm_thread_difference_mask != 0U ||
@@ -691,7 +832,9 @@ private:
                     equation.equality_edge_difference_mask != 0U ||
                     equation.family_difference_mask != 0U ||
                     equation.stage_difference_mask != 0U ||
-                    equation.candidate_state_identity_difference;
+                    equation.verification_difference_mask != 0U ||
+                    equation.candidate_state_identity_difference ||
+                    equation.proof_identity_difference;
                 if (contradiction) {
                     hash_contradiction(equation, lane_results_[i], lane_results_[j]);
                     contradictions_.push_back(equation);
@@ -705,6 +848,8 @@ private:
         material.insert(
             material.end(), source_topology_hash216_.begin(),
             source_topology_hash216_.begin() + HHS_HASH216_BYTES_LEN);
+        append_projection(material, a2_);
+        append_projection(material, delta_);
         for (const auto& lane_hash : global_.lane_hash216)
             material.insert(material.end(), lane_hash.begin(), lane_hash.begin() + HHS_HASH216_BYTES_LEN);
         for (const ContradictionEquation& equation : contradictions_)
