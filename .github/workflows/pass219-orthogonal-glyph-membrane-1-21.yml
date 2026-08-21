@@ -21,7 +21,9 @@ on:
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
       - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
       - 'HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_AMENDMENT_1_21_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_VM81_CIRCUIT_REPAIR_1_21_1.md'
       - 'docs/operations/restart/PASS_219_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_1_21_RESTART.md'
+      - 'docs/operations/restart/PASS_219_ORTHOGONAL_GLYPH_VM81_CIRCUIT_REPAIR_1_21_1_RESTART.md'
       - '.github/workflows/pass219-orthogonal-glyph-membrane-1-21.yml'
   workflow_dispatch:
 
@@ -46,7 +48,7 @@ jobs:
       - name: Prove additive lineage
         run: |
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
-          git merge-base --is-ancestor 85c237023e778e655f38f6363bab7f08907fa9b2 HEAD
+          git merge-base --is-ancestor 95a5370dfe20d8d6b26a89401fb60d7085aa7721 HEAD
 
       - name: Enforce source-defined exact membrane authority
         run: |
@@ -66,6 +68,12 @@ jobs:
           grep -F 'hhs188_transition_projected' \
             hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
           grep -F 'hhs189_encode_context' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'append_proof_identity' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'append_verification_identity' \
+            hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
+          grep -F 'append_projection(material, a2_)' \
             hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
           grep -F 'native_shared_invariant_proven = false' \
             hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp
