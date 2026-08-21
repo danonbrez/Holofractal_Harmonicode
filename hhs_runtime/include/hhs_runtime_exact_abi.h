@@ -24,6 +24,7 @@
 #include "hhs_pass219_octonion_runtime_1_19.h"
 #include "hhs_pass219_monolithic_constraint_abi_1_20.h"
 #include "hhs_pass219_authority_router_1_21_6.h"
+#include "hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
 #include "hhs_pass219b_universal_phase_locality_1_0.h"
 #endif
