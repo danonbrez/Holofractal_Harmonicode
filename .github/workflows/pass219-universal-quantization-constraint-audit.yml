@@ -12,6 +12,7 @@ on:
       - 'docs/pass219/APPENDIX_G_UNIVERSAL_QUANTIZATION_CONSTRAINT_ENFORCEMENT_LAW.md'
       - 'docs/pass219/APPENDIX_H_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE.md'
       - 'docs/pass219/APPENDIX_I_NESTED_MODULAR_FIBONACCI_COMPRESSION.md'
+      - 'docs/operations/restart/PASS_219B_I6_INHERITED_RUNTIME_CONFORMANCE_RESTART.md'
       - 'hhs_runtime/pass219_quantization_constraint_reference_v1.py'
       - 'hhs_runtime/pass219_native_universal_constraint_v1.py'
       - 'hhs_runtime/pass219_fibonacci_compression_reference_v1.py'
