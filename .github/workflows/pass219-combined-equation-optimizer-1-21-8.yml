@@ -12,6 +12,7 @@ on:
       - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_topology_1_21_8.py'
       - 'tests/pass219/test_pass219_combined_equation_pass159_frontend_1_21_8.c'
+      - 'tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py'
       - '.github/workflows/pass219-combined-equation-optimizer-1-21-8.yml'
       - 'docs/operations/restart/PASS_219_COMBINED_EQUATION_OPTIMIZER_1_21_8_RESTART.md'
   workflow_dispatch:
@@ -48,6 +49,8 @@ jobs:
             hhs_runtime/hhs_runtime_constraint_enforcement_binding_v1.py \
             hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py \
             hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+            hhs_runtime/core_sandbox/hhs_octonion_digital_dna_u72_table_v1.py \
+            hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py \
             HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
             docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md \
             hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h \
@@ -68,7 +71,8 @@ jobs:
       - name: Enforce read-only optimization boundary
         run: |
           ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
-            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py \
+            tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py
           grep -F 'projection_substitution_authorized": False' \
             hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
           grep -F 'algebraic_cancellation_authorized": False' \
@@ -86,6 +90,7 @@ jobs:
           python -m hhs_runtime.core_sandbox.hhs_pass219_combined_equation_optimizer_1_21_8 > /tmp/pass219-i1218.json
           python tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py
           python tests/pass219/test_pass219_combined_equation_topology_1_21_8.py
+          python tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py
           python - <<'PY'
           import json
           from pathlib import Path
