@@ -30,12 +30,21 @@ def test_combined_equation_identity_and_repeated_denominator() -> None:
     assert result["ok"] is True
     assert result["combined_source_sha256"] == COMBINED_SHA256
     assert result["denominator_occurrences"] == 2
+    assert len(result["denominator_occurrence_offsets"]) == 2
+    assert result["denominator_occurrence_offsets"][0] < result["denominator_occurrence_offsets"][1]
     assert result["common_subexpression_identity_verified"] is True
-    assert result["baseline_denominator_evaluations"] == 2
-    assert result["planned_denominator_evaluations"] == 1
-    assert result["duplicate_denominator_evaluations_eliminated"] == 1
+    assert result["source_occurrence_provenance_preserved"] is True
+
+    # Value work may be memoized, but the two source occurrences remain two
+    # independently witnessed bindings.  No receipt/provenance edge is erased.
+    assert result["baseline_denominator_value_evaluations"] == 2
+    assert result["candidate_denominator_value_evaluations"] == 1
+    assert result["candidate_denominator_value_evaluations_avoided"] == 1
+    assert result["denominator_source_occurrence_witnesses_required"] == 2
+    assert result["denominator_memoized_value_nodes_candidate"] == 1
+    assert result["execution_receipt_count_reduction_authorized"] is False
     assert result["compute_denominator_once_candidate"] is True
-    assert result["reuse_same_denominator_identity_on_lhs_and_rhs"] is True
+    assert result["reuse_same_denominator_value_on_lhs_and_rhs"] is True
 
 
 def test_ordered_perimeter_matches_two_interleaving_four_cycles() -> None:
@@ -58,9 +67,14 @@ def test_denominator_magnitude_projection_is_bound_not_substituted() -> None:
     assert result["projection_center_cells"] == 1
     assert result["projection_unit_definition"] == "1=u⁷²"
     assert result["center_relation"] == "x+y+z+w=0/u⁷²"
-    assert result["baseline_projection_cell_checks"] == 9
+
+    # The fast path replaces six general checks with six exact phase witnesses;
+    # it never reduces the final nine-cell verification obligation.
+    assert result["baseline_projection_general_evaluations"] == 9
+    assert result["candidate_projection_general_evaluations"] == 3
+    assert result["candidate_projection_exact_phase_witness_checks"] == 6
+    assert result["final_projection_cells_verified"] == 9
     assert result["candidate_projection_orbit_representatives"] == 3
-    assert result["candidate_projection_checks_eliminated"] == 6
     assert result["projection_fast_path_candidate_only"] is True
     assert result["projection_derivation_authority"] is False
     assert result["projection_substitution_authorized"] is False
@@ -81,7 +95,7 @@ def test_no_algebraic_or_authority_promotion() -> None:
 
 def test_mutating_ordered_product_rejects_combined_identity() -> None:
     valid = verify_combined_equation_optimizer()
-    source = valid["preflight"]  # exercise first so rejection cannot bypass preflight
+    source = valid["preflight"]
     assert source["ok"] is True
     from pathlib import Path
     root = Path(__file__).resolve().parents[2]
