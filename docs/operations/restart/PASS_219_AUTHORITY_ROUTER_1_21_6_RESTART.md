@@ -15,7 +15,7 @@
 
 `AUTHORITY_ROLE_AMBIGUITY — FAIL_CLOSED_RUNTIME_ROUTING_REPAIR`
 
-I121.5 proved that canonical main already contains frozen Pass191 exact-context execution/manifold evidence for the exact I120 native source. That discovery creates a new downstream hazard if later native code treats the strongest available evidence as canonical whole-expression authority.
+I121.5 proved that canonical main already contains frozen Pass191 exact-context execution/manifold evidence for the exact I120 native source. That discovery creates a downstream hazard if later native code treats the strongest available evidence as canonical whole-expression authority.
 
 I121.6 therefore makes the evidence/authority distinction compiler-visible in the cumulative exact C ABI.
 
@@ -38,7 +38,7 @@ The router has only one successful route decision:
 
 `HHS_EXACT_PASS219_AUTHORITY_ROUTE_PASS169_REQUIRED`
 
-There is deliberately no `CANONICAL_PROVEN` route decision in the public enum.
+There is deliberately no public `HHS_EXACT_PASS219_AUTHORITY_ROUTE_CANONICAL_PROVEN` decision.
 
 ## Fail-closed evidence dependencies
 
@@ -98,16 +98,26 @@ The root Makefile's existing dynamic exact-aggregate dependency census includes 
 - `a7823593126f790a804312e7ce4160e4adc59e0d` — C positive/negative conformance
 - `82f51600a0567266f4b4b70e89731c80596d1d39` — C++ ABI conformance
 - `85f87edfd96b458962b5042ec9774bcb94078a53` — exact/synthetic workflow
+- `8c982f43ff0ef8ad65659adf995f4228e99fb778` — repair CI guard to reject an actual canonical-proof decision symbol rather than explanatory documentation text
 
 ## Validation state
 
 I121.5 Actions run `32459705059` was observed on the I121.5 head. Both exact and synthetic jobs terminated failure with `steps=null` and no logs, matching the repository-wide runner failure affecting unrelated Pass159, VM81, UQCEL, RNA, Pass217, and Pass218 jobs in the same batch. This is infrastructure evidence, not a code verdict.
 
-I121.6 requires:
+The first I121.6 Actions run was `32460165739`:
+
+- exact job `96705344179` — `failure`, `steps=null`, no logs;
+- synthetic job `96705344429` — `failure`, `steps=null`, no logs.
+
+Neither job reached checkout or executed the workflow. Simultaneous unrelated workflows again showed the same zero-step failure signature. The result is therefore runner/infrastructure evidence only.
+
+Static QA after that zero-step run found a workflow guard precision defect: the header documentation legitimately contained the phrase `CANONICAL_PROVEN`, while the guard rejected that text anywhere in the header. Commit `8c982f43...` repaired the guard to reject only the forbidden public route symbol `HHS_EXACT_PASS219_AUTHORITY_ROUTE_CANONICAL_PROVEN`. No runtime semantics changed.
+
+I121.6 requires successful execution of:
 
 1. canonical-main ancestry for Pass169/186/189/191 evidence;
 2. no floating-point fields or operations in the authority router;
-3. no public `CANONICAL_PROVEN` route decision;
+3. no public canonical-proof route decision;
 4. cumulative exact ABI compilation;
 5. C evidence-tier and malformed-bundle tests;
 6. C++ ABI consumption;
@@ -115,6 +125,19 @@ I121.6 requires:
 8. Pass169 whole-expression contract lock.
 
 Do not mark I121.6 validated until an exact and synthetic job executes these steps successfully.
+
+## Current lineage census
+
+At pre-finalization head `248584358e23299dc41323f044cc13b670958721`, comparison against canonical main reported:
+
+```text
+merge base = f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf
+ahead      = 94
+behind     = 0
+status     = ahead
+```
+
+The workflow guard repair is additive after that checkpoint. Canonical `main` remains unchanged.
 
 ## Next semantic boundary
 
