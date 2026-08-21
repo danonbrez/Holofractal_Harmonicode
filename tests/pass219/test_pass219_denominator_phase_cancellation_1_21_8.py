@@ -21,7 +21,13 @@ def _module_literal(path: Path, name: str):
     raise AssertionError(f"missing frozen literal {name} in {path}")
 
 
-def _pass129_spec_literal() -> dict:
+def _pass129_phase_literals() -> dict:
+    wanted = {
+        "phase_carrier",
+        "phase_weights",
+        "four_phase_product_semantics",
+        "ordinary_unnormalized_product_is_not_equivalent",
+    }
     tree = ast.parse(PASS129_PATH.read_text(encoding="utf-8"), filename=str(PASS129_PATH))
     for node in tree.body:
         if not isinstance(node, ast.ClassDef) or node.name != "InvariantDeltaProjectionAlgebra":
@@ -30,24 +36,35 @@ def _pass129_spec_literal() -> dict:
             if not isinstance(member, ast.FunctionDef) or member.name != "_build_spec":
                 continue
             for stmt in member.body:
-                if isinstance(stmt, ast.Assign):
-                    if any(isinstance(target, ast.Name) and target.id == "spec" for target in stmt.targets):
-                        return ast.literal_eval(stmt.value)
-    raise AssertionError("missing frozen Pass129 spec literal")
+                if not isinstance(stmt, ast.Assign):
+                    continue
+                if not any(isinstance(target, ast.Name) and target.id == "spec" for target in stmt.targets):
+                    continue
+                if not isinstance(stmt.value, ast.Dict):
+                    raise AssertionError("frozen Pass129 spec is not a dict literal")
+                result = {}
+                for key_node, value_node in zip(stmt.value.keys, stmt.value.values):
+                    if key_node is None:
+                        continue
+                    key = ast.literal_eval(key_node)
+                    if key in wanted:
+                        result[key] = ast.literal_eval(value_node)
+                if set(result) != wanted:
+                    raise AssertionError(f"missing frozen Pass129 phase literals: {sorted(wanted - set(result))}")
+                return result
+    raise AssertionError("missing frozen Pass129 phase spec")
 
 
 PHASE_RING = int(_module_literal(U72_TABLE_PATH, "PHASE_RING"))
 BASIS_PHASE_INDEX = dict(_module_literal(U72_TABLE_PATH, "BASIS_PHASE_INDEX"))
-PASS129_SPEC = _pass129_spec_literal()
+PASS129_PHASE = _pass129_phase_literals()
 
-# Ordered numerator matrix projected onto the frozen named u72 basis.
 NUMERATOR_BASIS = (
     ("x", "w", "yx"),
     ("wz", None, "zw"),
     ("xy", "z", "y"),
 )
 
-# Exact symbolic phase-carrier exponents in the supplied denominator matrix.
 DENOMINATOR_I_EXPONENT = (
     (1, 3, 2),
     (2, None, 4),
@@ -67,23 +84,15 @@ OUTER_CLOCKWISE = (
 
 
 def _carrier_phase(exponent: int) -> int:
-    # Pass129 fixes a four-member ordered carrier [I,I^2,I^3,I^4].  I121.8
-    # projects those four positions onto the inherited 72-phase ring at exact
-    # quarter-ring spacing.  This is a projection witness only; it does not
-    # redefine either frozen source file or claim VM81 admission authority.
     assert PHASE_RING == 72
     assert exponent in (1, 2, 3, 4)
-    phase_cardinality = len(PASS129_SPEC["phase_carrier"])
+    phase_cardinality = len(PASS129_PHASE["phase_carrier"])
     assert phase_cardinality == 4
     assert PHASE_RING % phase_cardinality == 0
     return (exponent * (PHASE_RING // phase_cardinality)) % PHASE_RING
 
 
 def test_frozen_phase_authority_files_are_read_as_data_not_executed() -> None:
-    # The historical u72 table currently imports an unavailable helper through
-    # its own legacy dependency chain.  This thread is not authorized to repair
-    # that frozen dependency.  AST literal extraction lets this diagnostic bind
-    # its immutable declared phase constants without executing or modifying it.
     assert U72_TABLE_PATH.exists()
     assert PASS129_PATH.exists()
     assert PHASE_RING == 72
@@ -91,10 +100,10 @@ def test_frozen_phase_authority_files_are_read_as_data_not_executed() -> None:
 
 
 def test_frozen_four_phase_carrier_order_is_preserved() -> None:
-    assert PASS129_SPEC["phase_carrier"] == ["I", "I^2", "I^3", "I^4"]
-    assert PASS129_SPEC["phase_weights"] == ["I", "-1", "-I", "1"]
-    assert PASS129_SPEC["four_phase_product_semantics"] == "CARDINALITY_NORMALIZED_TYPED_PRODUCT"
-    assert PASS129_SPEC["ordinary_unnormalized_product_is_not_equivalent"] is True
+    assert PASS129_PHASE["phase_carrier"] == ["I", "I^2", "I^3", "I^4"]
+    assert PASS129_PHASE["phase_weights"] == ["I", "-1", "-I", "1"]
+    assert PASS129_PHASE["four_phase_product_semantics"] == "CARDINALITY_NORMALIZED_TYPED_PRODUCT"
+    assert PASS129_PHASE["ordinary_unnormalized_product_is_not_equivalent"] is True
 
 
 def test_phase_matrix_matches_every_frozen_outer_basis_anchor() -> None:
@@ -118,7 +127,6 @@ def test_all_eight_outer_quotient_phase_residues_are_u72_closure() -> None:
         residue = (numerator_phase - denominator_phase) % PHASE_RING
         residues.append(residue)
     assert residues == [0] * 8
-    # The frozen u72 table denotes phase-zero xy/zw carriers as u^72 closure.
     assert BASIS_PHASE_INDEX["xy"] == 0
     assert BASIS_PHASE_INDEX["zw"] == 0
 
