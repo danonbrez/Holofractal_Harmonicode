@@ -17,7 +17,16 @@ extern "C" {
 #define HHS_EXACT_PASS219_VM81_PARENTHESIS_THREADS 34U
 #define HHS_EXACT_PASS219_VM81_EQUALITY_HALF_GATE_THREADS 15U
 #define HHS_EXACT_PASS219_VM81_SOURCE_STRUCTURE_THREADS 49U
-#define HHS_EXACT_PASS219_VM81_DERIVED_THREADS 15U
+#define HHS_EXACT_PASS219_VM81_CANDIDATE_COMPLETION_THREADS 15U
+/*
+ * Historical source-compatible name retained for 1.21.3 callers. These slots
+ * are candidate-completion operations, not proof that canonical Pass159 VMIR
+ * produced their effects. Main-history alignment requires a separate verified
+ * VMIR -> candidate-effect binding before they may be called VMIR-derived in
+ * an authority claim.
+ */
+#define HHS_EXACT_PASS219_VM81_DERIVED_THREADS \
+    HHS_EXACT_PASS219_VM81_CANDIDATE_COMPLETION_THREADS
 #define HHS_EXACT_PASS219_VM81_NEXT_EDGES 4U
 #define HHS_EXACT_PASS219_VM81_SYMBOL_COUNT 24U
 #define HHS_EXACT_PASS219_VM81_MAX_EXECUTION_STEPS 4096U
@@ -96,6 +105,7 @@ typedef struct HHSExactPass219VM81ProgramV1 {
     uint32_t version;
     uint32_t instruction_count;
     uint32_t source_structure_thread_count;
+    /* Historical field name: counts candidate-completion slots in 1.21.3. */
     uint32_t derived_thread_count;
     uint32_t semantic_family_coverage_mask;
     uint64_t equality_edge_coverage_mask;
@@ -106,6 +116,7 @@ typedef struct HHSExactPass219VM81ProgramV1 {
     uint8_t z_cell81;
     uint8_t w_cell81;
     uint8_t source_structure_complete;
+    /* Complete as an executable candidate circuit, not as symbolic semantics. */
     uint8_t effectful_lowering_complete;
     uint8_t source_semantics_complete;
     uint8_t full_symbolic_identity_required;
@@ -178,13 +189,18 @@ HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_adapter_version(void);
 
 /*
  * Lower the frozen 1.20 native source topology into one effectful 64-thread
- * VM81 program. The lowerer preserves all 34 parenthesis shells and all 15
- * literal equality half-gates, then fills the inherited 15 derived slots with
- * semantic-family constraint registration, ordered-phase witness operations,
- * closure operations, an exact identity-gate probe, and HALT.
+ * VM81 candidate program. The lowerer preserves all 34 parenthesis shells and
+ * all 15 literal equality half-gates, then fills the inherited 15 completion
+ * slots with semantic-family constraint registration, ordered-phase witness
+ * operations, closure operations, an exact identity-gate probe, and HALT.
  *
- * This is deliberately classified as effectful but semantically incomplete:
- * the current exact kernel identity gate cannot prove the entire symbolic
+ * IMPORTANT MAIN-AUTHORITY CLASSIFICATION: these 15 completion operations are
+ * not claimed to have been emitted by the canonical Pass159 VMIR artifact.
+ * 1.21.3 proves executable candidate completion only. A later composition gate
+ * must independently bind Pass159 VMIR identity/effects to this candidate before
+ * any VMIR-derived authority claim is permitted.
+ *
+ * The current exact kernel identity gate also cannot prove the entire symbolic
  * radical/modular equality chain, so source_semantics_complete remains zero.
  */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_lower_monolithic_structure(
