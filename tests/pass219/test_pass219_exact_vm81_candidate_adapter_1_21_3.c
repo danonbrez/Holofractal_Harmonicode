@@ -163,6 +163,15 @@ int main(void) {
     }
 
     {
+        HHSExactPass219VM81ProgramV1 forged_semantics = program;
+        forged_semantics.source_semantics_complete = 1U;
+        if (hhs_exact_pass219_vm81_execute_candidate(
+                &forged_semantics, &candidate, &execution) !=
+            HHS_EXACT_STATUS_INVARIANT_FAILURE)
+            return 19;
+    }
+
+    {
         HHSExactPass219VM81ExecutionV1 forged_expected = replay.replay;
         HHSExactPass219VM81ReplayV1 negative_replay;
         forged_expected.after_frame.words[40] ^= UINT64_C(1);
@@ -172,7 +181,7 @@ int main(void) {
                 HHS_EXACT_STATUS_INVARIANT_FAILURE ||
             negative_replay.replay_verified != 0U ||
             negative_replay.frame_equal != 0U)
-            return 19;
+            return 20;
     }
 
     puts("PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3_OK_PROOF_STILL_FAIL_CLOSED");
