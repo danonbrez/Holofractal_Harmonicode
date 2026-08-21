@@ -45,10 +45,14 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
           fetch-depth: 0
 
-      - name: Prove additive lineage
+      - name: Prove canonical main authority lineage
         run: |
           git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
-          git merge-base --is-ancestor 95a5370dfe20d8d6b26a89401fb60d7085aa7721 HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor eb88a4b88ab8c598458c0e48c0f4f9db77f81654 HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          git merge-base --is-ancestor c77e3feef42448a111d8b8912a1d1cb157d51925 HEAD
+          git merge-base --is-ancestor a1a55a4f621ff3678f5af81119439e9558cf9db4 HEAD
 
       - name: Enforce source-defined exact membrane authority
         run: |
