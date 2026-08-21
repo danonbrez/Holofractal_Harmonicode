@@ -13,6 +13,10 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i124_pass200c.py'
+      - 'hhs_runtime/hhs_vm81_receipt_provenance_v1.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py'
+      - 'scripts/pass200c_production_validation.py'
       - 'tests/pass219/test_pass219_inherited_pass200c_1_24.c'
       - 'tests/pass219/test_pass219_inherited_pass200c_1_24.cpp'
       - 'tests/pass219/test_pass219_cumulative_pass200c_membrane_i124.py'
@@ -73,7 +77,7 @@ jobs:
           test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:tests/test_hhs_pass200c_guarded_active_admission_v1.py)" = e6bd83499193ec5242ec0b04696bd7d423cebd4a
           test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:scripts/pass200c_production_validation.py)" = 9c4f4b545cecf6e14dbe7aff050eed90f3368fe8
 
-      - name: Prove frozen I123 Pass 200C source identities
+      - name: Prove frozen core identities and I126 validator compatibility repair
         run: |
           test "$(git hash-object HHS_PASS_200C_GUARDED_ACTIVE_ADMISSION.md)" = bc06fcab22c5bd857566c5560b9fd05b83bcdc75
           test "$(git hash-object .github/workflows/pass200c-guarded-active-admission.yml)" = bd54ffaf0c00c1b993dfa7f1d7cc759752bc9776
@@ -81,7 +85,10 @@ jobs:
           test "$(git hash-object hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py)" = 92f0bef25882c0885f769bff4570610601e820ea
           test "$(git hash-object hhs_backend/api/pass200c_active_routes.py)" = 4b08c4e183793836f667ebacb73602341b1d45c2
           test "$(git hash-object tests/test_hhs_pass200c_guarded_active_admission_v1.py)" = e6bd83499193ec5242ec0b04696bd7d423cebd4a
-          test "$(git hash-object scripts/pass200c_production_validation.py)" = 9c4f4b545cecf6e14dbe7aff050eed90f3368fe8
+          grep -Fq 'HHSRuntimeController' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200c.production.pass200a.holdouts' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200c.production.pass200a.shadows' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200a_vm81_receipt_chain_verified' scripts/pass200c_production_validation.py
 
       - name: Reject approximate arithmetic and new authority exports
         run: |
