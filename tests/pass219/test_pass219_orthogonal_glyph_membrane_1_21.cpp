@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdio>
 #include <cstring>
+#include <memory>
 
 using hhs::rna::OrthogonalGlyphMembrane;
 
@@ -15,7 +16,8 @@ static bool hash216_valid(const std::array<char, HHS_HASH216_BYTES_STRLEN>& hash
     if (hash[HHS_HASH216_BYTES_LEN] != '\0')
         return false;
     for (std::size_t i = 0U; i < HHS_HASH216_BYTES_LEN; ++i) {
-        if (std::strchr(HHS_EXACT_HASH72_ALPHABET, hash[i]) == nullptr)
+        if (hash[i] == '\0' ||
+            std::strchr(HHS_EXACT_HASH72_ALPHABET, hash[i]) == nullptr)
             return false;
     }
     return true;
@@ -107,8 +109,8 @@ int main(int argc, char** argv) {
     HHSExactBigUIntView delta{
         static_cast<std::uint32_t>(sizeof(HHSExactBigUIntView)), 1U, &delta_byte};
 
-    OrthogonalGlyphMembrane membrane(a2, delta);
-    if (membrane.status() != HHS_EXACT_STATUS_OK)
+    auto membrane = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
+    if (membrane->status() != HHS_EXACT_STATUS_OK)
         return 1;
 
     if (OrthogonalGlyphMembrane::lane_count != 24U ||
@@ -121,7 +123,7 @@ int main(int argc, char** argv) {
         OrthogonalGlyphMembrane::vmir_derived_thread_count != 15U)
         return 2;
 
-    const auto& source_threads = membrane.source_threads();
+    const auto& source_threads = membrane->source_threads();
     for (std::size_t i = 0U; i < OrthogonalGlyphMembrane::parenthesis_thread_count; ++i) {
         if (source_threads[i].kind != OrthogonalGlyphMembrane::ThreadKind::ParenthesisShell)
             return 3;
@@ -141,7 +143,7 @@ int main(int argc, char** argv) {
     }
 
     if (argc == 2 && std::strcmp(argv[1], "--dump-source") == 0) {
-        const auto& equation = membrane.lane(OrthogonalGlyphMembrane::Glyph::P).equation;
+        const auto& equation = membrane->lane(OrthogonalGlyphMembrane::Glyph::P).equation;
         return std::fwrite(equation.data(), 1U, equation.size(), stdout) == equation.size()
             ? 0
             : 6;
@@ -153,17 +155,17 @@ int main(int argc, char** argv) {
         if (assignments[i].proof.struct_size == 0U)
             return 7;
     }
-    if (membrane.assign_all(assignments) != HHS_EXACT_STATUS_OK)
+    if (membrane->assign_all(assignments) != HHS_EXACT_STATUS_OK)
         return 8;
-    if (membrane.compute_parallel() != HHS_EXACT_STATUS_OK || !membrane.computed())
+    if (membrane->compute_parallel() != HHS_EXACT_STATUS_OK || !membrane->computed())
         return 9;
 
     for (std::size_t i = 0U; i < OrthogonalGlyphMembrane::lane_count; ++i) {
         const auto glyph = static_cast<OrthogonalGlyphMembrane::Glyph>(i);
-        const auto& lane = membrane.lane(glyph);
-        const auto& result = membrane.lane_result(glyph);
+        const auto& lane = membrane->lane(glyph);
+        const auto& result = membrane->lane_result(glyph);
         if (lane.glyph != glyph ||
-            lane.equation != membrane.lane(OrthogonalGlyphMembrane::Glyph::P).equation)
+            lane.equation != membrane->lane(OrthogonalGlyphMembrane::Glyph::P).equation)
             return 10;
         if (result.status != HHS_EXACT_STATUS_OK ||
             !result.full_vm5184_address_closure || !result.full_hydration_roundtrip ||
@@ -193,7 +195,9 @@ int main(int argc, char** argv) {
             return 16;
     }
 
-    const auto& global = membrane.global();
+    const auto baseline_graph = membrane->global().contradiction_graph_hash216;
+    const auto baseline_lane_hashes = membrane->global().lane_hash216;
+    const auto& global = membrane->global();
     if (!global.source_topology_exact || !global.all_lanes_computed ||
         !global.a2_delta_exact_projection_equal ||
         !global.every_lane_xy_zw_projection_equal ||
@@ -207,57 +211,117 @@ int main(int argc, char** argv) {
     constexpr std::uint32_t expected_pairs = static_cast<std::uint32_t>(
         (OrthogonalGlyphMembrane::lane_count * (OrthogonalGlyphMembrane::lane_count - 1U)) / 2U);
     if (global.emergent_equation_count != expected_pairs ||
-        membrane.contradictions().size() != expected_pairs)
+        membrane->contradictions().size() != expected_pairs)
         return 18;
-    for (const auto& equation : membrane.contradictions()) {
+    for (const auto& equation : membrane->contradictions()) {
         if (!hash216_valid(equation.equation_hash216) ||
             equation.vm_thread_difference_mask == 0U ||
             equation.vm81_cell_difference_count == 0U ||
-            !equation.candidate_state_identity_difference)
+            !equation.candidate_state_identity_difference ||
+            !equation.proof_identity_difference)
             return 19;
     }
     if (!hash216_valid(global.source_topology_hash216) ||
         !hash216_valid(global.contradiction_graph_hash216))
         return 20;
 
-    const auto graph_before = global.contradiction_graph_hash216;
-    const auto lane_before = global.lane_hash216;
-    if (membrane.compute_parallel() != HHS_EXACT_STATUS_OK ||
-        graph_before != membrane.global().contradiction_graph_hash216 ||
-        lane_before != membrane.global().lane_hash216)
+    if (membrane->compute_parallel() != HHS_EXACT_STATUS_OK ||
+        baseline_graph != membrane->global().contradiction_graph_hash216 ||
+        baseline_lane_hashes != membrane->global().lane_hash216)
         return 21;
+
+    /* Exact a² and Delta bytes participate in global identity, not only equality. */
+    std::uint8_t value2_a2_byte = 2U;
+    std::uint8_t value2_delta_byte = 2U;
+    HHSExactBigUIntView value2_a2{
+        static_cast<std::uint32_t>(sizeof(HHSExactBigUIntView)), 1U, &value2_a2_byte};
+    HHSExactBigUIntView value2_delta{
+        static_cast<std::uint32_t>(sizeof(HHSExactBigUIntView)), 1U, &value2_delta_byte};
+    auto value2_membrane = std::make_unique<OrthogonalGlyphMembrane>(value2_a2, value2_delta);
+    if (value2_membrane->status() != HHS_EXACT_STATUS_OK ||
+        value2_membrane->assign_all(assignments) != HHS_EXACT_STATUS_OK ||
+        value2_membrane->compute_parallel() != HHS_EXACT_STATUS_OK ||
+        !value2_membrane->global().a2_delta_exact_projection_equal ||
+        value2_membrane->global().contradiction_graph_hash216 == baseline_graph)
+        return 22;
+
+    /* Proof/receipt identity changes must perturb lane/global Hash216 identities. */
+    auto proof_assignments = assignments;
+    proof_assignments[0].proof.proof_hash216[0] = '6';
+    proof_assignments[0].proof.receipt_hash72[0] = 'b';
+    auto proof_membrane = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
+    if (proof_membrane->status() != HHS_EXACT_STATUS_OK ||
+        proof_membrane->assign_all(proof_assignments) != HHS_EXACT_STATUS_OK ||
+        proof_membrane->compute_parallel() != HHS_EXACT_STATUS_OK ||
+        proof_membrane->lane_result(OrthogonalGlyphMembrane::Glyph::P).lane_hash216 ==
+            baseline_lane_hashes[0] ||
+        proof_membrane->global().contradiction_graph_hash216 == baseline_graph)
+        return 23;
+    bool saw_proof_identity_difference = false;
+    for (const auto& equation : proof_membrane->contradictions()) {
+        if (equation.left == OrthogonalGlyphMembrane::Glyph::P ||
+            equation.right == OrthogonalGlyphMembrane::Glyph::P) {
+            if (equation.proof_identity_difference)
+                saw_proof_identity_difference = true;
+        }
+    }
+    if (!saw_proof_identity_difference)
+        return 24;
+
+    /* A proof decision difference must become explicit contradiction identity. */
+    auto rejected_assignments = assignments;
+    rejected_assignments[0].proof.source_sha256[0] ^= UINT8_C(1);
+    auto rejected_membrane = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
+    if (rejected_membrane->status() != HHS_EXACT_STATUS_OK ||
+        rejected_membrane->assign_all(rejected_assignments) != HHS_EXACT_STATUS_OK ||
+        rejected_membrane->compute_parallel() != HHS_EXACT_STATUS_INVARIANT_FAILURE ||
+        rejected_membrane->lane_result(OrthogonalGlyphMembrane::Glyph::P).verification.decision !=
+            HHS_EXACT_PASS219_MONOLITHIC_REJECTED ||
+        rejected_membrane->global().rejected_lane_count != 1U)
+        return 25;
+    bool saw_verification_difference = false;
+    for (const auto& equation : rejected_membrane->contradictions()) {
+        if ((equation.left == OrthogonalGlyphMembrane::Glyph::P ||
+             equation.right == OrthogonalGlyphMembrane::Glyph::P) &&
+            equation.verification_difference_mask != 0U) {
+            saw_verification_difference = true;
+        }
+    }
+    if (!saw_verification_difference ||
+        rejected_membrane->global().contradiction_graph_hash216 == baseline_graph)
+        return 26;
 
     std::uint8_t bad_delta_byte = 2U;
     HHSExactBigUIntView bad_delta{
         static_cast<std::uint32_t>(sizeof(HHSExactBigUIntView)), 1U, &bad_delta_byte};
-    OrthogonalGlyphMembrane bad_projection(a2, bad_delta);
-    if (bad_projection.status() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 22;
+    auto bad_projection = std::make_unique<OrthogonalGlyphMembrane>(a2, bad_delta);
+    if (bad_projection->status() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
+        return 27;
 
-    OrthogonalGlyphMembrane mismatch(a2, delta);
+    auto mismatch = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
     auto mismatch_assignment = assignments[0];
     mismatch_assignment.frame.words[1] = UINT64_C(2);
-    if (mismatch.assign_lane(OrthogonalGlyphMembrane::Glyph::P, mismatch_assignment) !=
+    if (mismatch->assign_lane(OrthogonalGlyphMembrane::Glyph::P, mismatch_assignment) !=
         HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 23;
+        return 28;
 
-    OrthogonalGlyphMembrane incomplete(a2, delta);
-    if (incomplete.assign_lane(OrthogonalGlyphMembrane::Glyph::P, assignments[0]) !=
+    auto incomplete = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
+    if (incomplete->assign_lane(OrthogonalGlyphMembrane::Glyph::P, assignments[0]) !=
             HHS_EXACT_STATUS_OK ||
-        incomplete.compute_parallel() != HHS_EXACT_STATUS_INVALID_ARGUMENT)
-        return 24;
+        incomplete->compute_parallel() != HHS_EXACT_STATUS_INVALID_ARGUMENT)
+        return 29;
 
-    OrthogonalGlyphMembrane broken_xyzw(a2, delta);
+    auto broken_xyzw = std::make_unique<OrthogonalGlyphMembrane>(a2, delta);
     auto broken_assignments = assignments;
     broken_assignments[5].frame.words[1] = UINT64_C(2);
     HHSExactPass219OctonionSurfaceV1 broken_surface{};
     if (!derive_surface(broken_assignments[5].frame, broken_surface))
-        return 25;
+        return 30;
     broken_assignments[5].proof = build_proof(broken_surface.state, 5U);
-    if (broken_xyzw.assign_all(broken_assignments) != HHS_EXACT_STATUS_OK)
-        return 26;
-    if (broken_xyzw.compute_parallel() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
-        return 27;
+    if (broken_xyzw->assign_all(broken_assignments) != HHS_EXACT_STATUS_OK)
+        return 31;
+    if (broken_xyzw->compute_parallel() != HHS_EXACT_STATUS_INVARIANT_FAILURE)
+        return 32;
 
     std::puts("PASS219_ORTHOGONAL_GLYPH_MEMBRANE_1_21_VM81_CIRCUIT_OK");
     return 0;
