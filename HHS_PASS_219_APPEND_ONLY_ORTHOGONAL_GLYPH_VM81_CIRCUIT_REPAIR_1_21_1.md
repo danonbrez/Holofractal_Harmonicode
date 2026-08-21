@@ -241,12 +241,45 @@ The repair is falsified if any of the following occur:
 - thread scheduling changes lane or global Hash216 identities;
 - the C++ membrane gains canonical mutation/receipt authority.
 
-## 10. Implementation checkpoint
+## 10. Canonical authority lineage and implementation checkpoint
 
-The repair is implemented on:
+This repair branch is rooted directly in canonical `main` at:
+
+`f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
+
+The governing inherited authority is repository history already contained in that mainline, including:
+
+```text
+Pass 159 merged HARMONICODE/VM81 toolchain
+8e7ffb22286f5b6b377c778276c333607a7c2a03
+
+Pass 168 VM81 5,184-cell / 64×81 parameter circuit contract
+eb88a4b88ab8c598458c0e48c0f4f9db77f81654
+
+Pass 169 whole-expression algebra enforcement / VM81 exact symbolic authority
+62e296024b27ff3209e3ef2ac4a2d565e03296ca
+
+Pass 186 x86_64 ordered noncommutative VM81 ABI
+fd42056c22071d290945b02efe3a5752aaa3d737
+
+Pass 188 executable Bott/G243 runtime
+c77e3feef42448a111d8b8912a1d1cb157d51925
+
+Pass 189 executable HQLH/kappa41 contextual hydration runtime
+a1a55a4f621ff3678f5af81119439e9558cf9db4
+
+Frozen Pass 219 I118 ancestor
+e87bc42b17c03ff98f691838b8d573a5bdf46ff2
+```
+
+The earlier `85c237023e778e655f38f6363bab7f08907fa9b2` checkpoint records validated 1.19/1.20 implementation work, but it is **not an ancestry or canonical-authority root for PR #315**. Its implementation was carried repair-forward onto the direct-main branch without rewriting either history.
+
+Implementation branch:
 
 `agent/pass219-orthogonal-glyph-parallel-membrane-1-21`
 
-in PR `#315`, stacked above the validated 1.19/1.20 parent `85c237023e778e655f38f6363bab7f08907fa9b2`.
+Pull request:
 
-Dedicated workflow run `32375615525` is terminal green for both exact-head and synthetic-merge targets, including compilation and execution of the inherited Pass 188 and Pass 189 runtime sources and inherited 1.19/1.20 conformance.
+`#315`
+
+Historical workflow run `32375615525` remains evidence for the earlier executable 1.21.1 checkpoint. Current closure must be revalidated on the main-aligned repair head; historical green evidence is not promoted into validation of later commits.
