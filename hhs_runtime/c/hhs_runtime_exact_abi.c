@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 219 exact ordered octonion and monolithic constraint boundaries, plus Pass 219B universal phase locality. */
+/* Additive exact ABI aggregate through Pass 219 exact ordered octonion, monolithic constraint, and fail-closed authority routing boundaries, plus Pass 219B universal phase locality. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -24,5 +24,6 @@
 #include "hhs_pass219_inherited_pass206_1_18.inc"
 #include "hhs_pass219_octonion_runtime_1_19.inc"
 #include "hhs_pass219_monolithic_constraint_abi_1_20.inc"
+#include "hhs_pass219_authority_router_1_21_6.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
