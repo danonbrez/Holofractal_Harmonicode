@@ -1,0 +1,109 @@
+name: Pass 219 Combined Equation Optimizer 1.21.8
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+      - 'contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
+      - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
+      - '.github/workflows/pass219-combined-equation-optimizer-1-21-8.yml'
+      - 'docs/operations/restart/PASS_219_COMBINED_EQUATION_OPTIMIZER_1_21_8_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  combined-equation-optimizer:
+    name: combined-equation-optimizer (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+
+      - name: Prove frozen runtime dependencies are untouched
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
+            Makefile \
+            hhs_runtime/hhs_runtime_constraint_enforcement_binding_v1.py \
+            hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py \
+            hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md \
+            hhs_runtime/include/hhs_pass219b_phase_quantized_hydration_1_0.h
+
+      - name: Verify exact source identities
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            'c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412cb6d25' \
+            'contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode' | sha256sum -c -
+
+      - name: Enforce read-only optimization boundary
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+          grep -F 'projection_substitution_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+          grep -F 'algebraic_cancellation_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+          grep -F 'ncalc_matrix_power_reimplemented": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+          grep -F 'pass169_whole_expression_admission_required": True' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+
+      - name: Enter inherited Pass043 optimizer membrane and run conformance
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: '.'
+        run: |
+          python -m hhs_runtime.core_sandbox.hhs_pass219_combined_equation_optimizer_1_21_8 > /tmp/pass219-i1218.json
+          python tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/pass219-i1218.json').read_text())
+          assert value['ok'] is True
+          assert value['denominator_occurrences'] == 2
+          assert value['planned_denominator_evaluations'] == 1
+          assert value['candidate_projection_orbit_representatives'] == 3
+          assert value['projection_substitution_authorized'] is False
+          assert value['algebraic_cancellation_authorized'] is False
+          assert value['canonical_monolithic_proof'] is False
+          assert value['pass169_whole_expression_admission_required'] is True
+          PY
+
+      - name: Preserve Pass219B ordered two-ring grammar
+        run: |
+          grep -F 'x -> yx -> y -> xy -> x' docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md
+          grep -F 'w -> zw -> z -> wz -> w' docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md
+          grep -F 'x+y+z+w=0' docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md
+
+      - name: Preserve Pass169 whole-expression authority
+        run: |
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
