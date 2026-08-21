@@ -87,7 +87,8 @@ static int hhs_exact_pass219_monolithic_hash_text_valid(
     if (value == NULL || value[length] != '\0')
         return 0;
     for (i = 0U; i < length; ++i) {
-        if (strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
+        if (value[i] == '\0' ||
+            strchr(HHS_EXACT_HASH72_ALPHABET, value[i]) == NULL)
             return 0;
     }
     return 1;
@@ -333,6 +334,9 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
     const uint64_t all_edges = HHS_EXACT_PASS219_MONOLITHIC_ALL_EDGE_MASK;
     uint64_t covered_edges;
     uint64_t overlap_edges;
+    uint64_t undeclared_edges;
+    uint32_t undeclared_stages;
+    uint32_t undeclared_families;
     int source_valid;
     int ordered_xy_bound;
     int proof_hashes_valid;
@@ -378,6 +382,12 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
         (proof->edge_satisfied_mask & proof->edge_failed_mask) |
         (proof->edge_satisfied_mask & proof->edge_unresolved_mask) |
         (proof->edge_failed_mask & proof->edge_unresolved_mask);
+    undeclared_edges =
+        (proof->edge_satisfied_mask |
+         proof->edge_failed_mask |
+         proof->edge_unresolved_mask) & ~all_edges;
+    undeclared_stages = proof->completed_stage_mask & ~HHS_EXACT_PASS219_STAGE_REQUIRED;
+    undeclared_families = proof->resolved_family_mask & ~HHS_EXACT_PASS219_FAMILY_REQUIRED;
     covered_edges =
         (proof->edge_satisfied_mask |
          proof->edge_failed_mask |
@@ -388,6 +398,9 @@ HHSExactStatus hhs_exact_pass219_monolithic_verify_proof(
         !ordered_xy_bound ||
         !proof_hashes_valid ||
         overlap_edges != 0U ||
+        undeclared_edges != 0U ||
+        undeclared_stages != 0U ||
+        undeclared_families != 0U ||
         (proof->edge_failed_mask & all_edges) != 0U ||
         ((proof->completed_stage_mask & HHS_EXACT_PASS219_STAGE_REQUIRED) ==
              HHS_EXACT_PASS219_STAGE_REQUIRED &&
