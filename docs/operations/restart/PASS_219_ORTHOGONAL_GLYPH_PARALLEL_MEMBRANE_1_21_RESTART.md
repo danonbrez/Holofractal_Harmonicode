@@ -1,112 +1,102 @@
 # Pass 219 I121 — Orthogonal Glyph Parallel Membrane Restart Record
 
-## Authority and lineage
+## Authority correction
+
+This restart record describes the original 1.21.0 implementation and is retained as frozen repair history. Its former statement that PR #315 was created from `85c237023e778e655f38f6363bab7f08907fa9b2` was incorrect.
+
+Canonical repository state for this branch is:
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
-- Authoritative `main` at tranche start: `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
-- Exact validated parent carrying Pass 219 1.19 + 1.20: `85c237023e778e655f38f6363bab7f08907fa9b2`
+- Canonical `main` authority base: `f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf`
 - Branch: `agent/pass219-orthogonal-glyph-parallel-membrane-1-21`
 - PR: `#315`
-- Intended final merge target: `main`
-- Delivery mode: additive / no frozen-history rewrite
+- Intended merge target: `main`
+- Delivery mode: additive / repair-forward / no frozen-history rewrite
+- `85c237023e778e655f38f6363bab7f08907fa9b2`: validated side-branch 1.19/1.20 implementation checkpoint only; **not** an ancestor or canonical authority root for PR #315.
 
-The branch was created directly from exact parent `85c23702...`. The new tranche does not rewrite the ordered octonion ABI 1.19 or monolithic constraint ABI 1.20.
+The direct-main branch preserves the 1.19/1.20 implementation repair-forward while repository-commit authority remains the inherited `main` pass history.
 
-## Implemented scope
+## Original 1.21.0 implementation — superseded
 
-New C++17 membrane:
+The initial tranche implemented:
 
-`hhs::rna::OrthogonalGlyphMembrane`
+1. 24 orthogonal glyph lanes;
+2. full 348-byte native UTF-8 verbatim source per lane;
+3. parallel per-lane processing;
+4. deterministic lane-order reduction;
+5. per-lane and contradiction Hash216 identities;
+6. fail-closed preservation of VM81 canonical authority.
 
-Implemented properties:
-
-1. exact shared invariant `xy = zw = a² = ∆`, with inherited `a² = 1`;
-2. 24 orthogonal glyph lanes;
-3. one 216-coordinate hydration band per lane;
-4. exact closure `24 × 216 = 5,184`;
-5. complete 348-byte native UTF-8 verbatim equation stored in every lane;
-6. parallel per-lane monolithic computation with `std::launch::async`;
-7. deterministic reduction by lane ordinal independent of scheduling;
-8. per-lane Hash216 identity;
-9. concatenated 5,184-byte lane-identity fabric;
-10. pairwise contradiction detection across edge/family/stage/phase/decision/candidate-state dimensions;
-11. independent Hash216 identity for every emergent `ContradictionEquation`;
-12. deterministic global contradiction-graph Hash216 reduced from the 5,184-byte lane fabric and emergent equation identities;
-13. fail-closed preservation of inherited VM81 canonical proof authority.
-
-## Orthogonal lane registry
+However, it incorrectly interpreted the execution substrate as:
 
 ```text
-P, t, p, q, Delta, m, b, c, u, s,
-x, y, z, w, xy, yx, zw, wz,
-At, f, Bt, A, B, a2
+24 lanes × 216 coordinates = 5,184
 ```
 
-Lane bands are fixed as `ordinal × 216 .. ordinal × 216 + 215`.
+and used scalar phase projections too directly. Those execution semantics are **superseded by 1.21.1** and SHALL NOT be used as current authority.
 
-## Shared invariant test state
+## Governing repair
 
-The conformance fixture uses exact octonion inputs:
+Current execution interpretation is defined by:
+
+- `HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_VM81_CIRCUIT_REPAIR_1_21_1.md`
+- `docs/operations/restart/PASS_219_ORTHOGONAL_GLYPH_VM81_CIRCUIT_REPAIR_1_21_1_RESTART.md`
+
+The repaired model is:
 
 ```text
-x=0, y=1, z=0, w=1
+one complete 348-byte equation per glyph lane
+×
+64 ordered operation threads
+×
+81 VM81 cells
+=
+5,184 permanent VM81 positions per glyph lane
 ```
 
-Under inherited 1.19 ordered phase rules this yields:
+The 24 glyph lanes are orthogonal complete realizations above the 5,184-position VM81 fabric. They do not partition one VM5184 plane.
+
+## Canonical inherited pass anchors
+
+The current repair is constrained by mainline authority already contained in `f5d8fdc...`, including:
 
 ```text
-xy=1
-zw=1
-yx=37
-wz=37
+Pass159 merged HARMONICODE/VM81 toolchain:
+8e7ffb22286f5b6b377c778276c333607a7c2a03
+
+Pass168 VM81 64×81 / 5,184 circuit contract:
+eb88a4b88ab8c598458c0e48c0f4f9db77f81654
+
+Pass169 whole-expression algebra / VM81 authority:
+62e296024b27ff3209e3ef2ac4a2d565e03296ca
+
+Pass186 ordered noncommutative x86_64 VM81 ABI:
+fd42056c22071d290945b02efe3a5752aaa3d737
+
+Pass188 executable Bott/G243 runtime:
+c77e3feef42448a111d8b8912a1d1cb157d51925
+
+Pass189 executable HQLH/kappa41 runtime:
+a1a55a4f621ff3678f5af81119439e9558cf9db4
+
+Frozen Pass219 I118 ancestor:
+e87bc42b17c03ff98f691838b8d573a5bdf46ff2
 ```
 
-with exact `Delta=1`, thereby satisfying:
+## Historical validation
 
-```text
-xy = zw = a² = Delta = 1
-```
+Validation observed for the original 1.21.0/early repair checkpoints remains historical evidence only. It does not validate later repair-forward commits automatically.
 
-while retaining the reversed ordered contradictions `yx != xy` and `wz != zw`.
-
-## Files changed in this tranche
-
-- `hhs_runtime/include/hhs_pass219_orthogonal_glyph_membrane_1_21.hpp`
-- `tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp`
-- `.github/workflows/pass219-orthogonal-glyph-membrane-1-21.yml`
-- `HHS_PASS_219_APPEND_ONLY_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_AMENDMENT_1_21_0.md`
-- `docs/operations/restart/PASS_219_ORTHOGONAL_GLYPH_PARALLEL_MEMBRANE_1_21_RESTART.md`
-
-## Validation already observed
-
-An initial implementation checkpoint completed the substantive exact and synthetic workflow gates successfully before the per-contradiction Hash216 strengthening:
-
-- additive lineage proof;
-- no authoritative floating point;
-- cumulative exact C substrate compilation;
-- C++17 parallel membrane compilation and runtime conformance;
-- byte-for-byte lane source equality against the native 348-byte verbatim equation;
-- inherited monolithic 1.20 regression;
-- inherited ordered octonion 1.19 regression.
-
-The final validation must rerun after the per-contradiction Hash216 change and this restart record.
-
-## Remaining validation / next action
-
-1. trigger the focused `Pass 219 Orthogonal Glyph Membrane 1.21` workflow on the final head;
-2. require both exact-head and synthetic-merge jobs terminal green;
-3. confirm inherited 1.19, 1.20, UQCEL, and VM81 exact-ABI workflows remain green where triggered;
-4. compare branch against exact parent and canonical main;
-5. leave PR #315 unmerged unless separate merge authorization is given.
+Current closure requires fresh exact-head and synthetic-merge validation on the final main-aligned branch head.
 
 ## Authority boundary
 
 ```text
-floating-point authority: none
-VM81 mutation authority: none
-Hash72 commit authority: none
+floating-point canonical authority: none
 raw packet canonical proof: forbidden
-canonical proof authority: inherited Pass159 -> VM81 only
+candidate VM81 mutation authority: none
+candidate Hash72 commit authority: none
+canonical proof/admission authority: inherited exact VM81 path only
 ```
 
-No canonical `main` mutation is authorized by this tranche request.
+No canonical `main` mutation is authorized by this restart record.
