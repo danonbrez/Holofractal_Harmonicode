@@ -4,8 +4,6 @@ import copy
 import json
 from pathlib import Path
 
-import pytest
-
 from hhs_runtime.core_sandbox.hhs_pass219_inherited_manifold_authority_1_21_5 import (
     DECISION,
     EXPECTED_AUTHORITY_PATH,
@@ -74,8 +72,12 @@ def test_inherited_verifier_rejects_tampered_exact_context_certificate() -> None
     tampered["unified_manifold_epoch"]["deep_candidate_certificates"][0]["residuals"][
         "cubic_minus_delta"
     ] = 1
-    with pytest.raises(AssertionError):
+    rejected = False
+    try:
         verify_integrated_manifold_search(tampered)
+    except AssertionError:
+        rejected = True
+    assert rejected is True
 
 
 def test_pass191_exact_hits_remain_context_scoped_not_monolithic_proofs() -> None:
@@ -87,3 +89,15 @@ def test_pass191_exact_hits_remain_context_scoped_not_monolithic_proofs() -> Non
         assert certificate["chain_decision"]["scope"] == "EXACT_CONTEXT_CANDIDATE"
         assert certificate["chain_decision"]["status"] == "PROVED"
     assert payload["theorem_decision"]["status"] == "OBSTRUCTED"
+
+
+def run_dependency_free_conformance() -> None:
+    test_i120_source_is_exact_frozen_pass191_source()
+    test_i121_5_binds_inherited_authority_without_claiming_pass169_closure()
+    test_i121_5_evidence_identity_is_deterministic()
+    test_inherited_verifier_rejects_tampered_exact_context_certificate()
+    test_pass191_exact_hits_remain_context_scoped_not_monolithic_proofs()
+
+
+if __name__ == "__main__":
+    run_dependency_free_conformance()
