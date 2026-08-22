@@ -3,6 +3,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 
+from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import hhs_hash72
 from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime import (
     PRODUCTION_VERSION,
     REPAIR_SCHEMA,
@@ -32,6 +33,15 @@ class Pass199ProductionProjectionTests(unittest.TestCase):
                 self.assertNotEqual(report["core_contract"], report["contract"])
                 self.assertEqual(report["governed_operation_count"], 49)
                 self.assertEqual(runtime.report()["report_hash72"], report["report_hash72"])
+                report_identity = {
+                    key: value
+                    for key, value in report.items()
+                    if key not in {"report_hash72", "pass198_run"}
+                }
+                self.assertEqual(
+                    report["report_hash72"],
+                    hhs_hash72("pass199.report", report_identity),
+                )
                 runs = runtime.pass198.list_runs()
                 self.assertEqual(len(runs), 1)
                 self.assertEqual(report["pass198_verification_record_count"], 1)
