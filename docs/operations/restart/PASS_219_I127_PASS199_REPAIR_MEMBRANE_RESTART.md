@@ -1,16 +1,18 @@
 # Pass 219 Iteration 1.27 — Pass 199 repair + membrane restart record
 
-Status: **CENSUS COMPLETE — IMPLEMENTATION PENDING**
+Status: **IMPLEMENTATION CHECKPOINT — REPAIR VALIDATION PENDING**
 
 ## Repository authority
 
 ```text
 repository: danonbrez/Holofractal_Harmonicode
 branch: agent/pass219-iteration127-pass199-repair-membrane
+PR: #318
 merge target: main
 merge authorization: NOT GRANTED
 frozen I126 predecessor: fca09c16d2e9008de5cd9a09347e14de695e4ef3
 canonical main at tranche start: ff66e376a44c8b928a9a42c2e6d8aa1846785fc2
+pre-checkpoint repair head: d09b0e08fd0d9db9be5cebe35443e1cd1d749e8a
 ```
 
 The branch was created directly from the exact final frozen I126 head after final seal run `32538076250` completed exact and synthetic successfully.
@@ -19,7 +21,7 @@ The branch was created directly from the exact final frozen I126 head after fina
 
 `INHERITED_IMPLEMENTATION_REPAIR_AND_MEMBRANE_EXPOSURE`
 
-Pass 199 exists historically and was accepted, but six post-merge review findings remain reproducible in frozen I126. I127 must repair-forward the production authority before exposing Pass 199 through the cumulative Pass 219 C ABI / C++ RNA membrane.
+Pass 199 exists historically and was accepted, but six post-merge review findings remained reproducible in frozen I126. I127 repair-forwards the current production projection additively while preserving the accepted V1/V2 implementation as historical provenance. The Pass 219 C ABI / C++ RNA membrane is intentionally not yet added; repaired runtime validation must pass first.
 
 ## Accepted Pass 199 history
 
@@ -41,61 +43,106 @@ Historical Pass 199 intent remains binding:
 - compiler auto-promotion and runtime auto-admission remain disabled;
 - no multi-host consensus, arbitrary external provider authority, live-cloud acceptance, or physical-hardware claim is introduced by I127.
 
-## Reproducible review findings
+## Reproducible review findings and implemented repairs
 
 ```text
-3700543546  P1  one execution records two Pass 198 verification runs
-3700543548  P1  full_replay=false can still be labeled deterministic/closed
-3700543550  P2  distinct_gate_values counts position-bound hashes, not canonical gate payloads
-3700543555  P1  reused singleton commit can be projected with a newly supplied unrelated receipt
-3700543559  P1  expired persisted worker slots are rejected before stale-claim recovery
-3700543562  P2  resumed completed_job_count counts only jobs completed by the current process
+3700543546  P1  duplicate Pass 198 verification recording
+3700543548  P1  deterministic closure possible without executed full replay
+3700543550  P2  gate diversity counts position-bound hashes
+3700543555  P1  reused commit can be projected with unrelated new receipt
+3700543559  P1  expired persisted worker slot rejected before recovery
+3700543562  P2  resumed completion count excludes previously completed jobs
 ```
 
-All six remain present at frozen I126:
+Implemented repair mapping:
 
-- `hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py` still upgrades the core report and records `_record_pass198_run(...)` a second time;
-- `hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py` still treats an unexecuted replay as `deterministic: True` and uses the caller-supplied receipt in authority projection even when an existing singleton commit is reused;
-- the same V1 candidate path computes `distinct_gate_values = len(set(cell_hashes))`, where the hashes contain cell position metadata;
-- `hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py` still rejects a persisted `current_job_id` in worker-slot ensure before scheduler recovery and reports `completed_job_count` from the current-process `completed_ids` list only.
+1. **One Pass 198 verification per execution**
+   - V3 reuses the single Pass 198 run recorded by the inherited core execution.
+   - The production upgrade no longer records `_record_pass198_run(...)` a second time.
+   - The upgraded report binds `pass198_run.report_hash72` to `core_report_hash72` and records `pass198_verification_record_count = 1`.
 
-## Repair constraints
+2. **Replay is mandatory for closure**
+   - V3 rejects `full_replay=False` and config payloads with `full_replay: false` before canonical tree admission or Pass 198 proof recording.
+   - Closure therefore requires an actually executed independent full replay.
 
-I127 must preserve historical accepted source identity as provenance and repair forward additively. It must not silently rewrite the accepted Pass 199 merge.
+3. **Canonical gate diversity**
+   - V3 computes diversity from canonical gate payload JSON identity, independent of cell position.
+   - The repair regression cross-checks the result against inherited Pass 197 exact state evaluation.
 
-Required repaired behavior:
+4. **Existing commit receipt continuity**
+   - V3 loads and verifies the persisted singleton tree-commit receipt.
+   - Reused commits are projected only with the original `arguments.vm81_receipt_hash72`.
+   - A conflicting newly supplied receipt is rejected.
 
-1. exactly one Pass 198 verification record per closed Pass 199 execution;
-2. deterministic closure and simplification recording require an actually executed successful full replay;
-3. distinct gate diversity is computed from canonical gate payload identity independent of cell position;
-4. reused singleton commit authority projection is bound to the persisted commit receipt; conflicting newly supplied receipt is rejected;
-5. restart recovers expired claims/worker slots before slot-active rejection;
-6. resumed worker totals reflect all persisted completed jobs, while optionally distinguishing jobs newly completed in the current process;
-7. singleton VM81/Hash72 authority remains inherited and unique;
-8. no candidate worker, API, cache, Pass 198 registry, or C++ membrane receives mutation authority.
+5. **Stale worker recovery before slot rejection**
+   - `Pass199WorkerSlotContextV3` executes the inherited scheduler recovery before inherited worker-slot active validation.
+   - No new scheduler or recovery authority is introduced.
 
-## Planned implementation shape
+6. **Durable completion totals across restart**
+   - V3 reconciles `completed_job_count` from all persisted completed jobs in the workspace.
+   - Jobs completed in the current process are separately exposed as `newly_completed_job_count` / `newly_completed_job_ids`.
 
-Prefer an additive repaired production layer (V3) plus focused tests, with the historical V1/V2 files retained as provenance where feasible. If a shared helper must change because both production execution and replay use it, bind the historical accepted blob separately and document the repair-forward identity explicitly.
+## Repair implementation checkpoints
 
-The repaired Pass 199 runtime must be validated before the I127 membrane is considered wired.
+```text
+f14f862ccca495d183ec44cd3bd7565e71008808  create I127 census/restart checkpoint
+cd37d4c53763507d7a18692a7c9e233f64c69dbc  add repaired Pass 199 V3 production runtime
+4576b3d962f2165669847ca39bbbf7dc1a8f8b80  route canonical Pass 199 production import through V3
+8170913dc1e4eba6bde4b7451292c0a37c9b37aa  add six-finding I127 repair regression
+52bb6353183a5585761368fd2d8a688c4b53bf29  bind production projection test to one Pass 198 proof
+d09b0e08fd0d9db9be5cebe35443e1cd1d749e8a  expand Pass 199 production workflow for V3 repair validation
+```
 
-## Required validation
+## Current intended delta relative to frozen I126
 
-At minimum:
+```text
+docs/operations/restart/PASS_219_I127_PASS199_REPAIR_MEMBRANE_RESTART.md
+hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v3.py
+hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py
+tests/test_hhs_pass199_i127_repair_v1.py
+tests/test_hhs_pass199_production_projection_v1.py
+.github/workflows/pass199-distributed-calibration-fabric.yml
+```
 
-1. regression tests reproducing all six findings and proving the repairs;
-2. full historical 405-state / 810-branch production calibration;
-3. complete independent replay before closure;
-4. exactly one singleton tree-commit receipt and one Pass 198 verification record;
-5. restart after persisted claimed work with expired lease;
-6. restart after all branch jobs complete but before tree commit, preserving durable completion totals;
-7. conflicting receipt against reused commit rejected;
-8. distinct gate count agrees with canonical gate payload equality rather than position identity;
-9. Pass 198 upstream preservation;
-10. Pass 200A immediate successor preservation;
-11. VM81 exact ABI and UQCEL preservation;
-12. exact/synthetic I127 membrane seal after documentation freeze.
+Historical accepted V1/V2 source files remain unmodified in this repair checkpoint.
+
+## Authority boundary
+
+```text
+candidate workers: immutable evidence only
+candidate canonical mutation authority: false
+candidate tree-commit authority: false
+Pass 198 canonical mutation authority: false
+API canonical mutation authority: false
+C++ mutation authority: false
+new Hash72 clock/commit authority: false
+canonical tree admission: inherited singleton calibration.commit_tree path
+```
+
+V3 uses inherited scheduler recovery, durable job storage, Pass 198 registry integration, tree-commit lookup, receipt verification, and exact replay. It does not create a second authority path.
+
+## Validation now pending
+
+The repaired runtime must be proven before the I127 membrane is added.
+
+Required repair-validation closure:
+
+1. compile V1/V2/V3 and production/API surfaces;
+2. existing durable calibration lifecycle regression;
+3. focused six-finding I127 repair regression;
+4. full registered 405-state / 810-branch production calibration;
+5. 320 admitted / 85 domain rejected / 1,658,880 exact VM5184 comparisons;
+6. complete independent 810-branch replay before closure;
+7. exactly one singleton tree-commit receipt and one Pass 198 verification record;
+8. cached receipt-independent resume retains exact report and one commit;
+9. stale claimed worker restart recovery;
+10. restart after durable branch completion preserves total completion count;
+11. conflicting receipt against reused commit rejection;
+12. canonical gate-diversity equality with Pass 197;
+13. no-float canonical operation scan;
+14. Pass 198 upstream preservation;
+15. Pass 200A immediate successor preservation;
+16. VM81 exact ABI and UQCEL preservation.
 
 ## Environment state
 
@@ -103,6 +150,6 @@ No local process or private scratch state is required. All authoritative state i
 
 ## Next action
 
-Inspect the inherited replay, worker-store, Pass 198 recording, and tree-commit receipt helpers needed to implement the six repairs without creating duplicate authority. Then implement the smallest additive repair-forward surface, add regression coverage, validate dependency-scoped gates, and only after terminal green expose Pass 199 through the I127 C/C++ membrane.
+Read the Pass 199 workflow triggered by this exact implementation checkpoint. If an executed assertion fails, repair only the violated inherited state and preserve the failing evidence. Once the repaired Pass 199 production workflow is terminal green, run the bounded upstream/successor preservation gates and then add the I127 C ABI/C++ RNA membrane from this validated runtime state.
 
 Do not merge I126 or I127 without separate explicit integration authorization.
