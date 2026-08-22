@@ -272,7 +272,11 @@ class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationRuntimeV
         prior = json.loads(self.report_path.read_text(encoding="utf-8"))
         expected = hhs_hash72(
             "pass199.report",
-            {key: value for key, value in prior.items() if key != "report_hash72"},
+            {
+                key: value
+                for key, value in prior.items()
+                if key not in {"report_hash72", "pass198_run"}
+            },
         )
         if prior.get("run_id") != prepared["run_id"]:
             return None
@@ -359,7 +363,7 @@ class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationRuntimeV
         upgraded = {
             key: copy.deepcopy(value)
             for key, value in core.items()
-            if key != "report_hash72"
+            if key not in {"report_hash72", "pass198_run"}
         }
         upgraded.update(
             {
@@ -376,8 +380,8 @@ class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationRuntimeV
                 "pass198_verification_reused_from_core_execution": True,
             }
         )
-        upgraded["pass198_run"] = pass198_run
         upgraded["report_hash72"] = hhs_hash72("pass199.report", upgraded)
+        upgraded["pass198_run"] = pass198_run
         self._write(self.report_path, upgraded)
         self._last_report = copy.deepcopy(upgraded)
         return copy.deepcopy(upgraded)
