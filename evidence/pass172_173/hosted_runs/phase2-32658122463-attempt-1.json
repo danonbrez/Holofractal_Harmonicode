@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass220-linux-vm-bootstrap-preimplementation",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "4f622ed2851880fdc7f8cd1871eec120651a377368e9e55a96d0cd8f7943564c",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 32658122463,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "627217834a305b89fbfbd27713bbff375de35ad0"
+}

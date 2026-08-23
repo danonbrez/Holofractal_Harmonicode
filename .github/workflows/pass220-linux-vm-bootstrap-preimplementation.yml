@@ -1,0 +1,123 @@
+name: Pass 220 Linux VM Bootstrap Preimplementation
+
+on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass220_linux_vm/**'
+      - 'hhs_backend/api_server.py'
+      - 'hhs_backend/visual_server.py'
+      - 'start_api.sh'
+      - 'start_vm.sh'
+      - 'start_web_compat.sh'
+      - 'tests/pass220/**'
+      - 'docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md'
+      - 'docs/pass220/PASS_220_LINUX_VM_BOOTSTRAP_PREIMPLEMENTATION.md'
+      - 'docs/operations/restart/PASS_220_LINUX_VM_BOOTSTRAP_PREIMPLEMENTATION_RESTART.md'
+      - 'README.md'
+      - 'ARCHITECTURE.md'
+      - 'RUNTIME_FLOW.md'
+      - '.github/workflows/pass220-linux-vm-bootstrap-preimplementation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  linux-vm-bootstrap:
+    name: linux-vm-bootstrap (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove validated Pass 219B I7 ancestry
+        run: git merge-base --is-ancestor 6df75bc39fd7c58108b8cf7aee3758341fe345a5 HEAD
+
+      - name: Preserve Pass 220 implementation admission gate
+        run: |
+          grep -F 'PASS 219 TERMINAL MERGE + EXACT-HEAD VERIFICATION' \
+            HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+          grep -F 'NON_PROMOTIONAL' \
+            HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+
+      - name: Preserve cumulative deployment end state
+        run: |
+          target='docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md'
+          grep -F 'FULL CLOUD SERVER API' "$target"
+          grep -F 'NATIVE HARMONICODE LINUX VMs' "$target"
+          grep -F 'DOWNLOADABLE STANDALONE APPLICATIONS AND CREATIVE CONTENT' "$target"
+          grep -F 'SECURE DATABASE FUNCTIONS' "$target"
+          grep -F 'NOT A PASS 219 TERMINAL-CLOSURE CLAIM' "$target"
+          grep -F 'singleton inherited VM81/kernel authority' "$target"
+
+      - name: Reject approximate arithmetic in VM planning module
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          path = pathlib.Path('native_projects/hhs_pass220_linux_vm/hhs_linux_vm.py')
+          text = path.read_text('utf-8')
+          match = re.search(r'\b(float|double)\b', text)
+          if match:
+              raise SystemExit(f'forbidden approximate token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Compile Python migration surfaces
+        run: |
+          python -m py_compile \
+            native_projects/hhs_pass220_linux_vm/hhs_linux_vm.py \
+            hhs_backend/api_server.py \
+            hhs_backend/visual_server.py \
+            tests/pass220/test_hhs_linux_vm_bootstrap.py \
+            tests/pass220/test_pass220_interface_migration.py
+
+      - name: Run VM bootstrap conformance
+        run: python tests/pass220/test_hhs_linux_vm_bootstrap.py
+
+      - name: Run interface migration conformance
+        run: python tests/pass220/test_pass220_interface_migration.py
+
+      - name: Validate deterministic VM manifest and plan
+        run: |
+          python -m native_projects.hhs_pass220_linux_vm.hhs_linux_vm manifest > /tmp/hhs-p220-manifest.json
+          python -m native_projects.hhs_pass220_linux_vm.hhs_linux_vm plan \
+            --acceleration tcg > /tmp/hhs-p220-plan.json
+          python - <<'PY'
+          from dataclasses import replace
+          import json
+          from native_projects.hhs_pass220_linux_vm.hhs_linux_vm import config_identity, load_config
+
+          manifest = json.load(open('/tmp/hhs-p220-manifest.json', encoding='utf-8'))
+          plan = json.load(open('/tmp/hhs-p220-plan.json', encoding='utf-8'))
+          config = load_config('native_projects/hhs_pass220_linux_vm/config/hhs-vm.default.json')
+          tcg_config = replace(config, acceleration='tcg')
+
+          assert manifest['promotion_status'] == 'NON_PROMOTIONAL_PREIMPLEMENTATION'
+          assert manifest['canonical_mutation_authority'] is False
+          assert manifest['canonical_persistence_authority'] is False
+          assert manifest['canonical_hash72_authority'] is False
+          assert manifest['web_frontend_status'] == 'DEPRECATED_COMPATIBILITY_ONLY'
+          assert plan['resolved_acceleration'] == 'tcg'
+          assert plan['guest_is_canonical_authority'] is False
+          assert plan['config_identity_sha256'] == config_identity(tcg_config)
+          assert 'user,id=hhsnet' in plan['qemu_argv']
+          PY
+
+      - name: Validate launcher shell syntax
+        run: bash -n start_api.sh start_vm.sh start_web_compat.sh
+
+      - name: Prove web deprecation is compatibility not deletion
+        run: |
+          test -f applications/holofractal_harmonizer/index.html
+          grep -F 'DEPRECATED_COMPATIBILITY_ONLY' hhs_backend/visual_server.py
+          grep -F 'HHS_PASS220_NATIVE_LINUX_VM' hhs_backend/visual_server.py
+          grep -F 'hhs_backend.api_server:app' start_api.sh
+
+      - name: Parse default VM config
+        run: python -m json.tool native_projects/hhs_pass220_linux_vm/config/hhs-vm.default.json >/dev/null

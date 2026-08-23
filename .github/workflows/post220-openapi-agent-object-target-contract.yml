@@ -1,0 +1,104 @@
+name: Post-220 OpenAPI Agent Object Target Contract
+
+on:
+  pull_request:
+    paths:
+      - 'docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+      - 'docs/operations/restart/POST_220_OPENAPI_AGENT_OBJECT_WORKSPACE_TARGET_RESTART.md'
+      - '.github/workflows/post220-openapi-agent-object-target-contract.yml'
+      - 'docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md'
+      - 'HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: agent-object-target-contract (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Preserve validated Pass 219B I7 ancestry
+        run: git merge-base --is-ancestor 6df75bc39fd7c58108b8cf7aee3758341fe345a5 HEAD
+
+      - name: Preserve Pass 219 and Pass 220 admission boundaries
+        run: |
+          grep -F 'NOT A PASS 219 TERMINAL-CLOSURE CLAIM' \
+            docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md
+          grep -F 'PASS 219 TERMINAL MERGE + EXACT-HEAD VERIFICATION' \
+            HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+
+      - name: Validate Deployment Target 1 identity and gate
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'BINDING_FIRST_POST_220_DEPLOYMENT_TARGET — NOT IMPLEMENTED — NOT PASS 219 OR PASS 220 CLOSURE' "$target"
+          grep -F 'HHS_REMOTE_AGENT_OBJECT_WORKSPACE_V1' "$target"
+          grep -F 'PASS 219 TERMINAL CLOSURE + EXACT-HEAD VERIFICATION' "$target"
+          grep -F 'PASS 220 TERMINAL CLOSURE + EXACT-HEAD VERIFICATION' "$target"
+          grep -F 'OpenAPI 3.2.0' "$target"
+
+      - name: Validate inherited registry reuse and authority
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'Pass 170 public API port authority' "$target"
+          grep -F 'Pass 189 repository-wide template-object registry' "$target"
+          grep -F 'Pass 190 canonical operation registry' "$target"
+          grep -F 'Pass 219 exact reusable runtime/ABI closure' "$target"
+          grep -F 'Pass 220 common action/workspace model' "$target"
+          grep -F 'SINGLETON VM81/KERNEL ADMISSION' "$target"
+          grep -F 'The AI agent is a caller and planner. It is **not** canonical HHS authority.' "$target"
+
+      - name: Validate minimum agent workflow and object breadth
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'DISCOVER OPENAPI' "$target"
+          grep -F 'SUBMIT USER OBJECT REQUEST' "$target"
+          grep -F 'APPLY ONE OR MORE TYPED REVISIONS' "$target"
+          grep -F 'RETRIEVE ARTIFACT(S)' "$target"
+          grep -F 'VERIFY DIGEST + PROVENANCE + RECEIPT' "$target"
+          grep -F 'ONE SOFTWARE/APPLICATION OBJECT' "$target"
+          grep -F 'ONE CREATIVE OR DOCUMENT/MEDIA OBJECT' "$target"
+          grep -F 'ONE DATA OR STRUCTURED PROJECT OBJECT' "$target"
+
+      - name: Validate minimum API capability families
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'GET    /openapi.json' "$target"
+          grep -F 'GET    /v1/capabilities' "$target"
+          grep -F 'POST   /v1/agent/sessions' "$target"
+          grep -F 'POST   /v1/agent/object-requests' "$target"
+          grep -F 'POST   /v1/agent/object-requests/{request_id}/actions' "$target"
+          grep -F 'GET    /v1/jobs/{job_id}' "$target"
+          grep -F 'POST   /v1/objects/{object_id}/export' "$target"
+          grep -F 'GET    /v1/artifacts/{artifact_id}' "$target"
+          grep -F 'GET    /v1/receipts/{receipt_id}' "$target"
+
+      - name: Validate fail-closed security requirements
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'tenant and workspace isolation' "$target"
+          grep -F 'idempotency protection for retried mutations' "$target"
+          grep -F 'SSRF and unintended private-network egress rejection' "$target"
+          grep -F 'cross-tenant object/artifact/database access denial' "$target"
+          grep -F 'no raw VM81 memory/register mutation API' "$target"
+          grep -F 'no direct database superuser credential exposure' "$target"
+          grep -F 'no unrestricted host or VM shell capability by default' "$target"
+
+      - name: Validate external-agent acceptance is executable, not documentation-only
+        run: |
+          target='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'operating as a remote client and given only the service OpenAPI contract, valid credentials, and user intent' "$target"
+          grep -F 'survive a worker or service interruption' "$target"
+          grep -F 'reject an unauthorized operation' "$target"
+          grep -F 'reject a cross-tenant object/artifact access attempt' "$target"
+          grep -F 'demonstrate that every admitted mutation still reaches the singleton inherited VM81/kernel authority' "$target"
