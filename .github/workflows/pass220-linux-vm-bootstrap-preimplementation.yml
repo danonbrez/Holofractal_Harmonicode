@@ -10,6 +10,7 @@ on:
       - 'start_vm.sh'
       - 'start_web_compat.sh'
       - 'tests/pass220/**'
+      - 'docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md'
       - 'docs/pass220/PASS_220_LINUX_VM_BOOTSTRAP_PREIMPLEMENTATION.md'
       - 'docs/operations/restart/PASS_220_LINUX_VM_BOOTSTRAP_PREIMPLEMENTATION_RESTART.md'
       - 'README.md'
@@ -45,6 +46,16 @@ jobs:
             HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
           grep -F 'NON_PROMOTIONAL' \
             HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+
+      - name: Preserve cumulative deployment end state
+        run: |
+          target='docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md'
+          grep -F 'FULL CLOUD SERVER API' "$target"
+          grep -F 'NATIVE HARMONICODE LINUX VMs' "$target"
+          grep -F 'DOWNLOADABLE STANDALONE APPLICATIONS AND CREATIVE CONTENT' "$target"
+          grep -F 'SECURE DATABASE FUNCTIONS' "$target"
+          grep -F 'NOT A PASS 219 TERMINAL-CLOSURE CLAIM' "$target"
+          grep -F 'singleton inherited VM81/kernel authority' "$target"
 
       - name: Reject approximate arithmetic in VM planning module
         run: |
