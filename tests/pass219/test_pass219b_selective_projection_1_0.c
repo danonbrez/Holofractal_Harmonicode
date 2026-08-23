@@ -57,10 +57,17 @@ int main(void) {
     assert(ids[0] == 0U);
     assert(ids[1] == 3U);
     assert(ids[count - 1U] == 5181U);
+    assert(hhs_exact_pass219b_selective_projection_validate_ids_u32(
+        5184ULL, 1U, 3U, ids, count) == HHS_EXACT_STATUS_OK);
     for (i = 1U; i < count; ++i) {
         assert(ids[i] > ids[i - 1U]);
         assert(ids[i] % 3U == 0U);
     }
+
+    ids[17] += 1U;
+    assert(hhs_exact_pass219b_selective_projection_validate_ids_u32(
+        5184ULL, 1U, 3U, ids, count) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    ids[17] -= 1U;
 
     assert(hhs_exact_pass219b_selective_projection_build_equal_cell_ranges(
         ids, count, 5184ULL, 81U, ranges, 81U) == HHS_EXACT_STATUS_OK);
