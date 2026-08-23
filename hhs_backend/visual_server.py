@@ -1,4 +1,4 @@
-"""Default HHS visual development environment server.
+"""Deprecated compatibility browser projection for the HHS backend.
 
 This module composes the canonical HHS FastAPI runtime, governed assistant,
 installation, application-factory, media, hydration, Pass 196 integration,
@@ -8,6 +8,10 @@ shadow optimization, Pass 200B governed canary admission, Pass 200C guarded
 active admission, Pass 201 public API federation, and the Pass 161 visual
 application. The canonical server remains runtime authority; this module only
 changes HTTP projection.
+
+Pass 220 migration status: the browser frontend is compatibility/remote
+projection only. The preferred local surface is the native Linux VM path and
+the primary machine surface is the API-only backend composition.
 """
 from __future__ import annotations
 
@@ -35,7 +39,13 @@ from hhs_backend.api.public_api_registry_routes import router as public_api_rout
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
 from hhs_backend.runtime.hhs_pass201_public_api_federation_v1 import register_public_api_federation
 
+WEB_FRONTEND_STATUS = "DEPRECATED_COMPATIBILITY_ONLY"
+PREFERRED_LOCAL_INTERFACE = "HHS_PASS220_NATIVE_LINUX_VM"
+PRIMARY_MACHINE_INTERFACE = "HHS_CANONICAL_API_BACKEND"
+
 app = canonical_server.app
+app.state.hhs_web_frontend_status = WEB_FRONTEND_STATUS
+app.state.hhs_preferred_local_interface = PREFERRED_LOCAL_INTERFACE
 
 
 def _route_exists(path: str, name: str | None = None) -> bool:
@@ -90,12 +100,19 @@ PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 @app.get("/api/system/status", tags=["system"])
 async def visual_system_status() -> Dict[str, Any]:
-    """Preserve the former JSON root response under an explicit API path."""
+    """Preserve the former JSON root response and expose migration status."""
     return {
         "system": "HARMONICODE",
         "status": "online",
         "boot_id": canonical_server.SERVER_BOOT_ID,
-        "default_interface": "HHS_LITERT_LM_VISUAL_DEVELOPMENT_ASSISTANT",
+        "default_interface": PREFERRED_LOCAL_INTERFACE,
+        "primary_machine_interface": PRIMARY_MACHINE_INTERFACE,
+        "web_frontend_status": WEB_FRONTEND_STATUS,
+        "web_frontend_removed": False,
+        "web_compatibility_entrypoint": "start_web_compat.sh",
+        "api_entrypoint": "start_api.sh",
+        "native_vm_entrypoint": "start_vm.sh",
+        "pass220_promotion_status": "NON_PROMOTIONAL_PREIMPLEMENTATION",
         "public_api": "/api/public",
         "public_api_catalog": "/api/public/catalog",
         "public_api_openapi": "/api/public/openapi",
