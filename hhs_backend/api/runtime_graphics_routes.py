@@ -44,6 +44,16 @@ def runtime_graphics_capabilities() -> Dict[str, Any]:
         "driver_bundled_by_hhs": False,
         "gpu_device_authority": "HOST_DRIVER_ONLY",
         "hhs_runtime_authority": "PROJECTION_ACCELERATION_ONLY",
+        "selective_projection": {
+            "schema": "HHS_PASS219B_SELECTIVE_PROJECTION_1_0",
+            "selector": "EXACT_RATIONAL_PRECOMPUTED_IDS_AND_CELL_RANGES",
+            "gpu_id_buffer": "STATIC_UINT32_PROJECTION_IDENTITY",
+            "measured_hot_path_division": False,
+            "measured_hot_path_modulo": False,
+            "canonical_state_mutation_allowed": False,
+            "canonical_persistence_allowed": False,
+            "canonical_hash72_commit_allowed": False,
+        },
         "routes": [
             "GET /api/runtime/graphics/status",
             "GET /api/runtime/graphics/vulkan",
