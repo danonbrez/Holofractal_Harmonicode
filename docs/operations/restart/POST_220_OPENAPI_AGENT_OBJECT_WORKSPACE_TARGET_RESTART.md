@@ -2,7 +2,7 @@
 
 ## Status
 
-`BINDING_TARGET_SPECIFICATION — NOT IMPLEMENTED — NOT DEPLOYED`
+`BINDING_TARGET_SPECIFICATION — CONTRACT VALIDATED — NOT IMPLEMENTED — NOT DEPLOYED`
 
 This is a repository-visible restart record for the first deployment target intended after terminal Pass 219 and terminal Pass 220 closure.
 
@@ -17,8 +17,12 @@ This is a repository-visible restart record for the first deployment target inte
 - That observed head was an evidence-only Pass 172/173 hosted-validation commit; it did not change the Pass 220 VM/API implementation.
 - Deployment Target 1 specification commit: `b1700f40d0da91452006aaf75c1b4f9f4c9a9620`
 - Dedicated contract-workflow commit: `48e0f0d81494f77a7a99f2bb1fc478f6fabe0dd3`
+- Initial restart-record commit validated by the dedicated workflow: `122a1e5a193ca2000335fbda1af88392ffaafdd7`
+- Dedicated validation run: `32658122415`
+- Exact job: `97240005070` — `SUCCESS`
+- Synthetic job: `97240004895` — `SUCCESS`
 
-Automated hosted-evidence workflows have previously appended evidence-only commits to this branch. Before any later promotion, compare the intended implementation/specification checkpoint against the branch tip and classify unrelated evidence-only movement rather than treating all tip movement as Deployment Target 1 source changes.
+Automated hosted-evidence workflows have previously appended evidence-only commits to this branch. After the validated target checkpoint, branch movement SHALL be compared and classified before promotion. Evidence-only commits do not change the target semantics merely because they become the branch tip.
 
 ## Governing files
 
@@ -64,7 +68,7 @@ Nothing in this specification changes the current Pass 219 closure requirement o
 
 ## Specification completed
 
-The target contract now defines:
+The target contract defines:
 
 1. OpenAPI 3.2.0 as the currently pinned agent-facing API profile, subject to the cumulative standards registry at implementation time;
 2. a registry-driven user-object model covering software, documents/media, data, workflows, packages, and any other materializable Pass 189 object/template;
@@ -78,24 +82,24 @@ The target contract now defines:
 10. external-agent acceptance using only the service OpenAPI contract, valid credentials, and user intent;
 11. acceptance breadth across a software/application object, creative/document/media object, and data/structured-project object when executable registered implementations exist.
 
-## Validation state
+## Validation completed
 
-A dedicated exact/synthetic GitHub Actions contract workflow has been added:
+Dedicated GitHub Actions run `32658122415` completed green on both exact and synthetic jobs for the target-specification checkpoint.
 
-`.github/workflows/post220-openapi-agent-object-target-contract.yml`
+Both jobs proved:
 
-It is required to verify:
+1. validated Pass 219B I7 ancestry;
+2. Pass 219 and Pass 220 admission boundaries remain intact;
+3. Deployment Target 1 identity, status, admission sequence, and OpenAPI profile are present;
+4. Pass 170 public API, Pass 189 template registry, Pass 190 operation registry, Pass 219 exact runtime, and Pass 220 common action/workspace inheritance remain explicit;
+5. the AI agent remains a caller/planner rather than canonical authority;
+6. minimum remote lifecycle includes OpenAPI discovery, user-object submission, typed revision, artifact retrieval, and digest/provenance/receipt verification;
+7. minimum capability families include capabilities, sessions, object requests/actions, jobs, export, artifacts, and receipts;
+8. tenant isolation, idempotency, SSRF protection, cross-tenant denial, raw-VM81 denial, DB-superuser denial, and unrestricted-shell denial remain explicit;
+9. external acceptance requires a real remote agent using the OpenAPI contract, interruption recovery, unauthorized/cross-tenant rejection, and singleton-authority proof;
+10. representative acceptance breadth remains software/application + creative/document/media + data/structured project where executable registered implementations exist.
 
-- Pass 219/220 gates remain intact;
-- target identity/status and OpenAPI profile;
-- inherited registry/object/runtime reuse;
-- singleton authority boundary;
-- minimum agent lifecycle;
-- minimum remote capability families;
-- fail-closed security requirements;
-- external-agent executable acceptance requirements.
-
-At creation of this restart record, the workflow has been committed but its newest run may still be queued or in progress. Do not record it as green until terminal GitHub Actions evidence confirms both exact and synthetic jobs.
+This validation proves the contract is internally preserved on the PR exact and synthetic heads. It does **not** prove the remote service has been implemented or deployed.
 
 ## Environment/deployment state
 
