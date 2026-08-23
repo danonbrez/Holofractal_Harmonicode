@@ -3,7 +3,12 @@ from __future__ import annotations
 from dataclasses import replace
 import json
 from pathlib import Path
+import sys
 import unittest
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from native_projects.hhs_pass220_linux_vm.hhs_linux_vm import (
     AUTHORITY_PATH,
@@ -22,7 +27,6 @@ from native_projects.hhs_pass220_linux_vm.hhs_linux_vm import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = ROOT / "native_projects/hhs_pass220_linux_vm/config/hhs-vm.default.json"
 
 
