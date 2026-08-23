@@ -65,6 +65,14 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_selective_projection_build_ids_u
     size_t *out_count
 );
 
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_selective_projection_validate_ids_u32(
+    uint64_t source_count,
+    uint32_t numerator_p,
+    uint32_t denominator_q,
+    const uint32_t *selected_ids,
+    size_t selected_count
+);
+
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_selective_projection_build_equal_cell_ranges(
     const uint32_t *selected_ids,
     size_t selected_count,
