@@ -70,7 +70,7 @@ jobs:
           target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
           grep -F 'LOCAL PURPOSE != GLOBAL SYSTEM ROLE' "$target"
           grep -F 'FILE ORGANIZATION != PROTECTION TOPOLOGY' "$target"
-          grep -F 'LOCAL REDUNDANCY != GLOBAL REMOVABILITY' ARCHITECTURE.md
+          grep -F 'LOCAL REDUNDANCY != GLOBAL REMOVABILITY' "$target"
           grep -F 'DO NOT REMOVE INVARIANTS TO GET SPEED' "$target"
           grep -F 'REDUCE THE ACTIVE WORK REQUIRED' "$target"
 
