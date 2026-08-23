@@ -1,0 +1,1054 @@
+openapi: 3.2.0
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: HHS Universal Knowledge Economy Network Profile
+  version: 1.0.0
+  summary: Contract-only OpenAPI capability profile for HHS peer/server federation
+  description: >-
+    This document specifies the minimum machine-discoverable capability families for
+    HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_V1. It is a downstream contract profile,
+    not evidence that a production network is implemented or deployed. Existing
+    Pass 190, Pass 220, and Deployment Target 1 registered operations must be reused
+    or aliased where semantics overlap; this document does not authorize a second
+    semantic implementation or mutation authority.
+  x-hhs-contract-status: BINDING_DOWNSTREAM_NETWORK_ARCHITECTURE_NOT_IMPLEMENTED
+  x-hhs-authority: SINGLETON_VM81_KERNEL_ONLY
+servers:
+  - url: https://{host}
+    variables:
+      host:
+        default: hhs.invalid
+        description: Deployment-specific authenticated HHS federation origin.
+tags:
+  - name: Discovery
+  - name: Admission
+  - name: Resources
+  - name: Storage
+  - name: Lineage
+  - name: Receipts
+paths:
+  /.well-known/hhs-network:
+    get:
+      tags: [Discovery]
+      operationId: hhsNetworkWellKnownGet
+      summary: Discover the HHS network profile identity and API locations
+      responses:
+        '200':
+          description: Network discovery document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkDiscovery'
+  /openapi.json:
+    get:
+      tags: [Discovery]
+      operationId: hhsNetworkOpenApiGet
+      summary: Retrieve the effective OpenAPI document
+      responses:
+        '200':
+          description: Effective OpenAPI 3.2 document
+  /v1/network/profile:
+    get:
+      tags: [Discovery]
+      operationId: hhsNetworkProfileGet
+      summary: Retrieve the active network profile and policy digest
+      responses:
+        '200':
+          description: Active profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkProfile'
+  /v1/network/capabilities:
+    get:
+      tags: [Discovery]
+      operationId: hhsNetworkCapabilitiesGet
+      summary: Retrieve machine-readable federation capabilities
+      responses:
+        '200':
+          description: Capability declaration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapabilitySet'
+  /v1/network/admission/challenges:
+    post:
+      tags: [Admission]
+      operationId: hhsNetworkAdmissionChallengeCreate
+      summary: Create a bounded federation-admission challenge
+      security:
+        - HhsPeerMtls: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdmissionChallengeRequest'
+      responses:
+        '201':
+          description: Admission challenge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionChallenge'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/admission/proofs:
+    post:
+      tags: [Admission]
+      operationId: hhsNetworkAdmissionProofSubmit
+      summary: Submit profile, identity, PQC, lineage, and resource-conformance proof
+      security:
+        - HhsPeerMtls: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdmissionProof'
+      responses:
+        '200':
+          description: Admission decision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionDecision'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/resources/envelope:
+    get:
+      tags: [Resources]
+      operationId: hhsResourceEnvelopeGet
+      summary: Retrieve the caller's verified reciprocal or contracted resource envelope
+      security:
+        - HhsOAuth2: [network.resources.read]
+      responses:
+        '200':
+          description: Verified resource envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceEnvelope'
+  /v1/network/resources/contribution-policy:
+    put:
+      tags: [Resources]
+      operationId: hhsContributionPolicyPut
+      summary: Set the node-local bounded background contribution policy
+      description: >-
+        This operation changes the local node's volunteered network resource limits.
+        It does not grant semantic authority and cannot exceed locally available hardware.
+      security:
+        - HhsOAuth2: [network.resources.configure]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContributionPolicy'
+      responses:
+        '200':
+          description: Effective contribution policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionPolicy'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/network/resources/credits:
+    get:
+      tags: [Resources]
+      operationId: hhsCreditStateGet
+      summary: Retrieve the exact receipt-backed resource credit state
+      security:
+        - HhsOAuth2: [network.resources.read]
+      responses:
+        '200':
+          description: Credit state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditState'
+  /v1/network/resources/pools:
+    get:
+      tags: [Resources]
+      operationId: hhsResourcePoolsGet
+      summary: Discover eligible round-robin resource pools and current profile rules
+      security:
+        - HhsOAuth2: [network.resources.read]
+      responses:
+        '200':
+          description: Resource pool descriptors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourcePool'
+  /v1/network/resources/jobs:
+    post:
+      tags: [Resources]
+      operationId: hhsResourceJobCreate
+      summary: Submit a bounded peer/server resource job
+      description: >-
+        Reciprocal requests are rejected when their concurrent remote envelope exceeds
+        the caller's verified local envelope. Paid requests are bounded by contracted quota.
+      security:
+        - HhsOAuth2: [network.resources.submit]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceJobRequest'
+      responses:
+        '202':
+          description: Job admitted to an eligible scheduler pool
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceJob'
+        '403':
+          $ref: '#/components/responses/Denied'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/network/resources/jobs/{job_id}:
+    parameters:
+      - $ref: '#/components/parameters/JobId'
+    get:
+      tags: [Resources]
+      operationId: hhsResourceJobGet
+      summary: Read durable network resource-job state
+      security:
+        - HhsOAuth2: [network.resources.read]
+      responses:
+        '200':
+          description: Durable job state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceJob'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/network/resources/bids:
+    post:
+      tags: [Resources]
+      operationId: hhsResourceBidCreate
+      summary: Set a bounded priority bid for an eligible round-robin scheduling round
+      security:
+        - HhsOAuth2: [network.resources.bid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceBid'
+      responses:
+        '201':
+          description: Bid accepted within spend and envelope limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceBidReceipt'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/storage/contracts:
+    post:
+      tags: [Storage]
+      operationId: hhsStorageContractCreate
+      summary: Create a network durability contract for a locally created object state
+      security:
+        - HhsOAuth2: [network.storage.contract]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorageContractRequest'
+      responses:
+        '201':
+          description: Storage contract admitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageContract'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/storage/contracts/{contract_id}:
+    parameters:
+      - $ref: '#/components/parameters/ContractId'
+    get:
+      tags: [Storage]
+      operationId: hhsStorageContractGet
+      summary: Retrieve durability, mirror, and proof state for a storage contract
+      security:
+        - HhsOAuth2: [network.storage.read]
+      responses:
+        '200':
+          description: Storage contract
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageContract'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/network/objects/{object_id}/lineage:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    get:
+      tags: [Lineage]
+      operationId: hhsObjectLineageGet
+      summary: Retrieve verifiable Genesis, state, fork, merge, and dependency lineage
+      security:
+        - HhsOAuth2: [network.objects.read]
+      responses:
+        '200':
+          description: Lineage envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectLineageEnvelope'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/network/objects/{object_id}/forks:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    post:
+      tags: [Lineage]
+      operationId: hhsObjectForkCreate
+      summary: Fork a verified foreign object state into a new Genesis lineage
+      description: >-
+        This is the required mutation path when the actor is not the Genesis creator of
+        the source lineage. Direct foreign-lineage canonical mutation is forbidden.
+      security:
+        - HhsOAuth2: [network.objects.fork]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForkRequest'
+      responses:
+        '201':
+          description: New fork Genesis admitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForkGenesis'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/objects/{object_id}/merge-proposals:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    post:
+      tags: [Lineage]
+      operationId: hhsMergeProposalCreate
+      summary: Submit a fork-derived merge proposal to the source lineage authority
+      description: >-
+        Submission does not mutate the source lineage. Only the source Genesis authority
+        can admit the corresponding merge operation through inherited HHS authority.
+      security:
+        - HhsOAuth2: [network.objects.propose]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeProposal'
+      responses:
+        '201':
+          description: Merge proposal recorded without source-lineage mutation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MergeProposalReceipt'
+        '403':
+          $ref: '#/components/responses/Denied'
+  /v1/network/receipts/{receipt_id}:
+    parameters:
+      - $ref: '#/components/parameters/ReceiptId'
+    get:
+      tags: [Receipts]
+      operationId: hhsNetworkReceiptGet
+      summary: Retrieve a verifiable network contribution, scheduling, storage, lineage, or federation receipt
+      security:
+        - HhsOAuth2: [network.receipts.read]
+      responses:
+        '200':
+          description: Receipt envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptEnvelope'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    HhsPeerMtls:
+      type: mutualTLS
+      description: >-
+        Mutual TLS for server/peer admission. The production federation profile must
+        additionally satisfy the profile-pinned PQC or PQ/traditional hybrid transport rules.
+    HhsOAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes:
+            network.resources.read: Read resource envelope, pools, jobs, and credits
+            network.resources.configure: Configure local background contribution bounds
+            network.resources.submit: Submit eligible network resource jobs
+            network.resources.bid: Spend credits on bounded scheduling priority
+            network.storage.contract: Create reciprocal network storage contracts
+            network.storage.read: Read storage contracts and proof state
+            network.objects.read: Read network object lineage
+            network.objects.fork: Create a new Genesis fork from a verified source state
+            network.objects.propose: Submit merge proposals without direct source mutation
+            network.receipts.read: Read scoped network receipts
+  parameters:
+    JobId:
+      name: job_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ContractId:
+      name: contract_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ObjectId:
+      name: object_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ReceiptId:
+      name: receipt_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+  responses:
+    Denied:
+      description: Request denied by identity, capability, lineage, resource, credit, profile, or security policy
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Stale state, incompatible envelope, quota conflict, duplicate settlement, or scheduling conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Scoped identity not found or not visible to the caller
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Identifier:
+      type: string
+      minLength: 1
+      maxLength: 512
+    ExactUnsigned:
+      type: string
+      pattern: '^(0|[1-9][0-9]*)$'
+      description: Exact arbitrary-size nonnegative integer represented without floating point.
+    ExactSigned:
+      type: string
+      pattern: '^-?(0|[1-9][0-9]*)$'
+      description: Exact arbitrary-size signed integer represented without floating point.
+    ExactRational:
+      type: object
+      required: [numerator, denominator]
+      additionalProperties: false
+      properties:
+        numerator:
+          $ref: '#/components/schemas/ExactSigned'
+        denominator:
+          type: string
+          pattern: '^[1-9][0-9]*$'
+    HashIdentity:
+      type: string
+      minLength: 1
+      maxLength: 16384
+    NetworkDiscovery:
+      type: object
+      required: [network_profile_id, policy_digest, openapi, capabilities]
+      additionalProperties: false
+      properties:
+        network_profile_id:
+          $ref: '#/components/schemas/Identifier'
+        policy_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        openapi:
+          type: string
+          format: uri-reference
+        capabilities:
+          type: string
+          format: uri-reference
+    NetworkProfile:
+      type: object
+      required:
+        - network_profile_id
+        - version
+        - policy_digest
+        - effective_epoch
+        - pqc_profile
+        - resource_policy
+        - lineage_policy
+        - federation_policy
+      additionalProperties: false
+      properties:
+        network_profile_id:
+          $ref: '#/components/schemas/Identifier'
+        version:
+          type: string
+        policy_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        effective_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        pqc_profile:
+          type: string
+        resource_policy:
+          type: string
+        lineage_policy:
+          type: string
+        federation_policy:
+          type: string
+    CapabilitySet:
+      type: object
+      required: [profile_id, operations, resource_classes]
+      additionalProperties: false
+      properties:
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        operations:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        resource_classes:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/ResourceClass'
+    AdmissionChallengeRequest:
+      type: object
+      required: [peer_id, requested_profile_id, capability_digest]
+      additionalProperties: false
+      properties:
+        peer_id:
+          $ref: '#/components/schemas/Identifier'
+        requested_profile_id:
+          $ref: '#/components/schemas/Identifier'
+        capability_digest:
+          $ref: '#/components/schemas/HashIdentity'
+    AdmissionChallenge:
+      type: object
+      required: [challenge_id, profile_id, nonce, expiry_epoch]
+      additionalProperties: false
+      properties:
+        challenge_id:
+          $ref: '#/components/schemas/Identifier'
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        nonce:
+          $ref: '#/components/schemas/HashIdentity'
+        expiry_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+    AdmissionProof:
+      type: object
+      required:
+        - challenge_id
+        - peer_id
+        - profile_id
+        - policy_digest
+        - identity_proof
+        - pqc_suite
+        - resource_envelope_digest
+        - lineage_capability_digest
+        - signature
+      additionalProperties: false
+      properties:
+        challenge_id:
+          $ref: '#/components/schemas/Identifier'
+        peer_id:
+          $ref: '#/components/schemas/Identifier'
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        policy_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        identity_proof:
+          $ref: '#/components/schemas/HashIdentity'
+        pqc_suite:
+          type: string
+        resource_envelope_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        lineage_capability_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        signature:
+          $ref: '#/components/schemas/HashIdentity'
+    AdmissionDecision:
+      type: object
+      required: [admitted, profile_id, decision_receipt_id]
+      additionalProperties: false
+      properties:
+        admitted:
+          type: boolean
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        federation_class:
+          type: string
+        decision_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+        denial_codes:
+          type: array
+          items:
+            type: string
+    ResourceClass:
+      type: string
+      enum:
+        - CPU
+        - GPU
+        - MEMORY
+        - DURABLE_STORAGE
+        - CACHE_STORAGE
+        - UPLOAD_BANDWIDTH
+        - DOWNLOAD_BANDWIDTH
+        - SPECIAL_ACCELERATOR
+    ResourceQuantity:
+      type: object
+      required: [resource_class, quantity, unit]
+      additionalProperties: false
+      properties:
+        resource_class:
+          $ref: '#/components/schemas/ResourceClass'
+        quantity:
+          $ref: '#/components/schemas/ExactUnsigned'
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 64
+        capability_class:
+          type: string
+          maxLength: 256
+    ResourceEnvelope:
+      type: object
+      required: [peer_id, envelope_type, verified_epoch, quantities, envelope_digest]
+      additionalProperties: false
+      properties:
+        peer_id:
+          $ref: '#/components/schemas/Identifier'
+        envelope_type:
+          type: string
+          enum: [RECIPROCAL_LOCAL, PAID_CONTRACTED]
+        verified_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        quantities:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ResourceQuantity'
+        envelope_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        verification_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    ContributionPolicy:
+      type: object
+      required: [enabled, cpu_percent_basis_points, ram_bytes, storage_bytes, max_concurrent_assignments]
+      additionalProperties: false
+      properties:
+        enabled:
+          type: boolean
+        cpu_percent_basis_points:
+          type: integer
+          minimum: 0
+          maximum: 10000
+        gpu_percent_basis_points:
+          type: integer
+          minimum: 0
+          maximum: 10000
+        ram_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        storage_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        upload_bytes_per_second:
+          $ref: '#/components/schemas/ExactUnsigned'
+        download_bytes_per_second:
+          $ref: '#/components/schemas/ExactUnsigned'
+        idle_only:
+          type: boolean
+        charging_only:
+          type: boolean
+        battery_floor_basis_points:
+          type: integer
+          minimum: 0
+          maximum: 10000
+        thermal_policy:
+          type: string
+        max_concurrent_assignments:
+          type: integer
+          minimum: 0
+          maximum: 65535
+    CreditTranche:
+      type: object
+      required: [tranche_id, resource_class, earned_amount, earned_epoch, contribution_receipt_id, decay_policy_id]
+      additionalProperties: false
+      properties:
+        tranche_id:
+          $ref: '#/components/schemas/Identifier'
+        resource_class:
+          $ref: '#/components/schemas/ResourceClass'
+        earned_amount:
+          $ref: '#/components/schemas/ExactUnsigned'
+        earned_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        contribution_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+        decay_policy_id:
+          $ref: '#/components/schemas/Identifier'
+    CreditBalance:
+      type: object
+      required: [resource_class, amount]
+      additionalProperties: false
+      properties:
+        resource_class:
+          $ref: '#/components/schemas/ResourceClass'
+        amount:
+          $ref: '#/components/schemas/ExactUnsigned'
+    CreditState:
+      type: object
+      required: [peer_id, epoch, prior_state_root, state_root, balances]
+      additionalProperties: false
+      properties:
+        peer_id:
+          $ref: '#/components/schemas/Identifier'
+        epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        prior_state_root:
+          $ref: '#/components/schemas/HashIdentity'
+        state_root:
+          $ref: '#/components/schemas/HashIdentity'
+        balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditBalance'
+        active_tranches:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditTranche'
+    ResourcePool:
+      type: object
+      required: [pool_id, resource_class, profile_id, scheduling_epoch, priority_tiers]
+      additionalProperties: false
+      properties:
+        pool_id:
+          $ref: '#/components/schemas/Identifier'
+        resource_class:
+          $ref: '#/components/schemas/ResourceClass'
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        scheduling_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        priority_tiers:
+          type: array
+          items:
+            type: string
+        scheduler_policy_digest:
+          $ref: '#/components/schemas/HashIdentity'
+    ResourceJobRequest:
+      type: object
+      required: [idempotency_key, resource_quantities, execution_class, max_total_credit_spend]
+      additionalProperties: false
+      properties:
+        idempotency_key:
+          $ref: '#/components/schemas/Identifier'
+        resource_quantities:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ResourceQuantity'
+        execution_class:
+          type: string
+          enum: [RECIPROCAL, PAID_CONTRACTED]
+        object_state_id:
+          $ref: '#/components/schemas/Identifier'
+        candidate_operation_id:
+          $ref: '#/components/schemas/Identifier'
+        max_total_credit_spend:
+          $ref: '#/components/schemas/ExactUnsigned'
+        priority_tier:
+          type: string
+        burst_policy:
+          type: string
+    ResourceJob:
+      type: object
+      required: [job_id, status, execution_class, requested, admitted_epoch]
+      additionalProperties: false
+      properties:
+        job_id:
+          $ref: '#/components/schemas/Identifier'
+        status:
+          type: string
+          enum: [QUEUED, RESERVED, RUNNING, COMPLETED, FAILED, CANCELLED, LOCAL_RECOVERY_WAIT]
+        execution_class:
+          type: string
+          enum: [RECIPROCAL, PAID_CONTRACTED]
+        requested:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceQuantity'
+        admitted_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        scheduling_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+        result_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    ResourceBid:
+      type: object
+      required: [job_id, pool_id, priority_tier, max_bid, max_total_spend, expected_credit_state_root]
+      additionalProperties: false
+      properties:
+        job_id:
+          $ref: '#/components/schemas/Identifier'
+        pool_id:
+          $ref: '#/components/schemas/Identifier'
+        priority_tier:
+          type: string
+        max_bid:
+          $ref: '#/components/schemas/ExactUnsigned'
+        max_total_spend:
+          $ref: '#/components/schemas/ExactUnsigned'
+        expected_credit_state_root:
+          $ref: '#/components/schemas/HashIdentity'
+    ResourceBidReceipt:
+      type: object
+      required: [bid_id, scheduling_epoch, accepted, reserved_credit, receipt_id]
+      additionalProperties: false
+      properties:
+        bid_id:
+          $ref: '#/components/schemas/Identifier'
+        scheduling_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        accepted:
+          type: boolean
+        reserved_credit:
+          $ref: '#/components/schemas/ExactUnsigned'
+        clearing_debit:
+          $ref: '#/components/schemas/ExactUnsigned'
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    StorageContractRequest:
+      type: object
+      required: [object_id, state_id, canonical_compressed_bytes, local_reserved_bytes, replication_policy]
+      additionalProperties: false
+      properties:
+        object_id:
+          $ref: '#/components/schemas/Identifier'
+        state_id:
+          $ref: '#/components/schemas/Identifier'
+        canonical_compressed_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        local_reserved_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        replication_policy:
+          type: string
+        availability_class:
+          type: string
+    StorageContract:
+      type: object
+      required: [contract_id, object_id, state_id, canonical_compressed_bytes, local_reserved_bytes, profile_id, contract_root]
+      additionalProperties: false
+      properties:
+        contract_id:
+          $ref: '#/components/schemas/Identifier'
+        object_id:
+          $ref: '#/components/schemas/Identifier'
+        state_id:
+          $ref: '#/components/schemas/Identifier'
+        canonical_compressed_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        local_reserved_bytes:
+          $ref: '#/components/schemas/ExactUnsigned'
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        contract_root:
+          $ref: '#/components/schemas/HashIdentity'
+        mirror_receipt_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identifier'
+    DependencyEdge:
+      type: object
+      required: [dependency_object_id, dependency_state_id, dependency_digest, edge_type]
+      additionalProperties: false
+      properties:
+        dependency_object_id:
+          $ref: '#/components/schemas/Identifier'
+        dependency_state_id:
+          $ref: '#/components/schemas/Identifier'
+        dependency_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        edge_type:
+          type: string
+    ObjectLineageEnvelope:
+      type: object
+      required:
+        - object_id
+        - genesis_id
+        - state_id
+        - creator_identity
+        - content_digest
+        - dependency_root
+        - lineage_root
+        - receipt_id
+      additionalProperties: false
+      properties:
+        object_id:
+          $ref: '#/components/schemas/Identifier'
+        genesis_id:
+          $ref: '#/components/schemas/Identifier'
+        state_id:
+          $ref: '#/components/schemas/Identifier'
+        parent_state_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identifier'
+        creator_identity:
+          $ref: '#/components/schemas/Identifier'
+        operation_identity:
+          $ref: '#/components/schemas/Identifier'
+        content_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/DependencyEdge'
+        dependency_root:
+          $ref: '#/components/schemas/HashIdentity'
+        lineage_root:
+          $ref: '#/components/schemas/HashIdentity'
+        network_profile_id:
+          $ref: '#/components/schemas/Identifier'
+        policy_root:
+          $ref: '#/components/schemas/HashIdentity'
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'
+        fork_source:
+          $ref: '#/components/schemas/ForkSource'
+    ForkSource:
+      type: object
+      required: [source_object_id, source_state_id, source_content_digest, source_lineage_root, source_receipt_id]
+      additionalProperties: false
+      properties:
+        source_object_id:
+          $ref: '#/components/schemas/Identifier'
+        source_state_id:
+          $ref: '#/components/schemas/Identifier'
+        source_content_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        source_lineage_root:
+          $ref: '#/components/schemas/HashIdentity'
+        source_receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    ForkRequest:
+      type: object
+      required: [source_state_id, expected_source_content_digest, expected_source_lineage_root, new_policy_root]
+      additionalProperties: false
+      properties:
+        source_state_id:
+          $ref: '#/components/schemas/Identifier'
+        expected_source_content_digest:
+          $ref: '#/components/schemas/HashIdentity'
+        expected_source_lineage_root:
+          $ref: '#/components/schemas/HashIdentity'
+        new_policy_root:
+          $ref: '#/components/schemas/HashIdentity'
+    ForkGenesis:
+      type: object
+      required: [new_genesis_id, source, fork_creator_identity, fork_policy_root, receipt_id]
+      additionalProperties: false
+      properties:
+        new_genesis_id:
+          $ref: '#/components/schemas/Identifier'
+        source:
+          $ref: '#/components/schemas/ForkSource'
+        fork_creator_identity:
+          $ref: '#/components/schemas/Identifier'
+        fork_policy_root:
+          $ref: '#/components/schemas/HashIdentity'
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    MergeProposal:
+      type: object
+      required: [source_genesis_id, source_expected_state_id, fork_genesis_id, fork_state_id, fork_lineage_root]
+      additionalProperties: false
+      properties:
+        source_genesis_id:
+          $ref: '#/components/schemas/Identifier'
+        source_expected_state_id:
+          $ref: '#/components/schemas/Identifier'
+        fork_genesis_id:
+          $ref: '#/components/schemas/Identifier'
+        fork_state_id:
+          $ref: '#/components/schemas/Identifier'
+        fork_lineage_root:
+          $ref: '#/components/schemas/HashIdentity'
+        proposal_message:
+          type: string
+          maxLength: 16384
+    MergeProposalReceipt:
+      type: object
+      required: [proposal_id, recorded_epoch, source_mutated, receipt_id]
+      additionalProperties: false
+      properties:
+        proposal_id:
+          $ref: '#/components/schemas/Identifier'
+        recorded_epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        source_mutated:
+          type: boolean
+          const: false
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'
+    ReceiptEnvelope:
+      type: object
+      required: [receipt_id, receipt_class, profile_id, epoch, prior_root, next_root, signature_set]
+      additionalProperties: false
+      properties:
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'
+        receipt_class:
+          type: string
+        profile_id:
+          $ref: '#/components/schemas/Identifier'
+        epoch:
+          $ref: '#/components/schemas/ExactUnsigned'
+        prior_root:
+          $ref: '#/components/schemas/HashIdentity'
+        next_root:
+          $ref: '#/components/schemas/HashIdentity'
+        hash72_receipt_identity:
+          $ref: '#/components/schemas/Identifier'
+        hash216_operation_identity:
+          $ref: '#/components/schemas/Identifier'
+        signature_set:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/HashIdentity'
+    Error:
+      type: object
+      required: [code, message]
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        receipt_id:
+          $ref: '#/components/schemas/Identifier'

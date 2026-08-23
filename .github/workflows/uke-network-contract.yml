@@ -1,0 +1,160 @@
+name: HHS UKE Network Contract
+
+on:
+  pull_request:
+    paths:
+      - 'docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+      - 'contracts/network/HHS_UKE_NETWORK_STANDARDS_PROFILE_V1.json'
+      - 'contracts/network/HHS_UKE_NETWORK_OPENAPI_PROFILE_V1.yaml'
+      - 'docs/operations/restart/UKE_NETWORK_CONTRACT_RESTART.md'
+      - 'docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+      - 'HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md'
+      - '.github/workflows/uke-network-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: uke-network-contract (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Preserve validated Pass 219B I7 ancestry
+        run: git merge-base --is-ancestor 6df75bc39fd7c58108b8cf7aee3758341fe345a5 HEAD
+
+      - name: Preserve Pass 219, Pass 220, and Target 1 gates
+        run: |
+          grep -F 'PASS 219 TERMINAL MERGE + EXACT-HEAD VERIFICATION' \
+            HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+          target1='docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md'
+          grep -F 'BINDING_FIRST_POST_220_DEPLOYMENT_TARGET — NOT IMPLEMENTED — NOT PASS 219 OR PASS 220 CLOSURE' "$target1"
+          grep -F 'HHS_REMOTE_AGENT_OBJECT_WORKSPACE_V1' "$target1"
+
+      - name: Validate UKE identity, status, and promotion gate
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'BINDING_DOWNSTREAM_NETWORK_ARCHITECTURE — NOT IMPLEMENTED — NOT PASS 219 OR PASS 220 CLOSURE' "$contract"
+          grep -F 'HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_V1' "$contract"
+          grep -F 'DEPLOYMENT TARGET 1 IMPLEMENTATION / ACCEPTANCE' "$contract"
+          grep -F 'HHS UKE NETWORK PRODUCTION FEDERATION ACCEPTANCE' "$contract"
+
+      - name: Validate local sovereignty and network admission
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'NO NETWORK PARTICIPATION' "$contract"
+          grep -F 'NO NETWORK ECONOMIC OBLIGATION' "$contract"
+          grep -F 'NETWORK PARTICIPATION' "$contract"
+          grep -F 'SELECTED NETWORK PROFILE CONFORMANCE' "$contract"
+          grep -F 'A server with no local enforcement is permitted.' "$contract"
+
+      - name: Validate physical resource conservation and peer envelope
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'ALLOCATED_r(e)' "$contract"
+          grep -F 'AVAILABLE_PEERS_r(e) + AVAILABLE_SERVERS_r(e)' "$contract"
+          grep -F 'REMOTE_CONCURRENT_REQUEST_r(peer,e)' "$contract"
+          grep -F 'VERIFIED_LOCAL_ENVELOPE_r(peer,e)' "$contract"
+          grep -F 'PAID_REMOTE_REQUEST_r' "$contract"
+          grep -F 'CONTRACTED_SERVER_QUOTA_r' "$contract"
+
+      - name: Validate reciprocal credit and equilibrium laws
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'time-decaying, receipt-backed claim' "$contract"
+          grep -F 'adjustable background contribution' "$contract" || grep -F 'Adjustable background contribution' "$contract"
+          grep -F 'round-robin' "$contract"
+          grep -F 'priority_tier' "$contract"
+          grep -F 'max_bid_per_round' "$contract"
+          grep -F 'Q4 AGGRESSIVE_GLOBAL_BURST' "$contract"
+          grep -F 'Q0 LOCAL_ONLY_RECOVERY' "$contract"
+          grep -F 'GLOBAL_ENABLE_THRESHOLD > GLOBAL_DISABLE_THRESHOLD' "$contract"
+
+      - name: Validate Genesis lineage and fork security
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'POSSESSION' "$contract" || grep -F 'Possession is not authority' "$contract"
+          grep -F 'actor != GENESIS_CREATOR(lineage)' "$contract"
+          grep -F 'DIRECT_CANONICAL_MUTATION_FORBIDDEN' "$contract"
+          grep -F 'FORK_REQUIRED' "$contract"
+          grep -F 'Committed history SHALL be append-only.' "$contract"
+          grep -F 'dependency_root' "$contract"
+          grep -F 'lineage_root' "$contract"
+
+      - name: Validate standards profile JSON and modern PQC baseline
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('contracts/network/HHS_UKE_NETWORK_STANDARDS_PROFILE_V1.json')
+          data = json.loads(p.read_text())
+          assert data['schema'] == 'HHS_UKE_NETWORK_STANDARDS_PROFILE_V1'
+          assert data['canonicalNetworkIdentity'] == 'HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_V1'
+          principles = data['normativePrinciples']
+          assert principles['localOfflineNetworkEconomyRequired'] is False
+          assert principles['reciprocalRemoteEnvelopeMayExceedVerifiedLocalEnvelope'] is False
+          assert principles['paidContractMayExceedVerifiedLocalEnvelopeWithinQuota'] is True
+          assert principles['creditsArePermanentMinedProperty'] is False
+          assert principles['foreignLineageDirectMutationAllowed'] is False
+          assert principles['foreignLineageForkRequired'] is True
+          assert principles['peerCandidateCanCommitCanonicalState'] is False
+          assert principles['authoritativeFloatingPointAllowed'] is False
+          ids = {item['standardId'] for item in data['standards']}
+          required = {
+              'OPENAPI-3.2.0', 'JSON-SCHEMA-2020-12', 'TLS-1.3-RFC9846',
+              'BCP195-RFC9852', 'QUIC-V1', 'HTTP3', 'NIST-FIPS-203-ML-KEM',
+              'NIST-FIPS-204-ML-DSA', 'NIST-FIPS-205-SLH-DSA',
+              'TLS-PQT-HYBRID-RFC10024', 'X509-ML-DSA-RFC9881',
+              'X509-ML-KEM-RFC9935', 'JOSE-COSE-ML-DSA-RFC9964',
+              'CBOR', 'COSE', 'OAUTH2-SECURITY-BCP', 'OAUTH2-MTLS'
+          }
+          missing = required - ids
+          assert not missing, sorted(missing)
+          PY
+
+      - name: Validate OpenAPI profile and exact numeric boundary
+        run: |
+          api='contracts/network/HHS_UKE_NETWORK_OPENAPI_PROFILE_V1.yaml'
+          grep -F 'openapi: 3.2.0' "$api"
+          grep -F 'jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema' "$api"
+          grep -F '/v1/network/admission/proofs:' "$api"
+          grep -F '/v1/network/resources/envelope:' "$api"
+          grep -F '/v1/network/resources/contribution-policy:' "$api"
+          grep -F '/v1/network/resources/credits:' "$api"
+          grep -F '/v1/network/resources/pools:' "$api"
+          grep -F '/v1/network/resources/jobs:' "$api"
+          grep -F '/v1/network/resources/bids:' "$api"
+          grep -F '/v1/network/storage/contracts:' "$api"
+          grep -F '/v1/network/objects/{object_id}/lineage:' "$api"
+          grep -F '/v1/network/objects/{object_id}/forks:' "$api"
+          grep -F '/v1/network/objects/{object_id}/merge-proposals:' "$api"
+          grep -F '/v1/network/receipts/{receipt_id}:' "$api"
+          grep -F 'type: mutualTLS' "$api"
+          grep -F 'RECIPROCAL_LOCAL' "$api"
+          grep -F 'PAID_CONTRACTED' "$api"
+          if grep -nE '^[[:space:]]+type:[[:space:]]+number([[:space:]]|$)|format:[[:space:]]+(float|double)([[:space:]]|$)' "$api"; then
+            echo 'authoritative floating-point schema detected' >&2
+            exit 1
+          fi
+          if grep -nE '^  /v1/network/objects/\{object_id\}/(mutate|edit|write):' "$api"; then
+            echo 'direct foreign mutation-style route detected' >&2
+            exit 1
+          fi
+
+      - name: Validate inherited singular authority and peer non-authority
+        run: |
+          contract='docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+          grep -F 'singleton VM81/kernel authority' "$contract"
+          grep -F 'peer network SHALL NOT create a second VM81' "$contract"
+          grep -F 'A provider MAY perform candidate computation. It does not obtain canonical mutation authority' "$contract"
+          grep -F 'RESOURCE PRIORITY != SEMANTIC AUTHORITY' "$contract"
