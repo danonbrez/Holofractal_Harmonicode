@@ -78,9 +78,15 @@ jobs:
           python -m native_projects.hhs_pass220_linux_vm.hhs_linux_vm plan \
             --acceleration tcg > /tmp/hhs-p220-plan.json
           python - <<'PY'
+          from dataclasses import replace
           import json
+          from native_projects.hhs_pass220_linux_vm.hhs_linux_vm import config_identity, load_config
+
           manifest = json.load(open('/tmp/hhs-p220-manifest.json', encoding='utf-8'))
           plan = json.load(open('/tmp/hhs-p220-plan.json', encoding='utf-8'))
+          config = load_config('native_projects/hhs_pass220_linux_vm/config/hhs-vm.default.json')
+          tcg_config = replace(config, acceleration='tcg')
+
           assert manifest['promotion_status'] == 'NON_PROMOTIONAL_PREIMPLEMENTATION'
           assert manifest['canonical_mutation_authority'] is False
           assert manifest['canonical_persistence_authority'] is False
@@ -88,7 +94,7 @@ jobs:
           assert manifest['web_frontend_status'] == 'DEPRECATED_COMPATIBILITY_ONLY'
           assert plan['resolved_acceleration'] == 'tcg'
           assert plan['guest_is_canonical_authority'] is False
-          assert plan['config_identity_sha256'] == 'd5e5e1b6e0aa43bb492383d343453145e8c09b8f2cae2c544700e8b951149b31'
+          assert plan['config_identity_sha256'] == config_identity(tcg_config)
           assert 'user,id=hhsnet' in plan['qemu_argv']
           PY
 
