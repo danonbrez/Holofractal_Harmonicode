@@ -37,6 +37,25 @@ Hash72 receipt -> Hash216 archival/indexing
 
 The virtual machine is an execution, containment, compatibility, and human-interface environment. It is **not** a second HHS runtime authority.
 
+## Binding cumulative deployment end state
+
+This bootstrap inherits the Pass 219 carry-forward deployment objective defined in:
+
+`docs/pass219/PASS_219_CUMULATIVE_DEPLOYMENT_END_STATE.md`
+
+The final deployable HHS product SHALL simultaneously support:
+
+```text
+FULL CLOUD SERVER API
++ NATIVE HARMONICODE LINUX VMs
++ DOWNLOADABLE STANDALONE APPLICATIONS AND CREATIVE CONTENT
++ SECURE DATABASE FUNCTIONS
+```
+
+These are cumulative product requirements, not mutually exclusive alternatives. The native Linux VM work in this branch is one deployment plane inside that larger system; it SHALL NOT narrow HHS into a VM-only or desktop-only product. Likewise, later cloud work SHALL NOT narrow HHS into a browser-only or API-only service.
+
+Pass 219 remains responsible for closing its exact reusable runtime/ABI obligations. The cloud service, production VM fleet, standalone release pipeline, creative-content distribution path, and hardened database service are downstream implementation/acceptance work unless an accepted Pass 219 contract explicitly promotes a particular dependency into Pass 219 closure.
+
 ## Interface disposition
 
 Pass 220 already defines native Linux GUI, CLI/Bash, and machine API as the primary interaction surfaces. The browser becomes secondary compatibility, remote-access, administration, and projection only.
@@ -159,7 +178,8 @@ The preimplementation CI must validate, without requiring QEMU/KVM hardware:
 - shell syntax of the new entrypoints;
 - no approximate-arithmetic tokens in the VM planning module;
 - ancestry from validated Pass 219B I7;
-- Pass 220 contract remains present and retains its implementation gate.
+- Pass 220 contract remains present and retains its implementation gate;
+- the cumulative deployment end-state keeps all four required product forms and remains non-terminal for Pass 219.
 
 Actual QEMU boot, guest image construction, native desktop rendering, and end-to-end guest-to-HHS action execution require later environment-backed evidence.
 
