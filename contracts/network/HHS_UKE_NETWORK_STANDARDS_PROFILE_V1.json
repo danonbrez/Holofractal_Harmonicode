@@ -1,0 +1,259 @@
+{
+  "schema": "HHS_UKE_NETWORK_STANDARDS_PROFILE_V1",
+  "version": 1,
+  "profileId": "HHS_UKE_GLOBAL_RECIPROCAL_STANDARDS_V1",
+  "canonicalNetworkIdentity": "HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_V1",
+  "status": "BINDING_AUTHORING_BASELINE_REVERIFY_AT_IMPLEMENTATION",
+  "researchSnapshotDate": "2026-08-23",
+  "repositoryInheritance": {
+    "pass163PeerCandidateNonAuthority": true,
+    "pass190CanonicalOperationRegistry": true,
+    "pass219ExactRuntimeAbi": true,
+    "pass220ExternalStandardsRegistryRequired": true,
+    "deploymentTarget1OpenApiFirst": true,
+    "singletonVm81AuthorityPreserved": true
+  },
+  "normativePrinciples": {
+    "localOfflineNetworkEconomyRequired": false,
+    "networkParticipationRequiresSelectedProfileConformance": true,
+    "reciprocalRemoteEnvelopeMayExceedVerifiedLocalEnvelope": false,
+    "paidContractMayExceedVerifiedLocalEnvelopeWithinQuota": true,
+    "creditsArePermanentMinedProperty": false,
+    "creditsDecayByExactProfileDefinedEpochSchedule": true,
+    "foreignLineageDirectMutationAllowed": false,
+    "foreignLineageForkRequired": true,
+    "priorityCanPurchaseSemanticAuthority": false,
+    "peerCandidateCanCommitCanonicalState": false,
+    "authoritativeFloatingPointAllowed": false
+  },
+  "standards": [
+    {
+      "standardId": "BCP14",
+      "authority": "IETF",
+      "references": ["RFC2119", "RFC8174"],
+      "classification": "NORMATIVE_STANDARD",
+      "use": "normative requirement language"
+    },
+    {
+      "standardId": "OPENAPI-3.2.0",
+      "authority": "OpenAPI Initiative",
+      "version": "3.2.0",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "machine-discoverable HTTP API contract and federation capability description"
+    },
+    {
+      "standardId": "JSON-SCHEMA-2020-12",
+      "authority": "JSON Schema",
+      "version": "2020-12",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "OpenAPI and standalone schema vocabulary for JSON-facing network structures"
+    },
+    {
+      "standardId": "TLS-1.3-RFC9846",
+      "authority": "IETF",
+      "version": "TLS 1.3",
+      "reference": "RFC9846",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "secure stream transport baseline",
+      "notes": "RFC9846 obsoletes RFC8446 while retaining TLS version 1.3"
+    },
+    {
+      "standardId": "BCP195-RFC9852",
+      "authority": "IETF",
+      "reference": "RFC9852",
+      "classification": "BEST_CURRENT_PRACTICE",
+      "use": "new TLS-using HHS network protocols require TLS 1.3"
+    },
+    {
+      "standardId": "QUIC-V1",
+      "authority": "IETF",
+      "reference": "RFC9000",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "multiplexed peer/server transport where QUIC is selected"
+    },
+    {
+      "standardId": "HTTP3",
+      "authority": "IETF",
+      "reference": "RFC9114",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "preferred HTTP mapping over QUIC for internet federation"
+    },
+    {
+      "standardId": "NIST-FIPS-203-ML-KEM",
+      "authority": "NIST",
+      "reference": "FIPS203",
+      "publicationDate": "2024-08-13",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "post-quantum key encapsulation",
+      "parameterSets": ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"],
+      "implementationNote": "recheck NIST errata and revisions before implementation freeze"
+    },
+    {
+      "standardId": "NIST-FIPS-204-ML-DSA",
+      "authority": "NIST",
+      "reference": "FIPS204",
+      "publicationDate": "2024-08-13",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "post-quantum digital signatures",
+      "parameterSets": ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"],
+      "implementationNote": "recheck the NIST errata list; NIST posted minor planned corrections as of 2026-07-31"
+    },
+    {
+      "standardId": "NIST-FIPS-205-SLH-DSA",
+      "authority": "NIST",
+      "reference": "FIPS205",
+      "publicationDate": "2024-08-13",
+      "classification": "NORMATIVE_OPTIONAL_PROFILE",
+      "use": "independent stateless hash-based post-quantum signature option"
+    },
+    {
+      "standardId": "TLS-PQT-HYBRID-RFC10024",
+      "authority": "IETF",
+      "reference": "RFC10024",
+      "publicationDate": "2026-08",
+      "classification": "NORMATIVE_STANDARD",
+      "use": "post-quantum/traditional hybrid TLS 1.3 key agreement",
+      "groups": ["X25519MLKEM768", "SecP256r1MLKEM768", "SecP384r1MLKEM1024"],
+      "defaultAuthoringPreference": "X25519MLKEM768"
+    },
+    {
+      "standardId": "X509-ML-DSA-RFC9881",
+      "authority": "IETF",
+      "reference": "RFC9881",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "ML-DSA identifiers in X.509 certificates and CRLs",
+      "implementationNote": "apply verified RFC errata, including the ML-DSA-87 public-key-size correction"
+    },
+    {
+      "standardId": "X509-ML-KEM-RFC9935",
+      "authority": "IETF",
+      "reference": "RFC9935",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "ML-KEM identifiers in X.509 PKI where the consuming protocol supports ML-KEM certificates"
+    },
+    {
+      "standardId": "JOSE-COSE-ML-DSA-RFC9964",
+      "authority": "IETF",
+      "reference": "RFC9964",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "ML-DSA serialization for JOSE and COSE envelopes"
+    },
+    {
+      "standardId": "CBOR",
+      "authority": "IETF",
+      "reference": "RFC8949",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "compact binary network envelopes",
+      "profileRequirement": "HHS signed envelopes use an explicitly pinned deterministic encoding and authoritative exact fields do not use floating-point representations"
+    },
+    {
+      "standardId": "COSE",
+      "authority": "IETF",
+      "reference": "RFC9052",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "signed, encrypted, or MACed CBOR security envelopes"
+    },
+    {
+      "standardId": "JCS",
+      "authority": "Independent Submission / RFC Editor",
+      "reference": "RFC8785",
+      "classification": "OPTIONAL_INTEROPERABILITY_PROFILE",
+      "use": "canonical JSON-facing signatures where JSON is retained as the signed representation",
+      "restriction": "exact HHS numeric authority outside interoperable JSON-number semantics remains represented by tagged strings or exact integer/rational encodings"
+    },
+    {
+      "standardId": "OAUTH2-SECURITY-BCP",
+      "authority": "IETF",
+      "reference": "RFC9700",
+      "classification": "BEST_CURRENT_PRACTICE",
+      "use": "OAuth 2.0 API authorization security where OAuth is selected"
+    },
+    {
+      "standardId": "OAUTH2-MTLS",
+      "authority": "IETF",
+      "reference": "RFC8705",
+      "classification": "NORMATIVE_WHEN_SELECTED",
+      "use": "mutual-TLS client authentication and certificate-bound access tokens"
+    },
+    {
+      "standardId": "ICE",
+      "authority": "IETF",
+      "reference": "RFC8445",
+      "classification": "OPTIONAL_NETWORK_PROFILE",
+      "use": "peer connectivity establishment and NAT traversal orchestration"
+    },
+    {
+      "standardId": "STUN",
+      "authority": "IETF",
+      "reference": "RFC8489",
+      "classification": "OPTIONAL_NETWORK_PROFILE",
+      "use": "NAT mapping and connectivity checks"
+    },
+    {
+      "standardId": "TURN",
+      "authority": "IETF",
+      "reference": "RFC8656",
+      "classification": "OPTIONAL_NETWORK_PROFILE",
+      "use": "relay fallback when direct peer paths cannot be established",
+      "accountingRule": "relay bandwidth and server use remain resource-accounted under the selected profile"
+    },
+    {
+      "standardId": "GIT-OBJECT-SEMANTICS",
+      "authority": "Git project / de facto ecosystem",
+      "classification": "DE_FACTO_ECOSYSTEM",
+      "use": "fork, immutable commit, branch, ancestry, merge-proposal, and content-addressed development semantics",
+      "restriction": "Git semantics inform lineage interoperability but do not replace HHS Hash72/Hash216/VM81 authority"
+    }
+  ],
+  "profileDefaults": {
+    "transport": {
+      "tlsMinimum": "1.3",
+      "tlsReference": "RFC9846",
+      "httpPreferred": "HTTP/3",
+      "httpReference": "RFC9114",
+      "quicReference": "RFC9000",
+      "pqtHybridGroup": "X25519MLKEM768",
+      "pqtHybridReference": "RFC10024",
+      "zeroRttAuthoritativeMutationAllowed": false
+    },
+    "signatures": {
+      "networkContractPrimary": "ML-DSA",
+      "independentHashBasedOption": "SLH-DSA",
+      "algorithmAgilityRequired": true,
+      "downgradeRejectionRequired": true
+    },
+    "serialization": {
+      "apiDescription": "OpenAPI 3.2.0",
+      "jsonSchema": "2020-12",
+      "binaryEnvelope": "deterministic CBOR profile",
+      "binarySecurityEnvelope": "COSE",
+      "authoritativeFloatAllowed": false
+    },
+    "resourceEconomy": {
+      "backgroundContributionUserAdjustable": true,
+      "creditDecay": "exact discrete profile-defined epoch schedule",
+      "roundRobinPerAuthenticatedIdentity": true,
+      "priorityTiers": true,
+      "boundedBids": true,
+      "quantizedLocalGlobalBurstRecovery": true,
+      "reciprocalRemoteEnvelopeBoundedByVerifiedLocalEnvelope": true,
+      "paidServerQuotaException": true
+    },
+    "objectLineage": {
+      "historyAppendOnly": true,
+      "dependencyRootRequired": true,
+      "genesisIdentityRequired": true,
+      "foreignDirectMutation": false,
+      "foreignForkRequired": true,
+      "mergeRequiresOriginLineageAuthority": true
+    }
+  },
+  "implementationFreezeRequirements": [
+    "reconcile this profile against the then-current HHS_P220_EXTERNAL_STANDARDS_REGISTRY_V1",
+    "reverify all standards versions, status, and errata",
+    "freeze exact cryptographic parameter sets and implementation libraries",
+    "freeze exact OpenAPI and JSON Schema dialect identifiers",
+    "freeze exact network profile digest and upgrade policy",
+    "execute standards conformance and negative interoperability tests before production federation"
+  ]
+}
