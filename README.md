@@ -1,62 +1,157 @@
 # Holofractal Harmonicode (HHS)
 
-HHS is a deterministic, receipt-governed programming environment that combines Harmonicode source semantics, VM81 execution and admission, Hash72 receipt lineage, Hash216 ordered identity, native C ABI surfaces, Python runtime control, backend APIs, visual development, replay, persistence, and governed multimodal tooling.
+HHS is one cumulative deterministic, receipt-governed programming and runtime environment. It combines a pre-pass state-change/kernel-protection foundation, exact Harmonicode semantics, singleton VM81/kernel admission, Hash72 receipt lineage, Hash216 ordered archival/indexing identity, native and Python runtime surfaces, hydration/continuation systems, backend APIs, visual development, replay, persistence, acceleration, and governed multimodal/agent tooling.
 
-## Current authoritative repository state
+The numbered pass system is additive. It does not define a collection of independent runtimes.
 
-The repository is a **working transitional hybrid**, not a scaffold.
+## Current repository state
 
-| Layer | Current repository state |
+The repository is a **working transitional hybrid with active unmerged continuation branches**.
+
+Current observed state for this documentation alignment:
+
+| Layer | Repository state |
 |---|---|
-| Pass 159 toolchain | VM81 + Hash216 Harmonicode interpreter and C11 native compiler evidence is closed on authoritative `main`. |
-| Pass 190 | Iterations 1–7 are present. Iteration 7 is verified for durable workers, dependency scheduling, deterministic claims, cancellation, retry, stale-worker recovery, and receipt-bound execution of registered pure operations. |
-| Pass 190 registry | 42 governed operations: 10 inherited native ABI operations and 32 exact VM81-authority fallback operations. |
-| Pass 191 | The universal Genesis-to-runtime repository-hydration contract is frozen on `main`. Contract presence does not by itself claim full Pass 191 implementation or repository-wide verification. |
-| Visual environment | `bash start.sh` launches the integrated HHS visual development assistant through `hhs_backend.visual_server:app`. |
-| Deployment target | DigitalOcean/systemd deployment assets are repository-native for Pass 189 Iterations 1–4, the Pass 190 service and worker path, and the Pass 196 integrated environment. Vercel is not part of those acceptance paths. |
+| Pre-pass foundation | Predates Pass 001. System-wide architecture now explicitly records its kernel-protection, error-correction, cross-format, path/time/noncommutative, rollback, and optimization boundaries. This clarification is documentation-only and is not a new pass. |
+| Authoritative `main` | `3c926453d65b71a6d1789e06b748544f5f2bd228`. Its runtime parent is Pass 219B I6 merge `ff66e376a44c8b928a9a42c2e6d8aa1846785fc2`; the subsequent main commit adds creative-writing content rather than a new runtime closure. |
+| Pass 219B I7 | PR #319, validated head `6df75bc39fd7c58108b8cf7aee3758341fe345a5`, open and unmerged. Exact selective projection optimization; zero new canonical mutation/Hash72 authority. |
+| Pass 220 | PR #320, head `d0fb6165bf8249175566c934820eecf8e93bdacc`, draft and unmerged. Native Linux VM/bootstrap work remains `NON_PROMOTIONAL_PREIMPLEMENTATION` until terminal Pass 219 closure. |
+| Post-220 Deployment Target 1 | Authenticated OpenAPI remote-agent object workspace is a binding downstream target, not an implemented/accepted production service. |
+| Universal Knowledge Economy network | PR #321, validated contract head `d4146f4553920a1776962400a4df4e64c994f45e`, draft and unmerged. It specifies downstream P2P/resource/federation/lineage architecture without claiming network implementation. |
 
-The latest completed Pass 190 layer intentionally does **not** claim external provider execution, arbitrary subprocess execution, mutating target execution, multi-host consensus, final Pass 190 completion, or live DigitalOcean production acceptance.
+Do not infer Pass 219 terminal closure, Pass 220 implementation admission, Deployment Target 1 acceptance, or production UKE federation from the existence of these contracts/branches.
+
+## Foundational architecture
+
+The system hierarchy is:
+
+```text
+PRE-PASS STATE-CHANGE / KERNEL-PROTECTION ENVIRONMENT
+        ↓
+SINGLETON VM81 / KERNEL ADMISSION AND COMMIT AUTHORITY
+        ↓
+HASH72 ADMITTED RECEIPT / STATE LINEAGE
+        ↓
+NUMBERED PASS SYSTEM
+        ↓
+HASH216 / HYDRATION / CACHE / GPU / AGENT / IDE / NETWORK OPTIMIZATIONS
+```
+
+The pre-pass foundation is **not Pass 000** and is not owned by a later numbered pass.
+
+Its architectural role is primarily:
+
+```text
+kernel protection
++ error correction
++ state-continuity enforcement
++ multimodal cross-validation
++ path/time/order-sensitive transition constraints
++ lightweight prediction / optimization
++ automatic rollback on required disagreement
+```
+
+It is not accurately described as one obvious security package. HHS also has explicit security mechanisms—hashing, signatures, authentication, capabilities, PQC/network profiles, isolation, and receipts—but those are a separate real layer rather than a substitute for the pre-pass state-change substrate.
+
+The detailed clarification is:
+
+[`docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md`](docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md)
+
+## Cross-format state law
+
+Multiple required authoritative representations may encode the same raw state differently, but they may not disagree about that state.
+
+```text
+for every required authoritative modality m:
+Normalize_m(View_m) = canonical_raw_state
+```
+
+This is exact equality enforcement, not consensus voting.
+
+```text
+required representation disagreement
+→ closure failure
+→ no canonical commit
+→ retain / restore last fully closed state
+```
+
+A mode, backend, model, cache, GPU, API, or pass cannot select one disagreeing representation as the new truth.
 
 ## Authority model
 
+At the system level:
+
 ```text
-input
-→ parser and source preservation
-→ symbolic or macro expansion
-→ typed state proposal
-→ VM81 admission
-→ kernel and invariant audit
-→ LOCKED or QUARANTINED gate
-→ Hash72 receipt
-→ Hash216 identity/topology witness
-→ replay, persistence, API, SDK, and visual projection
+input / candidate
+→ exact source and raw-state identity preservation
+→ applicable parsing / typing / capability / policy checks
+→ pre-pass path/time/multimodal/noncommutative compatibility
+→ required cross-format equality and correction closure
+→ singleton VM81/kernel admission
+→ exact inherited invariant closure
+→ LOCKED / CORRECTED / RECOVERED / REJECTED / QUARANTINED
+→ Hash72 receipt commitment if admitted
+→ Hash216 archival / indexing / topology witness
+→ replay / persistence
+→ native / API / SDK / assistant / visual projection
 ```
 
 Binding rules:
 
-- VM81 is the semantic execution, admission, and authoritative state-transition substrate.
-- Hash72 is the canonical receipt and causal-lineage authority.
-- Hash216 preserves ordered identity, indexing, topology, and historical evidence.
-- Canonical kernel arithmetic is exact; floating-point values may be display, timing, benchmark, or calibration witnesses but do not silently replace exact state.
-- Ordered products such as `xy` and `yx` must not be collapsed unless an applicable law proves equivalence.
-- Every mutation must be explicit, audited, receipt-bound, and replay-verifiable.
-- Language-model output is a proposal or capability result, not canonical state merely because inference completed.
+- VM81/kernel remains the singleton semantic mutation/admission authority.
+- Hash72 commits and chains admitted state transitions; a Hash72-shaped value does not independently define foundational validity.
+- Hash216 preserves ordered identity, indexing, topology, archival evidence, and reusable continuation context after valid receipt closure.
+- Canonical kernel arithmetic is exact; floating-point values may be bounded display, graphics, timing, benchmark, calibration, or foreign-format witnesses but do not silently replace exact authority.
+- Ordered products such as `xy` and `yx` must not be collapsed unless the applicable exact law proves equivalence in the required domain.
+- Every canonical mutation must be explicit, bounded, audited/admitted, receipt-bound, and replay-verifiable.
+- Language-model output, GPU work, cache results, provider output, and remote-peer results are proposals/candidates/evidence until the inherited authority path admits them.
+
+## Optimization law
+
+HHS optimizes the amount of active work, not the definition of validity.
+
+```text
+DO NOT REMOVE INVARIANTS TO GET SPEED
+REDUCE THE ACTIVE WORK REQUIRED TO DEMONSTRATE THE SAME INVARIANTS
+```
+
+This permits large global validity structure while keeping per-step work bounded through validated continuations, exact caches, vector indexing, dependency-scoped recomputation, selective hydration, compiled representations, branch ranking, and candidate parallelism.
+
+```text
+HOW FAST CAN WE FIND A VALID NEXT STATE?
+```
+
+is an optimization problem.
+
+```text
+WHAT COUNTS AS A VALID NEXT STATE?
+```
+
+is not a pass-level optimization variable.
+
+Small local modules may participate in larger path-, time-, modality-, ordering-, correction-, or rollback-sensitive relations:
+
+```text
+LOCAL PURPOSE != GLOBAL SYSTEM ROLE
+FILE ORGANIZATION != PROTECTION TOPOLOGY
+LOCAL REDUNDANCY != GLOBAL REMOVABILITY
+```
 
 ## Repository layout
 
-The repository currently preserves root-level compatibility modules while canonical implementations increasingly live in structured package paths.
+The repository preserves a transitional hybrid of historical/root compatibility surfaces and structured package paths.
 
 | Path | Responsibility |
 |---|---|
-| `hhs_runtime/` | Canonical runtime substrate, core sandbox, kernel resolution, C runtime, testing, and execution helpers |
+| `hhs_runtime/` | Native/Python runtime substrate, kernel resolution, exact execution, C surfaces, continuation/replay, tests, and inherited/pre-pass-sensitive behavior |
 | `hhs_python/` | Python runtime controller and ctypes bridge surfaces |
-| `hhs_backend/` | FastAPI lifecycle, orchestration, assistant, routes, WebSockets, runtime services |
-| `hhs_graph/` | Receipt and multimodal graph topology |
-| `hhs_storage/` | Durable state and persistence primitives |
-| `native_projects/` | Pass-scoped native implementations, contracts, validation, deployment, and restart records |
-| `hhs_gui/` and `applications/` | Visual runtime applications and user-facing development surfaces |
+| `hhs_backend/` | FastAPI/service lifecycle, orchestration, assistant, routes, WebSockets, runtime services |
+| `hhs_graph/` | Receipt, object, branch, and continuation topology |
+| `hhs_storage/` | Durable state, receipt, Hash216/vector, replay, and persistence primitives |
+| `native_projects/` | Pass-scoped native implementations, ABI bindings, contracts, evidence, deployment, and restart records |
+| `hhs_gui/`, `applications/` | Human-operable runtime applications and development surfaces |
 | `docs/` | Architecture, pass contracts, explanatory papers, deployment, and operational documentation |
-| root modules | Compatibility imports and historical entry points; new canonical logic should not be added here unless the change is intentionally a compatibility repair |
+| root runtime modules | Compatibility/historical entry points; path location alone does not prove a module is disposable or non-authoritative to inherited behavior |
 
 Example compatibility path:
 
@@ -65,132 +160,81 @@ hhs_general_runtime_layer_v1.py
 → hhs_runtime.core_sandbox.hhs_general_runtime_layer_v1
 ```
 
-## Current Pass 190 operation fabric
+Prefer current canonical package implementations for new code, while preserving and testing inherited behavior before moving or deleting historical surfaces.
 
-The active implemented operation-fabric surface lives under:
+## Pass 219 / 219B boundary
+
+Current Pass 219 development is a cumulative C/C++ reusable membrane over inherited HHS behavior. It must expose rather than redefine the inherited authority chain.
+
+Pass 219B selective phase/hydration work remains bounded and projection/candidate oriented where specified. PR #319 explicitly preserves zero canonical mutation, persistence, and Hash72 commit authority for the I7 optimization surface.
+
+Do not treat an unmerged Pass 219/219B branch as authoritative `main` merely because its validation is green.
+
+## Pass 220 boundary
+
+The Pass 220 contract targets a professional native Linux HARMONICODE IDE/runtime/portable-VM development environment while preserving the same cumulative authority.
+
+Its implementation gate remains:
+
+```text
+PASS 219 TERMINAL MERGE + EXACT-HEAD VERIFICATION
+→ PASS 220 IMPLEMENTATION ADMISSION
+```
+
+PR #320 therefore remains preimplementation/non-promotional. Existing browser interfaces remain compatibility/remote/admin projections rather than the final primary local product direction.
+
+## Downstream remote-agent and network targets
+
+After terminal Pass 219 and Pass 220 closure, the first deployment target is an authenticated OpenAPI remote-agent object workspace. The effective remote model reuses the inherited operation registry, object/template authority, common action model, durable jobs, artifacts, receipts, and singleton VM81 path rather than creating a second object or mutation engine.
+
+The later Universal Knowledge Economy contract extends that model into a peer/server network with immutable object lineage, Genesis/fork rules, reciprocal resource accounting, time-decaying credits, physical resource conservation, paid server contracts, subnet profiles, and PQC-secure federation.
+
+These are downstream contracts, not current production-network claims.
+
+## Inherited Pass 190 operation fabric
+
+Pass 190 remains an important implemented historical/cumulative operation-fabric layer under:
 
 ```text
 native_projects/hhs_pass190_operation_fabric/
 ```
 
-Iteration 7 execution path:
+Its validated durable-worker work established governed operation registration, dependency/schedule handling, worker claims, retry/recovery, receipts, generated SDK bindings, and API/visual projection under singleton authority.
 
-```text
-registered pure operation
-→ durable execution job
-→ dependency and schedule admission
-→ capability-matched worker
-→ Hash72 execution claim
-→ exact target evaluation
-→ one outer VM81 admission
-→ one Hash72 receipt and event
-→ completed, retry-wait, failed, or cancelled job state
-```
-
-Key properties:
-
-- one authoritative SQLite state for resources, workers, jobs, leases, fences, receipts, and events;
-- exact integer nanosecond coordinates for schedules, heartbeats, retries, leases, starts, and completion;
-- deterministic job selection by highest priority and then lexicographically smallest job ID;
-- acyclic same-workspace dependency graphs;
-- one running job per worker;
-- receipt-bound pure-operation execution;
-- bounded retry and stale-worker recovery;
-- generated Python and TypeScript SDK parity;
-- visual authority and OpenAPI exposure;
-- shared DigitalOcean service state for API and worker processes.
-
-### Validate Pass 190 Iteration 7
+Historical Pass 190 validation remains useful when that surface is impacted:
 
 ```bash
-cd native_projects/hhs_pass190_operation_fabric
-make validate
+make -C native_projects/hhs_pass190_operation_fabric validate
 ```
 
-The validation target builds and tests the native ABI, runs Iterations 1–7 tests, checks compilation, rejects private `eval`/`exec`, checks generated SDKs and bindings, verifies GUI surfaces, verifies deployment assets, and runs iteration-specific evidence checks.
+Do not interpret this inherited operational section as meaning Pass 190 is still the current overall development frontier.
 
-### Pass 190 runtime route
+## Deployment operations
 
-Iteration 7 adds:
-
-```text
-GET /api/pass190/execution-runtime
-```
-
-The Pass 190 service is designed to run on `127.0.0.1:8190` behind the repository deployment boundary. The API and worker services share:
-
-```text
-/var/lib/hhs/pass190-authority.sqlite3
-```
-
-## DigitalOcean deployment operations
-
-The canonical installation and operations runbook for the Pass 189 DigitalOcean stack is:
+Repository-native deployment assets include historical DigitalOcean/systemd paths and later integrated-environment work. The existing operational runbook remains:
 
 [`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md)
 
-It documents:
+It covers host preparation, service ordering, TLS routing, controlled upgrades/restarts, backups, restore/rollback, logs, isolation, troubleshooting, and maintenance for the applicable accepted deployment surfaces.
 
-- Ubuntu host preparation and repository installation;
-- Pass 189 systemd dependency ordering and nginx TLS routing;
-- local and public verification;
-- controlled upgrades and restart procedures;
-- SQLite and filesystem backups;
-- restore and rollback;
-- security maintenance, logs, troubleshooting, and incident isolation;
-- routine daily, weekly, and monthly maintenance;
-- the default `8190` collision between Pass 189 Iteration 2 and Pass 190.
-
-Before co-hosting multiple pass services, assign and record a non-conflicting loopback port plan. Pass 196 uses `127.0.0.1:8080`; Pass 189 uses `8189–8192`; Pass 190 currently defaults to `8190` and therefore requires relocation or a separate host when Pass 189 Iteration 2 is enabled.
+Historical deployment acceptance does not automatically satisfy Pass 220 native-VM, post-220 cloud/API, secure-database, downloadable-artifact, or UKE federation acceptance.
 
 ## Integrated visual environment
 
-### Prerequisites
-
-- Python 3.11+
-- GCC or Clang
-- GNU Make
-- Node.js 22+
-- accelerator and driver support for the selected local model-provider profile
-
-### Start
+The inherited browser-based environment can still be launched through the historical compatibility path where dependencies are present:
 
 ```bash
-git clone https://github.com/danonbrez/Holofractal_Harmonicode.git
-cd Holofractal_Harmonicode
 python -m pip install -r requirements.txt
 bash start.sh
 ```
 
-Open:
-
-```text
-http://localhost:8080/
-```
-
-The default composition provides the visual development assistant, registered-object workspace, nested inspectors, governed HHS tools, provider and authority diagnostics, and degraded startup when the model provider is unavailable unless strict startup is enabled.
-
-The former root JSON status remains available through:
-
-```text
-GET /api/system/status
-```
+Pass 220 explicitly moves the preferred future local interface toward a native Linux application/VM workspace. The web surface remains useful for compatibility, remote access, administration, and migration comparison.
 
 ## Harmonicode program and macro surfaces
 
-The repository contains:
+The repository contains `.hhsprog` executable program surfaces, receipt-bearing run results, exact integer/rational operations, algebra-native macros, nested expansion, symbolic commitments, Hash72 receipt behavior, and replay verification.
 
-- `.hhsprog` executable program format;
-- `.hhsrun` receipt-bearing run results;
-- `run`, `verify`, `inspect`, and `demo` CLI commands;
-- exact integer and rational runtime operations;
-- algebra-native macros;
-- nested macro expansion;
-- symbolic commitments;
-- Hash72 expansion and call receipts;
-- replay verification.
-
-Core files:
+Core compatibility/public files include:
 
 ```text
 terminal_hhsprog_v5_macro_algebra.py
@@ -199,56 +243,30 @@ hhs_receipt_replay_verifier_v1.py
 hhs_general_runtime_layer_v1.py
 ```
 
-Macro execution model:
-
-```text
-macro source
-→ canonical symbolic macro
-→ parameter binding
-→ nested expansion
-→ symbolic commit
-→ AuditedRunner receipt
-→ replayable Hash72 chain
-```
-
-## Pass 191
-
-The normative contract is:
-
-[`docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL_INVARIANT_CLOSURE.md`](docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL_INVARIANT_CLOSURE.md)
-
-Its target is:
-
-```text
-one repository
-→ one complete historical lineage
-→ one canonical object graph
-→ one canonical operation registry
-→ one universal invariant envelope
-→ one VM81 admission authority
-→ one Hash72 commit chain
-→ one Hash216 identity topology
-→ many consistent user and machine surfaces
-```
-
-The companion educational manuscript is:
-
-[`docs/pass191/HHS_DYADIC_QUARTIC_PHASE_LATTICE_AND_HARMONICODE_EXPLANATORY_ESSAYS.md`](docs/pass191/HHS_DYADIC_QUARTIC_PHASE_LATTICE_AND_HARMONICODE_EXPLANATORY_ESSAYS.md)
-
-It explains the dyadic–quartic phase lattice, critical resonance, integer and rational phase states, Fibonacci/plastic/Collatz relations, quadratic reciprocity, receipts, repository architecture, and the Harmonicode language in educational natural language.
+Identity-bearing lexical form, list/membrane structure, ordered operands, exact arithmetic, source/native bytes, and predecessor lineage must not be normalized away by later compilers or optimizers.
 
 ## Canonical documentation
 
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) — ownership boundaries, canonical paths, current pass layering, and anti-drift rules
-- [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — end-to-end execution, receipt, replay, worker, API, and visual projection flow
-- [`GLOSSARY.md`](GLOSSARY.md) — stable definitions for the principal HHS terms
-- [`AGENTS.md`](AGENTS.md) — repository navigation and implementation rules
-- [`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md) — DigitalOcean installation, service operation, backup, restore, rollback, security, troubleshooting, and maintenance
-- [`HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md`](HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md) — current verified operation-fabric contract
+Read these together:
 
-## Baseline validation
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — current ownership, authority, cumulative layering, low-latency law, and anti-drift rules
+- [`docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md`](docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md) — pre-pass state-change/kernel-protection foundation
+- [`docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md`](docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md) — single-authority/plug-in compatibility specification
+- [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — end-to-end transition, rollback, receipt, replay, cache, hydration, agent, API, and interface flow
+- [`GLOSSARY.md`](GLOSSARY.md) — stable terminology
+- [`AGENTS.md`](AGENTS.md) — repository navigation and implementation/refactor rules
+- [`HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_CONTRACT.md`](HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_CONTRACT.md) — current numbered-pass runtime contract family
+- [`HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md`](HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md) — downstream native development-environment contract
+- [`docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md`](docs/deployment/HHS_DEPLOYMENT_TARGET_1_OPENAPI_AGENT_OBJECT_WORKSPACE.md) — first post-220 remote production target
+- [`docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md`](docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md) — downstream peer/resource/federation architecture
 
-Run from the repository root:
+## Baseline validation discipline
+
+Use dependency-scoped validation rather than indiscriminately rerunning unaffected history.
+
+For foundational/runtime changes, include the affected exact/no-float, ordered/noncommutative, cross-format, rollback, replay, VM81, Hash72/Hash216, ABI, and pass-specific tests.
+
+Historical baseline commands remain available where relevant:
 
 ```bash
 python hhs_runtime_smoke_tests_v1.py
@@ -256,10 +274,12 @@ python hhs_regression_suite_v1.py
 python hhs_v1_bundle_runner.py
 ```
 
-Run Pass 190 validation separately:
+A path, environment, performance, or deployment failure must be repaired forward at the affected boundary. Do not weaken foundational state validity, invariant checks, receipt continuity, ordered identity, or replay requirements to make a test pass.
 
-```bash
-make -C native_projects/hhs_pass190_operation_fabric validate
-```
+## Disclosure boundary under consideration
 
-A path or environment failure should be repaired at the adapter or deployment layer. Invariant checks, receipt continuity, ordered identity, and replay requirements must not be weakened to make a test pass.
+The architecture allows a future release policy to expose public interoperability contracts while keeping selected pre-pass/kernel/algebra implementation details in validated compiled hydration-ROM or equivalent artifacts.
+
+That policy is **not frozen by this README or the current documentation alignment**. In particular, no decision is made here about permanent non-upgradability, successor-ROM policy, or exact proprietary file boundaries.
+
+System-wide documentation intentionally describes the invariant and authority model without publishing the exact pre-pass file-to-role map, private timing constants, or internal correction sequence.

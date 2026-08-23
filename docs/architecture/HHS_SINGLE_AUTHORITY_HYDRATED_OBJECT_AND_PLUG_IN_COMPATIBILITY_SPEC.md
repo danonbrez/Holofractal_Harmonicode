@@ -4,19 +4,19 @@
 
 - Classification: canonical architecture specification
 - Repository: `danonbrez/Holofractal_Harmonicode`
-- Base reviewed: `main @ e664ba99f788b2c3c41ea8d88b3112195eac26e3`
-- Change type: additive documentation; no runtime semantics are replaced
-- Authority rule: one integrated HHS computational authority
+- Repository reconciliation for this alignment: authoritative `main @ 3c926453d65b71a6d1789e06b748544f5f2bd228`; downstream contract base `d4146f4553920a1776962400a4df4e64c994f45e`
+- Change type: additive architecture/documentation alignment; no runtime semantics are replaced
+- Authority rule: one integrated HHS computational authority inheriting a pre-pass state-change constitution
 
-This specification records the required interpretation of the integrated Holofractal Harmonicode System. It is binding on new modules, applications, interfaces, services, agents, storage adapters, compilers, execution backends, and future numbered passes.
+This specification records the required interpretation of the integrated Holofractal Harmonicode System. It is binding on new modules, applications, interfaces, services, agents, storage adapters, compilers, execution backends, future numbered passes, and refactors.
+
+Normative foundational companion:
+
+[`HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md`](HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md)
 
 ## 1. System identity
 
-HHS is an evolutionary, modular, entangled, thermodynamic, phase-logical, agentic knowledge economy implemented as one cumulative computational system.
-
-The system predates the numbered pass sequence. Every compatible pass is an in-place extension of the same inherited system image. Pass directories, contracts, artifacts, receipts, and evidence boundaries do not create separate runtimes or independent products.
-
-The current system is:
+HHS is one cumulative computational system. The system predates the numbered pass sequence.
 
 ```text
 pre-pass foundation
@@ -25,9 +25,35 @@ pre-pass foundation
 = one cumulative HHS runtime image
 ```
 
-No implementation may reinterpret the repository as a collection of unrelated demonstrations or pass-specific authorities.
+The pre-pass foundation is not Pass 000. A later pass may expose, validate, optimize, or bind inherited behavior, but it does not retroactively become the origin of that behavior.
 
-## 2. Singular computational authority
+Pass directories, contracts, artifacts, receipts, and evidence boundaries do not create separate runtimes or independent products.
+
+## 2. Foundational state-change hierarchy
+
+The architectural order is:
+
+```text
+PRE-PASS STATE-CHANGE / KERNEL-PROTECTION ENVIRONMENT
+        ↓
+SINGLETON VM81 / KERNEL ADMISSION AND COMMIT AUTHORITY
+        ↓
+HASH72 ADMITTED RECEIPT / STATE LINEAGE
+        ↓
+NUMBERED PASS SYSTEM
+        ↓
+HASH216 / HYDRATION / CACHE / ACCELERATION / AGENT / INTERFACE / NETWORK LAYERS
+```
+
+The pass system is a consumer of an already constrained runtime substrate.
+
+```text
+OPTIMIZATION AUTHORITY < PRE-PASS STATE VALIDITY
+```
+
+No optimizer, agent, pass, interface, compiler, cache, GPU, database, provider, or remote peer may redefine the foundational conditions that determine whether a candidate state transition is compatible with kernel continuity.
+
+## 3. Singular computational authority
 
 HHS permits many modules, agents, candidate workers, branch trees, mathematical projections, caches, interfaces, and storage layers. It permits exactly one canonical mutation authority.
 
@@ -58,67 +84,113 @@ The following must never become alternate authorities:
 - device adapters;
 - compiler frontends;
 - compatibility shims;
-- pass-scoped services.
+- pass-scoped services;
+- network peers or paid servers.
 
-## 3. Internal post-quantum security boundary
+## 4. Pre-pass kernel-protection and error-correction substrate
 
-The post-quantum security system is internal to the kernel and integrated runtime. It is not exposed as a menu of independent external cryptographic operations.
+The deepest kernel-protection behavior is not accurately represented as one conventional security package.
 
-External callers submit bounded operation or transformation proposals. They do not select, reorder, weaken, bypass, or directly invoke internal security stages.
+The pre-pass environment is a path-specific, multimodal, temporally bounded, ordered/noncommutative state-change substrate whose locally narrow modules collectively provide kernel protection, error correction, state continuity, reconstruction comparison, lightweight prediction/optimization, and rollback behavior.
 
-The internal validation fabric includes the inherited formal specifications and implemented operations for:
+A local module may appear to be an unrelated experiment or utility when inspected in isolation. Its system role may depend on predecessor state, execution path, temporal/epoch position, modality, noncommutative ordering, or hash/receipt lineage.
 
-- exact no-float canonical Harmonicode algebra;
-- higher-dimensional tensor validation;
-- ordered and noncommutative phase computation;
-- high-entropy validation;
-- Golay-style toroidal corruption detection, correction, denaturing, and recovery;
-- closure and invariant enforcement;
-- phase and identity preservation;
-- bounded mutation ownership;
-- rollback and last-known-good recovery;
-- deterministic replay;
-- local and global membrane constraints;
-- parent and lineage continuity.
+```text
+LOCAL PURPOSE != GLOBAL SYSTEM ROLE
+FILE ORGANIZATION != PROTECTION TOPOLOGY
+LOCAL REDUNDANCY != GLOBAL REMOVABILITY
+```
 
-The security claim applies to the cumulative construction: formal specifications were translated into equations, equations into operations, operations into native runtime gates, native gates into tested execution paths, and those paths were reinforced by interconnected Python implementations and broader pass-level validation.
+No refactor may remove or combine uncertain inherited modules solely because conventional local analysis reports equivalent scalar endpoints or apparent redundancy.
 
-Hash72 and Hash216 are not substitutes for this internal validation fabric.
+This specification deliberately does not publish the exact pre-pass file-to-role topology, private timing constants, operational sequence, or internal correction map.
 
-## 4. Python phase-locked enforcement mesh
+## 5. Cross-format unanimity
 
-The Python layers are not a single wrapper around a small C application. They form a stacked, interconnected security and functionality mesh around the authoritative native runtime.
+HHS may maintain multiple structurally independent authoritative representations of one raw state.
 
-Different modules enforce the same governing constraints through different mathematical and operational modalities, including:
+Let `R_n` be the canonical raw state and `N_m` the exact normalization/decoding function for required modality `m`.
+
+A fully closed state satisfies:
+
+```text
+for every required authoritative modality m:
+N_m(F_m) = R_n
+```
+
+Required representations may differ in data format, algebra, topology, storage form, execution backend, or purpose. They may not establish competing truths.
+
+This is not majority consensus:
+
+```text
+CROSS-FORMAT VALIDATION != CONSENSUS VOTING
+```
+
+If any required authoritative representation disagrees:
+
+```text
+exists m : N_m(F'_m) != R_(n+1)
+=> CLOSURE FAILURE
+=> NO CANONICAL COMMIT
+=> RETAIN / RESTORE LAST FULLY CLOSED STATE
+```
+
+No pass, mode, accelerator, cache, model, API, worker, or database may vote past required disagreement.
+
+## 6. Explicit post-quantum/security boundary is separate
+
+HHS also contains explicit security mechanisms, including hashing, signatures, authentication, capabilities, PQC/network profiles, isolation, receipts, and access/admission controls.
+
+These are real security mechanisms. They are distinct from, and do not replace, the pre-pass kernel-protection/error-correction substrate.
+
+```text
+EXPLICIT SECURITY / CRYPTOGRAPHIC CONTROL
+!=
+PRE-PASS KERNEL PROTECTION / ERROR CORRECTION
+```
+
+External callers submit bounded proposals. They do not select, reorder, weaken, bypass, or directly invoke private/internal state-protection stages.
+
+Hash72 and Hash216 are not substitutes for the pre-pass foundation.
+
+## 7. Python and heterogeneous local-module roles
+
+The Python layers are not a single wrapper around a small C application and are not accurately described as one homogeneous security mesh.
+
+Across the cumulative repository, Python modules may participate in:
 
 - exact symbolic and rational validation;
-- tensor, manifold, and phase projections;
-- semantic and proposition-identity preservation;
-- entropy, corruption, and recovery checks;
+- tensor/manifold/phase projection;
+- error correction, recovery, and quarantine;
+- multimodal reconstruction comparison;
+- timing/state tracking;
+- lightweight prediction, cache, and reuse optimization;
 - storage and ledger integrity;
 - replay reconstruction;
-- provider-output quarantine;
-- API and workflow admission;
+- provider-output admission;
+- API/workflow orchestration;
 - repository-wide hydration and dependency scans;
-- multimodal reconstruction comparison;
-- lifecycle and deployment hardening.
+- lifecycle/deployment hardening;
+- pass-era testing and membrane exposure.
 
-These modules provide heterogeneous redundancy. They must remain phase-locked to the same object identity, predecessor lineage, VM81 admission boundary, invariant envelope, and receipt semantics.
+Some of these roles are pre-pass-sensitive; others are later orchestration or validation surfaces. Documentation and refactors must preserve that distinction.
 
-Python may harden, orchestrate, persist, test, translate, hydrate, optimize, or project the native authority. Python must not replace it.
+Python may harden, orchestrate, persist, test, translate, hydrate, optimize, or project the native authority. Python must not replace VM81/kernel mutation authority or redefine foundational validity.
 
-## 5. Canonical validation and archival order
+## 8. Canonical validation and archival order
 
-The order of operations is binding.
+At system level the order is:
 
 ```text
 candidate object or transformation
-→ source and identity preservation
-→ Python phase-locked security mesh
+→ exact source / raw-state identity preservation
+→ applicable parsing / typing / capability / policy checks
+→ pre-pass path/time/multimodal/noncommutative compatibility
+→ required cross-format equality and error-correction closure
 → private VM81/kernel validation and execution
-→ exact Harmonicode closure
-→ correction, recovery, entropy, tensor, lineage, and replay checks
-→ admitted or rejected transformation
+→ exact inherited Harmonicode / invariant closure
+→ LOCKED, CORRECTED, RECOVERED, REJECTED, or QUARANTINED
+→ Hash72 receipt commitment only for an admitted transition
 ```
 
 Only a successfully admitted transformation may produce the canonical three-part receipt block:
@@ -129,25 +201,25 @@ Only a successfully admitted transformation may produce the canonical three-part
 
 The meanings are:
 
-- `prev_hash72`: the authoritative predecessor receipt or state boundary;
-- `state_hash72`: the exact admitted resulting state;
-- `receipt_hash72`: the proof that the bounded transformation survived the full validation path.
+- `prev_hash72`: authoritative predecessor receipt/state boundary;
+- `state_hash72`: exact admitted resulting state;
+- `receipt_hash72`: proof/receipt that the bounded transition survived the applicable state-change and admission path.
 
-Hash72 is therefore the receipt of completed validation. A Hash72-shaped value is not sufficient evidence of a valid state.
+A Hash72-shaped value is not sufficient evidence of a valid state.
 
-## 6. Hash216 long-term storage begins after receipt closure
+## 9. Hash216 long-term storage begins after receipt closure
 
-Hash216 archival and long-term vector indexing occur only after the valid three-part Hash72 receipt block exists.
+Hash216 archival and long-term vector indexing occur only after a valid three-part Hash72 receipt block exists.
 
 The archival module must:
 
-1. preserve the exact order `prev`, `state`, `receipt`;
+1. preserve exact order `prev`, `state`, `receipt`;
 2. concatenate the three 72-character blocks without normalization, reordering, width loss, or character substitution;
 3. preserve all 216 character positions;
-4. derive the configured SHA-256 positional or array representation character by character;
-5. bind the array to the exact concatenated block and applicable metadata;
+4. derive the configured character-addressed SHA-256 positional/array representation;
+5. bind the array to the exact concatenated block and metadata;
 6. store the result as a durable vector-index record;
-7. retain predecessor, current, transformation, dependency, replay, and recovery context.
+7. retain predecessor, transformation, dependency, replay, and recovery context.
 
 ```text
 prev_hash72
@@ -159,42 +231,56 @@ prev_hash72
 → durable long-term storage
 ```
 
-Hash216 does not retroactively authorize the transformation. VM81 and the integrated validation fabric already authorized it. Hash216 preserves, indexes, retrieves, relates, and hydrates the completed proof.
+Hash216 does not retroactively authorize the transformation. It preserves, indexes, retrieves, relates, and hydrates completed proof.
 
-A vector match is never permission to bypass current-context verification, VM81 admission, or Hash72 commitment.
+A vector match is never permission to bypass foundational compatibility, current-context verification, VM81 admission, or Hash72 commitment.
 
-## 7. Hash216 vector-store buffer cache optimizer
+## 10. Hash216 vector-store / validated-computation cache
 
-Above durable Hash216 storage, HHS provides a reusable validated-computation cache.
+Above durable Hash216 storage, HHS provides reusable validated-computation cache/continuation mechanisms.
 
 A cached record may preserve:
 
 - exact source and machine bytes;
-- decoder and compiler context;
+- decoder/compiler context;
 - ordered operands and grouping;
-- local and global constraints;
+- local/global constraints;
 - VM81 lowering graph;
-- VM5184 route;
-- G243 controls;
+- VM5184 route and G243 controls;
 - dependency roots;
-- expected faults and privilege class;
+- expected faults/privilege class;
 - test-vector identities;
-- admission and rejection receipts;
+- admission/rejection receipts;
 - replay, reversal, rollback, and repair metadata;
 - retained native encoding.
 
-A warm cache hit may remove redundant decoding, lowering, proof construction, branch expansion, and microcode generation. It may not remove:
+A warm cache hit may remove redundant decoding, lowering, proof construction, branch expansion, and microcode generation. It may not remove foundational state compatibility, exact-context verification, predecessor/dependency validation, current capability/resource checks, singleton VM81 admission, or ordered Hash72 commitment.
 
-- exact-context verification;
-- predecessor validation;
-- dependency validation;
-- current resource and privilege checks;
-- singleton VM81 admission;
-- the ordered Hash72 commit.
+The cache is executable validated memory, not independent authority.
 
-The cache is executable validated memory, not an independent execution authority.
+## 11. Low-latency optimization law
 
-## 8. Full VM5184 × G243 hydration
+The optimization rule is:
+
+```text
+DO NOT REMOVE INVARIANTS TO GET SPEED
+
+REDUCE THE ACTIVE WORK REQUIRED
+TO DEMONSTRATE THE SAME INVARIANTS
+```
+
+The target asymmetry is:
+
+```text
+GLOBAL VALIDITY STRUCTURE = LARGE
+PER-STEP AUTHORITATIVE WORK = BOUNDED
+```
+
+Validated continuations, exact caches, vector indexing, dependency-bounded recomputation, selective hydration, compiled representations, candidate parallelism, and branch prediction/ranking may reduce latency while preserving the same state-change law.
+
+A later optimizer may improve how quickly a valid next state is found. It may not redefine what counts as valid.
+
+## 12. Full VM5184 × G243 hydration
 
 The canonical permanent address is:
 
@@ -202,11 +288,7 @@ The canonical permanent address is:
 s = 64c + o
 ```
 
-where:
-
-- `c ∈ [0,80]` is the VM81 cell;
-- `o ∈ [0,63]` is the ordered operation position;
-- `s ∈ [0,5183]` is the permanent micro-operation identity.
+where `c ∈ [0,80]`, `o ∈ [0,63]`, and `s ∈ [0,5183]`.
 
 The projected control address is:
 
@@ -214,10 +296,7 @@ The projected control address is:
 q = 243s + g
 ```
 
-where:
-
-- `g ∈ [0,242]` is an ordered five-trit control projection;
-- `q ∈ [0,1,259,711]` is the projected execution coordinate.
+where `g ∈ [0,242]` and `q ∈ [0,1,259,711]`.
 
 Therefore:
 
@@ -228,9 +307,7 @@ Therefore:
 
 Every valid transformation may be translated into this hydration fabric while retaining exact source identity, ordered operands, phase, grouping, dependencies, constraints, and receipt lineage.
 
-## 9. Bidirectional x86_64 translation
-
-The hydrated processor supports exact native ingress and retained-identity egress.
+## 13. Bidirectional x86_64 translation
 
 Forward path:
 
@@ -240,7 +317,8 @@ x86_64 bytes
 → Hash216 instruction identity
 → VM81 intermediate representation
 → VM5184 × G243 route
-→ candidate execution
+→ immutable candidate execution
+→ applicable foundational compatibility
 → singleton admission
 → admitted state and Hash72 receipt
 ```
@@ -257,11 +335,11 @@ Different byte encodings remain different identities even when they have similar
 
 Privileged, malformed, unavailable, unsafe, or host-escaping instructions must be trapped, modeled, rejected, or quarantined according to their registered class.
 
-## 10. Full hydration branch-tree model
+## 14. Full hydration branch-tree model
 
 Full hydration intentionally extends through millions of nested, closed, and entangled branch-tree states representing valid permutations under global and local constraints.
 
-A branch is not merely a speculative output. A valid hydrated branch binds:
+A valid hydrated branch binds:
 
 - parent state;
 - ordered transformation;
@@ -270,22 +348,17 @@ A branch is not merely a speculative output. A valid hydrated branch binds:
 - phase relationships;
 - dependency and entanglement links;
 - resulting state;
-- reverse and recovery path;
+- reverse/recovery path;
 - receipt lineage;
 - reusable continuation identity.
 
 Invalid branches must be pruned, rejected, denatured, rolled back, or quarantined without mutating canonical state.
 
-Candidate branches may be explored in parallel. Admission and commitment remain singular and deterministically ordered.
+Candidate branches may be explored in parallel. Admission/commitment remain singular and deterministically ordered.
 
-## 11. Memory register and logic are one hydrated object
+## 15. Memory register and logic are one hydrated object
 
-HHS does not require the conventional conceptual separation:
-
-```text
-memory contains values
-processor contains logic
-```
+HHS does not require the conventional separation `memory contains values / processor contains logic`.
 
 The hydrated object is simultaneously:
 
@@ -300,87 +373,73 @@ state
 
 A serialized VM81 runtime circuit hydration preserves both remembered state and executable topology. Loading it restores not only values but the validated relationships required to continue computation.
 
-Each hydrated object is therefore all of the following:
-
-- memory register;
-- executable logic;
-- bounded smart contract;
-- transformation history;
-- Hash216 continuation index;
-- VM81/VM5184/G243 circuit;
-- program continuation;
-- recovery and replay image.
+Each hydrated object may therefore be memory register, executable logic, bounded contract, transformation history, Hash216 continuation index, VM81/VM5184/G243 circuit, program continuation, and recovery/replay image.
 
 Serialization must preserve exact position, order, nesting depth, branch identity, phase, constraints, predecessor/successor relations, native bytes, and receipts. Retaining only a numerical endpoint while losing these relations is data loss.
 
-## 12. Sparse continuation and computational reuse
+## 16. Sparse continuation and computational reuse
 
-The preferred continuation model is:
+Preferred continuation:
 
 ```text
 nearest valid hydrated parent
 + authorized delta
-→ affected dependency and projection frontier
-→ preserve all unaffected computation
-→ recompute only the bounded frontier
-→ compare with the canonical full projection
-→ singleton VM81 admission
+→ affected dependency/projection frontier
+→ preserve unaffected computation
+→ recompute only bounded frontier
+→ compare with canonical full projection
+→ foundational compatibility / singleton VM81 admission
 → new Hash72 receipt block
 → new Hash216 durable continuation record
 ```
 
-The runtime must treat prior validated computation as reusable computational capital rather than discardable intermediate output.
+Prior validated computation is reusable computational capital rather than discardable intermediate output. Agents may consume prior continuations and calculate unresolved deltas, but they do not issue canonical state.
 
-This is the foundation of the HHS agentic knowledge economy: agents consume previously validated continuations, calculate only unresolved deltas where possible, and contribute new reusable validated objects.
+## 17. Plug-and-play object contract
 
-## 13. Plug-and-play object contract
+Anything may be built on top of HHS provided it enters as a fully backward-compatible reusable object.
 
-Anything may be built on top of HHS, provided it enters as a fully backward-compatible reusable object.
+A plug-and-play object must declare/preserve:
 
-A plug-and-play object must declare and preserve:
-
-- stable object and schema identity;
-- exact input and output types;
-- source and native-byte identity where applicable;
+- stable object/schema identity;
+- exact input/output types;
+- source/native-byte identity where applicable;
 - ordered operations and ABI/opcode bindings;
-- dependency and capability requirements;
-- local and inherited global constraints;
-- state and mutation ownership;
-- resource and privilege boundaries;
-- lifecycle and event semantics;
+- dependencies/capabilities;
+- local, inherited global, and foundational state-change constraints;
+- state/mutation ownership;
+- resource/privilege boundaries;
+- lifecycle/event semantics;
 - positive, negative, replay, rollback, and recovery vectors;
 - Hash72 receipt bindings;
-- Hash216 archival and continuation bindings;
-- native, Python, API, CLI, SDK, and interface adapters where applicable;
+- Hash216 archival/continuation bindings;
+- applicable native, Python, API, CLI, SDK, assistant, and interface adapters;
 - machine-readable exclusion reasons for intentionally unsupported surfaces.
 
-The object may add new operations, representations, applications, agents, devices, optimizers, interfaces, or workflows. It may not create a second kernel, receipt clock, canonical state store, incompatible identity system, or bypass around validation.
+The object may add operations, representations, applications, agents, devices, optimizers, interfaces, or workflows. It may not create a second kernel, receipt clock, canonical state store, incompatible identity system, foundational-validity authority, or validation bypass.
 
-## 14. Backward-compatibility law
+## 18. Backward-compatibility law
 
-A compatible extension must satisfy all of the following:
+A compatible extension must satisfy:
 
 ```text
 new capability works
 AND inherited capabilities still work
 AND inherited object identities remain valid
 AND shared invariants remain unchanged
+AND foundational state-change semantics remain unchanged
 AND the object composes through existing authority
 AND replay reproduces the same admitted result
 AND no alternate authority path exists
 ```
 
-Backward compatibility is bidirectional:
+Backward compatibility is bidirectional: inherited objects remain executable; new objects may consume/compose inherited validated objects; combined objects can be serialized, moved, rehydrated, replayed, and reused without hidden chat-only or environment-only dependencies.
 
-- inherited objects remain executable in the expanded system;
-- new objects can consume and compose inherited validated objects;
-- combined objects can be serialized, moved, rehydrated, replayed, and reused without hidden chat-only or environment-only dependencies.
+Pass-scoped implementation must modify and compose the existing authoritative system. It must not create a parallel kernel, registry, backend, ABI, opcode set, database authority, GUI product, or foundational-validity path.
 
-Pass-scoped implementation must modify and compose the existing authoritative system. It must not create a parallel kernel, registry, backend, ABI, opcode set, database authority, or GUI product.
+## 19. Interface and API projection rules
 
-## 15. Interface and API projection rules
-
-JSON is the internal and external transport protocol, not the capability itself.
+JSON is an internal/external transport protocol, not the capability itself.
 
 Correct flow:
 
@@ -392,86 +451,84 @@ native or hydrated operation
 → optional JSON serialization for transport, inspection, export, or replay
 ```
 
-Incorrect flow:
+Interfaces must expose the real capability first and the receipt as proof. The UI/API must not substitute fabricated or receipt-only representations for actual functionality.
 
-```text
-button
-→ endpoint
-→ JSON object
-→ display raw JSON
-→ claim integration complete
-```
+The interface should derive from the complete authoritative capability registry rather than a manually selected demo subset. Every integrated user-facing capability must be discoverable or have an explicit exclusion reason.
 
-Interfaces must expose the real capability first and the receipt as proof. Examples:
+## 20. Acceptance tests for every extension
 
-- graphics operation → visible scene and editing result;
-- compiler operation → runnable package and retained binary identity;
-- hydration scan → searchable repository and dependency graph;
-- calculator operation → calculator state and result;
-- simulation operation → live governed simulation state;
-- file operation → actual file result and replay evidence.
+Every new object or pass must include dependency-scoped evidence for applicable requirements, including:
 
-The UI must be generated from the complete authoritative capability registry rather than a manually selected demo subset. Every integrated user-facing capability must be discoverable or have a machine-readable exclusion reason.
-
-## 16. Acceptance tests for every extension
-
-Every new object or pass must include dependency-scoped evidence for:
-
-1. schema and ABI compatibility;
+1. schema/ABI compatibility;
 2. inherited object identity preservation;
-3. exact arithmetic and no-float authority boundaries;
-4. ordered and noncommutative operand preservation;
-5. local and global constraint inheritance;
-6. successful VM81 admission for valid cases;
-7. rejection or quarantine of invalid cases;
-8. rollback without unauthorized mutation;
-9. deterministic replay;
-10. correct `(prev,state,receipt)` chain production;
-11. post-receipt Hash216/SHA-256 vector archival ordering;
-12. cache-hit verification without admission bypass;
-13. VM5184 × G243 address reversibility where applicable;
-14. exact native-byte ingress and retained egress where applicable;
-15. plug-and-play discovery and composition;
-16. no regression of inherited applications and workflows;
-17. real interface behavior rather than receipt-only JSON display.
+3. exact arithmetic/no-float authority boundaries;
+4. ordered/noncommutative operand preservation;
+5. local/global/foundational constraint inheritance;
+6. required cross-format equality where applicable;
+7. successful VM81 admission for valid cases;
+8. rejection/quarantine of invalid cases;
+9. rollback without unauthorized mutation;
+10. deterministic replay;
+11. correct `(prev,state,receipt)` production;
+12. post-receipt Hash216/SHA-256 archival ordering;
+13. cache-hit verification without admission bypass;
+14. VM5184 × G243 address reversibility where applicable;
+15. exact native-byte ingress/retained egress where applicable;
+16. plug-and-play discovery/composition;
+17. no regression of inherited applications/workflows;
+18. real interface behavior rather than receipt-only JSON display.
 
-Validation must be repair-forward and dependency-scoped. Previously frozen evidence need not be rerun when unaffected, but impacted tests and one final integrated replay must pass before closure.
+Validation is repair-forward and dependency-scoped. Previously frozen evidence need not be rerun when unaffected, but impacted tests and the required integrated replay/closure checks must pass before completion.
 
-## 17. Anti-drift prohibitions
+## 21. Anti-drift prohibitions
 
 The following are prohibited:
 
+- describing the pass system as the origin of the pre-pass kernel-protection foundation;
+- renaming the pre-pass foundation into a numbered pass for convenience;
 - describing VM81 as a simple application;
-- describing Python as the sole computation authority;
-- treating Hash72 as the entire security algorithm;
+- describing Python as the sole computation authority or as one homogeneous security wrapper;
+- treating explicit hashing/PQC modules as the complete kernel-protection model;
+- treating Hash72 as the mechanism that defines foundational state validity;
 - treating Hash216 as the original transformation validator;
 - indexing a transformation before valid receipt-chain closure;
 - accepting a vector match as mutation permission;
-- separating hydrated memory from its executable logic and constraints;
+- voting past disagreement among required authoritative representations;
+- collapsing multiple required representations into one without equivalence proof;
+- removing apparently redundant local modules without global dependency-scoped equivalence evidence;
+- reordering noncommutative/path-sensitive operations based only on scalar endpoint equality;
+- separating hydrated memory from executable logic/constraints;
 - flattening ordered branches into untyped scalar outputs;
-- bypassing internal security through public helper APIs;
+- bypassing private/internal protection through public helper APIs;
 - creating pass-specific parallel products;
-- exposing only a manually curated demo subset;
 - substituting raw JSON for functional application surfaces;
 - breaking inherited objects to simplify a new feature;
-- using floating-point values as canonical identity or admission authority;
+- using floating-point values as canonical identity/admission authority;
 - creating more than one canonical state or receipt clock.
 
-## 18. Canonical summary
+## 22. Disclosure boundary
+
+System-wide documentation SHALL publish enough architecture to preserve interoperability, reviewability, and anti-drift rules without requiring publication of the exact pre-pass internal topology.
+
+The repository may later adopt a release policy that distributes selected kernel/pre-pass/algebra behavior as compiled hydration-ROM or equivalent artifacts while keeping implementation details proprietary. That policy remains **under consideration** and is not frozen by this specification.
+
+No decision about permanent non-upgradability, successor-ROM admission, or exact proprietary file boundaries is implied here.
+
+## 23. Canonical summary
 
 ```text
-formal specifications and equations
-→ native kernel operations and internal security
-→ phase-locked Python enforcement mesh
-→ singleton VM81 admission
+pre-pass path/time/multimodal/noncommutative state-change compatibility
+→ required cross-format equality / rollback on disagreement
+→ singleton VM81/kernel admission
 → valid (prev,state,receipt) Hash72 chain
 → exact 216-character concatenation
 → character-addressed SHA-256 array
 → Hash216 durable vector index
-→ validated-computation buffer/cache
+→ validated-computation cache
 → VM5184 × G243 hydrated circuit execution
-→ exact x86_64 ingress and retained egress
-→ reusable backward-compatible plug-and-play objects
+→ exact x86_64 ingress / retained egress
+→ pass-level optimizers / agents / interfaces / networking
+→ reusable backward-compatible objects
 ```
 
-The complexity remains functional because HHS permits unlimited modular construction and branch exploration while preserving one computational authority, one admitted state history, and one reusable integrated system image.
+The complexity remains functional because HHS permits modular construction and extensive candidate exploration while preserving one foundational state-validity law, one canonical mutation authority, one admitted state history, and one reusable cumulative system image.

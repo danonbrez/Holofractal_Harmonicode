@@ -1,0 +1,122 @@
+name: System-wide Pre-Pass Architecture Alignment
+
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'ARCHITECTURE.md'
+      - 'RUNTIME_FLOW.md'
+      - 'GLOSSARY.md'
+      - 'AGENTS.md'
+      - 'docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+      - 'docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md'
+      - 'docs/operations/restart/SYSTEMWIDE_PREPASS_ARCHITECTURE_ALIGNMENT_RESTART.md'
+      - '.github/workflows/systemwide-prepass-architecture-alignment.yml'
+      - 'docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md'
+      - 'HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md'
+
+permissions:
+  contents: read
+
+jobs:
+  architecture:
+    name: prepass-architecture (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Preserve downstream contract ancestry
+        run: git merge-base --is-ancestor d4146f4553920a1776962400a4df4e64c994f45e HEAD
+
+      - name: Validate documentation-only change surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only d4146f4553920a1776962400a4df4e64c994f45e HEAD > /tmp/changed.txt
+          cat /tmp/changed.txt
+          if grep -Ev '^((README|ARCHITECTURE|RUNTIME_FLOW|GLOSSARY|AGENTS)\.md|docs/architecture/[^/]+\.md|docs/operations/restart/[^/]+\.md|\.github/workflows/systemwide-prepass-architecture-alignment\.yml)$' /tmp/changed.txt; then
+            echo 'Unexpected non-documentation change in architecture-alignment branch' >&2
+            exit 1
+          fi
+
+      - name: Validate pre-pass identity and non-pass boundary
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION_V1' "$target"
+          grep -F 'NOT A NUMBERED PASS' "$target"
+          grep -F 'not Pass 000' README.md
+          grep -F 'not Pass 000' ARCHITECTURE.md
+
+      - name: Validate foundational hierarchy
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'PRE-PASS STATE-CHANGE / KERNEL-PROTECTION ENVIRONMENT' "$target"
+          grep -F 'OPTIMIZATION AUTHORITY < PRE-PASS STATE VALIDITY' "$target"
+          grep -F 'VM81 / KERNEL' "$target"
+          grep -F 'HASH72' "$target"
+          grep -F 'NUMBERED PASS SYSTEM' "$target"
+
+      - name: Validate local-role and optimization anti-drift laws
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'LOCAL PURPOSE != GLOBAL SYSTEM ROLE' "$target"
+          grep -F 'FILE ORGANIZATION != PROTECTION TOPOLOGY' "$target"
+          grep -F 'LOCAL REDUNDANCY != GLOBAL REMOVABILITY' "$target"
+          grep -F 'DO NOT REMOVE INVARIANTS TO GET SPEED' "$target"
+          grep -F 'REDUCE THE ACTIVE WORK REQUIRED' "$target"
+
+      - name: Validate cross-format unanimity and rollback
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'CROSS-FORMAT VALIDATION != CONSENSUS VOTING' "$target"
+          grep -F 'CLOSURE FAILURE' "$target"
+          grep -F 'NO COMMIT' "$target"
+          grep -F 'RETAIN / RESTORE LAST FULLY CLOSED STATE' "$target"
+          grep -F 'required representation disagreement' RUNTIME_FLOW.md
+
+      - name: Validate explicit security separation
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'EXPLICIT SECURITY / CRYPTOGRAPHIC CONTROLS' "$target"
+          grep -F 'PRE-PASS KERNEL-PROTECTION / ERROR-CORRECTION TOPOLOGY' "$target"
+          grep -F 'Hashing and explicit security modules are real layers' "$target"
+          ! grep -F 'phase-locked Python security mesh' ARCHITECTURE.md
+          ! grep -F 'phase-locked Python security mesh' RUNTIME_FLOW.md
+          ! grep -F 'phase-locked Python security mesh' docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md
+
+      - name: Validate authority and receipt ordering
+        run: |
+          grep -F 'singleton VM81' RUNTIME_FLOW.md
+          grep -F 'Hash72 receipt commitment' RUNTIME_FLOW.md
+          grep -F 'Hash216' RUNTIME_FLOW.md
+          grep -F 'A Hash72-shaped value is not sufficient evidence of a valid state.' docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md
+          grep -F 'A vector match is never permission' docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md
+
+      - name: Validate current repository status boundaries
+        run: |
+          grep -F '3c926453d65b71a6d1789e06b748544f5f2bd228' README.md
+          grep -F '6df75bc39fd7c58108b8cf7aee3758341fe345a5' README.md
+          grep -F 'd0fb6165bf8249175566c934820eecf8e93bdacc' README.md
+          grep -F 'd4146f4553920a1776962400a4df4e64c994f45e' README.md
+          grep -F 'NON_PROMOTIONAL_PREIMPLEMENTATION' README.md
+
+      - name: Preserve Pass 220 and UKE non-promotion boundaries
+        run: |
+          grep -F 'PASS 219 TERMINAL MERGE + EXACT-HEAD VERIFICATION' HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md
+          grep -F 'BINDING_DOWNSTREAM_NETWORK_ARCHITECTURE — NOT IMPLEMENTED — NOT PASS 219 OR PASS 220 CLOSURE' docs/deployment/HHS_UNIVERSAL_KNOWLEDGE_ECONOMY_NETWORK_CONTRACT.md
+
+      - name: Validate disclosure policy remains unresolved
+        run: |
+          target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
+          grep -F 'under architectural consideration and is not frozen by this document' "$target"
+          grep -F 'does not decide whether an admitted ROM generation is permanently non-upgradable' "$target"
+          grep -F 'not frozen by this README' README.md
