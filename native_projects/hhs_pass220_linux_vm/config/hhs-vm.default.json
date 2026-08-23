@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_P220_LINUX_VM_CONFIG_V0",
+  "guest_name": "HHS-Linux-VM",
+  "architecture": "x86_64",
+  "machine": "q35",
+  "acceleration": "auto",
+  "vcpus": 4,
+  "memory_mib": 4096,
+  "disk_image": ".hhs/vm/hhs-linux.qcow2",
+  "disk_format": "qcow2",
+  "display": "gtk",
+  "network": "user",
+  "api_host": "10.0.2.2",
+  "api_port": 8080
+}
