@@ -12,7 +12,7 @@ binding and exposes the safe open cloud-computer state/recall surface.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
-* ``/health`` and ``/api/health`` provide bounded, dependency-light liveness.
+* ``/health`` and ``/api/health`` provide bounded, dependency-free process liveness.
 * ``/api/public/*`` catalogs every public route, service, and pass module.
 * ``/api/runtime/mainframe/*`` exposes universal executable declarations.
 * ``/api/runtime/open-cloud/*`` exposes sandbox policy, closure, jobs, and recall.
@@ -21,13 +21,15 @@ Static mounts are installed last so they cannot shadow any API or WebSocket.
 """
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 
 from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import pass174_server as pass174
 from hhs_backend import production_server as production
-from hhs_backend.api.pass175_runtime_routes import router as pass175_router
+from hhs_backend.api import pass175_runtime_routes as pass175_runtime_api
+from hhs_backend.api import runtime_routes as runtime_api
 from hhs_backend.api.pass175_ws_routes import router as pass175_ws_router
 from hhs_backend.api.pass175_terminal_routes import router as pass175_terminal_router
 from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_terminal_ws_router
@@ -37,7 +39,7 @@ from hhs_backend.runtime.hhs_pass201_public_api_federation import register_publi
 
 app = pass174.app
 app.title = "HHS Safe Open Cloud Computer IDE"
-app.version = "4.5.0"
+app.version = "4.5.4"
 app.description = (
     "Full integrated development environment and safe open cloud computer for real web applications, "
     "games, calculators, documents, audio, video, multimodal projects, HARMONICODE, multi-target "
@@ -50,6 +52,17 @@ app.description = (
 FULL_IDE_ROOT = production.VISUAL_ROOT
 RUNTIME_CONSOLE_ROOT = pass174._ide_root
 API_FALLBACK_PATH = pass174._API_FALLBACK_PATH
+RUNTIME_AUTHORITY_STATUS_PATH = "/api/runtime/authority/status"
+RUNTIME_SERVICES_PATH = "/api/runtime/services"
+PASS175_AUTHORITY_STATUS_PATH = "/api/v1/pass175/authority"
+PASS175_BOUNDED_STATUS_PATH = "/api/v1/pass175/status"
+PASS175_MATERIALIZED_STATUS_PATH = "/api/v1/pass175/status/materialized"
+PASS175_FINAL_STATUS_PATHS = frozenset({
+    PASS175_AUTHORITY_STATUS_PATH,
+    PASS175_BOUNDED_STATUS_PATH,
+    PASS175_MATERIALIZED_STATUS_PATH,
+})
+FINAL_HEALTH_PATHS = frozenset({"/health", "/api/health"})
 
 
 def _has_route_prefix(prefix: str) -> bool:
@@ -79,6 +92,7 @@ app.router.routes = [
     and str(getattr(route, "path", "")) != API_FALLBACK_PATH
 ]
 
+pass175_router = pass175_runtime_api.router
 if not _has_route_prefix("/api/v1/pass175/status"):
     app.include_router(pass175_router)
 if not _has_route_prefix("/api/v1/pass175/ws/events"):
@@ -90,22 +104,121 @@ if not _has_route_prefix("/api/v1/pass175/terminal/ws/events"):
 if not _has_exact_route("/api/public/status"):
     app.include_router(public_api_router)
 
+
+async def final_pass175_authority_status() -> dict[str, Any]:
+    """Return immutable Pass 175 identity without entering the worker pool."""
+    return pass175_runtime_api.authority_witness()
+
+
+async def final_pass175_bounded_status() -> dict[str, Any]:
+    """Return the bounded Pass 175 status without entering the worker pool."""
+    return pass175_runtime_api.bounded_status()
+
+
+# Earlier Pass 175 composition layers may retain an eager status handler that
+# materializes all 5,184 permanent instructions. Replace only the three status
+# surfaces with the current bounded authority module. Hydration, execution,
+# terminal, firmware, device, and WebSocket routes retain their inherited owners.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) not in PASS175_FINAL_STATUS_PATHS
+]
+app.add_api_route(
+    PASS175_AUTHORITY_STATUS_PATH,
+    final_pass175_authority_status,
+    methods=["GET"],
+    name="hhs-pass175-authority-witness",
+)
+app.add_api_route(
+    PASS175_BOUNDED_STATUS_PATH,
+    final_pass175_bounded_status,
+    methods=["GET"],
+    name="hhs-pass175-bounded-status",
+)
+app.add_api_route(
+    PASS175_MATERIALIZED_STATUS_PATH,
+    pass175_runtime_api.materialized_status,
+    methods=["GET"],
+    name="hhs-pass175-materialized-status",
+)
+
+# The inherited Pass 54 role-orchestration router and production server both
+# register this path. FastAPI resolves the first match, so retain one bounded
+# production endpoint before public federation catalogs the final route graph.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != RUNTIME_AUTHORITY_STATUS_PATH
+]
+app.add_api_route(
+    RUNTIME_AUTHORITY_STATUS_PATH,
+    production.production_runtime_authority_status,
+    methods=["GET"],
+    name="hhs-production-runtime-authority-status",
+)
+
 # Public federation is composed before fallback/static routes. All importable
 # hhs_backend.api routers become directly accessible at their native paths.
 PASS201_PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 
+def _runtime_services_projection() -> dict[str, Any]:
+    """Materialize the guarded descriptor list entirely outside the ASGI loop."""
+    ingress = runtime_api.io_gateway.ingress("api.runtime.services", {"method": "GET"})
+    services = runtime_api.runtime_emulator.service_registry.services()
+    response = {
+        "schema": "HHS_RUNTIME_SERVICE_LIST_V1",
+        "services": services,
+    }
+    response["io"] = {
+        "ingress": ingress,
+        "egress": runtime_api.io_gateway.egress(
+            "api.runtime.services",
+            {"service_count": len(services)},
+        ),
+    }
+    return runtime_api._contract_response(RUNTIME_SERVICES_PATH, "GET", response)
+
+
+async def final_runtime_services() -> dict[str, Any]:
+    """Return the complete service registry without monopolizing FastAPI."""
+    return await asyncio.to_thread(_runtime_services_projection)
+
+
+# Service descriptor construction is read-only but can perform Hash72 IO
+# witnessing and serialize the complete registry. The inherited async handler
+# executes that synchronous work directly on the serving loop. Replace every
+# inherited owner after federation with one worker-isolated final route.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != RUNTIME_SERVICES_PATH
+]
+app.add_api_route(
+    RUNTIME_SERVICES_PATH,
+    final_runtime_services,
+    methods=["GET"],
+    name="hhs-final-runtime-services",
+)
+
+
 async def application_ide_liveness() -> dict[str, Any]:
-    """Return cheap process and route liveness without invoking heavy peers."""
+    """Return bounded process liveness plus the committed Pass 174 boot snapshot."""
     boot = dict(pass174.PASS174_BOOT_STATE)
-    authority_ready = bool(boot.get("authority_ready") and boot.get("ready"))
+    boot_authority_ready = bool(boot.get("ready") and boot.get("authority_ready"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V2",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V6",
         "ok": True,
         "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
-        "authority_ready": authority_ready,
-        "runtime_ready": authority_ready,
+        # This is a committed startup snapshot, not mutable live-runtime
+        # traversal. Receipt/state identity still comes only from the dedicated
+        # bounded runtime-authority endpoint.
+        "authority_ready": boot_authority_ready,
+        "runtime_ready": boot_authority_ready,
+        "runtime_authority_probe_separate": True,
+        "health_authority_source": "PASS174_BOOT_STATE_COMMITTED_SNAPSHOT",
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
@@ -115,43 +228,58 @@ async def application_ide_liveness() -> dict[str, Any]:
         "mainframe": "/api/runtime/mainframe/status",
         "open_cloud": "/api/runtime/open-cloud/status",
         "open_cloud_closure": "/api/runtime/open-cloud/closure",
+        "runtime_services": RUNTIME_SERVICES_PATH,
         "public_api_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
         "pass174_boot": boot,
+        "runtime_authority_source": RUNTIME_AUTHORITY_STATUS_PATH,
+        "runtime_readiness_uses_committed_live_projection": True,
+        "health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS",
+        "health_routes_deduplicated": True,
+        "status_read_is_bounded": True,
+        "runtime_object_traversal_performed": False,
+        "service_registry_traversal_performed": False,
         "routes": {
             "workspace": _has_route_prefix("/api/runtime/workspace"),
             "development_lifecycle": _has_route_prefix("/api/runtime/development"),
             "assistant": _has_route_prefix("/api/assistant"),
-            "pass175_processor": _has_route_prefix("/api/v1/pass175/status"),
+            "pass175_processor": _has_exact_route(PASS175_BOUNDED_STATUS_PATH),
+            "pass175_authority": _has_exact_route(PASS175_AUTHORITY_STATUS_PATH),
+            "pass175_materialized_status": _has_exact_route(PASS175_MATERIALIZED_STATUS_PATH),
             "pass175_terminal": _has_route_prefix("/api/v1/pass175/terminal/status"),
             "public_api": _has_route_prefix("/api/public/status"),
             "mainframe": _has_route_prefix("/api/runtime/mainframe/status"),
             "open_cloud": _has_route_prefix("/api/runtime/open-cloud/status"),
             "open_cloud_closure": _has_route_prefix("/api/runtime/open-cloud/closure"),
+            "runtime_authority": _has_exact_route(RUNTIME_AUTHORITY_STATUS_PATH),
+            "runtime_services": _has_exact_route(RUNTIME_SERVICES_PATH),
         },
-        "remediation": (
-            None
-            if authority_ready
-            else "The web service is reachable, but runtime authority is not ready. Inspect /api/v1/pass174/deployment/status and platform logs."
-        ),
+        "remediation": None,
     }
 
 
-if not _has_exact_route("/health"):
-    app.add_api_route(
-        "/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-health",
-    )
-if not _has_exact_route("/api/health"):
-    app.add_api_route(
-        "/api/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-api-health",
-    )
+# Health has accumulated several inherited owners across production overlays.
+# Merely checking whether a health path exists is unsafe because Starlette uses
+# first-match routing. Remove every inherited owner after federation, then add
+# exactly one event-loop-native process-liveness owner for both canonical paths.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) not in FINAL_HEALTH_PATHS
+]
+app.add_api_route(
+    "/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-health",
+)
+app.add_api_route(
+    "/api/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-api-health",
+)
 
 if RUNTIME_CONSOLE_ROOT.is_dir():
     app.mount(
@@ -194,7 +322,14 @@ pass174.PASS174_BOOT_STATE.update({
     "runtime_console_preserved": RUNTIME_CONSOLE_ROOT.is_dir(),
     "application_ide_is_public_root": True,
     "diagnostic_console_is_supporting_surface": True,
-    "pass175_virtual_instruction_processor_routes": _has_route_prefix("/api/v1/pass175/status"),
+    "pass175_virtual_instruction_processor_routes": _has_exact_route(PASS175_BOUNDED_STATUS_PATH),
+    "pass175_authority_witness_route": PASS175_AUTHORITY_STATUS_PATH,
+    "pass175_bounded_status_route": PASS175_BOUNDED_STATUS_PATH,
+    "pass175_materialized_status_route": PASS175_MATERIALIZED_STATUS_PATH,
+    "pass175_status_routes_deduplicated": True,
+    "pass175_bounded_status_async": True,
+    "pass175_authority_witness_async": True,
+    "pass175_materialized_status_worker_isolated": True,
     "pass175_websocket_routes": _has_route_prefix("/api/v1/pass175/ws/events"),
     "pass175_terminal_routes": _has_route_prefix("/api/v1/pass175/terminal/status"),
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
@@ -206,6 +341,16 @@ pass174.PASS174_BOOT_STATE.update({
     "api_fallback_deferred_for_integrated_passes": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
+    "health_routes_deduplicated": True,
+    "health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS",
+    "health_runtime_dependency": False,
+    "health_authority_source": "PASS174_BOOT_STATE_COMMITTED_SNAPSHOT",
+    "runtime_services_route": RUNTIME_SERVICES_PATH,
+    "runtime_services_route_deduplicated": True,
+    "runtime_services_worker_isolated": True,
+    "runtime_authority_route": RUNTIME_AUTHORITY_STATUS_PATH,
+    "runtime_authority_route_deduplicated": True,
+    "runtime_readiness_uses_committed_live_projection": True,
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
     "legacy_parser_module_entries_disabled": True,
     "external_vercel_quota_is_not_acceptance_gate": True,

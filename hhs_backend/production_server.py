@@ -32,10 +32,11 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
 VISUAL_SOURCE_ROOT = VISUAL_ROOT / "src"
 VISUAL_SOURCE_MOUNT_NAME = "hhs-production-source-assets"
+PRODUCTION_LIVENESS_PATH = "/api/health"
 
 app = canonical.app
 app.title = "HHS Holofractal Harmonizer"
-app.version = "3.4.1"
+app.version = "3.4.2"
 app.description = (
     "Canonical HHS runtime and front-and-center visual IDE with source-preserving "
     "multimodal ingress, Hash216 indexing, exact 5,184-bit VM snapshots, HHS "
@@ -143,7 +144,7 @@ def _workspace_session_snapshot(project_id: str | None = None) -> dict[str, Any]
             "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
             "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
             "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
-            "live_workflow": canonical.LIVE_WORKFLOW.status(),
+            "live_workflow": canonical.LIVE_WORKFLOW.authority_status(),
         },
         "self_tests_executed": False,
     }
@@ -185,12 +186,33 @@ async def _assistant_health() -> dict[str, Any]:
         }
 
 
-def _runtime_authority_status() -> dict[str, Any]:
-    workflow = canonical.LIVE_WORKFLOW.status()
-    runtime_state = canonical.runtime_controller.latest_runtime_state()
+def _committed_runtime_projection(workflow: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the last Hash72-committed emission without traversing mutable VM state."""
+
     last_emission = dict(workflow.get("last_emission") or {})
-    receipt_hash72 = last_emission.get("receipt_hash72") or runtime_state.get("receipt_hash72")
-    state_hash72 = last_emission.get("runtime_state_hash72") or runtime_state.get("state_hash72")
+    bridge = dict(workflow.get("bridge") or {})
+    emulator = dict(bridge.get("emulator") or {})
+    receipt_hash72 = last_emission.get("receipt_hash72") or emulator.get("receipt_hash72")
+    state_hash72 = last_emission.get("runtime_state_hash72") or emulator.get("runtime_state_hash72")
+    return {
+        "schema": "HHS_COMMITTED_RUNTIME_AUTHORITY_PROJECTION_V1",
+        "source": "LIVE_WORKFLOW_COMMITTED_EMISSION",
+        "state_hash72": state_hash72,
+        "receipt_hash72": receipt_hash72,
+        "step": last_emission.get("kernel_tick") or emulator.get("runtime_step"),
+        "boot_id": emulator.get("boot_id"),
+        "sequence_id": last_emission.get("sequence_id") or bridge.get("sequence_id"),
+        "committed_emission_snapshot": True,
+        "bounded_status_projection": True,
+        "mutable_runtime_traversal_performed": False,
+    }
+
+
+def _runtime_authority_status() -> dict[str, Any]:
+    workflow = canonical.LIVE_WORKFLOW.authority_status()
+    runtime_state = _committed_runtime_projection(workflow)
+    receipt_hash72 = runtime_state.get("receipt_hash72")
+    state_hash72 = runtime_state.get("state_hash72")
     authority_ready = bool(
         canonical.SERVER_STATE.get("runtime_initialized")
         and canonical.SERVER_STATE.get("graph_initialized")
@@ -213,12 +235,46 @@ def _runtime_authority_status() -> dict[str, Any]:
         "runtime": runtime_state,
         "authority": "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1",
         "frontend_is_authority": False,
+        "status_read_is_bounded": True,
     }
 
 
 @app.get("/api/runtime/authority/status")
 async def production_runtime_authority_status() -> dict[str, Any]:
     return _runtime_authority_status()
+
+
+# Canonical server layers may already publish an unrelated or heavyweight
+# `/api/health` handler. Production UI health must resolve one dependency-light
+# liveness projection before the API fallback and static root are installed.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != PRODUCTION_LIVENESS_PATH
+]
+
+
+@app.get(PRODUCTION_LIVENESS_PATH, name="hhs-production-bounded-liveness")
+async def production_liveness() -> dict[str, Any]:
+    runtime = _runtime_authority_status()
+    authority_ready = bool(runtime.get("ok"))
+    return {
+        "schema": "HHS_PRODUCTION_BOUNDED_LIVENESS_V1",
+        "ok": True,
+        "status": "HHS_PRODUCTION_SERVICE_REACHABLE",
+        "service_available": True,
+        "authority_ready": authority_ready,
+        "runtime_ready": authority_ready,
+        "assistant_ready": False,
+        "assistant_health_requires_separate_probe": True,
+        "frontend_runtime_authority": False,
+        "public_interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
+        "runtime_authority": runtime,
+        "runtime_authority_source": "/api/runtime/authority/status",
+        "runtime_readiness_uses_committed_live_projection": True,
+        "status_read_is_bounded": True,
+        "mutable_runtime_traversal_performed": False,
+    }
 
 
 @app.get("/api/product/health")
@@ -275,6 +331,7 @@ async def production_system_status() -> dict[str, Any]:
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
+        "bounded_liveness_api": PRODUCTION_LIVENESS_PATH,
         "runtime_authority_api": "/api/runtime/authority/status",
         "product_health_api": "/api/product/health",
         "workspace_session_api": "/api/runtime/workspace/session",

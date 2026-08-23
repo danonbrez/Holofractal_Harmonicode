@@ -187,7 +187,11 @@ export class BoundedJobManager {
   #jobs = new Map();
   #sequence = 0;
 
-  constructor({ setTimer = setTimeout, clearTimer = clearTimeout, now = () => Date.now() } = {}) {
+  constructor({
+    setTimer = (callback, delay) => globalThis.setTimeout(callback, delay),
+    clearTimer = (timer) => globalThis.clearTimeout(timer),
+    now = () => Date.now(),
+  } = {}) {
     this.setTimer = setTimer;
     this.clearTimer = clearTimer;
     this.now = now;

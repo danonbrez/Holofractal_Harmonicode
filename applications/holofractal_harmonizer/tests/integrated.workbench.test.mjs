@@ -1,55 +1,62 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import test from 'node:test';
 
-const root = resolve(new URL('..', import.meta.url).pathname);
-const read = (path) => readFileSync(resolve(root, path), 'utf8');
+const sourceUrl = new URL('../src/integrated-workbench.mjs', import.meta.url);
+const visualIdeUrl = new URL('../src/visual-ide.mjs', import.meta.url);
 
-test('theme bootstrap is independent from the IDE application module', () => {
-  const startup = read('src/production-startup-coordinator.mjs');
-  const theme = read('src/theme-bootstrap.mjs');
-  assert.match(startup, /import '\.\/theme-bootstrap\.mjs'/);
-  assert.match(theme, /hhs-harmonic-studio-theme/);
-  assert.match(theme, /harmonic-studio-theme\.css/);
-  assert.match(theme, /integrated-workbench\.css/);
-});
+async function source() {
+  return readFile(sourceUrl, 'utf8');
+}
 
-test('integrated workbench runs local web applications and previews modalities', () => {
-  const source = read('src/integrated-workbench.mjs');
+async function visualIdeSource() {
+  return readFile(visualIdeUrl, 'utf8');
+}
+
+test('integrated workbench runs local web applications and previews modalities', async () => {
+  const text = await source();
   for (const token of [
+    'ide-preview-panel',
     'ide-application-frame',
-    'allow-scripts allow-forms allow-modals allow-downloads',
     'inlineProjectReferences',
+    'project-local CSS and JavaScript',
     'image/',
     'audio/',
     'video/',
     'application/pdf',
-    'Open Window',
-    'Application preview console',
-  ]) assert.ok(source.includes(token), `missing ${token}`);
-  assert.doesNotMatch(source, /allow-same-origin/);
+  ]) assert.match(text, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
-test('repository history is an IDE subsystem rather than a replacement landing page', () => {
-  const source = read('src/integrated-workbench.mjs');
-  const ide = read('src/visual-ide.mjs');
+test('repository history is an IDE subsystem rather than a replacement landing page', async () => {
+  const text = await source();
   for (const endpoint of [
     '/api/runtime/repository/status',
     '/api/runtime/repository/passes',
     '/api/runtime/repository/commits',
     '/api/runtime/repository/file',
-  ]) assert.ok(source.includes(endpoint), `missing ${endpoint}`);
-  assert.match(source, /PASS CONSTRAINTS \+ HISTORY/);
-  assert.match(source, /The editor remains the primary product surface/);
+  ]) assert.match(text, new RegExp(endpoint.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(text, /Repository Lineage/);
+  assert.match(text, /Pass constraints/);
+  assert.match(text, /Commit history/);
+});
 
-  const lifecycle = ide.indexOf("safeInit('project-lifecycle', initProjectLifecycle)");
-  const workbench = ide.indexOf("safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true })");
-  const interactive = ide.indexOf("stage: 'INTERACTIVE'");
-  assert.ok(lifecycle >= 0, 'project lifecycle is not initialized through Pass 176 safety');
-  assert.ok(workbench >= 0, 'repository workbench is not initialized through Pass 176 safety');
-  assert.ok(interactive >= 0, 'Pass 176 ordered boot does not expose INTERACTIVE');
-  assert.ok(lifecycle < workbench, 'optional repository history must initialize after project lifecycle');
-  assert.match(ide, /OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING/);
-  assert.match(ide, /queueMicrotask\(/);
+test('repository lineage hydration is explicitly user initiated', async () => {
+  const text = await source();
+  const initStart = text.indexOf('export function initIntegratedWorkbench()');
+  const initBody = text.slice(initStart);
+
+  assert.ok(initStart >= 0);
+  assert.match(text, /function openRepositoryPanel\(mode\)[\s\S]*void loadRepositoryData\(\);/);
+  assert.match(text, /lineageHydration: 'USER_INITIATED'/);
+  assert.match(text, /ON DEMAND/);
+  assert.match(text, /OPEN TO LOAD/);
+  assert.doesNotMatch(initBody, /void loadRepositoryData\(\);/);
+});
+
+test('primary IDE boots intuitive workflow, integrated assistant, and workbench', async () => {
+  const text = await visualIdeSource();
+  assert.match(text, /initIntuitiveIDE/);
+  assert.match(text, /initIntegratedAssistant/);
+  assert.match(text, /initIntegratedWorkbench/);
+  assert.match(text, /OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING/);
 });

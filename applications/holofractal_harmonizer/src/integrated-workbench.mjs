@@ -239,7 +239,7 @@ function mountRepositoryExplorer() {
   section.id = 'ide-repository-explorer';
   section.className = 'ide-repository-explorer';
   section.innerHTML = `
-    <div class="explorer-section-title"><span>PASS CONSTRAINTS + HISTORY</span><span id="ide-repository-count">LOADING</span></div>
+    <div class="explorer-section-title"><span>PASS CONSTRAINTS + HISTORY</span><span id="ide-repository-count">ON DEMAND</span></div>
     <div class="ide-repository-shortcuts">
       <button id="ide-open-passes" type="button"><strong>Pass catalog</strong><small>Contracts · constraints · evidence</small></button>
       <button id="ide-open-commits" type="button"><strong>Commit lineage</strong><small>Legacy history · authoritative main</small></button>
@@ -263,7 +263,7 @@ function mountRepositoryPanel() {
       <button id="ide-repository-commits" type="button">Commit history</button>
       <input id="ide-repository-search" type="search" placeholder="Search passes, constraints, paths, status…">
       <button id="ide-repository-refresh" type="button">Refresh</button>
-      <span id="ide-repository-state">LOADING</span>
+      <span id="ide-repository-state">OPEN TO LOAD</span>
     </div>
     <div class="ide-repository-layout">
       <div id="ide-repository-list" class="ide-repository-list"></div>
@@ -326,7 +326,7 @@ function renderRepositoryList() {
   if (!values.length) {
     const empty = document.createElement('p');
     empty.className = 'ide-repository-empty';
-    empty.textContent = repositoryState.loading ? 'Loading repository lineage…' : 'No matching repository history.';
+    empty.textContent = repositoryState.loading ? 'Loading repository lineage…' : 'Open Pass History to load repository lineage.';
     host.append(empty);
   }
 }
@@ -420,8 +420,9 @@ async function loadRepositoryData(force = false) {
     repositoryState.commits = commits.commits || [];
     repositoryState.commitPage = 1;
     repositoryState.commitsHaveMore = Boolean(commits.has_more);
-    setText('#ide-repository-count', `${status.pass_count} PASSES`);
-    setText('#ide-repository-state', `${status.pass_count} PASSES · ${repositoryState.commits.length} COMMITS`);
+    const passCount = Number(passes.pass_count ?? status.pass_count ?? repositoryState.passes.length);
+    setText('#ide-repository-count', `${passCount} PASSES`);
+    setText('#ide-repository-state', `${passCount} PASSES · ${repositoryState.commits.length} COMMITS`);
     renderRepositoryList();
   } catch (error) {
     setText('#ide-repository-state', 'HISTORY DEGRADED');
@@ -470,10 +471,12 @@ export function initIntegratedWorkbench() {
   mountRepositoryPanel();
   mountMenuActions();
   addEventListener('message', onPreviewMessage);
+  setText('#ide-repository-count', 'ON DEMAND');
+  setText('#ide-repository-state', 'OPEN TO LOAD');
   window.HHSIntegratedWorkbench = Object.freeze({
     preview: refreshApplicationPreview,
     openHistory: openRepositoryPanel,
     loadRepositoryData,
+    lineageHydration: 'USER_INITIATED',
   });
-  void loadRepositoryData();
 }

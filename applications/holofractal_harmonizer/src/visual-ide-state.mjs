@@ -3,6 +3,13 @@ export const $$ = (selector) => [...document.querySelectorAll(selector)];
 export const TEXT_MODALITIES = new Set(['TEXT', 'MARKDOWN', 'SOURCE_CODE', 'JSON', 'JSONL', 'CSV', 'HTML', 'XML', 'HHS_CONTRACT', 'HHS_RECEIPT', 'HHS_MANIFEST', 'HHS_VECTOR_PACKET']);
 const STORAGE_KEY = 'hhs.visualIde.v1';
 const STORAGE_PENDING_KEY = `${STORAGE_KEY}.pending`;
+const STARTUP_AUTHORITY_PATHS = new Set([
+  '/api/health',
+  '/api/runtime/live/status',
+  '/api/v1/pass175/status',
+  '/api/v1/pass175/authority',
+]);
+const STARTUP_AUTHORITY_TIMEOUT_MS = 30_000;
 const genesis = `a²=1\nb²=2\nc²=3\nP=72\np=64\nq=81\nΔ=P²-pq\n(P²-pq)-Δ=0`;
 function storageRead(key) {
   try { return localStorage.getItem(key); }
@@ -55,7 +62,11 @@ export function persist() {
 }
 export function setText(selector, value) {
   const node = $(selector);
-  if (node) node.textContent = String(value);
+  if (!node) return false;
+  const next = String(value);
+  if (node.textContent === next) return false;
+  node.textContent = next;
+  return true;
 }
 export function log(message, data) {
   const output = $('#ide-terminal-output');
@@ -137,7 +148,10 @@ function abortMessage(path, signal) {
 export async function requestJson(path, options = {}) {
   const controller = new AbortController();
   const upstream = options.signal || null;
-  const timeoutMs = Math.max(1, Number(options.timeoutMs || 120000));
+  const requestedTimeoutMs = Math.max(1, Number(options.timeoutMs || 120000));
+  const timeoutMs = STARTUP_AUTHORITY_PATHS.has(path)
+    ? Math.max(STARTUP_AUTHORITY_TIMEOUT_MS, requestedTimeoutMs)
+    : requestedTimeoutMs;
   const retryCount = Math.max(0, Math.min(3, Number(options.retryCount || 0)));
   const method = String(options.method || 'GET').toUpperCase();
   const fetchOptions = { ...options };

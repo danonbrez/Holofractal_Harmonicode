@@ -13,8 +13,11 @@ test('primary IDE boots intuitive workflow, integrated assistant, and workbench'
   assert.match(source, /import \{ initIntuitiveIDE \} from '\.\/intuitive-ide\.mjs'/);
   assert.match(source, /safeInit\('project-lifecycle', initProjectLifecycle\)/);
   assert.match(source, /safeInit\('integrated-assistant', initIntegratedAssistant, \{ optional: true \}\)/);
-  assert.match(source, /safeInit\('integrated-workbench', initIntegratedWorkbench, \{ optional: true \}\)/);
-  assert.match(source, /safeInit\('intuitive-ide', initIntuitiveIDE, \{ optional: true \}\)/);
+  assert.match(source, /function scheduleOptionalProjectionHydration\(\)/);
+  assert.match(source, /\['integrated-workbench', initIntegratedWorkbench\]/);
+  assert.match(source, /\['intuitive-ide', initIntuitiveIDE\]/);
+  assert.match(source, /void safeInit\(name, initializer, \{ optional: true \}\)/);
+  assert.match(source, /window\.setTimeout\(\(\) => \{/);
   assert.match(source, /async function bootVisualIDE\(\)/);
   assert.match(source, /return stability\.boot\(\[/);
   assert.match(source, /const visualIdeBootPromise = bootVisualIDE\(\)/);

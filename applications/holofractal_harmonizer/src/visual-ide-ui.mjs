@@ -37,7 +37,7 @@ export function activateFile(path) {
   const prior = activeFile();
   const editor = $('#ide-source-editor');
   const editorLoadedPath = editor?.dataset.loadedPath || '';
-  if (prior && editor && !prior.bytesB64 && editorLoadedPath === prior.path) prior.content = editor.value;
+  if (prior && editor && !prior.bytesB64 && editorLoadedPath === prior.path && path !== prior.path) prior.content = editor.value;
   state.activePath = path;
   const file = activeFile();
   setText('#ide-active-file', file.name);

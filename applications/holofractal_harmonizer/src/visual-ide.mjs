@@ -17,6 +17,8 @@ import { initPass176Stability } from './pass176-stability.mjs';
 let stability = null;
 const bootOptions = { state, activeFile, persist, ensureProject, log };
 const bindings = new WeakMap();
+const WORKSPACE_AUTHORITY_BIND_TIMEOUT_MS = 15_000;
+let workspaceAuthorityBindPromise = null;
 
 function required(selector) {
   const node = $(selector);
@@ -71,6 +73,131 @@ async function runGovernedLifecycle(job) {
   job?.signal?.addEventListener('abort', abort, { once: true });
   try { return await runBoundedProjectTest(); }
   finally { job?.signal?.removeEventListener?.('abort', abort); }
+}
+
+function receiptHashFromLiveStatus(liveStatus) {
+  return liveStatus?.last_emission?.receipt_hash72
+    || liveStatus?.bridge?.emulator?.receipt_hash72
+    || null;
+}
+
+function stateHashFromLiveStatus(liveStatus) {
+  return liveStatus?.last_emission?.runtime_state_hash72
+    || liveStatus?.bridge?.emulator?.runtime_state_hash72
+    || null;
+}
+
+function scheduleWorkspaceAuthorityBind() {
+  if (workspaceAuthorityBindPromise) return workspaceAuthorityBindPromise;
+  const controller = new AbortController();
+  const timer = window.setTimeout(
+    () => controller.abort('HHS_P176_OPTIONAL_WORKSPACE_BIND_TIMEOUT'),
+    WORKSPACE_AUTHORITY_BIND_TIMEOUT_MS,
+  );
+  workspaceAuthorityBindPromise = ensureProject({ signal: controller.signal })
+    .then((projectId) => {
+      log(`Workspace authority bound to ${projectId}.`);
+      window.dispatchEvent(new CustomEvent('hhs:workspace-authority-bind:ready', {
+        detail: {
+          project_id: projectId,
+          optional_background_task: true,
+          blocks_pass176_quiescence: false,
+          frontend_is_authority: false,
+        },
+      }));
+      return projectId;
+    })
+    .catch((error) => {
+      log(`Workspace initialization deferred: ${error.message}`);
+      window.dispatchEvent(new CustomEvent('hhs:workspace-authority-bind:deferred', {
+        detail: {
+          classification: error?.name === 'AbortError'
+            ? 'HHS_P176_OPTIONAL_WORKSPACE_BIND_TIMEOUT'
+            : 'HHS_P176_OPTIONAL_WORKSPACE_BIND_DEFERRED',
+          message: error?.message || String(error),
+          optional_background_task: true,
+          blocks_pass176_quiescence: false,
+          project_files_preserved: true,
+          frontend_is_authority: false,
+        },
+      }));
+      return null;
+    })
+    .finally(() => window.clearTimeout(timer));
+  return workspaceAuthorityBindPromise;
+}
+
+async function hydrateBackendAuthorityEvidence() {
+  const [serviceHealth, liveStatus, pass175] = await Promise.all([
+    requestJson('/api/health', { timeoutMs: 10000, retryCount: 1 }),
+    requestJson('/api/runtime/live/status', { timeoutMs: 10000, retryCount: 1 }),
+    requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
+  ]);
+  const receiptHash72 = receiptHashFromLiveStatus(liveStatus);
+  const runtimeStateHash72 = stateHashFromLiveStatus(liveStatus);
+  const canonicalRuntimeAttached = serviceHealth?.runtime_ready === true
+    && serviceHealth?.authority_ready === true;
+  const runtimeReady = canonicalRuntimeAttached
+    && liveStatus?.running === true
+    && liveStatus?.authority_ready === true
+    && liveStatus?.receipt_ready === true
+    && Boolean(receiptHash72)
+    && Boolean(runtimeStateHash72);
+  const runtimeStatus = Object.freeze({
+    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_PROJECTION_V2',
+    ok: runtimeReady,
+    status: runtimeReady ? 'HHS_RUNTIME_AUTHORITY_ONLINE' : 'HHS_RUNTIME_AUTHORITY_WARMING',
+    canonical_runtime_attached: canonicalRuntimeAttached,
+    graph_initialized: serviceHealth?.authority_ready === true,
+    websocket_ready: liveStatus?.running === true,
+    receipt_hash72: receiptHash72,
+    runtime_state_hash72: runtimeStateHash72,
+    live_workflow: liveStatus,
+    authority: 'HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1',
+    frontend_is_authority: false,
+    status_read_is_bounded: true,
+    source_routes: Object.freeze(['/api/health', '/api/runtime/live/status']),
+    shadowed_role_authority_route_used: false,
+  });
+  const productHealth = Object.freeze({
+    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_EVIDENCE_INPUT_V2',
+    runtime: runtimeStatus,
+    assistantHealthExcluded: true,
+  });
+  const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
+  if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
+    throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
+  }
+  void scheduleWorkspaceAuthorityBind();
+  return authorityEvidence;
+}
+
+function scheduleBackendAuthorityHydration() {
+  window.setTimeout(() => {
+    void hydrateBackendAuthorityEvidence().catch((error) => {
+      stability.recordError(error, {
+        stage: 'BACKEND_CAPABILITY_CHECKED',
+        optional: true,
+        deferred: true,
+      });
+    });
+  }, 0);
+  return { deferred: true, authorityRequiredBeforeAcceptance: true };
+}
+
+function scheduleOptionalProjectionHydration() {
+  const initializers = [
+    ['integrated-workbench', initIntegratedWorkbench],
+    ['intuitive-ide', initIntuitiveIDE],
+    ['pass175-processor', initPass175Processor],
+    ['pass175-terminal-processor', initPass175TerminalProcessor],
+  ];
+  initializers.forEach(([name, initializer], index) => {
+    window.setTimeout(() => {
+      void safeInit(name, initializer, { optional: true });
+    }, index * 16);
+  });
+  return { deferred: true, taskBounded: true, count: initializers.length };
 }
 
 function bindCoreControls() {
@@ -290,37 +417,12 @@ async function bootVisualIDE() {
     },
     {
       stage: 'BACKEND_CAPABILITY_CHECKED',
-      run: async () => {
-        const [productHealth, pass175] = await Promise.all([
-          requestJson('/api/product/health', { timeoutMs: 10000, retryCount: 1 }),
-          requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
-        ]);
-        const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
-        if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
-          throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
-        }
-        void stability.runAction('workspace-authority-bind', async ({ signal }) => {
-          const projectId = await ensureProject({ signal });
-          log(`Workspace authority bound to ${projectId}.`);
-          return projectId;
-        }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
-          log(`Workspace initialization deferred: ${error.message}`);
-        });
-        return authorityEvidence;
-      },
+      run: () => scheduleBackendAuthorityHydration(),
       optional: true,
     },
     {
       stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
-      run: () => {
-        queueMicrotask(() => {
-          void safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true });
-          void safeInit('intuitive-ide', initIntuitiveIDE, { optional: true });
-          void safeInit('pass175-processor', initPass175Processor, { optional: true });
-          void safeInit('pass175-terminal-processor', initPass175TerminalProcessor, { optional: true });
-        });
-        return { deferred: true };
-      },
+      run: () => scheduleOptionalProjectionHydration(),
       optional: true,
     },
     {
@@ -339,6 +441,8 @@ async function bootVisualIDE() {
           replay,
           egress: exportEgress,
           stability: () => stability.status(),
+          workspaceAuthorityBinding: () => workspaceAuthorityBindPromise,
+          optionalWorkspaceBindBlocksQuiescence: false,
         });
         window.dispatchEvent(new CustomEvent('hhs:visual-ide:interactive', { detail: stability.status() }));
       },

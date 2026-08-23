@@ -34,6 +34,9 @@ const state = {
   historyMarked: false,
   suppressNextPop: false,
 };
+let reconcileTimer = null;
+let pendingPreferredSurface = null;
+let reconciling = false;
 
 function isMobile() {
   return window.matchMedia(MOBILE_QUERY).matches;
@@ -49,12 +52,15 @@ function isSurfaceOpen(name) {
 function setSurfaceOpen(name, open) {
   const element = surfaces[name]?.();
   if (!element) return;
-  if (name === 'command') element.hidden = !open;
-  else {
+  if (name === 'command') {
+    if (element.hidden !== !open) element.hidden = !open;
+  } else {
     if (!isMobile()) return;
     element.classList.toggle('open', open);
   }
-  element.setAttribute('aria-hidden', String(!open));
+  if (element.getAttribute('aria-hidden') !== String(!open)) {
+    element.setAttribute('aria-hidden', String(!open));
+  }
   if (open) {
     element.setAttribute('aria-modal', 'true');
     element.setAttribute('role', name === 'command' ? 'dialog' : 'region');
@@ -66,7 +72,7 @@ function setSurfaceOpen(name, open) {
 function syncScrim() {
   const open = Boolean(state.activeSurface && isSurfaceOpen(state.activeSurface));
   const scrim = $('#hhs-mobile-scrim');
-  if (scrim) scrim.hidden = !open;
+  if (scrim && scrim.hidden === open) scrim.hidden = !open;
   document.body.classList.toggle('hhs-transient-open', open);
   document.documentElement.dataset.hhsActiveSurface = open ? state.activeSurface : 'none';
 }
@@ -119,17 +125,38 @@ function activateSurface(name, { focus = true } = {}) {
 }
 
 function reconcileSurfaceState(preferred = null) {
-  const openNames = Object.keys(surfaces).filter(isSurfaceOpen);
-  if (!openNames.length) {
-    if (state.activeSurface) closeAll({ restoreFocus: false });
-    return;
+  if (reconciling) return;
+  reconciling = true;
+  try {
+    const openNames = Object.keys(surfaces).filter(isSurfaceOpen);
+    if (!openNames.length) {
+      if (state.activeSurface) closeAll({ restoreFocus: false });
+      return;
+    }
+    const selected = preferred && openNames.includes(preferred)
+      ? preferred
+      : openNames.includes('command')
+        ? 'command'
+        : openNames.at(-1);
+    if (state.activeSurface === selected && openNames.length === 1) {
+      syncScrim();
+      return;
+    }
+    activateSurface(selected, { focus: false });
+  } finally {
+    reconciling = false;
   }
-  const selected = preferred && openNames.includes(preferred)
-    ? preferred
-    : openNames.includes('command')
-      ? 'command'
-      : openNames.at(-1);
-  activateSurface(selected, { focus: false });
+}
+
+function scheduleReconcile(preferred = null) {
+  if (preferred) pendingPreferredSurface = preferred;
+  if (reconcileTimer !== null) return;
+  reconcileTimer = window.setTimeout(() => {
+    reconcileTimer = null;
+    const selected = pendingPreferredSurface;
+    pendingPreferredSurface = null;
+    reconcileSurfaceState(selected);
+  }, 0);
 }
 
 function createCloseButton(label, className = 'hhs-surface-close') {
@@ -211,13 +238,13 @@ function installMobilePaneController() {
     button.setAttribute('role', 'tab');
     button.addEventListener('click', () => {
       const pane = button.dataset.mobilePane;
-      window.queueMicrotask(() => {
+      window.setTimeout(() => {
         if (pane === 'explorer') {
           activateSurface('explorer');
           return;
         }
         selectMobilePane(pane);
-      });
+      }, 0);
     }, true);
   });
   window.requestAnimationFrame(() => selectMobilePane(currentPane(), { persist: false }));
@@ -267,15 +294,15 @@ document.addEventListener('click', (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
   if (target.closest('#nav-toggle, [data-mobile-pane="explorer"]')) {
-    window.queueMicrotask(() => reconcileSurfaceState('explorer'));
+    scheduleReconcile('explorer');
     return;
   }
   if (target.closest('#inspect-toggle')) {
-    window.queueMicrotask(() => reconcileSurfaceState('inspector'));
+    scheduleReconcile('inspector');
     return;
   }
   if (isMobile() && target.closest('#registry-nav .ide-file-item, #registry-nav [data-object-id]')) {
-    window.queueMicrotask(() => closeAll({ restoreFocus: false }));
+    window.setTimeout(() => closeAll({ restoreFocus: false }), 0);
   }
 }, true);
 
@@ -310,7 +337,7 @@ window.visualViewport?.addEventListener('resize', setViewportHeight, { passive: 
 
 const observer = new MutationObserver(() => {
   installCommandPaletteChrome();
-  window.queueMicrotask(() => reconcileSurfaceState());
+  scheduleReconcile();
 });
 for (const name of Object.keys(surfaces)) {
   const element = surfaces[name]?.();
