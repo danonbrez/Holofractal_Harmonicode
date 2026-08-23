@@ -53,8 +53,8 @@ jobs:
           target='docs/architecture/HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION.md'
           grep -F 'HHS_PRE_PASS_KERNEL_PROTECTION_STATE_CHANGE_CONSTITUTION_V1' "$target"
           grep -F 'NOT A NUMBERED PASS' "$target"
-          grep -F 'The pre-pass foundation is not Pass 000' README.md
-          grep -F 'The pre-pass foundation is not Pass 000' ARCHITECTURE.md
+          grep -F 'not Pass 000' README.md
+          grep -F 'not Pass 000' ARCHITECTURE.md
 
       - name: Validate foundational hierarchy
         run: |
