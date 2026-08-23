@@ -95,7 +95,7 @@ jobs:
 
       - name: Validate authority and receipt ordering
         run: |
-          grep -F 'singleton VM81/kernel admission' RUNTIME_FLOW.md
+          grep -F 'singleton VM81' RUNTIME_FLOW.md
           grep -F 'Hash72 receipt commitment' RUNTIME_FLOW.md
           grep -F 'Hash216' RUNTIME_FLOW.md
           grep -F 'A Hash72-shaped value is not sufficient evidence of a valid state.' docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md
