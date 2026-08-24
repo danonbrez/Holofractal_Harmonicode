@@ -290,19 +290,13 @@ def _report_has_promotion_grade_coverage(report: Mapping[str, Any], expected_sta
     return True
 
 
-def _cost_reference(name: str, report: Mapping[str, Any]) -> dict[str, Any]:
-    summary = report["summary"]
+def _cost_reference(name: str) -> dict[str, Any]:
+    """Stable declaration: no per-simplification cost was independently measured."""
     return {
         "simplification_name": name,
-        "claim_scope": "AGGREGATE_REPORT_REFERENCE_ONLY",
+        "claim_scope": "NO_PER_SIMPLIFICATION_COST_MEASURED",
         "measurement_status": "UNMEASURED_PER_SIMPLIFICATION",
         "promotion_grade_cost_claim": False,
-        "aggregate_reference": {
-            "before": summary["original_leaf_evaluations"],
-            "after": summary["factorized_cell_evaluations"],
-            "saved": summary["saved_leaf_evaluations"],
-            "saved_fraction": summary["saved_fraction"],
-        },
     }
 
 
@@ -593,7 +587,7 @@ class Pass198OperationCalibrationRegistry:
                         "tested_parameter_envelope_hash72s": envelopes,
                         "workload_identity_hash72s": workload_hashes,
                         "verification_workload_count": len(workload_hashes),
-                        "cost": _cost_reference(name, report),
+                        "cost": _cost_reference(name),
                     }
                 )
                 event_id, event_hash = self._event(
@@ -636,7 +630,7 @@ class Pass198OperationCalibrationRegistry:
                         "negative_mutations": operation["negative_mutations"],
                     },
                     "retained_witnesses": operation["retained_witnesses"],
-                    "cost": _cost_reference(name, report),
+                    "cost": _cost_reference(name),
                     "replay_receipt": report["replay"],
                     "revocation_conditions": [
                         "exact counterexample",
