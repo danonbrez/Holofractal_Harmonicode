@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 219B exact selective projection. */
+/* Additive exact ABI aggregate through Pass 219B sparse dirty projection. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -25,3 +25,4 @@
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
 #include "hhs_pass219b_selective_projection_1_0.inc"
+#include "hhs_pass219b_sparse_dirty_projection_1_0.inc"
