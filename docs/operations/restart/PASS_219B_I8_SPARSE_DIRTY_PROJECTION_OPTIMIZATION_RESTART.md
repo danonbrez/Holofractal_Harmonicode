@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTED_AND_VALIDATED — CHECKPOINT_SEAL_REVALIDATION_REQUIRED — NOT MERGED`
+`IMPLEMENTED_AND_VALIDATED — READY_FOR_REVIEW — NOT MERGED`
 
 ## Repository
 
@@ -10,14 +10,17 @@
 - Authoritative main observed before this task: `3c926453d65b71a6d1789e06b748544f5f2bd228`
 - Inherited runtime parent / Pass 219B I6 merge: `ff66e376a44c8b928a9a42c2e6d8aa1846785fc2`
 - Validated Pass 219B I7 parent: `6df75bc39fd7c58108b8cf7aee3758341fe345a5`
-- I8 implementation head validated before evidence seal: `a82993c9df7d59c141eb0078fb34230a1e0c485e`
+- I8 implementation/evidence-seal head before compatibility repair: `a30cf59984576e330d088618f68341f4c6985e37`
+- Validated compatibility-repair head: `a824988a618d10e573241a89f5915a838d5285d2`
 - Working branch: `agent/pass219b-i8-sparse-dirty-projection-optimization`
 - Review PR: `#323`
 - Review base: `agent/pass219b-i7-exact-selective-projection-optimization`
 
+The exact final review head is recorded in the terminal PR checkpoint comment after the documentation-seal commit and its final CI run. This avoids claiming a commit's own hash inside content that necessarily precedes creation of that commit.
+
 ## Purpose
 
-Continue the selective-projection optimization without promoting device-specific FPS or density constants. I8 implements and tests the general repository principle:
+Continue selective-projection optimization without promoting device-specific FPS or density constants. I8 implements and tests the general repository principle:
 
 ```text
 SPARSE AUTHORITATIVE CHANGE
@@ -26,7 +29,7 @@ SPARSE AUTHORITATIVE CHANGE
 
 using I7's exact precomputed selected-identity cell ranges.
 
-The implemented lowering is:
+Implemented lowering:
 
 ```text
 full exact authoritative state remains active
@@ -40,7 +43,7 @@ sorted unique complete dirty source-cell witness
         -> update only those derived/projection spans
 ```
 
-If dirty-set completeness is not proven, the optimization is not admitted and the declared fallback is:
+If dirty-set completeness is not proven, sparse execution is not admitted and the declared fallback is:
 
 `FULL_DERIVED_PROJECTION_PATH`
 
@@ -49,26 +52,32 @@ If dirty-set completeness is not proven, the optimization is not admitted and th
 - Singleton VM81/kernel authority remains unchanged.
 - Hash72 and Hash216 semantics remain unchanged.
 - I7 selected identities and cell ranges remain inherited rather than redefined.
-- GPU/graphics work remains projection-only/candidate-only.
+- GPU/graphics remains projection-only/candidate-only.
 - No I8 function mutates or persists canonical state or commits Hash72.
 - No float/double arithmetic exists in the exact I8 planner.
 - No division/modulo operator exists in the exact sparse span planner.
-- Timing/FPS/device observations remain benchmark witnesses only and are not canonical constants.
+- Timing/FPS/device observations remain calibration witnesses only and are not canonical constants.
 
 ## Changed files
+
+New I8 surfaces:
 
 - `hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h`
 - `hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.hpp`
 - `hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc`
-- `hhs_runtime/include/hhs_runtime_exact_abi.h`
-- `hhs_runtime/c/hhs_runtime_exact_abi.c`
-- `hhs_backend/api/runtime_graphics_routes.py`
 - `tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c`
 - `tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp`
 - `docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_OPTIMIZATION.md`
 - `docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE.json`
 - `.github/workflows/pass219b-i8-sparse-dirty-projection.yml`
 - this restart record
+
+Updated integration surfaces:
+
+- `hhs_runtime/include/hhs_runtime_exact_abi.h`
+- `hhs_runtime/c/hhs_runtime_exact_abi.c`
+- `hhs_backend/api/runtime_graphics_routes.py`
+- `hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc` only for historical standalone include-path compatibility; I7 selector semantics are unchanged.
 
 ## Implemented exact rules
 
@@ -95,32 +104,19 @@ span_count <= dirty_cell_count
 
 Separated dirty spans cannot bridge clean selected data. Touching dirty selected regions are coalesced.
 
-## Executed validation
+## General conformance
 
-Dedicated workflow:
+The exhaustive C model covers:
 
-- run: `32681087219`
-- exact job: `97297809412` — `SUCCESS`
-- synthetic job: `97297809630` — `SUCCESS`
-- validated implementation head: `a82993c9df7d59c141eb0078fb34230a1e0c485e`
+- cell counts 1 through 8;
+- five variable-length contiguous range layouts;
+- zero-length cell ranges;
+- every dirty-cell subset for every model;
+- `2,550` exact dirty-subset cases total.
 
-Both lanes passed:
+Each case compares direct dirty selected membership with I8's emitted spans. The I7 integration case reconstructs the current derived projection from a previous projection by copying only emitted sparse spans and requires byte-for-byte equality with the full derived result.
 
-1. exact I7 ancestry;
-2. float/double rejection in the exact sparse module;
-3. division/modulo rejection in the sparse span planner;
-4. canonical-authority export rejection;
-5. cumulative exact ABI compilation under C11 warnings-as-errors;
-6. I8 exhaustive C conformance;
-7. I8 C++ conformance;
-8. inherited I7 C/C++ conformance;
-9. inherited Pass 219B phase-hydration C/C++ conformance;
-10. graphics capability syntax and completeness fallback;
-11. evidence JSON and non-device admission policy.
-
-The exhaustive C model covered cell counts 1 through 8, five variable-length range layouts including zero-length cells, and every dirty subset: `2,550` exact dirty-subset cases.
-
-Negative cases passed for:
+Negative cases cover:
 
 - incomplete dirty-set witness;
 - sparse/full inequality;
@@ -130,6 +126,75 @@ Negative cases passed for:
 - duplicate dirty cells;
 - truncated selected-count coverage;
 - noncontiguous range metadata.
+
+## Executed validation
+
+### Initial implementation gate
+
+- run `32681087219`
+- exact job `97297809412` — `SUCCESS`
+- synthetic job `97297809630` — `SUCCESS`
+
+### First sealed gate
+
+- run `32681178420`
+- exact job `97298046745` — `SUCCESS`
+- synthetic job `97298046640` — `SUCCESS`
+
+### Repair-forward final implementation gate
+
+- validated repair head: `a824988a618d10e573241a89f5915a838d5285d2`
+- run `32681343205`
+- exact job `97298466166` — `SUCCESS`
+- synthetic job `97298466077` — `SUCCESS`
+
+Both final dedicated lanes passed:
+
+1. exact I7 ancestry;
+2. float/double rejection in exact sparse surfaces;
+3. division/modulo rejection in sparse span planner;
+4. canonical-authority export rejection;
+5. cumulative exact ABI compilation under C11 warnings-as-errors;
+6. exhaustive I8 C conformance;
+7. I8 C++ conformance;
+8. inherited I7 C/C++ conformance;
+9. inherited Pass 219B phase-hydration C/C++ conformance;
+10. graphics capability syntax, complete-surface binding, dirty-set completeness fallback;
+11. evidence JSON and non-device admission policy.
+
+### Broad Pass 219 quantization / ABI audit
+
+An earlier sealed head exposed one compatibility defect after all quantization/UQCEL tests had passed: the historical standalone public C ABI smoke compiled `hhs_runtime/c/hhs_runtime_abi.c` with only the historical `hhs_runtime/c` include directory, while I7's aggregate `.inc` used a bare include name for a public header in `hhs_runtime/include`.
+
+Failure classification:
+
+`INCLUDE_PATH_COMPATIBILITY_DEFECT_NOT_SEMANTIC_REGRESSION`
+
+Repair-forward action:
+
+```text
+hhs_pass219b_selective_projection_1_0.inc
+hhs_pass219b_sparse_dirty_projection_1_0.inc
+```
+
+now resolve their public headers with source-relative `../include/...` paths. The historical test flags and standalone ABI contract were preserved rather than weakened.
+
+Post-repair audit:
+
+- run `32681343152`
+- job `97298465879` — `SUCCESS`
+
+That audit passed:
+
+- strict additive exact-ABI compile;
+- integrated shared ABI build;
+- UQCEL/Fibonacci/composed symbol exports;
+- Pass 192 oracle;
+- UQCEL correspondence/enforcement/inherited/monolithic/Fibonacci tests;
+- historical standalone public C ABI link smoke;
+- standalone VM81 exactness.
+
+Inherited Pass 219 RNA transcription, grammar, admission, retrieval, and execution-composer workflows on the repair head were also observed green.
 
 ## External benchmark witness
 
@@ -147,15 +212,26 @@ and a small dirty-cell set per tick. Device FPS and projection-density boundarie
 
 The ChatGPT execution container could not resolve `github.com`; no local clone/test state is authoritative. Repository writes and executable validation were performed through the connected GitHub repository and GitHub Actions.
 
-## Remaining validation
+## Repository-wide candidate principles produced by I8
 
-The evidence and restart seal commits occur after the validated implementation head, so one final exact/synthetic dedicated workflow run on the sealed branch head is required before marking I8 ready for review.
+These are reusable principles, not automatic authorization to alter unrelated subsystems:
 
-No unchanged full-history rerun is required beyond the workflows automatically triggered by the aggregate ABI files unless a new failure appears.
+1. hoist invariant exact work out of repeated hot paths;
+2. reuse validated exact metadata through direct lookup;
+3. bind optimization metadata to the complete inherited state surface;
+4. use sparse derived work only when the sparse change witness is complete;
+5. coalesce only semantically contiguous affected regions;
+6. optimize active work/proof surface rather than deleting invariants;
+7. fall back to the complete path whenever sparse preconditions are unproven;
+8. require exact full-result equivalence before promotion;
+9. preserve inherited build/ABI entry paths when extending aggregate runtimes;
+10. treat device-specific timings and limits as calibration witnesses, not semantic laws.
+
+Each application to cache, vector indexing, hydration, serialization, replication, or another subsystem still requires its own dependency-scoped proof.
 
 ## Next action
 
-Wait only for the dedicated I8 exact/synthetic seal run, repair forward if it fails, then record the exact final head and leave PR #323 ready for review.
+After the terminal documentation-seal exact/synthetic run is green, leave PR #323 ready for review. The next optimization iteration should select another subsystem-specific application of the same principles and prove equivalence independently rather than encoding the browser's device-specific numeric boundary.
 
 ## Merge status
 
