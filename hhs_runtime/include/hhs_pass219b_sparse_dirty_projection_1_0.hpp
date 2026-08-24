@@ -34,6 +34,7 @@ inline HHSExactStatus verify_sparse_dirty_projection(
     const HHSExactPass219BSparseProjectionSpanV1* spans,
     std::size_t span_count,
     std::uint64_t realized_update_selected_count,
+    bool dirty_set_complete,
     bool exact_projection_equal,
     bool canonical_authority_requested = false) noexcept {
     return hhs_exact_pass219b_sparse_dirty_projection_verify(
@@ -41,6 +42,7 @@ inline HHSExactStatus verify_sparse_dirty_projection(
         spans,
         span_count,
         realized_update_selected_count,
+        dirty_set_complete ? 1U : 0U,
         exact_projection_equal ? 1U : 0U,
         canonical_authority_requested ? 1U : 0U);
 }
