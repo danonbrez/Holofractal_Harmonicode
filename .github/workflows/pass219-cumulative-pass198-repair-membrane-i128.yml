@@ -1,0 +1,166 @@
+name: Pass 219 Cumulative Pass 198 Repair Membrane I128
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration128-pass198-repair-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py'
+      - 'hhs_backend/api/pass198_calibration_registry_routes.py'
+      - 'tests/test_hhs_pass198_operation_calibration_registry_v1.py'
+      - 'tests/test_hhs_pass198_i128_repair_v1.py'
+      - '.github/workflows/pass198-i128-repair-validation.yml'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass198_1_28.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i128_pass198.py'
+      - 'tests/pass219/test_pass219_inherited_pass198_1_28.c'
+      - 'tests/pass219/test_pass219_inherited_pass198_1_28.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass198_membrane_i128.py'
+      - 'docs/pass198/PASS_219_I128_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I128_PASS198_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass198-repair-membrane-i128.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass198-repair-membrane:
+    name: inherited-pass198-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I127 and accepted Pass 198 squash lineage
+        run: |
+          git merge-base --is-ancestor fa89488d84f845fa372551b5324e0ddd37e49daf HEAD
+          git merge-base --is-ancestor 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e HEAD
+          git merge-base --is-ancestor 97faba2ec59c54d1cd17be5bb88ade370841f65f HEAD
+          test "$(git merge-base a383ab8ec6a55e04ab490477c7b8cfe5d107d098 HEAD)" = "b40e11315840781d1fd9c12932fad46eb32e383f"
+
+      - name: Prove accepted Pass 198 provenance and repaired identities
+        run: |
+          test "$(git rev-parse 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e:HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY.md)" = "c623794f920ebbefbb6cb21eaf20767a1fd78306"
+          test "$(git rev-parse 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e:hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py)" = "3ec97b653344cbaf28eee89e6debbe1b6a89975d"
+          test "$(git rev-parse 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e:hhs_backend/api/pass198_calibration_registry_routes.py)" = "0e2581a3ecb0044eaf328617be1ae85e69e1e9a7"
+          test "$(git rev-parse 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e:tests/test_hhs_pass198_operation_calibration_registry_v1.py)" = "2f4285b15644e88fb46d74bf06fa5c8d266e8859"
+          test "$(git rev-parse 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e:.github/workflows/pass198-operation-calibration-registry.yml)" = "d9eb8b172d81ed2d9e07916c13b914bab8ec6654"
+          test "$(git rev-parse 97faba2ec59c54d1cd17be5bb88ade370841f65f:hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py)" = "9be70fd34fad007001a830fc225792a9a56a24e7"
+          test "$(git rev-parse 97faba2ec59c54d1cd17be5bb88ade370841f65f:hhs_backend/api/pass198_calibration_registry_routes.py)" = "2b2663cab7f74a2e1c21b77c2d5317296d925911"
+          test "$(git rev-parse 97faba2ec59c54d1cd17be5bb88ade370841f65f:tests/test_hhs_pass198_i128_repair_v1.py)" = "b05a76b0cb694a51b66b147583c95520f2e54a9b"
+          test "$(git rev-parse 97faba2ec59c54d1cd17be5bb88ade370841f65f:.github/workflows/pass198-i128-repair-validation.yml)" = "879f6b10ed08f5be590f28510ba12b225da44d0b"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py)" = "9be70fd34fad007001a830fc225792a9a56a24e7"
+          test "$(git hash-object hhs_backend/api/pass198_calibration_registry_routes.py)" = "2b2663cab7f74a2e1c21b77c2d5317296d925911"
+          test "$(git hash-object tests/test_hhs_pass198_i128_repair_v1.py)" = "b05a76b0cb694a51b66b147583c95520f2e54a9b"
+          test "$(git hash-object .github/workflows/pass198-i128-repair-validation.yml)" = "879f6b10ed08f5be590f28510ba12b225da44d0b"
+
+      - name: Compile repaired Python and membrane surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py \
+            hhs_backend/api/pass198_calibration_registry_routes.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i128_pass198.py \
+            tests/test_hhs_pass198_i128_repair_v1.py \
+            tests/pass219/test_pass219_cumulative_pass198_membrane_i128.py
+
+      - name: Reject approximate arithmetic and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass198_1_28.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1|vm81_mutation_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass198_1_28.inc
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py; then
+            echo 'Approximate canonical arithmetic detected in Pass 198 repair.' >&2
+            exit 1
+          fi
+
+      - name: Compile cumulative exact ABI and Pass 198 repair conformance
+        run: |
+          mkdir -p /tmp/pass219-i128-pass198
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i128-pass198/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass198_1_28.c \
+            /tmp/pass219-i128-pass198/exact.o \
+            -o /tmp/pass219-i128-pass198/pass198-c
+          /tmp/pass219-i128-pass198/pass198-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass198_1_28.cpp \
+            /tmp/pass219-i128-pass198/exact.o \
+            -o /tmp/pass219-i128-pass198/pass198-cpp
+          /tmp/pass219-i128-pass198/pass198-cpp
+
+      - name: Run repaired Pass 198 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass198_membrane_i128.py
+
+      - name: Re-run inherited lifecycle and thirteen-finding regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass198_operation_calibration_registry_v1 \
+            tests.test_hhs_pass198_i128_repair_v1
+
+      - name: Execute complete Pass 198 envelope with mutation evidence
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass198_operation_calibration_registry_v1 import Pass198OperationCalibrationRegistry
+
+          with tempfile.TemporaryDirectory() as root:
+              registry = Pass198OperationCalibrationRegistry(state_root=root)
+              try:
+                  run = registry.run_operation('pass197.reciprocal_matrix_gate', {}, vm81_receipt_hash72='8' * 72)
+                  assert run['status'] == 'CLOSED'
+                  assert run['summary']['evaluated_parameter_states'] == 405
+                  assert run['summary']['admitted_parameter_states'] == 320
+                  assert run['summary']['domain_rejected_parameter_states'] == 85
+                  assert run['summary']['address_comparisons'] == 1_658_880
+                  proofs = registry.list_simplifications()
+                  assert len(proofs) == 4
+                  for proof in proofs:
+                      evidence = proof['counterexample_search']['executed_negative_mutation_evidence']
+                      assert evidence['required_mutation_count'] == 6
+                      assert evidence['executed_mutation_count'] == 6
+                      assert evidence['all_required_negative_mutations_executed_and_detected'] is True
+              finally:
+                  registry.close()
+          PY
+
+      - name: Preserve frozen Pass 199 and Pass 200A successor chain
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass199_membrane_i127.py
+          PYTHONPATH="$PWD" python -m unittest -v tests.test_hhs_pass199_i127_repair_v1
+          PYTHONPATH="$PWD" python -m unittest -v tests.test_hhs_pass200a_proof_carrying_optimization_v1
