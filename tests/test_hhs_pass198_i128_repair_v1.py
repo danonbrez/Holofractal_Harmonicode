@@ -255,12 +255,12 @@ class Pass198I128RepairTests(unittest.TestCase):
         seen_names = set()
         for proof in proofs:
             cost = proof["cost"]
-            self.assertEqual(cost["claim_scope"], "AGGREGATE_REPORT_REFERENCE_ONLY")
+            self.assertEqual(cost["claim_scope"], "NO_PER_SIMPLIFICATION_COST_MEASURED")
             self.assertEqual(cost["measurement_status"], "UNMEASURED_PER_SIMPLIFICATION")
             self.assertFalse(cost["promotion_grade_cost_claim"])
             self.assertEqual(cost["simplification_name"], proof["name"])
             self.assertNotIn("saved", cost)
-            self.assertIn("saved", cost["aggregate_reference"])
+            self.assertNotIn("aggregate_reference", cost)
             seen_names.add(cost["simplification_name"])
         self.assertEqual(len(seen_names), 4)
 
