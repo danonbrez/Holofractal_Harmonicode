@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTED_ON_REVIEW_BRANCH — VALIDATION PENDING`
+`IMPLEMENTED_AND_VALIDATED — READY_FOR_REVIEW — NOT MERGED`
 
 Pass 219B I8 is an additive optimization continuation stacked on the exact validated I7 head:
 
@@ -180,10 +180,12 @@ The C conformance test does not depend on one device, one frame rate, or one pro
 It enumerates:
 
 - cell counts from 1 through 8;
-- multiple variable-length contiguous range layouts, including zero-length cells;
+- five variable-length contiguous range layouts, including zero-length cells;
 - every possible dirty-cell subset for those cell counts.
 
-For every case it compares the exact union implied by dirty source cells against the emitted sparse spans and requires identical selected membership.
+That produces `2,550` exact dirty-subset cases. For every case the test compares the exact union implied by dirty source cells against the emitted sparse spans and requires identical selected membership.
+
+An I7 integration case additionally reconstructs a current derived byte projection from a previous projection using only I8 spans and requires byte-for-byte equality with the full current derived projection.
 
 This converts the optimization claim from a device benchmark observation into an implementation property.
 
@@ -258,6 +260,21 @@ Repository-wide promotion should be based on:
 
 Mirrored ordering, repeated sentinels, cold/warm classification, and exact output equality should remain part of performance studies so environmental drift is not mistaken for a semantic or algorithmic limit.
 
+### 8. Preserve inherited build paths while extending aggregates
+
+An additive aggregate module must remain callable through inherited public and standalone compilation paths.
+
+I8 exposed a historical standalone C ABI include-path defect after the new aggregate modules were present. The repair preserved the historical test contract and changed only the aggregate `.inc` header resolution to source-relative public-header paths.
+
+General rule:
+
+```text
+NEW AGGREGATE MODULE
+=> PRESERVE EXISTING PUBLIC BUILD / LINK ENTRY PATHS
+```
+
+unless an explicit compatibility-breaking migration has separately been authorized.
+
 ## External benchmark witness that motivated I8
 
 A user-supplied rerun on 2026-08-24 reported:
@@ -293,6 +310,32 @@ I8 adds:
 - restart record;
 - exact/synthetic CI workflow.
 
+The branch also repairs only the include path in `hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc` so the inherited historical standalone C ABI path remains compilable. I7 selector behavior is unchanged.
+
+## Validation result
+
+Initial implementation validation:
+
+- run `32681087219`
+- exact job `97297809412` — `SUCCESS`
+- synthetic job `97297809630` — `SUCCESS`
+
+First sealed validation:
+
+- run `32681178420`
+- exact job `97298046745` — `SUCCESS`
+- synthetic job `97298046640` — `SUCCESS`
+
+Repair-forward validation at `a824988a618d10e573241a89f5915a838d5285d2`:
+
+- dedicated I8 run `32681343205`
+- exact job `97298466166` — `SUCCESS`
+- synthetic job `97298466077` — `SUCCESS`
+- Pass 219 Universal Quantization Constraint Audit run `32681343152`
+- audit job `97298465879` — `SUCCESS`
+
+The post-repair broad audit confirms the historical standalone public C ABI link contract and standalone VM81 exactness in addition to the UQCEL, Fibonacci, quantization, and inherited conformance tests.
+
 ## Non-goals
 
 I8 does not:
@@ -311,7 +354,7 @@ I8 does not:
 
 ## Completion gate
 
-I8 is eligible to freeze only after:
+I8 is ready for review only after:
 
 1. exact I7 ancestry is proven;
 2. cumulative exact ABI compiles under warnings-as-errors;
@@ -321,7 +364,11 @@ I8 is eligible to freeze only after:
 6. inherited Pass 219B phase-hydration C/C++ conformance remains green;
 7. exact I8 planner contains no float/double or division/modulo arithmetic;
 8. no new mutation/persistence/Hash72 authority export is present;
-9. graphics capability declaration remains projection-only and requires dirty-set completeness;
+9. graphics capability remains projection-only and requires dirty-set completeness;
 10. machine-readable evidence parses;
-11. exact-head and synthetic-merge CI are green;
-12. restart record is bound to the validated head and evidence.
+11. exact-head and synthetic-merge I8 CI are green;
+12. inherited standalone C ABI and VM81 exactness remain green;
+13. broad Pass 219 quantization/UQCEL audit remains green;
+14. restart/evidence records are repository-visible.
+
+All executable gates above have passed on the validated repair head. The terminal documentation-seal commit must preserve those results in its final exact/synthetic run before the branch is marked non-draft ready for review.
