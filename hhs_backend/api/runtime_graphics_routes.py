@@ -60,6 +60,8 @@ def runtime_graphics_capabilities() -> Dict[str, Any]:
             "output": "COALESCED_SELECTED_INDEX_SPANS",
             "full_selected_rebuild_required_per_tick": False,
             "selected_count_must_match_inherited_i7_plan": True,
+            "dirty_set_completeness_required": True,
+            "incomplete_dirty_set_fallback": "FULL_DERIVED_PROJECTION_PATH",
             "measured_hot_path_division": False,
             "measured_hot_path_modulo": False,
             "canonical_state_mutation_allowed": False,
