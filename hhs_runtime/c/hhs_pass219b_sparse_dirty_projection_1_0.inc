@@ -71,13 +71,13 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_validate
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_build_spans(
     const HHSExactPass219BProjectionCellRangeV1 *cell_ranges,
     uint32_t cell_count,
+    uint64_t selected_count,
     const uint32_t *dirty_cells,
     size_t dirty_cell_count,
     HHSExactPass219BSparseProjectionSpanV1 *out_spans,
     size_t span_capacity,
     HHSExactPass219BSparseDirtyProjectionPlanV1 *out_plan
 ) {
-    uint64_t selected_count;
     uint64_t update_selected_count = 0U;
     uint64_t prior_span_end = 0U;
     size_t required_spans = 0U;
@@ -89,10 +89,6 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_build_sp
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     }
     memset(out_plan, 0, sizeof(*out_plan));
-    if (cell_count == 0U || cell_count > HHS_EXACT_PASS219B_SPARSE_DIRTY_PROJECTION_MAX_CELLS) {
-        return HHS_EXACT_STATUS_RANGE_ERROR;
-    }
-    selected_count = cell_ranges[cell_count - 1U].end_selected;
     status = hhs_exact_pass219b_sparse_dirty_projection_validate_ranges(
         cell_ranges, cell_count, selected_count);
     if (status != HHS_EXACT_STATUS_OK) {
