@@ -1,4 +1,4 @@
-#include "hhs_pass219b_sparse_dirty_projection_1_0.h"
+#include "../include/hhs_pass219b_sparse_dirty_projection_1_0.h"
 
 #include <string.h>
 
