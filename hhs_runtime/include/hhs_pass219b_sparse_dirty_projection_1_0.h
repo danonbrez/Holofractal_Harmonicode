@@ -29,6 +29,7 @@ typedef struct HHSExactPass219BSparseDirtyProjectionPlanV1 {
     uint64_t avoided_selected_count;
     uint8_t precomputed_cell_ranges_required;
     uint8_t dirty_cells_sorted_unique_required;
+    uint8_t dirty_set_completeness_required;
     uint8_t contiguous_selected_spans_coalesced;
     uint8_t measured_hot_path_division_forbidden;
     uint8_t measured_hot_path_modulo_forbidden;
@@ -62,6 +63,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_verify(
     const HHSExactPass219BSparseProjectionSpanV1 *spans,
     size_t span_count,
     uint64_t realized_update_selected_count,
+    uint32_t dirty_set_complete,
     uint32_t exact_projection_equal,
     uint32_t canonical_authority_requested
 );
