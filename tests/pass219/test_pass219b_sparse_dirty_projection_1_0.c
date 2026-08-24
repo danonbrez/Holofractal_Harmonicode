@@ -73,6 +73,7 @@ static void assert_exhaustive_small_models(void) {
                 assert(plan.update_selected_count == expected_update);
                 assert(plan.avoided_selected_count == selected_count - expected_update);
                 assert(plan.span_count <= dirty_count);
+                assert(plan.dirty_set_completeness_required == 1U);
                 assert(plan.projection_only == 1U);
                 assert(plan.canonical_mutation_authority == 0U);
                 assert(plan.canonical_persistence_authority == 0U);
@@ -90,6 +91,7 @@ static void assert_exhaustive_small_models(void) {
                     spans,
                     (size_t)plan.span_count,
                     expected_update,
+                    1U,
                     1U,
                     0U) == HHS_EXACT_STATUS_OK);
             }
@@ -141,6 +143,7 @@ static void assert_i7_range_integration_and_sparse_equivalence(void) {
     assert(plan.avoided_selected_count == 1728ULL - expected_update);
     assert(plan.precomputed_cell_ranges_required == 1U);
     assert(plan.dirty_cells_sorted_unique_required == 1U);
+    assert(plan.dirty_set_completeness_required == 1U);
     assert(plan.contiguous_selected_spans_coalesced == 1U);
     assert(plan.measured_hot_path_division_forbidden == 1U);
     assert(plan.measured_hot_path_modulo_forbidden == 1U);
@@ -166,6 +169,7 @@ static void assert_i7_range_integration_and_sparse_equivalence(void) {
         (size_t)plan.span_count,
         expected_update,
         1U,
+        1U,
         0U) == HHS_EXACT_STATUS_OK);
     assert(hhs_exact_pass219b_sparse_dirty_projection_verify(
         &plan,
@@ -173,12 +177,22 @@ static void assert_i7_range_integration_and_sparse_equivalence(void) {
         (size_t)plan.span_count,
         expected_update,
         0U,
+        1U,
         0U) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
     assert(hhs_exact_pass219b_sparse_dirty_projection_verify(
         &plan,
         spans,
         (size_t)plan.span_count,
         expected_update,
+        1U,
+        0U,
+        0U) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    assert(hhs_exact_pass219b_sparse_dirty_projection_verify(
+        &plan,
+        spans,
+        (size_t)plan.span_count,
+        expected_update,
+        1U,
         1U,
         1U) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 
