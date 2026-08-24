@@ -54,6 +54,18 @@ def runtime_graphics_capabilities() -> Dict[str, Any]:
             "canonical_persistence_allowed": False,
             "canonical_hash72_commit_allowed": False,
         },
+        "sparse_dirty_projection": {
+            "schema": "HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0",
+            "input": "I7_PRECOMPUTED_CELL_RANGES_PLUS_SORTED_UNIQUE_DIRTY_CELL_IDS",
+            "output": "COALESCED_SELECTED_INDEX_SPANS",
+            "full_selected_rebuild_required_per_tick": False,
+            "selected_count_must_match_inherited_i7_plan": True,
+            "measured_hot_path_division": False,
+            "measured_hot_path_modulo": False,
+            "canonical_state_mutation_allowed": False,
+            "canonical_persistence_allowed": False,
+            "canonical_hash72_commit_allowed": False,
+        },
         "routes": [
             "GET /api/runtime/graphics/status",
             "GET /api/runtime/graphics/vulkan",
