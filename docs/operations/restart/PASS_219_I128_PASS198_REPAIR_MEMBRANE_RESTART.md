@@ -1,6 +1,6 @@
 # Pass 219 Iteration 1.28 — Pass 198 repair + membrane restart record
 
-Status: **MEMBRANE IMPLEMENTED — EXACT/SYNTHETIC VALIDATION PENDING**
+Status: **FREEZE CANDIDATE — FINAL DOCUMENTATION-INCLUSIVE SEAL PENDING**
 
 ## Repository checkpoint
 
@@ -12,16 +12,17 @@ merge target: main
 merge authorization: NOT GRANTED
 frozen I127 predecessor: fa89488d84f845fa372551b5324e0ddd37e49daf
 validated pre-membrane repair checkpoint: 97faba2ec59c54d1cd17be5bb88ade370841f65f
+validated membrane implementation commit: d5270169662242b20212344e0c3f3c34cc2379f2
 current main observed at PR creation: 3c926453d65b71a6d1789e06b748544f5f2bd228
 ```
 
-The branch remains a direct descendant of frozen I127. Do not rebase, merge, or rewrite historical successor source merely to complete I128.
+The branch remains a direct descendant of frozen I127. No source rewrite, rebase, merge, or canonical-main mutation is authorized or required for this freeze candidate.
 
 ## Classification
 
 `INHERITED_IMPLEMENTATION_REPAIR_AND_MEMBRANE_EXPOSURE`
 
-Pass 198 merged historically in PR #136 before its review completed. The complete review census contains **13 substantive findings**. I128 repairs the inherited V1 compatibility surface in place because Pass199 and Pass200A import `Pass198OperationCalibrationRegistry` directly.
+Pass 198 merged historically in PR #136 before its review completed. The definitive review census contains **13 substantive findings**. I128 repaired the inherited V1 compatibility surface in place because Pass199 and Pass200A import `Pass198OperationCalibrationRegistry` directly.
 
 ## Accepted Pass 198 history
 
@@ -117,11 +118,12 @@ All six must carry `executed=true`, `detected=true`, per-probe Hash72 evidence, 
 1f4e8b50ecd96c46cf812d84c5228832a11a6f82  finding-13 focused regression
 c8b92f5bb01b195e1b9ae0c666a6df139e91d717  thirteen-finding production gate
 97faba2ec59c54d1cd17be5bb88ade370841f65f  documentation-inclusive pre-membrane repair checkpoint
+d5270169662242b20212344e0c3f3c34cc2379f2  atomic I128 C/C++/Python membrane implementation
 ```
 
-## Completed pre-membrane validation on `97faba2e...`
+## Pre-membrane validation on `97faba2e...`
 
-All required gates are terminal green:
+All required gates were terminal green:
 
 ```text
 Pass198 I128 thirteen-finding validation: 32770921677  SUCCESS
@@ -134,9 +136,40 @@ VM81 Exact ABI:                            32770921615  SUCCESS
 UQCEL:                                     32770921651  SUCCESS
 ```
 
-The Pass199 run completed its full 405-state / 810-branch repaired worker execution and receipt-independent cached resume. Pass200A completed four production holdouts/compiler shadows. Pass200B completed production proof, bounded canary, exhaustion, and rollback.
+## First membrane implementation seal on `d5270169...`
 
-## I128 membrane files
+Dedicated workflow:
+
+```text
+run:            32773011143  SUCCESS
+exact job:      97577480413  SUCCESS
+synthetic job:  97577480086  SUCCESS
+```
+
+Both targets passed:
+
+- frozen I127 and Pass198 squash-aware lineage;
+- accepted historical and repaired blob identities;
+- Python membrane compilation;
+- no-float / no-new-authority scan;
+- cumulative C11 exact ABI compilation;
+- C conformance negative tests;
+- C++17 RNA-wrapper conformance;
+- Pass198 membrane preflight;
+- inherited lifecycle + all 13 repair regressions;
+- complete 405-state / 320-admitted / 85-rejected envelope;
+- 1,658,880 exact VM5184 comparisons;
+- all six executed/detected mutation probes;
+- frozen Pass199 membrane and Pass200A successor preservation.
+
+Supplemental membrane-head exact-runtime gates:
+
+```text
+VM81 Exact ABI: 32773011176  SUCCESS
+UQCEL:          32773011063  SUCCESS
+```
+
+## I128 membrane exposure
 
 ```text
 hhs_runtime/include/hhs_pass219_inherited_pass198_1_28.h
@@ -150,7 +183,7 @@ tests/pass219/test_pass219_cumulative_pass198_membrane_i128.py
 docs/pass198/PASS_219_I128_INHERITED_EXPOSURE.md
 ```
 
-The exact ABI aggregate is extended additively through Pass198 after the frozen Pass199 I127 layer.
+The exact ABI aggregate is extended additively through Pass198 immediately after the frozen Pass199 I127 layer.
 
 C binding:
 
@@ -164,15 +197,16 @@ C++ RNA surface:
 
 The I128 membrane is validator-only. It creates no candidate, canonical mutation, persistence, Hash72-clock, C++, API, or VM81 mutation authority. VM81/kernel admission remains inherited singleton authority. Automatic compiler promotion and runtime admission remain disabled.
 
-## Remaining validation
+## Final seal action
 
-1. Run `Pass 219 Cumulative Pass 198 Repair Membrane I128` exact target.
-2. Run the same workflow against the synthetic current-main composition.
-3. If either fails, repair only the violated I128/inherited boundary and rerun impacted gates.
-4. If both pass, update this restart record and exposure doc with exact run/job evidence in one documentation-inclusive freeze-candidate commit.
-5. Rerun exact/synthetic I128 membrane validation on that final commit.
-6. Freeze I128 only when the final documentation-inclusive commit is green.
-7. Keep PR #324 draft/unmerged until separate merge authorization.
+This documentation update is the freeze-candidate checkpoint. No implementation source or ABI identity is changed.
+
+1. Run `Pass 219 Cumulative Pass 198 Repair Membrane I128` against this exact documentation-inclusive head.
+2. Require both exact and synthetic targets to be terminal `SUCCESS`.
+3. Do not change repository files after those final jobs pass.
+4. Mark `PASS_219_I128 = FROZEN` only as PR metadata after the final seal, preserving the validated commit identity.
+5. Keep PR #324 draft/unmerged until separate merge authorization.
+6. After freeze, the next reverse-pass census target is inherited Pass197.
 
 ## Environment state
 

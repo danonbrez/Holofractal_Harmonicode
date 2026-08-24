@@ -15,6 +15,7 @@ reviewed historical head: a383ab8ec6a55e04ab490477c7b8cfe5d107d098
 accepted squash merge: 122d21565fd7f3f9bbe9fb73ad2182d1d468ba5e
 frozen I1.27 predecessor: fa89488d84f845fa372551b5324e0ddd37e49daf
 validated I1.28 repair checkpoint: 97faba2ec59c54d1cd17be5bb88ade370841f65f
+validated membrane implementation: d5270169662242b20212344e0c3f3c34cc2379f2
 ```
 
 The accepted merge remains historical provenance. The repaired current V1 surface is bound because Pass 199 and Pass 200A inherit and call that exact class directly.
@@ -93,10 +94,37 @@ VM81 Exact ABI:                            32770921615
 UQCEL:                                     32770921651
 ```
 
+## First membrane implementation seal
+
+Membrane implementation commit:
+
+`d5270169662242b20212344e0c3f3c34cc2379f2`
+
+Dedicated I1.28 workflow:
+
+```text
+run:            32773011143  SUCCESS
+exact job:      97577480413  SUCCESS
+synthetic job:  97577480086  SUCCESS
+```
+
+Both targets proved historical/repaired identities, exact C/C++ ABI conformance, membrane preflight, all 13 repair regressions, the complete 405-state production envelope, six executed/detected mutation probes, and Pass199/Pass200A successor preservation.
+
+Supplemental membrane-head gates:
+
+```text
+VM81 Exact ABI: 32773011176  SUCCESS
+UQCEL:          32773011063  SUCCESS
+```
+
 ## Authority boundary
 
 I1.28 adds no new canonical writer. VM81/kernel authorization remains inherited. Hash72 remains evidence/receipt identity and Hash216 remains archival proof after valid closure. The registry, API, worker, C ABI, C++ wrapper, cache, and proof storage do not independently grant mutation authority.
 
-## Freeze rule
+## Freeze candidate
 
-I1.28 is not frozen merely because the membrane sources exist. The membrane must pass exact and synthetic validation, after which the documentation-inclusive seal commit is validated again. Only that final validated commit may be labeled frozen.
+The first membrane implementation seal is complete. This documentation-inclusive checkpoint records the exact evidence without changing any implementation or ABI source.
+
+I1.28 becomes frozen only if `Pass 219 Cumulative Pass 198 Repair Membrane I128` passes both exact and synthetic targets again on this final documentation-inclusive commit. After that final green seal, repository files must remain unchanged; freeze status is recorded only in PR metadata so the validated commit identity is preserved.
+
+Next reverse-pass census target after freeze: inherited Pass197.
