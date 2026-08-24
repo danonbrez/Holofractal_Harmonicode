@@ -1,9 +1,10 @@
 {
   "schema": "HHS_PASS219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE_V1",
   "version": 1,
-  "status": "PENDING_CI",
+  "status": "VALIDATED_BEFORE_CHECKPOINT_SEAL",
   "repository": "danonbrez/Holofractal_Harmonicode",
   "inheritedI7Head": "6df75bc39fd7c58108b8cf7aee3758341fe345a5",
+  "validatedImplementationHead": "a82993c9df7d59c141eb0078fb34230a1e0c485e",
   "principle": "SPARSE_AUTHORITATIVE_CHANGE_IMPLIES_SPARSE_DERIVED_WORK_WHEN_CHANGE_WITNESS_IS_COMPLETE",
   "authority": {
     "canonicalMutation": false,
@@ -25,7 +26,7 @@
     "moduloInSparsePlanner": false,
     "floatingPointInSparsePlanner": false
   },
-  "generalConformancePlan": {
+  "generalConformance": {
     "cellCountsInclusive": [1, 8],
     "rangeLayoutVariants": 5,
     "dirtySubsetsExhaustivePerModel": true,
@@ -42,7 +43,22 @@
       "duplicate dirty cells",
       "truncated selected-count coverage",
       "noncontiguous range metadata"
-    ]
+    ],
+    "result": "PASS"
+  },
+  "validation": {
+    "workflowRun": 32681087219,
+    "exactJob": 97297809412,
+    "exactConclusion": "success",
+    "syntheticJob": 97297809630,
+    "syntheticConclusion": "success",
+    "cumulativeExactAbiCompiled": true,
+    "i7CAndCppPreserved": true,
+    "inheritedPhaseHydrationCAndCppPreserved": true,
+    "noApproximateArithmetic": true,
+    "noDivisionOrModuloInSparsePlanner": true,
+    "noCanonicalAuthorityExport": true,
+    "graphicsCapabilityValidated": true
   },
   "externalBenchmarkWitness": {
     "source": "user-supplied rerun",
