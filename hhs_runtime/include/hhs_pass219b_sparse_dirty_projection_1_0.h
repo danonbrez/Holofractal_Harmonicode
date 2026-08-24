@@ -49,6 +49,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_validate
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_build_spans(
     const HHSExactPass219BProjectionCellRangeV1 *cell_ranges,
     uint32_t cell_count,
+    uint64_t selected_count,
     const uint32_t *dirty_cells,
     size_t dirty_cell_count,
     HHSExactPass219BSparseProjectionSpanV1 *out_spans,
