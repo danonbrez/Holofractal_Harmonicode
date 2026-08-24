@@ -9,6 +9,7 @@ from pathlib import Path
 from hhs_backend.runtime.hhs_pass198_operation_calibration_registry_v1 import (
     BUILTIN_ADAPTER,
     BUILTIN_PASS197_SPEC,
+    NEGATIVE_MUTATION_EVIDENCE_SCHEMA,
     REPAIR_SCHEMA,
     OperationSpec,
     Pass198OperationCalibrationRegistry,
@@ -264,11 +265,41 @@ class Pass198I128RepairTests(unittest.TestCase):
             seen_names.add(cost["simplification_name"])
         self.assertEqual(len(seen_names), 4)
 
+    def test_13_required_negative_mutations_are_executed_and_persisted(self) -> None:
+        self.registry.run_operation(
+            "pass197.reciprocal_matrix_gate",
+            {"x_values": ["-1", "1"], "y_values": ["-1", "1"], "xy_symbol_values": [0]},
+            vm81_receipt_hash72="1" * 72,
+        )
+        proofs = self.registry.list_simplifications()
+        self.assertEqual(len(proofs), 4)
+        required = set(BUILTIN_PASS197_SPEC.negative_mutations)
+        roots = set()
+        for proof in proofs:
+            search = proof["counterexample_search"]
+            self.assertTrue(search["all_required_negative_mutations_executed_and_detected"])
+            evidence = search["executed_negative_mutation_evidence"]
+            self.assertEqual(evidence["schema"], NEGATIVE_MUTATION_EVIDENCE_SCHEMA)
+            self.assertEqual(evidence["required_mutation_count"], 6)
+            self.assertEqual(evidence["executed_mutation_count"], 6)
+            self.assertTrue(evidence["all_required_negative_mutations_executed_and_detected"])
+            self.assertEqual({item["mutation"] for item in evidence["results"]}, required)
+            self.assertTrue(all(item["executed"] and item["detected"] for item in evidence["results"]))
+            self.assertTrue(all(len(item["evidence_hash72"]) == 72 for item in evidence["results"]))
+            self.assertEqual(len(evidence["evidence_root_hash72"]), 72)
+            roots.add(evidence["evidence_root_hash72"])
+        self.assertEqual(len(roots), 1)
+        events = [json.loads(row[0]) for row in self.registry._db.execute("SELECT payload_json FROM events ORDER BY seq")]
+        proof_events = [item for item in events if item["event_type"] == "SIMPLIFICATION_ENVELOPE_VERIFIED"]
+        self.assertEqual(len(proof_events), 4)
+        self.assertTrue(all(item["payload"]["negative_mutation_evidence_root_hash72"] in roots for item in proof_events))
+
     def test_status_exposes_i128_repair_boundary(self) -> None:
         status = self.registry.status()
         self.assertEqual(status["repair_schema"], REPAIR_SCHEMA)
         self.assertTrue(status["executable_adapter_requires_exact_builtin_specification"])
         self.assertTrue(status["promotion_requires_distinct_workload_identities"])
+        self.assertTrue(status["negative_mutation_execution_required_for_verified_proofs"])
         self.assertFalse(status["compiler_auto_promotion"])
         self.assertFalse(status["runtime_auto_admission"])
 
