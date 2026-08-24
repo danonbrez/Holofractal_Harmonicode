@@ -125,6 +125,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_build_sp
     out_plan->avoided_selected_count = selected_count - update_selected_count;
     out_plan->precomputed_cell_ranges_required = 1U;
     out_plan->dirty_cells_sorted_unique_required = 1U;
+    out_plan->dirty_set_completeness_required = 1U;
     out_plan->contiguous_selected_spans_coalesced = 1U;
     out_plan->measured_hot_path_division_forbidden = 1U;
     out_plan->measured_hot_path_modulo_forbidden = 1U;
@@ -165,6 +166,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_verify(
     const HHSExactPass219BSparseProjectionSpanV1 *spans,
     size_t span_count,
     uint64_t realized_update_selected_count,
+    uint32_t dirty_set_complete,
     uint32_t exact_projection_equal,
     uint32_t canonical_authority_requested
 ) {
@@ -191,6 +193,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_verify(
         plan->projection_only != 1U ||
         plan->precomputed_cell_ranges_required != 1U ||
         plan->dirty_cells_sorted_unique_required != 1U ||
+        plan->dirty_set_completeness_required != 1U ||
         plan->contiguous_selected_spans_coalesced != 1U ||
         plan->measured_hot_path_division_forbidden != 1U ||
         plan->measured_hot_path_modulo_forbidden != 1U) {
@@ -209,6 +212,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_sparse_dirty_projection_verify(
     if (counted != plan->update_selected_count ||
         realized_update_selected_count != plan->update_selected_count ||
         plan->avoided_selected_count != plan->selected_count - plan->update_selected_count ||
+        dirty_set_complete != 1U ||
         exact_projection_equal != 1U) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
