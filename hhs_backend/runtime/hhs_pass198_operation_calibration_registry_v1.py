@@ -11,20 +11,36 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+import tempfile
 import threading
 import time
 from dataclasses import asdict, dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import Pass197ABHydrationCalibration
-from hhs_backend.runtime.pass197_exact_v1 import ADDRESS_COUNT, canonical_json, hash72
-from hhs_backend.runtime.pass197_state_v1 import CalibrationConfig
+from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import (
+    Pass197ABHydrationCalibration,
+    Pass197CalibrationError,
+)
+from hhs_backend.runtime.pass197_exact_v1 import (
+    ADDRESS_COUNT,
+    M,
+    address,
+    canonical_json,
+    decode_address,
+    hash72,
+    matrix_identity,
+    matrix_multiply,
+    matrix_power,
+)
+from hhs_backend.runtime.pass197_state_v1 import CalibrationConfig, evaluate_state
 
 VERSION = "HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY_V1"
 CONTRACT = "HHS-P198-OCR-PROOF-SIMPLIFICATION-VM81-H72"
 CLASSIFICATION = "HHS_PASS_198_GENERIC_CALIBRATION_REGISTRY_FOUNDATION_VERIFIED"
 REPAIR_SCHEMA = "HHS_PASS_198_I128_REPAIR_V1"
+NEGATIVE_MUTATION_EVIDENCE_SCHEMA = "HHS_PASS_198_EXECUTED_NEGATIVE_MUTATION_EVIDENCE_V1"
 REGISTRY_SCHEMA = "HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY_V1"
 SPEC_SCHEMA = "HHS_PASS_198_OPERATION_SPEC_V1"
 TREE_SCHEMA = "HHS_PASS_198_PARAMETER_TREE_V1"
@@ -300,6 +316,189 @@ def _cost_reference(name: str) -> dict[str, Any]:
     }
 
 
+def _mutation_result(mutation: str, *, detected: bool, outcome: str, details: Mapping[str, Any]) -> dict[str, Any]:
+    body = {
+        "mutation": mutation,
+        "executed": True,
+        "detected": bool(detected),
+        "outcome": outcome,
+        "details": _copy(dict(details)),
+    }
+    return {**body, "evidence_hash72": hash72("pass198.negative.mutation.evidence", body)}
+
+
+def _matrix_string_payload(matrix: Sequence[Sequence[Any]]) -> list[list[str]]:
+    return [[str(value) for value in row] for row in matrix]
+
+
+def _probe_replace_xy_with_product() -> dict[str, Any]:
+    mutation = "replace xy with x*y"
+    x = Fraction(1)
+    y = Fraction(1)
+    lexical_exponent = 0
+    product_exponent = int(x * y)
+    canonical = evaluate_state(x, y, lexical_exponent, matrix_power(M, -lexical_exponent))
+    mutated = evaluate_state(x, y, product_exponent, matrix_power(M, -product_exponent))
+    detected = (
+        lexical_exponent != product_exponent
+        and canonical["state_hash72"] != mutated["state_hash72"]
+    )
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="STATE_IDENTITY_CHANGED" if detected else "MUTATION_NOT_DETECTED",
+        details={
+            "lexical_xy_exponent": lexical_exponent,
+            "x_times_y_exponent": product_exponent,
+            "canonical_state_hash72": canonical["state_hash72"],
+            "mutated_state_hash72": mutated["state_hash72"],
+        },
+    )
+
+
+def _probe_float_ingress() -> dict[str, Any]:
+    mutation = "admit floating-point ingress"
+    detected = False
+    error_hash = ZERO_HASH72
+    try:
+        CalibrationConfig.from_payload({"x_values": [0.5], "y_values": [1], "xy_symbol_values": [0]})
+    except ValueError as exc:
+        detected = True
+        error_hash = hash72("pass198.negative.float.rejection", str(exc))
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="FLOAT_REJECTED" if detected else "FLOAT_ACCEPTED",
+        details={"rejection_error_hash72": error_hash},
+    )
+
+
+def _probe_reverse_matrix_product_order() -> dict[str, Any]:
+    mutation = "reverse matrix product order"
+    permutation = (
+        (Fraction(0), Fraction(1), Fraction(0)),
+        (Fraction(1), Fraction(0), Fraction(0)),
+        (Fraction(0), Fraction(0), Fraction(1)),
+    )
+    forward = matrix_multiply(M, permutation)
+    reversed_product = matrix_multiply(permutation, M)
+    detected = forward != reversed_product
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="ORDER_REVERSAL_CHANGED_EXACT_MATRIX" if detected else "ORDER_REVERSAL_UNDETECTED",
+        details={
+            "forward_hash72": hash72("pass198.negative.matrix.forward", _matrix_string_payload(forward)),
+            "reversed_hash72": hash72("pass198.negative.matrix.reversed", _matrix_string_payload(reversed_product)),
+        },
+    )
+
+
+def _probe_strip_vm81_lane_identity() -> dict[str, Any]:
+    mutation = "strip VM81 lane identity"
+    first_address = address(0, 0)
+    second_address = address(0, 1)
+    first_decoded = decode_address(first_address)
+    second_decoded = decode_address(second_address)
+    stripped_first = first_decoded[:4]
+    stripped_second = second_decoded[:4]
+    detected = first_address != second_address and stripped_first == stripped_second
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="LANE_STRIP_COLLISION_DETECTED" if detected else "LANE_STRIP_UNDETECTED",
+        details={
+            "first_address": first_address,
+            "second_address": second_address,
+            "first_lane": first_decoded[4],
+            "second_lane": second_decoded[4],
+            "stripped_cell_indices": list(stripped_first),
+        },
+    )
+
+
+def _probe_zero_reciprocal_domain() -> dict[str, Any]:
+    mutation = "admit zero reciprocal domain"
+    result = evaluate_state(Fraction(0), Fraction(1), 0, matrix_identity(3))
+    detected = result.get("status") == "DOMAIN_REJECTED" and int(result.get("address_count", -1)) == 0
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="ZERO_DOMAIN_REJECTED" if detected else "ZERO_DOMAIN_ADMITTED",
+        details={
+            "state_hash72": result["state_hash72"],
+            "status": result["status"],
+            "address_count": result["address_count"],
+        },
+    )
+
+
+def _probe_checkpoint_receipt_tip_tamper() -> dict[str, Any]:
+    mutation = "tamper checkpoint receipt tip"
+    detected = False
+    before_hash = ZERO_HASH72
+    tampered_tip = "f" * 72
+    with tempfile.TemporaryDirectory() as root:
+        runtime = Pass197ABHydrationCalibration(state_root=root)
+        payload = {"x_values": [1], "y_values": [1], "xy_symbol_values": [0]}
+        runtime.run(payload, vm81_receipt_hash72="1" * 72)
+        checkpoint_path = Path(root) / "ab_hydration_checkpoint.json"
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        before_hash = str(checkpoint.get("checkpoint_hash72") or ZERO_HASH72)
+        checkpoint["receipt_tip_hash72"] = tampered_tip
+        checkpoint_path.write_text(canonical_json(checkpoint) + "\n", encoding="utf-8")
+        try:
+            runtime.run(payload, resume=True, vm81_receipt_hash72="2" * 72)
+        except Pass197CalibrationError:
+            detected = True
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="CHECKPOINT_TAMPER_REJECTED" if detected else "CHECKPOINT_TAMPER_ACCEPTED",
+        details={
+            "original_checkpoint_hash72": before_hash,
+            "tampered_receipt_tip_hash72": tampered_tip,
+        },
+    )
+
+
+_NEGATIVE_MUTATION_PROBES = {
+    "replace xy with x*y": _probe_replace_xy_with_product,
+    "admit floating-point ingress": _probe_float_ingress,
+    "reverse matrix product order": _probe_reverse_matrix_product_order,
+    "strip VM81 lane identity": _probe_strip_vm81_lane_identity,
+    "admit zero reciprocal domain": _probe_zero_reciprocal_domain,
+    "tamper checkpoint receipt tip": _probe_checkpoint_receipt_tip_tamper,
+}
+
+
+def _execute_required_negative_mutations(operation: Mapping[str, Any]) -> dict[str, Any]:
+    required = tuple(str(item) for item in operation.get("negative_mutations") or ())
+    if operation.get("replay_policy", {}).get("mutation_counterexamples_required") is not True:
+        raise Pass198RegistryError("approved simplification proof requires mutation counterexamples")
+    if not required or set(required) != set(_NEGATIVE_MUTATION_PROBES):
+        raise Pass198RegistryError("registered negative-mutation set has no complete executable probe binding")
+    results = [_NEGATIVE_MUTATION_PROBES[mutation]() for mutation in required]
+    complete = (
+        len(results) == len(required)
+        and all(item.get("executed") is True and item.get("detected") is True for item in results)
+        and {item["mutation"] for item in results} == set(required)
+    )
+    body = {
+        "schema": NEGATIVE_MUTATION_EVIDENCE_SCHEMA,
+        "operation_id": operation["operation_id"],
+        "operation_spec_hash72": operation["spec_hash72"],
+        "required_mutation_count": len(required),
+        "executed_mutation_count": len(results),
+        "all_required_negative_mutations_executed_and_detected": complete,
+        "results": results,
+    }
+    evidence = {**body, "evidence_root_hash72": hash72("pass198.negative.mutation.evidence.root", body)}
+    if not complete:
+        raise Pass198RegistryError("required negative mutation execution did not fail closed")
+    return evidence
+
+
 class Pass198OperationCalibrationRegistry:
     def __init__(self, *, state_root: str | os.PathLike[str] | None = None) -> None:
         self.state_root = Path(state_root or os.getenv("HHS_PASS198_STATE_ROOT") or ".hhs/pass198").resolve()
@@ -564,6 +763,14 @@ class Pass198OperationCalibrationRegistry:
     def _record_simplifications(self, operation: Mapping[str, Any], run: Mapping[str, Any], report: Mapping[str, Any]) -> None:
         if not _report_has_promotion_grade_coverage(report):
             raise Pass198RegistryError("promotion-grade simplification proof requires complete deterministic full replay and admitted coverage")
+        negative_evidence = _execute_required_negative_mutations(operation)
+        counterexample_search = {
+            "mismatch_parameter_states": report["summary"]["mismatch_parameter_states"],
+            "singular_parameter_states": report["summary"]["singular_parameter_states"],
+            "negative_mutations": operation["negative_mutations"],
+            "executed_negative_mutation_evidence": negative_evidence,
+            "all_required_negative_mutations_executed_and_detected": True,
+        }
         workload_hash = str(run.get("workload_identity_hash72") or _workload_identity(run))
         envelope_hash = str(run.get("executed_parameter_envelope_hash72") or _executed_envelope_identity(run, report))
         for item in report["lossless_simplifications"]:
@@ -587,6 +794,7 @@ class Pass198OperationCalibrationRegistry:
                         "tested_parameter_envelope_hash72s": envelopes,
                         "workload_identity_hash72s": workload_hashes,
                         "verification_workload_count": len(workload_hashes),
+                        "counterexample_search": _copy(counterexample_search),
                         "cost": _cost_reference(name),
                     }
                 )
@@ -598,6 +806,7 @@ class Pass198OperationCalibrationRegistry:
                         "run_id": run["run_id"],
                         "verification_run_count": len(run_ids),
                         "verification_workload_count": len(workload_hashes),
+                        "negative_mutation_evidence_root_hash72": negative_evidence["evidence_root_hash72"],
                     },
                 )
                 document["updated_event_hash72"] = event_hash
@@ -624,16 +833,13 @@ class Pass198OperationCalibrationRegistry:
                     "workload_identity_hash72s": [workload_hash],
                     "verification_workload_count": 1,
                     "exact_equivalence_root_hash72": report["state_root_hash72"],
-                    "counterexample_search": {
-                        "mismatch_parameter_states": report["summary"]["mismatch_parameter_states"],
-                        "singular_parameter_states": report["summary"]["singular_parameter_states"],
-                        "negative_mutations": operation["negative_mutations"],
-                    },
+                    "counterexample_search": _copy(counterexample_search),
                     "retained_witnesses": operation["retained_witnesses"],
                     "cost": _cost_reference(name),
                     "replay_receipt": report["replay"],
                     "revocation_conditions": [
                         "exact counterexample",
+                        "negative mutation not executed or not detected",
                         "replay root mismatch",
                         "retained witness loss",
                         "operation identity change",
@@ -651,6 +857,7 @@ class Pass198OperationCalibrationRegistry:
                         "run_id": run["run_id"],
                         "workload_identity_hash72": workload_hash,
                         "tested_parameter_envelope_hash72": envelope_hash,
+                        "negative_mutation_evidence_root_hash72": negative_evidence["evidence_root_hash72"],
                     },
                 )
                 document = {**proof, "proof_hash72": proof_hash72, "created_event_hash72": event_hash, "updated_event_hash72": event_hash}
@@ -701,6 +908,9 @@ class Pass198OperationCalibrationRegistry:
                 if current == "REVOKED" or target != PROMOTION_ORDER[PROMOTION_ORDER.index(current) + 1]:
                     raise Pass198RegistryError("promotion must advance exactly one stage")
                 document = json.loads(row["payload_json"])
+                mutation_evidence = document.get("counterexample_search", {}).get("executed_negative_mutation_evidence", {})
+                if mutation_evidence.get("all_required_negative_mutations_executed_and_detected") is not True:
+                    raise Pass198RegistryError("promotion evidence lacks executed fail-closed negative mutations")
                 if not supplied.issubset(set(document.get("run_ids", ()))):
                     raise Pass198RegistryError("unknown promotion evidence run")
                 workload_hashes: set[str] = set()
@@ -727,6 +937,7 @@ class Pass198OperationCalibrationRegistry:
                         "to": target,
                         "evidence_run_ids": sorted(supplied),
                         "evidence_workload_hash72s": sorted(workload_hashes),
+                        "negative_mutation_evidence_root_hash72": mutation_evidence.get("evidence_root_hash72"),
                         "vm81_receipt_hash72": receipt,
                     },
                 )
@@ -827,6 +1038,7 @@ class Pass198OperationCalibrationRegistry:
             "executable_adapter_count": 1,
             "executable_adapter_requires_exact_builtin_specification": True,
             "promotion_requires_distinct_workload_identities": True,
+            "negative_mutation_execution_required_for_verified_proofs": True,
             "compiler_auto_promotion": False,
             "runtime_auto_admission": False,
             "ok": chain["ok"] and operation_count >= 1,
