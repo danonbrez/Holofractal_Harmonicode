@@ -1,0 +1,110 @@
+name: Pass 198 I128 Repair Validation
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py'
+      - 'hhs_backend/api/pass198_calibration_registry_routes.py'
+      - 'tests/test_hhs_pass198_operation_calibration_registry_v1.py'
+      - 'tests/test_hhs_pass198_i128_repair_v1.py'
+      - 'docs/operations/restart/PASS_219_I128_PASS198_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass198-i128-repair-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pass198-i128-repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile repaired Pass 198 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py \
+            hhs_backend/api/pass198_calibration_registry_routes.py \
+            tests/test_hhs_pass198_operation_calibration_registry_v1.py \
+            tests/test_hhs_pass198_i128_repair_v1.py
+
+      - name: Run inherited lifecycle and twelve-finding repair regressions
+        run: |
+          python -m unittest -v \
+            tests.test_hhs_pass198_operation_calibration_registry_v1 \
+            tests.test_hhs_pass198_i128_repair_v1
+
+      - name: Execute complete 405-state promotion-grade envelope
+        run: |
+          python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass198_operation_calibration_registry_v1 import (
+              REPAIR_SCHEMA,
+              Pass198OperationCalibrationRegistry,
+          )
+
+          with tempfile.TemporaryDirectory() as root:
+              registry = Pass198OperationCalibrationRegistry(state_root=root)
+              try:
+                  run = registry.run_operation(
+                      'pass197.reciprocal_matrix_gate',
+                      {},
+                      vm81_receipt_hash72='7' * 72,
+                  )
+                  summary = run['summary']
+                  assert run['status'] == 'CLOSED'
+                  assert run['promotion_grade_coverage'] is True
+                  assert run['checkpoint_receipt_independent'] is True
+                  assert summary['evaluated_parameter_states'] == 405
+                  assert summary['admitted_parameter_states'] == 320
+                  assert summary['domain_rejected_parameter_states'] == 85
+                  assert summary['address_comparisons'] == 1_658_880
+                  assert run['replay']['full_replay_executed'] is True
+                  assert run['replay']['deterministic'] is True
+                  assert run['replay']['replayed_parameter_states'] == 405
+                  proofs = registry.list_simplifications()
+                  assert len(proofs) == 4
+                  assert all(item['status'] == 'ENVELOPE_VERIFIED' for item in proofs)
+                  assert all(item['verification_workload_count'] == 1 for item in proofs)
+                  assert all(item['cost']['promotion_grade_cost_claim'] is False for item in proofs)
+                  assert all(item['cost']['claim_scope'] == 'AGGREGATE_REPORT_REFERENCE_ONLY' for item in proofs)
+                  status = registry.status()
+                  assert status['repair_schema'] == REPAIR_SCHEMA
+                  assert status['event_chain']['ok'] is True
+              finally:
+                  registry.close()
+          PY
+
+      - name: Verify API registration binds authorization receipt
+        run: |
+          grep -Fq 'vm81_receipt_hash72=receipt_hash72' hhs_backend/api/pass198_calibration_registry_routes.py
+          grep -Fq 'registration_vm81_receipt_hash72' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+
+      - name: Verify repaired authority and exact-value markers
+        run: |
+          grep -Fq 'BEGIN IMMEDIATE' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'promotion-grade simplification proof requires complete deterministic full replay' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'distinct verified workloads' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'operation has no approved executable adapter/specification binding' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'checkpoint_receipt_independent' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'promotion_grade_cost_claim' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
