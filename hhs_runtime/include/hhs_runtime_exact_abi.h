@@ -24,4 +24,5 @@
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
 #include "hhs_pass219b_universal_phase_locality_1_0.h"
 #include "hhs_pass219b_selective_projection_1_0.h"
+#include "hhs_pass219b_sparse_dirty_projection_1_0.h"
 #endif
