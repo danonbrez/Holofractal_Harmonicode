@@ -40,7 +40,7 @@ jobs:
             tests/test_hhs_pass198_operation_calibration_registry_v1.py \
             tests/test_hhs_pass198_i128_repair_v1.py
 
-      - name: Run inherited lifecycle and twelve-finding repair regressions
+      - name: Run inherited lifecycle and thirteen-finding repair regressions
         run: |
           python -m unittest -v \
             tests.test_hhs_pass198_operation_calibration_registry_v1 \
@@ -81,8 +81,17 @@ jobs:
                   assert all(item['cost']['promotion_grade_cost_claim'] is False for item in proofs)
                   assert all(item['cost']['claim_scope'] == 'NO_PER_SIMPLIFICATION_COST_MEASURED' for item in proofs)
                   assert all('aggregate_reference' not in item['cost'] for item in proofs)
+                  mutation_evidence = [item['counterexample_search']['executed_negative_mutation_evidence'] for item in proofs]
+                  assert all(item['counterexample_search']['all_required_negative_mutations_executed_and_detected'] is True for item in proofs)
+                  assert all(evidence['required_mutation_count'] == 6 for evidence in mutation_evidence)
+                  assert all(evidence['executed_mutation_count'] == 6 for evidence in mutation_evidence)
+                  assert all(evidence['all_required_negative_mutations_executed_and_detected'] is True for evidence in mutation_evidence)
+                  assert all(len(evidence['results']) == 6 for evidence in mutation_evidence)
+                  assert all(all(result['executed'] and result['detected'] for result in evidence['results']) for evidence in mutation_evidence)
+                  assert len({evidence['evidence_root_hash72'] for evidence in mutation_evidence}) == 1
                   status = registry.status()
                   assert status['repair_schema'] == REPAIR_SCHEMA
+                  assert status['negative_mutation_execution_required_for_verified_proofs'] is True
                   assert status['event_chain']['ok'] is True
               finally:
                   registry.close()
@@ -102,6 +111,9 @@ jobs:
           grep -Fq 'checkpoint_receipt_independent' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
           grep -Fq 'promotion_grade_cost_claim' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
           grep -Fq 'NO_PER_SIMPLIFICATION_COST_MEASURED' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'executed_negative_mutation_evidence' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'required negative mutation execution did not fail closed' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'negative_mutation_execution_required_for_verified_proofs' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
 
       - name: Reject floating-point canonical operations
         run: |
