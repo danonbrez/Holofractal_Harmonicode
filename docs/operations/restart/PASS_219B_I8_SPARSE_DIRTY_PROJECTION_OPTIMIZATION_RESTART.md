@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTATION_IN_PROGRESS — STACKED ON VALIDATED I7 — NOT MERGED`
+`IMPLEMENTED_AND_VALIDATED — CHECKPOINT_SEAL_REVALIDATION_REQUIRED — NOT MERGED`
 
 ## Repository
 
@@ -10,12 +10,14 @@
 - Authoritative main observed before this task: `3c926453d65b71a6d1789e06b748544f5f2bd228`
 - Inherited runtime parent / Pass 219B I6 merge: `ff66e376a44c8b928a9a42c2e6d8aa1846785fc2`
 - Validated Pass 219B I7 parent: `6df75bc39fd7c58108b8cf7aee3758341fe345a5`
+- I8 implementation head validated before evidence seal: `a82993c9df7d59c141eb0078fb34230a1e0c485e`
 - Working branch: `agent/pass219b-i8-sparse-dirty-projection-optimization`
-- Intended review base: `agent/pass219b-i7-exact-selective-projection-optimization`
+- Review PR: `#323`
+- Review base: `agent/pass219b-i7-exact-selective-projection-optimization`
 
 ## Purpose
 
-Continue the selective-projection optimization without promoting device-specific FPS or density constants. I8 tests and implements the general repository principle:
+Continue the selective-projection optimization without promoting device-specific FPS or density constants. I8 implements and tests the general repository principle:
 
 ```text
 SPARSE AUTHORITATIVE CHANGE
@@ -24,17 +26,23 @@ SPARSE AUTHORITATIVE CHANGE
 
 using I7's exact precomputed selected-identity cell ranges.
 
-The intended lowering is:
+The implemented lowering is:
 
 ```text
 full exact authoritative state remains active
         +
-precomputed selected-ID ranges remain exact
+complete inherited I7 selected_count
         +
-sorted dirty source-cell identities
+precomputed exact selected-ID cell ranges
+        +
+sorted unique complete dirty source-cell witness
         -> exact coalesced selected-index spans
         -> update only those derived/projection spans
 ```
+
+If dirty-set completeness is not proven, the optimization is not admitted and the declared fallback is:
+
+`FULL_DERIVED_PROJECTION_PATH`
 
 ## Binding inherited boundaries
 
@@ -42,13 +50,12 @@ sorted dirty source-cell identities
 - Hash72 and Hash216 semantics remain unchanged.
 - I7 selected identities and cell ranges remain inherited rather than redefined.
 - GPU/graphics work remains projection-only/candidate-only.
-- No I8 function may mutate or persist canonical state or commit Hash72.
-- No float/double arithmetic may enter the exact I8 planner.
-- Timing/FPS/device observations are benchmark witnesses only and shall not become canonical constants.
+- No I8 function mutates or persists canonical state or commits Hash72.
+- No float/double arithmetic exists in the exact I8 planner.
+- No division/modulo operator exists in the exact sparse span planner.
+- Timing/FPS/device observations remain benchmark witnesses only and are not canonical constants.
 
-## Planned changed files
-
-Expected additive/updated surfaces:
+## Changed files
 
 - `hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h`
 - `hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.hpp`
@@ -63,45 +70,93 @@ Expected additive/updated surfaces:
 - `.github/workflows/pass219b-i8-sparse-dirty-projection.yml`
 - this restart record
 
-## Validation plan
+## Implemented exact rules
 
-1. prove exact I7 ancestry;
-2. compile cumulative exact ABI under C11 warnings-as-errors;
-3. run I8 C conformance including exhaustive small-model dirty-set equivalence;
-4. run I8 C++ conformance;
-5. rerun I7 C/C++ conformance;
-6. rerun inherited Pass 219B phase-hydration C/C++ conformance;
-7. reject float/double and division/modulo in the exact sparse planner;
-8. reject mutation/persistence/Hash72 authority exports;
-9. validate graphics capability declaration;
-10. parse machine-readable evidence;
-11. validate exact head and synthetic merge through CI.
+```text
+complete range coverage through inherited selected_count
+AND sorted unique dirty cells
+AND dirty-set completeness proof
+AND minimal coalesced nonempty selected spans
+AND sparse/full derived equivalence
+AND zero canonical authority
+```
 
-## Current execution state
+Exact count laws:
 
-Completed:
+```text
+update_selected_count
+= sum(end_selected-first_selected for dirty cells)
 
-- reconciled current main and PR #319;
-- confirmed PR #319 remains open, mergeable, unmerged, validated at `6df75bc39fd7c58108b8cf7aee3758341fe345a5`;
-- identified I7 precomputed equal-cell ranges as the reusable prerequisite;
-- created this I8 branch from exact validated I7.
+avoided_selected_count
+= selected_count-update_selected_count
 
-Remaining:
+span_count <= dirty_cell_count
+```
 
-- implement sparse dirty-span planner and wrappers;
-- add exact conformance and evidence;
-- wire aggregate ABI and graphics capabilities;
-- run exact/synthetic CI;
-- open review PR if green.
+Separated dirty spans cannot bridge clean selected data. Touching dirty selected regions are coalesced.
+
+## Executed validation
+
+Dedicated workflow:
+
+- run: `32681087219`
+- exact job: `97297809412` — `SUCCESS`
+- synthetic job: `97297809630` — `SUCCESS`
+- validated implementation head: `a82993c9df7d59c141eb0078fb34230a1e0c485e`
+
+Both lanes passed:
+
+1. exact I7 ancestry;
+2. float/double rejection in the exact sparse module;
+3. division/modulo rejection in the sparse span planner;
+4. canonical-authority export rejection;
+5. cumulative exact ABI compilation under C11 warnings-as-errors;
+6. I8 exhaustive C conformance;
+7. I8 C++ conformance;
+8. inherited I7 C/C++ conformance;
+9. inherited Pass 219B phase-hydration C/C++ conformance;
+10. graphics capability syntax and completeness fallback;
+11. evidence JSON and non-device admission policy.
+
+The exhaustive C model covered cell counts 1 through 8, five variable-length range layouts including zero-length cells, and every dirty subset: `2,550` exact dirty-subset cases.
+
+Negative cases passed for:
+
+- incomplete dirty-set witness;
+- sparse/full inequality;
+- canonical authority request;
+- insufficient span capacity;
+- unsorted dirty cells;
+- duplicate dirty cells;
+- truncated selected-count coverage;
+- noncontiguous range metadata.
+
+## External benchmark witness
+
+The optimization was motivated by the user-supplied rerun receipt:
+
+`64b4963017da2cf22d3ca912702ace07e6f9f9f30321e7dbcf85041619477827`
+
+which reported one exact state digest across mirrored projection runs:
+
+`69c042f32e861d61816067d2268a76a3eb1bcc52ef369421693f6964b1b9c8df`
+
+and a small dirty-cell set per tick. Device FPS and projection-density boundaries are deliberately not promoted into I8 semantics.
 
 ## Environment
 
-The ChatGPT execution container could not resolve `github.com`, so no local clone/test state is authoritative. Repository writes and executable validation are being kept GitHub-resident through the connected repository and GitHub Actions.
+The ChatGPT execution container could not resolve `github.com`; no local clone/test state is authoritative. Repository writes and executable validation were performed through the connected GitHub repository and GitHub Actions.
+
+## Remaining validation
+
+The evidence and restart seal commits occur after the validated implementation head, so one final exact/synthetic dedicated workflow run on the sealed branch head is required before marking I8 ready for review.
+
+No unchanged full-history rerun is required beyond the workflows automatically triggered by the aggregate ABI files unless a new failure appears.
 
 ## Next action
 
-Implement `HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0` as an additive projection-only exact ABI surface, then validate dependency-scoped exact/synthetic CI.
+Wait only for the dedicated I8 exact/synthetic seal run, repair forward if it fails, then record the exact final head and leave PR #323 ready for review.
 
 ## Merge status
 
-No merge is authorized or performed by this checkpoint.
+PR #323 remains stacked on I7. No merge is authorized or performed.
