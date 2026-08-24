@@ -39,6 +39,7 @@ int main() {
     assert(plan.canonical_mutation_authority == 0U);
     assert(plan.canonical_persistence_authority == 0U);
     assert(plan.canonical_hash72_authority == 0U);
+    assert(plan.dirty_set_completeness_required == 1U);
     assert(plan.dirty_cell_count == dirty.size());
     assert(plan.span_count == 3U);
     assert(plan.update_selected_count < plan.selected_count);
@@ -49,18 +50,28 @@ int main() {
         spans.data(),
         plan.span_count,
         plan.update_selected_count,
+        true,
         true) == HHS_EXACT_STATUS_OK);
     assert(hhs::pass219b::verify_sparse_dirty_projection(
         plan,
         spans.data(),
         plan.span_count,
         plan.update_selected_count,
+        false,
+        true) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    assert(hhs::pass219b::verify_sparse_dirty_projection(
+        plan,
+        spans.data(),
+        plan.span_count,
+        plan.update_selected_count,
+        true,
         false) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
     assert(hhs::pass219b::verify_sparse_dirty_projection(
         plan,
         spans.data(),
         plan.span_count,
         plan.update_selected_count,
+        true,
         true,
         true) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 
