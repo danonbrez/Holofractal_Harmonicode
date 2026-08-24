@@ -12,6 +12,7 @@ namespace hhs::pass219b {
 inline HHSExactStatus build_sparse_dirty_projection_spans(
     const HHSExactPass219BProjectionCellRangeV1* cell_ranges,
     std::uint32_t cell_count,
+    std::uint64_t selected_count,
     const std::uint32_t* dirty_cells,
     std::size_t dirty_cell_count,
     HHSExactPass219BSparseProjectionSpanV1* out_spans,
@@ -20,6 +21,7 @@ inline HHSExactStatus build_sparse_dirty_projection_spans(
     return hhs_exact_pass219b_sparse_dirty_projection_build_spans(
         cell_ranges,
         cell_count,
+        selected_count,
         dirty_cells,
         dirty_cell_count,
         out_spans,
