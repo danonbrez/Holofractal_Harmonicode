@@ -114,7 +114,11 @@ def operation_register(request: OperationRegisterRequest) -> Dict[str, Any]:
     ingress = _ingress(operation, {"method": "POST", "operation_id": request.operation.get("operation_id")})
     tick, receipt_hash72 = _authorized_receipt(operation)
     try:
-        result = PASS198_OPERATION_CALIBRATION_REGISTRY.register_operation(request.operation, source=operation)
+        result = PASS198_OPERATION_CALIBRATION_REGISTRY.register_operation(
+            request.operation,
+            source=operation,
+            vm81_receipt_hash72=receipt_hash72,
+        )
     except (Pass198RegistryError, ValueError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["vm81_authorized_tick"] = _tick_projection(operation, tick, receipt_hash72)
@@ -204,7 +208,7 @@ def simplification_revoke(request: SimplificationRevokeRequest) -> Dict[str, Any
             request.reason,
             vm81_receipt_hash72=receipt_hash72,
         )
-    except Pass198RegistryError as exc:
+    except (Pass198RegistryError, ValueError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["vm81_authorized_tick"] = _tick_projection(operation, tick, receipt_hash72)
     result["io"] = {"ingress": ingress, "egress": _egress(operation, {"simplification_id": request.simplification_id, "status": result.get("status")})}
