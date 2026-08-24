@@ -1,10 +1,11 @@
 {
   "schema": "HHS_PASS219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE_V1",
   "version": 1,
-  "status": "VALIDATED_BEFORE_CHECKPOINT_SEAL",
+  "status": "VALIDATED_READY_FOR_REVIEW",
   "repository": "danonbrez/Holofractal_Harmonicode",
   "inheritedI7Head": "6df75bc39fd7c58108b8cf7aee3758341fe345a5",
   "validatedImplementationHead": "a82993c9df7d59c141eb0078fb34230a1e0c485e",
+  "validatedCompatibilityRepairHead": "a824988a618d10e573241a89f5915a838d5285d2",
   "principle": "SPARSE_AUTHORITATIVE_CHANGE_IMPLIES_SPARSE_DERIVED_WORK_WHEN_CHANGE_WITNESS_IS_COMPLETE",
   "authority": {
     "canonicalMutation": false,
@@ -47,18 +48,35 @@
     "result": "PASS"
   },
   "validation": {
-    "workflowRun": 32681087219,
-    "exactJob": 97297809412,
-    "exactConclusion": "success",
-    "syntheticJob": 97297809630,
-    "syntheticConclusion": "success",
+    "initialImplementationRun": 32681087219,
+    "initialExactJob": 97297809412,
+    "initialSyntheticJob": 97297809630,
+    "sealedPreRepairRun": 32681178420,
+    "sealedPreRepairExactJob": 97298046745,
+    "sealedPreRepairSyntheticJob": 97298046640,
+    "finalCompatibilityRun": 32681343205,
+    "finalCompatibilityExactJob": 97298466166,
+    "finalCompatibilitySyntheticJob": 97298466077,
+    "finalQuantizationAuditRun": 32681343152,
+    "finalQuantizationAuditJob": 97298465879,
+    "allNamedConclusions": "success",
     "cumulativeExactAbiCompiled": true,
     "i7CAndCppPreserved": true,
     "inheritedPhaseHydrationCAndCppPreserved": true,
+    "historicalStandalonePublicCAbiPreserved": true,
+    "standaloneVm81KernelExact": true,
+    "uqcelAndQuantizationAuditsPreserved": true,
     "noApproximateArithmetic": true,
     "noDivisionOrModuloInSparsePlanner": true,
     "noCanonicalAuthorityExport": true,
     "graphicsCapabilityValidated": true
+  },
+  "repairForward": {
+    "trigger": "historical standalone public C ABI smoke could not resolve the I7 projection header through its legacy hhs_runtime/c include path",
+    "classification": "INCLUDE_PATH_COMPATIBILITY_DEFECT_NOT_SEMANTIC_REGRESSION",
+    "repair": "I7 and I8 aggregate .inc files resolve their public headers through ../include relative to the source directory",
+    "testPolicy": "preserve historical standalone compile contract rather than weakening its include flags",
+    "postRepairQuantizationAudit": "PASS"
   },
   "externalBenchmarkWitness": {
     "source": "user-supplied rerun",
@@ -77,6 +95,7 @@
     "coalesce only semantically contiguous dirty regions",
     "fall back to the complete path when sparse preconditions are unproven",
     "require exact result equality before promoting an optimization",
+    "preserve historical build and ABI paths when adding aggregate modules",
     "treat device performance numbers as calibration witnesses rather than semantic laws"
   ]
 }
