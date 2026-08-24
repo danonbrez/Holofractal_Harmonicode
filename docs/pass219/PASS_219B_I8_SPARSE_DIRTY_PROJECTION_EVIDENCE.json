@@ -1,0 +1,66 @@
+{
+  "schema": "HHS_PASS219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE_V1",
+  "version": 1,
+  "status": "PENDING_CI",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritedI7Head": "6df75bc39fd7c58108b8cf7aee3758341fe345a5",
+  "principle": "SPARSE_AUTHORITATIVE_CHANGE_IMPLIES_SPARSE_DERIVED_WORK_WHEN_CHANGE_WITNESS_IS_COMPLETE",
+  "authority": {
+    "canonicalMutation": false,
+    "canonicalPersistence": false,
+    "canonicalHash72Commit": false,
+    "projectionOnly": true,
+    "singletonVm81AuthorityPreserved": true
+  },
+  "exactModel": {
+    "input": "complete I7 selected-index cell ranges + inherited selected_count + sorted unique dirty cell ids",
+    "output": "minimal coalesced nonempty selected-index spans",
+    "updateSelectedCount": "sum(end_selected-first_selected for every declared dirty cell)",
+    "avoidedSelectedCount": "selected_count-update_selected_count",
+    "spanCountBound": "span_count <= dirty_cell_count",
+    "completeSurfaceBinding": "last cell range must end at inherited selected_count",
+    "dirtySetCompletenessRequired": true,
+    "incompleteDirtySetFallback": "FULL_DERIVED_PROJECTION_PATH",
+    "divisionInSparsePlanner": false,
+    "moduloInSparsePlanner": false,
+    "floatingPointInSparsePlanner": false
+  },
+  "generalConformancePlan": {
+    "cellCountsInclusive": [1, 8],
+    "rangeLayoutVariants": 5,
+    "dirtySubsetsExhaustivePerModel": true,
+    "totalDirtySubsetCases": 2550,
+    "includesZeroLengthCellRanges": true,
+    "comparesSparseMembershipToDirectDirtyUnion": true,
+    "requiresSparseByteEquivalenceToFullDerivedProjection": true,
+    "negativeCases": [
+      "incomplete dirty-set witness",
+      "full-result inequality",
+      "canonical authority request",
+      "insufficient span capacity",
+      "unsorted dirty cells",
+      "duplicate dirty cells",
+      "truncated selected-count coverage",
+      "noncontiguous range metadata"
+    ]
+  },
+  "externalBenchmarkWitness": {
+    "source": "user-supplied rerun",
+    "generatedAt": "2026-08-24T01:31:05.136Z",
+    "receiptSha256": "64b4963017da2cf22d3ca912702ace07e6f9f9f30321e7dbcf85041619477827",
+    "referenceStateSha256": "69c042f32e861d61816067d2268a76a3eb1bcc52ef369421693f6964b1b9c8df",
+    "uniqueDigestCount": 1,
+    "reportedUniqueDirtyCellsPerTick": 7,
+    "interpretation": "motivation only; device timing and projection-density limits are not canonical I8 constants"
+  },
+  "repositoryWideCandidatePrinciples": [
+    "hoist invariant exact work out of repeated hot paths",
+    "reuse validated exact metadata by direct lookup",
+    "bind optimization metadata to the complete inherited state surface",
+    "perform sparse derived work only from a complete exact change witness",
+    "coalesce only semantically contiguous dirty regions",
+    "fall back to the complete path when sparse preconditions are unproven",
+    "require exact result equality before promoting an optimization",
+    "treat device performance numbers as calibration witnesses rather than semantic laws"
+  ]
+}
