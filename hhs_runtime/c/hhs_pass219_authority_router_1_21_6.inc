@@ -1,4 +1,4 @@
-#include "hhs_pass219_authority_router_1_21_6.h"
+#include "../include/hhs_pass219_authority_router_1_21_6.h"
 
 #include <string.h>
 
@@ -32,7 +32,6 @@ static int hhs219_authority_evidence_valid(
         !hhs219_authority_flag(evidence->pass191_deterministic_replay_verified))
         return 0;
 
-    /* No downstream evidence may exist without exact source identity. */
     if (evidence->source_identity_exact == 0U &&
         (evidence->pass159_source_pipeline_verified != 0U ||
          evidence->pass159_vmir_identity_present != 0U ||
@@ -45,17 +44,14 @@ static int hhs219_authority_evidence_valid(
          evidence->pass191_deterministic_replay_verified != 0U))
         return 0;
 
-    /* Pass159 VMIR identity is meaningful only after its source pipeline. */
     if (evidence->pass159_vmir_identity_present != 0U &&
         evidence->pass159_source_pipeline_verified == 0U)
         return 0;
 
-    /* I121.3 execution/replay is an inseparable diagnostic pair. */
     if (evidence->candidate_exact_execution_verified !=
         evidence->candidate_exact_replay_verified)
         return 0;
 
-    /* I121.4 requires both Pass159 pipeline identity and I121.3 replay. */
     if (evidence->i1214_unresolved_composition_verified != 0U &&
         (evidence->pass159_source_pipeline_verified == 0U ||
          evidence->pass159_vmir_identity_present == 0U ||
@@ -63,7 +59,6 @@ static int hhs219_authority_evidence_valid(
          evidence->candidate_exact_replay_verified == 0U))
         return 0;
 
-    /* Pass191 evidence is valid only as the complete frozen evidence bundle. */
     if (evidence->pass191_inherited_manifold_verified != 0U) {
         if (evidence->pass191_exact_context_scope_preserved == 0U ||
             evidence->pass191_singleton_vm81_authority_verified == 0U ||
@@ -156,8 +151,6 @@ HHSExactStatus hhs_exact_pass219_authority_route_evidence(
     out_route->decision = HHS_EXACT_PASS219_AUTHORITY_ROUTE_PASS169_REQUIRED;
     out_route->reason_mask = reasons;
     out_route->selected_evidence_role = selected;
-
-    /* All upstream surfaces remain evidence-only. */
     out_route->pass159_canonical_authority = 0U;
     out_route->candidate_adapter_canonical_authority = 0U;
     out_route->i1214_composition_canonical_authority = 0U;
