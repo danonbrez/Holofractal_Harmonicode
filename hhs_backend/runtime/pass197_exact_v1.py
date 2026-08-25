@@ -7,12 +7,14 @@ from dataclasses import dataclass
 from fractions import Fraction
 from typing import Any, Mapping
 
+_HASH_AUTHORITY_ERROR: Exception | None = None
 try:
     from hhs_backend.runtime.runtime_workspace_object_v1 import hash72 as _kernel_hash72
     HASH_AUTHORITY = "HHS_HASH72_KERNEL_AUTHORITY"
-except Exception:
+except Exception as exc:  # fail closed at first identity-bearing operation
     _kernel_hash72 = None
-    HASH_AUTHORITY = "STANDALONE_SHA512_VALIDATION_FALLBACK"
+    _HASH_AUTHORITY_ERROR = exc
+    HASH_AUTHORITY = "HHS_HASH72_KERNEL_AUTHORITY_UNAVAILABLE"
 
 HASH_TRANSPORT = "CANONICAL_SHA512_LENGTH_BOUND_TO_HASH72_RING"
 CELL_COUNT = 81
@@ -26,20 +28,23 @@ def canonical_json(value: Any) -> str:
 
 
 def hash72(label: str, value: Any) -> str:
+    """Commit through the inherited Hash72 authority or fail closed.
+
+    The SHA-512 digest remains only the exact bounded transport payload historically
+    passed into the Hash72 kernel. It is never a substitute receipt authority.
+    """
+    if _kernel_hash72 is None:
+        raise RuntimeError("Pass197 canonical Hash72 authority is unavailable") from _HASH_AUTHORITY_ERROR
     canonical = canonical_json(value).encode("utf-8")
     canonical_sha512 = hashlib.sha512(canonical).hexdigest()
-    if _kernel_hash72 is not None:
-        return _kernel_hash72(
-            label,
-            {
-                "schema": "HHS_PASS_197_BOUNDED_HASH72_TRANSPORT_V1",
-                "canonical_sha512": canonical_sha512,
-                "canonical_bytes": len(canonical),
-            },
-        )
-    return hashlib.sha512(
-        f"{label}\u241f{len(canonical)}\u241f{canonical_sha512}".encode("utf-8")
-    ).hexdigest()[:72]
+    return _kernel_hash72(
+        label,
+        {
+            "schema": "HHS_PASS_197_BOUNDED_HASH72_TRANSPORT_V1",
+            "canonical_sha512": canonical_sha512,
+            "canonical_bytes": len(canonical),
+        },
+    )
 
 
 def exact_fraction(value: Any, *, field: str) -> Fraction:
@@ -56,8 +61,20 @@ def exact_fraction(value: Any, *, field: str) -> Fraction:
             raise ValueError(f"invalid exact rational for {field}") from exc
     if isinstance(value, Mapping):
         try:
-            return Fraction(int(value["numerator"]), int(value["denominator"]))
-        except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+            numerator = value["numerator"]
+            denominator = value["denominator"]
+        except KeyError as exc:
+            raise ValueError(f"invalid exact rational object for {field}") from exc
+        if (
+            isinstance(numerator, bool)
+            or isinstance(denominator, bool)
+            or not isinstance(numerator, int)
+            or not isinstance(denominator, int)
+        ):
+            raise ValueError(f"{field} rational object components must be exact integers")
+        try:
+            return Fraction(numerator, denominator)
+        except (TypeError, ValueError, ZeroDivisionError) as exc:
             raise ValueError(f"invalid exact rational object for {field}") from exc
     raise ValueError(f"unsupported exact rational for {field}")
 
