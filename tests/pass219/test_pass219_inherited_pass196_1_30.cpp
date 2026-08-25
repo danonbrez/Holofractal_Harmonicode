@@ -43,7 +43,7 @@ int main() {
     std::strcpy(w.repaired_api_blob, "39187c3376591c64758019090d9b115c6a43f6ee");
     std::strcpy(w.repaired_frontend_blob, "1503903c844c9e601133853eed9ed597f6fd2274");
     std::strcpy(w.projection_refresh_blob, "44254e10f90e929a4f8c1a18a75b3ca14a2c05ed");
-    std::strcpy(w.repair_regression_blob, "55d1da0ea58044436646ccd8a331088135515c8f");
+    std::strcpy(w.repair_regression_blob, "d0860d89cd8abe596f49c73b7e544511cdaba5d0");
     std::strcpy(w.repair_workflow_blob, "7a19d3e7faab6e7210e156026300e96550b9afcb");
     assert(Surface::bind(w, binding) == HHS_EXACT_STATUS_OK);
     assert(binding.pass_number == 196U);
