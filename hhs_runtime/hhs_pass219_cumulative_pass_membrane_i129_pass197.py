@@ -29,7 +29,7 @@ REPAIR_TEST_PATH = P("tests/test_hhs_pass197_i129_repair_v1.py")
 HISTORICAL_WORKFLOW_PATH = P(".github/workflows/pass197-ab-hydration-calibration.yml")
 REPAIR_WORKFLOW_PATH = P(".github/workflows/pass197-i129-repair-validation.yml")
 
-HISTORICAL_BASE = "e3d6694e06edbe8f04c02d6b665301b34f6ec074"
+HISTORICAL_BASE = "77bf7ddfcfb09246a805a6e8f0919cfa18d0f3c0"
 HISTORICAL_REVIEWED_HEAD = "aeadabcce0ea178ad5b6a27001e109f349808dde"
 ACCEPTED_MERGE = "2321a1f05a6da410034a31ca141e3919091bb09a"
 FROZEN_I128 = "c85b2b29cdf26d21912eb06b7d50323526944cc2"
