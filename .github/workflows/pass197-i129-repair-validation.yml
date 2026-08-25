@@ -1,0 +1,90 @@
+name: Pass 197 I129 Repair Validation
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_backend/runtime/pass197_exact_v1.py'
+      - 'hhs_backend/runtime/pass197_state_v1.py'
+      - 'hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'hhs_backend/api/pass197_calibration_routes.py'
+      - 'applications/holofractal_harmonizer/src/pass197-calibration.mjs'
+      - 'tests/test_hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'tests/test_hhs_pass197_i129_repair_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass197_1_29.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i129_pass197.py'
+      - '.github/workflows/pass197-i129-repair-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile repaired Pass 197 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py \
+            hhs_backend/api/pass197_calibration_routes.py \
+            tests/test_hhs_pass197_i129_repair_v1.py
+
+      - name: Run historical lifecycle and twelve I129 repair regressions
+        run: |
+          python -m unittest -v \
+            tests.test_hhs_pass197_ab_hydration_calibration_v1 \
+            tests.test_hhs_pass197_i129_repair_v1
+
+      - name: Execute complete 405-state repaired envelope
+        run: |
+          python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import Pass197ABHydrationCalibration, REPAIR_SCHEMA
+          with tempfile.TemporaryDirectory() as root:
+              report = Pass197ABHydrationCalibration(state_root=root).run(vm81_receipt_hash72='1' * 72)
+              summary = report['summary']
+              assert report['repair_schema'] == REPAIR_SCHEMA
+              assert report['closed'] is True
+              assert summary['evaluated_parameter_states'] == 405
+              assert summary['kernel_audited_parameter_states'] == 405
+              assert summary['admitted_parameter_states'] == 320
+              assert summary['domain_rejected_parameter_states'] == 85
+              assert summary['address_comparisons'] == 1_658_880
+              assert summary['mismatch_parameter_states'] == 0
+              assert summary['singular_parameter_states'] == 0
+              assert report['replay']['full_replay_executed'] is True
+              assert report['replay']['deterministic'] is True
+              assert report['replay']['replayed_parameter_states'] == 405
+          PY
+
+      - name: Enforce fail-closed authority and exact ingress source gates
+        run: |
+          ! grep -Fq 'STANDALONE_SHA512_VALIDATION_FALLBACK' hhs_backend/runtime/pass197_exact_v1.py
+          grep -Fq 'HHS_HASH72_KERNEL_AUTHORITY_UNAVAILABLE' hhs_backend/runtime/pass197_exact_v1.py
+          grep -Fq 'rational object components must be exact integers' hhs_backend/runtime/pass197_exact_v1.py
+          grep -Fq 'MAX_SYNCHRONOUS_PARAMETER_STATES = 405' hhs_backend/runtime/pass197_state_v1.py
+          grep -Fq 'must contain unique exact coordinates' hhs_backend/runtime/pass197_state_v1.py
+          grep -Fq 'full_replay_verified = config.full_replay' hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py
+          grep -Fq 'kernel_audit_receipt_hash72' hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py
+          grep -Fq 'List[StrictInt]' hhs_backend/api/pass197_calibration_routes.py
+          grep -Fq 'StrictBool' hhs_backend/api/pass197_calibration_routes.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify closed-only visual projection syntax
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass197-calibration.mjs
+          grep -Fq 'if (!value?.closed || !value?.report_hash72) return;' applications/holofractal_harmonizer/src/pass197-calibration.mjs
