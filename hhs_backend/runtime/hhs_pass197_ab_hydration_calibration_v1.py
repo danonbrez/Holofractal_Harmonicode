@@ -93,11 +93,10 @@ class Pass197ABHydrationCalibration:
         self._write(self.checkpoint_path, checkpoint)
 
     @staticmethod
-    def _audit_branch(key: str, result: Mapping[str, Any]) -> dict[str, str]:
-        """Audit one branch through the inherited state layer before persistence."""
-        layer = HHSStateLayerV1(initial_state={"pass197": {"repair_schema": REPAIR_SCHEMA}})
+    def _audit_branch(layer: HHSStateLayerV1, ordinal: int, key: str, result: Mapping[str, Any]) -> dict[str, str]:
+        """Audit one branch through one per-run inherited state layer before persistence."""
         audit = layer.set(
-            "pass197.branch",
+            f"pass197.branches.b{ordinal:06d}",
             {
                 "key": key,
                 "state_hash72": result.get("state_hash72"),
@@ -142,6 +141,7 @@ class Pass197ABHydrationCalibration:
 
         powers = {exponent: matrix_power(M, -exponent) for exponent in config.xy_symbol_values}
         completed = dict(checkpoint.get("completed", {}))
+        audit_layer = HHSStateLayerV1(initial_state={"pass197": {"repair_schema": REPAIR_SCHEMA, "config_hash72": config_hash72}})
         for exponent in config.xy_symbol_values:
             for x in config.x_values:
                 for y in config.y_values:
@@ -151,7 +151,7 @@ class Pass197ABHydrationCalibration:
                     if key in completed:
                         continue
                     result = evaluate_state(x, y, exponent, powers[exponent])
-                    kernel_evidence = self._audit_branch(key, result)
+                    kernel_evidence = self._audit_branch(audit_layer, len(completed), key, result)
                     branch = {
                         "key": key,
                         "predecessor_hash72": checkpoint.get("receipt_tip_hash72", ZERO_HASH72),
