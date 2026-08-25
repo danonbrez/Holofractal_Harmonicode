@@ -1,0 +1,179 @@
+name: Pass 219 Pass159 Global Witness Provenance 1.21.10
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_219_APPEND_ONLY_PASS159_GLOBAL_WITNESS_PROVENANCE_AMENDMENT_1_21_10.md'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+      - 'hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c'
+      - 'tests/pass219/test_pass219_pass159_global_witness_producer_1_21_10.c'
+      - '.github/workflows/pass219-pass159-global-witness-provenance-1-21-10.yml'
+      - 'docs/operations/restart/PASS_219_PASS159_GLOBAL_WITNESS_PROVENANCE_1_21_10_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pass159-global-witness-provenance:
+    name: pass159-global-witness-provenance (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical and validated lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor 9b3bbd5ce087df9875e2b8b9cb4b2d9513fb4b92 HEAD
+          git merge-base --is-ancestor 13be0d935458344db30fcdfa43407d2cfca78512 HEAD
+
+      - name: Prove frozen Pass159 and Pass169 remain untouched
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
+            native_projects/hhs_pass159_harmonicode_toolchain \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            Makefile
+
+      - name: Prove I121.9 semantics and cumulative exact ABI remain frozen
+        run: |
+          git diff --exit-code 9b3bbd5ce087df9875e2b8b9cb4b2d9513fb4b92 HEAD -- \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.hpp \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp \
+            .github/workflows/pass219-harmonicode-global-constraint-membrane-1-21-9.yml
+          git diff --exit-code 13be0d935458344db30fcdfa43407d2cfca78512 HEAD -- \
+            hhs_runtime/include/hhs_runtime_exact_abi.h \
+            hhs_runtime/c/hhs_runtime_exact_abi.c
+
+      - name: Verify exact combined source and gate offsets
+        run: |
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          assert len(source) == 632
+          offsets = []
+          start = 0
+          while True:
+              index = source.find(b'==', start)
+              if index < 0:
+                  break
+              offsets.append(index)
+              start = index + 2
+          assert offsets == [96, 240, 266, 274, 285], offsets
+          assert source.count(b'=') == 16
+          assert source.count(b'==') == 5
+          assert source.count(b'=') - source.count(b'==') == 11
+          PY
+
+      - name: Enter inherited Pass043 validation membrane
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: .
+        run: |
+          python -m hhs_runtime.hhs_pass219_i121_validation_membrane_v1 > /tmp/i12110-preflight.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/i12110-preflight.json').read_text())
+          assert value['ok'] is True
+          assert value['canonical_monolithic_proof'] is False
+          assert value['pass169_whole_expression_admission_required'] is True
+          assert value['vm81_mutation_authority'] is False
+          assert value['hash72_commit_authority'] is False
+          PY
+
+      - name: Enforce non-promoting I121.10 source boundary
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            tests/pass219/test_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->boolean_gate_results_available = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->membrane_input_ready = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->pass169_whole_expression_authority_required = 1U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->canonical_monolithic_proof = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->vm81_mutation_authority = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->hash72_commit_authority = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+          grep -F 'out_provenance->persistence_mutation_authority = 0U;' \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c
+
+      - name: Build frozen Pass159 unchanged
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i12110-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i12110-build --parallel 2
+          ctest --test-dir /tmp/pass159-i12110-build --output-on-failure
+
+      - name: Compile and run I121.10 provenance producer
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            tests/pass219/test_pass219_pass159_global_witness_producer_1_21_10.c \
+            -L/tmp/pass159-i12110-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i12110-build \
+            -o /tmp/pass219-i12110-provenance
+          /tmp/pass219-i12110-provenance
+
+      - name: Preserve I121.8 all-distinct Pass159 identity census
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c \
+            -L/tmp/pass159-i12110-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-i12110-build \
+            -o /tmp/pass159-i12110-identity-census
+          /tmp/pass159-i12110-identity-census | tee /tmp/pass159-i12110-identity-census.txt
+          grep -F 'source_equal=0 tokens_equal=0 cst_equal=0 ast_equal=0 types_equal=0 graph_equal=0 hir_equal=0 vmir_equal=0' \
+            /tmp/pass159-i12110-identity-census.txt
+
+      - name: Re-run I121.9 C membrane conformance
+        run: |
+          mkdir -p /tmp/pass219-i12110-i1219
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i12110-i1219/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            /tmp/pass219-i12110-i1219/exact.o \
+            -o /tmp/pass219-i12110-i1219/test-c
+          /tmp/pass219-i12110-i1219/test-c
+
+      - name: Preserve Pass169 whole-expression authority
+        run: |
+          grep -F 'converts equality chains into ordered constraint graphs' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
