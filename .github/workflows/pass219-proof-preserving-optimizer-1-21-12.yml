@@ -8,6 +8,8 @@ on:
       - 'HHS_PASS_219_APPEND_ONLY_PROOF_PRESERVING_OPTIMIZATION_AMENDMENT_1_21_12.md'
       - 'hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py'
       - 'tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
+      - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
       - '.github/workflows/pass219-proof-preserving-optimizer-1-21-12.yml'
       - 'docs/operations/restart/PASS_219_PROOF_PRESERVING_OPTIMIZATION_1_21_12_RESTART.md'
   workflow_dispatch:
@@ -36,28 +38,28 @@ jobs:
           git merge-base --is-ancestor 9e17ff8e2fde1e3c50cb17b3cd5cac5b61a131a7 HEAD
           git merge-base --is-ancestor bb43b29faa0e7b62bccf544081452934ce5af054 HEAD
 
-      - name: Prove frozen semantic surfaces remain untouched
+      - name: Prove immutable semantic dependencies remain untouched
         run: |
+          # I121.8 optimizer/test are intentionally repair-forwarded and are
+          # validated below by exact source identities plus full conformance.
+          # Aggregate ABI registries and the I121.9 .inc include path are also
+          # additive/integration surfaces, so they are compiled/tested below
+          # rather than compared byte-for-byte to the pre-consolidation seal.
           git diff --exit-code 9e17ff8e2fde1e3c50cb17b3cd5cac5b61a131a7 HEAD -- \
             Makefile \
             HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
             native_projects/hhs_pass159_harmonicode_toolchain \
             contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
             contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode \
-            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py \
-            tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py \
             tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py \
             hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h \
-            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc \
             tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
             hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h \
             hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
             hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h \
             hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
             tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
-            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c \
-            hhs_runtime/include/hhs_runtime_exact_abi.h \
-            hhs_runtime/c/hhs_runtime_exact_abi.c
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c
 
       - name: Verify exact inherited source identities
         run: |
@@ -67,6 +69,8 @@ jobs:
           printf '%s  %s\n' \
             'c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412cb6d25' \
             'contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode' | sha256sum -c -
+          grep -F '"denominator_occurrence_offset_unit": "UTF8_BYTE_OFFSET"' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
 
       - name: Enforce read-only non-promoting optimization surface
         run: |
