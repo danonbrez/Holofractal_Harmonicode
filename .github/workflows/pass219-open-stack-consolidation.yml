@@ -62,12 +62,37 @@ jobs:
             exit 0
           fi
           if ! git merge --no-ff --no-commit "$source_ref"; then
-            echo 'CONFLICT_SET_BEGIN'
-            git diff --name-only --diff-filter=U
-            echo 'CONFLICT_SET_END'
-            git status --short
-            git merge --abort || true
-            exit 1
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+            printf 'I121.12 conflict set:\n%s\n' "${conflicts[*]}"
+            expected=(hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/include/hhs_runtime_exact_abi.h)
+            if [[ ${#conflicts[@]} -ne 2 ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[0]} "* ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[1]} "* ]]; then
+              git status --short
+              git merge --abort || true
+              exit 1
+            fi
+            for path in "${expected[@]}"; do
+              git show ":2:${path}" > "/tmp/ours.$(basename "$path")"
+              git show ":3:${path}" > "/tmp/theirs.$(basename "$path")"
+              git checkout --ours -- "$path"
+              python - "$path" "/tmp/theirs.$(basename "$path")" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          theirs = pathlib.Path(sys.argv[2]).read_text('utf-8').splitlines()
+          ours = path.read_text('utf-8').splitlines()
+          source_includes = [line for line in theirs if line.startswith('#include ')]
+          missing = [line for line in source_includes if line not in ours]
+          if path.suffix == '.h':
+              end = max(i for i, line in enumerate(ours) if line.strip() == '#endif')
+              ours[end:end] = missing
+          else:
+              ours.extend(missing)
+          path.write_text('\n'.join(ours) + '\n', 'utf-8')
+          PY
+              git add "$path"
+            done
+            test -z "$(git diff --name-only --diff-filter=U)"
           fi
           git commit -m 'Merge Pass 219 I121.12 superset into consolidation'
           git push origin HEAD:agent/pass219-consolidate-green-stacks
@@ -82,12 +107,36 @@ jobs:
             exit 0
           fi
           if ! git merge --no-ff --no-commit "$source_ref"; then
-            echo 'CONFLICT_SET_BEGIN'
-            git diff --name-only --diff-filter=U
-            echo 'CONFLICT_SET_END'
-            git status --short
-            git merge --abort || true
-            exit 1
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+            printf 'I7-I8 conflict set:\n%s\n' "${conflicts[*]}"
+            expected=(hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/include/hhs_runtime_exact_abi.h)
+            if [[ ${#conflicts[@]} -ne 2 ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[0]} "* ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[1]} "* ]]; then
+              git status --short
+              git merge --abort || true
+              exit 1
+            fi
+            for path in "${expected[@]}"; do
+              git show ":3:${path}" > "/tmp/theirs.$(basename "$path")"
+              git checkout --ours -- "$path"
+              python - "$path" "/tmp/theirs.$(basename "$path")" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          theirs = pathlib.Path(sys.argv[2]).read_text('utf-8').splitlines()
+          ours = path.read_text('utf-8').splitlines()
+          source_includes = [line for line in theirs if line.startswith('#include ')]
+          missing = [line for line in source_includes if line not in ours]
+          if path.suffix == '.h':
+              end = max(i for i, line in enumerate(ours) if line.strip() == '#endif')
+              ours[end:end] = missing
+          else:
+              ours.extend(missing)
+          path.write_text('\n'.join(ours) + '\n', 'utf-8')
+          PY
+              git add "$path"
+            done
+            test -z "$(git diff --name-only --diff-filter=U)"
           fi
           git commit -m 'Merge Pass 219B I7-I8 superset into consolidation'
           git push origin HEAD:agent/pass219-consolidate-green-stacks
@@ -152,7 +201,6 @@ jobs:
               pathlib.Path('hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc'),
           ]
           forbidden_numeric = re.compile(r'\b(float|double)\b')
-          forbidden_authority = {'commit', 'persist', 'write_hash72', 'mutate_vm81', 'admit'}
           for path in paths:
               text = path.read_text('utf-8')
               if forbidden_numeric.search(text):
@@ -167,8 +215,7 @@ jobs:
           PY
 
       - name: Validate machine-readable evidence
-        run: |
-          python -m json.tool docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json >/dev/null
+        run: python -m json.tool docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json >/dev/null
 
       - name: Verify current-main synthetic integration
         run: |
