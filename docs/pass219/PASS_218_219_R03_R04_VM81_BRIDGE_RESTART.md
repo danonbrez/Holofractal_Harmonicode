@@ -12,7 +12,7 @@
 
 ## Status
 
-`CURRENT_MAIN_RECONCILIATION_IMPLEMENTED — EXACT/SYNTHETIC VALIDATION PENDING`
+`CURRENT_MAIN_RECONCILIATION_VALIDATED — DOCUMENTATION-INCLUSIVE FINAL SEAL PENDING`
 
 This branch transplants the one remaining unique executable Pass 218/219 stack from stale PR #208 onto current canonical `main`. It does not merge the stale seven-commit lineage directly.
 
@@ -87,33 +87,51 @@ hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
 tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
 ```
 
-## Required validation
+## First hosted validation seal
 
-The current workflow must prove both exact PR head and GitHub synthetic merge candidate:
+Substantive repaired head before this documentation update:
 
 ```text
-current main 21ca1078... is an ancestor
-historical R03/R04 contract/evaluator blobs remain byte-identical
+ef7999466e2d65823e50597ab2f3dc73167b4bb4
+```
+
+Dedicated workflow:
+
+```text
+Pass 218 219 R03 R04 VM81 Bridge Current Main
+run       32859267200
+exact     97838900441  SUCCESS
+synthetic 97838900160  SUCCESS
+```
+
+Both lanes proved:
+
+```text
+current main 21ca1078... ancestry
+historical R03/R04 contract/evaluator blobs byte-identical
 Python compilation
-no floating-point literals in authority-adjacent new Python
-bridge has no direct step/commit bypass call
+no floating-point literals in authority-adjacent Python
+no direct controller step/receipt bypass
 inherited Pass218 narrative tests
 repaired R03/R04/VM81 bridge tests
-obsolete {"authorized": true} audit shape is rejected
-failed authority audit is rejected
-malformed Hash72 lineage is rejected
-audit/receipt identity mismatch is rejected
+obsolete {"authorized": true} audit shape rejected
+failed authority audit rejected
+malformed Hash72 lineage rejected
+audit/receipt identity mismatch rejected
 inherited native Pass219 ethical-scope membrane
 strict cumulative exact ABI compilation
 historical standalone public C ABI smoke
 standalone VM81 --verify --no-trace
 ```
 
+The only change after that green substantive head is this restart-record evidence update. The resulting documentation-inclusive head must receive one final exact/synthetic run before merge.
+
 ## Closure sequence
 
 ```text
 IMPLEMENT
--> DEPENDENCY-SCOPED EXACT/SYNTHETIC VALIDATION
+-> DEPENDENCY-SCOPED EXACT/SYNTHETIC VALIDATION  [GREEN]
+-> DOCUMENTATION-INCLUSIVE FINAL SEAL
 -> READY PR
 -> VERIFY REVIEW THREADS
 -> MERGE CURRENT-MAIN RECONCILIATION
