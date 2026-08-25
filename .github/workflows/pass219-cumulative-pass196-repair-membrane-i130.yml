@@ -74,8 +74,8 @@ jobs:
           git merge-base --is-ancestor 40e6e07d5f4a401541a6255339223e853846e713 HEAD
           git merge-base --is-ancestor 37687d479f2a9f1d996d225a4ba3556d9db72a86 HEAD
           git merge-base --is-ancestor 959729c9070399fcdf0015702cd8777079e05dcc HEAD
-          git merge-base --is-ancestor 0142d9a6199f8acf9f23e287f471e6d80b9acd2a 37687d479f2a9f1d996d225a4ba3556d9db72a86
-          git merge-base --is-ancestor a2c21e4dab7a0dcb5e3366db2f817b023d413231 959729c9070399fcdf0015702cd8777079e05dcc
+          test "$(git merge-base 0142d9a6199f8acf9f23e287f471e6d80b9acd2a 37687d479f2a9f1d996d225a4ba3556d9db72a86)" = "1d3c7588a242e3a83304f5083c2ec5a974f19399"
+          test "$(git merge-base a2c21e4dab7a0dcb5e3366db2f817b023d413231 959729c9070399fcdf0015702cd8777079e05dcc)" = "dd7f6aec3408c807c1cde0d6770aefe610c27e29"
 
       - name: Prove accepted V1 provenance and repaired identities
         run: |
