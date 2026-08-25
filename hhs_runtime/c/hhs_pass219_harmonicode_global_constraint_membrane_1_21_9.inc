@@ -1,4 +1,4 @@
-#include "hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h"
+#include "../include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h"
 
 #include <string.h>
 
@@ -11,7 +11,6 @@ static const uint8_t HHS219_GLOBAL_MEMBRANE_SOURCE_SHA256[
     0xdeU, 0xa6U, 0x83U, 0xf6U, 0x80U, 0x20U, 0xcfU, 0x53U
 };
 
-/* Zero-based UTF-8 byte offsets of the five literal `==` gate occurrences. */
 static const uint32_t HHS219_GLOBAL_MEMBRANE_GATE_OFFSETS[
     HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT
 ] = {96U, 240U, 266U, 274U, 285U};
