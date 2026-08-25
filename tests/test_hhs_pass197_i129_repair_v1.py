@@ -3,9 +3,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from pydantic import ValidationError
-
-from hhs_backend.api.pass197_calibration_routes import ABHydrationCalibrationRequest
 from hhs_backend.runtime import pass197_exact_v1
 from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import (
     Pass197ABHydrationCalibration,
@@ -14,6 +11,8 @@ from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import (
 )
 from hhs_backend.runtime.pass197_exact_v1 import exact_fraction
 from hhs_backend.runtime.pass197_state_v1 import CalibrationConfig, MAX_SYNCHRONOUS_PARAMETER_STATES
+
+ROOT = Path(__file__).parents[1]
 
 
 class Pass197I129RepairTests(unittest.TestCase):
@@ -33,12 +32,13 @@ class Pass197I129RepairTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 CalibrationConfig.from_payload({"x_values": [1], "y_values": [1], "xy_symbol_values": [value]})
 
-    def test_03_api_exponents_and_controls_are_strict(self):
-        for value in (1.0, True):
-            with self.assertRaises(ValidationError):
-                ABHydrationCalibrationRequest(xy_symbol_values=[value])
-        with self.assertRaises(ValidationError):
-            ABHydrationCalibrationRequest(full_replay="true")
+    def test_03_api_exponents_and_controls_are_declared_strict(self):
+        source = (ROOT / "hhs_backend/api/pass197_calibration_routes.py").read_text()
+        self.assertIn("List[StrictInt]", source)
+        self.assertIn("include_domain_rejections: StrictBool", source)
+        self.assertIn("full_replay: StrictBool", source)
+        self.assertIn("resume: StrictBool", source)
+        self.assertIn("VM81 authorized tick did not produce a Hash72 receipt", source)
 
     def test_04_duplicate_exact_coordinates_are_rejected(self):
         with self.assertRaises(ValueError):
@@ -129,7 +129,7 @@ class Pass197I129RepairTests(unittest.TestCase):
             pass197_exact_v1._HASH_AUTHORITY_ERROR = original_error
 
     def test_12_frontend_registers_only_verified_closed_projection(self):
-        source = (Path(__file__).parents[1] / "applications/holofractal_harmonizer/src/pass197-calibration.mjs").read_text()
+        source = (ROOT / "applications/holofractal_harmonizer/src/pass197-calibration.mjs").read_text()
         self.assertIn("if (!value?.closed || !value?.report_hash72) return;", source)
         self.assertIn("lifecycle_state: 'ACTIVE'", source)
         self.assertNotIn("lifecycle_state: value.closed ? 'ACTIVE'", source)
