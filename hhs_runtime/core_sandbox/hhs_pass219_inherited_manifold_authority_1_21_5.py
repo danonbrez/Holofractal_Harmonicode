@@ -87,6 +87,32 @@ def _require_exact_context_certificates(payload: Mapping[str, Any]) -> None:
             raise AssertionError("Pass191 retained certificate checks failed")
 
 
+def _require_completion_continuity(
+    payload: Mapping[str, Any], completion: Mapping[str, Any]
+) -> str:
+    completion_core = {
+        key: value
+        for key, value in completion.items()
+        if key != "completion_hash72"
+    }
+    expected_completion_hash = hash72_digest(
+        {"domain": "HHS-PASS-191-UNIFIED-MANIFOLD-COMPLETION-V2"},
+        completion_core,
+    )
+    if completion.get("completion_hash72") != expected_completion_hash:
+        raise AssertionError("Pass191 completion Hash72 mismatch")
+    if completion.get("integrated_manifold_search_hash72") != payload.get(
+        "integrated_manifold_search_hash72"
+    ):
+        raise AssertionError("Pass191 completion-to-search link mismatch")
+    epoch = payload.get("unified_manifold_epoch", {})
+    if not isinstance(epoch, Mapping):
+        raise AssertionError("Pass191 manifold epoch missing")
+    if completion.get("manifold_epoch_hash72") != epoch.get("manifold_epoch_hash72"):
+        raise AssertionError("Pass191 completion-to-manifold link mismatch")
+    return expected_completion_hash
+
+
 def verify_inherited_manifold_authority(root: str | Path | None = None) -> dict[str, Any]:
     """Bind frozen Pass191 execution evidence without manufacturing Pass169 closure.
 
@@ -116,15 +142,18 @@ def verify_inherited_manifold_authority(root: str | Path | None = None) -> dict[
         / "PASS_191_INTEGRATED_COMPLETION_RECEIPT.json"
     )
 
-    native_source = native_fixture.read_text(encoding="utf-8").rstrip("\n")
-    if native_source != MANIFOLD_SOURCE:
+    native_bytes = native_fixture.read_bytes()
+    expected_native_bytes = MANIFOLD_SOURCE.encode("utf-8")
+    if native_bytes != expected_native_bytes:
         raise AssertionError("I120 native source is not byte-identical to frozen Pass191 MANIFOLD_SOURCE")
+    native_source = native_bytes.decode("utf-8")
     if presentation_normalize(native_source) != CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE.rstrip("\n"):
         raise AssertionError("presentation-only normalization does not match canonical Pass219 source")
 
     payload = _load_json(evidence_path)
     completion = _load_json(completion_path)
     verified = verify_integrated_manifold_search(payload)
+    expected_completion_hash = _require_completion_continuity(payload, completion)
 
     if verified.get("ok") is not True:
         raise AssertionError("inherited Pass191 integrated verifier rejected frozen evidence")
@@ -198,7 +227,7 @@ def verify_inherited_manifold_authority(root: str | Path | None = None) -> dict[
         "vm81_mutation_authority": False,
         "hash72_commit_authority": False,
         "inherited_integrated_manifold_hash72": verified["integrated_manifold_search_hash72"],
-        "inherited_completion_hash72": completion.get("completion_hash72"),
+        "inherited_completion_hash72": expected_completion_hash,
         "inherited_manifold_checksum_fnv1a64": EXPECTED_CHECKSUM,
         "authority_path": EXPECTED_AUTHORITY_PATH,
     }

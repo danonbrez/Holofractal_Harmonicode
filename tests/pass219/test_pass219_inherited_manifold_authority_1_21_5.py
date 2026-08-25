@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import copy
 import json
+import tempfile
 from pathlib import Path
 
+from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.core_sandbox.hhs_pass219_inherited_manifold_authority_1_21_5 import (
     DECISION,
     EXPECTED_AUTHORITY_PATH,
@@ -29,12 +31,55 @@ PASS191_EVIDENCE = (
     / "evidence"
     / "PASS_191_INTEGRATED_PROOF_SEARCH.json"
 )
+PASS191_COMPLETION = (
+    ROOT
+    / "native_projects"
+    / "hhs_pass191_dyadic_quartic_phase_lattice"
+    / "evidence"
+    / "PASS_191_INTEGRATED_COMPLETION_RECEIPT.json"
+)
+
+
+def _copy_minimal_authority_fixture(destination: Path) -> tuple[Path, Path, Path]:
+    fixture = destination / "contracts" / "pass219" / FIXTURE.name
+    evidence = (
+        destination
+        / "native_projects"
+        / "hhs_pass191_dyadic_quartic_phase_lattice"
+        / "evidence"
+        / PASS191_EVIDENCE.name
+    )
+    completion = evidence.with_name(PASS191_COMPLETION.name)
+    fixture.parent.mkdir(parents=True, exist_ok=True)
+    evidence.parent.mkdir(parents=True, exist_ok=True)
+    fixture.write_bytes(FIXTURE.read_bytes())
+    evidence.write_bytes(PASS191_EVIDENCE.read_bytes())
+    completion.write_bytes(PASS191_COMPLETION.read_bytes())
+    return fixture, evidence, completion
+
+
+def _expect_authority_rejection(root: Path, fragment: str) -> None:
+    try:
+        verify_inherited_manifold_authority(root)
+    except AssertionError as exc:
+        assert fragment in str(exc)
+    else:
+        raise AssertionError(f"expected inherited authority rejection containing {fragment!r}")
 
 
 def test_i120_source_is_exact_frozen_pass191_source() -> None:
-    native = FIXTURE.read_text(encoding="utf-8").rstrip("\n")
-    assert native == MANIFOLD_SOURCE
+    native_bytes = FIXTURE.read_bytes()
+    assert native_bytes == MANIFOLD_SOURCE.encode("utf-8")
+    native = native_bytes.decode("utf-8")
     assert presentation_normalize(native) == CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE.rstrip("\n")
+
+
+def test_i120_source_rejects_trailing_newline_byte_drift() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        fixture, _, _ = _copy_minimal_authority_fixture(root)
+        fixture.write_bytes(fixture.read_bytes() + b"\n")
+        _expect_authority_rejection(root, "byte-identical")
 
 
 def test_i121_5_binds_inherited_authority_without_claiming_pass169_closure() -> None:
@@ -66,6 +111,46 @@ def test_i121_5_evidence_identity_is_deterministic() -> None:
     assert first == second
 
 
+def test_completion_hash72_is_verified_before_inheritance() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _, _, completion_path = _copy_minimal_authority_fixture(root)
+        completion = json.loads(completion_path.read_text(encoding="utf-8"))
+        completion["completion_hash72"] = "0" * 72
+        completion_path.write_text(json.dumps(completion), encoding="utf-8")
+        _expect_authority_rejection(root, "completion Hash72 mismatch")
+
+
+def test_completion_search_link_is_bound_even_with_self_consistent_completion_hash() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _, _, completion_path = _copy_minimal_authority_fixture(root)
+        completion = json.loads(completion_path.read_text(encoding="utf-8"))
+        completion["integrated_manifold_search_hash72"] = "0" * 72
+        completion_core = {key: value for key, value in completion.items() if key != "completion_hash72"}
+        completion["completion_hash72"] = hash72_digest(
+            {"domain": "HHS-PASS-191-UNIFIED-MANIFOLD-COMPLETION-V2"},
+            completion_core,
+        )
+        completion_path.write_text(json.dumps(completion), encoding="utf-8")
+        _expect_authority_rejection(root, "completion-to-search link mismatch")
+
+
+def test_completion_manifold_link_is_bound_even_with_self_consistent_completion_hash() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _, _, completion_path = _copy_minimal_authority_fixture(root)
+        completion = json.loads(completion_path.read_text(encoding="utf-8"))
+        completion["manifold_epoch_hash72"] = "0" * 72
+        completion_core = {key: value for key, value in completion.items() if key != "completion_hash72"}
+        completion["completion_hash72"] = hash72_digest(
+            {"domain": "HHS-PASS-191-UNIFIED-MANIFOLD-COMPLETION-V2"},
+            completion_core,
+        )
+        completion_path.write_text(json.dumps(completion), encoding="utf-8")
+        _expect_authority_rejection(root, "completion-to-manifold link mismatch")
+
+
 def test_inherited_verifier_rejects_tampered_exact_context_certificate() -> None:
     payload = json.loads(PASS191_EVIDENCE.read_text(encoding="utf-8"))
     tampered = copy.deepcopy(payload)
@@ -93,8 +178,12 @@ def test_pass191_exact_hits_remain_context_scoped_not_monolithic_proofs() -> Non
 
 def run_dependency_free_conformance() -> None:
     test_i120_source_is_exact_frozen_pass191_source()
+    test_i120_source_rejects_trailing_newline_byte_drift()
     test_i121_5_binds_inherited_authority_without_claiming_pass169_closure()
     test_i121_5_evidence_identity_is_deterministic()
+    test_completion_hash72_is_verified_before_inheritance()
+    test_completion_search_link_is_bound_even_with_self_consistent_completion_hash()
+    test_completion_manifold_link_is_bound_even_with_self_consistent_completion_hash()
     test_inherited_verifier_rejects_tampered_exact_context_certificate()
     test_pass191_exact_hits_remain_context_scoped_not_monolithic_proofs()
 

@@ -165,13 +165,15 @@ def verify_combined_equation_optimizer(
     if combined.count(DENOMINATOR_SOURCE) != 2:
         raise ValueError("REJECT_I1218_DENOMINATOR_OCCURRENCE_DRIFT")
 
-    first_offset = combined.find(DENOMINATOR_SOURCE)
-    second_offset = combined.find(DENOMINATOR_SOURCE, first_offset + 1)
+    combined_bytes = combined.encode("utf-8")
+    denominator_bytes = DENOMINATOR_SOURCE.encode("utf-8")
+    first_offset = combined_bytes.find(denominator_bytes)
+    second_offset = combined_bytes.find(denominator_bytes, first_offset + 1)
     if first_offset < 0 or second_offset <= first_offset:
         raise ValueError("REJECT_I1218_DENOMINATOR_OCCURRENCE_DRIFT")
-    if combined[first_offset:first_offset + len(DENOMINATOR_SOURCE)] != DENOMINATOR_SOURCE:
+    if combined_bytes[first_offset:first_offset + len(denominator_bytes)] != denominator_bytes:
         raise ValueError("REJECT_I1218_FIRST_DENOMINATOR_SPAN_DRIFT")
-    if combined[second_offset:second_offset + len(DENOMINATOR_SOURCE)] != DENOMINATOR_SOURCE:
+    if combined_bytes[second_offset:second_offset + len(denominator_bytes)] != denominator_bytes:
         raise ValueError("REJECT_I1218_SECOND_DENOMINATOR_SPAN_DRIFT")
 
     if NUMERATOR_MATRIX_SOURCE not in DENOMINATOR_SOURCE or PHASE_MATRIX_SOURCE not in DENOMINATOR_SOURCE:
@@ -203,6 +205,7 @@ def verify_combined_equation_optimizer(
         "denominator_source_sha256": DENOMINATOR_SHA256,
         "denominator_occurrences": 2,
         "denominator_occurrence_offsets": [first_offset, second_offset],
+        "denominator_occurrence_offset_unit": "UTF8_BYTE_OFFSET",
         "denominator_source_occurrence_witnesses_required": 2,
         "denominator_memoized_value_nodes_candidate": 1,
         "common_subexpression_identity_verified": True,

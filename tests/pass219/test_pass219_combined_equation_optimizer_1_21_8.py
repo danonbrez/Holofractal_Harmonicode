@@ -30,10 +30,17 @@ def test_combined_equation_identity_and_repeated_denominator() -> None:
     assert result["ok"] is True
     assert result["combined_source_sha256"] == COMBINED_SHA256
     assert result["denominator_occurrences"] == 2
-    assert len(result["denominator_occurrence_offsets"]) == 2
-    assert result["denominator_occurrence_offsets"][0] < result["denominator_occurrence_offsets"][1]
+    assert result["denominator_occurrence_offsets"] == [352, 493]
+    assert result["denominator_occurrence_offset_unit"] == "UTF8_BYTE_OFFSET"
     assert result["common_subexpression_identity_verified"] is True
     assert result["source_occurrence_provenance_preserved"] is True
+
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    combined = (root / "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode").read_bytes()
+    denominator = DENOMINATOR_SOURCE.encode("utf-8")
+    for offset in result["denominator_occurrence_offsets"]:
+        assert combined[offset:offset + len(denominator)] == denominator
 
     # Value work may be memoized, but the two source occurrences remain two
     # independently witnessed bindings.  No receipt/provenance edge is erased.
