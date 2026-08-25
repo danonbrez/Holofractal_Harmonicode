@@ -48,9 +48,11 @@ jobs:
         run: python -m unittest -v tests.test_hhs_pass200b_governed_canary_admission_v1
 
       - name: Execute production proof, bounded canary, exhaustion, and rollback
+        env:
+          HHS_RUNTIME_OUTPUT_DIR: ${{ github.workspace }}/.hhs/pass200b-ci/runtime
         run: |
           rm -rf .hhs/pass200b-ci evidence/pass200b-ci
-          mkdir -p evidence/pass200b-ci
+          mkdir -p evidence/pass200b-ci "$HHS_RUNTIME_OUTPUT_DIR"
           python - <<'PY'
           import json
           import time
@@ -63,24 +65,32 @@ jobs:
               CLASSIFICATION,
               Pass200BGovernedCanaryAuthority,
           )
+          from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
 
           root = Path('.hhs/pass200b-ci')
+          controller = HHSRuntimeController()
           pass200a = Pass200AProofCarryingOptimizationAuthority(state_root=root / 'pass200a')
           canary = None
           reopened = None
           try:
+              qualification_tick = controller.authorized_tick(source='pass200b.production.pass200a.holdouts')
+              qualification_receipt = qualification_tick['receipt']['receipt_hash72']
               qualification = pass200a.run_holdouts(
                   worker_count=8,
-                  vm81_receipt_hash72='7' * 72,
+                  vm81_receipt_hash72=qualification_receipt,
               )
+              shadow_tick = controller.authorized_tick(source='pass200b.production.pass200a.shadows')
+              shadow_receipt = shadow_tick['receipt']['receipt_hash72']
               shadows = pass200a.execute_all_shadows(
                   worker_count=8,
-                  vm81_receipt_hash72='8' * 72,
+                  vm81_receipt_hash72=shadow_receipt,
               )
               assert qualification['closed'] is True
+              assert qualification['vm81_receipt_provenance']['ok'] is True
               assert qualification['independent_envelope_count'] == 4
               assert qualification['bundle_count'] == 4
               assert shadows['closed'] is True
+              assert shadows['vm81_receipt_provenance']['ok'] is True
               assert shadows['shadow_match_count'] == 4
               assert shadows['candidate_activation_count'] == 0
 
@@ -213,6 +223,7 @@ jobs:
                   'status_hash72': status['status_hash72'],
                   'event_chain': verification['event_chain'],
                   'candidate_return_ordinals': [0, 4],
+                  'pass200a_vm81_receipt_chain_verified': True,
                   'claim_boundary': {
                       'dual_approval_required': True,
                       'candidate_self_authorization': False,
@@ -280,6 +291,8 @@ jobs:
           grep -Fq 'pass200b_governed_canary_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -Fq 'The panel cannot manufacture approvals' applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs
           grep -Fq 'candidate cannot authorize itself' HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md
+          grep -Fq 'HHSRuntimeController' .github/workflows/pass200b-governed-canary-admission.yml
+          grep -Fq 'pass200a_vm81_receipt_chain_verified' .github/workflows/pass200b-governed-canary-admission.yml
 
       - name: Upload Pass 200B evidence
         uses: actions/upload-artifact@v4

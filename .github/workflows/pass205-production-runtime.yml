@@ -79,6 +79,29 @@ jobs:
       - name: Run Pass 205 production tests
         run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
 
+      - name: Validate Pass 219 I119 inherited Pass 205 exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i119-pass205
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i119-pass205/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.c \
+            /tmp/pass219-i119-pass205/exact.o \
+            -o /tmp/pass219-i119-pass205/pass205-c
+          /tmp/pass219-i119-pass205/pass205-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
+            /tmp/pass219-i119-pass205/exact.o \
+            -o /tmp/pass219-i119-pass205/pass205-cpp
+          /tmp/pass219-i119-pass205/pass205-cpp
+
+      - name: Validate Pass 219 I119 kernel-derived membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py
+
+      - name: Preserve Pass 206 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass206_membrane_i118.py
+
       - name: Run existing Pass 205 design tests
         run: |
           mkdir -p evidence/pass205-ci

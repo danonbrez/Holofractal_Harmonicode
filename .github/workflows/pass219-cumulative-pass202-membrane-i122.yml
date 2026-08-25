@@ -1,0 +1,111 @@
+name: Pass 219 Cumulative Pass 202 Membrane I122
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration122-pass202-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass202_1_22.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass202_1_22.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass202_1_22.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py'
+      - 'tests/pass219/test_pass219_inherited_pass202_1_22.c'
+      - 'tests/pass219/test_pass219_inherited_pass202_1_22.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'docs/pass202/PASS_219_I122_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I122_PASS202_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass202-membrane-i122.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass202-membrane:
+    name: inherited-pass202-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I121 and accepted Pass 202 integration
+        run: |
+          git merge-base --is-ancestor 94a100766c582c83fa3e4f7cb815c08b0eacfa1a HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 33ce89c7328180eb98d59f72df43f3036cf1edab HEAD
+          git merge-base --is-ancestor 83b6fd89cd8adb1962aeb159917fe24ee4485441 HEAD
+
+      - name: Prove historical Pass 202 source identities
+        run: |
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:.github/workflows/guarded-continuous-integration.yml)" = e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = b1ad8ced814c8c58d3365c4f45cbb0cd338fb564
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 2cf1d20f60d26d1b476ebd268fdc85b1db1a0764
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/install.sh)" = 97ab585e3e96122cbaded47e1a436fc0e143bac1
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3296ee9787544542697d3915e01569562ef30046
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 82250c50fa9d20a82d0b957d2637398760b1c416
+          test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:tests/test_hhs_guarded_auto_update_contract_v1.py)" = 709afe1c0d612ad91744a5cd71cb87d8a313aad6
+
+      - name: Prove frozen I121 deployment identities
+        run: |
+          test "$(git hash-object .github/workflows/guarded-continuous-integration.yml)" = e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4
+          test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3296ee9787544542697d3915e01569562ef30046
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = c1815c56e5bceeca2a840c5a693bd22d6e85ef84
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 7890657593b5d4dd03e4cf5eb2c4c1c7ba25e519
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 93dfbe6cc3a789de82b5249f32a129a31306aeb5
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 729d8e571160239094aaef612a17d039f310ca03
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = 23afbf9c99d77f57acd7334d767c483572d64e0a
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          ! grep -E '\b(float|double)\b|<math\.h>|sqrt\(|sin\(|cos\(|pow\(|log\(|exp\(' hhs_runtime/include/hhs_pass219_inherited_pass202_1_22.h hhs_runtime/c/hhs_pass219_inherited_pass202_1_22.inc
+          grep -q 'pass219_new_deployment_authority != 0U' hhs_runtime/c/hhs_pass219_inherited_pass202_1_22.inc
+          grep -q 'vm81_mutation_authority != 0U' hhs_runtime/c/hhs_pass219_inherited_pass202_1_22.inc
+
+      - name: Compile cumulative exact ABI and Pass 202 conformance
+        run: |
+          mkdir -p /tmp/hhs-i122
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/hhs-i122/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass202_1_22.c /tmp/hhs-i122/exact.o -o /tmp/hhs-i122/pass202-c
+          /tmp/hhs-i122/pass202-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass202_1_22.cpp /tmp/hhs-i122/exact.o -o /tmp/hhs-i122/pass202-cpp
+          /tmp/hhs-i122/pass202-cpp
+
+      - name: Run kernel-derived Pass 202 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py
+
+      - name: Run inherited Pass 202 deployment contract regression
+        run: python -m pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py
+
+      - name: Preserve frozen Pass 203 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass203_membrane_i121.py

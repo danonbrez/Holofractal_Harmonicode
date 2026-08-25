@@ -1,22 +1,46 @@
-"""Pass 198 persistent operation-calibration and proof-carrying simplification registry."""
+"""Pass 198 persistent operation-calibration and proof-carrying simplification registry.
+
+I128 repair-forward note: PR #136 remains the historical provenance for the V1
+contract.  This module preserves that public surface while closing its post-merge
+review findings.  Pass 199/200A import this class directly, so the repair is made
+at the inherited V1 compatibility surface rather than behind an unused alternate
+runtime.
+"""
 from __future__ import annotations
 
 import json
 import os
 import sqlite3
+import tempfile
 import threading
 import time
 from dataclasses import asdict, dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import Pass197ABHydrationCalibration
-from hhs_backend.runtime.pass197_exact_v1 import ADDRESS_COUNT, canonical_json, hash72
-from hhs_backend.runtime.pass197_state_v1 import CalibrationConfig
+from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import (
+    Pass197ABHydrationCalibration,
+    Pass197CalibrationError,
+)
+from hhs_backend.runtime.pass197_exact_v1 import (
+    ADDRESS_COUNT,
+    M,
+    address,
+    canonical_json,
+    decode_address,
+    hash72,
+    matrix_identity,
+    matrix_multiply,
+    matrix_power,
+)
+from hhs_backend.runtime.pass197_state_v1 import CalibrationConfig, evaluate_state
 
 VERSION = "HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY_V1"
 CONTRACT = "HHS-P198-OCR-PROOF-SIMPLIFICATION-VM81-H72"
 CLASSIFICATION = "HHS_PASS_198_GENERIC_CALIBRATION_REGISTRY_FOUNDATION_VERIFIED"
+REPAIR_SCHEMA = "HHS_PASS_198_I128_REPAIR_V1"
+NEGATIVE_MUTATION_EVIDENCE_SCHEMA = "HHS_PASS_198_EXECUTED_NEGATIVE_MUTATION_EVIDENCE_V1"
 REGISTRY_SCHEMA = "HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY_V1"
 SPEC_SCHEMA = "HHS_PASS_198_OPERATION_SPEC_V1"
 TREE_SCHEMA = "HHS_PASS_198_PARAMETER_TREE_V1"
@@ -24,6 +48,10 @@ RUN_SCHEMA = "HHS_PASS_198_OPERATION_CALIBRATION_RUN_V1"
 SIMPLIFICATION_SCHEMA = "HHS_PASS_198_PROOF_CARRYING_SIMPLIFICATION_V1"
 EVENT_SCHEMA = "HHS_PASS_198_REGISTRY_EVENT_V1"
 ZERO_HASH72 = "0" * 72
+BUILTIN_OPERATION_ID = "pass197.reciprocal_matrix_gate"
+BUILTIN_ADAPTER = "hhs.pass197.reciprocal_matrix_gate.v1"
+BUILTIN_AXIS_NAMES = frozenset({"x_values", "y_values", "xy_symbol_values"})
+CONFIG_CONTROL_NAMES = frozenset({"include_domain_rejections", "full_replay"})
 PROMOTION_ORDER = (
     "OBSERVED",
     "ENVELOPE_VERIFIED",
@@ -32,6 +60,13 @@ PROMOTION_ORDER = (
     "RUNTIME_ADMITTED",
     "FROZEN_CONSTRAINT",
 )
+PROMOTION_WORKLOAD_MINIMUMS = {
+    "ENVELOPE_VERIFIED": 1,
+    "CROSS_WORKLOAD_VERIFIED": 2,
+    "COMPILER_CANDIDATE": 2,
+    "RUNTIME_ADMITTED": 3,
+    "FROZEN_CONSTRAINT": 4,
+}
 
 
 class Pass198RegistryError(RuntimeError):
@@ -52,6 +87,34 @@ def _strings(value: Any, field: str) -> tuple[str, ...]:
     if not result or len(result) != len(set(result)):
         raise ValueError(f"{field} must contain unique values")
     return result
+
+
+def _optional_hash72(value: Any, field: str) -> str | None:
+    if value is None:
+        return None
+    text = _string(value, field, 72)
+    if len(text) != 72:
+        raise ValueError(f"{field} must contain exactly 72 characters")
+    return text
+
+
+def _validate_exact_identity_value(value: Any, field: str) -> None:
+    """Reject approximate/opaque values from identity-bearing canonical payloads."""
+    if isinstance(value, float):
+        raise ValueError(f"{field} must not contain floating-point values")
+    if value is None or isinstance(value, (bool, int, str)):
+        return
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise ValueError(f"{field} mapping keys must be strings")
+            _validate_exact_identity_value(item, f"{field}.{key}")
+        return
+    if isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            _validate_exact_identity_value(item, f"{field}[{index}]")
+        return
+    raise ValueError(f"{field} contains unsupported canonical value type {type(value).__name__}")
 
 
 def _copy(value: Any) -> Any:
@@ -80,7 +143,10 @@ class OperationSpec:
     @classmethod
     def create(cls, payload: Mapping[str, Any]) -> "OperationSpec":
         operation_id = _string(payload.get("operation_id"), "operation_id")
-        version = int(payload.get("version", 1))
+        raw_version = payload.get("version", 1)
+        if isinstance(raw_version, bool) or not isinstance(raw_version, int):
+            raise ValueError("version must be an exact integer")
+        version = raw_version
         if not 1 <= version <= 1_000_000:
             raise ValueError("version must be in [1,1000000]")
         display_name = _string(payload.get("display_name"), "display_name")
@@ -120,6 +186,7 @@ class OperationSpec:
             "replay_policy": replay_policy,
             "status": status,
         }
+        _validate_exact_identity_value(identity, "operation_spec")
         return cls(
             operation_id=operation_id,
             version=version,
@@ -145,9 +212,9 @@ class OperationSpec:
 
 BUILTIN_PASS197_SPEC = OperationSpec.create(
     {
-        "operation_id": "pass197.reciprocal_matrix_gate",
+        "operation_id": BUILTIN_OPERATION_ID,
         "display_name": "Pass 197 reciprocal matrix gate",
-        "adapter": "hhs.pass197.reciprocal_matrix_gate.v1",
+        "adapter": BUILTIN_ADAPTER,
         "input_schema": {"type": "object", "additionalProperties": False},
         "parameter_axes": {
             "x_values": ["-3", "-2", "-1", "-1/2", "0", "1/2", "1", "2", "3"],
@@ -191,6 +258,245 @@ BUILTIN_PASS197_SPEC = OperationSpec.create(
         },
     }
 )
+
+
+def _workload_identity(run: Mapping[str, Any]) -> str:
+    return hash72(
+        "pass198.workload.identity",
+        {
+            "operation_id": run["operation_id"],
+            "operation_spec_hash72": run["operation_spec_hash72"],
+            "tree_hash72": run["tree_hash72"],
+            "config_hash72": run["config_hash72"],
+        },
+    )
+
+
+def _executed_envelope_identity(run: Mapping[str, Any], report: Mapping[str, Any]) -> str:
+    summary = report["summary"]
+    return hash72(
+        "pass198.executed.parameter.envelope",
+        {
+            "operation_id": run["operation_id"],
+            "operation_spec_hash72": run["operation_spec_hash72"],
+            "tree_hash72": run["tree_hash72"],
+            "config_hash72": run["config_hash72"],
+            "state_root_hash72": report["state_root_hash72"],
+            "evaluated_parameter_states": summary["evaluated_parameter_states"],
+            "admitted_parameter_states": summary["admitted_parameter_states"],
+            "domain_rejected_parameter_states": summary["domain_rejected_parameter_states"],
+        },
+    )
+
+
+def _report_has_promotion_grade_coverage(report: Mapping[str, Any], expected_state_count: int | None = None) -> bool:
+    summary = report.get("summary") or {}
+    replay = report.get("replay") or {}
+    evaluated = int(summary.get("evaluated_parameter_states", 0))
+    admitted = int(summary.get("admitted_parameter_states", 0))
+    replayed = int(replay.get("replayed_parameter_states", 0))
+    if not bool(report.get("closed")):
+        return False
+    if not bool(replay.get("full_replay_executed")) or not bool(replay.get("deterministic")):
+        return False
+    if admitted <= 0 or replayed != evaluated:
+        return False
+    if expected_state_count is not None and evaluated != int(expected_state_count):
+        return False
+    return True
+
+
+def _cost_reference(name: str) -> dict[str, Any]:
+    """Stable declaration: no per-simplification cost was independently measured."""
+    return {
+        "simplification_name": name,
+        "claim_scope": "NO_PER_SIMPLIFICATION_COST_MEASURED",
+        "measurement_status": "UNMEASURED_PER_SIMPLIFICATION",
+        "promotion_grade_cost_claim": False,
+    }
+
+
+def _mutation_result(mutation: str, *, detected: bool, outcome: str, details: Mapping[str, Any]) -> dict[str, Any]:
+    body = {
+        "mutation": mutation,
+        "executed": True,
+        "detected": bool(detected),
+        "outcome": outcome,
+        "details": _copy(dict(details)),
+    }
+    return {**body, "evidence_hash72": hash72("pass198.negative.mutation.evidence", body)}
+
+
+def _matrix_string_payload(matrix: Sequence[Sequence[Any]]) -> list[list[str]]:
+    return [[str(value) for value in row] for row in matrix]
+
+
+def _probe_replace_xy_with_product() -> dict[str, Any]:
+    mutation = "replace xy with x*y"
+    x = Fraction(1)
+    y = Fraction(1)
+    lexical_exponent = 0
+    product_exponent = int(x * y)
+    canonical = evaluate_state(x, y, lexical_exponent, matrix_power(M, -lexical_exponent))
+    mutated = evaluate_state(x, y, product_exponent, matrix_power(M, -product_exponent))
+    detected = (
+        lexical_exponent != product_exponent
+        and canonical["state_hash72"] != mutated["state_hash72"]
+    )
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="STATE_IDENTITY_CHANGED" if detected else "MUTATION_NOT_DETECTED",
+        details={
+            "lexical_xy_exponent": lexical_exponent,
+            "x_times_y_exponent": product_exponent,
+            "canonical_state_hash72": canonical["state_hash72"],
+            "mutated_state_hash72": mutated["state_hash72"],
+        },
+    )
+
+
+def _probe_float_ingress() -> dict[str, Any]:
+    mutation = "admit floating-point ingress"
+    detected = False
+    error_hash = ZERO_HASH72
+    try:
+        CalibrationConfig.from_payload({"x_values": [0.5], "y_values": [1], "xy_symbol_values": [0]})
+    except ValueError as exc:
+        detected = True
+        error_hash = hash72("pass198.negative.float.rejection", str(exc))
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="FLOAT_REJECTED" if detected else "FLOAT_ACCEPTED",
+        details={"rejection_error_hash72": error_hash},
+    )
+
+
+def _probe_reverse_matrix_product_order() -> dict[str, Any]:
+    mutation = "reverse matrix product order"
+    permutation = (
+        (Fraction(0), Fraction(1), Fraction(0)),
+        (Fraction(1), Fraction(0), Fraction(0)),
+        (Fraction(0), Fraction(0), Fraction(1)),
+    )
+    forward = matrix_multiply(M, permutation)
+    reversed_product = matrix_multiply(permutation, M)
+    detected = forward != reversed_product
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="ORDER_REVERSAL_CHANGED_EXACT_MATRIX" if detected else "ORDER_REVERSAL_UNDETECTED",
+        details={
+            "forward_hash72": hash72("pass198.negative.matrix.forward", _matrix_string_payload(forward)),
+            "reversed_hash72": hash72("pass198.negative.matrix.reversed", _matrix_string_payload(reversed_product)),
+        },
+    )
+
+
+def _probe_strip_vm81_lane_identity() -> dict[str, Any]:
+    mutation = "strip VM81 lane identity"
+    first_address = address(0, 0)
+    second_address = address(0, 1)
+    first_decoded = decode_address(first_address)
+    second_decoded = decode_address(second_address)
+    stripped_first = first_decoded[:4]
+    stripped_second = second_decoded[:4]
+    detected = first_address != second_address and stripped_first == stripped_second
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="LANE_STRIP_COLLISION_DETECTED" if detected else "LANE_STRIP_UNDETECTED",
+        details={
+            "first_address": first_address,
+            "second_address": second_address,
+            "first_lane": first_decoded[4],
+            "second_lane": second_decoded[4],
+            "stripped_cell_indices": list(stripped_first),
+        },
+    )
+
+
+def _probe_zero_reciprocal_domain() -> dict[str, Any]:
+    mutation = "admit zero reciprocal domain"
+    result = evaluate_state(Fraction(0), Fraction(1), 0, matrix_identity(3))
+    detected = result.get("status") == "DOMAIN_REJECTED" and int(result.get("address_count", -1)) == 0
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="ZERO_DOMAIN_REJECTED" if detected else "ZERO_DOMAIN_ADMITTED",
+        details={
+            "state_hash72": result["state_hash72"],
+            "status": result["status"],
+            "address_count": result["address_count"],
+        },
+    )
+
+
+def _probe_checkpoint_receipt_tip_tamper() -> dict[str, Any]:
+    mutation = "tamper checkpoint receipt tip"
+    detected = False
+    before_hash = ZERO_HASH72
+    tampered_tip = "f" * 72
+    with tempfile.TemporaryDirectory() as root:
+        runtime = Pass197ABHydrationCalibration(state_root=root)
+        payload = {"x_values": [1], "y_values": [1], "xy_symbol_values": [0]}
+        runtime.run(payload, vm81_receipt_hash72="1" * 72)
+        checkpoint_path = Path(root) / "ab_hydration_checkpoint.json"
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        before_hash = str(checkpoint.get("checkpoint_hash72") or ZERO_HASH72)
+        checkpoint["receipt_tip_hash72"] = tampered_tip
+        checkpoint_path.write_text(canonical_json(checkpoint) + "\n", encoding="utf-8")
+        try:
+            runtime.run(payload, resume=True, vm81_receipt_hash72="2" * 72)
+        except Pass197CalibrationError:
+            detected = True
+    return _mutation_result(
+        mutation,
+        detected=detected,
+        outcome="CHECKPOINT_TAMPER_REJECTED" if detected else "CHECKPOINT_TAMPER_ACCEPTED",
+        details={
+            "original_checkpoint_hash72": before_hash,
+            "tampered_receipt_tip_hash72": tampered_tip,
+        },
+    )
+
+
+_NEGATIVE_MUTATION_PROBES = {
+    "replace xy with x*y": _probe_replace_xy_with_product,
+    "admit floating-point ingress": _probe_float_ingress,
+    "reverse matrix product order": _probe_reverse_matrix_product_order,
+    "strip VM81 lane identity": _probe_strip_vm81_lane_identity,
+    "admit zero reciprocal domain": _probe_zero_reciprocal_domain,
+    "tamper checkpoint receipt tip": _probe_checkpoint_receipt_tip_tamper,
+}
+
+
+def _execute_required_negative_mutations(operation: Mapping[str, Any]) -> dict[str, Any]:
+    required = tuple(str(item) for item in operation.get("negative_mutations") or ())
+    if operation.get("replay_policy", {}).get("mutation_counterexamples_required") is not True:
+        raise Pass198RegistryError("approved simplification proof requires mutation counterexamples")
+    if not required or set(required) != set(_NEGATIVE_MUTATION_PROBES):
+        raise Pass198RegistryError("registered negative-mutation set has no complete executable probe binding")
+    results = [_NEGATIVE_MUTATION_PROBES[mutation]() for mutation in required]
+    complete = (
+        len(results) == len(required)
+        and all(item.get("executed") is True and item.get("detected") is True for item in results)
+        and {item["mutation"] for item in results} == set(required)
+    )
+    body = {
+        "schema": NEGATIVE_MUTATION_EVIDENCE_SCHEMA,
+        "operation_id": operation["operation_id"],
+        "operation_spec_hash72": operation["spec_hash72"],
+        "required_mutation_count": len(required),
+        "executed_mutation_count": len(results),
+        "all_required_negative_mutations_executed_and_detected": complete,
+        "results": results,
+    }
+    evidence = {**body, "evidence_root_hash72": hash72("pass198.negative.mutation.evidence.root", body)}
+    if not complete:
+        raise Pass198RegistryError("required negative mutation execution did not fail closed")
+    return evidence
 
 
 class Pass198OperationCalibrationRegistry:
@@ -242,22 +548,44 @@ class Pass198OperationCalibrationRegistry:
         )
         return int(cursor.lastrowid), event_hash72
 
-    def register_operation(self, payload: Mapping[str, Any], *, source: str = "api", idempotent: bool = False) -> dict[str, Any]:
+    def register_operation(
+        self,
+        payload: Mapping[str, Any],
+        *,
+        source: str = "api",
+        idempotent: bool = False,
+        vm81_receipt_hash72: str | None = None,
+    ) -> dict[str, Any]:
         spec = OperationSpec.create(payload)
+        receipt = _optional_hash72(vm81_receipt_hash72, "vm81_receipt_hash72")
+        source_value = _string(source, "source")
         with self._lock:
-            row = self._db.execute("SELECT spec_hash72,payload_json FROM operations WHERE operation_id=?", (spec.operation_id,)).fetchone()
-            if row:
-                if idempotent and row["spec_hash72"] == spec.spec_hash72:
-                    return json.loads(row["payload_json"])
-                raise Pass198RegistryError(f"operation identity already exists: {spec.operation_id}")
             try:
                 self._db.execute("BEGIN IMMEDIATE")
+                row = self._db.execute(
+                    "SELECT spec_hash72,payload_json FROM operations WHERE operation_id=?",
+                    (spec.operation_id,),
+                ).fetchone()
+                if row:
+                    if idempotent and row["spec_hash72"] == spec.spec_hash72:
+                        self._db.commit()
+                        return json.loads(row["payload_json"])
+                    raise Pass198RegistryError(f"operation identity already exists: {spec.operation_id}")
                 event_id, event_hash = self._event(
                     self._db,
                     "OPERATION_REGISTERED",
-                    {"operation_id": spec.operation_id, "spec_hash72": spec.spec_hash72, "source": source},
+                    {
+                        "operation_id": spec.operation_id,
+                        "spec_hash72": spec.spec_hash72,
+                        "source": source_value,
+                        "vm81_receipt_hash72": receipt,
+                    },
                 )
-                document = {**spec.payload(), "registration_event_hash72": event_hash}
+                document = {
+                    **spec.payload(),
+                    "registration_event_hash72": event_hash,
+                    "registration_vm81_receipt_hash72": receipt,
+                }
                 self._db.execute(
                     "INSERT INTO operations(operation_id,status,spec_hash72,payload_json,created_event,updated_event) VALUES(?,?,?,?,?,?)",
                     (spec.operation_id, spec.status, spec.spec_hash72, canonical_json(document), event_id, event_id),
@@ -269,19 +597,39 @@ class Pass198OperationCalibrationRegistry:
                 raise
 
     def get_operation(self, operation_id: str) -> dict[str, Any]:
-        row = self._db.execute("SELECT payload_json FROM operations WHERE operation_id=?", (_string(operation_id, "operation_id"),)).fetchone()
+        normalized = _string(operation_id, "operation_id")
+        row = self._db.execute(
+            "SELECT payload_json FROM operations WHERE operation_id=?",
+            (normalized,),
+        ).fetchone()
         if not row:
-            raise Pass198RegistryError(f"unknown calibration operation: {operation_id}")
+            raise Pass198RegistryError(f"unknown calibration operation: {normalized}")
         return json.loads(row["payload_json"])
 
     def list_operations(self) -> list[dict[str, Any]]:
         return [json.loads(row[0]) for row in self._db.execute("SELECT payload_json FROM operations ORDER BY operation_id")]
 
+    @staticmethod
+    def _require_approved_executable(operation: Mapping[str, Any]) -> None:
+        if (
+            operation.get("operation_id") != BUILTIN_OPERATION_ID
+            or operation.get("adapter") != BUILTIN_ADAPTER
+            or operation.get("spec_hash72") != BUILTIN_PASS197_SPEC.spec_hash72
+        ):
+            raise Pass198RegistryError("operation has no approved executable adapter/specification binding")
+        if set(operation.get("parameter_axes") or {}) != BUILTIN_AXIS_NAMES:
+            raise Pass198RegistryError("approved Pass 197 adapter requires the registered x/y/xy axis schema")
+
     def parameter_tree(self, operation_id: str, overrides: Mapping[str, Any] | None = None) -> dict[str, Any]:
-        operation = self.get_operation(operation_id)
+        normalized = _string(operation_id, "operation_id")
+        operation = self.get_operation(normalized)
         if operation["status"] != "REGISTERED":
             raise Pass198RegistryError("operation is not enabled")
+        self._require_approved_executable(operation)
         payload = dict(overrides or {})
+        unexpected = set(payload) - BUILTIN_AXIS_NAMES - CONFIG_CONTROL_NAMES
+        if unexpected:
+            raise Pass198RegistryError(f"unsupported Pass 197 calibration fields: {sorted(unexpected)}")
         for key, values in operation["parameter_axes"].items():
             payload.setdefault(key, values)
         config = CalibrationConfig.from_payload(payload)
@@ -303,7 +651,7 @@ class Pass198OperationCalibrationRegistry:
         body = {
             "schema": TREE_SCHEMA,
             "version": VERSION,
-            "operation_id": operation_id,
+            "operation_id": normalized,
             "operation_spec_hash72": operation["spec_hash72"],
             "config": config.payload(),
             "state_count": len(states),
@@ -321,61 +669,80 @@ class Pass198OperationCalibrationRegistry:
         resume: bool = True,
         vm81_receipt_hash72: str | None = None,
     ) -> dict[str, Any]:
-        operation = self.get_operation(operation_id)
-        if operation["adapter"] != "hhs.pass197.reciprocal_matrix_gate.v1":
-            raise Pass198RegistryError(f"no executable adapter for {operation['adapter']}")
-        tree = self.parameter_tree(operation_id, config_payload)
-        provisional = hash72(
-            "pass198.run.provisional",
-            {"operation_id": operation_id, "tree_hash72": tree["tree_hash72"], "vm81_receipt_hash72": vm81_receipt_hash72},
+        normalized = _string(operation_id, "operation_id")
+        operation = self.get_operation(normalized)
+        self._require_approved_executable(operation)
+        receipt = _optional_hash72(vm81_receipt_hash72, "vm81_receipt_hash72")
+        tree = self.parameter_tree(normalized, config_payload)
+        checkpoint_identity = hash72(
+            "pass198.run.checkpoint",
+            {
+                "operation_id": normalized,
+                "operation_spec_hash72": operation["spec_hash72"],
+                "tree_hash72": tree["tree_hash72"],
+            },
         )
-        report = Pass197ABHydrationCalibration(state_root=self.state_root / "runs" / provisional).run(
+        report = Pass197ABHydrationCalibration(state_root=self.state_root / "runs" / checkpoint_identity).run(
             config_payload,
             resume=resume,
-            vm81_receipt_hash72=vm81_receipt_hash72,
+            vm81_receipt_hash72=receipt,
         )
+        promotion_grade = _report_has_promotion_grade_coverage(report, tree["state_count"])
         run_id = hash72(
             "pass198.operation.run",
             {
-                "operation_id": operation_id,
+                "operation_id": normalized,
                 "tree_hash72": tree["tree_hash72"],
                 "report_hash72": report["report_hash72"],
-                "vm81_receipt_hash72": vm81_receipt_hash72,
+                "vm81_receipt_hash72": receipt,
             },
         )
         body = {
             "schema": RUN_SCHEMA,
             "version": VERSION,
+            "repair_schema": REPAIR_SCHEMA,
             "run_id": run_id,
-            "operation_id": operation_id,
+            "operation_id": normalized,
             "operation_spec_hash72": operation["spec_hash72"],
             "tree_hash72": tree["tree_hash72"],
             "config_hash72": report["config_hash72"],
             "report_hash72": report["report_hash72"],
             "state_root_hash72": report["state_root_hash72"],
-            "vm81_receipt_hash72": vm81_receipt_hash72,
-            "status": "CLOSED" if report["closed"] else "REJECTED",
+            "vm81_receipt_hash72": receipt,
+            "status": "CLOSED" if promotion_grade else "REJECTED",
             "summary": report["summary"],
             "replay": report["replay"],
+            "promotion_grade_coverage": promotion_grade,
+            "checkpoint_identity_hash72": checkpoint_identity,
+            "checkpoint_receipt_independent": True,
             "created_ns": time.time_ns(),
         }
+        body["workload_identity_hash72"] = _workload_identity(body)
+        body["executed_parameter_envelope_hash72"] = _executed_envelope_identity(body, report)
         with self._lock:
-            row = self._db.execute("SELECT payload_json FROM runs WHERE run_id=?", (run_id,)).fetchone()
-            if row:
-                return json.loads(row["payload_json"])
             try:
                 self._db.execute("BEGIN IMMEDIATE")
+                row = self._db.execute("SELECT payload_json FROM runs WHERE run_id=?", (run_id,)).fetchone()
+                if row:
+                    self._db.commit()
+                    return json.loads(row["payload_json"])
                 event_id, event_hash = self._event(
                     self._db,
                     "CALIBRATION_RUN_RECORDED",
-                    {"run_id": run_id, "operation_id": operation_id, "status": body["status"], "report_hash72": body["report_hash72"]},
+                    {
+                        "run_id": run_id,
+                        "operation_id": normalized,
+                        "status": body["status"],
+                        "report_hash72": body["report_hash72"],
+                        "promotion_grade_coverage": promotion_grade,
+                    },
                 )
                 document = {**body, "event_hash72": event_hash}
                 self._db.execute(
                     "INSERT INTO runs(run_id,operation_id,config_hash72,report_hash72,state_root_hash72,status,payload_json,created_event) VALUES(?,?,?,?,?,?,?,?)",
-                    (run_id, operation_id, body["config_hash72"], body["report_hash72"], body["state_root_hash72"], body["status"], canonical_json(document), event_id),
+                    (run_id, normalized, body["config_hash72"], body["report_hash72"], body["state_root_hash72"], body["status"], canonical_json(document), event_id),
                 )
-                if report["closed"]:
+                if promotion_grade:
                     self._record_simplifications(operation, document, report)
                 self._db.commit()
                 return document
@@ -383,8 +750,32 @@ class Pass198OperationCalibrationRegistry:
                 self._db.rollback()
                 raise
 
+    def _workload_hashes_for_runs(self, run_ids: Sequence[str]) -> list[str]:
+        values: set[str] = set()
+        for run_id in run_ids:
+            row = self._db.execute("SELECT payload_json FROM runs WHERE run_id=?", (run_id,)).fetchone()
+            if not row:
+                continue
+            run = json.loads(row["payload_json"])
+            values.add(str(run.get("workload_identity_hash72") or _workload_identity(run)))
+        return sorted(values)
+
     def _record_simplifications(self, operation: Mapping[str, Any], run: Mapping[str, Any], report: Mapping[str, Any]) -> None:
+        if not _report_has_promotion_grade_coverage(report):
+            raise Pass198RegistryError("promotion-grade simplification proof requires complete deterministic full replay and admitted coverage")
+        negative_evidence = _execute_required_negative_mutations(operation)
+        counterexample_search = {
+            "mismatch_parameter_states": report["summary"]["mismatch_parameter_states"],
+            "singular_parameter_states": report["summary"]["singular_parameter_states"],
+            "negative_mutations": operation["negative_mutations"],
+            "executed_negative_mutation_evidence": negative_evidence,
+            "all_required_negative_mutations_executed_and_detected": True,
+        }
+        workload_hash = str(run.get("workload_identity_hash72") or _workload_identity(run))
+        envelope_hash = str(run.get("executed_parameter_envelope_hash72") or _executed_envelope_identity(run, report))
         for item in report["lossless_simplifications"]:
+            if not bool(item.get("lossless")):
+                raise Pass198RegistryError("non-lossless simplification cannot be registered as verified")
             name = str(item["name"])
             simplification_id = hash72(
                 "pass198.simplification.identity",
@@ -393,47 +784,62 @@ class Pass198OperationCalibrationRegistry:
             existing = self._db.execute("SELECT payload_json FROM simplifications WHERE simplification_id=?", (simplification_id,)).fetchone()
             if existing:
                 document = json.loads(existing["payload_json"])
-                run_ids = sorted(set(document["run_ids"]) | {run["run_id"]})
-                document["run_ids"] = run_ids
-                document["verification_run_count"] = len(run_ids)
+                run_ids = sorted(set(document.get("run_ids", ())) | {run["run_id"]})
+                envelopes = sorted(set(document.get("tested_parameter_envelope_hash72s", ())) | {envelope_hash})
+                workload_hashes = sorted(set(document.get("workload_identity_hash72s", ())) | set(self._workload_hashes_for_runs(run_ids)) | {workload_hash})
+                document.update(
+                    {
+                        "run_ids": run_ids,
+                        "verification_run_count": len(run_ids),
+                        "tested_parameter_envelope_hash72s": envelopes,
+                        "workload_identity_hash72s": workload_hashes,
+                        "verification_workload_count": len(workload_hashes),
+                        "counterexample_search": _copy(counterexample_search),
+                        "cost": _cost_reference(name),
+                    }
+                )
                 event_id, event_hash = self._event(
                     self._db,
                     "SIMPLIFICATION_REVERIFIED",
-                    {"simplification_id": simplification_id, "run_id": run["run_id"], "verification_run_count": len(run_ids)},
+                    {
+                        "simplification_id": simplification_id,
+                        "run_id": run["run_id"],
+                        "verification_run_count": len(run_ids),
+                        "verification_workload_count": len(workload_hashes),
+                        "negative_mutation_evidence_root_hash72": negative_evidence["evidence_root_hash72"],
+                    },
                 )
                 document["updated_event_hash72"] = event_hash
                 document["proof_hash72"] = hash72("pass198.simplification.aggregate", document)
-                self._db.execute(
+                cursor = self._db.execute(
                     "UPDATE simplifications SET proof_hash72=?,payload_json=?,updated_event=? WHERE simplification_id=?",
                     (document["proof_hash72"], canonical_json(document), event_id, simplification_id),
                 )
+                if cursor.rowcount != 1:
+                    raise Pass198RegistryError("simplification reverification update lost its target")
             else:
                 proof = {
                     "schema": SIMPLIFICATION_SCHEMA,
                     "version": VERSION,
+                    "repair_schema": REPAIR_SCHEMA,
                     "simplification_id": simplification_id,
                     "operation_id": operation["operation_id"],
                     "name": name,
                     "status": "ENVELOPE_VERIFIED",
                     "source_operation_identity": operation["spec_hash72"],
                     "candidate_operation_identity": hash72("pass198.simplification.candidate", {"operation_id": operation["operation_id"], "name": name}),
-                    "tested_parameter_envelope_hash72": run["tree_hash72"],
+                    "tested_parameter_envelope_hash72": envelope_hash,
+                    "tested_parameter_envelope_hash72s": [envelope_hash],
+                    "workload_identity_hash72s": [workload_hash],
+                    "verification_workload_count": 1,
                     "exact_equivalence_root_hash72": report["state_root_hash72"],
-                    "counterexample_search": {
-                        "mismatch_parameter_states": report["summary"]["mismatch_parameter_states"],
-                        "singular_parameter_states": report["summary"]["singular_parameter_states"],
-                        "negative_mutations": operation["negative_mutations"],
-                    },
+                    "counterexample_search": _copy(counterexample_search),
                     "retained_witnesses": operation["retained_witnesses"],
-                    "cost": {
-                        "before": report["summary"]["original_leaf_evaluations"],
-                        "after": report["summary"]["factorized_cell_evaluations"],
-                        "saved": report["summary"]["saved_leaf_evaluations"],
-                        "saved_fraction": report["summary"]["saved_fraction"],
-                    },
+                    "cost": _cost_reference(name),
                     "replay_receipt": report["replay"],
                     "revocation_conditions": [
                         "exact counterexample",
+                        "negative mutation not executed or not detected",
                         "replay root mismatch",
                         "retained witness loss",
                         "operation identity change",
@@ -446,7 +852,13 @@ class Pass198OperationCalibrationRegistry:
                 event_id, event_hash = self._event(
                     self._db,
                     "SIMPLIFICATION_ENVELOPE_VERIFIED",
-                    {"simplification_id": simplification_id, "run_id": run["run_id"]},
+                    {
+                        "simplification_id": simplification_id,
+                        "run_id": run["run_id"],
+                        "workload_identity_hash72": workload_hash,
+                        "tested_parameter_envelope_hash72": envelope_hash,
+                        "negative_mutation_evidence_root_hash72": negative_evidence["evidence_root_hash72"],
+                    },
                 )
                 document = {**proof, "proof_hash72": proof_hash72, "created_event_hash72": event_hash, "updated_event_hash72": event_hash}
                 self._db.execute(
@@ -477,41 +889,74 @@ class Pass198OperationCalibrationRegistry:
         evidence_run_ids: Sequence[str],
         vm81_receipt_hash72: str | None = None,
     ) -> dict[str, Any]:
+        normalized = _string(simplification_id, "simplification_id")
         target = str(target_status).upper()
         if target not in PROMOTION_ORDER:
             raise ValueError("invalid promotion target")
-        row = self._db.execute("SELECT status,payload_json FROM simplifications WHERE simplification_id=?", (_string(simplification_id, "simplification_id"),)).fetchone()
-        if not row:
-            raise Pass198RegistryError("unknown simplification")
-        current = row["status"]
-        if current == "REVOKED" or target != PROMOTION_ORDER[PROMOTION_ORDER.index(current) + 1]:
-            raise Pass198RegistryError("promotion must advance exactly one stage")
-        document = json.loads(row["payload_json"])
         supplied = set(_strings(evidence_run_ids, "evidence_run_ids"))
-        if not supplied.issubset(set(document["run_ids"])):
-            raise Pass198RegistryError("unknown promotion evidence run")
-        required = {"CROSS_WORKLOAD_VERIFIED": 2, "COMPILER_CANDIDATE": 2, "RUNTIME_ADMITTED": 3, "FROZEN_CONSTRAINT": 4}.get(target, 1)
-        if len(supplied) < required:
-            raise Pass198RegistryError(f"{target} requires {required} verified runs")
+        receipt = _optional_hash72(vm81_receipt_hash72, "vm81_receipt_hash72")
         with self._lock:
             try:
                 self._db.execute("BEGIN IMMEDIATE")
+                row = self._db.execute(
+                    "SELECT status,payload_json FROM simplifications WHERE simplification_id=?",
+                    (normalized,),
+                ).fetchone()
+                if not row:
+                    raise Pass198RegistryError("unknown simplification")
+                current = str(row["status"])
+                if current == "REVOKED" or target != PROMOTION_ORDER[PROMOTION_ORDER.index(current) + 1]:
+                    raise Pass198RegistryError("promotion must advance exactly one stage")
+                document = json.loads(row["payload_json"])
+                mutation_evidence = document.get("counterexample_search", {}).get("executed_negative_mutation_evidence", {})
+                if mutation_evidence.get("all_required_negative_mutations_executed_and_detected") is not True:
+                    raise Pass198RegistryError("promotion evidence lacks executed fail-closed negative mutations")
+                if not supplied.issubset(set(document.get("run_ids", ()))):
+                    raise Pass198RegistryError("unknown promotion evidence run")
+                workload_hashes: set[str] = set()
+                for run_id in supplied:
+                    run_row = self._db.execute(
+                        "SELECT operation_id,status,payload_json FROM runs WHERE run_id=?",
+                        (run_id,),
+                    ).fetchone()
+                    if not run_row or run_row["status"] != "CLOSED" or run_row["operation_id"] != document["operation_id"]:
+                        raise Pass198RegistryError("promotion evidence must reference a closed verified run for the same operation")
+                    run_document = json.loads(run_row["payload_json"])
+                    if run_document.get("promotion_grade_coverage") is False:
+                        raise Pass198RegistryError("promotion evidence lacks promotion-grade execution coverage")
+                    workload_hashes.add(str(run_document.get("workload_identity_hash72") or _workload_identity(run_document)))
+                required = PROMOTION_WORKLOAD_MINIMUMS.get(target, 1)
+                if len(supplied) < required or len(workload_hashes) < required:
+                    raise Pass198RegistryError(f"{target} requires {required} distinct verified workloads")
                 event_id, event_hash = self._event(
                     self._db,
                     "SIMPLIFICATION_PROMOTED",
-                    {"simplification_id": simplification_id, "from": current, "to": target, "evidence_run_ids": sorted(supplied), "vm81_receipt_hash72": vm81_receipt_hash72},
+                    {
+                        "simplification_id": normalized,
+                        "from": current,
+                        "to": target,
+                        "evidence_run_ids": sorted(supplied),
+                        "evidence_workload_hash72s": sorted(workload_hashes),
+                        "negative_mutation_evidence_root_hash72": mutation_evidence.get("evidence_root_hash72"),
+                        "vm81_receipt_hash72": receipt,
+                    },
                 )
-                document.update({
-                    "status": target,
-                    "promotion_evidence_run_ids": sorted(supplied),
-                    "promotion_vm81_receipt_hash72": vm81_receipt_hash72,
-                    "updated_event_hash72": event_hash,
-                })
+                document.update(
+                    {
+                        "status": target,
+                        "promotion_evidence_run_ids": sorted(supplied),
+                        "promotion_evidence_workload_hash72s": sorted(workload_hashes),
+                        "promotion_vm81_receipt_hash72": receipt,
+                        "updated_event_hash72": event_hash,
+                    }
+                )
                 document["proof_hash72"] = hash72("pass198.simplification.promoted", document)
-                self._db.execute(
+                cursor = self._db.execute(
                     "UPDATE simplifications SET status=?,proof_hash72=?,payload_json=?,updated_event=? WHERE simplification_id=?",
-                    (target, document["proof_hash72"], canonical_json(document), event_id, simplification_id),
+                    (target, document["proof_hash72"], canonical_json(document), event_id, normalized),
                 )
+                if cursor.rowcount != 1:
+                    raise Pass198RegistryError("promotion update lost its normalized simplification target")
                 self._db.commit()
                 return _copy(document)
             except Exception:
@@ -519,29 +964,42 @@ class Pass198OperationCalibrationRegistry:
                 raise
 
     def revoke_simplification(self, simplification_id: str, reason: Mapping[str, Any], *, vm81_receipt_hash72: str | None = None) -> dict[str, Any]:
-        row = self._db.execute("SELECT payload_json FROM simplifications WHERE simplification_id=?", (_string(simplification_id, "simplification_id"),)).fetchone()
-        if not row:
-            raise Pass198RegistryError("unknown simplification")
-        document = json.loads(row["payload_json"])
+        normalized = _string(simplification_id, "simplification_id")
+        receipt = _optional_hash72(vm81_receipt_hash72, "vm81_receipt_hash72")
+        reason_copy = dict(reason)
+        _validate_exact_identity_value(reason_copy, "revocation_reason")
         with self._lock:
             try:
                 self._db.execute("BEGIN IMMEDIATE")
+                row = self._db.execute(
+                    "SELECT status,payload_json FROM simplifications WHERE simplification_id=?",
+                    (normalized,),
+                ).fetchone()
+                if not row:
+                    raise Pass198RegistryError("unknown simplification")
+                if row["status"] == "REVOKED":
+                    raise Pass198RegistryError("simplification is already revoked")
+                document = json.loads(row["payload_json"])
                 event_id, event_hash = self._event(
                     self._db,
                     "SIMPLIFICATION_REVOKED",
-                    {"simplification_id": simplification_id, "reason": dict(reason), "vm81_receipt_hash72": vm81_receipt_hash72},
+                    {"simplification_id": normalized, "reason": reason_copy, "vm81_receipt_hash72": receipt},
                 )
-                document.update({
-                    "status": "REVOKED",
-                    "revocation_reason": dict(reason),
-                    "revocation_vm81_receipt_hash72": vm81_receipt_hash72,
-                    "updated_event_hash72": event_hash,
-                })
+                document.update(
+                    {
+                        "status": "REVOKED",
+                        "revocation_reason": reason_copy,
+                        "revocation_vm81_receipt_hash72": receipt,
+                        "updated_event_hash72": event_hash,
+                    }
+                )
                 document["proof_hash72"] = hash72("pass198.simplification.revoked", document)
-                self._db.execute(
+                cursor = self._db.execute(
                     "UPDATE simplifications SET status='REVOKED',proof_hash72=?,payload_json=?,updated_event=? WHERE simplification_id=?",
-                    (document["proof_hash72"], canonical_json(document), event_id, simplification_id),
+                    (document["proof_hash72"], canonical_json(document), event_id, normalized),
                 )
+                if cursor.rowcount != 1:
+                    raise Pass198RegistryError("revocation update lost its normalized simplification target")
                 self._db.commit()
                 return _copy(document)
             except Exception:
@@ -569,6 +1027,7 @@ class Pass198OperationCalibrationRegistry:
         body = {
             "schema": REGISTRY_SCHEMA,
             "version": VERSION,
+            "repair_schema": REPAIR_SCHEMA,
             "contract": CONTRACT,
             "classification": CLASSIFICATION,
             "state_root": str(self.state_root),
@@ -577,6 +1036,9 @@ class Pass198OperationCalibrationRegistry:
             "simplification_counts": simplification_counts,
             "event_chain": chain,
             "executable_adapter_count": 1,
+            "executable_adapter_requires_exact_builtin_specification": True,
+            "promotion_requires_distinct_workload_identities": True,
+            "negative_mutation_execution_required_for_verified_proofs": True,
             "compiler_auto_promotion": False,
             "runtime_auto_admission": False,
             "ok": chain["ok"] and operation_count >= 1,
