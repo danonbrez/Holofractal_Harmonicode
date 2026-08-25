@@ -66,7 +66,7 @@ jobs:
         run: |
           git merge-base --is-ancestor c85b2b29cdf26d21912eb06b7d50323526944cc2 HEAD
           git merge-base --is-ancestor 2321a1f05a6da410034a31ca141e3919091bb09a HEAD
-          test "$(git merge-base aeadabcce0ea178ad5b6a27001e109f349808dde HEAD)" = "e3d6694e06edbe8f04c02d6b665301b34f6ec074"
+          test "$(git merge-base aeadabcce0ea178ad5b6a27001e109f349808dde HEAD)" = "77bf7ddfcfb09246a805a6e8f0919cfa18d0f3c0"
 
       - name: Prove accepted Pass 197 provenance and repaired identities
         run: |
