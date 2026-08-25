@@ -23,7 +23,7 @@ class FakeRegistry {
     return [...this.objects.values()]
       .filter((object) => (!filter.object_type || object.object_type === filter.object_type)
         && (!filter.lifecycle_state || object.lifecycle_state === filter.lifecycle_state))
-      .map(structuredClone);
+      .map((object) => structuredClone(object));
   }
   search(query) {
     const normalized = String(query || '').toLowerCase();
