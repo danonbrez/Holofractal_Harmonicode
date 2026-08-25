@@ -98,6 +98,10 @@ int main(void) {
     assert(hhs_exact_pass219b_selective_projection_plan(
         4183503552ULL, 1U, 1U, &plan) == HHS_EXACT_STATUS_OK);
     assert(plan.selected_count == 4183503552ULL);
+    assert(hhs_exact_pass219b_selective_projection_plan(
+        4294967296ULL, 1U, 1U, &plan) == HHS_EXACT_STATUS_RANGE_ERROR);
+    assert(hhs_exact_pass219b_selective_projection_build_ids_u32(
+        4294967296ULL, 1U, 1U, small, 10U, &count) == HHS_EXACT_STATUS_RANGE_ERROR);
 
     return 0;
 }
