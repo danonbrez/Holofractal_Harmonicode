@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through repaired Pass 198 inherited calibration binding and Pass 219B universal phase locality. */
+/* Additive exact ABI aggregate through repaired Pass 197 inherited hydration calibration binding and Pass 219B universal phase locality. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -32,5 +32,6 @@
 #include "hhs_pass219_inherited_pass200a_1_26.inc"
 #include "hhs_pass219_inherited_pass199_1_27.inc"
 #include "hhs_pass219_inherited_pass198_1_28.inc"
+#include "hhs_pass219_inherited_pass197_1_29.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
