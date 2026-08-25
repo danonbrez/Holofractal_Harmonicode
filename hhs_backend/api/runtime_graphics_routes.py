@@ -56,9 +56,12 @@ def runtime_graphics_capabilities() -> Dict[str, Any]:
         },
         "sparse_dirty_projection": {
             "schema": "HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0",
+            "availability": "VALIDATED_CALLABLE_ABI_CANDIDATE",
+            "production_active": False,
+            "runtime_binding": "NOT_YET_BOUND_TO_SHIPPED_RENDER_LOOP",
             "input": "I7_PRECOMPUTED_CELL_RANGES_PLUS_SORTED_UNIQUE_DIRTY_CELL_IDS",
             "output": "COALESCED_SELECTED_INDEX_SPANS",
-            "full_selected_rebuild_required_per_tick": False,
+            "full_selected_rebuild_avoidance": "AVAILABLE_ONLY_WHEN_EXPLICITLY_INVOKED_WITH_COMPLETE_DIRTY_WITNESS",
             "selected_count_must_match_inherited_i7_plan": True,
             "dirty_set_completeness_required": True,
             "incomplete_dirty_set_fallback": "FULL_DERIVED_PROJECTION_PATH",
