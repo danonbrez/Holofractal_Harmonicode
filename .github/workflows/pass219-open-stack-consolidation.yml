@@ -1,0 +1,223 @@
+name: Pass 219 Open Stack Consolidation
+
+on:
+  push:
+    branches:
+      - agent/pass219-consolidate-green-stacks
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/**'
+      - 'hhs_backend/api/runtime_graphics_routes.py'
+      - 'contracts/pass219/**'
+      - 'docs/pass219/**'
+      - 'docs/operations/restart/PASS_219_OPEN_STACK_CONSOLIDATION_RESTART.md'
+      - 'HHS_PASS_219_APPEND_ONLY_*'
+      - 'tests/pass219/**'
+      - '.github/workflows/pass219-open-stack-consolidation.yml'
+      - '.github/workflows/pass219-orthogonal-glyph-membrane-1-21.yml'
+      - '.github/workflows/pass219-proof-preserving-optimizer-1-21-12.yml'
+      - '.github/workflows/pass219b-i7-exact-selective-projection.yml'
+      - '.github/workflows/pass219b-i8-sparse-dirty-projection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pass219-open-stack-consolidation
+  cancel-in-progress: false
+
+jobs:
+  consolidate-and-validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout consolidation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure merge identity
+        run: |
+          git config user.name hhs-validation
+          git config user.email hhs-validation@users.noreply.github.com
+
+      - name: Fetch canonical and source stacks
+        run: |
+          git fetch origin main
+          git fetch origin agent/pass219-orthogonal-glyph-parallel-membrane-1-21
+          git fetch origin agent/pass219b-i8-sparse-dirty-projection-optimization
+          git merge-base --is-ancestor origin/main HEAD
+
+      - name: Merge I121.12 superset stack when missing
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          source_ref=origin/agent/pass219-orthogonal-glyph-parallel-membrane-1-21
+          if git merge-base --is-ancestor "$source_ref" HEAD; then
+            echo 'I121.12 superset already contained.'
+            exit 0
+          fi
+          if ! git merge --no-ff --no-commit "$source_ref"; then
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+            printf 'I121.12 conflict set:\n%s\n' "${conflicts[*]}"
+            expected=(hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/include/hhs_runtime_exact_abi.h)
+            if [[ ${#conflicts[@]} -ne 2 ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[0]} "* ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[1]} "* ]]; then
+              git status --short
+              git merge --abort || true
+              exit 1
+            fi
+            for path in "${expected[@]}"; do
+              git show ":2:${path}" > "/tmp/ours.$(basename "$path")"
+              git show ":3:${path}" > "/tmp/theirs.$(basename "$path")"
+              git checkout --ours -- "$path"
+              python - "$path" "/tmp/theirs.$(basename "$path")" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          theirs = pathlib.Path(sys.argv[2]).read_text('utf-8').splitlines()
+          ours = path.read_text('utf-8').splitlines()
+          source_includes = [line for line in theirs if line.startswith('#include ')]
+          missing = [line for line in source_includes if line not in ours]
+          if path.suffix == '.h':
+              end = max(i for i, line in enumerate(ours) if line.strip() == '#endif')
+              ours[end:end] = missing
+          else:
+              ours.extend(missing)
+          path.write_text('\n'.join(ours) + '\n', 'utf-8')
+          PY
+              git add "$path"
+            done
+            test -z "$(git diff --name-only --diff-filter=U)"
+          fi
+          git commit -m 'Merge Pass 219 I121.12 superset into consolidation'
+          git push origin HEAD:agent/pass219-consolidate-green-stacks
+
+      - name: Merge Pass219B I7-I8 superset when missing
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          source_ref=origin/agent/pass219b-i8-sparse-dirty-projection-optimization
+          if git merge-base --is-ancestor "$source_ref" HEAD; then
+            echo 'Pass219B I7-I8 superset already contained.'
+            exit 0
+          fi
+          if ! git merge --no-ff --no-commit "$source_ref"; then
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+            printf 'I7-I8 conflict set:\n%s\n' "${conflicts[*]}"
+            expected=(hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/include/hhs_runtime_exact_abi.h)
+            if [[ ${#conflicts[@]} -ne 2 ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[0]} "* ]] || \
+               [[ " ${conflicts[*]} " != *" ${expected[1]} "* ]]; then
+              git status --short
+              git merge --abort || true
+              exit 1
+            fi
+            for path in "${expected[@]}"; do
+              git show ":3:${path}" > "/tmp/theirs.$(basename "$path")"
+              git checkout --ours -- "$path"
+              python - "$path" "/tmp/theirs.$(basename "$path")" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          theirs = pathlib.Path(sys.argv[2]).read_text('utf-8').splitlines()
+          ours = path.read_text('utf-8').splitlines()
+          source_includes = [line for line in theirs if line.startswith('#include ')]
+          missing = [line for line in source_includes if line not in ours]
+          if path.suffix == '.h':
+              end = max(i for i, line in enumerate(ours) if line.strip() == '#endif')
+              ours[end:end] = missing
+          else:
+              ours.extend(missing)
+          path.write_text('\n'.join(ours) + '\n', 'utf-8')
+          PY
+              git add "$path"
+            done
+            test -z "$(git diff --name-only --diff-filter=U)"
+          fi
+          git commit -m 'Merge Pass 219B I7-I8 superset into consolidation'
+          git push origin HEAD:agent/pass219-consolidate-green-stacks
+
+      - name: Require both source heads in consolidated history
+        run: |
+          git merge-base --is-ancestor 7e29361f2a3688e89723b135dcb029da43e263b2 HEAD
+          git merge-base --is-ancestor 2bcd37a3876b16bd476b2bd5712ae5cf4d3a3f8e HEAD
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Strict cumulative exact ABI compile
+        run: |
+          mkdir -p /tmp/pass219-consolidation
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-consolidation/exact.o
+
+      - name: Run exact octonion and monolithic ABI regressions
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_octonion_runtime_1_19.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/oct && /tmp/pass219-consolidation/oct
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/mono && /tmp/pass219-consolidation/mono
+
+      - name: Run I121 proof-preserving Python regressions
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_i121_validation_membrane_v1.py \
+            tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py \
+            tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py \
+            tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py \
+            tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py
+
+      - name: Run I121 compiled conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/glyph && /tmp/pass219-consolidation/glyph
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/global && /tmp/pass219-consolidation/global
+
+      - name: Run Pass219B I7 and I8 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.c /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i7 && /tmp/pass219-consolidation/i7
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.cpp /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i7cpp && /tmp/pass219-consolidation/i7cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i8 && /tmp/pass219-consolidation/i8
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i8cpp && /tmp/pass219-consolidation/i8cpp
+
+      - name: Run standalone VM81 exact verification
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o /tmp/pass219-consolidation/vm81
+          /tmp/pass219-consolidation/vm81 --verify
+
+      - name: Reject approximate or new authority in new Pass219B exact surfaces
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_selective_projection_1_0.h'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc'),
+          ]
+          forbidden_numeric = re.compile(r'\b(float|double)\b')
+          for path in paths:
+              text = path.read_text('utf-8')
+              if forbidden_numeric.search(text):
+                  raise SystemExit(f'approximate authority token in {path}')
+              identifiers = re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', text)
+              for identifier in identifiers:
+                  tokens = set(identifier.lower().split('_'))
+                  if 'commit' in tokens or 'persist' in tokens or 'admit' in tokens or 'mutate' in tokens:
+                      raise SystemExit(f'authority-like export token {identifier!r} in {path}')
+                  if 'write' in tokens and 'hash72' in tokens:
+                      raise SystemExit(f'Hash72 write authority token {identifier!r} in {path}')
+          PY
+
+      - name: Validate machine-readable evidence
+        run: python -m json.tool docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json >/dev/null
+
+      - name: Verify current-main synthetic integration
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor origin/main HEAD

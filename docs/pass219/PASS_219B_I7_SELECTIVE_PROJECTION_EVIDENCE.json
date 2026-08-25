@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS219B_I7_SELECTIVE_PROJECTION_EVIDENCE_V1",
+  "version": 1,
+  "repository_base": {
+    "branch": "main",
+    "commit": "ff66e376a44c8b928a9a42c2e6d8aa1846785fc2"
+  },
+  "authoritative_state": {
+    "entities": 17625600,
+    "dirty_cells_per_tick": 7,
+    "vm81_cells": 81,
+    "exact_state_digest": "69c042f32e861d61816067d2268a76a3eb1bcc52ef369421693f6964b1b9c8df",
+    "exact_state_digest_algorithm": "SHA256",
+    "projection_can_mutate_canonical_state": false,
+    "projection_can_persist_canonical_state": false,
+    "projection_can_commit_hash72": false
+  },
+  "benchmark_artifact_digests_sha256": {
+    "decomposition": "b18de72450f841482a5093527e80facc09b411439cfdbcc50c4864bba669bd22",
+    "raster_footprint": "485abb6c3a801a9c4f5ef88f4ce27891978027300d8693ac5c55413bd617bd88",
+    "selective_visual_hydration": "2d69bd22b7eeb97d3bac525922ca86fe54e5cb5a6d238088a4aeaaf4bb96b155",
+    "generic_rational_boundary": "c74fde3b7d3dcc4d01e022140f432dd76372dfe8203057ae4cb65852ff5db585",
+    "optimized_rational_selector": "30f7905d2e70db82f33d5d57d4efb4a0efdb78b6539215baae673a86e494244f"
+  },
+  "canonical_receipt_binding": {
+    "hash72_receipt_present": false,
+    "classification": "NONCANONICAL_BENCHMARK_ARTIFACT_DIGESTS_ONLY",
+    "promotion_to_hash72_receipt_forbidden_without_explicit_binding": true
+  },
+  "validated_observations": {
+    "isolated_exact_transition_capacity_ticks_per_second_approx": 133.23,
+    "full_dynamic_projection_fps_approx": 20.82,
+    "one_third_stride_projection_fps": 60.33182510548631,
+    "one_third_optimized_rational_favorable_fps": 60.33384728832858,
+    "one_third_optimized_rational_later_fps": 46.80065520917286,
+    "one_third_favorable_transition_ms": 9.83166666639348,
+    "one_third_later_transition_ms": 14.445555555489328,
+    "one_third_favorable_projection_ms": 2.2988888889137242,
+    "one_third_later_projection_ms": 2.8277777781503066,
+    "one_third_upload_bytes_per_frame": 2030933.3333333333,
+    "one_third_upload_avoided_ratio": 0.6666666666666667,
+    "seven_twentieths_favorable_fps": 59.66784897404454,
+    "seven_twentieths_projection_ratio": 0.35
+  },
+  "interpretation": {
+    "selector_optimization_validated": true,
+    "projection_density_independently_tunable": true,
+    "authoritative_state_equality_preserved": true,
+    "browser_long_run_environment_drift_observed": true,
+    "specific_android_background_process_proven": false,
+    "intrinsic_60hz_ceiling_frozen": false,
+    "favorable_state_60hz_projection_density_lower_bound_approx": 0.35
+  },
+  "future_benchmark_policy": {
+    "protocol": "sentinel-controlled interleaving",
+    "sentinel_ratio": "1/3",
+    "sequence": "sentinel -> candidate -> sentinel",
+    "candidate_result_is_valid_only_if_both_neighboring_sentinels_remain_in_calibrated_state": true,
+    "contaminated_result_classification": "ENVIRONMENT_CONTAMINATED"
+  }
+}
