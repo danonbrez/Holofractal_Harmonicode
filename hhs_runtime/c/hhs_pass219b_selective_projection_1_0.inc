@@ -67,6 +67,9 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219b_selective_projection_plan(
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     }
     memset(out_plan, 0, sizeof(*out_plan));
+    if (source_count > (uint64_t)UINT32_MAX) {
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    }
     status = hhs_exact_pass219b_selective_projection_selected_count(
         source_count, numerator_p, denominator_q, &selected);
     if (status != HHS_EXACT_STATUS_OK) {
