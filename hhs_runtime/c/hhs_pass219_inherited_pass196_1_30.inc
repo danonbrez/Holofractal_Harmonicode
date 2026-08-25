@@ -11,7 +11,7 @@ static const char P196_REPAIRED_V2_BLOB[] = "196b1fbdbbb3610ccb47e7fd638d4c3f2cd
 static const char P196_REPAIRED_API_BLOB[] = "39187c3376591c64758019090d9b115c6a43f6ee";
 static const char P196_REPAIRED_FRONTEND_BLOB[] = "1503903c844c9e601133853eed9ed597f6fd2274";
 static const char P196_PROJECTION_REFRESH_BLOB[] = "44254e10f90e929a4f8c1a18a75b3ca14a2c05ed";
-static const char P196_REPAIR_REGRESSION_BLOB[] = "55d1da0ea58044436646ccd8a331088135515c8f";
+static const char P196_REPAIR_REGRESSION_BLOB[] = "d0860d89cd8abe596f49c73b7e544511cdaba5d0";
 static const char P196_REPAIR_WORKFLOW_BLOB[] = "7a19d3e7faab6e7210e156026300e96550b9afcb";
 
 static uint32_t p196_version_word(void) {
