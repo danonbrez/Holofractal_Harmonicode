@@ -1,0 +1,139 @@
+name: Pass 219 Pass159 VM81 Proof Bridge 1.21.2
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c'
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'native_projects/hhs_pass159_harmonicode_toolchain/**'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'tests/pass219/test_pass219_pass159_vm81_proof_bridge_1_21_2.c'
+      - '.github/workflows/pass219-pass159-vm81-proof-bridge-1-21-2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pass159-vm81-proof:
+    name: pass159-vm81-proof (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+
+      - name: Enforce exact read-only bridge authority
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.h \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+          grep -F 'HHS159_MODE_EXECUTE_AND_HOLD' \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+          grep -F 'hhs159_build_constraint_graph' \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+          grep -F 'hhs159_lower_vmir' \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+          grep -F 'hhs159_interpreter_replay' \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+          grep -F 'hhs159_compare_interpreter_compiler' \
+            hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c
+
+      - name: Census inherited Pass159 execution semantics
+        if: matrix.target == 'exact'
+        run: |
+          gzip -dc native_projects/hhs_pass159_harmonicode_toolchain/src/hhs159_core.c.gz \
+            > /tmp/hhs159_core.inspect.c
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('/tmp/hhs159_core.inspect.c').read_text()
+          names = [
+              'hhs159_frontend_to_vmir',
+              'hhs159_lower_vmir',
+              'hhs159_interpret',
+              'hhs159_interpreter_replay',
+              'hhs159_compare_interpreter_compiler',
+              'hhs159_execute',
+          ]
+          for name in names:
+              marker = name + '('
+              pos = text.find(marker)
+              if pos < 0:
+                  print(f'=== {name}: NOT FOUND ===')
+                  continue
+              start = text.rfind('\n', 0, pos) + 1
+              brace = text.find('{', pos)
+              if brace < 0:
+                  print(f'=== {name}: NO BODY ===')
+                  continue
+              depth = 0
+              end = brace
+              for i in range(brace, len(text)):
+                  if text[i] == '{': depth += 1
+                  elif text[i] == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = i + 1
+                          break
+              print(f'=== {name} ===')
+              print(text[start:end])
+          PY
+
+      - name: Build and verify inherited Pass159 toolchain
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-build --parallel 2
+          ctest --test-dir /tmp/pass159-build --output-on-failure
+
+      - name: Compile exact monolithic substrate and Pass159 proof bridge
+        run: |
+          mkdir -p /tmp/pass219-pass159-1-21-2
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-pass159-1-21-2/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            -c hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c \
+            -o /tmp/pass219-pass159-1-21-2/bridge.o
+
+      - name: Run verbatim source through Pass159 VM81 proof and replay
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_pass159_vm81_proof_bridge_1_21_2.c \
+            /tmp/pass219-pass159-1-21-2/bridge.o \
+            /tmp/pass219-pass159-1-21-2/exact.o \
+            -L/tmp/pass159-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-build \
+            -o /tmp/pass219-pass159-1-21-2/test-pass159-proof
+          /tmp/pass219-pass159-1-21-2/test-pass159-proof
+
+      - name: Preserve verbatim source identity
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -

@@ -1,0 +1,181 @@
+name: Pass 219B I8 Sparse Dirty Projection
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_backend/api/runtime_graphics_routes.py'
+      - 'tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c'
+      - 'tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp'
+      - 'docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_OPTIMIZATION.md'
+      - 'docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE.json'
+      - 'docs/operations/restart/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_OPTIMIZATION_RESTART.md'
+      - '.github/workflows/pass219b-i8-sparse-dirty-projection.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  sparse-dirty-projection:
+    name: sparse-dirty-projection (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove validated Pass 219B I7 ancestry
+        run: git merge-base --is-ancestor 6df75bc39fd7c58108b8cf7aee3758341fe345a5 HEAD
+
+      - name: Reject approximate arithmetic in exact sparse planner
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc'),
+          ]
+          for path in paths:
+              text = path.read_text('utf-8')
+              match = re.search(r'\b(float|double)\b', text)
+              if match:
+                  raise SystemExit(f'forbidden approximate token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Reject division and modulo in sparse span planner
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          path = pathlib.Path('hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc')
+          text = path.read_text('utf-8')
+          text = re.sub(r'/\*.*?\*/', '', text, flags=re.S)
+          text = re.sub(r'//.*', '', text)
+          text = re.sub(r'"(?:\\.|[^"\\])*"', '""', text)
+          if '/' in text or '%' in text:
+              raise SystemExit('division/modulo operator found in exact sparse span planner')
+          PY
+
+      - name: Reject new canonical authority exports
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          text = pathlib.Path('hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h').read_text('utf-8')
+          declarations = []
+          lines = text.splitlines()
+          for index, line in enumerate(lines):
+              if 'HHS_EXACT_API' not in line:
+                  continue
+              declaration = line
+              cursor = index + 1
+              while ';' not in declaration and cursor < len(lines):
+                  declaration += ' ' + lines[cursor]
+                  cursor += 1
+              declarations.append(declaration)
+          forbidden_single = {'commit', 'admit', 'persist', 'mutate'}
+          for declaration in declarations:
+              identifiers = re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', declaration)
+              for identifier in identifiers:
+                  token_set = set(identifier.lower().split('_'))
+                  if token_set & forbidden_single:
+                      raise SystemExit(f'forbidden I8 authority export token in {identifier!r}')
+                  if 'write' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I8 Hash72 write export in {identifier!r}')
+                  if 'emit' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I8 Hash72 emit export in {identifier!r}')
+          PY
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219b-i8
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i8/exact.o
+
+      - name: Run I8 exhaustive C conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/i8-c
+          /tmp/pass219b-i8/i8-c
+
+      - name: Run I8 C++ conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/i8-cpp
+          /tmp/pass219b-i8/i8-cpp
+
+      - name: Preserve I7 selective projection conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_selective_projection_1_0.c \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/i7-c
+          /tmp/pass219b-i8/i7-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_selective_projection_1_0.cpp \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/i7-cpp
+          /tmp/pass219b-i8/i7-cpp
+
+      - name: Preserve inherited Pass 219B phase hydration
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/phase-c
+          /tmp/pass219b-i8/phase-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i8/exact.o -o /tmp/pass219b-i8/phase-cpp
+          /tmp/pass219b-i8/phase-cpp
+
+      - name: Validate sparse graphics capability surface
+        run: |
+          python -m py_compile hhs_backend/api/runtime_graphics_routes.py
+          python - <<'PY'
+          import ast
+          import pathlib
+
+          path = pathlib.Path('hhs_backend/api/runtime_graphics_routes.py')
+          tree = ast.parse(path.read_text('utf-8'), filename=str(path))
+          function = next(
+              node for node in tree.body
+              if isinstance(node, ast.FunctionDef) and node.name == 'runtime_graphics_capabilities'
+          )
+          returned = next(node.value for node in ast.walk(function) if isinstance(node, ast.Return))
+          if not isinstance(returned, ast.Dict):
+              raise SystemExit('runtime_graphics_capabilities must return a literal dict')
+          sparse_node = None
+          for key_node, value_node in zip(returned.keys, returned.values):
+              if isinstance(key_node, ast.Constant) and key_node.value == 'sparse_dirty_projection':
+                  sparse_node = value_node
+                  break
+          if sparse_node is None:
+              raise SystemExit('sparse_dirty_projection capability missing')
+          sparse = ast.literal_eval(sparse_node)
+          assert sparse['schema'] == 'HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0'
+          assert sparse['availability'] == 'VALIDATED_CALLABLE_ABI_CANDIDATE'
+          assert sparse['production_active'] is False
+          assert sparse['runtime_binding'] == 'NOT_YET_BOUND_TO_SHIPPED_RENDER_LOOP'
+          assert sparse['dirty_set_completeness_required'] is True
+          assert sparse['incomplete_dirty_set_fallback'] == 'FULL_DERIVED_PROJECTION_PATH'
+          assert sparse['canonical_hash72_commit_allowed'] is False
+          PY
+
+      - name: Validate general evidence and non-device admission policy
+        run: |
+          python -m json.tool docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE.json >/dev/null
+          grep -q 'PERFORMANCE NUMBERS ARE WITNESSES, NOT LAWS\|Performance numbers are witnesses, not laws' docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_OPTIMIZATION.md
+          grep -q 'FULL_DERIVED_PROJECTION_PATH' docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE.json
+          grep -q 'totalDirtySubsetCases.*2550' docs/pass219/PASS_219B_I8_SPARSE_DIRTY_PROJECTION_EVIDENCE.json

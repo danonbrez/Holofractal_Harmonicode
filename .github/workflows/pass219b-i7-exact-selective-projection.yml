@@ -1,0 +1,137 @@
+name: Pass 219B I7 Exact Selective Projection
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219b_selective_projection_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219b_selective_projection_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_backend/api/runtime_graphics_routes.py'
+      - 'tests/pass219/test_pass219b_selective_projection_1_0.c'
+      - 'tests/pass219/test_pass219b_selective_projection_1_0.cpp'
+      - 'docs/pass219/PASS_219B_I7_EXACT_SELECTIVE_PROJECTION_OPTIMIZATION.md'
+      - 'docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json'
+      - 'docs/operations/restart/PASS_219B_I7_EXACT_SELECTIVE_PROJECTION_OPTIMIZATION_RESTART.md'
+      - '.github/workflows/pass219b-i7-exact-selective-projection.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-selective-projection:
+    name: exact-selective-projection (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove frozen Pass 219B I6 ancestry
+        run: git merge-base --is-ancestor ff66e376a44c8b928a9a42c2e6d8aa1846785fc2 HEAD
+
+      - name: Reject approximate arithmetic in exact selector
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          paths = [
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_selective_projection_1_0.h'),
+              pathlib.Path('hhs_runtime/include/hhs_pass219b_selective_projection_1_0.hpp'),
+              pathlib.Path('hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc'),
+          ]
+          for path in paths:
+              text = path.read_text('utf-8')
+              match = re.search(r'\b(float|double)\b', text)
+              if match:
+                  raise SystemExit(f'forbidden approximate token {match.group(1)!r} in {path}')
+          PY
+
+      - name: Reject new canonical authority exports
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          text = pathlib.Path('hhs_runtime/include/hhs_pass219b_selective_projection_1_0.h').read_text('utf-8')
+          declarations = []
+          lines = text.splitlines()
+          for index, line in enumerate(lines):
+              if 'HHS_EXACT_API' not in line:
+                  continue
+              declaration = line
+              cursor = index + 1
+              while ';' not in declaration and cursor < len(lines):
+                  declaration += ' ' + lines[cursor]
+                  cursor += 1
+              declarations.append(declaration)
+          forbidden_single = {'commit', 'admit', 'persist', 'mutate'}
+          for declaration in declarations:
+              identifiers = re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', declaration)
+              for identifier in identifiers:
+                  tokens = identifier.lower().split('_')
+                  token_set = set(tokens)
+                  if token_set & forbidden_single:
+                      raise SystemExit(f'forbidden I7 authority export token in {identifier!r}')
+                  if 'write' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I7 Hash72 write export in {identifier!r}')
+                  if 'emit' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I7 Hash72 emit export in {identifier!r}')
+          PY
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219b-i7
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219b-i7/exact.o
+
+      - name: Run I7 C conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_selective_projection_1_0.c \
+            /tmp/pass219b-i7/exact.o -o /tmp/pass219b-i7/i7-c
+          /tmp/pass219b-i7/i7-c
+
+      - name: Run I7 C++ conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_selective_projection_1_0.cpp \
+            /tmp/pass219b-i7/exact.o -o /tmp/pass219b-i7/i7-cpp
+          /tmp/pass219b-i7/i7-cpp
+
+      - name: Preserve inherited Pass 219B phase hydration
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            /tmp/pass219b-i7/exact.o -o /tmp/pass219b-i7/phase-c
+          /tmp/pass219b-i7/phase-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.cpp \
+            /tmp/pass219b-i7/exact.o -o /tmp/pass219b-i7/phase-cpp
+          /tmp/pass219b-i7/phase-cpp
+
+      - name: Validate graphics capability surface
+        run: |
+          python -m py_compile hhs_backend/api/runtime_graphics_routes.py
+          grep -q 'EXACT_RATIONAL_PRECOMPUTED_IDS_AND_CELL_RANGES' hhs_backend/api/runtime_graphics_routes.py
+          grep -q 'canonical_hash72_commit_allowed.*False' hhs_backend/api/runtime_graphics_routes.py
+
+      - name: Validate frozen evidence JSON and receipt classification
+        run: |
+          python -m json.tool docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json >/dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          evidence = json.loads(Path('docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json').read_text('utf-8'))
+          assert 'receipts' not in evidence
+          assert evidence['canonical_receipt_binding']['hash72_receipt_present'] is False
+          assert evidence['canonical_receipt_binding']['classification'] == 'NONCANONICAL_BENCHMARK_ARTIFACT_DIGESTS_ONLY'
+          assert all(len(value) == 64 for value in evidence['benchmark_artifact_digests_sha256'].values())
+          PY
