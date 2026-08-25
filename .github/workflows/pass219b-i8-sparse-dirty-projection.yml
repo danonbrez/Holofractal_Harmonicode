@@ -3,7 +3,7 @@ name: Pass 219B I8 Sparse Dirty Projection
 on:
   pull_request:
     branches:
-      - agent/pass219b-i7-exact-selective-projection-optimization
+      - main
     paths:
       - 'hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h'
       - 'hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.hpp'
@@ -74,10 +74,28 @@ jobs:
           python - <<'PY'
           import pathlib, re
           text = pathlib.Path('hhs_runtime/include/hhs_pass219b_sparse_dirty_projection_1_0.h').read_text('utf-8')
-          exports = '\n'.join(line for line in text.splitlines() if 'HHS_EXACT_API' in line)
-          bad = re.search(r'\b(commit|admit|persist|write_hash72|emit_hash72)\b', exports)
-          if bad:
-              raise SystemExit(f'forbidden I8 authority export: {bad.group(1)}')
+          declarations = []
+          lines = text.splitlines()
+          for index, line in enumerate(lines):
+              if 'HHS_EXACT_API' not in line:
+                  continue
+              declaration = line
+              cursor = index + 1
+              while ';' not in declaration and cursor < len(lines):
+                  declaration += ' ' + lines[cursor]
+                  cursor += 1
+              declarations.append(declaration)
+          forbidden_single = {'commit', 'admit', 'persist', 'mutate'}
+          for declaration in declarations:
+              identifiers = re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', declaration)
+              for identifier in identifiers:
+                  token_set = set(identifier.lower().split('_'))
+                  if token_set & forbidden_single:
+                      raise SystemExit(f'forbidden I8 authority export token in {identifier!r}')
+                  if 'write' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I8 Hash72 write export in {identifier!r}')
+                  if 'emit' in token_set and 'hash72' in token_set:
+                      raise SystemExit(f'forbidden I8 Hash72 emit export in {identifier!r}')
           PY
 
       - name: Compile cumulative exact ABI
@@ -125,10 +143,17 @@ jobs:
       - name: Validate sparse graphics capability surface
         run: |
           python -m py_compile hhs_backend/api/runtime_graphics_routes.py
-          grep -q 'HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0' hhs_backend/api/runtime_graphics_routes.py
-          grep -q 'dirty_set_completeness_required.*True' hhs_backend/api/runtime_graphics_routes.py
-          grep -q 'incomplete_dirty_set_fallback.*FULL_DERIVED_PROJECTION_PATH' hhs_backend/api/runtime_graphics_routes.py
-          grep -q 'canonical_hash72_commit_allowed.*False' hhs_backend/api/runtime_graphics_routes.py
+          python - <<'PY'
+          from hhs_backend.api.runtime_graphics_routes import runtime_graphics_capabilities
+          sparse = runtime_graphics_capabilities()['sparse_dirty_projection']
+          assert sparse['schema'] == 'HHS_PASS219B_SPARSE_DIRTY_PROJECTION_1_0'
+          assert sparse['availability'] == 'VALIDATED_CALLABLE_ABI_CANDIDATE'
+          assert sparse['production_active'] is False
+          assert sparse['runtime_binding'] == 'NOT_YET_BOUND_TO_SHIPPED_RENDER_LOOP'
+          assert sparse['dirty_set_completeness_required'] is True
+          assert sparse['incomplete_dirty_set_fallback'] == 'FULL_DERIVED_PROJECTION_PATH'
+          assert sparse['canonical_hash72_commit_allowed'] is False
+          PY
 
       - name: Validate general evidence and non-device admission policy
         run: |
