@@ -1,6 +1,6 @@
 # Pass 219 I130 / inherited Pass 196 repair membrane — restart record
 
-Status: `IMPLEMENTED — SQUASH-AWARE DOCUMENTATION-INCLUSIVE EXACT/SYNTHETIC RESEAL PENDING`
+Status: `IMPLEMENTED — REPAIR-FORWARD COMPLETE; DOCUMENTATION-INCLUSIVE EXACT/SYNTHETIC RESEAL PENDING`
 
 ## Repository state
 
@@ -20,6 +20,8 @@ Status: `IMPLEMENTED — SQUASH-AWARE DOCUMENTATION-INCLUSIVE EXACT/SYNTHETIC RE
 - PR #130 squash-aware merge base: `dd7f6aec3408c807c1cde0d6770aefe610c27e29`
 - First complete documentation-inclusive membrane head: `cb29471a906d88d8b08cf516b2d2e009d23172f2`
 - Squash-lineage workflow repair commit: `f52c0e6fff06158170547a457d26166c14695ff3`
+- Seal test-identity workflow repair commit: `041e832843d4d9377b03c02b91bdb6d64e38dd52`
+- Membrane source-evidence identity repair commit: `366a30363ef4d5d6972e6c18e7445d3acebf3603`
 - Merge authorization: NOT GRANTED
 
 ## Classification
@@ -54,8 +56,10 @@ Repaired I130 identities:
 - production API `hhs_backend/api/pass196_integration_routes.py` — blob `39187c3376591c64758019090d9b115c6a43f6ee`
 - browser integration `applications/holofractal_harmonizer/src/pass196-integration.mjs` — blob `1503903c844c9e601133853eed9ed597f6fd2274`
 - projection overlay `applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs` — blob `44254e10f90e929a4f8c1a18a75b3ca14a2c05ed`
-- repair regression `tests/test_hhs_pass196_i130_repair_v2.py` — blob `d0860d89cd8abe596f49c73b7e544511cdaba5d0`
+- repair regression `tests/test_hhs_pass196_i130_repair_v2.py` — repository-proven blob `55d1da0ea58044436646ccd8a331088135515c8f`
 - repair workflow `.github/workflows/pass196-i130-repair-validation.yml` — blob `7a19d3e7faab6e7210e156026300e96550b9afcb`
+
+The earlier `d0860d89cd8abe596f49c73b7e544511cdaba5d0` test identity was stale seal metadata, not the blob installed by the repository commit that added the I130 repair regression. Both the dedicated workflow seal and the Python membrane source-evidence table now use the repository-proven `55d1da0e...` identity.
 
 ## Native I130 membrane
 
@@ -114,11 +118,21 @@ Repository-proven squash identities:
 - `merge-base(0142d9a6199f8acf9f23e287f471e6d80b9acd2a, 37687d479f2a9f1d996d225a4ba3556d9db72a86) = 1d3c7588a242e3a83304f5083c2ec5a974f19399`
 - `merge-base(a2c21e4dab7a0dcb5e3366db2f817b023d413231, 959729c9070399fcdf0015702cd8777079e05dcc) = dd7f6aec3408c807c1cde0d6770aefe610c27e29`
 
-Commit `f52c0e6fff06158170547a457d26166c14695ff3` replaces only those invalid ancestor assertions with exact squash-aware merge-base assertions. Accepted-merge ancestry, runtime/membrane identities, and authority semantics are unchanged.
+Commit `f52c0e6fff06158170547a457d26166c14695ff3` replaced only those invalid ancestor assertions with exact squash-aware merge-base assertions.
+
+### Seal identity repair-forward
+
+Final reseal run `32907664479` on the prior I130 head failed both lanes at `Prove accepted V1 provenance and repaired identities`. Six asserted source identities matched; the regression test assertion alone expected stale blob `d0860d89...` while the repository-installed test is blob `55d1da0e...`.
+
+Commit `041e832843d4d9377b03c02b91bdb6d64e38dd52` repaired the workflow assertion only. On follow-up run `32910552363`, both lanes passed lineage, repaired source identity, Python/JavaScript compilation, no-approximate/no-authority-export gates, and C/C++ exact ABI conformance before failing in `Run repaired Pass 196 membrane preflight`.
+
+That failure exposed the same stale `d0860d89...` identity in `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i130_pass196.py::REPAIRED_BLOBS`. Commit `366a30363ef4d5d6972e6c18e7445d3acebf3603` repair-forwards the membrane table to the repository-proven `55d1da0e...` blob. No runtime, ABI, authority, or Pass196 repair semantics changed.
+
+A fresh dedicated exact/synthetic run was created for `366a3036...`; at this restart-record update both jobs were still queued for hosted runners. That intermediate run is superseded for freeze purposes by the documentation-inclusive head created by this restart-record update.
 
 ## Final reseal requirement
 
-The next exact branch head created by this restart-record update is the documentation-inclusive final reseal candidate. The dedicated workflow `Pass 219 Cumulative Pass 196 Repair Membrane I130` must pass both exact and synthetic lanes on that exact head.
+The exact branch head created by this restart-record update is the documentation-inclusive final reseal candidate. The dedicated workflow `Pass 219 Cumulative Pass 196 Repair Membrane I130` must pass both exact and synthetic lanes on that exact head.
 
 Required lanes prove:
 
@@ -145,13 +159,13 @@ No local/private worktree is required for recovery. Repository-visible Git objec
 
 ## Next action
 
-1. identify the exact head created by this restart-record update;
-2. wait for the dedicated I130 exact/synthetic reseal on that head;
-3. if a lane fails, inspect the executed failing step/log and repair only that defect;
-4. when both lanes are terminal green, update PR #328 metadata to `PASS_219_I130 = FROZEN` and `Pass 196 = REPAIRED_AND_WIRED` without changing repository files;
+1. resolve the exact head created by this restart-record update;
+2. inspect the dedicated I130 exact/synthetic reseal on that exact head;
+3. if a lane fails, repair only the executed evidence-backed defect and checkpoint forward;
+4. when both lanes are terminal green, record PR #328 metadata as `PASS_219_I130 = FROZEN` and `Pass 196 = REPAIRED_AND_WIRED` without changing repository files;
 5. keep PR #328 draft/open/unmerged because merge authorization has not been granted;
-6. next reverse-pass census target after I130 freeze is Pass195.
+6. next reverse-pass census target after I130 freeze is Pass195, whose accepted historical implementation is PR #117 / merge `8bcc0921555ecface13113c8a2620415ddb3fdf1`.
 
 ## Blockers
 
-No implementation blocker is known. Final freeze is gated only on the documentation-inclusive exact/synthetic reseal and any evidence-backed failure it may reveal.
+No known implementation blocker remains after the two stale test-identity repairs. Final freeze is gated on the documentation-inclusive exact/synthetic reseal and any evidence-backed failure it may reveal.
