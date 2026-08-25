@@ -61,7 +61,7 @@ function createPanel() {
   node.id = 'pass197-calibration';
   node.className = 'p197';
   node.innerHTML = `
-    <header><div><h3>Pass 197 A/B Hydration Calibration</h3><p>Exact original-versus-factorized gate trees across 81 VM81 cells × 64 lanes, with replay and lossless simplification witnesses.</p></div><span id="p197-badge" class="p197-badge">NOT RUN</span></header>
+    <header><div><h3>Pass 197 A/B Hydration Calibration</h3><p>Exact original-versus-factorized gate trees across 81 VM81 cells × 64 lanes, with replay and kernel-audited persistence witnesses.</p></div><span id="p197-badge" class="p197-badge">NOT RUN</span></header>
     <div class="p197-grid">
       <div><span>PARAMETER STATES</span><strong id="p197-states">—</strong></div>
       <div><span>USEFUL / ADMITTED</span><strong id="p197-useful">—</strong></div>
@@ -86,10 +86,11 @@ function render(value = {}, output = null) {
   state.status = value;
   const summary = summaryOf(value);
   const closed = Boolean(value.closed);
+  const quarantined = Boolean(value.quarantined);
   const badge = document.querySelector('#p197-badge');
   if (badge) {
-    badge.textContent = state.error ? 'ERROR' : closed ? 'CLOSED' : value.scanned ? 'INCOMPLETE' : 'NOT RUN';
-    badge.className = `p197-badge ${state.error ? 'error' : closed ? 'ready' : ''}`;
+    badge.textContent = state.error || quarantined ? 'ERROR' : closed ? 'CLOSED' : value.scanned ? 'INCOMPLETE' : 'NOT RUN';
+    badge.className = `p197-badge ${state.error || quarantined ? 'error' : closed ? 'ready' : ''}`;
   }
   setText('p197-states', summary.evaluated_parameter_states ?? '—');
   setText('p197-useful', summary.useful_parameter_states == null ? '—' : `${summary.useful_parameter_states} / ${summary.admitted_parameter_states}`);
@@ -98,13 +99,13 @@ function render(value = {}, output = null) {
   setText('p197-savings', saved ? `${saved.numerator}/${saved.denominator}` : '—');
   const view = document.querySelector('#p197-output');
   if (view) {
-    view.textContent = output || state.error || (value.scanned || value.report_hash72
+    view.textContent = output || state.error || value.detail || (value.scanned || value.report_hash72
       ? [
           `closed=${closed}`,
+          `kernel_audited=${summary.kernel_audited_parameter_states ?? '—'}`,
           `mismatches=${summary.mismatch_parameter_states ?? '—'}`,
           `singular_states=${summary.singular_parameter_states ?? '—'}`,
           `domain_rejections=${summary.domain_rejected_parameter_states ?? '—'}`,
-          `replay_deterministic=${value.replay?.deterministic ?? 'see report'}`,
           `report_hash72=${value.report_hash72 || '—'}`,
         ].join('\n')
       : view.textContent);
@@ -117,6 +118,10 @@ function render(value = {}, output = null) {
 }
 
 async function project(value) {
+  // I129: never register a provisional INITIALIZING/DEGRADED object. ObjectRegistry
+  // has immutable identity and no update operation, so projection occurs only from
+  // a verified CLOSED report; this prevents the historical stale-registration bug.
+  if (!value?.closed || !value?.report_hash72) return;
   for (let attempt = 0; attempt < 200; attempt += 1) {
     const runtime = window.HHSHarmonizer;
     if (runtime?.registry) {
@@ -127,11 +132,11 @@ async function project(value) {
             object_type: 'RUNTIME',
             canonical_name: 'HHS_PASS197_AB_HYDRATION_CALIBRATION',
             display_name: 'Pass 197 A/B Hydration Calibration',
-            description: 'Exact parameter-tree calibration, 5,184-address gate verification, replay, and lossless simplification admission.',
+            description: 'Exact parameter-tree calibration, 5,184-address gate verification, inherited kernel audit, replay, and lossless simplification admission.',
             modality_classes: ['VM81_STATE', 'PARAMETER_TREE', 'CALIBRATION_LEDGER', 'HASH72_RECEIPT'],
-            lifecycle_state: value.closed ? 'ACTIVE' : value.scanned ? 'DEGRADED' : 'INITIALIZING',
+            lifecycle_state: 'ACTIVE',
             authority_state: 'VALIDATED_PROJECTION',
-            validation_state: value.closed ? 'EXACT_AB_CLOSURE_VERIFIED' : 'CALIBRATION_PENDING',
+            validation_state: 'EXACT_AB_CLOSURE_VERIFIED',
             capabilities: ['CALIBRATION_STATUS_READ', 'CALIBRATION_RUN_REQUEST', 'CALIBRATION_REPORT_READ'],
             actions: [
               { action_id: 'status', method: 'GET', endpoint: `${API}/status` },
@@ -139,7 +144,7 @@ async function project(value) {
               { action_id: 'report', method: 'GET', endpoint: `${API}/report` },
             ],
             dependencies: ['hhs:runtime:pass196-integrated-environment'],
-            metadata: { contract: value.contract, report_hash72: value.report_hash72, frontend_is_authority: false },
+            metadata: { contract: value.contract, report_hash72: value.report_hash72, repair_schema: value.repair_schema, frontend_is_authority: false },
           }, 'system:pass197-calibration-projection');
         }
       } catch (error) {
@@ -156,7 +161,10 @@ async function refresh() {
   try {
     const status = await request(`${API}/status`);
     render(status);
-    await project(status);
+    if (status.closed) {
+      const report = await request(`${API}/report`, { timeoutMs: 60000 });
+      await project(report);
+    }
   } catch (error) {
     state.error = `${error.name}: ${error.message}`;
     render(state.status || {});
@@ -191,6 +199,7 @@ async function showReport() {
     const summary = report.summary || {};
     render(report, [
       `parameter_states=${summary.evaluated_parameter_states ?? '—'}`,
+      `kernel_audited_states=${summary.kernel_audited_parameter_states ?? '—'}`,
       `useful_states=${summary.useful_parameter_states ?? '—'}`,
       `address_comparisons=${summary.address_comparisons ?? '—'}`,
       `lossless_simplifications=${summary.lossless_simplifications_admitted ?? false}`,
@@ -198,6 +207,7 @@ async function showReport() {
       `replay_deterministic=${report.replay?.deterministic ?? false}`,
       `report_hash72=${report.report_hash72 || '—'}`,
     ].join('\n'));
+    await project(report);
   } catch (error) {
     state.error = `${error.name}: ${error.message}`;
     render(state.status || {});
