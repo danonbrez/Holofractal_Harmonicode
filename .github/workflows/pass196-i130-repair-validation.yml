@@ -1,0 +1,87 @@
+name: Pass 196 I130 Repair Validation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration130-pass196-repair-membrane
+    paths:
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
+      - 'hhs_backend/api/pass196_integration_routes.py'
+      - 'applications/holofractal_harmonizer/src/pass196-integration.mjs'
+      - 'applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass196.projection-refresh.test.mjs'
+      - 'tests/test_hhs_pass196_i130_repair_v2.py'
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - '.github/workflows/pass196-i130-repair-validation.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
+      - 'hhs_backend/api/pass196_integration_routes.py'
+      - 'applications/holofractal_harmonizer/src/pass196-integration.mjs'
+      - 'applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass196.projection-refresh.test.mjs'
+      - 'tests/test_hhs_pass196_i130_repair_v2.py'
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - '.github/workflows/pass196-i130-repair-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install repository dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Preserve accepted Pass196 V1 provenance and current topology
+        run: |
+          test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py)" = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
+          grep -F 'StateDirectory=hhs' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'WorkingDirectory=/opt/hhs/app' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'HHS_PASS196_STATE_ROOT=/var/lib/hhs/pass196' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F -- '--host 127.0.0.1 --port 8080 --workers 1' deploy/digitalocean/hhs-pass196-integrated-environment.service
+
+      - name: Compile repaired Python surfaces
+        run: |
+          python -m py_compile hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+          python -m py_compile hhs_backend/api/pass196_integration_routes.py
+          python -m py_compile tests/test_hhs_pass196_i130_repair_v2.py
+
+      - name: Validate repaired browser projection modules
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs
+          node --check applications/holofractal_harmonizer/src/pass196-integration.mjs
+          node --test applications/holofractal_harmonizer/tests/pass196.projection-refresh.test.mjs
+
+      - name: Enforce fail-closed authority source gates
+        run: |
+          grep -F 'PASS196_VM81_HASH72_RECEIPT_REQUIRED_FOR_PERSISTENCE' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+          grep -F 'PASS196_CURRENT_MANIFEST_QUARANTINED' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+          grep -F 'PASS196_PERSIST_VECTOR_STRICT_BOOL_REQUIRED' hhs_backend/api/pass196_integration_routes.py
+          grep -F 'StrictBool' hhs_backend/api/pass196_integration_routes.py
+          grep -F "authority_state: 'VALIDATED_PROJECTION'" applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs
+          grep -F "frontend_is_authority: false" applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs
+          ! grep -Eq '\b(float|double)\b|Decimal\(|numpy|np\.' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+
+      - name: Run historical Pass196 lifecycle regression
+        run: PYTHONPATH="$PWD" python -m pytest -q tests/test_hhs_pass196_integrated_environment_v1.py
+
+      - name: Run I130 repair regressions
+        run: PYTHONPATH="$PWD" python -m pytest -q tests/test_hhs_pass196_i130_repair_v2.py
+
+      - name: Preserve production route composition
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q tests/test_runtime_bootstrap_gateway.py tests/test_production_visual_server.py
