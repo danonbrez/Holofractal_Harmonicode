@@ -35,6 +35,8 @@ typedef struct HHSExactPass193HypersolidNativeEgressAuthorityWitnessV1 {
     uint32_t explicit_user_action_install_boundary;
     uint32_t nft_identity_execution_authorization_separation;
     uint32_t reversible_url_safe_hash216_transport;
+    uint32_t production_router_registered;
+    uint32_t public_api_federation_preserved;
     uint32_t pass194_successor_preserved;
     uint32_t float_is_canonical_authority;
     uint32_t projection_is_canonical_authority;
@@ -55,9 +57,11 @@ typedef struct HHSExactPass193HypersolidNativeEgressAuthorityWitnessV1 {
     char pass192_reference_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char runtime_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char api_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
+    char visual_server_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char runtime_test_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char api_test_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char native_target_test_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
+    char visual_registration_test_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
     char focused_workflow_blob[HHS_EXACT_PASS193_GIT_SHA_STRLEN];
 } HHSExactPass193HypersolidNativeEgressAuthorityWitnessV1;
 
@@ -76,6 +80,7 @@ typedef struct HHSExactPass219InheritedPass193BindingV1 {
     uint32_t native_target_validation_bound;
     uint32_t portable_package_security_bound;
     uint32_t nft_execution_separation_bound;
+    uint32_t production_registration_bound;
     uint32_t pass194_successor_bound;
     uint32_t no_new_authority_bound;
     uint32_t float_is_canonical_authority;
