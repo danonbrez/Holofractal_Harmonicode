@@ -7,6 +7,7 @@ on:
     paths:
       - 'hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py'
       - 'hhs_backend/api/pass194_storage_training_routes.py'
+      - 'hhs_backend/visual_server.py'
       - 'tests/test_hhs_pass194_multimodal_storage_training_v1.py'
       - 'tests/test_hhs_pass194_storage_training_routes.py'
       - '.github/workflows/pass194-i132-storage-training-validation.yml'
@@ -15,6 +16,7 @@ on:
     paths:
       - 'hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py'
       - 'hhs_backend/api/pass194_storage_training_routes.py'
+      - 'hhs_backend/visual_server.py'
       - 'tests/test_hhs_pass194_multimodal_storage_training_v1.py'
       - 'tests/test_hhs_pass194_storage_training_routes.py'
       - '.github/workflows/pass194-i132-storage-training-validation.yml'
@@ -40,11 +42,12 @@ jobs:
           git merge-base --is-ancestor 714f3f3c5c77eab9714be421811ce4fd650a8e99 HEAD
           git merge-base --is-ancestor b8202201bc92470afdd15d701d16ea102aeb3aab HEAD
           test -f docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md
-      - name: Compile Pass 194 runtime and API
+      - name: Compile Pass 194 runtime, API, and production registration
         run: |
           python -m py_compile \
             hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py \
             hhs_backend/api/pass194_storage_training_routes.py \
+            hhs_backend/visual_server.py \
             tests/test_hhs_pass194_multimodal_storage_training_v1.py \
             tests/test_hhs_pass194_storage_training_routes.py
       - name: Run Pass 194 runtime and API regressions
