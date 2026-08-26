@@ -13,6 +13,17 @@ on:
       - 'tests/test_hhs_pass193_hypersolid_routes.py'
       - 'tests/test_hhs_pass193_native_targets_v1.py'
       - '.github/workflows/pass193-i133-repair-validation.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md'
+      - 'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'hhs_backend/api/pass193_hypersolid_routes.py'
+      - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/test_hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'tests/test_hhs_pass193_hypersolid_routes.py'
+      - 'tests/test_hhs_pass193_native_targets_v1.py'
+      - '.github/workflows/pass193-i133-repair-validation.yml'
   workflow_dispatch:
 
 permissions:
