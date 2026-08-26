@@ -8,10 +8,12 @@ on:
       - 'docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md'
       - 'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py'
       - 'hhs_backend/api/pass193_hypersolid_routes.py'
+      - 'hhs_backend/visual_server.py'
       - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
       - 'tests/test_hhs_pass193_hypersolid_native_egress_v1.py'
       - 'tests/test_hhs_pass193_hypersolid_routes.py'
       - 'tests/test_hhs_pass193_native_targets_v1.py'
+      - 'tests/test_hhs_pass193_visual_registration.py'
       - '.github/workflows/pass193-i133-repair-validation.yml'
   pull_request:
     branches: [main]
@@ -19,10 +21,12 @@ on:
       - 'docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md'
       - 'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py'
       - 'hhs_backend/api/pass193_hypersolid_routes.py'
+      - 'hhs_backend/visual_server.py'
       - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
       - 'tests/test_hhs_pass193_hypersolid_native_egress_v1.py'
       - 'tests/test_hhs_pass193_hypersolid_routes.py'
       - 'tests/test_hhs_pass193_native_targets_v1.py'
+      - 'tests/test_hhs_pass193_visual_registration.py'
       - '.github/workflows/pass193-i133-repair-validation.yml'
   workflow_dispatch:
 
@@ -69,10 +73,12 @@ jobs:
           python -m py_compile \
             hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py \
             hhs_backend/api/pass193_hypersolid_routes.py \
+            hhs_backend/visual_server.py \
             tests/pass192_193/test_pass192_193_contract_invariants.py \
             tests/test_hhs_pass193_hypersolid_native_egress_v1.py \
             tests/test_hhs_pass193_hypersolid_routes.py \
-            tests/test_hhs_pass193_native_targets_v1.py
+            tests/test_hhs_pass193_native_targets_v1.py \
+            tests/test_hhs_pass193_visual_registration.py
 
       - name: Preserve exact canonical arithmetic boundary
         run: |
@@ -107,11 +113,12 @@ jobs:
       - name: Run inherited Pass 192-193 pre-contract suite
         run: python tests/pass192_193/test_pass192_193_contract_invariants.py -v
 
-      - name: Run Pass 193 runtime and API conformance
+      - name: Run Pass 193 runtime, API, and production registration conformance
         run: |
           PYTHONPATH="$PWD" python -m unittest -v \
             tests.test_hhs_pass193_hypersolid_native_egress_v1 \
-            tests.test_hhs_pass193_hypersolid_routes
+            tests.test_hhs_pass193_hypersolid_routes \
+            tests.test_hhs_pass193_visual_registration
 
       - name: Validate x86_64 and ARM64 native targets
         env:
@@ -132,9 +139,11 @@ jobs:
               'docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md',
               'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py',
               'hhs_backend/api/pass193_hypersolid_routes.py',
+              'hhs_backend/visual_server.py',
               'tests/test_hhs_pass193_hypersolid_native_egress_v1.py',
               'tests/test_hhs_pass193_hypersolid_routes.py',
               'tests/test_hhs_pass193_native_targets_v1.py',
+              'tests/test_hhs_pass193_visual_registration.py',
           ]
           payload = {
               'schema': 'HHS_PASS219_I133_PASS193_FOCUSED_REPAIR_EVIDENCE_V1',
@@ -147,6 +156,7 @@ jobs:
                   for path in files
               },
               'native_targets_required': ['linux-x86_64-elf', 'linux-arm64-elf'],
+              'production_registration': '/api/runtime/hypersolids',
               'canonical_float_authority': False,
               'vm81_authority': 'INHERITED_SINGLETON',
           }
