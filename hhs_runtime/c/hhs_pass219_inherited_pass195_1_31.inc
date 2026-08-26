@@ -6,11 +6,11 @@
 static const char P195_PRIMARY_MERGE[] = "8bcc0921555ecface13113c8a2620415ddb3fdf1";
 static const char P195_FROZEN_I130[] = "69743440249dd7a05aa2b4096482d248973f239e";
 static const char P195_HISTORICAL_V1_BLOB[] = "ea7041c026e63445034c7161268faafe436cd2d1";
-static const char P195_REPAIRED_V2_BLOB[] = "d4382d00e06492b06fecc8a2df76c99c5e5f6b51";
+static const char P195_REPAIRED_V2_BLOB[] = "c1cf830a8ede708b62cc052610968f7fc498228d";
 static const char P195_REPAIRED_API_BLOB[] = "e62f59d5c8617a546908fd9ca2bd43998c62cd2e";
 static const char P195_REPAIRED_FRONTEND_BLOB[] = "9153f922193ddadf2e208986e11dc9d57e12f817";
 static const char P195_REPAIR_REGRESSION_BLOB[] = "866a893e30dfd9565b712df9ff9c979395b25a3f";
-static const char P195_REPAIR_WORKFLOW_BLOB[] = "271e2ec78d3e15cfedadf180bee3978ce80ba7f8";
+static const char P195_REPAIR_WORKFLOW_BLOB[] = "f43d6cdb62e8836e075cb4400d9525eaf8f4d491";
 
 static uint32_t p195_version_word(void) {
     return (HHS_EXACT_PASS219_INHERITED_PASS195_VERSION_MAJOR << 16) |
