@@ -12,6 +12,7 @@ from hhs_backend.runtime.hhs_pass194_multimodal_storage_training_v1 import (
     Pass194Runtime,
 )
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+from hhs_runtime.pass163.vmrc import SNAPSHOT_BYTES
 
 
 def authority(index: int) -> dict[str, object]:
@@ -111,7 +112,7 @@ class Pass194RuntimeTests(unittest.TestCase):
 
     def test_encrypted_vector_projection_is_derived_non_authority(self) -> None:
         record = self._workspace_and_file()
-        frame = bytes([7]) * 5184
+        frame = bytes([7]) * SNAPSHOT_BYTES
         projection = self.runtime.store_vector_projection(
             record["file_version_id"],
             frame,
