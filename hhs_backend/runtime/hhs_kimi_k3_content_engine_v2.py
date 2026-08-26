@@ -117,8 +117,6 @@ class KimiK3ContentEngine(KimiK3ContentEngineV1):
         return status
 
     async def health(self) -> Dict[str, Any]:
-        # Let the inherited transport probe run, but seal the final returned object,
-        # never a predecessor status record that is subsequently mutated.
         health = dict(await super().health())
         health.pop("status_root_hash72", None)
         health["version"] = VERSION
@@ -131,8 +129,17 @@ class KimiK3ContentEngine(KimiK3ContentEngineV1):
         response = copy.deepcopy(KimiK3ContentEngineV1._response_schema())
         schema = response["json_schema"]["schema"]
         handoff = schema["properties"]["hhs_native_handoff"]["properties"]
-        handoff["title"].update({"minLength": 1, "maxLength": MAX_HANDOFF_TITLE_CHARS})
-        handoff["story_text"].update({"maxLength": MAX_HANDOFF_STORY_CHARS})
+        # V1 intentionally reuses a single string schema object in several fields.
+        # Replace these two nodes rather than mutating the shared object in place.
+        handoff["title"] = {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": MAX_HANDOFF_TITLE_CHARS,
+        }
+        handoff["story_text"] = {
+            "type": "string",
+            "maxLength": MAX_HANDOFF_STORY_CHARS,
+        }
         style = handoff["style_overrides"]["properties"]
         style["effect_speed"]["maximum"] = 12
         style["title_max_chars"]["minimum"] = 8
