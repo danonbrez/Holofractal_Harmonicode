@@ -20,6 +20,9 @@ on:
       - "tests/test_hhs_pass195_i131_repair_v2.py"
       - ".github/workflows/pass195-i131-repair-validation.yml"
 
+permissions:
+  contents: read
+
 jobs:
   repair-validation:
     runs-on: ubuntu-24.04
