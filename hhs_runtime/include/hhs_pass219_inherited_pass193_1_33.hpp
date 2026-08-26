@@ -35,6 +35,8 @@ public:
     static constexpr bool ordered_phase_history_required() noexcept { return true; }
     static constexpr bool pass192_nesting_preserved() noexcept { return true; }
     static constexpr bool explicit_install_action_required() noexcept { return true; }
+    static constexpr bool production_registration_required() noexcept { return true; }
+    static constexpr bool public_api_federation_preserved() noexcept { return true; }
 };
 
 }  // namespace hhs::rna
