@@ -8,7 +8,6 @@ from typing import Any, Dict
 
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
 from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i116 import ROOT
-from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i132_pass194 import pass194_membrane_source_evidence
 
 VERSION = "PASS_219_CUMULATIVE_PASS_MEMBRANE_1_33"
 PASS193_NUMBER = 193
@@ -29,10 +28,19 @@ API_TEST_PATH = P("tests/test_hhs_pass193_hypersolid_routes.py")
 NATIVE_TEST_PATH = P("tests/test_hhs_pass193_native_targets_v1.py")
 VISUAL_REGISTRATION_TEST_PATH = P("tests/test_hhs_pass193_visual_registration.py")
 FOCUSED_WORKFLOW_PATH = P(".github/workflows/pass193-i133-repair-validation.yml")
+PASS194_CONTRACT_PATH = P("docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md")
+PASS194_MEMBRANE_PATH = P("hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py")
+PASS194_HEADER_PATH = P("hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h")
+PASS194_INC_PATH = P("hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc")
 
 CONTRACT_AUTHORIZATION_COMMIT = "eebc47a52de143df4a9acf807735f576ad0ce844"
 CONTRACT_BASELINE_COMMIT = "c3da7e2b7125754b65f08fb8922a151bf01df2b8"
 FROZEN_I132 = "d311cd243845456851518ce1fef026a7d3cac45e"
+PASS194_AUTHORIZATION_COMMIT = "714f3f3c5c77eab9714be421811ce4fd650a8e99"
+PASS194_CONTRACT_BLOB = "f437461b4cb74b40ba8444c48319ad8f906359cf"
+PASS194_MEMBRANE_BLOB = "4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51"
+PASS194_HEADER_BLOB = "def3dcf6044fb29db58af04e3928cd14c227ce77"
+PASS194_INC_BLOB = "ef1625c9badd2f71929953ec376562834d94ccf0"
 SOURCE_BLOBS = {
     CONTRACT_PATH: "2452a5d5184bd9275e150b4b4afd840928e723fd",
     PRECONTRACT_TEST_PATH: "a72e7b8ab6dc0f891540fe2192d92d80f4a0cf52",
@@ -81,6 +89,31 @@ def _require(path: Path, *fragments: str) -> None:
     for fragment in fragments:
         if fragment not in text:
             raise RuntimeError(f"PASS193_SOURCE_DRIFT:{path}:{fragment}")
+
+
+def _pass194_frozen_successor_evidence() -> Dict[str, Any]:
+    if _git("merge-base", "--is-ancestor", FROZEN_I132, "HEAD") != "":
+        raise RuntimeError("PASS193_FROZEN_I132_NOT_ANCESTOR")
+    expected = {
+        PASS194_CONTRACT_PATH: PASS194_CONTRACT_BLOB,
+        PASS194_MEMBRANE_PATH: PASS194_MEMBRANE_BLOB,
+        PASS194_HEADER_PATH: PASS194_HEADER_BLOB,
+        PASS194_INC_PATH: PASS194_INC_BLOB,
+    }
+    for path, blob in expected.items():
+        historical = _git("rev-parse", f"{FROZEN_I132}:{path}")
+        if historical != blob:
+            raise RuntimeError(f"PASS193_PASS194_FROZEN_SUCCESSOR_DRIFT:{path}")
+    return {
+        "pass_number": 194,
+        "frozen_commit": FROZEN_I132,
+        "contract_authorization_commit": PASS194_AUTHORIZATION_COMMIT,
+        "contract_blob": PASS194_CONTRACT_BLOB,
+        "membrane_blob": PASS194_MEMBRANE_BLOB,
+        "header_blob": PASS194_HEADER_BLOB,
+        "inc_blob": PASS194_INC_BLOB,
+        "successor_preserved": True,
+    }
 
 
 def pass193_membrane_source_evidence() -> Dict[str, Any]:
@@ -154,9 +187,7 @@ def pass193_membrane_source_evidence() -> Dict[str, Any]:
         "Validate x86_64 and ARM64 native targets",
     )
 
-    successor = pass194_membrane_source_evidence()
-    if successor.get("contract_authorization_commit") != "714f3f3c5c77eab9714be421811ce4fd650a8e99":
-        raise RuntimeError("PASS193_PASS194_SUCCESSOR_IDENTITY_DRIFT")
+    successor = _pass194_frozen_successor_evidence()
     return {
         "contract_authorization_commit": CONTRACT_AUTHORIZATION_COMMIT,
         "contract_baseline_commit": CONTRACT_BASELINE_COMMIT,
@@ -259,9 +290,11 @@ def validate_pass193_successor_binding() -> Dict[str, Any]:
     successor = pass193_membrane_source_evidence()["pass194_successor"]
     return {
         "ok": True,
-        "successor_pass": 194,
+        "successor_pass": successor["pass_number"],
+        "successor_frozen_commit": successor["frozen_commit"],
         "successor_contract_authorization": successor["contract_authorization_commit"],
-        "successor_preserved": True,
+        "successor_membrane_blob": successor["membrane_blob"],
+        "successor_preserved": successor["successor_preserved"],
     }
 
 
@@ -310,7 +343,7 @@ def pass193_surface_declaration() -> Dict[str, Any]:
             "pass193_nft_execution_separation",
             "pass193_production_router_registration",
             "pass193_public_api_federation_preserved",
-            "pass193_pass194_successor",
+            "pass193_pass194_frozen_successor",
         ],
         "rejection_codes": [
             "REJECT_PASS193_CONTRACT_DRIFT",
@@ -323,6 +356,7 @@ def pass193_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS193_PACKAGE_AUTOEXEC",
             "REJECT_PASS193_NFT_AUTHORITY_ESCALATION",
             "REJECT_PASS193_PRODUCTION_REGISTRATION_DRIFT",
+            "REJECT_PASS193_FROZEN_SUCCESSOR_DRIFT",
             "REJECT_PASS193_AUTHORITY_ESCALATION",
         ],
         "mutation_policy": "INHERITED_VM81_AUTHORIZED_CANONICAL_MUTATIONS_ONLY",
