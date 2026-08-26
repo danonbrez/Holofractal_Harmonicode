@@ -34,6 +34,7 @@
 #include "hhs_pass219_inherited_pass197_1_29.h"
 #include "hhs_pass219_inherited_pass196_1_30.h"
 #include "hhs_pass219_inherited_pass195_1_31.h"
+#include "hhs_pass219_inherited_pass194_1_32.h"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
 #include "hhs_pass219b_universal_phase_locality_1_0.h"
 #include "hhs_pass219_octonion_runtime_1_19.h"
