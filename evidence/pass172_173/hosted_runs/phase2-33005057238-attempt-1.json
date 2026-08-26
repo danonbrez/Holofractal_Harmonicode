@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass219-iteration133-pass193-repair-membrane",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "35387cb005b9b0e8e0b1909c59cedba3aca33750b0d58d4bc85b493807fe6fe8",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 33005057238,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "76ca925c30ff1f5839999a7285483677bd99c03a"
+}
