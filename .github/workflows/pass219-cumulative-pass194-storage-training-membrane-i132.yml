@@ -1,0 +1,163 @@
+name: Pass 219 Cumulative Pass 194 Storage Training Membrane I132
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration132-pass194-storage-training-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md'
+      - 'hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py'
+      - 'hhs_backend/api/pass194_storage_training_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'tests/test_hhs_pass194_multimodal_storage_training_v1.py'
+      - 'tests/test_hhs_pass194_storage_training_routes.py'
+      - '.github/workflows/pass194-i132-storage-training-validation.yml'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py'
+      - 'tests/pass219/test_pass219_inherited_pass194_1_32.c'
+      - 'tests/pass219/test_pass219_inherited_pass194_1_32.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass194_membrane_i132.py'
+      - 'docs/pass194/PASS_219_I132_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I132_PASS194_STORAGE_TRAINING_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass194-storage-training-membrane-i132.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass194-storage-training-membrane:
+    name: inherited-pass194-storage-training-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I131 and Pass 194 authorization lineage
+        run: |
+          git merge-base --is-ancestor b8202201bc92470afdd15d701d16ea102aeb3aab HEAD
+          test "$(git merge-base b8202201bc92470afdd15d701d16ea102aeb3aab HEAD)" = "b8202201bc92470afdd15d701d16ea102aeb3aab"
+          git merge-base --is-ancestor 714f3f3c5c77eab9714be421811ce4fd650a8e99 HEAD
+          test "$(git rev-parse 714f3f3c5c77eab9714be421811ce4fd650a8e99:docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md)" = "f437461b4cb74b40ba8444c48319ad8f906359cf"
+
+      - name: Prove Pass 194 implementation identities
+        run: |
+          test "$(git hash-object docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md)" = "f437461b4cb74b40ba8444c48319ad8f906359cf"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py)" = "37c7a7dd3ad246674111398c50ee94e580e72d58"
+          test "$(git hash-object hhs_backend/api/pass194_storage_training_routes.py)" = "b414b77d2bf35e5fef3056e6e91da3d7146fc278"
+          test "$(git hash-object hhs_backend/visual_server.py)" = "998852398931f2e3af2da57ec455211f938b2661"
+          test "$(git hash-object tests/test_hhs_pass194_multimodal_storage_training_v1.py)" = "ee7044605fde90f5bd40813de18cdf5d30b6d560"
+          test "$(git hash-object tests/test_hhs_pass194_storage_training_routes.py)" = "7954ea3d45184088ef7f4406a018316075388054"
+          test "$(git hash-object .github/workflows/pass194-i132-storage-training-validation.yml)" = "f5cb94c8ad9f92741dab81ec2b8cdf1661f6c979"
+
+      - name: Compile Pass 194 production and membrane surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py \
+            hhs_backend/api/pass194_storage_training_routes.py \
+            hhs_backend/visual_server.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py \
+            tests/test_hhs_pass194_multimodal_storage_training_v1.py \
+            tests/test_hhs_pass194_storage_training_routes.py \
+            tests/pass219/test_pass219_cumulative_pass194_membrane_i132.py
+
+      - name: Run Pass 194 runtime and API regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass194_multimodal_storage_training_v1 \
+            tests.test_hhs_pass194_storage_training_routes
+
+      - name: Reject approximate native authority and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1|cxx_mutation_authority[[:space:]]*=[[:space:]]*1|vm81_mutation_authority[[:space:]]*=[[:space:]]*1|vector_store_is_source_authority[[:space:]]*=[[:space:]]*1|vector_store_is_consent_authority[[:space:]]*=[[:space:]]*1|training_provider_is_vm81_authority[[:space:]]*=[[:space:]]*1|browser_is_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc
+          grep -F 'out_binding->vector_store_is_source_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc
+          grep -F 'out_binding->training_provider_is_vm81_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc
+          grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc
+
+      - name: Compile cumulative exact ABI and Pass 194 conformance
+        run: |
+          mkdir -p /tmp/pass219-i132-pass194
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i132-pass194/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass194_1_32.c \
+            /tmp/pass219-i132-pass194/exact.o \
+            -o /tmp/pass219-i132-pass194/pass194-c
+          /tmp/pass219-i132-pass194/pass194-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass194_1_32.cpp \
+            /tmp/pass219-i132-pass194/exact.o \
+            -o /tmp/pass219-i132-pass194/pass194-cpp
+          /tmp/pass219-i132-pass194/pass194-cpp
+
+      - name: Run Pass 194 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass194_membrane_i132.py
+
+      - name: Preserve frozen Pass 195 I131 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass195_membrane_i131.py
+
+      - name: Emit I132 seal evidence
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          evidence = {
+              'schema': 'HHS_PASS219_I132_PASS194_SEAL_EVIDENCE_V1',
+              'target': os.environ['TARGET'],
+              'validated_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'frozen_i131': 'b8202201bc92470afdd15d701d16ea102aeb3aab',
+              'pass194_authorization_commit': '714f3f3c5c77eab9714be421811ce4fd650a8e99',
+              'classification': 'MISSING_IMPLEMENTATION_AND_MEMBRANE_EXPOSURE',
+              'pass194_implemented_and_wired': True,
+              'pass195_successor_preserved': True,
+              'default_training_permission': 'DENY',
+              'vector_source_authority': False,
+              'training_provider_vm81_authority': False,
+              'new_authority_minted': False,
+          }
+          with open(f'/tmp/pass219-i132-pass194-{os.environ["TARGET"]}.json', 'w', encoding='utf-8') as handle:
+              json.dump(evidence, handle, sort_keys=True, indent=2)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i132-pass194-${{ matrix.target }}
+          path: /tmp/pass219-i132-pass194-${{ matrix.target }}.json
+          if-no-files-found: error
