@@ -11,10 +11,12 @@ static const char P193_PRECONTRACT_TEST_BLOB[] = "a72e7b8ab6dc0f891540fe2192d92d
 static const char P193_PASS192_REFERENCE_BLOB[] = "bda83c1a8791dd4bd9e807a88e0a419848d1d140";
 static const char P193_RUNTIME_BLOB[] = "c5c961b406a67c75f277299c4c617c15bb4544cf";
 static const char P193_API_BLOB[] = "76482bce7fa1d9940df05b86603ccf43db8bacb2";
+static const char P193_VISUAL_SERVER_BLOB[] = "d09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b";
 static const char P193_RUNTIME_TEST_BLOB[] = "c003362aabf2a7a8cc7b2c9fc424b398b96f7050";
 static const char P193_API_TEST_BLOB[] = "28abf4097fa5cb2ea7aeaaaded896d5eb6f02cd3";
 static const char P193_NATIVE_TARGET_TEST_BLOB[] = "21c9d05101b42fd32eecda5f95aafbae0772b7af";
-static const char P193_FOCUSED_WORKFLOW_BLOB[] = "7339e2f00a7af376a9ba1d9c6a27ca8f4b03e0be";
+static const char P193_VISUAL_REGISTRATION_TEST_BLOB[] = "af461a5be0b8148c941b5fa0e3e78fe10d325dba";
+static const char P193_FOCUSED_WORKFLOW_BLOB[] = "1d6e216f6f4b7dc6666906a8f50f379b8ef7d089";
 
 static uint32_t p193_version_word(void) {
     return (HHS_EXACT_PASS219_INHERITED_PASS193_VERSION_MAJOR << 16) |
@@ -61,6 +63,8 @@ HHSExactStatus hhs_exact_pass219_bind_pass193_hypersolid_native_egress(
         witness->explicit_user_action_install_boundary != 1U ||
         witness->nft_identity_execution_authorization_separation != 1U ||
         witness->reversible_url_safe_hash216_transport != 1U ||
+        witness->production_router_registered != 1U ||
+        witness->public_api_federation_preserved != 1U ||
         witness->pass194_successor_preserved != 1U ||
         witness->float_is_canonical_authority != 0U ||
         witness->projection_is_canonical_authority != 0U ||
@@ -83,9 +87,11 @@ HHSExactStatus hhs_exact_pass219_bind_pass193_hypersolid_native_egress(
         !p193_git(witness->pass192_reference_blob, P193_PASS192_REFERENCE_BLOB) ||
         !p193_git(witness->runtime_blob, P193_RUNTIME_BLOB) ||
         !p193_git(witness->api_blob, P193_API_BLOB) ||
+        !p193_git(witness->visual_server_blob, P193_VISUAL_SERVER_BLOB) ||
         !p193_git(witness->runtime_test_blob, P193_RUNTIME_TEST_BLOB) ||
         !p193_git(witness->api_test_blob, P193_API_TEST_BLOB) ||
         !p193_git(witness->native_target_test_blob, P193_NATIVE_TARGET_TEST_BLOB) ||
+        !p193_git(witness->visual_registration_test_blob, P193_VISUAL_REGISTRATION_TEST_BLOB) ||
         !p193_git(witness->focused_workflow_blob, P193_FOCUSED_WORKFLOW_BLOB))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
@@ -104,6 +110,7 @@ HHSExactStatus hhs_exact_pass219_bind_pass193_hypersolid_native_egress(
     out_binding->native_target_validation_bound = 1U;
     out_binding->portable_package_security_bound = 1U;
     out_binding->nft_execution_separation_bound = 1U;
+    out_binding->production_registration_bound = 1U;
     out_binding->pass194_successor_bound = 1U;
     out_binding->no_new_authority_bound = 1U;
     out_binding->float_is_canonical_authority = 0U;
