@@ -23,9 +23,11 @@ PRECONTRACT_TEST_PATH = P("tests/pass192_193/test_pass192_193_contract_invariant
 PASS192_REFERENCE_PATH = P("hhs_runtime/pass219_fibonacci_compression_reference_v1.py")
 RUNTIME_PATH = P("hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py")
 API_PATH = P("hhs_backend/api/pass193_hypersolid_routes.py")
+VISUAL_SERVER_PATH = P("hhs_backend/visual_server.py")
 RUNTIME_TEST_PATH = P("tests/test_hhs_pass193_hypersolid_native_egress_v1.py")
 API_TEST_PATH = P("tests/test_hhs_pass193_hypersolid_routes.py")
 NATIVE_TEST_PATH = P("tests/test_hhs_pass193_native_targets_v1.py")
+VISUAL_REGISTRATION_TEST_PATH = P("tests/test_hhs_pass193_visual_registration.py")
 FOCUSED_WORKFLOW_PATH = P(".github/workflows/pass193-i133-repair-validation.yml")
 
 CONTRACT_AUTHORIZATION_COMMIT = "eebc47a52de143df4a9acf807735f576ad0ce844"
@@ -37,10 +39,12 @@ SOURCE_BLOBS = {
     PASS192_REFERENCE_PATH: "bda83c1a8791dd4bd9e807a88e0a419848d1d140",
     RUNTIME_PATH: "c5c961b406a67c75f277299c4c617c15bb4544cf",
     API_PATH: "76482bce7fa1d9940df05b86603ccf43db8bacb2",
+    VISUAL_SERVER_PATH: "d09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b",
     RUNTIME_TEST_PATH: "c003362aabf2a7a8cc7b2c9fc424b398b96f7050",
     API_TEST_PATH: "28abf4097fa5cb2ea7aeaaaded896d5eb6f02cd3",
     NATIVE_TEST_PATH: "21c9d05101b42fd32eecda5f95aafbae0772b7af",
-    FOCUSED_WORKFLOW_PATH: "7339e2f00a7af376a9ba1d9c6a27ca8f4b03e0be",
+    VISUAL_REGISTRATION_TEST_PATH: "af461a5be0b8148c941b5fa0e3e78fe10d325dba",
+    FOCUSED_WORKFLOW_PATH: "1d6e216f6f4b7dc6666906a8f50f379b8ef7d089",
 }
 REQUIRED_OPERATIONS = (
     "validate_pass193_contract_and_lineage",
@@ -49,6 +53,7 @@ REQUIRED_OPERATIONS = (
     "validate_pass193_native_egress_boundary",
     "validate_pass193_package_nft_boundary",
     "validate_pass193_api_transport_boundary",
+    "validate_pass193_production_registration_boundary",
     "validate_pass193_successor_binding",
     "validate_pass193_no_new_authority",
 )
@@ -115,6 +120,15 @@ def pass193_membrane_source_evidence() -> Dict[str, Any]:
         "authority_execution",
     )
     _require(
+        VISUAL_SERVER_PATH,
+        "pass193_hypersolid_router",
+        '/api/runtime/hypersolids/status',
+        "app.include_router(pass193_hypersolid_router)",
+        '"pass193_hypersolid_api": "/api/runtime/hypersolids"',
+        '"pass193_hypersolid_native_egress": "HHS-P193-RHFM-EPRP-NF-NC-SNFTE-VM81-H72-H216"',
+        "PUBLIC_API_REGISTRATION = register_public_api_federation(app)",
+    )
+    _require(
         RUNTIME_TEST_PATH,
         "test_ordered_exact_rotations_preserve_noncommutative_history",
         "test_pass192_nesting_witness_is_exact_and_address_sensitive",
@@ -128,9 +142,15 @@ def pass193_membrane_source_evidence() -> Dict[str, Any]:
         "HHS_PASS193_REQUIRE_NATIVE_TARGETS",
     )
     _require(
+        VISUAL_REGISTRATION_TEST_PATH,
+        "test_pass193_router_is_explicitly_registered_before_public_federation",
+        "test_system_status_exposes_pass193_api_and_contract_identity",
+    )
+    _require(
         FOCUSED_WORKFLOW_PATH,
         "Prove frozen I132 and Pass 193 authorization lineage",
         "Preserve exact canonical arithmetic boundary",
+        "Run Pass 193 runtime, API, and production registration conformance",
         "Validate x86_64 and ARM64 native targets",
     )
 
@@ -223,6 +243,18 @@ def validate_pass193_api_transport_boundary() -> Dict[str, Any]:
     }
 
 
+def validate_pass193_production_registration_boundary() -> Dict[str, Any]:
+    pass193_membrane_source_evidence()
+    return {
+        "ok": True,
+        "production_router_registered": True,
+        "registration_precedes_public_federation": True,
+        "public_api_federation_preserved": True,
+        "system_status_api_exposed": True,
+        "canonical_server_remains_runtime_authority": True,
+    }
+
+
 def validate_pass193_successor_binding() -> Dict[str, Any]:
     successor = pass193_membrane_source_evidence()["pass194_successor"]
     return {
@@ -247,6 +279,7 @@ def validate_pass193_no_new_authority() -> Dict[str, Any]:
         "projection_authority": False,
         "package_autoexec_authority": False,
         "nft_identity_execution_authority": False,
+        "public_api_federation_is_vm81_authority": False,
         "singleton_vm81_authority_remains_inherited": True,
     }
 
@@ -275,6 +308,8 @@ def pass193_surface_declaration() -> Dict[str, Any]:
             "pass193_package_path_safety",
             "pass193_explicit_install_action",
             "pass193_nft_execution_separation",
+            "pass193_production_router_registration",
+            "pass193_public_api_federation_preserved",
             "pass193_pass194_successor",
         ],
         "rejection_codes": [
@@ -287,6 +322,7 @@ def pass193_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS193_ARCHIVE_TRAVERSAL",
             "REJECT_PASS193_PACKAGE_AUTOEXEC",
             "REJECT_PASS193_NFT_AUTHORITY_ESCALATION",
+            "REJECT_PASS193_PRODUCTION_REGISTRATION_DRIFT",
             "REJECT_PASS193_AUTHORITY_ESCALATION",
         ],
         "mutation_policy": "INHERITED_VM81_AUTHORIZED_CANONICAL_MUTATIONS_ONLY",
@@ -330,6 +366,7 @@ OPERATIONS = {
     "validate_pass193_native_egress_boundary": validate_pass193_native_egress_boundary,
     "validate_pass193_package_nft_boundary": validate_pass193_package_nft_boundary,
     "validate_pass193_api_transport_boundary": validate_pass193_api_transport_boundary,
+    "validate_pass193_production_registration_boundary": validate_pass193_production_registration_boundary,
     "validate_pass193_successor_binding": validate_pass193_successor_binding,
     "validate_pass193_no_new_authority": validate_pass193_no_new_authority,
 }
