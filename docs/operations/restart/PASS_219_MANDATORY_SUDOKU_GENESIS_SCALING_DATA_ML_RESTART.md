@@ -220,3 +220,21 @@ Repair:
 This converts an over-broad historical freeze into two typed checks:
 1. semantic files remain frozen;
 2. build metadata must expose the exact ABI transitive dependency graph.
+
+
+## Repair-forward integration checkpoint — propagated Makefile freeze repair
+
+After the exact ABI build graph repair was validated by the dedicated adapter and VM81 workflows, the full PR matrix exposed three additional historical workflows whose semantic freeze lists also included `Makefile`:
+
+- `Pass 219 Inherited Manifold Authority 1.21.5` — run `33100521931`
+- `Pass 219 I121 Runtime Validation Membrane` — run `33100521504`
+- `Pass 219 Authority Router 1.21.6` — run `33100521850`
+
+All three failures were confined to the freeze step and showed only the exact ABI dependency-graph Makefile delta.
+
+Repair applied consistently:
+- retain the historical diff freeze over semantic/runtime dependencies;
+- remove `Makefile` from the semantic freeze set;
+- require the exact ABI dependency declarations explicitly in the same step.
+
+No manifold, authority-router, Pass191, Pass169, VM81, Hash72, autocomposer, or constraint runtime semantics are modified by this repair.
