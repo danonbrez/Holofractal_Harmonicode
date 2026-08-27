@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from fractions import Fraction
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -694,7 +695,10 @@ class Pass192Runtime:
     def _record_path(root: Path, identity: str) -> Path:
         if not isinstance(identity, str) or len(identity) != 216:
             raise Pass192Error("HHS_P192_HASH216_IDENTITY_INVALID")
-        return root / (_hash72("HHS-P192-FILE", {"identity": identity}) + ".json")
+        locator = hashlib.sha256(
+            b"HHS-P192-FILE\\0" + identity.encode("utf-8")
+        ).hexdigest()
+        return root / (locator + ".json")
 
     def _read_index(self) -> dict[str, Any]:
         try:
