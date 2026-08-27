@@ -1,0 +1,247 @@
+name: Pass 219 Mandatory Sudoku Genesis Scaling Data ML
+
+on:
+  push:
+    branches:
+      - agent/pass219-mandatory-sudoku-genesis-scaling-data-ml
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h'
+      - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp'
+      - 'hhs_runtime/c/hhs_pass219_mandatory_genesis_scaling_1_22.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
+      - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.c'
+      - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.cpp'
+      - 'tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py'
+      - 'docs/pass219/**'
+      - 'whitepapers/HHS_PASS219_*REV5.md'
+      - 'benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp'
+      - 'benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py'
+      - '.github/workflows/pass219-mandatory-sudoku-genesis-scaling-data-ml.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h'
+      - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp'
+      - 'hhs_runtime/c/hhs_pass219_mandatory_genesis_scaling_1_22.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
+      - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.c'
+      - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.cpp'
+      - 'tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py'
+      - 'docs/pass219/**'
+      - 'whitepapers/HHS_PASS219_*REV5.md'
+      - 'benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp'
+      - 'benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py'
+      - '.github/workflows/pass219-mandatory-sudoku-genesis-scaling-data-ml.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-pass219-data-ml:
+    name: mandatory-genesis-scaling (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove cumulative base and build synthetic when requested
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 634db40aaf57ec087b7353d6d9205d896622adb4 HEAD
+          git merge-base --is-ancestor 71572b53746a8f8f56245641128a4394d5d0e1b5 HEAD
+          if [ "${{ matrix.target }}" = "synthetic" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
+            git fetch origin main
+            git config user.name "hhs-ci"
+            git config user.email "hhs-ci@invalid.local"
+            head_sha="$(git rev-parse HEAD)"
+            git checkout -B pass219-122-synthetic origin/main
+            git merge --no-ff --no-edit "$head_sha"
+          fi
+          echo "VALIDATION_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python packages
+        run: python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Parse normative contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json >/dev/null
+          python - <<'PY'
+          import json
+          p='contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['schema'] == 'HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22'
+          assert d['version'] == '1.22.0'
+          assert d['mandatory_scope']['all_pass219_data_processing'] is True
+          assert d['mandatory_scope']['all_pass219_machine_learning'] is True
+          assert d['cumulative_inheritance']['preserves_singleton_vm81_authority'] is True
+          assert d['genesis_data_plane']['addresses'] == 5184
+          assert d['genesis_data_plane']['zero_sum_required'] == [
+              'all rows','all columns','all 3x3 blocks','both diagonals'
+          ]
+          PY
+
+      - name: Reject approximate arithmetic in new canonical module
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h             hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp             hhs_runtime/c/hhs_pass219_mandatory_genesis_scaling_1_22.inc
+
+      - name: Compile cumulative exact ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-122 artifacts/pass219/mandatory-data-ml
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-122/exact.o
+
+      - name: Run mandatory Genesis scaling C conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.c             /tmp/pass219-122/exact.o             -o /tmp/pass219-122/genesis-c
+          /tmp/pass219-122/genesis-c
+
+      - name: Run mandatory Genesis scaling C++ conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.cpp             /tmp/pass219-122/exact.o             -o /tmp/pass219-122/genesis-cpp
+          /tmp/pass219-122/genesis-cpp
+
+      - name: Validate mandatory Pass 219 registration
+        run: |
+          python -m pytest -q --tb=short tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py
+          python tests/pass219/test_pass219_execution_composer_registration_v1.py
+
+      - name: Preserve RNA execution composer C and C++ ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_execution_composer_1_14.c             /tmp/pass219-122/exact.o             -o /tmp/pass219-122/rna-composer-c
+          /tmp/pass219-122/rna-composer-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_execution_composer_1_14.cpp             /tmp/pass219-122/exact.o             -o /tmp/pass219-122/rna-composer-cpp
+          /tmp/pass219-122/rna-composer-cpp
+
+      - name: Preserve Pass 219B I1 I5 I7 I8 C and C++ conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          for stem in             test_pass219b_phase_quantized_hydration_1_0             test_pass219b_universal_phase_locality_1_0             test_pass219b_selective_projection_1_0             test_pass219b_sparse_dirty_projection_1_0
+          do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include               "tests/pass219/${stem}.c" /tmp/pass219-122/exact.o               -o "/tmp/pass219-122/${stem}-c"
+            "/tmp/pass219-122/${stem}-c"
+            g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include               "tests/pass219/${stem}.cpp" /tmp/pass219-122/exact.o               -o "/tmp/pass219-122/${stem}-cpp"
+            "/tmp/pass219-122/${stem}-cpp"
+          done
+
+      - name: Build inherited Pass 205 and Pass 207 native runtimes
+        run: |
+          python -c 'from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))'
+          python -c 'from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))'
+
+      - name: Preserve Pass 207 and Pass 208 accelerator semantics
+        run: |
+          python -m pytest -q --tb=short             tests/test_hhs_pass207_gpu_driver_v1.py             tests/test_hhs_pass208_gpu_branch_manifold_v1.py
+
+      - name: Re-run actual Pass 208 phase-local CPU reference composition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py             artifacts/pass219/mandatory-data-ml/pass208_cpu_reference.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/mandatory-data-ml/pass208_cpu_reference.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['backend'] == 'CPU_REFERENCE'
+          assert d['physical_gpu'] is False
+          assert d['baseline_logical_lane_dispatches'] == 839808
+          assert d['phase_logical_lane_dispatches'] == 10368
+          assert d['work_reduction_x1000'] == 81000
+          assert d['child_state_projection_equal'] is True
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Re-run composition benchmark against cumulative ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp             /tmp/pass219-122/exact.o             -o /tmp/pass219-122/composition-bench
+          /tmp/pass219-122/composition-bench             artifacts/pass219/mandatory-data-ml/composition.json
+          python -m json.tool artifacts/pass219/mandatory-data-ml/composition.json >/dev/null
+
+      - name: Verify standalone VM81 remains exact
+        shell: bash
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace
+
+      - name: Validate white-paper and documentation binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22'             whitepapers/HHS_PASS219_SUDOKU_QUDIT_GENESIS_DATA_PLANE_REV5.md
+          grep -q '71572b53746a8f8f56245641128a4394d5d0e1b5'             whitepapers/HHS_PASS219_DETERMINISTIC_SCALING_COMPOSITION_REV5.md
+          grep -q 'Pass 219 1.22 mandatory Genesis data-plane addendum'             docs/pass219/APPENDIX_B_HYDRATION_ROM_COORDINATE_AND_ABI_CLASS_MATRIX.md
+          grep -q 'Pass 219 1.22 mandatory Genesis normalization versus Genesis replay'             docs/pass219/APPENDIX_C_POST_PASS218_INDEXED_REUSE_AND_PROOF_EXPORT_POLICY.md
+
+      - name: Emit validation evidence
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          evidence = {
+              'schema': 'HHS_PASS219_MANDATORY_GENESIS_SCALING_VALIDATION_V1',
+              'validation_head': os.environ['VALIDATION_HEAD'],
+              'matrix_target': '${{ matrix.target }}',
+              'genesis_cells': 81,
+              'genesis_addresses': 5184,
+              'mandatory_work_classes': 12,
+              'pass208_lane_baseline': 839808,
+              'pass208_lane_selected': 10368,
+              'phase_local_work_reduction_x1000': 81000,
+              'canonical_authority_changed': False,
+              'physical_gpu_measured': False,
+              'result': 'PASS',
+          }
+          with open('artifacts/pass219/mandatory-data-ml/validation.json','w',encoding='utf-8') as f:
+              json.dump(evidence,f,indent=2,sort_keys=True)
+              f.write('\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-mandatory-genesis-scaling-${{ matrix.target }}
+          path: artifacts/pass219/mandatory-data-ml/*.json
+          if-no-files-found: error

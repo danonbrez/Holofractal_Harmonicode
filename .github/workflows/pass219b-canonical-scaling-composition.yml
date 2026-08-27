@@ -1,0 +1,221 @@
+name: Pass 219B Canonical Scaling Composition Benchmark
+
+on:
+  push:
+    branches:
+      - agent/pass219b-canonical-scaling-composition-benchmark
+    paths:
+      - 'benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp'
+      - 'benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py'
+      - 'docs/operations/restart/PASS_219B_CANONICAL_SCALING_COMPOSITION_BENCHMARK_RESTART.md'
+      - '.github/workflows/pass219b-canonical-scaling-composition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scaling-composition:
+    name: scaling-composition (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+
+    steps:
+      - name: Checkout benchmark head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Build exact or synthetic current-main candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 634db40aaf57ec087b7353d6d9205d896622adb4 HEAD
+          if [ "${{ matrix.target }}" = "synthetic" ]; then
+            git fetch origin main
+            git config user.name "hhs-ci"
+            git config user.email "hhs-ci@invalid.local"
+            benchmark_head="$(git rev-parse HEAD)"
+            git checkout -B pass219b-scaling-synthetic origin/main
+            git merge --no-ff --no-edit "$benchmark_head"
+            echo "SYNTHETIC_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          else
+            echo "SYNTHETIC_HEAD=NOT_APPLICABLE" >> "$GITHUB_ENV"
+          fi
+          echo "VALIDATION_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Reject accidental implementation or authority changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only 634db40aaf57ec087b7353d6d9205d896622adb4...HEAD)"
+          printf '%s\n' "$changed"
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            case "$path" in
+              benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp|\
+              benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py|\
+              docs/operations/restart/PASS_219B_CANONICAL_SCALING_COMPOSITION_BENCHMARK_RESTART.md|\
+              .github/workflows/pass219b-canonical-scaling-composition.yml)
+                ;;
+              *)
+                echo "unexpected changed path: $path" >&2
+                exit 1
+                ;;
+            esac
+          done <<< "$changed"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Compile cumulative exact ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219b-compose artifacts/pass219b/composition
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219b-compose/exact.o
+
+      - name: Compile exact composition benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp \
+            /tmp/pass219b-compose/exact.o \
+            -o /tmp/pass219b-compose/composition-bench
+
+      - name: Run exact composition matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          /tmp/pass219b-compose/composition-bench \
+            artifacts/pass219b/composition/composition.json
+          python -m json.tool artifacts/pass219b/composition/composition.json >/dev/null
+
+      - name: Re-run inherited I2 phase locality benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219b/pass219b_phase_locality_benchmark.cpp \
+            /tmp/pass219b-compose/exact.o \
+            -o /tmp/pass219b-compose/phase-locality
+          /tmp/pass219b-compose/phase-locality \
+            artifacts/pass219b/composition/phase_locality.json
+          python -m json.tool artifacts/pass219b/composition/phase_locality.json >/dev/null
+
+      - name: Build inherited Pass 205 and Pass 207 native runtimes
+        run: |
+          python -c 'from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))'
+          python -c 'from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))'
+
+      - name: Re-run actual Pass 208 CPU reference branch manifold
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py \
+            artifacts/pass219b/composition/pass208_cpu_reference.json
+          python -m json.tool artifacts/pass219b/composition/pass208_cpu_reference.json >/dev/null
+
+      - name: Decide exact composition from fresh evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py \
+            artifacts/pass219b/composition/composition.json \
+            artifacts/pass219b/composition/phase_locality.json \
+            artifacts/pass219b/composition/pass208_cpu_reference.json \
+            artifacts/pass219b/composition/decision.json
+          python -m json.tool artifacts/pass219b/composition/decision.json >/dev/null
+
+      - name: Preserve Pass 219B exact C and C++ conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          for stem in \
+            test_pass219b_phase_quantized_hydration_1_0 \
+            test_pass219b_universal_phase_locality_1_0 \
+            test_pass219b_selective_projection_1_0 \
+            test_pass219b_sparse_dirty_projection_1_0
+          do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+              "tests/pass219/${stem}.c" /tmp/pass219b-compose/exact.o \
+              -o "/tmp/pass219b-compose/${stem}-c"
+            "/tmp/pass219b-compose/${stem}-c"
+
+            g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+              "tests/pass219/${stem}.cpp" /tmp/pass219b-compose/exact.o \
+              -o "/tmp/pass219b-compose/${stem}-cpp"
+            "/tmp/pass219b-compose/${stem}-cpp"
+          done
+
+      - name: Preserve Pass 207 and Pass 208 accelerator semantics
+        run: |
+          python -m pytest -q --tb=short \
+            tests/test_hhs_pass207_gpu_driver_v1.py \
+            tests/test_hhs_pass208_gpu_branch_manifold_v1.py
+
+      - name: Verify no approximate arithmetic decides the composition
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -En '\b(float|double)\b' \
+            benchmarks/pass219b/pass219b_canonical_scaling_composition_benchmark.cpp
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          path = Path('benchmarks/pass219b/analyze_pass219b_canonical_scaling_composition.py')
+          tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
+          floats = [
+              n.value for n in ast.walk(tree)
+              if isinstance(n, ast.Constant) and isinstance(n.value, float)
+          ]
+          assert not floats, floats
+          print('NO_APPROXIMATE_COMPOSITION_AUTHORITY=1')
+          PY
+
+      - name: Publish composition summary
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219b/composition/decision.json', encoding='utf-8'))
+          e=d['portable_deterministic_evidence']
+          r=e['representative_one_third_dirty7']
+          print('## Pass 219B scaling composition')
+          print(f"- classification: {d['classification']}")
+          print(f"- semantic equality: {d['semantic_equality']}")
+          print(f"- Pass208 phase-local lanes: {e['phase_locality_baseline_lanes']} -> {e['phase_locality_selected_lanes']}")
+          print(f"- one-third projection: {r['authoritative_source_entities']} -> {r['selected_projection_entities']}")
+          print(f"- 7-dirty-cell sparse update: {r['selected_projection_entities']} -> {r['dirty_update_entities']}")
+          print(f"- maximum current phase-locality planner depth: {e['phase_recursive_max_current_depth']}")
+          print(f"- reduction at that depth for one exact origin/layer: {e['phase_recursive_reduction_at_max_depth']}")
+          print('- canonical authority changed: false')
+          print('- physical GPU timing in this run: false')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219b-canonical-scaling-composition-${{ matrix.target }}
+          path: artifacts/pass219b/composition/*.json
+          if-no-files-found: error

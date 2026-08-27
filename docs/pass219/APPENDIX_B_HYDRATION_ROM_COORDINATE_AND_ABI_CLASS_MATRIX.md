@@ -250,3 +250,68 @@ B-TEST-08  BigInt/byte round-trip preserves all authoritative fields
 B-TEST-09  bounded hydration does not allocate the full theoretical address space
 B-TEST-10  restart reconstructs the same coordinate tuple and Hash72/Hash216 lineage exactly
 ```
+
+
+## B11. Pass 219 1.22 mandatory Genesis data-plane addendum
+
+Pass 219 1.22 makes the inherited Sudoku/Lo Shu geometry mandatory for every Pass 219 data-processing and machine-learning execution surface.
+
+The canonical Pass 219 empty data-plane state is the existing repository diagonal Sudoku topology with exact trinary projection:
+
+```text
+trit(s) = (s mod 3) - 1
+```
+
+Because every Sudoku row, column, 3x3 block, and both diagonals is a permutation of `0..8`, every such unit has exact trinary sum zero.
+
+Every cell additionally carries:
+
+```text
+cell81
+row9
+column9
+sudoku_symbol9
+trit
+local Lo Shu value
+ordered phase channel
+```
+
+The local phase channel is bound by the inherited Lo Shu mapping:
+
+```text
+4->x, 9->y, 2->z,
+3->w, 5->1, 7->xy,
+8->yx, 1->zw, 6->wz
+```
+
+The Genesis state is an initialized Hydration ROM empty state:
+
+```text
+addressable geometry initialized = true
+hydrated payload present = false
+```
+
+It is not an instruction to allocate the full 51,648,192-state manifold or any deeper phase-projected manifold.
+
+## B12. Pass 219 1.22 ABI additions
+
+| Formal capability | Public type/symbol | Authority |
+|---|---|---|
+| canonical empty Genesis qudit | `HHSExactPass219GenesisDescriptorV1` | normalization only |
+| Genesis cell | `HHSExactPass219GenesisCellV1` | normalization only |
+| 5,184 address | `HHSExactPass219GenesisAddressV1` | inherited coordinate view |
+| mandatory scaling request | `HHSExactPass219MandatoryScalingRequestV1` | planning only |
+| mandatory scaling plan | `HHSExactPass219MandatoryScalingPlanV1` | planning only |
+| scaling witness | `HHSExactPass219MandatoryScalingWitnessV1` | verification only |
+| C++ Genesis view | `hhs::rna::Pass219GenesisQuditView` | no mutation authority |
+| C++ scaling plan | `hhs::rna::Pass219MandatoryScalingPlan` | no mutation authority |
+
+New mandatory tests add:
+
+```text
+B-TEST-11  all Sudoku rows/columns/blocks/diagonals are exact permutations
+B-TEST-12  all required trinary unit sums equal zero
+B-TEST-13  all 81 Lo Shu/phase-channel bindings equal the canonical local map
+B-TEST-14  all 5,184 Genesis addresses round-trip exactly
+B-TEST-15  all Pass 219 data/ML work classes require the mandatory Genesis/scaling plan
+```

@@ -46,15 +46,16 @@ jobs:
           git merge-base --is-ancestor a1a55a4f621ff3678f5af81119439e9558cf9db4 HEAD
           git merge-base --is-ancestor d95fa6116a46b42594e9849e46cce50216d55d68 HEAD
 
-      - name: Prove frozen runtime dependencies and Makefile are untouched
+      - name: Prove frozen semantic runtime dependencies are untouched
         run: |
           git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
-            Makefile \
             hhs_runtime/hhs_runtime_constraint_enforcement_binding_v1.py \
             hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py \
             hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
             HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
             native_projects/hhs_pass191_dyadic_quartic_phase_lattice
+          grep -F 'EXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)' Makefile
+          grep -F '$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS)' Makefile
 
       - name: Require read-only kernel-derived validation declarations
         run: |
