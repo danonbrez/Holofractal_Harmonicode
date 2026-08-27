@@ -2,7 +2,7 @@
   "schema": "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22",
   "version": "1.22.0",
   "pass": 219,
-  "status": "NORMATIVE_IMPLEMENTATION_AND_VALIDATION_REQUIRED",
+  "status": "VALIDATED_IMPLEMENTED_READY_FOR_MERGE_TARGET_VERIFICATION_PENDING",
   "repository": "danonbrez/Holofractal_Harmonicode",
   "base_authority": {
     "main": "634db40aaf57ec087b7353d6d9205d896622adb4",
@@ -290,5 +290,38 @@
     "existing Pass219B Pass207 Pass208 RNA and VM81 conformance stays green",
     "exact and synthetic current-main CI pass",
     "target main is verified after merge"
+  ],
+  "implementation_validation": {
+    "implementation_head": "6669cb6e26959eeeb8ecb234d0d4a008c9aa996d",
+    "workflow_run": 33076820477,
+    "exact_job": 98533059748,
+    "synthetic_job": 98533059467,
+    "exact_artifact": {
+      "id": 9648228355,
+      "sha256": "7d7d87b21bb52c0c8fdf38b14a127cc9a4098629e4ebc3be3ff3e2f4c4e8b3ff"
+    },
+    "synthetic_artifact": {
+      "id": 9648237274,
+      "sha256": "6f620030224ebddb41fca53fe2ea5e9621fc6abc32fd9cc0c5c3e39b3ed07fd0"
+    },
+    "cumulative_exact_abi_compile": true,
+    "genesis_c_conformance": true,
+    "genesis_cpp_conformance": true,
+    "all_5184_addresses_round_trip": true,
+    "mandatory_registration_conformance": true,
+    "rna_execution_composer_preserved": true,
+    "pass219b_i1_i5_i7_i8_preserved": true,
+    "pass207_pass208_regression_tests": "5 passed",
+    "pass208_cpu_reference_equal": true,
+    "standalone_vm81_exact": true,
+    "composition_benchmark_pass": true,
+    "canonical_authority_changed": false,
+    "physical_gpu_measured": false,
+    "target_main_verified": false
+  },
+  "validation_notes": [
+    "The first validation attempt failed only because the tamper negative-test fixture assigned the cell its existing trit value; the fixture was repaired without changing implementation semantics.",
+    "Wall-clock timing is observational and is not used as canonical selection authority.",
+    "Final target-main verification remains a post-merge closure gate."
   ]
 }

@@ -418,3 +418,34 @@ The 1.22 implementation is complete only when:
 14. the validated branch is merged and target main is verified.
 
 Until those gates pass, the contract is normative but not closed.
+
+
+## 17. Implementation validation receipt
+
+The 1.22 implementation reached dependency-scoped exact and synthetic green validation before merge.
+
+```text
+implementation head  6669cb6e26959eeeb8ecb234d0d4a008c9aa996d
+workflow run         33076820477
+exact job            98533059748  SUCCESS
+synthetic job        98533059467  SUCCESS
+exact artifact       9648228355
+exact artifact sha   7d7d87b21bb52c0c8fdf38b14a127cc9a4098629e4ebc3be3ff3e2f4c4e8b3ff
+synthetic artifact   9648237274
+synthetic sha        6f620030224ebddb41fca53fe2ea5e9621fc6abc32fd9cc0c5c3e39b3ed07fd0
+```
+
+The validation proved:
+
+- the cumulative exact ABI compiles under C11 warnings-as-errors;
+- the new C and C++ Genesis/scaling conformance passes;
+- all 5,184 Genesis addresses round-trip;
+- all declared Pass 219 data/ML registrations are bound to the mandatory guard;
+- inherited RNA execution-composer conformance remains green;
+- inherited Pass 219B I1/I5/I7/I8 conformance remains green;
+- Pass 207/208 regression is green and the actual Pass 208 CPU-reference candidate projection remains exactly equal;
+- the prior deterministic composition benchmark remains green against the cumulative ABI;
+- standalone VM81 exact verification remains green;
+- no new canonical mutation, persistence, Hash72, or floating-point authority is introduced.
+
+A documentation/contract seal rerun and target-main verification remain the final closure steps.
