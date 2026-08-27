@@ -24,6 +24,7 @@ from hhs_backend.api.graphics_hydration_routes import router as graphics_hydrati
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.kimi_k3_content_routes import router as kimi_k3_content_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass192_fibonacci_routes import router as pass192_fibonacci_router
 from hhs_backend.api.pass193_hypersolid_routes import router as pass193_hypersolid_router
 from hhs_backend.api.pass194_storage_training_routes import router as pass194_storage_training_router
 from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
@@ -58,6 +59,8 @@ if not _route_exists("/api/runtime/application-factory/status"):
     app.include_router(application_factory_router)
 if not _route_exists("/api/runtime/storybook-reel/status"):
     app.include_router(storybook_reel_router)
+if not _route_exists("/v1/tensors/fibonacci/status"):
+    app.include_router(pass192_fibonacci_router)
 if not _route_exists("/api/runtime/hypersolids/status"):
     app.include_router(pass193_hypersolid_router)
 if not _route_exists("/api/runtime/storage-training/status"):
@@ -111,6 +114,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "installation_api": "/api/runtime/installation",
         "application_factory_api": "/api/runtime/application-factory",
         "storybook_reel_api": "/api/runtime/storybook-reel",
+        "pass192_fibonacci_api": "/v1/tensors/fibonacci",
         "pass193_hypersolid_api": "/api/runtime/hypersolids",
         "pass194_storage_training_api": "/api/runtime/storage-training",
         "kimi_k3_content_engine_api": "/api/runtime/content-engine/kimi-k3",
@@ -130,6 +134,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "visual_environment": "HHS-P161-HHUMOCE",
         "application_factory": "HHS-P180-INTEGRATED-APPLICATION-FACTORY",
         "storybook_reel": "HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1",
+        "pass192_cellular_fibonacci": "HHS-P192-LSCFNT-MMD-VM81-H72-H216",
         "pass193_hypersolid_native_egress": "HHS-P193-RHFM-EPRP-NF-NC-SNFTE-VM81-H72-H216",
         "pass194_multimodal_storage_training": "HHS-P194-UMFFHS-SQLCG-EVS-AGITC-VM81-H72-H216",
         "kimi_k3_content_engine": "HHS-P195-KIMI-K3-MULTIMODAL-CONTENT-ENGINE",
