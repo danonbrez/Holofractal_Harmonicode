@@ -2,7 +2,9 @@
 
 ## Status
 
-`IMPLEMENTED_AND_WIRED — FINAL EXACT/SYNTHETIC SEAL PENDING`
+`FREEZE_CANDIDATE — DOCUMENTATION-INCLUSIVE SEAL REQUIRED`
+
+This file is part of the I133 freeze candidate. The commit containing the final I133 documentation set becomes the frozen I133 checkpoint only when both `exact` and `synthetic` lanes of `.github/workflows/pass219-cumulative-pass193-repair-membrane-i133.yml` are terminal green for that commit. No implementation or authority change is permitted between that validated commit and the frozen checkpoint.
 
 ## Lineage
 
@@ -15,49 +17,37 @@
 - Draft PR: `#330`
 - Merge authorization: **not granted**
 
-## Census result
+## Implemented Pass 193 boundary
 
-The historical Pass 193 commit added the authorized contract but no dedicated Pass 193 runtime implementation. The shared `tests/pass192_193/test_pass192_193_contract_invariants.py` suite was pre-contract evidence, not runtime completion. I133 therefore repairs the missing implementation and exposes it through the cumulative Pass 219 membrane rather than treating contract prose as implementation.
+I133 repairs the historical contract-only gap and exposes Pass 193 as an inherited cumulative layer. The repaired boundary includes:
 
-## Production runtime
-
-`hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py`
-
-The repaired runtime provides a bounded exact hypersolid/native-egress boundary with:
-
-- explicit 3D and 4D regular-family classification plus higher-dimensional regular families;
-- exact or symbolic canonical coordinates and incidence identity;
-- ordered rational phase history where operation order remains semantically significant;
-- Pass 192 Fibonacci nesting witnesses and deterministic fractal addressing;
-- Hash216 canonical object/artifact/package identities and Hash72 mutation receipts;
-- inherited singleton VM81 admission for canonical mutation;
+- exact/symbolic canonical hypersolid family and incidence identity;
+- ordered rational rotations/folds with order-sensitive phase history;
+- Pass 192 exact Fibonacci nesting and deterministic fractal addressing;
+- inherited singleton VM81 admission for every canonical mutation;
+- Hash72 mutation receipts and Hash216 canonical identities;
 - noncanonical projection separation;
-- persisted native artifact bytes plus compiler/linker/environment provenance;
+- persisted native artifact bytes with compiler/linker/environment provenance;
 - required x86_64 and ARM64 compile/link/launch/ABI/deterministic-workload evidence;
-- path-safe portable ZIP construction with explicit-user-action install boundary;
+- path-safe portable ZIP packaging with explicit-user-action installation;
 - NFT executable identity separated from execution authorization;
-- deterministic replay.
+- reversible URL-safe transport of unchanged canonical Hash216 identities;
+- explicit production `/api/runtime/hypersolids` registration before Pass 201 public API federation.
 
-Floating point, render projection, native-target evidence, package identity, and NFT identity do not become canonical mutation authority.
+Production/runtime surfaces:
 
-## Production API and interface registration
+- `hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py`
+- `hhs_backend/api/pass193_hypersolid_routes.py`
+- `hhs_backend/visual_server.py`
 
-`hhs_backend/api/pass193_hypersolid_routes.py` exposes `/api/runtime/hypersolids` operations for status, creation, inspection, exact rotation, fold, nesting, projection, validation, native artifact recording, package creation, receipt inspection, NFT executable creation, execution authorization, and replay.
-
-Canonical Hash216 identifiers are not rewritten for HTTP transport. The API uses a reversible URL-safe reference encoding and decodes back to the exact canonical identity.
-
-`hhs_backend/visual_server.py` explicitly registers the Pass 193 router before Pass 201 public API federation and exposes the API/contract identity through `/api/system/status`. The canonical server remains runtime authority; the visual server changes HTTP projection only.
-
-## Native Pass 219 membrane
-
-Implemented surfaces:
+Native/cumulative Pass 219 surfaces:
 
 - `hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h`
 - `hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp`
 - `hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc`
 - `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py`
-- aggregate `hhs_runtime/include/hhs_runtime_exact_abi.h`
-- aggregate `hhs_runtime/c/hhs_runtime_exact_abi.c`
+- `hhs_runtime/include/hhs_runtime_exact_abi.h`
+- `hhs_runtime/c/hhs_runtime_exact_abi.c`
 
 Public C binder:
 
@@ -67,39 +57,79 @@ C++ RNA facade:
 
 `hhs::rna::InheritedPass193HypersolidNativeEgress`
 
-Pass 193 is appended immediately after Pass 194 in reverse inherited-pass order. No earlier ABI include is removed or reordered.
+Pass 193 is appended after Pass 194 in reverse inherited-pass order. Earlier aggregate ABI includes remain ordered and intact.
 
 ## Conformance surfaces
-
-Focused implementation tests:
 
 - `tests/pass192_193/test_pass192_193_contract_invariants.py`
 - `tests/test_hhs_pass193_hypersolid_native_egress_v1.py`
 - `tests/test_hhs_pass193_hypersolid_routes.py`
 - `tests/test_hhs_pass193_native_targets_v1.py`
 - `tests/test_hhs_pass193_visual_registration.py`
-
-Native/cumulative membrane tests:
-
 - `tests/pass219/test_pass219_inherited_pass193_1_33.c`
 - `tests/pass219/test_pass219_inherited_pass193_1_33.cpp`
 - `tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py`
 
-## Focused validation receipt
+## Validation history
 
-The first complete core repair tree was validated by GitHub Actions before production-registration closure:
+### Focused production gate
 
-- focused workflow: `Pass 193 I133 Repair Validation`
-- run: `32990722343`
-- job: `98247401066`
-- head: `a8525b15f50b597b663384fcc22693c2bfe8ea72`
-- result: **SUCCESS**
-- artifact: `9614542635`
-- artifact SHA-256: `67801972fb041eb4840486a277801f6662c309719eb20b145289c4c2d94361e8`
+Latest focused production validation:
 
-Every focused step passed, including frozen-I132 lineage, Python compilation, no-float canonical scan, singleton VM81 admission proof, inherited Pass 192/193 contract suite, Pass 193 runtime/API tests, and x86_64/ARM64 native-target validation.
+- workflow: `Pass 193 I133 Repair Validation`
+- run: `33005106491`
+- job: `98296713976`
+- conclusion: **SUCCESS**
 
-Production registration and native/cumulative membrane additions occurred after that receipt and therefore require the final doc-inclusive validation described below.
+This validates frozen-I132 lineage, no-float canonical authority, singleton VM81 inheritance, Pass 192/193 contract regression, runtime/API/production registration, and required x86_64/ARM64 native targets.
+
+### Aggregate compiler repair
+
+Initial cumulative seal run `33005750413` exposed one concrete aggregate C defect in both exact and synthetic lanes:
+
+`hhs_runtime/c/hhs_runtime_exact_abi.c:47:56: error: extra tokens at end of #include directive [-Werror]`
+
+Repair commit:
+
+`fb71f76a7e80ec4affcdeae0ec49bcfbe259125a`
+
+The stray final closing brace was removed. Repaired aggregate blob:
+
+`bd186317732141e3b285624fc23dee15beba215e`
+
+### Seal-fingerprint repair
+
+Revalidation run `33040324835` then stopped before compilation because the seal workflow still expected the pre-repair aggregate blob `1136186e950f1a018c3eb7ad917299aad2402330`.
+
+The workflow fingerprint was repaired in:
+
+`b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308`
+
+Corrected workflow blob:
+
+`a6e37b311ee86609ff23c499b8004ea964db8093`
+
+The old aggregate fingerprint is absent; the workflow now binds `bd186317732141e3b285624fc23dee15beba215e`.
+
+### Corrected implementation-tree terminal evidence
+
+Exact validation of corrected head `b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308`:
+
+- run: `33040611371`
+- job: `98413105707`
+- conclusion: **SUCCESS**
+- artifact: `9633717987` (`pass219-i133-pass193-exact-seal`)
+- artifact digest: `sha256:d775fd92e1bfda8ec73a62c4ce4a53a526b0e41ab4b7331c55db2b93ec29bfd3`
+
+Synthetic current-main validation of the same corrected head:
+
+- run: `33040613225`
+- job: `98413110780`
+- conclusion: **SUCCESS**
+- artifact: `9633712149` (`pass219-i133-pass193-synthetic-seal`)
+- artifact digest: `sha256:14e58501cb718a358ecb87421df5a238377fbb91c3961f10bce07f045ae18039`
+
+Both lanes passed source identity, aggregate order, authority-negative checks, Python compilation, focused regressions, native target validation, aggregate C compilation, Pass 193 C/C++ conformance, cumulative membrane preflight, evidence creation, and artifact upload.
 
 ## Authority boundary
 
@@ -113,25 +143,19 @@ I133 grants no new:
 - VM81 mutation authority;
 - projection authority;
 - floating-point canonical authority;
-- native-evidence mutation authority;
+- native-evidence VM81 authority;
 - package auto-execution authority;
 - NFT identity execution authority;
 - public API federation mutation authority.
 
-The singleton VM81 authority remains inherited. Hash72 remains mutation evidence; Hash216 remains canonical/archive identity after valid closure.
+Singleton VM81 mutation authority remains inherited. Hash72 remains execution/mutation evidence; Hash216 remains canonical/archive identity after valid closure.
 
-## Final seal requirement
+## Branch-noise boundary
 
-I133 is frozen only after a documentation-inclusive exact branch head and synthetic current-main candidate both pass the dedicated cumulative I133 workflow. The seal must prove:
+External `evidence/pass172_173/hosted_runs/*` commits have repeatedly appeared on this branch. They are unrelated to Pass 193 and are not part of the I133 semantic implementation, authority, or validation boundary. A frozen I133 checkpoint is identified by the validated documentation-inclusive commit, not by later unrelated evidence-only branch movement.
 
-1. frozen I132 and historical Pass 193 lineage;
-2. exact source/blob identities for the repaired core and production registration;
-3. focused Pass 193 regressions and required native architectures;
-4. aggregate C ABI compilation;
-5. Pass 193 C and C++ conformance;
-6. cumulative Python membrane preflight;
-7. Pass 194 successor preservation;
-8. zero new authority and no approximate canonical authority;
-9. exact/synthetic evidence artifacts.
+## Freeze rule
 
-Until those lanes are terminal green, PR #330 remains draft and unmerged.
+The next documentation-inclusive workflow run triggered by the final I133 documentation commit is the terminal freeze gate. If both exact and synthetic lanes are green, that exact commit is I133 `FROZEN`; a later evidence-only receipt may record the run/artifact identifiers without redefining the frozen implementation tree.
+
+PR #330 remains draft and unmerged unless separately authorized.
