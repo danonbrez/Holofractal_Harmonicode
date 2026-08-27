@@ -132,3 +132,48 @@ Run the documentation/contract seal validation, then open and merge the validate
 ## Blockers
 
 None. Target-main verification is intentionally pending until after merge.
+
+
+## Repair-forward integration checkpoint — PR #331
+
+PR-level integration exposed two inherited failures after the dedicated 1.22 exact/synthetic seal was already green.
+
+### Failure A — Pass 219 Exact VM81 Candidate Adapter 1.21.3
+
+Observed run:
+- PR workflow: `Pass 219 Exact VM81 Candidate Adapter 1.21.3`
+- failing run: `33077206681`
+- failure stage: cumulative exact ABI / adapter compilation
+
+Diagnosis:
+- current `main` header/test surface reflects the later fail-closed 1.21.3 authority alignment;
+- current `main` C implementation had regressed to an older incompatible internal vocabulary/API surface;
+- mismatches included obsolete VM81 constants, obsolete descriptor fields, obsolete replay fields, obsolete status names, and obsolete kernel helpers;
+- this defect predates the 1.22 Genesis/scaling implementation and was exposed because 1.22 correctly retriggers the cumulative exact-ABI workflow.
+
+Repair:
+- restore the previously aligned adapter implementation from validated alignment commit `66462fa6dcb52a1aa56e77f278d19e9eae1ec706`;
+- retain the later strict-compiler opcode enum cast used by current main;
+- do not change the public 1.21.3 header or authority contract;
+- rerun only the impacted adapter workflow plus the 1.22 cumulative validation.
+
+### Failure B — Pass 219 Harmonicode Global Constraint Membrane 1.21.9
+
+Observed run:
+- failing run: `33077206246`
+- failure stage: `Prove validated I121.8 semantics remain unchanged`
+
+Diagnosis:
+- the workflow compares current PR state against historical commit `76909286967ff991f007953280ff8bb1302cc59a`;
+- current authoritative `main` already contains later accepted I121.8 changes relative to that commit;
+- PR #331 does not modify those I121.8 semantic files;
+- therefore the historical hard-coded freeze is stale and rejects current main itself.
+
+Repair:
+- compare the protected I121.8 files against the actual PR base SHA on pull requests;
+- on manual dispatch, compare against the merge base with current `origin/main`;
+- no I121.8 semantic source is modified.
+
+### Next action
+
+Validate these two repair-forward changes on PR #331. If both formerly failing workflows and the dedicated 1.22 workflow are green, inspect the remaining PR matrix for new failures, then merge and verify `main`.

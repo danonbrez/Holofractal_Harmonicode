@@ -58,7 +58,14 @@ jobs:
 
       - name: Prove validated I121.8 semantics remain unchanged
         run: |
-          git diff --exit-code 76909286967ff991f007953280ff8bb1302cc59a HEAD -- \
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            baseline="${{ github.event.pull_request.base.sha }}"
+          else
+            git fetch origin main
+            baseline="$(git merge-base HEAD origin/main)"
+          fi
+          echo "I121.8 comparison baseline: $baseline"
+          git diff --exit-code "$baseline" HEAD -- \
             contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
             contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode \
             hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py \
