@@ -8,111 +8,107 @@
 - Intended merge target: `main`
 - Draft PR: `#330`
 - Main observed at I133 start: `634db40aaf57ec087b7353d6d9205d896622adb4`
-- Current checkpoint commit at this record update: `930f0ab6caf261774323dc551ce184d93228ec64`
 - Merge authorization: not granted
-
-## Pass 193 census classification
-
-`MISSING_IMPLEMENTATION_AND_MEMBRANE_EXPOSURE`
-
-The historical authorization commit `eebc47a52de143df4a9acf807735f576ad0ce844` added the Pass 193 contract, while repository census found no dedicated historical Pass 193 runtime implementation surface. The shared Pass 192/193 test file is pre-contract evidence and does not convert the contract into a verified runtime.
+- Pass 193 census classification: `MISSING_IMPLEMENTATION_AND_MEMBRANE_EXPOSURE`
 
 ## Implemented scope
 
-I133 now contains:
+I133 contains the complete repair/exposure boundary for historical Pass 193:
 
-1. exact/symbolic hypersolid registry and canonical object identity;
+1. exact/symbolic hypersolid registry and incidence identity;
 2. ordered rational phase rotations/folds;
 3. Pass 192 exact Fibonacci nesting and deterministic fractal addressing;
-4. inherited singleton VM81 admission for canonical mutations;
+4. inherited singleton VM81 admission for canonical mutation;
 5. Hash72 receipt lineage and Hash216 canonical identities;
 6. noncanonical projection separation;
-7. native artifact provenance plus x86_64 and ARM64 validation evidence requirements;
-8. path-safe portable ZIP packaging and explicit-user-action installation boundary;
+7. native artifact provenance with x86_64 and ARM64 evidence requirements;
+8. path-safe portable ZIP packaging and explicit-user-action installation;
 9. NFT identity separated from execution authorization;
-10. reversible URL-safe transport of canonical Hash216 identifiers;
-11. production `/api/runtime/hypersolids` router registration before Pass 201 public federation;
-12. C/C++ Pass 219 membrane 1.33 plus aggregate ABI inclusion;
-13. cumulative Python membrane and positive/negative conformance tests.
+10. reversible URL-safe Hash216 path transport;
+11. production `/api/runtime/hypersolids` registration before Pass 201 federation;
+12. C/C++ inherited Pass 193 membrane 1.33 and aggregate ABI inclusion;
+13. cumulative Python membrane plus focused/native/C/C++/production/cumulative conformance tests.
 
-## Changed/new I133 files
+## Repair-forward validation history
 
-Core implementation and production wiring:
+Focused production gate:
 
-- `hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py`
-- `hhs_backend/api/pass193_hypersolid_routes.py`
-- `hhs_backend/visual_server.py`
+- run `33005106491`
+- job `98296713976`
+- result `SUCCESS`
 
-Native/cumulative membrane:
+Initial cumulative run `33005750413` failed both lanes at aggregate C compilation because `hhs_runtime/c/hhs_runtime_exact_abi.c` ended with a stray closing brace after the final include.
 
-- `hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h`
-- `hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp`
-- `hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc`
-- `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py`
-- `hhs_runtime/include/hhs_runtime_exact_abi.h`
-- `hhs_runtime/c/hhs_runtime_exact_abi.c`
+Repair commit:
 
-Tests:
+`fb71f76a7e80ec4affcdeae0ec49bcfbe259125a`
 
-- `tests/test_hhs_pass193_hypersolid_native_egress_v1.py`
-- `tests/test_hhs_pass193_hypersolid_routes.py`
-- `tests/test_hhs_pass193_native_targets_v1.py`
-- `tests/test_hhs_pass193_visual_registration.py`
-- `tests/pass219/test_pass219_inherited_pass193_1_33.c`
-- `tests/pass219/test_pass219_inherited_pass193_1_33.cpp`
-- `tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py`
+Repaired aggregate blob:
 
-Workflows/docs:
+`bd186317732141e3b285624fc23dee15beba215e`
 
-- `.github/workflows/pass193-i133-repair-validation.yml`
+Revalidation run `33040324835` then failed both lanes at source-identity proof because the workflow still expected the pre-repair blob. This was a stale validation fingerprint, not a new runtime defect.
+
+Fingerprint repair commit:
+
+`b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308`
+
+Corrected cumulative workflow blob:
+
+`a6e37b311ee86609ff23c499b8004ea964db8093`
+
+## Corrected implementation-tree evidence
+
+Exact lane for corrected head `b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308`:
+
+- run `33040611371`
+- job `98413105707`
+- result `SUCCESS`
+- artifact `9633717987`
+- artifact digest `sha256:d775fd92e1bfda8ec73a62c4ce4a53a526b0e41ab4b7331c55db2b93ec29bfd3`
+
+Synthetic current-main lane for the same corrected head:
+
+- run `33040613225`
+- job `98413110780`
+- result `SUCCESS`
+- artifact `9633712149`
+- artifact digest `sha256:14e58501cb718a358ecb87421df5a238377fbb91c3961f10bce07f045ae18039`
+
+Both lanes passed the previously failing aggregate C/C++ step and the cumulative membrane preflight.
+
+## Current freeze candidate
+
+The final I133 documentation set consists of:
+
 - `docs/pass193/PASS_219_I133_INHERITED_EXPOSURE.md`
 - this restart record
 
-## Validation completed
+The exact commit containing the completed documentation set is the I133 freeze candidate. It becomes `FROZEN` only when the cumulative I133 workflow triggered by that commit has both exact and synthetic lanes terminal green.
 
-Focused core repair validation:
+A later evidence-only receipt may record the terminal run/artifact IDs, but it does not redefine the frozen implementation tree.
 
-- workflow: `Pass 193 I133 Repair Validation`
-- run: `32990722343`
-- job: `98247401066`
-- validated head: `a8525b15f50b597b663384fcc22693c2bfe8ea72`
-- conclusion: `success`
-- artifact: `9614542635`
-- artifact digest: `sha256:67801972fb041eb4840486a277801f6662c309719eb20b145289c4c2d94361e8`
+## Authority boundary
 
-Successful steps included frozen-I132/Pass-193 lineage, Python compilation, no-float canonical scan, inherited singleton VM81 proof, Pass 192/193 pre-contract suite, Pass 193 runtime/API conformance, and real x86_64/ARM64 compile-link-launch/ABI deterministic validation.
+I133 adds no candidate, canonical mutation, independent persistence, Hash72 clock, C++ mutation, VM81 mutation, projection, floating-point canonical, native-evidence VM81, package auto-execution, NFT identity execution, or public-API mutation authority.
 
-## Validation still required
-
-The focused receipt predates explicit production registration and the final C/C++/Python cumulative membrane closure. Therefore I133 is not yet frozen.
-
-Remaining gate:
-
-- rerun updated focused workflow including production registration;
-- create/run dedicated I133 cumulative exact/synthetic workflow;
-- compile aggregate exact C ABI;
-- compile/run Pass 193 C and C++ conformance;
-- run cumulative Python membrane preflight;
-- validate both exact branch head and synthetic current-main candidate;
-- preserve terminal evidence artifacts;
-- update this record with final run IDs and frozen head, then rerun the doc-inclusive seal.
+Singleton VM81 authority remains inherited.
 
 ## Environment state
 
-GitHub Actions is the executable validation environment. The repository API is used for stateless mutation/inspection. The earlier local container could not resolve GitHub hosts; no completion claim depends on local-only execution.
+GitHub Actions is the executable validation environment. Earlier local execution was unavailable because the agent container could not resolve GitHub hosts. Completion therefore depends only on repository-visible source and GitHub Actions evidence.
 
-## Repair-forward note
+## Branch-noise note
 
-An external Pass 172/173 evidence writer appended one unrelated evidence file to this branch after the first focused run. It was removed by commit `a1704c3639f5687206d58eda09f2776aeac37def`. The add/delete pair is tree-neutral relative to validated core head `a8525b15f50b597b663384fcc22693c2bfe8ea72`.
+External `evidence/pass172_173/hosted_runs/*` commits may appear on this branch. They are explicitly excluded from the I133 semantic freeze boundary. Freeze identity is the documentation-inclusive validated commit, not later unrelated evidence-only movement.
 
 ## Next action
 
-Create the dedicated cumulative I133 exact/synthetic seal workflow over the current doc-inclusive tree and execute its dependency-scoped validation.
+Consume the exact and synthetic jobs from the cumulative I133 run triggered by the commit containing this completed restart record.
 
-## Blockers
-
-No repository blocker currently identified. I133 remains validation-incomplete until the cumulative exact/synthetic lanes are terminal green.
+- If both are green: declare that exact commit I133 `FROZEN`, record a non-semantic freeze receipt, and descend to Pass 192 / I134.
+- If either fails: repair only the I133-specific failure and rerun the impacted gate.
 
 ## Merge status
 
-PR #330 remains open, draft, mergeable, and unmerged. No merge is authorized by this restart record.
+PR #330 remains open, draft, mergeable, and unmerged. No merge is authorized by this record.
