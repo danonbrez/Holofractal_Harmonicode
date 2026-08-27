@@ -177,3 +177,29 @@ Repair:
 ### Next action
 
 Validate these two repair-forward changes on PR #331. If both formerly failing workflows and the dedicated 1.22 workflow are green, inspect the remaining PR matrix for new failures, then merge and verify `main`.
+
+
+## Repair-forward integration checkpoint — exact ABI dependency graph
+
+The restored 1.21.3 adapter now compiles successfully against the current cumulative exact ABI. The next gate exposed a separate pre-existing build-graph defect:
+
+- failing run: `33099967178`
+- failing stage: `Prove runtime library tracks exact ABI aggregate changes`
+- cumulative exact ABI compilation: PASS
+- candidate adapter compilation: PASS
+- failure: touching `hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc` did not invalidate `libhhs_runtime.so`
+
+Cause:
+- `hhs_runtime/c/hhs_runtime_abi.c` textually includes `hhs_runtime_exact_abi.c`;
+- `hhs_runtime_exact_abi.c` textually includes the exact ABI `.inc` modules;
+- the Makefile target for `libhhs_runtime.so` listed only the top-level legacy C sources and did not declare the transitive exact ABI source dependencies.
+
+Repair:
+- add `EXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)`;
+- bind `$(ABI_LIB)` to `$(EXACT_ABI_DEPS)`;
+- this changes rebuild invalidation only; it does not change runtime semantics or authority.
+
+Next action:
+- rerun the impacted exact VM81 adapter workflow;
+- continue the global membrane and mandatory 1.22 validation;
+- inspect the full PR matrix before merge.

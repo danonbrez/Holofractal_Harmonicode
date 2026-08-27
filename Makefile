@@ -6,6 +6,7 @@ CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c
 LDFLAGS ?= -lm
 RUNTIME_BUILD_DIR := hhs_runtime/builds
 ABI_LIB := $(RUNTIME_BUILD_DIR)/libhhs_runtime.so
+EXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)
 VM81_BIN := $(RUNTIME_BUILD_DIR)/hhs_vm81
 
 .PHONY: all c-kernel c-abi vm81 verify-c emulate-c service-registry io-gateway semantic-memory-guard runtime-dataflow-guard persistence-guard runtime-contract foundational-standards hash72-u72 hash72-kernel-authority backend-routes gui-runtime-contract srcg-primitive srcg-api-surface system-closure-harness runtime-reachability runtime-integration-decisions guarded-plugin-adapters plugin-capability-planner guarded-plugin-invocation-executor contract-schema-registry constraint-stack-security-harness runtime-constraint-enforcement zero-bypass-runtime-interposer test clean
@@ -19,7 +20,7 @@ $(RUNTIME_BUILD_DIR):
 
 c-abi: $(ABI_LIB)
 
-$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h | $(RUNTIME_BUILD_DIR)
+$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS) | $(RUNTIME_BUILD_DIR)
 	$(CC) $(CFLAGS) -fPIC -shared hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c -o $(ABI_LIB) $(LDFLAGS)
 
 vm81: $(VM81_BIN)
