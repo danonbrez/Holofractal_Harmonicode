@@ -203,3 +203,20 @@ Next action:
 - rerun the impacted exact VM81 adapter workflow;
 - continue the global membrane and mandatory 1.22 validation;
 - inspect the full PR matrix before merge.
+
+
+## Repair-forward integration checkpoint — global membrane build-metadata freeze
+
+Run `33100160613` reached the updated global membrane and failed before I121.8 comparison because the historical semantic freeze list also included `Makefile`.
+
+The new Makefile delta is required to make the exact ABI build graph truthful; it does not alter Pass169, VM81, Hash72, constraint, or autocomposer semantics.
+
+Repair:
+- keep the historical freeze over the actual semantic/runtime dependencies;
+- remove `Makefile` from that semantic diff set;
+- explicitly require the two exact ABI dependency declarations in `Makefile` by literal grep;
+- retain the separate PR-base I121.8 semantic comparison added in the prior repair.
+
+This converts an over-broad historical freeze into two typed checks:
+1. semantic files remain frozen;
+2. build metadata must expose the exact ABI transitive dependency graph.
