@@ -96,7 +96,8 @@ int main(void) {
 
     {
         HHSExactPass219GenesisDescriptorV1 tampered = genesis;
-        tampered.cells[40].trit = 1;
+        tampered.cells[40].trit =
+            (int8_t)(tampered.cells[40].trit == 1 ? -1 : 1);
         assert(hhs_exact_pass219_genesis_validate(&tampered) ==
                HHS_EXACT_STATUS_INVARIANT_FAILURE);
     }
