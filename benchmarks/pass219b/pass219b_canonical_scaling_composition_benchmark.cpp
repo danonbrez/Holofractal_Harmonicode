@@ -190,20 +190,6 @@ static SparseResult run_sparse_case(
     };
 }
 
-static void write_json_string(std::ofstream &out, const std::string &s) {
-    out << '"';
-    for (const char ch : s) {
-        if (ch == '"' || ch == '\\') {
-            out << '\\' << ch;
-        } else if (ch == '\n') {
-            out << "\\n";
-        } else {
-            out << ch;
-        }
-    }
-    out << '"';
-}
-
 }  // namespace
 
 int main(int argc, char **argv) {
