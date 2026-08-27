@@ -8,7 +8,7 @@
 - branch: `agent/pass219-mandatory-sudoku-genesis-scaling-data-ml`
 - intended target: `main`
 - merge authorization: granted by user request to implement repository-wide Pass 219 mandatory algorithm; merge occurs only after all required validation gates pass
-- classification: `VALIDATED_IMPLEMENTED_READY_FOR_MERGE_TARGET_VERIFICATION_PENDING`
+- classification: `MERGED_MAIN_RESTARTABLE_CHECKPOINT_COMPLETE`
 
 ## Authorization
 
@@ -238,3 +238,152 @@ Repair applied consistently:
 - require the exact ABI dependency declarations explicitly in the same step.
 
 No manifold, authority-router, Pass191, Pass169, VM81, Hash72, autocomposer, or constraint runtime semantics are modified by this repair.
+
+
+## Final merged restartable checkpoint — 2026-08-27
+
+### Repository-visible state
+
+- authoritative pre-work main: `634db40aaf57ec087b7353d6d9205d896622adb4`
+- inherited scaling-composition checkpoint: `71572b53746a8f8f56245641128a4394d5d0e1b5`
+- final validated feature-branch head: `94ea8e29b598b28ef41e721e55af79fd43bf7a5f`
+- pull request: `#331`
+- PR state: `MERGED`
+- merge commit: `b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f`
+- verified main at checkpoint creation: `b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f`
+- merge ancestry: main is exactly one merge commit ahead of the validated branch head; merge base is `94ea8e29b598b28ef41e721e55af79fd43bf7a5f`
+- feature branch behind main at verification: `0`
+- canonical mutation/Hash72 authority changed by this work: `NO`
+
+### Final PR validation matrix
+
+The final PR-head matrix for `94ea8e29b598b28ef41e721e55af79fd43bf7a5f` completed with:
+
+- workflows observed: `44`
+- successful: `43`
+- failed: `0`
+- skipped: `1`
+- skipped workflow: `Guarded Continuous Integration`
+- active/incomplete workflows: `0`
+
+Formerly failing inherited gates were repaired forward and are green at the final head:
+
+- `Pass 219 Exact VM81 Candidate Adapter 1.21.3`
+  - run `33100979014` — SUCCESS
+- `Pass 219 Harmonicode Global Constraint Membrane 1.21.9`
+  - run `33100978827` — SUCCESS
+- `Pass 219 Mandatory Sudoku Genesis Scaling Data ML`
+  - run `33100978980` — SUCCESS
+
+Final dedicated 1.22 jobs:
+
+- exact job `98618275991` — SUCCESS
+- synthetic job `98618275653` — SUCCESS
+
+Final dedicated artifacts:
+
+- exact artifact `9658483825`
+  - SHA-256 `a5645e0bb2d850f103ba53737f4164cfcf10df24e47b957773d1a8c12962b506`
+- synthetic artifact `9658502398`
+  - SHA-256 `fbb99d10379a6bea9b765c6adb4be79f3ec021de1be0c25b0d6eb43976a9c89c`
+
+### Implemented surfaces at this checkpoint
+
+Core exact ABI:
+- `hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h`
+- `hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp`
+- `hhs_runtime/c/hhs_pass219_mandatory_genesis_scaling_1_22.inc`
+- cumulative exact ABI aggregation in `hhs_runtime/include/hhs_runtime_exact_abi.h`
+- cumulative exact ABI aggregation in `hhs_runtime/c/hhs_runtime_exact_abi.c`
+
+Registration:
+- `hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py`
+- mandatory guard integrated into `hhs_runtime/hhs_pass219_execution_composer_registration_v1.py`
+
+Normative documentation:
+- `contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json`
+- `docs/pass219/PASS_219_MANDATORY_SUDOKU_QUDIT_GENESIS_SCALING_1_22.md`
+- `whitepapers/HHS_PASS219_SUDOKU_QUDIT_GENESIS_DATA_PLANE_REV5.md`
+- `whitepapers/HHS_PASS219_DETERMINISTIC_SCALING_COMPOSITION_REV5.md`
+- Pass 219 Appendices B and C updated
+
+Repair-forward integration:
+- restored current-compatible exact VM81 candidate adapter implementation
+- exact ABI transitive build dependencies added to `Makefile`
+- stale historical semantic-freeze gates rebased to typed semantic-vs-build-metadata checks
+- no I121.8, Pass169, VM81, Hash72, authority-router, or manifold semantics weakened by those build/CI repairs
+
+### Validation completed
+
+Completed and green before merge:
+
+1. exact Sudoku-qudit Genesis descriptor validation;
+2. exact trinary zero-sum closure over rows, columns, 3x3 blocks, and both diagonals;
+3. exact Lo Shu and ordered phase-channel binding;
+4. exhaustive 5,184-address encode/decode round trip;
+5. all 12 declared Pass 219 data/ML work classes require the mandatory planner;
+6. exact selector absence routes to the dense complete path;
+7. incomplete dirty witness routes to the full derived/projection path;
+8. Pass 207/208 remain candidate-only;
+9. exact CPU/VM equality remains required before singleton VM81 admission;
+10. I7/I8 remain downstream derived views;
+11. no float/double canonical authority in the new exact planner;
+12. cumulative C11/C++17 exact ABI conformance;
+13. Pass 219B I1/I5/I7/I8 regression;
+14. Pass 207/208 regression;
+15. RNA execution-composer conformance;
+16. actual Pass 208 CPU-reference equality;
+17. deterministic scaling composition benchmark;
+18. standalone VM81 exact verification;
+19. exact ABI build invalidation for included exact modules;
+20. full final PR workflow matrix with zero failures.
+
+### Execution environment recorded
+
+Validation environment:
+- GitHub-hosted Ubuntu 24.04
+- Python 3.12 for dependency-scoped Python tests
+- Pass 208 backend: `CPU_REFERENCE`
+- physical GPU required: `NO`
+- physical GPU timing measured in closure run: `NO`
+- timing evidence remains noncanonical
+- `PYTHONHASHSEED=0` on dedicated 1.22 validation
+
+### Post-merge verification boundary
+
+GitHub reports no workflows attached directly to merge commit
+`b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f`.
+
+Therefore this checkpoint distinguishes:
+
+- **validated executable candidate:** final PR head `94ea8e29b598b28ef41e721e55af79fd43bf7a5f`, 43 successful workflows / 0 failures;
+- **target repository verification:** PR #331 merged that exact validated head into `main`; merge ancestry and current main identity were verified;
+- **post-merge CI execution:** not triggered by the repository's current workflow event filters.
+
+No post-merge workflow execution is being claimed.
+
+### Restart instructions
+
+For any continuation:
+
+1. start from current `main`, not the merged feature branch;
+2. require `b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f` to be an ancestor of the continuation base;
+3. preserve contract `HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22`;
+4. preserve the mandatory guard `pass219_mandatory_sudoku_genesis_scaling_data_ml`;
+5. preserve exact stage order:
+   `Genesis -> phase locality -> Pass207 -> Pass208 -> CPU/VM equality -> singleton VM81 -> I7 -> I8 -> Hash72/Hash216`;
+6. do not grant candidate accelerators, C++ wrappers, projections, cache layers, or GPU paths canonical mutation authority;
+7. rerun only dependency-scoped gates affected by new changes, then perform one bounded final integration pass.
+
+### Remaining work
+
+For the user-authorized 1.22 implementation request: `NONE`.
+
+Optional future hardening, if a later pass explicitly requires it:
+- add a dedicated `main` push-triggered post-merge smoke workflow rather than relying only on PR-head synthetic validation.
+
+### Blockers
+
+`NONE`.
+
+This section is the canonical restart point for the completed Pass 219 1.22 mandatory Sudoku-qudit Genesis and deterministic scaling integration.
