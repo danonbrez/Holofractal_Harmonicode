@@ -705,6 +705,11 @@ class Pass192Runtime:
             raise Pass192Error("HHS_P192_INDEX_SCHEMA_INVALID")
         return value
 
+    def _write_index(self, value: Mapping[str, Any]) -> None:
+        if value.get("schema") != "HHS_PASS192_CELLULAR_FIBONACCI_REGISTRY_V1":
+            raise Pass192Error("HHS_P192_INDEX_SCHEMA_INVALID")
+        self._write_json(self.index_path, value)
+
     @staticmethod
     def _write_json(path: Path, value: Any) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
