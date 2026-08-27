@@ -1,0 +1,294 @@
+{
+  "schema": "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22",
+  "version": "1.22.0",
+  "pass": 219,
+  "status": "NORMATIVE_IMPLEMENTATION_AND_VALIDATION_REQUIRED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_authority": {
+    "main": "634db40aaf57ec087b7353d6d9205d896622adb4",
+    "validated_scaling_composition_head": "71572b53746a8f8f56245641128a4394d5d0e1b5",
+    "scaling_workflow_run": 33069243239,
+    "scaling_exact_job": 98506946381,
+    "scaling_synthetic_job": 98506946072
+  },
+  "cumulative_inheritance": {
+    "additive": true,
+    "rewrites_historical_pass217_candidate": false,
+    "preserves_singleton_vm81_authority": true,
+    "preserves_hash72_hash216_authority": true,
+    "preserves_noncommutative_phase_order": true,
+    "preserves_exact_arithmetic": true,
+    "floating_point_canonical_authority": false
+  },
+  "genesis_data_plane": {
+    "classification": "CANONICAL_PASS219_EMPTY_ADDRESSABLE_DATA_PLANE",
+    "semantics": "Hydration ROM empty state: initialized addressable geometry before hydrated payload",
+    "side": 9,
+    "cells": 81,
+    "operations_per_cell": 64,
+    "addresses": 5184,
+    "vm81_frame_bytes": 648,
+    "sudoku_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        0,
+        1,
+        2
+      ],
+      [
+        6,
+        7,
+        8,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        8,
+        2,
+        4,
+        1,
+        3,
+        0,
+        7,
+        5,
+        6
+      ],
+      [
+        5,
+        0,
+        6,
+        4,
+        2,
+        7,
+        1,
+        8,
+        3
+      ],
+      [
+        7,
+        3,
+        1,
+        5,
+        8,
+        6,
+        4,
+        2,
+        0
+      ],
+      [
+        1,
+        8,
+        7,
+        2,
+        0,
+        3,
+        5,
+        6,
+        4
+      ],
+      [
+        2,
+        6,
+        0,
+        7,
+        5,
+        4,
+        8,
+        3,
+        1
+      ],
+      [
+        4,
+        5,
+        3,
+        8,
+        6,
+        1,
+        2,
+        0,
+        7
+      ]
+    ],
+    "trit_rule": "trit(s)=(s mod 3)-1",
+    "zero_sum_required": [
+      "all rows",
+      "all columns",
+      "all 3x3 blocks",
+      "both diagonals"
+    ],
+    "lo_shu_seed": [
+      [
+        4,
+        9,
+        2
+      ],
+      [
+        3,
+        5,
+        7
+      ],
+      [
+        8,
+        1,
+        6
+      ]
+    ],
+    "lo_shu_local_binding": "lo_shu[row mod 3][column mod 3]",
+    "phase_channel_by_lo_shu_value": {
+      "1": "zw",
+      "2": "z",
+      "3": "w",
+      "4": "x",
+      "5": "1",
+      "6": "wz",
+      "7": "xy",
+      "8": "yx",
+      "9": "y"
+    },
+    "address_rule": {
+      "linear": "64*cell81+operation64",
+      "phase_alpha": "operation64/8",
+      "phase_beta": "operation64 mod 8",
+      "hash72_row": "linear/72",
+      "hash72_column": "linear mod 72"
+    },
+    "payload_hydrated_at_genesis": false,
+    "geometry_initialized_at_genesis": true
+  },
+  "mandatory_scope": {
+    "all_pass219_data_processing": true,
+    "all_pass219_machine_learning": true,
+    "work_classes": [
+      "DATA_INGEST",
+      "DATA_TRANSFORM",
+      "DATA_INDEX",
+      "FEATURE_HYDRATION",
+      "VECTOR_RETRIEVAL",
+      "ML_TRAIN",
+      "ML_INFERENCE",
+      "ML_UPDATE",
+      "ML_EVALUATION",
+      "MULTIMODAL_PROCESSING",
+      "SERIALIZATION",
+      "REPLAY"
+    ],
+    "public_guard": "pass219_mandatory_sudoku_genesis_scaling_data_ml",
+    "bypass_without_explicit_reference_or_audit_authority": false
+  },
+  "deterministic_scaling_composition": {
+    "stage_order": [
+      "GENESIS_NORMALIZE",
+      "PHASE_LOCALITY",
+      "PASS207_BATCH_CACHE",
+      "PASS208_CANDIDATE_EXPANSION",
+      "EXACT_CPU_VM_ORACLE",
+      "SINGLETON_VM81_ADMISSION",
+      "I7_SELECTIVE_PROJECTION",
+      "I8_SPARSE_DIRTY_DERIVED",
+      "HASH72_HASH216_EXISTING_PATH"
+    ],
+    "phase_locality": {
+      "radix_per_layer": 81,
+      "maximum_current_depth": 9,
+      "law": "Q=product(q_l); M=product(s_l); R=Q/M",
+      "exact_selector_absent": "DENSE_COMPLETE_PATH"
+    },
+    "pass207": {
+      "role": "DETERMINISTIC_CANDIDATE_BATCHING_AND_CONTENT_KEYED_CACHE",
+      "canonical_mutation_authority": false,
+      "exact_integer_only_required": true,
+      "stable_lane_identity_required": true
+    },
+    "pass208": {
+      "role": "CANDIDATE_BRANCH_EXPANSION",
+      "canonical_mutation_authority": false,
+      "exact_cpu_vm_oracle_equality_required": true
+    },
+    "vm81": {
+      "role": "SINGLETON_CANONICAL_ADMISSION_AND_COMMIT",
+      "authority": "INHERITED_C_ONLY"
+    },
+    "i7": {
+      "role": "EXACT_POST_ADMISSION_SELECTIVE_PROJECTION",
+      "canonical_mutation_authority": false,
+      "original_identity_required": true
+    },
+    "i8": {
+      "role": "EXACT_SPARSE_DERIVED_UPDATE",
+      "canonical_mutation_authority": false,
+      "complete_dirty_witness_required": true,
+      "incomplete_dirty_witness": "FULL_DERIVED_PROJECTION_PATH"
+    },
+    "hash72_hash216": {
+      "role": "INHERITED_RECEIPT_LINEAGE_AND_INDEX_PATHS",
+      "new_authority_created": false
+    }
+  },
+  "deterministic_prior_evidence": {
+    "phase_local_pass208_lanes_baseline": 839808,
+    "phase_local_pass208_lanes_selected": 10368,
+    "phase_local_work_reduction": "81x",
+    "one_third_projection": {
+      "source": 17625600,
+      "selected": 5875200
+    },
+    "one_third_seven_dirty_cells": {
+      "selected": 5875200,
+      "update": 507734,
+      "avoided": 5367466,
+      "sparse_work_reduction_x1000": 11571
+    },
+    "recursive_phase_locality_depth9_reduction": "150094635296999121",
+    "timing_is_canonical": false
+  },
+  "exact_public_abi": {
+    "header": "hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h",
+    "cpp_wrapper": "hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp",
+    "implementation": "hhs_runtime/c/hhs_pass219_mandatory_genesis_scaling_1_22.inc",
+    "symbols": [
+      "hhs_exact_pass219_mandatory_genesis_scaling_version",
+      "hhs_exact_pass219_genesis_descriptor",
+      "hhs_exact_pass219_genesis_validate",
+      "hhs_exact_pass219_genesis_address_encode",
+      "hhs_exact_pass219_genesis_address_decode",
+      "hhs_exact_pass219_mandatory_scaling_plan",
+      "hhs_exact_pass219_mandatory_scaling_verify"
+    ]
+  },
+  "acceptance": [
+    "Genesis descriptor validates exact Sudoku topology",
+    "trinary sums close to zero on rows columns blocks diagonals",
+    "Lo Shu and phase-channel bindings are exact",
+    "all 5184 addresses round-trip",
+    "all declared Pass219 data/ML work classes require mandatory plan",
+    "missing exact phase selector fails to dense complete path",
+    "incomplete dirty witness fails to full derived path",
+    "candidate accelerators cannot claim canonical authority",
+    "exact CPU VM equality remains required before VM81 admission",
+    "I7 and I8 remain downstream of authoritative state",
+    "no float or double in canonical module",
+    "existing Pass219B Pass207 Pass208 RNA and VM81 conformance stays green",
+    "exact and synthetic current-main CI pass",
+    "target main is verified after merge"
+  ]
+}
