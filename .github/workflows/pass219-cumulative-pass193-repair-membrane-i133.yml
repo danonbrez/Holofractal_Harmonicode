@@ -127,7 +127,7 @@ jobs:
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc)" = "12485b95b762a6dd5db1a62dfa16aaa3580e8b16"
           test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "12dc633b44f56ce8a4d131eda7df892e960d1397"
           test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "5a1281937c2ff46bdd7b776b2c705147f2c4ded7"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "1136186e950f1a018c3eb7ad917299aad2402330"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "bd186317732141e3b285624fc23dee15beba215e"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.c)" = "7a6e40e417494b4ac565a508c7765c9dee670e7d"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.cpp)" = "e1deb2b07c988aa7f88e3cb2666e6e30763a54c1"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py)" = "456576418326a056a0cdfb14f7438d01e67eb289"
