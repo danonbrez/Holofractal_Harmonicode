@@ -49,7 +49,6 @@ class Pass190I136CompletionTests(unittest.TestCase):
             SECRET,
             principal="i136-test",
             scopes=scopes,
-            now=1_700_000_000,
             ttl_seconds=900,
             nonce="i136-fixed-nonce",
         )
@@ -91,7 +90,7 @@ class Pass190I136CompletionTests(unittest.TestCase):
             [[1, 2, 3]],
         )
         constructor = self.context.invoke_constructor(
-            "Length(value=[1,2,3])"
+            "Len(value=[1,2,3])"
         )
         shell = lower_shell_command(
             self.context,
