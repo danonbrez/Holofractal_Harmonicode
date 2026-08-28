@@ -213,7 +213,7 @@ def pass190_membrane_source_evidence() -> Dict[str, Any]:
     _require(
         SHELL_PATH,
         '"project.new"',
-        '"project.test"',
+        'f"project.{command}"',
         '"receipts"',
         "canonical_state_fabricated",
     )
