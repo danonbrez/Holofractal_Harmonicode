@@ -142,6 +142,12 @@ jobs:
           test "$(git hash-object schemas/pass187/HHS_PASS_187_COMPILED_ARTIFACT_V1.schema.json)" = "a3e736ec539b740962d7ad05d9ce70b4d2064710"
           test "$(git hash-object grammar/pass187/harmonicode_graph_grammar.ebnf)" = "87b7179d3b340b531543087c5d08b2bc1211af3a"
 
+      - name: Prove receipt-bearing Pass 187 freeze evidence identities
+        run: |
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/evidence/P187_I139_VALIDATION_RECEIPT.json)" = "11285678a0db787def6851cda6c12d067c303b87"
+          test "$(git hash-object docs/pass187/HHS_PASS_187_I139_UNIVERSAL_COMPOSITION_IMPLEMENTATION_REPORT.md)" = "15129037984627616aa83236a94839c095a7f920"
+          test "$(git hash-object docs/operations/restart/PASS_219_I139_PASS187_COMPOSITION_COMPLETION_RESTART.md)" = "494a16483a35aaa16bb11c227d29b068392ef2a9"
+
       - name: Prove I139 membrane identities and additive ABI order
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h)" = "e59603ac523dd32e845b21492fc3d2336a562dcf"

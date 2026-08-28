@@ -1,0 +1,68 @@
+{
+  "schema": "HHS_PASS_187_I139_UNIVERSAL_COMPOSITION_IMPLEMENTATION_RECEIPT_V1",
+  "contract": "HHS-P187-UMOACF-IR-HC-VM81-H72-H216",
+  "classification": "HHS_PASS_187_UNIVERSAL_COMPOSITION_AND_INCREMENTAL_RECOMPOSITION_VERIFIED",
+  "historical_contract_commit": "6584c8e118eb73e0884165b3d1afd1ec84f34f57",
+  "composition_completion_head": "c36beacd8d6748f65c30ca3b02ac237eac38c34d",
+  "focused_validation": {
+    "run": 33186767175,
+    "job": 98901660703,
+    "conclusion": "success",
+    "normative_scenarios": 12,
+    "browser_acceptance": [
+      "mouse_drag_drop",
+      "keyboard",
+      "touch",
+      "pen_pointer",
+      "accessibility_navigation",
+      "cancellation",
+      "replay"
+    ],
+    "linux_adapters": [
+      "file",
+      "process",
+      "unix_socket",
+      "http"
+    ],
+    "planner_benchmark_nodes": 100
+  },
+  "cumulative_validation": {
+    "head": "86476e8661238ea529fba5c54dd0cfcce455ad7a",
+    "run": 33187479550,
+    "exact": {
+      "job": 98904120899,
+      "artifact": 9692338586,
+      "artifact_sha256": "f907af29883d917460af0eed86380f5ef67f8ad916763d209127132738931351",
+      "conclusion": "success"
+    },
+    "synthetic": {
+      "job": 98904121138,
+      "artifact": 9692333557,
+      "artifact_sha256": "7e286c7b96a243cde1094fd8bd15ac54471427816e069a316826884822feed54",
+      "conclusion": "success"
+    }
+  },
+  "historical_bott": {
+    "contract": "HHS-P187-BP-XNOR-IPRE-VM81-Q144-G243-X64",
+    "baseline_merge": "5db45d6b72b93132997f815d16df4540fd13adfc",
+    "classification": "HHS_PASS_187_CONTRACT_FROZEN_HYDRATION_BASELINE_VERIFIED",
+    "historical_runtime_complete_at_freeze": false,
+    "hydrated_addresses": 1259712,
+    "active_period_two_states": 629856,
+    "drift_collapse_states": 629856,
+    "gear_preserved_states": 1259712,
+    "deterministic_checksum_u64": "11e3bbf0214751c3",
+    "pass188_runtime_closure_commit": "c77e3feef42448a111d8b8912a1d1cb157d51925"
+  },
+  "authority_boundary": {
+    "inherited_vm81_hash72_witness_required": true,
+    "local_event_evidence_is_mutation_authority": false,
+    "independent_vm81_authority": false,
+    "independent_hash72_clock": false,
+    "browser_authority": false,
+    "cache_authority": false,
+    "compiled_artifact_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "authoritative_main_status": "NOT_MERGED_SEPARATE_AUTHORIZATION_REQUIRED"
+}
