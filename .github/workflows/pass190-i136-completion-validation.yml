@@ -161,10 +161,19 @@ jobs:
           assert status['new_receipt_clock'] is False
           PY
 
-      - name: Preserve inherited exact ABI unchanged
+      - name: Preserve predecessor exact ABI and additive I136 membrane
         run: |
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a967aca9b33d1b925caf439000482737d2e96786"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "43619e86f6bb7bdf08bd2a7dbc423649d2828c7a"
+          test "$(git rev-parse fbbc3ff37b6dea6c31e73612731e4e323a54475f:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a967aca9b33d1b925caf439000482737d2e96786"
+          test "$(git rev-parse fbbc3ff37b6dea6c31e73612731e4e323a54475f:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "43619e86f6bb7bdf08bd2a7dbc423649d2828c7a"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass192_1_34.h') < h.index('hhs_pass219_inherited_pass191_1_35.h') < h.index('hhs_pass219_inherited_pass190_1_36.h')
+          assert c.index('hhs_pass219_inherited_pass192_1_34.inc') < c.index('hhs_pass219_inherited_pass191_1_35.inc') < c.index('hhs_pass219_inherited_pass190_1_36.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass190-i136-exact.o
