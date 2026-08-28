@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pass 191 Repository Hydration</title>
+<style>
+:root{color-scheme:dark;--bg:#071017;--panel:#0d1820;--line:#284552;--muted:#9ab9c9;--text:#e8f7ff;--good:#9dd7b7;--bad:#ffb2a6;--accent:#c8e5f2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,sans-serif}
+header{padding:24px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0c1a23,#071017)}
+h1{margin:0;font-size:clamp(24px,4vw,40px)}header p{max-width:850px;color:var(--muted)}
+main{padding:20px clamp(16px,4vw,48px) 56px;display:grid;gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h2,.card h3{margin-top:0}.metric{font-size:28px;font-weight:750;overflow-wrap:anywhere}.muted{color:var(--muted)}
+button,input,textarea{font:inherit}button{border:1px solid #557987;background:#17303b;color:var(--text);padding:9px 13px;border-radius:8px;cursor:pointer}
+button:hover{background:#20404d}button.primary{background:#d5edf7;color:#071017;border-color:#d5edf7}
+input,textarea{width:100%;background:#071017;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px}
+label{display:block;margin:8px 0}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.stage{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);font-weight:700}
+.ok{color:var(--good)}.error{color:var(--bad)}dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px}dd{margin:0;overflow-wrap:anywhere}
+progress{width:100%;height:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto;background:#071017;border-radius:8px;padding:12px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:7px;border-bottom:1px solid #203845;vertical-align:top}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+<h1>Repository Hydration</h1>
+<p>Pass 191 presents the committed repository as one exact, replayable object graph. Read-only preview never mutates VM81 state. Durable jobs require an inherited authority receipt and expose every lifecycle checkpoint, topology root, blocker and replay result.</p>
+</header>
+<main>
+<section class="grid">
+<article class="card"><div class="muted">Runtime</div><div class="metric" id="runtime">—</div><div id="authority" class="muted">Loading authority boundary…</div></article>
+<article class="card"><div class="muted">Objects</div><div class="metric" id="objects">—</div><div id="bytes" class="muted">Run preview to scan committed tree</div></article>
+<article class="card"><div class="muted">Functions</div><div class="metric" id="functions">—</div><div id="passes" class="muted">—</div></article>
+<article class="card"><div class="muted">Closure</div><div class="metric" id="closure">—</div><div id="blockers" class="muted">—</div></article>
+</section>
+
+<section class="grid">
+<article class="card">
+<h2>Read-only hydration</h2>
+<label>Commit<input id="commit" value="HEAD"></label>
+<label>Changed since (optional)<input id="since" placeholder="commit SHA"></label>
+<div class="actions"><button class="primary" id="preview">Hydrate committed tree</button><button id="loadLineage">Pass lineage</button><button id="loadInvariants">Invariants</button></div>
+<p id="previewStatus" class="muted">No persistent state is written by preview.</p>
+</article>
+
+<article class="card">
+<h2>Durable governed job</h2>
+<label>Authority execution JSON<textarea id="authorityJson" rows="5" placeholder='Paste a VM81-authorized execution receipt'></textarea></label>
+<div class="actions"><button id="createJob">Create job</button><button id="resumeJob">Run / resume</button><button id="verifyJob">Verify</button><button id="replayJob">Replay</button></div>
+<p>Job <strong id="jobId">—</strong> <span class="stage" id="jobStage">NONE</span></p>
+<progress id="progress" max="1" value="0"></progress>
+<div id="jobMessage" class="muted">Durable state is created only with inherited singleton VM81 authority.</div>
+</article>
+</section>
+
+<section class="card">
+<h2>Hydrated topology</h2>
+<dl>
+<dt>Repository root</dt><dd id="repoRoot">—</dd>
+<dt>Object registry</dt><dd id="objectRoot">—</dd>
+<dt>Function registry</dt><dd id="functionRoot">—</dd>
+<dt>Pass lineage</dt><dd id="lineageRoot">—</dd>
+<dt>Invariant registry</dt><dd id="invariantRoot">—</dd>
+<dt>Hash216 index</dt><dd id="indexRoot">—</dd>
+</dl>
+</section>
+
+<section class="grid">
+<article class="card"><h2>Lineage / invariant view</h2><div id="detail" class="muted">Use the buttons above to inspect the hydrated graph.</div></article>
+<article class="card"><h2>Human-readable report</h2><pre id="report">No durable completed job yet.</pre></article>
+</section>
+</main>
+<script>
+const api=(p)=>p;
+const $=(id)=>document.getElementById(id);
+let currentJob=null;
+async function json(path, options={}){
+ const response=await fetch(api(path),options);
+ const body=await response.json().catch(()=>({detail:response.statusText}));
+ if(!response.ok) throw new Error(body.detail||response.statusText);
+ return body;
+}
+function fmtBytes(n){if(!Number.isFinite(n))return "—";const units=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<units.length-1){n/=1024;i++}return n.toFixed(i?1:0)+" "+units[i]}
+function renderManifest(m){
+ $("objects").textContent=String(m.object_count??"—");
+ $("bytes").textContent=fmtBytes(Number(m.bytes_scanned));
+ $("functions").textContent=String(m.functions_registered??"—");
+ $("passes").textContent=(m.passes_linked??"—")+" lineage records";
+ $("closure").textContent=m.completion_classification||"—";
+ $("blockers").textContent=(m.blocker_count??0)+" blockers · symmetry "+(m.symmetry_valid?"verified":"unverified");
+ const t=m.topology||{};
+ $("repoRoot").textContent=t.hydrated_repository_root_hash216||"—";
+ $("objectRoot").textContent=t.object_registry_root||"—";
+ $("functionRoot").textContent=t.function_registry_root||"—";
+ $("lineageRoot").textContent=t.pass_lineage_root||"—";
+ $("invariantRoot").textContent=t.invariant_registry_root||"—";
+ $("indexRoot").textContent=t.hash216_index_root||"—";
+}
+async function loadStatus(){
+ try{const s=await json("/v1/hydration/status");$("runtime").textContent="ONLINE";$("runtime").className="metric ok";$("authority").textContent="VM81: "+s.singleton_vm81_authority+" · float canonical authority: "+String(s.floating_point_canonical_authority)}
+ catch(e){$("runtime").textContent="OFFLINE";$("runtime").className="metric error";$("authority").textContent=e.message}
+}
+$("preview").onclick=async()=>{
+ $("previewStatus").textContent="Discovering committed tree…";
+ try{
+  const body={commit:$("commit").value||"HEAD",since_commit:$("since").value||null,include_objects:false};
+  const m=await json("/v1/hydration/preview",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  renderManifest(m);$("previewStatus").textContent="Read-only hydration complete. No VM81 mutation performed.";
+ }catch(e){$("previewStatus").textContent=e.message;$("previewStatus").className="error"}
+};
+$("loadLineage").onclick=async()=>{
+ try{const v=await json("/v1/hydration/lineage/passes");const linked=v.records.filter(x=>x.source_count>0);$("detail").innerHTML="<p><strong>"+v.records.length+"</strong> explicit Genesis/pass records. <strong>"+linked.length+"</strong> have direct path matches in this hydration.</p><table><tr><th>Pass</th><th>Representation</th><th>Sources</th></tr>"+v.records.slice(0,191).map(x=>"<tr><td>"+(x.pass_number===0?"Genesis":x.pass_number)+"</td><td>"+x.representation+"</td><td>"+x.source_count+"</td></tr>").join("")+"</table>"}
+ catch(e){$("detail").textContent=e.message}
+};
+$("loadInvariants").onclick=async()=>{
+ try{const v=await json("/v1/hydration/invariants");$("detail").innerHTML="<table><tr><th>Invariant</th><th>Class</th></tr>"+v.invariants.map(x=>"<tr><td>"+x.id+"</td><td>"+x.kind+"</td></tr>").join("")+"</table>"}
+ catch(e){$("detail").textContent=e.message}
+};
+function auth(){const raw=$("authorityJson").value.trim();if(!raw)throw new Error("Authority execution JSON is required for durable mutation.");return JSON.parse(raw)}
+$("createJob").onclick=async()=>{
+ try{
+  const body={commit:$("commit").value||"HEAD",since_commit:$("since").value||null,authority_execution:auth()};
+  const j=await json("/v1/hydration/jobs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  currentJob=j.job_id;await refreshJob();
+ }catch(e){$("jobMessage").textContent=e.message;$("jobMessage").className="error"}
+};
+async function refreshJob(){
+ if(!currentJob)return;
+ const j=await json("/v1/hydration/jobs/"+currentJob);$("jobId").textContent=j.job_id;$("jobStage").textContent=j.stage;
+ const h=j.history||[],last=h[h.length-1]||{};const total=last.total_work_count||1,done=Math.min(last.completed_work_count||0,total);$("progress").max=total;$("progress").value=done;
+ $("jobMessage").textContent=j.failure_reason||j.recovery_action||"";
+ if(j.manifest)renderManifest(j.manifest);
+ if(j.stage==="COMPLETED"){const r=await fetch("/v1/hydration/jobs/"+currentJob+"/report");$("report").textContent=await r.text()}
+}
+$("resumeJob").onclick=async()=>{try{if(!currentJob)throw new Error("Create a job first.");await json("/v1/hydration/jobs/"+currentJob+"/resume",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({authority_execution:auth()})});await refreshJob()}catch(e){$("jobMessage").textContent=e.message;$("jobMessage").className="error"}};
+$("verifyJob").onclick=async()=>{try{if(!currentJob)throw new Error("Create a job first.");const v=await json("/v1/hydration/jobs/"+currentJob+"/verify",{method:"POST"});$("jobMessage").textContent=v.ok?"Verification passed.":"Verification failed: "+JSON.stringify(v.checks)}catch(e){$("jobMessage").textContent=e.message}};
+$("replayJob").onclick=async()=>{try{if(!currentJob)throw new Error("Create a job first.");const v=await json("/v1/hydration/jobs/"+currentJob+"/replay",{method:"POST"});$("jobMessage").textContent=v.ok?"Deterministic replay verified.":"Replay mismatch: "+v.mismatches.join(", ")}catch(e){$("jobMessage").textContent=e.message}};
+loadStatus();
+</script>
+</body>
+</html>
