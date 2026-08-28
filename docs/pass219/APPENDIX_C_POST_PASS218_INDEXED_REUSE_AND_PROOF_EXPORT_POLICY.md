@@ -171,3 +171,71 @@ RECOMPUTE ONLY THE AFFECTED FRONTIER.
 RETURN TO GENESIS WHEN THE FIRST-PRINCIPLES PROOF ITSELF IS THE REQUIRED OUTPUT,
 OR WHEN A TYPED AUDIT/RECOVERY CONDITION REQUIRES IT.
 ```
+
+
+## C12. Pass 219 1.22 mandatory Genesis normalization versus Genesis replay
+
+Pass 219 1.22 adds a mandatory Sudoku-qudit Genesis **normalization layer** to all Pass 219 data/ML execution. This does not change C1.
+
+The distinction is now explicit:
+
+```text
+GENESIS DATA-PLANE NORMALIZATION
+= mandatory coordinate/state organization
+
+FULL GENESIS REPLAY
+= conditional recomputation from first principles
+```
+
+Therefore ordinary authenticated continuation remains:
+
+```text
+mandatory Genesis geometry
++ authenticated indexed predecessor
++ matching dependency frontier
+-> indexed continuation
+```
+
+and still requires:
+
+```text
+Genesis replay count = 0
+```
+
+on the ordinary eligible path.
+
+The mandatory deterministic scaling composition is inserted around the existing continuation/admission path:
+
+```text
+Genesis normalize
+-> exact phase locality
+-> Pass 207 deterministic batching/cache
+-> Pass 208 candidate expansion
+-> exact CPU/VM equality
+-> singleton VM81 admission
+-> I7 exact selective projection
+-> I8 sparse dirty derived update when complete
+-> existing Hash72/Hash216 path
+```
+
+If an optimization proof is absent, work expands to the inherited complete path; state authority does not change.
+
+## C13. Pass 219 1.22 anti-bypass requirements
+
+A Pass 219 data-processing or machine-learning executor SHALL declare the guard:
+
+```text
+pass219_mandatory_sudoku_genesis_scaling_data_ml
+```
+
+The registration layer SHALL also bind the exact planner/verification symbols.
+
+Additional anti-regression tests are:
+
+```text
+C-TEST-11  ordinary indexed continuation retains mandatory Genesis normalization with zero full Genesis replay
+C-TEST-12  missing exact phase selector routes to dense candidate work
+C-TEST-13  incomplete dirty witness routes to full derived/projection work
+C-TEST-14  Pass 207/208 candidate acceleration cannot acquire canonical authority
+C-TEST-15  no registered Pass 219 data/ML executor omits the mandatory Genesis/scaling guard
+```

@@ -1,0 +1,133 @@
+name: Pass 218 219 R03 R04 VM81 Bridge Current Main
+
+on:
+  push:
+    branches:
+      - agent/pass219-r03-r04-vm81-bridge-current-main
+    paths:
+      - 'hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py'
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py'
+      - 'HHS_PASS_218_APPEND_ONLY_CAUSAL_ATTRIBUTION_COUNTEREXAMPLE_MEMORY_AMENDMENT_2_3_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_VM81_ETHICAL_ADMISSION_BRIDGE_AMENDMENT_1_5_0.md'
+      - 'docs/pass219/PASS_218_219_R03_R04_VM81_BRIDGE_RESTART.md'
+      - '.github/workflows/pass218-219-r03-r04-vm81-bridge.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py'
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py'
+      - 'HHS_PASS_218_APPEND_ONLY_CAUSAL_ATTRIBUTION_COUNTEREXAMPLE_MEMORY_AMENDMENT_2_3_0.md'
+      - 'HHS_PASS_219_APPEND_ONLY_VM81_ETHICAL_ADMISSION_BRIDGE_AMENDMENT_1_5_0.md'
+      - 'docs/pass219/PASS_218_219_R03_R04_VM81_BRIDGE_RESTART.md'
+      - '.github/workflows/pass218-219-r03-r04-vm81-bridge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-validation:
+    name: r03-r04-vm81-bridge (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - name: Checkout exact or synthetic candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Verify current canonical integration base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 21ca107896efe7cc2409fcd91909debc41ae920b HEAD
+          echo "CURRENT_MAIN_21CA_ANCESTOR=1"
+
+      - name: Preserve historical R03 R04 contract semantics byte-for-byte
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object HHS_PASS_218_APPEND_ONLY_CAUSAL_ATTRIBUTION_COUNTEREXAMPLE_MEMORY_AMENDMENT_2_3_0.md)" = "48629c904e9a6be6cb7b850596e91a9e5b08d3b7"
+          test "$(git hash-object HHS_PASS_219_APPEND_ONLY_VM81_ETHICAL_ADMISSION_BRIDGE_AMENDMENT_1_5_0.md)" = "e280014970639e088e46e6aa3d679535cecf566c"
+          test "$(git hash-object hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py)" = "cc366b60c6c451a97412767346bb80593d10ff24"
+          echo "HISTORICAL_SEMANTIC_BLOBS_PRESERVED=1"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test requirements
+        run: python -m pip install --disable-pip-version-check pytest 'cryptography>=45.0,<47.0'
+
+      - name: Compile refined Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py \
+            hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py \
+            tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
+
+      - name: Enforce exact non-bypass authority boundary
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          paths = [
+              Path('hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py'),
+              Path('hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'),
+          ]
+          for path in paths:
+              tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
+              floats = [
+                  node.value for node in ast.walk(tree)
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float)
+              ]
+              assert not floats, f'{path}: float literals present: {floats}'
+          print('NO_FLOAT_LITERAL_AUTHORITY_PATH=1')
+          PY
+          grep -F 'controller.authorized_tick(source=source)' hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+          ! grep -En 'controller\.(step|commit_receipt|runtime_step|receipt_commit)\(' \
+            hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+          grep -F 'audit.get("ok") is not True' hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+          grep -F 'audit.get("state_hash72") != state_hash72' hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+          grep -F 'audit.get("receipt_hash72") != receipt_hash72' hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+
+      - name: Run inherited and repaired narrative bridge gates
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: '.'
+        run: |
+          python -m pytest -q \
+            hhs_runtime/test_narrative_alignment_reasoning_engine_v1.py \
+            tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
+
+      - name: Re-run inherited native Pass 219 ethical scope membrane
+        run: make -C native_projects/hhs_pass219_ethical_scope_membrane clean test
+
+      - name: Strict-compile cumulative exact ABI
+        run: >-
+          gcc -O2 -std=c11 -Wall -Wextra -Werror
+          -Ihhs_runtime/include -Ihhs_runtime/c -fPIC -shared
+          hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/src/hhs_hash216.c
+          -o /tmp/libhhs_r03_r04_exact.so
+
+      - name: Verify historical standalone public C ABI link contract
+        env:
+          PYTHONPATH: '.'
+        run: >-
+          python -m pytest -q
+          tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
+
+      - name: Verify standalone VM81 kernel remains exact
+        run: |
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace

@@ -17,28 +17,36 @@ from hhs_backend.runtime.hhs_pass200c_guarded_active_admission import (
     CLASSIFICATION,
     Pass200CGuardedActiveAuthority,
 )
+from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
 
 
 def run(state_root: Path, evidence_path: Path) -> dict:
     shutil.rmtree(state_root, ignore_errors=True)
     evidence_path.parent.mkdir(parents=True, exist_ok=True)
+    controller = HHSRuntimeController()
     pass200a = Pass200AProofCarryingOptimizationAuthority(state_root=state_root / "pass200a")
     pass200b = None
     pass200c = None
     reopened = None
     try:
+        qualification_tick = controller.authorized_tick(source="pass200c.production.pass200a.holdouts")
+        qualification_receipt = qualification_tick["receipt"]["receipt_hash72"]
         qualification = pass200a.run_holdouts(
             worker_count=8,
-            vm81_receipt_hash72="7" * 72,
+            vm81_receipt_hash72=qualification_receipt,
         )
+        shadow_tick = controller.authorized_tick(source="pass200c.production.pass200a.shadows")
+        shadow_receipt = shadow_tick["receipt"]["receipt_hash72"]
         shadows = pass200a.execute_all_shadows(
             worker_count=8,
-            vm81_receipt_hash72="8" * 72,
+            vm81_receipt_hash72=shadow_receipt,
         )
         assert qualification["closed"] is True
+        assert qualification["vm81_receipt_provenance"]["ok"] is True
         assert qualification["independent_envelope_count"] == 4
         assert qualification["bundle_count"] == 4
         assert shadows["closed"] is True
+        assert shadows["vm81_receipt_provenance"]["ok"] is True
         assert shadows["shadow_match_count"] == 4
         assert shadows["candidate_activation_count"] == 0
 
@@ -267,6 +275,7 @@ def run(state_root: Path, evidence_path: Path) -> dict:
             "current_frontier_hash72": current["frontier_hash72"],
             "status_hash72": status["status_hash72"],
             "event_chain": verification["event_chain"],
+            "pass200a_vm81_receipt_chain_verified": True,
             "claim_boundary": {
                 "three_active_approvals_required": True,
                 "guard_every_active_invocation": True,

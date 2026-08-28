@@ -1,0 +1,132 @@
+name: Pass 219 Cumulative Pass 200A Repair Membrane I126
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration126-pass200a-repair-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py'
+      - 'hhs_runtime/hhs_vm81_receipt_provenance_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200a_1_26.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200a_1_26.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass200a_1_26.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i126_pass200a.py'
+      - 'tests/test_hhs_pass200a_proof_carrying_optimization_v1.py'
+      - 'tests/pass219/test_pass219_inherited_pass200a_1_26.c'
+      - 'tests/pass219/test_pass219_inherited_pass200a_1_26.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass200a_membrane_i126.py'
+      - 'docs/pass200a/PASS_219_I126_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I126_PASS200A_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass200a-proof-carrying-shadow-optimization.yml'
+      - '.github/workflows/pass219-cumulative-pass200a-repair-membrane-i126.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass200a-repair-membrane:
+    name: inherited-pass200a-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I125 and accepted Pass 200A squash lineage
+        run: |
+          git merge-base --is-ancestor 21bf16233a0c4573a754c29686d13782bcc4fc44 HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor eee6670f7d3c6743e1bf32c7e42a4150d07351e3 HEAD
+          test "$(git merge-base 5ef1d3ab6c0ceb3a20d468447b991066626de366 HEAD)" = "649be68e1566002ce66c919463a386b8018bc2fb"
+
+      - name: Prove historical Pass 200A identities and immutable V1 provenance
+        run: |
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:HHS_PASS_200A_PROOF_CARRYING_SHADOW_OPTIMIZATION.md)" = "46c9a8fdbacb80e1d136a67bd4b48e2e4a82c367"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py)" = "1f6d7b0092da3916705a58af9ae2ad2c22c3bab3"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py)" = "521e89fc1c8b3067574884fb69a79a4d856887a1"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:.github/workflows/pass200a-proof-carrying-shadow-optimization.yml)" = "2817d207568e43f5621d56267f076503fa7e9628"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:hhs_backend/api/pass200a_optimization_routes.py)" = "3f123916520c6b7f877903d50bb924992895bff6"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:tests/test_hhs_pass200a_proof_carrying_optimization_v1.py)" = "068a5e15e5a877ff439ab42535b1429cf77b00ad"
+          test "$(git rev-parse eee6670f7d3c6743e1bf32c7e42a4150d07351e3:docs/pass200a/RESTART_RECORD.md)" = "984950272cd9463319b163cb7a2a1e2037c0da12"
+          test "$(git hash-object HHS_PASS_200A_PROOF_CARRYING_SHADOW_OPTIMIZATION.md)" = "46c9a8fdbacb80e1d136a67bd4b48e2e4a82c367"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py)" = "1f6d7b0092da3916705a58af9ae2ad2c22c3bab3"
+
+      - name: Compile repaired Python production surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_vm81_receipt_provenance_v1.py \
+            hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py \
+            hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i126_pass200a.py \
+            tests/test_hhs_pass200a_proof_carrying_optimization_v1.py \
+            tests/pass219/test_pass219_cumulative_pass200a_membrane_i126.py
+
+      - name: Reject approximate arithmetic and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass200a_1_26.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass200a_1_26.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass200a_1_26.inc
+          ! grep -Eq 'candidate_may_commit[[:space:]]*=[[:space:]]*1|candidate_may_activate[[:space:]]*=[[:space:]]*1|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass200a_1_26.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass200a_1_26.inc
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_runtime/hhs_vm81_receipt_provenance_v1.py \
+            hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py; then
+            echo 'Approximate canonical arithmetic detected in Pass 200A repair.' >&2
+            exit 1
+          fi
+
+      - name: Compile cumulative exact ABI and Pass 200A repair conformance
+        run: |
+          mkdir -p /tmp/pass219-i126-pass200a
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i126-pass200a/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200a_1_26.c \
+            /tmp/pass219-i126-pass200a/exact.o \
+            -o /tmp/pass219-i126-pass200a/pass200a-c
+          /tmp/pass219-i126-pass200a/pass200a-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200a_1_26.cpp \
+            /tmp/pass219-i126-pass200a/exact.o \
+            -o /tmp/pass219-i126-pass200a/pass200a-cpp
+          /tmp/pass219-i126-pass200a/pass200a-cpp
+
+      - name: Run kernel-derived repaired Pass 200A membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass200a_membrane_i126.py
+
+      - name: Run Pass 200A eight-finding repair regression
+        run: PYTHONPATH="$PWD" python -m unittest -v tests.test_hhs_pass200a_proof_carrying_optimization_v1
+
+      - name: Preserve frozen Pass 200B successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass200b_membrane_i125.py

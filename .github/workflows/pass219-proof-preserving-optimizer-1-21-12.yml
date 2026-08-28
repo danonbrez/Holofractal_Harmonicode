@@ -1,0 +1,188 @@
+name: Pass 219 Proof Preserving Optimizer 1.21.12
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_219_APPEND_ONLY_PROOF_PRESERVING_OPTIMIZATION_AMENDMENT_1_21_12.md'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
+      - 'tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py'
+      - '.github/workflows/pass219-proof-preserving-optimizer-1-21-12.yml'
+      - 'docs/operations/restart/PASS_219_PROOF_PRESERVING_OPTIMIZATION_1_21_12_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof-preserving-optimizer:
+    name: proof-preserving-optimizer (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical and sealed lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 9e17ff8e2fde1e3c50cb17b3cd5cac5b61a131a7 HEAD
+          git merge-base --is-ancestor bb43b29faa0e7b62bccf544081452934ce5af054 HEAD
+
+      - name: Prove immutable semantic dependencies remain untouched
+        run: |
+          # I121.8 optimizer/test are intentionally repair-forwarded and are
+          # validated below by exact source identities plus full conformance.
+          # Aggregate ABI registries and the I121.9 .inc include path are also
+          # additive/integration surfaces, so they are compiled/tested below
+          # rather than compared byte-for-byte to the pre-consolidation seal.
+          git diff --exit-code 9e17ff8e2fde1e3c50cb17b3cd5cac5b61a131a7 HEAD -- \
+            Makefile \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            native_projects/hhs_pass159_harmonicode_toolchain \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode \
+            tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c
+
+      - name: Verify exact inherited source identities
+        run: |
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            'c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412cb6d25' \
+            'contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode' | sha256sum -c -
+          grep -F '"denominator_occurrence_offset_unit": "UTF8_BYTE_OFFSET"' \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py
+
+      - name: Enforce read-only non-promoting optimization surface
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py \
+            tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py
+          ! grep -En 'hhs_vm_(init|reset|step|run)|hhs159_(lex|parse|build|lower|interpret|execute)' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"receipt_count_reduction_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"algebraic_cancellation_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"projection_substitution_authorized": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"boolean_gate_truth_produced": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"canonical_monolithic_proof": False' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+          grep -F '"pass169_whole_expression_admission_required": True' \
+            hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+
+      - name: Run activated I121.12 optimizer and conformance
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: '.'
+        run: |
+          python -m hhs_runtime.core_sandbox.hhs_pass219_proof_preserving_optimizer_1_21_12 > /tmp/pass219-i12112.json
+          python tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/pass219-i12112.json').read_text())
+          assert value['ok'] is True
+          assert value['read_only_optimization_activated'] is True
+          cse = value['denominator_cse']
+          assert cse['baseline_value_evaluations'] == 2
+          assert cse['memoized_value_evaluations'] == 1
+          assert cse['source_occurrence_witness_count'] == 2
+          assert cse['receipt_count_reduction_authorized'] is False
+          projection = value['projection_validation_fast_path']
+          assert projection['optimized_general_evaluations'] == 3
+          assert projection['exact_phase_witness_checks'] == 6
+          assert projection['final_verified_cells'] == 9
+          work = value['structural_work_accounting']
+          assert work['baseline_general_work_units'] == 11
+          assert work['optimized_general_work_units'] == 4
+          assert work['general_work_units_avoided'] == 7
+          assert work['runtime_speedup_claimed'] is False
+          authority = value['authority_boundary']
+          assert authority['boolean_gate_truth_produced'] is False
+          assert authority['canonical_monolithic_proof'] is False
+          assert authority['pass169_whole_expression_admission_required'] is True
+          PY
+
+      - name: Re-run inherited I121.8 optimization and phase proofs
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: '.'
+        run: |
+          python tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py
+          python tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py
+
+      - name: Build frozen Pass159 and preserve whole-expression distinction
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i12112-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i12112-build --parallel 2
+          ctest --test-dir /tmp/pass159-i12112-build --output-on-failure
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c \
+            -L/tmp/pass159-i12112-build -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-i12112-build \
+            -o /tmp/pass159-i12112-identity-census
+          /tmp/pass159-i12112-identity-census | tee /tmp/pass159-i12112-identity-census.txt
+          grep -F 'source_equal=0 tokens_equal=0 cst_equal=0 ast_equal=0 types_equal=0 graph_equal=0 hir_equal=0 vmir_equal=0' \
+            /tmp/pass159-i12112-identity-census.txt
+
+      - name: Preserve I121.9 membrane and I121.11 fail-closed production state
+        run: |
+          mkdir -p /tmp/pass219-i12112
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i12112/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            /tmp/pass219-i12112/exact.o \
+            -o /tmp/pass219-i12112/i1219
+          /tmp/pass219-i12112/i1219
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I12111_EXPECT_PROVIDER=0 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_binding_1_21_11.c \
+            /tmp/pass219-i12112/exact.o \
+            -L/tmp/pass159-i12112-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i12112-build \
+            -o /tmp/pass219-i12112/no-provider
+          /tmp/pass219-i12112/no-provider \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Preserve Pass169 authority contract
+        run: |
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'emits Hash72 execution receipts' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md

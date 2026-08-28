@@ -1,0 +1,135 @@
+name: Pass 219 Cumulative Pass 203 Membrane I121
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration121-pass203-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass203_1_21.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass203_1_21.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass203_1_21.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i121_pass203.py'
+      - 'tests/pass219/test_pass219_inherited_pass203_1_21.c'
+      - 'tests/pass219/test_pass219_inherited_pass203_1_21.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass203_membrane_i121.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'docs/pass203/PASS_219_I121_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I121_PASS203_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass203-membrane-i121.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass203-membrane:
+    name: inherited-pass203-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I120 and accepted Pass 203 integration
+        run: |
+          git merge-base --is-ancestor 1a3a5a81d01840f94c1d8568612e3959764b07df HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor b5209f0dad3fade8bacede8cf1dd10c3fdc12e34 HEAD
+          test "$(git merge-base b1bb5ca1908b6e02a037ea412801286867be74b3 HEAD)" = 8bd57b5843648efb52092568fae3501eeeefeda0
+
+      - name: Prove frozen Pass 203 receipts and source blobs
+        run: |
+          declare -A expected=(
+            [evidence/pass203/PASS203_MAINFRAME_VALIDATION_RECEIPT.json]=96ba032149343cffbde17ee9833e47c79395ac14
+            [evidence/pass203/PASS203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT.json]=100a97fc47477d2f633626c33e89dfd6ccb44d21
+            [evidence/pass204/PASS203_INHERITED_VALIDATION_RECEIPT.json]=69e5e3f8db578fee2dfc07573fcce5423add6376
+            [hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py]=3e4002bc6115f3e6f8d2b33eaf486b37dfa18685
+            [hhs_backend/runtime/hhs_pass203_function_worker_v1.py]=5f587460c9c6e51d386eaacd072b0fde787808d1
+            [hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py]=8c39eef09d1e909c19f574e39cb77652bafdaf2e
+            [hhs_backend/api/pass203_mainframe_routes.py]=25cf656a41bd72b3967f0d748ea6cf8b7479e78a
+            [hhs_backend/runtime/hhs_storybook_reel_v3.py]=940fbc1d8e0bf071c35d3a8524e676e85a853e16
+            [hhs_backend/api/storybook_reel_routes.py]=cb5fda6a1d3074f9bf825362f3a02ef686e088b8
+            [applications/holofractal_harmonizer/src/pass203-mainframe.mjs]=59743753aaaf7bed9bafbef3fb015de52deac421
+            [applications/storybook_reel_studio/pass203-high-fidelity-controls.js]=0ed08747993a81385b439bcf2665c6bb45e08c18
+            [tests/test_hhs_pass203_hydrated_mainframe_v1.py]=26c685c65d006f41adceac7750983e84e8a6e33e
+            [tests/test_hhs_pass203_high_fidelity_render_v1.py]=945e687e1d1ffdb7398a645e86d23ee1c1a5a926
+            [.github/workflows/pass203-hydrated-mainframe.yml]=d69ff55f10e79ff760e03c820f212575f8f46d72
+            [.github/workflows/storybook-reel-studio.yml]=77e82a2d8f06c50e68a40babe2df081cc461b313
+          )
+          for path in "${!expected[@]}"; do
+            test "$(git rev-parse HEAD:$path)" = "${expected[$path]}"
+          done
+          for path in \
+            hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py \
+            hhs_backend/runtime/hhs_pass203_function_worker_v1.py \
+            hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py \
+            hhs_backend/api/pass203_mainframe_routes.py \
+            hhs_backend/runtime/hhs_storybook_reel_v3.py \
+            hhs_backend/api/storybook_reel_routes.py \
+            applications/holofractal_harmonizer/src/pass203-mainframe.mjs \
+            applications/storybook_reel_studio/pass203-high-fidelity-controls.js \
+            tests/test_hhs_pass203_hydrated_mainframe_v1.py \
+            tests/test_hhs_pass203_high_fidelity_render_v1.py \
+            .github/workflows/pass203-hydrated-mainframe.yml \
+            .github/workflows/storybook-reel-studio.yml; do
+            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse b1bb5ca1908b6e02a037ea412801286867be74b3:$path)"
+          done
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          ! grep -REn '\b(float|double)\b|<math\.h>' \
+            hhs_runtime/include/hhs_pass219_inherited_pass203_1_21.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass203_1_21.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass203_1_21.inc
+          ! grep -En 'HHS_EXACT_API.*(commit|admit|persist|execute|mutate)' \
+            hhs_runtime/include/hhs_pass219_inherited_pass203_1_21.h
+
+      - name: Compile cumulative exact ABI and Pass 203 conformance
+        run: |
+          mkdir -p /tmp/pass219-i121
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i121/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass203_1_21.c \
+            /tmp/pass219-i121/exact.o -o /tmp/pass219-i121/p203-c
+          /tmp/pass219-i121/p203-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass203_1_21.cpp \
+            /tmp/pass219-i121/exact.o -o /tmp/pass219-i121/p203-cpp
+          /tmp/pass219-i121/p203-cpp
+
+      - name: Run kernel-derived Pass 203 membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i121_pass203.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass203_membrane_i121.py
+
+      - name: Preserve frozen Pass 204 successor membrane
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass204_1_20.c \
+            /tmp/pass219-i121/exact.o -o /tmp/pass219-i121/p204-c
+          /tmp/pass219-i121/p204-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass204_1_20.cpp \
+            /tmp/pass219-i121/exact.o -o /tmp/pass219-i121/p204-cpp
+          /tmp/pass219-i121/p204-cpp
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass204_membrane_i120.py

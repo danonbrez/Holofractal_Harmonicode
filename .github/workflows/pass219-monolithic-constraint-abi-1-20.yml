@@ -1,0 +1,108 @@
+name: Pass 219 Monolithic Constraint ABI 1.20
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
+      - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.cpp'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex'
+      - '.github/workflows/pass219-monolithic-constraint-abi-1-20.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  monolithic-constraint:
+    name: monolithic-constraint (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove repair lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+
+      - name: Verify frozen verbatim source identities
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            '7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42' \
+            'contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            '9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_RESIDUAL_BOUNDARY_1_15_0.tex' | sha256sum -c -
+
+      - name: Reject approximate or mutation authority in monolithic ABI
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h \
+            hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc
+          ! grep -En 'HHS_EXACT_API.*(commit|persist|admit)' \
+            hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-monolithic-1-20
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-monolithic-1-20/exact.o
+
+      - name: Run C conformance and byte-for-byte source round trips
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
+            /tmp/pass219-monolithic-1-20/exact.o \
+            -o /tmp/pass219-monolithic-1-20/test-c
+          /tmp/pass219-monolithic-1-20/test-c
+          /tmp/pass219-monolithic-1-20/test-c --dump-native-source > /tmp/pass219-monolithic-1-20/native.harmonicode
+          cmp /tmp/pass219-monolithic-1-20/native.harmonicode \
+              contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            '/tmp/pass219-monolithic-1-20/native.harmonicode' | sha256sum -c -
+          /tmp/pass219-monolithic-1-20/test-c --dump-source > /tmp/pass219-monolithic-1-20/source.harmonicode
+          cmp /tmp/pass219-monolithic-1-20/source.harmonicode \
+              contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode
+          printf '%s  %s\n' \
+            '7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42' \
+            '/tmp/pass219-monolithic-1-20/source.harmonicode' | sha256sum -c -
+
+      - name: Run C++ ABI conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_monolithic_constraint_abi_1_20.cpp \
+            /tmp/pass219-monolithic-1-20/exact.o \
+            -o /tmp/pass219-monolithic-1-20/test-cpp
+          /tmp/pass219-monolithic-1-20/test-cpp
+
+      - name: Preserve ordered octonion runtime
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            /tmp/pass219-monolithic-1-20/exact.o \
+            -o /tmp/pass219-monolithic-1-20/i119-c
+          /tmp/pass219-monolithic-1-20/i119-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.cpp \
+            /tmp/pass219-monolithic-1-20/exact.o \
+            -o /tmp/pass219-monolithic-1-20/i119-cpp
+          /tmp/pass219-monolithic-1-20/i119-cpp

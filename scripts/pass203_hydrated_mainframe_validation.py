@@ -45,7 +45,14 @@ def main() -> int:
 
         from fastapi.testclient import TestClient
         from hhs_backend.application_ide_server import app
+        import hhs_backend.api.pass203_mainframe_routes as pass203_routes
         from hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 import PASS203_MAINFRAME, InvocationRejectedError
+
+        # Bind the already-registered hosted route to the exact singleton used by
+        # this validator. Pass 204's accepted inherited replay uses the same
+        # explicit route/authority binding pattern, avoiding import-graph alias
+        # ambiguity without changing Pass 203 runtime or routing semantics.
+        pass203_routes.PASS203_MAINFRAME = PASS203_MAINFRAME
 
         with TestClient(app) as client:
             # Representative hosted calls prove public composition. Complete inventory

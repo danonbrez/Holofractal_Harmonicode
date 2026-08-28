@@ -1,0 +1,136 @@
+name: Pass 219 Cumulative Pass 200C Membrane I124
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration124-pass200c-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200c_1_24.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass200c_1_24.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass200c_1_24.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i124_pass200c.py'
+      - 'hhs_runtime/hhs_vm81_receipt_provenance_v1.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization.py'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v2.py'
+      - 'scripts/pass200c_production_validation.py'
+      - 'tests/pass219/test_pass219_inherited_pass200c_1_24.c'
+      - 'tests/pass219/test_pass219_inherited_pass200c_1_24.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass200c_membrane_i124.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'docs/pass200c/PASS_219_I124_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I124_PASS200C_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass200c-membrane-i124.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass200c-membrane:
+    name: inherited-pass200c-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I123 and accepted Pass 200C integration
+        run: |
+          git merge-base --is-ancestor 30e1ae3a278ee19c3c167d3659ed71ca2a016873 HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor a7868be1d98345cc7641bb7f59b716667cf1808d HEAD
+          test "$(git merge-base 73fa715ac8aee578b81e053fae99594df0b34889 HEAD)" = beff24168bb81b0b1459e325ebaad29b2252b980
+
+      - name: Prove historical Pass 200C source identities
+        run: |
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:HHS_PASS_200C_GUARDED_ACTIVE_ADMISSION.md)" = bc06fcab22c5bd857566c5560b9fd05b83bcdc75
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:.github/workflows/pass200c-guarded-active-admission.yml)" = bd54ffaf0c00c1b993dfa7f1d7cc759752bc9776
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py)" = 4c61dd428996372a9d8170092efde0a21c391134
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py)" = 92f0bef25882c0885f769bff4570610601e820ea
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:hhs_backend/api/pass200c_active_routes.py)" = 4b08c4e183793836f667ebacb73602341b1d45c2
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:tests/test_hhs_pass200c_guarded_active_admission_v1.py)" = e6bd83499193ec5242ec0b04696bd7d423cebd4a
+          test "$(git rev-parse a7868be1d98345cc7641bb7f59b716667cf1808d:scripts/pass200c_production_validation.py)" = 9c4f4b545cecf6e14dbe7aff050eed90f3368fe8
+
+      - name: Prove frozen core identities and I126 validator compatibility repair
+        run: |
+          test "$(git hash-object HHS_PASS_200C_GUARDED_ACTIVE_ADMISSION.md)" = bc06fcab22c5bd857566c5560b9fd05b83bcdc75
+          test "$(git hash-object .github/workflows/pass200c-guarded-active-admission.yml)" = bd54ffaf0c00c1b993dfa7f1d7cc759752bc9776
+          test "$(git hash-object hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py)" = 4c61dd428996372a9d8170092efde0a21c391134
+          test "$(git hash-object hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py)" = 92f0bef25882c0885f769bff4570610601e820ea
+          test "$(git hash-object hhs_backend/api/pass200c_active_routes.py)" = 4b08c4e183793836f667ebacb73602341b1d45c2
+          test "$(git hash-object tests/test_hhs_pass200c_guarded_active_admission_v1.py)" = e6bd83499193ec5242ec0b04696bd7d423cebd4a
+          grep -Fq 'HHSRuntimeController' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200c.production.pass200a.holdouts' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200c.production.pass200a.shadows' scripts/pass200c_production_validation.py
+          grep -Fq 'pass200a_vm81_receipt_chain_verified' scripts/pass200c_production_validation.py
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(double|float)([^[:alnum:]_]|$)' \
+            hhs_runtime/include/hhs_pass219_inherited_pass200c_1_24.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass200c_1_24.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass200c_1_24.inc; then
+            echo 'Approximate numeric type detected in I124 exact authority surface.' >&2
+            exit 1
+          fi
+          grep -Fq 'pass219_new_active_admission_authority != 0U' hhs_runtime/c/hhs_pass219_inherited_pass200c_1_24.inc
+          grep -Fq 'frozen_constraint_promotion != 0U' hhs_runtime/c/hhs_pass219_inherited_pass200c_1_24.inc
+
+      - name: Compile cumulative exact ABI and Pass 200C conformance
+        run: |
+          mkdir -p /tmp/pass219-i124-pass200c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i124-pass200c/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200c_1_24.c \
+            /tmp/pass219-i124-pass200c/exact.o \
+            -o /tmp/pass219-i124-pass200c/pass200c-c
+          /tmp/pass219-i124-pass200c/pass200c-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass200c_1_24.cpp \
+            /tmp/pass219-i124-pass200c/exact.o \
+            -o /tmp/pass219-i124-pass200c/pass200c-cpp
+          /tmp/pass219-i124-pass200c/pass200c-cpp
+
+      - name: Run kernel-derived Pass 200C membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass200c_membrane_i124.py
+
+      - name: Run inherited Pass 200C guarded-active regression
+        run: python -m unittest -v tests.test_hhs_pass200c_guarded_active_admission_v1
+
+      - name: Run Pass 200C production validator
+        run: |
+          rm -rf /tmp/hhs-pass200c-i124
+          PYTHONPATH="$PWD" python scripts/pass200c_production_validation.py \
+            --state-root /tmp/hhs-pass200c-i124/state \
+            --evidence /tmp/hhs-pass200c-i124/PASS200C_VALIDATION_RECEIPT.json
+
+      - name: Preserve frozen Pass 201 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass201_membrane_i123.py

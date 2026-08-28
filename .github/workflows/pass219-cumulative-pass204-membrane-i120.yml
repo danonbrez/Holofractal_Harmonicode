@@ -1,0 +1,108 @@
+name: Pass 219 Cumulative Pass 204 Membrane I120
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration120-pass204-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass204_1_20.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass204_1_20.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass204_1_20.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i120_pass204.py'
+      - 'tests/pass219/test_pass219_inherited_pass204_1_20.c'
+      - 'tests/pass219/test_pass219_inherited_pass204_1_20.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass204_membrane_i120.py'
+      - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'docs/operations/restart/PASS_219_I120_PASS204_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass204-membrane-i120.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass204-membrane:
+    name: inherited-pass204-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I119 and accepted Pass 204 integration
+        run: |
+          git merge-base --is-ancestor 770d5be2a0bb81fb833ac3c8398ddc48ff2ef0a9 HEAD
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor deb34287ee155d9538005bbbfd6519794d999ac9 HEAD
+          test "$(git merge-base 6b26fbf6f4b767d4eb5f2a790c552b03fd39d352 HEAD)" = fe5cb897ce5ca97a0c6c7439f26743dcefb83d4f
+
+      - name: Prove frozen Pass 204 source and receipt blobs
+        run: |
+          test "$(git rev-parse HEAD:evidence/pass204/PASS204_OPEN_CLOUD_VALIDATION_RECEIPT.json)" = 2b2a3baa87ea41577b4b4397da03b1b790c5cfae
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass204_open_cloud_mainframe_v1.py)" = 409e30b3abe4d53f319d0ba83bdc60cc44946198
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py)" = 2dcaed59d5ce457650987f9dc9aeb89ac6cfe60b
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass204_sandbox_worker_v1.py)" = 18ba30c2cd9c68713b18b847d7fd8a15d1fa0af2
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass204_sandbox_worker.py)" = 1a95bc76a3bcd6219b22f483badcb073bcbf44a6
+          test "$(git rev-parse HEAD:hhs_backend/runtime/hhs_pass204_native_abi_executor_v1.py)" = 963ba904e04484a835743295fc935443ec0a0e27
+          test "$(git rev-parse HEAD:hhs_backend/api/pass204_open_cloud_routes.py)" = f950f86c88ac56bbf2d94addb339a50cd3ea4489
+          test "$(git rev-parse HEAD:tests/test_hhs_pass204_open_cloud_mainframe_v1.py)" = 807be51dd9be3c3bbb80c3ca06f74ed8081cc584
+          test "$(git rev-parse HEAD:.github/workflows/pass204-open-cloud-mainframe.yml)" = 174ff0397529c13ad13f591b6bc2243bb2ce64cb
+
+      - name: Reject approximate arithmetic and new authority exports
+        run: |
+          ! grep -REn '\b(float|double)\b|<math\.h>' \
+            hhs_runtime/include/hhs_pass219_inherited_pass204_1_20.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass204_1_20.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass204_1_20.inc
+          ! grep -En 'HHS_EXACT_API.*(commit|admit|persist)' \
+            hhs_runtime/include/hhs_pass219_inherited_pass204_1_20.h
+
+      - name: Compile cumulative exact ABI and Pass 204 conformance
+        run: |
+          mkdir -p /tmp/pass219-i120
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i120/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass204_1_20.c \
+            /tmp/pass219-i120/exact.o -o /tmp/pass219-i120/p204-c
+          /tmp/pass219-i120/p204-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass204_1_20.cpp \
+            /tmp/pass219-i120/exact.o -o /tmp/pass219-i120/p204-cpp
+          /tmp/pass219-i120/p204-cpp
+
+      - name: Run kernel-derived Pass 204 membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i120_pass204.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass204_membrane_i120.py
+
+      - name: Preserve frozen Pass 205 successor membrane
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.c \
+            /tmp/pass219-i120/exact.o -o /tmp/pass219-i120/p205-c
+          /tmp/pass219-i120/p205-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
+            /tmp/pass219-i120/exact.o -o /tmp/pass219-i120/p205-cpp
+          /tmp/pass219-i120/p205-cpp
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py

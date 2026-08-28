@@ -1,0 +1,85 @@
+name: Pass 219 Exact Octonion Runtime I119
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h'
+      - 'hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
+      - 'tests/pass219/test_pass219_octonion_runtime_1_19.cpp'
+      - '.github/workflows/pass219-exact-octonion-runtime-i119.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-octonion-runtime:
+    name: exact-octonion-runtime (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number) }}
+          fetch-depth: 0
+
+      - name: Prove current-main repair ancestry
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+
+      - name: Reject approximate arithmetic in exact octonion authority
+        run: |
+          ! grep -REn '\b(float|double)\b' \
+            hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h \
+            hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc
+
+      - name: Require all eight named ABI channels
+        run: |
+          for channel in x y z w xy yx zw wz; do
+            grep -Eq "uint8_t ${channel};" hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h
+          done
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i119
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i119/exact.o
+
+      - name: Run I119 C and C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/i119-c
+          /tmp/pass219-i119/i119-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.cpp \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/i119-cpp
+          /tmp/pass219-i119/i119-cpp
+
+      - name: Preserve I118 and Pass 219B exact ABI surfaces
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.c \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/i118-c
+          /tmp/pass219-i119/i118-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.cpp \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/i118-cpp
+          /tmp/pass219-i119/i118-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.c \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/p219b-c
+          /tmp/pass219-i119/p219b-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp \
+            /tmp/pass219-i119/exact.o -o /tmp/pass219-i119/p219b-cpp
+          /tmp/pass219-i119/p219b-cpp

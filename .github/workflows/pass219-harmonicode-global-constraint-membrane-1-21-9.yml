@@ -1,0 +1,187 @@
+name: Pass 219 Harmonicode Global Constraint Membrane 1.21.9
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_219_APPEND_ONLY_HARMONICODE_GLOBAL_CONSTRAINT_MEMBRANE_AMENDMENT_1_21_9.md'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+      - 'hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.hpp'
+      - 'hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c'
+      - 'tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp'
+      - '.github/workflows/pass219-harmonicode-global-constraint-membrane-1-21-9.yml'
+      - 'docs/operations/restart/PASS_219_HARMONICODE_GLOBAL_CONSTRAINT_MEMBRANE_1_21_9_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  global-constraint-membrane:
+    name: global-constraint-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          git merge-base --is-ancestor 76909286967ff991f007953280ff8bb1302cc59a HEAD
+
+      - name: Prove frozen inherited semantic dependencies remain untouched
+        run: |
+          git diff --exit-code f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD -- \
+            hhs_runtime/hhs_runtime_constraint_enforcement_binding_v1.py \
+            hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py \
+            hhs_runtime/hhs_kernel_runtime_autocomposer_v1.py \
+            hhs_runtime/core_sandbox/hhs_octonion_digital_dna_u72_table_v1.py \
+            hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md \
+            native_projects/hhs_pass159_harmonicode_toolchain
+          grep -F 'EXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)' Makefile
+          grep -F '$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS)' Makefile
+
+      - name: Prove validated I121.8 semantics remain unchanged
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            baseline="${{ github.event.pull_request.base.sha }}"
+          else
+            git fetch origin main
+            baseline="$(git merge-base HEAD origin/main)"
+          fi
+          echo "I121.8 comparison baseline: $baseline"
+          git diff --exit-code "$baseline" HEAD -- \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode \
+            hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py \
+            tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py \
+            tests/pass219/test_pass219_combined_equation_topology_1_21_8.py \
+            tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py \
+            tests/pass219/test_pass219_combined_equation_pass159_frontend_1_21_8.c \
+            tests/pass219/test_pass219_combined_vs_numerator_pass159_identity_1_21_8.c \
+            .github/workflows/pass219-combined-equation-optimizer-1-21-8.yml
+
+      - name: Verify exact source identity and gate occurrence topology
+        run: |
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          assert len(source) == 632
+          offsets = []
+          start = 0
+          while True:
+              index = source.find(b'==', start)
+              if index < 0:
+                  break
+              offsets.append(index)
+              start = index + 2
+          assert offsets == [96, 240, 266, 274, 285], offsets
+          assert source.count(b'=') == 16
+          assert source.count(b'==') == 5
+          assert source.count(b'=') - source.count(b'==') == 11
+          PY
+
+      - name: Enter inherited Pass043 validation membrane
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: .
+        run: |
+          python -m hhs_runtime.hhs_pass219_i121_validation_membrane_v1 > /tmp/i1219-preflight.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('/tmp/i1219-preflight.json').read_text())
+          assert value['ok'] is True
+          assert value['canonical_monolithic_proof'] is False
+          assert value['pass169_whole_expression_admission_required'] is True
+          assert value['vm81_mutation_authority'] is False
+          assert value['hash72_commit_authority'] is False
+          PY
+
+      - name: Enforce exact non-promoting I121.9 source surface
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h \
+            hhs_runtime/include/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.hpp \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp
+          grep -F 'ordinary_boolean_equality = 1U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'all_nested_boolean_gates_must_be_true = 1U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'whole_equation_propagates_on_true = 1U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'shared_global_symbol_environment_required = 1U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'pass169_whole_expression_authority_required = 1U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'canonical_monolithic_proof = 0U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'vm81_mutation_authority = 0U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+          grep -F 'hash72_commit_authority = 0U' \
+            hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-global-membrane-1-21-9
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-global-membrane-1-21-9/exact.o
+
+      - name: Run C global membrane conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            /tmp/pass219-global-membrane-1-21-9/exact.o \
+            -o /tmp/pass219-global-membrane-1-21-9/test-c
+          /tmp/pass219-global-membrane-1-21-9/test-c
+
+      - name: Run C++ global membrane conformance
+        run: |
+          g++ -O2 -std=c++20 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.cpp \
+            /tmp/pass219-global-membrane-1-21-9/exact.o \
+            -o /tmp/pass219-global-membrane-1-21-9/test-cpp
+          /tmp/pass219-global-membrane-1-21-9/test-cpp
+
+      - name: Re-run bounded I121.8 structural regressions
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONPATH: .
+        run: |
+          python tests/pass219/test_pass219_combined_equation_optimizer_1_21_8.py
+          python tests/pass219/test_pass219_combined_equation_topology_1_21_8.py
+          python tests/pass219/test_pass219_denominator_phase_cancellation_1_21_8.py
+
+      - name: Preserve Pass169 whole-expression authority
+        run: |
+          grep -F 'treats the whole expression as a simultaneous constraint proof' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'converts equality chains into ordered constraint graphs' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md
+          grep -F 'executes only through VM81 authority' \
+            HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md

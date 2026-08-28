@@ -1,0 +1,143 @@
+name: Pass 219 Main Authority Composition 1.21.4
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_main_authority_composition_1_21_4.h'
+      - 'hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c'
+      - 'hhs_runtime/include/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c'
+      - 'hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h'
+      - 'hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h'
+      - 'hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/include/hhs_hash216_bytes.h'
+      - 'native_projects/hhs_pass159_harmonicode_toolchain/**'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'tests/pass219/test_pass219_main_authority_composition_1_21_4.c'
+      - '.github/workflows/pass219-main-authority-composition-1-21-4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  main-authority-composition:
+    name: main-authority-composition (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main pass authority ancestry
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor 8e7ffb22286f5b6b377c778276c333607a7c2a03 HEAD
+          git merge-base --is-ancestor eb88a4b88ab8c598458c0e48c0f4f9db77f81654 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+
+      - name: Preserve frozen monolithic source identity
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+
+      - name: Enforce fail-closed main authority classification
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_main_authority_composition_1_21_4.h \
+            hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c
+          grep -F 'HHS_EXACT_PASS219_MAIN_AUTHORITY_VMIR_EFFECT_BINDING_REQUIRED' \
+            hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c
+          grep -F 'pass159_vmir_effect_binding_observed = 0U' \
+            hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c
+          grep -F 'whole_expression_semantics_resolved = 0U' \
+            hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c
+          grep -F 'canonical_monolithic_proof = 0U' \
+            hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c
+          grep -F 'HHS_EXACT_PASS219_VM81_CANDIDATE_COMPLETION_THREADS' \
+            hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h
+
+      - name: Build inherited Pass159 toolchain
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-main-authority \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-main-authority --parallel 2
+          ctest --test-dir /tmp/pass159-main-authority --output-on-failure
+
+      - name: Compile exact substrates and composition
+        run: |
+          mkdir -p /tmp/pass219-main-authority
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-main-authority/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/pass219-main-authority/adapter.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            -c hhs_runtime/c/hhs_pass219_pass159_vm81_proof_bridge_1_21_2.c \
+            -o /tmp/pass219-main-authority/pass159-bridge.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/src/hhs_hash216.c \
+            -o /tmp/pass219-main-authority/hash216.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c \
+            -o /tmp/pass219-main-authority/composition.o
+
+      - name: Execute main-aligned source pipeline plus exact VM81 candidate replay
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_main_authority_composition_1_21_4.c \
+            /tmp/pass219-main-authority/composition.o \
+            /tmp/pass219-main-authority/pass159-bridge.o \
+            /tmp/pass219-main-authority/adapter.o \
+            /tmp/pass219-main-authority/exact.o \
+            /tmp/pass219-main-authority/hash216.o \
+            -L/tmp/pass159-main-authority -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-main-authority \
+            -o /tmp/pass219-main-authority/test-main-authority
+          /tmp/pass219-main-authority/test-main-authority
+
+      - name: Preserve I121.2 and I121.3 focused boundaries
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass219/test_pass219_pass159_vm81_proof_bridge_1_21_2.c \
+            /tmp/pass219-main-authority/pass159-bridge.o \
+            /tmp/pass219-main-authority/exact.o \
+            -L/tmp/pass159-main-authority -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-main-authority \
+            -o /tmp/pass219-main-authority/test-pass159
+          /tmp/pass219-main-authority/test-pass159
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            /tmp/pass219-main-authority/adapter.o \
+            /tmp/pass219-main-authority/exact.o \
+            -o /tmp/pass219-main-authority/test-candidate
+          /tmp/pass219-main-authority/test-candidate

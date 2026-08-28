@@ -1,0 +1,156 @@
+name: Pass 219 Exact VM81 Candidate Adapter 1.21.3
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Makefile'
+      - 'hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h'
+      - 'hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/include/hhs_pass219_octonion_runtime_1_19.h'
+      - 'hhs_runtime/c/hhs_pass219_octonion_runtime_1_19.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c'
+      - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
+      - 'tests/pass219/test_pass219_octonion_runtime_1_19.c'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - '.github/workflows/pass219-exact-vm81-candidate-adapter-1-21-3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-vm81-candidate:
+    name: exact-vm81-candidate (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove canonical main authority lineage
+        run: |
+          git merge-base --is-ancestor f5d8fdc014d888f93c0d85d40d2a2c0c198eefdf HEAD
+          git merge-base --is-ancestor e87bc42b17c03ff98f691838b8d573a5bdf46ff2 HEAD
+          git merge-base --is-ancestor eb88a4b88ab8c598458c0e48c0f4f9db77f81654 HEAD
+          git merge-base --is-ancestor 62e296024b27ff3209e3ef2ac4a2d565e03296ca HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+
+      - name: Preserve frozen native source identity
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+
+      - name: Enforce exact fail-closed adapter authority
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          ! grep -En 'HHS_EXACT_API.*(commit|persist|admit)' \
+            hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h
+          grep -F '#include "../HARMONICODE_VM_RUNTIME.c"' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          grep -F 'vm81_step(&vm)' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          grep -F 'source_semantics_complete != 0U' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          grep -F 'canonical_monolithic_proof = 0U' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+          grep -F 'full_symbolic_identity_gate_supported = 0U' \
+            hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+
+      - name: Compile cumulative exact ABI and candidate adapter
+        run: |
+          mkdir -p /tmp/pass219-vm81-1-21-3
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-vm81-1-21-3/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/pass219-vm81-1-21-3/adapter.o
+
+      - name: Prove runtime library tracks exact ABI aggregate changes
+        run: |
+          make clean
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass219_octonion_version|hhs_exact_pass219_monolithic_version'
+          touch hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc
+          if make -q c-abi; then
+            echo 'exact ABI dependency change did not invalidate libhhs_runtime.so'
+            exit 1
+          else
+            status=$?
+            test "$status" -eq 1
+          fi
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass219_octonion_version|hhs_exact_pass219_monolithic_version'
+
+      - name: Run source lowering exact VM81 execution replay and negative gates
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            /tmp/pass219-vm81-1-21-3/adapter.o \
+            /tmp/pass219-vm81-1-21-3/exact.o \
+            -o /tmp/pass219-vm81-1-21-3/test-adapter
+          /tmp/pass219-vm81-1-21-3/test-adapter
+
+      - name: Compile C++ ABI consumer
+        run: |
+          cat > /tmp/pass219-vm81-1-21-3/header.cpp <<'CPP'
+          #include "hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
+          #include <cstddef>
+          static_assert(HHS_EXACT_PASS219_VM81_PROGRAM_THREADS == 64U);
+          static_assert(HHS_EXACT_PASS219_VM81_SYMBOL_COUNT == 24U);
+          static_assert(HHS_EXACT_PASS219_VM81_SOURCE_STRUCTURE_THREADS == 49U);
+          int main() {
+              HHSExactPass219VM81ProgramV1 program{};
+              HHSExactVM81Frame frame{};
+              HHSExactPass219VM81ExecutionV1 execution{};
+              (void)program;
+              (void)frame;
+              (void)execution;
+              return 0;
+          }
+          CPP
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            /tmp/pass219-vm81-1-21-3/header.cpp \
+            -c -o /tmp/pass219-vm81-1-21-3/header.o
+
+      - name: Preserve monolithic and ordered-octonion fail-closed membranes
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
+            /tmp/pass219-vm81-1-21-3/exact.o \
+            -o /tmp/pass219-vm81-1-21-3/test-monolithic
+          /tmp/pass219-vm81-1-21-3/test-monolithic
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            /tmp/pass219-vm81-1-21-3/exact.o \
+            -o /tmp/pass219-vm81-1-21-3/test-octonion
+          /tmp/pass219-vm81-1-21-3/test-octonion
+
+      - name: Preserve exact kernel self-verification
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+            -o /tmp/pass219-vm81-1-21-3/hhs-vm81
+          /tmp/pass219-vm81-1-21-3/hhs-vm81 --verify --no-trace
