@@ -302,9 +302,9 @@ def _run_project(project: Mapping[str, Any], steps: int) -> dict[str, Any]:
 def _test_project(project: Mapping[str, Any]) -> dict[str, Any]:
     source = str(project["files"].get("src/main.hhs") or "")
     request = build_interpreter_request(
-        project["project_id"],
-        f"object:{project['project_id']}:acceptance-expression",
-        "1+2",
+        project_id=project["project_id"],
+        source_object_id=f"object:{project['project_id']}:acceptance-expression",
+        expression="1+2",
     )
     interpreted = interpret_expression(request, "1+2")
     run = _run_project(project, 3)
