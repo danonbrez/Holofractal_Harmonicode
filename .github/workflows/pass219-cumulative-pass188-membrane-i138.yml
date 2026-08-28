@@ -137,6 +137,8 @@ jobs:
           test "$(git hash-object native_projects/hhs_pass188_license_lineage/README.md)" = "53b1beba38e17defea694e734920535a68c5b23a"
           test "$(git hash-object native_projects/hhs_pass188_license_lineage/Makefile)" = "01c30f4c5c2099e3bef0367f2fc5a342cabd7b90"
           test "$(git hash-object .github/workflows/pass188-license-lineage-completion.yml)" = "943f93de78036622be13fe6f530e2a5c596de7e6"
+          test "$(git hash-object native_projects/hhs_pass188_license_lineage/evidence/P188_I138_VALIDATION_RECEIPT.json)" = "deb3db71cbea47e2ad25cd184b84c775582f1fe2"
+          test "$(git hash-object docs/pass188/HHS_PASS_188_I138_LICENSE_LINEAGE_IMPLEMENTATION_REPORT.md)" = "5238ff48f9556160356cbb3ffbe7da65c76264bd"
 
       - name: Prove I138 membrane identities and additive ABI order
         run: |
@@ -150,7 +152,7 @@ jobs:
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass188_1_38.cpp)" = "dbafb4df45eaf10c968fe1e63221f3c2ad983f1a"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py)" = "bc0d55493b05a028f102076aa0e1f1c1a5cf440b"
           test "$(git hash-object docs/pass219/PASS_219_I138_INHERITED_PASS188_FULL_COMPLETION.md)" = "beb1f825d143b8307641cae5fd84c909a15dcdd7"
-          test "$(git hash-object docs/operations/restart/PASS_219_I138_PASS188_LICENSE_LINEAGE_RESTART.md)" = "fcca6823cdcecc7de77ce55c9f7906a81494e98b"
+          test "$(git hash-object docs/operations/restart/PASS_219_I138_PASS188_LICENSE_LINEAGE_RESTART.md)" = "2806a7b8682fc6cfb184e57e2c3dda407f910796"
           test "$(git rev-parse ef27a1caf0d977e0f767b13126dba8fe49b09dab:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "80b3480b96ec897804f44ca561b3f575f070c9bb"
           test "$(git rev-parse ef27a1caf0d977e0f767b13126dba8fe49b09dab:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "e22eba55fcd054984ca1c2d883d093130e4ab974"
           python - <<'PY'

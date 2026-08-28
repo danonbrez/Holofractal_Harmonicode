@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_PASS_188_I138_LICENSE_LINEAGE_IMPLEMENTATION_RECEIPT_V1",
+  "contract": "HHS-P188-VNFTCLL-LOSP-VM81-H72-H216",
+  "classification": "HHS_PASS_188_VERSIONED_CONTENT_LICENSE_AND_LEGACY_STATE_VERIFIED",
+  "historical_contract_commit": "50aec3f624fe6cbaefa3220b7d709bb1b388a942",
+  "license_completion_head": "8e6f209aa8974da30d0b1dcb85a7ca2dc10060c6",
+  "focused_validation": {
+    "run": 33177282910,
+    "job": 98869073632,
+    "conclusion": "success",
+    "acceptance_scenarios": 16
+  },
+  "cumulative_validation": {
+    "head": "87d51271c744be28afc6242e4247959849c0e985",
+    "run": 33177835923,
+    "exact": {
+      "job": 98870981452,
+      "artifact": 9688380097,
+      "artifact_sha256": "e06c1e3700ba30df18a66a37a4b42d1075c057c8708c2b9785f7bc41f4ebe592",
+      "conclusion": "success"
+    },
+    "synthetic": {
+      "job": 98870981070,
+      "artifact": 9688384466,
+      "artifact_sha256": "a66b529bdf93b49e89b246a3d755f0d50c87f74f8680674f27f4551546e98c14",
+      "conclusion": "success"
+    }
+  },
+  "historical_bott": {
+    "implementation_commit": "c77e3feef42448a111d8b8912a1d1cb157d51925",
+    "contract": "HHS-P188-BOTT-RUNTIME-H216-VM81-Q144-G243-X64",
+    "classification": "HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION_VERIFIED",
+    "receipt_blob": "492d60716896c66cdb507f6e76163d988d1d41e6",
+    "projected_addresses": 1259712,
+    "deterministic_replay_addresses": 1259712
+  },
+  "authority_boundary": {
+    "inherited_vm81_hash72_witness_required": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_clock": false,
+    "bott_canonical_mutation_authority": false,
+    "external_chain_authority": false,
+    "wallet_authority": false,
+    "browser_local_authority": false,
+    "marketplace_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "authoritative_main_status": "NOT_MERGED_SEPARATE_AUTHORIZATION_REQUIRED"
+}
