@@ -87,9 +87,9 @@ CLASSIFICATIONS = (
 )
 
 EXECUTABLE_MAPPINGS: dict[str, tuple[str, str]] = {
-    "builtins.len": ("python.len", "Length"),
+    "builtins.len": ("python.len", "Len"),
     "builtins.abs": ("python.abs", "Abs"),
-    "builtins.sorted": ("python.sorted", "Sort"),
+    "builtins.sorted": ("python.sorted", "Sorted"),
     "builtins.str.join": ("text.join", "Join"),
     "builtins.dict.get": ("dict.get", "Get"),
     "math.gcd": ("math.gcd", "GCD"),
