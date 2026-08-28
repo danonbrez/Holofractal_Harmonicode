@@ -42,7 +42,6 @@ try {
   await waitForHealth();
   browserInstance = await chromium.launch({ headless: true });
   const context = await browserInstance.newContext({
-    hasTouch: true,
     viewport: { width: 1280, height: 900 },
   });
   const page = await context.newPage();
@@ -53,14 +52,14 @@ try {
   await page.getByRole('status').waitFor();
   assert.equal(await page.getByRole('article').count(), 2);
 
-  const source = page.getByRole('button', { name: /output browser\.source out value\/exact/i });
-  const target = page.getByRole('button', { name: /input browser\.target in value\/exact/i });
+  const source = page.getByRole('button', { name: /output browser\\.source out value\\/exact/i });
+  const target = page.getByRole('button', { name: /input browser\\.target in value\\/exact/i });
   const receiptField = page.getByLabel('Inherited VM81 Hash72 receipt');
 
   // Real browser mouse drag/drop acceptance.
   await receiptField.fill(receipt(10));
   await source.dragTo(target);
-  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor();
+  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor({ timeout: 10000 });
   assert.match(await page.locator('#event-log').innerText(), /receipt_commit/);
 
   // Real browser keyboard acceptance.
@@ -69,16 +68,7 @@ try {
   await page.keyboard.press('Enter');
   await target.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor();
-
-  // Real browser touch acceptance.
-  await receiptField.fill(receipt(12));
-  const sourceBox = await source.boundingBox();
-  const targetBox = await target.boundingBox();
-  assert.ok(sourceBox && targetBox);
-  await page.touchscreen.tap(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
-  await page.touchscreen.tap(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2);
-  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor();
+  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor({ timeout: 10000 });
 
   // Browser PointerEvent stylus acceptance.
   await receiptField.fill(receipt(13));
@@ -94,7 +84,7 @@ try {
     isPrimary: true,
     buttons: 0,
   });
-  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor();
+  await page.getByRole('status').filter({ hasText: 'admitted' }).waitFor({ timeout: 10000 });
 
   // Accessibility/navigation acceptance.
   assert.ok(await source.getAttribute('aria-label'));
@@ -102,7 +92,6 @@ try {
   await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(() => document.activeElement !== document.body));
 
-  // Projection/receipt ordering remains visible and replay is explicit.
   const logText = await page.locator('#event-log').innerText();
   for (const phase of [
     'candidate_graph_intent',
@@ -122,6 +111,27 @@ try {
   await page.getByRole('button', { name: 'Replay' }).click();
   await page.getByRole('status').filter({ hasText: 'replay verified' }).waitFor();
   assert.match(await page.locator('#event-log').innerText(), /replay_event/);
+  await context.close();
+
+  // Separate real touch-capable browser context.
+  const touchContext = await browserInstance.newContext({
+    hasTouch: true,
+    viewport: { width: 1280, height: 900 },
+  });
+  const touchPage = await touchContext.newPage();
+  touchPage.on('pageerror', error => errors.push(String(error)));
+  await touchPage.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' });
+  const touchSource = touchPage.getByRole('button', { name: /output browser\\.source out value\\/exact/i });
+  const touchTarget = touchPage.getByRole('button', { name: /input browser\\.target in value\\/exact/i });
+  await touchPage.getByLabel('Inherited VM81 Hash72 receipt').fill(receipt(12));
+  const sourceBox = await touchSource.boundingBox();
+  const targetBox = await touchTarget.boundingBox();
+  assert.ok(sourceBox && targetBox);
+  await touchPage.touchscreen.tap(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
+  await touchPage.touchscreen.tap(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2);
+  await touchPage.getByRole('status').filter({ hasText: 'admitted' }).waitFor({ timeout: 10000 });
+  assert.match(await touchPage.locator('#event-log').innerText(), /receipt_commit/);
+  await touchContext.close();
 
   assert.deepEqual(errors, []);
   await context.close();

@@ -88,7 +88,7 @@
       port: inputButton.dataset.port
     };
     const args = {
-      edge_id: 'ui-edge-' + edgeCounter++,
+      edge_id: 'ui-edge-' + (receipt.value.trim().slice(-12) || 'no-receipt') + '-' + edgeCounter++,
       source_logical_object_id: source.logical_object_id,
       source_port: source.port,
       target_logical_object_id: target.logical_object_id,
