@@ -130,19 +130,21 @@ def _port_map(descriptor: Mapping[str, Any], kind: str) -> dict[str, dict[str, A
 
 
 def _graph_projection(state: Mapping[str, Any]) -> dict[str, Any]:
-    return {
-        "project_id": state["project_id"],
-        "objects": state["objects"],
-        "edges": state["edges"],
-        "layers": state["layers"],
-        "snapshots": state["snapshots"],
-        "branches": state["branches"],
-        "templates": state["templates"],
-        "cache": state["cache"],
-        "artifacts": state["artifacts"],
-        "execution_counts": state["execution_counts"],
-        "runtime_values": state["runtime_values"],
-    }
+    return copy.deepcopy(
+        {
+            "project_id": state["project_id"],
+            "objects": state["objects"],
+            "edges": state["edges"],
+            "layers": state["layers"],
+            "snapshots": state["snapshots"],
+            "branches": state["branches"],
+            "templates": state["templates"],
+            "cache": state["cache"],
+            "artifacts": state["artifacts"],
+            "execution_counts": state["execution_counts"],
+            "runtime_values": state["runtime_values"],
+        }
+    )
 
 
 def harmonicode_expression(edge: Mapping[str, Any]) -> str:
