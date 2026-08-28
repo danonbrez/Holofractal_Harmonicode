@@ -208,7 +208,7 @@ class Pass190I136CompletionTests(unittest.TestCase):
         status = client.get("/v1/system/status")
         self.assertEqual(status.status_code, 200)
         self.assertEqual(status.json()["runtime_mode"], "FULL_CANONICAL_RUNTIME")
-        self.assertEqual(status.json()["governed_operation_count"], 42)
+        self.assertEqual(status.json()["governed_operation_count"], 52)
 
         pure = client.post(
             "/v1/operations/python.len",
