@@ -1,0 +1,172 @@
+{
+  "schema": "HHS_PASS_191_OPERATION_REGISTRY_V1",
+  "contract": "HHS-P191-GTRFRH-UIC-VM81-H72-H216",
+  "inherited_registry": "native_projects/hhs_pass190_operation_fabric/registry/HHS_OPERATION_REGISTRY_V1.json",
+  "authority": {
+    "canonical_mutation": "INHERITED_SINGLETON_VM81",
+    "hash72": "MUTATION_AND_DECISION_RECEIPTS",
+    "hash216": "OBJECT_FUNCTION_INVARIANT_TOPOLOGY",
+    "floating_point_canonical_authority": false
+  },
+  "surfaces": [
+    "HARMONICODE",
+    "PYTHON_SDK",
+    "CLI",
+    "OPENAPI",
+    "WEBSOCKET",
+    "VISUAL_IDE",
+    "ASSISTANT_TOOL_MANIFEST"
+  ],
+  "operations": [
+    {
+      "operation_id": "P191.Hydrate.Repository",
+      "harmonicode_constructor": "Hydrate.Repository",
+      "CLI_command": "hhs hydrate repository",
+      "HTTP_path": "POST /v1/hydration/jobs",
+      "effect_class": "mutation",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Genesis",
+      "harmonicode_constructor": "Hydrate.Genesis",
+      "CLI_command": "hhs hydrate genesis",
+      "HTTP_path": "GET /v1/hydration/lineage/passes",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Pass",
+      "harmonicode_constructor": "Hydrate.Pass",
+      "CLI_command": "hhs hydrate pass",
+      "HTTP_path": "GET /v1/hydration/lineage/passes",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Object",
+      "harmonicode_constructor": "Hydrate.Object",
+      "CLI_command": "hhs hydrate object",
+      "HTTP_path": "GET /v1/hydration/objects/{object_id}",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Function",
+      "harmonicode_constructor": "Hydrate.Function",
+      "CLI_command": "hhs hydrate function",
+      "HTTP_path": "GET /v1/hydration/functions/{operation_id}",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Surface",
+      "harmonicode_constructor": "Hydrate.Surface",
+      "CLI_command": "hhs hydrate surface",
+      "HTTP_path": "GET /v1/hydration/surfaces",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.ChangedSince",
+      "harmonicode_constructor": "Hydrate.ChangedSince",
+      "CLI_command": "hhs hydrate changed --since",
+      "HTTP_path": "POST /v1/hydration/preview",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Resume",
+      "harmonicode_constructor": "Hydrate.Resume",
+      "CLI_command": "hhs hydrate resume",
+      "HTTP_path": "POST /v1/hydration/jobs/{job_id}/resume",
+      "effect_class": "mutation",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Verify",
+      "harmonicode_constructor": "Hydrate.Verify",
+      "CLI_command": "hhs hydrate verify",
+      "HTTP_path": "POST /v1/hydration/jobs/{job_id}/verify",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Replay",
+      "harmonicode_constructor": "Hydrate.Replay",
+      "CLI_command": "hhs hydrate replay",
+      "HTTP_path": "POST /v1/hydration/jobs/{job_id}/replay",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Hydrate.Report",
+      "harmonicode_constructor": "Hydrate.Report",
+      "CLI_command": "hhs hydrate report",
+      "HTTP_path": "GET /v1/hydration/jobs/{job_id}/report",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Registry.Resolve",
+      "harmonicode_constructor": "Registry.Resolve",
+      "CLI_command": "hhs registry functions",
+      "HTTP_path": "GET /v1/hydration/functions/{operation_id}",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Symmetry.Validate",
+      "harmonicode_constructor": "Symmetry.Validate",
+      "CLI_command": "hhs symmetry verify",
+      "HTTP_path": "GET /v1/hydration/invariants",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Reciprocal.Verify",
+      "harmonicode_constructor": "Reciprocal.Verify",
+      "CLI_command": "hhs reciprocal verify",
+      "HTTP_path": "GET /v1/hydration/invariants",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    },
+    {
+      "operation_id": "P191.Receipt.Get",
+      "harmonicode_constructor": "Receipt.Get",
+      "CLI_command": "hhs hydrate receipt",
+      "HTTP_path": "GET /v1/hydration/receipts/{receipt_id}",
+      "effect_class": "pure",
+      "WebSocket_channel": "pass191.hydration.lifecycle",
+      "replay_supported": true,
+      "implementation_status": "EXECUTABLE_VERIFIED_PENDING_I135_SEAL"
+    }
+  ]
+}
