@@ -120,7 +120,7 @@ jobs:
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass190_1_36.cpp)" = "687a45c50e75383a7ce5d127555d232c07b27b6d"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py)" = "d29c771629a743ed8bb9a7e022dc4dec3e5b52c2"
           test "$(git hash-object docs/pass219/PASS_219_I136_INHERITED_PASS190_FULL_COMPLETION_MEMBRANE.md)" = "28ac62f21520408be8345ed9e4ae471e23d29505"
-          test "$(git hash-object docs/operations/restart/PASS_219_I136_PASS190_REPAIR_MEMBRANE_RESTART.md)" = "9774ddedf040dcbb405ea097dd3b7296b8758fd8"
+          test "$(git hash-object docs/operations/restart/PASS_219_I136_PASS190_REPAIR_MEMBRANE_RESTART.md)" = "6d82254ce53ed2536952d6bf9587ce49f64c7091"
 
       - name: Verify additive aggregate order and reject authority escalation
         run: |
