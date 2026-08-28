@@ -156,7 +156,7 @@ def pass192_membrane_source_evidence() -> Dict[str, Any]:
         "FINITE_REQUESTED_PREFIX_REQUIRED",
         "NON_DESTRUCTIVE_DEPTH_MODULUS_METADATA",
         "OUTER_MODULUS_NON_DESTRUCTIVE_LOCAL",
-        'b"HHS-P192-FILE\\0"',
+        "HHS-P192-FILE",
         "hashlib.sha256",
         "def replay(self",
     )
