@@ -69,7 +69,7 @@ jobs:
           test "$(git hash-object schemas/pass190/HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1.json)" = "d2f82c74d6fab051d009099155857d3ecde9b4b5"
           test "$(git hash-object schemas/pass190/HHS_HYDRATION_ADAPTER_REGISTRY_V1.json)" = "d80c8e949a310049852208784df9de594678f354"
           test "$(git hash-object schemas/pass190/HHS_PUBLIC_NETWORK_PORT_REGISTRY.json)" = "48e17afa9ab9e84879acda80214f6998c90663b6"
-          test "$(git hash-object tests/pass190/test_pass190_i136_completion_coordinator.py)" = "b6aca22b0912708fc5464cebd00267098c2b6ffe"
+          test "$(git hash-object tests/pass190/test_pass190_i136_completion_coordinator.py)" = "e4226be476562d10330ac44cde0f54a7d715711a"
 
       - name: Compile I136 Python surfaces
         run: |
