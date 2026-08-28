@@ -307,11 +307,20 @@ def _test_project(project: Mapping[str, Any]) -> dict[str, Any]:
         expression="1+2",
     )
     interpreted = interpret_expression(request, "1+2")
+    exact_value = interpreted.get("exact_symbolic_value") or {}
+    interpreter_receipt = interpreted.get("execution_receipt") or {}
     run = _run_project(project, 3)
     checks = {
         "source_present": bool(source),
         "exact_interpreter_ok": bool(interpreted.get("ok")),
-        "exact_interpreter_result_is_three": interpreted.get("result") == 3,
+        "exact_interpreter_result_is_three": exact_value == {
+            "numerator": 3,
+            "denominator": 1,
+        },
+        "exact_interpreter_receipt_present": (
+            isinstance(interpreter_receipt.get("receipt_hash72"), str)
+            and len(interpreter_receipt["receipt_hash72"]) == 72
+        ),
         "compile_ok": bool(run["build"]["ok"]),
         "compiler_did_not_authorize_execution": run["build"][
             "execution_authorized_by_compiler"
@@ -322,7 +331,7 @@ def _test_project(project: Mapping[str, Any]) -> dict[str, Any]:
     result = {
         "ok": all(checks.values()),
         "checks": checks,
-        "interpreter_receipt_hash72": interpreted.get("receipt_hash72"),
+        "interpreter_receipt_hash72": interpreter_receipt.get("receipt_hash72"),
         "execution_evidence_hash72": run["execution_evidence_hash72"],
     }
     result["test_evidence_hash72"] = hash72(
