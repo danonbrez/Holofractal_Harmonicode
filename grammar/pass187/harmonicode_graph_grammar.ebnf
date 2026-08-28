@@ -1,0 +1,16 @@
+(* HHS Pass 187 canonical line-oriented Harmonicode graph serialization.
+   JSON payloads are RFC-8259 objects serialized with lexicographically sorted
+   keys and no insignificant whitespace. Record order is semantic. *)
+
+document      = project_record, { object_record }, { edge_record }, { layer_record } ;
+project_record = "PROJECT", space, canonical_json, newline ;
+object_record  = "OBJECT", space, canonical_json, newline ;
+edge_record    = "EDGE", space, canonical_json, newline ;
+layer_record   = "LAYERORDER", space, canonical_json, newline ;
+space          = " " ;
+newline        = "\n" ;
+canonical_json = ? exact canonical JSON object emitted by canonical_json() ? ;
+
+(* Ordered edge records preserve noncommutativity:
+   A -> B is not interchangeable with B -> A.
+   LAYER order is separately preserved by LAYERORDER. *)

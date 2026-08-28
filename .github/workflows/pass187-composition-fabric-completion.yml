@@ -1,0 +1,49 @@
+name: Pass 187 Universal Composition Completion
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration139-pass187-composition-completion
+    paths:
+      - 'hhs_runtime/pass187/**'
+      - 'schemas/pass187/**'
+      - 'grammar/pass187/**'
+      - 'tests/pass187/**'
+      - 'native_projects/hhs_pass187_composition_fabric/**'
+      - '.github/workflows/pass187-composition-fabric-completion.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass187/**'
+      - 'schemas/pass187/**'
+      - 'grammar/pass187/**'
+      - 'tests/pass187/**'
+      - 'native_projects/hhs_pass187_composition_fabric/**'
+      - '.github/workflows/pass187-composition-fabric-completion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Validate Pass 187 universal composition fabric
+        run: make -C native_projects/hhs_pass187_composition_fabric validate
