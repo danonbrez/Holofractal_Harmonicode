@@ -141,6 +141,7 @@ def _graph_projection(state: Mapping[str, Any]) -> dict[str, Any]:
         "cache": state["cache"],
         "artifacts": state["artifacts"],
         "execution_counts": state["execution_counts"],
+        "runtime_values": state["runtime_values"],
     }
 
 
@@ -259,6 +260,7 @@ class CompositionAuthority:
                 "cache": {},
                 "artifacts": [],
                 "execution_counts": {},
+                "runtime_values": {},
                 "frozen_objects": [],
                 "active_branch": "main",
             }
@@ -1002,7 +1004,18 @@ class CompositionAuthority:
                         "logical_object_id": logical_id,
                         "active_version_id": descriptor["immutable_version_id"],
                         "dependencies": [
-                            self._active_descriptor(state, dep)["immutable_version_id"]
+                            {
+                                "logical_object_id": dep,
+                                "active_version_id": self._active_descriptor(
+                                    state, dep
+                                )["immutable_version_id"],
+                                "runtime_value_identity": state["runtime_values"].get(
+                                    dep,
+                                    self._active_descriptor(
+                                        state, dep
+                                    )["immutable_version_id"],
+                                ),
+                            }
                             for dep in deps
                         ],
                     },
@@ -1041,6 +1054,7 @@ class CompositionAuthority:
                     "value_identity": value_identity,
                     "stale": False,
                 }
+                state["runtime_values"][logical_id] = value_identity
                 state["execution_counts"][logical_id] = int(state["execution_counts"].get(logical_id, 0)) + 1
                 executed.append(logical_id)
             return state, {
