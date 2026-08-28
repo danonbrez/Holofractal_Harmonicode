@@ -52,8 +52,8 @@ try {
   await page.getByRole('status').waitFor();
   assert.equal(await page.getByRole('article').count(), 2);
 
-  const source = page.getByRole('button', { name: /output browser\\.source out value\\/exact/i });
-  const target = page.getByRole('button', { name: /input browser\\.target in value\\/exact/i });
+  const source = page.getByRole('button', { name: 'output browser.source out value/exact', exact: true });
+  const target = page.getByRole('button', { name: 'input browser.target in value/exact', exact: true });
   const receiptField = page.getByLabel('Inherited VM81 Hash72 receipt');
 
   // Real browser mouse drag/drop acceptance.
@@ -121,8 +121,8 @@ try {
   const touchPage = await touchContext.newPage();
   touchPage.on('pageerror', error => errors.push(String(error)));
   await touchPage.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' });
-  const touchSource = touchPage.getByRole('button', { name: /output browser\\.source out value\\/exact/i });
-  const touchTarget = touchPage.getByRole('button', { name: /input browser\\.target in value\\/exact/i });
+  const touchSource = touchPage.getByRole('button', { name: 'output browser.source out value/exact', exact: true });
+  const touchTarget = touchPage.getByRole('button', { name: 'input browser.target in value/exact', exact: true });
   await touchPage.getByLabel('Inherited VM81 Hash72 receipt').fill(receipt(12));
   const sourceBox = await touchSource.boundingBox();
   const targetBox = await touchTarget.boundingBox();
