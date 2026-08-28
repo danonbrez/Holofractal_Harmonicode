@@ -18,7 +18,7 @@
   "supported_nucleus": {
     "builtins.len": {
       "operation_id": "python.len",
-      "harmonicode_constructor": "Length"
+      "harmonicode_constructor": "Len"
     },
     "builtins.abs": {
       "operation_id": "python.abs",
@@ -26,7 +26,7 @@
     },
     "builtins.sorted": {
       "operation_id": "python.sorted",
-      "harmonicode_constructor": "Sort"
+      "harmonicode_constructor": "Sorted"
     },
     "builtins.str.join": {
       "operation_id": "text.join",
