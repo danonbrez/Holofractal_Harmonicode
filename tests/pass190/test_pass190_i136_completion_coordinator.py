@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import base64
+import io
 import sys
 import tempfile
+import zipfile
 import unittest
 
 from fastapi.testclient import TestClient
@@ -74,7 +77,7 @@ class Pass190I136CompletionTests(unittest.TestCase):
 
     def test_existing_iteration7_is_single_execution_authority(self) -> None:
         status = self.context.status()
-        self.assertEqual(status["governed_operation_count"], 42)
+        self.assertEqual(status["governed_operation_count"], 52)
         self.assertEqual(status["runtime_mode"], "FULL_CANONICAL_RUNTIME")
         self.assertFalse(status["new_vm81_authority"])
         self.assertFalse(status["new_receipt_clock"])
@@ -135,13 +138,70 @@ class Pass190I136CompletionTests(unittest.TestCase):
             "OBSTRUCTED",
         )
 
-    def test_shell_is_honest_about_remaining_acceptance_commands(self) -> None:
+    def test_shell_scientific_calculator_acceptance_path_is_real_and_replayable(self) -> None:
+        token = self.token(
+            "workspace:write", "workspace:read", "artifact:write", "artifact:read"
+        )
         doctor = lower_shell_command(self.context, "hhs doctor")
         self.assertTrue(doctor["ok"])
-        self.assertEqual(doctor["governed_operation_count"], 42)
-        with self.assertRaises(ShellUnsupported) as captured:
-            lower_shell_command(self.context, "hhs build")
-        self.assertIn("ACCEPTANCE_COMMAND_NOT_YET_BOUND:build", str(captured.exception))
+        self.assertEqual(doctor["governed_operation_count"], 52)
+        profile = lower_shell_command(self.context, "hhs profile")
+        self.assertEqual(profile["result"]["profile_id"], "local")
+        created = lower_shell_command(
+            self.context, "hhs new scientific-calculator project-acceptance",
+            authorization_token=token,
+        )
+        self.assertEqual(created["operation_id"], "project.new")
+        self.assertIn("src/main.hhs", created["result"]["files"])
+        edited = lower_shell_command(
+            self.context,
+            "hhs edit project-acceptance src/main.hhs 'a²=1 b²=2 c²=3'",
+            authorization_token=token,
+        )
+        self.assertEqual(edited["operation_id"], "project.edit")
+        built = lower_shell_command(
+            self.context, "hhs build project-acceptance",
+            authorization_token=token,
+        )
+        self.assertTrue(built["result"]["build"]["ok"])
+        self.assertFalse(built["result"]["build"]["execution_authorized_by_compiler"])
+        ran = lower_shell_command(
+            self.context, "hhs run project-acceptance 3",
+            authorization_token=token,
+        )
+        self.assertEqual(ran["result"]["run"]["tick"], 3)
+        self.assertFalse(ran["result"]["run"]["history_erased"])
+        tested = lower_shell_command(
+            self.context, "hhs test project-acceptance",
+            authorization_token=token,
+        )
+        self.assertTrue(tested["result"]["test"]["ok"])
+        exported = lower_shell_command(
+            self.context, "hhs export project-acceptance",
+            authorization_token=token,
+        )
+        payload = base64.b64decode(exported["result"]["zip_base64"], validate=True)
+        with zipfile.ZipFile(io.BytesIO(payload), "r") as archive:
+            self.assertIn("index.html", archive.namelist())
+            self.assertIn("src/main.hhs", archive.namelist())
+            self.assertEqual(archive.read("src/main.hhs").decode(), "a²=1 b²=2 c²=3")
+        receipt_hash72 = exported["receipt"]["hash72"]
+        replayed_receipt = self.context.replay(receipt_hash72)
+        self.assertTrue(replayed_receipt["replay_verified"])
+        project_replay = self.context.invoke(
+            "project.replay", {"project_id": "project-acceptance"},
+            surface="python-sdk", authorization_token=token,
+        )
+        self.assertTrue(project_replay["result"]["ok"])
+        self.assertFalse(project_replay["result"]["hidden_process_state_required"])
+        reopened = lower_shell_command(
+            self.context, "hhs open project-acceptance",
+            authorization_token=token,
+        )
+        self.assertEqual(
+            reopened["result"]["project_root_hash72"],
+            project_replay["result"]["project_root_hash72"],
+        )
 
     def test_full_runtime_fastapi_gateway_uses_same_context(self) -> None:
         client = TestClient(create_app(self.context))
@@ -182,7 +242,7 @@ class Pass190I136CompletionTests(unittest.TestCase):
 
         document = client.get("/v1/registry/openapi")
         self.assertEqual(document.status_code, 200)
-        self.assertEqual(document.json()["x-hhs-operation-count"], 42)
+        self.assertEqual(document.json()["x-hhs-operation-count"], 52)
         self.assertEqual(
             document.json()["x-hhs-runtime-mode"],
             "FULL_CANONICAL_RUNTIME",

@@ -49,6 +49,8 @@ def _load_native() -> tuple[Any, Any, Any, Any]:
 
 DurableExecutionContext, Iteration7OperationRegistry, parse_constructor, verify_capability_token = _load_native()
 
+from .acceptance import Pass190AcceptanceAuthorityContext
+
 
 class Pass190CompletionError(RuntimeError):
     pass
@@ -112,7 +114,7 @@ class Pass190CompletionContext:
         require_pinned_python: bool = True,
     ) -> None:
         self.database_path = Path(database_path)
-        self.authority = DurableExecutionContext(self.database_path)
+        self.authority = Pass190AcceptanceAuthorityContext(self.database_path)
         self.registry = self.authority.registry
         self.capability_secret = capability_secret
         state_root = hydration_state_root or (
@@ -122,8 +124,8 @@ class Pass190CompletionContext:
         self.python_compat = build_python_compatibility_registry(
             require_pinned_version=require_pinned_python
         )
-        if len(self.registry.records) != 42:
-            raise Pass190CompletionError("HHS_P190_ITERATION7_OPERATION_COUNT_DRIFT")
+        if len(self.registry.records) != 52:
+            raise Pass190CompletionError("HHS_P190_I136_OPERATION_COUNT_DRIFT")
 
     @property
     def runtime_mode(self) -> str:
@@ -142,6 +144,8 @@ class Pass190CompletionContext:
             "classification": COMPLETION_CLASSIFICATION,
             "runtime_mode": self.runtime_mode,
             "governed_operation_count": len(self.registry.records),
+            "historical_iteration7_operation_count": 42,
+            "i136_project_acceptance_operation_count": 10,
             "registry_hash216": self.registry.payload["registry_hash216"],
             "python_compatibility": compatibility_summary(self.python_compat),
             "full_hydration": "REUSED_FROM_FROZEN_I135",

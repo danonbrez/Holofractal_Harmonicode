@@ -45,15 +45,10 @@ REQUIRED_COMMAND_FAMILIES = (
 )
 
 _IMPLEMENTED_META = {
-    "status",
-    "doctor",
-    "operations",
-    "python-census",
-    "hydrate-preview",
-    "eval",
-    "invoke",
-    "replay",
-    "completion",
+    "status", "doctor", "login", "profile", "new", "open", "list", "files",
+    "edit", "build", "run", "test", "jobs", "artifacts", "export", "receipts",
+    "replay", "config", "shell", "completion", "eval", "explain",
+    "operations", "python-census", "hydrate-preview", "invoke",
 }
 
 
@@ -104,6 +99,90 @@ def lower_shell_command(
                 "hydrated_repository_root_hash216"
             ],
         }
+    if command in {"login", "profile"}:
+        return context.invoke(
+            "profile.local", {}, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "new":
+        if len(tokens) not in {3, 4}:
+            raise Pass190CompletionError("HHS_P190_SHELL_NEW_USAGE")
+        template = tokens[2].replace("-", "_")
+        project_id = tokens[3] if len(tokens) == 4 else f"project-{template.replace('_','-')}"
+        return context.invoke(
+            "project.new",
+            {"project_id": project_id, "name": tokens[2], "template": template},
+            surface="shell", authorization_token=authorization_token,
+        )
+    if command == "open":
+        if len(tokens) != 3:
+            raise Pass190CompletionError("HHS_P190_SHELL_OPEN_USAGE")
+        return context.invoke(
+            "project.get", {"project_id": tokens[2]}, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "list":
+        return context.invoke(
+            "project.list", {}, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "files":
+        if len(tokens) != 3:
+            raise Pass190CompletionError("HHS_P190_SHELL_FILES_USAGE")
+        result = context.invoke(
+            "project.get", {"project_id": tokens[2]}, surface="shell",
+            authorization_token=authorization_token,
+        )
+        return {**result, "files": sorted(result["result"]["files"])}
+    if command == "edit":
+        if len(tokens) != 5:
+            raise Pass190CompletionError("HHS_P190_SHELL_EDIT_USAGE")
+        return context.invoke(
+            "project.edit",
+            {"project_id": tokens[2], "path": tokens[3], "content": tokens[4]},
+            surface="shell", authorization_token=authorization_token,
+        )
+    if command in {"build", "test", "export"}:
+        if len(tokens) != 3:
+            raise Pass190CompletionError(f"HHS_P190_SHELL_{command.upper()}_USAGE")
+        return context.invoke(
+            f"project.{command}", {"project_id": tokens[2]}, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "run":
+        if len(tokens) not in {3, 4}:
+            raise Pass190CompletionError("HHS_P190_SHELL_RUN_USAGE")
+        args = {"project_id": tokens[2]}
+        if len(tokens) == 4:
+            args["steps"] = int(tokens[3])
+        return context.invoke(
+            "project.run", args, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "jobs":
+        return context.invoke(
+            "job.list", {}, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "artifacts":
+        args = {"workspace_id": tokens[2]} if len(tokens) == 3 else {}
+        return context.invoke(
+            "artifact.list", args, surface="shell",
+            authorization_token=authorization_token,
+        )
+    if command == "receipts":
+        return {
+            "receipts": context.authority.receipts_after(0, 100),
+            "canonical_state_fabricated": False,
+        }
+    if command == "config":
+        return context.status()
+    if command == "shell":
+        return {"mode": "INTERACTIVE_REPL_AVAILABLE", "commands": list(REQUIRED_COMMAND_FAMILIES)}
+    if command == "explain":
+        if len(tokens) != 3:
+            raise Pass190CompletionError("HHS_P190_SHELL_EXPLAIN_USAGE")
+        return context.resolve_operation(tokens[2])
     if command == "operations":
         return {
             "operations": [

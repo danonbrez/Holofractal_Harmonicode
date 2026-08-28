@@ -12,6 +12,7 @@ from .completion import (
     FROZEN_I135,
     Pass190CompletionContext,
 )
+from .acceptance import PROJECT_OPERATION_IDS, Pass190AcceptanceAuthorityContext
 from .python_compat import (
     PYTHON_COMPAT_SCHEMA,
     PYTHON_COMPAT_VERSION,
@@ -24,6 +25,8 @@ __all__ = [
     "CONTRACT_ID",
     "FROZEN_I135",
     "Pass190CompletionContext",
+    "Pass190AcceptanceAuthorityContext",
+    "PROJECT_OPERATION_IDS",
     "PYTHON_COMPAT_SCHEMA",
     "PYTHON_COMPAT_VERSION",
     "build_python_compatibility_registry",
