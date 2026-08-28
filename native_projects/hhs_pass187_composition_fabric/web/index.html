@@ -110,10 +110,10 @@
         sequence: committed.result.sequence,
         vm81_receipt_hash72: committed.result.vm81_receipt_hash72
       });
-      status.textContent = 'admitted';
       selectedSource = null;
       document.querySelectorAll('.port.output.selected').forEach(el => el.classList.remove('selected'));
       await refresh();
+      status.textContent = 'admitted';
     } catch (error) {
       status.textContent = 'rejected';
       log('failure_or_cancellation', {message:String(error.message || error)});
