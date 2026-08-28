@@ -592,10 +592,12 @@ class CompositionAuthority:
         vm81_receipt_hash72: str,
         metadata: Mapping[str, Any] | None = None,
         order: int | None = None,
-        operation_name: str = "CONNECT",
+        operation_name: str | None = None,
     ) -> dict[str, Any]:
         if relationship not in RELATIONSHIPS:
             raise ValueError("unknown relationship")
+        if operation_name is None:
+            operation_name = relationship if relationship in {"LAYER", "NEST", "REFERENCE"} else "CONNECT"
         if source_logical_object_id == target_logical_object_id and relationship != "FEEDBACK":
             raise ValueError("self-edge requires FEEDBACK")
         meta = dict(metadata or {})
