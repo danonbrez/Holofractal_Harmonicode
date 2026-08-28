@@ -129,7 +129,7 @@ jobs:
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h)" = "5f3245022447dcd3a1cce215f373e4f899946944"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp)" = "0f645b5164d8b4b337ff7191c07558cc28f9261f"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc)" = "ef39790111aa37640bf282cec27804597f44dee4"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "4d1be0c445df6badef5607f602de97aa6e776860"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.c)" = "87349989276f76a579b186f7579f0536814f466c"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.cpp)" = "90f244736c61dc91f2a7d17b145aaab942a5eae7"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py)" = "bbca5ecd535c0bc45f3f74a23b138ea979d789c4"
