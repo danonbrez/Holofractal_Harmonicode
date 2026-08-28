@@ -94,7 +94,7 @@ class Pass190I136CompletionTests(unittest.TestCase):
         )
         shell = lower_shell_command(
             self.context,
-            'hhs invoke python.len "{\"value\":[1,2,3]}"',
+            "hhs invoke python.len '{\"value\":[1,2,3]}'",
         )
         for result in (direct, python, constructor, shell):
             self.assertEqual(result["operation_id"], "python.len")
