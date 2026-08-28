@@ -1,8 +1,9 @@
-"""Pass 219 I114 canonical execution-composer registration.
+"""Pass 219 canonical execution-composer registration.
 
 This module registers the additive exact C ABI execution selector with the
-inherited Pass 043/217 kernel runtime auto-composer.  It does not duplicate the
-C routing policy and it does not grant mutation authority.
+inherited Pass 043/217 kernel runtime auto-composer.  Pass 219 1.22 adds the
+mandatory Sudoku-qudit Genesis + deterministic scaling data/ML guard without
+changing the inherited I114 execution ABI or granting mutation authority.
 """
 
 from __future__ import annotations
@@ -10,8 +11,16 @@ from __future__ import annotations
 from typing import Any, Dict, MutableMapping, Optional
 
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
+from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
+    GENESIS_SYMBOL,
+    GENESIS_VALIDATE_SYMBOL,
+    MANDATORY_GUARD,
+    PLAN_SYMBOL,
+    SCHEMA as MANDATORY_DATA_ML_SCHEMA,
+    VERIFY_SYMBOL,
+)
 
-VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14"
+VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22"
 SURFACE_ID = "executor:pass219.rna.execution.compose"
 EXECUTION_SYMBOL = "hhs_exact_pass219_rna_execution_compose"
 PREPARE_SYMBOL = "hhs_exact_pass219_rna_execution_prepare_candidate"
@@ -34,22 +43,30 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
         "surface_type": "EXECUTOR",
         "module": "hhs_runtime_exact_abi",
         "symbol": EXECUTION_SYMBOL,
-        "invariant_ids": ["HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I014"],
+        "invariant_ids": ["HHS-I001", "HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I014"],
         "contract_schemas": [
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
             "HHS_PASS219_POST_PASS218_INDEXED_REUSE_POLICY_1_5_0",
+            MANDATORY_DATA_ML_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_KERNEL_DERIVATION_WITNESS_V1",
             "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
             "HHS_PASS219_RNA_EXECUTION_PLAN_V1",
+            "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
+            "HHS_PASS219_MANDATORY_SCALING_WITNESS_V1",
         ],
         "validators": [
+            GENESIS_SYMBOL,
+            GENESIS_VALIDATE_SYMBOL,
+            PLAN_SYMBOL,
+            VERIFY_SYMBOL,
             EXECUTION_SYMBOL,
             PREPARE_SYMBOL,
         ],
         "guards": [
             "kernel_runtime_autocomposer",
+            MANDATORY_GUARD,
             "authenticated_indexed_predecessor_gate",
             "dependency_frontier_gate",
             "single_c_vm81_mutation_authority",
@@ -58,11 +75,12 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_EXECUTION_ROUTE_WITHOUT_TYPED_REASON",
             "REJECT_PASS219_INDEXED_CONTINUATION_WITHOUT_AUTHENTICATED_PREDECESSOR",
             "REJECT_PASS219_DEPENDENCY_CHANGE_AS_UNSCOPED_GENESIS_REPLAY",
+            "REJECT_PASS219_DATA_ML_WITHOUT_MANDATORY_GENESIS_SCALING",
             "REJECT_PASS219_CPP_MUTATION_AUTHORITY",
         ],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
         "persistence_policy": "EXECUTION_ROUTE_EVIDENCE_ONLY",
-        "boundedness_policy": "PASS_219_FIXED_ABI_ROUTE_SELECTION_1_14",
+        "boundedness_policy": "PASS_219_FIXED_ABI_ROUTE_SELECTION_1_14_PLUS_EXACT_WORKLOAD_BOUND_SCALING_1_22",
         "declared_operations": [EXECUTION_SYMBOL],
     }
 
@@ -76,12 +94,17 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "prepare_symbol": PREPARE_SYMBOL,
         "default_eligible_route": "INDEXED_CONTINUATION",
         "default_preconditions": [
+            "PASS219_MANDATORY_SUDOKU_GENESIS_SCALING_DATA_ML",
             "AUTHENTICATED_INDEXED_PREDECESSOR",
             "CURRENT_DEPENDENCY_FRONTIER_MATCH",
             "NO_TYPED_BYPASS_REQUEST",
         ],
+        "mandatory_data_ml_guard": MANDATORY_GUARD,
+        "mandatory_data_ml_schema": MANDATORY_DATA_ML_SCHEMA,
+        "mandatory_genesis_scaling_applies_before_route_selection": True,
         "typed_bypass_reasons": list(BYPASS_REASONS),
         "genesis_replay_default": False,
+        "genesis_data_plane_normalization_default": True,
         "cxx_mutation_authority": False,
         "vm81_mutation_authority": "INHERITED_C_ONLY",
     }

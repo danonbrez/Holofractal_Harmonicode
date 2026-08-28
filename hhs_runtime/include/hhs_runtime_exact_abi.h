@@ -45,4 +45,5 @@
 #include "hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h"
 #include "hhs_pass219b_selective_projection_1_0.h"
 #include "hhs_pass219b_sparse_dirty_projection_1_0.h"
+#include "hhs_pass219_mandatory_genesis_scaling_1_22.h"
 #endif
