@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_188_CONTENT_VERSION_V1",
+  "title": "HHS Pass 188 immutable content version",
+  "type": "object",
+  "required": [
+    "logical_content_id",
+    "content_version_id",
+    "version",
+    "content_hash",
+    "parents",
+    "embedded_license_ids",
+    "creation_sequence"
+  ],
+  "properties": {
+    "logical_content_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_version_id": {
+      "type": "string",
+      "pattern": "^cv_[0-9a-f]{72}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^cv_[0-9a-f]{72}$"
+      },
+      "uniqueItems": true
+    },
+    "embedded_license_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "creation_sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

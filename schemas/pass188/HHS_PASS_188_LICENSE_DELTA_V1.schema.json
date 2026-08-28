@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_188_LICENSE_DELTA_V1",
+  "title": "HHS Pass 188 exact license delta",
+  "type": "object",
+  "properties": {
+    "controlled_content_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "obligations": {
+      "type": "object"
+    },
+    "legacy_policy": {
+      "enum": [
+        "LEGACY_BOUND",
+        "CURRENT_TERMS",
+        "OPT_IN_UPGRADE",
+        "COMPATIBILITY_FLOOR",
+        "REVOCABLE_CAPABILITY",
+        "FORKED_LICENSE",
+        "SUNSET"
+      ]
+    },
+    "territory": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "modality": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "revocable_rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "compatibility_floor_rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "royalty": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "integer",
+          "minimum": 1
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "external_anchor_status": {
+      "enum": [
+        "PENDING",
+        "CONFIRMED",
+        "FAILED",
+        "REORGED",
+        "UNAVAILABLE"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

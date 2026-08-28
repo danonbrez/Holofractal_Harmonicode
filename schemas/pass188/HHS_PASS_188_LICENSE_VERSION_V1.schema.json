@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_188_LICENSE_VERSION_V1",
+  "title": "HHS Pass 188 immutable license version",
+  "type": "object",
+  "required": [
+    "logical_license_id",
+    "license_version_id",
+    "version",
+    "parents",
+    "controlled_content_ids",
+    "rights",
+    "obligations",
+    "legacy_policy",
+    "controller_at_creation",
+    "revocable_rights",
+    "compatibility_floor_rights",
+    "royalty",
+    "delta",
+    "active",
+    "expired",
+    "external_anchor_status",
+    "creation_sequence"
+  ],
+  "properties": {
+    "logical_license_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license_version_id": {
+      "type": "string",
+      "pattern": "^lv_[0-9a-f]{72}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^lv_[0-9a-f]{72}$"
+      },
+      "uniqueItems": true
+    },
+    "controlled_content_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "obligations": {
+      "type": "object"
+    },
+    "legacy_policy": {
+      "enum": [
+        "LEGACY_BOUND",
+        "CURRENT_TERMS",
+        "OPT_IN_UPGRADE",
+        "COMPATIBILITY_FLOOR",
+        "REVOCABLE_CAPABILITY",
+        "FORKED_LICENSE",
+        "SUNSET"
+      ]
+    },
+    "controller_at_creation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "territory": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "modality": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "revocable_rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "compatibility_floor_rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "royalty": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "integer",
+          "minimum": 1
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "delta": {
+      "type": "object"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "expired": {
+      "type": "boolean"
+    },
+    "external_anchor_status": {
+      "enum": [
+        "PENDING",
+        "CONFIRMED",
+        "FAILED",
+        "REORGED",
+        "UNAVAILABLE"
+      ]
+    },
+    "creation_sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}
