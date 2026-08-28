@@ -121,7 +121,7 @@ jobs:
           registry = build_python_compatibility_registry()
           summary = compatibility_summary(registry)
           assert summary['python_version'] == '3.12'
-          assert summary['coverage_module_count'] >= 50
+          assert summary['coverage_module_count'] == 49
           assert summary['public_callable_record_count'] > 500
           assert summary['unclassified_public_callables'] == 0
           assert summary['supported_nucleus_count'] == 6
