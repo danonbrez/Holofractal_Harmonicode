@@ -821,7 +821,7 @@ class CompositionAuthority:
 
         def parameterize_value(value: Any) -> Any:
             if isinstance(value, str) and value in mapping:
-                return " + str(mapping[value]) + "
+                return "${" + str(mapping[value]) + "}"
             if isinstance(value, list):
                 return [parameterize_value(item) for item in value]
             if isinstance(value, dict):
