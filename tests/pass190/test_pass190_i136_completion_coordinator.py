@@ -78,6 +78,10 @@ class Pass190I136CompletionTests(unittest.TestCase):
     def test_existing_iteration7_is_single_execution_authority(self) -> None:
         status = self.context.status()
         self.assertEqual(status["governed_operation_count"], 52)
+        self.assertEqual(
+            status["classification"],
+            "HHS_PASS_190_I136_COMPLETION_COORDINATOR_VERIFIED",
+        )
         self.assertEqual(status["runtime_mode"], "FULL_CANONICAL_RUNTIME")
         self.assertFalse(status["new_vm81_authority"])
         self.assertFalse(status["new_receipt_clock"])
