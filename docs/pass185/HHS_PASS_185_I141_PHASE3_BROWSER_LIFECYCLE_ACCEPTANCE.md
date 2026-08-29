@@ -14,12 +14,12 @@ This bounded Phase-3 block extends the already verified Phase-1 application life
 
 The block verifies:
 
-- application-shell ownership of the singleton Runtime OS lifecycle;
+- on-demand ownership of the public-root `IntegratedRuntimeClient` while the Runtime surface is mounted;
 - WebSocket disconnect when the production backend is stopped;
 - finite reconnect after restart on the same production port;
 - browser offline then online recovery;
-- repeated Runtime/Application navigation without duplicate subscriptions;
-- full page reload with a single four-channel subscription set;
+- repeated Runtime/Application navigation alternating exactly between dormant zero-subscription state and one subscription per channel;
+- full page reload from a dormant public client to a single four-channel subscription set after Runtime mount;
 - local calculator edit/preview/test/ZIP while the backend is unavailable;
 - local calculator edit/preview/test/ZIP while the browser is offline;
 - explicit localStorage-unavailable degradation while the in-memory application remains usable;
@@ -29,11 +29,15 @@ The block verifies:
 
 ## Repair-forward changes
 
-### Runtime OS lifecycle ownership
+### Production transport lifecycle ownership
 
-`RuntimeShell` remains the sole owner of `RuntimeOS.initialize()` / `RuntimeOS.shutdown()`.
+The exact production bootstrap is `hhs_gui/bootstrap.ts -> hhs_gui/main.tsx`.
 
-`LiveRuntimeProjectionPanel` no longer initializes or destroys the shared application-wide Runtime OS when its tab mounts/unmounts. The panel is a read-only projection only.
+`main.tsx` constructs one `IntegratedRuntimeClient`, exposes the existing read-only diagnostic handle as `window.__HHS_RUNTIME_CLIENT__`, and mounts `CanonicalRuntimeIDE`.
+
+`LiveRuntimeProjectionPanel` owns the intended on-demand projection lifecycle: mounting the Runtime surface invokes `IntegratedRuntimeClient.initialize()`; unmounting it invokes `IntegratedRuntimeClient.shutdown()`. Ordinary editing/application work therefore carries no live WebSocket subscription set.
+
+The earlier Phase-3 exploratory changes to the unused `src/App.tsx -> RuntimeShell -> RuntimeOS` entry path were restored to their pre-Phase-3 blobs after this production-entrypoint reconciliation.
 
 ### Reconnect deduplication
 
@@ -45,7 +49,7 @@ Read-only metrics expose:
 - projection subscription count;
 - pending reconnect channels.
 
-These metrics do not derive or mutate runtime truth.
+These metrics do not derive or mutate runtime truth. The gate cross-checks them against the already exposed `window.__HHS_RUNTIME_CLIENT__.getMetrics()` diagnostic handle.
 
 ### Local persistence unavailable
 
