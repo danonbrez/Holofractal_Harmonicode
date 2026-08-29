@@ -135,3 +135,23 @@ Validation profiles:
 The workflow must first prove the inherited compiled C library, then temporarily remove only that validated library for the C-degraded scenario and restore its exact SHA-256 afterward.
 
 No Phase-2 result may be promoted to terminal Pass 185 completion. Repair forward from the exact branch tip on any failure.
+
+
+## Phase-2 C-runtime degradation repair-forward checkpoint
+
+The first C-unavailable run exposed two real hard dependencies and they were repaired forward:
+
+1. the Python↔C bridge previously failed at import when `libhhs_runtime.so` was absent;
+2. after import was made explicitly degradable, the module-global `HHSRuntimeController` still invoked C initialization during construction.
+
+Current repair boundary:
+
+- `hhs_python/runtime/hhs_ctypes_bridge.py` permits import-only degradation only when `HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT=1`; every C function call remains fail-closed;
+- `hhs_python/runtime/hhs_runtime_controller.py` records explicit C availability and returns no fabricated canonical state when unavailable;
+- `hhs_python/runtime/hhs_runtime_emulator.py` requires a live canonical runtime before boot;
+- `hhs_backend/server.py` yields a source-only degraded web service without starting runtime/WebSocket execution when C authority is unavailable;
+- `hhs_backend/production_server.py` opts the production shell into this degradation and exposes C availability in product health.
+
+Latest implementation/workflow head before this trigger: `ae46a79e7bbfcb3f87299f3d0baeab005f91a04f`.
+
+Required next validation is the complete Phase-2 matrix. Do not accept a C-degraded green result unless process/static and optional-provider profiles also remain green in the same workflow.
