@@ -228,6 +228,9 @@ export class RuntimeSocketManager {
     private shutdownRequested =
         false
 
+    private readonly reconnectTimers =
+        new Map<RuntimeEventType, number>()
+
     private readonly maxHistory =
         2048
 
@@ -1041,17 +1044,23 @@ export class RuntimeSocketManager {
 
         if (
             this.shutdownRequested
+            ||
+            this.reconnectTimers.has(channel)
         ) {
 
             return
         }
 
-        window.setTimeout(
+        const timer = window.setTimeout(
 
             () => {
 
+                this.reconnectTimers.delete(channel)
+
                 if (
                     this.shutdownRequested
+                    ||
+                    this.isChannelConnected(channel)
                 ) {
 
                     return
@@ -1088,6 +1097,27 @@ export class RuntimeSocketManager {
 
             this.reconnectDelayMs
         )
+
+        this.reconnectTimers.set(channel, timer)
+    }
+
+    private isChannelConnected(
+        channel: RuntimeEventType
+    ): boolean {
+
+        switch (channel) {
+
+            case "runtime":
+                return this.state.runtimeConnected
+            case "replay":
+                return this.state.replayConnected
+            case "graph":
+                return this.state.graphConnected
+            case "transport":
+                return this.state.transportConnected
+            default:
+                return false
+        }
     }
 
     // =====================================================
@@ -1190,6 +1220,11 @@ export class RuntimeSocketManager {
         this.shutdownRequested =
             true
 
+        for (const timer of this.reconnectTimers.values()) {
+            window.clearTimeout(timer)
+        }
+        this.reconnectTimers.clear()
+
         this.runtimeSocket?.close()
 
         this.replaySocket?.close()
@@ -1261,7 +1296,16 @@ export class RuntimeSocketManager {
 
             totalEvents:
                 this.state
-                    .totalEvents
+                    .totalEvents,
+
+            listenerCounts:
+                Object.fromEntries(
+                    [...this.listeners.entries()]
+                        .map(([channel, listeners]) => [channel, listeners.size])
+                ),
+
+            reconnectPending:
+                [...this.reconnectTimers.keys()]
         }
     }
 
