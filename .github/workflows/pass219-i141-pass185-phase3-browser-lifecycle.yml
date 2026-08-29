@@ -94,7 +94,7 @@ jobs:
       - name: Run Phase-3 real-browser lifecycle acceptance
         run: |
           mkdir -p "$HHS_PASS185_PHASE3_EVIDENCE"
-          timeout 480s python hhs_verification/pass185/phase3_browser_lifecycle_acceptance.py \
+          timeout 480s python -m hhs_verification.pass185.phase3_browser_lifecycle_acceptance \
             --evidence-dir "$HHS_PASS185_PHASE3_EVIDENCE"
 
       - name: Retain impacted production-root regressions
