@@ -1,0 +1,185 @@
+name: Pass 219 I141 Pass 185 Phase 2 Degradation Negative Acceptance
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
+    paths:
+      - 'hhs_gui/index.html'
+      - 'hhs_verification/pass185/phase2_degradation_negative_acceptance.py'
+      - 'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md'
+      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
+      - '.github/workflows/pass219-i141-pass185-phase2-degradation-negative.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i141-pass185-phase2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase2-degradation-negative:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '12'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_PASS185_PHASE2_EVIDENCE: '/tmp/pass185-phase2'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped runtime packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            requests \
+            pytest \
+            playwright
+
+      - name: Prove inherited compiled C runtime before degradation
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum hhs_runtime/builds/libhhs_runtime.so | tee /tmp/pass185-c-runtime-before.sha256
+
+      - name: Typecheck and build exact Runtime OS public root
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+          grep -Fq 'runtime_boot_reload' dist/index.html
+          grep -Fq 'Interface status' dist/index.html
+
+      - name: Validate Phase-2 source contract
+        run: |
+          python -m py_compile hhs_verification/pass185/phase2_degradation_negative_acceptance.py
+          grep -Fq 'HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_IMPLEMENTED_PENDING_VALIDATION' \
+            docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md
+          grep -Fq 'hhs_backend.runtime_os_application_server:app' \
+            hhs_verification/pass185/phase2_degradation_negative_acceptance.py
+          grep -Fq 'terminal_pass185_completion_claimed' \
+            hhs_verification/pass185/phase2_degradation_negative_acceptance.py
+
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Run process socket and static module negative acceptance
+        run: |
+          mkdir -p "$HHS_PASS185_PHASE2_EVIDENCE/process-static"
+          timeout 360s python hhs_verification/pass185/phase2_degradation_negative_acceptance.py \
+            --profile process-static-negative \
+            --evidence-dir "$HHS_PASS185_PHASE2_EVIDENCE/process-static"
+
+      - name: Run optional provider and Word2Vec degraded acceptance
+        run: |
+          mkdir -p "$HHS_PASS185_PHASE2_EVIDENCE/optional-provider"
+          timeout 300s python hhs_verification/pass185/phase2_degradation_negative_acceptance.py \
+            --profile optional-provider-degraded \
+            --evidence-dir "$HHS_PASS185_PHASE2_EVIDENCE/optional-provider"
+
+      - name: Run compiled C unavailable source-only acceptance
+        run: |
+          set -euo pipefail
+          mkdir -p "$HHS_PASS185_PHASE2_EVIDENCE/c-runtime-missing"
+          mv hhs_runtime/builds/libhhs_runtime.so /tmp/libhhs_runtime.pass185.saved.so
+          restore() {
+            if [ -f /tmp/libhhs_runtime.pass185.saved.so ]; then
+              mv /tmp/libhhs_runtime.pass185.saved.so hhs_runtime/builds/libhhs_runtime.so
+            fi
+          }
+          trap restore EXIT
+          test ! -e hhs_runtime/builds/libhhs_runtime.so
+          timeout 300s python hhs_verification/pass185/phase2_degradation_negative_acceptance.py \
+            --profile c-runtime-missing \
+            --evidence-dir "$HHS_PASS185_PHASE2_EVIDENCE/c-runtime-missing"
+          restore
+          trap - EXIT
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum -c /tmp/pass185-c-runtime-before.sha256
+
+      - name: Retain impacted inherited degradation regressions
+        run: |
+          timeout 180s pytest -q \
+            tests/test_hhs_pass174_heroku_boot_resilience_v1.py \
+            tests/pass176/test_deployment_backend_degraded_mode_static.py \
+            tests/test_runtime_os_production_root.py
+
+      - name: Seal Phase-2 evidence
+        if: always()
+        run: |
+          mkdir -p "$HHS_PASS185_PHASE2_EVIDENCE"
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('/tmp/pass185-phase2')
+          evidence_files = sorted(root.glob('**/*.json'))
+          payload = {
+              'schema': 'HHS_PASS219_I141_PASS185_PHASE2_VALIDATION_SEAL_V1',
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'authoritative_main_base': 'f8aa3337ee023c7d828343eac208987c20a05e67',
+              'phase1_validated_head': '31a3ca0f725ac7ee14a7c2252da750536afe13ec',
+              'pass185_contract_commit': 'f260f2b013072a48399d9cdc207d0a76a6c63d2f',
+              'classification': 'HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_EXECUTED',
+              'terminal_pass185_completion_claimed': False,
+              'profiles': {},
+              'source_blobs': {},
+          }
+          for path in [
+              'hhs_gui/index.html',
+              'hhs_verification/pass185/phase2_degradation_negative_acceptance.py',
+              'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md',
+          ]:
+              payload['source_blobs'][path] = subprocess.check_output(
+                  ['git', 'hash-object', path], text=True
+              ).strip()
+          for evidence in evidence_files:
+              data = json.loads(evidence.read_text())
+              payload['profiles'][data.get('profile', evidence.stem)] = {
+                  'ok': data.get('ok'),
+                  'path': str(evidence.relative_to(root)),
+                  'sha256': hashlib.sha256(evidence.read_bytes()).hexdigest(),
+              }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          (root / 'i141-phase2-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i141-pass185-phase2-degradation-negative
+          path: |
+            /tmp/pass185-phase2/**
+            /tmp/pass185-c-runtime-before.sha256
+          if-no-files-found: warn
+          retention-days: 30
