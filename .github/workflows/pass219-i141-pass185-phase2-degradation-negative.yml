@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pass219-i141-pass185-phase2-${{ github.ref }}
+  group: pass219-i141-pass185-phase2-v2-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
