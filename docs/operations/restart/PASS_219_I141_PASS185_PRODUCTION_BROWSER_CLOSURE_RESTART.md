@@ -111,3 +111,27 @@ Continue I141 from the branch tip. Begin the next contract block with the exact 
 `PROCESS/SOCKET + STATIC MODULE/MIME + OPTIONAL PROVIDER/C-RUNTIME DEGRADATION + BROWSER NEGATIVE ACCEPTANCE`
 
 Reuse the green Phase-1 lifecycle as the invariant interactive nucleus. Do not rerun unchanged historical suites except where a Phase-2 profile affects them. Keep `HHS_PASS_185_PRODUCTION_BROWSER_AND_RUNTIME_CLOSURE_VERIFIED` prohibited until all remaining mandatory matrices, multimodal workflows, performance/starvation gates, final cumulative receipt, authoritative-main verification, and external deployment replay are closed.
+
+
+## Phase-2 implementation checkpoint
+
+- implementation head before validation trigger: `a4c6fe4796130551f78aa4706bc247bbd32164f4`
+- classification: `HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_IMPLEMENTED_PENDING_VALIDATION`
+- terminal Pass 185 completion claimed: no
+
+Phase-2 additions:
+
+- `hhs_gui/index.html`: visible recovery controls on the existing finite boot-failure watchdog;
+- `hhs_verification/pass185/phase2_degradation_negative_acceptance.py`;
+- `docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md`;
+- `.github/workflows/pass219-i141-pass185-phase2-degradation-negative.yml`.
+
+Validation profiles:
+
+1. exact-production process/socket + static/module negative acceptance;
+2. exact-production Gemma/Word2Vec unavailable degradation with local application lifecycle preserved;
+3. exact-production compiled-C-unavailable profile with autobuild disabled and local editor/preview/test/ZIP preserved.
+
+The workflow must first prove the inherited compiled C library, then temporarily remove only that validated library for the C-degraded scenario and restore its exact SHA-256 afterward.
+
+No Phase-2 result may be promoted to terminal Pass 185 completion. Repair forward from the exact branch tip on any failure.
