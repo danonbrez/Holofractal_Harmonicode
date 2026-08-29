@@ -105,6 +105,7 @@ export const Pass185ApplicationLifecyclePanel: React.FC = () => {
   const [savedText, setSavedText] = useState(initial.sourceText)
   const [savedAt, setSavedAt] = useState<string | null>(initial.savedAt)
   const [previewHtml, setPreviewHtml] = useState(initial.sourceText)
+  const [previewRevision, setPreviewRevision] = useState(0)
   const [previewReady, setPreviewReady] = useState(false)
   const [status, setStatus] = useState(initial.sourceText ? "REOPENED_SAVED_SOURCE" : "EMPTY")
   const [testStatus, setTestStatus] = useState("NOT_RUN")
@@ -207,6 +208,7 @@ export const Pass185ApplicationLifecyclePanel: React.FC = () => {
     }
     setPreviewReady(false)
     setPreviewHtml(sourceText)
+    setPreviewRevision((value) => value + 1)
     setStatus("PREVIEW_REQUESTED")
     setError(null)
   }
@@ -319,7 +321,7 @@ export const Pass185ApplicationLifecyclePanel: React.FC = () => {
           </div>
           {previewHtml ? (
             <iframe
-              key={previewHtml}
+              key={`${previewRevision}:${previewHtml.length}`}
               ref={iframeRef}
               data-testid="pass185-preview-frame"
               title="Pass 185 application preview"
