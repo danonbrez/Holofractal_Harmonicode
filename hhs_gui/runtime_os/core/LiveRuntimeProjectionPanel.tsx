@@ -72,8 +72,14 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
       }
     }
 
-    refreshProjection()
-    void refreshAuthority()
+    runtimeOS.initialize()
+      .then(() => {
+        refreshProjection()
+        void refreshAuthority()
+      })
+      .catch((error: unknown) => {
+        if (mounted) setConnectionError(error instanceof Error ? error.message : String(error))
+      })
 
     const projectionInterval = window.setInterval(refreshProjection, 1500)
     const authorityInterval = window.setInterval(() => void refreshAuthority(), 5000)
@@ -81,6 +87,7 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
       mounted = false
       window.clearInterval(projectionInterval)
       window.clearInterval(authorityInterval)
+      runtimeOS.shutdown()
     }
   }, [runtimeOS])
 
