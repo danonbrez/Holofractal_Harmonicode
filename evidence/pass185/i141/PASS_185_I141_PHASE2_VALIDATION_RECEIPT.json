@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE2_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase1_validated_head": "31a3ca0f725ac7ee14a7c2252da750536afe13ec",
+    "phase2_validated_head": "2b972a66743a505937d5f819c839f5e59dda98b4",
+    "phase2_validated_tree": "e67889f885481e0ddfd14c33a61b035af82e0bcc",
+    "ahead_of_authoritative_main_base": 44,
+    "behind_authoritative_main_base": 0
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-phase2-degradation-negative.yml",
+    "run_id": 33254220079,
+    "job_id": 99105019179,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9715347753,
+      "name": "pass219-i141-pass185-phase2-degradation-negative",
+      "size_bytes": 191765,
+      "sha256": "c7f4ba101f0182169c1156df582e664d8befd17188d7ecd2724eee437aca2773"
+    },
+    "profiles": {
+      "process_socket_static_module_negative": "success",
+      "optional_provider_word2vec_degraded": "success",
+      "compiled_c_unavailable_source_only": "success",
+      "impacted_inherited_production_root_regressions": "success"
+    }
+  },
+  "verified_behaviors": {
+    "exact_production_entrypoint": "hhs_backend.runtime_os_application_server:app",
+    "inherited_c_runtime_built_and_hashed_before_degradation": true,
+    "occupied_port_finite_failure": true,
+    "missing_runtime_os_root_finite_prebind_failure": true,
+    "runtime_os_asset_mime_inventory_verified": true,
+    "unknown_asset_404_verified": true,
+    "unknown_api_json_fail_closed_verified": true,
+    "blocked_required_bundle_visible_failure_and_reload_recovery": true,
+    "wrong_mime_bundle_visible_failure_and_reload_recovery": true,
+    "corrupted_local_storage_recovery": true,
+    "gemma_unavailable_does_not_block_local_application_lifecycle": true,
+    "word2vec_unavailable_does_not_block_local_application_lifecycle": true,
+    "c_runtime_missing_selects_outer_source_only_shell": true,
+    "source_only_calculator_preview_7_plus_8_equals_15": true,
+    "source_only_zip_export_verified": true,
+    "mobile_application_export_control_visible": true,
+    "compiled_c_library_restored_with_predegradation_sha256": true
+  },
+  "implementation_boundary": {
+    "source_only_dispatcher": "hhs_backend/runtime_os_application_server.py",
+    "preserved_full_composition": "hhs_backend/runtime_os_application_server_full.py",
+    "source_only_shell": "hhs_backend/runtime_os_source_only_server.py",
+    "canonical_runtime_internal_files_restored_to_pre_phase2_blobs": true,
+    "frontend_runtime_authority": false,
+    "browser_replacement_authority": false,
+    "python_replacement_authority": false,
+    "canonical_mutation_permitted_in_source_only_mode": false,
+    "vm81_authority_minted": false,
+    "hash72_authority_minted": false,
+    "canonical_state_fabricated_when_c_runtime_missing": false
+  },
+  "repair_forward": {
+    "prebind_deadline_aligned_with_cumulative_import_cost": true,
+    "initial_internal_c_degradation_experiments_reverted_after_outer_dispatcher_adopted": true,
+    "stale_ci_concurrency_namespace_versioned": true,
+    "unrelated_legacy_pass176_static_regressions_excluded_from_dependency_scoped_gate": true
+  },
+  "remaining_terminal_scope": [
+    "broader browser lifecycle recovery including websocket/offline/reconnect/concurrent-context cases",
+    "multimodal document workflow",
+    "multimodal calculator/general application workflow beyond Phase-1 nucleus where required",
+    "2D game workflow",
+    "image/graphics workflow",
+    "audio workflow",
+    "video/audiovisual workflow",
+    "performance and starvation CPU/memory/IO/latency gates",
+    "remaining contract negative matrix",
+    "cumulative Pass-185 closure receipt",
+    "authoritative-main verification",
+    "external deployment replay"
+  ]
+}
