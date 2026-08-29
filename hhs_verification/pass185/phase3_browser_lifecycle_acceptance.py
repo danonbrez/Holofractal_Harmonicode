@@ -33,6 +33,17 @@ def open_tab(page: Page, name: str) -> None:
 
 def launch_page(context: BrowserContext, base_url: str) -> Page:
     page = context.new_page()
+    console_errors: list[str] = []
+    page_errors: list[str] = []
+    setattr(page, "_hhs_console_errors", console_errors)
+    setattr(page, "_hhs_page_errors", page_errors)
+    page.on(
+        "console",
+        lambda message: console_errors.append(message.text)
+        if message.type == "error"
+        else None,
+    )
+    page.on("pageerror", lambda error: page_errors.append(str(error)))
     page.set_default_timeout(30_000)
     page.set_default_navigation_timeout(90_000)
     response = page.goto(base_url + "/", wait_until="domcontentloaded")
@@ -70,6 +81,9 @@ def wait_transport_metrics(
         if expected():
             return last
         page.wait_for_timeout(250)
+    workspace_text = page.locator(
+        '[data-testid="hhs-visual-runtime-os-workspace"]'
+    ).inner_text()
     raise AssertionError(
         {
             "classification": "RUNTIME_TRANSPORT_METRICS_TIMEOUT",
@@ -77,6 +91,9 @@ def wait_transport_metrics(
             "expected_subscriptions": subscriptions,
             "expected_reconnect": reconnect,
             "last": last,
+            "workspace_text": workspace_text[-5000:],
+            "console_errors": getattr(page, "_hhs_console_errors", [])[-50:],
+            "page_errors": getattr(page, "_hhs_page_errors", [])[-50:],
         }
     )
 
