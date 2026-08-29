@@ -153,40 +153,7 @@ runtime_emulator = HHSCEmulator(controller=runtime_controller)
 
 runtime_graph = HHSMultimodalReceiptGraph()
 
-
-class HHSUnavailableIOGateway:
-    """No-authority IO projection for explicit source-only production mode."""
-
-    def __init__(self, controller: HHSRuntimeController):
-        self.controller = controller
-
-    def status(self) -> Dict[str, Any]:
-        return {
-            "schema": "HHS_CANONICAL_IO_GATEWAY_UNAVAILABLE_V1",
-            "ok": False,
-            "available": False,
-            "source_only_degraded_mode": True,
-            "canonical_io_authority_active": False,
-            "python_replacement_authority": False,
-            "runtime_availability": self.controller.availability_status(),
-        }
-
-    def ingress(self, *args, **kwargs):
-        _ = args, kwargs
-        self.controller.require_runtime()
-        raise RuntimeError("unreachable")
-
-    def egress(self, *args, **kwargs):
-        _ = args, kwargs
-        self.controller.require_runtime()
-        raise RuntimeError("unreachable")
-
-
-io_gateway = (
-    HHSIOGateway(runtime_controller)
-    if runtime_controller.runtime_available
-    else HHSUnavailableIOGateway(runtime_controller)
-)
+io_gateway = HHSIOGateway(runtime_controller)
 
 
 def _contract_response(route: str, method: str, payload: Dict[str, Any], *, io: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
