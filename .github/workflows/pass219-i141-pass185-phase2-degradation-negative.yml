@@ -8,6 +8,7 @@ on:
       - 'hhs_gui/index.html'
       - 'hhs_backend/production_server.py'
       - 'hhs_backend/server.py'
+      - 'hhs_backend/api/runtime_routes.py'
       - 'hhs_python/runtime/hhs_ctypes_bridge.py'
       - 'hhs_python/runtime/hhs_runtime_controller.py'
       - 'hhs_python/runtime/hhs_runtime_emulator.py'
@@ -91,6 +92,7 @@ jobs:
           grep -Fq 'canonical_c_calls_fail_closed_when_unavailable' hhs_python/runtime/hhs_ctypes_bridge.py
           grep -Fq 'def availability_status' hhs_python/runtime/hhs_runtime_controller.py
           grep -Fq 'if not runtime_controller.runtime_available' hhs_backend/server.py
+          grep -Fq 'HHSUnavailableIOGateway' hhs_backend/api/runtime_routes.py
           grep -Fq 'self.controller.require_runtime()' hhs_python/runtime/hhs_runtime_emulator.py
 
       - name: Install bounded Chromium
@@ -165,6 +167,7 @@ jobs:
               'hhs_gui/index.html',
               'hhs_backend/production_server.py',
               'hhs_backend/server.py',
+              'hhs_backend/api/runtime_routes.py',
               'hhs_python/runtime/hhs_ctypes_bridge.py',
               'hhs_python/runtime/hhs_runtime_controller.py',
               'hhs_python/runtime/hhs_runtime_emulator.py',
