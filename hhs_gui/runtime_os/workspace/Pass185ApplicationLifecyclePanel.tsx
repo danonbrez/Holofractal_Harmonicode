@@ -125,7 +125,14 @@ export const Pass185ApplicationLifecyclePanel: React.FC = () => {
       savedAt,
       ...patch,
     }
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+    } catch (reason: unknown) {
+      setStatus("LOCAL_STORAGE_UNAVAILABLE_LOCAL_SESSION_ACTIVE")
+      setError(
+        `Local persistence unavailable; the current editor session remains usable in memory. ${reason instanceof Error ? reason.message : String(reason)}`,
+      )
+    }
   }
 
   useEffect(() => {
