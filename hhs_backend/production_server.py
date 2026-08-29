@@ -17,7 +17,6 @@ from typing import Any, Mapping
 # provisioned. Gemma remains preferred whenever its registry is ready.
 os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
 os.environ.setdefault("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "5")
-os.environ.setdefault("HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT", "1")
 
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -166,23 +165,6 @@ async def production_workspace_session_ensure(payload: dict[str, Any]) -> dict[s
     return _workspace_session_snapshot(project["project_id"])
 
 
-def _c_runtime_health() -> dict[str, Any]:
-    try:
-        from hhs_python.runtime.hhs_ctypes_bridge import runtime_library_status
-
-        return dict(runtime_library_status())
-    except Exception as exc:
-        return {
-            "schema": "HHS_C_RUNTIME_LIBRARY_STATUS_V1",
-            "ok": False,
-            "available": False,
-            "status": "HHS_C_RUNTIME_STATUS_ERROR",
-            "error": f"{type(exc).__name__}: {exc}",
-            "python_replacement_authority": False,
-            "canonical_c_calls_fail_closed_when_unavailable": True,
-        }
-
-
 async def _assistant_health() -> dict[str, Any]:
     try:
         from hhs_backend.runtime.hhs_production_assistant_v1 import (
@@ -243,7 +225,6 @@ async def production_runtime_authority_status() -> dict[str, Any]:
 async def production_product_health() -> dict[str, Any]:
     runtime = _runtime_authority_status()
     assistant = await _assistant_health()
-    c_runtime = _c_runtime_health()
     return {
         "schema": "HHS_PRODUCTION_PRODUCT_HEALTH_V1",
         "ok": bool(runtime.get("ok") and assistant.get("online")),
@@ -254,8 +235,6 @@ async def production_product_health() -> dict[str, Any]:
         ),
         "runtime": runtime,
         "assistant": assistant,
-        "c_runtime": c_runtime,
-        "source_only_degraded_mode": not bool(c_runtime.get("available")),
         "visual_shell_only": False,
         "public_interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
         "hosted_native_assistant_word2vec_required": False,
@@ -267,7 +246,6 @@ async def production_product_health() -> dict[str, Any]:
 async def production_health() -> dict[str, Any]:
     canonical_health = await canonical.health()
     assistant_health = await _assistant_health()
-    c_runtime = _c_runtime_health()
     visual_present = (VISUAL_ROOT / "index.html").is_file()
     runtime_status = _runtime_authority_status()
     fully_ready = bool(visual_present and runtime_status.get("ok") and assistant_health.get("online"))
@@ -282,8 +260,6 @@ async def production_health() -> dict[str, Any]:
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
         "runtime_authority": runtime_status,
         "assistant": assistant_health,
-        "c_runtime": c_runtime,
-        "source_only_degraded_mode": not bool(c_runtime.get("available")),
         "canonical": canonical_health,
     }
 
