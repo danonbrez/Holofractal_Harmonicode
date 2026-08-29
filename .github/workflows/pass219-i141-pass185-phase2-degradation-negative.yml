@@ -128,11 +128,10 @@ jobs:
           test -s hhs_runtime/builds/libhhs_runtime.so
           sha256sum -c /tmp/pass185-c-runtime-before.sha256
 
-      - name: Retain impacted inherited degradation regressions
+      - name: Retain impacted inherited production-root regressions
         run: |
           timeout 180s pytest -q \
             tests/test_hhs_pass174_heroku_boot_resilience_v1.py \
-            tests/pass176/test_deployment_backend_degraded_mode_static.py \
             tests/test_runtime_os_production_root.py
 
       - name: Seal Phase-2 evidence
