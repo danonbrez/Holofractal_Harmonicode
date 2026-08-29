@@ -1,0 +1,288 @@
+name: Pass 219 Cumulative Pass 191 Repair Membrane I135
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration135-pass191-census-membrane
+    paths:
+      - 'docs/pass191/**'
+      - 'docs/operations/restart/PASS_219_I135_PASS191_REPAIR_MEMBRANE_RESTART.md'
+      - 'HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md'
+      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
+      - 'hhs_runtime/pass191/**'
+      - 'hhs_backend/api/pass191_repository_hydration_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/pass191-repository-hydration.html'
+      - 'schemas/pass191/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/test_hhs_pass191_repository_hydration_*'
+      - 'tests/pass219/test_pass219_inherited_pass191_1_35.c'
+      - 'tests/pass219/test_pass219_inherited_pass191_1_35.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py'
+      - '.github/workflows/pass191-i135-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass191-repair-membrane-i135.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass191/**'
+      - 'docs/operations/restart/PASS_219_I135_PASS191_REPAIR_MEMBRANE_RESTART.md'
+      - 'HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md'
+      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
+      - 'hhs_runtime/pass191/**'
+      - 'hhs_backend/api/pass191_repository_hydration_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/pass191-repository-hydration.html'
+      - 'schemas/pass191/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/test_hhs_pass191_repository_hydration_*'
+      - 'tests/pass219/test_pass219_inherited_pass191_1_35.c'
+      - 'tests/pass219/test_pass219_inherited_pass191_1_35.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py'
+      - '.github/workflows/pass191-i135-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass191-repair-membrane-i135.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass191-repair-membrane:
+    name: inherited-pass191-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I134 and dual Pass 191 history
+        run: |
+          git merge-base --is-ancestor 4bb202e657670dac1ab2a39575821b647f691d71 HEAD
+          test "$(git merge-base 4bb202e657670dac1ab2a39575821b647f691d71 HEAD)" = "4bb202e657670dac1ab2a39575821b647f691d71"
+          git merge-base --is-ancestor 89d67731c6c4f5798e26a43e0273c6ce33a1abee HEAD
+          git merge-base --is-ancestor cd8979c5ded5150e0020e011345106567201b672 HEAD
+          test "$(git rev-parse 89d67731c6c4f5798e26a43e0273c6ce33a1abee:docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL_INVARIANT_CLOSURE.md)" = "f5d3b61ea366de9d5f1fc9207b393cb70e2225ef"
+          test "$(git rev-parse cd8979c5ded5150e0020e011345106567201b672:HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md)" = "5a19122fb709f6d4b253bca5a431ea3c2c7c0b5b"
+          test "$(git rev-parse 4bb202e657670dac1ab2a39575821b647f691d71:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
+
+      - name: Prove Pass 191 repaired source identities
+        run: |
+          test "$(git hash-object hhs_runtime/pass191/repository_hydration.py)" = "68cddc42f7c0a4ebdd88d20172b10bef7cd919c4"
+          test "$(git hash-object hhs_runtime/pass191/__init__.py)" = "b2a5c252e290dbcf7918f2e18cee623f1013e159"
+          test "$(git hash-object hhs_runtime/pass191/cli.py)" = "ba4bc91a7d3856cea371db072d9f81f67e498307"
+          test "$(git hash-object hhs_backend/api/pass191_repository_hydration_routes.py)" = "80cf59852437b0346f5f16e7d65c96c76915ea8a"
+          test "$(git hash-object hhs_backend/visual_server.py)" = "409d451a7db39945c07b919bbb9faa3626dc0bc6"
+          test "$(git hash-object applications/holofractal_harmonizer/pass191-repository-hydration.html)" = "cfb04fb7b854f991c5d3d02cfc9bc117b52d0f67"
+          test "$(git hash-object schemas/pass191/HHS_PASS_191_OPERATION_REGISTRY_V1.json)" = "ba5beb49360bf9ff4cf2c1970cc443137b2c63ab"
+          test "$(git hash-object schemas/pass191/HHS_PASS_191_HYDRATION_JOB_V1.schema.json)" = "45809617bee1030d2d03ffbd602315df14a8b5d5"
+          test "$(git hash-object tests/test_hhs_pass191_repository_hydration_v1.py)" = "19c4e2faf299d5d58b82eed5ccc7c831a0ffee2e"
+          test "$(git hash-object tests/test_hhs_pass191_repository_hydration_surfaces_v1.py)" = "a74197db0f3a6351f10acd3ec2fa9ff1f92647e1"
+          test "$(git hash-object .github/workflows/pass191-i135-repair-validation.yml)" = "657122ed2d883a7a2b0c8d00f62585692d3962eb"
+
+      - name: Prove Pass 191 native membrane and aggregate identities
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h)" = "6086438875a1e43680a18e4034d4db9d8cc06160"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp)" = "a57e7b0bb9ba0d72fe455df7bcc6d3efcdaa577f"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc)" = "43fce4a4bcaef01c4ccb41ada3bb33be93816114"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py)" = "5aa26de7f8e52d682409b3932298d2d2d77f5fb1"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass191_1_35.c)" = "919d9697692489a5c5943291d5929f8538a48c92"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass191_1_35.cpp)" = "c413b800c543d70a1c2cd5230ca01993a91f2b23"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py)" = "c254b3606c4980c8b4e1cee34f7f6a831e33244a"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a967aca9b33d1b925caf439000482737d2e96786"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "43619e86f6bb7bdf08bd2a7dbc423649d2828c7a"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass193_1_33.h') < h.index('hhs_pass219_inherited_pass192_1_34.h') < h.index('hhs_pass219_inherited_pass191_1_35.h')
+          assert c.index('hhs_pass219_inherited_pass193_1_33.inc') < c.index('hhs_pass219_inherited_pass192_1_34.inc') < c.index('hhs_pass219_inherited_pass191_1_35.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
+
+      - name: Reject approximate authority and theorem escalation
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          for name in [
+              'hhs_runtime/pass191/repository_hydration.py',
+              'hhs_runtime/pass191/cli.py',
+              'hhs_backend/api/pass191_repository_hydration_routes.py',
+          ]:
+              tree = ast.parse(Path(name).read_text(), filename=name)
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float):
+                      raise SystemExit(f'float literal in canonical Pass191 surface: {name}:{node.lineno}')
+                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'float':
+                      raise SystemExit(f'float conversion in canonical Pass191 surface: {name}:{node.lineno}')
+          PY
+          ! grep -Eq 'float_is_canonical_authority[[:space:]]*=[[:space:]]*1U|dqpl_theorem_claim_escalation[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U|cxx_mutation_authority[[:space:]]*=[[:space:]]*1U|vm81_mutation_authority[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
+          grep -F 'out_binding->dqpl_theorem_claim_escalation = 0U' hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
+          grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
+
+      - name: Compile Pass 191 Python surfaces and cumulative membrane
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass191/repository_hydration.py \
+            hhs_runtime/pass191/__init__.py \
+            hhs_runtime/pass191/cli.py \
+            hhs_backend/api/pass191_repository_hydration_routes.py \
+            hhs_backend/visual_server.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py \
+            tests/test_hhs_pass191_repository_hydration_v1.py \
+            tests/test_hhs_pass191_repository_hydration_surfaces_v1.py \
+            tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py
+
+      - name: Revalidate inherited Pass 191 DQPL scope
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+
+      - name: Run Pass 191 runtime interface and production regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass191_repository_hydration_v1 \
+            tests.test_hhs_pass191_repository_hydration_surfaces_v1
+
+      - name: Hydrate actual committed repository read-only
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_runtime.pass191 import RepositoryHydrationRuntime
+          runtime = RepositoryHydrationRuntime()
+          manifest = runtime.preview()
+          compact = runtime.compact(manifest)
+          assert compact['passes_linked'] == 191
+          assert compact['symmetry_valid'] is True
+          assert compact['blocker_count'] == 0
+          assert compact['object_count'] > 0
+          assert compact['functions_registered'] >= 15
+          assert compact['dqpl_inheritance']['theorem_status'] == 'OBSTRUCTED'
+          assert manifest['floating_point_canonical_authority'] is False
+          assert manifest['singleton_vm81_authority'] == 'INHERITED'
+          PY
+
+      - name: Compile aggregate exact ABI and Pass 191 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i135-pass191
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i135-pass191/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass191_1_35.c \
+            /tmp/pass219-i135-pass191/exact.o \
+            -o /tmp/pass219-i135-pass191/pass191-c
+          /tmp/pass219-i135-pass191/pass191-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass191_1_35.cpp \
+            /tmp/pass219-i135-pass191/exact.o \
+            -o /tmp/pass219-i135-pass191/pass191-cpp
+          /tmp/pass219-i135-pass191/pass191-cpp
+
+      - name: Run cumulative Pass 191 membrane preflight
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I135_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass191/i135
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I135_TARGET']
+          paths = [
+              'hhs_runtime/pass191/repository_hydration.py',
+              'hhs_runtime/pass191/cli.py',
+              'hhs_backend/api/pass191_repository_hydration_routes.py',
+              'hhs_backend/visual_server.py',
+              'applications/holofractal_harmonizer/pass191-repository-hydration.html',
+              'schemas/pass191/HHS_PASS_191_OPERATION_REGISTRY_V1.json',
+              'schemas/pass191/HHS_PASS_191_HYDRATION_JOB_V1.schema.json',
+              'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass191_1_35.c',
+              'tests/pass219/test_pass219_inherited_pass191_1_35.cpp',
+              'tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I135_PASS191_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i134': '4bb202e657670dac1ab2a39575821b647f691d71',
+              'pass191_universal_authorization': '89d67731c6c4f5798e26a43e0273c6ce33a1abee',
+              'pass191_dqpl_merge': 'cd8979c5ded5150e0020e011345106567201b672',
+              'dqpl_theorem_status': 'OBSTRUCTED',
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+              'vm81_authority': 'INHERITED_SINGLETON',
+              'canonical_float_authority': False,
+              'theorem_claim_escalation': False,
+              'production_api': '/v1/hydration',
+              'visual_ide': '/pass191-repository-hydration.html',
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass191/i135/PASS_219_I135_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i135-pass191-${{ matrix.target }}-seal
+          path: evidence/pass191/i135/PASS_219_I135_${{ matrix.target == 'exact' && 'EXACT' || 'SYNTHETIC' }}_SEAL.json
+          if-no-files-found: error

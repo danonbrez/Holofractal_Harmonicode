@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass219-iteration133-pass193-repair-membrane",
+  "failures": 1,
+  "next_action": "inspect the failed step log, commit a dependency-scoped repair, and rerun",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "failure"
+  },
+  "pytest_output_sha256": "ba82386c3103242835954c386f7170a6bdd0f891708c5b55e669a75e65123d7b",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 33005281921,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "FAILURE",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "4e8555e61fb03a596cd0e34a2e2ba4204242b11d"
+}

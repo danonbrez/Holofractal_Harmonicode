@@ -1,0 +1,263 @@
+name: Pass 219 Cumulative Pass 192 Repair Membrane I134
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration134-pass192-census-membrane
+    paths:
+      - 'docs/pass192/**'
+      - 'docs/operations/restart/PASS_219_I134_PASS192_REPAIR_MEMBRANE_RESTART.md'
+      - 'hhs_runtime/pass192/**'
+      - 'hhs_backend/api/pass192_fibonacci_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'schemas/pass192/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/test_hhs_pass219_fibonacci_compression_compliance.py'
+      - 'tests/test_hhs_pass192_*'
+      - 'tests/pass219/test_pass219_inherited_pass192_1_34.c'
+      - 'tests/pass219/test_pass219_inherited_pass192_1_34.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py'
+      - '.github/workflows/pass192-i134-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass192-repair-membrane-i134.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass192/**'
+      - 'docs/operations/restart/PASS_219_I134_PASS192_REPAIR_MEMBRANE_RESTART.md'
+      - 'hhs_runtime/pass192/**'
+      - 'hhs_backend/api/pass192_fibonacci_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'schemas/pass192/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/test_hhs_pass219_fibonacci_compression_compliance.py'
+      - 'tests/test_hhs_pass192_*'
+      - 'tests/pass219/test_pass219_inherited_pass192_1_34.c'
+      - 'tests/pass219/test_pass219_inherited_pass192_1_34.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py'
+      - '.github/workflows/pass192-i134-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass192-repair-membrane-i134.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass192-repair-membrane:
+    name: inherited-pass192-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            'pytest>=8,<9'
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I133 and historical Pass 192 lineage
+        run: |
+          git merge-base --is-ancestor 8380d2dbc9cf1b0245f006eaa440b47a921d4901 HEAD
+          test "$(git merge-base 8380d2dbc9cf1b0245f006eaa440b47a921d4901 HEAD)" = "8380d2dbc9cf1b0245f006eaa440b47a921d4901"
+          git merge-base --is-ancestor c3da7e2b7125754b65f08fb8922a151bf01df2b8 HEAD
+          test "$(git rev-parse c3da7e2b7125754b65f08fb8922a151bf01df2b8:docs/pass192/HHS_PASS_192_LO_SHU_CELLULAR_FIBONACCI_NESTING_TENSOR_AND_MODULAR_MEMBRANE_DEPTH_AUTHORITY.md)" = "cab24f1b2e7510321f6449814302ea31b704d5a8"
+          test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "12dc633b44f56ce8a4d131eda7df892e960d1397"
+          test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h)" = "81605d5e7931041205bfe987e2e64e53572899c8"
+          test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc)" = "12485b95b762a6dd5db1a62dfa16aaa3580e8b16"
+
+      - name: Prove Pass 192 core source identities
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h)" = "8e2d0a1620ff8ce88f588ce9dc55d79f5503f354"
+          test "$(git hash-object hhs_runtime/c/hhs_pass192_fibonacci_compression_1_9.inc)" = "2034a9cacb07d09c4b5786ccec28e61d64de635b"
+          test "$(git hash-object hhs_runtime/pass219_fibonacci_compression_reference_v1.py)" = "bda83c1a8791dd4bd9e807a88e0a419848d1d140"
+          test "$(git hash-object hhs_runtime/pass192/runtime.py)" = "279495e7b88adbd01e56eb6b8897c4d2f88bb948"
+          test "$(git hash-object hhs_runtime/pass192/__init__.py)" = "2e0727e9e078fdbb5ad9f866d05f6d886576a9e1"
+          test "$(git hash-object hhs_runtime/pass192/cli.py)" = "1718211edd8739c43837aea9ba53d8de613e3f1b"
+          test "$(git hash-object hhs_backend/api/pass192_fibonacci_routes.py)" = "1e2f9f37f46310d0dffecba66b5c044958b585bc"
+          test "$(git hash-object hhs_backend/visual_server.py)" = "aefc759cccf3ebd75f81f220814a225a592b4140"
+          test "$(git hash-object schemas/pass192/HHS_PASS_192_CELLULAR_FIBONACCI_TENSOR_V1.schema.json)" = "697b0bf3ba811f82ef0a62b4e9bd3615d59bdcb9"
+          test "$(git hash-object schemas/pass192/HHS_PASS_192_OPERATION_REGISTRY_V1.json)" = "33384a6886117c45b6b6ff96514ac85477fbb14d"
+          test "$(git hash-object tests/pass192_193/test_pass192_193_contract_invariants.py)" = "a72e7b8ab6dc0f891540fe2192d92d80f4a0cf52"
+          test "$(git hash-object tests/test_hhs_pass219_fibonacci_compression_compliance.py)" = "b615c6c192761bdb565c7e6cecf6daa03e95c8ab"
+          test "$(git hash-object tests/test_hhs_pass192_cellular_fibonacci_v1.py)" = "a0ce335f5e263c980f30d8427162d321a8ffa122"
+          test "$(git hash-object tests/test_hhs_pass192_fibonacci_routes.py)" = "7586e0270a44b83e6838ca10d43ac33806143774"
+          test "$(git hash-object tests/test_hhs_pass192_cli_v1.py)" = "250275392c6b1ee2809512673d7f1864243527a3"
+          test "$(git hash-object tests/test_hhs_pass192_visual_registration.py)" = "c56aa9e67f331bbc61430317667ea80272549bc2"
+          test "$(git hash-object .github/workflows/pass192-i134-repair-validation.yml)" = "7d23c8867cb9647295b34c0975b5842e6c96adc0"
+
+      - name: Prove Pass 192 native membrane identities and aggregate order
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h)" = "5f3245022447dcd3a1cce215f373e4f899946944"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp)" = "0f645b5164d8b4b337ff7191c07558cc28f9261f"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc)" = "ef39790111aa37640bf282cec27804597f44dee4"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.c)" = "87349989276f76a579b186f7579f0536814f466c"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.cpp)" = "90f244736c61dc91f2a7d17b145aaab942a5eae7"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py)" = "bbca5ecd535c0bc45f3f74a23b138ea979d789c4"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "4b2bd2b2fd4b92c230b1dec428e29c9778dd3c6c"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "ebec4fd407f5388ee4124f01ef85bdc77d6745cd"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass194_1_32.h') < h.index('hhs_pass219_inherited_pass193_1_33.h') < h.index('hhs_pass219_inherited_pass192_1_34.h')
+          assert c.index('hhs_pass219_inherited_pass194_1_32.inc') < c.index('hhs_pass219_inherited_pass193_1_33.inc') < c.index('hhs_pass219_inherited_pass192_1_34.inc')
+          PY
+
+      - name: Reject approximate authority and authority escalation
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/pass192/runtime.py \
+            hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U|cxx_mutation_authority[[:space:]]*=[[:space:]]*1U|vm81_mutation_authority[[:space:]]*=[[:space:]]*1U|filesystem_locator_is_canonical_authority[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc
+          grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc
+          grep -F 'out_binding->filesystem_locator_is_canonical_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc
+
+      - name: Compile Pass 192 production and cumulative Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass192/__init__.py \
+            hhs_runtime/pass192/runtime.py \
+            hhs_runtime/pass192/cli.py \
+            hhs_backend/api/pass192_fibonacci_routes.py \
+            hhs_backend/visual_server.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py \
+            tests/test_hhs_pass192_cellular_fibonacci_v1.py \
+            tests/test_hhs_pass192_fibonacci_routes.py \
+            tests/test_hhs_pass192_cli_v1.py \
+            tests/test_hhs_pass192_visual_registration.py \
+            tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py
+
+      - name: Run Pass 192 historical core and interface regressions
+        run: |
+          python tests/pass192_193/test_pass192_193_contract_invariants.py -v
+          PYTHONPATH="$PWD" python -m pytest -q tests/test_hhs_pass219_fibonacci_compression_compliance.py
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass192_cellular_fibonacci_v1 \
+            tests.test_hhs_pass192_fibonacci_routes \
+            tests.test_hhs_pass192_cli_v1 \
+            tests.test_hhs_pass192_visual_registration
+
+      - name: Compile aggregate exact ABI and Pass 192 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i134-pass192
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i134-pass192/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass192_1_34.c \
+            /tmp/pass219-i134-pass192/exact.o \
+            -o /tmp/pass219-i134-pass192/pass192-c
+          /tmp/pass219-i134-pass192/pass192-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass192_1_34.cpp \
+            /tmp/pass219-i134-pass192/exact.o \
+            -o /tmp/pass219-i134-pass192/pass192-cpp
+          /tmp/pass219-i134-pass192/pass192-cpp
+
+      - name: Run cumulative Pass 192 membrane preflight
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I134_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass192/i134
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I134_TARGET']
+          paths = [
+              'hhs_runtime/pass192/runtime.py',
+              'hhs_runtime/pass192/cli.py',
+              'hhs_backend/api/pass192_fibonacci_routes.py',
+              'hhs_backend/visual_server.py',
+              'schemas/pass192/HHS_PASS_192_CELLULAR_FIBONACCI_TENSOR_V1.schema.json',
+              'schemas/pass192/HHS_PASS_192_OPERATION_REGISTRY_V1.json',
+              'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass192_1_34.c',
+              'tests/pass219/test_pass219_inherited_pass192_1_34.cpp',
+              'tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I134_PASS192_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i133': '8380d2dbc9cf1b0245f006eaa440b47a921d4901',
+              'pass192_authorization': 'c3da7e2b7125754b65f08fb8922a151bf01df2b8',
+              'pass193_frozen_successor_membrane_blob': '12dc633b44f56ce8a4d131eda7df892e960d1397',
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+              'vm81_authority': 'INHERITED_SINGLETON',
+              'canonical_float_authority': False,
+              'filesystem_locator_canonical_authority': False,
+              'production_api': '/v1/tensors/fibonacci',
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass192/i134/PASS_219_I134_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i134-pass192-${{ matrix.target }}-seal
+          path: evidence/pass192/i134/PASS_219_I134_${{ matrix.target == 'exact' && 'EXACT' || 'SYNTHETIC' }}_SEAL.json
+          if-no-files-found: error

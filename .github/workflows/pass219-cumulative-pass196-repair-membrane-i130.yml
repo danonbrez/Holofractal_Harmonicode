@@ -1,0 +1,173 @@
+name: Pass 219 Cumulative Pass 196 Repair Membrane I130
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration130-pass196-repair-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py'
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
+      - 'hhs_backend/api/pass196_integration_routes.py'
+      - 'applications/holofractal_harmonizer/src/pass196-integration.mjs'
+      - 'applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass196.projection-refresh.test.mjs'
+      - 'tests/test_hhs_pass196_integrated_environment_v1.py'
+      - 'tests/test_hhs_pass196_i130_repair_v2.py'
+      - '.github/workflows/pass196-i130-repair-validation.yml'
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass196_1_30.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass196_1_30.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass196_1_30.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i130_pass196.py'
+      - 'tests/pass219/test_pass219_inherited_pass196_1_30.c'
+      - 'tests/pass219/test_pass219_inherited_pass196_1_30.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass196_membrane_i130.py'
+      - 'docs/pass196/PASS_219_I130_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I130_PASS196_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass196-repair-membrane-i130.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass196-repair-membrane:
+    name: inherited-pass196-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I129 and accepted Pass 196 lineage
+        run: |
+          git merge-base --is-ancestor 40e6e07d5f4a401541a6255339223e853846e713 HEAD
+          git merge-base --is-ancestor 37687d479f2a9f1d996d225a4ba3556d9db72a86 HEAD
+          git merge-base --is-ancestor 959729c9070399fcdf0015702cd8777079e05dcc HEAD
+          test "$(git merge-base 0142d9a6199f8acf9f23e287f471e6d80b9acd2a 37687d479f2a9f1d996d225a4ba3556d9db72a86)" = "1d3c7588a242e3a83304f5083c2ec5a974f19399"
+          test "$(git merge-base a2c21e4dab7a0dcb5e3366db2f817b023d413231 959729c9070399fcdf0015702cd8777079e05dcc)" = "dd7f6aec3408c807c1cde0d6770aefe610c27e29"
+
+      - name: Prove accepted V1 provenance and repaired identities
+        run: |
+          test "$(git rev-parse 37687d479f2a9f1d996d225a4ba3556d9db72a86:hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py)" = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py)" = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py)" = "196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6"
+          test "$(git hash-object hhs_backend/api/pass196_integration_routes.py)" = "39187c3376591c64758019090d9b115c6a43f6ee"
+          test "$(git hash-object applications/holofractal_harmonizer/src/pass196-integration.mjs)" = "1503903c844c9e601133853eed9ed597f6fd2274"
+          test "$(git hash-object applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs)" = "44254e10f90e929a4f8c1a18a75b3ca14a2c05ed"
+          test "$(git hash-object tests/test_hhs_pass196_i130_repair_v2.py)" = "55d1da0ea58044436646ccd8a331088135515c8f"
+          test "$(git hash-object .github/workflows/pass196-i130-repair-validation.yml)" = "7a19d3e7faab6e7210e156026300e96550b9afcb"
+          grep -F 'StateDirectory=hhs' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'WorkingDirectory=/opt/hhs/app' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F 'HHS_PASS196_STATE_ROOT=/var/lib/hhs/pass196' deploy/digitalocean/hhs-pass196-integrated-environment.service
+
+      - name: Compile repaired Python and membrane surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py \
+            hhs_backend/api/pass196_integration_routes.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i130_pass196.py \
+            tests/test_hhs_pass196_i130_repair_v2.py \
+            tests/pass219/test_pass219_cumulative_pass196_membrane_i130.py
+          node --check applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs
+          node --check applications/holofractal_harmonizer/src/pass196-integration.mjs
+
+      - name: Reject approximate native authority and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass196_1_30.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass196_1_30.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass196_1_30.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1|vm81_mutation_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass196_1_30.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass196_1_30.inc
+          grep -F 'vector_store_is_source_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass196_1_30.inc
+          grep -F 'browser_projection_is_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass196_1_30.inc
+
+      - name: Compile cumulative exact ABI and Pass 196 repair conformance
+        run: |
+          mkdir -p /tmp/pass219-i130-pass196
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i130-pass196/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass196_1_30.c \
+            /tmp/pass219-i130-pass196/exact.o \
+            -o /tmp/pass219-i130-pass196/pass196-c
+          /tmp/pass219-i130-pass196/pass196-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass196_1_30.cpp \
+            /tmp/pass219-i130-pass196/exact.o \
+            -o /tmp/pass219-i130-pass196/pass196-cpp
+          /tmp/pass219-i130-pass196/pass196-cpp
+
+      - name: Run repaired Pass 196 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass196_membrane_i130.py
+
+      - name: Run historical Pass 196 lifecycle and I130 repair regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass196_integrated_environment_v1 \
+            tests.test_hhs_pass196_i130_repair_v2
+          node --test applications/holofractal_harmonizer/tests/pass196.projection-refresh.test.mjs
+
+      - name: Preserve repaired Pass 197 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass197_membrane_i129.py
+
+      - name: Emit I130 seal evidence
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          evidence = {
+              'schema': 'HHS_PASS219_I130_PASS196_SEAL_EVIDENCE_V1',
+              'target': os.environ['TARGET'],
+              'validated_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'frozen_i129': '40e6e07d5f4a401541a6255339223e853846e713',
+              'accepted_pass196_merge': '37687d479f2a9f1d996d225a4ba3556d9db72a86',
+              'accepted_topology_merge': '959729c9070399fcdf0015702cd8777079e05dcc',
+              'review_finding_count': 10,
+              'classification': 'INHERITED_IMPLEMENTATION_REPAIR_AND_MEMBRANE_EXPOSURE',
+              'pass196_repaired_and_wired': True,
+              'new_authority_minted': False,
+          }
+          with open(f'/tmp/pass219-i130-pass196-{os.environ["TARGET"]}.json', 'w', encoding='utf-8') as handle:
+              json.dump(evidence, handle, sort_keys=True, indent=2)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i130-pass196-${{ matrix.target }}
+          path: /tmp/pass219-i130-pass196-${{ matrix.target }}.json
+          if-no-files-found: error

@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PUBLIC_NETWORK_PORT_REGISTRY_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "services": [
+    {
+      "service_id": "pass190.canonical.public_api",
+      "application": "hhs_backend.public_api_server:app",
+      "default_bind": "127.0.0.1",
+      "default_port": 8190,
+      "protocol": "HTTP",
+      "production_transport": "HTTPS_BEHIND_VERIFIED_TLS_TERMINATOR",
+      "websocket": true,
+      "canonical_authority": "SINGLE_PASS190_COMPLETION_CONTEXT",
+      "runtime_modes": [
+        "FULL_CANONICAL_RUNTIME",
+        "READ_ONLY_CANONICAL_RUNTIME"
+      ]
+    }
+  ],
+  "duplicate_canonical_public_gateway_allowed": false
+}

@@ -5,7 +5,7 @@ import asyncio
 from typing import Any, Dict, List
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictBool, StrictInt
 
 from hhs_backend.api.runtime_routes import _contract_response, io_gateway, runtime_controller
 from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import (
@@ -22,10 +22,10 @@ router = APIRouter(
 class ABHydrationCalibrationRequest(BaseModel):
     x_values: List[Any] | None = None
     y_values: List[Any] | None = None
-    xy_symbol_values: List[int] | None = None
-    include_domain_rejections: bool = True
-    full_replay: bool = True
-    resume: bool = True
+    xy_symbol_values: List[StrictInt] | None = None
+    include_domain_rejections: StrictBool = True
+    full_replay: StrictBool = True
+    resume: StrictBool = True
 
 
 class CalibrationToolInvokeRequest(BaseModel):
@@ -64,6 +64,8 @@ def _request_payload(request: ABHydrationCalibrationRequest) -> Dict[str, Any]:
 async def _run_calibration(request: ABHydrationCalibrationRequest, *, source: str) -> Dict[str, Any]:
     authorized_tick = runtime_controller.authorized_tick(source=source)
     receipt_hash72 = _receipt_hash72(authorized_tick)
+    if receipt_hash72 is None:
+        raise Pass197CalibrationError("VM81 authorized tick did not produce a Hash72 receipt")
     result = await asyncio.to_thread(
         PASS197_AB_HYDRATION_CALIBRATION.run,
         _request_payload(request),
@@ -86,7 +88,7 @@ def calibration_status() -> Dict[str, Any]:
     result = PASS197_AB_HYDRATION_CALIBRATION.status()
     result["io"] = {
         "ingress": ingress,
-        "egress": _egress(operation, {"closed": result.get("closed"), "report_hash72": result.get("report_hash72")}),
+        "egress": _egress(operation, {"closed": result.get("closed"), "quarantined": result.get("quarantined", False), "report_hash72": result.get("report_hash72")}),
     }
     return _contract_response("/api/runtime/calibration/status", "GET", result)
 

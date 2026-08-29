@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_188_EVENT_V1",
+  "title": "HHS Pass 188 VM81-witnessed Hash72 event",
+  "type": "object",
+  "required": [
+    "sequence",
+    "predecessor_hash72",
+    "event_type",
+    "payload",
+    "authority_hash72",
+    "successor_hash72",
+    "hash216"
+  ],
+  "properties": {
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "predecessor_hash72": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "event_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object"
+    },
+    "authority_hash72": {
+      "type": "string",
+      "pattern": "^(?!0{72}$)[0-9a-f]{72}$"
+    },
+    "successor_hash72": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "hash216": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{216}$"
+    }
+  },
+  "additionalProperties": false
+}

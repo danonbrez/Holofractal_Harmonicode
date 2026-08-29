@@ -1,0 +1,46 @@
+{
+  "schema": "HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "python_version": "3.12",
+  "generation_module": "hhs_runtime.pass190.python_compat",
+  "generation_function": "build_python_compatibility_registry",
+  "public_surface_policy": "__all__ when present, otherwise non-private module names; public methods of module-owned classes",
+  "classifications": [
+    "CANONICAL_NATIVE",
+    "COMPATIBILITY_NATIVE",
+    "DELEGATED_PYTHON",
+    "ADAPTER_REQUIRED",
+    "UNSUPPORTED_WITH_REASON",
+    "SECURITY_RESTRICTED",
+    "NONDETERMINISTIC",
+    "PLATFORM_CONDITIONAL"
+  ],
+  "supported_nucleus": {
+    "builtins.len": {
+      "operation_id": "python.len",
+      "harmonicode_constructor": "Len"
+    },
+    "builtins.abs": {
+      "operation_id": "python.abs",
+      "harmonicode_constructor": "Abs"
+    },
+    "builtins.sorted": {
+      "operation_id": "python.sorted",
+      "harmonicode_constructor": "Sorted"
+    },
+    "builtins.str.join": {
+      "operation_id": "text.join",
+      "harmonicode_constructor": "Join"
+    },
+    "builtins.dict.get": {
+      "operation_id": "dict.get",
+      "harmonicode_constructor": "Get"
+    },
+    "math.gcd": {
+      "operation_id": "math.gcd",
+      "harmonicode_constructor": "GCD"
+    }
+  },
+  "full_generated_registry": "CI/evidence artifact until I136 finalization",
+  "unclassified_public_callables_allowed": false
+}

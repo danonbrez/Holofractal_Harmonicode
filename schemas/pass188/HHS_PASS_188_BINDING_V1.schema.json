@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_188_BINDING_V1",
+  "title": "HHS Pass 188 exact project authorization binding",
+  "type": "object",
+  "required": [
+    "binding_id",
+    "project_id",
+    "principal",
+    "logical_content_id",
+    "content_version_id",
+    "logical_license_id",
+    "license_version_id",
+    "rights_snapshot",
+    "obligations_snapshot",
+    "status",
+    "creation_sequence"
+  ],
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "logical_content_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_version_id": {
+      "type": "string",
+      "pattern": "^cv_[0-9a-f]{72}$"
+    },
+    "logical_license_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license_version_id": {
+      "type": "string",
+      "pattern": "^lv_[0-9a-f]{72}$"
+    },
+    "rights_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "obligations_snapshot": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "ACTIVE",
+        "RETIRED"
+      ]
+    },
+    "creation_sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

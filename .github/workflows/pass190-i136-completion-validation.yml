@@ -1,0 +1,187 @@
+name: Pass 190 I136 Completion Coordinator Validation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration136-pass190-census-membrane
+    paths:
+      - 'hhs_runtime/pass190/**'
+      - 'hhs_backend/public_api_server.py'
+      - 'schemas/pass190/**'
+      - 'tests/pass190/test_pass190_i136_completion_coordinator.py'
+      - 'native_projects/hhs_pass190_operation_fabric/**'
+      - 'docs/pass190/**'
+      - '.github/workflows/pass190-i136-completion-validation.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass190/**'
+      - 'hhs_backend/public_api_server.py'
+      - 'schemas/pass190/**'
+      - 'tests/pass190/test_pass190_i136_completion_coordinator.py'
+      - 'native_projects/hhs_pass190_operation_fabric/**'
+      - 'docs/pass190/**'
+      - '.github/workflows/pass190-i136-completion-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Prove frozen I135 and Pass 190 historical lineage
+        run: |
+          git merge-base --is-ancestor 5e593b384732ffb065480cdd2d1098f1f32a990e HEAD
+          test "$(git merge-base 5e593b384732ffb065480cdd2d1098f1f32a990e HEAD)" = "5e593b384732ffb065480cdd2d1098f1f32a990e"
+          git merge-base --is-ancestor 88e7ae935990b1c36db6d39bc46d3b89b2e465cb HEAD
+          git merge-base --is-ancestor 7b4825ae1437c2325bc9bb348086c0957cfd5c28 HEAD
+          test "$(git rev-parse 88e7ae935990b1c36db6d39bc46d3b89b2e465cb:docs/pass190/HHS_PASS_190_OPENAPI_VM81_REMOTE_AUTHORITY_HARMONICODE_OS_SHELL_PYTHON_COMPATIBILITY_ALGEBRA_AND_FULL_HYDRATION_FABRIC.md)" = "3fcdd91c52f5054ee075e9f4fd7b4a0c9c90ec74"
+          test "$(git rev-parse 7b4825ae1437c2325bc9bb348086c0957cfd5c28:native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_7_DURABLE_EXECUTION_RECEIPT.json)" = "d89d16e0c2a8fb99ae67ca0317b5ab3b824f3805"
+
+      - name: Prove I136 completion source identities
+        run: |
+          test "$(git hash-object hhs_runtime/pass190/__init__.py)" = "00e6463075cb62f3e1913d301456fbefcb4044d1"
+          test "$(git hash-object hhs_runtime/pass190/python_compat.py)" = "fb08250159d0c8e55e0947f041dc88a5285824af"
+          test "$(git hash-object hhs_runtime/pass190/completion.py)" = "74c343fdb0d1dd42c1cc99abd2d7c81e49e60dd9"
+          test "$(git hash-object hhs_runtime/pass190/shell.py)" = "d723ef6f0a65fe055d8c2ebceeeb67635f2c0a77"
+          test "$(git hash-object hhs_runtime/pass190/acceptance.py)" = "c27f8aa589976e495003328f51bc1afaa83d5d9f"
+          test "$(git hash-object hhs_backend/public_api_server.py)" = "6431f246ef973211b71d97c2137c482e3b7a11d6"
+          test "$(git hash-object schemas/pass190/HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1.json)" = "d2f82c74d6fab051d009099155857d3ecde9b4b5"
+          test "$(git hash-object schemas/pass190/HHS_HYDRATION_ADAPTER_REGISTRY_V1.json)" = "d80c8e949a310049852208784df9de594678f354"
+          test "$(git hash-object schemas/pass190/HHS_PUBLIC_NETWORK_PORT_REGISTRY.json)" = "48e17afa9ab9e84879acda80214f6998c90663b6"
+          test "$(git hash-object tests/pass190/test_pass190_i136_completion_coordinator.py)" = "0fce98eb5364bbdd4b90b8ce72f474f21551b751"
+
+      - name: Compile I136 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass190/__init__.py \
+            hhs_runtime/pass190/python_compat.py \
+            hhs_runtime/pass190/completion.py \
+            hhs_runtime/pass190/shell.py \
+            hhs_runtime/pass190/acceptance.py \
+            hhs_backend/public_api_server.py \
+            tests/pass190/test_pass190_i136_completion_coordinator.py
+
+      - name: Reject floating-point canonical authority
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          for name in [
+              'hhs_runtime/pass190/python_compat.py',
+              'hhs_runtime/pass190/completion.py',
+              'hhs_runtime/pass190/shell.py',
+              'hhs_runtime/pass190/acceptance.py',
+              'hhs_backend/public_api_server.py',
+          ]:
+              tree = ast.parse(Path(name).read_text(), filename=name)
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float):
+                      raise SystemExit(f'float literal in canonical I136 surface: {name}:{node.lineno}')
+                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'float':
+                      raise SystemExit(f'float conversion in canonical I136 surface: {name}:{node.lineno}')
+          PY
+
+      - name: Revalidate complete historical Pass 190 Iterations 1 through 7
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate
+
+      - name: Run I136 completion coordinator conformance
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v tests.pass190.test_pass190_i136_completion_coordinator
+
+      - name: Generate full Python 3.12 compatibility census
+        run: |
+          mkdir -p evidence/pass190/i136
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass190.python_compat import (
+              build_python_compatibility_registry,
+              compatibility_summary,
+          )
+          registry = build_python_compatibility_registry()
+          summary = compatibility_summary(registry)
+          assert summary['python_version'] == '3.12'
+          assert summary['coverage_module_count'] == 49
+          assert summary['public_callable_record_count'] > 500
+          assert summary['unclassified_public_callables'] == 0
+          assert summary['supported_nucleus_count'] == 6
+          Path('evidence/pass190/i136/HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1.generated.json').write_text(
+              json.dumps(registry, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          Path('evidence/pass190/i136/HHS_PYTHON_COMPATIBILITY_SUMMARY_V1.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Rehydrate actual repository through frozen I135 authority
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.pass190 import Pass190CompletionContext
+          ctx = Pass190CompletionContext(
+              database_path=Path('/tmp/pass190-i136-authority.sqlite3'),
+              repository_root=Path.cwd(),
+              hydration_state_root=Path('/tmp/pass190-i136-hydration'),
+              capability_secret='i136-validation-secret-' + ('x' * 40),
+          )
+          hydration = ctx.hydration_preview()
+          assert hydration['passes_linked'] == 191
+          assert hydration['blocker_count'] == 0
+          assert hydration['symmetry_valid'] is True
+          status = ctx.status()
+          assert status['governed_operation_count'] == 52
+          assert status['runtime_mode'] == 'FULL_CANONICAL_RUNTIME'
+          assert status['classification'] == 'HHS_PASS_190_I136_COMPLETION_COORDINATOR_VERIFIED'
+          assert status['new_vm81_authority'] is False
+          assert status['new_receipt_clock'] is False
+          PY
+
+      - name: Preserve predecessor exact ABI and additive I136 membrane
+        run: |
+          test "$(git rev-parse fbbc3ff37b6dea6c31e73612731e4e323a54475f:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a967aca9b33d1b925caf439000482737d2e96786"
+          test "$(git rev-parse fbbc3ff37b6dea6c31e73612731e4e323a54475f:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "43619e86f6bb7bdf08bd2a7dbc423649d2828c7a"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass192_1_34.h') < h.index('hhs_pass219_inherited_pass191_1_35.h') < h.index('hhs_pass219_inherited_pass190_1_36.h')
+          assert c.index('hhs_pass219_inherited_pass192_1_34.inc') < c.index('hhs_pass219_inherited_pass191_1_35.inc') < c.index('hhs_pass219_inherited_pass190_1_36.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass190-i136-exact.o
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass190-i136-completion-coordinator
+          path: |
+            evidence/pass190/i136/HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1.generated.json
+            evidence/pass190/i136/HHS_PYTHON_COMPATIBILITY_SUMMARY_V1.json
+          if-no-files-found: error

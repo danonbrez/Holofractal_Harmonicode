@@ -1,3 +1,5 @@
+import { installPass196ProjectionRefresh } from './pass196-projection-refresh.mjs';
+
 const API = '/api/runtime/integration';
 const OBJECT_ID = 'hhs:runtime:pass196-integrated-environment';
 const state = { status: null, busy: false, error: null };
@@ -58,46 +60,54 @@ function render(status = {}, output = null) {
   const summary = passSummary(status);
   const badge = document.querySelector('#p196-badge');
   if (badge) {
-    badge.textContent = state.error ? 'ERROR' : status.integration_closed ? 'CLOSED' : status.scanned ? 'DEGRADED' : 'UNSCANNED';
-    badge.className = `p196-badge ${state.error ? 'error' : status.integration_closed ? 'ready' : status.scanned ? 'degraded' : ''}`;
+    badge.textContent = state.error ? 'ERROR' : status.integration_closed ? 'CLOSED' : status.scanned ? 'DEGRADED' : status.phase === 'QUARANTINED' ? 'QUARANTINED' : 'UNSCANNED';
+    badge.className = `p196-badge ${state.error || status.phase === 'QUARANTINED' ? 'error' : status.integration_closed ? 'ready' : status.scanned ? 'degraded' : ''}`;
   }
   setText('p196-passes', summary.maximum || '—');
   setText('p196-integrated', status.scanned ? `${summary.integrated} / ${summary.maximum}` : '—');
   setText('p196-files', status.file_count ?? '—');
   setText('p196-vector', status.vector?.persisted ? 'AES-GCM' : status.scanned ? 'NOT PERSISTED' : '—');
   const view = document.querySelector('#p196-output');
-  if (view) view.textContent = output ? (typeof output === 'string' ? output : JSON.stringify(output, null, 2)) : state.error || (status.scanned ? [`phase=${status.phase}`, `integration_closed=${Boolean(status.integration_closed)}`, `global_surfaces_operational=${Boolean(status.operational)}`, `unresolved_pass_layers=${summary.unresolved}`, `manifest_hash72=${status.manifest_hash72 || '—'}`, `vector_object=${status.vector?.vector_object_id || '—'}`].join('\n') : view.textContent);
+  if (view) view.textContent = output ? (typeof output === 'string' ? output : JSON.stringify(output, null, 2)) : state.error || (status.phase === 'QUARANTINED' ? [`phase=QUARANTINED`, `integration_closed=false`, `last_good_historical=${status.last_good_manifest_hash72 || '—'}`, `failure=${status.failure?.reason || 'unknown'}`].join('\n') : status.scanned ? [`phase=${status.phase}`, `integration_closed=${Boolean(status.integration_closed)}`, `global_surfaces_operational=${Boolean(status.operational)}`, `unresolved_pass_layers=${summary.unresolved}`, `manifest_hash72=${status.manifest_hash72 || '—'}`, `vector_object=${status.vector?.vector_object_id || '—'}`].join('\n') : view.textContent);
   const button = document.querySelector('#p196-scan');
   if (button) { button.disabled = state.busy; button.textContent = state.busy ? 'Scanning through VM81 authority…' : 'Run deep integration scan'; }
   const validation = document.querySelector('#validation-state');
-  if (validation && status.scanned) validation.textContent = status.integration_closed ? 'PASS 196 · FULL PASS-LAYER INTEGRATION CLOSED' : `PASS 196 · DEGRADED · ${summary.unresolved} PASS LAYERS REQUIRE JOIN`;
+  if (validation && (status.scanned || status.phase === 'QUARANTINED')) validation.textContent = status.integration_closed ? 'PASS 196 · FULL PASS-LAYER INTEGRATION CLOSED' : status.phase === 'QUARANTINED' ? 'PASS 196 · QUARANTINED · LAST-GOOD EVIDENCE IS HISTORICAL ONLY' : `PASS 196 · DEGRADED · ${summary.unresolved} PASS LAYERS REQUIRE JOIN`;
+}
+
+function projectionFor(status) {
+  return {
+    object_id: OBJECT_ID,
+    object_type: 'RUNTIME',
+    canonical_name: 'HHS_PASS196_SERIALIZED_PARALLEL_INTEGRATED_ENVIRONMENT',
+    display_name: 'Pass 196 Integrated Environment',
+    description: 'Repository pass integration scan, VM81 admission, encrypted Hash216 vector memory, Linux API-tool server, and visual IDE projection.',
+    modality_classes: ['REPOSITORY_GRAPH', 'VM81_STATE', 'ENCRYPTED_VECTOR_MEMORY', 'LINUX_ENVIRONMENT', 'API_TOOL_SERVER', 'VISUAL_IDE'],
+    lifecycle_state: status.integration_closed ? 'ACTIVE' : status.phase === 'QUARANTINED' ? 'FAILED' : status.scanned ? 'DEGRADED' : 'INITIALIZING',
+    authority_state: 'VALIDATED_PROJECTION',
+    validation_state: status.integration_closed ? 'PASS_LAYER_CLOSURE_VERIFIED' : status.phase === 'QUARANTINED' ? 'CURRENT_SCAN_QUARANTINED' : 'PASS_LAYER_GAPS_EXPLICIT',
+    capabilities: ['INTEGRATION_STATUS_READ', 'INTEGRATION_SCAN_REQUEST', 'INTEGRATION_GAP_READ', 'API_TOOL_DISCOVERY'],
+    actions: [
+      { action_id: 'status', method: 'GET', endpoint: `${API}/status` },
+      { action_id: 'scan', method: 'POST', endpoint: `${API}/scan`, requires_authority: true },
+      { action_id: 'gaps', method: 'GET', endpoint: `${API}/gaps` },
+      { action_id: 'tools', method: 'GET', endpoint: `${API}/tools` },
+    ],
+    dependencies: ['hhs:runtime:canonical-authority'],
+    metadata: { contract: status.contract, phase: status.phase, manifest_hash72: status.manifest_hash72, last_good_manifest_hash72: status.last_good_manifest_hash72, pass_state_counts: status.pass_state_counts, vector: status.vector, frontend_is_authority: false },
+  };
 }
 
 async function project(status) {
   for (let attempt = 0; attempt < 200; attempt += 1) {
     const runtime = window.HHSHarmonizer;
-    if (runtime?.registry) {
+    if (runtime?.registry && runtime?.ledger) {
       try {
-        if (!runtime.registry.has(OBJECT_ID)) await runtime.registry.register({
-          object_id: OBJECT_ID,
-          object_type: 'RUNTIME',
-          canonical_name: 'HHS_PASS196_SERIALIZED_PARALLEL_INTEGRATED_ENVIRONMENT',
-          display_name: 'Pass 196 Integrated Environment',
-          description: 'Repository pass integration scan, VM81 admission, encrypted Hash216 vector memory, Linux API-tool server, and visual IDE projection.',
-          modality_classes: ['REPOSITORY_GRAPH', 'VM81_STATE', 'ENCRYPTED_VECTOR_MEMORY', 'LINUX_ENVIRONMENT', 'API_TOOL_SERVER', 'VISUAL_IDE'],
-          lifecycle_state: status.integration_closed ? 'ACTIVE' : status.scanned ? 'DEGRADED' : 'INITIALIZING',
-          authority_state: 'VALIDATED_PROJECTION',
-          validation_state: status.integration_closed ? 'PASS_LAYER_CLOSURE_VERIFIED' : 'PASS_LAYER_GAPS_EXPLICIT',
-          capabilities: ['INTEGRATION_STATUS_READ', 'INTEGRATION_SCAN_REQUEST', 'INTEGRATION_GAP_READ', 'API_TOOL_DISCOVERY'],
-          actions: [
-            { action_id: 'status', method: 'GET', endpoint: `${API}/status` },
-            { action_id: 'scan', method: 'POST', endpoint: `${API}/scan`, requires_authority: true },
-            { action_id: 'gaps', method: 'GET', endpoint: `${API}/gaps` },
-            { action_id: 'tools', method: 'GET', endpoint: `${API}/tools` },
-          ],
-          dependencies: ['hhs:runtime:canonical-authority'],
-          metadata: { contract: status.contract, phase: status.phase, manifest_hash72: status.manifest_hash72, pass_state_counts: status.pass_state_counts, vector: status.vector, frontend_is_authority: false },
-        }, 'system:pass196-integration-projection');
+        installPass196ProjectionRefresh(runtime);
+        await runtime.registry.refreshValidatedProjection(
+          projectionFor(status),
+          'system:pass196-integration-projection',
+        );
       } catch (error) { console.warn('[HHS Pass196 projection]', error); }
       return;
     }
@@ -114,7 +124,7 @@ async function refresh() {
 async function scan() {
   state.busy = true; state.error = null; render(state.status || {});
   try { const status = await request(`${API}/scan`, { method: 'POST', body: JSON.stringify({ persist_vector: true }), timeoutMs: 300000 }); render(status); await project(status); }
-  catch (error) { state.error = `${error.name}: ${error.message}`; render(state.status || {}); }
+  catch (error) { state.error = `${error.name}: ${error.message}`; render(state.status || {}); await refresh(); }
   finally { state.busy = false; render(state.status || {}); }
 }
 

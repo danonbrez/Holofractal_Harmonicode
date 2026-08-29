@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_HYDRATION_ADAPTER_REGISTRY_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "adapters": [
+    {
+      "adapter_id": "harmonicode.source",
+      "source_class": "HARMONICODE",
+      "implementation": "native_projects/hhs_pass190_operation_fabric/python/hhs_pass190.py",
+      "authority": "PASS190_OPERATION_REGISTRY"
+    },
+    {
+      "adapter_id": "shell.command",
+      "source_class": "SHELL",
+      "implementation": "hhs_runtime/pass190/shell.py",
+      "authority": "LOWERS_TO_PASS190_OPERATION"
+    },
+    {
+      "adapter_id": "python.callable",
+      "source_class": "PYTHON",
+      "implementation": "hhs_runtime/pass190/python_compat.py",
+      "authority": "CLASSIFIED_COMPATIBILITY_CENSUS"
+    },
+    {
+      "adapter_id": "openapi.operation",
+      "source_class": "OPENAPI",
+      "implementation": "hhs_backend/public_api_server.py",
+      "authority": "PASS190_COMPLETION_CONTEXT"
+    },
+    {
+      "adapter_id": "repository.committed_tree",
+      "source_class": "REPOSITORY",
+      "implementation": "hhs_runtime/pass191/repository_hydration.py",
+      "authority": "FROZEN_I135_REUSED"
+    },
+    {
+      "adapter_id": "native.abi",
+      "source_class": "NATIVE_ABI",
+      "implementation": "native_projects/hhs_pass190_operation_fabric/native/generated/HHS_NATIVE_ABI_MANIFEST_V1.json",
+      "authority": "TEN_OPERATION_NATIVE_ABI"
+    },
+    {
+      "adapter_id": "visual.workflow",
+      "source_class": "GUI",
+      "implementation": "hhs_gui/runtime_apps/pass190/Pass190OperationFabricSurface.tsx",
+      "authority": "REPLACEABLE_PROJECTION"
+    }
+  ],
+  "invariant": "HYDRATED_SOURCE=>SOURCE_PRESERVED_AND_IDENTITY_ASSIGNED_AND_TYPE_BOUND_AND_SEMANTICS_REGISTERED_AND_AUTHORITY_PATH_RESOLVED_AND_RECEIPT_POLICY_BOUND_AND_REPLAY_VERIFIED"
+}

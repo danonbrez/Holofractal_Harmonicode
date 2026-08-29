@@ -1,0 +1,167 @@
+name: Pass 219 Cumulative Pass 195 Repair Membrane I131
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration131-pass195-repair-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py'
+      - 'hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py'
+      - 'hhs_backend/api/kimi_k3_content_routes.py'
+      - 'applications/storybook_reel_studio/kimi-content-engine.js'
+      - 'tests/test_hhs_kimi_k3_content_engine_v1.py'
+      - 'tests/test_hhs_pass195_i131_repair_v2.py'
+      - '.github/workflows/pass195-i131-repair-validation.yml'
+      - '.github/workflows/pass195-kimi-k3-content-engine.yml'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass195_1_31.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass195_1_31.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i131_pass195.py'
+      - 'tests/pass219/test_pass219_inherited_pass195_1_31.c'
+      - 'tests/pass219/test_pass219_inherited_pass195_1_31.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass195_membrane_i131.py'
+      - 'docs/pass195/PASS_219_I131_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I131_PASS195_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass195-repair-membrane-i131.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass195-repair-membrane:
+    name: inherited-pass195-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I130 and accepted Pass 195 lineage
+        run: |
+          git merge-base --is-ancestor 69743440249dd7a05aa2b4096482d248973f239e HEAD
+          test "$(git merge-base 69743440249dd7a05aa2b4096482d248973f239e HEAD)" = "69743440249dd7a05aa2b4096482d248973f239e"
+          git merge-base --is-ancestor 8bcc0921555ecface13113c8a2620415ddb3fdf1 HEAD
+
+      - name: Prove immutable V1 provenance and repaired identities
+        run: |
+          test "$(git rev-parse 8bcc0921555ecface13113c8a2620415ddb3fdf1:hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py)" = "ea7041c026e63445034c7161268faafe436cd2d1"
+          test "$(git hash-object hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py)" = "ea7041c026e63445034c7161268faafe436cd2d1"
+          test "$(git hash-object hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py)" = "c1cf830a8ede708b62cc052610968f7fc498228d"
+          test "$(git hash-object hhs_backend/api/kimi_k3_content_routes.py)" = "e62f59d5c8617a546908fd9ca2bd43998c62cd2e"
+          test "$(git hash-object applications/storybook_reel_studio/kimi-content-engine.js)" = "9153f922193ddadf2e208986e11dc9d57e12f817"
+          test "$(git hash-object tests/test_hhs_pass195_i131_repair_v2.py)" = "866a893e30dfd9565b712df9ff9c979395b25a3f"
+          test "$(git hash-object .github/workflows/pass195-i131-repair-validation.yml)" = "f43d6cdb62e8836e075cb4400d9525eaf8f4d491"
+          test "$(git hash-object .github/workflows/pass195-kimi-k3-content-engine.yml)" = "ca5bf19464aa1c9ef67b37ce5d84f3c24d300a59"
+
+      - name: Compile repaired Pass 195 and membrane surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py \
+            hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py \
+            hhs_backend/api/kimi_k3_content_routes.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i131_pass195.py \
+            tests/test_hhs_kimi_k3_content_engine_v1.py \
+            tests/test_hhs_pass195_i131_repair_v2.py \
+            tests/pass219/test_pass219_cumulative_pass195_membrane_i131.py
+          node --check applications/storybook_reel_studio/kimi-content-engine.js
+
+      - name: Reject approximate native authority and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass195_1_31.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass195_1_31.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1|cxx_mutation_authority[[:space:]]*=[[:space:]]*1|vm81_mutation_authority[[:space:]]*=[[:space:]]*1|external_provider_is_canonical_authority[[:space:]]*=[[:space:]]*1|browser_handoff_is_canonical_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass195_1_31.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc
+          grep -F 'out_binding->external_provider_is_canonical_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc
+          grep -F 'out_binding->browser_handoff_is_canonical_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc
+          grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass195_1_31.inc
+
+      - name: Compile cumulative exact ABI and Pass 195 repair conformance
+        run: |
+          mkdir -p /tmp/pass219-i131-pass195
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i131-pass195/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass195_1_31.c \
+            /tmp/pass219-i131-pass195/exact.o \
+            -o /tmp/pass219-i131-pass195/pass195-c
+          /tmp/pass219-i131-pass195/pass195-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass195_1_31.cpp \
+            /tmp/pass219-i131-pass195/exact.o \
+            -o /tmp/pass219-i131-pass195/pass195-cpp
+          /tmp/pass219-i131-pass195/pass195-cpp
+
+      - name: Run repaired Pass 195 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass195_membrane_i131.py
+
+      - name: Run historical Pass 195 and I131 repair regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_kimi_k3_content_engine_v1 \
+            tests.test_hhs_pass195_i131_repair_v2
+
+      - name: Preserve frozen Pass 196 I130 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass196_membrane_i130.py
+
+      - name: Emit I131 seal evidence
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          evidence = {
+              'schema': 'HHS_PASS219_I131_PASS195_SEAL_EVIDENCE_V1',
+              'target': os.environ['TARGET'],
+              'validated_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'frozen_i130': '69743440249dd7a05aa2b4096482d248973f239e',
+              'accepted_pass195_merge': '8bcc0921555ecface13113c8a2620415ddb3fdf1',
+              'review_finding_count': 12,
+              'classification': 'INHERITED_IMPLEMENTATION_REPAIR_AND_MEMBRANE_EXPOSURE',
+              'pass195_repaired_and_wired': True,
+              'pass196_successor_preserved': True,
+              'new_authority_minted': False,
+          }
+          with open(f'/tmp/pass219-i131-pass195-{os.environ["TARGET"]}.json', 'w', encoding='utf-8') as handle:
+              json.dump(evidence, handle, sort_keys=True, indent=2)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i131-pass195-${{ matrix.target }}
+          path: /tmp/pass219-i131-pass195-${{ matrix.target }}.json
+          if-no-files-found: error

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_191_HYDRATION_JOB_V1.schema.json",
+  "title": "HHS Pass 191 Repository Hydration Job",
+  "type": "object",
+  "required": ["schema","job_id","job_hash216_identity","request","stage","history","receipt_links"],
+  "properties": {
+    "schema": {"const": "HHS_PASS_191_HYDRATION_JOB_V1"},
+    "job_id": {"type": "string", "pattern": "^P191-[0-9a-f]{40}$"},
+    "job_hash216_identity": {"type": "string", "minLength": 216, "maxLength": 216},
+    "request": {
+      "type": "object",
+      "required": ["commit","read_only","repair_authority"],
+      "properties": {
+        "commit": {"type": "string", "minLength": 1},
+        "since_commit": {"type": ["string","null"]},
+        "read_only": {"const": true},
+        "repair_authority": {"const": false}
+      }
+    },
+    "stage": {
+      "enum": ["QUEUED","DISCOVERING","PRESERVING","CLASSIFYING","PARSING","TYPING","INDEXING","LINKING","BINDING","VALIDATING","ADMISSION_PENDING","COMMITTING","REPLAYING","COMPLETED","FAILED","CANCELLED","BLOCKED"]
+    },
+    "history": {"type": "array"},
+    "receipt_links": {"type": "array", "items": {"type": "string", "minLength": 72, "maxLength": 72}},
+    "artifact_links": {"type": "array"},
+    "failure_reason": {"type": ["string","null"]},
+    "recovery_action": {"type": ["string","null"]}
+  }
+}

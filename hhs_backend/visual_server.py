@@ -1,13 +1,14 @@
 """Default HHS visual development environment server.
 
 This module composes the canonical HHS FastAPI runtime, governed assistant,
-installation, application-factory, media, hydration, Pass 196 integration,
-Pass 197 exact A/B calibration, Pass 198 operation calibration registry,
-Pass 199 durable distributed calibration, Pass 200A proof-carrying compiler
-shadow optimization, Pass 200B governed canary admission, Pass 200C guarded
-active admission, Pass 201 public API federation, and the Pass 161 visual
-application. The canonical server remains runtime authority; this module only
-changes HTTP projection.
+installation, application-factory, media, hydration, Pass 193 hypersolid/native
+egress, Pass 194 storage/training, Pass 196 integration, Pass 197 exact A/B
+calibration, Pass 198 operation calibration registry, Pass 199 durable
+distributed calibration, Pass 200A proof-carrying compiler shadow optimization,
+Pass 200B governed canary admission, Pass 200C guarded active admission,
+Pass 201 public API federation, and the Pass 161 visual application. The
+canonical server remains runtime authority; this module only changes HTTP
+projection.
 """
 from __future__ import annotations
 
@@ -23,6 +24,10 @@ from hhs_backend.api.graphics_hydration_routes import router as graphics_hydrati
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.kimi_k3_content_routes import router as kimi_k3_content_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass191_repository_hydration_routes import router as pass191_repository_hydration_router
+from hhs_backend.api.pass192_fibonacci_routes import router as pass192_fibonacci_router
+from hhs_backend.api.pass193_hypersolid_routes import router as pass193_hypersolid_router
+from hhs_backend.api.pass194_storage_training_routes import router as pass194_storage_training_router
 from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
 from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
 from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
@@ -55,6 +60,14 @@ if not _route_exists("/api/runtime/application-factory/status"):
     app.include_router(application_factory_router)
 if not _route_exists("/api/runtime/storybook-reel/status"):
     app.include_router(storybook_reel_router)
+if not _route_exists("/v1/hydration/status"):
+    app.include_router(pass191_repository_hydration_router)
+if not _route_exists("/v1/tensors/fibonacci/status"):
+    app.include_router(pass192_fibonacci_router)
+if not _route_exists("/api/runtime/hypersolids/status"):
+    app.include_router(pass193_hypersolid_router)
+if not _route_exists("/api/runtime/storage-training/status"):
+    app.include_router(pass194_storage_training_router)
 if not _route_exists("/api/runtime/content-engine/kimi-k3/status"):
     app.include_router(kimi_k3_content_router)
 if not _route_exists("/api/runtime/integration/status"):
@@ -104,6 +117,11 @@ async def visual_system_status() -> Dict[str, Any]:
         "installation_api": "/api/runtime/installation",
         "application_factory_api": "/api/runtime/application-factory",
         "storybook_reel_api": "/api/runtime/storybook-reel",
+        "pass191_repository_hydration_api": "/v1/hydration",
+        "pass191_repository_hydration_studio": "/pass191-repository-hydration.html",
+        "pass192_fibonacci_api": "/v1/tensors/fibonacci",
+        "pass193_hypersolid_api": "/api/runtime/hypersolids",
+        "pass194_storage_training_api": "/api/runtime/storage-training",
         "kimi_k3_content_engine_api": "/api/runtime/content-engine/kimi-k3",
         "pass196_integration_api": "/api/runtime/integration",
         "pass197_calibration_api": "/api/runtime/calibration",
@@ -121,6 +139,10 @@ async def visual_system_status() -> Dict[str, Any]:
         "visual_environment": "HHS-P161-HHUMOCE",
         "application_factory": "HHS-P180-INTEGRATED-APPLICATION-FACTORY",
         "storybook_reel": "HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1",
+        "pass191_universal_repository_hydration": "HHS-P191-GTRFRH-UIC-VM81-H72-H216",
+        "pass192_cellular_fibonacci": "HHS-P192-LSCFNT-MMD-VM81-H72-H216",
+        "pass193_hypersolid_native_egress": "HHS-P193-RHFM-EPRP-NF-NC-SNFTE-VM81-H72-H216",
+        "pass194_multimodal_storage_training": "HHS-P194-UMFFHS-SQLCG-EVS-AGITC-VM81-H72-H216",
         "kimi_k3_content_engine": "HHS-P195-KIMI-K3-MULTIMODAL-CONTENT-ENGINE",
         "pass196_integrated_environment": "HHS-P196-SPIRAH-EVDB-LINUX-TOOLSERVER-VIDE-VM81-H72-H216",
         "pass197_ab_hydration_calibration": "HHS-P197-ABTREE-VM81X64-EXACT-LOSSLESS-HYDRATION",

@@ -1,0 +1,262 @@
+name: Pass 219 Cumulative Pass 190 Repair Membrane I136
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration136-pass190-census-membrane
+    paths:
+      - 'hhs_runtime/pass190/**'
+      - 'hhs_backend/public_api_server.py'
+      - 'schemas/pass190/**'
+      - 'tests/pass190/test_pass190_i136_completion_coordinator.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass190_1_36.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i136_pass190.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass190_1_36.c'
+      - 'tests/pass219/test_pass219_inherited_pass190_1_36.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py'
+      - 'docs/pass219/PASS_219_I136_INHERITED_PASS190_FULL_COMPLETION_MEMBRANE.md'
+      - 'docs/operations/restart/PASS_219_I136_PASS190_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass190-i136-completion-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass190-repair-membrane-i136.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass190/**'
+      - 'hhs_backend/public_api_server.py'
+      - 'schemas/pass190/**'
+      - 'tests/pass190/test_pass190_i136_completion_coordinator.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass190_1_36.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i136_pass190.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass190_1_36.*'
+      - 'tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py'
+      - 'docs/pass219/PASS_219_I136_INHERITED_PASS190_FULL_COMPLETION_MEMBRANE.md'
+      - 'docs/operations/restart/PASS_219_I136_PASS190_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass190-i136-completion-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass190-repair-membrane-i136.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass190-repair-membrane:
+    name: inherited-pass190-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I135, historical Pass 190, and validated core
+        run: |
+          git merge-base --is-ancestor 5e593b384732ffb065480cdd2d1098f1f32a990e HEAD
+          git merge-base --is-ancestor 88e7ae935990b1c36db6d39bc46d3b89b2e465cb HEAD
+          git merge-base --is-ancestor 7b4825ae1437c2325bc9bb348086c0957cfd5c28 HEAD
+          git merge-base --is-ancestor fbbc3ff37b6dea6c31e73612731e4e323a54475f HEAD
+          test "$(git merge-base 5e593b384732ffb065480cdd2d1098f1f32a990e HEAD)" = "5e593b384732ffb065480cdd2d1098f1f32a990e"
+          test "$(git rev-parse 88e7ae935990b1c36db6d39bc46d3b89b2e465cb:docs/pass190/HHS_PASS_190_OPENAPI_VM81_REMOTE_AUTHORITY_HARMONICODE_OS_SHELL_PYTHON_COMPATIBILITY_ALGEBRA_AND_FULL_HYDRATION_FABRIC.md)" = "3fcdd91c52f5054ee075e9f4fd7b4a0c9c90ec74"
+          test "$(git rev-parse 7b4825ae1437c2325bc9bb348086c0957cfd5c28:native_projects/hhs_pass190_operation_fabric/evidence/P190_ITERATION_7_DURABLE_EXECUTION_RECEIPT.json)" = "d89d16e0c2a8fb99ae67ca0317b5ab3b824f3805"
+          test "$(git rev-parse fbbc3ff37b6dea6c31e73612731e4e323a54475f:.github/workflows/pass190-i136-completion-validation.yml)" = "e40d396334b8b440cd20ccc0544987288ff986ff"
+
+      - name: Prove I136 completion and membrane source identities
+        run: |
+          test "$(git hash-object hhs_runtime/pass190/__init__.py)" = "00e6463075cb62f3e1913d301456fbefcb4044d1"
+          test "$(git hash-object hhs_runtime/pass190/python_compat.py)" = "fb08250159d0c8e55e0947f041dc88a5285824af"
+          test "$(git hash-object hhs_runtime/pass190/completion.py)" = "74c343fdb0d1dd42c1cc99abd2d7c81e49e60dd9"
+          test "$(git hash-object hhs_runtime/pass190/acceptance.py)" = "c27f8aa589976e495003328f51bc1afaa83d5d9f"
+          test "$(git hash-object hhs_runtime/pass190/shell.py)" = "d723ef6f0a65fe055d8c2ebceeeb67635f2c0a77"
+          test "$(git hash-object hhs_backend/public_api_server.py)" = "6431f246ef973211b71d97c2137c482e3b7a11d6"
+          test "$(git hash-object schemas/pass190/HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1.json)" = "d2f82c74d6fab051d009099155857d3ecde9b4b5"
+          test "$(git hash-object schemas/pass190/HHS_HYDRATION_ADAPTER_REGISTRY_V1.json)" = "d80c8e949a310049852208784df9de594678f354"
+          test "$(git hash-object schemas/pass190/HHS_PUBLIC_NETWORK_PORT_REGISTRY.json)" = "48e17afa9ab9e84879acda80214f6998c90663b6"
+          test "$(git hash-object tests/pass190/test_pass190_i136_completion_coordinator.py)" = "0fce98eb5364bbdd4b90b8ce72f474f21551b751"
+          test "$(git hash-object .github/workflows/pass190-i136-completion-validation.yml)" = "f46afe4af4bdbcc283bf62307a628094c6ff350f"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.h)" = "88f7a93721f385b9e4355232b161fc46b823381c"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.hpp)" = "a8226256f75366f6bd0c75f273f80ad7113ccd3c"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass190_1_36.inc)" = "0b8e9e22152dc45e0b3c4c571ad748db018529df"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i136_pass190.py)" = "7dd6b98e7603ebed21c272bd1341961619984444"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a157202400134c4a8ea2bca7a36b41c6d64c4147"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "5ac5b1908fe25433cf082601d1adab43d87baf63"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass190_1_36.c)" = "deda6a89d913cef4840bd1e89f3d70d75fcd2d01"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass190_1_36.cpp)" = "687a45c50e75383a7ce5d127555d232c07b27b6d"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py)" = "d29c771629a743ed8bb9a7e022dc4dec3e5b52c2"
+          test "$(git hash-object docs/pass219/PASS_219_I136_INHERITED_PASS190_FULL_COMPLETION_MEMBRANE.md)" = "28ac62f21520408be8345ed9e4ae471e23d29505"
+          test "$(git hash-object docs/operations/restart/PASS_219_I136_PASS190_REPAIR_MEMBRANE_RESTART.md)" = "6d82254ce53ed2536952d6bf9587ce49f64c7091"
+
+      - name: Verify additive aggregate order and reject authority escalation
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass192_1_34.h') < h.index('hhs_pass219_inherited_pass191_1_35.h') < h.index('hhs_pass219_inherited_pass190_1_36.h')
+          assert c.index('hhs_pass219_inherited_pass192_1_34.inc') < c.index('hhs_pass219_inherited_pass191_1_35.inc') < c.index('hhs_pass219_inherited_pass190_1_36.inc')
+          for name in [
+              'hhs_runtime/pass190/python_compat.py',
+              'hhs_runtime/pass190/completion.py',
+              'hhs_runtime/pass190/acceptance.py',
+              'hhs_runtime/pass190/shell.py',
+              'hhs_backend/public_api_server.py',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i136_pass190.py',
+          ]:
+              tree = ast.parse(Path(name).read_text(), filename=name)
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Constant) and isinstance(node.value, float):
+                      raise SystemExit(f'float literal in canonical I136 surface: {name}:{node.lineno}')
+                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'float':
+                      raise SystemExit(f'float conversion in canonical I136 surface: {name}:{node.lineno}')
+          PY
+          ! grep -Eq 'float_is_canonical_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U|cxx_mutation_authority[[:space:]]*=[[:space:]]*1U|vm81_mutation_authority[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass190_1_36.inc
+
+      - name: Revalidate historical Pass 190 Iterations 1 through 7
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate
+
+      - name: Revalidate I136 completion coordinator
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v tests.pass190.test_pass190_i136_completion_coordinator
+
+      - name: Run cumulative Pass 190 membrane preflight
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py
+
+      - name: Rehydrate actual repository through frozen I135
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.pass190 import Pass190CompletionContext
+          ctx = Pass190CompletionContext(
+              database_path=Path('/tmp/pass190-i136-cumulative.sqlite3'),
+              repository_root=Path.cwd(),
+              hydration_state_root=Path('/tmp/pass190-i136-cumulative-hydration'),
+              capability_secret='i136-cumulative-secret-' + ('x' * 40),
+          )
+          hydration = ctx.hydration_preview()
+          status = ctx.status()
+          assert hydration['passes_linked'] == 191
+          assert hydration['blocker_count'] == 0
+          assert hydration['symmetry_valid'] is True
+          assert status['governed_operation_count'] == 52
+          assert status['classification'] == 'HHS_PASS_190_I136_COMPLETION_COORDINATOR_VERIFIED'
+          assert status['new_vm81_authority'] is False
+          assert status['new_receipt_clock'] is False
+          assert status['floating_point_canonical_authority'] is False
+          PY
+
+      - name: Compile aggregate exact ABI and Pass 190 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i136-pass190
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i136-pass190/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass190_1_36.c \
+            /tmp/pass219-i136-pass190/exact.o \
+            -o /tmp/pass219-i136-pass190/pass190-c
+          /tmp/pass219-i136-pass190/pass190-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass190_1_36.cpp \
+            /tmp/pass219-i136-pass190/exact.o \
+            -o /tmp/pass219-i136-pass190/pass190-cpp
+          /tmp/pass219-i136-pass190/pass190-cpp
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I136_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass190/i136
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I136_TARGET']
+          paths = [
+              'hhs_runtime/pass190/completion.py',
+              'hhs_runtime/pass190/acceptance.py',
+              'hhs_backend/public_api_server.py',
+              'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass190_1_36.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass190_1_36.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i136_pass190.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass190_1_36.c',
+              'tests/pass219/test_pass219_inherited_pass190_1_36.cpp',
+              'tests/pass219/test_pass219_cumulative_pass190_membrane_i136.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I136_PASS190_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i135': '5e593b384732ffb065480cdd2d1098f1f32a990e',
+              'validated_core_head': 'fbbc3ff37b6dea6c31e73612731e4e323a54475f',
+              'validated_core_run': 33160480090,
+              'pass190_contract_authorization': '88e7ae935990b1c36db6d39bc46d3b89b2e465cb',
+              'pass190_iteration7_merge': '7b4825ae1437c2325bc9bb348086c0957cfd5c28',
+              'governed_operation_count': 52,
+              'vm81_authority': 'INHERITED_PASS190_DURABLE_AUTHORITY',
+              'new_hash72_clock': False,
+              'canonical_float_authority': False,
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass190/i136/PASS_219_I136_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i136-pass190-${{ matrix.target }}-seal
+          path: evidence/pass190/i136/PASS_219_I136_*.json
+          if-no-files-found: error

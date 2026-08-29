@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_187_EDGE_V1",
+  "type": "object",
+  "required": [
+    "edge_id",
+    "source_logical_object_id",
+    "source_version_id",
+    "source_port",
+    "target_logical_object_id",
+    "target_version_id",
+    "target_port",
+    "relationship",
+    "metadata",
+    "order",
+    "expression"
+  ],
+  "properties": {
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_logical_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_version_id": {
+      "type": "string",
+      "pattern": "^ov_[0-9a-f]{72}$"
+    },
+    "source_port": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_logical_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_version_id": {
+      "type": "string",
+      "pattern": "^ov_[0-9a-f]{72}$"
+    },
+    "target_port": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relationship": {
+      "enum": [
+        "LIVE",
+        "SNAPSHOT",
+        "REFERENCE",
+        "FORK",
+        "LAYER",
+        "NEST",
+        "FEEDBACK",
+        "CONTROL",
+        "COMPILED"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expression": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

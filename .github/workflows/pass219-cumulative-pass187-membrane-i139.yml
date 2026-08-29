@@ -1,0 +1,285 @@
+name: Pass 219 Cumulative Pass 187 Membrane I139
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration139-pass187-composition-completion
+    paths:
+      - 'docs/pass187/**'
+      - 'HHS_PASS_187_BOTT_PERIODIC_XNOR_IMAGINARY_PHASE_ROTATION_ENTANGLEMENT_HYDRATION.md'
+      - 'native_projects/hhs_pass187_bott_hydration/**'
+      - 'hhs_runtime/pass187/**'
+      - 'schemas/pass187/**'
+      - 'grammar/pass187/**'
+      - 'tests/pass187/**'
+      - 'native_projects/hhs_pass187_composition_fabric/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass187_1_39.c'
+      - 'tests/pass219/test_pass219_inherited_pass187_1_39.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass187_membrane_i139.py'
+      - 'docs/pass219/PASS_219_I139_INHERITED_PASS187_FULL_COMPLETION.md'
+      - 'docs/operations/restart/PASS_219_I139_PASS187_COMPOSITION_COMPLETION_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass187-membrane-i139.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass187/**'
+      - 'HHS_PASS_187_BOTT_PERIODIC_XNOR_IMAGINARY_PHASE_ROTATION_ENTANGLEMENT_HYDRATION.md'
+      - 'native_projects/hhs_pass187_bott_hydration/**'
+      - 'hhs_runtime/pass187/**'
+      - 'schemas/pass187/**'
+      - 'grammar/pass187/**'
+      - 'tests/pass187/**'
+      - 'native_projects/hhs_pass187_composition_fabric/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass187_1_39.*'
+      - 'tests/pass219/test_pass219_cumulative_pass187_membrane_i139.py'
+      - 'docs/pass219/PASS_219_I139_INHERITED_PASS187_FULL_COMPLETION.md'
+      - 'docs/operations/restart/PASS_219_I139_PASS187_COMPOSITION_COMPLETION_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass187-membrane-i139.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass187-cumulative-membrane:
+    name: inherited-pass187-cumulative-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install inherited Pass 219 Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Install Playwright browser acceptance dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I138 and Pass 187 historical lineage
+        run: |
+          for commit in \
+            6f59481b48903759395dfbe94a4dc61097b306b1 \
+            6584c8e118eb73e0884165b3d1afd1ec84f34f57 \
+            5db45d6b72b93132997f815d16df4540fd13adfc \
+            c77e3feef42448a111d8b8912a1d1cb157d51925 \
+            c36beacd8d6748f65c30ca3b02ac237eac38c34d
+          do
+            git merge-base --is-ancestor "$commit" HEAD
+          done
+          test "$(git merge-base 6f59481b48903759395dfbe94a4dc61097b306b1 HEAD)" = "6f59481b48903759395dfbe94a4dc61097b306b1"
+          test "$(git rev-parse 6584c8e118eb73e0884165b3d1afd1ec84f34f57:docs/pass187/HHS_PASS_187_UNIVERSAL_MULTIMODAL_OBJECT_APPLICATION_COMPOSITION_AND_INCREMENTAL_RECOMPOSITION.md)" = "ac25bc7084b1a5e7202e25da47a5890307cf5e27"
+          test "$(git rev-parse 5db45d6b72b93132997f815d16df4540fd13adfc:native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_VALIDATION_RECEIPT.json)" = "79a8915337397a06d30bee4452ee273fa2bae105"
+
+      - name: Prove Pass 187 historical Bott identities
+        run: |
+          test "$(git hash-object HHS_PASS_187_BOTT_PERIODIC_XNOR_IMAGINARY_PHASE_ROTATION_ENTANGLEMENT_HYDRATION.md)" = "e811dc27aead3b12b85b24af9db7e88ff7b9442a"
+          test "$(git hash-object native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_BOTT_HYDRATION_BENCHMARK.json)" = "5290c0dab00f1c7e08520f834fdd2bde6fe6aa61"
+          test "$(git hash-object native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_VALIDATION_RECEIPT.json)" = "79a8915337397a06d30bee4452ee273fa2bae105"
+          test "$(git hash-object native_projects/hhs_pass187_bott_hydration/tools/hhs_pass187_bott_hydration_benchmark.c)" = "042090d382026c8b9cbc54a8d2d95143150b4fb5"
+          grep -F '"full_pass187_runtime_implementation_complete": false' native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_VALIDATION_RECEIPT.json
+
+      - name: Prove Pass 187 composition completion identities
+        run: |
+          test "$(git hash-object docs/pass187/HHS_PASS_187_UNIVERSAL_MULTIMODAL_OBJECT_APPLICATION_COMPOSITION_AND_INCREMENTAL_RECOMPOSITION.md)" = "ac25bc7084b1a5e7202e25da47a5890307cf5e27"
+          test "$(git hash-object hhs_runtime/pass187/__init__.py)" = "155b3d6faf359cf2891d133e309ae14e471a4508"
+          test "$(git hash-object hhs_runtime/pass187/composition.py)" = "e5b41b12cb24158010f0dffc7a88b6f2740e5d2b"
+          test "$(git hash-object hhs_runtime/pass187/adapters.py)" = "74f4c68f49e29ec08fb7be2f5b6f59592e9c6cf6"
+          test "$(git hash-object hhs_runtime/pass187/composition_server.py)" = "6f3ac19afe5db7305f8023cceca9ca1547fa5556"
+          test "$(git hash-object tests/pass187/test_pass187_composition.py)" = "64aa62e1ace43b49f8dbf4951ef0b87707129aeb"
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/web/index.html)" = "f768a07a760367fa3cc75a08d1c07bf1461fe1cb"
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/tools/hhs_pass187_browser_acceptance.mjs)" = "2fce626b94a4895800a9ffb48f3201078631d037"
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/tools/hhs_pass187_planner_benchmark.py)" = "156728631052269810e702e031b7ba7cb636c978"
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/Makefile)" = "a64e5e60cc8c01f38c980b386332b1370cb9a077"
+          test "$(git hash-object .github/workflows/pass187-composition-fabric-completion.yml)" = "7692878d88efb260e9430295648e384e78e5a50d"
+          test "$(git hash-object schemas/pass187/HHS_PASS_187_OBJECT_DESCRIPTOR_V1.schema.json)" = "71ff43891ec422481a4957bc4281e742820482f1"
+          test "$(git hash-object schemas/pass187/HHS_PASS_187_EDGE_V1.schema.json)" = "52f15abe80d3e1331c9279e21a4aa3119c045f48"
+          test "$(git hash-object schemas/pass187/HHS_PASS_187_EVENT_V1.schema.json)" = "0e5029d05786dae8f19592af5f7555647259d77d"
+          test "$(git hash-object schemas/pass187/HHS_PASS_187_COMPILED_ARTIFACT_V1.schema.json)" = "a3e736ec539b740962d7ad05d9ce70b4d2064710"
+          test "$(git hash-object grammar/pass187/harmonicode_graph_grammar.ebnf)" = "87b7179d3b340b531543087c5d08b2bc1211af3a"
+
+      - name: Prove receipt-bearing Pass 187 freeze evidence identities
+        run: |
+          test "$(git hash-object native_projects/hhs_pass187_composition_fabric/evidence/P187_I139_VALIDATION_RECEIPT.json)" = "11285678a0db787def6851cda6c12d067c303b87"
+          test "$(git hash-object docs/pass187/HHS_PASS_187_I139_UNIVERSAL_COMPOSITION_IMPLEMENTATION_REPORT.md)" = "15129037984627616aa83236a94839c095a7f920"
+          test "$(git hash-object docs/operations/restart/PASS_219_I139_PASS187_COMPOSITION_COMPLETION_RESTART.md)" = "494a16483a35aaa16bb11c227d29b068392ef2a9"
+
+      - name: Prove I139 membrane identities and additive ABI order
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h)" = "e59603ac523dd32e845b21492fc3d2336a562dcf"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.hpp)" = "0e00dc16c9624cf51aa0c9a1d6e30397a1529763"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc)" = "0ff432490633dac2417aa3e294305378848dc570"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py)" = "52ceb9f52bdf30dc4849676c1ac0aafe613708ca"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "db92bb0590adb667ac406a89e43171a8ab12eb3c"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "8d6c694e4bb7358f28844df55848b07604030e33"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass187_1_39.c)" = "c33470165768c462dd870dafc9d16cc586b51f8e"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass187_1_39.cpp)" = "8830e876578645d7a9bce6823995e42837124660"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass187_membrane_i139.py)" = "73e44f23fe2f436f5b76fe8e282cfa31631b2726"
+          test "$(git hash-object docs/pass219/PASS_219_I139_INHERITED_PASS187_FULL_COMPLETION.md)" = "76e1b77787c72d4db757515b9d1724f1f940fbb3"
+          test "$(git rev-parse 6f59481b48903759395dfbe94a4dc61097b306b1:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "fa6cd855f64bf9f76dc3a26743f69b3a8109c84c"
+          test "$(git rev-parse 6f59481b48903759395dfbe94a4dc61097b306b1:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "95ccd25f2bd06ed3afdb6d3dfb5c3ac6ae438698"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass189_1_37.h') < h.index('hhs_pass219_inherited_pass188_1_38.h') < h.index('hhs_pass219_inherited_pass187_1_39.h')
+          assert c.index('hhs_pass219_inherited_pass189_1_37.inc') < c.index('hhs_pass219_inherited_pass188_1_38.inc') < c.index('hhs_pass219_inherited_pass187_1_39.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
+          ! grep -Eq 'local_event_evidence_is_mutation_authority[[:space:]]*=[[:space:]]*1U|independent_vm81_authority[[:space:]]*=[[:space:]]*1U|independent_hash72_clock[[:space:]]*=[[:space:]]*1U|float_canonical_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc
+
+      - name: Revalidate Pass 187 universal composition completion
+        run: make -C native_projects/hhs_pass187_composition_fabric validate
+
+      - name: Revalidate historical Pass 187 Bott hydration benchmark
+        run: |
+          mkdir -p /tmp/pass219-i139-pass187
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass186_x64_vm81_q144/include \
+            native_projects/hhs_pass187_bott_hydration/tools/hhs_pass187_bott_hydration_benchmark.c \
+            native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c \
+            -o /tmp/pass219-i139-pass187/bott-benchmark
+          /tmp/pass219-i139-pass187/bott-benchmark > /tmp/pass219-i139-pass187/bott.json
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/pass219-i139-pass187/bott.json'))
+          assert data['classification'] == 'HHS_PASS_187_BOTT_HYDRATION_SWEEP_VERIFIED'
+          assert data['hydrated_states'] == 1259712
+          assert data['samples'] == 7
+          assert data['active_period_two_states'] == 629856
+          assert data['drift_collapse_states'] == 629856
+          assert data['gear_preserved_states'] == 1259712
+          assert data['deterministic_checksum_u64'] == '11e3bbf0214751c3'
+          assert data['floating_point_authority'] is False
+          assert data['host_timing_authority'] == 'NONAUTHORITATIVE'
+          PY
+
+      - name: Run I139 cumulative membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass187_membrane_i139.py
+
+      - name: Compile aggregate exact ABI and Pass 187 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i139-pass187
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i139-pass187/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass187_1_39.c \
+            /tmp/pass219-i139-pass187/exact.o \
+            -o /tmp/pass219-i139-pass187/pass187-c
+          /tmp/pass219-i139-pass187/pass187-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass187_1_39.cpp \
+            /tmp/pass219-i139-pass187/exact.o \
+            -o /tmp/pass219-i139-pass187/pass187-cpp
+          /tmp/pass219-i139-pass187/pass187-cpp
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I139_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass187/i139
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I139_TARGET']
+          paths = [
+              'hhs_runtime/pass187/composition.py',
+              'tests/pass187/test_pass187_composition.py',
+              'native_projects/hhs_pass187_composition_fabric/tools/hhs_pass187_browser_acceptance.mjs',
+              'native_projects/hhs_pass187_bott_hydration/evidence/HHS_PASS_187_VALIDATION_RECEIPT.json',
+              'hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass187_1_39.c',
+              'tests/pass219/test_pass219_inherited_pass187_1_39.cpp',
+              'tests/pass219/test_pass219_cumulative_pass187_membrane_i139.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I139_PASS187_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i138': '6f59481b48903759395dfbe94a4dc61097b306b1',
+              'composition_completion_head': 'c36beacd8d6748f65c30ca3b02ac237eac38c34d',
+              'composition_classification': 'HHS_PASS_187_UNIVERSAL_COMPOSITION_AND_INCREMENTAL_RECOMPOSITION_VERIFIED',
+              'bott_classification': 'HHS_PASS_187_CONTRACT_FROZEN_HYDRATION_BASELINE_VERIFIED',
+              'composition_acceptance_scenarios': 12,
+              'bott_hydrated_addresses': 1259712,
+              'new_vm81_authority': False,
+              'new_hash72_clock': False,
+              'local_event_evidence_authority': False,
+              'canonical_float_authority': False,
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass187/i139/PASS_219_I139_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i139-pass187-${{ matrix.target }}-seal
+          path: evidence/pass187/i139/PASS_219_I139_*.json
+          if-no-files-found: error

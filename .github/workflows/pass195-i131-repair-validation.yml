@@ -1,0 +1,55 @@
+name: Pass 195 I131 Repair Validation
+
+on:
+  push:
+    branches:
+      - "agent/pass219-iteration131-pass195-repair-membrane"
+    paths:
+      - "hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py"
+      - "hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py"
+      - "hhs_backend/api/kimi_k3_content_routes.py"
+      - "applications/storybook_reel_studio/kimi-content-engine.js"
+      - "tests/test_hhs_kimi_k3_content_engine_v1.py"
+      - "tests/test_hhs_pass195_i131_repair_v2.py"
+      - ".github/workflows/pass195-i131-repair-validation.yml"
+  pull_request:
+    paths:
+      - "hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py"
+      - "hhs_backend/api/kimi_k3_content_routes.py"
+      - "applications/storybook_reel_studio/kimi-content-engine.js"
+      - "tests/test_hhs_pass195_i131_repair_v2.py"
+      - ".github/workflows/pass195-i131-repair-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  repair-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Prove immutable Pass 195 V1 provenance
+        run: test "$(git hash-object hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py)" = "ea7041c026e63445034c7161268faafe436cd2d1"
+      - name: Compile repaired Pass 195 Python surfaces
+        run: |
+          python -m py_compile hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_kimi_k3_content_engine_v2.py
+          python -m py_compile hhs_backend/api/kimi_k3_content_routes.py
+          python -m py_compile tests/test_hhs_kimi_k3_content_engine_v1.py
+          python -m py_compile tests/test_hhs_pass195_i131_repair_v2.py
+      - name: Validate repaired Storybook client syntax
+        run: node --check applications/storybook_reel_studio/kimi-content-engine.js
+      - name: Run historical Pass 195 and I131 repair regressions
+        run: |
+          python -m unittest \
+            tests.test_hhs_kimi_k3_content_engine_v1 \
+            tests.test_hhs_pass195_i131_repair_v2

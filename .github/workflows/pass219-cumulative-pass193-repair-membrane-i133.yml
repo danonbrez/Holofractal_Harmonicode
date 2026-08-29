@@ -1,0 +1,259 @@
+name: Pass 219 Cumulative Pass 193 Repair Membrane I133
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration133-pass193-repair-membrane
+    paths:
+      - 'docs/pass193/**'
+      - 'docs/operations/restart/PASS_219_I133_PASS193_REPAIR_MEMBRANE_RESTART.md'
+      - 'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'hhs_backend/api/pass193_hypersolid_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/test_hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'tests/test_hhs_pass193_hypersolid_routes.py'
+      - 'tests/test_hhs_pass193_native_targets_v1.py'
+      - 'tests/test_hhs_pass193_visual_registration.py'
+      - 'tests/pass219/test_pass219_inherited_pass193_1_33.c'
+      - 'tests/pass219/test_pass219_inherited_pass193_1_33.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py'
+      - '.github/workflows/pass193-i133-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass193-repair-membrane-i133.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass193/**'
+      - 'docs/operations/restart/PASS_219_I133_PASS193_REPAIR_MEMBRANE_RESTART.md'
+      - 'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'hhs_backend/api/pass193_hypersolid_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
+      - 'tests/test_hhs_pass193_hypersolid_native_egress_v1.py'
+      - 'tests/test_hhs_pass193_hypersolid_routes.py'
+      - 'tests/test_hhs_pass193_native_targets_v1.py'
+      - 'tests/test_hhs_pass193_visual_registration.py'
+      - 'tests/pass219/test_pass219_inherited_pass193_1_33.c'
+      - 'tests/pass219/test_pass219_inherited_pass193_1_33.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py'
+      - '.github/workflows/pass193-i133-repair-validation.yml'
+      - '.github/workflows/pass219-cumulative-pass193-repair-membrane-i133.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass193-repair-membrane:
+    name: inherited-pass193-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Install required native target toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu qemu-user file
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I132 and historical Pass 193 lineage
+        run: |
+          git merge-base --is-ancestor d311cd243845456851518ce1fef026a7d3cac45e HEAD
+          test "$(git merge-base d311cd243845456851518ce1fef026a7d3cac45e HEAD)" = "d311cd243845456851518ce1fef026a7d3cac45e"
+          git merge-base --is-ancestor eebc47a52de143df4a9acf807735f576ad0ce844 HEAD
+          test "$(git rev-parse eebc47a52de143df4a9acf807735f576ad0ce844:docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md)" = "2452a5d5184bd9275e150b4b4afd840928e723fd"
+          test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py)" = "4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51"
+          test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h)" = "def3dcf6044fb29db58af04e3928cd14c227ce77"
+          test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc)" = "ef1625c9badd2f71929953ec376562834d94ccf0"
+
+      - name: Prove repaired Pass 193 source identities
+        run: |
+          test "$(git hash-object hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py)" = "c5c961b406a67c75f277299c4c617c15bb4544cf"
+          test "$(git hash-object hhs_backend/api/pass193_hypersolid_routes.py)" = "76482bce7fa1d9940df05b86603ccf43db8bacb2"
+          test "$(git hash-object hhs_backend/visual_server.py)" = "d09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b"
+          test "$(git hash-object tests/test_hhs_pass193_hypersolid_native_egress_v1.py)" = "c003362aabf2a7a8cc7b2c9fc424b398b96f7050"
+          test "$(git hash-object tests/test_hhs_pass193_hypersolid_routes.py)" = "28abf4097fa5cb2ea7aeaaaded896d5eb6f02cd3"
+          test "$(git hash-object tests/test_hhs_pass193_native_targets_v1.py)" = "21c9d05101b42fd32eecda5f95aafbae0772b7af"
+          test "$(git hash-object tests/test_hhs_pass193_visual_registration.py)" = "af461a5be0b8148c941b5fa0e3e78fe10d325dba"
+          test "$(git hash-object .github/workflows/pass193-i133-repair-validation.yml)" = "1d6e216f6f4b7dc6666906a8f50f379b8ef7d089"
+
+      - name: Prove Pass 193 native membrane identities and aggregate order
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h)" = "81605d5e7931041205bfe987e2e64e53572899c8"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp)" = "ecca12d28cb0f2b42cb72e6887339fdba231541b"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc)" = "12485b95b762a6dd5db1a62dfa16aaa3580e8b16"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "12dc633b44f56ce8a4d131eda7df892e960d1397"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "5a1281937c2ff46bdd7b776b2c705147f2c4ded7"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "bd186317732141e3b285624fc23dee15beba215e"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.c)" = "7a6e40e417494b4ac565a508c7765c9dee670e7d"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.cpp)" = "e1deb2b07c988aa7f88e3cb2666e6e30763a54c1"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py)" = "456576418326a056a0cdfb14f7438d01e67eb289"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass194_1_32.h') < h.index('hhs_pass219_inherited_pass193_1_33.h')
+          assert c.index('hhs_pass219_inherited_pass194_1_32.inc') < c.index('hhs_pass219_inherited_pass193_1_33.inc')
+          PY
+
+      - name: Reject approximate native authority and authority escalation
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U|cxx_mutation_authority[[:space:]]*=[[:space:]]*1U|vm81_mutation_authority[[:space:]]*=[[:space:]]*1U|nft_identity_is_execution_authority[[:space:]]*=[[:space:]]*1U|package_autoexec_authority[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc
+          grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc
+          grep -F 'out_binding->nft_identity_is_execution_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc
+          grep -F 'out_binding->package_autoexec_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc
+
+      - name: Compile Pass 193 production and cumulative Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py \
+            hhs_backend/api/pass193_hypersolid_routes.py \
+            hhs_backend/visual_server.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py \
+            tests/pass192_193/test_pass192_193_contract_invariants.py \
+            tests/test_hhs_pass193_hypersolid_native_egress_v1.py \
+            tests/test_hhs_pass193_hypersolid_routes.py \
+            tests/test_hhs_pass193_native_targets_v1.py \
+            tests/test_hhs_pass193_visual_registration.py \
+            tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py
+
+      - name: Run Pass 193 focused runtime API and production registration regressions
+        run: |
+          python tests/pass192_193/test_pass192_193_contract_invariants.py -v
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass193_hypersolid_native_egress_v1 \
+            tests.test_hhs_pass193_hypersolid_routes \
+            tests.test_hhs_pass193_visual_registration
+
+      - name: Revalidate required native target egress
+        env:
+          HHS_PASS193_REQUIRE_NATIVE_TARGETS: '1'
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v tests.test_hhs_pass193_native_targets_v1
+
+      - name: Compile aggregate exact ABI and Pass 193 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i133-pass193
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i133-pass193/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass193_1_33.c \
+            /tmp/pass219-i133-pass193/exact.o \
+            -o /tmp/pass219-i133-pass193/pass193-c
+          /tmp/pass219-i133-pass193/pass193-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass193_1_33.cpp \
+            /tmp/pass219-i133-pass193/exact.o \
+            -o /tmp/pass219-i133-pass193/pass193-cpp
+          /tmp/pass219-i133-pass193/pass193-cpp
+
+      - name: Run cumulative Pass 193 membrane preflight
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I133_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass193/i133
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I133_TARGET']
+          paths = [
+              'hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py',
+              'hhs_backend/api/pass193_hypersolid_routes.py',
+              'hhs_backend/visual_server.py',
+              'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass193_1_33.c',
+              'tests/pass219/test_pass219_inherited_pass193_1_33.cpp',
+              'tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I133_PASS193_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i132': 'd311cd243845456851518ce1fef026a7d3cac45e',
+              'pass193_authorization': 'eebc47a52de143df4a9acf807735f576ad0ce844',
+              'pass194_frozen_successor_membrane_blob': '4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51',
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+              'native_targets': ['linux-x86_64-elf', 'linux-arm64-elf'],
+              'vm81_authority': 'INHERITED_SINGLETON',
+              'canonical_float_authority': False,
+              'production_api': '/api/runtime/hypersolids',
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass193/i133/PASS_219_I133_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i133-pass193-${{ matrix.target }}-seal
+          path: evidence/pass193/i133/PASS_219_I133_${{ matrix.target == 'exact' && 'EXACT' || 'SYNTHETIC' }}_SEAL.json
+          if-no-files-found: error

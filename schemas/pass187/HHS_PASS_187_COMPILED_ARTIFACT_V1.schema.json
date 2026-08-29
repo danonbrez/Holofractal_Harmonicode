@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_187_COMPILED_ARTIFACT_V1",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "target",
+    "path",
+    "sha256",
+    "graph_identity"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "pattern": "^artifact_[0-9a-f]{72}$"
+    },
+    "target": {
+      "enum": [
+        "web-app",
+        "project-bundle",
+        "native-cli"
+      ]
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "graph_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    }
+  },
+  "additionalProperties": false
+}

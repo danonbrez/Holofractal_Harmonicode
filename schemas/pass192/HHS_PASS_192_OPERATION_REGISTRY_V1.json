@@ -1,0 +1,22 @@
+{
+  "authority": {
+    "float_canonical_authority": false,
+    "hash216": "CANONICAL_AND_ARCHIVE_IDENTITY",
+    "hash72": "EXECUTION_AND_MUTATION_RECEIPT",
+    "mutation": "INHERITED_SINGLETON_VM81"
+  },
+  "contract": "HHS-P192-LSCFNT-MMD-VM81-H72-H216",
+  "operations": [
+    {"cli": null, "harmonicode": "FibonacciSequence(index)", "mutation": false, "openapi": null, "operation_id": "P192.FibonacciSequence", "python_sdk": "hhs_runtime.pass192.fibonacci_sequence"},
+    {"cli": null, "harmonicode": "FibonacciRatio(depth)", "mutation": false, "openapi": null, "operation_id": "P192.FibonacciRatio", "python_sdk": "hhs_runtime.pass192.fibonacci_ratio"},
+    {"cli": null, "harmonicode": "CumulativeFibonacciScale(depth)", "mutation": false, "openapi": null, "operation_id": "P192.CumulativeFibonacciScale", "python_sdk": "hhs_runtime.pass192.cumulative_fibonacci_scale"},
+    {"cli": null, "harmonicode": "LoShuCell(row,column)", "mutation": false, "openapi": null, "operation_id": "P192.LoShuCell", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.lo_shu_cell"},
+    {"cli": "hhs tensor fibonacci create --cell ROW,COLUMN", "harmonicode": "CellularFibonacciTensor(cell)", "mutation": true, "openapi": "POST /v1/tensors/fibonacci", "operation_id": "P192.CellularFibonacciTensor", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.create_tensor"},
+    {"cli": "hhs tensor fibonacci inspect <tensor-id>", "harmonicode": "InspectTensor(tensor)", "mutation": false, "openapi": "GET /v1/tensors/fibonacci/{id}", "operation_id": "P192.InspectTensor", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.get_tensor"},
+    {"cli": "hhs tensor fibonacci materialize <tensor-id> --depth N", "harmonicode": "MaterializeTensorPrefix(tensor,depth)", "mutation": true, "openapi": "POST /v1/tensors/fibonacci/{id}/materialize", "operation_id": "P192.MaterializeTensorPrefix", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.materialize_prefix"},
+    {"cli": null, "harmonicode": "MembraneWitness(depth)", "mutation": false, "openapi": null, "operation_id": "P192.MembraneWitness", "python_sdk": "hhs_runtime.pass192.membrane_witness"},
+    {"cli": "hhs tensor fibonacci validate <tensor-id>", "harmonicode": "ValidateTensor(tensor)", "mutation": false, "openapi": "POST /v1/tensors/fibonacci/{id}/validate", "operation_id": "P192.ValidateTensor", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.validate_tensor"},
+    {"cli": "hhs tensor fibonacci replay [identity]", "harmonicode": "ReplayTensor(receipt)", "mutation": false, "openapi": "POST /v1/tensors/fibonacci/{id}/replay", "operation_id": "P192.ReplayTensor", "python_sdk": "hhs_runtime.pass192.Pass192Runtime.replay"}
+  ],
+  "schema": "HHS_PASS_192_OPERATION_REGISTRY_V1"
+}

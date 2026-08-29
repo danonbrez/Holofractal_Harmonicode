@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_187_EVENT_V1",
+  "type": "object",
+  "required": [
+    "sequence",
+    "operation",
+    "parameters",
+    "vm81_receipt_hash72",
+    "predecessor_vm81_receipt_hash72",
+    "event_evidence_hash72",
+    "hash216",
+    "reversible",
+    "compensation",
+    "pre_state",
+    "post_state"
+  ],
+  "properties": {
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "operation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "vm81_receipt_hash72": {
+      "type": "string",
+      "pattern": "^(?!0{72}$)[0-9a-f]{72}$"
+    },
+    "predecessor_vm81_receipt_hash72": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "event_evidence_hash72": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "hash216": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{216}$"
+    },
+    "reversible": {
+      "type": "boolean"
+    },
+    "compensation": {
+      "type": "object"
+    },
+    "pre_state": {
+      "type": "object"
+    },
+    "post_state": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

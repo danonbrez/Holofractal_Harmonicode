@@ -1,0 +1,36 @@
+name: Pass 188 Versioned License Lineage Completion
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration138-pass188-license-lineage-completion
+    paths:
+      - 'hhs_runtime/pass188/**'
+      - 'schemas/pass188/**'
+      - 'tests/pass188/**'
+      - 'native_projects/hhs_pass188_license_lineage/**'
+      - '.github/workflows/pass188-license-lineage-completion.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass188/**'
+      - 'schemas/pass188/**'
+      - 'tests/pass188/**'
+      - 'native_projects/hhs_pass188_license_lineage/**'
+      - '.github/workflows/pass188-license-lineage-completion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate Pass 188 versioned license lineage
+        run: make -C native_projects/hhs_pass188_license_lineage validate

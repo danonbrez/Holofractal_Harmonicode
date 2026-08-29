@@ -5,7 +5,7 @@ import asyncio
 from typing import Any, Dict
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictBool
 
 from hhs_backend.api.runtime_routes import (
     _contract_response,
@@ -13,7 +13,7 @@ from hhs_backend.api.runtime_routes import (
     runtime_controller,
     runtime_graph,
 )
-from hhs_backend.runtime.hhs_pass196_integrated_environment_v1 import (
+from hhs_backend.runtime.hhs_pass196_integrated_environment_v2 import (
     PASS196_INTEGRATED_ENVIRONMENT,
     Pass196Error,
 )
@@ -35,7 +35,7 @@ router = APIRouter(
 
 
 class IntegrationScanRequest(BaseModel):
-    persist_vector: bool = True
+    persist_vector: StrictBool = True
 
 
 class IntegrationToolInvokeRequest(BaseModel):
@@ -57,6 +57,24 @@ def _receipt_hash72(authorized_tick: Dict[str, Any]) -> str | None:
         return None
     value = receipt.get("receipt_hash72")
     return value if isinstance(value, str) and value else None
+
+
+def _strict_persist_vector(arguments: Dict[str, Any]) -> bool:
+    value = arguments.get("persist_vector", True)
+    if type(value) is not bool:
+        raise Pass196Error("PASS196_PERSIST_VECTOR_STRICT_BOOL_REQUIRED")
+    return value
+
+
+def _scan_http_error(exc: BaseException) -> HTTPException:
+    return HTTPException(
+        status_code=503,
+        detail={
+            "schema": "HHS_PASS_196_INTEGRATION_SCAN_FAILURE_V1",
+            "ok": False,
+            "reason": str(exc),
+        },
+    )
 
 
 def _project_runtime_graph() -> None:
@@ -120,14 +138,7 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
             source=operation,
         )
     except (Pass196Error, OSError, ValueError, RuntimeError) as exc:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "schema": "HHS_PASS_196_INTEGRATION_SCAN_FAILURE_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
-        ) from exc
+        raise _scan_http_error(exc) from exc
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -212,7 +223,7 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
             result = PASS196_INTEGRATED_ENVIRONMENT.status()
         elif request.tool == "integration.scan":
             result = await _run_scan(
-                persist_vector=bool(request.arguments.get("persist_vector", True)),
+                persist_vector=_strict_persist_vector(request.arguments),
                 source=operation,
             )
         elif request.tool == "integration.manifest":
@@ -221,8 +232,12 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
             result = PASS196_INTEGRATED_ENVIRONMENT.gaps()
         else:
             raise Pass196Error(f"unknown integration tool: {request.tool}")
-    except Pass196Error as exc:
-        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except (OSError, ValueError, RuntimeError) as exc:
+        if request.tool == "integration.scan":
+            raise _scan_http_error(exc) from exc
+        if isinstance(exc, Pass196Error):
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        raise
     result["tool_invocation"] = {
         "schema": "HHS_PASS_196_API_TOOL_INVOCATION_V1",
         "tool": request.tool,

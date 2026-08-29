@@ -11,6 +11,20 @@ from hhs_backend.runtime.pass197_exact_v1 import (
     hash72, original_gate,
 )
 
+MAX_SYNCHRONOUS_PARAMETER_STATES = 405
+
+
+def _strict_bool(data: Mapping[str, Any], field: str, default: bool) -> bool:
+    value = data.get(field, default)
+    if not isinstance(value, bool):
+        raise ValueError(f"{field} must be a boolean")
+    return value
+
+
+def _require_unique(values: tuple[Any, ...], field: str) -> None:
+    if len(values) != len(set(values)):
+        raise ValueError(f"{field} must contain unique exact coordinates")
+
 
 @dataclass(frozen=True)
 class CalibrationConfig:
@@ -28,17 +42,25 @@ class CalibrationConfig:
         y_values = tuple(exact_fraction(v, field="y_values") for v in data.get("y_values", axis))
         exponents: list[int] = []
         for value in data.get("xy_symbol_values", (-2, -1, 0, 1, 2)):
-            if isinstance(value, (bool, float)):
+            if isinstance(value, bool) or not isinstance(value, int):
                 raise ValueError("xy_symbol_values requires exact integers")
-            integer = int(value)
-            if not -16 <= integer <= 16:
+            if not -16 <= value <= 16:
                 raise ValueError("xy_symbol exponent must be in [-16,16]")
-            exponents.append(integer)
+            exponents.append(value)
         if not x_values or not y_values or not exponents:
             raise ValueError("calibration axes must be nonempty")
-        if len(x_values) * len(y_values) * len(exponents) > 50_000:
-            raise ValueError("bounded calibration permits at most 50,000 parameter states")
-        return cls(x_values, y_values, tuple(exponents), bool(data.get("include_domain_rejections", True)), bool(data.get("full_replay", True)))
+        _require_unique(x_values, "x_values")
+        _require_unique(y_values, "y_values")
+        exponent_values = tuple(exponents)
+        _require_unique(exponent_values, "xy_symbol_values")
+        parameter_states = len(x_values) * len(y_values) * len(exponent_values)
+        if parameter_states > MAX_SYNCHRONOUS_PARAMETER_STATES:
+            raise ValueError(
+                f"synchronous calibration permits at most {MAX_SYNCHRONOUS_PARAMETER_STATES} parameter states"
+            )
+        include_domain_rejections = _strict_bool(data, "include_domain_rejections", True)
+        full_replay = _strict_bool(data, "full_replay", True)
+        return cls(x_values, y_values, exponent_values, include_domain_rejections, full_replay)
 
     def payload(self) -> dict[str, Any]:
         return {
@@ -47,6 +69,7 @@ class CalibrationConfig:
             "xy_symbol_values": list(self.xy_symbol_values),
             "include_domain_rejections": self.include_domain_rejections,
             "full_replay": self.full_replay,
+            "max_synchronous_parameter_states": MAX_SYNCHRONOUS_PARAMETER_STATES,
             "lexical_identity": {"xy_symbol": "MatrixPower exponent token", "x*y": "parameter product", "equal_by_default": False},
         }
 

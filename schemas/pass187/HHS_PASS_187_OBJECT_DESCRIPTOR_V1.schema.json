@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+  "type": "object",
+  "required": [
+    "logical_object_id",
+    "immutable_version_id",
+    "object_class",
+    "modality_set",
+    "content_identity",
+    "source_identity",
+    "provenance",
+    "owner_or_mutation_authority",
+    "permissions",
+    "inputs",
+    "outputs",
+    "operations",
+    "dependencies",
+    "state_schema",
+    "state_identity",
+    "history_root",
+    "replay_root",
+    "compatible_egress_targets",
+    "runtime_authority"
+  ],
+  "properties": {
+    "logical_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "immutable_version_id": {
+      "type": "string",
+      "pattern": "^ov_[0-9a-f]{72}$"
+    },
+    "object_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "modality_set": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "content_identity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_identity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "owner_or_mutation_authority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "state_schema": {
+      "type": "object"
+    },
+    "state": {
+      "type": "object"
+    },
+    "state_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "history_root": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "replay_root": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{72}$"
+    },
+    "compatible_egress_targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "runtime_authority": {
+      "type": "string",
+      "const": "INHERITED_VM81"
+    },
+    "parent_version_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "trusted": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "port": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

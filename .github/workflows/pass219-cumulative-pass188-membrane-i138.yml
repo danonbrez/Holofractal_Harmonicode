@@ -1,0 +1,258 @@
+name: Pass 219 Cumulative Pass 188 Membrane I138
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration138-pass188-license-lineage-completion
+    paths:
+      - 'docs/pass188/**'
+      - 'HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION.md'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+      - 'hhs_runtime/pass188/**'
+      - 'schemas/pass188/**'
+      - 'tests/pass188/**'
+      - 'native_projects/hhs_pass188_license_lineage/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass188_1_38.c'
+      - 'tests/pass219/test_pass219_inherited_pass188_1_38.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py'
+      - 'docs/pass219/PASS_219_I138_INHERITED_PASS188_FULL_COMPLETION.md'
+      - 'docs/operations/restart/PASS_219_I138_PASS188_LICENSE_LINEAGE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass188-membrane-i138.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/pass188/**'
+      - 'HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION.md'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+      - 'hhs_runtime/pass188/**'
+      - 'schemas/pass188/**'
+      - 'tests/pass188/**'
+      - 'native_projects/hhs_pass188_license_lineage/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass188_1_38.*'
+      - 'tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py'
+      - 'docs/pass219/PASS_219_I138_INHERITED_PASS188_FULL_COMPLETION.md'
+      - 'docs/operations/restart/PASS_219_I138_PASS188_LICENSE_LINEAGE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass188-membrane-i138.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass188-cumulative-membrane:
+    name: inherited-pass188-cumulative-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited Pass 219 Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'cryptography>=46.0,<47.0'
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I137 and Pass 188 historical lineage
+        run: |
+          for commit in \
+            ef27a1caf0d977e0f767b13126dba8fe49b09dab \
+            50aec3f624fe6cbaefa3220b7d709bb1b388a942 \
+            c77e3feef42448a111d8b8912a1d1cb157d51925 \
+            8e6f209aa8974da30d0b1dcb85a7ca2dc10060c6
+          do
+            git merge-base --is-ancestor "$commit" HEAD
+          done
+          test "$(git merge-base ef27a1caf0d977e0f767b13126dba8fe49b09dab HEAD)" = "ef27a1caf0d977e0f767b13126dba8fe49b09dab"
+          test "$(git rev-parse 50aec3f624fe6cbaefa3220b7d709bb1b388a942:docs/pass188/HHS_PASS_188_VERSIONED_NFT_CONTENT_LICENSE_LINEAGE_AND_LEGACY_STATE_PROTECTION.md)" = "871ed3fff0a677ad6173eb00a099d010ac1a730b"
+          test "$(git rev-parse c77e3feef42448a111d8b8912a1d1cb157d51925:native_projects/hhs_pass188_bott_runtime/evidence/P188_VALIDATION_RECEIPT.json)" = "492d60716896c66cdb507f6e76163d988d1d41e6"
+
+      - name: Prove Pass 188 historical Bott identities
+        run: |
+          test "$(git hash-object HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION.md)" = "4ab77654e688283e1042b68f2cf3aacdd7d6feda"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/Makefile)" = "9fe456a72d393c832e3db0472f052e3409914951"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/README.md)" = "038e54424059ccebab5b5ff0b531f095e1604db7"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/evidence/P188_SOURCE_MANIFEST.json)" = "dacabcf69c8576745dffe3a50af38326bac26c97"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/evidence/P188_VALIDATION_RECEIPT.json)" = "492d60716896c66cdb507f6e76163d988d1d41e6"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/include/hhs_pass188_bott_runtime.h)" = "880e18c9c88c050a98be8bff35969821dfcb7ad4"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c)" = "643cc11704d39cc87c30a7ec351307dd431ab95e"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S)" = "e424c8559ea82fe95a46639a97f273d65c4d6de6"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/python/hhs_pass188.py)" = "ec054ec687a938dd70b7215dddcc449c322d9b72"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/python/test_hhs_pass188.py)" = "7d747904542e514148426113bdee683f37894ad5"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/server/hhs_pass188_server.py)" = "547055d599f0d57dd92baba319ec506218e52ca0"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/tests/hhs_pass188_bott_runtime_test.c)" = "370ec89ac248406b67d7e9d86a9a04a61da82ae2"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/tools/hhs_pass188_cli.c)" = "d33ce66efdec194d721abbcdbf96b1120e5d0905"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/tools/hhs_pass188_surface_smoke.py)" = "3bc6a09fd9727ffe7f8ac92c23f793b3a1583be8"
+          test "$(git hash-object native_projects/hhs_pass188_bott_runtime/web/index.html)" = "c813234262a1041017d8b177cf1f1825600c46b6"
+
+      - name: Prove Pass 188 license completion identities
+        run: |
+          test "$(git hash-object docs/pass188/HHS_PASS_188_VERSIONED_NFT_CONTENT_LICENSE_LINEAGE_AND_LEGACY_STATE_PROTECTION.md)" = "871ed3fff0a677ad6173eb00a099d010ac1a730b"
+          test "$(git hash-object hhs_runtime/pass188/__init__.py)" = "26b9e3f017e67c98a9d7eaa19a1c407d7e45d2c2"
+          test "$(git hash-object hhs_runtime/pass188/license_lineage.py)" = "9ead3669a04b211be09adca66b35f37269350056"
+          test "$(git hash-object hhs_runtime/pass188/license_server.py)" = "33a5ab11dcb557a87ad465ccba2b726cc1375348"
+          test "$(git hash-object tests/pass188/test_pass188_license_lineage.py)" = "e55466723c0f15667fea93ecbb076a1f2fb5d570"
+          test "$(git hash-object schemas/pass188/HHS_PASS_188_CONTENT_VERSION_V1.schema.json)" = "6a01f5ccb1446b9a1f0a730d001e68635ce041ea"
+          test "$(git hash-object schemas/pass188/HHS_PASS_188_LICENSE_VERSION_V1.schema.json)" = "0f02f8f787aeba12e788c717acb0f92584f7bbdf"
+          test "$(git hash-object schemas/pass188/HHS_PASS_188_LICENSE_DELTA_V1.schema.json)" = "91e280b1660460e6950818cdaa7f5bb3c8a776d4"
+          test "$(git hash-object schemas/pass188/HHS_PASS_188_BINDING_V1.schema.json)" = "07b054b75fca66893b35a86f8a689fc559f032a0"
+          test "$(git hash-object schemas/pass188/HHS_PASS_188_EVENT_V1.schema.json)" = "f4f5e186f3369fc33050daf7616ad63a864686f2"
+          test "$(git hash-object native_projects/hhs_pass188_license_lineage/README.md)" = "53b1beba38e17defea694e734920535a68c5b23a"
+          test "$(git hash-object native_projects/hhs_pass188_license_lineage/Makefile)" = "01c30f4c5c2099e3bef0367f2fc5a342cabd7b90"
+          test "$(git hash-object .github/workflows/pass188-license-lineage-completion.yml)" = "943f93de78036622be13fe6f530e2a5c596de7e6"
+          test "$(git hash-object native_projects/hhs_pass188_license_lineage/evidence/P188_I138_VALIDATION_RECEIPT.json)" = "deb3db71cbea47e2ad25cd184b84c775582f1fe2"
+          test "$(git hash-object docs/pass188/HHS_PASS_188_I138_LICENSE_LINEAGE_IMPLEMENTATION_REPORT.md)" = "5238ff48f9556160356cbb3ffbe7da65c76264bd"
+
+      - name: Prove I138 membrane identities and additive ABI order
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.h)" = "fe13e2e53301b0cb73210879fd41d49c0c101f9b"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.hpp)" = "bc957286ce8a6fcbcdceca170dd49aa17801b414"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc)" = "a38cd30c383cd6f2e1140036865cfd7008d839c2"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py)" = "2cf7b7e8694e11678f9d84fce7bb2f54785d5c59"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "fa6cd855f64bf9f76dc3a26743f69b3a8109c84c"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "95ccd25f2bd06ed3afdb6d3dfb5c3ac6ae438698"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass188_1_38.c)" = "c4294e57038890d60e052d374c3281e5b07544af"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass188_1_38.cpp)" = "dbafb4df45eaf10c968fe1e63221f3c2ad983f1a"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py)" = "bc0d55493b05a028f102076aa0e1f1c1a5cf440b"
+          test "$(git hash-object docs/pass219/PASS_219_I138_INHERITED_PASS188_FULL_COMPLETION.md)" = "beb1f825d143b8307641cae5fd84c909a15dcdd7"
+          test "$(git hash-object docs/operations/restart/PASS_219_I138_PASS188_LICENSE_LINEAGE_RESTART.md)" = "2806a7b8682fc6cfb184e57e2c3dda407f910796"
+          test "$(git rev-parse ef27a1caf0d977e0f767b13126dba8fe49b09dab:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "80b3480b96ec897804f44ca561b3f575f070c9bb"
+          test "$(git rev-parse ef27a1caf0d977e0f767b13126dba8fe49b09dab:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "e22eba55fcd054984ca1c2d883d093130e4ab974"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass190_1_36.h') < h.index('hhs_pass219_inherited_pass189_1_37.h') < h.index('hhs_pass219_inherited_pass188_1_38.h')
+          assert c.index('hhs_pass219_inherited_pass190_1_36.inc') < c.index('hhs_pass219_inherited_pass189_1_37.inc') < c.index('hhs_pass219_inherited_pass188_1_38.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
+          ! grep -Eq 'license_external_chain_required[[:space:]]*=[[:space:]]*1U|license_wallet_authority[[:space:]]*=[[:space:]]*1U|license_browser_authority[[:space:]]*=[[:space:]]*1U|license_marketplace_authority[[:space:]]*=[[:space:]]*1U|license_float_canonical_authority[[:space:]]*=[[:space:]]*1U|license_independent_vm81_authority[[:space:]]*=[[:space:]]*1U|license_independent_hash72_clock[[:space:]]*=[[:space:]]*1U|bott_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U' \
+            hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc
+
+      - name: Revalidate Pass 188 versioned license completion
+        run: make -C native_projects/hhs_pass188_license_lineage validate
+
+      - name: Revalidate historical Pass 188 Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+
+      - name: Run I138 cumulative membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py
+
+      - name: Compile aggregate exact ABI and Pass 188 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i138-pass188
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i138-pass188/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass188_1_38.c \
+            /tmp/pass219-i138-pass188/exact.o \
+            -o /tmp/pass219-i138-pass188/pass188-c
+          /tmp/pass219-i138-pass188/pass188-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass188_1_38.cpp \
+            /tmp/pass219-i138-pass188/exact.o \
+            -o /tmp/pass219-i138-pass188/pass188-cpp
+          /tmp/pass219-i138-pass188/pass188-cpp
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I138_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass188/i138
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I138_TARGET']
+          paths = [
+              'hhs_runtime/pass188/license_lineage.py',
+              'tests/pass188/test_pass188_license_lineage.py',
+              'native_projects/hhs_pass188_bott_runtime/evidence/P188_VALIDATION_RECEIPT.json',
+              'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass188_1_38.c',
+              'tests/pass219/test_pass219_inherited_pass188_1_38.cpp',
+              'tests/pass219/test_pass219_cumulative_pass188_membrane_i138.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I138_PASS188_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i137': 'ef27a1caf0d977e0f767b13126dba8fe49b09dab',
+              'license_completion_head': '8e6f209aa8974da30d0b1dcb85a7ca2dc10060c6',
+              'license_classification': 'HHS_PASS_188_VERSIONED_CONTENT_LICENSE_AND_LEGACY_STATE_VERIFIED',
+              'bott_classification': 'HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION_VERIFIED',
+              'license_acceptance_scenarios': 16,
+              'bott_projected_addresses': 1259712,
+              'external_chain_authority': False,
+              'bott_canonical_mutation_authority': False,
+              'new_vm81_authority': False,
+              'new_hash72_clock': False,
+              'canonical_float_authority': False,
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass188/i138/PASS_219_I138_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i138-pass188-${{ matrix.target }}-seal
+          path: evidence/pass188/i138/PASS_219_I138_*.json
+          if-no-files-found: error

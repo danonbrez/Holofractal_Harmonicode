@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HHS Pass 187 Universal Composition</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+  body { margin: 0; background: #111; color: #eee; }
+  header { display:flex; gap:1rem; align-items:center; padding:1rem; border-bottom:1px solid #444; }
+  main { display:grid; grid-template-columns: 1fr 22rem; min-height: calc(100vh - 5rem); }
+  #canvas { padding:1rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(18rem,1fr)); gap:1rem; align-content:start; }
+  .object { border:1px solid #555; border-radius:.5rem; padding:.75rem; background:#191919; }
+  .object:focus-within { outline:2px solid currentColor; }
+  .ports { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+  .port-group { min-width:0; }
+  .port { display:block; width:100%; margin:.25rem 0; padding:.45rem; text-align:left; border:1px solid #666; border-radius:.35rem; background:#222; color:inherit; }
+  .port.output { cursor:grab; }
+  .port.selected { outline:2px solid currentColor; }
+  aside { border-left:1px solid #444; padding:1rem; overflow:auto; }
+  #event-log { font-family: ui-monospace, monospace; font-size:.8rem; white-space:pre-wrap; }
+  input { width:28rem; max-width:45vw; }
+  button { cursor:pointer; }
+  .status { font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Pass 187 Composition Fabric</strong>
+  <label>Inherited VM81 Hash72 receipt
+    <input id="receipt" aria-label="Inherited VM81 Hash72 receipt" autocomplete="off" spellcheck="false">
+  </label>
+  <button id="refresh" type="button">Refresh</button>
+  <button id="replay" type="button">Replay</button>
+  <button id="cancel-intent" type="button">Cancel intent</button>
+  <span id="status" class="status" role="status" aria-live="polite">loading</span>
+</header>
+<main>
+  <section id="canvas" aria-label="Composition graph"></section>
+  <aside>
+    <h2>Intent and receipt events</h2>
+    <div id="expression" aria-live="polite"></div>
+    <div id="event-log" role="log" aria-live="polite"></div>
+  </aside>
+</main>
+<script>
+(() => {
+  const canvas = document.getElementById('canvas');
+  const status = document.getElementById('status');
+  const receipt = document.getElementById('receipt');
+  const expression = document.getElementById('expression');
+  const eventLog = document.getElementById('event-log');
+  let selectedSource = null;
+  let edgeCounter = 1;
+
+  const log = (phase, payload) => {
+    const line = document.createElement('div');
+    line.dataset.phase = phase;
+    line.textContent = phase + ' ' + JSON.stringify(payload);
+    eventLog.prepend(line);
+  };
+
+  async function api(path, operation, args = {}) {
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({operation, args})
+    });
+    const body = await response.json();
+    if (!response.ok || body.ok === false) throw new Error(body.error || 'request failed');
+    return body;
+  }
+
+  function selectSource(button) {
+    document.querySelectorAll('.port.output.selected').forEach(el => el.classList.remove('selected'));
+    button.classList.add('selected');
+    selectedSource = {
+      logical_object_id: button.dataset.objectId,
+      port: button.dataset.port
+    };
+    log('candidate_graph_intent', selectedSource);
+  }
+
+  async function connectTo(inputButton, source = selectedSource) {
+    if (!source) return;
+    const target = {
+      logical_object_id: inputButton.dataset.objectId,
+      port: inputButton.dataset.port
+    };
+    const args = {
+      edge_id: 'ui-edge-' + (receipt.value.trim().slice(-12) || 'no-receipt') + '-' + edgeCounter++,
+      source_logical_object_id: source.logical_object_id,
+      source_port: source.port,
+      target_logical_object_id: target.logical_object_id,
+      target_port: target.port,
+      relationship: 'LIVE'
+    };
+    expression.textContent = 'LIVE(' + source.logical_object_id + '.' + source.port +
+      ' -> ' + target.logical_object_id + '.' + target.port + ')';
+    try {
+      const preview = await api('/api/pass187/preview', 'CONNECT', args);
+      log('candidate_graph_intent', preview.result);
+      if (!preview.result.compatible) throw new Error(preview.result.reason);
+      args.vm81_receipt_hash72 = receipt.value.trim();
+      log('authority_admission', {receipt_present: args.vm81_receipt_hash72.length === 72});
+      const committed = await api('/api/pass187/execute', 'CONNECT', args);
+      log('runtime_execution', {operation:'CONNECT'});
+      log('projection_update', committed.result.result);
+      log('receipt_commit', {
+        sequence: committed.result.sequence,
+        vm81_receipt_hash72: committed.result.vm81_receipt_hash72
+      });
+      selectedSource = null;
+      document.querySelectorAll('.port.output.selected').forEach(el => el.classList.remove('selected'));
+      await refresh();
+      status.textContent = 'admitted';
+    } catch (error) {
+      status.textContent = 'rejected';
+      log('failure_or_cancellation', {message:String(error.message || error)});
+    }
+  }
+
+  function portButton(obj, port, kind) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'port ' + kind;
+    button.dataset.objectId = obj.logical_object_id;
+    button.dataset.port = port.name;
+    button.setAttribute('aria-label', kind + ' ' + obj.logical_object_id + ' ' + port.name + ' ' + port.type);
+    button.textContent = port.name + ' : ' + port.type;
+    if (kind === 'output') {
+      button.draggable = true;
+      button.addEventListener('dragstart', event => {
+        selectSource(button);
+        event.dataTransfer.setData('application/json', JSON.stringify(selectedSource));
+      });
+      button.addEventListener('pointerdown', () => selectSource(button));
+      button.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectSource(button);
+        }
+      });
+    } else {
+      button.addEventListener('dragover', event => event.preventDefault());
+      button.addEventListener('drop', event => {
+        event.preventDefault();
+        let source = selectedSource;
+        try {
+          const raw = event.dataTransfer.getData('application/json');
+          if (raw) source = JSON.parse(raw);
+        } catch (_) {}
+        connectTo(button, source);
+      });
+      button.addEventListener('pointerup', event => {
+        if (event.pointerType === 'touch' || event.pointerType === 'pen') connectTo(button);
+      });
+      button.addEventListener('keydown', event => {
+        if ((event.key === 'Enter' || event.key === ' ') && selectedSource) {
+          event.preventDefault();
+          connectTo(button);
+        }
+      });
+    }
+    return button;
+  }
+
+  function render(objects) {
+    canvas.replaceChildren();
+    Object.values(objects).sort((a,b) => a.logical_object_id.localeCompare(b.logical_object_id)).forEach(obj => {
+      const card = document.createElement('article');
+      card.className = 'object';
+      card.dataset.objectId = obj.logical_object_id;
+      card.setAttribute('aria-label', 'Object ' + obj.logical_object_id);
+      const title = document.createElement('h2');
+      title.textContent = obj.logical_object_id;
+      const meta = document.createElement('div');
+      meta.textContent = obj.object_class + ' · ' + obj.immutable_version_id.slice(0,14) + '…';
+      const ports = document.createElement('div');
+      ports.className = 'ports';
+      const inputs = document.createElement('div');
+      inputs.className = 'port-group';
+      inputs.innerHTML = '<h3>Inputs</h3>';
+      (obj.inputs || []).forEach(port => inputs.appendChild(portButton(obj, port, 'input')));
+      const outputs = document.createElement('div');
+      outputs.className = 'port-group';
+      outputs.innerHTML = '<h3>Outputs</h3>';
+      (obj.outputs || []).forEach(port => outputs.appendChild(portButton(obj, port, 'output')));
+      ports.append(inputs, outputs);
+      const inspect = document.createElement('button');
+      inspect.type = 'button';
+      inspect.textContent = 'Inspect / open nested graph';
+      inspect.addEventListener('click', () => log('projection_update', {
+        logical_object_id: obj.logical_object_id,
+        state_identity: obj.state_identity
+      }));
+      card.append(title, meta, ports, inspect);
+      canvas.appendChild(card);
+    });
+  }
+
+  async function refresh() {
+    try {
+      const [stateResponse, objectsResponse] = await Promise.all([
+        fetch('/api/pass187/status').then(r => r.json()),
+        api('/api/pass187/execute', 'OBJECTS', {})
+      ]);
+      render(objectsResponse.result);
+      status.textContent = stateResponse.replay.valid ? 'verified' : 'drift';
+    } catch (error) {
+      status.textContent = 'failed';
+      log('failure_or_cancellation', {message:String(error.message || error)});
+    }
+  }
+
+  document.getElementById('refresh').addEventListener('click', refresh);
+  document.getElementById('cancel-intent').addEventListener('click', () => {
+    selectedSource = null;
+    document.querySelectorAll('.port.output.selected').forEach(el => el.classList.remove('selected'));
+    status.textContent = 'cancelled';
+    log('failure_or_cancellation', {cancelled:true, authority_mutation:false});
+  });
+  document.getElementById('replay').addEventListener('click', async () => {
+    try {
+      const body = await api('/api/pass187/execute', 'REPLAY', {});
+      log('replay_event', body.result);
+      status.textContent = body.result.valid ? 'replay verified' : 'replay failed';
+    } catch (error) {
+      log('failure_or_cancellation', {message:String(error.message || error)});
+    }
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>

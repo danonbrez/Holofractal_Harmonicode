@@ -23,7 +23,7 @@ function injectStyles() {
     .kimi-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
     .kimi-grid label { display:grid; gap:5px; font-size:11px; color:var(--muted,#b5abbc); }
     .kimi-grid .wide { grid-column:1/-1; }
-    .kimi-grid select,.kimi-grid textarea { width:100%; box-sizing:border-box; border:1px solid rgba(255,255,255,.14); border-radius:9px; background:#110d15; color:#f8f3fa; padding:9px; font:inherit; }
+    .kimi-grid select,.kimi-grid textarea,.kimi-grid input { width:100%; box-sizing:border-box; border:1px solid rgba(255,255,255,.14); border-radius:9px; background:#110d15; color:#f8f3fa; padding:9px; font:inherit; }
     .kimi-grid textarea { min-height:76px; resize:vertical; line-height:1.45; }
     .kimi-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
     .kimi-actions button,.kimi-actions a { border:0; border-radius:9px; padding:9px 11px; font-weight:750; font-size:11px; cursor:pointer; text-decoration:none; text-align:center; }
@@ -67,6 +67,9 @@ function createPanel() {
           <option value="sprite">Sprite production · 1024×1024</option>
         </select>
       </label>
+      <label class="wide">Operator token
+        <input id="kimi-operator-token" type="password" autocomplete="off" spellcheck="false" placeholder="Required for paid provider generation" />
+      </label>
       <label class="wide">Art direction
         <textarea id="kimi-art-direction" maxlength="32768">Polished cinematic sprite-map graphics with readable silhouettes, harmonic reciprocal color planes, layered parallax, deterministic transitions, and shader-ready channels.</textarea>
       </label>
@@ -105,17 +108,20 @@ function applyNativeHandoff(plan) {
   const story = byId('story');
   if (title && handoff.title) { title.value = handoff.title; dispatch(title); }
   if (story && handoff.story_text) { story.value = handoff.story_text; dispatch(story); }
+
   const style = handoff.style_overrides || {};
+  // Template defaults must be installed first. Generated overrides are applied
+  // afterward so the template change handler cannot erase the admitted plan.
+  const template = byId('template');
+  if (template && style.template_id && [...template.options].some((option) => option.value === style.template_id)) {
+    template.value = style.template_id;
+    dispatch(template);
+  }
   for (const [key, value] of Object.entries(style)) {
     const input = byId(key.replaceAll('_', '-'));
     if (!input || key === 'template_id') continue;
     input.value = value;
     dispatch(input);
-  }
-  const template = byId('template');
-  if (template && style.template_id && [...template.options].some((option) => option.value === style.template_id)) {
-    template.value = style.template_id;
-    dispatch(template);
   }
   byId('kimi-result-summary').textContent = 'Native handoff applied to the Storybook Studio controls. Review the preview, upload narration, then run the existing HHS native MP4 generator.';
 }
@@ -138,7 +144,7 @@ async function checkStatus() {
     const response = await fetch(`${API}/status`, { cache: 'no-store' });
     const payload = unwrap(await response.json());
     const configured = Boolean(payload?.configured && payload?.enabled);
-    badge.textContent = configured ? 'CONFIGURED' : 'KEY REQUIRED';
+    badge.textContent = configured ? 'CONFIGURED · AUTH REQUIRED' : 'KEY REQUIRED';
     badge.className = `kimi-status ${configured ? 'ready' : 'error'}`;
     button.disabled = !configured;
     if (!configured) button.title = 'Configure HHS_KIMI_K3_API_KEY or MOONSHOT_API_KEY on the server.';
@@ -157,10 +163,17 @@ async function generatePlan() {
   const resultSummary = byId('kimi-result-summary');
   const resultHash = byId('kimi-result-hash');
   const sourceText = byId('story')?.value?.trim() || '';
+  const operatorToken = byId('kimi-operator-token')?.value?.trim() || '';
   if (!sourceText) {
     resultBox.hidden = false;
     resultTitle.textContent = 'Source text required';
     resultSummary.textContent = 'Enter the story or visual brief before generating a plan.';
+    return;
+  }
+  if (!operatorToken) {
+    resultBox.hidden = false;
+    resultTitle.textContent = 'Operator authorization required';
+    resultSummary.textContent = 'Enter the operator token before invoking the protected paid provider route.';
     return;
   }
   button.disabled = true;
@@ -173,7 +186,10 @@ async function generatePlan() {
     const geometry = targetGeometry();
     const response = await fetch(`${API}/plan`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${operatorToken}`,
+      },
       body: JSON.stringify({
         operation: byId('kimi-operation').value,
         project_id: 'project:storybook-reel',
@@ -196,6 +212,9 @@ async function generatePlan() {
       throw new Error(typeof reason === 'string' ? reason : JSON.stringify(reason));
     }
     const payload = unwrap(raw);
+    if (payload?.ok !== true) throw new Error('The provider result was not admitted by HHS.');
+    if (payload?.status !== 'KIMI_K3_CONTENT_PLAN_ADMITTED') throw new Error('The provider plan did not reach the admitted state.');
+    if (payload?.provider_result_ingress?.ok !== true) throw new Error('The provider plan failed governed result ingress.');
     if (!payload?.plan) throw new Error('The provider returned no admitted plan.');
     window.HHS_KIMI_K3_CONTENT_PLAN = payload.plan;
     const scenes = payload.plan.storyboard?.scenes?.length || 0;
@@ -207,6 +226,8 @@ async function generatePlan() {
     byId('kimi-apply').disabled = false;
     exposeDownload(payload.plan);
   } catch (error) {
+    window.HHS_KIMI_K3_CONTENT_PLAN = null;
+    byId('kimi-apply').disabled = true;
     resultTitle.textContent = 'Kimi K3 generation failed';
     resultSummary.textContent = error.message;
     resultHash.textContent = '';

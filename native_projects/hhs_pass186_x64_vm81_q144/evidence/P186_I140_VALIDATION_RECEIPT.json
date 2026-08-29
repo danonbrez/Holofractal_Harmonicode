@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS_186_I140_INHERITED_BINDING_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P186-X64-VM81-Q144-F7-G243-NCABI",
+  "historical_classification": "HHS_PASS_186_X64_VM81_Q144_NONCOMMUTATIVE_ABI_VALIDATED",
+  "i140_classification": "HHS_PASS_186_INHERITED_EXACT_ABI_MEMBRANE_WIRED",
+  "historical_implementation_commit": "fd42056c22071d290945b02efe3a5752aaa3d737",
+  "frozen_i139_predecessor": "e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4",
+  "i140_implementation_head": "395b1080d4dd6d90045d8b681c538cfb65dd888e",
+  "i140_implementation_tree": "4a96868212deca2e0bef9da3984e2eb8a9cf4a81",
+  "validation": {
+    "run": 33247547960,
+    "conclusion": "success",
+    "exact": {
+      "job": 99087545596,
+      "artifact": 9713322038,
+      "artifact_sha256": "583ed7898c5b4a9425ae0b4317a7414126bed02af342f8f6bbe9d2683832563f",
+      "conclusion": "success"
+    },
+    "synthetic_current_main": {
+      "job": 99087545466,
+      "artifact": 9713322523,
+      "artifact_sha256": "f79b87fdc5d49c89498619de37bb8953c715c707aae5e05695641fd1b8a89242",
+      "conclusion": "success"
+    },
+    "historical_exhaustive_roundtrip_states": 1259712,
+    "historical_native_make_test_disassemble": true,
+    "aggregate_exact_abi_compiled": true,
+    "c_conformance": true,
+    "cpp_conformance": true,
+    "python_membrane_preflight": true
+  },
+  "historical_source_drift": false,
+  "ordered_noncommutative_identity_preserved": true,
+  "authority_boundary": {
+    "new_pass219_candidate_authority": false,
+    "new_canonical_mutation_authority": false,
+    "new_persistence_authority": false,
+    "new_hash72_clock": false,
+    "independent_vm81_authority": false,
+    "independent_opcode_authority": false,
+    "cxx_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "authoritative_main_status": "NOT_MERGED_SEPARATE_AUTHORIZATION_REQUIRED"
+}

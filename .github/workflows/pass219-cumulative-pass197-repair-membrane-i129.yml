@@ -1,0 +1,162 @@
+name: Pass 219 Cumulative Pass 197 Repair Membrane I129
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration129-pass197-repair-membrane
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/pass197_exact_v1.py'
+      - 'hhs_backend/runtime/pass197_state_v1.py'
+      - 'hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'hhs_backend/api/pass197_calibration_routes.py'
+      - 'applications/holofractal_harmonizer/src/pass197-calibration.mjs'
+      - 'tests/test_hhs_pass197_i129_repair_v1.py'
+      - '.github/workflows/pass197-i129-repair-validation.yml'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass197_1_29.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i129_pass197.py'
+      - 'tests/pass219/test_pass219_inherited_pass197_1_29.c'
+      - 'tests/pass219/test_pass219_inherited_pass197_1_29.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass197_membrane_i129.py'
+      - 'docs/pass197/PASS_219_I129_INHERITED_EXPOSURE.md'
+      - 'docs/operations/restart/PASS_219_I129_PASS197_REPAIR_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass197-repair-membrane-i129.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass197-repair-membrane:
+    name: inherited-pass197-repair-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I128 and accepted Pass 197 squash lineage
+        run: |
+          git merge-base --is-ancestor c85b2b29cdf26d21912eb06b7d50323526944cc2 HEAD
+          git merge-base --is-ancestor 2321a1f05a6da410034a31ca141e3919091bb09a HEAD
+          test "$(git merge-base aeadabcce0ea178ad5b6a27001e109f349808dde HEAD)" = "77bf7ddfcfb09246a805a6e8f0919cfa18d0f3c0"
+
+      - name: Prove accepted Pass 197 provenance and repaired identities
+        run: |
+          test "$(git rev-parse 2321a1f05a6da410034a31ca141e3919091bb09a:hhs_backend/runtime/pass197_exact_v1.py)" = "8f1674801005a0de400a13d61ac537b11d65e152"
+          test "$(git rev-parse 2321a1f05a6da410034a31ca141e3919091bb09a:hhs_backend/runtime/pass197_state_v1.py)" = "4a60cae7139771feea0e1131fd6b40143f8e42fd"
+          test "$(git rev-parse 2321a1f05a6da410034a31ca141e3919091bb09a:hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py)" = "597afc78212df9460688d71fc262bbd3f9b881ba"
+          test "$(git rev-parse 2321a1f05a6da410034a31ca141e3919091bb09a:hhs_backend/api/pass197_calibration_routes.py)" = "daa7a22d85f685b123292e10cc6b5e05bb5fe9ef"
+          test "$(git rev-parse 2321a1f05a6da410034a31ca141e3919091bb09a:applications/holofractal_harmonizer/src/pass197-calibration.mjs)" = "81161f6af73120c6d5fa2fd5e1a0eb4a5c579050"
+          test "$(git hash-object hhs_backend/runtime/pass197_exact_v1.py)" = "96be2009ca46cbcab7633f6fae97a0bea7621abb"
+          test "$(git hash-object hhs_backend/runtime/pass197_state_v1.py)" = "10c986063d5fa2503d732e6725bb3b8665372666"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py)" = "6d86629bdf25bdb03890197475a12dbf9190c618"
+          test "$(git hash-object hhs_backend/api/pass197_calibration_routes.py)" = "0325974ff78c097b010b297971c2243d4132af43"
+          test "$(git hash-object applications/holofractal_harmonizer/src/pass197-calibration.mjs)" = "f68cac28e29a29da99c4cb415778fb1c196a19f2"
+          test "$(git hash-object tests/test_hhs_pass197_i129_repair_v1.py)" = "1924e7c9eb3642087b6b2792ce75fded38dbee00"
+          test "$(git hash-object .github/workflows/pass197-i129-repair-validation.yml)" = "76786543a6bac5f0884c19e8226369ae8f47ff0c"
+
+      - name: Compile repaired Python and membrane surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py \
+            hhs_backend/api/pass197_calibration_routes.py \
+            hhs_runtime/hhs_pass219_cumulative_pass_membrane_i129_pass197.py \
+            tests/test_hhs_pass197_i129_repair_v1.py \
+            tests/pass219/test_pass219_cumulative_pass197_membrane_i129.py
+
+      - name: Reject approximate native authority and accidental authority exports
+        run: |
+          ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
+            hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.h \
+            hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.hpp \
+            hhs_runtime/c/hhs_pass219_inherited_pass197_1_29.inc
+          ! grep -Eq 'pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1|vm81_mutation_authority[[:space:]]*=[[:space:]]*1' \
+            hhs_runtime/include/hhs_pass219_inherited_pass197_1_29.h \
+            hhs_runtime/c/hhs_pass219_inherited_pass197_1_29.inc
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py; then
+            echo 'Approximate canonical arithmetic detected in Pass 197 repair.' >&2
+            exit 1
+          fi
+
+      - name: Compile cumulative exact ABI and Pass 197 repair conformance
+        run: |
+          mkdir -p /tmp/pass219-i129-pass197
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i129-pass197/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass197_1_29.c \
+            /tmp/pass219-i129-pass197/exact.o \
+            -o /tmp/pass219-i129-pass197/pass197-c
+          /tmp/pass219-i129-pass197/pass197-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass197_1_29.cpp \
+            /tmp/pass219-i129-pass197/exact.o \
+            -o /tmp/pass219-i129-pass197/pass197-cpp
+          /tmp/pass219-i129-pass197/pass197-cpp
+
+      - name: Run repaired Pass 197 membrane preflight
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass197_membrane_i129.py
+
+      - name: Run Pass 197 lifecycle and I129 repair regressions
+        run: |
+          PYTHONPATH="$PWD" python -m unittest -v \
+            tests.test_hhs_pass197_ab_hydration_calibration_v1 \
+            tests.test_hhs_pass197_i129_repair_v1
+
+      - name: Execute complete repaired 405-state Pass 197 envelope
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import Pass197ABHydrationCalibration
+          with tempfile.TemporaryDirectory() as root:
+              report = Pass197ABHydrationCalibration(state_root=root).run(vm81_receipt_hash72='7' * 72)
+              summary = report['summary']
+              assert report['closed'] is True
+              assert summary['evaluated_parameter_states'] == 405
+              assert summary['kernel_audited_parameter_states'] == 405
+              assert summary['admitted_parameter_states'] == 320
+              assert summary['domain_rejected_parameter_states'] == 85
+              assert summary['address_comparisons'] == 1_658_880
+              assert summary['mismatch_parameter_states'] == 0
+              assert summary['singular_parameter_states'] == 0
+              assert report['replay']['full_replay_executed'] is True
+              assert report['replay']['deterministic'] is True
+              assert report['replay']['replayed_parameter_states'] == 405
+          PY
+
+      - name: Preserve repaired Pass 198 successor membrane
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass198_membrane_i128.py
