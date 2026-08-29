@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS219_I140_PASS186_RECEIPT_BEARING_FINAL_TRIGGER_V1",
+  "validated_implementation_head": "395b1080d4dd6d90045d8b681c538cfb65dd888e",
+  "validated_run": 33247547960,
+  "purpose": "Trigger final exact and synthetic validation after receipt-bearing evidence is committed.",
+  "historical_pass186_sources_modified": false,
+  "merge_authorized": false
+}
