@@ -1,0 +1,72 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE1_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+  "phase": "CURRENT_PRODUCTION_VISIBLE_LIFECYCLE_PHASE1",
+  "classification": "HHS_PASS_185_CURRENT_PRODUCTION_VISIBLE_LIFECYCLE_PHASE1_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "authoritative_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+  "validated_head": "31a3ca0f725ac7ee14a7c2252da750536afe13ec",
+  "validated_tree": "c8232474b9d15fcf847f77d4a79ba54c0aaf8eb7",
+  "workflow": {
+    "run": 33249040294,
+    "job": 99091407019,
+    "conclusion": "success",
+    "artifact": 9713782418,
+    "artifact_sha256": "21fc874daa36a94a6129de42ebc53d58f51a54f50ff8a1953d4d5055de969927"
+  },
+  "acceptance": {
+    "exact_production_entrypoint": "hhs_backend.runtime_os_application_server:app",
+    "native_authorities_built": true,
+    "typescript_typecheck": true,
+    "runtime_os_build": true,
+    "production_root_cold_boot": true,
+    "real_chromium": true,
+    "create_calculator": true,
+    "edit_html": true,
+    "backend_save_witness": true,
+    "preview": true,
+    "calculate_7_plus_8_result": 15,
+    "run_test": true,
+    "export_zip": true,
+    "zip_contents_validated": true,
+    "reload_reopen_source": true,
+    "reload_preview_runnable": true,
+    "mobile_controls_visible": true,
+    "page_errors": 0,
+    "http_5xx": 0
+  },
+  "repair_forward": [
+    {
+      "commit": "2069ad86e8500484e499551fca8a4caaff18a616",
+      "repair": "COPY_ZIP_BYTES_TO_EXPLICIT_ARRAYBUFFER_FOR_BLOBPART_COMPATIBILITY"
+    },
+    {
+      "commit": "5a6f9c1462e1f432f758fc2851541c8fbd45ecb7",
+      "repair": "FORCE_NEW_PREVIEW_EXECUTION_REVISION_ON_IDENTICAL_SOURCE_AFTER_RELOAD"
+    },
+    {
+      "commit": "31a3ca0f725ac7ee14a7c2252da750536afe13ec",
+      "repair": "CLASSIFY_NAVIGATION_ABORTED_PRODUCT_HEALTH_PROBE_AS_NONACTIONABLE_RELOAD_CANCELLATION"
+    }
+  ],
+  "authority_boundary": {
+    "canonical_source_witness": "WORKSPACE_COMMAND_INGRESS_REGISTER",
+    "frontend_runtime_authority": false,
+    "browser_preview_is_canonical_authority": false,
+    "zip_packaging_is_canonical_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_stream": false,
+    "new_persistence_authority": false
+  },
+  "remaining_terminal_scope": [
+    "PROCESS_SOCKET_FAILURE_MATRIX",
+    "STATIC_MODULE_MIME_FAILURE_MATRIX",
+    "BROWSER_LIFECYCLE_DEGRADATION_MATRIX",
+    "OPTIONAL_PROVIDER_AND_C_RUNTIME_DEGRADATION_MATRIX",
+    "MULTIMODAL_APPLICATION_WORKFLOWS",
+    "PERFORMANCE_STARVATION_GATES",
+    "COMPLETE_NEGATIVE_TEST_MATRIX",
+    "CUMULATIVE_FINAL_RECEIPT",
+    "AUTHORITATIVE_MAIN_AND_EXTERNAL_DEPLOYMENT_REPLAY"
+  ]
+}
