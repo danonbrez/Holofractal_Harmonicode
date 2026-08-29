@@ -94,6 +94,12 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
     : []
   const projectionSubscriptions = ["runtime", "replay", "graph", "transport"]
     .reduce((total, channel) => total + Number(listenerCounts[channel] ?? 0), 0)
+  const connectedChannels = [
+    socketMetrics.runtimeConnected,
+    socketMetrics.replayConnected,
+    socketMetrics.graphConnected,
+    socketMetrics.transportConnected,
+  ].filter(Boolean).length
 
   return (
     <section data-testid="live-runtime-projection-panel" className="rounded-2xl border border-cyan-900/70 bg-black/80 p-3 font-mono shadow-2xl">
@@ -116,7 +122,8 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
 
       {connectionError ? <p className="mb-3 rounded-lg border border-red-900 bg-red-950/30 p-2 text-[10px] text-red-300">{connectionError}</p> : null}
 
-      <div data-testid="live-runtime-transport-metrics" className="mb-3 grid gap-2 rounded-xl border border-neutral-800 bg-neutral-950/80 p-3 text-[10px] sm:grid-cols-2">
+      <div data-testid="live-runtime-transport-metrics" className="mb-3 grid gap-2 rounded-xl border border-neutral-800 bg-neutral-950/80 p-3 text-[10px] sm:grid-cols-3">
+        <Field label="connected channels" value={`${connectedChannels} / 4`} />
         <Field label="projection subscriptions" value={`${projectionSubscriptions} / 4`} />
         <Field label="reconnect pending" value={reconnectPending.length ? reconnectPending.join(", ") : "none"} />
       </div>
