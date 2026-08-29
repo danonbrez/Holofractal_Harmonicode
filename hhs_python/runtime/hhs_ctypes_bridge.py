@@ -352,7 +352,78 @@ class HHSGraphEdge(Structure):
 # LOAD LIBRARY
 # ============================================================================
 
-_RUNTIME_LIB = ctypes.CDLL(str(_resolve_runtime_library()))
+class HHSRuntimeLibraryUnavailable(RuntimeError):
+    """Raised when a canonical C ABI operation is requested without its library."""
+
+
+class _UnavailableCFunction:
+    def __init__(self, name: str, detail: str):
+        self.name = name
+        self.detail = detail
+        self.argtypes = None
+        self.restype = None
+
+    def __call__(self, *args, **kwargs):
+        _ = args, kwargs
+        raise HHSRuntimeLibraryUnavailable(
+            f"HHS C runtime authority unavailable for {self.name}: {self.detail}"
+        )
+
+
+class _UnavailableRuntimeLibrary:
+    """Signature-compatible non-authority used only to keep the web shell importable.
+
+    Attribute access returns inert call stubs so ctypes signature declarations
+    remain importable. Every attempted canonical C operation still fails closed.
+    """
+
+    def __init__(self, detail: str):
+        self.detail = detail
+        self._functions: dict[str, _UnavailableCFunction] = {}
+
+    def __getattr__(self, name: str) -> _UnavailableCFunction:
+        function = self._functions.get(name)
+        if function is None:
+            function = _UnavailableCFunction(name, self.detail)
+            self._functions[name] = function
+        return function
+
+
+_RUNTIME_LIBRARY_PATH: pathlib.Path | None = None
+_RUNTIME_LIBRARY_ERROR: str | None = None
+
+try:
+    _RUNTIME_LIBRARY_PATH = _resolve_runtime_library()
+    _RUNTIME_LIB = ctypes.CDLL(str(_RUNTIME_LIBRARY_PATH))
+except (FileNotFoundError, OSError) as exc:
+    allow_degraded_import = (
+        os.environ.get("HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT", "").lower()
+        in {"1", "true", "yes", "on"}
+    )
+    if not allow_degraded_import:
+        raise
+    _RUNTIME_LIBRARY_ERROR = f"{type(exc).__name__}: {exc}"
+    _RUNTIME_LIB = _UnavailableRuntimeLibrary(_RUNTIME_LIBRARY_ERROR)
+
+
+def runtime_library_status() -> dict:
+    """Return availability without claiming a Python replacement authority."""
+
+    available = _RUNTIME_LIBRARY_PATH is not None and _RUNTIME_LIBRARY_ERROR is None
+    return {
+        "schema": "HHS_C_RUNTIME_LIBRARY_STATUS_V1",
+        "ok": available,
+        "available": available,
+        "status": "HHS_C_RUNTIME_AVAILABLE" if available else "HHS_C_RUNTIME_UNAVAILABLE",
+        "library_path": str(_RUNTIME_LIBRARY_PATH) if _RUNTIME_LIBRARY_PATH is not None else None,
+        "error": _RUNTIME_LIBRARY_ERROR,
+        "degraded_import_enabled": (
+            os.environ.get("HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT", "").lower()
+            in {"1", "true", "yes", "on"}
+        ),
+        "python_replacement_authority": False,
+        "canonical_c_calls_fail_closed_when_unavailable": True,
+    }
 
 # ============================================================================
 # ABI FUNCTION SIGNATURES
