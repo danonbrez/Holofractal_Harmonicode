@@ -311,11 +311,19 @@ def run_c_runtime_missing(evidence_dir: Path) -> dict[str, Any]:
     try:
         startup = server.start()
         interface = json_fetch(server.base_url + "/api/interface/status")
+        product = json_fetch(server.base_url + "/api/product/health", timeout=15.0)
+        c_runtime = product.get("c_runtime") or {}
+        assert c_runtime.get("available") is False, c_runtime
+        assert product.get("source_only_degraded_mode") is True, product
+        assert c_runtime.get("python_replacement_authority") is False, c_runtime
+        assert c_runtime.get("canonical_c_calls_fail_closed_when_unavailable") is True, c_runtime
         lifecycle = validate_local_lifecycle(server.base_url, evidence_dir, label="c-runtime-missing-browser")
         return {
             "profile": "c-runtime-missing",
             "startup": startup,
             "interface": interface,
+            "product_health": product,
+            "c_runtime": c_runtime,
             "compiled_runtime_library_present": False,
             "autobuild_disabled": True,
             "local_lifecycle": lifecycle,
