@@ -20,9 +20,6 @@ export const RuntimeShell: React.FC<RuntimeShellProps> = ({ runtimeOS }) => {
 
   useEffect(() => {
     let mounted = true
-    const shutdownForPageExit = (): void => runtimeOS.shutdown()
-
-    window.addEventListener("pagehide", shutdownForPageExit)
 
     runtimeOS.initialize()
       .then(() => {
@@ -39,7 +36,7 @@ export const RuntimeShell: React.FC<RuntimeShellProps> = ({ runtimeOS }) => {
 
     return () => {
       mounted = false
-      window.removeEventListener("pagehide", shutdownForPageExit)
+      runtimeOS.shutdown()
     }
   }, [runtimeOS])
 
