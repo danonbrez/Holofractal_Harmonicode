@@ -76,7 +76,7 @@ The gate executes:
 
 ## Current Phase-2 classification
 
-`HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_IMPLEMENTED_PENDING_VALIDATION`
+`HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_VERIFIED`
 
 This is not the terminal Pass 185 classification.
 
@@ -95,3 +95,27 @@ The following remain mandatory after a green Phase 2:
 Phase 2 creates no new VM81 authority, Hash72 commit stream, persistence authority, C++ mutation authority, browser mutation authority, or canonical floating-point path.
 
 Optional-provider and C-runtime degradation are availability classifications only. They do not transfer canonical authority to the browser.
+
+
+## Final Phase-2 validation
+
+Phase 2 is terminal green at:
+
+- validated head: `2b972a66743a505937d5f819c839f5e59dda98b4`
+- validated tree: `e67889f885481e0ddfd14c33a61b035af82e0bcc`
+- run: `33254220079`
+- job: `99105019179`
+- artifact: `9715347753`
+- artifact SHA-256: `c7f4ba101f0182169c1156df582e664d8befd17188d7ecd2724eee437aca2773`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE2_VALIDATION_RECEIPT.json`
+
+All Phase-2 behavioral profiles passed in the same run:
+
+1. process/socket + static/module negative acceptance;
+2. optional Gemma/Word2Vec degradation with the local application lifecycle preserved;
+3. compiled-C-unavailable source-only production boot with calculator preview/test/ZIP preserved;
+4. impacted inherited Pass-174 and Runtime-OS production-root regressions.
+
+The final C-unavailable architecture is intentionally bounded at the outer production entrypoint. The cumulative application remains preserved in `runtime_os_application_server_full.py`, while `runtime_os_application_server.py` selects `runtime_os_source_only_server.py` only when C degradation is explicitly requested and the compiled library is absent. Canonical C/Hash72/VM81 modules were restored to their pre-Phase-2 blobs.
+
+Phase 2 still does **not** claim terminal Pass 185 completion.
