@@ -286,33 +286,11 @@ async def startup_sequence():
         "Starting HHS backend..."
     )
 
-    if not runtime_controller.runtime_available:
-        availability = runtime_controller.availability_status()
-        SERVER_STATE.update({
-            "runtime_initialized": False,
-            "graph_initialized": False,
-            "websocket_ready": False,
-            "live_workflow_ready": False,
-            "runtime_degraded": True,
-            "source_only_degraded_mode": True,
-            "runtime_availability": availability,
-            "runtime_degradation_reason": availability.get("error"),
-        })
-        await initialize_graph()
-        logger.warning(
-            "HHS backend started in source-only degraded mode; canonical C runtime "
-            "authority is unavailable and all runtime execution remains closed"
-        )
-        return
-
     await initialize_runtime()
 
     await initialize_graph()
 
     await initialize_websocket_layer()
-
-    SERVER_STATE["runtime_degraded"] = False
-    SERVER_STATE["source_only_degraded_mode"] = False
 
     logger.info(
         "HHS backend startup complete"
@@ -330,15 +308,11 @@ async def shutdown_sequence():
 
     await LIVE_WORKFLOW.stop()
 
-    if runtime_controller.runtime_available:
-        runtime_controller.halt()
-        logger.info(
-            "Runtime halted"
-        )
-    else:
-        logger.info(
-            "Source-only degraded shutdown completed without invoking C runtime authority"
-        )
+    runtime_controller.halt()
+
+    logger.info(
+        "Runtime halted"
+    )
 
 # ============================================================================
 # FASTAPI LIFESPAN
