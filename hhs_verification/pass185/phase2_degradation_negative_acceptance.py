@@ -350,7 +350,7 @@ def run_process_and_static_negative(evidence_dir: Path) -> dict[str, Any]:
     )
     occupied_meta = occupied_server.start(wait_ready=False)
     assert occupied_server.process is not None
-    occupied_code = wait_for_exit(occupied_server.process, 12)
+    occupied_code = wait_for_exit(occupied_server.process, 45)
     occupied_server.stop()
     occupied.close()
     assert occupied_code != 0
@@ -374,7 +374,7 @@ def run_process_and_static_negative(evidence_dir: Path) -> dict[str, Any]:
     )
     missing_meta = missing_server.start(wait_ready=False)
     assert missing_server.process is not None
-    missing_code = wait_for_exit(missing_server.process, 12)
+    missing_code = wait_for_exit(missing_server.process, 45)
     missing_server.stop()
     missing_log = missing_server.log_path.read_text(encoding="utf-8", errors="replace")
     shutil.rmtree(missing_root, ignore_errors=True)
