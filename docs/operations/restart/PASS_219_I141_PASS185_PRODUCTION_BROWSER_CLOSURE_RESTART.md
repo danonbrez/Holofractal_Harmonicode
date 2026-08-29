@@ -38,3 +38,52 @@ I141 may expose or validate inherited Pass 185 behavior but must not create a se
 ## Recovery action
 
 Resolve the branch tip with `git rev-parse HEAD`. Continue from that exact repository-visible tip. Preserve the last green checkpoint and repair forward. Do not infer Pass 185 completion from contract prose alone and do not merge without separate authorization.
+
+
+## I141 Phase-1 implementation checkpoint
+
+- Phase-1 implementation head before validation trigger: `91aa47f888cf751f1e9049966ce9cde80643bfc9`
+- classification: `HHS_PASS_185_CURRENT_PRODUCTION_VISIBLE_LIFECYCLE_PHASE1_IMPLEMENTED_PENDING_VALIDATION`
+- terminal Pass 185 completion claimed: no
+
+Implemented files:
+
+- `hhs_gui/runtime_os/artifacts/createStoredZip.ts`
+- `hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx`
+- modified `hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx`
+- `hhs_verification/pass185/production_root_browser_acceptance.py`
+- `docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md`
+- `.github/workflows/pass219-i141-pass185-production-root-phase1.yml`
+
+Phase-1 visible workflow:
+
+`Create Calculator → edit HTML → Save/Witness → Preview → 7+8=15 → Run Test → Export ZIP → validate ZIP → reload → reopen source → rerun preview → mobile-control check`
+
+Canonical source witnessing remains the inherited backend workspace command path. Preview and ZIP packaging are non-authoritative projections.
+
+## Validation state
+
+Run the dedicated I141 Phase-1 workflow on the exact branch head. It must:
+
+1. build inherited native authorities;
+2. typecheck and build the current TypeScript Runtime OS;
+3. boot `hhs_backend.runtime_os_application_server:app`;
+4. execute the visible workflow in real Chromium;
+5. validate downloaded ZIP contents;
+6. prove reload/reopen behavior;
+7. capture screenshot, browser/network evidence, server log, source identities, and a Phase-1 seal.
+
+If this gate fails, repair forward from the exact branch tip. Do not downgrade the current production root to the legacy Pass 176 application in order to make the test pass.
+
+## Remaining terminal Pass 185 scope after Phase 1
+
+Even after Phase 1 is green, do not emit `HHS_PASS_185_PRODUCTION_BROWSER_AND_RUNTIME_CLOSURE_VERIFIED` until the contract-wide remaining matrix is closed, including:
+
+- C runtime degradation and missing/slow optional dependency behavior;
+- assistant-provider and Word2Vec degradation without base-IDE starvation;
+- production module-graph/MIME/404/5xx negative cases;
+- multimodal create/edit/preview/test/export workflows required by the Pass 185 contract;
+- startup starvation/background-tick evidence;
+- cumulative inherited closure evidence and final restartable receipt.
+
+No I141 merge is authorized by this restart record.
