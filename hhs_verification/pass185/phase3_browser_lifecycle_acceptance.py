@@ -54,6 +54,70 @@ def launch_page(context: BrowserContext, base_url: str) -> Page:
     return page
 
 
+def client_metrics(page: Page) -> dict[str, Any]:
+    value = page.evaluate(
+        """() => {
+            const client = window.__HHS_RUNTIME_CLIENT__;
+            return client ? client.getMetrics() : { missing: true };
+        }"""
+    )
+    return dict(value or {})
+
+
+def wait_client_state(
+    page: Page,
+    *,
+    initialized: bool,
+    connected_channels: int,
+    listeners_per_channel: int,
+    reconnect_pending: int | None = None,
+    timeout_ms: int = 30_000,
+) -> dict[str, Any]:
+    deadline = time.monotonic() + timeout_ms / 1000
+    last: dict[str, Any] = {}
+    while time.monotonic() < deadline:
+        last = client_metrics(page)
+        sockets = dict(last.get("sockets") or {})
+        connected = sum(
+            1
+            for key in (
+                "runtimeConnected",
+                "replayConnected",
+                "graphConnected",
+                "transportConnected",
+            )
+            if sockets.get(key) is True
+        )
+        counts = dict(sockets.get("listenerCounts") or {})
+        listener_ok = all(
+            int(counts.get(channel, 0)) == listeners_per_channel
+            for channel in ("runtime", "replay", "graph", "transport")
+        )
+        pending = list(sockets.get("reconnectPending") or [])
+        if (
+            bool(last.get("initialized")) is initialized
+            and connected == connected_channels
+            and listener_ok
+            and (reconnect_pending is None or len(pending) == reconnect_pending)
+        ):
+            return last
+        page.wait_for_timeout(250)
+    raise AssertionError(
+        {
+            "classification": "INTEGRATED_RUNTIME_CLIENT_STATE_TIMEOUT",
+            "expected": {
+                "initialized": initialized,
+                "connected_channels": connected_channels,
+                "listeners_per_channel": listeners_per_channel,
+                "reconnect_pending": reconnect_pending,
+            },
+            "last": last,
+            "console_errors": getattr(page, "_hhs_console_errors", [])[-50:],
+            "page_errors": getattr(page, "_hhs_page_errors", [])[-50:],
+        }
+    )
+
+
 def wait_transport_metrics(
     page: Page,
     *,
@@ -178,31 +242,39 @@ def main_transport_recovery(
     )
     page = launch_page(context, base_url)
 
+    # Public production transport is intentionally on-demand. Before the
+    # Runtime surface is opened the integrated client must be dormant.
+    dormant_initial = wait_client_state(
+        page,
+        initialized=False,
+        connected_channels=0,
+        listeners_per_channel=0,
+        reconnect_pending=0,
+    )
+
     initial = wait_transport_metrics(
         page,
         connected="4 / 4",
         subscriptions="4 / 4",
         reconnect="none",
     )
-    local_before = local_calculator(
+    active_initial = wait_client_state(
         page,
-        evidence_dir,
-        label="phase3-before-stop",
-        marker="PASS185_PHASE3_BEFORE_STOP",
+        initialized=True,
+        connected_channels=4,
+        listeners_per_channel=1,
+        reconnect_pending=0,
     )
 
-    stop_result = server.stop()
-    down_metrics = wait_transport_metrics(
+    # First outage: keep the Runtime surface mounted so the existing client
+    # must observe close and reconnect on its own after the backend restarts.
+    stop_auto = server.stop()
+    down_auto = wait_client_state(
         page,
-        connected="0 / 4",
-        subscriptions="4 / 4",
+        initialized=True,
+        connected_channels=0,
+        listeners_per_channel=1,
         timeout_ms=20_000,
-    )
-    local_down = local_calculator(
-        page,
-        evidence_dir,
-        label="phase3-server-down",
-        marker="PASS185_PHASE3_SERVER_DOWN",
     )
 
     restarted = ProductionServer(
@@ -214,8 +286,68 @@ def main_transport_recovery(
         },
         label="phase3-restarted-server",
     )
-    restart_meta = restarted.start()
-    recovered = wait_transport_metrics(
+    restart_auto = restarted.start()
+    recovered_auto = wait_client_state(
+        page,
+        initialized=True,
+        connected_channels=4,
+        listeners_per_channel=1,
+        reconnect_pending=0,
+        timeout_ms=60_000,
+    )
+    recovered_ui = wait_transport_metrics(
+        page,
+        connected="4 / 4",
+        subscriptions="4 / 4",
+        reconnect="none",
+        timeout_ms=30_000,
+    )
+
+    # Second outage: leave Runtime for Application. Its on-demand cleanup must
+    # close all sockets/listeners, while local edit/preview/test/export remains
+    # usable with the backend absent.
+    stop_local = restarted.stop()
+    wait_client_state(
+        page,
+        initialized=True,
+        connected_channels=0,
+        listeners_per_channel=1,
+        timeout_ms=20_000,
+    )
+    open_tab(page, "Application")
+    page.wait_for_selector('[data-testid="pass185-application-lifecycle"]')
+    dormant_server_down = wait_client_state(
+        page,
+        initialized=False,
+        connected_channels=0,
+        listeners_per_channel=0,
+        reconnect_pending=0,
+    )
+    local_down = local_calculator(
+        page,
+        evidence_dir,
+        label="phase3-server-down",
+        marker="PASS185_PHASE3_SERVER_DOWN",
+    )
+
+    restarted_again = ProductionServer(
+        port,
+        evidence_dir,
+        env={
+            "HHS_COGNITION_AUTO_TICK": "0",
+            "HHS_DISABLE_C_AUTOBUILD": "1",
+        },
+        label="phase3-restarted-again-server",
+    )
+    restart_after_local = restarted_again.start()
+    still_dormant = wait_client_state(
+        page,
+        initialized=False,
+        connected_channels=0,
+        listeners_per_channel=0,
+        reconnect_pending=0,
+    )
+    remounted = wait_transport_metrics(
         page,
         connected="4 / 4",
         subscriptions="4 / 4",
@@ -223,12 +355,35 @@ def main_transport_recovery(
         timeout_ms=60_000,
     )
 
+    # Browser network outage while Runtime remains mounted must reconnect using
+    # the same single subscription set when connectivity returns.
     context.set_offline(True)
-    offline_metrics = wait_transport_metrics(
+    offline_active = wait_client_state(
         page,
-        connected="0 / 4",
-        subscriptions="4 / 4",
+        initialized=True,
+        connected_channels=0,
+        listeners_per_channel=1,
         timeout_ms=20_000,
+    )
+    context.set_offline(False)
+    online_active = wait_client_state(
+        page,
+        initialized=True,
+        connected_channels=4,
+        listeners_per_channel=1,
+        reconnect_pending=0,
+        timeout_ms=60_000,
+    )
+
+    # Local application use while browser networking is disabled.
+    context.set_offline(True)
+    open_tab(page, "Application")
+    dormant_offline = wait_client_state(
+        page,
+        initialized=False,
+        connected_channels=0,
+        listeners_per_channel=0,
+        reconnect_pending=0,
     )
     local_offline = local_calculator(
         page,
@@ -236,9 +391,8 @@ def main_transport_recovery(
         label="phase3-browser-offline",
         marker="PASS185_PHASE3_BROWSER_OFFLINE",
     )
-
     context.set_offline(False)
-    online_metrics = wait_transport_metrics(
+    restored_after_offline_local = wait_transport_metrics(
         page,
         connected="4 / 4",
         subscriptions="4 / 4",
@@ -246,24 +400,55 @@ def main_transport_recovery(
         timeout_ms=60_000,
     )
 
-    navigation: list[str] = []
-    for _ in range(3):
+    # Repeated navigation must alternate cleanly between zero and one listener
+    # per channel rather than accumulating duplicate subscriptions.
+    navigation: list[dict[str, Any]] = []
+    for cycle in range(3):
         open_tab(page, "Application")
         page.wait_for_selector('[data-testid="pass185-application-lifecycle"]')
+        dormant = wait_client_state(
+            page,
+            initialized=False,
+            connected_channels=0,
+            listeners_per_channel=0,
+            reconnect_pending=0,
+        )
+        active_ui = wait_transport_metrics(
+            page,
+            connected="4 / 4",
+            subscriptions="4 / 4",
+            reconnect="none",
+            timeout_ms=30_000,
+        )
+        active = wait_client_state(
+            page,
+            initialized=True,
+            connected_channels=4,
+            listeners_per_channel=1,
+            reconnect_pending=0,
+        )
         navigation.append(
-            wait_transport_metrics(
-                page,
-                connected="4 / 4",
-                subscriptions="4 / 4",
-                reconnect="none",
-                timeout_ms=30_000,
-            )
+            {
+                "cycle": cycle + 1,
+                "dormant": dormant,
+                "active": active,
+                "active_ui": active_ui,
+            }
         )
 
+    # Full reload creates a new public-root client; it must start dormant and
+    # then establish exactly one subscription per channel on Runtime mount.
     page.reload(wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="hhs-canonical-runtime-ide"]', timeout=60_000)
     page.wait_for_selector('[data-testid="hhs-product-workspace"]', timeout=60_000)
     open_workspace(page)
+    reload_dormant = wait_client_state(
+        page,
+        initialized=False,
+        connected_channels=0,
+        listeners_per_channel=0,
+        reconnect_pending=0,
+    )
     reload_metrics = wait_transport_metrics(
         page,
         connected="4 / 4",
@@ -280,22 +465,39 @@ def main_transport_recovery(
 
     return (
         {
+            "dormant_initial": dormant_initial,
             "initial_metrics": initial,
-            "local_before_stop": local_before,
-            "server_stop": stop_result,
-            "server_down_metrics": down_metrics,
-            "local_while_server_down": local_down,
-            "restart": restart_meta,
-            "recovered_metrics": recovered,
-            "browser_offline_metrics": offline_metrics,
-            "local_while_browser_offline": local_offline,
-            "browser_online_metrics": online_metrics,
+            "active_initial": active_initial,
+            "automatic_reconnect": {
+                "server_stop": stop_auto,
+                "down": down_auto,
+                "restart": restart_auto,
+                "recovered": recovered_auto,
+                "recovered_ui": recovered_ui,
+            },
+            "source_only_during_server_outage": {
+                "server_stop": stop_local,
+                "dormant": dormant_server_down,
+                "local_lifecycle": local_down,
+                "restart": restart_after_local,
+                "still_dormant_after_restart": still_dormant,
+                "remounted_runtime": remounted,
+            },
+            "browser_offline_reconnect": {
+                "offline_active": offline_active,
+                "online_active": online_active,
+            },
+            "browser_offline_local_application": {
+                "dormant": dormant_offline,
+                "local_lifecycle": local_offline,
+                "restored_runtime": restored_after_offline_local,
+            },
             "navigation_metrics": navigation,
+            "reload_dormant": reload_dormant,
             "reload_metrics": reload_metrics,
         },
-        restarted,
+        restarted_again,
     )
-
 
 def storage_unavailable(
     browser: Browser,
