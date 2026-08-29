@@ -50,9 +50,8 @@ export class RuntimeOS {
     }
 
     public async initialize(): Promise<void> {
-        if (this.initialized && !this.destroyed) return
+        if (this.initialized) return
 
-        this.destroyed = false
         console.log("[RuntimeOS] initialize")
 
         await this.socketManager.initialize()
@@ -187,7 +186,6 @@ export class RuntimeOS {
         this.socketManager.shutdown()
         this.session.terminate()
         this.windowManager.reset()
-        this.initialized = false
         this.destroyed = true
         console.log("[RuntimeOS] destroyed")
     }
