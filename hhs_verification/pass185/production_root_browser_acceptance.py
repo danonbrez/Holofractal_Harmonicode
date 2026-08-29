@@ -186,10 +186,20 @@ def main() -> None:
         context.close()
         browser.close()
 
-    if page_errors or request_failures or http_errors:
+    ignored_reload_aborts = [
+        failure for failure in request_failures
+        if failure["url"].endswith("/api/product/health")
+        and failure["failure"] == "net::ERR_ABORTED"
+    ]
+    actionable_request_failures = [
+        failure for failure in request_failures
+        if failure not in ignored_reload_aborts
+    ]
+    if page_errors or actionable_request_failures or http_errors:
         raise AssertionError({
             "page_errors": page_errors,
-            "request_failures": request_failures,
+            "request_failures": actionable_request_failures,
+            "ignored_reload_aborts": ignored_reload_aborts,
             "http_5xx": http_errors,
         })
 
