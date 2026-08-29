@@ -25,43 +25,6 @@ from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
 from hhs_runtime.hhs_lazy_service_registry_v1 import make_lazy_default_service_registry
 
 
-
-class HHSUnavailableRuntimeServiceRegistry:
-    """Explicit no-service projection used only when C runtime authority is absent."""
-
-    population_mode = "C_RUNTIME_UNAVAILABLE_NO_SERVICE_REGISTRY"
-
-    def __init__(self, controller: HHSRuntimeController):
-        self.controller = controller
-
-    def services(self) -> List[Dict[str, Any]]:
-        return []
-
-    def status(self) -> Dict[str, Any]:
-        return {
-            "schema": "HHS_RUNTIME_SERVICE_REGISTRY_UNAVAILABLE_V1",
-            "ok": False,
-            "available": False,
-            "service_count": 0,
-            "services": [],
-            "population_mode": self.population_mode,
-            "source_only_degraded_mode": True,
-            "canonical_runtime_authority_active": False,
-            "python_replacement_authority": False,
-            "reason": self.controller.availability_status(),
-        }
-
-    def interpose_dispatch(self, *args, **kwargs):
-        _ = args, kwargs
-        self.controller.require_runtime()
-        raise RuntimeError("unreachable")
-
-    def dispatch(self, *args, **kwargs):
-        _ = args, kwargs
-        self.controller.require_runtime()
-        raise RuntimeError("unreachable")
-
-
 @dataclass
 class HHSEmulatorConfig:
     """Configuration for automatic C-runtime emulation."""
@@ -96,17 +59,12 @@ class HHSCEmulator:
         self.booted_at: Optional[float] = None
         self.tick_history: List[Dict[str, Any]] = []
         self.last_packet: Optional[Dict[str, Any]] = None
-        self.service_registry = (
-            make_lazy_default_service_registry(self.controller)
-            if self.controller.runtime_available
-            else HHSUnavailableRuntimeServiceRegistry(self.controller)
-        )
+        self.service_registry = make_lazy_default_service_registry(self.controller)
 
     def boot(self) -> Dict[str, Any]:
         """Initialize and validate the C ABI, returning the initial state."""
 
-        runtime = self.controller.require_runtime()
-        if not runtime.validate_abi():
+        if not self.controller.runtime.validate_abi():
             raise RuntimeError("HHS C runtime ABI validation failed")
 
         self.booted = True
@@ -236,7 +194,6 @@ class HHSCEmulator:
                 "EAGER_SERVICE_IMPORTS",
             ),
             "service_registry": self.service_registry.status(),
-            "runtime_availability": self.controller.availability_status(),
         }
 
     def dispatch_service(
