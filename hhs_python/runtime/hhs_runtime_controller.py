@@ -21,6 +21,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 import uuid
 import threading
@@ -29,7 +30,9 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Callable, Any
 
 from hhs_python.runtime.hhs_ctypes_bridge import (
-    HHSRuntimeBridge
+    HHSRuntimeBridge,
+    HHSRuntimeLibraryUnavailable,
+    runtime_library_status,
 )
 from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
 from hhs_runtime.hhs_unified_hash72_ledger_v1 import append_payload
@@ -77,8 +80,6 @@ class HHSRuntimeController:
 
     def __init__(self):
 
-        self.runtime = HHSRuntimeBridge()
-
         self.runtime_lock = threading.RLock()
 
         self.listeners: Dict[
@@ -96,6 +97,45 @@ class HHSRuntimeController:
         self.replay_cache = []
 
         self.authority_audit_cache = []
+
+        self.runtime: HHSRuntimeBridge | None = None
+        self.runtime_unavailable_detail: str | None = None
+
+        try:
+            self.runtime = HHSRuntimeBridge()
+        except HHSRuntimeLibraryUnavailable as exc:
+            allow_degraded = (
+                os.environ.get("HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT", "").lower()
+                in {"1", "true", "yes", "on"}
+            )
+            if not allow_degraded:
+                raise
+            self.runtime_unavailable_detail = str(exc)
+
+    @property
+    def runtime_available(self) -> bool:
+        return self.runtime is not None
+
+    def require_runtime(self) -> HHSRuntimeBridge:
+        runtime = self.runtime
+        if runtime is None:
+            detail = self.runtime_unavailable_detail or str(runtime_library_status().get("error") or "unknown")
+            raise HHSRuntimeLibraryUnavailable(
+                "HHS canonical runtime controller is unavailable because the C ABI "
+                f"library is not active: {detail}"
+            )
+        return runtime
+
+    def availability_status(self) -> Dict[str, Any]:
+        status = dict(runtime_library_status())
+        status.update({
+            "schema": "HHS_RUNTIME_CONTROLLER_AVAILABILITY_V1",
+            "controller_available": self.runtime_available,
+            "canonical_runtime_authority_active": self.runtime_available,
+            "source_only_degraded_mode": not self.runtime_available,
+            "python_replacement_authority": False,
+        })
+        return status
 
     # =====================================================================
     # EVENT SYSTEM
@@ -144,12 +184,13 @@ class HHSRuntimeController:
 
         with self.runtime_lock:
 
-            previous_step = self.runtime.step
+            runtime = self.require_runtime()
+            previous_step = runtime.step
 
-            self.runtime.runtime_step()
+            runtime.runtime_step()
 
             runtime_state = (
-                self.runtime.export_runtime_dict()
+                runtime.export_runtime_dict()
             )
 
             self.execution_history.append(runtime_state)
@@ -184,9 +225,11 @@ class HHSRuntimeController:
 
         results = []
 
+        runtime = self.require_runtime()
+
         for _ in range(count):
 
-            if self.runtime.halted:
+            if runtime.halted:
                 break
 
             result = self.step()
@@ -201,10 +244,11 @@ class HHSRuntimeController:
 
         with self.runtime_lock:
 
-            self.runtime.runtime_halt()
+            runtime = self.require_runtime()
+            runtime.runtime_halt()
 
             runtime_state = (
-                self.runtime.export_runtime_dict()
+                runtime.export_runtime_dict()
             )
 
             self.emit_event(
@@ -222,22 +266,23 @@ class HHSRuntimeController:
 
         with self.runtime_lock:
 
-            self.runtime.receipt_commit()
+            runtime = self.require_runtime()
+            runtime.receipt_commit()
 
             receipt_data = {
 
                 "step":
-                    self.runtime.step,
+                    runtime.step,
 
                 "state_hash72":
-                    self.runtime.state_hash72,
+                    runtime.state_hash72,
 
                 "receipt_hash72":
-                    self.runtime.receipt_hash72,
+                    runtime.receipt_hash72,
             }
 
             runtime_state = (
-                self.runtime.export_runtime_dict()
+                runtime.export_runtime_dict()
             )
 
             authority_audit = assert_runtime_authorized(
@@ -387,6 +432,25 @@ class HHSRuntimeController:
 
     def latest_runtime_state(self):
 
+        if self.runtime is None:
+            status = self.availability_status()
+            return {
+                "schema": "HHS_RUNTIME_CONTROLLER_UNAVAILABLE_V1",
+                "ok": False,
+                "status": "HHS_C_RUNTIME_UNAVAILABLE",
+                "available": False,
+                "canonical_runtime_authority_active": False,
+                "canonical_state_available": False,
+                "state_hash72": None,
+                "receipt_hash72": None,
+                "step": None,
+                "halted": True,
+                "source_only_degraded_mode": True,
+                "runtime_library": status,
+                "frontend_is_authority": False,
+                "python_replacement_authority": False,
+            }
+
         return self.runtime.export_runtime_dict()
 
     # =====================================================================
@@ -395,8 +459,9 @@ class HHSRuntimeController:
 
     def export_graph_node(self):
 
+        runtime = self.require_runtime()
         runtime_state = (
-            self.runtime.export_runtime_dict()
+            runtime.export_runtime_dict()
         )
 
         return {
@@ -435,8 +500,9 @@ class HHSRuntimeController:
 
     def export_vector_record(self):
 
+        runtime = self.require_runtime()
         runtime_state = (
-            self.runtime.export_runtime_dict()
+            runtime.export_runtime_dict()
         )
 
         hash72 = runtime_state["state_hash72"]
@@ -467,8 +533,9 @@ class HHSRuntimeController:
 
     def export_multimodal_packet(self):
 
+        runtime = self.require_runtime()
         runtime_state = (
-            self.runtime.export_runtime_dict()
+            runtime.export_runtime_dict()
         )
 
         return {
