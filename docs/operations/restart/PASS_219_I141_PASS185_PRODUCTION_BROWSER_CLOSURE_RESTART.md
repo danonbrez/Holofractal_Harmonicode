@@ -155,3 +155,43 @@ Current repair boundary:
 Latest implementation/workflow head before this trigger: `ae46a79e7bbfcb3f87299f3d0baeab005f91a04f`.
 
 Required next validation is the complete Phase-2 matrix. Do not accept a C-degraded green result unless process/static and optional-provider profiles also remain green in the same workflow.
+
+
+## Phase-2 freeze and Phase-3 continuation checkpoint
+
+Phase 2 is verified and frozen.
+
+- Phase-2 validated head: `2b972a66743a505937d5f819c839f5e59dda98b4`
+- Phase-2 validated tree: `e67889f885481e0ddfd14c33a61b035af82e0bcc`
+- validation run: `33254220079`
+- validation job: `99105019179`
+- evidence artifact: `9715347753`
+- artifact SHA-256: `c7f4ba101f0182169c1156df582e664d8befd17188d7ecd2724eee437aca2773`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE2_VALIDATION_RECEIPT.json`
+- classification: `HHS_PASS_185_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE_VERIFIED`
+- terminal Pass 185 completion: not claimed
+
+The outer source-only dispatcher is now the sole C-missing degradation membrane. Canonical runtime internals were restored to their pre-Phase-2 blobs.
+
+### Next bounded block — Phase 3
+
+Continue from the current I141 branch tip with:
+
+`BROWSER LIFECYCLE + OFFLINE/WEBSOCKET/RECONNECT/CONCURRENT-CONTEXT ACCEPTANCE`
+
+Required Phase-3 focus:
+
+- exact current production root;
+- base Phase-1 calculator lifecycle remains invariant;
+- WebSocket transport unavailable at initial load;
+- WebSocket disconnect after mount;
+- reconnect/recovery without duplicate runtime authority;
+- browser offline then online recovery;
+- repeated reload/navigation without duplicate event/listener growth;
+- two concurrent browser contexts with independent local source state and no cross-context authority fabrication;
+- localStorage unavailable/corrupt/recovered cases not already exhausted by Phase 2;
+- finite visible degraded state for every recoverable browser transport failure;
+- no direct internal function/state substitution for visible acceptance;
+- repository-visible Phase-3 evidence and validation receipt.
+
+After Phase 3, proceed to the multimodal workflow block, then performance/starvation and remaining negatives before terminal Pass-185 closure.
