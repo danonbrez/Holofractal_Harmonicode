@@ -50,6 +50,14 @@ The inherited implementation already validates:
 - strict C11 compilation;
 - no floating-point arithmetic opcode in the checked disassembly.
 
+## I140 implementation checkpoint
+
+- implementation head: `395b1080d4dd6d90045d8b681c538cfb65dd888e`
+- implementation tree: `4a96868212deca2e0bef9da3984e2eb8a9cf4a81`
+- historical Pass 186 sources modified: no
+- cumulative exact ABI order tail: `192 → 191 → 190 → 189 → 188 → 187 → 186`
+- validation state: implementation committed; exact/synthetic workflow pending
+
 ## I140 required work
 
 1. Add inherited Pass 186 C/C++ binding surfaces after frozen Pass 187.
@@ -59,6 +67,8 @@ The inherited implementation already validates:
 5. Add exact/synthetic current-main CI validation.
 6. Re-run the historical Pass 186 exhaustive native test and disassembly gate.
 7. Freeze the resulting validated checkpoint with repository-visible receipts.
+
+Items 1–5 are implemented at the implementation head above. Items 6–7 remain validation/freeze work.
 
 ## Authority boundary
 

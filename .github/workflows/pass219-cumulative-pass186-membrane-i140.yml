@@ -109,7 +109,7 @@ jobs:
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass186_1_40.cpp)" = "3d3f906e44b96e5a1ada01e94df887f4e65beae2"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py)" = "c7280ddf1d87e08c6eb54356670a76a49dcedd3c"
           test "$(git hash-object docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md)" = "6b536d931e1aef24ee0cd82e28c37d43e8b68676"
-          test "$(git hash-object docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md)" = "f260cb441c6f6818970683aaa7352639f2eb9729"
+          test "$(git hash-object docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md)" = "6345e6d11ad2243c9a2056baaff37d40799df71b"
           python - <<'PY'
           from pathlib import Path
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
