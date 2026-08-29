@@ -64,7 +64,8 @@ class HHSCEmulator:
     def boot(self) -> Dict[str, Any]:
         """Initialize and validate the C ABI, returning the initial state."""
 
-        if not self.controller.runtime.validate_abi():
+        runtime = self.controller.require_runtime()
+        if not runtime.validate_abi():
             raise RuntimeError("HHS C runtime ABI validation failed")
 
         self.booted = True
@@ -194,6 +195,7 @@ class HHSCEmulator:
                 "EAGER_SERVICE_IMPORTS",
             ),
             "service_registry": self.service_registry.status(),
+            "runtime_availability": self.controller.availability_status(),
         }
 
     def dispatch_service(
