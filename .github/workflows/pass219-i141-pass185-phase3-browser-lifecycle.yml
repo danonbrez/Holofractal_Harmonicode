@@ -5,6 +5,7 @@ on:
     branches:
       - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
     paths:
+      - 'hhs_gui/runtime_os/core/RuntimeOS.ts'
       - 'hhs_gui/runtime_os/core/RuntimeSocketManager.ts'
       - 'hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx'
       - 'hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx'
@@ -80,6 +81,7 @@ jobs:
             hhs_verification/pass185/phase3_browser_lifecycle_acceptance.py
           grep -Fq 'terminal_pass185_completion_claimed' \
             hhs_verification/pass185/phase3_browser_lifecycle_acceptance.py
+          grep -Fq 'this.initialized = false' hhs_gui/runtime_os/core/RuntimeOS.ts
           grep -Fq 'reconnectTimers' hhs_gui/runtime_os/core/RuntimeSocketManager.ts
           grep -Fq 'live-runtime-transport-metrics' \
             hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx
@@ -127,6 +129,7 @@ jobs:
               'source_blobs': {},
           }
           for path in [
+              'hhs_gui/runtime_os/core/RuntimeOS.ts',
               'hhs_gui/runtime_os/core/RuntimeSocketManager.ts',
               'hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx',
               'hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx',
