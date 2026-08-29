@@ -1,0 +1,204 @@
+name: Pass 219 Cumulative Pass 186 Membrane I140
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration140-pass186-x64-vm81-q144-binding
+    paths:
+      - 'HHS_PASS_186_X86_64_VM81_Q144_7_FACTORIAL_NONCOMMUTATIVE_ABI.md'
+      - 'native_projects/hhs_pass186_x64_vm81_q144/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass186_1_40.c'
+      - 'tests/pass219/test_pass219_inherited_pass186_1_40.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py'
+      - 'docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md'
+      - 'docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass186-membrane-i140.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'HHS_PASS_186_X86_64_VM81_Q144_7_FACTORIAL_NONCOMMUTATIVE_ABI.md'
+      - 'native_projects/hhs_pass186_x64_vm81_q144/**'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_inherited_pass186_1_40.*'
+      - 'tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py'
+      - 'docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md'
+      - 'docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass186-membrane-i140.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-pass186-cumulative-membrane:
+    name: inherited-pass186-cumulative-membrane (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Synthesize current main for push validation
+        if: github.event_name == 'push' && matrix.target == 'synthetic'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            git config user.name hhs-validation
+            git config user.email hhs-validation@users.noreply.github.com
+            git merge --no-edit origin/main
+          fi
+
+      - name: Prove frozen I139 and Pass 186 historical lineage
+        run: |
+          git merge-base --is-ancestor e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4 HEAD
+          git merge-base --is-ancestor fd42056c22071d290945b02efe3a5752aaa3d737 HEAD
+          test "$(git merge-base e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4 HEAD)" = "e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4"
+          test "$(git rev-parse fd42056c22071d290945b02efe3a5752aaa3d737:HHS_PASS_186_X86_64_VM81_Q144_7_FACTORIAL_NONCOMMUTATIVE_ABI.md)" = "41e2e92393ad0bb08b876cf4ca09992a0baf8779"
+          test "$(git rev-parse fd42056c22071d290945b02efe3a5752aaa3d737:native_projects/hhs_pass186_x64_vm81_q144/PASS_186_VALIDATION_RECEIPT.json)" = "0f8f4b9a92d3c3267361d530e91ccfe661aef4e4"
+
+      - name: Prove Pass 186 historical source identities
+        run: |
+          test "$(git hash-object HHS_PASS_186_X86_64_VM81_Q144_7_FACTORIAL_NONCOMMUTATIVE_ABI.md)" = "41e2e92393ad0bb08b876cf4ca09992a0baf8779"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/Makefile)" = "da4153d6468a46da13989195c57da6cc26fb684f"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/PASS_186_VALIDATION_RECEIPT.json)" = "0f8f4b9a92d3c3267361d530e91ccfe661aef4e4"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/README.md)" = "b4b037e5dedc65722314807ec030f520edb37d51"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/include/hhs_pass186_x64_vm81_q144_abi.h)" = "37ce8eafaa1beb4614e6ab41e2cd5b0904bb0376"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S)" = "7ee997d3f6126d04d48988498b83f7e488ead20c"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c)" = "a4e7099b266569c6b9db8e68b03b741f58d32a5f"
+          test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/tests/hhs_pass186_x64_vm81_q144_smoke.c)" = "d53860ad314000cda7c75462f7c8122a1d492cb1"
+
+      - name: Prove frozen I139 successor identities
+        run: |
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py)" = "52ceb9f52bdf30dc4849676c1ac0aafe613708ca"
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h)" = "e59603ac523dd32e845b21492fc3d2336a562dcf"
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.hpp)" = "0e00dc16c9624cf51aa0c9a1d6e30397a1529763"
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc)" = "0ff432490633dac2417aa3e294305378848dc570"
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "db92bb0590adb667ac406a89e43171a8ab12eb3c"
+          test "$(git rev-parse e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "8d6c694e4bb7358f28844df55848b07604030e33"
+
+      - name: Prove I140 membrane identities and additive ABI order
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.h)" = "fc31e2d29b91088b45c03cae54bb599a3918d265"
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.hpp)" = "d4c9347897e3133807cf091acdd3b76a96022266"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc)" = "46076af086cf5a74b7d9131a376c8d4c49112caf"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py)" = "97b01cdca66cefd72b06e9062e30b2d6efe71953"
+          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a57d68e8d8ee58d17eebfd67efed2ed156fed4e4"
+          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "a8f1802272558077d7d8eb909b3056cfbb98dc77"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass186_1_40.c)" = "b5a9373a79ace277768b0a6471b276dbdadf2d56"
+          test "$(git hash-object tests/pass219/test_pass219_inherited_pass186_1_40.cpp)" = "3d3f906e44b96e5a1ada01e94df887f4e65beae2"
+          test "$(git hash-object tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py)" = "c7280ddf1d87e08c6eb54356670a76a49dcedd3c"
+          test "$(git hash-object docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md)" = "6b536d931e1aef24ee0cd82e28c37d43e8b68676"
+          test "$(git hash-object docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md)" = "f260cb441c6f6818970683aaa7352639f2eb9729"
+          python - <<'PY'
+          from pathlib import Path
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert h.index('hhs_pass219_inherited_pass188_1_38.h') < h.index('hhs_pass219_inherited_pass187_1_39.h') < h.index('hhs_pass219_inherited_pass186_1_40.h')
+          assert c.index('hhs_pass219_inherited_pass188_1_38.inc') < c.index('hhs_pass219_inherited_pass187_1_39.inc') < c.index('hhs_pass219_inherited_pass186_1_40.inc')
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
+          assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          PY
+          ! grep -Eq 'independent_opcode_authority[[:space:]]*=[[:space:]]*1U|independent_vm81_authority[[:space:]]*=[[:space:]]*1U|independent_hash72_clock[[:space:]]*=[[:space:]]*1U|float_canonical_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U'             hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc
+
+      - name: Revalidate historical Pass 186 exhaustive native ABI
+        run: make -C native_projects/hhs_pass186_x64_vm81_q144 clean test disassemble
+
+      - name: Run I140 cumulative membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py
+
+      - name: Compile aggregate exact ABI and Pass 186 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i140-pass186
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i140-pass186/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Inative_projects/hhs_pass186_x64_vm81_q144/include             -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c             -o /tmp/pass219-i140-pass186/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S             -o /tmp/pass219-i140-pass186/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass186_1_40.c             /tmp/pass219-i140-pass186/exact.o             /tmp/pass219-i140-pass186/pass186.o             /tmp/pass219-i140-pass186/registers.o             -o /tmp/pass219-i140-pass186/pass186-c
+          /tmp/pass219-i140-pass186/pass186-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass186_1_40.cpp             /tmp/pass219-i140-pass186/exact.o             /tmp/pass219-i140-pass186/pass186.o             /tmp/pass219-i140-pass186/registers.o             -o /tmp/pass219-i140-pass186/pass186-cpp
+          /tmp/pass219-i140-pass186/pass186-cpp
+
+      - name: Record exact or synthetic evidence
+        if: always()
+        env:
+          HHS_I140_TARGET: ${{ matrix.target }}
+        run: |
+          mkdir -p evidence/pass186/i140
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          target = os.environ['HHS_I140_TARGET']
+          paths = [
+              'HHS_PASS_186_X86_64_VM81_Q144_7_FACTORIAL_NONCOMMUTATIVE_ABI.md',
+              'native_projects/hhs_pass186_x64_vm81_q144/PASS_186_VALIDATION_RECEIPT.json',
+              'native_projects/hhs_pass186_x64_vm81_q144/include/hhs_pass186_x64_vm81_q144_abi.h',
+              'native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c',
+              'native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S',
+              'native_projects/hhs_pass186_x64_vm81_q144/tests/hhs_pass186_x64_vm81_q144_smoke.c',
+              'hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.h',
+              'hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.hpp',
+              'hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc',
+              'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'tests/pass219/test_pass219_inherited_pass186_1_40.c',
+              'tests/pass219/test_pass219_inherited_pass186_1_40.cpp',
+              'tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I140_PASS186_CUMULATIVE_SEAL_EVIDENCE_V1',
+              'target': target,
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'frozen_i139': 'e5ce3529fcdd7c214aeda8b09f3b7b2bff08b8c4',
+              'pass186_implementation_commit': 'fd42056c22071d290945b02efe3a5752aaa3d737',
+              'classification': 'HHS_PASS_186_X64_VM81_Q144_NONCOMMUTATIVE_ABI_VALIDATED',
+              'hydrated_roundtrip_states': 1259712,
+              'ordered_basis_identity_preserved': True,
+              'new_vm81_authority': False,
+              'new_hash72_clock': False,
+              'independent_opcode_authority': False,
+              'canonical_float_authority': False,
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          out = Path(f'evidence/pass186/i140/PASS_219_I140_{target.upper()}_SEAL.json')
+          out.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i140-pass186-${{ matrix.target }}-seal
+          path: evidence/pass186/i140/PASS_219_I140_*.json
+          if-no-files-found: error
