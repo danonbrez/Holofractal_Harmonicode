@@ -79,3 +79,29 @@ I140 requires:
 I140 creates no new Pass 219 candidate authority, canonical mutation authority, persistence authority, Hash72 clock, independent VM81 authority, independent opcode authority, C++ mutation authority, or floating-point canonical authority.
 
 The historical Pass 186 mapper is an exact projection/crosswalk surface. It does not become a second canonical mutation path by being exposed through the cumulative Pass 219 ABI.
+
+## Cumulative validation receipt
+
+Validated implementation head:
+
+`395b1080d4dd6d90045d8b681c538cfb65dd888e`
+
+Workflow run:
+
+`33247547960`
+
+Exact:
+
+- job: `99087545596`
+- artifact: `9713322038`
+- artifact SHA-256: `583ed7898c5b4a9425ae0b4317a7414126bed02af342f8f6bbe9d2683832563f`
+
+Synthetic current-main:
+
+- job: `99087545466`
+- artifact: `9713322523`
+- artifact SHA-256: `f79b87fdc5d49c89498619de37bb8953c715c707aae5e05695641fd1b8a89242`
+
+Both legs passed historical Pass 186 source identity checks, the exhaustive native `make clean test disassemble` gate, frozen-I139 successor checks, I140 membrane preflight, aggregate exact ABI compilation, and C/C++ conformance.
+
+This evidence validates the implementation head. The receipt-bearing freeze is finalized only after the subsequent exact/synthetic run proves these receipt and documentation identities.

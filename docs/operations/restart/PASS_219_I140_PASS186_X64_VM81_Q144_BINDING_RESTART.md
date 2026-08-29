@@ -56,7 +56,12 @@ The inherited implementation already validates:
 - implementation tree: `4a96868212deca2e0bef9da3984e2eb8a9cf4a81`
 - historical Pass 186 sources modified: no
 - cumulative exact ABI order tail: `192 → 191 → 190 → 189 → 188 → 187 → 186`
-- validation state: implementation committed; exact/synthetic workflow pending
+- validation state: implementation cumulative workflow terminal green
+- validated implementation head: `395b1080d4dd6d90045d8b681c538cfb65dd888e`
+- validated implementation tree: `4a96868212deca2e0bef9da3984e2eb8a9cf4a81`
+- cumulative validation run: `33247547960`
+- exact job/artifact/SHA-256: `99087545596` / `9713322038` / `583ed7898c5b4a9425ae0b4317a7414126bed02af342f8f6bbe9d2683832563f`
+- synthetic job/artifact/SHA-256: `99087545466` / `9713322523` / `f79b87fdc5d49c89498619de37bb8953c715c707aae5e05695641fd1b8a89242`
 
 ## I140 required work
 
@@ -68,7 +73,17 @@ The inherited implementation already validates:
 6. Re-run the historical Pass 186 exhaustive native test and disassembly gate.
 7. Freeze the resulting validated checkpoint with repository-visible receipts.
 
-Items 1–5 are implemented at the implementation head above. Items 6–7 remain validation/freeze work.
+Items 1–6 are complete and terminal green. The receipt-bearing freeze validation remains.
+
+## Receipt-bearing finalization
+
+Validation receipt:
+
+`native_projects/hhs_pass186_x64_vm81_q144/evidence/P186_I140_VALIDATION_RECEIPT.json`
+
+The receipt records the green exact and synthetic cumulative run above. A final validation trigger is staged separately so the final checkpoint can prove the receipt, documentation, restart record, and trigger identities without modifying the frozen historical Pass 186 sources.
+
+No merge is authorized by this record.
 
 ## Authority boundary
 
