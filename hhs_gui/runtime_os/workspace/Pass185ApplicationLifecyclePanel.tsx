@@ -254,7 +254,9 @@ export const Pass185ApplicationLifecyclePanel: React.FC = () => {
         { path: "application.manifest.json", data: JSON.stringify(manifest, null, 2) + "\n" },
         { path: "README.txt", data: "HHS Pass 185 production-root application export. Open index.html in a modern browser.\n" },
       ])
-      const url = URL.createObjectURL(new Blob([bytes], { type: "application/zip" }))
+      const zipBuffer = new ArrayBuffer(bytes.byteLength)
+      new Uint8Array(zipBuffer).set(bytes)
+      const url = URL.createObjectURL(new Blob([zipBuffer], { type: "application/zip" }))
       const link = Object.assign(document.createElement("a"), {
         href: url,
         download: "pass185-calculator.zip",
