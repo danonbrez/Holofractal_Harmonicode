@@ -6,12 +6,9 @@ on:
       - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
     paths:
       - 'hhs_gui/index.html'
-      - 'hhs_backend/production_server.py'
-      - 'hhs_backend/server.py'
-      - 'hhs_backend/api/runtime_routes.py'
-      - 'hhs_python/runtime/hhs_ctypes_bridge.py'
-      - 'hhs_python/runtime/hhs_runtime_controller.py'
-      - 'hhs_python/runtime/hhs_runtime_emulator.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'hhs_backend/runtime_os_source_only_server.py'
       - 'hhs_verification/pass185/phase2_degradation_negative_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md'
       - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
@@ -88,12 +85,11 @@ jobs:
             hhs_verification/pass185/phase2_degradation_negative_acceptance.py
           grep -Fq 'terminal_pass185_completion_claimed' \
             hhs_verification/pass185/phase2_degradation_negative_acceptance.py
-          grep -Fq 'HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT' hhs_backend/production_server.py
-          grep -Fq 'canonical_c_calls_fail_closed_when_unavailable' hhs_python/runtime/hhs_ctypes_bridge.py
-          grep -Fq 'def availability_status' hhs_python/runtime/hhs_runtime_controller.py
-          grep -Fq 'if not runtime_controller.runtime_available' hhs_backend/server.py
-          grep -Fq 'HHSUnavailableIOGateway' hhs_backend/api/runtime_routes.py
-          grep -Fq 'self.controller.require_runtime()' hhs_python/runtime/hhs_runtime_emulator.py
+          grep -Fq '_SOURCE_ONLY_DEGRADED' hhs_backend/runtime_os_application_server.py
+          grep -Fq 'runtime_os_application_server_full' hhs_backend/runtime_os_application_server.py
+          grep -Fq 'canonical_mutation_permitted' hhs_backend/runtime_os_source_only_server.py
+          grep -Fq 'python_replacement_authority' hhs_backend/runtime_os_source_only_server.py
+          grep -Fq 'project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)' hhs_backend/runtime_os_source_only_server.py
 
       - name: Install bounded Chromium
         run: timeout 600s python -m playwright install --with-deps chromium
@@ -165,12 +161,9 @@ jobs:
           }
           for path in [
               'hhs_gui/index.html',
-              'hhs_backend/production_server.py',
-              'hhs_backend/server.py',
-              'hhs_backend/api/runtime_routes.py',
-              'hhs_python/runtime/hhs_ctypes_bridge.py',
-              'hhs_python/runtime/hhs_runtime_controller.py',
-              'hhs_python/runtime/hhs_runtime_emulator.py',
+              'hhs_backend/runtime_os_application_server.py',
+              'hhs_backend/runtime_os_application_server_full.py',
+              'hhs_backend/runtime_os_source_only_server.py',
               'hhs_verification/pass185/phase2_degradation_negative_acceptance.py',
               'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md',
           ]:
