@@ -7,7 +7,10 @@ on:
     paths:
       - 'hhs_gui/index.html'
       - 'hhs_backend/production_server.py'
+      - 'hhs_backend/server.py'
       - 'hhs_python/runtime/hhs_ctypes_bridge.py'
+      - 'hhs_python/runtime/hhs_runtime_controller.py'
+      - 'hhs_python/runtime/hhs_runtime_emulator.py'
       - 'hhs_verification/pass185/phase2_degradation_negative_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md'
       - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
@@ -86,6 +89,9 @@ jobs:
             hhs_verification/pass185/phase2_degradation_negative_acceptance.py
           grep -Fq 'HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT' hhs_backend/production_server.py
           grep -Fq 'canonical_c_calls_fail_closed_when_unavailable' hhs_python/runtime/hhs_ctypes_bridge.py
+          grep -Fq 'def availability_status' hhs_python/runtime/hhs_runtime_controller.py
+          grep -Fq 'if not runtime_controller.runtime_available' hhs_backend/server.py
+          grep -Fq 'self.controller.require_runtime()' hhs_python/runtime/hhs_runtime_emulator.py
 
       - name: Install bounded Chromium
         run: timeout 600s python -m playwright install --with-deps chromium
@@ -158,7 +164,10 @@ jobs:
           for path in [
               'hhs_gui/index.html',
               'hhs_backend/production_server.py',
+              'hhs_backend/server.py',
               'hhs_python/runtime/hhs_ctypes_bridge.py',
+              'hhs_python/runtime/hhs_runtime_controller.py',
+              'hhs_python/runtime/hhs_runtime_emulator.py',
               'hhs_verification/pass185/phase2_degradation_negative_acceptance.py',
               'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md',
           ]:
