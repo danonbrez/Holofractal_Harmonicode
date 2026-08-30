@@ -22,6 +22,8 @@
 - Agentic workspace seed commit: `e795a65b4e1cec6723826dda045e3a96928311ee`
 - Volume III manuscript expansion: `1c8b7da55d75dda1ac497e955480e6fc10488fa1`
 - Volume IV workspace-frontier update: `99dc60f58a70433480ff1b1643c1d9fbdb229161`
+- Prior-thread evidence policy update: `e899edca018e978f4f9ee22f3d93a2344dece004`
+- Volume III research trace: `6ac79f15bbe009976903add832d5d3661ff4af73`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -29,6 +31,7 @@
 - `docs/research/manuscripts/UNIFIED_THEORY_OF_HUMAN_SOCIAL_SCIENCE.md`
 - `docs/research/manuscripts/UNIFIED_THEORY_AGENTIC_WORKSPACE.md`
 - `docs/operations/restart/UNIFIED_THEORY_MANUSCRIPT_AGENTIC_BRANCH_RESTART.md`
+- `docs/research/manuscripts/evidence/VOLUME_III_RESEARCH_TRACE.md`
 
 ## Canonical manuscript receipt
 
@@ -78,6 +81,8 @@ Completed:
 - Native HHS content, hydration, and execution surfaces inspected from the exact base commit.
 - Volume III derived from repository-native cumulative-default, Pass 188 lineage, Pass 189 provenance/quarantine, and post-Pass218 authenticated-reuse policies.
 - External Class-B research layer recorded for cultural tightness/looseness, network behavior diffusion, costly punishment/cooperation, cultural adaptation, and group-size constraints.
+- Prior conversation history searched for supporting arguments without changing core claims; recovered continuity anchors were recorded in the agentic workspace.
+- Editable Library manuscript synchronized to the repository Volume III content.
 
 Not yet required:
 
