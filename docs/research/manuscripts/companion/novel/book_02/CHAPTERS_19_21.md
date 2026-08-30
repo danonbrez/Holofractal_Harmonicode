@@ -923,6 +923,143 @@ Semantic hostile.
 People willing to ask what a word actually authorized.
 
 
+
+
+The Harvest reached Julian through his mother before it reached policy.
+
+She called because a quiz had told her she was a nineteenth-century empress.
+
+"What?"
+
+"It says I am empress."
+
+"Congratulations."
+
+"You want link?"
+
+"No."
+
+"It guessed I like gardening."
+
+"You do."
+
+"How know?"
+
+"Probably questions."
+
+"I didn't answer gardening."
+
+"What'd you answer?"
+
+She listed choices.
+
+Travel.
+
+Food.
+
+Music.
+
+Preferred room.
+
+Favorite weather.
+
+Julian could see inference even without model.
+
+"You gave it enough."
+
+"Enough for empress?"
+
+"No one has enough for that."
+
+She laughed.
+
+Then he noticed the quiz requested access to profile friends.
+
+"Did you allow?"
+
+"I clicked."
+
+"Ma."
+
+"What?"
+
+"Why need friends to tell you empress?"
+
+"Maybe friends matter."
+
+The permission had already been granted.
+
+Julian revoked it.
+
+His mother objected because quiz result page stopped showing which relatives were "royal court."
+
+A trivial entertainment function had pulled social graph because social features increased engagement.
+
+Years earlier he might have treated this as evidence of manipulation.
+
+Now he saw product design.
+
+Still dangerous.
+
+Intent did not eliminate consequence.
+
+After the Harvest scandal, the same quiz disappeared.
+
+His mother's data did not necessarily disappear with it.
+
+She asked:
+
+"Can you get it back?"
+
+"What?"
+
+"My answers."
+
+"Probably export."
+
+"No. Back."
+
+He understood.
+
+Recall.
+
+She wanted retrieval from whoever had copied.
+
+"Probably not."
+
+"Then they have my empress forever?"
+
+"Maybe."
+
+"That's stupid."
+
+Yes.
+
+The network had normalized copying without recall.
+
+Consent could authorize transmission, but revocation could not always invert distribution.
+
+This was mathematically simple.
+
+Socially profound.
+
+Julian wrote:
+
+DISTRIBUTED DISCLOSURE MAY BE IRREVERSIBLE.
+
+Elena crossed out irreversible.
+
+PRACTICALLY NON-RECALLABLE.
+
+"Why?"
+
+"Copies can still be deleted if known."
+
+"Fine."
+
+The distinction mattered because impossible and expensive are different states.
+
+
 ### Chapter Twenty — Confession Wave
 
 The first confession Julian read belonged to a woman he knew.
@@ -1556,6 +1693,137 @@ Better consent.
 The confession wave did not merely reveal hidden harms.
 
 It forced institutions to design memory for people whose histories were not abstract research objects.
+
+
+
+
+The Keel case did not end when Keel was fired.
+
+A year later he applied to teach at a private institute outside Bellwether.
+
+The hiring committee found the viral accusations.
+
+Then the retraction.
+
+Then the emails.
+
+Then commentary about the retraction.
+
+Then commentary accusing commentary of minimizing.
+
+The public record had become recursive.
+
+Keel sued his former university.
+
+Discovery released more documents.
+
+Some supported him.
+
+Some did not.
+
+The original accuser published a clarification saying she had never claimed one phrase repeatedly attributed to her.
+
+News outlets corrected older articles.
+
+Search engines continued surfacing cached headlines.
+
+Which current state should a hiring committee use?
+
+Julian had no role.
+
+Elena's archive received a request for old advisory records involving Keel.
+
+She processed them.
+
+Nothing relevant.
+
+Still, his name triggered public assumptions.
+
+Elena said:
+
+"Reputation has no canonical maintainer."
+
+"Courts."
+
+"Only legal findings."
+
+"Employers."
+
+"Local."
+
+"Platforms."
+
+"Ranking."
+
+"Person."
+
+"Limited reach."
+
+The network created durable distributed reputation without centralized repair protocol.
+
+That was a structural asymmetry.
+
+Accusation could propagate through many independent copies.
+
+Correction required reaching each copy or outranking them.
+
+Impossible.
+
+The best available repair was additive.
+
+New state appended.
+
+Not deletion.
+
+This resembled history.
+
+A person could not erase the past.
+
+But digital systems made past search-efficient.
+
+Old state remained near current state forever unless ranking changed.
+
+Julian wrote:
+
+FORGIVENESS != DELETION.
+
+CORRECTION != ERASURE.
+
+CURRENT EVALUATION MUST BE TIME-INDEXED.
+
+Elena approved all three.
+
+Then added:
+
+AND SOME RECORDS SHOULD EXPIRE FROM ROUTINE DECISION SURFACES.
+
+Julian objected.
+
+"History erasure."
+
+"No. Access policy."
+
+"Same data hidden."
+
+"From routine query, not archive."
+
+"Who decides?"
+
+"Again."
+
+The problem of the spent conviction, old debt, youthful speech, rehabilitated offender, changed belief: society had always needed forgetting as well as memory.
+
+Digital permanence disrupted that equilibrium.
+
+The archive preserved.
+
+The hiring system should perhaps decay weight.
+
+Different surfaces.
+
+Same history.
+
+Typed access.
 
 
 ### Chapter Twenty-One — Exit Without Exit
@@ -2292,3 +2560,126 @@ REFINEMENT ORIGINATED IN SPECIFIC HUMAN COST.
 Elena approved.
 
 Abstract improvement could erase the person who paid for discovery.
+
+
+Exit from platform became a labor issue when FlexWorks changed payment provider.
+
+Workers had to migrate accounts.
+
+Nia was already gone, but Julian reviewed complaints.
+
+A contractor named Luis had five years of ratings.
+
+The new provider imported only aggregate score.
+
+4.86.
+
+Not review text.
+
+Not job categories.
+
+Not appeal history.
+
+Not one corrected abusive review.
+
+The score survived.
+
+The provenance did not.
+
+Luis objected because his strongest work history—electrical certification and high ratings on complex tasks—was no longer visible.
+
+The platform called migration successful because the scalar transferred.
+
+Julian called it lossy.
+
+"Customers just need trust signal," project manager said.
+
+"Workers need history."
+
+"Profile rebuilt with new jobs."
+
+"At whose cost?"
+
+"Migration."
+
+"Exactly."
+
+They eventually imported category summaries and verified certifications.
+
+Still not full reviews.
+
+A compromise.
+
+The episode clarified something important:
+
+Portability can preserve identity while destroying explanatory context.
+
+Consensus proposed portable credentials.
+
+Good.
+
+Portable reputation was harder.
+
+A credential could be verified against authority.
+
+Reputation was many observers' compressed history.
+
+There was no neutral canonical scalar.
+
+Julian emailed Vane:
+
+PORTABLE REPUTATION STILL NO.
+
+Vane:
+
+We renamed it years ago because of you.
+
+Julian:
+
+I know. Still no.
+
+Vane:
+
+Thank you for maintenance.
+
+Julian laughed.
+
+Mira heard.
+
+"What's funny?"
+
+"Mr. Vane."
+
+"Is he your friend?"
+
+Julian stopped.
+
+"Unfortunately."
+
+"Why unfortunately?"
+
+"Because he keeps being reasonable."
+
+"That's bad?"
+
+"Very."
+
+She rolled her eyes and returned to her phone.
+
+Julian watched.
+
+Mira's friendships moved fluidly across services.
+
+If one app disappeared, group moved.
+
+Their social graph belonged more to them than to any platform because they actively carried it.
+
+Adults had mistaken platform for community.
+
+Children understood platform as venue.
+
+That was healthier.
+
+Until the venue controlled which people they could find.
+
+Then architecture returned.
