@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`MODULE 4 — PHASE 4B: THE GOLDEN INVARIANT — BOOK I: THE WORLD ON TELEVISION`
+`MODULE 4 — PHASE 4C: THE GOLDEN INVARIANT — BOOK II: THE WORLD IN THE FEED`
 
-Module 4 has been redefined as the complete full-length novel. Phase 4A is complete: the historical/technological evidence trace, object registry, three-era composition, 36-chapter compiler, and exact 72-beat map are repository-visible and validated. The next action is continuous literary prose for Chapters 1-12 / Beats B00-B23 (2001-2012), with the compiler kept invisible.
+Phase 4B is complete. Canonical Book I manuscript: `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`, 35,022 words, 12 chapters, with B00-B23 all validated. Next generate Chapters 13-24 / Beats B24-B47 (2012-2019) from the exact Book I terminal state.
 
 ## External research policy
 
@@ -292,3 +292,23 @@ Recovered prior-thread narrative continuity is intentionally reused:
 - the Ark — distributed, provenance-preserving, deliberately non-sovereign counter-system.
 
 The next action remains inside Module 4 as Phase 4B, not Module 5.
+
+
+## Module 4 Phase 4B completion
+
+Book I — **THE WORLD ON TELEVISION** is complete and repository-visible.
+
+Canonical manuscript:
+
+`docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`
+
+Receipt:
+
+- 35,022 words;
+- 12 chapters;
+- B00-B23 all validated;
+- source fragment files preserved under `docs/research/manuscripts/companion/novel/book_01/`;
+- direct-name validation found zero occurrences of the checked real platform/event names;
+- terminal historical state: common broadcast reality has become personalized carried reality by the end of 2012.
+
+Book II must inherit Julian, Elena, Mira, Vane, Ana Reyes, the Golden Measure, SOURCE/SUMMARY, Rat, Lyra recurrence, and the established provenance rules without resetting characterization or technology state.
