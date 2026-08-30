@@ -32,7 +32,7 @@ The historical contract requires:
 Phase-5 harness settings:
 
 - startup deadline: 45,000 ms;
-- lightweight endpoint: `/api/system/status`;
+- lightweight endpoint: discovered from the production-declared `/api/health` then `/health` surfaces;
 - health p95 gate: 250 ms;
 - concurrent event-loop health gate: 100 ms;
 - idle observation: 10.5 seconds;
@@ -80,3 +80,10 @@ Workflow:
 The gate must build inherited C authority, build the exact Runtime OS, execute the production performance and recovery runner in Chromium, retain impacted production-root regressions, seal evidence, and upload the artifact.
 
 Phase 5 remains pending until one exact branch head passes the full workflow.
+
+
+## Phase-5 health-route reconciliation
+
+The first Phase-5 execution used `/api/system/status` as a presumed lightweight route and aborted on a single one-second tail timeout before a p95 could be computed.
+
+The production boot record itself declares `/api/health` and `/health` as the lightweight health surfaces. The runner now probes those declared routes, selects the first valid JSON health endpoint, records isolated timeout samples rather than aborting immediately, and applies the historical p95 < 250 ms gate across the complete sample set.
