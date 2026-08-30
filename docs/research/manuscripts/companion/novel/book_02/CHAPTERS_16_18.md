@@ -3224,3 +3224,124 @@ Elena said:
 "One point."
 
 Julian was becoming easy to please.
+
+
+The family split produced one unexpectedly useful experiment.
+
+Aaron and Julian agreed, for a month, to send each other the strongest version of the other side's argument.
+
+Not the stupidest.
+
+Not the viral clip.
+
+The strongest.
+
+The rule sounded easy.
+
+It was not.
+
+Julian had to identify which arguments Aaron would consider strong.
+
+That required understanding Aaron's model rather than caricaturing it.
+
+Aaron had same problem.
+
+The first week failed.
+
+Aaron sent an article he thought Julian would like because it criticized a politician Aaron hated.
+
+Julian said:
+
+"That's not my argument."
+
+Julian sent a legal analysis Aaron considered elitist.
+
+"That's not mine."
+
+They revised.
+
+Ask before sending:
+
+WHAT WOULD CHANGE YOUR CONFIDENCE?
+
+That improved.
+
+Aaron said his biggest concern was institutional bias hiding behind neutral procedures.
+
+Julian realized he shared concern.
+
+Different target.
+
+Julian said his was inability to reconstruct causal chain after information compression.
+
+Aaron said:
+
+"That's same thing with more words."
+
+Maybe.
+
+The month did not make them agree politically.
+
+It changed the family interface.
+
+They learned where disagreements lived:
+
+facts,
+
+weights,
+
+predictions,
+
+values,
+
+trust in institutions,
+
+definitions.
+
+Previously every disagreement appeared as global moral contradiction.
+
+Now some could be typed.
+
+"You're wrong about value," Aaron said once.
+
+"Value isn't fact."
+
+"I know."
+
+"Then you mean priority."
+
+"Fine. Your priority sucks."
+
+Progress.
+
+Elena watched with anthropological interest.
+
+Mira watched with boredom.
+
+Their mother said:
+
+"Can you two just admit you enjoy arguing?"
+
+Neither did.
+
+At month's end Aaron stopped sending articles for three days.
+
+Julian noticed.
+
+The absence felt strange.
+
+Then Aaron sent a photograph of their mother asleep during a murder show.
+
+Caption:
+
+COMMON GROUND.
+
+Julian laughed.
+
+The relationship had recovered enough that not every message needed politics.
+
+This was the real repair.
+
+Not agreement.
+
+Restored bandwidth for other state.
