@@ -440,3 +440,122 @@ Required work:
 7. only after every non-waivable matrix row is individually evidenced, build one cumulative Pass-185 closure gate.
 
 Terminal Pass 185 completion remains prohibited until cumulative local closure, safe integration, authoritative-main verification, and external deployment replay.
+
+
+## STOP CHECKPOINT — 2026-08-30 07:55 America/New_York
+
+This is the authoritative restart point for the next prompt. Stop after this checkpoint. Do not continue Phase 7, merge, deploy, or mutate additional repository surfaces until explicitly resumed.
+
+### Repository identity
+
+- repository: `danonbrez/Holofractal_Harmonicode`
+- branch: `agent/pass219-iteration141-pass185-production-browser-closure-reconciliation`
+- pre-checkpoint working head: `cab2ef2c093ec46ce408a0c3577b7e8f75507c24`
+- pre-checkpoint tree: `39266100ed257d67f2ea883ce968be69612fc506`
+- historical I141 authoritative-main base: `f8aa3337ee023c7d828343eac208987c20a05e67`
+- current observed `main`: `feba5302d90f2fb757df566d8436f7c3d3fb9a79`
+- current branch vs historical I141 base: 128 ahead / 0 behind; merge base exactly `f8aa3337ee023c7d828343eac208987c20a05e67`
+- current branch vs current main: 128 ahead / 8 behind; status `diverged`; merge base exactly `f8aa3337ee023c7d828343eac208987c20a05e67`
+- merge status: **UNMERGED**
+- terminal Pass 185 completion: **NOT CLAIMED**
+
+### Last frozen cumulative evidence
+
+Phase 1 through Phase 6 are frozen repository inputs.
+
+Most recent frozen phase:
+
+- Phase 6 validated head: `d716fb50ed8f903ccd8de965d8fa880b08df9027`
+- Phase 6 validated tree: `a5d61a4de3a329f1f1ce6c2dcb3b9d036e423d27`
+- Phase 6 run: `33307912399`
+- Phase 6 job: `99247647719`
+- Phase 6 artifact: `9731086579`
+- Phase 6 artifact SHA-256: `cdeb910f749a39e5abbbc7329c94eb1052be2972e862e41840e257462a1086c9`
+- Phase 6 evidence SHA-256: `cf29d4b714c705bf6d3851ed6c7e251e622b3964a673ff4e5a8e0a8bb9d82f4c`
+- Phase 6 seal receipt SHA-256: `1eb676b4f69dabcce5e5fdce30412945bf0d09204fc044c04c22ad68b7ed33d8`
+- Phase 6 repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE6_VALIDATION_RECEIPT.json`
+- Phase 6 classification: `HHS_PASS_185_PHASE6_WORKSPACE_JOB_GAPS_VERIFIED`
+
+Phase 5 final repository receipt remains:
+
+`evidence/pass185/i141/PASS_185_I141_PHASE5_VALIDATION_RECEIPT.json`
+
+### Post-Phase-6 commits already present
+
+The four commits after the Phase-6 validated head are:
+
+1. `15e1332faf6574eb00b196fe496eb16be61c80fb`
+   - sealed the Phase-6 strict validation receipt;
+2. `b455f9d3e6f5d2d3e9748b2017be12cc6fd515ac`
+   - marked the Phase-6 document verified with strict Run evidence;
+3. `8c19171e1b4ce4cebe1c69049c9aa4f7607f765c`
+   - advanced this restart record to the remaining Phase-7 matrix;
+4. `cab2ef2c093ec46ce408a0c3577b7e8f75507c24`
+   - began Phase 7 by exposing Pass-185 assistant provider-readiness controls in
+     `hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx`.
+
+The assistant provider-readiness change at `cab2ef2c…` is **not yet frozen by a dedicated Phase-7 validation receipt**.
+
+### Validation state at stop
+
+Completed/frozen:
+
+- Phase 1 calculator/application lifecycle;
+- Phase 2 process/static/degradation negatives;
+- Phase 3 browser lifecycle/reconnect/offline/concurrent-context behavior;
+- Phase 4 document/game/graphics/audio/video plus calculator multimodal workflows;
+- Phase 5 performance/starvation/remaining negative matrix;
+- Phase 6 New File/upload/Explorer/Build/Run/terminal/governed-job gap closure, including strict numeric Run evidence and durable governed-job cancellation proof.
+
+Current-head automatic workflows triggered by the latest assistant-panel commit are legacy/general workflows and are not dependency-scoped Phase-7 evidence. Their failures must not be treated as Phase-7 product evidence without attribution.
+
+### Phase-7 scope still open
+
+Next bounded block remains:
+
+`PHASE 7 — PROCESS / CACHE / NETWORK / PROVIDER COMPLETION MATRIX`
+
+Required unresolved work:
+
+1. complete the remaining Process/Socket §6.1 rows not already proven by Phases 2/5/6;
+2. complete Static/Module §6.2 cache, delayed-load, truncation, duplicate-import, HTTP-500, and rejection cases still missing;
+3. complete Browser Lifecycle §6.3 hard reload, back/forward, restored-tab, JavaScript-disabled, slow-network, temporary-API-unavailable, and remaining viewport/history cases;
+4. complete Optional Provider §6.6 ready/active and explicit activation-failure cases;
+5. capture the remaining environment/process/network/trace evidence required by §10;
+6. retain Phase-1 through Phase-6 receipts as immutable inputs;
+7. build a dedicated Phase-7 validation workflow and receipt only after each non-waivable row is individually evidenced.
+
+### Mandatory integration reconciliation before merge
+
+Because current `main` has advanced eight commits beyond the historical I141 base, the next integration phase must first inspect:
+
+`f8aa3337ee023c7d828343eac208987c20a05e67..feba5302d90f2fb757df566d8436f7c3d3fb9a79`
+
+and reconcile those eight main commits against I141 before any safe merge decision.
+
+Do **not** fast-forward or merge the current branch as-is. Preserve all frozen Phase-1–6 evidence while reconciling current-main drift.
+
+### Exact next action when resumed
+
+1. read this STOP CHECKPOINT;
+2. confirm branch tip and current `main`;
+3. if either changed, recompute ancestry before modifying files;
+4. continue Phase 7 from the assistant-provider readiness surface at `cab2ef2c…`;
+5. create dependency-scoped Phase-7 tests/workflow;
+6. freeze Phase 7 only on one exact green head;
+7. then perform cumulative Pass-185 closure reconciliation;
+8. only after cumulative closure is green, reconcile the eight-current-main-commit drift before any merge;
+9. authoritative-main verification and external deployment replay remain mandatory after integration.
+
+### Blockers at stop
+
+- Phase 7 is incomplete and has no validation receipt.
+- current main has advanced eight commits beyond I141's historical base.
+- cumulative Pass-185 closure receipt does not yet exist.
+- authoritative-main verification after integration is not done.
+- external deployment replay is not done.
+- terminal classification `HHS_PASS_185_PRODUCTION_BROWSER_AND_RUNTIME_CLOSURE_VERIFIED` remains prohibited.
+
+### Stop condition
+
+Repository state is restartable from this record. No further action is authorized until the next user prompt.
