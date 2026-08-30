@@ -13,6 +13,7 @@ on:
       - 'hhs_gui/runtime_os/workspace/Pass185MultimodalLifecyclePanel.tsx'
       - 'hhs_gui/runtime_os/core/RuntimeSocketManager.ts'
       - 'hhs_verification/pass185/phase5_performance_negative_acceptance.py'
+      - 'tests/test_runtime_os_production_root.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE5_PERFORMANCE_NEGATIVE_ACCEPTANCE.md'
       - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
       - '.github/workflows/pass219-i141-pass185-phase5-performance-negative.yml'
@@ -84,6 +85,8 @@ jobs:
           grep -Fq 'HHS_COGNITION_AUTO_TICK' hhs_verification/pass185/phase5_performance_negative_acceptance.py
           grep -Fq 'timing_and_resource_values_are_noncanonical_evidence' hhs_verification/pass185/phase5_performance_negative_acceptance.py
           grep -Fq 'frontend_runtime_authority' hhs_verification/pass185/phase5_performance_negative_acceptance.py
+          grep -Fq 'production_inherited_runtime_authority_status' hhs_backend/production_server.py
+          grep -Fq 'test_pass185_production_runtime_authority_route_wins_first_match' tests/test_runtime_os_production_root.py
           grep -Fq 'HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_IMPLEMENTED_PENDING_VALIDATION' \
             docs/pass185/HHS_PASS_185_I141_PHASE5_PERFORMANCE_NEGATIVE_ACCEPTANCE.md
 
@@ -135,6 +138,7 @@ jobs:
               'hhs_gui/runtime_os/workspace/Pass185MultimodalLifecyclePanel.tsx',
               'hhs_gui/runtime_os/core/RuntimeSocketManager.ts',
               'hhs_verification/pass185/phase5_performance_negative_acceptance.py',
+              'tests/test_runtime_os_production_root.py',
               'docs/pass185/HHS_PASS_185_I141_PHASE5_PERFORMANCE_NEGATIVE_ACCEPTANCE.md',
           ]:
               payload['source_blobs'][path] = subprocess.check_output(
