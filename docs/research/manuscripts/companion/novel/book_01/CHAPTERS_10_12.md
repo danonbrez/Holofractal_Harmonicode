@@ -4885,6 +4885,117 @@ She smiled and went upstairs.
 Julian left the line where it was.
 
 
+
+
+The dead television left one more problem.
+
+For years, public notices had been composed for a shared screen.
+
+One sentence.
+
+Large type.
+
+Everyone in the lobby received the same text.
+
+Mobile alerts introduced audience logic.
+
+Employees could receive building-specific warnings.
+
+Residents could receive neighborhood notices.
+
+Transit riders could receive route alerts.
+
+Parents could receive school messages.
+
+The improvement was obvious.
+
+A chemical spill near the river did not need to interrupt a family forty miles away.
+
+But the architecture changed the social meaning of public information.
+
+A warning could now be correct for one audience and absent from another.
+
+Julian tested the new alert service using three accounts.
+
+His own.
+
+Elena's.
+
+A test profile assigned to another district.
+
+The same city event generated different text.
+
+His message:
+
+ROAD CLOSED AT HARBOR AND NINTH. USE ALTERNATE ROUTE.
+
+Elena's:
+
+TRAFFIC DELAYS NEAR RIVER DISTRICT.
+
+The test profile:
+
+No alert.
+
+All were correct under the targeting rules.
+
+Julian stared at the screens.
+
+A common state no longer required a common message.
+
+This was efficient.
+
+It was also the seed of something he did not yet know how to name.
+
+If two people later argued about whether the city had warned them, both could possess authentic records.
+
+The dispute would require reconstructing audience state.
+
+He wrote:
+
+MESSAGE TRUTH DEPENDS ON RECIPIENT SCOPE.
+
+Elena read it.
+
+"Careful."
+
+"Why?"
+
+"Truth doesn't depend on recipient."
+
+"Message relevance."
+
+"Then write relevance."
+
+He crossed out truth.
+
+MESSAGE RELEVANCE DEPENDS ON RECIPIENT SCOPE.
+
+"Better."
+
+Julian looked at the three phones.
+
+"Eventually everyone gets a different world."
+
+"No."
+
+"Different slice."
+
+"Yes."
+
+"Same difference."
+
+"No."
+
+He smiled.
+
+"You're going to make me preserve that distinction for twenty years, aren't you?"
+
+"If necessary."
+
+It would be.
+
+
 On New Year's Eve Julian's mother hosted family in the row house.
 
 Television countdown.
