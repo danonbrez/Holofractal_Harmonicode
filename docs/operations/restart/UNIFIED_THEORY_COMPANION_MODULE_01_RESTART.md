@@ -33,7 +33,11 @@ W=(D,T,G,M,E)
 - Workspace frontier update: \`915c551bb863544e90be72266d40f905553177cd\`
 - Initial restart record: \`0556e478be85337760cf8abf9abf9678a219ece4\`
 - Companion index formatting repair: \`7e6545dbe91e551dc518681c8142f392ac9c05aa\`
-- Restart record formatting repair: this commit.
+- Restart record formatting repair: `b1b1d9dbbfc8ccc06c67ef5fb09d0e30a07b48b7`
+- Reference-manual Good/Evil ontology: `886885d680abbd86cd636265aad9a322da5b9b8c`
+- Module 1 ontology binding: `4c5b3ab562d517369a3b004cadd5317bb3e0be8f`
+- Companion index ontology dependency: `6805876b63e7c876f4be7b75580d6ed073a19f29`
+- Restart record ontology update: this commit.
 
 ## Changed files
 
@@ -127,7 +131,7 @@ The Legist's institutional attack requires hidden deprecation or unauthorized au
 Completed:
 
 - Module 1 fetched successfully from the branch.
-- File receipt: 1,145 lines / 22,986 characters.
+- File receipt after ontological binding: 1,251 lines / 24,883 characters.
 - Verified invariant tensor \`W=(D,T,G,M,E)\`.
 - Verified Lyra / Discordia, Faustian Broker, Vampire / Shapeshifter, Sophist, Corrupted Oracle / Legist, and Tower surfaces.
 - Verified Terminal Inversion.
@@ -180,3 +184,37 @@ Core execution question:
 ## Blockers
 
 None.
+
+
+## Ontological closure
+
+Reference-manual Section VII-A now defines:
+
+[
+	ext{Entropy}
+
+eq
+	ext{Evil}
+]
+
+Base entropy is non-agentic physical dissipation.
+
+Good is the formal class of truthful, adaptive, repairable negentropic organization satisfying the declared closure gates.
+
+Evil is the formal class of agentic, host-dependent corruption requiring asymmetric extraction plus a persistent integrity-corruption channel.
+
+Module 1 inherits this distinction directly.
+
+The Polymorphic Adversary is therefore not a destroyer whose identity is chaos. Its strongest state is a locally ordered parasitic subsystem that preserves enough host organization to continue extracting from it.
+
+The terminal paradox is explicit:
+
+[
+I_Hightarrow0
+Rightarrow
+operatorname{ResourceBase}(P)ightarrow0
+Rightarrow
+operatorname{Persistence}(P)ightarrow0
+]
+
+This makes Terminal Inversion, rather than total destruction, the required climax state.
