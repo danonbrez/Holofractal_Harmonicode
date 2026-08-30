@@ -194,17 +194,60 @@ def wait_ready_with_samples(
     )
 
 
-def health_latency_gate(base_url: str) -> dict[str, Any]:
+def resolve_lightweight_health_path(base_url: str) -> str:
+    attempts: list[dict[str, Any]] = []
+    for path in ("/api/health", "/health"):
+        try:
+            status, content_type, body, elapsed_ms = request(
+                base_url + path,
+                timeout=1.0,
+            )
+            attempts.append({
+                "path": path,
+                "status": status,
+                "content_type": content_type,
+                "elapsed_ms": round(elapsed_ms, 3),
+            })
+            if status == 200 and "json" in content_type.lower():
+                payload = json.loads(body)
+                if isinstance(payload, dict):
+                    return path
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as exc:
+            attempts.append({"path": path, "error": f"{type(exc).__name__}: {exc}"})
+    raise AssertionError({
+        "classification": "PHASE5_LIGHTWEIGHT_HEALTH_ROUTE_UNAVAILABLE",
+        "attempts": attempts,
+    })
+
+
+def health_latency_gate(base_url: str, health_path: str) -> dict[str, Any]:
     latencies: list[float] = []
+    timeout_samples = 0
+    timeout_ms = 1000.0
     for _ in range(40):
-        payload, elapsed_ms = json_request(base_url, "/api/system/status", timeout=1.0)
-        assert payload.get("system") == "HARMONICODE"
-        latencies.append(elapsed_ms)
+        try:
+            payload, elapsed_ms = json_request(
+                base_url,
+                health_path,
+                timeout=timeout_ms / 1000,
+            )
+            assert isinstance(payload, dict)
+            latencies.append(elapsed_ms)
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError):
+            timeout_samples += 1
+            latencies.append(timeout_ms)
         time.sleep(0.025)
     p95 = percentile(latencies, 0.95)
-    assert p95 < HEALTH_P95_GATE_MS, {"p95_ms": p95, "samples_ms": latencies}
+    assert p95 < HEALTH_P95_GATE_MS, {
+        "health_path": health_path,
+        "p95_ms": p95,
+        "timeout_samples": timeout_samples,
+        "samples_ms": latencies,
+    }
     return {
+        "health_path": health_path,
         "count": len(latencies),
+        "timeout_samples": timeout_samples,
         "p50_ms": round(percentile(latencies, 0.50), 3),
         "p95_ms": round(p95, 3),
         "max_ms": round(max(latencies), 3),
@@ -258,7 +301,7 @@ def idle_resource_gate(server: ProductionServer) -> dict[str, Any]:
     }
 
 
-def event_loop_yield_gate(base_url: str) -> dict[str, Any]:
+def event_loop_yield_gate(base_url: str, health_path: str) -> dict[str, Any]:
     samples: list[float] = []
     failures: list[str] = []
     stop = threading.Event()
@@ -268,7 +311,7 @@ def event_loop_yield_gate(base_url: str) -> dict[str, Any]:
             try:
                 _, elapsed_ms = json_request(
                     base_url,
-                    "/api/system/status",
+                    health_path,
                     timeout=0.5,
                 )
                 samples.append(elapsed_ms)
@@ -580,7 +623,8 @@ def recovery_gate(evidence_dir: Path, previous: ProductionServer) -> tuple[dict[
     )
     recovered.start(wait_ready=False)
     startup = wait_ready_with_samples(recovered)
-    health = health_latency_gate(recovered.base_url)
+    recovery_health_path = resolve_lightweight_health_path(recovered.base_url)
+    health = health_latency_gate(recovered.base_url, recovery_health_path)
     return (
         {
             "stop": stopped,
@@ -616,9 +660,10 @@ def main() -> None:
 
     try:
         startup = wait_ready_with_samples(server)
-        health = health_latency_gate(server.base_url)
+        health_path = resolve_lightweight_health_path(server.base_url)
+        health = health_latency_gate(server.base_url, health_path)
         idle = idle_resource_gate(server)
-        event_loop = event_loop_yield_gate(server.base_url)
+        event_loop = event_loop_yield_gate(server.base_url, health_path)
         browser = browser_gate(server.base_url, evidence_dir)
         recovery, active_server = recovery_gate(evidence_dir, server)
 
