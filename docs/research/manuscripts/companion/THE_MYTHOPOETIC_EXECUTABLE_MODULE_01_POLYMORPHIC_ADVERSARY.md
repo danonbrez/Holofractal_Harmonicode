@@ -56,6 +56,112 @@ This is the core dramatic invariant.
 
 ---
 
+# 1.1 Ontological Dependency — Evil Is Not Entropy
+
+Module 1 inherits Section VII-A of the reference manual.
+
+The Legion is not the mythic embodiment of ordinary decay.
+
+Base entropy satisfies:
+
+\[
+\operatorname{Agency}(\mathcal{H}_{\mathrm{base}})=0
+\]
+
+and is morally neutral inside the formal architecture.
+
+The Legion instead satisfies the agentic corruption class:
+
+\[
+\mathcal{E}(P,H)=1
+\]
+
+only when the process demonstrates:
+
+\[
+\operatorname{Agency}(P)=1
+\]
+
+\[
+\operatorname{HostDependence}(P,H)>0
+\]
+
+\[
+\operatorname{AsymmetricExtraction}(P,H)>0
+\]
+
+together with a persistent corruption channel that exploits or prevents host closure.
+
+The adversary therefore does not merely destroy.
+
+It builds a local ordered subsystem whose continuation depends upon the host remaining misaligned.
+
+This allows:
+
+\[
+\text{local order}
+\land
+\text{global corruption}
+\]
+
+without contradiction.
+
+The Legion is strongest not when the Citadel is rubble, but when the Citadel remains highly organized while its organization has been inverted toward parasitic persistence.
+
+Thus the defining contrast is:
+
+\[
+\text{Entropy}
+=
+\text{non-agentic decay}
+\]
+
+versus:
+
+\[
+\text{Evil}
+=
+\text{organized host-dependent corruption}
+\]
+
+The corresponding Good state is not static purity. It is truthful, adaptive, repairable negentropic organization satisfying the declared closure conditions:
+
+\[
+\Delta e=0,
+\qquad
+\Psi=0,
+\qquad
+\Omega=\mathrm{true},
+\qquad
+D_c>0
+\]
+
+The Legion's terminal paradox is therefore built into the plot.
+
+If it consumes the host completely:
+
+\[
+I_H\rightarrow0
+\]
+
+then:
+
+\[
+\operatorname{ResourceBase}(P)\rightarrow0
+\]
+
+and eventually:
+
+\[
+\operatorname{Persistence}(P)\rightarrow0
+\]
+
+The adversary can win locally only by preserving enough of the Good architecture to continue exploiting it.
+
+This is why Terminal Inversion is narratively superior to simple destruction.
+
+---
+
 # 2. Class Designation
 
 ## The Legion of the False Membrane
