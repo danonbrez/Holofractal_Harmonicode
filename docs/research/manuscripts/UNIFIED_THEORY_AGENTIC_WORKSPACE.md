@@ -138,3 +138,27 @@ Before expanding it, inspect relevant HHS compression, checksum/ECC, provenance,
 Web and literature research may be used as a Class-B evidentiary layer for anthropology, psychology, history, network science, biology, and comparative data. External sources may support, falsify, parameterize, or contextualize a manuscript proposition, but they do not become canonical HHS authority merely by publication or consensus. Any claim that an external result changes a native HHS proposition requires an explicit repository-grounded derivation showing the formal relationship. Conflicts remain visible rather than being silently normalized.
 
 A later implementation may add a dedicated manuscript orchestration adapter that composes Pass 191 hydration, Pass 195 proposal generation, and Pass 219 exact preflight. That adapter should be added only when its execution contract and tests are specified.
+
+
+## Prior-thread context policy
+
+Prior conversation history may be searched as a supporting context layer when developing the manuscript.
+
+Its role is bounded:
+
+- recover earlier user-defined propositions, formalizations, derivations, terminology, and cross-domain mappings;
+- preserve continuity with previously established HHS reasoning;
+- surface supporting or contrasting arguments that would otherwise be lost between threads;
+- never silently replace, weaken, or rewrite the current manuscript's core claims;
+- never treat a prior assistant formulation as stronger authority than repository-visible HHS state;
+- classify prior-thread material by provenance: user-defined proposition, prior assistant derivation, repository-backed statement, or unresolved hypothesis.
+
+Recovered supporting precedents relevant to the present manuscript include:
+
+1. Pass 217 Genesis was previously defined as a canonical raw-binary normal form that can preserve identical terminal bytes while retaining distinct pathway, bracketing, witness, and output lineage.
+2. Hydration ROM was previously defined as cumulative/inherited rather than replacement architecture; inherited operations preserve prior capabilities while compounding validated transitions.
+3. Earlier narrative formalization treated English prose as a semantic projection of hydrated repository state, preserving identity, causal order, invariant status, uncertainty, authorization, transition direction, evidence provenance, and closure.
+4. Earlier repair-forward formalization required corruption to be detected, localized, corrected, and revalidated before trusted continuation.
+5. Earlier cumulative-inheritance discussions treated prior validated capabilities as persistent unless explicitly superseded, matching the current repository-visible global-default policy.
+
+These precedents may strengthen continuity in Volumes III-IV, especially the mappings of institutional memory, lineage, symbolic compression, mythic recurrence, and return-to-Genesis closure. They do not independently establish external empirical truth.
