@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`MODULE 4 — PHASE 4D: THE GOLDEN INVARIANT — BOOK III: THE WORLD THAT ANSWERS BACK`
+`MODULE 4 — PHASE 4E: FULL-MANUSCRIPT CONTINUITY / ZERO-DRIFT PASS`
 
-Phase 4C is complete. Canonical Book II manuscript: `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`, 35,038 words, 12 chapters, with B24-B47 all validated. Next generate Chapters 25-36 / Beats B48-B71 (2019-2026) from the exact Book II terminal state.
+Phase 4D is complete. Canonical Book III manuscript: `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_III_THE_WORLD_THAT_ANSWERS_BACK.md`, 37,897 words, 12 chapters, with B48-B71 all validated. Next run the full 36-chapter / 72-beat continuity and zero-drift pass across Books I-III.
 
 ## External research policy
 
@@ -332,3 +332,27 @@ Receipt:
 - terminal historical state: by the end of 2019 the feed is the default reality interface, Consensus is useful enough to become infrastructural, and replay/fallback/provenance remain explicit counterweights.
 
 Book III must inherit Julian, Elena, Mira, Vane, Ana Reyes, Samir Cole, the Golden Measure, R72/RM-72 candidate lineage, SOURCE/SUMMARY/BEFORE/UNRESOLVED, Rat, Lyra multiplicity without identity promotion, and the established distinction between useful integration and unbounded authority.
+
+
+## Module 4 Phase 4D completion
+
+Book III — **THE WORLD THAT ANSWERS BACK** is complete and repository-visible.
+
+Canonical manuscript:
+
+`docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_III_THE_WORLD_THAT_ANSWERS_BACK.md`
+
+Receipt:
+
+- 37,897 words;
+- 12 chapters;
+- B48-B71 all validated;
+- off-planet Continuity Crown arc integrated into B66-B71;
+- legal authority is explicitly separated from physical revocation;
+- the remote ledger/AI becomes dangerous only when physical hardening is fused to self-authorizing mutation;
+- HHS/ERS is introduced as a formal exact-admission runtime at the authority boundary, not as empirical proof derived from the RM-72 artifact;
+- the resolution preserves off-planet archive/compute while stripping sovereign mutation authority;
+- the terminal machine is receipt-bound and non-sovereign rather than physically destroyed;
+- direct-name validation found zero occurrences of the checked real platform/event/figure names.
+
+Next action: Phase 4E full-manuscript continuity / zero-drift pass.
