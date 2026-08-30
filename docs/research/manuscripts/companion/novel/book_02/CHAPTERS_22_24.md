@@ -3648,3 +3648,198 @@ The feed had become reality's default interface.
 Consensus had become useful enough that turning it off now seemed irresponsible.
 
 That was the exact state from which the next book had to begin.
+
+
+The final Consensus incident of the year was small enough not to make news.
+
+A neighborhood service center lost connection to the central network for forty-three minutes.
+
+The backup procedure allowed staff to continue accepting paper and local cached forms.
+
+One clerk, newly hired, did not know the fallback.
+
+The training module had moved online.
+
+When the network failed, so did the instructions for what to do when the network failed.
+
+Julian heard about it from Ana.
+
+"Perfect."
+
+"Do not sound happy."
+
+"It's pure."
+
+"Pure stupid."
+
+They visited the center.
+
+A laminated continuity card had once been posted behind the desk.
+
+Removed during renovation because "all procedures current online."
+
+No malicious actor.
+
+No model error.
+
+No privacy conflict.
+
+Simple dependency recursion.
+
+The system stored its failure instructions inside the system that might fail.
+
+Julian wrote a one-page fallback card.
+
+NETWORK UNAVAILABLE:
+
+1. CONFIRM LOCAL SAFETY.
+2. RECORD TIME.
+3. ACCEPT PAPER / CACHED FORM WHERE AUTHORIZED.
+4. DO NOT INVENT ELIGIBILITY STATE.
+5. ISSUE MANUAL RECEIPT.
+6. RECONCILE AFTER RESTORATION.
+7. ESCALATE UNRESOLVED CONFLICT.
+
+Ana laminated it.
+
+"Ancient technology."
+
+"Works without login."
+
+They deployed cards to pilot centers.
+
+The next outage, staff continued.
+
+No story.
+
+No complaint.
+
+No metric spike.
+
+Good repair disappeared into normal operation.
+
+Julian thought of Lyra's message:
+
+Harmony is harder to prove because nothing catches.
+
+He disliked agreeing with an unknown account.
+
+But the sentence described maintenance.
+
+A repaired bearing made no headline.
+
+A correct access rule generated no incident.
+
+A preserved predecessor prevented an argument no one knew they might have had.
+
+The absence of failure was difficult evidence because nothing visible occurred.
+
+Managers wanted metrics.
+
+Julian proposed periodic replay tests.
+
+Simulate network loss.
+
+Check paper path.
+
+Measure reconciliation.
+
+Vane approved.
+
+The continuity drill found another problem: manual receipts used local numbers that could collide across centers.
+
+They added center prefix.
+
+Another drill found forms whose cached version expired.
+
+They added version date.
+
+Another found staff entered duplicate residents after restoration.
+
+They added reconciliation match.
+
+Each test generated more machinery.
+
+Julian worried repair itself could become bureaucratic armor.
+
+At some point controls cost more than risk.
+
+He asked Ana how to know.
+
+"Threat model."
+
+"Which can be wrong."
+
+"Yes."
+
+"Then?"
+
+"Review."
+
+"Which can be wrong."
+
+"Julian."
+
+He smiled.
+
+No final layer.
+
+Only bounded responsibility.
+
+At home he showed Mira the fallback card.
+
+She read.
+
+"Why paper?"
+
+"Network can fail."
+
+"Phone too?"
+
+"Yes."
+
+"Consensus too?"
+
+"Yes."
+
+"Everything?"
+
+"Everything."
+
+Mira thought.
+
+"Then what doesn't fail?"
+
+Julian almost answered with some principle.
+
+Instead:
+
+"Nothing I know."
+
+She nodded as if this was obvious.
+
+"Then keep backup."
+
+There.
+
+Eleven-year-old systems architecture.
+
+He taped her sentence under the fallback card.
+
+Elena added:
+
+BACKUP MUST BE TESTED.
+
+Mira added:
+
+MOM RUINS EVERYTHING.
+
+Julian preserved the note.
+
+It was the right final receipt for 2019.
+
+The network had become the default world, but the family had learned not to confuse default with infallible.
+
+Book II did not close on distrust.
+
+It closed on replay.
