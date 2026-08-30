@@ -2185,6 +2185,124 @@ Both had to be visible without being confused.
 
 
 
+
+The question of consent became less theoretical when Julian's mother received a letter about a loyalty program she did not remember joining.
+
+The grocery chain had merged accounts.
+
+Purchases from an old discount card were now connected to an online identity created when she ordered prescriptions.
+
+The letter described the change as an improved personalized experience.
+
+Julian read it at her kitchen table.
+
+"You use the card?"
+
+"For coupons."
+
+"You use pharmacy?"
+
+"Obviously."
+
+"They combined profiles."
+
+"So?"
+
+"Did you agree?"
+
+"I probably clicked something."
+
+"You don't click."
+
+"Then you did."
+
+Julian looked at Elena.
+
+Elena said, "Do not involve me."
+
+His mother opened the refrigerator.
+
+"Why do I care if they know I buy yogurt?"
+
+"Not yogurt."
+
+"What?"
+
+"Pattern."
+
+"What pattern?"
+
+"What you buy, when, prescriptions maybe not prescription names but pharmacy usage, household—"
+
+She closed the refrigerator.
+
+"Julian."
+
+"What?"
+
+"If the grocery store wants to discover I buy too much ice cream, let them experience the thrill."
+
+He laughed.
+
+Then she added:
+
+"If they raise my price because of it, tell me."
+
+There.
+
+Execution boundary.
+
+She did not object to observation in principle.
+
+She objected to undisclosed consequence.
+
+Julian reread the letter.
+
+Nothing stated individualized pricing.
+
+Coupons were personalized.
+
+Which meant some people received offers others did not.
+
+Was that a price difference?
+
+Sometimes.
+
+Was it unfair?
+
+Maybe.
+
+Was it useful?
+
+His mother loved the coupons.
+
+Again the system resisted clean moral classification.
+
+Julian created a rule in Rat:
+
+FLAG CHANGE ONLY WHEN CONSEQUENCE CLASS CHANGES.
+
+Elena revised:
+
+FLAG TEXTUAL DELTA ALWAYS. CLASSIFY CONSEQUENCE SEPARATELY.
+
+He looked at her.
+
+"More work."
+
+"Yes."
+
+"Your design philosophy is more work."
+
+"My design philosophy is visible work."
+
+"Nobody will adopt that."
+
+She kissed him.
+
+"You did."
+
+
 ---
 
 ### Chapter Twelve — The Pocket Gate
