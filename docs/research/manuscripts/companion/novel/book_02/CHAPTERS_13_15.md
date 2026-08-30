@@ -4168,3 +4168,254 @@ A locked room and an unmarked door can produce same practical absence.
 He still insisted the distinction be recorded.
 
 Because repair differed.
+
+
+The Glass Leak changed the way Julian looked at free wireless internet.
+
+Bellwether had begun installing public Wi-Fi in libraries, plazas, recreation centers, and transit stations.
+
+The service was popular.
+
+People without reliable home broadband used it for job applications, schoolwork, benefits, messaging, entertainment.
+
+Mira used it while waiting for swimming lessons.
+
+Julian used it to download a manual once and forgot about it.
+
+Then Ana showed him the analytics dashboard.
+
+Not content.
+
+Device counts.
+
+Session duration.
+
+Access points.
+
+Roaming patterns.
+
+A phone moving from library to transit station to plaza could be observed as one pseudonymous device if network identifiers persisted.
+
+"Why?" Julian asked.
+
+"Capacity planning."
+
+"Need path?"
+
+"Helps know movement and handoff."
+
+"Could infer person routine."
+
+"Sometimes."
+
+"Do we?"
+
+"Not at individual level in dashboard."
+
+"Underlying?"
+
+"Logs."
+
+"Retention?"
+
+She told him.
+
+"Too long."
+
+"Security wants incident history."
+
+"Planning wants aggregates."
+
+"Then separate."
+
+They argued for weeks.
+
+Security needed raw enough data to investigate abuse.
+
+Planning needed patterns.
+
+Privacy wanted minimization.
+
+The final architecture retained short-window pseudonymous operational logs, then aggregated mobility statistics beyond that window unless a specific security hold existed under policy.
+
+Julian considered this a good compromise.
+
+Then a police unit requested historical device data tied to an investigation.
+
+The network team had it within retention window.
+
+Legal reviewed.
+
+Request lawful.
+
+Data helped place a suspect near a transit station.
+
+Case solved partly through a service installed to help residents get online.
+
+The newspaper later reported it.
+
+Public response split.
+
+Some said good.
+
+Some said surveillance.
+
+A woman at a hearing asked:
+
+"When I connected my kid's tablet at library, did I agree to become police sensor?"
+
+The city's attorney explained terms.
+
+She said:
+
+"That's not what I asked."
+
+Julian recognized the sentence.
+
+Represented expectation versus legal permission.
+
+The Wi-Fi splash page technically linked privacy policy.
+
+Almost no one read.
+
+The city revised notice:
+
+NETWORK LOGS MAY BE RETAINED FOR SECURITY AND MAY BE DISCLOSED WHEN LEGALLY REQUIRED.
+
+Plain.
+
+Uncomfortable.
+
+Accurate.
+
+Usage barely changed.
+
+This surprised officials.
+
+People preferred service despite knowledge.
+
+Consent improved not because users declined but because consequence stopped being hidden behind generic language.
+
+Julian saw a lesson:
+
+Transparency does not necessarily destroy useful systems.
+
+Sometimes institutions hide complexity because they assume people cannot tolerate tradeoffs.
+
+People often can.
+
+They mostly hate surprise.
+
+The Wi-Fi network remained.
+
+Analytics became narrower.
+
+Lawful access remained possible.
+
+No side won.
+
+The boundary became visible.
+
+That was better.
+
+One evening Julian watched Mira connect at library.
+
+The warning appeared.
+
+She tapped accept without reading.
+
+He stopped her.
+
+"Read."
+
+She sighed.
+
+"Why?"
+
+"Because."
+
+"You always say because not answer."
+
+He read with her.
+
+"Logs may be retained," she said. "What's logs?"
+
+"Record that device connected."
+
+"Do they know what I read?"
+
+"Not from this notice. Other internet systems might know sites."
+
+"Do they know me?"
+
+"Maybe device. Account if you sign in somewhere."
+
+"This is too much."
+
+"Yes."
+
+"Can I use internet?"
+
+"Yes."
+
+She tapped accept.
+
+"Then why make me read if I still use?"
+
+Julian paused.
+
+"So you know what you're choosing."
+
+"What if I need it?"
+
+There.
+
+Consent under dependency.
+
+The question he had avoided.
+
+If a service becomes necessary, choice narrows.
+
+Authorization remains meaningful but less free in practical sense.
+
+School assigned online homework.
+
+Library Wi-Fi was not luxury for every child.
+
+A privacy condition attached to access could become unavoidable infrastructure.
+
+Julian told Elena.
+
+She said:
+
+"Then public systems need higher standard because exit cost high."
+
+"Exactly."
+
+"Write."
+
+He did:
+
+CONSENT QUALITY DECREASES AS PRACTICAL EXIT COST INCREASES.
+
+That line eventually entered Consensus governance drafts through Vane.
+
+Julian accused him again.
+
+Vane replied:
+
+You send me your notes.
+
+Julian:
+
+Not permission.
+
+Vane:
+
+Your emails literally say "use this."
+
+Julian checked.
+
+Several did.
+
+He hated receipts.
