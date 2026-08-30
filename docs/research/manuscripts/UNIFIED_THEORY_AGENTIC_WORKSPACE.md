@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 3: THE PLOT STATE MACHINE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 4: NARRATIVE OBJECT REGISTRY AND BEAT COMPILER`
 
-Modules 1 and 2 are complete. Module 3 must compose the Polymorphic Adversary and the Citadel's distributed proof architecture into an ordered dramatic state machine from stable Genesis geometry through corruption, Terminal Inversion, recovery, adversarial retest, public recalibration, and successor-state handoff.
+Modules 1-3 are complete. Module 4 must serialize the executable plot into stable character, location, symbol, institution, artifact, motif, and beat objects with predecessor/successor links and a bounded 72-state narrative projection suitable for native proposal expansion without changing the theorem map.
 
 ## External research policy
 
@@ -216,3 +216,40 @@ eq H_0
 ]
 
 The next frontier is Module 3: the executable plot-state machine.
+
+
+## Companion Module 3 completion state
+
+Module 3 is complete in \`docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_03_PLOT_STATE_MACHINE.md\`.
+
+Its global trajectory is:
+
+\[
+S_0
+\rightarrow
+S_{\mathrm{corrupt}}
+\rightarrow
+S_{\mathrm{inverted}}
+\rightarrow
+S_{\mathrm{recovery}}
+\rightarrow
+S_f
+\]
+
+with:
+
+\[
+S_f\sim S_0
+\]
+
+at the invariant boundary and:
+
+\[
+H_f\neq H_0
+\]
+
+because the corruption history remains authenticated.
+
+The module contains six acts, complete adversary coverage \(W=(D,T,G,M,E)\), complete defender coverage \(\mathfrak{D}=(K,A,L,G,C,X,H)\), a mandatory failed first repair, affected-frontier reconstruction, adversarial retest, distributed Pillar recalibration, successor handoff, a causal dependency graph, character arc matrix, scene grammar, theorem-to-plot map, and twelve validation gates.
+
+The next frontier is Module 4: Narrative Object Registry and Beat Compiler.
