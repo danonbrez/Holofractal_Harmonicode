@@ -1,0 +1,333 @@
+{
+  "schema": "HHS_PASS221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT_V1",
+  "contract_id": "HHS-P221-INSTAGRAM-RECEIPT-BLOG-DEPLOYMENT",
+  "version": "1.0.0",
+  "pass": 221,
+  "status": "CONTRACT_AUTHORIZED_IMPLEMENTATION_NOT_YET_CLOSED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "adopted_against_main": "33eb620d2dcc932479d3450e418b2c2c732866d2",
+  "target_account": "@the_jade_dynasty",
+  "deployment_target": "DigitalOcean",
+  "cumulative_position": {
+    "additive_extension": true,
+    "pass220_reserved_for": "native Linux VM/bootstrap and web-deprecation boundary",
+    "may_contract_before_pass220_terminal_closure": true,
+    "promotional_implementation_gate": [
+      "PASS_219_TERMINAL_CLOSURE",
+      "CURRENT_MAIN_EXACT_HEAD_VERIFICATION",
+      "PASS_220_TERMINAL_CLOSURE",
+      "CURRENT_MAIN_EXACT_HEAD_VERIFICATION"
+    ],
+    "non_promotional_preimplementation_allowed": true,
+    "no_terminal_closure_claim_before_gate": true
+  },
+  "inherits": [
+    "PRE_PASS_KERNEL_PROTECTION_STATE_CONTINUITY",
+    "SINGLETON_VM81_KERNEL_ADMISSION_COMMIT_AUTHORITY",
+    "AUTHORITATIVE_HASH72_SECURITY_INTEGRITY",
+    "HASH216_POST_CLOSURE_PROOF_ARCHIVE",
+    "CANONICAL_EXACT_ARITHMETIC",
+    "HHS-P219-GLOBAL-CANONICAL-DEFAULTS",
+    "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+    "SECURITY_HASH72_V44_CORE_SANDBOX_DELEGATION_REPAIR",
+    "APPLICABLE_PASS220_DEPLOYMENT_INTERFACE_INVARIANTS_AFTER_TERMINAL_CLOSURE"
+  ],
+  "source_authority": {
+    "official_api_only": true,
+    "host": "graph.instagram.com",
+    "login_architecture": "Instagram Login",
+    "minimum_scope": "instagram_business_basic",
+    "optional_insights_scope": "instagram_business_manage_insights",
+    "professional_account_required": true,
+    "forbidden": [
+      "instagram.com HTML scraping",
+      "logged-in browser automation",
+      "unofficial private APIs",
+      "mobile private endpoint replay",
+      "rate-limit bypass",
+      "access-control bypass",
+      "session-cookie extraction",
+      "scraping fallback after token failure"
+    ],
+    "unavailable_status": "IG_AUTHORITY_UNAVAILABLE",
+    "fail_closed": true
+  },
+  "platform_versioning": {
+    "environment_variable": "IG_GRAPH_API_VERSION",
+    "pinned_supported_version_required": true,
+    "batch_receipt_records_version": true,
+    "silent_version_drift_forbidden": true
+  },
+  "ingestion": {
+    "media_endpoint_template": "https://graph.instagram.com/{IG_GRAPH_API_VERSION}/{IG_USER_ID}/media",
+    "fields": [
+      "id",
+      "caption",
+      "media_type",
+      "media_url",
+      "thumbnail_url",
+      "permalink",
+      "timestamp",
+      "like_count",
+      "comments_count",
+      "children"
+    ],
+    "cursor_pagination_until_exhausted": true,
+    "pagination_host_validation_required": true,
+    "rate_discipline": {
+      "honor_429": true,
+      "honor_retry_after": true,
+      "inspect_usage_headers_when_supplied": true,
+      "bounded_exponential_backoff": true,
+      "configurable_conservative_local_budget": true,
+      "bypass_forbidden": true
+    }
+  },
+  "media_normalization": {
+    "no_permanent_instagram_cdn_hotlinking": true,
+    "image_mirror_required": true,
+    "video_mirror_required": true,
+    "video_thumbnail_mirror_when_present": true,
+    "carousel_children_individually_mirrored": true,
+    "carousel_child_order_canonical": true,
+    "destination": "DigitalOcean Spaces"
+  },
+  "authoritative_integrity": {
+    "source_hash72_fields": [
+      "ig_media_id",
+      "permalink",
+      "timestamp"
+    ],
+    "media_hash72_commits_exact_mirrored_bytes": true,
+    "payload_hash72_fields": [
+      "caption",
+      "media_type",
+      "ordered_media_hash72",
+      "spaces_object_identity",
+      "metrics_snapshot"
+    ],
+    "receipt_hash72_fields": [
+      "previous_receipt_hash72",
+      "source_hash72",
+      "payload_hash72",
+      "event_type"
+    ],
+    "hash72_authority": "security_hash72_v44",
+    "kernel_delegation_only": true,
+    "python_reimplementation_forbidden": true,
+    "javascript_reimplementation_forbidden": true,
+    "foreign_hashes_authoritative": false
+  },
+  "event_model": {
+    "event_types": [
+      "INGEST",
+      "REFRESH",
+      "SUPERSEDE",
+      "TOMBSTONE",
+      "METRICS_UPDATE",
+      "AUTHORITY_FAILURE"
+    ],
+    "append_only": true,
+    "supersession_references_prior_receipt": true,
+    "tombstone_references_prior_receipt": true,
+    "temporary_unavailability_is_not_deletion": true,
+    "metrics_changes_are_new_events": true
+  },
+  "ledger": {
+    "source_of_truth": "data/instagram/the_jade_dynasty/ledger.jsonl",
+    "derived_paths": [
+      "data/instagram/the_jade_dynasty/items/",
+      "index/feed_index.json",
+      "dist/"
+    ],
+    "ephemeral_app_platform_fs_authoritative": false,
+    "durable_repository_approved_persistence_required_before_success": true,
+    "historical_rewrite_forbidden": true
+  },
+  "batch_closure": {
+    "batch_hash72_fields": [
+      "prior_batch_hash72",
+      "ordered_item_receipt_hash72",
+      "api_version",
+      "account_id",
+      "batch_source_timestamp"
+    ],
+    "exact_integer_counts": [
+      "items_observed",
+      "new_items",
+      "supersessions",
+      "tombstones",
+      "metrics_updates",
+      "media_objects_mirrored",
+      "unchanged_items",
+      "failures"
+    ]
+  },
+  "authority_chain": [
+    "INSTAGRAM_API_RESPONSE",
+    "BOUNDARY_VALIDATION",
+    "CANONICAL_INGEST_OBJECT",
+    "SINGLETON_HHS_KERNEL_VM81_ADMISSION",
+    "security_hash72_v44",
+    "RECEIPT_CLOSURE",
+    "APPEND_ONLY_LEDGER",
+    "HASH216_ARCHIVAL_PROOF_WHERE_APPLICABLE",
+    "DERIVED_BLOG_PROJECTION"
+  ],
+  "projection": {
+    "static_first": true,
+    "routes": [
+      "/",
+      "/post/{ig_media_id}/",
+      "/feed.xml",
+      "/feed.json",
+      "/verify/{receipt_hash72}/"
+    ],
+    "blog_is_authoritative": false,
+    "index_is_authoritative": false,
+    "verify_statuses": [
+      "MATCH",
+      "MISMATCH",
+      "TOMBSTONE",
+      "SUPERSEDED"
+    ],
+    "mismatch_blocks_new_active_publish": true,
+    "caption_html_trusted": false,
+    "original_permalink_exposed": true
+  },
+  "deterministic_build": {
+    "rebuild_from_ledger_and_immutable_media": true,
+    "byte_identical_for_same_dependency_toolchain_version": true,
+    "prohibited_nondeterminism": [
+      "current wall-clock build timestamps",
+      "filesystem enumeration order",
+      "random IDs",
+      "environment-specific absolute paths",
+      "uncontrolled locale formatting",
+      "unordered serialization",
+      "unpinned generator behavior"
+    ]
+  },
+  "digitalocean": {
+    "primary_shape": "App Platform static site + scheduled ingest job + Spaces",
+    "build_command": "python3 tools/build_blog.py",
+    "output_directory": "dist/",
+    "ingest_command": "python3 tools/ig_ingest.py",
+    "preferred_schedule": "0 */6 * * *",
+    "required_secrets": [
+      "IG_ACCESS_TOKEN",
+      "IG_USER_ID",
+      "IG_GRAPH_API_VERSION",
+      "SPACES_KEY",
+      "SPACES_SECRET",
+      "SPACES_BUCKET",
+      "SPACES_ENDPOINT",
+      "DIGITALOCEAN_TOKEN"
+    ],
+    "conditional_git_secret": "GH_CONTENT_TOKEN or equivalent least-privilege GitHub App credential",
+    "tls_required": true
+  },
+  "token_lifecycle": {
+    "refresh_endpoint": "https://graph.instagram.com/refresh_access_token",
+    "grant_type": "ig_refresh_token",
+    "refresh_before_expiry": true,
+    "secret_value_never_receipted": true,
+    "on_refresh_failure": {
+      "ingestion": "HALT",
+      "blog": "KEEP_LAST_VERIFIED_BUILD",
+      "scrape_fallback": "FORBIDDEN",
+      "status": "IG_AUTHORITY_UNAVAILABLE"
+    }
+  },
+  "acceptance_tests": {
+    "T1": "Cold ingest: official API only, complete receipt chain, mirrored media, batch closure, zero scrape traffic",
+    "T2": "Ledger/media integrity: 100% payload/media/receipt-chain/batch-root match",
+    "T3": "Append-only tamper detection: altered caption flags exact MISMATCH and blocks publish",
+    "T4": "Replay: delete index/dist and byte-identically regenerate from ledger plus immutable mirrored media",
+    "T5": "Update cycle: new source post extends chain and appears after one verified cycle",
+    "T6": "Deletion honesty: confirmed source deletion appends tombstone rather than silent removal",
+    "T7": "Token failure: IG_AUTHORITY_UNAVAILABLE, no new ingest, no scraping, last verified build remains",
+    "T8": "Public HTTPS surface: /, post, RSS, JSON Feed, verify all return 200 and known receipt MATCH"
+  },
+  "required_negative_tests": [
+    "invalid access token",
+    "missing IG_USER_ID",
+    "HTTP 429",
+    "malformed API response",
+    "pagination cycle/repetition",
+    "foreign pagination host",
+    "media download failure",
+    "media byte corruption",
+    "carousel child omission",
+    "carousel child reordering",
+    "Spaces upload failure",
+    "kernel authority loss",
+    "Hash72 mismatch",
+    "broken receipt predecessor",
+    "duplicate conflicting media ID",
+    "non-deterministic rebuild",
+    "secret leakage into output",
+    "deployment trigger failure"
+  ],
+  "expected_repository_surfaces": [
+    "contracts/pass221/PASS_221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT_1_0.json",
+    "docs/pass221/PASS_221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT.md",
+    "docs/operations/restart/PASS_221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT_RESTART.md",
+    "hhs_runtime/pass221/instagram_ingestion.py",
+    "hhs_runtime/pass221/instagram_receipts.py",
+    "tools/ig_ingest.py",
+    "tools/build_blog.py",
+    "tools/verify_instagram_ledger.py",
+    "templates/instagram_blog/",
+    "data/instagram/the_jade_dynasty/ledger.jsonl",
+    "tests/pass221/",
+    ".github/workflows/pass221-instagram-receipt-blog.yml",
+    ".do/app.yaml"
+  ],
+  "validation_progression": [
+    "contract/schema validation",
+    "canonicalization unit tests",
+    "Hash72 authority/delegation tests",
+    "ledger transition tests",
+    "media-integrity tests",
+    "static deterministic replay",
+    "mocked external-failure tests",
+    "authorized live Instagram integration",
+    "DigitalOcean deployment acceptance",
+    "T1-T8 closure",
+    "merge and verified-main closure"
+  ],
+  "closure_claim_requirements": [
+    "items ingested",
+    "item-event receipts issued",
+    "media objects mirrored",
+    "carousel child objects mirrored",
+    "supersessions",
+    "tombstones",
+    "batch_hash72",
+    "deployment URL",
+    "T1-T8 results",
+    "implementation commit",
+    "merge or ready-PR identity",
+    "verified-main identity",
+    "deployment identity"
+  ],
+  "terminal_invariants": [
+    "INSTAGRAM_IS_INGRESS_NOT_HHS_AUTHORITY",
+    "DIGITALOCEAN_IS_DEPLOYMENT_PERSISTENCE_NOT_HHS_AUTHORITY",
+    "SPACES_IS_MEDIA_STORAGE_NOT_HHS_AUTHORITY",
+    "BLOG_IS_PROJECTION_NOT_LEDGER",
+    "INDEX_IS_DERIVED_NOT_AUTHORITATIVE",
+    "HASH72_SECURITY_INTEGRITY_HAS_ONE_AUTHORITATIVE_KERNEL_PATH",
+    "NO_PYTHON_OR_JAVASCRIPT_HASH72_REIMPLEMENTATION",
+    "NO_SCRAPING_FALLBACK",
+    "NO_SILENT_DELETION",
+    "NO_IN_PLACE_HISTORICAL_MUTATION",
+    "NO_UNVERIFIED_CONTENT_IN_NEW_VERIFIED_BUILD",
+    "EPHEMERAL_APP_PLATFORM_FS_NEVER_CANONICAL_LEDGER",
+    "EVERY_SUCCESSFUL_INGEST_BATCH_CLOSES_WITH_RECEIPT",
+    "EVERY_PUBLIC_POST_TRACEABLE_TO_RECEIPT",
+    "EVERY_ACTIVE_MEDIA_OBJECT_HAS_CONTENT_INTEGRITY",
+    "T1_T8_EXECUTED_GREEN_BEFORE_TERMINAL_CLOSURE"
+  ]
+}
