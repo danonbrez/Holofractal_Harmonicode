@@ -2,7 +2,7 @@
 
 Classification:
 
-`HHS_PASS_185_PHASE6_WORKSPACE_JOB_GAPS_IMPLEMENTED_PENDING_VALIDATION`
+`HHS_PASS_185_PHASE6_WORKSPACE_JOB_GAPS_VERIFIED`
 
 Terminal Pass 185 completion is not claimed.
 
@@ -79,3 +79,39 @@ The running-job cancellation must be driven by visible browser controls while th
 Phase 6 does not yet claim the complete historical Pass-185 matrix. After it is frozen, the remaining reconciliation must still prove any contract scenarios not individually covered by Phases 1–6, including outstanding process/socket, cache/network/browser-history, provider-ready/activation-failure, and final evidence-package requirements.
 
 Authoritative-main verification and external deployment replay remain mandatory after cumulative local closure.
+
+
+## Final Phase-6 validation
+
+Phase 6 is verified and frozen at the strict implementation/evidence head:
+
+- validated head: `d716fb50ed8f903ccd8de965d8fa880b08df9027`
+- validated tree: `a5d61a4de3a329f1f1ce6c2dcb3b9d036e423d27`
+- workflow run: `33307912399`
+- job: `99247647719`
+- artifact: `9731086579`
+- artifact SHA-256: `cdeb910f749a39e5abbbc7329c94eb1052be2972e862e41840e257462a1086c9`
+- evidence SHA-256: `cf29d4b714c705bf6d3851ed6c7e251e622b3964a673ff4e5a8e0a8bb9d82f4c`
+- seal receipt SHA-256: `1eb676b4f69dabcce5e5fdce30412945bf0d09204fc044c04c22ad68b7ed33d8`
+- compiled-C SHA-256: `7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE6_VALIDATION_RECEIPT.json`
+
+Strict visible evidence:
+
+- New File reset the source buffer;
+- upload loaded `pass185-uploaded.hhs`;
+- Witness created a visible workspace object;
+- Explorer selection remained operable;
+- Build exposed a compiled artifact identity;
+- emulator creation exposed a session identity;
+- Run advanced the visible numeric emulator tick exactly from `0` to `4`;
+- inherited Pass-175 terminal reached `READY → PONG → CLOSED`;
+- Pass-191 governed job reached `QUEUED → RUNNING → CANCELLED`;
+- cancellation checkpoint was `CANCELLED_BY_AUTHORIZED_REQUEST`;
+- recovery created a distinct replacement job in `QUEUED` state;
+- browser page errors: zero;
+- browser console errors: zero.
+
+The earlier Phase-6 run whose Run witness differed only by whitespace is not completion evidence and is superseded by this strict numeric-tick validation.
+
+Phase 6 still does not claim terminal Pass 185 completion.
