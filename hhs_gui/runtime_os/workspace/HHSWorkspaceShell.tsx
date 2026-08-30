@@ -4,11 +4,12 @@ import { LiveRuntimeProjectionPanel } from "../core/LiveRuntimeProjectionPanel"
 import { Pass185ApplicationLifecyclePanel } from "./Pass185ApplicationLifecyclePanel"
 import { Pass185MultimodalLifecyclePanel } from "./Pass185MultimodalLifecyclePanel"
 import { Pass185TerminalPanel } from "./Pass185TerminalPanel"
+import { Pass185HydrationJobPanel } from "./Pass185HydrationJobPanel"
 import type { RuntimeOS } from "../core/RuntimeOS"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
 type Json = Record<string, any>
-type WorkspaceTab = "workbench" | "application" | "multimodal" | "assistant" | "runtime" | "terminal" | "receipts"
+type WorkspaceTab = "workbench" | "application" | "multimodal" | "assistant" | "runtime" | "jobs" | "terminal" | "receipts"
 type BusyAction = "boot" | "project" | "source" | "interpret" | "compile" | "emulator" | "runtime" | null
 
 type Activity = {
@@ -400,13 +401,14 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
       </header>
 
       <nav className="sticky top-[57px] z-30 border-b border-neutral-800 bg-neutral-950/95 px-2 py-2 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-6xl grid-cols-4 gap-1 sm:grid-cols-7">
+        <div className="mx-auto grid max-w-7xl grid-cols-4 gap-1 sm:grid-cols-8">
           {([
             ["workbench", "Build"],
             ["application", "Application"],
             ["multimodal", "Multimodal"],
             ["assistant", "Assistant"],
             ["runtime", "Runtime"],
+            ["jobs", "Jobs"],
             ["terminal", "Terminal"],
             ["receipts", "Receipts"],
           ] as [WorkspaceTab, string][]).map(([id, label]) => (
@@ -580,6 +582,10 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               </section>
             </aside>
           </div>
+        ) : null}
+
+        {tab === "jobs" ? (
+          <Pass185HydrationJobPanel />
         ) : null}
 
         {tab === "terminal" ? (
