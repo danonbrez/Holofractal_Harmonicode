@@ -99,7 +99,16 @@ def verify_receipts(repo: Path) -> dict[str, Any]:
         value = json.loads(raw)
         assert value.get("classification") == classification, (phase, value.get("classification"))
         assert value.get("terminal_pass185_completion_claimed") is False
-        assert (value.get("pass185_contract") or {}).get("identifier") == CONTRACT_ID
+        contract_field = value.get("pass185_contract")
+        if isinstance(contract_field, dict):
+            recorded_contract_id = contract_field.get("identifier")
+        else:
+            recorded_contract_id = value.get("contract")
+        assert recorded_contract_id == CONTRACT_ID, (
+            phase,
+            recorded_contract_id,
+            value.get("schema"),
+        )
         if phase == 7:
             seal = value.get("phase7_seal") or {}
             assert seal.get("matrix_row_count") == 62
@@ -111,6 +120,7 @@ def verify_receipts(repo: Path) -> dict[str, Any]:
             "classification": classification,
             "validated_head": head,
             "sha256": sha256(raw).hexdigest(),
+            "contract_id": recorded_contract_id,
         }
     return result
 

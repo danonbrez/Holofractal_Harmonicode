@@ -308,3 +308,31 @@ Current authority regressions remain required:
 - production Runtime OS root/authority composition.
 
 No Pass-217 evidence is rewritten or weakened. Run `33317245728` remains preserved as failing evidence.
+
+
+### Cumulative run 33317446006 frozen-receipt normalization repair
+
+Run `33317446006` on `3bd16781b5f24c831e0f41232042d8c6afcf6a9e` passed:
+
+- C compilation;
+- Runtime OS typecheck/build;
+- cumulative source-boundary checks;
+- Phase-7 object-identity authority checks;
+- current singleton/Hash72/authority-conflict/runtime-root regressions;
+- Chromium installation.
+
+The cumulative executable then stopped before browser launch while verifying frozen receipt metadata.
+
+Exact cause:
+
+- Phase 1 stores the Pass-185 contract identifier in the historical field `contract: "HHS-P185-PCBAVC-IVC-VM81-H72-H216"`;
+- Phases 2–7 store the same identifier in `pass185_contract.identifier`;
+- the cumulative verifier incorrectly required only the later object form.
+
+Classification:
+
+`FROZEN_RECEIPT_SCHEMA_NORMALIZATION_DEFECT_NOT_PHASE_EVIDENCE_FAILURE`
+
+Repair-forward accepts exactly those two repository-recorded representations and still requires the identifier to equal `HHS-P185-PCBAVC-IVC-VM81-H72-H216`. No receipt is rewritten and no alternate contract identifier is accepted.
+
+Run `33317446006` remains failing evidence. The next descendant must rerun the cumulative executable and reach the actual production-browser gate.
