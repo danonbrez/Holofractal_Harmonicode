@@ -71,11 +71,11 @@ Expected certification behavior is independent of this repair: pre-existing back
 
 ## Exact next action
 
-Run the two-test dependency-scoped suite in a repository-capable execution environment. If green, exercise the gateway smoke path, then merge or open the ready PR according to current delivery policy. If an unrelated certification layer remains failed, preserve that evidence and repair forward separately.
+None for this defect. The repair is merged and target-verified. Continue only with the separate pre-existing backend final-certification repair queue.
 
 ## Blockers
 
-No repository-semantic blocker is known. Observed execution blockers are lack of outbound GitHub DNS in the current local execution container and zero-job GitHub Actions termination before any workflow steps execute.
+None for this defect. Historical execution limitations during validation were lack of outbound GitHub DNS in the local execution container and zero-job GitHub Actions termination before workflow steps executed; neither remains a blocker to this completed merge.
 
 
 ## Terminal closure receipt
