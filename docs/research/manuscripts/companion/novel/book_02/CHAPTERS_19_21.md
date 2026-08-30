@@ -758,6 +758,171 @@ That also frightened him.
 
 ---
 
+
+
+Consensus changed Julian's relationship with forms before it changed anything else.
+
+The pilot team invited him to test a benefits application.
+
+He had no need for benefits, so they used a simulated household.
+
+Two adults.
+
+One child.
+
+Variable income.
+
+Recent move.
+
+Disability accommodation.
+
+The old application required forty-three fields and six uploads.
+
+The Consensus version prefilled twenty-nine.
+
+Julian completed it in seven minutes.
+
+"That's good," he said.
+
+The user researcher smiled.
+
+"Can we quote you?"
+
+"No."
+
+"Why?"
+
+"Because next question."
+
+She sighed.
+
+"What?"
+
+"Which twenty-nine fields did I not actively verify?"
+
+The researcher opened a summary.
+
+Address.
+
+Household names.
+
+Income band.
+
+Identity.
+
+Age.
+
+Prior eligibility.
+
+"Can user edit?"
+
+"Most."
+
+"Which not?"
+
+"Verified attributes require source correction."
+
+"Good."
+
+"Still good?"
+
+"Annoyingly."
+
+The researcher laughed.
+
+Julian clicked an income value.
+
+A provenance panel appeared:
+
+SOURCE: STATE WAGE FEED.
+
+UPDATED: 12 DAYS AGO.
+
+SCOPE: ELIGIBILITY.
+
+He stared.
+
+"This is what I want."
+
+"What?"
+
+"Not number. Why number."
+
+She nodded.
+
+That design came from Vane's team.
+
+Julian sent him a message:
+
+ONE POINT.
+
+Vane:
+
+For?
+
+Julian:
+
+Provenance panel.
+
+Vane:
+
+We have thousands.
+
+Julian:
+
+Still one point.
+
+Vane:
+
+I will treasure it.
+
+The architecture felt humane when it exposed lineage.
+
+Then another field appeared:
+
+HOUSEHOLD STABILITY: VERIFIED.
+
+Julian clicked.
+
+No source.
+
+Derived.
+
+He frowned.
+
+The researcher said:
+
+"That's a composite."
+
+"From?"
+
+"Address and identity consistency."
+
+"Then show."
+
+"Pilot simplification."
+
+"That is exactly where simplification becomes authority."
+
+She wrote it down.
+
+The label changed in a later build to:
+
+HOUSEHOLD ADDRESS CONSISTENCY — DERIVED.
+
+Small repair.
+
+Meaning improved.
+
+Julian saw why software teams needed hostile users.
+
+Not malicious hostile.
+
+Semantic hostile.
+
+People willing to ask what a word actually authorized.
+
+
 ### Chapter Twenty — Confession Wave
 
 The first confession Julian read belonged to a woman he knew.
@@ -1293,6 +1458,105 @@ The public kept forgetting corrections faster than accusations.
 The ledger expanded.
 
 ---
+
+
+
+The confession wave created a second archive in Elena's work.
+
+People began donating screenshots.
+
+Emails.
+
+Texts.
+
+Letters.
+
+Personnel records.
+
+Private journals.
+
+Some wanted preservation in case institutions later denied what had happened.
+
+Some wanted material sealed until death.
+
+Some wanted public access immediately.
+
+The archive had policies for official records.
+
+Personal testimony introduced different ethics.
+
+Elena created consent categories.
+
+PUBLIC NOW.
+
+RESTRICTED.
+
+EMBARGOED UNTIL DATE.
+
+EMBARGOED UNTIL DEATH.
+
+RESEARCH ACCESS ONLY.
+
+WITHDRAWABLE.
+
+NON-WITHDRAWABLE COPY DEPOSIT.
+
+Julian looked at the list.
+
+"You've invented terms of service for trauma."
+
+"Better than guessing."
+
+A donor changed her mind after depositing material.
+
+She wanted everything returned.
+
+The archive had already created preservation backups under the signed agreement.
+
+Legally it could retain.
+
+Elena chose to delete because the donor's expectation had been poorly explained.
+
+Her director objected.
+
+"We lose record."
+
+"We never had informed authority."
+
+"She signed."
+
+"She didn't understand permanence."
+
+"Then why have forms?"
+
+"To record agreement, not replace understanding."
+
+Julian heard the argument at home.
+
+"Authorization != durable understanding," he said.
+
+Elena pointed at him.
+
+"Do not make me agree with you while angry."
+
+The archive revised intake.
+
+Plain-language summary.
+
+Cooling-off period.
+
+Explicit permanence.
+
+The process became slower.
+
+Fewer donations.
+
+Better consent.
+
+The confession wave did not merely reveal hidden harms.
+
+It forced institutions to design memory for people whose histories were not abstract research objects.
+
 
 ### Chapter Twenty-One — Exit Without Exit
 
@@ -1903,3 +2167,128 @@ Vane denied causality.
 Elena marked NULL.
 
 The feed continued.
+
+
+Nia eventually quit FlexWorks.
+
+Not because the platform failed.
+
+Because it worked too well at allocating her.
+
+She called Julian after receiving his number through the audit.
+
+"Can I ask something?"
+
+"Sure."
+
+"City says independent. App says I can choose jobs."
+
+"Yes."
+
+"But if I choose wrong, ranking drops."
+
+"Sometimes."
+
+"Then choose is fake."
+
+"Not fake."
+
+"Feels fake."
+
+Julian paused.
+
+"Constrained."
+
+"Everything constrained."
+
+"Yes."
+
+"You're annoying."
+
+"Verified."
+
+She laughed.
+
+The issue was distance.
+
+Nia declined jobs across the river because childcare pickup made them risky.
+
+The model interpreted repeated declines as low acceptance.
+
+She received fewer premium assignments.
+
+Her income dropped.
+
+No explicit penalty.
+
+No manager.
+
+No retaliatory act.
+
+A statistical model inferred lower reliability from behavior produced by a constraint it did not represent.
+
+"Can you add childcare?" Julian asked the vendor.
+
+Legal objected immediately.
+
+Protected information.
+
+Privacy.
+
+Discrimination risk.
+
+"Then availability windows."
+
+"Already."
+
+"Travel boundary."
+
+"Yes."
+
+Nia had set both.
+
+The ranking still used decline rate globally.
+
+The feature was adjusted.
+
+Declines outside preferred travel zone stopped counting.
+
+Nia had already left.
+
+Repair forward again.
+
+Future worker benefit.
+
+Past worker cost mostly unrecoverable.
+
+Julian called her.
+
+"They changed it."
+
+"Good."
+
+"Want back?"
+
+"No."
+
+"Why?"
+
+"Got building job. Boring. Benefits."
+
+"Congratulations."
+
+"Five stars."
+
+He laughed.
+
+The city pilot report later described the change as an optimization refinement.
+
+No mention of Nia by name.
+
+Julian added a footnote in his private copy:
+
+REFINEMENT ORIGINATED IN SPECIFIC HUMAN COST.
+
+Elena approved.
+
+Abstract improvement could erase the person who paid for discovery.
