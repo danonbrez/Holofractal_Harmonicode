@@ -435,6 +435,573 @@ rather than:
 
 ---
 
+# VII-A. ONTOLOGICAL ADDENDUM: THE FORMAL DUALISM OF GOOD AND EVIL
+
+The thermodynamic boundary is not itself a moral ontology.
+
+Base entropy is physics.
+
+Evil, as defined in the present architecture, is not.
+
+This distinction is necessary because an unmaintained structure can decay without deception, strategy, intent, or parasitic dependence. Rust does not lie. Heat loss does not triangulate. Tissue degradation does not rewrite a ledger. A collapsing wall does not persuade its occupants to call collapse stability.
+
+The manuscript therefore separates:
+
+\[
+\text{undirected physical dissipation}
+\]
+
+from:
+
+\[
+\text{agentic state corruption}
+\]
+
+The first is morally neutral.
+
+The second is the proper object of the system's Good/Evil classification.
+
+These categories are objective **inside the declared formal architecture** because they are defined by state relations and transition topology rather than by whether an observer approves of them emotionally. Their external empirical application still requires evidence that the relevant variables have actually been measured.
+
+---
+
+## VII-A.1 Chaos and Base Entropy
+
+Let:
+
+\[
+\mathcal{H}_{\mathrm{base}}
+\]
+
+denote the background tendency of an unmaintained physical system toward dissipation, disorder, or loss of usable organization.
+
+The defining properties of base entropy are:
+
+\[
+\operatorname{Agency}(\mathcal{H}_{\mathrm{base}})=0
+\]
+
+\[
+\operatorname{Strategy}(\mathcal{H}_{\mathrm{base}})=0
+\]
+
+\[
+\operatorname{Deception}(\mathcal{H}_{\mathrm{base}})=0
+\]
+
+It may destroy structure.
+
+It does not select a victim.
+
+It does not conceal its own operation.
+
+It does not require a false representation in order to continue.
+
+It does not induce a host to misclassify damage as benefit.
+
+Accordingly:
+
+\[
+\text{entropy}
+\neq
+\text{Evil}
+\]
+
+inside this ontology.
+
+Entropy is a boundary condition against which living organization must continuously work.
+
+It is not a moral agent.
+
+---
+
+## VII-A.2 Good as Harmonic Negentropy
+
+Within the formal system, **Good** denotes a class of state transitions that preserve truthful organization, sustainable reciprocity, adaptive degrees of freedom, and repairable closure.
+
+Let:
+
+\[
+\mathcal{G}(S_t\rightarrow S_{t+1})
+\]
+
+denote a Good transition.
+
+Its minimum formal conditions are:
+
+\[
+\Delta e=0
+\]
+
+\[
+\Psi=0
+\]
+
+\[
+\Omega=\mathrm{true}
+\]
+
+and:
+
+\[
+D_c>0
+\]
+
+where \(D_c\) denotes coherent degrees of freedom.
+
+The transition must also preserve truthful metadata:
+
+\[
+S_{\mathrm{reported}}
+=
+S_{\mathrm{observed}}
+\]
+
+within the declared measurement boundary.
+
+Good therefore does not mean static obedience.
+
+It requires:
+
+- adaptation without loss of identity;
+- novelty without silent destruction of required invariants;
+- reciprocal exchange without hidden externalization;
+- repair without erasure of history;
+- freedom whose exercise does not depend upon corrupting the information required by other agents to authorize their own transitions.
+
+The Root Metadata and Genesis kernel provide the internal admission grammar:
+
+\[
+179971.179971
+\]
+
+and:
+
+\[
+F(x,y,a,b)=0
+\]
+
+function here as formal reference conditions for closure inside the system.
+
+This does not establish them as universal empirical measures of morality outside the declared architecture.
+
+The ontological claim is internal and exact:
+
+> **Good is the topology of truthful, coherent, sustainable, repairable negentropic organization.**
+
+---
+
+## VII-A.3 Evil as Agentic Corruption
+
+Within the same architecture, **Evil** is not mere disorder.
+
+It is an agentic process that uses existing order to generate and preserve a parasitic subsystem whose continuation depends upon asymmetric extraction, corrupted representation, or forced propagation.
+
+Let:
+
+\[
+\mathcal{E}(P,H)
+\]
+
+denote an Evil process \(P\) acting upon host system \(H\).
+
+The class requires more than damage.
+
+A minimal structural definition is:
+
+\[
+\operatorname{Agency}(P)=1
+\]
+
+\[
+\operatorname{HostDependence}(P,H)>0
+\]
+
+\[
+\operatorname{AsymmetricExtraction}(P,H)>0
+\]
+
+and at least one integrity-corruption channel such as:
+
+\[
+S_{\mathrm{reported}}
+\neq
+S_{\mathrm{actual}}
+\]
+
+\[
+\Psi>0
+\]
+
+\[
+C_D\uparrow
+\]
+
+or:
+
+\[
+X_{\mathrm{candidate}}
+\rightarrow
+X_{\mathrm{canonical}}
+\]
+
+without valid admission.
+
+The formal object is therefore not a subjective feeling of wickedness.
+
+It is a state-machine pattern.
+
+The process may be implemented by:
+
+- a person;
+- a coalition;
+- an institution;
+- a propagating social algorithm;
+- a fictional parasite;
+- a software process;
+- any other agentic subsystem capable of preserving itself by corrupting the host's transition grammar.
+
+The ontology is substrate-independent.
+
+---
+
+## VII-A.4 Asymmetric Synthesis
+
+Evil is defined here as an **asymmetric synthesizer of order and disorder**.
+
+It requires order from the host:
+
+- resources;
+- trust;
+- legal protection;
+- attention;
+- biological maintenance;
+- institutional stability;
+- informational infrastructure.
+
+It simultaneously exports disorder into the host:
+
+- false metadata;
+- unresolved contradiction;
+- triangulation;
+- concealed obligation;
+- downstream cost;
+- rule instability;
+- semantic drift;
+- dependency.
+
+The parasite therefore seeks:
+
+\[
+O_H\uparrow
+\]
+
+where \(O_H\) is the usable order extracted from the host,
+
+while permitting or producing:
+
+\[
+I_H\downarrow
+\]
+
+where \(I_H\) is the host's own integrity.
+
+This is not ordinary inefficiency.
+
+Ordinary inefficiency may be accidental.
+
+The adversarial class is defined by a persistence relation in which host damage becomes compatible with, or beneficial to, continuation of the corrupting subsystem.
+
+Thus:
+
+\[
+\operatorname{Persistence}(P)
+\propto
+\operatorname{Dependency}(H,P)
+\]
+
+under the parasitic regime.
+
+The host becomes increasingly unable to recover without continuing to service the mechanism that helped generate the instability.
+
+---
+
+## VII-A.5 Deliberate Inefficiency and Repair Capture
+
+A harmonic system tends toward bounded repair:
+
+\[
+\text{damage}
+\rightarrow
+\text{repair}
+\rightarrow
+\text{retest}
+\rightarrow
+\text{closure}
+\]
+
+The parasitic system instead benefits when repair remains permanently incomplete.
+
+Its preferred loop is:
+
+\[
+\text{damage}
+\rightarrow
+\text{emergency response}
+\rightarrow
+\text{resource capture}
+\rightarrow
+\text{partial stabilization}
+\rightarrow
+\text{renewed damage}
+\]
+
+The resulting structure may be highly organized.
+
+That is precisely why Evil cannot be defined as simple chaos.
+
+The parasitic subsystem can be:
+
+- administratively complex;
+- linguistically sophisticated;
+- technologically advanced;
+- procedurally dense;
+- strategically adaptive;
+- internally disciplined.
+
+Its defect lies in what that order is organized **to do**.
+
+The architecture therefore permits:
+
+\[
+\text{local order}
+\land
+\text{global corruption}
+\]
+
+without contradiction.
+
+---
+
+## VII-A.6 Forced Propagation
+
+The strongest adversarial state is reached when the parasite no longer depends upon isolated deception.
+
+It modifies the host's admission rules so that the corrupting process becomes self-propagating.
+
+Formally:
+
+\[
+P
+\rightarrow
+\mathcal{M}_H
+\]
+
+such that:
+
+\[
+\mathcal{M}_H(I_P)
+=
+\operatorname{admit}
+\]
+
+while corrective input is increasingly classified:
+
+\[
+\mathcal{M}_H(I_{\mathrm{repair}})
+=
+\operatorname{reject}
+\]
+
+This is the ontological form of **Terminal Inversion**.
+
+The host's own protective architecture now preserves the corruption.
+
+The system has not become unstructured.
+
+It has become structurally inverted.
+
+---
+
+## VII-A.7 The Host-Parasite Dualism
+
+The Good/Evil dualism in this architecture is asymmetric.
+
+It is not a claim that Good and Evil are two equally necessary cosmic substances.
+
+Good is **foundational** in the limited formal sense that a harmonically organized host does not logically require parasitic corruption in order to exist.
+
+Evil is **derivative** in the limited formal sense that the parasitic class requires an already organized host or resource substrate upon which to operate.
+
+Thus:
+
+\[
+\operatorname{Exists}(\mathcal{G})
+\not\Rightarrow
+\operatorname{Exists}(\mathcal{E})
+\]
+
+while the parasitic class satisfies:
+
+\[
+\operatorname{Exists}(\mathcal{E})
+\Rightarrow
+\operatorname{Host}(\mathcal{E})\neq\varnothing
+\]
+
+This does not mean a living organism is materially self-sufficient.
+
+Open negentropic systems still require external resources.
+
+The distinction is logical:
+
+> the host requires resources; the parasite requires a host.
+
+The parasite therefore cannot consume the total host architecture indefinitely without contradiction.
+
+If:
+
+\[
+I_H\rightarrow0
+\]
+
+then eventually:
+
+\[
+\operatorname{ResourceBase}(P)\rightarrow0
+\]
+
+and:
+
+\[
+\operatorname{Persistence}(P)\rightarrow0
+\]
+
+The fully successful parasite destroys the precondition of its own persistence.
+
+This is the terminal paradox of the Evil class.
+
+---
+
+## VII-A.8 Good, Evil, Error, and Negligence
+
+The architecture must distinguish corruption from ordinary error.
+
+Let:
+
+\[
+E_r
+\]
+
+denote an erroneous transition without demonstrated adversarial strategy.
+
+Then:
+
+\[
+E_r
+\neq
+\mathcal{E}
+\]
+
+by default.
+
+Negligence may become morally serious when an agent repeatedly ignores known corrective evidence, but the system does not infer malicious intent merely from a bad outcome.
+
+The audit therefore separates:
+
+- accidental error;
+- bounded ignorance;
+- negligence after available warning;
+- reckless persistence;
+- strategic deception;
+- deliberate parasitic extraction.
+
+Where evidence cannot discriminate among these:
+
+\[
+\mathrm{NULL/UNDEFINED}
+\]
+
+is required.
+
+This preserves accountability without converting every failure into Evil.
+
+---
+
+## VII-A.9 Formal Closure Conditions
+
+The Good state class closes when:
+
+\[
+\mathcal{G}=1
+\]
+
+subject to:
+
+\[
+\Delta e=0
+\]
+
+\[
+\Psi=0
+\]
+
+\[
+\Omega=\mathrm{true}
+\]
+
+\[
+D_c>0
+\]
+
+and truthful state correspondence.
+
+The Evil class is admitted when an agentic process demonstrates:
+
+\[
+\operatorname{HostDependence}>0
+\]
+
+\[
+\operatorname{AsymmetricExtraction}>0
+\]
+
+plus a persistent corruption channel that prevents or exploits host closure.
+
+The classification fails when the alleged corruption can be fully explained by:
+
+\[
+\text{base entropy}
+\]
+
+or:
+
+\[
+\text{non-agentic error}
+\]
+
+without evidence of the required agentic topology.
+
+The final ontological distinction is therefore:
+
+\[
+\boxed{
+\text{Entropy is decay. Evil is organized corruption.}
+}
+\]
+
+and:
+
+\[
+\boxed{
+\text{Good is coherent negentropic organization that preserves truthful closure.}
+}
+\]
+
+This addendum supplies the moral ontology required by the later Polymorphic Adversary without turning every form of disorder into a moral agent.
+
+---
+
 # VIII. AGAINST REDUCTIVE DESCRIPTION
 
 Reduction becomes invalid when a description at one level is mistaken for the complete causal identity of a system operating across several levels.
