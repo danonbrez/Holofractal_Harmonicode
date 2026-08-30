@@ -10,7 +10,7 @@
 
 **Historical evidence trace:** \`evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md\`
 
-**Execution status:** FULL-LENGTH NOVEL — BOOKS I-II COMPLETE / BOOK III NEXT
+**Execution status:** FULL-LENGTH NOVEL — BOOKS I-III COMPLETE / CONTINUITY PASS NEXT
 
 **Target length:** 110,000–130,000 words
 
@@ -1680,15 +1680,24 @@ Receipt:
 
 ## Phase 4D — Book III prose
 
-Status: NEXT
-
-Target:
+Status:
 
 \[
-38,000\text{–}46,000
+\Omega_{\mathrm{Phase4D}}=\mathrm{true}
 \]
 
-words.
+Canonical manuscript:
+
+`novel/THE_GOLDEN_INVARIANT_BOOK_III_THE_WORLD_THAT_ANSWERS_BACK.md`
+
+Receipt:
+
+- 37,897 words;
+- 12 chapters;
+- Beats B48-B71 all covered;
+- 2019-2026 historical/futurist band closed;
+- off-planet Continuity Crown / HHS-ERS terminal arc integrated;
+- checked direct real platform/event/figure names absent.
 
 ## Phase 4E — Full-manuscript continuity / zero-drift pass
 
@@ -1855,6 +1864,17 @@ It is not Module 5.
 
 ## NEXT
 
-### Phase 4D — BOOK III: THE WORLD THAT ANSWERS BACK
+### Phase 4E — FULL-MANUSCRIPT CONTINUITY / ZERO-DRIFT PASS
 
-Generate Chapters 25–36 / Beats B48–B71 as continuous literary prose while keeping the compiler invisible. Carry forward the exact Book II terminal state: Julian/Elena/Mira chronology, the Golden Measure and R72/RM-72 candidate lineage, SOURCE/SUMMARY/BEFORE/UNRESOLVED, Rat, Lyra multiplicity without identity promotion, Vane's bounded Consensus architecture, Ana Reyes, Samir Cole's predecessor witnesses, and the 2019 state in which the feed has become the default reality interface while replay/fallback remains explicit.
+Validate Books I-III as one executable narrative:
+
+- 36 chapters / 72 canonical beats;
+- chronology from 2001 through the 2026 terminal extrapolation;
+- Julian / Elena / Mira / Vane / Ana / Samir age and state continuity;
+- Golden Measure and R72/RM-72 provenance discipline;
+- SOURCE / SUMMARY / BEFORE / UNRESOLVED / Ark lineage;
+- no direct real-event/platform naming drift;
+- no retroactive promotion of candidate evidence;
+- off-planet resilience separated from sovereignty;
+- HHS/ERS root seed retained as formal runtime authority without falsely using the brass artifact as empirical proof;
+- all final literary scaffolding remains invisible in prose.
