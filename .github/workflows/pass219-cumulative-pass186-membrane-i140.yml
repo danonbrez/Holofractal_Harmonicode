@@ -131,7 +131,8 @@ jobs:
           assert 'cross_cutting_defaults_are_mandatory' in policy_h
           assert 'retroactive_repair_forward_required' in policy_h
           assert 'standalone_passes_allowed() noexcept { return false; }' in policy_hpp
-          assert 'repair_forward_on_gap = true' in policy_hpp
+          assert 'repair_forward_on_gap=true' in policy_hpp
+          assert 'optional_cross_cutting_defaults=false' in policy_hpp
           PY
           ! grep -Eq 'independent_opcode_authority[[:space:]]*=[[:space:]]*1U|independent_vm81_authority[[:space:]]*=[[:space:]]*1U|independent_hash72_clock[[:space:]]*=[[:space:]]*1U|float_canonical_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U'             hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc
 
