@@ -4019,3 +4019,152 @@ Julian added:
 DO NOT FORCE SINGLE ORIGIN ON COUPLED ESCALATION.
 
 This rule would later matter far beyond protests.
+
+
+The year the Glass Leak broke, Bellwether also replaced printed employee directories with search.
+
+Nobody cared.
+
+Julian cared later.
+
+The old directory listed everyone alphabetically.
+
+Name.
+
+Department.
+
+Office.
+
+Phone.
+
+A clerk could flip pages and see organizational structure accidentally.
+
+The new directory required a query.
+
+Type a name.
+
+Receive result.
+
+Faster if you knew whom you wanted.
+
+Worse if you did not know whom to ask.
+
+Julian discovered this while trying to locate whoever owned a new environmental sensor program.
+
+He searched environmental.
+
+No person.
+
+Sensor.
+
+No.
+
+Air quality.
+
+No.
+
+The old directory would not have solved keyword either, but it would have shown department names.
+
+He called Information Services.
+
+"Who owns indoor sensor pilot?"
+
+"Facilities Analytics."
+
+"That's a department?"
+
+"Unit."
+
+"Under?"
+
+"Operational Intelligence."
+
+"Which is?"
+
+"Office of Integrated Services."
+
+Julian laughed.
+
+"Can I browse org tree?"
+
+"Directory has hierarchy view."
+
+It did.
+
+Hidden under three menus.
+
+Julian opened it.
+
+The city had changed organizationally without him noticing.
+
+New units formed around data.
+
+Analytics.
+
+Digital services.
+
+Integrated identity.
+
+Public engagement.
+
+Information assurance.
+
+The bureaucracy was becoming shaped like its networks.
+
+This mattered because search changed institutional curiosity.
+
+When access is query-first, users retrieve what they can name.
+
+Unknown categories become harder to encounter.
+
+The same problem as feeds, but inverted.
+
+A feed showed what system selected.
+
+Search showed what user asked.
+
+Both filtered.
+
+The old paper directory had one advantage: accidental adjacency.
+
+Julian could see people next to one another and infer structure.
+
+He asked the directory team for browse mode by department.
+
+They already had one.
+
+Again, feature existed.
+
+Discoverability failed.
+
+Julian added:
+
+ACCESSIBLE != DISCOVERABLE.
+
+Elena approved immediately.
+
+Archives had lived with this forever.
+
+A record could be public and practically invisible if no one knew catalog term.
+
+The internet had not abolished gatekeeping.
+
+It had moved part of gate into vocabulary.
+
+A person needed the right query.
+
+This changed how Julian interpreted the Glass Leak too.
+
+Secret programs could be technically overseen, legally authorized, and documented yet remain outside public discoverability by design.
+
+Public debate then collided with a state that had records but no public query path.
+
+The distinction between hidden and inaccessible became politically meaningless to people affected.
+
+Julian understood why.
+
+A locked room and an unmarked door can produce same practical absence.
+
+He still insisted the distinction be recorded.
+
+Because repair differed.
