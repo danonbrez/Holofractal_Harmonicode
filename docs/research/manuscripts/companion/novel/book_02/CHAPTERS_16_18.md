@@ -2086,7 +2086,7 @@ The family truce held.
 
 Then a viral political account appeared in Bellwether.
 
-The account called itself Cincinnatus Rex.
+The account called itself Common Ledger.
 
 No verified identity.
 
@@ -2256,7 +2256,7 @@ Unknown.
 
 They searched posting patterns.
 
-Cincinnatus Rex posted every few minutes during some periods.
+Common Ledger posted every few minutes during some periods.
 
 Could be scheduled.
 
@@ -2322,7 +2322,7 @@ EXECUTOR.
 
 The same message could pass through each.
 
-Cincinnatus Rex posted a false claim about a city contract.
+Common Ledger posted a false claim about a city contract.
 
 Julian corrected with source.
 
@@ -2360,7 +2360,7 @@ Then the account repeated a different false claim without correction.
 
 No stable classification.
 
-Aaron loved Cincinnatus Rex.
+Aaron loved Common Ledger.
 
 This reopened the family fault.
 
@@ -2474,7 +2474,7 @@ This became one of the most important lines in SOURCE.
 
 The bot question and the family split converged near the end of the year.
 
-Cincinnatus Rex posted a video of a political speech with subtitles.
+Common Ledger posted a video of a political speech with subtitles.
 
 Aaron shared it.
 
@@ -2568,7 +2568,7 @@ For once, same feed.
 
 Same conclusion.
 
-The next day Cincinnatus Rex posted:
+The next day Common Ledger posted:
 
 OFFICIAL TRANSCRIPT DISPUTES CAPTION. VIDEO LEFT UP FOR RECORD.
 
@@ -2955,7 +2955,7 @@ ADVERSARIAL SEED + BENIGN RELAY = HARMFUL CASCADE.
 That was enough.
 
 
-Cincinnatus Rex eventually invited Aaron to a private group.
+Common Ledger eventually invited Aaron to a private group.
 
 Aaron told Julian because he wanted to brag.
 
