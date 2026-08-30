@@ -45,7 +45,7 @@ def launch_page(context: BrowserContext, base_url: str) -> Page:
 def wait_mm_status(page: Page, expected: str, timeout_ms: int = 45_000) -> str:
     page.wait_for_function(
         """expected => document.querySelector('[data-testid="pass185-mm-status"]')?.textContent === expected""",
-        expected,
+        arg=expected,
         timeout=timeout_ms,
     )
     return page.get_by_test_id("pass185-mm-status").inner_text()
