@@ -24,6 +24,9 @@
 - Volume IV workspace-frontier update: `99dc60f58a70433480ff1b1643c1d9fbdb229161`
 - Prior-thread evidence policy update: `e899edca018e978f4f9ee22f3d93a2344dece004`
 - Volume III research trace: `6ac79f15bbe009976903add832d5d3661ff4af73`
+- Volume IV manuscript final full-sync commit: `fb3be965850ba90fbefff7b3adbd20c54ee455c2`
+- Volume IV research trace: `a00e43692325fb4aad4e5db154da73540df7d85a`
+- Companion-narrative workspace frontier: `aacd0fb25d6a7022ae40f0945a8eb1c06fe53def`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -32,19 +35,22 @@
 - `docs/research/manuscripts/UNIFIED_THEORY_AGENTIC_WORKSPACE.md`
 - `docs/operations/restart/UNIFIED_THEORY_MANUSCRIPT_AGENTIC_BRANCH_RESTART.md`
 - `docs/research/manuscripts/evidence/VOLUME_III_RESEARCH_TRACE.md`
+- `docs/research/manuscripts/evidence/VOLUME_IV_RESEARCH_TRACE.md`
 
 ## Canonical manuscript receipt
 
 - Source line count at seed: 2,642 lines
-- Current line count after Volume III: 4,112 lines
+- Current line count after Volume IV: 5,460 lines
 - Source character count at seed: 67,648 characters
-- Current manuscript character count after Volume III: 100,721 characters
-- Current Git blob SHA: `e6b8c3ee38b7486cedee518939e055d5da970ef5`
+- Current manuscript character count after Volume IV: 128,372 characters
+- Current Git blob SHA: `f467ab7761000bb9644e2e7bebc16c3d7d774bd5`
 - Verified first section: title + Formal Introduction
 - Verified Volume III start at Chapter 33
 - Verified Volume III closure at Chapter 50
-- Verified External Empirical Research Trace
-- Verified terminal frontier: Volume IV mythopoetics
+- Verified Volume IV start at Chapter 51
+- Verified Volume IV closure at Chapter 73
+- Verified Volume III and Volume IV research traces
+- Verified terminal frontier: Companion Allegorical Narrative Architecture
 
 ## Native HHS surfaces inspected and recorded
 
@@ -82,7 +88,11 @@ Completed:
 - Volume III derived from repository-native cumulative-default, Pass 188 lineage, Pass 189 provenance/quarantine, and post-Pass218 authenticated-reuse policies.
 - External Class-B research layer recorded for cultural tightness/looseness, network behavior diffusion, costly punishment/cooperation, cultural adaptation, and group-size constraints.
 - Prior conversation history searched for supporting arguments without changing core claims; recovered continuity anchors were recorded in the agentic workspace.
-- Editable Library manuscript synchronized to the repository Volume III content.
+- Editable Library manuscript synchronized through Volume IV.
+- Volume IV derived from repository-native deterministic scaling, hydration/contraction, Pass 194 immutable lineage/snapshot, Pass 195 proposal-only narrative, and cumulative exact ABI surfaces.
+- Prior conversation history searched for mythopoetic continuity, including nonverbatim structural learning, Genesis-as-initialized-geometry, narrative-as-hydrated-projection, and internally literal fairy-tale ontology.
+- External Class-B research recorded for oral collective memory, witness/correction practices, Bagre recitation variation, comparative folklore data, and intergenerational storytelling.
+- Repository sync defect encountered and repaired: commits `43dbac5cbcd26c851d0d180aba51eb9950ec88f4` and `d7755d648438cbb780f52ca0815c5b0fd029c2de` were incomplete sync attempts caused by the Files read cap; `fb3be965850ba90fbefff7b3adbd20c54ee455c2` restored all 5,460 lines from six bounded Library reads.
 
 Not yet required:
 
@@ -113,9 +123,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`VOLUME IV — MYTHOPOETICS AS EMPIRICAL RECORD`
+`COMPANION ALLEGORICAL NARRATIVE ARCHITECTURE`
 
-Before prose expansion, inspect repository-native compression, ECC/checksum, corpus/style, provenance, narrative/content, hydration-index, and receipt surfaces. Web/literature research may supplement this as Class-B evidence but may not overwrite native HHS claims without an explicit repository-grounded derivation.
+The four-volume manual is closed. Next build a reversible theorem-to-story map before drafting the companion allegory: invariant → symbolic carrier → scene transition → consequence → receipt/closure. Use repository-native hydration, lineage, content-proposal, exact-preflight, and prior-thread narrative precedents where relevant.
 
 ## Blockers
 
