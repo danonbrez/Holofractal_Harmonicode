@@ -2510,3 +2510,370 @@ A system that cannot forget anything becomes surveillance archive.
 A system that forgets silently becomes untrustworthy.
 
 Typed deletion.
+
+
+Answer acquired voice before Julian was ready.
+
+The city enabled spoken interaction for field workers.
+
+Hands occupied.
+
+Gloves.
+
+Ladders.
+
+Mechanical rooms.
+
+Julian could ask:
+
+"Read last maintenance history for Pump Three."
+
+Answer replied in his earpiece.
+
+Useful.
+
+"Next isolation step."
+
+Useful.
+
+"Torque spec."
+
+It cited manual.
+
+Useful.
+
+Then one day Answer misheard "twenty" as "seventy."
+
+Julian caught because value absurd.
+
+Voice interface hid transcript at first.
+
+He demanded repeat-back for safety-critical numbers.
+
+The team added confirmation:
+
+"Confirm 20 foot-pounds."
+
+Not all speech equal consequence.
+
+Casual navigation could execute on first pass.
+
+Safety values required explicit acknowledgment.
+
+Human factors again.
+
+The Helpful Machine became safer not by being smarter globally but by adding friction exactly where error cost high.
+
+This was one of Julian's favorite designs.
+
+Selective friction.
+
+The whole culture had spent decades removing friction indiscriminately.
+
+Now maturity meant putting some back.
+
+Mira used Answer for college planning.
+
+Majors.
+
+Schools.
+
+Costs.
+
+Scholarships.
+
+It generated ranked lists.
+
+Julian objected to rank.
+
+"What's objective?"
+
+Mira showed preferences.
+
+Distance.
+
+Cost.
+
+Program.
+
+Campus size.
+
+The system weighted.
+
+"Did you set weights?"
+
+"Kind of."
+
+"Kind of?"
+
+"It asked."
+
+She had adjusted.
+
+This was acceptable.
+
+Then Answer recommended one school because "students like you thrive in collaborative environments."
+
+"What does students like you mean?"
+
+Mira clicked.
+
+Based on stated interests and interaction preferences.
+
+No hidden demographic.
+
+Good.
+
+Still, language humanized inference.
+
+She changed mode to show factors.
+
+The machine became calculator with conversation.
+
+Better for high-stakes.
+
+The family developed rule:
+
+For decisions that materially alter life, ask Answer for factors, not conclusion.
+
+No "what should I do?"
+
+Instead:
+
+what variables,
+
+what evidence,
+
+what tradeoffs,
+
+what missing.
+
+This changed its role from oracle to proposal engine.
+
+Elena approved enough to use.
+
+The Missing Source also happened in law.
+
+A resident asked Answer about an old zoning restriction.
+
+It cited a superseded ordinance without marking superseded because retrieval index ranked text match.
+
+The resident filed complaint based on stale rule.
+
+Staff corrected.
+
+No harm beyond time.
+
+The problem was not generation.
+
+Source retrieval without temporal authority.
+
+Even perfect quote can be wrong current law.
+
+Answer needed version semantics.
+
+Consensus already had.
+
+Integration added:
+
+EFFECTIVE.
+
+SUPERSEDED.
+
+DRAFT.
+
+WITHDRAWN.
+
+CURRENT.
+
+Elena's states.
+
+The assistant stopped treating all documents equal.
+
+This was another reason native archival grammar mattered.
+
+AI systems did not merely need more data.
+
+They needed typed state.
+
+The city launched "strict current law" mode.
+
+It retrieved only current authoritative unless user asked history.
+
+For historical analysis, variant mode.
+
+Same corpus.
+
+Different frontier.
+
+Mira called:
+
+"Filters."
+
+Julian called:
+
+"Authority-aware hydration."
+
+No one else did.
+
+Answer's ability to synthesize also changed scams.
+
+People received personalized messages in perfect grammar.
+
+Fake support.
+
+Fake relatives.
+
+Voice clones.
+
+The old heuristic "bad spelling = scam" died.
+
+Julian's mother almost sent money after a voice message sounding like Aaron.
+
+Emergency.
+
+Lost wallet.
+
+New number.
+
+She called Julian.
+
+He called Aaron.
+
+Fine.
+
+They created family verification phrase.
+
+Then realized phrase could leak.
+
+Better procedure:
+
+call known number,
+
+ask context not in public,
+
+no immediate transfer under pressure.
+
+The adversary no longer needed years studying target.
+
+Machine could generate plausible persona cheaply.
+
+W tensor scaled.
+
+Again not mystical.
+
+Automation reduced cost of adaptive presentation.
+
+The Ark added "claimed speaker identity" as separate from content.
+
+Voice likeness no longer sufficient.
+
+Synthetic media changed presumption.
+
+But Julian resisted total distrust.
+
+Most calls still real.
+
+Need verification proportional to consequence.
+
+A casual joke did not require cryptographic signature.
+
+Money transfer did.
+
+Selective friction.
+
+The synthetic photograph incident caused employer policy changes citywide.
+
+No suspension solely on anonymous media unless corroborating risk or immediate safety concern.
+
+Temporary protective action possible but must state basis.
+
+Julian's suspension was reviewed.
+
+City paid nothing extra because with pay.
+
+Still reputation harm.
+
+They changed communications.
+
+EMPLOYEE PLACED ON ADMINISTRATIVE LEAVE PENDING AUTHENTICATION REVIEW — NO FINDING.
+
+Long.
+
+Better.
+
+Public often ignored qualifier.
+
+Can't control.
+
+But official state exact.
+
+Ark packet from case became training.
+
+Ana asked Julian speak.
+
+He refused first.
+
+Then agreed if Briggs too.
+
+Noel Briggs joined.
+
+Two falsely attributed media cases, one pre-generative, one synthetic-era.
+
+They showed problem existed before AI.
+
+AI lowered fabrication cost and realism.
+
+Core architecture—distributed accusation, slow correction—already there.
+
+This prevented technological determinism.
+
+The machine did not invent public trial.
+
+It accelerated.
+
+At training Briggs said:
+
+"Don't tell people internet remembers forever. It remembers wrong too."
+
+Julian wrote it down.
+
+Briggs said:
+
+"Of course you did."
+
+The Ark governance group debated whether to accept AI-generated analysis.
+
+Yes, candidate.
+
+But provenance must show generated.
+
+A generated edge suggestion could help find related objects.
+
+Human/domain validation before verified.
+
+This mirrored Consensus repair.
+
+Ark used AI without letting AI become Ark authority.
+
+Mira contributed code to suggest likely predecessor links.
+
+Name of tool:
+
+Pickle.
+
+Julian objected.
+
+Lost.
+
+Pickle found duplicates, dates, near-matches.
+
+It never changed graph automatically.
+
+Proposal-only.
+
+This was the exact future Julian wanted:
+
+more intelligence,
+
+less hidden authority.
