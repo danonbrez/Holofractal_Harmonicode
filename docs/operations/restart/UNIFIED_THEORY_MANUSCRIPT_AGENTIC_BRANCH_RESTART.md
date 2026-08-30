@@ -27,6 +27,10 @@
 - Volume IV manuscript final full-sync commit: `fb3be965850ba90fbefff7b3adbd20c54ee455c2`
 - Volume IV research trace: `a00e43692325fb4aad4e5db154da73540df7d85a`
 - Companion-narrative workspace frontier: `aacd0fb25d6a7022ae40f0945a8eb1c06fe53def`
+- Mythopoetic executable Module 1: `4afcda2f3d2f064da19d3472e09cdb559e83372d`
+- Companion executable index: `0230d48c187de97da4aef49d1bfaf68b1a6bd632`
+- Module 2 workspace frontier: `915c551bb863544e90be72266d40f905553177cd`
+- Module 1 dedicated restart record: `0556e478be85337760cf8abf9abf9678a219ece4`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -36,6 +40,9 @@
 - `docs/operations/restart/UNIFIED_THEORY_MANUSCRIPT_AGENTIC_BRANCH_RESTART.md`
 - `docs/research/manuscripts/evidence/VOLUME_III_RESEARCH_TRACE.md`
 - `docs/research/manuscripts/evidence/VOLUME_IV_RESEARCH_TRACE.md`
+- `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md`
+- `docs/research/manuscripts/companion/COMPANION_ALLEGORICAL_NARRATIVE_ARCHITECTURE.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_01_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -50,7 +57,10 @@
 - Verified Volume IV start at Chapter 51
 - Verified Volume IV closure at Chapter 73
 - Verified Volume III and Volume IV research traces
-- Verified terminal frontier: Companion Allegorical Narrative Architecture
+- Verified four-volume manual closure through Chapter 73
+- Verified companion Module 1: 1,145 lines / 22,986 characters
+- Verified companion executable index
+- Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
 ## Native HHS surfaces inspected and recorded
 
@@ -123,9 +133,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`COMPANION ALLEGORICAL NARRATIVE ARCHITECTURE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 2: THE CITADEL'S DEFENDING ARCHITECTURE`
 
-The four-volume manual is closed. Next build a reversible theorem-to-story map before drafting the companion allegory: invariant → symbolic carrier → scene transition → consequence → receipt/closure. Use repository-native hydration, lineage, content-proposal, exact-preflight, and prior-thread narrative precedents where relevant.
+Module 1 is complete and checkpointed. Next define the lawful authority, historical memory, provenance, membrane, successor-state, dissent-quarantine, and repair-forward roles that can recover the Citadel from Terminal Inversion without a brute-force reset.
 
 ## Blockers
 
