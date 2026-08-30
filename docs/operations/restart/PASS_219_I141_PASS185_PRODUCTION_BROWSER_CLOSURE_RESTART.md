@@ -344,3 +344,52 @@ Required Phase-5 focus:
 After Phase 5, perform cumulative Pass-185 closure reconciliation. Do not emit the terminal Pass-185 classification until the cumulative receipt, authoritative-main verification, and external deployment replay are complete.
 
 No I141 merge is authorized by this restart record.
+
+
+## Phase-5 freeze and cumulative Pass-185 closure checkpoint
+
+Phase 5 is verified and frozen at its implementation/evidence head.
+
+- Phase-5 validated head: `36321174c124ff5ba81bd60fd37a72ce703e606c`
+- Phase-5 validated tree: `89e9f83674700565695e54868ba50f93c1535f06`
+- validation run: `33304271871`
+- validation job: `99237928339`
+- evidence artifact: `9729993598`
+- artifact SHA-256: `82b99ecba184b51ce677038e76a1de5fecd4739873d215b2288e18e298ac7127`
+- evidence SHA-256: `f0a9efcf8de1c178e86cecc26269f2d5c539c801406c504fe950ccf79c980a78`
+- seal receipt SHA-256: `10f5e85b988e07be5612a2800a1dc0cea603ac93e38aa05d3aa5e565ac75d726`
+- classification: `HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_VERIFIED`
+- terminal Pass 185 completion: not claimed
+- merge status: I141 remains unmerged
+
+Phase-5 frozen repair-forward invariants:
+
+- `/api/runtime/authority/status` resolves to the production runtime-authority projection;
+- inherited authority-graph status remains available at `/api/runtime/inherited-authority/status`;
+- `HHS_COGNITION_AUTO_TICK=0` disables recurring background canonical ticks;
+- startup and explicit authorized runtime ticks remain callable;
+- one asyncio lock serializes canonical runtime-step requests;
+- heavy singleton runtime-step work executes off the ASGI event loop;
+- timing/resource metrics are evidence only and never canonical inputs;
+- idle runtime state and Hash72 remain unchanged without authorized workload;
+- browser and optional-provider activity cannot mint runtime authority.
+
+### Next bounded block — cumulative Pass-185 closure reconciliation
+
+Continue from the current I141 branch with:
+
+`CUMULATIVE PASS-185 CLOSURE + AUTHORITATIVE-MAIN + EXTERNAL DEPLOYMENT REPLAY`
+
+Required sequence:
+
+1. reconcile the historical Pass-185 contract line by line against frozen Phase-1/2/3/4/5 receipts;
+2. identify any remaining contract item not already proven by exact repository evidence;
+3. add only genuinely missing cumulative acceptance checks;
+4. produce one cumulative Pass-185 closure workflow/receipt referencing all frozen phase heads, trees, runs, jobs, artifacts, and SHA-256 identities;
+5. prove I141 is based on authoritative main and remains a strict descendant without history rewrite;
+6. when cumulative closure is green, prepare the branch for safe merge but do not merge unless the user explicitly authorizes or the previously stated merge directive is still applicable to this exact completed Pass-185 closure;
+7. after merge, verify authoritative main at the merged identity;
+8. perform the exact external deployment replay required by the Pass-185 contract;
+9. only then emit the terminal Pass-185 classification.
+
+No terminal Pass-185 claim may be inferred from Phase 5 alone.
