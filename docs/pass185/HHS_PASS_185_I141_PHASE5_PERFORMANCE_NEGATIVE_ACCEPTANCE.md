@@ -87,3 +87,16 @@ Phase 5 remains pending until one exact branch head passes the full workflow.
 The first Phase-5 execution used `/api/system/status` as a presumed lightweight route and aborted on a single one-second tail timeout before a p95 could be computed.
 
 The production boot record itself declares `/api/health` and `/health` as the lightweight health surfaces. The runner now probes those declared routes, selects the first valid JSON health endpoint, records isolated timeout samples rather than aborting immediately, and applies the historical p95 < 250 ms gate across the complete sample set.
+
+
+## Phase-5 event-loop measurement reconciliation
+
+A later exact-head run showed three authorized canonical steps lasting approximately 3.3–3.7 seconds each while hundreds of `/api/health` requests continued completing, mostly within roughly 1–21 ms. One isolated client-observed sample reached 120.46 ms.
+
+The historical contract prohibits more than 100 ms of **synchronous canonical work on the ASGI main loop without yielding**; it does not define maximum end-to-end client latency as identical to loop occupancy. After the runtime step was moved to one serialized worker-thread lane, the Phase-5 witness therefore requires:
+
+- no concurrent health request failures/timeouts;
+- at least twenty health samples during the explicit workload;
+- concurrent health p95 below 100 ms;
+- the same singleton runtime step lane guarded by one asyncio lock;
+- maximum observed client latency retained as diagnostic evidence only.
