@@ -129,7 +129,8 @@ def governed_job_flow(page: Page) -> dict[str, Any]:
     page.get_by_test_id("pass185-hydration-cancel").click()
     cancelled = wait_text(page, "pass185-hydration-job-stage", "CANCELLED", 60_000)
     assert page.get_by_test_id("pass185-hydration-last-action").inner_text().strip() == "JOB_CANCELLED"
-    cancelled_json = json.loads(page.get_by_test_id("pass185-hydration-job-json").inner_text())
+    cancelled_json_text = page.get_by_test_id("pass185-hydration-job-json").text_content() or ""
+    cancelled_json = json.loads(cancelled_json_text)
     assert cancelled_json["stage"] == "CANCELLED"
     assert cancelled_json["history"][-1]["checkpoint"] == "CANCELLED_BY_AUTHORIZED_REQUEST"
 
