@@ -195,3 +195,96 @@ Required Phase-3 focus:
 - repository-visible Phase-3 evidence and validation receipt.
 
 After Phase 3, proceed to the multimodal workflow block, then performance/starvation and remaining negatives before terminal Pass-185 closure.
+
+
+## Phase-3 freeze and Phase-4 continuation checkpoint
+
+Phase 3 is verified and frozen.
+
+- Phase-3 validated head: `beff7599dedff2624be712f7a215de5c193e8cbe`
+- Phase-3 validated tree: `b20f7834ff439b3fe8f8e3bae3216da7744918e4`
+- validation run: `33294510153`
+- validation job: `99211758381`
+- evidence artifact: `9727030968`
+- artifact SHA-256: `6b02d7c0e5677cc13cf7cb75cb3885714a263fe63af30223ddf6fee4cdc472f9`
+- evidence JSON SHA-256: `5caf404779f382b70735461a2fdd5009bbae579ff5fc883e6abd95af98e5ed1f`
+- seal receipt SHA-256: `db3e973aaf182bf53675210cb92b541659a5669c9f84ede52cae323e8aa99f95`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE3_VALIDATION_RECEIPT.json`
+- classification: `HHS_PASS_185_PHASE3_BROWSER_LIFECYCLE_VERIFIED`
+- terminal Pass 185 completion: not claimed
+- merge status: I141 remains unmerged
+
+The production-root transport composition is now explicitly reconciled to:
+
+`bootstrap.ts -> main.tsx -> IntegratedRuntimeClient -> CanonicalRuntimeIDE -> HHSProductWorkspace`
+
+Phase-3 repair-forward invariants now include:
+
+- WebSocket error paths fail connection-state closed;
+- one pending reconnect timer maximum per channel;
+- Runtime transport is dormant outside the Runtime surface;
+- Runtime mount creates exactly one subscription per channel;
+- Runtime unmount returns to zero live subscriptions;
+- browser offline emulation is accepted through observable HTTP failure plus finite online recovery rather than requiring pre-existing WebSocket objects to close;
+- localStorage failure is visible and nonfatal for local editor/preview/test/export;
+- concurrent browser contexts keep independent local source state;
+- no browser, cache, or Python replacement mutation authority is created.
+
+### Next bounded block — Phase 4
+
+Continue from the current I141 branch tip with:
+
+`PRODUCTION-ROOT MULTIMODAL APPLICATION WORKFLOW ACCEPTANCE`
+
+Phase 4 is additive to the already frozen Phase-1/2/3 evidence. Do not redefine their authority or rerun unrelated historical suites.
+
+Required Phase-4 workflow families:
+
+1. text/document:
+   - create/open a document-like source;
+   - edit visible content;
+   - preview/render it;
+   - exercise a user-facing validation or execution action;
+   - export a deterministic artifact where the product exposes one;
+
+2. calculator/general application:
+   - preserve the existing Phase-1 calculator nucleus;
+   - prove the application path remains callable as the shared general-app baseline;
+
+3. 2D game:
+   - create/open an actual game/application surface;
+   - exercise visible interaction/state change;
+   - prove finite preview/run behavior;
+
+4. image/graphics:
+   - create/open a graphics-capable surface;
+   - perform a visible edit or parameter change;
+   - prove rendered output changes without creating canonical runtime authority in the browser;
+
+5. audio:
+   - create/open an audio-capable surface;
+   - exercise a visible control/parameter workflow;
+   - prove finite local or backend-mediated output/receipt behavior according to the inherited implementation;
+
+6. video/audiovisual:
+   - create/open a video or audiovisual surface;
+   - exercise visible transport/edit controls;
+   - prove finite rendered/played/exported behavior according to the inherited implementation.
+
+Phase-4 rules:
+
+- exact production root only;
+- real browser controls only for acceptance; do not substitute direct internal function calls for visible workflows;
+- preserve Phase-1 calculator, Phase-2 degradation, and Phase-3 transport lifecycle invariants;
+- use existing registered application modules and inherited backend command paths before adding new surfaces;
+- canonical save/witness/mutation remains backend-owned;
+- browser-local render/preview/media playback is non-authoritative;
+- exact/symbolic canonical computation remains unchanged;
+- deterministic repository-visible evidence and receipt required;
+- no terminal Pass-185 classification until performance/starvation, remaining negatives, cumulative closure, authoritative-main verification, and external deployment replay also pass.
+
+After Phase 4, the next bounded block is:
+
+`PERFORMANCE/STARVATION + REMAINING NEGATIVE MATRIX`
+
+No I141 merge is authorized by this restart record.
