@@ -511,16 +511,32 @@ def boot_watchdog_case(
     page.unroute("**/assets/*.js")
     page.locator("#runtime_boot_reload").click()
     page.wait_for_selector('[data-testid="hhs-canonical-runtime-ide"]', timeout=60_000)
+    recovery_health = page.evaluate(
+        """async () => {
+            const response = await fetch('/api/health', {cache: 'no-store'});
+            return {status: response.status, ok: response.ok};
+        }"""
+    )
+    assert recovery_health.get("status") == 200 and recovery_health.get("ok") is True, recovery_health
     page.screenshot(path=str(evidence_dir / f"phase5-negative-{name}.png"), full_page=True)
     context.close()
     return {
         "finite_visible_failure": True,
         "boot_failure": failure,
         "reload_recovered": True,
+        "post_reload_health": recovery_health,
     }
 
 
 def residual_negative_gate(browser: Browser, base_url: str, evidence_dir: Path) -> dict[str, Any]:
+    collision, _ = json_request(
+        base_url,
+        "/api/pass185-does-not-exist",
+        timeout=5.0,
+        expected_status=404,
+    )
+    assert collision.get("status") == "HHS_API_ROUTE_NOT_FOUND", collision
+
     never = boot_watchdog_case(
         browser,
         base_url,
@@ -577,13 +593,6 @@ def residual_negative_gate(browser: Browser, base_url: str, evidence_dir: Path) 
         extra_routes=cycle_routes,
     )
 
-    collision, _ = json_request(
-        base_url,
-        "/api/pass185-does-not-exist",
-        timeout=5.0,
-        expected_status=404,
-    )
-    assert collision.get("status") == "HHS_API_ROUTE_NOT_FOUND", collision
     return {
         "never_resolving_boot": never,
         "self_dependent_parser_event": parser,
