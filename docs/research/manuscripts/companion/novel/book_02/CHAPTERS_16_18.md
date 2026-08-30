@@ -2705,7 +2705,7 @@ When he told Vane, Vane said:
 
 Vane laughed.
 
-The Cincinnatus account made this concrete.
+The Common Ledger account made this concrete.
 
 When the platform altered ranking to reduce repetitive political posts, engagement with the account dropped sharply.
 
@@ -2713,7 +2713,7 @@ Followers accused the company of suppression.
 
 The company said quality adjustment.
 
-Cincinnatus posted graphs.
+Common Ledger posted graphs.
 
 Critics said the account deserved reduction because it spammed.
 
@@ -2721,7 +2721,7 @@ Supporters said spam was label for effective dissent.
 
 Julian looked at raw posting frequency.
 
-Cincinnatus did post far more than typical users.
+Common Ledger did post far more than typical users.
 
 Algorithmic reduction had plausible neutral rationale.
 
