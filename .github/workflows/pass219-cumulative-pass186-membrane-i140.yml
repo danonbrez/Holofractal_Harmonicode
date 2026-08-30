@@ -103,12 +103,15 @@ jobs:
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass186_1_40.hpp)" = "d4c9347897e3133807cf091acdd3b76a96022266"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc)" = "46076af086cf5a74b7d9131a376c8d4c49112caf"
           test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i140_pass186.py)" = "97b01cdca66cefd72b06e9062e30b2d6efe71953"
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a57d68e8d8ee58d17eebfd67efed2ed156fed4e4"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "a8f1802272558077d7d8eb909b3056cfbb98dc77"
+          # Preserve the I140 aggregate baseline at the adoption commit, but allow
+          # later additive cumulative layers to extend the live aggregate.
+          test "$(git rev-parse eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a57d68e8d8ee58d17eebfd67efed2ed156fed4e4"
+          test "$(git rev-parse eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "a8f1802272558077d7d8eb909b3056cfbb98dc77"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass186_1_40.c)" = "b5a9373a79ace277768b0a6471b276dbdadf2d56"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass186_1_40.cpp)" = "3d3f906e44b96e5a1ada01e94df887f4e65beae2"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass186_membrane_i140.py)" = "c7280ddf1d87e08c6eb54356670a76a49dcedd3c"
-          test "$(git hash-object docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md)" = "ceb39e06a39b0c96b28a95f3816d7f67bb8ce0e0"
+          test "$(git rev-parse eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb:docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md)" = "ceb39e06a39b0c96b28a95f3816d7f67bb8ce0e0"
+          grep -q 'Global canonical default repair-forward amendment' docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
           test "$(git hash-object docs/operations/restart/PASS_219_I140_PASS186_X64_VM81_Q144_BINDING_RESTART.md)" = "5eab4c4a809ab96a135422373935ca6d88e83cee"
           test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/evidence/P186_I140_VALIDATION_RECEIPT.json)" = "9ea8d8369fe98626751a14abc324a5d012562de6"
           test "$(git hash-object native_projects/hhs_pass186_x64_vm81_q144/evidence/P186_I140_FINAL_TRIGGER.json)" = "d4214af8137933c9d663fcbd90f31068b22ea11c"
@@ -118,8 +121,18 @@ jobs:
           c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
           assert h.index('hhs_pass219_inherited_pass188_1_38.h') < h.index('hhs_pass219_inherited_pass187_1_39.h') < h.index('hhs_pass219_inherited_pass186_1_40.h')
           assert c.index('hhs_pass219_inherited_pass188_1_38.inc') < c.index('hhs_pass219_inherited_pass187_1_39.inc') < c.index('hhs_pass219_inherited_pass186_1_40.inc')
+          assert h.index('hhs_pass219_inherited_pass186_1_40.h') < h.index('hhs_pass219_global_canonical_defaults_1_0.h')
+          assert c.index('hhs_pass219_inherited_pass186_1_40.inc') < c.index('hhs_pass219_global_canonical_defaults_1_0.inc')
           assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
           assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          policy_h = Path('hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h').read_text()
+          policy_hpp = Path('hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp').read_text()
+          assert 'HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT 35U' in policy_h
+          assert 'cross_cutting_defaults_are_mandatory' in policy_h
+          assert 'retroactive_repair_forward_required' in policy_h
+          assert 'standalone_passes_allowed() noexcept { return false; }' in policy_hpp
+          assert 'repair_forward_on_gap=true' in policy_hpp
+          assert 'optional_cross_cutting_defaults=false' in policy_hpp
           PY
           ! grep -Eq 'independent_opcode_authority[[:space:]]*=[[:space:]]*1U|independent_vm81_authority[[:space:]]*=[[:space:]]*1U|independent_hash72_clock[[:space:]]*=[[:space:]]*1U|float_canonical_authority[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U'             hhs_runtime/c/hhs_pass219_inherited_pass186_1_40.inc
 

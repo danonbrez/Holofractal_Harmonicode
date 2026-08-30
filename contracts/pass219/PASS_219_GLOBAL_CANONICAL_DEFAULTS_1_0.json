@@ -1,0 +1,138 @@
+{
+  "schema": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_V1",
+  "contract_id": "HHS-P219-GLOBAL-CANONICAL-DEFAULTS",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "MANDATORY_CANONICAL_DEFAULT",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "adopted_against_main": "eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb",
+  "pass_semantics": {
+    "numbered_pass_is_additive_system_version": true,
+    "successful_implementation_must_remain_cumulatively_reachable": true,
+    "standalone_application_classification_allowed": false,
+    "one_off_experiment_classification_allowed": false,
+    "isolated_native_project_substitutes_for_canonical_wiring": false,
+    "unwired_successful_implementation_is_completion": false,
+    "unwired_successful_implementation_classification": "MISSING_CUMULATIVE_EXPOSURE"
+  },
+  "cross_cutting_defaults": {
+    "applies_to_all_applicable_existing_surfaces": true,
+    "applies_to_all_applicable_future_surfaces": true,
+    "retroactive_repair_forward_required": true,
+    "optional": false,
+    "permanent_until_explicit_upgrade_or_deprecation": true,
+    "classes": [
+      "compression",
+      "latency",
+      "caching",
+      "indexing",
+      "memory_efficiency",
+      "branch_prediction",
+      "serialization_efficiency",
+      "security",
+      "cryptographic_integrity",
+      "state_validation",
+      "constraint_enforcement",
+      "exactness_enforcement",
+      "admission_control",
+      "rollback_protection",
+      "deterministic_replay",
+      "data_integrity",
+      "authority_separation"
+    ]
+  },
+  "supersession": {
+    "silence_is_deprecation": false,
+    "omission_is_deprecation": false,
+    "refactoring_is_deprecation": false,
+    "directory_placement_is_deprecation": false,
+    "replacement_requires_explicit_upgrade_or_deprecation": true,
+    "replacement_requires_validation_and_repository_lineage": true
+  },
+  "current_cumulative_binding_census": {
+    "ceiling_pass": 218,
+    "wired_floor_pass": 186,
+    "binding_count": 35,
+    "ordered_bindings": [
+      "218",
+      "217",
+      "216",
+      "215",
+      "214",
+      "213",
+      "212",
+      "211",
+      "210",
+      "209",
+      "208",
+      "207",
+      "206",
+      "205",
+      "204",
+      "203",
+      "202",
+      "201",
+      "200c",
+      "200b",
+      "200a",
+      "199",
+      "198",
+      "197",
+      "196",
+      "195",
+      "194",
+      "193",
+      "192",
+      "191",
+      "190",
+      "189",
+      "188",
+      "187",
+      "186"
+    ],
+    "pass200_variants_are_distinct_bindings": true,
+    "missing_numeric_pass_in_coverage_is_regression": true
+  },
+  "repair_forward": {
+    "wired_but_stale": "REPAIR_FORWARD_REQUIRED",
+    "unwired_successful_implementation": "MISSING_CUMULATIVE_EXPOSURE",
+    "missing_required_implementation": "MISSING_IMPLEMENTATION",
+    "no_grandfather_bypass": true
+  },
+  "known_repair_forward_debt": [
+    {
+      "pass": 157,
+      "contract_id": "HHS-P157-PPF-MPTC",
+      "canonical_title": "PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR",
+      "native_project": "native_projects/hhs_pass157_ppf_mptc",
+      "classification": "MISSING_CUMULATIVE_EXPOSURE",
+      "mandatory_repair_forward": true,
+      "native_project_is_not_canonical_substitute": true
+    }
+  ],
+  "authority": {
+    "singleton_vm81_admission_and_commit_remains_inherited": true,
+    "hash72_execution_evidence_remains_inherited": true,
+    "hash216_archival_identity_remains_inherited": true,
+    "exact_symbolic_authority_required": true,
+    "alternate_mutation_authority_created": false
+  },
+  "executable_enforcement": {
+    "c_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",
+    "cpp_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",
+    "c_implementation": "hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc",
+    "validator": "tools/validate_pass219_global_canonical_defaults.py",
+    "c_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.c",
+    "cpp_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",
+    "workflow": ".github/workflows/pass219-global-canonical-defaults.yml",
+    "aggregate_exact_abi_required": true
+  },
+  "governing_invariant": [
+    "NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED",
+    "NO_APPLICABLE_CANONICAL_OPTIMIZATION_IS_OPTIONAL",
+    "NO_APPLICABLE_CANONICAL_SECURITY_OR_CONSTRAINT_MECHANISM_IS_BYPASSED",
+    "NO_PREVIOUS_VERSION_IS_GRANDFATHERED_AROUND_A_LATER_GLOBAL_DEFAULT",
+    "ALL_SUCH_GAPS_ARE_REPAIRED_FORWARD",
+    "ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT"
+  ]
+}
