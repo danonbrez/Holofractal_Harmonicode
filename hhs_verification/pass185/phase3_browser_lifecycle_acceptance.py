@@ -358,13 +358,23 @@ def main_transport_recovery(
     # Browser network outage while Runtime remains mounted must reconnect using
     # the same single subscription set when connectivity returns.
     context.set_offline(True)
-    offline_active = wait_client_state(
-        page,
-        initialized=True,
-        connected_channels=0,
-        listeners_per_channel=1,
-        timeout_ms=20_000,
+    offline_fetch = page.evaluate(
+        """async () => {
+            try {
+                const response = await fetch('/api/product/health', { cache: 'no-store' });
+                return { ok: response.ok, status: response.status };
+            } catch (error) {
+                return { ok: false, error: String(error) };
+            }
+        }"""
     )
+    assert offline_fetch.get("ok") is False, offline_fetch
+    offline_active = client_metrics(page)
+    offline_sockets = dict(offline_active.get("sockets") or {})
+    offline_counts = dict(offline_sockets.get("listenerCounts") or {})
+    assert bool(offline_active.get("initialized")) is True, offline_active
+    for channel in ("runtime", "replay", "graph", "transport"):
+        assert int(offline_counts.get(channel, 0)) == 1, offline_active
     context.set_offline(False)
     online_active = wait_client_state(
         page,
@@ -484,8 +494,10 @@ def main_transport_recovery(
                 "remounted_runtime": remounted,
             },
             "browser_offline_reconnect": {
+                "offline_fetch": offline_fetch,
                 "offline_active": offline_active,
                 "online_active": online_active,
+                "preexisting_websocket_objects_not_required_to_close_under_browser_offline_emulation": True,
             },
             "browser_offline_local_application": {
                 "dormant": dormant_offline,
