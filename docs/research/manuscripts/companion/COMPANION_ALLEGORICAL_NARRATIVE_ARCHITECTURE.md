@@ -50,6 +50,22 @@ Surface instances include Lyra / Discordia, the Faustian Broker, the Vampire / S
 
 The invariant adversarial mechanism is substrate-independent. Surface sex, species, title, or institution does not define the algorithm.
 
+## Ontological dependency
+
+Module 1 inherits Section VII-A of the reference manual:
+
+\[
+\text{Entropy}
+\neq
+\text{Evil}
+\]
+
+Base entropy is non-agentic physical decay. The adversary class is organized, host-dependent corruption whose continuation depends on asymmetric extraction, corrupted representation, or forced propagation.
+
+The corresponding Good class is truthful, adaptive, repairable negentropic organization satisfying the manuscript's closure gates.
+
+This means the companion plot must never equate destruction alone with Evil. The decisive adversarial state is **Terminal Inversion**: a highly organized Citadel using its own structure to preserve corruption.
+
 ### Module 2 — The Citadel's Defending Architecture
 
 Status:
