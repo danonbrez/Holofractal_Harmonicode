@@ -118,11 +118,17 @@ Terminal Inversion is reversed only by restoring authority separation, immutable
 
 ### Module 3 — The Plot State Machine: From Terminal Inversion to Return
 
+File:
+
+\`THE_MYTHOPOETIC_EXECUTABLE_MODULE_03_PLOT_STATE_MACHINE.md\`
+
 Status:
 
-\`NEXT\`
+\[
+\Omega_{\mathrm{Module3}}=\mathrm{true}
+\]
 
-Required execution path:
+Execution path:
 
 \[
 S_0
@@ -154,9 +160,45 @@ H_f
 H_0
 \]
 
-because the corruption history remains authenticated.
+because corruption history remains authenticated.
 
-Module 3 must convert the adversarial and restorative architectures into one ordered dramatic state machine, including first ingress, progressive capture, Terminal Inversion, surviving receipts, failed first repair, bounded reconstruction, adversarial retest, public Pillar recalibration, and successor-state handoff.
+Module 3 contains six acts from calibrated Genesis through first ingress, semantic drift, institutional capture, Terminal Inversion, failed first repair, bounded reconstruction, adversarial retest, public Pillar recalibration, and successor handoff.
+
+Its closure depends on both complete adversary coverage:
+
+\[
+W=(D,T,G,M,E)
+\]
+
+and complete defender coverage:
+
+\[
+\mathfrak{D}=(K,A,L,G,C,X,H)
+\]
+
+without permitting either brute-force collapse or blank-state recovery.
+
+### Module 4 — Narrative Object Registry and Beat Compiler
+
+Status:
+
+\`NEXT\`
+
+Required output:
+
+- canonical character registry;
+- location and jurisdiction registry;
+- symbolic-object registry;
+- theorem-to-object mappings;
+- institutional-office registry;
+- recurring motif registry;
+- legal/ritual artifact registry;
+- predecessor/successor scene-state links;
+- bounded 72-state beat projection.
+
+The 72-state projection is a composition surface rather than a requirement that all beats carry equal prose length.
+
+Module 4 must serialize the Module 3 plot into a stable object-and-beat graph that the native proposal layer can expand without altering the theorem map.
 
 ## Native execution correspondences
 
