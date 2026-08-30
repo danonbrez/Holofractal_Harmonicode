@@ -338,11 +338,19 @@ export class RuntimeSocketManager {
         this.runtimeSocket.onerror =
             (error) => {
 
+            this.state
+                .runtimeConnected =
+                    false
+
             console.error(
 
                 "[runtime/ws] error",
 
                 error
+            )
+
+            this.scheduleReconnect(
+                "runtime"
             )
         }
 
@@ -404,11 +412,19 @@ export class RuntimeSocketManager {
         this.replaySocket.onerror =
             (error) => {
 
+            this.state
+                .replayConnected =
+                    false
+
             console.error(
 
                 "[replay/ws] error",
 
                 error
+            )
+
+            this.scheduleReconnect(
+                "replay"
             )
         }
 
@@ -470,11 +486,19 @@ export class RuntimeSocketManager {
         this.graphSocket.onerror =
             (error) => {
 
+            this.state
+                .graphConnected =
+                    false
+
             console.error(
 
                 "[graph/ws] error",
 
                 error
+            )
+
+            this.scheduleReconnect(
+                "graph"
             )
         }
 
@@ -536,11 +560,19 @@ export class RuntimeSocketManager {
         this.transportSocket.onerror =
             (error) => {
 
+            this.state
+                .transportConnected =
+                    false
+
             console.error(
 
                 "[transport/ws] error",
 
                 error
+            )
+
+            this.scheduleReconnect(
+                "transport"
             )
         }
 
