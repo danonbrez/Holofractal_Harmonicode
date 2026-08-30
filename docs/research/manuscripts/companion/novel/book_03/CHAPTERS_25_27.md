@@ -3399,3 +3399,276 @@ What result would change your state?
 If none, debate no longer empirical.
 
 Mira used this in family arguments and became unbearable.
+
+
+The Great Indoors changed time itself in Julian's household.
+
+Before, workday had edges.
+
+Leave house.
+
+Return.
+
+Commute served as decompression whether he liked it or not.
+
+Remote work removed transition.
+
+Elena could finish an archive call at 5:58 and be at dinner 6:00 carrying unresolved argument in her face.
+
+Mira could close class and open entertainment on same device within seconds.
+
+No state reset.
+
+The family began inventing rituals.
+
+Julian changed clothes after work even if clothes clean.
+
+Elena took walk around block.
+
+Mira played one song loud.
+
+These were not productivity hacks.
+
+They were boundary transitions made physical because architecture no longer provided.
+
+This taught Julian ritual as interface.
+
+A repeated action marking state change can be useful without superstition.
+
+Work → home.
+
+School → home.
+
+Grief → ordinary.
+
+Emergency → normal.
+
+When external institutions lost spatial boundaries, people recreated with symbols.
+
+The disease years made old rituals more intelligible.
+
+Why uniforms?
+
+Why commutes?
+
+Why doors?
+
+Why closing ceremonies?
+
+State needs legible transitions.
+
+The essential divide also revealed social value of boredom.
+
+Frontline workers experienced dangerous monotony.
+
+Remote workers experienced screen saturation.
+
+Children lost unstructured contact.
+
+When public spaces reopened, Mira spent hours with friends doing nothing.
+
+Julian asked what they did.
+
+"Nothing."
+
+"Where?"
+
+"Park."
+
+"For three hours?"
+
+"Yes."
+
+He almost asked for purpose.
+
+Stopped.
+
+The feed had trained every idle minute to contain content.
+
+Physical friendship could contain silence.
+
+This seemed important.
+
+No metric.
+
+He did not write.
+
+Later he did:
+
+UNSTRUCTURED TIME MAY BE A RESOURCE.
+
+Then felt ridiculous.
+
+Elena said:
+
+"You're documenting boredom."
+
+"Apparently."
+
+The Summer of Windows archive eventually held too much.
+
+Storage not problem.
+
+Cataloging.
+
+Context.
+
+Staff.
+
+Millions of files without metadata become landfill.
+
+Elena designed sampling and prioritization.
+
+Official sequences.
+
+Representative livestreams.
+
+High-impact incidents.
+
+Ordinary scenes.
+
+Countervailing perspectives.
+
+Random samples.
+
+She deliberately collected mundane footage:
+
+people handing water,
+
+waiting,
+
+walking home.
+
+Why?
+
+Because dramatic selection distorts.
+
+A future archive of only conflict would lie about frequency.
+
+She called:
+
+negative-space sampling.
+
+Julian loved.
+
+Preserve non-events enough to calibrate events.
+
+This principle later entered Ark: evidence of normal baseline can matter when evaluating anomaly.
+
+An image of one broken window means more if baseline block usually intact.
+
+The Two Elections aftermath created local relationships that did not heal.
+
+One cousin stopped family gatherings.
+
+Not over policy exactly.
+
+Over insults during chat.
+
+The informational split had become personal.
+
+Julian tried repair protocol.
+
+Detect.
+
+Record.
+
+Attribute.
+
+Repair.
+
+Cousin laughed.
+
+"We're not machines."
+
+"No."
+
+"Then stop."
+
+He did.
+
+Some relationships do not consent to repair.
+
+No protocol can force.
+
+This mattered to his system obsession.
+
+Repair path requires participating agents.
+
+If one exits, state changes.
+
+Closure may be separation.
+
+The family adjusted.
+
+Not every broken relation restored.
+
+History retained without reconciliation.
+
+Julian wrote:
+
+REPAIR DESIRE ≠ REPAIR AUTHORITY.
+
+Elena approved quietly.
+
+The Counting House breach cases continued years.
+
+Video evidence.
+
+Plea agreements.
+
+Trials.
+
+Appeals.
+
+Public narratives changed as new records emerged.
+
+People who had made confident first-day claims rarely revisited.
+
+The legal system's slowness allowed more complete record.
+
+Also delayed closure.
+
+The feed's speed produced first impression.
+
+The two temporal systems were mismatched.
+
+Julian wondered if public platforms could display:
+
+PRELIMINARY EVENT STATE.
+
+LATER ADJUDICATED STATE.
+
+Some did labels.
+
+Most not.
+
+Ark could link.
+
+But culture had to care.
+
+One day Aaron sent old claim with note:
+
+UPDATE: I WAS WRONG ABOUT THIS ONE.
+
+Julian stared.
+
+Called.
+
+"Are you dying?"
+
+"Shut up."
+
+"What happened?"
+
+"Read court file."
+
+"Who are you?"
+
+"Your brother."
+
+Repair can propagate socially when people choose.
+
+No machine forced.
+
+Maybe hope.
