@@ -1,0 +1,84 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE6_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE6_WORKSPACE_JOB_GAPS_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase5_implementation_validated_head": "36321174c124ff5ba81bd60fd37a72ce703e606c",
+    "phase6_validated_head": "d716fb50ed8f903ccd8de965d8fa880b08df9027",
+    "phase6_validated_tree": "a5d61a4de3a329f1f1ce6c2dcb3b9d036e423d27",
+    "ahead_of_authoritative_main_base": 124,
+    "behind_authoritative_main_base": 0
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-phase6-cumulative-workspace-job.yml",
+    "run_id": 33307912399,
+    "job_id": 99247647719,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9731086579,
+      "name": "pass219-i141-pass185-phase6-cumulative-workspace-job",
+      "sha256": "cdeb910f749a39e5abbbc7329c94eb1052be2972e862e41840e257462a1086c9"
+    },
+    "evidence_sha256": "cf29d4b714c705bf6d3851ed6c7e251e622b3964a673ff4e5a8e0a8bb9d82f4c",
+    "seal_receipt_sha256": "1eb676b4f69dabcce5e5fdce30412945bf0d09204fc044c04c22ad68b7ed33d8",
+    "compiled_c_sha256": "7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c"
+  },
+  "verified_workbench": {
+    "new_file": true,
+    "upload_source_name": "pass185-uploaded.hhs",
+    "upload_bytes": 45,
+    "explorer_object_count": 1,
+    "build_artifact_visible": true,
+    "emulator_session_visible": true,
+    "run_before_tick": 0,
+    "run_after_tick": 4
+  },
+  "verified_terminal": {
+    "inherited_pass175_terminal_reused": true,
+    "opened_state": "READY",
+    "ping_state": "PONG",
+    "closed_state": "CLOSED",
+    "parallel_state_authority": false
+  },
+  "verified_governed_job": {
+    "created_stage": "QUEUED",
+    "running_stage": "RUNNING",
+    "cancelled_stage": "CANCELLED",
+    "cancel_checkpoint": "CANCELLED_BY_AUTHORIZED_REQUEST",
+    "recovered_stage": "QUEUED",
+    "replacement_job_identity_distinct": true,
+    "frontend_job_authority": false,
+    "cooperative_concurrency_regression": true
+  },
+  "authority_boundary": {
+    "authority_tick_surface": "/api/runtime/authority/tick",
+    "authority_implementation": "HHSRuntimeController.authorized_tick",
+    "serialized_with_runtime_step_lock": true,
+    "pass191_vm81_admission_reused": true,
+    "browser_mints_hash72": false,
+    "new_vm81_authority": false,
+    "parallel_commit_authority": false
+  },
+  "production": {
+    "entrypoint": "hhs_backend.runtime_os_application_server:app",
+    "server_ready_ms": 15575,
+    "browser_page_errors": 0,
+    "browser_console_errors": 0
+  },
+  "remaining_terminal_scope": [
+    "remaining complete process/socket scenarios not individually evidenced",
+    "remaining static/cache/network/browser-history scenarios not individually evidenced",
+    "optional-provider ready and activation-failure scenarios not individually evidenced",
+    "complete cumulative Pass-185 evidence package including required trace/network/process manifests",
+    "authoritative-main verification after safe integration",
+    "external deployment replay",
+    "terminal Pass-185 classification"
+  ]
+}
