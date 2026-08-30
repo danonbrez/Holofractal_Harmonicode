@@ -42,6 +42,10 @@
 - Companion index Module 2 closure: `5529fad92005dbbb4db5b8f38e7254a6cd1dc0dc`
 - Module 3 workspace frontier: `381442eb74f21a7a83612b4f91af8cf69dff9935`
 - Module 2 dedicated restart record: `845c49c14e463861d907b970933e11b5f8ec545f`
+- Module 3 implementation: `924f51dc4af0ac48dfb9d05ce475d914774d5db2`
+- Companion index Module 3 closure: `0934fc64d2774c45f3ac8b8a1dccd3a8883bcee4`
+- Module 4 workspace frontier: `6f2959ea52efb87b271bc43018d6ef5c78d96a6f`
+- Module 3 dedicated restart record: `1762abc59345d46d1344bd163ddff6003167f40e`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -56,6 +60,8 @@
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_01_RESTART.md`
 - `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_02_CITADEL_DEFENDING_ARCHITECTURE.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_02_RESTART.md`
+- `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_03_PLOT_STATE_MACHINE.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_03_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -74,7 +80,9 @@
 - Verified four-volume manual closure through Chapter 73
 - Verified companion Module 1 after ontological binding: 1,251 lines / 24,883
 - Verified companion Module 2: 1,605 lines / 27,256 characters
-- Verified seven defender roles, ten-phase recovery state machine, theorem-to-story map, and Module 2 validation gates characters
+- Verified seven defender roles, ten-phase recovery state machine, theorem-to-story map, and Module 2 validation gates
+- Verified companion Module 3: 2,309 lines / 40,257 characters
+- Verified six acts, Terminal Inversion, failed first repair, bounded reconstruction, adversarial retest, Pillar recalibration, successor handoff, and twelve validation gates characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -149,9 +157,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 3: THE PLOT STATE MACHINE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 4: NARRATIVE OBJECT REGISTRY AND BEAT COMPILER`
 
-Module 1 is complete and checkpointed. Next define the lawful authority, historical memory, provenance, membrane, successor-state, dissent-quarantine, and repair-forward roles that can recover the Citadel from Terminal Inversion without a brute-force reset.
+Modules 1-3 are complete and checkpointed. Next serialize the validated plot into stable character, location, symbolic-object, institution, motif, artifact, and predecessor/successor beat registries, then compile a bounded 72-state narrative projection suitable for proposal-only prose expansion.
 
 ## Blockers
 
