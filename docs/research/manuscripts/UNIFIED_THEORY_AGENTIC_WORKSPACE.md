@@ -172,3 +172,17 @@ Volume IV is complete through Chapter 73. The repository-visible research trace 
 ## Companion executable state
 
 Module 1 is closed as a polymorphic adversary architecture with invariant tensor `W=(D,T,G,M,E)`. Lyra remains a female-coded relational surface, while the invariant adversarial algorithm is explicitly substrate-independent. Native Pass 195 proposal-only authority, Pass 189 provenance quarantine, Pass 219 exact preflight, and cumulative-default rules are mapped into the adversary's limitations and fail-closed conditions.
+
+
+## Ontological anchor
+
+Reference-manual Section VII-A defines the Good/Evil dualism used by all later companion modules.
+
+- Base entropy is non-agentic physical dissipation and is not classified as Evil.
+- Good is truthful, adaptive, repairable negentropic organization under the declared closure gates.
+- Evil is agentic host-dependent corruption requiring asymmetric extraction plus a persistent integrity-corruption channel.
+- The dualism is asymmetric: a host does not logically require a parasite; the parasitic class requires an organized host/resource substrate.
+- The terminal paradox is that complete destruction of host integrity removes the resource base required by the parasite.
+- Therefore the Polymorphic Adversary's preferred climax state is Terminal Inversion rather than rubble: locally ordered institutions preserve globally corrupt transition rules.
+
+External application of these formal classes remains subject to the manuscript's Class A/B/C evidence typing.
