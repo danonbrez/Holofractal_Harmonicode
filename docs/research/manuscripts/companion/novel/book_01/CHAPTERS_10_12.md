@@ -4700,6 +4700,191 @@ What remembers the path?
 That was the better question.
 
 
+
+
+A week before the year ended, the Annex television finally broke.
+
+Not dramatically.
+
+The picture developed a vertical green line, then a second, then began turning itself off every twenty minutes.
+
+Redding would have repaired it.
+
+The new building engineer submitted a replacement request.
+
+Procurement rejected it.
+
+"Why?" Julian asked.
+
+"Nonessential."
+
+Julian looked at the dead screen bolted high in the lobby.
+
+The television had been installed as emergency infrastructure after the Morning Sirens.
+
+For eleven years it had remained on through wars, storms, elections, scandals, closures, alerts, and ordinary afternoons.
+
+Now the city considered it unnecessary because employees received emergency information through desktops and phones.
+
+Julian read the rejection twice.
+
+"Take it down?"
+
+"Facilities says leave until disposal."
+
+"So dead TV stays."
+
+"For now."
+
+Julian brought a ladder.
+
+He stood beneath the same mounting bracket where he had installed the REMEMBER plaque years earlier.
+
+The receptionist watched.
+
+"You taking my news?"
+
+"You have a phone."
+
+"Not the same."
+
+"No."
+
+She looked at the blank screen.
+
+"I liked everybody seeing same thing."
+
+Julian stopped.
+
+"Why?"
+
+"Because then you could say, did you see that?"
+
+"You can send links."
+
+She shook her head.
+
+"Not same."
+
+Julian removed the power cord.
+
+The screen reflected the lobby.
+
+Security desk.
+
+Badge reader.
+
+Visitors.
+
+Himself on a ladder.
+
+For eleven years the television had been a shared window.
+
+Its replacement would not be another shared window.
+
+It would be a thousand private ones.
+
+He unbolted the display with another technician.
+
+They carried it to storage.
+
+Nobody held a ceremony.
+
+The wall remained slightly darker where the television had blocked sunlight.
+
+Julian stood back.
+
+The lobby looked strangely unfinished.
+
+His phone buzzed with a breaking-news alert.
+
+The receptionist's phone buzzed a second later.
+
+Then the security guard's.
+
+Three devices.
+
+Three chimes.
+
+Julian opened his alert.
+
+The receptionist opened hers.
+
+"What'd you get?" he asked.
+
+She read the headline.
+
+His was different.
+
+Same event.
+
+Different emphasis.
+
+He showed her.
+
+She frowned.
+
+"Why's yours say that?"
+
+"Personalization, maybe."
+
+"Which one's right?"
+
+Julian looked at the empty wall.
+
+"Probably both parts."
+
+"That's annoying."
+
+"Yeah."
+
+She slipped the phone into her pocket.
+
+"Bring the TV back."
+
+He laughed.
+
+The dead television went to surplus.
+
+Julian saved the disposal ticket.
+
+Not because the television mattered.
+
+Because transitions hid in paperwork.
+
+Emergency shared screen.
+
+Ordinary shared screen.
+
+Obsolete shared screen.
+
+Personal alerts.
+
+No vote.
+
+No declaration.
+
+Just replacement by a more useful interface.
+
+That evening he added one line to SOURCE:
+
+2012 — ANNEX COMMON BROADCAST DISPLAY REMOVED. INDIVIDUAL MOBILE ALERTS NOW ASSUMED.
+
+Elena read it.
+
+"That's your Book One."
+
+"What book?"
+
+"Nothing."
+
+He looked at her.
+
+She smiled and went upstairs.
+
+Julian left the line where it was.
+
+
 On New Year's Eve Julian's mother hosted family in the row house.
 
 Television countdown.
