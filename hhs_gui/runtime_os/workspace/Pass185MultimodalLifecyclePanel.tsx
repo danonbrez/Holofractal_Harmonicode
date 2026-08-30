@@ -30,6 +30,12 @@ const MODE_SOURCE_NAME: Record<Mode, string> = {
 }
 
 const encoder = new TextEncoder()
+
+function blobBuffer(bytes: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(bytes.byteLength)
+  new Uint8Array(buffer).set(bytes)
+  return buffer
+}
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
 
@@ -232,7 +238,7 @@ export const Pass185MultimodalLifecyclePanel: React.FC<Pass185MultimodalLifecycl
       { path: "README.txt", data: `Pass 185 Phase 4 ${MODE_LABELS[mode]} export. Browser preview is non-authoritative.\n` },
     ]
     const bytes = createStoredZip(entries)
-    const blob = new Blob([bytes], { type: "application/zip" })
+    const blob = new Blob([blobBuffer(bytes)], { type: "application/zip" })
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
@@ -247,7 +253,7 @@ export const Pass185MultimodalLifecyclePanel: React.FC<Pass185MultimodalLifecycl
   const generateAudio = (): void => {
     if (audioUrl) URL.revokeObjectURL(audioUrl)
     const bytes = wavTone(audioFrequency, audioDurationMs)
-    const url = URL.createObjectURL(new Blob([bytes], { type: "audio/wav" }))
+    const url = URL.createObjectURL(new Blob([blobBuffer(bytes)], { type: "audio/wav" }))
     setAudioBytes(bytes)
     setAudioUrl(url)
     setStatus("AUDIO_PREVIEW_READY")
