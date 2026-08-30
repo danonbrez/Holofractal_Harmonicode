@@ -2,9 +2,9 @@
 
 ## The Mythopoetic Executable
 
-**Branch:** `agent/unified-human-social-science-manuscript`
+**Branch:** \`agent/unified-human-social-science-manuscript\`
 
-**Reference manual:** `../UNIFIED_THEORY_OF_HUMAN_SOCIAL_SCIENCE.md`
+**Reference manual:** \`../UNIFIED_THEORY_OF_HUMAN_SOCIAL_SCIENCE.md\`
 
 ## Purpose
 
@@ -12,17 +12,17 @@ This directory is the executable companion to the four-volume reference architec
 
 Each module must preserve a reversible mapping:
 
-[
-	ext{formal invariant}
-ightarrow
-	ext{symbolic carrier}
-ightarrow
-	ext{scene transition}
-ightarrow
-	ext{consequence}
-ightarrow
-	ext{decoding receipt}
-]
+\[
+\text{formal invariant}
+\rightarrow
+\text{symbolic carrier}
+\rightarrow
+\text{scene transition}
+\rightarrow
+\text{consequence}
+\rightarrow
+\text{decoding receipt}
+\]
 
 Generated prose is proposal-only until the module's invariant map is validated against the reference manual and repository-grounded HHS mechanics.
 
@@ -32,19 +32,19 @@ Generated prose is proposal-only until the module's invariant map is validated a
 
 File:
 
-`THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md`
+\`THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md\`
 
 Status:
 
-[
-Omega_{mathrm{Module1}}=mathrm{true}
-]
+\[
+\Omega_{\mathrm{Module1}}=\mathrm{true}
+\]
 
 Architecture:
 
-[
+\[
 W=(D,T,G,M,E)
-]
+\]
 
 Surface instances include Lyra / Discordia, the Faustian Broker, the Vampire / Shapeshifter, the Sophist, the Corrupted Oracle / Legist, and the Tower.
 
@@ -54,7 +54,7 @@ The invariant adversarial mechanism is substrate-independent. Surface sex, speci
 
 Status:
 
-`NEXT`
+\`NEXT\`
 
 Required components:
 
