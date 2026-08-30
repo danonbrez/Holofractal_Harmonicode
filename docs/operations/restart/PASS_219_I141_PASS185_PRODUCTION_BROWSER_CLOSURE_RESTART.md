@@ -393,3 +393,50 @@ Required sequence:
 9. only then emit the terminal Pass-185 classification.
 
 No terminal Pass-185 claim may be inferred from Phase 5 alone.
+
+
+## Phase-6 freeze — strict workspace / terminal / governed-job closure
+
+Phase 6 is verified and frozen at its strict implementation/evidence head.
+
+- validated head: `d716fb50ed8f903ccd8de965d8fa880b08df9027`
+- validated tree: `a5d61a4de3a329f1f1ce6c2dcb3b9d036e423d27`
+- run: `33307912399`
+- job: `99247647719`
+- artifact: `9731086579`
+- artifact SHA-256: `cdeb910f749a39e5abbbc7329c94eb1052be2972e862e41840e257462a1086c9`
+- evidence SHA-256: `cf29d4b714c705bf6d3851ed6c7e251e622b3964a673ff4e5a8e0a8bb9d82f4c`
+- seal receipt SHA-256: `1eb676b4f69dabcce5e5fdce30412945bf0d09204fc044c04c22ad68b7ed33d8`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE6_VALIDATION_RECEIPT.json`
+- classification: `HHS_PASS_185_PHASE6_WORKSPACE_JOB_GAPS_VERIFIED`
+
+Frozen Phase-6 invariants:
+
+- New File and upload are local buffers until explicit inherited Witness authority;
+- Build uses inherited `compile.execute`;
+- Run uses inherited `emulator.run` and the visible tick advanced `0 → 4`;
+- terminal UI reuses Pass-175 terminal authority;
+- guarded authority-tick output comes from the singleton `HHSRuntimeController.authorized_tick`;
+- Pass-191 job create/run/cancel/recovery remains VM81-admission-bound;
+- a concurrently running Pass-191 resume cannot overwrite an authorized `CANCELLED` durable state;
+- frontend/runtime parallel authority remains false.
+
+### Next bounded block — remaining cumulative matrix reconciliation
+
+Continue with:
+
+`PHASE 7 — PROCESS / CACHE / NETWORK / PROVIDER COMPLETION MATRIX`
+
+Do not merge I141.
+
+Required work:
+
+1. reconcile Process/Socket §6.1 scenarios not already frozen by Phases 2, 5, and 6;
+2. reconcile Static/Module §6.2 cache, delay, truncation, duplicate-import, HTTP-500, and rejection cases not already frozen;
+3. reconcile Browser Lifecycle §6.3 normal/hard reload, back/forward, restored-tab, JavaScript-disabled, slow-network, temporary-API-unavailable, and remaining viewport/history cases;
+4. reconcile Optional Provider §6.6 ready/active and explicit activation-failure cases;
+5. capture the missing environment/process/network/trace evidence required by §10;
+6. retain all Phase-1–6 receipts as immutable inputs;
+7. only after every non-waivable matrix row is individually evidenced, build one cumulative Pass-185 closure gate.
+
+Terminal Pass 185 completion remains prohibited until cumulative local closure, safe integration, authoritative-main verification, and external deployment replay.
