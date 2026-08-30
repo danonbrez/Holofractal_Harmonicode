@@ -336,3 +336,36 @@ Classification:
 Repair-forward accepts exactly those two repository-recorded representations and still requires the identifier to equal `HHS-P185-PCBAVC-IVC-VM81-H72-H216`. No receipt is rewritten and no alternate contract identifier is accepted.
 
 Run `33317446006` remains failing evidence. The next descendant must rerun the cumulative executable and reach the actual production-browser gate.
+
+
+### Cumulative run 33317598541 Playwright browser-path isolation repair
+
+Run `33317598541` on `693a139b70ec8c7e00c212a26f1b6b93d2028a15` passed:
+
+- C compilation;
+- Runtime OS typecheck/build;
+- cumulative source-boundary checks;
+- cumulative authority boundary regressions (29 passed);
+- Chromium installation.
+
+The exact-production cumulative executable then reached `browser_evidence()` and failed before launching Chromium because the test intentionally switched `HOME` to the isolated evidence root after Playwright had installed the browser under the runner HOME.
+
+Exact error:
+
+`BrowserType.launch: Executable doesn't exist at /tmp/pass185-cumulative-local/isolated-state/home/.cache/ms-playwright/chromium_headless_shell-1234/...`
+
+Classification:
+
+`PLAYWRIGHT_BROWSER_CACHE_PATH_ISOLATION_DEFECT`
+
+This is a harness-path defect, not a production-root browser failure.
+
+Repair-forward:
+
+- bind `PLAYWRIGHT_BROWSERS_PATH=/tmp/pass185-playwright-browsers` at the cumulative job level;
+- install Chromium into that explicit path;
+- preserve that variable when the runner isolates `HOME`;
+- record the browser path in the environment manifest;
+- fail early if the explicit browser path is absent.
+
+No application/runtime authority code changes in this repair. Run `33317598541` remains preserved as failing evidence.

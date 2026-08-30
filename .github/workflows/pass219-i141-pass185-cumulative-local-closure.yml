@@ -32,6 +32,7 @@ jobs:
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
       HHS_PASS185_CUMULATIVE_EVIDENCE: '/tmp/pass185-cumulative-local'
+      PLAYWRIGHT_BROWSERS_PATH: '/tmp/pass185-playwright-browsers'
 
     steps:
       - uses: actions/checkout@v4
@@ -126,7 +127,10 @@ jobs:
             tests/test_runtime_os_production_root.py
 
       - name: Install bounded Chromium
-        run: timeout 600s python -m playwright install --with-deps chromium
+        run: |
+          mkdir -p "$PLAYWRIGHT_BROWSERS_PATH"
+          timeout 600s python -m playwright install --with-deps chromium
+          test -d "$PLAYWRIGHT_BROWSERS_PATH"
 
       - name: Run cumulative exact-production local closure
         run: |

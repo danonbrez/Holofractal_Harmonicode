@@ -139,6 +139,7 @@ def environment_manifest(repo: Path, state_root: Path) -> dict[str, Any]:
         "state_root": str(state_root),
         "cognition_auto_tick": os.environ.get("HHS_COGNITION_AUTO_TICK"),
         "assistant_health_timeout": os.environ.get("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS"),
+        "playwright_browsers_path": os.environ.get("PLAYWRIGHT_BROWSERS_PATH"),
     }
 
 
@@ -341,6 +342,10 @@ def main() -> None:
     os.environ["HHS_COGNITION_AUTO_TICK"] = "0"
     os.environ["HHS_DISABLE_C_AUTOBUILD"] = "1"
     os.environ["HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS"] = "0.5"
+    assert os.environ.get("PLAYWRIGHT_BROWSERS_PATH"), (
+        "PLAYWRIGHT_BROWSERS_PATH must be explicit so isolated HOME cannot hide "
+        "the installed Chromium executable"
+    )
 
     receipts = verify_receipts(repo)
     env = environment_manifest(repo, state_root)
