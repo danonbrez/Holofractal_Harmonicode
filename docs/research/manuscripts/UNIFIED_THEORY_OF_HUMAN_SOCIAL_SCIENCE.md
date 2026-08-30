@@ -4998,3 +4998,462 @@ Large comparative folklore datasets demonstrate that traditional motifs can corr
 This supports treating folklore as analyzable cultural data.
 
 Let a folklore corpus be:
+
+\[
+\mathcal F=
+\{M_1,M_2,\ldots,M_n\}
+\]
+
+Each story may be represented by a typed feature vector:
+
+\[
+\phi(M_i)
+=
+(
+\text{roles},
+\text{motifs},
+\text{transitions},
+\text{sanctions},
+\text{kinship},
+\text{risk},
+\text{resource},
+\text{closure}
+)
+\]
+
+The corpus can then be tested for:
+
+- motif recurrence;
+- geographic clustering;
+- social correlation;
+- transition-pattern stability;
+- lineage variation;
+- independent convergence.
+
+The manuscript's claim becomes testable at scale.
+
+If myth preserves structural social information, then some encoded features should systematically covary with external cultural variables.
+
+Where no such covariance exists, the corresponding empirical claim weakens.
+
+---
+
+## Chapter 67
+## The Native Narrative Engine as Proposal, Not Authority
+
+Pass 195 supplies a repository-native content engine capable of producing bounded narrative proposals, style-conditioned outputs, and native handoffs.
+
+Its authority boundary is explicit.
+
+The provider remains proposal-only.
+
+The mythopoetic manuscript adopts the same rule.
+
+Generated stories can be used to:
+
+- test whether a formal theorem survives allegorical encoding;
+- generate alternate surface realizations of one relation graph;
+- stress-test ambiguity;
+- compare mythological temperature;
+- vary poetic density;
+- expose missing causal links;
+- test whether a reader can reconstruct the intended invariant.
+
+But generated prose does not become evidence merely because it is coherent.
+
+Therefore:
+
+\[
+\text{generated narrative}
+\rightarrow
+\text{candidate symbolic carrier}
+\]
+
+not:
+
+\[
+\text{generated narrative}
+\rightarrow
+\text{validated theorem}
+\]
+
+The theorem must pre-exist or be independently admitted.
+
+---
+
+## Chapter 68
+## Nonverbatim Structural Learning
+
+Prior HHS development explicitly separated structural learning from verbatim retention in the narrative/corpus layer.
+
+The manuscript adopts that principle as a mythopoetic invariant.
+
+A corpus processor should seek:
+
+\[
+\text{structure}
+\]
+
+rather than:
+
+\[
+\text{memorized passage}
+\]
+
+The target features include:
+
+- causal ordering;
+- role geometry;
+- conflict topology;
+- boundary transitions;
+- rhythm and recurrence;
+- symbolic density;
+- closure pattern;
+- viewpoint transformation.
+
+This prevents the medium from displacing the meaning.
+
+It also enables the same theorem to be expressed through multiple literary surfaces without pretending those surfaces are identical.
+
+---
+
+## Chapter 69
+## Poetic Form as Memory Scaffold
+
+Oral traditions often employ meter, rhyme, repetition, alliteration, formulaic phrases, parallelism, and musical structure.
+
+These features can function as memory scaffolds.
+
+Let narrative content be \(C\) and poetic constraints be \(P\).
+
+Then recall may be modeled as:
+
+\[
+\operatorname{Recall}(C\mid P)
+\]
+
+rather than:
+
+\[
+\operatorname{Recall}(C)
+\]
+
+The thesis therefore distinguishes ornamental poetics from structural poetics.
+
+Ornamental poetics changes surface beauty.
+
+Structural poetics contributes to transmission fidelity, segmentation, expectation, or reconstruction.
+
+This distinction provides a formal use for the manuscript's poetic-temperature concept.
+
+Poetic temperature is not merely style intensity.
+
+It can be analyzed as a transmission parameter.
+
+---
+
+## Chapter 70
+## Mythology Temperature as Abstraction Depth
+
+The manuscript architecture previously proposed a mythology-temperature continuum from direct logic through commentary and explanation toward mythopoetic expression.
+
+Formalize it as:
+
+\[
+\Theta_M
+\]
+
+where low \(\Theta_M\) preserves explicit variables and high \(\Theta_M\) replaces them with symbolic carriers.
+
+At low temperature:
+
+\[
+A\rightarrow B\rightarrow C
+\]
+
+is stated directly.
+
+At higher temperature:
+
+\[
+\text{kingdom}
+\rightarrow
+\text{curse}
+\rightarrow
+\text{descent}
+\rightarrow
+\text{return}
+\]
+
+may encode the same relation class.
+
+A valid transformation requires:
+
+\[
+I_{\mathrm{low}}
+=
+I_{\mathrm{high}}
+\]
+
+at the declared invariant boundary.
+
+The purpose of mythology temperature is therefore controlled abstraction without semantic drift.
+
+---
+
+## Chapter 71
+## Return to Genesis as Narrative Closure
+
+A large class of myths terminates through restoration, rebirth, return, reconciliation, recovered identity, or re-established order.
+
+Within HHS, Genesis is not structureless zero.
+
+It is canonical initialized geometry.
+
+The mythopoetic analogue is therefore not:
+
+\[
+\text{return}
+=
+\text{erase history}
+\]
+
+It is:
+
+\[
+\text{return}
+=
+\text{restore valid coordinate law while retaining lineage}
+\]
+
+A narrative closure state may be:
+
+\[
+S_f
+\sim
+S_0
+\]
+
+with respect to invariant structure while:
+
+\[
+H_f
+\neq
+H_0
+\]
+
+because the history has changed.
+
+The restored kingdom is not the untouched kingdom.
+
+The integrated person is not the pre-conflict person.
+
+Closure preserves the lesson as lineage.
+
+This is recursion closure in narrative form.
+
+---
+
+## Chapter 72
+## External Empirical Research Trace
+
+This chapter records a bounded Class-B research layer for Volume IV.
+
+### 72.1 Oral traditions as collective memory
+
+David C. Rubin's work on oral traditions emphasizes forms such as ballads, songs, rhymes, and epic poetry as long-lived cultural products dependent upon human memory. The literature treats them as carriers of practical, moral, and conflict-related information while also studying the cognitive constraints under which they survive.
+
+Use:
+
+\[
+\text{supports oral tradition as a memory system}
+\]
+
+Boundary:
+
+It does not establish exact factual preservation of every narrative detail.
+
+### 72.2 Information-preserving practices in oral traditions
+
+Research on forager oral traditions documents communities in which narrators, listeners, repetition, source claims, and correction practices are used to maintain story consistency.
+
+Use:
+
+\[
+\text{supports redundancy and witness-based correction}
+\]
+
+Boundary:
+
+The practices vary across cultures and cannot be generalized without evidence.
+
+### 72.3 Variation in mythic recitation
+
+Jack Goody's recordings of the Bagre emphasize that multiple versions of a supposedly shared recitation can vary considerably.
+
+Use:
+
+\[
+\text{supports variant-witness rather than frozen-text model}
+\]
+
+Boundary:
+
+Variation does not by itself determine which invariant, if any, is being preserved.
+
+### 72.4 Folklore as comparative data
+
+Comparative folklore research using a large catalog spanning approximately one thousand societies reports that oral motifs can reflect known geographic and social attributes and can be analyzed alongside ethnographic variables.
+
+Use:
+
+\[
+\text{supports folklore as structured comparative data}
+\]
+
+Boundary:
+
+Correlation between motifs and social variables does not prove one causal interpretation of a myth.
+
+### 72.5 Intergenerational storytelling
+
+Research among Tsimane communities reports traditional information flowing substantially from older, more knowledgeable storytellers toward younger recipients.
+
+Use:
+
+\[
+\text{supports storytelling as intergenerational transmission}
+\]
+
+Boundary:
+
+The observed transmission pattern is population-specific and not a universal human constant.
+
+### 72.6 Methodological counterweight
+
+Anthropological work on myth repeatedly warns against treating one collected version as an invariant original or assuming that all symbolic material serves the same function.
+
+Therefore:
+
+\[
+\text{mythic persistence}
+\neq
+\text{literal immutability}
+\]
+
+The manuscript retains its stronger thesis only at the level it can defend:
+
+\[
+\text{myth can preserve structural information across transformation}
+\]
+
+---
+
+## Chapter 73
+## Volume IV Closure
+
+Volume IV establishes mythopoetics as a typed cultural-memory layer.
+
+The central architecture is:
+
+\[
+S
+\xrightarrow{\mathcal C_{\mathrm{myth}}}
+M
+\xrightarrow{\mathcal D_{\mathrm{myth}}}
+\widehat S
+\]
+
+with successful preservation when:
+
+\[
+I(S)=I(\widehat S)
+\]
+
+at the declared invariant boundary.
+
+The resulting system distinguishes:
+
+- structural precision from documentary literalism;
+- motif indexing from causal proof;
+- redundancy from cryptographic identity;
+- archetype from free association;
+- historical symbol from biological essence;
+- oral variation from informationlessness;
+- generated narrative from authority;
+- poetic scaffolding from ornament;
+- return-to-Genesis from history erasure.
+
+The witch archetype is retained as a covert-destabilization schema.
+
+Dark magic is formalized as unauthorized state mutation through corrupted or concealed metadata while remaining literal inside fictional systems that define magic as a native object.
+
+The Serpent is formalized as adversarial semantic injection against an existing boundary representation.
+
+Genesis 3 is retained as the manuscript's compact multi-term corruption blueprint:
+
+\[
+\text{boundary}
+\rightarrow
+\text{semantic reframing}
+\rightarrow
+\text{tripartite valuation}
+\rightarrow
+\text{unauthorized transition}
+\rightarrow
+\text{fragmentation}
+\rightarrow
+\text{shame}
+\rightarrow
+\text{blame shift}
+\rightarrow
+\text{loss of baseline harmony}
+\]
+
+The tripartite vector remains:
+
+\[
+\mathbf V
+=
+(
+\text{physical gratification},
+\text{esthetic/novelty salience},
+\text{unaligned power/status}
+)
+\]
+
+The final mythopoetic admission rule is:
+
+\[
+\text{symbolic compression}
++
+\text{variant lineage}
++
+\text{contextual hydration}
++
+\text{independent corroboration}
+\rightarrow
+\text{bounded structural inference}
+\]
+
+Where the symbol is detached from its relation graph:
+
+\[
+\mathrm{NULL/UNDEFINED}
+\]
+
+Where variants contradict the proposed invariant:
+
+\[
+\Psi\neq0
+\]
+
+Where the carrier changes but the declared relation survives:
+
+\[
+\Omega=\mathrm{true}
+\]
+
+The four-volume reference architecture is now closed.
+
+The next development frontier is the **Companion Allegorical Narrative Architecture**: a complete mythic story system that encodes the formal invariants of Volumes I-IV into characters, places, conflicts, transformations, and receipts while preserving a reversible map back to the reference manual.
