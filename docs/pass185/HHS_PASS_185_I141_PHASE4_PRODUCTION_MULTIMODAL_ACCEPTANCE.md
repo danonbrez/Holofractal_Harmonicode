@@ -2,7 +2,7 @@
 
 Classification:
 
-`HHS_PASS_185_PHASE4_PRODUCTION_MULTIMODAL_IMPLEMENTED_PENDING_VALIDATION`
+`HHS_PASS_185_PHASE4_PRODUCTION_MULTIMODAL_VERIFIED`
 
 Terminal Pass 185 completion is **not** claimed.
 
@@ -119,4 +119,21 @@ The gate must:
 6. run impacted multimodal/workspace/production-root regressions;
 7. seal repository-identifiable evidence and upload an artifact.
 
-Phase 4 remains pending until one exact branch head passes the complete workflow.
+## Final Phase-4 validation
+
+Phase 4 is terminal green at:
+
+- validated head: `6721a7daa5ac9bff087e3f2df92ca8e0212e126b`
+- validated tree: `88fb222808f5c85cec69ded243aecb944db33d34`
+- workflow run: `33298038651`
+- job: `99220959313`
+- artifact: `9728051321`
+- artifact SHA-256: `c8011eec0eeadcabe651ec36e7e056359048aef43c96748b1194c293261130cc`
+- evidence SHA-256: `ec2761ff77d913298728cb4e365bcdb7d89f70661c7d1044873c2d408bf95080`
+- seal receipt SHA-256: `1ce3ad8149edac485af644735542e7b8fe29ae8d7ef92469c50a087aa3c99253`
+- compiled-C SHA-256: `7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE4_VALIDATION_RECEIPT.json`
+
+All document, 2D game, graphics, audio, audiovisual, and inherited calculator workflows passed in the same exact production-root Chromium run. The impacted inherited multimodal and production-root regressions also passed.
+
+Phase 4 still does **not** claim terminal Pass 185 completion.
