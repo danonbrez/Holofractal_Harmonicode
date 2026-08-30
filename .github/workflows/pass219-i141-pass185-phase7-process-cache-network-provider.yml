@@ -1,0 +1,286 @@
+name: Pass 219 I141 Pass 185 Phase 7 Process Cache Network Provider
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
+    paths:
+      - 'hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx'
+      - 'hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py'
+      - 'docs/pass185/HHS_PASS_185_I141_PHASE7_PROCESS_CACHE_NETWORK_PROVIDER_COMPLETION.md'
+      - '.github/workflows/pass219-i141-pass185-phase7-process-cache-network-provider.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i141-pass185-phase7-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase7-process-cache-network-provider:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS185_PHASE7_EVIDENCE: '/tmp/pass185-phase7'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record exact repository identity
+        run: |
+          git rev-parse HEAD | tee /tmp/pass185-phase7-head.txt
+          git rev-parse HEAD^{tree} | tee /tmp/pass185-phase7-tree.txt
+          git fetch origin main --no-tags
+          git rev-parse origin/main | tee /tmp/pass185-phase7-observed-main.txt
+          git merge-base HEAD origin/main | tee /tmp/pass185-phase7-merge-base.txt
+          git status --short
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped runtime packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            requests pytest playwright
+
+      - name: Compile inherited C authority
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum hhs_runtime/builds/libhhs_runtime.so \
+            | tee /tmp/pass185-phase7-c-runtime.sha256
+
+      - name: Typecheck and build exact Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Validate Phase-7 source boundary
+        run: |
+          python -m py_compile \
+            hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py
+          grep -Fq 'pass185-assistant-provider-status' \
+            hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx
+          grep -Fq 'pass185-assistant-input' \
+            hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx
+          grep -Fq 'pass185-assistant-send' \
+            hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx
+          grep -Fq 'terminal_pass185_completion_claimed' \
+            hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py
+          grep -Fq 'canonical_runtime_authority_changed' \
+            hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py
+          grep -Fq 'waived_rows' \
+            hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py
+
+      - name: Run dependency-scoped regressions
+        run: |
+          timeout 480s pytest -q \
+            tests/test_hhs_litert_lm_assistant_v1.py \
+            tests/test_hhs_pass166_word2vec_v1.py \
+            tests/test_runtime_os_production_root.py
+
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Run Phase-7 process and socket gaps
+        run: |
+          mkdir -p "$HHS_PASS185_PHASE7_EVIDENCE"
+          timeout 900s python -m \
+            hhs_verification.pass185.phase7_process_cache_network_provider_acceptance \
+            --profile process-socket \
+            --evidence-dir "$HHS_PASS185_PHASE7_EVIDENCE"
+
+      - name: Run Phase-7 browser cache network and history gaps
+        run: |
+          timeout 1200s python -m \
+            hhs_verification.pass185.phase7_process_cache_network_provider_acceptance \
+            --profile browser-cache-network \
+            --evidence-dir "$HHS_PASS185_PHASE7_EVIDENCE"
+
+      - name: Run Phase-7 provider ready and activation failure gaps
+        run: |
+          timeout 900s python -m \
+            hhs_verification.pass185.phase7_process_cache_network_provider_acceptance \
+            --profile provider-ready \
+            --evidence-dir "$HHS_PASS185_PHASE7_EVIDENCE"
+
+      - name: Build non-waivable cumulative Phase-7 matrix
+        run: |
+          timeout 120s python -m \
+            hhs_verification.pass185.phase7_process_cache_network_provider_acceptance \
+            --profile matrix \
+            --evidence-dir "$HHS_PASS185_PHASE7_EVIDENCE"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(
+              Path('/tmp/pass185-phase7/phase7-matrix.json').read_text()
+          )
+          assert value['ok'] is True
+          assert value['failed_rows'] == []
+          assert value['waived_rows'] == []
+          assert all(
+              row['status'] == 'PASS' and row['waived'] is False
+              for row in value['rows']
+          )
+          PY
+
+      - name: Seal Phase-7 evidence
+        if: always()
+        run: |
+          mkdir -p "$HHS_PASS185_PHASE7_EVIDENCE"
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+          from hhs_runtime.pass150.genome import Hash216Genome
+          from hhs_runtime.pass166.common import ZERO_HASH216
+
+          root = Path('/tmp/pass185-phase7')
+          payload = {
+              'schema': 'HHS_PASS219_I141_PASS185_PHASE7_VALIDATION_SEAL_V1',
+              'head': subprocess.check_output(
+                  ['git', 'rev-parse', 'HEAD'], text=True
+              ).strip(),
+              'tree': subprocess.check_output(
+                  ['git', 'rev-parse', 'HEAD^{tree}'], text=True
+              ).strip(),
+              'historical_pass185_contract_base':
+                  'f8aa3337ee023c7d828343eac208987c20a05e67',
+              'phase6_validated_head':
+                  'd716fb50ed8f903ccd8de965d8fa880b08df9027',
+              'pass185_contract_commit':
+                  'f260f2b013072a48399d9cdc207d0a76a6c63d2f',
+              'observed_main':
+                  Path('/tmp/pass185-phase7-observed-main.txt').read_text().strip(),
+              'merge_base_with_observed_main':
+                  Path('/tmp/pass185-phase7-merge-base.txt').read_text().strip(),
+              'classification':
+                  'HHS_PASS_185_PHASE7_PROCESS_CACHE_NETWORK_PROVIDER_EXECUTED',
+              'terminal_pass185_completion_claimed': False,
+              'authoritative_main_verified': False,
+              'external_deployment_verified': False,
+              'source_blobs': {},
+              'evidence': {},
+          }
+          for path in [
+              'hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx',
+              'hhs_verification/pass185/phase7_process_cache_network_provider_acceptance.py',
+              'docs/pass185/HHS_PASS_185_I141_PHASE7_PROCESS_CACHE_NETWORK_PROVIDER_COMPLETION.md',
+              '.github/workflows/pass219-i141-pass185-phase7-process-cache-network-provider.yml',
+          ]:
+              payload['source_blobs'][path] = subprocess.check_output(
+                  ['git', 'hash-object', path], text=True
+              ).strip()
+
+          for path in sorted(root.glob('**/*')):
+              if not path.is_file():
+                  continue
+              raw = path.read_bytes()
+              item = {
+                  'path': str(path.relative_to(root)),
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'bytes': len(raw),
+              }
+              if path.suffix == '.json':
+                  try:
+                      value = json.loads(raw)
+                      item['ok'] = value.get('ok')
+                      item['classification'] = value.get('classification')
+                  except Exception as exc:
+                      item['json_error'] = f'{type(exc).__name__}: {exc}'
+              payload['evidence'][str(path.relative_to(root))] = item
+
+          matrix = json.loads((root / 'phase7-matrix.json').read_text())
+          payload['matrix_sha256'] = matrix['matrix_sha256']
+          payload['matrix_row_count'] = matrix['row_count']
+          payload['matrix_failed_rows'] = matrix['failed_rows']
+          payload['matrix_waived_rows'] = matrix['waived_rows']
+
+          projection = {
+              key: value['sha256']
+              for key, value in sorted(payload['evidence'].items())
+          }
+          encoded = json.dumps(
+              projection, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['completion_receipt_hash72'] = hash72_digest(
+              {'domain': 'HHS-PASS185-I141-PHASE7-COMPLETION-V1'},
+              encoded,
+          )
+          payload['evidence_set_hash216'] = Hash216Genome.root(
+              Hash216Genome.positions(
+                  encoded,
+                  previous_root=ZERO_HASH216,
+                  sequence=7,
+              )
+          )
+          seal_bytes = json.dumps(
+              payload, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['seal_sha256'] = hashlib.sha256(seal_bytes).hexdigest()
+          (root / 'i141-phase7-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Require terminal Phase-7 local evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('/tmp/pass185-phase7')
+          for name in (
+              'phase7-process-socket.json',
+              'phase7-browser-cache-network.json',
+              'phase7-provider-ready.json',
+              'phase7-matrix.json',
+          ):
+              value = json.loads((root / name).read_text())
+              assert value['ok'] is True
+          seal = json.loads((root / 'i141-phase7-seal.json').read_text())
+          assert seal['matrix_failed_rows'] == []
+          assert seal['matrix_waived_rows'] == []
+          assert len(seal['completion_receipt_hash72']) == 72
+          assert seal['evidence_set_hash216']
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i141-pass185-phase7-process-cache-network-provider
+          path: |
+            /tmp/pass185-phase7/**
+            /tmp/pass185-phase7-c-runtime.sha256
+            /tmp/pass185-phase7-head.txt
+            /tmp/pass185-phase7-tree.txt
+            /tmp/pass185-phase7-observed-main.txt
+            /tmp/pass185-phase7-merge-base.txt
+          if-no-files-found: warn
+          retention-days: 30
