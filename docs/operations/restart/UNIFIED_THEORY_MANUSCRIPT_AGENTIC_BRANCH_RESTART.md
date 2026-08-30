@@ -38,6 +38,10 @@
 - Companion index ontology dependency: `6805876b63e7c876f4be7b75580d6ed073a19f29`
 - Module 1 ontology restart update: `e25511024afff64e20abb78dc928947a018e97b0`
 - Workspace ontological anchor: `421dc9560a6eb4530921fb0757f64613dcf856b8`
+- Module 2 implementation: `d9063944369662e1320e2691e239b584eb67f148`
+- Companion index Module 2 closure: `5529fad92005dbbb4db5b8f38e7254a6cd1dc0dc`
+- Module 3 workspace frontier: `381442eb74f21a7a83612b4f91af8cf69dff9935`
+- Module 2 dedicated restart record: `845c49c14e463861d907b970933e11b5f8ec545f`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -50,6 +54,8 @@
 - `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md`
 - `docs/research/manuscripts/companion/COMPANION_ALLEGORICAL_NARRATIVE_ARCHITECTURE.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_01_RESTART.md`
+- `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_02_CITADEL_DEFENDING_ARCHITECTURE.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_02_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -66,7 +72,9 @@
 - Verified Volume IV closure at Chapter 73
 - Verified Volume III and Volume IV research traces
 - Verified four-volume manual closure through Chapter 73
-- Verified companion Module 1 after ontological binding: 1,251 lines / 24,883 characters
+- Verified companion Module 1 after ontological binding: 1,251 lines / 24,883
+- Verified companion Module 2: 1,605 lines / 27,256 characters
+- Verified seven defender roles, ten-phase recovery state machine, theorem-to-story map, and Module 2 validation gates characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -141,7 +149,7 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 2: THE CITADEL'S DEFENDING ARCHITECTURE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 3: THE PLOT STATE MACHINE`
 
 Module 1 is complete and checkpointed. Next define the lawful authority, historical memory, provenance, membrane, successor-state, dissent-quarantine, and repair-forward roles that can recover the Citadel from Terminal Inversion without a brute-force reset.
 
