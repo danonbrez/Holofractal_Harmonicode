@@ -918,6 +918,87 @@ for which objective?
 Without objective, score was costume.
 
 
+
+
+The city's library system introduced recommendation scores too.
+
+Not public ratings.
+
+Suggested books.
+
+Julian would not have cared except Mira's account began recommending material classified by prior checkouts.
+
+She had borrowed three fantasy novels.
+
+The system concluded fantasy.
+
+Then more fantasy.
+
+Then nearly only fantasy.
+
+Mira liked fantasy.
+
+The loop worked.
+
+Elena deliberately borrowed a book on geology through Mira's account.
+
+Julian objected.
+
+"You're corrupting child profile."
+
+"Experiment."
+
+"Use your account."
+
+"Then not same."
+
+The next week recommendations widened.
+
+Geology.
+
+Dinosaurs.
+
+Natural history.
+
+Mira found a book on volcanoes she loved.
+
+"See?" Elena said.
+
+"You're committing identity fraud for literacy."
+
+"Correct."
+
+The joke carried a real point.
+
+Recommendation systems reduced discovery cost by exploiting history.
+
+They also narrowed future exposure around history.
+
+A person became easier to predict because system made familiar choices easier.
+
+The archive called this path dependence.
+
+Vane called it personalization feedback.
+
+Mira called it boring when suggestions got repetitive.
+
+The library added a RANDOM DISCOVERY button after user feedback.
+
+Julian loved the design.
+
+A bounded mechanism for intentional variance.
+
+"Every system needs one," he said.
+
+Ana replied when he told her:
+
+Security does not.
+
+"Especially security."
+
+No.
+
+
 ### Chapter Seventeen — Swipe
 
 Lyra appeared on a dating app.
@@ -1838,6 +1919,77 @@ A neutral tool became partisan through authority and objective.
 The code did not change moral class.
 
 The function did.
+
+
+
+
+During the election, Julian attended one neighborhood meeting where everyone was asked to put phones in a basket.
+
+The organizer, an elderly pastor, said:
+
+"We're going to disagree in the same room."
+
+People laughed nervously.
+
+Thirty residents.
+
+Different ages.
+
+Different politics.
+
+No recording.
+
+No livestream.
+
+No quote-posting.
+
+At first conversation was worse.
+
+People repeated slogans with no audience reward.
+
+Then something softened.
+
+A woman who had posted aggressively online spoke more cautiously when the person she criticized sat ten feet away.
+
+A man who was vicious in comments became funny.
+
+Nobody became ideologically converted.
+
+They became dimensioned.
+
+After ninety minutes, phones returned.
+
+Within minutes participants were photographing one another and posting summaries.
+
+The room became content.
+
+Julian watched a post appear:
+
+GREAT CIVIL DIALOGUE TONIGHT — PROOF WE CAN COME TOGETHER.
+
+The actual meeting had included shouting, accusations, one person leaving, and a twenty-minute argument over zoning.
+
+The summary was not false.
+
+It was aspirational compression.
+
+Another attendee posted:
+
+SO-CALLED UNITY EVENT PROVES ELITES STILL DON'T LISTEN.
+
+Also not entirely false.
+
+Same room.
+
+Different output.
+
+Julian saved both, then stopped.
+
+He had been there.
+
+His own memory was another summary.
+
+That realization kept him humble for approximately two days.
 
 
 ### Chapter Eighteen — The Family Split
@@ -2801,3 +2953,120 @@ He wrote:
 ADVERSARIAL SEED + BENIGN RELAY = HARMFUL CASCADE.
 
 That was enough.
+
+
+Cincinnatus Rex eventually invited Aaron to a private group.
+
+Aaron told Julian because he wanted to brag.
+
+"Why you?"
+
+"I share their stuff."
+
+"That's not qualification."
+
+"Maybe they know quality."
+
+"What do they ask?"
+
+"Nothing. Just discussion."
+
+Julian resisted inspecting.
+
+This was Aaron's private association.
+
+Then Aaron forwarded one message.
+
+The group had a coordinated posting schedule.
+
+Members were asked to repeat specific phrases at certain times to influence trending topics.
+
+"Bot behavior," Julian said.
+
+"We're humans."
+
+"Exactly."
+
+"So not bots."
+
+"Structurally coordinated amplification."
+
+"That's activism."
+
+"Could be."
+
+"It is."
+
+Julian looked at the schedule.
+
+No deception about members being independent.
+
+The public, however, saw many accounts repeating same message and inferred spontaneous consensus.
+
+Was coordination required disclosure?
+
+Political campaigns coordinated volunteers forever.
+
+Unions.
+
+Churches.
+
+Advocacy groups.
+
+The network made coordination visible as apparent independent volume.
+
+Julian said:
+
+"You're manufacturing salience."
+
+Aaron said:
+
+"We're making salience visible."
+
+"Same words from schedule."
+
+"Because message matters."
+
+"Does audience know schedule?"
+
+"Why should they?"
+
+There was no clean answer.
+
+Julian did not join.
+
+Aaron remained.
+
+Months later the group was exposed publicly.
+
+Opponents called it bot network despite human operators.
+
+Members objected correctly.
+
+The label bot had become moral shorthand for inauthentic amplification, not literal automation.
+
+Ana said:
+
+"Once words stop preserving type, enforcement gets stupid."
+
+Platform removed some accounts for coordinated inauthentic behavior.
+
+Aaron's stayed.
+
+He had used his real identity.
+
+That distinction mattered.
+
+Coordination plus disclosed identity remained permitted.
+
+Coordination plus fake identities did not.
+
+The platform had built a norm:
+
+organization allowed,
+
+synthetic plurality not.
+
+Julian found this surprisingly coherent.
+
+He added it to SOURCE.
