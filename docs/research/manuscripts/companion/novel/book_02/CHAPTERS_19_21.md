@@ -2970,3 +2970,139 @@ Ana underlined hard gate.
 Some things should not be traded against speed.
 
 That became important later.
+
+
+Consensus's first public controversy was not a failure.
+
+It was a recommendation.
+
+Residents logging into the city portal saw personalized service suggestions.
+
+PROPERTY TAX REBATE MAY BE AVAILABLE.
+
+CHILDCARE ASSISTANCE.
+
+SMALL BUSINESS TRAINING.
+
+MENTAL HEALTH RESOURCES.
+
+The suggestions were generated from known eligibility attributes and viewed topics.
+
+A local newspaper reported that some residents received debt counseling while others did not.
+
+The headline asked whether city was secretly scoring financial distress.
+
+Consensus said no.
+
+The recommendation used public program eligibility and optional profile data.
+
+Technically correct.
+
+Still, people experienced a government page inferring something about them.
+
+One resident said:
+
+"I didn't ask city to tell me I'm poor."
+
+Another said the suggestion saved her hundreds.
+
+Same feature.
+
+Different dignity cost.
+
+Vane's team changed wording.
+
+Instead of:
+
+RECOMMENDED FOR YOU
+
+it became:
+
+YOU MAY QUALIFY
+
+with source:
+
+BASED ON ELIGIBILITY INFORMATION YOU AUTHORIZED FOR REUSE.
+
+Longer.
+
+Less magical.
+
+Julian liked it.
+
+The shift from machine intimacy to transparent criterion reduced unease.
+
+The system stopped pretending to know the person.
+
+It stated relation.
+
+That became another permanent interface rule:
+
+DO NOT HUMANIZE INFERENCE BEYOND EVIDENCE.
+
+A machine could say this attribute matches.
+
+It should not say I know what you need unless it actually carried the authority and context to support that claim.
+
+
+The confession wave also produced professional whisper networks.
+
+Private spreadsheets.
+
+Shared lists.
+
+Group chats warning about managers, employers, dates, professors.
+
+Some contained well-documented patterns.
+
+Some rumor.
+
+Some mixtures.
+
+People built them because formal institutions failed.
+
+Institutions criticized them because no due process.
+
+Both statements could be true.
+
+Elena refused to archive one such spreadsheet when offered without source authority.
+
+"Why?"
+
+"Contains allegations about living people distributed privately."
+
+"Historical value."
+
+"Doesn't override."
+
+"What if deleted?"
+
+"Then deleted."
+
+Julian was surprised.
+
+"You preserve everything until privacy."
+
+"Correct."
+
+"Strong boundary."
+
+"Should be."
+
+The donor instead deposited a sealed copy with a lawyer under conditions.
+
+Elena helped design transfer metadata without receiving content.
+
+Julian watched.
+
+A provenance architecture could preserve existence and custody without exposing payload.
+
+Hash without text, in his later language.
+
+At the time he called it sealed witness.
+
+This became important to the Ark.
+
+Not every proof required universal disclosure.
+
+Sometimes proving a record existed at a time was enough until authorized opening.
