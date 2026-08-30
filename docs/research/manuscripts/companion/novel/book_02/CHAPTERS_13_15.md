@@ -842,6 +842,179 @@ The next power would belong to whoever summarized it.
 
 ---
 
+
+
+The city's always-on assumption became visible during a heat emergency.
+
+Temperatures stayed high for five days.
+
+Bellwether opened cooling centers.
+
+The public-alert system sent messages based on neighborhood, age eligibility where known, utility distress indicators, and opt-in emergency preferences.
+
+This was precisely the sort of targeted public service Julian had once wanted.
+
+A resident named Mrs. Greenwood did not receive one.
+
+She lived alone.
+
+Seventy-eight.
+
+No smartphone.
+
+Landline disconnected for nonpayment.
+
+Her utility account showed irregular payment, but she had opted out of promotional contact years earlier, and the city's data-sharing rule treated that status conservatively.
+
+A neighbor found her confused from heat and called an ambulance.
+
+She recovered.
+
+The incident review became ugly.
+
+Emergency management asked why she had not been targeted.
+
+Privacy asked whether her utility status could have been repurposed for health outreach.
+
+Legal asked whether emergency authority changed purpose limitations.
+
+Public health said the distinction was absurd if someone nearly died.
+
+Julian sat in the back with Ana.
+
+A planner said:
+
+"We had the data."
+
+Ana replied:
+
+"That is not the same as having authorization to use the data."
+
+Public health said:
+
+"Then authorization killed outreach."
+
+Ana did not flinch.
+
+"No. A boundary constrained outreach. The question is whether the boundary was correctly designed."
+
+Julian liked that.
+
+The easy story would have been privacy versus safety.
+
+The actual problem involved granularity.
+
+Mrs. Greenwood had opted out of one kind of contact.
+
+The system interpreted that as a broader restriction.
+
+A flag designed to protect her became a barrier to emergency communication.
+
+The city revised policy.
+
+Emergency life-safety notices could bypass certain ordinary communication preferences under declared conditions, with audit.
+
+Not marketing.
+
+Not debt collection.
+
+Not service promotion.
+
+Emergency.
+
+Julian wrote:
+
+BOUNDARY EXCEPTION MUST BE TYPED.
+
+Ana added:
+
+AND RECEIPT-BEARING.
+
+They smiled.
+
+Afterward Julian visited Mrs. Greenwood with a city technician to install a free emergency-capable phone.
+
+She did not want it.
+
+"I don't need government calling me."
+
+"It's for alerts."
+
+"I have television."
+
+"Power went out."
+
+"I have radio."
+
+"Did you hear cooling center?"
+
+"No."
+
+"That's the point."
+
+She looked at the device.
+
+"Does it track me?"
+
+Julian paused.
+
+"Cell network knows roughly where device is when connected."
+
+"So yes."
+
+"For network operation."
+
+"Same thing."
+
+He understood why ordinary explanations failed.
+
+Technical distinction mattered.
+
+So did lived effect.
+
+"Can I leave it here?"
+
+"Yes."
+
+"Can city know if I leave?"
+
+"Not through this program."
+
+"Can company?"
+
+"Network can."
+
+"Then don't tell me it doesn't track."
+
+Julian nodded.
+
+"Fair."
+
+She took the phone anyway.
+
+Not because she trusted infrastructure.
+
+Because it was free and had large buttons.
+
+The next alert reached her.
+
+Success.
+
+The city added a metric.
+
+Julian added a note:
+
+SUCCESS DOES NOT ERASE NEW DEPENDENCY.
+
+This was the always-on bargain.
+
+Reachability improved protection.
+
+It also became expectation.
+
+Mrs. Greenwood, who had once been unreachable by design, was now a node.
+
+
 ### Chapter Fourteen — Metadata
 
 The first time Julian saw Lyra in motion, she waved.
@@ -1641,6 +1814,129 @@ Julian had learned to live with that.
 Mostly.
 
 ---
+
+
+
+The metadata problem became personal when Julian's mother changed doctors.
+
+The new clinic imported medication history, allergies, prior labs, insurance, and appointment records through connected services.
+
+The transfer saved hours.
+
+Then a nurse asked:
+
+"Are you still taking the antidepressant?"
+
+Julian's mother looked at her.
+
+"What antidepressant?"
+
+The nurse turned the screen.
+
+A medication appeared.
+
+Prescribed to someone with same last name and birth month.
+
+Different first name.
+
+The record had been merged through an identity-resolution service.
+
+The nurse corrected it quickly.
+
+No harm.
+
+But the wrong medication had entered a clinical decision surface.
+
+Julian asked for the source.
+
+The clinic's patient portal displayed current record, not the merge lineage.
+
+A health-information exchange had supplied the item.
+
+The exchange pointed to a pharmacy record.
+
+The pharmacy record belonged to another woman.
+
+"How did you match?" Julian asked on support call.
+
+"Probabilistic identity resolution."
+
+"What probability?"
+
+The representative could not provide.
+
+"Can you mark false association?"
+
+"Yes."
+
+"Does correction propagate back?"
+
+"To exchange."
+
+"To everyone who already imported?"
+
+"Depends partner synchronization."
+
+Julian closed his eyes.
+
+His mother said:
+
+"Why are you making this a federal case? They fixed it."
+
+"Because another doctor could have it."
+
+"I don't have another doctor."
+
+"You did."
+
+"I have you. That's enough doctors."
+
+He ignored her.
+
+Elena later said:
+
+"This is relationship graph too."
+
+"Medication?"
+
+"Identity relation."
+
+"Same surname, month, geography."
+
+"System inferred same person."
+
+"False edge."
+
+"Yes."
+
+Metadata did not merely describe relations.
+
+It could create them.
+
+An inferred edge could become operational state.
+
+The system's confidence threshold determined when possibility became canonical.
+
+That was enormous power hidden inside matching.
+
+Julian wrote:
+
+ENTITY RESOLUTION IS AUTHORITY.
+
+Ana replied:
+
+Now you understand why security people drink.
+
+The clinic eventually provided correction receipts.
+
+Julian saved them.
+
+His mother told everyone he had "deleted her fake depression."
+
+He corrected her wording twice.
+
+She kept using it.
+
 
 ### Chapter Fifteen — Hashtag Summer
 
@@ -2501,3 +2797,208 @@ Thousands of private screens glowed beyond the glass.
 The world was no longer on television.
 
 It was in the feed.
+
+
+The hashtag summer also changed journalism.
+
+Local reporters began monitoring public posts as assignment systems.
+
+A rumor that once might have stayed inside a neighborhood could produce a camera crew if enough accounts repeated it.
+
+This was not necessarily bad.
+
+Reporters discovered fires, protests, corruption tips, transit failures, and police incidents quickly.
+
+But public attention became a routing signal.
+
+An event with strong network activity received faster verification than an equally important event with little online presence.
+
+Julian noticed when two building failures happened the same week.
+
+One involved a dramatic ceiling collapse in a downtown restaurant.
+
+No injuries.
+
+Patrons posted photographs immediately.
+
+Local news arrived in twenty minutes.
+
+The second involved carbon monoxide in an apartment building in a poorer district.
+
+Three residents hospitalized.
+
+No one livestreamed.
+
+The story appeared the next morning.
+
+"Why first bigger?" Julian asked a reporter he knew from city work.
+
+"Visual."
+
+"Second hurt people."
+
+"I know."
+
+"Then?"
+
+"Desk saw restaurant first."
+
+"Because feed."
+
+"Because people were posting."
+
+"Same."
+
+The reporter looked irritated.
+
+"We also have six people covering entire city now."
+
+There.
+
+Resource scarcity plus attention signals.
+
+The feed did not have to be malicious to distort public salience.
+
+It optimized limited human labor using visible demand.
+
+Events with cameras became more likely to receive cameras.
+
+Julian wrote:
+
+OBSERVABILITY ATTRACTS OBSERVATION.
+
+Elena added:
+
+AND UNOBSERVED HARM CAN LOOK RARE.
+
+This became important in the police-data work.
+
+Complaints rose after video reporting tools improved.
+
+Officials initially described the rise as worsening conduct.
+
+Activists said it proved hidden abuse.
+
+Analysts later found reporting accessibility had also changed.
+
+The actual causal state was mixed.
+
+More observation could produce more recorded harm without more underlying harm.
+
+Or reveal more real harm.
+
+Or both.
+
+Julian began treating reporting rate as a variable rather than direct proxy.
+
+This sounded painfully obvious after he learned it.
+
+Most important things did.
+
+The summer's network cascades made these measurement problems political.
+
+Every side wanted counts to mean what its story required.
+
+Julian's role, increasingly, was to be the person who ruined a useful chart.
+
+He became good at it.
+
+At a community data meeting, a young activist presented a graph showing complaints doubling.
+
+Julian asked whether intake channels changed.
+
+The room groaned.
+
+The activist said:
+
+"Yes, because people finally trust reporting."
+
+"Then part of increase is reporting."
+
+"You're minimizing."
+
+"No. I'm separating."
+
+"People were harmed."
+
+"Probably more than record showed before."
+
+"Then say that."
+
+"I just did."
+
+The meeting facilitator interrupted before it became personal.
+
+Afterward the activist found him.
+
+"You always sound like you're defending system."
+
+Julian said:
+
+"I repair system."
+
+"Same thing."
+
+"No."
+
+She walked away.
+
+The exchange bothered him.
+
+Maintenance culture did produce a bias.
+
+Julian looked for repairable mechanisms.
+
+Some systems deserved replacement, not repair.
+
+How would he know when?
+
+Elena's answer:
+
+"When preservation cost exceeds preserved value and successor has validated path."
+
+"That's still repair language."
+
+"Because replacement is a repair operation if you preserve lineage."
+
+He hated that too.
+
+At home Mira created her own hashtag for a school science project.
+
+She tagged photos of bean plants.
+
+Some grew.
+
+Some died.
+
+She posted only healthy ones.
+
+Julian asked why.
+
+"Dead ones ugly."
+
+"Then your record says experiment worked better than it did."
+
+"It's not record. It's post."
+
+That distinction landed hard.
+
+The feed was not an archive.
+
+People had never promised it would be.
+
+The problem came when observers treated curated posts as complete population evidence.
+
+Julian apologized.
+
+Mira posted one dead plant anyway.
+
+Caption:
+
+DAD SAYS FAILURE HAS RIGHTS.
+
+It received more likes than all healthy plants combined.
+
+The network rewarded the anomaly.
+
+Julian had no idea what lesson to draw.
