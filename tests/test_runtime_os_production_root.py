@@ -303,3 +303,12 @@ def test_pass185_production_runtime_authority_route_wins_first_match_and_preserv
     ]
     assert len(inherited_alias) == 1
     assert getattr(inherited_alias[0], "endpoint", None).__name__ == "production_inherited_runtime_authority_status"
+
+
+def test_pass185_production_auto_tick_profile_is_bound_to_live_workflow():
+    source = Path("hhs_backend/server.py").read_text(encoding="utf-8")
+
+    assert 'HHS_COGNITION_AUTO_TICK' in source
+    assert 'LIVE_WORKFLOW_AUTO_START = _environment_flag_enabled(' in source
+    assert 'auto_start=LIVE_WORKFLOW_AUTO_START' in source
+    assert '"live_workflow_auto_start":' in source
