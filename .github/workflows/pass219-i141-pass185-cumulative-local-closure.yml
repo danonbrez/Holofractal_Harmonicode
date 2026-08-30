@@ -149,7 +149,7 @@ jobs:
           PY
 
       - name: Seal cumulative local evidence
-        if: always()
+        if: success()
         run: |
           python - <<'PY'
           import hashlib

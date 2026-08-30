@@ -1,7 +1,8 @@
 import React, { useEffect } from "react"
 import { HHSProductWorkspace } from "../workspace/HHSProductWorkspace"
 import { RuntimeDiagnosticsDrawer } from "../workspace/RuntimeDiagnosticsDrawer"
-import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"\nimport { pass185BootCoordinator } from "./Pass185BootCoordinator"
+import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"
+import { pass185BootCoordinator } from "./Pass185BootCoordinator"
 import type { RuntimeOS } from "./RuntimeOS"
 
 export interface CanonicalRuntimeIDEProps {
@@ -10,6 +11,10 @@ export interface CanonicalRuntimeIDEProps {
 
 export const CanonicalRuntimeIDE: React.FC<CanonicalRuntimeIDEProps> = ({ runtimeClient }) => {
   useEffect(() => {
+    pass185BootCoordinator.markWorkspaceBound("React product workspace committed")
+    pass185BootCoordinator.markEditorReady("workspace editor capability modules bound")
+    pass185BootCoordinator.markPreviewReady("application preview capability modules bound")
+    pass185BootCoordinator.markInteractive(false, "public Runtime OS controls committed")
     document.documentElement.dataset.hhsMounted = "true"
     document.getElementById("runtime_boot_overlay")?.remove()
     return () => runtimeClient.shutdown()

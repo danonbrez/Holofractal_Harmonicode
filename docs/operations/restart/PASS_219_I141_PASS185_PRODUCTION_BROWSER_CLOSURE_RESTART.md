@@ -258,3 +258,24 @@ The immediate repair-forward commit fixes:
 - the cumulative workflow source-boundary grep for Playwright tracing.
 
 Only the repaired descendant is eligible for cumulative validation. Frozen Phase-1–7 receipts remain untouched.
+
+
+### Cumulative run 33316831444 attributable failure and repair-forward
+
+Dedicated cumulative run `33316831444` on `fa35d2a0953c7ff66677534555159513b2d88cd9` failed before browser validation.
+
+Attributable failure:
+
+- job: `99271710220`
+- failing step: `Typecheck and build exact Runtime OS`
+- TypeScript reported invalid characters in `CanonicalRuntimeIDE.tsx`;
+- inspection confirmed literal `\\n` escape text remained embedded in import/error lines in `main.tsx` and `CanonicalRuntimeIDE.tsx`;
+- the evidence seal then failed secondarily because it was marked `if: always()` and attempted to read `cumulative-local-closure.json` after the earlier build failure.
+
+Repair-forward action:
+
+- rewrite the affected TypeScript files with actual line breaks;
+- bind the ordered boot-state calls in `CanonicalRuntimeIDE.tsx`;
+- make the cumulative seal step run only after prior cumulative steps succeed.
+
+Run `33316831444` is preserved as failing evidence and cannot count toward local closure. The next pushed descendant is the only eligible validation candidate.

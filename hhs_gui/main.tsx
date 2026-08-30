@@ -1,7 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { CanonicalRuntimeIDE } from "./runtime_os/core/CanonicalRuntimeIDE"
-import { IntegratedRuntimeClient } from "./runtime_os/core/IntegratedRuntimeClient"\nimport { pass185BootCoordinator } from "./runtime_os/core/Pass185BootCoordinator"
+import { IntegratedRuntimeClient } from "./runtime_os/core/IntegratedRuntimeClient"
+import { pass185BootCoordinator } from "./runtime_os/core/Pass185BootCoordinator"
 import "./src/styles/global.css"
 
 declare global {
@@ -23,7 +24,8 @@ class FatalBoundary extends React.Component<React.PropsWithChildren, FatalBounda
   }
 
   public componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    console.error("[HHS Runtime OS] integrated workspace failure", error, info)\n    pass185BootCoordinator.fail("frontend_render_failure", error.message)
+    console.error("[HHS Runtime OS] integrated workspace failure", error, info)
+    pass185BootCoordinator.fail("frontend_render_failure", error.message)
     document.documentElement.dataset.hhsMounted = "error"
     document.getElementById("runtime_boot_overlay")?.remove()
   }
@@ -71,7 +73,8 @@ try {
     import.meta.hot.dispose(() => runtimeClient.shutdown())
   }
 } catch (error: unknown) {
-  rootDocument.dataset.hhsEntry = "failed"\n  pass185BootCoordinator.fail("frontend_react_entry_error", String(error))
+  rootDocument.dataset.hhsEntry = "failed"
+  pass185BootCoordinator.fail("frontend_react_entry_error", String(error))
   window.__HHS_REPORT_BOOT_ERROR__?.("frontend_react_entry_error", error)
   throw error
 }
