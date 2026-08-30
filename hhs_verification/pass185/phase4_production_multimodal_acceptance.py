@@ -54,7 +54,7 @@ def wait_mm_status(page: Page, expected: str, timeout_ms: int = 45_000) -> str:
 def wait_app_status(page: Page, expected: str, timeout_ms: int = 45_000) -> str:
     page.wait_for_function(
         """expected => document.querySelector('[data-testid="pass185-lifecycle-status"]')?.textContent === expected""",
-        expected,
+        arg=expected,
         timeout=timeout_ms,
     )
     return page.get_by_test_id("pass185-lifecycle-status").inner_text()
