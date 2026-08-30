@@ -23,7 +23,12 @@
     "cross_cutting_defaults_are_mandatory": true,
     "retroactive_repair_forward_required": true,
     "standalone_pass_classification_allowed": false,
-    "explicit_upgrade_or_deprecation_required_for_default_change": true
+    "explicit_upgrade_or_deprecation_required_for_default_change": true,
+    "multimodal_optimization_generalization_contract": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+    "all_optimizations_multimodal_by_default": true,
+    "compatible_untested_optimization_targets_require_validation": true,
+    "compatible_safe_beneficial_optimization_targets_require_generalization": true,
+    "local_optimization_scope_requires_bounded_evidence": true
   },
   "genesis_data_plane": {
     "classification": "CANONICAL_PASS219_EMPTY_ADDRESSABLE_DATA_PLANE",
@@ -298,7 +303,11 @@
     "successful numbered pass implementations remain cumulatively reachable rather than standalone",
     "applicable cross-cutting optimizations security and constraints are global canonical defaults",
     "older applicable surfaces missing a later canonical default are repair-forward obligations",
-    "canonical defaults persist until explicit validated upgrade or deprecation"
+    "canonical defaults persist until explicit validated upgrade or deprecation",
+    "all successful optimizations are multimodal by default",
+    "compatible untested optimization targets are validation obligations",
+    "compatible safe beneficial optimization targets are generalized without a new modality-specific directive",
+    "local optimization scope requires an evidenced bounded exception"
   ],
   "implementation_validation": {
     "implementation_head": "6669cb6e26959eeeb8ecb234d0d4a008c9aa996d",
@@ -332,6 +341,7 @@
     "The first validation attempt failed only because the tamper negative-test fixture assigned the cell its existing trit value; the fixture was repaired without changing implementation semantics.",
     "Wall-clock timing is observational and is not used as canonical selection authority.",
     "Final target-main verification remains a post-merge closure gate.",
-    "Global canonical default inheritance is governed by HHS-P219-GLOBAL-CANONICAL-DEFAULTS; native-project placement never substitutes for cumulative runtime wiring."
+    "Global canonical default inheritance is governed by HHS-P219-GLOBAL-CANONICAL-DEFAULTS; native-project placement never substitutes for cumulative runtime wiring.",
+    "Multimodal optimization propagation is governed by HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION; compatible targets are discovered from canonical descriptor metadata and cannot default to local-only."
   ]
 }

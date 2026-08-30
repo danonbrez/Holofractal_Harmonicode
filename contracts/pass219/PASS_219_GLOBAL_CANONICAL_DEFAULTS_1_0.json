@@ -133,6 +133,21 @@
     "NO_APPLICABLE_CANONICAL_SECURITY_OR_CONSTRAINT_MECHANISM_IS_BYPASSED",
     "NO_PREVIOUS_VERSION_IS_GRANDFATHERED_AROUND_A_LATER_GLOBAL_DEFAULT",
     "ALL_SUCH_GAPS_ARE_REPAIRED_FORWARD",
-    "ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT"
-  ]
+    "ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT",
+    "ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT",
+    "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
+    "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
+    "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION"
+  ],
+  "multimodal_optimization_generalization": {
+    "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+    "mandatory": true,
+    "all_optimizations_multimodal_by_default": true,
+    "automatic_compatible_target_discovery": true,
+    "compatible_untested_targets": "VALIDATION_REQUIRED",
+    "compatible_safe_beneficial_targets": "GENERALIZE_REQUIRED",
+    "locality_requires_evidenced_bounded_exception": true,
+    "no_new_user_directive_required_per_modality": true,
+    "canonical_descriptor_schema": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1"
+  }
 }

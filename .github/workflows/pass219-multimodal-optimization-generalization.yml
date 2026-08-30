@@ -1,0 +1,158 @@
+name: Pass 219 Multimodal Optimization Generalization
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-multimodal-optimization-generalization
+    paths:
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json'
+      - 'contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
+      - 'contracts/pass219/optimization_generalization/**'
+      - 'schemas/pass219/HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1.schema.json'
+      - 'docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md'
+      - 'docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_multimodal_optimization_generalization_1_0.*'
+      - 'hhs_runtime/c/hhs_pass219_multimodal_optimization_generalization_1_0.inc'
+      - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
+      - 'tools/hhs_multimodal_optimization_generalizer.py'
+      - 'tools/validate_pass219_multimodal_optimization_generalization.py'
+      - 'tests/pass219/test_pass219_multimodal_optimization_generalization*'
+      - '.github/workflows/pass219-multimodal-optimization-generalization.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json'
+      - 'contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
+      - 'contracts/pass219/optimization_generalization/**'
+      - 'schemas/pass219/HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1.schema.json'
+      - 'docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md'
+      - 'docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_multimodal_optimization_generalization_1_0.*'
+      - 'hhs_runtime/c/hhs_pass219_multimodal_optimization_generalization_1_0.inc'
+      - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
+      - 'tools/hhs_multimodal_optimization_generalizer.py'
+      - 'tools/validate_pass219_multimodal_optimization_generalization.py'
+      - 'tests/pass219/test_pass219_multimodal_optimization_generalization*'
+      - '.github/workflows/pass219-multimodal-optimization-generalization.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  multimodal-optimization-generalization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate universal multimodal invariant
+        run: python tools/validate_pass219_multimodal_optimization_generalization.py
+
+      - name: Validate all optimization generalization manifests
+        run: python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Audit changed optimization code for declaration coverage
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}"
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="HEAD^"
+          fi
+          python tools/hhs_multimodal_optimization_generalizer.py audit-diff "$BASE"
+
+      - name: Run Python classifier conformance
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_multimodal_optimization_generalization.py
+
+      - name: Preserve prior global-default validator
+        run: python tools/validate_pass219_global_canonical_defaults.py
+
+      - name: Compile aggregate exact ABI
+        run: |
+          mkdir -p /tmp/pass219-mog
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-mog/exact.o
+
+      - name: Compile inherited Pass 186 dependency objects
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass186_x64_vm81_q144/include \
+            -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c \
+            -o /tmp/pass219-mog/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S \
+            -o /tmp/pass219-mog/registers.o
+
+      - name: Run C multimodal policy conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.c \
+            /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            -o /tmp/pass219-mog/mog-c
+          /tmp/pass219-mog/mog-c
+
+      - name: Run C++ multimodal policy conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.cpp \
+            /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            -o /tmp/pass219-mog/mog-cpp
+          /tmp/pass219-mog/mog-cpp
+
+      - name: Preserve current Pass 186 C/C++ membrane
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass186_1_40.c \
+            /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            -o /tmp/pass219-mog/pass186-c
+          /tmp/pass219-mog/pass186-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass186_1_40.cpp \
+            /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            -o /tmp/pass219-mog/pass186-cpp
+          /tmp/pass219-mog/pass186-cpp
+
+      - name: Emit multimodal generalization receipt
+        if: always()
+        run: |
+          mkdir -p evidence/pass219/multimodal-optimization
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          payload = {
+              "schema": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_RECEIPT_V1",
+              "head": subprocess.check_output(["git","rev-parse","HEAD"], text=True).strip(),
+              "tree": subprocess.check_output(["git","rev-parse","HEAD^{tree}"], text=True).strip(),
+              "classification": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+              "all_optimizations_multimodal_by_default": True,
+              "compatible_unvalidated": "VALIDATION_REQUIRED",
+              "compatible_safe_beneficial": "GENERALIZE_REQUIRED",
+              "locality_requires_bounded_exception": True,
+          }
+          encoded = json.dumps(payload, sort_keys=True, separators=(",",":")).encode()
+          payload["receipt_sha256"] = hashlib.sha256(encoded).hexdigest()
+          Path("evidence/pass219/multimodal-optimization/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_RECEIPT.json").write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-multimodal-optimization-generalization-receipt
+          path: evidence/pass219/multimodal-optimization/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_RECEIPT.json
+          if-no-files-found: error
