@@ -3215,3 +3215,244 @@ The researcher asked why Julian looked unhappy.
 She did not understand.
 
 Elena did.
+
+
+The cleanest demonstration of correction asymmetry came from a man named Noel Briggs.
+
+Briggs worked for Bellwether sanitation.
+
+A video showed a city truck striking a parked car and leaving.
+
+The driver's face was partly visible through windshield.
+
+Someone identified Briggs from an old employee photograph.
+
+The name spread.
+
+By noon, comments called him drunk, criminal, protected by union.
+
+A local account posted his home neighborhood.
+
+Briggs was placed on administrative leave because the truck number did belong to his unit.
+
+He denied driving.
+
+Few believed.
+
+The city checked dispatch.
+
+Briggs had been at a transfer station across town.
+
+Another employee had borrowed the truck after equipment failure.
+
+The video timestamp had also been uploaded with timezone metadata that a platform displayed incorrectly for some viewers.
+
+Two errors.
+
+Wrong identity.
+
+Confused time.
+
+The city issued correction next morning.
+
+News outlet updated article.
+
+Original viral posts remained.
+
+Some deleted.
+
+Many not.
+
+Briggs returned to work.
+
+Then his teenage daughter received messages at school.
+
+"Your dad hit car."
+
+"He didn't."
+
+"Video."
+
+The correction had not reached peer network.
+
+Briggs asked city communications to do more.
+
+They posted again.
+
+Engagement lower.
+
+Julian became involved because union wanted proof of dispatch logs.
+
+He gave them.
+
+Briggs looked at him.
+
+"How do I clear name?"
+
+Julian had no answer.
+
+"Record is clear."
+
+"Internet isn't."
+
+"Can request corrections."
+
+"From who?"
+
+There were hundreds of copies.
+
+Some screenshots.
+
+Some private chats.
+
+A false state had distributed beyond any single authority.
+
+Briggs said:
+
+"If city accused me, city could clear."
+
+"City didn't first accuse."
+
+"City put me leave."
+
+"Pending investigation."
+
+"Everybody saw guilty."
+
+The procedural distinction had not survived social compression.
+
+ADMINISTRATIVE LEAVE became SUSPENDED.
+
+SUSPENDED became FIRED.
+
+VIRAL IDENTIFICATION became OFFICIAL IDENTIFICATION.
+
+Julian mapped mutation chain.
+
+Briggs did not care.
+
+He wanted life back.
+
+Weeks passed.
+
+Search results improved after corrections.
+
+Not perfect.
+
+Briggs started adding his middle initial to professional profiles to distinguish from old posts.
+
+Identity adaptation as repair burden.
+
+He had to change presentation because network error persisted.
+
+Julian found this unacceptable.
+
+He asked Consensus team whether provenance could attach corrections to copied claims.
+
+Vane said:
+
+"Only participating systems."
+
+"Then make universal."
+
+"No."
+
+"Why?"
+
+"Because universal correction authority becomes censorship authority."
+
+Julian stopped.
+
+Yes.
+
+A system capable of forcing every copy to update would possess power to rewrite distributed memory.
+
+The cure could be worse than disease.
+
+"What then?"
+
+"Cryptographically link source corrections where systems choose to honor."
+
+"Voluntary."
+
+"Yes."
+
+"Some won't."
+
+"Yes."
+
+"Briggs stays harmed."
+
+"Some harms cannot be perfectly recalled."
+
+Julian hated this.
+
+Vane did too.
+
+They designed nothing that day.
+
+The lesson was not architecture failure.
+
+It was irreversibility of distributed speech.
+
+Repair had limits.
+
+A zero-drift system could preserve correction and provenance.
+
+It could not guarantee every human would receive or accept them.
+
+Julian wrote:
+
+REPAIRABILITY != TOTAL REVERSIBILITY.
+
+Elena added:
+
+AND JUSTICE MAY REQUIRE MATERIAL COMPENSATION WHEN INFORMATION CANNOT BE RECALLED.
+
+The union negotiated paid leave restoration and legal support for Briggs.
+
+Not enough to erase reputation harm.
+
+Something.
+
+Months later Julian searched his name.
+
+Top results mostly correction.
+
+One old viral post still high.
+
+Briggs said:
+
+"Better."
+
+Not closed.
+
+Better.
+
+The experience changed Julian's view of public trials.
+
+He no longer believed the answer was simply slower judgment.
+
+Sometimes immediate protective action was necessary.
+
+The answer was explicit state typing and proportional consequence.
+
+ALLEGATION.
+
+INVESTIGATION.
+
+PROVISIONAL CONTAINMENT.
+
+FINDING.
+
+CORRECTION.
+
+Each should remain distinct.
+
+The feed collapsed them because all appeared as posts.
+
+Consensus could preserve types internally.
+
+Culture still had to learn them.
+
+That learning was slower than software.
