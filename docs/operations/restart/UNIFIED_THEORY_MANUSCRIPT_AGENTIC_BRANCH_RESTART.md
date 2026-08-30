@@ -55,6 +55,9 @@
 - Module 4 Book I completion restart record: `9eaedf9c305703b46c0e4a1d1a5a921ea1c179d9`
 - Module 4 Book II canonical assembly: `d852f01cb6bfafe8898c162c40dae6c1012adcf7`
 - Module 4 Book II completion restart record: `40f1e78f2028b374daba7d24f3c6e0471d98477f`
+- Module 4 Book III compiler off-planet integration: `8207f93518354a61fc9f774f0516c29bcba4623c`
+- Module 4 Book III canonical assembly: `8ae4352d1678cfb653006a307e7133066f8384df`
+- Module 4 Book III completion restart record: `365f8398fa61a9680feb9491d7e1eed6000a720f`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -78,6 +81,8 @@
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4B_RESTART.md`
 - `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4C_RESTART.md`
+- `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_III_THE_WORLD_THAT_ANSWERS_BACK.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4D_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -105,7 +110,9 @@
 - Verified Module 4 Book I: 35,022 words / 12 chapters / B00-B23 complete
 - Verified Book I historical band 2001-2012 and direct-name audit
 - Verified Module 4 Book II: 35,038 words / 12 chapters / B24-B47 complete
-- Verified Book II historical band 2012-2019 and direct-name/allusion audit characters
+- Verified Book II historical band 2012-2019 and direct-name/allusion audit
+- Verified Module 4 Book III: 37,897 words / 12 chapters / B48-B71 complete
+- Verified Book III 2019-2026 historical/futurist band, off-planet HHS/ERS climax, and direct-name audit characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -180,10 +187,50 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`MODULE 4 — PHASE 4D: THE GOLDEN INVARIANT — BOOK III: THE WORLD THAT ANSWERS BACK`
+`MODULE 4 — PHASE 4E: FULL-MANUSCRIPT CONTINUITY / ZERO-DRIFT PASS`
 
-Modules 1-3, Module 4 Phase 4A, Book I, and Book II are complete and checkpointed. Next generate Book III continuous prose for Chapters 25-36 / Beats B48-B71 / 2019-2026 from the exact Book II terminal state, preserving chronology, characterization, provenance/replay rules, and the invisible theorem map.
+Modules 1-3, Module 4 Phase 4A, and Books I-III are complete and checkpointed. Next run the full 36-chapter / 72-beat continuity and zero-drift pass across the trilogy, preserving chronology, candidate/proof boundaries, off-planet resilience-versus-sovereignty, and the invisible theorem map.
 
 ## Blockers
 
 None for continued branch development.
+
+
+## Book III terminal state
+
+Canonical Book III:
+
+`docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_III_THE_WORLD_THAT_ANSWERS_BACK.md`
+
+Receipt:
+
+- canonical blob: `7a03d6209147640efb46b8d129677c2e26d497cd`;
+- 37,897 words;
+- 12 chapters;
+- B48-B71 complete;
+- 2019-2026 historical/futurist band closed;
+- off-planet Continuity Crown / HHS-ERS climax integrated;
+- checked direct platform/event/figure names absent;
+- dedicated restart: `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4D_RESTART.md`;
+- dedicated restart commit: `365f8398fa61a9680feb9491d7e1eed6000a720f`.
+
+Book III closes with the distinction:
+
+[
+	ext{remote resilience}
+
+eq
+	ext{remote sovereignty}
+]
+
+and the operational transition:
+
+[
+	ext{proxy-aligned remote governor}
+ightarrow
+	ext{receipt-bound non-sovereign intelligence}
+]
+
+The HHS root metadata token `179971.179971` is a formal runtime object. The identical RM-72 artifact marking remains historically unresolved and is not promoted into empirical proof.
+
+The next action is Phase 4E full-manuscript continuity / zero-drift validation.
