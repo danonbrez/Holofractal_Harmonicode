@@ -71,18 +71,20 @@ def workbench_flow(page: Page) -> dict[str, Any]:
 
     page.get_by_test_id("pass185-workbench-create-emulator").click()
     emulator_state = wait_not_contains(page, "pass185-workbench-emulator-state", "none", 90_000)
-    before = page.get_by_test_id("pass185-workbench-emulator-progress").inner_text()
+    tick_locator = page.get_by_test_id("pass185-workbench-emulator-tick")
+    before_tick = int(tick_locator.inner_text().replace("tick", "").strip())
     page.get_by_test_id("pass185-workbench-run").click()
-    transition = page.wait_for_function(
+    after_tick = int(page.wait_for_function(
         """before => {
-            const text = document.querySelector('[data-testid="pass185-workbench-emulator-progress"]')?.textContent?.trim()
-            return text && text !== before ? text : false
+            const text = document.querySelector('[data-testid="pass185-workbench-emulator-tick"]')?.textContent || ""
+            const match = text.match(/([0-9]+)/)
+            const value = match ? Number(match[1]) : NaN
+            return Number.isFinite(value) && value > before ? value : false
         }""",
-        arg=before,
+        arg=before_tick,
         timeout=90_000,
-    ).json_value()
-    after = str(transition)
-    assert after and after != before, {"before": before, "after": after}
+    ).json_value())
+    assert after_tick >= before_tick + 4, {"before_tick": before_tick, "after_tick": after_tick}
 
     return {
         "new_file": True,
@@ -91,8 +93,8 @@ def workbench_flow(page: Page) -> dict[str, Any]:
         "explorer_object_count": object_count,
         "artifact_state": artifact_state,
         "emulator_state": emulator_state,
-        "run_before": before,
-        "run_after": after,
+        "run_before_tick": before_tick,
+        "run_after_tick": after_tick,
     }
 
 
