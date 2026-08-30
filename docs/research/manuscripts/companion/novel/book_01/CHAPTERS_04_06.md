@@ -1918,6 +1918,112 @@ BORROWED JUDGMENT REQUIRES PROVENANCE.
 They left the note on the refrigerator until Mira colored over it.
 
 
+
+Julian's mother never considered the financial crisis abstract.
+
+Her hours at the insurance office were cut by one day a week.
+
+The company called it flexible scheduling.
+
+She called it Friday.
+
+For three months Julian covered part of the utility bill.
+
+She objected every time.
+
+"I have money."
+
+"You have less money."
+
+"So do you."
+
+"I have overtime when they let me."
+
+"Exactly."
+
+He placed cash under the fruit bowl.
+
+She moved it into his jacket pocket.
+
+He put it back.
+
+Eventually they stopped pretending the operation was voluntary.
+
+This was the household version of systemic support.
+
+Resources crossed because a dependency mattered.
+
+Nobody called it a bailout.
+
+Nobody demanded a philosophical theory of moral hazard.
+
+The language changed with scale.
+
+Julian noticed how moral categories followed the noun.
+
+A bank received liquidity.
+
+A company restructured.
+
+A homeowner defaulted.
+
+A family helped.
+
+A debtor failed.
+
+A government stabilized.
+
+Materially, money moved across obligations.
+
+The words supplied legitimacy.
+
+One Sunday his mother asked whether he regretted not buying the West Bellwether house.
+
+"Financially?"
+
+"Whatever."
+
+"Yes and no."
+
+"Useless."
+
+"House would be cheaper now."
+
+"So you should've waited."
+
+"I didn't know."
+
+"Exactly."
+
+She cut coupons.
+
+"You keep acting like people are stupid for not knowing what happened after."
+
+"I don't."
+
+"Your face does."
+
+Julian sat.
+
+She was right.
+
+Hindsight made predecessor states look irrational because later information leaked backward into judgment.
+
+He thought of Marcus.
+
+The right audit had to ask what was knowable then.
+
+Not what became obvious later.
+
+This became another permanent rule:
+
+NO RETROACTIVE OMNISCIENCE.
+
+He wrote it into SOURCE.
+
+Elena approved immediately.
+
+
 ---
 
 ### Chapter Six — Mortgage Winter
