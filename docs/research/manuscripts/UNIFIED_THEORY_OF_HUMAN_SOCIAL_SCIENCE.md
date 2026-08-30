@@ -2640,3 +2640,1472 @@ Where evidence cannot discriminate between competing causal accounts:
 \]
 
 Volume II has therefore scaled the organic conductor into a coupled-agent architecture while preserving the distinction between typed resource exchange, partner-specific evaluation, empirical hypothesis, and formal invariant. The next volume can apply the same controls to **multi-agent cultural systems, inherited taboos, institutional memory, contagion models, and intergenerational risk management**.
+
+---
+
+# VOLUME III
+# ANTHROPOLOGICAL RISK MANAGEMENT
+
+## Epistemic Gate Before Cultural Execution
+
+Volume III scales the coupled-agent model into a multi-agent cultural system.
+
+The governing question is no longer only:
+
+> What transitions preserve the integrity of one person or one relationship?
+
+It becomes:
+
+> Which inherited rules, institutions, classifications, prohibitions, permissions, and repair procedures preserve a population's ability to coordinate across generations?
+
+Three controls are required before execution.
+
+First, persistence is evidence of survivability under some historical conditions. It is not proof of universal optimality.
+
+Second, novelty is not proof of improvement. A newly proposed norm must still pass compatibility, consequence, and authority checks.
+
+Third, cultural rules must retain provenance. A society that preserves a rule while forgetting the problem the rule addressed loses the information necessary to distinguish:
+
+\[
+\text{necessary constraint}
+\]
+
+from:
+
+\[
+\text{obsolete implementation}
+\]
+
+The HHS repository provides an exact engineering analogue.
+
+Its cumulative-default policy does not permit a validated mechanism to disappear merely because a newer module exists. Nor does it make an inherited implementation immutable forever. The native rule is:
+
+\[
+\text{inherit}
+\rightarrow
+\text{validate}
+\rightarrow
+\text{retain or explicitly supersede}
+\]
+
+The cultural equivalent is neither blind traditionalism nor automatic iconoclasm.
+
+It is **versioned inheritance with explicit deprecation**.
+
+External anthropology, network science, evolutionary models, and cross-cultural psychology enter this volume only as Class-B evidence. They may support, challenge, or parameterize a formal mapping. They do not silently replace the native formal architecture.
+
+---
+
+## Chapter 33
+## The Multi-Agent Cultural State
+
+Let a bounded cultural system at time \(t\) be:
+
+\[
+\mathcal{C}_t
+=
+\left(
+\mathcal{A}_t,
+\mathcal{N}_t,
+\mathcal{I}_t,
+\mathcal{M}_t,
+\mathcal{R}_t,
+\mathcal{P}_t
+\right)
+\]
+
+where:
+
+- \(\mathcal{A}_t\) = participating agents;
+- \(\mathcal{N}_t\) = active norms, permissions, and prohibitions;
+- \(\mathcal{I}_t\) = institutions and enforcement structures;
+- \(\mathcal{M}_t\) = retained historical memory;
+- \(\mathcal{R}_t\) = resource and obligation networks;
+- \(\mathcal{P}_t\) = procedures for admission, revision, repair, and succession.
+
+The culture evolves through:
+
+\[
+T_{\mathcal C}
+\left(
+\mathcal{C}_t,
+\mathcal{E}_t
+\right)
+=
+\mathcal{C}_{t+1}
+\]
+
+where \(\mathcal{E}_t\) includes environmental change, migration, conflict, technological change, demographic transition, new information, and internal innovation.
+
+The system is therefore not a static list of beliefs.
+
+It is a distributed coordination machine with memory.
+
+Its norms shape:
+
+- who may make which commitments;
+- what counts as valid evidence;
+- how obligations are inherited;
+- which risks require disclosure;
+- what conduct triggers exclusion or repair;
+- how property and responsibility move across generations;
+- how children enter existing networks of obligation;
+- how institutions respond to corruption;
+- how previously successful rules are modified.
+
+The primary risk is not disagreement by itself.
+
+It is loss of a shared transition grammar.
+
+When agents cannot determine which rules are active, who is authorized to alter them, or whether prior obligations remain binding, the cultural state accumulates unresolved branches:
+
+\[
+\Psi_{\mathcal C}\neq0
+\]
+
+---
+
+## Chapter 34
+## Norms as Cumulative Defaults
+
+The HHS cumulative-default architecture supplies a direct structural model for inherited norms.
+
+In the repository:
+
+\[
+\text{validated cross-cutting mechanism}
+\rightarrow
+\text{canonical default over compatible surfaces}
+\]
+
+and an older compatible surface that omits the later mechanism is classified as stale rather than exempt merely because it is old.
+
+The cultural analogue is:
+
+\[
+\text{retained norm}
+\rightarrow
+\text{inherited presumption}
+\]
+
+only within the domain for which its function remains relevant.
+
+This domain qualification is essential.
+
+A norm governing inheritance does not automatically determine artistic style.
+
+A sanitation rule does not automatically determine courtship.
+
+A military emergency procedure does not automatically become ordinary civil governance.
+
+Therefore:
+
+\[
+\text{global}
+\neq
+\text{untyped universal}
+\]
+
+The correct operation is:
+
+\[
+\operatorname{Scope}(N)
+\]
+
+where \(N\) is the inherited norm and its compatibility domain is explicitly stated.
+
+Within that domain, three states are possible.
+
+### 34.1 Active inherited default
+
+The norm's generating problem remains present and the mechanism remains effective.
+
+\[
+N_t
+\rightarrow
+N_{t+1}
+\]
+
+### 34.2 Wired but stale
+
+The norm still exists, but later evidence shows that its implementation no longer satisfies the system's own goals.
+
+\[
+N_t
+\rightarrow
+\operatorname{REPAIR\_FORWARD}
+\]
+
+### 34.3 Explicitly superseded
+
+A replacement is introduced with recorded reason, scope, migration path, and outcome criteria.
+
+\[
+N_t
+\rightarrow
+N'_{t+1}
+\]
+
+with:
+
+\[
+\operatorname{Receipt}(N_t\rightarrow N'_{t+1})
+\neq
+\varnothing
+\]
+
+Silence is not deprecation.
+
+Forgetting is not deprecation.
+
+Social embarrassment is not deprecation.
+
+Likewise, age alone is not validation.
+
+The rule must remain traceable to function.
+
+---
+
+## Chapter 35
+## Chesterton's Fence as Dependency-Frontier Analysis
+
+The principle commonly called *Chesterton's Fence* can be restated without requiring reverence for inherited structures.
+
+Suppose a rule \(N\) appears unnecessary in the present state.
+
+Before deletion, identify:
+
+\[
+\operatorname{Deps}(N)
+=
+\{d_1,d_2,\ldots,d_k\}
+\]
+
+and determine which downstream states depend upon it.
+
+The repository's indexed-reuse policy applies the same logic to computation:
+
+\[
+\text{changed dependency}
+\rightarrow
+\text{affected frontier}
+\rightarrow
+\text{recompute affected frontier only}
+\]
+
+The cultural version is:
+
+\[
+\text{proposed norm removal}
+\rightarrow
+\text{dependency reconstruction}
+\rightarrow
+\text{bounded consequence test}
+\]
+
+The fence principle is therefore not:
+
+\[
+\text{old rule}
+\rightarrow
+\text{never remove}
+\]
+
+It is:
+
+\[
+\text{unknown function}
+\rightarrow
+\text{do not delete blindly}
+\]
+
+Once the function is reconstructed, the system may conclude:
+
+\[
+\text{retain}
+\]
+
+\[
+\text{repair}
+\]
+
+\[
+\text{narrow}
+\]
+
+\[
+\text{replace}
+\]
+
+or:
+
+\[
+\text{deprecate}
+\]
+
+The critical requirement is that the choice be made against a reconstructed dependency graph rather than against fashion, sentiment, or semantic relabeling alone.
+
+---
+
+## Chapter 36
+## Tradition as Versioned Lineage
+
+Pass 188 provides a stronger model than an undifferentiated notion of tradition.
+
+Its native license-lineage runtime distinguishes policy states including:
+
+- LEGACY_BOUND;
+- CURRENT_TERMS;
+- OPT_IN_UPGRADE;
+- COMPATIBILITY_FLOOR;
+- REVOCABLE_CAPABILITY;
+- FORKED_LICENSE;
+- SUNSET.
+
+The anthropological analogue is a **versioned normative lineage**.
+
+Let a norm have versions:
+
+\[
+N^{(0)},N^{(1)},\ldots,N^{(m)}
+\]
+
+with explicit deltas:
+
+\[
+\Delta N^{(k)}
+=
+N^{(k+1)}-N^{(k)}
+\]
+
+The social system can then distinguish:
+
+### Legacy-bound rule
+
+An obligation remains attached to a historical commitment even after later standards change.
+
+### Current terms
+
+The currently active rule for new entrants or new agreements.
+
+### Opt-in upgrade
+
+Existing participants may voluntarily migrate to a newer rule without retroactively falsifying the earlier agreement.
+
+### Compatibility floor
+
+Some minimum invariant must be preserved even when local implementations differ.
+
+### Revocable capability
+
+A permission can be withdrawn prospectively when revocability was part of the original admission.
+
+### Fork
+
+Two communities preserve a common lineage while adopting incompatible later rules.
+
+### Sunset
+
+A norm is intentionally retired after a recorded transition period.
+
+This structure is more exact than either:
+
+\[
+\text{tradition is sacred}
+\]
+
+or:
+
+\[
+\text{tradition is arbitrary}
+\]
+
+It permits historical continuity without requiring semantic freezing.
+
+The same rule applies to family law, inheritance procedure, courtship convention, civic oath, property custom, ritual office, and institutional role. The object of study is not whether a custom sounds modern or ancient. The object is its version history, authority, function, compatibility, and consequence.
+
+---
+
+## Chapter 37
+## Provenance Quarantine and Cultural Admission
+
+Pass 189 preserves a provenance/quarantine authority boundary.
+
+The cultural analogue is direct.
+
+Novel information, moral accusation, behavioral innovation, institutional policy, or imported practice should not acquire population-wide authority merely because it has entered the information environment.
+
+Define an incoming cultural candidate:
+
+\[
+X_{\text{cand}}
+\]
+
+The candidate first enters quarantine:
+
+\[
+X_{\text{cand}}
+\rightarrow
+\mathcal{Q}
+\]
+
+where the system evaluates:
+
+- origin;
+- evidence;
+- incentives;
+- reproducibility;
+- compatibility with existing obligations;
+- foreseeable externalities;
+- reversibility;
+- affected populations;
+- whether adoption requires coercive enforcement.
+
+Promotion occurs only after the candidate satisfies declared admission criteria:
+
+\[
+\mathcal{Q}
+\rightarrow
+X_{\text{promoted}}
+\]
+
+The key engineering distinction is:
+
+\[
+\text{candidate}
+\neq
+\text{authority}
+\]
+
+A rumor may be socially influential without being true.
+
+A popular theory may be culturally dominant without being verified.
+
+A moral panic may generate enforcement without possessing reliable provenance.
+
+A new practice may be beneficial without yet being sufficiently tested for compulsory adoption.
+
+Therefore cultural maturity should be declared honestly.
+
+If the evidence class is:
+
+\[
+\mathrm{CALIBRATION\_IN\_PROGRESS}
+\]
+
+the culture commits a category error when it behaves as though the state were:
+
+\[
+\mathrm{VERIFIED\_UNIVERSAL}
+\]
+
+This is the social equivalent of unauthorized authority promotion.
+
+Quarantine must itself be bounded. An unresolved candidate requires criteria for promotion, rejection, or continued observation. Permanent suspension without a decision rule is not a valid terminal state.
+
+---
+
+## Chapter 38
+## Moral Contagion as Network Transmission
+
+The architecture uses the phrase **moral virus contagion** for the propagation of destabilizing behavioral patterns through a group.
+
+The formal object of transmission must be the pattern rather than the person.
+
+Let:
+
+\[
+X_i(t)\in\{0,1\}
+\]
+
+denote whether agent \(i\) currently instantiates a specified transmissible behavior or belief pattern.
+
+Let:
+
+\[
+W_{ij}
+\]
+
+represent the influence weight from agent \(j\) to agent \(i\).
+
+A general transition can be written:
+
+\[
+\Pr
+\left[
+X_i(t+1)=1
+\right]
+=
+f
+\left(
+\sum_j W_{ij}X_j(t),
+S_i(t),
+E_i(t)
+\right)
+\]
+
+where \(S_i\) contains the agent's current internal state and \(E_i\) the surrounding environment.
+
+This can model:
+
+- panic propagation;
+- rumor cascades;
+- normalization of deception;
+- retaliatory aggression;
+- corruption;
+- cowardice under coalition pressure;
+- relational triangulation;
+- scapegoating;
+- prosocial cooperation;
+- disciplined restraint;
+- costly truth-telling.
+
+External network experiments provide Class-B evidence that behavioral adoption can depend on network topology and repeated reinforcement. The exact propagation function remains domain-specific.
+
+Thus:
+
+\[
+\text{pattern}
+\neq
+\text{person}
+\]
+
+and:
+
+\[
+\text{contagion model}
+\neq
+\text{moral essence}
+\]
+
+The audit target is the reproducible transition mechanism.
+
+---
+
+## Chapter 39
+## Enforcement, Punishment, and Cooperative Equilibria
+
+A norm without enforcement may be descriptive rather than operative.
+
+Let a cooperative rule be \(N\), a violation be \(v\), and an enforcement response be \(P(v)\).
+
+A simple system has:
+
+\[
+N
++
+P(v)
+\rightarrow
+\text{increased compliance}
+\]
+
+but the relation is not monotonic.
+
+Punishment itself has cost:
+
+\[
+C_P>0
+\]
+
+and can create secondary failure states if it is arbitrary, asymmetric, excessive, or impossible to appeal.
+
+External experimental work on public-goods games provides evidence that costly punishment can increase cooperation under specified laboratory conditions. Cultural-evolution models likewise show that norm enforcement can stabilize cooperation, while also warning that enforcement can stabilize maladaptive conventions.
+
+Therefore:
+
+\[
+\text{stability}
+\neq
+\text{goodness}
+\]
+
+and:
+
+\[
+\text{enforced}
+\neq
+\text{valid}
+\]
+
+The full audit is:
+
+\[
+\text{norm}
++
+\text{enforcement}
++
+\text{outcome}
++
+\text{appeal}
++
+\text{repair}
+\rightarrow
+\text{classification}
+\]
+
+A system that measures only compliance cannot distinguish legitimate coordination from stable coercion.
+
+---
+
+## Chapter 40
+## Tightness, Looseness, and Threat Calibration
+
+Cross-cultural research provides a useful empirical analogue to membrane permeability.
+
+Let:
+
+\[
+T_C
+\]
+
+denote cultural tightness: strength of norms and intolerance of deviance.
+
+Let:
+
+\[
+L_C
+\]
+
+denote looseness: weaker norms and broader tolerated variation.
+
+Neither is an unconditional optimum.
+
+A high-threat environment may reward coordination:
+
+\[
+\operatorname{Threat}\uparrow
+\rightarrow
+T_C\uparrow
+\]
+
+while low-threat or rapidly changing environments may reward exploratory degrees of freedom:
+
+\[
+\operatorname{ExplorationValue}\uparrow
+\rightarrow
+L_C\uparrow
+\]
+
+The relevant system problem is adaptive calibration.
+
+Excessive looseness may admit destructive variance.
+
+Excessive tightness may suppress corrective novelty.
+
+The membrane must therefore optimize:
+
+\[
+\operatorname{Safety}
++
+\operatorname{Adaptability}
+\]
+
+subject to:
+
+\[
+\Psi=0
+\]
+
+This corresponds directly to the Volume I definition of health as coherent degrees of freedom under necessary constraint.
+
+At cultural scale, the question becomes:
+
+> How much variation can the system safely admit without losing coordination, and how much constraint can it impose without preventing correction?
+
+External comparative studies report substantial cross-national variation in norm strength and associations between perceived ecological or social threat and tighter norm systems. These findings are reference evidence, not proof that every individual norm in a tight culture is adaptive.
+
+---
+
+## Chapter 41
+## Dunbar-Scale Coordination and the Group-Size Variable
+
+The architecture references ancestral coordination near what is commonly called Dunbar's number.
+
+The underlying empirical claim should be typed precisely.
+
+Dunbar's 1992 work proposed a relationship between primate neocortex measures and typical group size and used that relationship to reason about human social-group constraints.
+
+For the present framework:
+
+\[
+D
+\]
+
+is not admitted as a universal exact constant.
+
+Instead:
+
+\[
+D
+=
+\text{candidate scale parameter for stable relationship management}
+\]
+
+Its value may vary by relationship type, institution, communication technology, hierarchy, and measurement rule.
+
+The manuscript may therefore ask whether certain risk-management mechanisms change regime as:
+
+\[
+|\mathcal{A}|
+\]
+
+crosses coordination thresholds.
+
+At small scale, reputation may be locally observable.
+
+At larger scale, the system increasingly requires:
+
+- formal records;
+- delegated authority;
+- standardized rules;
+- identity persistence;
+- audit trails;
+- dispute procedures;
+- institutional memory.
+
+Thus the important transition is not a magic population number.
+
+It is:
+
+\[
+\text{memory capacity of direct social observation}
+\rightarrow
+\text{need for externalized institutional memory}
+\]
+
+---
+
+## Chapter 42
+## Sex-Specific Risk Hypotheses
+
+Historical cultures frequently partitioned social risk by sex.
+
+Within this thesis, such partitions may be represented as hypotheses:
+
+\[
+H_m
+\]
+
+and:
+
+\[
+H_f
+\]
+
+where each hypothesis predicts different frequency distributions, mechanisms, or consequences for specified behaviors.
+
+The supplied architecture proposes, for example, an external-perimeter cluster containing cowardice, panic, and coalitional failure, and an internal-relational cluster containing triangulation, covert manipulation, and semantic distortion.
+
+The formal system does not erase that proposition.
+
+It converts it into a discriminating test.
+
+Let behavior class \(B_k\) be measured across populations:
+
+\[
+\Pr(B_k\mid \text{male})
+\]
+
+and:
+
+\[
+\Pr(B_k\mid \text{female})
+\]
+
+with context variables held or modeled explicitly.
+
+Possible outcomes include:
+
+\[
+\Pr(B_k\mid \text{male})
+>
+\Pr(B_k\mid \text{female})
+\]
+
+\[
+\Pr(B_k\mid \text{male})
+<
+\Pr(B_k\mid \text{female})
+\]
+
+or:
+
+\[
+\Pr(B_k\mid \text{male})
+\approx
+\Pr(B_k\mid \text{female})
+\]
+
+The architecture may retain sex-specific predictions where evidence discriminates them.
+
+Where evidence does not:
+
+\[
+\mathrm{NULL/UNDEFINED}
+\]
+
+The invariant is not:
+
+\[
+\text{sex}
+\rightarrow
+\text{moral verdict}
+\]
+
+It is:
+
+\[
+\text{behavior}
+\rightarrow
+\text{measurable consequence}
+\]
+
+with sex retained as a candidate explanatory variable rather than an automatic conclusion.
+
+This preserves the source architecture while preventing a historical category from being mistaken for a completed comparative dataset.
+
+---
+
+## Chapter 43
+## Binary Sociosexual Classification as a Risk Gate
+
+Traditional societies often compressed sociosexual information into coarse categories.
+
+The supplied architecture identifies a restricted/unrestricted or wife/prostitute division as a historical risk-management mechanism.
+
+That mechanism can be analyzed formally without assuming that a two-state classifier exhausts human reality.
+
+Define:
+
+\[
+\mathcal{C}_{2}(H)
+\in
+\{R,U\}
+\]
+
+where:
+
+- \(R\) = behavior historically classified as restricted;
+- \(U\) = behavior historically classified as unrestricted.
+
+The classifier reduces information.
+
+Therefore:
+
+\[
+\mathcal{C}_{2}(H)
+\neq
+H
+\]
+
+The scientific question is whether the compression retained variables that materially predicted:
+
+- parentage confidence;
+- exclusivity compatibility;
+- disease exposure;
+- inheritance disputes;
+- resource-transfer risk;
+- abandonment;
+- child-care obligations;
+- coalition conflict.
+
+If so, the historical classifier may have possessed practical predictive value.
+
+But every coarse gate generates classification error.
+
+Define:
+
+\[
+\mathrm{FP}
+=
+\text{false positive}
+\]
+
+and:
+
+\[
+\mathrm{FN}
+=
+\text{false negative}
+\]
+
+A mandatory cultural gate can be justified scientifically only by comparing:
+
+\[
+\operatorname{Cost}(\mathrm{FP})
+\]
+
+\[
+\operatorname{Cost}(\mathrm{FN})
+\]
+
+\[
+\operatorname{Benefit}(\text{gate})
+\]
+
+against less lossy alternatives.
+
+Thus a historical binary classification can be studied as an engineered compression layer without silently promoting it into an immutable ontology.
+
+The zero-drift rule applies equally to attempts to erase the historical classifier and attempts to absolutize it.
+
+---
+
+## Chapter 44
+## Intergenerational Resource Transfer
+
+One of the strongest functions of social norms is the management of obligations that outlive the original transaction.
+
+Let an intergenerational state be:
+
+\[
+G_t
+=
+\left(
+P_t,
+C_t,
+O_t,
+A_t,
+L_t
+\right)
+\]
+
+where:
+
+- \(P_t\) = property or productive resources;
+- \(C_t\) = dependent-care obligations;
+- \(O_t\) = outstanding commitments;
+- \(A_t\) = recognized authority to transfer or assign;
+- \(L_t\) = lineage and provenance record.
+
+A transfer is valid only if:
+
+\[
+\operatorname{Authority}(A_t)=1
+\]
+
+and:
+
+\[
+\operatorname{Lineage}(L_t)=\mathrm{valid}
+\]
+
+and:
+
+\[
+\operatorname{Obligations}(O_t)
+\]
+
+are not silently erased.
+
+This is the social analogue of immutable version history.
+
+The objective is not to guarantee one universal family form.
+
+It is to prevent hidden transfer of cost.
+
+Examples include:
+
+- assigning debt without disclosure;
+- transferring property while concealing encumbrances;
+- creating dependents while disavowing foreseeable obligations;
+- redirecting jointly produced resources without authorized procedure;
+- changing inheritance rules after reliance has already occurred.
+
+Intergenerational stability therefore depends upon receipt-bearing continuity:
+
+\[
+\text{prior obligation}
+\rightarrow
+\text{current state}
+\rightarrow
+\text{successor state}
+\]
+
+---
+
+## Chapter 45
+## Institutional Memory and Authenticated Reuse
+
+The repository's post-Pass218 rule is:
+
+\[
+\text{PROVEN + INDEXED + AUTHENTICATED}
+\rightarrow
+\text{REUSE BY DEFAULT}
+\]
+
+The corresponding institutional rule is:
+
+\[
+\text{verified historical learning}
+\rightarrow
+\text{retain by default}
+\]
+
+provided the dependency frontier has not materially changed.
+
+This is neither historical determinism nor presentism.
+
+When conditions remain equivalent, recomputing every lesson from catastrophe is irrational.
+
+When conditions change, inherited policy must be revalidated.
+
+The cultural equivalent of a typed Genesis replay is a first-principles re-examination.
+
+Legitimate triggers include:
+
+- changed dependency;
+- corruption recovery;
+- missing or invalid historical evidence;
+- explicit audit;
+- foundational constitutional review;
+- external shock invalidating prior assumptions.
+
+Thus:
+
+\[
+\text{remembered precedent}
+\neq
+\text{eternal command}
+\]
+
+and:
+
+\[
+\text{new generation}
+\neq
+\text{blank state}
+\]
+
+Healthy institutional memory avoids both extremes.
+
+A historical receipt should be preserved even when its rule is later deprecated. Otherwise the system loses the ability to distinguish genuine reform from unrecorded drift.
+
+---
+
+## Chapter 46
+## Ritual, Taboo, and the Cultural Membrane
+
+A taboo is a high-cost boundary marker.
+
+Its engineering analogue is an admission membrane that rejects a class of transitions before they reach canonical authority.
+
+Let:
+
+\[
+\mathcal{M}_{\mathcal C}(I)
+=
+\begin{cases}
+\operatorname{admit}(I), & I\in\mathcal A\\
+\operatorname{quarantine}(I), & I\in\mathcal Q\\
+\operatorname{reject}(I), & I\in\mathcal R
+\end{cases}
+\]
+
+The value of such a membrane depends on its classification accuracy.
+
+A successful taboo can reduce the frequency of high-cost states by making certain transitions socially expensive before the downstream harm must be individually rediscovered.
+
+A defective taboo can preserve obsolete constraints, conceal power asymmetry, or block corrective information.
+
+Therefore the audit asks:
+
+1. What state does the taboo prohibit?
+2. What historical harm was associated with that state?
+3. Is the causal pathway still active?
+4. What is the false-positive cost?
+5. What is the false-negative cost?
+6. Can the same protection be achieved with a narrower rule?
+7. Who possesses authority to revise it?
+8. What evidence would justify deprecation?
+
+This converts taboo from a slogan into a testable membrane specification.
+
+Ritual performs a related function.
+
+Where taboo marks forbidden transition, ritual can mark authorized transition:
+
+\[
+S_a
+\rightarrow
+\operatorname{Ritual}
+\rightarrow
+S_b
+\]
+
+Marriage ceremonies, initiations, oaths, funerary rites, public office, and legal transfers can therefore be analyzed as social serialization events: they make a state transition legible to multiple observers.
+
+The function of ritual need not be reduced to one causal theory. It may simultaneously coordinate witnesses, compress meaning, establish temporal boundaries, assign obligations, and generate common memory.
+
+---
+
+## Chapter 47
+## Governance Failure Modes
+
+The repository architecture identifies several failure classes that transfer cleanly into institutional analysis.
+
+### 47.1 Orphaned implementation
+
+A useful rule exists locally but is not integrated into the broader system.
+
+Cultural analogue:
+
+Local knowledge exists but never reaches the institutions whose behavior it should constrain.
+
+### 47.2 Wired but stale
+
+The rule remains active but lacks later required protections.
+
+Cultural analogue:
+
+An institution preserves the form of a norm while losing the mechanism that made it legitimate.
+
+### 47.3 Grandfather bypass
+
+An older component claims exemption from a later safety invariant merely because of age.
+
+Cultural analogue:
+
+An inherited privilege persists without passing standards now required of equivalent actors.
+
+### 47.4 Unauthorized authority promotion
+
+A candidate mechanism acquires canonical mutation power before verification.
+
+Cultural analogue:
+
+Rumor, ideology, emergency policy, charismatic authority, or unvalidated theory becomes compulsory before the evidentiary gate closes.
+
+### 47.5 Hidden deprecation
+
+A rule is functionally abandoned without explicit replacement or receipt.
+
+Cultural analogue:
+
+Citizens continue reasoning from an obsolete public standard while actual enforcement follows an undisclosed new one.
+
+### 47.6 Unbounded quarantine
+
+Candidate status never resolves.
+
+Cultural analogue:
+
+A person, practice, or idea is indefinitely suspended without a defined test for admission or rejection.
+
+### 47.7 Irreversible revocation without prior authority
+
+A permission believed to be durable is withdrawn retroactively.
+
+Cultural analogue:
+
+The system changes the rules after reliance and treats the new rule as though it had always applied.
+
+### 47.8 History erasure
+
+Receipts are deleted to simplify the present story.
+
+Cultural analogue:
+
+Institutional memory is rewritten so current actors cannot reconstruct how the present state was produced.
+
+### 47.9 Enforcement without appeal
+
+A norm possesses punishment authority but no bounded correction channel.
+
+Cultural analogue:
+
+The system can classify defect but cannot correct a false classification.
+
+Every failure is fundamentally an integrity defect in the transition chain.
+
+---
+
+## Chapter 48
+## Cultural Repair Forward
+
+Repair-forward is neither nostalgia nor revolution.
+
+It is the operation:
+
+\[
+\text{preserve verified lineage}
+\rightarrow
+\text{identify defect}
+\rightarrow
+\text{modify affected frontier}
+\rightarrow
+\text{revalidate}
+\rightarrow
+\text{retain receipt}
+\]
+
+The procedure avoids two destructive simplifications.
+
+The first is total reset:
+
+\[
+\text{defect in one norm}
+\rightarrow
+\text{erase entire inheritance}
+\]
+
+The second is total immunity:
+
+\[
+\text{inherited norm}
+\rightarrow
+\text{cannot be revised}
+\]
+
+Repair-forward asks instead:
+
+\[
+\operatorname{AffectedFrontier}(N)
+\]
+
+and changes the smallest scope sufficient to restore closure.
+
+This is especially important in multi-generational systems because every large-scale reset destroys information that may be impossible to reconstruct.
+
+The cultural state should therefore preserve:
+
+- original rule;
+- generating conditions;
+- known failure modes;
+- revisions;
+- exceptions;
+- enforcement history;
+- downstream consequences;
+- superseding rule;
+- reason for supersession.
+
+That record is the institutional equivalent of a receipt chain.
+
+The zero-drift criterion is:
+
+\[
+\text{change}
+\neq
+\text{erasure}
+\]
+
+A repaired system should be able to explain both why the previous state existed and why the successor state differs.
+
+---
+
+## Chapter 49
+## External Empirical Research Trace
+
+This chapter records a bounded Class-B research layer used to test or parameterize Volume III. These sources do not constitute HHS canonical authority.
+
+### 49.1 Cultural tightness and looseness
+
+Michele J. Gelfand and colleagues, *Differences Between Tight and Loose Cultures: A 33-Nation Study*, Science 332 (2011), 1100-1104, DOI 10.1126/science.1197754.
+
+Relevance:
+
+The study provides comparative evidence that cultures vary substantially in strength of social norms and tolerance of deviance, and reports associations between stronger norm systems and ecological or historical threat variables.
+
+Use in this manuscript:
+
+\[
+\text{supports candidate threat-calibration model}
+\]
+
+It does not prove that every restrictive norm is adaptive.
+
+### 49.2 Behavior propagation through network structure
+
+Damon Centola, *The Spread of Behavior in an Online Social Network Experiment*, Science 329 (2010), 1194-1197, DOI 10.1126/science.1185231.
+
+Relevance:
+
+Experimental evidence showed that adoption of a health behavior depended on network structure and reinforcing exposures.
+
+Use in this manuscript:
+
+\[
+\text{supports network-dependent contagion model}
+\]
+
+It does not imply that every moral, political, or relational behavior diffuses by the same function.
+
+### 49.3 Punishment and cooperation
+
+Ernst Fehr and Simon Gächter, *Altruistic Punishment in Humans*, Nature 415 (2002), 137-140, DOI 10.1038/415137a.
+
+Relevance:
+
+Public-goods experiments showed that costly punishment can sustain higher cooperation under the studied conditions.
+
+Use in this manuscript:
+
+\[
+\text{supports enforcement-as-coordination mechanism}
+\]
+
+It does not establish that punishment is intrinsically legitimate or that harsher punishment always yields better cooperation.
+
+### 49.4 Cultural evolution and large-scale cooperation
+
+Robert Boyd, Peter J. Richerson, and Joseph Henrich, *Rapid Cultural Adaptation Can Facilitate the Evolution of Large-Scale Cooperation*, Behavioral Ecology and Sociobiology 65 (2011), 431-444, DOI 10.1007/s00265-010-1100-3.
+
+Relevance:
+
+The work formalizes mechanisms through which cultural transmission, norm enforcement, and group variation may facilitate large-scale cooperation under specified assumptions.
+
+Use in this manuscript:
+
+\[
+\text{supports versioned cultural adaptation as a candidate mechanism}
+\]
+
+The paper itself emphasizes model assumptions and competing formulations; therefore it is not imported as a universal law.
+
+### 49.5 Group-size constraints
+
+R. I. M. Dunbar, *Neocortex Size as a Constraint on Group Size in Primates*, Journal of Human Evolution 22 (1992), 469-493, DOI 10.1016/0047-2484(92)90081-J.
+
+Relevance:
+
+The paper proposed a relationship between primate neocortical measures and characteristic social-group size.
+
+Use in this manuscript:
+
+\[
+\text{supports group-size constraint as a testable parameter}
+\]
+
+It does not justify treating the popularized value of approximately 150 as an exact universal human constant.
+
+### 49.6 Counterweight: norms can stabilize maladaptive states
+
+The cultural-evolution literature contains an important negative result for simplistic traditionalism:
+
+\[
+\text{stable norm}
+\not\Rightarrow
+\text{adaptive norm}
+\]
+
+Reward, punishment, conformity, and reputation can stabilize multiple equilibria. Some may improve group cooperation; others may preserve costly or maladaptive practices.
+
+This external result is structurally compatible with the repository's distinction between:
+
+\[
+\text{reachable inherited mechanism}
+\]
+
+and:
+
+\[
+\text{currently valid canonical default}
+\]
+
+because inheritance still requires compatibility and validation.
+
+---
+
+## Chapter 50
+## Volume III Closure
+
+Volume III has extended the architecture from coupled agents to inherited cultural systems.
+
+The principal state is:
+
+\[
+\mathcal{C}_t
+=
+\left(
+\mathcal{A}_t,
+\mathcal{N}_t,
+\mathcal{I}_t,
+\mathcal{M}_t,
+\mathcal{R}_t,
+\mathcal{P}_t
+\right)
+\]
+
+Its integrity depends upon four simultaneous properties.
+
+### Provenance
+
+The system can reconstruct where a rule came from and which problem it addressed.
+
+### Scope
+
+The system knows which surfaces the rule legitimately constrains.
+
+### Authority
+
+The system distinguishes candidate ideas from rules authorized to mutate shared state.
+
+### Repairability
+
+The system can supersede defective rules without erasing their lineage.
+
+Chesterton's Fence is thereby transformed into dependency-frontier analysis.
+
+Tradition becomes versioned lineage.
+
+Taboo becomes membrane policy.
+
+Ritual becomes publicly legible state transition.
+
+Institutional memory becomes authenticated reuse.
+
+Moral contagion becomes network transmission of specified behavioral patterns rather than a license to classify persons as pathogens.
+
+Historical sex-specific risk partitions remain testable hypotheses rather than automatic biological verdicts.
+
+Binary sociosexual classifications remain analyzable as information-compression and risk-gating mechanisms whose predictive value and error costs must be measured rather than assumed.
+
+The cultural admission rule is:
+
+\[
+\text{inheritance}
++
+\text{provenance}
++
+\text{current compatibility}
++
+\text{bounded consequence}
+\rightarrow
+\text{retained authority}
+\]
+
+Where a rule remains useful but its implementation is stale:
+
+\[
+\operatorname{REPAIR\_FORWARD}
+\]
+
+Where a candidate has not completed the evidentiary gate:
+
+\[
+\operatorname{QUARANTINE}
+\]
+
+Where the rule has been explicitly and validly superseded:
+
+\[
+\operatorname{DEPRECATED}
+\]
+
+Where its function cannot be reconstructed:
+
+\[
+\mathrm{NULL/UNDEFINED}
+\]
+
+And where lineage, authority, scope, and current operation remain mutually consistent:
+
+\[
+\Omega_{\mathcal C}
+=
+\mathrm{true}
+\]
+
+Volume IV can now examine **mythopoetics as a long-duration cultural storage layer**: not merely as ornament, but as symbolic compression, checksum, error-correcting redundancy, archetypal indexing, and a possible carrier of institutional memory across periods in which literal technical records do not survive.
+
