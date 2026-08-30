@@ -795,6 +795,129 @@ Then remembered machines required same judgment encoded somewhere.
 He did not actually prefer machines.
 
 
+
+
+The rating self entered Mira's school through a kindness program.
+
+Students earned points for attendance, completed work, helping classmates, and school participation.
+
+Points unlocked privileges.
+
+Early lunch.
+
+Event tickets.
+
+Homework passes.
+
+The program was meant to encourage positive behavior.
+
+Mira loved it for three weeks.
+
+Then she lost points because her assignment was marked late.
+
+She had submitted it on time.
+
+The teacher had not synced the classroom app before the deadline snapshot.
+
+Correction restored points.
+
+But the weekly leaderboard had already been shown.
+
+Mira came home furious.
+
+"I wasn't eighth."
+
+"You're not a number," Julian said.
+
+"That's not the problem."
+
+Correct.
+
+The school could repair internal state.
+
+It could not repair the social moment in which classmates had seen the ranking.
+
+Elena attended the parent meeting.
+
+She asked why behavioral points were public.
+
+"Motivation," the principal said.
+
+"For whom?"
+
+"Students."
+
+"Do you have evidence public rank improves intended behavior beyond private feedback?"
+
+The room shifted.
+
+A parent said kids liked competition.
+
+Another said her son hated it.
+
+A teacher said the leaderboard saved time.
+
+The principal promised review.
+
+Public ranking became opt-in by classroom.
+
+Mira's class kept it.
+
+Mira opted out personally.
+
+Her score still existed for school.
+
+Not displayed.
+
+This was her first explicit privacy decision.
+
+Julian asked why.
+
+"Because if I get points, people think I'm teacher favorite. If I lose points, they think bad. I just want my points."
+
+"Private state."
+
+"Whatever."
+
+The rating self was not only vanity.
+
+Public metrics changed relationships among people being measured.
+
+A score designed to influence one person became metadata for everyone else.
+
+The city discovered the same in employee dashboards.
+
+When crew performance rankings became visible to supervisors across departments, workers began avoiding assignments likely to lower completion metrics.
+
+A difficult building developed a labor shadow.
+
+Nobody wanted it.
+
+Not because workers were lazy.
+
+Because the metric punished complexity.
+
+Julian volunteered there for a month.
+
+His completion time worsened.
+
+Resident satisfaction improved because he fixed recurring failures rather than closing tickets quickly.
+
+One dashboard said performance down.
+
+Another said repeat failures down.
+
+Which Julian was real?
+
+Both.
+
+The ranking question was always:
+
+for which objective?
+
+Without objective, score was costume.
+
+
 ### Chapter Seventeen — Swipe
 
 Lyra appeared on a dating app.
@@ -1600,6 +1723,123 @@ Julian was furious.
 He clipped the editorial anyway.
 
 
+
+
+Swipe culture altered even people who never used dating apps because expectations migrated offline.
+
+Devon explained this after marrying Priya.
+
+"You know what app did?"
+
+"Found wife?"
+
+"No. Made everybody think options visible."
+
+"What does that mean?"
+
+"In a bar before, maybe twenty people. App says there are thousands nearby."
+
+"Are."
+
+"Not available to you."
+
+"Exactly."
+
+Perceived abundance changed patience.
+
+Small incompatibilities looked larger when alternatives felt one swipe away.
+
+Julian had no dataset.
+
+Only stories.
+
+He marked hypothesis.
+
+Elena approved.
+
+At the same time, profile optimization moved into politics.
+
+Campaign volunteers were taught to present different entry points depending on the voter.
+
+Economic message.
+
+Security message.
+
+Social message.
+
+Healthcare message.
+
+Nothing unusual.
+
+Door-to-door campaigns had always adapted.
+
+The difference was predictive scoring.
+
+A volunteer might know before knocking which topic was statistically likely to matter.
+
+Julian volunteered for neither party.
+
+He did agree to audit a civic voter-information pilot using public registration data.
+
+The software assigned turnout propensity.
+
+Not vote preference.
+
+High.
+
+Medium.
+
+Low.
+
+The city wanted to target nonpartisan reminders.
+
+"Why not remind everyone?" Julian asked.
+
+"Cost."
+
+"Digital message cost near zero."
+
+"Attention cost isn't."
+
+He disliked the answer because it was sophisticated.
+
+If everyone received every reminder, people ignored them.
+
+Targeting could improve signal.
+
+But low-propensity voters were exactly those one might want to reach.
+
+The model prioritized people already likely to respond.
+
+Optimization reinforced prior participation.
+
+Julian wrote:
+
+TARGETING CAN REPRODUCE BASELINE.
+
+The pilot added a random outreach sample to measure missed populations.
+
+Small design change.
+
+More useful inference.
+
+This was the kind of repair that made him believe institutions could learn.
+
+Then a campaign obtained voter profiles from commercial data and used similar scores to decide where to send organizers.
+
+Nothing illegal.
+
+Different purpose.
+
+Same machinery.
+
+A neutral tool became partisan through authority and objective.
+
+The code did not change moral class.
+
+The function did.
+
+
 ### Chapter Eighteen — The Family Split
 
 Aaron and Julian repaired function before belief.
@@ -2400,3 +2640,164 @@ The table laughed.
 For ten minutes politics became ordinary again.
 
 Then a phone buzzed.
+
+
+The bot question became physical when a false school-closing rumor spread during a winter storm.
+
+At 5:40 a.m., an account styled to resemble Bellwether Schools posted:
+
+ALL DISTRICT SCHOOLS CLOSED.
+
+The official account had not.
+
+The fake used same logo.
+
+One letter different in handle.
+
+Parents shared screenshots without link.
+
+By six, buses were rolling.
+
+Some families kept children home.
+
+Teachers received messages.
+
+Local radio repeated closure before confirming.
+
+The district posted correction.
+
+OPEN ON TWO-HOUR DELAY.
+
+Screenshots of the fake continued circulating after correction.
+
+Mira's school attendance dropped by a third.
+
+Nobody knew who created the account.
+
+Teen prank?
+
+Automated spam?
+
+Political agitator?
+
+A parent trying to force closure?
+
+No motive needed to explain spread.
+
+The message was plausible and useful.
+
+People propagated because they wanted to help.
+
+Malice at source became cooperation downstream.
+
+Julian joined incident review.
+
+The district proposed a verified badge.
+
+Ana said:
+
+"Badges can be copied visually."
+
+"Then people click profile."
+
+"Some."
+
+"Official app notification."
+
+"Then app becomes sole authority."
+
+"Good."
+
+"Until app fails."
+
+Silence.
+
+They settled on redundant verification.
+
+Official site.
+
+Verified profile.
+
+Text alert.
+
+Local broadcast.
+
+A closure was canonical only if at least two trusted channels agreed.
+
+Not mathematically perfect.
+
+Operationally better.
+
+Mira asked:
+
+"Why don't they make fake account impossible?"
+
+Julian said:
+
+"Because anyone can name themselves."
+
+"Then make school name locked."
+
+"Who owns names?"
+
+"School."
+
+"What about fan page?"
+
+"Why school need fan page?"
+
+He laughed.
+
+"Exactly."
+
+The incident taught the district that authenticity was not a visual property.
+
+Logo meant nothing.
+
+Color meant nothing.
+
+Handle almost meant nothing.
+
+Source path mattered.
+
+Julian's old obsession had become a parent email:
+
+WHEN IN DOUBT, VERIFY THROUGH SECOND OFFICIAL CHANNEL.
+
+He printed it and put it on refrigerator.
+
+Elena wrote underneath:
+
+DAD FINALLY MAINSTREAM.
+
+The fake account vanished.
+
+No culprit found.
+
+The event still had consequence.
+
+Absences.
+
+Lost instruction.
+
+Parents missing work.
+
+Confusion.
+
+No malicious agent required for network damage after initial injection.
+
+Propagation could be mostly prosocial.
+
+This complicated the Legion model forming in Julian's head.
+
+Evil, if it existed as architecture, did not need thousands of evil people.
+
+It needed one corrupting input entering a system whose ordinary incentives carried it.
+
+But he did not write evil.
+
+He wrote:
+
+ADVERSARIAL SEED + BENIGN RELAY = HARMFUL CASCADE.
+
+That was enough.
