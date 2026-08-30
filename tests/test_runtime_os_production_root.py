@@ -280,3 +280,26 @@ def test_legacy_harmonizer_remains_inherited_source_not_public_authority():
     assert '"legacy_harmonizer_is_public_root": False' in projection
     assert 'os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT")' in projection
     assert 'RUNTIME_OS_SOURCE_ROOT = ROOT_DIR / "hhs_gui"' in projection
+
+
+def test_pass185_production_runtime_authority_route_wins_first_match_and_preserves_inherited_alias():
+    from hhs_backend import runtime_os_application_server
+
+    routes = list(runtime_os_application_server.app.router.routes)
+    authority_matches = [
+        route
+        for route in routes
+        if str(getattr(route, "path", "")) == "/api/runtime/authority/status"
+        and "GET" in (getattr(route, "methods", None) or set())
+    ]
+    assert authority_matches
+    assert getattr(authority_matches[0], "endpoint", None).__name__ == "production_runtime_authority_status"
+
+    inherited_alias = [
+        route
+        for route in routes
+        if str(getattr(route, "path", "")) == "/api/runtime/inherited-authority/status"
+        and "GET" in (getattr(route, "methods", None) or set())
+    ]
+    assert len(inherited_alias) == 1
+    assert getattr(inherited_alias[0], "endpoint", None).__name__ == "production_inherited_runtime_authority_status"
