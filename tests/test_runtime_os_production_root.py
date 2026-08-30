@@ -312,3 +312,12 @@ def test_pass185_production_auto_tick_profile_is_bound_to_live_workflow():
     assert 'LIVE_WORKFLOW_AUTO_START = _environment_flag_enabled(' in source
     assert 'auto_start=LIVE_WORKFLOW_AUTO_START' in source
     assert '"live_workflow_auto_start":' in source
+
+
+def test_pass185_runtime_step_yields_asgi_loop_without_parallel_step_authority():
+    source = Path("hhs_backend/api/runtime_routes.py").read_text(encoding="utf-8")
+
+    assert "runtime_step_lock = asyncio.Lock()" in source
+    assert "async with runtime_step_lock:" in source
+    assert "await asyncio.to_thread(" in source
+    assert "_execute_runtime_step_sync" in source
