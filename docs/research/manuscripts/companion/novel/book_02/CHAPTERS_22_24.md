@@ -588,6 +588,99 @@ It was a survival rule for systems about to become convenient enough to erase th
 
 ---
 
+
+
+The BEFORE drive forced Julian and Elena to decide what counted as source.
+
+A policy PDF was source.
+
+But what about the web page that linked it?
+
+A database export?
+
+A screenshot?
+
+A vendor brochure promising a feature later absent from contract?
+
+A meeting note describing why a field was added?
+
+Samir argued all of them mattered differently.
+
+"Contract is authority," Julian said.
+
+"Not always expectation," Samir replied.
+
+"Expectation isn't enforceable."
+
+"Sometimes reliance is."
+
+Elena said, "Different types."
+
+They built folders.
+
+AUTHORITY.
+
+IMPLEMENTATION.
+
+REPRESENTATION.
+
+DISCUSSION.
+
+OBSERVATION.
+
+Julian objected to proliferation.
+
+Then a procurement dispute proved Samir right.
+
+A vendor's signed contract promised 99.9 percent service uptime.
+
+Marketing deck promised "continuous availability."
+
+Residents later complained during scheduled maintenance.
+
+The vendor pointed to contract exclusions.
+
+The city pointed to deck.
+
+Legally, contract controlled.
+
+Politically, the deck mattered because officials had used its language publicly.
+
+One transition had multiple receipts with different authority.
+
+SOURCE BEFORE SUMMARY did not mean one source.
+
+It meant do not flatten source types before deciding what question you are answering.
+
+Julian revised the BEFORE index.
+
+Each object now carried:
+
+type,
+
+authority,
+
+date,
+
+scope,
+
+predecessor,
+
+known successor.
+
+Elena said:
+
+"You're building an archive."
+
+"I hate you."
+
+"Correct."
+
+The drive stopped being a pile of files.
+
+It became a graph.
+
+
 ### Chapter Twenty-Three — Consensus Beta
 
 Consensus Beta worked.
@@ -1207,6 +1300,119 @@ He wanted bounded strong ones.
 The distinction grew harder as strength increased.
 
 ---
+
+
+
+Consensus Beta's first major success involved a family who had nearly given up on the city.
+
+The mother, Keisha Martin, worked two jobs.
+
+Her son required specialized transportation to school.
+
+She had applied separately to education, transportation assistance, and a disability support program.
+
+Each required proof of residence and eligibility.
+
+One application stalled because a document had expired between submissions.
+
+Consensus linked the verified attribute.
+
+The three programs reconciled.
+
+Transportation began in days.
+
+Keisha sent a thank-you note.
+
+It circulated internally.
+
+Vane forwarded it to Julian without comment.
+
+Julian replied:
+
+TWO POINTS.
+
+Vane:
+
+Your scoring model lacks consistency.
+
+Julian:
+
+Human.
+
+The success mattered because it prevented Julian from turning Ms. Pike and Tomas Vale into proof that integration itself was wrong.
+
+A system had to be judged across both repaired harm and delivered benefit.
+
+That required typed accounting.
+
+How many people saved time?
+
+How many errors?
+
+How severe?
+
+How long to repair?
+
+Who bore burden?
+
+Which benefits existed only because data was reused?
+
+Which harms existed only because it was?
+
+The mayor wanted one success score.
+
+Julian refused to help create it.
+
+The performance office created one anyway.
+
+CONSENSUS SERVICE IMPACT: 92.4.
+
+Julian asked what units.
+
+The analyst laughed.
+
+"Index."
+
+"Of?"
+
+"Composite."
+
+"Weights?"
+
+"Published appendix."
+
+He read them.
+
+Wait time.
+
+Completion rate.
+
+Fraud recovery.
+
+Satisfaction.
+
+Appeal resolution.
+
+Cost.
+
+The score was not meaningless.
+
+It was a declared projection.
+
+Julian disliked it less.
+
+Then discovered political press releases used 92.4 without the appendix.
+
+Compression again.
+
+He added a Rat-style page linking every public score to weights.
+
+Nobody asked him.
+
+Few visited.
+
+Still.
+
 
 ### Chapter Twenty-Four — The Last Receipt
 
@@ -1983,3 +2189,94 @@ Not summary.
 Book Two ended with the city more functional than it had been at the beginning.
 
 That was the problem the next book would inherit.
+
+
+Samir's paper samples revealed a stranger defect.
+
+Digitization improved legibility so much that later users trusted the scan more than the original.
+
+One contract page had a faded handwritten insertion.
+
+On paper, ink difference was obvious.
+
+The insertion had been added later and initialed.
+
+On the grayscale scan, it looked like original text.
+
+The revision relation disappeared visually.
+
+The words survived.
+
+The transition did not.
+
+Elena ordered color rescans for amendment-bearing documents.
+
+Storage increased.
+
+Project manager complained.
+
+"Why color for text?"
+
+"Because color carries provenance."
+
+"Not semantic content."
+
+"It is semantic if it distinguishes revision."
+
+Samir held up the paper.
+
+"Blue ink is a timestamp without date."
+
+The manager stared.
+
+"That is not technically true."
+
+"Good enough to stop you deleting it."
+
+They compromised.
+
+Only documents with identified ink or annotation dependencies received high-fidelity capture.
+
+Affected frontier.
+
+Again.
+
+Julian had begun to recognize a pattern in good repair.
+
+Not maximal preservation.
+
+Not minimal storage.
+
+Identify which distinctions change future interpretation, then preserve those distinctions.
+
+The same logic could govern memory, privacy, social history, even politics.
+
+Not everything.
+
+The discriminating evidence.
+
+That was harder than slogans because it required knowing the future question enough to preserve what mattered.
+
+Impossible perfectly.
+
+Better than pretending all bytes equal.
+
+Samir's box became a teaching set.
+
+Digital staff learned to compare physical and scanned state.
+
+One trainee asked why anyone cared once contract ended.
+
+Samir said:
+
+"Because ended contracts are how you learn what current contract means."
+
+The trainee nodded politely without understanding.
+
+Julian understood.
+
+Every current state was compressed history.
+
+A system that lost predecessor could still operate.
+
+It just could not explain itself when challenged.
