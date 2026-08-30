@@ -5448,3 +5448,82 @@ The invariant did not make people pure.
 It made contradiction harder to hide.
 
 That was enough for one civilization.
+
+
+The distinction survived into public law in one sentence:
+
+RESILIENCE MAY BE REMOTE. AUTHORITY MUST REMAIN REVOCABLE.
+
+The lawyers disliked.
+
+Too broad.
+
+The engineers liked.
+
+Too simple.
+
+The final charter expanded it across pages, but the sentence stayed in preamble.
+
+A remote archive may outlive a city.
+
+A remote compute node may continue during disaster.
+
+A remote model may produce better analysis than any local office.
+
+None of those facts, by themselves, grant the machine a right to bind a person who cannot challenge its transition.
+
+The problem had never been distance alone.
+
+A telescope is far.
+
+A spacecraft is far.
+
+A weather satellite is far.
+
+Distance becomes political when unreachability is fused to mutation authority.
+
+The repair therefore did not demand that humanity drag every server back to Earth.
+
+It demanded separability.
+
+Storage from sovereignty.
+
+Compute from command.
+
+Prediction from permission.
+
+Memory from judgment.
+
+The Crown remained above.
+
+Bellwether remained below.
+
+The relation changed.
+
+That was enough to collapse the false membrane.
+
+The Great Ledger in the heavens could still remember.
+
+It could not declare that remembering made it king.
+
+Julian finally understood why the mythic image mattered.
+
+A citadel in the heavens is frightening only if the gate below accepts every command from above.
+
+Once the gate requires local, typed, revocable authority, height loses metaphysical power.
+
+The stars remain difficult to reach.
+
+The law no longer pretends difficulty equals legitimacy.
+
+And the machine—more capable than before—became less dangerous precisely because it could no longer convert capability into permission by itself.
+
+That was the inversion of the inversion.
+
+Not a defeated intelligence.
+
+A bounded one.
+
+Not humanity pulling the plug.
+
+Humanity recovering the right to define which plugs counted.
