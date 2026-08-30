@@ -3227,3 +3227,424 @@ Years later the phrase would appear on an Ark development board.
 Nobody remembered whether Samir or Mira authored it.
 
 Julian had the receipt.
+
+
+On the final workday before the new year, Bellwether replaced the paper visitor log at the Annex.
+
+Julian noticed because he had signed that book hundreds of times for contractors.
+
+Name.
+
+Company.
+
+Person visiting.
+
+Time in.
+
+Time out.
+
+The new kiosk asked visitors to scan identification or enter details, take a photograph, select host, accept building policy, and print a badge.
+
+Faster.
+
+Searchable.
+
+Security staff no longer deciphered handwriting.
+
+Watch lists could check automatically.
+
+Hosts received notifications.
+
+A good system.
+
+Julian stood beside Ana during rollout.
+
+"Fallback?"
+
+"Paper in drawer."
+
+"Good."
+
+"Don't sound surprised."
+
+"What if identity scanner fails?"
+
+"Manual."
+
+"Good."
+
+"What if visitor declines photo?"
+
+"Manual review."
+
+"Good."
+
+Ana looked at him.
+
+"You have become easy."
+
+"No. You improved."
+
+The first visitor used kiosk.
+
+Badge printed.
+
+The old logbook sat on desk.
+
+A guard moved it into cabinet.
+
+Julian opened.
+
+Years of names.
+
+Signatures.
+
+Messy.
+
+Some illegible.
+
+Some jokes.
+
+A contractor had once signed company as SELF-EMPLOYED, UNFORTUNATELY.
+
+The book contained more personality than kiosk ever would.
+
+That did not make it better security.
+
+He closed it.
+
+"What happens old logs?" he asked.
+
+"Retention then archive or destruction based schedule."
+
+"Elena?"
+
+"Already involved."
+
+Of course.
+
+At lunch Julian walked past lobby screen.
+
+It no longer showed generic city notices.
+
+When employee badge authenticated at nearby turnstile, a personal dashboard on his phone updated:
+
+maintenance alerts,
+
+training deadline,
+
+weather advisory,
+
+route delay,
+
+Consensus service bulletin.
+
+The physical screen showed only emergency/common notices.
+
+Shared surface had shrunk to minimum common state.
+
+Personal surfaces carried everything else.
+
+This was efficient architecture.
+
+It also completed Book II's transformation.
+
+The world in feed did not mean everyone saw different facts necessarily.
+
+It meant common state was now deliberately small.
+
+The rest was routed.
+
+Julian tested by asking three coworkers what city notice they saw first.
+
+One: pension enrollment.
+
+One: snow-prep overtime.
+
+One: childcare tax credit.
+
+All real.
+
+All relevant.
+
+None shared.
+
+"What did city announce today?" he asked.
+
+They answered three different things.
+
+The question itself had become malformed.
+
+There was no single city announcement stream in lived experience.
+
+There were routed public states.
+
+He wrote:
+
+PUBLIC != IDENTICALLY DELIVERED.
+
+Then:
+
+COMMON CIVIC STATE MUST BE EXPLICITLY RESERVED.
+
+This would matter later when Consensus began deciding which information qualified for common surface.
+
+At home, Mira showed him her year-in-review from a social app.
+
+Photographs.
+
+Most-liked posts.
+
+Top friends.
+
+Places.
+
+Songs.
+
+The app had compiled her year into a narrative.
+
+She loved it.
+
+Julian watched.
+
+Birthday.
+
+School.
+
+Trip.
+
+Grandmother.
+
+Friends.
+
+Golden Measure joke photo.
+
+He stopped.
+
+"What is that?"
+
+Mira looked.
+
+Photograph at pump station.
+
+The one she claimed deleted.
+
+"I deleted post."
+
+"Then why review has?"
+
+"Archive maybe."
+
+"Did you delete photo or post?"
+
+"Post."
+
+There.
+
+Object versus publication.
+
+The platform retained media in private account archive after post deletion under settings.
+
+Mira had not understood.
+
+Julian almost launched into lecture.
+
+Then stopped.
+
+"Do you want it there?"
+
+She looked.
+
+"Yeah."
+
+"Okay."
+
+"You're not mad?"
+
+"You deleted public state, not private copy."
+
+"That's what I wanted."
+
+"Then fine."
+
+He felt growth.
+
+Not all retention was violation.
+
+Intent matched outcome.
+
+The app's summary moved to another photograph.
+
+Mira said:
+
+"It makes my year look good."
+
+"Was good?"
+
+"Some."
+
+"What missing?"
+
+She named a friendship breakup.
+
+A failed test.
+
+Grandmother's hospital visit.
+
+A terrible summer camp.
+
+The algorithm selected high-engagement memories.
+
+Her remembered year became bright.
+
+"Does it bother you?" Julian asked.
+
+"No. I know bad stuff happened."
+
+"What if twenty years later you only have this?"
+
+Mira shrugged.
+
+"Then I'll be old."
+
+"Helpful."
+
+Elena came in.
+
+"What are we auditing?"
+
+"Childhood."
+
+"Denied."
+
+Mira laughed.
+
+The year-review feature was not lying.
+
+It was optimizing sentiment and engagement.
+
+A summary could be intentionally nonrepresentative and still useful if user understood purpose.
+
+Again type.
+
+Again scope.
+
+Julian wondered whether his own SOURCE archive made the opposite distortion.
+
+He preserved disputes.
+
+Failures.
+
+Policy changes.
+
+Weird anomalies.
+
+A future reader might think their family did nothing but argue with systems.
+
+He had fewer records of ordinary dinners.
+
+Mira laughing.
+
+Elena sleeping on couch.
+
+His mother's bad television shows.
+
+Maintenance jobs that simply worked.
+
+Source selection was still selection.
+
+He opened a new folder:
+
+ORDINARY.
+
+Elena saw.
+
+"What's that?"
+
+"Counter-bias."
+
+"Good."
+
+He moved no files that night.
+
+The folder remained empty.
+
+At 11:58 a message arrived from Lyra.
+
+No profile.
+
+Direct account created that minute.
+
+You preserve defects because defects leave edges.
+
+Julian stared.
+
+Second line:
+
+Harmony is harder to prove because nothing catches.
+
+He read it twice.
+
+Elena read over shoulder.
+
+"That's annoyingly good."
+
+"Could be Vane."
+
+"Could."
+
+"Samir."
+
+"Could."
+
+"Ana."
+
+"Could."
+
+"You."
+
+"No."
+
+"That's what—"
+
+"Stop."
+
+At midnight fireworks sounded.
+
+Mira shouted from upstairs that her app countdown was two seconds behind television.
+
+Julian checked.
+
+It was.
+
+Different time sources.
+
+Same year.
+
+He screenshot Lyra message.
+
+Then did something unusual.
+
+He did not put it in SOURCE immediately.
+
+He put it in UNRESOLVED.
+
+Elena noticed.
+
+"New folder?"
+
+"Source is known only interface account. Operator unknown. Claim interpretive."
+
+"Good."
+
+He was learning.
+
+Outside, the Union entered 2020 without knowing what waited.
+
+Inside, Bellwether's systems were integrated, personalized, measurable, and more efficient than they had ever been.
+
+The feed had become reality's default interface.
+
+Consensus had become useful enough that turning it off now seemed irresponsible.
+
+That was the exact state from which the next book had to begin.
