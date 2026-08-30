@@ -3070,3 +3070,157 @@ synthetic plurality not.
 Julian found this surprisingly coherent.
 
 He added it to SOURCE.
+
+
+Julian's mother became a minor political influencer by accident.
+
+She posted a photograph of a broken curb ramp outside her pharmacy.
+
+Caption:
+
+CITY HAS MONEY FOR APPS BUT NOT THIS.
+
+Her account was usually family photographs and murder shows.
+
+The curb picture spread through neighborhood groups.
+
+Then disability advocates.
+
+Then political accounts.
+
+By afternoon it had thousands of shares.
+
+A local candidate reposted.
+
+Public works received urgent calls.
+
+Julian got assigned.
+
+He arrived to find television camera.
+
+His mother stood beside ramp looking delighted.
+
+"You did this?"
+
+"I took picture."
+
+"You tagged city."
+
+"That's what tag for."
+
+The curb had been reported previously.
+
+Work order existed.
+
+Low priority.
+
+The viral post changed priority because public salience became operational risk.
+
+Julian hated that the ramp got fixed because it was famous while other inaccessible corners waited.
+
+He also could not argue against fixing it.
+
+After repair, his mother's follower count tripled.
+
+She posted:
+
+THEY FIXED IT. THANK YOU.
+
+People praised accountability.
+
+Then began sending her other problems.
+
+Potholes.
+
+Trash.
+
+Streetlights.
+
+She forwarded everything to Julian.
+
+"Stop."
+
+"People need help."
+
+"Use city portal."
+
+"They don't trust portal."
+
+"You're not portal."
+
+"Apparently I am."
+
+A human routing layer formed because people trusted person more than institution.
+
+Julian helped create a neighborhood issue page with direct links and tracking IDs so his mother could redirect without becoming unofficial dispatcher.
+
+She kept posting anyway.
+
+The incident taught him another reason influencers emerged.
+
+Institutions had interfaces.
+
+People preferred faces.
+
+A face could translate bureaucracy into relation.
+
+That was useful.
+
+It also concentrated informal authority without training or accountability.
+
+His mother solved this by being impossible to control.
+
+
+The dating apps began offering identity verification.
+
+A badge appeared beside profiles that submitted document and selfie.
+
+Devon loved it.
+
+"Less catfish."
+
+"Does badge mean person honest?"
+
+"Means person exists."
+
+"Good distinction."
+
+A verified Lyra profile appeared two weeks later.
+
+Julian almost laughed.
+
+The badge proved some verification process had matched a face to an identity document.
+
+It did not prove the name Lyra was legal name unless policy said.
+
+He read policy.
+
+Verified badge meant age and photo match, not necessarily displayed name.
+
+The interface allowed users to infer more than badge promised.
+
+He reported ambiguous label to company.
+
+No response.
+
+Months later help text changed:
+
+PHOTO VERIFIED.
+
+Better.
+
+Lyra profile vanished before then.
+
+Elena said:
+
+"Maybe you improved dating."
+
+"Global service."
+
+"One tooltip."
+
+"Still."
+
+"One point."
+
+Julian was becoming easy to please.
