@@ -358,6 +358,35 @@ async def runtime_step(
 
 # ----------------------------------------------------------------------------
 
+@router.post("/authority/tick")
+async def runtime_authority_tick():
+    """Return one explicit singleton VM81-authorized execution packet.
+
+    This surface does not introduce a second admission path. It serializes the
+    inherited HHSRuntimeController.authorized_tick call behind the same runtime
+    step lock used by the production API, so callers can bind downstream
+    governed jobs to a real state/receipt/audit lineage.
+    """
+    async with runtime_step_lock:
+        execution = await asyncio.to_thread(
+            runtime_controller.authorized_tick,
+            "api.runtime.authority.tick",
+        )
+        await broadcast_runtime_state()
+        return _contract_response(
+            "/api/runtime/authority/tick",
+            "POST",
+            {
+                "schema": "HHS_GUARDED_RUNTIME_AUTHORITY_TICK_RESPONSE_V1",
+                "ok": True,
+                "authority_execution": execution,
+                "singleton_vm81_authority": True,
+                "parallel_commit_authority": False,
+            },
+        )
+
+# ----------------------------------------------------------------------------
+
 @router.post("/halt")
 async def halt_runtime():
 
