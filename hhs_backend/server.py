@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
 import time
 import uuid
 
@@ -203,13 +204,28 @@ SERVER_STATE: Dict[str, Any] = {
 
     "live_workflow_ready":
         False,
+
+    "live_workflow_auto_start":
+        LIVE_WORKFLOW_AUTO_START,
 }
+
+def _environment_flag_enabled(name: str, *, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() not in {"0", "false", "no", "off"}
+
+
+LIVE_WORKFLOW_AUTO_START = _environment_flag_enabled(
+    "HHS_COGNITION_AUTO_TICK",
+    default=True,
+)
 
 LIVE_WORKFLOW = LiveFastAPIRuntimeWorkflow(
     runtime_emulator=runtime_emulator,
     runtime_graph=runtime_graph,
     interval_seconds=1.0,
-    auto_start=True,
+    auto_start=LIVE_WORKFLOW_AUTO_START,
 )
 
 GUI_COMMAND_LOOP = LiveGUICommandAuthorityLoop(
