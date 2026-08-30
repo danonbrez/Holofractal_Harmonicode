@@ -366,6 +366,214 @@ History, Julian would decide much later, did not usually enter through the front
 
 It came in through maintenance.
 
+
+For months afterward, Julian kept expecting the city to admit that the emergency was ending.
+
+He expected a memo.
+
+The way a building engineer eventually signed off after a leak. Cause located. Damaged material removed. Wall dried. Area returned to service.
+
+Instead the emergency became a category under which unrelated things could be purchased.
+
+First came the access systems.
+
+Then radios.
+
+Then databases.
+
+Then contractor badges.
+
+Then interoperable identification.
+
+Then training.
+
+Julian attended a mandatory session in a conference room where an instructor from a security company taught municipal employees to notice anomalous behavior.
+
+The instructor was cheerful.
+
+"You're not being asked to profile people," he said. "You're being asked to detect deviations from context."
+
+Julian raised his hand.
+
+The instructor looked at him.
+
+"Yes?"
+
+"Deviation from whose context?"
+
+The room sighed.
+
+Benson whispered, "Don't."
+
+Julian continued.
+
+"Like, if somebody's walking fast, that could be suspicious or they could be late."
+
+"Correct."
+
+"So what makes it suspicious?"
+
+"Totality of circumstances."
+
+"Which means?"
+
+"It means you use judgment."
+
+"So the policy is trust judgment?"
+
+"Trained judgment."
+
+"How do you measure whether training improved it?"
+
+The instructor smiled in the specialized way people smiled before moving on.
+
+"We'll get to scenarios."
+
+They did.
+
+A man taking photographs of infrastructure.
+
+A person asking unusual questions.
+
+An unattended bag.
+
+A vehicle parked too long.
+
+An employee accessing an area unrelated to assigned work.
+
+Julian recognized himself in three of the examples.
+
+At lunch he told Redding.
+
+"They're going to arrest maintenance."
+
+"Only you."
+
+"They specifically described taking pictures of equipment."
+
+"You take pictures of serial numbers."
+
+"Exactly."
+
+"Then stop looking terroristy."
+
+Julian laughed.
+
+The training did not make him angry.
+
+Most of it was reasonable.
+
+That was what interested him.
+
+Almost every individual recommendation was reasonable.
+
+Do not prop secure doors.
+
+Verify visitors.
+
+Report unattended objects.
+
+Protect access credentials.
+
+Question unexplained entry.
+
+The drift appeared not in any single instruction but in accumulation.
+
+A building once designed around presumed ordinary access became a building designed around continuous verification.
+
+The wall did not get thicker.
+
+The meaning of being inside changed.
+
+At home Julian's mother had begun saving bottled water in the basement.
+
+"How much water do you need?"
+
+"Enough."
+
+"For what?"
+
+"You never know."
+
+"What event are we surviving?"
+
+"The event nobody warned you about."
+
+"You watch warnings all day."
+
+"Exactly. Imagine what they're not saying."
+
+Julian stared at her.
+
+"That logic doesn't close."
+
+"I don't know what that means."
+
+"It means you can use missing information to prove anything."
+
+She carried another case downstairs.
+
+"You have a computer full of notes about city doors."
+
+"That's work."
+
+"That's weird."
+
+"Both can be true."
+
+He helped her stack the water.
+
+The basement already contained batteries, canned soup, old tax returns, Christmas decorations, and a box of school papers his mother refused to discard.
+
+Julian opened the school box.
+
+His handwriting from age nine.
+
+A drawing of a bridge.
+
+A spelling test.
+
+A report card.
+
+These fragments had survived because no policy governed them.
+
+He thought about the Annex security sheet folded in his desk.
+
+Institutional memory was formal enough to destroy itself on schedule.
+
+Family memory survived by disobedience.
+
+He carried one bottle of water upstairs and placed it beside the television.
+
+The line beneath the broadcast said the national threat level had changed color.
+
+His mother pointed.
+
+"See?"
+
+Julian looked at the color.
+
+"What does that mean we do differently?"
+
+"Be alert."
+
+"From yesterday?"
+
+"More alert."
+
+"How?"
+
+She became irritated.
+
+"Why do you need everything to have instructions?"
+
+He almost answered.
+
+Because otherwise the state had changed only in language.
+
+He did not yet have the words.
+
+
 ---
 
 ### Chapter Two — The Crawling Line
@@ -697,6 +905,200 @@ Below them, the city glowed.
 Somewhere in the Annex, the television was still on.
 
 The line crawled even when no one watched it.
+
+
+Dr. Sutter made the class model an emergency database as a semester project.
+
+Each team received the same fictional city.
+
+Hospitals.
+
+Schools.
+
+Roads.
+
+Power substations.
+
+Shelters.
+
+Police.
+
+Fire.
+
+Transit.
+
+The assignment sounded easy until the students tried to decide what counted as the same person.
+
+A hospital patient had one identifier.
+
+The school system another.
+
+Police records another.
+
+Utility accounts belonged to households.
+
+Transit cards belonged to tokens.
+
+A shelter might know only a name, or a name spelled wrong.
+
+"Use social security number," someone said.
+
+Dr. Sutter shook her head.
+
+"Children?"
+
+"Date of birth and name."
+
+"Twins?"
+
+"Address."
+
+"Homeless?"
+
+"Then—"
+
+The class fell silent.
+
+Julian enjoyed this.
+
+Identity seemed obvious until a database had to execute it.
+
+They built composite keys.
+
+Then exceptions.
+
+Then override procedures.
+
+Then procedures for who could authorize overrides.
+
+By the end of the project, the table that represented people had become the most complicated table in the system.
+
+"This is why universal identity projects fail," Dr. Sutter said.
+
+A student objected.
+
+"They don't fail. Government has IDs."
+
+"Government has many IDs."
+
+"Make one."
+
+"For which purpose?"
+
+"Everything."
+
+Dr. Sutter smiled.
+
+"That word should frighten engineers."
+
+After class Julian asked why.
+
+"Because everything is where scope goes to die."
+
+She tapped his textbook.
+
+"A system designed for one purpose inherits assumptions from that purpose. When you reuse the identifier, you import assumptions people stop noticing."
+
+Julian thought of badges that had become cafeteria cards and printer credentials.
+
+"You could design it general from the start."
+
+"You could."
+
+"Then?"
+
+"Then you would make assumptions about purposes that do not exist yet."
+
+He hated this answer.
+
+"There's no way to do it right?"
+
+"Of course there is."
+
+"What?"
+
+"Make assumptions visible. Keep authority narrow. Preserve migration paths. Admit uncertainty."
+
+"That's four ways."
+
+"Engineers pay by the comma."
+
+Years later Julian would remember that sentence when people spoke of technology as though its central question were intelligence.
+
+Intelligence was rarely the shortage.
+
+Scope was.
+
+On the roof with Redding, Julian began asking which systems were allowed to talk to which.
+
+The access-control database knew when employees entered buildings.
+
+Timekeeping knew when they clocked in.
+
+Parking knew which cars entered garages.
+
+The employee directory knew department.
+
+Security knew badge status.
+
+"Do these connect?" Julian asked.
+
+"Some."
+
+"Could you tell if someone entered a building before clocking in?"
+
+"Probably."
+
+"Does anybody?"
+
+"Probably."
+
+"Who?"
+
+Redding laughed.
+
+"Julian, you think I am the city."
+
+"You've been here thirty years."
+
+"Exactly. I know enough to know there isn't one city."
+
+Below them, traffic lights changed in coordinated waves.
+
+Julian watched.
+
+"There should be."
+
+"What?"
+
+"One city."
+
+Redding turned.
+
+"Careful."
+
+"What?"
+
+"That is how people get ideas."
+
+"What kind?"
+
+"The kind that require consultants."
+
+Julian laughed, but the desire remained.
+
+One city.
+
+One record.
+
+One view.
+
+It sounded efficient.
+
+It sounded sane.
+
+He had not yet met Elena, and therefore had nobody nearby whose professional instinct was to ask what one record had to erase in order to become one.
+
 
 ---
 
@@ -1373,3 +1775,133 @@ Julian pulled over.
 When he reopened the profile, Elena Mor had no friends.
 
 He took the screenshot anyway.
+
+
+The false Elena profile became their first shared experiment.
+
+They set rules.
+
+No contacting the account.
+
+No assuming identity.
+
+No inventing motive.
+
+Record only state changes they could independently observe.
+
+Elena created a table.
+
+Julian objected to the number of columns.
+
+"Timestamp, URL, internal identifier, visible fields, friend count, source device, source account, capture hash."
+
+"Capture what?"
+
+"Hash."
+
+"Of a screenshot?"
+
+"Yes."
+
+"Why?"
+
+"To show it didn't change."
+
+"Who's accusing us of changing it?"
+
+"No one."
+
+"Then why?"
+
+"Because if this ever matters, future us will be strangers."
+
+Julian stared at her.
+
+"That may be the most depressing thing you've said."
+
+"It's archival optimism."
+
+"Explain."
+
+"I assume future us will care enough to check."
+
+They logged five appearances.
+
+Each account behaved differently.
+
+One existed for eleven minutes.
+
+One for two days.
+
+One accepted a friend request from someone Elena had worked with in college and then disappeared before the person could send a message.
+
+One had an internal identifier that, according to the site, predated the site's public launch.
+
+Julian immediately became excited.
+
+Elena did not.
+
+"Clock migration."
+
+"Could be."
+
+"Imported beta data."
+
+"Could be."
+
+"Bad display."
+
+"Could be."
+
+"You're ruining this."
+
+"Good."
+
+The fifth profile contained a single public status:
+
+I HAVE ALWAYS BEEN HERE.
+
+Julian read it aloud.
+
+"Now that's creepy."
+
+Elena said nothing.
+
+The status disappeared while they watched.
+
+Julian refreshed.
+
+Blank page.
+
+He refreshed again.
+
+Profile unavailable.
+
+He looked at Elena.
+
+"Still clock migration?"
+
+"Now we have a new observation."
+
+"You are biologically incapable of fear."
+
+"Not true."
+
+"What scares you?"
+
+"People who confuse fear with proof."
+
+He wanted to kiss her.
+
+This seemed inappropriate to the experiment and therefore he did.
+
+Their first kiss occurred in front of an apparently impossible social-media account impersonating Elena.
+
+Neither of them later knew what that meant.
+
+The account disappeared.
+
+Their relationship did not.
+
+For a while.
+
