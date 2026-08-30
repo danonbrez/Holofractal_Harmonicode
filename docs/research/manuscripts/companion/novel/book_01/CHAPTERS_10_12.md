@@ -2303,6 +2303,554 @@ She kissed him.
 "You did."
 
 
+
+The city's first mobile-work mandate was not called a mandate.
+
+It was called an efficiency initiative.
+
+Supervisors received city-issued phones first.
+
+Then inspectors.
+
+Then on-call technicians.
+
+Then "high-mobility personnel," a category broad enough to include almost anyone whose chair had wheels.
+
+Julian received a device in a cardboard box with a charger, plastic case, laminated quick-start guide, and six-page acknowledgment form.
+
+He read the form.
+
+Coyle signed immediately.
+
+"You reading that?"
+
+"Yes."
+
+"Why?"
+
+"It says they can remotely wipe device."
+
+"It's their phone."
+
+"Also personal contacts if synced."
+
+"Don't sync."
+
+"Good."
+
+Coyle looked over.
+
+"What else?"
+
+"Location services may be used for operational dispatch."
+
+"They already know where we are."
+
+"Do they?"
+
+"We drive city trucks."
+
+"GPS on truck, not me."
+
+"Same thing."
+
+"Not when I get lunch."
+
+Coyle shrugged.
+
+"Then leave phone in truck."
+
+The policy required employees to remain reachable.
+
+Julian pointed.
+
+Coyle sighed.
+
+"Fine. Throw it in river."
+
+The phone made work objectively easier.
+
+Photographs attached directly to tickets.
+
+Parts searched on site.
+
+Supervisors reached crews.
+
+Maps improved routing.
+
+Technicians could video-call specialists.
+
+Julian solved a control-panel failure in twenty minutes by sending a photograph to an electrician across town.
+
+Previously the diagnosis might have taken half a day.
+
+He loved this.
+
+Then the department began measuring response.
+
+How long between assignment and acknowledgment.
+
+How long between acknowledgment and arrival.
+
+How long between arrival and closure.
+
+The device produced timestamps automatically.
+
+No one entered a new timekeeping agreement.
+
+The work process itself generated observability.
+
+Supervisors began asking why technicians acknowledged jobs but did not move.
+
+Traffic.
+
+Lunch.
+
+Another job.
+
+Bathroom.
+
+A conversation with a resident.
+
+Life acquired unexplained intervals because the system's clock was more granular than management's model.
+
+Julian saw a dashboard showing his average acknowledgment time.
+
+Forty-two seconds.
+
+"Good," his supervisor said.
+
+"What should it be?"
+
+"Under two minutes."
+
+"Why?"
+
+"Target."
+
+"Based on?"
+
+"Department average."
+
+"So target is behavior already happening."
+
+"Yes."
+
+"Then what are we improving?"
+
+The supervisor looked at him.
+
+"You know, at some point a metric is just a metric."
+
+"No."
+
+"Please go fix something."
+
+Julian did.
+
+That afternoon he intentionally waited one minute before acknowledging a nonurgent ticket.
+
+Not sabotage.
+
+Experiment.
+
+The phone vibrated again after thirty seconds.
+
+Reminder.
+
+At sixty:
+
+UNACKNOWLEDGED ASSIGNMENT.
+
+At ninety a supervisor texted:
+
+You see ticket?
+
+Julian acknowledged.
+
+The system had transformed responsiveness from professional judgment into latency.
+
+He understood why.
+
+Dispatch needed certainty.
+
+He also saw how quickly certainty could become obligation.
+
+At home he opened Rat and created a separate folder:
+
+WORKPLACE TERMS.
+
+Elena watched.
+
+"That is not what Rat does."
+
+"Now it does."
+
+"Scope creep."
+
+"Compatible global optimization."
+
+"What?"
+
+"Nothing."
+
+He saved the city mobile-device policy.
+
+First version.
+
+Then the next.
+
+Three months later a phrase changed.
+
+Operational location may be collected during active assignment.
+
+became:
+
+Operational location may be collected while device is active for work purposes.
+
+Julian stared.
+
+Active assignment.
+
+Work purposes.
+
+Different scope.
+
+He emailed the union.
+
+The representative replied:
+
+Probably boilerplate.
+
+Julian:
+
+Then easy to clarify.
+
+No response.
+
+He filed it.
+
+Weeks later the department clarified that location would not be used for disciplinary monitoring absent investigation.
+
+New memo.
+
+New state.
+
+He saved both.
+
+Most coworkers did not care.
+
+They cared if the phone worked.
+
+Julian increasingly accepted that this was not stupidity.
+
+People had jobs.
+
+Children.
+
+Bills.
+
+Illness.
+
+Divorces.
+
+Commutes.
+
+A person could not audit every contract required to exist in modern life.
+
+That was Vane's relevance problem again, but now consent itself had become high-volume information.
+
+No one could read everything they supposedly agreed to.
+
+The legal fiction remained.
+
+The cognitive capacity did not.
+
+Julian asked Elena:
+
+"What happens when valid consent requires more reading than a life contains?"
+
+She did not answer immediately.
+
+"Delegation."
+
+"To who?"
+
+"That becomes the dangerous question."
+
+He thought about rating agencies.
+
+Mortgage brokers.
+
+Privacy experts.
+
+Consumer groups.
+
+Unions.
+
+Lawyers.
+
+Software.
+
+The future would require agents to read on behalf of people.
+
+Then people would need to know whether to trust the agents.
+
+The recursion had no obvious bottom.
+
+He took the Golden Measure from the cabinet and set it beside the city phone.
+
+"Why that?"
+
+"I want something with no terms."
+
+Elena picked up the brass rule.
+
+"It has terms."
+
+"Where?"
+
+"You just don't have them."
+
+She turned it over.
+
+RM-72.
+
+"Some dead engineer knew exactly what this meant."
+
+"Maybe."
+
+"And because we don't, you keep treating the object like innocence."
+
+Julian took it back.
+
+"You're ruining old metal now."
+
+"I am consistent."
+
+He smiled.
+
+That night Mira woke from a nightmare.
+
+Julian went upstairs.
+
+She would not explain the dream.
+
+She asked if the house could know things.
+
+"What kind of things?"
+
+"Us."
+
+"The house?"
+
+"Yes."
+
+He thought of thermostats.
+
+Alarm sensors.
+
+Wireless router.
+
+Work phone.
+
+Personal phones.
+
+Laptop.
+
+Game device.
+
+"Some things."
+
+"Can it know I'm scared?"
+
+"Not really."
+
+"Can the phone?"
+
+"Not unless you tell it."
+
+Mira looked at him.
+
+"What if it hears?"
+
+"The phone isn't listening like a person."
+
+He heard the sentence after saying it.
+
+Not exactly true.
+
+The microphone could listen.
+
+Applications could access it under conditions.
+
+Voice assistants were emerging.
+
+Audio could be recorded.
+
+But the device did not sit there understanding fear.
+
+Not then.
+
+He corrected.
+
+"It can record sound if something is using the microphone. That's different from knowing what the sound means."
+
+"What's microphone?"
+
+He explained.
+
+Mira touched his face.
+
+"Are you scared?"
+
+"No."
+
+"How do I know?"
+
+Julian smiled.
+
+"You don't."
+
+She considered.
+
+Then lay down.
+
+"Stay."
+
+He stayed.
+
+Downstairs, notifications accumulated on the black glass.
+
+For the first time Julian understood the emotional problem behind every technical one.
+
+Humans wanted machines to know enough to help and not enough to govern.
+
+The line between those states moved with every new capability.
+
+No setting page could freeze it permanently.
+
+
+
+
+
+The last municipal meeting Julian attended that year concerned emergency alerts.
+
+The city wanted a unified system capable of sending warnings through text, email, social feeds, automated calls, highway signs, websites, transit boards, and public screens.
+
+Nobody opposed the goal.
+
+The memory of the Morning Sirens remained strong enough that saying faster warning was bad would have sounded insane.
+
+A vendor demonstrated one message entered once and propagated across channels.
+
+This was elegant.
+
+Julian felt genuine admiration.
+
+"Can channels modify?"
+
+"Template-specific formatting."
+
+"Meaning?"
+
+"Length limits, abbreviations, link insertion."
+
+"Does semantic content remain identical?"
+
+The vendor paused.
+
+"Equivalent."
+
+"Who checks?"
+
+"Approved templates."
+
+"What if message doesn't fit template?"
+
+"Operator preview."
+
+"Across all?"
+
+"Yes."
+
+Julian nodded.
+
+Good design.
+
+Then Ana Reyes, a security engineer Julian had met twice, raised another question.
+
+"Can local departments issue without central approval?"
+
+"Depends permission."
+
+"Can central revoke?"
+
+"Yes."
+
+"Can local alert if central system unavailable?"
+
+"Fallback credentials."
+
+"Can central suppress local?"
+
+The room shifted.
+
+The vendor said, "Authorized administrators can manage message state."
+
+Ana said, "That wasn't my question."
+
+Julian looked at her.
+
+Same species.
+
+Afterward he introduced himself.
+
+"Julian."
+
+"I know. You asked semantic identity."
+
+"You asked suppression."
+
+"Because everybody designs send. Nobody designs refusal."
+
+They walked to the elevators.
+
+"What do you do?"
+
+"Security."
+
+"Physical?"
+
+"Information."
+
+"Sorry."
+
+Ana laughed.
+
+"Why sorry?"
+
+"You're doomed."
+
+"Maintenance?"
+
+"Yes."
+
+"Same."
+
+They exchanged contact information.
+
+Ana would not become important to Julian's life for another decade.
+
+At the time she was simply another person who asked where authority stopped.
+
+That was how the future assembled itself.
+
+Not in prophecy.
+
+In contact lists.
+
+
 ---
 
 ### Chapter Twelve — The Pocket Gate
