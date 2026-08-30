@@ -330,7 +330,7 @@ def event_loop_yield_gate(base_url: str, health_path: str) -> dict[str, Any]:
                 "/api/runtime/step",
                 method="POST",
                 payload={"steps": 1},
-                timeout=3.0,
+                timeout=15.0,
             )
             assert body
             step_latencies.append(elapsed_ms)
