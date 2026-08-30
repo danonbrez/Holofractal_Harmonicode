@@ -887,6 +887,43 @@ The Great Indoors taught institutions to mistake visibility for work because vis
 That lesson would later feed directly into Consensus.
 
 
+
+
+The remote-work period also created a strange archive of homes.
+
+Years later, when employees changed jobs, their old meeting recordings still contained bedrooms, kitchens, children crossing frames, bookshelves, medical equipment, family photographs.
+
+The city retained some recordings under public-meeting law, others deleted under routine policy.
+
+The difference depended on meeting type, not intimacy of captured background.
+
+Julian found this unsettling.
+
+A formal public hearing held from private home could make private environment part of public record.
+
+The legal rule made sense.
+
+The medium changed consequence.
+
+Elena developed virtual-background guidance for public officials who wanted to separate personal space from public record.
+
+Some mocked.
+
+Then one elected member's family photograph triggered unwanted public attention.
+
+People stopped mocking.
+
+Again, new technology did not create new authority rule; it changed what old rule exposed.
+
+This became one of Elena's clearest examples of why medium must be included in state-transition analysis.
+
+Same meeting authority.
+
+Different capture surface.
+
+Different downstream privacy.
+
+
 ### Chapter Twenty-Six — The Essential Divide
 
 The phrase essential worker became honorable faster than it became materially clear.
@@ -1748,6 +1785,71 @@ Not city action.
 Julian action.
 
 Small.
+
+
+
+
+The essential divide changed how Julian understood gratitude.
+
+For months, signs thanked workers.
+
+Then budgets tightened.
+
+People who had been "heroes" entered ordinary labor negotiations.
+
+Public sympathy faded.
+
+Some workers felt betrayed.
+
+Julian did not think gratitude created permanent wage entitlement.
+
+He did think rhetoric had functioned as temporary compensation for risk.
+
+When material cost disappeared from public attention, symbolic praise looked cheaper in hindsight.
+
+He wrote:
+
+SYMBOLIC COMPENSATION CAN MASK UNRESOLVED MATERIAL COST.
+
+Elena asked whether that made praise false.
+
+"No."
+
+"Then?"
+
+"Insufficient."
+
+This distinction mattered.
+
+A society could sincerely honor people and still underpay them.
+
+Sincerity did not close ledger.
+
+Conversely, high pay did not prove honor.
+
+Different coordinates.
+
+The unions used retention data.
+
+Turnover.
+
+Vacancies.
+
+Injury.
+
+Absence.
+
+The conversation became measurable.
+
+Some departments raised pay.
+
+Others changed schedules.
+
+Some did nothing.
+
+No one universal solution.
+
+The crisis had made hidden labor visible; keeping it visible required data after emotion moved on.
 
 
 ### Chapter Twenty-Seven — Two Elections
@@ -3226,3 +3328,74 @@ Teacher said:
 Julian wrote nothing.
 
 Some truths did not need his notebook.
+
+
+The election-receipt project eventually invited skeptics into the audit room.
+
+Not performative skeptics whose condition for belief was impossible.
+
+People with concrete questions.
+
+Observers from multiple factions watched random ballot reconciliation.
+
+Chain logs.
+
+Tally.
+
+Storage.
+
+Correction.
+
+Most left with narrower disagreements.
+
+One man remained unconvinced.
+
+He said:
+
+"I think system could fake all this."
+
+Julian asked:
+
+"What evidence would discriminate?"
+
+The man did not know.
+
+That was key.
+
+A claim with no possible disconfirming state could not be operational audit proposition.
+
+It could remain belief.
+
+Not actionable verification target.
+
+The project published this distinction gently.
+
+AUDITABLE QUESTION:
+
+specific mismatch, procedure, count, custody, access.
+
+NON-AUDITABLE ASSERTION:
+
+system may fabricate any evidence whatsoever.
+
+The second was logically possible in broad skeptical sense.
+
+But no finite procedure could satisfy.
+
+Institutions need bounded closure criteria.
+
+Otherwise quarantine never ends.
+
+Julian saw how conspiracy systems survive: every correction becomes evidence of deeper control.
+
+No exit predicate.
+
+The solution was not ridicule.
+
+It was ask:
+
+What result would change your state?
+
+If none, debate no longer empirical.
+
+Mira used this in family arguments and became unbearable.
