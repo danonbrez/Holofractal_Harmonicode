@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 186 inherited x86_64 VM81 Q144 authority binding plus Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
+/* Additive exact ABI aggregate through Pass 186 inherited x86_64 VM81 Q144 authority binding, wrapped by mandatory Pass 219 global canonical defaults, plus Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -44,6 +44,7 @@
 #include "hhs_pass219_inherited_pass188_1_38.inc"
 #include "hhs_pass219_inherited_pass187_1_39.inc"
 #include "hhs_pass219_inherited_pass186_1_40.inc"
+#include "hhs_pass219_global_canonical_defaults_1_0.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
 #include "hhs_pass219b_universal_phase_locality_1_0.inc"
 #include "hhs_pass219_octonion_runtime_1_19.inc"

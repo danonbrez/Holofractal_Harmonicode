@@ -105,3 +105,13 @@ Synthetic current-main:
 Both legs passed historical Pass 186 source identity checks, the exhaustive native `make clean test disassemble` gate, frozen-I139 successor checks, I140 membrane preflight, aggregate exact ABI compilation, and C/C++ conformance.
 
 This evidence validates the implementation head. The receipt-bearing freeze is finalized only after the subsequent exact/synthetic run proves these receipt and documentation identities.
+
+## Global canonical default repair-forward amendment
+
+The cumulative membrane is now additionally governed by HHS-P219-GLOBAL-CANONICAL-DEFAULTS.
+
+This amendment does not rewrite frozen Pass 186 through Pass 218 historical implementation blobs. Instead, the aggregate exact ABI adds a policy layer after the current inherited tail. That layer makes cumulative reachability mandatory, rejects standalone-pass and isolated-native-project substitution, requires applicable cross-cutting defaults globally and retroactively, forbids grandfather bypass, and requires explicit validated upgrade or deprecation before a canonical default can change.
+
+The executable binding census covers all 35 currently wired inherited bindings from Pass 218 through Pass 186, including distinct Pass 200c, Pass 200b, and Pass 200a bindings. Future reverse reconciliation must extend this census downward without silently removing existing bindings.
+
+Pass 157 HHS-P157-PPF-MPTC is recorded as MISSING_CUMULATIVE_EXPOSURE repair-forward debt because its successful native implementation exists while cumulative runtime exposure is absent.
