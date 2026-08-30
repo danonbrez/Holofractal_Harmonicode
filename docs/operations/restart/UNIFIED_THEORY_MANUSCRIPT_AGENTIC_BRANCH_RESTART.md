@@ -37,6 +37,7 @@
 - Module 1 ontology binding: `4c5b3ab562d517369a3b004cadd5317bb3e0be8f`
 - Companion index ontology dependency: `6805876b63e7c876f4be7b75580d6ed073a19f29`
 - Module 1 ontology restart update: `e25511024afff64e20abb78dc928947a018e97b0`
+- Workspace ontological anchor: `421dc9560a6eb4530921fb0757f64613dcf856b8`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
