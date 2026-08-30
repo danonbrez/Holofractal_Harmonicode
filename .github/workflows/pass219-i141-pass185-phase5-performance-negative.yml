@@ -87,7 +87,7 @@ jobs:
           grep -Fq 'frontend_runtime_authority' hhs_verification/pass185/phase5_performance_negative_acceptance.py
           grep -Fq 'production_inherited_runtime_authority_status' hhs_backend/production_server.py
           grep -Fq 'test_pass185_production_runtime_authority_route_wins_first_match' tests/test_runtime_os_production_root.py
-          grep -Fq 'HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_IMPLEMENTED_PENDING_VALIDATION' \
+          grep -Eq 'HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_(IMPLEMENTED_PENDING_VALIDATION|VERIFIED)' \
             docs/pass185/HHS_PASS_185_I141_PHASE5_PERFORMANCE_NEGATIVE_ACCEPTANCE.md
 
       - name: Install bounded Chromium
