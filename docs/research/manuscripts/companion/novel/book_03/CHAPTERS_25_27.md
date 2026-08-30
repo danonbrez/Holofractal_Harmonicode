@@ -2970,3 +2970,80 @@ Julian told Elena.
 "Nothing."
 
 She had no idea why he laughed.
+
+
+The Great Indoors also transformed public meetings.
+
+Before, a planning hearing required people to travel downtown, find parking, wait, speak into a microphone for two minutes.
+
+Remote hearings expanded participation.
+
+Parents joined after children slept.
+
+Disabled residents avoided travel.
+
+People across city watched.
+
+Comment counts rose.
+
+This was objectively more accessible.
+
+Then organized groups flooded hearings from outside affected neighborhoods.
+
+Some residents felt drowned.
+
+The city debated residency restrictions.
+
+That would exclude legitimate nonresident stakeholders.
+
+They added speaker categories rather than exclusion.
+
+Affected resident.
+
+Property owner.
+
+Worker.
+
+Citywide.
+
+Outside jurisdiction.
+
+All could speak.
+
+Decision-makers could see relation to issue.
+
+Metadata again.
+
+Not to discount voice automatically.
+
+To preserve context.
+
+A resident said:
+
+"Why should my comment count same as someone in another state?"
+
+A civil-liberties lawyer replied:
+
+"Speech isn't vote."
+
+Good distinction.
+
+Public hearing gathered information and legitimacy, not direct plebiscite.
+
+The remote interface had blurred by showing everyone equal rectangles and comment counters.
+
+Julian noted:
+
+INTERFACE EQUALITY ≠ DECISION AUTHORITY EQUALITY.
+
+Remote access stayed after reopen.
+
+Hybrid became default.
+
+A crisis innovation survived because it improved access beyond emergency.
+
+This was valid inheritance.
+
+Origin emergency, current validation independent.
+
+Exactly how temporary rules should become permanent.
