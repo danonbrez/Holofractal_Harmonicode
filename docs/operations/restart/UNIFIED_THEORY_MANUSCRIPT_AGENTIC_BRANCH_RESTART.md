@@ -51,6 +51,8 @@
 - Companion architecture Module 4 redefinition: `f62abb1cdee27e9956d6d2dde60cad18ba561099`
 - Module 4 Phase 4B workspace frontier: `ab8198cb5892b54390210fd1c4ec587bab37e035`
 - Module 4 Phase 4A dedicated restart record: `1d5fe4ef90ac449af68d32a20a945e0330bbb6f3`
+- Module 4 Book I canonical assembly: `1e543b298dfe637773256b48721e31be4c54c908`
+- Module 4 Book I completion restart record: `9eaedf9c305703b46c0e4a1d1a5a921ea1c179d9`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -70,6 +72,8 @@
 - `docs/research/manuscripts/companion/evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md`
 - `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_04_THE_GOLDEN_INVARIANT_NOVEL_RUNTIME.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4A_RESTART.md`
+- `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4B_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -93,7 +97,9 @@
 - Verified six acts, Terminal Inversion, failed first repair, bounded reconstruction, adversarial retest, Pillar recalibration, successor handoff, and twelve validation gates
 - Verified Module 4 Phase 4A: 1,750 lines / 38,717 characters
 - Verified exact 72-beat compiler with B00-B71 and no gaps
-- Verified 24/24/24 historical split, 36 chapters, 3 books, and 110k-130k full-novel target characters
+- Verified 24/24/24 historical split, 36 chapters, 3 books, and 110k-130k full-novel target
+- Verified Module 4 Book I: 35,022 words / 12 chapters / B00-B23 complete
+- Verified Book I historical band 2001-2012 and direct-name audit characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -168,9 +174,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`MODULE 4 — PHASE 4B: THE GOLDEN INVARIANT — BOOK I: THE WORLD ON TELEVISION`
+`MODULE 4 — PHASE 4C: THE GOLDEN INVARIANT — BOOK II: THE WORLD IN THE FEED`
 
-Modules 1-3 and Module 4 Phase 4A are complete and checkpointed. Module 4 is now the full-length novel. Next generate continuous literary prose for Book I, Chapters 1-12 / Beats B00-B23 / 2001-2012, while keeping the 72-beat compiler and theorem map invisible in the final narrative.
+Modules 1-3, Module 4 Phase 4A, and Book I are complete and checkpointed. Next generate Book II continuous prose for Chapters 13-24 / Beats B24-B47 / 2012-2019 from the exact Book I terminal state, preserving chronology, characterization, provenance rules, and the invisible theorem map.
 
 ## Blockers
 
