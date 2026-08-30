@@ -68,31 +68,105 @@ This means the companion plot must never equate destruction alone with Evil. The
 
 ### Module 2 — The Citadel's Defending Architecture
 
+File:
+
+\`THE_MYTHOPOETIC_EXECUTABLE_MODULE_02_CITADEL_DEFENDING_ARCHITECTURE.md\`
+
+Status:
+
+\[
+\Omega_{\mathrm{Module2}}=\mathrm{true}
+\]
+
+Defender architecture:
+
+\[
+\mathfrak{D}
+=
+(K,A,L,G,C,X,H)
+\]
+
+with:
+
+- King — lawful bounded mutation authority;
+- Architect — historical memory and structural inference;
+- Ledger-Keeper — provenance and receipt continuity;
+- Guardian — selective admission membrane;
+- Child / Apprentice — successor-state inheritance;
+- Exile — quarantined but preserved dissent;
+- Harmonizer — repair-forward coordination.
+
+The defenders do not form a second army. They form a distributed proof architecture.
+
+The recovery invariant is:
+
+\[
+\text{preserve}
+\rightarrow
+\text{compare}
+\rightarrow
+\text{localize}
+\rightarrow
+\text{repair}
+\rightarrow
+\text{retest}
+\rightarrow
+\text{inherit}
+\]
+
+Terminal Inversion is reversed only by restoring authority separation, immutable lineage, direct verification, bounded quarantine, affected-frontier repair, adversarial retest, and successor-state handoff.
+
+### Module 3 — The Plot State Machine: From Terminal Inversion to Return
+
 Status:
 
 \`NEXT\`
 
-Required components:
+Required execution path:
 
-- King — lawful declared constraint;
-- Architect — historical memory and structural inference;
-- Ledger-Keeper — provenance and receipts;
-- Guardian — selective admission membrane;
-- Child / Apprentice — successor-state inheritance;
-- Exile — quarantined but preserved dissent;
-- Harmonizer — repair-forward without total reset.
+\[
+S_0
+\rightarrow
+S_{\mathrm{corrupt}}
+\rightarrow
+S_{\mathrm{inverted}}
+\rightarrow
+S_{\mathrm{recovery}}
+\rightarrow
+S_f
+\]
 
-Primary question:
+with:
 
-> How does a system under Terminal Inversion recover the original coordinate law without erasing the history of the corruption?
+\[
+S_f
+\sim
+S_0
+\]
+
+at the invariant boundary,
+
+while:
+
+\[
+H_f
+\neq
+H_0
+\]
+
+because the corruption history remains authenticated.
+
+Module 3 must convert the adversarial and restorative architectures into one ordered dramatic state machine, including first ingress, progressive capture, Terminal Inversion, surviving receipts, failed first repair, bounded reconstruction, adversarial retest, public Pillar recalibration, and successor-state handoff.
 
 ## Native execution correspondences
 
-- Pass 191: repository hydration and retrieval;
+- Pass 191: repository hydration, changed-since, verification, replay, and receipt retrieval;
 - Pass 194: immutable content/version lineage and hydration snapshots;
 - Pass 195: proposal-only narrative generation and bounded story handoff;
 - Pass 219: Genesis normalization, exact preflight, and inherited canonical authority;
 - Pass 189: provenance quarantine and bounded promotion;
+- Pass 188: versioned inheritance, compatibility floor, prospective revocation, fork, and sunset;
+- post-Pass218 indexed reuse: authenticated continuation and affected-frontier recomputation;
 - cumulative global defaults: no silent bypass or deprecation.
 
 ## Development rule
