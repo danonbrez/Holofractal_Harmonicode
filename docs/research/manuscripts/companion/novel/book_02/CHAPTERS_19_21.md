@@ -1060,6 +1060,131 @@ PRACTICALLY NON-RECALLABLE.
 The distinction mattered because impossible and expensive are different states.
 
 
+
+
+The Harvest scandal made Consensus change its consent model before launch.
+
+Early prototypes had one screen:
+
+ALLOW VERIFIED DATA TO BE REUSED ACROSS PARTICIPATING SERVICES?
+
+Yes.
+
+No.
+
+Julian called it consent laundering.
+
+The team objected.
+
+"User chooses."
+
+"Chooses category containing unknown future services."
+
+"Participating services listed."
+
+"Today."
+
+The product manager opened a design workshop.
+
+They decomposed consent.
+
+Attribute.
+
+Purpose.
+
+Recipient class.
+
+Duration.
+
+Revocation rule.
+
+Legal basis.
+
+Some sharing was optional.
+
+Some required by law to deliver service.
+
+Some allowed by explicit program enrollment.
+
+The interface became more complicated.
+
+User testing showed comprehension fell.
+
+Simplify, and scope blurred.
+
+Specify, and users stopped reading.
+
+There was no interface trick that eliminated cognitive cost.
+
+Vane said:
+
+"Consent has bandwidth."
+
+Julian hated the phrase.
+
+"People have bandwidth."
+
+"Same."
+
+"No."
+
+Vane conceded.
+
+The team introduced layered explanation.
+
+Short summary.
+
+Expandable detail.
+
+Machine-readable receipt.
+
+Current-state dashboard.
+
+Julian liked it.
+
+Then test users clicked through without expanding.
+
+"Failed," he said.
+
+The researcher disagreed.
+
+"They understood essential purpose better than control."
+
+"Still didn't read."
+
+"Reading every clause is not objective."
+
+"What is?"
+
+"Accurate expectation."
+
+That changed Julian's model.
+
+Consent did not require memorizing implementation.
+
+It required enough correspondence between represented and actual consequence to authorize meaningfully.
+
+The receipt preserved detail for later audit.
+
+This was better than the fantasy that everyone should become a lawyer.
+
+Elena approved.
+
+"Finally, you accept humans are not parsers."
+
+"They are bad parsers."
+
+"Humans invented parsers because humans are bad parsers."
+
+"Fair."
+
+Consensus adopted the layered model.
+
+One more local success.
+
+One more reason the system became trusted.
+
+
 ### Chapter Twenty — Confession Wave
 
 The first confession Julian read belonged to a woman he knew.
@@ -1824,6 +1949,87 @@ Different surfaces.
 Same history.
 
 Typed access.
+
+
+
+
+The confession wave reached Mira's middle school as a rumor about a teacher.
+
+A student posted that a teacher had touched her inappropriately during class.
+
+Parents reacted before the school issued a statement.
+
+Some demanded immediate firing.
+
+Others said children lie.
+
+Julian hated both defaults.
+
+The school removed the teacher from classroom pending review.
+
+Not punishment.
+
+Containment.
+
+Students were interviewed.
+
+Camera footage showed part of incident.
+
+The teacher had put a hand on the student's shoulder while guiding her away from a confrontation.
+
+The student said the contact felt threatening because of what teacher had said before.
+
+Another student corroborated the earlier verbal conflict.
+
+No sexual allegation remained after clarification.
+
+The original post had used inappropriate to mean unwelcome and aggressive.
+
+Adults had read sexual misconduct.
+
+Semantic expansion generated a different case.
+
+The school eventually returned teacher with disciplinary note for handling conflict poorly.
+
+The student received no punishment for post.
+
+A parent group wanted apology.
+
+Another wanted teacher fired anyway.
+
+Mira asked Julian:
+
+"Who lied?"
+
+"Maybe nobody."
+
+"Someone said wrong thing."
+
+"Wrong word can happen without lie."
+
+"But everybody got mad."
+
+"Because they filled missing meaning."
+
+Mira frowned.
+
+"So say exact."
+
+"Good rule."
+
+Elena said:
+
+"Hard when upset."
+
+The incident taught Mira something Julian had learned through policies.
+
+Ambiguous terms become dangerous when they trigger high-authority responses.
+
+Classification language required care proportional to consequence.
+
+At school scale, a word had almost changed a career.
+
+At national scale, same mechanism moved institutions.
 
 
 ### Chapter Twenty-One — Exit Without Exit
@@ -2683,3 +2889,84 @@ That was healthier.
 Until the venue controlled which people they could find.
 
 Then architecture returned.
+
+
+FlexWorks produced its first serious injury on a wet November morning.
+
+A contractor fell from a ladder while repairing an exterior light.
+
+The work order had classified task as basic fixture replacement.
+
+City employees doing same task would have required a second worker under conditions.
+
+The app's contractor policy placed ladder safety on individual provider subject to job category.
+
+Who owned the risk rule?
+
+City?
+
+Vendor?
+
+Contractor?
+
+Insurance?
+
+The injured worker broke an ankle.
+
+Everyone agreed he should have used a spotter.
+
+Nobody agreed who was responsible for ensuring one existed.
+
+The vendor said contractors controlled means and methods.
+
+The city said scope description had not required elevated work above threshold.
+
+Photograph in work order showed fixture but not height clearly.
+
+The contractor said he accepted because app estimated twenty-minute task and paid fixed amount.
+
+Requesting helper would make job unprofitable.
+
+There.
+
+Incentive converted safety rule into cost.
+
+No one had ordered him to climb alone.
+
+The payment architecture made unsafe choice economically easier.
+
+Julian attended review.
+
+"Then price model is safety control."
+
+Procurement said, "Indirectly."
+
+"Then audit it like one."
+
+The next version classified elevated work separately and adjusted pay for helper requirement.
+
+Insurance premium changed.
+
+Cost rose.
+
+Completion time rose.
+
+Injury risk fell.
+
+Residents complained jobs slower.
+
+The city accepted.
+
+This was actual constraint enforcement.
+
+Optimization had to include safety or optimization would route around it.
+
+Julian added:
+
+IF A CONSTRAINT IS NOT IN OBJECTIVE OR HARD GATE, SYSTEM TREATS IT AS FRICTION.
+
+Ana underlined hard gate.
+
+Some things should not be traded against speed.
+
+That became important later.
