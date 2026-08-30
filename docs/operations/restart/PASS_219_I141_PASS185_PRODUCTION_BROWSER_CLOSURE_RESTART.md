@@ -201,3 +201,45 @@ Continue from the exact branch tip containing this record.
 ## Stop condition
 
 Phase 7 is frozen green and restartable from repository-visible state. Return control to the user. Do not merge or deploy from this checkpoint.
+
+
+## CUMULATIVE LOCAL-CLOSURE REPAIR CHECKPOINT — 2026-08-30
+
+The next bounded Pass-185 step was resumed from frozen Phase 7.
+
+### Reconciliation finding
+
+The cumulative contract audit did **not** silently promote the Phase-7 matrix to complete local closure. It identified four remaining local implementation/evidence gaps in historical Pass-185 §5.3, §7.1, and §10:
+
+- the exact required finite boot-state names were absent from the production Runtime OS;
+- no frozen Pass-185 runner retained a Playwright trace;
+- the cumulative package lacked an explicit process-tree/environment-manifest pair;
+- mobile evidence did not explicitly exercise a real touchscreen event.
+
+### Repair implemented
+
+This checkpoint adds:
+
+- `hhs_gui/runtime_os/core/Pass185BootCoordinator.ts`;
+- cumulative coordinator bindings in `hhs_gui/index.html`, `hhs_gui/bootstrap.ts`, `hhs_gui/main.tsx`, and `hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx`;
+- `hhs_verification/pass185/cumulative_local_closure_acceptance.py`;
+- `.github/workflows/pass219-i141-pass185-cumulative-local-closure.yml`;
+- `docs/pass185/HHS_PASS_185_I141_CUMULATIVE_LOCAL_CLOSURE.md`.
+
+The coordinator is browser-observation state only and creates no canonical authority.
+
+### Validation required
+
+The dedicated cumulative workflow must:
+
+1. prove all seven frozen validated heads remain ancestors;
+2. typecheck/build the exact Runtime OS and compile inherited C authority;
+3. run dependency-scoped singleton VM81/Hash72 authority regressions;
+4. run the exact production root with isolated HOME/runtime state;
+5. retain environment, process-tree, trace, network, screenshot, and touch evidence;
+6. require ordered boot history through `INTERACTIVE` or `DEGRADED_INTERACTIVE`;
+7. require zero local contract gaps and zero waivers;
+8. seal Hash72 and Hash216 cumulative local evidence;
+9. keep authoritative-main, external-deployment, and terminal Pass-185 flags false.
+
+Do not merge or deploy from this checkpoint. If the dedicated workflow fails, repair forward only from attributable cumulative-local-closure failures without rewriting frozen Phase-1–7 receipts.

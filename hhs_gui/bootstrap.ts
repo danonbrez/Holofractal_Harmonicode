@@ -1,4 +1,4 @@
-declare global {
+import { pass185BootCoordinator } from "./runtime_os/core/Pass185BootCoordinator"\n\ndeclare global {
   interface Window {
     __HHS_REPORT_BOOT_ERROR__?: (label: string, value: unknown) => void
   }
