@@ -4022,3 +4022,46 @@ For one hour he sat with his family and no screen.
 Nothing happened that required a receipt.
 
 That, too, was part of the state.
+
+
+Before bed, Julian opened the continuity card one last time and added the date of the successful drill.
+
+Not because the drill had failed.
+
+Because success without a timestamp became folklore.
+
+He wrote who participated, which forms were used, which prefix collision had been repaired, and which cached form version had been replaced.
+
+Then he added one final line:
+
+REPLAY PASSED UNDER CURRENT CONDITIONS.
+
+Not permanently.
+
+Not universally.
+
+Current conditions.
+
+That qualifier mattered more to him than the green result.
+
+A system was never simply proven once and released from history. It was proven against a state, a dependency set, and a time.
+
+Elena read over his shoulder.
+
+"Finally."
+
+"What?"
+
+"You learned how to stop."
+
+Julian closed the notebook.
+
+The city outside continued routing messages through millions of private paths.
+
+Inside, no device buzzed.
+
+For one night, unresolved state remained unresolved without demanding immediate action.
+
+That was not failure.
+
+It was a valid terminal condition until new evidence arrived.
