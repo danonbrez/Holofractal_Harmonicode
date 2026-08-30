@@ -574,6 +574,74 @@ Because otherwise the state had changed only in language.
 He did not yet have the words.
 
 
+
+The first anniversary of the Sirens arrived with new plaques in municipal buildings.
+
+At the Annex a bronze plate appeared beside the lobby television.
+
+REMEMBER.
+
+Nothing followed the word.
+
+Julian installed the mounting anchors.
+
+Redding held the plaque while Julian leveled it.
+
+"Left."
+
+"It is left."
+
+"Your left."
+
+"My left is the same left."
+
+"Not from here."
+
+Julian adjusted.
+
+The receptionist watched them.
+
+"Little more."
+
+Julian looked at her.
+
+"Everyone is an engineer during plaque installation."
+
+She smiled.
+
+The ceremony lasted eighteen minutes.
+
+Officials spoke.
+
+Names were read.
+
+The television showed similar ceremonies elsewhere.
+
+Afterward the lobby emptied and the bronze remained above a trash can containing paper coffee cups.
+
+Julian stood alone for a moment.
+
+Remember what?
+
+The dead.
+
+The fear.
+
+The unity.
+
+The failure.
+
+The reason for the locks.
+
+The reason for the wars.
+
+The instruction was clear and the object unspecified.
+
+He wrote this nowhere.
+
+Some thoughts felt dishonest when documented too quickly.
+
+
 ---
 
 ### Chapter Two — The Crawling Line
@@ -1098,6 +1166,68 @@ It sounded efficient.
 It sounded sane.
 
 He had not yet met Elena, and therefore had nobody nearby whose professional instinct was to ask what one record had to erase in order to become one.
+
+
+
+One night after class Dr. Sutter found Julian in the computer lab testing backup restores.
+
+"Assignment was over an hour ago."
+
+"I know."
+
+"Then why are you still breaking my database?"
+
+"Backup says successful."
+
+"Good."
+
+"Restore doesn't."
+
+"Better."
+
+Julian looked at her.
+
+"Better?"
+
+"You learned something."
+
+"The backup is bad."
+
+"The report is bad."
+
+"Same outcome."
+
+"Different repair."
+
+She sat beside him.
+
+The software had produced a green check mark every night.
+
+No one had tested recovery.
+
+Dr. Sutter said, "Systems love proving they performed the operation they know how to measure."
+
+Julian tried another restore.
+
+Failed.
+
+"How do you certify backup?"
+
+"Restore it."
+
+"Every time?"
+
+"Enough to know the chain."
+
+He thought of emergency plans nobody exercised, badge databases nobody reconciled, cameras nobody checked until after incidents.
+
+A record claiming readiness was not readiness.
+
+Later he added a line to TEMPORARY.txt:
+
+TEST RETURN, NOT JUST WRITE.
+
+He did not know this would become one of his permanent rules.
 
 
 ---
@@ -1905,3 +2035,76 @@ Their relationship did not.
 
 For a while.
 
+
+
+Julian's mother joined the profile network before Elena did.
+
+She used a photograph Julian hated because it showed her at a family cookout holding a paper plate.
+
+"Why that picture?"
+
+"I look good."
+
+"You're eating corn."
+
+"I look good eating corn."
+
+She added cousins Julian had forgotten.
+
+Old neighbors.
+
+People from church.
+
+Former coworkers.
+
+Within weeks the network revived a version of South Bellwether Julian remembered from childhood.
+
+People who had moved away reappeared in comments.
+
+Dead people reappeared in tagged photographs posted by surviving relatives.
+
+His mother's page became a communal porch.
+
+Julian had assumed the network would make people more isolated because they were looking at screens.
+
+Instead he watched his mother speak more often to a friend in Georgia than she had in twenty years.
+
+That complicated his suspicion.
+
+One evening she showed him a photograph of his father taken before Julian was born.
+
+"Where'd that come from?"
+
+"Carol had it."
+
+"Who's Carol?"
+
+"Exactly."
+
+His father stood beside a car wearing a shirt Julian had seen only in another photograph.
+
+The image entered his memory immediately.
+
+Within days Julian could not remember whether he had always known it.
+
+That disturbed him more than he admitted.
+
+A new record did not merely add to memory.
+
+It could rewrite the felt boundary of what had been remembered.
+
+He asked Elena about it.
+
+"Memory is reconstructive."
+
+"I know."
+
+"Then?"
+
+"I don't like how fast the new picture became old in my head."
+
+Elena nodded.
+
+"Save source."
+
+He did.
