@@ -11,7 +11,6 @@ on:
       - 'hhs_backend/runtime_os_source_only_server.py'
       - 'hhs_verification/pass185/phase2_degradation_negative_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE2_DEGRADATION_NEGATIVE_ACCEPTANCE.md'
-      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
       - '.github/workflows/pass219-i141-pass185-phase2-degradation-negative.yml'
   workflow_dispatch:
 

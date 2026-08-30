@@ -10,7 +10,6 @@ on:
       - 'hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx'
       - 'hhs_verification/pass185/production_root_browser_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md'
-      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
       - '.github/workflows/pass219-i141-pass185-production-root-phase1.yml'
   workflow_dispatch:
 

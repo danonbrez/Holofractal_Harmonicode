@@ -13,7 +13,6 @@ on:
       - 'hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx'
       - 'hhs_verification/pass185/phase3_browser_lifecycle_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE3_BROWSER_LIFECYCLE_ACCEPTANCE.md'
-      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
       - '.github/workflows/pass219-i141-pass185-phase3-browser-lifecycle.yml'
   workflow_dispatch:
 

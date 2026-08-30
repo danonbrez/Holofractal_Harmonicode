@@ -13,7 +13,6 @@ on:
       - 'hhs_backend/runtime/multimodal_workspace_ingress_v1.py'
       - 'hhs_verification/pass185/phase4_production_multimodal_acceptance.py'
       - 'docs/pass185/HHS_PASS_185_I141_PHASE4_PRODUCTION_MULTIMODAL_ACCEPTANCE.md'
-      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
       - '.github/workflows/pass219-i141-pass185-phase4-production-multimodal.yml'
   workflow_dispatch:
 

@@ -390,3 +390,24 @@ Classification:
 Repair-forward replaces that literal escape with a real source newline and adds a cumulative source-boundary assertion preventing recurrence. No canonical runtime authority is changed.
 
 The separate CI queue de-amplification repair remains queued for the post-green cumulative checkpoint so this production-source repair does not expand the current validation surface.
+
+
+### Frozen Phase-1–6 CI trigger de-amplification
+
+After the Phase-1 through Phase-6 receipts were frozen, their workflows continued to list the shared restart record as an automatic `push.paths` trigger. Because every repair-forward checkpoint updates that restart record, bookkeeping-only commits repeatedly spawned six expensive historical browser/runtime jobs in parallel.
+
+This checkpoint removes only the shared restart-record path from automatic Phase-1 through Phase-6 push filters.
+
+Preserved:
+
+- each frozen phase workflow still auto-runs when its actual implementation, test, contract, or workflow surface changes;
+- each workflow retains `workflow_dispatch`;
+- all frozen Phase-1 through Phase-6 receipts remain unchanged;
+- the cumulative local-closure workflow remains the active reconciliation gate;
+- no runtime, VM81, Hash72, Hash216, GUI, API, or production implementation changes occur in this checkpoint.
+
+Classification:
+
+`HHS_PASS185_FROZEN_PHASE_CI_BOOKKEEPING_FANOUT_REMOVED`
+
+The exact production implementation validation candidate remains `d29297b534a62c8fddebe1b9a3a4fd6969220c40`; this later workflow-only checkpoint does not replace its browser evidence.
