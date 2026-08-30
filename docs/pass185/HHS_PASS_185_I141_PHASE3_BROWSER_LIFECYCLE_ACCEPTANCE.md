@@ -2,7 +2,7 @@
 
 Classification:
 
-`HHS_PASS_185_PHASE3_BROWSER_LIFECYCLE_ACCEPTANCE_IMPLEMENTED_PENDING_VALIDATION`
+`HHS_PASS_185_PHASE3_BROWSER_LIFECYCLE_VERIFIED`
 
 Terminal Pass 185 completion is **not** claimed.
 
@@ -85,4 +85,20 @@ Phase 3 preserves:
 - application-local editing/preview/export as non-authoritative browser behavior;
 - save/witness only through inherited workspace command ingress.
 
-Phase 3 must remain pending until one exact branch head passes the full workflow.
+## Final Phase-3 validation
+
+Phase 3 is terminal green at:
+
+- validated head: `beff7599dedff2624be712f7a215de5c193e8cbe`
+- validated tree: `b20f7834ff439b3fe8f8e3bae3216da7744918e4`
+- workflow run: `33294510153`
+- job: `99211758381`
+- artifact: `9727030968`
+- artifact SHA-256: `6b02d7c0e5677cc13cf7cb75cb3885714a263fe63af30223ddf6fee4cdc472f9`
+- evidence JSON SHA-256: `5caf404779f382b70735461a2fdd5009bbae579ff5fc883e6abd95af98e5ed1f`
+- seal receipt SHA-256: `db3e973aaf182bf53675210cb92b541659a5669c9f84ede52cae323e8aa99f95`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE3_VALIDATION_RECEIPT.json`
+
+The exact production composition was reconciled to `bootstrap.ts -> main.tsx -> IntegratedRuntimeClient -> CanonicalRuntimeIDE -> HHSProductWorkspace`. The final gate verified on-demand four-channel Runtime transport, backend stop/restart reconnect, browser offline/online recovery, listener deduplication, localStorage-unavailable local operation, repeated mount/unmount and reload behavior, independent concurrent browser contexts, and retained production-root regressions.
+
+Phase 3 still does **not** claim terminal Pass 185 completion.
