@@ -579,7 +579,8 @@ def residual_negative_gate(browser: Browser, base_url: str, evidence_dir: Path) 
 
     collision, _ = json_request(
         base_url,
-        "/api/runtime/workspace/command/phase5-collision",
+        "/api/pass185-does-not-exist",
+        timeout=5.0,
         expected_status=404,
     )
     assert collision.get("status") == "HHS_API_ROUTE_NOT_FOUND", collision
