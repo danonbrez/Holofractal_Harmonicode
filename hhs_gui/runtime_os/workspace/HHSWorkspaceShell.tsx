@@ -520,7 +520,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
 
                 {emulatorSession ? (
                   <div className="mt-3 rounded-xl border border-neutral-800 bg-black/50 p-3">
-                    <div data-testid="pass185-workbench-emulator-progress" className="flex items-center justify-between text-xs"><span>{text(emulatorSession.mode, "PAUSED")}</span><span>tick {String(emulatorSession.tick ?? 0)}</span></div>
+                    <div data-testid="pass185-workbench-emulator-progress" className="flex items-center justify-between text-xs"><span>{text(emulatorSession.mode, "PAUSED")}</span><span data-testid="pass185-workbench-emulator-tick">tick {String(emulatorSession.tick ?? 0)}</span></div>
                     <div className="mt-2 grid grid-cols-3 gap-1">
                       <button type="button" onClick={() => emulatorCommand("emulator.step")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Step</button>
                       <button data-testid="pass185-workbench-run" type="button" onClick={() => emulatorCommand("emulator.run")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Run 4</button>
