@@ -858,6 +858,94 @@ EVEN IF CREEPY.
 She left it.
 
 
+
+The archive migration produced a second lesson when a citizen challenged a property lien.
+
+The digital record showed the lien as active.
+
+The homeowner produced a stamped paper release.
+
+The release did not appear in the imported system.
+
+A clerk initially rejected it as inconsistent with the official record.
+
+Elena was called.
+
+She traced the paper backward.
+
+Stamp valid.
+
+Signature valid.
+
+File number valid.
+
+Microfilm index contained a gap on the corresponding date.
+
+The original release had been filed.
+
+It had simply never entered the digitized chain.
+
+For forty minutes the city possessed two contradictory official states.
+
+Digital:
+
+LIEN ACTIVE.
+
+Paper:
+
+LIEN RELEASED.
+
+The homeowner asked, "Which one's real?"
+
+Nobody answered immediately.
+
+Elena finally said, "The release controls if it's authentic."
+
+The clerk asked, "Then why doesn't system show it?"
+
+"Because system is wrong."
+
+The room became quiet.
+
+The homeowner laughed once.
+
+Not happily.
+
+"You're allowed to say that?"
+
+Elena looked at the screen.
+
+"Somebody has to."
+
+The correction was entered.
+
+The system now displayed the right state.
+
+But Elena made the clerk retain the discrepancy receipt.
+
+Julian heard the story at dinner.
+
+"Good."
+
+"Why good?"
+
+"System got corrected."
+
+"Homeowner spent two weeks proving system wrong."
+
+"Still."
+
+Elena nodded.
+
+"Still."
+
+They had become unwilling optimists.
+
+Repair mattered.
+
+So did the cost of being right before authority agreed.
+
+
 ---
 
 ### Chapter Eight — The Invisible Audience
@@ -1544,6 +1632,57 @@ This was not a battle.
 It was co-evolution.
 
 The prospect was more unsettling than a broken tool because there was no final version to certify.
+
+
+
+After Benson's case, city employees created private groups to complain about public social media.
+
+This lasted until someone leaked screenshots from the private group.
+
+The leak caused a second investigation.
+
+Julian found this perfect.
+
+People had attempted to solve invisible audience risk by constructing a smaller audience inside the same infrastructure.
+
+The boundary existed socially.
+
+The platform could not guarantee its preservation.
+
+One screenshot crossed it.
+
+Private became public.
+
+During the investigation a manager said, "Nothing online is private."
+
+Elena, when Julian repeated this, objected.
+
+"That is false."
+
+"Practically?"
+
+"Still false."
+
+"Things leak."
+
+"Houses get robbed. That doesn't make houses public."
+
+"Good line."
+
+"Do not steal it."
+
+Julian wrote it down.
+
+The distinction mattered because fatalism destroyed boundaries as effectively as bad tools.
+
+If people believed privacy impossible, they stopped demanding design that respected it.
+
+The network then became more invasive partly because everyone assumed invasion was inevitable.
+
+Architecture followed expectation.
+
+Again.
+
 
 
 ---
@@ -2472,3 +2611,84 @@ They laughed at the altar.
 Mira, four, asked loudly why everyone was quiet.
 
 That photograph became the one image Elena never objected to being shared.
+
+
+Cass contacted Julian months after the encampment was cleared.
+
+Not through social media.
+
+Email.
+
+Subject:
+
+YOU STILL ARCHIVING?
+
+Julian replied:
+
+DEPENDS WHO'S ASKING.
+
+Cass:
+
+THAT IS THE MOST ARCHIVIST ANSWER POSSIBLE.
+
+She had moved into community organizing and wanted copies of livestreams that vanished when a platform account was suspended.
+
+Julian had two.
+
+He asked Elena whether to send them.
+
+"Whose videos?"
+
+"Public streams."
+
+"Any private subjects?"
+
+"People in crowd."
+
+"Already public?"
+
+"At time."
+
+"Does that equal permanent redistribution?"
+
+Julian sighed.
+
+"Nothing can be easy."
+
+"Correct."
+
+They sent links only to material whose creators had explicitly allowed download.
+
+Cass replied:
+
+YOU PEOPLE ARE EXHAUSTING.
+
+Julian:
+
+THAT IS WHY WE STILL HAVE FILES.
+
+Cass:
+
+FAIR.
+
+The exchange became another small proof that preservation itself required boundaries.
+
+An archive was not moral merely because it remembered.
+
+Memory could expose.
+
+Embarrass.
+
+Endanger.
+
+Freeze people in states they had left.
+
+Elena added a new column to their SOURCE index:
+
+RETENTION / REDISTRIBUTION AUTHORITY.
+
+Julian objected to the length.
+
+She ignored him.
+
+The Ark, before it was the Ark, learned consent from a protest video.
