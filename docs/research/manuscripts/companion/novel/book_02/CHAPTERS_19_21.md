@@ -3106,3 +3106,112 @@ This became important to the Ark.
 Not every proof required universal disclosure.
 
 Sometimes proving a record existed at a time was enough until authorized opening.
+
+
+The most unsettling Harvest demonstration happened at a public technology fair.
+
+A university team built a game.
+
+Visitors answered twelve harmless questions.
+
+Coffee or tea.
+
+City or country.
+
+Morning or night.
+
+Risky investment or safe savings.
+
+Crowded party or quiet dinner.
+
+Then the game predicted which of six political messages they would find most persuasive.
+
+Julian played.
+
+The system selected a message about infrastructure reliability.
+
+"Cheating," he said.
+
+The researcher laughed.
+
+"Why?"
+
+"My badge says Facilities."
+
+She looked.
+
+"Model doesn't see badge."
+
+"Then obvious."
+
+"Maybe you're obvious."
+
+Elena played.
+
+The model selected archival funding framed as intergenerational stewardship.
+
+She stared.
+
+"That is creepy."
+
+Mira played.
+
+The model failed completely.
+
+It predicted environmental activism.
+
+Mira selected a message about school lunch.
+
+"Ha," she said.
+
+The researcher explained the model was statistical, not psychic.
+
+It performed above chance across groups.
+
+Not individuals reliably.
+
+That distinction disappeared in public imagination.
+
+People heard prediction and imagined knowledge.
+
+Campaigns did not need perfect models.
+
+They needed small aggregate lift across millions of contacts.
+
+Julian saw the scale problem.
+
+A weak inference could be powerful if applied broadly.
+
+At individual scale, wrong often.
+
+At population scale, useful.
+
+This made personal anecdotes poor audits.
+
+"I got irrelevant ad" did not disprove targeting.
+
+"I got exact ad" did not prove mind-reading.
+
+Only aggregate calibration did.
+
+He wrote:
+
+MODEL POWER MAY LIVE IN POPULATION, NOT PERSON.
+
+This was crucial to Lyra too.
+
+The polymorphic adversary did not need perfect understanding.
+
+It needed enough adaptation to increase bypass probability.
+
+The researcher asked why Julian looked unhappy.
+
+"Your game is good."
+
+"Thanks."
+
+"That's why."
+
+She did not understand.
+
+Elena did.
