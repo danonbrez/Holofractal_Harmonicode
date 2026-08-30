@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`MODULE 4 — PHASE 4C: THE GOLDEN INVARIANT — BOOK II: THE WORLD IN THE FEED`
+`MODULE 4 — PHASE 4D: THE GOLDEN INVARIANT — BOOK III: THE WORLD THAT ANSWERS BACK`
 
-Phase 4B is complete. Canonical Book I manuscript: `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`, 35,022 words, 12 chapters, with B00-B23 all validated. Next generate Chapters 13-24 / Beats B24-B47 (2012-2019) from the exact Book I terminal state.
+Phase 4C is complete. Canonical Book II manuscript: `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`, 35,038 words, 12 chapters, with B24-B47 all validated. Next generate Chapters 25-36 / Beats B48-B71 (2019-2026) from the exact Book II terminal state.
 
 ## External research policy
 
@@ -312,3 +312,23 @@ Receipt:
 - terminal historical state: common broadcast reality has become personalized carried reality by the end of 2012.
 
 Book II must inherit Julian, Elena, Mira, Vane, Ana Reyes, the Golden Measure, SOURCE/SUMMARY, Rat, Lyra recurrence, and the established provenance rules without resetting characterization or technology state.
+
+
+## Module 4 Phase 4C completion
+
+Book II — **THE WORLD IN THE FEED** is complete and repository-visible.
+
+Canonical manuscript:
+
+`docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`
+
+Receipt:
+
+- 35,038 words;
+- 12 chapters;
+- B24-B47 all validated;
+- source fragment files preserved under `docs/research/manuscripts/companion/novel/book_02/`;
+- direct-name validation found zero occurrences of the checked real platform/event/allusion names;
+- terminal historical state: by the end of 2019 the feed is the default reality interface, Consensus is useful enough to become infrastructural, and replay/fallback/provenance remain explicit counterweights.
+
+Book III must inherit Julian, Elena, Mira, Vane, Ana Reyes, Samir Cole, the Golden Measure, R72/RM-72 candidate lineage, SOURCE/SUMMARY/BEFORE/UNRESOLVED, Rat, Lyra multiplicity without identity promotion, and the established distinction between useful integration and unbounded authority.
