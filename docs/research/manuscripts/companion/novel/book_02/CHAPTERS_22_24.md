@@ -3140,3 +3140,90 @@ Julian:
 "Too late."
 
 This was the last year Julian thought Vane had kept the architecture bounded successfully.
+
+
+The last lesson of 2019 came from a missing staple.
+
+A scanned procurement packet contained twelve pages.
+
+The paper original contained thirteen.
+
+No page was missing.
+
+The thirteenth was a blank separator with a staple hole and handwritten initials.
+
+Digitization staff had omitted it as blank.
+
+Samir noticed.
+
+"Why keep blank?"
+
+"Because initials."
+
+"What do they mean?"
+
+"Attachment reviewed."
+
+"How know?"
+
+"That's what auditor did."
+
+"Documented?"
+
+"Old procedure manual."
+
+They found manual.
+
+Blank separator marked transition between technical and financial review.
+
+The initials proved one reviewer had seen both sections.
+
+Without it, later audit could not establish chain.
+
+A blank page carried state.
+
+Julian laughed.
+
+"Unknown isn't zero. Blank isn't nothing."
+
+Elena looked at him.
+
+"Now you're stealing from yourself."
+
+They rescanned.
+
+The page appeared white except faint initials.
+
+Metadata labeled:
+
+REVIEW SEPARATOR — SIGNED.
+
+No one outside audit would ever care.
+
+That was the point.
+
+Systems could not know in advance which apparently empty object would become discriminating evidence.
+
+Maximum preservation was impossible.
+
+Minimum preservation required understanding function.
+
+The best they could do was preserve uncertainty when deletion rationale was weak.
+
+Samir called this:
+
+"Don't throw away weird."
+
+Elena objected.
+
+Julian thought it was perfect.
+
+Mira wrote it on the carbon-copy receipt book.
+
+DO NOT THROW AWAY WEIRD.
+
+Years later the phrase would appear on an Ark development board.
+
+Nobody remembered whether Samir or Mira authored it.
+
+Julian had the receipt.
