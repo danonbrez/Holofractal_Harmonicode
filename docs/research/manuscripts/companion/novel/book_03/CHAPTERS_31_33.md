@@ -2156,3 +2156,357 @@ Samir called contracts.
 Mira called obvious.
 
 Julian called Ark.
+
+
+Answer created a new labor divide inside city hall.
+
+People who learned to use it well produced more.
+
+People who refused remained slower in some tasks.
+
+Management began expecting higher output.
+
+Productivity gain turned into baseline.
+
+This happened quickly.
+
+A planner said:
+
+"Before, two days. Now afternoon."
+
+Six months later afternoon became expected.
+
+Workers did not gain half day.
+
+Organization absorbed.
+
+Julian recognized automation pattern.
+
+Tool benefit distributed by power.
+
+Not inherently exploitation.
+
+Could shorten backlog.
+
+Could reduce overtime.
+
+Could also intensify work.
+
+Union negotiated AI-use policy.
+
+No discipline solely from usage metrics.
+
+No requirement to use unapproved systems.
+
+Training provided.
+
+Generated output remains worker responsibility where worker authorizes.
+
+Management cannot treat machine suggestion as evidence employee error if employee rejects with documented reason.
+
+This last clause came from one case.
+
+Answer suggested code repair.
+
+Technician knew unsafe.
+
+Supervisor asked why ignored AI.
+
+Absurd.
+
+Policy fixed.
+
+The machine's recommendation had acquired implicit authority through management enthusiasm.
+
+Again.
+
+Candidate must stay candidate.
+
+Julian liked seeing same invariant everywhere.
+
+The harder question was authorship.
+
+A resident received beautifully written denial letter.
+
+Human signed.
+
+Machine drafted from rule.
+
+Who authored?
+
+Agency.
+
+Not model.
+
+But if wording harmful, which responsibility?
+
+Agency still.
+
+Delegation does not delegate accountability.
+
+Old line.
+
+
+Elena tested Answer on archival descriptions under strict mode.
+
+It was excellent at converting technical catalog language into public summaries while citing exact records.
+
+Then it made one subtle category error.
+
+A collection described "wives of workers" in historical title because original organization used phrase.
+
+Answer modernized to "spouses."
+
+Inclusive.
+
+But source population had been explicitly women because program only served wives under old policy.
+
+Modernization erased historical constraint.
+
+Elena stopped batch.
+
+"Semantic smoothing."
+
+The model had made language more contemporary and less accurate.
+
+They changed prompt:
+
+PRESERVE HISTORICALLY MATERIAL CATEGORIES EVEN IF TERMINOLOGY IS OUTDATED; EXPLAIN WITHOUT SILENT REPLACEMENT.
+
+Better.
+
+This illustrated anti-drift challenge.
+
+Helpful rewriting can remove offensive/dated language and accidentally remove evidence of past institution.
+
+Archive must retain source term.
+
+Public interface can contextualize.
+
+Not silently rewrite history.
+
+Julian connected to political fights over old documents.
+
+Same.
+
+
+The Missing Source incident had a second consequence: people started submitting generated citations to the archive.
+
+Researchers, students, residents.
+
+"According to Bellwether Ordinance 1947-22..."
+
+No ordinance.
+
+Staff wasted time.
+
+Elena created reference-verification guidance.
+
+If assistant gives citation:
+
+click source,
+
+search catalog,
+
+confirm title/date,
+
+confirm quoted proposition.
+
+Basic.
+
+Then one generated citation pointed to real ordinance but wrong section.
+
+Harder.
+
+Another to real newspaper issue with fabricated article title.
+
+The machine had learned plausible bibliographic structure.
+
+Archives became validation layer for AI output.
+
+Usage increased.
+
+Elena's staff workload rose.
+
+The machine reduced research friction by shifting verification burden onto authoritative sources.
+
+This was not bad.
+
+But cost externalized.
+
+Libraries and archives needed support.
+
+Julian wrote:
+
+AUTOMATION MAY MOVE LABOR DOWNSTREAM RATHER THAN REMOVE.
+
+Same as gig apps.
+
+Same as forms.
+
+Efficiency must trace cost transfer.
+
+
+Mira's school developed honor policy around Answer.
+
+The first version banned generated text.
+
+Impossible to enforce.
+
+Second required disclosure.
+
+Students pasted:
+
+AI USED FOR BRAINSTORMING.
+
+AI USED FOR GRAMMAR.
+
+AI USED FOR CODE DEBUGGING.
+
+Teachers overwhelmed.
+
+Third asked only when tool materially generated submitted content.
+
+Still ambiguous.
+
+Mira argued:
+
+"If it explains and I learn, not content."
+
+Teacher agreed.
+
+"If it rewrites my sentence?"
+
+Maybe editing.
+
+"If it gives sentence and I change words?"
+
+Generated.
+
+They realized originality was gradient.
+
+School shifted assessment.
+
+Oral questions.
+
+Process artifacts.
+
+Source verification.
+
+Personal reflection on decisions.
+
+The education system adapted by measuring understanding rather than text production alone.
+
+Some assignments remained no-AI because skill itself mattered.
+
+Mental arithmetic.
+
+Foundational writing.
+
+Others allowed.
+
+Typed objective.
+
+Julian liked.
+
+A calculator did not eliminate arithmetic instruction.
+
+Answer would not eliminate learning if objective explicit.
+
+The panic was partly missing task definition.
+
+
+The synthetic photograph suspension changed Julian's behavior in public.
+
+He became aware every camera could be source or raw material.
+
+At one event he avoided standing near political sign because he imagined future crop.
+
+Then stopped himself.
+
+This was corrosive.
+
+If synthetic possibility makes people self-censor physical life, attack succeeds even without fake.
+
+He attended family festival.
+
+Photographs everywhere.
+
+Accepted.
+
+Risk cannot be zero.
+
+Ark should reduce consequence of false media, not make everyone hide.
+
+This became design principle:
+
+PROVENANCE SYSTEM MUST NOT REQUIRE TOTAL SURVEILLANCE TO PROVE INNOCENCE.
+
+Julian had strong location evidence because city tracked work.
+
+Ordinary person might not.
+
+Should they need continuous logging as alibi?
+
+No.
+
+The cure—lifelogging—could become worse than synthetic threat.
+
+Ark needed asymmetry handling.
+
+Unknown provenance of accusation should limit authority of accusation; subject should not bear impossible burden to prove negative.
+
+Elena wrote:
+
+ABSENCE OF PERSONAL SURVEILLANCE IS NOT EVIDENCE AGAINST SUBJECT.
+
+This entered protocol.
+
+
+Ark's first governance dispute concerned deletion.
+
+One member wanted immutable forever.
+
+Elena opposed.
+
+Sensitive records.
+
+Mistaken uploads.
+
+Legal orders.
+
+Consent revocation.
+
+Julian feared deletion destroys lineage.
+
+They separated:
+
+object tombstone,
+
+payload retention.
+
+A receipt could preserve that object existed and was withdrawn without retaining public payload.
+
+Hash.
+
+Reason class.
+
+Authority.
+
+Some cases require full legal deletion including hash? Possibly under law/privacy.
+
+Then no universal.
+
+Local jurisdiction.
+
+Ark protocol allowed redaction witness.
+
+This offended purists.
+
+Good.
+
+A system that cannot forget anything becomes surveillance archive.
+
+A system that forgets silently becomes untrustworthy.
+
+Typed deletion.
