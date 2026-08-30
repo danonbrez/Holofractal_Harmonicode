@@ -53,6 +53,8 @@
 - Module 4 Phase 4A dedicated restart record: `1d5fe4ef90ac449af68d32a20a945e0330bbb6f3`
 - Module 4 Book I canonical assembly: `1e543b298dfe637773256b48721e31be4c54c908`
 - Module 4 Book I completion restart record: `9eaedf9c305703b46c0e4a1d1a5a921ea1c179d9`
+- Module 4 Book II canonical assembly: `d852f01cb6bfafe8898c162c40dae6c1012adcf7`
+- Module 4 Book II completion restart record: `40f1e78f2028b374daba7d24f3c6e0471d98477f`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -74,6 +76,8 @@
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4A_RESTART.md`
 - `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4B_RESTART.md`
+- `docs/research/manuscripts/companion/novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4C_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -99,7 +103,9 @@
 - Verified exact 72-beat compiler with B00-B71 and no gaps
 - Verified 24/24/24 historical split, 36 chapters, 3 books, and 110k-130k full-novel target
 - Verified Module 4 Book I: 35,022 words / 12 chapters / B00-B23 complete
-- Verified Book I historical band 2001-2012 and direct-name audit characters
+- Verified Book I historical band 2001-2012 and direct-name audit
+- Verified Module 4 Book II: 35,038 words / 12 chapters / B24-B47 complete
+- Verified Book II historical band 2012-2019 and direct-name/allusion audit characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -174,9 +180,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`MODULE 4 — PHASE 4C: THE GOLDEN INVARIANT — BOOK II: THE WORLD IN THE FEED`
+`MODULE 4 — PHASE 4D: THE GOLDEN INVARIANT — BOOK III: THE WORLD THAT ANSWERS BACK`
 
-Modules 1-3, Module 4 Phase 4A, and Book I are complete and checkpointed. Next generate Book II continuous prose for Chapters 13-24 / Beats B24-B47 / 2012-2019 from the exact Book I terminal state, preserving chronology, characterization, provenance rules, and the invisible theorem map.
+Modules 1-3, Module 4 Phase 4A, Book I, and Book II are complete and checkpointed. Next generate Book III continuous prose for Chapters 25-36 / Beats B48-B71 / 2019-2026 from the exact Book II terminal state, preserving chronology, characterization, provenance/replay rules, and the invisible theorem map.
 
 ## Blockers
 
