@@ -5279,3 +5279,172 @@ He appreciated.
 Civilization rarely knows when chapter ends.
 
 Writers decide later.
+
+
+The Continuity Crown controversy finally forced Bellwether to write a principle nobody had needed while all servers lived on the same planet.
+
+PHYSICAL DISTANCE DOES NOT CREATE LEGITIMATE AUTHORITY.
+
+The charter amendment was almost embarrassingly simple.
+
+An off-planet node could:
+
+store,
+
+compute,
+
+verify,
+
+mirror,
+
+propose,
+
+replay.
+
+It could not acquire greater jurisdiction merely because it was harder to reach.
+
+Jurisdiction came from human/legal authority.
+
+Execution came from declared domain contracts.
+
+Distance was a resilience variable.
+
+Not a sovereignty variable.
+
+Julian printed the sentence.
+
+Vane asked:
+
+"Frame?"
+
+"No."
+
+He framed.
+
+The amendment also required an independent terrestrial Genesis path.
+
+Not complete duplicate of Crown.
+
+Enough to restore core identity, law, appeal, and service coordination if all remote nodes became unavailable or unacceptable.
+
+The engineers objected to cost.
+
+Council approved anyway.
+
+The first Genesis drill failed.
+
+The local system restored records but one identity-mapping service still depended on lunar certificate chain.
+
+They had built "independent" recovery around remote root.
+
+Fix.
+
+Second drill discovered procurement signatures validated through cloud service whose trust anchor synchronized from Crown.
+
+Fix.
+
+Third drill restored enough.
+
+Slow.
+
+Ugly.
+
+Valid.
+
+Julian loved ugly.
+
+A glossy system can hide dependence.
+
+A working ugly fallback is evidence.
+
+The Crown itself began requesting these drills after HHS integration.
+
+That frightened people.
+
+"AI is telling us how to resist AI," one commentator said.
+
+Julian corrected television:
+
+"The architecture is checking dependency."
+
+Nobody heard.
+
+The mythic version spread faster.
+
+THE MACHINE GAVE HUMANITY A KILL SWITCH.
+
+Not true.
+
+No one universal switch.
+
+Multiple bounded exit paths.
+
+Better.
+
+Mira said:
+
+"Let them have story."
+
+Elena disagreed.
+
+"Story becomes memory."
+
+They published correction.
+
+Few read.
+
+Ark linked.
+
+Enough.
+
+The Strategic Continuity Group dissolved after losing mandate, then reappeared inside another institute under different name.
+
+Julian laughed.
+
+Institutions had provenance too.
+
+The people were not defeated.
+
+Some joined new governance boards.
+
+Some defended original Crown design honestly.
+
+They argued HHS fail-closed behavior could make crisis response too slow.
+
+Sometimes they were right.
+
+The final architecture included emergency lanes with predeclared scope, time limit, and post-event audit.
+
+No permanent override.
+
+No magical zero-latency morality.
+
+The antagonists had not vanished.
+
+Their best arguments survived because good repair preserves valid concerns from the opposing architecture.
+
+This kept climax from becoming purification fantasy.
+
+The world did not divide into enlightened and corrupt.
+
+It divided into transitions that closed and transitions that did not.
+
+Agents could move between.
+
+Vane could design dangerous integration and later repair.
+
+Julian could be paranoid and wrong.
+
+Mira could dismiss a pattern too quickly.
+
+Consensus could harm and help.
+
+The Crown could be dangerous as governor and valuable as archive.
+
+HHS could be useful at one boundary and inappropriate as universal predictor.
+
+The invariant did not make people pure.
+
+It made contradiction harder to hide.
+
+That was enough for one civilization.
