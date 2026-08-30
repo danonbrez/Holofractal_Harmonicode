@@ -510,7 +510,7 @@ def storage_unavailable(
         accept_downloads=True,
     )
     context.add_init_script(
-        """() => {
+        """(() => {
             const target = "hhs.pass185.production-lifecycle.v1";
             const getItem = Storage.prototype.getItem;
             const setItem = Storage.prototype.setItem;
@@ -522,7 +522,7 @@ def storage_unavailable(
                 if (name === target) throw new DOMException("blocked", "SecurityError");
                 return setItem.call(this, name, value);
             };
-        }"""
+        })();"""
     )
     page = launch_page(context, base_url)
     open_tab(page, "Application")
