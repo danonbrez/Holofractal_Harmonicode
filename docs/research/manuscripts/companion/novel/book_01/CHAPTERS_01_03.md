@@ -1230,6 +1230,120 @@ TEST RETURN, NOT JUST WRITE.
 He did not know this would become one of his permanent rules.
 
 
+
+The first municipal attempt at one employee identity failed because of middle initials.
+
+Julian learned this during a data-cleanup weekend when Human Resources, Security, Payroll, and Information Services tried to reconcile personnel directories.
+
+The meeting occupied a windowless training room and produced more hostility than most elections.
+
+A woman from Payroll said, "We have one authoritative employee number."
+
+Security said, "Badge system uses another."
+
+Human Resources said, "Our number is authoritative."
+
+Payroll said, "Ours pays them."
+
+Security said, "Ours opens doors."
+
+Julian sat against the wall with coffee, officially present because access-control exports were involved.
+
+A contractor displayed unmatched records.
+
+JAMES R HOLT.
+
+JAMES ROBERT HOLT.
+
+JIM HOLT.
+
+JAMES HOLT JR.
+
+JAMES HOLT.
+
+Same person?
+
+Sometimes.
+
+Not always.
+
+One employee had changed surname after marriage.
+
+Another had never updated Security.
+
+A third was accidentally sharing a date of birth with an unrelated employee because one legacy system stored an unknown day as January first.
+
+The contractor proposed a master identity table.
+
+"Good," Payroll said.
+
+"Who owns it?" HR asked.
+
+The room became quiet.
+
+The question was not technical.
+
+Everyone had wanted one source until one source required one owner.
+
+Julian raised his hand.
+
+Nobody invited him to.
+
+"What if nobody owns all of it?"
+
+The contractor said, "Then you don't have a master."
+
+"Have references."
+
+"To what?"
+
+"Department source."
+
+"Then queries are slower."
+
+"Yes."
+
+"Conflicts persist."
+
+"Visible conflicts."
+
+The contractor looked at him with professional pity.
+
+"Normalization exists to eliminate inconsistency."
+
+"Some inconsistency is real."
+
+HR said, "Such as?"
+
+"Security says person has badge. Payroll says terminated. That's not duplicate noise. That's a problem."
+
+The room changed.
+
+Not because Julian was brilliant.
+
+Because everyone could imagine the terminated employee whose badge still opened a door.
+
+The contractor added conflict-state handling.
+
+The weekend ran long.
+
+On Sunday night Julian sat alone with the reconciliation report.
+
+Thousands matched.
+
+Dozens did not.
+
+The unmatched list looked like failure.
+
+He printed it.
+
+The printout later proved more useful than the successful merge.
+
+Every unresolved identity was a place where the city admitted it did not yet know.
+
+Julian began to respect explicit incompleteness.
+
+
 ---
 
 ### Chapter Three — Profiles
