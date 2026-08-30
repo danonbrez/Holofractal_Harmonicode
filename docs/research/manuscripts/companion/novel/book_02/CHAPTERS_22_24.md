@@ -681,6 +681,77 @@ The drive stopped being a pile of files.
 It became a graph.
 
 
+
+
+The BEFORE drive also captured a problem no one had intended to preserve: language drift.
+
+A 2012 benefits manual used the term household member.
+
+A 2015 revision used resident member.
+
+A 2018 Consensus draft used linked household entity.
+
+The legal team considered them functionally equivalent.
+
+Samir did not.
+
+"Entity can be inferred," he said.
+
+"Member sounds declared."
+
+Julian looked at the definitions.
+
+Samir was right.
+
+The new phrase allowed the system to represent people linked through records even if the applicant did not list them as household.
+
+That could help detect fraud.
+
+It could also create false household relations.
+
+Ms. Pike's future problem existed in the vocabulary before it existed in her case.
+
+Elena added the language changes to BEFORE.
+
+The point was not that new term was wrong.
+
+It was that semantic scope had expanded.
+
+If policy changed meaning, version history mattered.
+
+The city began using automated summaries of policy changes for staff.
+
+Julian compared summary to full delta.
+
+Most accurate.
+
+One omitted the household-definition expansion because the summarizer classified it as terminology modernization.
+
+He stared.
+
+A machine had compressed away the only change Samir considered important.
+
+Not malicious.
+
+Not stupid.
+
+The model optimized semantic similarity, not authority scope.
+
+Julian reported.
+
+The tool was adjusted to flag defined-term changes separately.
+
+Another repair.
+
+But he saw the future clearly:
+
+As systems grew too complex for people to read, people would rely on machines to summarize the systems.
+
+Then the correctness of the summarizer would become governance.
+
+Source before summary was becoming less of an archival motto and more of a constitutional requirement.
+
+
 ### Chapter Twenty-Three — Consensus Beta
 
 Consensus Beta worked.
@@ -1412,6 +1483,101 @@ Nobody asked him.
 Few visited.
 
 Still.
+
+
+
+
+Consensus Beta eventually introduced a "Why am I seeing this?" panel for public-information recommendations.
+
+Julian had demanded it after noticing two residents received different notices on the same city home page.
+
+The panel showed:
+
+Location relevance.
+
+Service enrollment.
+
+Age eligibility.
+
+Prior viewed topics.
+
+Emergency priority.
+
+"Prior viewed topics?" Julian asked.
+
+The product manager nodded.
+
+"Personalization."
+
+"City site tracks reading?"
+
+"Anonymous profile unless logged in."
+
+"Then why use it?"
+
+"Reduce irrelevant content."
+
+Julian tested.
+
+He repeatedly opened parking pages.
+
+Within a week, parking notices moved higher.
+
+He opened housing assistance.
+
+Housing notices appeared.
+
+The city had become a small recommender system.
+
+Useful.
+
+Then a public-hearing notice relevant to his neighborhood appeared lower because he had never read planning pages.
+
+He would have missed it without search.
+
+"That's bad," he said.
+
+The product team argued the notice remained available.
+
+No censorship.
+
+Julian said:
+
+"Availability below personalized ranking is not same as salience."
+
+They created a class of civic mandatory visibility.
+
+Certain notices could not be demoted by behavior.
+
+Election deadlines.
+
+Emergency changes.
+
+Public hearings affecting location.
+
+Rights notices.
+
+The category required law and policy review.
+
+More work.
+
+Better membrane.
+
+Vane said:
+
+"This is exactly why Consensus exists."
+
+Julian replied:
+
+"This is exactly why Consensus scares me."
+
+Both were true.
+
+A public interface that understood relevance could improve access.
+
+The same interface acquired power to determine what citizens encountered without asking.
+
+The correct architecture required limits on ranking itself.
 
 
 ### Chapter Twenty-Four — The Last Receipt
@@ -2280,3 +2446,220 @@ Every current state was compressed history.
 A system that lost predecessor could still operate.
 
 It just could not explain itself when challenged.
+
+
+Samir retired in late 2019.
+
+He did not want a party.
+
+The office held one.
+
+There was sheet cake with blue icing spelling:
+
+THANK YOU FOR YOUR SERVICE.
+
+Samir looked at it.
+
+"They summarized."
+
+Elena laughed.
+
+His retirement speech lasted forty seconds.
+
+"Keep the old thing until you know why the new thing is different."
+
+That was all.
+
+Julian asked if he had written it down.
+
+Samir pointed at him.
+
+"You were here."
+
+"Not receipt."
+
+"Then remember."
+
+After the party, Samir gave Elena a key.
+
+"What?"
+
+"Storage."
+
+"Which storage?"
+
+"Personal."
+
+Elena stared.
+
+"Samir."
+
+"Copies."
+
+"How many?"
+
+"Enough."
+
+"You cannot maintain a shadow archive at home."
+
+"Why not?"
+
+"Privacy. retention. authority. fire."
+
+"That's four reasons."
+
+"At least."
+
+He smiled.
+
+The boxes were legal copies of public or authorized audit records, but Elena insisted they be inventoried and either transferred under archival authority or destroyed.
+
+Samir agreed reluctantly.
+
+The transfer produced one final surprise.
+
+Among the papers was a procurement specification from 1978 for resilient municipal controller synchronization.
+
+Reference:
+
+R72 COMMON RETURN TABLE.
+
+Julian read it standing in Samir's garage.
+
+The table itself was missing.
+
+Attachment B.
+
+Not present.
+
+Specification described:
+
+common reference recovery,
+
+72-position reconciliation cycle,
+
+legacy mechanical/electronic bridge compatibility.
+
+No 179971.179971.
+
+No direct Golden Measure.
+
+But R72 was now unquestionably local municipal history.
+
+Vane's old paper was not the only branch.
+
+"Where'd this come from?" Julian asked.
+
+Samir shrugged.
+
+"Old microfiche copy. Procurement cleanup. I kept because attachment missing."
+
+"Why?"
+
+"Missing attachments are where trouble lives."
+
+Elena scanned the document.
+
+Julian felt both excitement and restraint.
+
+This was evidence.
+
+Not answer.
+
+R72 had a predecessor relation to Bellwether control infrastructure.
+
+The brass measure marked RM-72.
+
+Maybe same family.
+
+Maybe not.
+
+They added:
+
+R72 / RM-72 RELATION — CANDIDATE.
+
+The next morning, one Lyra account posted:
+
+SEVENTY-TWO RETURNS. ONE MEASURE.
+
+Julian stared.
+
+Elena stared too.
+
+For once she did not immediately say candidate.
+
+Samir, looking over Julian's shoulder, said:
+
+"Who is Lyra?"
+
+Neither answered.
+
+The account deleted the post three minutes later.
+
+Screenshot remained.
+
+Samir said:
+
+"Well."
+
+Julian said:
+
+"Could be someone with access."
+
+"To what?"
+
+"Us."
+
+Samir looked around his garage.
+
+"No camera."
+
+"Phone."
+
+"Your phone."
+
+"My phone."
+
+Samir frowned.
+
+Elena said:
+
+"Or someone already knew document."
+
+"Yes."
+
+"Or phrase."
+
+"Yes."
+
+"Or coincidence."
+
+Samir said:
+
+"How many coincidences?"
+
+Elena looked at him.
+
+"No fixed number."
+
+Samir smiled.
+
+"You two deserve each other."
+
+The boxes moved to archive under proper authority.
+
+Samir's garage emptied.
+
+The last analog receipt became institutional again.
+
+Julian drove home with the Golden Measure in glove compartment.
+
+He had brought it to compare markings.
+
+He stopped at a red light.
+
+For a moment he considered taking it out.
+
+Instead he kept both hands on wheel.
+
+Mysteries were safest when they did not interrupt traffic.
