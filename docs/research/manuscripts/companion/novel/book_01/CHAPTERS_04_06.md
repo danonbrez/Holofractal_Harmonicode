@@ -735,6 +735,90 @@ People built habits around possibility.
 
 
 
+
+The phone also changed waiting.
+
+Before the black phone, waiting had texture.
+
+Bus stop.
+
+Doctor's office.
+
+Elevator lobby.
+
+Line at the permit counter.
+
+People stared.
+
+Read old magazines.
+
+Listened to strangers.
+
+Now every pause acquired a door.
+
+Julian noticed this while waiting for a replacement breaker at an electrical supply warehouse.
+
+The clerk said ten minutes.
+
+Julian checked mail.
+
+News.
+
+Weather.
+
+A forum about control systems.
+
+A message from Elena.
+
+A photograph from Marcus.
+
+A work ticket.
+
+The clerk called his name.
+
+Twenty-three minutes had passed.
+
+Julian felt cheated.
+
+The phone had removed boredom and with it his sense of elapsed time.
+
+He mentioned this to Elena.
+
+"You're upset the device made waiting easier."
+
+"I'm upset I didn't know I waited."
+
+"Why?"
+
+"Because then ten minutes can become twenty-three without friction."
+
+She looked at him.
+
+"That is the most municipal complaint possible."
+
+He laughed.
+
+But he began noticing how many transitions entered through removed friction.
+
+Buy now.
+
+Reply now.
+
+Navigate now.
+
+Approve now.
+
+Rate now.
+
+Share now.
+
+The network's great promise was not intelligence.
+
+It was fewer pauses.
+
+Julian wondered what pauses had been doing besides annoying people.
+
+
 ---
 
 ### Chapter Five — Easy Houses
@@ -1750,6 +1834,90 @@ Source.
 
 
 
+
+Marcus's foreclosure changed Julian's friendship with numbers.
+
+Before, Julian had treated money as a quantity.
+
+Afterward he began treating it as a relation among records.
+
+Loan balance.
+
+Assessed value.
+
+Market value.
+
+Payment.
+
+Interest rate.
+
+Income.
+
+Debt.
+
+The house existed physically across all of them.
+
+Its economic identity changed depending on which ledger executed.
+
+Marcus eventually rented a smaller place near the transit yard.
+
+Julian helped assemble furniture.
+
+Kendra brought their daughter.
+
+The adults were civil.
+
+The child moved between them carrying toys whose jurisdiction no one disputed.
+
+Marcus said, "You know what I miss?"
+
+"Garage?"
+
+"Knowing what I was doing."
+
+"You didn't know then."
+
+"Exactly."
+
+Julian understood.
+
+Confidence was not knowledge, but it had practical value.
+
+A system could become so complex that ordinary people could act only by trusting abstractions supplied by specialists.
+
+Mortgage broker.
+
+Rating agency.
+
+Bank.
+
+Appraiser.
+
+Regulator.
+
+Investor.
+
+Each saw a slice.
+
+Marcus had seen a payment.
+
+Nobody had shown him the full dependency graph because nobody nearby possessed it.
+
+This was not absolution.
+
+It was architecture.
+
+Julian wrote:
+
+COMPLEXITY CREATES BORROWED JUDGMENT.
+
+Elena added:
+
+BORROWED JUDGMENT REQUIRES PROVENANCE.
+
+They left the note on the refrigerator until Mira colored over it.
+
+
 ---
 
 ### Chapter Six — Mortgage Winter
@@ -2660,3 +2828,46 @@ Return to measure.
 They were not building a theory.
 
 They were trying to remember what they meant.
+
+
+During Mira's first winter, the Golden Measure sat untouched for almost six weeks.
+
+This was the longest gap in Julian's investigation.
+
+He discovered, to his surprise, that babies were effective anti-paranoia devices.
+
+At three in the morning a crying infant outranked unexplained constants.
+
+Mira did not care about lineage.
+
+She cared about temperature, hunger, pain, and contact.
+
+Her requirements were brutally typed.
+
+Julian liked that.
+
+One night, walking her through the dark kitchen, he stopped beside the brass measure.
+
+Mira had finally gone quiet.
+
+He looked at the number.
+
+179971.179971.
+
+For the first time it seemed less like a mystery and more like a temptation.
+
+A problem that rewarded him for leaving the immediate world.
+
+He turned the measure face down.
+
+Mira breathed against his shoulder.
+
+Systems, he thought, failed when they forgot what they were maintaining.
+
+The thought embarrassed him.
+
+It sounded sentimental.
+
+He kept it anyway.
+
+Years later, when Consensus would explain human outcomes in terms of optimal state allocation, Julian would remember that night and the warm, inconvenient weight of a child who could not be compressed without loss.
