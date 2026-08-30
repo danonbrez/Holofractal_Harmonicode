@@ -1041,6 +1041,64 @@ Nobody needed to conspire if incentives aligned.
 
 
 
+
+Julian's favorite demonstration of mirrored politics came from lawn signs.
+
+A street near his mother's house displayed eight signs during one election season.
+
+Four warned that freedom was disappearing.
+
+Four warned that democracy was disappearing.
+
+Two houses displayed both kinds because roommates disagreed.
+
+Julian photographed the block.
+
+Elena asked why.
+
+"Same emergency word."
+
+"Different noun."
+
+"Same function."
+
+"What function?"
+
+"Make ordinary election feel like last gate."
+
+Elena looked at the image.
+
+"Maybe they believe it is."
+
+"That's what matters."
+
+Fear increased authorization.
+
+People accepted measures during existential threat they would reject during ordinary disagreement.
+
+The Long Emergency had taught institutions this structurally.
+
+The network taught everyone else.
+
+Every issue could be framed as terminal.
+
+If every election was the last election, exceptional tactics never expired.
+
+Julian wrote:
+
+EMERGENCY HAS NO NATURAL SUNSET.
+
+Then beneath it:
+
+MUST BE VERSIONED.
+
+Elena added:
+
+AND WHO DECLARES END?
+
+They left that unanswered.
+
+
 ---
 
 ### Chapter Eleven — Five Stars
@@ -2043,6 +2101,87 @@ Once people could see the exact delta, they argued over meaning.
 This was progress.
 
 It just did not feel like closure.
+
+
+
+
+Rat eventually received a legal threat.
+
+Not a lawsuit.
+
+A letter.
+
+A company's counsel objected that Julian's site reproduced portions of policy text and could confuse users about which version was currently operative.
+
+Julian read the letter twice.
+
+"They want us to stop keeping old terms."
+
+"Not exactly," Elena said.
+
+"They want only current linked."
+
+"They say archived text may be inaccurate if separated from full context."
+
+"It's a fair concern."
+
+Julian stared at her.
+
+"Whose side are you on?"
+
+"The record."
+
+"Awful answer."
+
+They revised Rat.
+
+Every archived diff now displayed:
+
+HISTORICAL VERSION — NOT CURRENT TERMS.
+
+Source date.
+
+Retrieval date.
+
+Current-policy link.
+
+Checksum.
+
+Julian hated that the legal letter improved the system.
+
+Elena enjoyed reminding him.
+
+"Adversarial input."
+
+"Lawyer input."
+
+"Sometimes same function."
+
+The counsel wrote again.
+
+This time:
+
+Thank you for clarifying.
+
+Julian printed the email.
+
+Elena asked why.
+
+"Victory receipt."
+
+"No one won."
+
+"That's why it's rare."
+
+Rat remained small.
+
+But the principle became larger.
+
+A predecessor without context could mislead.
+
+A current state without predecessor could hide drift.
+
+Both had to be visible without being confused.
 
 
 
@@ -3308,3 +3447,188 @@ Inside, the network waited in black glass.
 Book One ended without anybody noticing.
 
 The gate was already in their pockets.
+
+
+On New Year's Eve Julian's mother hosted family in the row house.
+
+Television countdown.
+
+Children running upstairs.
+
+Food covering every flat surface.
+
+Phones everywhere.
+
+His brother streamed music through one.
+
+A cousin used another to show photographs from another state.
+
+Someone argued politics from an article nobody else could open because the site required registration.
+
+Mira fell asleep under coats.
+
+At eleven-fifty the television assembled the country into one synchronized ritual.
+
+Crowds in distant cities.
+
+Hosts shouting.
+
+Numbers descending.
+
+Julian remembered the Morning Sirens.
+
+Mass broadcast still possessed a power the feed did not.
+
+One image.
+
+One time.
+
+Millions of people receiving the same signal.
+
+But even during the countdown, half the room held secondary screens.
+
+People recorded the television.
+
+Messaged other rooms.
+
+Posted photographs proving they were present for the same thing everyone else was present for elsewhere.
+
+The shared moment had acquired individualized receipts.
+
+At midnight the room shouted.
+
+Julian kissed Elena.
+
+His mother kissed everyone.
+
+Mira woke crying.
+
+Fireworks sounded outside.
+
+For perhaps thirty seconds no one looked at a phone.
+
+Then notifications arrived.
+
+Happy new year.
+
+Photographs.
+
+Messages.
+
+A new year's system alert from work sent by mistake.
+
+Julian laughed.
+
+"What?" Elena asked.
+
+He showed her.
+
+MANDATORY GENERATOR TEST — 07:00.
+
+"You're working?"
+
+"No. Scheduler copied holiday template wrong."
+
+"Will they fix it?"
+
+"Eventually."
+
+He looked around the room.
+
+The network had become so normal that its mistakes felt like weather.
+
+Not metaphysical.
+
+Not political.
+
+Administrative.
+
+This, Julian thought, was how permanent infrastructure actually arrived.
+
+Not when people praised it.
+
+When people complained about it the way they complained about rain.
+
+He went to the kitchen for water.
+
+The Golden Measure was upstairs.
+
+The black phone in his pocket.
+
+The SOURCE and SUMMARY folders on a home server built from discarded municipal hardware.
+
+Rat running a scheduled diff at midnight.
+
+The LYRA folder dormant for six weeks.
+
+His daughter asleep in a house full of relatives who had already distributed hundreds of copies of her existence.
+
+The city outside entering another year.
+
+Julian had no sense of standing at the end of an era.
+
+Nobody did.
+
+Eras were labels applied after the dependency changed.
+
+At twelve-ten his phone buzzed.
+
+Unknown message.
+
+No number displayed.
+
+Just text:
+
+YOU WILL MISS THE WORLD WHEN IT ONLY WATCHED.
+
+Julian stared.
+
+He showed Elena.
+
+She read it twice.
+
+"Screenshot."
+
+"Already."
+
+"Source?"
+
+"Unknown."
+
+"Could be spam."
+
+"Could be."
+
+"Could be somebody from Rat."
+
+"Could be."
+
+"Could be Vane."
+
+"His sense of humor isn't that good."
+
+"True."
+
+The message disappeared from the thread.
+
+The screenshot remained.
+
+Elena looked at him.
+
+"Do not promote it."
+
+"I know."
+
+From the living room his mother shouted that they were missing the celebration.
+
+Julian locked the phone.
+
+They went back.
+
+The television was showing fireworks.
+
+The line beneath it had stopped crawling for the holiday special.
+
+For once, the bottom of the screen was empty.
+
+Julian noticed only because he had spent eleven years learning to expect motion there.
