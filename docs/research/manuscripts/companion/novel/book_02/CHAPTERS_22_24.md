@@ -3843,3 +3843,182 @@ The network had become the default world, but the family had learned not to conf
 Book II did not close on distrust.
 
 It closed on replay.
+
+
+A few days later Julian returned to the service center for an unrelated repair and found the laminated fallback card hanging beside the kiosk.
+
+Nobody had decorated it.
+
+Nobody had turned it into policy theater.
+
+It was simply there.
+
+A clerk was using the network.
+
+The printer worked.
+
+The queue moved.
+
+Nothing had failed.
+
+Julian stood long enough that the clerk asked whether he needed help.
+
+"No."
+
+"Then why are you staring at paper?"
+
+"Checking if it exists."
+
+She looked at the card.
+
+"Oh, that. Ana made us do drill yesterday."
+
+"How'd it go?"
+
+"Annoying."
+
+"Good."
+
+She laughed.
+
+"We shut network off on purpose. Had to write receipts by hand."
+
+"Any problems?"
+
+"Two people used wrong prefix. One form old."
+
+"Fixed?"
+
+"Yeah."
+
+"Then good."
+
+"You're weird."
+
+"Documented."
+
+He walked outside.
+
+Bellwether was preparing for snow.
+
+Transit signs warned of delays.
+
+Phones carried neighborhood alerts.
+
+Consensus queued service messages by location and eligibility.
+
+The city was more connected than any version Julian had known.
+
+And beneath it now sat paper cards, replay tests, predecessor links, appeal rules, bounded data scopes, and enough failure receipts to prove that someone expected machinery to break.
+
+That expectation did not weaken the system.
+
+It made the system less dependent on belief.
+
+Julian finally understood what he had been trying to preserve since the first temporary lock after the Morning Sirens.
+
+Not the old state.
+
+Not the old medium.
+
+Not even the old rules.
+
+He wanted the path by which authority had moved.
+
+A current system could be entirely different from its predecessor and still remain continuous if it could explain:
+
+what changed,
+
+why,
+
+who authorized it,
+
+which dependency changed,
+
+what evidence justified the change,
+
+what failure it introduced,
+
+how that failure was repaired,
+
+and what remained unresolved.
+
+Without that path, modernization became amnesia.
+
+With it, change could become lineage.
+
+He opened his phone.
+
+No Lyra message.
+
+No alert.
+
+No emergency.
+
+He almost felt disappointed.
+
+Then he laughed at himself.
+
+Elena had warned him.
+
+A person who spends enough time preserving anomalies can begin to mistake quiet for missing data.
+
+He put the phone away.
+
+The service center doors opened behind him and a woman came out carrying a printed receipt.
+
+She folded it into her coat pocket without looking at it.
+
+The paper would probably be thrown away.
+
+The transaction also existed digitally.
+
+Redundant for now.
+
+Maybe useless.
+
+Maybe the only surviving witness if something failed later.
+
+Julian did not follow her to ask.
+
+He was learning not to archive strangers.
+
+At home, Mira had left the carbon-copy book on the kitchen table.
+
+One new ticket waited for him.
+
+OFFENSE:
+
+MAKING EVERYTHING A SYSTEM.
+
+PENALTY:
+
+ONE HOUR NO COMPUTER.
+
+He signed.
+
+"Do I get appeal?"
+
+"No."
+
+"Governance failure."
+
+"Two hours."
+
+He stopped.
+
+Elena watched from the doorway.
+
+"Enforcement without appeal."
+
+Mira pointed at him.
+
+"Three."
+
+Julian surrendered.
+
+For one hour he sat with his family and no screen.
+
+Nothing happened that required a receipt.
+
+That, too, was part of the state.
