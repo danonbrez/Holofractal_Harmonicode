@@ -262,8 +262,8 @@ The primary protagonist is Julian Vance, a municipal maintenance worker and cove
 
 - Phase 4A — historical / object / 72-beat compiler: COMPLETE
 - Phase 4B — Book I prose, 2001–2012: COMPLETE — 35,022 words / 12 chapters / B00-B23
-- Phase 4C — Book II prose, 2012–2019: NEXT
-- Phase 4D — Book III prose, 2019–2026
+- Phase 4C — Book II prose, 2012–2019: COMPLETE — 35,038 words / 12 chapters / B24-B47
+- Phase 4D — Book III prose, 2019–2026: NEXT
 - Phase 4E — continuity / zero-drift pass
 - Phase 4F — literary compression pass
 
