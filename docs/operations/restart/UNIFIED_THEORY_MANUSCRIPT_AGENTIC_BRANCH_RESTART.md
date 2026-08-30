@@ -46,6 +46,11 @@
 - Companion index Module 3 closure: `0934fc64d2774c45f3ac8b8a1dccd3a8883bcee4`
 - Module 4 workspace frontier: `6f2959ea52efb87b271bc43018d6ef5c78d96a6f`
 - Module 3 dedicated restart record: `1762abc59345d46d1344bd163ddff6003167f40e`
+- Module 4 historical / technology evidence trace: `2d97a0de4cb47c44f1e8ecd7655d843588c5a225`
+- Module 4 full-novel runtime: `9ec634abd9794abfdcfef7e0ca306ea93237c629`
+- Companion architecture Module 4 redefinition: `f62abb1cdee27e9956d6d2dde60cad18ba561099`
+- Module 4 Phase 4B workspace frontier: `ab8198cb5892b54390210fd1c4ec587bab37e035`
+- Module 4 Phase 4A dedicated restart record: `1d5fe4ef90ac449af68d32a20a945e0330bbb6f3`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -62,6 +67,9 @@
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_02_RESTART.md`
 - `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_03_PLOT_STATE_MACHINE.md`
 - `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_03_RESTART.md`
+- `docs/research/manuscripts/companion/evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md`
+- `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_04_THE_GOLDEN_INVARIANT_NOVEL_RUNTIME.md`
+- `docs/operations/restart/UNIFIED_THEORY_COMPANION_MODULE_04_PHASE4A_RESTART.md`
 
 ## Canonical manuscript receipt
 
@@ -82,7 +90,10 @@
 - Verified companion Module 2: 1,605 lines / 27,256 characters
 - Verified seven defender roles, ten-phase recovery state machine, theorem-to-story map, and Module 2 validation gates
 - Verified companion Module 3: 2,309 lines / 40,257 characters
-- Verified six acts, Terminal Inversion, failed first repair, bounded reconstruction, adversarial retest, Pillar recalibration, successor handoff, and twelve validation gates characters
+- Verified six acts, Terminal Inversion, failed first repair, bounded reconstruction, adversarial retest, Pillar recalibration, successor handoff, and twelve validation gates
+- Verified Module 4 Phase 4A: 1,750 lines / 38,717 characters
+- Verified exact 72-beat compiler with B00-B71 and no gaps
+- Verified 24/24/24 historical split, 36 chapters, 3 books, and 110k-130k full-novel target characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
@@ -157,9 +168,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 4: NARRATIVE OBJECT REGISTRY AND BEAT COMPILER`
+`MODULE 4 — PHASE 4B: THE GOLDEN INVARIANT — BOOK I: THE WORLD ON TELEVISION`
 
-Modules 1-3 are complete and checkpointed. Next serialize the validated plot into stable character, location, symbolic-object, institution, motif, artifact, and predecessor/successor beat registries, then compile a bounded 72-state narrative projection suitable for proposal-only prose expansion.
+Modules 1-3 and Module 4 Phase 4A are complete and checkpointed. Module 4 is now the full-length novel. Next generate continuous literary prose for Book I, Chapters 1-12 / Beats B00-B23 / 2001-2012, while keeping the 72-beat compiler and theorem map invisible in the final narrative.
 
 ## Blockers
 
