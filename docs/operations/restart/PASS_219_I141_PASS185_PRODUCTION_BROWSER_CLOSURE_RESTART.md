@@ -243,3 +243,18 @@ The dedicated cumulative workflow must:
 9. keep authoritative-main, external-deployment, and terminal Pass-185 flags false.
 
 Do not merge or deploy from this checkpoint. If the dedicated workflow fails, repair forward only from attributable cumulative-local-closure failures without rewriting frozen Phase-1–7 receipts.
+
+
+### Repair-forward correction to cumulative implementation checkpoint
+
+The first cumulative implementation commit `ca446d61009faef2de37a72a02110fd9f46629c0` created the new coordinator/runner/workflow but three intended Runtime OS bindings remained byte-identical, and `bootstrap.ts` contained literal escaped newline text at its import boundary. That checkpoint is **not** a validation candidate.
+
+The immediate repair-forward commit fixes:
+
+- bootstrap import/callback syntax;
+- failure forwarding from `index.html`;
+- fatal-entry/render failure forwarding from `main.tsx`;
+- ordered workspace/editor/preview/interactive boot-state binding in `CanonicalRuntimeIDE.tsx`;
+- the cumulative workflow source-boundary grep for Playwright tracing.
+
+Only the repaired descendant is eligible for cumulative validation. Frozen Phase-1–7 receipts remain untouched.

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { HHSProductWorkspace } from "../workspace/HHSProductWorkspace"
 import { RuntimeDiagnosticsDrawer } from "../workspace/RuntimeDiagnosticsDrawer"
-import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"
+import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"\nimport { pass185BootCoordinator } from "./Pass185BootCoordinator"
 import type { RuntimeOS } from "./RuntimeOS"
 
 export interface CanonicalRuntimeIDEProps {

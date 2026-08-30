@@ -63,7 +63,7 @@
           error.textContent = `${label}\n${stringify(value)}`;
         }
         if (actions) actions.style.display = "flex";
-        document.documentElement.dataset.hhsBootFailure = label;
+        document.documentElement.dataset.hhsBootFailure = label;\n        window.__HHS_BOOT_COORDINATOR__?.fail?.(label, stringify(value));
       };
       window.__HHS_REPORT_BOOT_ERROR__ = report;
       document.getElementById("runtime_boot_reload")?.addEventListener("click", () => window.location.reload());
