@@ -1685,6 +1685,96 @@ Again.
 
 
 
+
+The most useful video Julian ever saw showed almost nothing.
+
+A bus camera recorded an intersection during a collision between a city vehicle and a cyclist.
+
+The forward camera faced away from the impact.
+
+It captured sound.
+
+A horn.
+
+Brakes.
+
+Metal.
+
+People shouting.
+
+Investigators initially considered it peripheral.
+
+Then Elena, who had no role in the case and therefore naturally became involved after Julian complained at dinner, asked whether the camera clock was synchronized.
+
+It was not.
+
+The displayed time was forty-seven seconds slow.
+
+Another camera from a storefront showed the cyclist entering frame.
+
+A traffic controller logged the signal phase.
+
+A witness's phone captured aftermath.
+
+None contained the event completely.
+
+Together they reconstructed sequence.
+
+The bus driver had a green signal.
+
+The cyclist entered late.
+
+The city vehicle's speed was above policy but below the early estimate circulating online.
+
+The public argument had formed around one cellphone clip showing the cyclist injured on pavement.
+
+The clip was authentic.
+
+The interpretation built around it was not entirely wrong.
+
+It was simply underdetermined.
+
+Julian watched investigators align timestamps.
+
+This was the first time he saw provenance operate like geometry.
+
+Each record was a coordinate.
+
+No coordinate contained the whole event.
+
+Agreement emerged from relations.
+
+He told Elena.
+
+"That's how archives work."
+
+"Everything is how archives work to you."
+
+"Correct."
+
+"What if one camera is fake?"
+
+"Then its relation to the others fails."
+
+"Not necessarily."
+
+"No."
+
+She smiled.
+
+"You finally asked the next question."
+
+Julian understood.
+
+Redundancy did not guarantee truth.
+
+It raised the cost of coherent falsification.
+
+That was different.
+
+He added it to SOURCE.
+
+
 ---
 
 ### Chapter Nine — Compression
