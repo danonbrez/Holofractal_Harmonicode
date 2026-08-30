@@ -31,6 +31,8 @@
 - Companion executable index: `0230d48c187de97da4aef49d1bfaf68b1a6bd632`
 - Module 2 workspace frontier: `915c551bb863544e90be72266d40f905553177cd`
 - Module 1 dedicated restart record: `0556e478be85337760cf8abf9abf9678a219ece4`
+- Companion index formatting repair: `7e6545dbe91e551dc518681c8142f392ac9c05aa`
+- Module 1 restart formatting repair: `b1b1d9dbbfc8ccc06c67ef5fb09d0e30a07b48b7`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
