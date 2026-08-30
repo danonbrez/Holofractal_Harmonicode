@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+import threading
 import unittest
 
 from fastapi import FastAPI
@@ -150,6 +151,62 @@ class Pass191SurfaceTests(unittest.TestCase):
         obj = self.client.get(f"/v1/hydration/objects/{ref}")
         self.assertEqual(obj.status_code, 200)
         self.assertEqual(obj.json()["hash216_identity"], object_id)
+
+    def test_running_job_cancel_is_cooperative_and_cannot_be_overwritten_by_resume(self) -> None:
+        created = self.runtime.create_job({}, authority_execution=authority(1))
+        job_id = created["job_id"]
+
+        preview_started = threading.Event()
+        release_preview = threading.Event()
+        original_preview = self.runtime.preview
+        resume_result: dict[str, object] = {}
+        resume_error: list[BaseException] = []
+
+        def blocking_preview(*args, **kwargs):
+            preview_started.set()
+            if not release_preview.wait(timeout=5):
+                raise AssertionError("preview cancellation test did not release")
+            return original_preview(*args, **kwargs)
+
+        self.runtime.preview = blocking_preview  # type: ignore[method-assign]
+
+        def resume() -> None:
+            try:
+                resume_result.update(
+                    self.runtime.resume_job(job_id, authority_execution=authority(2))
+                )
+            except BaseException as exc:
+                resume_error.append(exc)
+
+        worker = threading.Thread(target=resume, name="pass191-cancel-resume", daemon=True)
+        worker.start()
+        self.assertTrue(preview_started.wait(timeout=5), "resume did not enter DISCOVERING")
+
+        cancelled = self.runtime.cancel_job(job_id, authority_execution=authority(3))
+        self.assertEqual(cancelled["stage"], "CANCELLED")
+        self.assertEqual(cancelled["history"][-1]["checkpoint"], "CANCELLED_BY_AUTHORIZED_REQUEST")
+
+        release_preview.set()
+        worker.join(timeout=10)
+        self.assertFalse(worker.is_alive(), "resume thread did not terminate after cancellation")
+        self.assertEqual(resume_error, [])
+
+        durable = self.runtime.get_job(job_id)
+        self.assertEqual(durable["stage"], "CANCELLED")
+        self.assertEqual(resume_result.get("stage"), "CANCELLED")
+        self.assertEqual(durable["history"][-1]["stage"], "CANCELLED")
+        self.assertNotIn("completion_receipt_hash72", durable)
+        cancelled_index = next(
+            index for index, event in enumerate(durable["history"])
+            if event["stage"] == "CANCELLED"
+        )
+        self.assertFalse(
+            any(event["stage"] not in {"CANCELLED"} for event in durable["history"][cancelled_index + 1:]),
+            durable["history"],
+        )
+        self.assertTrue(
+            any(receipt["event"] == "P191.Hydrate.Cancel" for receipt in self.runtime.receipts())
+        )
 
     def test_websocket_exposes_typed_lifecycle_without_fabricating_commit(self) -> None:
         job = self.runtime.create_job({}, authority_execution=authority(1))
