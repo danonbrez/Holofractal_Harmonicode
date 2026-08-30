@@ -2550,3 +2550,423 @@ Julian:
 UNVERIFIED.
 
 The joke became less funny as Consensus expanded.
+
+
+The Great Indoors changed funerals.
+
+Julian's uncle died during the closures.
+
+Not from the disease.
+
+A stroke.
+
+The family could not gather normally.
+
+A small service allowed limited attendance.
+
+Everyone else watched a stream.
+
+The camera stood at back of chapel.
+
+One fixed rectangle.
+
+Flowers.
+
+Casket.
+
+Priest.
+
+Empty pews.
+
+Relatives appeared in comment panel.
+
+LOVE YOU.
+
+WE'RE HERE.
+
+Julian hated the panel.
+
+Then his mother wrote:
+
+HE WOULD HAVE LAUGHED AT THIS.
+
+He laughed.
+
+The stream preserved something impossible before.
+
+Cousins across states attended.
+
+People with illness attended.
+
+But grief became mediated by mute buttons and buffering.
+
+At one point video froze on Julian's mother crying.
+
+The image remained frozen while audio continued.
+
+A private moment became accidental still frame.
+
+Elena closed laptop briefly.
+
+"Why?"
+
+"Not everything needs persistence."
+
+The recording was automatically saved.
+
+Family received link.
+
+Julian downloaded because of course.
+
+Then hesitated.
+
+Who authorized permanent recording?
+
+The funeral home terms included.
+
+Did family understand?
+
+Probably not.
+
+He asked relatives.
+
+Some wanted copy.
+
+Some didn't care.
+
+One objected.
+
+They kept private family copy with restricted access.
+
+This became one of Elena's examples:
+
+a service can make an ephemeral human event persistent by default because storage is cheap.
+
+The technical default creates memory policy without explicit cultural decision.
+
+The Great Indoors made this common.
+
+Weddings.
+
+Birthdays.
+
+Therapy.
+
+School.
+
+Work.
+
+Court.
+
+Medical visits.
+
+Every human interaction moved through systems that could record.
+
+Not all did.
+
+Capability existed.
+
+Julian wrote:
+
+REMOTE PRESENCE CREATES LATENT ARCHIVE.
+
+He found this more unsettling than surveillance because no adversarial agent required.
+
+Recording emerged as convenience.
+
+"Can we record this meeting for people who couldn't attend?"
+
+Reasonable.
+
+Soon every meeting had transcript.
+
+Searchable.
+
+People spoke differently.
+
+A joke became record.
+
+A tentative thought became quotable.
+
+Organizations gained memory and lost some conversational looseness.
+
+One director said:
+
+"Off record."
+
+There was no off-record button.
+
+They stopped recording some sessions.
+
+Again, mature system required forgetting.
+
+
+Ventilation became political before Julian understood anyone cared about air handlers.
+
+For twenty years nobody asked him about air changes per hour outside facility staff.
+
+Now parents, reporters, teachers, union representatives, council members asked.
+
+"How much fresh air?"
+
+"Depends building."
+
+"Can you increase?"
+
+"Sometimes."
+
+"Why not maximum?"
+
+"Heating capacity. humidity. fan limits. filters. noise."
+
+"Health says more."
+
+"Engineering says system."
+
+This was Julian's moment.
+
+Hidden infrastructure became public debate.
+
+Schools demanded filters.
+
+Some systems could handle higher resistance.
+
+Others could not.
+
+People bought portable units.
+
+Good.
+
+Some put devices where airflow short-circuited.
+
+Less.
+
+One social-media post claimed every classroom could be made safe by installing a particular filter rating.
+
+Julian wanted.
+
+Some old air handlers could not maintain flow with denser filter.
+
+Pressure rose.
+
+Fans overheated.
+
+Airflow fell.
+
+A higher-rated filter could produce less total clean air in incompatible system.
+
+Optimization local.
+
+Global effect opposite.
+
+He demonstrated to school board with fan curve.
+
+No one enjoyed.
+
+But they adopted compatibility testing.
+
+Julian wrote:
+
+STRONGER LOCAL CONSTRAINT CAN REDUCE GLOBAL PERFORMANCE IF SUBSTRATE INCOMPATIBLE.
+
+This became one of his favorite examples because everyone understood filter.
+
+Mira's school used portable purifiers where central systems limited.
+
+Hybrid.
+
+Not purity.
+
+The disease years taught society to see buildings as biological support systems.
+
+Ventilation.
+
+Water.
+
+Space.
+
+Crowding.
+
+Doors.
+
+A building was not container.
+
+It shaped exposure.
+
+Julian felt maintenance move from invisible labor to public health.
+
+Then attention moved on.
+
+People forgot.
+
+Filters remained.
+
+Some.
+
+
+The Summer of Windows made Elena's archive a battleground over deletion requests.
+
+People had posted angry things during demonstrations.
+
+Months later job searches surfaced.
+
+Some asked archive to remove captures.
+
+"We were collecting public material," Elena explained.
+
+"I was nineteen," one person said.
+
+"You're twenty."
+
+"Exactly."
+
+He had posted a slogan later associated with violence he said he did not support.
+
+Archive copy preserved context, including peaceful posts around.
+
+Search engine found archive page.
+
+He wanted removal.
+
+Historical value versus present harm.
+
+Elena restricted indexing while retaining collection.
+
+The record remained for research under controlled access.
+
+Public search no longer surfaced name.
+
+Julian asked:
+
+"Isn't that hiding history?"
+
+"It's scoping access."
+
+"Same old."
+
+"Correct."
+
+She developed a temporal sensitivity policy.
+
+Public-interest records remained.
+
+Incidental individual identities could be de-indexed after declared period unless central to event or authorized.
+
+Not deletion.
+
+Reduced routine discoverability.
+
+This was digital forgetting without erasure.
+
+The archive became more humane.
+
+Also more subjective.
+
+Who is central?
+
+What is public interest?
+
+Human judgment.
+
+No formula escaped.
+
+Elena documented decisions.
+
+Appeal.
+
+That was best available.
+
+
+After the Counting House breach, Julian visited the Annex archive room where emergency procedures from the first Morning Sirens still existed.
+
+One binder from 2001.
+
+Yellowed.
+
+TEMPORARY ACCESS CONTROL IMPLEMENTATION.
+
+He opened.
+
+180-day review.
+
+No evidence review occurred exactly then.
+
+Later policies replaced.
+
+The temporary system became lineage.
+
+Julian wondered what emergency rules from disease years would look like twenty years later.
+
+Remote identity.
+
+Health data sharing.
+
+Emergency alerts.
+
+Public-meeting video.
+
+Would future people know which were emergency-born?
+
+He added origin tags in BEFORE.
+
+This made policy staff annoyed.
+
+"Why label emergency if now permanent?"
+
+"Because origin matters to review."
+
+"Could bias future reviewers."
+
+"Good. They should ask why."
+
+"Permanent rule may be valid independent."
+
+"Then validate."
+
+The phrase emergency origin did not invalidate.
+
+It prevented forgetting that admission threshold had once been exceptional.
+
+The city adopted metadata:
+
+ORIGIN AUTHORITY.
+
+CURRENT AUTHORITY.
+
+SUNSET/REAUTHORIZATION HISTORY.
+
+This was boring governance.
+
+Julian found beautiful.
+
+The breach itself made one other thing clear:
+
+receipt-bearing authority needed physical continuity.
+
+The counting procedure had backup sites.
+
+People.
+
+Paper.
+
+Rules.
+
+A building breach delayed but did not erase process.
+
+The institution was not building.
+
+Yet building mattered symbolically.
+
+The crowd targeted place because place represented authority.
+
+Myth and bureaucracy overlapped.
+
+Julian told Elena.
+
+"Don't start Volume Four."
+
+"What?"
+
+"Nothing."
+
+She had no idea why he laughed.
