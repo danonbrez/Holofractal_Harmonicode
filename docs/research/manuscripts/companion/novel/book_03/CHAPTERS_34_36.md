@@ -2732,3 +2732,204 @@ Julian heard later and felt proud.
 The novel's closing did not need prophecy.
 
 It needed a culture learning to live without pretending uncertainty is failure.
+
+
+The cumulative-authority review eventually produced a citizen-facing page called:
+
+WHAT CAN CONSENSUS DECIDE?
+
+Julian hated the title because answer was "depends."
+
+The page used categories.
+
+### Consensus may execute automatically
+
+- exact clerical transformations under declared rules;
+- routing where no substantive right changes;
+- duplicate-document reuse under active authorization;
+- emergency notifications under explicit statutory triggers.
+
+### Consensus may propose but not decide
+
+- fraud suspicion;
+- hiring preference;
+- content authenticity;
+- discretionary benefit exceptions;
+- risk ranking with materially adverse consequence.
+
+### Consensus may not decide
+
+- guilt;
+- political truth;
+- revocation of rights outside domain authority;
+- its own admissibility when challenged.
+
+The page became popular because it was simple.
+
+Experts complained oversimplified.
+
+It was.
+
+But it linked full rules.
+
+Layered explanation.
+
+The public needed semantic contract.
+
+Mira read.
+
+"Finally."
+
+"What?"
+
+"City says what robot allowed."
+
+"Consensus isn't robot."
+
+She stared.
+
+"Fine."
+
+Vane called page best thing consortium published.
+
+Marketing claimed credit.
+
+Julian accepted because outcome mattered.
+
+The Terminal Inversion case also led to a legal principle: no automated integrity system could be sole gatekeeper for evidence challenging itself in high-consequence public decisions.
+
+Not universal law everywhere.
+
+Bellwether charter rule.
+
+Independent appeal.
+
+This was architectural constitutionalism.
+
+A system constraint written in law and API.
+
+Ana insisted both.
+
+"Law without technical enforcement drifts."
+
+Elena added:
+
+"Technical without legal authority becomes private governance."
+
+Both.
+
+The Failed Decree recovery created a new profession category inside city: continuity operator.
+
+People trained to run service under degraded automation.
+
+Not full old clerk.
+
+Not developer.
+
+Hybrid.
+
+They understood policies, paper fallback, data export, reconciliation.
+
+The role existed because system complexity required human who knew alternate paths.
+
+Julian liked.
+
+Maintenance for bureaucracy.
+
+One continuity operator caught a Consensus outage by noticing queue latency rather than server status.
+
+Frontend requests accepted.
+
+Backend stuck.
+
+Green health.
+
+Same lesson from years before.
+
+Service health must include end-to-end.
+
+The city added synthetic transactions.
+
+Test application through whole path.
+
+Receipts.
+
+This was literally runtime validation.
+
+Julian felt universe repeating.
+
+Seven Routes protocol matured.
+
+Each route had owner, validation cadence, last successful replay.
+
+If route not tested, marked stale.
+
+No pretending independent because file exists.
+
+A dormant backup that cannot be restored is not backup.
+
+Book One lesson returned.
+
+The Ark public viewer displayed:
+
+ROUTE VALIDATED: 14 DAYS AGO.
+
+ROUTE STALE: 190 DAYS.
+
+Users could see.
+
+This prevented ceremonial redundancy.
+
+The Golden Invariant's final public meaning shifted away from number despite sensationalists.
+
+Mira gave one interview reluctantly.
+
+Reporter asked:
+
+"What does 179971.179971 mean?"
+
+"We don't know."
+
+"Do you think it's important?"
+
+"Maybe to artifact."
+
+"Your father believes—"
+
+"My father likes unsolved problems."
+
+Julian yelled at screen:
+
+"Accurate."
+
+Reporter asked:
+
+"What did you prove?"
+
+"That a present technical relation had a recoverable predecessor chain and that four differences were documented repairs, not contradictions."
+
+"Why matters?"
+
+"Because if system can show how it changed, you can repair without pretending past didn't exist."
+
+This became quote.
+
+Better than Julian could write.
+
+He did not save?
+
+He saved.
+
+Of course.
+
+Mira texted:
+
+STOP ARCHIVING ME.
+
+He replied:
+
+PUBLIC INTERVIEW.
+
+She blocked him for twenty minutes.
+
+Family repair protocol.
