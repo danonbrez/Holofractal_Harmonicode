@@ -2,7 +2,7 @@
 
 Classification:
 
-`HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_IMPLEMENTED_PENDING_VALIDATION`
+`HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_VERIFIED`
 
 Terminal Pass 185 completion is not claimed.
 
@@ -79,7 +79,44 @@ Workflow:
 
 The gate must build inherited C authority, build the exact Runtime OS, execute the production performance and recovery runner in Chromium, retain impacted production-root regressions, seal evidence, and upload the artifact.
 
-Phase 5 remains pending until one exact branch head passes the full workflow.
+## Final Phase-5 validation
+
+Phase 5 is terminal green at the implementation/evidence head:
+
+- validated head: `36321174c124ff5ba81bd60fd37a72ce703e606c`
+- validated tree: `89e9f83674700565695e54868ba50f93c1535f06`
+- workflow run: `33304271871`
+- job: `99237928339`
+- artifact: `9729993598`
+- artifact SHA-256: `82b99ecba184b51ce677038e76a1de5fecd4739873d215b2288e18e298ac7127`
+- evidence SHA-256: `f0a9efcf8de1c178e86cecc26269f2d5c539c801406c504fe950ccf79c980a78`
+- seal receipt SHA-256: `10f5e85b988e07be5612a2800a1dc0cea603ac93e38aa05d3aa5e565ac75d726`
+- compiled-C SHA-256: `7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c`
+- repository receipt: `evidence/pass185/i141/PASS_185_I141_PHASE5_VALIDATION_RECEIPT.json`
+
+Measured evidence includes:
+
+- idle lightweight-health p95: `7.376 ms`;
+- idle process CPU: `0.19%` across `10.51 s`;
+- idle runtime step and state Hash72 unchanged;
+- three explicit canonical runtime steps of approximately `5.2 s` each;
+- `562` concurrent health samples with zero request failures;
+- concurrent health p95 during canonical work: `27.968 ms`;
+- maximum diagnostic health latency during that workload: `35.687 ms`;
+- editor interaction: `13.096 ms` during six optional product-health probes;
+- zero recorded browser long tasks above `200 ms`;
+- all four remaining synthetic boot-dependency failures produced finite visible recovery and post-reload `/api/health = 200`;
+- unknown API classification returned structured `HHS_API_ROUTE_NOT_FOUND` without SPA fall-through;
+- finite process stop and restart with post-recovery health p95 `2.821 ms`.
+
+Repair-forward closure within Phase 5 also established:
+
+- production runtime-authority route precedence with the inherited authority projection retained under an explicit alias;
+- `HHS_COGNITION_AUTO_TICK=0` actually disables the recurring canonical background tick while preserving startup and explicit authorized ticks;
+- canonical runtime steps execute through one serialized singleton lane off the ASGI event loop;
+- no frontend/browser authority is introduced by performance instrumentation.
+
+Phase 5 still does **not** claim terminal Pass 185 completion. Cumulative Pass-185 closure, authoritative-main verification, and external deployment replay remain required.
 
 
 ## Phase-5 health-route reconciliation
