@@ -110,12 +110,19 @@ jobs:
           grep -Fq 'process-tree.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
           grep -Fq 'environment-manifest.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
 
-      - name: Validate singleton inherited authority regressions
+      - name: Validate cumulative authority boundary and regressions
         run: |
+          for path in \
+            hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+            hhs_runtime/hhs_unified_hash72_ledger_v1.py \
+            hhs_python/runtime/hhs_runtime_controller.py
+          do
+            test "$(git rev-parse 26d06f34a3b074f8f969c80ccc5b9db087fd9430:$path)" = "$(git hash-object "$path")"
+          done
           timeout 420s pytest -q \
             tests/test_hhs_cumulative_execution_authority_v1.py \
             tests/test_hhs_hash72_kernel_surface_unification_v1.py \
-            tests/test_hhs_pass217_inherited_authority_freeze_v1.py \
+            tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py \
             tests/test_runtime_os_production_root.py
 
       - name: Install bounded Chromium

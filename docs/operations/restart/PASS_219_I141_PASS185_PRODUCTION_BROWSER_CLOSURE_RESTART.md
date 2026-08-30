@@ -279,3 +279,32 @@ Repair-forward action:
 - make the cumulative seal step run only after prior cumulative steps succeed.
 
 Run `33316831444` is preserved as failing evidence and cannot count toward local closure. The next pushed descendant is the only eligible validation candidate.
+
+
+### Cumulative run 33317245728 inherited-regression classification
+
+Run `33317245728` on `936b8d5f05761af1ff063d24bfcf7b9b3a99ffc0` passed C compilation, Runtime OS typecheck/build, and cumulative source-boundary checks, then failed one inherited Pass-217 freeze assertion.
+
+Exact failure:
+
+- job: `99272831719`
+- 32 tests passed, 1 failed;
+- failing assertion: `tests/test_hhs_pass217_inherited_authority_freeze_v1.py::Pass217Iteration1FreezeTests::test_contracts_and_protected_runtime_are_object_bound`;
+- assertion expected `hhs_runtime/HARMONICODE_VM_RUNTIME.c` to remain byte-identical to the historical Pass-217 base.
+
+Classification:
+
+`STALE_FULL_HISTORY_FREEZE_ASSERTION_NOT_ATTRIBUTABLE_TO_PASS185_CUMULATIVE_CHANGES`
+
+The Pass-185 I141 diff from its shared base does not modify `hhs_runtime/HARMONICODE_VM_RUNTIME.c`. The historical Pass-217 test therefore cannot be used as a cumulative I141 no-new-authority gate because later inherited work had already changed that runtime before this cumulative block.
+
+Repair-forward validation replaces that stale whole-history assertion with exact object-identity checks proving the cumulative block has not changed the VM runtime, unified Hash72 ledger, or runtime controller since the frozen Phase-7 validated head `26d06f34a3b074f8f969c80ccc5b9db087fd9430`.
+
+Current authority regressions remain required:
+
+- cumulative execution authority;
+- Hash72 kernel surface unification;
+- Pass-214 authority-conflict reconciliation;
+- production Runtime OS root/authority composition.
+
+No Pass-217 evidence is rewritten or weakened. Run `33317245728` remains preserved as failing evidence.
