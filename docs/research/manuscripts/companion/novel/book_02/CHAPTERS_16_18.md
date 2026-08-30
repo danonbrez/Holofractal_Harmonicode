@@ -656,6 +656,145 @@ Hard enough to execute that civilization had not solved it.
 
 ---
 
+
+
+The rating self reached employment before Julian understood it had arrived.
+
+A contractor applying for city work attached a portfolio containing platform scores.
+
+4.91 customer satisfaction.
+
+97 percent on-time.
+
+Top ten percent response.
+
+Verified identity.
+
+Verified insurance.
+
+The procurement analyst treated these as evidence.
+
+Julian asked whether the city had validated what the scores measured.
+
+"They're from established platform."
+
+"Established isn't metric definition."
+
+"They have thousands of reviews."
+
+"Reviews of what?"
+
+"Work."
+
+"Which work?"
+
+The analyst sighed.
+
+"Home services."
+
+"City work isn't home services."
+
+"Still workmanship."
+
+"Maybe."
+
+The platform score compressed different jobs, customers, neighborhoods, price points, and expectations into one number.
+
+It looked precise because decimals imply knowledge.
+
+Julian requested distribution.
+
+Unavailable.
+
+Sample size?
+
+Displayed.
+
+Review recency?
+
+Some.
+
+Weights?
+
+Proprietary.
+
+The city still awarded the contract.
+
+The contractor performed well.
+
+Julian was annoyed by success.
+
+He wanted bad architecture to fail visibly.
+
+It often did not.
+
+Sometimes an opaque score predicted adequately because underlying signal was strong.
+
+That did not make opacity desirable.
+
+It made the argument harder.
+
+Later one contractor with a lower score outperformed higher-rated firms on complex work because her platform history came from emergency repairs, where customers were angrier.
+
+Context affected rating.
+
+The scalar punished difficulty.
+
+Julian wrote:
+
+SCORE WITHOUT TASK MIX = CONTEXT LOSS.
+
+This became a procurement note.
+
+Around the same time, people began listing moral and political labels in professional biographies.
+
+Some employers liked it.
+
+Some avoided it.
+
+Public identity became an unofficial hiring feature even when formal policies prohibited certain discrimination.
+
+A hiring manager did not need to ask beliefs if the profile volunteered them.
+
+A candidate learned to curate.
+
+Julian saw younger applicants sanitize old accounts before interviews.
+
+Delete jokes.
+
+Hide photos.
+
+Unfollow controversial pages.
+
+Create professional feed.
+
+"Is that deception?" he asked Elena.
+
+"No."
+
+"Could be."
+
+"Everything could be."
+
+"Suppose employer would reject based on old joke."
+
+"Then candidate has incentive to hide."
+
+"Material?"
+
+"Depends job, joke, current behavior."
+
+"Impossible."
+
+"Human."
+
+Julian preferred machines.
+
+Then remembered machines required same judgment encoded somewhere.
+
+He did not actually prefer machines.
+
+
 ### Chapter Seventeen — Swipe
 
 Lyra appeared on a dating app.
@@ -1322,6 +1461,145 @@ The sorting remained.
 
 ---
 
+
+
+Devon's dating life became a laboratory Julian had not requested.
+
+Every few weeks Devon announced a new rule.
+
+Never message first after midnight.
+
+Never use group photograph first.
+
+Never say "just ask."
+
+Always include one activity picture.
+
+Never include fish.
+
+"Fish?"
+
+"Women hate fish."
+
+"All women?"
+
+"Enough."
+
+Julian stared.
+
+"You are training to model."
+
+"No. Model trains me."
+
+That was more accurate than Devon knew.
+
+People experimented with self-presentation and read response as feedback.
+
+Profile iteration.
+
+Photo change.
+
+Bio change.
+
+Match rate changes.
+
+The social environment became an optimization loop.
+
+Those who received little attention adapted more aggressively.
+
+Those who received abundant attention filtered more aggressively.
+
+Different scarcity conditions produced different behavior.
+
+Julian saw why moralizing each individual strategy missed system geometry.
+
+The app created local incentives.
+
+Devon eventually met a woman named Priya.
+
+After six months he admitted the dog was not his.
+
+She laughed.
+
+She had already known because the dog's collar appeared under his sister's name in another post.
+
+"You investigated?"
+
+"Basic diligence."
+
+They married three years later.
+
+The borrowed-dog deception had not mattered.
+
+Julian was forced to remove it from his examples.
+
+"Material relevance," Elena said.
+
+"I know."
+
+"Say it."
+
+"No."
+
+The election campaigns were less harmless.
+
+Audience-specific ads sometimes presented positions not merely selected but incompatible.
+
+One neighborhood received a message promising strict development controls.
+
+Developers received another praising accelerated construction.
+
+Julian archived both.
+
+He sent them to the campaign asking reconciliation.
+
+No answer.
+
+A spokesperson later said the messages addressed different aspects of a nuanced platform.
+
+Possible.
+
+Then a third ad directly contradicted one.
+
+The campaign removed it and blamed a vendor.
+
+Was that repair?
+
+Maybe.
+
+Who authored political persona when vendors, consultants, data firms, and candidate teams all contributed?
+
+Responsibility distributed.
+
+Authority remained with candidate.
+
+Julian wrote:
+
+DELEGATED PRESENTATION DOES NOT DELEGATE PUBLIC ACCOUNTABILITY.
+
+Elena approved.
+
+This line circulated through Rat users and eventually appeared unattributed in a newspaper editorial.
+
+Julian was furious.
+
+"You should be pleased."
+
+"They stole."
+
+"Language propagates."
+
+"With no provenance."
+
+"Now you care about credit."
+
+"I care about source."
+
+"Of course."
+
+He clipped the editorial anyway.
+
+
 ### Chapter Eighteen — The Family Split
 
 Aaron and Julian repaired function before belief.
@@ -1945,3 +2223,180 @@ A stable address with uncertain operator.
 The feed did not care.
 
 It routed.
+
+
+The family split taught Julian how ranking could manufacture absence.
+
+During the months Aaron blocked him, Julian's feed contained fewer posts from relatives who interacted primarily through Aaron's family group.
+
+Cousins seemed to vanish.
+
+An aunt stopped appearing.
+
+Birthday photos disappeared.
+
+Julian assumed people were avoiding him.
+
+Then his mother showed him a cousin's new baby.
+
+"When did this happen?"
+
+"Two weeks."
+
+"Nobody told me."
+
+"It's in group."
+
+"I'm blocked."
+
+"Still?"
+
+"Apparently."
+
+His social world had narrowed because one access relation changed.
+
+The platform's ranking then amplified the narrowing by showing him more of the people still connected.
+
+He experienced the absence as social fact.
+
+The actual family had not changed as much as the interface.
+
+This frightened him more than explicit censorship.
+
+Nobody had removed his cousins.
+
+The network simply stopped routing them.
+
+He called one.
+
+"Everything okay?"
+
+"Yeah. Why?"
+
+"Haven't seen you."
+
+"We talk online."
+
+"Not to me."
+
+"Oh. Aaron thing?"
+
+"Apparently."
+
+The cousin added him directly.
+
+Posts returned.
+
+Reality seemed to widen.
+
+Julian wrote:
+
+ROUTING LOSS FEELS LIKE RELATIONAL LOSS.
+
+When he told Vane, Vane said:
+
+"That is why we need user-controllable ranking."
+
+"Users don't want to manage graph weights."
+
+"Correct."
+
+"So defaults rule."
+
+"Often."
+
+"Who chooses defaults?"
+
+"Governance."
+
+"Stop saying that word like it helps."
+
+Vane laughed.
+
+The Cincinnatus account made this concrete.
+
+When the platform altered ranking to reduce repetitive political posts, engagement with the account dropped sharply.
+
+Followers accused the company of suppression.
+
+The company said quality adjustment.
+
+Cincinnatus posted graphs.
+
+Critics said the account deserved reduction because it spammed.
+
+Supporters said spam was label for effective dissent.
+
+Julian looked at raw posting frequency.
+
+Cincinnatus did post far more than typical users.
+
+Algorithmic reduction had plausible neutral rationale.
+
+It also materially reduced political reach.
+
+Same operation.
+
+Two meanings.
+
+Then the account adapted.
+
+Posts less frequent.
+
+More images.
+
+More replies through supporter accounts.
+
+Reach recovered.
+
+Whether supporters were bots or humans became impossible to separate cleanly because humans coordinated like bots and bots imitated humans.
+
+The platform announced removal of inauthentic networks.
+
+Some real activists were caught.
+
+Appeals restored accounts.
+
+Others not.
+
+The system was learning to classify coordinated behavior while politics learned to evade classification.
+
+Ana described it as adversarial security without malware.
+
+"Everyone thinks attacker means bad person," she said.
+
+"Attacker means optimizing against rule."
+
+"Could be activist resisting censorship."
+
+"Yes."
+
+"Could be propagandist."
+
+"Yes."
+
+"Could be business."
+
+"Yes."
+
+"Then adversarial is structural."
+
+"Exactly."
+
+Julian liked that.
+
+It preserved behavior without moral shortcut.
+
+At a family dinner Aaron complained that the platform had hidden conservative posts.
+
+A cousin said it hid progressive posts too.
+
+Their mother said:
+
+"Maybe it hides all of you because you're annoying."
+
+The table laughed.
+
+For ten minutes politics became ordinary again.
+
+Then a phone buzzed.
