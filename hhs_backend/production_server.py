@@ -8,6 +8,7 @@ owned by ``hhs_backend.server``.
 """
 from __future__ import annotations
 
+import inspect
 import os
 from pathlib import Path
 from typing import Any, Mapping
@@ -59,20 +60,41 @@ if not _has_route_prefix("/api/runtime/multimodal-ingress"):
 if not _has_route_prefix("/api/runtime/development"):
     app.include_router(development_lifecycle_router)
 
-# Remove only prior root projections or static root mounts. Every API and
-# WebSocket route remains registered before the verified visual application.
+# Preserve the inherited authority-graph endpoint under an explicit alias
+# while reserving /api/runtime/authority/status for the production runtime
+# authority projection required by Pass 185. FastAPI resolves the first matching
+# route, so leaving both registrations at the same path would shadow production.
+_INHERITED_RUNTIME_AUTHORITY_STATUS_ENDPOINT = next(
+    (
+        getattr(route, "endpoint", None)
+        for route in app.router.routes
+        if getattr(route, "path", None) == "/api/runtime/authority/status"
+        and "GET" in (getattr(route, "methods", None) or set())
+    ),
+    None,
+)
+
+# Remove prior root projections/static root mounts and the inherited conflicting
+# runtime-authority GET. Every other API and WebSocket route remains registered
+# before the verified visual application.
 app.router.routes = [
     route
     for route in app.router.routes
     if not (
-        getattr(route, "path", None) in {"", "/"}
-        and (
-            "GET" in (getattr(route, "methods", None) or set())
-            or getattr(route, "name", None) in {
-                "hhs-canonical-visual-runtime-os",
-                "hhs-visual-home",
-                "hhs-production-harmonizer",
-            }
+        (
+            getattr(route, "path", None) in {"", "/"}
+            and (
+                "GET" in (getattr(route, "methods", None) or set())
+                or getattr(route, "name", None) in {
+                    "hhs-canonical-visual-runtime-os",
+                    "hhs-visual-home",
+                    "hhs-production-harmonizer",
+                }
+            )
+        )
+        or (
+            getattr(route, "path", None) == "/api/runtime/authority/status"
+            and "GET" in (getattr(route, "methods", None) or set())
         )
     )
 ]
@@ -216,6 +238,24 @@ def _runtime_authority_status() -> dict[str, Any]:
     }
 
 
+@app.get("/api/runtime/inherited-authority/status")
+async def production_inherited_runtime_authority_status() -> Any:
+    endpoint = _INHERITED_RUNTIME_AUTHORITY_STATUS_ENDPOINT
+    if endpoint is None:
+        return JSONResponse(
+            status_code=503,
+            content={
+                "schema": "HHS_PRODUCTION_INHERITED_AUTHORITY_STATUS_V1",
+                "ok": False,
+                "status": "HHS_INHERITED_AUTHORITY_STATUS_UNAVAILABLE",
+            },
+        )
+    result = endpoint()
+    if inspect.isawaitable(result):
+        result = await result
+    return result
+
+
 @app.get("/api/runtime/authority/status")
 async def production_runtime_authority_status() -> dict[str, Any]:
     return _runtime_authority_status()
@@ -276,6 +316,7 @@ async def production_system_status() -> dict[str, Any]:
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
         "runtime_authority_api": "/api/runtime/authority/status",
+        "inherited_authority_api": "/api/runtime/inherited-authority/status",
         "product_health_api": "/api/product/health",
         "workspace_session_api": "/api/runtime/workspace/session",
         "workspace_api": "/api/runtime/workspace",
