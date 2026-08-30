@@ -33,6 +33,10 @@
 - Module 1 dedicated restart record: `0556e478be85337760cf8abf9abf9678a219ece4`
 - Companion index formatting repair: `7e6545dbe91e551dc518681c8142f392ac9c05aa`
 - Module 1 restart formatting repair: `b1b1d9dbbfc8ccc06c67ef5fb09d0e30a07b48b7`
+- Reference-manual Good/Evil ontology: `886885d680abbd86cd636265aad9a322da5b9b8c`
+- Module 1 ontology binding: `4c5b3ab562d517369a3b004cadd5317bb3e0be8f`
+- Companion index ontology dependency: `6805876b63e7c876f4be7b75580d6ed073a19f29`
+- Module 1 ontology restart update: `e25511024afff64e20abb78dc928947a018e97b0`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -49,18 +53,19 @@
 ## Canonical manuscript receipt
 
 - Source line count at seed: 2,642 lines
-- Current line count after Volume IV: 5,460 lines
+- Current reference-manual line count after ontological addendum: 6,027 lines
 - Source character count at seed: 67,648 characters
-- Current manuscript character count after Volume IV: 128,372 characters
-- Current Git blob SHA: `f467ab7761000bb9644e2e7bebc16c3d7d774bd5`
+- Current reference-manual character count after ontological addendum: 139,031 characters
+- Current Git blob SHA: `81bb9a76366f9400e5e2b96021b09ede8a649220`
 - Verified first section: title + Formal Introduction
+- Verified Section VII-A Good/Evil ontology: entropy != Evil; Good as truthful repairable negentropic closure; Evil as host-dependent agentic corruption
 - Verified Volume III start at Chapter 33
 - Verified Volume III closure at Chapter 50
 - Verified Volume IV start at Chapter 51
 - Verified Volume IV closure at Chapter 73
 - Verified Volume III and Volume IV research traces
 - Verified four-volume manual closure through Chapter 73
-- Verified companion Module 1: 1,145 lines / 22,986 characters
+- Verified companion Module 1 after ontological binding: 1,251 lines / 24,883 characters
 - Verified companion executable index
 - Verified terminal frontier: Module 2 — The Citadel's Defending Architecture
 
