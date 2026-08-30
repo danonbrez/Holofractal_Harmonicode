@@ -10,7 +10,7 @@
 
 **Historical evidence trace:** \`evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md\`
 
-**Execution status:** FULL-LENGTH NOVEL — ARCHITECTURE FROZEN / PROSE GENERATION NEXT
+**Execution status:** FULL-LENGTH NOVEL — BOOK I COMPLETE / BOOK II NEXT
 
 **Target length:** 110,000–130,000 words
 
@@ -1551,15 +1551,27 @@ Includes:
 
 ## Phase 4B — Book I prose
 
-Target:
+Status:
 
 \[
-35,000\text{–}42,000
+\Omega_{\mathrm{Phase4B}}=\mathrm{true}
 \]
 
-words.
+Canonical manuscript:
+
+`novel/THE_GOLDEN_INVARIANT_BOOK_I_THE_WORLD_ON_TELEVISION.md`
+
+Receipt:
+
+- 35,022 words;
+- 12 chapters;
+- Beats B00-B23 all covered;
+- 2001-2012 historical band closed;
+- zero direct references to the prohibited named real platforms/events checked during validation.
 
 ## Phase 4C — Book II prose
+
+Status: NEXT
 
 Target:
 
@@ -1744,6 +1756,6 @@ It is not Module 5.
 
 ## NEXT
 
-### Phase 4B — BOOK I: THE WORLD ON TELEVISION
+### Phase 4C — BOOK II: THE WORLD IN THE FEED
 
-Generate Chapters 1–12 / Beats B00–B23 as continuous literary prose while keeping the compiler invisible.
+Generate Chapters 13–24 / Beats B24–B47 as continuous literary prose while keeping the compiler invisible. Carry forward the exact Book I terminal state, including Julian/Elena/Mira chronology, the Golden Measure, SOURCE/SUMMARY, Rat, Lyra recurrence, Vane, Ana Reyes, and the transition from common broadcast reality to personalized carried reality.
