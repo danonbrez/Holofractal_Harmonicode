@@ -73,16 +73,16 @@ def workbench_flow(page: Page) -> dict[str, Any]:
     emulator_state = wait_not_contains(page, "pass185-workbench-emulator-state", "none", 90_000)
     before = page.get_by_test_id("pass185-workbench-emulator-progress").inner_text()
     page.get_by_test_id("pass185-workbench-run").click()
-    page.wait_for_function(
+    transition = page.wait_for_function(
         """before => {
             const text = document.querySelector('[data-testid="pass185-workbench-emulator-progress"]')?.textContent?.trim()
-            return Boolean(text && text !== before)
+            return text && text !== before ? text : false
         }""",
         arg=before,
         timeout=90_000,
-    )
-    after = page.get_by_test_id("pass185-workbench-emulator-progress").inner_text()
-    assert after != before
+    ).json_value()
+    after = str(transition)
+    assert after and after != before, {"before": before, "after": after}
 
     return {
         "new_file": True,
