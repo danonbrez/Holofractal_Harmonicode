@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`VOLUME IV — MYTHOPOETICS AS EMPIRICAL RECORD`
+`COMPANION ALLEGORICAL NARRATIVE ARCHITECTURE`
 
-Before expanding it, inspect relevant HHS compression, checksum/ECC, provenance, corpus/style, narrative/content, hydration-index, and receipt surfaces so symbolic-memory correspondences are derived from repository state rather than memory alone.
+The four-volume reference manual is now closed through Volume IV. The next phase should build a reversible theorem-to-story map before drafting long-form prose: formal invariant → narrative role/object → transition scene → consequence → closure receipt. Native Pass 191 hydration, Pass 194 lineage, Pass 195 proposal generation, Pass 219 exact preflight, and prior-thread narrative precedents should be used where materially relevant.
 
 ## External research policy
 
@@ -162,3 +162,8 @@ Recovered supporting precedents relevant to the present manuscript include:
 5. Earlier cumulative-inheritance discussions treated prior validated capabilities as persistent unless explicitly superseded, matching the current repository-visible global-default policy.
 
 These precedents may strengthen continuity in Volumes III-IV, especially the mappings of institutional memory, lineage, symbolic compression, mythic recurrence, and return-to-Genesis closure. They do not independently establish external empirical truth.
+
+
+## Volume IV completion state
+
+Volume IV is complete through Chapter 73. The repository-visible research trace is `docs/research/manuscripts/evidence/VOLUME_IV_RESEARCH_TRACE.md`. The volume formalizes symbolic compression, contextual hydration, motif indexing, variant witnesses, archetypal schemas, witch/dark-magic/Serpent transition logic, Genesis 3 multi-term corruption, poetic/mythology temperature, return-to-Genesis closure, and a bounded external oral-tradition evidence layer.
