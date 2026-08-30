@@ -178,27 +178,100 @@ and complete defender coverage:
 
 without permitting either brute-force collapse or blank-state recovery.
 
-### Module 4 — Narrative Object Registry and Beat Compiler
+### Module 4 — THE GOLDEN INVARIANT
+
+File:
+
+\`THE_MYTHOPOETIC_EXECUTABLE_MODULE_04_THE_GOLDEN_INVARIANT_NOVEL_RUNTIME.md\`
+
+Historical / technological evidence trace:
+
+\`evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md\`
 
 Status:
 
-\`NEXT\`
+\[
+\mathrm{IN\ PROGRESS}
+\]
 
-Required output:
+Phase 4A — historical/object/beat compiler:
 
-- canonical character registry;
-- location and jurisdiction registry;
-- symbolic-object registry;
-- theorem-to-object mappings;
-- institutional-office registry;
-- recurring motif registry;
-- legal/ritual artifact registry;
-- predecessor/successor scene-state links;
-- bounded 72-state beat projection.
+\[
+\Omega_{\mathrm{Phase4A}}=\mathrm{true}
+\]
 
-The 72-state projection is a composition surface rather than a requirement that all beats carry equal prose length.
+Module 4 is the complete full-length companion novel, not merely a preprocessing module.
 
-Module 4 must serialize the Module 3 plot into a stable object-and-beat graph that the native proposal layer can expand without altering the theorem map.
+Target:
+
+\[
+110,000\text{–}130,000\ \text{words}
+\]
+
+Composition:
+
+\[
+3\ \text{books}
+\]
+
+\[
+36\ \text{chapters}
+\]
+
+\[
+72\ \text{canonical beats}
+\]
+
+Historical projection:
+
+\[
+B_0\ldots B_{23}=2001\text{–}2012
+\]
+
+\[
+B_{24}\ldots B_{47}=2012\text{–}2019
+\]
+
+\[
+B_{48}\ldots B_{71}=2019\text{–}2026
+\]
+
+The novel uses transformed major news cycles and technology adoption as causal beat substrate while keeping the prose allegorical: real public figures, political parties, companies, platforms, historical event names, literary authors, titles, quotations, and canonical myths are not directly named.
+
+The visible transformation is:
+
+\[
+\text{broadcast reality}
+\rightarrow
+\text{networked identity}
+\rightarrow
+\text{algorithmic reality}
+\rightarrow
+\text{generated reality}
+\rightarrow
+\text{provenance recovery}
+\]
+
+The working novel title is:
+
+**THE GOLDEN INVARIANT**
+
+The primary protagonist is Julian Vance, a municipal maintenance worker and covert provenance-system builder. Elena Mor carries the archival / predecessor-memory surface. Elias Vane is a partly-correct systems architect rather than a simple villain. Lyra remains the polymorphic adversarial carrier. The Ark is a deliberately non-sovereign provenance protocol.
+
+#### Module 4 execution phases
+
+- Phase 4A — historical / object / 72-beat compiler: COMPLETE
+- Phase 4B — Book I prose, 2001–2012: NEXT
+- Phase 4C — Book II prose, 2012–2019
+- Phase 4D — Book III prose, 2019–2026
+- Phase 4E — continuity / zero-drift pass
+- Phase 4F — literary compression pass
+
+### Current next frontier
+
+\`MODULE 4 — PHASE 4B: BOOK I — THE WORLD ON TELEVISION\`
+
+Generate Chapters 1–12 / Beats B00–B23 as continuous literary prose while keeping the compiler invisible.
 
 ## Native execution correspondences
 
