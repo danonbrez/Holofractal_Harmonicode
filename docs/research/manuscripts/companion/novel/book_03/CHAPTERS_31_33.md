@@ -2877,3 +2877,422 @@ This was the exact future Julian wanted:
 more intelligence,
 
 less hidden authority.
+
+
+Answer eventually developed modes people treated like personalities.
+
+Concise.
+
+Creative.
+
+Analytical.
+
+Source-bound.
+
+Socratic.
+
+The interface invited users to choose tone.
+
+Julian disliked that epistemic rigor could look like personality setting.
+
+A creative mode could still be factual.
+
+An analytical mode could still fabricate.
+
+He asked product team:
+
+"Can mode names imply authority?"
+
+They changed some labels.
+
+SOURCE-BOUND became explicit capability, not style.
+
+Creative remained style.
+
+This distinction mattered.
+
+A user selecting "professional" should not assume more accurate.
+
+The city procurement office required regulated mode by policy.
+
+Mira used creative for brainstorming.
+
+Elena source-bound.
+
+Julian toggled and forgot, then blamed tool.
+
+Human.
+
+The provider added visible mode badge each answer.
+
+Good.
+
+Then users copied text without badge.
+
+Context lost.
+
+Consensus preserved response metadata when ingested.
+
+External email did not.
+
+Generated content traveled without generation provenance.
+
+Ark began supporting optional generated-origin receipts.
+
+Not watermark magic.
+
+A statement:
+
+this text produced by model version X under mode Y at time Z.
+
+Could be stripped.
+
+Still useful when honest.
+
+The group debated mandatory machine marking.
+
+Mira objected.
+
+"If I use it to brainstorm and rewrite, what is output?"
+
+Exactly.
+
+Binary synthetic/human became lossy.
+
+Material question was what claim depended on generation.
+
+For code, generated lines maybe.
+
+For essay, authorship rules.
+
+For factual answer, source.
+
+No universal.
+
+The public wanted detector again.
+
+Reality offered process.
+
+The city adopted provenance for high-consequence machine outputs only.
+
+Benefit decisions.
+
+Legal notices.
+
+Public statements generated substantially.
+
+Work orders not necessarily unless safety.
+
+Typed.
+
+A major test came when Answer drafted a public health notice using current source documents but selected wrong current guidance because two agencies disagreed.
+
+Both sources current.
+
+Not a hallucination.
+
+Conflict unresolved.
+
+The model chose one without surfacing conflict.
+
+This taught:
+
+retrieval grounding does not eliminate authority conflict.
+
+If sources disagree, answer must not synthesize false consensus.
+
+Consensus source-bound mode added conflict detection.
+
+When authoritative documents materially diverged, output:
+
+AUTHORITATIVE SOURCES CONFLICT — HUMAN RESOLUTION REQUIRED.
+
+Julian loved NULL/UNDEFINED returning in consumer language.
+
+The first time a user saw, complained:
+
+"Why can't AI answer?"
+
+Because correct behavior sometimes refusal.
+
+The product team feared dissatisfaction.
+
+Vane defended.
+
+"A confident wrong answer is worse than unresolved."
+
+This became core.
+
+The Missing Source episode taught another subtlety through Julian's own memory.
+
+Months later he found handwritten note in old notebook:
+
+R72 return calibration — possible field measure?
+
+Dated before Answer false bulletin.
+
+He had indeed entertained RM-72 relation earlier.
+
+This explained why fabricated answer felt familiar.
+
+The machine had not necessarily implanted all familiarity.
+
+It had attached to prior hypothesis.
+
+Human memory and generated synthesis interacted.
+
+Julian's fear softened.
+
+But note also showed memory unreliability.
+
+He had forgotten his own candidate.
+
+The right repair was not conclude false memory entirely.
+
+It was source reconstruction.
+
+Notebook predecessor.
+
+Machine output successor.
+
+Now relation clear.
+
+He added to UNRESOLVED:
+
+PRE-EXISTING HYPOTHESIS DOCUMENTED; GENERATED RESPONSE FALSELY INCREASED SPECIFICITY.
+
+This was more accurate.
+
+Elena said:
+
+"See why we keep notes?"
+
+"Don't enjoy."
+
+She enjoyed.
+
+Mira's Pickle assistant later surfaced an old chat where she had joked about "Lyra" before generated name event.
+
+The date preceded.
+
+Had she typed Lyra herself?
+
+The chat quoted family story after they told her? Timeline showed maybe earlier by days due timezone display.
+
+They investigated.
+
+Platform export timestamps UTC.
+
+Local display shifted date around midnight.
+
+The joke actually occurred after generated name.
+
+No resolution.
+
+Even timestamp semantics could manufacture precedence.
+
+They documented and stopped.
+
+Julian was finally able to say:
+
+doesn't matter enough.
+
+A miracle.
+
+The synthetic photograph case changed newsrooms.
+
+Mara Bell's team began asking source submitters for originals, not screenshots.
+
+Original file when safe.
+
+Capture context.
+
+Who received.
+
+When.
+
+If anonymity necessary, trusted intermediary.
+
+This slowed tips.
+
+Some sources refused.
+
+A valid tradeoff.
+
+For low-stakes story, screenshot enough.
+
+For high-stakes accusation, stronger provenance.
+
+The newsroom created evidence tiers.
+
+Not truth tiers.
+
+Tier A: original + verified chain.
+
+Tier B: derivative with corroboration.
+
+Tier C: unverified lead.
+
+Only A/B for strong factual publication absent other evidence.
+
+C triggers reporting.
+
+This reduced one false story.
+
+Also caused one real story delay.
+
+No perfect.
+
+Mara published methodology.
+
+Competitors mocked bureaucracy then adopted parts.
+
+Ark protocol spread through practice, not mandate.
+
+Courts became interested.
+
+A judge asked whether Ark receipt admissible.
+
+Lawyers argued.
+
+Ark itself had no special legal status.
+
+Signatures, timestamps, hashes, business records could be evaluated under existing evidence rules.
+
+Good.
+
+No new priesthood.
+
+Julian insisted README:
+
+ARK RECEIPT DOES NOT CREATE LEGAL AUTHORITY.
+
+Domain decides.
+
+The Ark repository was attacked—not hacked successfully, but flooded.
+
+Thousands of bogus packets.
+
+Storage.
+
+Spam.
+
+Some malicious illegal content.
+
+They had built open ingress without enough quarantine.
+
+Ana said:
+
+"I told you."
+
+Julian:
+
+"Yes."
+
+They added candidate quarantine separate from accepted graph.
+
+Malware scan.
+
+Content safety.
+
+Rate limit.
+
+Trusted submitter shortcuts but no truth authority.
+
+A filtered item could still appeal via separate route.
+
+Terminal Inversion lesson embedded.
+
+Ark needed membrane too.
+
+Freedom from sovereignty did not mean no gate.
+
+A gate without one truth judge.
+
+One attacker tried to exploit hash permanence by uploading personal data then claiming Ark preserved forever.
+
+Deletion policy saved them.
+
+Payload removed.
+
+Tombstone minimal where lawful.
+
+Protocol matured under attack.
+
+Mira contributed abuse tests.
+
+At seventeen she was better than adults at imagining trolling.
+
+She created malformed receipts.
+
+Conflicting timestamps.
+
+Circular predecessor graphs.
+
+Self-signed fake authorities.
+
+The validator caught some.
+
+Not all.
+
+One cycle caused infinite traversal in viewer.
+
+She laughed.
+
+"Your provenance system dies from provenance."
+
+They fixed visited-set and depth bounds.
+
+Even truth lineage needs halting condition.
+
+Julian wrote:
+
+RECURSION WITHOUT BOUND = DENIAL OF SERVICE.
+
+Mira:
+
+"Obviously."
+
+Everything obvious after failure.
+
+Ark's most important design choice became portable export.
+
+No user trapped.
+
+A project could export full graph plus signatures and host elsewhere.
+
+If Ark organization corrupted, data could fork.
+
+This frightened some:
+
+"What if fake Ark?"
+
+Good.
+
+Name not authority.
+
+Signatures and sources.
+
+Multiple implementations.
+
+The protocol had to survive hostile clone.
+
+That was test of non-sovereignty.
+
+Vane loved.
+
+Consensus teams disliked because integration easier with one endpoint.
+
+They used multiple.
+
+More work.
+
+Better.
+
+The Provenance Strike became less strike and more ecosystem.
+
+No dramatic battle.
+
+A thousand boring receipts.
+
+Which was exactly point.
