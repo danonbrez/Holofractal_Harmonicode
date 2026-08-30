@@ -129,8 +129,12 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`VOLUME III — ANTHROPOLOGICAL RISK MANAGEMENT`
+`VOLUME IV — MYTHOPOETICS AS EMPIRICAL RECORD`
 
-Before expanding it, inspect relevant HHS boundary, security, inheritance, hydration, policy, corpus, and exact-membrane surfaces so the engineering correspondences are derived from repository state rather than memory alone.
+Before expanding it, inspect relevant HHS compression, checksum/ECC, provenance, corpus/style, narrative/content, hydration-index, and receipt surfaces so symbolic-memory correspondences are derived from repository state rather than memory alone.
+
+## External research policy
+
+Web and literature research may be used as a Class-B evidentiary layer for anthropology, psychology, history, network science, biology, and comparative data. External sources may support, falsify, parameterize, or contextualize a manuscript proposition, but they do not become canonical HHS authority merely by publication or consensus. Any claim that an external result changes a native HHS proposition requires an explicit repository-grounded derivation showing the formal relationship. Conflicts remain visible rather than being silently normalized.
 
 A later implementation may add a dedicated manuscript orchestration adapter that composes Pass 191 hydration, Pass 195 proposal generation, and Pass 219 exact preflight. That adapter should be added only when its execution contract and tests are specified.
