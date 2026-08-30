@@ -1788,7 +1788,7 @@ The profile site reconnected him with a friend from childhood.
 
 The Stream told him his cousin had a baby.
 
-Navigation software kept him from getting lost in New Jersey.
+Navigation software kept him from getting lost in a neighboring state.
 
 Online banking prevented overdraft fees twice.
 
