@@ -1015,6 +1015,171 @@ It also became expectation.
 Mrs. Greenwood, who had once been unreachable by design, was now a node.
 
 
+
+
+The first real test of always-on Bellwether came when the network went off.
+
+A summer thunderstorm crossed the city in less than an hour and took three substations with it.
+
+Cell service degraded.
+
+Several fiber routes lost power.
+
+Cloud-hosted city applications remained healthy in distant data centers, which the status dashboard described as operational.
+
+Residents could not reach them.
+
+Julian stood in the emergency room at the Annex staring at a green dashboard for services nobody in two neighborhoods could access.
+
+"Operational for who?" he asked.
+
+The vendor representative said, "Backend is up."
+
+"Front end is unreachable."
+
+"Some users."
+
+"Then service isn't up for them."
+
+"We report infrastructure health."
+
+"Report service health."
+
+"Different metric."
+
+Exactly.
+
+The city had optimized availability at the server layer and forgotten that a service required a path from person to server.
+
+Phone lines became overloaded.
+
+Paper notices returned.
+
+Police cars used loudspeakers in one neighborhood.
+
+Libraries with backup power became information points.
+
+A community center put a handwritten sign in the window:
+
+COOLING CENTER OPEN — CASH ONLY VENDING — CHARGING LIMITED.
+
+The sign reached people more reliably than the emergency app because it occupied the same physical street.
+
+Julian spent twelve hours moving portable generators.
+
+At one shelter, volunteers wrote names on paper because the registration portal timed out.
+
+The forms were ugly.
+
+Handwriting inconsistent.
+
+Duplicate names.
+
+No automated eligibility check.
+
+The shelter still worked.
+
+When service returned, staff entered data manually.
+
+Some paper was lost.
+
+Some duplicated.
+
+The city later called the event a continuity success because critical operations continued.
+
+Julian agreed.
+
+The lesson was not paper good, network bad.
+
+It was:
+
+A SYSTEM IS NOT AVAILABLE IF ITS USERS CANNOT REACH IT.
+
+He added:
+
+RESILIENCE REQUIRES ALTERNATE PATH, NOT ONLY REDUNDANT SERVER.
+
+Vane later used nearly the same sentence in a standards draft.
+
+Julian accused him of theft.
+
+Vane said it was basic distributed systems.
+
+Elena marked independent convergence.
+
+Julian marked thief.
+
+The outage also produced a small social panic.
+
+People could not load feeds.
+
+Rumors moved by voice.
+
+A gas explosion that never happened.
+
+Looting that did not occur.
+
+A hospital evacuation exaggerated from one wing transfer.
+
+The absence of network did not remove misinformation.
+
+It changed its routing.
+
+Julian heard a woman in line say:
+
+"My cousin knows somebody at hospital."
+
+Ancient protocol.
+
+No screenshot.
+
+No link.
+
+No correction channel except another cousin.
+
+When service returned, the false rumors entered the feed retroactively through people recounting them.
+
+The network preserved even its own absence.
+
+That night, exhausted, Julian sat on the porch with Elena.
+
+Their phones charged inside.
+
+Neither wanted them.
+
+"Always on," Julian said.
+
+"Until off."
+
+"Then people panic because off."
+
+"Dependency."
+
+"Yes."
+
+Elena looked down the dark street.
+
+"Before phones, outage would have been normal."
+
+"Before electricity, electrical outage normal."
+
+"That's not an argument against electricity."
+
+"Exactly."
+
+She smiled.
+
+"You're learning."
+
+"Don't ruin."
+
+The network had crossed a threshold when losing it became emergency in itself.
+
+Infrastructure was no longer what the feed traveled over.
+
+The feed was infrastructure.
+
+
 ### Chapter Fourteen — Metadata
 
 The first time Julian saw Lyra in motion, she waved.
@@ -1936,6 +2101,171 @@ His mother told everyone he had "deleted her fake depression."
 He corrected her wording twice.
 
 She kept using it.
+
+
+
+
+Metadata became dangerous enough to need hiding in one of Elena's cases.
+
+A domestic-violence shelter donated administrative records to the archive under restriction.
+
+No names in the research copy.
+
+Addresses removed.
+
+Phone numbers removed.
+
+Dates generalized.
+
+Elena's junior archivist believed the dataset was anonymized.
+
+Elena was not satisfied.
+
+Patterns remained.
+
+Admission dates.
+
+School district.
+
+Age bands.
+
+Employment categories.
+
+Court dates.
+
+Service referrals.
+
+Julian was not allowed to see the data, which annoyed him correctly.
+
+Elena described the structure without exposing records.
+
+"Could somebody reidentify?"
+
+"Maybe."
+
+"From what?"
+
+"Rare combinations."
+
+A woman in a small occupation, entering a shelter during a publicly documented court case, with a child in a particular school district.
+
+No name required.
+
+The record could point.
+
+They brought in a privacy researcher.
+
+She demonstrated reidentification against public court dockets and newspaper archives.
+
+Three probable matches from a sample.
+
+The room went cold.
+
+The data was truthful.
+
+The redaction was truthful.
+
+The anonymity claim was false.
+
+Not intentionally.
+
+The archive revised access.
+
+More aggregation.
+
+Delayed release.
+
+Suppressed rare combinations.
+
+Research utility fell.
+
+Safety improved.
+
+A historian complained that the restrictions made serious analysis difficult.
+
+Elena agreed.
+
+"Then why do it?" the historian asked.
+
+"Because subjects did not authorize future strangers to reconstruct where they fled."
+
+"But this is public-interest scholarship."
+
+"Public interest is not universal override."
+
+Julian heard the story later.
+
+"How do you study hidden patterns if privacy hides them?"
+
+"Governed access."
+
+"Then authority."
+
+"Yes."
+
+"Who decides?"
+
+"Always the question."
+
+The problem mirrored the Glass Leak.
+
+Bulk visibility could reveal abuse.
+
+Bulk visibility could expose vulnerable people.
+
+The same metadata methods that uncovered institutional wrongdoing could locate a person hiding from harm.
+
+Good tools were not self-classifying.
+
+Julian wrote:
+
+PROVENANCE + PURPOSE + SUBJECT RISK.
+
+Elena added:
+
+AND MINIMUM NECESSARY DISCLOSURE.
+
+He groaned at the fourth term.
+
+She said:
+
+"Reality has no obligation to fit your whiteboard."
+
+The shelter case changed his attitude toward data minimization.
+
+He had previously disliked deletion because lost lineage weakened audit.
+
+Now he saw that retained detail could itself become latent attack surface.
+
+Preserve everything was not only expensive.
+
+It could be immoral.
+
+The correct question was not maximum memory.
+
+It was minimum sufficient memory for authorized future operations.
+
+That was much harder.
+
+He revised an old note:
+
+PRESERVE WHAT ALLOWS FUTURE DISCRIMINATION.
+
+to:
+
+PRESERVE MINIMUM STATE REQUIRED FOR AUTHORIZED FUTURE DISCRIMINATION.
+
+Then stared at the sentence.
+
+"That sounds terrible."
+
+Elena read.
+
+"Use evaluation."
+
+He changed discrimination to evaluation.
+
+Language mattered even in private notes because future Julian would inherit them.
 
 
 ### Chapter Fifteen — Hashtag Summer
@@ -3002,3 +3332,268 @@ It received more likes than all healthy plants combined.
 The network rewarded the anomaly.
 
 Julian had no idea what lesson to draw.
+
+
+Bellwether's largest demonstration that summer ended with a mural.
+
+The wall belonged to a closed department store.
+
+During the march, artists painted names of people killed in disputed encounters across the country.
+
+By morning the wall had become a gathering point.
+
+Candles.
+
+Flowers.
+
+Photographs.
+
+Messages.
+
+Livestreams.
+
+The property owner announced the mural would be removed.
+
+The network erupted.
+
+Preserve.
+
+Erase.
+
+Private property.
+
+Public memory.
+
+Vandalism.
+
+Memorial.
+
+City Council received thousands of messages.
+
+Most from outside Bellwether.
+
+The owner delayed.
+
+Then offered to donate a photograph of the mural to the city archive before repainting.
+
+Everyone hated this compromise differently.
+
+Elena was asked whether a photograph preserved the mural.
+
+"No."
+
+A council member seemed surprised.
+
+"You're archivist."
+
+"A photograph preserves an image of the mural."
+
+"Isn't that enough?"
+
+"For what?"
+
+"History."
+
+"History is not one object."
+
+She explained.
+
+Physical wall had location.
+
+Scale.
+
+Weather.
+
+Flowers.
+
+People gathering.
+
+Paint layers.
+
+Conflict over ownership.
+
+A photograph preserved appearance from one position.
+
+A 3D scan could preserve more.
+
+Video more context.
+
+Oral histories more relation.
+
+None preserved the event completely.
+
+"So what do we do?" the council member asked.
+
+"Decide what future question you care about."
+
+The city negotiated a temporary preservation period.
+
+The mural remained three months.
+
+Then was painted over under agreement.
+
+The archive captured high-resolution imagery, interviews, legal documents, photographs of gatherings, property correspondence, and a fragment of loose paint removed during stabilization.
+
+Some activists called this destruction.
+
+The owner called it generous.
+
+Elena called it documented transition.
+
+Julian visited after repainting.
+
+Blank beige wall.
+
+A small plaque noted an archived memorial had occupied the site.
+
+He scanned the code on the plaque.
+
+Images opened.
+
+The physical absence linked to digital memory.
+
+"Is that good?" Mira asked.
+
+She had come with him.
+
+"Better than nothing."
+
+"That's not good."
+
+"Most systems are better than nothing."
+
+She looked at the blank wall.
+
+"People wanted it."
+
+"Some."
+
+"Then why paint?"
+
+"Owner wanted wall back."
+
+"Who wins?"
+
+"Depends which authority."
+
+She frowned.
+
+"That's annoying."
+
+"Verified."
+
+The episode became a miniature of the whole cultural conflict.
+
+Whose memory?
+
+Whose wall?
+
+Whose audience?
+
+Which state becomes canonical?
+
+The feed wanted permanent moral visibility.
+
+Property wanted physical control.
+
+Archive wanted lineage.
+
+City wanted peace.
+
+No single actor was irrational.
+
+The compromise satisfied none fully.
+
+That may have been evidence it represented actual plural authority rather than one winning narrative.
+
+The hashtag itself evolved.
+
+By autumn, companies used it.
+
+Some sincerely.
+
+Some opportunistically.
+
+Advertisements appeared beside protest content.
+
+Brands posted solidarity graphics.
+
+People accused them of exploitation.
+
+Others praised support.
+
+The moral address had become market address.
+
+Julian watched a beverage company place the label beneath a product photograph.
+
+He laughed so hard Elena came in.
+
+"What?"
+
+He showed her.
+
+She stared.
+
+"That is inevitable."
+
+"Why?"
+
+"Address with audience."
+
+"Capitalism is a parser."
+
+"Everything is a parser to you."
+
+"Everything is compression to you."
+
+They were both ruined.
+
+Platforms began moderating violent video differently.
+
+Warning labels.
+
+Blurred images.
+
+Age gates.
+
+Some activists said hiding footage suppressed evidence.
+
+Families said repeated circulation exploited death.
+
+Platforms allowed links with warnings.
+
+The same video carried witness value and trauma cost.
+
+Again no single scalar.
+
+Mira encountered a blurred clip.
+
+She clicked.
+
+A warning appeared.
+
+She stopped.
+
+Later she asked:
+
+"Why show warning instead of delete?"
+
+Julian said:
+
+"Because some people need see."
+
+"Why?"
+
+"To know what happened."
+
+"Do I?"
+
+"No."
+
+"Then good."
+
+A child understood audience-scoped admission more naturally than most policy debates.
+
+Julian wrote nothing.
+
+Not every moment needed capture.
