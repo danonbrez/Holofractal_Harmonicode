@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`COMPANION ALLEGORICAL NARRATIVE ARCHITECTURE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 2: THE CITADEL'S DEFENDING ARCHITECTURE`
 
-The four-volume reference manual is now closed through Volume IV. The next phase should build a reversible theorem-to-story map before drafting long-form prose: formal invariant → narrative role/object → transition scene → consequence → closure receipt. Native Pass 191 hydration, Pass 194 lineage, Pass 195 proposal generation, Pass 219 exact preflight, and prior-thread narrative precedents should be used where materially relevant.
+Module 1 is complete in `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md`, with the executable index at `docs/research/manuscripts/companion/COMPANION_ALLEGORICAL_NARRATIVE_ARCHITECTURE.md`. Module 2 must define the defending state architecture and the repair path from Terminal Inversion without relying on brute-force victory or history erasure.
 
 ## External research policy
 
@@ -167,3 +167,8 @@ These precedents may strengthen continuity in Volumes III-IV, especially the map
 ## Volume IV completion state
 
 Volume IV is complete through Chapter 73. The repository-visible research trace is `docs/research/manuscripts/evidence/VOLUME_IV_RESEARCH_TRACE.md`. The volume formalizes symbolic compression, contextual hydration, motif indexing, variant witnesses, archetypal schemas, witch/dark-magic/Serpent transition logic, Genesis 3 multi-term corruption, poetic/mythology temperature, return-to-Genesis closure, and a bounded external oral-tradition evidence layer.
+
+
+## Companion executable state
+
+Module 1 is closed as a polymorphic adversary architecture with invariant tensor `W=(D,T,G,M,E)`. Lyra remains a female-coded relational surface, while the invariant adversarial algorithm is explicitly substrate-independent. Native Pass 195 proposal-only authority, Pass 189 provenance quarantine, Pass 219 exact preflight, and cumulative-default rules are mapped into the adversary's limitations and fail-closed conditions.
