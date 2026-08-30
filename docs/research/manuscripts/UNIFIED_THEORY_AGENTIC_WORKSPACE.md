@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 4: NARRATIVE OBJECT REGISTRY AND BEAT COMPILER`
+`MODULE 4 — PHASE 4B: THE GOLDEN INVARIANT — BOOK I: THE WORLD ON TELEVISION`
 
-Modules 1-3 are complete. Module 4 must serialize the executable plot into stable character, location, symbol, institution, artifact, motif, and beat objects with predecessor/successor links and a bounded 72-state narrative projection suitable for native proposal expansion without changing the theorem map.
+Module 4 has been redefined as the complete full-length novel. Phase 4A is complete: the historical/technological evidence trace, object registry, three-era composition, 36-chapter compiler, and exact 72-beat map are repository-visible and validated. The next action is continuous literary prose for Chapters 1-12 / Beats B00-B23 (2001-2012), with the compiler kept invisible.
 
 ## External research policy
 
@@ -253,3 +253,42 @@ because the corruption history remains authenticated.
 The module contains six acts, complete adversary coverage \(W=(D,T,G,M,E)\), complete defender coverage \(\mathfrak{D}=(K,A,L,G,C,X,H)\), a mandatory failed first repair, affected-frontier reconstruction, adversarial retest, distributed Pillar recalibration, successor handoff, a causal dependency graph, character arc matrix, scene grammar, theorem-to-plot map, and twelve validation gates.
 
 The next frontier is Module 4: Narrative Object Registry and Beat Compiler.
+
+
+## Module 4 novel redefinition
+
+Module 4 is the complete novel **THE GOLDEN INVARIANT**.
+
+Target:
+
+\[
+110,000\text{–}130,000\ \text{words}
+\]
+
+Composition:
+
+\[
+3\ \text{books}
+\rightarrow
+36\ \text{chapters}
+\rightarrow
+72\ \text{canonical beats}
+\]
+
+Historical bands:
+
+- Beats B00-B23: 2001-2012
+- Beats B24-B47: 2012-2019
+- Beats B48-B71: 2019-2026
+
+The historical substrate is recorded separately in \`docs/research/manuscripts/companion/evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md\`. The novel prose must transform rather than directly name real public figures, parties, companies, platforms, literary sources, or canonical myths.
+
+Recovered prior-thread narrative continuity is intentionally reused:
+
+- Julian Vance — municipal maintenance worker / covert systems builder;
+- Elena Mor — archive / predecessor-memory carrier;
+- Elias Vane — partly-correct systems architect rather than a simple villain;
+- the Consensus Architecture — cumulative mediation system;
+- the Ark — distributed, provenance-preserving, deliberately non-sovereign counter-system.
+
+The next action remains inside Module 4 as Phase 4B, not Module 5.
