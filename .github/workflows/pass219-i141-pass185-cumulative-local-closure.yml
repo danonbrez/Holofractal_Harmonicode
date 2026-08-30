@@ -110,6 +110,12 @@ jobs:
           grep -Fq 'page.touchscreen.tap' hhs_verification/pass185/cumulative_local_closure_acceptance.py
           grep -Fq 'process-tree.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
           grep -Fq 'environment-manifest.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('hhs_gui/index.html').read_text(encoding='utf-8')
+          assert r'hhsBootFailure = label;\n' not in text
+          assert 'window.__HHS_BOOT_COORDINATOR__?.fail?.(label, stringify(value));' in text
+          PY
 
       - name: Validate cumulative authority boundary and regressions
         run: |

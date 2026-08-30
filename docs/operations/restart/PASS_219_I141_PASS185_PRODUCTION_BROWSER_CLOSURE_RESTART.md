@@ -369,3 +369,24 @@ Repair-forward:
 - fail early if the explicit browser path is absent.
 
 No application/runtime authority code changes in this repair. Run `33317598541` remains preserved as failing evidence.
+
+
+### Cumulative run 33317794658 production-root page-error repair
+
+Run `33317794658` on `485c74d0c2cbcdf7602b81e523dda44cc12a61ab` reached the exact production-root browser acceptance after all build, authority, browser-install, receipt-lineage, and environment-isolation gates were green.
+
+The final browser audit found one initial-navigation `pageerror`:
+
+`SyntaxError: Invalid or unexpected token`
+
+Artifact `9734006464` has SHA-256 `c0321e8fb055d9b930f8fe1938e4a54b0624f8267e8c4830f2ca7d597bb2d853`. Its retained Playwright trace proves the ordered boot reached `INTERACTIVE` and identifies the error before application interaction.
+
+Trace inspection of the served built HTML found a literal backslash-n in the inline boot error reporter between the `hhsBootFailure` assignment and coordinator failure call.
+
+Classification:
+
+`PASS185_BOOT_ERROR_REPORTER_LITERAL_ESCAPE_SYNTAX_DEFECT`
+
+Repair-forward replaces that literal escape with a real source newline and adds a cumulative source-boundary assertion preventing recurrence. No canonical runtime authority is changed.
+
+The separate CI queue de-amplification repair remains queued for the post-green cumulative checkpoint so this production-source repair does not expand the current validation surface.
