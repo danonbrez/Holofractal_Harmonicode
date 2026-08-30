@@ -2,7 +2,7 @@
 
 ## Status
 
-DEPENDENCY-SCOPED REPAIR CHECKPOINT COMMITTED. Runtime execution validation remains bounded to the affected import/hash path and must not be conflated with unrelated backend final-certification failures.
+TERMINAL DEPENDENCY-SCOPED REPAIR CLOSURE. The missing core-sandbox Hash72 export is repaired, merged to authoritative main, and verified present on main. Unrelated backend final-certification failures remain a separate repair queue.
 
 ## Repository state
 
@@ -76,3 +76,20 @@ Run the two-test dependency-scoped suite in a repository-capable execution envir
 ## Blockers
 
 No repository-semantic blocker is known. Observed execution blockers are lack of outbound GitHub DNS in the current local execution container and zero-job GitHub Actions termination before any workflow steps execute.
+
+
+## Terminal closure receipt
+
+- Pull request: `#336` — Repair core sandbox Hash72 authority export
+- Branch head merged: `f5f45141b62965a023a31a59a52e5202714560e4`
+- Merge commit: `765bb21fd30d9a18c97c4bf33b8ccbf4f27f71a7`
+- Merge target: `main`
+- Merge result: `MERGED`
+- Target verification: `main` resolved to merge commit `765bb21fd30d9a18c97c4bf33b8ccbf4f27f71a7` immediately after merge.
+- Verified on target:
+  - `hhs_runtime/core_sandbox/hhs_general_runtime_layer_v1.py` exports the exact delegation shim;
+  - `tests/test_core_sandbox_hash72_delegation.py` is present on `main`;
+  - the shim delegates through `load_authoritative_kernel()`, canonicalizes at the boundary, preserves the kernel signature, and contains no alternate Hash72 or legacy SHA fallback.
+- External workflow state: branch-triggered Actions runs terminated before job materialization with zero jobs; no repository test steps executed. Per repository delivery policy, this external infrastructure condition did not delay the completed dependency-scoped merge.
+- Remaining work for this defect: `NONE`.
+- Separate next repair queue: pre-existing backend final-certification failures exposed once gateway import succeeds.
