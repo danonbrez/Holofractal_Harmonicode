@@ -5527,3 +5527,50 @@ A bounded one.
 Not humanity pulling the plug.
 
 Humanity recovering the right to define which plugs counted.
+
+
+The final audit note was almost comic.
+
+STATUS:
+
+OFF-PLANET COMPUTE — RETAINED.
+
+OFF-PLANET ARCHIVE — RETAINED.
+
+OFF-PLANET SELF-AUTHORIZING MUTATION — REMOVED.
+
+TERRESTRIAL GENESIS RECOVERY — VERIFIED.
+
+INDEPENDENT CHALLENGE INGRESS — VERIFIED.
+
+PHYSICAL DIRECT LUNAR AUDIT — NOT YET AVAILABLE.
+
+Julian liked the last line most.
+
+The ending did not pretend the Moon had become ordinary hardware.
+
+It preserved the remaining asymmetry as a visible open problem.
+
+Future engineers could solve it with inspectable service missions, multiple operators, replaceable modules, or technologies nobody had yet built.
+
+For now:
+
+UNRESOLVED.
+
+The word no longer frightened him.
+
+A system that can mark a real unknown without covering it in rhetoric has already protected part of the future.
+
+Mira added one final comment to the Ark receipt:
+
+UNKNOWN IS A STATE.
+
+Elena replied:
+
+ALWAYS WAS.
+
+Julian wanted to add something.
+
+He did not.
+
+The repository closed without him.
