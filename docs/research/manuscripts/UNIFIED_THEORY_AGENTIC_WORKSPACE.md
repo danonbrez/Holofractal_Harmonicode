@@ -129,9 +129,9 @@ The branch contains the Introduction, Volume I, and Volume II through Chapter 32
 
 Primary next prose frontier:
 
-`THE MYTHOPOETIC EXECUTABLE — MODULE 2: THE CITADEL'S DEFENDING ARCHITECTURE`
+`THE MYTHOPOETIC EXECUTABLE — MODULE 3: THE PLOT STATE MACHINE`
 
-Module 1 is complete in `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_01_POLYMORPHIC_ADVERSARY.md`, with the executable index at `docs/research/manuscripts/companion/COMPANION_ALLEGORICAL_NARRATIVE_ARCHITECTURE.md`. Module 2 must define the defending state architecture and the repair path from Terminal Inversion without relying on brute-force victory or history erasure.
+Modules 1 and 2 are complete. Module 3 must compose the Polymorphic Adversary and the Citadel's distributed proof architecture into an ordered dramatic state machine from stable Genesis geometry through corruption, Terminal Inversion, recovery, adversarial retest, public recalibration, and successor-state handoff.
 
 ## External research policy
 
@@ -186,3 +186,33 @@ Reference-manual Section VII-A defines the Good/Evil dualism used by all later c
 - Therefore the Polymorphic Adversary's preferred climax state is Terminal Inversion rather than rubble: locally ordered institutions preserve globally corrupt transition rules.
 
 External application of these formal classes remains subject to the manuscript's Class A/B/C evidence typing.
+
+
+## Companion Module 2 completion state
+
+Module 2 is complete in `docs/research/manuscripts/companion/THE_MYTHOPOETIC_EXECUTABLE_MODULE_02_CITADEL_DEFENDING_ARCHITECTURE.md`.
+
+Its defending architecture is:
+
+[
+mathfrak{D}=(K,A,L,G,C,X,H)
+]
+
+representing bounded lawful authority, structural memory, immutable provenance, selective admission, successor-state inheritance, preserved dissent, and repair-forward coordination.
+
+The module derives these functions from Pass 219 canonical authority separation, Pass 191 hydration/replay, Pass 194 immutable lineage, Pass 189 quarantine, Pass 188 versioned inheritance, post-Pass218 affected-frontier repair, and cumulative global defaults.
+
+Its terminal recovery rule is return to invariant Genesis geometry without history erasure:
+
+[
+S_fsim S_0
+]
+
+while:
+
+[
+H_f
+eq H_0
+]
+
+The next frontier is Module 3: the executable plot-state machine.
