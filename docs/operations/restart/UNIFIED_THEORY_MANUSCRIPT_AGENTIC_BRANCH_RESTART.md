@@ -19,7 +19,9 @@
 ## Repository-visible commits before this restart record
 
 - Manuscript seed commit: `8e033f3ba7cd8f4c88ee29a6989886d46c86faed`
-- Agentic workspace commit: `e795a65b4e1cec6723826dda045e3a96928311ee`
+- Agentic workspace seed commit: `e795a65b4e1cec6723826dda045e3a96928311ee`
+- Volume III manuscript expansion: `1c8b7da55d75dda1ac497e955480e6fc10488fa1`
+- Volume IV workspace-frontier update: `99dc60f58a70433480ff1b1643c1d9fbdb229161`
 - Restart-record commit: this commit; resolve from Git history for this file.
 
 ## Changed files
@@ -31,10 +33,15 @@
 ## Canonical manuscript receipt
 
 - Source line count at seed: 2,642 lines
+- Current line count after Volume III: 4,112 lines
 - Source character count at seed: 67,648 characters
-- Git blob SHA after upload: `7369de309cec4d63f4038f36e63cfddc70b81940`
+- Current manuscript character count after Volume III: 100,721 characters
+- Current Git blob SHA: `e6b8c3ee38b7486cedee518939e055d5da970ef5`
 - Verified first section: title + Formal Introduction
-- Verified terminal section: Volume II closure through the Volume III development frontier
+- Verified Volume III start at Chapter 33
+- Verified Volume III closure at Chapter 50
+- Verified External Empirical Research Trace
+- Verified terminal frontier: Volume IV mythopoetics
 
 ## Native HHS surfaces inspected and recorded
 
@@ -69,6 +76,8 @@ Completed:
 - Manuscript start and terminal ranges fetched successfully from branch.
 - Agentic workspace fetched successfully from branch.
 - Native HHS content, hydration, and execution surfaces inspected from the exact base commit.
+- Volume III derived from repository-native cumulative-default, Pass 188 lineage, Pass 189 provenance/quarantine, and post-Pass218 authenticated-reuse policies.
+- External Class-B research layer recorded for cultural tightness/looseness, network behavior diffusion, costly punishment/cooperation, cultural adaptation, and group-size constraints.
 
 Not yet required:
 
@@ -99,9 +108,9 @@ For the next manuscript iteration:
 
 ## Next intended frontier
 
-`VOLUME III — ANTHROPOLOGICAL RISK MANAGEMENT`
+`VOLUME IV — MYTHOPOETICS AS EMPIRICAL RECORD`
 
-Before prose expansion, inspect repository-native boundary, inheritance, security, policy, corpus/index, and exact membrane surfaces so the engineering correspondences are sourced from the branch rather than reconstructed from thread memory.
+Before prose expansion, inspect repository-native compression, ECC/checksum, corpus/style, provenance, narrative/content, hydration-index, and receipt surfaces. Web/literature research may supplement this as Class-B evidence but may not overwrite native HHS claims without an explicit repository-grounded derivation.
 
 ## Blockers
 
