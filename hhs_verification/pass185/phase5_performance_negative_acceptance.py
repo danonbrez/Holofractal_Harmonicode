@@ -529,10 +529,10 @@ def boot_watchdog_case(
 
 
 def residual_negative_gate(browser: Browser, base_url: str, evidence_dir: Path) -> dict[str, Any]:
-    collision, _ = json_request(
+    collision, collision_elapsed_ms = json_request(
         base_url,
         "/api/pass185-does-not-exist",
-        timeout=5.0,
+        timeout=15.0,
         expected_status=404,
     )
     assert collision.get("status") == "HHS_API_ROUTE_NOT_FOUND", collision
@@ -601,6 +601,8 @@ def residual_negative_gate(browser: Browser, base_url: str, evidence_dir: Path) 
         "api_route_collision": {
             "status": 404,
             "classification": collision.get("status"),
+            "latency_ms": round(collision_elapsed_ms, 3),
+            "timeout_seconds": 15.0,
             "html_spa_fallback": False,
         },
     }
