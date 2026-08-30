@@ -48,6 +48,9 @@ Completed:
 2. Signature comparison confirms the shim matches the authoritative kernel signature.
 3. Authority-path inspection confirms `load_authoritative_kernel()` is fail-closed and verifies `security_hash72_v44` among required kernel symbols.
 4. Patch is dependency-scoped and does not add a local Hash72 algorithm, cache, or import-time kernel singleton.
+5. A local semantic smoke of the exact shim passed with a stub authoritative kernel: tuple/Fraction/Path/dict canonicalization, keyword-only domain forwarding, and returned digest propagation matched the delegated authority call exactly.
+6. Fail-closed propagation passed locally: an authority-loader HHSRuntimeLoadError escaped unchanged and no fallback digest was produced.
+7. The branch push triggered 11 GitHub Actions workflow runs, but they all terminated before job materialization. Sampled runs report total_count=0 jobs and therefore executed no repository test steps; these zero-job failures are infrastructure/workflow-dispatch evidence, not code-validation failures.
 
 Environment limitation:
 
@@ -72,4 +75,4 @@ Run the two-test dependency-scoped suite in a repository-capable execution envir
 
 ## Blockers
 
-No repository-semantic blocker is known. The only observed blocker is lack of outbound GitHub DNS in the current local execution container.
+No repository-semantic blocker is known. Observed execution blockers are lack of outbound GitHub DNS in the current local execution container and zero-job GitHub Actions termination before any workflow steps execute.
