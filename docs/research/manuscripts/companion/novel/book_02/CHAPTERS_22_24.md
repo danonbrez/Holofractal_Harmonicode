@@ -2976,3 +2976,167 @@ Julian appealed none.
 The last analog receipt became family comedy before it became metaphor.
 
 That was healthier.
+
+
+The BEFORE drive outgrew the drive.
+
+Julian migrated it to a small server at home.
+
+Elena objected to the phrase server because it was an old workstation under the stairs.
+
+"It serves."
+
+"It wheezes."
+
+"Still."
+
+They mirrored the data to two encrypted disks stored separately.
+
+One with Elena.
+
+One in a safe-deposit box.
+
+Julian wrote restore instructions.
+
+Elena tested them without telling him.
+
+The restore failed because one encryption key file path assumed Julian's username.
+
+She waited until dinner.
+
+"Your archive dies if you die."
+
+"Good evening."
+
+"Dependency."
+
+He fixed.
+
+Then asked Mira, now eleven, to follow restore instructions.
+
+She failed at step three because instruction said mount volume.
+
+"What is mount?"
+
+Julian explained.
+
+"Then write plug in drive."
+
+Different generation.
+
+Different vocabulary.
+
+The instructions had been technically correct and operationally unusable for successor.
+
+Elena smiled.
+
+"Provenance includes executable comprehension."
+
+Julian revised instructions in ordinary language.
+
+Mira completed restore.
+
+This became first successor test of what would later become Ark.
+
+Not whether files existed.
+
+Whether someone other than creator could recover state.
+
+Julian wrote:
+
+IF ONLY AUTHOR CAN REPLAY, NOT RESTARTABLE.
+
+The sentence would travel farther than he knew.
+
+
+Consensus Beta ended the year with a public audit.
+
+Vane insisted on publishing failures alongside successes.
+
+The communications team resisted.
+
+"Public will misread."
+
+"Then explain."
+
+"Opponents will cherry-pick."
+
+"They already do."
+
+"Why hand ammunition?"
+
+"Because hidden failure becomes scandal later."
+
+Julian attended release.
+
+Report contained:
+
+reduced wait time,
+
+reduced duplicate submissions,
+
+fraud detections,
+
+false adverse states,
+
+appeal times,
+
+data-reuse complaints,
+
+system outages,
+
+unreconstructable decision incidents,
+
+corrective actions.
+
+Reporters focused on failures.
+
+Communications team looked furious.
+
+Vane looked calm.
+
+A month later survey showed trust had not collapsed.
+
+In some groups it rose.
+
+People distinguished error from concealment.
+
+Not everyone.
+
+Enough.
+
+Julian told Vane:
+
+"Three points."
+
+"For?"
+
+"Publishing defects."
+
+"Finally approaching passing."
+
+"Never."
+
+Vane said:
+
+"You know what Consensus needs most?"
+
+"What?"
+
+"People who expect it to fail somewhere."
+
+"That's comforting."
+
+"Systems designed only by believers become religions."
+
+Julian saved the line.
+
+Vane said:
+
+"Do not quote."
+
+Julian:
+
+"Too late."
+
+This was the last year Julian thought Vane had kept the architecture bounded successfully.
