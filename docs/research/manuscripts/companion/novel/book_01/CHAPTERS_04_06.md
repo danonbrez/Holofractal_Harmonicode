@@ -1748,19 +1748,19 @@ The crawling line described recovery.
 
 Julian drove through both states.
 
-One evening he and Elena passed an encampment in a public square.
-
-Tents.
+One evening he and Elena passed a local foreclosure protest outside a shuttered bank branch.
 
 Cardboard signs.
 
-Drums.
+A folding table.
 
-Students.
+Thermoses of coffee.
 
-Unemployed workers.
+Homeowners carrying envelopes from lenders.
 
-Older activists.
+Union jackets.
+
+College students.
 
 Young people holding phones above the crowd.
 
@@ -1784,11 +1784,11 @@ Julian slowed.
 
 They parked.
 
-The encampment smelled like wet fabric, pizza, cigarettes, and electrical insulation.
+The sidewalk smelled like wet cardboard, pizza, cigarettes, and bus exhaust.
 
 Extension cords ran from portable generators.
 
-A volunteer media table had six laptops open to live streams.
+A volunteer media table had three laptops open to live streams.
 
 The strange thing was how many layers of audience existed at once.
 
@@ -1846,7 +1846,7 @@ Some wanted a bathroom.
 
 The network compressed them into one thing anyway.
 
-The next day's television called it a movement.
+The next day's local television called it a foreclosure protest.
 
 That was not false.
 
