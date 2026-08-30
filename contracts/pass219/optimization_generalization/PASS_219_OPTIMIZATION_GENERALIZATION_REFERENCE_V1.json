@@ -1,0 +1,180 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [],
+  "optimization": {
+    "optimization_id": "REFERENCE_BUFFER_FAST_PATH",
+    "compatible_object_classes": [
+      "hydration_buffer"
+    ],
+    "required_operations": [
+      "READ"
+    ],
+    "required_port_types": [
+      "HHS_BUFFER_V1"
+    ]
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "hydration_buffer",
+    "operations": [
+      "READ",
+      "WRITE"
+    ],
+    "inputs": [
+      {
+        "name": "in",
+        "type": "HHS_BUFFER_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "out",
+        "type": "HHS_BUFFER_V1"
+      }
+    ],
+    "runtime_authority": "INHERITED_VM81",
+    "exactness_domain": "EXACT_SYMBOLIC",
+    "state_schema": {
+      "schema": "HHS_BUFFER_V1"
+    },
+    "logical_object_id": "source-vm81",
+    "modality_set": [
+      "VM81_STATE"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "hydration_buffer",
+      "operations": [
+        "READ",
+        "WRITE"
+      ],
+      "inputs": [
+        {
+          "name": "in",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "out",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "runtime_authority": "INHERITED_VM81",
+      "exactness_domain": "EXACT_SYMBOLIC",
+      "state_schema": {
+        "schema": "HHS_BUFFER_V1"
+      },
+      "logical_object_id": "target-vector",
+      "modality_set": [
+        "ENCRYPTED_VECTOR_MEMORY"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "hydration_buffer",
+      "operations": [
+        "READ",
+        "WRITE"
+      ],
+      "inputs": [
+        {
+          "name": "in",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "out",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "runtime_authority": "INHERITED_VM81",
+      "exactness_domain": "EXACT_SYMBOLIC",
+      "state_schema": {
+        "schema": "HHS_BUFFER_V1"
+      },
+      "logical_object_id": "target-calibration",
+      "modality_set": [
+        "CALIBRATION_LEDGER"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "hydration_buffer",
+      "operations": [
+        "READ",
+        "WRITE"
+      ],
+      "inputs": [
+        {
+          "name": "in",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "out",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "runtime_authority": "INHERITED_VM81",
+      "exactness_domain": "EXACT_SYMBOLIC",
+      "state_schema": {
+        "schema": "HHS_BUFFER_V1"
+      },
+      "logical_object_id": "target-interface",
+      "modality_set": [
+        "VISUAL_IDE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "FOREIGN_OBJECT_DESCRIPTOR_V1",
+      "object_class": "hydration_buffer",
+      "operations": [
+        "READ",
+        "WRITE"
+      ],
+      "inputs": [
+        {
+          "name": "in",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "out",
+          "type": "HHS_BUFFER_V1"
+        }
+      ],
+      "runtime_authority": "INHERITED_VM81",
+      "exactness_domain": "EXACT_SYMBOLIC",
+      "state_schema": {
+        "schema": "HHS_BUFFER_V1"
+      },
+      "logical_object_id": "target-other-schema",
+      "modality_set": [
+        "FOREIGN"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "target-vector",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true
+    },
+    {
+      "logical_object_id": "target-interface",
+      "bounded_exception": "INTERFACE_ONLY",
+      "exception_evidence": "reference:interface-only-surface"
+    }
+  ],
+  "declared_generalize_required": [
+    "target-vector"
+  ]
+}

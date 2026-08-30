@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "type": "object",
+  "required": [
+    "schema",
+    "optimization",
+    "source",
+    "targets",
+    "target_evidence",
+    "declared_generalize_required",
+    "changed_paths"
+  ],
+  "properties": {
+    "schema": {
+      "const": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1"
+    },
+    "local_only": {
+      "type": "boolean"
+    },
+    "changed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "optimization": {
+      "type": "object",
+      "required": [
+        "optimization_id"
+      ],
+      "properties": {
+        "optimization_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compatible_object_classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_port_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "source": {
+      "$ref": "#/$defs/object"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/object"
+      }
+    },
+    "target_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "declared_generalize_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "object": {
+      "type": "object",
+      "required": [
+        "logical_object_id",
+        "object_class",
+        "modality_set",
+        "operations",
+        "inputs",
+        "outputs",
+        "runtime_authority"
+      ],
+      "properties": {
+        "logical_object_id": {
+          "type": "string"
+        },
+        "descriptor_schema_id": {
+          "type": "string"
+        },
+        "object_class": {
+          "type": "string"
+        },
+        "modality_set": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "runtime_authority": {
+          "type": "string"
+        },
+        "exactness_domain": {
+          "type": "string"
+        },
+        "state_schema": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "logical_object_id"
+      ],
+      "properties": {
+        "logical_object_id": {
+          "type": "string"
+        },
+        "validation_executed": {
+          "type": "boolean"
+        },
+        "safe": {
+          "type": "boolean"
+        },
+        "benefit": {
+          "type": "boolean"
+        },
+        "bounded_exception": {
+          "type": "string"
+        },
+        "exception_evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -44,6 +44,7 @@
 #include "hhs_pass219_inherited_pass187_1_39.h"
 #include "hhs_pass219_inherited_pass186_1_40.h"
 #include "hhs_pass219_global_canonical_defaults_1_0.h"
+#include "hhs_pass219_multimodal_optimization_generalization_1_0.h"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
 #include "hhs_pass219b_universal_phase_locality_1_0.h"
 #include "hhs_pass219_octonion_runtime_1_19.h"

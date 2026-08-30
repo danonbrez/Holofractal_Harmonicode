@@ -1,0 +1,136 @@
+{
+  "schema": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_V1",
+  "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "MANDATORY_UNIVERSAL_INVARIANT",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "adopted_against_main": "feba5302d90f2fb757df566d8436f7c3d3fb9a79",
+  "inherits": [
+    "HHS-P219-GLOBAL-CANONICAL-DEFAULTS"
+  ],
+  "canonical_object_metadata": {
+    "primary_descriptor_schema": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "schema_path": "schemas/pass187/HHS_PASS_187_OBJECT_DESCRIPTOR_V1.schema.json",
+    "compatibility_fields": [
+      "object_class",
+      "modality_set",
+      "state_schema",
+      "inputs",
+      "outputs",
+      "operations",
+      "dependencies",
+      "compatible_egress_targets",
+      "runtime_authority"
+    ],
+    "modality_name_alone_is_sufficient": false
+  },
+  "invariant": {
+    "all_optimizations_multimodal_by_default": true,
+    "locality_is_exception_not_default": true,
+    "compatible_targets_discovered_automatically": true,
+    "compatible_untested_targets_are_validation_obligations": true,
+    "safe_beneficial_compatible_targets_are_generalization_obligations": true,
+    "no_new_user_directive_required_per_compatible_modality": true,
+    "applies_to_existing_and_future_objects": true,
+    "repair_forward_required": true
+  },
+  "target_classification": {
+    "incompatible": "NOT_APPLICABLE",
+    "compatible_unvalidated": "VALIDATION_REQUIRED",
+    "compatible_safe_beneficial": "GENERALIZE_REQUIRED",
+    "compatible_bounded_exception": "LOCAL_EXCEPTION_ALLOWED"
+  },
+  "bounded_exception_reasons": [
+    "UNSAFE",
+    "NO_MEANINGFUL_BENEFIT",
+    "CONTEXT_SPECIFIC",
+    "METADATA_INCOMPATIBLE",
+    "OBJECT_INCOMPATIBLE",
+    "INTERFACE_ONLY",
+    "INGRESS_ONLY",
+    "EGRESS_ONLY",
+    "EXPLICIT_ONE_OFF"
+  ],
+  "exception_requirements": {
+    "repository_visible_evidence_required": true,
+    "absence_of_evidence_is_exception": false,
+    "unsafe_requires_executed_validation": true,
+    "no_benefit_requires_executed_validation": true,
+    "context_or_one_off_requires_explicit_bounded_contract": true,
+    "silence_is_locality": false
+  },
+  "compatibility_algorithm": {
+    "descriptor_schema_must_match": true,
+    "runtime_authority_must_match": true,
+    "object_class_must_match_or_be_explicitly_compatible": true,
+    "required_operations_must_be_supported": true,
+    "required_port_types_must_be_supported": true,
+    "exactness_domain_must_match": true,
+    "same_modality_required": false,
+    "cross_modality_generalization_expected": true
+  },
+  "automated_enforcement": {
+    "runtime_classifier": "hhs_runtime/pass219/multimodal_optimization_generalization.py",
+    "c_header": "hhs_runtime/include/hhs_pass219_multimodal_optimization_generalization_1_0.h",
+    "cpp_header": "hhs_runtime/include/hhs_pass219_multimodal_optimization_generalization_1_0.hpp",
+    "c_implementation": "hhs_runtime/c/hhs_pass219_multimodal_optimization_generalization_1_0.inc",
+    "validator": "tools/validate_pass219_multimodal_optimization_generalization.py",
+    "change_auditor": "tools/hhs_multimodal_optimization_generalizer.py",
+    "manifest_schema": "schemas/pass219/HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1.schema.json",
+    "manifest_directory": "contracts/pass219/optimization_generalization",
+    "workflow": ".github/workflows/pass219-multimodal-optimization-generalization.yml",
+    "aggregate_exact_abi_required": true,
+    "undeclared_optimization_change_is_failure": true
+  },
+  "governing_invariant": [
+    "ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT",
+    "COMPATIBILITY_IS_DERIVED_FROM_CANONICAL_METADATA_AND_OBJECT_SEMANTICS",
+    "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
+    "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
+    "LOCALITY_REQUIRES_AN_EXPLICIT_EVIDENCED_BOUNDED_EXCEPTION",
+    "GENERALIZATION_DOES_NOT_REQUIRE_A_NEW_USER_DIRECTIVE_PER_MODALITY"
+  ],
+  "initial_repair_forward_audit": {
+    "status": "REQUIRED",
+    "discovery_rule": "Every already-wired or newly-reconciled optimization-bearing pass becomes a generalization audit seed until compatible modality coverage is resolved.",
+    "seeds": [
+      {
+        "id": "PASS192_FIBONACCI_COMPRESSION",
+        "source": "hhs_runtime/pass192/runtime.py",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      },
+      {
+        "id": "PASS207_DETERMINISTIC_BATCH_CACHE",
+        "source": "contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      },
+      {
+        "id": "PASS208_CANDIDATE_BRANCH_EXPANSION",
+        "source": "contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      },
+      {
+        "id": "PASS219B_PHASE_LOCALITY",
+        "source": "hhs_runtime/c/hhs_pass219b_universal_phase_locality_1_0.inc",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      },
+      {
+        "id": "PASS219B_SELECTIVE_PROJECTION",
+        "source": "hhs_runtime/c/hhs_pass219b_selective_projection_1_0.inc",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      },
+      {
+        "id": "PASS219B_SPARSE_DIRTY_PROJECTION",
+        "source": "hhs_runtime/c/hhs_pass219b_sparse_dirty_projection_1_0.inc",
+        "classification": "GENERALIZATION_AUDIT_REQUIRED",
+        "local_only": false
+      }
+    ]
+  }
+}

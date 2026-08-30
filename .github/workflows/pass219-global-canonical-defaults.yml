@@ -6,8 +6,10 @@ on:
       - agent/pass219-global-canonical-defaults-main-repair
     paths:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
+      - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
       - contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json
       - docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md
+      - docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md
       - docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
       - hhs_runtime/include/hhs_runtime_exact_abi.h
       - hhs_runtime/c/hhs_runtime_exact_abi.c
@@ -19,8 +21,10 @@ on:
   pull_request:
     paths:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
+      - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
       - contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json
       - docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md
+      - docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md
       - docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
       - hhs_runtime/include/hhs_runtime_exact_abi.h
       - hhs_runtime/c/hhs_runtime_exact_abi.c

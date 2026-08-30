@@ -46,3 +46,13 @@ NO APPLICABLE CANONICAL SECURITY OR CONSTRAINT MECHANISM IS BYPASSED.
 NO PREVIOUS VERSION IS GRANDFATHERED AROUND A LATER GLOBAL DEFAULT.
 ALL SUCH GAPS ARE REPAIRED_FORWARD.
 ONLY AN EXPLICIT UPGRADE OR DEPRECATION MAY CHANGE THE DEFAULT.
+
+## Multimodal optimization generalization
+
+The global canonical-default rule is refined by `HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION`.
+
+Every successful optimization is multimodal by default. The repository must discover compatible targets using canonical object metadata, not modality names alone. Compatible untested targets are `VALIDATION_REQUIRED`; compatible targets that reproduce the improvement safely are `GENERALIZE_REQUIRED`.
+
+Local-only scope is permitted only through an explicit bounded exception with repository-visible evidence. Unsafe and no-benefit exceptions require executed validation. Context-specific, interface-only, ingress-only, egress-only, and explicit one-off scopes must be bounded in their contract.
+
+A new user directive is not required for every compatible modality. Generalization is an inherited canonical obligation once compatibility, safety, and benefit are established.
