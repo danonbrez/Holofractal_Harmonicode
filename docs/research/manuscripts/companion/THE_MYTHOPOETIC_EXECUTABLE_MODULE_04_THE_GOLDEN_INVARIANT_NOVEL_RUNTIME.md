@@ -10,7 +10,7 @@
 
 **Historical evidence trace:** \`evidence/MODULE_04_AMERICAN_HISTORY_TECH_BEAT_TRACE.md\`
 
-**Execution status:** FULL-LENGTH NOVEL — BOOK I COMPLETE / BOOK II NEXT
+**Execution status:** FULL-LENGTH NOVEL — BOOKS I-II COMPLETE / BOOK III NEXT
 
 **Target length:** 110,000–130,000 words
 
@@ -1571,17 +1571,27 @@ Receipt:
 
 ## Phase 4C — Book II prose
 
-Status: NEXT
-
-Target:
+Status:
 
 \[
-35,000\text{–}42,000
+\Omega_{\mathrm{Phase4C}}=\mathrm{true}
 \]
 
-words.
+Canonical manuscript:
+
+`novel/THE_GOLDEN_INVARIANT_BOOK_II_THE_WORLD_IN_THE_FEED.md`
+
+Receipt:
+
+- 35,038 words;
+- 12 chapters;
+- Beats B24-B47 all covered;
+- 2012-2019 historical band closed;
+- zero direct references to the checked prohibited real platforms/events/allusions during validation.
 
 ## Phase 4D — Book III prose
+
+Status: NEXT
 
 Target:
 
@@ -1756,6 +1766,6 @@ It is not Module 5.
 
 ## NEXT
 
-### Phase 4C — BOOK II: THE WORLD IN THE FEED
+### Phase 4D — BOOK III: THE WORLD THAT ANSWERS BACK
 
-Generate Chapters 13–24 / Beats B24–B47 as continuous literary prose while keeping the compiler invisible. Carry forward the exact Book I terminal state, including Julian/Elena/Mira chronology, the Golden Measure, SOURCE/SUMMARY, Rat, Lyra recurrence, Vane, Ana Reyes, and the transition from common broadcast reality to personalized carried reality.
+Generate Chapters 25–36 / Beats B48–B71 as continuous literary prose while keeping the compiler invisible. Carry forward the exact Book II terminal state: Julian/Elena/Mira chronology, the Golden Measure and R72/RM-72 candidate lineage, SOURCE/SUMMARY/BEFORE/UNRESOLVED, Rat, Lyra multiplicity without identity promotion, Vane's bounded Consensus architecture, Ana Reyes, Samir Cole's predecessor witnesses, and the 2019 state in which the feed has become the default reality interface while replay/fallback remains explicit.
