@@ -514,8 +514,8 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
                   <StateField label="project" value={project ? "ready" : "not created"} ready={Boolean(project)} />
                   <StateField label="source" value={selectedObject ? "witnessed" : "local"} ready={Boolean(selectedObject)} />
-                  <StateField label="artifact" value={artifactId || "none"} ready={Boolean(artifactId)} />
-                  <StateField label="emulator" value={sessionId || "none"} ready={Boolean(sessionId)} />
+                  <StateField label="artifact" value={artifactId || "none"} ready={Boolean(artifactId)} testId="pass185-workbench-artifact-state" />
+                  <StateField label="emulator" value={sessionId || "none"} ready={Boolean(sessionId)} testId="pass185-workbench-emulator-state" />
                 </div>
 
                 {emulatorSession ? (
@@ -537,7 +537,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 </div>
                 {lastResult ? (
                   <>
-                    <p className="mt-3 text-sm leading-6 text-neutral-200">{text(lastResult.summary, "Operation completed.")}</p>
+                    <p data-testid="pass185-last-result-summary" className="mt-3 text-sm leading-6 text-neutral-200">{text(lastResult.summary, "Operation completed.")}</p>
                     <details className="mt-3 rounded-lg border border-neutral-800 bg-black/50 p-2">
                       <summary className="cursor-pointer text-[10px] text-neutral-500">Technical evidence</summary>
                       <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[9px] text-neutral-400">{JSON.stringify(lastResult, null, 2)}</pre>
@@ -622,8 +622,8 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   )
 }
 
-const StateField: React.FC<{ label: string; value: string; ready: boolean }> = ({ label, value, ready }) => (
-  <div className="rounded-lg border border-neutral-800 bg-black/50 p-2">
+const StateField: React.FC<{ label: string; value: string; ready: boolean; testId?: string }> = ({ label, value, ready, testId }) => (
+  <div data-testid={testId} className="rounded-lg border border-neutral-800 bg-black/50 p-2">
     <div className="text-neutral-600">{label}</div>
     <div className={`mt-1 truncate font-mono ${ready ? "text-emerald-300" : "text-neutral-500"}`} title={value}>{value}</div>
   </div>
