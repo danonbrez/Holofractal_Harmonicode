@@ -5179,3 +5179,58 @@ The line beneath it had stopped crawling for the holiday special.
 For once, the bottom of the screen was empty.
 
 Julian noticed only because he had spent eleven years learning to expect motion there.
+
+
+Before bed, Julian checked the old Annex television disposal record one more time.
+
+SURPLUS ELECTRONICS.
+
+No note about why it had been installed.
+
+No note about why it had stayed.
+
+No note about what replaced its public function.
+
+A future clerk reading only the disposal line would see a dead television.
+
+Julian could see an eleven-year transition from shared emergency broadcast to individualized network alerts.
+
+The difference existed entirely in lineage.
+
+He added the installation record, the temporary emergency authorization, the maintenance history, and the disposal ticket to one folder.
+
+Elena stood behind him.
+
+"You know normal people sleep after midnight."
+
+"This is five minutes."
+
+"You have said that for eleven years."
+
+He saved the folder.
+
+ANNEX_COMMON_SCREEN_2001_2012.
+
+"Too literal," Elena said.
+
+"It's a filename."
+
+"Exactly."
+
+He shut down the computer.
+
+For a moment the monitor went black before the desk lamp reflected in it.
+
+Another dark glass surface.
+
+Another mirror when the system stopped speaking.
+
+Julian turned off the lamp.
+
+Upstairs, Mira murmured in her sleep.
+
+Outside, somebody shouted happy new year again though midnight had passed.
+
+The network kept sending messages into the dark.
+
+Julian let them wait.
