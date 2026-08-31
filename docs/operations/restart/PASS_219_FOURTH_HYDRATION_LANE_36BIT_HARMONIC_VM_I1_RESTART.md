@@ -6,13 +6,14 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Branch head before this checkpoint record: `390a53ded7230e581457cb17ec22214f4156cbb1`
-- Status: RESTARTABLE CHECKPOINT / MANDATORY DEFAULT-STATE INTEGRATION
-- Main merge: not yet performed
+- Validated implementation head: `6c92de9581c8d6f88d03f7ff3543a01ba7efdc01`
+- Branch head immediately before this checkpoint record: `c589801035c458fd4ea142fcafb70a53b1839611`
+- Main merge: **not performed**
+- Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
 ## Governing invariant
 
-Harmonic36 is a mandatory nested circuit topology of the one VM81/Hash72/Hash216 state machine, not a translation adapter or alternate authority.
+Harmonic36 is a mandatory nested circuit topology of the inherited singleton VM81/Hash72/Hash216 state machine.
 
 ```text
 5184
@@ -22,188 +23,343 @@ Harmonic36 is a mandatory nested circuit topology of the one VM81/Hash72/Hash216
 = 12 * 12 * 3 * 12
 ```
 
-Every compatible pass-level optimization, hydration/compression route, phase computation, GPU candidate path, Hash216/vector-cache retrieval, RNA lowering path, knowledge-graph relation and multimodal execution path must preserve one canonical 5184 identity and return to singleton VM81 admission.
+Cardinality equality does not erase typed semantics. H36 has zero independent VM81, Hash72, Hash216, persistence or canonical floating-point authority.
 
-## Implemented in this iteration
+## Completed implementation frontier
 
-### Executable Harmonic36 kernel
+### 1. Exact H36 / VM81 / Hash72 / phase factorization
 
-Published the complete current kernel source split:
+Implemented and validated:
 
+- exhaustive 5,184 native-coordinate crosswalk;
+- VM81 `81×64` ↔ H36 `144×36` exact bit round-trip;
+- Hash72 `72×72` preservation;
+- operation64 ↔ ordered phase `8×8` preservation;
+- Q144 `12×12` and equal-temperament `3×12` coordinates;
+- 64 harmonic operator identities, all 12 transpositions;
+- arbitrary exact `12+12+12` harmonic pack/unpack;
+- exact integer voice-leading witnesses.
+
+Core files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h`
+- `hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp`
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc`
 - `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_rules_1_0.inc`
 - `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc`
 - `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_exec_1_0.inc`
-- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc`
 
-Current execution coverage includes:
-
-- literal PDP-10-compatible 36-bit instruction encoding/decoding `9+4+1+4+18`;
-- indirect/indexed effective addressing;
-- MOVE/MOVS/MOVN/MOVM families;
-- ADD/SUB;
-- EXCH/JRST/XCT;
-- CAI/CAM/JUMP/SKIP/AOJ/AOS/SOJ/SOS;
-- 16 Boolean functions across the 0400–0477 family;
-- HHS UUOs for harmonic render, transpose, voice-leading transition, factorization coordinate and halt;
-- deterministic rejection of historical floating regions as noncanonical;
-- deterministic trap for still-unimplemented historical instruction families.
-
-### Exact 5184 data plane
+### 2. Pass 210 / Fibonacci / HFC compression
 
 Implemented:
 
-- VM81 `81×64` <-> H36 `144×36` exact bit round-trip;
-- historical 36-bit bit ordering;
-- exhaustive coordinate crosswalk to VM81, Hash72, Q144, phase8×8 and harmonic rule64;
-- exact `12×12×3×12 = 5184` equal-temperament validation;
-- 144-word exact equal-temperament seed;
-- arbitrary 12+12+12 harmonic pack/unpack;
-- all 64 current harmonic rule descriptors and all 12 transpositions;
-- exact integer voice-leading witness metrics.
+- exact 5,184-byte Boolean expansion/contraction;
+- inherited HFC geometry `36 snapshots × 288 width × 144 stride`;
+- exact double coverage;
+- all 36 single-snapshot erasure recovery drills;
+- Fibonacci compression descriptor validation;
+- reconstructed register == original register;
+- reconstructed VM81 == original VM81;
+- H36 hydration round-trip equality.
 
-### C++ RNA facade
+Files:
 
-Published:
+- `hhs_runtime/include/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc`
+- `tests/pass219/test_pass219_harmonic36_compression_gpu_fabric_1_0.c`
 
-- `hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp`
+### 3. Pass 207/208 GPU locality binding
 
-The facade exposes reusable `Harmonic36Word` and `Harmonic36NestedVM` objects while retaining zero independent VM81/Hash72/persistence authority.
+Implemented:
 
-### Mandatory default binding
+- exact rectangular H36 `word144 × bit36` locality plans;
+- selected-lane enumeration through the native 5,184 factorization circuit;
+- Pass 207 stable-lane/candidate-only binding;
+- Pass 208 candidate expansion/ranking binding;
+- physical completion order explicitly noncanonical;
+- exact GPU candidate == CPU/VM81 oracle requirement;
+- singleton VM81 admission preserved;
+- zero GPU Hash72/persistence/mutation authority.
 
-Published the machine-checkable mandatory integration descriptor:
+### 4. Hash216 directional branch ranking
 
-- default-state machine required;
-- hydration required;
-- compression required;
-- phase gear required;
-- GPU candidate path required;
-- Hash216/vector cache required;
-- knowledge graph required;
-- deterministic quantum-like branch path required;
-- RNA/DNA transcription required;
-- octonion/ternary required;
-- Lo Shu/Sudoku qudit required;
-- native 36-bit execution required;
-- multimodal generalization required.
+Implemented:
 
-Independent VM81, Hash72, Hash216 and floating-point canonical authority remain zero.
+- ordered Hash216 occurrence identity;
+- lane role / lane position / glyph-derived native Hash72 circuit binding;
+- source/target harmonic operator identity;
+- common-tone witness;
+- semitone-resolution witness;
+- integer voice-leading cost;
+- phase distance;
+- native 5,184-address distance;
+- directional position216 distance;
+- deterministic lexicographic integer ranking;
+- stable candidate-ID final tie break;
+- candidate-only authority boundary.
 
-### Factorization fabric
+Files:
 
-Published:
+- `hhs_runtime/include/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc`
+- `tests/pass219/test_pass219_harmonic36_branch_knowledge_fabric_1_0.c`
 
-- `hhs_runtime/include/hhs_pass219_harmonic36_factorization_fabric_1_0.h`
-- `hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc`
+### 5. Existing Pass 128 knowledge-graph integration
 
-The fabric calls the inherited Pass 219 Genesis decoder and fails closed unless the existing:
+Implemented a bridge into the existing canonical graph rather than creating a second graph authority.
 
-```text
-81×64
-72×72
-8×8 phase
-```
+Files:
 
-coordinates exactly equal the new:
+- `hhs_runtime/hhs_pass219_harmonic36_knowledge_graph_bridge_v1.py`
+- `tests/pass219/test_pass219_harmonic36_knowledge_graph_bridge_v1.py`
 
-```text
-144×36
-12×12 Q144
-3×12 equal-temperament
-harmonic rule64
-```
-
-view for the same `linear5184`.
-
-It also emits an exact VM81 -> H36 -> VM81 hydration round-trip witness.
-
-### Hash216 / RNA binding
-
-Published:
-
-- `hhs_runtime/include/hhs_pass219_harmonic36_hash216_rna_binding_1_0.h`
-- `hhs_runtime/c/hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc`
-
-For every ordered Hash216 occurrence:
+Guarded service:
 
 ```text
-(lane_role, lane_position72, glyph)
--> symbol_index72
--> lane_position72 * 72 + symbol_index72
--> native Hash72 linear5184
--> VM81 / H36 / phase / harmonic circuit
+runtime.harmonic36_knowledge_graph_bridge.pass219
 ```
 
-Repeated Hash72 glyphs are explicitly permitted. Identity remains distinct through ordered lane position and lane role. A no-repeat 72-symbol lane is recognized as the permutation-core case inside the wider repeat-allowed manifold.
+The bridge:
 
-Existing per-occurrence SHA-256 vector-index records are preserved; the H36 binding does not mint an alternate vector namespace.
+- accepts only Pass 128-supported relation names;
+- uses exact confidence fractions;
+- hashes H36 relation evidence into an evidence root;
+- delegates edge construction to `CanonicalKnowledgeGraphEngine.relate()`;
+- remains non-executable and non-mutating;
+- creates no alternate graph store.
 
-RNA's `hydration_slot5184` is explicitly preserved as a distinct hydration axis and is not silently equated with the VM81 `cell81×operation64` address.
+### 6. Native PDP-10/KA10-compatible 36-bit execution
 
-## Key commits after the prior checkpoint
+The nested CPU now executes the existing MOVE/Boolean/conditional groups plus the following expanded historical integer/control surface.
 
-- `4555a3d0bb75350db2c1ad3588234a76f6ae47f5` — H36 data plane.
-- `470a98c789219fce1a589e1bbc6398b0891b2d45` — executable 36-bit kernel.
-- `a399c7063a1d38556b1804ea873d305d1a573b17` — kernel aggregate.
-- `2ae25b6bbc29afebd5e9174745bb5652e49658c8` — exact ABI executable-kernel wiring.
-- `3ee919650dea3da5aab9b6eda974456eab24f841` — nested VM conformance.
-- `b176238eef4068d43d0cc7e4c1f6e9880dc97b67` — C++ RNA facade.
-- `d4343f611e254c177d6707024463ca138548edc8` — C++ conformance.
-- `59d5911619c633e437bd1046c5772d8630fed94f` — strict dedicated workflow.
-- `99e04fe19ab32055398d5da99d3555729123d837` — repaired exact `12×12×3×12` validator.
-- `ed3d71f339305baf9bab6076c0480a00fa31b916` / `a3535742d512c33dd36df9241c2e9426cb9b8daf` — factorization fabric ABI/implementation.
-- `8fa8539dc63d03df023c8cce98eff6e5421ad32e` — factorization fabric exhaustive test.
-- `32f1d6450ed8285288ea52ac7938d1489062bb2f` — repaired cumulative ABI include and fabric wiring.
-- `5364bfe994b1cb40d3640110b9e1604a7eef550e` — cumulative ABI/fabric workflow validation.
-- `fe61615c8cbdc3e5aeefbd2f5c74b78df23f7063` / `7e685ea793c27fb8430eb73fd0d28456596e4d5d` — Hash216/RNA binding ABI/implementation.
-- `2908c7588a7f1c1c10e66a6ef60d48e02fddb990` — repeat-aware Hash216/RNA test.
-- `96e2c05bdcc0844b81b76e2f618eb7a04004a1b4` / `2cb0be1784ac26937095c19fdbc0dd48a5b8d1c1` — aggregate ABI Hash216/RNA wiring.
-- `e2109840940f54b9c6b1cdfcaa060bbdd6221110` — dedicated Hash216/RNA integration validation workflow.
-- `d920090f91a24bb2f99192e5cf7d59b8d13ca0b3` / `390a53ded7230e581457cb17ec22214f4156cbb1` — normative repeat-aware Hash216 addressing rule and contract.
+#### Byte pointer
 
-## Validation evidence
+```text
+133 IBP
+134 ILDB
+135 LDB
+136 IDPB
+137 DPB
+```
 
-An early dedicated run failed at the validator because the check used `12×12×3` instead of the required `12×12×3×12`. That defect was repaired at `99e04fe19ab32055398d5da99d3555729123d837`.
+Literal `P/S/I/X/Y` pointer semantics and cross-word pointer increment are implemented.
 
-Subsequent dedicated Harmonic36 runs are terminal green:
+#### Integer multiply/divide and shifts
 
-- run `33406413057` at `32f1d6450ed8285288ea52ac7938d1489062bb2f` — SUCCESS.
-- run `33406416646` at `5364bfe994b1cb40d3640110b9e1604a7eef550e` — SUCCESS.
-- run `33406700671` at `96e2c05bdcc0844b81b76e2f618eb7a04004a1b4` — SUCCESS.
-- run `33406711856` at `2cb0be1784ac26937095c19fdbc0dd48a5b8d1c1` — SUCCESS.
-- run `33406713668` at `e2109840940f54b9c6b1cdfcaa060bbdd6221110` — SUCCESS.
+```text
+220-223 IMUL*
+224-227 MUL*
+230-233 IDIV*
+234-237 DIV*
+240 ASH
+241 ROT
+242 LSH
+243 JFFO
+244 ASHC
+245 ROTC
+246 LSHC
+```
 
-Validated gates include strict C11 kernel compilation, exact 5,184 coordinate/round-trip tests, mandatory binding checks, C++17 facade compilation, cumulative exact-ABI compilation, factorization-fabric equality, repeat-aware Hash216/RNA binding, and no canonical `float`/`double` implementation in the H36 kernel.
+Two-word MUL/DIV/ASHC use the historical 70 arithmetic bits with duplicated sign across the two 36-bit words. They are not flattened into ordinary 72-bit arithmetic.
 
-Repository-wide unrelated workflows may still fail independently; do not reinterpret them as H36 module failures without dependency evidence.
+Files:
 
-## Remaining scope
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_legacy_isa_1_1.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_two_word_isa_1_2.inc`
 
-This checkpoint is not the final Harmonic36 closure.
+#### Halfword and bit-test families
 
-Still required:
+Implemented:
 
-1. Bind inherited Pass 210/Fibonacci/HFC compression so H36-selected compression paths prove exact reconstruction rather than only H36 hydration round-trip.
-2. Bind Pass 207/208 GPU candidate/locality optimization to H36 word, phase and factorization groups with exact CPU/VM81 equality before admission.
-3. Bind H36 typed relations into the existing multimodal knowledge-graph/index metadata without creating a second graph authority.
-4. Bind deterministic branch/candidate selection to the same Hash216 directional occurrence circuit.
-5. Complete the remaining historical 36-bit ISA families required for the intended legacy hardware emulation surface, including byte-pointer operations, multiply/divide, shifts/rotates/JFFO, BLT/AOBJ/stack/subroutine, halfword, test-bit and I/O families; optional historical floating behavior must remain noncanonical or software-bounded.
-6. Expand harmonic execution beyond the current 64-family registry where additional Romantic/classical/jazz voice-leading, inversion, chord-scale, modulation and progression rules require executable state rather than metadata.
-7. Add measured GPU/cache/compression benchmarks and retain only exact winners under the repository's universal optimization-generalization rule.
-8. Run the final dependency-scoped cumulative gate after these bindings.
+```text
+500-577 complete halfword family
+600-677 complete test/modify/skip family
+```
+
+A real defect was found during strict validation: an internal 16-bit temporary truncated an 18-bit PDP-10 halfword. It was repaired at `d49aef5a5cdd2933bd8252660473f6c0f09f8b82`.
+
+#### Program control / stack / subroutine
+
+Implemented:
+
+```text
+251 BLT
+252 AOBJP
+253 AOBJN
+254 JRST 0,E
+255 JFCL
+256 XCT
+260 PUSHJ
+261 PUSH
+262 POP
+263 POPJ
+264 JSR
+265 JSP
+266 JSA
+267 JRA
+```
+
+Program-counter save words use the historical flag positions for arithmetic overflow, Carry 0, Carry 1, floating overflow and divide check.
+
+Pushdown pointer arithmetic and pushdown-overflow witness state are implemented.
+
+Unsupported nonzero JRST function variants fail closed instead of silently behaving as plain JRST.
+
+#### Processor-side I/O bus
+
+Implemented the literal instruction format:
+
+```text
+111 | device7 | function3 | I | X | Y
+```
+
+and processor-side semantics for:
+
+```text
+BLKI
+BLKO
+DATAI
+DATAO
+CONO
+CONI
+CONSZ
+CONSO
+```
+
+A bounded 128-device emulator-local status/data register surface is exposed by the H36 ABI.
+
+Peripheral-specific device behavior is deliberately not invented by the CPU kernel.
+
+File:
+
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_control_io_1_3.inc`
+
+### 7. Historical sticky arithmetic flags
+
+ADD/SUB, increment/decrement, MOVN/MOVM, multiply/divide and arithmetic shifts now set the historical sticky event flags used by JFCL and saved PC words.
+
+Validated cases include:
+
+- positive ADD overflow → Carry1 + arithmetic overflow;
+- negative SUB overflow → Carry0 + arithmetic overflow;
+- -1 + 1 → Carry0 + Carry1;
+- AOJ/SOJ overflow edges;
+- MOVNI zero carry behavior;
+- MOVN/MOVM minimum-negative overflow;
+- JFCL observation and selected-flag clearing;
+- unrelated existing flags remain sticky.
+
+## Validation receipt
+
+Authoritative dependency-scoped code gate:
+
+- workflow: `Pass 219 Harmonic36 Nested VM`
+- run: `33413612502`
+- job: `99558901184`
+- head: `6c92de9581c8d6f88d03f7ff3543a01ba7efdc01`
+- conclusion: **SUCCESS**
+
+Every dedicated step was green:
+
+1. Strict C11 kernel compile.
+2. Exact 5,184 nested VM conformance.
+3. Legacy 36-bit ISA 1.1 conformance.
+4. Two-word 36-bit ISA 1.2 conformance.
+5. Control stack I/O ISA 1.3 conformance.
+6. Arithmetic flag fidelity conformance.
+7. Mandatory default binding conformance.
+8. C++17 RNA facade conformance.
+9. Exact cumulative ABI compile.
+10. Exact factorization fabric conformance.
+11. Hash216 RNA binding conformance.
+12. Compression GPU fabric conformance.
+13. Branch knowledge fabric conformance.
+14. Canonical Pass128 graph bridge self-test.
+15. No canonical floating implementation.
+16. Mandatory integration contract proof.
+
+Additional earlier green receipts include:
+
+- `33406936504` at `000827df90a9a7813042fd8284f65fa404190ff6`;
+- `33408549282` at `41cf2bbd640256a0e6027c2041db8a9b282a7ab8`;
+- `33409111007` at `0fd4b8acd8a3e0c05802830692ca1c6fa6742417`;
+- `33413386346` at `309084c0f097394512f3b98d6f0c744c2847c4de`;
+- `33413545732` at `990e562684b0cfa7edcabcaf407795d17f9123d3`.
+
+A later documentation-only workflow run may be queued. Do not hold the thread open for it and do not reinterpret queued external CI as an implementation blocker.
+
+## Normative documentation updated after green code head
+
+- `fff4b3ced760be09449c83285e047e4036357280` — expanded normative implementation document.
+- `c589801035c458fd4ea142fcafb70a53b1839611` — machine-readable contract records completed bindings and explicit extension boundaries.
+
+## Explicit remaining boundaries
+
+This checkpoint is intentionally not called final closure.
+
+### Harmonic execution
+
+The 64 harmonic operators are the fixed operation64 basis. Full compositional Romantic/classical/jazz behavior still requires executable composition above that basis, including at minimum:
+
+- inversion and figured-bass state;
+- register/voicing state;
+- multi-voice voice-leading constraints;
+- tendency-tone resolution;
+- cadence grammar;
+- tonicization and secondary-function chains;
+- common-tone and enharmonic reinterpretation chains;
+- chromatic-mediant and equal-division modulation paths;
+- modal interchange context;
+- jazz chord-scale/altered-dominant context;
+- upper-structure/polychord context;
+- substitute-dominant and related-ii chains;
+- constant-structure motion;
+- deterministic progression grammar and repair-forward resolution.
+
+The basis MUST remain 64-wide for VM81 `81×64=5184`; compositional logic belongs above the basis rather than increasing the native operation cardinality.
+
+### Legacy hardware execution
+
+Still explicit, not silently approximated:
+
+- nonzero JRST function variants and privilege-return behavior;
+- opcode 257 MAP;
+- priority interrupt machinery;
+- user/user-I/O privilege mode;
+- interrupt-cycle-specific BLKI/BLKO behavior;
+- concrete peripheral device models;
+- historical floating execution.
+
+Historical floating instructions must remain noncanonical with respect to HHS exact authority. If a compatibility emulator is later implemented, it must be software-bounded and unable to become canonical state authority.
+
+### Optimization closure
+
+Still required before final integration:
+
+- measured H36 compression/cache/GPU benchmark evidence on representative workloads;
+- reject slower candidate implementations;
+- globally generalize only exact winning optimizations under the existing Pass 219 universal optimization rule;
+- final dependency-scoped cumulative replay;
+- merge/ready-PR and verify-main only when explicitly authorized.
 
 ## Exact next action
 
-Resume from this branch and implement the **H36 compression + GPU locality binding** first:
+Resume on this branch from the checkpoint commit and implement the **compositional harmonic execution grammar** above the fixed 64-operation basis.
+
+The next module should preserve:
 
 ```text
-existing Pass210 / Fibonacci compression
-+ existing Pass207/208 candidate-locality path
-+ H36 factorization circuit
--> exact reconstruction/equality witness
--> singleton VM81 admission unchanged
+64 native harmonic/phase operators
++ exact composition state
++ inversion/voicing/context relations
++ deterministic progression transition
++ Hash216 directional branch identity
++ Pass128 evidence projection
++ singleton VM81 admission
 ```
 
-Then add knowledge-graph/branch metadata and continue the remaining 36-bit ISA groups.
+Then continue the remaining privilege/interrupt/JRST/MAP compatibility surface and measured optimization benchmarks.
 
-Do not merge to `main` until the dependency-scoped closure gates for those remaining surfaces are complete or the user explicitly changes the integration boundary.
+Do not restart work already green in run `33413612502`. Rerun only impacted dependency-scoped gates and one final cumulative gate.
+
+Do not merge to `main` without explicit integration authorization.
