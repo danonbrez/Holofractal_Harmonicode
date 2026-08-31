@@ -55,4 +55,5 @@
 #include "hhs_pass219b_sparse_dirty_projection_1_0.h"
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.h"
 #include "hhs_pass219_harmonic36_default_binding_1_0.h"
+#include "hhs_pass219_harmonic36_factorization_fabric_1_0.h"
 #endif
