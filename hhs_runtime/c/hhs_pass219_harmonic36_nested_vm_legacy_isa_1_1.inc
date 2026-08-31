@@ -371,7 +371,7 @@ static HHSExactStatus h36_execute_shift_jffo(
 
 static uint64_t h36_halfword_apply(
     uint64_t destination,
-    uint16_t moved_half,
+    uint32_t moved_half,
     int destination_right,
     uint8_t other_operation
 ) {
@@ -413,7 +413,7 @@ static HHSExactStatus h36_execute_halfword(
     uint8_t other_operation = (uint8_t)((op >> 3U) & 3U);
     uint64_t source_word;
     uint64_t destination_word;
-    uint16_t moved_half;
+    uint32_t moved_half;
     uint64_t result;
     HHSExactStatus status;
 
@@ -434,8 +434,8 @@ static HHSExactStatus h36_execute_halfword(
     }
 
     moved_half = source_right
-        ? (uint16_t)(source_word & HHS_EXACT_PASS219_H36_HALF_MASK)
-        : (uint16_t)((source_word >> 18U) &
+        ? (uint32_t)(source_word & HHS_EXACT_PASS219_H36_HALF_MASK)
+        : (uint32_t)((source_word >> 18U) &
                      HHS_EXACT_PASS219_H36_HALF_MASK);
     result = h36_halfword_apply(
         destination_word, moved_half, destination_right, other_operation);
