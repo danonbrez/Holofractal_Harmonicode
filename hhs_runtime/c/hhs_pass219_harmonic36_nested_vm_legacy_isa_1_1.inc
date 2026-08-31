@@ -2,7 +2,7 @@
  * PDP-10/KA10-compatible exact integer/byte/halfword/test extension.
  *
  * This module intentionally does not approximate the duplicated-sign
- * double-length format. MUL/DIV and combined shifts remain fail-closed
+ * two-word arithmetic format. MUL/DIV and combined shifts remain fail-closed
  * until their 70-bit magnitude + duplicated sign representation is
  * implemented explicitly.
  */
