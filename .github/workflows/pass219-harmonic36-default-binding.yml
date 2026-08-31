@@ -20,6 +20,8 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_grammar_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_exec_1_1.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
@@ -34,6 +36,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_compression_gpu_fabric_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_branch_knowledge_fabric_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_composition_grammar_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_composition_programs_1_1.c'
       - 'hhs_runtime/hhs_pass219_harmonic36_composition_graph_bridge_v1.py'
       - 'tests/pass219/test_pass219_harmonic36_composition_graph_bridge_v1.py'
       - 'hhs_runtime/hhs_pass219_harmonic36_knowledge_graph_bridge_v1.py'
@@ -163,6 +166,15 @@ jobs:
             /tmp/h36/exact-abi.o \
             -o /tmp/h36/test-composition
           /tmp/h36/test-composition
+
+      - name: Composition programs 1.1 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_composition_programs_1_1.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-composition-programs
+          /tmp/h36/test-composition-programs
 
       - name: Canonical Pass128 graph bridge self-test
         run: |
