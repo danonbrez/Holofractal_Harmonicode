@@ -8,5 +8,14 @@ classoption:
   - openany
 fontsize: 11pt
 toc-title: "Contents"
+geometry:
+  - paperwidth=6in
+  - paperheight=9in
+  - inner=0.78in
+  - outer=0.62in
+  - top=0.72in
+  - bottom=0.78in
+  - headsep=0.22in
+  - footskip=0.34in
 lang: en-US
 ---
