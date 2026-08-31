@@ -31,17 +31,32 @@ static uint16_t h36_popcount_mask12(uint16_t mask) {
     return count;
 }
 
-static uint8_t h36_nth_pc(uint16_t mask, uint8_t n) {
-    uint8_t pc;
+static uint16_t h36_comp_rotate12(uint16_t mask, uint8_t semitones) {
+    uint8_t s = (uint8_t)(semitones % 12U);
+    uint16_t m = (uint16_t)(mask & UINT16_C(0x0FFF));
+    if (s == 0U) return m;
+    return (uint16_t)(
+        (((uint32_t)m << s) | ((uint32_t)m >> (12U - s))) &
+        UINT32_C(0x0FFF)
+    );
+}
+
+static uint8_t h36_nth_pc_from_root(
+    uint16_t mask,
+    uint8_t root_pc12,
+    uint8_t n
+) {
+    uint8_t step;
     uint8_t count = 0U;
     mask &= UINT16_C(0x0FFF);
-    for (pc = 0U; pc < 12U; ++pc) {
+    for (step = 0U; step < 12U; ++step) {
+        uint8_t pc = (uint8_t)((root_pc12 + step) % 12U);
         if ((mask & (uint16_t)(UINT16_C(1) << pc)) != 0U) {
             if (count == n) return pc;
             ++count;
         }
     }
-    return 0U;
+    return root_pc12;
 }
 
 static uint8_t h36_nearest_pitch(
@@ -339,6 +354,7 @@ HHSExactStatus hhs_exact_pass219_h36_composition_state(
     uint16_t active;
     uint16_t chord_count;
     uint8_t bass_pc;
+    uint8_t root_pc;
     uint8_t anchors[4] = {48U, 55U, 60U, 67U};
     uint8_t mins[4] = {
         H36_VOICE_MIN_BASS, H36_VOICE_MIN_TENOR,
@@ -383,8 +399,12 @@ HHSExactStatus hhs_exact_pass219_h36_composition_state(
         chord_count = h36_popcount_mask12(active);
     if (chord_count == 0U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    bass_pc = h36_nth_pc(
+    root_pc = rule.preferred_bass_pc12 < 12U
+        ? (uint8_t)((tonic_pc12 + rule.preferred_bass_pc12) % 12U)
+        : tonic_pc12;
+    bass_pc = h36_nth_pc_from_root(
         core != 0U ? core : active,
+        root_pc,
         (uint8_t)(inversion % chord_count));
 
     memset(out_state, 0, sizeof(*out_state));
@@ -402,7 +422,8 @@ HHSExactStatus hhs_exact_pass219_h36_composition_state(
         (uint16_t)(context_flags | h36_context_for_rule(harmonic_rule64));
     out_state->tendency_mask12 = resolution;
     out_state->chord_mask12 = active;
-    out_state->scale_mask12 = rule.scale_mask12;
+    out_state->scale_mask12 =
+        h36_comp_rotate12(rule.scale_mask12, tonic_pc12);
     status = hhs_exact_pass219_h36_harmonic_render(
         harmonic_rule64, tonic_pc12, &out_state->rendered_word36);
     if (status != HHS_EXACT_STATUS_OK)
