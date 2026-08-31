@@ -33,11 +33,10 @@ class ProbabilityVM81Authority:
             "inherited": dict(self.authority.status()),
         }
 
-    def commit(self, *, operation_identity: str, hash216_identity: str, exact_result: Fraction) -> dict[str, Any]:
+    def commit(self, *, operation_identity: str, exact_result: Fraction) -> dict[str, Any]:
         digest = sha256(
-            b"P183-VM81-COMMIT\0"
+            b"P183-VM81-COMMIT-V2\0"
             + bytes.fromhex(operation_identity)
-            + bytes.fromhex(hash216_identity)
             + _fraction_string(exact_result).encode("ascii")
         ).digest()
         writes = {index: (1 if byte & 1 else -1) for index, byte in enumerate(digest[:16])}
@@ -49,16 +48,16 @@ class ProbabilityVM81Authority:
             prefer_retrieval=True,
         )
         payload = {
-            "schema": "P183_VM81_ADMISSION_RECEIPT_V1",
+            "schema": "P183_VM81_ADMISSION_RECEIPT_V2",
             "authority": AUTHORITY_ID,
             "operation_identity_sha256": operation_identity,
-            "hash216_identity_sha256": hash216_identity,
             "exact_result": _fraction_string(exact_result),
             "vmrc_operation_class": "VMRC_COMMIT",
             "capability_scope": "P183_PROBABILITY_HYDRATION",
             "inherited_classification": inherited.get("classification"),
             "inherited_operation_key": inherited.get("operation_key"),
             "mutation_authority": True,
+            "hash216_input_authority": False,
         }
         receipt_hash72 = _hash72(payload, _canonical(inherited))
         return {
@@ -66,7 +65,7 @@ class ProbabilityVM81Authority:
             "payload": payload,
             "receipt_hash72": receipt_hash72,
             "receipt_sha256": sha256(
-                b"P183-VM81-RECEIPT\0" + receipt_hash72.encode("ascii") + _canonical(payload)
+                b"P183-VM81-RECEIPT-V2\0" + receipt_hash72.encode("utf-8") + _canonical(payload)
             ).hexdigest(),
             "inherited": dict(inherited),
         }

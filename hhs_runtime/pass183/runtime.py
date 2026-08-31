@@ -18,13 +18,57 @@ from .adapters import _DrawStream, _evaluate_adapter, _seed_bytes, apply_outer_m
 from .authority import Authority, EvaluationRecord, ProbabilityVM81Authority
 
 
+def _archive_hash216(
+    *,
+    previous_hash72: str,
+    authority_hash72: str,
+    receipt_hash72: str,
+    previous_root: str,
+    sequence: int,
+) -> dict[str, Any]:
+    lanes = (previous_hash72, authority_hash72, receipt_hash72)
+    if any(len(value) != 72 for value in lanes):
+        raise Pass183Error("P183_REJECT_RECEIPT", "hash216_lane_length")
+    combined = "".join(lanes)
+    indexes = tuple(
+        sha256(
+            b"P183-HASH216-ARCHIVE-CHAR-V2\0"
+            + sequence.to_bytes(8, "big")
+            + position.to_bytes(2, "big")
+            + character.encode("utf-8")
+        ).hexdigest()
+        for position, character in enumerate(combined)
+    )
+    root = sha256(
+        b"P183-HASH216-ARCHIVE-ROOT-V2\0"
+        + bytes.fromhex(previous_root)
+        + b"".join(bytes.fromhex(item) for item in indexes)
+    ).hexdigest()
+    return {
+        "schema": "P183_HASH216_ARCHIVE_V2",
+        "classification": "HHS_PASS_183_HASH216_ARCHIVE_AFTER_HASH72_CLOSURE",
+        "previous_hash72": previous_hash72,
+        "authority_hash72": authority_hash72,
+        "receipt_hash72": receipt_hash72,
+        "combined_hash216": combined,
+        "character_indexes_sha256": list(indexes),
+        "previous_archive_root_sha256": previous_root,
+        "archive_root_sha256": root,
+        "sequence": sequence,
+        "created_after_hash72_closure": True,
+        "mutation_authority": False,
+    }
+
+
 class ProbabilityHydrationRuntime:
     """Exact, bounded, receipt-producing Pass 183 runtime."""
 
     def __init__(self, *, authority: Authority | ProbabilityVM81Authority | None = None) -> None:
         self.authority = authority if isinstance(authority, ProbabilityVM81Authority) else ProbabilityVM81Authority(authority)
         self._records: list[EvaluationRecord] = []
-        self._receipt_head = ZERO_SHA256
+        self._receipt_head_sha256 = ZERO_SHA256
+        self._receipt_head_hash72 = _hash72({"schema": "P183_HASH72_CLOCK_GENESIS_V2"})
+        self._hash216_archive_root = ZERO_SHA256
 
     @staticmethod
     def status() -> dict[str, Any]:
@@ -43,6 +87,10 @@ class ProbabilityHydrationRuntime:
             "canonical_numeric_authority": "EXACT_INTEGER_RATIONAL_SYMBOLIC_TYPED_RESIDUE",
             "float_authority": False,
             "singleton_vm81_authority": True,
+            "canonical_hash72_required": True,
+            "hash216_archival_only": True,
+            "hash216_precommit_authority": False,
+            "legacy_native_hash_witness_canonical": False,
         }
 
     def inspect(self, *, adapter: str, equation: str) -> dict[str, Any]:
@@ -183,10 +231,10 @@ class ProbabilityHydrationRuntime:
             "global_modulus_applied_after_closure": True,
             "membrane_interiors_reduced": False,
         }
-        identity = _hash216(payload, equation_bytes)
-        payload["hash216"] = identity
+        compatibility_witness = _hash216(payload, equation_bytes)
+        payload["hash216"] = compatibility_witness
         payload["evaluation_identity_sha256"] = sha256(
-            b"P183-EVALUATION\0" + bytes.fromhex(identity["logical_identity_sha256"]) + _canonical(payload)
+            b"P183-EVALUATION-V2\0" + equation_bytes + _canonical(payload)
         ).hexdigest()
         request = {
             "adapter": adapter,
@@ -216,7 +264,7 @@ class ProbabilityHydrationRuntime:
             manifest=manifest,
             seed_class=seed_class,
             seed=seed,
-            hash72_clock=self._receipt_head,
+            hash72_clock=self._receipt_head_hash72,
             modulus=modulus,
         )
         if not commit:
@@ -224,44 +272,63 @@ class ProbabilityHydrationRuntime:
 
         authority_receipt = self.authority.commit(
             operation_identity=evaluated["evaluation_identity_sha256"],
-            hash216_identity=evaluated["hash216"]["logical_identity_sha256"],
             exact_result=Fraction(evaluated["closure_exact"]),
         )
         receipt_payload = {
-            "schema": "P183_PROBABILITY_HYDRATION_RECEIPT_V1",
+            "schema": "P183_PROBABILITY_HYDRATION_RECEIPT_V2",
             "sequence": len(self._records),
-            "prior_receipt_sha256": self._receipt_head,
+            "prior_receipt_sha256": self._receipt_head_sha256,
+            "prior_receipt_hash72": self._receipt_head_hash72,
             "evaluation_identity_sha256": evaluated["evaluation_identity_sha256"],
-            "hash216_identity_sha256": evaluated["hash216"]["logical_identity_sha256"],
             "authority_receipt_sha256": authority_receipt["receipt_sha256"],
+            "authority_receipt_hash72": authority_receipt["receipt_hash72"],
             "classification": (
                 "HHS_PASS_183_TYPED_ZERO_BYPASS_VERIFIED"
                 if evaluated["typed_zero_bypass"]
                 else "HHS_PASS_183_PROBABILITY_HYDRATION_ADMITTED"
             ),
+            "hash216_input_authority": False,
         }
         receipt_hash72 = _hash72(receipt_payload, _canonical(evaluated))
+        receipt_sha256 = sha256(
+            b"P183-RECEIPT-V2\0" + receipt_hash72.encode("utf-8") + _canonical(receipt_payload)
+        ).hexdigest()
+        archive = _archive_hash216(
+            previous_hash72=self._receipt_head_hash72,
+            authority_hash72=str(authority_receipt["receipt_hash72"]),
+            receipt_hash72=receipt_hash72,
+            previous_root=self._hash216_archive_root,
+            sequence=len(self._records),
+        )
         receipt = {
             **receipt_payload,
             "receipt_hash72": receipt_hash72,
-            "receipt_sha256": sha256(
-                b"P183-RECEIPT\0" + receipt_hash72.encode("ascii") + _canonical(receipt_payload)
-            ).hexdigest(),
+            "receipt_sha256": receipt_sha256,
+            "hash216_archive": archive,
         }
-        self._receipt_head = receipt["receipt_sha256"]
+        self._receipt_head_hash72 = receipt_hash72
+        self._receipt_head_sha256 = receipt_sha256
+        self._hash216_archive_root = archive["archive_root_sha256"]
         self._records.append(EvaluationRecord(request, evaluated, receipt, authority_receipt))
         return {
             "classification": receipt_payload["classification"],
             "evaluation": evaluated,
             "receipt": receipt,
             "authority_receipt": authority_receipt,
+            "hash216_archive": archive,
         }
 
     def replay(self) -> dict[str, Any]:
-        prior = ZERO_SHA256
+        prior_sha256 = ZERO_SHA256
+        prior_hash72 = _hash72({"schema": "P183_HASH72_CLOCK_GENESIS_V2"})
+        prior_archive_root = ZERO_SHA256
         replayed: list[str] = []
         for index, record in enumerate(self._records):
-            if record.receipt["sequence"] != index or record.receipt["prior_receipt_sha256"] != prior:
+            if (
+                record.receipt["sequence"] != index
+                or record.receipt["prior_receipt_sha256"] != prior_sha256
+                or record.receipt["prior_receipt_hash72"] != prior_hash72
+            ):
                 raise Pass183Error("P183_REJECT_RECEIPT", f"sequence:{index}")
             request = record.request
             replay_evaluation, _ = self._evaluate(
@@ -275,22 +342,41 @@ class ProbabilityHydrationRuntime:
             )
             if replay_evaluation["evaluation_identity_sha256"] != record.evaluation["evaluation_identity_sha256"]:
                 raise Pass183Error("P183_REJECT_REPLAY", f"evaluation:{index}")
-            body = {key: value for key, value in record.receipt.items() if key not in {"receipt_hash72", "receipt_sha256"}}
+            body = {
+                key: value
+                for key, value in record.receipt.items()
+                if key not in {"receipt_hash72", "receipt_sha256", "hash216_archive"}
+            }
             expected_hash72 = _hash72(body, _canonical(record.evaluation))
             expected_sha = sha256(
-                b"P183-RECEIPT\0" + expected_hash72.encode("ascii") + _canonical(body)
+                b"P183-RECEIPT-V2\0" + expected_hash72.encode("utf-8") + _canonical(body)
             ).hexdigest()
             if expected_hash72 != record.receipt["receipt_hash72"] or expected_sha != record.receipt["receipt_sha256"]:
                 raise Pass183Error("P183_REJECT_RECEIPT", f"digest:{index}")
-            prior = str(record.receipt["receipt_sha256"])
+            expected_archive = _archive_hash216(
+                previous_hash72=prior_hash72,
+                authority_hash72=str(record.authority_receipt["receipt_hash72"]),
+                receipt_hash72=expected_hash72,
+                previous_root=prior_archive_root,
+                sequence=index,
+            )
+            if expected_archive != record.receipt.get("hash216_archive"):
+                raise Pass183Error("P183_REJECT_REPLAY", f"hash216_archive:{index}")
+            prior_sha256 = expected_sha
+            prior_hash72 = expected_hash72
+            prior_archive_root = expected_archive["archive_root_sha256"]
             replayed.append(replay_evaluation["evaluation_identity_sha256"])
         authority_replay = self.authority.replay()
-        root = sha256(b"P183-REPLAY\0" + b"".join(bytes.fromhex(item) for item in replayed)).hexdigest()
+        root = sha256(b"P183-REPLAY-V2\0" + b"".join(bytes.fromhex(item) for item in replayed)).hexdigest()
         return {
             "classification": "HHS_PASS_183_DETERMINISTIC_REPLAY_VERIFIED",
             "records": len(self._records),
             "receipt_chain_valid": True,
-            "final_receipt_sha256": prior,
+            "final_receipt_sha256": prior_sha256,
+            "final_receipt_hash72": prior_hash72,
+            "hash216_archive_root_sha256": prior_archive_root,
+            "hash216_archival_only": True,
+            "hash216_precommit_authority": False,
             "replay_root_sha256": root,
             "authority_replay": authority_replay,
         }

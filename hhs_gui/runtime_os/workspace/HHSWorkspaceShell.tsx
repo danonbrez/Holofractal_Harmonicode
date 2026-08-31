@@ -6,11 +6,12 @@ import { Pass185MultimodalLifecyclePanel } from "./Pass185MultimodalLifecyclePan
 import { Pass185TerminalPanel } from "./Pass185TerminalPanel"
 import { Pass185HydrationJobPanel } from "./Pass185HydrationJobPanel"
 import { Pass184RuntimePackagePanel } from "./Pass184RuntimePackagePanel"
+import { Pass183ProbabilityHydrationPanel } from "./Pass183ProbabilityHydrationPanel"
 import type { RuntimeOS } from "../core/RuntimeOS"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
 type Json = Record<string, any>
-type WorkspaceTab = "workbench" | "application" | "multimodal" | "assistant" | "runtime" | "package" | "jobs" | "terminal" | "receipts"
+type WorkspaceTab = "workbench" | "application" | "multimodal" | "assistant" | "runtime" | "package" | "probability" | "jobs" | "terminal" | "receipts"
 type BusyAction = "boot" | "project" | "source" | "interpret" | "compile" | "emulator" | "runtime" | null
 
 type Activity = {
@@ -402,7 +403,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
       </header>
 
       <nav className="sticky top-[57px] z-30 border-b border-neutral-800 bg-neutral-950/95 px-2 py-2 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-1 sm:grid-cols-9">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-1 sm:grid-cols-5 lg:grid-cols-10">
           {([
             ["workbench", "Build"],
             ["application", "Application"],
@@ -410,6 +411,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
             ["assistant", "Assistant"],
             ["runtime", "Runtime"],
             ["package", "Package"],
+            ["probability", "Probability"],
             ["jobs", "Jobs"],
             ["terminal", "Terminal"],
             ["receipts", "Receipts"],
@@ -588,6 +590,10 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
 
         {tab === "package" ? (
           <Pass184RuntimePackagePanel />
+        ) : null}
+
+        {tab === "probability" ? (
+          <Pass183ProbabilityHydrationPanel />
         ) : null}
 
         {tab === "jobs" ? (

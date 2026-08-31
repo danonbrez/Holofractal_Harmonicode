@@ -42,6 +42,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from hhs_backend.api.pass184_runtime_routes import router as pass184_runtime_router
+from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.application_ide_server import app as inherited_app
 from hhs_backend.runtime_os_pass218_authority_i13 import (
     PASS218_AUTHORITY_ACTION_PREPARE_PATH,
@@ -244,6 +245,7 @@ app.description = (
     "the TypeScript/React/Vite Runtime OS."
 )
 app.include_router(pass184_runtime_router)
+app.include_router(probability_hydration_router)
 PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)
 PASS218_AUTHORITY_CONTROL_PLANE = install_pass218_authority_control_plane(
     app,
