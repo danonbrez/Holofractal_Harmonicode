@@ -146,6 +146,8 @@ static HHSExactStatus h36_execute(
 
     if (h36_execute_legacy_extended(state, ins, e, &status))
         return status;
+    if (h36_execute_legacy_two_word(state, ins, e, &status))
+        return status;
 
     if (op >= UINT16_C(0200) && op <= UINT16_C(0217)) {
         uint8_t mode = (uint8_t)(op & 3U);
