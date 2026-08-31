@@ -85,7 +85,13 @@
     "H36_KA10_USER_IO_RESTRICTION_MUUO",
     "H36_KA10_247_257_PROFILE_CORRECT",
     "H36_OPTIMIZATION_EXACT_EQUALITY_BEFORE_TIMING",
-    "H36_STRUCTURAL_HFC_MEASURED_WINNER_DEFAULT"
+    "H36_STRUCTURAL_HFC_MEASURED_WINNER_DEFAULT",
+    "H36_KA10_TTY_CONCRETE_DEVICE",
+    "H36_KA10_PTR_CONCRETE_DEVICE",
+    "H36_KA10_PTP_CONCRETE_DEVICE",
+    "H36_KA10_DEVICE_BUSY_DONE_OBSERVABLE",
+    "H36_KA10_DEVICE_PI_INTEGRATION",
+    "H36_KA10_DEVICE_REPLAYABLE_BUFFERS"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -143,7 +149,16 @@
     "measured_h36_structural_hfc_winner": true,
     "measured_h36_locality_winner": true,
     "measured_h36_native_cache_winner": true,
-    "structural_hfc_promoted_default": true
+    "structural_hfc_promoted_default": true,
+    "ka10_tty_device_model": true,
+    "ka10_ptr_device_model": true,
+    "ka10_ptp_device_model": true,
+    "deterministic_device_step": true,
+    "tty_test_loopback": true,
+    "ptr_binary_six_frame_36bit_assembly": true,
+    "ptp_binary_channel8_channel7_rules": true,
+    "concrete_device_priority_interrupt_requests": true,
+    "concrete_device_block_data_condition_io": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -165,5 +180,11 @@
       "native_cache_speedup_x1000": 9825
     },
     "authoritative_state_changed": false
+  },
+  "latest_validated_h36_gate": {
+    "run": 33446382841,
+    "job": 99666331302,
+    "head": "9b22ae93b7f653d20a911b13b8ad941db32e9dc8",
+    "conclusion": "SUCCESS"
   }
 }
