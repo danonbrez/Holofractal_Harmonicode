@@ -9,6 +9,8 @@
 #define H36_PC_CRY0 UINT32_C(0200000)
 #define H36_PC_CRY1 UINT32_C(0100000)
 #define H36_PC_FOV  UINT32_C(0040000)
+#define H36_PC_USER UINT32_C(0010000)
+#define H36_PC_UIOT UINT32_C(0004000)
 #define H36_PC_DCK  UINT32_C(0000040)
 
 static uint32_t h36_left18(uint64_t word) {
@@ -42,6 +44,8 @@ static uint32_t h36_pc_flags_left18(
     if (state->legacy_carry0 != 0U) flags |= H36_PC_CRY0;
     if (state->legacy_carry1 != 0U) flags |= H36_PC_CRY1;
     if (state->legacy_floating_overflow != 0U) flags |= H36_PC_FOV;
+    if (state->legacy_user_mode != 0U) flags |= H36_PC_USER;
+    if (state->legacy_user_io != 0U) flags |= H36_PC_UIOT;
     if (state->legacy_no_divide != 0U) flags |= H36_PC_DCK;
     return flags & (uint32_t)HHS_EXACT_PASS219_H36_HALF_MASK;
 }
@@ -295,6 +299,15 @@ static HHSExactStatus h36_execute_io(
     device = io.device7;
     fn = io.function3;
 
+    state->legacy_last_io_interrupt_cycle =
+        state->legacy_interrupt_cycle;
+    if (state->legacy_user_mode != 0U &&
+        state->legacy_user_io == 0U) {
+        state->legacy_user_io_trap = 1U;
+        state->trap = HHS_EXACT_PASS219_H36_TRAP_LEGACY_PRIVILEGE;
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
     if (fn == 0U || fn == 1U) {
         uint64_t pointer;
         uint32_t target;
@@ -379,13 +392,7 @@ static int h36_execute_legacy_control_io(
         return 1;
     }
     if (op == UINT16_C(0254)) {
-        if (ac != 0U) {
-            state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-            *out_status = HHS_EXACT_STATUS_INVARIANT_FAILURE;
-        } else {
-            state->pc18 = e;
-            *out_status = HHS_EXACT_STATUS_OK;
-        }
+        *out_status = h36_priv_execute_jrst(state, ins);
         return 1;
     }
     if (op == UINT16_C(0255)) {
@@ -396,9 +403,8 @@ static int h36_execute_legacy_control_io(
         *out_status = HHS_EXACT_STATUS_OK;
         return 1;
     }
-    if (op == UINT16_C(0257)) {
-        state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-        *out_status = HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (op == UINT16_C(0247) || op == UINT16_C(0257)) {
+        *out_status = h36_priv_execute_special_system(state, op);
         return 1;
     }
     if (op >= UINT16_C(0260) && op <= UINT16_C(0263)) {
