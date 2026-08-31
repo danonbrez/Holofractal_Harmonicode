@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `77218f095ca2b7d2a763bb6b31e9e3c6cea4303a`
-- Branch head immediately before this checkpoint record: `77218f095ca2b7d2a763bb6b31e9e3c6cea4303a`
+- Validated implementation head: `9b22ae93b7f653d20a911b13b8ad941db32e9dc8`
+- Branch head immediately before this checkpoint record: `9b22ae93b7f653d20a911b13b8ad941db32e9dc8`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -345,6 +345,50 @@ At checkpoint creation, functional steps 1-24 are already green, including:
 
 Only artifact upload / workflow cleanup remained external at the moment of checkpoint creation. Per repository workflow policy, that does not hold this thread open.
 
+### 12. KA10 standard console devices 1.6
+
+Implemented concrete historical devices over the already-validated processor I/O bus:
+
+- PTP device code `0100`;
+- PTR device code `0104`;
+- TTY device code `0120`.
+
+TTY:
+
+- deterministic input/output buffers;
+- Test loopback;
+- Busy/Done state;
+- PI assignment and request;
+- DATA/CONDITION/block I/O integration.
+
+PTR:
+
+- bounded tape input;
+- alphanumeric 8-bit frames;
+- binary six-frame -> exact 36-bit assembly;
+- Tape/Binary/Busy/Done/PI state;
+- DATAI continuation and BLKI integration.
+
+PTP:
+
+- bounded tape output;
+- alphanumeric and binary frame production;
+- binary channel-8 forced, channel-7 clear, low-six payload;
+- Busy/Done/No-Tape/PI state;
+- DATAO and BLKO integration.
+
+Device work advances only through the explicit deterministic `hhs_exact_pass219_h36_devices_step` call, keeping asynchronous historical state observable and replayable.
+
+Cumulative validation:
+
+- workflow `Pass 219 Harmonic36 Nested VM`;
+- run `33446382841`;
+- job `99666331302`;
+- head `9b22ae93b7f653d20a911b13b8ad941db32e9dc8`;
+- conclusion **SUCCESS**.
+
+Every functional step is green, including KA10 UUO 1.5, KA10 console devices 1.6, composition programs, graph bridges, measured optimization winners, contract proof, and benchmark artifact upload.
+
 ## Validation receipt
 
 Authoritative dependency-scoped code gate:
@@ -429,23 +473,23 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-Resume from this checkpoint with a **concrete peripheral-device layer above the validated KA10 processor I/O bus**, starting with a bounded console teletype/paper-tape device family.
-
-Requirements:
+Resume from this checkpoint with the next bounded KA10 hardware layer:
 
 ```text
-processor I/O format remains unchanged
-+ concrete device status/data transition semantics
-+ BLKI/BLKO/DATAI/DATAO/CONI/CONO/CONSZ/CONSO device behavior
-+ interrupt request integration through the validated 7-channel PI membrane
-+ deterministic input/output buffers
-+ exact replay tests
--> emulator-local hardware state only
+hardware Read-In Mode / RIM bootstrap
++ standard PTR 0104 bootstrap path
++ processor reset/flag-reset witness
++ DATAI + repeated BLKI loader behavior
++ exact 36-bit IOWD progression
++ terminal JRST handoff
++ replayable bootstrap receipt
+-> reuse concrete PTR 1.6 device
+-> reuse existing BLKI processor semantics
 -> zero VM81/Hash72/persistence authority
 ```
 
-Do not reinterpret KA10 opcode 257 as MAP. Any KI10/KL10 pager work must be a separate processor-profile module.
+After RIM bootstrap closure, the next device family should be APR/PI internal-device programming or additional external peripherals, not a change to the already-correct KA10 opcode 257 behavior.
 
-Do not rerun already-green composition or optimization experiments except through the normal cumulative H36 dependency gate.
+Any KI10/KL10 pager MAP support must remain a separate additive processor-profile module.
 
 Do not merge to `main` without explicit integration authorization.
