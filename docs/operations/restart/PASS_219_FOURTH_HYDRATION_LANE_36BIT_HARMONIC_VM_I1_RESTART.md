@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `59448cea603e6e195da59a89f1bda116dfb15661`
-- Branch head immediately before this checkpoint record: `5a90adaedd68434272d99c3218b9e11d6e86632b`
+- Validated implementation head: `77218f095ca2b7d2a763bb6b31e9e3c6cea4303a`
+- Branch head immediately before this checkpoint record: `77218f095ca2b7d2a763bb6b31e9e3c6cea4303a`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -274,6 +274,77 @@ Validated composition run:
 
 The progression program gate in the same cumulative lineage validates 192 template/key builds and preserves rule IDs strictly inside `1..64`.
 
+### 9. KA10 historical UUO mode
+
+Implemented explicit mode separation between the HHS harmonic UUO microkernel and historical KA10 monitor-trap behavior.
+
+Historical mode now validates:
+
+- LUUO `001-037` -> `040/041`;
+- MUUO `040-077` and opcode `000` -> `040/041`;
+- unassigned `100-127` -> `060/061`;
+- restricted user I/O -> MUUO vector;
+- exact opcode/AC/effective-address trap word;
+- post-instruction PC witness;
+- user LUUO remains local;
+- MUUO/unassigned/restricted-I/O enter executive handling;
+- KA10 247/257 remain special-hardware slots and no-op when hardware is absent.
+
+The later KI10/KL10 MAP interpretation is explicitly not applied to the KA10 profile.
+
+### 10. Optimization closure
+
+Exact-equality-before-timing benchmark run:
+
+- run `33438040388`
+- artifact `9775141976`
+- artifact SHA-256 `cdab1e6ab4629fc0b81a6fa8e1041b7b65fb17cf66385e75ad9fbffd0d28e620`
+
+Measured CPU-reference winners:
+
+- VM81↔H36 transcode: **23.698×**;
+- structural HFC reconstruction: **5.592×**;
+- H36 locality: **21.044×**, 187/5184 realized, 4997 avoided;
+- direct native 5184 cache address: **9.825×**.
+
+Physical GPU timing was not measured in this run.
+
+The structural HFC winner is promoted to the default verification path and is independently green:
+
+- promoted commit `b1fa33fe910ba89acda7b6920f33171b8462f08d`;
+- run `33438168848`;
+- conclusion **SUCCESS**.
+
+### 11. Current cumulative validation
+
+Current head `77218f095ca2b7d2a763bb6b31e9e3c6cea4303a` is being validated by run `33445995080`.
+
+At checkpoint creation, functional steps 1-24 are already green, including:
+
+- strict C11 kernel compile;
+- exact 5184 VM;
+- legacy ISA 1.1;
+- two-word ISA 1.2;
+- control/stack/I-O 1.3;
+- privilege/JRST/PI 1.4;
+- **KA10 historical UUO 1.5**;
+- arithmetic flags;
+- mandatory default binding;
+- C++ RNA facade;
+- cumulative exact ABI;
+- factorization;
+- Hash216 RNA;
+- compression/GPU fabric;
+- branch knowledge fabric;
+- composition grammar;
+- 16 progression programs × 12 tonics;
+- both Pass128 graph bridges;
+- no canonical floating implementation;
+- measured optimization winners;
+- mandatory integration contract proof.
+
+Only artifact upload / workflow cleanup remained external at the moment of checkpoint creation. Per repository workflow policy, that does not hold this thread open.
+
 ## Validation receipt
 
 Authoritative dependency-scoped code gate:
@@ -339,46 +410,42 @@ The basis MUST remain 64-wide for VM81 `81×64=5184`.
 
 ### Legacy hardware execution
 
-Still explicit, not silently approximated:
+The KA10 CPU profile now includes the explicit historical UUO monitor path, nonzero JRST/privilege handling, seven-channel priority interrupt state, interrupt-cycle I/O witness, stack/subroutine/control families, byte/shift/integer/two-word arithmetic, Boolean/test/halfword families, and the generic 128-device processor I/O bus.
 
-- nonzero JRST function variants and privilege-return behavior;
-- opcode 257 MAP;
-- priority interrupt machinery;
-- user/user-I/O privilege mode;
-- interrupt-cycle-specific BLKI/BLKO behavior;
-- concrete peripheral device models;
-- historical floating execution.
+The prior "MAP" gap is removed for the KA10 profile: opcode 257 is correctly treated as a special-hardware slot, not later KI10/KL10 pager MAP.
 
-Historical floating instructions must remain noncanonical with respect to HHS exact authority. If a compatibility emulator is later implemented, it must be software-bounded and unable to become canonical state authority.
+Remaining hardware extension work is now explicit:
+
+- concrete peripheral device models above the generic processor I/O bus;
+- optional historical floating hardware emulation, kept noncanonical to HHS exact authority;
+- optional later-processor profiles (KI10/KL10/etc.) as separate additive compatibility modules rather than silently changing KA10 semantics;
+- richer relocation/protection hardware modeling beyond the bounded 144-word nested image.
 
 ### Optimization closure
 
-Still required before final integration:
+Measured optimization closure is complete for the current H36 CPU-reference paths. All retained candidates were exact winners, and structural HFC recovery has been promoted to the default.
 
-- measured H36 compression/cache/GPU benchmark evidence on representative workloads;
-- reject slower candidate implementations;
-- globally generalize only exact winning optimizations under the existing Pass 219 universal optimization rule;
-- final dependency-scoped cumulative replay;
-- merge/ready-PR and verify-main only when explicitly authorized.
+Physical GPU timing remains a separate hardware-specific measurement obligation and is not inferred from CPU-reference evidence.
 
 ## Exact next action
 
-Resume from this checkpoint and implement the remaining **PDP-10 privilege / JRST / MAP compatibility membrane** without weakening HHS authority separation.
+Resume from this checkpoint with a **concrete peripheral-device layer above the validated KA10 processor I/O bus**, starting with a bounded console teletype/paper-tape device family.
 
-Next bounded target:
+Requirements:
 
 ```text
-nonzero JRST function decode
-+ MAP compatibility semantics
-+ user / user-I-O mode witnesses
-+ priority-interrupt state and entry/return witness
-+ interrupt-cycle I-O distinction
--> emulator-local historical state only
+processor I/O format remains unchanged
++ concrete device status/data transition semantics
++ BLKI/BLKO/DATAI/DATAO/CONI/CONO/CONSZ/CONSO device behavior
++ interrupt request integration through the validated 7-channel PI membrane
++ deterministic input/output buffers
++ exact replay tests
+-> emulator-local hardware state only
 -> zero VM81/Hash72/persistence authority
 ```
 
-Then add measured H36 compression/cache/GPU benchmarks, retain only exact winners, and run one final dependency-scoped cumulative replay.
+Do not reinterpret KA10 opcode 257 as MAP. Any KI10/KL10 pager work must be a separate processor-profile module.
 
-Do not restart composition work already green in run `33436874435`. Rerun only impacted gates.
+Do not rerun already-green composition or optimization experiments except through the normal cumulative H36 dependency gate.
 
 Do not merge to `main` without explicit integration authorization.
