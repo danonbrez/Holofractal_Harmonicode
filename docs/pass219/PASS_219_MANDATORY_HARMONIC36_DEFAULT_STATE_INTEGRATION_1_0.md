@@ -475,3 +475,72 @@ Files:
 - `hhs_runtime/hhs_pass219_harmonic36_composition_graph_bridge_v1.py`
 - `tests/pass219/test_pass219_harmonic36_composition_graph_bridge_v1.py`
 
+
+
+## 14. KA10 historical UUO mode
+
+The H36 VM now exposes an explicit historical KA10 UUO execution mode alongside the default HHS harmonic microkernel mode.
+
+This distinction is mandatory because the same opcode range has two meanings:
+
+- HHS mode: the existing nested harmonic UUO microkernel;
+- historical KA10 mode: DEC LUUO/MUUO/unassigned monitor semantics.
+
+Historical KA10 mode implements:
+
+```text
+001-037 -> LUUO through 040/041
+040-077 -> MUUO through 040/041
+000     -> monitor UUO behavior
+100-127 -> unassigned instruction through 060/061
+restricted user I/O -> MUUO through 040/041
+```
+
+The stored UUO word preserves:
+
+```text
+opcode9 | AC4 | 00000 | effective-address18
+```
+
+The post-instruction PC word is retained as an emulator-local witness.
+
+A user LUUO remains local to the user's 40/41 pair. MUUO, unassigned, and restricted-I/O paths enter executive handling.
+
+### 14.1 KA10 247/257 profile correction
+
+For the KA10 profile, opcodes 247 and 257 are reserved special-hardware instruction slots. When optional special hardware is absent they execute as no-ops. They are not interpreted as the later KI10/KL10 pager MAP instruction.
+
+This distinction is now normative for the KA10 profile.
+
+Files:
+
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_uuo_1_5.inc`
+- `tests/pass219/test_pass219_harmonic36_ka10_uuo_1_5.c`
+
+## 15. Measured H36 optimization promotion
+
+The optimization gate requires exact equality before timing.
+
+Validated CPU-reference measurements from run `33438040388`:
+
+| Path | Baseline median | Winner median | Speedup |
+|---|---:|---:|---:|
+| VM81↔H36 transcode, 256 rounds | 4,715,841 ns | 198,993 ns | 23.698× |
+| HFC reconstruction, 512 rounds | 6,980,371 ns | 1,248,275 ns | 5.592× |
+| H36 locality | 53,917 ns | 2,562 ns | 21.044× |
+| native 5,184 cache address, 200k queries | 657,067 ns | 66,872 ns | 9.825× |
+
+The locality case realizes 187 of 5,184 lanes and avoids 4,997 lanes.
+
+Physical GPU timing was not measured on the hosted runner; the locality timing is CPU-reference evidence only.
+
+Artifact:
+
+```text
+id = 9775141976
+sha256 = cdab1e6ab4629fc0b81a6fa8e1041b7b65fb17cf66385e75ad9fbffd0d28e620
+```
+
+The structural 144-block HFC reconstruction winner is now the default compression verification route. The generic reconstruction remains available as an audit/reference implementation.
+
+The promoted default is independently green in run `33438168848` at commit `b1fa33fe910ba89acda7b6920f33171b8462f08d`.
