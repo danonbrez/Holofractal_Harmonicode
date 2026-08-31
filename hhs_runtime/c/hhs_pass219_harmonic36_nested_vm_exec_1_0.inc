@@ -144,10 +144,8 @@ static HHSExactStatus h36_execute(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
-    if (op >= UINT16_C(0133) && op <= UINT16_C(0137)) {
-        state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    }
+    if (h36_execute_legacy_extended(state, ins, e, &status))
+        return status;
 
     if (op >= UINT16_C(0200) && op <= UINT16_C(0217)) {
         uint8_t mode = (uint8_t)(op & 3U);
