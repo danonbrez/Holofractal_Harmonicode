@@ -93,23 +93,45 @@ I142 local completion additionally emits:
 
 Hash216 remains archival and grants no mutation authority.
 
+## Frozen dependency-scoped validation
+
+Dedicated workflow `.github/workflows/pass219-i142-pass184-portable-runtime.yml` completed green on trigger checkpoint `56a2463b6341bd7fce6ebd804759eabebb5fbaab`, whose parent is exact implementation checkpoint `40dd51f6dbfdcc11f90d9484773d3fd1356f590d`.
+
+- workflow run: `33385270995` — **success**
+- job: `99466446360` (`pass184-i142`) — **success**
+- artifact: `9755356279` (`pass219-i142-pass184-portable-runtime`)
+- artifact SHA-256: `0ce3a30bf5e3bf8197b88627efa07e2fc1b8c6db213b4acd079e4cb47df034b8`
+- local completion classification: `HHS_PASS_184_I142_LOCAL_ACCEPTANCE_VERIFIED`
+- Hash72 completion receipt: `1QP(A933Alu3lFc)M/6FJIdyWk064L0K?>*hlyQjkI/As7?kj5sbHREf-uFO/g!t+V95XY-K`
+- Hash216 evidence-set identity: `3b350e019bed74cc9a5156e8d92d7eeabb901bf4d97b33bdf9dd0b6ef961a714`
+- completion receipt SHA-256: `8cff0a3ea682f74016869bc2240edaa05f82cc8e3a3626a2fe37942376bb5a54`
+- exact Runtime OS target: `hhs_backend.runtime_os_application_server:app`
+- package/API acceptance: `13 passed`
+- package build classification: `HHS_PASS_184_PORTABLE_RUNTIME_PACKAGE_BUILT_AND_VERIFIED`
+- manifest classification: `HHS_PASS_184_PACKAGE_MANIFEST_VERIFIED`
+- verification classification: `HHS_PASS_184_PORTABLE_RUNTIME_PACKAGE_VERIFIED`
+- production route smoke: `HHS_PASS184_I142_PRODUCTION_ROUTE_SMOKE_VERIFIED`
+- global canonical defaults: `HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED`
+- multimodal generalization: `HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED`
+- strict C and C++ aggregate bindings: **PASS**
+- Runtime OS TypeScript typecheck/build: **PASS**
+
+Run `33385237967` remains classified as superseded by concurrency cancellation, not an implementation failure.
+
+Canonical frozen machine-readable evidence is `evidence/pass184/i142/PASS_219_I142_PASS184_VALIDATION_RECEIPT.json`.
+
 ## Authority boundary
 
 The package and supervisor may inspect environment, resolve deterministic profile closure, materialize bounded package files, verify file integrity, supervise one Uvicorn process, and observe TCP/HTTP readiness.
 
 They may not admit or commit VM81 state, mint an independent Hash72 clock, use Hash216 as mutation authority, create a parallel persistence authority, or grant the GUI canonical mutation authority.
 
-## Validation boundary
+## Closure boundary
 
-I142 is not terminal until the dedicated workflow proves:
-- historical Pass-184 source pins;
-- deterministic package and tamper rejection;
-- current Runtime OS target;
-- CLI/API/GUI shared authority;
-- aggregate C/C++ binding;
-- global-default census 37/floor 184;
-- multimodal-generalization preservation;
-- current production route reachability;
-- Hash72/Hash216 local completion evidence.
+I142 dependency-scoped validation is frozen green.
 
-Merge and deployment remain separate downstream operations.
+The following remain explicitly false and downstream:
+- merge performed: **false**
+- authoritative-main verification: **false**
+- deployment performed: **false**
+- terminal Pass-184 completion: **false**
