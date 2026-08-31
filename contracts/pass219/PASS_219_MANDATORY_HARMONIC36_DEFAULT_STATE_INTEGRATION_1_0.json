@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_V1",
+  "version": 1,
+  "pass": 219,
+  "additive": true,
+  "baseline": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "cardinalities": {
+    "vm81": "81*64=5184",
+    "hash72": "72*72=5184",
+    "harmonic36": "144*36=5184",
+    "equal_temperament": "12*12*3*12=5184"
+  },
+  "mandatory_default_state_binding": {
+    "default_state_machine_required": true,
+    "hydration_required": true,
+    "compression_required": true,
+    "phase_gear_required": true,
+    "gpu_candidate_path_required": true,
+    "hash216_vector_cache_required": true,
+    "knowledge_graph_required": true,
+    "quantum_like_branch_required": true,
+    "rna_dna_transcription_required": true,
+    "octonion_ternary_required": true,
+    "loshu_sudoku_qudit_required": true,
+    "native_36bit_execution_required": true,
+    "multimodal_generalization_required": true
+  },
+  "authority": {
+    "singleton_vm81_authority_preserved": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_authority": false,
+    "independent_hash216_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "fail_closed": [
+    "H36_BYPASSED_ON_COMPATIBLE_DEFAULT_PATH",
+    "VM81_H36_ROUNDTRIP_MISMATCH",
+    "H36_COORDINATE_NONBIJECTION",
+    "ORDERED_PHASE_IDENTITY_ERASURE",
+    "HASH72_HASH216_LINEAGE_DRIFT",
+    "COMPRESSION_RECONSTRUCTION_MISMATCH",
+    "GPU_CPU_VM81_EQUALITY_MISMATCH",
+    "CACHE_MUTATION_AUTHORITY_ESCALATION",
+    "FLOAT_CANONICAL_AUTHORITY_ESCALATION",
+    "UNWITNESSED_HARMONIC_SEMANTIC_COLLAPSE"
+  ],
+  "acceptance": [
+    "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
+    "EXHAUSTIVE_81X64_144X36_EQUALITY",
+    "HASH72_72X72_PRESERVATION",
+    "OPERATION64_PHASE8X8_PRESERVATION",
+    "64_HARMONIC_RULES_X12_TRANSPOSITIONS",
+    "ARBITRARY_12TET_PACK_UNPACK",
+    "LITERAL_36BIT_EXECUTION_CONFORMANCE",
+    "HYDRATION_IMPORT_EXPORT_BIT_EQUALITY",
+    "COMPRESSION_ROUNDTRIP_EQUALITY",
+    "GPU_CANDIDATE_EXACT_CPU_EQUALITY",
+    "HASH216_VECTOR_CACHE_LINEAGE_PRESERVATION",
+    "RNA_LOWERING_EXPOSURE",
+    "GENESIS_LOSHU_SUDOKU_PRESERVATION",
+    "STRICT_C11_CXX17_AGGREGATE_BUILD",
+    "NO_CANONICAL_FLOAT_AUTHORITY"
+  ]
+}
