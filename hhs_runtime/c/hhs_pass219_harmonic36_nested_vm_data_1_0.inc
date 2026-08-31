@@ -367,5 +367,11 @@ HHSExactStatus hhs_exact_pass219_h36_vm_init(
     state->canonical_hash72_authority = 0U;
     state->canonical_persistence_authority = 0U;
     state->floating_point_authority = 0U;
+    /*
+     * PI 1.4 exposed direct enable/request/enter helpers before the
+     * historical PI device was modeled. Keep that compatibility surface
+     * active by default; CONO PI can explicitly deactivate or reset it.
+     */
+    state->legacy_priority_system_on = 1U;
     return HHS_EXACT_STATUS_OK;
 }
