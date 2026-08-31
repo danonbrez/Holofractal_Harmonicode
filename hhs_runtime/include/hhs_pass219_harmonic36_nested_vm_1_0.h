@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 6U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 7U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -197,6 +197,30 @@ typedef struct HHSExactPass219H36HarmonicTransitionV1 {
     uint16_t target_pitch_count;
 } HHSExactPass219H36HarmonicTransitionV1;
 
+typedef struct HHSExactPass219H36RIMReceiptV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint8_t device7;
+    uint8_t reset_witness;
+    uint8_t pointer_valid;
+    uint8_t terminal_executed;
+    uint32_t declared_word_count;
+    uint32_t loaded_word_count;
+    uint32_t first_loaded_address18;
+    uint32_t last_loaded_address18;
+    uint64_t initial_iowd36;
+    uint64_t final_iowd36;
+    uint64_t terminal_word36;
+    uint32_t final_pc18;
+    uint16_t ptr_start_position;
+    uint16_t ptr_end_position;
+    uint8_t exact_replayable;
+    uint8_t canonical_mutation_authority;
+    uint8_t canonical_hash72_authority;
+    uint8_t canonical_persistence_authority;
+    uint8_t floating_point_authority;
+} HHSExactPass219H36RIMReceiptV1;
+
 typedef struct HHSExactPass219H36VMStateV1 {
     uint32_t struct_size;
     uint32_t version;
@@ -296,6 +320,8 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_tty_copy_output(const HHSExac
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_ptr_load_tape(HHSExactPass219H36VMStateV1 *state, const uint8_t *frames, size_t count);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_ptp_copy_tape(const HHSExactPass219H36VMStateV1 *state, uint8_t *out_frames, size_t capacity, size_t *out_count);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_devices_step(HHSExactPass219H36VMStateV1 *state);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_rim_bootstrap(HHSExactPass219H36VMStateV1 *state, HHSExactPass219H36RIMReceiptV1 *out_receipt);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_rim_receipt_validate(const HHSExactPass219H36VMStateV1 *state, const HHSExactPass219H36RIMReceiptV1 *receipt);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_import_vm81(const HHSExactVM81Frame *frame, HHSExactPass219H36VMStateV1 *state);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_export_vm81(const HHSExactPass219H36VMStateV1 *state, HHSExactVM81Frame *frame);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_equal_temperament_seed(HHSExactPass219H36VMStateV1 *state);
