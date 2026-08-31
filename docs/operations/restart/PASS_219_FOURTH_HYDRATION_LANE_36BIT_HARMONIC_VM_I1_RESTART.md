@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `c12420dc5c692a1e5f91808ce78f44745dd5e668`
-- Branch head immediately before this checkpoint record: `c12420dc5c692a1e5f91808ce78f44745dd5e668`
+- Validated implementation head: `af9c3253f4844b186ea6ddea8c5d094625fe89e3`
+- Branch head immediately before this checkpoint record: `af9c3253f4844b186ea6ddea8c5d094625fe89e3`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -422,6 +422,39 @@ Functional validation at checkpoint:
 
 All preceding H36 steps through composition-program conformance were also green when this checkpoint was written. Remaining graph/benchmark/artifact workflow steps were still external follow-through and are nonblocking under the repository workflow policy.
 
+### 14. KA10 APR/PI internal devices 1.8
+
+Implemented the KA10 internal processor devices:
+
+- APR device `000`;
+- PI device `004`.
+
+APR now provides exact bounded CONI/CONO processor-condition programming, including processor-channel assignment, arithmetic/floating/clock interrupt enables, condition clears, pushdown-overflow status, and the peripheral I/O-reset pulse.
+
+The historical divide relation is explicit: KA10 has no independent divide-check interrupt enable. `No Divide` sets arithmetic `Overflow`, so the arithmetic-overflow APR enable is the interrupt path.
+
+PI now provides:
+
+- global activate/deactivate;
+- channel enable/disable;
+- software request/clear;
+- PI reset;
+- exact status readback;
+- deterministic priority admission;
+- program request acceptance even on a disabled selected channel.
+
+Hardware/APR requests and program-generated requests are stored separately. Clearing a software request therefore cannot erase a still-live TTY/PTR/PTP/APR condition.
+
+Functional validation at checkpoint:
+
+- workflow `Pass 219 Harmonic36 Nested VM`;
+- run `33451207962`;
+- job `99681283046`;
+- head `af9c3253f4844b186ea6ddea8c5d094625fe89e3`;
+- `KA10 APR PI 1.8 conformance` **SUCCESS**.
+
+All preceding H36 gates through exact factorization were also green when this checkpoint was written. Remaining Hash216/graph/benchmark/artifact steps were external follow-through and are nonblocking under the repository workflow policy.
+
 ## Validation receipt
 
 Authoritative dependency-scoped code gate:
@@ -506,27 +539,32 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-Resume from this checkpoint with the **KA10 internal APR/PI device programming layer**.
+Resume from this checkpoint by moving above hardware-completeness work into the first **lightweight KA10 monitor/driver execution profile**.
+
+This follows the architectural purpose of the 36-bit lane: reuse minimal pre-GUI software/driver execution surfaces as efficient software stacks inside the modern VM81/Hash72/Hash216/hydration hardware, rather than implementing historical hardware for nostalgia.
 
 Bounded target:
 
 ```text
-APR internal device code and CONI/CONO status/control
-+ processor reset request path
-+ arithmetic overflow / floating overflow / divide-check interrupt enables
-+ pushdown-overflow status integration
-+ PI internal device programming
-+ enable/disable/clear/request channel behavior
-+ exact status readback
-+ deterministic priority-entry tests
--> reuse validated seven-channel PI membrane
--> preserve external-device PI requests
--> emulator-local hardware state only
--> zero VM81/Hash72/persistence authority
+minimal executive monitor image
++ RIM-loaded bootstrap
++ APR/PI initialization
++ TTY/PTR/PTP interrupt service routines
++ deterministic device dispatch table
++ bounded monitor call / UUO entry
++ tiny run queue / cooperative dispatch
++ exact restart/replay receipt
++ workload signature metadata for stack-selection cache
+-> executes entirely through validated H36/VM81 state
+-> candidate software stack, not alternate authority
+-> Hash216/vector-store optimization evidence reusable after validation
+-> zero bypass of VM81 admission
 ```
 
-Do not alter the validated RIM, PTR/TTY/PTP, KA10 UUO, composition, or optimization layers except for impacted cumulative compilation.
+The first monitor profile should remain deliberately small and measurable. Its purpose is to establish an efficient reusable software-stack candidate that can later compete against heavier Linux/x86_64 execution paths under the existing optimization-selection architecture.
 
-Any later KI10/KL10 paging or MAP work remains a separate additive processor-profile module.
+Do not expand into unrelated peripheral emulation unless required by this monitor profile.
+
+Any KI10/KL10 paging/MAP work remains a separate additive processor-profile module.
 
 Do not merge to `main` without explicit integration authorization.
