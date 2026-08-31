@@ -1,0 +1,15 @@
+---
+title: "THE GOLDEN INVARIANT"
+subtitle: "A Novel in Three Books"
+date: "Repository Manuscript Edition — August 2026"
+documentclass: book
+classoption:
+  - twoside
+  - openany
+fontsize: 11pt
+toc-title: "Contents"
+colorlinks: true
+linkcolor: DeepInk
+papersize: custom
+lang: en-US
+---
