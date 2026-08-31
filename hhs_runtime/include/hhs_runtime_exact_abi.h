@@ -43,6 +43,8 @@
 #include "hhs_pass219_inherited_pass188_1_38.h"
 #include "hhs_pass219_inherited_pass187_1_39.h"
 #include "hhs_pass219_inherited_pass186_1_40.h"
+#include "hhs_pass219_inherited_pass185_1_41.h"
+#include "hhs_pass219_inherited_pass184_1_42.h"
 #include "hhs_pass219_global_canonical_defaults_1_0.h"
 #include "hhs_pass219_multimodal_optimization_generalization_1_0.h"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
