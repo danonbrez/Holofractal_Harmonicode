@@ -318,6 +318,9 @@ static HHSExactStatus h36_execute_io(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
+    if (h36_execute_builtin_device(state, ins, e, &status))
+        return status;
+
     if (fn == 0U || fn == 1U) {
         uint64_t pointer;
         uint32_t target;
