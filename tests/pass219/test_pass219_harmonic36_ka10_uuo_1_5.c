@@ -49,7 +49,7 @@ int main(void) {
     /* Default HHS microkernel mode remains unchanged. */
     init(&vm);
     vm.accumulators[1] =
-        UINT64_C(HHS_EXACT_PASS219_H36_RULE_I_MAJOR) |
+        (uint64_t)HHS_EXACT_PASS219_H36_RULE_I_MAJOR |
         (UINT64_C(0) << 8U) |
         (UINT64_C(20) << 12U);
     assert(step0(&vm, enc(UINT16_C(0001), 1U, 0U, 0U, 0U)) ==
