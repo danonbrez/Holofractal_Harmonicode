@@ -32,6 +32,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_uuo_1_5.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_console_devices_1_6.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
@@ -136,6 +137,15 @@ jobs:
             /tmp/h36/core.o \
             -o /tmp/h36/test-ka10-rim
           /tmp/h36/test-ka10-rim
+
+      - name: KA10 APR PI 1.8 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-ka10-apr-pi
+          /tmp/h36/test-ka10-apr-pi
 
       - name: Arithmetic flag fidelity conformance
         run: |
