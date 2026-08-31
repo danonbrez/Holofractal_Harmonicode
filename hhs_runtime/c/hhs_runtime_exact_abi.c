@@ -59,3 +59,4 @@
 #include "hhs_pass219_harmonic36_default_binding_1_0.inc"
 #include "hhs_pass219_harmonic36_factorization_fabric_1_0.inc"
 #include "hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc"
+#include "hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc"
