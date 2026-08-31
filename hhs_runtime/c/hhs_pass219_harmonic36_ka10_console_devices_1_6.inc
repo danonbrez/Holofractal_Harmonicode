@@ -36,9 +36,11 @@ static void h36_device_request_pi(
     uint8_t channel
 ) {
     if (channel >= 1U && channel <= HHS_EXACT_PASS219_H36_PI_CHANNELS) {
+        uint8_t bit = (uint8_t)(1U << (channel - 1U));
+        state->legacy_priority_external_request_mask =
+            (uint8_t)(state->legacy_priority_external_request_mask | bit);
         state->legacy_priority_request_mask =
-            (uint8_t)(state->legacy_priority_request_mask |
-                      (uint8_t)(1U << (channel - 1U)));
+            (uint8_t)(state->legacy_priority_request_mask | bit);
     }
 }
 
