@@ -30,9 +30,9 @@ Pass 219 must expose each inherited pass additively through the aggregate exact 
 
 As of adoption against main eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb, the cumulative inherited binding census is:
 
-218 -> 217 -> 216 -> 215 -> 214 -> 213 -> 212 -> 211 -> 210 -> 209 -> 208 -> 207 -> 206 -> 205 -> 204 -> 203 -> 202 -> 201 -> 200c -> 200b -> 200a -> 199 -> 198 -> 197 -> 196 -> 195 -> 194 -> 193 -> 192 -> 191 -> 190 -> 189 -> 188 -> 187 -> 186
+218 -> 217 -> 216 -> 215 -> 214 -> 213 -> 212 -> 211 -> 210 -> 209 -> 208 -> 207 -> 206 -> 205 -> 204 -> 203 -> 202 -> 201 -> 200c -> 200b -> 200a -> 199 -> 198 -> 197 -> 196 -> 195 -> 194 -> 193 -> 192 -> 191 -> 190 -> 189 -> 188 -> 187 -> 186 -> 185 -> 184
 
-The numeric coverage is Pass 218 through Pass 186, with Pass 200a, 200b, and 200c preserved as distinct bindings. Future reverse reconciliation must extend the floor downward; it may not silently remove an existing binding.
+The numeric coverage is Pass 218 through Pass 184, with Pass 200a, 200b, and 200c preserved as distinct bindings. I142 repairs the previously missing native Pass-185 production-closure exposure before binding Pass 184. Future reverse reconciliation must extend the floor downward; it may not silently remove an existing binding.
 
 ## Known repair-forward debt
 
