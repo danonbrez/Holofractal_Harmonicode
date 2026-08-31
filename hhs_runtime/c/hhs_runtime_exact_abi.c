@@ -62,3 +62,5 @@
 #include "hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc"
 #include "hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc"
 #include "hhs_pass219_harmonic36_composition_grammar_1_0.inc"
+#include "hhs_pass219_harmonic36_composition_program_rules_1_1.inc"
+#include "hhs_pass219_harmonic36_composition_program_exec_1_1.inc"
