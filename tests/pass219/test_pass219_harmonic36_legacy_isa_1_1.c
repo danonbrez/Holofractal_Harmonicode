@@ -168,7 +168,7 @@ int main(void) {
     assert(one(&vm, enc(UINT16_C(0505), 1U, UINT32_C(0765432))) ==
            HHS_EXACT_STATUS_OK);
     assert(vm.accumulators[1] ==
-           (UINT64_C(0765432) << 18U) | UINT64_C(0123456));
+           ((UINT64_C(0765432) << 18U) | UINT64_C(0123456)));
 
     init(&vm);
     vm.accumulators[1] = UINT64_C(0777777) << 18U;
