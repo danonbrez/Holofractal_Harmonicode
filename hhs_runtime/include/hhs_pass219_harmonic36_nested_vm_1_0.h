@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 0U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 1U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -28,7 +28,8 @@ typedef enum HHSExactPass219H36TrapV1 {
     HHS_EXACT_PASS219_H36_TRAP_NONCANONICAL_FLOAT = 3,
     HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE = 4,
     HHS_EXACT_PASS219_H36_TRAP_INDIRECT_LIMIT = 5,
-    HHS_EXACT_PASS219_H36_TRAP_HARMONIC_RULE = 6
+    HHS_EXACT_PASS219_H36_TRAP_HARMONIC_RULE = 6,
+    HHS_EXACT_PASS219_H36_TRAP_LEGACY_POINTER = 7
 } HHSExactPass219H36TrapV1;
 
 typedef enum HHSExactPass219H36HarmonicEraV1 {
@@ -181,6 +182,11 @@ typedef struct HHSExactPass219H36VMStateV1 {
     uint8_t canonical_hash72_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
+    uint8_t legacy_overflow;
+    uint8_t legacy_carry0;
+    uint8_t legacy_carry1;
+    uint8_t legacy_floating_overflow;
+    uint8_t legacy_no_divide;
 } HHSExactPass219H36VMStateV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_h36_version(void);
