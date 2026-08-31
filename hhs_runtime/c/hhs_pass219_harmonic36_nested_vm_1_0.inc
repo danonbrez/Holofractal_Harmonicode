@@ -3,5 +3,6 @@
 #include "hhs_pass219_harmonic36_nested_vm_legacy_isa_1_1.inc"
 #include "hhs_pass219_harmonic36_nested_vm_two_word_isa_1_2.inc"
 #include "hhs_pass219_harmonic36_nested_vm_privilege_pi_1_4.inc"
+#include "hhs_pass219_harmonic36_nested_vm_uuo_1_5.inc"
 #include "hhs_pass219_harmonic36_nested_vm_control_io_1_3.inc"
 #include "hhs_pass219_harmonic36_nested_vm_exec_1_0.inc"
