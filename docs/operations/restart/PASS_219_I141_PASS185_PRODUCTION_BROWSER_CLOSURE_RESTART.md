@@ -496,3 +496,64 @@ Documentation:
 `docs/pass185/HHS_PASS_185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT.md`
 
 If main moves from `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191` before the run executes, fail closed and rerun drift reconciliation rather than testing stale main.
+
+
+## FROZEN SYNTHETIC INTEGRATION PREFLIGHT CHECKPOINT — 2026-08-31
+
+The synthetic current-main composition is frozen green without remote integration.
+
+The originally requested run `33383386673` on `602ebae5a5ed49e171a7a12784d6e1fd865e6db5` was superseded by the exact current branch-tip trigger and cancelled during native compilation. Its synthesis had already accepted authoritative main `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`; the cancellation is not classified as an attributable synthetic-preflight defect.
+
+Exact frozen green evidence:
+
+- validation run: `33383422078`
+- validation job: `99460631642`
+- artifact: `9754686961`
+- artifact SHA-256: `1bfb8e0010340cc89b8977c4dfb04eead92f34fd61528698f49eaa32b62e4f10`
+- tested branch head: `ee8247e4432a6f5501e00812f9e17a6500b0bb3a`
+- tested branch tree: `95a49a8d7c1922e64f91331fb93d7af5618a9144`
+- tested authoritative main: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
+- merge base: `f8aa3337ee023c7d828343eac208987c20a05e67`
+- synthetic commit: `1a584d00d5c8f04338b791ed1fa8bb32d434ff96`
+- synthetic tree: `bebfdcdd361bd8680c6a0e650651dbd2d5943e07`
+- changed-path overlap: `0`
+- cumulative local evidence SHA-256: `e3f1691a76a4793fc6e409eddf8c8b76aae5129efdecff64cfd776c286114026`
+- Playwright trace SHA-256: `04106ddd482de47e60987939e7504b998253e479e0eba10fda022e929b2c7e22`
+- Hash72 completion receipt: `ByohEHW53VfGcMDTDFkA71X5LxA3UF9!aDgtgd9i(X<oJG8dg4!d!B6C8<lyfYJ3jHOdb6-d`
+- Hash216 evidence-set identity: `34ed47ff743bf4d1e280cf87c96a5ebeb2f8caaba635a40db8091c223f385a68`
+- synthetic seal SHA-256: `2ded3485b4ee759c7b72433d42b25861ebf7a0012e9ef4fad8712a1653b72714`
+- browser state: `INTERACTIVE`
+- page errors: `0`
+- console errors: `0`
+- local unresolved contract rows: `0`
+- local waivers: `0`
+- canonical runtime authority changed: `false`
+- new VM81 authority: `false`
+- parallel Hash72 commit authority: `false`
+
+Repository receipt:
+`evidence/pass185/i141/PASS_185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT_RECEIPT.json`
+
+Updated validation documentation:
+`docs/pass185/HHS_PASS_185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT.md`
+
+Frozen Phase-1 through Phase-7 receipts and the frozen cumulative local-closure receipt were preserved without rewrite.
+
+Completion boundary remains intentionally open:
+
+- remote integration: **false**;
+- authoritative-main verification: **false**;
+- external-deployment verification: **false**;
+- terminal Pass-185 completion: **false**.
+
+No PR was opened. No merge, rebase, remote integration, or deployment was performed.
+
+### Exact resumable next action
+
+Resume from the repository branch tip containing this section. Treat run `33383422078` and artifact `9754686961` as the frozen synthetic-preflight evidence for tested branch `ee8247e4432a6f5501e00812f9e17a6500b0bb3a` against main `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`.
+
+The next operation, if explicitly authorized, is a bounded remote integration step followed by authoritative-main verification. External deployment replay and terminal Pass-185 completion remain later independent gates.
+
+### Stop condition
+
+Synthetic current-main composition is frozen green and restartable. Return control to the user. Do not merge or deploy from this checkpoint.
