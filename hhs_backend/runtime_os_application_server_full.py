@@ -41,6 +41,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from hhs_backend.api.pass184_runtime_routes import router as pass184_runtime_router
 from hhs_backend.application_ide_server import app as inherited_app
 from hhs_backend.runtime_os_pass218_authority_i13 import (
     PASS218_AUTHORITY_ACTION_PREPARE_PATH,
@@ -239,9 +240,10 @@ app = inherited_app
 app.title = "HHS Runtime OS Application Environment"
 app.description = (
     "Full cumulative HHS application, API, assistant, VM81, Hash72/Hash216, pass, "
-    "workspace, compiler, emulator, replay, and runtime surfaces projected through "
+    "workspace, compiler, emulator, replay, portable package/service, and runtime surfaces projected through "
     "the TypeScript/React/Vite Runtime OS."
 )
+app.include_router(pass184_runtime_router)
 PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)
 PASS218_AUTHORITY_CONTROL_PLANE = install_pass218_authority_control_plane(
     app,
