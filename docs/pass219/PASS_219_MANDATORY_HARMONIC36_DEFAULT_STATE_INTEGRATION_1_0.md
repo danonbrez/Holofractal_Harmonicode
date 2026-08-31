@@ -155,3 +155,33 @@ Required dependency-scoped acceptance includes:
 This extension is complete only when the default aggregate runtime exposes and validates it across the inherited surfaces above, the repository-visible restart record is current, dependency-scoped tests are green, and the completed branch is merged or otherwise explicitly frozen for integration.
 
 Documentation-only completion is forbidden.
+
+
+## 10. Repeat-aware Hash72/Hash216 addressing law
+
+The native Hash72 circuit coordinate is the ordered pair:
+
+```text
+(lane_position72, symbol_index72)
+-> lane_position72 * 72 + symbol_index72
+-> native_hash72_linear5184
+```
+
+For a Hash216 transition, lane role is an additional directional axis:
+
+```text
+(previous | change | receipt, lane_position72, symbol_index72)
+```
+
+Repeated glyphs are permitted. Repetition does not collapse identity because lane role and ordered lane position remain part of the address. A no-repeat 72-symbol lane is therefore a distinguished permutation-core case inside the wider repeat-allowed ordered manifold, not a different storage authority.
+
+The runtime binding SHALL:
+
+- resolve the glyph against the canonical 72-symbol Hash72 alphabet;
+- preserve `absolute_position216 = lane_role * 72 + lane_position72`;
+- map `(lane_position72, symbol_index72)` into the native `72² = 5,184` circuit;
+- factor that same address into VM81 `81×64`, H36 `144×36`, and phase `8×8` coordinates;
+- preserve the existing per-occurrence SHA-256 vector-index record when present;
+- never use H36/vector metadata to bypass current VM81 admission or Hash72/Hash216 lineage.
+
+RNA hydration coordinates retain their separate hydration `slot5184` axis. The binding MUST NOT silently equate that slot with the VM81 `cell81×operation64` address. Both identities are preserved and witnessed.
