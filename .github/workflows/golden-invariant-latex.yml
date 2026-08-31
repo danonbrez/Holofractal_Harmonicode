@@ -7,6 +7,10 @@ on:
     paths:
       - 'docs/research/manuscripts/companion/novel/latex/**'
       - '.github/workflows/golden-invariant-latex.yml'
+  pull_request:
+    paths:
+      - 'docs/research/manuscripts/companion/novel/latex/**'
+      - '.github/workflows/golden-invariant-latex.yml'
 
 permissions:
   contents: read
