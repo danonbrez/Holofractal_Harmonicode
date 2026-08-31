@@ -1,0 +1,168 @@
+name: Pass 219 I141 Pass 185 Production Root Phase 1
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
+    paths:
+      - 'hhs_gui/runtime_os/artifacts/createStoredZip.ts'
+      - 'hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx'
+      - 'hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx'
+      - 'hhs_verification/pass185/production_root_browser_acceptance.py'
+      - 'docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md'
+      - '.github/workflows/pass219-i141-pass185-production-root-phase1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i141-pass185-phase1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-root-phase1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '12'
+      HHS_PASS185_BASE_URL: 'http://127.0.0.1:8767'
+      HHS_PASS185_EVIDENCE_DIR: '/tmp/pass185-evidence'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped runtime and browser packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             requests             pytest             playwright
+
+      - name: Build inherited native authorities
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Typecheck and build current Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Validate I141 Phase-1 sources
+        run: |
+          python -m py_compile hhs_verification/pass185/production_root_browser_acceptance.py
+          grep -Fq 'HHS_PASS_185_CURRENT_PRODUCTION_VISIBLE_LIFECYCLE_PHASE1_IMPLEMENTED_PENDING_VALIDATION'             docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md
+          ! grep -Fq 'Current classification: HHS_PASS_185_PRODUCTION_BROWSER_AND_RUNTIME_CLOSURE_VERIFIED'             docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md
+          grep -Fq 'Pass185ApplicationLifecyclePanel' hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx
+          grep -Fq 'WORKSPACE_COMMAND_INGRESS_REGISTER' hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx
+          grep -Fq 'frontend_runtime_authority: false' hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx
+
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Boot exact current production-root server
+        run: |
+          set -euo pipefail
+          python -m uvicorn hhs_backend.runtime_os_application_server:app             --host 127.0.0.1 --port 8767 --workers 1 --log-level info             > /tmp/pass185-production-root.log 2>&1 &
+          echo $! > /tmp/pass185-server.pid
+          ready=0
+          for attempt in $(seq 1 120); do
+            if ! kill -0 "$(cat /tmp/pass185-server.pid)" 2>/dev/null; then
+              cat /tmp/pass185-production-root.log
+              exit 1
+            fi
+            code=$(curl -sS -o /tmp/pass185-root.html -w '%{http_code}' http://127.0.0.1:8767/ || true)
+            if [ "$code" = "200" ]; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/pass185-production-root.log
+            exit 1
+          fi
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/pass185-root.html
+          curl -fsS --max-time 10 http://127.0.0.1:8767/api/interface/status > /tmp/pass185-interface.json
+
+      - name: Execute visible calculator lifecycle in real Chromium
+        run: |
+          set -euo pipefail
+          cleanup() {
+            if [ -f /tmp/pass185-server.pid ]; then
+              kill "$(cat /tmp/pass185-server.pid)" 2>/dev/null || true
+              wait "$(cat /tmp/pass185-server.pid)" 2>/dev/null || true
+            fi
+          }
+          trap cleanup EXIT
+          timeout 300s python hhs_verification/pass185/production_root_browser_acceptance.py
+
+      - name: Seal Phase-1 evidence
+        if: always()
+        run: |
+          mkdir -p /tmp/pass185-evidence
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          paths = [
+              'hhs_gui/runtime_os/artifacts/createStoredZip.ts',
+              'hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx',
+              'hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx',
+              'hhs_verification/pass185/production_root_browser_acceptance.py',
+              'docs/pass185/HHS_PASS_185_I141_REPOSITORY_RECONCILIATION_AND_PHASE1.md',
+          ]
+          payload = {
+              'schema': 'HHS_PASS219_I141_PASS185_PRODUCTION_ROOT_PHASE1_SEAL_V1',
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'authoritative_base': 'f8aa3337ee023c7d828343eac208987c20a05e67',
+              'pass185_contract_commit': 'f260f2b013072a48399d9cdc207d0a76a6c63d2f',
+              'classification': 'HHS_PASS_185_CURRENT_PRODUCTION_VISIBLE_LIFECYCLE_PHASE1_IMPLEMENTED_PENDING_TERMINAL_RECONCILIATION',
+              'terminal_pass185_completion_claimed': False,
+              'source_blobs': {
+                  path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
+                  for path in paths
+              },
+          }
+          browser = Path('/tmp/pass185-evidence/pass185-production-root.json')
+          payload['browser_evidence_present'] = browser.is_file()
+          if browser.is_file():
+              payload['browser_evidence_sha256'] = hashlib.sha256(browser.read_bytes()).hexdigest()
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          Path('/tmp/pass185-evidence/i141-phase1-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i141-pass185-production-root-phase1
+          path: |
+            /tmp/pass185-evidence/**
+            /tmp/pass185-production-root.log
+            /tmp/pass185-interface.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,263 @@
+name: Pass 219 I141 Pass 185 Cumulative Local Closure
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
+    paths:
+      - 'hhs_gui/index.html'
+      - 'hhs_gui/bootstrap.ts'
+      - 'hhs_gui/main.tsx'
+      - 'hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx'
+      - 'hhs_gui/runtime_os/core/Pass185BootCoordinator.ts'
+      - 'hhs_verification/pass185/cumulative_local_closure_acceptance.py'
+      - 'docs/pass185/HHS_PASS_185_I141_CUMULATIVE_LOCAL_CLOSURE.md'
+      - 'docs/operations/restart/PASS_219_I141_PASS185_PRODUCTION_BROWSER_CLOSURE_RESTART.md'
+      - '.github/workflows/pass219-i141-pass185-cumulative-local-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i141-pass185-cumulative-local-closure-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cumulative-local-closure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS185_CUMULATIVE_EVIDENCE: '/tmp/pass185-cumulative-local'
+      PLAYWRIGHT_BROWSERS_PATH: '/tmp/pass185-playwright-browsers'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record exact lineage
+        run: |
+          mkdir -p "$HHS_PASS185_CUMULATIVE_EVIDENCE"
+          git rev-parse HEAD | tee "$HHS_PASS185_CUMULATIVE_EVIDENCE/head.txt"
+          git rev-parse HEAD^{tree} | tee "$HHS_PASS185_CUMULATIVE_EVIDENCE/tree.txt"
+          git fetch origin main --no-tags
+          git rev-parse origin/main | tee "$HHS_PASS185_CUMULATIVE_EVIDENCE/observed-main.txt"
+          git merge-base HEAD origin/main | tee "$HHS_PASS185_CUMULATIVE_EVIDENCE/merge-base.txt"
+          for sha in \
+            31a3ca0f725ac7ee14a7c2252da750536afe13ec \
+            2b972a66743a505937d5f819c839f5e59dda98b4 \
+            beff7599dedff2624be712f7a215de5c193e8cbe \
+            6721a7daa5ac9bff087e3f2df92ca8e0212e126b \
+            36321174c124ff5ba81bd60fd37a72ce703e606c \
+            d716fb50ed8f903ccd8de965d8fa880b08df9027 \
+            26d06f34a3b074f8f969c80ccc5b9db087fd9430
+          do
+            git merge-base --is-ancestor "$sha" HEAD
+          done
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped runtime packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            requests pytest playwright
+
+      - name: Compile inherited C authority
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum hhs_runtime/builds/libhhs_runtime.so \
+            | tee "$HHS_PASS185_CUMULATIVE_EVIDENCE/c-runtime.sha256"
+
+      - name: Typecheck and build exact Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Validate cumulative source boundary
+        run: |
+          python -m py_compile hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          grep -Fq 'DOCUMENT_RECEIVED' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'STATIC_ASSETS_LOADING' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'CORE_MODULES_READY' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'DOM_READY' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'WORKSPACE_BOUND' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'EDITOR_READY' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'PREVIEW_READY' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'DEGRADED_INTERACTIVE' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'FAILED' hhs_gui/runtime_os/core/Pass185BootCoordinator.ts
+          grep -Fq 'tracing.start' hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          grep -Fq 'page.touchscreen.tap' hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          grep -Fq 'process-tree.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          grep -Fq 'environment-manifest.json' hhs_verification/pass185/cumulative_local_closure_acceptance.py
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('hhs_gui/index.html').read_text(encoding='utf-8')
+          assert r'hhsBootFailure = label;\n' not in text
+          assert 'window.__HHS_BOOT_COORDINATOR__?.fail?.(label, stringify(value));' in text
+          PY
+
+      - name: Validate cumulative authority boundary and regressions
+        run: |
+          for path in \
+            hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+            hhs_runtime/hhs_unified_hash72_ledger_v1.py \
+            hhs_python/runtime/hhs_runtime_controller.py
+          do
+            test "$(git rev-parse 26d06f34a3b074f8f969c80ccc5b9db087fd9430:$path)" = "$(git hash-object "$path")"
+          done
+          timeout 420s pytest -q \
+            tests/test_hhs_cumulative_execution_authority_v1.py \
+            tests/test_hhs_hash72_kernel_surface_unification_v1.py \
+            tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py \
+            tests/test_runtime_os_production_root.py
+
+      - name: Install bounded Chromium
+        run: |
+          mkdir -p "$PLAYWRIGHT_BROWSERS_PATH"
+          timeout 600s python -m playwright install --with-deps chromium
+          test -d "$PLAYWRIGHT_BROWSERS_PATH"
+
+      - name: Run cumulative exact-production local closure
+        run: |
+          timeout 1200s python -m \
+            hhs_verification.pass185.cumulative_local_closure_acceptance \
+            --evidence-dir "$HHS_PASS185_CUMULATIVE_EVIDENCE"
+
+      - name: Require zero local gaps or waivers
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(
+              Path('/tmp/pass185-cumulative-local/cumulative-local-closure.json').read_text()
+          )
+          assert value['ok'] is True
+          assert value['local_unresolved_contract_rows'] == []
+          assert value['local_waivers'] == []
+          assert value['browser']['boot']['state'] in {
+              'INTERACTIVE', 'DEGRADED_INTERACTIVE'
+          }
+          assert value['browser']['trace']['bytes'] > 0
+          assert value['browser']['mobile_touch'] is True
+          assert value['terminal_pass185_completion_claimed'] is False
+          assert value['authoritative_main_verified'] is False
+          assert value['external_deployment_verified'] is False
+          PY
+
+      - name: Seal cumulative local evidence
+        if: success()
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+          from hhs_runtime.pass150.genome import Hash216Genome
+          from hhs_runtime.pass166.common import ZERO_HASH216
+
+          root = Path('/tmp/pass185-cumulative-local')
+          payload = {
+              'schema': 'HHS_PASS219_I141_PASS185_CUMULATIVE_LOCAL_CLOSURE_SEAL_V1',
+              'head': subprocess.check_output(
+                  ['git', 'rev-parse', 'HEAD'], text=True
+              ).strip(),
+              'tree': subprocess.check_output(
+                  ['git', 'rev-parse', 'HEAD^{tree}'], text=True
+              ).strip(),
+              'phase7_validated_head':
+                  '26d06f34a3b074f8f969c80ccc5b9db087fd9430',
+              'observed_main':
+                  (root / 'observed-main.txt').read_text().strip(),
+              'merge_base_with_observed_main':
+                  (root / 'merge-base.txt').read_text().strip(),
+              'classification':
+                  'HHS_PASS_185_CUMULATIVE_PHASE1_PHASE7_LOCAL_CLOSURE_EXECUTED',
+              'authoritative_main_verified': False,
+              'external_deployment_verified': False,
+              'terminal_pass185_completion_claimed': False,
+              'source_blobs': {},
+              'evidence': {},
+          }
+          for path in [
+              'hhs_gui/index.html',
+              'hhs_gui/bootstrap.ts',
+              'hhs_gui/main.tsx',
+              'hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx',
+              'hhs_gui/runtime_os/core/Pass185BootCoordinator.ts',
+              'hhs_verification/pass185/cumulative_local_closure_acceptance.py',
+              'docs/pass185/HHS_PASS_185_I141_CUMULATIVE_LOCAL_CLOSURE.md',
+              '.github/workflows/pass219-i141-pass185-cumulative-local-closure.yml',
+          ]:
+              payload['source_blobs'][path] = subprocess.check_output(
+                  ['git', 'hash-object', path], text=True
+              ).strip()
+          for path in sorted(root.glob('**/*')):
+              if not path.is_file():
+                  continue
+              raw = path.read_bytes()
+              payload['evidence'][str(path.relative_to(root))] = {
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'bytes': len(raw),
+              }
+          local = json.loads((root / 'cumulative-local-closure.json').read_text())
+          payload['local_evidence_sha256'] = local['evidence_sha256']
+          payload['local_unresolved_contract_rows'] = local['local_unresolved_contract_rows']
+          payload['local_waivers'] = local['local_waivers']
+          projection = {
+              key: value['sha256']
+              for key, value in sorted(payload['evidence'].items())
+          }
+          encoded = json.dumps(
+              projection, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['completion_receipt_hash72'] = hash72_digest(
+              {'domain': 'HHS-PASS185-I141-CUMULATIVE-LOCAL-CLOSURE-V1'},
+              encoded,
+          )
+          payload['evidence_set_hash216'] = Hash216Genome.root(
+              Hash216Genome.positions(
+                  encoded,
+                  previous_root=ZERO_HASH216,
+                  sequence=8,
+              )
+          )
+          seal_bytes = json.dumps(
+              payload, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['seal_sha256'] = hashlib.sha256(seal_bytes).hexdigest()
+          (root / 'cumulative-local-closure-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i141-pass185-cumulative-local-closure
+          path: /tmp/pass185-cumulative-local/**
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,124 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE4_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE4_PRODUCTION_MULTIMODAL_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase3_validated_head": "beff7599dedff2624be712f7a215de5c193e8cbe",
+    "phase4_validated_head": "6721a7daa5ac9bff087e3f2df92ca8e0212e126b",
+    "phase4_validated_tree": "88fb222808f5c85cec69ded243aecb944db33d34",
+    "ahead_of_authoritative_main_base": 82,
+    "behind_authoritative_main_base": 0
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-phase4-production-multimodal.yml",
+    "run_id": 33298038651,
+    "job_id": 99220959313,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9728051321,
+      "name": "pass219-i141-pass185-phase4-production-multimodal",
+      "size_bytes": 130834,
+      "sha256": "c8011eec0eeadcabe651ec36e7e056359048aef43c96748b1194c293261130cc"
+    },
+    "evidence": {
+      "schema": "HHS_PASS185_I141_PHASE4_PRODUCTION_MULTIMODAL_ACCEPTANCE_V1",
+      "sha256": "ec2761ff77d913298728cb4e365bcdb7d89f70661c7d1044873c2d408bf95080",
+      "classification": "HHS_PASS_185_PHASE4_PRODUCTION_MULTIMODAL_VERIFIED",
+      "elapsed_ms": 19691,
+      "production_server_ready_ms": 24336
+    },
+    "seal": {
+      "schema": "HHS_PASS219_I141_PASS185_PHASE4_VALIDATION_SEAL_V1",
+      "receipt_sha256": "1ce3ad8149edac485af644735542e7b8fe29ae8d7ef92469c50a087aa3c99253"
+    },
+    "compiled_c_sha256": "7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c",
+    "phases": {
+      "real_browser_multimodal": "success",
+      "calculator_phase1_baseline": "success",
+      "impacted_multimodal_regressions": "success",
+      "impacted_production_root_regressions": "success",
+      "evidence_seal": "success"
+    }
+  },
+  "verified_workflows": {
+    "document": {
+      "modality": "TEXT",
+      "verify": "DOCUMENT_PREVIEW_VERIFIED",
+      "witness": "DOCUMENT_SOURCE_WITNESSED",
+      "export": "DOCUMENT_EXPORT_READY"
+    },
+    "game": {
+      "modality": "JSON",
+      "verify": "GAME_INTERACTION_VERIFIED",
+      "witness": "GAME_SOURCE_WITNESSED",
+      "export": "GAME_EXPORT_READY",
+      "final_position": "x=2 y=2"
+    },
+    "graphics": {
+      "modality": "IMAGE",
+      "verify": "GRAPHICS_RENDER_VERIFIED",
+      "witness": "GRAPHICS_SOURCE_WITNESSED",
+      "export": "GRAPHICS_EXPORT_READY",
+      "rendered_size": "80",
+      "rendered_label": "PHASE4"
+    },
+    "audio": {
+      "modality": "AUDIO",
+      "verify": "AUDIO_PREVIEW_VERIFIED",
+      "witness": "AUDIO_SOURCE_WITNESSED",
+      "export": "AUDIO_EXPORT_READY",
+      "preview": "RIFF/WAVE",
+      "source_prefix_hex": "524946468409000057415645666d7420"
+    },
+    "audiovisual": {
+      "modality": "VIDEO",
+      "verify": "AUDIOVISUAL_REEL_VERIFIED",
+      "witness": "VIDEO_SOURCE_WITNESSED",
+      "export": "VIDEO_EXPORT_READY",
+      "transport": "AUDIOVISUAL_PAUSED"
+    },
+    "calculator": {
+      "acceptance": "CALCULATOR_7_PLUS_8_EQUALS_15",
+      "witnessed": "SOURCE_WITNESSED",
+      "verified": "PREVIEW_TEST_VERIFIED"
+    }
+  },
+  "authority_boundary": {
+    "source_witness_authority": "WORKSPACE_COMMAND_INGRESS_REGISTER",
+    "frontend_runtime_authority": false,
+    "browser_media_preview_authority": false,
+    "browser_preview_is_canonical_source": false,
+    "canonical_backend_authority_unchanged": true,
+    "vm81_authority_minted_in_browser": false,
+    "hash72_authority_minted_in_browser": false
+  },
+  "repair_forward": {
+    "explicit_array_buffer_for_blob_payloads": true,
+    "playwright_status_wait_signature_repaired": true,
+    "existing_multimodal_ingress_reused_without_second_authority": true
+  },
+  "source_blobs": {
+    "docs/pass185/HHS_PASS_185_I141_PHASE4_PRODUCTION_MULTIMODAL_ACCEPTANCE.md": "51c0ed374d9de18e25e5f0bcb2ee788b3971d3f1",
+    "hhs_backend/runtime/hhs_workspace_authority_loop_v1.py": "aadab4dcb379c916f1969613bdd9f2e9314ee12d",
+    "hhs_backend/runtime/multimodal_workspace_ingress_v1.py": "2a586c047951a101c9c4aa9b2f919005c26e8c68",
+    "hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx": "77276c213b3138d196e336bc81a69166ae9ef922",
+    "hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx": "f87968d0e891c36c3fa1de2509eb3ca6842263e3",
+    "hhs_gui/runtime_os/workspace/Pass185MultimodalLifecyclePanel.tsx": "a506591b6dee46568fba3607c20b9804e9ca21be",
+    "hhs_gui/runtime_os/workspace/WorkspaceCommandClient.ts": "dd672fbb3003314b4e43d3b6b8cda5a63e523e9c",
+    "hhs_verification/pass185/phase4_production_multimodal_acceptance.py": "f2eac2f147d86f7d94e47833c6fe776c00b112ee"
+  },
+  "remaining_terminal_scope": [
+    "performance and starvation CPU/memory/IO/latency gates",
+    "remaining Pass-185 negative matrix",
+    "cumulative Pass-185 closure receipt",
+    "authoritative-main verification",
+    "external deployment replay"
+  ]
+}

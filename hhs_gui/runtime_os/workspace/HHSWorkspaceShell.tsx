@@ -1,11 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { RuntimeAssistantPanel } from "../assistant/RuntimeAssistantPanel"
 import { LiveRuntimeProjectionPanel } from "../core/LiveRuntimeProjectionPanel"
+import { Pass185ApplicationLifecyclePanel } from "./Pass185ApplicationLifecyclePanel"
+import { Pass185MultimodalLifecyclePanel } from "./Pass185MultimodalLifecyclePanel"
+import { Pass185TerminalPanel } from "./Pass185TerminalPanel"
+import { Pass185HydrationJobPanel } from "./Pass185HydrationJobPanel"
 import type { RuntimeOS } from "../core/RuntimeOS"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
 type Json = Record<string, any>
-type WorkspaceTab = "workbench" | "assistant" | "runtime" | "receipts"
+type WorkspaceTab = "workbench" | "application" | "multimodal" | "assistant" | "runtime" | "jobs" | "terminal" | "receipts"
 type BusyAction = "boot" | "project" | "source" | "interpret" | "compile" | "emulator" | "runtime" | null
 
 type Activity = {
@@ -138,6 +142,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   const [emulatorSession, setEmulatorSession] = useState<Json | null>(null)
   const [lastResult, setLastResult] = useState<Json | null>(null)
   const [activity, setActivity] = useState<Activity[]>([])
+  const uploadInputRef = useRef<HTMLInputElement | null>(null)
 
   const selectedObject = objects.find((item) => item.object_id === selectedObjectId) ?? null
   const projectId = text(project?.project_id)
@@ -266,6 +271,29 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
     await submit("project.create", { name: projectName })
   })
 
+  const newFile = (): void => {
+    setSourceName("untitled.hhs")
+    setSourceText("")
+    setWitnessedSourceText("")
+    setSelectedObjectId(null)
+    setArtifact(null)
+    setEmulatorSession(null)
+    setLastResult(null)
+    setError(null)
+  }
+
+  const loadUploadedSource = async (file: File): Promise<void> => {
+    const source = await file.text()
+    setSourceName(file.name || "uploaded.hhs")
+    setSourceText(source)
+    setWitnessedSourceText("")
+    setSelectedObjectId(null)
+    setArtifact(null)
+    setEmulatorSession(null)
+    setLastResult(null)
+    setError(null)
+  }
+
   const witnessSource = () => run("source", async () => {
     await ensureSource(await ensureProject())
   })
@@ -373,11 +401,15 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
       </header>
 
       <nav className="sticky top-[57px] z-30 border-b border-neutral-800 bg-neutral-950/95 px-2 py-2 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-3xl grid-cols-4 gap-1">
+        <div className="mx-auto grid max-w-7xl grid-cols-4 gap-1 sm:grid-cols-8">
           {([
             ["workbench", "Build"],
+            ["application", "Application"],
+            ["multimodal", "Multimodal"],
             ["assistant", "Assistant"],
             ["runtime", "Runtime"],
+            ["jobs", "Jobs"],
+            ["terminal", "Terminal"],
             ["receipts", "Receipts"],
           ] as [WorkspaceTab, string][]).map(([id, label]) => (
             <button key={id} type="button" onClick={() => setTab(id)} className={`min-h-10 rounded-lg px-2 text-xs ${tab === id ? "bg-cyan-900 text-white" : "bg-neutral-900 text-neutral-400"}`}>
@@ -413,7 +445,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               ) : (
                 <div className="mt-3 space-y-2">
                   {objects.map((object) => (
-                    <button key={text(object.object_id)} type="button" onClick={() => setSelectedObjectId(text(object.object_id))} className={`w-full rounded-xl border p-3 text-left ${selectedObjectId === object.object_id ? "border-cyan-700 bg-cyan-950/40" : "border-neutral-800 bg-black/40"}`}>
+                    <button data-testid="pass185-workspace-object" key={text(object.object_id)} type="button" onClick={() => setSelectedObjectId(text(object.object_id))} className={`w-full rounded-xl border p-3 text-left ${selectedObjectId === object.object_id ? "border-cyan-700 bg-cyan-950/40" : "border-neutral-800 bg-black/40"}`}>
                       <div className="truncate text-xs font-medium text-neutral-100">{text(object.name, "workspace object")}</div>
                       <div className="mt-1 truncate text-[9px] text-neutral-500">{text(object.object_type)} · {text(object.lifecycle_state)}</div>
                       <div className="mt-1 truncate font-mono text-[9px] text-cyan-800">{shortHash(object.root_hash72 ?? object.current_root_hash72)}</div>
@@ -436,18 +468,34 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
 
               <div className="space-y-3 p-3">
                 <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_160px]">
-                  <input value={sourceName} onChange={(event) => setSourceName(event.target.value)} className="rounded-lg border border-neutral-700 bg-black p-2 text-sm" aria-label="Source file name" />
+                  <input data-testid="pass185-source-file-name" value={sourceName} onChange={(event) => setSourceName(event.target.value)} className="rounded-lg border border-neutral-700 bg-black p-2 text-sm" aria-label="Source file name" />
                   <select value={target} onChange={(event) => setTarget(event.target.value)} className="rounded-lg border border-neutral-700 bg-black p-2 text-sm" aria-label="Compiler target">
                     {["HHS_IR", "C_KERNEL_PLAN", "C_SOURCE", "PYTHON_ADAPTER", "JSON_EXECUTION_GRAPH", "DOT_GRAPH", "BYTECODE_OR_VM_PLAN", "RECEIPT_ONLY_PLAN"].map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </div>
 
-                <textarea value={sourceText} onChange={(event) => setSourceText(event.target.value)} className="min-h-[38vh] w-full resize-y rounded-xl border border-neutral-700 bg-black p-3 font-mono text-sm leading-6 text-cyan-50 outline-none focus:border-cyan-600" placeholder="Enter HARMONICODE or source content…" spellCheck={false} aria-label="HHS source editor" />
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <button data-testid="pass185-new-file" type="button" onClick={newFile} disabled={Boolean(busyAction)} className="runtime-button min-h-10 px-3 text-sm">New File</button>
+                  <button data-testid="pass185-upload-source" type="button" onClick={() => uploadInputRef.current?.click()} disabled={Boolean(busyAction)} className="runtime-button min-h-10 px-3 text-sm">Upload source</button>
+                  <input
+                    ref={uploadInputRef}
+                    data-testid="pass185-upload-input"
+                    type="file"
+                    className="hidden"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      event.currentTarget.value = ""
+                      if (file) void loadUploadedSource(file).catch((reason) => setError(reason instanceof Error ? reason.message : String(reason)))
+                    }}
+                  />
+                </div>
+
+                <textarea data-testid="pass185-workbench-source-editor" value={sourceText} onChange={(event) => setSourceText(event.target.value)} className="min-h-[38vh] w-full resize-y rounded-xl border border-neutral-700 bg-black p-3 font-mono text-sm leading-6 text-cyan-50 outline-none focus:border-cyan-600" placeholder="Enter HARMONICODE or source content…" spellCheck={false} aria-label="HHS source editor" />
 
                 <div className="grid gap-2 sm:grid-cols-3">
-                  <button type="button" onClick={witnessSource} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Witness source</button>
-                  <button type="button" onClick={compile} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Compile artifact</button>
-                  <button type="button" onClick={createEmulator} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Create emulator</button>
+                  <button data-testid="pass185-workbench-save" type="button" onClick={witnessSource} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Witness source</button>
+                  <button data-testid="pass185-workbench-build" type="button" onClick={compile} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Compile artifact</button>
+                  <button data-testid="pass185-workbench-create-emulator" type="button" onClick={createEmulator} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Create emulator</button>
                 </div>
 
                 <div className="rounded-xl border border-neutral-800 bg-black/50 p-3">
@@ -466,16 +514,16 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
                   <StateField label="project" value={project ? "ready" : "not created"} ready={Boolean(project)} />
                   <StateField label="source" value={selectedObject ? "witnessed" : "local"} ready={Boolean(selectedObject)} />
-                  <StateField label="artifact" value={artifactId || "none"} ready={Boolean(artifactId)} />
-                  <StateField label="emulator" value={sessionId || "none"} ready={Boolean(sessionId)} />
+                  <StateField label="artifact" value={artifactId || "none"} ready={Boolean(artifactId)} testId="pass185-workbench-artifact-state" />
+                  <StateField label="emulator" value={sessionId || "none"} ready={Boolean(sessionId)} testId="pass185-workbench-emulator-state" />
                 </div>
 
                 {emulatorSession ? (
                   <div className="mt-3 rounded-xl border border-neutral-800 bg-black/50 p-3">
-                    <div className="flex items-center justify-between text-xs"><span>{text(emulatorSession.mode, "PAUSED")}</span><span>tick {String(emulatorSession.tick ?? 0)}</span></div>
+                    <div data-testid="pass185-workbench-emulator-progress" className="flex items-center justify-between text-xs"><span>{text(emulatorSession.mode, "PAUSED")}</span><span data-testid="pass185-workbench-emulator-tick">tick {String(emulatorSession.tick ?? 0)}</span></div>
                     <div className="mt-2 grid grid-cols-3 gap-1">
                       <button type="button" onClick={() => emulatorCommand("emulator.step")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Step</button>
-                      <button type="button" onClick={() => emulatorCommand("emulator.run")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Run 4</button>
+                      <button data-testid="pass185-workbench-run" type="button" onClick={() => emulatorCommand("emulator.run")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Run 4</button>
                       <button type="button" onClick={() => emulatorCommand("emulator.snapshot")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Snapshot</button>
                     </div>
                   </div>
@@ -489,7 +537,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 </div>
                 {lastResult ? (
                   <>
-                    <p className="mt-3 text-sm leading-6 text-neutral-200">{text(lastResult.summary, "Operation completed.")}</p>
+                    <p data-testid="pass185-last-result-summary" className="mt-3 text-sm leading-6 text-neutral-200">{text(lastResult.summary, "Operation completed.")}</p>
                     <details className="mt-3 rounded-lg border border-neutral-800 bg-black/50 p-2">
                       <summary className="cursor-pointer text-[10px] text-neutral-500">Technical evidence</summary>
                       <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[9px] text-neutral-400">{JSON.stringify(lastResult, null, 2)}</pre>
@@ -499,6 +547,18 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               </section>
             </aside>
           </div>
+        ) : null}
+
+        {tab === "application" ? (
+          <Pass185ApplicationLifecyclePanel />
+        ) : null}
+
+        {tab === "multimodal" ? (
+          <Pass185MultimodalLifecyclePanel
+            commandClient={commandClient}
+            projectId={projectId || null}
+            onAuthorityFeedback={(feedback) => applyFeedback(text(record(feedback.command).operation, "ingress.register"), feedback)}
+          />
         ) : null}
 
         {tab === "assistant" ? (
@@ -522,6 +582,14 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               </section>
             </aside>
           </div>
+        ) : null}
+
+        {tab === "jobs" ? (
+          <Pass185HydrationJobPanel />
+        ) : null}
+
+        {tab === "terminal" ? (
+          <Pass185TerminalPanel />
         ) : null}
 
         {tab === "receipts" ? (
@@ -554,8 +622,8 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   )
 }
 
-const StateField: React.FC<{ label: string; value: string; ready: boolean }> = ({ label, value, ready }) => (
-  <div className="rounded-lg border border-neutral-800 bg-black/50 p-2">
+const StateField: React.FC<{ label: string; value: string; ready: boolean; testId?: string }> = ({ label, value, ready, testId }) => (
+  <div data-testid={testId} className="rounded-lg border border-neutral-800 bg-black/50 p-2">
     <div className="text-neutral-600">{label}</div>
     <div className={`mt-1 truncate font-mono ${ready ? "text-emerald-300" : "text-neutral-500"}`} title={value}>{value}</div>
   </div>
