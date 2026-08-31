@@ -24,6 +24,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_legacy_isa_1_1.c'
       - 'tests/pass219/test_pass219_harmonic36_two_word_isa_1_2.c'
       - 'tests/pass219/test_pass219_harmonic36_control_io_isa_1_3.c'
+      - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c'
@@ -86,6 +87,15 @@ jobs:
             /tmp/h36/core.o \
             -o /tmp/h36/test-control-io
           /tmp/h36/test-control-io
+
+      - name: Arithmetic flag fidelity conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-arithmetic-flags
+          /tmp/h36/test-arithmetic-flags
 
       - name: Mandatory default binding conformance
         run: |
