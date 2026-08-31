@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 7U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 8U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -21,6 +21,8 @@ extern "C" {
 #define HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT 128U
 #define HHS_EXACT_PASS219_H36_PI_CHANNELS 7U
 #define HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY 256U
+#define HHS_EXACT_PASS219_H36_DEVICE_APR UINT8_C(0000)
+#define HHS_EXACT_PASS219_H36_DEVICE_PI UINT8_C(0004)
 #define HHS_EXACT_PASS219_H36_DEVICE_PTP UINT8_C(0100)
 #define HHS_EXACT_PASS219_H36_DEVICE_PTR UINT8_C(0104)
 #define HHS_EXACT_PASS219_H36_DEVICE_TTY UINT8_C(0120)
@@ -251,6 +253,28 @@ typedef struct HHSExactPass219H36VMStateV1 {
     uint8_t legacy_priority_request_mask;
     uint8_t legacy_priority_active_mask;
     uint8_t legacy_priority_active_channel;
+    uint8_t legacy_priority_system_on;
+    uint8_t legacy_priority_program_request_mask;
+    uint8_t legacy_priority_manual_request_mask;
+    uint8_t legacy_priority_external_request_mask;
+
+    uint8_t legacy_apr_channel;
+    uint8_t legacy_apr_overflow_interrupt_enable;
+    uint8_t legacy_apr_floating_overflow_interrupt_enable;
+    uint8_t legacy_apr_clock_interrupt_enable;
+    uint8_t legacy_apr_clock_flag;
+    uint8_t legacy_apr_nonexistent_memory;
+    uint8_t legacy_apr_memory_protection;
+    uint8_t legacy_apr_address_break;
+    uint8_t legacy_apr_trap_offset;
+    uint8_t legacy_power_failure;
+    uint8_t legacy_parity_error;
+    uint8_t legacy_parity_interrupt_enable;
+    uint8_t legacy_relocation8;
+    uint8_t legacy_protection8;
+    uint32_t legacy_apr_io_reset_count;
+    uint64_t legacy_console_data_switches36;
+    uint64_t legacy_pi_console_display36;
     uint8_t legacy_special_247_seen;
     uint8_t legacy_special_257_seen;
     uint8_t legacy_special_hardware_present;
@@ -314,6 +338,9 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_device_get(const HHSExactP
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enable_mask(HHSExactPass219H36VMStateV1 *state, uint8_t enabled_mask7);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_request(HHSExactPass219H36VMStateV1 *state, uint8_t channel1_7, uint32_t vector18);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enter(HHSExactPass219H36VMStateV1 *state, uint8_t *out_channel1_7);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_internal_interrupt_refresh(HHSExactPass219H36VMStateV1 *state);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_apr_status(const HHSExactPass219H36VMStateV1 *state, uint64_t *out_status36);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_pi_status(const HHSExactPass219H36VMStateV1 *state, uint64_t *out_status36);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_legacy_uuo_mode_set(HHSExactPass219H36VMStateV1 *state, uint8_t mode);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_tty_feed_input(HHSExactPass219H36VMStateV1 *state, const uint8_t *bytes, size_t count);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_tty_copy_output(const HHSExactPass219H36VMStateV1 *state, uint8_t *out_bytes, size_t capacity, size_t *out_count);
