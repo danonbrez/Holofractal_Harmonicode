@@ -9,18 +9,26 @@ static HHSExactStatus h36_memory_required(
     return HHS_EXACT_STATUS_OK;
 }
 
-static uint64_t h36_move_transform(uint16_t opcode, uint64_t value) {
+static uint64_t h36_move_transform(
+    HHSExactPass219H36VMStateV1 *state,
+    uint16_t opcode,
+    uint64_t value
+) {
     uint16_t family = (uint16_t)(opcode & UINT16_C(0774));
     uint64_t v = value & HHS_EXACT_PASS219_H36_WORD_MASK;
     if (family == UINT16_C(0204)) {
         return ((v & HHS_EXACT_PASS219_H36_HALF_MASK) << 18U) |
                ((v >> 18U) & HHS_EXACT_PASS219_H36_HALF_MASK);
     }
-    if (family == UINT16_C(0210))
+    if (family == UINT16_C(0210)) {
+        h36_legacy_negate_flags(state, v, 0);
         return h36_wrap_i64(-h36_signed(v));
+    }
     if (family == UINT16_C(0214)) {
-        int64_t s = h36_signed(v);
-        return h36_wrap_i64(s < 0 ? -s : s);
+        int64_t signed_value = h36_signed(v);
+        h36_legacy_negate_flags(state, v, 1);
+        return h36_wrap_i64(
+            signed_value < 0 ? -signed_value : signed_value);
     }
     return v;
 }
@@ -163,7 +171,7 @@ static HHSExactStatus h36_execute(
             if (status != HHS_EXACT_STATUS_OK) return status;
             input = state->memory[e];
         }
-        result = h36_move_transform(op, input);
+        result = h36_move_transform(state, op, input);
 
         if (mode == 0U || mode == 1U)
             state->accumulators[ac] = result;
@@ -209,17 +217,28 @@ static HHSExactStatus h36_execute(
             if (status != HHS_EXACT_STATUS_OK) return status;
             operand = state->memory[e];
         }
-        result = subtract
-            ? h36_signed(state->accumulators[ac]) - h36_signed(operand)
-            : h36_signed(state->accumulators[ac]) + h36_signed(operand);
+        {
+            uint64_t lhs = state->accumulators[ac] &
+                           HHS_EXACT_PASS219_H36_WORD_MASK;
+            uint64_t result_word;
+            result = subtract
+                ? h36_signed(lhs) - h36_signed(operand)
+                : h36_signed(lhs) + h36_signed(operand);
+            result_word = h36_wrap_i64(result);
 
-        if (mode == 0U || mode == 1U)
-            state->accumulators[ac] = h36_wrap_i64(result);
-        else if (mode == 2U)
-            state->memory[e] = h36_wrap_i64(result);
-        else {
-            state->accumulators[ac] = h36_wrap_i64(result);
-            state->memory[e] = h36_wrap_i64(result);
+            if (subtract)
+                h36_legacy_sub_flags(state, lhs, operand, result_word);
+            else
+                h36_legacy_add_flags(state, lhs, operand, result_word);
+
+            if (mode == 0U || mode == 1U)
+                state->accumulators[ac] = result_word;
+            else if (mode == 2U)
+                state->memory[e] = result_word;
+            else {
+                state->accumulators[ac] = result_word;
+                state->memory[e] = result_word;
+            }
         }
         return HHS_EXACT_STATUS_OK;
     }
@@ -263,6 +282,12 @@ static HHSExactStatus h36_execute(
                 family == UINT16_C(0340) ? INT64_C(1) : -INT64_C(1);
             value = h36_signed(state->accumulators[ac]) + delta;
             state->accumulators[ac] = h36_wrap_i64(value);
+            if (delta > 0)
+                h36_legacy_increment_flags(
+                    state, state->accumulators[ac]);
+            else
+                h36_legacy_decrement_flags(
+                    state, state->accumulators[ac]);
             if (h36_condition(condition, value, 0))
                 state->pc18 = e;
             return HHS_EXACT_STATUS_OK;
@@ -275,6 +300,10 @@ static HHSExactStatus h36_execute(
             value = h36_signed(state->memory[e]) + delta;
             state->memory[e] = h36_wrap_i64(value);
             state->accumulators[ac] = h36_wrap_i64(value);
+            if (delta > 0)
+                h36_legacy_increment_flags(state, state->memory[e]);
+            else
+                h36_legacy_decrement_flags(state, state->memory[e]);
             if (h36_condition(condition, value, 0))
                 state->pc18 = (state->pc18 + 1U) & UINT32_C(0x3FFFF);
             return HHS_EXACT_STATUS_OK;
