@@ -13,7 +13,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_CGPU_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_CGPU_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_CGPU_VERSION_PATCH 0U
+#define HHS_EXACT_PASS219_H36_CGPU_VERSION_PATCH 1U
 
 #define HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES 5184U
 #define HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT 36U
@@ -105,6 +105,13 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_hfc_snapshot_encode(
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_hfc_snapshot_reconstruct(
+    const uint8_t *snapshots,
+    size_t snapshot_bytes,
+    const uint8_t available[HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT],
+    uint8_t out_register[HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES]
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_hfc_snapshot_reconstruct_blocks(
     const uint8_t *snapshots,
     size_t snapshot_bytes,
     const uint8_t available[HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT],
