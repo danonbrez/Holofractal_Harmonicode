@@ -1,11 +1,17 @@
 static uint64_t h36_reverse36(uint64_t value) {
-    uint64_t in = value & HHS_EXACT_PASS219_H36_WORD_MASK;
-    uint64_t out = 0U;
-    uint32_t i;
-    for (i = 0U; i < HHS_EXACT_PASS219_H36_WORD_BITS; ++i) {
-        out |= ((in >> i) & UINT64_C(1)) << (35U - i);
-    }
-    return out;
+    uint64_t x = value & HHS_EXACT_PASS219_H36_WORD_MASK;
+    x = ((x & UINT64_C(0x5555555555555555)) << 1U) |
+        ((x >> 1U) & UINT64_C(0x5555555555555555));
+    x = ((x & UINT64_C(0x3333333333333333)) << 2U) |
+        ((x >> 2U) & UINT64_C(0x3333333333333333));
+    x = ((x & UINT64_C(0x0F0F0F0F0F0F0F0F)) << 4U) |
+        ((x >> 4U) & UINT64_C(0x0F0F0F0F0F0F0F0F));
+    x = ((x & UINT64_C(0x00FF00FF00FF00FF)) << 8U) |
+        ((x >> 8U) & UINT64_C(0x00FF00FF00FF00FF));
+    x = ((x & UINT64_C(0x0000FFFF0000FFFF)) << 16U) |
+        ((x >> 16U) & UINT64_C(0x0000FFFF0000FFFF));
+    x = (x << 32U) | (x >> 32U);
+    return (x >> 28U) & HHS_EXACT_PASS219_H36_WORD_MASK;
 }
 
 static uint32_t h36_distance12(uint8_t a, uint8_t b) {
