@@ -1,0 +1,59 @@
+name: Build Golden Invariant LaTeX PDF
+
+on:
+  push:
+    branches:
+      - agent/golden-invariant-latex-pdf
+    paths:
+      - 'docs/research/manuscripts/companion/novel/latex/**'
+      - '.github/workflows/golden-invariant-latex.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: pandoc/latex:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build standalone LaTeX source
+        working-directory: docs/research/manuscripts/companion/novel/latex
+        run: |
+          pandoc THE_GOLDEN_INVARIANT_COMPLETE.md \
+            --from=markdown+raw_tex+tex_math_dollars \
+            --standalone \
+            --top-level-division=chapter \
+            --shift-heading-level-by=-2 \
+            --toc \
+            --metadata-file=golden_invariant_metadata.yaml \
+            --include-in-header=golden_invariant_header.tex \
+            --pdf-engine=xelatex \
+            -o THE_GOLDEN_INVARIANT_COMPLETE_MANUSCRIPT.tex
+
+      - name: Build PDF
+        working-directory: docs/research/manuscripts/companion/novel/latex
+        run: |
+          pandoc THE_GOLDEN_INVARIANT_COMPLETE.md \
+            --from=markdown+raw_tex+tex_math_dollars \
+            --standalone \
+            --top-level-division=chapter \
+            --shift-heading-level-by=-2 \
+            --toc \
+            --metadata-file=golden_invariant_metadata.yaml \
+            --include-in-header=golden_invariant_header.tex \
+            --pdf-engine=xelatex \
+            -o THE_GOLDEN_INVARIANT_COMPLETE_MANUSCRIPT.pdf
+
+      - name: Upload manuscript
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-invariant-latex-manuscript
+          path: |
+            docs/research/manuscripts/companion/novel/latex/THE_GOLDEN_INVARIANT_COMPLETE_MANUSCRIPT.pdf
+            docs/research/manuscripts/companion/novel/latex/THE_GOLDEN_INVARIANT_COMPLETE_MANUSCRIPT.tex
+          if-no-files-found: error
+          retention-days: 30
