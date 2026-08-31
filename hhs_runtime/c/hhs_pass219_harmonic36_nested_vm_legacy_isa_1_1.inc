@@ -520,27 +520,12 @@ static int h36_execute_legacy_extended(
         *out_status = h36_execute_imul_idiv(state, ins, e);
         return 1;
     }
-    if (op >= UINT16_C(0224) && op <= UINT16_C(0227)) {
-        state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-        *out_status = HHS_EXACT_STATUS_INVARIANT_FAILURE;
-        return 1;
-    }
     if (op >= UINT16_C(0230) && op <= UINT16_C(0233)) {
         *out_status = h36_execute_imul_idiv(state, ins, e);
         return 1;
     }
-    if (op >= UINT16_C(0234) && op <= UINT16_C(0237)) {
-        state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-        *out_status = HHS_EXACT_STATUS_INVARIANT_FAILURE;
-        return 1;
-    }
     if (op >= UINT16_C(0240) && op <= UINT16_C(0243)) {
         *out_status = h36_execute_shift_jffo(state, ins, e);
-        return 1;
-    }
-    if (op >= UINT16_C(0244) && op <= UINT16_C(0246)) {
-        state->trap = HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE;
-        *out_status = HHS_EXACT_STATUS_INVARIANT_FAILURE;
         return 1;
     }
     if (op >= UINT16_C(0500) && op <= UINT16_C(0577)) {
