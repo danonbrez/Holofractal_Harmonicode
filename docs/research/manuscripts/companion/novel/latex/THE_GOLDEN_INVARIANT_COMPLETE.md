@@ -7,7 +7,8 @@ This edition compiles the complete three-book manuscript of \emph{The Golden Inv
 
 \mainmatter
 
-\part{BOOK I — THE WORLD ON TELEVISION}
+\part*{BOOK I — THE WORLD ON TELEVISION}
+\addcontentsline{toc}{part}{BOOK I — THE WORLD ON TELEVISION}
 
 ### Chapter One — Sirens
 
@@ -13220,7 +13221,8 @@ The network kept sending messages into the dark.
 
 Julian let them wait.
 
-\part{BOOK II — THE WORLD IN THE FEED}
+\part*{BOOK II — THE WORLD IN THE FEED}
+\addcontentsline{toc}{part}{BOOK II — THE WORLD IN THE FEED}
 
 ### Chapter Thirteen — Always On
 
@@ -28503,7 +28505,8 @@ That was not failure.
 
 It was a valid terminal condition until new evidence arrived.
 
-\part{BOOK III — THE WORLD THAT ANSWERS BACK}
+\part*{BOOK III — THE WORLD THAT ANSWERS BACK}
+\addcontentsline{toc}{part}{BOOK III — THE WORLD THAT ANSWERS BACK}
 
 ### Chapter Twenty-Five — The Great Indoors
 
