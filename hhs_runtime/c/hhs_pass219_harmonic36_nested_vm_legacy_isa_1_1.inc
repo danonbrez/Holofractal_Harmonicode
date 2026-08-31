@@ -7,6 +7,120 @@
  * implemented explicitly.
  */
 
+static void h36_legacy_add_flags(
+    HHSExactPass219H36VMStateV1 *state,
+    uint64_t a,
+    uint64_t b,
+    uint64_t result
+) {
+    uint64_t sign = UINT64_C(1) << 35U;
+    a &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    b &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    result &= HHS_EXACT_PASS219_H36_WORD_MASK;
+
+    if ((a & sign) != 0U && (b & sign) != 0U) {
+        if ((result & sign) != 0U) {
+            state->legacy_carry0 = 1U;
+            state->legacy_carry1 = 1U;
+        } else {
+            state->legacy_carry0 = 1U;
+            state->legacy_overflow = 1U;
+        }
+        return;
+    }
+    if ((a & sign) == 0U && (b & sign) == 0U) {
+        if ((result & sign) != 0U) {
+            state->legacy_carry1 = 1U;
+            state->legacy_overflow = 1U;
+        }
+        return;
+    }
+    if ((result & sign) == 0U) {
+        state->legacy_carry0 = 1U;
+        state->legacy_carry1 = 1U;
+    }
+}
+
+static void h36_legacy_sub_flags(
+    HHSExactPass219H36VMStateV1 *state,
+    uint64_t a,
+    uint64_t b,
+    uint64_t result
+) {
+    uint64_t sign = UINT64_C(1) << 35U;
+    a &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    b &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    result &= HHS_EXACT_PASS219_H36_WORD_MASK;
+
+    if ((a & sign) != 0U && (b & sign) == 0U) {
+        if ((result & sign) != 0U) {
+            state->legacy_carry0 = 1U;
+            state->legacy_carry1 = 1U;
+        } else {
+            state->legacy_carry0 = 1U;
+            state->legacy_overflow = 1U;
+        }
+        return;
+    }
+    if ((a & sign) == 0U && (b & sign) != 0U) {
+        if ((result & sign) != 0U) {
+            state->legacy_carry1 = 1U;
+            state->legacy_overflow = 1U;
+        }
+        return;
+    }
+    if ((result & sign) == 0U) {
+        state->legacy_carry0 = 1U;
+        state->legacy_carry1 = 1U;
+    }
+}
+
+static void h36_legacy_increment_flags(
+    HHSExactPass219H36VMStateV1 *state,
+    uint64_t result
+) {
+    const uint64_t max_negative = UINT64_C(1) << 35U;
+    result &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    if (result == 0U) {
+        state->legacy_carry0 = 1U;
+        state->legacy_carry1 = 1U;
+    } else if (result == max_negative) {
+        state->legacy_carry1 = 1U;
+        state->legacy_overflow = 1U;
+    }
+}
+
+static void h36_legacy_decrement_flags(
+    HHSExactPass219H36VMStateV1 *state,
+    uint64_t result
+) {
+    const uint64_t max_positive = (UINT64_C(1) << 35U) - UINT64_C(1);
+    result &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    if (result == max_positive) {
+        state->legacy_carry0 = 1U;
+        state->legacy_overflow = 1U;
+    } else if (result != HHS_EXACT_PASS219_H36_WORD_MASK) {
+        state->legacy_carry0 = 1U;
+        state->legacy_carry1 = 1U;
+    }
+}
+
+static void h36_legacy_negate_flags(
+    HHSExactPass219H36VMStateV1 *state,
+    uint64_t source,
+    int magnitude_only
+) {
+    const uint64_t max_negative = UINT64_C(1) << 35U;
+    source &= HHS_EXACT_PASS219_H36_WORD_MASK;
+    if (source == max_negative) {
+        state->legacy_carry1 = 1U;
+        state->legacy_overflow = 1U;
+    } else if (magnitude_only == 0 && source == 0U) {
+        state->legacy_carry0 = 1U;
+        state->legacy_carry1 = 1U;
+    }
+}
+
 static HHSExactStatus h36_legacy_memory_required(
     HHSExactPass219H36VMStateV1 *state,
     uint32_t address
