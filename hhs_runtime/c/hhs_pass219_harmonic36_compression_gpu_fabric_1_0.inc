@@ -301,7 +301,7 @@ HHSExactStatus hhs_exact_pass219_h36_compression_verify(
          ++erasure) {
         memset(available, 1, sizeof(available));
         available[erasure] = 0U;
-        status = hhs_exact_pass219_h36_hfc_snapshot_reconstruct(
+        status = hhs_exact_pass219_h36_hfc_snapshot_reconstruct_blocks(
             snapshots, sizeof(snapshots), available, reconstructed_register);
         if (status != HHS_EXACT_STATUS_OK ||
             memcmp(register_bytes, reconstructed_register,
