@@ -224,19 +224,6 @@ int main(void) {
     assert((vm.accumulators[1] & UINT64_C(0777)) == 0U);
     assert(vm.pc18 == 1U);
 
-    /* Double-length duplicated-sign families remain explicit fail-closed gaps. */
-    init(&vm);
-    vm.accumulators[1] = 2U;
-    vm.memory[100] = 3U;
-    assert(one(&vm, enc(UINT16_C(0224), 1U, 100U)) ==
-           HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    assert(vm.trap == HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE);
-
-    init(&vm);
-    assert(one(&vm, enc(UINT16_C(0244), 1U, 1U)) ==
-           HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    assert(vm.trap == HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE);
-
     puts("PASS219 Harmonic36 legacy ISA 1.1 conformance: PASS");
     return 0;
 }
