@@ -60,6 +60,22 @@
     "RNA_LOWERING_EXPOSURE",
     "GENESIS_LOSHU_SUDOKU_PRESERVATION",
     "STRICT_C11_CXX17_AGGREGATE_BUILD",
-    "NO_CANONICAL_FLOAT_AUTHORITY"
-  ]
+    "NO_CANONICAL_FLOAT_AUTHORITY",
+    "HASH216_REPEAT_AWARE_OCCURRENCE_FACTORIZATION",
+    "RNA_HYDRATION_AXIS_AND_VM81_ADDRESS_DISTINCT"
+  ],
+  "hash216_repeat_addressing": {
+    "repeat_allowed": true,
+    "no_repeat_core_recognized": true,
+    "occurrence_identity": [
+      "lane_role",
+      "lane_position72",
+      "symbol_index72"
+    ],
+    "native_hash72_coordinate": "lane_position72*72+symbol_index72",
+    "preserves_absolute_position216": true,
+    "preserves_sha256_vector_index_record": true,
+    "hydration_slot5184_is_distinct_from_vm81_cell_operation_address": true,
+    "independent_cache_authority": false
+  }
 }
