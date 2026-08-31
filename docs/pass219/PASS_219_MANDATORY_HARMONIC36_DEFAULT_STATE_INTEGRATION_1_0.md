@@ -354,3 +354,124 @@ The generic register bus implements processor-side PDP-10 transfer semantics. Pe
 
 Historical floating instruction regions remain deterministically rejected as noncanonical canonical-state arithmetic. MAP, machine-specific JRST variants, interrupt/user-mode privilege machinery and concrete peripheral models remain explicit bounded extension surfaces rather than silently approximated behavior.
 
+
+
+## 13. Compositional harmonic execution grammar
+
+The native harmonic basis remains exactly 64 operations. Compositional logic is implemented above that basis and does not alter `81×64=5184`.
+
+### 13.1 Exact composition state
+
+The runtime now represents:
+
+- tonic and key-center pitch classes;
+- mode;
+- rule64 identity;
+- inversion;
+- four ordered integer voice positions;
+- bass/soprano pitch classes;
+- secondary-function target;
+- target key center;
+- modal-interchange / altered-dominant / upper-structure / polychord / constant-structure / modulation / modal / symmetric context flags;
+- tendency-tone mask;
+- chord and scale masks;
+- rendered exact 36-bit harmonic word.
+
+Voicing is deterministic and root-relative using the rule registry's preferred bass/root identity. Scale state is transposed exactly with the tonic. No float tuning state is introduced.
+
+### 13.2 Transition grammar
+
+Composition transitions compute and preserve:
+
+- exact four-voice movement cost;
+- common tones;
+- semitone tendency resolutions;
+- contrary-motion pairs;
+- unresolved tendencies;
+- parallel perfect intervals;
+- grammar penalty;
+- functional/special relation classification;
+- cadence classification;
+- modulation observation.
+
+The relation vocabulary covers functional, secondary-function, modal interchange, augmented-sixth, Neapolitan, tritone substitution, backdoor, chromatic mediant, enharmonic reinterpretation, equal division, constant structure, modal, jazz chord-scale, upper-structure and symmetric relations.
+
+Cadence state includes perfect/imperfect authentic, half, deceptive, plagal, backdoor and modal forms.
+
+### 13.3 Hash216-bound candidate ranking
+
+A composition candidate wraps the existing Hash216 directional branch candidate. Source and target occurrence rule identities MUST equal the composition source/target rule64 identities.
+
+Ranking is exact and grammar-first:
+
+```text
+progression allowed
+-> unresolved tendencies
+-> parallel perfects
+-> exact grammar/voice-leading score
+-> stable candidate id
+```
+
+The candidate remains non-authoritative and must still pass singleton VM81 admission.
+
+### 13.4 Deterministic progression programs
+
+The program registry contains 16 bounded progression families over the fixed basis:
+
+1. diatonic authentic;
+2. diatonic deceptive;
+3. minor authentic;
+4. Neapolitan cadence;
+5. Italian augmented-sixth cadence;
+6. French augmented-sixth cadence;
+7. German augmented-sixth cadence;
+8. secondary-dominant chain;
+9. jazz ii–V–I;
+10. minor jazz iiø–Vb9–i;
+11. related-ii / tritone-substitution chain;
+12. backdoor cadence;
+13. altered-dominant chain;
+14. Coltrane three-tonic cycle;
+15. constant-structure cycle;
+16. four-tonic minor-third cycle.
+
+Each program is deterministically rebuilt from `template_id + root_tonic_pc12`. The full registry is tested across all 12 tonic positions, for 192 program builds and replay validations.
+
+Files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_composition_grammar_1_0.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_composition_grammar_1_0.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_composition_program_exec_1_1.inc`
+- `tests/pass219/test_pass219_harmonic36_composition_grammar_1_0.c`
+- `tests/pass219/test_pass219_harmonic36_composition_programs_1_1.c`
+
+### 13.5 Composition evidence in Pass 128
+
+Composition evidence is hashed separately and appended to the existing H36/Pass128 edge's `relation_evidence_roots`.
+
+The bridge preserves:
+
+- cadence;
+- inversion;
+- ordered voices;
+- voice-leading cost;
+- tendency-resolution evidence;
+- parallel-perfect evidence;
+- modulation state;
+- progression admissibility;
+- fixed operation64 identity.
+
+It creates no alternate graph store or graph execution authority.
+
+Guarded service:
+
+```text
+runtime.harmonic36_composition_graph_bridge.pass219
+```
+
+Files:
+
+- `hhs_runtime/hhs_pass219_harmonic36_composition_graph_bridge_v1.py`
+- `tests/pass219/test_pass219_harmonic36_composition_graph_bridge_v1.py`
+
