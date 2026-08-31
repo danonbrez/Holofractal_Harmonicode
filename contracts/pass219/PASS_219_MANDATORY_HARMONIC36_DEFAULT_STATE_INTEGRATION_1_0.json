@@ -62,7 +62,17 @@
     "STRICT_C11_CXX17_AGGREGATE_BUILD",
     "NO_CANONICAL_FLOAT_AUTHORITY",
     "HASH216_REPEAT_AWARE_OCCURRENCE_FACTORIZATION",
-    "RNA_HYDRATION_AXIS_AND_VM81_ADDRESS_DISTINCT"
+    "RNA_HYDRATION_AXIS_AND_VM81_ADDRESS_DISTINCT",
+    "PASS210_HFC_36_SINGLE_ERASURE_EXACT_RECOVERY",
+    "PASS207_208_H36_LOCALITY_EXACT_CPU_VM81_EQUALITY",
+    "HASH216_DIRECTIONAL_BRANCH_INTEGER_RANKING",
+    "PASS128_H36_KNOWLEDGE_GRAPH_BRIDGE",
+    "PDP10_BYTE_POINTER_ISA_CONFORMANCE",
+    "PDP10_TWO_WORD_FIXED_ARITHMETIC_CONFORMANCE",
+    "PDP10_HALFWORD_AND_TEST_FAMILY_CONFORMANCE",
+    "PDP10_CONTROL_PUSHDOWN_SUBROUTINE_CONFORMANCE",
+    "PDP10_LITERAL_IO_WORD_AND_GENERIC_BUS_CONFORMANCE",
+    "PDP10_STICKY_ARITHMETIC_FLAG_CONFORMANCE"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -77,5 +87,34 @@
     "preserves_sha256_vector_index_record": true,
     "hydration_slot5184_is_distinct_from_vm81_cell_operation_address": true,
     "independent_cache_authority": false
+  },
+  "implemented_bindings": {
+    "pass210_hfc_exact_reconstruction": true,
+    "fibonacci_descriptor_validation": true,
+    "all_36_single_snapshot_erasure_recovery": true,
+    "pass207_208_gpu_locality_binding": true,
+    "gpu_cpu_vm81_exact_equality_required": true,
+    "deterministic_hash216_branch_ranking": true,
+    "pass128_knowledge_graph_bridge": true,
+    "guarded_service_registry_exposure": true,
+    "byte_pointer_isa_133_137": true,
+    "imul_idiv_isa_220_233": true,
+    "two_word_mul_div_isa_224_237": true,
+    "shift_rotate_jffo_isa_240_246": true,
+    "blt_aobj_program_control": true,
+    "pushdown_subroutine_isa_260_267": true,
+    "halfword_isa_500_577": true,
+    "test_bit_isa_600_677": true,
+    "io_word_format_111_device7_function3_ixy": true,
+    "generic_io_functions_blki_blko_datai_datao_cono_coni_consz_conso": true,
+    "sticky_legacy_integer_flags": true
+  },
+  "explicit_extension_boundary": {
+    "canonical_floating_execution": false,
+    "nonzero_jrst_function_variants": false,
+    "map_instruction": false,
+    "priority_interrupt_and_user_privilege_machine": false,
+    "peripheral_specific_device_models": false,
+    "generic_processor_side_io_bus": true
   }
 }
