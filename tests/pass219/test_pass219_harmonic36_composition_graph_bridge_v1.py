@@ -105,7 +105,7 @@ def test_composition_root_is_edge_evidence():
     ]
     assert root in checked["h36_pass128_binding"][
         "pass128_edge"
-    ]["evidence_roots"]
+    ]["relation_evidence_roots"]
     assert checked["execution_authority"] is False
     assert checked["mutation_authority"] is False
 
