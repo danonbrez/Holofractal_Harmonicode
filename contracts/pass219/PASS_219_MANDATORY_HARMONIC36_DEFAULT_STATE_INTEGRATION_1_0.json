@@ -96,7 +96,16 @@
     "H36_KA10_RIM_DATAI_IOWD",
     "H36_KA10_RIM_REPEATED_BLKI",
     "H36_KA10_RIM_TERMINAL_XCT",
-    "H36_KA10_RIM_EXACT_REPLAY"
+    "H36_KA10_RIM_EXACT_REPLAY",
+    "H36_KA10_APR_DEVICE_000",
+    "H36_KA10_PI_DEVICE_004",
+    "H36_KA10_APR_PROCESSOR_CONDITIONS",
+    "H36_KA10_NO_DIVIDE_OVERFLOW_ROUTE",
+    "H36_KA10_APR_IO_RESET",
+    "H36_KA10_PI_PROGRAM_REQUESTS",
+    "H36_KA10_PI_HARDWARE_SOFTWARE_REQUEST_SEPARATION",
+    "H36_KA10_PI_GLOBAL_CHANNEL_CONTROL",
+    "H36_KA10_PI_STATUS_READBACK"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -171,7 +180,24 @@
     "ka10_rim_iowd_progression": true,
     "ka10_rim_terminal_xct": true,
     "ka10_rim_control_reset_witness": true,
-    "ka10_rim_exact_replay_receipt": true
+    "ka10_rim_exact_replay_receipt": true,
+    "ka10_apr_device_000": true,
+    "ka10_pi_device_004": true,
+    "ka10_apr_coni_cono": true,
+    "ka10_pi_coni_cono": true,
+    "ka10_apr_io_reset": true,
+    "ka10_apr_pushdown_overflow_interrupt": true,
+    "ka10_apr_overflow_interrupt_enable": true,
+    "ka10_apr_floating_overflow_interrupt_enable": true,
+    "ka10_apr_clock_interrupt_enable": true,
+    "ka10_no_divide_routes_via_overflow": true,
+    "ka10_pi_global_activate_deactivate": true,
+    "ka10_pi_channel_enable_disable": true,
+    "ka10_pi_program_request_force": true,
+    "ka10_pi_program_request_clear": true,
+    "ka10_pi_request_source_separation": true,
+    "ka10_pi_exact_status_readback": true,
+    "ka10_internal_interrupt_refresh": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -201,10 +227,10 @@
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33447267510,
-    "job": 99669050978,
-    "head": "c12420dc5c692a1e5f91808ce78f44745dd5e668",
-    "rim_1_7": "SUCCESS",
+    "run": 33451207962,
+    "job": 99681283046,
+    "head": "af9c3253f4844b186ea6ddea8c5d094625fe89e3",
+    "apr_pi_1_8": "SUCCESS",
     "external_followup_pending_at_checkpoint": true
   }
 }
