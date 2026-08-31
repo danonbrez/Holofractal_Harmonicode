@@ -53,6 +53,15 @@ static HHSExactStatus h36_execute(
     state->last_effective_address18 = e;
     state->last_opcode9 = op;
 
+    {
+        uint8_t legacy_uuo_class = HHS_EXACT_PASS219_H36_UUO_CLASS_NONE;
+        if (h36_ka10_should_dispatch_uuo(
+                state, op, &legacy_uuo_class)) {
+            return h36_ka10_uuo_dispatch(
+                state, ins, e, legacy_uuo_class, depth);
+        }
+    }
+
     if (op < UINT16_C(0100)) {
         if (op == UINT16_C(0001)) {
             uint64_t request = state->accumulators[ac];
