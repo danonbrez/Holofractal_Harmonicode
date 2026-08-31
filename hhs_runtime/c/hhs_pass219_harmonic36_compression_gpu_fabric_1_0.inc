@@ -206,6 +206,62 @@ HHSExactStatus hhs_exact_pass219_h36_hfc_snapshot_reconstruct(
     return HHS_EXACT_STATUS_OK;
 }
 
+HHSExactStatus hhs_exact_pass219_h36_hfc_snapshot_reconstruct_blocks(
+    const uint8_t *snapshots,
+    size_t snapshot_bytes,
+    const uint8_t available[HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT],
+    uint8_t out_register[HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES]
+) {
+    uint32_t block;
+    if (snapshots == NULL || available == NULL || out_register == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (snapshot_bytes < HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_BYTES)
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+
+    for (block = 0U;
+         block < HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT;
+         ++block) {
+        uint32_t source_snapshot;
+        uint32_t source_offset;
+        uint32_t byte_offset;
+
+        if (available[block] > 1U)
+            return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+        if (available[block] != 0U) {
+            source_snapshot = block;
+            source_offset = 0U;
+        } else {
+            uint32_t previous =
+                (block + HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT - 1U) %
+                HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT;
+            if (available[previous] > 1U)
+                return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+            if (available[previous] == 0U)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            source_snapshot = previous;
+            source_offset = HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_STRIDE;
+        }
+
+        for (byte_offset = 0U;
+             byte_offset < HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_STRIDE;
+             ++byte_offset) {
+            uint8_t value = snapshots[
+                source_snapshot * HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_WIDTH +
+                source_offset + byte_offset
+            ];
+            if (value > 1U)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            out_register[
+                block * HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_STRIDE +
+                byte_offset
+            ] = value;
+        }
+    }
+
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219_h36_compression_verify(
     const HHSExactVM81Frame *frame,
     const HHSExactPass219InheritedPass210BindingV1 *pass210,
