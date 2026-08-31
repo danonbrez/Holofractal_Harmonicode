@@ -15,3 +15,10 @@
 - merge performed: no
 - deployment performed: no
 - terminal Pass-184 completion claimed: false
+
+
+## Validation trigger
+
+Dedicated I142 workflow implementation head: `40dd51f6dbfdcc11f90d9484773d3fd1356f590d`.
+
+This documentation-only descendant exists solely to instantiate the dependency-scoped Pass-184/I142 workflow. It changes no runtime, ABI, authority, package, API, or GUI implementation.
