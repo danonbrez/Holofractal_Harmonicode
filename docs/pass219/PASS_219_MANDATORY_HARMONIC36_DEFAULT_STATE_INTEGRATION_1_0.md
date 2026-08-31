@@ -185,3 +185,172 @@ The runtime binding SHALL:
 - never use H36/vector metadata to bypass current VM81 admission or Hash72/Hash216 lineage.
 
 RNA hydration coordinates retain their separate hydration `slot5184` axis. The binding MUST NOT silently equate that slot with the VM81 `cell81×operation64` address. Both identities are preserved and witnessed.
+
+
+## 11. Implemented inherited optimization bindings
+
+The mandatory surfaces above are now executable bindings rather than forward declarations.
+
+### 11.1 Pass 210 / Fibonacci / HFC
+
+The Harmonic36 compression fabric expands one VM81 frame into the inherited 5,184-byte Boolean register, applies the inherited Pass 210 geometry exactly:
+
+```text
+register = 5184
+snapshots = 36
+snapshot width = 288
+snapshot stride = 144
+coverage = 2x
+```
+
+and proves:
+
+- direct VM81 Boolean expansion/contraction equality;
+- all 36 single-snapshot erasure recoveries;
+- exact reconstruction of the original 5,184-bit state;
+- inherited Fibonacci descriptor validation;
+- H36 hydration round-trip equality.
+
+Compression remains a representation/reconstruction circuit only and has zero canonical mutation, Hash72 or persistence authority.
+
+### 11.2 Pass 207/208 GPU candidate locality
+
+The H36 GPU fabric accepts an exact rectangular `word144 × bit36` locality window and enumerates the selected native 5,184 lanes through the existing factorization circuit.
+
+Every candidate must prove:
+
+```text
+GPU candidate frame == exact CPU/VM81 oracle frame
+```
+
+before it can leave candidate status.
+
+Physical completion order is explicitly noncanonical. Stable lane identity, Hash216 lineage and singleton VM81 admission remain mandatory.
+
+### 11.3 Hash216 branch ranking and Pass 128 knowledge graph
+
+H36 branch candidates now carry:
+
+- ordered Hash216 occurrence identity;
+- H36 harmonic source/target operator identity;
+- exact integer voice-leading cost;
+- common-tone and semitone-resolution witnesses;
+- phase distance;
+- native 5,184-address distance;
+- directional Hash216 position distance.
+
+Ranking is deterministic lexicographic integer ranking with candidate ID as the final stable tie-breaker.
+
+Knowledge evidence is projected into the existing Pass 128 canonical knowledge graph using only Pass 128-supported relation names and exact confidence fractions. No second graph store or graph mutation authority is created.
+
+The guarded service registry exposes:
+
+```text
+runtime.harmonic36_knowledge_graph_bridge.pass219
+```
+
+and the bridge remains non-executable and non-mutating at the graph layer.
+
+## 12. Native 36-bit execution frontier
+
+The nested executor now implements the following PDP-10/KA10-compatible integer/control surface in addition to the original MOVE, Boolean and conditional groups:
+
+### 12.1 Byte-pointer family
+
+```text
+133 IBP
+134 ILDB
+135 LDB
+136 IDPB
+137 DPB
+```
+
+including the literal `P/S/I/X/Y` byte-pointer representation, pointer increment across word boundaries and exact byte deposit/load behavior.
+
+### 12.2 Integer arithmetic and shifts
+
+Implemented:
+
+```text
+220-223 IMUL*
+224-227 MUL*
+230-233 IDIV*
+234-237 DIV*
+240 ASH
+241 ROT
+242 LSH
+243 JFFO
+244 ASHC
+245 ROTC
+246 LSHC
+```
+
+Two-word fixed arithmetic uses the historical 70 arithmetic bits with duplicated sign in the two 36-bit words; it is not flattened into ordinary 72-bit two's-complement arithmetic.
+
+The executor also maintains sticky legacy arithmetic flags for ADD/SUB, increment/decrement, MOVN/MOVM, multiply/divide and arithmetic shift behavior so JFCL and saved PC words observe real instruction-generated state.
+
+### 12.3 Full halfword and test families
+
+All opcodes:
+
+```text
+500-577 halfword transfer family
+600-677 test/modify/skip family
+```
+
+are executable with exact 18-bit halves. The earlier 16-bit truncation defect was detected by strict conformance and repaired.
+
+### 12.4 Program control and pushdown
+
+Implemented:
+
+```text
+251 BLT
+252 AOBJP
+253 AOBJN
+254 JRST 0,E
+255 JFCL
+256 XCT
+260 PUSHJ
+261 PUSH
+262 POP
+263 POPJ
+264 JSR
+265 JSP
+266 JSA
+267 JRA
+```
+
+Unsupported nonzero JRST function variants fail closed rather than silently behaving as plain JRST.
+
+Saved PC words use the historical left-half status-bit positions for arithmetic overflow, carry0, carry1, floating overflow and divide check.
+
+### 12.5 Hardware I/O word format and generic bus
+
+The runtime exposes the literal I/O instruction representation:
+
+```text
+111 | device7 | function3 | I | X | Y
+```
+
+and executes:
+
+```text
+BLKI
+BLKO
+DATAI
+DATAO
+CONO
+CONI
+CONSZ
+CONSO
+```
+
+against a bounded 128-device emulator-local status/data register surface.
+
+The generic register bus implements processor-side PDP-10 transfer semantics. Peripheral-specific electromechanical/device behavior is intentionally outside the H36 canonical state and must be supplied by a bounded device model; it is not invented by the CPU kernel.
+
+### 12.6 Explicit noncanonical/unsupported boundary
+
+Historical floating instruction regions remain deterministically rejected as noncanonical canonical-state arithmetic. MAP, machine-specific JRST variants, interrupt/user-mode privilege machinery and concrete peripheral models remain explicit bounded extension surfaces rather than silently approximated behavior.
+
