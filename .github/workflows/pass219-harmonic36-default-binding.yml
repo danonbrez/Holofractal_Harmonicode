@@ -1,4 +1,4 @@
-name: Pass 219 Harmonic36 Mandatory Default Binding
+name: Pass 219 Harmonic36 Nested VM
 
 on:
   push:
@@ -6,10 +6,14 @@ on:
       - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
     paths:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_default_binding_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
@@ -21,25 +25,39 @@ permissions:
   contents: read
 
 jobs:
-  mandatory-default-binding:
+  harmonic36-conformance:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
-      - name: Strict C11 binding compile and test
+      - name: Strict C11 kernel compile
         run: |
-          mkdir -p /tmp/h36-binding
-          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc \
-            -o /tmp/h36-binding/binding.o
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            tests/pass219/test_pass219_harmonic36_default_binding_1_0.c \
-            /tmp/h36-binding/binding.o \
-            -o /tmp/h36-binding/test
-          /tmp/h36-binding/test
+          mkdir -p /tmp/h36
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc             -o /tmp/h36/core.o
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc             -o /tmp/h36/binding.o
+
+      - name: Exact 5184 nested VM conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c             /tmp/h36/core.o             -o /tmp/h36/test-vm
+          /tmp/h36/test-vm
+
+      - name: Mandatory default binding conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_default_binding_1_0.c             /tmp/h36/binding.o             -o /tmp/h36/test-binding
+          /tmp/h36/test-binding
+
+      - name: C++17 RNA facade conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp             /tmp/h36/core.o             -o /tmp/h36/test-cpp
+          /tmp/h36/test-cpp
+
+      - name: No canonical floating implementation
+        run: |
+          if grep -nE '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp             hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc; then
+            echo "Canonical floating type detected in Harmonic36 kernel"
+            exit 1
+          fi
 
       - name: Prove mandatory integration contract
         run: |
@@ -50,7 +68,6 @@ jobs:
           contract = json.loads(Path(
               'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
           ).read_text())
-
           required = contract['mandatory_default_state_binding']
           assert required and all(required.values())
 
@@ -64,5 +81,6 @@ jobs:
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
           c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
           assert 'hhs_pass219_harmonic36_default_binding_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
           PY
