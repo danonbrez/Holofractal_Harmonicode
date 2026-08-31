@@ -27,6 +27,9 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_hash216_rna_binding_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_compression_gpu_fabric_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_branch_knowledge_fabric_1_0.c'
+      - 'hhs_runtime/hhs_pass219_harmonic36_knowledge_graph_bridge_v1.py'
+      - 'tests/pass219/test_pass219_harmonic36_knowledge_graph_bridge_v1.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
@@ -106,6 +109,18 @@ jobs:
             /tmp/h36/exact-abi.o \
             -o /tmp/h36/test-branch-knowledge
           /tmp/h36/test-branch-knowledge
+
+      - name: Canonical Pass128 graph bridge self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          from hhs_runtime.hhs_pass219_harmonic36_knowledge_graph_bridge_v1 import (
+              pass219_harmonic36_knowledge_graph_self_test,
+          )
+          result = pass219_harmonic36_knowledge_graph_self_test()
+          assert result["status"] == "PASS"
+          assert result["execution_authority"] is False
+          assert result["mutation_authority"] is False
+          PY
 
       - name: No canonical floating implementation
         run: |
