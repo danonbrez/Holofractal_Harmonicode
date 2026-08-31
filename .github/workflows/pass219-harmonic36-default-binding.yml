@@ -8,13 +8,16 @@ on:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_default_binding_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_factorization_fabric_1_0.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c'
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
@@ -52,6 +55,22 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp             /tmp/h36/core.o             -o /tmp/h36/test-cpp
           /tmp/h36/test-cpp
 
+      - name: Exact cumulative ABI compile
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36/exact-abi.o
+
+      - name: Exact factorization fabric conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-fabric
+          /tmp/h36/test-fabric
+
       - name: No canonical floating implementation
         run: |
           if grep -nE '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp             hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc; then
@@ -81,6 +100,8 @@ jobs:
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
           c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
           assert 'hhs_pass219_harmonic36_default_binding_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.h' in h
           assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
           PY
