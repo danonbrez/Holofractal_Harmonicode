@@ -80,11 +80,12 @@ int main(void) {
     assert(vm.legacy_overflow == 0U);
     assert(vm.legacy_carry0 == 1U);
 
-    /* Unsupported nonzero JRST function remains fail-closed. */
+    /* JRST selector 1 enters the historical user-mode state. */
     init(&vm);
     assert(one(&vm, enc(UINT16_C(0254), 1U, 5U)) ==
-           HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    assert(vm.trap == HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE);
+           HHS_EXACT_STATUS_OK);
+    assert(vm.pc18 == 5U);
+    assert(vm.legacy_user_mode == 1U);
 
     /* PUSH then POP round-trip through the pushdown pointer. */
     init(&vm);
