@@ -51,8 +51,8 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 186,
-    "binding_count": 35,
+    "wired_floor_pass": 184,
+    "binding_count": 37,
     "ordered_bindings": [
       "218",
       "217",
@@ -88,10 +88,17 @@
       "189",
       "188",
       "187",
-      "186"
+      "186",
+      "185",
+      "184"
     ],
     "pass200_variants_are_distinct_bindings": true,
-    "missing_numeric_pass_in_coverage_is_regression": true
+    "missing_numeric_pass_in_coverage_is_regression": true,
+    "i142_repair_forward": {
+      "iteration": 142,
+      "pass185": "CUMULATIVE_PRODUCTION_CLOSURE_EXPOSED",
+      "pass184": "PORTABLE_RUNTIME_AUTHORITY_BOUND"
+    }
   },
   "repair_forward": {
     "wired_but_stale": "REPAIR_FORWARD_REQUIRED",
