@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `6c92de9581c8d6f88d03f7ff3543a01ba7efdc01`
-- Branch head immediately before this checkpoint record: `c589801035c458fd4ea142fcafb70a53b1839611`
+- Validated implementation head: `59448cea603e6e195da59a89f1bda116dfb15661`
+- Branch head immediately before this checkpoint record: `5a90adaedd68434272d99c3218b9e11d6e86632b`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -249,6 +249,31 @@ Validated cases include:
 - JFCL observation and selected-flag clearing;
 - unrelated existing flags remain sticky.
 
+### 8. Compositional harmonic grammar
+
+Implemented and validated above the fixed operation64 basis:
+
+- exact tonic/key/mode/inversion/context state;
+- deterministic root-relative four-voice realization;
+- exact transposed scale state;
+- functional, Romantic chromatic, jazz/modern-jazz relation classification;
+- authentic/half/deceptive/plagal/backdoor/modal cadence classification;
+- tendency-resolution and parallel-perfect witnesses;
+- exact four-voice movement cost;
+- grammar-first deterministic candidate ranking;
+- Hash216 source/target occurrence binding;
+- Pass128 composition evidence-root projection;
+- 16 deterministic progression templates;
+- all 16 templates replayed in all 12 tonic positions.
+
+Validated composition run:
+
+- run `33436874435`
+- head `59448cea603e6e195da59a89f1bda116dfb15661`
+- conclusion **SUCCESS**
+
+The progression program gate in the same cumulative lineage validates 192 template/key builds and preserves rule IDs strictly inside `1..64`.
+
 ## Validation receipt
 
 Authoritative dependency-scoped code gate:
@@ -299,24 +324,18 @@ This checkpoint is intentionally not called final closure.
 
 ### Harmonic execution
 
-The 64 harmonic operators are the fixed operation64 basis. Full compositional Romantic/classical/jazz behavior still requires executable composition above that basis, including at minimum:
+The fixed 64-operation basis now has an executable compositional grammar, four-voice realization, cadence/modulation context, deterministic candidate ranking and a 16-template progression registry.
 
-- inversion and figured-bass state;
-- register/voicing state;
-- multi-voice voice-leading constraints;
-- tendency-tone resolution;
-- cadence grammar;
-- tonicization and secondary-function chains;
-- common-tone and enharmonic reinterpretation chains;
-- chromatic-mediant and equal-division modulation paths;
-- modal interchange context;
-- jazz chord-scale/altered-dominant context;
-- upper-structure/polychord context;
-- substitute-dominant and related-ii chains;
-- constant-structure motion;
-- deterministic progression grammar and repair-forward resolution.
+Remaining harmonic work is extension/coverage rather than absence of a composition engine:
 
-The basis MUST remain 64-wide for VM81 `81×64=5184`; compositional logic belongs above the basis rather than increasing the native operation cardinality.
+- additional inversion/figured-bass idioms beyond the current root-relative inversion model;
+- larger voice-count orchestration above the validated four-voice core;
+- species/counterpoint-specific rules;
+- deeper enharmonic spelling identity where equal-temperament pitch-class equality must retain notation/function distinctions;
+- learned/corpus-derived progression priors that remain subordinate to the exact grammar;
+- multimodal generalization of the composition metadata into notation/audio/control representations.
+
+The basis MUST remain 64-wide for VM81 `81×64=5184`.
 
 ### Legacy hardware execution
 
@@ -344,22 +363,22 @@ Still required before final integration:
 
 ## Exact next action
 
-Resume on this branch from the checkpoint commit and implement the **compositional harmonic execution grammar** above the fixed 64-operation basis.
+Resume from this checkpoint and implement the remaining **PDP-10 privilege / JRST / MAP compatibility membrane** without weakening HHS authority separation.
 
-The next module should preserve:
+Next bounded target:
 
 ```text
-64 native harmonic/phase operators
-+ exact composition state
-+ inversion/voicing/context relations
-+ deterministic progression transition
-+ Hash216 directional branch identity
-+ Pass128 evidence projection
-+ singleton VM81 admission
+nonzero JRST function decode
++ MAP compatibility semantics
++ user / user-I-O mode witnesses
++ priority-interrupt state and entry/return witness
++ interrupt-cycle I-O distinction
+-> emulator-local historical state only
+-> zero VM81/Hash72/persistence authority
 ```
 
-Then continue the remaining privilege/interrupt/JRST/MAP compatibility surface and measured optimization benchmarks.
+Then add measured H36 compression/cache/GPU benchmarks, retain only exact winners, and run one final dependency-scoped cumulative replay.
 
-Do not restart work already green in run `33413612502`. Rerun only impacted dependency-scoped gates and one final cumulative gate.
+Do not restart composition work already green in run `33436874435`. Rerun only impacted gates.
 
 Do not merge to `main` without explicit integration authorization.
