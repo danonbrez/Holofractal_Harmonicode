@@ -706,3 +706,129 @@ job = 99669050978
 head = c12420dc5c692a1e5f91808ce78f44745dd5e668
 KA10 RIM bootstrap 1.7 = SUCCESS
 ```
+
+
+## 18. KA10 APR/PI internal device programming
+
+The H36 KA10 profile now includes concrete internal-device programming for:
+
+```text
+APR = device 000
+PI  = device 004
+```
+
+These are not generic I/O-register placeholders. They expose the historical processor-condition and priority-interrupt control surfaces through the same KA10 I/O instruction decoder already used by the concrete TTY/PTR/PTP devices.
+
+### 18.1 APR processor conditions
+
+APR `CONO` implements the documented right-half control functions:
+
+- bits 33-35: processor PI-channel assignment;
+- bit 32: clear arithmetic Overflow;
+- bits 31/30: enable/disable arithmetic-Overflow interrupt;
+- bit 29: clear Floating Overflow;
+- bits 28/27: enable/disable Floating-Overflow interrupt;
+- bit 26: clear clock flag;
+- bits 25/24: enable/disable clock interrupt;
+- bit 23: clear nonexistent-memory flag;
+- bit 22: clear memory-protection flag;
+- bit 21: clear address-break flag;
+- bit 19: peripheral I/O reset pulse;
+- bit 18: clear pushdown-overflow flag.
+
+APR `CONI` returns exact processor status for the implemented state, including:
+
+- pushdown overflow;
+- user-I/O mode;
+- address break;
+- memory protection;
+- nonexistent memory;
+- clock flag/enable;
+- floating overflow/enable;
+- trap-offset witness;
+- arithmetic overflow/enable;
+- processor PI assignment.
+
+Contradictory enable/disable controls fail closed rather than inventing an ordering.
+
+### 18.2 No-Divide relation
+
+KA10 does not expose a separate divide-check interrupt-enable control in APR.
+
+A failed divide sets `No Divide` and arithmetic `Overflow`; therefore the existing APR arithmetic-overflow interrupt enable is the interrupt route.
+
+No alternate nonhistorical divide-enable bit is introduced.
+
+### 18.3 APR I/O reset
+
+APR bit 19 emits a peripheral I/O-reset pulse.
+
+The H36 implementation clears device control state for TTY/PTR/PTP and generic peripheral status/data while preserving mounted/produced media and leaving the PI system and processor-condition flags unaffected except for flags explicitly cleared in the same APR control word.
+
+The reset event is counted by `legacy_apr_io_reset_count` as an emulator-local replay witness.
+
+### 18.4 PI system programming
+
+PI `CONO` implements:
+
+- clear power-failure flag;
+- clear parity-error flag;
+- enable/disable parity-error interrupt;
+- clear selected software-generated requests;
+- reset the PI system;
+- initiate selected software interrupt requests;
+- enable selected channels;
+- disable selected channels;
+- deactivate PI globally;
+- activate PI globally.
+
+Channels are selected by bits 29-35 for levels 1-7.
+
+Program-generated requests are stored separately from external hardware/APR requests. This is required so a PI operation that clears a software request cannot erase an interrupt condition still asserted by TTY, PTR, PTP, or APR.
+
+A program request produced by PI bit 24 can be accepted even when its selected channel is disabled, while hardware/device requests remain gated by the enabled-channel mask.
+
+Global PI deactivation preserves pending requests but prevents priority entry until PI is activated again.
+
+### 18.5 PI status
+
+PI `CONI` exposes:
+
+- software request channels;
+- power-failure/parity conditions;
+- parity-interrupt enable;
+- channels with interrupts in progress;
+- global PI active state;
+- enabled channels.
+
+The same status drives `CONSZ` and `CONSO`.
+
+PI `DATAI` returns zero as documented for the KA10 programming surface. PI `DATAO` is retained as a bounded console-display witness only.
+
+### 18.6 Request refresh and authority
+
+After successful H36 instruction execution, internal interrupt conditions are deterministically refreshed.
+
+The refresh derives hardware requests from current device/APR conditions rather than treating the request mask as mutation authority.
+
+All APR/PI state remains emulator-local and has zero authority to:
+
+- commit VM81 mutation;
+- commit Hash72;
+- commit Hash216;
+- persist canonical state;
+- bypass VM81 admission.
+
+Files:
+
+- `hhs_runtime/c/hhs_pass219_harmonic36_ka10_apr_pi_1_8.inc`
+- `tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c`
+
+Functional validation at implementation head:
+
+```text
+run = 33451207962
+job = 99681283046
+head = af9c3253f4844b186ea6ddea8c5d094625fe89e3
+KA10 APR PI 1.8 = SUCCESS
+```
