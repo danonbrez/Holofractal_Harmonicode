@@ -182,6 +182,9 @@ static void h36_priv_priority_dismiss(
     uint8_t next = 0U;
     uint8_t i;
 
+    if (state->legacy_priority_system_on == 0U)
+        return;
+
     if (channel != 0U && channel <= HHS_EXACT_PASS219_H36_PI_CHANNELS) {
         uint8_t bit = (uint8_t)(1U << (channel - 1U));
         state->legacy_priority_active_mask =
@@ -209,7 +212,7 @@ HHSExactStatus hhs_exact_pass219_h36_priority_enable_mask(
     if ((enabled_mask7 & UINT8_C(0x80)) != 0U)
         return HHS_EXACT_STATUS_RANGE_ERROR;
     state->legacy_priority_enabled_mask = enabled_mask7;
-    return HHS_EXACT_STATUS_OK;
+    return hhs_exact_pass219_h36_internal_interrupt_refresh(state);
 }
 
 HHSExactStatus hhs_exact_pass219_h36_priority_request(
@@ -227,9 +230,9 @@ HHSExactStatus hhs_exact_pass219_h36_priority_request(
 
     bit = (uint8_t)(1U << (channel1_7 - 1U));
     state->legacy_priority_vector18[channel1_7 - 1U] = vector18;
-    state->legacy_priority_request_mask =
-        (uint8_t)(state->legacy_priority_request_mask | bit);
-    return HHS_EXACT_STATUS_OK;
+    state->legacy_priority_manual_request_mask =
+        (uint8_t)(state->legacy_priority_manual_request_mask | bit);
+    return hhs_exact_pass219_h36_internal_interrupt_refresh(state);
 }
 
 HHSExactStatus hhs_exact_pass219_h36_priority_enter(
@@ -244,11 +247,21 @@ HHSExactStatus hhs_exact_pass219_h36_priority_enter(
     if (state == NULL || out_channel1_7 == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
 
+    if (hhs_exact_pass219_h36_internal_interrupt_refresh(state) !=
+        HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    if (state->legacy_priority_system_on == 0U) {
+        *out_channel1_7 = 0U;
+        return HHS_EXACT_STATUS_OK;
+    }
+
     pending = (uint8_t)(
-        state->legacy_priority_request_mask &
-        state->legacy_priority_enabled_mask &
-        UINT8_C(0x7F)
+        (state->legacy_priority_external_request_mask &
+         state->legacy_priority_enabled_mask) |
+        state->legacy_priority_program_request_mask
     );
+    pending &= UINT8_C(0x7F);
     current = state->legacy_priority_active_channel;
 
     for (i = 1U; i <= HHS_EXACT_PASS219_H36_PI_CHANNELS; ++i) {
@@ -269,6 +282,10 @@ HHSExactStatus hhs_exact_pass219_h36_priority_enter(
         uint8_t bit = (uint8_t)(1U << (chosen - 1U));
         state->legacy_priority_saved_pc_word[chosen - 1U] =
             h36_priv_pc_word(state);
+        state->legacy_priority_manual_request_mask =
+            (uint8_t)(state->legacy_priority_manual_request_mask & ~bit);
+        state->legacy_priority_program_request_mask =
+            (uint8_t)(state->legacy_priority_program_request_mask & ~bit);
         state->legacy_priority_request_mask =
             (uint8_t)(state->legacy_priority_request_mask & ~bit);
         state->legacy_priority_active_mask =
@@ -279,6 +296,7 @@ HHSExactStatus hhs_exact_pass219_h36_priority_enter(
         state->legacy_user_io = 0U;
         state->pc18 = state->legacy_priority_vector18[chosen - 1U];
     }
+    (void)hhs_exact_pass219_h36_internal_interrupt_refresh(state);
     return HHS_EXACT_STATUS_OK;
 }
 
