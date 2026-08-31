@@ -304,6 +304,16 @@ static HHSExactStatus h36_execute_io(
     if (state->legacy_user_mode != 0U &&
         state->legacy_user_io == 0U) {
         state->legacy_user_io_trap = 1U;
+        if (state->legacy_uuo_mode ==
+            HHS_EXACT_PASS219_H36_UUO_MODE_KA10_HISTORICAL) {
+            return h36_ka10_uuo_dispatch(
+                state,
+                ins,
+                e,
+                HHS_EXACT_PASS219_H36_UUO_CLASS_IO_RESTRICTION,
+                0U
+            );
+        }
         state->trap = HHS_EXACT_PASS219_H36_TRAP_LEGACY_PRIVILEGE;
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
