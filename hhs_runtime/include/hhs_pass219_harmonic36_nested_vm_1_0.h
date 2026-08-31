@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 5U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 6U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -20,6 +20,10 @@ extern "C" {
 #define HHS_EXACT_PASS219_H36_RULE_COUNT 64U
 #define HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT 128U
 #define HHS_EXACT_PASS219_H36_PI_CHANNELS 7U
+#define HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY 256U
+#define HHS_EXACT_PASS219_H36_DEVICE_PTP UINT8_C(0100)
+#define HHS_EXACT_PASS219_H36_DEVICE_PTR UINT8_C(0104)
+#define HHS_EXACT_PASS219_H36_DEVICE_TTY UINT8_C(0120)
 #define HHS_EXACT_PASS219_H36_WORD_MASK UINT64_C(0xFFFFFFFFF)
 #define HHS_EXACT_PASS219_H36_HALF_MASK UINT64_C(0x3FFFF)
 
@@ -236,6 +240,40 @@ typedef struct HHSExactPass219H36VMStateV1 {
     uint64_t legacy_priority_saved_pc_word[
         HHS_EXACT_PASS219_H36_PI_CHANNELS
     ];
+
+    uint8_t tty_input_queue[HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY];
+    uint8_t tty_output_queue[HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY];
+    uint16_t tty_input_head;
+    uint16_t tty_input_count;
+    uint16_t tty_output_count;
+    uint8_t tty_input_buffer;
+    uint8_t tty_output_buffer;
+    uint8_t tty_test;
+    uint8_t tty_input_busy;
+    uint8_t tty_input_done;
+    uint8_t tty_output_busy;
+    uint8_t tty_output_done;
+    uint8_t tty_pi_channel;
+
+    uint8_t ptr_tape[HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY];
+    uint16_t ptr_tape_position;
+    uint16_t ptr_tape_count;
+    uint64_t ptr_buffer36;
+    uint8_t ptr_binary;
+    uint8_t ptr_busy;
+    uint8_t ptr_done;
+    uint8_t ptr_tape_present;
+    uint8_t ptr_pi_channel;
+
+    uint8_t ptp_tape[HHS_EXACT_PASS219_H36_DEVICE_BUFFER_CAPACITY];
+    uint16_t ptp_tape_count;
+    uint8_t ptp_buffer8;
+    uint8_t ptp_binary;
+    uint8_t ptp_busy;
+    uint8_t ptp_done;
+    uint8_t ptp_no_tape;
+    uint8_t ptp_pi_channel;
+
     uint64_t io_status[HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT];
     uint64_t io_data[HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT];
 } HHSExactPass219H36VMStateV1;
@@ -253,6 +291,11 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enable_mask(HHSExact
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_request(HHSExactPass219H36VMStateV1 *state, uint8_t channel1_7, uint32_t vector18);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enter(HHSExactPass219H36VMStateV1 *state, uint8_t *out_channel1_7);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_legacy_uuo_mode_set(HHSExactPass219H36VMStateV1 *state, uint8_t mode);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_tty_feed_input(HHSExactPass219H36VMStateV1 *state, const uint8_t *bytes, size_t count);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_tty_copy_output(const HHSExactPass219H36VMStateV1 *state, uint8_t *out_bytes, size_t capacity, size_t *out_count);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_ptr_load_tape(HHSExactPass219H36VMStateV1 *state, const uint8_t *frames, size_t count);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_ptp_copy_tape(const HHSExactPass219H36VMStateV1 *state, uint8_t *out_frames, size_t capacity, size_t *out_count);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_devices_step(HHSExactPass219H36VMStateV1 *state);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_import_vm81(const HHSExactVM81Frame *frame, HHSExactPass219H36VMStateV1 *state);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_export_vm81(const HHSExactPass219H36VMStateV1 *state, HHSExactVM81Frame *frame);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_equal_temperament_seed(HHSExactPass219H36VMStateV1 *state);
