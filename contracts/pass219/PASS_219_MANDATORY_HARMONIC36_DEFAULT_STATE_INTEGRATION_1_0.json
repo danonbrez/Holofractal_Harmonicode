@@ -91,7 +91,12 @@
     "H36_KA10_PTP_CONCRETE_DEVICE",
     "H36_KA10_DEVICE_BUSY_DONE_OBSERVABLE",
     "H36_KA10_DEVICE_PI_INTEGRATION",
-    "H36_KA10_DEVICE_REPLAYABLE_BUFFERS"
+    "H36_KA10_DEVICE_REPLAYABLE_BUFFERS",
+    "H36_KA10_RIM_RESET_WITNESS",
+    "H36_KA10_RIM_DATAI_IOWD",
+    "H36_KA10_RIM_REPEATED_BLKI",
+    "H36_KA10_RIM_TERMINAL_XCT",
+    "H36_KA10_RIM_EXACT_REPLAY"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -158,7 +163,15 @@
     "ptr_binary_six_frame_36bit_assembly": true,
     "ptp_binary_channel8_channel7_rules": true,
     "concrete_device_priority_interrupt_requests": true,
-    "concrete_device_block_data_condition_io": true
+    "concrete_device_block_data_condition_io": true,
+    "ka10_hardware_read_in_mode": true,
+    "ka10_rim_ptr_0104": true,
+    "ka10_rim_datai_first_word": true,
+    "ka10_rim_repeated_blki": true,
+    "ka10_rim_iowd_progression": true,
+    "ka10_rim_terminal_xct": true,
+    "ka10_rim_control_reset_witness": true,
+    "ka10_rim_exact_replay_receipt": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -186,5 +199,12 @@
     "job": 99666331302,
     "head": "9b22ae93b7f653d20a911b13b8ad941db32e9dc8",
     "conclusion": "SUCCESS"
+  },
+  "latest_functional_validation": {
+    "run": 33447267510,
+    "job": 99669050978,
+    "head": "c12420dc5c692a1e5f91808ce78f44745dd5e668",
+    "rim_1_7": "SUCCESS",
+    "external_followup_pending_at_checkpoint": true
   }
 }
