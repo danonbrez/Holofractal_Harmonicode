@@ -475,3 +475,24 @@ Documentation:
 ### Next bounded action
 
 Establish the explicit safe integration boundary against this or a later authoritative-main identity. If main advances again before integration, rerun this drift reconciliation first. After integration, run combined-composition validation before authoritative-main closure or external deployment replay.
+
+
+## SYNTHETIC INTEGRATION PREFLIGHT IMPLEMENTATION CHECKPOINT
+
+A non-destructive combined-composition preflight has been added for authoritative main `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`.
+
+The preflight uses a detached local merge tree/commit only. It does not update `main`, the Pass-185 branch ref, or any other remote ref during validation.
+
+Required green result:
+
+`HHS_PASS_185_I141_SYNTHETIC_CURRENT_MAIN_COMBINED_COMPOSITION_VERIFIED`
+
+The gate revalidates current main's exact ABI, Hash72 delegation, global canonical defaults, multimodal optimization generalization, singleton authority boundaries, and the complete cumulative Pass-185 exact-production browser closure in one synthetic tree.
+
+Workflow:
+`.github/workflows/pass219-i141-pass185-synthetic-integration-preflight.yml`
+
+Documentation:
+`docs/pass185/HHS_PASS_185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT.md`
+
+If main moves from `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191` before the run executes, fail closed and rerun drift reconciliation rather than testing stale main.
