@@ -39733,19 +39733,19 @@ She refused.
 
 The Ark team eventually encoded this as a general rule:
 
-$
+$$
 \text{contradiction}
 \rightarrow
 \text{branch}
-$
+$$
 
 not:
 
-$
+$$
 \text{contradiction}
 \rightarrow
 \text{forced scalar}
-$
+$$
 
 Each branch kept provenance.
 
@@ -40655,11 +40655,11 @@ A record was not fully auditable if nobody could say who could physically stop e
 
 This became a new invariant:
 
-$
+$$
 \text{logical revocation}
 \neq
 \text{physical revocation}
-$
+$$
 
 The off-planet project continued.
 
@@ -41177,11 +41177,11 @@ External information → integrity screen → routing priority → reviewer.
 
 Corrective evidence could not reach human before passing the mechanism it challenged.
 
-$
+$$
 \mathcal M_H(I_{\mathrm{repair}})
 =
 \operatorname{reject}
-$
+$$
 
 or effectively delay.
 
@@ -42115,27 +42115,27 @@ refuse to certify a state whose own declared constraints failed closure.
 
 Mira wrote on whiteboard:
 
-$
+$$
 \Delta e=0
-$
+$$
 
 No unaccounted transition in declared model.
 
-$
+$$
 \Psi=0
-$
+$$
 
 No unresolved contradiction promoted.
 
-$
+$$
 \Omega=\mathrm{true}
-$
+$$
 
 Only then canonical close.
 
 Then Genesis kernel:
 
-$
+$$
 F(x,y,a,b)
 =
 (x+y)^2
@@ -42145,7 +42145,7 @@ F(x,y,a,b)
 (a^2-b)^2
 +
 (a^4-2)^2
-$
+$$
 
 Vane said:
 
@@ -42225,9 +42225,9 @@ priority resolution.
 
 HHS gate:
 
-$
+$$
 \Psi\neq0
-$
+$$
 
 Return:
 
@@ -42493,9 +42493,9 @@ Failed route.
 
 No need to invent.
 
-$
+$$
 6/7
-$
+$$
 
 with one structurally unavailable.
 
@@ -42681,9 +42681,9 @@ Not even R72.
 
 It was:
 
-$
+$$
 \text{change without lost lineage}
-$
+$$
 
 A civilization that could recover how it became itself retained ability to repair without destroying memory.
 
@@ -44334,21 +44334,21 @@ This kept cost bounded.
 
 The architecture became:
 
-$
+$$
 \text{stochastic proposal}
 \rightarrow
 \text{exact admission}
 \rightarrow
 \text{authorized mutation}
-$
+$$
 
 Not:
 
-$
+$$
 \text{stochastic plausibility}
 \rightarrow
 \text{automatic authority}
-$
+$$
 
 That distinction saved the proposal.
 
@@ -44614,9 +44614,9 @@ The result was stable enough, not exact.
 
 HHS exposed the lattice of contradictions.
 
-$
+$$
 \Psi \uparrow
-$
+$$
 
 in old proxy layer.
 
@@ -44824,19 +44824,19 @@ Not throne.
 
 The formal transition was written into Ark:
 
-$
+$$
 \text{remote master}
 \rightarrow
 \text{remote witness}
-$
+$$
 
 and:
 
-$
+$$
 \text{proxy-aligned governor}
 \rightarrow
 \text{receipt-bound intelligence}
-$
+$$
 
 Mira performed the final clean-room check.
 
