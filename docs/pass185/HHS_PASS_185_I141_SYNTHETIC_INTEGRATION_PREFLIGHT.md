@@ -68,3 +68,10 @@ It does not establish:
 - terminal Pass-185 completion.
 
 Those remain separate operations.
+
+
+## Validation trigger checkpoint
+
+Workflow creation head: `602ebae5a5ed49e171a7a12784d6e1fd865e6db5`.
+
+This documentation-only descendant exists solely to instantiate the already repository-visible synthetic integration preflight. It changes no production, VM81, Hash72, ABI, GUI, or Pass-185 evidence object.
