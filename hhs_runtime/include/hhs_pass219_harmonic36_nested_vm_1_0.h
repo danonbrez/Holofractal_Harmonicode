@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 1U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 3U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -18,6 +18,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_H36_ACCUMULATORS 16U
 #define HHS_EXACT_PASS219_H36_ADDRESS_BITS 18U
 #define HHS_EXACT_PASS219_H36_RULE_COUNT 64U
+#define HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT 128U
 #define HHS_EXACT_PASS219_H36_WORD_MASK UINT64_C(0xFFFFFFFFF)
 #define HHS_EXACT_PASS219_H36_HALF_MASK UINT64_C(0x3FFFF)
 
@@ -29,7 +30,8 @@ typedef enum HHSExactPass219H36TrapV1 {
     HHS_EXACT_PASS219_H36_TRAP_UNIMPLEMENTED_OPCODE = 4,
     HHS_EXACT_PASS219_H36_TRAP_INDIRECT_LIMIT = 5,
     HHS_EXACT_PASS219_H36_TRAP_HARMONIC_RULE = 6,
-    HHS_EXACT_PASS219_H36_TRAP_LEGACY_POINTER = 7
+    HHS_EXACT_PASS219_H36_TRAP_LEGACY_POINTER = 7,
+    HHS_EXACT_PASS219_H36_TRAP_LEGACY_IO = 8
 } HHSExactPass219H36TrapV1;
 
 typedef enum HHSExactPass219H36HarmonicEraV1 {
@@ -126,6 +128,15 @@ typedef struct HHSExactPass219H36InstructionV1 {
     uint32_t address18;
 } HHSExactPass219H36InstructionV1;
 
+typedef struct HHSExactPass219H36IOInstructionV1 {
+    uint64_t word36;
+    uint8_t device7;
+    uint8_t function3;
+    uint8_t indirect1;
+    uint8_t index4;
+    uint32_t address18;
+} HHSExactPass219H36IOInstructionV1;
+
 typedef struct HHSExactPass219H36CoordinateV1 {
     uint16_t linear5184;
     uint8_t word144;
@@ -187,6 +198,9 @@ typedef struct HHSExactPass219H36VMStateV1 {
     uint8_t legacy_carry1;
     uint8_t legacy_floating_overflow;
     uint8_t legacy_no_divide;
+    uint8_t legacy_pushdown_overflow;
+    uint64_t io_status[HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT];
+    uint64_t io_data[HHS_EXACT_PASS219_H36_IO_DEVICE_COUNT];
 } HHSExactPass219H36VMStateV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_h36_version(void);
@@ -194,6 +208,10 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_validate(void);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_coordinate(uint16_t linear5184, HHSExactPass219H36CoordinateV1 *out);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_instruction_encode(uint16_t opcode9, uint8_t ac4, uint8_t indirect1, uint8_t index4, uint32_t address18, uint64_t *out_word36);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_instruction_decode(uint64_t word36, HHSExactPass219H36InstructionV1 *out);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_instruction_encode(uint8_t device7, uint8_t function3, uint8_t indirect1, uint8_t index4, uint32_t address18, uint64_t *out_word36);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_instruction_decode(uint64_t word36, HHSExactPass219H36IOInstructionV1 *out);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_device_set(HHSExactPass219H36VMStateV1 *state, uint8_t device7, uint64_t status36, uint64_t data36);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_device_get(const HHSExactPass219H36VMStateV1 *state, uint8_t device7, uint64_t *out_status36, uint64_t *out_data36);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_import_vm81(const HHSExactVM81Frame *frame, HHSExactPass219H36VMStateV1 *state);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_export_vm81(const HHSExactPass219H36VMStateV1 *state, HHSExactVM81Frame *frame);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_equal_temperament_seed(HHSExactPass219H36VMStateV1 *state);
