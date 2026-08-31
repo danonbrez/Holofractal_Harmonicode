@@ -9,7 +9,7 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_VERSION_PATCH 4U
+#define HHS_EXACT_PASS219_H36_VERSION_PATCH 5U
 #define HHS_EXACT_PASS219_H36_WORD_BITS 36U
 #define HHS_EXACT_PASS219_H36_WORD_COUNT 144U
 #define HHS_EXACT_PASS219_H36_FRAME_BITS 5184U
@@ -35,6 +35,19 @@ typedef enum HHSExactPass219H36TrapV1 {
     HHS_EXACT_PASS219_H36_TRAP_LEGACY_IO = 8,
     HHS_EXACT_PASS219_H36_TRAP_LEGACY_PRIVILEGE = 9
 } HHSExactPass219H36TrapV1;
+
+typedef enum HHSExactPass219H36LegacyUUOModeV1 {
+    HHS_EXACT_PASS219_H36_UUO_MODE_HHS_MICROKERNEL = 0,
+    HHS_EXACT_PASS219_H36_UUO_MODE_KA10_HISTORICAL = 1
+} HHSExactPass219H36LegacyUUOModeV1;
+
+typedef enum HHSExactPass219H36LegacyUUOClassV1 {
+    HHS_EXACT_PASS219_H36_UUO_CLASS_NONE = 0,
+    HHS_EXACT_PASS219_H36_UUO_CLASS_LUUO = 1,
+    HHS_EXACT_PASS219_H36_UUO_CLASS_MUUO = 2,
+    HHS_EXACT_PASS219_H36_UUO_CLASS_UNASSIGNED = 3,
+    HHS_EXACT_PASS219_H36_UUO_CLASS_IO_RESTRICTION = 4
+} HHSExactPass219H36LegacyUUOClassV1;
 
 typedef enum HHSExactPass219H36HarmonicEraV1 {
     HHS_EXACT_PASS219_H36_ERA_DIATONIC = 1,
@@ -213,6 +226,12 @@ typedef struct HHSExactPass219H36VMStateV1 {
     uint8_t legacy_special_247_seen;
     uint8_t legacy_special_257_seen;
     uint8_t legacy_special_hardware_present;
+    uint8_t legacy_uuo_mode;
+    uint8_t legacy_uuo_last_class;
+    uint16_t legacy_uuo_dispatch_count;
+    uint32_t legacy_uuo_last_vector18;
+    uint64_t legacy_uuo_saved_pc_word;
+    uint64_t legacy_uuo_instruction_word;
     uint32_t legacy_priority_vector18[HHS_EXACT_PASS219_H36_PI_CHANNELS];
     uint64_t legacy_priority_saved_pc_word[
         HHS_EXACT_PASS219_H36_PI_CHANNELS
@@ -233,6 +252,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_io_device_get(const HHSExactP
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enable_mask(HHSExactPass219H36VMStateV1 *state, uint8_t enabled_mask7);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_request(HHSExactPass219H36VMStateV1 *state, uint8_t channel1_7, uint32_t vector18);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_priority_enter(HHSExactPass219H36VMStateV1 *state, uint8_t *out_channel1_7);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_legacy_uuo_mode_set(HHSExactPass219H36VMStateV1 *state, uint8_t mode);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_import_vm81(const HHSExactVM81Frame *frame, HHSExactPass219H36VMStateV1 *state);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_export_vm81(const HHSExactPass219H36VMStateV1 *state, HHSExactVM81Frame *frame);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_equal_temperament_seed(HHSExactPass219H36VMStateV1 *state);
