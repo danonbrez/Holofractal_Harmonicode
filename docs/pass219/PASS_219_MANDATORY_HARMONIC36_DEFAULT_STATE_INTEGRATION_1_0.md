@@ -544,3 +544,87 @@ sha256 = cdab1e6ab4629fc0b81a6fa8e1041b7b65fb17cf66385e75ad9fbffd0d28e620
 The structural 144-block HFC reconstruction winner is now the default compression verification route. The generic reconstruction remains available as an audit/reference implementation.
 
 The promoted default is independently green in run `33438168848` at commit `b1fa33fe910ba89acda7b6920f33171b8462f08d`.
+
+
+## 16. KA10 standard console devices
+
+The nested H36 KA10 profile now includes concrete device models for the three standard console I/O devices:
+
+```text
+PTP = 0100
+PTR = 0104
+TTY = 0120
+```
+
+These devices execute above the existing processor I/O instruction decoder and therefore preserve the original instruction format and generic bus behavior for all other device codes.
+
+### 16.1 Console teletype
+
+The TTY device implements deterministic:
+
+- input queue and input buffer;
+- output buffer and bounded output log;
+- Test loopback mode;
+- Input Busy / Input Done;
+- Output Busy / Output Done;
+- PI assignment;
+- DATAI / DATAO;
+- CONI / CONO / CONSZ / CONSO;
+- block-input/block-output compatibility through the processor bus;
+- priority request generation.
+
+Device completion occurs only through `hhs_exact_pass219_h36_devices_step`, so Busy and Done remain observable machine states.
+
+### 16.2 Paper tape reader
+
+The PTR device implements:
+
+- bounded loaded tape frames;
+- Tape flag;
+- Binary / Busy / Done / PI assignment;
+- alphanumeric 8-bit reads;
+- binary 36-bit word assembly from six qualifying channel-8 frames;
+- DATAI continuation behavior;
+- CONI / CONO / CONSZ / CONSO;
+- BLKI-compatible word transfer;
+- deterministic PI request.
+
+In binary mode, the first qualifying line becomes the leftmost six-bit byte and channel 1 is the rightmost bit of each byte.
+
+### 16.3 Paper tape punch
+
+The PTP device implements:
+
+- bounded punched-tape output;
+- Binary / Busy / Done / No-Tape / PI assignment;
+- alphanumeric 8-bit frames;
+- binary frames with channel 8 forced on, channel 7 forced off, and channels 1-6 taken from the low six bits;
+- DATAO / CONI / CONO / CONSZ / CONSO;
+- BLKO-compatible output;
+- deterministic PI request.
+
+### 16.4 Authority boundary
+
+All device queues, buffers, flags, and tapes are emulator-local historical hardware state.
+
+They have zero authority to:
+
+- mutate canonical VM81;
+- commit Hash72;
+- commit Hash216;
+- persist canonical state;
+- bypass singleton VM81 admission.
+
+Files:
+
+- `hhs_runtime/c/hhs_pass219_harmonic36_ka10_console_devices_1_6.inc`
+- `tests/pass219/test_pass219_harmonic36_ka10_console_devices_1_6.c`
+
+Validated cumulative gate:
+
+```text
+run = 33446382841
+job = 99666331302
+head = 9b22ae93b7f653d20a911b13b8ad941db32e9dc8
+conclusion = SUCCESS
+```
