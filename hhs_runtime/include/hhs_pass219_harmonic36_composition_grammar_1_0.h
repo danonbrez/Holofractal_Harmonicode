@@ -9,11 +9,13 @@ extern "C" {
 
 #define HHS_EXACT_PASS219_H36_COMPOSITION_VERSION_MAJOR 1U
 #define HHS_EXACT_PASS219_H36_COMPOSITION_VERSION_MINOR 0U
-#define HHS_EXACT_PASS219_H36_COMPOSITION_VERSION_PATCH 0U
+#define HHS_EXACT_PASS219_H36_COMPOSITION_VERSION_PATCH 1U
 
 #define HHS_EXACT_PASS219_H36_COMPOSITION_VOICES 4U
 #define HHS_EXACT_PASS219_H36_COMPOSITION_MAX_CANDIDATES 64U
 #define HHS_EXACT_PASS219_H36_NO_SECONDARY_TARGET 255U
+#define HHS_EXACT_PASS219_H36_COMPOSITION_MAX_PROGRAM_STEPS 8U
+#define HHS_EXACT_PASS219_H36_COMPOSITION_TEMPLATE_COUNT 16U
 
 typedef enum HHSExactPass219H36CompositionModeV1 {
     HHS_EXACT_PASS219_H36_MODE_MAJOR = 1,
@@ -34,6 +36,25 @@ typedef enum HHSExactPass219H36CadenceV1 {
     HHS_EXACT_PASS219_H36_CADENCE_BACKDOOR = 6,
     HHS_EXACT_PASS219_H36_CADENCE_MODAL = 7
 } HHSExactPass219H36CadenceV1;
+
+typedef enum HHSExactPass219H36CompositionTemplateV1 {
+    HHS_EXACT_PASS219_H36_TEMPLATE_DIATONIC_AUTHENTIC = 1,
+    HHS_EXACT_PASS219_H36_TEMPLATE_DIATONIC_DECEPTIVE = 2,
+    HHS_EXACT_PASS219_H36_TEMPLATE_MINOR_AUTHENTIC = 3,
+    HHS_EXACT_PASS219_H36_TEMPLATE_NEAPOLITAN_CADENCE = 4,
+    HHS_EXACT_PASS219_H36_TEMPLATE_ITALIAN_AUG6_CADENCE = 5,
+    HHS_EXACT_PASS219_H36_TEMPLATE_FRENCH_AUG6_CADENCE = 6,
+    HHS_EXACT_PASS219_H36_TEMPLATE_GERMAN_AUG6_CADENCE = 7,
+    HHS_EXACT_PASS219_H36_TEMPLATE_SECONDARY_DOMINANT_CHAIN = 8,
+    HHS_EXACT_PASS219_H36_TEMPLATE_JAZZ_II_V_I = 9,
+    HHS_EXACT_PASS219_H36_TEMPLATE_MINOR_JAZZ_II_V_I = 10,
+    HHS_EXACT_PASS219_H36_TEMPLATE_TRITONE_SUB_CHAIN = 11,
+    HHS_EXACT_PASS219_H36_TEMPLATE_BACKDOOR_CADENCE = 12,
+    HHS_EXACT_PASS219_H36_TEMPLATE_ALTERED_DOMINANT_CHAIN = 13,
+    HHS_EXACT_PASS219_H36_TEMPLATE_COLTRANE_THREE_TONIC = 14,
+    HHS_EXACT_PASS219_H36_TEMPLATE_CONSTANT_STRUCTURE = 15,
+    HHS_EXACT_PASS219_H36_TEMPLATE_FOUR_TONIC_MINOR_THIRDS = 16
+} HHSExactPass219H36CompositionTemplateV1;
 
 typedef enum HHSExactPass219H36CompositionRelationV1 {
     HHS_EXACT_PASS219_H36_RELATION_INVALID = 0,
@@ -154,6 +175,31 @@ typedef struct HHSExactPass219H36CompositionRankingV1 {
     uint8_t floating_point_authority;
 } HHSExactPass219H36CompositionRankingV1;
 
+typedef struct HHSExactPass219H36CompositionProgramV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint32_t template_id;
+    uint8_t root_tonic_pc12;
+    uint8_t step_count;
+    uint16_t exact_total_voice_leading_cost;
+    uint16_t total_grammar_penalty;
+    uint16_t total_unresolved_tendencies;
+    uint16_t total_parallel_perfects;
+    uint8_t modulation_count;
+    uint8_t fixed_operation64_preserved;
+    uint8_t deterministic_replay;
+    uint8_t canonical_mutation_authority;
+    uint8_t canonical_hash72_authority;
+    uint8_t canonical_persistence_authority;
+    uint8_t floating_point_authority;
+    HHSExactPass219H36CompositionStateV1 states[
+        HHS_EXACT_PASS219_H36_COMPOSITION_MAX_PROGRAM_STEPS
+    ];
+    HHSExactPass219H36CompositionTransitionV1 transitions[
+        HHS_EXACT_PASS219_H36_COMPOSITION_MAX_PROGRAM_STEPS - 1U
+    ];
+} HHSExactPass219H36CompositionProgramV1;
+
 HHS_EXACT_API uint32_t hhs_exact_pass219_h36_composition_version(void);
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_composition_state(
@@ -193,6 +239,18 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_composition_ranking_validate(
     const HHSExactPass219H36CompositionCandidateV1 *candidates,
     size_t candidate_count,
     const HHSExactPass219H36CompositionRankingV1 *ranking
+);
+
+HHS_EXACT_API uint32_t hhs_exact_pass219_h36_composition_template_count(void);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_composition_program_build(
+    uint32_t template_id,
+    uint8_t root_tonic_pc12,
+    HHSExactPass219H36CompositionProgramV1 *out_program
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_h36_composition_program_validate(
+    const HHSExactPass219H36CompositionProgramV1 *program
 );
 
 #ifdef __cplusplus
