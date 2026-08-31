@@ -628,3 +628,81 @@ job = 99666331302
 head = 9b22ae93b7f653d20a911b13b8ad941db32e9dc8
 conclusion = SUCCESS
 ```
+
+
+## 17. KA10 hardware Read-In Mode
+
+The H36 KA10 profile now implements deterministic hardware Read-In Mode (RIM) over the concrete PTR device `0104`.
+
+The bootstrap path is modeled as the hardware sequence:
+
+```text
+I/O reset
+-> PTR binary word available
+-> DATAI PTR,0 reads first 36-bit IOWD
+-> repeated BLKI PTR,0 loads declared data words
+-> final loaded word executes as XCT
+-> terminal transfer establishes final PC
+```
+
+The first word must be a valid negative-count IOWD:
+
+```text
+-N ,, ADDRESS-1
+```
+
+The bounded 144-word H36 memory image must contain the complete declared destination range or the read-in fails closed.
+
+### 17.1 Reset witness
+
+READ-IN reset clears processor/device control state without erasing mounted PTR media:
+
+- arithmetic/carry/floating/divide flags;
+- user/user-I/O state;
+- interrupt-cycle state;
+- priority enable/request/active state;
+- TTY/PTR/PTP Busy/Done/PI control state;
+- generic I/O status/data registers.
+
+The PTR tape image and current physical tape position remain media state.
+
+### 17.2 Exact loader semantics
+
+The implementation reuses the existing processor I/O decoder and concrete PTR:
+
+- PTR binary stepping produces each 36-bit word;
+- the first word is transferred with DATAI semantics into memory location 0;
+- each succeeding word is transferred through existing BLKI pointer progression;
+- the final IOWD left half must reach zero exactly;
+- the last loaded word is decoded and executed directly as the RIM terminal XCT.
+
+### 17.3 Replay receipt
+
+`HHSExactPass219H36RIMReceiptV1` records:
+
+- device code;
+- reset witness;
+- initial and final IOWD;
+- declared/loaded count;
+- first/last loaded addresses;
+- terminal instruction;
+- final PC;
+- initial/final tape position;
+- exact replayability;
+- zero canonical authority.
+
+The conformance tape contains one IOWD plus three binary words, each encoded as six six-bit PTR frames. A fresh second VM with identical mounted media must reproduce the same loaded memory, final PC, and byte-identical receipt.
+
+Files:
+
+- `hhs_runtime/c/hhs_pass219_harmonic36_ka10_rim_bootstrap_1_7.inc`
+- `tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c`
+
+Functional validation:
+
+```text
+run = 33447267510
+job = 99669050978
+head = c12420dc5c692a1e5f91808ce78f44745dd5e668
+KA10 RIM bootstrap 1.7 = SUCCESS
+```
