@@ -78,7 +78,16 @@ def validate_pass183_historical_lineage() -> dict[str, Any]:
     }
 
 def validate_pass183_historical_green_evidence() -> dict[str, Any]:
-    _git("merge-base", "--is-ancestor", PASS183_IMPLEMENTATION_COMMIT, PASS183_HISTORICAL_GREEN_HEAD)
+    # The green PR head predates the later implementation/merge commit.
+    # Validate the exact Pass-183 source identity executed by the green run
+    # instead of asserting impossible temporal ancestry.
+    for path, expected in HISTORICAL_BLOBS.items():
+        green_blob = _git("rev-parse", f"{PASS183_HISTORICAL_GREEN_HEAD}:{path}")
+        implementation_blob = _git("rev-parse", f"{PASS183_IMPLEMENTATION_COMMIT}:{path}")
+        if green_blob != expected or implementation_blob != expected or green_blob != implementation_blob:
+            raise RuntimeError(
+                f"PASS183_HISTORICAL_GREEN_SOURCE_IDENTITY_DRIFT:{path}:{green_blob}:{implementation_blob}"
+            )
     i142 = json.loads(_text(I142_VALIDATION_RECEIPT))
     assert i142["closure"]["i142_dependency_scoped_validation_green"] is True
     return {
@@ -89,6 +98,8 @@ def validate_pass183_historical_green_evidence() -> dict[str, Any]:
         "historical_artifact_sha256": PASS183_HISTORICAL_ARTIFACT_SHA256,
         "historical_workflow_conclusion": "success",
         "historical_artifact_expired": True,
+        "green_head_predates_implementation_commit": True,
+        "green_head_pass183_blobs_equal_implementation_blobs": True,
         "i142_successor_green": True,
     }
 
