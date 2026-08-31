@@ -148,6 +148,8 @@ static HHSExactStatus h36_execute(
         return status;
     if (h36_execute_legacy_two_word(state, ins, e, &status))
         return status;
+    if (h36_execute_legacy_control_io(state, ins, e, &status))
+        return status;
 
     if (op >= UINT16_C(0200) && op <= UINT16_C(0217)) {
         uint8_t mode = (uint8_t)(op & 3U);
@@ -182,11 +184,6 @@ static HHSExactStatus h36_execute(
         state->memory[e] =
             state->accumulators[ac] & HHS_EXACT_PASS219_H36_WORD_MASK;
         state->accumulators[ac] = tmp;
-        return HHS_EXACT_STATUS_OK;
-    }
-
-    if (op == UINT16_C(0254)) {
-        state->pc18 = e;
         return HHS_EXACT_STATUS_OK;
     }
 
