@@ -318,6 +318,8 @@ static HHSExactStatus h36_execute_io(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
+    if (h36_execute_internal_apr_pi(state, ins, e, &status))
+        return status;
     if (h36_execute_builtin_device(state, ins, e, &status))
         return status;
 
