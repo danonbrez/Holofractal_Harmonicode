@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `9b22ae93b7f653d20a911b13b8ad941db32e9dc8`
-- Branch head immediately before this checkpoint record: `9b22ae93b7f653d20a911b13b8ad941db32e9dc8`
+- Validated implementation head: `c12420dc5c692a1e5f91808ce78f44745dd5e668`
+- Branch head immediately before this checkpoint record: `c12420dc5c692a1e5f91808ce78f44745dd5e668`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -389,6 +389,39 @@ Cumulative validation:
 
 Every functional step is green, including KA10 UUO 1.5, KA10 console devices 1.6, composition programs, graph bridges, measured optimization winners, contract proof, and benchmark artifact upload.
 
+### 13. KA10 Read-In Mode 1.7
+
+Implemented deterministic hardware RIM over concrete PTR device `0104`:
+
+- I/O/control reset witness;
+- mounted tape preserved across reset;
+- PTR forced to binary read-in mode;
+- first 36-bit word read by DATAI semantics into memory 0;
+- first word validated as negative-count IOWD `-N,,ADDRESS-1`;
+- repeated existing BLKI semantics load exactly N words;
+- final IOWD count must reach zero;
+- final loaded word executes as XCT;
+- terminal JRST handoff establishes final PC;
+- receipt records pointer/range/count/terminal/final-PC/tape positions;
+- replay on a fresh VM must produce byte-identical receipt and memory.
+
+Conformance tape:
+
+```text
+24 PTR frames
+= 4 full 36-bit words
+= IOWD + 2 payload words + terminal JRST
+```
+
+Functional validation at checkpoint:
+
+- run `33447267510`;
+- job `99669050978`;
+- head `c12420dc5c692a1e5f91808ce78f44745dd5e668`;
+- `KA10 RIM bootstrap 1.7 conformance` **SUCCESS**.
+
+All preceding H36 steps through composition-program conformance were also green when this checkpoint was written. Remaining graph/benchmark/artifact workflow steps were still external follow-through and are nonblocking under the repository workflow policy.
+
 ## Validation receipt
 
 Authoritative dependency-scoped code gate:
@@ -473,23 +506,27 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-Resume from this checkpoint with the next bounded KA10 hardware layer:
+Resume from this checkpoint with the **KA10 internal APR/PI device programming layer**.
+
+Bounded target:
 
 ```text
-hardware Read-In Mode / RIM bootstrap
-+ standard PTR 0104 bootstrap path
-+ processor reset/flag-reset witness
-+ DATAI + repeated BLKI loader behavior
-+ exact 36-bit IOWD progression
-+ terminal JRST handoff
-+ replayable bootstrap receipt
--> reuse concrete PTR 1.6 device
--> reuse existing BLKI processor semantics
+APR internal device code and CONI/CONO status/control
++ processor reset request path
++ arithmetic overflow / floating overflow / divide-check interrupt enables
++ pushdown-overflow status integration
++ PI internal device programming
++ enable/disable/clear/request channel behavior
++ exact status readback
++ deterministic priority-entry tests
+-> reuse validated seven-channel PI membrane
+-> preserve external-device PI requests
+-> emulator-local hardware state only
 -> zero VM81/Hash72/persistence authority
 ```
 
-After RIM bootstrap closure, the next device family should be APR/PI internal-device programming or additional external peripherals, not a change to the already-correct KA10 opcode 257 behavior.
+Do not alter the validated RIM, PTR/TTY/PTP, KA10 UUO, composition, or optimization layers except for impacted cumulative compilation.
 
-Any KI10/KL10 pager MAP support must remain a separate additive processor-profile module.
+Any later KI10/KL10 paging or MAP work remains a separate additive processor-profile module.
 
 Do not merge to `main` without explicit integration authorization.
