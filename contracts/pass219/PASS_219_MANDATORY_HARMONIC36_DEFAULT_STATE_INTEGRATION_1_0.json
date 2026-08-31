@@ -79,7 +79,13 @@
     "H36_HASH216_COMPOSITION_CANDIDATE_BINDING",
     "H36_GRAMMAR_FIRST_INTEGER_RANKING",
     "H36_16_PROGRESSIONS_X12_TONICS_DETERMINISTIC_REPLAY",
-    "H36_COMPOSITION_PASS128_EVIDENCE_ROOT_BINDING"
+    "H36_COMPOSITION_PASS128_EVIDENCE_ROOT_BINDING",
+    "H36_KA10_HISTORICAL_UUO_MODE",
+    "H36_KA10_LUUO_MUUO_UNASSIGNED_VECTORS",
+    "H36_KA10_USER_IO_RESTRICTION_MUUO",
+    "H36_KA10_247_257_PROFILE_CORRECT",
+    "H36_OPTIMIZATION_EXACT_EQUALITY_BEFORE_TIMING",
+    "H36_STRUCTURAL_HFC_MEASURED_WINNER_DEFAULT"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -125,7 +131,19 @@
     "deterministic_progression_template_registry_16": true,
     "progression_templates_all_12_tonics_validated": true,
     "composition_pass128_evidence_bridge": true,
-    "composition_guarded_service_registry_exposure": true
+    "composition_guarded_service_registry_exposure": true,
+    "ka10_explicit_historical_uuo_mode": true,
+    "ka10_luuo_040_041_dispatch": true,
+    "ka10_muuo_040_041_dispatch": true,
+    "ka10_unassigned_060_061_dispatch": true,
+    "ka10_user_io_restriction_muuo_dispatch": true,
+    "ka10_247_257_special_slot_noop_without_hardware": true,
+    "ka10_later_map_semantics_not_misapplied": true,
+    "measured_h36_transcode_winner": true,
+    "measured_h36_structural_hfc_winner": true,
+    "measured_h36_locality_winner": true,
+    "measured_h36_native_cache_winner": true,
+    "structural_hfc_promoted_default": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -134,5 +152,18 @@
     "priority_interrupt_and_user_privilege_machine": false,
     "peripheral_specific_device_models": false,
     "generic_processor_side_io_bus": true
+  },
+  "optimization_evidence": {
+    "workflow_run": 33438040388,
+    "artifact_id": 9775141976,
+    "artifact_sha256": "cdab1e6ab4629fc0b81a6fa8e1041b7b65fb17cf66385e75ad9fbffd0d28e620",
+    "physical_gpu_measured": false,
+    "cpu_reference": {
+      "transcode_speedup_x1000": 23698,
+      "hfc_reconstruction_speedup_x1000": 5592,
+      "locality_speedup_x1000": 21044,
+      "native_cache_speedup_x1000": 9825
+    },
+    "authoritative_state_changed": false
   }
 }
