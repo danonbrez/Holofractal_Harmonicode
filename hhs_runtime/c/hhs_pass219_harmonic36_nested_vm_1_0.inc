@@ -5,6 +5,7 @@
 #include "hhs_pass219_harmonic36_nested_vm_privilege_pi_1_4.inc"
 #include "hhs_pass219_harmonic36_nested_vm_uuo_1_5.inc"
 #include "hhs_pass219_harmonic36_ka10_console_devices_1_6.inc"
+#include "hhs_pass219_harmonic36_ka10_apr_pi_1_8.inc"
 #include "hhs_pass219_harmonic36_nested_vm_control_io_1_3.inc"
 #include "hhs_pass219_harmonic36_ka10_rim_bootstrap_1_7.inc"
 #include "hhs_pass219_harmonic36_nested_vm_exec_1_0.inc"
