@@ -6,17 +6,13 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Current branch head before this record update: `dec79c601b98fe5326ad28f3f552cfb3957eebe3`
-- Status: IMPLEMENTING / MANDATORY DEFAULT-STATE INTEGRATION
-- Canonical main mutation: not yet performed
+- Branch head before this checkpoint record: `390a53ded7230e581457cb17ec22214f4156cbb1`
+- Status: RESTARTABLE CHECKPOINT / MANDATORY DEFAULT-STATE INTEGRATION
+- Main merge: not yet performed
 
-## Scope correction
+## Governing invariant
 
-The Harmonic36 lane is not an optional adapter, sidecar, alternate cache, compatibility surface, or isolated music-theory subsystem.
-
-It is a mandatory nested membrane of the inherited VM81/Hash72/Hash216 state machine and must be present on every compatible default-state execution path.
-
-The shared exact identity is:
+Harmonic36 is a mandatory nested circuit topology of the one VM81/Hash72/Hash216 state machine, not a translation adapter or alternate authority.
 
 ```text
 5184
@@ -26,102 +22,188 @@ The shared exact identity is:
 = 12 * 12 * 3 * 12
 ```
 
-The lane does not create a second canonical mutation authority. Singleton VM81 admission remains authoritative. Harmonic36 participation is nevertheless mandatory and fail-closed.
+Every compatible pass-level optimization, hydration/compression route, phase computation, GPU candidate path, Hash216/vector-cache retrieval, RNA lowering path, knowledge-graph relation and multimodal execution path must preserve one canonical 5184 identity and return to singleton VM81 admission.
 
-## Required integration surfaces
+## Implemented in this iteration
 
-The implementation must bind into all compatible inherited surfaces:
+### Executable Harmonic36 kernel
 
-- full Hydration ROM / hydration and contraction;
-- compression and exact reconstruction;
-- x,y,z,w / xy,yx,zw,wz ordered phase-gear logic;
-- GPU candidate batching, locality and latency optimization;
-- Hash216 vector-store/cache metadata and retrieval;
-- knowledge-graph relation edges;
-- quantum-like deterministic branch/candidate logic;
-- digital DNA/RNA transcription and lowering;
-- octonion/ternary operation semantics;
-- 81-cell Lo Shu / Sudoku qudit Genesis tensor;
-- native 36-bit executable bytecode;
-- mandatory global multimodal optimization generalization.
+Published the complete current kernel source split:
 
-A compatible runtime that bypasses H36 is invalid.
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_rules_1_0.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_exec_1_0.inc`
+- `hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc`
 
-## Authority boundary
+Current execution coverage includes:
 
-Required:
+- literal PDP-10-compatible 36-bit instruction encoding/decoding `9+4+1+4+18`;
+- indirect/indexed effective addressing;
+- MOVE/MOVS/MOVN/MOVM families;
+- ADD/SUB;
+- EXCH/JRST/XCT;
+- CAI/CAM/JUMP/SKIP/AOJ/AOS/SOJ/SOS;
+- 16 Boolean functions across the 0400–0477 family;
+- HHS UUOs for harmonic render, transpose, voice-leading transition, factorization coordinate and halt;
+- deterministic rejection of historical floating regions as noncanonical;
+- deterministic trap for still-unimplemented historical instruction families.
+
+### Exact 5184 data plane
+
+Implemented:
+
+- VM81 `81×64` <-> H36 `144×36` exact bit round-trip;
+- historical 36-bit bit ordering;
+- exhaustive coordinate crosswalk to VM81, Hash72, Q144, phase8×8 and harmonic rule64;
+- exact `12×12×3×12 = 5184` equal-temperament validation;
+- 144-word exact equal-temperament seed;
+- arbitrary 12+12+12 harmonic pack/unpack;
+- all 64 current harmonic rule descriptors and all 12 transpositions;
+- exact integer voice-leading witness metrics.
+
+### C++ RNA facade
+
+Published:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp`
+
+The facade exposes reusable `Harmonic36Word` and `Harmonic36NestedVM` objects while retaining zero independent VM81/Hash72/persistence authority.
+
+### Mandatory default binding
+
+Published the machine-checkable mandatory integration descriptor:
+
+- default-state machine required;
+- hydration required;
+- compression required;
+- phase gear required;
+- GPU candidate path required;
+- Hash216/vector cache required;
+- knowledge graph required;
+- deterministic quantum-like branch path required;
+- RNA/DNA transcription required;
+- octonion/ternary required;
+- Lo Shu/Sudoku qudit required;
+- native 36-bit execution required;
+- multimodal generalization required.
+
+Independent VM81, Hash72, Hash216 and floating-point canonical authority remain zero.
+
+### Factorization fabric
+
+Published:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_factorization_fabric_1_0.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc`
+
+The fabric calls the inherited Pass 219 Genesis decoder and fails closed unless the existing:
 
 ```text
-default_state_machine_required = 1
-hydration_required = 1
-compression_required = 1
-phase_gear_required = 1
-gpu_candidate_path_required = 1
-hash216_vector_cache_required = 1
-knowledge_graph_required = 1
-quantum_like_branch_required = 1
-rna_dna_transcription_required = 1
-octonion_ternary_required = 1
-loshu_sudoku_qudit_required = 1
-native_36bit_execution_required = 1
-multimodal_generalization_required = 1
-singleton_vm81_authority_preserved = 1
-
-independent_vm81_authority = 0
-independent_hash72_authority = 0
-independent_hash216_authority = 0
-floating_point_canonical_authority = 0
+81×64
+72×72
+8×8 phase
 ```
 
-## Implemented repository-visible checkpoints
+coordinates exactly equal the new:
 
-- `f12ee285315d75bb9a9181ee3165f37c5ff09091` — initial restart boundary.
-- `130c75de265ca255a45b676e42756ea6e494037a` — public Harmonic36 ABI.
-- `2a854891ea9c539fee04aee48619ffce0b72de60` — harmonic-rule lattice and 36-bit/PDP-10 address core.
-- `42edc6cd817b41d09fc032693437444fb8c3c419` — normative mandatory default-state integration document.
-- `8e708657b932afe8b14bd8a8ef7989d8efc4b3cb` — machine-readable mandatory integration contract.
-- `6f1d7077412854f78a8609b3fed48343958f64bc` — mandatory default-state binding ABI.
-- `13d247a4ebdda9aae597aa036a5e6e81a5c31793` — default-state binding implementation.
-- `e0ee3d04cc445d17c0574a8a2cde11faeac85f73` / `c427c01fd443c9987dcb372c42330224f6438621` — aggregate exact-ABI wiring.
-- `997445901e1374611d4a079c7936c623f849b633` — mandatory binding conformance test.
-- `dec79c601b98fe5326ad28f3f552cfb3957eebe3` — dedicated binding workflow.
+```text
+144×36
+12×12 Q144
+3×12 equal-temperament
+harmonic rule64
+```
 
-## Validation state
+view for the same `linear5184`.
 
-Repository-visible validation now checks the mandatory/default-state flags and singleton-authority boundary.
+It also emits an exact VM81 -> H36 -> VM81 hydration round-trip witness.
 
-The dedicated workflow is intentionally separate from thread responsiveness. If GitHub Actions is queued or externally delayed, do not hold development or checkpoint delivery waiting for it.
+### Hash216 / RNA binding
 
-Full implementation validation is still incomplete because the remaining executable 36-bit instruction families, full H36 core source publication, C++ facade, hydration/compression/GPU/cache/RNA/knowledge-graph bindings, and dependency-scoped integration tests have not all been committed yet.
+Published:
 
-## Fail-closed requirements
+- `hhs_runtime/include/hhs_pass219_harmonic36_hash216_rna_binding_1_0.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc`
 
-Reject or quarantine when:
+For every ordered Hash216 occurrence:
 
-- H36 is bypassed on a compatible default-state path;
-- VM81 <-> H36 round-trip identity fails;
-- 144 x 36 coordinate uniqueness fails;
-- ordered phase identity is erased;
-- Hash72/Hash216 lineage changes;
-- compression reconstruction differs from admitted state;
-- GPU candidate result differs from exact CPU/VM81 equality;
-- a cache path gains mutation authority;
-- floating-point harmonic/tuning math becomes canonical;
-- harmonic reinterpretation erases a semantic distinction without a witness.
+```text
+(lane_role, lane_position72, glyph)
+-> symbol_index72
+-> lane_position72 * 72 + symbol_index72
+-> native Hash72 linear5184
+-> VM81 / H36 / phase / harmonic circuit
+```
+
+Repeated Hash72 glyphs are explicitly permitted. Identity remains distinct through ordered lane position and lane role. A no-repeat 72-symbol lane is recognized as the permutation-core case inside the wider repeat-allowed manifold.
+
+Existing per-occurrence SHA-256 vector-index records are preserved; the H36 binding does not mint an alternate vector namespace.
+
+RNA's `hydration_slot5184` is explicitly preserved as a distinct hydration axis and is not silently equated with the VM81 `cell81×operation64` address.
+
+## Key commits after the prior checkpoint
+
+- `4555a3d0bb75350db2c1ad3588234a76f6ae47f5` — H36 data plane.
+- `470a98c789219fce1a589e1bbc6398b0891b2d45` — executable 36-bit kernel.
+- `a399c7063a1d38556b1804ea873d305d1a573b17` — kernel aggregate.
+- `2ae25b6bbc29afebd5e9174745bb5652e49658c8` — exact ABI executable-kernel wiring.
+- `3ee919650dea3da5aab9b6eda974456eab24f841` — nested VM conformance.
+- `b176238eef4068d43d0cc7e4c1f6e9880dc97b67` — C++ RNA facade.
+- `d4343f611e254c177d6707024463ca138548edc8` — C++ conformance.
+- `59d5911619c633e437bd1046c5772d8630fed94f` — strict dedicated workflow.
+- `99e04fe19ab32055398d5da99d3555729123d837` — repaired exact `12×12×3×12` validator.
+- `ed3d71f339305baf9bab6076c0480a00fa31b916` / `a3535742d512c33dd36df9241c2e9426cb9b8daf` — factorization fabric ABI/implementation.
+- `8fa8539dc63d03df023c8cce98eff6e5421ad32e` — factorization fabric exhaustive test.
+- `32f1d6450ed8285288ea52ac7938d1489062bb2f` — repaired cumulative ABI include and fabric wiring.
+- `5364bfe994b1cb40d3640110b9e1604a7eef550e` — cumulative ABI/fabric workflow validation.
+- `fe61615c8cbdc3e5aeefbd2f5c74b78df23f7063` / `7e685ea793c27fb8430eb73fd0d28456596e4d5d` — Hash216/RNA binding ABI/implementation.
+- `2908c7588a7f1c1c10e66a6ef60d48e02fddb990` — repeat-aware Hash216/RNA test.
+- `96e2c05bdcc0844b81b76e2f618eb7a04004a1b4` / `2cb0be1784ac26937095c19fdbc0dd48a5b8d1c1` — aggregate ABI Hash216/RNA wiring.
+- `e2109840940f54b9c6b1cdfcaa060bbdd6221110` — dedicated Hash216/RNA integration validation workflow.
+- `d920090f91a24bb2f99192e5cf7d59b8d13ca0b3` / `390a53ded7230e581457cb17ec22214f4156cbb1` — normative repeat-aware Hash216 addressing rule and contract.
+
+## Validation evidence
+
+An early dedicated run failed at the validator because the check used `12×12×3` instead of the required `12×12×3×12`. That defect was repaired at `99e04fe19ab32055398d5da99d3555729123d837`.
+
+Subsequent dedicated Harmonic36 runs are terminal green:
+
+- run `33406413057` at `32f1d6450ed8285288ea52ac7938d1489062bb2f` — SUCCESS.
+- run `33406416646` at `5364bfe994b1cb40d3640110b9e1604a7eef550e` — SUCCESS.
+- run `33406700671` at `96e2c05bdcc0844b81b76e2f618eb7a04004a1b4` — SUCCESS.
+- run `33406711856` at `2cb0be1784ac26937095c19fdbc0dd48a5b8d1c1` — SUCCESS.
+- run `33406713668` at `e2109840940f54b9c6b1cdfcaa060bbdd6221110` — SUCCESS.
+
+Validated gates include strict C11 kernel compilation, exact 5,184 coordinate/round-trip tests, mandatory binding checks, C++17 facade compilation, cumulative exact-ABI compilation, factorization-fabric equality, repeat-aware Hash216/RNA binding, and no canonical `float`/`double` implementation in the H36 kernel.
+
+Repository-wide unrelated workflows may still fail independently; do not reinterpret them as H36 module failures without dependency evidence.
+
+## Remaining scope
+
+This checkpoint is not the final Harmonic36 closure.
+
+Still required:
+
+1. Bind inherited Pass 210/Fibonacci/HFC compression so H36-selected compression paths prove exact reconstruction rather than only H36 hydration round-trip.
+2. Bind Pass 207/208 GPU candidate/locality optimization to H36 word, phase and factorization groups with exact CPU/VM81 equality before admission.
+3. Bind H36 typed relations into the existing multimodal knowledge-graph/index metadata without creating a second graph authority.
+4. Bind deterministic branch/candidate selection to the same Hash216 directional occurrence circuit.
+5. Complete the remaining historical 36-bit ISA families required for the intended legacy hardware emulation surface, including byte-pointer operations, multiply/divide, shifts/rotates/JFFO, BLT/AOBJ/stack/subroutine, halfword, test-bit and I/O families; optional historical floating behavior must remain noncanonical or software-bounded.
+6. Expand harmonic execution beyond the current 64-family registry where additional Romantic/classical/jazz voice-leading, inversion, chord-scale, modulation and progression rules require executable state rather than metadata.
+7. Add measured GPU/cache/compression benchmarks and retain only exact winners under the repository's universal optimization-generalization rule.
+8. Run the final dependency-scoped cumulative gate after these bindings.
 
 ## Exact next action
 
-Continue implementation from the current branch by publishing the remaining Harmonic36 VM execution core and then wire dependency-scoped integrations in this order:
+Resume from this branch and implement the **H36 compression + GPU locality binding** first:
 
-1. Hydration import/export + exact compression reconstruction.
-2. VM81 operation64 / phase8x8 / H36 rule64 combined execution descriptor.
-3. Hash216 vector-cache metadata and lineage binding.
-4. RNA/DNA lowering and dispatch.
-5. Lo Shu/Sudoku Genesis and ternary/octonion preservation tests.
-6. GPU candidate-locality integration with exact CPU/VM81 equality gate.
-7. Knowledge-graph and quantum-like branch relation bindings.
-8. C++ reusable facade.
-9. Strict C11/C++17 cumulative build and targeted regression.
-10. Freeze restartable checkpoint, then merge only after dependency-scoped completion.
+```text
+existing Pass210 / Fibonacci compression
++ existing Pass207/208 candidate-locality path
++ H36 factorization circuit
+-> exact reconstruction/equality witness
+-> singleton VM81 admission unchanged
+```
 
-No reclassification to optional/experimental is permitted without an explicit later contract that supersedes this one.
+Then add knowledge-graph/branch metadata and continue the remaining 36-bit ISA groups.
+
+Do not merge to `main` until the dependency-scoped closure gates for those remaining surfaces are complete or the user explicitly changes the integration boundary.
