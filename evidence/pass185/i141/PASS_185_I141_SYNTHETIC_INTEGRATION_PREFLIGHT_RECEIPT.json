@@ -1,0 +1,58 @@
+{
+  "schema": "HHS_PASS185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT_RECEIPT_V1",
+  "classification": "HHS_PASS_185_I141_SYNTHETIC_CURRENT_MAIN_COMBINED_COMPOSITION_VERIFIED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "workflow": ".github/workflows/pass219-i141-pass185-synthetic-integration-preflight.yml",
+  "superseded_run": {
+    "run_id": 33383386673,
+    "job_id": 99460503332,
+    "head_sha": "602ebae5a5ed49e171a7a12784d6e1fd865e6db5",
+    "conclusion": "cancelled",
+    "classification": "SUPERSEDED_BY_EXACT_BRANCH_TIP_TRIGGER_NOT_SYNTHETIC_DEFECT"
+  },
+  "green_validation": {
+    "run_id": 33383422078,
+    "job_id": 99460631642,
+    "artifact_id": 9754686961,
+    "artifact_name": "pass219-i141-pass185-synthetic-integration-preflight",
+    "artifact_size_bytes": 1196062,
+    "artifact_sha256": "1bfb8e0010340cc89b8977c4dfb04eead92f34fd61528698f49eaa32b62e4f10",
+    "branch_head": "ee8247e4432a6f5501e00812f9e17a6500b0bb3a",
+    "branch_tree": "95a49a8d7c1922e64f91331fb93d7af5618a9144",
+    "tested_main_head": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
+    "historical_merge_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "synthetic_commit": "1a584d00d5c8f04338b791ed1fa8bb32d434ff96",
+    "synthetic_tree": "bebfdcdd361bd8680c6a0e650651dbd2d5943e07",
+    "changed_path_overlap": [],
+    "zero_overlap": true,
+    "browser_state": "INTERACTIVE",
+    "page_errors": [],
+    "console_errors": [],
+    "cumulative_local_evidence_sha256": "e3f1691a76a4793fc6e409eddf8c8b76aae5129efdecff64cfd776c286114026",
+    "playwright_trace_sha256": "04106ddd482de47e60987939e7504b998253e479e0eba10fda022e929b2c7e22",
+    "completion_receipt_hash72": "ByohEHW53VfGcMDTDFkA71X5LxA3UF9!aDgtgd9i(X<oJG8dg4!d!B6C8<lyfYJ3jHOdb6-d",
+    "evidence_set_hash216": "34ed47ff743bf4d1e280cf87c96a5ebeb2f8caaba635a40db8091c223f385a68",
+    "seal_sha256": "2ded3485b4ee759c7b72433d42b25861ebf7a0012e9ef4fad8712a1653b72714",
+    "main_global_defaults_preserved": true,
+    "main_multimodal_generalization_preserved": true,
+    "main_hash72_delegation_preserved": true,
+    "main_exact_abi_preserved": true,
+    "pass185_cumulative_closure_preserved": true,
+    "canonical_runtime_authority_changed": false,
+    "new_vm81_authority": false,
+    "parallel_hash72_commit_authority": false,
+    "local_unresolved_contract_rows": [],
+    "local_waivers": []
+  },
+  "frozen_evidence_policy": {
+    "phase1_through_phase7_receipts_rewritten": false,
+    "cumulative_receipt_rewritten": false
+  },
+  "completion_boundary": {
+    "remote_integration_performed": false,
+    "remote_rebase_performed": false,
+    "authoritative_main_verified": false,
+    "external_deployment_verified": false,
+    "terminal_pass185_completion_claimed": false
+  }
+}
