@@ -72,7 +72,14 @@
     "PDP10_HALFWORD_AND_TEST_FAMILY_CONFORMANCE",
     "PDP10_CONTROL_PUSHDOWN_SUBROUTINE_CONFORMANCE",
     "PDP10_LITERAL_IO_WORD_AND_GENERIC_BUS_CONFORMANCE",
-    "PDP10_STICKY_ARITHMETIC_FLAG_CONFORMANCE"
+    "PDP10_STICKY_ARITHMETIC_FLAG_CONFORMANCE",
+    "H36_COMPOSITION_STATE_EXACT_FOUR_VOICE",
+    "H36_ROOT_RELATIVE_INVERSION_VOICING",
+    "H36_CADENCE_MODULATION_GRAMMAR",
+    "H36_HASH216_COMPOSITION_CANDIDATE_BINDING",
+    "H36_GRAMMAR_FIRST_INTEGER_RANKING",
+    "H36_16_PROGRESSIONS_X12_TONICS_DETERMINISTIC_REPLAY",
+    "H36_COMPOSITION_PASS128_EVIDENCE_ROOT_BINDING"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -107,7 +114,18 @@
     "test_bit_isa_600_677": true,
     "io_word_format_111_device7_function3_ixy": true,
     "generic_io_functions_blki_blko_datai_datao_cono_coni_consz_conso": true,
-    "sticky_legacy_integer_flags": true
+    "sticky_legacy_integer_flags": true,
+    "fixed_64_operation_composition_basis": true,
+    "exact_four_voice_composition_state": true,
+    "root_relative_inversion_and_voicing": true,
+    "exact_cadence_and_modulation_state": true,
+    "tendency_and_parallel_motion_witnesses": true,
+    "hash216_bound_composition_candidates": true,
+    "grammar_first_integer_candidate_ranking": true,
+    "deterministic_progression_template_registry_16": true,
+    "progression_templates_all_12_tonics_validated": true,
+    "composition_pass128_evidence_bridge": true,
+    "composition_guarded_service_registry_exposure": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
