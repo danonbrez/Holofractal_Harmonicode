@@ -225,7 +225,7 @@ class Harmonic36CompositionGraphBridge:
         base = self._base.verify_binding(
             engine, obj["h36_pass128_binding"]
         )
-        roots = base["pass128_edge"]["evidence_roots"]
+        roots = base["pass128_edge"]["relation_evidence_roots"]
         if composition["composition_evidence_root_hash72"] not in roots:
             raise Harmonic36CompositionGraphError(
                 "H36_COMPOSITION_GRAPH_ROOT_MISMATCH",
