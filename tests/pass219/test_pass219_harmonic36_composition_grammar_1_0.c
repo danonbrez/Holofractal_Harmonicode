@@ -144,8 +144,8 @@ int main(void) {
     assert(t.relation == HHS_EXACT_PASS219_H36_RELATION_MODAL);
 
     /* Hash216-bound composition candidates retain directional identity. */
-    occurrence(0U, 10U, 24U, &source_occ);
-    occurrence(1U, 11U, 25U, &target_occ);
+    occurrence(0U, 0U, 24U, &source_occ);
+    occurrence(1U, 0U, 25U, &target_occ);
     assert(source_occ.harmonic_rule64 == 25U);
     assert(target_occ.harmonic_rule64 == 26U);
     assert(hhs_exact_pass219_h36_composition_transition(
@@ -162,8 +162,8 @@ int main(void) {
         HHSExactPass219H36CompositionTransitionV1 bad;
         HHSExactPass219H36Hash216OccurrenceBindingV1 s2;
         HHSExactPass219H36Hash216OccurrenceBindingV1 t2;
-        occurrence(0U, 12U, 27U, &s2);
-        occurrence(1U, 13U, 29U, &t2);
+        occurrence(0U, 0U, 27U, &s2);
+        occurrence(1U, 0U, 29U, &t2);
         assert(s2.harmonic_rule64 == 28U);
         assert(t2.harmonic_rule64 == 30U);
         assert(hhs_exact_pass219_h36_composition_transition(
@@ -179,8 +179,8 @@ int main(void) {
         HHSExactPass219H36Hash216OccurrenceBindingV1 s3;
         HHSExactPass219H36Hash216OccurrenceBindingV1 t3;
         HHSExactPass219H36CompositionTransitionV1 good;
-        occurrence(0U, 14U, 27U, &s3);
-        occurrence(1U, 15U, 28U, &t3);
+        occurrence(0U, 0U, 27U, &s3);
+        occurrence(1U, 0U, 28U, &t3);
         assert(s3.harmonic_rule64 == 28U);
         assert(t3.harmonic_rule64 == 29U);
         assert(hhs_exact_pass219_h36_composition_transition(
