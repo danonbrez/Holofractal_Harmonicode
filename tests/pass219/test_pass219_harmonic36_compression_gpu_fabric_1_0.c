@@ -100,6 +100,51 @@ int main(void) {
     assert(cw.h36_roundtrip_equal == 1U);
     assert(cw.exact_reconstruction_equal == 1U);
 
+    {
+        uint8_t register_bytes[HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES];
+        uint8_t snapshots[HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_BYTES];
+        uint8_t available[HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT];
+        uint8_t generic_reconstruction[
+            HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES
+        ];
+        uint8_t block_reconstruction[
+            HHS_EXACT_PASS219_H36_HFC_REGISTER_BYTES
+        ];
+        uint32_t erased;
+
+        assert(hhs_exact_pass219_h36_boolean_expand(
+            &frame, register_bytes) == HHS_EXACT_STATUS_OK);
+        assert(hhs_exact_pass219_h36_hfc_snapshot_encode(
+            register_bytes, snapshots, sizeof(snapshots)) ==
+            HHS_EXACT_STATUS_OK);
+
+        for (erased = 0U;
+             erased < HHS_EXACT_PASS219_H36_HFC_SNAPSHOT_COUNT;
+             ++erased) {
+            memset(available, 1, sizeof(available));
+            available[erased] = 0U;
+            assert(hhs_exact_pass219_h36_hfc_snapshot_reconstruct(
+                snapshots, sizeof(snapshots), available,
+                generic_reconstruction) == HHS_EXACT_STATUS_OK);
+            assert(hhs_exact_pass219_h36_hfc_snapshot_reconstruct_blocks(
+                snapshots, sizeof(snapshots), available,
+                block_reconstruction) == HHS_EXACT_STATUS_OK);
+            assert(memcmp(
+                register_bytes, generic_reconstruction,
+                sizeof(register_bytes)) == 0);
+            assert(memcmp(
+                generic_reconstruction, block_reconstruction,
+                sizeof(register_bytes)) == 0);
+        }
+
+        memset(available, 1, sizeof(available));
+        available[4] = 0U;
+        available[5] = 0U;
+        assert(hhs_exact_pass219_h36_hfc_snapshot_reconstruct_blocks(
+            snapshots, sizeof(snapshots), available,
+            block_reconstruction) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    }
+
     assert(hhs_exact_pass219_h36_gpu_locality_plan(
         &p207, &p208, 12U, 17U, 3U, 11U, &plan) ==
         HHS_EXACT_STATUS_OK);
