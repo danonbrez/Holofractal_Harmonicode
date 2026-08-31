@@ -1,0 +1,68 @@
+name: Pass 219 Harmonic36 Mandatory Default Binding
+
+on:
+  push:
+    branches:
+      - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_default_binding_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
+      - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+      - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
+      - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
+      - '.github/workflows/pass219-harmonic36-default-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mandatory-default-binding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Strict C11 binding compile and test
+        run: |
+          mkdir -p /tmp/h36-binding
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc \
+            -o /tmp/h36-binding/binding.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_default_binding_1_0.c \
+            /tmp/h36-binding/binding.o \
+            -o /tmp/h36-binding/test
+          /tmp/h36-binding/test
+
+      - name: Prove mandatory integration contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+          ).read_text())
+
+          required = contract['mandatory_default_state_binding']
+          assert required and all(required.values())
+
+          authority = contract['authority']
+          assert authority['singleton_vm81_authority_preserved'] is True
+          assert authority['independent_vm81_authority'] is False
+          assert authority['independent_hash72_authority'] is False
+          assert authority['independent_hash216_authority'] is False
+          assert authority['floating_point_canonical_authority'] is False
+
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert 'hhs_pass219_harmonic36_default_binding_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
+          PY
