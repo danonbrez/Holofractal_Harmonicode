@@ -372,6 +372,8 @@ HHSExactStatus hhs_exact_pass219_h36_vm_step(
     state->pc18 = (state->pc18 + 1U) & UINT32_C(0x3FFFF);
     status = h36_execute(state, &ins, 0U);
     state->steps += 1U;
+    if (status == HHS_EXACT_STATUS_OK)
+        (void)hhs_exact_pass219_h36_internal_interrupt_refresh(state);
     return status;
 }
 
