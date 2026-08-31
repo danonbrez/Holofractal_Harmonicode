@@ -46,6 +46,7 @@ on:
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
+      - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -217,6 +218,34 @@ jobs:
             exit 1
           fi
 
+      - name: Measured H36 optimization winners
+        run: |
+          mkdir -p artifacts/pass219/harmonic36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36/exact-opt.o
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_optimization_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-benchmark
+          /tmp/h36/h36-benchmark \
+            artifacts/pass219/harmonic36/optimization_benchmark.json
+          cat artifacts/pass219/harmonic36/optimization_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/optimization_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['physical_gpu_measured'] is False
+          assert d['authoritative_state_changed'] is False
+          assert d['transcode']['exact_result_equal'] is True
+          assert d['hfc_reconstruction']['exact_result_equal'] is True
+          assert d['gpu_locality_cpu_reference']['exact_selected_equal'] is True
+          assert d['native_cache_address']['exact_result_equal'] is True
+          assert d['all_candidate_winners'] is True
+          PY
+
       - name: Prove mandatory integration contract
         run: |
           python - <<'PY'
@@ -252,3 +281,9 @@ jobs:
           assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
           PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-harmonic36-optimization-benchmark
+          path: artifacts/pass219/harmonic36/optimization_benchmark.json
+          if-no-files-found: error
