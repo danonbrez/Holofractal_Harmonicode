@@ -236,6 +236,14 @@
     "timing_noncanonical": true,
     "singleton_vm81_authority_preserved": true,
     "hash72_hash216_authority_preserved": true,
-    "validation_pending": true
+    "validation_pending": false,
+    "validation_classification": "GLOBAL_COMPRESSION_DEBT_POLICY_PROMOTION_SUPPORTED",
+    "validated_run": 33546781551,
+    "exact_job": 99986146595,
+    "synthetic_job": 99986146427,
+    "exact_artifact": 9815799961,
+    "synthetic_artifact": 9815799188,
+    "exact_and_synthetic_green": true,
+    "reconciled_current_main": "a5c0da9df9bef4c848c186d74e2ba5f897f93687"
   }
 }
