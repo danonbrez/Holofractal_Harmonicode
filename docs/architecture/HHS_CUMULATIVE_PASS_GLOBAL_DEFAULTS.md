@@ -179,3 +179,40 @@ that omit the policy are `WIRED_BUT_STALE` until repaired forward.
 
 The policy never creates an additional VM81 mutation authority, persistence
 authority, Hash72 authority, or Hash216 authority.
+
+
+## Compression-debt global default
+
+Pass 219 adds `HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0` as a mandatory cross-cutting default.
+
+The conserved quantity is computational obligation:
+
+```text
+inbound + issued
+=
+executed/settled + retained-compressed + transferred-out
+```
+
+Physical time remains monotonic and is not debt credit.
+
+The mandatory native closure membrane is:
+
+```text
+81 * 64 = 5184 bits
+3 * 72 = 216 Hash216 occurrences
+```
+
+with complete 216-position SHA-256 indexing, ordered phase identity, Sudoku/Lo Shu Genesis binding, and reciprocal transfer accounting.
+
+Compatible runtime/data/ML layers must restrict immediate debt work to at most seven VM81 cells while preserving the complete 81-cell authoritative frame. Deferred obligations remain typed compressed debt or reciprocal transfers.
+
+The exact reciprocal bookkeeping policy is:
+
+```text
+debt 3/25
+capacity 25/3
+```
+
+and does not modify the already-admitted monotonic `25/3 ms` latency rule.
+
+No pre-existing compatible surface is grandfathered around this invariant; missing enforcement is repair-forward debt.
