@@ -69,6 +69,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -520,6 +521,61 @@ jobs:
               assert row['occupancy4_vs_fresh_ratio_x1000'] > 1000
               assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
           assert d['measurement']['all_occupancy4_faster_than_fresh'] is True
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 cache capacity 8
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-capacity8
+          /tmp/h36/h36-stack-cache-capacity8 \
+            artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 8
+          assert d['cache']['next_sequence'] == 9
+          assert d['boundary']['ninth_store_result'] == 'BUFFER_TOO_SMALL'
+          assert d['boundary']['full_capacity_idempotent_existing_store_ok'] is True
+          assert d['boundary']['full_capacity_count_sequence_unchanged'] is True
+          assert d['correctness'] and all(d['correctness'].values())
+          assert len(d['residents']) == 8
+          assert len({row['workload_signature36'] for row in d['residents']}) == 8
+          assert [row['entry_sequence'] for row in d['residents']] == list(range(1, 9))
+          names = {row['name'] for row in d['residents']}
+          assert {
+              'FULL_MONITOR',
+              'CONSOLE_FOCUSED',
+              'BINARY_IO_FOCUSED',
+              'MONITOR_CONTROL_FOCUSED',
+              'APR_PI_INTERRUPT_FOCUSED',
+              'RIM_BOOTSTRAP_FOCUSED',
+              'MIXED_CONSOLE_BINARY_IO',
+              'MIXED_SCHEDULER_IO_UUO',
+          } == names
+          for row in d['residents']:
+              assert row['workload_signature36'] > 0
+              assert row['semantic_result_signature64'] > 0
+              assert row['h36_median_ns'] > 0
+              assert row['linux_median_ns'] > 0
+              assert row['selected_candidate_id'] in (1, 2)
+              assert len(row['selected_vector_key216']) == 216
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['occupancy1_lookup_median_ns'] > 0
+              assert row['occupancy4_lookup_median_ns'] > 0
+              assert row['occupancy8_lookup_median_ns'] > 0
+              assert row['occupancy8_vs_fresh_ratio_x1000'] > 0
+              assert row['occupancy8_vs_occupancy1_ratio_x1000'] > 0
+              assert row['occupancy8_vs_occupancy4_ratio_x1000'] > 0
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
