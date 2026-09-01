@@ -135,7 +135,10 @@
     "H36_STACK_CACHE_ZERO_AUTHORITY",
     "H36_STACK_CACHE_BOUNDED_CAPACITY",
     "H36_STACK_CACHE_IDEMPOTENT_STORE",
-    "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_REJECTION"
+    "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_REJECTION",
+    "H36_STACK_CACHE_MEASURED_BENEFIT",
+    "H36_STACK_CACHE_DEPENDENCY_SCOPED_LOOKUP_VALIDATION",
+    "H36_STACK_CACHE_GENERALIZATION_MEASURED_TARGET_ONLY"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -257,7 +260,13 @@
     "h36_stack_cache_idempotent_store": true,
     "h36_stack_cache_partial_identity_collision_rejection": true,
     "h36_stack_cache_hash216_metadata_only": true,
-    "h36_stack_cache_zero_authority": true
+    "h36_stack_cache_zero_authority": true,
+    "h36_stack_cache_initial_negative_measurement_preserved": true,
+    "h36_stack_cache_duplicate_full_validation_removed": true,
+    "h36_stack_cache_dependency_scoped_lookup_validation": true,
+    "h36_stack_cache_measured_winner": true,
+    "h36_stack_cache_current_target_generalize_required": true,
+    "h36_stack_cache_other_compatible_targets_validation_required": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -288,21 +297,35 @@
       "artifact_id": 9783529146,
       "artifact_sha256": "63046cea9506229fbc4f0830e5abfc1358761d535086771dd0d8588b914d6221",
       "authoritative_state_changed": false
+    },
+    "stack_selection_cache_1_11": {
+      "exact_cache_hit_fresh_equal": true,
+      "stale_signature_rejected": true,
+      "deterministic_replay_receipt": true,
+      "selected_target": "h36-stack-cache-3734727431",
+      "measured_winner": "CACHE_HIT",
+      "speedup_x1000": 1196,
+      "run": 33475578584,
+      "job": 99754022255,
+      "artifact_id": 9788037050,
+      "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6",
+      "authoritative_state_changed": false
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33474222007,
-    "job": 99750000903,
-    "head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
+    "run": 33475578584,
+    "job": 99754022255,
+    "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33474222007,
-    "job": 99750000903,
-    "head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
+    "run": 33475578584,
+    "job": 99754022255,
+    "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
     "ka10_monitor_profile_1_9": "SUCCESS",
     "stack_selection_1_10": "SUCCESS",
     "stack_selection_cache_1_11": "SUCCESS",
+    "stack_selection_cache_benchmark": "CACHE_HIT_MEASURED_WINNER",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -404,8 +427,8 @@
     "full_cache_status": "BUFFER_TOO_SMALL",
     "vector_store_metadata_only": true,
     "hash216_lineage_claim": false,
-    "performance_benefit_measured": false,
-    "generalization_state": "VALIDATION_REQUIRED",
+    "performance_benefit_measured": true,
+    "generalization_state": "GENERALIZE_REQUIRED",
     "authority": {
       "candidate_only": true,
       "vm81_mutation": false,
@@ -420,6 +443,43 @@
       "job": 99750000903,
       "artifact_id": 9787576934,
       "artifact_sha256": "63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06"
+    },
+    "optimized_implementation_head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+    "compatible_other_signatures": "VALIDATION_REQUIRED",
+    "benchmark": {
+      "platform": "linux-x86_64",
+      "samples": 11,
+      "rounds_per_sample": 4096,
+      "baseline_negative": {
+        "run": 33475406279,
+        "head": "b4c2d5d2d8385fa99fe6f3bf4b59ba66e7f6a041",
+        "fresh_selection_median_ns": 19011549,
+        "cache_hit_median_ns": 27643766,
+        "winner": "FRESH_SELECTION",
+        "winner_ratio_x1000": 1454
+      },
+      "first_optimization": {
+        "run": 33475482687,
+        "head": "8d85461a6d5d0fff18bd2045e3a8cc1d3dde263c",
+        "fresh_selection_median_ns": 17855908,
+        "cache_hit_median_ns": 18003153,
+        "winner": "FRESH_SELECTION",
+        "winner_ratio_x1000": 1008
+      },
+      "measured_winner": {
+        "run": 33475578584,
+        "job": 99754022255,
+        "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+        "fresh_selection_median_ns": 18749724,
+        "cache_hit_median_ns": 15671781,
+        "fresh_selection_per_operation_median_ns": 4577,
+        "cache_hit_per_operation_median_ns": 3826,
+        "winner": "CACHE_HIT",
+        "speedup_x1000": 1196,
+        "artifact_id": 9788037050,
+        "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6"
+      },
+      "cross_platform_inference": false
     }
   }
 }
