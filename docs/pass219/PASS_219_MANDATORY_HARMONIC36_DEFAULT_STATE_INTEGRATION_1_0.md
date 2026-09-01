@@ -1847,3 +1847,96 @@ occupancy4_total_ns >= fresh_selection_total_ns
 must fail closed and trigger cache repair or explicit reclassification.
 
 All authority boundaries remain unchanged.
+
+## 26. Global exact 25/3 latency policy integration 1.16
+
+H36 stack selection and cache residency now inherit the promoted global Pass 219
+latency quantum without changing the H36 semantic selector or any canonical
+authority boundary.
+
+The exact policy is:
+
+```text
+U = 25/3 ms = 1/120 s
+
+Tier 1 = U  = 25/3 ms  = 120 FPS
+Tier 2 = 2U = 50/3 ms  =  60 FPS
+Tier 3 = 4U = 100/3 ms =  30 FPS
+
+window:
+mean <= Tier 1
+p95 <= Tier 2
+max <= Tier 3
+```
+
+All threshold decisions remain integer/rational cross-multiplications. No
+floating-point value decides the H36 route, policy tier, budget result, or
+state.
+
+### 26.1 H36 selector binding
+
+The additive exact ABI surface:
+
+```text
+hhs_pass219_harmonic36_global_latency_policy_1_16
+```
+
+executes the already-validated H36/Linux exact stack selector first. It then
+projects the two independently executable, exact-semantic-equal stack
+candidates into the global latency planner.
+
+Admission is fail-closed:
+
+```text
+exact H36 selector result
++ exact workload/result identity
++ candidate-only route
++ exact selector proof
++ complete exact fallback
++ canonical authority requested = 0
+-> global 25/3 latency classification
+-> selected route must equal exact H36 selected candidate
+```
+
+A planner disagreement with the exact H36 selector is an invariant failure.
+Timing therefore cannot rewrite semantic selection identity.
+
+### 26.2 Budget-unmet behavior
+
+If the fastest exact H36-selected route misses the requested tier, the planner
+returns `LATENCY_BUDGET_UNMET` semantics through the exact latency decision.
+It does not drop required work, synthesize an incomplete route, or acquire
+authority. A complete exact fallback remains present.
+
+This makes the global policy an optimization and scheduling membrane around the
+existing H36 path, not a substitute for VM81 admission or exact computation.
+
+### 26.3 Preserved H36 validation anchors
+
+This integration does not reclassify or discard the sealed H36 evidence:
+
+```text
+retained capacity-eight boundary
+head = a8834b12553741dc5fd04f3434752de14cfccb1b
+run  = 33529443931
+job  = 99928529597
+
+latest green repeat-stability implementation
+head = 157796f80b9806365de7a8578840560f3716617b
+run  = 33533279927
+job  = 99941365968
+```
+
+The calibrated occupancy gate remains:
+
+```text
+5 repeats
+>= 4 beneficial repeats
+occupancy4_total_ns < fresh_selection_total_ns
+```
+
+The global latency policy adds exact tier/budget classification to those H36
+optimization surfaces; it does not restore one-shot timing assertions, infer
+cross-platform performance, expand cache capacity beyond eight, or alter
+VM81/Hash72/Hash216 authority.
+\n

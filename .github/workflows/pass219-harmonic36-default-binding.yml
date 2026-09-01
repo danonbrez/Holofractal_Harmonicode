@@ -3,7 +3,7 @@ name: Pass 219 Harmonic36 Nested VM
 on:
   push:
     branches:
-      - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
+      - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1\n      - agent/pass219-h36-global-latency-policy-integration
     paths:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
@@ -27,7 +27,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc'
-      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'\n      - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'\n      - 'hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc'\n      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'\n      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
@@ -41,7 +41,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
       - 'tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c'
-      - 'tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c'
+      - 'tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c'\n      - 'tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
@@ -215,6 +215,15 @@ jobs:
             /tmp/h36/exact-abi.o \
             -o /tmp/h36/test-stack-selection
           /tmp/h36/test-stack-selection
+
+      - name: H36 global 25/3 latency policy 1.16 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-h36-global-latency
+          /tmp/h36/test-h36-global-latency
 
       - name: H36 stack-selection cache 1.11 conformance
         run: |

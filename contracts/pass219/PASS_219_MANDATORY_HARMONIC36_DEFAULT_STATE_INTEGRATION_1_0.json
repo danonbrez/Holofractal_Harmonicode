@@ -4,7 +4,7 @@
   "pass": 219,
   "additive": true,
   "baseline": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
-  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "branch": "agent/pass219-h36-global-latency-policy-integration",
   "cardinalities": {
     "vm81": "81*64=5184",
     "hash72": "72*72=5184",
@@ -24,7 +24,8 @@
     "octonion_ternary_required": true,
     "loshu_sudoku_qudit_required": true,
     "native_36bit_execution_required": true,
-    "multimodal_generalization_required": true
+    "multimodal_generalization_required": true,
+    "global_latency_policy_25_over_3_required": true
   },
   "authority": {
     "singleton_vm81_authority_preserved": true,
@@ -64,7 +65,12 @@
     "H36_STACK_CACHE_CAPACITY8_CROSS_PLATFORM_UNMEASURED_PROMOTION",
     "H36_STACK_CACHE_ONE_SHOT_TIMING_BOOLEAN_AS_SOLE_GENERALIZATION_GATE",
     "H36_STACK_CACHE_REPEAT_STABILITY_FEWER_THAN_4_OF_5_BENEFICIAL",
-    "H36_STACK_CACHE_REPEAT_STABILITY_AGGREGATE_CACHE_NOT_FASTER"
+    "H36_STACK_CACHE_REPEAT_STABILITY_AGGREGATE_CACHE_NOT_FASTER",
+    "H36_GLOBAL_LATENCY_POLICY_BYPASSED",
+    "H36_LATENCY_ROUTE_SELECTOR_DIVERGED_FROM_EXACT_STACK_SELECTOR",
+    "H36_LATENCY_ROUTE_WITHOUT_COMPLETE_FALLBACK_ACCEPTED",
+    "H36_LATENCY_ROUTE_CANONICAL_AUTHORITY_ESCALATION",
+    "H36_LATENCY_BUDGET_UNMET_DROPPED_REQUIRED_COMPUTATION"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -176,7 +182,13 @@
     "H36_STACK_CACHE_CAPACITY8_GENERALIZATION_BOUNDED_LINUX_X86_64",
     "H36_STACK_CACHE_TIMING_STABILITY_EXACT_INTEGER_REPEAT_GATE",
     "H36_STACK_CACHE_ONE_SHOT_REGRESSION_NONAUTHORITATIVE_AFTER_CALIBRATION",
-    "H36_STACK_CACHE_CALIBRATION_ALTERNATING_MEASUREMENT_ORDER"
+    "H36_STACK_CACHE_CALIBRATION_ALTERNATING_MEASUREMENT_ORDER",
+    "H36_GLOBAL_LATENCY_25_OVER_3_POLICY_BOUND",
+    "H36_STACK_LATENCY_TIER_CLASSIFICATION_EXACT_INTEGER",
+    "H36_STACK_LATENCY_ROUTE_SELECTION_EXACT_SELECTOR_PARITY",
+    "H36_STACK_LATENCY_COMPLETE_FALLBACK_PRESERVED",
+    "H36_STACK_LATENCY_BUDGET_UNMET_EXPLICIT",
+    "H36_STACK_LATENCY_CANONICAL_AUTHORITY_UNCHANGED"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -834,5 +846,51 @@
       "occupancy4_linux_x86_64": "GENERALIZE_REQUIRED",
       "reclassification_required": false
     }
+  },
+  "global_latency_policy_25_over_3_1_16": {
+    "policy": "PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+    "integration_parent": "06ba7057d5403397afe73b0e492fb686a6ba1547",
+    "latency_quantum": {
+      "numerator_ms": 25,
+      "denominator_ms": 3,
+      "seconds": "1/120"
+    },
+    "tiers": [
+      {
+        "tier": 1,
+        "multiplier": 1,
+        "fps": 120
+      },
+      {
+        "tier": 2,
+        "multiplier": 2,
+        "fps": 60
+      },
+      {
+        "tier": 3,
+        "multiplier": 4,
+        "fps": 30
+      }
+    ],
+    "window_policy": {
+      "mean_max_tier": 1,
+      "p95_max_tier": 2,
+      "max_max_tier": 3,
+      "integer_rational_cross_multiplication_only": true
+    },
+    "h36_route_binding": {
+      "exact_h36_selector_runs_before_latency_planner": true,
+      "selected_route_must_equal_h36_selected_candidate": true,
+      "both_exact_semantic_equivalent_stack_candidates_remain_complete_fallbacks": true,
+      "budget_unmet_is_explicit": true,
+      "required_computation_preserved_on_budget_unmet": true,
+      "timing_is_noncanonical": true
+    },
+    "authority": {
+      "singleton_vm81_authority_preserved": true,
+      "hash72_hash216_authority_preserved": true,
+      "candidate_acceleration_only": true,
+      "canonical_authority_acquired_by_latency_planner": false
+    }
   }
-}
+}\n
