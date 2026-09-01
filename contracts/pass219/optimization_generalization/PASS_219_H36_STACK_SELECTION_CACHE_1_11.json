@@ -5,6 +5,7 @@
     "hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h",
     "hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc",
     "tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c",
+    "benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp",
     "hhs_runtime/include/hhs_runtime_exact_abi.h",
     "hhs_runtime/c/hhs_runtime_exact_abi.c"
   ],
@@ -120,15 +121,55 @@
       ]
     }
   ],
-  "target_evidence": [],
-  "declared_generalize_required": [],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-stack-cache-3734727431",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "exact_cache_hit_fresh_selection_equal": true,
+      "stale_signature_rejected": true,
+      "deterministic_replay_receipt": true,
+      "platform": "linux-x86_64",
+      "samples": 11,
+      "rounds_per_sample": 4096,
+      "fresh_selection_median_ns": 18749724,
+      "cache_hit_median_ns": 15671781,
+      "speedup_x1000": 1196,
+      "validation_run": 33475578584,
+      "validation_job": 99754022255,
+      "artifact_id": 9788037050,
+      "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6",
+      "authority_escalation": false
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-stack-cache-3734727431"
+  ],
   "policy": {
-    "correctness_validation_run": 33474222007,
+    "correctness_validation_run": 33475578584,
     "cache_hit_fresh_exact_equal": true,
     "stale_signature_rejected": true,
-    "performance_benefit_measured": false,
-    "current_target_classification": "VALIDATION_REQUIRED",
+    "performance_benefit_measured": true,
+    "current_target_classification": "GENERALIZE_REQUIRED",
     "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
-    "no_unmeasured_generalization": true
+    "no_unmeasured_generalization": true,
+    "cross_platform_inference": false,
+    "retained_negative_measurements": [
+      {
+        "run": 33475406279,
+        "head": "b4c2d5d2d8385fa99fe6f3bf4b59ba66e7f6a041",
+        "cache_benefit": false,
+        "winner": "FRESH_SELECTION",
+        "winner_ratio_x1000": 1454
+      },
+      {
+        "run": 33475482687,
+        "head": "8d85461a6d5d0fff18bd2045e3a8cc1d3dde263c",
+        "cache_benefit": false,
+        "winner": "FRESH_SELECTION",
+        "winner_ratio_x1000": 1008
+      }
+    ]
   }
 }
