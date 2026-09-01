@@ -105,7 +105,16 @@
     "H36_KA10_PI_PROGRAM_REQUESTS",
     "H36_KA10_PI_HARDWARE_SOFTWARE_REQUEST_SEPARATION",
     "H36_KA10_PI_GLOBAL_CHANNEL_CONTROL",
-    "H36_KA10_PI_STATUS_READBACK"
+    "H36_KA10_PI_STATUS_READBACK",
+    "H36_KA10_MONITOR_RIM_LOADED_IMAGE",
+    "H36_KA10_MONITOR_APR_PI_INITIALIZATION",
+    "H36_KA10_MONITOR_TTY_PTR_PTP_ISR",
+    "H36_KA10_MONITOR_DETERMINISTIC_DISPATCH_TABLE",
+    "H36_KA10_MONITOR_HISTORICAL_UUO_ENTRY",
+    "H36_KA10_MONITOR_COOPERATIVE_RUN_QUEUE",
+    "H36_KA10_MONITOR_EXACT_REPLAY_RECEIPT",
+    "H36_KA10_MONITOR_WORKLOAD_SIGNATURE",
+    "H36_KA10_MONITOR_CANDIDATE_ONLY_AUTHORITY"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -197,14 +206,27 @@
     "ka10_pi_program_request_clear": true,
     "ka10_pi_request_source_separation": true,
     "ka10_pi_exact_status_readback": true,
-    "ka10_internal_interrupt_refresh": true
+    "ka10_internal_interrupt_refresh": true,
+    "ka10_lightweight_monitor_profile_1_9": true,
+    "ka10_monitor_rim_loaded_image": true,
+    "ka10_monitor_apr_pi_initialization": true,
+    "ka10_monitor_tty_isr": true,
+    "ka10_monitor_ptr_isr": true,
+    "ka10_monitor_ptp_isr": true,
+    "ka10_monitor_apr_isr": true,
+    "ka10_monitor_deterministic_dispatch_table": true,
+    "ka10_monitor_historical_uuo_entry": true,
+    "ka10_monitor_two_slot_cooperative_run_queue": true,
+    "ka10_monitor_exact_replay_receipt": true,
+    "ka10_monitor_workload_signature": true,
+    "ka10_monitor_candidate_stack_only": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
-    "nonzero_jrst_function_variants": false,
+    "nonzero_jrst_function_variants": true,
     "map_instruction": false,
-    "priority_interrupt_and_user_privilege_machine": false,
-    "peripheral_specific_device_models": false,
+    "priority_interrupt_and_user_privilege_machine": true,
+    "peripheral_specific_device_models": true,
     "generic_processor_side_io_bus": true
   },
   "optimization_evidence": {
@@ -221,16 +243,63 @@
     "authoritative_state_changed": false
   },
   "latest_validated_h36_gate": {
-    "run": 33446382841,
-    "job": 99666331302,
-    "head": "9b22ae93b7f653d20a911b13b8ad941db32e9dc8",
+    "run": 33455670905,
+    "job": 99694999134,
+    "head": "8c773b37c9c1525ae7f22cb54bacca539a4f0e08",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33451207962,
-    "job": 99681283046,
-    "head": "af9c3253f4844b186ea6ddea8c5d094625fe89e3",
-    "apr_pi_1_8": "SUCCESS",
-    "external_followup_pending_at_checkpoint": true
+    "run": 33455670905,
+    "job": 99694999134,
+    "head": "8c773b37c9c1525ae7f22cb54bacca539a4f0e08",
+    "ka10_monitor_profile_1_9": "SUCCESS",
+    "cumulative_gate": "SUCCESS",
+    "external_followup_pending_at_checkpoint": false
+  },
+  "ka10_monitor_profile_1_9": {
+    "image_range18": [
+      "040",
+      "0107"
+    ],
+    "image_words": 40,
+    "boot18": "070",
+    "scheduler18": "064",
+    "dispatch_table18": [
+      "042",
+      "045"
+    ],
+    "run_queue18": [
+      "046",
+      "047"
+    ],
+    "interrupt_routines18": {
+      "tty": "050",
+      "ptr": "053",
+      "ptp": "056",
+      "apr": "062"
+    },
+    "run_queue_slots": 2,
+    "rim_loaded": true,
+    "historical_uuo_mode": true,
+    "exact_replay_receipt": true,
+    "workload_signature36": true,
+    "candidate_stack_only": true,
+    "authority": {
+      "vm81_mutation": false,
+      "hash72": false,
+      "hash216": false,
+      "persistence": false,
+      "floating_point": false
+    }
+  },
+  "monitor_profile_validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33455670905,
+    "job": 99694999134,
+    "head": "8c773b37c9c1525ae7f22cb54bacca539a4f0e08",
+    "conclusion": "SUCCESS",
+    "optimization_artifact_id": 9781338689,
+    "optimization_artifact_sha256": "b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d2092",
+    "note": "Artifact remains the existing H36 optimization benchmark; monitor stack-selection timing is the next bounded step."
   }
 }

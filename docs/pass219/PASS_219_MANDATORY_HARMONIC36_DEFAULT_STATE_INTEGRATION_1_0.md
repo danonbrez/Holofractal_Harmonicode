@@ -832,3 +832,65 @@ job = 99681283046
 head = af9c3253f4844b186ea6ddea8c5d094625fe89e3
 KA10 APR PI 1.8 = SUCCESS
 ```
+
+## 19. KA10 lightweight monitor/driver execution profile 1.9
+
+The first bounded pre-GUI KA10 software stack is now implemented as executable 36-bit state rather than host-side orchestration.
+
+The profile is deliberately small:
+
+```text
+monitor image = 040..0107
+RIM terminal  = 0107 -> JRST 070
+boot          = 070..075
+scheduler     = 064
+dispatch      = 042..045
+run queue     = 046..047
+TTY ISR       = 050
+PTR ISR       = 053
+PTP ISR       = 056
+APR ISR       = 062
+tasks         = 0104,0105
+```
+
+The image is loaded through the validated KA10 RIM/PTR path. Boot code programs the validated TTY/PTR/PTP devices, APR channel/overflow interrupt route, and PI channels before entering the monitor scheduler.
+
+The driver executes asynchronous device progress only through the deterministic device-step surface, refreshes internal interrupt conditions, admits priority entry through the existing PI machine, and executes the selected ISR through the same H36 instruction engine. There is no host-side shortcut around the historical instruction/device state.
+
+The dispatch table is resident 36-bit monitor data. The two-slot cooperative run queue dispatches executable task addresses. Each task enters the historical KA10 MUUO path and yields through the existing 040/041 monitor vector, proving that the monitor-call path is executable rather than descriptive.
+
+The monitor receipt contains:
+
+- the nested RIM receipt;
+- exact executed-step and dispatch counts;
+- TTY/PTR/PTP/APR service counts;
+- historical UUO dispatch count;
+- queue cursor and last interrupt channel;
+- a deterministic 36-bit image/workload signature;
+- explicit candidate-stack-only classification;
+- zero VM81 mutation, Hash72, Hash216, persistence, and floating-point authority.
+
+Fresh bootstrap/replay VMs must produce byte-identical receipts for the same deterministic workload.
+
+Public surfaces:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc`
+- `tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c`
+- aggregate exposure through `hhs_runtime_exact_abi.h` and `hhs_runtime_exact_abi.c`.
+
+Validated cumulative receipt:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33455670905
+job      = 99694999134
+head     = 8c773b37c9c1525ae7f22cb54bacca539a4f0e08
+result   = SUCCESS
+artifact = 9781338689
+artifact sha256 = b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d2092
+```
+
+Every cumulative H36 gate was green at this head, including strict C11, monitor 1.9 conformance, exact cumulative ABI compilation, all inherited fabrics/graphs, no-canonical-float validation, optimization benchmark, contract proof, and artifact upload.
+
+The monitor is therefore a validated **candidate software stack**, not an alternate execution authority. Promotion into any default stack-selection path requires a later exact-equality-before-timing comparison against the competing stack for the same workload.

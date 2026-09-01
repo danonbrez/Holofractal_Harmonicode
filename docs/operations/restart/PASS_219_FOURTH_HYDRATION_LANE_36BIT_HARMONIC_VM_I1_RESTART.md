@@ -6,8 +6,8 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `af9c3253f4844b186ea6ddea8c5d094625fe89e3`
-- Branch head immediately before this checkpoint record: `af9c3253f4844b186ea6ddea8c5d094625fe89e3`
+- Validated implementation head: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
+- Branch head immediately before this checkpoint record: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
 - Main merge: **not performed**
 - Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
 
@@ -455,44 +455,79 @@ Functional validation at checkpoint:
 
 All preceding H36 gates through exact factorization were also green when this checkpoint was written. Remaining Hash216/graph/benchmark/artifact steps were external follow-through and are nonblocking under the repository workflow policy.
 
+### 15. KA10 lightweight monitor/driver profile 1.9
+
+Implemented the bounded monitor/driver target named by the preceding checkpoint:
+
+- executable monitor image at `040..0107`;
+- RIM/PTR bootstrap into the exact H36 memory image;
+- boot-time TTY/PTR/PTP + APR/PI initialization;
+- deterministic resident dispatch table at `042..045`;
+- TTY/PTR/PTP/APR interrupt service routines;
+- historical MUUO monitor-call/yield through `040/041`;
+- two-slot cooperative run queue at `046/047`;
+- exact monitor/RIM replay receipt;
+- deterministic 36-bit workload/image signature;
+- candidate-stack-only authority classification.
+
+Public/implementation files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h`;
+- `hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc`;
+- `tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c`;
+- exact ABI aggregates updated;
+- Pass 219 H36 workflow updated.
+
+Validation closed fully green:
+
+- workflow `Pass 219 Harmonic36 Nested VM`;
+- run `33455670905`;
+- job `99694999134`;
+- head `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`;
+- conclusion **SUCCESS**;
+- artifact `9781338689`;
+- artifact SHA-256 `b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d2092`.
+
+All cumulative steps are green, not only the new monitor test. The monitor preserves zero independent VM81/Hash72/Hash216/persistence/floating-point authority.
+
 ## Validation receipt
 
-Authoritative dependency-scoped code gate:
+Current authoritative dependency-scoped cumulative gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33413612502`
-- job: `99558901184`
-- head: `6c92de9581c8d6f88d03f7ff3543a01ba7efdc01`
+- run: `33455670905`
+- job: `99694999134`
+- head: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
 - conclusion: **SUCCESS**
+- optimization artifact: `9781338689`
+- artifact SHA-256: `b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d2092`
 
-Every dedicated step was green:
+Every dedicated functional and cumulative step is green, including:
 
 1. Strict C11 kernel compile.
 2. Exact 5,184 nested VM conformance.
-3. Legacy 36-bit ISA 1.1 conformance.
-4. Two-word 36-bit ISA 1.2 conformance.
-5. Control stack I/O ISA 1.3 conformance.
-6. Arithmetic flag fidelity conformance.
-7. Mandatory default binding conformance.
-8. C++17 RNA facade conformance.
-9. Exact cumulative ABI compile.
-10. Exact factorization fabric conformance.
-11. Hash216 RNA binding conformance.
-12. Compression GPU fabric conformance.
-13. Branch knowledge fabric conformance.
-14. Canonical Pass128 graph bridge self-test.
-15. No canonical floating implementation.
-16. Mandatory integration contract proof.
+3. Legacy ISA 1.1.
+4. Two-word ISA 1.2.
+5. Control/stack/I/O 1.3.
+6. Privilege/JRST/PI 1.4.
+7. Historical UUO 1.5.
+8. Console devices 1.6.
+9. RIM bootstrap 1.7.
+10. APR/PI 1.8.
+11. **KA10 monitor profile 1.9**.
+12. Arithmetic flag fidelity.
+13. Mandatory default binding.
+14. C++17 RNA facade.
+15. Exact cumulative ABI compile.
+16. Factorization/Hash216/compression/GPU/branch-knowledge fabrics.
+17. Composition grammar/programs.
+18. Both Pass128 graph bridges.
+19. No canonical floating implementation.
+20. Measured H36 optimization winners.
+21. Mandatory integration contract proof.
+22. Benchmark artifact upload.
 
-Additional earlier green receipts include:
-
-- `33406936504` at `000827df90a9a7813042fd8284f65fa404190ff6`;
-- `33408549282` at `41cf2bbd640256a0e6027c2041db8a9b282a7ab8`;
-- `33409111007` at `0fd4b8acd8a3e0c05802830692ca1c6fa6742417`;
-- `33413386346` at `309084c0f097394512f3b98d6f0c744c2847c4de`;
-- `33413545732` at `990e562684b0cfa7edcabcaf407795d17f9123d3`.
-
-A later documentation-only workflow run may be queued. Do not hold the thread open for it and do not reinterpret queued external CI as an implementation blocker.
+The prior transient cumulative-ABI failure at run `33455533743` was repair-forwarded: the monitor itself was already green there; the failure was a literal newline escape in the aggregate include. The corrected aggregate and normalized no-float gate are green at the current validated head.
 
 ## Normative documentation updated after green code head
 
@@ -526,10 +561,12 @@ The prior "MAP" gap is removed for the KA10 profile: opcode 257 is correctly tre
 
 Remaining hardware extension work is now explicit:
 
-- concrete peripheral device models above the generic processor I/O bus;
 - optional historical floating hardware emulation, kept noncanonical to HHS exact authority;
 - optional later-processor profiles (KI10/KL10/etc.) as separate additive compatibility modules rather than silently changing KA10 semantics;
-- richer relocation/protection hardware modeling beyond the bounded 144-word nested image.
+- richer relocation/protection hardware modeling beyond the bounded 144-word nested image;
+- additional peripherals only when required by a validated workload, not as hardware-completeness work for its own sake.
+
+Concrete TTY/PTR/PTP devices, APR/PI programming, RIM, and the first lightweight monitor/driver stack are complete for the current KA10 profile.
 
 ### Optimization closure
 
@@ -539,32 +576,25 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-Resume from this checkpoint by moving above hardware-completeness work into the first **lightweight KA10 monitor/driver execution profile**.
-
-This follows the architectural purpose of the 36-bit lane: reuse minimal pre-GUI software/driver execution surfaces as efficient software stacks inside the modern VM81/Hash72/Hash216/hydration hardware, rather than implementing historical hardware for nostalgia.
+Resume from this checkpoint by integrating the validated monitor's workload signature into the existing optimization/stack-selection evidence path.
 
 Bounded target:
 
 ```text
-minimal executive monitor image
-+ RIM-loaded bootstrap
-+ APR/PI initialization
-+ TTY/PTR/PTP interrupt service routines
-+ deterministic device dispatch table
-+ bounded monitor call / UUO entry
-+ tiny run queue / cooperative dispatch
-+ exact restart/replay receipt
-+ workload signature metadata for stack-selection cache
--> executes entirely through validated H36/VM81 state
--> candidate software stack, not alternate authority
--> Hash216/vector-store optimization evidence reusable after validation
--> zero bypass of VM81 admission
+same deterministic workload
++ lightweight H36/KA10 monitor candidate
++ competing heavier x86_64/Linux software-stack candidate
++ exact result/state equality before timing
++ integer/receipt-bound workload signature
++ Hash216/vector-store candidate metadata
++ measured latency/resource evidence
+-> choose/promote only an exact measured winner
+-> preserve singleton VM81 admission
+-> candidate cache has zero mutation/Hash72/Hash216/persistence authority
 ```
 
-The first monitor profile should remain deliberately small and measurable. Its purpose is to establish an efficient reusable software-stack candidate that can later compete against heavier Linux/x86_64 execution paths under the existing optimization-selection architecture.
+Do not infer a performance win from historical size or architecture. Establish exact workload/result equality first, then measure. If the H36 monitor wins and the optimization is metadata-compatible, apply the repository's universal multimodal optimization-generalization invariant rather than leaving the improvement local-only.
 
-Do not expand into unrelated peripheral emulation unless required by this monitor profile.
-
-Any KI10/KL10 paging/MAP work remains a separate additive processor-profile module.
+Do not expand into KI10/KL10 paging/MAP in this step. That remains a separate additive processor profile.
 
 Do not merge to `main` without explicit integration authorization.
