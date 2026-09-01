@@ -1,0 +1,107 @@
+{
+  "schema": "HHS_PASS219_HOLOGRAPHIC_HARMONIC_WINDOW_25_3_1_0",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "IMPLEMENTED_VALIDATION_PENDING",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "7d9c6234970783b5086c8b2d2a86125004ccdd9e",
+  "inheritance": {
+    "global_latency_policy": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+    "mandatory_genesis_scaling": "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22",
+    "singleton_vm81_authority_preserved": true,
+    "hash72_hash216_authority_preserved": true,
+    "timing_noncanonical": true,
+    "no_float_canonical_authority": true
+  },
+  "algebra": {
+    "a2": 1,
+    "b2": 2,
+    "c2": 3,
+    "d2": 5,
+    "exact_residues": {
+      "T": "t^3-t",
+      "M": "m^2-m",
+      "representation": "SIGNED_NUMERATORS_OVER_ONE_COMMON_POSITIVE_DENOMINATOR"
+    },
+    "relation": "d^4/c^2=(b^2*T+(a^2+b^2)*M)^2/(d^2-b^2)",
+    "inherited_closed_reference": {
+      "T": 1,
+      "M": 1
+    },
+    "closed_combination": "2*1+3*1=5",
+    "exact_cross_product": "5*5*(5-2)=3*5*5=75",
+    "closed_ratio": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "negative_root_also_closes_after_square": true,
+    "base_symbols_t_and_m_are_not_assumed_integer_roots": true
+  },
+  "recursive_window": {
+    "scale_ratio": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "law": "W_k=W_0*(3/25)^k",
+    "maximum_current_depth": 9,
+    "current_depth_origin": "PASS219B universal phase-locality planner",
+    "exact_rational_only": true,
+    "branch_predicates": [
+      "phase_coordinate < active_window",
+      "phase_coordinate <= active_window"
+    ],
+    "direct_layer_addressed": true,
+    "recursion_stack_allocated": false,
+    "pointer_tree_traversal_required": false,
+    "fixed_width_single_layer_work": true,
+    "whole_path_depth_bounded": true,
+    "unbounded_depth_constant_time_claim": false,
+    "rationale": "A direct decision at a declared finite layer uses fixed-width arithmetic independent of total tree node count; enumerating an unbounded-depth path cannot be truthfully classified as O(1)."
+  },
+  "pass219_scope": {
+    "mandatory_global_default": true,
+    "mandatory_data_ml_guard": "pass219_holographic_harmonic_window_25_over_3",
+    "execution_composer_required": true,
+    "compatible_nested_recursive_logic": true,
+    "compatible_if_then_branch_selection": true,
+    "complete_fallback_on_missing_or_invalid_proof": true
+  },
+  "authority": {
+    "branch_window_canonical_mutation": false,
+    "branch_window_persistence": false,
+    "branch_window_hash72_commit": false,
+    "singleton_vm81": "INHERITED_C_ONLY",
+    "hash72_hash216": "INHERITED_PATHS_ONLY"
+  },
+  "public_abi": {
+    "header": "hhs_runtime/include/hhs_pass219_holographic_harmonic_window_25_3_1_0.h",
+    "implementation": "hhs_runtime/c/hhs_pass219_holographic_harmonic_window_25_3_1_0.inc",
+    "symbols": [
+      "hhs_exact_pass219_holographic_harmonic_window_version",
+      "hhs_exact_pass219_holographic_harmonic_window_invariant",
+      "hhs_exact_pass219_holographic_harmonic_window_validate",
+      "hhs_exact_pass219_holographic_branch_evaluate"
+    ]
+  },
+  "failure_policy": {
+    "residue_witness_missing": "REJECT",
+    "harmonic_closure_missing": "REJECT_OPTIMIZED_BRANCH_WINDOW_AND_USE_COMPLETE_INHERITED_PATH",
+    "depth_out_of_range": "REJECT",
+    "arithmetic_overflow": "REJECT",
+    "canonical_authority_requested": "REJECT"
+  },
+  "acceptance": [
+    "T=M=1 closes exactly to 25/3",
+    "equivalent common-denominator rational residues close",
+    "negative signed root closes after square",
+    "nonclosing residues cannot drive branch evaluation",
+    "recursive windows evaluate exactly through depth 9",
+    "inclusive and strict branch boundaries are exact",
+    "no float or double in canonical evaluator",
+    "global canonical defaults require the window validator",
+    "mandatory data ML and execution composer registrations require the guard",
+    "existing global latency and H36 paths remain green",
+    "exact-head and synthetic-current-main CI pass",
+    "merge and verify main"
+  ]
+}
