@@ -140,15 +140,37 @@
       "resident_count": 4,
       "capacity": 8,
       "authority_escalation": false
+    },
+    {
+      "logical_object_id": "h36-stack-cache-residency-occupancy8-unvalidated",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "platform": "linux-x86_64",
+      "validation_run": 33528991694,
+      "validation_job": 99927016899,
+      "artifact_id": 9808920709,
+      "artifact_sha256": "8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417",
+      "eight_simultaneous_entries_valid": true,
+      "all_exact_lookups_equal_fresh": true,
+      "cross_signature_hits_rejected": true,
+      "ninth_distinct_store_buffer_too_small": true,
+      "full_capacity_idempotent_store_ok": true,
+      "all_occupancy8_faster_than_fresh": true,
+      "resident_count": 8,
+      "capacity": 8,
+      "authority_escalation": false
     }
   ],
   "declared_generalize_required": [
-    "h36-stack-cache-residency-occupancy4-linux-x86_64"
+    "h36-stack-cache-residency-occupancy4-linux-x86_64",
+    "h36-stack-cache-residency-occupancy8-unvalidated"
   ],
   "policy": {
     "occupancy4_classification": "GENERALIZE_REQUIRED",
-    "occupancy8_classification": "VALIDATION_REQUIRED",
-    "no_unmeasured_capacity8_promotion": true,
-    "cross_platform_inference": false
+    "occupancy8_classification": "GENERALIZE_REQUIRED",
+    "no_unmeasured_capacity8_promotion": false,
+    "cross_platform_inference": false,
+    "occupancy8_validated_by": "PASS_219_H36_STACK_CACHE_CAPACITY8_1_14"
   }
 }
