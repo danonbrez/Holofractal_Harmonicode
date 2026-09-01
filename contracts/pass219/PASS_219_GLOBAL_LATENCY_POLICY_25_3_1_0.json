@@ -1,0 +1,137 @@
+{
+  "schema": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "NONPROMOTIONAL_BENCHMARK_CANDIDATE",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
+  "inherited": {
+    "mandatory_genesis_scaling_merge": "b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f",
+    "singleton_vm81_authority": true,
+    "hash72_hash216_authority": true,
+    "pass207_candidate_only": true,
+    "pass208_candidate_only": true,
+    "exact_cpu_vm_equality_before_admission": true,
+    "timing_noncanonical": true
+  },
+  "algebra": {
+    "a2": 1,
+    "b2": 2,
+    "c2": 3,
+    "d2": 5,
+    "mean_ratio_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "identities": [
+      "d^4/c^2 = 25/3",
+      "(b^2+c^2)^2/(a^2+b^2) = 25/3"
+    ],
+    "exact_cross_products": [
+      "5*5*3 = 3*25",
+      "(2+3)*(2+3)*3 = (1+2)*25"
+    ]
+  },
+  "tiers": [
+    {
+      "tier": 1,
+      "fps": 120,
+      "budget_ms": {
+        "numerator": 25,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 25000000,
+        "denominator": 3
+      }
+    },
+    {
+      "tier": 2,
+      "fps": 60,
+      "budget_ms": {
+        "numerator": 50,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 50000000,
+        "denominator": 3
+      }
+    },
+    {
+      "tier": 3,
+      "fps": 30,
+      "budget_ms": {
+        "numerator": 100,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 100000000,
+        "denominator": 3
+      }
+    }
+  ],
+  "window_policy": {
+    "mean_must_be_within_tier": 1,
+    "p95_must_be_within_tier": 2,
+    "max_must_be_within_tier": 3,
+    "percentile_definition": "nearest-rank",
+    "integer_nanosecond_measurements": true
+  },
+  "route_selection": {
+    "exact_semantic_equality_required": true,
+    "exact_selector_or_complete_fallback_required": true,
+    "candidate_only": true,
+    "timing_may_select_semantically_equivalent_route": true,
+    "timing_may_change_canonical_identity": false,
+    "unmet_budget": "PRESERVE_FASTEST_EXACT_ELIGIBLE_ROUTE_AND_REPORT_BUDGET_UNMET",
+    "missing_exact_selector": "COMPLETE_FALLBACK_ONLY",
+    "canonical_authority_request": "REJECT"
+  },
+  "physical_evidence": {
+    "path": "artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json",
+    "device_code": "SM-F966U",
+    "hardware_gpu_measured": true,
+    "dense_host_total_median_ns": 13400000,
+    "dense_gpu_median_ns": 11534336,
+    "dense_lane_dispatches": 68024448,
+    "expected_largest_measured_tier1_materialized_combinations": 729,
+    "expected_tier1_host_total_median_ns": 1368750,
+    "expected_tier1_lane_dispatches": 7558272,
+    "full_dense_lane_equality_claimed": false,
+    "exact_selected_sample_equality_required": true
+  },
+  "fresh_validation": {
+    "pass208_cpu_reference": "benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py",
+    "phase_locality": "benchmarks/pass219b/pass219b_phase_locality_benchmark.cpp",
+    "policy_overhead": "benchmarks/pass219/pass219_global_latency_policy_benchmark.cpp",
+    "analyzer": "benchmarks/pass219/analyze_pass219_global_latency_policy.py"
+  },
+  "promotion_gates": [
+    "exact algebra validates",
+    "120/60/30 tier closure validates",
+    "physical measured baseline is above Tier 1",
+    "physical measured exact-selected route reaches Tier 1",
+    "exact work count decreases",
+    "selected VM81 child-state/projection equality passes on CPU reference",
+    "phase-local exact equality gates pass",
+    "policy overhead is less than physical latency saved",
+    "canonical authority remains unchanged",
+    "missing exact optimization proof preserves complete fallback"
+  ],
+  "promotion_effect_if_supported": {
+    "action": "UPDATE_PASS219_GLOBAL_CANONICAL_DEFAULTS_AND_DOCUMENTATION",
+    "scope": "ALL_COMPATIBLE_LATENCY_SENSITIVE_VM81_DATA_ML_AND_RUNTIME_SURFACES",
+    "performance_guarantee": false,
+    "policy_guarantee": true,
+    "repair_forward_required": true
+  },
+  "prohibited": [
+    "timing as semantic identity",
+    "dropping required semantic work to satisfy frame budget",
+    "GPU direct canonical mutation",
+    "Hash72 or Hash216 authority transfer",
+    "physical GPU claims from CI CPU runner",
+    "full dense-lane equality claim from Fold7 selected-sample evidence",
+    "fixed hardware timing assumed across devices"
+  ]
+}
