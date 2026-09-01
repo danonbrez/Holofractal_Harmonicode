@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS185_I141_CURRENT_MAIN_DRIFT_RECONCILIATION_V2",
+  "pass": 185,
+  "pass219_iteration": 141,
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+  "historical_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+  "pass185_head_before_refresh": "acc30cbf17a75d6d09914d2b2231772254be699e",
+  "authoritative_main": "75396e1bbf2fe95920311a5f8005b6ac1cde4cce",
+  "pass185_commits_from_base": 149,
+  "main_commits_from_base": 456,
+  "pass185_changed_paths": 61,
+  "main_changed_paths": 175,
+  "changed_path_overlap": [],
+  "changed_path_overlap_count": 0,
+  "merge_or_rebase_performed": false,
+  "deployment_performed": false,
+  "prior_frozen_phase_receipts_rewritten": false,
+  "classification": "HHS_PASS_185_I141_CURRENT_MAIN_DRIFT_RECONCILED_NO_PATH_CONFLICTS",
+  "next_gate": "SYNTHETIC_CURRENT_MAIN_COMBINED_COMPOSITION_REFRESH"
+}
