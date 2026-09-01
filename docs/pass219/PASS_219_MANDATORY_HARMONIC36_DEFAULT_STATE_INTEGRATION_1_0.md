@@ -1363,3 +1363,111 @@ MONITOR_CONTROL_FOCUSED
 ```
 
 The repeat gate also validated the expected manifest state: three H36 stack targets generalized in total (the original full workload plus console and binary I/O), one H36 monitor-control bounded exception, and four cache targets generalized in total (original plus all three new workloads).
+
+## 23. Four-resident cache residency 1.13
+
+The cache is now validated as a **single shared bounded instance** containing all four previously validated workload identities at the same time:
+
+```text
+1. full monitor       3734727431
+2. console            4793332410
+3. binary I/O         21509979554
+4. monitor control    41886677838
+```
+
+The cache capacity remains 8. This pass validates occupancy 4 only; occupancy 8 is not inferred.
+
+### 23.1 Exact isolation
+
+The occupancy-4 benchmark proves:
+
+- every exact lookup returns the same frozen selected stack/result as fresh selection;
+- repeated lookup produces deterministic receipt equality;
+- a workload signature combined with another resident's semantic signature/key is rejected rather than cross-hitting;
+- wrong semantic signature is rejected;
+- wrong vector key is rejected;
+- a fully unrelated valid identity returns `RANGE_ERROR`;
+- duplicate sequence corruption is rejected;
+- duplicate-identity corruption is rejected;
+- partial-identity corruption is rejected;
+- idempotent re-store of an existing exact selection does not advance count or sequence.
+
+Shared-cache state after admission is:
+
+```text
+capacity      = 8
+entry_count   = 4
+next_sequence = 5
+entry sequences = [1, 2, 3, 4]
+```
+
+### 23.2 Occupancy performance
+
+Validation:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33498621593
+job      = 99826491387
+head     = 030561453896265eaf421e52ff2d6eea7220f511
+result   = SUCCESS
+artifact = 9796760547
+artifact sha256 = 75c2e1cd18b34a2ac4e022538e0f162117c223474b228287a7a93917793a80a7
+```
+
+Measured 11 samples × 4096 operations:
+
+```text
+FULL_MONITOR
+  fresh selector       = 12,113,425 ns
+  occupancy 1 lookup   = 10,960,862 ns
+  occupancy 4 lookup   = 11,053,798 ns
+  occupancy4/fresh win = 1.095x
+  occupancy4/occupancy1 overhead = 1.008x
+
+CONSOLE_FOCUSED
+  fresh selector       = 12,141,518 ns
+  occupancy 1 lookup   = 10,971,904 ns
+  occupancy 4 lookup   = 11,045,319 ns
+  occupancy4/fresh win = 1.099x
+  occupancy4/occupancy1 overhead = 1.006x
+
+BINARY_IO_FOCUSED
+  fresh selector       = 12,063,477 ns
+  occupancy 1 lookup   = 10,900,578 ns
+  occupancy 4 lookup   = 10,979,166 ns
+  occupancy4/fresh win = 1.098x
+  occupancy4/occupancy1 overhead = 1.007x
+
+MONITOR_CONTROL_FOCUSED
+  fresh selector       = 12,299,801 ns
+  occupancy 1 lookup   = 11,100,418 ns
+  occupancy 4 lookup   = 11,174,963 ns
+  occupancy4/fresh win = 1.100x
+  occupancy4/occupancy1 overhead = 1.006x
+```
+
+The bounded linear scan therefore adds only a small runner-local occupancy cost while preserving a measurable cache benefit over fresh selection for all four residents.
+
+### 23.3 Generalization boundary
+
+The dedicated manifest:
+
+```text
+contracts/pass219/optimization_generalization/
+PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json
+```
+
+classifies:
+
+```text
+h36-stack-cache-residency-occupancy4-linux-x86_64
+-> GENERALIZE_REQUIRED
+
+h36-stack-cache-residency-occupancy8-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+This promotion does not imply that occupancy 8 will preserve the same performance ratio. Capacity-8 expansion must use additional real workloads and be measured independently.
+
+All cache residency remains candidate metadata only. It adds no VM81 admission bypass, mutation authority, Hash72 authority, Hash216 lineage/authority, persistence authority, or floating-point authority.
