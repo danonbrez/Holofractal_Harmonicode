@@ -674,7 +674,18 @@ jobs:
           from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
 
           p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json')
-          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          raw = json.loads(p.read_text(encoding='utf-8'))
+          result = validate_manifest(raw)
+          policy = raw['policy']
+          assert policy['timing_gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert policy['calibration_repeats'] == 5
+          assert policy['required_beneficial_repeats'] == 4
+          assert policy['aggregate_requirement'] == 'occupancy4_total_ns < fresh_selection_total_ns'
+          assert policy['one_shot_benefit_boolean_authoritative'] is False
+          assert policy['retained_last_green_capacity8_boundary']['head'] == 'a8834b12553741dc5fd04f3434752de14cfccb1b'
+          assert policy['retained_last_green_capacity8_boundary']['run'] == 33529443931
+          assert policy['triggering_one_shot_regression']['head'] == '17a83022f70ad35c90dd826bc20e905d123c9acc'
+          assert policy['triggering_one_shot_regression']['regression_reproduced_under_calibration'] is False
           assert result['generalize_required'] == [
               'h36-stack-cache-residency-occupancy4-linux-x86_64',
               'h36-stack-cache-residency-occupancy8-unvalidated',
@@ -719,6 +730,25 @@ jobs:
           assert authority['independent_hash72_authority'] is False
           assert authority['independent_hash216_authority'] is False
           assert authority['floating_point_canonical_authority'] is False
+
+          retained = contract['retained_last_green_capacity8_boundary']
+          assert retained['head'] == 'a8834b12553741dc5fd04f3434752de14cfccb1b'
+          assert retained['run'] == 33529443931
+          assert retained['job'] == 99928529597
+          assert retained['status'] == 'SUCCESS_RETAINED'
+
+          stability = contract['stack_cache_timing_stability_1_15']
+          assert stability['triggering_regression']['head'] == '17a83022f70ad35c90dd826bc20e905d123c9acc'
+          assert stability['triggering_regression']['run'] == 33529740240
+          assert stability['triggering_regression']['correctness_green'] is True
+          assert stability['calibrated_reproduction']['regression_reproduced'] is False
+          assert stability['calibrated_reproduction']['beneficial_repeat_count_all_residents'] == 5
+          assert stability['gate']['kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert stability['gate']['calibration_repeats'] == 5
+          assert stability['gate']['required_beneficial_repeats'] == 4
+          assert stability['gate']['one_shot_boolean_authoritative'] is False
+          assert stability['classification']['occupancy4_linux_x86_64'] == 'GENERALIZE_REQUIRED'
+          assert stability['classification']['reclassification_required'] is False
 
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
           c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
