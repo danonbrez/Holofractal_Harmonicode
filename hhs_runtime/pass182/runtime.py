@@ -700,8 +700,8 @@ class UniversalHydrationCompiler:
             "reference_graphics_video_adapter": "images" in adapters["reference_adapters"] and "video" in adapters["reference_adapters"],
             "reference_repository_tree_adapter": "repository_tree" in adapters["reference_adapters"],
             "singleton_vm81_authority_preserved": True,
-            "hash72_independent_authority_created": False,
-            "hash216_mutation_authority_created": False,
+            "no_independent_hash72_authority_created": True,
+            "no_hash216_mutation_authority_created": True,
         }
         return {
             "contract_id": CONTRACT_ID,
