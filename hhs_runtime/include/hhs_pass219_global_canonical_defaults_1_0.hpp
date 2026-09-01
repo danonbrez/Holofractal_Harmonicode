@@ -19,7 +19,9 @@ public:
  static constexpr uint32_t wired_floor_pass() noexcept { return HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_FLOOR; }
  static constexpr uint32_t registered_binding_count() noexcept { return HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT; }
  static constexpr bool global_latency_policy_required() noexcept { return HHS_EXACT_PASS219_GLOBAL_LATENCY_DEFAULT_REQUIRED == 1U; }
+ static constexpr bool global_compression_debt_policy_required() noexcept { return HHS_EXACT_PASS219_GLOBAL_COMPRESSION_DEBT_DEFAULT_REQUIRED == 1U; }
  static HHSExactStatus validate_latency_policy() noexcept { return hhs_exact_pass219_global_canonical_defaults_validate_latency_policy(); }
+ static HHSExactStatus validate_compression_debt_policy() noexcept { return hhs_exact_pass219_global_canonical_defaults_validate_compression_debt_policy(); }
  static HHSExactStatus validate() noexcept { return hhs_exact_pass219_global_canonical_defaults_validate(); }
 };
 template <uint16_t PassNumber,uint8_t Variant=HHS_EXACT_PASS219_BINDING_VARIANT_NONE>
@@ -37,5 +39,6 @@ static_assert(GlobalCanonicalDefaults::explicit_upgrade_or_deprecation_required(
 static_assert(GlobalCanonicalDefaults::singleton_vm81_authority_preserved());
 static_assert(GlobalCanonicalDefaults::exact_symbolic_authority_required());
 static_assert(GlobalCanonicalDefaults::global_latency_policy_required());
+static_assert(GlobalCanonicalDefaults::global_compression_debt_policy_required());
 }
 #endif
