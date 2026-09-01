@@ -1,0 +1,223 @@
+name: Pass 219 Global Latency Policy 25over3
+
+on:
+  push:
+    branches:
+      - agent/pass219-global-latency-policy-25over3-benchmark
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c'
+      - 'tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp'
+      - 'benchmarks/pass219/pass219_global_latency_policy_benchmark.cpp'
+      - 'benchmarks/pass219/analyze_pass219_global_latency_policy.py'
+      - 'contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
+      - 'docs/operations/restart/PASS_219_GLOBAL_LATENCY_POLICY_25_OVER_3_BENCHMARK_RESTART.md'
+      - '.github/workflows/pass219-global-latency-policy-25over3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  latency-policy:
+    name: global-latency-policy (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+
+    steps:
+      - name: Checkout benchmark head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Prove cumulative lineage and build synthetic current-main candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f HEAD
+          git merge-base --is-ancestor e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191 HEAD
+          if [ "${{ matrix.target }}" = "synthetic" ]; then
+            git fetch origin main
+            git config user.name "hhs-ci"
+            git config user.email "hhs-ci@invalid.local"
+            benchmark_head="$(git rev-parse HEAD)"
+            git checkout -B pass219-latency-synthetic origin/main
+            git merge --no-ff --no-edit "$benchmark_head"
+          fi
+          echo "VALIDATION_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Parse candidate contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json >/dev/null
+          python - <<'PY'
+          import json
+          from fractions import Fraction
+          p='contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['status'] == 'NONPROMOTIONAL_BENCHMARK_CANDIDATE'
+          a2,b2,c2,d2 = (d['algebra'][k] for k in ('a2','b2','c2','d2'))
+          assert Fraction(d2*d2,c2) == Fraction(25,3)
+          assert Fraction((b2+c2)**2,a2+b2) == Fraction(25,3)
+          assert [(x['tier'],x['fps']) for x in d['tiers']] == [(1,120),(2,60),(3,30)]
+          PY
+
+      - name: Reject approximate arithmetic from exact policy implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b'             hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h             hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc
+
+      - name: Compile cumulative exact ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-latency artifacts/pass219/global-latency
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-latency/exact.o
+
+      - name: Run exact latency policy C conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/test-c
+          /tmp/pass219-latency/test-c
+
+      - name: Run latency policy C++ conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/test-cpp
+          /tmp/pass219-latency/test-cpp
+
+      - name: Preserve existing global defaults and mandatory Genesis scaling
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.c             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/global-defaults-c
+          /tmp/pass219-latency/global-defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/global-defaults-cpp
+          /tmp/pass219-latency/global-defaults-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.c             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/genesis-c
+          /tmp/pass219-latency/genesis-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.cpp             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/genesis-cpp
+          /tmp/pass219-latency/genesis-cpp
+
+      - name: Benchmark policy overhead
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             benchmarks/pass219/pass219_global_latency_policy_benchmark.cpp             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/policy-bench
+          /tmp/pass219-latency/policy-bench             artifacts/pass219/global-latency/policy_overhead.json
+          python -m json.tool artifacts/pass219/global-latency/policy_overhead.json >/dev/null
+
+      - name: Fresh phase-locality benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             benchmarks/pass219b/pass219b_phase_locality_benchmark.cpp             /tmp/pass219-latency/exact.o             -o /tmp/pass219-latency/phase-bench
+          /tmp/pass219-latency/phase-bench             artifacts/pass219/global-latency/phase_locality.json
+          python -m json.tool artifacts/pass219/global-latency/phase_locality.json >/dev/null
+
+      - name: Build inherited Pass 205 and Pass 207 native runtimes
+        run: |
+          python -c 'from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))'
+          python -c 'from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))'
+
+      - name: Preserve Pass 207 and Pass 208 accelerator semantics
+        run: |
+          python -m pytest -q --tb=short             tests/test_hhs_pass207_gpu_driver_v1.py             tests/test_hhs_pass208_gpu_branch_manifold_v1.py
+
+      - name: Fresh actual Pass 208 CPU reference benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py             artifacts/pass219/global-latency/pass208_cpu_reference.json
+          python -m json.tool artifacts/pass219/global-latency/pass208_cpu_reference.json >/dev/null
+
+      - name: Analyze physical and fresh latency evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219/analyze_pass219_global_latency_policy.py             artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json             artifacts/pass219/global-latency/pass208_cpu_reference.json             artifacts/pass219/global-latency/phase_locality.json             artifacts/pass219/global-latency/policy_overhead.json             artifacts/pass219/global-latency/decision.json
+          python -m json.tool artifacts/pass219/global-latency/decision.json >/dev/null
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/global-latency/decision.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['classification'] == 'GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED', d['classification']
+          assert d['physical_fold7']['dense']['host_tier'] == 2
+          s=d['physical_fold7']['largest_measured_tier1_exact_slice']
+          assert s['materialized_combinations'] == 729
+          assert s['host_tier'] == 1
+          assert s['work_reduction_x1000'] == 9000
+          assert d['fresh_cpu_reference']['child_state_projection_equal'] is True
+          assert d['promotion_gates']['supported'] is True
+          assert d['claim_boundary']['canonical_state_authority_changed'] is False
+          PY
+
+      - name: Prove shared runtime exports latency policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          make clean
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E             'hhs_exact_pass219_global_latency_policy_version|hhs_exact_pass219_global_latency_classify_ns|hhs_exact_pass219_global_latency_select_route'
+
+      - name: Preserve standalone VM81 exact verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace
+
+      - name: Publish summary
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219/global-latency/decision.json', encoding='utf-8'))
+          s=d['physical_fold7']['largest_measured_tier1_exact_slice']
+          o=d['policy_overhead']
+          print('## Pass 219 global latency policy 25/3')
+          print(f"- classification: {d['classification']}")
+          print('- exact latency quantum: 25/3 ms = 1/120 s')
+          print('- tiers: 120 / 60 / 30 FPS')
+          print(f"- Fold7 dense host tier: {d['physical_fold7']['dense']['host_tier']}")
+          print(f"- largest measured Tier-1 exact slice M: {s['materialized_combinations']}")
+          print(f"- Fold7 work reduction x1000: {s['work_reduction_x1000']}")
+          print(f"- Fold7 host speedup x1000: {s['host_speedup_x1000']}")
+          print(f"- conservative policy-overhead ppm of Tier-1 budget: {o['overhead_vs_tier1_budget_ppm']}")
+          print(f"- fresh CPU exact child equality: {d['fresh_cpu_reference']['child_state_projection_equal']}")
+          print('- canonical authority changed: false')
+          print('- fresh CI physical GPU measured: false')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-global-latency-policy-${{ matrix.target }}
+          path: artifacts/pass219/global-latency/*.json
+          if-no-files-found: error
