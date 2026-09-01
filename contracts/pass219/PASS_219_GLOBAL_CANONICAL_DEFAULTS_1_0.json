@@ -38,7 +38,10 @@
       "rollback_protection",
       "deterministic_replay",
       "data_integrity",
-      "authority_separation"
+      "authority_separation",
+      "compression_debt_accounting",
+      "native_5184_closure",
+      "recursive_debt_transfer"
     ]
   },
   "supersession": {
@@ -128,7 +131,10 @@
     "aggregate_exact_abi_required": true,
     "global_latency_policy_header": "hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h",
     "global_latency_policy_implementation": "hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc",
-    "global_latency_registration": "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py"
+    "global_latency_registration": "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py",
+    "compression_debt_header": "hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h",
+    "compression_debt_implementation": "hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc",
+    "compression_debt_registration": "hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py"
   },
   "governing_invariant": [
     "NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED",
@@ -141,7 +147,10 @@
     "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
     "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
     "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION",
-    "VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES"
+    "VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES",
+    "NO_ANONYMOUS_COMPRESSION_DEBT_CROSSES_THE_NATIVE_5184_BOUNDARY",
+    "PHYSICAL_TIME_IS_MONOTONIC_AND_IS_NOT_COMPRESSION_DEBT",
+    "IMMEDIATE_DEBT_WORK_SURFACE_IS_AT_MOST_7_OF_81_VM81_CELLS"
   ],
   "multimodal_optimization_generalization": {
     "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
@@ -194,5 +203,47 @@
     "promotion_integration_exact_job": 99955888052,
     "promotion_integration_synthetic_job": 99955887958,
     "exact_and_synthetic_green": true
+  },
+  "validated_compression_debt_policy": {
+    "contract_id": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0",
+    "mandatory": true,
+    "conserved_quantity": "COMPRESSION_DEBT",
+    "elapsed_time_is_debt": false,
+    "physical_time_monotonic": true,
+    "reciprocal_normalization": {
+      "debt": {
+        "numerator": 3,
+        "denominator": 25
+      },
+      "execution_capacity": {
+        "numerator": 25,
+        "denominator": 3
+      }
+    },
+    "native_boundary": {
+      "bits": 5184,
+      "bytes": 648,
+      "vm81_cells": 81,
+      "x86_word_bits": 64,
+      "hash72_lanes": 3,
+      "hash216_occurrences": 216,
+      "complete_sha256_positional_index_required": true
+    },
+    "immediate_active_cells_max": 7,
+    "reference_81_over_7_x1000": 11571,
+    "reciprocal_transfer_required": true,
+    "no_anonymous_debt": true,
+    "timing_noncanonical": true,
+    "singleton_vm81_authority_preserved": true,
+    "hash72_hash216_authority_preserved": true,
+    "validation_pending": false,
+    "validation_classification": "GLOBAL_COMPRESSION_DEBT_POLICY_PROMOTION_SUPPORTED",
+    "validated_run": 33546781551,
+    "exact_job": 99986146595,
+    "synthetic_job": 99986146427,
+    "exact_artifact": 9815799961,
+    "synthetic_artifact": 9815799188,
+    "exact_and_synthetic_green": true,
+    "reconciled_current_main": "a5c0da9df9bef4c848c186d74e2ba5f897f93687"
   }
 }

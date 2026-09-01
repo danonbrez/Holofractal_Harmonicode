@@ -9,6 +9,14 @@ on:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
       - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
       - contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json
+      - contracts/pass219/PASS_219_COMPRESSION_DEBT_CLOSURE_3_25_1_0.json
+      - docs/pass219/PASS_219_COMPRESSION_DEBT_NATIVE_5184_CLOSURE_1_0.md
+      - whitepapers/HHS_PASS219_COMPRESSION_DEBT_NATIVE_CLOSURE_MEMBRANE_REV1.md
+      - hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h
+      - hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc
+      - hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py
+      - tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.*
+      - tests/pass219/test_pass219_compression_debt_registration_v1.py
       - contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json
       - docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md
       - hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h
@@ -31,6 +39,14 @@ on:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
       - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
       - contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json
+      - contracts/pass219/PASS_219_COMPRESSION_DEBT_CLOSURE_3_25_1_0.json
+      - docs/pass219/PASS_219_COMPRESSION_DEBT_NATIVE_5184_CLOSURE_1_0.md
+      - whitepapers/HHS_PASS219_COMPRESSION_DEBT_NATIVE_CLOSURE_MEMBRANE_REV1.md
+      - hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h
+      - hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc
+      - hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py
+      - tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.*
+      - tests/pass219/test_pass219_compression_debt_registration_v1.py
       - contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json
       - docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md
       - hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h
@@ -91,6 +107,13 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/latency-cpp
           /tmp/pass219-global-defaults/latency-cpp
           python -m pytest -q tests/pass219/test_pass219_global_latency_policy_registration_v1.py
+      - name: Run promoted compression-debt closure conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/debt-c
+          /tmp/pass219-global-defaults/debt-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/debt-cpp
+          /tmp/pass219-global-defaults/debt-cpp
+          python -m pytest -q tests/pass219/test_pass219_compression_debt_registration_v1.py
       - name: Preserve current I140 C/C++ membrane conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/pass186-c

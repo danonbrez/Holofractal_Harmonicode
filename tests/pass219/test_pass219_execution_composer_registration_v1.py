@@ -1,3 +1,7 @@
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+)
 from hhs_runtime.hhs_pass219_execution_composer_registration_v1 import (
     BYPASS_REASONS,
     EXECUTION_SYMBOL,
@@ -16,6 +20,14 @@ def main() -> None:
     assert declaration["mutation_policy"] == "NO_EXTERNAL_STATE_MUTATION"
     assert manifest["default_eligible_route"] == "INDEXED_CONTINUATION"
     assert manifest["genesis_replay_default"] is False
+    assert MANDATORY_COMPRESSION_DEBT_GUARD in declaration["guards"]
+    assert COMPRESSION_DEBT_SCHEMA in declaration["contract_schemas"]
+    assert manifest["mandatory_compression_debt_guard"] == MANDATORY_COMPRESSION_DEBT_GUARD
+    assert manifest["mandatory_compression_debt_schema"] == COMPRESSION_DEBT_SCHEMA
+    assert manifest["compression_debt_conserved_quantity"] == "COMPRESSION_DEBT"
+    assert manifest["compression_debt_elapsed_time_is_debt"] is False
+    assert manifest["compression_debt_native_boundary_bits"] == 5184
+    assert manifest["compression_debt_immediate_active_cells_max"] == 7
     assert manifest["cxx_mutation_authority"] is False
     assert manifest["vm81_mutation_authority"] == "INHERITED_C_ONLY"
     assert tuple(manifest["typed_bypass_reasons"]) == BYPASS_REASONS

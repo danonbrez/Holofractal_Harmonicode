@@ -19,6 +19,16 @@ from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
     SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
     WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
 )
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    BOUNDARY_SYMBOL as DEBT_BOUNDARY_SYMBOL,
+    GLOBAL_CLOSE_SYMBOL as DEBT_GLOBAL_CLOSE_SYMBOL,
+    LAYER_CLOSE_SYMBOL as DEBT_LAYER_CLOSE_SYMBOL,
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    POLICY_VALIDATE_SYMBOL as DEBT_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+    SCHEDULE_SYMBOL as DEBT_SCHEDULE_SYMBOL,
+    TRANSFER_BOUND_SYMBOL as DEBT_TRANSFER_BOUND_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     GENESIS_SYMBOL,
     GENESIS_VALIDATE_SYMBOL,
@@ -28,7 +38,7 @@ from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     VERIFY_SYMBOL,
 )
 
-VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22_PLUS_GLOBAL_LATENCY_25_3_1_0"
+VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22_PLUS_GLOBAL_LATENCY_25_3_1_0_PLUS_COMPRESSION_DEBT_3_25_1_0"
 SURFACE_ID = "executor:pass219.rna.execution.compose"
 EXECUTION_SYMBOL = "hhs_exact_pass219_rna_execution_compose"
 PREPARE_SYMBOL = "hhs_exact_pass219_rna_execution_prepare_candidate"
@@ -57,6 +67,7 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_POST_PASS218_INDEXED_REUSE_POLICY_1_5_0",
             MANDATORY_DATA_ML_SCHEMA,
             LATENCY_POLICY_SCHEMA,
+            COMPRESSION_DEBT_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_KERNEL_DERIVATION_WITNESS_V1",
@@ -66,6 +77,9 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_MANDATORY_SCALING_WITNESS_V1",
             "HHS_PASS219_LATENCY_WINDOW_RESULT_V1",
             "HHS_PASS219_LATENCY_SELECTION_V1",
+            "HHS_PASS219_COMPRESSION_DEBT_LAYER_RESULT_V1",
+            "HHS_PASS219_COMPRESSION_DEBT_TRANSFER_PAIR_V1",
+            "HHS_PASS219_NATIVE_5184_CLOSURE_BOUNDARY_RESULT_V1",
         ],
         "validators": [
             GENESIS_SYMBOL,
@@ -78,11 +92,18 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             LATENCY_CLASSIFY_SYMBOL,
             LATENCY_WINDOW_SYMBOL,
             LATENCY_SELECT_SYMBOL,
+            DEBT_POLICY_VALIDATE_SYMBOL,
+            DEBT_LAYER_CLOSE_SYMBOL,
+            DEBT_TRANSFER_BOUND_SYMBOL,
+            DEBT_GLOBAL_CLOSE_SYMBOL,
+            DEBT_SCHEDULE_SYMBOL,
+            DEBT_BOUNDARY_SYMBOL,
         ],
         "guards": [
             "kernel_runtime_autocomposer",
             MANDATORY_GUARD,
             MANDATORY_LATENCY_GUARD,
+            MANDATORY_COMPRESSION_DEBT_GUARD,
             "authenticated_indexed_predecessor_gate",
             "dependency_frontier_gate",
             "single_c_vm81_mutation_authority",
@@ -93,6 +114,7 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_DEPENDENCY_CHANGE_AS_UNSCOPED_GENESIS_REPLAY",
             "REJECT_PASS219_DATA_ML_WITHOUT_MANDATORY_GENESIS_SCALING",
             "REJECT_PASS219_EXECUTION_WITHOUT_GLOBAL_LATENCY_POLICY",
+            "REJECT_PASS219_EXECUTION_WITHOUT_COMPRESSION_DEBT_CLOSURE",
             "REJECT_PASS219_CPP_MUTATION_AUTHORITY",
         ],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
@@ -113,6 +135,7 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "default_preconditions": [
             "PASS219_MANDATORY_SUDOKU_GENESIS_SCALING_DATA_ML",
             "PASS219_GLOBAL_LATENCY_POLICY_25_OVER_3",
+            "PASS219_COMPRESSION_DEBT_NATIVE_5184_ZERO_SUM_CLOSURE",
             "AUTHENTICATED_INDEXED_PREDECESSOR",
             "CURRENT_DEPENDENCY_FRONTIER_MATCH",
             "NO_TYPED_BYPASS_REQUEST",
@@ -122,6 +145,12 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "mandatory_genesis_scaling_applies_before_route_selection": True,
         "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
         "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
+        "mandatory_compression_debt_guard": MANDATORY_COMPRESSION_DEBT_GUARD,
+        "mandatory_compression_debt_schema": COMPRESSION_DEBT_SCHEMA,
+        "compression_debt_conserved_quantity": "COMPRESSION_DEBT",
+        "compression_debt_elapsed_time_is_debt": False,
+        "compression_debt_native_boundary_bits": 5184,
+        "compression_debt_immediate_active_cells_max": 7,
         "latency_route_selection_requires_exact_semantic_equality": True,
         "latency_budget_unmet_preserves_correct_route": True,
         "latency_timing_is_noncanonical": True,

@@ -449,3 +449,26 @@ The validation proved:
 - no new canonical mutation, persistence, Hash72, or floating-point authority is introduced.
 
 A documentation/contract seal rerun and target-main verification remain the final closure steps.
+
+
+## 18. Mandatory compression-debt closure addendum
+
+Pass 219 1.22 data/ML execution now inherits the global compression-debt closure guard:
+
+```text
+pass219_compression_debt_native_5184_zero_sum_closure
+```
+
+The Genesis/scaling pipeline remains unchanged in authority order. The added rule constrains how unfinished work may leave a local execution layer.
+
+```text
+inbound + issued
+=
+executed/settled + retained-compressed + transferred-out
+```
+
+Immediate active obligations are limited to at most seven VM81 cells while the full 81-cell / 5184-bit authoritative state remains exact.
+
+Any transferred residual must already be bound to a complete source and target Hash216 transition, exact 5184 addresses, ordered phase identity, and reciprocal debit/credit witness.
+
+This does not force a complete Genesis replay and does not alter singleton VM81 admission authority.
