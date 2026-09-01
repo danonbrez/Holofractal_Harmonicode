@@ -8,6 +8,20 @@ on:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
       - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
       - contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json
+      - contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json
+      - docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md
+      - hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h
+      - hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc
+      - hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py
+      - tests/pass219/test_pass219_global_latency_policy_25_3_1_0.*
+      - tests/pass219/test_pass219_global_latency_policy_registration_v1.py
+      - contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json
+      - docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md
+      - hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h
+      - hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc
+      - hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py
+      - tests/pass219/test_pass219_global_latency_policy_25_3_1_0.*
+      - tests/pass219/test_pass219_global_latency_policy_registration_v1.py
       - docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md
       - docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md
       - docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
@@ -63,6 +77,13 @@ jobs:
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/global-defaults-cpp
           /tmp/pass219-global-defaults/global-defaults-cpp
+      - name: Run promoted global latency policy conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/latency-c
+          /tmp/pass219-global-defaults/latency-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/latency-cpp
+          /tmp/pass219-global-defaults/latency-cpp
+          python -m pytest -q tests/pass219/test_pass219_global_latency_policy_registration_v1.py
       - name: Preserve current I140 C/C++ membrane conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/pass186-c
