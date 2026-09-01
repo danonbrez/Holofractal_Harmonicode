@@ -12,6 +12,14 @@ from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
     POLICY_VALIDATE_SYMBOL as DEBT_POLICY_VALIDATE_SYMBOL,
     SCHEMA as COMPRESSION_DEBT_SCHEMA,
 )
+from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
+    CLASSIFY_SYMBOL as LATENCY_CLASSIFY_SYMBOL,
+    MANDATORY_LATENCY_GUARD,
+    POLICY_VALIDATE_SYMBOL as LATENCY_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as LATENCY_POLICY_SCHEMA,
+    SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
+    WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     GENESIS_SYMBOL,
     GENESIS_VALIDATE_SYMBOL,
@@ -52,6 +60,12 @@ def test_mandatory_manifest_covers_all_declared_data_ml_classes() -> None:
     assert manifest["canonical_authority"]["pass207"] is False
     assert manifest["canonical_authority"]["pass208"] is False
     assert manifest["canonical_authority"]["singleton_vm81"] == "INHERITED_C_ONLY"
+    assert manifest["mandatory_latency_guard"] == MANDATORY_LATENCY_GUARD
+    assert manifest["mandatory_latency_schema"] == LATENCY_POLICY_SCHEMA
+    assert manifest["latency_policy"]["quantum_ms"] == {"numerator": 25, "denominator": 3}
+    assert manifest["latency_policy"]["tiers_fps"] == [120, 60, 30]
+    assert manifest["latency_policy"]["timing_is_noncanonical"] is True
+    assert manifest["latency_policy"]["unmet_budget_preserves_complete_correct_route"] is True
     assert manifest["floating_point_authority"] is False
 
 
@@ -68,6 +82,13 @@ def test_mandatory_guard_surface_exposes_exact_abi() -> None:
     assert MANDATORY_COMPRESSION_DEBT_GUARD in declaration["guards"]
     assert DEBT_POLICY_VALIDATE_SYMBOL in declaration["validators"]
     assert DEBT_BOUNDARY_SYMBOL in declaration["validators"]
+    assert LATENCY_POLICY_SCHEMA in declaration["contract_schemas"]
+    assert MANDATORY_LATENCY_GUARD in declaration["guards"]
+    assert LATENCY_POLICY_VALIDATE_SYMBOL in declaration["validators"]
+    assert LATENCY_CLASSIFY_SYMBOL in declaration["validators"]
+    assert LATENCY_WINDOW_SYMBOL in declaration["validators"]
+    assert LATENCY_SELECT_SYMBOL in declaration["validators"]
+    assert "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY" in declaration["rejection_codes"]
     assert declaration["mutation_policy"] == "INHERITED_SINGLETON_VM81_ONLY"
     assert declaration["persistence_policy"] == "INHERITED_HASH72_HASH216_PATHS_ONLY"
 
@@ -85,6 +106,12 @@ def test_pass219_execution_composer_requires_mandatory_guard() -> None:
     assert COMPRESSION_DEBT_SCHEMA in declaration["contract_schemas"]
     assert DEBT_POLICY_VALIDATE_SYMBOL in declaration["validators"]
     assert DEBT_BOUNDARY_SYMBOL in declaration["validators"]
+    assert LATENCY_POLICY_SCHEMA in declaration["contract_schemas"]
+    assert MANDATORY_LATENCY_GUARD in declaration["guards"]
+    assert LATENCY_POLICY_VALIDATE_SYMBOL in declaration["validators"]
+    assert LATENCY_CLASSIFY_SYMBOL in declaration["validators"]
+    assert LATENCY_WINDOW_SYMBOL in declaration["validators"]
+    assert LATENCY_SELECT_SYMBOL in declaration["validators"]
     assert manifest["mandatory_data_ml_guard"] == MANDATORY_GUARD
     assert manifest["mandatory_data_ml_schema"] == SCHEMA
     assert manifest["mandatory_genesis_scaling_applies_before_route_selection"] is True
@@ -92,6 +119,11 @@ def test_pass219_execution_composer_requires_mandatory_guard() -> None:
     assert manifest["mandatory_compression_debt_schema"] == COMPRESSION_DEBT_SCHEMA
     assert manifest["compression_debt_conserved_quantity"] == "COMPRESSION_DEBT"
     assert manifest["compression_debt_elapsed_time_is_debt"] is False
+    assert manifest["mandatory_latency_guard"] == MANDATORY_LATENCY_GUARD
+    assert manifest["mandatory_latency_schema"] == LATENCY_POLICY_SCHEMA
+    assert manifest["latency_route_selection_requires_exact_semantic_equality"] is True
+    assert manifest["latency_budget_unmet_preserves_correct_route"] is True
+    assert manifest["latency_timing_is_noncanonical"] is True
     assert manifest["genesis_replay_default"] is False
     assert manifest["genesis_data_plane_normalization_default"] is True
 

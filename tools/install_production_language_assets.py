@@ -10,10 +10,12 @@ registry. The resulting status is written for deployment diagnostics.
 from __future__ import annotations
 
 import argparse
+import grp
 import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import urllib.request
@@ -31,6 +33,73 @@ def _truthy(name: str, default: bool = False) -> bool:
     if raw is None:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _normalize_production_checkout_readability(root: Path = ROOT) -> dict[str, Any]:
+    """Make tracked production source readable by the configured service group.
+
+    The guarded updater runs as root under umask 027 while hhs.service runs as
+    User=hhs/Group=hhs. Git promotion and rollback can therefore replace tracked
+    files with root-owned modes that the service cannot read. Only tracked files
+    and their parent directories are normalized; untracked host state and secrets
+    are intentionally untouched.
+    """
+    if os.geteuid() != 0:
+        return {"normalized": False, "reason": "not-root", "tracked_files": 0}
+    if not _truthy("HHS_PRODUCTION_NORMALIZE_CHECKOUT_READABILITY", default=True):
+        return {"normalized": False, "reason": "disabled", "tracked_files": 0}
+
+    group_name = os.getenv("HHS_PRODUCTION_SERVICE_GROUP", "hhs").strip() or "hhs"
+    try:
+        gid = grp.getgrnam(group_name).gr_gid
+    except KeyError as exc:
+        raise RuntimeError(f"production service group does not exist: {group_name}") from exc
+
+    process = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-z"],
+        check=True,
+        capture_output=True,
+    )
+    relative_paths = [
+        Path(value.decode("utf-8", errors="strict"))
+        for value in process.stdout.split(b"\0")
+        if value
+    ]
+    directories: set[Path] = {root}
+    normalized_files = 0
+
+    for relative in relative_paths:
+        path = root / relative
+        if not path.exists() or path.is_symlink():
+            continue
+        current = path.stat()
+        os.chown(path, -1, gid)
+        os.chmod(path, stat.S_IMODE(current.st_mode) | stat.S_IRGRP)
+        normalized_files += 1
+
+        parent = path.parent
+        while parent != root.parent and root in (parent, *parent.parents):
+            directories.add(parent)
+            if parent == root:
+                break
+            parent = parent.parent
+
+    for directory in sorted(directories, key=lambda value: len(value.parts)):
+        if not directory.exists() or directory.is_symlink():
+            continue
+        current = directory.stat()
+        os.chown(directory, -1, gid)
+        os.chmod(
+            directory,
+            stat.S_IMODE(current.st_mode) | stat.S_IRGRP | stat.S_IXGRP,
+        )
+
+    return {
+        "normalized": True,
+        "reason": None,
+        "service_group": group_name,
+        "tracked_files": normalized_files,
+    }
 
 
 def _load_manifest() -> Mapping[str, Any] | None:
@@ -228,6 +297,7 @@ def main() -> int:
         or _truthy("HHS_PRODUCTION_REQUIRE_ASSISTANT", default=False)
     )
     try:
+        _normalize_production_checkout_readability()
         report = execute(
             install_if_configured=args.install_if_configured,
             require_assistant=require,
