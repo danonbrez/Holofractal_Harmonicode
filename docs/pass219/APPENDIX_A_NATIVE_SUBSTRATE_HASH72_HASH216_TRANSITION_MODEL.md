@@ -183,3 +183,46 @@ I-A06  per-position vector topology survives whole-record integrity hashing
 I-A07  indexed retrieval never becomes independent VM81 mutation authority
 I-A08  serialization/restart reproduces lane roles, positions, glyphs, SHA records, and predecessor lineage exactly
 ```
+
+
+## A10. Compression-debt transfer at the native 5184 membrane
+
+Pass 219 compression debt is unresolved computational obligation, not elapsed time.
+
+At the native boundary:
+
+```text
+81 * 64 = 5184 bits
+72 * 72 = 5184 Hash72 coordinates
+3 * 72 = 216 Hash216 occurrences
+```
+
+A debt transfer may use Hash216 as its exact source/target address only when both transition records have all 216 inherited positional SHA-256 index records resolved.
+
+A transfer record is therefore bound to:
+
+```text
+source transition216
+target transition216
+source layer
+target layer
+modality
+amount
+source slot5184
+target slot5184
+ordered phase pair
+closure witness
+```
+
+and the receiver MUST record a reciprocal credit with exactly equal amount and identity.
+
+Hash216 remains an index/witness layer. This transfer mechanism does not grant Hash216 mutation authority.
+
+Additional invariants:
+
+```text
+I-A09  no anonymous compression debt crosses the native 5184 boundary
+I-A10  every debt transfer source/target has complete 216-position SHA-256 indexing
+I-A11  every transfer debit has one exact reciprocal receiving credit
+I-A12  elapsed time is never represented as debt credit
+```
