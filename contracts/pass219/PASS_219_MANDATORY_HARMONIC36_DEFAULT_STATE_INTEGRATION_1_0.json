@@ -338,19 +338,21 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33496909452,
-    "job": 99821090942,
-    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
+    "run": 33497200386,
+    "job": 99822014646,
+    "head": "97c6f668028a329980e2b624882f18de486ce427",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33496909452,
-    "job": 99821090942,
-    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
+    "run": 33497200386,
+    "job": 99822014646,
+    "head": "97c6f668028a329980e2b624882f18de486ce427",
     "ka10_monitor_profile_1_9": "SUCCESS",
     "stack_selection_1_10": "SUCCESS",
     "stack_selection_cache_1_11": "SUCCESS",
-    "multisignature_stack_cache_audit": "SUCCESS",
+    "multisignature_stack_cache_audit": "SUCCESS_REPEAT",
+    "stack_generalization_manifest": "SUCCESS",
+    "cache_generalization_manifest": "SUCCESS",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -579,6 +581,16 @@
       "workload_signature_collision": false,
       "cross_platform_inference": false,
       "canonical_authority_changed": false
+    },
+    "policy_repeat": {
+      "run": 33497200386,
+      "job": 99822014646,
+      "head": "97c6f668028a329980e2b624882f18de486ce427",
+      "conclusion": "SUCCESS",
+      "artifact_id": 9796212368,
+      "artifact_sha256": "21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b",
+      "stack_decisions_stable": true,
+      "cache_benefit_stable": true
     }
   }
 }
