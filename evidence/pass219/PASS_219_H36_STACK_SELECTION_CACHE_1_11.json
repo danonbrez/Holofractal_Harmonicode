@@ -1,0 +1,58 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_SELECTION_CACHE_1_11",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "implementation_head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33474222007,
+    "job": 99750000903,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9787576934,
+    "artifact_sha256": "63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06"
+  },
+  "cache": {
+    "capacity": 8,
+    "entry_count_tested": 1,
+    "sequence": "1",
+    "workload_signature36": 3734727431,
+    "semantic_result_signature64": "4176962402124975431",
+    "selected_candidate_id": 1,
+    "selected_stack": "H36_KA10_MONITOR",
+    "vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1",
+    "vector_key216_length": 216,
+    "entry_signature64": "4396347223969929149",
+    "replay_signature64": "4030867320796911141",
+    "cache_hit": true,
+    "cache_hit_fresh_selection_exact_equal": true,
+    "deterministic_relookup_receipt_byte_equal": true,
+    "idempotent_store": true,
+    "stale_semantic_signature_rejected": true,
+    "mismatched_vector_key_rejected": true,
+    "unrelated_cache_miss_status": "RANGE_ERROR",
+    "duplicate_sequence_rejected_by_cache_validator": true,
+    "partial_identity_collision_rejected": true,
+    "bounded_full_cache_status": "BUFFER_TOO_SMALL"
+  },
+  "lineage": {
+    "vector_store_metadata_only": true,
+    "hash216_lineage_claim": false,
+    "canonical_hash216_authority": false
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "correctness_validated": true,
+    "performance_benefit_measured": false,
+    "compatible_targets": "VALIDATION_REQUIRED"
+  }
+}

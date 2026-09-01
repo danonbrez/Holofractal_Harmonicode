@@ -43,7 +43,12 @@
     "GPU_CPU_VM81_EQUALITY_MISMATCH",
     "CACHE_MUTATION_AUTHORITY_ESCALATION",
     "FLOAT_CANONICAL_AUTHORITY_ESCALATION",
-    "UNWITNESSED_HARMONIC_SEMANTIC_COLLAPSE"
+    "UNWITNESSED_HARMONIC_SEMANTIC_COLLAPSE",
+    "H36_STACK_CACHE_STALE_SIGNATURE_ACCEPTED",
+    "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_ACCEPTED",
+    "H36_STACK_CACHE_REPLAY_DRIFT",
+    "H36_STACK_CACHE_AUTHORITY_ESCALATION",
+    "H36_STACK_CACHE_HASH216_LINEAGE_FALSE_CLAIM"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -121,7 +126,16 @@
     "H36_STACK_VECTOR_KEY216_CANDIDATE_METADATA",
     "H36_STACK_HASH216_LINEAGE_NONCLAIM",
     "H36_STACK_MEASURED_WINNER_ONLY_PROMOTION",
-    "H36_STACK_MULTIMODAL_GENERALIZATION_BRIDGE"
+    "H36_STACK_MULTIMODAL_GENERALIZATION_BRIDGE",
+    "H36_STACK_CACHE_HIT_FRESH_EXACT_EQUALITY",
+    "H36_STACK_CACHE_STALE_SIGNATURE_REJECTION",
+    "H36_STACK_CACHE_MISMATCHED_VECTOR_KEY_REJECTION",
+    "H36_STACK_CACHE_DETERMINISTIC_REPLAY_RECEIPT",
+    "H36_STACK_CACHE_HASH216_METADATA_ONLY",
+    "H36_STACK_CACHE_ZERO_AUTHORITY",
+    "H36_STACK_CACHE_BOUNDED_CAPACITY",
+    "H36_STACK_CACHE_IDEMPOTENT_STORE",
+    "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_REJECTION"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -233,7 +247,17 @@
     "h36_stack_candidate_vector_key216": true,
     "h36_stack_hash216_lineage_claim_forbidden": true,
     "h36_stack_measured_winner_only": true,
-    "h36_stack_multimodal_generalization_bridge": true
+    "h36_stack_multimodal_generalization_bridge": true,
+    "h36_stack_selection_cache_1_11": true,
+    "h36_stack_cache_capacity_8": true,
+    "h36_stack_cache_hit_fresh_exact_equality": true,
+    "h36_stack_cache_stale_signature_rejection": true,
+    "h36_stack_cache_vector_key_mismatch_rejection": true,
+    "h36_stack_cache_deterministic_replay_receipt": true,
+    "h36_stack_cache_idempotent_store": true,
+    "h36_stack_cache_partial_identity_collision_rejection": true,
+    "h36_stack_cache_hash216_metadata_only": true,
+    "h36_stack_cache_zero_authority": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -267,17 +291,18 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33462132899,
-    "job": 99714316241,
-    "head": "3cedf9bdcfff1cf571c0072ad9003915a8d834a9",
+    "run": 33474222007,
+    "job": 99750000903,
+    "head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33462132899,
-    "job": 99714316241,
-    "head": "3cedf9bdcfff1cf571c0072ad9003915a8d834a9",
+    "run": 33474222007,
+    "job": 99750000903,
+    "head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
     "ka10_monitor_profile_1_9": "SUCCESS",
     "stack_selection_1_10": "SUCCESS",
+    "stack_selection_cache_1_11": "SUCCESS",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -357,6 +382,44 @@
       "job": 99714316241,
       "artifact_id": 9783529146,
       "artifact_sha256": "63046cea9506229fbc4f0830e5abfc1358761d535086771dd0d8588b914d6221"
+    }
+  },
+  "stack_selection_cache_1_11": {
+    "implementation_head": "bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71",
+    "capacity": 8,
+    "workload_signature36": 3734727431,
+    "semantic_result_signature64": "4176962402124975431",
+    "selected_candidate_id": 1,
+    "selected_stack": "H36_KA10_MONITOR",
+    "selected_vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1",
+    "entry_sequence": "1",
+    "entry_signature64": "4396347223969929149",
+    "replay_signature64": "4030867320796911141",
+    "cache_hit_fresh_selection_exact_equal": true,
+    "deterministic_relookup_receipt_byte_equal": true,
+    "idempotent_store": true,
+    "stale_semantic_signature_rejected": true,
+    "mismatched_vector_key_rejected": true,
+    "unrelated_cache_miss_status": "RANGE_ERROR",
+    "full_cache_status": "BUFFER_TOO_SMALL",
+    "vector_store_metadata_only": true,
+    "hash216_lineage_claim": false,
+    "performance_benefit_measured": false,
+    "generalization_state": "VALIDATION_REQUIRED",
+    "authority": {
+      "candidate_only": true,
+      "vm81_mutation": false,
+      "vm81_admission_bypass": false,
+      "hash72": false,
+      "hash216": false,
+      "persistence": false,
+      "floating_point": false
+    },
+    "evidence": {
+      "run": 33474222007,
+      "job": 99750000903,
+      "artifact_id": 9787576934,
+      "artifact_sha256": "63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06"
     }
   }
 }

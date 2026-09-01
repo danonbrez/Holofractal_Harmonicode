@@ -1,0 +1,134 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h",
+    "hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc",
+    "tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c"
+  ],
+  "optimization": {
+    "optimization_id": "H36_STACK_SELECTION_CACHE_1_11",
+    "compatible_object_classes": [
+      "stack_selection_cache"
+    ],
+    "required_operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_STACK_SELECTION_V1"
+    ],
+    "correctness_gate": "CACHE_HIT_EQUALS_FRESH_SELECTION_EXACTLY",
+    "benefit_gate": "MEASUREMENT_REQUIRED_BEFORE_GENERALIZATION"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "stack_selection_cache",
+    "operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cached_selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1"
+    },
+    "logical_object_id": "h36-stack-selection-fresh-3734727431",
+    "modality_set": [
+      "H36_STACK_SELECTION"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1"
+      },
+      "logical_object_id": "h36-stack-cache-3734727431",
+      "modality_set": [
+        "H36_VECTOR_CACHE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1"
+      },
+      "logical_object_id": "h36-compatible-stack-cache-workloads-unvalidated",
+      "modality_set": [
+        "MULTIMODAL_STACK_CACHE"
+      ]
+    }
+  ],
+  "target_evidence": [],
+  "declared_generalize_required": [],
+  "policy": {
+    "correctness_validation_run": 33474222007,
+    "cache_hit_fresh_exact_equal": true,
+    "stale_signature_rejected": true,
+    "performance_benefit_measured": false,
+    "current_target_classification": "VALIDATION_REQUIRED",
+    "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
+    "no_unmeasured_generalization": true
+  }
+}

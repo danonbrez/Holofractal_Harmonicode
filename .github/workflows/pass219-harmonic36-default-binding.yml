@@ -58,6 +58,7 @@ on:
       - 'hhs_runtime/hhs_service_registry_v1.py'
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
@@ -384,6 +385,23 @@ jobs:
           assert result['local_exceptions'] == []
           PY
 
+      - name: Validate stack-cache generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == []
+          assert result['validation_required'] == [
+              'h36-compatible-stack-cache-workloads-unvalidated',
+              'h36-stack-cache-3734727431',
+          ]
+          assert result['local_exceptions'] == []
+          PY
+
       - name: Prove mandatory integration contract
         run: |
           python - <<'PY'
@@ -426,6 +444,8 @@ jobs:
           assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.inc' in c
           manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
           assert manifest.is_file()
+          cache_manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
+          assert cache_manifest.is_file()
           PY
 
       - uses: actions/upload-artifact@v4

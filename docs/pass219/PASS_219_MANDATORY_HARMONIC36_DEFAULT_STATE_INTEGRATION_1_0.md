@@ -989,3 +989,118 @@ Files:
 - `benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp`
 - `evidence/pass219/PASS_219_H36_STACK_SELECTION_BENCHMARK_1_10.json`
 - `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json`
+
+## 21. Hash216/vector-store stack-selection cache 1.11
+
+The measured stack selector now has a bounded candidate-cache layer for reuse of an already validated selection result.
+
+This cache is an additive optimization surface over the 1.10 selector. It is **not** a canonical Hash216 store and does not reinterpret the selected 216-character key as transition lineage.
+
+The bounded cache has eight entries:
+
+```text
+capacity = 8
+entry identity =
+    workload_signature36
+  + semantic_result_signature64
+  + selected_vector_key216
+```
+
+Each occupied entry stores the exact 1.10 selection record, a monotonically assigned deterministic sequence, and an exact 64-bit entry signature. Full capacity fails closed with `BUFFER_TOO_SMALL`; there is no implicit eviction policy in this bounded profile.
+
+### 21.1 Exact cache-hit equality
+
+The cache conformance test executes:
+
+```text
+fresh exact stack selection
+-> store
+-> lookup
+-> cached selection
+-> byte-exact compare with fresh selection
+-> deterministic second lookup
+-> byte-identical receipt
+```
+
+The exact equality check is separate from the lookup receipt. The receipt attests cache-entry integrity; `hhs_exact_pass219_h36_stack_cache_hit_equals_fresh` proves the cached selection equals the fresh selection exactly.
+
+### 21.2 Fail-closed stale and collision handling
+
+The cache rejects:
+
+- same workload signature with changed semantic result signature;
+- same workload/result signature with a changed 216-character vector key;
+- duplicate deterministic cache-entry sequences;
+- exact duplicate identities in separate slots;
+- partial-identity collisions across workload/result/key components;
+- replay receipts whose entry or replay signatures drift.
+
+An unrelated fully distinct query is a normal bounded cache miss and returns `RANGE_ERROR`.
+
+Idempotently storing the byte-identical fresh selection does not allocate another entry or advance the sequence.
+
+### 21.3 Replay receipt
+
+Validated deterministic receipt:
+
+```text
+sequence             = 1
+entry_signature64    = 4396347223969929149
+replay_signature64   = 4030867320796911141
+cache_hit            = true
+fresh_selection_equal= true (executed separate equality gate)
+stale_reject         = true
+authority            = 0
+```
+
+The selected vector key remains the exact 216-character 1.10 candidate key.
+
+### 21.4 Authority and Hash216 boundary
+
+Every cache, entry, and receipt explicitly records:
+
+```text
+candidate_only = 1
+vector_store_metadata_only = 1
+hash216_lineage_claim = 0
+canonical_mutation_authority = 0
+canonical_hash72_authority = 0
+canonical_hash216_authority = 0
+canonical_persistence_authority = 0
+floating_point_authority = 0
+vm81_admission_bypass = 0
+```
+
+A cache hit may remove redundant stack-selection work. It cannot bypass singleton VM81 admission, current-context validation, or any later Hash72 commitment.
+
+### 21.5 Validation and generalization state
+
+Dependency-scoped cumulative validation:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33474222007
+job      = 99750000903
+head     = bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71
+result   = SUCCESS
+artifact = 9787576934
+artifact sha256 = 63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06
+```
+
+Correctness, stale rejection, replay, and authority separation are validated. Cache performance benefit has **not** yet been inferred.
+
+The optimization-generalization manifest therefore classifies both the current cache target and additional metadata-compatible cache workloads as:
+
+```text
+VALIDATION_REQUIRED
+```
+
+A target becomes `GENERALIZE_REQUIRED` only after executed evidence establishes exact safety and a measurable benefit for that compatible target.
+
+Files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc`
+- `tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c`
+- `evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`
+- `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`
