@@ -1471,3 +1471,63 @@ h36-stack-cache-residency-occupancy8-unvalidated
 This promotion does not imply that occupancy 8 will preserve the same performance ratio. Capacity-8 expansion must use additional real workloads and be measured independently.
 
 All cache residency remains candidate metadata only. It adds no VM81 admission bypass, mutation authority, Hash72 authority, Hash216 lineage/authority, persistence authority, or floating-point authority.
+
+### 23.4 Enforcement repeat
+
+The occupancy-4 classification was promoted into the cumulative H36 workflow and rerun fail-closed.
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33498840150
+job      = 99827186656
+head     = 6d63b0867ab212df070a109befcddf6e2f64f2fd
+result   = SUCCESS
+artifact = 9796845905
+artifact sha256 = 2b8a5b574d974d23f5ff80577e8d4b0a63eed50217e517254b2c40575e433851
+```
+
+Repeat measurements:
+
+```text
+FULL_MONITOR
+  fresh selector       = 13,834,066 ns
+  occupancy 1 lookup   = 11,899,838 ns
+  occupancy 4 lookup   = 11,858,079 ns
+  occupancy4/fresh win = 1.166x
+  occupancy4/occupancy1 ratio = 0.996x
+
+CONSOLE_FOCUSED
+  fresh selector       = 13,522,538 ns
+  occupancy 1 lookup   = 11,724,048 ns
+  occupancy 4 lookup   = 11,797,878 ns
+  occupancy4/fresh win = 1.146x
+  occupancy4/occupancy1 ratio = 1.006x
+
+BINARY_IO_FOCUSED
+  fresh selector       = 13,901,526 ns
+  occupancy 1 lookup   = 11,783,036 ns
+  occupancy 4 lookup   = 11,760,522 ns
+  occupancy4/fresh win = 1.182x
+  occupancy4/occupancy1 ratio = 0.998x
+
+MONITOR_CONTROL_FOCUSED
+  fresh selector       = 13,599,696 ns
+  occupancy 1 lookup   = 11,763,367 ns
+  occupancy 4 lookup   = 11,820,151 ns
+  occupancy4/fresh win = 1.150x
+  occupancy4/occupancy1 ratio = 1.004x
+```
+
+The repeat confirms that occupancy 4 remains beneficial against fresh selection for every resident while occupancy-related scan cost remains effectively flat at this bounded size.
+
+The workflow also validated:
+
+```text
+h36-stack-cache-residency-occupancy4-linux-x86_64
+-> GENERALIZE_REQUIRED
+
+h36-stack-cache-residency-occupancy8-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+No capacity-8 or cross-platform performance claim is made.
