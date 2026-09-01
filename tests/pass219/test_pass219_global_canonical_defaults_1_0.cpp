@@ -9,8 +9,8 @@ int main(){
  static_assert(!GlobalCanonicalDefaults::isolated_native_project_is_canonical_substitute());
  static_assert(GlobalCanonicalDefaults::cross_cutting_defaults_are_mandatory());
  static_assert(GlobalCanonicalDefaults::retroactive_repair_forward_required());
- using P184=CumulativePassGlobalDefaults<184>; using P183=CumulativePassGlobalDefaults<183>;
- static_assert(P184::global_defaults_required&&P183::global_defaults_required);
- static_assert(P183::repair_forward_on_gap&&!P183::standalone_application&&!P183::optional_cross_cutting_defaults);
+ using P184=CumulativePassGlobalDefaults<184>; using P183=CumulativePassGlobalDefaults<183>; using P182=CumulativePassGlobalDefaults<182>;
+ static_assert(P184::global_defaults_required&&P183::global_defaults_required&&P182::global_defaults_required);
+ static_assert(P182::repair_forward_on_gap&&!P182::standalone_application&&!P182::optional_cross_cutting_defaults);
  assert(GlobalCanonicalDefaults::validate()==HHS_EXACT_STATUS_OK); return 0;
 }
