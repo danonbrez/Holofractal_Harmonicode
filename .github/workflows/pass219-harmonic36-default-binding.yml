@@ -63,6 +63,7 @@ on:
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -367,6 +368,37 @@ jobs:
           assert d['selection']['vector_store_metadata_only'] is True
           assert d['generalization_bridge']['compatible_unvalidated'] == 'VALIDATION_REQUIRED'
           assert d['generalization_bridge']['compatible_safe_beneficial'] == 'GENERALIZE_REQUIRED'
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 stack-selection cache versus fresh selector
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-benchmark
+          /tmp/h36/h36-stack-cache-benchmark \
+            artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['identity']['workload_signature36'] == 3734727431
+          assert str(d['identity']['semantic_result_signature64']) == '4176962402124975431'
+          assert d['identity']['selected_candidate_id'] == 1
+          assert d['identity']['vector_key216_length'] == 216
+          assert d['correctness']['cache_hit_equals_fresh_before_timing'] is True
+          assert d['correctness']['stale_signature_rejected_before_timing'] is True
+          assert d['correctness']['deterministic_replay_receipt'] is True
+          assert d['fresh_selection']['median_ns'] > 0
+          assert d['cache_hit']['median_ns'] > 0
+          assert d['measurement']['winner'] in ('CACHE_HIT', 'FRESH_SELECTION')
+          assert d['measurement']['winner_ratio_x1000'] > 0
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
