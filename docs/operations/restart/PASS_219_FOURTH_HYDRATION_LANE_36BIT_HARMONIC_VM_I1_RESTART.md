@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
-- Branch head immediately before this checkpoint record: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
+- Validated implementation head: `97c6f668028a329980e2b624882f18de486ce427`
+- Branch head immediately before this checkpoint record: `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / STACK CACHE 1.11 MEASURED WINNER / CURRENT TARGET GENERALIZED / POLICY GATE GREEN**
+- Status: **RESTARTABLE / REAL MULTISIGNATURE AUDIT COMPLETE / PER-WORKLOAD GENERALIZATION GREEN / DOC-EVIDENCE RERUN NONBLOCKING**
 
 ## Governing invariant
 
@@ -815,21 +815,167 @@ artifact sha256           = 4f02e262c3a6b61817574e0c1daab15928f2929f0e02a771e033
 
 Absolute timings and ratios remain runner-local. The supported invariant is only that the optimized cache was an exact measured winner for this validated Linux x86_64 workload identity in both post-optimization cumulative runs.
 
+### 19. Real multisignature stack/cache audit closure
+
+Continued from checkpoint `8f2db8ca551ef7ad2cc6c9a68763266ef9f0cef9`.
+
+New executable benchmark:
+
+- `benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp`.
+
+It executes three real workload classes through both the H36 monitor and Linux x86_64 reference before selection/cache timing:
+
+```text
+CONSOLE_FOCUSED
+  TTY input A
+  TTY output B
+  2 scheduler dispatches
+  2 historical MUUO services
+
+BINARY_IO_FOCUSED
+  PTR six-frame assembly -> 012345670123
+  PTP output C
+  PTR/PTP ISR services
+
+MONITOR_CONTROL_FOCUSED
+  4 cooperative dispatches
+  4 historical MUUO services
+```
+
+Workload signatures are deterministically derived from the monitor image plus the concrete operation sequence/arguments and are pairwise distinct.
+
+First green audit:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33496909452
+job      = 99821090942
+head     = 29b6e2018f8431554f226da0c1fed7ad37b13b22
+result   = SUCCESS
+artifact = 9796096476
+artifact sha256 = dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e
+```
+
+Measured first-run decisions:
+
+```text
+CONSOLE_FOCUSED
+  workload_signature36      = 4793332410
+  semantic_signature64      = 6731027650694893003
+  H36 / Linux               = 20,950 / 109,495 ns
+  stack winner              = H36_KA10_MONITOR
+  selector ratio            = 5.226x
+  fresh / cache             = 18,588,395 / 14,973,115 ns
+  cache ratio               = 1.241x
+
+BINARY_IO_FOCUSED
+  workload_signature36      = 21509979554
+  semantic_signature64      = 1456447110141201574
+  H36 / Linux               = 20,889 / 106,910 ns
+  stack winner              = H36_KA10_MONITOR
+  selector ratio            = 5.118x
+  fresh / cache             = 18,790,964 / 15,161,769 ns
+  cache ratio               = 1.239x
+
+MONITOR_CONTROL_FOCUSED
+  workload_signature36      = 41886677838
+  semantic_signature64      = 2318081696571468614
+  H36 / Linux               = 19,216 / 501 ns
+  stack winner              = LINUX_X86_64_POSIX
+  Linux winner ratio        = 38.355x
+  fresh / cache             = 18,382,750 / 14,817,374 ns
+  cache ratio               = 1.240x
+```
+
+The monitor-control result is intentionally preserved as a negative H36 result. H36 is not globally promoted.
+
+Generalization manifests now classify:
+
+```text
+H36 stack:
+  h36-ka10-monitor-3734727431                  -> GENERALIZE_REQUIRED
+  h36-ka10-monitor-console-4793332410          -> GENERALIZE_REQUIRED
+  h36-ka10-monitor-binary-21509979554          -> GENERALIZE_REQUIRED
+  h36-ka10-monitor-monitor-control-41886677838 -> LOCAL_EXCEPTION_ALLOWED
+                                                    NO_MEANINGFUL_BENEFIT
+  h36-compatible-stack-workloads-unvalidated  -> VALIDATION_REQUIRED
+
+Stack-selection cache:
+  h36-stack-cache-3734727431                   -> GENERALIZE_REQUIRED
+  h36-stack-cache-console-4793332410           -> GENERALIZE_REQUIRED
+  h36-stack-cache-binary-21509979554           -> GENERALIZE_REQUIRED
+  h36-stack-cache-monitor-control-41886677838  -> GENERALIZE_REQUIRED
+  h36-compatible-stack-cache-workloads-unvalidated
+                                               -> VALIDATION_REQUIRED
+```
+
+The cache remains useful even when Linux is the selected stack; cache authority remains zero.
+
+Repository-visible integration commits:
+
+- `544978ae6596a7ef2cee9649a4e14eb985eba4f4` — multisignature executable benchmark;
+- `29b6e2018f8431554f226da0c1fed7ad37b13b22` — cumulative benchmark wiring;
+- `63c895fe427fd6784e138156de9a358a4d168f60` — stack-selection classifications;
+- `ece4b07a6b3821b5bc51d97bd87b6963290d8d68` — cache classifications;
+- `6444ced997cda753ee941d0df47875ce521a2ec4` — machine-readable measurement evidence;
+- `d67df64efc1d5cc604228d5d51bd407d4e018924` — cumulative contract binding;
+- `57a4cbd190ca730b075e83eb3f8d9a7e71f60527` — normative audit documentation;
+- `97c6f668028a329980e2b624882f18de486ce427` — fail-closed policy enforcement.
+
+Terminal green policy/enforcement rerun:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33497200386
+job      = 99822014646
+head     = 97c6f668028a329980e2b624882f18de486ce427
+result   = SUCCESS
+artifact = 9796212368
+artifact sha256 = 21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b
+```
+
+Repeat measurements retained all decisions:
+
+```text
+console:
+  H36 / Linux   = 23,033 / 106,949 ns
+  cache/fresh   = 15,006,876 / 18,487,262 ns
+  cache ratio   = 1.231x
+
+binary I/O:
+  H36 / Linux   = 23,073 / 109,553 ns
+  cache/fresh   = 14,935,304 / 18,833,265 ns
+  cache ratio   = 1.260x
+
+monitor control:
+  H36 / Linux   = 19,156 / 501 ns
+  cache/fresh   = 14,982,943 / 18,398,417 ns
+  cache ratio   = 1.227x
+```
+
+Repeat evidence/contract/documentation commits:
+
+- `c0fc948fa39098d2556f48431e63fa79f28666a3`;
+- `17113356731e53a5f09f67527814be5cd27d1acd`;
+- `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe`.
+
+The documentation/evidence-head follow-up H36 run `33497366667` was still in progress when this checkpoint was prepared. It is nonblocking because the executable/policy head `97c6f668028a329980e2b624882f18de486ce427` is terminal green.
+
 ## Validation receipt
 
-Current terminal green dependency-scoped H36 policy gate:
+Current terminal green dependency-scoped implementation/policy gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33475717192`
-- job: `99754440329`
-- head: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
+- run: `33497200386`
+- job: `99822014646`
+- head: `97c6f668028a329980e2b624882f18de486ce427`
 - conclusion: **SUCCESS**
-- optimization artifact: `9788087119`
-- artifact SHA-256: `4f02e262c3a6b61817574e0c1daab15928f2929f0e02a771e033ec56ac0e7a6f`
+- artifact: `9796212368`
+- artifact SHA-256: `21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b`
 
-The gate includes strict C11, exact cumulative ABI, all inherited H36/KA10/device/monitor/composition/graph surfaces, stack selector 1.10, cache 1.11 conformance, no-canonical-float validation, stack-selection benchmark, **cache-vs-fresh measured-winner enforcement**, both optimization-generalization manifests, cumulative integration-contract proof, and artifact upload.
+This gate includes all inherited H36 conformance, selector/cache conformance, existing optimization measurements, original cache measurement, the three real multisignature workloads, per-workload selected-stack enforcement, per-workload cache-benefit enforcement, both generalization manifests, cumulative contract proof, and artifact upload.
 
-The same optimized cache implementation was already green at run `33475578584` / job `99754022255` with a 1.196x measured cache win. The policy rerun independently retained the win at 1.237x.
+The later evidence/contract/documentation head `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe` has follow-up run `33497366667` in progress at checkpoint creation. It does not block restartability or completion.
 
 ## Normative documentation updated after green code head
 
@@ -878,60 +1024,48 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Preserve the current measured cache promotion only for the exact validated target:
+1. Check follow-up H36 run `33497366667` once.
+   - Preserve it if **SUCCESS**.
+   - If it fails, inspect only the first dependency-scoped H36 failure and repair forward; do not invalidate terminal green policy head `97c6f668028a329980e2b624882f18de486ce427` unless the failure proves a relevant defect.
+
+2. Implement the next bounded cache-residency step using the **same cache instance**, not one cache per workload:
 
 ```text
-workload_signature36 = 3734727431
-semantic_result_signature64 = 4176962402124975431
-platform = linux-x86_64
-classification = GENERALIZE_REQUIRED
+original full workload 3734727431
++ console 4793332410
++ binary I/O 21509979554
++ monitor control 41886677838
+-> 4 simultaneous exact entries in capacity-8 cache
 ```
 
-2. Expand the generalization audit to **real metadata-compatible workload signatures**, not synthetic signature substitutions. Use at least these bounded semantic workload classes through the same H36 monitor/selector/cache path:
+3. Prove multi-entry isolation:
 
 ```text
-A. console-focused
-   TTY input/output + scheduler dispatch
+lookup each exact identity
+-> exact selected stack/result
+-> deterministic receipt
+-> no cross-signature hit
 
-B. binary I/O-focused
-   PTR 36-bit assembly + PTP output + ISR service
+wrong semantic signature for any resident workload
+-> INVARIANT_FAILURE
 
-C. monitor-control-focused
-   cooperative dispatch + historical MUUO services
+wrong vector_key216 for any resident workload
+-> INVARIANT_FAILURE
+
+fully unrelated identity
+-> RANGE_ERROR
+
+duplicate sequence / duplicate or partial identity
+-> fail closed
 ```
 
-For each class:
+4. Measure cache lookup at occupancy 1 versus occupancy 4 for each resident workload. Preserve correctness before timing. Do not assume the current linear scan remains beneficial as occupancy grows.
 
-```text
-fresh H36/Linux semantic equality
--> deterministic workload_signature36
--> deterministic semantic_result_signature64
--> measured 1.10 stack winner
--> candidate vector_key216
--> cache store
--> stale/mismatch negative gates
--> cache hit == fresh selection exactly
--> repeated cache-vs-fresh timing
--> per-target generalization classification
-```
+5. If occupancy-4 cache lookup remains exact + safe + beneficial, classify the multi-entry residency optimization `GENERALIZE_REQUIRED`. If the scan overhead removes meaningful benefit, optimize indexing within the bounded eight-entry cache without weakening full store/audit/public receipt validation.
 
-3. Classification remains fail-closed:
+6. Only after occupancy-4 closure, expand toward the capacity-8 boundary with additional **real** workload signatures rather than synthetic placeholders.
 
-```text
-exact + safe + measured cache benefit
--> GENERALIZE_REQUIRED
-
-exact + safe + no meaningful benefit
--> NO_MEANINGFUL_BENEFIT bounded exception
-   with repository-visible measurement evidence
-
-compatible but unmeasured
--> VALIDATION_REQUIRED
-```
-
-4. Do not infer the current 1.196x/1.237x Linux x86_64 ratios for another workload signature or platform.
-
-5. Preserve full-cache validation for store/audit/public receipt-validation paths; lookup optimization may remain dependency-scoped only while exact identity, stale/collision rejection, deterministic replay, and singleton VM81 admission remain intact.
+Do not infer cross-platform timing.
 
 Do not expand into KI10/KL10 paging/MAP in this step.
 
