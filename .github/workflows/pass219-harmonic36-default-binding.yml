@@ -481,7 +481,7 @@ jobs:
           assert d['authoritative_state_changed'] is False
           PY
 
-      - name: Measure H36 cache occupancy 1 versus 4
+      - name: Calibrate H36 cache occupancy 1 versus 4
         run: |
           g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
@@ -510,6 +510,12 @@ jobs:
           }
           assert {row['name'] for row in d['residents']} == set(expected)
           assert [row['entry_sequence_occupancy4'] for row in d['residents']] == [1, 2, 3, 4]
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
+          assert d['measurement']['gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert d['measurement']['calibration_repeats'] == 5
+          assert d['measurement']['required_beneficial_repeats'] == 4
+          assert d['measurement']['aggregate_requires_occupancy4_total_lt_fresh_total'] is True
           for row in d['residents']:
               workload, semantic, candidate = expected[row['name']]
               assert row['workload_signature36'] == workload
@@ -519,10 +525,21 @@ jobs:
               assert row['fresh_selection_median_ns'] > 0
               assert row['occupancy1_lookup_median_ns'] > 0
               assert row['occupancy4_lookup_median_ns'] > 0
-              assert row['occupancy4_faster_than_fresh'] is True
-              assert row['occupancy4_vs_fresh_ratio_x1000'] > 1000
+              assert row['fresh_selection_total_ns'] > 0
+              assert row['occupancy1_lookup_total_ns'] > 0
+              assert row['occupancy4_lookup_total_ns'] > 0
+              assert 0 <= row['beneficial_repeat_count'] <= 5
+              assert len(row['repeat_measurements']) == 5
+              assert [r['repeat'] for r in row['repeat_measurements']] == [1,2,3,4,5]
+              assert [r['measurement_order'] for r in row['repeat_measurements']] == [
+                  'FRESH_OCC1_OCC4',
+                  'OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4',
+                  'OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4',
+              ]
+              assert row['occupancy4_vs_fresh_ratio_x1000'] > 0
               assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
-          assert d['measurement']['all_occupancy4_faster_than_fresh'] is True
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
