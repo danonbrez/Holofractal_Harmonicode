@@ -1104,3 +1104,80 @@ Files:
 - `tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c`
 - `evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`
 - `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`
+
+### 21.6 Measured cache optimization and promotion
+
+Cache reuse was not promoted from structural intuition. The production lookup path was measured repeatedly against a fresh 1.10 selection over the same already-measured candidate evidence and exact workload identity.
+
+The first benchmark preserved a negative result:
+
+```text
+head = b4c2d5d2d8385fa99fe6f3bf4b59ba66e7f6a041
+run  = 33475406279
+fresh selection median / 4096 = 19,011,549 ns
+cache hit median / 4096       = 27,643,766 ns
+winner                         = FRESH_SELECTION
+ratio                          = 1.454x
+```
+
+The cache was therefore not generalized.
+
+The first repair removed a duplicate full-cache validation during receipt construction while retaining public full receipt validation:
+
+```text
+head = 8d85461a6d5d0fff18bd2045e3a8cc1d3dde263c
+run  = 33475482687
+fresh selection median / 4096 = 17,855,908 ns
+cache hit median / 4096       = 18,003,153 ns
+winner                         = FRESH_SELECTION
+ratio                          = 1.008x
+```
+
+That result remained non-beneficial and was also not promoted.
+
+The second repair made lookup validation dependency-scoped. Lookup now validates:
+
+- cache header and zero-authority invariants;
+- every occupied slot's basic identity/sequence metadata;
+- duplicate sequence rejection;
+- exact and partial query-identity collision rejection;
+- the matched selection's exact structural invariants;
+- the matched entry's deterministic entry signature;
+- the query's complete 216-character key validity.
+
+Full-cache validation remains unchanged for store, audit, and public receipt-validation paths. Unrelated cache entries therefore cannot authorize or mutate state, and singleton VM81 admission remains mandatory.
+
+The resulting measured winner:
+
+```text
+head = dc3ea1eada0b5b965fd74a58555da3522e0f5b59
+workflow = Pass 219 Harmonic36 Nested VM
+run  = 33475578584
+job  = 99754022255
+samples = 11
+rounds/sample = 4096
+
+fresh selection median = 18,749,724 ns
+cache hit median       = 15,671,781 ns
+fresh/op               = 4,577 ns
+cache/op               = 3,826 ns
+winner                 = CACHE_HIT
+speedup                 = 1.196x
+
+artifact = 9788037050
+artifact sha256 = 00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6
+```
+
+Exact equality, stale-signature rejection, deterministic replay, and zero authority were all proven before timing.
+
+The generalization classification is now:
+
+```text
+h36-stack-cache-3734727431
+-> GENERALIZE_REQUIRED
+
+h36-compatible-stack-cache-workloads-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+The 1.196x ratio is runner-local evidence, not a universal or cross-platform speed constant. Only the exact validated workload identity is promoted.
