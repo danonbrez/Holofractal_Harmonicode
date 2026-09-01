@@ -285,8 +285,31 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
         entry->selection.selected_vector_key216,
         sizeof(out_receipt->vector_key216));
 
-    return hhs_exact_pass219_h36_stack_cache_receipt_validate(
-        cache, out_receipt);
+    if (out_receipt->entry_index >= cache->capacity ||
+        cache->entries[out_receipt->entry_index].occupied != 1U ||
+        out_receipt->selected_candidate_id !=
+            cache->entries[out_receipt->entry_index].selection.selected_candidate_id ||
+        out_receipt->selected_stack_kind !=
+            cache->entries[out_receipt->entry_index].selection.selected_stack_kind ||
+        out_receipt->sequence !=
+            cache->entries[out_receipt->entry_index].sequence ||
+        out_receipt->workload_signature36 !=
+            cache->entries[out_receipt->entry_index].selection.workload_signature36 ||
+        out_receipt->semantic_result_signature64 !=
+            cache->entries[out_receipt->entry_index].selection.semantic_result_signature64 ||
+        out_receipt->entry_signature64 !=
+            cache->entries[out_receipt->entry_index].entry_signature64 ||
+        out_receipt->replay_signature64 !=
+            h36_stack_cache_replay_signature(
+                &cache->entries[out_receipt->entry_index],
+                out_receipt->entry_index) ||
+        memcmp(
+            out_receipt->vector_key216,
+            cache->entries[out_receipt->entry_index].selection.selected_vector_key216,
+            HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    return HHS_EXACT_STATUS_OK;
 }
 
 HHSExactStatus hhs_exact_pass219_h36_stack_cache_hit_equals_fresh(
