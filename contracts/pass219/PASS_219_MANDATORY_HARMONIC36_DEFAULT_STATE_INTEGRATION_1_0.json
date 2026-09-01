@@ -57,7 +57,11 @@
     "H36_STACK_CACHE_OCCUPANCY4_DUPLICATE_SEQUENCE_ACCEPTED",
     "H36_STACK_CACHE_OCCUPANCY4_DUPLICATE_IDENTITY_ACCEPTED",
     "H36_STACK_CACHE_OCCUPANCY4_PARTIAL_IDENTITY_ACCEPTED",
-    "H36_STACK_CACHE_OCCUPANCY8_UNMEASURED_PROMOTION"
+    "H36_STACK_CACHE_OCCUPANCY8_UNMEASURED_PROMOTION",
+    "H36_STACK_CACHE_CAPACITY8_NINTH_DISTINCT_STORE_ACCEPTED",
+    "H36_STACK_CACHE_CAPACITY8_COUNT_SEQUENCE_DRIFT_AFTER_REJECTED_STORE",
+    "H36_STACK_CACHE_CAPACITY8_CROSS_SIGNATURE_FALSE_HIT",
+    "H36_STACK_CACHE_CAPACITY8_CROSS_PLATFORM_UNMEASURED_PROMOTION"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -161,7 +165,12 @@
     "H36_STACK_CACHE_OCCUPANCY4_MEASURED_BENEFIT",
     "H36_STACK_CACHE_OCCUPANCY1_OCCUPANCY4_COMPARISON",
     "H36_STACK_CACHE_CROSS_SIGNATURE_REJECTION",
-    "H36_STACK_CACHE_OCCUPANCY4_GENERALIZATION_BOUNDED"
+    "H36_STACK_CACHE_OCCUPANCY4_GENERALIZATION_BOUNDED",
+    "H36_STACK_CACHE_CAPACITY8_EIGHT_RESIDENT_EXACT_ISOLATION",
+    "H36_STACK_CACHE_CAPACITY8_NINTH_STORE_BUFFER_TOO_SMALL",
+    "H36_STACK_CACHE_CAPACITY8_IDEMPOTENT_STORE_AT_FULL_CAPACITY",
+    "H36_STACK_CACHE_CAPACITY8_MEASURED_BENEFIT",
+    "H36_STACK_CACHE_CAPACITY8_GENERALIZATION_BOUNDED_LINUX_X86_64"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -311,7 +320,15 @@
     "h36_stack_cache_partial_identity_tamper_rejection": true,
     "h36_stack_cache_occupancy4_measured_winner_vs_fresh": true,
     "h36_stack_cache_occupancy4_generalize_required": true,
-    "h36_stack_cache_occupancy8_validation_required": true
+    "h36_stack_cache_occupancy8_validation_required": true,
+    "h36_stack_cache_capacity8_1_14": true,
+    "h36_stack_cache_eight_simultaneous_residents": true,
+    "h36_stack_cache_capacity8_exact_isolation": true,
+    "h36_stack_cache_capacity8_ninth_store_buffer_too_small": true,
+    "h36_stack_cache_full_capacity_idempotent_store": true,
+    "h36_stack_cache_capacity8_measured_winner_vs_fresh": true,
+    "h36_stack_cache_capacity8_generalize_required_linux_x86_64": true,
+    "h36_stack_cache_capacity8_cross_platform_validation_required": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -358,9 +375,9 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33498840150,
-    "job": 99827186656,
-    "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
+    "run": 33528991694,
+    "job": 99927016899,
+    "head": "03bc4ae3b69d3834ca70cb904fa6924fb1196e98",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
@@ -689,6 +706,69 @@
       "artifact_sha256": "2b8a5b574d974d23f5ff80577e8d4b0a63eed50217e517254b2c40575e433851",
       "all_occupancy4_faster_than_fresh": true,
       "residency_manifest_valid": true
+    }
+  },
+  "stack_cache_capacity8_1_14": {
+    "validation": {
+      "run": 33528991694,
+      "job": 99927016899,
+      "head": "03bc4ae3b69d3834ca70cb904fa6924fb1196e98",
+      "conclusion": "SUCCESS",
+      "artifact_id": 9808920709,
+      "artifact_sha256": "8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417"
+    },
+    "resident_entries": 8,
+    "capacity": 8,
+    "next_sequence": 9,
+    "ninth_store": {
+      "workload": "BOUNDARY_CONSOLE_ALTERNATE",
+      "workload_signature36": 38935941853,
+      "result": "BUFFER_TOO_SMALL",
+      "count_sequence_unchanged": true
+    },
+    "new_workloads": [
+      {
+        "name": "APR_PI_INTERRUPT_FOCUSED",
+        "workload_signature36": 56629000078,
+        "semantic_result_signature64": "6036511113464237678",
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "h36_median_ns": 2023,
+        "linux_median_ns": 521
+      },
+      {
+        "name": "RIM_BOOTSTRAP_FOCUSED",
+        "workload_signature36": 45496969883,
+        "semantic_result_signature64": "15550751547534181799",
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "h36_median_ns": 3115,
+        "linux_median_ns": 561
+      },
+      {
+        "name": "MIXED_CONSOLE_BINARY_IO",
+        "workload_signature36": 19461196675,
+        "semantic_result_signature64": "7100043395069015146",
+        "selected_stack": "H36_KA10_MONITOR",
+        "h36_median_ns": 22865,
+        "linux_median_ns": 258110
+      },
+      {
+        "name": "MIXED_SCHEDULER_IO_UUO",
+        "workload_signature36": 25778039250,
+        "semantic_result_signature64": "17797529900924037577",
+        "selected_stack": "H36_KA10_MONITOR",
+        "h36_median_ns": 21333,
+        "linux_median_ns": 129115
+      }
+    ],
+    "performance": {
+      "all_occupancy8_faster_than_fresh": true,
+      "occupancy8_vs_fresh_x1000_min": 1164,
+      "occupancy8_vs_fresh_x1000_max": 1197,
+      "cross_platform_inference": false
+    },
+    "classification": {
+      "occupancy8_linux_x86_64": "GENERALIZE_REQUIRED",
+      "occupancy8_cross_platform": "VALIDATION_REQUIRED"
     }
   }
 }
