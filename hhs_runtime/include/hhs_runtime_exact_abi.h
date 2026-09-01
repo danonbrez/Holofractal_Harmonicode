@@ -64,5 +64,6 @@
 #include "hhs_pass219_harmonic36_stack_selection_1_10.h"
 #include "hhs_pass219_harmonic36_stack_selection_cache_1_11.h"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.h"
+#include "hhs_pass219_holographic_harmonic_window_25_3_1_0.h"
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.h"
 #endif
