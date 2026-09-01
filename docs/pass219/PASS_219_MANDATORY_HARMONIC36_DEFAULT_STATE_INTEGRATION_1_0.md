@@ -1181,3 +1181,147 @@ h36-compatible-stack-cache-workloads-unvalidated
 ```
 
 The 1.196x ratio is runner-local evidence, not a universal or cross-platform speed constant. Only the exact validated workload identity is promoted.
+
+## 22. Real workload-signature generalization audit
+
+The cache/generalization path is no longer validated only against the original full monitor workload. Three additional **executable** workload classes are now run through the same H36 monitor, Linux reference, 1.10 selector, 1.11 cache, stale/mismatch gates, replay receipt, and measurement pipeline.
+
+The signatures are derived from the concrete monitor image plus each class's actual operation sequence and arguments. They are not substituted or randomized identifiers.
+
+Validation:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33496909452
+job      = 99821090942
+head     = 29b6e2018f8431554f226da0c1fed7ad37b13b22
+result   = SUCCESS
+artifact = 9796096476
+artifact sha256 = dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e
+```
+
+The benchmark uses 7 stack samples × 8 complete workloads/sample and 11 cache samples × 4096 selection operations/sample.
+
+### 22.1 Console-focused workload
+
+Concrete semantics:
+
+```text
+TTY input  = A
+TTY output = B
+scheduler dispatches = 2
+historical MUUO services = 2
+```
+
+Evidence:
+
+```text
+workload_signature36       = 4793332410
+semantic_result_signature  = 6731027650694893003
+H36 median                 = 20,950 ns
+Linux x86_64 median        = 109,495 ns
+selected stack             = H36_KA10_MONITOR
+selector speedup           = 5.226x
+
+fresh selector median      = 18,588,395 ns / 4096
+cache hit median           = 14,973,115 ns / 4096
+cache speedup              = 1.241x
+```
+
+Classification:
+
+```text
+H36 stack target  -> GENERALIZE_REQUIRED
+cache target      -> GENERALIZE_REQUIRED
+```
+
+### 22.2 Binary-I/O-focused workload
+
+Concrete semantics:
+
+```text
+PTR six-frame binary assembly -> 012345670123
+PTP output                    -> C
+PTR ISR services              -> 1
+PTP ISR services              -> 1
+```
+
+Evidence:
+
+```text
+workload_signature36       = 21509979554
+semantic_result_signature  = 1456447110141201574
+H36 median                 = 20,889 ns
+Linux x86_64 median        = 106,910 ns
+selected stack             = H36_KA10_MONITOR
+selector speedup           = 5.118x
+
+fresh selector median      = 18,790,964 ns / 4096
+cache hit median           = 15,161,769 ns / 4096
+cache speedup              = 1.239x
+```
+
+Classification:
+
+```text
+H36 stack target  -> GENERALIZE_REQUIRED
+cache target      -> GENERALIZE_REQUIRED
+```
+
+### 22.3 Monitor-control-focused workload
+
+Concrete semantics:
+
+```text
+cooperative dispatches     = 4
+historical MUUO services   = 4
+final scheduler state      = exact match
+```
+
+This workload produces the important negative H36 result:
+
+```text
+workload_signature36       = 41886677838
+semantic_result_signature  = 2318081696571468614
+H36 median                 = 19,216 ns
+Linux x86_64 median        = 501 ns
+selected stack             = LINUX_X86_64_POSIX
+Linux winner ratio         = 38.355x
+```
+
+The system therefore does **not** globally force H36 merely because H36 won other workloads.
+
+The H36 target classification is:
+
+```text
+LOCAL_EXCEPTION_ALLOWED
+reason = NO_MEANINGFUL_BENEFIT
+```
+
+The selector result itself still benefits from the exact cache:
+
+```text
+fresh selector median      = 18,382,750 ns / 4096
+cache hit median           = 14,817,374 ns / 4096
+cache speedup              = 1.240x
+
+cache target -> GENERALIZE_REQUIRED
+```
+
+This proves the cache optimization is independent of which candidate stack wins.
+
+### 22.4 Global boundary
+
+All three workload signatures are distinct. For every class:
+
+- H36/Linux semantic equality is established before stack timing;
+- candidate selection is measurement-driven;
+- vector keys remain 216-character candidate metadata only;
+- cache hit equals fresh selection exactly before cache timing;
+- stale semantic signatures fail closed;
+- mismatched vector keys fail closed;
+- deterministic replay receipts remain valid;
+- cache and stack candidates have zero mutation/Hash72/Hash216/persistence authority;
+- no cross-platform timing inference is made.
+
+The repository policy is therefore **per compatible measured object**, not “H36 everywhere” or “cache everywhere.” Unmeasured compatible workload signatures remain `VALIDATION_REQUIRED`.
