@@ -77,3 +77,7 @@ The new gate must:
 9. emit Hash72/Hash216 evidence while explicitly recording that no remote integration or deployment occurred.
 
 Remote main integration, authoritative-main verification after integration, and external deployment replay remain independent later gates.
+
+## Validation trigger
+
+The append-only current-main synthetic workflow exists on this branch. This documentation-only commit is the bounded push trigger for that workflow; no implementation, receipt, authority, merge, or deployment state is changed by the trigger itself.
