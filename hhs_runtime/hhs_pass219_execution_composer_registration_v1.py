@@ -19,6 +19,13 @@ from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
     SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
     WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
 )
+from hhs_runtime.hhs_pass219_holographic_harmonic_window_registration_v1 import (
+    BRANCH_SYMBOL as HOLOGRAPHIC_BRANCH_SYMBOL,
+    INVARIANT_SYMBOL as HOLOGRAPHIC_INVARIANT_SYMBOL,
+    MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
+    SCHEMA as HOLOGRAPHIC_WINDOW_SCHEMA,
+    VALIDATE_SYMBOL as HOLOGRAPHIC_VALIDATE_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     GENESIS_SYMBOL,
     GENESIS_VALIDATE_SYMBOL,
@@ -28,7 +35,7 @@ from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     VERIFY_SYMBOL,
 )
 
-VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22_PLUS_GLOBAL_LATENCY_25_3_1_0"
+VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22_PLUS_GLOBAL_LATENCY_25_3_1_0_PLUS_HOLOGRAPHIC_WINDOW_1_0"
 SURFACE_ID = "executor:pass219.rna.execution.compose"
 EXECUTION_SYMBOL = "hhs_exact_pass219_rna_execution_compose"
 PREPARE_SYMBOL = "hhs_exact_pass219_rna_execution_prepare_candidate"
@@ -57,6 +64,7 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_POST_PASS218_INDEXED_REUSE_POLICY_1_5_0",
             MANDATORY_DATA_ML_SCHEMA,
             LATENCY_POLICY_SCHEMA,
+            HOLOGRAPHIC_WINDOW_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_KERNEL_DERIVATION_WITNESS_V1",
@@ -78,11 +86,15 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             LATENCY_CLASSIFY_SYMBOL,
             LATENCY_WINDOW_SYMBOL,
             LATENCY_SELECT_SYMBOL,
+            HOLOGRAPHIC_INVARIANT_SYMBOL,
+            HOLOGRAPHIC_VALIDATE_SYMBOL,
+            HOLOGRAPHIC_BRANCH_SYMBOL,
         ],
         "guards": [
             "kernel_runtime_autocomposer",
             MANDATORY_GUARD,
             MANDATORY_LATENCY_GUARD,
+            MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
             "authenticated_indexed_predecessor_gate",
             "dependency_frontier_gate",
             "single_c_vm81_mutation_authority",
@@ -93,6 +105,7 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_DEPENDENCY_CHANGE_AS_UNSCOPED_GENESIS_REPLAY",
             "REJECT_PASS219_DATA_ML_WITHOUT_MANDATORY_GENESIS_SCALING",
             "REJECT_PASS219_EXECUTION_WITHOUT_GLOBAL_LATENCY_POLICY",
+            "REJECT_PASS219_EXECUTION_WITHOUT_HOLOGRAPHIC_WINDOW",
             "REJECT_PASS219_CPP_MUTATION_AUTHORITY",
         ],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
@@ -113,6 +126,7 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "default_preconditions": [
             "PASS219_MANDATORY_SUDOKU_GENESIS_SCALING_DATA_ML",
             "PASS219_GLOBAL_LATENCY_POLICY_25_OVER_3",
+            "PASS219_HOLOGRAPHIC_HARMONIC_WINDOW_25_OVER_3",
             "AUTHENTICATED_INDEXED_PREDECESSOR",
             "CURRENT_DEPENDENCY_FRONTIER_MATCH",
             "NO_TYPED_BYPASS_REQUEST",
@@ -122,9 +136,14 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "mandatory_genesis_scaling_applies_before_route_selection": True,
         "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
         "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
+        "mandatory_holographic_window_guard": MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
+        "mandatory_holographic_window_schema": HOLOGRAPHIC_WINDOW_SCHEMA,
         "latency_route_selection_requires_exact_semantic_equality": True,
         "latency_budget_unmet_preserves_correct_route": True,
         "latency_timing_is_noncanonical": True,
+        "holographic_window_direct_layer_addressed": True,
+        "holographic_window_maximum_current_depth": 9,
+        "holographic_window_unbounded_depth_constant_time_claim": False,
         "typed_bypass_reasons": list(BYPASS_REASONS),
         "genesis_replay_default": False,
         "genesis_data_plane_normalization_default": True,
