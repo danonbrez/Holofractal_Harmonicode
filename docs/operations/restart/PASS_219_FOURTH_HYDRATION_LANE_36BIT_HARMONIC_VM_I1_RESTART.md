@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `a8834b12553741dc5fd04f3434752de14cfccb1b`
-- Branch head immediately before this checkpoint record: `53fcd1b0ef1c61bdeaff9e72d76de9eb1d01f12c`
+- Validated implementation head: `157796f80b9806365de7a8578840560f3716617b`
+- Branch head immediately before this checkpoint record: `3f3589b5cad5d18826b711aee0df2fcf19cebfe2`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / CAPACITY-8 CACHE 1.14 CLOSED / POLICY REPEAT GREEN / ACCESS-DISTRIBUTION NEXT**
+- Status: **RESTARTABLE / TIMING STABILITY REPAIR GREEN / CAPACITY-8 SEALED / NO RECLASSIFICATION**
 
 ## Governing invariant
 
@@ -1292,21 +1292,200 @@ All fail-closed policy assertions and all four optimization-generalization manif
 
 All authority boundaries remain unchanged: cache state is candidate metadata only and cannot bypass singleton VM81 admission or gain mutation, Hash72, Hash216, persistence, or floating-point authority.
 
+### 22. Timing stability repair 1.15 closure
+
+The retained last green capacity-eight boundary remains unchanged:
+
+```text
+head     = a8834b12553741dc5fd04f3434752de14cfccb1b
+run      = 33529443931
+job      = 99928529597
+artifact = 9809101393
+sha256   = 511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345
+result   = SUCCESS
+```
+
+The later frozen checkpoint `17a83022f70ad35c90dd826bc20e905d123c9acc`
+triggered a one-shot occupancy timing failure:
+
+```text
+run = 33529740240
+job = 99929569893
+failing step = Measure H36 cache occupancy 1 versus 4
+
+BINARY_IO_FOCUSED
+fresh selector median = 8,792,668 ns
+occupancy4 median     = 9,620,458 ns
+```
+
+All correctness, identity, replay, isolation, cache-state and authority checks
+remained green.
+
+The regression was reproduced under bounded calibrated sampling using:
+
+```text
+calibration repeats      = 5
+samples per repeat       = 11
+operations per sample    = 4096
+measurement order        = alternating
+required beneficial runs = 4 of 5
+aggregate gate           = occupancy4_total_ns < fresh_selection_total_ns
+```
+
+Calibration benchmark:
+
+```text
+head = ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b
+run  = 33532945748
+job  = 99940293326
+```
+
+The benchmark output completed validly. Its subsequent workflow failure was
+only the inherited parser requesting the removed one-shot row field.
+
+Calibrated reproduction result:
+
+```text
+FULL_MONITOR            5/5 beneficial, aggregate 1.197x
+CONSOLE_FOCUSED         5/5 beneficial, aggregate 1.198x
+BINARY_IO_FOCUSED       5/5 beneficial, aggregate 1.199x
+MONITOR_CONTROL_FOCUSED 5/5 beneficial, aggregate 1.195x
+
+regression reproduced = false
+reclassification required = false
+```
+
+The one-shot Boolean was therefore replaced by the exact integer gate:
+
+```text
+EXACT_INTEGER_REPEAT_STABILITY
+
+for each resident:
+  beneficial_repeat_count >= 4
+  occupancy4_total_ns < fresh_selection_total_ns
+
+for all residents:
+  repeat_stability_pass == true
+```
+
+Relevant repair commits:
+
+- `ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b` — calibrated occupancy benchmark;
+- `88efd8339977d570624f32648b12b35206e6a439` — collection-only calibration wiring;
+- `d1f4d1041462b552571355d25c6999a05995cfbe` — exact repeat-stability enforcement;
+- `ed699c621ee0b6a1ec1f0865d4c4b1bacbea268c` — stability repair evidence;
+- `36ca0e5a81bfe7e8560f12a93825df85a0f09788` — residency manifest stability policy;
+- `d1a6121cc65d9dee80a06e7c7227ad4d92aff36f` — cumulative contract stability binding;
+- `ded21dd36c9413909880033a2c35dd30b3beaa6c` — normative stability documentation;
+- `157796f80b9806365de7a8578840560f3716617b` — sealed manifest/integration enforcement head;
+- `3f3589b5cad5d18826b711aee0df2fcf19cebfe2` — sealed rerun evidence.
+
+Final sealed rerun:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33533279927
+job      = 99941365968
+head     = 157796f80b9806365de7a8578840560f3716617b
+result   = SUCCESS
+artifact = 9810601586
+artifact sha256 = 8c21aa52059cbdee58e2c83571146744c591e48de84416c2bb036ff3d2179c48
+```
+
+Final calibrated occupancy-4 gate:
+
+```text
+FULL_MONITOR
+  beneficial repeats = 5/5
+  fresh total        = 94,148,016 ns
+  occupancy4 total   = 78,326,435 ns
+  ratio              = 1.201x
+
+CONSOLE_FOCUSED
+  beneficial repeats = 5/5
+  fresh total        = 94,484,436 ns
+  occupancy4 total   = 78,993,075 ns
+  ratio              = 1.196x
+
+BINARY_IO_FOCUSED
+  beneficial repeats = 5/5
+  fresh total        = 95,758,652 ns
+  occupancy4 total   = 78,694,120 ns
+  ratio              = 1.216x
+
+MONITOR_CONTROL_FOCUSED
+  beneficial repeats = 5/5
+  fresh total        = 94,225,272 ns
+  occupancy4 total   = 78,570,710 ns
+  ratio              = 1.199x
+```
+
+The same sealed run then passed:
+
+```text
+capacity-8 benchmark
+-> SUCCESS
+
+stack-selection generalization manifest
+-> SUCCESS
+
+stack-cache generalization manifest
+-> SUCCESS
+
+stack-cache residency manifest
+-> SUCCESS
+
+stack-cache capacity8 manifest
+-> SUCCESS
+
+mandatory integration proof
+-> SUCCESS
+
+artifact upload/sealing
+-> SUCCESS
+```
+
+Capacity-8 boundary behavior remained exact:
+
+```text
+capacity      = 8
+entry_count   = 8
+next_sequence = 9
+ninth distinct store = BUFFER_TOO_SMALL
+idempotent resident store at capacity = OK
+```
+
+No cache reclassification was performed.
+
+All authority boundaries remain unchanged.
+
 ## Validation receipt
 
-Current terminal green dependency-scoped capacity-8 policy gate:
+Retained last green capacity-eight boundary:
 
-- workflow: `Pass 219 Harmonic36 Nested VM`
+- head: `a8834b12553741dc5fd04f3434752de14cfccb1b`
 - run: `33529443931`
 - job: `99928529597`
-- head: `a8834b12553741dc5fd04f3434752de14cfccb1b`
 - conclusion: **SUCCESS**
 - artifact: `9809101393`
 - artifact SHA-256: `511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345`
 
-This gate includes all inherited H36 conformance, eight real workload identities, exact H36/Linux equality for the four new workloads, stack selection, full-capacity cache admission, ninth-store boundary behavior, exact isolation, fresh/occupancy-1/4/8 timing, all four optimization-generalization manifests, cumulative contract proof, and artifact upload.
+Current terminal green timing-stability repair/sealing gate:
 
-There is no pending dependency-scoped H36 validation at this checkpoint.
+- workflow: `Pass 219 Harmonic36 Nested VM`
+- run: `33533279927`
+- job: `99941365968`
+- head: `157796f80b9806365de7a8578840560f3716617b`
+- conclusion: **SUCCESS**
+- artifact: `9810601586`
+- artifact SHA-256: `8c21aa52059cbdee58e2c83571146744c591e48de84416c2bb036ff3d2179c48`
+
+The sealed gate includes calibrated repeat stability, capacity-eight boundary
+validation, all four optimization-generalization manifests, mandatory
+integration proof, and artifact upload.
+
+There is no pending dependency-scoped H36 validation required for this
+timing-stability repair.
 
 ## Normative documentation updated after green code head
 
@@ -1355,57 +1534,48 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Preserve capacity 8 as the current physical bound of stack-selection cache 1.11:
+1. Preserve both validation anchors without conflating them:
 
 ```text
-capacity         = 8
-resident_entries = 8
-next_sequence    = 9
-classification   = GENERALIZE_REQUIRED
-platform         = linux-x86_64
+retained last green capacity-eight boundary
+= a8834b12553741dc5fd04f3434752de14cfccb1b
+= run 33529443931
+
+latest green stability-repair sealed rerun
+= 157796f80b9806365de7a8578840560f3716617b
+= run 33533279927
 ```
 
-2. Do not add more resident identities or implicit eviction in the next step.
-
-3. Implement **access-distribution validation** across the same eight frozen resident identities. Benchmark at least:
+2. Keep the exact integer timing gate canonical for occupancy policy:
 
 ```text
-A. uniform round-robin
-   1,2,3,4,5,6,7,8 repeated
-
-B. hot/cold skew
-   one hot resident dominates with deterministic cold interleaving
-
-C. alternating edge access
-   first-entry / last-entry alternation
-
-D. adversarial last-entry access
-   repeated sequence-8 lookup against full occupancy
-
-E. deterministic mixed trace
-   fixed replayable trace spanning all eight residents
+5 calibration repeats
+>= 4 beneficial repeats
+aggregate occupancy4_total_ns < fresh_selection_total_ns
 ```
 
-4. For each distribution:
+Do not restore a one-shot timing Boolean as the sole promotion/demotion gate.
+
+3. Resume the previously frozen **access-distribution validation** across the
+same eight capacity-bound residents:
 
 ```text
-exact lookup == frozen selection
--> deterministic receipt
--> no cross-signature hit
--> stale/mismatched identity rejection preserved
--> integer timing samples
--> compare current bounded linear scan against any candidate derived index
+uniform round-robin
+hot/cold skew
+first/last alternation
+adversarial last-entry access
+deterministic mixed replay trace
 ```
 
-5. Do **not** introduce an index merely because occupancy 8 is slower than occupancy 1. The current cache remains beneficial versus fresh selection. An indexed path is authorized only if mixed-access evidence demonstrates a meaningful improvement and exact replay/isolation remain unchanged.
+4. Apply the same repeat-based integer stability discipline to any performance
+classification derived from those distributions.
 
-6. If an index is implemented:
-   - derive/rebuild it deterministically from the eight cache entries;
-   - give it zero independent mutation/Hash72/Hash216/persistence authority;
-   - retain full cache validation for store/audit/public receipt-validation paths;
-   - fail closed if index and resident entries disagree.
+5. Introduce an indexed lookup only if repeat-stable evidence shows a meaningful
+benefit and exact replay/isolation remain unchanged.
 
-7. Keep cross-platform behavior `VALIDATION_REQUIRED`; do not infer Linux x86_64 timing to other platforms.
+Do not infer cross-platform timing.
+
+Do not expand beyond capacity 8.
 
 Do not expand into KI10/KL10 paging/MAP in this step.
 
