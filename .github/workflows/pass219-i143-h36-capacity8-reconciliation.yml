@@ -1,0 +1,316 @@
+name: Pass 219 I143 H36 Capacity8 Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-i143-h36-capacity8-reconciliation
+    paths:
+      - '.github/workflows/pass219-i143-h36-capacity8-reconciliation.yml'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_*'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_*'
+      - 'benchmarks/pass219/harmonic36_*'
+      - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_*'
+      - 'hhs_runtime/pass183/**'
+      - 'hhs_runtime/pass184/**'
+      - 'hhs_verification/pass185/**'
+      - 'hhs_backend/runtime/hhs_pass210_holographic_frame_compression_v1.py'
+      - 'contracts/pass210/**'
+      - 'scripts/test_pass183_probability_hydration.sh'
+      - 'scripts/test_pass184_portable_runtime.sh'
+      - 'scripts/run_pass210_hfc_validation.sh'
+      - 'hhs_gui/**'
+      - 'docs/operations/restart/PASS_219_I143_H36_CAPACITY8_RECONCILIATION_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  h36-calibrated-capacity8:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prove frozen two-parent lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 56a681281d626c07b868cf6f5364e9973d6e908e HEAD
+          git merge-base --is-ancestor 41136b9f54dc8e6c9043f26bbe0c2f9d08e4e492 HEAD
+          git merge-base --is-ancestor a8834b12553741dc5fd04f3434752de14cfccb1b HEAD
+
+      - name: Install bounded validation packages
+        run: python -m pip install --disable-pip-version-check 'pytest>=8,<9' jsonschema
+
+      - name: Compile cumulative exact ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/i143-h36 artifacts/pass219/i143-h36/h36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/i143-h36/exact.o
+
+      - name: Preserve H36 VM selector and cache conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c             /tmp/i143-h36/exact.o             -o /tmp/i143-h36/stack-selection
+          /tmp/i143-h36/stack-selection
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c             /tmp/i143-h36/exact.o             -o /tmp/i143-h36/stack-cache
+          /tmp/i143-h36/stack-cache
+
+      - name: Enforce calibrated occupancy-four stability
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp             /tmp/i143-h36/exact.o             -o /tmp/i143-h36/residency
+          /tmp/i143-h36/residency             artifacts/pass219/i143-h36/h36/residency.json
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/pass219/i143-h36/h36/residency.json',encoding='utf-8'))
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 4
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
+          assert d['measurement']['gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert d['measurement']['all_repeat_stability_pass'] is True
+          assert all(row['repeat_stability_pass'] for row in d['residents'])
+          assert all(row['beneficial_repeat_count'] >= 4 for row in d['residents'])
+          assert all(row['occupancy4_lookup_total_ns'] < row['fresh_selection_total_ns'] for row in d['residents'])
+          assert d['authoritative_state_changed'] is False
+          assert all(value is False for value in d['authority'].values())
+          PY
+
+      - name: Re-prove capacity-eight boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp             /tmp/i143-h36/exact.o             -o /tmp/i143-h36/capacity8
+          /tmp/i143-h36/capacity8             artifacts/pass219/i143-h36/h36/capacity8.json
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/pass219/i143-h36/h36/capacity8.json',encoding='utf-8'))
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 8
+          assert d['cache']['next_sequence'] == 9
+          assert d['boundary']['ninth_store_result'] == 'BUFFER_TOO_SMALL'
+          assert d['boundary']['full_capacity_idempotent_existing_store_ok'] is True
+          assert d['boundary']['full_capacity_count_sequence_unchanged'] is True
+          assert d['correctness'] and all(d['correctness'].values())
+          assert len(d['residents']) == 8
+          assert d['measurement']['all_occupancy8_faster_than_fresh'] is True
+          assert all(row['occupancy8_faster_than_fresh'] for row in d['residents'])
+          assert d['authoritative_state_changed'] is False
+          assert all(value is False for value in d['authority'].values())
+          PY
+
+      - name: Validate all H36 generalization manifests
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+          paths = [
+              Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'),
+              Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'),
+              Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'),
+              Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json'),
+          ]
+          for path in paths:
+              result=validate_manifest(json.loads(path.read_text(encoding='utf-8')))
+              assert result['generalize_required']
+          capacity=validate_manifest(json.loads(paths[-1].read_text(encoding='utf-8')))
+          assert capacity['generalize_required'] == ['h36-stack-cache-capacity8-linux-x86_64']
+          assert capacity['validation_required'] == ['h36-stack-cache-capacity8-cross-platform-unvalidated']
+          PY
+
+      - name: Prove H36 integration contract and authority boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json').read_text())
+          assert c['mandatory_default_state_binding'] and all(c['mandatory_default_state_binding'].values())
+          a=c['authority']
+          assert a['singleton_vm81_authority_preserved'] is True
+          assert a['independent_vm81_authority'] is False
+          assert a['independent_hash72_authority'] is False
+          assert a['independent_hash216_authority'] is False
+          assert a['floating_point_canonical_authority'] is False
+          s=c['stack_cache_timing_stability_1_15']
+          assert s['gate']['kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert s['gate']['calibration_repeats'] == 5
+          assert s['gate']['required_beneficial_repeats'] == 4
+          assert s['gate']['one_shot_boolean_authoritative'] is False
+          assert s['classification']['reclassification_required'] is False
+          h=Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          x=Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          for token in [
+              'hhs_pass219_inherited_pass185_1_41.h',
+              'hhs_pass219_inherited_pass184_1_42.h',
+              'hhs_pass219_inherited_pass183_1_43.h',
+              'hhs_pass219_harmonic36_stack_selection_cache_1_11.h',
+          ]:
+              assert token in h
+          for token in [
+              'hhs_pass219_inherited_pass185_1_41.inc',
+              'hhs_pass219_inherited_pass184_1_42.inc',
+              'hhs_pass219_inherited_pass183_1_43.inc',
+              'hhs_pass219_harmonic36_stack_selection_cache_1_11.inc',
+          ]:
+              assert token in x
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i143-h36-calibrated-capacity8
+          path: artifacts/pass219/i143-h36/h36/*.json
+          if-no-files-found: error
+          retention-days: 30
+
+  pass183-184-210-exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '20'
+      HHS_PASS183_JOB_DIR: '/tmp/hhs-pass183-jobs'
+      HHS_PASS184_PACKAGE_ROOT: '/tmp/hhs-pass184-packages'
+      HHS_PASS184_EVIDENCE_DIR: '/tmp/hhs-pass184-evidence'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             requests             'pytest>=8,<9'             pydantic
+
+      - name: Compile inherited C authority
+        run: timeout 600s bash bin/post_compile
+
+      - name: Run Pass 183 acceptance and I143 membrane
+        run: |
+          timeout 1200s bash scripts/test_pass183_probability_hydration.sh
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i143_pass183.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass183_membrane_i143.py
+
+      - name: Run Pass 184 acceptance and I142 membrane
+        run: |
+          timeout 900s bash scripts/test_pass184_portable_runtime.sh
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i142_pass184.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass184_membrane_i142.py
+
+      - name: Preserve global defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Run Pass 210 HFC and cumulative membrane
+        run: |
+          timeout 600s bash scripts/run_pass210_hfc_validation.sh
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass210_membrane_i116.py
+
+      - name: Strict exact ABI and VM81 verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/i143-h36-exact.o
+          python -m pytest -q tests/test_hhs_exact_runtime_abi_v1.py
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace
+
+      - name: Verify inherited Pass 186 SysV AMD64 ABI
+        run: make -C native_projects/hhs_pass186_x64_vm81_q144 clean test
+
+  pass185-runtime-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '12'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_PASS185_CUMULATIVE_EVIDENCE: '/tmp/pass185-cumulative-local'
+      PLAYWRIGHT_BROWSERS_PATH: '/tmp/pass185-playwright-browsers'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install bounded Runtime OS dependencies
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             requests             'pytest>=8,<9'             playwright
+
+      - name: Compile inherited C authority
+        run: timeout 600s bash bin/post_compile
+
+      - name: Typecheck and build Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Preserve Runtime OS and authority regressions
+        run: |
+          timeout 420s pytest -q             tests/test_hhs_cumulative_execution_authority_v1.py             tests/test_hhs_hash72_kernel_surface_unification_v1.py             tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py             tests/test_runtime_os_production_root.py
+
+      - name: Install bounded Chromium
+        run: |
+          mkdir -p "$PLAYWRIGHT_BROWSERS_PATH"
+          timeout 600s python -m playwright install --with-deps chromium
+          test -d "$PLAYWRIGHT_BROWSERS_PATH"
+
+      - name: Run Pass 185 cumulative exact-production browser closure
+        run: |
+          mkdir -p "$HHS_PASS185_CUMULATIVE_EVIDENCE"
+          timeout 1200s python -m             hhs_verification.pass185.cumulative_local_closure_acceptance             --evidence-dir "$HHS_PASS185_CUMULATIVE_EVIDENCE"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value=json.loads(Path('/tmp/pass185-cumulative-local/cumulative-local-closure.json').read_text())
+          assert value['ok'] is True
+          assert value['local_unresolved_contract_rows'] == []
+          assert value['local_waivers'] == []
+          assert value['browser']['boot']['state'] in {'INTERACTIVE','DEGRADED_INTERACTIVE'}
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i143-h36-pass185-runtime-browser
+          path: /tmp/pass185-cumulative-local/**
+          if-no-files-found: warn
+          retention-days: 30
