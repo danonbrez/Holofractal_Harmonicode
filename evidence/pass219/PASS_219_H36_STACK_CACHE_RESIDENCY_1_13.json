@@ -1,0 +1,99 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_CACHE_RESIDENCY_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_CACHE_RESIDENCY_1_13",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "implementation_head": "030561453896265eaf421e52ff2d6eea7220f511",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33498621593,
+    "job": 99826491387,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796760547,
+    "artifact_sha256": "75c2e1cd18b34a2ac4e022538e0f162117c223474b228287a7a93917793a80a7"
+  },
+  "cache": {
+    "capacity": 8,
+    "resident_entries": 4,
+    "next_sequence": 5,
+    "resident_order": [
+      3734727431,
+      4793332410,
+      21509979554,
+      41886677838
+    ]
+  },
+  "correctness": {
+    "four_simultaneous_entries_valid": true,
+    "all_exact_lookups_equal_fresh": true,
+    "deterministic_receipts": true,
+    "cross_signature_hits_rejected": true,
+    "wrong_semantic_signature_rejected": true,
+    "wrong_vector_key_rejected": true,
+    "unrelated_identity_range_error": true,
+    "duplicate_sequence_rejected": true,
+    "duplicate_identity_tamper_rejected": true,
+    "partial_identity_tamper_rejected": true,
+    "idempotent_store_preserves_count_and_sequence": true
+  },
+  "performance": {
+    "platform": "linux-x86_64",
+    "samples": 11,
+    "rounds_per_sample": 4096,
+    "residents": [
+      {
+        "name": "FULL_MONITOR",
+        "workload_signature36": 3734727431,
+        "fresh_selection_median_ns": 12113425,
+        "occupancy1_lookup_median_ns": 10960862,
+        "occupancy4_lookup_median_ns": 11053798,
+        "occupancy4_vs_fresh_x1000": 1095,
+        "occupancy4_vs_occupancy1_x1000": 1008
+      },
+      {
+        "name": "CONSOLE_FOCUSED",
+        "workload_signature36": 4793332410,
+        "fresh_selection_median_ns": 12141518,
+        "occupancy1_lookup_median_ns": 10971904,
+        "occupancy4_lookup_median_ns": 11045319,
+        "occupancy4_vs_fresh_x1000": 1099,
+        "occupancy4_vs_occupancy1_x1000": 1006
+      },
+      {
+        "name": "BINARY_IO_FOCUSED",
+        "workload_signature36": 21509979554,
+        "fresh_selection_median_ns": 12063477,
+        "occupancy1_lookup_median_ns": 10900578,
+        "occupancy4_lookup_median_ns": 10979166,
+        "occupancy4_vs_fresh_x1000": 1098,
+        "occupancy4_vs_occupancy1_x1000": 1007
+      },
+      {
+        "name": "MONITOR_CONTROL_FOCUSED",
+        "workload_signature36": 41886677838,
+        "fresh_selection_median_ns": 12299801,
+        "occupancy1_lookup_median_ns": 11100418,
+        "occupancy4_lookup_median_ns": 11174963,
+        "occupancy4_vs_fresh_x1000": 1100,
+        "occupancy4_vs_occupancy1_x1000": 1006
+      }
+    ],
+    "all_occupancy4_faster_than_fresh": true,
+    "interpretation": "Occupancy-4 adds a small runner-local lookup overhead versus occupancy-1 but preserves a measured cache advantage over fresh selection for all four validated resident identities. No capacity-8 benefit is inferred."
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "occupancy4": "GENERALIZE_REQUIRED",
+    "occupancy8": "VALIDATION_REQUIRED",
+    "cross_platform_inference": false
+  }
+}
