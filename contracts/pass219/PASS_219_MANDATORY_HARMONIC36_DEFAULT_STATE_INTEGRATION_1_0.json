@@ -48,7 +48,11 @@
     "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_ACCEPTED",
     "H36_STACK_CACHE_REPLAY_DRIFT",
     "H36_STACK_CACHE_AUTHORITY_ESCALATION",
-    "H36_STACK_CACHE_HASH216_LINEAGE_FALSE_CLAIM"
+    "H36_STACK_CACHE_HASH216_LINEAGE_FALSE_CLAIM",
+    "H36_REAL_WORKLOAD_SIGNATURE_COLLISION",
+    "H36_REAL_WORKLOAD_SEMANTIC_EQUALITY_BYPASS",
+    "H36_MONITOR_CONTROL_H36_FORCED_PROMOTION_AGAINST_MEASUREMENT",
+    "H36_REAL_CACHE_GENERALIZED_WITHOUT_MEASUREMENT"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -138,7 +142,16 @@
     "H36_STACK_CACHE_PARTIAL_IDENTITY_COLLISION_REJECTION",
     "H36_STACK_CACHE_MEASURED_BENEFIT",
     "H36_STACK_CACHE_DEPENDENCY_SCOPED_LOOKUP_VALIDATION",
-    "H36_STACK_CACHE_GENERALIZATION_MEASURED_TARGET_ONLY"
+    "H36_STACK_CACHE_GENERALIZATION_MEASURED_TARGET_ONLY",
+    "H36_REAL_CONSOLE_STACK_EQUALITY_AND_SELECTION",
+    "H36_REAL_BINARY_IO_STACK_EQUALITY_AND_SELECTION",
+    "H36_REAL_MONITOR_CONTROL_STACK_EQUALITY_AND_SELECTION",
+    "H36_REAL_WORKLOAD_SIGNATURE_DISTINCTNESS",
+    "H36_REAL_STACK_SELECTION_PER_WORKLOAD_NOT_GLOBAL",
+    "H36_REAL_CACHE_GENERALIZATION_CONSOLE",
+    "H36_REAL_CACHE_GENERALIZATION_BINARY_IO",
+    "H36_REAL_CACHE_GENERALIZATION_MONITOR_CONTROL",
+    "H36_MONITOR_CONTROL_H36_NO_BENEFIT_BOUNDED_EXCEPTION"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -266,7 +279,19 @@
     "h36_stack_cache_dependency_scoped_lookup_validation": true,
     "h36_stack_cache_measured_winner": true,
     "h36_stack_cache_current_target_generalize_required": true,
-    "h36_stack_cache_other_compatible_targets_validation_required": true
+    "h36_stack_cache_other_compatible_targets_validation_required": true,
+    "h36_real_console_workload_signature_4793332410": true,
+    "h36_real_binary_io_workload_signature_21509979554": true,
+    "h36_real_monitor_control_workload_signature_41886677838": true,
+    "h36_real_workload_signatures_distinct": true,
+    "h36_console_h36_stack_measured_winner": true,
+    "h36_binary_io_h36_stack_measured_winner": true,
+    "h36_monitor_control_linux_stack_measured_winner": true,
+    "h36_monitor_control_h36_no_meaningful_benefit_exception": true,
+    "h36_console_cache_measured_winner": true,
+    "h36_binary_io_cache_measured_winner": true,
+    "h36_monitor_control_cache_measured_winner": true,
+    "h36_stack_selection_per_workload_generalization": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -313,19 +338,19 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33475578584,
-    "job": 99754022255,
-    "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+    "run": 33496909452,
+    "job": 99821090942,
+    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33475578584,
-    "job": 99754022255,
-    "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+    "run": 33496909452,
+    "job": 99821090942,
+    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
     "ka10_monitor_profile_1_9": "SUCCESS",
     "stack_selection_1_10": "SUCCESS",
     "stack_selection_cache_1_11": "SUCCESS",
-    "stack_selection_cache_benchmark": "CACHE_HIT_MEASURED_WINNER",
+    "multisignature_stack_cache_audit": "SUCCESS",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -480,6 +505,80 @@
         "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6"
       },
       "cross_platform_inference": false
+    }
+  },
+  "stack_cache_multisignature_audit_1_12": {
+    "benchmark": "benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp",
+    "platform": "linux-x86_64",
+    "stack_samples": 7,
+    "stack_rounds_per_sample": 8,
+    "cache_samples": 11,
+    "cache_rounds_per_sample": 4096,
+    "validation": {
+      "run": 33496909452,
+      "job": 99821090942,
+      "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
+      "conclusion": "SUCCESS",
+      "artifact_id": 9796096476,
+      "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e"
+    },
+    "workloads": [
+      {
+        "class": "CONSOLE_FOCUSED",
+        "workload_signature36": 4793332410,
+        "semantic_result_signature64": "6731027650694893003",
+        "exact_h36_linux_semantic_equal": true,
+        "h36_median_ns": 20950,
+        "linux_median_ns": 109495,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5226,
+        "stack_generalization": "GENERALIZE_REQUIRED",
+        "fresh_selection_median_ns": 18588395,
+        "cache_hit_median_ns": 14973115,
+        "cache_speedup_x1000": 1241,
+        "cache_generalization": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "BINARY_IO_FOCUSED",
+        "workload_signature36": 21509979554,
+        "semantic_result_signature64": "1456447110141201574",
+        "exact_h36_linux_semantic_equal": true,
+        "h36_median_ns": 20889,
+        "linux_median_ns": 106910,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5118,
+        "stack_generalization": "GENERALIZE_REQUIRED",
+        "fresh_selection_median_ns": 18790964,
+        "cache_hit_median_ns": 15161769,
+        "cache_speedup_x1000": 1239,
+        "cache_generalization": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "MONITOR_CONTROL_FOCUSED",
+        "workload_signature36": 41886677838,
+        "semantic_result_signature64": "2318081696571468614",
+        "exact_h36_linux_semantic_equal": true,
+        "h36_median_ns": 19216,
+        "linux_median_ns": 501,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "selector_speedup_x1000": 38355,
+        "h36_stack_generalization": "LOCAL_EXCEPTION_ALLOWED",
+        "h36_stack_exception": "NO_MEANINGFUL_BENEFIT",
+        "fresh_selection_median_ns": 18382750,
+        "cache_hit_median_ns": 14817374,
+        "cache_speedup_x1000": 1240,
+        "cache_generalization": "GENERALIZE_REQUIRED"
+      }
+    ],
+    "invariants": {
+      "exact_equality_before_stack_timing": true,
+      "exact_cache_hit_fresh_equality_before_cache_timing": true,
+      "stale_signature_rejection": true,
+      "mismatched_vector_key_rejection": true,
+      "deterministic_replay_receipt": true,
+      "workload_signature_collision": false,
+      "cross_platform_inference": false,
+      "canonical_authority_changed": false
     }
   }
 }
