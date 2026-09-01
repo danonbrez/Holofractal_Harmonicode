@@ -61,7 +61,10 @@
     "H36_STACK_CACHE_CAPACITY8_NINTH_DISTINCT_STORE_ACCEPTED",
     "H36_STACK_CACHE_CAPACITY8_COUNT_SEQUENCE_DRIFT_AFTER_REJECTED_STORE",
     "H36_STACK_CACHE_CAPACITY8_CROSS_SIGNATURE_FALSE_HIT",
-    "H36_STACK_CACHE_CAPACITY8_CROSS_PLATFORM_UNMEASURED_PROMOTION"
+    "H36_STACK_CACHE_CAPACITY8_CROSS_PLATFORM_UNMEASURED_PROMOTION",
+    "H36_STACK_CACHE_ONE_SHOT_TIMING_BOOLEAN_AS_SOLE_GENERALIZATION_GATE",
+    "H36_STACK_CACHE_REPEAT_STABILITY_FEWER_THAN_4_OF_5_BENEFICIAL",
+    "H36_STACK_CACHE_REPEAT_STABILITY_AGGREGATE_CACHE_NOT_FASTER"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -170,7 +173,10 @@
     "H36_STACK_CACHE_CAPACITY8_NINTH_STORE_BUFFER_TOO_SMALL",
     "H36_STACK_CACHE_CAPACITY8_IDEMPOTENT_STORE_AT_FULL_CAPACITY",
     "H36_STACK_CACHE_CAPACITY8_MEASURED_BENEFIT",
-    "H36_STACK_CACHE_CAPACITY8_GENERALIZATION_BOUNDED_LINUX_X86_64"
+    "H36_STACK_CACHE_CAPACITY8_GENERALIZATION_BOUNDED_LINUX_X86_64",
+    "H36_STACK_CACHE_TIMING_STABILITY_EXACT_INTEGER_REPEAT_GATE",
+    "H36_STACK_CACHE_ONE_SHOT_REGRESSION_NONAUTHORITATIVE_AFTER_CALIBRATION",
+    "H36_STACK_CACHE_CALIBRATION_ALTERNATING_MEASUREMENT_ORDER"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -328,7 +334,13 @@
     "h36_stack_cache_full_capacity_idempotent_store": true,
     "h36_stack_cache_capacity8_measured_winner_vs_fresh": true,
     "h36_stack_cache_capacity8_generalize_required_linux_x86_64": true,
-    "h36_stack_cache_capacity8_cross_platform_validation_required": true
+    "h36_stack_cache_capacity8_cross_platform_validation_required": true,
+    "h36_stack_cache_timing_stability_1_15": true,
+    "h36_stack_cache_exact_integer_repeat_gate": true,
+    "h36_stack_cache_calibration_repeats_5": true,
+    "h36_stack_cache_required_beneficial_repeats_4": true,
+    "h36_stack_cache_alternating_measurement_order": true,
+    "h36_stack_cache_one_shot_boolean_deprecated_as_authoritative_gate": true
   },
   "explicit_extension_boundary": {
     "canonical_floating_execution": false,
@@ -780,6 +792,47 @@
       "artifact_id": 9809101393,
       "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345",
       "all_occupancy8_faster_than_fresh": true
+    }
+  },
+  "retained_last_green_capacity8_boundary": {
+    "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+    "run": 33529443931,
+    "job": 99928529597,
+    "artifact_id": 9809101393,
+    "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345",
+    "status": "SUCCESS_RETAINED"
+  },
+  "stack_cache_timing_stability_1_15": {
+    "triggering_regression": {
+      "head": "17a83022f70ad35c90dd826bc20e905d123c9acc",
+      "run": 33529740240,
+      "job": 99929569893,
+      "resident": "BINARY_IO_FOCUSED",
+      "correctness_green": true,
+      "fresh_selection_median_ns": 8792668,
+      "occupancy4_lookup_median_ns": 9620458
+    },
+    "calibrated_reproduction": {
+      "benchmark_head": "ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b",
+      "run": 33532945748,
+      "job": 99940293326,
+      "calibration_repeats": 5,
+      "samples_per_repeat": 11,
+      "rounds_per_sample": 4096,
+      "beneficial_repeat_count_all_residents": 5,
+      "aggregate_benefit_all_residents": true,
+      "regression_reproduced": false
+    },
+    "gate": {
+      "kind": "EXACT_INTEGER_REPEAT_STABILITY",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "aggregate_requirement": "occupancy4_total_ns < fresh_selection_total_ns",
+      "one_shot_boolean_authoritative": false
+    },
+    "classification": {
+      "occupancy4_linux_x86_64": "GENERALIZE_REQUIRED",
+      "reclassification_required": false
     }
   }
 }
