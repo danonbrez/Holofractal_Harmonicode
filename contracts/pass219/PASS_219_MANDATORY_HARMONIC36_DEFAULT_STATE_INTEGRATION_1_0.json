@@ -375,22 +375,24 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33528991694,
-    "job": 99927016899,
-    "head": "03bc4ae3b69d3834ca70cb904fa6924fb1196e98",
+    "run": 33529443931,
+    "job": 99928529597,
+    "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33498840150,
-    "job": 99827186656,
-    "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
+    "run": 33529443931,
+    "job": 99928529597,
+    "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
     "stack_selection_1_10": "SUCCESS",
     "stack_selection_cache_1_11": "SUCCESS",
     "multisignature_stack_cache_audit": "SUCCESS",
-    "stack_cache_residency_1_13": "SUCCESS_REPEAT",
+    "stack_cache_residency_1_13": "SUCCESS",
+    "stack_cache_capacity8_1_14": "SUCCESS_REPEAT",
     "stack_selection_generalization_manifest": "SUCCESS",
     "stack_cache_generalization_manifest": "SUCCESS",
     "stack_cache_residency_generalization_manifest": "SUCCESS",
+    "stack_cache_capacity8_generalization_manifest": "SUCCESS",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -769,6 +771,15 @@
     "classification": {
       "occupancy8_linux_x86_64": "GENERALIZE_REQUIRED",
       "occupancy8_cross_platform": "VALIDATION_REQUIRED"
+    },
+    "policy_repeat": {
+      "run": 33529443931,
+      "job": 99928529597,
+      "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+      "conclusion": "SUCCESS",
+      "artifact_id": 9809101393,
+      "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345",
+      "all_occupancy8_faster_than_fresh": true
     }
   }
 }
