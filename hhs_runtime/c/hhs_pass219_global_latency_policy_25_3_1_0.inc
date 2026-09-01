@@ -178,6 +178,27 @@ HHSExactStatus hhs_exact_pass219_global_latency_policy_validate(void) {
     if (lhs != rhs)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
+    /*
+     * Holographic recursive-window closure under the inherited exact
+     * projection residues T=(t^3-t)=1 and M=(m^2-m)=1:
+     *
+     * d^4/c^2 =
+     * [b^2*T + (a^2+b^2)*M]^2 / (d^2-b^2).
+     */
+    {
+        const uint64_t t_residue = 1U;
+        const uint64_t m_residue = 1U;
+        const uint64_t combined =
+            (uint64_t)p.b2 * t_residue +
+            (uint64_t)(p.a2 + p.b2) * m_residue;
+
+        lhs = (uint64_t)p.d2 * (uint64_t)p.d2 *
+              (uint64_t)(p.d2 - p.b2);
+        rhs = (uint64_t)p.c2 * combined * combined;
+        if (lhs != rhs || combined != 5U)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
     /* Exact millisecond/fps closure for 120/60/30. */
     if ((uint64_t)25U * 120U != (uint64_t)1000U * 3U ||
         (uint64_t)50U * 60U != (uint64_t)1000U * 3U ||
