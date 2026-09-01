@@ -1710,3 +1710,140 @@ MIXED_SCHEDULER_IO_UUO    = 1.197x
 The repeat preserves the eight-entry boundary, the ninth-store `BUFFER_TOO_SMALL` behavior, every per-workload stack winner, all per-signature cache promotions, and both residency/capacity generalization manifests.
 
 Capacity 8 is therefore closed as the current physical stack-selection cache bound for the evidenced Linux x86_64 profile.
+
+## 25. Timing stability repair 1.15
+
+The retained last green capacity-eight boundary remains:
+
+```text
+head     = a8834b12553741dc5fd04f3434752de14cfccb1b
+run      = 33529443931
+job      = 99928529597
+artifact = 9809101393
+sha256   = 511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345
+result   = SUCCESS
+```
+
+The later frozen checkpoint `17a83022f70ad35c90dd826bc20e905d123c9acc`
+triggered run `33529740240`, whose only H36 failure was the occupancy-4
+one-shot timing assertion.
+
+Correctness remained fully green. The single reversal was:
+
+```text
+BINARY_IO_FOCUSED
+fresh selector median  = 8,792,668 ns
+occupancy-4 median     = 9,620,458 ns
+one-shot benefit       = false
+```
+
+No identity, replay, isolation, authority, or cache-state invariant failed.
+
+### 25.1 Bounded calibrated reproduction
+
+The occupancy benchmark was repeated with:
+
+```text
+calibration repeats       = 5
+samples per repeat        = 11
+operations per sample     = 4096
+required beneficial runs  = 4 of 5
+measurement order         = alternating
+  repeat 1: fresh -> occupancy1 -> occupancy4
+  repeat 2: occupancy4 -> occupancy1 -> fresh
+  repeat 3: fresh -> occupancy1 -> occupancy4
+  repeat 4: occupancy4 -> occupancy1 -> fresh
+  repeat 5: fresh -> occupancy1 -> occupancy4
+```
+
+Calibration benchmark head:
+
+```text
+ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b
+run 33532945748
+job 99940293326
+```
+
+The benchmark output itself completed validly. The workflow then failed only
+because the inherited one-shot parser still requested the removed
+`occupancy4_faster_than_fresh` row field; that parser mismatch is not a
+benchmark or cache failure.
+
+Calibrated results:
+
+```text
+FULL_MONITOR
+  beneficial repeats = 5 / 5
+  fresh total        = 93,965,429 ns
+  occupancy4 total   = 78,465,490 ns
+  aggregate ratio    = 1.197x
+
+CONSOLE_FOCUSED
+  beneficial repeats = 5 / 5
+  fresh total        = 94,285,237 ns
+  occupancy4 total   = 78,674,213 ns
+  aggregate ratio    = 1.198x
+
+BINARY_IO_FOCUSED
+  beneficial repeats = 5 / 5
+  fresh total        = 94,522,057 ns
+  occupancy4 total   = 78,821,071 ns
+  aggregate ratio    = 1.199x
+
+MONITOR_CONTROL_FOCUSED
+  beneficial repeats = 5 / 5
+  fresh total        = 93,898,186 ns
+  occupancy4 total   = 78,568,511 ns
+  aggregate ratio    = 1.195x
+```
+
+The one-shot regression therefore did **not** reproduce.
+
+### 25.2 Exact integer stability gate
+
+The authoritative timing policy is repaired forward to:
+
+```text
+gate kind = EXACT_INTEGER_REPEAT_STABILITY
+
+for every resident:
+  calibration_repeats == 5
+  beneficial_repeat_count >= 4
+  occupancy4_total_ns < fresh_selection_total_ns
+
+all residents:
+  repeat_stability_pass == true
+```
+
+No floating tolerance or percentage threshold is used to decide pass/fail.
+
+The prior one-shot Boolean is retained only as historical measurement
+evidence and is no longer sufficient by itself to promote or demote cache
+generalization.
+
+### 25.3 Classification
+
+Because the regression did not reproduce under the bounded calibrated gate:
+
+```text
+occupancy 4 / Linux x86_64
+-> remains GENERALIZE_REQUIRED
+
+capacity 8 / Linux x86_64
+-> retained GENERALIZE_REQUIRED
+
+reclassification required
+-> false
+```
+
+A future calibrated failure of either condition:
+
+```text
+beneficial_repeat_count < 4
+or
+occupancy4_total_ns >= fresh_selection_total_ns
+```
+
+must fail closed and trigger cache repair or explicit reclassification.
+
+All authority boundaries remain unchanged.
