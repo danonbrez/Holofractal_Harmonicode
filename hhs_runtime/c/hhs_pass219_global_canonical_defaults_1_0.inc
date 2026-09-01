@@ -102,12 +102,24 @@ HHSExactStatus hhs_exact_pass219_global_canonical_defaults_binding_at(
     return HHS_EXACT_STATUS_OK;
 }
 
+HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate_latency_policy(void) {
+    if (HHS_EXACT_PASS219_GLOBAL_LATENCY_DEFAULT_REQUIRED != 1U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    return hhs_exact_pass219_global_latency_policy_validate();
+}
+
 HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate(void) {
     HHSExactPass219GlobalCanonicalDefaultPolicyV1 policy;
     size_t i;
     uint32_t seen[HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_CEILING + 1U] = {0U};
 
     if (hhs_exact_pass219_global_canonical_defaults_policy(&policy) !=
+        HHS_EXACT_STATUS_OK) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    if (hhs_exact_pass219_global_canonical_defaults_validate_latency_policy() !=
         HHS_EXACT_STATUS_OK) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }

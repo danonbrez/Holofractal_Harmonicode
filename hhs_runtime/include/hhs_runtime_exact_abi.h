@@ -63,4 +63,5 @@
 #include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h"
 #include "hhs_pass219_harmonic36_stack_selection_1_10.h"
 #include "hhs_pass219_harmonic36_stack_selection_cache_1_11.h"
+#include "hhs_pass219_global_latency_policy_25_3_1_0.h"
 #endif

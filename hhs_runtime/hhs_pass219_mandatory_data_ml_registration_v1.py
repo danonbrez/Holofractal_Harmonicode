@@ -9,6 +9,15 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
+from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
+    CLASSIFY_SYMBOL as LATENCY_CLASSIFY_SYMBOL,
+    MANDATORY_LATENCY_GUARD,
+    POLICY_VALIDATE_SYMBOL as LATENCY_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as LATENCY_POLICY_SCHEMA,
+    SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
+    WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
+)
+
 VERSION = "PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
 SCHEMA = "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
 SURFACE_ID = "guard:pass219.mandatory.genesis_scaling.data_ml"
@@ -65,17 +74,24 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             SCHEMA,
             "HHS_PASS219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_1_0",
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
+            LATENCY_POLICY_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
             "HHS_PASS219_MANDATORY_SCALING_WITNESS_V1",
             "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
+            "HHS_PASS219_LATENCY_WINDOW_RESULT_V1",
+            "HHS_PASS219_LATENCY_SELECTION_V1",
         ],
         "validators": [
             GENESIS_SYMBOL,
             GENESIS_VALIDATE_SYMBOL,
             PLAN_SYMBOL,
             VERIFY_SYMBOL,
+            LATENCY_POLICY_VALIDATE_SYMBOL,
+            LATENCY_CLASSIFY_SYMBOL,
+            LATENCY_WINDOW_SYMBOL,
+            LATENCY_SELECT_SYMBOL,
         ],
         "guards": [
             "exact_sudoku_qudit_genesis_normalization",
@@ -87,6 +103,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "i7_post_admission_projection_only",
             "i8_complete_dirty_witness_or_full_derived_path",
             "existing_hash72_hash216_authority_only",
+            MANDATORY_LATENCY_GUARD,
         ],
         "rejection_codes": [
             "REJECT_PASS219_DATA_ML_WITHOUT_GENESIS_NORMALIZATION",
@@ -94,6 +111,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_SPARSE_DERIVED_WITHOUT_COMPLETE_DIRTY_WITNESS",
             "REJECT_PASS219_CANDIDATE_ACCELERATOR_CANONICAL_AUTHORITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_EXACT_CPU_VM_EQUALITY",
+            "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_ONLY",
         "persistence_policy": "INHERITED_HASH72_HASH216_PATHS_ONLY",
@@ -111,6 +129,8 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
         "mandatory_guard": MANDATORY_GUARD,
         "mandatory_for_all_pass219_data_processing": True,
         "mandatory_for_all_pass219_machine_learning": True,
+        "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
+        "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
         "work_classes": list(WORK_CLASSES),
         "stage_order": list(STAGE_ORDER),
         "genesis": {
@@ -134,6 +154,15 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
             "i8_sparse_projection": False,
             "singleton_vm81": "INHERITED_C_ONLY",
             "hash72_hash216": "INHERITED_PATHS_ONLY",
+        },
+        "latency_policy": {
+            "quantum_ms": {"numerator": 25, "denominator": 3},
+            "tiers_fps": [120, 60, 30],
+            "mean_max_tier": 1,
+            "p95_max_tier": 2,
+            "max_max_tier": 3,
+            "timing_is_noncanonical": True,
+            "unmet_budget_preserves_complete_correct_route": True,
         },
         "floating_point_authority": False,
     }
