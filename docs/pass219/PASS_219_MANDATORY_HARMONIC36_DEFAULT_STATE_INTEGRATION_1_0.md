@@ -1531,3 +1531,151 @@ h36-stack-cache-residency-occupancy8-unvalidated
 ```
 
 No capacity-8 or cross-platform performance claim is made.
+
+## 24. Capacity-8 cache boundary 1.14
+
+The shared H36 stack-selection cache is now validated at its physical capacity of eight real executable workload identities.
+
+The inherited four residents remain:
+
+```text
+1. FULL_MONITOR
+2. CONSOLE_FOCUSED
+3. BINARY_IO_FOCUSED
+4. MONITOR_CONTROL_FOCUSED
+```
+
+Four additional real workloads are admitted:
+
+```text
+5. APR_PI_INTERRUPT_FOCUSED
+   workload_signature36 = 56629000078
+   semantic_signature64 = 6036511113464237678
+   H36 / Linux           = 2,023 / 521 ns
+   selected stack        = LINUX_X86_64_POSIX
+
+6. RIM_BOOTSTRAP_FOCUSED
+   workload_signature36 = 45496969883
+   semantic_signature64 = 15550751547534181799
+   H36 / Linux           = 3,115 / 561 ns
+   selected stack        = LINUX_X86_64_POSIX
+
+7. MIXED_CONSOLE_BINARY_IO
+   workload_signature36 = 19461196675
+   semantic_signature64 = 7100043395069015146
+   H36 / Linux           = 22,865 / 258,110 ns
+   selected stack        = H36_KA10_MONITOR
+
+8. MIXED_SCHEDULER_IO_UUO
+   workload_signature36 = 25778039250
+   semantic_signature64 = 17797529900924037577
+   H36 / Linux           = 21,333 / 129,115 ns
+   selected stack        = H36_KA10_MONITOR
+```
+
+The capacity-8 profile therefore retains per-workload selection rather than forcing either stack globally.
+
+### 24.1 Full-capacity boundary
+
+At full admission:
+
+```text
+capacity      = 8
+entry_count   = 8
+next_sequence = 9
+entry sequences = [1,2,3,4,5,6,7,8]
+```
+
+A ninth real executable boundary workload is used rather than a synthetic identity:
+
+```text
+BOUNDARY_CONSOLE_ALTERNATE
+workload_signature36 = 38935941853
+```
+
+Its distinct store at full capacity returns exactly:
+
+```text
+BUFFER_TOO_SMALL
+```
+
+and leaves both `entry_count == 8` and `next_sequence == 9` unchanged.
+
+An idempotent store of an already resident exact selection still returns `OK` at full capacity and likewise does not advance count or sequence.
+
+### 24.2 Isolation and fail-closed behavior
+
+The full cache proves:
+
+- all eight exact lookups equal fresh selection;
+- cross-signature workload/result/key combinations fail closed;
+- wrong semantic signatures fail closed;
+- wrong vector keys fail closed;
+- fully unrelated valid identities return `RANGE_ERROR`;
+- duplicate sequence corruption is rejected;
+- duplicate identity corruption is rejected;
+- partial identity corruption is rejected;
+- no authority changes occur.
+
+### 24.3 Maximum-capacity performance
+
+Validation:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33528991694
+job      = 99927016899
+head     = 03bc4ae3b69d3834ca70cb904fa6924fb1196e98
+result   = SUCCESS
+artifact = 9808920709
+artifact sha256 = 8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417
+```
+
+Measured occupancy-8 versus fresh-selector wins:
+
+```text
+FULL_MONITOR              = 1.185x
+CONSOLE_FOCUSED           = 1.179x
+BINARY_IO_FOCUSED         = 1.194x
+MONITOR_CONTROL_FOCUSED   = 1.164x
+APR_PI_INTERRUPT_FOCUSED  = 1.196x
+RIM_BOOTSTRAP_FOCUSED     = 1.192x
+MIXED_CONSOLE_BINARY_IO   = 1.197x
+MIXED_SCHEDULER_IO_UUO    = 1.195x
+```
+
+Occupancy 8 adds small linear-scan cost relative to occupancy 1/4, but all eight resident workloads preserve a measured cache advantage over fresh selection.
+
+### 24.4 Classification
+
+The inherited residency manifest is updated so occupancy 8 is no longer stale/unvalidated.
+
+The dedicated capacity manifest:
+
+```text
+contracts/pass219/optimization_generalization/
+PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json
+```
+
+classifies:
+
+```text
+h36-stack-cache-capacity8-linux-x86_64
+-> GENERALIZE_REQUIRED
+
+h36-stack-cache-capacity8-cross-platform-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+Per-workload stack classification remains independent:
+
+```text
+APR/PI H36 target        -> NO_MEANINGFUL_BENEFIT bounded exception
+RIM H36 target           -> NO_MEANINGFUL_BENEFIT bounded exception
+mixed console/binary H36 -> GENERALIZE_REQUIRED
+mixed scheduler/I/O/UUO  -> GENERALIZE_REQUIRED
+```
+
+All eight per-signature cache targets are `GENERALIZE_REQUIRED` on their measured Linux x86_64 evidence.
+
+No cross-platform performance claim is inferred. Cache residency remains candidate metadata only and adds no VM81 admission bypass, mutation authority, Hash72 authority, Hash216 lineage/authority, persistence authority, or floating-point authority.
