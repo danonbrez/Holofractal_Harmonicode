@@ -254,3 +254,33 @@ exact semantic route set
 
 Existing compatible surfaces that omit the policy are repair-forward targets;
 future compatible surfaces must register the global latency guard.
+
+
+## Compression debt is not elapsed-time credit
+
+The global `25/3 ms` policy and the compression-debt ledger are coupled but distinct.
+
+```text
+physical elapsed time: monotonic
+compression debt: conserved computational obligation
+```
+
+A layer that cannot continue immediate work inside the `25/3 ms` tier does not receive time back. Its unresolved work must instead be retained in compressed typed form or transferred through the native 5184/Hash216 debt membrane.
+
+The reciprocal bookkeeping normalization is:
+
+```text
+debt      3/25
+capacity 25/3
+```
+
+and is exact rational accounting only.
+
+Operationally:
+
+```text
+within 25/3 ms -> local immediate execution may continue
+over 25/3 ms   -> transfer or recompress unresolved debt
+```
+
+Timing remains noncanonical for semantic identity, and the complete correct route remains preserved.
