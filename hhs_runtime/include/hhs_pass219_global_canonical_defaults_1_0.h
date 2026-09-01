@@ -2,6 +2,7 @@
 #define HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_1_0_H
 #include "hhs_runtime_exact_abi_v1_1_base.h"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.h"
+#include "hhs_pass219_compression_debt_closure_3_25_1_0.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,6 +13,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_FLOOR 186U
 #define HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT 35U
 #define HHS_EXACT_PASS219_GLOBAL_LATENCY_DEFAULT_REQUIRED 1U
+#define HHS_EXACT_PASS219_GLOBAL_COMPRESSION_DEBT_DEFAULT_REQUIRED 1U
 typedef enum HHSExactPass219BindingVariant { HHS_EXACT_PASS219_BINDING_VARIANT_NONE=0, HHS_EXACT_PASS219_BINDING_VARIANT_A=1, HHS_EXACT_PASS219_BINDING_VARIANT_B=2, HHS_EXACT_PASS219_BINDING_VARIANT_C=3 } HHSExactPass219BindingVariant;
 typedef struct HHSExactPass219CumulativeBindingKeyV1 { uint16_t pass_number; uint8_t variant; uint8_t reserved; } HHSExactPass219CumulativeBindingKeyV1;
 typedef struct HHSExactPass219GlobalCanonicalDefaultPolicyV1 {
@@ -21,6 +23,7 @@ HHS_EXACT_API uint32_t hhs_exact_pass219_global_canonical_defaults_version(void)
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_canonical_defaults_policy(HHSExactPass219GlobalCanonicalDefaultPolicyV1 *out_policy);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate(void);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate_latency_policy(void);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate_compression_debt_policy(void);
 HHS_EXACT_API size_t hhs_exact_pass219_global_canonical_defaults_binding_count(void);
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_canonical_defaults_binding_at(size_t index,HHSExactPass219CumulativeBindingKeyV1 *out_binding);
 #ifdef __cplusplus
