@@ -72,17 +72,8 @@ Do not treat queued external workflow execution as a reason to withhold a reposi
 - exact I143 and H36 heads resolved;
 - divergence verified;
 - integration branch created at exact I143 head;
-- no history merge performed yet;
-- no validation result claimed yet.
-
-## Next action
-
-Create an integration merge of `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1` into this branch, resolve only actual conflicts while preserving both inherited contracts, then execute the bounded combined validation matrix.
-
-## Blockers
-
-None at checkpoint creation.
-
+- reconciliation history integrated and repair-forward cumulative Pass 184 reachability fix applied;
+- combined dependency-scoped workflow validation is terminal green.
 
 ## Repair-forward validation checkpoint — cumulative Pass 184 reachability
 
@@ -113,6 +104,51 @@ Repair:
 
 No Pass 184 runtime, package, authority, or receipt semantics changed.
 
-Next action:
-- rerun the dedicated reconciliation workflow;
-- continue Pass 210, exact ABI, Runtime OS, and browser closure if the repaired cumulative membrane passes.
+## Final reconciliation validation receipts
+
+Terminal green workflow run: `33550661406`
+
+Validated branch/head:
+- branch: `agent/pass219-i143-h36-capacity8-reconciliation`
+- workflow head SHA: `ac53e0f3078f06b5de3907d94fd65a89cbea0e78`
+
+Jobs:
+- `pass183-184-210-exact` — job `99999005590` — SUCCESS
+  - Pass 183 acceptance + I143 membrane: SUCCESS
+  - Pass 184 acceptance + repaired I142 cumulative membrane: SUCCESS
+  - global defaults + multimodal generalization preservation: SUCCESS
+  - Pass 210 HFC + cumulative membrane: SUCCESS
+  - strict exact ABI + VM81 verification: SUCCESS
+  - inherited Pass 186 SysV AMD64 ABI verification: SUCCESS
+- `h36-calibrated-capacity8` — job `99999005662` — SUCCESS
+  - frozen two-parent lineage: SUCCESS
+  - H36 VM selector/cache conformance: SUCCESS
+  - calibrated occupancy-four stability: SUCCESS
+  - capacity-eight boundary: SUCCESS
+  - all H36 generalization manifests: SUCCESS
+  - integration contract + authority boundary: SUCCESS
+- `pass185-runtime-browser` — job `99999005760` — SUCCESS
+  - Runtime OS typecheck/build: SUCCESS
+  - Runtime OS + authority regressions: SUCCESS
+  - bounded Chromium install: SUCCESS
+  - Pass 185 cumulative exact-production browser closure: SUCCESS
+
+Artifacts:
+- `9817301809` — `pass219-i143-h36-calibrated-capacity8`
+  - SHA-256: `c0ae523d8602eab408182f15938fce9833fff975a49ad632fc4812b6769c4c6d`
+- `9817343801` — `pass219-i143-h36-pass185-runtime-browser`
+  - SHA-256: `76327a6ecd89285b26525aeb9bbd460296bb68aec07e09a28869b9aa48b08757`
+
+## Closure classification
+
+`I143 + H36 RECONCILIATION = VALIDATION-COMPLETE`
+
+The combined reconciliation has passed its dependency-scoped exact, H36, Runtime OS, and browser validation matrix. No further repair is required for this reconciliation boundary.
+
+## Next action
+
+Proceed to the next explicitly authorized integration step from this validation-complete reconciliation branch. Do not merge this reconciliation to `main` without separate authorization.
+
+## Blockers
+
+None.
