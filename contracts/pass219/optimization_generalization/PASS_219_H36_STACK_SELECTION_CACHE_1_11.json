@@ -7,7 +7,8 @@
     "tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c",
     "benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp",
     "hhs_runtime/include/hhs_runtime_exact_abi.h",
-    "hhs_runtime/c/hhs_runtime_exact_abi.c"
+    "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    "benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp"
   ],
   "optimization": {
     "optimization_id": "H36_STACK_SELECTION_CACHE_1_11",
@@ -113,6 +114,102 @@
       "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
       "exactness_domain": "EXACT_INTEGER",
       "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "workload_signature36": 4793332410
+      },
+      "logical_object_id": "h36-stack-cache-console-4793332410",
+      "modality_set": [
+        "H36_STACK_CACHE_CONSOLE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "workload_signature36": 21509979554
+      },
+      "logical_object_id": "h36-stack-cache-binary-21509979554",
+      "modality_set": [
+        "H36_STACK_CACHE_BINARY_IO"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "workload_signature36": 41886677838
+      },
+      "logical_object_id": "h36-stack-cache-monitor-control-41886677838",
+      "modality_set": [
+        "H36_STACK_CACHE_MONITOR_CONTROL"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
         "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1"
       },
       "logical_object_id": "h36-compatible-stack-cache-workloads-unvalidated",
@@ -141,10 +238,82 @@
       "artifact_id": 9788037050,
       "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6",
       "authority_escalation": false
+    },
+    {
+      "logical_object_id": "h36-stack-cache-console-4793332410",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "exact_cache_hit_fresh_selection_equal": true,
+      "stale_signature_rejected": true,
+      "mismatched_vector_key_rejected": true,
+      "deterministic_replay_receipt": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 4793332410,
+      "semantic_result_signature64": "6731027650694893003",
+      "selected_candidate_id": 1,
+      "selected_stack": "H36_KA10_MONITOR",
+      "fresh_selection_median_ns": 18588395,
+      "cache_hit_median_ns": 14973115,
+      "speedup_x1000": 1241,
+      "validation_run": 33496909452,
+      "validation_job": 99821090942,
+      "artifact_id": 9796096476,
+      "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e",
+      "authority_escalation": false
+    },
+    {
+      "logical_object_id": "h36-stack-cache-binary-21509979554",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "exact_cache_hit_fresh_selection_equal": true,
+      "stale_signature_rejected": true,
+      "mismatched_vector_key_rejected": true,
+      "deterministic_replay_receipt": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 21509979554,
+      "semantic_result_signature64": "1456447110141201574",
+      "selected_candidate_id": 1,
+      "selected_stack": "H36_KA10_MONITOR",
+      "fresh_selection_median_ns": 18790964,
+      "cache_hit_median_ns": 15161769,
+      "speedup_x1000": 1239,
+      "validation_run": 33496909452,
+      "validation_job": 99821090942,
+      "artifact_id": 9796096476,
+      "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e",
+      "authority_escalation": false
+    },
+    {
+      "logical_object_id": "h36-stack-cache-monitor-control-41886677838",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "exact_cache_hit_fresh_selection_equal": true,
+      "stale_signature_rejected": true,
+      "mismatched_vector_key_rejected": true,
+      "deterministic_replay_receipt": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 41886677838,
+      "semantic_result_signature64": "2318081696571468614",
+      "selected_candidate_id": 2,
+      "selected_stack": "LINUX_X86_64_POSIX",
+      "fresh_selection_median_ns": 18382750,
+      "cache_hit_median_ns": 14817374,
+      "speedup_x1000": 1240,
+      "validation_run": 33496909452,
+      "validation_job": 99821090942,
+      "artifact_id": 9796096476,
+      "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e",
+      "authority_escalation": false
     }
   ],
   "declared_generalize_required": [
-    "h36-stack-cache-3734727431"
+    "h36-stack-cache-3734727431",
+    "h36-stack-cache-binary-21509979554",
+    "h36-stack-cache-console-4793332410",
+    "h36-stack-cache-monitor-control-41886677838"
   ],
   "policy": {
     "correctness_validation_run": 33475578584,
@@ -170,6 +339,12 @@
         "winner": "FRESH_SELECTION",
         "winner_ratio_x1000": 1008
       }
+    ],
+    "real_workload_audit_run": 33496909452,
+    "real_workload_targets_generalized": [
+      "h36-stack-cache-console-4793332410",
+      "h36-stack-cache-binary-21509979554",
+      "h36-stack-cache-monitor-control-41886677838"
     ]
   }
 }
