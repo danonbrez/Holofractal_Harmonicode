@@ -187,5 +187,65 @@
       "workload_signatures_distinct": true,
       "authoritative_state_changed": false
     }
+  },
+  "multisignature_policy_repeat": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33497200386,
+    "job": 99822014646,
+    "head": "97c6f668028a329980e2b624882f18de486ce427",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796212368,
+    "artifact_sha256": "21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b",
+    "workloads": [
+      {
+        "class": "CONSOLE_FOCUSED",
+        "h36_median_ns": 23033,
+        "linux_median_ns": 106949,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 4643,
+        "fresh_selection_median_ns": 18487262,
+        "cache_hit_median_ns": 15006876,
+        "cache_speedup_x1000": 1231,
+        "cache_benefit": true
+      },
+      {
+        "class": "BINARY_IO_FOCUSED",
+        "h36_median_ns": 23073,
+        "linux_median_ns": 109553,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 4748,
+        "fresh_selection_median_ns": 18833265,
+        "cache_hit_median_ns": 14935304,
+        "cache_speedup_x1000": 1260,
+        "cache_benefit": true
+      },
+      {
+        "class": "MONITOR_CONTROL_FOCUSED",
+        "h36_median_ns": 19156,
+        "linux_median_ns": 501,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "selector_speedup_x1000": 38235,
+        "fresh_selection_median_ns": 18398417,
+        "cache_hit_median_ns": 14982943,
+        "cache_speedup_x1000": 1227,
+        "cache_benefit": true
+      }
+    ],
+    "manifest_validation": {
+      "h36_stack_generalize_required": [
+        "h36-ka10-monitor-3734727431",
+        "h36-ka10-monitor-binary-21509979554",
+        "h36-ka10-monitor-console-4793332410"
+      ],
+      "h36_stack_local_exceptions": [
+        "h36-ka10-monitor-monitor-control-41886677838"
+      ],
+      "cache_generalize_required": [
+        "h36-stack-cache-3734727431",
+        "h36-stack-cache-binary-21509979554",
+        "h36-stack-cache-console-4793332410",
+        "h36-stack-cache-monitor-control-41886677838"
+      ]
+    }
   }
 }
