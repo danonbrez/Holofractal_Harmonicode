@@ -1679,3 +1679,34 @@ mixed scheduler/I/O/UUO  -> GENERALIZE_REQUIRED
 All eight per-signature cache targets are `GENERALIZE_REQUIRED` on their measured Linux x86_64 evidence.
 
 No cross-platform performance claim is inferred. Cache residency remains candidate metadata only and adds no VM81 admission bypass, mutation authority, Hash72 authority, Hash216 lineage/authority, persistence authority, or floating-point authority.
+
+### 24.5 Enforcement repeat
+
+The capacity-8 classification was promoted into the cumulative H36 workflow and rerun fail-closed.
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33529443931
+job      = 99928529597
+head     = a8834b12553741dc5fd04f3434752de14cfccb1b
+result   = SUCCESS
+artifact = 9809101393
+artifact sha256 = 511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345
+```
+
+Repeat occupancy-8 versus fresh-selector ratios:
+
+```text
+FULL_MONITOR              = 1.178x
+CONSOLE_FOCUSED           = 1.165x
+BINARY_IO_FOCUSED         = 1.171x
+MONITOR_CONTROL_FOCUSED   = 1.175x
+APR_PI_INTERRUPT_FOCUSED  = 1.195x
+RIM_BOOTSTRAP_FOCUSED     = 1.196x
+MIXED_CONSOLE_BINARY_IO   = 1.193x
+MIXED_SCHEDULER_IO_UUO    = 1.197x
+```
+
+The repeat preserves the eight-entry boundary, the ninth-store `BUFFER_TOO_SMALL` behavior, every per-workload stack winner, all per-signature cache promotions, and both residency/capacity generalization manifests.
+
+Capacity 8 is therefore closed as the current physical stack-selection cache bound for the evidenced Linux x86_64 profile.
