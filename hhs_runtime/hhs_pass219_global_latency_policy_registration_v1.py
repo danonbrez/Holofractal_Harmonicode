@@ -11,6 +11,12 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+    SCHEDULE_SYMBOL as DEBT_SCHEDULE_SYMBOL,
+)
+
 VERSION = "PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0"
 SCHEMA = "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0"
 SURFACE_ID = "guard:pass219.global_latency.25_over_3"
@@ -44,11 +50,13 @@ def pass219_global_latency_surface_declaration() -> Dict[str, Any]:
             SCHEMA,
             "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_V1",
             "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22",
+            COMPRESSION_DEBT_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_PASS219_LATENCY_WINDOW_RESULT_V1",
             "HHS_PASS219_LATENCY_SELECTION_V1",
             "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
+            "HHS_PASS219_COMPRESSION_DEBT_LAYER_RESULT_V1",
         ],
         "validators": [
             POLICY_SYMBOL,
@@ -56,6 +64,7 @@ def pass219_global_latency_surface_declaration() -> Dict[str, Any]:
             CLASSIFY_SYMBOL,
             WINDOW_SYMBOL,
             SELECT_SYMBOL,
+            DEBT_SCHEDULE_SYMBOL,
         ],
         "guards": [
             "exact_25_over_3_latency_quantum",
@@ -67,12 +76,15 @@ def pass219_global_latency_surface_declaration() -> Dict[str, Any]:
             "candidate_acceleration_only",
             "single_c_vm81_mutation_authority",
             "existing_hash72_hash216_authority_only",
+            MANDATORY_COMPRESSION_DEBT_GUARD,
+            "physical_time_monotonic_no_time_credit",
         ],
         "rejection_codes": [
             "REJECT_PASS219_LATENCY_POLICY_ALGEBRA_DRIFT",
             "REJECT_PASS219_LATENCY_ROUTE_WITHOUT_EXACT_SEMANTIC_EQUALITY",
             "REJECT_PASS219_LATENCY_ROUTE_WITHOUT_EXACT_SELECTOR_OR_COMPLETE_FALLBACK",
             "REJECT_PASS219_LATENCY_CANDIDATE_CANONICAL_AUTHORITY",
+            "REJECT_PASS219_LATENCY_AS_COMPRESSION_DEBT_CREDIT",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_ONLY",
         "persistence_policy": "INHERITED_HASH72_HASH216_PATHS_ONLY",
@@ -116,6 +128,14 @@ def pass219_global_latency_manifest() -> Dict[str, Any]:
             "pass208": False,
             "singleton_vm81": "INHERITED_C_ONLY",
             "hash72_hash216": "INHERITED_PATHS_ONLY",
+        },
+        "compression_debt_coupling": {
+            "mandatory_guard": MANDATORY_COMPRESSION_DEBT_GUARD,
+            "schema": COMPRESSION_DEBT_SCHEMA,
+            "conserved_quantity": "COMPRESSION_DEBT",
+            "elapsed_time_is_debt": False,
+            "physical_time_monotonic": True,
+            "over_budget_scheduler_action": "TRANSFER_OR_RECOMPRESS_UNSETTLED_DEBT",
         },
         "floating_point_authority": False,
         "timing_is_noncanonical": True,
