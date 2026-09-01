@@ -81,3 +81,5 @@ Remote main integration, authoritative-main verification after integration, and 
 ## Validation trigger
 
 The append-only current-main synthetic workflow exists on this branch. This documentation-only commit is the bounded push trigger for that workflow; no implementation, receipt, authority, merge, or deployment state is changed by the trigger itself.
+
+The explicit ref-update trigger below changes only this documentation path so the already-committed validation workflow can observe a normal branch push event.
