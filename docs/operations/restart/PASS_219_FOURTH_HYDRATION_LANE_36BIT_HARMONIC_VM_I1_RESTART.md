@@ -7,9 +7,9 @@
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
 - Validated implementation head: `97c6f668028a329980e2b624882f18de486ce427`
-- Branch head immediately before this checkpoint record: `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe`
+- Branch head immediately before this checkpoint record: `bdd7cb5793c734f78ff57ccbbc39bb692fbf15d9`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / REAL MULTISIGNATURE AUDIT COMPLETE / PER-WORKLOAD GENERALIZATION GREEN / DOC-EVIDENCE RERUN NONBLOCKING**
+- Status: **RESTARTABLE / REAL MULTISIGNATURE AUDIT COMPLETE / PER-WORKLOAD GENERALIZATION GREEN / ALL FOLLOW-UP H36 GATES GREEN**
 
 ## Governing invariant
 
@@ -959,7 +959,16 @@ Repeat evidence/contract/documentation commits:
 - `17113356731e53a5f09f67527814be5cd27d1acd`;
 - `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe`.
 
-The documentation/evidence-head follow-up H36 run `33497366667` was still in progress when this checkpoint was prepared. It is nonblocking because the executable/policy head `97c6f668028a329980e2b624882f18de486ce427` is terminal green.
+The documentation/evidence-head follow-up H36 run is also terminal green:
+
+```text
+run      = 33497366667
+job      = 99822535027
+head     = a20cee20fc2d781f5c2d41f4a079dba231ef1bfe
+result   = SUCCESS
+artifact = 9796276083
+artifact sha256 = 58810a9c58fdc3275e1ae86873de8110e5ff8d7369f5cbfcfc7f0bf36d802db4
+```
 
 ## Validation receipt
 
@@ -975,7 +984,7 @@ Current terminal green dependency-scoped implementation/policy gate:
 
 This gate includes all inherited H36 conformance, selector/cache conformance, existing optimization measurements, original cache measurement, the three real multisignature workloads, per-workload selected-stack enforcement, per-workload cache-benefit enforcement, both generalization manifests, cumulative contract proof, and artifact upload.
 
-The later evidence/contract/documentation head `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe` has follow-up run `33497366667` in progress at checkpoint creation. It does not block restartability or completion.
+The later evidence/contract/documentation head `a20cee20fc2d781f5c2d41f4a079dba231ef1bfe` is also green: run `33497366667`, job `99822535027`, artifact `9796276083`, SHA-256 `58810a9c58fdc3275e1ae86873de8110e5ff8d7369f5cbfcfc7f0bf36d802db4`.
 
 ## Normative documentation updated after green code head
 
@@ -1024,9 +1033,7 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Check follow-up H36 run `33497366667` once.
-   - Preserve it if **SUCCESS**.
-   - If it fails, inspect only the first dependency-scoped H36 failure and repair forward; do not invalidate terminal green policy head `97c6f668028a329980e2b624882f18de486ce427` unless the failure proves a relevant defect.
+1. Preserve follow-up H36 run `33497366667` / job `99822535027` as terminal green evidence for the documentation/evidence head.
 
 2. Implement the next bounded cache-residency step using the **same cache instance**, not one cache per workload:
 
