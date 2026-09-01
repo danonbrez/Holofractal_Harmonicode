@@ -67,3 +67,4 @@
 #include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc"
 
 #include "hhs_pass219_harmonic36_stack_selection_1_10.inc"
+#include "hhs_pass219_harmonic36_stack_selection_cache_1_11.inc"

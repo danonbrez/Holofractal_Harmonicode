@@ -15,6 +15,7 @@ on:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_composition_grammar_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
@@ -26,6 +27,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
@@ -39,6 +41,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
       - 'tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c'
+      - 'tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
@@ -203,6 +206,15 @@ jobs:
             -o /tmp/h36/test-stack-selection
           /tmp/h36/test-stack-selection
 
+      - name: H36 stack-selection cache 1.11 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-stack-cache
+          /tmp/h36/test-stack-cache
+
       - name: Exact factorization fabric conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -290,7 +302,9 @@ jobs:
             hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h \
             hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc \
             hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h \
-            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc; then
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc; then
             echo "Canonical floating type detected in Harmonic36 kernel"
             exit 1
           fi
@@ -399,6 +413,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.h' in h
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h' in h
           assert 'hhs_pass219_harmonic36_stack_selection_1_10.h' in h
+          assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.h' in h
           assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
@@ -408,6 +423,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
           assert 'hhs_pass219_harmonic36_stack_selection_1_10.inc' in c
+          assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.inc' in c
           manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
           assert manifest.is_file()
           PY

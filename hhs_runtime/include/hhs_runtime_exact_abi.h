@@ -62,4 +62,5 @@
 #include "hhs_pass219_harmonic36_composition_grammar_1_0.h"
 #include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h"
 #include "hhs_pass219_harmonic36_stack_selection_1_10.h"
+#include "hhs_pass219_harmonic36_stack_selection_cache_1_11.h"
 #endif
