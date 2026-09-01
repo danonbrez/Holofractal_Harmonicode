@@ -367,54 +367,9 @@ class GraphicsHydrationRuntime:
             return {**record, "record_path": str(output)}
 
     def promote_constraint(self, candidate: Mapping[str, Any]) -> Dict[str, Any]:
-        with self._authority_lock:
-            predicate = str(candidate.get("predicate") or "").strip()
-            family = str(candidate.get("family") or "").strip()
-            evidence, stages = candidate.get("evidence"), candidate.get("stages")
-            if not predicate or not family:
-                raise GraphicsHydrationError("P181_CONSTRAINT_PREDICATE_AND_FAMILY_REQUIRED")
-            if not isinstance(evidence, list) or not evidence:
-                raise GraphicsHydrationError("P181_CONSTRAINT_EVIDENCE_REQUIRED")
-            if not isinstance(stages, Mapping):
-                raise GraphicsHydrationError("P181_CONSTRAINT_STAGE_MAP_REQUIRED")
-            missing = [stage for stage in PROMOTION_STAGES if stages.get(stage) is not True]
-            canonical_candidate = {
-                "family": family,
-                "predicate": predicate,
-                "arithmetic": str(candidate.get("arithmetic") or "EXACT_INTEGER_OR_RATIONAL"),
-                "severity": str(candidate.get("severity") or "HARD_REJECTION"),
-                "scope": str(candidate.get("scope") or "ALL_AUTHORITATIVE_STORY_REEL_FRAMES"),
-                "evidence": stable(evidence),
-                "stages": {stage: stages.get(stage) is True for stage in PROMOTION_STAGES},
-                "supersedes": candidate.get("supersedes"),
-            }
-            constraint_id = hash216(canonical_candidate, domain=CONSTRAINT_IDENTITY_DOMAIN)
-            if missing:
-                return {
-                    "schema": "HHS_P181_GRAPHICS_CONSTRAINT_PROMOTION_V1",
-                    "ok": False,
-                    "status": "REJECT_GRAPHICS_CONSTRAINT_NOT_FULLY_VALIDATED",
-                    "constraint_id": constraint_id,
-                    "missing_stages": missing,
-                }
-            record = {
-                "schema": "HHS_GRAPHICS_RUNTIME_CONSTRAINT_V1",
-                "constraint_id": constraint_id,
-                "contract": CONTRACT,
-                "authority": AUTHORITY,
-                "state": "FROZEN",
-                **canonical_candidate,
-            }
-            record["constraint_hash72"] = hash72(record, domain=RECEIPT_DOMAIN)
-            output = self.constraint_root / _artifact_filename(constraint_id)
-            output.write_bytes(canonical_bytes(record))
-            return {
-                "schema": "HHS_P181_GRAPHICS_CONSTRAINT_PROMOTION_V1",
-                "ok": True,
-                "status": "HHS_GRAPHICS_RUNTIME_CONSTRAINT_PROMOTION_VERIFIED",
-                "constraint": record,
-                "record_path": str(output),
-            }
+        raise GraphicsHydrationError(
+            "P181_LEGACY_DIRECT_CONSTRAINT_PROMOTION_DISABLED_USE_REGISTRY_FREEZE"
+        )
 
 
 def graphics_hydration_self_test() -> Dict[str, Any]:
