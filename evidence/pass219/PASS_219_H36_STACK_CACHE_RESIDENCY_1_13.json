@@ -218,6 +218,69 @@
       "aggregate_requirement": "occupancy4_total_ns < fresh_selection_total_ns",
       "one_shot_boolean_authoritative": false,
       "classification": "GENERALIZE_REQUIRED"
+    },
+    "sealed_rerun": {
+      "head": "157796f80b9806365de7a8578840560f3716617b",
+      "run": 33533279927,
+      "job": 99941365968,
+      "conclusion": "SUCCESS",
+      "artifact_id": 9810601586,
+      "artifact_sha256": "8c21aa52059cbdee58e2c83571146744c591e48de84416c2bb036ff3d2179c48",
+      "occupancy4_stability": {
+        "gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+        "calibration_repeats": 5,
+        "required_beneficial_repeats": 4,
+        "all_repeat_stability_pass": true,
+        "residents": [
+          {
+            "name": "FULL_MONITOR",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94148016,
+            "occupancy4_total_ns": 78326435,
+            "ratio_x1000": 1201
+          },
+          {
+            "name": "CONSOLE_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94484436,
+            "occupancy4_total_ns": 78993075,
+            "ratio_x1000": 1196
+          },
+          {
+            "name": "BINARY_IO_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 95758652,
+            "occupancy4_total_ns": 78694120,
+            "ratio_x1000": 1216
+          },
+          {
+            "name": "MONITOR_CONTROL_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94225272,
+            "occupancy4_total_ns": 78570710,
+            "ratio_x1000": 1199
+          }
+        ]
+      },
+      "capacity8_path": {
+        "benchmark_pass": true,
+        "manifests_pass": true,
+        "integration_proof_pass": true,
+        "artifact_sealed": true,
+        "ninth_store_result": "BUFFER_TOO_SMALL",
+        "all_occupancy8_faster_than_fresh": true,
+        "resident_ratios_x1000": {
+          "FULL_MONITOR": 1197,
+          "CONSOLE_FOCUSED": 1169,
+          "BINARY_IO_FOCUSED": 1198,
+          "MONITOR_CONTROL_FOCUSED": 1194,
+          "APR_PI_INTERRUPT_FOCUSED": 1200,
+          "RIM_BOOTSTRAP_FOCUSED": 1119,
+          "MIXED_CONSOLE_BINARY_IO": 1200,
+          "MIXED_SCHEDULER_IO_UUO": 1187
+        }
+      },
+      "disposition": "NO_RECLASSIFICATION; ONE_SHOT ASSERTION REPLACED BY EXACT_INTEGER_REPEAT_STABILITY"
     }
   }
 }
