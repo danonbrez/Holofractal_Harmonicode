@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `03bc4ae3b69d3834ca70cb904fa6924fb1196e98`
-- Branch head immediately before this checkpoint record: `a8834b12553741dc5fd04f3434752de14cfccb1b`
+- Validated implementation head: `a8834b12553741dc5fd04f3434752de14cfccb1b`
+- Branch head immediately before this checkpoint record: `53fcd1b0ef1c61bdeaff9e72d76de9eb1d01f12c`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / CAPACITY-8 CACHE 1.14 IMPLEMENTED / FIRST CAPACITY GATE GREEN / POLICY RERUN IN PROGRESS**
+- Status: **RESTARTABLE / CAPACITY-8 CACHE 1.14 CLOSED / POLICY REPEAT GREEN / ACCESS-DISTRIBUTION NEXT**
 
 ## Governing invariant
 
@@ -1270,28 +1270,43 @@ workflow = Pass 219 Harmonic36 Nested VM
 run      = 33529443931
 job      = 99928529597
 head     = a8834b12553741dc5fd04f3434752de14cfccb1b
-state at checkpoint preparation = IN_PROGRESS
+result   = SUCCESS
+artifact = 9809101393
+artifact sha256 = 511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345
 ```
 
-This follow-up is nonblocking for restartability because the capacity-8 implementation head already has terminal green validation. If it completes green, freeze its artifact/measurement receipt. If it fails, inspect only the first relevant H36 failure and repair forward.
+Repeat occupancy-8 versus fresh-selector ratios:
+
+```text
+FULL_MONITOR              = 1.178x
+CONSOLE_FOCUSED           = 1.165x
+BINARY_IO_FOCUSED         = 1.171x
+MONITOR_CONTROL_FOCUSED   = 1.175x
+APR_PI_INTERRUPT_FOCUSED  = 1.195x
+RIM_BOOTSTRAP_FOCUSED     = 1.196x
+MIXED_CONSOLE_BINARY_IO   = 1.193x
+MIXED_SCHEDULER_IO_UUO    = 1.197x
+```
+
+All fail-closed policy assertions and all four optimization-generalization manifests are green.
 
 All authority boundaries remain unchanged: cache state is candidate metadata only and cannot bypass singleton VM81 admission or gain mutation, Hash72, Hash216, persistence, or floating-point authority.
 
 ## Validation receipt
 
-Current terminal green dependency-scoped capacity-8 implementation gate:
+Current terminal green dependency-scoped capacity-8 policy gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33528991694`
-- job: `99927016899`
-- head: `03bc4ae3b69d3834ca70cb904fa6924fb1196e98`
+- run: `33529443931`
+- job: `99928529597`
+- head: `a8834b12553741dc5fd04f3434752de14cfccb1b`
 - conclusion: **SUCCESS**
-- artifact: `9808920709`
-- artifact SHA-256: `8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417`
+- artifact: `9809101393`
+- artifact SHA-256: `511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345`
 
-The gate includes all inherited H36 conformance, the eight real workload identities, exact H36/Linux equality for the four new workloads, stack selection, full-capacity cache admission, ninth-store boundary behavior, exact isolation, fresh/occupancy-1/4/8 timing, inherited optimization manifests, cumulative contract proof, and artifact upload.
+This gate includes all inherited H36 conformance, eight real workload identities, exact H36/Linux equality for the four new workloads, stack selection, full-capacity cache admission, ninth-store boundary behavior, exact isolation, fresh/occupancy-1/4/8 timing, all four optimization-generalization manifests, cumulative contract proof, and artifact upload.
 
-The fail-closed policy rerun `33529443931` / job `99928529597` at head `a8834b12553741dc5fd04f3434752de14cfccb1b` is in progress at checkpoint creation and is explicitly nonblocking under the repository workflow policy.
+There is no pending dependency-scoped H36 validation at this checkpoint.
 
 ## Normative documentation updated after green code head
 
@@ -1340,23 +1355,57 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Check capacity-8 policy rerun `33529443931` / job `99928529597` once.
-   - If **SUCCESS**, record its artifact SHA-256 and repeat occupancy-8 measurements in evidence/contract/docs, then freeze a final green capacity-8 checkpoint.
-   - If **FAILURE**, inspect only the first H36 dependency-scoped failing step and repair forward. Do not invalidate first green run `33528991694` unless the failure demonstrates a real relevant defect.
+1. Preserve capacity 8 as the current physical bound of stack-selection cache 1.11:
 
-2. Do not expand cache capacity beyond 8 in the current implementation. Capacity 8 is the declared physical bound of stack-selection cache 1.11.
+```text
+capacity         = 8
+resident_entries = 8
+next_sequence    = 9
+classification   = GENERALIZE_REQUIRED
+platform         = linux-x86_64
+```
 
-3. The next optimization step after terminal capacity-8 policy closure is **access-distribution validation**, not more resident identities:
-   - benchmark deterministic lookup sequences across all eight residents;
-   - include uniform round-robin, hot/cold skew, and adversarial last-entry access ordering;
-   - preserve the same exact-isolation and authority gates;
-   - determine whether the current bounded linear scan remains adequate under realistic mixed access distributions.
+2. Do not add more resident identities or implicit eviction in the next step.
 
-4. Only introduce an indexed lookup structure if measured access-distribution evidence shows a meaningful benefit and the index can be derived/rebuilt deterministically from the eight authoritative cache entries without becoming an independent state authority.
+3. Implement **access-distribution validation** across the same eight frozen resident identities. Benchmark at least:
 
-5. Preserve full store/audit/public receipt validation. Any fast lookup index remains a non-authoritative derivative.
+```text
+A. uniform round-robin
+   1,2,3,4,5,6,7,8 repeated
 
-Do not infer cross-platform timing.
+B. hot/cold skew
+   one hot resident dominates with deterministic cold interleaving
+
+C. alternating edge access
+   first-entry / last-entry alternation
+
+D. adversarial last-entry access
+   repeated sequence-8 lookup against full occupancy
+
+E. deterministic mixed trace
+   fixed replayable trace spanning all eight residents
+```
+
+4. For each distribution:
+
+```text
+exact lookup == frozen selection
+-> deterministic receipt
+-> no cross-signature hit
+-> stale/mismatched identity rejection preserved
+-> integer timing samples
+-> compare current bounded linear scan against any candidate derived index
+```
+
+5. Do **not** introduce an index merely because occupancy 8 is slower than occupancy 1. The current cache remains beneficial versus fresh selection. An indexed path is authorized only if mixed-access evidence demonstrates a meaningful improvement and exact replay/isolation remain unchanged.
+
+6. If an index is implemented:
+   - derive/rebuild it deterministically from the eight cache entries;
+   - give it zero independent mutation/Hash72/Hash216/persistence authority;
+   - retain full cache validation for store/audit/public receipt-validation paths;
+   - fail closed if index and resident entries disagree.
+
+7. Keep cross-platform behavior `VALIDATION_REQUIRED`; do not infer Linux x86_64 timing to other platforms.
 
 Do not expand into KI10/KL10 paging/MAP in this step.
 
