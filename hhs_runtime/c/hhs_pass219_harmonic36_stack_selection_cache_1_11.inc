@@ -206,6 +206,94 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_store(
     return hhs_exact_pass219_h36_stack_cache_validate(cache);
 }
 
+static HHSExactStatus h36_stack_cache_lookup_header_validate(
+    const HHSExactPass219H36StackCacheV1 *cache
+) {
+    if (cache == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (cache->struct_size != sizeof(*cache) ||
+        cache->version != HHS_EXACT_PASS219_H36_STACK_CACHE_VERSION)
+        return HHS_EXACT_STATUS_VERSION_MISMATCH;
+    if (cache->capacity != HHS_EXACT_PASS219_H36_STACK_CACHE_CAPACITY ||
+        cache->entry_count > cache->capacity ||
+        cache->next_sequence == 0U ||
+        cache->candidate_only != 1U ||
+        cache->vector_store_metadata_only != 1U ||
+        cache->hash216_lineage_claim != 0U ||
+        cache->canonical_mutation_authority != 0U ||
+        cache->canonical_hash72_authority != 0U ||
+        cache->canonical_hash216_authority != 0U ||
+        cache->canonical_persistence_authority != 0U ||
+        cache->floating_point_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
+
+static HHSExactStatus h36_stack_cache_lookup_entry_validate(
+    const HHSExactPass219H36StackCacheEntryV1 *entry,
+    uint64_t workload_signature36,
+    uint64_t semantic_result_signature64,
+    const char vector_key216[HHS_EXACT_UQCEL_HASH216_STRLEN]
+) {
+    const HHSExactPass219H36StackSelectionV1 *selection;
+    if (entry == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (entry->struct_size != sizeof(*entry) ||
+        entry->version != HHS_EXACT_PASS219_H36_STACK_CACHE_VERSION)
+        return HHS_EXACT_STATUS_VERSION_MISMATCH;
+    if (entry->occupied != 1U ||
+        entry->sequence == 0U ||
+        entry->entry_signature64 == 0U ||
+        entry->candidate_only != 1U ||
+        entry->vector_store_metadata_only != 1U ||
+        entry->hash216_lineage_claim != 0U ||
+        entry->canonical_mutation_authority != 0U ||
+        entry->canonical_hash72_authority != 0U ||
+        entry->canonical_hash216_authority != 0U ||
+        entry->canonical_persistence_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    selection = &entry->selection;
+    if (selection->struct_size != sizeof(*selection) ||
+        selection->version != HHS_EXACT_PASS219_H36_STACK_SELECTION_VERSION)
+        return HHS_EXACT_STATUS_VERSION_MISMATCH;
+    if (selection->candidate_count !=
+            HHS_EXACT_PASS219_H36_STACK_CANDIDATE_COUNT ||
+        selection->selected_candidate_id == 0U ||
+        (selection->selected_stack_kind !=
+             HHS_EXACT_PASS219_H36_STACK_CANDIDATE_H36_KA10 &&
+         selection->selected_stack_kind !=
+             HHS_EXACT_PASS219_H36_STACK_CANDIDATE_LINUX_X86_64) ||
+        selection->workload_signature36 != workload_signature36 ||
+        selection->semantic_result_signature64 !=
+            semantic_result_signature64 ||
+        selection->selected_median_ns == 0U ||
+        selection->runner_up_median_ns == 0U ||
+        selection->speedup_x1000 == 0U ||
+        selection->exact_equality_before_timing != 1U ||
+        selection->timing_executed != 1U ||
+        selection->measured_winner != 1U ||
+        selection->stable_tie_break_by_candidate_id != 1U ||
+        selection->candidate_only != 1U ||
+        selection->vector_store_metadata_only != 1U ||
+        selection->canonical_mutation_authority != 0U ||
+        selection->canonical_hash72_authority != 0U ||
+        selection->canonical_hash216_authority != 0U ||
+        selection->canonical_persistence_authority != 0U ||
+        selection->floating_point_authority != 0U ||
+        selection->selected_vector_key216[
+            HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] != '\0' ||
+        memcmp(
+            selection->selected_vector_key216,
+            vector_key216,
+            HHS_EXACT_UQCEL_HASH216_STRLEN) != 0 ||
+        entry->entry_signature64 !=
+            h36_stack_cache_entry_signature(
+                selection, entry->sequence))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
     const HHSExactPass219H36StackCacheV1 *cache,
     uint64_t workload_signature36,
@@ -215,6 +303,7 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
     HHSExactPass219H36StackCacheReceiptV1 *out_receipt
 ) {
     uint32_t i;
+    uint32_t occupied = 0U;
     HHSExactStatus status;
     const HHSExactPass219H36StackCacheEntryV1 *entry = NULL;
     uint32_t entry_index = 0U;
@@ -222,7 +311,7 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
     if (cache == NULL || vector_key216 == NULL ||
         out_selection == NULL || out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    status = hhs_exact_pass219_h36_stack_cache_validate(cache);
+    status = h36_stack_cache_lookup_header_validate(cache);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
     if (workload_signature36 == 0U ||
@@ -232,22 +321,57 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     for (i = 0U; i < cache->capacity; ++i) {
+        const HHSExactPass219H36StackCacheEntryV1 *candidate =
+            &cache->entries[i];
+        uint32_t j;
+        if (candidate->occupied == 0U)
+            continue;
+        if (candidate->occupied != 1U ||
+            candidate->struct_size != sizeof(*candidate) ||
+            candidate->version != HHS_EXACT_PASS219_H36_STACK_CACHE_VERSION ||
+            candidate->sequence == 0U ||
+            candidate->sequence >= cache->next_sequence ||
+            candidate->candidate_only != 1U ||
+            candidate->vector_store_metadata_only != 1U ||
+            candidate->hash216_lineage_claim != 0U ||
+            candidate->canonical_mutation_authority != 0U ||
+            candidate->canonical_hash72_authority != 0U ||
+            candidate->canonical_hash216_authority != 0U ||
+            candidate->canonical_persistence_authority != 0U)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+        occupied += 1U;
+        for (j = 0U; j < i; ++j) {
+            if (cache->entries[j].occupied == 1U &&
+                cache->entries[j].sequence == candidate->sequence)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+        }
         if (h36_stack_cache_exact_identity(
-                &cache->entries[i],
+                candidate,
                 workload_signature36,
                 semantic_result_signature64,
                 vector_key216)) {
-            entry = &cache->entries[i];
+            if (entry != NULL)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            status = h36_stack_cache_lookup_entry_validate(
+                candidate,
+                workload_signature36,
+                semantic_result_signature64,
+                vector_key216);
+            if (status != HHS_EXACT_STATUS_OK)
+                return status;
+            entry = candidate;
             entry_index = i;
-            break;
+            continue;
         }
         if (h36_stack_cache_partial_collision(
-                &cache->entries[i],
+                candidate,
                 workload_signature36,
                 semantic_result_signature64,
                 vector_key216))
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
+    if (occupied != cache->entry_count)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     if (entry == NULL)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
