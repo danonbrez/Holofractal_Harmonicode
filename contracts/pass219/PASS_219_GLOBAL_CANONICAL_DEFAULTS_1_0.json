@@ -125,7 +125,10 @@
     "c_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.c",
     "cpp_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",
     "workflow": ".github/workflows/pass219-global-canonical-defaults.yml",
-    "aggregate_exact_abi_required": true
+    "aggregate_exact_abi_required": true,
+    "global_latency_policy_header": "hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h",
+    "global_latency_policy_implementation": "hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc",
+    "global_latency_registration": "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py"
   },
   "governing_invariant": [
     "NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED",
@@ -137,7 +140,8 @@
     "ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT",
     "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
     "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
-    "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION"
+    "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION",
+    "VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES"
   ],
   "multimodal_optimization_generalization": {
     "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
@@ -149,5 +153,42 @@
     "locality_requires_evidenced_bounded_exception": true,
     "no_new_user_directive_required_per_modality": true,
     "canonical_descriptor_schema": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1"
+  },
+  "validated_global_latency_policy": {
+    "contract_id": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+    "mandatory": true,
+    "exact_quantum_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "exact_identity": [
+      "d^4/c^2 = 25/3",
+      "(b^2+c^2)^2/(a^2+b^2) = 25/3"
+    ],
+    "fps_tiers": [
+      120,
+      60,
+      30
+    ],
+    "tier_multipliers": [
+      1,
+      2,
+      4
+    ],
+    "window_policy": {
+      "mean_max_tier": 1,
+      "p95_max_tier": 2,
+      "max_max_tier": 3
+    },
+    "exact_semantic_equality_required_for_latency_route_selection": true,
+    "timing_noncanonical": true,
+    "performance_guarantee": false,
+    "unmet_budget_preserves_correct_route": true,
+    "singleton_vm81_authority_preserved": true,
+    "hash72_hash216_authority_preserved": true,
+    "validated_run": 33536893755,
+    "validation_classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
+    "compatible_existing_surfaces_repair_forward_required": true,
+    "compatible_future_surfaces_must_register_guard": true
   }
 }
