@@ -1,0 +1,170 @@
+name: Pass 219 I144 Pass 182 Universal Hydration Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration144-pass182-universal-hydration-reconciliation
+    paths:
+      - 'docs/pass182/**'
+      - 'hhs_runtime/pass182/**'
+      - 'bin/hhs-hydrate'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i144_pass182.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass182_1_44.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass182_1_44.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/test_pass182_universal_hydration.py'
+      - 'tests/pass219/test_pass219_cumulative_pass182_membrane_i144.py'
+      - 'tests/pass219/test_pass219_inherited_pass182_1_44.*'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - '.github/workflows/pass219-i144-pass182-universal-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i144-pass182-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass182-i144:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped test package
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install pytest
+
+      - name: Verify frozen predecessor and Pass 182 contract
+        run: |
+          git merge-base --is-ancestor f4ba13da3d4ac556d7fa511c667187d3c9e7ac52 HEAD
+          test "$(git rev-parse HEAD:evidence/pass183/i143/PASS_219_I143_PASS183_VALIDATION_RECEIPT.json)" = "4619ea215173c55fe50e68197dfa87cb6ce58276"
+          grep -F "HHS-P182-UMHC-ROTR-VM81-H72-H216" docs/pass182/HHS_PASS_182_UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_AND_READ_ONLY_TREE_RUNTIME.md
+          grep -F "THE FILE TREE AND MODALITY CORPUS ARE IMMUTABLE EVIDENCE." docs/pass182/HHS_PASS_182_UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_AND_READ_ONLY_TREE_RUNTIME.md
+
+      - name: Compile Pass 182 Python surfaces
+        run: |
+          python -m py_compile             hhs_runtime/pass182/__init__.py             hhs_runtime/pass182/runtime.py             hhs_runtime/pass182/cli.py             hhs_runtime/hhs_pass219_cumulative_pass_membrane_i144_pass182.py
+
+      - name: Run Pass 182 runtime acceptance
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q tests/test_pass182_universal_hydration.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass182_membrane_i144.py
+
+      - name: Smoke hhs-hydrate command and package replay
+        run: |
+          root="$(mktemp -d)"
+          mkdir -p "$root/source/src"
+          printf 'def identity(x):\n    return x\n' > "$root/source/src/app.py"
+          printf '# demo\n' > "$root/source/README.md"
+          PYTHONPATH="$PWD" bash bin/hhs-hydrate doctor --source "$root/source" > "$root/doctor.json"
+          PYTHONPATH="$PWD" bash bin/hhs-hydrate package --source "$root/source" --output "$root/package" --profile multimodal > "$root/package.json"
+          python - <<'PY'
+          import json, os
+          root=os.environ.get("RUNNER_TEMP","/tmp")
+          # CLI return status is the primary smoke; focused Python tests verify payload details.
+          print(json.dumps({"classification":"HHS_PASS182_I144_CLI_SMOKE_VERIFIED"},sort_keys=True))
+          PY
+
+      - name: Preserve global defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Compile inherited exact C ABI
+        run: |
+          mkdir -p /tmp/pass219-i144
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i144/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i144/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i144/registers.o
+
+      - name: Run Pass 182 and global-default C/C++ conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass182_1_44.c /tmp/pass219-i144/exact.o /tmp/pass219-i144/pass186.o /tmp/pass219-i144/registers.o -o /tmp/pass219-i144/pass182-c
+          /tmp/pass219-i144/pass182-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass182_1_44.cpp /tmp/pass219-i144/exact.o /tmp/pass219-i144/pass186.o /tmp/pass219-i144/registers.o -o /tmp/pass219-i144/pass182-cpp
+          /tmp/pass219-i144/pass182-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i144/exact.o /tmp/pass219-i144/pass186.o /tmp/pass219-i144/registers.o -o /tmp/pass219-i144/defaults-c
+          /tmp/pass219-i144/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i144/exact.o /tmp/pass219-i144/pass186.o /tmp/pass219-i144/registers.o -o /tmp/pass219-i144/defaults-cpp
+          /tmp/pass219-i144/defaults-cpp
+
+      - name: Emit exact-head I144 branch-local receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass182/i144
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i144_pass182 import execute_pass182_membrane_preflight
+
+          preflight=execute_pass182_membrane_preflight()
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          base={
+              "schema":"PASS_219_I144_PASS182_VALIDATION_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration144-pass182-universal-hydration-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"HHS_PASS182_I144_DEPENDENCY_SCOPED_VALIDATION_VERIFIED",
+              "preflight":preflight,
+              "global_defaults":{"wired_ceiling":218,"wired_floor":182,"binding_count":39},
+              "authority":{
+                  "singleton_vm81_authority_remains_inherited":True,
+                  "independent_hash72_clock":False,
+                  "hash216_mutation_authority":False,
+                  "floating_point_canonical_authority":False,
+              },
+              "closure":{
+                  "i144_dependency_scoped_validation_green":True,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+                  "deployment_performed":False,
+                  "terminal_pass182_completion":False,
+              },
+          }
+          receipt72=make_hash72_witness("pass182:i144:validation",base,width=72).digest
+          lanes=[
+              make_hash72_witness("pass182:i144:archive:previous",{"head":head,"receipt":receipt72},width=72).digest,
+              make_hash72_witness("pass182:i144:archive:change",{"tree":tree,"receipt":receipt72},width=72).digest,
+              make_hash72_witness("pass182:i144:archive:receipt",base,width=72).digest,
+          ]
+          base["receipt_hash72"]=receipt72
+          base["archive_hash216"]="".join(lanes)
+          path=Path("evidence/pass182/i144/PASS_219_I144_PASS182_VALIDATION_RECEIPT.json")
+          path.write_text(json.dumps(base,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({"classification":base["classification"],"head":head,"receipt_hash72":receipt72,"archive_hash216":base["archive_hash216"]},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i144-pass182-universal-hydration
+          path: evidence/pass182/i144/PASS_219_I144_PASS182_VALIDATION_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30
