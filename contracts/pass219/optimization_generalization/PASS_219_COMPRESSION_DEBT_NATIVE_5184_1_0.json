@@ -1,0 +1,148 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc",
+    "hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc",
+    "hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py",
+    "hhs_runtime/hhs_pass219_execution_composer_registration_v1.py",
+    "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py",
+    "hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py",
+    "hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h",
+    "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",
+    "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp"
+  ],
+  "optimization": {
+    "optimization_id": "PASS219_COMPRESSION_DEBT_NATIVE_5184_ZERO_SUM_CLOSURE",
+    "compatible_object_classes": [
+      "exact_deferred_work_surface"
+    ],
+    "required_operations": [
+      "CLASSIFY",
+      "SETTLE",
+      "TRANSFER",
+      "VALIDATE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0"
+    ],
+    "correctness_gate": "EXACT_ZERO_SUM_DEBT_CLOSURE_AND_INHERITED_VM81_AUTHORITY",
+    "benefit_gate": "BOUNDED_ACTIVE_SURFACE_WITH_EXACT_RETAINED_OR_TRANSFERRED_DEBT"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "exact_deferred_work_surface",
+    "operations": [
+      "CLASSIFY",
+      "SETTLE",
+      "TRANSFER",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "debt_window",
+        "type": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "closed_or_transferred_debt",
+        "type": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0"
+      }
+    ],
+    "runtime_authority": "NONCANONICAL_POLICY_INHERITED_SINGLETON_VM81_MUTATION",
+    "exactness_domain": "EXACT_INTEGER_RATIONAL",
+    "state_schema": {
+      "schema": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0",
+      "native_boundary_bits": 5184,
+      "vm81_cells": 81,
+      "immediate_active_cells_max": 7,
+      "debt_numerator": 3,
+      "debt_denominator": 25,
+      "capacity_numerator": 25,
+      "capacity_denominator": 3,
+      "physical_time_monotonic": true,
+      "elapsed_time_is_debt": false
+    },
+    "logical_object_id": "pass219-compression-debt-native-5184-source",
+    "modality_set": [
+      "VM81_RUNTIME"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "exact_deferred_work_surface",
+      "operations": [
+        "CLASSIFY",
+        "SETTLE",
+        "TRANSFER",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "debt_window",
+          "type": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "closed_or_transferred_debt",
+          "type": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0"
+        }
+      ],
+      "runtime_authority": "NONCANONICAL_POLICY_INHERITED_SINGLETON_VM81_MUTATION",
+      "exactness_domain": "EXACT_INTEGER_RATIONAL",
+      "state_schema": {
+        "schema": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0",
+        "native_boundary_bits": 5184,
+        "vm81_cells": 81,
+        "immediate_active_cells_max": 7,
+        "debt_numerator": 3,
+        "debt_denominator": 25,
+        "capacity_numerator": 25,
+        "capacity_denominator": 3,
+        "physical_time_monotonic": true,
+        "elapsed_time_is_debt": false
+      },
+      "logical_object_id": "all-compatible-exact-vm81-data-ml-runtime-deferred-work-surfaces",
+      "modality_set": [
+        "VM81_RUNTIME",
+        "DATA_ML_RUNTIME",
+        "RNA_EXECUTION_RUNTIME"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "all-compatible-exact-vm81-data-ml-runtime-deferred-work-surfaces",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "validation_run": 33547128989,
+      "exact_job": 99987295035,
+      "synthetic_job": 99987294960,
+      "native_5184_boundary_verified": true,
+      "zero_sum_compression_debt_verified": true,
+      "physical_time_monotonic": true,
+      "singleton_vm81_authority_preserved": true,
+      "hash72_hash216_authority_preserved": true,
+      "gpu_direct_canonical_mutation": false,
+      "performance_guarantee": false,
+      "policy_enforcement_guarantee": true
+    }
+  ],
+  "declared_generalize_required": [
+    "all-compatible-exact-vm81-data-ml-runtime-deferred-work-surfaces"
+  ],
+  "policy": {
+    "scope": "ALL_COMPATIBLE_EXACT_VM81_DATA_ML_RNA_RUNTIME_DEFERRED_WORK_SURFACES",
+    "compression_debt_is_conserved_computational_obligation": true,
+    "physical_time_credit_forbidden": true,
+    "native_boundary_bits": 5184,
+    "immediate_active_cells_max": 7,
+    "exact_reciprocal_transfer_required": true,
+    "complete_hash216_positional_index_required": true,
+    "no_authority_escalation": true
+  }
+}
