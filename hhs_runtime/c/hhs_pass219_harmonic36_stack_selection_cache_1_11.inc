@@ -269,7 +269,7 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_lookup(
     out_receipt->replay_signature64 =
         h36_stack_cache_replay_signature(entry, entry_index);
     out_receipt->cache_hit = 1U;
-    out_receipt->fresh_selection_equal = 1U;
+    out_receipt->selection_integrity_validated = 1U;
     out_receipt->exact_replayable = 1U;
     out_receipt->stale_signature_rejected = 1U;
     out_receipt->candidate_only = 1U;
@@ -344,7 +344,7 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_receipt_validate(
             h36_stack_cache_replay_signature(
                 entry, receipt->entry_index) ||
         receipt->cache_hit != 1U ||
-        receipt->fresh_selection_equal != 1U ||
+        receipt->selection_integrity_validated != 1U ||
         receipt->exact_replayable != 1U ||
         receipt->stale_signature_rejected != 1U ||
         receipt->candidate_only != 1U ||
@@ -415,5 +415,32 @@ HHSExactStatus hhs_exact_pass219_h36_stack_cache_validate(
     if (occupied != cache->entry_count ||
         cache->next_sequence <= max_sequence)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    for (i = 0U; i < cache->capacity; ++i) {
+        uint32_t j;
+        const HHSExactPass219H36StackCacheEntryV1 *left =
+            &cache->entries[i];
+        if (left->occupied != 1U)
+            continue;
+        for (j = i + 1U; j < cache->capacity; ++j) {
+            const HHSExactPass219H36StackCacheEntryV1 *right =
+                &cache->entries[j];
+            if (right->occupied != 1U)
+                continue;
+            if (left->sequence == right->sequence)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            if (h36_stack_cache_exact_identity(
+                    right,
+                    left->selection.workload_signature36,
+                    left->selection.semantic_result_signature64,
+                    left->selection.selected_vector_key216) ||
+                h36_stack_cache_partial_collision(
+                    right,
+                    left->selection.workload_signature36,
+                    left->selection.semantic_result_signature64,
+                    left->selection.selected_vector_key216))
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+        }
+    }
     return HHS_EXACT_STATUS_OK;
 }

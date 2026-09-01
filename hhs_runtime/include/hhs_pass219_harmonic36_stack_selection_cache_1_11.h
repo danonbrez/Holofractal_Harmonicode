@@ -58,7 +58,7 @@ typedef struct HHSExactPass219H36StackCacheReceiptV1 {
     uint64_t entry_signature64;
     uint64_t replay_signature64;
     uint8_t cache_hit;
-    uint8_t fresh_selection_equal;
+    uint8_t selection_integrity_validated;
     uint8_t exact_replayable;
     uint8_t stale_signature_rejected;
     uint8_t candidate_only;

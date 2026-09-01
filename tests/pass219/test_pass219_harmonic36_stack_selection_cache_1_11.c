@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 static void make_selection(
@@ -76,7 +77,7 @@ int main(void) {
     assert(hhs_exact_pass219_h36_stack_cache_hit_equals_fresh(
         &cached, &fresh) == HHS_EXACT_STATUS_OK);
     assert(receipt.cache_hit == 1U);
-    assert(receipt.fresh_selection_equal == 1U);
+    assert(receipt.selection_integrity_validated == 1U);
     assert(receipt.exact_replayable == 1U);
     assert(receipt.stale_signature_rejected == 1U);
     assert(receipt.entry_signature64 != 0U);
@@ -155,5 +156,13 @@ int main(void) {
 
     assert(hhs_exact_pass219_h36_stack_cache_validate(&cache) ==
            HHS_EXACT_STATUS_OK);
+
+    printf(
+        "PASS219 H36 stack cache 1.11: sequence=%llu entry_signature64=%llu replay_signature64=%llu key216=%s authority=0 replay=1 stale_reject=1 fresh_equal=1\n",
+        (unsigned long long)replay_receipt.sequence,
+        (unsigned long long)replay_receipt.entry_signature64,
+        (unsigned long long)replay_receipt.replay_signature64,
+        replay_receipt.vector_key216
+    );
     return 0;
 }
