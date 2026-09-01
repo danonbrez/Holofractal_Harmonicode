@@ -2,7 +2,7 @@
   "schema": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
   "version": "1.0.0",
   "pass": 219,
-  "status": "NONPROMOTIONAL_BENCHMARK_CANDIDATE",
+  "status": "VALIDATED_GLOBAL_CANONICAL_DEFAULT_READY_FOR_INTEGRATION",
   "repository": "danonbrez/Holofractal_Harmonicode",
   "authoritative_base": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
   "inherited": {
@@ -133,5 +133,92 @@
     "physical GPU claims from CI CPU runner",
     "full dense-lane equality claim from Fold7 selected-sample evidence",
     "fixed hardware timing assumed across devices"
-  ]
+  ],
+  "validation_receipt": {
+    "benchmark_head": "1a0ab12b4c2e66969a8fb8176f3ee0b66a45fa27",
+    "workflow_run": 33536893755,
+    "exact_job": 99953297079,
+    "synthetic_job": 99953297450,
+    "exact_artifact": {
+      "id": 9811999235,
+      "sha256": "3a15b58001efe6e026fd90817aa612d89801a30879ab744e4f1d8bdfcdb9ea0e"
+    },
+    "synthetic_artifact": {
+      "id": 9812007878,
+      "sha256": "e54df7a2ebb05512d795b5449823a1732cdad798f999d688fb61259a9761f6e5"
+    },
+    "classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
+    "all_promotion_gates_passed": true,
+    "fresh_ci_physical_gpu_measured": false,
+    "physical_gpu_evidence_reused_from": "artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json"
+  },
+  "measured_benefit": {
+    "fold7_dense": {
+      "host_total_median_ns": 13400000,
+      "tier": 2,
+      "lane_dispatches": 68024448
+    },
+    "fold7_largest_measured_tier1_exact_slice": {
+      "materialized_combinations": 729,
+      "host_total_median_ns": 1368750,
+      "gpu_median_ns": 1282048,
+      "tier": 1,
+      "lane_dispatches": 7558272,
+      "work_reduction_x1000": 9000,
+      "host_speedup_x1000": 9789,
+      "gpu_speedup_x1000": 8996,
+      "tier1_headroom_x1000": 6088
+    },
+    "fresh_cpu_reference": {
+      "baseline_median_ns": 771246619,
+      "baseline_tier": 4,
+      "phase_median_ns": 10101389,
+      "phase_tier": 2,
+      "work_reduction_x1000": 81000,
+      "wall_speedup_x1000": 76350,
+      "child_state_projection_equal": true
+    },
+    "fresh_phase_locality": {
+      "vector_shortlist": {
+        "dense_median_ns": 12855569,
+        "dense_tier": 2,
+        "phase_median_ns": 122972,
+        "phase_tier": 1,
+        "work_reduction_x1000": 81000,
+        "wall_speedup_x1000": 104540,
+        "exact_equal": true
+      },
+      "cache_exact_lookup": {
+        "hash_map_median_ns": 740611,
+        "phase_address_median_ns": 203172,
+        "wall_speedup_x1000": 3645,
+        "exact_equal": true
+      },
+      "materialization": {
+        "full_median_ns": 7108362,
+        "selected_median_ns": 98357,
+        "capacity_reduction_x1000": 81000,
+        "wall_speedup_x1000": 72271,
+        "exact_equal": true
+      }
+    },
+    "policy_overhead": {
+      "conservative_one_classify_route_window_per_epoch_ns": {
+        "numerator": 1765753,
+        "denominator": 31250
+      },
+      "overhead_vs_tier1_budget_ppm": 6,
+      "overhead_vs_physical_latency_saved_ppm": 4,
+      "net_latency_saved_positive": true
+    }
+  },
+  "global_default_enforcement": {
+    "required_for_compatible_latency_sensitive_pass219_surfaces": true,
+    "global_defaults_validator_must_validate_policy": true,
+    "pass219_data_ml_registration_guard": "pass219_global_latency_policy_25_over_3",
+    "pass219_execution_composer_guard": "pass219_global_latency_policy_25_over_3",
+    "performance_guarantee": false,
+    "policy_enforcement_guarantee": true,
+    "repair_forward_required": true
+  }
 }
