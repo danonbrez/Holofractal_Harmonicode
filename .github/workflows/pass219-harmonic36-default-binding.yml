@@ -431,15 +431,36 @@ jobs:
               'MONITOR_CONTROL_FOCUSED',
           }
           assert len({row['workload_signature36'] for row in d['workloads']}) == 3
+          expected = {
+              'CONSOLE_FOCUSED': {
+                  'workload_signature36': 4793332410,
+                  'semantic_result_signature64': 6731027650694893003,
+                  'selected_candidate_id': 1,
+                  'selected_stack': 'H36_KA10_MONITOR',
+              },
+              'BINARY_IO_FOCUSED': {
+                  'workload_signature36': 21509979554,
+                  'semantic_result_signature64': 1456447110141201574,
+                  'selected_candidate_id': 1,
+                  'selected_stack': 'H36_KA10_MONITOR',
+              },
+              'MONITOR_CONTROL_FOCUSED': {
+                  'workload_signature36': 41886677838,
+                  'semantic_result_signature64': 2318081696571468614,
+                  'selected_candidate_id': 2,
+                  'selected_stack': 'LINUX_X86_64_POSIX',
+              },
+          }
           for row in d['workloads']:
-              assert row['workload_signature36'] > 0
-              assert row['semantic_result_signature64'] > 0
+              exp = expected[row['class']]
+              assert row['workload_signature36'] == exp['workload_signature36']
+              assert row['semantic_result_signature64'] == exp['semantic_result_signature64']
               assert row['exact_h36_linux_semantic_equal_before_timing'] is True
               assert row['h36_median_ns'] > 0
               assert row['linux_median_ns'] > 0
-              assert row['selected_candidate_id'] in (1, 2)
-              assert row['selected_stack'] in ('H36_KA10_MONITOR', 'LINUX_X86_64_POSIX')
-              assert row['selector_speedup_x1000'] > 0
+              assert row['selected_candidate_id'] == exp['selected_candidate_id']
+              assert row['selected_stack'] == exp['selected_stack']
+              assert row['selector_speedup_x1000'] > 1000
               assert row['vector_key216_length'] == 216
               assert row['cache_hit_equals_fresh_before_timing'] is True
               assert row['stale_signature_rejected'] is True
@@ -448,7 +469,8 @@ jobs:
               assert row['replay_signature64'] > 0
               assert row['fresh_selection_median_ns'] > 0
               assert row['cache_hit_median_ns'] > 0
-              assert row['cache_winner_ratio_x1000'] > 0
+              assert row['cache_benefit'] is True
+              assert row['cache_winner_ratio_x1000'] > 1000
               assert all(value is False for value in row['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
@@ -462,9 +484,15 @@ jobs:
 
           p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
           result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
-          assert result['generalize_required'] == ['h36-ka10-monitor-3734727431']
+          assert result['generalize_required'] == [
+              'h36-ka10-monitor-3734727431',
+              'h36-ka10-monitor-binary-21509979554',
+              'h36-ka10-monitor-console-4793332410',
+          ]
           assert result['validation_required'] == ['h36-compatible-stack-workloads-unvalidated']
-          assert result['local_exceptions'] == []
+          assert result['local_exceptions'] == [
+              'h36-ka10-monitor-monitor-control-41886677838',
+          ]
           PY
 
       - name: Validate stack-cache generalization manifest
@@ -476,7 +504,12 @@ jobs:
 
           p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
           result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
-          assert result['generalize_required'] == ['h36-stack-cache-3734727431']
+          assert result['generalize_required'] == [
+              'h36-stack-cache-3734727431',
+              'h36-stack-cache-binary-21509979554',
+              'h36-stack-cache-console-4793332410',
+              'h36-stack-cache-monitor-control-41886677838',
+          ]
           assert result['validation_required'] == [
               'h36-compatible-stack-cache-workloads-unvalidated',
           ]
