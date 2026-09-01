@@ -3,7 +3,9 @@ name: Pass 219 Mandatory Sudoku Genesis Scaling Data ML
 on:
   push:
     branches:
+      - main
       - agent/pass219-mandatory-sudoku-genesis-scaling-data-ml
+      - 'agent/pass219-genesis-scaling-current-main-*'
     paths:
       - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.h'
       - 'hhs_runtime/include/hhs_pass219_mandatory_genesis_scaling_1_22.hpp'
@@ -12,6 +14,22 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
       - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
+      - 'hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
       - 'contracts/pass219/PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22.json'
       - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.c'
       - 'tests/pass219/test_pass219_mandatory_genesis_scaling_1_22.cpp'
