@@ -569,7 +569,7 @@ HHSExactStatus hhs_exact_pass219_compression_debt_global_close(
     out_result->internal_transfers_cancel =
         (uint8_t)(debit_total == credit_total ? 1U : 0U);
     out_result->issued_equals_settled_plus_outstanding =
-        (uint8_t)(created <= UINT64_MAX - retained &&
+        (uint8_t)(settled <= UINT64_MAX - retained &&
                   created == settled + retained ? 1U : 0U);
     out_result->global_zero_sum_closed =
         (uint8_t)(out_result->all_layers_closed != 0U &&
