@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `3cedf9bdcfff1cf571c0072ad9003915a8d834a9`
-- Branch head immediately before this checkpoint record: `662850f690b49c15fcbe365ff03ec3724bd649b5`
+- Validated implementation head: `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`
+- Branch head immediately before this checkpoint record: `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / STACK SELECTION 1.10 IMPLEMENTED / CODE GATE GREEN / POLICY RERUN QUEUED**
+- Status: **RESTARTABLE / STACK CACHE 1.11 IMPLEMENTED / CODE GATE GREEN / POLICY RERUN QUEUED**
 
 ## Governing invariant
 
@@ -580,44 +580,117 @@ Follow-up cumulative run created by that policy commit:
 - if it later fails, inspect only its first failed H36 step and repair forward from this checkpoint;
 - do not rerun already-green implementation-head evidence unless the failure is dependency-relevant.
 
+### 17. Hash216/vector-store stack-selection cache 1.11
+
+Implemented from checkpoint `0b0e1b874bbfbbca24f2692968406f7f96f6d862`.
+
+New additive exact ABI surfaces:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h`;
+- `hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc`;
+- `tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c`;
+- aggregate exposure through `hhs_runtime_exact_abi.h/.c`.
+
+Cache profile:
+
+```text
+capacity = 8
+identity =
+    workload_signature36
+  + semantic_result_signature64
+  + selected_vector_key216
+entry = exact StackSelectionV1 + deterministic sequence + entry signature64
+```
+
+Validated behaviors:
+
+- fresh selection -> store -> cache hit -> byte-exact fresh equality;
+- second lookup -> byte-identical cached selection and byte-identical replay receipt;
+- idempotent identical store does not allocate or advance sequence;
+- changed semantic signature with same workload/key is rejected;
+- changed vector key with same workload/result is rejected;
+- unrelated fully distinct query returns `RANGE_ERROR`;
+- duplicate sequence and partial-identity collision are rejected by cache validation;
+- full cache fails `BUFFER_TOO_SMALL`;
+- no implicit eviction is admitted in this bounded profile.
+
+Exact deterministic cache receipt observed in C11 conformance:
+
+```text
+sequence           = 1
+entry_signature64  = 4396347223969929149
+replay_signature64 = 4030867320796911141
+vector_key216      = 5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1
+authority          = 0
+replay             = 1
+stale_reject       = 1
+fresh_equal        = 1
+```
+
+Authority remains fail-closed:
+
+```text
+candidate_only = 1
+vector_store_metadata_only = 1
+hash216_lineage_claim = 0
+canonical_mutation_authority = 0
+canonical_hash72_authority = 0
+canonical_hash216_authority = 0
+canonical_persistence_authority = 0
+floating_point_authority = 0
+vm81_admission_bypass = 0
+```
+
+Green implementation head:
+
+- `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`;
+- workflow `Pass 219 Harmonic36 Nested VM`;
+- run `33474222007`;
+- job `99750000903`;
+- conclusion **SUCCESS**;
+- artifact `9787576934`;
+- artifact SHA-256 `63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06`.
+
+Repository-visible evidence and policy:
+
+- `evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`;
+- `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json`;
+- contract/documentation commit `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf`.
+
+The cache generalization manifest intentionally remains:
+
+```text
+h36-stack-cache-3734727431
+-> VALIDATION_REQUIRED
+
+h36-compatible-stack-cache-workloads-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+Correctness is proven. Performance benefit is not inferred. A later measurement must establish benefit before `GENERALIZE_REQUIRED`.
+
+Follow-up H36 policy/evidence run:
+
+- run `33474346394`;
+- state at restart checkpoint preparation: **QUEUED**;
+- this does not invalidate the green implementation head;
+- inspect/repair forward only if its first dependency-scoped failure proves a relevant defect.
+
 ## Validation receipt
 
-Current authoritative dependency-scoped cumulative gate:
+Current green dependency-scoped implementation gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33455670905`
-- job: `99694999134`
-- head: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
+- run: `33474222007`
+- job: `99750000903`
+- head: `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`
 - conclusion: **SUCCESS**
-- optimization artifact: `9781338689`
-- artifact SHA-256: `b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d2092`
+- optimization artifact: `9787576934`
+- artifact SHA-256: `63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06`
 
-Every dedicated functional and cumulative step is green, including:
+Every dependency-scoped H36 step is green, including strict C11, nested VM, full KA10 ISA/device/RIM/APR/PI/monitor path, stack selector 1.10, **stack-selection cache 1.11**, exact cumulative ABI compilation, inherited factorization/Hash216/compression/branch/composition surfaces, graph bridges, no-canonical-float gate, optimization benchmarks, generalization manifest validation, integration-contract proof, and artifact upload.
 
-1. Strict C11 kernel compile.
-2. Exact 5,184 nested VM conformance.
-3. Legacy ISA 1.1.
-4. Two-word ISA 1.2.
-5. Control/stack/I/O 1.3.
-6. Privilege/JRST/PI 1.4.
-7. Historical UUO 1.5.
-8. Console devices 1.6.
-9. RIM bootstrap 1.7.
-10. APR/PI 1.8.
-11. **KA10 monitor profile 1.9**.
-12. Arithmetic flag fidelity.
-13. Mandatory default binding.
-14. C++17 RNA facade.
-15. Exact cumulative ABI compile.
-16. Factorization/Hash216/compression/GPU/branch-knowledge fabrics.
-17. Composition grammar/programs.
-18. Both Pass128 graph bridges.
-19. No canonical floating implementation.
-20. Measured H36 optimization winners.
-21. Mandatory integration contract proof.
-22. Benchmark artifact upload.
-
-The prior transient cumulative-ABI failure at run `33455533743` was repair-forwarded: the monitor itself was already green there; the failure was a literal newline escape in the aggregate include. The corrected aggregate and normalized no-float gate are green at the current validated head.
+The policy/evidence head `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf` has follow-up run `33474346394` queued. It is a nonblocking follow-up under the repository workflow policy.
 
 ## Normative documentation updated after green code head
 
@@ -666,27 +739,42 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Check follow-up H36 run `33462291942`.
-   - If **SUCCESS**, preserve it as the policy/evidence-head receipt.
-   - If **FAILURE**, inspect the first failed dependency-scoped step only and repair forward; do not invalidate the already-green implementation head `3cedf9bdcfff1cf571c0072ad9003915a8d834a9` unless the failure proves an implementation defect.
+1. Check policy/evidence run `33474346394`.
+   - If **SUCCESS**, preserve it as the contract/evidence-head receipt.
+   - If **FAILURE**, inspect only the first failed dependency-scoped H36 step and repair forward. Do not invalidate green implementation head `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71` unless the failure proves a relevant implementation defect.
 
-2. Continue development with a bounded **Hash216/vector-store stack-selection cache** for the selected workload signature:
+2. Measure the stack-selection cache against fresh 1.10 selection for the **same exact workload identity**:
 
 ```text
-workload_signature36
-+ semantic_result_signature64
-+ selected vector_key216
-+ measured winner metadata
--> candidate cache entry
--> cache hit / fresh selection exact equality
--> stale/mismatched signature rejection
--> zero mutation/Hash72/Hash216/persistence authority
--> deterministic replay receipt
+same workload_signature36
++ same semantic_result_signature64
++ same selected vector_key216
++ cache hit == fresh selection exactly
++ repeated integer timing samples
+-> measure fresh-selection median
+-> measure cache-hit median
+-> retain/promote cache only if measured beneficial
 ```
 
-3. After cache-hit equality is green, expand the generalization audit to additional metadata-compatible workload signatures. Each untested signature remains `VALIDATION_REQUIRED`; only safe beneficial validated targets become `GENERALIZE_REQUIRED`.
+3. Classification rule:
 
-Do not infer cross-platform performance from the Linux x86_64 receipt.
+```text
+exact + safe + cache faster
+-> GENERALIZE_REQUIRED for compatible validated target
+
+exact + safe + no meaningful benefit
+-> explicit NO_MEANINGFUL_BENEFIT bounded exception
+   with repository-visible measurement evidence
+
+compatible but unmeasured
+-> VALIDATION_REQUIRED
+```
+
+4. If the current cache implementation is not a measured winner, optimize the lookup/validation path without weakening stale-signature rejection, replay validation, current-context validation, or singleton VM81 authority.
+
+5. After the current signature's benefit classification is resolved, validate additional metadata-compatible workload signatures individually before generalizing.
+
+Do not infer cross-platform cache performance.
 
 Do not expand into KI10/KL10 paging/MAP in this step.
 
