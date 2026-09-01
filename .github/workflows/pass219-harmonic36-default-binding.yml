@@ -59,6 +59,7 @@ on:
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
+      - 'evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
@@ -397,8 +398,10 @@ jobs:
           assert d['correctness']['deterministic_replay_receipt'] is True
           assert d['fresh_selection']['median_ns'] > 0
           assert d['cache_hit']['median_ns'] > 0
-          assert d['measurement']['winner'] in ('CACHE_HIT', 'FRESH_SELECTION')
-          assert d['measurement']['winner_ratio_x1000'] > 0
+          assert d['measurement']['cache_faster'] is True
+          assert d['measurement']['winner'] == 'CACHE_HIT'
+          assert d['measurement']['winner_ratio_x1000'] > 1000
+          assert d['measurement']['benefit_verified'] is True
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
@@ -426,10 +429,9 @@ jobs:
 
           p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
           result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
-          assert result['generalize_required'] == []
+          assert result['generalize_required'] == ['h36-stack-cache-3734727431']
           assert result['validation_required'] == [
               'h36-compatible-stack-cache-workloads-unvalidated',
-              'h36-stack-cache-3734727431',
           ]
           assert result['local_exceptions'] == []
           PY
