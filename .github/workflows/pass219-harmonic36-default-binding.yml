@@ -269,11 +269,15 @@ jobs:
 
       - name: No canonical floating implementation
         run: |
-          if grep -nE '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp             hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc \\\n            hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h \\\n            hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc; then
+          if grep -nE '\b(float|double)\b' \
+            hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h \
+            hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp \
+            hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc; then
             echo "Canonical floating type detected in Harmonic36 kernel"
             exit 1
           fi
-
       - name: Measured H36 optimization winners
         run: |
           mkdir -p artifacts/pass219/harmonic36
