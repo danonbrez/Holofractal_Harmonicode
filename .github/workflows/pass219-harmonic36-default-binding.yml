@@ -481,7 +481,7 @@ jobs:
           assert d['authoritative_state_changed'] is False
           PY
 
-      - name: Calibrate H36 cache occupancy 1 versus 4
+      - name: Enforce calibrated H36 cache occupancy stability
         run: |
           g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
@@ -538,8 +538,13 @@ jobs:
                   'OCC4_OCC1_FRESH',
                   'FRESH_OCC1_OCC4',
               ]
-              assert row['occupancy4_vs_fresh_ratio_x1000'] > 0
+              assert row['beneficial_repeat_count'] >= 4
+              assert row['aggregate_benefit'] is True
+              assert row['repeat_stability_pass'] is True
+              assert row['occupancy4_lookup_total_ns'] < row['fresh_selection_total_ns']
+              assert row['occupancy4_vs_fresh_ratio_x1000'] > 1000
               assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
+          assert d['measurement']['all_repeat_stability_pass'] is True
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
