@@ -7,9 +7,9 @@
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
 - Validated implementation head: `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`
-- Branch head immediately before this checkpoint record: `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf`
+- Branch head immediately before this checkpoint record: `8dcf9e2aece39d77de3a451bc55e574798fedbc1`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / STACK CACHE 1.11 IMPLEMENTED / CODE GATE GREEN / POLICY RERUN QUEUED**
+- Status: **RESTARTABLE / STACK CACHE 1.11 IMPLEMENTED / CODE AND POLICY GATES GREEN**
 
 ## Governing invariant
 
@@ -672,9 +672,11 @@ Correctness is proven. Performance benefit is not inferred. A later measurement 
 Follow-up H36 policy/evidence run:
 
 - run `33474346394`;
-- state at restart checkpoint preparation: **QUEUED**;
-- this does not invalidate the green implementation head;
-- inspect/repair forward only if its first dependency-scoped failure proves a relevant defect.
+- job `99750365995`;
+- head `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf`;
+- conclusion **SUCCESS**;
+- artifact `9787616267`;
+- artifact SHA-256 `b2daf7d7befa2fee4d3419f4370959852e19b666064aa0b207571bdb8bfc1807`.
 
 ## Validation receipt
 
@@ -690,7 +692,7 @@ Current green dependency-scoped implementation gate:
 
 Every dependency-scoped H36 step is green, including strict C11, nested VM, full KA10 ISA/device/RIM/APR/PI/monitor path, stack selector 1.10, **stack-selection cache 1.11**, exact cumulative ABI compilation, inherited factorization/Hash216/compression/branch/composition surfaces, graph bridges, no-canonical-float gate, optimization benchmarks, generalization manifest validation, integration-contract proof, and artifact upload.
 
-The policy/evidence head `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf` has follow-up run `33474346394` queued. It is a nonblocking follow-up under the repository workflow policy.
+The policy/evidence head `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf` is also green: run `33474346394`, job `99750365995`, artifact `9787616267`, SHA-256 `b2daf7d7befa2fee4d3419f4370959852e19b666064aa0b207571bdb8bfc1807`.
 
 ## Normative documentation updated after green code head
 
@@ -739,9 +741,7 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Check policy/evidence run `33474346394`.
-   - If **SUCCESS**, preserve it as the contract/evidence-head receipt.
-   - If **FAILURE**, inspect only the first failed dependency-scoped H36 step and repair forward. Do not invalidate green implementation head `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71` unless the failure proves a relevant implementation defect.
+1. Preserve policy/evidence run `33474346394` / job `99750365995` as terminal green evidence for cache 1.11.
 
 2. Measure the stack-selection cache against fresh 1.10 selection for the **same exact workload identity**:
 
