@@ -18,6 +18,8 @@ volatile std::uint64_t g_residency_sink = 0U;
 constexpr int kSamples = 11;
 constexpr std::uint32_t kRoundsPerSample = 4096U;
 constexpr std::size_t kResidents = 4U;
+constexpr std::size_t kCalibrationRepeats = 5U;
+constexpr std::uint32_t kRequiredBeneficialRepeats = 4U;
 
 struct SemanticResultLayout {
     std::uint64_t tty_input;
@@ -65,6 +67,21 @@ struct ResidencyMeasurement {
     std::uint64_t occupancy4_vs_fresh_x1000 = 0U;
     std::uint64_t occupancy4_vs_occupancy1_x1000 = 0U;
     bool occupancy4_faster_than_fresh = false;
+};
+
+struct CalibratedResidency {
+    std::array<ResidencyMeasurement, kCalibrationRepeats> repeats{};
+    std::uint64_t fresh_total_ns = 0U;
+    std::uint64_t occupancy1_total_ns = 0U;
+    std::uint64_t occupancy4_total_ns = 0U;
+    std::uint64_t fresh_median_ns = 0U;
+    std::uint64_t occupancy1_median_ns = 0U;
+    std::uint64_t occupancy4_median_ns = 0U;
+    std::uint64_t occupancy4_vs_fresh_x1000 = 0U;
+    std::uint64_t occupancy4_vs_occupancy1_x1000 = 0U;
+    std::uint32_t beneficial_repeat_count = 0U;
+    bool aggregate_benefit = false;
+    bool repeat_stability_pass = false;
 };
 
 template <class Fn>
@@ -325,7 +342,8 @@ ResidencyMeasurement measure_resident(
     const HHSExactPass219H36StackCandidateEvidenceV1 &linux,
     const HHSExactPass219H36StackSelectionV1 &selection,
     const HHSExactPass219H36StackCacheV1 &occupancy1,
-    const HHSExactPass219H36StackCacheV1 &occupancy4
+    const HHSExactPass219H36StackCacheV1 &occupancy4,
+    std::size_t calibration_repeat
 ) {
     ResidencyMeasurement m{};
 
@@ -367,9 +385,15 @@ ResidencyMeasurement measure_resident(
         g_residency_sink ^= checksum;
     };
 
-    m.fresh_median_ns = median_ns(fresh_sample);
-    m.occupancy1_median_ns = median_ns(occupancy1_sample);
-    m.occupancy4_median_ns = median_ns(occupancy4_sample);
+    if ((calibration_repeat & 1U) == 0U) {
+        m.fresh_median_ns = median_ns(fresh_sample);
+        m.occupancy1_median_ns = median_ns(occupancy1_sample);
+        m.occupancy4_median_ns = median_ns(occupancy4_sample);
+    } else {
+        m.occupancy4_median_ns = median_ns(occupancy4_sample);
+        m.occupancy1_median_ns = median_ns(occupancy1_sample);
+        m.fresh_median_ns = median_ns(fresh_sample);
+    }
     if (m.fresh_median_ns == 0U ||
         m.occupancy1_median_ns == 0U ||
         m.occupancy4_median_ns == 0U)
@@ -384,6 +408,65 @@ ResidencyMeasurement measure_resident(
     m.occupancy4_vs_occupancy1_x1000 =
         ratio_x1000(m.occupancy4_median_ns, m.occupancy1_median_ns);
     return m;
+}
+
+CalibratedResidency calibrate_resident(
+    const HHSExactPass219H36StackCandidateEvidenceV1 &h36,
+    const HHSExactPass219H36StackCandidateEvidenceV1 &linux,
+    const HHSExactPass219H36StackSelectionV1 &selection,
+    const HHSExactPass219H36StackCacheV1 &occupancy1,
+    const HHSExactPass219H36StackCacheV1 &occupancy4
+) {
+    CalibratedResidency calibrated{};
+    std::array<std::uint64_t, kCalibrationRepeats> fresh_values{};
+    std::array<std::uint64_t, kCalibrationRepeats> occupancy1_values{};
+    std::array<std::uint64_t, kCalibrationRepeats> occupancy4_values{};
+
+    for (std::size_t repeat = 0U;
+         repeat < kCalibrationRepeats;
+         ++repeat) {
+        calibrated.repeats[repeat] = measure_resident(
+            h36,
+            linux,
+            selection,
+            occupancy1,
+            occupancy4,
+            repeat);
+        const ResidencyMeasurement &m = calibrated.repeats[repeat];
+        fresh_values[repeat] = m.fresh_median_ns;
+        occupancy1_values[repeat] = m.occupancy1_median_ns;
+        occupancy4_values[repeat] = m.occupancy4_median_ns;
+        calibrated.fresh_total_ns += m.fresh_median_ns;
+        calibrated.occupancy1_total_ns += m.occupancy1_median_ns;
+        calibrated.occupancy4_total_ns += m.occupancy4_median_ns;
+        if (m.occupancy4_faster_than_fresh)
+            calibrated.beneficial_repeat_count += 1U;
+    }
+
+    std::sort(fresh_values.begin(), fresh_values.end());
+    std::sort(occupancy1_values.begin(), occupancy1_values.end());
+    std::sort(occupancy4_values.begin(), occupancy4_values.end());
+    calibrated.fresh_median_ns =
+        fresh_values[kCalibrationRepeats / 2U];
+    calibrated.occupancy1_median_ns =
+        occupancy1_values[kCalibrationRepeats / 2U];
+    calibrated.occupancy4_median_ns =
+        occupancy4_values[kCalibrationRepeats / 2U];
+    calibrated.aggregate_benefit =
+        calibrated.occupancy4_total_ns < calibrated.fresh_total_ns;
+    calibrated.repeat_stability_pass =
+        calibrated.beneficial_repeat_count >=
+            kRequiredBeneficialRepeats &&
+        calibrated.aggregate_benefit;
+    calibrated.occupancy4_vs_fresh_x1000 =
+        ratio_x1000(
+            calibrated.fresh_total_ns,
+            calibrated.occupancy4_total_ns);
+    calibrated.occupancy4_vs_occupancy1_x1000 =
+        ratio_x1000(
+            calibrated.occupancy4_total_ns,
+            calibrated.occupancy1_total_ns);
+    return calibrated;
 }
 
 }  // namespace
@@ -431,14 +514,14 @@ int main(int argc, char **argv) {
 
     prove_isolation(occupancy4, selections);
 
-    std::array<ResidencyMeasurement, kResidents> measurements{};
-    bool all_occupancy4_beneficial = true;
+    std::array<CalibratedResidency, kResidents> measurements{};
+    bool all_repeat_stability_pass = true;
     for (std::size_t i = 0U; i < kResidents; ++i) {
-        measurements[i] = measure_resident(
+        measurements[i] = calibrate_resident(
             h36[i], linux[i], selections[i], occupancy1[i], occupancy4);
-        all_occupancy4_beneficial =
-            all_occupancy4_beneficial &&
-            measurements[i].occupancy4_faster_than_fresh;
+        all_repeat_stability_pass =
+            all_repeat_stability_pass &&
+            measurements[i].repeat_stability_pass;
     }
 
     std::ostream *out = &std::cout;
@@ -455,7 +538,10 @@ int main(int argc, char **argv) {
         << "  \"schema\": \"HHS_PASS219_H36_STACK_CACHE_RESIDENCY_1_13_BENCHMARK_V1\",\n"
         << "  \"platform\": {\"linux\": true, \"x86_64\": true, "
         << "\"samples\": " << kSamples << ", "
-        << "\"rounds_per_sample\": " << kRoundsPerSample << "},\n"
+        << "\"rounds_per_sample\": " << kRoundsPerSample << ", "
+        << "\"calibration_repeats\": " << kCalibrationRepeats << ", "
+        << "\"required_beneficial_repeats\": "
+        << kRequiredBeneficialRepeats << "},\n"
         << "  \"cache\": {\"capacity\": 8, \"resident_entries\": 4, "
         << "\"next_sequence\": " << occupancy4.next_sequence << "},\n"
         << "  \"correctness\": {\n"
@@ -496,21 +582,63 @@ int main(int argc, char **argv) {
             << m.occupancy1_median_ns << ",\n"
             << "      \"occupancy4_lookup_median_ns\": "
             << m.occupancy4_median_ns << ",\n"
-            << "      \"occupancy4_faster_than_fresh\": "
-            << (m.occupancy4_faster_than_fresh ? "true" : "false")
-            << ",\n"
+            << "      \"fresh_selection_total_ns\": "
+            << m.fresh_total_ns << ",\n"
+            << "      \"occupancy1_lookup_total_ns\": "
+            << m.occupancy1_total_ns << ",\n"
+            << "      \"occupancy4_lookup_total_ns\": "
+            << m.occupancy4_total_ns << ",\n"
+            << "      \"beneficial_repeat_count\": "
+            << m.beneficial_repeat_count << ",\n"
+            << "      \"aggregate_benefit\": "
+            << (m.aggregate_benefit ? "true" : "false") << ",\n"
+            << "      \"repeat_stability_pass\": "
+            << (m.repeat_stability_pass ? "true" : "false") << ",\n"
             << "      \"occupancy4_vs_fresh_ratio_x1000\": "
             << m.occupancy4_vs_fresh_x1000 << ",\n"
             << "      \"occupancy4_vs_occupancy1_ratio_x1000\": "
-            << m.occupancy4_vs_occupancy1_x1000 << "\n"
+            << m.occupancy4_vs_occupancy1_x1000 << ",\n"
+            << "      \"repeat_measurements\": [\n";
+        for (std::size_t repeat = 0U;
+             repeat < kCalibrationRepeats;
+             ++repeat) {
+            const auto &rm = m.repeats[repeat];
+            *out
+                << "        {\"repeat\": " << repeat + 1U
+                << ", \"measurement_order\": \""
+                << (((repeat & 1U) == 0U)
+                    ? "FRESH_OCC1_OCC4"
+                    : "OCC4_OCC1_FRESH")
+                << "\", \"fresh_ns\": " << rm.fresh_median_ns
+                << ", \"occupancy1_ns\": "
+                << rm.occupancy1_median_ns
+                << ", \"occupancy4_ns\": "
+                << rm.occupancy4_median_ns
+                << ", \"occupancy4_faster_than_fresh\": "
+                << (rm.occupancy4_faster_than_fresh
+                    ? "true" : "false")
+                << "}"
+                << (repeat + 1U == kCalibrationRepeats
+                    ? "\n" : ",\n");
+        }
+        *out
+            << "      ]\n"
             << "    }" << (i + 1U == kResidents ? "\n" : ",\n");
     }
 
     *out
         << "  ],\n"
         << "  \"measurement\": {\n"
-        << "    \"all_occupancy4_faster_than_fresh\": "
-        << (all_occupancy4_beneficial ? "true" : "false") << "\n"
+        << "    \"gate_kind\": "
+        << "\"EXACT_INTEGER_REPEAT_STABILITY\",\n"
+        << "    \"calibration_repeats\": "
+        << kCalibrationRepeats << ",\n"
+        << "    \"required_beneficial_repeats\": "
+        << kRequiredBeneficialRepeats << ",\n"
+        << "    \"aggregate_requires_occupancy4_total_lt_fresh_total\": "
+        << "true,\n"
+        << "    \"all_repeat_stability_pass\": "
+        << (all_repeat_stability_pass ? "true" : "false") << "\n"
         << "  },\n"
         << "  \"authority\": {\n"
         << "    \"vm81_mutation\": false,\n"
