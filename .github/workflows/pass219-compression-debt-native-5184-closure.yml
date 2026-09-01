@@ -1,0 +1,209 @@
+name: Pass 219 Compression Debt Native 5184 Closure
+
+on:
+  push:
+    branches:
+      - agent/pass219-compression-debt-5184-zero-sum-closure
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.*'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'contracts/pass219/PASS_219_COMPRESSION_DEBT_CLOSURE_3_25_1_0.json'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'docs/pass219/**'
+      - 'whitepapers/HHS_PASS219_COMPRESSION_DEBT_NATIVE_CLOSURE_MEMBRANE_REV1.md'
+      - 'tests/pass219/test_pass219_compression_debt_*'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - '.github/workflows/pass219-compression-debt-native-5184-closure.yml'
+      - '.github/workflows/pass219-global-canonical-defaults.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.*'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'contracts/pass219/PASS_219_COMPRESSION_DEBT_CLOSURE_3_25_1_0.json'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'docs/pass219/**'
+      - 'whitepapers/HHS_PASS219_COMPRESSION_DEBT_NATIVE_CLOSURE_MEMBRANE_REV1.md'
+      - 'tests/pass219/test_pass219_compression_debt_*'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - '.github/workflows/pass219-compression-debt-native-5184-closure.yml'
+      - '.github/workflows/pass219-global-canonical-defaults.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-compression-debt:
+    name: compression-debt-5184 (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [exact, synthetic]
+
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+
+    steps:
+      - name: Checkout validation candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
+          fetch-depth: 0
+
+      - name: Prove base and construct synthetic current-main candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 7d9c6234970783b5086c8b2d2a86125004ccdd9e HEAD
+          if [ "${{ matrix.target }}" = "synthetic" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
+            git fetch origin main
+            git config user.name "hhs-ci"
+            git config user.email "hhs-ci@invalid.local"
+            feature_head="$(git rev-parse HEAD)"
+            git checkout -B pass219-debt-synthetic origin/main
+            git merge --no-ff --no-edit "$feature_head"
+          fi
+          echo "VALIDATION_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Validate normative contracts and global-default wiring
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_COMPRESSION_DEBT_CLOSURE_3_25_1_0.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json >/dev/null
+          python tools/validate_pass219_global_canonical_defaults.py
+
+      - name: Reject approximate arithmetic in canonical debt module
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b'             hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h             hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc
+
+      - name: Compile cumulative exact ABI and Pass 186 dependency tail
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-debt artifacts/pass219/compression-debt
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-debt/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror             -Inative_projects/hhs_pass186_x64_vm81_q144/include             -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c             -o /tmp/pass219-debt/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S             -o /tmp/pass219-debt/registers.o
+
+      - name: Run compression-debt C conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.c             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/debt-c
+          /tmp/pass219-debt/debt-c
+
+      - name: Run compression-debt C++ conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.cpp             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/debt-cpp
+          /tmp/pass219-debt/debt-cpp
+
+      - name: Run registration and global-default conformance
+        run: |
+          python -m pytest -q --tb=short             tests/pass219/test_pass219_compression_debt_registration_v1.py
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.c             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/defaults-c
+          /tmp/pass219-debt/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/defaults-cpp
+          /tmp/pass219-debt/defaults-cpp
+
+      - name: Preserve Genesis scaling global latency RNA and Hash216 bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          for stem in             test_pass219_mandatory_genesis_scaling_1_22             test_pass219_global_latency_policy_25_3_1_0
+          do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include               "tests/pass219/${stem}.c"               /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o               -o "/tmp/pass219-debt/${stem}-c"
+            "/tmp/pass219-debt/${stem}-c"
+            g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include               "tests/pass219/${stem}.cpp"               /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o               -o "/tmp/pass219-debt/${stem}-cpp"
+            "/tmp/pass219-debt/${stem}-cpp"
+          done
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_transcription_1_10.c             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/rna-c
+          /tmp/pass219-debt/rna-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_hash216_rna_binding_1_0.c             /tmp/pass219-debt/exact.o /tmp/pass219-debt/pass186.o /tmp/pass219-debt/registers.o             -o /tmp/pass219-debt/h36-hash216-c
+          /tmp/pass219-debt/h36-hash216-c
+
+      - name: Preserve Pass 207 and Pass 208 accelerator semantics
+        run: |
+          python -m pytest -q --tb=short             tests/test_hhs_pass207_gpu_driver_v1.py             tests/test_hhs_pass208_gpu_branch_manifold_v1.py
+
+      - name: Verify standalone VM81 exactness
+        shell: bash
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify --no-trace
+
+      - name: Validate documentation binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'compression debt' whitepapers/HHS_PASS219_COMPRESSION_DEBT_NATIVE_CLOSURE_MEMBRANE_REV1.md
+          grep -q '81 \* 64 = 5184' docs/pass219/PASS_219_COMPRESSION_DEBT_NATIVE_5184_CLOSURE_1_0.md
+          grep -q 'Compression debt is not elapsed-time credit' docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md
+          grep -q 'Compression-debt transfer at the native 5184 membrane' docs/pass219/APPENDIX_A_NATIVE_SUBSTRATE_HASH72_HASH216_TRANSITION_MODEL.md
+
+      - name: Emit exact validation evidence
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          evidence = {
+              "schema": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_VALIDATION_V1",
+              "validation_head": os.environ["VALIDATION_HEAD"],
+              "matrix_target": "${{ matrix.target }}",
+              "conserved_quantity": "COMPRESSION_DEBT",
+              "elapsed_time_is_debt": False,
+              "physical_time_monotonic": True,
+              "native_boundary_bits": 5184,
+              "native_boundary_bytes": 648,
+              "hash216_occurrences": 216,
+              "immediate_active_cells_max": 7,
+              "reference_81_over_7_x1000": 11571,
+              "debt_exchange": [3,25],
+              "capacity_exchange": [25,3],
+              "latency_quantum_ms": [25,3],
+              "canonical_authority_changed": False,
+              "result": "PASS",
+          }
+          with open("artifacts/pass219/compression-debt/validation.json","w",encoding="utf-8") as f:
+              json.dump(evidence,f,indent=2,sort_keys=True)
+              f.write("\n")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-compression-debt-5184-${{ matrix.target }}
+          path: artifacts/pass219/compression-debt/*.json
+          if-no-files-found: error
