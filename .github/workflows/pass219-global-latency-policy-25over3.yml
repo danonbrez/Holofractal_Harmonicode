@@ -79,7 +79,8 @@ jobs:
           from fractions import Fraction
           p='contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json'
           d=json.load(open(p, encoding='utf-8'))
-          assert d['status'] == 'NONPROMOTIONAL_BENCHMARK_CANDIDATE'
+          assert d['status'] == 'VALIDATED_GLOBAL_CANONICAL_DEFAULT_READY_FOR_INTEGRATION'
+          assert d['validation_receipt']['classification'] == 'GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED'
           a2,b2,c2,d2 = (d['algebra'][k] for k in ('a2','b2','c2','d2'))
           assert Fraction(d2*d2,c2) == Fraction(25,3)
           assert Fraction((b2+c2)**2,a2+b2) == Fraction(25,3)
@@ -157,6 +158,11 @@ jobs:
           set -euo pipefail
           python benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py             artifacts/pass219/global-latency/pass208_cpu_reference.json
           python -m json.tool artifacts/pass219/global-latency/pass208_cpu_reference.json >/dev/null
+
+      - name: Validate promoted latency registration
+        run: |
+          python -m pytest -q --tb=short tests/pass219/test_pass219_global_latency_policy_registration_v1.py
+          python tools/validate_pass219_global_canonical_defaults.py
 
       - name: Analyze physical and fresh latency evidence
         shell: bash
