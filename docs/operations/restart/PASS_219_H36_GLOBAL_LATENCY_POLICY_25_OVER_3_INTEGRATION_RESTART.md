@@ -10,7 +10,7 @@
 - validated latency-policy parent: `2a747ce560a337713672ae8f9b00e47d2fb538d7`
 - two-parent history integration commit: `06ba7057d5403397afe73b0e492fb686a6ba1547`
 - merge authorization: granted by user
-- state at this checkpoint: implementation prepared; dependency-scoped integration validation required before main promotion
+- state at this checkpoint: **READY FOR MAIN PROMOTION / DEPENDENCY-SCOPED H36 INTEGRATION GREEN**
 
 ## Frozen evidence that must remain authoritative
 
@@ -41,6 +41,7 @@
 - synthetic promotion artifact: `9812312988`
 - synthetic artifact SHA-256: `e7573f4378dab79c8343d9918767655fd22f0b9db3ce6d4a73cdfb7dcdb77499`
 - classification: `GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED`
+- final seal rerun: `33537936487` — **SUCCESS**
 
 ## Integration implementation
 
@@ -83,3 +84,52 @@ record its workflow receipt, open/refresh the bounded integration-to-main PR,
 merge with history preserved, and verify `main`. If a dependency-relevant
 gate fails, repair forward on this integration branch and retain both frozen
 parent evidence sets.
+
+
+## Combined H36 + latency validation closure
+
+The code-valid combined head closed green:
+
+- validated code head: `5286bdf4998a125a2547c4912a188466ff4ec3f8`
+- workflow: `Pass 219 Harmonic36 Nested VM`
+- run: `33540275025`
+- job: `99964508436`
+- conclusion: **SUCCESS**
+- artifact: `9813316372` (`pass219-harmonic36-optimization-benchmark`)
+
+The run passed:
+
+- strict C11 kernel compile;
+- exact cumulative ABI compile;
+- H36 selector 1.10 conformance;
+- H36 global 25/3 latency policy 1.16 conformance;
+- H36 stack-selection cache conformance;
+- exact factorization / Hash216 RNA / compression-GPU / branch-knowledge gates;
+- composition and Pass128 graph bridges;
+- no canonical floating implementation;
+- measured H36 optimization winners;
+- H36/Linux stack selection and cache measurements;
+- calibrated occupancy repeat-stability;
+- capacity-eight boundary measurement;
+- all stack/cache optimization-generalization manifests;
+- mandatory H36 integration contract proof;
+- artifact upload.
+
+The later branch head changes after `5286bdf...` are documentation-only.
+Per repository workflow policy, any new run triggered solely by sealing this
+restart record is follow-up evidence and does not invalidate the green code head.
+
+## Promotion disposition
+
+The integration branch is zero commits behind `main`, preserves both sealed
+parent histories, and is authorized for bounded merge to `main`.
+
+After merge, verify that `main` contains:
+
+- H36 retained capacity-eight boundary `a8834b12...`;
+- H36 repeat-stability repair `157796f8...`;
+- latency-policy sealed parent `2a747ce5...`;
+- two-parent integration `06ba7057...`;
+- H36 latency binding implementation `ad059540...`;
+- text-encoding repair chain through `5286bdf...`;
+- this restartable seal.
