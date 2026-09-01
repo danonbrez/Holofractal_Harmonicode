@@ -20,7 +20,7 @@
       "HHS_PASS219_H36_STACK_SELECTION_V1"
     ],
     "correctness_gate": "FOUR_RESIDENT_EXACT_ISOLATION_AND_REPLAY",
-    "benefit_gate": "OCCUPANCY4_LOOKUP_FASTER_THAN_FRESH_SELECTION_FOR_ALL_VALIDATED_RESIDENTS"
+    "benefit_gate": "EXACT_INTEGER_REPEAT_STABILITY: calibration_repeats=5; beneficial_repeat_count>=4; occupancy4_total_ns<fresh_selection_total_ns"
   },
   "source": {
     "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
@@ -139,7 +139,12 @@
       "all_occupancy4_faster_than_fresh": true,
       "resident_count": 4,
       "capacity": 8,
-      "authority_escalation": false
+      "authority_escalation": false,
+      "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "all_residents_repeat_stability_pass": true,
+      "one_shot_regression_reproduced": false
     },
     {
       "logical_object_id": "h36-stack-cache-residency-occupancy8-unvalidated",
@@ -171,6 +176,30 @@
     "occupancy8_classification": "GENERALIZE_REQUIRED",
     "no_unmeasured_capacity8_promotion": false,
     "cross_platform_inference": false,
-    "occupancy8_validated_by": "PASS_219_H36_STACK_CACHE_CAPACITY8_1_14"
+    "occupancy8_validated_by": "PASS_219_H36_STACK_CACHE_CAPACITY8_1_14",
+    "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+    "calibration_repeats": 5,
+    "required_beneficial_repeats": 4,
+    "aggregate_requirement": "occupancy4_total_ns < fresh_selection_total_ns",
+    "one_shot_benefit_boolean_authoritative": false,
+    "retained_last_green_capacity8_boundary": {
+      "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+      "run": 33529443931,
+      "job": 99928529597
+    },
+    "triggering_one_shot_regression": {
+      "head": "17a83022f70ad35c90dd826bc20e905d123c9acc",
+      "run": 33529740240,
+      "job": 99929569893,
+      "resident": "BINARY_IO_FOCUSED",
+      "regression_reproduced_under_calibration": false
+    },
+    "calibrated_reproduction": {
+      "run": 33532945748,
+      "job": 99940293326,
+      "benchmark_head": "ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b",
+      "all_residents_beneficial_repeats": 5,
+      "all_repeat_stability_pass": true
+    }
   }
 }
