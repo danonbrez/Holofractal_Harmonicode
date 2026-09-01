@@ -1325,3 +1325,41 @@ All three workload signatures are distinct. For every class:
 - no cross-platform timing inference is made.
 
 The repository policy is therefore **per compatible measured object**, not “H36 everywhere” or “cache everywhere.” Unmeasured compatible workload signatures remain `VALIDATION_REQUIRED`.
+
+### 22.5 Enforcement repeat
+
+The classifications above were promoted into the cumulative workflow and rerun rather than accepted from a single measurement.
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33497200386
+job      = 99822014646
+head     = 97c6f668028a329980e2b624882f18de486ce427
+result   = SUCCESS
+artifact = 9796212368
+artifact sha256 = 21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b
+```
+
+Repeat decisions:
+
+```text
+CONSOLE_FOCUSED
+  H36 / Linux      = 23,033 / 106,949 ns
+  stack winner     = H36_KA10_MONITOR
+  cache / fresh    = 15,006,876 / 18,487,262 ns
+  cache speedup    = 1.231x
+
+BINARY_IO_FOCUSED
+  H36 / Linux      = 23,073 / 109,553 ns
+  stack winner     = H36_KA10_MONITOR
+  cache / fresh    = 14,935,304 / 18,833,265 ns
+  cache speedup    = 1.260x
+
+MONITOR_CONTROL_FOCUSED
+  H36 / Linux      = 19,156 / 501 ns
+  stack winner     = LINUX_X86_64_POSIX
+  cache / fresh    = 14,982,943 / 18,398,417 ns
+  cache speedup    = 1.227x
+```
+
+The repeat gate also validated the expected manifest state: three H36 stack targets generalized in total (the original full workload plus console and binary I/O), one H36 monitor-control bounded exception, and four cache targets generalized in total (original plus all three new workloads).
