@@ -181,5 +181,29 @@
   "generalization": {
     "occupancy8": "GENERALIZE_REQUIRED",
     "cross_platform": "VALIDATION_REQUIRED"
+  },
+  "policy_repeat": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33529443931,
+    "job": 99928529597,
+    "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9809101393,
+    "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345",
+    "resident_ratios_x1000": {
+      "FULL_MONITOR": 1178,
+      "CONSOLE_FOCUSED": 1165,
+      "BINARY_IO_FOCUSED": 1171,
+      "MONITOR_CONTROL_FOCUSED": 1175,
+      "APR_PI_INTERRUPT_FOCUSED": 1195,
+      "RIM_BOOTSTRAP_FOCUSED": 1196,
+      "MIXED_CONSOLE_BINARY_IO": 1193,
+      "MIXED_SCHEDULER_IO_UUO": 1197
+    },
+    "all_occupancy8_faster_than_fresh": true,
+    "stack_manifest_valid": true,
+    "cache_manifest_valid": true,
+    "residency_manifest_valid": true,
+    "capacity8_manifest_valid": true
   }
 }
