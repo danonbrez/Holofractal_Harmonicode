@@ -54,4 +54,5 @@
 #include "hhs_pass219b_selective_projection_1_0.h"
 #include "hhs_pass219b_sparse_dirty_projection_1_0.h"
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.h"
+#include "hhs_pass219_global_latency_policy_25_3_1_0.h"
 #endif
