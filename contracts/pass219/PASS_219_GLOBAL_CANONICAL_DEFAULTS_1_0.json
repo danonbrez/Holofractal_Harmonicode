@@ -51,8 +51,8 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 183,
-    "binding_count": 38,
+    "wired_floor_pass": 182,
+    "binding_count": 39,
     "ordered_bindings": [
       "218",
       "217",
@@ -91,7 +91,8 @@
       "186",
       "185",
       "184",
-      "183"
+      "183",
+      "182"
     ],
     "pass200_variants_are_distinct_bindings": true,
     "missing_numeric_pass_in_coverage_is_regression": true,
@@ -104,6 +105,11 @@
       "iteration": 143,
       "pass183": "PROBABILITY_HYDRATION_BOUND_WITH_HASH72_THEN_HASH216_ARCHIVAL_ORDER",
       "legacy_native_hash_witness": "NONCANONICAL_COMPATIBILITY_ONLY"
+    },
+    "i144_repair_forward": {
+      "iteration": 144,
+      "pass182": "UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_RUNTIME_AND_CUMULATIVE_BINDING",
+      "authority": "SINGLETON_VM81_PROMOTION_ONLY_HASH72_EVIDENCE_HASH216_ARCHIVAL"
     }
   },
   "repair_forward": {
