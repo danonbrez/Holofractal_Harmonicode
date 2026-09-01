@@ -54,6 +54,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_knowledge_graph_bridge_v1.py'
       - 'hhs_runtime/hhs_service_registry_v1.py'
       - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
@@ -355,6 +356,20 @@ jobs:
           assert d['authoritative_state_changed'] is False
           PY
 
+      - name: Validate stack-selection generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == ['h36-ka10-monitor-3734727431']
+          assert result['validation_required'] == ['h36-compatible-stack-workloads-unvalidated']
+          assert result['local_exceptions'] == []
+          PY
+
       - name: Prove mandatory integration contract
         run: |
           python - <<'PY'
@@ -393,6 +408,8 @@ jobs:
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
           assert 'hhs_pass219_harmonic36_stack_selection_1_10.inc' in c
+          manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
+          assert manifest.is_file()
           PY
 
       - uses: actions/upload-artifact@v4

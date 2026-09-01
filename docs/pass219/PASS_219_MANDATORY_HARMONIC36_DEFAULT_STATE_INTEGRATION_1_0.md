@@ -894,3 +894,98 @@ artifact sha256 = b9665826692297e097878a04b215fd4887be2ae32d69b873decbb05db34d20
 Every cumulative H36 gate was green at this head, including strict C11, monitor 1.9 conformance, exact cumulative ABI compilation, all inherited fabrics/graphs, no-canonical-float validation, optimization benchmark, contract proof, and artifact upload.
 
 The monitor is therefore a validated **candidate software stack**, not an alternate execution authority. Promotion into any default stack-selection path requires a later exact-equality-before-timing comparison against the competing stack for the same workload.
+
+## 20. Exact stack selection 1.10
+
+The validated KA10 monitor is now integrated into the existing optimization-selection discipline as a measured candidate rather than an assumed default.
+
+The comparison workload is identical on both candidates:
+
+```text
+TTY input A
+TTY output B
+PTR 36-bit word 012345670123
+PTP output C
+4 cooperative dispatches
+4 historical monitor-call / UUO services
+final scheduler state
+```
+
+The H36 path executes through the RIM-loaded monitor, concrete devices, APR/PI machine, ISR paths and historical MUUO dispatcher. The comparison path executes the same semantic workload through Linux x86_64 POSIX pipe/read/write/close primitives.
+
+Selection is fail-closed:
+
+1. workload signatures must match;
+2. semantic result signatures must match exactly;
+3. exact equality is established before timing;
+4. both measurements must be present and nonzero;
+5. the lower measured median wins, with candidate-ID tie break only for an exact timing tie;
+6. the selected entry remains candidate-only and carries no canonical mutation, Hash72, Hash216 or persistence authority.
+
+The 216-character selector key uses the native Hash72 alphabet and Hash216-sized shape for vector-store candidate lookup. It is explicitly metadata only:
+
+```text
+vector_key216_present = 1
+hash216_lineage_claim = 0
+canonical_hash216_authority = 0
+```
+
+It therefore cannot be confused with a canonical Hash216 transition commitment.
+
+### 20.1 Measured Linux x86_64 result
+
+Validated run:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33462132899
+job      = 99714316241
+head     = 3cedf9bdcfff1cf571c0072ad9003915a8d834a9
+artifact = 9783529146
+artifact sha256 = 63046cea9506229fbc4f0830e5abfc1358761d535086771dd0d8588b914d6221
+result   = SUCCESS
+```
+
+Measured over 9 samples × 32 complete workloads per sample:
+
+```text
+workload signature36       = 3734727431
+semantic result signature  = 4176962402124975431
+H36/KA10 median            = 93,097 ns
+Linux x86_64 POSIX median  = 358,475 ns
+measured speedup           = 3.850×
+selected candidate         = H36_KA10_MONITOR
+```
+
+The H36 candidate used 14 monitor execution steps for the semantic workload. The POSIX reference observed 20 pipe/read/write/close system-call events. Process-side working-state byte counts are also recorded, but are not treated as equivalent to whole-process RSS or kernel memory.
+
+### 20.2 Promotion and generalization boundary
+
+The measured winner is promoted only for the evidenced tuple:
+
+```text
+platform = linux-x86_64
+workload_signature36 = 3734727431
+semantic_result_signature64 = 4176962402124975431
+```
+
+The Pass 219 multimodal optimization-generalization invariant is wired directly into the selector. For other metadata-compatible stack workloads:
+
+```text
+compatible + unvalidated
+-> VALIDATION_REQUIRED
+
+compatible + validated + safe + beneficial
+-> GENERALIZE_REQUIRED
+```
+
+No timing result for a different workload signature, platform, or incompatible descriptor is inferred from this measurement.
+
+Files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc`
+- `tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c`
+- `benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp`
+- `evidence/pass219/PASS_219_H36_STACK_SELECTION_BENCHMARK_1_10.json`
+- `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json`

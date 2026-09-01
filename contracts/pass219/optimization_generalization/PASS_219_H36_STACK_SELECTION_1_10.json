@@ -1,0 +1,145 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h",
+    "hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc",
+    "tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c",
+    "benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c"
+  ],
+  "optimization": {
+    "optimization_id": "H36_KA10_MONITOR_STACK_SELECTION_1_10",
+    "compatible_object_classes": [
+      "software_stack_workload"
+    ],
+    "required_operations": [
+      "EXECUTE",
+      "REPLAY",
+      "MEASURE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+      "HHS_PASS219_H36_STACK_RESULT_V1"
+    ],
+    "exact_equality_before_timing": true,
+    "winner_scope": "WORKLOAD_SIGNATURE_AND_PLATFORM_EVIDENCED"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "software_stack_workload",
+    "operations": [
+      "EXECUTE",
+      "REPLAY",
+      "MEASURE"
+    ],
+    "inputs": [
+      {
+        "name": "workload",
+        "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+      "workload_signature36": 3734727431
+    },
+    "logical_object_id": "linux-x86_64-posix-reference-3734727431",
+    "modality_set": [
+      "LINUX_X86_64_POSIX"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 3734727431
+      },
+      "logical_object_id": "h36-ka10-monitor-3734727431",
+      "modality_set": [
+        "H36_KA10_MONITOR"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": "OTHER_COMPATIBLE"
+      },
+      "logical_object_id": "h36-compatible-stack-workloads-unvalidated",
+      "modality_set": [
+        "H36_COMPATIBLE_STACK_WORKLOAD"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-ka10-monitor-3734727431",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33462132899,
+      "evidence_job": 99714316241,
+      "exact_result_equal": true,
+      "speedup_x1000": 3850,
+      "selected_candidate_id": 1
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-ka10-monitor-3734727431"
+  ],
+  "policy": {
+    "current_signature_promoted": true,
+    "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
+    "no_unmeasured_global_promotion": true
+  }
+}
