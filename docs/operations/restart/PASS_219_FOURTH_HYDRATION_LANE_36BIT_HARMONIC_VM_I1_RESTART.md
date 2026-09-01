@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`
-- Branch head immediately before this checkpoint record: `8dcf9e2aece39d77de3a451bc55e574798fedbc1`
+- Validated implementation head: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
+- Branch head immediately before this checkpoint record: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / STACK CACHE 1.11 IMPLEMENTED / CODE AND POLICY GATES GREEN**
+- Status: **RESTARTABLE / STACK CACHE 1.11 MEASURED WINNER / CURRENT TARGET GENERALIZED / POLICY GATE GREEN**
 
 ## Governing invariant
 
@@ -678,21 +678,158 @@ Follow-up H36 policy/evidence run:
 - artifact `9787616267`;
 - artifact SHA-256 `b2daf7d7befa2fee4d3419f4370959852e19b666064aa0b207571bdb8bfc1807`.
 
+### 18. Stack-cache measured optimization closure
+
+Continued from checkpoint `906611fe8e1ac9dc9ccd5d99de02510b02d910b8`.
+
+Benchmark surface:
+
+- `benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp`;
+- 11 timing samples;
+- 4096 operations per sample;
+- exact workload signature36 `3734727431`;
+- exact semantic result signature64 `4176962402124975431`;
+- selected candidate `H36_KA10_MONITOR`;
+- exact 216-character vector key unchanged;
+- cache-hit/fresh selection equality established before timing;
+- stale semantic signature rejection established before timing;
+- deterministic replay receipt established before timing.
+
+The benchmark was intentionally allowed to fail the benefit hypothesis.
+
+#### Baseline negative measurement
+
+Commit path:
+
+- benchmark file `c931a7c4809b7822e3f6022f19e48559e101536e`;
+- cumulative workflow wiring `b4c2d5d2d8385fa99fe6f3bf4b59ba66e7f6a041`.
+
+Run:
+
+```text
+run                       = 33475406279
+fresh selection median    = 19,011,549 ns / 4096
+cache hit median          = 27,643,766 ns / 4096
+winner                    = FRESH_SELECTION
+winner ratio              = 1.454x
+cache benefit             = false
+artifact                  = 9787977790
+artifact sha256           = 90c5cc826ded2ceaa26fbb30d10e366c779a8c8c3b9b8f5169e5c81519b8f734
+```
+
+No cache promotion was made.
+
+#### Optimization 1 — remove duplicate full-cache validation
+
+Commit:
+
+- `8d85461a6d5d0fff18bd2045e3a8cc1d3dde263c`.
+
+The cache-hit path stopped re-running full-cache validation a second time solely while constructing its receipt. Public receipt validation and store/audit full validation remained unchanged.
+
+Run:
+
+```text
+run                       = 33475482687
+fresh selection median    = 17,855,908 ns / 4096
+cache hit median          = 18,003,153 ns / 4096
+winner                    = FRESH_SELECTION
+winner ratio              = 1.008x
+cache benefit             = false
+artifact                  = 9788005261
+artifact sha256           = 11b2ac1191ec79dafcd08c35711a2f8318a0e173995fa8a02fe75365343e841d
+```
+
+The cache remained unpromoted.
+
+#### Optimization 2 — dependency-scoped lookup validation
+
+Commit:
+
+- `dc3ea1eada0b5b965fd74a58555da3522e0f5b59`.
+
+Lookup now validates only dependencies that can affect the requested result:
+
+- cache header/version/capacity/zero-authority invariants;
+- occupied-slot basic metadata;
+- sequence validity and duplicate-sequence rejection;
+- exact/partial query identity collision rejection;
+- complete 216-character query-key validity;
+- the matched selection's exact structural invariants;
+- the matched entry's deterministic entry signature.
+
+Full-cache validation remains mandatory for store, audit, and public receipt-validation paths. No mutation, Hash72, Hash216, persistence, or VM81-admission authority was added.
+
+Green measured-winner run:
+
+```text
+workflow                  = Pass 219 Harmonic36 Nested VM
+run                       = 33475578584
+job                       = 99754022255
+head                      = dc3ea1eada0b5b965fd74a58555da3522e0f5b59
+fresh selection median    = 18,749,724 ns / 4096
+cache hit median          = 15,671,781 ns / 4096
+fresh/op                  = 4,577 ns
+cache/op                  = 3,826 ns
+winner                    = CACHE_HIT
+speedup                   = 1.196x
+artifact                  = 9788037050
+artifact sha256           = 00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6
+```
+
+Repository-visible evidence/policy commits:
+
+- `0afbc7944372489b13c33440907544ca50e739f1` — measured optimization evidence including both negative measurements;
+- `6873604d59d6a562cc16d43b888ce722390b0c8e` — generalization manifest promotes only the validated current target;
+- `5abd9cdb3cc4f74808679cd0a3d35193dd6f09b2` — cumulative H36 contract binding;
+- `a5091ea739362565adec09fd5e674c947d5618ed` — normative implementation documentation;
+- `3a1329fdc3d841055c7530c0d22b7b286c18ef1b` — CI policy requires cache benefit and updated generalization result.
+
+Current generalization classification:
+
+```text
+h36-stack-cache-3734727431
+-> GENERALIZE_REQUIRED
+
+h36-compatible-stack-cache-workloads-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+Policy/enforcement rerun:
+
+```text
+workflow                  = Pass 219 Harmonic36 Nested VM
+run                       = 33475717192
+job                       = 99754440329
+head                      = 3a1329fdc3d841055c7530c0d22b7b286c18ef1b
+fresh selection median    = 17,727,318 ns / 4096
+cache hit median          = 14,321,767 ns / 4096
+fresh/op                  = 4,327 ns
+cache/op                  = 3,496 ns
+winner                    = CACHE_HIT
+speedup                   = 1.237x
+result                    = SUCCESS
+artifact                  = 9788087119
+artifact sha256           = 4f02e262c3a6b61817574e0c1daab15928f2929f0e02a771e033ec56ac0e7a6f
+```
+
+Absolute timings and ratios remain runner-local. The supported invariant is only that the optimized cache was an exact measured winner for this validated Linux x86_64 workload identity in both post-optimization cumulative runs.
+
 ## Validation receipt
 
-Current green dependency-scoped implementation gate:
+Current terminal green dependency-scoped H36 policy gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33474222007`
-- job: `99750000903`
-- head: `bce5545c9da8d4cf2bbe37f74ec7b6c8d6ec0a71`
+- run: `33475717192`
+- job: `99754440329`
+- head: `3a1329fdc3d841055c7530c0d22b7b286c18ef1b`
 - conclusion: **SUCCESS**
-- optimization artifact: `9787576934`
-- artifact SHA-256: `63c0a55be0049c16ab42ebe5677048070c30b22041fadec795869b99f632de06`
+- optimization artifact: `9788087119`
+- artifact SHA-256: `4f02e262c3a6b61817574e0c1daab15928f2929f0e02a771e033ec56ac0e7a6f`
 
-Every dependency-scoped H36 step is green, including strict C11, nested VM, full KA10 ISA/device/RIM/APR/PI/monitor path, stack selector 1.10, **stack-selection cache 1.11**, exact cumulative ABI compilation, inherited factorization/Hash216/compression/branch/composition surfaces, graph bridges, no-canonical-float gate, optimization benchmarks, generalization manifest validation, integration-contract proof, and artifact upload.
+The gate includes strict C11, exact cumulative ABI, all inherited H36/KA10/device/monitor/composition/graph surfaces, stack selector 1.10, cache 1.11 conformance, no-canonical-float validation, stack-selection benchmark, **cache-vs-fresh measured-winner enforcement**, both optimization-generalization manifests, cumulative integration-contract proof, and artifact upload.
 
-The policy/evidence head `f14e4f8a996a0bcd43010ca6d7e4b1d17cb26bcf` is also green: run `33474346394`, job `99750365995`, artifact `9787616267`, SHA-256 `b2daf7d7befa2fee4d3419f4370959852e19b666064aa0b207571bdb8bfc1807`.
+The same optimized cache implementation was already green at run `33475578584` / job `99754022255` with a 1.196x measured cache win. The policy rerun independently retained the win at 1.237x.
 
 ## Normative documentation updated after green code head
 
@@ -741,40 +878,60 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Preserve policy/evidence run `33474346394` / job `99750365995` as terminal green evidence for cache 1.11.
-
-2. Measure the stack-selection cache against fresh 1.10 selection for the **same exact workload identity**:
+1. Preserve the current measured cache promotion only for the exact validated target:
 
 ```text
-same workload_signature36
-+ same semantic_result_signature64
-+ same selected vector_key216
-+ cache hit == fresh selection exactly
-+ repeated integer timing samples
--> measure fresh-selection median
--> measure cache-hit median
--> retain/promote cache only if measured beneficial
+workload_signature36 = 3734727431
+semantic_result_signature64 = 4176962402124975431
+platform = linux-x86_64
+classification = GENERALIZE_REQUIRED
 ```
 
-3. Classification rule:
+2. Expand the generalization audit to **real metadata-compatible workload signatures**, not synthetic signature substitutions. Use at least these bounded semantic workload classes through the same H36 monitor/selector/cache path:
 
 ```text
-exact + safe + cache faster
--> GENERALIZE_REQUIRED for compatible validated target
+A. console-focused
+   TTY input/output + scheduler dispatch
+
+B. binary I/O-focused
+   PTR 36-bit assembly + PTP output + ISR service
+
+C. monitor-control-focused
+   cooperative dispatch + historical MUUO services
+```
+
+For each class:
+
+```text
+fresh H36/Linux semantic equality
+-> deterministic workload_signature36
+-> deterministic semantic_result_signature64
+-> measured 1.10 stack winner
+-> candidate vector_key216
+-> cache store
+-> stale/mismatch negative gates
+-> cache hit == fresh selection exactly
+-> repeated cache-vs-fresh timing
+-> per-target generalization classification
+```
+
+3. Classification remains fail-closed:
+
+```text
+exact + safe + measured cache benefit
+-> GENERALIZE_REQUIRED
 
 exact + safe + no meaningful benefit
--> explicit NO_MEANINGFUL_BENEFIT bounded exception
+-> NO_MEANINGFUL_BENEFIT bounded exception
    with repository-visible measurement evidence
 
 compatible but unmeasured
 -> VALIDATION_REQUIRED
 ```
 
-4. If the current cache implementation is not a measured winner, optimize the lookup/validation path without weakening stale-signature rejection, replay validation, current-context validation, or singleton VM81 authority.
+4. Do not infer the current 1.196x/1.237x Linux x86_64 ratios for another workload signature or platform.
 
-5. After the current signature's benefit classification is resolved, validate additional metadata-compatible workload signatures individually before generalizing.
-
-Do not infer cross-platform cache performance.
+5. Preserve full-cache validation for store/audit/public receipt-validation paths; lookup optimization may remain dependency-scoped only while exact identity, stale/collision rejection, deterministic replay, and singleton VM81 admission remain intact.
 
 Do not expand into KI10/KL10 paging/MAP in this step.
 
