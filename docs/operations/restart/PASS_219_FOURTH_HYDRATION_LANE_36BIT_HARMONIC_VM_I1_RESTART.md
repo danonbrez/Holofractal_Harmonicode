@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
-- Branch head immediately before this checkpoint record: `8c773b37c9c1525ae7f22cb54bacca539a4f0e08`
+- Validated implementation head: `3cedf9bdcfff1cf571c0072ad9003915a8d834a9`
+- Branch head immediately before this checkpoint record: `662850f690b49c15fcbe365ff03ec3724bd649b5`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / DEPENDENCY-SCOPED CODE GATE GREEN / CONTINUATION REQUIRED**
+- Status: **RESTARTABLE / STACK SELECTION 1.10 IMPLEMENTED / CODE GATE GREEN / POLICY RERUN QUEUED**
 
 ## Governing invariant
 
@@ -490,6 +490,96 @@ Validation closed fully green:
 
 All cumulative steps are green, not only the new monitor test. The monitor preserves zero independent VM81/Hash72/Hash216/persistence/floating-point authority.
 
+### 16. Exact H36/Linux stack selection 1.10
+
+Implemented the next bounded optimization-selection step from checkpoint `1203a6b2cb27798a126c365fb654559aa72c6966`.
+
+New public/runtime surfaces:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h`;
+- `hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc`;
+- `tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c`;
+- `benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp`;
+- aggregate exact ABI exposure in `hhs_runtime_exact_abi.h/.c`.
+
+The selector requires:
+
+```text
+same workload signature36
++ same semantic result signature64
++ exact result equality = 1
++ timing executed = 1
++ nonzero measured medians
+-> deterministic lower-median selection
+-> stable candidate-ID tie break
+```
+
+The selected 216-character vector key is Hash72-alphabet / Hash216-sized candidate metadata only. It explicitly carries:
+
+```text
+hash216_lineage_claim = 0
+canonical_hash216_authority = 0
+candidate_only = 1
+```
+
+Measured implementation-head validation:
+
+- code head: `3cedf9bdcfff1cf571c0072ad9003915a8d834a9`;
+- workflow: `Pass 219 Harmonic36 Nested VM`;
+- run: `33462132899`;
+- job: `99714316241`;
+- conclusion: **SUCCESS**;
+- artifact: `9783529146`;
+- artifact SHA-256: `63046cea9506229fbc4f0830e5abfc1358761d535086771dd0d8588b914d6221`.
+
+Exact-equal measured workload:
+
+```text
+workload_signature36        = 3734727431
+semantic_result_signature64 = 4176962402124975431
+samples                     = 9
+rounds/sample               = 32
+
+H36_KA10_MONITOR            = 93,097 ns median/sample
+LINUX_X86_64_POSIX          = 358,475 ns median/sample
+speedup_x1000               = 3850
+selected                     = H36_KA10_MONITOR
+```
+
+The comparison established semantic equality **before** timing. The H36 workload observed 14 monitor execution steps. The Linux reference observed 20 POSIX pipe/read/write/close events. These resource counters are typed evidence and are not presented as equivalent whole-process memory or CPU metrics.
+
+Measured evidence is repository-visible:
+
+- `evidence/pass219/PASS_219_H36_STACK_SELECTION_BENCHMARK_1_10.json`.
+
+The multimodal optimization-generalization manifest is repository-visible:
+
+- `contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json`.
+
+Its current classification is intentionally bounded:
+
+```text
+h36-ka10-monitor-3734727431
+-> GENERALIZE_REQUIRED
+
+h36-compatible-stack-workloads-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+Therefore the measured H36 winner is promoted for the evidenced Linux x86_64 workload/signature tuple. No timing win is inferred for another workload signature or platform without validation.
+
+Policy/evidence commit:
+
+- `662850f690b49c15fcbe365ff03ec3724bd649b5`.
+
+Follow-up cumulative run created by that policy commit:
+
+- run `33462291942`;
+- state at checkpoint creation: **QUEUED**;
+- this queue is nonblocking under repository workflow policy;
+- if it later fails, inspect only its first failed H36 step and repair forward from this checkpoint;
+- do not rerun already-green implementation-head evidence unless the failure is dependency-relevant.
+
 ## Validation receipt
 
 Current authoritative dependency-scoped cumulative gate:
@@ -576,25 +666,28 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-Resume from this checkpoint by integrating the validated monitor's workload signature into the existing optimization/stack-selection evidence path.
+1. Check follow-up H36 run `33462291942`.
+   - If **SUCCESS**, preserve it as the policy/evidence-head receipt.
+   - If **FAILURE**, inspect the first failed dependency-scoped step only and repair forward; do not invalidate the already-green implementation head `3cedf9bdcfff1cf571c0072ad9003915a8d834a9` unless the failure proves an implementation defect.
 
-Bounded target:
+2. Continue development with a bounded **Hash216/vector-store stack-selection cache** for the selected workload signature:
 
 ```text
-same deterministic workload
-+ lightweight H36/KA10 monitor candidate
-+ competing heavier x86_64/Linux software-stack candidate
-+ exact result/state equality before timing
-+ integer/receipt-bound workload signature
-+ Hash216/vector-store candidate metadata
-+ measured latency/resource evidence
--> choose/promote only an exact measured winner
--> preserve singleton VM81 admission
--> candidate cache has zero mutation/Hash72/Hash216/persistence authority
+workload_signature36
++ semantic_result_signature64
++ selected vector_key216
++ measured winner metadata
+-> candidate cache entry
+-> cache hit / fresh selection exact equality
+-> stale/mismatched signature rejection
+-> zero mutation/Hash72/Hash216/persistence authority
+-> deterministic replay receipt
 ```
 
-Do not infer a performance win from historical size or architecture. Establish exact workload/result equality first, then measure. If the H36 monitor wins and the optimization is metadata-compatible, apply the repository's universal multimodal optimization-generalization invariant rather than leaving the improvement local-only.
+3. After cache-hit equality is green, expand the generalization audit to additional metadata-compatible workload signatures. Each untested signature remains `VALIDATION_REQUIRED`; only safe beneficial validated targets become `GENERALIZE_REQUIRED`.
 
-Do not expand into KI10/KL10 paging/MAP in this step. That remains a separate additive processor profile.
+Do not infer cross-platform performance from the Linux x86_64 receipt.
+
+Do not expand into KI10/KL10 paging/MAP in this step.
 
 Do not merge to `main` without explicit integration authorization.
