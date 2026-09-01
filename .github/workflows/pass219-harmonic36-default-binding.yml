@@ -65,6 +65,7 @@ on:
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -403,6 +404,52 @@ jobs:
           assert d['measurement']['winner_ratio_x1000'] > 1000
           assert d['measurement']['benefit_verified'] is True
           assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure real H36 stack-cache workload signatures
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-multisignature
+          /tmp/h36/h36-stack-cache-multisignature \
+            artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['all_workload_signatures_distinct'] is True
+          assert len(d['workloads']) == 3
+          assert {row['class'] for row in d['workloads']} == {
+              'CONSOLE_FOCUSED',
+              'BINARY_IO_FOCUSED',
+              'MONITOR_CONTROL_FOCUSED',
+          }
+          assert len({row['workload_signature36'] for row in d['workloads']}) == 3
+          for row in d['workloads']:
+              assert row['workload_signature36'] > 0
+              assert row['semantic_result_signature64'] > 0
+              assert row['exact_h36_linux_semantic_equal_before_timing'] is True
+              assert row['h36_median_ns'] > 0
+              assert row['linux_median_ns'] > 0
+              assert row['selected_candidate_id'] in (1, 2)
+              assert row['selected_stack'] in ('H36_KA10_MONITOR', 'LINUX_X86_64_POSIX')
+              assert row['selector_speedup_x1000'] > 0
+              assert row['vector_key216_length'] == 216
+              assert row['cache_hit_equals_fresh_before_timing'] is True
+              assert row['stale_signature_rejected'] is True
+              assert row['mismatched_vector_key_rejected'] is True
+              assert row['entry_signature64'] > 0
+              assert row['replay_signature64'] > 0
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['cache_hit_median_ns'] > 0
+              assert row['cache_winner_ratio_x1000'] > 0
+              assert all(value is False for value in row['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
 
