@@ -1,0 +1,784 @@
+name: Pass 219 Harmonic36 Nested VM
+
+on:
+  push:
+    branches:
+      - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_default_binding_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_factorization_fabric_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_rna_binding_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_composition_grammar_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_grammar_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_exec_1_1.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_legacy_isa_1_1.c'
+      - 'tests/pass219/test_pass219_harmonic36_two_word_isa_1_2.c'
+      - 'tests/pass219/test_pass219_harmonic36_control_io_isa_1_3.c'
+      - 'tests/pass219/test_pass219_harmonic36_privilege_pi_1_4.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_uuo_1_5.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_console_devices_1_6.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
+      - 'tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c'
+      - 'tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c'
+      - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
+      - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
+      - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_hash216_rna_binding_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_compression_gpu_fabric_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_branch_knowledge_fabric_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_composition_grammar_1_0.c'
+      - 'tests/pass219/test_pass219_harmonic36_composition_programs_1_1.c'
+      - 'hhs_runtime/hhs_pass219_harmonic36_composition_graph_bridge_v1.py'
+      - 'tests/pass219/test_pass219_harmonic36_composition_graph_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass219_harmonic36_knowledge_graph_bridge_v1.py'
+      - 'tests/pass219/test_pass219_harmonic36_knowledge_graph_bridge_v1.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
+      - 'evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
+      - 'evidence/pass219/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'
+      - 'evidence/pass219/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json'
+      - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
+      - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
+      - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
+      - '.github/workflows/pass219-harmonic36-default-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  harmonic36-conformance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Strict C11 kernel compile
+        run: |
+          mkdir -p /tmp/h36
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc             -o /tmp/h36/core.o
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc             -o /tmp/h36/binding.o
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc \
+            -o /tmp/h36/monitor.o
+
+      - name: Exact 5184 nested VM conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c             /tmp/h36/core.o             -o /tmp/h36/test-vm
+          /tmp/h36/test-vm
+
+      - name: Legacy 36-bit ISA 1.1 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_legacy_isa_1_1.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-legacy-isa
+          /tmp/h36/test-legacy-isa
+
+      - name: Two-word 36-bit ISA 1.2 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_two_word_isa_1_2.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-two-word-isa
+          /tmp/h36/test-two-word-isa
+
+      - name: Control stack I-O ISA 1.3 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_control_io_isa_1_3.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-control-io
+          /tmp/h36/test-control-io
+
+      - name: Privilege JRST PI 1.4 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_privilege_pi_1_4.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-privilege-pi
+          /tmp/h36/test-privilege-pi
+
+      - name: KA10 historical UUO 1.5 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_uuo_1_5.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-ka10-uuo
+          /tmp/h36/test-ka10-uuo
+
+      - name: KA10 console devices 1.6 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_console_devices_1_6.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-ka10-devices
+          /tmp/h36/test-ka10-devices
+
+      - name: KA10 RIM bootstrap 1.7 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-ka10-rim
+          /tmp/h36/test-ka10-rim
+
+      - name: KA10 APR PI 1.8 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-ka10-apr-pi
+          /tmp/h36/test-ka10-apr-pi
+
+      - name: KA10 monitor profile 1.9 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c \
+            /tmp/h36/core.o /tmp/h36/monitor.o \
+            -o /tmp/h36/test-ka10-monitor
+          /tmp/h36/test-ka10-monitor
+
+      - name: Arithmetic flag fidelity conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c \
+            /tmp/h36/core.o \
+            -o /tmp/h36/test-arithmetic-flags
+          /tmp/h36/test-arithmetic-flags
+
+      - name: Mandatory default binding conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_default_binding_1_0.c             /tmp/h36/binding.o             -o /tmp/h36/test-binding
+          /tmp/h36/test-binding
+
+      - name: C++17 RNA facade conformance
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp             /tmp/h36/core.o             -o /tmp/h36/test-cpp
+          /tmp/h36/test-cpp
+
+      - name: Exact cumulative ABI compile
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36/exact-abi.o
+
+      - name: H36 stack selector 1.10 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-stack-selection
+          /tmp/h36/test-stack-selection
+
+      - name: H36 stack-selection cache 1.11 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-stack-cache
+          /tmp/h36/test-stack-cache
+
+      - name: Exact factorization fabric conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-fabric
+          /tmp/h36/test-fabric
+
+      - name: Hash216 RNA binding conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_hash216_rna_binding_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-hash216-rna
+          /tmp/h36/test-hash216-rna
+
+      - name: Compression GPU fabric conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_compression_gpu_fabric_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-compression-gpu
+          /tmp/h36/test-compression-gpu
+
+      - name: Branch knowledge fabric conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_branch_knowledge_fabric_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-branch-knowledge
+          /tmp/h36/test-branch-knowledge
+
+      - name: Composition grammar 1.0 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_composition_grammar_1_0.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-composition
+          /tmp/h36/test-composition
+
+      - name: Composition programs 1.1 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_composition_programs_1_1.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-composition-programs
+          /tmp/h36/test-composition-programs
+
+      - name: Canonical Pass128 graph bridge self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          from hhs_runtime.hhs_pass219_harmonic36_knowledge_graph_bridge_v1 import (
+              pass219_harmonic36_knowledge_graph_self_test,
+          )
+          result = pass219_harmonic36_knowledge_graph_self_test()
+          assert result["status"] == "PASS"
+          assert result["execution_authority"] is False
+          assert result["mutation_authority"] is False
+          PY
+
+      - name: Composition Pass128 graph bridge self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          from hhs_runtime.hhs_pass219_harmonic36_composition_graph_bridge_v1 import (
+              pass219_harmonic36_composition_graph_self_test,
+          )
+          result = pass219_harmonic36_composition_graph_self_test()
+          assert result["status"] == "PASS"
+          assert result["execution_authority"] is False
+          assert result["mutation_authority"] is False
+          PY
+
+      - name: No canonical floating implementation
+        run: |
+          if grep -nE '\b(float|double)\b' \
+            hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h \
+            hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp \
+            hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc; then
+            echo "Canonical floating type detected in Harmonic36 kernel"
+            exit 1
+          fi
+      - name: Measured H36 optimization winners
+        run: |
+          mkdir -p artifacts/pass219/harmonic36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36/exact-opt.o
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_optimization_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-benchmark
+          /tmp/h36/h36-benchmark \
+            artifacts/pass219/harmonic36/optimization_benchmark.json
+          cat artifacts/pass219/harmonic36/optimization_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/optimization_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['physical_gpu_measured'] is False
+          assert d['authoritative_state_changed'] is False
+          assert d['transcode']['exact_result_equal'] is True
+          assert d['hfc_reconstruction']['exact_result_equal'] is True
+          assert d['gpu_locality_cpu_reference']['exact_selected_equal'] is True
+          assert d['native_cache_address']['exact_result_equal'] is True
+          assert d['all_candidate_winners'] is True
+          PY
+
+      - name: Measured H36 KA10 versus Linux x86_64 stack selection
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-benchmark
+          /tmp/h36/h36-stack-benchmark \
+            artifacts/pass219/harmonic36/stack_selection_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_selection_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_selection_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['workload']['exact_result_equal_before_timing'] is True
+          assert d['selection']['exact_equality_before_timing'] is True
+          assert d['selection']['timing_executed'] is True
+          assert d['selection']['measured_winner'] is True
+          assert d['selection']['selected_candidate_id'] in (1, 2)
+          assert d['selection']['selected_stack'] in (
+              'H36_KA10_MONITOR', 'LINUX_X86_64_POSIX')
+          assert d['h36_ka10_monitor']['vector_key216_length'] == 216
+          assert d['linux_x86_64_posix']['vector_key216_length'] == 216
+          assert d['h36_ka10_monitor']['hash216_lineage_claim'] is False
+          assert d['linux_x86_64_posix']['hash216_lineage_claim'] is False
+          assert d['selection']['vector_store_metadata_only'] is True
+          assert d['generalization_bridge']['compatible_unvalidated'] == 'VALIDATION_REQUIRED'
+          assert d['generalization_bridge']['compatible_safe_beneficial'] == 'GENERALIZE_REQUIRED'
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 stack-selection cache versus fresh selector
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-benchmark
+          /tmp/h36/h36-stack-cache-benchmark \
+            artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_selection_cache_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['identity']['workload_signature36'] == 3734727431
+          assert str(d['identity']['semantic_result_signature64']) == '4176962402124975431'
+          assert d['identity']['selected_candidate_id'] == 1
+          assert d['identity']['vector_key216_length'] == 216
+          assert d['correctness']['cache_hit_equals_fresh_before_timing'] is True
+          assert d['correctness']['stale_signature_rejected_before_timing'] is True
+          assert d['correctness']['deterministic_replay_receipt'] is True
+          assert d['fresh_selection']['median_ns'] > 0
+          assert d['cache_hit']['median_ns'] > 0
+          assert d['measurement']['cache_faster'] is True
+          assert d['measurement']['winner'] == 'CACHE_HIT'
+          assert d['measurement']['winner_ratio_x1000'] > 1000
+          assert d['measurement']['benefit_verified'] is True
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure real H36 stack-cache workload signatures
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-multisignature
+          /tmp/h36/h36-stack-cache-multisignature \
+            artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_multisignature_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['all_workload_signatures_distinct'] is True
+          assert len(d['workloads']) == 3
+          assert {row['class'] for row in d['workloads']} == {
+              'CONSOLE_FOCUSED',
+              'BINARY_IO_FOCUSED',
+              'MONITOR_CONTROL_FOCUSED',
+          }
+          assert len({row['workload_signature36'] for row in d['workloads']}) == 3
+          expected = {
+              'CONSOLE_FOCUSED': {
+                  'workload_signature36': 4793332410,
+                  'semantic_result_signature64': 6731027650694893003,
+                  'selected_candidate_id': 1,
+                  'selected_stack': 'H36_KA10_MONITOR',
+              },
+              'BINARY_IO_FOCUSED': {
+                  'workload_signature36': 21509979554,
+                  'semantic_result_signature64': 1456447110141201574,
+                  'selected_candidate_id': 1,
+                  'selected_stack': 'H36_KA10_MONITOR',
+              },
+              'MONITOR_CONTROL_FOCUSED': {
+                  'workload_signature36': 41886677838,
+                  'semantic_result_signature64': 2318081696571468614,
+                  'selected_candidate_id': 2,
+                  'selected_stack': 'LINUX_X86_64_POSIX',
+              },
+          }
+          for row in d['workloads']:
+              exp = expected[row['class']]
+              assert row['workload_signature36'] == exp['workload_signature36']
+              assert row['semantic_result_signature64'] == exp['semantic_result_signature64']
+              assert row['exact_h36_linux_semantic_equal_before_timing'] is True
+              assert row['h36_median_ns'] > 0
+              assert row['linux_median_ns'] > 0
+              assert row['selected_candidate_id'] == exp['selected_candidate_id']
+              assert row['selected_stack'] == exp['selected_stack']
+              assert row['selector_speedup_x1000'] > 1000
+              assert row['vector_key216_length'] == 216
+              assert row['cache_hit_equals_fresh_before_timing'] is True
+              assert row['stale_signature_rejected'] is True
+              assert row['mismatched_vector_key_rejected'] is True
+              assert row['entry_signature64'] > 0
+              assert row['replay_signature64'] > 0
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['cache_hit_median_ns'] > 0
+              assert row['cache_benefit'] is True
+              assert row['cache_winner_ratio_x1000'] > 1000
+              assert all(value is False for value in row['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Enforce calibrated H36 cache occupancy stability
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-residency
+          /tmp/h36/h36-stack-cache-residency \
+            artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 4
+          assert d['cache']['next_sequence'] == 5
+          assert d['correctness'] and all(d['correctness'].values())
+          assert len(d['residents']) == 4
+          expected = {
+              'FULL_MONITOR': (3734727431, 4176962402124975431, 1),
+              'CONSOLE_FOCUSED': (4793332410, 6731027650694893003, 1),
+              'BINARY_IO_FOCUSED': (21509979554, 1456447110141201574, 1),
+              'MONITOR_CONTROL_FOCUSED': (41886677838, 2318081696571468614, 2),
+          }
+          assert {row['name'] for row in d['residents']} == set(expected)
+          assert [row['entry_sequence_occupancy4'] for row in d['residents']] == [1, 2, 3, 4]
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
+          assert d['measurement']['gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert d['measurement']['calibration_repeats'] == 5
+          assert d['measurement']['required_beneficial_repeats'] == 4
+          assert d['measurement']['aggregate_requires_occupancy4_total_lt_fresh_total'] is True
+          for row in d['residents']:
+              workload, semantic, candidate = expected[row['name']]
+              assert row['workload_signature36'] == workload
+              assert row['semantic_result_signature64'] == semantic
+              assert row['selected_candidate_id'] == candidate
+              assert len(row['vector_key216']) == 216
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['occupancy1_lookup_median_ns'] > 0
+              assert row['occupancy4_lookup_median_ns'] > 0
+              assert row['fresh_selection_total_ns'] > 0
+              assert row['occupancy1_lookup_total_ns'] > 0
+              assert row['occupancy4_lookup_total_ns'] > 0
+              assert 0 <= row['beneficial_repeat_count'] <= 5
+              assert len(row['repeat_measurements']) == 5
+              assert [r['repeat'] for r in row['repeat_measurements']] == [1,2,3,4,5]
+              assert [r['measurement_order'] for r in row['repeat_measurements']] == [
+                  'FRESH_OCC1_OCC4',
+                  'OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4',
+                  'OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4',
+              ]
+              assert row['beneficial_repeat_count'] >= 4
+              assert row['aggregate_benefit'] is True
+              assert row['repeat_stability_pass'] is True
+              assert row['occupancy4_lookup_total_ns'] < row['fresh_selection_total_ns']
+              assert row['occupancy4_vs_fresh_ratio_x1000'] > 1000
+              assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
+          assert d['measurement']['all_repeat_stability_pass'] is True
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 cache capacity 8
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-capacity8
+          /tmp/h36/h36-stack-cache-capacity8 \
+            artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_capacity8_1_14_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 8
+          assert d['cache']['next_sequence'] == 9
+          assert d['boundary']['ninth_store_result'] == 'BUFFER_TOO_SMALL'
+          assert d['boundary']['full_capacity_idempotent_existing_store_ok'] is True
+          assert d['boundary']['full_capacity_count_sequence_unchanged'] is True
+          assert d['correctness'] and all(d['correctness'].values())
+          assert len(d['residents']) == 8
+          assert len({row['workload_signature36'] for row in d['residents']}) == 8
+          assert [row['entry_sequence'] for row in d['residents']] == list(range(1, 9))
+          names = {row['name'] for row in d['residents']}
+          assert {
+              'FULL_MONITOR',
+              'CONSOLE_FOCUSED',
+              'BINARY_IO_FOCUSED',
+              'MONITOR_CONTROL_FOCUSED',
+              'APR_PI_INTERRUPT_FOCUSED',
+              'RIM_BOOTSTRAP_FOCUSED',
+              'MIXED_CONSOLE_BINARY_IO',
+              'MIXED_SCHEDULER_IO_UUO',
+          } == names
+          expected = {
+              'FULL_MONITOR': (3734727431, 4176962402124975431, 1),
+              'CONSOLE_FOCUSED': (4793332410, 6731027650694893003, 1),
+              'BINARY_IO_FOCUSED': (21509979554, 1456447110141201574, 1),
+              'MONITOR_CONTROL_FOCUSED': (41886677838, 2318081696571468614, 2),
+              'APR_PI_INTERRUPT_FOCUSED': (56629000078, 6036511113464237678, 2),
+              'RIM_BOOTSTRAP_FOCUSED': (45496969883, 15550751547534181799, 2),
+              'MIXED_CONSOLE_BINARY_IO': (19461196675, 7100043395069015146, 1),
+              'MIXED_SCHEDULER_IO_UUO': (25778039250, 17797529900924037577, 1),
+          }
+          for row in d['residents']:
+              workload, semantic, candidate = expected[row['name']]
+              assert row['workload_signature36'] == workload
+              assert row['semantic_result_signature64'] == semantic
+              assert row['h36_median_ns'] > 0
+              assert row['linux_median_ns'] > 0
+              assert row['selected_candidate_id'] == candidate
+              assert len(row['selected_vector_key216']) == 216
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['occupancy1_lookup_median_ns'] > 0
+              assert row['occupancy4_lookup_median_ns'] > 0
+              assert row['occupancy8_lookup_median_ns'] > 0
+              assert row['occupancy8_faster_than_fresh'] is True
+              assert row['occupancy8_vs_fresh_ratio_x1000'] > 1000
+              assert row['occupancy8_vs_occupancy1_ratio_x1000'] > 0
+              assert row['occupancy8_vs_occupancy4_ratio_x1000'] > 0
+          assert d['measurement']['all_occupancy8_faster_than_fresh'] is True
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Validate stack-selection generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == [
+              'h36-ka10-mixed-console-binary-19461196675',
+              'h36-ka10-mixed-scheduler-io-uuo-25778039250',
+              'h36-ka10-monitor-3734727431',
+              'h36-ka10-monitor-binary-21509979554',
+              'h36-ka10-monitor-console-4793332410',
+          ]
+          assert result['validation_required'] == ['h36-compatible-stack-workloads-unvalidated']
+          assert result['local_exceptions'] == [
+              'h36-ka10-apr-pi-56629000078',
+              'h36-ka10-monitor-monitor-control-41886677838',
+              'h36-ka10-rim-bootstrap-45496969883',
+          ]
+          PY
+
+      - name: Validate stack-cache generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == [
+              'h36-stack-cache-3734727431',
+              'h36-stack-cache-apr-pi-56629000078',
+              'h36-stack-cache-binary-21509979554',
+              'h36-stack-cache-console-4793332410',
+              'h36-stack-cache-mixed-console-binary-19461196675',
+              'h36-stack-cache-mixed-scheduler-io-uuo-25778039250',
+              'h36-stack-cache-monitor-control-41886677838',
+              'h36-stack-cache-rim-bootstrap-45496969883',
+          ]
+          assert result['validation_required'] == [
+              'h36-compatible-stack-cache-workloads-unvalidated',
+          ]
+          assert result['local_exceptions'] == []
+          PY
+
+      - name: Validate stack-cache residency generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json')
+          raw = json.loads(p.read_text(encoding='utf-8'))
+          result = validate_manifest(raw)
+          policy = raw['policy']
+          assert policy['timing_gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert policy['calibration_repeats'] == 5
+          assert policy['required_beneficial_repeats'] == 4
+          assert policy['aggregate_requirement'] == 'occupancy4_total_ns < fresh_selection_total_ns'
+          assert policy['one_shot_benefit_boolean_authoritative'] is False
+          assert policy['retained_last_green_capacity8_boundary']['head'] == 'a8834b12553741dc5fd04f3434752de14cfccb1b'
+          assert policy['retained_last_green_capacity8_boundary']['run'] == 33529443931
+          assert policy['triggering_one_shot_regression']['head'] == '17a83022f70ad35c90dd826bc20e905d123c9acc'
+          assert policy['triggering_one_shot_regression']['regression_reproduced_under_calibration'] is False
+          assert result['generalize_required'] == [
+              'h36-stack-cache-residency-occupancy4-linux-x86_64',
+              'h36-stack-cache-residency-occupancy8-unvalidated',
+          ]
+          assert result['validation_required'] == []
+          assert result['local_exceptions'] == []
+          PY
+
+      - name: Validate stack-cache capacity8 generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == [
+              'h36-stack-cache-capacity8-linux-x86_64',
+          ]
+          assert result['validation_required'] == [
+              'h36-stack-cache-capacity8-cross-platform-unvalidated',
+          ]
+          assert result['local_exceptions'] == []
+          PY
+
+      - name: Prove mandatory integration contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              'contracts/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.json'
+          ).read_text())
+          required = contract['mandatory_default_state_binding']
+          assert required and all(required.values())
+
+          authority = contract['authority']
+          assert authority['singleton_vm81_authority_preserved'] is True
+          assert authority['independent_vm81_authority'] is False
+          assert authority['independent_hash72_authority'] is False
+          assert authority['independent_hash216_authority'] is False
+          assert authority['floating_point_canonical_authority'] is False
+
+          retained = contract['retained_last_green_capacity8_boundary']
+          assert retained['head'] == 'a8834b12553741dc5fd04f3434752de14cfccb1b'
+          assert retained['run'] == 33529443931
+          assert retained['job'] == 99928529597
+          assert retained['status'] == 'SUCCESS_RETAINED'
+
+          stability = contract['stack_cache_timing_stability_1_15']
+          assert stability['triggering_regression']['head'] == '17a83022f70ad35c90dd826bc20e905d123c9acc'
+          assert stability['triggering_regression']['run'] == 33529740240
+          assert stability['triggering_regression']['correctness_green'] is True
+          assert stability['calibrated_reproduction']['regression_reproduced'] is False
+          assert stability['calibrated_reproduction']['beneficial_repeat_count_all_residents'] == 5
+          assert stability['gate']['kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert stability['gate']['calibration_repeats'] == 5
+          assert stability['gate']['required_beneficial_repeats'] == 4
+          assert stability['gate']['one_shot_boolean_authoritative'] is False
+          assert stability['classification']['occupancy4_linux_x86_64'] == 'GENERALIZE_REQUIRED'
+          assert stability['classification']['reclassification_required'] is False
+
+          h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          assert 'hhs_pass219_harmonic36_default_binding_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_hash216_rna_binding_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_composition_grammar_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h' in h
+          assert 'hhs_pass219_harmonic36_stack_selection_1_10.h' in h
+          assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.h' in h
+          assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
+          assert 'hhs_pass219_harmonic36_stack_selection_1_10.inc' in c
+          assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.inc' in c
+          manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
+          assert manifest.is_file()
+          cache_manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
+          assert cache_manifest.is_file()
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-harmonic36-optimization-benchmark
+          path: artifacts/pass219/harmonic36/*.json
+          if-no-files-found: error

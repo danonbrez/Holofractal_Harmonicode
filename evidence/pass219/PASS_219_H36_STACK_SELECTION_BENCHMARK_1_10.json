@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_SELECTION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_SELECTION_1_10",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "implementation_head": "3cedf9bdcfff1cf571c0072ad9003915a8d834a9",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33462132899,
+    "job": 99714316241,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9783529146,
+    "artifact_sha256": "63046cea9506229fbc4f0830e5abfc1358761d535086771dd0d8588b914d6221"
+  },
+  "platform": {
+    "linux": true,
+    "x86_64": true,
+    "samples": 9,
+    "rounds_per_sample": 32
+  },
+  "workload": {
+    "monitor_image_signature36": 3734727431,
+    "semantic_result_signature64": "4176962402124975431",
+    "exact_result_equal_before_timing": true,
+    "tty_input": 65,
+    "tty_output": 66,
+    "ptr_word36": 1402433619,
+    "ptp_output": 67,
+    "dispatch_count": 4,
+    "uuo_service_count": 4
+  },
+  "candidates": {
+    "h36_ka10_monitor": {
+      "candidate_id": 1,
+      "median_ns": 93097,
+      "per_workload_median_ns": 2909,
+      "process_working_state_bytes": 5120,
+      "vm_steps_observed": 14,
+      "vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1",
+      "vector_key216_length": 216,
+      "hash216_lineage_claim": false,
+      "candidate_only": true
+    },
+    "linux_x86_64_posix": {
+      "candidate_id": 2,
+      "median_ns": 358475,
+      "per_workload_median_ns": 11202,
+      "process_working_state_bytes": 100,
+      "posix_syscalls_observed": 20,
+      "vector_key216": "PrKTsQxuv48IAuC5(WUjgEk>Vt7aXWQSpRC!MaQjg!VEq)?XohSZyd2EQB3qP2ZK?IfiI*uEDBjfT6x?1c06l9M4!65fo22yMCVo>87*dw7AgtsvSr3GJtc2c2kcldlKetDiMiy*vx6+kvuA<evbuTufHJ3m/VVBN91-6WMh)sxcCWWyJvruK*KDnj/4aMYI<Dc6*hj)OCwT9CkXd/nz6PdI",
+      "vector_key216_length": 216,
+      "hash216_lineage_claim": false,
+      "candidate_only": true
+    }
+  },
+  "selection": {
+    "selected_candidate_id": 1,
+    "selected_stack": "H36_KA10_MONITOR",
+    "selected_median_ns": 93097,
+    "runner_up_median_ns": 358475,
+    "speedup_x1000": 3850,
+    "exact_equality_before_timing": true,
+    "timing_executed": true,
+    "measured_winner": true,
+    "selected_vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1",
+    "vector_store_metadata_only": true,
+    "candidate_only": true,
+    "promotion_scope": {
+      "workload_signature36": 3734727431,
+      "semantic_result_signature64": "4176962402124975431",
+      "platform": "linux-x86_64",
+      "current_signature_promoted": true,
+      "other_compatible_signatures_require_validation": true
+    }
+  },
+  "authority": {
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "authoritative_state_changed": false
+  }
+}

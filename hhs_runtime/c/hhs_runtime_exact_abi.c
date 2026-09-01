@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 183 inherited probability-hydration binding, wrapped by mandatory Pass 219 global canonical defaults and universal multimodal optimization generalization, plus Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
+/* Additive exact ABI aggregate through inherited Pass 183-186 cumulative bindings plus H36 capacity-eight harmonic stack, wrapped by mandatory Pass 219 global canonical defaults, universal multimodal optimization generalization, and Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -58,3 +58,15 @@
 #include "hhs_pass219b_selective_projection_1_0.inc"
 #include "hhs_pass219b_sparse_dirty_projection_1_0.inc"
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.inc"
+#include "hhs_pass219_harmonic36_nested_vm_1_0.inc"
+#include "hhs_pass219_harmonic36_default_binding_1_0.inc"
+#include "hhs_pass219_harmonic36_factorization_fabric_1_0.inc"
+#include "hhs_pass219_harmonic36_hash216_rna_binding_1_0.inc"
+#include "hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc"
+#include "hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc"
+#include "hhs_pass219_harmonic36_composition_grammar_1_0.inc"
+#include "hhs_pass219_harmonic36_composition_program_rules_1_1.inc"
+#include "hhs_pass219_harmonic36_composition_program_exec_1_1.inc"
+#include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc"
+#include "hhs_pass219_harmonic36_stack_selection_1_10.inc"
+#include "hhs_pass219_harmonic36_stack_selection_cache_1_11.inc"

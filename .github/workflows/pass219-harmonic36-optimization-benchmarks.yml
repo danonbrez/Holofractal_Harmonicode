@@ -1,0 +1,111 @@
+name: Pass 219 Harmonic36 Optimization Benchmarks
+
+on:
+  push:
+    branches:
+      - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
+    paths:
+      - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - '.github/workflows/pass219-harmonic36-optimization-benchmarks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile cumulative exact ABI and benchmark
+        run: |
+          mkdir -p /tmp/h36-bench artifacts/pass219/harmonic36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/h36-bench/exact.o
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             benchmarks/pass219/harmonic36_optimization_benchmark.cpp             /tmp/h36-bench/exact.o             -o /tmp/h36-bench/benchmark
+
+      - name: Measure exact H36 optimization candidates
+        run: |
+          /tmp/h36-bench/benchmark             artifacts/pass219/harmonic36/optimization_benchmark.json
+          cat artifacts/pass219/harmonic36/optimization_benchmark.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/pass219/harmonic36/optimization_benchmark.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+
+          assert d['schema'] == 'HHS_PASS219_H36_OPTIMIZATION_BENCHMARK_V1'
+          assert d['cpu_reference'] is True
+          assert d['physical_gpu_measured'] is False
+          assert d['authoritative_state_changed'] is False
+
+          for key in (
+              'transcode',
+              'hfc_reconstruction',
+              'native_cache_address',
+          ):
+              assert d[key]['exact_result_equal'] is True
+              assert d[key]['retained_winner'] is True
+              assert d[key]['speedup_x1000'] > 1000
+
+          local = d['gpu_locality_cpu_reference']
+          assert local['full_lanes'] == 5184
+          assert local['selected_lanes'] == 187
+          assert local['avoided_lanes'] == 4997
+          assert local['exact_selected_equal'] is True
+          assert local['retained_winner'] is True
+          assert local['speedup_x1000'] > 1000
+
+          assert d['all_candidate_winners'] is True
+          PY
+
+      - name: Publish benchmark summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open(
+              'artifacts/pass219/harmonic36/optimization_benchmark.json',
+              encoding='utf-8'
+          ))
+          def sx(v):
+              return f"{v/1000:.3f}x"
+          print('## Harmonic36 measured optimization evidence')
+          print(
+              '- VM81/H36 transcode: '
+              + sx(d['transcode']['speedup_x1000'])
+          )
+          print(
+              '- HFC structural block recovery: '
+              + sx(d['hfc_reconstruction']['speedup_x1000'])
+          )
+          print(
+              '- H36 locality CPU reference: '
+              + sx(d['gpu_locality_cpu_reference']['speedup_x1000'])
+              + ' median wall speedup; '
+              + str(d['gpu_locality_cpu_reference']['avoided_lanes'])
+              + ' of 5184 lanes avoided'
+          )
+          print(
+              '- Native direct 5184 cache address: '
+              + sx(d['native_cache_address']['speedup_x1000'])
+          )
+          print('- Physical GPU timing: NOT MEASURED on hosted runner')
+          print('- Canonical authority changed: NO')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-harmonic36-optimization-benchmark
+          path: artifacts/pass219/harmonic36/optimization_benchmark.json
+          if-no-files-found: error

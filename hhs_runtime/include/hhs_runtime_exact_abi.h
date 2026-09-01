@@ -57,4 +57,13 @@
 #include "hhs_pass219b_selective_projection_1_0.h"
 #include "hhs_pass219b_sparse_dirty_projection_1_0.h"
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.h"
+#include "hhs_pass219_harmonic36_default_binding_1_0.h"
+#include "hhs_pass219_harmonic36_factorization_fabric_1_0.h"
+#include "hhs_pass219_harmonic36_hash216_rna_binding_1_0.h"
+#include "hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h"
+#include "hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h"
+#include "hhs_pass219_harmonic36_composition_grammar_1_0.h"
+#include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h"
+#include "hhs_pass219_harmonic36_stack_selection_1_10.h"
+#include "hhs_pass219_harmonic36_stack_selection_cache_1_11.h"
 #endif

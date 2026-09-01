@@ -4064,6 +4064,40 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
 
 
     registry.register_function(
+        name="runtime.harmonic36_knowledge_graph_bridge.pass219",
+        module="hhs_runtime.hhs_pass219_harmonic36_knowledge_graph_bridge_v1",
+        function="pass219_harmonic36_knowledge_graph_self_test",
+        service_type="canonical_h36_pass128_relation_evidence_bridge",
+        description="Projects exact Harmonic36 VM81/Hash72/Hash216 directional, phase, and harmonic relation evidence into the existing immutable Pass 128 knowledge graph without creating execution, mutation, cache, graph, or persistence authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_HARMONIC36_KNOWLEDGE_EVIDENCE_V1","HHS_PASS219_HARMONIC36_PASS128_EDGE_BINDING_V1","HHS_CANONICAL_KNOWLEDGE_EDGE_V1"],
+        witness_schemas=["HHS_EXACT_PASS219_H36_KNOWLEDGE_EVIDENCE_V1","HHS_CANONICAL_KNOWLEDGE_NODE_V1","HHS_HASH72_KERNEL_WITNESS_V1"],
+        validators=["Harmonic36KnowledgeGraphBridge.evidence_record","Harmonic36KnowledgeGraphBridge.verify_evidence","Harmonic36KnowledgeGraphBridge.relate","Harmonic36KnowledgeGraphBridge.verify_binding","CanonicalKnowledgeGraphEngine.verify_edge","pass219_harmonic36_knowledge_graph_self_test"],
+        guards=["h36_factorization_identity","hash216_directional_identity","exact_confidence_fraction","pass128_supported_relation_only","evidence_root_required","knowledge_graph_projection_only","execution_authority_prohibited","mutation_authority_prohibited","canonical_persistence_authority_prohibited","zero_bypass_runtime_interposer"],
+        rejection_codes=["H36_KG_INVALID_EVIDENCE","H36_KG_UNSUPPORTED_RELATION","H36_KG_AUTHORITY_ESCALATION","H36_KG_ROOT_MISMATCH"],
+        mutation_policy="IMMUTABLE_H36_RELATION_EVIDENCE_ONLY_NO_VM81_GRAPH_OR_RUNTIME_MUTATION",
+        persistence_policy="EXISTING_PASS128_HASH72_GRAPH_RECEIPT_PATH_ONLY_NO_PARALLEL_GRAPH_STORE",
+        boundedness_policy="H36_5184_ADDRESS_216_OCCURRENCE_64_RULE_EXACT_RELATION_BOUNDS",
+    )
+
+    registry.register_function(
+        name="runtime.harmonic36_composition_graph_bridge.pass219",
+        module="hhs_runtime.hhs_pass219_harmonic36_composition_graph_bridge_v1",
+        function="pass219_harmonic36_composition_graph_self_test",
+        service_type="canonical_h36_composition_pass128_evidence_bridge",
+        description="Projects exact Harmonic36 inversion, voicing, cadence, modulation, tendency-resolution, and deterministic progression evidence through the existing H36/Pass128 graph path without creating execution, mutation, cache, graph, or persistence authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_HARMONIC36_COMPOSITION_EVIDENCE_V1","HHS_PASS219_HARMONIC36_COMPOSITION_PASS128_BINDING_V1","HHS_PASS219_HARMONIC36_KNOWLEDGE_EVIDENCE_V1","HHS_CANONICAL_KNOWLEDGE_EDGE_V1"],
+        witness_schemas=["HHS_EXACT_PASS219_H36_COMPOSITION_TRANSITION_V1","HHS_EXACT_PASS219_H36_COMPOSITION_CANDIDATE_V1","HHS_CANONICAL_KNOWLEDGE_NODE_V1","HHS_HASH72_KERNEL_WITNESS_V1"],
+        validators=["Harmonic36CompositionGraphBridge.evidence_record","Harmonic36CompositionGraphBridge.verify_evidence","Harmonic36CompositionGraphBridge.relate","Harmonic36CompositionGraphBridge.verify_binding","Harmonic36KnowledgeGraphBridge.verify_binding","CanonicalKnowledgeGraphEngine.verify_edge","pass219_harmonic36_composition_graph_self_test"],
+        guards=["fixed_operation64_preserved","four_voice_ordered_state","exact_integer_voice_leading","grammar_first_candidate_ranking","hash216_directional_identity","composition_evidence_root_required","pass128_existing_edge_only","execution_authority_prohibited","mutation_authority_prohibited","canonical_persistence_authority_prohibited","zero_bypass_runtime_interposer"],
+        rejection_codes=["H36_COMPOSITION_GRAPH_INVALID_EVIDENCE","H36_COMPOSITION_GRAPH_AUTHORITY_ESCALATION","H36_COMPOSITION_GRAPH_ROOT_MISMATCH"],
+        mutation_policy="IMMUTABLE_H36_COMPOSITION_EVIDENCE_ONLY_NO_VM81_GRAPH_OR_RUNTIME_MUTATION",
+        persistence_policy="EXISTING_PASS128_HASH72_GRAPH_RECEIPT_PATH_ONLY_NO_PARALLEL_COMPOSITION_GRAPH_STORE",
+        boundedness_policy="FIXED_64_OPERATION_BASIS_FOUR_VOICE_INTEGER_COMPOSITION_STATE",
+    )
+
+    registry.register_function(
         name="runtime.default_delta_constraint_envelope.pass130",
         module="hhs_runtime.hhs_pass130_default_delta_constraint_envelope_v1",
         function="pass130_self_test",
