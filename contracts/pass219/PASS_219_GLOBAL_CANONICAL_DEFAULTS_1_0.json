@@ -189,6 +189,10 @@
     "validated_run": 33536893755,
     "validation_classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
     "compatible_existing_surfaces_repair_forward_required": true,
-    "compatible_future_surfaces_must_register_guard": true
+    "compatible_future_surfaces_must_register_guard": true,
+    "promotion_integration_run": 33537679938,
+    "promotion_integration_exact_job": 99955888052,
+    "promotion_integration_synthetic_job": 99955887958,
+    "exact_and_synthetic_green": true
   }
 }

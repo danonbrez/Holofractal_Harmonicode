@@ -9,7 +9,7 @@
 - branch: `agent/pass219-global-latency-policy-25over3-benchmark`
 - intended target: `main`
 - merge authorization: NOT YET IMPLIED BY THIS BENCHMARK REQUEST
-- classification: `NONPROMOTIONAL_GLOBAL_LATENCY_POLICY_CANDIDATE_UNDER_TEST`
+- classification: `VALIDATED_GLOBAL_LATENCY_POLICY_PROMOTION_COMPLETE_ON_BRANCH_TARGET_MAIN_PENDING`
 
 ## User-specified latency law
 
@@ -144,20 +144,61 @@ If any gate fails, retain the benchmark and classify the policy as workload- or 
 
 ## Current progress
 
-- reconciled against current authoritative main;
-- confirmed the mandatory Genesis/scaling merge is inherited by current main;
-- reviewed Pass 082/083/084 latency-normalization evidence;
-- reviewed Pass 164 GPU scaling law;
-- reviewed Pass 214 benchmark authority;
-- reviewed Pass 219 global-default policy;
-- reviewed Pass 219B physical Fold7 WebGPU result and exact CPU-reference benchmark;
-- fixed the exact 25/3-ms tier interpretation and promotion gates;
-- implementation not yet written.
+Implementation, benchmarking, promotion analysis, global-default wiring, and dependency-scoped exact/synthetic validation are complete on the feature branch.
+
+Implemented:
+- exact integer-only 25/3 latency policy ABI;
+- exact 120/60/30 FPS tier classification;
+- bounded mean/Tier-1, p95/Tier-2, max/Tier-3 window evaluation;
+- exact-semantic route selection with mandatory complete fallback;
+- canonical-authority rejection at the latency planner;
+- shared exact ABI aggregation and exported runtime symbols;
+- mandatory Pass 219 latency registration guard;
+- mandatory data/ML and execution-composer guard inheritance;
+- global canonical-default validator integration;
+- C, C++, Python registration, benchmark, and fail-closed tests;
+- benchmark-results documentation and global-default documentation.
+
+Primary benchmark validation:
+- head: `1a0ab12b4c2e66969a8fb8176f3ee0b66a45fa27`
+- run: `33536893755`
+- exact job: `99953297079` — SUCCESS
+- synthetic job: `99953297450` — SUCCESS
+- exact artifact: `9811999235`, SHA-256 `3a15b58001efe6e026fd90817aa612d89801a30879ab744e4f1d8bdfcdb9ea0e`
+- synthetic artifact: `9812007878`, SHA-256 `e54df7a2ebb05512d795b5449823a1732cdad798f999d688fb61259a9761f6e5`
+- decision: `GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED`
+
+Promotion-integration validation:
+- head: `4fbed09f74b0e2eb5a1452cbb720bc6f05327477`
+- run: `33537679938`
+- exact job: `99955888052` — SUCCESS
+- synthetic job: `99955887958` — SUCCESS
+- exact artifact: `9812324219`, SHA-256 `ab8662829511ed73622953506d7d6b43e2bf30a43262f8308f3fd3a4ec7b8ca3`
+- synthetic artifact: `9812312988`, SHA-256 `e7573f4378dab79c8343d9918767655fd22f0b9db3ce6d4a73cdfb7dcdb77499`
+
+Validated benefit:
+- Fold7 dense host median `13,400,000 ns`: Tier 2.
+- largest measured exact Tier-1 slice `M=729`: `1,368,750 ns` host, `1,282,048 ns` GPU.
+- lane work: `68,024,448 -> 7,558,272` = exact `9x` reduction.
+- host timing ratio: approximately `9.789x`.
+- GPU timing ratio: approximately `8.996x`.
+- Tier-1 headroom at M=729: approximately `6.088x`.
+- fresh CPU Pass 208 selected child-state/projection equality: PASS.
+- fresh CPU lane work reduction: `81x`.
+- fresh phase-local vector shortlist: Tier 2 -> Tier 1 with exact equality.
+- conservative policy overhead: approximately `56.5 ns` for classify + route-select + 20-sample window, approximately `6 ppm` of the Tier-1 budget.
+- canonical authority changed: NO.
+
+Promotion consequence:
+- `PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0` is now wired on this branch as a mandatory global canonical default for compatible latency-sensitive Pass 219 surfaces.
+- performance at a specific tier is not guaranteed across every workload/device.
+- policy enforcement is mandatory: exact tier classification, exact-route preference, explicit budget-unmet reporting, and complete-route preservation.
+- existing compatible omitted surfaces are repair-forward targets under the inherited global-default rule.
 
 ## Next action
 
-Implement the exact nonpromotional latency policy ABI and tests, then execute physical-evidence analysis plus fresh CPU-reference and phase-local benchmarks.
+This branch is validated and restartable. Target-main promotion is intentionally not performed because this benchmark request did not explicitly authorize a merge or PR. On authorization, reconcile against then-current `main`, run the bounded impacted validation/PR matrix, merge, and verify the exact target commit.
 
 ## Blockers
 
-None.
+No implementation blocker. Authoritative-main closure is pending merge authorization only.

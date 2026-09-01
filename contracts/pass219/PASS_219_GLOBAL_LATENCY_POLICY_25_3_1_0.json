@@ -220,5 +220,22 @@
     "performance_guarantee": false,
     "policy_enforcement_guarantee": true,
     "repair_forward_required": true
+  },
+  "promotion_integration_validation": {
+    "head": "4fbed09f74b0e2eb5a1452cbb720bc6f05327477",
+    "workflow_run": 33537679938,
+    "exact_job": 99955888052,
+    "synthetic_job": 99955887958,
+    "exact_artifact": {
+      "id": 9812324219,
+      "sha256": "ab8662829511ed73622953506d7d6b43e2bf30a43262f8308f3fd3a4ec7b8ca3"
+    },
+    "synthetic_artifact": {
+      "id": 9812312988,
+      "sha256": "e7573f4378dab79c8343d9918767655fd22f0b9db3ce6d4a73cdfb7dcdb77499"
+    },
+    "global_defaults_validator": true,
+    "latency_registration_conformance": true,
+    "exact_and_synthetic_green": true
   }
 }
