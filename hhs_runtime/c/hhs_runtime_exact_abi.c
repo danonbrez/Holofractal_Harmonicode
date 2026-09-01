@@ -65,3 +65,5 @@
 #include "hhs_pass219_harmonic36_composition_program_rules_1_1.inc"
 #include "hhs_pass219_harmonic36_composition_program_exec_1_1.inc"
 #include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc"
+
+#include "hhs_pass219_harmonic36_stack_selection_1_10.inc"

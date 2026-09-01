@@ -14,6 +14,7 @@ on:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_composition_grammar_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
@@ -24,6 +25,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_exec_1_1.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
@@ -36,6 +38,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
+      - 'tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
@@ -54,6 +57,7 @@ on:
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -189,6 +193,15 @@ jobs:
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/h36/exact-abi.o
 
+      - name: H36 stack selector 1.10 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-stack-selection
+          /tmp/h36/test-stack-selection
+
       - name: Exact factorization fabric conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -274,7 +287,9 @@ jobs:
             hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp \
             hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc \
             hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h \
-            hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc; then
+            hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc; then
             echo "Canonical floating type detected in Harmonic36 kernel"
             exit 1
           fi
@@ -306,6 +321,40 @@ jobs:
           assert d['all_candidate_winners'] is True
           PY
 
+      - name: Measured H36 KA10 versus Linux x86_64 stack selection
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-benchmark
+          /tmp/h36/h36-stack-benchmark \
+            artifacts/pass219/harmonic36/stack_selection_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_selection_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_selection_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['workload']['exact_result_equal_before_timing'] is True
+          assert d['selection']['exact_equality_before_timing'] is True
+          assert d['selection']['timing_executed'] is True
+          assert d['selection']['measured_winner'] is True
+          assert d['selection']['selected_candidate_id'] in (1, 2)
+          assert d['selection']['selected_stack'] in (
+              'H36_KA10_MONITOR', 'LINUX_X86_64_POSIX')
+          assert d['h36_ka10_monitor']['vector_key216_length'] == 216
+          assert d['linux_x86_64_posix']['vector_key216_length'] == 216
+          assert d['h36_ka10_monitor']['hash216_lineage_claim'] is False
+          assert d['linux_x86_64_posix']['hash216_lineage_claim'] is False
+          assert d['selection']['vector_store_metadata_only'] is True
+          assert d['generalization_bridge']['compatible_unvalidated'] == 'VALIDATION_REQUIRED'
+          assert d['generalization_bridge']['compatible_safe_beneficial'] == 'GENERALIZE_REQUIRED'
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
       - name: Prove mandatory integration contract
         run: |
           python - <<'PY'
@@ -334,6 +383,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h' in h
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.h' in h
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h' in h
+          assert 'hhs_pass219_harmonic36_stack_selection_1_10.h' in h
           assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
@@ -342,10 +392,11 @@ jobs:
           assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
+          assert 'hhs_pass219_harmonic36_stack_selection_1_10.inc' in c
           PY
 
       - uses: actions/upload-artifact@v4
         with:
           name: pass219-harmonic36-optimization-benchmark
-          path: artifacts/pass219/harmonic36/optimization_benchmark.json
+          path: artifacts/pass219/harmonic36/*.json
           if-no-files-found: error
