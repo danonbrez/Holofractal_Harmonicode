@@ -1,0 +1,141 @@
+{
+  "schema": "HHS_PASS219_COMPRESSION_DEBT_CLOSURE_3_25_1_0",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "NORMATIVE_IMPLEMENTATION_AND_VALIDATION_REQUIRED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_authority": {
+    "main": "7d9c6234970783b5086c8b2d2a86125004ccdd9e",
+    "inherited_genesis_scaling_contract": "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22",
+    "inherited_global_latency_contract": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0"
+  },
+  "conserved_quantity": {
+    "name": "COMPRESSION_DEBT",
+    "elapsed_time_is_debt": false,
+    "physical_time_monotonic": true,
+    "local_equation": "inbound_debt + issued_debt = executed_settled + retained_compressed + transferred_out",
+    "global_equation": "internal transfer debits cancel reciprocal credits; created_total = settled_total + retained_outstanding",
+    "anonymous_residual_allowed": false
+  },
+  "reciprocal_normalization": {
+    "compression_debt": {
+      "numerator": 3,
+      "denominator": 25
+    },
+    "execution_capacity": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "exact_reciprocal_cross_product_required": true,
+    "floating_point_authority": false,
+    "adds_time_back": false
+  },
+  "immutable_native_boundary": {
+    "vm81_cells": 81,
+    "x86_word_bits": 64,
+    "boundary_bits": 5184,
+    "boundary_bytes": 648,
+    "hash72_lanes": 3,
+    "hash72_glyphs_per_lane": 72,
+    "hash216_occurrences": 216,
+    "sha256_bytes_per_occurrence": 32,
+    "hash216_order": [
+      "PREVIOUS",
+      "CHANGE",
+      "RECEIPT"
+    ],
+    "complete_positional_sha256_index_required": true,
+    "ordered_phase_witness_required": true,
+    "lo_shu_sudoku_qudit_genesis_required": true,
+    "no_partial_vm81_state": true,
+    "no_orphan_compression_debt": true,
+    "no_uncommitted_phase_transition": true,
+    "no_incomplete_hash216_witness": true
+  },
+  "active_surface_policy": {
+    "immediate_active_vm81_cells_max": 7,
+    "full_vm81_cells_preserved": 81,
+    "materialized_fraction": {
+      "numerator": 7,
+      "denominator": 81
+    },
+    "reference_reduction": {
+      "numerator": 81,
+      "denominator": 7
+    },
+    "reference_reduction_x1000": 11571,
+    "provenance": "validated seven-dirty-cell Pass219B sparse derived-work evidence",
+    "interpretation": "work/materialization bound; not a universal wall-clock speedup claim"
+  },
+  "transfer_record": {
+    "required_fields": [
+      "source_transition_word216",
+      "target_transition_word216",
+      "source_layer_id",
+      "target_layer_id",
+      "modality_id",
+      "amount",
+      "source_slot5184",
+      "target_slot5184",
+      "phase_left8",
+      "phase_right8",
+      "closure_witness_sha256"
+    ],
+    "reciprocal_source_debit_target_credit_required": true,
+    "exact_amount_equality_required": true,
+    "exact_identity_equality_required": true,
+    "exact_address_equality_required": true,
+    "exact_phase_equality_required": true,
+    "exact_witness_equality_required": true,
+    "source_and_target_hash216_indexes_complete_required": true
+  },
+  "latency_coupling": {
+    "exact_quantum_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "physical_time_monotonic": true,
+    "timing_is_noncanonical": true,
+    "debt_and_time_are_distinct": true,
+    "over_budget_scheduler_action": "TRANSFER_OR_RECOMPRESS_UNSETTLED_DEBT",
+    "over_budget_does_not_erase_or_credit_debt": true,
+    "over_budget_does_not_create_alternate_state_identity": true
+  },
+  "authority": {
+    "compression_debt_ledger": false,
+    "debt_scheduler": false,
+    "cache": false,
+    "gpu": false,
+    "vector_store": false,
+    "latency_policy": false,
+    "singleton_vm81": "INHERITED_C_ONLY",
+    "hash72_hash216": "INHERITED_PATHS_ONLY",
+    "alternate_mutation_authority_created": false
+  },
+  "executable_enforcement": {
+    "header": "hhs_runtime/include/hhs_pass219_compression_debt_closure_3_25_1_0.h",
+    "implementation": "hhs_runtime/c/hhs_pass219_compression_debt_closure_3_25_1_0.inc",
+    "registration": "hhs_runtime/hhs_pass219_compression_debt_closure_registration_v1.py",
+    "c_test": "tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.c",
+    "cpp_test": "tests/pass219/test_pass219_compression_debt_closure_3_25_1_0.cpp",
+    "python_test": "tests/pass219/test_pass219_compression_debt_registration_v1.py",
+    "aggregate_exact_abi_required": true,
+    "global_canonical_default_required": true
+  },
+  "acceptance": [
+    "81*64=5184 and 72*72=5184 and 3*72=216 are exact",
+    "all local layer ledgers conserve debt",
+    "all internal transfer debits have reciprocal credits",
+    "all internal transfers cancel globally",
+    "created debt equals settled plus retained outstanding debt for a closed layer set",
+    "immediate active work never exceeds 7 VM81 cells",
+    "full 81-cell VM81 frame remains exact and round-trippable",
+    "source and target transition records have all 216 SHA256 positional indexes",
+    "ordered phase witness and Lo Shu Sudoku Genesis binding validate",
+    "25/3 latency policy remains coupled but does not become compression debt",
+    "no float or double in canonical debt module",
+    "no new canonical authority is introduced",
+    "existing Genesis scaling latency H36 RNA Pass207 Pass208 regressions remain green",
+    "exact-head and synthetic-current-main validation pass"
+  ]
+}
