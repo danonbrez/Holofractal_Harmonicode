@@ -1939,4 +1939,4 @@ The global latency policy adds exact tier/budget classification to those H36
 optimization surfaces; it does not restore one-shot timing assertions, infer
 cross-platform performance, expand cache capacity beyond eight, or alter
 VM81/Hash72/Hash216 authority.
-\n
+
