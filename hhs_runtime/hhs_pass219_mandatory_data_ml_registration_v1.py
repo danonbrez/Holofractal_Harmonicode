@@ -17,6 +17,13 @@ from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
     SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
     WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
 )
+from hhs_runtime.hhs_pass219_holographic_harmonic_window_registration_v1 import (
+    BRANCH_SYMBOL as HOLOGRAPHIC_BRANCH_SYMBOL,
+    INVARIANT_SYMBOL as HOLOGRAPHIC_INVARIANT_SYMBOL,
+    MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
+    SCHEMA as HOLOGRAPHIC_WINDOW_SCHEMA,
+    VALIDATE_SYMBOL as HOLOGRAPHIC_VALIDATE_SYMBOL,
+)
 
 VERSION = "PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
 SCHEMA = "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
@@ -75,6 +82,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_1_0",
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
             LATENCY_POLICY_SCHEMA,
+            HOLOGRAPHIC_WINDOW_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
@@ -92,6 +100,9 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             LATENCY_CLASSIFY_SYMBOL,
             LATENCY_WINDOW_SYMBOL,
             LATENCY_SELECT_SYMBOL,
+            HOLOGRAPHIC_INVARIANT_SYMBOL,
+            HOLOGRAPHIC_VALIDATE_SYMBOL,
+            HOLOGRAPHIC_BRANCH_SYMBOL,
         ],
         "guards": [
             "exact_sudoku_qudit_genesis_normalization",
@@ -104,6 +115,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "i8_complete_dirty_witness_or_full_derived_path",
             "existing_hash72_hash216_authority_only",
             MANDATORY_LATENCY_GUARD,
+            MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
         ],
         "rejection_codes": [
             "REJECT_PASS219_DATA_ML_WITHOUT_GENESIS_NORMALIZATION",
@@ -112,6 +124,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_CANDIDATE_ACCELERATOR_CANONICAL_AUTHORITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_EXACT_CPU_VM_EQUALITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY",
+            "REJECT_PASS219_DATA_ML_WITHOUT_HOLOGRAPHIC_WINDOW",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_ONLY",
         "persistence_policy": "INHERITED_HASH72_HASH216_PATHS_ONLY",
@@ -131,6 +144,8 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
         "mandatory_for_all_pass219_machine_learning": True,
         "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
         "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
+        "mandatory_holographic_window_guard": MANDATORY_HOLOGRAPHIC_WINDOW_GUARD,
+        "mandatory_holographic_window_schema": HOLOGRAPHIC_WINDOW_SCHEMA,
         "work_classes": list(WORK_CLASSES),
         "stage_order": list(STAGE_ORDER),
         "genesis": {
@@ -163,6 +178,13 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
             "max_max_tier": 3,
             "timing_is_noncanonical": True,
             "unmet_budget_preserves_complete_correct_route": True,
+        },
+        "holographic_window": {
+            "ratio": {"numerator": 25, "denominator": 3},
+            "law": "W_k=W_0*(3/25)^k",
+            "maximum_current_depth": 9,
+            "direct_layer_addressed": True,
+            "unbounded_depth_constant_time_claim": False,
         },
         "floating_point_authority": False,
     }
