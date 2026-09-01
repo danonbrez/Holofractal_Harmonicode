@@ -13,6 +13,7 @@ on:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_composition_grammar_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
@@ -22,6 +23,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_grammar_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_exec_1_1.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_composition_program_rules_1_1.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.c'
@@ -33,6 +35,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_console_devices_1_6.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_rim_bootstrap_1_7.c'
       - 'tests/pass219/test_pass219_harmonic36_ka10_apr_pi_1_8.c'
+      - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
       - 'tests/pass219/test_pass219_harmonic36_default_binding_1_0.c'
@@ -69,6 +72,10 @@ jobs:
           mkdir -p /tmp/h36
           gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_1_0.inc             -o /tmp/h36/core.o
           gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc             -o /tmp/h36/binding.o
+          gcc -x c -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc \
+            -o /tmp/h36/monitor.o
 
       - name: Exact 5184 nested VM conformance
         run: |
@@ -146,6 +153,15 @@ jobs:
             /tmp/h36/core.o \
             -o /tmp/h36/test-ka10-apr-pi
           /tmp/h36/test-ka10-apr-pi
+
+      - name: KA10 monitor profile 1.9 conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c \
+            /tmp/h36/core.o /tmp/h36/monitor.o \
+            -o /tmp/h36/test-ka10-monitor
+          /tmp/h36/test-ka10-monitor
 
       - name: Arithmetic flag fidelity conformance
         run: |
@@ -313,6 +329,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_compression_gpu_fabric_1_0.h' in h
           assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.h' in h
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.h' in h
+          assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h' in h
           assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
@@ -320,6 +337,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_compression_gpu_fabric_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_branch_knowledge_fabric_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_composition_grammar_1_0.inc' in c
+          assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
           PY
 
       - uses: actions/upload-artifact@v4

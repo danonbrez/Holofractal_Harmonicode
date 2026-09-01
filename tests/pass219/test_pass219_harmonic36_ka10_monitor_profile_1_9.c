@@ -48,7 +48,7 @@ static void exercise(
     HHSExactPass219H36MonitorReceiptV1 *receipt
 ) {
     uint32_t steps = 0U;
-    uint8_t tty_in = UINT8_C('A');
+    uint8_t tty_in = (uint8_t)'A';
     uint8_t tty_out[8] = {0};
     size_t tty_out_count = 0U;
     uint8_t ptr_frames[6] = {0};
@@ -66,7 +66,7 @@ static void exercise(
         (uint64_t)tty_in);
     assert(monitor->tty_service_count == 1U);
 
-    vm->memory[DATA_CELL] = UINT64_C('B');
+    vm->memory[DATA_CELL] = (uint64_t)'B';
     exec_io(
         vm,
         ioenc(
@@ -83,7 +83,7 @@ static void exercise(
         vm, tty_out, sizeof(tty_out), &tty_out_count) ==
         HHS_EXACT_STATUS_OK);
     assert(tty_out_count == 1U);
-    assert(tty_out[0] == UINT8_C('B'));
+    assert(tty_out[0] == (uint8_t)'B');
 
     emit_word(ptr_word, ptr_frames);
     assert(hhs_exact_pass219_h36_ptr_load_tape(
@@ -106,7 +106,7 @@ static void exercise(
         ptr_word);
     assert(monitor->ptr_service_count == 1U);
 
-    vm->memory[DATA_CELL] = UINT64_C('C');
+    vm->memory[DATA_CELL] = (uint64_t)'C';
     exec_io(
         vm,
         ioenc(
@@ -123,7 +123,7 @@ static void exercise(
         vm, ptp_frames, sizeof(ptp_frames), &ptp_count) ==
         HHS_EXACT_STATUS_OK);
     assert(ptp_count == 1U);
-    assert(ptp_frames[0] == UINT8_C('C'));
+    assert(ptp_frames[0] == (uint8_t)'C');
 
     assert(hhs_exact_pass219_h36_ka10_monitor_drive(
         vm, monitor, 4U, &steps) == HHS_EXACT_STATUS_OK);

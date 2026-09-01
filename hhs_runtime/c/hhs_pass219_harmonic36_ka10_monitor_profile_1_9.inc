@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#define H36_MONITOR_PROFILE_ID UINT32_C(02190019)
+#define H36_MONITOR_PROFILE_ID UINT32_C(0x02190019)
 #define H36_MONITOR_TAPE_CAPACITY 256U
 #define H36_MONITOR_EXECUTION_LIMIT 32U
 
@@ -76,7 +76,7 @@ static uint64_t h36_monitor_signature36(
     size_t count
 ) {
     size_t i;
-    uint64_t signature = UINT64_C(021900190001) &
+    uint64_t signature = UINT64_C(0x219001901) &
                          HHS_EXACT_PASS219_H36_WORD_MASK;
     for (i = 0U; i < count; ++i) {
         uint64_t term = h36_monitor_rotl36(
