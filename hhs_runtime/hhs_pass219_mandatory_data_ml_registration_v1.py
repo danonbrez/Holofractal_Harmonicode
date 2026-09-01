@@ -18,6 +18,17 @@ from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
     WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
 )
 
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    BOUNDARY_SYMBOL as DEBT_BOUNDARY_SYMBOL,
+    GLOBAL_CLOSE_SYMBOL as DEBT_GLOBAL_CLOSE_SYMBOL,
+    LAYER_CLOSE_SYMBOL as DEBT_LAYER_CLOSE_SYMBOL,
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    POLICY_VALIDATE_SYMBOL as DEBT_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+    SCHEDULE_SYMBOL as DEBT_SCHEDULE_SYMBOL,
+    TRANSFER_BOUND_SYMBOL as DEBT_TRANSFER_BOUND_SYMBOL,
+)
+
 VERSION = "PASS_219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
 SCHEMA = "HHS_PASS219_MANDATORY_GENESIS_SCALING_DATA_ML_1_22"
 SURFACE_ID = "guard:pass219.mandatory.genesis_scaling.data_ml"
@@ -75,6 +86,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219B_UNIVERSAL_PHASE_LOCALITY_INVARIANT_1_0",
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
             LATENCY_POLICY_SCHEMA,
+            COMPRESSION_DEBT_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
@@ -82,6 +94,9 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "HHS_KERNEL_RUNTIME_COMPOSITION_WITNESS_V1",
             "HHS_PASS219_LATENCY_WINDOW_RESULT_V1",
             "HHS_PASS219_LATENCY_SELECTION_V1",
+            "HHS_PASS219_COMPRESSION_DEBT_LAYER_RESULT_V1",
+            "HHS_PASS219_COMPRESSION_DEBT_TRANSFER_PAIR_V1",
+            "HHS_PASS219_NATIVE_5184_CLOSURE_BOUNDARY_RESULT_V1",
         ],
         "validators": [
             GENESIS_SYMBOL,
@@ -92,6 +107,12 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             LATENCY_CLASSIFY_SYMBOL,
             LATENCY_WINDOW_SYMBOL,
             LATENCY_SELECT_SYMBOL,
+            DEBT_POLICY_VALIDATE_SYMBOL,
+            DEBT_LAYER_CLOSE_SYMBOL,
+            DEBT_TRANSFER_BOUND_SYMBOL,
+            DEBT_GLOBAL_CLOSE_SYMBOL,
+            DEBT_SCHEDULE_SYMBOL,
+            DEBT_BOUNDARY_SYMBOL,
         ],
         "guards": [
             "exact_sudoku_qudit_genesis_normalization",
@@ -104,6 +125,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "i8_complete_dirty_witness_or_full_derived_path",
             "existing_hash72_hash216_authority_only",
             MANDATORY_LATENCY_GUARD,
+            MANDATORY_COMPRESSION_DEBT_GUARD,
         ],
         "rejection_codes": [
             "REJECT_PASS219_DATA_ML_WITHOUT_GENESIS_NORMALIZATION",
@@ -112,6 +134,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_CANDIDATE_ACCELERATOR_CANONICAL_AUTHORITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_EXACT_CPU_VM_EQUALITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY",
+            "REJECT_PASS219_DATA_ML_WITHOUT_COMPRESSION_DEBT_CLOSURE",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_ONLY",
         "persistence_policy": "INHERITED_HASH72_HASH216_PATHS_ONLY",
@@ -131,6 +154,8 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
         "mandatory_for_all_pass219_machine_learning": True,
         "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
         "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
+        "mandatory_compression_debt_guard": MANDATORY_COMPRESSION_DEBT_GUARD,
+        "mandatory_compression_debt_schema": COMPRESSION_DEBT_SCHEMA,
         "work_classes": list(WORK_CLASSES),
         "stage_order": list(STAGE_ORDER),
         "genesis": {
@@ -163,6 +188,15 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
             "max_max_tier": 3,
             "timing_is_noncanonical": True,
             "unmet_budget_preserves_complete_correct_route": True,
+        },
+        "compression_debt_policy": {
+            "conserved_quantity": "COMPRESSION_DEBT",
+            "native_boundary_bits": 5184,
+            "immediate_active_cells_max": 7,
+            "reciprocal_debt_ratio": {"numerator": 3, "denominator": 25},
+            "reciprocal_capacity_ratio": {"numerator": 25, "denominator": 3},
+            "elapsed_time_is_debt": False,
+            "anonymous_debt_allowed": False,
         },
         "floating_point_authority": False,
     }
