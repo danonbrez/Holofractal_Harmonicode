@@ -82,3 +82,37 @@ Create an integration merge of `agent/pass219-fourth-hydration-lane-36bit-harmon
 ## Blockers
 
 None at checkpoint creation.
+
+
+## Repair-forward validation checkpoint — cumulative Pass 184 reachability
+
+Combined reconciliation run `33550435166` exposed a cumulative-validation defect after the H36 merge:
+
+- H36 calibrated occupancy and capacity-eight job: PASS through all H36 conformance, exact-integer stability, four generalization manifests, and integration-contract authority checks.
+- Pass 183 acceptance and I143 membrane: PASS.
+- Pass 184 local package/API acceptance: PASS, 13 tests passed.
+- Pass 184 I142 cumulative membrane: FAIL only at its historical hard-coded assumption that Pass 184 must remain the global-default floor with exactly 37 bindings.
+
+Observed current cumulative census on the I143 base already is:
+
+```text
+wired_floor_pass = 183
+binding_count = 38
+ordered tail = 186,185,184,183
+```
+
+The I142 membrane therefore rejected the valid additive I143 Pass 183 extension.
+
+Repair:
+- preserve the historical Pass 184 obligation but make the check cumulative;
+- require `wired_floor_pass <= 184`;
+- require at least the historical 37 bindings;
+- require Pass 184 to remain present and immediately preceded by Pass 186 and Pass 185 in the inherited binding order;
+- require the final ordered binding to equal the currently declared cumulative floor;
+- return the actual current floor/count instead of rewriting them to the historical I142 values.
+
+No Pass 184 runtime, package, authority, or receipt semantics changed.
+
+Next action:
+- rerun the dedicated reconciliation workflow;
+- continue Pass 210, exact ABI, Runtime OS, and browser closure if the repaired cumulative membrane passes.

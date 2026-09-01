@@ -63,8 +63,15 @@ def validate_pass184_public_surfaces()->dict[str,Any]:
  return {"ok":True,"cli":True,"api":True,"runtime_os_gui":True}
 def validate_pass184_global_default_reachability()->dict[str,Any]:
  c=json.loads(_text("contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json"))["current_cumulative_binding_census"]
- assert c["wired_floor_pass"]==184 and c["binding_count"]==37 and c["ordered_bindings"][-3:]==["186","185","184"]
- return {"ok":True,"wired_floor":184,"binding_count":37,"global_defaults_mandatory":True,"multimodal_generalization_inherited":True}
+ ordered=c["ordered_bindings"]
+ assert c["wired_floor_pass"]<=184 and c["binding_count"]>=37
+ assert "184" in ordered
+ i=ordered.index("184")
+ assert i>=2 and ordered[i-2:i+1]==["186","185","184"]
+ assert ordered[-1]==str(c["wired_floor_pass"])
+ return {"ok":True,"wired_floor":c["wired_floor_pass"],"binding_count":c["binding_count"],
+         "pass184_bound":True,"pass184_position":i,"global_defaults_mandatory":True,
+         "multimodal_generalization_inherited":True}
 def validate_pass184_no_new_authority()->dict[str,Any]:
  s=PortableRuntimeAuthority().status()
  assert s["canonical_mutation_authority"] is False and s["independent_vm81_authority"] is False and s["independent_hash72_clock"] is False
