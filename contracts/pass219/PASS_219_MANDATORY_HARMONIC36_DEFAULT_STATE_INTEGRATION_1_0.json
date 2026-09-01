@@ -358,21 +358,22 @@
     }
   },
   "latest_validated_h36_gate": {
-    "run": 33498621593,
-    "job": 99826491387,
-    "head": "030561453896265eaf421e52ff2d6eea7220f511",
+    "run": 33498840150,
+    "job": 99827186656,
+    "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
     "conclusion": "SUCCESS"
   },
   "latest_functional_validation": {
-    "run": 33497200386,
-    "job": 99822014646,
-    "head": "97c6f668028a329980e2b624882f18de486ce427",
-    "ka10_monitor_profile_1_9": "SUCCESS",
+    "run": 33498840150,
+    "job": 99827186656,
+    "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
     "stack_selection_1_10": "SUCCESS",
     "stack_selection_cache_1_11": "SUCCESS",
-    "multisignature_stack_cache_audit": "SUCCESS_REPEAT",
-    "stack_generalization_manifest": "SUCCESS",
-    "cache_generalization_manifest": "SUCCESS",
+    "multisignature_stack_cache_audit": "SUCCESS",
+    "stack_cache_residency_1_13": "SUCCESS_REPEAT",
+    "stack_selection_generalization_manifest": "SUCCESS",
+    "stack_cache_generalization_manifest": "SUCCESS",
+    "stack_cache_residency_generalization_manifest": "SUCCESS",
     "cumulative_gate": "SUCCESS",
     "external_followup_pending_at_checkpoint": false
   },
@@ -678,6 +679,16 @@
       "occupancy4": "GENERALIZE_REQUIRED",
       "occupancy8": "VALIDATION_REQUIRED",
       "cross_platform_inference": false
+    },
+    "policy_repeat": {
+      "run": 33498840150,
+      "job": 99827186656,
+      "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
+      "conclusion": "SUCCESS",
+      "artifact_id": 9796845905,
+      "artifact_sha256": "2b8a5b574d974d23f5ff80577e8d4b0a63eed50217e517254b2c40575e433851",
+      "all_occupancy4_faster_than_fresh": true,
+      "residency_manifest_valid": true
     }
   }
 }
