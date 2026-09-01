@@ -1,0 +1,64 @@
+{
+  "schema": "PASS_219_I144_PASS182_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration144-pass182-universal-hydration-reconciliation",
+  "implementation_head": "9758b4ed272fd1cf907f22e9fe28226c80900627",
+  "repair_history": {
+    "initial_workflow_run_id": 33563494453,
+    "initial_head": "31a8e50392ff3528c8a5973352c57d48366453be",
+    "initial_conclusion": "failure",
+    "isolated_failure": "EXPECTED_NEGATIVE_AUTHORITY_FLAGS_WERE_INCLUDED_AS_FALSE_VALUES_IN_ALL_CHECKS_GATE",
+    "repair_commit": "9758b4ed272fd1cf907f22e9fe28226c80900627"
+  },
+  "workflow": {
+    "path": ".github/workflows/pass219-i144-pass182-universal-hydration.yml",
+    "run_id": 33563563148,
+    "run_number": 2,
+    "job_id": 100041472628,
+    "conclusion": "success",
+    "head_sha": "9758b4ed272fd1cf907f22e9fe28226c80900627"
+  },
+  "validation": {
+    "python_acceptance": "8 passed, 1 warning",
+    "cumulative_membrane": true,
+    "cli_package_smoke": "HHS_PASS182_I144_CLI_SMOKE_VERIFIED",
+    "global_canonical_defaults": {
+      "classification": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+      "wired_ceiling": 218,
+      "wired_floor": 182,
+      "binding_count": 39
+    },
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+    "aggregate_exact_c_abi": true,
+    "pass182_c_conformance": true,
+    "pass182_cpp_conformance": true,
+    "global_defaults_c_conformance": true,
+    "global_defaults_cpp_conformance": true
+  },
+  "authority": {
+    "singleton_vm81_authority_remains_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_clock": false,
+    "hash216_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "generated_receipt": {
+    "classification": "HHS_PASS182_I144_DEPENDENCY_SCOPED_VALIDATION_VERIFIED",
+    "receipt_hash72": "NAwy(>+?)R6v6HG0!6H?bskgvy(g4gvEUmniIQTDi8BrGj8CIY+WX<M9o-8OZPTT)/>ZN?P)",
+    "archive_hash216": "F-gXl)+k2uB(xGZbHUqQlf*jlgpV9i0hGaGQxjveAV5YFdhtE*6rN4lX-9j4E)t)wgoRq46V-AGp+6Hsh6x-5smb0udkfUs-U08gv>76Km+JV2wgbQ9GiXBWv4S!l))4RFKU7SUQVib3UYn-yEnVHmOre9!22*X/F61Pn-3NXvyufAD?l9gAJZrsnNVYIndGwLodHN/<+*1Ret)dT(UYY0!C"
+  },
+  "artifact": {
+    "id": 9822205033,
+    "name": "pass219-i144-pass182-universal-hydration",
+    "size_bytes": 1752,
+    "sha256": "2f673e2484ea3fd2513e48adde80f7dd970cfe83c8e9349bcf1643f17ea13e49",
+    "expires_at": "2026-10-01T21:54:47Z"
+  },
+  "closure": {
+    "dependency_scoped_validation_green": true,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false,
+    "terminal_pass182_completion": false
+  }
+}
