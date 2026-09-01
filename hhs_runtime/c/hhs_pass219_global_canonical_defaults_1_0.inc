@@ -109,6 +109,13 @@ HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate_latency_poli
     return hhs_exact_pass219_global_latency_policy_validate();
 }
 
+HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate_holographic_window(void) {
+    if (HHS_EXACT_PASS219_HOLOGRAPHIC_WINDOW_DEFAULT_REQUIRED != 1U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    return hhs_exact_pass219_holographic_harmonic_window_validate();
+}
+
 HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate(void) {
     HHSExactPass219GlobalCanonicalDefaultPolicyV1 policy;
     size_t i;
@@ -120,6 +127,11 @@ HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate(void) {
     }
 
     if (hhs_exact_pass219_global_canonical_defaults_validate_latency_policy() !=
+        HHS_EXACT_STATUS_OK) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    if (hhs_exact_pass219_global_canonical_defaults_validate_holographic_window() !=
         HHS_EXACT_STATUS_OK) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
