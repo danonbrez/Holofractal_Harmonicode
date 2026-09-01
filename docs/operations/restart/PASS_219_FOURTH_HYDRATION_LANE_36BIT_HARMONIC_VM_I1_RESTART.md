@@ -6,10 +6,10 @@
 - Authoritative base: `e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191`
 - Branch: `agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1`
 - Merge target: `main`
-- Validated implementation head: `6d63b0867ab212df070a109befcddf6e2f64f2fd`
-- Branch head immediately before this checkpoint record: `4b89c19ae20166f2d5e15e3a1429b1f29256a716`
+- Validated implementation head: `03bc4ae3b69d3834ca70cb904fa6924fb1196e98`
+- Branch head immediately before this checkpoint record: `a8834b12553741dc5fd04f3434752de14cfccb1b`
 - Main merge: **not performed**
-- Status: **RESTARTABLE / FOUR-RESIDENT CACHE RESIDENCY 1.13 GREEN / OCCUPANCY4 GENERALIZED / OCCUPANCY8 UNVALIDATED**
+- Status: **RESTARTABLE / CAPACITY-8 CACHE 1.14 IMPLEMENTED / FIRST CAPACITY GATE GREEN / POLICY RERUN IN PROGRESS**
 
 ## Governing invariant
 
@@ -1125,21 +1125,173 @@ Repeat evidence/contract/documentation commits:
 
 All authority boundaries remain unchanged: cache residency is candidate metadata only, cannot bypass singleton VM81 admission, and has zero mutation, Hash72, Hash216, persistence, or floating-point authority.
 
+### 21. Capacity-8 cache boundary 1.14 closure
+
+Continued from checkpoint `fcfd754fe8ff6f43062ed717631ccaecfca8aeff`.
+
+New executable benchmark:
+
+- `benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp`.
+
+The benchmark adds four new real executable workload identities:
+
+```text
+5. APR_PI_INTERRUPT_FOCUSED
+   workload_signature36 = 56629000078
+   semantic_signature64 = 6036511113464237678
+   H36 / Linux           = 2,023 / 521 ns
+   selected stack        = LINUX_X86_64_POSIX
+
+6. RIM_BOOTSTRAP_FOCUSED
+   workload_signature36 = 45496969883
+   semantic_signature64 = 15550751547534181799
+   H36 / Linux           = 3,115 / 561 ns
+   selected stack        = LINUX_X86_64_POSIX
+
+7. MIXED_CONSOLE_BINARY_IO
+   workload_signature36 = 19461196675
+   semantic_signature64 = 7100043395069015146
+   H36 / Linux           = 22,865 / 258,110 ns
+   selected stack        = H36_KA10_MONITOR
+
+8. MIXED_SCHEDULER_IO_UUO
+   workload_signature36 = 25778039250
+   semantic_signature64 = 17797529900924037577
+   H36 / Linux           = 21,333 / 129,115 ns
+   selected stack        = H36_KA10_MONITOR
+```
+
+All four semantic pairs are exact before timing.
+
+The resulting single cache is exactly full:
+
+```text
+capacity      = 8
+entry_count   = 8
+next_sequence = 9
+entry sequences = [1,2,3,4,5,6,7,8]
+```
+
+A ninth real executable workload is used for the hard boundary:
+
+```text
+BOUNDARY_CONSOLE_ALTERNATE
+workload_signature36 = 38935941853
+```
+
+At full capacity its store returns:
+
+```text
+BUFFER_TOO_SMALL
+```
+
+with `entry_count == 8` and `next_sequence == 9` unchanged.
+
+An idempotent store of an existing resident at full capacity still returns `OK` without count/sequence change.
+
+Full-capacity isolation proves:
+
+```text
+all 8 exact lookups == fresh selection
+cross-signature identity combinations -> INVARIANT_FAILURE
+wrong semantic signature -> INVARIANT_FAILURE
+wrong vector key -> INVARIANT_FAILURE
+unrelated valid identity -> RANGE_ERROR
+duplicate sequence corruption -> INVARIANT_FAILURE
+duplicate identity corruption -> INVARIANT_FAILURE
+partial identity corruption -> INVARIANT_FAILURE
+```
+
+First terminal green capacity-8 validation:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33528991694
+job      = 99927016899
+head     = 03bc4ae3b69d3834ca70cb904fa6924fb1196e98
+result   = SUCCESS
+artifact = 9808920709
+artifact sha256 = 8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417
+```
+
+Measured occupancy-8 versus fresh-selector ratios:
+
+```text
+FULL_MONITOR              = 1.185x
+CONSOLE_FOCUSED           = 1.179x
+BINARY_IO_FOCUSED         = 1.194x
+MONITOR_CONTROL_FOCUSED   = 1.164x
+APR_PI_INTERRUPT_FOCUSED  = 1.196x
+RIM_BOOTSTRAP_FOCUSED     = 1.192x
+MIXED_CONSOLE_BINARY_IO   = 1.197x
+MIXED_SCHEDULER_IO_UUO    = 1.195x
+```
+
+All eight resident identities remain faster through occupancy-8 cache lookup than through fresh selector execution on this evidenced Linux x86_64 runner.
+
+Repository-visible commits:
+
+- `a1c618d7d99960043f8ba7f6aec9f2d614c9ee99` — capacity-8 executable benchmark;
+- `03bc4ae3b69d3834ca70cb904fa6924fb1196e98` — cumulative benchmark wiring;
+- `194a50ed2a6f316a3d3d2b6ea69061ef26bbfeff` — four new stack classifications;
+- `a0ce9e4d1583bc20c5c21cfa0ffcb4a3184dbfbf` — four new cache classifications;
+- `a315a7b65b1eeedbac753f9eaead25b09d719224` — inherited occupancy-8 residency promoted;
+- `e6da2f202dd8487e4b342ad28a8566c4954b1333` — capacity-8 evidence;
+- `860bf92e5c2e055a12aa7d579a4416c0c3f5732a` — dedicated capacity-8 manifest;
+- `0c630800d067c23a6f7f2d1d2bb544d698594c09` — cumulative contract binding;
+- `c0d1737394cf07aaa9cc659fb6f0f54f3a69a913` — normative capacity-8 documentation;
+- `a8834b12553741dc5fd04f3434752de14cfccb1b` — fail-closed capacity-8 policy enforcement.
+
+Current classification:
+
+```text
+h36-stack-cache-capacity8-linux-x86_64
+-> GENERALIZE_REQUIRED
+
+h36-stack-cache-capacity8-cross-platform-unvalidated
+-> VALIDATION_REQUIRED
+```
+
+Per-workload H36 stack classification:
+
+```text
+APR/PI H36 target        -> NO_MEANINGFUL_BENEFIT bounded exception
+RIM H36 target           -> NO_MEANINGFUL_BENEFIT bounded exception
+mixed console/binary H36 -> GENERALIZE_REQUIRED
+mixed scheduler/I/O/UUO  -> GENERALIZE_REQUIRED
+```
+
+All eight measured per-signature cache targets are `GENERALIZE_REQUIRED`.
+
+Capacity-8 policy rerun:
+
+```text
+workflow = Pass 219 Harmonic36 Nested VM
+run      = 33529443931
+job      = 99928529597
+head     = a8834b12553741dc5fd04f3434752de14cfccb1b
+state at checkpoint preparation = IN_PROGRESS
+```
+
+This follow-up is nonblocking for restartability because the capacity-8 implementation head already has terminal green validation. If it completes green, freeze its artifact/measurement receipt. If it fails, inspect only the first relevant H36 failure and repair forward.
+
+All authority boundaries remain unchanged: cache state is candidate metadata only and cannot bypass singleton VM81 admission or gain mutation, Hash72, Hash216, persistence, or floating-point authority.
+
 ## Validation receipt
 
-Current terminal green dependency-scoped implementation/policy gate:
+Current terminal green dependency-scoped capacity-8 implementation gate:
 
 - workflow: `Pass 219 Harmonic36 Nested VM`
-- run: `33498840150`
-- job: `99827186656`
-- head: `6d63b0867ab212df070a109befcddf6e2f64f2fd`
+- run: `33528991694`
+- job: `99927016899`
+- head: `03bc4ae3b69d3834ca70cb904fa6924fb1196e98`
 - conclusion: **SUCCESS**
-- artifact: `9796845905`
-- artifact SHA-256: `2b8a5b574d974d23f5ff80577e8d4b0a63eed50217e517254b2c40575e433851`
+- artifact: `9808920709`
+- artifact SHA-256: `8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417`
 
-The gate includes all inherited H36 conformance, original stack/cache measurements, real multisignature workloads, four-resident residency isolation, occupancy-1/occupancy-4/fresh measurement, stack-selection generalization, cache generalization, residency generalization, cumulative contract proof, and artifact upload.
+The gate includes all inherited H36 conformance, the eight real workload identities, exact H36/Linux equality for the four new workloads, stack selection, full-capacity cache admission, ninth-store boundary behavior, exact isolation, fresh/occupancy-1/4/8 timing, inherited optimization manifests, cumulative contract proof, and artifact upload.
 
-The policy requires every occupancy-4 resident to remain faster than fresh selection. It does not require occupancy 4 to outperform occupancy 1, because multi-entry residency provides broader exact reuse rather than a claim that additional residents accelerate a single lookup.
+The fail-closed policy rerun `33529443931` / job `99928529597` at head `a8834b12553741dc5fd04f3434752de14cfccb1b` is in progress at checkpoint creation and is explicitly nonblocking under the repository workflow policy.
 
 ## Normative documentation updated after green code head
 
@@ -1188,99 +1340,21 @@ Physical GPU timing remains a separate hardware-specific measurement obligation 
 
 ## Exact next action
 
-1. Preserve occupancy-4 residency 1.13 as the current generalized bounded cache profile:
+1. Check capacity-8 policy rerun `33529443931` / job `99928529597` once.
+   - If **SUCCESS**, record its artifact SHA-256 and repeat occupancy-8 measurements in evidence/contract/docs, then freeze a final green capacity-8 checkpoint.
+   - If **FAILURE**, inspect only the first H36 dependency-scoped failing step and repair forward. Do not invalidate first green run `33528991694` unless the failure demonstrates a real relevant defect.
 
-```text
-resident_entries = 4
-capacity         = 8
-classification   = GENERALIZE_REQUIRED
-platform         = linux-x86_64
-```
+2. Do not expand cache capacity beyond 8 in the current implementation. Capacity 8 is the declared physical bound of stack-selection cache 1.11.
 
-2. Expand to the physical capacity-8 boundary using **four additional real executable workload signatures**, not synthetic signature substitutions. Preferred bounded candidates from already implemented KA10/H36 surfaces are:
+3. The next optimization step after terminal capacity-8 policy closure is **access-distribution validation**, not more resident identities:
+   - benchmark deterministic lookup sequences across all eight residents;
+   - include uniform round-robin, hot/cold skew, and adversarial last-entry access ordering;
+   - preserve the same exact-isolation and authority gates;
+   - determine whether the current bounded linear scan remains adequate under realistic mixed access distributions.
 
-```text
-A. APR/PI interrupt-focused
-   processor-condition interrupt + monitor APR service
+4. Only introduce an indexed lookup structure if measured access-distribution evidence shows a meaningful benefit and the index can be derived/rebuilt deterministically from the eight authoritative cache entries without becoming an independent state authority.
 
-B. RIM/bootstrap-focused
-   exact read-in image/bootstrap + replay receipt
-
-C. mixed console + binary I/O
-   TTY + PTR/PTP device service in one semantic workload
-
-D. mixed scheduler + I/O/UUO
-   cooperative dispatch interleaved with concrete device service
-```
-
-A candidate may be replaced if an honest exact Linux x86_64 semantic reference cannot be defined from the same observable result.
-
-3. For every new workload:
-
-```text
-real executable H36 workload
--> independent Linux semantic reference
--> exact equality before timing
--> deterministic workload_signature36
--> semantic_result_signature64
--> measured stack selection
--> exact vector_key216
--> cache admission
--> cache hit == fresh selection
--> stale/mismatch/cross-signature rejection
-```
-
-4. Build one capacity-8 cache containing all eight real selections simultaneously.
-
-5. Prove capacity-8 isolation and boundary behavior:
-
-```text
-8 exact residents
--> entry_count = 8
--> next_sequence = 9
--> all exact lookups deterministic
-
-9th distinct store
--> BUFFER_TOO_SMALL
-
-idempotent existing store at full capacity
--> OK with no sequence/count change
-
-wrong semantic/key/cross-signature identity
--> fail closed
-
-unrelated identity
--> RANGE_ERROR
-
-duplicate sequence / duplicate or partial identity corruption
--> fail closed
-```
-
-6. Measure:
-
-```text
-fresh selector
-vs occupancy 1
-vs occupancy 4
-vs occupancy 8
-```
-
-for each of all eight resident workloads.
-
-7. Classification remains evidence-bound:
-
-```text
-exact + safe + occupancy8 faster than fresh for every validated resident
--> occupancy8 GENERALIZE_REQUIRED
-
-exact + safe + no meaningful benefit for a resident
--> optimize bounded indexing or record a measured bounded exception
-
-unmeasured/cross-platform
--> VALIDATION_REQUIRED
-```
-
-Do not weaken full store/audit/public receipt validation.
+5. Preserve full store/audit/public receipt validation. Any fast lookup index remains a non-authoritative derivative.
 
 Do not infer cross-platform timing.
 
