@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+    SCHEDULE_SYMBOL as DEBT_SCHEDULE_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_execution_composer_registration_v1 import (
     pass219_execution_registration_manifest,
     pass219_execution_surface_declaration,
@@ -44,6 +49,10 @@ def test_global_latency_manifest_is_exact_noncanonical_policy() -> None:
     assert manifest["performance_guarantee"] is False
     assert manifest["canonical_authority"]["latency_policy"] is False
     assert manifest["canonical_authority"]["singleton_vm81"] == "INHERITED_C_ONLY"
+    assert manifest["compression_debt_coupling"]["mandatory_guard"] == MANDATORY_COMPRESSION_DEBT_GUARD
+    assert manifest["compression_debt_coupling"]["schema"] == COMPRESSION_DEBT_SCHEMA
+    assert manifest["compression_debt_coupling"]["elapsed_time_is_debt"] is False
+    assert manifest["compression_debt_coupling"]["physical_time_monotonic"] is True
 
 
 def test_latency_guard_exposes_exact_abi_surface() -> None:
@@ -55,8 +64,11 @@ def test_latency_guard_exposes_exact_abi_surface() -> None:
         CLASSIFY_SYMBOL,
         WINDOW_SYMBOL,
         SELECT_SYMBOL,
+        DEBT_SCHEDULE_SYMBOL,
     ):
         assert symbol in declaration["validators"]
+    assert COMPRESSION_DEBT_SCHEMA in declaration["contract_schemas"]
+    assert MANDATORY_COMPRESSION_DEBT_GUARD in declaration["guards"]
     assert declaration["mutation_policy"] == "INHERITED_SINGLETON_VM81_ONLY"
     assert declaration["persistence_policy"] == "INHERITED_HASH72_HASH216_PATHS_ONLY"
 
