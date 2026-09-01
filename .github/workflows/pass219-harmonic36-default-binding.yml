@@ -66,6 +66,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -472,6 +473,50 @@ jobs:
               assert row['cache_benefit'] is True
               assert row['cache_winner_ratio_x1000'] > 1000
               assert all(value is False for value in row['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 cache occupancy 1 versus 4
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-stack-cache-residency
+          /tmp/h36/h36-stack-cache-residency \
+            artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json
+          cat artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/stack_cache_residency_1_13_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['cache']['capacity'] == 8
+          assert d['cache']['resident_entries'] == 4
+          assert d['cache']['next_sequence'] == 5
+          assert d['correctness'] and all(d['correctness'].values())
+          assert len(d['residents']) == 4
+          expected = {
+              'FULL_MONITOR': (3734727431, 4176962402124975431, 1),
+              'CONSOLE_FOCUSED': (4793332410, 6731027650694893003, 1),
+              'BINARY_IO_FOCUSED': (21509979554, 1456447110141201574, 1),
+              'MONITOR_CONTROL_FOCUSED': (41886677838, 2318081696571468614, 2),
+          }
+          assert {row['name'] for row in d['residents']} == set(expected)
+          assert [row['entry_sequence_occupancy4'] for row in d['residents']] == [1, 2, 3, 4]
+          for row in d['residents']:
+              workload, semantic, candidate = expected[row['name']]
+              assert row['workload_signature36'] == workload
+              assert row['semantic_result_signature64'] == semantic
+              assert row['selected_candidate_id'] == candidate
+              assert len(row['vector_key216']) == 216
+              assert row['fresh_selection_median_ns'] > 0
+              assert row['occupancy1_lookup_median_ns'] > 0
+              assert row['occupancy4_lookup_median_ns'] > 0
+              assert row['occupancy4_vs_fresh_ratio_x1000'] > 0
+              assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
+          assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
 
