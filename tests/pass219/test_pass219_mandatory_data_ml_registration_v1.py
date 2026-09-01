@@ -6,6 +6,12 @@ from hhs_runtime.hhs_pass219_execution_composer_registration_v1 import (
     pass219_execution_registration_manifest,
     pass219_execution_surface_declaration,
 )
+from hhs_runtime.hhs_pass219_compression_debt_closure_registration_v1 import (
+    BOUNDARY_SYMBOL as DEBT_BOUNDARY_SYMBOL,
+    MANDATORY_COMPRESSION_DEBT_GUARD,
+    POLICY_VALIDATE_SYMBOL as DEBT_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as COMPRESSION_DEBT_SCHEMA,
+)
 from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     GENESIS_SYMBOL,
     GENESIS_VALIDATE_SYMBOL,
@@ -26,6 +32,10 @@ def test_mandatory_manifest_covers_all_declared_data_ml_classes() -> None:
     assert manifest["mandatory_guard"] == MANDATORY_GUARD
     assert manifest["mandatory_for_all_pass219_data_processing"] is True
     assert manifest["mandatory_for_all_pass219_machine_learning"] is True
+    assert manifest["mandatory_compression_debt_guard"] == MANDATORY_COMPRESSION_DEBT_GUARD
+    assert manifest["mandatory_compression_debt_schema"] == COMPRESSION_DEBT_SCHEMA
+    assert manifest["compression_debt_policy"]["conserved_quantity"] == "COMPRESSION_DEBT"
+    assert manifest["compression_debt_policy"]["elapsed_time_is_debt"] is False
     assert tuple(manifest["work_classes"]) == WORK_CLASSES
     assert tuple(manifest["stage_order"]) == STAGE_ORDER
     assert manifest["genesis"]["cells"] == 81
@@ -54,6 +64,10 @@ def test_mandatory_guard_surface_exposes_exact_abi() -> None:
     assert GENESIS_VALIDATE_SYMBOL in declaration["validators"]
     assert PLAN_SYMBOL in declaration["validators"]
     assert VERIFY_SYMBOL in declaration["validators"]
+    assert COMPRESSION_DEBT_SCHEMA in declaration["contract_schemas"]
+    assert MANDATORY_COMPRESSION_DEBT_GUARD in declaration["guards"]
+    assert DEBT_POLICY_VALIDATE_SYMBOL in declaration["validators"]
+    assert DEBT_BOUNDARY_SYMBOL in declaration["validators"]
     assert declaration["mutation_policy"] == "INHERITED_SINGLETON_VM81_ONLY"
     assert declaration["persistence_policy"] == "INHERITED_HASH72_HASH216_PATHS_ONLY"
 
@@ -67,9 +81,17 @@ def test_pass219_execution_composer_requires_mandatory_guard() -> None:
     assert GENESIS_VALIDATE_SYMBOL in declaration["validators"]
     assert PLAN_SYMBOL in declaration["validators"]
     assert VERIFY_SYMBOL in declaration["validators"]
+    assert MANDATORY_COMPRESSION_DEBT_GUARD in declaration["guards"]
+    assert COMPRESSION_DEBT_SCHEMA in declaration["contract_schemas"]
+    assert DEBT_POLICY_VALIDATE_SYMBOL in declaration["validators"]
+    assert DEBT_BOUNDARY_SYMBOL in declaration["validators"]
     assert manifest["mandatory_data_ml_guard"] == MANDATORY_GUARD
     assert manifest["mandatory_data_ml_schema"] == SCHEMA
     assert manifest["mandatory_genesis_scaling_applies_before_route_selection"] is True
+    assert manifest["mandatory_compression_debt_guard"] == MANDATORY_COMPRESSION_DEBT_GUARD
+    assert manifest["mandatory_compression_debt_schema"] == COMPRESSION_DEBT_SCHEMA
+    assert manifest["compression_debt_conserved_quantity"] == "COMPRESSION_DEBT"
+    assert manifest["compression_debt_elapsed_time_is_debt"] is False
     assert manifest["genesis_replay_default"] is False
     assert manifest["genesis_data_plane_normalization_default"] is True
 
@@ -93,6 +115,7 @@ def test_no_registered_pass219_data_ml_executor_bypasses_mandatory_guard() -> No
             data_ml_executor_count += 1
             assert "MANDATORY_GUARD" in text, path
             assert "PASS219_MANDATORY_SUDOKU_GENESIS_SCALING_DATA_ML" in text, path
+            assert "MANDATORY_COMPRESSION_DEBT_GUARD" in text, path
         if is_explicit_data_ml:
             assert "MANDATORY_GUARD" in text, path
 
