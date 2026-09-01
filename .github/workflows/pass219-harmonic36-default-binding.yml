@@ -60,6 +60,8 @@ on:
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json'
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
       - 'evidence/pass219/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json'
+      - 'evidence/pass219/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
@@ -514,8 +516,10 @@ jobs:
               assert row['fresh_selection_median_ns'] > 0
               assert row['occupancy1_lookup_median_ns'] > 0
               assert row['occupancy4_lookup_median_ns'] > 0
-              assert row['occupancy4_vs_fresh_ratio_x1000'] > 0
+              assert row['occupancy4_faster_than_fresh'] is True
+              assert row['occupancy4_vs_fresh_ratio_x1000'] > 1000
               assert row['occupancy4_vs_occupancy1_ratio_x1000'] > 0
+          assert d['measurement']['all_occupancy4_faster_than_fresh'] is True
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
@@ -557,6 +561,24 @@ jobs:
           ]
           assert result['validation_required'] == [
               'h36-compatible-stack-cache-workloads-unvalidated',
+          ]
+          assert result['local_exceptions'] == []
+          PY
+
+      - name: Validate stack-cache residency generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json')
+          result = validate_manifest(json.loads(p.read_text(encoding='utf-8')))
+          assert result['generalize_required'] == [
+              'h36-stack-cache-residency-occupancy4-linux-x86_64',
+          ]
+          assert result['validation_required'] == [
+              'h36-stack-cache-residency-occupancy8-unvalidated',
           ]
           assert result['local_exceptions'] == []
           PY
