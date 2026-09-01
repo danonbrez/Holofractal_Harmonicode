@@ -55,7 +55,11 @@
     "performance_benefit_measured": true,
     "current_validated_target": "GENERALIZE_REQUIRED",
     "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
-    "cross_platform_inference": false
+    "cross_platform_inference": false,
+    "real_workload_signatures_validated": 3,
+    "cache_targets_generalize_required": 4,
+    "h36_stack_targets_generalize_required": 3,
+    "h36_stack_local_exceptions": 1
   },
   "performance_measurement": {
     "platform": "linux-x86_64",
@@ -103,5 +107,85 @@
       "cache_benefit": true
     },
     "interpretation": "Timing is runner-local. The promoted fact is that the optimized cache hit was the exact measured winner for this validated Linux x86_64 workload identity; the 1.196x ratio is not a cross-platform constant."
+  },
+  "multisignature_validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33496909452,
+    "job": 99821090942,
+    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796096476,
+    "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e",
+    "platform": "linux-x86_64",
+    "stack_samples": 7,
+    "stack_rounds_per_sample": 8,
+    "cache_samples": 11,
+    "cache_rounds_per_sample": 4096,
+    "workloads": [
+      {
+        "class": "CONSOLE_FOCUSED",
+        "workload_signature36": 4793332410,
+        "semantic_result_signature64": "6731027650694893003",
+        "h36_median_ns": 20950,
+        "linux_median_ns": 109495,
+        "selected_candidate_id": 1,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5226,
+        "vector_key216": "tfuz(1iI-X7B1jH408c-6n60BAOrYQQLMA3-*O<L+kOiKL<QZ4)ABrcd3BVdRQ!70bDSzLKw2nl2cNHJzYg>(2H>gcld8e8eKYQ/JDf(pnFIan>AVJbRsT01p/8eHt(L5X?fzNw)5El3?D9RG+U!za81-</XVI-Mni(qEzL?6B+/hBs9vck0O8UPIcKHn1gnXA2ZU7eZ+pS1(u2Ujj!E5+wG",
+        "entry_signature64": "6170934417055748247",
+        "replay_signature64": "7010736531221978357",
+        "fresh_selection_median_ns": 18588395,
+        "cache_hit_median_ns": 14973115,
+        "cache_speedup_x1000": 1241,
+        "stack_classification": "GENERALIZE_REQUIRED",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "BINARY_IO_FOCUSED",
+        "workload_signature36": 21509979554,
+        "semantic_result_signature64": "1456447110141201574",
+        "h36_median_ns": 20889,
+        "linux_median_ns": 106910,
+        "selected_candidate_id": 1,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5118,
+        "vector_key216": "jei)gdf/PEAs9MILOtuHOQXpnUt*Tf47PD?zy3gwy!tZT5)Int*XpA4SKMXYcEMAgr+k>Mtyimln!(PDfX3E?49PUHB2a12t5X2dOb+HT/P6z+x8(124)bX(CZXaW3<-RU(mRMEWy77XtVOU-cU<U?YXV9(aw3hQtZGE-J*6M9Nmc<kBcaIq3JCDgQ48pBMyi(O<qZy1!ag6VRtLP>WnnApX",
+        "entry_signature64": "12161527985123979229",
+        "replay_signature64": "10273493538701160304",
+        "fresh_selection_median_ns": 18790964,
+        "cache_hit_median_ns": 15161769,
+        "cache_speedup_x1000": 1239,
+        "stack_classification": "GENERALIZE_REQUIRED",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "MONITOR_CONTROL_FOCUSED",
+        "workload_signature36": 41886677838,
+        "semantic_result_signature64": "2318081696571468614",
+        "h36_median_ns": 19216,
+        "linux_median_ns": 501,
+        "selected_candidate_id": 2,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "selector_speedup_x1000": 38355,
+        "vector_key216": "q(IxvVjjUvereKtdppA>uu1yyYAvB3fxjJWuY!QVYp1+UiLu9IdfM+rk1m/L7bbkCTUP3ij1nlJiPvfoK)n34B1t!JNsJC>Plr96YIz*ryA9EJ(RHPeJ?bZJgvj77NPrdCO6r2Sr!WI/T!GSFi!jWlIQCPctCXujdyOXett3<ojTipoRPYVdO*+tNp4c/vTx3H8o1N3wiforBk5--61?!Q76",
+        "entry_signature64": "6069454105980554556",
+        "replay_signature64": "222155043648961744",
+        "fresh_selection_median_ns": 18382750,
+        "cache_hit_median_ns": 14817374,
+        "cache_speedup_x1000": 1240,
+        "stack_classification": "LOCAL_EXCEPTION_ALLOWED_NO_MEANINGFUL_BENEFIT_H36",
+        "selected_stack_classification": "LINUX_X86_64_POSIX_MEASURED_WINNER",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      }
+    ],
+    "common_invariants": {
+      "exact_h36_linux_semantic_equal_before_timing": true,
+      "cache_hit_equals_fresh_before_timing": true,
+      "stale_signature_rejected": true,
+      "mismatched_vector_key_rejected": true,
+      "deterministic_replay_receipt": true,
+      "workload_signatures_distinct": true,
+      "authoritative_state_changed": false
+    }
   }
 }
