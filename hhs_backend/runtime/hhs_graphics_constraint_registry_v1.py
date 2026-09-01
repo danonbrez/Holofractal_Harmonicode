@@ -17,6 +17,7 @@ from threading import RLock
 from typing import Any, Dict, Iterable, Mapping, Optional, Sequence
 
 from hhs_installer.canonical import canonical_bytes, hash72, hash216, stable
+from hhs_runtime.pass163.vmrc import VMRCRuntime, VMRCError
 
 CONTRACT = "HHS-P181-NCSR-GHIR-VM81-H72-H216"
 AUTHORITY = "HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1"
@@ -142,8 +143,9 @@ def validate_freeze_candidate(candidate: Mapping[str, Any]) -> Dict[str, Any]:
 class GraphicsConstraintRegistry:
     """Immutable freeze records plus atomic active constraint frontiers."""
 
-    def __init__(self, storage_root: Path | str) -> None:
+    def __init__(self, storage_root: Path | str, *, vm81: VMRCRuntime | None = None) -> None:
         self.storage_root = Path(storage_root)
+        self._vm81 = vm81
         self.storage_root.mkdir(parents=True, exist_ok=True)
         self.record_root = self.storage_root / "records"
         self.record_root.mkdir(parents=True, exist_ok=True)
@@ -323,6 +325,64 @@ class GraphicsConstraintRegistry:
             "event_count": len(self._events),
             "frontier_hash216": frontier["frontier_hash216"],
             "legacy_direct_promotion_exposed": False,
+            "vm81_authority_bound": self._vm81 is not None,
+            "independent_vm81_authority": False,
+            "vm81_epoch": None if self._vm81 is None else self._vm81.epoch,
+            "vm81_state_hash72": None if self._vm81 is None else self._vm81.state_hash72,
+        }
+
+    def _vm81_commit_transition(self, transition: str, payload: Mapping[str, Any]) -> Dict[str, Any]:
+        if self._vm81 is None:
+            raise GraphicsConstraintRegistryError("P181_VM81_ADMISSION_AUTHORITY_REQUIRED")
+        material = canonical_bytes({
+            "contract": CONTRACT,
+            "transition": transition,
+            "payload": stable(payload),
+        })
+        digest = hashlib.sha256(material).digest()
+        writes: Dict[int, int] = {}
+        for byte in digest[:16]:
+            writes[int(byte % 81)] = 1 if (byte & 1) else -1
+        try:
+            candidate = self._vm81.submit_candidate(
+                thread=62,
+                writes=writes,
+                operation="VMRC_COMMIT",
+                expected_input_hash72=self._vm81.state_hash72,
+                dependency_root=hash216(
+                    {"transition": transition, "payload": stable(payload)},
+                    domain="HHS-P181-GRAPHICS-CONSTRAINT-VM81-DEPENDENCY-V1",
+                ),
+                capability_scope="P181_GRAPHICS_CONSTRAINT_PROMOTION",
+                source_architecture="P181_GRAPHICS_CONSTRAINT_REGISTRY",
+                target_architecture="VM81",
+            )
+            result = self._vm81.execute(candidate)
+        except VMRCError as error:
+            raise GraphicsConstraintRegistryError(
+                f"P181_VM81_ADMISSION_REJECTED:{error}"
+            ) from error
+        commit = result.get("commit") or {}
+        receipt = commit.get("receipt") or {}
+        validation = result.get("validation") or {}
+        validated = validation.get("validated") or {}
+        if commit.get("classification") != "HHS_PASS_163_COMMIT_ADMITTED":
+            raise GraphicsConstraintRegistryError("P181_VM81_ADMISSION_NOT_COMMITTED")
+        receipt_hash72 = str(receipt.get("receipt_hash72") or "")
+        operation_hash216 = str(receipt.get("operation_hash216") or "")
+        if not receipt_hash72 or not operation_hash216:
+            raise GraphicsConstraintRegistryError("P181_VM81_ADMISSION_RECEIPT_INCOMPLETE")
+        return {
+            "classification": "HHS_PASS181_GRAPHICS_CONSTRAINT_VM81_ADMISSION_VERIFIED",
+            "transition": transition,
+            "candidate_id": candidate.candidate_id,
+            "receipt_hash72": receipt_hash72,
+            "operation_hash216": operation_hash216,
+            "output_hash72": str(receipt.get("output_hash72") or ""),
+            "vm81_epoch": self._vm81.epoch,
+            "singleton_authority": True,
+            "independent_vm81_authority": False,
+            "validation_mutation_authority": bool(validated.get("mutation_authority", False)),
         }
 
     def _next_version(self, predicate_id: str, record_kind: str) -> int:
@@ -392,7 +452,21 @@ class GraphicsConstraintRegistry:
                     "frontier": self._frontier_payload(),
                     "reused": True,
                 }
-            record = {**record_base, "record_hash216": record_hash216}
+            vm81_admission = self._vm81_commit_transition(
+                "FREEZE_AND_OPTIONAL_ACTIVATE",
+                {
+                    "record_hash216": record_hash216,
+                    "predicate_id": predicate_id,
+                    "record_kind": record_kind,
+                    "activate": bool(activate),
+                    "supersedes": supersedes,
+                },
+            )
+            record = {
+                **record_base,
+                "record_hash216": record_hash216,
+                "vm81_admission": vm81_admission,
+            }
             record["receipt_hash72"] = hash72(record, domain=CONSTRAINT_RECEIPT_DOMAIN)
             freeze_event = self._append_event("FREEZE", {"record": record})
             activation_event = None
@@ -481,6 +555,15 @@ class GraphicsConstraintRegistry:
                     target = None
             if target is None:
                 raise GraphicsConstraintRegistryError("P181_CONSTRAINT_ROLLBACK_TARGET_NOT_FOUND")
+            vm81_admission = self._vm81_commit_transition(
+                "ROLLBACK",
+                {
+                    "predicate_id": predicate_id,
+                    "record_kind": record_kind,
+                    "from_record_hash216": current,
+                    "target_record_hash216": target["record_hash216"],
+                },
+            )
             event = self._append_event(
                 "ROLLBACK",
                 {
@@ -488,6 +571,7 @@ class GraphicsConstraintRegistry:
                     "record_kind": record_kind,
                     "from_record_hash216": current,
                     "target_record_hash216": target["record_hash216"],
+                    "vm81_admission": vm81_admission,
                 },
             )
             return {
@@ -497,6 +581,7 @@ class GraphicsConstraintRegistry:
                 "event_hash216": event["event_hash216"],
                 "from_record_hash216": current,
                 "target_record_hash216": target["record_hash216"],
+                "vm81_admission": vm81_admission,
                 "frontier": self._frontier_payload(),
             }
 
