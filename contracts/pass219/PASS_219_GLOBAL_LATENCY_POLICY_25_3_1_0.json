@@ -1,0 +1,241 @@
+{
+  "schema": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "VALIDATED_GLOBAL_CANONICAL_DEFAULT_READY_FOR_INTEGRATION",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191",
+  "inherited": {
+    "mandatory_genesis_scaling_merge": "b8cbd8e457f7f981d1ce4c6b4c999ed4e713db1f",
+    "singleton_vm81_authority": true,
+    "hash72_hash216_authority": true,
+    "pass207_candidate_only": true,
+    "pass208_candidate_only": true,
+    "exact_cpu_vm_equality_before_admission": true,
+    "timing_noncanonical": true
+  },
+  "algebra": {
+    "a2": 1,
+    "b2": 2,
+    "c2": 3,
+    "d2": 5,
+    "mean_ratio_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "identities": [
+      "d^4/c^2 = 25/3",
+      "(b^2+c^2)^2/(a^2+b^2) = 25/3"
+    ],
+    "exact_cross_products": [
+      "5*5*3 = 3*25",
+      "(2+3)*(2+3)*3 = (1+2)*25"
+    ]
+  },
+  "tiers": [
+    {
+      "tier": 1,
+      "fps": 120,
+      "budget_ms": {
+        "numerator": 25,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 25000000,
+        "denominator": 3
+      }
+    },
+    {
+      "tier": 2,
+      "fps": 60,
+      "budget_ms": {
+        "numerator": 50,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 50000000,
+        "denominator": 3
+      }
+    },
+    {
+      "tier": 3,
+      "fps": 30,
+      "budget_ms": {
+        "numerator": 100,
+        "denominator": 3
+      },
+      "budget_ns": {
+        "numerator": 100000000,
+        "denominator": 3
+      }
+    }
+  ],
+  "window_policy": {
+    "mean_must_be_within_tier": 1,
+    "p95_must_be_within_tier": 2,
+    "max_must_be_within_tier": 3,
+    "percentile_definition": "nearest-rank",
+    "integer_nanosecond_measurements": true
+  },
+  "route_selection": {
+    "exact_semantic_equality_required": true,
+    "exact_selector_or_complete_fallback_required": true,
+    "candidate_only": true,
+    "timing_may_select_semantically_equivalent_route": true,
+    "timing_may_change_canonical_identity": false,
+    "unmet_budget": "PRESERVE_FASTEST_EXACT_ELIGIBLE_ROUTE_AND_REPORT_BUDGET_UNMET",
+    "missing_exact_selector": "COMPLETE_FALLBACK_ONLY",
+    "canonical_authority_request": "REJECT"
+  },
+  "physical_evidence": {
+    "path": "artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json",
+    "device_code": "SM-F966U",
+    "hardware_gpu_measured": true,
+    "dense_host_total_median_ns": 13400000,
+    "dense_gpu_median_ns": 11534336,
+    "dense_lane_dispatches": 68024448,
+    "expected_largest_measured_tier1_materialized_combinations": 729,
+    "expected_tier1_host_total_median_ns": 1368750,
+    "expected_tier1_lane_dispatches": 7558272,
+    "full_dense_lane_equality_claimed": false,
+    "exact_selected_sample_equality_required": true
+  },
+  "fresh_validation": {
+    "pass208_cpu_reference": "benchmarks/pass219b/pass219b_pass208_cpu_reference_benchmark.py",
+    "phase_locality": "benchmarks/pass219b/pass219b_phase_locality_benchmark.cpp",
+    "policy_overhead": "benchmarks/pass219/pass219_global_latency_policy_benchmark.cpp",
+    "analyzer": "benchmarks/pass219/analyze_pass219_global_latency_policy.py"
+  },
+  "promotion_gates": [
+    "exact algebra validates",
+    "120/60/30 tier closure validates",
+    "physical measured baseline is above Tier 1",
+    "physical measured exact-selected route reaches Tier 1",
+    "exact work count decreases",
+    "selected VM81 child-state/projection equality passes on CPU reference",
+    "phase-local exact equality gates pass",
+    "policy overhead is less than physical latency saved",
+    "canonical authority remains unchanged",
+    "missing exact optimization proof preserves complete fallback"
+  ],
+  "promotion_effect_if_supported": {
+    "action": "UPDATE_PASS219_GLOBAL_CANONICAL_DEFAULTS_AND_DOCUMENTATION",
+    "scope": "ALL_COMPATIBLE_LATENCY_SENSITIVE_VM81_DATA_ML_AND_RUNTIME_SURFACES",
+    "performance_guarantee": false,
+    "policy_guarantee": true,
+    "repair_forward_required": true
+  },
+  "prohibited": [
+    "timing as semantic identity",
+    "dropping required semantic work to satisfy frame budget",
+    "GPU direct canonical mutation",
+    "Hash72 or Hash216 authority transfer",
+    "physical GPU claims from CI CPU runner",
+    "full dense-lane equality claim from Fold7 selected-sample evidence",
+    "fixed hardware timing assumed across devices"
+  ],
+  "validation_receipt": {
+    "benchmark_head": "1a0ab12b4c2e66969a8fb8176f3ee0b66a45fa27",
+    "workflow_run": 33536893755,
+    "exact_job": 99953297079,
+    "synthetic_job": 99953297450,
+    "exact_artifact": {
+      "id": 9811999235,
+      "sha256": "3a15b58001efe6e026fd90817aa612d89801a30879ab744e4f1d8bdfcdb9ea0e"
+    },
+    "synthetic_artifact": {
+      "id": 9812007878,
+      "sha256": "e54df7a2ebb05512d795b5449823a1732cdad798f999d688fb61259a9761f6e5"
+    },
+    "classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
+    "all_promotion_gates_passed": true,
+    "fresh_ci_physical_gpu_measured": false,
+    "physical_gpu_evidence_reused_from": "artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json"
+  },
+  "measured_benefit": {
+    "fold7_dense": {
+      "host_total_median_ns": 13400000,
+      "tier": 2,
+      "lane_dispatches": 68024448
+    },
+    "fold7_largest_measured_tier1_exact_slice": {
+      "materialized_combinations": 729,
+      "host_total_median_ns": 1368750,
+      "gpu_median_ns": 1282048,
+      "tier": 1,
+      "lane_dispatches": 7558272,
+      "work_reduction_x1000": 9000,
+      "host_speedup_x1000": 9789,
+      "gpu_speedup_x1000": 8996,
+      "tier1_headroom_x1000": 6088
+    },
+    "fresh_cpu_reference": {
+      "baseline_median_ns": 771246619,
+      "baseline_tier": 4,
+      "phase_median_ns": 10101389,
+      "phase_tier": 2,
+      "work_reduction_x1000": 81000,
+      "wall_speedup_x1000": 76350,
+      "child_state_projection_equal": true
+    },
+    "fresh_phase_locality": {
+      "vector_shortlist": {
+        "dense_median_ns": 12855569,
+        "dense_tier": 2,
+        "phase_median_ns": 122972,
+        "phase_tier": 1,
+        "work_reduction_x1000": 81000,
+        "wall_speedup_x1000": 104540,
+        "exact_equal": true
+      },
+      "cache_exact_lookup": {
+        "hash_map_median_ns": 740611,
+        "phase_address_median_ns": 203172,
+        "wall_speedup_x1000": 3645,
+        "exact_equal": true
+      },
+      "materialization": {
+        "full_median_ns": 7108362,
+        "selected_median_ns": 98357,
+        "capacity_reduction_x1000": 81000,
+        "wall_speedup_x1000": 72271,
+        "exact_equal": true
+      }
+    },
+    "policy_overhead": {
+      "conservative_one_classify_route_window_per_epoch_ns": {
+        "numerator": 1765753,
+        "denominator": 31250
+      },
+      "overhead_vs_tier1_budget_ppm": 6,
+      "overhead_vs_physical_latency_saved_ppm": 4,
+      "net_latency_saved_positive": true
+    }
+  },
+  "global_default_enforcement": {
+    "required_for_compatible_latency_sensitive_pass219_surfaces": true,
+    "global_defaults_validator_must_validate_policy": true,
+    "pass219_data_ml_registration_guard": "pass219_global_latency_policy_25_over_3",
+    "pass219_execution_composer_guard": "pass219_global_latency_policy_25_over_3",
+    "performance_guarantee": false,
+    "policy_enforcement_guarantee": true,
+    "repair_forward_required": true
+  },
+  "promotion_integration_validation": {
+    "head": "4fbed09f74b0e2eb5a1452cbb720bc6f05327477",
+    "workflow_run": 33537679938,
+    "exact_job": 99955888052,
+    "synthetic_job": 99955887958,
+    "exact_artifact": {
+      "id": 9812324219,
+      "sha256": "ab8662829511ed73622953506d7d6b43e2bf30a43262f8308f3fd3a4ec7b8ca3"
+    },
+    "synthetic_artifact": {
+      "id": 9812312988,
+      "sha256": "e7573f4378dab79c8343d9918767655fd22f0b9db3ce6d4a73cdfb7dcdb77499"
+    },
+    "global_defaults_validator": true,
+    "latency_registration_conformance": true,
+    "exact_and_synthetic_green": true
+  }
+}

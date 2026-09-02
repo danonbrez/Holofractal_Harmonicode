@@ -1,0 +1,133 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py",
+    "hhs_runtime/hhs_service_registry_v1.py"
+  ],
+  "optimization": {
+    "optimization_id": "PASS219_GLOBAL_LATENCY_POLICY_25_OVER_3",
+    "compatible_object_classes": [
+      "latency_sensitive_exact_route"
+    ],
+    "required_operations": [
+      "CLASSIFY",
+      "SELECT",
+      "VALIDATE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_V1"
+    ],
+    "correctness_gate": "EXACT_SEMANTIC_EQUALITY_AND_COMPLETE_FALLBACK",
+    "benefit_gate": "VALIDATED_LATENCY_REDUCTION_WITH_NONCANONICAL_TIMING"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "latency_sensitive_exact_route",
+    "operations": [
+      "CLASSIFY",
+      "SELECT",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "route_window",
+        "type": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "selected_exact_route",
+        "type": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+      "mean_ratio_ms": {
+        "numerator": 25,
+        "denominator": 3
+      },
+      "timing_noncanonical": true,
+      "exact_semantic_equality_required": true
+    },
+    "logical_object_id": "pass219-global-latency-policy-25-over-3-source",
+    "modality_set": [
+      "VM81_RUNTIME_LATENCY"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "latency_sensitive_exact_route",
+      "operations": [
+        "CLASSIFY",
+        "SELECT",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "route_window",
+          "type": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "selected_exact_route",
+          "type": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+        "mean_ratio_ms": {
+          "numerator": 25,
+          "denominator": 3
+        },
+        "timing_noncanonical": true,
+        "exact_semantic_equality_required": true
+      },
+      "logical_object_id": "all-compatible-latency-sensitive-vm81-data-ml-runtime-surfaces",
+      "modality_set": [
+        "VM81_RUNTIME_LATENCY",
+        "DATA_ML_LATENCY"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "all-compatible-latency-sensitive-vm81-data-ml-runtime-surfaces",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "validation_run": 33536893755,
+      "exact_job": 99953297079,
+      "synthetic_job": 99953297450,
+      "promotion_integration_run": 33537679938,
+      "promotion_exact_job": 99955888052,
+      "promotion_synthetic_job": 99955887958,
+      "timing_noncanonical": true,
+      "singleton_vm81_authority_preserved": true,
+      "hash72_hash216_authority_preserved": true,
+      "gpu_direct_canonical_mutation": false,
+      "performance_guarantee": false,
+      "policy_enforcement_guarantee": true
+    }
+  ],
+  "declared_generalize_required": [
+    "all-compatible-latency-sensitive-vm81-data-ml-runtime-surfaces"
+  ],
+  "policy": {
+    "mean_ratio_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "scope": "ALL_COMPATIBLE_LATENCY_SENSITIVE_VM81_DATA_ML_AND_RUNTIME_SURFACES",
+    "timing_may_change_canonical_identity": false,
+    "exact_semantic_equality_required": true,
+    "complete_fallback_required": true,
+    "no_authority_escalation": true
+  }
+}

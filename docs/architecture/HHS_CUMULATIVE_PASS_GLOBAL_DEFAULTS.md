@@ -56,3 +56,126 @@ Every successful optimization is multimodal by default. The repository must disc
 Local-only scope is permitted only through an explicit bounded exception with repository-visible evidence. Unsafe and no-benefit exceptions require executed validation. Context-specific, interface-only, ingress-only, egress-only, and explicit one-off scopes must be bounded in their contract.
 
 A new user directive is not required for every compatible modality. Generalization is an inherited canonical obligation once compatibility, safety, and benefit are established.
+
+
+## Validated global VM81 latency policy — Pass 219 25/3
+
+Pass 219 now has a validated exact latency-governance default for compatible
+latency-sensitive VM81 runtime, data-processing, and machine-learning surfaces.
+
+The exact latency quantum is:
+
+```text
+a^2 = 1
+b^2 = 2
+c^2 = 3
+d^2 = 5
+
+d^4/c^2 = 25/3
+(b^2+c^2)^2/(a^2+b^2) = 25/3
+
+U = 25/3 ms = 1/120 s
+```
+
+The global tier lattice is:
+
+```text
+Tier 1 = U  = 25/3 ms   = 120 FPS
+Tier 2 = 2U = 50/3 ms   =  60 FPS
+Tier 3 = 4U = 100/3 ms  =  30 FPS
+```
+
+For bounded repeated execution the default observation window is:
+
+```text
+mean <= Tier 1
+p95  <= Tier 2
+max  <= Tier 3
+```
+
+The policy is exact in its classification logic. Integer nanosecond
+measurements are compared to rational tier boundaries by cross multiplication;
+no floating-point value determines the tier.
+
+### Enforcement semantics
+
+Latency is a routing constraint, not semantic authority.
+
+A latency-sensitive runtime may prefer a faster route only when that route has
+an independent exact semantic-equality witness and an exact selector/proof
+precondition. Candidate GPU, cache, projection, and phase-local routes remain
+non-authoritative.
+
+If no exact eligible route satisfies the requested latency tier:
+
+```text
+LATENCY_BUDGET_UNMET
+=> preserve the complete correct eligible route
+=> do not drop required semantic work
+=> do not change canonical identity
+```
+
+The policy therefore does not guarantee that every workload or every device
+will physically sustain 120 FPS. It guarantees deterministic tier
+classification, exact-route preference when available, explicit budget failure,
+and preservation of the inherited correct path.
+
+### Validation evidence
+
+The promotion decision is bound to workflow run `33536893755`.
+
+Exact and synthetic-current-main jobs both passed.
+
+Existing physical Fold7 WebGPU evidence classified the dense workload at Tier 2:
+
+```text
+dense host median = 13,400,000 ns
+dense GPU median  = 11,534,336 ns
+dense lanes       = 68,024,448
+```
+
+The largest already-measured exact-selected slice satisfying Tier 1 was
+`M=729`:
+
+```text
+host median       = 1,368,750 ns
+GPU median        = 1,282,048 ns
+lanes             = 7,558,272
+exact work change = 9x less lane work
+host speedup      = 9.789x observational
+GPU speedup       = 8.996x observational
+Tier-1 headroom   = 6.088x
+```
+
+A fresh CPU-reference Pass 208 run independently preserved exact selected
+VM81 child-state/projection equality while reducing logical lane work by 81x.
+Fresh phase-local vector shortlist evidence moved from Tier 2 to Tier 1 with
+exact result equality.
+
+The conservative measured cost of one classification, one route selection, and
+one 20-sample window evaluation was about 56.5 ns per epoch on the validation
+runner, approximately 6 ppm of the Tier-1 budget and approximately 4 ppm of the
+physical latency saved in the Fold7 comparison.
+
+Timing remains observational. The physical Fold7 artifact measured a real GPU;
+the validation CI runner did not. The Fold7 artifact proves selected-sample
+equality rather than full dense-lane equality, so selected VM81
+child-state/projection equality is independently rechecked on the CPU reference
+path.
+
+### Global-default consequence
+
+The benchmark classification is:
+
+`GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED`
+
+Therefore the 25/3 latency policy is a canonical cross-cutting default for
+compatible latency-sensitive Pass 219 surfaces under the existing global
+repair-forward rule.
+
+Compatible future surfaces must declare the
+`pass219_global_latency_policy_25_over_3` guard. Compatible existing surfaces
+that omit the policy are `WIRED_BUT_STALE` until repaired forward.
+
+The policy never creates an additional VM81 mutation authority, persistence
+authority, Hash72 authority, or Hash216 authority.

@@ -1,0 +1,161 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp",
+    ".github/workflows/pass219-harmonic36-default-binding.yml",
+    "evidence/pass219/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json"
+  ],
+  "optimization": {
+    "optimization_id": "H36_STACK_CACHE_CAPACITY8_1_14",
+    "compatible_object_classes": [
+      "stack_selection_cache"
+    ],
+    "required_operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE",
+      "BOUNDARY_CHECK"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_STACK_SELECTION_V1"
+    ],
+    "correctness_gate": "EIGHT_RESIDENT_EXACT_ISOLATION_AND_FULL_CAPACITY_BOUNDARY",
+    "benefit_gate": "OCCUPANCY8_LOOKUP_FASTER_THAN_FRESH_SELECTION_FOR_ALL_EIGHT_RESIDENTS"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "stack_selection_cache",
+    "operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cached_selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+      "resident_entries": 4,
+      "capacity": 8
+    },
+    "logical_object_id": "h36-stack-cache-capacity4-inherited-reference",
+    "modality_set": [
+      "H36_STACK_CACHE_RESIDENCY"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE",
+        "BOUNDARY_CHECK"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "resident_entries": 8,
+        "capacity": 8
+      },
+      "logical_object_id": "h36-stack-cache-capacity8-linux-x86_64",
+      "modality_set": [
+        "H36_STACK_CACHE_RESIDENCY"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE",
+        "BOUNDARY_CHECK"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "resident_entries": 8,
+        "capacity": 8,
+        "platform": "OTHER_COMPATIBLE"
+      },
+      "logical_object_id": "h36-stack-cache-capacity8-cross-platform-unvalidated",
+      "modality_set": [
+        "H36_STACK_CACHE_RESIDENCY"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-stack-cache-capacity8-linux-x86_64",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "platform": "linux-x86_64",
+      "validation_run": 33528991694,
+      "validation_job": 99927016899,
+      "artifact_id": 9808920709,
+      "artifact_sha256": "8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417",
+      "resident_count": 8,
+      "capacity": 8,
+      "next_sequence": 9,
+      "ninth_distinct_store_buffer_too_small": true,
+      "idempotent_existing_store_at_capacity_ok": true,
+      "exact_isolation": true,
+      "all_occupancy8_faster_than_fresh": true,
+      "authority_escalation": false
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-stack-cache-capacity8-linux-x86_64"
+  ],
+  "policy": {
+    "capacity8_linux_x86_64": "GENERALIZE_REQUIRED",
+    "capacity8_cross_platform": "VALIDATION_REQUIRED",
+    "no_cross_platform_inference": true,
+    "no_authority_escalation": true
+  }
+}
