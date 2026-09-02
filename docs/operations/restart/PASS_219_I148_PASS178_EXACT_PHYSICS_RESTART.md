@@ -8,6 +8,11 @@
 - frozen predecessor I147 checkpoint: `d6a9e81361938c53536f14f4f23be9bc4080e838`
 - first exact-physics nucleus commit: `97498ede3a9a5907c0cfc25f5fd868072577fcdc`
 - served Physics Studio wiring commit: `553589499985890fcbf493d59e65fe76c2a07e52`
+- pre-cumulative validation implementation head: `a19d601fd4141dda04d945ef72ed2bac4d4dabac`
+- failed dedicated run: `33626494423`
+- repair commit: `0b7ae01ff50e7f0ab3df6ab2b068506ea22d6c31`
+- repair test commit: `1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3`
+- repair validation run: `33626761513`
 - merge status: UNMERGED
 - authoritative-main verification: NOT PERFORMED
 - cumulative Pass 178 binding: NOT YET ADMITTED
@@ -31,39 +36,37 @@ The repository-visible corpus is only the contract-visible corpus nucleus. The c
 
 The following remain terminal debt: complete compiler pipeline, thermodynamic kernel, charged-particle field lab, full double-slit lab, measurement authority, singular Hash72 clock integration, full Three.js viewport, MP4 capture, browser/mobile performance/security acceptance, and authoritative-main closure.
 
-## Next action
-
-Run the dedicated I148 pre-cumulative validation. If green, seal its receipt, add the cumulative Pass 178 inherited C/C++ binding, extend global defaults to floor 178 / binding count 43, preserve `terminal_pass178_completion=false`, and execute the post-binding cumulative membrane.
-
-If validation fails, repair only the impacted Pass 178 surface. Do not widen authority and do not investigate unrelated relay fanout.
-
-
-## Hosted pre-cumulative validation
+## Dedicated pre-cumulative validation failure and repair
 
 Dedicated workflow:
 
 `.github/workflows/pass219-i148-pass178-exact-physics.yml`
 
-Exact implementation head:
+Run `33626494423` executed against exact head `a19d601fd4141dda04d945ef72ed2bac4d4dabac` and failed only at `Run Pass 178 Python conformance`.
 
-`a19d601fd4141dda04d945ef72ed2bac4d4dabac`
+Observed result:
 
-Workflow run:
+- 10 tests passed;
+- 1 test failed;
+- failure: `tests/test_hhs_pass178_abi_replay.py::test_vm81_admission_and_replay_chain`;
+- exception: `P178_CANDIDATE_NOT_VALIDATED`;
+- later native/corpus/capture/policy stages were skipped because the dependency-scoped Python gate failed;
+- unrelated Pass 205/166/174/acceptance/relay failures remain outside I148 scope.
 
-`33626494423`
+Root cause: an admitted relativistic state serializes exact rationals as canonical `[numerator, denominator]` pairs, but `ExactRational.coerce()` accepted exact objects, integers, strings and `Fraction` while rejecting the same canonical pair representation during the next validation cycle. This caused `_evolve()` output to fail re-validation before VM81 admission. The commit path therefore failed closed as intended.
 
-Recorded state at this checkpoint:
+Repair:
 
-`IN_PROGRESS_EXTERNAL_CI`
+- `0b7ae01ff50e7f0ab3df6ab2b068506ea22d6c31` adds exact two-integer list/tuple pair coercion while preserving Boolean rejection, zero-denominator rejection, normalization and float rejection;
+- `1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3` adds explicit canonical pair round-trip coverage;
+- no VM81, Hash72, Hash216, GPU, browser, renderer, corpus-completeness or floating-point authority was widened.
 
-At handoff, checkout and Python setup were green and dependency-scoped package installation was still active. No Pass 178 implementation/test stage had failed.
+Repair validation run `33626761513` is the authoritative next dependency-scoped run on exact repair head `1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3`.
 
-Routine immediate failures from unrelated Pass 205/166/174/acceptance/relay workflows are outside I148 dependency scope.
+## Next action
 
-Once the exact run executes:
+If repair run `33626761513` is green, freeze its exact receipt/artifact, add the cumulative inherited Pass 178 C/C++ binding, extend global defaults to floor `178` / binding count `43`, preserve `terminal_pass178_completion=false` and `repair_forward_required=true`, and execute one bounded post-binding cumulative validation.
 
-- if green, seal the nucleus receipt/artifact and add cumulative inherited Pass 178 with global floor `178` / binding count `43`, preserving `terminal_pass178_completion=false`;
-- if a dependency-scoped stage fails, repair only that Pass 178 surface;
-- preserve singleton inherited VM81 and no independent Hash72/Hash216/GPU/browser/floating-point authority;
-- do not claim the contract-visible corpus nucleus is the complete historical constraint corpus;
-- do not merge to main without separate authorization.
+If the repair run fails, inspect and repair only the newly failing Pass 178 dependency-scoped surface.
+
+Preserve singleton inherited VM81 authority, no independent Hash72 commit clock, archival-only Hash216 identity, no renderer/GPU/browser/floating-point canonical authority, and the explicit nonterminal status of the contract-visible corpus. Do not merge to main without separate authorization.
