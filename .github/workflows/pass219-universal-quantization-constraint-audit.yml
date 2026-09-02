@@ -22,6 +22,8 @@ on:
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc'
       - 'hhs_runtime/c/hhs_pass192_fibonacci_compression_1_9.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_*.inc'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_*.h'
       - 'hhs_runtime/src/hhs_hash216.c'
       - 'hhs_runtime/include/hhs_hash216_bytes.h'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
