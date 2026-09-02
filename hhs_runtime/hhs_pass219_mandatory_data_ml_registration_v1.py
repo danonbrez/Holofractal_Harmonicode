@@ -16,6 +16,18 @@ from hhs_runtime.hhs_pass219_cross_modal_reversible_state_registration_v1 import
     WORK_PLAN_SYMBOL as CROSS_MODAL_WORK_PLAN_SYMBOL,
 )
 
+from hhs_runtime.hhs_pass219_raw5184_octonion_audio_hydration_registration_v1 import (
+    BIT_EXPORT_SYMBOL as AUDIO5184_BIT_EXPORT_SYMBOL,
+    BIT_IMPORT_SYMBOL as AUDIO5184_BIT_IMPORT_SYMBOL,
+    FRAME_TO_PCM_SYMBOL as AUDIO5184_FRAME_TO_PCM_SYMBOL,
+    HYDRATE_SYMBOL as AUDIO5184_HYDRATE_SYMBOL,
+    MANDATORY_GUARD as AUDIO5184_GUARD,
+    PCM_TO_FRAME_SYMBOL as AUDIO5184_PCM_TO_FRAME_SYMBOL,
+    PIPELINE_SYMBOL as AUDIO5184_PIPELINE_SYMBOL,
+    SCHEMA as AUDIO5184_SCHEMA,
+    VALIDATE_SYMBOL as AUDIO5184_VALIDATE_SYMBOL,
+)
+
 from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
     CLASSIFY_SYMBOL as LATENCY_CLASSIFY_SYMBOL,
     MANDATORY_LATENCY_GUARD,
@@ -83,6 +95,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
             LATENCY_POLICY_SCHEMA,
             CROSS_MODAL_MANIFOLD_SCHEMA,
+            AUDIO5184_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
@@ -102,6 +115,13 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             LATENCY_SELECT_SYMBOL,
             CROSS_MODAL_STATE_VALIDATE_SYMBOL,
             CROSS_MODAL_WORK_PLAN_SYMBOL,
+            AUDIO5184_BIT_IMPORT_SYMBOL,
+            AUDIO5184_BIT_EXPORT_SYMBOL,
+            AUDIO5184_FRAME_TO_PCM_SYMBOL,
+            AUDIO5184_PCM_TO_FRAME_SYMBOL,
+            AUDIO5184_HYDRATE_SYMBOL,
+            AUDIO5184_VALIDATE_SYMBOL,
+            AUDIO5184_PIPELINE_SYMBOL,
         ],
         "guards": [
             "exact_sudoku_qudit_genesis_normalization",
@@ -115,6 +135,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "existing_hash72_hash216_authority_only",
             MANDATORY_LATENCY_GUARD,
             CROSS_MODAL_MANIFOLD_GUARD,
+            AUDIO5184_GUARD,
         ],
         "rejection_codes": [
             "REJECT_PASS219_DATA_ML_WITHOUT_GENESIS_NORMALIZATION",
@@ -124,6 +145,7 @@ def pass219_mandatory_data_ml_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_DATA_ML_WITHOUT_EXACT_CPU_VM_EQUALITY",
             "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY",
             "REJECT_PASS219_DATA_ML_WITHOUT_CROSS_MODAL_MANIFOLD_PROOF",
+            "REJECT_PASS219_SERIALIZATION_WITHOUT_RAW5184_PCM64_HYDRATION",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_ONLY",
         "persistence_policy": "INHERITED_HASH72_HASH216_PATHS_ONLY",
@@ -145,6 +167,8 @@ def pass219_mandatory_data_ml_manifest() -> Dict[str, Any]:
         "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
         "mandatory_cross_modal_manifold_guard": CROSS_MODAL_MANIFOLD_GUARD,
         "mandatory_cross_modal_manifold_schema": CROSS_MODAL_MANIFOLD_SCHEMA,
+        "mandatory_audio5184_guard": AUDIO5184_GUARD,
+        "mandatory_audio5184_schema": AUDIO5184_SCHEMA,
         "work_classes": list(WORK_CLASSES),
         "stage_order": list(STAGE_ORDER),
         "genesis": {

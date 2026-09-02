@@ -17,7 +17,7 @@ No other conventional STEM axiom is automatically native.
 
 | Projection ID | Source | Target | Preservation class | Reverse inference | Authority / validation |
 |---|---|---|---|---|---|
-| `PI-VM81-BYTES-v1` | VM81 frame | 648-byte little-endian x86_64-aligned carrier | exact serialization | exact | merged VM81 exact kernel/ABI |
+| `PI-VM81-BYTES-v1` | VM81 frame | 648-byte little-endian x86_64-aligned carrier | exact serialization | exact | merged VM81 exact kernel/ABI |\n| `PI-VM81-PCM64-I148-v1` | VM81 81×64-bit frame | 81-sample PCM64 carrier + ordered mono-lane phase witnesses | carrier: exact bit identity; waveform: exact integer projection | carrier exact; derived waveform does not infer source without carrier | Pass 219 I148; scalar projection has no runtime/admission authority |
 | `PI-X64-TRANSPORT-v1` | x86_64 instruction/byte stream | exact ABI byte transport | byte identity | exact byte round-trip | Pass 175/186 + merged exact ABI |
 | `PI-VM5184-OP-v1` | VM81 operation state | `(cell81,operation64)` | typed coordinate | exact where inherited mapping defined | VM81 contracts |
 | `PI-H72-5184-v1` | Hash72 token occurrence | `(position72,glyph72)` 5,184 plane | position/glyph occurrence | exact occurrence round-trip | exact kernel/ABI + Hash72 contract |
