@@ -6,12 +6,18 @@ from pathlib import Path
 
 import pytest
 
+from hhs_runtime.pass163.vmrc import VMRCRuntime
+
 from hhs_backend.runtime.hhs_graphics_constraint_registry_v1 import (
     AUTHORITY,
     PROMOTION_STAGES,
     GraphicsConstraintRegistry,
     GraphicsConstraintRegistryError,
 )
+
+
+def _registry(root: Path, vm81: VMRCRuntime | None = None) -> GraphicsConstraintRegistry:
+    return GraphicsConstraintRegistry(root, vm81=vm81 or VMRCRuntime())
 
 
 def _candidate(
@@ -74,7 +80,7 @@ def _promotion_evidence(label: str = "v1") -> dict:
 
 
 def test_incomplete_promotion_evidence_and_counterexamples_fail_closed(tmp_path: Path) -> None:
-    registry = GraphicsConstraintRegistry(tmp_path / "registry")
+    registry = _registry(tmp_path / "registry")
     evidence = _promotion_evidence()
     evidence["stages"]["adversarial_tested"] = False
     with pytest.raises(GraphicsConstraintRegistryError, match="STAGES_INCOMPLETE"):
@@ -113,7 +119,7 @@ def test_incomplete_promotion_evidence_and_counterexamples_fail_closed(tmp_path:
 
 
 def test_hard_constraint_and_style_profile_freeze_into_separate_frontiers(tmp_path: Path) -> None:
-    registry = GraphicsConstraintRegistry(tmp_path / "registry")
+    registry = _registry(tmp_path / "registry")
     hard = registry.freeze_candidate(
         _candidate("RECIPROCAL_PALETTE", candidate_hash="hard-v1"),
         _promotion_evidence("hard"),
@@ -149,7 +155,7 @@ def test_hard_constraint_and_style_profile_freeze_into_separate_frontiers(tmp_pa
 
 
 def test_explicit_supersession_and_rollback_preserve_immutable_versions(tmp_path: Path) -> None:
-    registry = GraphicsConstraintRegistry(tmp_path / "registry")
+    registry = _registry(tmp_path / "registry")
     first = registry.freeze_candidate(
         _candidate("ALL_LAYERS_NATIVE", candidate_hash="native-v1"),
         _promotion_evidence("v1"),
@@ -188,7 +194,7 @@ def test_explicit_supersession_and_rollback_preserve_immutable_versions(tmp_path
 
 def test_cold_restart_reconstructs_exact_active_frontier_and_event_chain(tmp_path: Path) -> None:
     root = tmp_path / "registry"
-    registry = GraphicsConstraintRegistry(root)
+    registry = _registry(root)
     first = registry.freeze_candidate(
         _candidate("STRICT_IMPROVEMENT_ADMISSION", candidate_hash="strict-v1"),
         _promotion_evidence("strict-v1"),
@@ -214,7 +220,7 @@ def test_cold_restart_reconstructs_exact_active_frontier_and_event_chain(tmp_pat
     expected_frontier = registry.active_frontier()
     expected_records = registry.list_records()
 
-    recovered = GraphicsConstraintRegistry(root)
+    recovered = _registry(root)
     assert recovered.active_frontier() == expected_frontier
     assert recovered.list_records() == expected_records
     replay = recovered.verify_replay()
@@ -229,7 +235,7 @@ def test_cold_restart_reconstructs_exact_active_frontier_and_event_chain(tmp_pat
 
 def test_journal_and_frontier_tampering_fail_closed(tmp_path: Path) -> None:
     journal_root = tmp_path / "journal-registry"
-    journal_registry = GraphicsConstraintRegistry(journal_root)
+    journal_registry = _registry(journal_root)
     journal_registry.freeze_candidate(
         _candidate("REJECTED_CANDIDATES_LACK_AUTHORITY", candidate_hash="reject-v1"),
         _promotion_evidence("reject-v1"),
@@ -237,10 +243,10 @@ def test_journal_and_frontier_tampering_fail_closed(tmp_path: Path) -> None:
     with journal_registry.journal_path.open("ab") as handle:
         handle.write(b"incomplete-tail")
     with pytest.raises(GraphicsConstraintRegistryError, match="INCOMPLETE_TAIL"):
-        GraphicsConstraintRegistry(journal_root)
+        _registry(journal_root)
 
     frontier_root = tmp_path / "frontier-registry"
-    frontier_registry = GraphicsConstraintRegistry(frontier_root)
+    frontier_registry = _registry(frontier_root)
     frontier_registry.freeze_candidate(
         _candidate("RECIPROCAL_PALETTE", candidate_hash="palette-v1"),
         _promotion_evidence("palette-v1"),
@@ -252,8 +258,57 @@ def test_journal_and_frontier_tampering_fail_closed(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     with pytest.raises(GraphicsConstraintRegistryError, match="FRONTIER_REPLAY_MISMATCH"):
-        GraphicsConstraintRegistry(frontier_root)
+        _registry(frontier_root)
 
+
+
+def test_runtime_constraint_freeze_requires_vm81_and_records_admission(tmp_path: Path) -> None:
+    root = tmp_path / "vm81-gate"
+    missing = GraphicsConstraintRegistry(root)
+    with pytest.raises(GraphicsConstraintRegistryError, match="VM81_ADMISSION_AUTHORITY_REQUIRED"):
+        missing.freeze_candidate(
+            _candidate("VM81_REQUIRED", candidate_hash="vm81-required"),
+            _promotion_evidence("vm81-required"),
+        )
+    assert not missing.list_records()
+
+    vm81 = VMRCRuntime()
+    before_epoch = vm81.epoch
+    registry = GraphicsConstraintRegistry(root, vm81=vm81)
+    frozen = registry.freeze_candidate(
+        _candidate("VM81_REQUIRED", candidate_hash="vm81-admitted"),
+        _promotion_evidence("vm81-admitted"),
+    )
+    admission = frozen["record"]["vm81_admission"]
+    assert vm81.epoch == before_epoch + 1
+    assert admission["classification"] == "HHS_PASS181_GRAPHICS_CONSTRAINT_VM81_ADMISSION_VERIFIED"
+    assert admission["singleton_authority"] is True
+    assert admission["independent_vm81_authority"] is False
+    assert admission["validation_mutation_authority"] is False
+    assert admission["receipt_hash72"]
+    assert admission["operation_hash216"]
+
+
+def test_rollback_requires_vm81_commit(tmp_path: Path) -> None:
+    vm81 = VMRCRuntime()
+    registry = GraphicsConstraintRegistry(tmp_path / "rollback-vm81", vm81=vm81)
+    first = registry.freeze_candidate(
+        _candidate("ROLLBACK_VM81", candidate_hash="rollback-v1"),
+        _promotion_evidence("rollback-v1"),
+    )
+    second = registry.freeze_candidate(
+        _candidate("ROLLBACK_VM81", candidate_hash="rollback-v2"),
+        _promotion_evidence("rollback-v2"),
+        supersedes=first["record"]["record_hash216"],
+    )
+    before = vm81.epoch
+    result = registry.rollback(
+        "ROLLBACK_VM81",
+        target_record_hash216=first["record"]["record_hash216"],
+    )
+    assert vm81.epoch == before + 1
+    assert result["vm81_admission"]["classification"] == "HHS_PASS181_GRAPHICS_CONSTRAINT_VM81_ADMISSION_VERIFIED"
+    assert result["from_record_hash216"] == second["record"]["record_hash216"]
 
 def test_governed_router_shadows_legacy_direct_promotion() -> None:
     from hhs_backend.visual_server import app
