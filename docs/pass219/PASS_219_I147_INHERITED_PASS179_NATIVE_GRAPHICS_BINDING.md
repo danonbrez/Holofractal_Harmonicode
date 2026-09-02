@@ -108,3 +108,35 @@ The authoritative post-binding executed result will be indexed under:
 `evidence/pass179/i147/PASS_219_I147_PASS179_CUMULATIVE_VALIDATION_RECEIPT_INDEX.json`.
 
 No merge, deployment, authoritative-main verification, or terminal Pass 179 completion is implied by branch-local green validation.
+
+
+## Post-binding green validation
+
+The first post-binding run `33622474165` passed the Pass 179 runtime, native C11, cumulative membrane, and 179/42 census but failed the global multimodal `audit-diff` because deterministic PNG compression in `hhs_runtime/pass179/software.py` had no optimization-generalization declaration.
+
+Repair-forward added:
+
+- manifest commit `610b0625a96c0b2fa980aff2029ef49a940477e2`;
+- optimization `PASS179_DETERMINISTIC_PNG_DEFLATE_COMPRESSION_I147`;
+- verified generalization target `pass179-compatible-rgba16-image-capture`;
+- compatible frame-sequence PNG egress remains `VALIDATION_REQUIRED`;
+- retrigger head `a8f59a36360814a83ac7a2f916e423d080afdb8b`.
+
+Final branch-local post-binding run:
+
+- workflow run `33622650604` — **SUCCESS**;
+- exact validated head `a8f59a36360814a83ac7a2f916e423d080afdb8b`;
+- Python: `13 passed, 1 warning`;
+- native C11 build/conformance: green;
+- cumulative I147 membrane: green;
+- global canonical defaults: `42` bindings / floor `179`;
+- multimodal generalization and `audit-diff`: green;
+- aggregate exact C ABI: green;
+- Pass 179 C/C++ binder conformance: green;
+- global-default C/C++ conformance: green;
+- nonterminal assertions: green;
+- Hash72 receipt: `XQ<oGqP2x9w0Mdq13(()MG7X*SDM)zR9TNNuVazs1+puuR8q9YGDO1BG<Rx)Zo?vBp!Ew+6d`;
+- artifact `9843523227`, SHA-256 `5861d4563e6692613c29f756d85aecb46e21138d1ddfbda7aef1164c118ecf6d`;
+- cumulative receipt-index blob `3a02bea7858f77cb627633ab709c92f31e7236fc`.
+
+Pass 179 is therefore **cumulatively wired and branch-locally validated, but nonterminal**. Ten terminal categories remain repair-forward debt. No merge, authoritative-main verification, deployment, or terminal Pass 179 completion is claimed.
