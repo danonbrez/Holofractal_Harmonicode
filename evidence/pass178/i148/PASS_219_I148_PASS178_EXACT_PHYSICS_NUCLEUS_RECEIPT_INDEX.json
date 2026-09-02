@@ -1,0 +1,66 @@
+{
+  "schema": "PASS_219_I148_PASS178_EXACT_PHYSICS_NUCLEUS_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration148-pass178-exact-physics-reconciliation",
+  "validated_nucleus": {
+    "head_sha": "1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3",
+    "workflow_path": ".github/workflows/pass219-i148-pass178-exact-physics.yml",
+    "workflow_run_id": 33626761513,
+    "job_id": 100236252569,
+    "conclusion": "success",
+    "classification": "P178_EXACT_PHYSICS_NUCLEUS_VALIDATED_NONTERMINAL",
+    "python_conformance": "11 passed, 1 warning",
+    "native_c11_build": true,
+    "native_c11_conformance": true,
+    "deterministic_replay_capture": true,
+    "corpus_and_http_surface": true,
+    "global_canonical_defaults_preserved": true,
+    "multimodal_generalization_preserved": true
+  },
+  "repair_forward_history": {
+    "failed_run_id": 33626494423,
+    "failed_head_sha": "a19d601fd4141dda04d945ef72ed2bac4d4dabac",
+    "failure": "P178_CANDIDATE_NOT_VALIDATED",
+    "root_cause": "CANONICAL_EXACT_RATIONAL_PAIR_REPLAY_COERCION_MISSING",
+    "repair_commit": "0b7ae01ff50e7f0ab3df6ab2b068506ea22d6c31",
+    "repair_test_commit": "1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3",
+    "authority_widened": false
+  },
+  "constraint_corpus": {
+    "path": "contracts/pass178/HARMONICODE_PHYSICS_CONSTRAINT_CORPUS.hhs",
+    "bytes": 857,
+    "sha256": "be4180f5991c57f87f2a35cf45a0638114284a957d2a39ba7ff53478b6ea23ff",
+    "classification": "CONTRACT_VISIBLE_CORPUS_NUCLEUS_NOT_COMPLETE_HISTORICAL_CORPUS"
+  },
+  "generated_receipt": {
+    "receipt_hash72": "<Wq+uIb99X</wleuL8id2t<FEUKKWJ6BF2y/HeE9JYFvgYD4k1!j)BcECDTSQyS//v!q80YA",
+    "archive_hash216": "r8ytoUa8saoMX6w4fARXJumX/gA+Rtm7G5ynrW5J)RL+Xz(1zTVkSMadbUcolsDP1h6uQRcoKNPBz9ylpDAz-B)Zs2hmfdyH0-obAJ(U4WyCtSXnz)Da-XM*3f4Yj(z>p2i/iab/bPm6A3A>Fppznf!bcpj3ydz0LQeQ)x2KMrhr9B4NM*SS(ReJNaG1PmMhR<NDo<Lcs96r3JkMKL+-YG-B"
+  },
+  "artifact": {
+    "id": 9845109512,
+    "name": "pass219-i148-pass178-exact-physics-nucleus",
+    "size_bytes": 1588,
+    "sha256": "59a3c411c5603587e6cad68a42d8cfe60bda73f18b0614a0e5e70063a82c4e79",
+    "expires_at": "2026-10-02T11:51:43Z"
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "renderer_mutation_authority": false,
+    "gpu_mutation_authority": false,
+    "browser_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "closure": {
+    "pre_cumulative_validation_green": true,
+    "cumulative_pass178_binding_added": false,
+    "terminal_pass178_completion": false,
+    "repair_forward_required": true,
+    "complete_historical_constraint_corpus": false,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}
