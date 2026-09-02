@@ -26,6 +26,12 @@ def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
+def _exact_rational(value: Any) -> ExactRational:
+    if isinstance(value, (list, tuple)) and len(value) == 2:
+        return ExactRational(int(value[0]), int(value[1]))
+    return ExactRational.coerce(value)
+
+
 def _hash216(domain: str, payload: Mapping[str, Any]) -> str:
     lanes = [
         make_hash72_witness(f"{domain}:previous", payload, width=72).digest,
@@ -357,11 +363,11 @@ class PhysicsAuthority:
         if model.model_kind == "RELATIVISTIC_FREE_PARTICLE":
             particle = RelativisticParticle(
                 particle_id=str(state.get("particle_id") or model.model_id),
-                mass=ExactRational.coerce(state["mass"]),
-                charge=ExactRational.coerce(state.get("charge", 0)),
-                position4=tuple(ExactRational.coerce(v) for v in state["position4"]),  # type: ignore[arg-type]
-                four_velocity=tuple(ExactRational.coerce(v) for v in state["four_velocity"]),  # type: ignore[arg-type]
-                proper_step=ExactRational.coerce(state["proper_step"]),
+                mass=_exact_rational(state["mass"]),
+                charge=_exact_rational(state.get("charge", 0)),
+                position4=tuple(_exact_rational(v) for v in state["position4"]),  # type: ignore[arg-type]
+                four_velocity=tuple(_exact_rational(v) for v in state["four_velocity"]),  # type: ignore[arg-type]
+                proper_step=_exact_rational(state["proper_step"]),
             )
             return particle.payload()
         if model.model_kind == "QUANTUM_FINITE_CAYLEY_STEP":
@@ -385,7 +391,7 @@ class PhysicsAuthority:
             return {
                 "schema": "HHS_PASS_178_HARMONICODE_STATE_V1",
                 "values": {
-                    key: ExactRational.coerce(state[key]).as_pair()
+                    key: _exact_rational(state[key]).as_pair()
                     for key in ("P", "A", "B", "p", "q")
                 },
                 "constraint_graph": graph.payload(),
