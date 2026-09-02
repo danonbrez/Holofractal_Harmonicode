@@ -1,0 +1,181 @@
+name: Pass 219 I147 Pass 179 Cumulative Binding
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration147-pass179-native-graphics-reconciliation
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass179_1_47.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass179_1_47.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i147_pass179.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/pass219/test_pass219_inherited_pass179_1_47.*'
+      - 'tests/pass219/test_pass219_cumulative_pass179_membrane_i147.py'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - '.github/workflows/pass219-i147-pass179-cumulative-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i147-pass179-cumulative-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass179-cumulative-i147:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install pytest 'cryptography>=46.0,<47.0' 'fastapi>=0.128,<1.0' 'pydantic>=2.7,<3.0'
+
+      - name: Verify frozen pre-cumulative Pass 179 evidence
+        run: |
+          git merge-base --is-ancestor f03491cd6744e56e2e81a689416b94a6fb0ae9a4 HEAD
+          git merge-base --is-ancestor ff149faeadf3e31764138a2316052a013b28599c HEAD
+          test "$(git hash-object evidence/pass179/i147/PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT_INDEX.json)" = "b6c7c9b42d3892de6ddaff354514ceafaa695b8e"
+          grep -F '"workflow_run_id": 33621928309' evidence/pass179/i147/PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT_INDEX.json
+          grep -F '"conclusion": "success"' evidence/pass179/i147/PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT_INDEX.json
+
+      - name: Compile I147 cumulative surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass219_cumulative_pass_membrane_i147_pass179.py             hhs_runtime/pass179/types.py             hhs_runtime/pass179/runtime.py             hhs_runtime/pass179/software.py             hhs_runtime/pass179/shader_ir.py             hhs_runtime/pass179/backends.py             hhs_runtime/pass179/animation.py             hhs_runtime/pass179/materials.py             hhs_runtime/pass179/golden.py             hhs_runtime/pass179/capture.py             hhs_backend/api/pass179_graphics_routes.py
+
+      - name: Run complete current Pass 179 Python conformance
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/test_hhs_pass179_exact_graphics.py             tests/test_hhs_pass179_scene_animation.py             tests/test_hhs_pass179_shader_ir.py             tests/test_hhs_pass179_software_renderer.py             tests/test_hhs_pass179_gpu_backends.py             tests/test_hhs_pass179_golden_scenes.py             tests/test_hhs_pass179_capture.py             tests/test_hhs_pass179_browser_ide.py             tests/test_hhs_pass179_materials.py
+
+      - name: Build and run Pass 179 native C11 conformance
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass179_graphics clean all
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/native/pass179_graphics_conformance.c             native_projects/hhs_pass179_graphics/src/hhs179_graphics.c             -o /tmp/pass179-native-conformance
+          /tmp/pass179-native-conformance
+
+      - name: Run I147 cumulative membrane
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass179_membrane_i147.py
+
+      - name: Preserve global canonical defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+          git fetch origin main
+          python tools/hhs_multimodal_optimization_generalizer.py audit-diff origin/main
+
+      - name: Compile aggregate exact ABI and Pass 179 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i147
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i147/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Inative_projects/hhs_pass186_x64_vm81_q144/include             -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c             -o /tmp/pass219-i147/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S             -o /tmp/pass219-i147/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass179_1_47.c             /tmp/pass219-i147/exact.o /tmp/pass219-i147/pass186.o /tmp/pass219-i147/registers.o             -o /tmp/pass219-i147/pass179-c
+          /tmp/pass219-i147/pass179-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass179_1_47.cpp             /tmp/pass219-i147/exact.o /tmp/pass219-i147/pass186.o /tmp/pass219-i147/registers.o             -o /tmp/pass219-i147/pass179-cpp
+          /tmp/pass219-i147/pass179-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.c             /tmp/pass219-i147/exact.o /tmp/pass219-i147/pass186.o /tmp/pass219-i147/registers.o             -o /tmp/pass219-i147/defaults-c
+          /tmp/pass219-i147/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp             /tmp/pass219-i147/exact.o /tmp/pass219-i147/pass186.o /tmp/pass219-i147/registers.o             -o /tmp/pass219-i147/defaults-cpp
+          /tmp/pass219-i147/defaults-cpp
+
+      - name: Assert nonterminal cumulative classification
+        run: |
+          grep -F 'terminal_pass179_completion_claimed() noexcept { return false; }' hhs_runtime/include/hhs_pass219_inherited_pass179_1_47.hpp
+          grep -F 'repair_forward_required() noexcept { return true; }' hhs_runtime/include/hhs_pass219_inherited_pass179_1_47.hpp
+          grep -F '#define HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_FLOOR 179U' hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h
+          grep -F '#define HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT 42U' hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h
+
+      - name: Emit exact-head cumulative nonterminal receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass179/i147
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i147_pass179 import execute_pass179_membrane_preflight
+
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          preflight=execute_pass179_membrane_preflight()
+          payload={
+              "schema":"PASS_219_I147_PASS179_CUMULATIVE_VALIDATION_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration147-pass179-native-graphics-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"HHS_PASS179_I147_CUMULATIVE_NONTERMINAL_VERIFIED",
+              "pre_cumulative_green_run":33621928309,
+              "validated_nucleus_head":"ff149faeadf3e31764138a2316052a013b28599c",
+              "nucleus_receipt_blob":"b6c7c9b42d3892de6ddaff354514ceafaa695b8e",
+              "preflight":preflight,
+              "global_defaults":{"wired_ceiling":218,"wired_floor":179,"binding_count":42},
+              "authority":{
+                  "singleton_vm81_inherited":True,
+                  "independent_vm81_authority":False,
+                  "independent_hash72_commit_authority":False,
+                  "hash216_mutation_authority":False,
+                  "gpu_mutation_authority":False,
+                  "browser_mutation_authority":False,
+                  "floating_point_canonical_authority":False,
+              },
+              "closure":{
+                  "cumulative_pass179_binding_added":True,
+                  "terminal_pass179_completion":False,
+                  "repair_forward_required":True,
+                  "remaining_terminal_category_count":10,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+              },
+          }
+          receipt=make_hash72_witness("pass179:i147:cumulative",payload,width=72).digest
+          lanes=[
+              make_hash72_witness("pass179:i147:cumulative:previous",{"head":head,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass179:i147:cumulative:change",{"tree":tree,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass179:i147:cumulative:receipt",payload,width=72).digest,
+          ]
+          payload["receipt_hash72"]=receipt
+          payload["archive_hash216"]="".join(lanes)
+          path=Path("evidence/pass179/i147/PASS_219_I147_PASS179_CUMULATIVE_VALIDATION_RECEIPT.json")
+          path.write_text(json.dumps(payload,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({
+              "classification":payload["classification"],
+              "head":head,
+              "receipt_hash72":receipt,
+              "archive_hash216":payload["archive_hash216"],
+          },sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i147-pass179-cumulative-binding
+          path: evidence/pass179/i147/PASS_219_I147_PASS179_CUMULATIVE_VALIDATION_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30
