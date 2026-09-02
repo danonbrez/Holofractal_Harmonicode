@@ -21,6 +21,10 @@ on:
       - 'tests/pass219/test_pass219_cumulative_pass180_membrane_i146.py'
       - 'tests/pass219/test_pass219_inherited_pass180_1_46.*'
       - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - 'contracts/pass219/optimization_generalization/PASS_182_UNIVERSAL_HYDRATION_I144.json'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
+      - '.github/workflows/pass219-cumulative-pass186-membrane-i140.yml'
+      - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
       - '.github/workflows/pass219-i146-pass180-application-factory.yml'
   workflow_dispatch:
 
@@ -136,6 +140,40 @@ jobs:
           python tools/validate_pass219_global_canonical_defaults.py
           python tools/validate_pass219_multimodal_optimization_generalization.py
           python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Audit repaired integration compatibility gates
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          python tools/hhs_multimodal_optimization_generalizer.py audit-diff origin/main
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          contract = json.loads(
+              Path("contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json").read_text()
+          )
+          census = contract["current_cumulative_binding_census"]
+          policy_h = Path(
+              "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h"
+          ).read_text()
+          match = re.search(
+              r"HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT\\s+(\\d+)U",
+              policy_h,
+          )
+          assert match is not None
+          assert int(match.group(1)) == census["binding_count"]
+          assert census["binding_count"] >= 35
+          assert census["wired_floor_pass"] <= 186
+          assert census["ordered_bindings"][:35][-1] == "186"
+          print({
+              "classification": "HHS_PASS186_ADDITIVE_SUCCESSOR_CENSUS_VERIFIED",
+              "binding_count": census["binding_count"],
+              "wired_floor": census["wired_floor_pass"],
+          })
+          PY
+          PYTHONPATH="$PWD" python -m pytest -q             tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
 
       - name: Compile exact ABI and I146 C/C++ conformance
         run: |
