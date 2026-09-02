@@ -229,3 +229,39 @@ Current authoritative main observed at validation seal:
 ## Exact restart action
 
 Compare this sealed branch head with current `main`. If `main` is unchanged or ancestor-compatible, open the integration PR. If `main` advanced, reconcile only the changed dependency frontier, rerun the dedicated gate, then merge and verify authoritative `main`.
+
+
+## PR integration repair-forward — inherited Pass191/I135 gate
+
+PR `#348` exposed a completed inherited red workflow:
+
+- workflow run: `33639568209`
+- gate: `Pass 219 Cumulative Pass 191 Repair Membrane I135`
+- failure stage: `Prove Pass 191 repaired source identities`
+
+Root cause was confirmed as stale historical identity enforcement rather than a new cross-modal defect.
+
+Two source blobs had already changed at the I146 branch base `646c97ca791189a8a6af832b1b0fc8878b9739b8`:
+
+- `hhs_runtime/pass191/repository_hydration.py`
+  - old I135 blob: `68cddc42f7c0a4ebdd88d20172b10bef7cd919c4`
+  - current inherited blob: `6f999708cde2eedf9393b682bf09d2fde1cecde5`
+  - approved descendant commit: `53225be181e0e507f443303d42ecd57da286571c` — cooperative/durable running-lifecycle cancellation
+- `tests/test_hhs_pass191_repository_hydration_surfaces_v1.py`
+  - old I135 blob: `a74197db0f3a6351f10acd3ec2fa9ff1f92647e1`
+  - current inherited blob: `160a3d2f5f221e670109a3306c3b3329ad0bd432`
+  - approved descendant commit: `1ccc01670f139e4c82f365ba57bab440bb5ad3f5` — concurrent running-job cancellation regression
+
+The gate also contained obsolete whole-file hashes for the cumulative exact ABI. Those hashes necessarily become stale whenever a later inherited Pass219 surface is added.
+
+Repair policy:
+
+1. prove the approved Pass191 descendant commits are ancestors;
+2. freeze the current approved Pass191 source identities;
+3. continue freezing Pass191-native C/C++ membrane identities;
+4. stop freezing the entire cumulative aggregate blob;
+5. prove the inherited Pass191 include ordering and required later additive surfaces semantically.
+
+This preserves Pass191 invariants without blocking legitimate cumulative Pass219 evolution.
+
+Status: `REPAIR COMMITTED — TARGETED PR VALIDATION PENDING`.
