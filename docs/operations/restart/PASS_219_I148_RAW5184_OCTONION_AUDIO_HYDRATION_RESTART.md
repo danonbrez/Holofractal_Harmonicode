@@ -92,18 +92,58 @@ Cell `80` remains the independent pilot/carrier cell.
 The grouping is a reversible transport view; it does not replace the inherited
 Pass 167 sector registry.
 
-### Ternary/H36 hydration
+### Stereo ternary / H36 hydration
 
-For each inherited phase `p∈[0,71]`:
+The canonical stereo ternary law is role-based and ordered:
 
 ```text
-trit        = (p mod 3) - 1
+(yx, x+y, xy) / (wz, z+w, zw)
+=
+(-1, 0, +1) / (-1, 0, +1)
+=
+(1, 1, 1)
+```
+
+for every admitted 5,184-bit PCM64 waveform frame.
+
+The three trits are semantic phase roles, not `phase mod 3`:
+
+```text
+reversed ordered product = -1
+additive stereo center    =  0
+direct ordered product    = +1
+```
+
+The slash is a typed stereo phase quotient, not ordinary scalar division.
+For coordinate `i`:
+
+```text
+Q(a_i,b_i) = 1 iff a_i and b_i are the same typed ternary phase role
+```
+
+Thus the middle coordinate closes as `Q(0,0)=1` without introducing
+ordinary arithmetic `0/0`. Any numerator/denominator role mismatch fails
+closed instead of producing a quotient.
+
+The associated actual octonion phases remain receipt-visible:
+
+```text
+numerator phase values   = (yx_phase, (x_phase+y_phase) mod 72, xy_phase)
+denominator phase values = (wz_phase, (z_phase+w_phase) mod 72, zw_phase)
+```
+
+and preserve noncommutative order independently of the role trits.
+
+For each actual inherited phase `p∈[0,71]`, H36 coordinates remain exact:
+
+```text
 resonance36 = p mod 36
 half_turn   = floor(p/36)
 p           = resonance36 + 36*half_turn
 ```
 
-Therefore the H36 coordinate pair preserves the exact phase value.
+The H36 pair preserves the exact 0–71 phase value while the ternary role
+preserves its ordered symbolic function.
 
 ### PCM64 rule
 
@@ -140,7 +180,9 @@ authority and cannot substitute for the 81-sample carrier.
 - cell reorder;
 - x/y or z/w stereo reorder;
 - ordered `xy/yx` or `zw/wz` collapse;
-- invalid ternary value;
+- any stereo ternary role other than the exact ordered `(-1,0,+1)` triple;
+- any typed quotient result other than `(1,1,1)`;
+- any attempt to interpret the center quotient as ordinary scalar `0/0`;
 - invalid H36 resonance/half-turn reconstruction;
 - pilot substitution;
 - PCM carrier normalization or clipping;
