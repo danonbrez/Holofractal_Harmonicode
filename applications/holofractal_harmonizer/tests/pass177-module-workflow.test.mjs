@@ -84,6 +84,10 @@ test('project generation is deterministic and emits an editable, Hash216-bound p
   assert.equal(first.identity.root, second.identity.root);
   assert.equal(first.manifest.identity.root, first.identity.root);
   assert.equal(first.manifest.entrypoint, 'index.html');
+  assert.equal(first.manifest.identity.browserProjectionOnly, true);
+  assert.equal(first.manifest.identity.canonicalAdmissionRequired, true);
+  assert.equal(first.manifest.identity.canonicalMutationAuthority, false);
+  assert.equal(first.identity.browserProjectionOnly, true);
   assert.ok(first.files.some((file) => file.path === 'hhs.project.json'));
   assert.ok(first.files.some((file) => file.path === 'manifest.webmanifest'));
   assert.ok(first.files.some((file) => file.path === 'tests/smoke.mjs'));
@@ -106,6 +110,9 @@ test('workflow engine validates, tests, builds, and packages a generated project
   assert.equal(result.stageStates['package-source-zip'].output.format, 'zip');
   assert.equal(result.stageStates['package-source-zip'].output.independentOfCompilation, true);
   assert.ok(result.checkpoint >= 6);
+  assert.equal(result.checkpointAuthority, 'MEMORY_CANDIDATE_ONLY');
+  assert.equal(result.canonicalAdmissionRequired, true);
+  assert.equal(result.canonicalMutationAuthority, false);
 });
 
 test('failed workflows can resume from repository-visible checkpoint state', async () => {
