@@ -30,30 +30,22 @@ static HHSExactStatus hhs_p219_audio5184_pcm_validate(
     return HHS_EXACT_STATUS_OK;
 }
 
-static HHSExactStatus hhs_p219_audio5184_channel(
+static HHSExactStatus hhs_p219_audio5184_phase_channel(
     uint8_t basis,
     uint8_t phase,
     HHSExactPass219Audio5184PhaseChannelV1 *out
 ) {
     int16_t signed_phase;
-    int8_t trit;
-    int64_t monitor;
-
     if (out == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (basis >= HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS ||
         phase >= HHS_EXACT_HASH72_LEN)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    trit = (int8_t)((int16_t)(phase % 3U) - 1);
     signed_phase = phase >= HHS_EXACT_PASS219_AUDIO5184_H36
         ? (int16_t)((int16_t)(phase % HHS_EXACT_PASS219_AUDIO5184_H36) -
                     (int16_t)HHS_EXACT_PASS219_AUDIO5184_H36)
         : (int16_t)phase;
-
-    monitor =
-        (int64_t)signed_phase * HHS_EXACT_PASS219_AUDIO5184_MONITOR_SCALE +
-        (int64_t)trit * HHS_EXACT_PASS219_AUDIO5184_TRIT_SCALE;
 
     memset(out, 0, sizeof(*out));
     out->phase72 = phase;
@@ -61,16 +53,13 @@ static HHSExactStatus hhs_p219_audio5184_channel(
         (uint8_t)(phase % HHS_EXACT_PASS219_AUDIO5184_H36);
     out->half_turn =
         (uint8_t)(phase / HHS_EXACT_PASS219_AUDIO5184_H36);
-    out->trit = trit;
     out->signed_phase = (int8_t)signed_phase;
     out->basis = basis;
-    out->monitor_pcm64 = monitor;
+    out->monitor_pcm64 = (int64_t)signed_phase * HHS_EXACT_PASS219_AUDIO5184_MONITOR_SCALE;
 
     if ((uint8_t)(
             out->resonance36 +
             HHS_EXACT_PASS219_AUDIO5184_H36 * out->half_turn) != phase)
-        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    if (out->trit < -1 || out->trit > 1)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return HHS_EXACT_STATUS_OK;
 }
@@ -90,6 +79,53 @@ static uint8_t hhs_p219_audio5184_phase_at(
         case HHS_EXACT_PHASE_WZ: return state->wz;
         default: return HHS_EXACT_HASH72_LEN;
     }
+}
+
+static HHSExactStatus hhs_p219_audio5184_stereo_ternary(
+    HHSExactPass219Audio5184StereoTernaryV1 *out
+) {
+    static const int8_t roles[3] = { -1, 0, 1 };
+    uint8_t i;
+    if (out == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(out, 0, sizeof(*out));
+    for (i = 0U; i < 3U; ++i) {
+        out->numerator_role[i] = roles[i];
+        out->denominator_role[i] = roles[i];
+        out->quotient_identity[i] = 1U;
+        out->quotient_phase72[i] = 0U;
+    }
+    out->center_zero_over_zero_u0_mod_u72 = 1U;
+    out->center_xy_sum_over_zw_sum_u0 = 1U;
+    out->typed_quotient_only = 1U;
+    out->scalar_division_attempted = 0U;
+    out->scalar_projection_runtime_authority = 0U;
+    out->all_coordinates_close_to_identity = 1U;
+    return HHS_EXACT_STATUS_OK;
+}
+
+static HHSExactStatus hhs_p219_audio5184_stereo_ternary_validate(
+    const HHSExactPass219Audio5184StereoTernaryV1 *q
+) {
+    static const int8_t roles[3] = { -1, 0, 1 };
+    uint8_t i;
+    if (q == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (q->center_zero_over_zero_u0_mod_u72 != 1U ||
+        q->center_xy_sum_over_zw_sum_u0 != 1U ||
+        q->typed_quotient_only != 1U ||
+        q->scalar_division_attempted != 0U ||
+        q->scalar_projection_runtime_authority != 0U ||
+        q->all_coordinates_close_to_identity != 1U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    for (i = 0U; i < 3U; ++i) {
+        if (q->numerator_role[i] != roles[i] ||
+            q->denominator_role[i] != roles[i] ||
+            q->quotient_identity[i] != 1U ||
+            q->quotient_phase72[i] != 0U)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    return HHS_EXACT_STATUS_OK;
 }
 
 uint32_t hhs_exact_pass219_audio5184_version(void) {
@@ -269,10 +305,16 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
             return status;
         quad->octonion = surface.state;
 
+        if (hhs_p219_audio5184_stereo_ternary_validate(&a->stereo_ternary) !=
+                HHS_EXACT_STATUS_OK ||
+            memcmp(&a->stereo_ternary, &b->stereo_ternary,
+                   sizeof(a->stereo_ternary)) != 0)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
         for (basis = 0U; basis < HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS; ++basis) {
             const uint8_t phase = hhs_p219_audio5184_phase_at(
                 &quad->octonion, basis);
-            status = hhs_p219_audio5184_channel(
+            status = hhs_p219_audio5184_phase_channel(
                 basis, phase, &quad->channels[basis]);
             if (status != HHS_EXACT_STATUS_OK)
                 return status;
@@ -280,13 +322,19 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
                 q * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS + basis] =
                 quad->channels[basis].monitor_pcm64;
         }
+        status = hhs_p219_audio5184_stereo_ternary(&quad->stereo_ternary);
+        if (status != HHS_EXACT_STATUS_OK)
+            return status;
     }
 
     out_hydration->exact_bit_roundtrip = 1U;
     out_hydration->exact_phase_reconstruction = 1U;
     out_hydration->dual_stereo_order_preserved = 1U;
     out_hydration->ordered_octonion_preserved = 1U;
-    out_hydration->ternary_h36_preserved = 1U;
+    out_hydration->typed_ternary_quotient_preserved = 1U;
+    out_hydration->zero_over_zero_u0_mod_u72_preserved = 1U;
+    out_hydration->scalar_projection_runtime_authority = 0U;
+    out_hydration->h36_phase_coordinates_preserved = 1U;
     out_hydration->canonical_mutation_authority = 0U;
     out_hydration->canonical_hash72_authority = 0U;
     out_hydration->canonical_hash216_authority = 0U;
@@ -324,7 +372,10 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydration_validate(
         hydration->exact_phase_reconstruction != 1U ||
         hydration->dual_stereo_order_preserved != 1U ||
         hydration->ordered_octonion_preserved != 1U ||
-        hydration->ternary_h36_preserved != 1U ||
+        hydration->typed_ternary_quotient_preserved != 1U ||
+        hydration->zero_over_zero_u0_mod_u72_preserved != 1U ||
+        hydration->scalar_projection_runtime_authority != 0U ||
+        hydration->h36_phase_coordinates_preserved != 1U ||
         hydration->canonical_mutation_authority != 0U ||
         hydration->canonical_hash72_authority != 0U ||
         hydration->canonical_hash216_authority != 0U ||
@@ -356,7 +407,6 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydration_validate(
             if (a->channels[basis].phase72 != b->channels[basis].phase72 ||
                 a->channels[basis].resonance36 != b->channels[basis].resonance36 ||
                 a->channels[basis].half_turn != b->channels[basis].half_turn ||
-                a->channels[basis].trit != b->channels[basis].trit ||
                 a->channels[basis].signed_phase != b->channels[basis].signed_phase ||
                 a->channels[basis].basis != b->channels[basis].basis ||
                 a->channels[basis].monitor_pcm64 != b->channels[basis].monitor_pcm64 ||
