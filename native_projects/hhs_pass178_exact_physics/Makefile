@@ -1,5 +1,5 @@
 CC ?= cc
-CFLAGS ?= -O2 -std=gnu11 -Wall -Wextra -Werror -pedantic
+CFLAGS ?= -O2 -std=gnu11 -Wall -Wextra -Werror
 BUILD := build
 
 all: $(BUILD)/libhhs178_physics.a $(BUILD)/libhhs178_physics.so
