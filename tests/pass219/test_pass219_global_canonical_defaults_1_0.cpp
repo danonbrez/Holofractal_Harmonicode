@@ -20,9 +20,10 @@ int main(){
  using P182=CumulativePassGlobalDefaults<182>;
  using P181=CumulativePassGlobalDefaults<181>;
  using P180=CumulativePassGlobalDefaults<180>;
+ using P179=CumulativePassGlobalDefaults<179>;
  static_assert(P218::global_defaults_required&&P200C::global_defaults_required&&P186::global_defaults_required);
- static_assert(P185::global_defaults_required&&P184::global_defaults_required&&P183::global_defaults_required&&P182::global_defaults_required&&P181::global_defaults_required&&P180::global_defaults_required);
- static_assert(P180::repair_forward_on_gap&&!P180::standalone_application&&!P180::optional_cross_cutting_defaults);
+ static_assert(P185::global_defaults_required&&P184::global_defaults_required&&P183::global_defaults_required&&P182::global_defaults_required&&P181::global_defaults_required&&P180::global_defaults_required&&P179::global_defaults_required);
+ static_assert(P179::repair_forward_on_gap&&!P179::standalone_application&&!P179::optional_cross_cutting_defaults);
  assert(GlobalCanonicalDefaults::validate_latency_policy()==HHS_EXACT_STATUS_OK);
  assert(GlobalCanonicalDefaults::validate()==HHS_EXACT_STATUS_OK);
  return 0;
