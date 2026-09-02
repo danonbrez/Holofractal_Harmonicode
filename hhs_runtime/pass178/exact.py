@@ -48,6 +48,13 @@ class ExactRational:
             raise ExactPhysicsError("P178_BOOLEAN_NOT_NUMERIC")
         if isinstance(value, int):
             return cls(value, 1)
+        if isinstance(value, (list, tuple)):
+            if len(value) != 2:
+                raise ExactPhysicsError("P178_EXACT_RATIONAL_PAIR_ARITY")
+            num, den = value
+            if isinstance(num, bool) or isinstance(den, bool) or not isinstance(num, int) or not isinstance(den, int):
+                raise ExactPhysicsError("P178_EXACT_RATIONAL_PAIR_INTEGER_REQUIRED")
+            return cls(num, den)
         if isinstance(value, str):
             raw = value.strip()
             if "/" in raw:
