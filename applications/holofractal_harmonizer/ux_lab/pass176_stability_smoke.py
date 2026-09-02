@@ -60,6 +60,7 @@ def main() -> None:
         )
 
         started = time.monotonic()
+        boot_diagnostic: dict[str, object] = {}
         current_phase = "navigate"
         try:
             phase(current_phase, url=BASE_URL)
@@ -82,6 +83,35 @@ def main() -> None:
             if interface_payload.get("legacy_harmonizer_is_public_root") is not False:
                 raise AssertionError(f"legacy Pass 176 IDE incorrectly owns current public root: {interface_payload}")
             phase(current_phase, interface=interface_payload.get("interface"))
+
+            current_phase = "boot-diagnostic"
+            boot_diagnostic = page.evaluate("""() => ({
+                href: window.location.href,
+                inlinePublicBoot: window.HHSInlinePublicBoot || null,
+                startupCoordinator: window.HHSProductionStartupCoordinator || null,
+                publicBoot: window.HHSPublicBoot ? {
+                    schema: window.HHSPublicBoot.schema,
+                    modules: window.HHSPublicBoot.status?.() || [],
+                } : null,
+                visualIdeBootPresent: Boolean(window.HHSVisualIDEBoot),
+                pass176Present: Boolean(window.HHSPass176),
+                moduleScripts: [...document.querySelectorAll('script')].map((node) => ({
+                    type: node.type || '',
+                    src: node.src || '',
+                    inlineBoot: node.hasAttribute('data-hhs-inline-public-boot'),
+                })),
+                moduleResources: performance.getEntriesByType('resource')
+                    .map((entry) => entry.name)
+                    .filter((name) => name.includes('.mjs')),
+            })""")
+            phase(
+                current_phase,
+                inline=bool(boot_diagnostic.get("inlinePublicBoot")),
+                coordinator=bool(boot_diagnostic.get("startupCoordinator")),
+                public_boot=bool(boot_diagnostic.get("publicBoot")),
+                visual_ide=bool(boot_diagnostic.get("visualIdeBootPresent")),
+                pass176=bool(boot_diagnostic.get("pass176Present")),
+            )
 
             current_phase = "wait-pass176-controller"
             page.wait_for_function("() => Boolean(window.HHSPass176 && window.HHSVisualIDEBoot)", timeout=20_000)
@@ -374,6 +404,7 @@ def main() -> None:
                 "page_errors": page_errors,
                 "request_failures": request_failures,
                 "http_errors": http_errors,
+                "boot_diagnostic": boot_diagnostic,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             write_json("browser-smoke-failure.json", failure)
