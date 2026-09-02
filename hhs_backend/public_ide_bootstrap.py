@@ -22,7 +22,7 @@ INLINE_PUBLIC_BOOT = """\
   const publicBootUrl = new URL('./src/public-boot.mjs', window.location.href).href;
   const startedAt = performance.now();
   window.HHSInlinePublicBoot = Object.freeze({
-    schema: 'HHS_INLINE_PUBLIC_BOOT_V3',
+    schema: 'HHS_INLINE_PUBLIC_BOOT_V2',
     module_url: moduleUrl,
     public_boot_url: publicBootUrl,
     started_at_ms: Math.round(startedAt),
@@ -34,7 +34,7 @@ INLINE_PUBLIC_BOOT = """\
     .then(({ startPublicBoot }) => startPublicBoot())
     .catch((error) => {
       const detail = {
-        schema: 'HHS_INLINE_PUBLIC_BOOT_FAILURE_V2',
+        schema: 'HHS_INLINE_PUBLIC_BOOT_FAILURE_V1',
         module_url: moduleUrl,
         public_boot_url: publicBootUrl,
         error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
@@ -85,7 +85,7 @@ def render_public_ide_index(asset_root: Path) -> HTMLResponse:
         html,
         headers={
             "Cache-Control": "no-store",
-            "X-HHS-Public-Boot": "HHS_INLINE_PUBLIC_BOOT_V3",
+            "X-HHS-Public-Boot": "HHS_INLINE_PUBLIC_BOOT_V2",
             "X-HHS-Legacy-Module-Entries": "disabled",
         },
     )
