@@ -47,7 +47,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependency-scoped test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx
 
       - name: Parse I150 contract
         run: |
