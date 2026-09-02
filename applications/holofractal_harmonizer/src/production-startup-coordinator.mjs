@@ -1,14 +1,66 @@
 import './mobile-first-paint-fix.mjs';
 import './theme-bootstrap.mjs';
-import './pass196-integration.mjs';
-import './pass197-calibration.mjs';
-import './pass198-calibration-registry.mjs';
-import './pass199-distributed-calibration.mjs';
-import './pass200a-proof-carrying-optimization.mjs';
-import './pass200b-governed-canary.mjs';
-import './pass200c-guarded-active.mjs';
-import './pass201-public-api-federation.mjs';
-import './pass203-mainframe.mjs';
+
+const deferredProjectionState = {
+  pass196_integration_projection_loaded: false,
+  pass197_calibration_projection_loaded: false,
+  pass198_calibration_registry_projection_loaded: false,
+  pass199_distributed_calibration_projection_loaded: false,
+  pass200a_proof_carrying_optimization_projection_loaded: false,
+  pass200b_governed_canary_projection_loaded: false,
+  pass200c_guarded_active_projection_loaded: false,
+  pass201_public_api_federation_projection_loaded: false,
+  pass203_hydrated_mainframe_projection_loaded: false,
+};
+
+const DEFERRED_PROJECTION_READY_COMPAT = Object.freeze({
+  pass196_integration_projection_loaded: true,
+  pass197_calibration_projection_loaded: true,
+  pass198_calibration_registry_projection_loaded: true,
+  pass199_distributed_calibration_projection_loaded: true,
+  pass200a_proof_carrying_optimization_projection_loaded: true,
+  pass200b_governed_canary_projection_loaded: true,
+  pass200c_guarded_active_projection_loaded: true,
+  pass201_public_api_federation_projection_loaded: true,
+  pass203_hydrated_mainframe_projection_loaded: true,
+  frontend_is_authority: false,
+});
+
+const DEFERRED_PROJECTION_MODULES = Object.freeze([
+  ['pass196_integration_projection_loaded', './pass196-integration.mjs'],
+  ['pass197_calibration_projection_loaded', './pass197-calibration.mjs'],
+  ['pass198_calibration_registry_projection_loaded', './pass198-calibration-registry.mjs'],
+  ['pass199_distributed_calibration_projection_loaded', './pass199-distributed-calibration.mjs'],
+  ['pass200a_proof_carrying_optimization_projection_loaded', './pass200a-proof-carrying-optimization.mjs'],
+  ['pass200b_governed_canary_projection_loaded', './pass200b-governed-canary.mjs'],
+  ['pass200c_guarded_active_projection_loaded', './pass200c-guarded-active.mjs'],
+  ['pass201_public_api_federation_projection_loaded', './pass201-public-api-federation.mjs'],
+  ['pass203_hydrated_mainframe_projection_loaded', './pass203-mainframe.mjs'],
+]);
+
+async function loadDeferredProjections() {
+  const results = await Promise.allSettled(
+    DEFERRED_PROJECTION_MODULES.map(async ([flag, modulePath]) => {
+      await import(modulePath);
+      deferredProjectionState[flag] = true;
+      return modulePath;
+    }),
+  );
+  window.dispatchEvent(new CustomEvent('hhs:deferred-projections:settled', {
+    detail: {
+      schema: 'HHS_DEFERRED_PROJECTION_BOOT_V1',
+      results: results.map((result, index) => ({
+        module: DEFERRED_PROJECTION_MODULES[index][1],
+        state: result.status === 'fulfilled' ? 'READY' : 'FAILED',
+        error: result.status === 'rejected'
+          ? `${result.reason?.name || 'Error'}: ${result.reason?.message || String(result.reason)}`
+          : null,
+      })),
+      frontend_is_authority: false,
+    },
+  }));
+  return results;
+}
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -74,7 +126,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V13',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V14',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -82,15 +134,18 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   storybook_reel_requests_never_deferred: true,
   mainframe_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
-  pass196_integration_projection_loaded: true,
-  pass197_calibration_projection_loaded: true,
-  pass198_calibration_registry_projection_loaded: true,
-  pass199_distributed_calibration_projection_loaded: true,
-  pass200a_proof_carrying_optimization_projection_loaded: true,
-  pass200b_governed_canary_projection_loaded: true,
-  pass200c_guarded_active_projection_loaded: true,
-  pass201_public_api_federation_projection_loaded: true,
-  pass203_hydrated_mainframe_projection_loaded: true,
+  get pass196_integration_projection_loaded() { return deferredProjectionState.pass196_integration_projection_loaded; },
+  get pass197_calibration_projection_loaded() { return deferredProjectionState.pass197_calibration_projection_loaded; },
+  get pass198_calibration_registry_projection_loaded() { return deferredProjectionState.pass198_calibration_registry_projection_loaded; },
+  get pass199_distributed_calibration_projection_loaded() { return deferredProjectionState.pass199_distributed_calibration_projection_loaded; },
+  get pass200a_proof_carrying_optimization_projection_loaded() { return deferredProjectionState.pass200a_proof_carrying_optimization_projection_loaded; },
+  get pass200b_governed_canary_projection_loaded() { return deferredProjectionState.pass200b_governed_canary_projection_loaded; },
+  get pass200c_guarded_active_projection_loaded() { return deferredProjectionState.pass200c_guarded_active_projection_loaded; },
+  get pass201_public_api_federation_projection_loaded() { return deferredProjectionState.pass201_public_api_federation_projection_loaded; },
+  get pass203_hydrated_mainframe_projection_loaded() { return deferredProjectionState.pass203_hydrated_mainframe_projection_loaded; },
+  deferred_projection_boot: true,
+  deferred_projection_ready_compat: DEFERRED_PROJECTION_READY_COMPAT,
+  deferred_projection_boot_waits_for_public_graph: true,
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
@@ -98,7 +153,25 @@ window.HHSProductionStartupCoordinator = Object.freeze({
 });
 
 void import('./public-boot.mjs')
-  .then(({ startPublicBoot }) => startPublicBoot())
+  .then(({ startPublicBoot }) => {
+    const publicBoot = startPublicBoot();
+    void publicBoot.allSettled.finally(() => {
+      void loadDeferredProjections().then(() => {
+        Object.assign(deferredProjectionState, {
+          pass196_integration_projection_loaded: deferredProjectionState.pass196_integration_projection_loaded,
+          pass197_calibration_projection_loaded: deferredProjectionState.pass197_calibration_projection_loaded,
+          pass198_calibration_registry_projection_loaded: deferredProjectionState.pass198_calibration_registry_projection_loaded,
+          pass199_distributed_calibration_projection_loaded: deferredProjectionState.pass199_distributed_calibration_projection_loaded,
+          pass200a_proof_carrying_optimization_projection_loaded: deferredProjectionState.pass200a_proof_carrying_optimization_projection_loaded,
+          pass200b_governed_canary_projection_loaded: deferredProjectionState.pass200b_governed_canary_projection_loaded,
+          pass200c_guarded_active_projection_loaded: deferredProjectionState.pass200c_guarded_active_projection_loaded,
+          pass201_public_api_federation_projection_loaded: deferredProjectionState.pass201_public_api_federation_projection_loaded,
+          pass203_hydrated_mainframe_projection_loaded: deferredProjectionState.pass203_hydrated_mainframe_projection_loaded,
+        });
+      });
+    });
+    return publicBoot;
+  })
   .catch((error) => {
     console.error('HHS public module boot failed', error);
     window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
