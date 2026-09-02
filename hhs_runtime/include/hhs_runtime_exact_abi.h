@@ -50,6 +50,7 @@
 #include "hhs_pass219_inherited_pass181_1_45.h"
 #include "hhs_pass219_inherited_pass180_1_46.h"
 #include "hhs_pass219_inherited_pass179_1_47.h"
+#include "hhs_pass219_inherited_pass178_1_48.h"
 #include "hhs_pass219_global_canonical_defaults_1_0.h"
 #include "hhs_pass219_multimodal_optimization_generalization_1_0.h"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.h"
