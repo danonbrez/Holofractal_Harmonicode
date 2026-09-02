@@ -581,3 +581,65 @@ of but also behind current main. Reconciliation is mandatory before PR merge.
 6. open a ready PR;
 7. merge with expected-head guard;
 8. verify authoritative main and create the terminal checkpoint.
+
+
+## Milestone 5 — final documented-head validation
+
+- validated head: `b5a6a6dd2f190283d8c901426b73752b7dd50e9d`
+- workflow: `Pass 219 I148 Raw5184 Octonion Audio Hydration`
+- run: `33648997418`
+- result: `SUCCESS`
+- artifact: `9853960285`
+- artifact digest: `sha256:c77e9cb92e2911d0932b2425efa2331bfb13892958adf71af8b564673a6e4937`
+
+Passed:
+
+- normative 1.2 contract parse;
+- no-float C/C++ authority scan;
+- cumulative exact ABI compile;
+- C exact raw/byte/PCM64 roundtrip;
+- C++ exact conformance;
+- Python raw5184, mono-lane, u72 and Q62 sine tests;
+- mandatory Pass219 registration inheritance;
+- cross-modal reversible-state regression;
+- I147 dynamic-paradox regression;
+- exact serialization benchmark;
+- shared exact runtime build;
+- inherited ordered octonion regression;
+- inherited H36 factorization regression;
+- artifact sealing.
+
+Exact benchmark:
+
+```text
+per frame:
+  baseline = 10529
+  fused    =  5184
+  saved    =  5345
+  reduction floor = 507/1000
+
+calibrated aggregate:
+  baseline = 11466081
+  fused    =  5645376
+  saved    =  5820705
+```
+
+## Integration state
+
+Current main at this checkpoint:
+
+`2521823a16f1635934d95ebc65dc55edeab907f8`
+
+The four commits added to main since the I148 base are confined to the
+Pass191/I135 repair harness and do not overlap the I148 dependency frontier.
+
+I148 remains merge-compatible in content but behind main by those four
+historical repair commits. Final integration SHALL use a normal PR merge
+against current main so the merge commit records both ancestries without
+rewriting the green I148 feature lineage.
+
+## Exact next action
+
+Open a ready PR from this branch to current main, verify GitHub mergeability
+and the PR-triggered I148 merge result, then merge with expected-head guard and
+verify authoritative main.

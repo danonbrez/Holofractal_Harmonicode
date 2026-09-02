@@ -1,24 +1,24 @@
 {
   "schema": "HHS_PASS219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_VALIDATION_RECEIPT_V1",
   "iteration": "I148",
-  "validation_head": "3956d2fa752caf69ad25215aeea9c901dfba146c",
-  "workflow_run": 33648627859,
+  "branch": "agent/pass219-iteration148-raw5184-octonion-audio-hydration",
+  "validated_head": "b5a6a6dd2f190283d8c901426b73752b7dd50e9d",
+  "workflow_run": 33648997418,
   "workflow_result": "SUCCESS",
   "artifact": {
-    "id": 9853808528,
+    "id": 9853960285,
     "name": "pass219-i148-raw5184-octonion-audio-hydration",
-    "sha256": "2e52d61c674387ebe04109cdfb93801a9809d00254eced47c18130330cf0d37b"
+    "sha256": "c77e9cb92e2911d0932b2425efa2331bfb13892958adf71af8b564673a6e4937"
   },
-  "serialization": {
+  "reversible_carrier": {
     "raw_bits": 5184,
     "raw_bytes": 648,
-    "cells": 81,
-    "bits_per_cell": 64,
-    "bit_order": "LSB0_PER_CELL",
-    "byte_order": "LITTLE_ENDIAN",
-    "exact_roundtrip": true
+    "vm81_cells": 81,
+    "pcm64_samples": 81,
+    "bit_identity": true,
+    "little_endian": true
   },
-  "mono_lanes": {
+  "mono_ternary": {
     "left": [
       "yx",
       "x+y",
@@ -35,62 +35,63 @@
       0,
       1
     ],
-    "pcm64_amplitudes": [
+    "pcm64": [
       -9223372036854776000,
       0,
       9223372036854776000
-    ]
-  },
-  "typed_u72": {
+    ],
     "quotient": [
       1,
       1,
       1
     ],
-    "quotient_phase72": [
-      0,
-      0,
-      0
-    ],
-    "center": "0/0=u^0 mod(u^72)=1",
-    "center_symbolic_relation": "(x+y)/(z+w)=u^0",
-    "scalar_projection_runtime_authority": false,
-    "scalar_division_attempted": false
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "scalar_projection_runtime_authority": false
+  },
+  "sine_q62": {
+    "phase_count": 72,
+    "quarter": 4611686018427388000,
+    "half": 0,
+    "three_quarter": -4611686018427388000,
+    "runtime_float": false,
+    "runtime_authority": false
   },
   "benchmark": {
-    "metric": "EXACT_SERIALIZATION_LOGICAL_WORK",
-    "baseline_per_frame": 10529,
-    "fused_per_frame": 5184,
-    "saved_per_frame": 5345,
-    "reduction_permille_floor": 507,
-    "calibrated_frames": 1089,
-    "aggregate_baseline": 11466081,
-    "aggregate_fused": 5645376,
-    "aggregate_saved": 5820705
+    "per_frame": {
+      "baseline": 10529,
+      "fused": 5184,
+      "saved": 5345,
+      "reduction_permille_floor": 507
+    },
+    "aggregate": {
+      "baseline": 11466081,
+      "fused": 5645376,
+      "saved": 5820705
+    }
   },
   "gates": {
     "contract": true,
-    "no_float_double": true,
+    "no_float": true,
     "cumulative_exact_abi": true,
     "c11": true,
     "cpp17": true,
-    "python_reference": true,
-    "mandatory_binding": true,
+    "python": true,
+    "mandatory_registration": true,
     "cross_modal_regression": true,
-    "exact_benchmark": true,
+    "i147_regression": true,
+    "benchmark": true,
     "shared_library": true,
-    "inherited_octonion": true,
-    "inherited_h36": true,
-    "inherited_i147": true
+    "octonion_regression": true,
+    "h36_regression": true
   },
   "authority": {
     "vm81_mutation": "INHERITED_SINGLETON_ONLY",
     "hash72": "INHERITED_ONLY",
     "hash216": "INHERITED_ONLY",
     "scalar_projection_runtime_authority": false,
+    "sine_projection_runtime_authority": false,
     "floating_point_authority": false
   },
   "main_observed": "2521823a16f1635934d95ebc65dc55edeab907f8",
-  "main_drift_overlap_with_i148": false,
   "result": "PASS"
 }
