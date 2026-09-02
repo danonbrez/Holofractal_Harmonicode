@@ -14,7 +14,7 @@ PHASE_CHANNELS = ("x", "y", "z", "w", "xy", "yx", "zw", "wz")
 PILOT_CELL = 80
 H36 = 36
 MONITOR_SCALE = 1 << 56
-TRIT_SCALE = 1 << 48
+ROLE_SCALE = 1 << 48
 MASK64 = (1 << 64) - 1
 
 
@@ -86,9 +86,21 @@ class PhaseChannel:
     phase72: int
     resonance36: int
     half_turn: int
-    trit: int
     signed_phase: int
     monitor_pcm64: int
+
+
+@dataclass(frozen=True)
+class StereoTernaryQuotient:
+    numerator_roles: tuple[int, int, int]
+    denominator_roles: tuple[int, int, int]
+    quotient_identity: tuple[int, int, int]
+    quotient_phase72: tuple[int, int, int]
+    center_zero_over_zero_u0_mod_u72: bool
+    center_xy_sum_over_zw_sum_u0: bool
+    typed_quotient_only: bool
+    scalar_division_attempted: bool
+    scalar_projection_runtime_authority: bool
 
 
 @dataclass(frozen=True)
@@ -98,6 +110,7 @@ class PhaseQuad:
     stereo_xy: tuple[int, int]
     stereo_zw: tuple[int, int]
     channels: tuple[PhaseChannel, ...]
+    stereo_ternary: StereoTernaryQuotient
 
 
 @dataclass(frozen=True)
@@ -110,6 +123,7 @@ class AudioHydration:
     canonical_hash72_authority: bool = False
     canonical_hash216_authority: bool = False
     canonical_persistence_authority: bool = False
+    scalar_projection_runtime_authority: bool = False
     floating_point_authority: bool = False
 
 
@@ -118,19 +132,32 @@ def phase_channel(basis: str, phase: int) -> PhaseChannel:
         raise ValueError("PHASE_RANGE")
     resonance = phase % H36
     half_turn = phase // H36
-    trit = (phase % 3) - 1
     signed_phase = resonance - H36 if half_turn else resonance
-    monitor = signed_phase * MONITOR_SCALE + trit * TRIT_SCALE
+    monitor = signed_phase * MONITOR_SCALE
     assert resonance + H36 * half_turn == phase
-    assert trit in (-1, 0, 1)
     return PhaseChannel(
         basis=basis,
         phase72=phase,
         resonance36=resonance,
         half_turn=half_turn,
-        trit=trit,
         signed_phase=signed_phase,
         monitor_pcm64=monitor,
+    )
+
+
+def typed_stereo_ternary(channels: Sequence[PhaseChannel]) -> StereoTernaryQuotient:
+    if tuple(channel.basis for channel in channels) != PHASE_CHANNELS:
+        raise ValueError("ORDERED_OCTONION_CHANNELS")
+    return StereoTernaryQuotient(
+        numerator_roles=(-1, 0, 1),
+        denominator_roles=(-1, 0, 1),
+        quotient_identity=(1, 1, 1),
+        quotient_phase72=(0, 0, 0),
+        center_zero_over_zero_u0_mod_u72=True,
+        center_xy_sum_over_zw_sum_u0=True,
+        typed_quotient_only=True,
+        scalar_division_attempted=False,
+        scalar_projection_runtime_authority=False,
     )
 
 
@@ -151,6 +178,7 @@ def hydrate_words(words: Sequence[int]) -> AudioHydration:
             phase_channel(basis, phase)
             for basis, phase in zip(PHASE_CHANNELS, phases)
         )
+        quotient = typed_stereo_ternary(channels)
         monitor.extend(channel.monitor_pcm64 for channel in channels)
         quads.append(
             PhaseQuad(
@@ -159,6 +187,7 @@ def hydrate_words(words: Sequence[int]) -> AudioHydration:
                 stereo_xy=(x, y),
                 stereo_zw=(z, w),
                 channels=channels,
+                stereo_ternary=quotient,
             )
         )
 
@@ -209,6 +238,7 @@ __all__ = [
     "PHASE_CHANNELS", "PILOT_CELL", "H36", "bitstring_to_words",
     "words_to_bitstring", "words_to_le_bytes", "le_bytes_to_words",
     "fold_word72", "octonion_channels_from_words", "PhaseChannel",
-    "PhaseQuad", "AudioHydration", "phase_channel", "hydrate_words",
+    "StereoTernaryQuotient", "PhaseQuad", "AudioHydration", "phase_channel",
+    "typed_stereo_ternary", "hydrate_words",
     "pipeline", "exact_serialization_work_model",
 ]
