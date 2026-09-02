@@ -25,7 +25,14 @@ def test_shell_and_python_deployment_assets_parse() -> None:
         ROOT / "bin" / "post_compile",
     ]
     subprocess.run(["bash", "-n", *map(str, scripts)], check=True)
-    subprocess.run(["python3", "-m", "py_compile", str(BUNDLE_TOOL)], check=True)
+    subprocess.run(
+        [
+            "python3", "-m", "py_compile",
+            str(BUNDLE_TOOL),
+            str(DEPLOY / "normalize-service-permissions.py"),
+        ],
+        check=True,
+    )
 
 
 def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> None:
@@ -153,6 +160,8 @@ def test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_at
         'POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile}',
         'ROLLBACK_COMMAND=${HHS_ROLLBACK_COMMAND:-bash bin/post_compile}',
         "runtime_os_bundle_sha",
+        "normalize_service_permissions",
+        "normalize-service-permissions.py",
     ]
     for token in required:
         assert token in source
@@ -251,6 +260,8 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         "ROLLBACK_HEALTH_FAILED",
         "Recovery mode refused because another listener already owns port 8080",
         "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
+        "HHS_ROLLBACK_BOUNDARY_HEALTHY=1",
+        "normalize_production_checkout",
         "HHS PRODUCTION SERVICE DIAGNOSTICS",
         "HHS_POST_MERGE_COMMAND=$NATIVE_BUILD",
         "HHS_ROLLBACK_COMMAND=$NATIVE_BUILD",
@@ -358,6 +369,8 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         "legacy_harmonizer_is_public_root",
         "/var/lib/hhs/runtime-os/releases/",
         "HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED",
+        "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1",
+        'runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"',
     ]
     for token in required:
         assert token in workflow
