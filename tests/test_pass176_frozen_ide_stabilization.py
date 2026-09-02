@@ -95,6 +95,9 @@ def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     assert "hhs_backend.runtime_os_application_server:app" in procfile
     assert "from hhs_backend.application_ide_server import app as inherited_app" in runtime_os
     assert "application_ide_server" in runtime_os_full
+    assert 'PASS176_FROZEN_IDE_PATH = "/pass176-ide"' in runtime_os_full
+    assert "hhs-pass176-frozen-ide" in runtime_os_full
+    assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in runtime_os_full
 
 
 def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
