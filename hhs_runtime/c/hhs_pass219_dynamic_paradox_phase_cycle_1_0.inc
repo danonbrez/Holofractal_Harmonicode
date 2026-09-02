@@ -158,7 +158,7 @@ hhs_exact_pass219_paradox_analyze(
     out->object_valid_option_count = (uint8_t)valid_count;
     out->object_has_fixed_point = valid_count > 0U ? 1U : 0U;
     out->seed_candidate_trinary =
-        out->seed_option_object_correct != 0U ? INT8_C(1) : INT8_C(-1);
+        out->seed_option_object_correct != 0U ? ((int8_t)1) : ((int8_t)-1);
 
     status = hhs_p219_paradox_normalize(
         problem->options[problem->seed_option_index],
@@ -208,19 +208,19 @@ hhs_exact_pass219_paradox_analyze(
     }
 
     out->cycle_motion_trinary =
-        out->period > 1U ? INT8_C(1) : INT8_C(0);
+        out->period > 1U ? ((int8_t)1) : ((int8_t)0);
 
     if (problem->permit_meta_closure != 0U && valid_count == 0U) {
         out->meta_empty_valid_set = 1U;
         out->meta_probability_zero = 1U;
         out->meta_probability.numerator = 0U;
         out->meta_probability.denominator = 1U;
-        out->meta_closure_trinary = INT8_C(0);
+        out->meta_closure_trinary = ((int8_t)0);
     } else {
         out->meta_probability.numerator = 0U;
         out->meta_probability.denominator = 1U;
         out->meta_closure_trinary =
-            valid_count == 0U ? INT8_C(-1) : INT8_C(1);
+            valid_count == 0U ? ((int8_t)-1) : ((int8_t)1);
     }
 
     out->bounded_closure = 1U;
