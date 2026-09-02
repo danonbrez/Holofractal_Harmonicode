@@ -2,21 +2,24 @@ import './gui-reliability.mjs';
 import { $, $$, state, activeFile, persist, setText, log, bytesToBase64, ensureProject, requestJson } from './visual-ide-state.mjs';
 import { showIde, showOther, renderFiles, activateFile, updateLineNumbers, saveFile, createFile, addBrowserFiles, renderSnapshot, renderHash216, openBottomTab, bind3d } from './visual-ide-ui.mjs';
 import { ingest, loadSnapshot, interpret, compile, run, replay, exportEgress } from './visual-ide-runtime.mjs';
-import { initProjectLifecycle } from './project-lifecycle.mjs';
-import { initIntegratedWorkbench } from './integrated-workbench.mjs';
-import { initIntegratedAssistant } from './integrated-assistant.mjs';
-import { initIntuitiveIDE } from './intuitive-ide.mjs';
-import { initApplicationStudio } from './application-studio.mjs';
-import { initDeployableAppCompiler } from './deployable-app-compiler.mjs';
-import { initPass175Processor } from './pass175-processor.mjs';
-import { initPass175TerminalProcessor } from './pass175-terminal.mjs';
-import { initProductionRecovery, runBoundedProjectTest, cancelActiveJob } from './production-recovery.mjs';
-import { initDeploymentHealth } from './deployment-health.mjs';
 import { initPass176Stability } from './pass176-stability.mjs';
 
 let stability = null;
+let productionRecoveryModule = null;
 const bootOptions = { state, activeFile, persist, ensureProject, log };
 const bindings = new WeakMap();
+
+async function loadProductionRecovery() {
+  if (!productionRecoveryModule) productionRecoveryModule = await import('./production-recovery.mjs');
+  return productionRecoveryModule;
+}
+
+async function loadAndInit(path, exportName, options = {}) {
+  const module = await import(path);
+  const initializer = module[exportName];
+  if (typeof initializer !== 'function') throw new Error(`HHS_P176_INITIALIZER_MISSING: ${exportName}`);
+  return safeInit(exportName, initializer, options);
+}
 
 function required(selector) {
   const node = $(selector);
@@ -67,6 +70,7 @@ async function runGovernedLifecycle(job) {
   if (job?.signal?.aborted) {
     throw new DOMException(String(job.signal.reason || 'HHS_P176_JOB_ABORTED'), 'AbortError');
   }
+  const { runBoundedProjectTest, cancelActiveJob } = await loadProductionRecovery();
   const abort = () => cancelActiveJob();
   job?.signal?.addEventListener('abort', abort, { once: true });
   try { return await runBoundedProjectTest(); }
@@ -276,16 +280,14 @@ async function bootVisualIDE() {
     {
       stage: 'PREVIEW_READY',
       run: async () => {
-        await safeInit('project-lifecycle', initProjectLifecycle);
-        await safeInit('production-recovery', initProductionRecovery);
-        await safeInit('deployment-health', initDeploymentHealth, { optional: true });
-        await safeInit('application-studio', initApplicationStudio);
-        await safeInit('deployable-app-compiler', initDeployableAppCompiler);
+        await loadAndInit('./project-lifecycle.mjs', 'initProjectLifecycle');
+        const recovery = await loadProductionRecovery();
+        await safeInit('initProductionRecovery', recovery.initProductionRecovery);
       },
     },
     {
       stage: 'ASSISTANT_READY',
-      run: () => safeInit('integrated-assistant', initIntegratedAssistant, { optional: true }),
+      run: () => loadAndInit('./integrated-assistant.mjs', 'initIntegratedAssistant', { optional: true }),
       optional: true,
     },
     {
@@ -314,10 +316,13 @@ async function bootVisualIDE() {
       stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
       run: () => {
         queueMicrotask(() => {
-          void safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true });
-          void safeInit('intuitive-ide', initIntuitiveIDE, { optional: true });
-          void safeInit('pass175-processor', initPass175Processor, { optional: true });
-          void safeInit('pass175-terminal-processor', initPass175TerminalProcessor, { optional: true });
+          void loadAndInit('./integrated-workbench.mjs', 'initIntegratedWorkbench', { optional: true });
+          void loadAndInit('./intuitive-ide.mjs', 'initIntuitiveIDE', { optional: true });
+          void loadAndInit('./pass175-processor.mjs', 'initPass175Processor', { optional: true });
+          void loadAndInit('./pass175-terminal.mjs', 'initPass175TerminalProcessor', { optional: true });
+          void loadAndInit('./deployment-health.mjs', 'initDeploymentHealth', { optional: true });
+          void loadAndInit('./application-studio.mjs', 'initApplicationStudio', { optional: true });
+          void loadAndInit('./deployable-app-compiler.mjs', 'initDeployableAppCompiler', { optional: true });
         });
         return { deferred: true };
       },
@@ -335,7 +340,7 @@ async function bootVisualIDE() {
           interpret,
           compile,
           run,
-          lifecycle: runBoundedProjectTest,
+          lifecycle: (...args) => loadProductionRecovery().then(({ runBoundedProjectTest }) => runBoundedProjectTest(...args)),
           replay,
           egress: exportEgress,
           stability: () => stability.status(),
