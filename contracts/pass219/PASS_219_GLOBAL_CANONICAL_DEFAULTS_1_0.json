@@ -51,8 +51,8 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 181,
-    "binding_count": 40,
+    "wired_floor_pass": 180,
+    "binding_count": 41,
     "ordered_bindings": [
       "218",
       "217",
@@ -93,7 +93,8 @@
       "184",
       "183",
       "182",
-      "181"
+      "181",
+      "180"
     ],
     "pass200_variants_are_distinct_bindings": true,
     "missing_numeric_pass_in_coverage_is_regression": true,
@@ -118,6 +119,13 @@
       "vm81_repair": "CONSTRAINT_FREEZE_AND_ROLLBACK_REQUIRE_INHERITED_VM81_COMMIT",
       "legacy_direct_promotion": "DISABLED",
       "remaining_terminal_obligation_count": 3
+    },
+    "i146_repair_forward": {
+      "iteration": 146,
+      "pass180": "APPLICATION_FACTORY_CUMULATIVELY_WIRED_TERMINAL_AFTER_VM81_REPAIR",
+      "vm81_repair": "CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT",
+      "hash72_order": "APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION",
+      "remaining_terminal_obligation_count": 0
     }
   },
   "repair_forward": {
