@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_PASS_177_I149_AUTHORITY_RECONCILIATION_V1",
+  "contract_id": "HHS-P177-UMACCT-WA-CEC-PD",
+  "iteration": 149,
+  "historical_implementation_merge": "2aeb16e736829ec9fe64b2a0d9779bbfa147f4ec",
+  "classification": "HISTORICAL_PARTIAL_IMPLEMENTATION_RECONCILED_NONTERMINAL",
+  "browser_surfaces": {
+    "module_library": "applications/holofractal_harmonizer/src/pass177/module-library.mjs",
+    "project_factory": "applications/holofractal_harmonizer/src/pass177/project-factory.mjs",
+    "workflow_engine": "applications/holofractal_harmonizer/src/pass177/workflow-engine.mjs",
+    "hash216_projection": "applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs"
+  },
+  "authority": {
+    "browser_hash216": "CANDIDATE_PROJECTION_ONLY",
+    "memory_checkpoint": "CANDIDATE_ONLY",
+    "canonical_project_mutation": "INHERITED_VM81_ONLY",
+    "canonical_checkpoint_mutation": "INHERITED_VM81_ONLY",
+    "hash72": "POST_VM81_EVIDENCE_ONLY",
+    "hash216": "ARCHIVAL_IDENTITY_ONLY",
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false
+  },
+  "historical_stage_truth": {
+    "test-project": "SOURCE_VALIDATED_NOT_EXECUTED_TARGET_TEST",
+    "build-project": "SOURCE_PRESERVING_NOT_TARGET_COMPILATION",
+    "package-source-zip": "INDEPENDENT_OF_COMPILATION"
+  },
+  "terminal_pass177_completion": false,
+  "repair_forward_required": true
+}
