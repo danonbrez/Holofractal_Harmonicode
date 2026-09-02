@@ -19,24 +19,30 @@ INLINE_PUBLIC_BOOT = """\
 <script data-hhs-inline-public-boot>
 (() => {
   const moduleUrl = new URL('./src/production-startup-coordinator.mjs', window.location.href).href;
+  const publicBootUrl = new URL('./src/public-boot.mjs', window.location.href).href;
   const startedAt = performance.now();
   window.HHSInlinePublicBoot = Object.freeze({
-    schema: 'HHS_INLINE_PUBLIC_BOOT_V2',
+    schema: 'HHS_INLINE_PUBLIC_BOOT_V3',
     module_url: moduleUrl,
+    public_boot_url: publicBootUrl,
     started_at_ms: Math.round(startedAt),
     legacy_parser_module_entries_disabled: true,
     frontend_is_authority: false,
   });
-  import(moduleUrl).catch((error) => {
-    const detail = {
-      schema: 'HHS_INLINE_PUBLIC_BOOT_FAILURE_V1',
-      module_url: moduleUrl,
-      error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
-      frontend_is_authority: false,
-    };
-    window.dispatchEvent(new CustomEvent('hhs:inline-public-boot:error', { detail }));
-    console.error('HHS_INLINE_PUBLIC_BOOT_FAILED', detail);
-  });
+  import(moduleUrl)
+    .then(() => import(publicBootUrl))
+    .then(({ startPublicBoot }) => startPublicBoot())
+    .catch((error) => {
+      const detail = {
+        schema: 'HHS_INLINE_PUBLIC_BOOT_FAILURE_V2',
+        module_url: moduleUrl,
+        public_boot_url: publicBootUrl,
+        error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
+        frontend_is_authority: false,
+      };
+      window.dispatchEvent(new CustomEvent('hhs:inline-public-boot:error', { detail }));
+      console.error('HHS_INLINE_PUBLIC_BOOT_FAILED', detail);
+    });
 })();
 </script>
 """
@@ -79,7 +85,7 @@ def render_public_ide_index(asset_root: Path) -> HTMLResponse:
         html,
         headers={
             "Cache-Control": "no-store",
-            "X-HHS-Public-Boot": "HHS_INLINE_PUBLIC_BOOT_V2",
+            "X-HHS-Public-Boot": "HHS_INLINE_PUBLIC_BOOT_V3",
             "X-HHS-Legacy-Module-Entries": "disabled",
         },
     )
