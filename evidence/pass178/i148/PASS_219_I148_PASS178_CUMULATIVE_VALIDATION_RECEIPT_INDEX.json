@@ -1,0 +1,69 @@
+{
+  "schema": "PASS_219_I148_PASS178_CUMULATIVE_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration148-pass178-exact-physics-reconciliation",
+  "validated_cumulative": {
+    "head_sha": "a9850b5d9479166d50693b8cc91f8d23b51dd2ed",
+    "workflow_path": ".github/workflows/pass219-i148-pass178-cumulative-binding.yml",
+    "workflow_run_id": 33627569124,
+    "job_id": 100238840977,
+    "conclusion": "success",
+    "classification": "HHS_PASS178_I148_CUMULATIVE_NONTERMINAL_VERIFIED",
+    "python_conformance": "11 passed, 1 warning",
+    "native_pass178_conformance": true,
+    "aggregate_exact_abi_conformance": true,
+    "c_and_cpp_binding_conformance": true,
+    "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED"
+  },
+  "pre_cumulative_nucleus": {
+    "head_sha": "1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3",
+    "workflow_run_id": 33626761513,
+    "receipt_index_blob": "1b74415c302f81e5fa424b8cf7e1d4daa036c529",
+    "artifact_id": 9845109512
+  },
+  "repair_forward_history": {
+    "failed_run_id": 33626494423,
+    "failure": "P178_CANDIDATE_NOT_VALIDATED",
+    "root_cause": "CANONICAL_EXACT_RATIONAL_PAIR_REPLAY_COERCION_MISSING",
+    "repair_commit": "0b7ae01ff50e7f0ab3df6ab2b068506ea22d6c31",
+    "repair_test_commit": "1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3",
+    "authority_widened": false
+  },
+  "global_census": {
+    "wired_ceiling": 218,
+    "wired_floor": 178,
+    "binding_count": 43,
+    "pass157": "MISSING_CUMULATIVE_EXPOSURE_REPAIR_FORWARD_REQUIRED"
+  },
+  "generated_receipt": {
+    "receipt_hash72": "8rJ>jxds1WL3xU10Vy<g6c0oWLFVYVHt2meGaPT8MeUChY<OSD5ctz1PbXeQ0nl-VWXjlT3v",
+    "archive_hash216": "fBu*yWc-h<Vu3yfgnOdKBHKKQEl?59Qbgvh-<y21Ifvw8uk)A5<mrRUJm!LrVcR0w+OoQ(NZ6/?+UL/arU+2bay-BMEDyx?kZIrFSL3AtC9Hy6HK)NaAhVI?MlRx2d!GUW)tc7O8s)JDE2V7xQesA!d6o(C9n4CqGFFqsAKJFCd7teth(TN/</PBaumOiX+gUm*Kp<4W-L5kBH9Xj)mY8vty"
+  },
+  "artifact": {
+    "id": 9845424641,
+    "name": "pass219-i148-pass178-cumulative-binding",
+    "size_bytes": 1772,
+    "sha256": "2cbd711c23f07d1d46ca911af49771e6eec734a52c016b7924496f0b76387d5b",
+    "expires_at": "2026-10-02T12:00:55Z"
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "renderer_mutation_authority": false,
+    "gpu_mutation_authority": false,
+    "browser_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "closure": {
+    "cumulative_pass178_binding_added": true,
+    "terminal_pass178_completion": false,
+    "repair_forward_required": true,
+    "complete_historical_constraint_corpus": false,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}
