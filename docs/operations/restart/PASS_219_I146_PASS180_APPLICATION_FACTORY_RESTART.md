@@ -66,3 +66,49 @@ If the receipt index is absent, executed I146 validation remains pending. Do not
 4. Continue the reverse census at Pass 179 unless the user directs a separate Pass 180 integration/merge operation.
 5. Keep current-main reconciliation separate because this lineage is intentionally diverged.
 6. Do not use Codex, Work agents, nested coding agents, or recursive CI polling.
+
+
+## Delivery-blocker repair and current-main reconciliation — 2026-09-02
+
+The first exact-head I146 run `33578936912` failed during pytest collection because `HHS_DISABLE_C_AUTOBUILD=1` was set while `hhs_runtime/builds/libhhs_runtime.so` had not been built. All later workflow stages were consequently skipped.
+
+Repair:
+
+- commit `0909e2871624f8730ee2019aacdb89c27dc93a54`;
+- explicit `timeout 600s make c-abi`;
+- fail-closed `test -s hhs_runtime/builds/libhhs_runtime.so`;
+- required ABI symbol verification before pytest.
+
+Repaired pre-reconciliation validation:
+
+- workflow run `33614855153` — **SUCCESS**;
+- Pass 180 suite: `8 passed`;
+- all I146 membrane, VM81, global-default, exact C/C++, receipt, and artifact stages green.
+
+Current-main reconciliation then used a two-parent merge tree rather than replaying 250 stale commits:
+
+- current-main parent: `75396e1bbf2fe95920311a5f8005b6ac1cde4cce`;
+- validated reverse parent: `94647e76e0d62bfcedcd4377fb91122e92cf8334`;
+- reconciliation commit: `f99015a0ccc1bb5d0d807ab60efc598e766134f4`;
+- reconciliation tree: `dab1fdf83981c2358767ce603a40edc443da42f2`;
+- files reconciled: `166`;
+- dual-modified files explicitly merged: `10`;
+- branch after reconciliation: `0` commits behind current main.
+
+The ten dual-modified surfaces preserve current-main global 25/3 latency/H36 policy while extending the cumulative inherited ABI and global-default census through Pass 180.
+
+Post-reconciliation exact validation:
+
+- workflow run `33615492808` — **SUCCESS**;
+- head `f99015a0ccc1bb5d0d807ab60efc598e766134f4`;
+- Pass 180 suite: `8 passed`;
+- `libhhs_runtime.so` rebuilt successfully;
+- cumulative I146 membrane green;
+- public route / inherited VM81 checks green;
+- global defaults green at `41` bindings / floor `180`;
+- multimodal generalization green;
+- exact C/C++ conformance green;
+- receipt/artifact sealing green;
+- artifact `9840760652`, SHA-256 `5953bc86e30e15d3378ef682914f924ed1878a79d9b3f7b6e02619a2096f7f71`.
+
+Pass 180 is now receipt-complete and integration-ready. No merge to `main` has been performed.
