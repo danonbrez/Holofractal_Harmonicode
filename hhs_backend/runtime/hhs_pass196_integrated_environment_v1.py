@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_runtime.hhs_pass219_global_raw5184_serialization_hydration_v1 import serialize_raw5184_bytes
 from hhs_runtime.pass163.vmrc import SNAPSHOT_BYTES
 from hhs_runtime.pass174.runtime import Hash216Array
 from hhs_runtime.pass174.storage import PersistentEncryptedVectorStore
@@ -119,7 +120,7 @@ def _snapshot(payload: Mapping[str, Any]) -> bytes:
     while len(output) < SNAPSHOT_BYTES:
         output.extend(sha512(seed + counter.to_bytes(8, "big") + canonical[:4096]).digest())
         counter += 1
-    return bytes(output[:SNAPSHOT_BYTES])
+    return serialize_raw5184_bytes(output[:SNAPSHOT_BYTES])
 
 
 def _changed(left: bytes, right: bytes) -> int:
