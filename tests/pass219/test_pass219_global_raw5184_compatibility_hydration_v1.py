@@ -89,23 +89,22 @@ def test_pass166_direct_projection_is_a_hydrated_raw5184_frame() -> None:
     assert receipt["center_closure"] == "0/0=u^0 mod(u^72)=1"
 
 
-def test_pass196_direct_snapshot_source_routes_through_i150() -> None:
-    source = (
+def test_pass196_active_v2_snapshot_routes_through_i150_and_v1_stays_frozen() -> None:
+    historical_v1 = (
         ROOT / "hhs_backend" / "runtime" /
         "hhs_pass196_integrated_environment_v1.py"
+    ).read_text(encoding="utf-8")
+    assert "serialize_raw5184_bytes" not in historical_v1
+
+    active_v2 = (
+        ROOT / "hhs_backend" / "runtime" /
+        "hhs_pass196_integrated_environment_v2.py"
     ).read_text(encoding="utf-8")
     assert (
         "from hhs_runtime.hhs_pass219_global_raw5184_serialization_hydration_v1 "
         "import serialize_raw5184_bytes"
-    ) in source
-    assert "return serialize_raw5184_bytes(output[:SNAPSHOT_BYTES])" in source
-
-    inherited_v2 = (
-        ROOT / "hhs_backend" / "runtime" /
-        "hhs_pass196_integrated_environment_v2.py"
-    ).read_text(encoding="utf-8")
-    assert "_snapshot," in inherited_v2
-    assert "hhs_pass196_integrated_environment_v1 import (" in inherited_v2
+    ) in active_v2
+    assert "return serialize_raw5184_bytes(_pass196_v1._snapshot(payload))" in active_v2
 
 
 def test_vmrc_lineage_surfaces_share_the_central_snapshot_serializer() -> None:
