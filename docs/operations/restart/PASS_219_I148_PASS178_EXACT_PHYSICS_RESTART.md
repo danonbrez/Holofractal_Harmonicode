@@ -119,3 +119,28 @@ Twelve categories remain mandatory repair-forward work:
 I148 cumulative implementation and validation are complete on the feature branch. Start the next reverse-pass work from the repository-visible I148 checkpoint state, treating `a9850b5d9479166d50693b8cc91f8d23b51dd2ed` as the exact validated implementation head and `7416e23bc5c2e637d14118fb308ce15b0d2da9ed` as its frozen cumulative receipt-index blob. Later documentation/checkpoint commits do not alter the validated implementation surfaces.
 
 Do not reconstruct I148 from conversation history. Do not rerun unchanged broad history. Validate only later impacted dependencies. Do not merge this branch to `main` without separate authorization.
+
+
+## Current-head cumulative confirmation — 2026-09-02
+
+A later exact rational rehydration compatibility repair was validated on current runtime head `140aeb2f5b4a7568a47645f20e2c45490d893aab` by pre-cumulative run `33631174394` — **SUCCESS**.
+
+The cumulative workflow trigger was then widened so future Pass 178 runtime/native/test changes automatically re-run cumulative validation. Exact current cumulative validation completed on head `c241ea7429e9ae5a176aeca7676a2093e9f21423`:
+
+- workflow run: `33631370281`
+- job: `100251364634`
+- conclusion: **SUCCESS**
+- Pass 178 Python conformance: `11 passed, 1 warning`
+- native ABI conformance: green
+- I148 cumulative membrane: green
+- exact C/C++ ABI binding conformance: green
+- global canonical defaults: `43` bindings / floor `178`
+- multimodal generalization: green
+- authority/nonterminal assertions: green
+- receipt Hash72: `8rJ>jxds1WL5oX1V3BiViRq0V>DsYihxqxcbMGHMxmlRfLqUvsvVCtS>chUuLIJ1J+XjlT3v`
+- artifact: `9846927606`
+- artifact SHA-256: `1788c53f6b6a175594aef40c1e2d60d6031c44a8b9a70f6cf04869eb6ec1e665`
+
+This supersedes the earlier cumulative validation only as the latest exact-head confirmation; the earlier green evidence remains frozen historical evidence.
+
+I148 remains nonterminal and unmerged. Next reverse census target: Pass 177.
