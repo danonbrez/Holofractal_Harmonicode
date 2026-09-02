@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 181 inherited graphics-hydration binding, wrapped by mandatory Pass 219 global canonical defaults and universal multimodal optimization generalization, plus Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
+/* Additive exact ABI aggregate through Pass 180 inherited application-factory binding, wrapped by mandatory Pass 219 global canonical defaults and universal multimodal optimization generalization, plus Pass 219 mandatory Sudoku-qudit Genesis scaling data plane 1.22. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -49,6 +49,7 @@
 #include "hhs_pass219_inherited_pass183_1_43.inc"
 #include "hhs_pass219_inherited_pass182_1_44.inc"
 #include "hhs_pass219_inherited_pass181_1_45.inc"
+#include "hhs_pass219_inherited_pass180_1_46.inc"
 #include "hhs_pass219_global_canonical_defaults_1_0.inc"
 #include "hhs_pass219_multimodal_optimization_generalization_1_0.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
