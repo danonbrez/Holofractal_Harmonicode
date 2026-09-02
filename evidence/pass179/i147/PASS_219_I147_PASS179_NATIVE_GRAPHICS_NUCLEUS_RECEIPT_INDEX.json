@@ -1,0 +1,64 @@
+{
+  "schema": "PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration147-pass179-native-graphics-reconciliation",
+  "census_before_i147": "CONTRACT_ONLY_WITH_MISSING_RUNTIME_AND_CUMULATIVE_EXPOSURE",
+  "validation_history": [
+    {
+      "workflow_run_id": 33619199383,
+      "head_sha": "34819bce80f63daa0b6558520a463906f2b06380",
+      "conclusion": "failure",
+      "classification": "TEST_EXPECTATION_DEFECT",
+      "detail": "Runtime correctly rejected float canonical authority; test expected stale error string."
+    }
+  ],
+  "validated_nucleus": {
+    "repair_commit": "ff149faeadf3e31764138a2316052a013b28599c",
+    "workflow_run_id": 33621928309,
+    "workflow_run_number": 2,
+    "job_id": 100220674030,
+    "conclusion": "success",
+    "classification": "P179_NATIVE_CORE_PRESENT_VALIDATED_NONTERMINAL",
+    "python_conformance": "13 passed, 1 warning",
+    "native_c11_build": true,
+    "native_c11_conformance": true,
+    "http_surface": true,
+    "deterministic_capture": true,
+    "global_defaults_preserved": true,
+    "multimodal_generalization_preserved": true
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "gpu_mutation_authority": false,
+    "browser_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "deterministic_capture": {
+    "scene_id": "pass179:golden:lattice-run:nucleus",
+    "frame_sha256": "c03778d14b94a180a2bd4c96748282fa7dad9408530f30497c02f212aa7afa1f",
+    "png_sha256": "0cb4304151c2b1148f2b3d9e2249df4224c7ed869abc6e4a8a8671f63559617c",
+    "png_bytes": 824
+  },
+  "generated_receipt": {
+    "receipt_hash72": "wzRsRYe<n1*<EHPbP0tf*4h*<80J3CpwAZA43*Ij7an(/pRSWE5mP13BEOiYS2SWtH1mkhQy",
+    "archive_hash216": "rLF?lqilSjkKXKZx5gA*Rmpz?L1GEt0X+AHBGYsxepU2t-DEK1w?MEo8DJVNntSY8)8UJ>PG)jgTy1C?(+YT9bH(()HVG<!XFztkKu-T3q+)jyGsHXGW<idH-fSE!0C7>8ImA0RsHUF/wrP15Bsvzw+8M2KDWtBYZ(aU2TDzQjst?cp04g8RbKxwI>Icb0Qrfiv21xZ-(MduX9bJMWq<-a-u"
+  },
+  "artifact": {
+    "id": 9843248033,
+    "name": "pass219-i147-pass179-native-graphics-nucleus",
+    "size_bytes": 1351,
+    "sha256": "f52e626bd67f6243d2a158833d2f4ea5e33e282400a0dbc033580e3f8a279d6e",
+    "expires_at": "2026-10-02T10:55:50Z"
+  },
+  "closure": {
+    "pre_cumulative_validation_green": true,
+    "cumulative_pass179_binding_added": false,
+    "terminal_pass179_completion": false,
+    "repair_forward_required": true,
+    "merge_performed": false,
+    "authoritative_main_verification": false
+  }
+}
