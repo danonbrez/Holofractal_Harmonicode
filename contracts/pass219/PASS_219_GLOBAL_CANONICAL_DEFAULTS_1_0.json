@@ -51,8 +51,8 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 180,
-    "binding_count": 41,
+    "wired_floor_pass": 179,
+    "binding_count": 42,
     "ordered_bindings": [
       "218",
       "217",
@@ -94,7 +94,8 @@
       "183",
       "182",
       "181",
-      "180"
+      "180",
+      "179"
     ],
     "pass200_variants_are_distinct_bindings": true,
     "missing_numeric_pass_in_coverage_is_regression": true,
@@ -126,6 +127,15 @@
       "vm81_repair": "CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT",
       "hash72_order": "APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION",
       "remaining_terminal_obligation_count": 0
+    },
+    "i147_repair_forward": {
+      "iteration": 147,
+      "pass179": "NATIVE_EXACT_GRAPHICS_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL",
+      "pre_cumulative_validation_run": 33621928309,
+      "validated_nucleus_head": "ff149faeadf3e31764138a2316052a013b28599c",
+      "nucleus_receipt_blob": "b6c7c9b42d3892de6ddaff354514ceafaa695b8e",
+      "authority": "INHERITED_VM81_SCENE_ADMISSION_POST_VM81_HASH72_EVIDENCE_HASH216_ARCHIVAL",
+      "remaining_terminal_category_count": 10
     }
   },
   "repair_forward": {
@@ -135,6 +145,27 @@
     "no_grandfather_bypass": true
   },
   "known_repair_forward_debt": [
+    {
+      "pass": 179,
+      "contract_id": "HHS-P179-NEGAS-MRL",
+      "canonical_title": "NATIVE_EXACT_GRAPHICS_ANIMATION_SHADER_MULTIMODAL_RENDERING_LIBRARY",
+      "classification": "WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure": true,
+      "mandatory_repair_forward": true,
+      "remaining_terminal_categories": [
+        "FULL_NATIVE_2D_3D_LIBRARY",
+        "FULL_SHADER_IR_GRAPH_AND_BACKEND_COMPILERS",
+        "FULL_WEBGPU_WEBGL2_DEVICE_EXECUTION",
+        "THREEJS_PASS178_PARITY",
+        "PLAYABLE_NATIVE_LATTICE_RUN",
+        "FULL_5184_MOTION_PARITY",
+        "IDE_EDITOR_TIMELINE_SHADER_GRAPH",
+        "FULL_CAPTURE_VIDEO_PIPELINE",
+        "BROWSER_E2E_PERFORMANCE_ACCESSIBILITY_SECURITY",
+        "AUTHORITATIVE_MAIN_INTEGRATION"
+      ],
+      "terminal_completion_claimed": false
+    },
     {
       "pass": 181,
       "contract_id": "HHS-P181-NCSR-GHIR-VM81-H72-H216",
