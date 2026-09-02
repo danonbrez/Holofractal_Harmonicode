@@ -218,3 +218,49 @@ authority and cannot substitute for the 81-sample carrier.
 Implement the additive exact C/C++ and Python bridge, register it in the
 cumulative exact ABI, then run only the I148 + inherited octonion/H36/cross-modal
 dependency frontier.
+
+
+## Milestone 0.3 — mono lane / trinary amplitude semantics
+
+User-specified channel topology is now authoritative for I148:
+
+```text
+left mono lane:
+  yx -> x+y -> xy
+
+right mono lane:
+  wz -> z+w -> zw
+
+center mono relation:
+  x+y : z+w
+```
+
+The ternary roles have fixed sample-level semantics for every admitted
+5,184-bit waveform frame:
+
+```text
+-1 = binary 5,184-bit digital noise floor
+ 0 = zero-sum crossing
++1 = sample saturation ceiling
+```
+
+Therefore the stereo closure is role-aligned:
+
+```text
+left  = (yx, x+y, xy) = (-1,0,+1)
+right = (wz, z+w, zw) = (-1,0,+1)
+
+left/right typed quotient = (1,1,1)
+```
+
+The six actual phase72 coordinates remain separately receipt-visible and are
+not required to be scalar-equal. The quotient is the native symbolic role/
+u72 identity. Scalar projection retains zero runtime/admission authority.
+
+ABI implementation SHALL expose both:
+
+- named ternary amplitude roles;
+- actual left/right phase72 coordinates;
+
+so a consumer cannot confuse symbolic lane identity with scalar projection
+equality.
