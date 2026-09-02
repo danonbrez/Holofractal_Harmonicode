@@ -1,0 +1,70 @@
+{
+  "schema": "PASS_219_I146_PASS180_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration146-pass180-application-factory-reconciliation",
+  "blocker_repair": {
+    "prior_failed_run_id": 33578936912,
+    "prior_failed_head": "c188e005eca0e5d83b2264fcc60f42f412e81718",
+    "classification": "MISSING_EXACT_RUNTIME_SHARED_LIBRARY",
+    "repair_commit": "0909e2871624f8730ee2019aacdb89c27dc93a54",
+    "repair": "Explicit make c-abi and libhhs_runtime.so verification before pytest while autobuild remains disabled."
+  },
+  "validated_checkpoint": {
+    "head_sha": "0909e2871624f8730ee2019aacdb89c27dc93a54",
+    "workflow_path": ".github/workflows/pass219-i146-pass180-application-factory.yml",
+    "workflow_run_id": 33614855153,
+    "workflow_run_number": 2,
+    "job_id": 100198215726,
+    "conclusion": "success",
+    "classification": "HHS_PASS180_I146_CUMULATIVE_TERMINAL_VERIFIED"
+  },
+  "validation": {
+    "exact_runtime_shared_library_build": true,
+    "shared_library_path": "hhs_runtime/builds/libhhs_runtime.so",
+    "pass180_runtime_suite": "8 passed",
+    "cumulative_i146_membrane": true,
+    "public_routes_vm81_authority": true,
+    "global_canonical_defaults": {
+      "classification": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+      "wired_ceiling": 218,
+      "wired_floor": 180,
+      "binding_count": 41
+    },
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+    "aggregate_exact_c_abi": true,
+    "pass180_c_conformance": true,
+    "pass180_cpp_conformance": true,
+    "global_defaults_c_conformance": true,
+    "global_defaults_cpp_conformance": true
+  },
+  "authority": {
+    "singleton_vm81_authority_remains_inherited": true,
+    "project_create_requires_vm81": true,
+    "file_upsert_requires_vm81": true,
+    "lifecycle_commit_requires_vm81": true,
+    "hash72_after_vm81": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_authority": false,
+    "hash216_mutation_authority": false
+  },
+  "generated_receipt": {
+    "receipt_hash72": ")Xqv!bz/!0AnJ-J?o35r8zbhxHNmCRI1f3a!NHxgIhr?f1vhm-Kk37)hAife*ralRbS4mvj!",
+    "archive_hash216": "nqc9t08gS9D6aR6ld>n4*Rz7*jlsQ)8+f+!5+vm5kK)uvpd7T4f*L9+5s*eTXIzwIgBh/f6fSD5wV!)-X9-F69<pJ5eA<IHmpbXOhJ9gpx8TrftESiQuZ-xt2R-Iksm!FnU7E7LX1I9K9p8QNdTpKE?nbdcO*)6nvLkSmg0bfsFlgCMSrHWN6k8f3NMClNmw4k6Amr)Pp8c0mFnkj>wfqWgn"
+  },
+  "artifact": {
+    "id": 9840516347,
+    "name": "pass219-i146-pass180-application-factory",
+    "size_bytes": 1824,
+    "sha256": "7b18a62833eed6f5e5624b1529899374018a2b35b16840efa1b2c52bec04d94d",
+    "expires_at": "2026-10-02T09:35:40Z"
+  },
+  "pass180_closure": {
+    "cumulative_exposure": true,
+    "terminal_pass180_completion": true,
+    "repair_forward_required": false,
+    "remaining_terminal_obligation_count": 0,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}
