@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_179_COMMAND_STREAM_V1",
+  "type": "object",
+  "required": [
+    "schema",
+    "width",
+    "height",
+    "commands"
+  ],
+  "properties": {
+    "schema": {
+      "const": "HHS_PASS_179_COMMAND_STREAM_V1"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1024
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1024
+    },
+    "commands": {
+      "type": "array",
+      "maxItems": 8193,
+      "items": {
+        "type": "object",
+        "required": [
+          "op"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "CLEAR",
+              "RECT",
+              "POINT"
+            ]
+          },
+          "x_q16": {
+            "type": "integer"
+          },
+          "y_q16": {
+            "type": "integer"
+          },
+          "w_q16": {
+            "type": "integer"
+          },
+          "h_q16": {
+            "type": "integer"
+          },
+          "rgba16": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

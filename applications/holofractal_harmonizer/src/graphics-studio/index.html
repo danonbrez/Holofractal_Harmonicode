@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HHS Pass 179 Graphics Studio</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#060811;color:#edf6ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 30% -20%,#17385b,#070a14 46%,#03040a)}
+header{padding:18px 22px;border-bottom:1px solid #2a4564;background:#07101ddd}
+main{display:grid;grid-template-columns:minmax(280px,360px) 1fr;min-height:calc(100vh - 92px)}
+aside,section{padding:16px}aside{border-right:1px solid #203049;background:#080d16cc}
+button,select,textarea{width:100%;margin:5px 0;padding:10px;border:1px solid #365574;border-radius:9px;background:#0d1725;color:#edf6ff}
+button{cursor:pointer;background:linear-gradient(135deg,#50d7c2,#6b9cff);color:#031018;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{border:1px solid #263c58;border-radius:12px;background:#09111ddd;padding:12px}
+img{width:100%;max-height:62vh;object-fit:contain;background:#000;border-radius:10px;image-rendering:auto}
+pre{white-space:pre-wrap;overflow:auto;max-height:35vh;background:#03070d;border:1px solid #26364e;border-radius:9px;padding:10px}
+small{color:#91a9c8}.status{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid #345578;border-radius:999px;padding:4px 8px;font-size:.75rem}
+@media(max-width:850px){main{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid #203049}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Pass 179 Native Graphics Studio</h1><p>Exact scene candidates → inherited VM81 admission → immutable software/GPU projection packets</p></header>
+<main>
+<aside>
+<div class="status" id="chips"></div>
+<h3>Golden scene nucleus</h3>
+<select id="golden"><option value="lattice-run">Lattice Run</option><option value="motion-5184">HHS Motion 5,184</option></select>
+<button id="commit">Commit through VM81</button>
+<button id="render">Render admitted PNG</button>
+<h3>Typed Shader IR</h3>
+<textarea id="shader" rows="14">{"schema":"HHS_PASS_179_SHADER_IR_V1","nodes":[{"id":"color","op":"CONST_RGBA16","rgba16":[65535,32000,8000,65535]},{"id":"out","op":"OUTPUT_COLOR","inputs":["color"]}],"output":"out"}</textarea>
+<div class="grid"><button data-shader="WGSL">WGSL</button><button data-shader="GLSL">GLSL</button></div>
+<small>Browser/GPU output is projection-only. It cannot mutate canonical scene state.</small>
+</aside>
+<section>
+<div class="grid"><div class="card"><h2>Reference frame</h2><img id="frame" alt="Deterministic Pass 179 software-rendered reference frame"></div>
+<div class="card"><h2>Evidence</h2><pre id="evidence">Loading status…</pre></div></div>
+</section>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>

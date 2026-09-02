@@ -1,0 +1,7 @@
+{
+  "schema": "HHS_PASS_179_GOLDEN_SCENE_REFERENCE_V1",
+  "generator": "hhs_runtime.pass179.golden:lattice_run_scene",
+  "scene_id": "pass179:golden:lattice-run:nucleus",
+  "inherited_reference": "applications/holofractal_harmonizer/src/platformer-template.mjs",
+  "classification": "NATIVE_COMMAND_PARITY_NUCLEUS_NOT_FULL_PLAYTHROUGH"
+}

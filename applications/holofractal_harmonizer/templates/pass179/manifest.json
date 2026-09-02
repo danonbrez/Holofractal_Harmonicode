@@ -1,0 +1,16 @@
+{
+  "schema": "HHS_PASS_179_GRAPHICS_PROJECT_TEMPLATE_V1",
+  "title": "Native Exact Graphics Project",
+  "description": "Editable Pass 179 scene, Shader IR, software-reference render, and projection-backend project.",
+  "modules": [
+    "runtime.vm81",
+    "graphics.native",
+    "ui.web",
+    "testing.acceptance",
+    "packaging.zip"
+  ],
+  "studio": "/graphics-studio/",
+  "api": "/api/runtime/pass179-graphics",
+  "authority": "INHERITED_VM81",
+  "terminal_template": false
+}

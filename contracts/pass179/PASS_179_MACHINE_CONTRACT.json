@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_179_MACHINE_CONTRACT_V1",
+  "contract_id": "HHS-P179-NEGAS-MRL",
+  "version": 1,
+  "classification": "P179_IMPLEMENTATION_NUCLEUS_NONTERMINAL",
+  "exact_domain": {
+    "canonical_float_authority": false,
+    "fixed_point": [
+      "Q16.16"
+    ],
+    "canonical_color": "RGBA16",
+    "canonical_time": "integer frame index + rational step"
+  },
+  "authority": {
+    "canonical_scene_mutation": "INHERITED_VM81_ONLY",
+    "hash72_commit": "POST_VM81_EVIDENCE_ONLY",
+    "hash216_identity": "THREE_HASH72_LANES_ARCHIVAL_IDENTITY",
+    "software_renderer_mutation_authority": false,
+    "gpu_mutation_authority": false,
+    "browser_mutation_authority": false
+  },
+  "bounds": {
+    "maximum_scene_nodes": 8192,
+    "maximum_reference_width": 1024,
+    "maximum_reference_height": 1024,
+    "maximum_shader_nodes": 256
+  },
+  "required_nucleus_surfaces": [
+    "native_c11_scene_command_core",
+    "typed_shader_ir",
+    "fixed_point_software_renderer",
+    "vm81_scene_admission",
+    "hash72_hash216_frame_identity",
+    "webgpu_projection",
+    "webgl2_projection",
+    "threejs_projection",
+    "deterministic_png_capture",
+    "lattice_run_golden_generator",
+    "motion_5184_golden_generator",
+    "graphics_studio_http_projection"
+  ],
+  "terminal_pass179_completion": false
+}

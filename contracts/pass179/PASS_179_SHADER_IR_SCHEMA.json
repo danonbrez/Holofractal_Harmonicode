@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_179_SHADER_IR_V1",
+  "type": "object",
+  "required": [
+    "schema",
+    "nodes",
+    "output"
+  ],
+  "properties": {
+    "schema": {
+      "const": "HHS_PASS_179_SHADER_IR_V1"
+    },
+    "nodes": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "op"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.:-]{1,96}$"
+          },
+          "op": {
+            "enum": [
+              "INPUT_POSITION",
+              "CONST_RGBA16",
+              "PHASE_COLOR",
+              "ADD",
+              "MUL",
+              "OUTPUT_COLOR"
+            ]
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "rgba16": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            }
+          },
+          "phase": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 215
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "output": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
