@@ -76,6 +76,8 @@ def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     visual = read(APP / "src" / "visual-ide.mjs")
     production = read(ROOT / "hhs_backend" / "production_server.py")
     application = read(ROOT / "hhs_backend" / "application_ide_server.py")
+    runtime_os = read(ROOT / "hhs_backend" / "runtime_os_application_server.py")
+    runtime_os_full = read(ROOT / "hhs_backend" / "runtime_os_application_server_full.py")
     procfile = read(ROOT / "Procfile")
     assert "initIntegratedAssistant" in visual
     assert "initApplicationStudio" in visual
@@ -90,7 +92,9 @@ def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     assert "hhs-production-harmonizer" in production
     assert "pass175_terminal_router" in application
     assert "hhs-full-application-ide" in application
-    assert "hhs_backend.application_ide_server:app" in procfile
+    assert "hhs_backend.runtime_os_application_server:app" in procfile
+    assert "from hhs_backend.application_ide_server import app as inherited_app" in runtime_os
+    assert "application_ide_server" in runtime_os_full
 
 
 def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
