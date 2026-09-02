@@ -80,6 +80,7 @@ def main() -> int:
     boot = final_status.get("boot") or {}
     resources = final_status.get("resources") or {}
     authority_evidence = final_status.get("authorityEvidence") or {}
+    current_public_interface = browser.get("current_public_interface") or {}
     parent_authority = parent.get("authority") or {}
     parent_roots = parent.get("terminal_roots") or {}
     parent_main = parent.get("main_verification") or {}
@@ -108,7 +109,13 @@ def main() -> int:
     checks = {
         "pass175_activation_gate": parent_integrity,
         "browser_smoke_ok": browser.get("ok") is True,
-        "production_root_full_ide": bool(browser.get("title")) and initial.get("stage") == "INTERACTIVE",
+        "frozen_ide_preservation_surface": bool(browser.get("title"))
+        and initial.get("stage") == "INTERACTIVE"
+        and browser.get("preservation_surface") == "/pass176-ide/"
+        and str(browser.get("base_url") or "").rstrip("/").endswith("/pass176-ide"),
+        "later_runtime_os_public_root_verified": current_public_interface.get("interface") == "HHS_VISUAL_RUNTIME_OS_WORKSPACE"
+        and current_public_interface.get("legacy_harmonizer_is_public_root") is False
+        and browser.get("current_public_root") == "/",
         "ordered_boot_complete": boot.get("stage") == "INTERACTIVE" and len(boot.get("records") or []) == 10,
         "duplicate_boot_idempotent": (browser.get("duplicate_boot") or {}).get("recordCount") == 10,
         "assistant_cycles_100": repetition.get("assistantCycles") == 100,
@@ -149,7 +156,7 @@ def main() -> int:
 
     receipt = {
         "schema": "HHS_PASS_176_TERMINAL_COMPLETION_RECEIPT_V1",
-        "classification": "HHS_PASS_176_FROZEN_PRODUCTION_IDE_STABILIZED_RECOVERABLE_VERIFIED",
+        "classification": "HHS_PASS_176_FROZEN_IDE_CUMULATIVELY_PRESERVED_VERIFIED",
         "terminal_pass176_completion": all(checks.values()),
         "checks": checks,
         "activation_parent": {
@@ -162,6 +169,9 @@ def main() -> int:
             "integrity_verified": parent_integrity,
         },
         "frozen_visual_baseline_preserved": True,
+        "current_public_root_superseded_by_runtime_os": True,
+        "pass176_preservation_route": "/pass176-ide/",
+        "current_public_interface": current_public_interface,
         "source_hashes": source_hashes,
         "source_root_sha256": source_root,
         "browser_evidence_sha256": file_sha(browser_path),
