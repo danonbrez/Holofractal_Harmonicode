@@ -83,3 +83,31 @@ Pass 179 remains nonterminal until the repository executes and verifies the rema
 4. Preserve PR #347 / I146 closure as a separate integration path.
 5. Continue only impacted validation after repair; do not rerun frozen unrelated pass evidence.
 6. Do not use Codex, Work/Workspace agents, nested coding agents, or swarms.
+
+
+## Hosted pre-cumulative validation
+
+Dedicated workflow:
+
+`.github/workflows/pass219-i147-pass179-native-graphics.yml`
+
+Exact implementation head:
+
+`34819bce80f63daa0b6558520a463906f2b06380`
+
+Workflow run:
+
+`33619199383`
+
+Current recorded state at checkpoint creation:
+
+`QUEUED_EXTERNAL_CI`
+
+Routine immediate push failures from unrelated Pass 205/166/174/acceptance/relay workflows are explicitly outside the I147 dependency scope and do not classify the Pass 179 implementation.
+
+The I147 thread must not remain blocked on this queue. Once the exact run executes:
+
+- if green, freeze its receipt/artifact and add the cumulative inherited Pass 179 binding with global-default floor `179`, while retaining `terminal_pass179_completion = false`;
+- if a dependency-scoped stage fails, repair only the impacted Pass 179 surface and rerun that bounded gate;
+- do not investigate unrelated relay noise;
+- do not claim terminal Pass 179 completion.
