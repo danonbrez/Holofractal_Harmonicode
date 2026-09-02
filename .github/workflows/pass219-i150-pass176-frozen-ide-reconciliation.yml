@@ -17,6 +17,7 @@ on:
       - 'applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py'
       - 'hhs_verification/pass176/**'
       - 'tests/test_pass176_frozen_ide_stabilization.py'
+      - 'tests/test_hhs_production_public_app_v1.py'
       - '.github/workflows/pass219-i150-pass176-frozen-ide-reconciliation.yml'
   workflow_dispatch:
 
