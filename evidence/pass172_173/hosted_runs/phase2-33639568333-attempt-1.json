@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass219-i146-cross-modal-reversible-state-manifold",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "10608e497355ec5088cbc7c0c781d288bf49775c44188ed5ec3114c8fa617219",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 33639568333,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "b26643f38e8e71b1d05eb8b1e811b9a636c07ced"
+}
