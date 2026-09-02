@@ -3,10 +3,10 @@
   "repository": "danonbrez/Holofractal_Harmonicode",
   "branch": "agent/pass219-iteration148-pass178-exact-physics-reconciliation",
   "validated_cumulative": {
-    "head_sha": "a9850b5d9479166d50693b8cc91f8d23b51dd2ed",
+    "head_sha": "c241ea7429e9ae5a176aeca7676a2093e9f21423",
     "workflow_path": ".github/workflows/pass219-i148-pass178-cumulative-binding.yml",
-    "workflow_run_id": 33627569124,
-    "job_id": 100238840977,
+    "workflow_run_id": 33631370281,
+    "job_id": 100251364634,
     "conclusion": "success",
     "classification": "HHS_PASS178_I148_CUMULATIVE_NONTERMINAL_VERIFIED",
     "python_conformance": "11 passed, 1 warning",
@@ -14,7 +14,8 @@
     "aggregate_exact_abi_conformance": true,
     "c_and_cpp_binding_conformance": true,
     "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
-    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED"
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+    "current_runtime_rehydration_repair_included": true
   },
   "pre_cumulative_nucleus": {
     "head_sha": "1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3",
@@ -37,15 +38,15 @@
     "pass157": "MISSING_CUMULATIVE_EXPOSURE_REPAIR_FORWARD_REQUIRED"
   },
   "generated_receipt": {
-    "receipt_hash72": "8rJ>jxds1WL3xU10Vy<g6c0oWLFVYVHt2meGaPT8MeUChY<OSD5ctz1PbXeQ0nl-VWXjlT3v",
-    "archive_hash216": "fBu*yWc-h<Vu3yfgnOdKBHKKQEl?59Qbgvh-<y21Ifvw8uk)A5<mrRUJm!LrVcR0w+OoQ(NZ6/?+UL/arU+2bay-BMEDyx?kZIrFSL3AtC9Hy6HK)NaAhVI?MlRx2d!GUW)tc7O8s)JDE2V7xQesA!d6o(C9n4CqGFFqsAKJFCd7teth(TN/</PBaumOiX+gUm*Kp<4W-L5kBH9Xj)mY8vty"
+    "receipt_hash72": "8rJ>jxds1WL5oX1V3BiViRq0V>DsYihxqxcbMGHMxmlRfLqUvsvVCtS>chUuLIJ1J+XjlT3v",
+    "archive_hash216": "Dkt3vnw?A<j0wqmjZyRiBHKKQEl?59Qbgvh-!ne!aebYkhr5BdWUrAIcGUjcdMVB3ATqHkJJgIco7AiA85b/pO0z?94Sb1?HT8!92(i49ugK0-bi)NaAhVI?MlRx2d!EWj<(U0v7NxIxSx3DlVesA!d6o(C9n4CqGFFsjDKuXFzMFTT//5LA<qpFyFkjUOPUFutZnTy*DAv/KB-5kp*CTQRJ"
   },
   "artifact": {
-    "id": 9845424641,
+    "id": 9846927606,
     "name": "pass219-i148-pass178-cumulative-binding",
-    "size_bytes": 1772,
-    "sha256": "2cbd711c23f07d1d46ca911af49771e6eec734a52c016b7924496f0b76387d5b",
-    "expires_at": "2026-10-02T12:00:55Z"
+    "size_bytes": 1771,
+    "sha256": "1788c53f6b6a175594aef40c1e2d60d6031c44a8b9a70f6cf04869eb6ec1e665",
+    "expires_at": "2026-10-02T12:42:13Z"
   },
   "authority": {
     "singleton_vm81_inherited": true,
@@ -65,5 +66,19 @@
     "merge_performed": false,
     "authoritative_main_verification": false,
     "deployment_performed": false
+  },
+  "previous_cumulative_validation": {
+    "head_sha": "a9850b5d9479166d50693b8cc91f8d23b51dd2ed",
+    "workflow_path": ".github/workflows/pass219-i148-pass178-cumulative-binding.yml",
+    "workflow_run_id": 33627569124,
+    "job_id": 100238840977,
+    "conclusion": "success",
+    "classification": "HHS_PASS178_I148_CUMULATIVE_NONTERMINAL_VERIFIED",
+    "python_conformance": "11 passed, 1 warning",
+    "native_pass178_conformance": true,
+    "aggregate_exact_abi_conformance": true,
+    "c_and_cpp_binding_conformance": true,
+    "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED"
   }
 }
