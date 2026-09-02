@@ -85,3 +85,84 @@ Optimization acceptance requires:
 ## Exact next action
 
 Implement the exact C/C++ witness/planner ABI and the Python branch/manifold verifier, then run dependency-scoped validation.
+
+
+## Milestone 1 — executable invariant membrane
+
+Commit: `40d8871decc222ed9729a34384f98ad39e30a389`
+
+Implemented:
+
+- exact C witness validation for Genesis/Hash216 lineage, ordered phase identity, complete modality coverage, reversible edge coverage, global constraint root binding, modality registry binding, and singleton VM81 authority;
+- exact C logical-work planner with overflow/range guards and fail-closed complete fallback;
+- C++17 wrappers over the same C authority surface;
+- Python immutable branch-state/DAG representation, deterministic node replay, non-commutative phase-path identity, modality round-trip witnesses, sibling-merge conflict checks, and exact logical-work planner;
+- public Pass 219 guard registration;
+- mandatory data/ML guard now declares the cross-modal reversible manifold requirement;
+- cumulative exact ABI exposes the new C surface.
+
+Canonical mutation authority remains unchanged.
+
+Status: `IMPLEMENTED — VALIDATION PENDING`.
+
+## Milestone 2 — benchmark and negative-test gate
+
+Commit: `3d2413ab68b1b2cea7e8bd5000628ad773138902`
+
+Implemented tests:
+
+- C11 exact positive and negative witness validation;
+- C++17 ABI parity;
+- deterministic parent-linked replay;
+- x/y versus y/x state-identity separation;
+- missing-modality rejection;
+- failed reversible round-trip rejection;
+- global-constraint-root drift rejection;
+- sibling-branch merge conflict rejection;
+- exact inverse-witness recovery;
+- stale-prefix fail-closed fallback.
+
+Benchmark model:
+
+```text
+baseline =
+  depth * modalities * constraints
++ depth * modalities * (modalities - 1)
++ depth * authority_checks
+
+candidate =
+  active_depth * modalities * constraints
++ changed_constraints * modalities
++ (active_depth + 1) * 2 * modalities
++ depth * authority_checks
+```
+
+The candidate is selectable only when:
+
+- the sealed prefix proof is valid;
+- canonical-hub round trips are verified;
+- cached prefix depth is nonzero;
+- candidate work is strictly less than baseline work.
+
+Authority-check count is deliberately identical in baseline and candidate plans.
+
+Calibrated exact case embedded in C/C++ tests:
+
+- depth: `64`
+- modalities: `5`
+- constraints/state: `24`
+- cached prefix: `56`
+- changed constraints: `2`
+- baseline logical work: `9024`
+- candidate logical work: `1124`
+- exact logical work saved: `7900`
+
+No wall-clock timing is canonicalized by this benchmark.
+
+Dedicated workflow:
+
+- workflow: `Pass 219 Cross-Modal Reversible State Manifold`
+- first authored-head run: `33638544637`
+- observed status at this checkpoint: `QUEUED`
+
+Status: `TESTS/BENCHMARK AUTHORED — EXECUTED RESULT PENDING`.
