@@ -103,7 +103,7 @@ def normalize_checkout(
     # Git-untracked. It is nevertheless part of the canonical service runtime
     # boundary and must remain readable during rollback/recovery before a new
     # build can run. Normalize only this exact generated path; do not recurse
-    # through other untracked files or directories.
+    # through any other untracked file or directory.
     runtime_build_dir = root / "hhs_runtime" / "builds"
     runtime_library = runtime_build_dir / "libhhs_runtime.so"
     runtime_library_present = runtime_library.is_file() and not runtime_library.is_symlink()
@@ -141,7 +141,7 @@ def normalize_checkout(
             )
 
     return {
-        "schema": "HHS_PRODUCTION_CHECKOUT_PERMISSION_RECEIPT_V3",
+        "schema": "HHS_PRODUCTION_CHECKOUT_PERMISSION_RECEIPT_V2",
         "repository_root": str(root),
         "service_user": user.pw_name,
         "service_group": group.gr_name,
@@ -155,7 +155,8 @@ def normalize_checkout(
         "untracked_runtime_permission_boundary": (
             [str(runtime_build_dir), str(runtime_library)] if runtime_library_present else []
         ),
-        "unrelated_untracked_state_modified": False,
+        "untracked_runtime_permissions_normalized": runtime_library_present,
+        "untracked_state_modified": False,
         "result": "PASS",
     }
 
