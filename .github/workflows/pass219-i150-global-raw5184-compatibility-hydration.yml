@@ -9,7 +9,7 @@ on:
       - 'hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py'
       - 'hhs_runtime/pass163/vmrc.py'
       - 'hhs_runtime/pass166/codec.py'
-      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py'
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
       - 'contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json'
       - 'tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py'
       - 'docs/operations/restart/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_RESTART.md'
@@ -20,7 +20,7 @@ on:
       - 'hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py'
       - 'hhs_runtime/pass163/vmrc.py'
       - 'hhs_runtime/pass166/codec.py'
-      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py'
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
       - 'contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json'
       - 'tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py'
       - 'docs/operations/restart/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_RESTART.md'
@@ -60,7 +60,8 @@ jobs:
           assert d['inherits']['raw_bytes'] == 648
           assert d['compatibility_surfaces']['pass163_vmrc_ingress'] == 'MANDATORY_HYDRATED'
           assert d['compatibility_surfaces']['pass166_direct_projection'] == 'MANDATORY_HYDRATED'
-          assert d['compatibility_surfaces']['pass196_v1_direct_snapshot'] == 'MANDATORY_HYDRATED'
+          assert d['compatibility_surfaces']['pass196_v1_direct_snapshot'] == 'FROZEN_HISTORICAL_PROVENANCE_UNMODIFIED'
+          assert d['compatibility_surfaces']['pass196_v2_snapshot'] == 'MANDATORY_HYDRATED_WRAPPER_OVER_FROZEN_V1_RAW_PRIMITIVE'
           assert d['hydration']['left_mono'] == ['yx','x+y','xy']
           assert d['hydration']['right_mono'] == ['wz','z+w','zw']
           assert d['hydration']['center_closure'] == '0/0=u^0 mod(u^72)=1'
