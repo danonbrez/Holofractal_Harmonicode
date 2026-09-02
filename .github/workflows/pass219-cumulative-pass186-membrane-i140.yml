@@ -127,7 +127,14 @@ jobs:
           assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
           policy_h = Path('hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h').read_text()
           policy_hpp = Path('hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp').read_text()
-          assert 'HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT 35U' in policy_h
+          import json, re
+          census = json.loads(Path('contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json').read_text())['current_cumulative_binding_census']
+          match = re.search(r'HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT\s+(\d+)U', policy_h)
+          assert match is not None
+          assert int(match.group(1)) == census['binding_count']
+          assert census['binding_count'] >= 35
+          assert census['wired_floor_pass'] <= 186
+          assert census['ordered_bindings'][:35][-1] == '186'
           assert 'cross_cutting_defaults_are_mandatory' in policy_h
           assert 'retroactive_repair_forward_required' in policy_h
           assert 'standalone_passes_allowed() noexcept { return false; }' in policy_hpp
