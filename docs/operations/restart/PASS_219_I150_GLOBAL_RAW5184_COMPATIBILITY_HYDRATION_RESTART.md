@@ -128,3 +128,48 @@ Do not reconstruct or rerun the already-green I149 implementation unless the rec
 ## Restart command state
 
 Resume from this repository-visible checkpoint on the I150 branch. Do not reconstruct from conversational context. The implementation state above is authoritative until explicitly superseded by a later repository commit.
+
+
+## Reconciled implementation and validation closure
+
+Reconciled branch:
+
+- `agent/pass219-iteration150-global-raw5184-compatibility-hydration-reconciled`
+- reconciled starting main: `fe7a80e95df65ae318f5ecf859e22e1c5f34bd09`
+- final validated implementation/workflow head: `da6f947c34fa369d7992c7e31f22a97e7dbd33eb`
+
+Pass 196 repair-forward constraint:
+
+- V1 historical provenance restored exactly to blob `d2cff008db58a29bf27be20cb3547b9e0018f5e1`;
+- active V2 wraps frozen V1 raw snapshot generation through I150;
+- no V1 provenance mutation remains.
+
+Executed dependency-scoped gate:
+
+- workflow run: `33654747360`
+- job: `100330377931`
+- result: `SUCCESS`
+- artifact: `9856291433`
+- artifact SHA-256: `fbebba4ffb71a6c9cd9949d3e08ff0f5814e0864cce5229c401a67cd14c4a2a9`
+
+Green surfaces:
+
+- I150 compatibility conformance;
+- Pass 163 VMRC;
+- Pass 165 multimodal ingress;
+- Pass 166 Word2Vec projection;
+- Pass 196 I130 V2 with immutable V1 provenance;
+- Pass 218 canonical commit and durable persistence;
+- private standalone C serializer carveout;
+- no-float/no-double authority guard.
+
+The earlier failed I150 runs were repair-forward evidence only:
+- `33654358571`: Pass 166 collection missing FastAPI dependency;
+- `33654444351`: Pass 196 collection missing cryptography dependency;
+- `33654556063`: exposed the real frozen-V1 provenance constraint, repaired by moving hydration to V2.
+
+No failed run above established an I150 serialization logic regression.
+
+## Integration next action
+
+Compare the validated branch against current authoritative `main`. If current-main drift is disjoint or zero, open a ready PR, merge with expected-head protection, verify authoritative-main ancestry, and append the terminal post-merge checkpoint. If main moved across an I150-affected surface, reconcile and rerun only the impacted frontier.
