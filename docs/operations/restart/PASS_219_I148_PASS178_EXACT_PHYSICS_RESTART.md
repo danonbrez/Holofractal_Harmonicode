@@ -36,3 +36,34 @@ The following remain terminal debt: complete compiler pipeline, thermodynamic ke
 Run the dedicated I148 pre-cumulative validation. If green, seal its receipt, add the cumulative Pass 178 inherited C/C++ binding, extend global defaults to floor 178 / binding count 43, preserve `terminal_pass178_completion=false`, and execute the post-binding cumulative membrane.
 
 If validation fails, repair only the impacted Pass 178 surface. Do not widen authority and do not investigate unrelated relay fanout.
+
+
+## Hosted pre-cumulative validation
+
+Dedicated workflow:
+
+`.github/workflows/pass219-i148-pass178-exact-physics.yml`
+
+Exact implementation head:
+
+`a19d601fd4141dda04d945ef72ed2bac4d4dabac`
+
+Workflow run:
+
+`33626494423`
+
+Recorded state at this checkpoint:
+
+`IN_PROGRESS_EXTERNAL_CI`
+
+At handoff, checkout and Python setup were green and dependency-scoped package installation was still active. No Pass 178 implementation/test stage had failed.
+
+Routine immediate failures from unrelated Pass 205/166/174/acceptance/relay workflows are outside I148 dependency scope.
+
+Once the exact run executes:
+
+- if green, seal the nucleus receipt/artifact and add cumulative inherited Pass 178 with global floor `178` / binding count `43`, preserving `terminal_pass178_completion=false`;
+- if a dependency-scoped stage fails, repair only that Pass 178 surface;
+- preserve singleton inherited VM81 and no independent Hash72/Hash216/GPU/browser/floating-point authority;
+- do not claim the contract-visible corpus nucleus is the complete historical constraint corpus;
+- do not merge to main without separate authorization.
