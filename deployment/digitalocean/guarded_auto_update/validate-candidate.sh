@@ -38,7 +38,10 @@ run_stage "shell syntax" bash -n \
   deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
   deployment/digitalocean/guarded_auto_update/install.sh
 
-python_files=(deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)
+python_files=(
+  deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py
+  deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py
+)
 for path in \
   hhs_backend/runtime_os_projection.py \
   hhs_backend/runtime_os_visual_server.py \
@@ -78,6 +81,7 @@ fi
 pytest_targets=()
 for path in \
   tests/test_hhs_guarded_auto_update_contract_v1.py \
+  tests/test_hhs_production_service_permissions_v2.py \
   tests/test_hhs_full_application_ide_root_v1.py \
   tests/test_hhs_repository_history_surface_v1.py \
   tests/test_hhs_pass205_continuation_runtime_v1.py; do

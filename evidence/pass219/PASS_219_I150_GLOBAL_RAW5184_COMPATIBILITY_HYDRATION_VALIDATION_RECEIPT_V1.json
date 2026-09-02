@@ -1,0 +1,52 @@
+{
+  "schema": "HHS_PASS219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_VALIDATION_RECEIPT_V1",
+  "pass": 219,
+  "iteration": "I150",
+  "branch": "agent/pass219-iteration150-global-raw5184-compatibility-hydration-reconciled",
+  "validated_head": "da6f947c34fa369d7992c7e31f22a97e7dbd33eb",
+  "workflow": {
+    "run_id": 33654747360,
+    "job_id": 100330377931,
+    "result": "SUCCESS"
+  },
+  "artifact": {
+    "id": 9856291433,
+    "name": "pass219-i150-global-raw5184-compatibility-hydration",
+    "sha256": "fbebba4ffb71a6c9cd9949d3e08ff0f5814e0864cce5229c401a67cd14c4a2a9"
+  },
+  "validated_surfaces": {
+    "i150_compatibility_conformance": true,
+    "pass163_vmrc": true,
+    "pass165_multimodal_ingress": true,
+    "pass166_word2vec_projection": true,
+    "pass196_i130_v2": true,
+    "pass196_v1_historical_blob_preserved": true,
+    "pass218_canonical_commit": true,
+    "pass218_durable_persistence": true,
+    "standalone_c_serializer_private": true,
+    "native_float_double_authority_rejected": true
+  },
+  "carrier": {
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "vm81_cells": 81,
+    "pcm64_samples": 81,
+    "exact_bit_identity": true
+  },
+  "hydration": {
+    "left_mono": ["yx", "x+y", "xy"],
+    "right_mono": ["wz", "z+w", "zw"],
+    "center_relation": "x+y:z+w",
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "center_native_relation": "(x+y)/(z+w)=u^0",
+    "ternary_roles": [-1, 0, 1],
+    "runtime_floating_point": false,
+    "scalar_projection_runtime_authority": false
+  },
+  "authority": {
+    "vm81_mutation_added": false,
+    "hash72_commit_added": false,
+    "hash216_commit_added": false,
+    "canonical_persistence_added": false
+  }
+}

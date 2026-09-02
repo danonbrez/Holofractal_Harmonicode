@@ -15,6 +15,9 @@ BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
 OWNERSHIP_TIMEOUT=${HHS_UPDATE_OWNERSHIP_TIMEOUT_SECONDS:-900}
 PRODUCTION_HEALTH_TIMEOUT=${HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS:-600}
+PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
+PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
+PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
@@ -51,7 +54,25 @@ bash -n \
   "$SOURCE/preserve-host-drift.sh" \
   "$SOURCE/validate-candidate.sh" \
   "$SOURCE/install.sh"
-python3 -m py_compile "$SOURCE/runtime-os-bundle.py"
+python3 -m py_compile "$SOURCE/runtime-os-bundle.py" "$SOURCE/normalize-service-permissions.py"
+
+normalize_production_checkout() {
+  python3 "$PERMISSION_TOOL" \
+    --repo-root "$REPO_ROOT" \
+    --service-user "$PRODUCTION_SERVICE_USER" \
+    --service-group "$PRODUCTION_SERVICE_GROUP"
+}
+
+wait_for_production_health() {
+  local deadline=$((SECONDS + PRODUCTION_HEALTH_TIMEOUT))
+  while (( SECONDS < deadline )); do
+    if curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null; then
+      return 0
+    fi
+    sleep 2
+  done
+  return 1
+}
 
 # The periodic timer is a follower, never a concurrent deployment owner.
 # Stop it before changing updater assets or environment. If a timer-launched
@@ -73,6 +94,10 @@ while :; do
   sleep 2
 done
 systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+
+# Permission repair is an independent pre-start invariant. It must run even
+# when the native/language build later fails so rollback remains bootable.
+normalize_production_checkout
 
 # Exact-main takeover normally requires the live service to remain online.
 # Recovery is deliberately narrower: it is allowed only after the immediately
@@ -111,6 +136,21 @@ if not records or records[-1].get("outcome") != "ROLLBACK_HEALTH_FAILED":
 print("HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1")
 PY
   echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
+  systemctl reset-failed hhs.service 2>/dev/null || true
+  systemctl start hhs.service
+  if ! wait_for_production_health; then
+    echo "Rollback boundary service failed health after permission normalization; refusing a new promotion." >&2
+    systemctl status hhs.service --no-pager --full >&2 || true
+    journalctl -u hhs.service -n 300 --no-pager >&2 || true
+    exit 8
+  fi
+  echo "HHS_ROLLBACK_BOUNDARY_HEALTHY=1"
+elif [[ "$ENABLE_PROMOTION" == "1" ]]; then
+  if ! wait_for_production_health; then
+    echo "Existing production service is active but unhealthy; refusing promotion." >&2
+    exit 8
+  fi
+  echo "HHS_PREPROMOTION_SERVICE_HEALTHY=1"
 fi
 
 install -d -m 0755 "$INSTALL_ROOT" /etc/hhs "$BUNDLE_ROOT" "$BUNDLE_ROOT/incoming" "$BUNDLE_ROOT/releases"
@@ -120,6 +160,7 @@ install -m 0755 "$SOURCE/build-runtime-os.sh" "$INSTALL_ROOT/build-runtime-os.sh
 install -m 0755 "$SOURCE/preserve-host-drift.sh" "$INSTALL_ROOT/preserve-host-drift.sh"
 install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidate.sh"
 install -m 0755 "$SOURCE/runtime-os-bundle.py" "$INSTALL_ROOT/runtime-os-bundle.py"
+install -m 0755 "$SOURCE/normalize-service-permissions.py" "$INSTALL_ROOT/normalize-service-permissions.py"
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
 

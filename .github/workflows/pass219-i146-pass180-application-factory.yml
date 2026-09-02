@@ -159,7 +159,7 @@ jobs:
               "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h"
           ).read_text()
           match = re.search(
-              r"HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT\\s+(\\d+)U",
+              r"HHS_EXACT_PASS219_GLOBAL_DEFAULT_BINDING_COUNT\s+(\d+)U",
               policy_h,
           )
           assert match is not None
@@ -173,7 +173,7 @@ jobs:
               "wired_floor": census["wired_floor_pass"],
           })
           PY
-          PYTHONPATH="$PWD" python -m pytest -q             tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
+          PYTHONPATH="$PWD" python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
 
       - name: Compile exact ABI and I146 C/C++ conformance
         run: |

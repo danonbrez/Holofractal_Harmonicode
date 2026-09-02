@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 177 inherited creation-workflow binding, preserving current-main global latency and H36 policy surfaces. */
+/* Additive exact ABI aggregate through Pass 177 inherited creation-workflow binding, preserving current-main cross-modal, raw-5184, latency, and H36 policy surfaces. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -64,6 +64,10 @@
 #include "hhs_pass219b_selective_projection_1_0.inc"
 #include "hhs_pass219b_sparse_dirty_projection_1_0.inc"
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.inc"
+#include "hhs_pass219_cross_modal_reversible_state_1_0.inc"
+#include "hhs_pass219_dynamic_paradox_phase_cycle_1_0.inc"
+#include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc"
+#include "hhs_pass219_global_raw5184_serialization_hydration_1_0.inc"
 #include "hhs_pass219_harmonic36_nested_vm_1_0.inc"
 #include "hhs_pass219_harmonic36_default_binding_1_0.inc"
 #include "hhs_pass219_harmonic36_factorization_fabric_1_0.inc"

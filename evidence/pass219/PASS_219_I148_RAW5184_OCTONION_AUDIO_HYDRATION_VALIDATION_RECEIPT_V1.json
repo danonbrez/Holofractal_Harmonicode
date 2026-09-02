@@ -1,0 +1,97 @@
+{
+  "schema": "HHS_PASS219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_VALIDATION_RECEIPT_V1",
+  "iteration": "I148",
+  "branch": "agent/pass219-iteration148-raw5184-octonion-audio-hydration",
+  "validated_head": "b5a6a6dd2f190283d8c901426b73752b7dd50e9d",
+  "workflow_run": 33648997418,
+  "workflow_result": "SUCCESS",
+  "artifact": {
+    "id": 9853960285,
+    "name": "pass219-i148-raw5184-octonion-audio-hydration",
+    "sha256": "c77e9cb92e2911d0932b2425efa2331bfb13892958adf71af8b564673a6e4937"
+  },
+  "reversible_carrier": {
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "vm81_cells": 81,
+    "pcm64_samples": 81,
+    "bit_identity": true,
+    "little_endian": true
+  },
+  "mono_ternary": {
+    "left": [
+      "yx",
+      "x+y",
+      "xy"
+    ],
+    "right": [
+      "wz",
+      "z+w",
+      "zw"
+    ],
+    "center_relation": "x+y:z+w",
+    "roles": [
+      -1,
+      0,
+      1
+    ],
+    "pcm64": [
+      -9223372036854776000,
+      0,
+      9223372036854776000
+    ],
+    "quotient": [
+      1,
+      1,
+      1
+    ],
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "scalar_projection_runtime_authority": false
+  },
+  "sine_q62": {
+    "phase_count": 72,
+    "quarter": 4611686018427388000,
+    "half": 0,
+    "three_quarter": -4611686018427388000,
+    "runtime_float": false,
+    "runtime_authority": false
+  },
+  "benchmark": {
+    "per_frame": {
+      "baseline": 10529,
+      "fused": 5184,
+      "saved": 5345,
+      "reduction_permille_floor": 507
+    },
+    "aggregate": {
+      "baseline": 11466081,
+      "fused": 5645376,
+      "saved": 5820705
+    }
+  },
+  "gates": {
+    "contract": true,
+    "no_float": true,
+    "cumulative_exact_abi": true,
+    "c11": true,
+    "cpp17": true,
+    "python": true,
+    "mandatory_registration": true,
+    "cross_modal_regression": true,
+    "i147_regression": true,
+    "benchmark": true,
+    "shared_library": true,
+    "octonion_regression": true,
+    "h36_regression": true
+  },
+  "authority": {
+    "vm81_mutation": "INHERITED_SINGLETON_ONLY",
+    "hash72": "INHERITED_ONLY",
+    "hash216": "INHERITED_ONLY",
+    "scalar_projection_runtime_authority": false,
+    "sine_projection_runtime_authority": false,
+    "floating_point_authority": false
+  },
+  "main_observed": "2521823a16f1635934d95ebc65dc55edeab907f8",
+  "result": "PASS"
+}

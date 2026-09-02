@@ -2,6 +2,23 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from hhs_runtime.hhs_pass219_cross_modal_reversible_state_registration_v1 import (
+    MANDATORY_GUARD as CROSS_MODAL_MANIFOLD_GUARD,
+    SCHEMA as CROSS_MODAL_MANIFOLD_SCHEMA,
+    STATE_VALIDATE_SYMBOL as CROSS_MODAL_STATE_VALIDATE_SYMBOL,
+    WORK_PLAN_SYMBOL as CROSS_MODAL_WORK_PLAN_SYMBOL,
+)
+from hhs_runtime.hhs_pass219_raw5184_octonion_audio_hydration_registration_v1 import (
+    BIT_EXPORT_SYMBOL as AUDIO5184_BIT_EXPORT_SYMBOL,
+    BIT_IMPORT_SYMBOL as AUDIO5184_BIT_IMPORT_SYMBOL,
+    FRAME_TO_PCM_SYMBOL as AUDIO5184_FRAME_TO_PCM_SYMBOL,
+    HYDRATE_SYMBOL as AUDIO5184_HYDRATE_SYMBOL,
+    MANDATORY_GUARD as AUDIO5184_GUARD,
+    PCM_TO_FRAME_SYMBOL as AUDIO5184_PCM_TO_FRAME_SYMBOL,
+    PIPELINE_SYMBOL as AUDIO5184_PIPELINE_SYMBOL,
+    SCHEMA as AUDIO5184_SCHEMA,
+    VALIDATE_SYMBOL as AUDIO5184_VALIDATE_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_execution_composer_registration_v1 import (
     pass219_execution_registration_manifest,
     pass219_execution_surface_declaration,
@@ -52,6 +69,10 @@ def test_mandatory_manifest_covers_all_declared_data_ml_classes() -> None:
     assert manifest["canonical_authority"]["singleton_vm81"] == "INHERITED_C_ONLY"
     assert manifest["mandatory_latency_guard"] == MANDATORY_LATENCY_GUARD
     assert manifest["mandatory_latency_schema"] == LATENCY_POLICY_SCHEMA
+    assert manifest["mandatory_cross_modal_manifold_guard"] == CROSS_MODAL_MANIFOLD_GUARD
+    assert manifest["mandatory_cross_modal_manifold_schema"] == CROSS_MODAL_MANIFOLD_SCHEMA
+    assert manifest["mandatory_audio5184_guard"] == AUDIO5184_GUARD
+    assert manifest["mandatory_audio5184_schema"] == AUDIO5184_SCHEMA
     assert manifest["latency_policy"]["quantum_ms"] == {"numerator": 25, "denominator": 3}
     assert manifest["latency_policy"]["tiers_fps"] == [120, 60, 30]
     assert manifest["latency_policy"]["timing_is_noncanonical"] is True
@@ -70,11 +91,27 @@ def test_mandatory_guard_surface_exposes_exact_abi() -> None:
     assert VERIFY_SYMBOL in declaration["validators"]
     assert LATENCY_POLICY_SCHEMA in declaration["contract_schemas"]
     assert MANDATORY_LATENCY_GUARD in declaration["guards"]
+    assert AUDIO5184_GUARD in declaration["guards"]
+    assert CROSS_MODAL_MANIFOLD_GUARD in declaration["guards"]
+    assert CROSS_MODAL_MANIFOLD_SCHEMA in declaration["contract_schemas"]
+    assert CROSS_MODAL_STATE_VALIDATE_SYMBOL in declaration["validators"]
+    assert CROSS_MODAL_WORK_PLAN_SYMBOL in declaration["validators"]
+    assert AUDIO5184_GUARD in declaration["guards"]
+    assert AUDIO5184_SCHEMA in declaration["contract_schemas"]
+    assert AUDIO5184_BIT_IMPORT_SYMBOL in declaration["validators"]
+    assert AUDIO5184_BIT_EXPORT_SYMBOL in declaration["validators"]
+    assert AUDIO5184_FRAME_TO_PCM_SYMBOL in declaration["validators"]
+    assert AUDIO5184_PCM_TO_FRAME_SYMBOL in declaration["validators"]
+    assert AUDIO5184_HYDRATE_SYMBOL in declaration["validators"]
+    assert AUDIO5184_VALIDATE_SYMBOL in declaration["validators"]
+    assert AUDIO5184_PIPELINE_SYMBOL in declaration["validators"]
     assert LATENCY_POLICY_VALIDATE_SYMBOL in declaration["validators"]
     assert LATENCY_CLASSIFY_SYMBOL in declaration["validators"]
     assert LATENCY_WINDOW_SYMBOL in declaration["validators"]
     assert LATENCY_SELECT_SYMBOL in declaration["validators"]
     assert "REJECT_PASS219_DATA_ML_WITHOUT_GLOBAL_LATENCY_POLICY" in declaration["rejection_codes"]
+    assert "REJECT_PASS219_DATA_ML_WITHOUT_CROSS_MODAL_MANIFOLD_PROOF" in declaration["rejection_codes"]
+    assert "REJECT_PASS219_SERIALIZATION_WITHOUT_RAW5184_PCM64_HYDRATION" in declaration["rejection_codes"]
     assert declaration["mutation_policy"] == "INHERITED_SINGLETON_VM81_ONLY"
     assert declaration["persistence_policy"] == "INHERITED_HASH72_HASH216_PATHS_ONLY"
 
@@ -99,6 +136,10 @@ def test_pass219_execution_composer_requires_mandatory_guard() -> None:
     assert manifest["mandatory_genesis_scaling_applies_before_route_selection"] is True
     assert manifest["mandatory_latency_guard"] == MANDATORY_LATENCY_GUARD
     assert manifest["mandatory_latency_schema"] == LATENCY_POLICY_SCHEMA
+    assert manifest["mandatory_cross_modal_manifold_guard"] == CROSS_MODAL_MANIFOLD_GUARD
+    assert manifest["mandatory_cross_modal_manifold_schema"] == CROSS_MODAL_MANIFOLD_SCHEMA
+    assert manifest["mandatory_audio5184_guard"] == AUDIO5184_GUARD
+    assert manifest["mandatory_audio5184_schema"] == AUDIO5184_SCHEMA
     assert manifest["latency_route_selection_requires_exact_semantic_equality"] is True
     assert manifest["latency_budget_unmet_preserves_correct_route"] is True
     assert manifest["latency_timing_is_noncanonical"] is True

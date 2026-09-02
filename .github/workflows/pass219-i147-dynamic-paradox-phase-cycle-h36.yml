@@ -1,0 +1,138 @@
+name: Pass 219 I147 Dynamic Paradox Phase Cycle H36
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-iteration147-dynamic-paradox-phase-cycle-h36
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_dynamic_paradox_phase_cycle_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_v1.py'
+      - 'hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.json'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.c'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.cpp'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py'
+      - 'benchmarks/pass219/pass219_i147_dynamic_paradox_benchmark.py'
+      - 'docs/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.md'
+      - 'docs/operations/restart/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_RESTART.md'
+      - '.github/workflows/pass219-i147-dynamic-paradox-phase-cycle-h36.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_dynamic_paradox_phase_cycle_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_v1.py'
+      - 'hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.json'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.c'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.cpp'
+      - 'tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py'
+      - 'benchmarks/pass219/pass219_i147_dynamic_paradox_benchmark.py'
+      - 'docs/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.md'
+      - 'docs/operations/restart/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_RESTART.md'
+      - '.github/workflows/pass219-i147-dynamic-paradox-phase-cycle-h36.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-i147-paradox:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse normative contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.json >/dev/null
+          python - <<'PY'
+          import json
+          p='contracts/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['object_level']['fixed_point_valid_option_count'] == 0
+          assert d['object_level']['trajectory'] == ['0','1/4','1/2','1/4']
+          assert d['meta_level']['may_promote_zero_back_to_object_option_truth'] is False
+          assert d['h36']['exact_value'] == 36
+          assert d['h36']['manifold_cardinality'] == 722204136308736
+          PY
+
+      - name: Reject approximate authority
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.h             hhs_runtime/include/hhs_pass219_dynamic_paradox_phase_cycle_1_0.hpp             hhs_runtime/c/hhs_pass219_dynamic_paradox_phase_cycle_1_0.inc
+
+      - name: Compile cumulative exact ABI
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-i147 artifacts/pass219/i147-dynamic-paradox
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i147/exact.o
+
+      - name: Run C exact conformance
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.c             /tmp/pass219-i147/exact.o             -o /tmp/pass219-i147/test-c
+          /tmp/pass219-i147/test-c
+
+      - name: Run C++ exact conformance
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_dynamic_paradox_phase_cycle_1_0.cpp             /tmp/pass219-i147/exact.o             -o /tmp/pass219-i147/test-cpp
+          /tmp/pass219-i147/test-cpp
+
+      - name: Run typed Python semantics
+        run: |
+          python -m pytest -q --tb=short             tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py             tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py
+
+      - name: Run exact logical-work benchmark
+        run: |
+          python benchmarks/pass219/pass219_i147_dynamic_paradox_benchmark.py             artifacts/pass219/i147-dynamic-paradox/benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/i147-dynamic-paradox/benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['object_level']['fixed_point_valid_option_count'] == 0
+          assert d['object_level']['period'] == 2
+          assert d['aggregate']['baseline_total_work'] == 130680
+          assert d['aggregate']['optimized_total_work'] == 35937
+          assert d['aggregate']['exact_work_saved'] == 94743
+          assert d['aggregate']['reduction_permille_floor'] == 725
+          PY
+
+      - name: Build shared exact runtime
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Preserve inherited H36 factorization surface
+        run: |
+          mkdir -p /tmp/pass219-i147-h36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i147-h36/exact.o
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c             /tmp/pass219-i147-h36/exact.o             -o /tmp/pass219-i147-h36/test-factorization
+          /tmp/pass219-i147-h36/test-factorization
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i147-dynamic-paradox-phase-cycle-h36
+          path: artifacts/pass219/i147-dynamic-paradox/*.json
+          if-no-files-found: error

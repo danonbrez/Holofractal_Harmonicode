@@ -1,0 +1,158 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_v1.py"
+  ],
+  "optimization": {
+    "optimization_id": "I147_BOUNDED_EXACT_PHASE_CYCLE_CLOSURE",
+    "compatible_object_classes": [
+      "self_referential_constraint_state"
+    ],
+    "required_operations": [
+      "ANALYZE_PHASE_CYCLE"
+    ],
+    "required_port_types": [
+      "HHS_EXACT_PROBABILITY_SEQUENCE_V1"
+    ]
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "self_referential_constraint_state",
+    "operations": [
+      "ANALYZE_PHASE_CYCLE"
+    ],
+    "inputs": [
+      {
+        "name": "probability_sequence",
+        "type": "HHS_EXACT_PROBABILITY_SEQUENCE_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "phase_cycle_witness",
+        "type": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+      }
+    ],
+    "runtime_authority": "NON_CANONICAL_EXACT_ANALYSIS",
+    "exactness_domain": "EXACT_RATIONAL",
+    "state_schema": {
+      "schema": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+    },
+    "logical_object_id": "i147-symbolic-logic-source",
+    "modality_set": [
+      "SYMBOLIC_LOGIC"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "self_referential_constraint_state",
+      "operations": [
+        "ANALYZE_PHASE_CYCLE"
+      ],
+      "inputs": [
+        {
+          "name": "probability_sequence",
+          "type": "HHS_EXACT_PROBABILITY_SEQUENCE_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "phase_cycle_witness",
+          "type": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+        }
+      ],
+      "runtime_authority": "NON_CANONICAL_EXACT_ANALYSIS",
+      "exactness_domain": "EXACT_RATIONAL",
+      "state_schema": {
+        "schema": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+      },
+      "logical_object_id": "i147-vm81-symbolic-target",
+      "modality_set": [
+        "VM81_STATE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "self_referential_constraint_state",
+      "operations": [
+        "ANALYZE_PHASE_CYCLE"
+      ],
+      "inputs": [
+        {
+          "name": "probability_sequence",
+          "type": "HHS_EXACT_PROBABILITY_SEQUENCE_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "phase_cycle_witness",
+          "type": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+        }
+      ],
+      "runtime_authority": "NON_CANONICAL_EXACT_ANALYSIS",
+      "exactness_domain": "EXACT_RATIONAL",
+      "state_schema": {
+        "schema": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+      },
+      "logical_object_id": "i147-hydration-symbolic-target",
+      "modality_set": [
+        "HYDRATION_STATE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "self_referential_constraint_state",
+      "operations": [
+        "ANALYZE_PHASE_CYCLE"
+      ],
+      "inputs": [
+        {
+          "name": "probability_sequence",
+          "type": "HHS_EXACT_PROBABILITY_SEQUENCE_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "phase_cycle_witness",
+          "type": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+        }
+      ],
+      "runtime_authority": "NON_CANONICAL_EXACT_ANALYSIS",
+      "exactness_domain": "EXACT_RATIONAL",
+      "state_schema": {
+        "schema": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1"
+      },
+      "logical_object_id": "i147-multimodal-constraint-target",
+      "modality_set": [
+        "MULTIMODAL_CONSTRAINT_STATE"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "i147-vm81-symbolic-target",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true
+    },
+    {
+      "logical_object_id": "i147-hydration-symbolic-target",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true
+    },
+    {
+      "logical_object_id": "i147-multimodal-constraint-target",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true
+    }
+  ],
+  "declared_generalize_required": [
+    "i147-hydration-symbolic-target",
+    "i147-multimodal-constraint-target",
+    "i147-vm81-symbolic-target"
+  ]
+}

@@ -24,6 +24,9 @@ BUNDLE_MODE=${HHS_RUNTIME_OS_BUNDLE_MODE:-prebuilt}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
 BUNDLE_TOOL=${HHS_RUNTIME_OS_BUNDLE_TOOL:-/usr/local/lib/hhs-guarded-update/runtime-os-bundle.py}
 BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
+PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
+PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
+PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-/usr/local/lib/hhs-guarded-update/normalize-service-permissions.py}
 
 CANDIDATE_ROOT="$STATE_ROOT/candidates"
 RECEIPT_LOG="$STATE_ROOT/receipts.jsonl"
@@ -71,8 +74,24 @@ normalize_repository() {
 }
 
 read_units() { read -r -a HHS_UNITS <<<"$SYSTEMD_UNITS"; ((${#HHS_UNITS[@]} > 0)) || fail "HHS_SYSTEMD_UNITS is empty"; }
+
+normalize_service_permissions() {
+  [[ -f "$PERMISSION_TOOL" ]] || fail "production permission normalizer missing: $PERMISSION_TOOL"
+  python3 "$PERMISSION_TOOL" \
+    --repo-root "$REPO_ROOT" \
+    --service-user "$PRODUCTION_SERVICE_USER" \
+    --service-group "$PRODUCTION_SERVICE_GROUP"
+}
+
 stop_units() { local index; for ((index=${#HHS_UNITS[@]}-1; index>=0; index--)); do log "Stopping ${HHS_UNITS[$index]}"; systemctl stop "${HHS_UNITS[$index]}"; done; }
-start_units() { local unit; for unit in "${HHS_UNITS[@]}"; do log "Starting $unit"; systemctl start "$unit"; done; }
+start_units() {
+  local unit
+  normalize_service_permissions
+  for unit in "${HHS_UNITS[@]}"; do
+    log "Starting $unit"
+    systemctl start "$unit"
+  done
+}
 
 wait_for_health() {
   local deadline=$((SECONDS + HEALTH_TIMEOUT)) url
@@ -116,6 +135,7 @@ sync_installed_assets() {
   [[ -f "$source/build-runtime-os.sh" ]] && install -m 0755 "$source/build-runtime-os.sh" /usr/local/lib/hhs-guarded-update/build-runtime-os.sh
   [[ -f "$source/preserve-host-drift.sh" ]] && install -m 0755 "$source/preserve-host-drift.sh" /usr/local/lib/hhs-guarded-update/preserve-host-drift.sh
   [[ -f "$source/runtime-os-bundle.py" ]] && install -m 0755 "$source/runtime-os-bundle.py" /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py
+  [[ -f "$source/normalize-service-permissions.py" ]] && install -m 0755 "$source/normalize-service-permissions.py" /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py
   [[ -f "$source/hhs-guarded-update.service" ]] && install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   [[ -f "$source/hhs-guarded-update.timer" ]] && install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
   [[ -f "$hhs_service" ]] && install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service

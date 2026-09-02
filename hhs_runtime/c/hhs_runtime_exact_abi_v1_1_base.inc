@@ -194,7 +194,11 @@ HHSExactStatus hhs_exact_phase_product(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_vm81_frame_import_le(
+static HHSExactStatus hhs_exact_vm81_frame_global_serialization_validate(
+    const HHSExactVM81Frame *frame
+);
+
+static HHSExactStatus hhs_exact_vm81_frame_import_le_raw(
     const uint8_t *bytes,
     size_t length,
     HHSExactVM81Frame *out_frame
@@ -214,7 +218,7 @@ HHSExactStatus hhs_exact_vm81_frame_import_le(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_vm81_frame_export_le(
+static HHSExactStatus hhs_exact_vm81_frame_export_le_raw(
     const HHSExactVM81Frame *frame,
     uint8_t *out_bytes,
     size_t capacity,
@@ -231,9 +235,43 @@ HHSExactStatus hhs_exact_vm81_frame_export_le(
         uint64_t word = frame->words[cell];
         uint32_t byte_index;
         for (byte_index = 0; byte_index < 8U; ++byte_index)
-            out_bytes[(size_t)cell * 8U + byte_index] = (uint8_t)((word >> (8U * byte_index)) & UINT64_C(0xFF));
+            out_bytes[(size_t)cell * 8U + byte_index] =
+                (uint8_t)((word >> (8U * byte_index)) & UINT64_C(0xFF));
     }
     return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_vm81_frame_import_le(
+    const uint8_t *bytes,
+    size_t length,
+    HHSExactVM81Frame *out_frame
+) {
+    HHSExactStatus status = hhs_exact_vm81_frame_import_le_raw(bytes, length, out_frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_exact_vm81_frame_global_serialization_validate(out_frame);
+    if (status != HHS_EXACT_STATUS_OK) {
+        memset(out_frame, 0, sizeof(*out_frame));
+        return status;
+    }
+    return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_vm81_frame_export_le(
+    const HHSExactVM81Frame *frame,
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    HHSExactStatus status;
+    if (out_length != NULL)
+        *out_length = HHS_EXACT_VM81_FRAME_BYTES;
+    if (frame == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    status = hhs_exact_vm81_frame_global_serialization_validate(frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    return hhs_exact_vm81_frame_export_le_raw(frame, out_bytes, capacity, out_length);
 }
 
 HHSExactStatus hhs_x86_64_ingress_exact(
@@ -288,6 +326,14 @@ HHSExactStatus hhs_x86_64_bytecode_copy_exact(
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (capacity < length)
         return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    if (length == HHS_EXACT_VM81_FRAME_BYTES) {
+        HHSExactVM81Frame frame;
+        HHSExactStatus status = hhs_exact_vm81_frame_import_le(input, length, &frame);
+        if (status != HHS_EXACT_STATUS_OK)
+            return status;
+        return hhs_exact_vm81_frame_export_le(
+            &frame, output, capacity, out_length);
+    }
     if (length != 0U)
         memmove(output, input, length);
     return HHS_EXACT_STATUS_OK;
