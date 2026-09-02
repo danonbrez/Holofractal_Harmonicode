@@ -264,3 +264,154 @@ ABI implementation SHALL expose both:
 
 so a consumer cannot confuse symbolic lane identity with scalar projection
 equality.
+
+
+## Milestone 1 — executable raw5184 / PCM64 / octonion bridge
+
+Primary implementation lineage:
+
+- `52fa93e1...` — exact raw bitstring/bytes/VM81/PCM64 bridge;
+- `eba8ebb8...` — role-based ternary clarification;
+- `f6e440c2...` — inherited `0/0=u^0 mod(u^72)=1` and scalar-projection nonauthority;
+- `47581c02680558c3a7c80010a39673ab5695ee2c` — exact mono-lane phase coordinates and PCM64 role bounds;
+- `5d20dd09d669f0f5658c4252c23544f91061c075` — mandatory Pass 219 data/ML + execution-composer binding;
+- `639c63ed239d9cfc721799910bce5d6fddf180ff` — exact tests, contract, benchmark, workflow;
+- `3956d2fa752caf69ad25215aeea9c901dfba146c` — C++ wrapper include repair.
+
+Implemented reversible transport:
+
+```text
+5184 raw binary symbols
+↕ exact LSB0
+648 little-endian bytes
+↕ exact VM81 frame
+81 × 64-bit PCM carrier samples
+```
+
+No normalization, gain, clipping, trigonometric approximation, or float is used on the reversible carrier.
+
+Implemented phase/audio topology per 20 four-cell quads:
+
+```text
+left mono  = (yx, x+y, xy) = (-1,0,+1)
+right mono = (wz, z+w, zw) = (-1,0,+1)
+center mono relation = x+y : z+w
+```
+
+Exact signed PCM64 amplitude roles:
+
+```text
+-1 = -9223372036854775808  binary 5184 digital noise floor
+ 0 =                    0  zero-sum crossing
++1 =  9223372036854775807  sample saturation ceiling
+```
+
+The six actual phase72 coordinates remain separately receipt-visible.
+
+Typed phase-ring closure:
+
+```text
+(-1,0,+1)/(-1,0,+1) = (1,1,1)
+quotient phase = (u^0,u^0,u^0)
+0/0 = u^0 mod(u^72) = 1
+(x+y)/(z+w) = u^0
+```
+
+Scalar projection runtime/admission authority is fixed `false`; no scalar division is executed.
+
+H36 coordinates remain orthogonal and exact for every phase:
+
+```text
+resonance36 = phase72 mod 36
+half_turn   = floor(phase72/36)
+phase72     = resonance36 + 36*half_turn
+```
+
+## Milestone 2 — validation and benchmark
+
+First dedicated run:
+
+- `33648505841`
+- exact ABI: PASS
+- C exact roundtrip/lane conformance: PASS
+- C++ wrapper: FAIL because `std::size_t` lacked `<cstddef>`
+- later stages: skipped
+- semantic/runtime defect: `NO`
+
+Repair:
+
+- `3956d2fa752caf69ad25215aeea9c901dfba146c` — add `<cstddef>`
+
+Terminal dependency-scoped run:
+
+- workflow: `Pass 219 I148 Raw5184 Octonion PCM64 Hydration`
+- run: `33648627859`
+- validated head: `3956d2fa752caf69ad25215aeea9c901dfba146c`
+- result: `SUCCESS`
+
+Passed:
+
+- normative contract parse;
+- no-float/no-double C/C++ authority scan;
+- cumulative exact ABI compile;
+- C11 raw5184/PCM64/mono-lane conformance;
+- C++17 wrapper conformance;
+- Python reference implementation;
+- mandatory data/ML + execution-composer binding;
+- inherited cross-modal reversible-state regression;
+- exact serialization logical-work benchmark;
+- shared exact runtime build;
+- inherited ordered octonion ABI;
+- inherited H36 factorization;
+- inherited I147 dynamic paradox semantics;
+- artifact sealing.
+
+Artifact:
+
+- id: `9853808528`
+- name: `pass219-i148-raw5184-octonion-audio-hydration`
+- digest: `sha256:2e52d61c674387ebe04109cdfb93801a9809d00254eced47c18130330cf0d37b`
+
+Exact benchmark:
+
+```text
+baseline per frame = 10529
+fused per frame    = 5184
+saved per frame    = 5345
+reduction floor    = 507/1000
+
+calibrated frame counts = 1 + 64 + 1024 = 1089
+
+aggregate baseline = 11466081
+aggregate fused    =  5645376
+aggregate saved    =  5820705
+```
+
+Timing is noncanonical.
+
+## Current-main drift at validation seal
+
+Observed current `main`:
+
+- `2521823a16f1635934d95ebc65dc55edeab907f8`
+
+Feature base:
+
+- `bcfe5652ecb210e3c7b118bcb129bd8c399ae72f`
+
+Divergence:
+
+- feature branch: 15 commits ahead;
+- feature branch: 4 commits behind;
+- the four main-only commits modify only Pass191/I135 repair surfaces:
+  - `.github/workflows/pass219-cumulative-pass191-repair-membrane-i135.yml`
+  - `docs/operations/restart/PASS_219_I135_POSTMERGE_SOURCE_IDENTITY_REPAIR_20260902.md`
+  - `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py`
+
+No I148 dependency-frontier file overlaps this drift.
+
+## Exact next action
+
+Commit formal documentation/evidence, open a ready PR against current `main`,
+require the PR synthetic merge to pass the I148 dependency workflow, then merge
+with an exact-head guard and verify authoritative `main`.
