@@ -40,10 +40,12 @@ Supporting surfaces such as ``/runtime-console`` remain intact.
 from __future__ import annotations
 
 from pathlib import Path
+from fastapi.staticfiles import StaticFiles
 
 from hhs_backend.api.pass184_runtime_routes import router as pass184_runtime_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
-from hhs_backend.application_ide_server import app as inherited_app
+from hhs_backend.application_ide_server import FULL_IDE_ROOT, app as inherited_app
+from hhs_backend.public_ide_bootstrap import render_public_ide_index
 from hhs_backend.runtime_os_pass218_authority_i13 import (
     PASS218_AUTHORITY_ACTION_PREPARE_PATH,
     PASS218_AUTHORITY_ALERTS_PATH,
@@ -479,6 +481,30 @@ PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I16_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I15_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
+
+# Pass 176's accepted full IDE was later superseded at public root by the
+# Runtime OS. Preserve the executable inherited IDE additively at a governed
+# non-root route so cumulative Pass 176 behavior remains directly reachable.
+PASS176_FROZEN_IDE_PATH = "/pass176-ide"
+PASS176_FROZEN_IDE_MOUNT_NAME = "hhs-pass176-frozen-ide"
+
+if FULL_IDE_ROOT.is_dir() and (FULL_IDE_ROOT / "index.html").is_file():
+    async def pass176_frozen_ide_index():
+        return render_public_ide_index(FULL_IDE_ROOT)
+
+    app.add_api_route(
+        PASS176_FROZEN_IDE_PATH + "/",
+        pass176_frozen_ide_index,
+        methods=["GET", "HEAD"],
+        include_in_schema=False,
+        name="hhs-pass176-frozen-ide-index",
+    )
+    app.mount(
+        PASS176_FROZEN_IDE_PATH,
+        StaticFiles(directory=str(FULL_IDE_ROOT), html=True),
+        name=PASS176_FROZEN_IDE_MOUNT_NAME,
+    )
+
 project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)
 
 __all__ = [
@@ -595,6 +621,8 @@ __all__ = [
     "PASS218_I48_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
+    "PASS176_FROZEN_IDE_MOUNT_NAME",
+    "PASS176_FROZEN_IDE_PATH",
     "PUBLIC_MOUNT_NAME",
     "REPOSITORY_ROOT",
     "RUNTIME_OS_ASSETS",
