@@ -70,6 +70,10 @@ Repair commit:
 
 `0c1e59d5b88836ce521dea639d816d55507da646`
 
+The follow-up run `33573861582` cleared compilation and entered the complete Pass 181 runtime suite, then was **cancelled by the workflow concurrency policy** when newer repository-visible checkpoint commits arrived. It is not classified as a test or implementation failure.
+
+The final exact-head validation must therefore be taken only from the receipt index below, not from the cancelled intermediate run.
+
 The authoritative final executed-validation result is indexed at:
 
 `evidence/pass181/i145/PASS_219_I145_PASS181_VALIDATION_RECEIPT_INDEX.json`
