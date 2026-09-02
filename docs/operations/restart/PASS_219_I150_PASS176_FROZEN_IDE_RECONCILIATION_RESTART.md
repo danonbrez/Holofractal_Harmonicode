@@ -237,3 +237,46 @@ The diagnostic does not mutate authority or bypass boot. Use its failure evidenc
 Current branch remains based on current main `de301d6ab8dca2438ebbe1ee745e61e669027018` through reconciliation commit `e5dd153e6f9471681c1f8b485db842b6ef7dfa74`.
 
 No Pass 176 cumulative binding has been added. Global census remains floor 177 / count 44.
+
+
+## Run 11 boot diagnosis and repair
+
+Diagnostic run:
+
+- run: `33667424548`
+- run number: 11
+- source head: `9ace787854a8ba0c88a7d6679886369def2517c6`
+- result: **FAILURE**
+- failure stage: preserved Pass 176 browser controller boot only
+
+The diagnostic proved:
+
+- `/pass176-ide/` returned successfully;
+- current Runtime OS remained the public root;
+- `HHSInlinePublicBoot` existed;
+- the inline boot requested `/pass176-ide/src/production-startup-coordinator.mjs`;
+- browser console/page/network/HTTP error sets were empty;
+- `HHSProductionStartupCoordinator`, `HHSPublicBoot`, `HHSVisualIDEBoot`, and `HHSPass176` had not materialized within the bounded window;
+- resource timing showed Pass 196–199 projection modules beginning to load before the coordinator reached its assignment.
+
+Root cause:
+
+`production-startup-coordinator.mjs` statically imported Pass 196–203 integration panels before publishing the core startup coordinator. Those panel modules immediately begin asynchronous backend refreshes. Under the bounded single-worker acceptance server, those refreshes can monopolize the worker while the remaining static ESM graph is still unresolved, preventing the coordinator body from reaching its assignment and preventing the inherited public boot from starting.
+
+Repair:
+
+- `9a3c927b6d408d114031bb9e4a22054b3a8f7513`
+  - retains mobile-first-paint and theme bootstrap as the only static prerequisites;
+  - publishes `HHSProductionStartupCoordinator` immediately;
+  - starts the inherited `HHS_PUBLIC_MODULE_BOOT_V2` graph;
+  - loads Pass 196–203 integration panels only after the core public graph settles;
+  - exposes deferred projection status through non-authoritative compatibility getters;
+  - keeps every later projection module present and scheduled;
+  - creates no frontend, VM81, Hash72, Hash216, browser, or checkpoint authority.
+
+- `506d21021c660b75d549b8c1a56c6d3715486831`
+  - adds the startup coordinator itself to the I150 dependency path filter.
+
+Current next action:
+
+Consume the dedicated I150 run emitted from `506d21021c660b75d549b8c1a56c6d3715486831` (or its exact successor if only non-triggering restart evidence is added). If browser/terminal verification is green, seal the pre-cumulative receipt and proceed to Pass 176 ABI 1.50 / floor 176 / count 45. If it fails, repair only the newly exposed impacted stage.
