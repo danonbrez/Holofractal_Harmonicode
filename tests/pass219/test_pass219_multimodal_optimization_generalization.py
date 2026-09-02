@@ -16,6 +16,7 @@ from hhs_runtime.pass219.multimodal_optimization_generalization import (
 
 ROOT = Path(__file__).resolve().parents[2]
 REFERENCE = ROOT / "contracts/pass219/optimization_generalization/PASS_219_OPTIMIZATION_GENERALIZATION_REFERENCE_V1.json"
+I147_MANIFEST = ROOT / "contracts/pass219/optimization_generalization/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_1_0.json"
 
 
 def load():
@@ -45,6 +46,17 @@ def main() -> int:
     target = manifest["targets"][1]
     decision = classify_target(manifest["source"], target, manifest["optimization"], None)
     assert decision["classification"] == VALIDATION_REQUIRED
+
+    i147 = json.loads(I147_MANIFEST.read_text(encoding="utf-8"))
+    i147_result = validate_manifest(i147)
+    assert i147_result["optimization_id"] == "I147_BOUNDED_EXACT_PHASE_CYCLE_CLOSURE"
+    assert i147_result["validation_required"] == []
+    assert i147_result["local_exceptions"] == []
+    assert i147_result["generalize_required"] == [
+        "i147-hydration-symbolic-target",
+        "i147-multimodal-constraint-target",
+        "i147-vm81-symbolic-target",
+    ]
     return 0
 
 
