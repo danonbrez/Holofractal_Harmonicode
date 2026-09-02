@@ -41,7 +41,8 @@ static const HHSExactPass219CumulativeBindingKeyV1 HHS_PASS219_GLOBAL_DEFAULT_BI
     { 185U, 0U, 0U },
     { 184U, 0U, 0U },
     { 183U, 0U, 0U },
-    { 182U, 0U, 0U }
+    { 182U, 0U, 0U },
+    { 181U, 0U, 0U }
 };
 
 _Static_assert(
