@@ -51,13 +51,14 @@ export function startPublicBoot() {
   };
 
   // The composed document disables all duplicate parser-owned entry modules.
-  // Browser and registry authorities start concurrently. Application controls
-  // initialize before visual-IDE hydration because both import the same control
-  // modules and the application surface owns the user-critical New Application path.
+  // Browser, registry, application controls, and the frozen Pass 176 Visual IDE
+  // start independently so a newer application-experience/support import cannot
+  // suppress the inherited IDE boot/controller. All surfaces remain frontend
+  // projections only; canonical VM81/Hash72/Hash216 authority remains backend-owned.
   const browser = launch('browser', './browser.mjs');
   const productionIntegration = launch('production-integration', './production-integration.mjs');
   const applicationExperience = launch('application-experience', './application-experience.mjs');
-  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
+  const visualIDE = launch('visual-ide', './visual-ide.mjs');
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
