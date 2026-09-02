@@ -11,6 +11,7 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'contracts/pass219/optimization_generalization/PASS_179_DETERMINISTIC_PNG_COMPRESSION_I147.json'
       - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
       - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
       - 'tools/validate_pass219_global_canonical_defaults.py'
