@@ -643,3 +643,73 @@ rewriting the green I148 feature lineage.
 Open a ready PR from this branch to current main, verify GitHub mergeability
 and the PR-triggered I148 merge result, then merge with expected-head guard and
 verify authoritative main.
+
+
+## Terminal post-merge checkpoint
+
+Integration:
+
+- PR: `#351`
+- merged: `YES`
+- merged feature/evidence head: `33614a55bc4aefb7d490c1f67d178f4275936a8f`
+- merge commit: `b86e748f7601111e48e5e25083dd989d539fe102`
+- merge base main: `2521823a16f1635934d95ebc65dc55edeab907f8`
+- feature ancestry in main: `VERIFIED`
+- feature head behind main after merge: `0`
+
+Authoritative green I148 validation:
+
+- runtime/docs head: `b5a6a6dd2f190283d8c901426b73752b7dd50e9d`
+- run: `33648997418`
+- result: `SUCCESS`
+- artifact: `9853960285`
+- digest: `sha256:c77e9cb92e2911d0932b2425efa2331bfb13892958adf71af8b564673a6e4937`
+
+Merged invariant summary:
+
+```text
+raw carrier:
+  5184 bits <-> 648 LE bytes <-> 81 VM81 words <-> 81 PCM64 bit patterns
+
+left mono:
+  yx -> x+y -> xy
+
+right mono:
+  wz -> z+w -> zw
+
+center mono:
+  x+y : z+w
+
+ternary roles:
+  -1 = digital noise floor = INT64_MIN
+   0 = zero-sum crossing = 0
+  +1 = saturation ceiling = INT64_MAX
+
+stereo quotient:
+  (-1,0,+1)/(-1,0,+1) = (1,1,1)
+
+center closure:
+  0/0 = u^0 mod(u^72) = 1
+  (x+y)/(z+w) = u^0
+
+scalar projection runtime authority = false
+
+derived waveform:
+  72-phase signed PCM64 Q62 sine lookup
+  runtime float = false
+  runtime authority = false
+```
+
+External post-merge workflow state:
+
+- unrelated legacy/main workflows may remain red or queued;
+- no such external failure changes the dependency-scoped I148 green receipt above;
+- any subsequent I148-specific main failure is repair-forward work and shall
+  not reconstruct this completed implementation.
+
+## Restart rule
+
+Start the next Pass 219 layer from the repository state containing this
+checkpoint. Reuse the I148 carrier, mono/stereo ternary semantics, u72 closure,
+Q62 sine projection, and exact validation receipt. Rerun only surfaces changed
+by subsequent work.
