@@ -114,16 +114,30 @@ additive stereo center    =  0
 direct ordered product    = +1
 ```
 
-The slash is a typed stereo phase quotient, not ordinary scalar division.
+The slash is the inherited HARMONICODE `u^72` phase quotient, not ordinary scalar division.
 For coordinate `i`:
 
 ```text
 Q(a_i,b_i) = 1 iff a_i and b_i are the same typed ternary phase role
 ```
 
-Thus the middle coordinate closes as `Q(0,0)=1` without introducing
-ordinary arithmetic `0/0`. Any numerator/denominator role mismatch fails
-closed instead of producing a quotient.
+Thus the middle coordinate closes by the already-formalized identity:
+
+```text
+0/0 = u^0 mod(u^72) = 1
+```
+
+and therefore:
+
+```text
+(x+y)/(z+w) = u^0
+```
+
+at the symbolic phase boundary. This is not a contradiction or impossible
+state. Ordinary scalar projection has no runtime/admission authority, so a
+scalar rendering of `(x+y)/(z+w)` cannot admit or reject the native frame.
+Any numerator/denominator *typed phase-role* mismatch fails closed; scalar
+projection disagreement remains diagnostic-only.
 
 The associated actual octonion phases remain receipt-visible:
 
@@ -182,7 +196,8 @@ authority and cannot substitute for the 81-sample carrier.
 - ordered `xy/yx` or `zw/wz` collapse;
 - any stereo ternary role other than the exact ordered `(-1,0,+1)` triple;
 - any typed quotient result other than `(1,1,1)`;
-- any attempt to interpret the center quotient as ordinary scalar `0/0`;
+- any attempt to give scalar `(x+y)/(z+w)` projection runtime/admission authority;
+- loss of the inherited `0/0 = u^0 mod(u^72) = 1` closure witness;
 - invalid H36 resonance/half-turn reconstruction;
 - pilot substitution;
 - PCM carrier normalization or clipping;
