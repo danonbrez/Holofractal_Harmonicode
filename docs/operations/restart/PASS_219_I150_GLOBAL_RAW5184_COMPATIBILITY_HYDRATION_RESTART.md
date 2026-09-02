@@ -173,3 +173,74 @@ No failed run above established an I150 serialization logic regression.
 ## Integration next action
 
 Compare the validated branch against current authoritative `main`. If current-main drift is disjoint or zero, open a ready PR, merge with expected-head protection, verify authoritative-main ancestry, and append the terminal post-merge checkpoint. If main moved across an I150-affected surface, reconcile and rerun only the impacted frontier.
+
+
+## Terminal post-merge checkpoint
+
+Integration:
+
+- PR: `#354`
+- merged: `YES`
+- merged feature head: `0aba088ffa002ce5468a5bf1351676b2fa42c87d`
+- merge commit: `c70f0458fdd3ed4d819b1e6d778046e2171f9526`
+- authoritative main immediately after merge: `c70f0458fdd3ed4d819b1e6d778046e2171f9526`
+- feature ancestry in main: `VERIFIED`
+- feature head behind main after merge: `0`
+
+Frozen green validation evidence:
+
+- validated implementation/workflow head: `da6f947c34fa369d7992c7e31f22a97e7dbd33eb`
+- workflow run: `33654747360`
+- job: `100330377931`
+- result: `SUCCESS`
+- artifact: `9856291433`
+- artifact SHA-256: `fbebba4ffb71a6c9cd9949d3e08ff0f5814e0864cce5229c401a67cd14c4a2a9`
+- the two commits after the validated head changed only this restart record and the validation receipt.
+
+Merged compatibility membrane:
+
+```text
+native exact ABI:
+  I149 public 5184-bit / 648-byte frame ingress-egress hydration
+
+Python compatibility:
+  Pass163 VMRCSnapshot ingress/egress -> I150 hydration
+  Pass163 Base64 -> VMRCSnapshot -> I150
+  Pass164/165/174/194/218 VMRC snapshot routes -> I150
+  Pass166 direct 648-byte projection -> I150
+  Pass196 V1 -> frozen historical raw primitive
+  Pass196 active V2 -> wraps frozen V1 raw snapshot -> I150
+
+left mono  = (yx, x+y, xy)
+right mono = (wz, z+w, zw)
+center     = x+y : z+w
+
+-1 = INT64_MIN
+ 0 = zero-sum crossing
++1 = INT64_MAX
+
+0/0 = u^0 mod(u^72) = 1
+(x+y)/(z+w) = u^0
+
+exact carrier bit identity = true
+runtime floating point = false
+scalar projection runtime authority = false
+new VM81 mutation authority = false
+new Hash72 commit authority = false
+new Hash216 commit authority = false
+new canonical persistence authority = false
+```
+
+Repair-forward validation history:
+
+- `33654358571`: bounded workflow missing FastAPI dependency;
+- `33654444351`: bounded workflow missing cryptography dependency;
+- `33654556063`: correctly exposed the immutable Pass196 V1 provenance constraint;
+- final repair moved active hydration to Pass196 V2 and restored V1 exactly;
+- `33654747360`: terminal green.
+
+The standalone `static vm81_serialize_frame_le` remains a private internal kernel self-check primitive and does not constitute a public/persistent serialization bypass.
+
+## Restart rule
+
+Start the next Pass 219 layer from authoritative main containing this terminal checkpoint. Treat I149 + I150 together as the global raw5184 serialization hydration boundary. Reuse it rather than adding parallel 648-byte/5,184-bit serializers. Any newly discovered public or persistent raw5184 emitter must bind to this membrane or be explicitly proven to be a private internal primitive.
