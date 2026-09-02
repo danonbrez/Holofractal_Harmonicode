@@ -18,6 +18,7 @@ on:
       - 'applications/holofractal_harmonizer/tests/pass176-*'
       - 'applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py'
       - 'hhs_verification/pass176/**'
+      - 'hhs_backend/public_ide_bootstrap.py'
       - 'hhs_backend/runtime_os_application_server_full.py'
       - 'hhs_gui/**'
       - 'tests/test_pass176_frozen_ide_stabilization.py'
