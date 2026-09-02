@@ -24,11 +24,11 @@ def main() -> int:
     witness = canonical_random_guess_paradox()
     assert witness.object_has_fixed_point is False
     assert witness.trajectory == (
-        0,
-        1 / 4,
-        1 / 2,
-        1 / 4,
-    ) or tuple(str(v) for v in witness.trajectory) == ("0", "1/4", "1/2", "1/4")
+        Fraction(0, 1),
+        Fraction(1, 4),
+        Fraction(1, 2),
+        Fraction(1, 4),
+    )
 
     h36 = h36_identity_witness()
     assert h36["identity_equal"] is True
