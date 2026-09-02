@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #define HHS_EXACT_PASS219_AUDIO5184_VERSION_MAJOR 1U
-#define HHS_EXACT_PASS219_AUDIO5184_VERSION_MINOR 0U
+#define HHS_EXACT_PASS219_AUDIO5184_VERSION_MINOR 1U
 #define HHS_EXACT_PASS219_AUDIO5184_VERSION_PATCH 0U
 
 #define HHS_EXACT_PASS219_AUDIO5184_RAW_BITS HHS_EXACT_VM81_FRAME_BITS
@@ -19,7 +19,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_AUDIO5184_PILOT_CELL 80U
 #define HHS_EXACT_PASS219_AUDIO5184_H36 36U
 #define HHS_EXACT_PASS219_AUDIO5184_MONITOR_SCALE INT64_C(72057594037927936)
-#define HHS_EXACT_PASS219_AUDIO5184_TRIT_SCALE INT64_C(281474976710656)
+#define HHS_EXACT_PASS219_AUDIO5184_ROLE_SCALE INT64_C(281474976710656)
 #define HHS_EXACT_PASS219_AUDIO5184_MONITOR_SAMPLES     (HHS_EXACT_PASS219_AUDIO5184_PHASE_QUADS * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS)
 
 typedef struct HHSExactPass219Audio5184PCM64V1 {
@@ -42,12 +42,25 @@ typedef struct HHSExactPass219Audio5184PhaseChannelV1 {
     uint8_t phase72;
     uint8_t resonance36;
     uint8_t half_turn;
-    int8_t trit;
     int8_t signed_phase;
     uint8_t basis;
-    uint16_t reserved0;
+    uint8_t reserved0[3];
     int64_t monitor_pcm64;
 } HHSExactPass219Audio5184PhaseChannelV1;
+
+typedef struct HHSExactPass219Audio5184StereoTernaryV1 {
+    int8_t numerator_role[3];
+    int8_t denominator_role[3];
+    uint8_t quotient_identity[3];
+    uint8_t quotient_phase72[3];
+    uint8_t center_zero_over_zero_u0_mod_u72;
+    uint8_t center_xy_sum_over_zw_sum_u0;
+    uint8_t typed_quotient_only;
+    uint8_t scalar_division_attempted;
+    uint8_t scalar_projection_runtime_authority;
+    uint8_t all_coordinates_close_to_identity;
+    uint8_t reserved0[2];
+} HHSExactPass219Audio5184StereoTernaryV1;
 
 typedef struct HHSExactPass219Audio5184PhaseQuadV1 {
     uint8_t quad_index;
@@ -63,6 +76,7 @@ typedef struct HHSExactPass219Audio5184PhaseQuadV1 {
     HHSExactPass219OctonionStateV1 octonion;
     HHSExactPass219Audio5184PhaseChannelV1
         channels[HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS];
+    HHSExactPass219Audio5184StereoTernaryV1 stereo_ternary;
 } HHSExactPass219Audio5184PhaseQuadV1;
 
 typedef struct HHSExactPass219Audio5184HydrationV1 {
@@ -78,7 +92,10 @@ typedef struct HHSExactPass219Audio5184HydrationV1 {
     uint8_t exact_phase_reconstruction;
     uint8_t dual_stereo_order_preserved;
     uint8_t ordered_octonion_preserved;
-    uint8_t ternary_h36_preserved;
+    uint8_t typed_ternary_quotient_preserved;
+    uint8_t zero_over_zero_u0_mod_u72_preserved;
+    uint8_t scalar_projection_runtime_authority;
+    uint8_t h36_phase_coordinates_preserved;
     uint8_t canonical_mutation_authority;
     uint8_t canonical_hash72_authority;
     uint8_t canonical_hash216_authority;
