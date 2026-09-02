@@ -1,0 +1,148 @@
+name: Pass 219 I148 Raw5184 Octonion PCM64 Hydration
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-iteration148-raw5184-octonion-audio-hydration
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_raw5184_octonion_audio_hydration_v1.py'
+      - 'hhs_runtime/hhs_pass219_raw5184_octonion_audio_hydration_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.json'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py'
+      - 'benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py'
+      - 'docs/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.md'
+      - 'docs/operations/restart/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_RESTART.md'
+      - '.github/workflows/pass219-i148-raw5184-octonion-audio-hydration.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc'
+      - 'hhs_runtime/hhs_pass219_raw5184_octonion_audio_hydration_v1.py'
+      - 'hhs_runtime/hhs_pass219_raw5184_octonion_audio_hydration_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
+      - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.json'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp'
+      - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py'
+      - 'benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py'
+      - 'docs/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.md'
+      - 'docs/operations/restart/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_RESTART.md'
+      - '.github/workflows/pass219-i148-raw5184-octonion-audio-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-i148-audio5184:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse normative contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.json >/dev/null
+          python - <<'PY'
+          import json
+          p='contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_1.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['raw_serialization']['bits'] == 5184
+          assert d['pcm64_carrier']['samples'] == 81
+          assert d['mono_lane_topology']['left'] == ['yx','x+y','xy']
+          assert d['mono_lane_topology']['right'] == ['wz','z+w','zw']
+          assert d['mono_lane_topology']['role_amplitudes_pcm64']['noise_floor'] == -9223372036854775808
+          assert d['mono_lane_topology']['role_amplitudes_pcm64']['zero_sum_crossing'] == 0
+          assert d['mono_lane_topology']['role_amplitudes_pcm64']['sample_saturation_ceiling'] == 9223372036854775807
+          assert d['typed_u72_quotient']['scalar_projection_runtime_authority'] is False
+          PY
+
+      - name: Reject approximate canonical audio authority
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp             hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
+
+      - name: Compile cumulative exact ABI
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-i148 artifacts/pass219/i148-raw5184-audio
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i148/exact.o
+
+      - name: Run C exact roundtrip and lane conformance
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-c
+          /tmp/pass219-i148/test-c
+
+      - name: Run C++ exact wrapper conformance
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-cpp
+          /tmp/pass219-i148/test-cpp
+
+      - name: Run Python reference and mandatory binding
+        run: |
+          python -m pytest -q --tb=short             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py             tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py             tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py
+
+      - name: Run exact serialization benchmark
+        run: |
+          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py             artifacts/pass219/i148-raw5184-audio/benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/i148-raw5184-audio/benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['aggregate']['baseline_total_work'] == 11466081
+          assert d['aggregate']['fused_total_work'] == 5645376
+          assert d['aggregate']['exact_work_saved'] == 5820705
+          assert d['aggregate']['reduction_permille_floor'] == 507
+          assert d['typed_u72_quotient']['scalar_projection_runtime_authority'] is False
+          PY
+
+      - name: Build shared exact runtime
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Preserve inherited ordered octonion ABI
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_octonion_runtime_1_19.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-oct
+          /tmp/pass219-i148/test-oct
+
+      - name: Preserve inherited H36 and I147 semantics
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-h36
+          /tmp/pass219-i148/test-h36
+          python -m pytest -q --tb=short             tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i148-raw5184-octonion-audio-hydration
+          path: artifacts/pass219/i148-raw5184-audio/*.json
+          if-no-files-found: error
