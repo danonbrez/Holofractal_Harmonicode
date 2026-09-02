@@ -16,6 +16,12 @@ public:
         return hhs_exact_pass219_audio5184_bitstring_import(bits, length, &frame);
     }
 
+    static HHSExactStatus sine_pcm64(
+        uint8_t phase72,
+        int64_t& out_sample) noexcept {
+        return hhs_exact_pass219_audio5184_sine_pcm64(phase72, &out_sample);
+    }
+
     static HHSExactStatus hydrate(
         const HHSExactVM81Frame& frame,
         HHSExactPass219Audio5184HydrationV1& out) noexcept {

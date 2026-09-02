@@ -1,0 +1,91 @@
+{
+  "schema": "HHS_PASS219_RAW5184_OCTONION_AUDIO_HYDRATION_V1",
+  "version": "1.2.0",
+  "iteration": "I148",
+  "classification": "ADDITIVE_MANDATORY_RAW5184_SERIALIZATION_MEMBRANE",
+  "base_authority": {
+    "vm81_cells": 81,
+    "word_bits": 64,
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "byte_order": "LITTLE_ENDIAN",
+    "bit_order": "LSB0_PER_UINT64_CELL",
+    "vm81_mutation": "INHERITED_SINGLETON_ONLY",
+    "hash72": "INHERITED_ONLY",
+    "hash216": "INHERITED_ONLY"
+  },
+  "reversible_carrier": {
+    "representations": [
+      "RAW_5184_BINARY_STRING",
+      "CANONICAL_648_BYTE_LE_FRAME",
+      "VM81_81_X_UINT64",
+      "PCM64_81_SAMPLE_SUPERFRAME"
+    ],
+    "bit_identity_required": true,
+    "normalization_allowed": false,
+    "clipping_allowed": false
+  },
+  "phase_hydration": {
+    "quads": 20,
+    "quad_cells": "4q+[0,1,2,3]",
+    "pilot_cell": 80,
+    "ordered_channels": ["x","y","z","w","xy","yx","zw","wz"],
+    "left_mono": ["yx","x+y","xy"],
+    "right_mono": ["wz","z+w","zw"],
+    "center_mono_relation": "x+y:z+w"
+  },
+  "ternary_audio_semantics": {
+    "roles": [-1,0,1],
+    "role_names": [
+      "BINARY_5184_DIGITAL_NOISE_FLOOR",
+      "ZERO_SUM_CROSSING",
+      "SAMPLE_SATURATION_CEILING"
+    ],
+    "pcm64": [
+      -9223372036854775808,
+      0,
+      9223372036854775807
+    ],
+    "stereo_equation": "(yx,x+y,xy)/(wz,z+w,zw)=(-1,0,+1)/(-1,0,+1)=(1,1,1)",
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "center_symbolic_relation": "(x+y)/(z+w)=u^0",
+    "scalar_projection_runtime_authority": false
+  },
+  "h36_phase_projection": {
+    "resonance36": "phase72 mod 36",
+    "half_turn": "floor(phase72/36)",
+    "reconstruction": "resonance36+36*half_turn"
+  },
+  "sine_projection": {
+    "format": "SIGNED_PCM64_Q62",
+    "phase_count": 72,
+    "scale": 4611686018427387904,
+    "implementation": "STATIC_INT64_LOOKUP",
+    "runtime_float": false,
+    "runtime_authority": false
+  },
+  "mandatory_binding": {
+    "guard": "pass219_raw5184_octonion_audio_hydration",
+    "applies_to": [
+      "SERIALIZATION",
+      "REPLAY",
+      "RAW_5184_VM81_BOUNDARY"
+    ]
+  },
+  "acceptance": [
+    "5184-bit raw string round-trips exactly",
+    "648-byte little-endian frame round-trips exactly",
+    "81 PCM64 carrier samples preserve all bits",
+    "20 quads plus cell80 pilot cover all cells",
+    "left mono lane is yx,x+y,xy",
+    "right mono lane is wz,z+w,zw",
+    "ternary roles are exact -1,0,+1",
+    "full signed PCM64 role bounds are exact",
+    "typed stereo quotient is 1,1,1",
+    "center closes as 0/0=u^0 mod(u^72)=1",
+    "scalar projection cannot admit or reject runtime state",
+    "Q62 sine uses no runtime float",
+    "H36 phase coordinates reconstruct exact phase72",
+    "no new VM81 Hash72 Hash216 authority"
+  ]
+}

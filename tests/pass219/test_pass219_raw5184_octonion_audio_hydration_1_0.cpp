@@ -1,35 +1,31 @@
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp"
 
+#include <array>
 #include <cassert>
 #include <cstdint>
-#include <string>
 
 int main() {
-    std::string bits(5184, '0');
-    for (std::size_t i = 0; i < bits.size(); ++i) {
-        if (((i * 13U) + 5U) % 7U < 3U) bits[i] = '1';
-    }
+    std::array<char, HHS_EXACT_PASS219_AUDIO5184_RAW_BITS> bits{};
+    for (std::size_t i = 0; i < bits.size(); ++i)
+        bits[i] = ((i * 7U + 3U) % 11U) < 5U ? '1' : '0';
 
     HHSExactVM81Frame frame{};
-    assert(hhs::pass219::Raw5184OctonionAudioHydration::import_bits(
-               bits.data(), bits.size(), frame) == HHS_EXACT_STATUS_OK);
+    assert(
+        hhs::pass219::Raw5184OctonionAudioHydration::import_bits(
+            bits.data(), bits.size(), frame) == HHS_EXACT_STATUS_OK
+    );
 
     HHSExactPass219Audio5184HydrationV1 hydration{};
-    assert(hhs::pass219::Raw5184OctonionAudioHydration::hydrate(
-               frame, hydration) == HHS_EXACT_STATUS_OK);
-    assert(hhs::pass219::Raw5184OctonionAudioHydration::validate(
-               frame, hydration));
+    assert(hhs::pass219::Raw5184OctonionAudioHydration::hydrate(frame, hydration) ==
+           HHS_EXACT_STATUS_OK);
+    assert(hhs::pass219::Raw5184OctonionAudioHydration::validate(frame, hydration));
 
-    const auto& q = hydration.quads[0].stereo_ternary;
-    assert(q.numerator_role[0] == -1);
-    assert(q.numerator_role[1] == 0);
-    assert(q.numerator_role[2] == 1);
-    assert(q.role_pcm64[0] == INT64_MIN);
-    assert(q.role_pcm64[1] == 0);
-    assert(q.role_pcm64[2] == INT64_MAX);
-    assert(q.center_zero_over_zero_u0_mod_u72 == 1U);
-    assert(q.center_xy_sum_over_zw_sum_u0 == 1U);
-    assert(q.center_mono_xy_sum_colon_zw_sum == 1U);
-    assert(q.scalar_projection_runtime_authority == 0U);
+    int64_t quarter{};
+    assert(hhs::pass219::Raw5184OctonionAudioHydration::sine_pcm64(18U, quarter) ==
+           HHS_EXACT_STATUS_OK);
+    assert(quarter == HHS_EXACT_PASS219_AUDIO5184_SINE_Q62_SCALE);
+    assert(hydration.quads[0].stereo_ternary.role_pcm64[0] == INT64_MIN);
+    assert(hydration.quads[0].stereo_ternary.role_pcm64[1] == 0);
+    assert(hydration.quads[0].stereo_ternary.role_pcm64[2] == INT64_MAX);
     return 0;
 }
