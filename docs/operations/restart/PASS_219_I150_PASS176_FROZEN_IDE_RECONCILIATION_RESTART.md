@@ -81,3 +81,89 @@ Only after run `33662139214` is green:
 8. create final I150 restart checkpoint if the post-binding gate is green.
 
 Do not merge to main without separate authorization. Ignore routine zero-job relay/fanout failures.
+
+
+## I150 cumulative preservation repair — current checkpoint
+
+Current authoritative main advanced again during I150:
+
+`de301d6ab8dca2438ebbe1ee745e61e669027018`
+
+Those six main commits are isolated native-runtime service-permission hardening. They touch four files and have zero overlap with the I150 Pass 176 repair.
+
+Second current-main reconciliation:
+
+- commit: `e5dd153e6f9471681c1f8b485db842b6ef7dfa74`
+- tree: `bc4c930aaf0887850b20a83cfe59f01b1af141de`
+- overlap count: 0
+- current-main permission hardening preserved exactly.
+
+### Browser-preservation root cause and repair
+
+Runs `33656369727` and the earlier scheduled repair run `33662139214` proved that current Python/Node Pass 176 logic is green but the historical browser controller is no longer present at public root.
+
+This is expected successor composition, not deletion of backend authority:
+
+- current `/` is owned by the later TypeScript Runtime OS;
+- `project_runtime_os()` explicitly removes inherited legacy public-root mounts;
+- the inherited full Pass 176 IDE assets and backend APIs still exist.
+
+I150 now preserves the executable Pass 176 IDE additively at:
+
+`/pass176-ide/`
+
+Repair commits:
+
+- `587022ec80b7e0aa5eac37f3a85c60f926affaeb` — add governed Pass 176 frozen-IDE mount beneath Runtime OS;
+- `d2116cfa81969bf69a93d2ba8fba2a5e312251de` — browser smoke validates preserved route and separately observes current Runtime OS root;
+- `154a96d74222c7cfa414d202f00341a584850e66` — verifier distinguishes cumulative Pass 176 preservation from current public-root ownership;
+- `ce1d3d3e9164fdd1744bb5f813f856fa0d475a77` — I150 workflow builds/boots current Runtime OS and targets `/pass176-ide/`;
+- `255592c734209ceaa6d5cda5b87777370b2350af` — static cumulative-preservation route assertion;
+- `fb4db5e94112aab69301c4f9ae9bd4756d0ae393` — exact I150 gate pinned to current-main ancestry.
+
+Inherited scheduled-repair commits retained:
+
+- `47d4f8eee9d157b45a68d340967088b2caabcb19` — public-boot compatibility ordering;
+- `3a903b66ea48b27687a8b6e70f725af9a996e44c` — include public boot in bounded gate;
+- `919932e5af819164409851dc46156c402ea15b1b` — checkpoint its failed browser rerun.
+
+### Exact authoritative pre-cumulative gate
+
+- workflow: `.github/workflows/pass219-i150-pass176-frozen-ide-reconciliation.yml`
+- run: `33666906021`
+- run number: 10
+- exact source head: `fb4db5e94112aab69301c4f9ae9bd4756d0ae393`
+- current state at checkpoint: `QUEUED_EXTERNAL_CI`
+
+This run is the first I150 gate where all of these agree simultaneously:
+
+1. latest current-main ancestry `de301d6a...`;
+2. current production Runtime OS entrypoint;
+3. current Runtime OS TypeScript build;
+4. preserved Pass 176 execution surface at `/pass176-ide/`;
+5. original Pass 176 browser interaction/authority assertions;
+6. cumulative-verifier distinction between preservation route and current public root.
+
+Do not treat cancelled runs #6/#7/#9 or stale-head run #8 as authoritative.
+
+### Exact next action
+
+Consume run `33666906021`.
+
+If green:
+
+1. freeze generated terminal/current-cumulative receipt, Hash72/Hash216 evidence and artifact metadata;
+2. add `hhs_pass219_inherited_pass176_1_50.{h,hpp,inc}`;
+3. extend exact ABI through Pass 176;
+4. update global census to floor `176`, binding count `45`;
+5. execute bounded post-binding cumulative membrane and C/C++ conformance;
+6. create final I150 restart checkpoint.
+
+If failure:
+
+- repair only the failing Pass 176/current-production compatibility surface;
+- do not remove Runtime OS public-root ownership;
+- do not restore Pass 176 as `/`;
+- do not widen frontend, Hash72, Hash216, GPU, browser or checkpoint authority.
+
+No main merge is authorized by this checkpoint.
