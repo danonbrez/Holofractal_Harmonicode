@@ -246,7 +246,7 @@ HHSExactStatus hhs_exact_pass219_audio5184_bitstring_import(
         }
         out_frame->words[cell] = word;
     }
-    return HHS_EXACT_STATUS_OK;
+    return hhs_exact_vm81_frame_global_serialization_validate(out_frame);
 }
 
 HHSExactStatus hhs_exact_pass219_audio5184_bitstring_export(
@@ -256,11 +256,16 @@ HHSExactStatus hhs_exact_pass219_audio5184_bitstring_export(
     size_t *out_length
 ) {
     uint32_t cell;
+    HHSExactStatus status;
     if (frame == NULL || out_length == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     *out_length = HHS_EXACT_PASS219_AUDIO5184_RAW_BITS;
     if (out_bits == NULL || capacity < HHS_EXACT_PASS219_AUDIO5184_RAW_BITS)
         return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+
+    status = hhs_exact_vm81_frame_global_serialization_validate(frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
 
     for (cell = 0U; cell < HHS_EXACT_VM81_CELLS; ++cell) {
         uint32_t bit;
@@ -323,7 +328,10 @@ HHSExactStatus hhs_exact_pass219_audio5184_bytes_import(
     HHSExactStatus status;
     if (bytes == NULL || out_pcm == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    status = hhs_exact_vm81_frame_import_le(bytes, length, &frame);
+    status = hhs_exact_vm81_frame_import_le_raw(bytes, length, &frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_exact_vm81_frame_global_serialization_validate(&frame);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
     return hhs_exact_pass219_audio5184_frame_to_pcm64(&frame, out_pcm);
@@ -342,7 +350,10 @@ HHSExactStatus hhs_exact_pass219_audio5184_bytes_export(
     status = hhs_exact_pass219_audio5184_pcm64_to_frame(pcm, &frame);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
-    return hhs_exact_vm81_frame_export_le(
+    status = hhs_exact_vm81_frame_global_serialization_validate(&frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    return hhs_exact_vm81_frame_export_le_raw(
         &frame, out_bytes, capacity, out_length);
 }
 
