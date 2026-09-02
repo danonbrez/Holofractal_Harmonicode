@@ -1,0 +1,191 @@
+name: Pass 219 I147 Pass 179 Native Graphics Nucleus
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration147-pass179-native-graphics-reconciliation
+    paths:
+      - 'contracts/pass179/**'
+      - 'hhs_runtime/pass179/**'
+      - 'hhs_runtime/include/hhs179_graphics.h'
+      - 'native_projects/hhs_pass179_graphics/**'
+      - 'hhs_backend/api/pass179_graphics_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/graphics-studio/**'
+      - 'applications/holofractal_harmonizer/templates/pass179/**'
+      - 'examples/pass179/**'
+      - 'tools/pass179_capture.py'
+      - 'tests/test_hhs_pass179_*.py'
+      - 'tests/native/pass179_graphics_conformance.c'
+      - '.github/workflows/pass219-i147-pass179-native-graphics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i147-pass179-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass179-i147:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install pytest 'cryptography>=46.0,<47.0' 'fastapi>=0.128,<1.0' 'pydantic>=2.7,<3.0'
+
+      - name: Verify contract-only census became executable source
+        run: |
+          test -s HHS_PASS_179_NATIVE_EXACT_GRAPHICS_ANIMATION_SHADER_MULTIMODAL_RENDERING_LIBRARY.md
+          test -s contracts/pass179/PASS_179_MACHINE_CONTRACT.json
+          test -s hhs_runtime/pass179/runtime.py
+          test -s native_projects/hhs_pass179_graphics/src/hhs179_graphics.c
+          test -s applications/holofractal_harmonizer/src/graphics-studio/index.html
+          grep -F '"terminal_pass179_completion": false' contracts/pass179/PASS_179_MACHINE_CONTRACT.json
+
+      - name: Compile Python Pass 179 surfaces
+        run: |
+          python -m py_compile             hhs_runtime/pass179/types.py             hhs_runtime/pass179/runtime.py             hhs_runtime/pass179/software.py             hhs_runtime/pass179/shader_ir.py             hhs_runtime/pass179/backends.py             hhs_runtime/pass179/animation.py             hhs_runtime/pass179/materials.py             hhs_runtime/pass179/golden.py             hhs_runtime/pass179/capture.py             hhs_backend/api/pass179_graphics_routes.py             tools/pass179_capture.py
+
+      - name: Run complete current Pass 179 Python conformance
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/test_hhs_pass179_exact_graphics.py             tests/test_hhs_pass179_scene_animation.py             tests/test_hhs_pass179_shader_ir.py             tests/test_hhs_pass179_software_renderer.py             tests/test_hhs_pass179_gpu_backends.py             tests/test_hhs_pass179_golden_scenes.py             tests/test_hhs_pass179_capture.py             tests/test_hhs_pass179_browser_ide.py             tests/test_hhs_pass179_materials.py
+
+      - name: Build native C11 graphics library
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass179_graphics clean all
+          test -s native_projects/hhs_pass179_graphics/build/libhhs179_graphics.a
+          test -s native_projects/hhs_pass179_graphics/build/libhhs179_graphics.so
+
+      - name: Run native C11 conformance
+        run: |
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/native/pass179_graphics_conformance.c             native_projects/hhs_pass179_graphics/src/hhs179_graphics.c             -o /tmp/pass179-conformance
+          /tmp/pass179-conformance
+
+      - name: Validate governed HTTP route surface
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_backend.api.pass179_graphics_routes import router
+          paths={route.path for route in router.routes}
+          required={
+              "/api/runtime/pass179-graphics/status",
+              "/api/runtime/pass179-graphics/scene/commit",
+              "/api/runtime/pass179-graphics/scene/{scene_id}/render",
+              "/api/runtime/pass179-graphics/scene/{scene_id}/png",
+              "/api/runtime/pass179-graphics/shader/validate",
+              "/api/runtime/pass179-graphics/shader/project/{target}",
+              "/api/runtime/pass179-graphics/backend/project/{backend}",
+              "/api/runtime/pass179-graphics/golden/{name}/commit",
+          }
+          assert required <= paths, sorted(required-paths)
+          print({"classification":"HHS_PASS179_HTTP_SURFACE_VERIFIED","routes":sorted(required)})
+          PY
+
+      - name: Execute deterministic capture smoke
+        run: |
+          PYTHONPATH="$PWD" python tools/pass179_capture.py lattice-run /tmp/pass179-lattice.png
+          test -s /tmp/pass179-lattice.png
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path("/tmp/pass179-lattice.png")
+          assert p.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+          print({"png_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"bytes":p.stat().st_size})
+          PY
+
+      - name: Preserve global Pass 219 policy gates
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Emit exact-head nonterminal nucleus receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass179/i147
+          PYTHONPATH="$PWD" python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.pass179.golden import golden_scene_manifest
+
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          payload={
+              "schema":"PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration147-pass179-native-graphics-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"P179_NATIVE_CORE_PRESENT_VALIDATED_NONTERMINAL",
+              "implemented":{
+                  "native_c11_core":True,
+                  "exact_scene_types":True,
+                  "software_renderer":True,
+                  "typed_shader_ir":True,
+                  "vm81_scene_admission":True,
+                  "deterministic_png_capture":True,
+                  "webgpu_projection_packet":True,
+                  "webgl2_projection_packet":True,
+                  "threejs_projection_packet":True,
+                  "golden_scene_nuclei":golden_scene_manifest(),
+                  "served_graphics_studio":True,
+              },
+              "authority":{
+                  "singleton_vm81_inherited":True,
+                  "independent_vm81_authority":False,
+                  "independent_hash72_commit_authority":False,
+                  "hash216_mutation_authority":False,
+                  "gpu_mutation_authority":False,
+                  "browser_mutation_authority":False,
+                  "floating_point_canonical_authority":False,
+              },
+              "closure":{
+                  "pre_cumulative_validation_green":True,
+                  "cumulative_pass179_binding_added":False,
+                  "terminal_pass179_completion":False,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+              },
+          }
+          receipt=make_hash72_witness("pass179:i147:nucleus",payload,width=72).digest
+          lanes=[
+              make_hash72_witness("pass179:i147:archive:previous",{"head":head,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass179:i147:archive:change",{"tree":tree,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass179:i147:archive:receipt",payload,width=72).digest,
+          ]
+          payload["receipt_hash72"]=receipt
+          payload["archive_hash216"]="".join(lanes)
+          path=Path("evidence/pass179/i147/PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT.json")
+          path.write_text(json.dumps(payload,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({"classification":payload["classification"],"head":head,"receipt_hash72":receipt,"archive_hash216":payload["archive_hash216"]},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i147-pass179-native-graphics-nucleus
+          path: evidence/pass179/i147/PASS_219_I147_PASS179_NATIVE_GRAPHICS_NUCLEUS_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30
