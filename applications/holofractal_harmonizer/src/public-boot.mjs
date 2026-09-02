@@ -50,23 +50,32 @@ export function startPublicBoot() {
     });
   };
 
-  // The composed document disables all duplicate parser-owned entry modules.
-  // Browser, registry, application controls, and the frozen Pass 176 Visual IDE
-  // start independently so a newer application-experience/support import cannot
-  // suppress the inherited IDE boot/controller. All surfaces remain frontend
-  // projections only; canonical VM81/Hash72/Hash216 authority remains backend-owned.
-  const browser = launch('browser', './browser.mjs');
-  const productionIntegration = launch('production-integration', './production-integration.mjs');
-  const applicationExperience = launch('application-experience', './application-experience.mjs');
+  // Pass 176 is preserved additively at /pass176-ide/. Its Visual IDE controller
+  // belongs to the core public graph and must become independently available before
+  // later presentation/integration projections are hydrated. This ordering does not
+  // transfer VM81, Hash72, Hash216, browser, checkpoint, or persistence authority to
+  // the frontend; it only prevents later projections from starving inherited IDE boot.
   const visualIDE = launch('visual-ide', './visual-ide.mjs');
+  const browser = launch('browser', './browser.mjs');
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
-  const allSettled = Promise.allSettled([
+  const corePublicGraph = Promise.allSettled([
+    visualIDE,
     browser,
+    workflowDefault,
+  ]);
+
+  const productionIntegration = corePublicGraph.then(() =>
+    launch('production-integration', './production-integration.mjs'));
+  const applicationExperience = corePublicGraph.then(() =>
+    launch('application-experience', './application-experience.mjs'));
+
+  const allSettled = Promise.allSettled([
+    visualIDE,
+    browser,
+    workflowDefault,
     productionIntegration,
     applicationExperience,
-    visualIDE,
-    workflowDefault,
   ]).then((results) => {
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
       detail: {
@@ -83,11 +92,12 @@ export function startPublicBoot() {
     schema: BOOT_SCHEMA,
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
+    visualIDE,
     browser,
+    workflowDefault,
+    corePublicGraph,
     productionIntegration,
     applicationExperience,
-    visualIDE,
-    workflowDefault,
     allSettled,
     status: snapshot,
     frontend_is_authority: false,
