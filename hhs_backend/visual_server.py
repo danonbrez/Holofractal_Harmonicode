@@ -34,6 +34,7 @@ from hhs_backend.api.pass198_calibration_registry_routes import router as pass19
 from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
 from hhs_backend.api.pass179_graphics_routes import router as pass179_graphics_router
 from hhs_backend.api.pass178_physics_routes import router as pass178_physics_router
+from hhs_backend.api.pass177_template_workflow_routes import router as pass177_workflow_router
 from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_optimization_router
 from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
 from hhs_backend.api.pass200c_active_routes import router as pass200c_active_router
@@ -93,6 +94,8 @@ if not _route_exists("/api/runtime/pass179-graphics/status"):
     app.include_router(pass179_graphics_router)
 if not _route_exists("/api/runtime/pass178-physics/status"):
     app.include_router(pass178_physics_router)
+if not _route_exists("/api/runtime/pass177-workflows/status"):
+    app.include_router(pass177_workflow_router)
 if not _route_exists("/api/runtime/graphics-hydration/constraints/registry/status"):
     app.include_router(graphics_constraint_router)
 if not _route_exists("/api/runtime/graphics-hydration/status"):
@@ -140,6 +143,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "pass179_native_graphics_api": "/api/runtime/pass179-graphics",
         "pass178_exact_physics_api": "/api/runtime/pass178-physics",
+        "pass177_workflow_authority_api": "/api/runtime/pass177-workflows",
         "pass178_physics_studio": "/physics-studio/",
         "pass179_graphics_studio": "/graphics-studio/",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
@@ -164,6 +168,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass201_public_api_federation": "HHS-P201-PUBLIC-API-FEDERATION-SERVICE-PASS-ROUTER-OPENAPI",
         "pass179_native_graphics": "HHS-P179-NEGAS-MRL",
         "pass178_exact_physics": "HHS-P178-NEH-RQ-TJS-PSR",
+        "pass177_universal_creation_workflows": "HHS-P177-UMACCT-WA-CEC-PD",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
