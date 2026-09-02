@@ -43,7 +43,9 @@ jobs:
             deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
-          python3 -m py_compile deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py
+          python3 -m py_compile \
+            deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
+            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py
           python3 - <<'PY'
           import runpy
           namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")
@@ -320,6 +322,12 @@ jobs:
           }
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
+          runuser -u hhs -- test -x /opt
+          runuser -u hhs -- test -x /opt/hhs
+          runuser -u hhs -- test -x "$APP_ROOT"
+          runuser -u hhs -- test -x "$APP_ROOT/hhs_backend"
+          runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"
+          echo "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1"
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
           systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'

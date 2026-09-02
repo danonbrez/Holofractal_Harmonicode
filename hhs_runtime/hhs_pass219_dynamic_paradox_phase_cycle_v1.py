@@ -19,6 +19,15 @@ MANIFOLD_BASE = 5184
 MANIFOLD_POWER = 4
 MANIFOLD_CARDINALITY = 722_204_136_308_736
 
+# Global Pass 219 optimization-generalization declaration.  I147's bounded
+# exact cycle detection replaces unbounded self-reference re-evaluation
+# without changing canonical mutation or persistence authority.
+OPTIMIZATION_ID = "I147_BOUNDED_EXACT_PHASE_CYCLE_CLOSURE"
+OPTIMIZATION_GENERALIZATION_MANIFEST = (
+    "contracts/pass219/optimization_generalization/"
+    "PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_1_0.json"
+)
+
 
 @dataclass(frozen=True)
 class ParadoxWitness:
