@@ -142,3 +142,46 @@ The binding is deliberately nonterminal:
 - `remaining_terminal_category_count = 10`.
 
 The authoritative next gate is the post-binding I147 workflow. No merge/main/deployment claim is made by this record.
+
+
+## Final I147 branch-local closure
+
+Final post-binding validation:
+
+- validated head: `a8f59a36360814a83ac7a2f916e423d080afdb8b`;
+- workflow run: `33622650604`;
+- job: `100223007900`;
+- classification: `HHS_PASS179_I147_CUMULATIVE_NONTERMINAL_VERIFIED`;
+- Python conformance: `13 passed, 1 warning`;
+- native C11 build/conformance: green;
+- cumulative membrane: green;
+- global defaults: `218..179`, `42` bindings;
+- multimodal generalization/audit-diff: green;
+- aggregate exact C ABI and Pass 179 C/C++ conformance: green;
+- Hash72 receipt: `XQ<oGqP2x9w0Mdq13(()MG7X*SDM)zR9TNNuVazs1+puuR8q9YGDO1BG<Rx)Zo?vBp!Ew+6d`;
+- cumulative artifact: `9843523227`;
+- artifact SHA-256: `5861d4563e6692613c29f756d85aecb46e21138d1ddfbda7aef1164c118ecf6d`;
+- cumulative receipt-index blob: `3a02bea7858f77cb627633ab709c92f31e7236fc`.
+
+The post-binding multimodal repair is frozen at:
+
+- manifest commit `610b0625a96c0b2fa980aff2029ef49a940477e2`;
+- final validated workflow head `a8f59a36360814a83ac7a2f916e423d080afdb8b`.
+
+Current integration boundary at checkpoint freeze:
+
+- current `main`: `75396e1bbf2fe95920311a5f8005b6ac1cde4cce`;
+- branch comparison: `291` commits ahead / `0` behind;
+- PR #347 / I146 remains a separate open mergeable integration path;
+- I147 merge: **NOT PERFORMED**;
+- authoritative-main verification: **NOT PERFORMED**;
+- deployment: **NOT PERFORMED**;
+- terminal Pass 179 completion: **FALSE**.
+
+Restart rule:
+
+1. Treat the pre-cumulative nucleus and post-binding receipts as frozen.
+2. Do not rerun unchanged I147 nucleus/cumulative surfaces merely to reconstruct context.
+3. Continue the next reverse census at Pass 178 unless the user explicitly orders Pass 179 terminal repair-forward or integration.
+4. Preserve all ten Pass 179 terminal categories as open debt until executed evidence closes them.
+5. Keep I146/PR #347 integration closure independent from I147 reverse development.
