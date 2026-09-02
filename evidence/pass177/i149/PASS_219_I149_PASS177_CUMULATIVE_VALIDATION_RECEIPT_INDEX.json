@@ -1,0 +1,65 @@
+{
+  "schema": "PASS_219_I149_PASS177_CUMULATIVE_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration149-pass177-workflow-authority-reconciliation",
+  "validated_cumulative": {
+    "head_sha": "7d267c4546d8d03feffbfc5761ffde71d598ecc4",
+    "workflow_path": ".github/workflows/pass219-i149-pass177-cumulative-binding.yml",
+    "workflow_run_id": 33632603026,
+    "job_id": 100255499016,
+    "conclusion": "success",
+    "classification": "HHS_PASS177_I149_CUMULATIVE_NONTERMINAL_VERIFIED",
+    "python_authority_and_membrane": "6 passed, 1 warning",
+    "historical_node_workflow_acceptance": true,
+    "aggregate_exact_abi_conformance": true,
+    "c_and_cpp_binding_conformance": true,
+    "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED"
+  },
+  "pre_cumulative_authority": {
+    "head_sha": "15fa5a458c6755eab4d1af4b405b83b3467d45d9",
+    "workflow_run_id": 33632013615,
+    "receipt_index_blob": "357365c6c55df87b1c199e64fb53d889c7315249",
+    "artifact_id": 9847194094
+  },
+  "historical_implementation": {
+    "merge_commit": "2aeb16e736829ec9fe64b2a0d9779bbfa147f4ec",
+    "historical_stage_truth_preserved": true,
+    "test_stage": "SOURCE_VALIDATED_NOT_EXECUTED_TARGET_TEST",
+    "build_stage": "SOURCE_PRESERVING_NOT_TARGET_COMPILATION",
+    "source_zip": "INDEPENDENT_OF_COMPILATION"
+  },
+  "global_census": {
+    "wired_ceiling": 218,
+    "wired_floor": 177,
+    "binding_count": 44
+  },
+  "generated_receipt": {
+    "receipt_hash72": "q<HMTQ9jl9c54UR?VO1cw5?pIH7gY<!*nG(6jh54+>g<*l0kdsV6!tk/sN1tpvGHSUaYEzQ!",
+    "archive_hash216": "rT*Hwio3HmPf/+vHfkeVblPC9CSPmIz7Or0HLA!yq0Z+JE4+sU4BtH1WD3o93I-a>TFEqMLNkm)8+CDU1TEcg5nQTm3N!Cn4T6wxzpM(I)p!qMIVFrfsKT5P/UAtA9RJaCjTIGvz?dNrTs4cuOB>TOZKGzAZWnzg-*6r0AqIFSi3T7siQPfo<460vO2erpdc?5o40t8slA/e6ts1AV9BxDOf"
+  },
+  "artifact": {
+    "id": 9847437114,
+    "name": "pass219-i149-pass177-cumulative-binding",
+    "size_bytes": 1806,
+    "sha256": "a4e2f39832f901ce494f3fdfe176f06584e4928ccbba6a62ec6fcf427a5b620a",
+    "expires_at": "2026-10-02T12:55:12Z"
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "browser_identity_authoritative": false,
+    "memory_checkpoint_authoritative": false
+  },
+  "closure": {
+    "cumulative_pass177_binding_added": true,
+    "terminal_pass177_completion": false,
+    "repair_forward_required": true,
+    "remaining_terminal_category_count": 12,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}
