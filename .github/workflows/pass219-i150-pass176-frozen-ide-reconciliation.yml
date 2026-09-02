@@ -17,6 +17,8 @@ on:
       - 'applications/holofractal_harmonizer/tests/pass176-*'
       - 'applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py'
       - 'hhs_verification/pass176/**'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'hhs_gui/**'
       - 'tests/test_pass176_frozen_ide_stabilization.py'
       - 'tests/test_hhs_production_public_app_v1.py'
       - '.github/workflows/pass219-i150-pass176-frozen-ide-reconciliation.yml'
@@ -37,7 +39,7 @@ jobs:
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
-      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765'
+      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765/pass176-ide/'
       HHS_COGNITION_AUTO_TICK: '0'
 
     steps:
@@ -64,12 +66,23 @@ jobs:
           timeout 600s make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
+      - name: Build current TypeScript Runtime OS projection
+        working-directory: hhs_gui
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
       - name: Verify historical Pass 176 merge ancestry
         run: |
           git merge-base --is-ancestor 4b862c1d9975b1e190bf2e88bff92175c2f935ed HEAD
           git merge-base --is-ancestor 4e4c073730dee1f66f91e28e533537c8f35fbe43 HEAD
           git merge-base --is-ancestor 02cd6953cda4d6be8d586a9c334c5933e7b46dcb HEAD
           grep -F 'HHS-P176-FPMIDE-SPR-HSI' HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md
+          grep -F 'PASS176_FROZEN_IDE_PATH = "/pass176-ide"' hhs_backend/runtime_os_application_server_full.py
 
       - name: Compile Pass 176 source surfaces
         run: |
@@ -104,7 +117,7 @@ jobs:
           HHS_COGNITION_AUTO_TICK: '0'
         run: |
           set -euo pipefail
-          python -m uvicorn hhs_backend.application_ide_server:app             --host 127.0.0.1 --port 8765 --workers 1 --log-level info             > /tmp/hhs-pass176-i150-server.log 2>&1 &
+          python -m uvicorn hhs_backend.runtime_os_application_server:app             --host 127.0.0.1 --port 8765 --workers 1 --log-level info             > /tmp/hhs-pass176-i150-server.log 2>&1 &
           SERVER_PID=$!
           cleanup() {
             kill "$SERVER_PID" 2>/dev/null || true
@@ -128,7 +141,9 @@ jobs:
             exit 1
           fi
           curl --connect-timeout 1 --max-time 10 -fsS             http://127.0.0.1:8765/ > /tmp/hhs-pass176-i150-root.html
-          grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-i150-root.html
+          grep -q 'HHS Visual Runtime OS Workspace' /tmp/hhs-pass176-i150-root.html
+          curl --connect-timeout 1 --max-time 10 -fsS             http://127.0.0.1:8765/pass176-ide/ > /tmp/hhs-pass176-i150-preserved.html
+          grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-i150-preserved.html
           curl --connect-timeout 1 --max-time 15 -fsS             http://127.0.0.1:8765/api/runtime/repository/status             > /tmp/hhs-pass176-i150-repository-status.json
           curl --connect-timeout 1 --max-time 15 -fsS             http://127.0.0.1:8765/api/v1/pass175/status             > /tmp/hhs-pass176-i150-pass175-status.json
           timeout 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
