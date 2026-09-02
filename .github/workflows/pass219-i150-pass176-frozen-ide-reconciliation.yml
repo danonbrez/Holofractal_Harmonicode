@@ -78,7 +78,7 @@ jobs:
 
       - name: Verify historical Pass 176 merge ancestry
         run: |
-          git merge-base --is-ancestor 4b862c1d9975b1e190bf2e88bff92175c2f935ed HEAD
+          git merge-base --is-ancestor de301d6ab8dca2438ebbe1ee745e61e669027018 HEAD
           git merge-base --is-ancestor 4e4c073730dee1f66f91e28e533537c8f35fbe43 HEAD
           git merge-base --is-ancestor 02cd6953cda4d6be8d586a9c334c5933e7b46dcb HEAD
           grep -F 'HHS-P176-FPMIDE-SPR-HSI' HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md
