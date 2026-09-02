@@ -1,0 +1,87 @@
+{
+  "schema": "PASS_219_I147_PASS179_CUMULATIVE_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration147-pass179-native-graphics-reconciliation",
+  "pre_cumulative": {
+    "validated_head": "ff149faeadf3e31764138a2316052a013b28599c",
+    "workflow_run_id": 33621928309,
+    "nucleus_receipt_blob": "b6c7c9b42d3892de6ddaff354514ceafaa695b8e",
+    "artifact_id": 9843248033,
+    "classification": "P179_NATIVE_CORE_PRESENT_VALIDATED_NONTERMINAL"
+  },
+  "post_binding_history": [
+    {
+      "workflow_run_id": 33622474165,
+      "head_sha": "28179a40e25a13d3fa7f91967b3d93cdc8abc5a3",
+      "conclusion": "failure",
+      "classification": "MISSING_MULTIMODAL_OPTIMIZATION_GENERALIZATION_DECLARATION",
+      "detail": "audit-diff correctly classified deterministic PNG compression in hhs_runtime/pass179/software.py as undeclared."
+    }
+  ],
+  "repair_forward": {
+    "manifest_commit": "610b0625a96c0b2fa980aff2029ef49a940477e2",
+    "workflow_retrigger_commit": "a8f59a36360814a83ac7a2f916e423d080afdb8b",
+    "optimization_id": "PASS179_DETERMINISTIC_PNG_DEFLATE_COMPRESSION_I147",
+    "verified_generalize_required": [
+      "pass179-compatible-rgba16-image-capture"
+    ],
+    "validation_required": [
+      "pass179-compatible-frame-sequence-png-egress-unvalidated"
+    ],
+    "no_new_authority": true
+  },
+  "validated_cumulative": {
+    "head_sha": "a8f59a36360814a83ac7a2f916e423d080afdb8b",
+    "workflow_path": ".github/workflows/pass219-i147-pass179-cumulative-binding.yml",
+    "workflow_run_id": 33622650604,
+    "workflow_run_number": 2,
+    "job_id": 100223007900,
+    "conclusion": "success",
+    "classification": "HHS_PASS179_I147_CUMULATIVE_NONTERMINAL_VERIFIED",
+    "python_conformance": "13 passed, 1 warning",
+    "native_c11_build": true,
+    "native_c11_conformance": true,
+    "cumulative_membrane": true,
+    "multimodal_generalization": true,
+    "aggregate_exact_c_abi": true,
+    "pass179_c_conformance": true,
+    "pass179_cpp_conformance": true,
+    "global_defaults_c_conformance": true,
+    "global_defaults_cpp_conformance": true
+  },
+  "global_census": {
+    "wired_ceiling": 218,
+    "wired_floor": 179,
+    "binding_count": 42,
+    "pass200_variants_distinct": true
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "gpu_mutation_authority": false,
+    "browser_mutation_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "generated_receipt": {
+    "receipt_hash72": "XQ<oGqP2x9w0Mdq13(()MG7X*SDM)zR9TNNuVazs1+puuR8q9YGDO1BG<Rx)Zo?vBp!Ew+6d",
+    "archive_hash216": "p6w8ihuxZf<pjIKG>tWCTj(ivisi<>8!HnY+m(YORPVlCGgUfJLFYmXpqhrko65KtqGl)4cyQnubfC9bm)8DzFM7dBGe!wAKcC+XsizZGME>8VgCdpu8<zPiD99kt5F-Bh9v+2OY>wE73JHsdjpNL6hX3jZzL>312*qoG/?KX!bW?IAQ0-LU)HZh+VVC/iHA9?xCCZgyh<OLW9JO4ZF3>w73"
+  },
+  "artifact": {
+    "id": 9843523227,
+    "name": "pass219-i147-pass179-cumulative-binding",
+    "size_bytes": 1899,
+    "sha256": "5861d4563e6692613c29f756d85aecb46e21138d1ddfbda7aef1164c118ecf6d",
+    "expires_at": "2026-10-02T11:04:23Z"
+  },
+  "closure": {
+    "cumulative_pass179_binding_added": true,
+    "terminal_pass179_completion": false,
+    "repair_forward_required": true,
+    "remaining_terminal_category_count": 10,
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}
