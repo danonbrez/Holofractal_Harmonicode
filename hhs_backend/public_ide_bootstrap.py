@@ -18,24 +18,67 @@ LEGACY_PUBLIC_MODULES = (
 INLINE_PUBLIC_BOOT = """\
 <script data-hhs-inline-public-boot>
 (() => {
-  const moduleUrl = new URL('./src/production-startup-coordinator.mjs', window.location.href).href;
-  const publicBootUrl = new URL('./src/public-boot.mjs', window.location.href).href;
+  const resolveModule = (name) => new URL(`./src/${name}`, window.location.href).href;
+  const mobileFirstPaintUrl = resolveModule('mobile-first-paint-fix.mjs');
+  const themeBootstrapUrl = resolveModule('theme-bootstrap.mjs');
+  const coordinatorUrl = resolveModule('production-startup-coordinator.mjs');
+  const publicBootUrl = resolveModule('public-boot.mjs');
   const startedAt = performance.now();
+
   window.HHSInlinePublicBoot = Object.freeze({
     schema: 'HHS_INLINE_PUBLIC_BOOT_V2',
-    module_url: moduleUrl,
+    module_url: coordinatorUrl,
     public_boot_url: publicBootUrl,
+    static_prerequisite_urls: Object.freeze([mobileFirstPaintUrl, themeBootstrapUrl]),
     started_at_ms: Math.round(startedAt),
     legacy_parser_module_entries_disabled: true,
     frontend_is_authority: false,
   });
-  import(moduleUrl)
-    .then(() => import(publicBootUrl))
-    .then(({ startPublicBoot }) => startPublicBoot())
+
+  const publishCoordinatorGate = () => {
+    if (window.HHSProductionStartupCoordinator) return window.HHSProductionStartupCoordinator;
+    window.HHSProductionStartupCoordinator = Object.freeze({
+      schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_BOOT_GATE_V1',
+      boot_gate_only: true,
+      static_prerequisites_ready: true,
+      public_module_boot_concurrent: true,
+      deferred_projection_boot_waits_for_public_graph: true,
+      runtime_registry_has_priority: true,
+      visual_ide_requests_never_deferred: true,
+      frontend_is_authority: false,
+    });
+    window.dispatchEvent(new CustomEvent('hhs:production-startup-coordinator:gate-ready', {
+      detail: window.HHSProductionStartupCoordinator,
+    }));
+    return window.HHSProductionStartupCoordinator;
+  };
+
+  Promise.all([
+    import(mobileFirstPaintUrl),
+    import(themeBootstrapUrl),
+  ])
+    .then(() => {
+      publishCoordinatorGate();
+      return import(publicBootUrl);
+    })
+    .then(({ startPublicBoot }) => {
+      const publicBoot = startPublicBoot();
+      void import(coordinatorUrl).catch((error) => {
+        const detail = {
+          schema: 'HHS_PRODUCTION_STARTUP_COORDINATOR_DEFERRED_FAILURE_V1',
+          module_url: coordinatorUrl,
+          error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
+          frontend_is_authority: false,
+        };
+        window.dispatchEvent(new CustomEvent('hhs:production-startup-coordinator:error', { detail }));
+        console.error('HHS_PRODUCTION_STARTUP_COORDINATOR_FAILED', detail);
+      });
+      return publicBoot;
+    })
     .catch((error) => {
       const detail = {
         schema: 'HHS_INLINE_PUBLIC_BOOT_FAILURE_V1',
-        module_url: moduleUrl,
+        module_url: coordinatorUrl,
         public_boot_url: publicBootUrl,
         error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
         frontend_is_authority: false,
