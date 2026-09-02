@@ -143,6 +143,9 @@ function createRun(workflow, context, runId) {
     startedAt: null,
     finishedAt: null,
     checkpoint: 0,
+    checkpointAuthority: 'MEMORY_CANDIDATE_ONLY',
+    canonicalAdmissionRequired: true,
+    canonicalMutationAuthority: false,
   };
 }
 
