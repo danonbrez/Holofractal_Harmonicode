@@ -1,0 +1,208 @@
+name: Pass 219 I148 Pass 178 Exact Physics Nucleus
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration148-pass178-exact-physics-reconciliation
+    paths:
+      - 'contracts/pass178/**'
+      - 'hhs_runtime/pass178/**'
+      - 'hhs_runtime/include/hhs178_physics.h'
+      - 'native_projects/hhs_pass178_exact_physics/**'
+      - 'hhs_backend/api/pass178_physics_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/physics-studio/**'
+      - 'applications/holofractal_harmonizer/templates/pass178/**'
+      - 'tools/capture-pass178-physics.py'
+      - 'tests/test_hhs_pass178_*.py'
+      - 'tests/native/pass178_physics_conformance.c'
+      - '.github/workflows/pass219-i148-pass178-exact-physics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i148-pass178-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass178-i148:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install pytest 'cryptography>=46.0,<47.0' 'fastapi>=0.128,<1.0' 'pydantic>=2.7,<3.0'
+
+      - name: Build inherited exact runtime shared library
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify Pass 178 executable source surfaces
+        run: |
+          test -s contracts/pass178/PASS_178_MACHINE_CONTRACT.json
+          test -s contracts/pass178/HARMONICODE_PHYSICS_CONSTRAINT_CORPUS.hhs
+          test -s hhs_runtime/pass178/runtime.py
+          test -s native_projects/hhs_pass178_exact_physics/src/hhs178_physics.c
+          test -s applications/holofractal_harmonizer/src/physics-studio/index.html
+          grep -F '"terminal_pass178_completion": false' contracts/pass178/PASS_178_MACHINE_CONTRACT.json
+          grep -F 'CONTRACT_VISIBLE_CORPUS_NUCLEUS_NOT_COMPLETE_HISTORICAL_CORPUS' hhs_runtime/pass178/runtime.py
+
+      - name: Compile Pass 178 Python surfaces
+        run: |
+          python -m py_compile             hhs_runtime/pass178/exact.py             hhs_runtime/pass178/constraints.py             hhs_runtime/pass178/relativity.py             hhs_runtime/pass178/quantum.py             hhs_runtime/pass178/render.py             hhs_runtime/pass178/runtime.py             hhs_runtime/pass178/templates.py             hhs_backend/api/pass178_physics_routes.py             tools/capture-pass178-physics.py
+
+      - name: Run Pass 178 Python conformance
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/test_hhs_pass178_exact_algebra.py             tests/test_hhs_pass178_relativity.py             tests/test_hhs_pass178_quantum.py             tests/test_hhs_pass178_abi_replay.py             tests/test_hhs_pass178_browser.py
+
+      - name: Build Pass 178 native ABI nucleus
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass178_exact_physics clean all
+          test -s native_projects/hhs_pass178_exact_physics/build/libhhs178_physics.a
+          test -s native_projects/hhs_pass178_exact_physics/build/libhhs178_physics.so
+
+      - name: Run native ABI conformance
+        run: |
+          gcc -std=gnu11 -O2 -Wall -Wextra -Werror             -Ihhs_runtime/include             tests/native/pass178_physics_conformance.c             native_projects/hhs_pass178_exact_physics/src/hhs178_physics.c             -o /tmp/pass178-physics-conformance
+          /tmp/pass178-physics-conformance
+
+      - name: Validate corpus identity and governed route surface
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_runtime.pass178.runtime import contract_corpus_identity
+          from hhs_backend.api.pass178_physics_routes import router
+
+          identity=contract_corpus_identity()
+          assert identity["byte_preserving"] is True
+          assert identity["classification"]=="CONTRACT_VISIBLE_CORPUS_NUCLEUS_NOT_COMPLETE_HISTORICAL_CORPUS"
+          assert len(identity["sha256"])==64
+          assert len(identity["hash216"])==216
+          paths={route.path for route in router.routes}
+          required={
+              "/api/runtime/pass178-physics/status",
+              "/api/runtime/pass178-physics/templates",
+              "/api/runtime/pass178-physics/source/{source_id}",
+              "/api/runtime/pass178-physics/model/register",
+              "/api/runtime/pass178-physics/model/{model_id}/initial",
+              "/api/runtime/pass178-physics/model/{model_id}/step",
+              "/api/runtime/pass178-physics/model/{model_id}/replay",
+              "/api/runtime/pass178-physics/model/{model_id}/render-packet",
+          }
+          assert required <= paths, sorted(required-paths)
+          print({"classification":"HHS_PASS178_CORPUS_AND_HTTP_SURFACE_VERIFIED","identity":identity})
+          PY
+
+      - name: Execute deterministic replay capture nucleus
+        run: |
+          PYTHONPATH="$PWD" python tools/capture-pass178-physics.py /tmp/pass178-replay.json --steps 4
+          test -s /tmp/pass178-replay.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("/tmp/pass178-replay.json").read_text())
+          assert p["replay"]["deterministic_replay_chain"] is True
+          assert len(p["packets"])==5
+          assert p["mp4_generated"] is False
+          PY
+
+      - name: Preserve cumulative Pass 219 policy gates
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Emit exact-head nonterminal nucleus receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass178/i148
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.pass178.runtime import contract_corpus_identity
+
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          payload={
+              "schema":"PASS_219_I148_PASS178_EXACT_PHYSICS_NUCLEUS_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration148-pass178-exact-physics-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"P178_EXACT_PHYSICS_NUCLEUS_VALIDATED_NONTERMINAL",
+              "corpus":contract_corpus_identity(),
+              "implemented":{
+                  "exact_rational_complex":True,
+                  "algebraic_root_branch_witness":True,
+                  "constraint_graph":True,
+                  "relativistic_proper_time_nucleus":True,
+                  "quantum_exact_cayley_nucleus":True,
+                  "native_public_abi_nucleus":True,
+                  "vm81_state_admission":True,
+                  "deterministic_replay":True,
+                  "immutable_render_packet":True,
+                  "served_physics_studio":True,
+              },
+              "authority":{
+                  "singleton_vm81_inherited":True,
+                  "independent_vm81_authority":False,
+                  "independent_hash72_commit_authority":False,
+                  "hash216_mutation_authority":False,
+                  "renderer_mutation_authority":False,
+                  "gpu_mutation_authority":False,
+                  "browser_mutation_authority":False,
+                  "floating_point_canonical_authority":False,
+              },
+              "closure":{
+                  "pre_cumulative_validation_green":True,
+                  "cumulative_pass178_binding_added":False,
+                  "terminal_pass178_completion":False,
+                  "complete_historical_constraint_corpus":False,
+                  "mp4_generated":False,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+              },
+          }
+          receipt=make_hash72_witness("pass178:i148:nucleus",payload,width=72).digest
+          lanes=[
+              make_hash72_witness("pass178:i148:archive:previous",{"head":head,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass178:i148:archive:change",{"tree":tree,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass178:i148:archive:receipt",payload,width=72).digest,
+          ]
+          payload["receipt_hash72"]=receipt
+          payload["archive_hash216"]="".join(lanes)
+          path=Path("evidence/pass178/i148/PASS_219_I148_PASS178_EXACT_PHYSICS_NUCLEUS_RECEIPT.json")
+          path.write_text(json.dumps(payload,sort_keys=True,indent=2)+"\n")
+          print(json.dumps({"classification":payload["classification"],"head":head,"receipt_hash72":receipt,"archive_hash216":payload["archive_hash216"]},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i148-pass178-exact-physics-nucleus
+          path: evidence/pass178/i148/PASS_219_I148_PASS178_EXACT_PHYSICS_NUCLEUS_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30
