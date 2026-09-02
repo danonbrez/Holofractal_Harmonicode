@@ -257,3 +257,40 @@ def test_exact_work_plan_reuses_prefix_and_hub_without_authority_reduction():
     assert stale["complete_fallback"] is True
     assert stale["selected_total_work"] == stale["baseline_total_work"]
     assert stale["exact_work_saved"] == 0
+
+
+def test_mandatory_data_ml_and_execution_composer_bind_cross_modal_guard():
+    from hhs_runtime.hhs_pass219_cross_modal_reversible_state_registration_v1 import (
+        MANDATORY_GUARD,
+        SCHEMA,
+        STATE_VALIDATE_SYMBOL,
+        WORK_PLAN_SYMBOL,
+    )
+    from hhs_runtime.hhs_pass219_execution_composer_registration_v1 import (
+        pass219_execution_registration_manifest,
+        pass219_execution_surface_declaration,
+    )
+    from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
+        pass219_mandatory_data_ml_manifest,
+        pass219_mandatory_data_ml_surface_declaration,
+    )
+
+    mandatory = pass219_mandatory_data_ml_surface_declaration()
+    assert MANDATORY_GUARD in mandatory["guards"]
+    assert SCHEMA in mandatory["contract_schemas"]
+    assert STATE_VALIDATE_SYMBOL in mandatory["validators"]
+    assert WORK_PLAN_SYMBOL in mandatory["validators"]
+
+    mandatory_manifest = pass219_mandatory_data_ml_manifest()
+    assert mandatory_manifest["mandatory_cross_modal_manifold_guard"] == MANDATORY_GUARD
+    assert mandatory_manifest["mandatory_cross_modal_manifold_schema"] == SCHEMA
+
+    composer = pass219_execution_surface_declaration()
+    assert MANDATORY_GUARD in composer["guards"]
+    assert SCHEMA in composer["contract_schemas"]
+    assert STATE_VALIDATE_SYMBOL in composer["validators"]
+    assert WORK_PLAN_SYMBOL in composer["validators"]
+
+    composer_manifest = pass219_execution_registration_manifest()
+    assert composer_manifest["mandatory_cross_modal_manifold_guard"] == MANDATORY_GUARD
+    assert composer_manifest["mandatory_cross_modal_manifold_schema"] == SCHEMA
