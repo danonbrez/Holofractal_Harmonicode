@@ -1,0 +1,131 @@
+name: Pass 219 I150 Global Raw5184 Compatibility Hydration
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-iteration150-global-raw5184-compatibility-hydration-reconciled
+    paths:
+      - 'hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py'
+      - 'hhs_runtime/pass163/vmrc.py'
+      - 'hhs_runtime/pass166/codec.py'
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
+      - 'contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json'
+      - 'tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py'
+      - 'docs/operations/restart/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_RESTART.md'
+      - '.github/workflows/pass219-i150-global-raw5184-compatibility-hydration.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py'
+      - 'hhs_runtime/pass163/vmrc.py'
+      - 'hhs_runtime/pass166/codec.py'
+      - 'hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py'
+      - 'contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json'
+      - 'tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py'
+      - 'docs/operations/restart/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_RESTART.md'
+      - '.github/workflows/pass219-i150-global-raw5184-compatibility-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-i150-compatibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
+
+      - name: Parse I150 contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json >/dev/null
+          python - <<'PY'
+          import json
+          p='contracts/pass219/PASS_219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_1_0.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['inherits']['raw_bits'] == 5184
+          assert d['inherits']['raw_bytes'] == 648
+          assert d['compatibility_surfaces']['pass163_vmrc_ingress'] == 'MANDATORY_HYDRATED'
+          assert d['compatibility_surfaces']['pass166_direct_projection'] == 'MANDATORY_HYDRATED'
+          assert d['compatibility_surfaces']['pass196_v1_direct_snapshot'] == 'FROZEN_HISTORICAL_PROVENANCE_UNMODIFIED'
+          assert d['compatibility_surfaces']['pass196_v2_snapshot'] == 'MANDATORY_HYDRATED_WRAPPER_OVER_FROZEN_V1_RAW_PRIMITIVE'
+          assert d['hydration']['left_mono'] == ['yx','x+y','xy']
+          assert d['hydration']['right_mono'] == ['wz','z+w','zw']
+          assert d['hydration']['center_closure'] == '0/0=u^0 mod(u^72)=1'
+          assert d['hydration']['runtime_floating_point'] is False
+          PY
+
+      - name: Reject approximate authority in I150 membrane
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double)\b'             hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py
+
+      - name: Run I150 compatibility conformance
+        run: pytest -q --tb=short tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py
+
+      - name: Preserve Pass 163 VMRC semantics
+        run: pytest -q --tb=short tests/test_hhs_pass163_vmrc_v1.py
+
+      - name: Preserve Pass 165 multimodal ingress semantics
+        run: pytest -q --tb=short tests/test_hhs_pass165_multimodal_ingress_v1.py
+
+      - name: Preserve Pass 166 Word2Vec projection semantics
+        run: pytest -q --tb=short tests/test_hhs_pass166_word2vec_v1.py
+
+      - name: Preserve Pass 196 I130 V2 semantics
+        run: pytest -q --tb=short tests/test_hhs_pass196_i130_repair_v2.py
+
+      - name: Preserve Pass 218 canonical commit and persistence semantics
+        run: |
+          pytest -q --tb=short             tests/pass218/test_pass218_iteration6_canonical_commit_boundary.py             tests/pass218/test_pass218_iteration7_durable_canonical_persistence.py
+
+      - name: Prove private standalone kernel serializer carveout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('hhs_runtime/HARMONICODE_VM_RUNTIME.c')
+          s=p.read_text(encoding='utf-8')
+          assert 'static void vm81_serialize_frame_le' in s
+          assert s.count('vm81_serialize_frame_le') == 2
+          assert 'vm81_serialize_frame_le(vm, frame);' in s
+          PY
+
+      - name: Emit validation artifact
+        run: |
+          mkdir -p artifacts/pass219/i150-global-raw5184
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('artifacts/pass219/i150-global-raw5184/validation.json')
+          p.write_text(json.dumps({
+            'schema':'HHS_PASS219_I150_GLOBAL_RAW5184_COMPATIBILITY_VALIDATION_V1',
+            'raw_bits':5184,
+            'raw_bytes':648,
+            'vmrc_ingress_hydrated':True,
+            'vmrc_egress_hydrated':True,
+            'pass166_projection_hydrated':True,
+            'pass196_snapshot_hydrated':True,
+            'exact_bit_identity':True,
+            'scalar_projection_runtime_authority':False,
+            'runtime_floating_point':False,
+            'result':'PASS'
+          }, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i150-global-raw5184-compatibility-hydration
+          path: artifacts/pass219/i150-global-raw5184/*.json
+          if-no-files-found: error
