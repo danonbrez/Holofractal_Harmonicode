@@ -286,13 +286,13 @@ export async function createPass177Project({ templateId, name, modules = [], var
     inheritedPasses: [174, 175, 176, 177],
   };
   const identity = await hash216Identity({ manifest: manifestBase, files: files.map(({ path, mediaType, content }) => ({ path, mediaType, content })) }, { previousRoot, sequence });
-  const manifest = { ...manifestBase, identity: { algorithm: identity.algorithm, root: identity.root, payloadSha256: identity.payloadSha256, previousRoot: identity.previousRoot, sequence: identity.sequence, vm81EchoRequired: true } };
+  const manifest = { ...manifestBase, identity: { algorithm: identity.algorithm, root: identity.root, payloadSha256: identity.payloadSha256, previousRoot: identity.previousRoot, sequence: identity.sequence, vm81EchoRequired: true, browserProjectionOnly: true, canonicalAdmissionRequired: true, canonicalMutationAuthority: false } };
   files.push({ path: 'hhs.project.json', mediaType: 'application/json', content: `${JSON.stringify(manifest, null, 2)}\n` });
   files.sort((left, right) => left.path.localeCompare(right.path));
   return Object.freeze({
     schema: 'hhs.pass177.generated-project/v1',
     manifest: Object.freeze(manifest),
-    identity,
+    identity: Object.freeze({ ...identity, browserProjectionOnly: true, canonicalAdmissionRequired: true, canonicalMutationAuthority: false }),
     files: Object.freeze(files.map((file) => Object.freeze({ ...file, dirty: false, checkpoint: `Generated from ${template.label} v${template.version}` }))),
   });
 }
