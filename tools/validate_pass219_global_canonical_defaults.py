@@ -23,8 +23,8 @@ def main():
  if ceiling!=max(nums) or floor!=min(nums): raise SystemExit("CURRENT_WIRED_BOUNDARY_DRIFT")
  for p in range(floor,ceiling+1):
   if nums.count(p)!=(3 if p==200 else 1): raise SystemExit(f"NUMERIC_COVERAGE_DRIFT:{p}")
- if eh.index('hhs_pass219_inherited_pass182_1_44.h')>eh.index('hhs_pass219_global_canonical_defaults_1_0.h'): raise SystemExit("POLICY_HEADER_NOT_AFTER_CURRENT_INHERITED_TAIL")
- if ec.index('hhs_pass219_inherited_pass182_1_44.inc')>ec.index('hhs_pass219_global_canonical_defaults_1_0.inc'): raise SystemExit("POLICY_SOURCE_NOT_AFTER_CURRENT_INHERITED_TAIL")
+ if eh.index('hhs_pass219_inherited_pass181_1_45.h')>eh.index('hhs_pass219_global_canonical_defaults_1_0.h'): raise SystemExit("POLICY_HEADER_NOT_AFTER_CURRENT_INHERITED_TAIL")
+ if ec.index('hhs_pass219_inherited_pass181_1_45.inc')>ec.index('hhs_pass219_global_canonical_defaults_1_0.inc'): raise SystemExit("POLICY_SOURCE_NOT_AFTER_CURRENT_INHERITED_TAIL")
  idir=ROOT/"hhs_runtime/include"
  for b in expected:
   m=re.search(rf'#include "(hhs_pass219_inherited_pass{re.escape(b)}_[^"]+)\.h"',eh)
