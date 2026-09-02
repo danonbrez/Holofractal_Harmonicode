@@ -10,7 +10,7 @@ int main(void){
  assert(p.standalone_passes_allowed==0U&&p.isolated_native_project_is_canonical_substitute==0U);
  assert(p.cross_cutting_defaults_are_mandatory==1U&&p.retroactive_repair_forward_required==1U);
  assert(p.grandfather_bypass_allowed==0U&&p.explicit_upgrade_or_deprecation_required==1U);
- assert(p.wired_ceiling_pass==218U&&p.wired_floor_pass==179U&&p.registered_binding_count==42U);
+ assert(p.wired_ceiling_pass==218U&&p.wired_floor_pass==178U&&p.registered_binding_count==43U);
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(0U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==218U);
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(18U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==200U&&k.variant==HHS_EXACT_PASS219_BINDING_VARIANT_C);
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(34U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==186U);
@@ -21,6 +21,7 @@ int main(void){
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(39U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==181U);
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(40U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==180U);
  assert(hhs_exact_pass219_global_canonical_defaults_binding_at(41U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==179U);
- assert(hhs_exact_pass219_global_canonical_defaults_binding_at(42U,&k)==HHS_EXACT_STATUS_RANGE_ERROR);
+ assert(hhs_exact_pass219_global_canonical_defaults_binding_at(42U,&k)==HHS_EXACT_STATUS_OK&&k.pass_number==178U);
+ assert(hhs_exact_pass219_global_canonical_defaults_binding_at(43U,&k)==HHS_EXACT_STATUS_RANGE_ERROR);
  return 0;
 }
