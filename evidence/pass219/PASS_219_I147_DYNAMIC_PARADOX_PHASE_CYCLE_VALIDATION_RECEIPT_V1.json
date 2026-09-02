@@ -1,0 +1,84 @@
+{
+  "schema": "HHS_PASS219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_VALIDATION_RECEIPT_V1",
+  "iteration": "I147",
+  "branch": "agent/pass219-iteration147-dynamic-paradox-phase-cycle-h36",
+  "validation_head": "d05251ae57d41383763f4ac8e433124ea4acb4f4",
+  "workflow_run": 33643477856,
+  "workflow_result": "SUCCESS",
+  "artifact": {
+    "id": 9851791177,
+    "name": "pass219-i147-dynamic-paradox-phase-cycle-h36",
+    "sha256": "d617413563a4bcd823e0797837bbd80dff57c122fca545421de8e1f7703dccfc"
+  },
+  "object_level": {
+    "options": [
+      "1/4",
+      "0",
+      "1/2",
+      "1/4"
+    ],
+    "valid_option_count": 0,
+    "seed_index": 1,
+    "seed_object_correct": false,
+    "trajectory": [
+      "0",
+      "1/4",
+      "1/2",
+      "1/4"
+    ],
+    "preperiod": 1,
+    "period": 2
+  },
+  "meta_level": {
+    "empty_object_valid_set": true,
+    "probability": "0",
+    "promotes_object_truth": false
+  },
+  "trinary": {
+    "seed_candidate": -1,
+    "meta_closure": 0,
+    "periodic_motion": 1
+  },
+  "h36": {
+    "a2": 1,
+    "b2": 2,
+    "c2": 3,
+    "lhs_value": 36,
+    "rhs_value": 36,
+    "h36_value": 36,
+    "manifold_base": 5184,
+    "manifold_power": 4,
+    "manifold_cardinality": 722204136308736
+  },
+  "benchmark": {
+    "metric": "EXACT_LOGICAL_COMPARISON_WORK",
+    "baseline_per_evaluation": 120,
+    "optimized_per_evaluation": 33,
+    "saved_per_evaluation": 87,
+    "reduction_permille_floor": 725,
+    "calibrated_evaluation_count": 1089,
+    "aggregate_baseline": 130680,
+    "aggregate_optimized": 35937,
+    "aggregate_saved": 94743
+  },
+  "gates": {
+    "contract": true,
+    "no_float_canonical_authority": true,
+    "cumulative_exact_abi": true,
+    "c11": true,
+    "cpp17": true,
+    "python_typed_semantics": true,
+    "cross_modal_regression": true,
+    "benchmark": true,
+    "shared_library": true,
+    "inherited_h36_factorization": true
+  },
+  "authority": {
+    "vm81_mutation": "INHERITED_SINGLETON_ONLY",
+    "hash72": "INHERITED_ONLY",
+    "hash216": "INHERITED_ONLY",
+    "new_mutation_authority": false,
+    "floating_point_authority": false
+  },
+  "result": "PASS"
+}

@@ -145,3 +145,139 @@ This is a finite integer identity only; it grants no allocation, recursion, or m
 ## Exact next action
 
 Implement the bounded exact C/C++ cycle witness and H36 identity validator, mirror the typed semantics in Python, then run dependency-scoped validation before documentation sealing.
+
+
+## Milestone 1 — exact runtime implementation
+
+Implementation commit: `61c75052b4f781fa3a90c1aed38db270f3db551b`
+
+Implemented:
+
+- bounded exact rational problem/witness ABI;
+- object-level fixed-point census;
+- finite ordered trajectory detection;
+- exact preperiod/period witness;
+- explicit rejection of meta-zero → object-truth promotion;
+- trinary classification fields `-1/0/+1`;
+- Python exact-Fraction mirror;
+- H36 exact identity witness;
+- exact `5184^4` cardinality witness;
+- public Pass 219 guard registration;
+- cumulative exact ABI exposure.
+
+Authority changes: `NONE`.
+
+## Milestone 2 — benchmark and negative gates
+
+Test/benchmark commit: `1bd9b2118a1de099c3960eb9ab49655e133f70dd`
+
+Negative gates include:
+
+- wrong object-level fixed-point claim;
+- meta/object type conflation;
+- incorrect finite visit bound;
+- denominator zero;
+- ordered trajectory tampering;
+- H36 identity tampering;
+- no-float C/C++ authority scan.
+
+Exact work model for the canonical four-option system:
+
+```text
+finite visit bound           = 6
+actual transitions           = 3
+
+baseline recursive rescan    = 120 comparison-work units/evaluation
+optimized bounded closure    = 33 comparison-work units/evaluation
+exact saved                  = 87
+reduction floor              = 725/1000
+```
+
+Calibrated batch counts: `1, 64, 1024`.
+
+Aggregate:
+
+```text
+baseline = 130680
+optimized = 35937
+saved = 94743
+reduction floor = 725/1000
+```
+
+Timing is noncanonical; the benchmark measures exact logical comparison work.
+
+## Repair-forward history
+
+### Exact-ABI include encoding
+
+Run `33643232682` failed at cumulative exact-ABI compilation because the authored aggregate include contained a literal `\\n` token.
+
+Repair commits:
+
+- `491321d25da8852f497d92c7c9a1373e40a668fc`
+- `d2c65f1be83c3c1a5af90367ff1673d1f35282c7`
+- `05fce6f08230d7e2d1a53381efb4d6b70ceff60c`
+
+The latter also normalized signed trinary constants before conformance.
+
+### Benchmark exact-Fraction import
+
+Run `33643377279` passed:
+
+- contract;
+- no-float gate;
+- cumulative C compile;
+- C conformance;
+- C++ conformance;
+- typed Python semantics;
+
+then failed only because the benchmark exact-rational cleanup referenced `Fraction` without importing it.
+
+Repair commit:
+
+- `d05251ae57d41383763f4ac8e433124ea4acb4f4`
+
+No runtime semantic code changed in that repair.
+
+## Milestone 3 — terminal dependency-scoped validation
+
+Workflow:
+
+- name: `Pass 219 I147 Dynamic Paradox Phase Cycle H36`
+- run: `33643477856`
+- validated head: `d05251ae57d41383763f4ac8e433124ea4acb4f4`
+- result: `SUCCESS`
+
+Passed:
+
+- normative contract parse;
+- exact C/C++ no-float authority scan;
+- cumulative exact ABI compilation;
+- C11 exact conformance;
+- C++17 exact conformance;
+- Python object/meta/cycle semantics;
+- inherited cross-modal reversible-state regression;
+- exact logical-work benchmark;
+- shared exact runtime build;
+- inherited H36 factorization regression;
+- artifact sealing.
+
+Artifact:
+
+- id: `9851791177`
+- name: `pass219-i147-dynamic-paradox-phase-cycle-h36`
+- digest: `sha256:d617413563a4bcd823e0797837bbd80dff57c122fca545421de8e1f7703dccfc`
+
+## Current status
+
+- formal semantics: `COMPLETE`
+- exact runtime: `GREEN`
+- benchmark/optimization: `GREEN`
+- H36 identity: `GREEN`
+- inherited H36 preservation: `GREEN`
+- formalization documentation: `THIS MILESTONE`
+- merge: `PENDING`
+
+## Exact next action
+
+Seal the formalization/evidence commit, compare the resulting head with current `main`, rerun only the I147 dependency gate on the docs-inclusive head, then open a ready PR, merge if exact-head/current-main compatibility remains green, and verify authoritative `main`.
