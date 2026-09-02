@@ -32,5 +32,5 @@ def test_shader_ir_rejects_forward_reference_and_float():
     }
     with pytest.raises(ShaderIRError):
         validate_shader_ir(bad)
-    with pytest.raises(Exception, match="FLOAT_CANONICAL_EVIDENCE_FORBIDDEN"):
+    with pytest.raises(Exception, match="P179_FLOAT_CANONICAL_AUTHORITY_FORBIDDEN"):
         validate_shader_ir({"schema": "HHS_PASS_179_SHADER_IR_V1", "nodes": [{"id": "x", "op": "PHASE_COLOR", "phase": 4.5}], "output": "x"})
