@@ -21,25 +21,7 @@
     "retroactive_repair_forward_required": true,
     "optional": false,
     "permanent_until_explicit_upgrade_or_deprecation": true,
-    "classes": [
-      "compression",
-      "latency",
-      "caching",
-      "indexing",
-      "memory_efficiency",
-      "branch_prediction",
-      "serialization_efficiency",
-      "security",
-      "cryptographic_integrity",
-      "state_validation",
-      "constraint_enforcement",
-      "exactness_enforcement",
-      "admission_control",
-      "rollback_protection",
-      "deterministic_replay",
-      "data_integrity",
-      "authority_separation"
-    ]
+    "classes": ["compression","latency","caching","indexing","memory_efficiency","branch_prediction","serialization_efficiency","security","cryptographic_integrity","state_validation","constraint_enforcement","exactness_enforcement","admission_control","rollback_protection","deterministic_replay","data_integrity","authority_separation"]
   },
   "supersession": {
     "silence_is_deprecation": false,
@@ -51,92 +33,18 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 179,
-    "binding_count": 42,
-    "ordered_bindings": [
-      "218",
-      "217",
-      "216",
-      "215",
-      "214",
-      "213",
-      "212",
-      "211",
-      "210",
-      "209",
-      "208",
-      "207",
-      "206",
-      "205",
-      "204",
-      "203",
-      "202",
-      "201",
-      "200c",
-      "200b",
-      "200a",
-      "199",
-      "198",
-      "197",
-      "196",
-      "195",
-      "194",
-      "193",
-      "192",
-      "191",
-      "190",
-      "189",
-      "188",
-      "187",
-      "186",
-      "185",
-      "184",
-      "183",
-      "182",
-      "181",
-      "180",
-      "179"
-    ],
+    "wired_floor_pass": 178,
+    "binding_count": 43,
+    "ordered_bindings": ["218","217","216","215","214","213","212","211","210","209","208","207","206","205","204","203","202","201","200c","200b","200a","199","198","197","196","195","194","193","192","191","190","189","188","187","186","185","184","183","182","181","180","179","178"],
     "pass200_variants_are_distinct_bindings": true,
     "missing_numeric_pass_in_coverage_is_regression": true,
-    "i142_repair_forward": {
-      "iteration": 142,
-      "pass185": "CUMULATIVE_PRODUCTION_CLOSURE_EXPOSED",
-      "pass184": "PORTABLE_RUNTIME_AUTHORITY_BOUND"
-    },
-    "i143_repair_forward": {
-      "iteration": 143,
-      "pass183": "PROBABILITY_HYDRATION_BOUND_WITH_HASH72_THEN_HASH216_ARCHIVAL_ORDER",
-      "legacy_native_hash_witness": "NONCANONICAL_COMPATIBILITY_ONLY"
-    },
-    "i144_repair_forward": {
-      "iteration": 144,
-      "pass182": "UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_RUNTIME_AND_CUMULATIVE_BINDING",
-      "authority": "SINGLETON_VM81_PROMOTION_ONLY_HASH72_EVIDENCE_HASH216_ARCHIVAL"
-    },
-    "i145_repair_forward": {
-      "iteration": 145,
-      "pass181": "GRAPHICS_HYDRATION_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL",
-      "vm81_repair": "CONSTRAINT_FREEZE_AND_ROLLBACK_REQUIRE_INHERITED_VM81_COMMIT",
-      "legacy_direct_promotion": "DISABLED",
-      "remaining_terminal_obligation_count": 3
-    },
-    "i146_repair_forward": {
-      "iteration": 146,
-      "pass180": "APPLICATION_FACTORY_CUMULATIVELY_WIRED_TERMINAL_AFTER_VM81_REPAIR",
-      "vm81_repair": "CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT",
-      "hash72_order": "APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION",
-      "remaining_terminal_obligation_count": 0
-    },
-    "i147_repair_forward": {
-      "iteration": 147,
-      "pass179": "NATIVE_EXACT_GRAPHICS_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL",
-      "pre_cumulative_validation_run": 33621928309,
-      "validated_nucleus_head": "ff149faeadf3e31764138a2316052a013b28599c",
-      "nucleus_receipt_blob": "b6c7c9b42d3892de6ddaff354514ceafaa695b8e",
-      "authority": "INHERITED_VM81_SCENE_ADMISSION_POST_VM81_HASH72_EVIDENCE_HASH216_ARCHIVAL",
-      "remaining_terminal_category_count": 10
-    }
+    "i142_repair_forward": {"iteration":142,"pass185":"CUMULATIVE_PRODUCTION_CLOSURE_EXPOSED","pass184":"PORTABLE_RUNTIME_AUTHORITY_BOUND"},
+    "i143_repair_forward": {"iteration":143,"pass183":"PROBABILITY_HYDRATION_BOUND_WITH_HASH72_THEN_HASH216_ARCHIVAL_ORDER","legacy_native_hash_witness":"NONCANONICAL_COMPATIBILITY_ONLY"},
+    "i144_repair_forward": {"iteration":144,"pass182":"UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_RUNTIME_AND_CUMULATIVE_BINDING","authority":"SINGLETON_VM81_PROMOTION_ONLY_HASH72_EVIDENCE_HASH216_ARCHIVAL"},
+    "i145_repair_forward": {"iteration":145,"pass181":"GRAPHICS_HYDRATION_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL","vm81_repair":"CONSTRAINT_FREEZE_AND_ROLLBACK_REQUIRE_INHERITED_VM81_COMMIT","legacy_direct_promotion":"DISABLED","remaining_terminal_obligation_count":3},
+    "i146_repair_forward": {"iteration":146,"pass180":"APPLICATION_FACTORY_CUMULATIVELY_WIRED_TERMINAL_AFTER_VM81_REPAIR","vm81_repair":"CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT","hash72_order":"APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION","remaining_terminal_obligation_count":0},
+    "i147_repair_forward": {"iteration":147,"pass179":"NATIVE_EXACT_GRAPHICS_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL","pre_cumulative_validation_run":33621928309,"validated_nucleus_head":"ff149faeadf3e31764138a2316052a013b28599c","nucleus_receipt_blob":"b6c7c9b42d3892de6ddaff354514ceafaa695b8e","authority":"INHERITED_VM81_SCENE_ADMISSION_POST_VM81_HASH72_EVIDENCE_HASH216_ARCHIVAL","remaining_terminal_category_count":10},
+    "i148_repair_forward": {"iteration":148,"pass178":"EXACT_PHYSICS_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL","pre_cumulative_validation_run":33626761513,"validated_nucleus_head":"1f63e08370d0e3c54390a7b4b3bec8ef042ddfa3","nucleus_receipt_blob":"1b74415c302f81e5fa424b8cf7e1d4daa036c529","authority":"INHERITED_VM81_STATE_ADMISSION_POST_VM81_HASH72_EVIDENCE_HASH216_ARCHIVAL","remaining_terminal_category_count":12}
   },
   "repair_forward": {
     "wired_but_stale": "REPAIR_FORWARD_REQUIRED",
@@ -146,48 +54,44 @@
   },
   "known_repair_forward_debt": [
     {
-      "pass": 179,
-      "contract_id": "HHS-P179-NEGAS-MRL",
-      "canonical_title": "NATIVE_EXACT_GRAPHICS_ANIMATION_SHADER_MULTIMODAL_RENDERING_LIBRARY",
-      "classification": "WIRED_NONTERMINAL_REPAIR_FORWARD",
-      "cumulative_exposure": true,
-      "mandatory_repair_forward": true,
-      "remaining_terminal_categories": [
-        "FULL_NATIVE_2D_3D_LIBRARY",
-        "FULL_SHADER_IR_GRAPH_AND_BACKEND_COMPILERS",
-        "FULL_WEBGPU_WEBGL2_DEVICE_EXECUTION",
-        "THREEJS_PASS178_PARITY",
-        "PLAYABLE_NATIVE_LATTICE_RUN",
-        "FULL_5184_MOTION_PARITY",
-        "IDE_EDITOR_TIMELINE_SHADER_GRAPH",
-        "FULL_CAPTURE_VIDEO_PIPELINE",
-        "BROWSER_E2E_PERFORMANCE_ACCESSIBILITY_SECURITY",
-        "AUTHORITATIVE_MAIN_INTEGRATION"
-      ],
-      "terminal_completion_claimed": false
+      "pass":178,
+      "contract_id":"HHS-P178-NEH-RQ-TJS-PSR",
+      "canonical_title":"NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME",
+      "classification":"WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure":true,
+      "mandatory_repair_forward":true,
+      "remaining_terminal_categories":["COMPLETE_HARMONICODE_CONSTRAINT_CORPUS","COMPLETE_TYPED_CST_AST_HIR_PIPELINE","FULL_NATIVE_PUBLIC_ABI_PARITY","THERMODYNAMIC_SYMBOLIC_KERNEL","RELATIVISTIC_CHARGED_PARTICLE_LAB","QUANTUM_DOUBLE_SLIT_LAB","REGISTERED_MEASUREMENT_AUTHORITY","SINGULAR_HASH72_COMMIT_INTEGRATION","THREEJS_EXECUTING_VIEWPORT","DETERMINISTIC_MP4_CAPTURE","BROWSER_MOBILE_E2E_AND_PERFORMANCE","AUTHORITATIVE_MAIN_INTEGRATION"],
+      "terminal_completion_claimed":false,
+      "complete_historical_constraint_corpus":false
     },
     {
-      "pass": 181,
-      "contract_id": "HHS-P181-NCSR-GHIR-VM81-H72-H216",
-      "canonical_title": "NATIVE_CINEMATIC_STORY_REEL_GRAPHICS_HYDRATION_RUNTIME",
-      "classification": "WIRED_NONTERMINAL_REPAIR_FORWARD",
-      "cumulative_exposure": true,
-      "mandatory_repair_forward": true,
-      "remaining_terminal_obligations": [
-        "DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY",
-        "THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY",
-        "FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT"
-      ],
-      "terminal_completion_claimed": false
+      "pass":179,
+      "contract_id":"HHS-P179-NEGAS-MRL",
+      "canonical_title":"NATIVE_EXACT_GRAPHICS_ANIMATION_SHADER_MULTIMODAL_RENDERING_LIBRARY",
+      "classification":"WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure":true,
+      "mandatory_repair_forward":true,
+      "remaining_terminal_categories":["FULL_NATIVE_2D_3D_LIBRARY","FULL_SHADER_IR_GRAPH_AND_BACKEND_COMPILERS","FULL_WEBGPU_WEBGL2_DEVICE_EXECUTION","THREEJS_PASS178_PARITY","PLAYABLE_NATIVE_LATTICE_RUN","FULL_5184_MOTION_PARITY","IDE_EDITOR_TIMELINE_SHADER_GRAPH","FULL_CAPTURE_VIDEO_PIPELINE","BROWSER_E2E_PERFORMANCE_ACCESSIBILITY_SECURITY","AUTHORITATIVE_MAIN_INTEGRATION"],
+      "terminal_completion_claimed":false
     },
     {
-      "pass": 157,
-      "contract_id": "HHS-P157-PPF-MPTC",
-      "canonical_title": "PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR",
-      "native_project": "native_projects/hhs_pass157_ppf_mptc",
-      "classification": "MISSING_CUMULATIVE_EXPOSURE",
-      "mandatory_repair_forward": true,
-      "native_project_is_not_canonical_substitute": true
+      "pass":181,
+      "contract_id":"HHS-P181-NCSR-GHIR-VM81-H72-H216",
+      "canonical_title":"NATIVE_CINEMATIC_STORY_REEL_GRAPHICS_HYDRATION_RUNTIME",
+      "classification":"WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure":true,
+      "mandatory_repair_forward":true,
+      "remaining_terminal_obligations":["DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY","THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY","FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT"],
+      "terminal_completion_claimed":false
+    },
+    {
+      "pass":157,
+      "contract_id":"HHS-P157-PPF-MPTC",
+      "canonical_title":"PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR",
+      "native_project":"native_projects/hhs_pass157_ppf_mptc",
+      "classification":"MISSING_CUMULATIVE_EXPOSURE",
+      "mandatory_repair_forward":true,
+      "native_project_is_not_canonical_substitute":true
     }
   ],
   "authority": {
@@ -198,81 +102,51 @@
     "alternate_mutation_authority_created": false
   },
   "executable_enforcement": {
-    "c_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",
-    "cpp_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",
-    "c_implementation": "hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc",
-    "validator": "tools/validate_pass219_global_canonical_defaults.py",
-    "c_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.c",
-    "cpp_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",
-    "workflow": ".github/workflows/pass219-global-canonical-defaults.yml",
-    "aggregate_exact_abi_required": true,
-    "global_latency_policy_header": "hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h",
-    "global_latency_policy_implementation": "hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc",
-    "global_latency_registration": "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py"
+    "c_header":"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",
+    "cpp_header":"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",
+    "c_implementation":"hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc",
+    "validator":"tools/validate_pass219_global_canonical_defaults.py",
+    "c_test":"tests/pass219/test_pass219_global_canonical_defaults_1_0.c",
+    "cpp_test":"tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",
+    "workflow":".github/workflows/pass219-global-canonical-defaults.yml",
+    "aggregate_exact_abi_required":true,
+    "global_latency_policy_header":"hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h",
+    "global_latency_policy_implementation":"hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc",
+    "global_latency_registration":"hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py"
   },
-  "governing_invariant": [
-    "NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED",
-    "NO_APPLICABLE_CANONICAL_OPTIMIZATION_IS_OPTIONAL",
-    "NO_APPLICABLE_CANONICAL_SECURITY_OR_CONSTRAINT_MECHANISM_IS_BYPASSED",
-    "NO_PREVIOUS_VERSION_IS_GRANDFATHERED_AROUND_A_LATER_GLOBAL_DEFAULT",
-    "ALL_SUCH_GAPS_ARE_REPAIRED_FORWARD",
-    "ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT",
-    "ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT",
-    "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
-    "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
-    "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION",
-    "VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES"
-  ],
+  "governing_invariant": ["NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED","NO_APPLICABLE_CANONICAL_OPTIMIZATION_IS_OPTIONAL","NO_APPLICABLE_CANONICAL_SECURITY_OR_CONSTRAINT_MECHANISM_IS_BYPASSED","NO_PREVIOUS_VERSION_IS_GRANDFATHERED_AROUND_A_LATER_GLOBAL_DEFAULT","ALL_SUCH_GAPS_ARE_REPAIRED_FORWARD","ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT","ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT","COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED","COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED","LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION","VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES"],
   "multimodal_optimization_generalization": {
-    "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
-    "mandatory": true,
-    "all_optimizations_multimodal_by_default": true,
-    "automatic_compatible_target_discovery": true,
-    "compatible_untested_targets": "VALIDATION_REQUIRED",
-    "compatible_safe_beneficial_targets": "GENERALIZE_REQUIRED",
-    "locality_requires_evidenced_bounded_exception": true,
-    "no_new_user_directive_required_per_modality": true,
-    "canonical_descriptor_schema": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1"
+    "contract_id":"HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+    "mandatory":true,
+    "all_optimizations_multimodal_by_default":true,
+    "automatic_compatible_target_discovery":true,
+    "compatible_untested_targets":"VALIDATION_REQUIRED",
+    "compatible_safe_beneficial_targets":"GENERALIZE_REQUIRED",
+    "locality_requires_evidenced_bounded_exception":true,
+    "no_new_user_directive_required_per_modality":true,
+    "canonical_descriptor_schema":"HHS_PASS_187_OBJECT_DESCRIPTOR_V1"
   },
   "validated_global_latency_policy": {
-    "contract_id": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
-    "mandatory": true,
-    "exact_quantum_ms": {
-      "numerator": 25,
-      "denominator": 3
-    },
-    "exact_identity": [
-      "d^4/c^2 = 25/3",
-      "(b^2+c^2)^2/(a^2+b^2) = 25/3"
-    ],
-    "fps_tiers": [
-      120,
-      60,
-      30
-    ],
-    "tier_multipliers": [
-      1,
-      2,
-      4
-    ],
-    "window_policy": {
-      "mean_max_tier": 1,
-      "p95_max_tier": 2,
-      "max_max_tier": 3
-    },
-    "exact_semantic_equality_required_for_latency_route_selection": true,
-    "timing_noncanonical": true,
-    "performance_guarantee": false,
-    "unmet_budget_preserves_correct_route": true,
-    "singleton_vm81_authority_preserved": true,
-    "hash72_hash216_authority_preserved": true,
-    "validated_run": 33536893755,
-    "validation_classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
-    "compatible_existing_surfaces_repair_forward_required": true,
-    "compatible_future_surfaces_must_register_guard": true,
-    "promotion_integration_run": 33537679938,
-    "promotion_integration_exact_job": 99955888052,
-    "promotion_integration_synthetic_job": 99955887958,
-    "exact_and_synthetic_green": true
+    "contract_id":"HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+    "mandatory":true,
+    "exact_quantum_ms":{"numerator":25,"denominator":3},
+    "exact_identity":["d^4/c^2 = 25/3","(b^2+c^2)^2/(a^2+b^2) = 25/3"],
+    "fps_tiers":[120,60,30],
+    "tier_multipliers":[1,2,4],
+    "window_policy":{"mean_max_tier":1,"p95_max_tier":2,"max_max_tier":3},
+    "exact_semantic_equality_required_for_latency_route_selection":true,
+    "timing_noncanonical":true,
+    "performance_guarantee":false,
+    "unmet_budget_preserves_correct_route":true,
+    "singleton_vm81_authority_preserved":true,
+    "hash72_hash216_authority_preserved":true,
+    "validated_run":33536893755,
+    "validation_classification":"GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
+    "compatible_existing_surfaces_repair_forward_required":true,
+    "compatible_future_surfaces_must_register_guard":true,
+    "promotion_integration_run":33537679938,
+    "promotion_integration_exact_job":99955888052,
+    "promotion_integration_synthetic_job":99955887958,
+    "exact_and_synthetic_green":true
   }
 }
