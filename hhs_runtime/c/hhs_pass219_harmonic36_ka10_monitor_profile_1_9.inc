@@ -1,4 +1,4 @@
-#include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h"
+#include "../include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h"
 
 #include <stddef.h>
 #include <stdint.h>

@@ -30,9 +30,9 @@ Pass 219 must expose each inherited pass additively through the aggregate exact 
 
 As of adoption against main eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb, the cumulative inherited binding census is:
 
-218 -> 217 -> 216 -> 215 -> 214 -> 213 -> 212 -> 211 -> 210 -> 209 -> 208 -> 207 -> 206 -> 205 -> 204 -> 203 -> 202 -> 201 -> 200c -> 200b -> 200a -> 199 -> 198 -> 197 -> 196 -> 195 -> 194 -> 193 -> 192 -> 191 -> 190 -> 189 -> 188 -> 187 -> 186
+218 -> 217 -> 216 -> 215 -> 214 -> 213 -> 212 -> 211 -> 210 -> 209 -> 208 -> 207 -> 206 -> 205 -> 204 -> 203 -> 202 -> 201 -> 200c -> 200b -> 200a -> 199 -> 198 -> 197 -> 196 -> 195 -> 194 -> 193 -> 192 -> 191 -> 190 -> 189 -> 188 -> 187 -> 186 -> 185 -> 184 -> 183 -> 182 -> 181 -> 180
 
-The numeric coverage is Pass 218 through Pass 186, with Pass 200a, 200b, and 200c preserved as distinct bindings. Future reverse reconciliation must extend the floor downward; it may not silently remove an existing binding.
+The numeric coverage is Pass 218 through Pass 180, with Pass 200a, 200b, and 200c preserved as distinct bindings. I143 binds Pass 183 only after repairing its receipt authority order so Hash216 is archival after canonical Hash72 closure and the historical native local-mixer hashes are compatibility-only, noncanonical witnesses. I144 adds the previously contract-only Pass 182 universal multimodal hydration compiler/runtime. The source tree remains immutable evidence; dynamic trace runs only from an ephemeral copy; constraint promotion requires inherited singleton VM81 admission; Hash72 remains evidentiary and Hash216 remains archival. I145 binds the validated Pass 181 graphics-hydration nucleus, repairs runtime-constraint freeze/rollback so canonical mutation requires the inherited VM81 authority, disables the legacy direct-freeze bypass, and records three remaining terminal Pass-181 acceptance obligations without claiming completion. I146 binds Pass 180 after repairing the application-factory canonical mutation path so project creation, file upsert, and lifecycle closure require inherited VM81 admission before Hash72 receipt emission; the original executable Pass 180 contract is then eligible for terminal closure with no remaining Pass-180 debt. Future reverse reconciliation must extend the floor downward; it may not silently remove an existing binding.
 
 ## Known repair-forward debt
 

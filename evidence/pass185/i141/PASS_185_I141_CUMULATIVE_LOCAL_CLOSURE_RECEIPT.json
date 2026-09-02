@@ -1,0 +1,84 @@
+{
+  "schema": "HHS_PASS185_I141_CUMULATIVE_LOCAL_CLOSURE_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_CUMULATIVE_PHASE1_PHASE7_LOCAL_CLOSURE_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "historical_authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase7_validated_head": "26d06f34a3b074f8f969c80ccc5b9db087fd9430",
+    "cumulative_validated_head": "ee21cebede955354c0a0050dc3b267f166ef9cfe",
+    "cumulative_validated_tree": "8f1c1a21fe4d104ba1e17ce02bf5aaefdc78bbd1",
+    "observed_main_during_validation": "33eb620d2dcc932479d3450e418b2c2c732866d2",
+    "merge_base_during_validation": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "current_main_at_receipt_freeze": "e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191"
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-cumulative-local-closure.yml",
+    "run_id": 33318159236,
+    "run_attempt": 1,
+    "run_created_at": "2026-08-30T14:54:40Z",
+    "run_updated_at": "2026-08-30T14:57:28Z",
+    "job_id": 99275307199,
+    "job_name": "cumulative-local-closure",
+    "conclusion": "success",
+    "artifact": {
+      "id": 9734119036,
+      "name": "pass219-i141-pass185-cumulative-local-closure",
+      "size_in_bytes": 1232618,
+      "sha256": "c8bb7a6b7c41248a42258ba7ec1d3050af2c9a8e7d2237097fc78bf3442e3533"
+    }
+  },
+  "cumulative_local_evidence": {
+    "schema": "HHS_PASS185_I141_CUMULATIVE_LOCAL_CLOSURE_V1",
+    "classification": "HHS_PASS_185_CUMULATIVE_PHASE1_PHASE7_LOCAL_CLOSURE_VERIFIED",
+    "local_evidence_sha256": "27f9443f31777e2c44b0b0811342f15d0c5cd8089c209e1bf8841c954c3c7d5a",
+    "local_file_sha256": "974d71705e9d0b6f01e6f480992a7a2374ceaf706a1b76fa85ffaea0ab5c6ba5",
+    "entrypoint": "hhs_backend.runtime_os_application_server:app",
+    "browser_state": "INTERACTIVE",
+    "browser_page_errors": 0,
+    "browser_console_errors": 0,
+    "desktop_pointer_keyboard_verified": true,
+    "mobile_touch_verified": true,
+    "playwright_trace": {
+      "bytes": 860759,
+      "sha256": "58926e3106eddbcc154d5378f259e2e786e44b524e004322ad8a818ba94d7165",
+      "screenshots": true,
+      "snapshots": true,
+      "sources": true
+    },
+    "local_unresolved_contract_rows": [],
+    "local_waivers": []
+  },
+  "cumulative_seal": {
+    "schema": "HHS_PASS219_I141_PASS185_CUMULATIVE_LOCAL_CLOSURE_SEAL_V1",
+    "classification": "HHS_PASS_185_CUMULATIVE_PHASE1_PHASE7_LOCAL_CLOSURE_EXECUTED",
+    "completion_receipt_hash72": "H4jC)a1-F8?2n-D)?lYLDvX+qTn-Ic/1-!<mTn>k)N8+4ACSDqeLYOk0v!aGi2)IiO)E6z(G",
+    "evidence_set_hash216": "6bf43e8079cc9f6b008da2188ac943230b47b857c20d9dde9848c099d3993bfb",
+    "declared_seal_sha256": "8f5b028a89ab8e2b56050bb9b32d287eb4d8e9e3190786f5a3b526449e722051",
+    "seal_file_sha256": "3dea0e8fd73aec2c7a4313c720f183353ad47c15c98f1457eea939cc7ff5d877",
+    "authoritative_main_verified": false,
+    "external_deployment_verified": false,
+    "terminal_pass185_completion_claimed": false
+  },
+  "authority_boundary": {
+    "phase1_through_phase7_receipts_rewritten": false,
+    "canonical_runtime_authority_changed": false,
+    "new_vm81_authority": false,
+    "parallel_hash72_commit_authority": false,
+    "frontend_runtime_authority": false,
+    "authoritative_main_verified": false,
+    "external_deployment_verified": false
+  },
+  "remaining_terminal_scope": [
+    "current-main drift reconciliation against e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191 or later authoritative main",
+    "explicit safe integration boundary",
+    "authoritative-main verification after integration",
+    "external production deployment replay",
+    "terminal Pass-185 classification"
+  ]
+}

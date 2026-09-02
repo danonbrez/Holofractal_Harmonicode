@@ -14,6 +14,27 @@
 - Contract: `HHS-P181-NCSR-GHIR-VM81-H72-H216`
 - Authority: `HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1`
 
+
+
+## I145 reconciliation amendment
+
+Pass 219 reverse reconciliation I145 preserves the historical Pass 181 implementation and repairs the later-discovered authority bypass in the Phase-6 registry:
+
+- historical repaired green head: `3ae56827b27500c2c8187126d5825a901d4feb40`;
+- historical Pass 181 workflow run: `30660886113` — success;
+- frozen predecessor Pass 219 I144 checkpoint: `132694cee0af4a43113ddc4c50f867c084a22bae`;
+- the governed constraint registry now requires a real inherited Pass 165/163 VM81 commit before a freeze or rollback can mutate the active constraint state;
+- the production registry reuses the existing graphics vector-hydration VM81 authority instead of minting a peer runtime;
+- the legacy direct `GraphicsHydrationRuntime.promote_constraint()` freeze path is disabled fail-closed;
+- cumulative Pass 219 exposure is added as I145 / Pass 181;
+- Pass 181 remains nonterminal.
+
+Remaining terminal obligations are exactly:
+
+1. deterministic cold-start **native reconstruction** replay beyond the already-completed constraint-frontier replay;
+2. Three.js editor-preview enhancement while preserving zero final-frame authority;
+3. full 90-second 1080×1920 inverse-render acceptance with one-click evidence package export.
+
 ## Implemented
 
 ### Phase 1 — authority and identity core
@@ -91,15 +112,14 @@
 - Phase 5 run `30647565377`: success.
 - Phase 5 proved idempotent typed admission, Pass 165 5,184-bit projections, two-job support thresholds, style separation, zero direct freezes, durable recovery, deterministic replay, final-job enforcement, and catalog tamper rejection.
 - PRs `#104`, `#105`, `#106`, and `#107` are merged to `main` as the commits listed above.
-- No completed constraint freeze/rollback registry, full cold-start native reconstruction replay, Three.js editor enhancement, or 90-second inverse reconstruction is claimed yet.
+- The Phase-6 constraint freeze/rollback registry is implemented and historically green, with I145 adding mandatory inherited-VM81 admission. Full cold-start native reconstruction replay, Three.js editor enhancement, and 90-second inverse reconstruction acceptance are still not claimed.
 
 ## Remaining Pass 181 phases
 
-1. Native graphics constraint registry with full promotion evidence, freeze, rollback, and supersession.
-2. Deterministic cold-start native reconstruction replay.
-3. Three.js editor-preview enhancement without final-frame authority.
-4. Full 90-second inverse-render reconstruction acceptance and one-click evidence package export.
+1. Deterministic cold-start native reconstruction replay.
+2. Three.js editor-preview enhancement without final-frame authority.
+3. Full 90-second inverse-render reconstruction acceptance and one-click evidence package export.
 
 ## Exact next action
 
-Implement an append-only runtime-constraint registry that accepts only eligible vector candidates plus complete reproduced, cross-sample, positive, negative, adversarial, replay, calibration, and contradiction-scan evidence; freezes hard invariants separately from style profiles; supports atomic activation, rollback, and supersession; and verifies the active constraint frontier after cold restart.
+Implement and validate deterministic cold-start native reconstruction replay using the already-governed recipe, VM81 constraint frontier, exact media timeline, and no-passthrough authority; do not claim the later editor or 90-second acceptance until separately executed.

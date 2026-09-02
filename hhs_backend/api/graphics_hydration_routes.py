@@ -15,6 +15,9 @@ from hhs_backend.runtime.hhs_graphics_hydration_v1 import (
 )
 from hhs_backend.runtime.hhs_graphics_optimization_v1 import GraphicsOptimizationError
 from hhs_backend.runtime.hhs_graphics_optimizer_instance_v1 import GRAPHICS_OPTIMIZER
+from hhs_backend.runtime.hhs_graphics_constraint_registry_instance_v1 import (
+    GRAPHICS_CONSTRAINT_REGISTRY,
+)
 from hhs_backend.runtime.hhs_graphics_vector_hydration_instance_v1 import (
     GRAPHICS_VECTOR_HYDRATION,
 )
@@ -45,7 +48,14 @@ def graphics_hydration_status() -> Dict[str, Any]:
     status["self_test_projection"] = graphics_hydration_self_test()
     status["bounded_optimizer"] = GRAPHICS_OPTIMIZER.status()
     status["vector_hydration"] = GRAPHICS_VECTOR_HYDRATION.status()
-    status["implementation_stage"] = "PASS_181_PHASE_5_VECTOR_HYDRATION_AND_INVARIANT_CANDIDATES"
+    status["constraint_registry"] = GRAPHICS_CONSTRAINT_REGISTRY.status()
+    status["implementation_stage"] = "PASS_181_PHASE_6_VM81_GATED_CONSTRAINT_REGISTRY"
+    status["terminal_pass181_completion"] = False
+    status["remaining_terminal_obligations"] = [
+        "DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY",
+        "THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY",
+        "FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT",
+    ]
     return status
 
 

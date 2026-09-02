@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass219-iteration146-pass180-application-factory-reconciliation",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "5a4f9c77afed0772d746e099238bccf6729cf4069d5da09a7eb3cc1bb106c6d2",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 33617501646,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "341c4c554d901abe71713f70bd5ee451e46795b5"
+}

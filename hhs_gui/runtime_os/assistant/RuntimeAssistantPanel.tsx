@@ -146,7 +146,7 @@ export const RuntimeAssistantPanel: React.FC<RuntimeAssistantPanelProps> = ({
           <h2 className="text-sm font-semibold text-cyan-100">Workspace assistant</h2>
           <p className="text-[10px] text-neutral-500">Project {projectId ?? "not created"} · source {sourceName}</p>
         </div>
-        <span className={online ? "text-[10px] text-emerald-300" : "text-[10px] text-amber-300"}>
+        <span data-testid="pass185-assistant-provider-status" className={online ? "text-[10px] text-emerald-300" : "text-[10px] text-amber-300"}>
           {online ? provider : "provider unavailable"}
         </span>
       </header>
@@ -167,6 +167,7 @@ export const RuntimeAssistantPanel: React.FC<RuntimeAssistantPanelProps> = ({
 
       <form className="border-t border-neutral-800 p-3" onSubmit={submit}>
         <textarea
+          data-testid="pass185-assistant-input"
           className="min-h-24 w-full resize-y rounded-xl border border-neutral-700 bg-black p-3 text-sm text-white outline-none focus:border-cyan-500"
           value={input}
           onChange={(event) => setInput(event.target.value)}
@@ -174,7 +175,7 @@ export const RuntimeAssistantPanel: React.FC<RuntimeAssistantPanelProps> = ({
           required
         />
         <div className="mt-2 flex items-center justify-between gap-2">
-          <button className="runtime-button min-h-10 px-4 py-2 text-sm" type="submit" disabled={busy || !online}>
+          <button data-testid="pass185-assistant-send" className="runtime-button min-h-10 px-4 py-2 text-sm" type="submit" disabled={busy || !online}>
             {busy ? "Processing…" : "Send"}
           </button>
           <button className="runtime-button min-h-10 px-3 py-2 text-xs" type="button" onClick={() => { setThreadId(null); setMessages([]) }}>

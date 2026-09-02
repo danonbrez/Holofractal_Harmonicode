@@ -23,6 +23,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import threading
 import time
 from typing import Any, Iterable, Mapping, Optional, Sequence
 import unicodedata
@@ -423,6 +424,8 @@ class RepositoryHydrationRuntime:
         )
         self.jobs_root = self.state_root / "jobs"
         self.receipt_path = self.state_root / "receipts.jsonl"
+        self._mutation_lock = threading.RLock()
+        self._cancel_events: dict[str, threading.Event] = {}
 
     def _git(self, *args: str, text: bool = True) -> str | bytes:
         completed = subprocess.run(
@@ -887,10 +890,12 @@ class RepositoryHydrationRuntime:
                         since_commit=job["request"]["since_commit"],
                         bounds=job["bounds"],
                     )
-                    job["manifest"] = manifest
-                    job["history"][-1]["total_work_count"] = manifest["object_count"]
-                    job["history"][-1]["completed_work_count"] = manifest["object_count"]
-                    self._write_job(job)
+                    with self._mutation_lock:
+                        self._raise_if_cancelled(job_id)
+                        job["manifest"] = manifest
+                        job["history"][-1]["total_work_count"] = manifest["object_count"]
+                        job["history"][-1]["completed_work_count"] = manifest["object_count"]
+                        self._write_job(job)
                 elif stage == "VALIDATING":
                     manifest = job.get("manifest")
                     if not isinstance(manifest, dict):
@@ -937,6 +942,9 @@ class RepositoryHydrationRuntime:
             self._write_job(job)
             return job
         except Pass191Error as exc:
+            if exc.classification == "HHS_P191_JOB_CANCELLED":
+                with self._mutation_lock:
+                    return self.get_job(job_id)
             terminal = "BLOCKED" if "BLOCKED" in exc.classification else "FAILED"
             job["failure_reason"] = exc.classification
             job["recovery_action"] = (
@@ -969,27 +977,29 @@ class RepositoryHydrationRuntime:
         authority_execution: Mapping[str, Any],
     ) -> dict[str, Any]:
         state_hash72, authority_receipt_hash72 = _authority_lineage(authority_execution)
-        job = self.get_job(job_id)
-        if job["stage"] in TERMINAL_STAGES:
+        with self._mutation_lock:
+            job = self.get_job(job_id)
+            if job["stage"] in TERMINAL_STAGES:
+                return job
+            self._cancel_event(job_id).set()
+            self._transition(
+                job,
+                "CANCELLED",
+                completed=len(job["history"]),
+                total=None,
+                checkpoint="CANCELLED_BY_AUTHORIZED_REQUEST",
+                authority_receipt_hash72=authority_receipt_hash72,
+            )
+            receipt = self._append_receipt(
+                "P191.Hydrate.Cancel",
+                job_id,
+                {"stage": "CANCELLED"},
+                state_hash72,
+                authority_receipt_hash72,
+            )
+            job["receipt_links"].append(receipt["receipt_hash72"])
+            self._write_job(job)
             return job
-        self._transition(
-            job,
-            "CANCELLED",
-            completed=len(job["history"]),
-            total=None,
-            checkpoint="CANCELLED_BY_AUTHORIZED_REQUEST",
-            authority_receipt_hash72=authority_receipt_hash72,
-        )
-        receipt = self._append_receipt(
-            "P191.Hydrate.Cancel",
-            job_id,
-            {"stage": "CANCELLED"},
-            state_hash72,
-            authority_receipt_hash72,
-        )
-        job["receipt_links"].append(receipt["receipt_hash72"])
-        self._write_job(job)
-        return job
 
     def verify_job(self, job_id: str) -> dict[str, Any]:
         job = self.get_job(job_id)
@@ -1261,6 +1271,14 @@ class RepositoryHydrationRuntime:
         }
         return {"ok": all(checks.values()), "checks": checks}
 
+    def _cancel_event(self, job_id: str) -> threading.Event:
+        with self._mutation_lock:
+            return self._cancel_events.setdefault(job_id, threading.Event())
+
+    def _raise_if_cancelled(self, job_id: str) -> None:
+        if self._cancel_event(job_id).is_set():
+            raise Pass191Error("HHS_P191_JOB_CANCELLED")
+
     def _transition(
         self,
         job: dict[str, Any],
@@ -1273,17 +1291,20 @@ class RepositoryHydrationRuntime:
     ) -> None:
         if stage not in LIFECYCLE:
             raise Pass191Error("HHS_P191_JOB_STAGE_INVALID", stage)
-        event = {
-            "stage": stage,
-            "completed_work_count": completed,
-            "total_work_count": total,
-            "current_object": None,
-            "checkpoint": checkpoint,
-            "authority_receipt_hash72": authority_receipt_hash72,
-        }
-        job["stage"] = stage
-        job["history"].append(event)
-        self._write_job(job)
+        with self._mutation_lock:
+            if stage != "CANCELLED":
+                self._raise_if_cancelled(str(job["job_id"]))
+            event = {
+                "stage": stage,
+                "completed_work_count": completed,
+                "total_work_count": total,
+                "current_object": None,
+                "checkpoint": checkpoint,
+                "authority_receipt_hash72": authority_receipt_hash72,
+            }
+            job["stage"] = stage
+            job["history"].append(event)
+            self._write_job(job)
 
     def _append_receipt(
         self,

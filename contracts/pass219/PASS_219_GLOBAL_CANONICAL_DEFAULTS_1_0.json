@@ -51,8 +51,8 @@
   },
   "current_cumulative_binding_census": {
     "ceiling_pass": 218,
-    "wired_floor_pass": 186,
-    "binding_count": 35,
+    "wired_floor_pass": 180,
+    "binding_count": 41,
     "ordered_bindings": [
       "218",
       "217",
@@ -88,10 +88,45 @@
       "189",
       "188",
       "187",
-      "186"
+      "186",
+      "185",
+      "184",
+      "183",
+      "182",
+      "181",
+      "180"
     ],
     "pass200_variants_are_distinct_bindings": true,
-    "missing_numeric_pass_in_coverage_is_regression": true
+    "missing_numeric_pass_in_coverage_is_regression": true,
+    "i142_repair_forward": {
+      "iteration": 142,
+      "pass185": "CUMULATIVE_PRODUCTION_CLOSURE_EXPOSED",
+      "pass184": "PORTABLE_RUNTIME_AUTHORITY_BOUND"
+    },
+    "i143_repair_forward": {
+      "iteration": 143,
+      "pass183": "PROBABILITY_HYDRATION_BOUND_WITH_HASH72_THEN_HASH216_ARCHIVAL_ORDER",
+      "legacy_native_hash_witness": "NONCANONICAL_COMPATIBILITY_ONLY"
+    },
+    "i144_repair_forward": {
+      "iteration": 144,
+      "pass182": "UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_RUNTIME_AND_CUMULATIVE_BINDING",
+      "authority": "SINGLETON_VM81_PROMOTION_ONLY_HASH72_EVIDENCE_HASH216_ARCHIVAL"
+    },
+    "i145_repair_forward": {
+      "iteration": 145,
+      "pass181": "GRAPHICS_HYDRATION_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL",
+      "vm81_repair": "CONSTRAINT_FREEZE_AND_ROLLBACK_REQUIRE_INHERITED_VM81_COMMIT",
+      "legacy_direct_promotion": "DISABLED",
+      "remaining_terminal_obligation_count": 3
+    },
+    "i146_repair_forward": {
+      "iteration": 146,
+      "pass180": "APPLICATION_FACTORY_CUMULATIVELY_WIRED_TERMINAL_AFTER_VM81_REPAIR",
+      "vm81_repair": "CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT",
+      "hash72_order": "APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION",
+      "remaining_terminal_obligation_count": 0
+    }
   },
   "repair_forward": {
     "wired_but_stale": "REPAIR_FORWARD_REQUIRED",
@@ -100,6 +135,20 @@
     "no_grandfather_bypass": true
   },
   "known_repair_forward_debt": [
+    {
+      "pass": 181,
+      "contract_id": "HHS-P181-NCSR-GHIR-VM81-H72-H216",
+      "canonical_title": "NATIVE_CINEMATIC_STORY_REEL_GRAPHICS_HYDRATION_RUNTIME",
+      "classification": "WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure": true,
+      "mandatory_repair_forward": true,
+      "remaining_terminal_obligations": [
+        "DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY",
+        "THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY",
+        "FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT"
+      ],
+      "terminal_completion_claimed": false
+    },
     {
       "pass": 157,
       "contract_id": "HHS-P157-PPF-MPTC",

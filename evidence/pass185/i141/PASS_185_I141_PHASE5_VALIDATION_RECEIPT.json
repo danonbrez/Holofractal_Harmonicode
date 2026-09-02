@@ -1,0 +1,126 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE5_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE5_PERFORMANCE_NEGATIVE_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase4_validated_head": "6721a7daa5ac9bff087e3f2df92ca8e0212e126b",
+    "phase5_implementation_validated_head": "36321174c124ff5ba81bd60fd37a72ce703e606c",
+    "phase5_implementation_validated_tree": "89e9f83674700565695e54868ba50f93c1535f06",
+    "phase5_documentation_validated_head": "842e5cea772dff4652f0aba3ac71889bea1ea2cb",
+    "phase5_documentation_validated_tree": "322c4e5340e8f5211de7a8c3a5e4c504a71b9272",
+    "documentation_checkpoint_ahead_of_authoritative_main_base": 107,
+    "documentation_checkpoint_behind_authoritative_main_base": 0
+  },
+  "implementation_validation": {
+    "run_id": 33304271871,
+    "job_id": 99237928339,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9729993598,
+      "name": "pass219-i141-pass185-phase5-performance-negative",
+      "sha256": "82b99ecba184b51ce677038e76a1de5fecd4739873d215b2288e18e298ac7127"
+    },
+    "evidence_sha256": "f0a9efcf8de1c178e86cecc26269f2d5c539c801406c504fe950ccf79c980a78",
+    "seal_receipt_sha256": "10f5e85b988e07be5612a2800a1dc0cea603ac93e38aa05d3aa5e565ac75d726"
+  },
+  "documentation_checkpoint_validation": {
+    "run_id": 33304554161,
+    "job_id": 99238659234,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9730074140,
+      "name": "pass219-i141-pass185-phase5-performance-negative",
+      "sha256": "356950bce537043186c164f0bd08b96823472dfafc9afa7934bf7ed2beb54e78"
+    },
+    "evidence_sha256": "173b0c518201ea7854e745bc8fa42eef7b4e2010cb37655d04faf0d11e56b9c6",
+    "seal_receipt_sha256": "08a9945021defb6cf9edca2a613ea80e1867a56cc1f96d69ea8bb333ebf65bf7",
+    "compiled_c_sha256": "7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c"
+  },
+  "measured_evidence": {
+    "startup_deadline_ms": 45000,
+    "idle_health": {
+      "path": "/api/health",
+      "sample_count": 40,
+      "p95_ms": 2.038,
+      "max_ms": 3.821,
+      "timeout_samples": 0,
+      "gate_ms": 250
+    },
+    "idle_resources": {
+      "window_seconds": 10.508,
+      "cpu_percent": 0.095,
+      "max_rss_kib": 152148,
+      "read_bytes_delta": 0,
+      "write_bytes_delta": 0,
+      "runtime_step_stable": true,
+      "runtime_state_hash72_stable": true
+    },
+    "event_loop": {
+      "authorized_step_latencies_ms": [
+        4440.47,
+        4184.673,
+        4253.307
+      ],
+      "health_samples": 555,
+      "health_timeout_or_request_failures": 0,
+      "p95_health_latency_ms": 21.619,
+      "max_health_latency_ms": 25.494,
+      "yield_gate_ms": 100,
+      "canonical_step_execution_off_asgi_loop": true,
+      "canonical_step_lane_serialized": true
+    },
+    "browser": {
+      "editor_probe_latency_ms": 8.905,
+      "optional_probe_count": 6,
+      "long_task_count": 0,
+      "long_tasks_above_200ms": 0,
+      "max_long_task_ms": 0,
+      "duplicate_control_binding": "ONE_CLICK_ONE_GAME_CELL",
+      "malformed_recovery_status": "EMPTY"
+    },
+    "unknown_api": {
+      "status": 404,
+      "classification": "HHS_API_ROUTE_NOT_FOUND",
+      "latency_ms": 7143.305,
+      "html_spa_fallback": false
+    },
+    "recovery": {
+      "health_p95_ms": 1.745,
+      "health_max_ms": 7.284,
+      "timeout_samples": 0
+    }
+  },
+  "verified_negative_recovery": [
+    "never-resolving boot dependency -> visible frontend_boot_timeout -> reload health 200",
+    "self-dependent parser event -> visible frontend_boot_timeout -> reload health 200",
+    "missing required DOM -> visible frontend_error -> reload health 200",
+    "circular boot dependency -> visible frontend_boot_timeout -> reload health 200",
+    "malformed lifecycle recovery state -> EMPTY fallback",
+    "duplicate visible control binding -> one click one cell",
+    "unknown API -> structured JSON 404 without SPA fall-through"
+  ],
+  "repair_forward": {
+    "production_runtime_authority_route_precedence": true,
+    "inherited_authority_alias_preserved": true,
+    "production_auto_tick_disable_honored": true,
+    "recurring_background_canonical_tick_disabled_in_profile": true,
+    "startup_and_explicit_authorized_ticks_preserved": true,
+    "canonical_runtime_step_singleton_lane_serialized": true,
+    "canonical_runtime_step_off_asgi_event_loop": true,
+    "frontend_runtime_authority": false,
+    "timing_and_resource_values_noncanonical": true
+  },
+  "remaining_terminal_scope": [
+    "cumulative Pass-185 closure reconciliation",
+    "authoritative-main verification after safe merge",
+    "external deployment replay",
+    "terminal Pass-185 classification"
+  ]
+}

@@ -97,10 +97,12 @@ def _canonical(value: Any) -> bytes:
 
 
 def _hash72(payload: Any, exact: bytes = b"") -> str:
-    if _repository_hash72_digest is not None:
-        return str(_repository_hash72_digest(payload, exact))
-    seed = sha256(b"P183-LOCAL-HASH72\0" + _canonical(payload) + exact).hexdigest()
-    return (seed + sha256(seed.encode("ascii")).hexdigest())[:72]
+    if _repository_hash72_digest is None:
+        raise Pass183Error("P183_REJECT_RECEIPT", "canonical_hash72_unavailable")
+    value = str(_repository_hash72_digest(payload, exact))
+    if len(value) != 72:
+        raise Pass183Error("P183_REJECT_RECEIPT", "canonical_hash72_length")
+    return value
 
 
 def _hash216(payload: Any, exact: bytes = b"") -> dict[str, Any]:
@@ -127,6 +129,9 @@ def _hash216(payload: Any, exact: bytes = b"") -> dict[str, Any]:
         indexes.append(prior)
     root = sha256(b"P183-HASH216-ROOT\0" + b"".join(bytes.fromhex(item) for item in indexes)).hexdigest()
     return {
+        "classification": "P183_LEGACY_PRECOMMIT_HASH216_COMPATIBILITY_WITNESS",
+        "canonical_archival": False,
+        "authority_use_prohibited": True,
         "predecessor": lanes[0],
         "current": lanes[1],
         "successor": lanes[2],

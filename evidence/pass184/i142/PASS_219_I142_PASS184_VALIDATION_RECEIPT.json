@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS_219_I142_PASS184_VALIDATION_RECEIPT_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration142-pass184-portable-runtime-reconciliation",
+  "workflow": ".github/workflows/pass219-i142-pass184-portable-runtime.yml",
+  "workflow_run": {
+    "id": 33385270995,
+    "run_number": 2,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "56a2463b6341bd7fce6ebd804759eabebb5fbaab",
+    "exact_implementation_checkpoint": "40dd51f6dbfdcc11f90d9484773d3fd1356f590d",
+    "superseded_run": 33385237967,
+    "superseded_run_classification": "CONCURRENCY_CANCELLATION_NOT_IMPLEMENTATION_FAILURE"
+  },
+  "job": {
+    "id": 99466446360,
+    "name": "pass184-i142",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 9755356279,
+    "name": "pass219-i142-pass184-portable-runtime",
+    "size_bytes": 847,
+    "sha256": "0ce3a30bf5e3bf8197b88627efa07e2fc1b8c6db213b4acd079e4cb47df034b8",
+    "contained_file": "PASS_184_COMPLETION.json"
+  },
+  "pass184_local_completion": {
+    "classification": "HHS_PASS_184_I142_LOCAL_ACCEPTANCE_VERIFIED",
+    "contract": "HHS-P184-PHRP-PSRA-VM81-H72-H216",
+    "authority": "HHS_VM81_SINGLETON_PORTABLE_RUNTIME_SERVICE_AUTHORITY_V1",
+    "completion_receipt_hash72": "1QP(A933Alu3lFc)M/6FJIdyWk064L0K?>*hlyQjkI/As7?kj5sbHREf-uFO/g!t+V95XY-K",
+    "evidence_set_hash216": "3b350e019bed74cc9a5156e8d92d7eeabb901bf4d97b33bdf9dd0b6ef961a714",
+    "receipt_sha256": "8cff0a3ea682f74016869bc2240edaa05f82cc8e3a3626a2fe37942376bb5a54",
+    "public_application": "hhs_backend.runtime_os_application_server:app",
+    "canonical_mutation_authority": false,
+    "independent_vm81_authority": false,
+    "independent_hash72_clock": false,
+    "hash216_archival_only": true,
+    "terminal_pass184_completion_claimed": false
+  },
+  "package_manifest_evidence": {
+    "deterministic_package": true,
+    "manifest_verification": true,
+    "package_tamper_rejection": true,
+    "profile_dependency_closure": true,
+    "package_build_classification": "HHS_PASS_184_PORTABLE_RUNTIME_PACKAGE_BUILT_AND_VERIFIED",
+    "manifest_schema": "HHS_PASS_184_RUNTIME_PACKAGE_MANIFEST_V1",
+    "manifest_classification": "HHS_PASS_184_PACKAGE_MANIFEST_VERIFIED",
+    "verification_schema": "HHS_PASS_184_PACKAGE_VERIFICATION_V1",
+    "verification_classification": "HHS_PASS_184_PORTABLE_RUNTIME_PACKAGE_VERIFIED",
+    "manifest_file": "manifests/runtime-package.json",
+    "integrity_algorithm": "SHA-256",
+    "manifest_identity_algorithm": "SHA-256_CANONICAL_JSON"
+  },
+  "runtime_os": {
+    "target": "hhs_backend.runtime_os_application_server:app",
+    "typecheck": "PASS",
+    "production_build": "PASS",
+    "production_route_smoke_classification": "HHS_PASS184_I142_PRODUCTION_ROUTE_SMOKE_VERIFIED"
+  },
+  "validation": {
+    "pass184_package_api_acceptance": "13_PASSED",
+    "i142_membrane_preflight": "PASS",
+    "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+    "global_default_binding_count": 37,
+    "global_default_wired_floor": 184,
+    "global_default_wired_ceiling": 218,
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+    "aggregate_exact_abi_c": "PASS",
+    "aggregate_exact_abi_cpp": "PASS",
+    "runtime_os_typecheck": "PASS",
+    "runtime_os_build": "PASS",
+    "production_route_smoke": "HHS_PASS184_I142_PRODUCTION_ROUTE_SMOKE_VERIFIED",
+    "local_completion_receipt_verification": "PASS"
+  },
+  "closure": {
+    "i142_dependency_scoped_validation_green": true,
+    "merge_performed": false,
+    "authoritative_main_verified": false,
+    "deployment_performed": false,
+    "terminal_pass184_completion": false
+  }
+}

@@ -3,6 +3,8 @@ from __future__ import annotations
 import io
 import zipfile
 
+from hhs_runtime.pass163.vmrc import VMRCRuntime
+
 from hhs_backend.runtime.hhs_application_factory_v1 import (
     ApplicationFactory,
     LIFECYCLE_STAGES,
@@ -10,6 +12,10 @@ from hhs_backend.runtime.hhs_application_factory_v1 import (
     WORKFLOW_LIBRARY,
     application_factory_self_test,
 )
+
+
+def _factory() -> ApplicationFactory:
+    return ApplicationFactory(vm81=VMRCRuntime())
 
 
 def test_library_exposes_plug_and_play_modules_and_complete_workflows():
@@ -22,7 +28,7 @@ def test_library_exposes_plug_and_play_modules_and_complete_workflows():
 
 
 def test_project_creation_closes_dependency_graph_and_preserves_sources():
-    factory = ApplicationFactory()
+    factory = _factory()
     result = factory.create_project(name="Calculator", workflow_id="scientific_calculator")
     assert result["ok"] is True
     project = result["project"]
@@ -36,7 +42,7 @@ def test_project_creation_closes_dependency_graph_and_preserves_sources():
 
 
 def test_incremental_plan_limits_work_and_keeps_single_commit_authority():
-    factory = ApplicationFactory()
+    factory = _factory()
     project = factory.create_project(name="Game", workflow_id="game_2d")["project"]
     plan = factory.plan_changes(project["project_id"], ["src/game.js"])["plan"]
     assert "graphics.native" in plan["impacted_modules"]
@@ -46,7 +52,7 @@ def test_incremental_plan_limits_work_and_keeps_single_commit_authority():
 
 
 def test_lifecycle_is_finite_checkpointed_and_replayable():
-    factory = ApplicationFactory()
+    factory = _factory()
     project = factory.create_project(name="App", workflow_id="web_application")["project"]
     result = factory.run_lifecycle(project["project_id"], ["src/app.js"], timeout_ms=5_000)
     assert result["ok"] is True
@@ -61,7 +67,7 @@ def test_lifecycle_is_finite_checkpointed_and_replayable():
 
 
 def test_source_zip_export_is_independent_of_compile_and_deterministic():
-    factory = ApplicationFactory()
+    factory = _factory()
     project = factory.create_project(name="Document", workflow_id="document_studio")["project"]
     first = factory.export_source_zip(project["project_id"])
     second = factory.export_source_zip(project["project_id"])
@@ -76,12 +82,52 @@ def test_source_zip_export_is_independent_of_compile_and_deterministic():
 
 
 def test_file_path_traversal_and_unknown_workflow_fail_closed():
-    factory = ApplicationFactory()
+    factory = _factory()
     project = factory.create_project(name="App", workflow_id="web_application")["project"]
     rejected_path = factory.upsert_file(project["project_id"], "../outside.txt", "no")
     rejected_workflow = factory.create_project(name="Unknown", workflow_id="not-real")
     assert rejected_path["ok"] is False
     assert rejected_workflow["ok"] is False
+
+
+def test_canonical_mutation_requires_vm81_and_hash72_follows_admission():
+    missing = ApplicationFactory()
+    rejected = missing.create_project(name="No authority", workflow_id="web_application")
+    assert rejected["ok"] is False
+    assert rejected["status"] == "REJECT_APPLICATION_VM81_AUTHORITY"
+    assert not missing.projects
+
+    vm81 = VMRCRuntime()
+    factory = ApplicationFactory(vm81=vm81)
+    before = vm81.epoch
+    created = factory.create_project(name="VM81 App", workflow_id="web_application")
+    assert created["ok"] is True
+    project = created["project"]
+    assert vm81.epoch == before + 1
+    assert project["vm81_admission"]["classification"] == (
+        "HHS_PASS180_APPLICATION_FACTORY_VM81_ADMISSION_VERIFIED"
+    )
+    assert project["vm81_admission"]["singleton_authority"] is True
+    assert project["vm81_admission"]["independent_vm81_authority"] is False
+    assert project["vm81_admission"]["validation_mutation_authority"] is False
+    assert project["creation_receipt_hash72"]
+    assert project["vm81_admission"]["receipt_hash72"]
+
+    before = vm81.epoch
+    changed = factory.upsert_file(project["project_id"], "src/app.js", "updated\n")
+    assert changed["ok"] is True
+    assert vm81.epoch == before + 1
+    assert changed["project"]["latest_receipt_hash72"]
+    assert changed["project"]["vm81_admission"]["receipt_hash72"]
+
+    before = vm81.epoch
+    lifecycle = factory.run_lifecycle(project["project_id"], ["src/app.js"])
+    assert lifecycle["ok"] is True
+    assert vm81.epoch == before + 1
+    assert lifecycle["job"]["result"]["vm81_admission"]["classification"] == (
+        "HHS_PASS180_APPLICATION_FACTORY_VM81_ADMISSION_VERIFIED"
+    )
+    assert lifecycle["job"]["checkpoints"][-1]["details"]["vm81_receipt_hash72"]
 
 
 def test_application_factory_self_test():
