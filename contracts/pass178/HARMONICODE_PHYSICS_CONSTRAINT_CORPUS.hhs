@@ -1,0 +1,31 @@
+# HHS Pass 178 contract-visible exact physics corpus nucleus
+# This artifact preserves only relations explicitly visible in the normative Pass 178 contract.
+# It is NOT represented as the complete historical user-supplied corpus required for terminal closure.
+
+P^4 == A*B
+Delta == P^2-p*q
+A == B == P^2
+u^72 == 1
+O != Pi
+sqrt(A*B) == sqrt(B*A) == P^2
+
+sigma(u) == -Log(1-u)
+epsilon(u) == 1/(1-u)-1+Log(1-u)
+theta(u) == u/(1-u)
+d_epsilon == theta*d_sigma
+Phi(G) == G-1-Log(G)
+Phi(G)+Phi(1/G) == (G-1)^2/G
+
+c^2*d_tau^2 == c^2*d_t^2-d_x^2-d_y^2-d_z^2
+gamma == (1-v^2/c^2)^(-1/2)
+E^2-p^2*c^2 == m^2*c^4
+d_p_mu/d_tau == q*F_mu_nu*u_nu
+
+(I+i*dt*H/(2*hbar))*psi_next == (I-i*dt*H/(2*hbar))*psi
+H == adjoint(H)
+norm(psi_next) == norm(psi)
+sum(abs2(psi)) == 1
+
+TypedZero(Mod72) == RenewedUnit(u^72)
+BoundaryInfinity != FiniteScalar
+Mod(BoundaryInfinity,m) == REJECT

@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_178_MACHINE_CONTRACT_V1",
+  "contract_id": "HHS-P178-NEH-RQ-TJS-PSR",
+  "version": 1,
+  "classification": "P178_EXACT_PHYSICS_NUCLEUS_NONTERMINAL",
+  "exact_numeric_domain": [
+    "ExactInteger",
+    "ExactRational",
+    "SymbolicConstant",
+    "AlgebraicRoot",
+    "CertifiedInterval",
+    "ComplexExact",
+    "ExactVector",
+    "ExactMatrix",
+    "TypedZero",
+    "BoundaryInfinity",
+    "ConstraintWitness",
+    "BranchWitness",
+    "UnitWitness"
+  ],
+  "authoritative_float_allowed": false,
+  "authority": {
+    "simulation_mutation": "INHERITED_VM81_ONLY",
+    "hash72": "POST_VM81_EXECUTION_EVIDENCE_ONLY_IN_I148_NUCLEUS",
+    "hash216": "THREE_HASH72_LANES_ARCHIVAL_IDENTITY_ONLY",
+    "renderer": "PROJECTION_ONLY",
+    "gpu": "NO_MUTATION_AUTHORITY",
+    "browser": "NO_MUTATION_AUTHORITY"
+  },
+  "nucleus_models": [
+    "RELATIVISTIC_FREE_PARTICLE",
+    "RELATIVISTIC_UNIFORM_FIELD_CANDIDATE",
+    "QUANTUM_FINITE_CAYLEY_STEP",
+    "HARMONICODE_CONSTRAINT_MEMBRANE"
+  ],
+  "bounds": {
+    "max_vector_dimension": 81,
+    "max_matrix_dimension": 81,
+    "max_steps_per_request": 4096,
+    "max_source_bytes": 1048576
+  },
+  "terminal_pass178_completion": false
+}
