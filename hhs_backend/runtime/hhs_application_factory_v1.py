@@ -21,6 +21,8 @@ from copy import deepcopy
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Set
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_runtime.pass163.vmrc import VMRCRuntime, VMRCError
+from hhs_runtime.pass165.ingestion import DEFAULT_MULTIMODAL_LEARNING_SERVICE
 
 VERSION = "PASS_180_HHS_INTEGRATED_APPLICATION_FACTORY_V1"
 AUTHORITY = "HHS_VM81_SINGLETON_APPLICATION_FACTORY_AUTHORITY_V1"
@@ -282,14 +284,84 @@ STARTER_FILES: Dict[str, Dict[str, str]] = {
 }
 
 
-class ApplicationFactory:
-    """Finite, checkpointed application lifecycle with one commit authority."""
+class ApplicationFactoryAuthorityError(RuntimeError):
+    """Raised when canonical application-factory mutation cannot reach VM81."""
 
-    def __init__(self) -> None:
+
+class ApplicationFactory:
+    """Finite, checkpointed application lifecycle with inherited VM81 commit authority."""
+
+    def __init__(self, *, vm81: VMRCRuntime | None = None) -> None:
         self.projects: Dict[str, Dict[str, Any]] = {}
         self.jobs: Dict[str, Dict[str, Any]] = {}
         self.journals: Dict[str, List[Dict[str, Any]]] = {}
         self._commit_lock = threading.RLock()
+        self._vm81 = vm81
+
+    def _vm81_commit_transition(
+        self,
+        transition: str,
+        payload: Mapping[str, Any],
+    ) -> Dict[str, Any]:
+        if self._vm81 is None:
+            raise ApplicationFactoryAuthorityError(
+                "P180_VM81_ADMISSION_AUTHORITY_REQUIRED"
+            )
+        material = _canonical_json(
+            {
+                "contract": "HHS-P180-IAF-VM81-H72-H216",
+                "transition": transition,
+                "payload": payload,
+            }
+        ).encode("utf-8")
+        digest = hashlib.sha256(material).digest()
+        writes: Dict[int, int] = {}
+        for byte in digest[:16]:
+            writes[int(byte % 81)] = 1 if (byte & 1) else -1
+        dependency_root = hashlib.sha256(
+            b"HHS-P180-APPLICATION-FACTORY-VM81-DEPENDENCY-V1\0" + material
+        ).hexdigest()
+        try:
+            candidate = self._vm81.submit_candidate(
+                thread=60,
+                writes=writes,
+                operation="VMRC_COMMIT",
+                expected_input_hash72=self._vm81.state_hash72,
+                dependency_root=dependency_root,
+                capability_scope="P180_APPLICATION_FACTORY_CANONICAL_MUTATION",
+                source_architecture="P180_APPLICATION_FACTORY",
+                target_architecture="VM81",
+            )
+            result = self._vm81.execute(candidate)
+        except VMRCError as error:
+            raise ApplicationFactoryAuthorityError(
+                f"P180_VM81_ADMISSION_REJECTED:{error}"
+            ) from error
+        commit = result.get("commit") or {}
+        receipt = commit.get("receipt") or {}
+        validated = (result.get("validation") or {}).get("validated") or {}
+        if commit.get("classification") != "HHS_PASS_163_COMMIT_ADMITTED":
+            raise ApplicationFactoryAuthorityError(
+                "P180_VM81_ADMISSION_NOT_COMMITTED"
+            )
+        if not receipt.get("receipt_hash72") or not receipt.get("operation_hash216"):
+            raise ApplicationFactoryAuthorityError(
+                "P180_VM81_ADMISSION_RECEIPT_INCOMPLETE"
+            )
+        return {
+            "classification": "HHS_PASS180_APPLICATION_FACTORY_VM81_ADMISSION_VERIFIED",
+            "transition": transition,
+            "candidate_id": candidate.candidate_id,
+            "receipt_hash72": str(receipt["receipt_hash72"]),
+            "operation_hash216": str(receipt["operation_hash216"]),
+            "output_hash72": str(receipt.get("output_hash72") or ""),
+            "vm81_epoch": self._vm81.epoch,
+            "singleton_authority": True,
+            "independent_vm81_authority": False,
+            "validation_mutation_authority": bool(
+                validated.get("mutation_authority", False)
+            ),
+        }
 
     def status(self) -> Dict[str, Any]:
         active = [job for job in self.jobs.values() if job.get("state") not in FINAL_JOB_STATES]
@@ -308,7 +380,12 @@ class ApplicationFactory:
             "source_export_independent_of_compile": True,
             "parallel_candidate_planning": True,
             "parallel_state_authority": False,
-            "singleton_commit_authority": True,
+            "singleton_commit_authority": self._vm81 is not None,
+            "vm81_authority_bound": self._vm81 is not None,
+            "vm81_epoch": None if self._vm81 is None else self._vm81.epoch,
+            "vm81_state_hash72": None if self._vm81 is None else self._vm81.state_hash72,
+            "independent_vm81_authority": False,
+            "hash72_after_vm81_required": True,
         }
 
     def module_library(self) -> Dict[str, Any]:
@@ -403,17 +480,53 @@ class ApplicationFactory:
             "latest_receipt_hash72": None,
             "authority": AUTHORITY,
         }
-        project["source_root_hash72"] = hash72("HHS_APPLICATION_FACTORY_SOURCE_TREE_V1", project["file_roots_hash72"])
-        project["project_root_hash72"] = hash72(PROJECT_SCHEMA, {k: v for k, v in project.items() if k != "project_root_hash72"})
-        project["creation_receipt_hash72"] = hash72(
-            "HHS_APPLICATION_FACTORY_PROJECT_CREATED_V1",
-            {"project_id": project_id, "project_root_hash72": project["project_root_hash72"]},
+        project["source_root_hash72"] = hash72(
+            "HHS_APPLICATION_FACTORY_SOURCE_TREE_V1",
+            project["file_roots_hash72"],
         )
-        with self._commit_lock:
-            self.projects[project_id] = project
-            self.journals[project_id] = [
-                {"sequence": 0, "event": "PROJECT_CREATED", "root_hash72": project["creation_receipt_hash72"]}
-            ]
+        candidate_project_root_hash72 = hash72(
+            PROJECT_SCHEMA,
+            {k: v for k, v in project.items() if k != "project_root_hash72"},
+        )
+        try:
+            with self._commit_lock:
+                admission = self._vm81_commit_transition(
+                    "PROJECT_CREATED",
+                    {
+                        "project_id": project_id,
+                        "workflow_id": workflow_id,
+                        "candidate_project_root_hash72": candidate_project_root_hash72,
+                    },
+                )
+                project["vm81_admission"] = admission
+                project["project_root_hash72"] = hash72(
+                    PROJECT_SCHEMA,
+                    {k: v for k, v in project.items() if k != "project_root_hash72"},
+                )
+                project["creation_receipt_hash72"] = hash72(
+                    "HHS_APPLICATION_FACTORY_PROJECT_CREATED_V1",
+                    {
+                        "project_id": project_id,
+                        "project_root_hash72": project["project_root_hash72"],
+                        "vm81_receipt_hash72": admission["receipt_hash72"],
+                    },
+                )
+                self.projects[project_id] = project
+                self.journals[project_id] = [
+                    {
+                        "sequence": 0,
+                        "event": "PROJECT_CREATED",
+                        "root_hash72": project["creation_receipt_hash72"],
+                        "vm81_receipt_hash72": admission["receipt_hash72"],
+                    }
+                ]
+        except ApplicationFactoryAuthorityError as error:
+            return {
+                "schema": PROJECT_SCHEMA,
+                "ok": False,
+                "status": "REJECT_APPLICATION_VM81_AUTHORITY",
+                "reason": str(error),
+            }
         return {
             "schema": "HHS_APPLICATION_FACTORY_PROJECT_CREATE_RESULT_V1",
             "ok": True,
@@ -454,8 +567,30 @@ class ApplicationFactory:
             )
             updated["updated_at_unix_ms"] = _now_ms()
             updated["state"] = "DIRTY"
+            candidate_project_root_hash72 = hash72(
+                PROJECT_SCHEMA,
+                {k: v for k, v in updated.items() if k != "project_root_hash72"},
+            )
+            try:
+                admission = self._vm81_commit_transition(
+                    "FILE_UPSERTED",
+                    {
+                        "project_id": project_id,
+                        "path": normalized,
+                        "file_root_hash72": updated["file_roots_hash72"][normalized],
+                        "candidate_project_root_hash72": candidate_project_root_hash72,
+                    },
+                )
+            except ApplicationFactoryAuthorityError as error:
+                return {
+                    "ok": False,
+                    "status": "REJECT_APPLICATION_VM81_AUTHORITY",
+                    "reason": str(error),
+                }
+            updated["vm81_admission"] = admission
             updated["project_root_hash72"] = hash72(
-                PROJECT_SCHEMA, {k: v for k, v in updated.items() if k != "project_root_hash72"}
+                PROJECT_SCHEMA,
+                {k: v for k, v in updated.items() if k != "project_root_hash72"},
             )
             receipt = hash72(
                 "HHS_APPLICATION_FACTORY_FILE_UPSERT_V1",
@@ -464,6 +599,7 @@ class ApplicationFactory:
                     "path": normalized,
                     "file_root_hash72": updated["file_roots_hash72"][normalized],
                     "project_root_hash72": updated["project_root_hash72"],
+                    "vm81_receipt_hash72": admission["receipt_hash72"],
                 },
             )
             updated["latest_receipt_hash72"] = receipt
@@ -474,6 +610,7 @@ class ApplicationFactory:
                     "event": "FILE_UPSERTED",
                     "path": normalized,
                     "root_hash72": receipt,
+                    "vm81_receipt_hash72": admission["receipt_hash72"],
                 }
             )
         return {
@@ -636,30 +773,52 @@ class ApplicationFactory:
             self._guard_job(job)
             with self._commit_lock:
                 current = deepcopy(self.projects[project_id])
-                receipt = hash72(
-                    "HHS_APPLICATION_FACTORY_LIFECYCLE_COMMIT_V1",
-                    {
-                        "project_id": project_id,
-                        "job_id": job_id,
-                        "prior_project_root_hash72": current["project_root_hash72"],
-                        "plan_root_hash72": plan_result["plan"]["plan_root_hash72"],
-                        "compile_plan_root_hash72": compile_plan["compile_plan_root_hash72"],
-                        "test_plan_root_hash72": test_plan["test_plan_root_hash72"],
-                        "package_root_hash72": package_manifest["package_root_hash72"],
-                    },
-                )
+                prior_project_root_hash72 = current["project_root_hash72"]
                 current["state"] = "READY"
                 current["latest_job_id"] = job_id
-                current["latest_receipt_hash72"] = receipt
                 current["updated_at_unix_ms"] = _now_ms()
                 current["build"] = {
                     "compile_plan": compile_plan,
                     "test_plan": test_plan,
                     "package_manifest": package_manifest,
                 }
-                current["project_root_hash72"] = hash72(
-                    PROJECT_SCHEMA, {k: v for k, v in current.items() if k != "project_root_hash72"}
+                candidate_project_root_hash72 = hash72(
+                    PROJECT_SCHEMA,
+                    {k: v for k, v in current.items() if k != "project_root_hash72"},
                 )
+                admission = self._vm81_commit_transition(
+                    "LIFECYCLE_COMMITTED",
+                    {
+                        "project_id": project_id,
+                        "job_id": job_id,
+                        "prior_project_root_hash72": prior_project_root_hash72,
+                        "candidate_project_root_hash72": candidate_project_root_hash72,
+                        "plan_root_hash72": plan_result["plan"]["plan_root_hash72"],
+                        "compile_plan_root_hash72": compile_plan["compile_plan_root_hash72"],
+                        "test_plan_root_hash72": test_plan["test_plan_root_hash72"],
+                        "package_root_hash72": package_manifest["package_root_hash72"],
+                    },
+                )
+                current["vm81_admission"] = admission
+                current["project_root_hash72"] = hash72(
+                    PROJECT_SCHEMA,
+                    {k: v for k, v in current.items() if k != "project_root_hash72"},
+                )
+                receipt = hash72(
+                    "HHS_APPLICATION_FACTORY_LIFECYCLE_COMMIT_V1",
+                    {
+                        "project_id": project_id,
+                        "job_id": job_id,
+                        "prior_project_root_hash72": prior_project_root_hash72,
+                        "project_root_hash72": current["project_root_hash72"],
+                        "plan_root_hash72": plan_result["plan"]["plan_root_hash72"],
+                        "compile_plan_root_hash72": compile_plan["compile_plan_root_hash72"],
+                        "test_plan_root_hash72": test_plan["test_plan_root_hash72"],
+                        "package_root_hash72": package_manifest["package_root_hash72"],
+                        "vm81_receipt_hash72": admission["receipt_hash72"],
+                    },
+                )
+                current["latest_receipt_hash72"] = receipt
                 self.projects[project_id] = current
                 self.journals[project_id].append(
                     {
@@ -667,6 +826,7 @@ class ApplicationFactory:
                         "event": "LIFECYCLE_COMMITTED",
                         "job_id": job_id,
                         "root_hash72": receipt,
+                        "vm81_receipt_hash72": admission["receipt_hash72"],
                     }
                 )
             self._checkpoint(
@@ -675,6 +835,7 @@ class ApplicationFactory:
                 "SUCCEEDED",
                 {
                     "receipt_hash72": receipt,
+                    "vm81_receipt_hash72": admission["receipt_hash72"],
                     "singleton_commit_authority": True,
                     "parallel_state_authority": False,
                 },
@@ -682,6 +843,7 @@ class ApplicationFactory:
             job["state"] = "SUCCEEDED"
             job["result"] = {
                 "receipt_hash72": receipt,
+                "vm81_admission": admission,
                 "project_root_hash72": self.projects[project_id]["project_root_hash72"],
                 "source_export_ready": True,
                 "compile_plan": compile_plan,
@@ -876,11 +1038,13 @@ class _TimedOut(RuntimeError):
     pass
 
 
-APPLICATION_FACTORY = ApplicationFactory()
+APPLICATION_FACTORY = ApplicationFactory(
+    vm81=DEFAULT_MULTIMODAL_LEARNING_SERVICE._vm81,
+)
 
 
 def application_factory_self_test() -> Dict[str, Any]:
-    factory = ApplicationFactory()
+    factory = ApplicationFactory(vm81=VMRCRuntime())
     created = factory.create_project(name="Pass 180 Calculator", workflow_id="scientific_calculator")
     project_id = created["project"]["project_id"]
     changed = factory.upsert_file(project_id, "src/calculator.js", "const PHI='(1+sqrt(5))/2';\n")
