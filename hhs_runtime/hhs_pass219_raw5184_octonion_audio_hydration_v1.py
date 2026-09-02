@@ -13,12 +13,38 @@ PHASE_QUADS = 20
 PHASE_CHANNELS = ("x", "y", "z", "w", "xy", "yx", "zw", "wz")
 PILOT_CELL = 80
 H36 = 36
-MONITOR_SCALE = 1 << 56
-ROLE_SCALE = 1 << 48
+SINE_Q62_SCALE = 1 << 62
 PCM64_NOISE_FLOOR = -(1 << 63)
 PCM64_ZERO_CROSSING = 0
 PCM64_SATURATION_CEILING = (1 << 63) - 1
 MASK64 = (1 << 64) - 1
+
+SINE_Q62 = (
+    0, 401934920255029411, 800810873071977681, 1193592171602022505,
+    1577289512995517789, 1948982728801669864, 2305843009213693952,
+    2645154432019525852, 2964334632409774423, 3260954456333195553,
+    3532756447825785444, 3777672029613755863, 3993837246235628775,
+    4179606949868785275, 4333567320897763126, 4454546627935218059,
+    4541624145405292212, 4594137160821195716, 4611686018427387904,
+    4594137160821195716, 4541624145405292212, 4454546627935218059,
+    4333567320897763126, 4179606949868785275, 3993837246235628775,
+    3777672029613755863, 3532756447825785444, 3260954456333195553,
+    2964334632409774423, 2645154432019525852, 2305843009213693952,
+    1948982728801669864, 1577289512995517789, 1193592171602022505,
+    800810873071977681, 401934920255029411, 0, -401934920255029411,
+    -800810873071977681, -1193592171602022505, -1577289512995517789,
+    -1948982728801669864, -2305843009213693952, -2645154432019525852,
+    -2964334632409774423, -3260954456333195553, -3532756447825785444,
+    -3777672029613755863, -3993837246235628775, -4179606949868785275,
+    -4333567320897763126, -4454546627935218059, -4541624145405292212,
+    -4594137160821195716, -4611686018427387904, -4594137160821195716,
+    -4541624145405292212, -4454546627935218059, -4333567320897763126,
+    -4179606949868785275, -3993837246235628775, -3777672029613755863,
+    -3532756447825785444, -3260954456333195553, -2964334632409774423,
+    -2645154432019525852, -2305843009213693952, -1948982728801669864,
+    -1577289512995517789, -1193592171602022505, -800810873071977681,
+    -401934920255029411,
+)
 
 
 def bitstring_to_words(bits: str) -> tuple[int, ...]:
@@ -90,7 +116,7 @@ class PhaseChannel:
     resonance36: int
     half_turn: int
     signed_phase: int
-    monitor_pcm64: int
+    sine_pcm64: int
 
 
 @dataclass(frozen=True)
@@ -128,7 +154,7 @@ class AudioHydration:
     pcm64_bits: tuple[int, ...]
     quads: tuple[PhaseQuad, ...]
     pilot_pcm64_bits: int
-    monitor_pcm64: tuple[int, ...]
+    sine_pcm64: tuple[int, ...]
     canonical_mutation_authority: bool = False
     canonical_hash72_authority: bool = False
     canonical_hash216_authority: bool = False
@@ -143,7 +169,7 @@ def phase_channel(basis: str, phase: int) -> PhaseChannel:
     resonance = phase % H36
     half_turn = phase // H36
     signed_phase = resonance - H36 if half_turn else resonance
-    monitor = signed_phase * MONITOR_SCALE
+    sine = SINE_Q62[phase]
     assert resonance + H36 * half_turn == phase
     return PhaseChannel(
         basis=basis,
@@ -151,7 +177,7 @@ def phase_channel(basis: str, phase: int) -> PhaseChannel:
         resonance36=resonance,
         half_turn=half_turn,
         signed_phase=signed_phase,
-        monitor_pcm64=monitor,
+        sine_pcm64=sine,
     )
 
 
@@ -201,7 +227,7 @@ def hydrate_words(words: Sequence[int]) -> AudioHydration:
         raise ValueError("VM81_WORD_RANGE")
 
     quads: list[PhaseQuad] = []
-    monitor: list[int] = []
+    sine: list[int] = []
     for q in range(PHASE_QUADS):
         cells = (4 * q, 4 * q + 1, 4 * q + 2, 4 * q + 3)
         x, y, z, w = (normalized[i] for i in cells)
@@ -211,7 +237,7 @@ def hydrate_words(words: Sequence[int]) -> AudioHydration:
             for basis, phase in zip(PHASE_CHANNELS, phases)
         )
         quotient = typed_stereo_ternary(channels)
-        monitor.extend(channel.monitor_pcm64 for channel in channels)
+        sine.extend(channel.sine_pcm64 for channel in channels)
         quads.append(
             PhaseQuad(
                 index=q,
@@ -227,7 +253,7 @@ def hydrate_words(words: Sequence[int]) -> AudioHydration:
         pcm64_bits=normalized,
         quads=tuple(quads),
         pilot_pcm64_bits=normalized[PILOT_CELL],
-        monitor_pcm64=tuple(monitor),
+        sine_pcm64=tuple(sine),
     )
 
 
@@ -267,7 +293,7 @@ def exact_serialization_work_model(frame_count: int = 1) -> dict[str, int | bool
 
 __all__ = [
     "RAW_BITS", "RAW_BYTES", "CELLS", "WORD_BITS", "PHASE_QUADS",
-    "PHASE_CHANNELS", "PILOT_CELL", "H36", "PCM64_NOISE_FLOOR",
+    "PHASE_CHANNELS", "PILOT_CELL", "H36", "SINE_Q62_SCALE", "SINE_Q62", "PCM64_NOISE_FLOOR",
     "PCM64_ZERO_CROSSING", "PCM64_SATURATION_CEILING", "bitstring_to_words",
     "words_to_bitstring", "words_to_le_bytes", "le_bytes_to_words",
     "fold_word72", "octonion_channels_from_words", "PhaseChannel",

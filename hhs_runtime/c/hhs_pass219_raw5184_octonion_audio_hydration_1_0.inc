@@ -2,6 +2,45 @@
 
 #include <string.h>
 
+static const int64_t HHS_P219_AUDIO5184_SINE_Q62[HHS_EXACT_HASH72_LEN] = {
+    INT64_C(0), INT64_C(401934920255029411), INT64_C(800810873071977681),
+    INT64_C(1193592171602022505), INT64_C(1577289512995517789),
+    INT64_C(1948982728801669864), INT64_C(2305843009213693952),
+    INT64_C(2645154432019525852), INT64_C(2964334632409774423),
+    INT64_C(3260954456333195553), INT64_C(3532756447825785444),
+    INT64_C(3777672029613755863), INT64_C(3993837246235628775),
+    INT64_C(4179606949868785275), INT64_C(4333567320897763126),
+    INT64_C(4454546627935218059), INT64_C(4541624145405292212),
+    INT64_C(4594137160821195716), INT64_C(4611686018427387904),
+    INT64_C(4594137160821195716), INT64_C(4541624145405292212),
+    INT64_C(4454546627935218059), INT64_C(4333567320897763126),
+    INT64_C(4179606949868785275), INT64_C(3993837246235628775),
+    INT64_C(3777672029613755863), INT64_C(3532756447825785444),
+    INT64_C(3260954456333195553), INT64_C(2964334632409774423),
+    INT64_C(2645154432019525852), INT64_C(2305843009213693952),
+    INT64_C(1948982728801669864), INT64_C(1577289512995517789),
+    INT64_C(1193592171602022505), INT64_C(800810873071977681),
+    INT64_C(401934920255029411), INT64_C(0),
+    -INT64_C(401934920255029411), -INT64_C(800810873071977681),
+    -INT64_C(1193592171602022505), -INT64_C(1577289512995517789),
+    -INT64_C(1948982728801669864), -INT64_C(2305843009213693952),
+    -INT64_C(2645154432019525852), -INT64_C(2964334632409774423),
+    -INT64_C(3260954456333195553), -INT64_C(3532756447825785444),
+    -INT64_C(3777672029613755863), -INT64_C(3993837246235628775),
+    -INT64_C(4179606949868785275), -INT64_C(4333567320897763126),
+    -INT64_C(4454546627935218059), -INT64_C(4541624145405292212),
+    -INT64_C(4594137160821195716), -INT64_C(4611686018427387904),
+    -INT64_C(4594137160821195716), -INT64_C(4541624145405292212),
+    -INT64_C(4454546627935218059), -INT64_C(4333567320897763126),
+    -INT64_C(4179606949868785275), -INT64_C(3993837246235628775),
+    -INT64_C(3777672029613755863), -INT64_C(3532756447825785444),
+    -INT64_C(3260954456333195553), -INT64_C(2964334632409774423),
+    -INT64_C(2645154432019525852), -INT64_C(2305843009213693952),
+    -INT64_C(1948982728801669864), -INT64_C(1577289512995517789),
+    -INT64_C(1193592171602022505), -INT64_C(800810873071977681),
+    -INT64_C(401934920255029411)
+};
+
 static uint32_t hhs_p219_audio5184_version_word(void) {
     return (HHS_EXACT_PASS219_AUDIO5184_VERSION_MAJOR << 16U) |
            (HHS_EXACT_PASS219_AUDIO5184_VERSION_MINOR << 8U) |
@@ -55,7 +94,7 @@ static HHSExactStatus hhs_p219_audio5184_phase_channel(
         (uint8_t)(phase / HHS_EXACT_PASS219_AUDIO5184_H36);
     out->signed_phase = (int8_t)signed_phase;
     out->basis = basis;
-    out->monitor_pcm64 = (int64_t)signed_phase * HHS_EXACT_PASS219_AUDIO5184_MONITOR_SCALE;
+    out->sine_pcm64 = HHS_P219_AUDIO5184_SINE_Q62[phase];
 
     if ((uint8_t)(
             out->resonance36 +
@@ -167,6 +206,18 @@ static HHSExactStatus hhs_p219_audio5184_stereo_ternary_validate(
 
 uint32_t hhs_exact_pass219_audio5184_version(void) {
     return hhs_p219_audio5184_version_word();
+}
+
+HHSExactStatus hhs_exact_pass219_audio5184_sine_pcm64(
+    uint8_t phase72,
+    int64_t *out_sample
+) {
+    if (out_sample == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (phase72 >= HHS_EXACT_HASH72_LEN)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    *out_sample = HHS_P219_AUDIO5184_SINE_Q62[phase72];
+    return HHS_EXACT_STATUS_OK;
 }
 
 HHSExactStatus hhs_exact_pass219_audio5184_bitstring_import(
@@ -310,8 +361,8 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
     out_hydration->raw_bytes = HHS_EXACT_PASS219_AUDIO5184_RAW_BYTES;
     out_hydration->pcm_samples = HHS_EXACT_PASS219_AUDIO5184_PCM_SAMPLES;
     out_hydration->phase_quad_count = HHS_EXACT_PASS219_AUDIO5184_PHASE_QUADS;
-    out_hydration->monitor_sample_count =
-        HHS_EXACT_PASS219_AUDIO5184_MONITOR_SAMPLES;
+    out_hydration->sine_sample_count =
+        HHS_EXACT_PASS219_AUDIO5184_SINE_SAMPLES;
     out_hydration->pilot_cell = HHS_EXACT_PASS219_AUDIO5184_PILOT_CELL;
     out_hydration->pilot_pcm64_bits =
         frame->words[HHS_EXACT_PASS219_AUDIO5184_PILOT_CELL];
@@ -349,9 +400,9 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
                 basis, phase, &quad->channels[basis]);
             if (status != HHS_EXACT_STATUS_OK)
                 return status;
-            out_hydration->monitor_pcm64[
+            out_hydration->sine_pcm64[
                 q * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS + basis] =
-                quad->channels[basis].monitor_pcm64;
+                quad->channels[basis].sine_pcm64;
         }
         status = hhs_p219_audio5184_stereo_ternary(&quad->octonion, &quad->stereo_ternary);
         if (status != HHS_EXACT_STATUS_OK)
@@ -396,7 +447,7 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydration_validate(
         hydration->raw_bytes != expected.raw_bytes ||
         hydration->pcm_samples != expected.pcm_samples ||
         hydration->phase_quad_count != expected.phase_quad_count ||
-        hydration->monitor_sample_count != expected.monitor_sample_count ||
+        hydration->sine_sample_count != expected.sine_sample_count ||
         hydration->pilot_cell != expected.pilot_cell ||
         hydration->pilot_pcm64_bits != expected.pilot_pcm64_bits ||
         hydration->exact_bit_roundtrip != 1U ||
@@ -446,10 +497,10 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydration_validate(
                 a->channels[basis].half_turn != b->channels[basis].half_turn ||
                 a->channels[basis].signed_phase != b->channels[basis].signed_phase ||
                 a->channels[basis].basis != b->channels[basis].basis ||
-                a->channels[basis].monitor_pcm64 != b->channels[basis].monitor_pcm64 ||
-                hydration->monitor_pcm64[
+                a->channels[basis].sine_pcm64 != b->channels[basis].sine_pcm64 ||
+                hydration->sine_pcm64[
                     q * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS + basis] !=
-                    expected.monitor_pcm64[
+                    expected.sine_pcm64[
                     q * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS + basis])
                 return HHS_EXACT_STATUS_INVARIANT_FAILURE;
         }

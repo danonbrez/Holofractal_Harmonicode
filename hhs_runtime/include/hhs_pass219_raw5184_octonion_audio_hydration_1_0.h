@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #define HHS_EXACT_PASS219_AUDIO5184_VERSION_MAJOR 1U
-#define HHS_EXACT_PASS219_AUDIO5184_VERSION_MINOR 1U
+#define HHS_EXACT_PASS219_AUDIO5184_VERSION_MINOR 2U
 #define HHS_EXACT_PASS219_AUDIO5184_VERSION_PATCH 0U
 
 #define HHS_EXACT_PASS219_AUDIO5184_RAW_BITS HHS_EXACT_VM81_FRAME_BITS
@@ -18,9 +18,9 @@ extern "C" {
 #define HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS 8U
 #define HHS_EXACT_PASS219_AUDIO5184_PILOT_CELL 80U
 #define HHS_EXACT_PASS219_AUDIO5184_H36 36U
-#define HHS_EXACT_PASS219_AUDIO5184_MONITOR_SCALE INT64_C(72057594037927936)
-#define HHS_EXACT_PASS219_AUDIO5184_ROLE_SCALE INT64_C(281474976710656)
-#define HHS_EXACT_PASS219_AUDIO5184_MONITOR_SAMPLES     (HHS_EXACT_PASS219_AUDIO5184_PHASE_QUADS * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS)
+#define HHS_EXACT_PASS219_AUDIO5184_SINE_Q62_SCALE INT64_C(4611686018427387904)
+#define HHS_EXACT_PASS219_AUDIO5184_SINE_SAMPLES \
+    (HHS_EXACT_PASS219_AUDIO5184_PHASE_QUADS * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS)
 
 typedef struct HHSExactPass219Audio5184PCM64V1 {
     uint32_t struct_size;
@@ -45,7 +45,7 @@ typedef struct HHSExactPass219Audio5184PhaseChannelV1 {
     int8_t signed_phase;
     uint8_t basis;
     uint8_t reserved0[3];
-    int64_t monitor_pcm64;
+    int64_t sine_pcm64;
 } HHSExactPass219Audio5184PhaseChannelV1;
 
 typedef struct HHSExactPass219Audio5184StereoTernaryV1 {
@@ -93,7 +93,7 @@ typedef struct HHSExactPass219Audio5184HydrationV1 {
     uint32_t raw_bytes;
     uint32_t pcm_samples;
     uint32_t phase_quad_count;
-    uint32_t monitor_sample_count;
+    uint32_t sine_sample_count;
     uint8_t pilot_cell;
     uint8_t exact_bit_roundtrip;
     uint8_t exact_phase_reconstruction;
@@ -112,7 +112,7 @@ typedef struct HHSExactPass219Audio5184HydrationV1 {
     uint64_t pilot_pcm64_bits;
     HHSExactPass219Audio5184PhaseQuadV1
         quads[HHS_EXACT_PASS219_AUDIO5184_PHASE_QUADS];
-    int64_t monitor_pcm64[HHS_EXACT_PASS219_AUDIO5184_MONITOR_SAMPLES];
+    int64_t sine_pcm64[HHS_EXACT_PASS219_AUDIO5184_SINE_SAMPLES];
 } HHSExactPass219Audio5184HydrationV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_audio5184_version(void);
@@ -151,6 +151,11 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_audio5184_frame_to_pcm64(
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_audio5184_pcm64_to_frame(
     const HHSExactPass219Audio5184PCM64V1 *pcm,
     HHSExactVM81Frame *out_frame
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_audio5184_sine_pcm64(
+    uint8_t phase72,
+    int64_t *out_sample
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
