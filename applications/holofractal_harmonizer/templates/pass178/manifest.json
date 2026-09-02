@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_178_PHYSICS_STUDIO_TEMPLATE_V1",
+  "title": "Exact Physics Studio",
+  "api": "/api/runtime/pass178-physics",
+  "studio": "/physics-studio/",
+  "authority": "INHERITED_VM81",
+  "projections": [
+    "THREEJS_READ_ONLY",
+    "CANVAS_DIAGNOSTIC"
+  ],
+  "terminal_template": false
+}
