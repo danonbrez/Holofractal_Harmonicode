@@ -1,0 +1,220 @@
+name: Pass 219 I150 Pass 176 Frozen IDE Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration150-pass176-frozen-ide-reconciliation
+    paths:
+      - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
+      - 'evidence/pass176/PASS_176_ACTIVATION_RECORD.json'
+      - 'applications/holofractal_harmonizer/src/pass176-*'
+      - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
+      - 'applications/holofractal_harmonizer/src/integrated-assistant.mjs'
+      - 'applications/holofractal_harmonizer/src/application-templates-runtime.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass176-*'
+      - 'applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py'
+      - 'hhs_verification/pass176/**'
+      - 'tests/test_pass176_frozen_ide_stabilization.py'
+      - '.github/workflows/pass219-i150-pass176-frozen-ide-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i150-pass176-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass176-i150:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install bounded runtime and browser dependencies
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             playwright             pytest
+
+      - name: Build inherited exact runtime authority
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify historical Pass 176 merge ancestry
+        run: |
+          git merge-base --is-ancestor 4e4c073730dee1f66f91e28e533537c8f35fbe43 HEAD
+          git merge-base --is-ancestor 02cd6953cda4d6be8d586a9c334c5933e7b46dcb HEAD
+          grep -F 'HHS-P176-FPMIDE-SPR-HSI' HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md
+
+      - name: Compile Pass 176 source surfaces
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass176-stability-core.mjs
+          node --check applications/holofractal_harmonizer/src/pass176-stability.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-runtime.mjs
+          node --check applications/holofractal_harmonizer/src/integrated-assistant.mjs
+          node --check applications/holofractal_harmonizer/src/application-templates-runtime.mjs
+          python -m py_compile             applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py             hhs_verification/pass176/verify.py             tests/test_pass176_frozen_ide_stabilization.py
+
+      - name: Execute deterministic Pass 176 core tests
+        working-directory: applications/holofractal_harmonizer
+        run: |
+          timeout 300s node --test tests/pass176-stability.test.mjs
+
+      - name: Execute dependency-scoped Pass 176 Python validation
+        run: |
+          timeout 600s python -m pytest -q             tests/test_pass176_frozen_ide_stabilization.py             tests/test_pass175_terminal_completion.py             tests/test_hhs_production_public_app_v1.py
+
+      - name: Install bounded Chromium runtime
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Browser and mobile terminal acceptance
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          HHS_LITERT_LM_BACKEND: auto
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '5'
+          HHS_COGNITION_AUTO_TICK: '0'
+        run: |
+          set -euo pipefail
+          python -m uvicorn hhs_backend.application_ide_server:app             --host 127.0.0.1 --port 8765 --workers 1 --log-level info             > /tmp/hhs-pass176-i150-server.log 2>&1 &
+          SERVER_PID=$!
+          cleanup() {
+            kill "$SERVER_PID" 2>/dev/null || true
+            wait "$SERVER_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          ready=0
+          for attempt in $(seq 1 60); do
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              cat /tmp/hhs-pass176-i150-server.log
+              exit 1
+            fi
+            if curl --connect-timeout 1 --max-time 5 -fsS               http://127.0.0.1:8765/api/product/health               > /tmp/hhs-pass176-i150-health.json; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/hhs-pass176-i150-server.log
+            exit 1
+          fi
+          curl --connect-timeout 1 --max-time 10 -fsS             http://127.0.0.1:8765/ > /tmp/hhs-pass176-i150-root.html
+          grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-i150-root.html
+          curl --connect-timeout 1 --max-time 15 -fsS             http://127.0.0.1:8765/api/runtime/repository/status             > /tmp/hhs-pass176-i150-repository-status.json
+          curl --connect-timeout 1 --max-time 15 -fsS             http://127.0.0.1:8765/api/v1/pass175/status             > /tmp/hhs-pass176-i150-pass175-status.json
+          timeout 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+
+      - name: Generate current terminal receipt
+        run: |
+          timeout 120s python hhs_verification/pass176/verify.py             --repository-root .             --output evidence/pass176/generated/PASS_176_I150_TERMINAL_COMPLETION_RECEIPT.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("evidence/pass176/generated/PASS_176_I150_TERMINAL_COMPLETION_RECEIPT.json")
+          payload=json.loads(p.read_text())
+          assert payload["terminal_pass176_completion"] is True
+          assert all(payload["checks"].values())
+          assert payload["authority"]["frontend_is_canonical_authority"] is False
+          assert payload["authority"]["frontend_non_authority_verified"] is True
+          assert payload["authority"]["singleton_vm81_admission_preserved"] is True
+          assert payload["authority"]["hash72_commit_streams"] == 1
+          print({"classification":payload["classification"],"receipt_sha256":payload["receipt_sha256"]})
+          PY
+
+      - name: Preserve global cumulative policy
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Emit I150 pre-cumulative receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass176/i150
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+
+          terminal_path=Path("evidence/pass176/generated/PASS_176_I150_TERMINAL_COMPLETION_RECEIPT.json")
+          terminal=json.loads(terminal_path.read_text())
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          payload={
+              "schema":"PASS_219_I150_PASS176_PRE_CUMULATIVE_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration150-pass176-frozen-ide-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"HHS_PASS176_I150_CURRENT_TERMINAL_REVALIDATED",
+              "historical_merge":"4e4c073730dee1f66f91e28e533537c8f35fbe43",
+              "terminal_receipt_sha256":terminal["receipt_sha256"],
+              "terminal_pass176_completion":terminal["terminal_pass176_completion"],
+              "authority":{
+                  "frontend_canonical_authority":False,
+                  "singleton_vm81_admission_preserved":True,
+                  "single_hash72_commit_stream_observed":True,
+                  "independent_vm81_authority":False,
+                  "independent_hash72_commit_authority":False,
+                  "hash216_mutation_authority":False,
+              },
+              "closure":{
+                  "pre_cumulative_validation_green":True,
+                  "cumulative_binding_added":False,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+              },
+          }
+          receipt=make_hash72_witness("pass176:i150:pre-cumulative",payload,width=72).digest
+          lanes=[
+              make_hash72_witness("pass176:i150:archive:previous",{"head":head,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass176:i150:archive:change",{"tree":tree,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass176:i150:archive:receipt",payload,width=72).digest,
+          ]
+          payload["receipt_hash72"]=receipt
+          payload["archive_hash216"]="".join(lanes)
+          out=Path("evidence/pass176/i150/PASS_219_I150_PASS176_PRE_CUMULATIVE_RECEIPT.json")
+          out.write_text(json.dumps(payload,sort_keys=True,indent=2)+"\n")
+          print(json.dumps({"classification":payload["classification"],"head":head,"receipt_hash72":receipt},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i150-pass176-pre-cumulative
+          path: |
+            evidence/pass176/i150/PASS_219_I150_PASS176_PRE_CUMULATIVE_RECEIPT.json
+            evidence/pass176/generated/PASS_176_I150_TERMINAL_COMPLETION_RECEIPT.json
+            applications/holofractal_harmonizer/evidence/pass176/browser-smoke.json
+            applications/holofractal_harmonizer/evidence/pass176/pass176-frozen-ide.png
+          if-no-files-found: warn
+          retention-days: 30
