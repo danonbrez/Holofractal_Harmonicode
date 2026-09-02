@@ -305,12 +305,6 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
             return status;
         quad->octonion = surface.state;
 
-        if (hhs_p219_audio5184_stereo_ternary_validate(&a->stereo_ternary) !=
-                HHS_EXACT_STATUS_OK ||
-            memcmp(&a->stereo_ternary, &b->stereo_ternary,
-                   sizeof(a->stereo_ternary)) != 0)
-            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-
         for (basis = 0U; basis < HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS; ++basis) {
             const uint8_t phase = hhs_p219_audio5184_phase_at(
                 &quad->octonion, basis);
@@ -401,6 +395,12 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydration_validate(
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
         if (memcmp(&a->octonion, &b->octonion, sizeof(a->octonion)) != 0)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+        if (hhs_p219_audio5184_stereo_ternary_validate(&a->stereo_ternary) !=
+                HHS_EXACT_STATUS_OK ||
+            memcmp(&a->stereo_ternary, &b->stereo_ternary,
+                   sizeof(a->stereo_ternary)) != 0)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
         for (basis = 0U; basis < HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS; ++basis) {
