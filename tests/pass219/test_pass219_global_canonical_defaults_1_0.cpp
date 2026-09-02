@@ -22,11 +22,12 @@ int main(){
  using P180=CumulativePassGlobalDefaults<180>;
  using P179=CumulativePassGlobalDefaults<179>;
  using P178=CumulativePassGlobalDefaults<178>;
+ using P177=CumulativePassGlobalDefaults<177>;
  static_assert(P218::global_defaults_required&&P200C::global_defaults_required&&P186::global_defaults_required);
- static_assert(P185::global_defaults_required&&P184::global_defaults_required&&P183::global_defaults_required&&P182::global_defaults_required&&P181::global_defaults_required&&P180::global_defaults_required&&P179::global_defaults_required&&P178::global_defaults_required);
- static_assert(P178::repair_forward_on_gap&&!P178::standalone_application&&!P178::optional_cross_cutting_defaults);
- assert(GlobalCanonicalDefaults::wired_floor_pass()==178U);
- assert(GlobalCanonicalDefaults::registered_binding_count()==43U);
+ static_assert(P185::global_defaults_required&&P184::global_defaults_required&&P183::global_defaults_required&&P182::global_defaults_required&&P181::global_defaults_required&&P180::global_defaults_required&&P179::global_defaults_required&&P178::global_defaults_required&&P177::global_defaults_required);
+ static_assert(P177::repair_forward_on_gap&&!P177::standalone_application&&!P177::optional_cross_cutting_defaults);
+ assert(GlobalCanonicalDefaults::wired_floor_pass()==177U);
+ assert(GlobalCanonicalDefaults::registered_binding_count()==44U);
  assert(GlobalCanonicalDefaults::validate_latency_policy()==HHS_EXACT_STATUS_OK);
  assert(GlobalCanonicalDefaults::validate()==HHS_EXACT_STATUS_OK);
  return 0;
