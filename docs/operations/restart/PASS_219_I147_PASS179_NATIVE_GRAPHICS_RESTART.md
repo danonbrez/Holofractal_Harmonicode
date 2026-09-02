@@ -12,7 +12,7 @@
 - merge status: **UNMERGED**
 - authoritative-main verification: **NOT PERFORMED**
 - terminal Pass 179 completion: **FALSE**
-- cumulative Pass 179 binding: **NOT YET ADMITTED**
+- cumulative Pass 179 binding: **ADDED — NONTERMINAL**
 
 ## Census result
 
@@ -99,9 +99,7 @@ Workflow run:
 
 `33619199383`
 
-Current recorded state at checkpoint creation:
-
-`QUEUED_EXTERNAL_CI`
+Pre-cumulative run `33621928309` on repaired head `ff149faeadf3e31764138a2316052a013b28599c`: **SUCCESS**
 
 Routine immediate push failures from unrelated Pass 205/166/174/acceptance/relay workflows are explicitly outside the I147 dependency scope and do not classify the Pass 179 implementation.
 
@@ -111,3 +109,36 @@ The I147 thread must not remain blocked on this queue. Once the exact run execut
 - if a dependency-scoped stage fails, repair only the impacted Pass 179 surface and rerun that bounded gate;
 - do not investigate unrelated relay noise;
 - do not claim terminal Pass 179 completion.
+
+
+## Pre-cumulative green evidence
+
+- first run: `33619199383` — failed only because the float-rejection test expected a stale error string;
+- repair commit: `ff149faeadf3e31764138a2316052a013b28599c`;
+- repaired run: `33621928309` — **SUCCESS**;
+- Python conformance: `13 passed, 1 warning`;
+- native C11 build/conformance: green;
+- HTTP route surface: green;
+- deterministic Lattice Run PNG SHA-256: `0cb4304151c2b1148f2b3d9e2249df4224c7ed869abc6e4a8a8671f63559617c`;
+- nucleus receipt Hash72: `wzRsRYe<n1*<EHPbP0tf*4h*<80J3CpwAZA43*Ij7an(/pRSWE5mP13BEOiYS2SWtH1mkhQy`;
+- artifact: `9843248033`, SHA-256 `f52e626bd67f6243d2a158833d2f4ea5e33e282400a0dbc033580e3f8a279d6e`;
+- repository receipt-index blob: `b6c7c9b42d3892de6ddaff354514ceafaa695b8e`.
+
+## Cumulative binding state
+
+I147 now adds:
+
+- `hhs_pass219_inherited_pass179_1_47.h/.hpp/.inc`;
+- `hhs_exact_pass219_bind_pass179_native_graphics`;
+- aggregate exact-ABI exposure after Pass 180;
+- global-default floor `179`;
+- global binding count `42`;
+- executable I147 Pass 179 cumulative membrane.
+
+The binding is deliberately nonterminal:
+
+- `terminal_completion_claimed = 0`;
+- `repair_forward_required = 1`;
+- `remaining_terminal_category_count = 10`.
+
+The authoritative next gate is the post-binding I147 workflow. No merge/main/deployment claim is made by this record.
