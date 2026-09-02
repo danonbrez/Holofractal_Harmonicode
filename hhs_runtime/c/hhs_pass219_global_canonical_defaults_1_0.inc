@@ -44,7 +44,8 @@ static const HHSExactPass219CumulativeBindingKeyV1 HHS_PASS219_GLOBAL_DEFAULT_BI
     { 182U, 0U, 0U },
     { 181U, 0U, 0U },
     { 180U, 0U, 0U },
-    { 179U, 0U, 0U }
+    { 179U, 0U, 0U },
+    { 178U, 0U, 0U }
 };
 
 _Static_assert(
@@ -153,9 +154,7 @@ HHSExactStatus hhs_exact_pass219_global_canonical_defaults_validate(void) {
     }
 
     for (i = 0U; i < hhs_exact_pass219_global_canonical_defaults_binding_count(); ++i) {
-        HHSExactPass219CumulativeBindingKeyV1 key =
-            HHS_PASS219_GLOBAL_DEFAULT_BINDINGS[i];
-
+        HHSExactPass219CumulativeBindingKeyV1 key = HHS_PASS219_GLOBAL_DEFAULT_BINDINGS[i];
         if (key.pass_number < HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_FLOOR ||
             key.pass_number > HHS_EXACT_PASS219_GLOBAL_DEFAULT_WIRED_CEILING ||
             key.variant > HHS_EXACT_PASS219_BINDING_VARIANT_C) {
