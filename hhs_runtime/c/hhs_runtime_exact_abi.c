@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 178 inherited exact-physics binding, preserving current-main global latency and H36 policy surfaces. */
+/* Additive exact ABI aggregate through Pass 177 inherited creation-workflow binding, preserving current-main global latency and H36 policy surfaces. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -52,6 +52,7 @@
 #include "hhs_pass219_inherited_pass180_1_46.inc"
 #include "hhs_pass219_inherited_pass179_1_47.inc"
 #include "hhs_pass219_inherited_pass178_1_48.inc"
+#include "hhs_pass219_inherited_pass177_1_49.inc"
 #include "hhs_pass219_global_canonical_defaults_1_0.inc"
 #include "hhs_pass219_multimodal_optimization_generalization_1_0.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
