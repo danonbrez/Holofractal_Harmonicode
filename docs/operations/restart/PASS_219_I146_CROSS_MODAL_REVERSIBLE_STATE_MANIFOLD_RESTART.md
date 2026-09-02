@@ -166,3 +166,66 @@ Dedicated workflow:
 - observed status at this checkpoint: `QUEUED`
 
 Status: `TESTS/BENCHMARK AUTHORED — EXECUTED RESULT PENDING`.
+
+
+## Milestone 3 — executed validation and repair-forward closure
+
+Repair history:
+
+1. run `33638544637` failed at cumulative exact-ABI compilation because the API-authored aggregate include edit contained a literal `\\n` token rather than a physical newline;
+2. commit `1859f41905269156d798713dee9e87b6d8adcf42` repaired the exact ABI integration and made the cross-modal guard explicit in both mandatory data/ML registration and the execution composer;
+3. run `33639088523` then passed the new ABI, C, C++, branch/mapping, benchmark, and `make c-abi` stages; its only failure was the inherited I146 script being invoked with pytest, which correctly returned exit code 5 because that file exposes `main()` rather than pytest test functions;
+4. commit `ad51c2c50f4f05c8ac8482bd920decc5c8343b4c` changed that preservation stage to the same direct Python invocation used by the authoritative I146 workflow.
+
+Terminal dependency-scoped validation:
+
+- workflow: `Pass 219 Cross-Modal Reversible State Manifold`
+- run: `33639218229`
+- validated head: `ad51c2c50f4f05c8ac8482bd920decc5c8343b4c`
+- result: `SUCCESS`
+- exact contract parse: `PASS`
+- no-float exact-ABI authority scan: `PASS`
+- cumulative exact ABI compile: `PASS`
+- C11 conformance: `PASS`
+- C++17 conformance: `PASS`
+- deterministic branch/replay/modality tests: `PASS`
+- mandatory data/ML + execution-composer guard inheritance: `PASS`
+- exact logical-work benchmark: `PASS`
+- `make c-abi` / shared library boundary: `PASS`
+- inherited I146/Pass180 preservation script: `PASS`
+- artifact upload: `PASS`
+
+Artifact:
+
+- id: `9850097988`
+- name: `pass219-cross-modal-reversible-state`
+- digest: `sha256:4636d25de3d662d857607f5e98bccd117e273488d5d14266aa82682fe57279e5`
+
+Versioned benchmark recomputation across its three calibrated cases:
+
+- aggregate baseline logical work: `1,384,512`
+- aggregate selected logical work: `32,228`
+- aggregate exact logical work saved: `1,352,284`
+- integer reduction floor: `976/1000`
+- authority-check reduction: `0`
+- canonical mutation authority changed: `NO`
+
+Current authoritative main observed at validation seal:
+
+- `75396e1bbf2fe95920311a5f8005b6ac1cde4cce`
+
+## Milestone status after validation seal
+
+- algebra/symbolic invariant formalization: `COMPLETE`
+- exact C/C++ runtime membrane: `COMPLETE`
+- deterministic branch/reversible modality mapping runtime: `COMPLETE`
+- mandatory data/ML + execution-composer binding: `COMPLETE`
+- exact benchmark/optimization gate: `COMPLETE`
+- formal documentation/whitepaper: `COMPLETE`
+- dependency-scoped executed validation: `GREEN`
+- current-main reconciliation: `NEXT`
+- PR/merge: `PENDING`
+
+## Exact restart action
+
+Compare this sealed branch head with current `main`. If `main` is unchanged or ancestor-compatible, open the integration PR. If `main` advanced, reconcile only the changed dependency frontier, rerun the dedicated gate, then merge and verify authoritative `main`.
