@@ -1,4 +1,5 @@
 name: Pass 219 I148 Pass 178 Cumulative Binding
+# I148 post-binding exact-head validation
 
 on:
   push:
