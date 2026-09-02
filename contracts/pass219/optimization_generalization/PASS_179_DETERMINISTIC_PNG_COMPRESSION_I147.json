@@ -1,0 +1,136 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/pass179/software.py"
+  ],
+  "optimization": {
+    "optimization_id": "PASS179_DETERMINISTIC_PNG_DEFLATE_COMPRESSION_I147",
+    "compatible_object_classes": [
+      "deterministic_graphics_capture"
+    ],
+    "required_operations": [
+      "PNG_ENCODE"
+    ],
+    "required_port_types": [
+      "HHS_PASS179_RGBA16_FRAME_V1",
+      "PNG_BYTES"
+    ],
+    "correctness_gate": "BYTE_DETERMINISTIC_RGBA16_TO_PNG_WITH_NO_CANONICAL_MUTATION_AUTHORITY",
+    "benefit_gate": "COMPRESSED_PNG_EGRESS_SMALLER_THAN_RAW_RGBA16_WHILE_PRESERVING_DETERMINISTIC_FRAME_IDENTITY"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "deterministic_graphics_capture",
+    "operations": [
+      "PNG_ENCODE"
+    ],
+    "inputs": [
+      {
+        "name": "rgba16_frame",
+        "type": "HHS_PASS179_RGBA16_FRAME_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "png_bytes",
+        "type": "PNG_BYTES"
+      }
+    ],
+    "runtime_authority": "PROJECTION_ONLY_NO_CANONICAL_MUTATION_AUTHORITY",
+    "exactness_domain": "EXACT_INTEGER_TO_DETERMINISTIC_MEDIA_PROJECTION",
+    "state_schema": {
+      "schema": "HHS_PASS_179_SOFTWARE_FRAME_V1"
+    },
+    "logical_object_id": "pass179-software-reference-png-capture",
+    "modality_set": [
+      "IMAGE_GRAPHICS"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "deterministic_graphics_capture",
+      "operations": [
+        "PNG_ENCODE"
+      ],
+      "inputs": [
+        {
+          "name": "rgba16_frame",
+          "type": "HHS_PASS179_RGBA16_FRAME_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "png_bytes",
+          "type": "PNG_BYTES"
+        }
+      ],
+      "runtime_authority": "PROJECTION_ONLY_NO_CANONICAL_MUTATION_AUTHORITY",
+      "exactness_domain": "EXACT_INTEGER_TO_DETERMINISTIC_MEDIA_PROJECTION",
+      "state_schema": {
+        "schema": "HHS_PASS_179_SOFTWARE_FRAME_V1"
+      },
+      "logical_object_id": "pass179-compatible-rgba16-image-capture",
+      "modality_set": [
+        "IMAGE_GRAPHICS",
+        "UI_CAPTURE",
+        "SCIENTIFIC_VISUALIZATION"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "deterministic_graphics_capture",
+      "operations": [
+        "PNG_ENCODE"
+      ],
+      "inputs": [
+        {
+          "name": "rgba16_frame",
+          "type": "HHS_PASS179_RGBA16_FRAME_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "png_bytes",
+          "type": "PNG_BYTES"
+        }
+      ],
+      "runtime_authority": "PROJECTION_ONLY_NO_CANONICAL_MUTATION_AUTHORITY",
+      "exactness_domain": "EXACT_INTEGER_TO_DETERMINISTIC_MEDIA_PROJECTION",
+      "state_schema": {
+        "schema": "HHS_PASS_179_SOFTWARE_FRAME_V1"
+      },
+      "logical_object_id": "pass179-compatible-frame-sequence-png-egress-unvalidated",
+      "modality_set": [
+        "VIDEO_ANIMATION",
+        "FRAME_SEQUENCE"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "pass179-compatible-rgba16-image-capture",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "validation_run": 33621928309,
+      "deterministic_frame_sha256": "c03778d14b94a180a2bd4c96748282fa7dad9408530f30497c02f212aa7afa1f",
+      "deterministic_png_sha256": "0cb4304151c2b1148f2b3d9e2249df4224c7ed869abc6e4a8a8671f63559617c",
+      "raw_rgba16_bytes": 518400,
+      "png_bytes": 824,
+      "canonical_mutation_authority": false,
+      "independent_vm81_authority": false,
+      "independent_hash72_commit_authority": false
+    }
+  ],
+  "declared_generalize_required": [
+    "pass179-compatible-rgba16-image-capture"
+  ],
+  "policy": {
+    "automatic_compatible_target_discovery": true,
+    "local_only": false,
+    "no_new_authority": true,
+    "frame_sequence_target_requires_executed_validation": true
+  }
+}
