@@ -1,0 +1,66 @@
+{
+  "schema": "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1",
+  "version": "1.0.0",
+  "iteration": "I147",
+  "classification": "ADDITIVE_EXACT_SELF_REFERENCE_CLOSURE_MEMBRANE",
+  "base": "main@717693cca81aaa257c95fe4235101b79258f9951",
+  "object_level": {
+    "map": "F(p)=count(option_value==p)/option_count",
+    "canonical_options": ["1/4", "0", "1/2", "1/4"],
+    "canonical_seed_index": 1,
+    "fixed_point_valid_option_count": 0,
+    "trajectory": ["0", "1/4", "1/2", "1/4"],
+    "preperiod": 1,
+    "period": 2,
+    "b_zero_object_level_correct": false
+  },
+  "meta_level": {
+    "enabled_only_after_object_fixed_point_census": true,
+    "empty_object_valid_set": true,
+    "probability_of_selecting_object_level_valid_option": "0",
+    "may_promote_zero_back_to_object_option_truth": false
+  },
+  "trinary": {
+    "invalid_fixed_point_candidate": -1,
+    "typed_meta_closure": 0,
+    "active_periodic_motion": 1
+  },
+  "boundedness": {
+    "finite_visit_bound": "option_count+2",
+    "unbounded_recursion_permitted": false,
+    "ordered_cycle_witness_required": true,
+    "continuous_interpolation_implied": false
+  },
+  "h36": {
+    "a2": 1,
+    "b2": 2,
+    "c2": 3,
+    "equation_left": "(b^6*c^4)/(c^2-a^2)",
+    "equation_right": "(a^2+b^2)^2*b^4",
+    "exact_value": 36,
+    "manifold_base": 5184,
+    "manifold_power": 4,
+    "manifold_cardinality": 722204136308736,
+    "finite_cardinality_does_not_authorize_allocation": true
+  },
+  "authority": {
+    "vm81_mutation": "INHERITED_SINGLETON_ONLY",
+    "hash72": "INHERITED_ONLY",
+    "hash216": "INHERITED_ONLY",
+    "candidate_mutation_authority": false,
+    "floating_point_authority": false
+  },
+  "acceptance": [
+    "no object-level fixed point for canonical 25/0/50/25 vector",
+    "exact transient zero then period-2 1/4<->1/2 orbit",
+    "meta-level zero emitted only for empty object-level valid set",
+    "meta zero cannot promote option B to object-level correctness",
+    "finite visit bound enforced",
+    "ordered trajectory tampering rejected",
+    "Boolean negation temporal semantics yields period-2 toggle",
+    "H36 exact identity equals 36 on both forms",
+    "5184^4 exact finite cardinality equals 722204136308736",
+    "no floating-point canonical authority",
+    "no new VM81 Hash72 Hash216 authority"
+  ]
+}
