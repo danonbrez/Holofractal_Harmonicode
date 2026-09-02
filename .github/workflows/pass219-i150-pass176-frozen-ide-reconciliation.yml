@@ -8,6 +8,7 @@ on:
       - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
       - 'evidence/pass176/PASS_176_ACTIVATION_RECORD.json'
       - 'applications/holofractal_harmonizer/src/pass176-*'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'applications/holofractal_harmonizer/src/public-boot.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
