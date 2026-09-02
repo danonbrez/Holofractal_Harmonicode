@@ -5,10 +5,6 @@ on:
     branches:
       - agent/pass219-iteration146-pass180-application-factory-reconciliation
     paths:
-      - 'docs/pass180/**'
-      - 'docs/pass219/PASS_219_I146_INHERITED_PASS180_APPLICATION_FACTORY_BINDING.md'
-      - 'docs/operations/restart/PASS_219_I146_PASS180_APPLICATION_FACTORY_RESTART.md'
-      - 'docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md'
       - 'hhs_backend/runtime/hhs_application_factory_v1.py'
       - 'hhs_backend/api/application_factory_routes.py'
       - 'hhs_backend/visual_server.py'
@@ -95,6 +91,13 @@ jobs:
             hhs_backend/visual_server.py \
             hhs_runtime/hhs_pass219_cumulative_pass_membrane_i146_pass180.py \
             tests/test_pass180_application_factory.py
+
+      - name: Build exact runtime shared library
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E 'hhs_exact_abi_validate|hhs_exact_pass219_inherited_pass180_version'
 
       - name: Run complete Pass 180 application-factory suite
         run: |
