@@ -32,6 +32,7 @@ from hhs_backend.api.pass196_integration_routes import router as pass196_integra
 from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
 from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
 from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
+from hhs_backend.api.pass179_graphics_routes import router as pass179_graphics_router
 from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_optimization_router
 from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
 from hhs_backend.api.pass200c_active_routes import router as pass200c_active_router
@@ -87,6 +88,8 @@ if not _route_exists("/api/runtime/optimization-active/status"):
 
 # Register governed freeze authority before the broader hydration router so the
 # legacy `/constraints/promote` projection is shadowed by a fail-closed route.
+if not _route_exists("/api/runtime/pass179-graphics/status"):
+    app.include_router(pass179_graphics_router)
 if not _route_exists("/api/runtime/graphics-hydration/constraints/registry/status"):
     app.include_router(graphics_constraint_router)
 if not _route_exists("/api/runtime/graphics-hydration/status"):
@@ -132,6 +135,8 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass200c_guarded_active_api": "/api/runtime/optimization-active",
         "pass201_public_api_federation_api": "/api/public",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
+        "pass179_native_graphics_api": "/api/runtime/pass179-graphics",
+        "pass179_graphics_studio": "/graphics-studio/",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
         "probability_hydration_api": "/api/v1/probability",
         "storybook_reel_studio": "/storybook-reel/",
@@ -152,6 +157,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass200b_governed_canary": "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72",
         "pass200c_guarded_active": "HHS-P200C-CANARY-EVIDENCE-ACTIVE-GUARD-VM81-H72",
         "pass201_public_api_federation": "HHS-P201-PUBLIC-API-FEDERATION-SERVICE-PASS-ROUTER-OPENAPI",
+        "pass179_native_graphics": "HHS-P179-NEGAS-MRL",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
@@ -172,6 +178,7 @@ _applications_root = Path(__file__).resolve().parents[1] / "applications"
 _storybook_root = _applications_root / "storybook_reel_studio"
 _probability_root = _applications_root / "probability_hydration_studio"
 _visual_root = _applications_root / "holofractal_harmonizer"
+_graphics_studio_root = _visual_root / "src" / "graphics-studio"
 
 if not (_storybook_root / "index.html").is_file():
     raise RuntimeError(f"Storybook reel studio is missing: {_storybook_root}")
@@ -179,10 +186,14 @@ if not (_probability_root / "index.html").is_file():
     raise RuntimeError(f"Pass 183 probability hydration studio is missing: {_probability_root}")
 if not (_visual_root / "index.html").is_file():
     raise RuntimeError(f"Pass 161 visual application is missing: {_visual_root}")
+if not (_graphics_studio_root / "index.html").is_file():
+    raise RuntimeError(f"Pass 179 graphics studio is missing: {_graphics_studio_root}")
 
 if not any(getattr(route, "name", None) == "hhs-storybook-reel-studio" for route in app.router.routes):
     app.mount("/storybook-reel", StaticFiles(directory=str(_storybook_root), html=True), name="hhs-storybook-reel-studio")
 if not any(getattr(route, "name", None) == "hhs-probability-hydration-studio" for route in app.router.routes):
     app.mount("/probability-hydration", StaticFiles(directory=str(_probability_root), html=True), name="hhs-probability-hydration-studio")
+if not any(getattr(route, "name", None) == "hhs-pass179-graphics-studio" for route in app.router.routes):
+    app.mount("/graphics-studio", StaticFiles(directory=str(_graphics_studio_root), html=True), name="hhs-pass179-graphics-studio")
 if not any(getattr(route, "name", None) == "hhs-visual-home" for route in app.router.routes):
     app.mount("/", StaticFiles(directory=str(_visual_root), html=True), name="hhs-visual-home")
