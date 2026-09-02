@@ -1,0 +1,57 @@
+{
+  "schema": "PASS_219_I149_PASS177_WORKFLOW_AUTHORITY_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration149-pass177-workflow-authority-reconciliation",
+  "validated_authority": {
+    "head_sha": "15fa5a458c6755eab4d1af4b405b83b3467d45d9",
+    "workflow_path": ".github/workflows/pass219-i149-pass177-workflow-authority.yml",
+    "workflow_run_id": 33632013615,
+    "job_id": 100253503440,
+    "conclusion": "success",
+    "classification": "HHS_PASS177_I149_HISTORICAL_WORKFLOW_AUTHORITY_RECONCILED_NONTERMINAL",
+    "backend_vm81_tests": "5 passed, 1 warning",
+    "historical_node_workflow_acceptance": true,
+    "governed_route_surface": true,
+    "global_canonical_defaults_preserved": true,
+    "multimodal_generalization_preserved": true
+  },
+  "historical_implementation": {
+    "merge_commit": "2aeb16e736829ec9fe64b2a0d9779bbfa147f4ec",
+    "module_library": true,
+    "project_factory": true,
+    "workflow_engine": true,
+    "browser_hash216_candidate_identity": true
+  },
+  "historical_truth": {
+    "test_stage": "SOURCE_VALIDATED_NOT_EXECUTED_TARGET_TEST",
+    "build_stage": "SOURCE_PRESERVING_NOT_TARGET_COMPILATION",
+    "source_zip": "INDEPENDENT_OF_COMPILATION"
+  },
+  "generated_receipt": {
+    "receipt_hash72": "2Rj?0cwXZLBnHhXan3K(K?)RJTRKvxKS8)jw>ub*j!QzO(jq7MXKxs<IlDsybP6v83h(cDWX",
+    "archive_hash216": "6N!23PJk-b3+!yG09ApAnTZ*+HjeMDoyY-<(iPX6GnbajIceNL(aaZtiL1tk*TZeg-lzBA9yHr)Z73L<DM?o*>(vN!4???0dUxZG)QJ!geIynSv0dk6fYevf!p6fzsM+Gi?S9up4Ma-zC)-H+WBK?AF5Sl3hDtBmJpZD21s0PdG46XPZXQBDQYe1pC3Ah!p4WFU0pwdS/QDy2OrJyEhVcBeJ"
+  },
+  "artifact": {
+    "id": 9847194094,
+    "name": "pass219-i149-pass177-workflow-authority",
+    "size_bytes": 1683,
+    "sha256": "8e6d5eeff73285e7bda23cf021e907cab38e6f22744ab03271dd7ddf200a3f7a",
+    "expires_at": "2026-10-02T12:48:56Z"
+  },
+  "authority": {
+    "singleton_vm81_inherited": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false,
+    "browser_identity_authoritative": false,
+    "memory_checkpoint_authoritative": false
+  },
+  "closure": {
+    "pre_cumulative_validation_green": true,
+    "cumulative_pass177_binding_added": false,
+    "terminal_pass177_completion": false,
+    "repair_forward_required": true,
+    "merge_performed": false,
+    "authoritative_main_verification": false
+  }
+}
