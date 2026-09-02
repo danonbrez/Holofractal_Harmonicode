@@ -1,0 +1,51 @@
+{
+  "schema": "HHS_PASS219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_VALIDATION_RECEIPT_V1",
+  "pass": 219,
+  "iteration": "I149",
+  "branch": "agent/pass219-iteration149-global-raw5184-serialization-hydration",
+  "base_main": "2b8a8a15ca3b6f085c4710a3b5c42318f737755f",
+  "validated_head": "82cbfb8ba8af37c4c08c268192b55af426355740",
+  "workflow": {
+    "run_id": 33651809741,
+    "result": "SUCCESS",
+    "job_id": 100320418905
+  },
+  "artifact": {
+    "id": 9855077911,
+    "name": "pass219-i149-global-raw5184-serialization-hydration",
+    "sha256": "65220f92c542cd87e520905a8fd94dc1c72619bc6a856cce7a3b6253ecc68d67"
+  },
+  "validated_surfaces": {
+    "contract_parse": true,
+    "no_native_float_or_double_authority": true,
+    "cumulative_exact_abi_compile": true,
+    "i149_global_serialization_conformance": true,
+    "i148_raw5184_regression": true,
+    "rna_exact_frame_roundtrip_regression": true,
+    "shared_exact_runtime_build": true,
+    "python_exact_bridge_frame_roundtrip": true,
+    "python_exact_bridge_648_bytecode_roundtrip": true
+  },
+  "carrier": {
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "vm81_cells": 81,
+    "pcm64_samples": 81,
+    "exact_bit_identity": true
+  },
+  "hydration": {
+    "left_mono": ["yx", "x+y", "xy"],
+    "right_mono": ["wz", "z+w", "zw"],
+    "center_relation": "x+y:z+w",
+    "ternary_roles": [-1, 0, 1],
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "scalar_projection_runtime_authority": false,
+    "runtime_floating_point": false
+  },
+  "authority": {
+    "vm81_mutation_added": false,
+    "hash72_commit_added": false,
+    "hash216_commit_added": false,
+    "projection_persistence_added": false
+  }
+}
