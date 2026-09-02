@@ -65,9 +65,23 @@ def main() -> None:
             phase(current_phase, url=BASE_URL)
             response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=60_000)
             if response is None or not response.ok:
-                raise AssertionError(f"Pass 176 production root failed: {getattr(response, 'status', None)}")
+                raise AssertionError(f"Pass 176 preserved IDE surface failed: {getattr(response, 'status', None)}")
             dom_loaded_ms = round((time.monotonic() - started) * 1000)
             phase("dom-content-loaded", status=response.status, elapsed_ms=dom_loaded_ms)
+
+            current_phase = "verify-current-public-root"
+            current_interface = page.evaluate("""async () => {
+                const response = await fetch('/api/interface/status');
+                return {status: response.status, payload: await response.json()};
+            }""")
+            if current_interface["status"] != 200:
+                raise AssertionError(f"current Runtime OS interface unavailable: {current_interface}")
+            interface_payload = current_interface["payload"]
+            if interface_payload.get("interface") != "HHS_VISUAL_RUNTIME_OS_WORKSPACE":
+                raise AssertionError(f"unexpected current public interface: {interface_payload}")
+            if interface_payload.get("legacy_harmonizer_is_public_root") is not False:
+                raise AssertionError(f"legacy Pass 176 IDE incorrectly owns current public root: {interface_payload}")
+            phase(current_phase, interface=interface_payload.get("interface"))
 
             current_phase = "wait-pass176-controller"
             page.wait_for_function("() => Boolean(window.HHSPass176 && window.HHSVisualIDEBoot)", timeout=20_000)
@@ -325,6 +339,9 @@ def main() -> None:
                 "schema": "HHS_PASS_176_FROZEN_IDE_BROWSER_SMOKE_V1",
                 "ok": True,
                 "base_url": BASE_URL,
+                "preservation_surface": "/pass176-ide/",
+                "current_public_root": "/",
+                "current_public_interface": current_interface["payload"],
                 "title": page.title(),
                 "timing_ms": {"dom_content_loaded": dom_loaded_ms, "pass176_interactive": interactive_ms},
                 "initial": initial,
