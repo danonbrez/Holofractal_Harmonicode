@@ -348,7 +348,7 @@ def pass202_membrane_manifest() -> Dict[str, Any]:
         "bootstrap_merge": s["bootstrap_merge"],
         "frozen_i121": s["frozen_i121"],
         "historical_blobs": s["historical_blobs"],
-        "frozen_i121_blobs": s["frozen_i121_blobs"],
+        "successor_hardened_blobs": s["successor_hardened_blobs"],
         "surface": pass202_surface_declaration(),
     }
 
