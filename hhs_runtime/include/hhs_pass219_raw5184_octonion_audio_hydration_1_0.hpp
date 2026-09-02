@@ -3,6 +3,8 @@
 
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.h"
 
+#include <cstddef>
+
 namespace hhs::pass219 {
 
 class Raw5184OctonionAudioHydration final {
