@@ -415,3 +415,169 @@ No I148 dependency-frontier file overlaps this drift.
 Commit formal documentation/evidence, open a ready PR against current `main`,
 require the PR synthetic merge to pass the I148 dependency workflow, then merge
 with an exact-head guard and verify authoritative `main`.
+
+
+## Milestone 1 — reversible raw5184 / PCM64 bridge
+
+Implementation lineage through:
+
+- `52fa93e128e3faa8165b28b225c4894e34d91e96` — initial raw5184/octet/PCM64 bridge;
+- `9353cf605d19e101afca6e52701b66772a15297b` through
+  `e0eefede6b4cadf9795a29f72e5bf208372d9456` — typed u72 stereo quotient;
+- `47581c02680558c3a7c80010a39673ab5695ee2c` — explicit mono lanes and exact PCM64 ternary bounds;
+- `5d20dd09d669f0f5658c4252c23544f91061c075` — mandatory Pass219 execution binding;
+- `114f407558cbb32fe721b60cb469841e8d941038` — integer Q62 sine projection.
+
+Implemented reversible path:
+
+```text
+5184 binary symbols
+<-> 648 canonical LE bytes
+<-> 81 VM81 uint64 words
+<-> 81 PCM64 bit-pattern samples
+```
+
+No carrier normalization or clipping is allowed.
+
+## Milestone 2 — native mono/stereo phase semantics
+
+For every admitted phase quad:
+
+```text
+left mono  = (yx, x+y, xy)
+right mono = (wz, z+w, zw)
+center mono relation = x+y : z+w
+```
+
+Role semantics:
+
+```text
+-1 = binary 5184 digital noise floor  -> INT64_MIN
+ 0 = zero-sum crossing               -> 0
++1 = sample saturation ceiling       -> INT64_MAX
+```
+
+Stereo role quotient:
+
+```text
+(-1,0,+1)/(-1,0,+1) = (1,1,1)
+```
+
+Center closure uses inherited HARMONICODE:
+
+```text
+0/0 = u^0 mod(u^72) = 1
+(x+y)/(z+w) = u^0
+```
+
+Scalar projection is non-authoritative and never performs runtime admission.
+
+The actual phase72 values of all six lane positions remain independently
+stored and validated.
+
+## Milestone 3 — integer-only sine projection
+
+The previous linear monitor was replaced by a static 72-entry signed-int64
+Q62 sine lookup.
+
+Exact anchor samples:
+
+```text
+phase 0  -> 0
+phase 18 -> +2^62
+phase 36 -> 0
+phase 54 -> -2^62
+```
+
+and:
+
+```text
+sine[k+36] = -sine[k]
+```
+
+for `k=0..35`.
+
+This projection performs no runtime float/double operation and has zero
+runtime/admission authority. The full-scale ternary PCM64 bounds remain
+separate from the Q62 sine projection.
+
+## Milestone 4 — benchmark and conformance authoring
+
+Current exact benchmark model:
+
+```text
+baseline/frame =
+  5184 validation scan
++ 5184 decode scan
++ 81 PCM sample copy
++ 80 quad-cell view copy
+= 10529 work units
+
+fused/frame =
+  one validated decode scan
+= 5184 work units
+
+saved/frame = 5345
+reduction floor = 507/1000
+```
+
+Calibrated frame counts:
+
+`1, 64, 1024`
+
+Aggregate exact work:
+
+```text
+baseline = 11466081
+fused    =  5645376
+saved    =  5820705
+```
+
+This is logical serialization work, not wall-clock timing.
+
+## Executed validation evidence
+
+### Green bridge/mono/u72 head
+
+- validated head: `3956d2fa752caf69ad25215aeea9c901dfba146c`
+- workflow run: `33648627859`
+- result: `SUCCESS`
+- artifact: `9853808528`
+- artifact digest: `sha256:2e52d61c674387ebe04109cdfb93801a9809d00254eced47c18130330cf0d37b`
+
+This proves the reversible carrier, exact ABI, mono/u72 implementation,
+mandatory bindings, benchmark/gates authored at that head, and inherited
+dependency preservation.
+
+### Expanded Q62 conformance head
+
+- head: `de6d100fd68d533898d737b0202f2f572e32af44`
+- workflow run: `33648754221`
+- status when this checkpoint was authored: `QUEUED`
+
+The expanded head adds stricter assertions for:
+
+- Q62 sine quarter/half-cycle symmetry;
+- exact left/right phase-lane reconstruction;
+- exact full-scale ternary PCM64 roles;
+- center u0 closure;
+- C/C++/Python conformance.
+
+No result is claimed until that run completes.
+
+## Current main drift
+
+At the latest comparison before this checkpoint, the I148 branch was ahead
+of but also behind current main. Reconciliation is mandatory before PR merge.
+
+## Exact next action
+
+1. read the terminal result of `33648754221`;
+2. repair only dependency-relevant failures;
+3. seal exact validation evidence;
+4. reconcile current main into the I148 branch without rewriting verified
+   feature history;
+5. rerun the I148 dependency frontier;
+6. open a ready PR;
+7. merge with expected-head guard;
+8. verify authoritative main and create the terminal checkpoint.
