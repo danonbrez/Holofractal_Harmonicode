@@ -167,3 +167,73 @@ If failure:
 - do not widen frontend, Hash72, Hash216, GPU, browser or checkpoint authority.
 
 No main merge is authorized by this checkpoint.
+
+
+## Run #10 preservation-route result and diagnostic handoff
+
+Exact run:
+
+- run: `33666906021`
+- run number: 10
+- source head: `fb4db5e94112aab69301c4f9ae9bd4756d0ae393`
+- result: **FAILURE**
+- failure stage: `Browser and mobile terminal acceptance`
+
+Green before browser:
+
+- dependency installation;
+- inherited exact runtime build;
+- TypeScript Runtime OS typecheck/build;
+- historical/current-main ancestry;
+- Pass 176 JS/Python syntax;
+- deterministic Pass 176 Node core suite;
+- dependency-scoped Pass 176 / Pass 175 / production Python validation;
+- Chromium installation.
+
+Browser facts proved before failure:
+
+- current Runtime OS public root responds;
+- preserved `/pass176-ide/` route responds;
+- current interface reports `HHS_VISUAL_RUNTIME_OS_WORKSPACE`;
+- `legacy_harmonizer_is_public_root=false`;
+- no console errors;
+- no page errors;
+- no request failures;
+- no HTTP errors.
+
+Exact failure:
+
+`Page.wait_for_function: Timeout 20000ms exceeded`
+
+at:
+
+`Boolean(window.HHSPass176 && window.HHSVisualIDEBoot)`
+
+Therefore the remaining defect is not server availability, current-root ownership, Python authority, Node Pass 176 logic, or network transport. It is specifically the preserved-page browser boot graph.
+
+### Diagnostic instrumentation
+
+Commit:
+
+`9ace787854a8ba0c88a7d6679886369def2517c6`
+
+Run:
+
+`33667424548` / run #11
+
+The diagnostic records before waiting for the controller:
+
+- `window.HHSInlinePublicBoot`;
+- `window.HHSProductionStartupCoordinator`;
+- `window.HHSPublicBoot`;
+- `window.HHSVisualIDEBoot`;
+- `window.HHSPass176`;
+- script elements;
+- loaded `.mjs` resource URLs;
+- current browser href.
+
+The diagnostic does not mutate authority or bypass boot. Use its failure evidence to repair exactly the missing layer. Do not infer the next repair before consuming this evidence.
+
+Current branch remains based on current main `de301d6ab8dca2438ebbe1ee745e61e669027018` through reconciliation commit `e5dd153e6f9471681c1f8b485db842b6ef7dfa74`.
+
+No Pass 176 cumulative binding has been added. Global census remains floor 177 / count 44.
