@@ -15,4 +15,7 @@ _base = Path(
     )
 )
 
-GRAPHICS_CONSTRAINT_REGISTRY = GraphicsConstraintRegistry(\n    _base / "constraint_registry",\n    vm81=GRAPHICS_VECTOR_HYDRATION.vm81_authority,\n)
+GRAPHICS_CONSTRAINT_REGISTRY = GraphicsConstraintRegistry(
+    _base / "constraint_registry",
+    vm81=GRAPHICS_VECTOR_HYDRATION.vm81_authority,
+)
