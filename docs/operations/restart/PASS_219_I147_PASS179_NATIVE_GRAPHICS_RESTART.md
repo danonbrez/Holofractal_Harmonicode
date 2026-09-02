@@ -1,0 +1,85 @@
+# Pass 219 I147 / Pass 179 native graphics restart record
+
+## Repository state
+
+- repository: `danonbrez/Holofractal_Harmonicode`
+- branch: `agent/pass219-iteration147-pass179-native-graphics-reconciliation`
+- merge target: `main`
+- branch base / inherited I146 evidence-only head: `f03491cd6744e56e2e81a689416b94a6fb0ae9a4`
+- first Pass 179 executable nucleus commit: `bf42707842ef94331c02b449f65f03b8e61e54d5`
+- served IDE wiring commit: `1401dcb9d2989babb1b6ee8e2539ad86b5e782ad`
+- conformance/docs head before hosted validation: `046e0084276fd71197e3b5176eebc5720d86fca4`
+- merge status: **UNMERGED**
+- authoritative-main verification: **NOT PERFORMED**
+- terminal Pass 179 completion: **FALSE**
+- cumulative Pass 179 binding: **NOT YET ADMITTED**
+
+## Census result
+
+Before I147, Pass 179 was contract-only:
+
+`CONTRACT_ONLY_WITH_MISSING_RUNTIME_AND_CUMULATIVE_EXPOSURE`
+
+Repository searches found the normative contract but none of the required Pass 179 machine contracts, native project, runtime package, Shader IR, software renderer, bindings, golden-scene implementation, IDE studio, tests, or evidence.
+
+## Implemented I147 nucleus
+
+I147 adds:
+
+- Pass 179 machine contract;
+- immutable command-stream schema;
+- typed Shader IR schema;
+- C11 exact scene/command/software-renderer core;
+- bounded 8,192-node scene capacity;
+- exact Q16.16 geometry and RGBA16 colors;
+- deterministic integer alpha composition;
+- Python exact scene authority wrapper;
+- inherited Pass-165/163 VM81 scene admission;
+- post-VM81 Hash72 evidence;
+- three-lane archival Hash216 identities;
+- exact fixed-step linear animation nucleus;
+- exact phase palette and gradient interpolation;
+- deterministic software rendering and PNG capture;
+- WebGPU/WebGL2/Three.js immutable projection packets;
+- literal 5,184-node HHS motion golden nucleus;
+- inherited Lattice Run native-command golden nucleus;
+- governed Pass 179 HTTP API;
+- editable served Graphics Studio;
+- Python/C conformance tests and guides.
+
+## Authority boundary
+
+I147 does not create:
+
+- independent VM81 authority;
+- independent Hash72 commit clock;
+- Hash216 mutation authority;
+- GPU mutation authority;
+- browser mutation authority;
+- floating-point canonical authority.
+
+The C renderer is projection-only. Canonical scene mutation is admitted by the inherited VM81 runtime before rendering.
+
+## Remaining terminal Pass 179 categories
+
+Pass 179 remains nonterminal until the repository executes and verifies the remaining full contract categories, including:
+
+1. complete 2D/3D native feature library;
+2. production Shader IR graph/compiler coverage;
+3. executing WebGPU/WebGL2 device backends;
+4. full Pass 178 Three.js parity;
+5. fully playable native Lattice Run;
+6. complete animated 5,184-particle parity;
+7. full IDE scene/timeline/shader/material editing;
+8. image-sequence/MP4 capture;
+9. browser E2E, performance, resource, accessibility, and security gates;
+10. authoritative-main integration and post-merge verification.
+
+## Restart procedure
+
+1. Read this record and the Pass 179 hosted validation receipt index if present.
+2. If the pre-cumulative gate is green, add the exact cumulative Pass 179 binding and move global-default floor from 180 to 179 while preserving `terminal_pass179_completion = false`.
+3. Do not mark Pass 179 terminal merely because the I147 nucleus is green.
+4. Preserve PR #347 / I146 closure as a separate integration path.
+5. Continue only impacted validation after repair; do not rerun frozen unrelated pass evidence.
+6. Do not use Codex, Work/Workspace agents, nested coding agents, or swarms.
