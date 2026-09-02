@@ -65,6 +65,41 @@
     "remaining_terminal_obligation_count": 0,
     "merge_performed": false,
     "authoritative_main_verification": false,
-    "deployment_performed": false
+    "deployment_performed": false,
+    "integration_ready": true,
+    "behind_main": 0
+  },
+  "current_main_reconciliation": {
+    "main_parent": "75396e1bbf2fe95920311a5f8005b6ac1cde4cce",
+    "validated_reverse_parent": "94647e76e0d62bfcedcd4377fb91122e92cf8334",
+    "reconciliation_commit": "f99015a0ccc1bb5d0d807ab60efc598e766134f4",
+    "reconciliation_tree": "dab1fdf83981c2358767ce603a40edc443da42f2",
+    "files_reconciled": 166,
+    "dual_modified_files_explicitly_merged": 10,
+    "behind_main_after_reconciliation": 0,
+    "current_main_global_latency_policy_preserved": true,
+    "reverse_cumulative_floor_preserved": 180
+  },
+  "integration_validation": {
+    "workflow_run_id": 33615492808,
+    "workflow_run_number": 3,
+    "job_id": 100200233723,
+    "head_sha": "f99015a0ccc1bb5d0d807ab60efc598e766134f4",
+    "conclusion": "success",
+    "classification": "HHS_PASS180_I146_CUMULATIVE_TERMINAL_VERIFIED",
+    "pass180_runtime_suite": "8 passed",
+    "exact_runtime_shared_library_build": true,
+    "global_canonical_defaults": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+    "wired_floor": 180,
+    "binding_count": 41,
+    "receipt_hash72": "KapXFk4WW(f<FVtT>6PLo1vWALqkH>Rhpf9!MNRIJcWm9Tpkm)Hi37)hA0xnKU/X5<N8Gu/q",
+    "archive_hash216": "KMEa(8zR80+gZb>cK6RF6MZSS-g0Jxm1YMIO*aoVIzyTyhuwCohHoS*2YTciWZzjab>pnk6EydU-HB0hHig(74vr7egt)JJmpbX/kAxq4+?KYoX5<d65Pxs1)j4SCa)o>pE7b/q<FXLaC*AsRxS?2jmmDUljVT024HfC6Z3VzI7FVFQvpM2Wmuke3MSWNOh+reYupr0Mn8c0mF5CsPZ!*a1i",
+    "artifact": {
+      "id": 9840760652,
+      "name": "pass219-i146-pass180-application-factory",
+      "size_bytes": 1832,
+      "sha256": "5953bc86e30e15d3378ef682914f924ed1878a79d9b3f7b6e02619a2096f7f71",
+      "expires_at": "2026-10-02T09:42:26Z"
+    }
   }
 }
