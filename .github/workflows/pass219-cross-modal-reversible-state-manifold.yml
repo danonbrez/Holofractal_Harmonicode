@@ -127,7 +127,7 @@ jobs:
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
         run: |
-          python -m pytest -q --tb=short tests/pass219/test_pass219_cumulative_pass180_membrane_i146.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass180_membrane_i146.py
 
       - uses: actions/upload-artifact@v4
         with:
