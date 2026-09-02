@@ -53,6 +53,13 @@ typedef struct HHSExactPass219Audio5184StereoTernaryV1 {
     int8_t denominator_role[3];
     uint8_t quotient_identity[3];
     uint8_t quotient_phase72[3];
+    uint8_t left_mono_phase72[3];
+    uint8_t right_mono_phase72[3];
+    int64_t role_pcm64[3];
+    uint8_t left_mono_yx_sum_xy;
+    uint8_t right_mono_wz_sum_zw;
+    uint8_t center_mono_xy_sum_colon_zw_sum;
+    uint8_t exact_pcm64_role_bounds;
     uint8_t center_zero_over_zero_u0_mod_u72;
     uint8_t center_xy_sum_over_zw_sum_u0;
     uint8_t typed_quotient_only;

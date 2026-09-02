@@ -15,6 +15,9 @@ PILOT_CELL = 80
 H36 = 36
 MONITOR_SCALE = 1 << 56
 ROLE_SCALE = 1 << 48
+PCM64_NOISE_FLOOR = -(1 << 63)
+PCM64_ZERO_CROSSING = 0
+PCM64_SATURATION_CEILING = (1 << 63) - 1
 MASK64 = (1 << 64) - 1
 
 
@@ -96,6 +99,13 @@ class StereoTernaryQuotient:
     denominator_roles: tuple[int, int, int]
     quotient_identity: tuple[int, int, int]
     quotient_phase72: tuple[int, int, int]
+    left_mono_phase72: tuple[int, int, int]
+    right_mono_phase72: tuple[int, int, int]
+    role_pcm64: tuple[int, int, int]
+    left_mono_yx_sum_xy: bool
+    right_mono_wz_sum_zw: bool
+    center_mono_xy_sum_colon_zw_sum: bool
+    exact_pcm64_role_bounds: bool
     center_zero_over_zero_u0_mod_u72: bool
     center_xy_sum_over_zw_sum_u0: bool
     typed_quotient_only: bool
@@ -148,11 +158,33 @@ def phase_channel(basis: str, phase: int) -> PhaseChannel:
 def typed_stereo_ternary(channels: Sequence[PhaseChannel]) -> StereoTernaryQuotient:
     if tuple(channel.basis for channel in channels) != PHASE_CHANNELS:
         raise ValueError("ORDERED_OCTONION_CHANNELS")
+    by_basis = {channel.basis: channel.phase72 for channel in channels}
+    left = (
+        by_basis["yx"],
+        (by_basis["x"] + by_basis["y"]) % 72,
+        by_basis["xy"],
+    )
+    right = (
+        by_basis["wz"],
+        (by_basis["z"] + by_basis["w"]) % 72,
+        by_basis["zw"],
+    )
     return StereoTernaryQuotient(
         numerator_roles=(-1, 0, 1),
         denominator_roles=(-1, 0, 1),
         quotient_identity=(1, 1, 1),
         quotient_phase72=(0, 0, 0),
+        left_mono_phase72=left,
+        right_mono_phase72=right,
+        role_pcm64=(
+            PCM64_NOISE_FLOOR,
+            PCM64_ZERO_CROSSING,
+            PCM64_SATURATION_CEILING,
+        ),
+        left_mono_yx_sum_xy=True,
+        right_mono_wz_sum_zw=True,
+        center_mono_xy_sum_colon_zw_sum=True,
+        exact_pcm64_role_bounds=True,
         center_zero_over_zero_u0_mod_u72=True,
         center_xy_sum_over_zw_sum_u0=True,
         typed_quotient_only=True,
@@ -235,7 +267,8 @@ def exact_serialization_work_model(frame_count: int = 1) -> dict[str, int | bool
 
 __all__ = [
     "RAW_BITS", "RAW_BYTES", "CELLS", "WORD_BITS", "PHASE_QUADS",
-    "PHASE_CHANNELS", "PILOT_CELL", "H36", "bitstring_to_words",
+    "PHASE_CHANNELS", "PILOT_CELL", "H36", "PCM64_NOISE_FLOOR",
+    "PCM64_ZERO_CROSSING", "PCM64_SATURATION_CEILING", "bitstring_to_words",
     "words_to_bitstring", "words_to_le_bytes", "le_bytes_to_words",
     "fold_word72", "octonion_channels_from_words", "PhaseChannel",
     "StereoTernaryQuotient", "PhaseQuad", "AudioHydration", "phase_channel",

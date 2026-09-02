@@ -40,6 +40,10 @@ def surface_declaration() -> Dict[str, Any]:
             "twenty_ordered_xyzw_dual_stereo_quads",
             "cell80_pilot_identity",
             "ordered_octonion_xy_yx_zw_wz",
+            "left_mono_lane_yx_sum_xy",
+            "right_mono_lane_wz_sum_zw",
+            "center_mono_relation_xy_sum_colon_zw_sum",
+            "exact_pcm64_noise_floor_zero_crossing_saturation_ceiling",
             "typed_stereo_ternary_role_quotient",
             "center_zero_over_zero_u0_mod_u72",
             "center_xy_sum_over_zw_sum_u0",
@@ -97,6 +101,9 @@ def manifest() -> Dict[str, Any]:
             "pilot_cell": 80,
         },
         "stereo_ternary": {
+            "left_mono": ["yx", "x+y", "xy"],
+            "right_mono": ["wz", "z+w", "zw"],
+            "center_mono_relation": "x+y:z+w",
             "numerator_roles": [-1, 0, 1],
             "denominator_roles": [-1, 0, 1],
             "quotient": [1, 1, 1],
@@ -105,6 +112,11 @@ def manifest() -> Dict[str, Any]:
             "center_symbolic_relation": "(x+y)/(z+w)=u^0",
             "scalar_projection_runtime_authority": False,
             "scalar_division_attempted": False,
+            "pcm64_role_amplitudes": {
+                "noise_floor": -9223372036854775808,
+                "zero_sum_crossing": 0,
+                "sample_saturation_ceiling": 9223372036854775807,
+            },
         },
         "h36": {
             "resonance36": "phase72 mod 36",

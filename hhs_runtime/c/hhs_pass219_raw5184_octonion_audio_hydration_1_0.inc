@@ -82,19 +82,44 @@ static uint8_t hhs_p219_audio5184_phase_at(
 }
 
 static HHSExactStatus hhs_p219_audio5184_stereo_ternary(
+    const HHSExactPass219OctonionStateV1 *state,
     HHSExactPass219Audio5184StereoTernaryV1 *out
 ) {
     static const int8_t roles[3] = { -1, 0, 1 };
+    static const int64_t pcm64_roles[3] = {
+        INT64_MIN, INT64_C(0), INT64_MAX
+    };
     uint8_t i;
-    if (out == NULL)
+
+    if (state == NULL || out == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (hhs_exact_pass219_octonion_validate_state(state) != HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
     memset(out, 0, sizeof(*out));
+
+    out->left_mono_phase72[0] = state->yx;
+    out->left_mono_phase72[1] =
+        (uint8_t)(((uint16_t)state->x + state->y) % HHS_EXACT_HASH72_LEN);
+    out->left_mono_phase72[2] = state->xy;
+
+    out->right_mono_phase72[0] = state->wz;
+    out->right_mono_phase72[1] =
+        (uint8_t)(((uint16_t)state->z + state->w) % HHS_EXACT_HASH72_LEN);
+    out->right_mono_phase72[2] = state->zw;
+
     for (i = 0U; i < 3U; ++i) {
         out->numerator_role[i] = roles[i];
         out->denominator_role[i] = roles[i];
         out->quotient_identity[i] = 1U;
         out->quotient_phase72[i] = 0U;
+        out->role_pcm64[i] = pcm64_roles[i];
     }
+
+    out->left_mono_yx_sum_xy = 1U;
+    out->right_mono_wz_sum_zw = 1U;
+    out->center_mono_xy_sum_colon_zw_sum = 1U;
+    out->exact_pcm64_role_bounds = 1U;
     out->center_zero_over_zero_u0_mod_u72 = 1U;
     out->center_xy_sum_over_zw_sum_u0 = 1U;
     out->typed_quotient_only = 1U;
@@ -108,21 +133,33 @@ static HHSExactStatus hhs_p219_audio5184_stereo_ternary_validate(
     const HHSExactPass219Audio5184StereoTernaryV1 *q
 ) {
     static const int8_t roles[3] = { -1, 0, 1 };
+    static const int64_t pcm64_roles[3] = {
+        INT64_MIN, INT64_C(0), INT64_MAX
+    };
     uint8_t i;
+
     if (q == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (q->center_zero_over_zero_u0_mod_u72 != 1U ||
+    if (q->left_mono_yx_sum_xy != 1U ||
+        q->right_mono_wz_sum_zw != 1U ||
+        q->center_mono_xy_sum_colon_zw_sum != 1U ||
+        q->exact_pcm64_role_bounds != 1U ||
+        q->center_zero_over_zero_u0_mod_u72 != 1U ||
         q->center_xy_sum_over_zw_sum_u0 != 1U ||
         q->typed_quotient_only != 1U ||
         q->scalar_division_attempted != 0U ||
         q->scalar_projection_runtime_authority != 0U ||
         q->all_coordinates_close_to_identity != 1U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
     for (i = 0U; i < 3U; ++i) {
         if (q->numerator_role[i] != roles[i] ||
             q->denominator_role[i] != roles[i] ||
             q->quotient_identity[i] != 1U ||
-            q->quotient_phase72[i] != 0U)
+            q->quotient_phase72[i] != 0U ||
+            q->left_mono_phase72[i] >= HHS_EXACT_HASH72_LEN ||
+            q->right_mono_phase72[i] >= HHS_EXACT_HASH72_LEN ||
+            q->role_pcm64[i] != pcm64_roles[i])
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     return HHS_EXACT_STATUS_OK;
@@ -316,7 +353,7 @@ HHSExactStatus hhs_exact_pass219_audio5184_hydrate(
                 q * HHS_EXACT_PASS219_AUDIO5184_PHASE_CHANNELS + basis] =
                 quad->channels[basis].monitor_pcm64;
         }
-        status = hhs_p219_audio5184_stereo_ternary(&quad->stereo_ternary);
+        status = hhs_p219_audio5184_stereo_ternary(&quad->octonion, &quad->stereo_ternary);
         if (status != HHS_EXACT_STATUS_OK)
             return status;
     }
