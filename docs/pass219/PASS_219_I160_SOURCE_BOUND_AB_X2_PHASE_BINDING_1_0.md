@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTATION TRANCHE — TWO SOURCE BINDINGS RESOLVED / COMPLETE BOUNDARY EXECUTOR STILL REQUIRED`
+`FEATURE-GREEN — TWO SOURCE BINDINGS RESOLVED / CENTRAL SERVICE REGISTRATION AND COMPLETE BOUNDARY EXECUTOR REMAIN`
 
 Base:
 
@@ -11,6 +11,19 @@ Base:
 Feature branch:
 
 `agent/pass219-i160-source-bound-ab-x2-phase-bindings`
+
+Validated feature head:
+
+`aa4de94da4ba55e2710dc32ebd7389b0931b474a`
+
+Dedicated validation:
+
+- run `33817966685`
+- job `100854194159`
+- conclusion `SUCCESS`
+- dependency-scoped pytest: `7 passed, 1 warning in 3.91s`
+- artifact `9917220688`
+- artifact digest `sha256:fe6731e2ab150bc2087acc11f7db58c32395b3260ad43a512f76358ae8dedaf1`
 
 I160 continues the exact I159 typed graph without rewriting the frozen HARMONICODE source, Pass191, I157, I158, or I159 semantics.
 
@@ -60,6 +73,10 @@ This proves edge 7 as:
 
 `SOURCE_BOUND_P4_PRODUCT_ROOT_CORRESPONDENCE`
 
+Validated product witness:
+
+`3871d54d8f48ba14561d5bae3fa6603b0c3975cb741bf4e6f56d20369ce2023f`
+
 ## I160 edge 9 — exact `x^2` ordered-phase binding
 
 The frozen I157 node does not authorize ordinary scalar `x*x`. It explicitly carries:
@@ -108,6 +125,10 @@ This proves edge 9 as:
 
 `PASS191_ORDERED_PHASE_BASIS_EXPONENT_JOIN`
 
+Validated phase witness:
+
+`aaf0519767877233cc05498008b8f7a6e5bb18fe7dbcfb90de86af20b97af863`
+
 No ordinary `18^2=324` exponent is used.
 
 ## Edge 8 remains fail-closed
@@ -141,7 +162,11 @@ Therefore edge 8 remains:
 
 `COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED`
 
-## Expected graph transition
+Validated boundary audit:
+
+`544bdea752c01fa701e7b4aaabe571b9876a540b58ed2a1d2b6263e280f1ad43`
+
+## Validated graph transition
 
 ```text
 before I160: 7 proved / 3 unresolved / 0 rejected
@@ -155,7 +180,15 @@ remaining:
   edge 8 COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED
 ```
 
-The next cumulative boundary is:
+Validated execution identity:
+
+`a6f894bfe96e52a54cd1231fd06efd14643c69b1c0eea99a9a19f1d51aeff886`
+
+Validated benchmark receipt:
+
+`00b30760215f52a957a5f784c291f3fbfdbdbbf1e502837893bf7b9f719590f0`
+
+The next cumulative source boundary is:
 
 `COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR`
 
@@ -191,13 +224,16 @@ tests/pass219/test_pass219_i160_source_bound_ab_x2_phase_binding.py
 benchmarks/pass219/pass219_i160_source_bound_ab_x2_phase_binding_benchmark.py
 contracts/pass219/PASS_219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_1_0.json
 .github/workflows/pass219-i160-source-bound-ab-x2-phase-binding.yml
+evidence/pass219/PASS_219_I160_FEATURE_VALIDATION_33817966685.json
 docs/operations/restart/PASS_219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_RESTART.md
 ```
 
-Public callable target:
+Direct callable module:
 
-`runtime.pass219.source_bound_ab_x2_phase_binding`
+`hhs_runtime.pass219.source_bound_ab_x2_phase_binding:i160_source_bound_binding_self_test`
 
-Self-test:
+## Integration gate still open
 
-`i160_source_bound_binding_self_test`
+The I160 runtime is feature-green but is **not yet registered** in the central governed `hhs_runtime/hhs_service_registry_v1.py` surface. That central registration must be added and registry-scoped validation must pass before I160 is classified merge-complete.
+
+No central public-service registration is claimed by this document until that write exists in repository state.
