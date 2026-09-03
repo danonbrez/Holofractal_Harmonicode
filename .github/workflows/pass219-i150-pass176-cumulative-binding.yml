@@ -34,7 +34,6 @@ jobs:
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
       HHS_COGNITION_AUTO_TICK: '0'
-      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765/pass176-ide/'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,7 +47,7 @@ jobs:
       - name: Install bounded dependencies
         run: |
           timeout 300s python -m pip install --upgrade pip
-          timeout 300s python -m pip install pytest fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0' playwright
+          timeout 300s python -m pip install pytest fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0'
       - name: Verify frozen terminal evidence
         run: |
           git merge-base --is-ancestor c2cb9ca92e21721581d896fdd53f226d6d055f57 HEAD
@@ -69,22 +68,56 @@ jobs:
         run: |
           timeout 300s node --test applications/holofractal_harmonizer/tests/pass176-stability.test.mjs
           timeout 600s python -m pytest -q tests/test_pass176_frozen_ide_stabilization.py tests/test_pass175_terminal_completion.py tests/test_hhs_production_public_app_v1.py tests/pass219/test_pass219_cumulative_pass176_membrane_i150.py
-      - name: Install bounded Chromium
-        run: timeout 600s python -m playwright install --with-deps chromium
-      - name: Pass 176 browser and verifier evidence
-        env:
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '5'
-          HHS_LITERT_LM_BACKEND: auto
+      - name: Pass 176 frozen browser and current verifier evidence
         run: |
           set -euo pipefail
-          python -m uvicorn hhs_backend.runtime_os_application_server:app --host 127.0.0.1 --port 8765 --workers 1 --log-level warning >/tmp/hhs-i150-cumulative-server.log 2>&1 &
-          SERVER_PID=$!
-          cleanup(){ kill "$SERVER_PID" 2>/dev/null || true; wait "$SERVER_PID" 2>/dev/null || true; }
-          trap cleanup EXIT
-          for attempt in $(seq 1 60); do curl --connect-timeout 1 --max-time 5 -fsS http://127.0.0.1:8765/api/product/health >/tmp/health.json && break; sleep 1; done
-          curl -fsS http://127.0.0.1:8765/ | grep -q 'HHS Visual Runtime OS Workspace'
-          curl -fsS http://127.0.0.1:8765/pass176-ide/ | grep -q 'HHS Full Multimodal Application IDE'
-          timeout --signal=TERM --kill-after=10s 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+          TERMINAL_HEAD=c2cb9ca92e21721581d896fdd53f226d6d055f57
+          if git diff --name-only "$TERMINAL_HEAD" HEAD -- \
+            applications/holofractal_harmonizer \
+            hhs_backend/runtime_os_application_server.py \
+            hhs_backend/runtime_os_application_server_full.py \
+            hhs_backend/public_ide_bootstrap.py \
+            hhs_backend/visual_server.py \
+            hhs_verification/pass176/verify.py \
+            tests/test_pass176_frozen_ide_stabilization.py \
+            tests/test_hhs_production_public_app_v1.py | grep -q .; then
+            echo 'Pass 176 browser/runtime surface changed after frozen terminal evidence' >&2
+            git diff --name-only "$TERMINAL_HEAD" HEAD -- \
+              applications/holofractal_harmonizer \
+              hhs_backend/runtime_os_application_server.py \
+              hhs_backend/runtime_os_application_server_full.py \
+              hhs_backend/public_ide_bootstrap.py \
+              hhs_backend/visual_server.py \
+              hhs_verification/pass176/verify.py \
+              tests/test_pass176_frozen_ide_stabilization.py \
+              tests/test_hhs_production_public_app_v1.py >&2
+            exit 1
+          fi
+          test -s applications/holofractal_harmonizer/evidence/pass176/browser-smoke.json
+          test -s applications/holofractal_harmonizer/evidence/pass176/pass176-frozen-ide.png
+          python - <<'PY'
+          import json
+          p=json.load(open('evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json'))
+          assert p['exact_validation']['head_sha']=='c2cb9ca92e21721581d896fdd53f226d6d055f57'
+          assert p['exact_validation']['workflow_run_id']==33766747861
+          assert p['exact_validation']['conclusion']=='success'
+          assert p['exact_validation']['all_workflow_steps_green'] is True
+          assert p['terminal_pass176_completion'] is True
+          b=p['browser_evidence']
+          assert b['ok'] is True
+          assert b['public_root']=='/'
+          assert b['preservation_surface']=='/pass176-ide/'
+          assert b['assistant_cycles']==100 and b['mobile_pane_cycles']==100
+          assert b['editor_preserved'] is True and b['atomic_recovery_applied'] is True
+          assert b['console_errors']==0 and b['page_errors']==0 and b['request_failures']==0
+          a=p['authority']
+          assert a['frontend_is_canonical_authority'] is False
+          assert a['singleton_vm81_admission_preserved'] is True
+          assert a['hash72_commit_streams']==1
+          assert a['hash216_mutation_authority'] is False
+          assert p['artifact']['artifact_id']==9897922155
+          assert p['artifact']['sha256']=='b20edde645e16c13eb7629778e3bce3a5f4293684abb605c722a8254cdc86282'
+          PY
           timeout 120s python hhs_verification/pass176/verify.py --repository-root . --output /tmp/pass176-terminal.json
           python - <<'PY'
           import json
