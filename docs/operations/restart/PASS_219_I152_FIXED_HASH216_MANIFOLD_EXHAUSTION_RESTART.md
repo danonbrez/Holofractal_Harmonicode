@@ -45,3 +45,14 @@ I152 proves exact cardinality/factorization and enforces the `81/7` budget bound
 7. Because the new benchmark file is under `benchmarks/pass219`, also observe the inherited I151 benchmark-history workflow on the merge and seal its new accepted history entry so benchmark inventory/time history remains cumulative.
 
 Current code blocker: none.
+
+## Feature validation
+- Green implementation run: `33721383420` at `6ec8f453534199503387c301524cae25ca7683a8`.
+- Green checkpoint run: `33721410267` at `465cf64dcc8824595281172980797a7b48cb0f29`.
+- Accepted job: `100541140304`.
+- Artifact: `9880354655`.
+- Artifact SHA-256: `b51d11d822d91030a4424313c9f2cfedf5884252a39e90621d8a03182c84c0f6`.
+- Every I152 step passed: parse, exact tests, benchmark emission, contract enforcement, summary, and artifact sealing.
+- Later head `881c4be35b69ce5a0859aba0170e7b7f65b0601d` only removes restart-document changes from workflow trigger paths; it does not alter workflow job steps, benchmark logic, tests, runtime invariants, or contract semantics.
+
+Next action: open the I152 PR against current main, merge with an expected-head guard if cleanly mergeable, then require an exact-main I152 run. Also capture the I151 benchmark-history run triggered on main by the newly added Pass 219 benchmark source.
