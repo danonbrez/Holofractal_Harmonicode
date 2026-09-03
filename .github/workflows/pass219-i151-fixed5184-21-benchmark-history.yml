@@ -48,8 +48,6 @@ jobs:
         run: |
           PYTHONPATH=. python benchmarks/pass219/pass219_cross_modal_reversible_state_benchmark.py \
             artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json
-            artifacts/pass219/i151/source_history_sha256.txt
-            artifacts/pass219/i151/source_history_lines.txt
 
       - name: Build run-keyed benchmark history receipt
         run: |
@@ -148,5 +146,7 @@ jobs:
             artifacts/pass219/i151/benchmark_inventory.json
             artifacts/pass219/i151/raw5184_audio_benchmark.json
             artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json
+            artifacts/pass219/i151/source_history_sha256.txt
+            artifacts/pass219/i151/source_history_lines.txt
           if-no-files-found: error
           retention-days: 90
