@@ -177,3 +177,24 @@ Feature evidence:
 Later feature-branch evidence/checkpoint commits are outside the I153 workflow trigger paths and do not alter implementation semantics.
 
 Next action: verify current main, open the I153 integration PR with an expected-head guard, merge if cleanly mergeable, then capture exact-main I153 validation plus the I151 benchmark-history entry caused by the new Pass 219 benchmark surface.
+
+
+## Exact-main dispatch gap and repair marker
+
+PR #363 merged the validated I153 implementation as `eb2992b22010b98999a8ddc24a3c8a040cead407`, and `main` was verified at that exact SHA.
+
+GitHub did not instantiate either expected scoped push workflow for that merge:
+- I153 local/global equation search filter;
+- inherited I151 benchmark-history observer.
+
+The connected GitHub API exposes rerun actions for existing workflow runs but no workflow-dispatch operation, so there was no exact-main run to rerun or dispatch directly.
+
+Repair-forward action:
+- branch: `agent/pass219-i153-exact-main-dispatch-marker`
+- commit: `fa759af52d99f18810f795d75d243fd2d15d753c`
+- change: one comment-only exact-main validation marker in the I153 benchmark source.
+
+The marker changes no executable statement, candidate count, gate pattern, arithmetic, cardinality, authority boundary, or expected benchmark result. Because the benchmark path is watched by both I153 and I151 on `main`, merging this marker is intended to instantiate both exact-main validations without fabricating a receipt.
+
+Expected exact-main benchmark remains:
+`4096 -> 128 -> 3968 = 32x`.

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+# Exact-main validation dispatch marker: semantics and benchmark workload unchanged.
+
 import hashlib
 import json
 from pathlib import Path
