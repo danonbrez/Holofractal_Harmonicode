@@ -49,10 +49,13 @@ function isSurfaceOpen(name) {
 function setSurfaceOpen(name, open) {
   const element = surfaces[name]?.();
   if (!element) return;
-  if (name === 'command') element.hidden = !open;
-  else {
+  if (name === 'command') {
+    const desiredHidden = !open;
+    if (element.hidden !== desiredHidden) element.hidden = desiredHidden;
+  } else {
     if (!isMobile()) return;
-    element.classList.toggle('open', open);
+    const currentlyOpen = element.classList.contains('open');
+    if (currentlyOpen !== open) element.classList.toggle('open', open);
   }
   element.setAttribute('aria-hidden', String(!open));
   if (open) {
@@ -308,9 +311,19 @@ window.addEventListener('resize', setViewportHeight, { passive: true });
 window.addEventListener('orientationchange', setViewportHeight, { passive: true });
 window.visualViewport?.addEventListener('resize', setViewportHeight, { passive: true });
 
+let observerReconciliationScheduled = false;
+const scheduleObserverReconciliation = () => {
+  if (observerReconciliationScheduled) return;
+  observerReconciliationScheduled = true;
+  window.setTimeout(() => {
+    observerReconciliationScheduled = false;
+    reconcileSurfaceState();
+  }, 0);
+};
+
 const observer = new MutationObserver(() => {
   installCommandPaletteChrome();
-  window.queueMicrotask(() => reconcileSurfaceState());
+  scheduleObserverReconciliation();
 });
 for (const name of Object.keys(surfaces)) {
   const element = surfaces[name]?.();
