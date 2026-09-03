@@ -844,6 +844,17 @@ uint32_t hhs_exact_pass219_h36_branch_ref_memo_threshold(
     return UINT32_C(87572);
 }
 
+static int h36_branch_ref_memo_threshold_is_calibrated(
+    uint32_t threshold
+) {
+    return threshold == UINT32_C(3172) ||
+           threshold == UINT32_C(6254) ||
+           threshold == UINT32_C(12580) ||
+           threshold == UINT32_C(19774) ||
+           threshold == UINT32_C(35269) ||
+           threshold == UINT32_C(87572);
+}
+
 HHSExactStatus hhs_exact_pass219_h36_branch_ref_composition_receipt(
     HHSExactPass219H36BranchReferenceCacheV1 *cache,
     const HHSExactPass219H36StackCacheV1 *frozen_parent_cache,
@@ -986,7 +997,8 @@ hhs_exact_pass219_h36_branch_ref_composition_receipt_validate(
         receipt->query_count >
             memo->composition_query_count[
                 receipt->target_lane_role] ||
-        receipt->memoization_threshold == 0U ||
+        !h36_branch_ref_memo_threshold_is_calibrated(
+            receipt->memoization_threshold) ||
         receipt->exact_replayable != 1U ||
         receipt->canonical_mutation_authority != 0U ||
         receipt->canonical_hash72_authority != 0U ||
@@ -1005,6 +1017,9 @@ hhs_exact_pass219_h36_branch_ref_composition_receipt_validate(
             receipt->query_count <
                 receipt->memoization_threshold)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    } else if (receipt->query_count >=
+               receipt->memoization_threshold) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     return HHS_EXACT_STATUS_OK;
 }
@@ -1192,9 +1207,9 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
                 continue;
             }
             if (is_memoized) {
-                if (used == 0U ||
+                if (!h36_branch_ref_memo_threshold_is_calibrated(
+                        used) ||
                     count < used ||
-                    used > UINT32_C(87572) ||
                     memo_sig !=
                         h36_branch_ref_composition_signature(
                             entry, (uint8_t)target))
