@@ -1,0 +1,122 @@
+name: Pass 219 I157 Candidate-Bound Typed Value Producer
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i157-candidate-bound-full-symbolic-value-producer
+    paths:
+      - 'hhs_runtime/pass219/typed_full_symbolic_candidate_values.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'tests/pass219/test_pass219_i157_candidate_bound_typed_value_graph.py'
+      - 'benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py'
+      - 'contracts/pass219/PASS_219_I157_CANDIDATE_BOUND_TYPED_VALUE_PRODUCER_1_0.json'
+      - 'docs/pass219/PASS_219_I157_CANDIDATE_BOUND_TYPED_VALUE_PRODUCER_1_0.md'
+      - '.github/workflows/pass219-i157-candidate-bound-typed-value-producer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typed-candidate-value-producer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse I157 producer and benchmark
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py \
+            benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py \
+            tests/pass219/test_pass219_i157_candidate_bound_typed_value_graph.py
+
+      - name: Reject float and destructive scalarization surfaces
+        run: |
+          ! grep -En 'math\.sqrt|numpy|decimal\.Decimal|float\(' \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py
+          grep -F 'ordinary_scalar_remainder_identity_claimed' \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py
+          grep -F 'A_or_B_definitionally_P2' \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py
+          grep -F 'ordinary_scalar_x_squared_assumed' \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py
+          grep -F 'full_i156_ratio_packet_eligible' \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py
+
+      - name: Run I157 dependency-scoped tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i157_candidate_bound_typed_value_graph.py
+
+      - name: Run public producer self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from hhs_runtime.pass219.typed_full_symbolic_candidate_values import (
+              candidate_bound_full_symbolic_value_producer_self_test,
+          )
+          result = candidate_bound_full_symbolic_value_producer_self_test()
+          assert result["ok"] is True
+          assert result["canonical_monolithic_proof"] is False
+          assert result["vm81_mutation_authority"] is False
+          assert result["hash72_mint_authority"] is False
+          assert result["hash216_persistence_authority"] is False
+          print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Emit I157 typed value graph benchmark
+        run: |
+          mkdir -p artifacts/pass219/i157
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py \
+            --output artifacts/pass219/i157/typed_candidate_value_graph.json
+          cat artifacts/pass219/i157/typed_candidate_value_graph.json
+
+      - name: Enforce benchmark authority boundary
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/pass219/i157/typed_candidate_value_graph.json")
+          row=json.loads(p.read_text())
+          assert row["schema"] == "HHS_PASS219_I157_TYPED_CANDIDATE_VALUE_GRAPH_BENCHMARK_V1"
+          assert row["result"] == "PASS"
+          assert row["term_count"] == 15
+          assert row["join_count"] == 10
+          assert row["typed_domain_count"] >= 7
+          assert row["join_status"] == {"PROVED": 5, "UNRESOLVED": 5, "REJECTED": 0}
+          assert row["graph_decision"] == "UNRESOLVED"
+          assert row["i156_full_ratio_packet_eligible"] is False
+          assert row["scalar_coercion_used"] is False
+          assert row["modular_remainder_scalarization_used"] is False
+          assert row["source_A_or_B_definitionally_P2"] is False
+          assert row["ordered_xy_yx_distinct"] is True
+          assert row["fixed_search_space"]["changed"] is False
+          assert row["physical_full_manifold_enumeration_claim"] is False
+          authority=row["authority"]
+          assert authority["canonical_monolithic_proof"] is False
+          assert authority["vm81_execution_verified"] is False
+          assert authority["vm81_mutation_authority"] is False
+          assert authority["hash72_execution_receipt_verified"] is False
+          assert authority["hash72_mint_authority"] is False
+          assert authority["hash216_persistence_authority"] is False
+          assert authority["deterministic_replay_verified"] is False
+          assert authority["floating_point_authority"] is False
+          assert len(row["receipt_sha256"]) == 64
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i157-candidate-bound-typed-value-producer-${{ github.sha }}
+          path: artifacts/pass219/i157/typed_candidate_value_graph.json
+          if-no-files-found: error
+          retention-days: 90
