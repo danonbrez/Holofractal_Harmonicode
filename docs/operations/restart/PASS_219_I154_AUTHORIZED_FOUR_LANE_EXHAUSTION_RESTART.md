@@ -119,3 +119,99 @@ If interrupted:
 
 Current implementation blocker: none.
 Current authority blocker: non-test Pass169 provider and I154 local-P/gate export are absent.
+
+
+## Feature validation
+
+Dependency-scoped I154 validation is terminal green:
+
+- validated implementation head: `f06e75a46375c3b13ede76f44e5196fad3b0097a`
+- workflow run: `33760589273`
+- job: `100665625029`
+- conclusion: SUCCESS
+- artifact: `9895265718`
+- artifact SHA-256: `f8f97265d7bb7857b07aac60d018de767dd2fb569f952fcfadc9040273cfdff3`
+
+Run-specific evidence:
+`evidence/pass219/PASS_219_I154_FEATURE_VALIDATION_33760589273.json`
+
+Exact artifact receipt SHA-256 values:
+```text
+production_provider_probe.json
+1996b12d69c9b794ca412d481d0ec48620de1b666c5c058591803d0638205887
+
+test_fixture_provider_probe.json
+cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e
+
+authorized_four_lane_exhaustion_benchmark.json
+892c04e9a356ebfdd3cae37caa46b139108f8828741d47dfe306618573d0db74
+```
+
+Production probe result:
+```text
+classification                     = BLOCKED_PROVIDER_UNAVAILABLE
+binding_decision                   = UNRESOLVED
+binding_reason_mask                = 1
+pass159_provenance_exact           = true
+runtime_provider_available         = false
+pass169_authority_verified         = false
+boolean_gate_results_available     = false
+membrane_input_ready               = false
+canonical_monolithic_proof         = false
+whole_equation_propagated          = false
+i154_local_snapshot_binding        = false
+i154_gate_vector_export            = false
+i154_planner_input_ready           = false
+```
+
+The real production effective-exhaustion measurement therefore remains:
+
+`NOT MEASURED / BLOCKED REAL AUTHORITY INPUT`
+
+with authoritative workload count `0`.
+
+No `81/7` production conclusion was manufactured.
+
+The test-only provider probe exercised the legacy verified-authority branch:
+```text
+runtime_provider_available         = true
+binding_decision                   = PROPAGATE
+pass169_authority_verified         = true
+boolean_gate_results_available     = true
+membrane_input_ready               = true
+canonical_monolithic_proof         = true
+test_fixture_is_authority          = false
+i154_planner_input_ready           = false
+```
+
+The explicit fixture-only planner override then validated all four lanes:
+```text
+baseline work units                = 4096
+effective downstream work units    = 128
+work units avoided                 = 3968
+ratio                              = 32x
+81/7 representative gate           = PASS
+canonical evidence eligible        = false
+planner receipt sha256             = b21fe95c93a621288c996b307394ff2655ee2faa6f2bdbe464dfaa865b485793
+```
+
+This proves the planner arithmetic and I153 integration path without promoting the fixture.
+
+All scoped workflow steps passed:
+1. frozen Pass159 build and tests;
+2. cumulative exact ABI compile;
+3. production no-provider probe;
+4. test-only provider probe;
+5. I154 surface parsing;
+6. I154 + I153 + I152 dependency-scoped tests;
+7. benchmark emission;
+8. fail-closed authority enforcement;
+9. artifact sealing.
+
+Next action:
+- reconcile current main;
+- open the I154 integration PR with an expected-head guard;
+- merge if cleanly mergeable;
+- validate I154 on exact main;
+- let I151 observe the new I154 benchmark surface and seal its next append-only history record;
+- do not treat the authority blocker as an implementation failure.
