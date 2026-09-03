@@ -382,3 +382,96 @@ Next integration action:
 Next implementation boundary:
 
 `REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS`
+
+
+## Exact-main closure
+
+Functional merge:
+
+- PR: `#383`
+- exact functional main: `cb092a81e6deab8799690812cdcb576e187f04e9`
+
+### I158 exact-main
+
+- run: `33784376105`
+- job: `100745483242`
+- conclusion: SUCCESS
+- artifact: `9904834010`
+- artifact SHA-256: `8d24f601a8e5bc9d54c73234f2faa64015d4e3b1b8c923fad9b38a1998aa7962`
+- benchmark file SHA-256: `3920b4e6fb4c9e9af1e3b555366143cab5dc6844d6331a025f03d249e1af9e48`
+
+Exact-main benchmark reproduced the feature identities:
+
+```text
+receipt
+22013658f372082f519068d37b28cf9bd7a36ea1f0f098f0537f1d675bd79d86
+
+execution membrane
+276975fe93f0bbfb1ff45eb5509f8748a2f52e99824dfa214883f93fb8385d92
+
+input I157 graph
+8749005574e8e1e0b451ae1ecfca15f1b46092368635246b2131a3141d992216
+
+candidate binding
+4cbb13ea614c7c391b84acf0c64ae668369ef38c42b59a6f1250eda22fc89c10
+```
+
+Exact-main state:
+
+```text
+PROVED=5
+UNRESOLVED=5
+REJECTED=0
+newly resolved modular pivots=0
+conventional matches=1
+conventional mismatches=1
+left conventional projection=0
+right conventional projection=1
+conventional projection has Harmonicode authority=false
+decision=UNRESOLVED_TYPED_SEMANTICS
+```
+
+Exact-main evidence:
+
+`evidence/pass219/PASS_219_I158_EXACT_MAIN_33784376105.json`
+
+### I151 cumulative history
+
+- run: `33784376272`
+- job: `100745483894`
+- conclusion: SUCCESS
+- artifact: `9904830500`
+- artifact SHA-256: `2b99684800782560c7abdf2271d4cc08915401c3954f97d838541b4a9148746a`
+
+Append-only transition:
+
+```text
+source lines=10
+source SHA-256=97a12e5976a4ac8d4a97676ad887f565f0e78f46ee9dff03594a810e025502ee
+previous entry SHA-256=07ab8af96b6cd7f39c35ed6c19a073366e8716d610db006adb7126af70587506
+
+output lines=11
+output SHA-256=83c1f4f8dda1c2128437536dba4a54a93a782bd97dbcc4defe1b70bb6c5ea9f6
+new entry SHA-256=f2d035c47eb059445c8a14ec506ba0531dbf6a63901f643ffe54d9aa7d39b05a
+
+inventory surfaces=32
+inventory root=887a84fe039df9c939e1d33552b1654afb5177cf71505f1f3d64c44e61c7ae65
+
+I158 benchmark source
+bytes=6153
+sha256=f16fdd4b3eedbb57c37ec39e46d0c29e725753c647c5e35711fe0acb8c069201
+```
+
+Run evidence:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_RUN_33784376272_AFTER_I158.json`
+
+The exact emitted eleventh history line is appended to the canonical I151 JSONL.
+
+### I158 closure classification
+
+`IMPLEMENTED / SEMANTICALLY_FALSIFIED-AND-REPAIRED / FEATURE-GREEN / MERGED / EXACT-MAIN-GREEN / HISTORY-APPENDED / EVIDENCE-SEALED`
+
+Next cumulative boundary:
+
+`REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS`
