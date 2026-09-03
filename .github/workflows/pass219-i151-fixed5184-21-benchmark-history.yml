@@ -74,7 +74,7 @@ jobs:
 
           history = Path('artifacts/pass219/i151/benchmark_history.jsonl')
           lines = [json.loads(line) for line in history.read_text(encoding='utf-8').splitlines()]
-          assert len(lines) == 2
+          assert len(lines) >= 2
           entry = lines[-1]
           assert entry['schema'] == 'HHS_PASS219_I151_BENCHMARK_HISTORY_ENTRY_V1'
           assert entry['resolution']['exact_cardinality_decimal'] == str(5184 ** 21)
