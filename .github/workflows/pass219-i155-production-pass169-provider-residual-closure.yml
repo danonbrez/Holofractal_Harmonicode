@@ -1,0 +1,242 @@
+name: Pass 219 I155 Production Pass169 Provider Residual Closure
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i155-production-pass169-provider-residual-closure
+    paths:
+      - 'contracts/pass219/PASS_219_I155_PRODUCTION_PASS169_PROVIDER_RESIDUAL_CLOSURE_1_0.json'
+      - 'docs/pass219/PASS_219_I155_PRODUCTION_PASS169_PROVIDER_RESIDUAL_CLOSURE_1_0.md'
+      - 'hhs_runtime/include/hhs_pass219_pass169_runtime_provider_1_21_13.h'
+      - 'hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c'
+      - 'hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h'
+      - 'hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c'
+      - 'tools/pass219/pass219_i154_pass169_provider_probe.c'
+      - 'tests/pass219/test_pass219_i155_production_pass169_provider_residual.c'
+      - 'benchmarks/pass219/pass219_i155_production_provider_residual_benchmark.py'
+      - 'benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py'
+      - '.github/workflows/pass219-i155-production-pass169-provider-residual-closure.yml'
+      - '.github/workflows/pass219-i154-authorized-four-lane-exhaustion-planner.yml'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
+      - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc'
+      - 'hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-provider-residual-closure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Enforce provider source authority boundary
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_pass169_runtime_provider_1_21_13.h \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            tests/pass219/test_pass219_i155_production_pass169_provider_residual.c
+          grep -F 'HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1' \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c
+          grep -F 'HHS_UQCEL_RESIDUAL_MONOLITHIC_EQUALITY_CHAIN' \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c
+          grep -F 'HHS_EXACT_PASS219_PASS169_BINDING_REASON_FULL_SYMBOLIC_UNRESOLVED' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+
+      - name: Build frozen Pass159 unchanged
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i155-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i155-build --parallel 2
+          ctest --test-dir /tmp/pass159-i155-build --output-on-failure
+
+      - name: Compile cumulative exact ABI unchanged
+        run: |
+          mkdir -p /tmp/pass219-i155 artifacts/pass219/i155
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i155/exact.o
+
+      - name: Run production provider residual conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            tests/pass219/test_pass219_i155_production_pass169_provider_residual.c \
+            /tmp/pass219-i155/exact.o \
+            -L/tmp/pass159-i155-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i155-build \
+            -o /tmp/pass219-i155/provider-conformance
+          /tmp/pass219-i155/provider-conformance \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Emit production provider probe
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I154_TEST_FIXTURE_PROVIDER=0 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            tools/pass219/pass219_i154_pass169_provider_probe.c \
+            /tmp/pass219-i155/exact.o \
+            -L/tmp/pass159-i155-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i155-build \
+            -o /tmp/pass219-i155/production-probe
+          /tmp/pass219-i155/production-probe \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i155/production_provider_probe.json
+          cat artifacts/pass219/i155/production_provider_probe.json
+
+      - name: Preserve test-only provider plumbing
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I154_TEST_FIXTURE_PROVIDER=1 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c \
+            tools/pass219/pass219_i154_pass169_provider_probe.c \
+            /tmp/pass219-i155/exact.o \
+            -L/tmp/pass159-i155-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i155-build \
+            -o /tmp/pass219-i155/fixture-probe
+          /tmp/pass219-i155/fixture-probe \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i155/test_fixture_provider_probe.json
+
+      - name: Parse benchmark surfaces
+        run: |
+          python -m py_compile benchmarks/pass219/pass219_i155_production_provider_residual_benchmark.py
+          python -m py_compile benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py
+
+      - name: Run dependency-scoped I152-I154 regressions
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i154_authorized_four_lane_exhaustion_planner.py \
+            tests/pass219/test_pass219_i153_local_global_equation_search_filter.py \
+            tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py
+
+      - name: Emit repaired I154 blocked-state benchmark
+        run: |
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py \
+            artifacts/pass219/i155/production_provider_probe.json \
+            artifacts/pass219/i155/test_fixture_provider_probe.json \
+            artifacts/pass219/i155/repaired_i154_authorized_four_lane_exhaustion_benchmark.json
+
+      - name: Emit I155 provider residual benchmark
+        run: |
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i155_production_provider_residual_benchmark.py \
+            artifacts/pass219/i155/production_provider_probe.json \
+            artifacts/pass219/i155/production_provider_residual_benchmark.json
+          cat artifacts/pass219/i155/production_provider_residual_benchmark.json
+
+      - name: Enforce I155 exact closure boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract=json.loads(Path(
+              'contracts/pass219/PASS_219_I155_PRODUCTION_PASS169_PROVIDER_RESIDUAL_CLOSURE_1_0.json'
+          ).read_text(encoding='utf-8'))
+          probe=json.loads(Path(
+              'artifacts/pass219/i155/production_provider_probe.json'
+          ).read_text(encoding='utf-8'))
+          i154=json.loads(Path(
+              'artifacts/pass219/i155/repaired_i154_authorized_four_lane_exhaustion_benchmark.json'
+          ).read_text(encoding='utf-8'))
+          i155=json.loads(Path(
+              'artifacts/pass219/i155/production_provider_residual_benchmark.json'
+          ).read_text(encoding='utf-8'))
+
+          assert probe['provider_origin'] == 'REPOSITORY_PRODUCTION_PASS169_VM81_PROVIDER'
+          assert probe['runtime_provider_available'] is True
+          assert probe['classification'] == 'BLOCKED_FULL_SYMBOLIC_RESIDUAL'
+          assert probe['binding_decision'] == 'UNRESOLVED'
+          assert probe['binding_reason_mask'] == 512
+          assert probe['pass159_provenance_exact'] is True
+          assert probe['pass169_authority_verified'] is False
+          assert probe['boolean_gate_results_available'] is False
+          assert probe['membrane_input_ready'] is False
+          assert probe['canonical_monolithic_proof'] is False
+          assert probe['whole_equation_propagated'] is False
+          assert probe['i154_local_snapshot_binding_available'] is False
+          assert probe['i154_gate_vector_export_available'] is False
+          assert probe['i154_planner_input_ready'] is False
+
+          assert i154['production_measurement']['status'] == 'BLOCKED_FULL_SYMBOLIC_RESIDUAL'
+          assert i154['production_measurement']['runtime_provider_available'] is True
+          assert i154['production_measurement']['authoritative_workload_count'] == 0
+          assert i154['production_measurement']['effective_exhaustion_work_measured'] is False
+          assert i154['production_measurement']['within_81_over_7_claim'] is None
+
+          assert i155['provider_absence_blocker_cleared'] is True
+          assert i155['production_provider_implementation_present'] is True
+          assert i155['current_blocker'] == 'FULL_SYMBOLIC_UQCEL_MONOLITHIC_EQUALITY_CHAIN'
+          assert i155['binding']['reason_mask'] == 512
+          assert i155['binding']['pass169_authority_verified'] is False
+          assert i155['full_symbolic']['uqcel_supported'] is False
+          assert i155['i154_real_exhaustion']['authoritative_workload_count'] == 0
+          assert i155['i154_real_exhaustion']['effective_exhaustion_work_measured'] is False
+          assert i155['i154_real_exhaustion']['within_81_over_7_claim'] is None
+          assert all(value is False for value in i155['authority'].values())
+
+          assert contract['provider_transition']['provider_absence_blocker_cleared'] is True
+          assert contract['current_authority_state']['production_provider_implementation_present'] is True
+          assert contract['current_authority_state']['full_symbolic_uqcel_supported'] is False
+          assert contract['fixed_search_space']['changed'] is False
+          PY
+
+      - name: Publish I155 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 I155 production Pass169 provider residual closure
+          - Production provider implementation: PRESENT / NON-TEST
+          - Prior PROVIDER_UNAVAILABLE blocker: CLEARED
+          - Current blocker: FULL_SYMBOLIC_UQCEL_MONOLITHIC_EQUALITY_CHAIN
+          - Binder: UNRESOLVED / reason mask 512
+          - Pass159 provenance: EXACT
+          - Pass169 canonical proof: NOT YET
+          - Authoritative four-lane workloads measured: 0
+          - Effective exhaustion work: NOT MEASURED
+          - Production 81/7 conclusion: NONE
+          - Fixed search cardinalities changed: NO
+          - VM81/Hash72/Hash216 authority promoted: NO
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i155-production-pass169-provider-residual-closure-${{ github.sha }}
+          path: |
+            artifacts/pass219/i155/production_provider_probe.json
+            artifacts/pass219/i155/test_fixture_provider_probe.json
+            artifacts/pass219/i155/repaired_i154_authorized_four_lane_exhaustion_benchmark.json
+            artifacts/pass219/i155/production_provider_residual_benchmark.json
+          if-no-files-found: error
+          retention-days: 90
