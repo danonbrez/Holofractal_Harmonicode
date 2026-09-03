@@ -1,0 +1,152 @@
+name: Pass 219 I158 Typed-Domain Join Execution
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i158-typed-domain-join-execution
+    paths:
+      - 'hhs_runtime/pass219/typed_domain_join_executor.py'
+      - 'hhs_runtime/pass219/typed_full_symbolic_candidate_values.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'tests/pass219/test_pass219_i158_typed_domain_join_execution.py'
+      - 'benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py'
+      - 'contracts/pass219/PASS_219_I158_TYPED_DOMAIN_JOIN_EXECUTION_1_0.json'
+      - 'docs/pass219/PASS_219_I158_TYPED_DOMAIN_JOIN_EXECUTION_1_0.md'
+      - '.github/workflows/pass219-i158-typed-domain-join-execution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typed-domain-join-execution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse I158 executor, benchmark, and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/typed_domain_join_executor.py \
+            benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py \
+            tests/pass219/test_pass219_i158_typed_domain_join_execution.py
+
+      - name: Reject approximate or scalarizing admission paths
+        run: |
+          ! grep -En 'math\.sqrt|numpy|decimal\.Decimal|float\(|isclose|tolerance' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+          grep -F 'reverse_inference_authorized' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+          grep -F 'ordinary_scalar_remainder_identity_claimed' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+          grep -F 'PASS191_X_SQUARED_PHASE_BINDING_REQUIRED' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+          grep -F 'COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+          grep -F 'HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED' \
+            hhs_runtime/pass219/typed_domain_join_executor.py
+
+      - name: Run I158 dependency-scoped tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i158_typed_domain_join_execution.py
+
+      - name: Run public I158 self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from hhs_runtime.pass219.typed_domain_join_executor import (
+              typed_domain_join_executor_self_test,
+          )
+          row = typed_domain_join_executor_self_test()
+          assert row["ok"] is True
+          assert row["decision"] == "UNRESOLVED_TYPED_SEMANTICS"
+          assert row["proved"] == 5
+          assert row["unresolved"] == 5
+          assert row["rejected"] == 0
+          assert row["newly_resolved_modular_pivots"] == 0
+          assert row["conventional_modular_projection_matches"] == 1
+          assert row["conventional_modular_projection_mismatches"] == 1
+          assert row["canonical_monolithic_boundary_proof"] is False
+          assert row["vm81_mutation_authority"] is False
+          assert row["hash72_mint_authority"] is False
+          assert row["hash216_persistence_authority"] is False
+          print(json.dumps(row, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Emit I158 typed-domain benchmark
+        run: |
+          mkdir -p artifacts/pass219/i158
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py \
+            --output artifacts/pass219/i158/typed_domain_join_execution.json
+          cat artifacts/pass219/i158/typed_domain_join_execution.json
+
+      - name: Enforce I158 benchmark authority boundary
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path(
+              "artifacts/pass219/i158/typed_domain_join_execution.json"
+          ).read_text())
+          assert row["schema"] == "HHS_PASS219_I158_TYPED_DOMAIN_JOIN_EXECUTION_BENCHMARK_V1"
+          assert row["result"] == "PASS"
+          assert row["P"] == 30
+          assert row["p"] == 29
+          assert row["q"] == 31
+          assert row["delta"] == 1
+          assert row["harmonic_value"] == 26970
+          assert row["modulus"] == 899
+          assert row["left_conventional_modular_projection"] == 0
+          assert row["right_conventional_modular_projection"] == 1
+          assert row["modular_target_representative"] == 1
+          assert row["left_conventional_projection_status"] == "REJECTED"
+          assert row["right_conventional_projection_status"] == "PROVED"
+          assert row["proved_before_i158"] == 5
+          assert row["proved_after_i158"] == 5
+          assert row["newly_resolved_modular_pivots"] == 0
+          assert row["conventional_modular_projection_matches"] == 1
+          assert row["conventional_modular_projection_mismatches"] == 1
+          assert row["unresolved_after_i158"] == 5
+          assert row["rejected_after_i158"] == 0
+          assert row["decision"] == "UNRESOLVED_TYPED_SEMANTICS"
+          assert len(row["projection_witness_sha256s"]) == 2
+          assert all(len(value) == 64 for value in row["projection_witness_sha256s"])
+          assert row["scalar_coercion_used"] is False
+          assert row["reverse_inference_authorized"] is False
+          assert row["ordinary_scalar_remainder_identity_claimed"] is False
+          assert row["physical_full_manifold_enumeration_claim"] is False
+          assert row["conventional_projection_authorized_for_harmonicode_join"] is False
+          assert row["candidate_join_status_derived_from_conventional_projection"] is False
+          assert row["next_boundary"] == "REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS"
+          assert len(row["remaining_blockers"]) == 5
+          authority=row["authority"]
+          assert authority["typed_join_execution_complete"] is False
+          assert authority["canonical_monolithic_boundary_proof"] is False
+          assert authority["pass169_terminal_proof"] is False
+          assert authority["vm81_execution_verified"] is False
+          assert authority["vm81_mutation_authority"] is False
+          assert authority["hash72_execution_receipt_verified"] is False
+          assert authority["hash72_mint_authority"] is False
+          assert authority["hash216_persistence_authority"] is False
+          assert authority["deterministic_replay_verified"] is False
+          assert authority["floating_point_authority"] is False
+          assert len(row["receipt_sha256"]) == 64
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i158-typed-domain-join-execution-${{ github.sha }}
+          path: artifacts/pass219/i158/typed_domain_join_execution.json
+          if-no-files-found: error
+          retention-days: 90
