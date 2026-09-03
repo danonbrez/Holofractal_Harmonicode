@@ -1,0 +1,92 @@
+name: Pass 219 I150 Pass 176 Module Evaluation Probe
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration150-pass176-frozen-ide-reconciliation
+    paths:
+      - 'applications/holofractal_harmonizer/ux_lab/pass176_module_evaluation_probe.py'
+      - '.github/workflows/pass219-i150-pass176-module-evaluation-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i150-pass176-module-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  module-evaluation-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765/pass176-ide/'
+      HHS_COGNITION_AUTO_TICK: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded probe dependencies
+        run: |
+          timeout 300s python -m pip install fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' playwright
+          timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Build inherited exact runtime authority
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Probe Pass 176 module evaluation frontier
+        run: |
+          set -euo pipefail
+          python -m uvicorn hhs_backend.runtime_os_application_server:app --host 127.0.0.1 --port 8765 --workers 1 --log-level warning > /tmp/hhs-pass176-module-probe-server.log 2>&1 &
+          SERVER_PID=$!
+          cleanup() {
+            kill "$SERVER_PID" 2>/dev/null || true
+            wait "$SERVER_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          ready=0
+          for attempt in $(seq 1 60); do
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              cat /tmp/hhs-pass176-module-probe-server.log
+              exit 1
+            fi
+            if curl --connect-timeout 1 --max-time 5 -fsS http://127.0.0.1:8765/api/product/health >/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/hhs-pass176-module-probe-server.log
+            exit 1
+          fi
+          timeout --signal=TERM --kill-after=10s 90s python applications/holofractal_harmonizer/ux_lab/pass176_module_evaluation_probe.py
+
+      - name: Preserve probe diagnostics
+        if: always()
+        run: |
+          mkdir -p evidence/pass176/i150/module-probe
+          cp applications/holofractal_harmonizer/evidence/pass176/module-evaluation-probe.json evidence/pass176/i150/module-probe/ 2>/dev/null || true
+          cp /tmp/hhs-pass176-module-probe-server.log evidence/pass176/i150/module-probe/server.log 2>/dev/null || true
+          printf '{"schema":"PASS_219_I150_MODULE_PROBE_MANIFEST_V1","head":"%s","run_id":"%s","run_attempt":"%s"}\n' "$(git rev-parse HEAD)" "${{ github.run_id }}" "${{ github.run_attempt }}" > evidence/pass176/i150/module-probe/manifest.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i150-pass176-module-evaluation-probe
+          path: evidence/pass176/i150/module-probe/
+          if-no-files-found: error
+          retention-days: 30
