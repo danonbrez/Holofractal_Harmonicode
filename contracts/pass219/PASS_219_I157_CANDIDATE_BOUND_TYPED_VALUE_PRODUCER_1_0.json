@@ -1,0 +1,120 @@
+{
+  "schema": "HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_PRODUCER_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I157",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "ae566d6581f11ce1d14cb2a72e798340c26ec751",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "HHS-P219-MONOLITHIC-UQCEL-RESIDUAL-1.15.0",
+    "HHS-P219-MONOLITHIC-CONSTRAINT-ABI-1.20",
+    "PASS_219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER",
+    "PASS_219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING"
+  ],
+  "purpose": "Produce the fifteen frozen monolithic source terms as one local-P- and Pass159-provenance-bound typed candidate value graph without replacing typed HARMONICODE joins with ordinary scalar equality.",
+  "semantic_repair": {
+    "scalar_full_chain_model_authorized": false,
+    "reason": "The frozen source joins rational, modular, tensor, ordered-phase, symbolic-root, and boundary domains. Pass 219 1.15 forbids replacing that source with a simplified scalar equation.",
+    "i156_ratio_surface_role": "BOUNDED_EXACT_RATIONAL_PROJECTION_WITNESS_ONLY_WITHIN_I157",
+    "source_A_semantics": "COMPLETE_MONOLITHIC_LEFT_BOUNDARY",
+    "source_B_semantics": "COMPLETE_MONOLITHIC_RIGHT_BOUNDARY",
+    "A_or_B_definitionally_P2": false,
+    "P2_MOD_pq_is_ordinary_remainder_scalar": false
+  },
+  "input_binding": {
+    "local_snapshot_schema": "HHS_PASS219_I153_LOCAL_HASH216_5184_P_SNAPSHOT_V1",
+    "pass159_provenance_schema": "HHS_PASS219_I157_PASS159_PROVENANCE_BINDING_V1",
+    "candidate_symbol_schema": "HHS_PASS219_I157_CANDIDATE_SYMBOL_ENVIRONMENT_V1",
+    "required_pass159_stages": [
+      "source",
+      "tokens",
+      "cst",
+      "ast",
+      "type_environment",
+      "constraint_graph",
+      "hir",
+      "vmir"
+    ],
+    "global_symbol_environment_root_required": true,
+    "local_P_must_equal_snapshot_P": true,
+    "downstream_authority_flags_must_be_false": true
+  },
+  "typed_domains": [
+    "EXACT_RATIONAL",
+    "MODULAR_STATE",
+    "EXACT_TENSOR_PROJECTION",
+    "ORDERED_PHASE",
+    "TENSOR_PHASE_QUOTIENT",
+    "SYMBOLIC_MODULAR_QUOTIENT",
+    "SYMBOLIC_BOUNDARY_RATIO",
+    "SYMBOLIC_RADICAL",
+    "SYMBOLIC_BOUNDARY"
+  ],
+  "implementation": {
+    "module": "hhs_runtime/pass219/typed_full_symbolic_candidate_values.py",
+    "public_function": "produce_candidate_bound_value_graph",
+    "public_service": "runtime.pass219.candidate_bound_typed_full_symbolic_values",
+    "benchmark": "benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py",
+    "term_count": 15,
+    "ordered_join_count": 10,
+    "deterministic_graph_identity": "SHA256_DIAGNOSTIC_ONLY",
+    "floating_point_authority": false
+  },
+  "term_policy": {
+    "ordinary_exact_rational_terms": [
+      "T3_MINUS_T",
+      "P3_MINUS_P_OVER_DELTA",
+      "T3_MINUS_T_OVER_DELTA",
+      "M2_MINUS_M",
+      "S",
+      "S_SUBSTITUTION_RHS",
+      "DELTA_OVER_P"
+    ],
+    "modular_terms": [
+      "P2_MOD_PQ",
+      "MOD_F_OVER_U_OVER_BT"
+    ],
+    "tensor_phase_terms": [
+      "MATRIX_PLUS_XY_OVER_AT"
+    ],
+    "symbolic_boundary_terms": [
+      "AB_OVER_P2",
+      "OUTER_LHS",
+      "TERMINAL_RHS"
+    ],
+    "symbolic_radical_terms": [
+      "SQRT_AB",
+      "DELTA_ROOT_RHS"
+    ]
+  },
+  "join_policy": {
+    "exact_rational_binding": "COMPARE_EXACT_FRACTIONS",
+    "modular_pivot": "PRESERVE_TYPED_MODULAR_STATE_NO_REMAINDER_SCALARIZATION",
+    "typed_constraint_join": "JOIN_EXACT_TYPED_WITNESSES_IN_ONE_CANDIDATE_TRANSACTION",
+    "ab_root": "REQUIRES_SYMBOLIC_AB_ROOT_EXECUTION_ADAPTER",
+    "monolithic_boundary": "REQUIRES_COMPLETE_BOUNDARY_EXECUTION",
+    "delta_radical": "REQUIRES_EXACT_PHASE_EXPONENT_RADICAL_ADAPTER",
+    "unresolved_is_false": false,
+    "rejected_is_unresolved": false
+  },
+  "authority_boundary": {
+    "canonical_monolithic_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "fixed_search_space": {
+    "target": "72^42=5184^21",
+    "working_manifold": "3*72^72",
+    "route_multiplicity": "3*72^30",
+    "required_reduction_ratio": "81/7",
+    "changed": false
+  },
+  "expected_next_boundary": "TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF"
+}
