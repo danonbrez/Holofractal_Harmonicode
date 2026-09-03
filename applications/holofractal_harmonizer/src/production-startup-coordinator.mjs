@@ -1,5 +1,6 @@
 import './mobile-first-paint-fix.mjs';
 import './theme-bootstrap.mjs';
+import { startPublicBoot } from './public-boot.mjs';
 
 const deferredProjectionState = {
   pass196_integration_projection_loaded: false,
@@ -126,7 +127,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V14',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V15',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -149,35 +150,21 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
+  synchronous_public_boot_handoff: true,
   frontend_is_authority: false,
 });
 
-void import('./public-boot.mjs')
-  .then(({ startPublicBoot }) => {
-    const publicBoot = startPublicBoot();
-    void publicBoot.allSettled.finally(() => {
-      void loadDeferredProjections().then(() => {
-        Object.assign(deferredProjectionState, {
-          pass196_integration_projection_loaded: deferredProjectionState.pass196_integration_projection_loaded,
-          pass197_calibration_projection_loaded: deferredProjectionState.pass197_calibration_projection_loaded,
-          pass198_calibration_registry_projection_loaded: deferredProjectionState.pass198_calibration_registry_projection_loaded,
-          pass199_distributed_calibration_projection_loaded: deferredProjectionState.pass199_distributed_calibration_projection_loaded,
-          pass200a_proof_carrying_optimization_projection_loaded: deferredProjectionState.pass200a_proof_carrying_optimization_projection_loaded,
-          pass200b_governed_canary_projection_loaded: deferredProjectionState.pass200b_governed_canary_projection_loaded,
-          pass200c_guarded_active_projection_loaded: deferredProjectionState.pass200c_guarded_active_projection_loaded,
-          pass201_public_api_federation_projection_loaded: deferredProjectionState.pass201_public_api_federation_projection_loaded,
-          pass203_hydrated_mainframe_projection_loaded: deferredProjectionState.pass203_hydrated_mainframe_projection_loaded,
-        });
-      });
-    });
-    return publicBoot;
-  })
-  .catch((error) => {
-    console.error('HHS public module boot failed', error);
-    window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
-      detail: {
-        classification: 'HHS_PUBLIC_MODULE_BOOT_FAILED',
-        message: error?.message || String(error),
-      },
-    }));
+try {
+  const publicBoot = startPublicBoot();
+  void publicBoot.allSettled.finally(() => {
+    void loadDeferredProjections();
   });
+} catch (error) {
+  console.error('HHS public module boot failed', error);
+  window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
+    detail: {
+      classification: 'HHS_PUBLIC_MODULE_BOOT_FAILED',
+      message: error?.message || String(error),
+    },
+  }));
+}
