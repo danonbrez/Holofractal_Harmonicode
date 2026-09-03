@@ -39,14 +39,22 @@ const DEFERRED_PROJECTION_MODULES = Object.freeze([
   ['pass203_hydrated_mainframe_projection_loaded', './pass203-mainframe.mjs'],
 ]);
 
+function yieldBrowserTurn() {
+  return new Promise((resolve) => window.setTimeout(resolve, 0));
+}
+
 async function loadDeferredProjections() {
-  const results = await Promise.allSettled(
-    DEFERRED_PROJECTION_MODULES.map(async ([flag, modulePath]) => {
+  const results = [];
+  for (const [flag, modulePath] of DEFERRED_PROJECTION_MODULES) {
+    try {
       await import(modulePath);
       deferredProjectionState[flag] = true;
-      return modulePath;
-    }),
-  );
+      results.push({ status: 'fulfilled', value: modulePath });
+    } catch (reason) {
+      results.push({ status: 'rejected', reason });
+    }
+    await yieldBrowserTurn();
+  }
   window.dispatchEvent(new CustomEvent('hhs:deferred-projections:settled', {
     detail: {
       schema: 'HHS_DEFERRED_PROJECTION_BOOT_V1',
@@ -147,6 +155,7 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   deferred_projection_boot: true,
   deferred_projection_ready_compat: DEFERRED_PROJECTION_READY_COMPAT,
   deferred_projection_boot_waits_for_public_graph: true,
+  deferred_projection_boot_yields_between_modules: true,
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
