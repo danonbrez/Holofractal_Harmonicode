@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS219_I152_NONRECURSIVE_TRIGGER_REPAIR_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I152",
+  "verified_main_sha": "f85194329fe8e11c58e10ac264688f190e4b4f4d",
+  "workflow_sha": "efc5bcbbb6b3092d58fb078f63a43eb7504a0e77",
+  "restart_path_present": false,
+  "retained_trigger_paths": [
+    "contracts/pass219/PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION_1_0.json",
+    "docs/pass219/PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION_1_0.md",
+    "hhs_runtime/pass219/fixed_cardinality_optimization.py",
+    "benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py",
+    "tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py",
+    ".github/workflows/pass219-i152-fixed-hash216-manifold-exhaustion.yml"
+  ],
+  "removed_trigger_path": "docs/operations/restart/PASS_219_I152_FIXED_HASH216_MANIFOLD_EXHAUSTION_RESTART.md",
+  "prior_redundant_green_run": 33721763395,
+  "prior_redundant_run_artifact_sha256": "a1dfcc6a1695166dc00f367ae7ca3132aa0a36a4e7c47cdffa5207e481edd3c3",
+  "benchmark_job_steps_changed": false,
+  "result": "PASS"
+}
