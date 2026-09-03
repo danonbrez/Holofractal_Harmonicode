@@ -17,6 +17,7 @@ on:
       - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_bigint.inc'
       - 'tests/pass219/test_pass219_i156_full_symbolic_monolithic_lowering.c'
+      - 'benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py'
       - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
       - 'tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py'
       - '.github/workflows/pass219-i156-full-symbolic-monolithic-lowering.yml'
@@ -98,41 +99,12 @@ jobs:
 
       - name: Emit exact I156 authority receipt
         run: |
-          python - <<'PY'
-          import hashlib, json
-          from pathlib import Path
-          receipt = {
-              "schema": "HHS_PASS219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING_BENCHMARK_V1",
-              "pass": 219,
-              "iteration": "I156",
-              "term_count": 15,
-              "edge_count": 10,
-              "family_count": 8,
-              "required_edge_mask": 1023,
-              "required_family_mask": 255,
-              "residual_mask_for_complete_witness": 0,
-              "exact_cross_multiplication": True,
-              "source_identity_required": True,
-              "pass159_provenance_root_required": True,
-              "ordered_xy_yx_required": True,
-              "legacy_v1_input_sufficient": False,
-              "candidate_value_producer_included": False,
-              "vm81_execution_verified": False,
-              "hash72_execution_receipt_verified": False,
-              "deterministic_replay_verified": False,
-              "canonical_vm81_mutation_authority": False,
-              "canonical_hash72_mint_authority": False,
-              "canonical_hash216_persistence_authority": False,
-              "floating_point_authority": False,
-              "fixed_search_cardinality_changed": False,
-              "result": "PASS",
-          }
-          raw=json.dumps(receipt,sort_keys=True,separators=(",",":")).encode()
-          receipt["receipt_sha256"]=hashlib.sha256(raw).hexdigest()
-          out=Path("artifacts/pass219/i156/full_symbolic_monolithic_lowering.json")
-          out.write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n",encoding="utf-8")
-          print(out.read_text())
-          PY
+          python -m py_compile benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py \
+            artifacts/pass219/i156/conformance.txt \
+            artifacts/pass219/i156/full_symbolic_monolithic_lowering.json
+          cat artifacts/pass219/i156/full_symbolic_monolithic_lowering.json
 
       - uses: actions/upload-artifact@v4
         with:
