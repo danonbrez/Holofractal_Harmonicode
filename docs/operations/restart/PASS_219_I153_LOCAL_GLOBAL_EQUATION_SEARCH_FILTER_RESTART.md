@@ -198,3 +198,94 @@ The marker changes no executable statement, candidate count, gate pattern, arith
 
 Expected exact-main benchmark remains:
 `4096 -> 128 -> 3968 = 32x`.
+
+
+## Exact-main closure
+
+### Integration
+
+PR `#363` merged the validated I153 implementation as:
+
+`eb2992b22010b98999a8ddc24a3c8a040cead407`
+
+GitHub later indexed both expected exact-main workflows for that commit and both were green:
+- I153 run `33744351337`, job `100613303867`, artifact `9889003520`, artifact SHA-256 `bc6c1f96740497734b30cf50c279b286432a27fc644b026a599485d32c233ae9`;
+- I151 run `33744351341`, job `100613303605`, artifact `9889002060`, artifact SHA-256 `444b7ca7538d365f81d9160be72f6b57764635d59a79b4552b39e539ea010e71`.
+
+Because the runs were initially absent from the first API listings, repair-forward PR `#364` added one comment-only benchmark dispatch marker. It changed no executable statement or expected benchmark result and merged as:
+
+`8b6853e922f7c9e0455c841597470cae6f17a911`
+
+The final source blob therefore received a second exact-main pair. The first pair is retained as green provenance but was superseded before canonical I151 history sealing so two branches of the same predecessor are not presented as one append-only chain.
+
+### Final exact-main I153
+
+- repository SHA: `8b6853e922f7c9e0455c841597470cae6f17a911`
+- workflow run: `33744540125`
+- job: `100613897607`
+- result: SUCCESS
+- artifact: `9889078735`
+- artifact SHA-256: `d973e095cc78e00606d965f51433b4b084d5a9cfa4d5eb16a99c4869f7978e9a`
+- benchmark JSON SHA-256: `f0bffc08a6ccc8dbc94b712347cd39fb901e3d2f9244d711b578981a4136b7fe`
+- filter receipt SHA-256: `4e0050e2b7f0e2bc0c1ead9edef1afd3449f530cedcb9b6988ef5f11ccb24ba8`
+
+Exact bounded result:
+
+```text
+candidate_count = 4096
+survivor_count  = 128
+rejected_count  = 3968
+avoided before downstream optimizer = 3968
+candidate reduction = 32x
+bounded synthetic 81/7 gate = PASS
+```
+
+The exact 348-byte equation source remained unchanged and P remained a local Hash216/5184 hydration snapshot. The fixed I152 target, work manifold, and route multiplicity remained unchanged.
+
+Authority remained:
+
+```text
+synthetic truth authority             = false
+full four-lane exhaustion claim       = false
+physical full-manifold enumeration    = false
+canonical VM81 mutation               = false
+canonical Hash72 mint                 = false
+canonical Hash216 persistence         = false
+Pass169 whole-expression authority    = still required
+```
+
+### Final cumulative I151 history
+
+- workflow run: `33744540144`
+- job: `100613897129`
+- result: SUCCESS
+- artifact: `9889074358`
+- artifact SHA-256: `0ca9532a6d134ca01ca8e2cc1e5da1c60fab452f35885af4c0356a4c06c7afad`
+- source history: 5 physical JSONL lines
+- output history: 6 physical JSONL lines
+- source SHA-256: `2e4ac5d78996fbd5d30aeae013e4d20f0fc4cd8d6082354ec5160485ee6e0cc1`
+- output SHA-256: `63f04882caf4d2d5c15f8d2b1095d4c7a26b14e04a3d2ef8da54404ec66a4507`
+- predecessor line SHA-256: `190c51093b59ada9d413555b0f15e0988541e3effb28a1a73d9deb9034276733`
+- benchmark inventory: 24 surfaces
+- inventory SHA-256 root: `f5ef48455549727af5132a7a9b1ac5c4eb2146a457f0c54b6c90a52b92cd7841`
+- final I153 benchmark source SHA-256: `66735dd0e42feec9c18586116ba500c7b4e063ffe8f21d0ee38d3cee89e2da09`
+
+The final I151 run is appended verbatim to:
+`evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY.jsonl`.
+
+### Closure state
+
+The evidence seal branch is:
+`agent/pass219-i153-main-evidence-seal-20260903`
+
+It changes only benchmark-history evidence, run-specific evidence, and this restart record. None are I151 or I153 trigger paths.
+
+After the evidence-only merge, I153 is closed for:
+- local P/Hash216 snapshot binding;
+- global whole-expression witness binding;
+- exact route-index preservation;
+- fail-closed search-space pruning;
+- bounded 32x candidate-count filtering evidence;
+- cumulative benchmark-history registration.
+
+The next unresolved layer is not cardinality definition or source binding. It is the integrated four-lane planner consuming real Pass169/VM81-authorized gate witnesses across representative workloads and measuring resulting effective exhaustion work against the immutable I152 `81/7` envelope.
