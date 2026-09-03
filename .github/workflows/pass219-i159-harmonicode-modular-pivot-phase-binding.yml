@@ -1,0 +1,174 @@
+name: Pass 219 I159 Harmonicode Modular-Pivot Phase Binding
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i159-harmonicode-modular-pivot-phase-binding
+    paths:
+      - 'hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py'
+      - 'hhs_runtime/pass219/typed_domain_join_executor.py'
+      - 'hhs_runtime/pass219/typed_full_symbolic_candidate_values.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'tests/pass219/test_pass219_i159_harmonicode_modular_pivot_phase_binding.py'
+      - 'benchmarks/pass219/pass219_i159_modular_pivot_phase_binding_benchmark.py'
+      - 'contracts/pass219/PASS_219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_1_0.json'
+      - 'docs/pass219/PASS_219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_1_0.md'
+      - 'native_projects/hhs_pass157_ppf_mptc/python/hhs_pass157/parser.py'
+      - 'native_projects/hhs_pass157_ppf_mptc/python/hhs_pass157/model.py'
+      - 'native_projects/hhs_pass157_ppf_mptc/specs/HHS_PASS_157_PPF_MPTC_CONTRACT_v1.1.0.md'
+      - 'docs/pass219/APPENDIX_E_TYPED_ZERO_PIVOT_AND_PHASE_CLOSURE.md'
+      - '.github/workflows/pass219-i159-harmonicode-modular-pivot-phase-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  modular-pivot-phase-binding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse I159 implementation
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py \
+            tests/pass219/test_pass219_i159_harmonicode_modular_pivot_phase_binding.py \
+            benchmarks/pass219/pass219_i159_modular_pivot_phase_binding_benchmark.py
+
+      - name: Enforce typed phase semantics in source
+        run: |
+          ! grep -En 'float\(|math\.sqrt|numpy|isclose|tolerance' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+          grep -F 'HHS_MODULAR_NORMALIZATION' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+          grep -F 'residue_only_authority' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+          grep -F 'ordinary_scalar_zero_equals_one_claimed' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+          grep -F 'P_FOLD_CLOSURE_TO_RENEWED_UNIT' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+          grep -F 'RENEWED_UNIT_PHASE_CLASS_JOIN' \
+            hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py
+
+      - name: Run I159 dependency-scoped tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i159_harmonicode_modular_pivot_phase_binding.py
+
+      - name: Run public I159 self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from hhs_runtime.pass219.harmonicode_modular_pivot_phase_binding import (
+              i159_modular_pivot_self_test,
+          )
+          row = i159_modular_pivot_self_test()
+          assert row["ok"] is True
+          assert row["decision"] == "PARTIALLY_RESOLVED_TYPED_GRAPH"
+          assert row["proved"] == 7
+          assert row["unresolved"] == 3
+          assert row["rejected"] == 0
+          assert row["newly_resolved_modular_pivots"] == 2
+          assert row["left_lane"]["quotient"] == 30
+          assert row["left_lane"]["residue"] == 0
+          assert row["authority_lane"]["quotient"] == 1
+          assert row["authority_lane"]["residue"] == 1
+          assert row["right_lane"]["quotient"] == 79
+          assert row["right_lane"]["residue"] == 1
+          assert row["canonical_monolithic_boundary_proof"] is False
+          assert row["vm81_mutation_authority"] is False
+          assert row["hash72_mint_authority"] is False
+          assert row["hash216_persistence_authority"] is False
+          print(json.dumps(row, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Emit I159 deterministic benchmark
+        run: |
+          mkdir -p artifacts/pass219/i159
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i159_modular_pivot_phase_binding_benchmark.py \
+            --output artifacts/pass219/i159/modular_pivot_phase_binding.json
+          cat artifacts/pass219/i159/modular_pivot_phase_binding.json
+
+      - name: Enforce I159 benchmark boundary
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path(
+              "artifacts/pass219/i159/modular_pivot_phase_binding.json"
+          ).read_text())
+          assert row["schema"] == "HHS_PASS219_I159_MODULAR_PIVOT_PHASE_BINDING_BENCHMARK_V1"
+          assert row["result"] == "PASS"
+          assert row["candidate"] == {
+              "P":30,"p":29,"q":31,"Delta":1,"t":30,"m":267,"modulus_pq":899
+          }
+          assert row["before_i159"] == {
+              "proved":5,"unresolved":5,"rejected":0
+          }
+          assert row["after_i159"] == {
+              "join_count":10,
+              "proved":7,
+              "unresolved":3,
+              "rejected":0,
+              "newly_resolved_modular_pivots":2,
+          }
+          assert row["decision"] == "PARTIALLY_RESOLVED_TYPED_GRAPH"
+          assert row["left_pivot"]["status"] == "PROVED"
+          assert row["left_pivot"]["relation"] == "P_FOLD_CLOSURE_TO_RENEWED_UNIT"
+          assert row["left_pivot"]["left_quotient"] == 30
+          assert row["left_pivot"]["left_residue"] == 0
+          assert row["left_pivot"]["authority_quotient"] == 1
+          assert row["left_pivot"]["authority_residue"] == 1
+          assert row["right_pivot"]["status"] == "PROVED"
+          assert row["right_pivot"]["relation"] == "RENEWED_UNIT_PHASE_CLASS_JOIN"
+          assert row["right_pivot"]["authority_quotient"] == 1
+          assert row["right_pivot"]["authority_residue"] == 1
+          assert row["right_pivot"]["right_quotient"] == 79
+          assert row["right_pivot"]["right_residue"] == 1
+          assert len(row["remaining_blockers"]) == 3
+          guards=row["semantic_guards"]
+          assert guards["conventional_modular_projection_used_as_authority"] is False
+          assert guards["ordinary_scalar_equality_claimed"] is False
+          assert guards["ordinary_scalar_zero_equals_one_claimed"] is False
+          assert guards["residue_only_authority"] is False
+          assert guards["quotients_retained"] is True
+          assert guards["full_phase_lane_identity_claimed"] is False
+          assert guards["typed_phase_relation_only"] is True
+          authority=row["authority"]
+          assert authority["typed_modular_pivot_profile_registered"] is True
+          assert authority["typed_modular_pivots_resolved"] is True
+          assert authority["typed_join_execution_complete"] is False
+          assert authority["canonical_monolithic_boundary_proof"] is False
+          assert authority["pass169_terminal_proof"] is False
+          assert authority["vm81_execution_verified"] is False
+          assert authority["vm81_mutation_authority"] is False
+          assert authority["hash72_execution_receipt_verified"] is False
+          assert authority["hash72_mint_authority"] is False
+          assert authority["hash216_persistence_authority"] is False
+          assert authority["deterministic_replay_verified"] is False
+          assert authority["floating_point_authority"] is False
+          assert row["next_boundary"] == "SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS"
+          assert row["fixed_resolution"] == "72^42=5184^21"
+          assert row["physical_full_manifold_enumeration_claim"] is False
+          assert len(row["receipt_sha256"]) == 64
+          assert len(row["i159_execution_sha256"]) == 64
+          assert len(row["profile_sha256"]) == 64
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i159-modular-pivot-phase-binding-${{ github.sha }}
+          path: artifacts/pass219/i159/modular_pivot_phase_binding.json
+          if-no-files-found: error
+          retention-days: 90

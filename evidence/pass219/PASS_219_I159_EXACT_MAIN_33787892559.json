@@ -1,0 +1,98 @@
+{
+  "schema": "HHS_PASS219_I159_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I159",
+  "repository_sha": "ea878c0913be99c4e1e667dfd7d0e090fd22bc66",
+  "workflow_run_id": 33787892559,
+  "job_id": 100757024504,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9906137794,
+    "name": "pass219-i159-modular-pivot-phase-binding-ea878c0913be99c4e1e667dfd7d0e090fd22bc66",
+    "sha256": "ea503f4f6896877a5479ef91610b2676346336259d3a4611ac65445aba2f73e5",
+    "benchmark_file_sha256": "0d115d5c3ef29d1de75cf75bf3f5b12b5a1206f18e816660083f106b80b68253",
+    "benchmark_file_bytes": 3297
+  },
+  "benchmark": {
+    "receipt_sha256": "c520926bbe19f145da5e16e756ae8513dcff9663ff788211561b7e9b070e6983",
+    "i159_execution_sha256": "d5d01d925baeb49b64c293d37679b3d6d8b3e20c89c970032a88b0f5b40d5f67",
+    "inherited_i158_execution_membrane_sha256": "276975fe93f0bbfb1ff45eb5509f8748a2f52e99824dfa214883f93fb8385d92",
+    "input_typed_value_graph_sha256": "8749005574e8e1e0b451ae1ecfca15f1b46092368635246b2131a3141d992216",
+    "profile_sha256": "1b6a5152f6f6fee89e5c616dd0e80e4b78112695687e8bae6006ffe2f5b2c4ef",
+    "before": {
+      "proved": 5,
+      "unresolved": 5,
+      "rejected": 0
+    },
+    "after": {
+      "join_count": 10,
+      "proved": 7,
+      "unresolved": 3,
+      "rejected": 0,
+      "newly_resolved_modular_pivots": 2
+    },
+    "edge2": {
+      "relation": "P_FOLD_CLOSURE_TO_RENEWED_UNIT",
+      "left_lane": {
+        "quotient": 30,
+        "residue": 0
+      },
+      "authority_lane": {
+        "quotient": 1,
+        "residue": 1
+      },
+      "witness_sha256": "ff78058533b7d2dcec8f977791d4b7d99fdc9e64b6c8c4cf8f8f1efeaebb4745"
+    },
+    "edge3": {
+      "relation": "RENEWED_UNIT_PHASE_CLASS_JOIN",
+      "authority_lane": {
+        "quotient": 1,
+        "residue": 1
+      },
+      "right_lane": {
+        "quotient": 79,
+        "residue": 1
+      },
+      "witness_sha256": "1455fd2c0c75597d421de1d3022eac9e73899bf128303423cbc0ca6b17972b0d"
+    },
+    "remaining_blockers": [
+      {
+        "edge_index": 7,
+        "reason": "BOUNDARY_PRODUCT_BINDING_REQUIRED"
+      },
+      {
+        "edge_index": 8,
+        "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED"
+      },
+      {
+        "edge_index": 9,
+        "reason": "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED"
+      }
+    ]
+  },
+  "semantic_guards": {
+    "conventional_modular_projection_used_as_authority": false,
+    "ordinary_scalar_equality_claimed": false,
+    "ordinary_scalar_zero_equals_one_claimed": false,
+    "residue_only_authority": false,
+    "quotients_retained": true,
+    "full_phase_lane_identity_claimed": false,
+    "typed_phase_relation_only": true
+  },
+  "authority": {
+    "typed_modular_pivot_profile_registered": true,
+    "typed_modular_pivots_resolved": true,
+    "typed_join_execution_complete": false,
+    "canonical_monolithic_boundary_proof": false,
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "next_boundary": "SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS",
+  "result": "PASS"
+}
