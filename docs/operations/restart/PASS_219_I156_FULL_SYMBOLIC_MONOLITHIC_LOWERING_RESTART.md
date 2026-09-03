@@ -242,3 +242,49 @@ Next integration action:
 5. verify exact-main I156;
 6. collect the I151 history append for the new I156 benchmark surface;
 7. seal exact-main evidence/history separately.
+
+
+## Integration and queued exact-main checkpoint
+
+I156 merged to `main` through PR `#376`.
+
+Merge commit:
+
+`5db82a026f3703813184d758cacaaf7ebfb0d268`
+
+Feature validation remains the accepted dependency-scoped implementation evidence:
+
+- run `33767257127`
+- job `100688184912`
+- SUCCESS
+- artifact `9898052234`
+- artifact SHA-256 `abfd61edeee81471cbfbf70b6fe32b3f5af7948df3ac8a1f1425495d8199a2ce`
+
+At checkpoint creation, exact-main validation was queued rather than failed:
+
+```text
+I151 benchmark-history run = 33767547024
+status                     = QUEUED
+head                       = 5db82a026f3703813184d758cacaaf7ebfb0d268
+
+I156 exact-main run        = 33767547494
+status                     = QUEUED
+head                       = 5db82a026f3703813184d758cacaaf7ebfb0d268
+```
+
+No exact-main failure has been observed.
+
+Per the standing forward-progress policy, queued GitHub Actions do not keep the interactive repository thread blocked after implementation, scoped validation, merge, and repository-visible checkpointing are complete.
+
+Exact follow-up action:
+
+1. inspect runs `33767547024` and `33767547494`;
+2. if I156 exact-main is green, seal its artifact and receipt;
+3. if I151 is green, append the resulting benchmark-history line exactly as emitted;
+4. if either fails, repair only the impacted I156/I151 surface;
+5. create an evidence-only exact-main seal without rerunning unrelated history;
+6. preserve the next implementation boundary as `CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER`.
+
+This checkpoint branch is:
+
+`agent/pass219-i156-queued-exact-main-checkpoint-20260903`
