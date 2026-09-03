@@ -72,3 +72,31 @@ Dependency-scoped acceptance is run `33719623520` at `1d1917f2...`. Later commit
 7. Future relevant benchmark changes repeat: run -> immutable artifact -> accepted chained entry -> repository evidence seal.
 
 Current I151 code blocker: none. Remaining closure: integration plus exact-main benchmark-history confirmation.
+
+
+## Exact-main closure
+
+PR `#356` merged as `eb2948e226b896712b3bb3bb5e9676aea030a31d`.
+
+Exact-main I151 workflow:
+- Run: `33719951650`
+- Job: `100536864521`
+- Result: SUCCESS
+- Artifact: `9879855765`
+- Artifact SHA-256: `e550acaeb6e8c3bd4ece0529a6cf3d67cc6362e55e9aee8fb19f6e1c61c27473`
+
+The exact-main artifact contains four physical JSONL lines: inherited seed, accepted branch run `33719250898`, accepted cumulative branch run `33719623520`, and exact-main run `33719951650`.
+
+Exact-main history proof:
+- source lines: `3`
+- output lines: `4`
+- source SHA-256: `e3ff6bcc99f4f70b8872e848b21ec88e159fd763a52aa808363d21ffb44c74eb`
+- output SHA-256: `8a679c45068d4d8ad1a591aebaa99c2bd233977eaf72255993fa4312619cf1ef`
+- predecessor entry SHA-256: `4017a904c2308f3a3e3ba573b52281a1fc1d7aab897de70a5e25c36a70e94291`
+- chain verification: PASS
+
+The exact-main benchmark reproduced the same logical-work results and the same 22-surface inventory root. No canonical VM81, Hash72, or Hash216 mutation authority changed.
+
+The main-run entry and receipt are sealed on `agent/pass219-i151-main-benchmark-history-seal-20260903`. This branch changes only benchmark-history evidence/checkpoint state and is intentionally outside the benchmark workflow trigger paths.
+
+After the evidence-only merge, I151 benchmark-history closure is complete. Future benchmark-bearing changes append another immutable run artifact and are then sealed into the same JSONL chain.
