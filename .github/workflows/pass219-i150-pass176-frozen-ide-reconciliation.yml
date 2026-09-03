@@ -10,6 +10,7 @@ on:
       - 'applications/holofractal_harmonizer/src/pass176-*'
       - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'applications/holofractal_harmonizer/src/public-boot.mjs'
+      - 'applications/holofractal_harmonizer/src/gui-reliability.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
@@ -91,6 +92,7 @@ jobs:
           node --check applications/holofractal_harmonizer/src/pass176-stability-core.mjs
           node --check applications/holofractal_harmonizer/src/pass176-stability.mjs
           node --check applications/holofractal_harmonizer/src/public-boot.mjs
+          node --check applications/holofractal_harmonizer/src/gui-reliability.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide-runtime.mjs
