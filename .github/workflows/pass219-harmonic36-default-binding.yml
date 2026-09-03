@@ -84,6 +84,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_fibonacci_branch_cache_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_fibonacci_branch_emergent_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -741,6 +742,38 @@ jobs:
           assert d['authority']['candidate_benchmark_only'] is True
           assert all(value is False for key, value in d['authority'].items()
                      if key != 'candidate_benchmark_only')
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure production H36 branch-reference cache 1.17
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-branch-ref-cache-1-17
+          /tmp/h36/h36-branch-ref-cache-1-17 \
+            artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json
+          cat artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
+          for key in ('lookup_144','lookup_5184','equivalence_144','equivalence_5184','composition_144'):
+              row=d[key]
+              assert row['beneficial_repeats'] >= 4
+              assert row['required_beneficial_repeats'] == 4
+          assert d['lookup_144']['direct_reference_total_ns'] < d['lookup_144']['parent_cache_total_ns']
+          assert d['lookup_5184']['direct_reference_total_ns'] < d['lookup_5184']['parent_cache_total_ns']
+          assert d['equivalence_144']['fib_bucket_total_ns'] < d['equivalence_144']['full_scan_total_ns']
+          assert d['equivalence_5184']['fib_bucket_total_ns'] < d['equivalence_5184']['full_scan_total_ns']
+          assert d['composition_144']['memoized_total_ns'] < d['composition_144']['computed_total_ns']
+          assert d['correctness'] and all(d['correctness'].values())
+          assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
 
