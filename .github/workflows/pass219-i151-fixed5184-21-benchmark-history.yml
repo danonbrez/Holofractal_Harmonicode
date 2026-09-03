@@ -3,6 +3,7 @@ name: Pass 219 I151 Fixed 5184^21 Benchmark History
 on:
   push:
     branches:
+      - main
       - agent/pass219-i151-fixed5184-21-benchmark-history
     paths:
       - 'contracts/pass219/PASS_219_I151_FIXED_5184_21_INTEGRATED_OPTIMIZATION_BENCHMARK_HISTORY_1_0.json'
@@ -47,12 +48,21 @@ jobs:
         run: |
           PYTHONPATH=. python benchmarks/pass219/pass219_cross_modal_reversible_state_benchmark.py \
             artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json
+            artifacts/pass219/i151/source_history_sha256.txt
+            artifacts/pass219/i151/source_history_lines.txt
 
       - name: Build run-keyed benchmark history receipt
         run: |
           mkdir -p artifacts/pass219/i151
-          cp evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY_SEED.jsonl \
-            artifacts/pass219/i151/benchmark_history.jsonl
+          SOURCE_HISTORY=evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY.jsonl
+          if [ ! -f "$SOURCE_HISTORY" ]; then
+            SOURCE_HISTORY=evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY_SEED.jsonl
+          fi
+          cp "$SOURCE_HISTORY" artifacts/pass219/i151/benchmark_history.jsonl
+          SOURCE_SHA256="$(sha256sum "$SOURCE_HISTORY" | awk '{print $1}')"
+          SOURCE_LINES="$(wc -l < "$SOURCE_HISTORY")"
+          printf '%s\n' "$SOURCE_SHA256" > artifacts/pass219/i151/source_history_sha256.txt
+          printf '%s\n' "$SOURCE_LINES" > artifacts/pass219/i151/source_history_lines.txt
           OBSERVED_AT="$(git show -s --format=%cI "$GITHUB_SHA")"
           PYTHONPATH=. python benchmarks/pass219/pass219_i151_benchmark_history.py \
             --repository-root . \
@@ -74,7 +84,13 @@ jobs:
 
           history = Path('artifacts/pass219/i151/benchmark_history.jsonl')
           lines = [json.loads(line) for line in history.read_text(encoding='utf-8').splitlines()]
-          assert len(lines) >= 2
+          assert len(lines) >= 3
+          accepted_keys = {
+              (str(row.get('repository_sha')), str(row.get('run_id')))
+              for row in lines
+              if row.get('schema') == 'HHS_PASS219_I151_BENCHMARK_HISTORY_ENTRY_V1'
+          }
+          assert ('46a2ebf29ffcd44b69b943430afbf05d005e062d', '33719250898') in accepted_keys
           entry = lines[-1]
           assert entry['schema'] == 'HHS_PASS219_I151_BENCHMARK_HISTORY_ENTRY_V1'
           assert entry['resolution']['exact_cardinality_decimal'] == str(5184 ** 21)
