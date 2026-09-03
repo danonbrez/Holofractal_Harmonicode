@@ -1,0 +1,222 @@
+name: Pass 219 I154 Authorized Four Lane Exhaustion Planner
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i154-authorized-four-lane-exhaustion-planner
+    paths:
+      - 'contracts/pass219/PASS_219_I154_AUTHORIZED_FOUR_LANE_EXHAUSTION_1_0.json'
+      - 'docs/pass219/PASS_219_I154_AUTHORIZED_FOUR_LANE_EXHAUSTION_1_0.md'
+      - 'hhs_runtime/pass219/authorized_four_lane_exhaustion_planner.py'
+      - 'tools/pass219/pass219_i154_pass169_provider_probe.c'
+      - 'tests/pass219/test_pass219_i154_authorized_four_lane_exhaustion_planner.py'
+      - 'benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py'
+      - '.github/workflows/pass219-i154-authorized-four-lane-exhaustion-planner.yml'
+      - 'hhs_runtime/pass219/local_global_equation_search_filter.py'
+      - 'hhs_runtime/pass219/fixed_cardinality_optimization.py'
+      - 'hhs_runtime/include/hhs_pass219_pass169_gate_authority_binding_1_21_11.h'
+      - 'hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c'
+      - 'hhs_runtime/include/hhs_pass219_pass169_runtime_provider_1_21_13.h'
+      - 'hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c'
+      - 'tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c'
+      - 'hhs_runtime/include/hhs_pass219_pass159_global_witness_provenance_1_21_10.h'
+      - 'hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authorized-four-lane-exhaustion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Build frozen Pass159 unchanged
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i154-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i154-build --parallel 2
+          ctest --test-dir /tmp/pass159-i154-build --output-on-failure
+
+      - name: Compile cumulative exact ABI unchanged
+        run: |
+          mkdir -p /tmp/pass219-i154 artifacts/pass219/i154
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i154/exact.o
+
+      - name: Probe production Pass169 provider
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I154_TEST_FIXTURE_PROVIDER=0 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            tools/pass219/pass219_i154_pass169_provider_probe.c \
+            /tmp/pass219-i154/exact.o \
+            -L/tmp/pass159-i154-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i154-build \
+            -o /tmp/pass219-i154/provider-probe
+          /tmp/pass219-i154/provider-probe \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i154/production_provider_probe.json
+          cat artifacts/pass219/i154/production_provider_probe.json
+
+      - name: Exercise test-only provider plumbing
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS_I154_TEST_FIXTURE_PROVIDER=1 \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            tests/pass219/test_pass219_pass169_gate_authority_provider_fixture_1_21_11.c \
+            tools/pass219/pass219_i154_pass169_provider_probe.c \
+            /tmp/pass219-i154/exact.o \
+            -L/tmp/pass159-i154-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i154-build \
+            -o /tmp/pass219-i154/provider-probe-fixture
+          /tmp/pass219-i154/provider-probe-fixture \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i154/test_fixture_provider_probe.json
+          cat artifacts/pass219/i154/test_fixture_provider_probe.json
+
+      - name: Parse I154 exact surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass219/authorized_four_lane_exhaustion_planner.py
+          python -m py_compile benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py
+
+      - name: Run dependency-scoped planner tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i154_authorized_four_lane_exhaustion_planner.py \
+            tests/pass219/test_pass219_i153_local_global_equation_search_filter.py \
+            tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py
+
+      - name: Emit I154 real-authority availability benchmark
+        run: |
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py \
+            artifacts/pass219/i154/production_provider_probe.json \
+            artifacts/pass219/i154/test_fixture_provider_probe.json \
+            artifacts/pass219/i154/authorized_four_lane_exhaustion_benchmark.json
+          cat artifacts/pass219/i154/authorized_four_lane_exhaustion_benchmark.json
+
+      - name: Enforce fail-closed production boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          prod=json.loads(Path(
+              'artifacts/pass219/i154/production_provider_probe.json'
+          ).read_text(encoding='utf-8'))
+          fixture=json.loads(Path(
+              'artifacts/pass219/i154/test_fixture_provider_probe.json'
+          ).read_text(encoding='utf-8'))
+          bench=json.loads(Path(
+              'artifacts/pass219/i154/authorized_four_lane_exhaustion_benchmark.json'
+          ).read_text(encoding='utf-8'))
+          contract=json.loads(Path(
+              'contracts/pass219/PASS_219_I154_AUTHORIZED_FOUR_LANE_EXHAUSTION_1_0.json'
+          ).read_text(encoding='utf-8'))
+
+          assert prod['provider_origin'] == 'REPOSITORY_PRODUCTION_PASS169_VM81_PROVIDER'
+          assert prod['classification'] == 'BLOCKED_FULL_SYMBOLIC_RESIDUAL'
+          assert prod['runtime_provider_available'] is True
+          assert prod['binding_decision'] == 'UNRESOLVED'
+          assert prod['binding_reason_mask'] == 512
+          assert prod['pass169_authority_verified'] is False
+          assert prod['boolean_gate_results_available'] is False
+          assert prod['membrane_input_ready'] is False
+          assert prod['canonical_monolithic_proof'] is False
+          assert prod['i154_local_snapshot_binding_available'] is False
+          assert prod['i154_gate_vector_export_available'] is False
+          assert prod['i154_planner_input_ready'] is False
+
+          assert fixture['provider_origin'] == 'TEST_FIXTURE_PASS169_VM81_PROVIDER'
+          assert fixture['classification'] == 'TEST_FIXTURE_PROVIDER_DIAGNOSTIC_ONLY'
+          assert fixture['runtime_provider_available'] is True
+          assert fixture['pass169_authority_verified'] is True
+          assert fixture['canonical_monolithic_proof'] is True
+          assert fixture['test_fixture_is_authority'] is False
+          assert fixture['i154_planner_input_ready'] is False
+
+          assert bench['result'] == 'BLOCKED_REAL_AUTHORITY_INPUT'
+          p=bench['production_measurement']
+          assert p['status'] == 'BLOCKED_FULL_SYMBOLIC_RESIDUAL'
+          assert p['effective_exhaustion_work_measured'] is False
+          assert p['authoritative_workload_count'] == 0
+          assert p['within_81_over_7_claim'] is None
+
+          t=bench['test_only_plumbing']
+          assert t['baseline_work_units'] == 4096
+          assert t['effective_downstream_work_units'] == 128
+          assert t['work_units_avoided'] == 3968
+          assert t['candidate_reduction_fraction'] == {'numerator':4096,'denominator':128}
+          assert t['candidate_reduction_x1000_floor'] == 32000
+          assert t['within_81_over_7_representative_work_budget'] is True
+          assert t['canonical_evidence_eligible'] is False
+          assert t['test_fixture_authority'] is False
+
+          assert bench['fixed_search_space']['target'] == '72^42=5184^21'
+          assert bench['fixed_search_space']['working_manifold'] == '3*72^72'
+          assert bench['fixed_search_space']['route_multiplicity'] == '3*72^30'
+          assert bench['fixed_search_space']['cardinality_changed'] is False
+          assert bench['global_exhaustion_bound_proven'] is False
+          assert bench['physical_full_target_exhaustion_claim'] is False
+          assert bench['physical_full_working_manifold_enumeration_claim'] is False
+
+          # I154 contract census is frozen at its base; I155 supersedes the current provider census.
+          assert contract['authority_boundary']['planner_manufactures_gate_truth'] is False
+          assert contract['authority_boundary']['planner_can_upgrade_fixture_to_authority'] is False
+          PY
+
+      - name: Publish I154 summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open(
+              'artifacts/pass219/i154/authorized_four_lane_exhaustion_benchmark.json',
+              encoding='utf-8'
+          ))
+          print('## Pass 219 I154 authorized four-lane exhaustion planner')
+          print('- Production Pass169 provider: PRESENT')
+          print('- Full-symbolic monolithic residual: UNRESOLVED')
+          print('- Real authoritative workloads measured: 0')
+          print('- Effective exhaustion measurement: BLOCKED, not zero')
+          print('- Local P/provider binding export: MISSING')
+          print('- Canonical gate-vector environment export: MISSING')
+          print('- Test-only four-lane plumbing: 4096 -> 128 (32x)')
+          print('- Test-only 81/7 representative gate: PASS')
+          print('- Test-only result canonical evidence: NO')
+          print('- Fixed 72^42 / 3*72^72 cardinalities changed: NO')
+          print('- Full exhaustion claimed: NO')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i154-authorized-four-lane-exhaustion-${{ github.sha }}
+          path: |
+            artifacts/pass219/i154/production_provider_probe.json
+            artifacts/pass219/i154/test_fixture_provider_probe.json
+            artifacts/pass219/i154/authorized_four_lane_exhaustion_benchmark.json
+          if-no-files-found: error
+          retention-days: 90
