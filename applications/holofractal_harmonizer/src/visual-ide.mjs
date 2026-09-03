@@ -196,7 +196,13 @@ function bindCoreControls() {
   bind(window, 'hhs:pass176:recovery-applied', () => {
     renderFiles();
     const restoredPath = state.activePath || state.files[0]?.path || null;
-    if (restoredPath) activateFile(restoredPath);
+    if (restoredPath) {
+      // Recovery has already replaced state.files with the saved envelope. Do not
+      // let activateFile capture the stale pre-recovery editor DOM back into that
+      // restored active file before it renders the recovered content.
+      editor.dataset.loadedPath = '';
+      activateFile(restoredPath);
+    }
   }, 'pass176-recovery-render');
 
   const zone = required('#ide-drop-zone');
