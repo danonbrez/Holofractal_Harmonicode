@@ -1,0 +1,116 @@
+name: Pass 219 I156 Full Symbolic Monolithic Lowering
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i156-full-symbolic-monolithic-lowering
+    paths:
+      - 'contracts/pass219/PASS_219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING_1_0.json'
+      - 'docs/pass219/PASS_219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING_1_0.md'
+      - 'hhs_runtime/include/hhs_pass219_full_symbolic_uqcel_lowering_1_22.h'
+      - 'hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_monolithic_constraint_abi_1_20.h'
+      - 'hhs_runtime/c/hhs_pass219_monolithic_constraint_abi_1_20.inc'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_bigint.inc'
+      - 'tests/pass219/test_pass219_i156_full_symbolic_monolithic_lowering.c'
+      - 'benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py'
+      - 'tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c'
+      - 'tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py'
+      - '.github/workflows/pass219-i156-full-symbolic-monolithic-lowering.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-symbolic-monolithic-lowering:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded regression dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Enforce exact read-only lowering authority
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_full_symbolic_uqcel_lowering_1_22.h \
+            hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc \
+            tests/pass219/test_pass219_i156_full_symbolic_monolithic_lowering.c
+          grep -F 'legacy_v1_full_symbolic_input_sufficient = 0U' \
+            hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc
+          grep -F 'candidate_value_producer_included = 0U' \
+            hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc
+          grep -F 'vm81_execution_included = 0U' \
+            hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc
+          grep -F 'residual_mask = 0U' \
+            hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i156 artifacts/pass219/i156
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i156/exact.o
+
+      - name: Run I156 exact lowering conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_i156_full_symbolic_monolithic_lowering.c \
+            /tmp/pass219-i156/exact.o \
+            -o /tmp/pass219-i156/test-i156
+          /tmp/pass219-i156/test-i156 | tee artifacts/pass219/i156/conformance.txt
+          grep -F 'PASS219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING_OK' \
+            artifacts/pass219/i156/conformance.txt
+
+      - name: Preserve inherited monolithic proof boundary
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
+            /tmp/pass219-i156/exact.o \
+            -o /tmp/pass219-i156/test-i120
+          /tmp/pass219-i156/test-i120
+
+      - name: Preserve inherited residual-boundary regression
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
+
+      - name: Build shared exact ABI and verify symbols
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC -shared \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i156/libhhs_i156.so
+          nm -D /tmp/pass219-i156/libhhs_i156.so | \
+            grep -E 'hhs_exact_pass219_full_symbolic_version|hhs_exact_pass219_full_symbolic_descriptor|hhs_exact_pass219_full_symbolic_lower'
+
+      - name: Emit exact I156 authority receipt
+        run: |
+          python -m py_compile benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py \
+            artifacts/pass219/i156/conformance.txt \
+            artifacts/pass219/i156/full_symbolic_monolithic_lowering.json
+          cat artifacts/pass219/i156/full_symbolic_monolithic_lowering.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i156-full-symbolic-monolithic-lowering-${{ github.sha }}
+          path: |
+            artifacts/pass219/i156/conformance.txt
+            artifacts/pass219/i156/full_symbolic_monolithic_lowering.json
+          if-no-files-found: error
+          retention-days: 90

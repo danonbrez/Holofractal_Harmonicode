@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_HISTORY_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "cause": "Pass 219 I156 full-symbolic monolithic lowering benchmark surface",
+  "repository_sha": "5db82a026f3703813184d758cacaaf7ebfb0d268",
+  "workflow_run_id": 33767547024,
+  "job_id": 100689156415,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9898248784,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-5db82a026f3703813184d758cacaaf7ebfb0d268",
+    "sha256": "63c0c910e1aba9b592de4e919bb124fd50e06f34a780ff4c80fc989b5a3b5f2a"
+  },
+  "history": {
+    "source_lines": 8,
+    "output_lines": 9,
+    "source_sha256": "ca67bac77cb428942e074c9587c7e7a83b139ce9ba9890edf55be690578c2dbf",
+    "output_sha256": "c359b083049f029b9406c5f9295b364fb81e9c589bee8c506c68f6482919f7ca",
+    "previous_entry_sha256": "1da09978433cf4d906f2d491497e3c293a7ff790ddc51c0caa9f7218aee6e2f0",
+    "appended_entry_sha256": "c9dbea515b977851728578cd2fc4e422635ced62709f8c3daaf9f6c4e4a4b5bc",
+    "chain_verified": true
+  },
+  "inventory": {
+    "surface_count": 30,
+    "sha256_root": "bfc360cf3fe1f7ae1a44c8b379bbd22387ac84652bd398a14021e8a73b0376b2",
+    "i156_surface": {
+      "path": "benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py",
+      "bytes": 2451,
+      "sha256": "58a3bb177bac47bf68316c2c52b65c0c10235c33db267c7c0f5c0fe47a02c811"
+    }
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "result": "PASS"
+}
