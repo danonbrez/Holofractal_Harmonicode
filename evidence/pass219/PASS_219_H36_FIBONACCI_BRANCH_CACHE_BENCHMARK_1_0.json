@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS219_H36_FIBONACCI_BRANCH_CACHE_BENCHMARK_EVIDENCE_V1",
+  "pass": 219,
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_main": "ead4e312556179b9a090c7a5b5d898d298be72a0",
+  "branch": "agent/pass219-h36-fibonacci-branch-cache-benchmark",
+  "benchmark_commit": "d880eb40a5b7a01ce8f1331c21829dcbb195d13c",
+  "workflow_commit": "1bc295d9b7f04beb1cb4192899d08c06fec8efcd",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33747123339,
+    "job": 100622062802,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9890078974,
+    "artifact_sha256": "b87a5db8148b77a2a6e5778cd5d399a2f9641cc6fba0c995797a1eac12535819"
+  },
+  "geometry": {
+    "lanes": 4,
+    "cells_per_lane": 36,
+    "branch_cells": 144,
+    "frame_bits": 5184,
+    "root_fibonacci": 144,
+    "distinct_fibonacci_identities": 9,
+    "max_equivalence_width": 40,
+    "asymmetric_additive_division_verified": true
+  },
+  "immutability": {
+    "frozen_parent_entries": 4,
+    "parent_cache_next_sequence": 5,
+    "branch_fork_by_previous_state_reference": true,
+    "parent_state_modified": false,
+    "copy_on_write_payload": false
+  },
+  "receipts": {
+    "branch_receipts": 144,
+    "compatible_lane_composition_receipts": 576,
+    "all_branch_chains_reverse_to_frozen_root": true,
+    "all_compatible_compositions_deterministic": true
+  },
+  "memory": {
+    "selection_bytes": 296,
+    "branch_ref_bytes": 40,
+    "fib_index_bytes": 316,
+    "duplicate_144_selection_payload_bytes": 42624,
+    "shared_parent_reference_total_bytes": 8732,
+    "duplicate_vs_shared_ratio_x1000": 4881,
+    "shared_reference_smaller": true
+  },
+  "measurement": {
+    "platform": "linux-x86_64",
+    "samples": 11,
+    "calibration_repeats": 5,
+    "local_rounds_per_sample": 8192,
+    "equivalence_rounds_per_sample": 1024,
+    "baseline_cache_total_ns": 453614559,
+    "direct_branch_ref_total_ns": 449889,
+    "fib_bucket_branch_ref_total_ns": 764255,
+    "baseline_vs_direct_speedup_x1000": 1008281,
+    "baseline_vs_fib_bucket_speedup_x1000": 593538,
+    "equivalence_full_scan_total_ns": 1498586,
+    "equivalence_fib_bucket_total_ns": 1500673,
+    "equivalence_bucket_speedup_x1000": 998
+  },
+  "selection": {
+    "best_local_lookup": "DIRECT_BRANCH_REF",
+    "best_equivalence_lookup": "FULL_SCAN",
+    "best_configuration": "DIRECT_BRANCH_REF",
+    "hybrid_direct_plus_fibonacci_index": false,
+    "recommended_runtime_shape": "DIRECT_IMMUTABLE_PARENT_REFERENCE_WITH_FIBONACCI_IDENTITY_METADATA_OFF_HOT_PATH"
+  },
+  "interpretation": {
+    "local_lookup": "Direct immutable parent references remove repeated linear parent-cache lookup and full selection copying for branch-local resolution.",
+    "equivalence_lookup": "At the fixed 144-cell H36 boundary, a complete branch scan was marginally faster than consulting the compact Fibonacci bucket index on this runner.",
+    "memory": "Reference-backed branch state uses 4.881x less measured storage than duplicating 144 full selection payloads in this benchmark.",
+    "scope": "Candidate benchmark only; no canonical VM81, Hash72, Hash216, or persistent state was changed."
+  },
+  "authority": {
+    "candidate_benchmark_only": true,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false,
+    "canonical_persistence": false,
+    "floating_point": false
+  }
+}
