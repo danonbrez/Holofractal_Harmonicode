@@ -288,3 +288,133 @@ Exact follow-up action:
 This checkpoint branch is:
 
 `agent/pass219-i156-queued-exact-main-checkpoint-20260903`
+
+
+## Exact-main closure
+
+### Functional integration
+
+PR `#376` merged I156 as:
+
+`5db82a026f3703813184d758cacaaf7ebfb0d268`
+
+A later restart/evidence-only checkpoint PR `#377` advanced `main` to:
+
+`94fb9fdf205be59045754101af2ed28bc6067840`
+
+without changing I156 implementation semantics.
+
+### I156 exact-main validation
+
+The exact functional merge head is terminal green:
+
+- workflow run: `33767547494`
+- job: `100689158796`
+- conclusion: SUCCESS
+- artifact: `9898220156`
+- artifact SHA-256: `94e0a7e3abeef62f988663e9e6dd8864b1b7fd2242c7874a56db77c066bc7c05`
+
+Exact-main receipts reproduce feature evidence:
+
+```text
+conformance
+4202f3370f6395295cb7a44697b4675eb850d72f525ca0f31c7fbe0a9718258b
+
+benchmark file
+7b9c08633bf7e1e10718d8221353ff06dd3cb5d03b2c8b68bf15d26c9a2aa1ed
+
+benchmark receipt
+aabd900272762bac9714c004c116953f99ae9ae3bbbd1eebd38f83759faf5d72
+```
+
+Exact-main verified capability:
+
+```text
+term count                       = 15
+frozen equality edges            = 10
+required edge mask               = 1023
+semantic families                = 8
+required family mask             = 255
+historical residual mask         = 31
+complete-witness residual mask   = 0
+exact equality                   = BigInt cross multiplication
+source identity required         = true
+Pass159 provenance root required = true
+ordered xy/yx required           = true
+one candidate transaction        = true
+```
+
+Authority remains intentionally downstream:
+
+```text
+candidate value producer included = false
+VM81 execution included            = false
+Hash72 execution receipt included  = false
+deterministic replay included      = false
+VM81 mutation authority            = false
+Hash72 mint authority              = false
+Hash216 persistence authority      = false
+floating-point authority           = false
+```
+
+Exact-main evidence:
+
+`evidence/pass219/PASS_219_I156_EXACT_MAIN_33767547494.json`
+
+### Cumulative I151 benchmark history
+
+The benchmark-history workflow for the functional merge is also terminal green:
+
+- workflow run: `33767547024`
+- job: `100689156415`
+- conclusion: SUCCESS
+- artifact: `9898248784`
+- artifact SHA-256: `63c0c910e1aba9b592de4e919bb124fd50e06f34a780ff4c80fc989b5a3b5f2a`
+
+Append-only history transition:
+
+```text
+source physical lines = 8
+source SHA-256         = ca67bac77cb428942e074c9587c7e7a83b139ce9ba9890edf55be690578c2dbf
+previous entry SHA-256 = 1da09978433cf4d906f2d491497e3c293a7ff790ddc51c0caa9f7218aee6e2f0
+
+output physical lines = 9
+output SHA-256         = c359b083049f029b9406c5f9295b364fb81e9c589bee8c506c68f6482919f7ca
+new entry SHA-256      = c9dbea515b977851728578cd2fc4e422635ced62709f8c3daaf9f6c4e4a4b5bc
+inventory surfaces     = 30
+inventory root         = bfc360cf3fe1f7ae1a44c8b379bbd22387ac84652bd398a14021e8a73b0376b2
+```
+
+New indexed benchmark surface:
+
+```text
+benchmarks/pass219/pass219_i156_full_symbolic_monolithic_lowering_benchmark.py
+bytes  = 2451
+sha256 = 58a3bb177bac47bf68316c2c52b65c0c10235c33db267c7c0f5c0fe47a02c811
+```
+
+The exact emitted ninth history line is appended to:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY.jsonl`
+
+Run evidence:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_RUN_33767547024_AFTER_I156.json`
+
+### I156 closure classification
+
+`IMPLEMENTED / FEATURE-GREEN / MERGED / EXACT-MAIN-GREEN / HISTORY-APPENDED / EVIDENCE-SEALED`
+
+I156 resolves the structural full-symbolic lowering boundary: one complete exact term-value witness can now clear historical residual mask `31 -> 0` across all ten frozen edges and all eight semantic families in one candidate transaction.
+
+It does not yet produce those term values from a runtime candidate.
+
+Therefore the next cumulative authority blocker remains:
+
+`CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER`
+
+The next producer must derive all fifteen exact term values from one Pass159-graph-bound candidate state, then feed I156 lowering before VM81 admission, Hash72 execution evidence, Hash216 proof identity, and deterministic replay may be claimed.
+
+Evidence seal branch:
+
+`agent/pass219-i156-main-evidence-seal-20260903`
