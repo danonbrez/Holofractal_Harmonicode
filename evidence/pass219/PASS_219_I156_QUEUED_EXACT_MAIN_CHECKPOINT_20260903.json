@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS219_I156_QUEUED_EXACT_MAIN_CHECKPOINT_V1",
+  "pass": 219,
+  "iteration": "I156",
+  "main_sha": "5db82a026f3703813184d758cacaaf7ebfb0d268",
+  "pr": 376,
+  "feature_validation": {
+    "run_id": 33767257127,
+    "job_id": 100688184912,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9898052234,
+    "artifact_sha256": "abfd61edeee81471cbfbf70b6fe32b3f5af7948df3ac8a1f1425495d8199a2ce"
+  },
+  "exact_main_runs": [
+    {
+      "workflow": "Pass 219 I151 Fixed 5184^21 Benchmark History",
+      "run_id": 33767547024,
+      "status": "QUEUED",
+      "head_sha": "5db82a026f3703813184d758cacaaf7ebfb0d268"
+    },
+    {
+      "workflow": "Pass 219 I156 Full Symbolic Monolithic Lowering",
+      "run_id": 33767547494,
+      "status": "QUEUED",
+      "head_sha": "5db82a026f3703813184d758cacaaf7ebfb0d268"
+    }
+  ],
+  "exact_main_failure_observed": false,
+  "implementation_merged": true,
+  "repository_visible_restart": true,
+  "next_action": "SEAL_OR_REPAIR_EXACT_MAIN_I151_I156",
+  "downstream_authority_blocker": "CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER",
+  "result": "CHECKPOINTED"
+}
