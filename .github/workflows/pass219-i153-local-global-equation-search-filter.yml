@@ -1,0 +1,134 @@
+name: Pass 219 I153 Local Global Equation Search Filter
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i153-local-global-equation-search-filter
+    paths:
+      - 'contracts/pass219/PASS_219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_1_0.json'
+      - 'docs/pass219/PASS_219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_1_0.md'
+      - 'hhs_runtime/pass219/local_global_equation_search_filter.py'
+      - 'benchmarks/pass219/pass219_i153_local_global_equation_search_filter_benchmark.py'
+      - 'tests/pass219/test_pass219_i153_local_global_equation_search_filter.py'
+      - '.github/workflows/pass219-i153-local-global-equation-search-filter.yml'
+      - 'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_combined_equation_optimizer_1_21_8.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'hhs_runtime/pass219/fixed_cardinality_optimization.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-global-equation-filter:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify inherited equation identities
+        run: |
+          printf '%s  %s\n' \
+            'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a' \
+            'contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode' | sha256sum -c -
+          printf '%s  %s\n' \
+            '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53' \
+            'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode' | sha256sum -c -
+
+      - name: Parse I153 exact surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass219/local_global_equation_search_filter.py
+          python -m py_compile benchmarks/pass219/pass219_i153_local_global_equation_search_filter_benchmark.py
+
+      - name: Validate I153 and inherited filter boundaries
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i153_local_global_equation_search_filter.py \
+            tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py \
+            tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py
+
+      - name: Emit bounded local-global search filter benchmark
+        run: |
+          PYTHONPATH=. python benchmarks/pass219/pass219_i153_local_global_equation_search_filter_benchmark.py \
+            artifacts/pass219/i153/local_global_equation_search_filter_benchmark.json
+          cat artifacts/pass219/i153/local_global_equation_search_filter_benchmark.json
+
+      - name: Enforce I153 filter contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract=json.loads(Path(
+              'contracts/pass219/PASS_219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_1_0.json'
+          ).read_text(encoding='utf-8'))
+          bench=json.loads(Path(
+              'artifacts/pass219/i153/local_global_equation_search_filter_benchmark.json'
+          ).read_text(encoding='utf-8'))
+
+          assert contract['equation_source']['bytes'] == 348
+          assert contract['equation_source']['sha256'] == 'ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a'
+          assert contract['equation_source']['preserved_verbatim'] is True
+          assert contract['local_snapshot_semantics']['P'] == 'LOCAL_STATE_HASH216_5184_HYDRATION_PARAMETER_SNAPSHOT'
+          assert contract['local_snapshot_semantics']['hydration_bits'] == 5184
+          assert contract['local_snapshot_semantics']['P_changes_target_cardinality'] is False
+          assert contract['fixed_global_search_space']['target_resolution'] == '72^42=5184^21'
+          assert contract['fixed_global_search_space']['working_manifold'] == '3*72^72'
+          assert contract['fixed_global_search_space']['route_multiplicity_per_target'] == '3*72^30'
+          assert contract['fixed_global_search_space']['exhaustion_ratio'] == '81/7'
+
+          assert bench['schema'] == 'HHS_PASS219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_BENCHMARK_V1'
+          assert bench['result'] == 'PASS'
+          assert bench['candidate_count'] == 4096
+          assert bench['survivor_count'] == 128
+          assert bench['rejected_count'] == 3968
+          assert bench['candidate_reduction_fraction'] == {'numerator': 4096, 'denominator': 128}
+          assert bench['candidate_reduction_x1000_floor'] == 32000
+          assert bench['bounded_synthetic_ratio_meets_81_over_7'] is True
+          assert bench['equation_source']['bytes'] == 348
+          assert bench['equation_source']['sha256'] == contract['equation_source']['sha256']
+          assert bench['fixed_search_space']['target_cardinality_decimal'] == str(72 ** 42)
+          assert bench['fixed_search_space']['working_manifold_cardinality_decimal'] == str(3 * (72 ** 72))
+          assert bench['fixed_search_space']['route_multiplicity_per_target_decimal'] == str(3 * (72 ** 30))
+          assert bench['synthetic_truth_authority'] is False
+          assert bench['full_four_lane_exhaustion_claim'] is False
+          assert bench['physical_full_manifold_enumeration_claim'] is False
+          assert bench['canonical_vm81_mutation'] is False
+          assert bench['canonical_hash72_mint'] is False
+          assert bench['canonical_hash216_persistence'] is False
+          PY
+
+      - name: Publish I153 summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219/i153/local_global_equation_search_filter_benchmark.json', encoding='utf-8'))
+          print('## Pass 219 I153 local/global equation search filter')
+          print('- Equation source: inherited 348-byte UQCEL source, unchanged')
+          print('- P: local Hash216 / 5184-hydration parameter snapshot')
+          print('- Global search space: I152 fixed cardinalities unchanged')
+          print('- Bounded synthetic candidates: ' + str(d['candidate_count']))
+          print('- Bounded synthetic survivors: ' + str(d['survivor_count']))
+          print('- Candidate-count reduction: 32x')
+          print('- Bounded synthetic ratio meets 81/7: YES')
+          print('- Pass169 canonical truth claimed: NO')
+          print('- Full four-lane exhaustion claimed: NO')
+          print('- Canonical VM81/Hash72/Hash216 authority changed: NO')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i153-local-global-equation-search-filter-${{ github.sha }}
+          path: artifacts/pass219/i153/local_global_equation_search_filter_benchmark.json
+          if-no-files-found: error
+          retention-days: 90
