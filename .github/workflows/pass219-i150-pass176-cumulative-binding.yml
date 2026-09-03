@@ -20,6 +20,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -68,6 +69,14 @@ jobs:
         run: |
           timeout 300s node --test applications/holofractal_harmonizer/tests/pass176-stability.test.mjs
           timeout 600s python -m pytest -q tests/test_pass176_frozen_ide_stabilization.py tests/test_pass175_terminal_completion.py tests/test_hhs_production_public_app_v1.py tests/pass219/test_pass219_cumulative_pass176_membrane_i150.py
+      - name: Rehydrate exact-green Pass 176 terminal artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-i150-pass176-pre-cumulative
+          path: /tmp/pass176-exact-green
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 33766747861
       - name: Pass 176 frozen browser and current verifier evidence
         run: |
           set -euo pipefail
@@ -116,6 +125,14 @@ jobs:
           assert p['artifact']['artifact_id']==9897922155
           assert p['artifact']['sha256']=='b20edde645e16c13eb7629778e3bce3a5f4293684abb605c722a8254cdc86282'
           PY
+          BROWSER_SOURCE="$(find /tmp/pass176-exact-green -type f -name browser-smoke.json -print -quit)"
+          test -n "$BROWSER_SOURCE"
+          mkdir -p applications/holofractal_harmonizer/evidence/pass176
+          cp "$BROWSER_SOURCE" applications/holofractal_harmonizer/evidence/pass176/browser-smoke.json
+          SCREENSHOT_SOURCE="$(find /tmp/pass176-exact-green -type f -name pass176-frozen-ide.png -print -quit || true)"
+          if test -n "$SCREENSHOT_SOURCE"; then
+            cp "$SCREENSHOT_SOURCE" applications/holofractal_harmonizer/evidence/pass176/pass176-frozen-ide.png
+          fi
           timeout 120s python hhs_verification/pass176/verify.py --repository-root . --output /tmp/pass176-terminal.json
           python - <<'PY'
           import json
