@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS219_I158_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I158",
+  "repository_sha": "cb092a81e6deab8799690812cdcb576e187f04e9",
+  "workflow_run_id": 33784376105,
+  "job_id": 100745483242,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9904834010,
+    "name": "pass219-i158-typed-domain-join-execution-cb092a81e6deab8799690812cdcb576e187f04e9",
+    "sha256": "8d24f601a8e5bc9d54c73234f2faa64015d4e3b1b8c923fad9b38a1998aa7962",
+    "benchmark_file_sha256": "3920b4e6fb4c9e9af1e3b555366143cab5dc6844d6331a025f03d249e1af9e48"
+  },
+  "benchmark": {
+    "receipt_sha256": "22013658f372082f519068d37b28cf9bd7a36ea1f0f098f0537f1d675bd79d86",
+    "execution_membrane_sha256": "276975fe93f0bbfb1ff45eb5509f8748a2f52e99824dfa214883f93fb8385d92",
+    "input_typed_value_graph_sha256": "8749005574e8e1e0b451ae1ecfca15f1b46092368635246b2131a3141d992216",
+    "candidate_binding_sha256": "4cbb13ea614c7c391b84acf0c64ae668369ef38c42b59a6f1250eda22fc89c10",
+    "decision": "UNRESOLVED_TYPED_SEMANTICS",
+    "proved": 5,
+    "unresolved": 5,
+    "rejected": 0,
+    "newly_resolved_modular_pivots": 0,
+    "conventional_projection_matches": 1,
+    "conventional_projection_mismatches": 1,
+    "left_conventional_projection": 0,
+    "right_conventional_projection": 1,
+    "conventional_projection_authorized_for_harmonicode_join": false,
+    "blocker_count": 5
+  },
+  "repository_blocker_evidence": {
+    "formal_evaluation_protocol_sha256": "dc5fc8a44a7bbd3b12f8e6734f854ff59c5a2feb9f14ce469699f70d3238822f",
+    "pass169_contract_sha256": "980ed823e556de4d1c89e0ae6c35a55403882d70f0bccfdcc100c2081e98493b",
+    "pass191_kernel_sha256": "84b87c1ee44d4d723b51c3fbe9d635a014bf1eaef9725ef6e73d44209f59d45c",
+    "pass191_x_squared_binding_unresolved": true
+  },
+  "authority": {
+    "typed_join_execution_complete": false,
+    "canonical_monolithic_boundary_proof": false,
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "fixed_cardinality_changed": false,
+  "next_boundary": "REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS",
+  "result": "PASS"
+}
