@@ -75,11 +75,12 @@ def build_receipt() -> dict[str, object]:
     graph = _fixture_graph()
     result = execute_typed_domain_joins(graph)
     witnesses = result["modular_projection_witnesses"]
+    audit = result["conventional_modular_projection_audit"]
     receipt: dict[str, object] = {
         "schema": SCHEMA,
         "pass": 219,
         "iteration": "I158",
-        "classification": "TYPED_DOMAIN_EXECUTION_CAPABILITY_BENCHMARK",
+        "classification": "TYPED_DOMAIN_SEMANTICS_AUDIT_BENCHMARK",
         "candidate_fixture_scope": "NONAUTHORITATIVE_DETERMINISTIC_CONFORMANCE_FIXTURE",
         "P": 30,
         "p": 29,
@@ -89,13 +90,21 @@ def build_receipt() -> dict[str, object]:
         "m": 267,
         "harmonic_value": 26970,
         "modulus": 899,
-        "left_modular_projection": witnesses[0]["projected_representative"],
-        "right_modular_projection": witnesses[1]["projected_representative"],
+        "left_conventional_modular_projection": witnesses[0]["projected_representative"],
+        "right_conventional_modular_projection": witnesses[1]["projected_representative"],
         "modular_target_representative": witnesses[0]["modular_representative"],
+        "left_conventional_projection_status": witnesses[0]["status"],
+        "right_conventional_projection_status": witnesses[1]["status"],
         "join_count": result["counts"]["join_count"],
         "proved_before_i158": 5,
         "proved_after_i158": result["counts"]["proved"],
         "newly_resolved_modular_pivots": result["counts"]["newly_resolved_modular_pivots"],
+        "conventional_modular_projection_matches": result["counts"][
+            "conventional_modular_projection_matches"
+        ],
+        "conventional_modular_projection_mismatches": result["counts"][
+            "conventional_modular_projection_mismatches"
+        ],
         "unresolved_after_i158": result["counts"]["unresolved"],
         "rejected_after_i158": result["counts"]["rejected"],
         "decision": result["decision"],
@@ -107,6 +116,12 @@ def build_receipt() -> dict[str, object]:
         ],
         "remaining_blockers": result["remaining_blockers"],
         "repository_blocker_evidence": result["repository_blocker_evidence"],
+        "conventional_projection_authorized_for_harmonicode_join": audit[
+            "adapter_authorized_for_harmonicode_join"
+        ],
+        "candidate_join_status_derived_from_conventional_projection": audit[
+            "candidate_join_status_derived_from_this_projection"
+        ],
         "scalar_coercion_used": any(
             row["scalar_coercion_used"] for row in result["executed_joins"]
         ),
