@@ -1,0 +1,75 @@
+{
+  "schema": "PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration150-pass176-frozen-ide-reconciliation",
+  "pass": 176,
+  "pass219_iteration": "I150",
+  "classification": "HHS_PASS_176_FROZEN_IDE_CUMULATIVELY_PRESERVED_VERIFIED",
+  "terminal_pass176_completion": true,
+  "exact_validation": {
+    "head_sha": "c2cb9ca92e21721581d896fdd53f226d6d055f57",
+    "workflow_run_id": 33766747861,
+    "workflow_run_number": 27,
+    "job_id": 100686459862,
+    "conclusion": "success",
+    "all_workflow_steps_green": true
+  },
+  "terminal_receipt": {
+    "artifact_path": "evidence/pass176/generated/PASS_176_I150_TERMINAL_COMPLETION_RECEIPT.json",
+    "receipt_sha256": "f43d26f4932074d8de5e001a4de4dee2435ce216c4112c4612547f63ef771173",
+    "terminal_pass176_completion": true,
+    "all_checks_green": true
+  },
+  "pre_cumulative_receipt": {
+    "artifact_path": "evidence/pass176/i150/PASS_219_I150_PASS176_PRE_CUMULATIVE_RECEIPT.json",
+    "classification": "HHS_PASS176_I150_CURRENT_TERMINAL_REVALIDATED",
+    "receipt_hash72": "sjKBUWG?kIX(*YP1qJNHZjZS1daArENjfYo(Ez?<m/9I6QMcj*L10*Qc3FHA8)c)ox2a8lmo",
+    "archive_hash216": "EXACT_VALUE_FROZEN_IN_ARTIFACT_PATH",
+    "hash216_authority": false
+  },
+  "browser_evidence": {
+    "json_path": "applications/holofractal_harmonizer/evidence/pass176/browser-smoke.json",
+    "screenshot_path": "applications/holofractal_harmonizer/evidence/pass176/pass176-frozen-ide.png",
+    "schema": "HHS_PASS_176_FROZEN_IDE_BROWSER_SMOKE_V1",
+    "ok": true,
+    "public_root": "/",
+    "preservation_surface": "/pass176-ide/",
+    "assistant_cycles": 100,
+    "mobile_pane_cycles": 100,
+    "editor_preserved": true,
+    "atomic_recovery_applied": true,
+    "console_errors": 0,
+    "page_errors": 0,
+    "request_failures": 0
+  },
+  "authority": {
+    "frontend_is_canonical_authority": false,
+    "frontend_non_authority_verified": true,
+    "singleton_vm81_admission_preserved": true,
+    "hash72_commit_streams": 1,
+    "independent_vm81_authority": false,
+    "independent_hash72_commit_authority": false,
+    "hash216_mutation_authority": false
+  },
+  "artifact": {
+    "artifact_id": 9897922155,
+    "name": "pass219-i150-pass176-pre-cumulative",
+    "size_bytes": 256754,
+    "sha256": "b20edde645e16c13eb7629778e3bce3a5f4293684abb605c722a8254cdc86282",
+    "created_at": "2026-09-03T14:27:51Z",
+    "expires_at": "2026-10-03T14:27:49Z",
+    "file_count": 13
+  },
+  "current_main_reconciliation": {
+    "main_sha": "ae566d6581f11ce1d14cb2a72e798340c26ec751",
+    "pr_number": 379,
+    "i150_reconciliation_merge_sha": "c7623b85cacb6bfb78dcddf0f7d49b0eb27abff4",
+    "main_was_not_modified_by_i150": true
+  },
+  "closure": {
+    "pass176_terminal_evidence_frozen": true,
+    "cumulative_binding_added": false,
+    "post_binding_validation_green": false,
+    "merged_to_main": false
+  }
+}
