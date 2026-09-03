@@ -23,6 +23,8 @@ constexpr int kStackSamples = 7;
 constexpr std::uint32_t kStackRounds = 8U;
 constexpr int kCacheSamples = 11;
 constexpr std::uint32_t kCacheRounds = 4096U;
+constexpr std::size_t kCalibrationRepeats = 5U;
+constexpr std::uint32_t kRequiredBeneficialRepeats = 4U;
 constexpr std::uint32_t kExecCell = 0120U;
 constexpr std::uint32_t kDataCell = 0121U;
 
@@ -77,9 +79,20 @@ struct CacheMeasurement {
     std::uint64_t occ1_ns = 0U;
     std::uint64_t occ4_ns = 0U;
     std::uint64_t occ8_ns = 0U;
+    std::uint64_t fresh_total_ns = 0U;
+    std::uint64_t occ1_total_ns = 0U;
+    std::uint64_t occ4_total_ns = 0U;
+    std::uint64_t occ8_total_ns = 0U;
+    std::array<std::uint64_t, kCalibrationRepeats> fresh_repeat_ns{};
+    std::array<std::uint64_t, kCalibrationRepeats> occ1_repeat_ns{};
+    std::array<std::uint64_t, kCalibrationRepeats> occ4_repeat_ns{};
+    std::array<std::uint64_t, kCalibrationRepeats> occ8_repeat_ns{};
+    std::uint32_t beneficial_repeat_count = 0U;
     std::uint64_t occ8_vs_fresh_x1000 = 0U;
     std::uint64_t occ8_vs_occ1_x1000 = 0U;
     std::uint64_t occ8_vs_occ4_x1000 = 0U;
+    bool aggregate_benefit = false;
+    bool repeat_stability_pass = false;
     bool occ8_faster_than_fresh = false;
 };
 
@@ -1068,20 +1081,72 @@ CacheMeasurement measure_cache(
             require_lookup(occ8, resident.selection);
     };
 
-    m.fresh_ns = median_ns(fresh, kCacheSamples);
-    m.occ1_ns = median_ns(lookup1, kCacheSamples);
-    m.occ4_ns = median_ns(lookup4, kCacheSamples);
-    m.occ8_ns = median_ns(lookup8, kCacheSamples);
-    if (m.fresh_ns == 0U || m.occ1_ns == 0U ||
-        m.occ4_ns == 0U || m.occ8_ns == 0U)
-        std::abort();
-    m.occ8_faster_than_fresh = m.occ8_ns < m.fresh_ns;
+    for (std::size_t repeat = 0U;
+         repeat < kCalibrationRepeats;
+         ++repeat) {
+        if ((repeat & 1U) == 0U) {
+            m.fresh_repeat_ns[repeat] =
+                median_ns(fresh, kCacheSamples);
+            m.occ1_repeat_ns[repeat] =
+                median_ns(lookup1, kCacheSamples);
+            m.occ4_repeat_ns[repeat] =
+                median_ns(lookup4, kCacheSamples);
+            m.occ8_repeat_ns[repeat] =
+                median_ns(lookup8, kCacheSamples);
+        } else {
+            m.occ8_repeat_ns[repeat] =
+                median_ns(lookup8, kCacheSamples);
+            m.occ4_repeat_ns[repeat] =
+                median_ns(lookup4, kCacheSamples);
+            m.occ1_repeat_ns[repeat] =
+                median_ns(lookup1, kCacheSamples);
+            m.fresh_repeat_ns[repeat] =
+                median_ns(fresh, kCacheSamples);
+        }
+
+        if (m.fresh_repeat_ns[repeat] == 0U ||
+            m.occ1_repeat_ns[repeat] == 0U ||
+            m.occ4_repeat_ns[repeat] == 0U ||
+            m.occ8_repeat_ns[repeat] == 0U)
+            std::abort();
+
+        m.fresh_total_ns += m.fresh_repeat_ns[repeat];
+        m.occ1_total_ns += m.occ1_repeat_ns[repeat];
+        m.occ4_total_ns += m.occ4_repeat_ns[repeat];
+        m.occ8_total_ns += m.occ8_repeat_ns[repeat];
+        if (m.occ8_repeat_ns[repeat] <
+            m.fresh_repeat_ns[repeat])
+            ++m.beneficial_repeat_count;
+    }
+
+    {
+        auto fresh_sorted = m.fresh_repeat_ns;
+        auto occ1_sorted = m.occ1_repeat_ns;
+        auto occ4_sorted = m.occ4_repeat_ns;
+        auto occ8_sorted = m.occ8_repeat_ns;
+        std::sort(fresh_sorted.begin(), fresh_sorted.end());
+        std::sort(occ1_sorted.begin(), occ1_sorted.end());
+        std::sort(occ4_sorted.begin(), occ4_sorted.end());
+        std::sort(occ8_sorted.begin(), occ8_sorted.end());
+        m.fresh_ns = fresh_sorted[kCalibrationRepeats / 2U];
+        m.occ1_ns = occ1_sorted[kCalibrationRepeats / 2U];
+        m.occ4_ns = occ4_sorted[kCalibrationRepeats / 2U];
+        m.occ8_ns = occ8_sorted[kCalibrationRepeats / 2U];
+    }
+
+    m.aggregate_benefit =
+        m.occ8_total_ns < m.fresh_total_ns;
+    m.repeat_stability_pass =
+        m.beneficial_repeat_count >=
+            kRequiredBeneficialRepeats &&
+        m.aggregate_benefit;
+    m.occ8_faster_than_fresh = m.repeat_stability_pass;
     m.occ8_vs_fresh_x1000 =
-        m.occ8_faster_than_fresh
-            ? ratio_x1000(m.fresh_ns, m.occ8_ns)
-            : ratio_x1000(m.occ8_ns, m.fresh_ns);
-    m.occ8_vs_occ1_x1000 = ratio_x1000(m.occ8_ns, m.occ1_ns);
-    m.occ8_vs_occ4_x1000 = ratio_x1000(m.occ8_ns, m.occ4_ns);
+        ratio_x1000(m.fresh_total_ns, m.occ8_total_ns);
+    m.occ8_vs_occ1_x1000 =
+        ratio_x1000(m.occ8_total_ns, m.occ1_total_ns);
+    m.occ8_vs_occ4_x1000 =
+        ratio_x1000(m.occ8_total_ns, m.occ4_total_ns);
     return m;
 }
 
@@ -1150,7 +1215,7 @@ int main(int argc, char **argv) {
         return 9;
 
     std::array<CacheMeasurement, kResidents> measurements{};
-    bool all_occ8_faster = true;
+    bool all_repeat_stability_pass = true;
     for (std::size_t i = 0U; i < residents.size(); ++i) {
         const auto occ1 = build_occ1(residents[i].selection);
         const auto occ4 = build_occ4(residents, i);
@@ -1159,9 +1224,9 @@ int main(int argc, char **argv) {
         require_lookup(occ8, residents[i].selection);
         measurements[i] =
             measure_cache(residents[i], occ1, occ4, occ8);
-        all_occ8_faster =
-            all_occ8_faster &&
-            measurements[i].occ8_faster_than_fresh;
+        all_repeat_stability_pass =
+            all_repeat_stability_pass &&
+            measurements[i].repeat_stability_pass;
     }
 
     std::ostream *out = &std::cout;
@@ -1180,7 +1245,10 @@ int main(int argc, char **argv) {
         << "\"stack_samples\": " << kStackSamples << ", "
         << "\"stack_rounds_per_sample\": " << kStackRounds << ", "
         << "\"cache_samples\": " << kCacheSamples << ", "
-        << "\"cache_rounds_per_sample\": " << kCacheRounds << "},\n"
+        << "\"cache_rounds_per_sample\": " << kCacheRounds << ", "
+        << "\"calibration_repeats\": " << kCalibrationRepeats << ", "
+        << "\"required_beneficial_repeats\": "
+        << kRequiredBeneficialRepeats << "},\n"
         << "  \"cache\": {\"capacity\": 8, \"resident_entries\": 8, "
         << "\"next_sequence\": " << occ8.next_sequence << "},\n"
         << "  \"boundary\": {\n"
@@ -1231,6 +1299,20 @@ int main(int argc, char **argv) {
             << m.occ4_ns << ",\n"
             << "      \"occupancy8_lookup_median_ns\": "
             << m.occ8_ns << ",\n"
+            << "      \"fresh_selection_total_ns\": "
+            << m.fresh_total_ns << ",\n"
+            << "      \"occupancy1_lookup_total_ns\": "
+            << m.occ1_total_ns << ",\n"
+            << "      \"occupancy4_lookup_total_ns\": "
+            << m.occ4_total_ns << ",\n"
+            << "      \"occupancy8_lookup_total_ns\": "
+            << m.occ8_total_ns << ",\n"
+            << "      \"beneficial_repeat_count\": "
+            << m.beneficial_repeat_count << ",\n"
+            << "      \"aggregate_benefit\": "
+            << (m.aggregate_benefit ? "true" : "false") << ",\n"
+            << "      \"repeat_stability_pass\": "
+            << (m.repeat_stability_pass ? "true" : "false") << ",\n"
             << "      \"occupancy8_faster_than_fresh\": "
             << (m.occ8_faster_than_fresh ? "true" : "false") << ",\n"
             << "      \"occupancy8_vs_fresh_ratio_x1000\": "
@@ -1238,15 +1320,49 @@ int main(int argc, char **argv) {
             << "      \"occupancy8_vs_occupancy1_ratio_x1000\": "
             << m.occ8_vs_occ1_x1000 << ",\n"
             << "      \"occupancy8_vs_occupancy4_ratio_x1000\": "
-            << m.occ8_vs_occ4_x1000 << "\n"
+            << m.occ8_vs_occ4_x1000 << ",\n"
+            << "      \"repeat_measurements\": [\n"
+            << "        {\"repeat\": 1, \"measurement_order\": \"FRESH_OCC1_OCC4_OCC8\", \"fresh_ns\": "
+            << m.fresh_repeat_ns[0] << ", \"occupancy1_ns\": "
+            << m.occ1_repeat_ns[0] << ", \"occupancy4_ns\": "
+            << m.occ4_repeat_ns[0] << ", \"occupancy8_ns\": "
+            << m.occ8_repeat_ns[0] << "},\n"
+            << "        {\"repeat\": 2, \"measurement_order\": \"OCC8_OCC4_OCC1_FRESH\", \"fresh_ns\": "
+            << m.fresh_repeat_ns[1] << ", \"occupancy1_ns\": "
+            << m.occ1_repeat_ns[1] << ", \"occupancy4_ns\": "
+            << m.occ4_repeat_ns[1] << ", \"occupancy8_ns\": "
+            << m.occ8_repeat_ns[1] << "},\n"
+            << "        {\"repeat\": 3, \"measurement_order\": \"FRESH_OCC1_OCC4_OCC8\", \"fresh_ns\": "
+            << m.fresh_repeat_ns[2] << ", \"occupancy1_ns\": "
+            << m.occ1_repeat_ns[2] << ", \"occupancy4_ns\": "
+            << m.occ4_repeat_ns[2] << ", \"occupancy8_ns\": "
+            << m.occ8_repeat_ns[2] << "},\n"
+            << "        {\"repeat\": 4, \"measurement_order\": \"OCC8_OCC4_OCC1_FRESH\", \"fresh_ns\": "
+            << m.fresh_repeat_ns[3] << ", \"occupancy1_ns\": "
+            << m.occ1_repeat_ns[3] << ", \"occupancy4_ns\": "
+            << m.occ4_repeat_ns[3] << ", \"occupancy8_ns\": "
+            << m.occ8_repeat_ns[3] << "},\n"
+            << "        {\"repeat\": 5, \"measurement_order\": \"FRESH_OCC1_OCC4_OCC8\", \"fresh_ns\": "
+            << m.fresh_repeat_ns[4] << ", \"occupancy1_ns\": "
+            << m.occ1_repeat_ns[4] << ", \"occupancy4_ns\": "
+            << m.occ4_repeat_ns[4] << ", \"occupancy8_ns\": "
+            << m.occ8_repeat_ns[4] << "}\n"
+            << "      ]\n"
             << "    }" << (i + 1U == residents.size() ? "\n" : ",\n");
     }
 
     *out
         << "  ],\n"
         << "  \"measurement\": {\n"
-        << "    \"all_occupancy8_faster_than_fresh\": "
-        << (all_occ8_faster ? "true" : "false") << "\n"
+        << "    \"gate_kind\": \"EXACT_INTEGER_REPEAT_STABILITY\",\n"
+        << "    \"calibration_repeats\": "
+        << kCalibrationRepeats << ",\n"
+        << "    \"required_beneficial_repeats\": "
+        << kRequiredBeneficialRepeats << ",\n"
+        << "    \"aggregate_requires_occupancy8_total_lt_fresh_total\": true,\n"
+        << "    \"one_shot_boolean_authoritative\": false,\n"
+        << "    \"all_repeat_stability_pass\": "
+        << (all_repeat_stability_pass ? "true" : "false") << "\n"
         << "  },\n"
         << "  \"authority\": {\n"
         << "    \"vm81_mutation\": false,\n"

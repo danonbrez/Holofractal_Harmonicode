@@ -78,5 +78,6 @@
 
 #include "hhs_pass219_harmonic36_stack_selection_1_10.inc"
 #include "hhs_pass219_harmonic36_stack_selection_cache_1_11.inc"
+#include "hhs_pass219_harmonic36_branch_reference_cache_1_17.inc"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.inc"
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.inc"

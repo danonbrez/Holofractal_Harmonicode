@@ -25,7 +25,8 @@
     "loshu_sudoku_qudit_required": true,
     "native_36bit_execution_required": true,
     "multimodal_generalization_required": true,
-    "global_latency_policy_25_over_3_required": true
+    "global_latency_policy_25_over_3_required": true,
+    "branch_reference_cache_required": true
   },
   "authority": {
     "singleton_vm81_authority_preserved": true,
@@ -70,7 +71,14 @@
     "H36_LATENCY_ROUTE_SELECTOR_DIVERGED_FROM_EXACT_STACK_SELECTOR",
     "H36_LATENCY_ROUTE_WITHOUT_COMPLETE_FALLBACK_ACCEPTED",
     "H36_LATENCY_ROUTE_CANONICAL_AUTHORITY_ESCALATION",
-    "H36_LATENCY_BUDGET_UNMET_DROPPED_REQUIRED_COMPUTATION"
+    "H36_LATENCY_BUDGET_UNMET_DROPPED_REQUIRED_COMPUTATION",
+    "H36_BRANCH_REF_PARENT_MUTATION_ACCEPTED",
+    "H36_BRANCH_REF_UNRECEIPTED_FORK_ACCEPTED",
+    "H36_BRANCH_REF_REVERSE_REPLAY_DRIFT",
+    "H36_BRANCH_REF_FIBONACCI_EQUIVALENCE_INDEX_DRIFT",
+    "H36_BRANCH_REF_COMPOSITION_MEMO_PROVENANCE_DRIFT",
+    "H36_BRANCH_REF_AUTHORITY_ESCALATION",
+    "H36_BRANCH_REF_PRODUCTION_REPEAT_STABILITY_FAILURE"
   ],
   "acceptance": [
     "EXHAUSTIVE_5184_COORDINATE_ROUNDTRIP",
@@ -188,7 +196,14 @@
     "H36_STACK_LATENCY_ROUTE_SELECTION_EXACT_SELECTOR_PARITY",
     "H36_STACK_LATENCY_COMPLETE_FALLBACK_PRESERVED",
     "H36_STACK_LATENCY_BUDGET_UNMET_EXPLICIT",
-    "H36_STACK_LATENCY_CANONICAL_AUTHORITY_UNCHANGED"
+    "H36_STACK_LATENCY_CANONICAL_AUTHORITY_UNCHANGED",
+    "H36_BRANCH_REF_5184_APPEND_ONLY_CAPACITY",
+    "H36_BRANCH_REF_FROZEN_PARENT_BYTE_EQUALITY",
+    "H36_BRANCH_REF_FIBONACCI_ADDITIVE_SUBDIVISION",
+    "H36_BRANCH_REF_CONTIGUOUS_EQUIVALENCE_INDEX",
+    "H36_BRANCH_REF_REVERSE_TO_ROOT_RECEIPT_REPLAY",
+    "H36_BRANCH_REF_ADAPTIVE_COMPOSITION_MEMO",
+    "H36_BRANCH_REF_PRODUCTION_REPEAT_STABILITY"
   ],
   "hash216_repeat_addressing": {
     "repeat_allowed": true,
@@ -891,6 +906,64 @@
       "hash72_hash216_authority_preserved": true,
       "candidate_acceleration_only": true,
       "canonical_authority_acquired_by_latency_planner": false
+    }
+  },
+  "branch_reference_cache_1_17": {
+    "version": "1.17",
+    "additive": true,
+    "inherited_stack_cache_1_11_preserved": true,
+    "frozen_parent_mutation": false,
+    "append_only_branch_forking": true,
+    "capacity": 5184,
+    "tiles144": 36,
+    "lanes": 4,
+    "cells_per_lane": 36,
+    "exact_abi": {
+      "header": "hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h",
+      "implementation": "hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc",
+      "aggregate_header": "hhs_runtime/include/hhs_runtime_exact_abi.h",
+      "aggregate_source": "hhs_runtime/c/hhs_runtime_exact_abi.c"
+    },
+    "runtime_policy": {
+      "local_lookup": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+      "branch_creation": "APPEND_ONLY_PREVIOUS_STATE_REFERENCE",
+      "equivalence_discovery": "CONTIGUOUS_FIBONACCI_IDENTITY_BUCKET",
+      "equivalent_state_resolution": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+      "repeated_composition_receipts": "ADAPTIVE_MEMOIZATION_AFTER_CALIBRATED_THRESHOLD",
+      "rare_composition_receipts": "COMPUTE_ON_DEMAND",
+      "memo_thresholds": [
+        3172,
+        6254,
+        12580,
+        19774,
+        35269,
+        87572
+      ]
+    },
+    "exact_head_validation": {
+      "head": "9026ca84998468f5f20add4661e62dd59effcbab",
+      "workflow_run": 33751463158,
+      "job": 100635741293,
+      "artifact_id": 9891731145,
+      "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358",
+      "conclusion": "SUCCESS"
+    },
+    "production_repeat_stability": {
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "all_paths_beneficial_repeats": 5,
+      "lookup_144_speedup_x1000": 63828,
+      "lookup_5184_speedup_x1000": 59883,
+      "equivalence_144_speedup_x1000": 2287,
+      "equivalence_5184_speedup_x1000": 1977,
+      "composition_144_speedup_x1000": 2651
+    },
+    "authority": {
+      "vm81_mutation": false,
+      "hash72_mint": false,
+      "hash216_persistence": false,
+      "canonical_persistence": false,
+      "floating_point": false
     }
   }
 }
