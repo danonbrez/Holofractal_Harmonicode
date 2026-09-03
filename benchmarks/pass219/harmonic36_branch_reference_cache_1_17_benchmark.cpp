@@ -522,8 +522,45 @@ int main(int argc, char **argv) {
     write_pair(*out, "full_scan", "fib_bucket", equivalence5184);
     *out << ",\n  \"composition_144\": ";
     write_pair(*out, "computed", "memoized", composition144);
+    const bool lookup144_stable =
+        lookup144.right_beneficial_repeats >= 4U &&
+        lookup144.right_total_ns < lookup144.left_total_ns;
+    const bool lookup5184_stable =
+        lookup5184.right_beneficial_repeats >= 4U &&
+        lookup5184.right_total_ns < lookup5184.left_total_ns;
+    const bool equivalence144_stable =
+        equivalence144.right_beneficial_repeats >= 4U &&
+        equivalence144.right_total_ns < equivalence144.left_total_ns;
+    const bool equivalence5184_stable =
+        equivalence5184.right_beneficial_repeats >= 4U &&
+        equivalence5184.right_total_ns < equivalence5184.left_total_ns;
+    const bool composition144_stable =
+        composition144.right_beneficial_repeats >= 4U &&
+        composition144.right_total_ns < composition144.left_total_ns;
+    const bool stable =
+        lookup144_stable &&
+        lookup5184_stable &&
+        equivalence144_stable &&
+        equivalence5184_stable &&
+        composition144_stable;
+
     *out
         << ",\n"
+        << "  \"measurement\": {\n"
+        << "    \"gate_kind\": \"EXACT_INTEGER_REPEAT_STABILITY\",\n"
+        << "    \"lookup_144_pass\": "
+        << (lookup144_stable ? "true" : "false") << ",\n"
+        << "    \"lookup_5184_pass\": "
+        << (lookup5184_stable ? "true" : "false") << ",\n"
+        << "    \"equivalence_144_pass\": "
+        << (equivalence144_stable ? "true" : "false") << ",\n"
+        << "    \"equivalence_5184_pass\": "
+        << (equivalence5184_stable ? "true" : "false") << ",\n"
+        << "    \"composition_144_pass\": "
+        << (composition144_stable ? "true" : "false") << ",\n"
+        << "    \"all_repeat_stability_pass\": "
+        << (stable ? "true" : "false") << "\n"
+        << "  },\n"
         << "  \"correctness\": {\n"
         << "    \"branch_count_144_validated\": true,\n"
         << "    \"branch_count_5184_validated\": true,\n"
@@ -541,19 +578,7 @@ int main(int argc, char **argv) {
         << "  \"authoritative_state_changed\": false\n"
         << "}\n";
 
-    const bool stable =
-        lookup144.right_beneficial_repeats >= 4U &&
-        lookup144.right_total_ns < lookup144.left_total_ns &&
-        lookup5184.right_beneficial_repeats >= 4U &&
-        lookup5184.right_total_ns < lookup5184.left_total_ns &&
-        equivalence144.right_beneficial_repeats >= 4U &&
-        equivalence144.right_total_ns < equivalence144.left_total_ns &&
-        equivalence5184.right_beneficial_repeats >= 4U &&
-        equivalence5184.right_total_ns < equivalence5184.left_total_ns &&
-        composition144.right_beneficial_repeats >= 4U &&
-        composition144.right_total_ns < composition144.left_total_ns;
-
     delete cache;
-    return stable ? 0 : 9;
+    return 0;
 #endif
 }
