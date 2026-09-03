@@ -215,3 +215,128 @@ Next action:
 - validate I154 on exact main;
 - let I151 observe the new I154 benchmark surface and seal its next append-only history record;
 - do not treat the authority blocker as an implementation failure.
+
+
+## Exact-main closure
+
+### Integration
+PR `#371` merged the validated I154 implementation cleanly as:
+
+`5bb11a87f8933e52e76474bad9c58dc005f03716`
+
+Exact `main` was verified at that SHA before evidence sealing.
+
+### Exact-main I154
+- workflow run: `33760828923`
+- job: `100666418769`
+- conclusion: SUCCESS
+- artifact: `9895365190`
+- artifact SHA-256: `c6adc4c2dc87bcd13d9d42106f35d05a8ffc08c9ca1a90c6225c95b9f1138bf2`
+
+Receipt SHA-256 values remained deterministic and matched feature validation:
+```text
+production provider probe
+1996b12d69c9b794ca412d481d0ec48620de1b666c5c058591803d0638205887
+
+test fixture provider probe
+cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e
+
+authorized four-lane benchmark
+892c04e9a356ebfdd3cae37caa46b139108f8828741d47dfe306618573d0db74
+```
+
+Production authority state on exact main:
+```text
+provider classification               = BLOCKED_PROVIDER_UNAVAILABLE
+binding decision                      = UNRESOLVED
+binding reason mask                   = 1
+Pass159 provenance exact              = true
+runtime provider available            = false
+Pass169 authority verified            = false
+Boolean gate results available        = false
+membrane input ready                  = false
+canonical monolithic proof            = false
+local P snapshot binding available    = false
+gate-vector environment export        = false
+planner input ready                   = false
+authoritative workload count          = 0
+effective exhaustion work measured    = false
+81/7 production conclusion            = none
+```
+
+The exact-main production result is therefore:
+
+`BLOCKED_REAL_AUTHORITY_INPUT`
+
+This is an authority-input blocker, not an implementation failure and not a zero-work exhaustion measurement.
+
+Test-only four-lane diagnostic plumbing remained:
+```text
+lanes                              = 4
+baseline work units                = 4096
+effective downstream work units    = 128
+work units avoided                 = 3968
+ratio                              = 32x
+81/7 representative gate           = PASS
+canonical evidence eligible        = false
+test fixture is authority          = false
+planner receipt sha256             = b21fe95c93a621288c996b307394ff2655ee2faa6f2bdbe464dfaa865b485793
+```
+
+### Cumulative I151 history after I154
+Exact-main observer:
+- workflow run: `33760828990`
+- job: `100666418946`
+- conclusion: SUCCESS
+- artifact: `9895357817`
+- artifact SHA-256: `8d394ebb3cf4b58a7d64d6b660fef7c3305af6a2a93cd0078ad70ce6264d6143`
+
+The repository history prefix was reconciled before append:
+```text
+source physical lines = 6
+source sha256          = 63f04882caf4d2d5c15f8d2b1095d4c7a26b14e04a3d2ef8da54404ec66a4507
+last sealed line hash  = 18a93d2ce026055be101fd7148bf1033bc5bc602a9fa54abefb40d5eab9ce8ee
+```
+
+The exact-main I151 artifact produced:
+```text
+output physical lines = 7
+output sha256          = 6d410196e5444afbe71ae2d8f84579a94d0c154952ed739cc6eaca3b61b81e5c
+new line hash          = 8a5f70cf0534ddf7b7576bb2a17c8b403afeb85ed94209228137fd7b97115510
+inventory surfaces     = 28
+inventory root         = b74d4937bd432d65899fb3d8226ea8a262bd37180b7f7348aa6ca76121a6b602
+```
+
+I154 benchmark inventory entry:
+```text
+path   = benchmarks/pass219/pass219_i154_authorized_four_lane_exhaustion_benchmark.py
+bytes  = 7635
+sha256 = 444062b8a01459b9f62ab7e9732bf2092195f4d283d4d046d8b7eaef3c6aa9b4
+```
+
+The seventh history record is appended verbatim to:
+`evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY.jsonl`
+
+Run-specific exact-main evidence:
+- `evidence/pass219/PASS_219_I154_EXACT_MAIN_33760828923.json`
+- `evidence/pass219/PASS_219_I151_BENCHMARK_RUN_33760828990_AFTER_I154.json`
+
+### Closure classification
+
+I154 implementation status:
+`IMPLEMENTED / FEATURE-GREEN / MERGED / EXACT-MAIN-GREEN / EVIDENCE-SEALED`
+
+I154 real exhaustion measurement status:
+`BLOCKED_REAL_AUTHORITY_INPUT`
+
+Remaining authority requirements:
+1. non-test Pass169/VM81 provider;
+2. provider-verified local I153 P/Hash216 snapshot binding;
+3. provider export of canonical five-gate vector and global environment root.
+
+No fixed cardinality changed.
+No canonical VM81, Hash72, or Hash216 authority moved into the planner.
+No full-manifold exhaustion claim was emitted.
+
+Evidence-seal branch:
+`agent/pass219-i154-main-evidence-seal-20260903`
