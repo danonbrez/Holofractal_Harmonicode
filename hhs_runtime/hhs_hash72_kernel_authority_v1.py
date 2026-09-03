@@ -52,25 +52,64 @@ def _transport_bytes(label: str, payload: str) -> bytes:
     return f"{label}\u241f{payload}".encode("utf-8")
 
 
+def _apply_aggregated_transport(ring: HHSHash72RingBridge, transport: bytes) -> None:
+    """Apply the exact bytewise ring trace with at most 72 ctypes crossings.
+
+    ``hhs_hash72_ring_rotate`` is additive: each call adds ``delta`` to the
+    selected ring position/profile and subtracts the same ``delta`` from the
+    adjacent toroidal position/profile. The final ring state therefore depends
+    on the sum of primary deltas for each of the 72 coordinates, while the
+    canonical witness also records the total trace count and final operation.
+
+    The legacy adapter crossed Python -> C once per transport byte. Large API
+    payloads consequently performed millions of ctypes calls even though the
+    native transition itself is only a pair of integer additions plus the
+    invariant refresh. Aggregating deltas by primary coordinate preserves the
+    exact final positions, DNA, rotation profile, zero-sum closure, trace count,
+    last index, and last delta while reducing the boundary crossings to <= 72.
+    """
+
+    trace_count = len(transport)
+    if trace_count == 0:
+        return
+
+    primary_deltas = [0] * HASH72_LEN
+    last_delta = 0
+
+    for offset, byte in enumerate(transport):
+        index = offset % HASH72_LEN
+        # offset == index (mod 72), so this is bit-for-bit equivalent to the
+        # historical ((byte + offset) % 72) expression.
+        delta = ((byte + index) % HASH72_LEN) or HASH72_LEN
+        primary_deltas[index] += delta
+        last_delta = delta
+
+    for index, delta in enumerate(primary_deltas):
+        if delta and not ring.rotate(index, delta):
+            raise RuntimeError("Hash72 u^72 ring transport failed zero-sum validation")
+
+    # Aggregated native rotations intentionally compress only call overhead,
+    # not witness semantics. Restore the exact metadata produced by the full
+    # bytewise trace after the equivalent final ring state has been reached.
+    ring.ring.trace_count = trace_count
+    ring.ring.last_index = (trace_count - 1) % HASH72_LEN
+    ring.ring.last_delta = last_delta
+
+
 def make_hash72_kernel_witness(label: str, value: Any, *, width: int = 24) -> HHSHash72KernelWitness:
     """Derive a Hash72 witness by rotating the C u^72 ring.
 
     For each canonical byte, the byte value is interpreted as a toroidal
     rotation delta at a deterministic ring coordinate. The C kernel applies the
     compensatory adjacent rotation, preserving the zero-sum closure invariant.
+    The adapter aggregates equivalent rotations before crossing the Python/C ABI
+    so authoritative semantics stay unchanged while large payloads remain
+    practical for runtime use.
     """
 
     payload = canonical_payload(value)
     ring = HHSHash72RingBridge()
-
-    for offset, byte in enumerate(_transport_bytes(label, payload)):
-        # Position is primary. The label/payload stream supplies offsets from
-        # the u^72 closure state, not a direct symbol substitution.
-        index = offset % HASH72_LEN
-        delta = ((byte + offset) % HASH72_LEN) or HASH72_LEN
-        ok = ring.rotate(index, delta)
-        if not ok:
-            raise RuntimeError("Hash72 u^72 ring transport failed zero-sum validation")
+    _apply_aggregated_transport(ring, _transport_bytes(label, payload))
 
     export = ring.export()
     dna = export["dna"]
