@@ -92,8 +92,10 @@ def main() -> int:
 
     assert production["schema"] == "HHS_PASS219_I154_PASS169_PROVIDER_PROBE_V1"
     assert production["provider_origin"] == "REPOSITORY_PRODUCTION_PASS169_VM81_PROVIDER"
-    assert production["runtime_provider_available"] is False
-    assert production["classification"] == "BLOCKED_PROVIDER_UNAVAILABLE"
+    assert production["runtime_provider_available"] is True
+    assert production["classification"] == "BLOCKED_FULL_SYMBOLIC_RESIDUAL"
+    assert production["binding_decision"] == "UNRESOLVED"
+    assert production["binding_reason_mask"] == 512
     assert production["pass169_authority_verified"] is False
     assert production["boolean_gate_results_available"] is False
     assert production["membrane_input_ready"] is False
@@ -125,10 +127,10 @@ def main() -> int:
         "pass": 219,
         "iteration": "I154",
         "production_measurement": {
-            "status": "BLOCKED_PROVIDER_UNAVAILABLE",
+            "status": "BLOCKED_FULL_SYMBOLIC_RESIDUAL",
             "effective_exhaustion_work_measured": False,
             "authoritative_workload_count": 0,
-            "runtime_provider_available": False,
+            "runtime_provider_available": True,
             "pass169_authority_verified": False,
             "local_P_snapshot_binding_available": False,
             "gate_vector_environment_export_available": False,
@@ -154,7 +156,7 @@ def main() -> int:
             "receipt_sha256": plumbing["receipt_sha256"],
         },
         "unresolved_authority_requirements": [
-            "NON_TEST_PASS169_VM81_PROVIDER",
+            "FULL_SYMBOLIC_UQCEL_MONOLITHIC_EQUALITY_CHAIN",
             "I154_LOCAL_P_SNAPSHOT_BINDING_VERIFIED_BY_PROVIDER",
             "I154_CANONICAL_GATE_VECTOR_AND_GLOBAL_ENVIRONMENT_EXPORT",
         ],

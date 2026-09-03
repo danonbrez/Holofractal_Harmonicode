@@ -60,6 +60,9 @@ static const char *classification_name(
 #else
     if (result->runtime_provider_available == 0U)
         return "BLOCKED_PROVIDER_UNAVAILABLE";
+    if (result->reason_mask ==
+        HHS_EXACT_PASS219_PASS169_BINDING_REASON_FULL_SYMBOLIC_UNRESOLVED)
+        return "BLOCKED_FULL_SYMBOLIC_RESIDUAL";
     if (result->pass169_authority_verified == 0U)
         return "BLOCKED_PASS169_AUTHORITY_NOT_VERIFIED";
     return "BLOCKED_I154_LOCAL_SNAPSHOT_BINDING_EXTENSION_MISSING";
