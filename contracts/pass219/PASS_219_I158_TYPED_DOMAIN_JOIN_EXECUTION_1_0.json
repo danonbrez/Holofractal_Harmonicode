@@ -2,27 +2,27 @@
   "schema": "HHS_PASS219_I158_TYPED_DOMAIN_JOIN_EXECUTION_CONTRACT_V1",
   "pass": 219,
   "iteration": "I158",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "danonbrez/Holofractal_Harmonicode",
   "authoritative_base": "2d9efd5e2960c42b7c762c95389b9688cfcb8433",
   "mode": "APPEND_ONLY_REPAIR_FORWARD",
-  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED_WITH_EXPLICIT_BLOCKER_PRESERVATION",
+  "classification": "CONTRACT_AUTHORIZED_TYPED_SEMANTICS_AUDIT_WITH_FAIL_CLOSED_UNRESOLVED_BOUNDARIES",
   "inherits": [
     "HHS-P169-HSAE-VM81-ESCPR",
     "HHS-P219-MONOLITHIC-UQCEL-RESIDUAL-1.15.0",
     "PASS_219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING",
     "PASS_219_I157_CANDIDATE_BOUND_TYPED_VALUE_PRODUCER"
   ],
-  "purpose": "Execute all currently registered and independently verifiable typed-domain joins over one I157 candidate graph without destructive scalarization, while preserving unresolved root/boundary obligations as explicit fail-closed blockers.",
+  "purpose": "Audit and execute only typed-domain joins whose operator semantics are already registered. Conventional modular projection is diagnostic only and cannot resolve the frozen Harmonicode MOD pivots without an explicit typed projection/operator registry binding.",
   "implementation": {
     "module": "hhs_runtime/pass219/typed_domain_join_executor.py",
     "public_function": "execute_typed_domain_joins",
-    "modular_projection_function": "project_rational_to_modular",
+    "conventional_projection_audit_function": "project_rational_to_modular",
     "public_service": "runtime.pass219.typed_domain_join_execution",
     "benchmark": "benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py",
     "tests": "tests/pass219/test_pass219_i158_typed_domain_join_execution.py"
   },
-  "candidate_closure_fixture": {
+  "conformance_fixture": {
     "P": 30,
     "p": 29,
     "q": 31,
@@ -31,9 +31,10 @@
     "m": 267,
     "exact_harmonic_value": 26970,
     "modulus_pq": 899,
-    "P2_mod_pq_representative": 1,
+    "P2_conventional_mod_representative": 1,
+    "harmonic_conventional_mod_representative": 0,
     "m2_minus_m": 71022,
-    "m2_minus_m_mod_pq_representative": 1,
+    "m2_minus_m_conventional_mod_representative": 1,
     "s": {
       "numerator": 2,
       "denominator": 25
@@ -44,17 +45,30 @@
     "w": 54,
     "scope": "NONAUTHORITATIVE_DETERMINISTIC_CONFORMANCE_FIXTURE"
   },
-  "projection_semantics": {
+  "exact_obstruction": {
+    "observed_in_run": 33783511319,
+    "statement": "When the exact rational chain closes for the conformance candidate, (t^3-t)/Delta = 26970 = 30*899, so its conventional residue mod pq is 0 while P^2 mod pq is 1.",
+    "general_structural_note": "Under the closed nonzero rational equalities with Delta=1 and pq=P^2-1, the harmonic term P(P^2-1) is divisible by pq whereas P^2 has conventional residue 1.",
+    "consequence": "Conventional scalar modular-class equality cannot be promoted to the active Harmonicode pivot semantics.",
+    "test_failure_classification": "SEMANTIC_FALSIFICATION_NOT_INFRASTRUCTURE_FAILURE"
+  },
+  "conventional_projection_audit": {
     "source_type": "EXACT_RATIONAL",
-    "target_type": "MODULAR_STATE",
+    "target_type": "CONVENTIONAL_MODULAR_CLASS_DIAGNOSTIC",
     "forward_rule": "num*inv(den) mod modulus when gcd(den,modulus)=1",
     "reverse_rule": null,
     "injective": false,
     "reverse_inference_authorized": false,
     "ordinary_scalar_remainder_identity_claimed": false,
-    "exact_integer_modular_inverse_required": true,
-    "noninvertible_denominator": "UNRESOLVED",
-    "class_mismatch": "REJECTED"
+    "adapter_authorized_for_harmonicode_join": false,
+    "candidate_join_status_derived_from_projection": false,
+    "noninvertible_denominator": "DIAGNOSTIC_UNRESOLVED",
+    "conventional_class_mismatch": "DIAGNOSTIC_REJECTED_ONLY"
+  },
+  "formal_typing_rule": {
+    "source": "docs/HARMONICODE_FORMAL_EVALUATION_PROTOCOL.md",
+    "familiar_Mod_glyph_does_not_determine_operator_semantics": true,
+    "conventional_interpretation_requires_registered_type_or_projection": true
   },
   "join_transition": {
     "inherited_i157": {
@@ -62,49 +76,55 @@
       "unresolved": 5,
       "rejected": 0
     },
-    "expected_i158_fixture": {
-      "proved": 7,
-      "unresolved": 3,
+    "expected_i158": {
+      "proved": 5,
+      "unresolved": 5,
       "rejected": 0
     },
-    "newly_resolved_edges": [
-      {
-        "edge_index": 2,
-        "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
-        "direction": "T3_MINUS_T_OVER_DELTA_TO_P2_MOD_PQ"
-      },
-      {
-        "edge_index": 3,
-        "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
-        "direction": "M2_MINUS_M_TO_P2_MOD_PQ"
-      }
-    ]
+    "newly_resolved_modular_pivots": 0,
+    "conventional_projection_audit": {
+      "matches": 1,
+      "mismatches": 1
+    }
   },
   "explicit_remaining_blockers": [
     {
+      "edge_index": 2,
+      "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+      "reason": "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED"
+    },
+    {
+      "edge_index": 3,
+      "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+      "reason": "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED"
+    },
+    {
       "edge_index": 7,
       "join_kind": "AB_ROOT_CORRESPONDENCE",
-      "reason": "BOUNDARY_PRODUCT_BINDING_REQUIRED",
-      "required_next_surface": "exact source-bound A/B boundary product evaluator"
+      "reason": "BOUNDARY_PRODUCT_BINDING_REQUIRED"
     },
     {
       "edge_index": 8,
       "join_kind": "MONOLITHIC_BOUNDARY_EQUALITY",
-      "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
-      "required_next_surface": "whole-source A/B execution bound to Pass159/Pass169"
+      "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED"
     },
     {
       "edge_index": 9,
       "join_kind": "DELTA_RADICAL_PROJECTION",
-      "reason": "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED",
-      "repository_evidence": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/hhs_pass191_manifold_kernel_v1.py carries x_squared_binding=None"
+      "reason": "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED"
     }
   ],
+  "repository_blocker_bindings": {
+    "pass191": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/hhs_pass191_manifold_kernel_v1.py contains x_squared_binding=None",
+    "pass169": "symbolic radical, exact algebraic equality, VM81 execution and Hash72 execution evidence remain required",
+    "formal_protocol": "Mod semantics must be typed before conventional interpretation"
+  },
   "source_of_truth_rules": {
     "i157_graph_sha256_must_verify": true,
     "i157_join_topology_must_match_frozen_edges": true,
     "pass191_x_squared_binding_must_still_be_unresolved": true,
-    "pass169_symbolic_radical_and_vm81_requirements_must_remain_present": true,
+    "pass169_execution_requirements_must_remain_present": true,
+    "formal_Mod_typing_protocol_must_remain_present": true,
     "scalar_coercion_forbidden": true,
     "float_canonical_authority_forbidden": true
   },
@@ -131,18 +151,19 @@
     "python_parse_compile",
     "dependency_scoped_pytest",
     "public_service_self_test",
-    "deterministic_i158_benchmark",
-    "projection_audit_noninjective_no_reverse_inference",
-    "negative_modular_class_mismatch_rejection",
-    "noninvertible_denominator_unresolved",
+    "deterministic_i158_semantics_audit_benchmark",
+    "conventional_projection_counterexample",
+    "projection_noninjective_no_reverse_inference",
+    "five_explicit_blockers",
     "i157_graph_tamper_rejection",
-    "pass191_blocker_binding",
+    "formal_Mod_typing_protocol_binding",
+    "pass191_x_squared_blocker_binding",
     "authority_boundary_assertions",
     "artifact_upload"
   ],
   "completion_semantics": {
-    "i158_complete_when": "all currently registered executable adapters are implemented and validated; unresolved unregistered semantics remain explicit blockers",
+    "i158_complete_when": "the conventional modular interpretation is falsified as join authority, all five unresolved typed obligations are repository-bound, and no downstream authority is manufactured",
     "terminal_pass169_complete": false,
-    "next_boundary": "BOUNDARY_VALUE_EVALUATOR_AND_PHASE_EXPONENT_BINDING"
+    "next_boundary": "REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS"
   }
 }
