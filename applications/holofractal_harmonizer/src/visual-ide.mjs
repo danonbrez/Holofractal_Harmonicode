@@ -279,11 +279,7 @@ async function bootVisualIDE() {
     },
     {
       stage: 'PREVIEW_READY',
-      run: async () => {
-        await loadAndInit('./project-lifecycle.mjs', 'initProjectLifecycle');
-        const recovery = await loadProductionRecovery();
-        await safeInit('initProductionRecovery', recovery.initProductionRecovery);
-      },
+      run: () => loadAndInit('./project-lifecycle.mjs', 'initProjectLifecycle'),
     },
     {
       stage: 'ASSISTANT_READY',
@@ -315,7 +311,8 @@ async function bootVisualIDE() {
     {
       stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
       run: () => {
-        queueMicrotask(() => {
+        window.setTimeout(() => {
+          void loadProductionRecovery().then((recovery) => safeInit('initProductionRecovery', recovery.initProductionRecovery, { optional: true }));
           void loadAndInit('./integrated-workbench.mjs', 'initIntegratedWorkbench', { optional: true });
           void loadAndInit('./intuitive-ide.mjs', 'initIntuitiveIDE', { optional: true });
           void loadAndInit('./pass175-processor.mjs', 'initPass175Processor', { optional: true });
@@ -323,8 +320,8 @@ async function bootVisualIDE() {
           void loadAndInit('./deployment-health.mjs', 'initDeploymentHealth', { optional: true });
           void loadAndInit('./application-studio.mjs', 'initApplicationStudio', { optional: true });
           void loadAndInit('./deployable-app-compiler.mjs', 'initDeployableAppCompiler', { optional: true });
-        });
-        return { deferred: true };
+        }, 0);
+        return { deferred: true, afterInteractiveContinuation: true };
       },
       optional: true,
     },
