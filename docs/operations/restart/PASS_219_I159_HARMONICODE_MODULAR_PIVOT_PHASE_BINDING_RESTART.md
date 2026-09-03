@@ -212,3 +212,43 @@ Next integration action:
 Next cumulative boundary:
 
 `SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS`
+
+
+## Functional integration checkpoint
+
+Functional PR:
+
+- PR: `#385`
+- merged head: `a4796d12c596887f324d45b7dd03e4269086c202`
+- functional main merge: `ea878c0913be99c4e1e667dfd7d0e090fd22bc66`
+
+The feature-scoped I159 gate was terminal green before merge.
+
+Exact-main validation was triggered automatically:
+
+```text
+I159 exact-main
+run 33787892559
+head ea878c0913be99c4e1e667dfd7d0e090fd22bc66
+state at checkpoint: IN_PROGRESS
+
+I151 cumulative benchmark history
+run 33787892623
+head ea878c0913be99c4e1e667dfd7d0e090fd22bc66
+state at checkpoint: IN_PROGRESS
+```
+
+Unrelated failing or queued workflows are not acceptance gates for I159.
+
+If either exact-main run is still externally queued/in-progress when control returns, restart from this repository checkpoint and inspect only those exact run IDs. Do not rerun the already-green feature validation unless an impacted I159 surface changes.
+
+Pending closure actions:
+
+1. verify I159 run `33787892559`;
+2. verify I151 run `33787892623`;
+3. collect artifacts and exact receipt identities;
+4. append the emitted I151 history line exactly once;
+5. seal exact-main I159 and I151 evidence on an evidence-only branch;
+6. merge evidence seal;
+7. confirm the evidence-only merge does not recursively trigger I159/I151;
+8. continue to `SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS`.
