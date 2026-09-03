@@ -5,6 +5,7 @@ on:
     branches:
       - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
       - agent/pass219-h36-global-latency-policy-integration
+      - agent/pass219-h36-fibonacci-branch-cache-benchmark
     paths:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
@@ -79,6 +80,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_fibonacci_branch_cache_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_fibonacci_branch_emergent_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -680,6 +682,51 @@ jobs:
           assert all(value is False for key, value in d['authority'].items()
                      if key != 'candidate_benchmark_only')
           assert d['authority']['candidate_benchmark_only'] is True
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 Fibonacci emergent branch benefits
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_fibonacci_branch_emergent_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-fibonacci-branch-emergent
+          /tmp/h36/h36-fibonacci-branch-emergent \
+            artifacts/pass219/harmonic36/fibonacci_branch_emergent_benchmark.json
+          cat artifacts/pass219/harmonic36/fibonacci_branch_emergent_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/fibonacci_branch_emergent_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['frozen_parent']['entries'] == 4
+          assert d['frozen_parent']['next_sequence'] == 5
+          assert d['frozen_parent']['unchanged_after_all_sweeps'] is True
+          assert [row['branches'] for row in d['scales']] == [144,288,576,1152,2304,5184]
+          assert [row['tiles144'] for row in d['scales']] == [1,2,4,8,16,36]
+          for row in d['scales']:
+              assert row['memory']['duplicate_bytes'] > 0
+              assert row['memory']['reference_bytes'] > 0
+              assert row['memory']['duplicate_vs_reference_x1000'] > 1000
+              assert row['fork_creation']['duplicate_total_ns'] > 0
+              assert row['fork_creation']['reference_total_ns'] > 0
+              assert row['random_access']['duplicate_total_ns'] > 0
+              assert row['random_access']['reference_total_ns'] > 0
+              assert row['equivalence']['full_scan_total_ns'] > 0
+              assert row['equivalence']['fib_bucket_total_ns'] > 0
+              assert row['composition_receipts']['compute_total_ns'] > 0
+              assert row['composition_receipts']['memo_total_ns'] > 0
+              assert row['composition_receipts']['memo_build_total_ns'] > 0
+              assert row['fork_creation']['winner'] in ('REFERENCE','DUPLICATE')
+              assert row['random_access']['winner'] in ('REFERENCE','DUPLICATE')
+              assert row['equivalence']['winner'] in ('FIB_BUCKET','FULL_SCAN')
+              assert row['composition_receipts']['winner'] in ('MEMOIZED','COMPUTED')
+          assert d['correctness'] and all(d['correctness'].values())
+          assert d['authority']['candidate_benchmark_only'] is True
+          assert all(value is False for key, value in d['authority'].items()
+                     if key != 'candidate_benchmark_only')
           assert d['authoritative_state_changed'] is False
           PY
 
