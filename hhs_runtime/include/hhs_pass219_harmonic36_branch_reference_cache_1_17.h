@@ -97,6 +97,8 @@ typedef struct HHSExactPass219H36BranchReferenceCacheV1 {
         HHS_EXACT_PASS219_H36_BRANCH_REF_FIB_BUCKETS];
     uint32_t fib_bucket_count[
         HHS_EXACT_PASS219_H36_BRANCH_REF_FIB_BUCKETS];
+    uint32_t fib_bucket_members[
+        HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY];
     HHSExactPass219H36BranchReferenceEntryV1
         entries[HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY];
     HHSExactPass219H36BranchMemoStateV1
