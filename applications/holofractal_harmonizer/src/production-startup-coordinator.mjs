@@ -127,7 +127,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V15',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V16',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -150,21 +150,29 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
-  synchronous_public_boot_handoff: true,
+  synchronous_public_boot_handoff: false,
+  coordinator_evaluation_closes_before_public_boot: true,
   frontend_is_authority: false,
 });
 
-try {
-  const publicBoot = startPublicBoot();
-  void publicBoot.allSettled.finally(() => {
-    void loadDeferredProjections();
-  });
-} catch (error) {
-  console.error('HHS public module boot failed', error);
-  window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
-    detail: {
-      classification: 'HHS_PUBLIC_MODULE_BOOT_FAILED',
-      message: error?.message || String(error),
-    },
-  }));
-}
+// Close evaluation of the parser-loaded coordinator before entering the dynamic
+// public-module graph. This avoids re-entering the module loader from inside the
+// coordinator's own evaluation job while still starting Pass 176 before every
+// deferred Pass 196-203 projection. The microtask is sequencing-only and carries
+// no execution, persistence, VM81, Hash72, Hash216, browser, or checkpoint authority.
+queueMicrotask(() => {
+  try {
+    const publicBoot = startPublicBoot();
+    void publicBoot.allSettled.finally(() => {
+      void loadDeferredProjections();
+    });
+  } catch (error) {
+    console.error('HHS public module boot failed', error);
+    window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
+      detail: {
+        classification: 'HHS_PUBLIC_MODULE_BOOT_FAILED',
+        message: error?.message || String(error),
+      },
+    }));
+  }
+});
