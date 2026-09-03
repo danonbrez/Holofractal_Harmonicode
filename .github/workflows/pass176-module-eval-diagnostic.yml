@@ -41,12 +41,17 @@ jobs:
                   f"\nconsole.info('HHS_MODULE_END:{rel}');\n",
                   encoding='utf-8',
               )
+          Path('applications/holofractal_harmonizer/module-probe.html').write_text(
+              '<!doctype html><meta charset="utf-8"><title>Pass176 module probe</title><main id="probe">PASS176 MODULE PROBE</main>\n',
+              encoding='utf-8',
+          )
           PY
       - name: Capture module evaluation frontier
         run: |
           set -euo pipefail
-          mkdir -p evidence/pass176/generated/module-eval-diagnostic
-          python -m http.server 8765 --directory applications/holofractal_harmonizer > evidence/pass176/generated/module-eval-diagnostic/static-server.log 2>&1 &
+          OUT=evidence/pass176/generated/module-eval-diagnostic
+          mkdir -p "$OUT"
+          python -m http.server 8765 --directory applications/holofractal_harmonizer > "$OUT/static-server.log" 2>&1 &
           SERVER_PID=$!
           cleanup() {
             kill "$SERVER_PID" 2>/dev/null || true
@@ -55,18 +60,18 @@ jobs:
           trap cleanup EXIT
           ready=0
           for attempt in $(seq 1 30); do
-            if curl --connect-timeout 1 --max-time 3 -fsS http://127.0.0.1:8765/ > evidence/pass176/generated/module-eval-diagnostic/root.html; then
+            if curl --connect-timeout 1 --max-time 3 -fsS http://127.0.0.1:8765/module-probe.html > "$OUT/module-probe.html"; then
               ready=1
               break
             fi
             sleep 1
           done
           test "$ready" -eq 1
-          timeout 90s python - <<'PY'
+          timeout --signal=TERM --kill-after=10s 90s python - <<'PY'
           from pathlib import Path
           import json
           import time
-          from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+          from playwright.sync_api import sync_playwright
 
           out = Path('evidence/pass176/generated/module-eval-diagnostic')
           messages = []
@@ -74,13 +79,37 @@ jobs:
           request_failures = []
           http_errors = []
           result = {
-              'schema': 'HHS_PASS_176_MODULE_EVALUATION_DIAGNOSTIC_V2',
-              'dom_content_loaded': False,
+              'schema': 'HHS_PASS_176_MODULE_EVALUATION_DIAGNOSTIC_V3',
               'messages': messages,
               'page_errors': page_errors,
               'request_failures': request_failures,
               'http_errors': http_errors,
+              'probes': [],
           }
+
+          targets = [
+              './src/sha256.mjs',
+              './src/core.mjs',
+              './src/visual-ide-state.mjs',
+              './src/visual-ide-ui.mjs',
+              './src/visual-ide-runtime.mjs',
+              './src/pass176-stability-core.mjs',
+              './src/pass176-stability.mjs',
+              './src/gui-reliability.mjs',
+              './src/visual-ide.mjs',
+              './src/browser.mjs',
+          ]
+
+          def flush():
+              starts = [m['text'].removeprefix('HHS_MODULE_START:') for m in messages if m['text'].startswith('HHS_MODULE_START:')]
+              ends = [m['text'].removeprefix('HHS_MODULE_END:') for m in messages if m['text'].startswith('HHS_MODULE_END:')]
+              result['started_modules'] = starts
+              result['ended_modules'] = ends
+              result['started_without_end'] = [name for name in starts if name not in set(ends)]
+              result['last_module_message'] = next((m['text'] for m in reversed(messages) if m['text'].startswith('HHS_MODULE_')), None)
+              (out / 'module-evaluation-diagnostic.json').write_text(json.dumps(result, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+              (out / 'browser-console.json').write_text(json.dumps(messages, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
               context = browser.new_context(viewport={'width': 390, 'height': 844})
@@ -89,43 +118,53 @@ jobs:
               page.on('pageerror', lambda error: page_errors.append(str(error)))
               page.on('requestfailed', lambda request: request_failures.append({'url': request.url, 'failure': request.failure or 'unknown'}))
               page.on('response', lambda response: http_errors.append({'url': response.url, 'status': response.status}) if response.status >= 400 else None)
+              response = page.goto('http://127.0.0.1:8765/module-probe.html', wait_until='domcontentloaded', timeout=15000)
+              result['probe_http_status'] = response.status if response else None
+              flush()
+
+              for target in targets:
+                  before = time.monotonic()
+                  probe = page.evaluate(
+                      """async (path) => {
+                        const timeout = new Promise((resolve) => setTimeout(() => resolve({state: 'TIMEOUT'}), 6000));
+                        const attempt = import(path).then(
+                          () => ({state: 'READY'}),
+                          (error) => ({state: 'FAILED', error: `${error?.name || 'Error'}: ${error?.message || String(error)}`}),
+                        );
+                        return Promise.race([attempt, timeout]);
+                      }""",
+                      target,
+                  )
+                  probe['path'] = target
+                  probe['elapsed_ms'] = round((time.monotonic() - before) * 1000)
+                  result['probes'].append(probe)
+                  flush()
+                  print(json.dumps(probe, sort_keys=True), flush=True)
+
+              result['boot_globals'] = page.evaluate("""() => ({
+                  visual_ide: Boolean(window.HHSVisualIDEBoot),
+                  pass176: Boolean(window.HHSPass176),
+                  browser_ready: Boolean(window.HHSBrowserReady),
+              })""")
               try:
-                  response = page.goto('http://127.0.0.1:8765/', wait_until='commit', timeout=30000)
-                  result['http_status'] = response.status if response else None
-                  try:
-                      page.wait_for_load_state('domcontentloaded', timeout=30000)
-                      result['dom_content_loaded'] = True
-                  except PlaywrightTimeoutError as error:
-                      result['dom_timeout'] = str(error)
-                  page.wait_for_timeout(5000)
+                  page.screenshot(path=str(out / 'module-evaluation-frontier.png'), timeout=5000)
               except Exception as error:
-                  result['navigation_error'] = f'{type(error).__name__}: {error}'
-              finally:
-                  starts = [m['text'].removeprefix('HHS_MODULE_START:') for m in messages if m['text'].startswith('HHS_MODULE_START:')]
-                  ends = [m['text'].removeprefix('HHS_MODULE_END:') for m in messages if m['text'].startswith('HHS_MODULE_END:')]
-                  result['started_modules'] = starts
-                  result['ended_modules'] = ends
-                  result['started_without_end'] = [name for name in starts if name not in set(ends)]
-                  result['last_module_message'] = next((m['text'] for m in reversed(messages) if m['text'].startswith('HHS_MODULE_')), None)
-                  result['boot_globals'] = page.evaluate("""() => ({
-                      inline: Boolean(window.HHSInlinePublicBoot),
-                      coordinator: Boolean(window.HHSProductionStartupCoordinator),
-                      public_boot: Boolean(window.HHSPublicBoot),
-                      visual_ide: Boolean(window.HHSVisualIDEBoot),
-                      pass176: Boolean(window.HHSPass176),
-                  })""") if not page.is_closed() else None
-                  try:
-                      page.screenshot(path=str(out / 'module-evaluation-frontier.png'), full_page=True)
-                  except Exception as error:
-                      result['screenshot_error'] = str(error)
-                  (out / 'module-evaluation-diagnostic.json').write_text(json.dumps(result, indent=2, sort_keys=True) + '\n', encoding='utf-8')
-                  (out / 'browser-console.json').write_text(json.dumps(messages, indent=2, sort_keys=True) + '\n', encoding='utf-8')
-                  browser.close()
-          print(json.dumps({k: result.get(k) for k in ('dom_content_loaded','last_module_message','started_without_end','boot_globals')}, indent=2, sort_keys=True))
+                  result['screenshot_error'] = f'{type(error).__name__}: {error}'
+              flush()
+              context.close()
+              browser.close()
+
+          print(json.dumps({
+              'probes': result['probes'],
+              'started_without_end': result.get('started_without_end'),
+              'last_module_message': result.get('last_module_message'),
+          }, indent=2, sort_keys=True))
           PY
       - name: Restore locally instrumented source
         if: always()
-        run: git restore applications/holofractal_harmonizer/src
+        run: |
+          git restore applications/holofractal_harmonizer/src
+          rm -f applications/holofractal_harmonizer/module-probe.html
       - uses: actions/upload-artifact@v4
         if: always()
         with:
