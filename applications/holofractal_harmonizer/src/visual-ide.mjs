@@ -297,11 +297,13 @@ async function bootVisualIDE() {
         if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
           throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
         }
-        void stability.runAction('workspace-authority-bind', async ({ signal }) => {
-          const projectId = await ensureProject({ signal });
+        // Workspace binding is optional boot follow-up, not an interactive user job.
+        // Keep it bounded inside requestJson/ensureProject without occupying the
+        // Pass 176 active-job ledger used to prove the editor is idle/interactive.
+        void ensureProject().then((projectId) => {
           log(`Workspace authority bound to ${projectId}.`);
           return projectId;
-        }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
+        }).catch((error) => {
           log(`Workspace initialization deferred: ${error.message}`);
         });
         return authorityEvidence;
