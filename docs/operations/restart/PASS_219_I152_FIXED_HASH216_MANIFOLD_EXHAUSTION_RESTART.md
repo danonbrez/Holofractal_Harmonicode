@@ -98,3 +98,14 @@ The evidence-only merge `da0043c447d94f8d323fe441565d8bbc17470ee5` unexpectedly 
 - Benchmark job steps, fixed cardinalities, tests, and authority semantics are unchanged.
 
 After this repair merges, the workflow-file change itself intentionally causes one final exact-main I152 validation. Subsequent evidence/history/restart-only seals must not launch I152.
+
+
+## Final trigger verification
+
+Main `f85194329fe8e11c58e10ac264688f190e4b4f4d` carries workflow blob `efc5bcbbb6b3092d58fb078f63a43eb7504a0e77`.
+
+The restart/checkpoint path is absent from the I152 workflow trigger list. Benchmark job steps are unchanged. The final evidence seal branch changes only:
+- `evidence/pass219/PASS_219_I152_NONRECURSIVE_TRIGGER_REPAIR.json`
+- this restart record.
+
+After this seal merges, absence of an I152 run on the seal merge is the terminal proof that evidence/checkpoint updates no longer recursively execute the benchmark.
