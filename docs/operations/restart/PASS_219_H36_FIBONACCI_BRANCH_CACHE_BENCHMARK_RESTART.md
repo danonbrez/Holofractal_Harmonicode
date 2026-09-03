@@ -9,6 +9,8 @@
 - Benchmark source commit: `d880eb40a5b7a01ce8f1331c21829dcbb195d13c`
 - Workflow wiring commit: `1bc295d9b7f04beb1cb4192899d08c06fec8efcd`
 - Evidence commit: `af0c3eaa6eb23a41ab8a1605c95f283998734839`
+- Emergent benchmark commit: `5a413fdd70bb07b54999ffeb5f2acd945438cf0c`
+- Emergent evidence commit: `6b04dfea0c6a7ae33fbdd9b37431f4203745e691`
 
 ## Scope completed
 
@@ -100,3 +102,118 @@ If productionizing this result:
 None for the benchmark conclusion.
 
 No production runtime path has been changed yet.
+
+
+## Emergent-benefit scaling sweep
+
+A second benchmark extended the same immutable-parent construction across:
+
+`144, 288, 576, 1152, 2304, 5184` branch states.
+
+Validation:
+
+- workflow run: `33748212696`
+- job: `100625507692`
+- conclusion: `SUCCESS`
+- artifact: `9890486924`
+- artifact SHA-256: `5a3855eb8ab09e8a3d21023bb87256f55955f2f198e220e98cac2f909d456293`
+- samples: 7
+- calibration repeats: 5
+- random-access rounds: 32,768
+- composition rounds: 65,536
+- equivalence rounds: 128
+
+All inherited H36 gates through calibrated occupancy-4, capacity-8, optimization manifests, and mandatory integration remained green in the same run.
+
+### Emergent result 1 — fork creation
+
+Reference-backed branch creation beat full-selection duplication at every tested scale.
+
+- 144 branches: `1.415×`
+- 288: `1.430×`
+- 576: `1.452×`
+- 1152: `1.424×`
+- 2304: `1.646×`
+- 5184: `1.585×`
+
+This establishes a direct branch-fork creation advantage in addition to the previously measured lookup advantage.
+
+### Emergent result 2 — working-set locality
+
+Random branch access through immutable references also won at every scale, and the advantage increased as duplicated payload pressure grew.
+
+- 144 branches: `1.030×`
+- 288: `1.100×`
+- 576: `1.118×`
+- 1152: `1.124×`
+- 2304: `1.296×`
+- 5184: `1.549×`
+
+At 5184 branches, duplicated selections occupied `1,575,936 bytes`; the reference-backed representation occupied `270,808 bytes`, a `5.819×` storage ratio.
+
+### Emergent result 3 — Fibonacci identity discovery
+
+When the workload is isolated to discovering all branch identities sharing a Fibonacci class, the Fibonacci bucket index wins strongly:
+
+- 144 branches: `6.815×`
+- 288: `8.265×`
+- 576: `8.798×`
+- 1152: `7.389×`
+- 2304: `4.874×`
+- 5184: `4.774×`
+
+This does not contradict the earlier 144-cell full-resolution measurement. In that earlier benchmark, every matched branch also executed direct-reference validation and composition resolution, so traversal cost was dominated by downstream work and the full scan was marginally faster. The new sweep isolates identity discovery itself.
+
+The runtime rule is therefore:
+
+`FIBONACCI BUCKET FOR EQUIVALENCE DISCOVERY -> DIRECT BRANCH REFERENCE FOR RESOLUTION`
+
+rather than inserting the bucket into every local lookup.
+
+### Emergent result 4 — compatible-composition receipt reuse
+
+Memoized compatible-lane receipts beat recomputation at all scales:
+
+- 144 branches: `2.527×`, break-even about `3,172` receipt queries
+- 288: `2.542×`, break-even `6,254`
+- 576: `2.511×`, break-even `12,580`
+- 1152: `2.915×`, break-even `19,774`
+- 2304: `3.087×`, break-even `35,269`
+- 5184: `2.887×`, break-even `87,572`
+
+A repeated composition path should therefore memoize only after its measured/query-count amortization threshold, while infrequent compositions remain computed on demand.
+
+### Emergent result 5 — invariants survived scaling
+
+For every tested scale:
+
+- Fibonacci additive subdivision remained exact;
+- full-scan and bucket equivalence sets were identical;
+- memoized composition receipts equaled recomputed receipts;
+- branch receipts remained deterministic;
+- the four frozen parent cache states remained byte-for-byte unchanged;
+- no canonical VM81, Hash72, Hash216, or persistence authority was introduced.
+
+## Updated best configuration
+
+The evidence now supports a composite runtime configuration:
+
+1. **Local state lookup:** direct immutable parent/previous-state reference.
+2. **Branch creation:** reference fork, never duplicate frozen payload.
+3. **Equivalence discovery:** Fibonacci identity bucket.
+4. **Equivalent-state resolution:** direct immutable branch reference after discovery.
+5. **Repeated compatible compositions:** memoized reversible receipt after the measured amortization threshold.
+6. **Infrequent compatible compositions:** compute the reversible receipt on demand.
+7. **Frozen state:** immutable; all evolution is append-only branch forking.
+
+The Fibonacci layer is therefore not merely metadata. It has a measured role as a selective nonlocal-equivalence index, while direct branch addressing remains the hot local path.
+
+## Revised next implementation step
+
+Productionization should now implement the branch-reference surface with three distinct paths rather than one:
+
+- direct H36 branch lookup;
+- Fibonacci-equivalence discovery index;
+- adaptive compatible-composition receipt memoization.
+
+The implementation must preserve the existing frozen parent cache and validate dependency-scoped exact ABI, Hash216 binding, branch-knowledge, receipt replay, occupancy, and artifact gates before merge.
