@@ -1,0 +1,148 @@
+{
+  "schema": "HHS_PASS219_I158_TYPED_DOMAIN_JOIN_EXECUTION_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I158",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "2d9efd5e2960c42b7c762c95389b9688cfcb8433",
+  "mode": "APPEND_ONLY_REPAIR_FORWARD",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED_WITH_EXPLICIT_BLOCKER_PRESERVATION",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "HHS-P219-MONOLITHIC-UQCEL-RESIDUAL-1.15.0",
+    "PASS_219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING",
+    "PASS_219_I157_CANDIDATE_BOUND_TYPED_VALUE_PRODUCER"
+  ],
+  "purpose": "Execute all currently registered and independently verifiable typed-domain joins over one I157 candidate graph without destructive scalarization, while preserving unresolved root/boundary obligations as explicit fail-closed blockers.",
+  "implementation": {
+    "module": "hhs_runtime/pass219/typed_domain_join_executor.py",
+    "public_function": "execute_typed_domain_joins",
+    "modular_projection_function": "project_rational_to_modular",
+    "public_service": "runtime.pass219.typed_domain_join_execution",
+    "benchmark": "benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py",
+    "tests": "tests/pass219/test_pass219_i158_typed_domain_join_execution.py"
+  },
+  "candidate_closure_fixture": {
+    "P": 30,
+    "p": 29,
+    "q": 31,
+    "delta": 1,
+    "t": 30,
+    "m": 267,
+    "exact_harmonic_value": 26970,
+    "modulus_pq": 899,
+    "P2_mod_pq_representative": 1,
+    "m2_minus_m": 71022,
+    "m2_minus_m_mod_pq_representative": 1,
+    "s": {
+      "numerator": 2,
+      "denominator": 25
+    },
+    "x": 18,
+    "y": 54,
+    "z": 18,
+    "w": 54,
+    "scope": "NONAUTHORITATIVE_DETERMINISTIC_CONFORMANCE_FIXTURE"
+  },
+  "projection_semantics": {
+    "source_type": "EXACT_RATIONAL",
+    "target_type": "MODULAR_STATE",
+    "forward_rule": "num*inv(den) mod modulus when gcd(den,modulus)=1",
+    "reverse_rule": null,
+    "injective": false,
+    "reverse_inference_authorized": false,
+    "ordinary_scalar_remainder_identity_claimed": false,
+    "exact_integer_modular_inverse_required": true,
+    "noninvertible_denominator": "UNRESOLVED",
+    "class_mismatch": "REJECTED"
+  },
+  "join_transition": {
+    "inherited_i157": {
+      "proved": 5,
+      "unresolved": 5,
+      "rejected": 0
+    },
+    "expected_i158_fixture": {
+      "proved": 7,
+      "unresolved": 3,
+      "rejected": 0
+    },
+    "newly_resolved_edges": [
+      {
+        "edge_index": 2,
+        "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+        "direction": "T3_MINUS_T_OVER_DELTA_TO_P2_MOD_PQ"
+      },
+      {
+        "edge_index": 3,
+        "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+        "direction": "M2_MINUS_M_TO_P2_MOD_PQ"
+      }
+    ]
+  },
+  "explicit_remaining_blockers": [
+    {
+      "edge_index": 7,
+      "join_kind": "AB_ROOT_CORRESPONDENCE",
+      "reason": "BOUNDARY_PRODUCT_BINDING_REQUIRED",
+      "required_next_surface": "exact source-bound A/B boundary product evaluator"
+    },
+    {
+      "edge_index": 8,
+      "join_kind": "MONOLITHIC_BOUNDARY_EQUALITY",
+      "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
+      "required_next_surface": "whole-source A/B execution bound to Pass159/Pass169"
+    },
+    {
+      "edge_index": 9,
+      "join_kind": "DELTA_RADICAL_PROJECTION",
+      "reason": "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED",
+      "repository_evidence": "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/hhs_pass191_manifold_kernel_v1.py carries x_squared_binding=None"
+    }
+  ],
+  "source_of_truth_rules": {
+    "i157_graph_sha256_must_verify": true,
+    "i157_join_topology_must_match_frozen_edges": true,
+    "pass191_x_squared_binding_must_still_be_unresolved": true,
+    "pass169_symbolic_radical_and_vm81_requirements_must_remain_present": true,
+    "scalar_coercion_forbidden": true,
+    "float_canonical_authority_forbidden": true
+  },
+  "authority_boundary": {
+    "typed_join_execution_complete": false,
+    "canonical_monolithic_boundary_proof": false,
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "fixed_search_space": {
+    "target": "72^42=5184^21",
+    "working_manifold": "3*72^72",
+    "route_multiplicity": "3*72^30",
+    "required_reduction_ratio": "81/7",
+    "changed": false
+  },
+  "validation_gates": [
+    "python_parse_compile",
+    "dependency_scoped_pytest",
+    "public_service_self_test",
+    "deterministic_i158_benchmark",
+    "projection_audit_noninjective_no_reverse_inference",
+    "negative_modular_class_mismatch_rejection",
+    "noninvertible_denominator_unresolved",
+    "i157_graph_tamper_rejection",
+    "pass191_blocker_binding",
+    "authority_boundary_assertions",
+    "artifact_upload"
+  ],
+  "completion_semantics": {
+    "i158_complete_when": "all currently registered executable adapters are implemented and validated; unresolved unregistered semantics remain explicit blockers",
+    "terminal_pass169_complete": false,
+    "next_boundary": "BOUNDARY_VALUE_EVALUATOR_AND_PHASE_EXPONENT_BINDING"
+  }
+}
