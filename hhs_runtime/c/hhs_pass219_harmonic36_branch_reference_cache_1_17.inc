@@ -118,13 +118,12 @@ static HHSExactStatus h36_branch_ref_parent_header_validate(
     return HHS_EXACT_STATUS_OK;
 }
 
-static HHSExactStatus h36_branch_ref_parent_entry_validate(
+static HHSExactStatus h36_branch_ref_parent_entry_validate_fast(
     const HHSExactPass219H36StackCacheV1 *parent_cache,
     uint32_t parent_slot,
     uint64_t expected_signature64
 ) {
     const HHSExactPass219H36StackCacheEntryV1 *entry;
-    uint64_t recomputed;
 
     if (parent_cache == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -133,10 +132,40 @@ static HHSExactStatus h36_branch_ref_parent_entry_validate(
     entry = &parent_cache->entries[parent_slot];
     if (entry->occupied != 1U)
         return HHS_EXACT_STATUS_RANGE_ERROR;
+    if (entry->struct_size != sizeof(*entry) ||
+        entry->version != HHS_EXACT_PASS219_H36_STACK_CACHE_VERSION)
+        return HHS_EXACT_STATUS_VERSION_MISMATCH;
+    if (entry->sequence == 0U ||
+        entry->entry_signature64 == 0U ||
+        entry->candidate_only != 1U ||
+        entry->vector_store_metadata_only != 1U ||
+        entry->hash216_lineage_claim != 0U ||
+        entry->canonical_mutation_authority != 0U ||
+        entry->canonical_hash72_authority != 0U ||
+        entry->canonical_hash216_authority != 0U ||
+        entry->canonical_persistence_authority != 0U ||
+        entry->entry_signature64 != expected_signature64)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
+
+static HHSExactStatus h36_branch_ref_parent_entry_validate_full(
+    const HHSExactPass219H36StackCacheV1 *parent_cache,
+    uint32_t parent_slot,
+    uint64_t expected_signature64
+) {
+    const HHSExactPass219H36StackCacheEntryV1 *entry;
+    uint64_t recomputed;
+    HHSExactStatus status;
+
+    status = h36_branch_ref_parent_entry_validate_fast(
+        parent_cache, parent_slot, expected_signature64);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    entry = &parent_cache->entries[parent_slot];
     recomputed = h36_branch_ref_parent_entry_signature(entry);
     if (recomputed == 0U ||
-        recomputed != entry->entry_signature64 ||
-        entry->entry_signature64 != expected_signature64)
+        recomputed != entry->entry_signature64)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return HHS_EXACT_STATUS_OK;
 }
@@ -283,7 +312,7 @@ static HHSExactStatus h36_branch_ref_entry_validate_fast(
             h36_branch_ref_receipt_signature(entry))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
-    status = h36_branch_ref_parent_entry_validate(
+    status = h36_branch_ref_parent_entry_validate_fast(
         parent_cache,
         entry->parent_slot,
         entry->parent_entry_signature64);
@@ -437,7 +466,7 @@ static HHSExactStatus h36_branch_ref_append(
         tile144 >= HHS_EXACT_PASS219_H36_BRANCH_REF_MAX_TILES)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    status = h36_branch_ref_parent_entry_validate(
+    status = h36_branch_ref_parent_entry_validate_fast(
         parent_cache,
         parent_slot,
         parent_cache->entries[parent_slot].entry_signature64);
@@ -1115,6 +1144,12 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
 
         status = h36_branch_ref_entry_validate_fast(
             cache, frozen_parent_cache, i);
+        if (status != HHS_EXACT_STATUS_OK)
+            return status;
+        status = h36_branch_ref_parent_entry_validate_full(
+            frozen_parent_cache,
+            entry->parent_slot,
+            entry->parent_entry_signature64);
         if (status != HHS_EXACT_STATUS_OK)
             return status;
 
