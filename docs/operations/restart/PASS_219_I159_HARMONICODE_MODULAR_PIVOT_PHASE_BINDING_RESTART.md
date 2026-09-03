@@ -212,3 +212,129 @@ Next integration action:
 Next cumulative boundary:
 
 `SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS`
+
+
+## Functional integration checkpoint
+
+Functional PR:
+
+- PR: `#385`
+- merged head: `a4796d12c596887f324d45b7dd03e4269086c202`
+- functional main merge: `ea878c0913be99c4e1e667dfd7d0e090fd22bc66`
+
+The feature-scoped I159 gate was terminal green before merge.
+
+Exact-main validation was triggered automatically:
+
+```text
+I159 exact-main
+run 33787892559
+head ea878c0913be99c4e1e667dfd7d0e090fd22bc66
+state at checkpoint: IN_PROGRESS
+
+I151 cumulative benchmark history
+run 33787892623
+head ea878c0913be99c4e1e667dfd7d0e090fd22bc66
+state at checkpoint: IN_PROGRESS
+```
+
+Unrelated failing or queued workflows are not acceptance gates for I159.
+
+If either exact-main run is still externally queued/in-progress when control returns, restart from this repository checkpoint and inspect only those exact run IDs. Do not rerun the already-green feature validation unless an impacted I159 surface changes.
+
+Pending closure actions:
+
+1. verify I159 run `33787892559`;
+2. verify I151 run `33787892623`;
+3. collect artifacts and exact receipt identities;
+4. append the emitted I151 history line exactly once;
+5. seal exact-main I159 and I151 evidence on an evidence-only branch;
+6. merge evidence seal;
+7. confirm the evidence-only merge does not recursively trigger I159/I151;
+8. continue to `SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS`.
+
+
+## Exact-main closure
+
+Functional main:
+
+`ea878c0913be99c4e1e667dfd7d0e090fd22bc66`
+
+### I159 exact-main
+
+- run: `33787892559`
+- job: `100757024504`
+- conclusion: SUCCESS
+- artifact: `9906137794`
+- artifact SHA-256: `ea503f4f6896877a5479ef91610b2676346336259d3a4611ac65445aba2f73e5`
+- benchmark file SHA-256: `0d115d5c3ef29d1de75cf75bf3f5b12b5a1206f18e816660083f106b80b68253`
+- receipt: `c520926bbe19f145da5e16e756ae8513dcff9663ff788211561b7e9b070e6983`
+- I159 execution: `d5d01d925baeb49b64c293d37679b3d6d8b3e20c89c970032a88b0f5b40d5f67`
+- profile: `1b6a5152f6f6fee89e5c616dd0e80e4b78112695687e8bae6006ffe2f5b2c4ef`
+
+Exact-main result reproduced:
+
+```text
+7 proved
+3 unresolved
+0 rejected
+2 newly resolved modular pivots
+
+edge 2: (30,0) closure residue -> (1,1) renewed unit
+edge 3: (1,1) renewed unit class <-> (79,1) renewed unit class
+```
+
+No conventional modular projection, scalar equality, scalar 0=1, or residue-only authority was used.
+
+Exact-main evidence:
+
+`evidence/pass219/PASS_219_I159_EXACT_MAIN_33787892559.json`
+
+### I151 cumulative history after I159
+
+- run: `33787892623`
+- job: `100757024087`
+- conclusion: SUCCESS
+- artifact: `9906138483`
+- artifact SHA-256: `69e11b15f3491e50cefe6d284a64bf12bfeb25cb5bb80010fa3f04722c6d6410`
+
+Append-only transition:
+
+```text
+source lines = 11
+source SHA-256 = 83c1f4f8dda1c2128437536dba4a54a93a782bd97dbcc4defe1b70bb6c5ea9f6
+previous entry SHA-256 = f2d035c47eb059445c8a14ec506ba0531dbf6a63901f643ffe54d9aa7d39b05a
+
+output lines = 12
+output SHA-256 = 6cad8a056afd025672aafd0f2c803396a5a5990f3176a817705df015fe0c143a
+new entry SHA-256 = 437bbb355fe06220943ab4fb2e595397f14921e7834cf4019823a5c6082a694a
+
+inventory surfaces = 33
+inventory root = 833c2c709b29634c7f0bf519e6c5b8282f51ea28a5dd733bb4b130679cb91481
+
+I159 benchmark surface:
+bytes = 5530
+sha256 = 8686264127e39e68eb36008a80d55a91f0e2ec70fa56f901564de3b2eb42dd64
+```
+
+The exact emitted twelfth history line has been appended once to the canonical I151 JSONL.
+
+Run evidence:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_RUN_33787892623_AFTER_I159.json`
+
+## I159 closure classification
+
+`IMPLEMENTED / FEATURE-GREEN / MERGED / EXACT-MAIN-GREEN / HISTORY-APPENDED / EVIDENCE-SEALED`
+
+Remaining source obligations:
+
+```text
+edge 7 BOUNDARY_PRODUCT_BINDING_REQUIRED
+edge 8 COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED
+edge 9 PASS191_X_SQUARED_PHASE_BINDING_REQUIRED
+```
+
+Next cumulative boundary:
+
+`SOURCE_BOUND_AB_PRODUCT_AND_X2_PHASE_EXPONENT_BINDINGS`
