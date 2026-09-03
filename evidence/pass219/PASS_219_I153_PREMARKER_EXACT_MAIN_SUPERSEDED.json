@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS219_I153_PREMARKER_EXACT_MAIN_SUPERSEDED_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I153",
+  "repository_sha": "eb2992b22010b98999a8ddc24a3c8a040cead407",
+  "classification": "GREEN_EXACT_MAIN_SUPERSEDED_BEFORE_CANONICAL_HISTORY_SEAL",
+  "reason": "Final comment-only benchmark dispatch marker produced the final source blob and later accepted history run.",
+  "i153_run": {
+    "workflow_run_id": 33744351337,
+    "job_id": 100613303867,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9889003520,
+    "artifact_sha256": "bc6c1f96740497734b30cf50c279b286432a27fc644b026a599485d32c233ae9"
+  },
+  "i151_run": {
+    "workflow_run_id": 33744351341,
+    "job_id": 100613303605,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9889002060,
+    "artifact_sha256": "444b7ca7538d365f81d9160be72f6b57764635d59a79b4552b39e539ea010e71",
+    "canonical_history_accumulation": false
+  },
+  "result": "PASS"
+}
