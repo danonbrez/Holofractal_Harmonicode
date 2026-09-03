@@ -56,3 +56,51 @@ Productionize the measured H36/Hash216 branch-cache configuration without modify
 Implementation not yet started on this branch beyond this repository-visible restart record.
 
 No blockers.
+
+
+## Implementation checkpoint — exact conformance green
+
+Implemented files:
+
+- `hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h`
+- `hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc`
+- `tests/pass219/test_pass219_harmonic36_branch_reference_cache_1_17.c`
+- exact ABI aggregate header/source additions
+- production benchmark harness `benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp`
+- dependency-scoped H36 workflow wiring
+
+Key commits through this checkpoint:
+
+- ABI declaration: `35526cb7025646669463c222f35db190657c4413`
+- memo-threshold provenance: `5ae1d113b59abfea4e65e8103dccec1b80c77b37`
+- implementation: `a1a3e19ec57d5505d8688ee7610ee817b1d7d818`
+- O(1) hot-path refinement: `d38e9c4c79b7f559c9017a485b96f234b636083c`
+- exact ABI header integration: `2bf149e55737a1b2cfee4149295121316bcc8eb3`
+- exact ABI source integration: `44948f28722ab877632ab00e5c9d7917cd41be86`
+- full-capacity conformance test: `3c9870b7da960fb670d72f2aa5ce26bcbe59631f`
+- first workflow wiring: `5335981db5ef96c9f2030b51c72d419c8efbadb6`
+- production benchmark source: `f4085bb8ae9a56ce8853a60115fc8d9929e456f3`
+- calibrated production benchmark wiring: `73bd07ac207fec9bd6bbc198deb63305b025278b`
+
+First production conformance validation:
+
+- workflow: `Pass 219 Harmonic36 Nested VM`
+- run: `33750331847`
+- job: `100632183436`
+- conclusion: `SUCCESS`
+- exact ABI compile: success
+- stack-cache 1.11 inherited conformance: success
+- branch-reference cache 1.17 conformance: success
+- Hash216 RNA binding: success
+- branch knowledge: success
+- composition grammar/programs: success
+- no canonical floating implementation: success
+- inherited optimization, occupancy-4, capacity-8, manifest, and integration gates: success
+
+The 1.17 conformance test validated all 5,184 branch slots, 36 H36 tiles, immutable parent byte equality, exact Fibonacci additive subdivision, branch receipt replay, reverse-to-root traversal, equivalence buckets, memo-threshold provenance across cache growth, tamper rejection, and full-capacity behavior.
+
+Current pending validation:
+
+- calibrated production-surface performance run `33750557466`, which requires >=4/5 beneficial repeats for direct reference lookup, Fibonacci equivalence discovery, and memoized composition.
+
+No correctness blockers are currently open.
