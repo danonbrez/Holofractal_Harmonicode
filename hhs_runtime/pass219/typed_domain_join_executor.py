@@ -585,7 +585,8 @@ def typed_domain_join_executor_self_test() -> dict[str, Any]:
         or result["counts"]["unresolved"] != 5
         or result["counts"]["rejected"] != 0
         or result["counts"]["newly_resolved_modular_pivots"] != 0
-        or result["counts"]["conventional_modular_projection_mismatches"] != 2
+        or result["counts"]["conventional_modular_projection_matches"] != 1
+        or result["counts"]["conventional_modular_projection_mismatches"] != 1
         or result["decision"] != "UNRESOLVED_TYPED_SEMANTICS"
     ):
         raise AssertionError("I158_SELF_TEST_COUNT_DRIFT")
@@ -599,6 +600,9 @@ def typed_domain_join_executor_self_test() -> dict[str, Any]:
         "rejected": result["counts"]["rejected"],
         "newly_resolved_modular_pivots": result["counts"][
             "newly_resolved_modular_pivots"
+        ],
+        "conventional_modular_projection_matches": result["counts"][
+            "conventional_modular_projection_matches"
         ],
         "conventional_modular_projection_mismatches": result["counts"][
             "conventional_modular_projection_mismatches"
