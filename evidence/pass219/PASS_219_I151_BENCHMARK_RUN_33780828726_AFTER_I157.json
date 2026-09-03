@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_HISTORY_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "cause": "Pass 219 I157 typed candidate value graph benchmark surface",
+  "repository_sha": "36e959341d3f87847fd7fc3600b70d713422e22e",
+  "workflow_run_id": 33780828726,
+  "job_id": 100733772149,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9903481234,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-36e959341d3f87847fd7fc3600b70d713422e22e",
+    "sha256": "bcd5ea3805776fa0c42aa8559814207a79e1ab6dc06e23de57f54d1035bb6019"
+  },
+  "history": {
+    "source_lines": 9,
+    "output_lines": 10,
+    "source_sha256": "c359b083049f029b9406c5f9295b364fb81e9c589bee8c506c68f6482919f7ca",
+    "output_sha256": "97a12e5976a4ac8d4a97676ad887f565f0e78f46ee9dff03594a810e025502ee",
+    "previous_entry_sha256": "c9dbea515b977851728578cd2fc4e422635ced62709f8c3daaf9f6c4e4a4b5bc",
+    "appended_entry_sha256": "7b822bff8e088d039e5b25d6b82e39f49879cd22906579b3fc34dd6c938bd8ea",
+    "chain_verified": true
+  },
+  "inventory": {
+    "surface_count": 31,
+    "sha256_root": "7617ad364881000e8ef7d93fcf027ce09af1363e328a57728bb79fe7bcdd82aa",
+    "i157_surface": {
+      "path": "benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py",
+      "bytes": 5237,
+      "sha256": "3b9fa095d859a4195cae87ee43c1974085c10b139f6fbc1154a1ff4e1f1bced2"
+    }
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "result": "PASS"
+}

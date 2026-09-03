@@ -296,3 +296,124 @@ Next integration action:
 Next implementation boundary remains:
 
 `TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF`
+
+
+## Exact-main closure
+
+### Functional integration
+
+PR `#380` merged I157 as:
+
+`36e959341d3f87847fd7fc3600b70d713422e22e`
+
+### I157 exact-main validation
+
+- workflow run: `33780828565`
+- job: `100733771626`
+- conclusion: SUCCESS
+- artifact: `9903482886`
+- artifact SHA-256: `d921feb49718d9d8bf5da68f1101b03340d4f19867044d8e13072aa7892bcd99`
+- benchmark file SHA-256: `32c4875d91b91a36950de9a6b971ed38d74ade8988a68248547d99ef5bf7c1fd`
+
+Exact-main benchmark identities:
+
+```text
+receipt
+69d806246ca29669a5338bfeb4b22139936e95ea0a6a5762ff3ee11d0378a962
+
+typed value graph
+8e0050d0828746bcc45e1120886075dd0369bbef6e3ebb77d9d053d05a305bde
+
+candidate binding
+5ee87a232bd348edbda7ecca202d3ec6a6b1f6d3a880fd92c0d6d2451da8f3a9
+```
+
+Exact-main capability reproduced:
+
+```text
+term count                     = 15
+ordered joins                  = 10
+typed domains observed         = 7
+PROVED joins                   = 5
+UNRESOLVED joins               = 5
+REJECTED joins                 = 0
+graph decision                 = UNRESOLVED
+I156 ratio projection terms    = 7
+non-rational typed terms       = 8
+I156 full ratio packet eligible= false
+scalar coercion                = false
+mod remainder scalarization    = false
+source A/B definitionally P^2  = false
+ordered xy / yx                = 0 / 36
+full physical enumeration      = false
+```
+
+Required next adapters remain:
+
+```text
+MODULAR_PIVOT_ADAPTER_REQUIRED_NO_SCALAR_REMAINDER_COERCION
+SYMBOLIC_AB_ROOT_EXECUTION_REQUIRED
+COMPLETE_BOUNDARY_EXECUTION_REQUIRED
+EXACT_PHASE_EXPONENT_RADICAL_ADAPTER_REQUIRED
+```
+
+Authority remains false for canonical monolithic proof, VM81 execution and
+mutation, Hash72 execution and minting, Hash216 persistence, deterministic
+replay, and floating-point authority.
+
+Exact-main evidence:
+
+`evidence/pass219/PASS_219_I157_EXACT_MAIN_33780828565.json`
+
+### Cumulative I151 benchmark history
+
+- workflow run: `33780828726`
+- job: `100733772149`
+- conclusion: SUCCESS
+- artifact: `9903481234`
+- artifact SHA-256: `bcd5ea3805776fa0c42aa8559814207a79e1ab6dc06e23de57f54d1035bb6019`
+
+Append-only transition:
+
+```text
+source physical lines = 9
+source SHA-256         = c359b083049f029b9406c5f9295b364fb81e9c589bee8c506c68f6482919f7ca
+previous entry SHA-256 = c9dbea515b977851728578cd2fc4e422635ced62709f8c3daaf9f6c4e4a4b5bc
+
+output physical lines = 10
+output SHA-256         = 97a12e5976a4ac8d4a97676ad887f565f0e78f46ee9dff03594a810e025502ee
+new entry SHA-256      = 7b822bff8e088d039e5b25d6b82e39f49879cd22906579b3fc34dd6c938bd8ea
+inventory surfaces     = 31
+inventory root         = 7617ad364881000e8ef7d93fcf027ce09af1363e328a57728bb79fe7bcdd82aa
+```
+
+New indexed benchmark:
+
+```text
+benchmarks/pass219/pass219_i157_typed_candidate_value_graph_benchmark.py
+bytes  = 5237
+sha256 = 3b9fa095d859a4195cae87ee43c1974085c10b139f6fbc1154a1ff4e1f1bced2
+```
+
+The exact emitted tenth history line is appended to:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY.jsonl`
+
+Run evidence:
+
+`evidence/pass219/PASS_219_I151_BENCHMARK_RUN_33780828726_AFTER_I157.json`
+
+### I157 closure classification
+
+`IMPLEMENTED / FEATURE-GREEN / MERGED / EXACT-MAIN-GREEN / HISTORY-APPENDED / EVIDENCE-SEALED`
+
+I157 closes the candidate-bound typed value-production layer without erasing
+domain distinctions or manufacturing downstream authority.
+
+The next cumulative implementation boundary is:
+
+`TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF`
+
+Evidence seal branch:
+
+`agent/pass219-i157-main-evidence-seal-20260903`
