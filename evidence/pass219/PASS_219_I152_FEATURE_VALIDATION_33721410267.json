@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS219_I152_FIXED_MANIFOLD_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I152",
+  "validated_head": "465cf64dcc8824595281172980797a7b48cb0f29",
+  "workflow_run_id": 33721410267,
+  "job_id": 100541140304,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9880354655,
+    "name": "pass219-i152-fixed-hash216-manifold-exhaustion-465cf64dcc8824595281172980797a7b48cb0f29",
+    "sha256": "b51d11d822d91030a4424313c9f2cfedf5884252a39e90621d8a03182c84c0f6"
+  },
+  "fixed_cardinalities": {
+    "target": "72^42=5184^21",
+    "working_manifold": "3*72^72",
+    "route_multiplicity": "3*72^30",
+    "exhaustion_ratio": "81/7"
+  },
+  "full_four_lane_exhaustion_status": "VALIDATION_REQUIRED",
+  "authority_changed": false,
+  "later_trigger_only_head": "881c4be35b69ce5a0859aba0170e7b7f65b0601d"
+}
