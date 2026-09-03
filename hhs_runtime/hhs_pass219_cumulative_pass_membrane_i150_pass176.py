@@ -53,7 +53,6 @@ def validate_pass176_frozen_terminal_evidence() -> dict[str, Any]:
 
 def validate_pass176_preservation_surface() -> dict[str, Any]:
     server = (ROOT / "hhs_backend/runtime_os_application_server_full.py").read_text("utf-8")
-    production = (ROOT / "hhs_backend/public_ide_bootstrap.py").read_text("utf-8")
     visual = (ROOT / "applications/holofractal_harmonizer/src/visual-ide.mjs").read_text("utf-8")
     for token in (
         'PASS176_FROZEN_IDE_PATH = "/pass176-ide"',
@@ -62,8 +61,12 @@ def validate_pass176_preservation_surface() -> dict[str, Any]:
     ):
         if token not in server:
             raise RuntimeError(f"PASS176_ADDITIVE_ROUTE_DRIFT:{token}")
-    if "HHS Visual Runtime OS Workspace" not in server + production:
-        raise RuntimeError("PASS176_RUNTIME_OS_PUBLIC_ROOT_DRIFT")
+    for token in (
+        'Full HHS application composition with the TypeScript Runtime OS at ``/``.',
+        "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)",
+    ):
+        if token not in server:
+            raise RuntimeError(f"PASS176_RUNTIME_OS_PUBLIC_ROOT_DRIFT:{token}")
     for token in ("window.HHSVisualIDEBoot", "window.HHSVisualIDE", "INTERACTIVE"):
         if token not in visual:
             raise RuntimeError(f"PASS176_VISUAL_IDE_SURFACE_DRIFT:{token}")
