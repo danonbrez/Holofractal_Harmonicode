@@ -1,0 +1,48 @@
+{
+  "schema": "HHS_PASS219_I156_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I156",
+  "functional_repository_sha": "5db82a026f3703813184d758cacaaf7ebfb0d268",
+  "checkpoint_descendant_main_sha": "94fb9fdf205be59045754101af2ed28bc6067840",
+  "workflow_run_id": 33767547494,
+  "job_id": 100689158796,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9898220156,
+    "name": "pass219-i156-full-symbolic-monolithic-lowering-5db82a026f3703813184d758cacaaf7ebfb0d268",
+    "sha256": "94e0a7e3abeef62f988663e9e6dd8864b1b7fd2242c7874a56db77c066bc7c05"
+  },
+  "receipts": {
+    "conformance_sha256": "4202f3370f6395295cb7a44697b4675eb850d72f525ca0f31c7fbe0a9718258b",
+    "benchmark_file_sha256": "7b9c08633bf7e1e10718d8221353ff06dd3cb5d03b2c8b68bf15d26c9a2aa1ed",
+    "benchmark_receipt_sha256": "aabd900272762bac9714c004c116953f99ae9ae3bbbd1eebd38f83759faf5d72"
+  },
+  "lowering": {
+    "term_count": 15,
+    "equality_edge_count": 10,
+    "required_edge_mask": 1023,
+    "semantic_family_count": 8,
+    "required_family_mask": 255,
+    "historical_residual_mask": 31,
+    "residual_mask_for_complete_witness": 0,
+    "exact_bigint_cross_multiplication": true,
+    "source_identity_required": true,
+    "pass159_provenance_root_required": true,
+    "ordered_xy_yx_required": true,
+    "one_candidate_transaction_required": true
+  },
+  "authority_boundary": {
+    "legacy_v1_full_symbolic_input_sufficient": false,
+    "candidate_value_producer_included": false,
+    "vm81_execution_included": false,
+    "hash72_execution_receipt_included": false,
+    "deterministic_replay_included": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false
+  },
+  "next_authority_blocker": "CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER",
+  "fixed_cardinality_changed": false,
+  "result": "PASS"
+}
