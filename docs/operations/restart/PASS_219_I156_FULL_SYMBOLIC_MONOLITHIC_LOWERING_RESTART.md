@@ -162,3 +162,83 @@ If interrupted:
 
 Current implementation blocker: none before CI.
 Current downstream authority blocker: candidate-bound full-symbolic value production.
+
+
+## Feature validation closure
+
+Accepted feature head:
+
+`93f0fac10e06e04555c988c3ebc99fa0f2b08367`
+
+Dedicated I156 workflow:
+
+- run: `33767257127`
+- job: `100688184912`
+- conclusion: SUCCESS
+- artifact: `9898052234`
+- artifact SHA-256: `abfd61edeee81471cbfbf70b6fe32b3f5af7948df3ac8a1f1425495d8199a2ce`
+
+Artifact receipts:
+
+```text
+conformance.txt
+sha256 = 4202f3370f6395295cb7a44697b4675eb850d72f525ca0f31c7fbe0a9718258b
+
+full_symbolic_monolithic_lowering.json
+sha256 = 7b9c08633bf7e1e10718d8221353ff06dd3cb5d03b2c8b68bf15d26c9a2aa1ed
+
+benchmark receipt
+sha256 = aabd900272762bac9714c004c116953f99ae9ae3bbbd1eebd38f83759faf5d72
+```
+
+Validated capability:
+
+```text
+terms                         = 15
+frozen equality edges         = 10
+edge mask on complete witness = 0x03FF
+semantic families             = 8
+family mask                   = 0x00FF
+historical residual mask      = 0x001F
+complete-witness residual     = 0
+exact ratio equality          = BigInt cross multiplication
+source identity               = required
+Pass159 provenance root       = required
+ordered xy/yx state           = required
+single candidate transaction  = required
+```
+
+Authority remains bounded:
+
+```text
+candidate value producer included = false
+VM81 execution verified           = false
+Hash72 execution receipt          = false
+deterministic replay verified     = false
+VM81 mutation authority           = false
+Hash72 mint authority             = false
+Hash216 persistence authority     = false
+floating-point authority          = false
+```
+
+Pre-green runs `33766964070`, `33767053587`, `33767117044`, and `33767154528` are preserved as rejected implementation attempts. They all stopped at strict C11 compilation because a pointer-to-array parameter added `const` qualification in a form rejected by ISO C before C2X under `-Werror -pedantic`.
+
+Repair commit:
+
+`93f0fac10e06e04555c988c3ebc99fa0f2b08367`
+
+changed only the internal helper signature; no lowering semantics or authority fields changed.
+
+Feature evidence:
+
+`evidence/pass219/PASS_219_I156_FEATURE_VALIDATION_33767257127.json`
+
+Next integration action:
+
+1. reconcile current `main`;
+2. open a ready I156 PR with expected-head guard;
+3. inspect dependency-scoped synthetic/PR validation for the exact ABI, monolithic ABI, and UQCEL audit;
+4. merge when those impacted gates are clean or already covered by equivalent scoped evidence;
+5. verify exact-main I156;
+6. collect the I151 history append for the new I156 benchmark surface;
+7. seal exact-main evidence/history separately.
