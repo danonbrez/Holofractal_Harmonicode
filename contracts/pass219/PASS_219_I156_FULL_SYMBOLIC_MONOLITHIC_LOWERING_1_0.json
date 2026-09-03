@@ -1,0 +1,126 @@
+{
+  "schema": "HHS_PASS219_I156_FULL_SYMBOLIC_MONOLITHIC_LOWERING_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I156",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "2e0dd3ad7245e97191f78abb5ceb119785f90f85",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "HHS-P219-MONOLITHIC-UQCEL-RESIDUAL-1.15.0",
+    "HHS-P219-MONOLITHIC-CONSTRAINT-ABI-1.20",
+    "PASS_219_I155_PRODUCTION_PASS169_PROVIDER_RESIDUAL_CLOSURE"
+  ],
+  "problem": {
+    "historical_full_symbolic_residual_mask": 31,
+    "residual_families": [
+      "T_M_HARMONIC",
+      "TENSOR_S_F_AT_BT",
+      "DELTA_P_ROOT",
+      "MOD_F_U",
+      "MONOLITHIC_EQUALITY_CHAIN"
+    ],
+    "v1_input_can_carry_full_symbolic_terms": false,
+    "v1_compatibility_A_B_are_source_A_B": false
+  },
+  "implementation": {
+    "header": "hhs_runtime/include/hhs_pass219_full_symbolic_uqcel_lowering_1_22.h",
+    "source": "hhs_runtime/c/hhs_pass219_full_symbolic_uqcel_lowering_1_22.inc",
+    "public_functions": [
+      "hhs_exact_pass219_full_symbolic_version",
+      "hhs_exact_pass219_full_symbolic_descriptor",
+      "hhs_exact_pass219_full_symbolic_lower"
+    ],
+    "exact_term_count": 15,
+    "equality_edge_count": 10,
+    "semantic_family_count": 8,
+    "term_value_type": "SIGNED_EXACT_BIGUINT_RATIO_VIEW",
+    "equality_method": "EXACT_BIGINT_CROSS_MULTIPLICATION",
+    "pass159_provenance_root_required": true,
+    "source_sha256_required": true,
+    "ordered_octonion_state_required": true,
+    "one_candidate_transaction_required": true
+  },
+  "edge_mapping": [
+    [
+      "T3_MINUS_T",
+      "P3_MINUS_P_OVER_DELTA"
+    ],
+    [
+      "P3_MINUS_P_OVER_DELTA",
+      "T3_MINUS_T_OVER_DELTA"
+    ],
+    [
+      "T3_MINUS_T_OVER_DELTA",
+      "P2_MOD_PQ"
+    ],
+    [
+      "P2_MOD_PQ",
+      "M2_MINUS_M"
+    ],
+    [
+      "S",
+      "S_SUBSTITUTION_RHS"
+    ],
+    [
+      "MATRIX_PLUS_XY_OVER_AT",
+      "MOD_F_OVER_U_OVER_BT"
+    ],
+    [
+      "MOD_F_OVER_U_OVER_BT",
+      "AB_OVER_P2"
+    ],
+    [
+      "AB_OVER_P2",
+      "SQRT_AB"
+    ],
+    [
+      "OUTER_LHS",
+      "TERMINAL_RHS"
+    ],
+    [
+      "DELTA_OVER_P",
+      "DELTA_ROOT_RHS"
+    ]
+  ],
+  "completion_semantics": {
+    "lowered_decision": "HHS_EXACT_PASS219_FULL_SYMBOLIC_LOWERED",
+    "required_edge_mask": 1023,
+    "required_family_mask": 255,
+    "residual_mask_after_complete_witness": 0,
+    "caller_complete_packet_can_self_prove_pass169": false,
+    "term_values_are_verified_not_produced": true,
+    "unsupported_or_missing_candidate_value_production_is_not_false_equation": true
+  },
+  "authority_boundary": {
+    "legacy_v1_full_symbolic_input_sufficient": false,
+    "candidate_value_producer_included": false,
+    "vm81_execution_included": false,
+    "hash72_execution_receipt_included": false,
+    "deterministic_replay_included": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false
+  },
+  "next_transition": {
+    "required": "CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER",
+    "then": [
+      "BIND_LOWERED_CANDIDATE_TO_PASS159_GRAPH",
+      "VM81_ADMISSION_AND_ATOMIC_COMMIT",
+      "HASH72_EXECUTION_RECEIPT",
+      "HASH216_PROOF_AND_TRANSITION_IDENTITY",
+      "DETERMINISTIC_REPLAY",
+      "PASS169_PROVIDER_AUTHORITY_PACKET",
+      "I154_REAL_FOUR_LANE_EXHAUSTION_MEASUREMENT"
+    ]
+  },
+  "fixed_search_space": {
+    "target": "72^42=5184^21",
+    "working_manifold": "3*72^72",
+    "route_multiplicity": "3*72^30",
+    "required_reduction_ratio": "81/7",
+    "changed": false
+  }
+}
