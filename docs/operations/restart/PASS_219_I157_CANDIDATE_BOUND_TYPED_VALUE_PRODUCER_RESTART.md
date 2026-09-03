@@ -212,3 +212,87 @@ Required adapters:
 
 Only after those are resolved may the path advance into VM81 admission,
 Hash72 execution evidence, Hash216 proof identity, and deterministic replay.
+
+
+## Feature validation closure
+
+Accepted feature head:
+
+`524c9eaedca33a6017f1ec84d5d1c9a8e265371f`
+
+Dedicated workflow:
+
+- run: `33780585039`
+- job: `100732975626`
+- conclusion: SUCCESS
+- artifact: `9903393564`
+- artifact SHA-256: `5225147ea0ce368f5ce52070f6b3ba3c7639e14efa5be6a94b6b4b251cf97c48`
+
+Benchmark receipt:
+
+`69d806246ca29669a5338bfeb4b22139936e95ea0a6a5762ff3ee11d0378a962`
+
+Typed graph identity:
+
+`8e0050d0828746bcc45e1120886075dd0369bbef6e3ebb77d9d053d05a305bde`
+
+Candidate binding identity:
+
+`5ee87a232bd348edbda7ecca202d3ec6a6b1f6d3a880fd92c0d6d2451da8f3a9`
+
+Validated feature metrics:
+
+```text
+terms                    = 15
+ordered joins            = 10
+typed domains observed   = 7
+PROVED joins             = 5
+UNRESOLVED joins         = 5
+REJECTED joins           = 0
+graph decision           = UNRESOLVED
+I156 ratio projections   = 7
+non-rational typed terms = 8
+I156 full ratio eligible = false
+scalar coercion used     = false
+remainder scalarization  = false
+A/B definitionally P^2   = false
+xy / yx                  = 0 / 36
+physical manifold enum   = false
+```
+
+Current exact downstream adapter set:
+
+```text
+MODULAR_PIVOT_ADAPTER_REQUIRED_NO_SCALAR_REMAINDER_COERCION
+SYMBOLIC_AB_ROOT_EXECUTION_REQUIRED
+COMPLETE_BOUNDARY_EXECUTION_REQUIRED
+EXACT_PHASE_EXPONENT_RADICAL_ADAPTER_REQUIRED
+```
+
+Authority remains false for canonical monolithic proof, VM81 execution/mutation,
+Hash72 execution/mint, Hash216 persistence, deterministic replay, and floating
+point.
+
+Rejected run `33780455773` is preserved as pre-green test evidence.  It failed
+only because one expected error token used uppercase while implementation
+emitted lowercase `s`, and the anti-float test matched the validator helper
+name itself.  Repair `524c9eae...` normalized the error token and renamed the
+helper; no typed-value semantics changed.
+
+Feature evidence:
+
+`evidence/pass219/PASS_219_I157_FEATURE_VALIDATION_33780585039.json`
+
+Next integration action:
+
+1. reconcile current `main`;
+2. open ready I157 PR;
+3. use dependency-scoped I157 evidence as the implementation gate;
+4. merge with expected-head guard;
+5. verify exact functional main;
+6. collect I151 benchmark-history append for the new I157 benchmark surface;
+7. seal exact-main I157 and I151 evidence separately.
+
+Next implementation boundary remains:
+
+`TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF`
