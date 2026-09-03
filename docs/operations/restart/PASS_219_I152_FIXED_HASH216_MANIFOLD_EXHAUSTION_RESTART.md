@@ -84,3 +84,17 @@ Inherited benchmark-history update:
 The exact-main I152 receipt and cumulative I151 history entry are sealed on `agent/pass219-i152-main-evidence-seal-20260903`. The seal changes only evidence/history/restart state and is outside both benchmark workflows' trigger paths.
 
 After the evidence-only merge, I152 is closed for the fixed-cardinality definition and exact budget enforcement. The next optimization work is to implement and benchmark the integrated four-lane exhaustion planner against the now-immutable target, working manifold, and `81/7` budget.
+
+
+## Nonrecursive evidence-trigger repair
+
+The evidence-only merge `da0043c447d94f8d323fe441565d8bbc17470ee5` unexpectedly launched I152 run `33721763395` because the restart record was still present in the workflow `paths` filter.
+
+- Redundant run: `33721763395`
+- Result: SUCCESS
+- Cause: restart/checkpoint file still matched the I152 push trigger.
+- Repair commit: `b0f88861c25fa0d809f610c78d57fb7a9d09756a`
+- Repair: remove `docs/operations/restart/PASS_219_I152_FIXED_HASH216_MANIFOLD_EXHAUSTION_RESTART.md` from I152 workflow trigger paths.
+- Benchmark job steps, fixed cardinalities, tests, and authority semantics are unchanged.
+
+After this repair merges, the workflow-file change itself intentionally causes one final exact-main I152 validation. Subsequent evidence/history/restart-only seals must not launch I152.

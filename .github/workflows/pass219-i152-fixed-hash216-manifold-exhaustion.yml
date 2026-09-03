@@ -12,7 +12,6 @@ on:
       - 'benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py'
       - 'tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py'
       - '.github/workflows/pass219-i152-fixed-hash216-manifold-exhaustion.yml'
-      - 'docs/operations/restart/PASS_219_I152_FIXED_HASH216_MANIFOLD_EXHAUSTION_RESTART.md'
   workflow_dispatch:
 
 permissions:
