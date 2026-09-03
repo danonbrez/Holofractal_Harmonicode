@@ -5,6 +5,7 @@ on:
     branches:
       - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
       - agent/pass219-h36-global-latency-policy-integration
+      - agent/pass219-h36-fibonacci-branch-cache-benchmark
     paths:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
@@ -78,6 +79,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_fibonacci_branch_cache_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -629,6 +631,56 @@ jobs:
               assert row['occupancy8_vs_occupancy4_ratio_x1000'] > 0
           assert d['measurement']['all_occupancy8_faster_than_fresh'] is True
           assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
+      - name: Measure H36 Fibonacci branch-reference cache configurations
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_fibonacci_branch_cache_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-fibonacci-branch-cache
+          /tmp/h36/h36-fibonacci-branch-cache \
+            artifacts/pass219/harmonic36/fibonacci_branch_cache_benchmark.json
+          cat artifacts/pass219/harmonic36/fibonacci_branch_cache_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/fibonacci_branch_cache_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['geometry']['lanes'] == 4
+          assert d['geometry']['cells_per_lane'] == 36
+          assert d['geometry']['branch_cells'] == 144
+          assert d['geometry']['frame_bits'] == 5184
+          assert d['geometry']['root_fibonacci'] == 144
+          assert d['geometry']['asymmetric_additive_division_verified'] is True
+          assert d['immutability']['frozen_parent_entries'] == 4
+          assert d['immutability']['parent_cache_next_sequence'] == 5
+          assert d['immutability']['branch_fork_by_previous_state_reference'] is True
+          assert d['immutability']['parent_state_modified'] is False
+          assert d['receipts']['branch_receipts'] == 144
+          assert d['receipts']['compatible_lane_composition_receipts'] == 576
+          assert d['receipts']['all_branch_chains_reverse_to_frozen_root'] is True
+          assert d['receipts']['all_compatible_compositions_deterministic'] is True
+          assert d['memory']['duplicate_144_selection_payload_bytes'] > 0
+          assert d['memory']['shared_parent_reference_total_bytes'] > 0
+          assert d['measurement']['baseline_cache_total_ns'] > 0
+          assert d['measurement']['direct_branch_ref_total_ns'] > 0
+          assert d['measurement']['fib_bucket_branch_ref_total_ns'] > 0
+          assert d['measurement']['equivalence_full_scan_total_ns'] > 0
+          assert d['measurement']['equivalence_fib_bucket_total_ns'] > 0
+          assert d['selection']['best_local_lookup'] in (
+              'BASELINE_CACHE',
+              'DIRECT_BRANCH_REF',
+              'FIB_BUCKET_BRANCH_REF',
+          )
+          assert d['selection']['best_equivalence_lookup'] in (
+              'FIB_BUCKET',
+              'FULL_SCAN',
+          )
+          assert all(value is False for key, value in d['authority'].items()
+                     if key != 'candidate_benchmark_only')
+          assert d['authority']['candidate_benchmark_only'] is True
           assert d['authoritative_state_changed'] is False
           PY
 
