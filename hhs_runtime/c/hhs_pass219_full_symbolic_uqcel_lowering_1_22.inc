@@ -166,7 +166,7 @@ static int hhs219_i156_ordered_phase_valid(
 
 static int hhs219_i156_hash_family(
     uint32_t family,
-    const char term_hashes[
+    char term_hashes[
         HHS_EXACT_PASS219_FULL_SYMBOLIC_TERM_COUNT
     ][HHS_EXACT_PASS219_FULL_SYMBOLIC_HASH216_STRLEN],
     const HHSExactPass219OctonionStateV1 *state,
