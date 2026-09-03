@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS219_I151_FIXED_5184_21_BENCHMARK_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "repository_sha": "46a2ebf29ffcd44b69b943430afbf05d005e062d",
+  "workflow_run_id": 33719250898,
+  "job_id": 100534816375,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9879617166,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-46a2ebf29ffcd44b69b943430afbf05d005e062d",
+    "sha256": "017caeb88625fd22648691c8eea52fed3ba01f1c47562d1bb6f3332f2ead0b5b",
+    "expires_at": "2026-12-02T05:32:04Z"
+  },
+  "fixed_resolution": {
+    "expression": "5184^21=72^42",
+    "exact_cardinality_decimal": "1018508951079768942856287659839033239780646340393381046433745481643146696720384",
+    "exhaustive_enumeration_claim": false
+  },
+  "inventory": {
+    "surface_count": 22,
+    "sha256_root": "6e39e5110e1be42252aa8a4fa02454f260626c81929ab338fc33a3f9a47ca187"
+  },
+  "fresh_benchmarks": {
+    "raw5184_audio": {
+      "schema": "HHS_PASS219_I148_RAW5184_AUDIO_BENCHMARK_V1",
+      "receipt_sha256": "da27c0d22e4dae846660178715f9d55d01c49ba99de483a1d18f9cb89c7f23c5",
+      "baseline_total_work": 11466081,
+      "fused_total_work": 5645376,
+      "exact_work_saved": 5820705,
+      "reduction_permille_floor": 507,
+      "result": "PASS"
+    },
+    "cross_modal_reversible_state": {
+      "schema": "HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_BENCHMARK_V1",
+      "receipt_sha256": "829d31a1daa9f855c21e96498b7435c11624896a09361eb0eb9007e707acf4c8",
+      "baseline_total_work": 1384512,
+      "selected_total_work": 32228,
+      "exact_work_saved": 1352284,
+      "reduction_permille_floor": 976,
+      "result": "PASS"
+    }
+  },
+  "inherited_receipts": {
+    "pass219b_i2_sha256": "baec0a701fdb1b100300537cace6193c5c76bf77147de0283fd1e666699165f1",
+    "h36_capacity8_sha256": "677feb9c14eebb8ff4f2fb83caf4620e502cb374e48d91757a21c6d0feebf2de"
+  },
+  "authority": {
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false
+  }
+}
