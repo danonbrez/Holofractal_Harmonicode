@@ -22,7 +22,7 @@
       "HHS_PASS219_H36_STACK_SELECTION_V1"
     ],
     "correctness_gate": "EIGHT_RESIDENT_EXACT_ISOLATION_AND_FULL_CAPACITY_BOUNDARY",
-    "benefit_gate": "OCCUPANCY8_LOOKUP_FASTER_THAN_FRESH_SELECTION_FOR_ALL_EIGHT_RESIDENTS"
+    "benefit_gate": "EXACT_INTEGER_REPEAT_STABILITY: calibration_repeats=5; beneficial_repeat_count>=4; occupancy8_total_ns<fresh_selection_total_ns"
   },
   "source": {
     "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
@@ -135,10 +135,10 @@
       "safe": true,
       "benefit": true,
       "platform": "linux-x86_64",
-      "validation_run": 33528991694,
-      "validation_job": 99927016899,
-      "artifact_id": 9808920709,
-      "artifact_sha256": "8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417",
+      "validation_run": 33751463158,
+      "validation_job": 100635741293,
+      "artifact_id": 9891731145,
+      "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358",
       "resident_count": 8,
       "capacity": 8,
       "next_sequence": 9,
@@ -146,7 +146,12 @@
       "idempotent_existing_store_at_capacity_ok": true,
       "exact_isolation": true,
       "all_occupancy8_faster_than_fresh": true,
-      "authority_escalation": false
+      "authority_escalation": false,
+      "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "all_residents_repeat_stability_pass": true,
+      "one_shot_boolean_authoritative": false
     }
   ],
   "declared_generalize_required": [
@@ -156,6 +161,29 @@
     "capacity8_linux_x86_64": "GENERALIZE_REQUIRED",
     "capacity8_cross_platform": "VALIDATION_REQUIRED",
     "no_cross_platform_inference": true,
-    "no_authority_escalation": true
+    "no_authority_escalation": true,
+    "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+    "calibration_repeats": 5,
+    "required_beneficial_repeats": 4,
+    "aggregate_requirement": "occupancy8_total_ns < fresh_selection_total_ns",
+    "one_shot_benefit_boolean_authoritative": false,
+    "triggering_one_shot_regression": {
+      "head": "73bd07ac207fec9bd6bbc198deb63305b025278b",
+      "run": 33750557466,
+      "job": 100632891223,
+      "resident": "BINARY_IO_FOCUSED",
+      "correctness_green": true,
+      "fresh_selection_median_ns": 8614457,
+      "occupancy8_lookup_median_ns": 9177486,
+      "classification": "TIMING_ONLY_ONE_SHOT_REGRESSION"
+    },
+    "calibrated_repair_validation": {
+      "head": "9026ca84998468f5f20add4661e62dd59effcbab",
+      "run": 33751463158,
+      "job": 100635741293,
+      "artifact_id": 9891731145,
+      "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358",
+      "all_repeat_stability_pass": true
+    }
   }
 }
