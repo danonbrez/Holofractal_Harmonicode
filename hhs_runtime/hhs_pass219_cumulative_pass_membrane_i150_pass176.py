@@ -55,7 +55,11 @@ def validate_pass176_preservation_surface() -> dict[str, Any]:
     server = (ROOT / "hhs_backend/runtime_os_application_server_full.py").read_text("utf-8")
     production = (ROOT / "hhs_backend/public_ide_bootstrap.py").read_text("utf-8")
     visual = (ROOT / "applications/holofractal_harmonizer/src/visual-ide.mjs").read_text("utf-8")
-    for token in ('PASS176_FROZEN_IDE_PATH = "/pass176-ide"', '"/pass176-ide/"'):
+    for token in (
+        'PASS176_FROZEN_IDE_PATH = "/pass176-ide"',
+        'PASS176_FROZEN_IDE_PATH + "/"',
+        "app.mount(",
+    ):
         if token not in server:
             raise RuntimeError(f"PASS176_ADDITIVE_ROUTE_DRIFT:{token}")
     if "HHS Visual Runtime OS Workspace" not in server + production:
