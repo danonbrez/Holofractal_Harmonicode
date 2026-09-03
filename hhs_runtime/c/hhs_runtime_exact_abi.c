@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 177 inherited creation-workflow binding, preserving current-main I156 full-symbolic lowering, cross-modal, raw-5184, latency, and H36 policy surfaces. */
+/* Additive exact ABI aggregate through terminal Pass 176 I150 binding, preserving current-main I156 full-symbolic lowering, cross-modal, raw-5184, latency, and H36 policy surfaces. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -53,6 +53,7 @@
 #include "hhs_pass219_inherited_pass179_1_47.inc"
 #include "hhs_pass219_inherited_pass178_1_48.inc"
 #include "hhs_pass219_inherited_pass177_1_49.inc"
+#include "hhs_pass219_inherited_pass176_1_50.inc"
 #include "hhs_pass219_global_canonical_defaults_1_0.inc"
 #include "hhs_pass219_multimodal_optimization_generalization_1_0.inc"
 #include "hhs_pass219b_phase_quantized_hydration_1_0.inc"
@@ -79,7 +80,6 @@
 #include "hhs_pass219_harmonic36_composition_program_rules_1_1.inc"
 #include "hhs_pass219_harmonic36_composition_program_exec_1_1.inc"
 #include "hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc"
-
 #include "hhs_pass219_harmonic36_stack_selection_1_10.inc"
 #include "hhs_pass219_harmonic36_stack_selection_cache_1_11.inc"
 #include "hhs_pass219_harmonic36_branch_reference_cache_1_17.inc"
