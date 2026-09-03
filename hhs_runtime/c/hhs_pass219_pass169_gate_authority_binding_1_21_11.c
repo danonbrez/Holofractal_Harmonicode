@@ -279,6 +279,12 @@ HHSExactStatus hhs_exact_pass219_pass169_bind_authority(
 
     memset(&proof, 0, sizeof(proof));
     status = hhs_pass169_verify_combined_gate_authority_1_21_11(provenance, &proof);
+    if (status == HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN) {
+        out_result->decision = HHS_EXACT_PASS219_PASS169_BINDING_UNRESOLVED;
+        out_result->reason_mask =
+            HHS_EXACT_PASS219_PASS169_BINDING_REASON_FULL_SYMBOLIC_UNRESOLVED;
+        return HHS_EXACT_STATUS_OK;
+    }
     if (status != HHS_EXACT_STATUS_OK) {
         out_result->decision = HHS_EXACT_PASS219_PASS169_BINDING_REJECT;
         out_result->reason_mask = HHS_EXACT_PASS219_PASS169_BINDING_REASON_PROVIDER_REJECTED;
