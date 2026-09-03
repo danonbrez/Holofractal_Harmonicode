@@ -365,3 +365,14 @@ def test_new_surface_contains_no_float_or_scalarization_backdoors() -> None:
     assert "ordinary_scalar_remainder_identity_claimed" in text
     assert "A_or_B_definitionally_P2" in text
     assert "scalar_coercion_used" in text
+
+
+def test_public_service_registration_is_repository_visible() -> None:
+    registry = (
+        Path(__file__).resolve().parents[2]
+        / "hhs_runtime/hhs_service_registry_v1.py"
+    ).read_text(encoding="utf-8")
+    assert 'name="runtime.pass219.candidate_bound_typed_full_symbolic_values"' in registry
+    assert 'module="hhs_runtime.pass219.typed_full_symbolic_candidate_values"' in registry
+    assert 'function="candidate_bound_full_symbolic_value_producer_self_test"' in registry
+    assert 'mutation_policy="READ_ONLY_TYPED_VALUE_GRAPH_NO_VM81_OR_CANONICAL_STATE_MUTATION"' in registry
