@@ -5,7 +5,6 @@ on:
     branches:
       - agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1
       - agent/pass219-h36-global-latency-policy-integration
-      - agent/pass219-h36-fibonacci-branch-cache-benchmark
     paths:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.hpp'
