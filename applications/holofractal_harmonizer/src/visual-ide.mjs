@@ -199,7 +199,8 @@ function bindCoreControls() {
     if (restoredPath) {
       // Recovery has already replaced state.files with the saved envelope. Do not
       // let activateFile capture the stale pre-recovery editor DOM back into that
-      // restored active file before it renders the recovered content.
+      // restored active file before it renders the recovered content. The browser
+      // smoke verifies this exact recovery rehydration boundary end to end.
       editor.dataset.loadedPath = '';
       activateFile(restoredPath);
     }
