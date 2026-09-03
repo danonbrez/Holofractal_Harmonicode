@@ -4170,16 +4170,16 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         module="hhs_runtime.pass219.typed_domain_join_executor",
         function="typed_domain_join_executor_self_test",
         service_type="pass219_exact_typed_domain_projection_executor",
-        description="Executes exact registered typed-domain joins over one I157 candidate graph, closing rational-to-modular pivots through explicit non-injective projection witnesses while preserving unresolved AB-boundary and phase-exponent obligations.",
+        description="Audits the remaining I157 typed-domain joins without inferring semantics from familiar glyphs: conventional rational-to-modular projection is retained as a nonauthoritative diagnostic counterexample while both Harmonicode modular pivots and the AB/boundary/phase-exponent obligations remain fail-closed.",
         invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
         contract_schemas=["HHS_PASS219_I158_TYPED_DOMAIN_JOIN_EXECUTION_V1","HHS_PASS219_I158_RATIONAL_TO_MODULAR_PROJECTION_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
         witness_schemas=["HHS_PASS219_I158_RATIONAL_TO_MODULAR_PROJECTION_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1","HHS_PASS219_I153_LOCAL_HASH216_5184_P_SNAPSHOT_V1"],
         validators=["project_rational_to_modular","execute_typed_domain_joins","typed_domain_join_executor_self_test"],
-        guards=["i157_graph_sha256_binding","i157_join_topology_binding","exact_rational_modular_projection","denominator_invertibility","no_reverse_inference","no_scalar_remainder_identity","pass191_x_squared_blocker_binding","pass169_boundary_execution_requirement","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        guards=["i157_graph_sha256_binding","i157_join_topology_binding","conventional_rational_modular_projection_diagnostic_only","harmonicode_Mod_requires_typed_registry","denominator_invertibility","no_reverse_inference","no_scalar_remainder_identity","formal_evaluation_protocol_binding","pass191_x_squared_blocker_binding","pass169_boundary_execution_requirement","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
         rejection_codes=["I157_GRAPH_SHA256_MISMATCH","MODULAR_STATE_ENCODING_INVALID","MODULAR_SCALARIZATION_FORBIDDEN","EXACT_TYPED_MODULAR_CLASS_MISMATCH","PASS191_X_SQUARED_BINDING_CHANGED_REAUDIT_REQUIRED","I157_UPSTREAM_AUTHORITY_ESCALATION"],
         mutation_policy="READ_ONLY_TYPED_DOMAIN_EXECUTION_NO_VM81_OR_CANONICAL_STATE_MUTATION",
         persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
-        boundedness_policy="TEN_FROZEN_JOINS_TWO_EXECUTABLE_MODULAR_PIVOTS_THREE_EXPLICIT_REMAINING_BLOCKERS",
+        boundedness_policy="TEN_FROZEN_JOINS_ZERO_NEW_AUTHORIZED_PIVOTS_FIVE_EXPLICIT_TYPED_SEMANTIC_BLOCKERS",
     )
 
     return registry
