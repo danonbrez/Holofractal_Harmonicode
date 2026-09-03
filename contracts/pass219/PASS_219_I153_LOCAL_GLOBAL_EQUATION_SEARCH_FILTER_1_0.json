@@ -1,0 +1,101 @@
+{
+  "schema": "HHS_PASS219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I153",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "94662cb6a6d4fe7b7310689a790af058cf554545",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "inherits": [
+    "PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20",
+    "PASS_219_I121_8_COMBINED_EQUATION_OPTIMIZER",
+    "PASS_219_I121_9_HARMONICODE_GLOBAL_CONSTRAINT_MEMBRANE",
+    "PASS_219_I121_12_PROOF_PRESERVING_OPTIMIZER",
+    "PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION"
+  ],
+  "equation_source": {
+    "path": "contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode",
+    "bytes": 348,
+    "sha256": "ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a",
+    "preserved_verbatim": true,
+    "duplicate_rewrite_forbidden": true
+  },
+  "combined_source_binding": {
+    "path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "inherited_gate_offsets": [
+      96,
+      240,
+      266,
+      274,
+      285
+    ],
+    "whole_expression_distinction_required": true
+  },
+  "local_snapshot_semantics": {
+    "P": "LOCAL_STATE_HASH216_5184_HYDRATION_PARAMETER_SNAPSHOT",
+    "hydration_bits": 5184,
+    "P_exact_integer_required": true,
+    "P_nonzero_required": true,
+    "snapshot_hash216_identity_required": true,
+    "supported_snapshot_identity_formats": [
+      "PASS150_HASH216_GENOME_ROOT_SHA256",
+      "HASH216_THREE_HASH72_216_GLYPH"
+    ],
+    "P_changes_target_cardinality": false,
+    "P_changes_working_manifold_cardinality": false,
+    "P_changes_route_multiplicity": false
+  },
+  "fixed_global_search_space": {
+    "target_resolution": "72^42=5184^21",
+    "target_cardinality_decimal": "1018508951079768942856287659839033239780646340393381046433745481643146696720384",
+    "working_manifold": "3*72^72",
+    "working_manifold_cardinality_decimal": "160347058642085998602075900420172615634821804179319834710808621932842456551257099299090591583867565623541495534132018087024926966939648",
+    "route_multiplicity_per_target": "3*72^30",
+    "route_multiplicity_decimal": "157433136421721760341373217653428671558776396700106883072",
+    "exhaustion_ratio": "81/7",
+    "immutable": true
+  },
+  "filter_pipeline": [
+    "I152_WORKING_ROUTE",
+    "LOCAL_HASH216_5184_P_SNAPSHOT_BINDING",
+    "VERBATIM_UQCEL_EQUATION_SOURCE_BINDING",
+    "SHARED_GLOBAL_SYMBOL_ENVIRONMENT_BINDING",
+    "FIVE_SOURCE_OFFSET_BOOLEAN_GATE_WITNESSES",
+    "GLOBAL_ENVIRONMENT_COMPLETENESS",
+    "CROSS_LAYER_REVALIDATION",
+    "NO_LOCAL_SYMBOL_SHADOWING",
+    "READ_ONLY_SURVIVOR_SET",
+    "DOWNSTREAM_COST_OPTIMIZATION",
+    "PASS169_WHOLE_EXPRESSION_AUTHORITY_BEFORE_CANONICAL_ADMISSION"
+  ],
+  "admissibility_rule": {
+    "all_five_gate_witnesses_true": true,
+    "same_local_snapshot_binding_for_all_gates": true,
+    "same_global_symbol_environment_root_for_all_gates": true,
+    "global_symbol_environment_complete": true,
+    "cross_layer_revalidation_complete": true,
+    "local_symbol_shadowing_detected": false,
+    "source_identity_exact": true,
+    "route_identity_exact": true
+  },
+  "authority_boundary": {
+    "filter_is_candidate_only": true,
+    "filter_produces_boolean_gate_truth": false,
+    "filter_produces_canonical_monolithic_proof": false,
+    "pass169_whole_expression_authority_required": true,
+    "vm81_mutation_authority": false,
+    "hash72_commit_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_authority": false
+  },
+  "benchmark_policy": {
+    "bounded_synthetic_candidate_filter_allowed": true,
+    "synthetic_gate_pattern_not_canonical_truth": true,
+    "candidate_count_reduction_may_be_measured": true,
+    "local_81_over_7_filter_ratio_may_be_reported_only_as_bounded_synthetic_evidence": true,
+    "full_72_power_42_exhaustion_claim": false,
+    "full_3_times_72_power_72_enumeration_claim": false
+  }
+}
