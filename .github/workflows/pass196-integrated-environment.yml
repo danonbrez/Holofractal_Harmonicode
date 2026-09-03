@@ -71,7 +71,11 @@ jobs:
         run: |
           grep -F "['pass196_integration_projection_loaded', './pass196-integration.mjs']" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -F "deferred_projection_boot_waits_for_public_graph: true" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
-          grep -F "synchronous_public_boot_handoff: true" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -F "synchronous_public_boot_handoff: false" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -F "coordinator_evaluation_closes_before_public_boot: true" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -F "queueMicrotask(() =>" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -F "void publicBoot.allSettled.finally(() =>" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -F "void loadDeferredProjections();" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -F "pass196_integration_router" hhs_backend/visual_server.py
           grep -F "from hhs_backend.visual_server import app as authoritative_app" hhs_backend/cached_visual_server.py
           grep -F "ProductionRuntimeBootstrapGateway" hhs_backend/production_visual_server.py
