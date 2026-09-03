@@ -11,6 +11,9 @@
 - Evidence commit: `af0c3eaa6eb23a41ab8a1605c95f283998734839`
 - Emergent benchmark commit: `5a413fdd70bb07b54999ffeb5f2acd945438cf0c`
 - Emergent evidence commit: `6b04dfea0c6a7ae33fbdd9b37431f4203745e691`
+- Restart extension commit: `4e675c3053d0fac3dbb1bd72ecc7d17768e8f975`
+- Temporary trigger cleanup commit: `2d1447fd78ce2f68aa86c8f4f2121b67795335ce`
+- Unused targeted-workflow removal commit: `5bcb33cbd2b866e699ad27ea70662c2fe0410d21`
 
 ## Scope completed
 
@@ -217,3 +220,20 @@ Productionization should now implement the branch-reference surface with three d
 - adaptive compatible-composition receipt memoization.
 
 The implementation must preserve the existing frozen parent cache and validate dependency-scoped exact ABI, Hash216 binding, branch-knowledge, receipt replay, occupancy, and artifact gates before merge.
+
+
+## Final branch state for this test phase
+
+The validated benchmark logic has not changed since workflow head
+`735d543e7e1fceda3d73a4e5cfb13f7644418e7f`.
+
+Subsequent commits only:
+
+- sealed measured evidence;
+- extended this restart record;
+- removed the temporary branch trigger;
+- removed an unused targeted workflow file that was not needed because the existing H36 workflow successfully executed the new benchmark.
+
+No candidate benchmark validation remains outstanding.
+
+Production runtime implementation remains intentionally separate. The next repository action, if authorized, is to implement the measured configuration on a new versioned branch-reference cache surface and then run dependency-scoped validation.
