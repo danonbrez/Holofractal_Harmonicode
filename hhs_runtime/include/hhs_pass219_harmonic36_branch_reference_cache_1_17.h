@@ -61,6 +61,8 @@ typedef struct HHSExactPass219H36BranchReferenceEntryV1 {
 typedef struct HHSExactPass219H36BranchMemoStateV1 {
     uint32_t composition_query_count[
         HHS_EXACT_PASS219_H36_BRANCH_REF_COMPOSITION_TARGETS];
+    uint32_t composition_memo_threshold_used[
+        HHS_EXACT_PASS219_H36_BRANCH_REF_COMPOSITION_TARGETS];
     uint64_t composition_memo_signature64[
         HHS_EXACT_PASS219_H36_BRANCH_REF_COMPOSITION_TARGETS];
     uint8_t composition_memoized_mask;
