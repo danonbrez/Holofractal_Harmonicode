@@ -135,3 +135,45 @@ The I153 workflow must:
 Because a new file is added under `benchmarks/pass219`, the inherited I151 benchmark-history workflow is also expected to observe the new surface. On exact-main integration, its new accepted entry must be sealed into the cumulative JSONL history.
 
 Current code blocker: none.
+
+
+## Feature validation
+
+Dependency-scoped I153 validation is terminal green:
+
+- validated implementation head: `5e83245432133a507ff71edee474a6f3fe4fc441`
+- workflow run: `33744121394`
+- job: `100612582786`
+- conclusion: SUCCESS
+- artifact: `9888918876`
+- artifact SHA-256: `cef5928574720ccc4f14d21f2db742c6374825bef0720675614d0c0097308837`
+
+Every scoped workflow step passed:
+- inherited 348-byte and 632-byte source identities;
+- I153 exact-surface parsing;
+- I153 tests;
+- inherited I152 fixed-cardinality tests;
+- inherited I121.12 proof-preserving optimizer tests;
+- bounded benchmark generation;
+- contract enforcement;
+- artifact sealing.
+
+Bounded synthetic filter evidence:
+
+```text
+input candidates = 4096
+survivors        = 128
+rejected         = 3968
+candidate ratio  = 32/1
+ratio_x1000      = 32000
+local 81/7 gate  = PASS
+```
+
+The ratio is candidate-count pruning under a deterministic synthetic five-gate witness pattern. It is not Pass169 equation truth and does not claim full four-lane or full-manifold exhaustion.
+
+Feature evidence:
+`evidence/pass219/PASS_219_I153_FEATURE_VALIDATION_33744121394.json`
+
+Later feature-branch evidence/checkpoint commits are outside the I153 workflow trigger paths and do not alter implementation semantics.
+
+Next action: verify current main, open the I153 integration PR with an expected-head guard, merge if cleanly mergeable, then capture exact-main I153 validation plus the I151 benchmark-history entry caused by the new Pass 219 benchmark surface.
