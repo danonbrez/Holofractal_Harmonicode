@@ -79,3 +79,58 @@ Not yet executed.
 ## Next action
 
 Implement the typed modular-pivot profile and integrate it into the I158 join membrane.
+
+
+## Implementation checkpoint before validation
+
+Current implementation head:
+
+`9efaeb0640707ae6ac248031dae0077c12416912`
+
+Implemented/updated files:
+
+- `hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py`
+- `tests/pass219/test_pass219_i159_harmonicode_modular_pivot_phase_binding.py`
+- `benchmarks/pass219/pass219_i159_modular_pivot_phase_binding_benchmark.py`
+- `contracts/pass219/PASS_219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_1_0.json`
+- `docs/pass219/PASS_219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_1_0.md`
+- `hhs_runtime/hhs_service_registry_v1.py`
+- `.github/workflows/pass219-i159-harmonicode-modular-pivot-phase-binding.yml`
+- this restart record.
+
+Pre-validation repair:
+
+- `41c7579a122bf3b620047262cf231e6e84339dcc` fixes the scoped test exception import before CI execution.
+
+Implemented exact profile:
+
+```text
+edge 2
+P_FOLD_CLOSURE_TO_RENEWED_UNIT
+(P,0) -> (1,1)
+M = pq = P^2-1
+
+edge 3
+RENEWED_UNIT_PHASE_CLASS_JOIN
+(1,1) <-> (k,1)
+with exact m^2-m = k*M+1 and k retained
+```
+
+Expected deterministic fixture:
+
+```text
+P=30
+M=899
+left      = 26970 = 30*M+0
+authority = 900   = 1*M+1
+right     = 71022 = 79*M+1
+
+I158: 5 proved / 5 unresolved / 0 rejected
+I159: 7 proved / 3 unresolved / 0 rejected
+```
+
+Validation command surface is the dedicated workflow:
+
+`Pass 219 I159 Harmonicode Modular-Pivot Phase Binding`
+
+No unrelated historical workflows are acceptance gates for this tranche.
