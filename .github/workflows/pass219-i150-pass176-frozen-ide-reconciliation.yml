@@ -155,7 +155,9 @@ jobs:
           cp /tmp/hhs-pass176-i150-preserved.html evidence/pass176/i150/diagnostics/pass176-preserved.html
           cp /tmp/hhs-pass176-i150-repository-status.json evidence/pass176/i150/diagnostics/repository-status.json
           cp /tmp/hhs-pass176-i150-pass175-status.json evidence/pass176/i150/diagnostics/pass175-status.json
-          timeout --signal=TERM --kill-after=10s 120s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+          # The smoke owns stricter per-phase bounded waits whose sequential envelope
+          # exceeds 120s; keep those assertions unchanged and bound the whole smoke at 300s.
+          timeout --signal=TERM --kill-after=10s 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
 
       - name: Collect browser and server diagnostics
         if: always()
