@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_HISTORY_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "cause": "Pass 219 I152 benchmark surface added",
+  "repository_sha": "2b7b17287f879ffdda429623a425f730e307c39b",
+  "workflow_run_id": 33721542189,
+  "job_id": 100541530871,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9880397527,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-2b7b17287f879ffdda429623a425f730e307c39b",
+    "sha256": "6195ddd76cccb92cfc7b6c69f6bd8fc809599b3da033f484687e25b7765f4f37"
+  },
+  "history": {
+    "source_lines": 4,
+    "output_lines": 5,
+    "source_sha256": "8a679c45068d4d8ad1a591aebaa99c2bd233977eaf72255993fa4312619cf1ef",
+    "output_sha256": "2e4ac5d78996fbd5d30aeae013e4d20f0fc4cd8d6082354ec5160485ee6e0cc1",
+    "previous_entry_sha256": "e7c55bc578e4ea86e61cc0a91f85218ef841347b3d644976164b93d0510409e5",
+    "chain_verified": true
+  },
+  "inventory": {
+    "previous_surface_count": 22,
+    "surface_count": 23,
+    "sha256_root": "3d7ea1e0b6026a5716d4f8b213198bb1ea9d99ea9480d67152b9c712596b01ca",
+    "added_surface": {
+      "path": "benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py",
+      "sha256": "eba620fbd9c6a0d1a2494b2b7e775a94d042ba8c7b519d3cbb4c452d12ce3a27"
+    }
+  },
+  "result": "PASS"
+}

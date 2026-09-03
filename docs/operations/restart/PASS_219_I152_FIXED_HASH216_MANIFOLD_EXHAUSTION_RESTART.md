@@ -56,3 +56,31 @@ Current code blocker: none.
 - Later head `881c4be35b69ce5a0859aba0170e7b7f65b0601d` only removes restart-document changes from workflow trigger paths; it does not alter workflow job steps, benchmark logic, tests, runtime invariants, or contract semantics.
 
 Next action: open the I152 PR against current main, merge with an expected-head guard if cleanly mergeable, then require an exact-main I152 run. Also capture the I151 benchmark-history run triggered on main by the newly added Pass 219 benchmark source.
+
+## Exact-main closure
+
+PR `#358` merged as `2b7b17287f879ffdda429623a425f730e307c39b`.
+
+Exact-main I152 validation:
+- workflow run: `33721542342`
+- job: `100541531423`
+- result: SUCCESS
+- artifact: `9880397637`
+- artifact SHA-256: `afa91d17b0f91471b84485526799114f41179fc034bfdf3ca80693ef11ccc99a`
+- exact target, working-manifold, route-factorization, `81/7` boundary, and one-unit-over rejection all passed.
+- full four-lane physical exhaustion remains `VALIDATION_REQUIRED`; no physical full-manifold enumeration is claimed.
+
+Inherited benchmark-history update:
+- I151 run: `33721542189`
+- job: `100541530871`
+- result: SUCCESS
+- artifact: `9880397527`
+- artifact SHA-256: `6195ddd76cccb92cfc7b6c69f6bd8fc809599b3da033f484687e25b7765f4f37`
+- canonical history advanced from 4 to 5 physical JSONL records.
+- inventory advanced from 22 to 23 benchmark surfaces.
+- new inventory root: `3d7ea1e0b6026a5716d4f8b213198bb1ea9d99ea9480d67152b9c712596b01ca`.
+- the added I152 benchmark source is hashed as `eba620fbd9c6a0d1a2494b2b7e775a94d042ba8c7b519d3cbb4c452d12ce3a27`.
+
+The exact-main I152 receipt and cumulative I151 history entry are sealed on `agent/pass219-i152-main-evidence-seal-20260903`. The seal changes only evidence/history/restart state and is outside both benchmark workflows' trigger paths.
+
+After the evidence-only merge, I152 is closed for the fixed-cardinality definition and exact budget enforcement. The next optimization work is to implement and benchmark the integrated four-lane exhaustion planner against the now-immutable target, working manifold, and `81/7` budget.
