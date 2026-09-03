@@ -159,18 +159,26 @@ jobs:
           python tools/validate_pass219_multimodal_optimization_generalization.py
           python tools/hhs_multimodal_optimization_generalizer.py validate-all
           python -m pytest -q tests/pass219/test_pass219_global_latency_policy_registration_v1.py
-      - name: Compile exact ABI and Pass 176 C/C++ conformance
+      - name: Build native conformance objects
         run: |
           mkdir -p /tmp/pass219-i150
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i150/exact.o
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i150/pass186.o
           gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i150/registers.o
+      - name: Pass 176 C binding conformance
+        run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass176_1_50.c /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/pass176-c
           /tmp/pass219-i150/pass176-c
+      - name: Pass 176 C++ binding conformance
+        run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass176_1_50.cpp /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/pass176-cpp
           /tmp/pass219-i150/pass176-cpp
+      - name: Global-default C conformance
+        run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/defaults-c
           /tmp/pass219-i150/defaults-c
+      - name: Global-default C++ conformance
+        run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/defaults-cpp
           /tmp/pass219-i150/defaults-cpp
       - name: Emit cumulative receipt
