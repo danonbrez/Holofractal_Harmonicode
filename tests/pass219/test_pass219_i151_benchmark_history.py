@@ -91,3 +91,14 @@ def test_history_is_append_only_chained_and_duplicate_run_keys_fail(tmp_path: Pa
 
     with pytest.raises(ValueError, match="duplicate benchmark run key"):
         tool.append_entry(history, second)
+
+
+def test_repository_history_is_physical_jsonl_and_preserves_first_accepted_run() -> None:
+    tool = _load_tool()
+    history = ROOT / "evidence" / "pass219" / "PASS_219_I151_BENCHMARK_HISTORY.jsonl"
+    raw = history.read_bytes()
+    assert b"\\n{" not in raw
+    lines = raw.splitlines(keepends=True)
+    assert len(lines) >= 2
+    keys = tool.validate_history(lines)
+    assert ("46a2ebf29ffcd44b69b943430afbf05d005e062d", "33719250898") in keys
