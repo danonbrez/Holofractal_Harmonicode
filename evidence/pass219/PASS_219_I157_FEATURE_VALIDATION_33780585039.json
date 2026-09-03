@@ -1,0 +1,67 @@
+{
+  "schema": "HHS_PASS219_I157_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I157",
+  "validated_head": "524c9eaedca33a6017f1ec84d5d1c9a8e265371f",
+  "workflow_run_id": 33780585039,
+  "job_id": 100732975626,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9903393564,
+    "name": "pass219-i157-candidate-bound-typed-value-producer-524c9eaedca33a6017f1ec84d5d1c9a8e265371f",
+    "sha256": "5225147ea0ce368f5ce52070f6b3ba3c7639e14efa5be6a94b6b4b251cf97c48"
+  },
+  "benchmark": {
+    "schema": "HHS_PASS219_I157_TYPED_CANDIDATE_VALUE_GRAPH_BENCHMARK_V1",
+    "receipt_sha256": "69d806246ca29669a5338bfeb4b22139936e95ea0a6a5762ff3ee11d0378a962",
+    "typed_value_graph_sha256": "8e0050d0828746bcc45e1120886075dd0369bbef6e3ebb77d9d053d05a305bde",
+    "candidate_binding_sha256": "5ee87a232bd348edbda7ecca202d3ec6a6b1f6d3a880fd92c0d6d2451da8f3a9",
+    "term_count": 15,
+    "join_count": 10,
+    "typed_domain_count": 7,
+    "join_status": {
+      "PROVED": 5,
+      "UNRESOLVED": 5,
+      "REJECTED": 0
+    },
+    "graph_decision": "UNRESOLVED",
+    "i156_ratio_projection_term_count": 7,
+    "non_rational_typed_term_count": 8,
+    "i156_full_ratio_packet_eligible": false,
+    "scalar_coercion_used": false,
+    "modular_remainder_scalarization_used": false,
+    "source_A_or_B_definitionally_P2": false,
+    "ordered_xy": 0,
+    "ordered_yx": 36,
+    "ordered_xy_yx_distinct": true,
+    "physical_full_manifold_enumeration_claim": false
+  },
+  "next_required_adapters": [
+    "COMPLETE_BOUNDARY_EXECUTION_REQUIRED",
+    "EXACT_PHASE_EXPONENT_RADICAL_ADAPTER_REQUIRED",
+    "MODULAR_PIVOT_ADAPTER_REQUIRED_NO_SCALAR_REMAINDER_COERCION",
+    "SYMBOLIC_AB_ROOT_EXECUTION_REQUIRED"
+  ],
+  "authority": {
+    "canonical_monolithic_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "rejected_pre_green_runs": [
+    {
+      "run_id": 33780455773,
+      "head_sha": "bd838db628ccd1a3d6a90321e66c9cbc110fc295",
+      "failure_step": "Run I157 dependency-scoped tests",
+      "cause": "TEST_GUARD_NAMING_AND_ERROR_TOKEN_ONLY"
+    }
+  ],
+  "repair_commit": "524c9eaedca33a6017f1ec84d5d1c9a8e265371f",
+  "fixed_cardinality_changed": false,
+  "next_boundary": "TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF",
+  "result": "PASS"
+}
