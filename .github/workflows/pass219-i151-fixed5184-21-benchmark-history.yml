@@ -1,0 +1,136 @@
+name: Pass 219 I151 Fixed 5184^21 Benchmark History
+
+on:
+  push:
+    branches:
+      - agent/pass219-i151-fixed5184-21-benchmark-history
+    paths:
+      - 'contracts/pass219/PASS_219_I151_FIXED_5184_21_INTEGRATED_OPTIMIZATION_BENCHMARK_HISTORY_1_0.json'
+      - 'docs/pass219/PASS_219_I151_FIXED_5184_21_INTEGRATED_OPTIMIZATION_BENCHMARK_HISTORY_1_0.md'
+      - 'benchmarks/pass219/pass219_i151_benchmark_history.py'
+      - 'tests/pass219/test_pass219_i151_benchmark_history.py'
+      - 'evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY_SEED.jsonl'
+      - '.github/workflows/pass219-i151-fixed5184-21-benchmark-history.yml'
+      - 'benchmarks/pass219/**'
+      - 'benchmarks/pass219b/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-resolution-history:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse collector
+        run: python -m py_compile benchmarks/pass219/pass219_i151_benchmark_history.py
+
+      - name: Validate fixed resolution and append-only history
+        run: python -m pytest -q --tb=short tests/pass219/test_pass219_i151_benchmark_history.py
+
+      - name: Emit fresh raw5184 octonion audio benchmark
+        run: |
+          PYTHONPATH=. python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py \
+            artifacts/pass219/i151/raw5184_audio_benchmark.json
+
+      - name: Emit fresh cross-modal reversible-state benchmark
+        run: |
+          PYTHONPATH=. python benchmarks/pass219/pass219_cross_modal_reversible_state_benchmark.py \
+            artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json
+
+      - name: Build run-keyed benchmark history receipt
+        run: |
+          mkdir -p artifacts/pass219/i151
+          cp evidence/pass219/PASS_219_I151_BENCHMARK_HISTORY_SEED.jsonl \
+            artifacts/pass219/i151/benchmark_history.jsonl
+          OBSERVED_AT="$(git show -s --format=%cI "$GITHUB_SHA")"
+          PYTHONPATH=. python benchmarks/pass219/pass219_i151_benchmark_history.py \
+            --repository-root . \
+            --repository-sha "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --observed-at "$OBSERVED_AT" \
+            --history artifacts/pass219/i151/benchmark_history.jsonl \
+            --registry-output artifacts/pass219/i151/benchmark_inventory.json \
+            --receipt artifacts/pass219/i151/raw5184_audio_benchmark.json \
+            --receipt artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json \
+            --receipt benchmarks/pass219b/PASS_219B_I2_MEASURED_RESULTS.json \
+            --receipt evidence/pass219/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json
+
+      - name: Enforce integrated evidence boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          history = Path('artifacts/pass219/i151/benchmark_history.jsonl')
+          lines = [json.loads(line) for line in history.read_text(encoding='utf-8').splitlines()]
+          assert len(lines) == 2
+          entry = lines[-1]
+          assert entry['schema'] == 'HHS_PASS219_I151_BENCHMARK_HISTORY_ENTRY_V1'
+          assert entry['resolution']['exact_cardinality_decimal'] == str(5184 ** 21)
+          assert entry['resolution']['equivalent'] == '72^42'
+          assert entry['resolution']['fixed'] is True
+          assert entry['integrated_lanes'] == [
+              'RAW5184_X86_64',
+              'VM81_HASH72_HASH216',
+              'OCTONION_DUAL_STEREO_TERNARY',
+              'HARMONIC36_144X36',
+          ]
+          assert entry['inventory']['count'] >= 20
+          assert len(entry['inventory']['sha256_root']) == 64
+          assert len(entry['receipts']) == 4
+          assert all(len(r['sha256']) == 64 for r in entry['receipts'])
+          assert entry['authority'] == {
+              'canonical_vm81_mutation': False,
+              'canonical_hash72_mint': False,
+              'canonical_hash216_persistence': False,
+          }
+
+          fresh = {
+              r['schema']: r
+              for r in entry['receipts']
+              if r['schema'] != 'UNSPECIFIED'
+          }
+          assert fresh['HHS_PASS219_I148_RAW5184_AUDIO_BENCHMARK_V1']['result'] == 'PASS'
+          assert fresh['HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_BENCHMARK_V1']['result'] == 'PASS'
+          assert 'HHS_PASS_219B_I2_MEASURED_RESULTS_V1' in fresh
+          assert 'HHS_PASS219_H36_STACK_CACHE_CAPACITY8_EVIDENCE_V1' in fresh
+          PY
+
+      - name: Publish fixed-resolution summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          lines=[json.loads(x) for x in open('artifacts/pass219/i151/benchmark_history.jsonl', encoding='utf-8')]
+          e=lines[-1]
+          print('## Pass 219 I151 fixed-resolution benchmark history')
+          print('- Resolution: 5184^21 = 72^42 (fixed)')
+          print('- Exact cardinality: ' + e['resolution']['exact_cardinality_decimal'])
+          print('- Integrated lanes: ' + ', '.join(e['integrated_lanes']))
+          print('- Discovered benchmark surfaces: ' + str(e['inventory']['count']))
+          print('- Inventory SHA-256 root: ' + e['inventory']['sha256_root'])
+          print('- Bound receipts: ' + str(len(e['receipts'])))
+          print('- Exhaustive 5184^21 enumeration claimed: NO')
+          print('- Canonical VM81/Hash72/Hash216 authority changed: NO')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i151-fixed5184-21-benchmark-history-${{ github.sha }}
+          path: |
+            artifacts/pass219/i151/benchmark_history.jsonl
+            artifacts/pass219/i151/benchmark_inventory.json
+            artifacts/pass219/i151/raw5184_audio_benchmark.json
+            artifacts/pass219/i151/cross_modal_reversible_state_benchmark.json
+          if-no-files-found: error
+          retention-days: 90
