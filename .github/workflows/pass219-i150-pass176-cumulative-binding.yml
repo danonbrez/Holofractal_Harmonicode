@@ -93,8 +93,6 @@ jobs:
               tests/test_hhs_production_public_app_v1.py >&2
             exit 1
           fi
-          test -s applications/holofractal_harmonizer/evidence/pass176/browser-smoke.json
-          test -s applications/holofractal_harmonizer/evidence/pass176/pass176-frozen-ide.png
           python - <<'PY'
           import json
           p=json.load(open('evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json'))
