@@ -166,3 +166,73 @@ If interrupted:
 
 Current implementation blocker: none.
 Current authority blocker: exact full-symbolic monolithic UQCEL lowering.
+
+
+## Feature validation
+
+I155 dependency-scoped validation is terminal green:
+
+- validated implementation head: `57abb633b494eb4f24600a7a6da8caaf770a269d`
+- workflow run: `33763343189`
+- job: `100674857987`
+- conclusion: SUCCESS
+- artifact: `9896427112`
+- artifact SHA-256: `9a321017025c38a90e57f8720f2b72f260c94797e8b26d40e7442a0512703231`
+
+Artifact receipt identities:
+```text
+production provider probe
+5a577ed10ef2fc8a942b5c11c9c79514ea42ab8d9a0003f70e5b3754dfeb6a02
+
+test-fixture provider probe
+cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e
+
+repaired I154 benchmark
+9f8d76d5b6676a26742a587f2c75e1d45b8ff5fc3450926c42766b6f858eba39
+
+I155 benchmark
+78505c32f05a563adab7986452c3841b5ba8d09ee7c66d687e7a08584dba4c5f
+
+I155 benchmark receipt
+b8bfa9bdf2c2cecbd602a935d2ddf99bddc0c68ff9752070b6653f492fa2e152
+```
+
+Validated production transition:
+```text
+PROVIDER_UNAVAILABLE                  -> CLEARED
+production provider present           = true
+production provider non-test          = true
+runtime provider available            = true
+Pass159 provenance exact              = true
+binder decision                       = UNRESOLVED
+binder reason mask                    = 512
+current blocker                       = FULL_SYMBOLIC_UQCEL_MONOLITHIC_EQUALITY_CHAIN
+Pass169 authority verified            = false
+Boolean gate results available        = false
+membrane input ready                  = false
+canonical monolithic proof            = false
+whole equation propagated             = false
+```
+
+Repaired I154 production state:
+```text
+status                                = BLOCKED_FULL_SYMBOLIC_RESIDUAL
+authoritative workload count          = 0
+effective exhaustion work measured    = false
+production 81/7 conclusion            = none
+local P/Hash216 provider binding      = unavailable
+canonical gate-vector export          = unavailable
+```
+
+No fixed cardinality changed and no VM81/Hash72/Hash216 mutation authority moved into the provider.
+
+Feature evidence:
+`evidence/pass219/PASS_219_I155_FEATURE_VALIDATION_33763343189.json`
+
+Next action:
+1. reconcile current main;
+2. open I155 integration PR with exact head guard;
+3. merge if clean;
+4. collect exact-main I155 and repaired I154 runs;
+5. collect I151 history update for the changed I154 and new I155 benchmark surfaces;
+6. seal exact-main evidence and append-only history without waiting on unrelated CI.
