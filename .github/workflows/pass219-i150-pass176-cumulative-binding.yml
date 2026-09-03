@@ -1,0 +1,152 @@
+name: Pass 219 I150 Pass 176 Cumulative Binding
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration150-pass176-frozen-ide-reconciliation
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass176_1_50.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass176_1_50.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i150_pass176.py'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/pass219/test_pass219_inherited_pass176_1_50.*'
+      - 'tests/pass219/test_pass219_cumulative_pass176_membrane_i150.py'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - 'evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json'
+      - '.github/workflows/pass219-i150-pass176-cumulative-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i150-pass176-cumulative-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass176-cumulative-i150:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765/pass176-ide/'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install bounded dependencies
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install pytest fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0' playwright
+      - name: Verify frozen terminal evidence
+        run: |
+          git merge-base --is-ancestor c2cb9ca92e21721581d896fdd53f226d6d055f57 HEAD
+          test "$(git hash-object evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json)" = "963b50533389114e2b270aff52184396b9e8178e"
+          grep -F '"workflow_run_id": 33766747861' evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json
+          grep -F '"terminal_pass176_completion": true' evidence/pass176/i150/PASS_219_I150_PASS176_TERMINAL_RECEIPT_INDEX.json
+      - name: Build aggregate exact runtime
+        run: |
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Build Runtime OS projection
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+      - name: Pass 176 Node and Python regression
+        run: |
+          timeout 300s node --test applications/holofractal_harmonizer/tests/pass176-stability.test.mjs
+          timeout 600s python -m pytest -q tests/test_pass176_frozen_ide_stabilization.py tests/test_pass175_terminal_completion.py tests/test_hhs_production_public_app_v1.py tests/pass219/test_pass219_cumulative_pass176_membrane_i150.py
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+      - name: Pass 176 browser and verifier evidence
+        env:
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '5'
+          HHS_LITERT_LM_BACKEND: auto
+        run: |
+          set -euo pipefail
+          python -m uvicorn hhs_backend.runtime_os_application_server:app --host 127.0.0.1 --port 8765 --workers 1 --log-level warning >/tmp/hhs-i150-cumulative-server.log 2>&1 &
+          SERVER_PID=$!
+          cleanup(){ kill "$SERVER_PID" 2>/dev/null || true; wait "$SERVER_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          for attempt in $(seq 1 60); do curl --connect-timeout 1 --max-time 5 -fsS http://127.0.0.1:8765/api/product/health >/tmp/health.json && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8765/ | grep -q 'HHS Visual Runtime OS Workspace'
+          curl -fsS http://127.0.0.1:8765/pass176-ide/ | grep -q 'HHS Full Multimodal Application IDE'
+          timeout --signal=TERM --kill-after=10s 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+          timeout 120s python hhs_verification/pass176/verify.py --repository-root . --output /tmp/pass176-terminal.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/pass176-terminal.json'))
+          assert p['terminal_pass176_completion'] is True
+          assert all(p['checks'].values())
+          assert p['authority']['frontend_is_canonical_authority'] is False
+          assert p['authority']['singleton_vm81_admission_preserved'] is True
+          assert p['authority']['hash72_commit_streams'] == 1
+          PY
+      - name: Run I150 cumulative membrane
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i150_pass176 import execute_pass176_membrane_preflight
+          r=execute_pass176_membrane_preflight()
+          assert r['ok'] is True
+          assert r['census']['wired_floor']==176
+          assert r['census']['binding_count']==45
+          assert r['exact_binding']['terminal_completion_claimed'] is True
+          PY
+      - name: Preserve global defaults latency and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+          python -m pytest -q tests/pass219/test_pass219_global_latency_policy_registration_v1.py
+      - name: Compile exact ABI and Pass 176 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i150
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i150/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i150/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i150/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass176_1_50.c /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/pass176-c
+          /tmp/pass219-i150/pass176-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass176_1_50.cpp /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/pass176-cpp
+          /tmp/pass219-i150/pass176-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/defaults-c
+          /tmp/pass219-i150/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i150/exact.o /tmp/pass219-i150/pass186.o /tmp/pass219-i150/registers.o -o /tmp/pass219-i150/defaults-cpp
+          /tmp/pass219-i150/defaults-cpp
+      - name: Emit cumulative receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass176/i150
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i150_pass176 import execute_pass176_membrane_preflight
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(); tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          payload={'schema':'PASS_219_I150_PASS176_CUMULATIVE_VALIDATION_RECEIPT_V1','repository':'danonbrez/Holofractal_Harmonicode','branch':'agent/pass219-iteration150-pass176-frozen-ide-reconciliation','head_sha':head,'tree_sha':tree,'workflow_run_id':int(os.environ['RUN_ID']),'workflow_run_attempt':int(os.environ['RUN_ATTEMPT']),'classification':'HHS_PASS176_I150_CUMULATIVE_TERMINAL_VERIFIED','preflight':execute_pass176_membrane_preflight(),'global_census':{'wired_ceiling':218,'wired_floor':176,'binding_count':45},'closure':{'cumulative_pass176_binding_added':True,'terminal_pass176_completion':True,'post_binding_validation_green':True,'merge_performed':False,'authoritative_main_verification':False}}
+          receipt=make_hash72_witness('pass176:i150:cumulative',payload,width=72).digest
+          lanes=[make_hash72_witness('pass176:i150:cumulative:previous',{'head':head,'receipt':receipt},width=72).digest,make_hash72_witness('pass176:i150:cumulative:change',{'tree':tree,'receipt':receipt},width=72).digest,make_hash72_witness('pass176:i150:cumulative:receipt',payload,width=72).digest]
+          payload['receipt_hash72']=receipt; payload['archive_hash216']=''.join(lanes)
+          Path('evidence/pass176/i150/PASS_219_I150_PASS176_CUMULATIVE_VALIDATION_RECEIPT.json').write_text(json.dumps(payload,sort_keys=True,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i150-pass176-cumulative-binding
+          path: evidence/pass176/i150/PASS_219_I150_PASS176_CUMULATIVE_VALIDATION_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30

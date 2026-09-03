@@ -23,8 +23,11 @@ def main():
  if ceiling!=max(nums) or floor!=min(nums): raise SystemExit("CURRENT_WIRED_BOUNDARY_DRIFT")
  for p in range(floor,ceiling+1):
   if nums.count(p)!=(3 if p==200 else 1): raise SystemExit(f"NUMERIC_COVERAGE_DRIFT:{p}")
- if eh.index('hhs_pass219_inherited_pass177_1_49.h')>eh.index('hhs_pass219_global_canonical_defaults_1_0.h'): raise SystemExit("POLICY_HEADER_NOT_AFTER_CURRENT_INHERITED_TAIL")
- if ec.index('hhs_pass219_inherited_pass177_1_49.inc')>ec.index('hhs_pass219_global_canonical_defaults_1_0.inc'): raise SystemExit("POLICY_SOURCE_NOT_AFTER_CURRENT_INHERITED_TAIL")
+ if floor!=176 or len(expected)!=45 or expected[-5:]!=["180","179","178","177","176"]: raise SystemExit("I150_PASS176_CUMULATIVE_CENSUS_DRIFT")
+ i150=c["current_cumulative_binding_census"].get("i150_reconciliation",{})
+ if i150.get("pass176")!="FROZEN_IDE_CUMULATIVELY_WIRED_TERMINAL" or i150.get("terminal_validation_run")!=33766747861: raise SystemExit("I150_PASS176_RECONCILIATION_EVIDENCE_DRIFT")
+ if eh.index('hhs_pass219_inherited_pass176_1_50.h')>eh.index('hhs_pass219_global_canonical_defaults_1_0.h'): raise SystemExit("POLICY_HEADER_NOT_AFTER_CURRENT_INHERITED_TAIL")
+ if ec.index('hhs_pass219_inherited_pass176_1_50.inc')>ec.index('hhs_pass219_global_canonical_defaults_1_0.inc'): raise SystemExit("POLICY_SOURCE_NOT_AFTER_CURRENT_INHERITED_TAIL")
  idir=ROOT/"hhs_runtime/include"
  for b in expected:
   m=re.search(rf'#include "(hhs_pass219_inherited_pass{re.escape(b)}_[^"]+)\.h"',eh)
@@ -51,8 +54,8 @@ def main():
  if "hhs_exact_pass219_global_latency_policy_validate()" not in pi: raise SystemExit("GLOBAL_LATENCY_GLOBAL_DEFAULT_VALIDATOR_MISSING")
  p157=(ROOT/"native_projects/hhs_pass157_ppf_mptc").is_dir(); wired157=any(x.startswith("157") for x in hb); debt=next((x for x in c["known_repair_forward_debt"] if x["pass"]==157),None)
  if p157 and not wired157 and (debt is None or debt["classification"]!="MISSING_CUMULATIVE_EXPOSURE" or not debt["mandatory_repair_forward"] or not debt["native_project_is_not_canonical_substitute"]): raise SystemExit("PASS157_REPAIR_FORWARD_DEBT_NOT_ENFORCED")
- for p in [ROOT/"docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md",ROOT/"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",ROOT/"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",ROOT/"tests/pass219/test_pass219_global_canonical_defaults_1_0.c",ROOT/"tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",ROOT/".github/workflows/pass219-global-canonical-defaults.yml",ROOT/"contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json",ROOT/"docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md",ROOT/"contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json",ROOT/"docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md",ROOT/"hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py",ROOT/"tests/pass219/test_pass219_global_latency_policy_registration_v1.py"]:
+ for p in [ROOT/"docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md",ROOT/"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",ROOT/"hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",ROOT/"tests/pass219/test_pass219_global_canonical_defaults_1_0.c",ROOT/"tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",ROOT/".github/workflows/pass219-global-canonical-defaults.yml",ROOT/"contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json",ROOT/"docs/architecture/HHS_MULTIMODAL_OPTIMIZATION_GENERALIZATION.md",ROOT/"contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json",ROOT/"docs/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_BENCHMARK_RESULTS.md",ROOT/"hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py",ROOT/"tests/pass219/test_pass219_global_latency_policy_registration_v1.py",ROOT/"hhs_runtime/hhs_pass219_cumulative_pass_membrane_i150_pass176.py",ROOT/"tests/pass219/test_pass219_cumulative_pass176_membrane_i150.py"]:
   if not p.is_file(): raise SystemExit(f"REQUIRED_POLICY_SURFACE_MISSING:{p}")
- print(json.dumps({"classification":"HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED","binding_count":len(expected),"wired_ceiling":ceiling,"wired_floor":floor,"pass157":"MISSING_CUMULATIVE_EXPOSURE_REPAIR_FORWARD_REQUIRED" if not wired157 else "WIRED"},sort_keys=True))
+ print(json.dumps({"classification":"HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED","binding_count":len(expected),"wired_ceiling":ceiling,"wired_floor":floor,"pass176":"CUMULATIVELY_WIRED_TERMINAL","pass157":"MISSING_CUMULATIVE_EXPOSURE_REPAIR_FORWARD_REQUIRED" if not wired157 else "WIRED"},sort_keys=True))
  return 0
 if __name__=="__main__": raise SystemExit(main())
