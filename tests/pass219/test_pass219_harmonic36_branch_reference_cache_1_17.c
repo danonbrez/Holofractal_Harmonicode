@@ -466,6 +466,12 @@ int main(void) {
         tampered, &parent) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 
     memcpy(tampered, cache, sizeof(*cache));
+    tampered->fib_bucket_members[5040U] =
+        cache->entry_count + 1U;
+    assert(hhs_exact_pass219_h36_branch_ref_cache_validate(
+        tampered, &parent) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    memcpy(tampered, cache, sizeof(*cache));
     tampered->memo[memo_branch]
         .composition_memo_signature64[3U] ^= UINT64_C(1);
     assert(hhs_exact_pass219_h36_branch_ref_cache_validate(
