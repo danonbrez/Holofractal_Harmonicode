@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -125,6 +126,10 @@ def build_receipt() -> dict[str, object]:
         "physical_full_manifold_enumeration_claim": False,
         "result": "PASS",
     }
+    canonical = json.dumps(
+        receipt, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    receipt["receipt_sha256"] = hashlib.sha256(canonical).hexdigest()
     return receipt
 
 
