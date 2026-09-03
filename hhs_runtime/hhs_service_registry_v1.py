@@ -4182,6 +4182,23 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="TEN_FROZEN_JOINS_ZERO_NEW_AUTHORIZED_PIVOTS_FIVE_EXPLICIT_TYPED_SEMANTIC_BLOCKERS",
     )
 
+    registry.register_function(
+        name="runtime.pass219.harmonicode_modular_pivot_phase_binding",
+        module="hhs_runtime.pass219.harmonicode_modular_pivot_phase_binding",
+        function="i159_modular_pivot_self_test",
+        service_type="pass219_exact_harmonicode_modular_pivot_phase_binding",
+        description="Executes the two frozen P^2(MOD)(pq) joins through the inherited Pass157 HHS_MODULAR_NORMALIZATION phase profile, retaining exact quotient and residue witnesses and typed closure/renewed-unit relations without scalar equality, residue-only authority, or canonical mutation.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_V1","HHS_PASS219_I159_MODULAR_NORMALIZATION_PROFILE_V1","HHS_PASS219_I159_EXACT_PHASE_LANE_V1","HHS_PASS219_I159_TYPED_MODULAR_PIVOT_WITNESS_V1"],
+        witness_schemas=["HHS_PASS_157_TYPED_MEMBRANE_V2","HHS_PASS219_I159_EXACT_PHASE_LANE_V1","HHS_PASS219_I159_TYPED_MODULAR_PIVOT_WITNESS_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
+        validators=["verify_pass157_modular_normalization_profile","build_phase_lane","prove_p_fold_closure_to_renewed_unit","prove_renewed_unit_phase_class_join","execute_i159_modular_pivot_phase_bindings","i159_modular_pivot_self_test"],
+        guards=["pass157_hhs_modular_normalization_node_binding","pass157_full_quotient_residue_identity","residue_only_authority_forbidden","typed_closure_residue_to_renewed_unit","candidate_m2_minus_m_binding","same_residue_not_sufficient","ordinary_scalar_identity_forbidden","scalar_zero_one_noncollapse","i157_graph_sha256_binding","no_conventional_mod_projection_authority","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["INHERITED_MODULAR_PROFILE_DRIFT","PHASE_MODULUS_POSITIVE_REQUIRED","PASS157_PHASE_DECOMPOSITION_MISMATCH","P_FOLD_CLOSURE_TO_RENEWED_UNIT_CONSTRAINT_MISMATCH","RENEWED_UNIT_PHASE_CLASS_CONSTRAINT_MISMATCH","P2_MOD_PQ_SOURCE_OPERATOR_DRIFT","P2_MOD_PQ_SCALARIZATION_FORBIDDEN","I157_GRAPH_SHA256_MISMATCH"],
+        mutation_policy="READ_ONLY_TYPED_MODULAR_PHASE_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_PHASE_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_TWO_I159_MODULAR_PIVOT_ADAPTERS_THREE_REMAINING_BOUNDARY_BLOCKERS",
+    )
+
     return registry
 
 
