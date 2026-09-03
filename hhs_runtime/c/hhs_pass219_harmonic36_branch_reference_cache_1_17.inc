@@ -34,6 +34,36 @@ static uint16_t h36_branch_ref_fib(uint16_t index) {
     return values[index];
 }
 
+static uint32_t h36_branch_ref_fib_bucket_offset(uint16_t index) {
+    switch (index) {
+        case UINT16_C(4): return UINT32_C(0);
+        case UINT16_C(5): return UINT32_C(144);
+        case UINT16_C(6): return UINT32_C(864);
+        case UINT16_C(7): return UINT32_C(2304);
+        case UINT16_C(8): return UINT32_C(3456);
+        case UINT16_C(9): return UINT32_C(4176);
+        case UINT16_C(10): return UINT32_C(4608);
+        case UINT16_C(11): return UINT32_C(4896);
+        case UINT16_C(12): return UINT32_C(5040);
+        default: return UINT32_C(0);
+    }
+}
+
+static uint32_t h36_branch_ref_fib_bucket_capacity(uint16_t index) {
+    switch (index) {
+        case UINT16_C(4): return UINT32_C(144);
+        case UINT16_C(5): return UINT32_C(720);
+        case UINT16_C(6): return UINT32_C(1440);
+        case UINT16_C(7): return UINT32_C(1152);
+        case UINT16_C(8): return UINT32_C(720);
+        case UINT16_C(9): return UINT32_C(432);
+        case UINT16_C(10): return UINT32_C(288);
+        case UINT16_C(11): return UINT32_C(144);
+        case UINT16_C(12): return UINT32_C(144);
+        default: return UINT32_C(0);
+    }
+}
+
 static uint64_t h36_branch_ref_parent_entry_signature(
     const HHSExactPass219H36StackCacheEntryV1 *entry
 ) {
@@ -391,6 +421,44 @@ static HHSExactStatus h36_branch_ref_entry_validate_fast(
     return HHS_EXACT_STATUS_OK;
 }
 
+static HHSExactStatus h36_branch_ref_entry_reference_validate_fast(
+    const HHSExactPass219H36BranchReferenceCacheV1 *cache,
+    const HHSExactPass219H36StackCacheV1 *parent_cache,
+    uint32_t branch_id
+) {
+    const HHSExactPass219H36BranchReferenceEntryV1 *entry;
+    HHSExactStatus status;
+
+    if (cache == NULL || parent_cache == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (branch_id >= cache->entry_count)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    entry = &cache->entries[branch_id];
+    if (entry->struct_size != sizeof(*entry) ||
+        entry->version != HHS_EXACT_PASS219_H36_BRANCH_REF_VERSION)
+        return HHS_EXACT_STATUS_VERSION_MISMATCH;
+    if (entry->occupied != 1U ||
+        entry->branch_id != branch_id ||
+        entry->sequence != (uint64_t)branch_id + UINT64_C(1) ||
+        entry->parent_slot >= parent_cache->capacity ||
+        entry->parent_entry_signature64 == 0U ||
+        entry->entry_signature64 == 0U ||
+        entry->receipt_signature64 == 0U ||
+        entry->branch_reference_only != 1U ||
+        entry->exact_replayable != 1U ||
+        entry->canonical_mutation_authority != 0U ||
+        entry->canonical_hash72_authority != 0U ||
+        entry->canonical_hash216_authority != 0U ||
+        entry->canonical_persistence_authority != 0U ||
+        entry->floating_point_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    status = h36_branch_ref_parent_entry_validate_fast(
+        parent_cache,
+        entry->parent_slot,
+        entry->parent_entry_signature64);
+    return status;
+}
+
 static void h36_branch_ref_fill_receipt(
     const HHSExactPass219H36BranchReferenceEntryV1 *entry,
     HHSExactPass219H36BranchReceiptV1 *receipt
@@ -448,6 +516,9 @@ static HHSExactStatus h36_branch_ref_append(
     uint8_t depth = 0U;
     uint64_t prior_receipt_signature64;
     uint16_t decrement = UINT16_C(0);
+    uint32_t bucket_offset;
+    uint32_t bucket_capacity;
+    uint32_t bucket_count;
     HHSExactStatus status;
 
     status = h36_branch_ref_header_validate(cache);
@@ -569,8 +640,18 @@ static HHSExactStatus h36_branch_ref_append(
     entry->receipt_signature64 =
         h36_branch_ref_receipt_signature(entry);
 
+    bucket_offset = h36_branch_ref_fib_bucket_offset(fib_index);
+    bucket_capacity = h36_branch_ref_fib_bucket_capacity(fib_index);
+    bucket_count = cache->fib_bucket_count[fib_index];
+    if (bucket_capacity == 0U ||
+        bucket_count >= bucket_capacity ||
+        bucket_offset + bucket_count >=
+            HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    cache->fib_bucket_members[bucket_offset + bucket_count] =
+        branch_id;
     cache->fib_bucket_head[fib_index] = branch_id;
-    cache->fib_bucket_count[fib_index] += UINT32_C(1);
+    cache->fib_bucket_count[fib_index] = bucket_count + UINT32_C(1);
     if (previous_branch_id ==
         HHS_EXACT_PASS219_H36_BRANCH_REF_NONE) {
         cache->root_branch_id[tile144][lane_role] = branch_id;
@@ -641,6 +722,8 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_init(
         cache->left_child_branch_id[i] =
             HHS_EXACT_PASS219_H36_BRANCH_REF_NONE;
         cache->right_child_branch_id[i] =
+            HHS_EXACT_PASS219_H36_BRANCH_REF_NONE;
+        cache->fib_bucket_members[i] =
             HHS_EXACT_PASS219_H36_BRANCH_REF_NONE;
     }
     for (i = 0U;
@@ -745,8 +828,10 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_equivalent(
     size_t out_capacity,
     size_t *out_count
 ) {
-    uint32_t branch_id;
-    size_t count = 0U;
+    uint32_t offset;
+    uint32_t capacity;
+    uint32_t count;
+    uint32_t i;
     HHSExactStatus status;
 
     if (out_count == NULL)
@@ -758,28 +843,31 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_equivalent(
         HHS_EXACT_PASS219_H36_BRANCH_REF_FIB_BUCKETS)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    *out_count = (size_t)cache->fib_bucket_count[fib_index];
-    if (*out_count != 0U && out_branch_ids == NULL)
+    count = cache->fib_bucket_count[fib_index];
+    *out_count = (size_t)count;
+    if (count != 0U && out_branch_ids == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (out_capacity < *out_count)
+    if (out_capacity < (size_t)count)
         return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
 
-    branch_id = cache->fib_bucket_head[fib_index];
-    while (branch_id !=
-           HHS_EXACT_PASS219_H36_BRANCH_REF_NONE) {
+    capacity = h36_branch_ref_fib_bucket_capacity(fib_index);
+    offset = h36_branch_ref_fib_bucket_offset(fib_index);
+    if (count > capacity ||
+        offset + count >
+            HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    for (i = 0U; i < count; ++i) {
+        uint32_t branch_id = cache->fib_bucket_members[offset + i];
         const HHSExactPass219H36BranchReferenceEntryV1 *entry;
-        if (branch_id >= cache->entry_count ||
-            count >= *out_count)
+        if (branch_id >= cache->entry_count)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
         entry = &cache->entries[branch_id];
         if (entry->occupied != 1U ||
             entry->fib_index != fib_index)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-        out_branch_ids[count++] = branch_id;
-        branch_id = entry->previous_fib_member_branch_id;
+        out_branch_ids[i] = branch_id;
     }
-    if (count != *out_count)
-        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -868,6 +956,7 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_composition_receipt(
     uint32_t count;
     uint8_t bit;
     uint64_t signature64;
+    int memoized;
     HHSExactStatus status;
 
     if (out_receipt == NULL)
@@ -882,17 +971,40 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_composition_receipt(
     if (target_lane_role >=
         HHS_EXACT_PASS219_H36_BRANCH_REF_COMPOSITION_TARGETS)
         return HHS_EXACT_STATUS_RANGE_ERROR;
-    status = h36_branch_ref_entry_validate_fast(
-        cache, frozen_parent_cache, branch_id);
+    if (branch_id >= cache->entry_count)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+
+    memo = &cache->memo[branch_id];
+    bit = (uint8_t)(UINT8_C(1) << target_lane_role);
+    memoized = (memo->composition_memoized_mask & bit) != 0U;
+    if (memoized) {
+        status = h36_branch_ref_entry_reference_validate_fast(
+            cache, frozen_parent_cache, branch_id);
+    } else {
+        status = h36_branch_ref_entry_validate_fast(
+            cache, frozen_parent_cache, branch_id);
+    }
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
     entry = &cache->entries[branch_id];
-    memo = &cache->memo[branch_id];
-    bit = (uint8_t)(UINT8_C(1) << target_lane_role);
-    threshold =
-        hhs_exact_pass219_h36_branch_ref_memo_threshold(
-            cache->entry_count);
+    if (memoized) {
+        threshold =
+            memo->composition_memo_threshold_used[target_lane_role];
+        signature64 =
+            memo->composition_memo_signature64[target_lane_role];
+        if (!h36_branch_ref_memo_threshold_is_calibrated(threshold) ||
+            signature64 == 0U ||
+            memo->composition_query_count[target_lane_role] < threshold)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    } else {
+        threshold =
+            hhs_exact_pass219_h36_branch_ref_memo_threshold(
+                cache->entry_count);
+        signature64 =
+            h36_branch_ref_composition_signature(
+                entry, target_lane_role);
+    }
 
     if (memo->composition_query_count[target_lane_role] <
         UINT32_MAX) {
@@ -900,26 +1012,14 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_composition_receipt(
     }
     count = memo->composition_query_count[target_lane_role];
 
-    if ((memo->composition_memoized_mask & bit) != 0U) {
-        signature64 =
-            memo->composition_memo_signature64[target_lane_role];
-        if (signature64 !=
-            h36_branch_ref_composition_signature(
-                entry, target_lane_role))
-            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    } else {
-        signature64 =
-            h36_branch_ref_composition_signature(
-                entry, target_lane_role);
-        if (count >= threshold) {
-            memo->composition_memo_signature64[
-                target_lane_role] = signature64;
-            memo->composition_memo_threshold_used[
-                target_lane_role] = threshold;
-            memo->composition_memoized_mask =
-                (uint8_t)(
-                    memo->composition_memoized_mask | bit);
-        }
+    if (!memoized && count >= threshold) {
+        memo->composition_memo_signature64[
+            target_lane_role] = signature64;
+        memo->composition_memo_threshold_used[
+            target_lane_role] = threshold;
+        memo->composition_memoized_mask =
+            (uint8_t)(memo->composition_memoized_mask | bit);
+        memoized = 1;
     }
 
     memset(out_receipt, 0, sizeof(*out_receipt));
@@ -928,18 +1028,13 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_composition_receipt(
         HHS_EXACT_PASS219_H36_BRANCH_REF_VERSION;
     out_receipt->branch_id = branch_id;
     out_receipt->query_count = count;
-    out_receipt->memoization_threshold =
-        (memo->composition_memo_threshold_used[target_lane_role] != 0U)
-            ? memo->composition_memo_threshold_used[target_lane_role]
-            : threshold;
+    out_receipt->memoization_threshold = threshold;
     out_receipt->branch_receipt_signature64 =
         entry->receipt_signature64;
     out_receipt->composition_receipt_signature64 = signature64;
     out_receipt->source_lane_role = entry->lane_role;
     out_receipt->target_lane_role = target_lane_role;
-    out_receipt->memoized =
-        (uint8_t)(
-            (memo->composition_memoized_mask & bit) != 0U);
+    out_receipt->memoized = (uint8_t)(memoized != 0);
     out_receipt->exact_replayable = 1U;
     out_receipt->canonical_mutation_authority = 0U;
     out_receipt->canonical_hash72_authority = 0U;
@@ -1103,6 +1198,8 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
 ) {
     uint8_t seen[
         HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY];
+    uint8_t flat_seen[
+        HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY];
     uint32_t i;
     uint32_t tile;
     uint32_t lane;
@@ -1127,6 +1224,7 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     memset(seen, 0, sizeof(seen));
+    memset(flat_seen, 0, sizeof(flat_seen));
     threshold =
         hhs_exact_pass219_h36_branch_ref_memo_threshold(
             cache->entry_count);
@@ -1227,6 +1325,17 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
          ++i) {
         uint32_t branch_id = cache->fib_bucket_head[i];
         uint32_t count = 0U;
+        uint32_t flat_count = cache->fib_bucket_count[i];
+        uint32_t offset = h36_branch_ref_fib_bucket_offset((uint16_t)i);
+        uint32_t capacity =
+            h36_branch_ref_fib_bucket_capacity((uint16_t)i);
+        uint32_t p;
+
+        if (flat_count > capacity ||
+            offset + capacity >
+                HHS_EXACT_PASS219_H36_BRANCH_REF_CAPACITY)
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
         while (branch_id !=
                HHS_EXACT_PASS219_H36_BRANCH_REF_NONE) {
             const HHSExactPass219H36BranchReferenceEntryV1 *entry;
@@ -1241,15 +1350,29 @@ HHSExactStatus hhs_exact_pass219_h36_branch_ref_cache_validate(
             count += UINT32_C(1);
             branch_id = entry->previous_fib_member_branch_id;
         }
-        if (count != cache->fib_bucket_count[i])
+        if (count != flat_count)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+        for (p = 0U; p < flat_count; ++p) {
+            uint32_t flat_id = cache->fib_bucket_members[offset + p];
+            if (flat_id >= cache->entry_count ||
+                flat_seen[flat_id] != 0U ||
+                cache->entries[flat_id].fib_index != i)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            flat_seen[flat_id] = 1U;
+        }
+        for (p = flat_count; p < capacity; ++p) {
+            if (cache->fib_bucket_members[offset + p] !=
+                HHS_EXACT_PASS219_H36_BRANCH_REF_NONE)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+        }
         total_bucket_count += count;
     }
 
     if (total_bucket_count != cache->entry_count)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     for (i = 0U; i < cache->entry_count; ++i) {
-        if (seen[i] != 1U)
+        if (seen[i] != 1U || flat_seen[i] != 1U)
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     return HHS_EXACT_STATUS_OK;
