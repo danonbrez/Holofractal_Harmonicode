@@ -1,0 +1,117 @@
+{
+  "schema": "HHS_PASS219_H36_FIBONACCI_BRANCH_EMERGENT_BENEFITS_EVIDENCE_V1",
+  "pass": 219,
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_main": "ead4e312556179b9a090c7a5b5d898d298be72a0",
+  "branch": "agent/pass219-h36-fibonacci-branch-cache-benchmark",
+  "benchmark_commit": "5a413fdd70bb07b54999ffeb5f2acd945438cf0c",
+  "workflow_commit": "735d543e7e1fceda3d73a4e5cfb13f7644418e7f",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33748212696,
+    "job": 100625507692,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9890486924,
+    "artifact_sha256": "5a3855eb8ab09e8a3d21023bb87256f55955f2f198e220e98cac2f909d456293"
+  },
+  "sweep": {
+    "platform": "linux-x86_64",
+    "samples": 7,
+    "calibration_repeats": 5,
+    "access_rounds": 32768,
+    "composition_rounds": 65536,
+    "equivalence_rounds": 128,
+    "branch_scales": [144, 288, 576, 1152, 2304, 5184],
+    "tiles144": [1, 2, 4, 8, 16, 36]
+  },
+  "results": [
+    {
+      "branches": 144,
+      "memory": {"duplicate_bytes": 43776, "reference_bytes": 8728, "ratio_x1000": 5015},
+      "fork_creation": {"duplicate_total_ns": 16199, "reference_total_ns": 11441, "reference_speedup_x1000": 1415},
+      "random_access": {"duplicate_total_ns": 435542, "reference_total_ns": 422529, "reference_speedup_x1000": 1030},
+      "equivalence_discovery": {"full_scan_total_ns": 65212, "fib_bucket_total_ns": 9568, "bucket_speedup_x1000": 6815},
+      "composition_receipts": {"compute_total_ns": 1826019, "memo_total_ns": 722570, "memo_build_total_ns": 10680, "memo_query_speedup_x1000": 2527, "break_even_queries": 3172}
+    },
+    {
+      "branches": 288,
+      "memory": {"duplicate_bytes": 87552, "reference_bytes": 16216, "ratio_x1000": 5399},
+      "fork_creation": {"duplicate_total_ns": 32341, "reference_total_ns": 22603, "reference_speedup_x1000": 1430},
+      "random_access": {"duplicate_total_ns": 462664, "reference_total_ns": 420306, "reference_speedup_x1000": 1100},
+      "equivalence_discovery": {"full_scan_total_ns": 124053, "fib_bucket_total_ns": 15009, "bucket_speedup_x1000": 8265},
+      "composition_receipts": {"compute_total_ns": 1824006, "memo_total_ns": 717309, "memo_build_total_ns": 21119, "memo_query_speedup_x1000": 2542, "break_even_queries": 6254}
+    },
+    {
+      "branches": 576,
+      "memory": {"duplicate_bytes": 175104, "reference_bytes": 31192, "ratio_x1000": 5613},
+      "fork_creation": {"duplicate_total_ns": 65452, "reference_total_ns": 45054, "reference_speedup_x1000": 1452},
+      "random_access": {"duplicate_total_ns": 467484, "reference_total_ns": 417861, "reference_speedup_x1000": 1118},
+      "equivalence_discovery": {"full_scan_total_ns": 248384, "fib_bucket_total_ns": 28231, "bucket_speedup_x1000": 8798},
+      "composition_receipts": {"compute_total_ns": 1813605, "memo_total_ns": 722239, "memo_build_total_ns": 41897, "memo_query_speedup_x1000": 2511, "break_even_queries": 12580}
+    },
+    {
+      "branches": 1152,
+      "memory": {"duplicate_bytes": 350208, "reference_bytes": 61144, "ratio_x1000": 5727},
+      "fork_creation": {"duplicate_total_ns": 128090, "reference_total_ns": 89909, "reference_speedup_x1000": 1424},
+      "random_access": {"duplicate_total_ns": 497599, "reference_total_ns": 442518, "reference_speedup_x1000": 1124},
+      "equivalence_discovery": {"full_scan_total_ns": 470968, "fib_bucket_total_ns": 63738, "bucket_speedup_x1000": 7389},
+      "composition_receipts": {"compute_total_ns": 2125108, "memo_total_ns": 728951, "memo_build_total_ns": 84248, "memo_query_speedup_x1000": 2915, "break_even_queries": 19774}
+    },
+    {
+      "branches": 2304,
+      "memory": {"duplicate_bytes": 700416, "reference_bytes": 121048, "ratio_x1000": 5786},
+      "fork_creation": {"duplicate_total_ns": 294250, "reference_total_ns": 178723, "reference_speedup_x1000": 1646},
+      "random_access": {"duplicate_total_ns": 596995, "reference_total_ns": 460530, "reference_speedup_x1000": 1296},
+      "equivalence_discovery": {"full_scan_total_ns": 910711, "fib_bucket_total_ns": 186850, "bucket_speedup_x1000": 4874},
+      "composition_receipts": {"compute_total_ns": 2301216, "memo_total_ns": 745331, "memo_build_total_ns": 167462, "memo_query_speedup_x1000": 3087, "break_even_queries": 35269}
+    },
+    {
+      "branches": 5184,
+      "memory": {"duplicate_bytes": 1575936, "reference_bytes": 270808, "ratio_x1000": 5819},
+      "fork_creation": {"duplicate_total_ns": 636167, "reference_total_ns": 401137, "reference_speedup_x1000": 1585},
+      "random_access": {"duplicate_total_ns": 697944, "reference_total_ns": 450361, "reference_speedup_x1000": 1549},
+      "equivalence_discovery": {"full_scan_total_ns": 2063513, "fib_bucket_total_ns": 432197, "bucket_speedup_x1000": 4774},
+      "composition_receipts": {"compute_total_ns": 2154141, "memo_total_ns": 745923, "memo_build_total_ns": 376343, "memo_query_speedup_x1000": 2887, "break_even_queries": 87572}
+    }
+  ],
+  "crossovers": {
+    "reference_fork_creation_first_win_branches": 144,
+    "reference_random_access_first_win_branches": 144,
+    "fibonacci_bucket_identity_discovery_first_win_branches": 144,
+    "composition_memo_first_win_branches": 144
+  },
+  "emergent_benefits": {
+    "fork_creation": "Reference forks are faster at every tested scale, rising to 1.585x at 5184 branches.",
+    "working_set_locality": "Reference random access improves as duplicate payload pressure grows, from 1.030x at 144 to 1.549x at 5184 branches.",
+    "identity_equivalence_discovery": "A Fibonacci bucket index accelerates identity-only equivalence enumeration from 4.774x to 8.798x across tested scales.",
+    "composition_receipt_reuse": "Memoized compatible-composition receipts reduce repeated receipt-query cost by 2.511x to 3.087x; measured amortization break-even grows with branch count.",
+    "storage_scaling": "Duplicate/reference storage ratio improves from 5.015x at 144 to 5.819x at 5184 branches."
+  },
+  "equivalence_scope_note": {
+    "prior_full_resolution_result": "The earlier 144-cell benchmark found a full scan marginally faster than Fibonacci bucketing when each matched branch also performed full direct-reference validation and composition resolution.",
+    "current_discovery_result": "This sweep isolates equivalence-class discovery only. Under that workload, the Fibonacci bucket wins strongly at 144 and every larger tested scale.",
+    "runtime_policy": "Use Fibonacci indexing to discover equivalent branch identities, then resolve selected branches directly; do not force bucket traversal into every local branch lookup."
+  },
+  "correctness": {
+    "fibonacci_additive_division_all_tiles": true,
+    "equivalence_scan_equals_bucket": true,
+    "composition_memo_equals_recomputed_receipt": true,
+    "all_branch_receipts_deterministic": true,
+    "frozen_parent_state_unchanged": true
+  },
+  "selected_configuration_extension": {
+    "local_lookup": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+    "equivalence_discovery": "FIBONACCI_IDENTITY_BUCKET",
+    "resolved_equivalence_branch": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+    "repeated_composition_receipts": "MEMOIZE_AFTER_AMORTIZATION_THRESHOLD",
+    "frozen_parent_policy": "REFERENCE_ONLY_NO_MUTATION"
+  },
+  "authority": {
+    "candidate_benchmark_only": true,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false,
+    "canonical_persistence": false,
+    "floating_point": false
+  }
+}
