@@ -40,11 +40,16 @@ PASS169_CONTRACT_PATH = Path(
     "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_"
     "EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md"
 )
+FORMAL_EVALUATION_PROTOCOL_PATH = Path(
+    "docs/HARMONICODE_FORMAL_EVALUATION_PROTOCOL.md"
+)
 
 MODULAR_EDGE_IDS = (2, 3)
 BLOCKED_EDGE_IDS = (7, 8, 9)
 
 EXPECTED_BLOCKERS = {
+    2: "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED",
+    3: "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED",
     7: "BOUNDARY_PRODUCT_BINDING_REQUIRED",
     8: "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
     9: "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED",
@@ -309,8 +314,10 @@ def _repository_blocker_evidence(root: str | Path | None = None) -> dict[str, An
     repo = _repo_root(root)
     pass191 = repo / PASS191_KERNEL_PATH
     pass169 = repo / PASS169_CONTRACT_PATH
+    protocol = repo / FORMAL_EVALUATION_PROTOCOL_PATH
     pass191_text = pass191.read_text(encoding="utf-8")
     pass169_text = pass169.read_text(encoding="utf-8")
+    protocol_text = protocol.read_text(encoding="utf-8")
 
     x_binding_unresolved = '"x_squared_binding": None' in pass191_text
     pass169_requires_symbolic_radical = (
@@ -325,9 +332,19 @@ def _repository_blocker_evidence(root: str | Path | None = None) -> dict[str, An
         raise TypedDomainExecutionError(
             "PASS191_X_SQUARED_BINDING_CHANGED_REAUDIT_REQUIRED"
         )
+    familiar_mod_does_not_fix_semantics = (
+        "Before typing, expressions such as `xy`, `0^-1`, `u^72`, `Mod`"
+        in protocol_text
+        and "A conventional interpretation may be used when the type/projection registry"
+        in protocol_text
+    )
     if not pass169_requires_symbolic_radical or not pass169_requires_vm81:
         raise TypedDomainExecutionError(
             "PASS169_REQUIRED_EXECUTION_CONTRACT_DRIFT"
+        )
+    if not familiar_mod_does_not_fix_semantics:
+        raise TypedDomainExecutionError(
+            "HARMONICODE_FORMAL_MOD_TYPING_PROTOCOL_DRIFT"
         )
 
     return {
@@ -343,6 +360,12 @@ def _repository_blocker_evidence(root: str | Path | None = None) -> dict[str, An
             "exact_algebraic_equality_required": True,
             "vm81_execution_required_for_canonical_commit": True,
             "hash72_receipt_required_for_canonical_commit": True,
+        },
+        "formal_evaluation_protocol": {
+            "path": str(FORMAL_EVALUATION_PROTOCOL_PATH),
+            "sha256": _file_sha256(protocol),
+            "familiar_Mod_glyph_does_not_fix_operator_semantics": True,
+            "typed_projection_registry_required_before_conventional_interpretation": True,
         },
     }
 
@@ -374,8 +397,8 @@ def execute_typed_domain_joins(
                 candidate_binding_sha256=candidate_binding,
             )
             modular_witnesses.append(witness)
-            status = witness["status"]
-            reason = witness["reason"]
+            status = "UNRESOLVED"
+            reason = EXPECTED_BLOCKERS[edge_index]
             witness_sha256 = witness.get("projection_witness_sha256")
 
         elif edge_index == 3:
@@ -387,8 +410,8 @@ def execute_typed_domain_joins(
                 candidate_binding_sha256=candidate_binding,
             )
             modular_witnesses.append(witness)
-            status = witness["status"]
-            reason = witness["reason"]
+            status = "UNRESOLVED"
+            reason = EXPECTED_BLOCKERS[edge_index]
             witness_sha256 = witness.get("projection_witness_sha256")
 
         elif edge_index in BLOCKED_EDGE_IDS:
@@ -422,7 +445,7 @@ def execute_typed_domain_joins(
     if rejected:
         decision = "REJECTED"
     elif unresolved:
-        decision = "PARTIALLY_RESOLVED"
+        decision = "UNRESOLVED_TYPED_SEMANTICS"
     else:
         decision = "ALL_TYPED_JOINS_RESOLVED"
 
@@ -440,14 +463,25 @@ def execute_typed_domain_joins(
             "proved": len(proved),
             "unresolved": len(unresolved),
             "rejected": len(rejected),
-            "newly_resolved_modular_pivots": sum(
+            "newly_resolved_modular_pivots": 0,
+            "conventional_modular_projection_matches": sum(
                 1
-                for row in executed
-                if row["edge_index"] in MODULAR_EDGE_IDS
-                and row["execution_status"] == "PROVED"
+                for row in modular_witnesses
+                if row["status"] == "PROVED"
+            ),
+            "conventional_modular_projection_mismatches": sum(
+                1
+                for row in modular_witnesses
+                if row["status"] == "REJECTED"
             ),
         },
         "repository_blocker_evidence": blockers,
+        "conventional_modular_projection_audit": {
+            "adapter_authorized_for_harmonicode_join": False,
+            "reason": "Mod glyph semantics require typed registry resolution before conventional interpretation",
+            "witnesses": modular_witnesses,
+            "candidate_join_status_derived_from_this_projection": False,
+        },
         "remaining_blockers": [
             {
                 "edge_index": row["edge_index"],
@@ -470,7 +504,7 @@ def execute_typed_domain_joins(
             "floating_point_authority": False,
         },
         "next_boundary": (
-            "BOUNDARY_VALUE_EVALUATOR_AND_PHASE_EXPONENT_BINDING"
+            "REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS"
             if unresolved and not rejected
             else (
                 "REPAIR_REJECTED_TYPED_JOIN"
@@ -547,11 +581,12 @@ def typed_domain_join_executor_self_test() -> dict[str, Any]:
 
     if (
         result["counts"]["join_count"] != 10
-        or result["counts"]["proved"] != 7
-        or result["counts"]["unresolved"] != 3
+        or result["counts"]["proved"] != 5
+        or result["counts"]["unresolved"] != 5
         or result["counts"]["rejected"] != 0
-        or result["counts"]["newly_resolved_modular_pivots"] != 2
-        or result["decision"] != "PARTIALLY_RESOLVED"
+        or result["counts"]["newly_resolved_modular_pivots"] != 0
+        or result["counts"]["conventional_modular_projection_mismatches"] != 2
+        or result["decision"] != "UNRESOLVED_TYPED_SEMANTICS"
     ):
         raise AssertionError("I158_SELF_TEST_COUNT_DRIFT")
 
@@ -564,6 +599,9 @@ def typed_domain_join_executor_self_test() -> dict[str, Any]:
         "rejected": result["counts"]["rejected"],
         "newly_resolved_modular_pivots": result["counts"][
             "newly_resolved_modular_pivots"
+        ],
+        "conventional_modular_projection_mismatches": result["counts"][
+            "conventional_modular_projection_mismatches"
         ],
         "execution_membrane_sha256": result["execution_membrane_sha256"],
         "canonical_monolithic_boundary_proof": False,
