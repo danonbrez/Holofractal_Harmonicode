@@ -84,7 +84,7 @@ def _graph(*, m: int = 267) -> dict[str, object]:
     )
 
 
-def test_modular_closure_candidate_is_exact_before_i158_execution() -> None:
+def test_harmonic_candidate_is_exact_before_i158_audit() -> None:
     graph = _graph()
     nodes = graph["value_nodes"]
     assert nodes[0]["payload"]["value"]["text"] == "26970"
@@ -99,32 +99,44 @@ def test_modular_closure_candidate_is_exact_before_i158_execution() -> None:
     assert graph["joins"][3]["status"] == "UNRESOLVED"
 
 
-def test_i158_executes_both_modular_pivots_as_typed_projections() -> None:
+def test_i158_preserves_modular_pivots_until_harmonicode_operator_is_typed() -> None:
     result = execute_typed_domain_joins(_graph())
     assert result["schema"] == SCHEMA
-    assert result["decision"] == "PARTIALLY_RESOLVED"
+    assert result["decision"] == "UNRESOLVED_TYPED_SEMANTICS"
     assert result["counts"] == {
         "join_count": 10,
-        "proved": 7,
-        "unresolved": 3,
+        "proved": 5,
+        "unresolved": 5,
         "rejected": 0,
-        "newly_resolved_modular_pivots": 2,
+        "newly_resolved_modular_pivots": 0,
+        "conventional_modular_projection_matches": 1,
+        "conventional_modular_projection_mismatches": 1,
     }
-    assert result["executed_joins"][2]["execution_status"] == "PROVED"
-    assert result["executed_joins"][3]["execution_status"] == "PROVED"
-    assert result["executed_joins"][2]["execution_reason"] == "EXACT_TYPED_MODULAR_CLASS_MATCH"
-    assert result["executed_joins"][3]["execution_reason"] == "EXACT_TYPED_MODULAR_CLASS_MATCH"
+    for edge in (2, 3):
+        assert result["executed_joins"][edge]["execution_status"] == "UNRESOLVED"
+        assert (
+            result["executed_joins"][edge]["execution_reason"]
+            == "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED"
+        )
+
+
+def test_conventional_projection_is_diagnostic_only() -> None:
+    result = execute_typed_domain_joins(_graph())
+    audit = result["conventional_modular_projection_audit"]
+    assert audit["adapter_authorized_for_harmonicode_join"] is False
+    assert audit["candidate_join_status_derived_from_this_projection"] is False
+    assert "typed registry resolution" in audit["reason"]
+    assert audit["witnesses"] == result["modular_projection_witnesses"]
 
 
 def test_modular_projection_witness_preserves_type_boundary() -> None:
-    result = execute_typed_domain_joins(_graph())
-    witnesses = result["modular_projection_witnesses"]
+    witnesses = execute_typed_domain_joins(_graph())["modular_projection_witnesses"]
     assert len(witnesses) == 2
+    assert [row["status"] for row in witnesses] == ["REJECTED", "PROVED"]
+    assert [row["projected_representative"] for row in witnesses] == [0, 1]
     for witness in witnesses:
         assert witness["schema"] == MODULAR_WITNESS_SCHEMA
-        assert witness["status"] == "PROVED"
         assert witness["modulus"] == 899
-        assert witness["projected_representative"] == 1
         assert witness["modular_representative"] == 1
         assert witness["ordinary_scalar_remainder_identity_claimed"] is False
         assert witness["scalar_coercion_used"] is False
@@ -135,34 +147,43 @@ def test_modular_projection_witness_preserves_type_boundary() -> None:
         assert len(witness["projection_witness_sha256"]) == 64
 
 
-def test_left_modular_projection_is_26970_mod_899_equals_1() -> None:
-    result = execute_typed_domain_joins(_graph())
-    left = result["modular_projection_witnesses"][0]
+def test_left_conventional_projection_proves_the_obstruction() -> None:
+    left = execute_typed_domain_joins(_graph())["modular_projection_witnesses"][0]
     assert left["scalar_term_id"] == 2
     assert left["rational"] == {"numerator": 26970, "denominator": 1}
     assert left["denominator_inverse"] == 1
-    assert left["projected_representative"] == 1
+    assert left["projected_representative"] == 0
+    assert left["modular_representative"] == 1
+    assert left["status"] == "REJECTED"
+    assert left["reason"] == "EXACT_TYPED_MODULAR_CLASS_MISMATCH"
+    assert 26970 == 30 * 899
 
 
-def test_right_modular_projection_is_71022_mod_899_equals_1() -> None:
-    result = execute_typed_domain_joins(_graph())
-    right = result["modular_projection_witnesses"][1]
+def test_right_conventional_projection_happens_to_match_without_gaining_authority() -> None:
+    right = execute_typed_domain_joins(_graph())["modular_projection_witnesses"][1]
     assert right["scalar_term_id"] == 4
     assert right["rational"] == {"numerator": 71022, "denominator": 1}
     assert right["denominator_inverse"] == 1
     assert right["projected_representative"] == 1
+    assert right["modular_representative"] == 1
+    assert right["status"] == "PROVED"
 
 
-def test_modular_mismatch_rejects_exactly_not_unresolved() -> None:
-    # m=268 -> m^2-m does not project to [1] mod 899.
+def test_conventional_projection_mismatch_does_not_reject_untyped_harmonicode_join() -> None:
     result = execute_typed_domain_joins(_graph(m=268))
-    assert result["decision"] == "REJECTED"
-    assert result["executed_joins"][3]["execution_status"] == "REJECTED"
-    assert result["executed_joins"][3]["execution_reason"] == "EXACT_TYPED_MODULAR_CLASS_MISMATCH"
-    assert result["counts"]["rejected"] == 1
+    assert result["decision"] == "UNRESOLVED_TYPED_SEMANTICS"
+    assert result["executed_joins"][3]["execution_status"] == "UNRESOLVED"
+    assert (
+        result["executed_joins"][3]["execution_reason"]
+        == "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED"
+    )
+    assert result["counts"]["rejected"] == 0
+    assert result["conventional_modular_projection_audit"][
+        "candidate_join_status_derived_from_this_projection"
+    ] is False
 
 
-def test_noninvertible_rational_denominator_remains_unresolved() -> None:
+def test_noninvertible_rational_denominator_remains_unresolved_in_diagnostic_projection() -> None:
     graph = _graph()
     scalar = deepcopy(graph["value_nodes"][2])
     scalar["payload"]["value"] = {
@@ -170,10 +191,9 @@ def test_noninvertible_rational_denominator_remains_unresolved() -> None:
         "denominator": 29,
         "text": "1/29",
     }
-    modular = graph["value_nodes"][3]
     witness = project_rational_to_modular(
         scalar,
-        modular,
+        graph["value_nodes"][3],
         scalar_term_id=2,
         modular_term_id=3,
         candidate_binding_sha256=graph["candidate_binding_sha256"],
@@ -183,9 +203,19 @@ def test_noninvertible_rational_denominator_remains_unresolved() -> None:
     assert witness["reverse_inference_authorized"] is False
 
 
-def test_remaining_three_blockers_are_explicit_and_repository_bound() -> None:
+def test_five_blockers_are_explicit_and_repository_bound() -> None:
     result = execute_typed_domain_joins(_graph())
     assert result["remaining_blockers"] == [
+        {
+            "edge_index": 2,
+            "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+            "reason": "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED",
+        },
+        {
+            "edge_index": 3,
+            "join_kind": "TYPED_MODULAR_PIVOT_JOIN",
+            "reason": "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED",
+        },
         {
             "edge_index": 7,
             "join_kind": "AB_ROOT_CORRESPONDENCE",
@@ -208,8 +238,13 @@ def test_remaining_three_blockers_are_explicit_and_repository_bound() -> None:
     assert blockers["pass169_contract"]["exact_algebraic_equality_required"] is True
     assert blockers["pass169_contract"]["vm81_execution_required_for_canonical_commit"] is True
     assert blockers["pass169_contract"]["hash72_receipt_required_for_canonical_commit"] is True
-    assert len(blockers["pass191_kernel"]["sha256"]) == 64
-    assert len(blockers["pass169_contract"]["sha256"]) == 64
+    protocol = blockers["formal_evaluation_protocol"]
+    assert protocol["familiar_Mod_glyph_does_not_fix_operator_semantics"] is True
+    assert protocol[
+        "typed_projection_registry_required_before_conventional_interpretation"
+    ] is True
+    for group in blockers.values():
+        assert len(group["sha256"]) == 64
 
 
 def test_no_downstream_authority_is_manufactured() -> None:
@@ -226,7 +261,10 @@ def test_no_downstream_authority_is_manufactured() -> None:
         "deterministic_replay_verified": False,
         "floating_point_authority": False,
     }
-    assert result["next_boundary"] == "BOUNDARY_VALUE_EVALUATOR_AND_PHASE_EXPONENT_BINDING"
+    assert (
+        result["next_boundary"]
+        == "REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS"
+    )
 
 
 def test_i157_graph_hash_tampering_fails_closed() -> None:
@@ -241,7 +279,8 @@ def test_i157_authority_smuggling_fails_closed_even_with_rehashed_graph() -> Non
     graph["authority"]["vm81_execution_verified"] = True
     core = dict(graph)
     core.pop("typed_value_graph_sha256")
-    import hashlib, json
+    import hashlib
+    import json
 
     graph["typed_value_graph_sha256"] = hashlib.sha256(
         json.dumps(
@@ -263,14 +302,16 @@ def test_executor_is_deterministic() -> None:
     assert len(first["execution_membrane_sha256"]) == 64
 
 
-def test_public_self_test_closes_only_modular_pivots() -> None:
+def test_public_self_test_preserves_all_untyped_blockers() -> None:
     receipt = typed_domain_join_executor_self_test()
     assert receipt["ok"] is True
-    assert receipt["decision"] == "PARTIALLY_RESOLVED"
-    assert receipt["proved"] == 7
-    assert receipt["unresolved"] == 3
+    assert receipt["decision"] == "UNRESOLVED_TYPED_SEMANTICS"
+    assert receipt["proved"] == 5
+    assert receipt["unresolved"] == 5
     assert receipt["rejected"] == 0
-    assert receipt["newly_resolved_modular_pivots"] == 2
+    assert receipt["newly_resolved_modular_pivots"] == 0
+    assert receipt["conventional_modular_projection_matches"] == 1
+    assert receipt["conventional_modular_projection_mismatches"] == 1
     assert receipt["canonical_monolithic_boundary_proof"] is False
     assert receipt["vm81_mutation_authority"] is False
     assert receipt["hash72_mint_authority"] is False
@@ -278,11 +319,10 @@ def test_public_self_test_closes_only_modular_pivots() -> None:
 
 
 def test_new_surface_has_no_float_or_approximate_admission_path() -> None:
-    path = (
+    text = (
         Path(__file__).resolve().parents[2]
         / "hhs_runtime/pass219/typed_domain_join_executor.py"
-    )
-    text = path.read_text(encoding="utf-8")
+    ).read_text(encoding="utf-8")
     for forbidden in (
         "math.sqrt",
         "numpy",
@@ -294,4 +334,5 @@ def test_new_surface_has_no_float_or_approximate_admission_path() -> None:
         assert forbidden not in text
     assert "reverse_inference_authorized" in text
     assert "ordinary_scalar_remainder_identity_claimed" in text
+    assert "HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED" in text
     assert "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED" in text
