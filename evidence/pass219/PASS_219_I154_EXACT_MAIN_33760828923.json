@@ -1,0 +1,70 @@
+{
+  "schema": "HHS_PASS219_I154_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I154",
+  "repository_sha": "5bb11a87f8933e52e76474bad9c58dc005f03716",
+  "workflow_run_id": 33760828923,
+  "job_id": 100666418769,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9895365190,
+    "name": "pass219-i154-authorized-four-lane-exhaustion-5bb11a87f8933e52e76474bad9c58dc005f03716",
+    "sha256": "c6adc4c2dc87bcd13d9d42106f35d05a8ffc08c9ca1a90c6225c95b9f1138bf2"
+  },
+  "receipts": {
+    "production_provider_probe_sha256": "1996b12d69c9b794ca412d481d0ec48620de1b666c5c058591803d0638205887",
+    "test_fixture_provider_probe_sha256": "cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e",
+    "benchmark_sha256": "892c04e9a356ebfdd3cae37caa46b139108f8828741d47dfe306618573d0db74"
+  },
+  "production": {
+    "classification": "BLOCKED_PROVIDER_UNAVAILABLE",
+    "binding_decision": "UNRESOLVED",
+    "binding_reason_mask": 1,
+    "pass159_provenance_exact": true,
+    "runtime_provider_available": false,
+    "pass169_authority_verified": false,
+    "boolean_gate_results_available": false,
+    "membrane_input_ready": false,
+    "canonical_monolithic_proof": false,
+    "whole_equation_propagated": false,
+    "local_P_snapshot_binding_available": false,
+    "gate_vector_environment_export_available": false,
+    "planner_input_ready": false,
+    "authoritative_workload_count": 0,
+    "effective_exhaustion_work_measured": false,
+    "within_81_over_7_claim": null
+  },
+  "test_only_plumbing": {
+    "lanes": [
+      "RAW5184_X86_64",
+      "VM81_HASH72_HASH216",
+      "OCTONION_DUAL_STEREO_TERNARY",
+      "HARMONIC36_144X36"
+    ],
+    "baseline_work_units": 4096,
+    "effective_downstream_work_units": 128,
+    "work_units_avoided": 3968,
+    "ratio": "32/1",
+    "ratio_x1000": 32000,
+    "within_81_over_7": true,
+    "canonical_evidence_eligible": false,
+    "test_fixture_authority": false,
+    "planner_receipt_sha256": "b21fe95c93a621288c996b307394ff2655ee2faa6f2bdbe464dfaa865b485793"
+  },
+  "fixed_search_space": {
+    "target": "72^42=5184^21",
+    "working_manifold": "3*72^72",
+    "route_multiplicity": "3*72^30",
+    "cardinality_changed": false
+  },
+  "unresolved_authority_requirements": [
+    "NON_TEST_PASS169_VM81_PROVIDER",
+    "I154_LOCAL_P_SNAPSHOT_BINDING_VERIFIED_BY_PROVIDER",
+    "I154_CANONICAL_GATE_VECTOR_AND_GLOBAL_ENVIRONMENT_EXPORT"
+  ],
+  "global_exhaustion_bound_proven": false,
+  "physical_full_target_exhaustion_claim": false,
+  "physical_full_working_manifold_enumeration_claim": false,
+  "authority_changed": false,
+  "result": "PASS"
+}
