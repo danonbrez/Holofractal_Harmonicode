@@ -225,3 +225,70 @@ Required next work:
 2. complete monolithic A/B boundary execution;
 3. exact Pass191 x^2 phase-exponent binding;
 4. only then Pass169 VM81 admission / Hash72 / Hash216 / replay.
+
+
+## Repair-forward after first scoped validation
+
+First dedicated run:
+
+- run: `33783511319`
+- job: `100742628579`
+- validation head: `d9d1d60e0afe638e8565d123e14b7b81153c1522`
+- conclusion: FAILURE
+- failing stage: dependency-scoped pytest
+- classification: `SEMANTIC_FALSIFICATION_NOT_INFRASTRUCTURE_FAILURE`
+
+The failure proved the original I158 conventional modular interpretation was invalid for the frozen source.
+
+Exact counterexample:
+
+```text
+P=30
+pq=899
+(t^3-t)/Delta = 26970 = 30*899
+26970 mod 899 = 0
+P^2 mod 899 = 900 mod 899 = 1
+```
+
+Therefore conventional residue equality cannot clear edge 2.
+
+Repository formal typing rules already require the `Mod` glyph to be typed before conventional interpretation. I158 was repaired so conventional rational-to-modular projection is diagnostic only.
+
+Repair commits:
+
+- `643ed5e76f61db53073eddb2090ca6d2f785fd56` — preserve modular pivots as unresolved and bind formal typing protocol.
+- `e497efd9575d8791f66e83e968aeb3faf10d7ed3` — correct diagnostic match/mismatch counts.
+- `f77a295ea1ce69719946b4f621abce32acd3439c` — repair scoped tests.
+- `882b6defbe17add14d3c5b8597506e0d0051701f` — repair benchmark.
+- `9ca26361b5f3331b43a7bd05023d47d1322a07b8` — repair I158 contract.
+- `cd8c353a25fc09b6fdb555687435f80d9709d4a1` — repair service registry.
+- `c4372e8822eb13d107d223df6040db21c462d8ae` — repair documentation.
+- `50d1617eb6aa0b467fd5a71632b79cddab52c2c7` — repair dedicated CI assertions.
+
+Repaired expected state:
+
+```text
+PROVED = 5
+UNRESOLVED = 5
+REJECTED = 0
+newly authorized modular pivots = 0
+conventional diagnostic matches = 1
+conventional diagnostic mismatches = 1
+decision = UNRESOLVED_TYPED_SEMANTICS
+```
+
+Five explicit blockers:
+
+```text
+edge 2 HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED
+edge 3 HARMONICODE_MODULAR_PIVOT_SEMANTICS_REQUIRED
+edge 7 BOUNDARY_PRODUCT_BINDING_REQUIRED
+edge 8 COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED
+edge 9 PASS191_X_SQUARED_PHASE_BINDING_REQUIRED
+```
+
+Repaired next boundary:
+
+`REGISTER_HARMONICODE_MODULAR_PIVOT_BOUNDARY_AND_PHASE_BINDINGS`
+
+Next action: run only the dedicated I158 workflow from the repaired head; if green, seal feature evidence and integrate.
