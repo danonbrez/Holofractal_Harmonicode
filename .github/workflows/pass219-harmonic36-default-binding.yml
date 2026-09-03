@@ -17,6 +17,7 @@ on:
       - 'hhs_runtime/include/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_*.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_default_binding_1_0.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_factorization_fabric_1_0.inc'
@@ -29,6 +30,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc'
       - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
@@ -47,6 +49,7 @@ on:
       - 'tests/pass219/test_pass219_harmonic36_ka10_monitor_profile_1_9.c'
       - 'tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c'
       - 'tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c'
+      - 'tests/pass219/test_pass219_harmonic36_branch_reference_cache_1_17.c'
       - 'tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c'
       - 'tests/pass219/test_pass219_harmonic36_arithmetic_flags_1_3.c'
       - 'tests/pass219/test_pass219_harmonic36_nested_vm_1_0.cpp'
@@ -70,6 +73,8 @@ on:
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_RESIDENCY_1_13.json'
       - 'evidence/pass219/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json'
       - 'contracts/pass219/optimization_generalization/PASS_219_H36_STACK_CACHE_CAPACITY8_1_14.json'
+      - 'contracts/pass219/optimization_generalization/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json'
+      - 'evidence/pass219/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json'
       - 'docs/pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_FOURTH_HYDRATION_LANE_36BIT_HARMONIC_VM_I1_RESTART.md'
       - 'benchmarks/pass219/harmonic36_optimization_benchmark.cpp'
@@ -80,6 +85,7 @@ on:
       - 'benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_fibonacci_branch_cache_benchmark.cpp'
       - 'benchmarks/pass219/harmonic36_fibonacci_branch_emergent_benchmark.cpp'
+      - 'benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp'
       - '.github/workflows/pass219-harmonic36-default-binding.yml'
   workflow_dispatch:
 
@@ -242,6 +248,15 @@ jobs:
             -o /tmp/h36/test-stack-cache
           /tmp/h36/test-stack-cache
 
+      - name: H36 branch-reference cache 1.17 conformance
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_branch_reference_cache_1_17.c \
+            /tmp/h36/exact-abi.o \
+            -o /tmp/h36/test-branch-ref-cache
+          /tmp/h36/test-branch-ref-cache
+
       - name: Exact factorization fabric conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -331,7 +346,9 @@ jobs:
             hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h \
             hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc \
             hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h \
-            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc; then
+            hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc \
+            hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h \
+            hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc; then
             echo "Canonical floating type detected in Harmonic36 kernel"
             exit 1
           fi
@@ -582,6 +599,8 @@ jobs:
           d=json.load(open(p, encoding='utf-8'))
           assert d['platform']['linux'] is True
           assert d['platform']['x86_64'] is True
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
           assert d['cache']['capacity'] == 8
           assert d['cache']['resident_entries'] == 8
           assert d['cache']['next_sequence'] == 9
@@ -625,11 +644,34 @@ jobs:
               assert row['occupancy1_lookup_median_ns'] > 0
               assert row['occupancy4_lookup_median_ns'] > 0
               assert row['occupancy8_lookup_median_ns'] > 0
+              assert row['fresh_selection_total_ns'] > 0
+              assert row['occupancy1_lookup_total_ns'] > 0
+              assert row['occupancy4_lookup_total_ns'] > 0
+              assert row['occupancy8_lookup_total_ns'] > 0
+              assert 0 <= row['beneficial_repeat_count'] <= 5
+              assert len(row['repeat_measurements']) == 5
+              assert [r['repeat'] for r in row['repeat_measurements']] == [1,2,3,4,5]
+              assert [r['measurement_order'] for r in row['repeat_measurements']] == [
+                  'FRESH_OCC1_OCC4_OCC8',
+                  'OCC8_OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4_OCC8',
+                  'OCC8_OCC4_OCC1_FRESH',
+                  'FRESH_OCC1_OCC4_OCC8',
+              ]
+              assert row['beneficial_repeat_count'] >= 4
+              assert row['aggregate_benefit'] is True
+              assert row['repeat_stability_pass'] is True
               assert row['occupancy8_faster_than_fresh'] is True
+              assert row['occupancy8_lookup_total_ns'] < row['fresh_selection_total_ns']
               assert row['occupancy8_vs_fresh_ratio_x1000'] > 1000
               assert row['occupancy8_vs_occupancy1_ratio_x1000'] > 0
               assert row['occupancy8_vs_occupancy4_ratio_x1000'] > 0
-          assert d['measurement']['all_occupancy8_faster_than_fresh'] is True
+          assert d['measurement']['gate_kind'] == 'EXACT_INTEGER_REPEAT_STABILITY'
+          assert d['measurement']['calibration_repeats'] == 5
+          assert d['measurement']['required_beneficial_repeats'] == 4
+          assert d['measurement']['aggregate_requires_occupancy8_total_lt_fresh_total'] is True
+          assert d['measurement']['one_shot_boolean_authoritative'] is False
+          assert d['measurement']['all_repeat_stability_pass'] is True
           assert all(value is False for value in d['authority'].values())
           assert d['authoritative_state_changed'] is False
           PY
@@ -729,6 +771,38 @@ jobs:
           assert d['authoritative_state_changed'] is False
           PY
 
+      - name: Measure production H36 branch-reference cache 1.17
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp \
+            /tmp/h36/exact-opt.o \
+            -o /tmp/h36/h36-branch-ref-cache-1-17
+          /tmp/h36/h36-branch-ref-cache-1-17 \
+            artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json
+          cat artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/harmonic36/branch_reference_cache_1_17_benchmark.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['platform']['linux'] is True
+          assert d['platform']['x86_64'] is True
+          assert d['platform']['calibration_repeats'] == 5
+          assert d['platform']['required_beneficial_repeats'] == 4
+          for key in ('lookup_144','lookup_5184','equivalence_144','equivalence_5184','composition_144'):
+              row=d[key]
+              assert row['beneficial_repeats'] >= 4
+              assert row['required_beneficial_repeats'] == 4
+          assert d['lookup_144']['direct_reference_total_ns'] < d['lookup_144']['parent_cache_total_ns']
+          assert d['lookup_5184']['direct_reference_total_ns'] < d['lookup_5184']['parent_cache_total_ns']
+          assert d['equivalence_144']['fib_bucket_total_ns'] < d['equivalence_144']['full_scan_total_ns']
+          assert d['equivalence_5184']['fib_bucket_total_ns'] < d['equivalence_5184']['full_scan_total_ns']
+          assert d['composition_144']['memoized_total_ns'] < d['composition_144']['computed_total_ns']
+          assert d['correctness'] and all(d['correctness'].values())
+          assert all(value is False for value in d['authority'].values())
+          assert d['authoritative_state_changed'] is False
+          PY
+
       - name: Validate stack-selection generalization manifest
         run: |
           PYTHONPATH=. python - <<'PY'
@@ -824,6 +898,58 @@ jobs:
           assert result['local_exceptions'] == []
           PY
 
+      - name: Validate branch-reference cache 1.17 generalization manifest
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.multimodal_optimization_generalization import validate_manifest
+
+          p = Path('contracts/pass219/optimization_generalization/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json')
+          raw = json.loads(p.read_text(encoding='utf-8'))
+          result = validate_manifest(raw)
+          assert result['generalize_required'] == [
+              'h36-branch-reference-cache-1-17-linux-x86_64',
+          ]
+          assert result['validation_required'] == [
+              'h36-branch-reference-cache-1-17-cross-platform-unvalidated',
+          ]
+          assert result['local_exceptions'] == []
+
+          policy = raw['policy']
+          assert policy['linux_x86_64'] == 'GENERALIZE_REQUIRED'
+          assert policy['cross_platform'] == 'VALIDATION_REQUIRED'
+          assert policy['local_lookup'] == 'DIRECT_IMMUTABLE_PARENT_REFERENCE'
+          assert policy['branch_forking'] == 'APPEND_ONLY_PREVIOUS_STATE_REFERENCE'
+          assert policy['equivalence_discovery'] == 'CONTIGUOUS_FIBONACCI_IDENTITY_BUCKET'
+          assert policy['composition_receipts'] == 'ADAPTIVE_MEMOIZATION_AFTER_CALIBRATED_THRESHOLD'
+          assert policy['frozen_parent_mutation'] is False
+          assert policy['no_cross_platform_inference'] is True
+          assert policy['no_authority_escalation'] is True
+
+          ev = json.loads(Path(
+              'evidence/pass219/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json'
+          ).read_text(encoding='utf-8'))
+          assert ev['validation']['run'] == 33751463158
+          assert ev['validation']['job'] == 100635741293
+          assert ev['validation']['conclusion'] == 'SUCCESS'
+          assert ev['validation']['artifact_id'] == 9891731145
+          assert ev['validation']['artifact_sha256'] == 'ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358'
+          assert ev['runtime']['capacity'] == 5184
+          assert ev['runtime']['append_only_branch_forking'] is True
+          assert ev['runtime']['direct_parent_reference'] is True
+          assert ev['runtime']['contiguous_fibonacci_identity_index'] is True
+          assert ev['runtime']['adaptive_composition_receipt_memoization'] is True
+          assert ev['production_measurement']['all_paths_beneficial_repeats'] == 5
+          assert ev['production_measurement']['all_repeat_stability_pass'] is True
+          assert ev['correctness'] and all(ev['correctness'].values())
+          assert ev['authority']['canonical_vm81_mutation'] is False
+          assert ev['authority']['canonical_hash72_mint'] is False
+          assert ev['authority']['canonical_hash216_persistence'] is False
+          assert ev['authority']['canonical_persistence'] is False
+          assert ev['authority']['floating_point'] is False
+          PY
+
       - name: Prove mandatory integration contract
         run: |
           python - <<'PY'
@@ -873,6 +999,7 @@ jobs:
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.h' in h
           assert 'hhs_pass219_harmonic36_stack_selection_1_10.h' in h
           assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.h' in h
+          assert 'hhs_pass219_harmonic36_branch_reference_cache_1_17.h' in h
           assert 'hhs_pass219_harmonic36_nested_vm_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_default_binding_1_0.inc' in c
           assert 'hhs_pass219_harmonic36_factorization_fabric_1_0.inc' in c
@@ -883,10 +1010,29 @@ jobs:
           assert 'hhs_pass219_harmonic36_ka10_monitor_profile_1_9.inc' in c
           assert 'hhs_pass219_harmonic36_stack_selection_1_10.inc' in c
           assert 'hhs_pass219_harmonic36_stack_selection_cache_1_11.inc' in c
+          assert 'hhs_pass219_harmonic36_branch_reference_cache_1_17.inc' in c
           manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_1_10.json')
           assert manifest.is_file()
           cache_manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_STACK_SELECTION_CACHE_1_11.json')
           assert cache_manifest.is_file()
+          branch_manifest = Path('contracts/pass219/optimization_generalization/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json')
+          branch_evidence = Path('evidence/pass219/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json')
+          assert branch_manifest.is_file()
+          assert branch_evidence.is_file()
+
+          branch_ref = contract['branch_reference_cache_1_17']
+          assert branch_ref['version'] == '1.17'
+          assert branch_ref['additive'] is True
+          assert branch_ref['inherited_stack_cache_1_11_preserved'] is True
+          assert branch_ref['frozen_parent_mutation'] is False
+          assert branch_ref['append_only_branch_forking'] is True
+          assert branch_ref['capacity'] == 5184
+          assert branch_ref['runtime_policy']['equivalence_discovery'] == 'CONTIGUOUS_FIBONACCI_IDENTITY_BUCKET'
+          assert branch_ref['runtime_policy']['repeated_composition_receipts'] == 'ADAPTIVE_MEMOIZATION_AFTER_CALIBRATED_THRESHOLD'
+          assert branch_ref['exact_head_validation']['workflow_run'] == 33751463158
+          assert branch_ref['exact_head_validation']['job'] == 100635741293
+          assert branch_ref['production_repeat_stability']['all_paths_beneficial_repeats'] == 5
+          assert branch_ref['authority'] and all(value is False for value in branch_ref['authority'].values())
           PY
 
       - uses: actions/upload-artifact@v4

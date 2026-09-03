@@ -1,0 +1,192 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h",
+    "hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc",
+    "tests/pass219/test_pass219_harmonic36_branch_reference_cache_1_17.c",
+    "benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    ".github/workflows/pass219-harmonic36-default-binding.yml",
+    "evidence/pass219/PASS_219_H36_BRANCH_REFERENCE_CACHE_1_17.json"
+  ],
+  "optimization": {
+    "optimization_id": "H36_BRANCH_REFERENCE_CACHE_1_17",
+    "compatible_object_classes": [
+      "branch_reference_cache"
+    ],
+    "required_operations": [
+      "ROOT",
+      "FORK",
+      "RESOLVE",
+      "EQUIVALENCE_DISCOVERY",
+      "COMPOSITION_RECEIPT",
+      "REVERSE_TO_ROOT",
+      "VALIDATE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_BRANCH_REFERENCE_ENTRY_V1",
+      "HHS_PASS219_H36_BRANCH_RECEIPT_V1"
+    ],
+    "correctness_gate": "IMMUTABLE_PARENT_REFERENCE_REVERSIBLE_RECEIPT_AND_EXACT_EQUIVALENCE",
+    "benefit_gate": "EXACT_INTEGER_REPEAT_STABILITY: calibration_repeats=5; beneficial_repeats>=4; optimized_total_ns<reference_total_ns"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "branch_reference_cache",
+    "operations": [
+      "ROOT",
+      "FORK",
+      "RESOLVE",
+      "EQUIVALENCE_DISCOVERY",
+      "COMPOSITION_RECEIPT",
+      "REVERSE_TO_ROOT",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "branch",
+        "type": "HHS_PASS219_H36_BRANCH_REFERENCE_ENTRY_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "receipt",
+        "type": "HHS_PASS219_H36_BRANCH_RECEIPT_V1"
+      }
+    ],
+    "runtime_authority": "REFERENCE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_BRANCH_REFERENCE_CACHE_V1",
+      "version": "1.17",
+      "capacity": 5184,
+      "frozen_parent_mutation": false
+    },
+    "logical_object_id": "h36-branch-reference-cache-1-17-measured-source",
+    "modality_set": [
+      "H36_BRANCH_REFERENCE_CACHE"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "branch_reference_cache",
+      "operations": [
+        "ROOT",
+        "FORK",
+        "RESOLVE",
+        "EQUIVALENCE_DISCOVERY",
+        "COMPOSITION_RECEIPT",
+        "REVERSE_TO_ROOT",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "branch",
+          "type": "HHS_PASS219_H36_BRANCH_REFERENCE_ENTRY_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "receipt",
+          "type": "HHS_PASS219_H36_BRANCH_RECEIPT_V1"
+        }
+      ],
+      "runtime_authority": "REFERENCE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_BRANCH_REFERENCE_CACHE_V1",
+        "version": "1.17",
+        "capacity": 5184,
+        "platform": "linux-x86_64"
+      },
+      "logical_object_id": "h36-branch-reference-cache-1-17-linux-x86_64",
+      "modality_set": [
+        "H36_BRANCH_REFERENCE_CACHE",
+        "HASH216_VECTOR_CACHE",
+        "H36_KNOWLEDGE_GRAPH"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "branch_reference_cache",
+      "operations": [
+        "ROOT",
+        "FORK",
+        "RESOLVE",
+        "EQUIVALENCE_DISCOVERY",
+        "COMPOSITION_RECEIPT",
+        "REVERSE_TO_ROOT",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "branch",
+          "type": "HHS_PASS219_H36_BRANCH_REFERENCE_ENTRY_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "receipt",
+          "type": "HHS_PASS219_H36_BRANCH_RECEIPT_V1"
+        }
+      ],
+      "runtime_authority": "REFERENCE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_BRANCH_REFERENCE_CACHE_V1",
+        "version": "1.17",
+        "capacity": 5184,
+        "platform": "OTHER_COMPATIBLE"
+      },
+      "logical_object_id": "h36-branch-reference-cache-1-17-cross-platform-unvalidated",
+      "modality_set": [
+        "MULTIMODAL_BRANCH_REFERENCE_CACHE"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-branch-reference-cache-1-17-linux-x86_64",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "platform": "linux-x86_64",
+      "validation_run": 33751463158,
+      "validation_job": 100635741293,
+      "artifact_id": 9891731145,
+      "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "all_measured_paths_beneficial_repeats": 5,
+      "direct_lookup_144_speedup_x1000": 63828,
+      "direct_lookup_5184_speedup_x1000": 59883,
+      "fibonacci_equivalence_144_speedup_x1000": 2287,
+      "fibonacci_equivalence_5184_speedup_x1000": 1977,
+      "memoized_composition_144_speedup_x1000": 2651,
+      "branch_count_5184_validated": true,
+      "frozen_parent_byte_equal": true,
+      "reversible_receipts": true,
+      "equivalence_bucket_exact": true,
+      "authority_escalation": false
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-branch-reference-cache-1-17-linux-x86_64"
+  ],
+  "policy": {
+    "linux_x86_64": "GENERALIZE_REQUIRED",
+    "cross_platform": "VALIDATION_REQUIRED",
+    "local_lookup": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+    "branch_forking": "APPEND_ONLY_PREVIOUS_STATE_REFERENCE",
+    "equivalence_discovery": "CONTIGUOUS_FIBONACCI_IDENTITY_BUCKET",
+    "equivalent_state_resolution": "DIRECT_IMMUTABLE_PARENT_REFERENCE",
+    "composition_receipts": "ADAPTIVE_MEMOIZATION_AFTER_CALIBRATED_THRESHOLD",
+    "frozen_parent_mutation": false,
+    "no_unmeasured_generalization": true,
+    "no_cross_platform_inference": true,
+    "no_authority_escalation": true
+  }
+}
