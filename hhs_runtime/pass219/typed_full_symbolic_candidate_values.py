@@ -145,19 +145,19 @@ def _repo_root(root: str | Path | None = None) -> Path:
     )
 
 
-def _reject_float(value: Any) -> None:
+def _reject_ieee_value(value: Any) -> None:
     if isinstance(value, float):
         raise TypedCandidateValueError("FLOAT_CANONICAL_INPUT_FORBIDDEN")
     if isinstance(value, Mapping):
         for child in value.values():
-            _reject_float(child)
+            _reject_ieee_value(child)
     elif isinstance(value, (list, tuple)):
         for child in value:
-            _reject_float(child)
+            _reject_ieee_value(child)
 
 
 def _canonical_json(value: Any) -> bytes:
-    _reject_float(value)
+    _reject_ieee_value(value)
     return json.dumps(
         value,
         sort_keys=True,
@@ -233,21 +233,22 @@ def _int(value: Any, name: str, *, minimum: int | None = None) -> int:
 
 
 def _fraction(value: Any, name: str) -> Fraction:
+    label = name.upper()
     if isinstance(value, bool) or isinstance(value, float):
-        raise TypedCandidateValueError(f"{name}_EXACT_RATIONAL_REQUIRED")
+        raise TypedCandidateValueError(f"{label}_EXACT_RATIONAL_REQUIRED")
     if isinstance(value, int):
         return Fraction(value, 1)
     if isinstance(value, Fraction):
         return value
     if isinstance(value, Mapping):
-        numerator = _int(value.get("numerator"), f"{name}_NUMERATOR")
+        numerator = _int(value.get("numerator"), f"{label}_NUMERATOR")
         denominator = _int(
             value.get("denominator"),
-            f"{name}_DENOMINATOR",
+            f"{label}_DENOMINATOR",
             minimum=1,
         )
         return Fraction(numerator, denominator)
-    raise TypedCandidateValueError(f"{name}_EXACT_RATIONAL_REQUIRED")
+    raise TypedCandidateValueError(f"{label}_EXACT_RATIONAL_REQUIRED")
 
 
 def _fraction_record(value: Fraction) -> dict[str, Any]:
