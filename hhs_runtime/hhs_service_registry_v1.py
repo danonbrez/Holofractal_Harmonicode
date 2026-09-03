@@ -4148,6 +4148,23 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="EXACTLY_18_COMMITTED_PASS132_WORKLOADS",
     )
 
+    registry.register_function(
+        name="runtime.pass219.candidate_bound_typed_full_symbolic_values",
+        module="hhs_runtime.pass219.typed_full_symbolic_candidate_values",
+        function="candidate_bound_full_symbolic_value_producer_self_test",
+        service_type="pass219_exact_typed_candidate_value_producer",
+        description="Produces the fifteen frozen Pass 219 monolithic source terms as one Pass159- and local-P-bound typed value graph while preserving modular, tensor, ordered-phase, symbolic-root, and boundary domains without scalar coercion or canonical mutation authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1","HHS_PASS219_I157_CANDIDATE_SYMBOL_ENVIRONMENT_V1","HHS_PASS219_I157_PASS159_PROVENANCE_BINDING_V1"],
+        witness_schemas=["HHS_PASS219_I153_LOCAL_HASH216_5184_P_SNAPSHOT_V1","HHS_PASS219_I121_10_PASS159_GLOBAL_WITNESS_PROVENANCE_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1"],
+        validators=["verify_frozen_source_identity","normalize_pass159_provenance","produce_candidate_bound_value_graph","candidate_bound_full_symbolic_value_producer_self_test"],
+        guards=["frozen_monolithic_source_identity","local_P_snapshot_binding","pass159_source_to_vmir_provenance","typed_domain_preservation","modular_pivot_no_scalar_remainder_coercion","A_B_complete_boundary_semantics","ordered_xy_yx_noncommutativity","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["SOURCE_IDENTITY_DRIFT","CANDIDATE_P_SNAPSHOT_DRIFT","PASS159_PROVENANCE_INCOMPLETE","VALUE_DOMAIN_UNREGISTERED","ORDERED_PHASE_NONCOMMUTATIVITY_COLLAPSED","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_TYPED_VALUE_GRAPH_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_GRAPH_IDENTITY_ONLY",
+        boundedness_policy="FIFTEEN_FROZEN_SOURCE_TERMS_TEN_ORDERED_JOINS_ONE_CANDIDATE_TRANSACTION",
+    )
+
     return registry
 
 
