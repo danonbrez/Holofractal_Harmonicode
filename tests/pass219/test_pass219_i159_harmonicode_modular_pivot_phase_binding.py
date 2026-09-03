@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from hhs_runtime.pass219.typed_domain_join_executor import TypedDomainExecutionError
 from hhs_runtime.pass219.harmonicode_modular_pivot_phase_binding import (
     HarmonicodeModularPivotError,
     build_phase_lane,
