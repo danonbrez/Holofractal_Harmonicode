@@ -1,0 +1,54 @@
+name: Pass 219 Language Processing C++ Membrane
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass219-language-processing-cpp-membrane-20260903
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_language_processing_membrane_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_language_processing_membrane_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_language_processing_membrane_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_language_processing_membrane_1_0.c'
+      - 'tests/pass219/test_pass219_language_processing_membrane_1_0.cpp'
+      - 'contracts/pass219/PASS_219_LANGUAGE_PROCESSING_CPP_MEMBRANE_1_0.json'
+      - '.github/workflows/pass219-language-processing-cpp-membrane.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-language-membrane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict C11 aggregate compile
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/hhs_runtime_exact_abi.o
+      - name: Native C membrane test
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_runtime_exact_abi.c \
+            tests/pass219/test_pass219_language_processing_membrane_1_0.c \
+            -o /tmp/pass219_language_membrane_c
+          /tmp/pass219_language_membrane_c
+      - name: C++17 wrapper test
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_language_processing_membrane_1_0.cpp \
+            /tmp/hhs_runtime_exact_abi.o \
+            -o /tmp/pass219_language_membrane_cpp
+          /tmp/pass219_language_membrane_cpp
+      - name: Exported symbol gate
+        run: |
+          nm -g --defined-only /tmp/hhs_runtime_exact_abi.o | grep -q 'hhs_exact_pass219_language_membrane_version'
+          nm -g --defined-only /tmp/hhs_runtime_exact_abi.o | grep -q 'hhs_exact_pass219_language_membrane_validate_complete'
+          nm -g --defined-only /tmp/hhs_runtime_exact_abi.o | grep -q 'hhs_exact_pass219_language_membrane_project_rna_plan'
