@@ -40,17 +40,16 @@ jobs:
           python-version: '3.11'
 
       - name: Install bounded validation dependencies
-        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx 'cryptography>=45.0,<47.0'
 
-      - name: Build exact ABI shared library
+      - name: Build full canonical runtime shared library
         run: |
           set -euo pipefail
-          mkdir -p hhs_runtime/builds artifacts/pass219/i166-public
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
-            -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o hhs_runtime/builds/libhhs_runtime.so
+          mkdir -p artifacts/pass219/i166-public
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
-            'hhs_pass168_(self_test|commit_candidate|replay_transition|rollback_transition|repair_transition|comparator_conformance)'
+            'hhs_runtime_init|hhs_pass168_(self_test|commit_candidate|replay_transition|rollback_transition|repair_transition|comparator_conformance)'
 
       - name: Parse and compile public surfaces
         run: |
