@@ -1,6 +1,6 @@
 {
   "arm64_verified": true,
-  "branch_head_validated": "e2119d555f2944c305865d10c55cafdf25a22888",
+  "branch_head_validated": "def9a422ce91f635f042cc6b9cd1f91ed4b14f29",
   "cells_covered": 5184,
   "classification": "HHS_PASS_168_VM81_5184_CELL_HARMONICODE_PARAMETER_CIRCUIT_AND_SPARSE_TENSOR_CONTROL_FABRIC_VERIFIED",
   "cli_complete": true,

@@ -10,7 +10,7 @@
     {
       "bytes": 2423,
       "path": "HHS_PASS_168_AUTHORITY_BINDING.json",
-      "sha256": "11183752c643577374b2ea3cc37a2dba24b83091f88a0bccaff3d8bba4ae2da8"
+      "sha256": "297384fada6abd7ffe967bb4e4527ee71dd20332c9a1ad96f4be9878e415877a"
     },
     {
       "bytes": 424,
@@ -100,15 +100,15 @@
     {
       "bytes": 659,
       "path": "HHS_PASS_168_BENCHMARK_REPORT.json",
-      "sha256": "d441e13a07d3f8d9f01db65c326d38fc7275c98a6f40dc0c8fee6e0ba759891f"
+      "sha256": "ff5b13e28a72526179c77789ac946fa069567b77589dccd8d26ba30cc661e95e"
     },
     {
       "bytes": 2227,
       "path": "HHS_PASS_168_COMPLETION_RECEIPT.json",
-      "sha256": "a2ebf757410770477909392ae4bb28c198b48db166eba1d8c7bebbd5eb715eeb"
+      "sha256": "2ac679ecf3c3066a16bafb980406d4805020bde3fe948036ab780340f9fcd3f8"
     }
   ],
-  "canonical_payload_sha256": "4c62e0ef21314a262119cb772acfa97ddd6c7b5146f37ed33dc3ff24f388eda2",
+  "canonical_payload_sha256": "c6e365f666b6d7b89414df941b22fd5c3a80423e667b4fd740d2afe5ad40a89d",
   "contract_id": "HHS-P168-VM81-5184-HPC-STCF",
   "result": "PASS",
   "schema": "HHS_PASS168_EVIDENCE_MANIFEST_V1",
