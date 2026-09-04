@@ -1,0 +1,130 @@
+{
+  "schema": "HHS_PASS219_I163_PASS169_TERMINAL_REVERSE_CROSSARCH_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I163",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "36dbd64689a71659d941a8a9d4913e4ca4e4ca5d",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "PASS_219_I162_PASS169_EXACT_SYMBOLIC_SEALED_CANDIDATE_EXECUTION_VERIFIED"
+  ],
+  "purpose": "Close the Pass169 sealed-candidate reverse-execution and cross-architecture identity slice without changing I162, manufacturing persistence authority, or claiming the remaining general Pass169 terminal contract.",
+  "i162_parent": {
+    "merge_commit": "36dbd64689a71659d941a8a9d4913e4ca4e4ca5d",
+    "immutable": true,
+    "typed_join_count": 10,
+    "typed_join_proved": 10,
+    "boolean_gate_count": 5,
+    "boolean_gates_true": 5,
+    "vm5184_address": 1,
+    "receipt_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "hash216_identity": "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18"
+  },
+  "source_binding": {
+    "path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "byte_length": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53"
+  },
+  "reverse_model": {
+    "pass169_required_equation": "source->proof->commit->reverse=prior committed state",
+    "pass159_reverse_api": "hhs159_reverse",
+    "pass159_reverse_inherited_semantics": "DETERMINISTIC_REVERSE_TRANSITION_RECEIPT",
+    "pass159_reverse_is_in_place_state_restore": false,
+    "pass159_reverse_phase": "REVERSE_EXECUTED",
+    "pass159_reverse_parent_binding": "FORWARD_RECEIPT_HASH216",
+    "actual_prior_state_restore": [
+      "EXACT_VM81_TRANSACTION_SNAPSHOT_RESTORE",
+      "HHS_HASH72_REVERSE_STATE"
+    ],
+    "vm81_prior_state_scope": "LOCAL_TRANSACTION_PROOF_STATE_ONLY",
+    "persistent_canonical_rollback_claimed": false,
+    "reverse_transition_determinism_required": true,
+    "forward_deterministic_repeat_required": true,
+    "interpreter_compiler_equality_required": true,
+    "fallback_authorized": false
+  },
+  "cross_architecture": {
+    "architectures_required": [
+      "x86_64",
+      "arm64"
+    ],
+    "bindings_required": [
+      "native_c11",
+      "python_ctypes"
+    ],
+    "arm64_execution": "AARCH64_STATIC_BINARY_UNDER_QEMU_USER",
+    "record_schema": "HHS_PASS219_I163_CROSSARCH_EXACT_RECORD_V1",
+    "records_must_be_identical": true,
+    "identity_fields": [
+      "decision",
+      "frame_committed",
+      "vm5184_address",
+      "frame_bytes",
+      "change_hash72",
+      "receipt_hash72",
+      "hash216_triplet",
+      "hash216_identity"
+    ],
+    "expected_vm5184_address": 1,
+    "expected_frame_bytes": 648,
+    "expected_receipt_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "expected_hash216_identity": "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18"
+  },
+  "implementation": {
+    "header": "hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h",
+    "reverse_source": "hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c",
+    "hash72_reverse_witness": "hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c",
+    "vm81_snapshot_reverse_witness": "hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c",
+    "native_test": "tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c",
+    "native_crossarch_probe": "tools/pass219/pass219_i163_crossarch_exact_probe.c",
+    "python_crossarch_probe": "tools/pass219/pass219_i163_python_exact_probe.py",
+    "benchmark": "benchmarks/pass219/pass219_i163_reverse_crossarch_benchmark.py",
+    "workflow": ".github/workflows/pass219-i163-pass169-terminal-reverse-crossarch.yml"
+  },
+  "authority_guards": {
+    "floating_point_authority": false,
+    "canonical_mutation_authority": false,
+    "hash216_persistence_authority": false,
+    "source_A_definitionally_P2": false,
+    "source_B_definitionally_P2": false,
+    "ordinary_scalar_A_equals_B_claimed": false,
+    "i162_runtime_rewritten": false,
+    "legacy_full_symbolic_uqcel_promoted": false
+  },
+  "acceptance": {
+    "frozen_source_identity_verified": true,
+    "i162_parent_blob_identity_verified": true,
+    "pass159_foundation_green_required": true,
+    "native_reverse_transition_receipt_verified": true,
+    "native_reverse_transition_deterministic": true,
+    "vm81_prior_transaction_state_restored": true,
+    "hash72_ring_prior_state_restored": true,
+    "interpreter_compiler_match": true,
+    "interpreter_compiler_fallback_used": false,
+    "x86_arm64_python_records_identical": true,
+    "repeat_benchmark_required": true,
+    "repeat_benchmark_minimum_repeats": 12
+  },
+  "authority_after_green": {
+    "pass169_sealed_candidate_forward_execution_verified": true,
+    "pass169_sealed_candidate_reverse_transition_verified": true,
+    "pass169_sealed_candidate_prior_transaction_state_restore_verified": true,
+    "pass169_sealed_candidate_cross_architecture_identity_verified": true,
+    "pass169_sealed_candidate_interpreter_compiler_equality_verified": true,
+    "pass169_terminal_contract_verified": false
+  },
+  "pass169_terminal_remaining_scope": [
+    "general Pass169 corpus and supported-domain execution beyond the sealed I162/I163 candidate",
+    "serialized proof deserialize and replay identity evidence where not already independently sealed",
+    "remaining Pass169 public CLI and HTTP callable acceptance surfaces",
+    "required parent Pass168 terminal acceptance reconciliation",
+    "supported GPU path cross-architecture identity if that path is promoted to Pass169 authority"
+  ],
+  "fixed_resolution": {
+    "identity": "72^42=5184^21",
+    "changed": false
+  },
+  "next_transition_on_green": "PASS169_GENERAL_CORPUS_SERIALIZED_PROOF_AND_PARENT_ACCEPTANCE_CLOSURE"
+}
