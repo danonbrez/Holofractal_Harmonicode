@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_169_HARMONIC_FUNCTION_DEFINITIONS_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "Exp_H": "SYMBOLIC_EXPONENTIAL_RUNTIME_NODE",
+  "Cos_H": "(Exp_H(I*theta)+Exp_H(-I*theta))/2",
+  "Sin_H": "(Exp_H(I*theta)-Exp_H(-I*theta))/(2*I)",
+  "identity_target": "Sin_H(theta)^2+Cos_H(theta)^2=1",
+  "direct_libm_lowering_authorized": false,
+  "gpu_approximate_trig_canonical_authority": false,
+  "runtime_lowering_required": true,
+  "canonical_corpus_bound_execution_verified": false
+}
