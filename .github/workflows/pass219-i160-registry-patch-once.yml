@@ -26,11 +26,11 @@ jobs:
 
           path = Path('hhs_runtime/hhs_service_registry_v1.py')
           text = path.read_text(encoding='utf-8')
-          service = 'runtime.pass219.source_bound_ab_x2_phase_binding'
+          service_name_token = 'name="runtime.pass219.source_bound_ab_x2_phase_binding"'
           predecessor = 'name="runtime.pass219.harmonicode_modular_pivot_phase_binding"'
           marker = '    return registry\n\n\ndef _compact_registry_status_from_registry'
 
-          if service in text:
+          if service_name_token in text:
               print('I160 registry entry already present; no mutation needed.')
           else:
               if text.count(predecessor) != 1:
@@ -44,8 +44,8 @@ jobs:
               print('Inserted I160 central governed service registration.')
 
           final = path.read_text(encoding='utf-8')
-          if final.count(service) != 1:
-              raise SystemExit('I160 service registration count must be exactly one')
+          if final.count(service_name_token) != 1:
+              raise SystemExit('I160 service name registration count must be exactly one')
           if final.count('complete_monolithic_boundary_executor_still_required') != 1:
               raise SystemExit('I160 fail-closed executor guard missing or duplicated')
           PY
