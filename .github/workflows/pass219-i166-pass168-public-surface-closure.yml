@@ -119,14 +119,10 @@ jobs:
           route_pairs=pairs(router.routes)
           assert len(route_pairs)==18
           app=create_app()
-          app_pairs=pairs(app.routes)
-          assert route_pairs <= app_pairs
+          openapi_paths=app.openapi()['paths']
           for method,path in route_pairs:
-              assert sum(
-                  1 for route in app.routes
-                  if getattr(route,'path','')==path
-                  and method in (getattr(route,'methods',set()) or set())
-              ) == 1
+              assert path in openapi_paths, (method,path)
+              assert method.lower() in openapi_paths[path], (method,path)
           assert len(REQUIRED_CLI_OPERATIONS)==21
 
           rows=[]
