@@ -1,0 +1,64 @@
+{
+  "artifact": {
+    "digest": "sha256:fe6731e2ab150bc2087acc11f7db58c32395b3260ad43a512f76358ae8dedaf1",
+    "id": 9917220688,
+    "name": "pass219-i160-source-bound-ab-x2-phase-binding-aa4de94da4ba55e2710dc32ebd7389b0931b474a",
+    "size_in_bytes": 2094
+  },
+  "authority": {
+    "canonical_monolithic_boundary_proof": false,
+    "deterministic_replay_verified": false,
+    "hash216_persistence_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false
+  },
+  "branch": "agent/pass219-i160-source-bound-ab-x2-phase-bindings",
+  "classification": "FEATURE_VALIDATION_EVIDENCE",
+  "conclusion": "SUCCESS",
+  "feature_head": "aa4de94da4ba55e2710dc32ebd7389b0931b474a",
+  "graph_transition": {
+    "after": {
+      "join_count": 10,
+      "newly_resolved_source_bound_bindings": 2,
+      "proved": 9,
+      "rejected": 0,
+      "unresolved": 1
+    },
+    "before": {
+      "proved": 7,
+      "rejected": 0,
+      "unresolved": 3
+    }
+  },
+  "identities": {
+    "boundary_audit_sha256": "544bdea752c01fa701e7b4aaabe571b9876a540b58ed2a1d2b6263e280f1ad43",
+    "candidate_binding_sha256": "4cbb13ea614c7c391b84acf0c64ae668369ef38c42b59a6f1250eda22fc89c10",
+    "i160_execution_sha256": "a6f894bfe96e52a54cd1231fd06efd14643c69b1c0eea99a9a19f1d51aeff886",
+    "inherited_i159_execution_sha256": "d5d01d925baeb49b64c293d37679b3d6d8b3e20c89c970032a88b0f5b40d5f67",
+    "input_typed_value_graph_sha256": "8749005574e8e1e0b451ae1ecfca15f1b46092368635246b2131a3141d992216",
+    "phase_witness_sha256": "aaf0519767877233cc05498008b8f7a6e5bb18fe7dbcfb90de86af20b97af863",
+    "product_witness_sha256": "3871d54d8f48ba14561d5bae3fa6603b0c3975cb741bf4e6f56d20369ce2023f",
+    "profile_sha256": "1f315c824a46f452dfb5911974473349d5b2a9ae4fb3246a8a31e130a3954a19",
+    "receipt_sha256": "00b30760215f52a957a5f784c291f3fbfdbdbbf1e502837893bf7b9f719590f0"
+  },
+  "iteration": "I160",
+  "job_id": 100854194159,
+  "next_boundary": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR",
+  "pass": 219,
+  "remaining_blocker": {
+    "edge_index": 8,
+    "join_kind": "MONOLITHIC_BOUNDARY_EQUALITY",
+    "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED"
+  },
+  "run_id": 33817966685,
+  "schema": "HHS_PASS219_I160_FEATURE_VALIDATION_EVIDENCE_V1",
+  "tests": {
+    "dependency_scoped_pytest": "7 passed, 1 warning in 3.91s",
+    "deterministic_benchmark": "PASS",
+    "public_self_test": "PASS",
+    "semantic_guard_scan": "PASS"
+  }
+}

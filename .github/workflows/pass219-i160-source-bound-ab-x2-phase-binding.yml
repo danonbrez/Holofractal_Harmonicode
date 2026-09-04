@@ -1,0 +1,175 @@
+# Defined on the branch before this validation-trigger commit.
+name: Pass 219 I160 Source-Bound AB and X2 Phase Binding
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i160-source-bound-ab-x2-phase-bindings
+    paths:
+      - 'hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py'
+      - 'hhs_runtime/pass219/harmonicode_modular_pivot_phase_binding.py'
+      - 'hhs_runtime/pass219/typed_domain_join_executor.py'
+      - 'hhs_runtime/pass219/typed_full_symbolic_candidate_values.py'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'tests/pass219/test_pass219_i160_source_bound_ab_x2_phase_binding.py'
+      - 'benchmarks/pass219/pass219_i160_source_bound_ab_x2_phase_binding_benchmark.py'
+      - 'contracts/pass219/PASS_219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_1_0.json'
+      - 'docs/pass219/PASS_219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_1_0.md'
+      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/hhs_pass191_phase_lattice_v1.py'
+      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/hhs_pass191_manifold_kernel_v1.py'
+      - 'HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md'
+      - '.github/workflows/pass219-i160-source-bound-ab-x2-phase-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-bound-ab-x2-phase-binding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse I160 implementation
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py \
+            tests/pass219/test_pass219_i160_source_bound_ab_x2_phase_binding.py \
+            benchmarks/pass219/pass219_i160_source_bound_ab_x2_phase_binding_benchmark.py
+
+      - name: Enforce I160 source-bound semantics
+        run: |
+          ! grep -En 'float\(|math\.sqrt|numpy|isclose|tolerance' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'SOURCE_BOUND_P4_PRODUCT_ROOT_CORRESPONDENCE' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'PASS191_ORDERED_PHASE_BASIS_EXPONENT_JOIN' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'dyadic_magnitude_used_as_scalar_exponent' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'right_scalar_zero_promoted_to_typed_boundary_identity' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+          grep -F 'historical_A_equals_P2_full_boundary_definition_reused' \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py
+
+      - name: Run I160 dependency-scoped tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i160_source_bound_ab_x2_phase_binding.py
+
+      - name: Run public I160 self-test
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from hhs_runtime.pass219.source_bound_ab_x2_phase_binding import (
+              i160_source_bound_binding_self_test,
+          )
+          row = i160_source_bound_binding_self_test()
+          assert row["ok"] is True
+          assert row["decision"] == "PARTIALLY_RESOLVED_TYPED_GRAPH"
+          assert row["counts"] == {
+              "join_count": 10,
+              "proved": 9,
+              "unresolved": 1,
+              "rejected": 0,
+              "newly_resolved_source_bound_bindings": 2,
+          }
+          assert row["product_witness"]["status"] == "PROVED"
+          assert row["product_witness"]["AB"] == 810000
+          assert row["product_witness"]["ordinary_scalar_A_equals_P2_claimed"] is False
+          assert row["product_witness"]["ordinary_scalar_B_equals_P2_claimed"] is False
+          phase=row["phase_witness"]
+          assert phase["status"] == "PROVED"
+          assert phase["phase_square"]["input"]["basis"] == "i"
+          assert phase["phase_square"]["output"]["basis"] == "-1"
+          assert phase["phase_square"]["output"]["dyadic_magnitude"] == "2"
+          assert phase["phase_square"]["ordered_phase_basis_exponent"] == -1
+          assert phase["phase_square"]["dyadic_magnitude_used_as_scalar_exponent"] is False
+          assert phase["right_phase_radical"] == {"numerator":1,"denominator":30}
+          audit=row["boundary_blocker_audit"]
+          assert audit["status"] == "UNRESOLVED"
+          assert audit["reason"] == "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED"
+          assert audit["right_scalar_zero_promoted_to_typed_boundary_identity"] is False
+          assert row["remaining_blockers"] == [{
+              "edge_index":8,
+              "join_kind":"MONOLITHIC_BOUNDARY_EQUALITY",
+              "reason":"COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
+          }]
+          assert row["next_boundary"] == "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR"
+          authority=row["authority"]
+          assert authority["complete_monolithic_boundary_executor_registered"] is False
+          assert authority["typed_join_execution_complete"] is False
+          assert authority["canonical_monolithic_boundary_proof"] is False
+          assert authority["pass169_terminal_proof"] is False
+          assert authority["vm81_execution_verified"] is False
+          assert authority["vm81_mutation_authority"] is False
+          assert authority["hash72_execution_receipt_verified"] is False
+          assert authority["hash72_mint_authority"] is False
+          assert authority["hash216_persistence_authority"] is False
+          assert authority["deterministic_replay_verified"] is False
+          print(json.dumps(row, sort_keys=True, separators=(",",":")))
+          PY
+
+      - name: Emit I160 deterministic benchmark
+        run: |
+          mkdir -p artifacts/pass219/i160
+          PYTHONPATH=. python \
+            benchmarks/pass219/pass219_i160_source_bound_ab_x2_phase_binding_benchmark.py \
+            --output artifacts/pass219/i160/source_bound_ab_x2_phase_binding.json
+          cat artifacts/pass219/i160/source_bound_ab_x2_phase_binding.json
+
+      - name: Enforce I160 benchmark boundary
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path(
+              "artifacts/pass219/i160/source_bound_ab_x2_phase_binding.json"
+          ).read_text())
+          assert row["schema"] == "HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_BENCHMARK_V1"
+          assert row["result"] == "PASS"
+          assert row["before_i160"] == {"proved":7,"unresolved":3,"rejected":0}
+          assert row["after_i160"] == {
+              "join_count":10,
+              "proved":9,
+              "unresolved":1,
+              "rejected":0,
+              "newly_resolved_source_bound_bindings":2,
+          }
+          assert row["edge_7_source_bound_ab_product"]["status"] == "PROVED"
+          assert row["edge_7_source_bound_ab_product"]["AB"] == 810000
+          assert row["edge_7_source_bound_ab_product"]["A_or_B_redefined_as_P2"] is False
+          assert row["edge_9_x_squared_phase_exponent"]["status"] == "PROVED"
+          phase=row["edge_9_x_squared_phase_exponent"]["phase_square"]
+          assert phase["output"]["dyadic_magnitude"] == "2"
+          assert phase["ordered_phase_basis_exponent"] == -1
+          assert phase["dyadic_magnitude_used_as_scalar_exponent"] is False
+          assert row["edge_8_monolithic_boundary"]["status"] == "UNRESOLVED"
+          assert row["edge_8_monolithic_boundary"]["scalar_zero_promoted_to_boundary_identity"] is False
+          assert row["next_boundary"] == "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR"
+          assert row["fixed_resolution"] == "72^42=5184^21"
+          assert row["physical_full_manifold_enumeration_claim"] is False
+          assert row["canonical_timing_claimed"] is False
+          assert row["performance_speedup_claimed"] is False
+          assert len(row["receipt_sha256"]) == 64
+          assert len(row["i160_execution_sha256"]) == 64
+          assert len(row["profile_sha256"]) == 64
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i160-source-bound-ab-x2-phase-binding-${{ github.sha }}
+          path: artifacts/pass219/i160/source_bound_ab_x2_phase_binding.json
+          if-no-files-found: error
+          retention-days: 90

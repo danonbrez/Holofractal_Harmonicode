@@ -4199,6 +4199,23 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="TEN_FROZEN_JOINS_TWO_I159_MODULAR_PIVOT_ADAPTERS_THREE_REMAINING_BOUNDARY_BLOCKERS",
     )
 
+    registry.register_function(
+        name="runtime.pass219.source_bound_ab_x2_phase_binding",
+        module="hhs_runtime.pass219.source_bound_ab_x2_phase_binding",
+        function="i160_source_bound_binding_self_test",
+        service_type="pass219_exact_source_bound_ab_x2_phase_binding",
+        description="Executes the frozen I160 source-bound P^4=AB product membrane and Pass191 ordered x^2 phase-basis exponent adapter, retaining exact dyadic/quartic witness metadata while leaving the complete monolithic boundary executor fail-closed and forbidding scalar-zero authority escalation.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_CONTRACT_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1","HHS_PASS219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_V1"],
+        witness_schemas=["HHS_PASS219_I160_SOURCE_BOUND_AB_PRODUCT_WITNESS_V1","HHS_PASS219_I160_PASS191_ORDERED_PHASE_EXPONENT_WITNESS_V1","HHS_PASS219_I160_BOUNDARY_ZERO_AUDIT_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1"],
+        validators=["build_source_bound_ab_product_witness","build_pass191_ordered_phase_exponent_witness","audit_complete_boundary_zero_projection","execute_i160_source_bound_bindings","i160_source_bound_binding_self_test"],
+        guards=["source_bound_P4_AB_product_membrane","complete_A_B_not_definitionally_P2","Pass191_ordered_phase_basis_exponent","Pass191_dyadic_coordinate_retained","ordinary_x_squared_forbidden","right_scalar_zero_not_boundary_authority","complete_monolithic_boundary_executor_still_required","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["I159_GRAPH_SHA256_MISMATCH","SOURCE_BOUND_P4_PRODUCT_MISMATCH","COMPLETE_BOUNDARY_SCALARIZATION_FORBIDDEN","PASS191_ORDERED_PHASE_BINDING_MISMATCH","ORDINARY_X_SQUARED_FORBIDDEN","BOUNDARY_ZERO_AUTHORITY_ESCALATION_FORBIDDEN","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_SOURCE_BOUND_TYPED_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_TWO_I160_SOURCE_BOUND_BINDINGS_ONE_REMAINING_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR",
+    )
+
     return registry
 
 

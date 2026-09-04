@@ -1,0 +1,103 @@
+{
+  "authority_boundary": {
+    "canonical_monolithic_boundary_proof": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false,
+    "hash216_persistence_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false
+  },
+  "classification": "AUTHORIZED_IMPLEMENTATION_CONTRACT",
+  "expected_output_boundary": {
+    "join_count": 10,
+    "newly_resolved_source_bound_bindings": 2,
+    "next_boundary": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR",
+    "proved": 9,
+    "rejected": 0,
+    "remaining_edge": 8,
+    "unresolved": 1
+  },
+  "fixed_resolution": {
+    "changed": false,
+    "identity": "72^42=5184^21",
+    "physical_full_manifold_enumeration_claim": false
+  },
+  "implementation": {
+    "edge_7": {
+      "forbidden": [
+        "redefine complete boundary A as P^2",
+        "redefine complete boundary B as P^2",
+        "floating point radical authority"
+      ],
+      "relation": "SOURCE_BOUND_P4_PRODUCT_ROOT_CORRESPONDENCE",
+      "required": true,
+      "rule": "Use inherited P^4=AB as a product membrane only; derive AB/P^2=P^2 and the positive exact root sqrt(AB)=P^2."
+    },
+    "edge_8": {
+      "audit": "Record exact AB/(pq+Delta)=P^2 and the resulting conventional right projection zero, but do not promote that diagnostic zero into a typed boundary identity or scalar A=B.",
+      "next_iteration_target": true,
+      "reason": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
+      "required_state": "UNRESOLVED_FAIL_CLOSED"
+    },
+    "edge_9": {
+      "fixture": {
+        "delta_over_P": "1/30",
+        "input_basis": "i",
+        "ordered_phase_basis_exponent": -1,
+        "phase_square_output_basis": "-1",
+        "phase_square_output_dyadic_level": 1,
+        "positive_root": 30,
+        "pq_plus_u72": 900,
+        "right": "1/30",
+        "x_phase": 18
+      },
+      "forbidden": [
+        "ordinary x*x = 324 exponent",
+        "discard Pass191 dyadic coordinate",
+        "scalarize Pass191 dyadic magnitude into the exponent without an explicit contract",
+        "floating point radical authority"
+      ],
+      "relation": "PASS191_ORDERED_PHASE_BASIS_EXPONENT_JOIN",
+      "required": true,
+      "rule": "Bind the I157 ORDERED_PHASE_EXPONENT x^2 to the Pass191 PHASE_SQUARE quartic basis lane while retaining its dyadic coordinate as typed witness metadata. The dyadic magnitude is not silently reused as an ordinary scalar exponent."
+    }
+  },
+  "inherits": [
+    "PASS_219_I157_CANDIDATE_BOUND_TYPED_FULL_SYMBOLIC_VALUES",
+    "PASS_219_I158_TYPED_DOMAIN_JOIN_EXECUTOR",
+    "PASS_219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING",
+    "PASS_191_DYADIC_QUARTIC_PHASE_LATTICE",
+    "PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME"
+  ],
+  "input_boundary": {
+    "join_count": 10,
+    "proved": 7,
+    "rejected": 0,
+    "unresolved": 3,
+    "unresolved_edges": {
+      "7": "BOUNDARY_PRODUCT_BINDING_REQUIRED",
+      "8": "COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_REQUIRED",
+      "9": "PASS191_X_SQUARED_PHASE_BINDING_REQUIRED"
+    }
+  },
+  "iteration": "I160",
+  "pass": 219,
+  "schema": "HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_CONTRACT_V1",
+  "title": "Source-Bound AB Product and X-Squared Phase-Exponent Binding",
+  "validation": {
+    "artifact": "artifacts/pass219/i160/source_bound_ab_x2_phase_binding.json",
+    "benchmark": "benchmarks/pass219/pass219_i160_source_bound_ab_x2_phase_binding_benchmark.py",
+    "dependency_scoped_pytest": "tests/pass219/test_pass219_i160_source_bound_ab_x2_phase_binding.py",
+    "negative_gates": [
+      "A_or_B_definitionally_P2 forbidden",
+      "non-real phase-basis exponent rejected",
+      "boundary zero projection not promoted to equality",
+      "no float canonical authority"
+    ],
+    "public_self_test": "hhs_runtime.pass219.source_bound_ab_x2_phase_binding:i160_source_bound_binding_self_test"
+  },
+  "version": "1.0.0"
+}
