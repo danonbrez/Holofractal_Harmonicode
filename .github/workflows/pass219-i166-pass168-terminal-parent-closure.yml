@@ -1,4 +1,4 @@
-# Revalidation trigger after exact 3x3 cofactor repair.
+# Revalidation trigger after exact candidate arithmetic preflight repair.
 name: Pass 219 I166 Pass168 Terminal Parent Closure
 
 on:
@@ -51,6 +51,8 @@ jobs:
             hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
           grep -F '#include "hhs_pass168_parameter_circuit_1_0.inc"' hhs_runtime/c/hhs_runtime_exact_abi.c
           grep -F '#include "hhs_pass168_comparator_1_0.inc"' hhs_runtime/c/hhs_runtime_exact_abi.c
+          grep -F 'preflight_status = hhs_pass168_state_compute(&scratch);' \
+            hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
 
       - name: Strict compile cumulative exact ABI and x86-64 probe
         run: |
@@ -175,6 +177,7 @@ jobs:
               'comparators_verified':6,
               'sparse_dependency_updates_verified':True,
               'single_exact_abi_commit_surface':True,
+              'candidate_exact_execution_preflight_verified':True,
               'hash72_receipts_verified':True,
               'hash216_identity_verified':True,
               'rollback_verified':True,
