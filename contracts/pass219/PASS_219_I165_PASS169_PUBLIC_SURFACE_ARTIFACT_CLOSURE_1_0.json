@@ -1,0 +1,38 @@
+{
+  "schema": "HHS_PASS219_I165_PASS169_PUBLIC_SURFACE_ARTIFACT_CLOSURE_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I165",
+  "contract_id": "PASS_219_I165_PASS169_PUBLIC_SURFACE_ARTIFACT_CLOSURE_1_0",
+  "base_main": "33fdd71c6bf04af4e3cfe0b86ce32dbdb0b7cf7d",
+  "inherits": ["HHS-P169-HSAE-VM81-ESCPR", "PASS_219_I164_PASS169_TERMINAL_RECONCILIATION"],
+  "purpose": "Close the contract-required CLI/HTTP reachability and non-corpus evidence-artifact gap without manufacturing the missing canonical corpus, Pass168 parent closure, or canonical algebra authority.",
+  "required_cli_equivalents": 20,
+  "required_http_endpoints": 17,
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "shared_service": "hhs_runtime.pass169.public_service.Pass169AlgebraService",
+  "canonical_source_ingress_policy": "FAIL_CLOSED_UNTIL_CANONICAL_CORPUS_PRESENT",
+  "candidate_source_ingress_policy": "EXACT_UTF8_SHA256_NONCANONICAL_NONMUTATING",
+  "authority_guards": {
+    "second_fastapi_application": false,
+    "second_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "partial_fixture_corpus_promotion": false,
+    "terminal_classification_minted": false
+  },
+  "acceptance": {
+    "cli_20_of_20_reachable": true,
+    "http_17_of_17_canonical_gateway_reachable": true,
+    "shared_service_identity": true,
+    "candidate_ingress_round_trip": true,
+    "canonical_mutation_fails_closed_without_corpus": true,
+    "i161_i164_frozen_evidence_preserved": true,
+    "required_non_corpus_artifacts_present": true,
+    "canonical_corpus_present": false,
+    "pass168_terminal_parent_resolved": false,
+    "pass169_terminal_verified": false
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "next_boundary": "PASS169_CANONICAL_CORPUS_PROVENANCE_AND_PASS168_PARENT_RESOLUTION"
+}
