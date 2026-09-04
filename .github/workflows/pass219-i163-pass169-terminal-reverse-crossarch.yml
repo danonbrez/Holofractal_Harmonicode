@@ -9,6 +9,7 @@ on:
       - 'hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h'
       - 'hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c'
       - 'hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c'
+      - 'hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c'
       - 'tools/pass219/pass219_i163_crossarch_exact_probe.c'
       - 'tools/pass219/pass219_i163_python_exact_probe.py'
       - 'tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c'
@@ -39,6 +40,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu qemu-user file
 
+      - name: Parse I163 contract and benchmark
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I163_PASS169_TERMINAL_REVERSE_CROSSARCH_1_0.json >/dev/null
+          python -m py_compile benchmarks/pass219/pass219_i163_reverse_crossarch_benchmark.py
+          python -m py_compile tools/pass219/pass219_i163_python_exact_probe.py
+
       - name: Enforce I163 authority guards
         run: |
           set -euo pipefail
@@ -46,13 +53,15 @@ jobs:
             hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h \
             hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
             hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
+            hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c \
             tools/pass219/pass219_i163_crossarch_exact_probe.c \
             tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c
           grep -F 'hhs159_reverse' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
           grep -F 'hhs_hash72_reverse_state' hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c
+          grep -F 'hhs_exact_vm81_admit_uqcel' hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c
           grep -F 'pass169_terminal_contract_claimed = 0U' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
 
-      - name: Verify I162 parent remains unchanged
+      - name: Verify I162 parent and frozen source remain unchanged
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h)" = "9a36b4d9f7e61c2d684ac22f37a102babecd04a7"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c)" = "9c62d396a69cc3545f17c4d7e2b27b975f777a0d"
@@ -71,29 +80,20 @@ jobs:
           cmake --build /tmp/pass159-i163-build --parallel 2
           ctest --test-dir /tmp/pass159-i163-build --output-on-failure
 
-      - name: Census inherited Pass159 reverse semantics
+      - name: Verify inherited Pass159 reverse-transition semantics
         run: |
           python - <<'PY'
           from pathlib import Path
-          for path in (
-              Path('/tmp/pass159-i163-build/hhs159_core.c'),
-              Path('/tmp/pass159-i163-build/test_pass159.c'),
-          ):
-              text=path.read_text(encoding='utf-8')
-              print(f'=== {path.name} reverse census ===')
-              cursor=0
-              found=0
-              while True:
-                  index=text.find('hhs159_reverse', cursor)
-                  if index < 0:
-                      break
-                  found += 1
-                  start=max(0, text.rfind('\n', 0, max(0,index-1200)))
-                  end=min(len(text), index+7000)
-                  print(text[start:end])
-                  print('=== reverse occurrence boundary ===')
-                  cursor=index+len('hhs159_reverse')
-              assert found > 0
+          text=Path('/tmp/pass159-i163-build/hhs159_core.c').read_text(encoding='utf-8')
+          start=text.index('HHS159Status hhs159_reverse(')
+          end=text.index('HHS159Status hhs159_compare_interpreter_compiler(', start)
+          body=text[start:end]
+          assert 'HHS159_REVERSE_TRANSITION_V1' in body
+          assert 'REVERSE_EXECUTED' in body
+          assert 'receipt->base.hash216' in body
+          assert 'receipt->semantic_root' in body
+          assert 'receipt->vm81_steps' in body
+          print('I163 inherited reverse-transition semantics: PASS')
           PY
 
       - name: Compile cumulative exact ABI
@@ -112,6 +112,7 @@ jobs:
             hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
             hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
             hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
+            hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c \
             hhs_runtime/c/hhs_runtime_abi.c \
             tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c \
             -L/tmp/pass159-i163-build -lhhs_pass159 -lcrypto -lm \
@@ -186,10 +187,63 @@ jobs:
           print(json.dumps(evidence,sort_keys=True))
           PY
 
-      - name: Preserve I162 and I161 dependency-scoped regression
+      - name: Run deterministic I163 reverse benchmark
+        run: |
+          python benchmarks/pass219/pass219_i163_reverse_crossarch_benchmark.py \
+            /tmp/pass219-i163/i163-reverse \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i163/crossarch_parity.json \
+            artifacts/pass219/i163/reverse_crossarch_benchmark.json \
+            --repeats 12 --enforce
+          python -m json.tool artifacts/pass219/i163/reverse_crossarch_benchmark.json >/dev/null
+
+      - name: Enforce I163 contract boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract=json.loads(Path('contracts/pass219/PASS_219_I163_PASS169_TERMINAL_REVERSE_CROSSARCH_1_0.json').read_text())
+          parity=json.loads(Path('artifacts/pass219/i163/crossarch_parity.json').read_text())
+          bench=json.loads(Path('artifacts/pass219/i163/reverse_crossarch_benchmark.json').read_text())
+          assert contract['reverse_model']['pass159_reverse_is_in_place_state_restore'] is False
+          assert contract['reverse_model']['persistent_canonical_rollback_claimed'] is False
+          assert contract['authority_after_green']['pass169_terminal_contract_verified'] is False
+          assert contract['fixed_resolution']['identity']=='72^42=5184^21'
+          assert parity['result']=='PASS' and parity['records_identical'] is True
+          assert parity['architectures']==['x86_64','arm64']
+          assert parity['bindings']==['native_c11','python_ctypes']
+          assert bench['result']=='PASS' and bench['repeats']==12
+          assert bench['deterministic_reverse_result'] is True
+          assert bench['native_reverse_runtime_verified'] is True
+          assert bench['cross_architecture_records_identical'] is True
+          assert bench['pass169_terminal_contract_verified'] is False
+          assert bench['floating_point_authority'] is False
+          assert bench['canonical_mutation_authority'] is False
+          assert bench['hash216_persistence_authority'] is False
+          PY
+
+      - name: Preserve I161 typed closure dependency regression
         run: |
           PYTHONPATH=. python -m pytest -q --tb=short \
             tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+
+      - name: Publish I163 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 I163 reverse and cross-architecture closure
+          - Pass159 reverse-transition receipt: VERIFIED
+          - Pass159 reverse-transition determinism: VERIFIED
+          - Exact VM81 prior transaction-state restore: VERIFIED
+          - Hash72 ring reverse / prior state restore: VERIFIED
+          - Interpreter/compiler equality: VERIFIED / NO FALLBACK
+          - x86-64 / ARM64 exact identity: VERIFIED
+          - Native C11 / Python ctypes identity: VERIFIED
+          - I162 parent: UNCHANGED
+          - Floating-point authority: NONE
+          - Persistent canonical rollback authority: NONE
+          - Hash216 persistence authority: NONE
+          - Pass169 terminal contract: NOT YET CLAIMED
+          EOF
 
       - name: Upload I163 evidence
         uses: actions/upload-artifact@v4
@@ -200,5 +254,6 @@ jobs:
             artifacts/pass219/i163/arm64_exact_record.json
             artifacts/pass219/i163/python_exact_record.json
             artifacts/pass219/i163/crossarch_parity.json
+            artifacts/pass219/i163/reverse_crossarch_benchmark.json
           if-no-files-found: error
           retention-days: 90
