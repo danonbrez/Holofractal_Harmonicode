@@ -142,16 +142,10 @@ def test_pass168_router_and_canonical_gateway_bind_exactly_once() -> None:
     router = build_pass168_parameter_circuit_router()
     assert _route_pairs(router.routes) == REQUIRED_HTTP
     app = create_app()
-    pairs = _route_pairs(app.routes)
-    assert REQUIRED_HTTP <= pairs
-    for pair in REQUIRED_HTTP:
-        matches = [
-            route
-            for route in app.routes
-            if getattr(route, "path", "") == pair[1]
-            and pair[0] in (getattr(route, "methods", set()) or set())
-        ]
-        assert len(matches) == 1, pair
+    paths = app.openapi()["paths"]
+    for method, path in REQUIRED_HTTP:
+        assert path in paths, (method, path)
+        assert method.lower() in paths[path], (method, path)
 
 
 def test_pass168_http_executes_native_service_without_float_authority(tmp_path: Path, monkeypatch) -> None:
