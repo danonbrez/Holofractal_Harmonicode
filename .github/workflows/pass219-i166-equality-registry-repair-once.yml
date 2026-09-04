@@ -21,6 +21,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install generator import dependency
+        run: python -m pip install --disable-pip-version-check fastapi
       - name: Verify native numbering and repair projection
         env:
           PYTHONPATH: .
@@ -29,7 +31,6 @@ jobs:
           set -euo pipefail
           timeout 600s make c-abi
           python - <<'PY'
-          import ctypes
           from hhs_runtime.pass168.terminal_artifacts import _EqualityGate, _LIB
           values=(_EqualityGate * 12)()
           status=int(_LIB.hhs_pass168_equality_registry(values))
