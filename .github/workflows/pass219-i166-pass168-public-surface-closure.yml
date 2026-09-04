@@ -135,10 +135,15 @@ jobs:
               service=Pass168ParameterCircuitService(f'/tmp/pass219-i166-repeat-{index}')
               status=service.status()
               rows.append(json.dumps(status,sort_keys=True,separators=(',',':')))
-          # Status includes no wall-clock data and should be byte-deterministic across fresh exact states.
           assert len(set(rows))==1
           receipt=hashlib.sha256(rows[0].encode()).hexdigest()
+          validation=json.loads(Path('artifacts/pass219/i166-public/cli_validate.json').read_text())
           bench=json.loads(Path('artifacts/pass219/i166-public/cli_benchmark.json').read_text())
+          assert validation['result']=='PASS'
+          assert validation['native']['status']==0
+          assert validation['ledger_replay_verified'] is True
+          assert bench['repeats']==12
+          assert bench['deterministic_receipt'] is True
           evidence={
               'schema':'HHS_PASS219_I166_PASS168_PUBLIC_SURFACE_EVIDENCE_V1',
               'result':'PASS',
@@ -153,12 +158,13 @@ jobs:
               'durable_ledger_replayed_through_native_authority':True,
               'status_repeat_count':12,
               'deterministic_status_receipt_sha256':receipt,
-              'benchmark_result':bench.get('result'),
+              'benchmark_repeats':bench['repeats'],
+              'benchmark_deterministic_receipt':bench['deterministic_receipt'],
+              'benchmark_record_hash216':bench['record_hash216'],
               'floating_point_canonical_authority':False,
               'new_parallel_vm81_authority':False,
               'fallback_used':False,
           }
-          assert evidence['benchmark_result']=='PASS'
           Path('artifacts/pass219/i166-public/public_surface_evidence.json').write_text(
               json.dumps(evidence,sort_keys=True,indent=2)+'\n',encoding='utf-8'
           )
