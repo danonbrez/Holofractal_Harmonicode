@@ -1,0 +1,140 @@
+{
+  "schema": "HHS_PASS219_I164_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I164",
+  "classification": "FEATURE_GREEN_FAIL_CLOSED_PASS169_TERMINAL_RECONCILIATION_BLOCKED",
+  "base_main": "42b614f5fbba3e90aa2571c138c53c25591326a2",
+  "branch": "agent/pass219-i164-pass169-terminal-reconciliation",
+  "validated_functional_head": "39615c9649b4f9d1a2f77a491d2e4f9773f4ff1a",
+  "fixed_resolution": "72^42=5184^21",
+  "contract": {
+    "id": "HHS-P169-HSAE-VM81-ESCPR",
+    "bound": true,
+    "terminal_classification": "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME_VERIFIED"
+  },
+  "frozen_evidence": {
+    "i161_typed_monolithic_closure_verified": true,
+    "i162_vm81_admission_commit_hash72_hash216_replay_verified": true,
+    "i163_reverse_and_cross_architecture_verified": true,
+    "all_frozen_evidence_verified": true
+  },
+  "canonical_corpus": {
+    "required_path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "present": false,
+    "reconstruction_from_partial_fixtures_authorized": false,
+    "recoverable_exact_fixtures": [
+      {
+        "path": "contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode",
+        "bytes": 354,
+        "sha256": "7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42",
+        "qualifies_as_pass169_canonical_corpus": false
+      },
+      {
+        "path": "contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode",
+        "bytes": 348,
+        "sha256": "ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a",
+        "qualifies_as_pass169_canonical_corpus": false
+      },
+      {
+        "path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+        "bytes": 632,
+        "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+        "qualifies_as_pass169_canonical_corpus": false
+      },
+      {
+        "path": "contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode",
+        "bytes": 55,
+        "sha256": "c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412cb6d25",
+        "qualifies_as_pass169_canonical_corpus": false
+      }
+    ]
+  },
+  "terminal_conditions_already_verified": {
+    "complete_constraint_graph_executable": true,
+    "exact_numeric_authority_demonstrated": true,
+    "no_ieee_canonical_authority": true,
+    "canonical_computation_through_runtime_abi": true,
+    "vm81_admission_and_commit_verified": true,
+    "hash72_receipts_verified": true,
+    "hash216_identities_verified": true,
+    "interpreter_compiler_agreement_verified": true,
+    "deterministic_replay_verified": true,
+    "reverse_execution_restores_prior_state": true,
+    "cross_architecture_evidence_matches": true
+  },
+  "terminal_conditions_unresolved": {
+    "full_source_corpus_preserved": false,
+    "all_source_symbols_distinguishable": false,
+    "symbolic_harmonic_functions_registered": false,
+    "O_not_Pi_symbol_separation_registered": false,
+    "pass168_parent_resolved": false
+  },
+  "public_surfaces": {
+    "required_cli_operation_count": 20,
+    "implemented_cli_operation_count": 0,
+    "cli_complete": false,
+    "required_http_endpoint_count": 17,
+    "implemented_http_endpoint_count": 0,
+    "http_complete": false
+  },
+  "required_artifacts": {
+    "required_count": 18,
+    "present_count": 0,
+    "complete": false
+  },
+  "pass168_parent": {
+    "completion_receipt_path": "HHS_PASS_168_COMPLETION_RECEIPT.json",
+    "receipt_present": false,
+    "resolved": false
+  },
+  "blockers": [
+    "PASS169_CANONICAL_CORPUS_ABSENT",
+    "PASS169_REQUIRED_ARTIFACT_SET_INCOMPLETE",
+    "PASS169_REQUIRED_CLI_SURFACE_INCOMPLETE",
+    "PASS169_REQUIRED_HTTP_SURFACE_INCOMPLETE",
+    "PASS168_TERMINAL_PARENT_RECEIPT_UNRESOLVED"
+  ],
+  "dependency_scoped_validation": {
+    "workflow": "Pass 219 I164 Pass169 Terminal Reconciliation",
+    "run_id": 33879669809,
+    "job_id": 101044959518,
+    "conclusion": "success",
+    "python": "3.11.16",
+    "parse_compile": "success",
+    "authority_guard": "success",
+    "frozen_evidence_presence": "success",
+    "pytest": {
+      "passed": 6,
+      "failed": 0,
+      "warnings": 1,
+      "duration_seconds": 2.54,
+      "warning": "PytestConfigWarning: Unknown config option: asyncio_mode"
+    },
+    "machine_readable_reconciliation": "success"
+  },
+  "artifact": {
+    "id": 9939298287,
+    "name": "pass219-i164-pass169-terminal-reconciliation-39615c9649b4f9d1a2f77a491d2e4f9773f4ff1a",
+    "size_bytes": 2485,
+    "digest": "sha256:bc6fe13b295f4da6747067ca214a31e0696a4fd5ab0a9511925c6b32f042fffa",
+    "expired": false
+  },
+  "superseded_validation_attempts": [
+    {
+      "run_id": 33879387015,
+      "job_id": 101044029807,
+      "status": "invalid_reconciliation_evidence",
+      "reason": "The first implementation-discovery scan counted I164's own required CLI declaration constants as executable implementations. Five tests passed and one scanner-isolation assertion failed. Repaired by excluding reconciliation and test declarations from independent runtime surface discovery."
+    }
+  ],
+  "authority": {
+    "pass169_terminal_contract_verified": false,
+    "new_vm81_mutation_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "partial_source_relabeling_as_canonical_corpus": false
+  },
+  "result": "PASS_RECONCILIATION_BLOCKED_TERMINAL",
+  "next_boundary": "PASS169_CANONICAL_CORPUS_AND_GENERAL_PUBLIC_SURFACE_CLOSURE"
+}
