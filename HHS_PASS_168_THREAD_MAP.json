@@ -1,0 +1,585 @@
+{
+  "count": 64,
+  "derived_threads": 24,
+  "permanent_identity": true,
+  "raw_threads": 40,
+  "schema": "HHS_PASS168_THREAD_MAP_V1",
+  "threads": [
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P1",
+      "thread_col": 0,
+      "thread_id": 0,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P2",
+      "thread_col": 1,
+      "thread_id": 1,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P3",
+      "thread_col": 2,
+      "thread_id": 2,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P4",
+      "thread_col": 3,
+      "thread_id": 3,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P5",
+      "thread_col": 4,
+      "thread_id": 4,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P6",
+      "thread_col": 5,
+      "thread_id": 5,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P7",
+      "thread_col": 6,
+      "thread_id": 6,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P8",
+      "thread_col": 7,
+      "thread_id": 7,
+      "thread_row": 0
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P9",
+      "thread_col": 0,
+      "thread_id": 8,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P10",
+      "thread_col": 1,
+      "thread_id": 9,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P11",
+      "thread_col": 2,
+      "thread_id": 10,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P12",
+      "thread_col": 3,
+      "thread_id": 11,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P13",
+      "thread_col": 4,
+      "thread_id": 12,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P14",
+      "thread_col": 5,
+      "thread_id": 13,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P15",
+      "thread_col": 6,
+      "thread_id": 14,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P16",
+      "thread_col": 7,
+      "thread_id": 15,
+      "thread_row": 1
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P17",
+      "thread_col": 0,
+      "thread_id": 16,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P18",
+      "thread_col": 1,
+      "thread_id": 17,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P19",
+      "thread_col": 2,
+      "thread_id": 18,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P20",
+      "thread_col": 3,
+      "thread_id": 19,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P21",
+      "thread_col": 4,
+      "thread_id": 20,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P22",
+      "thread_col": 5,
+      "thread_id": 21,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P23",
+      "thread_col": 6,
+      "thread_id": 22,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P24",
+      "thread_col": 7,
+      "thread_id": 23,
+      "thread_row": 2
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P25",
+      "thread_col": 0,
+      "thread_id": 24,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P26",
+      "thread_col": 1,
+      "thread_id": 25,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P27",
+      "thread_col": 2,
+      "thread_id": 26,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "P28",
+      "thread_col": 3,
+      "thread_id": 27,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E1",
+      "thread_col": 4,
+      "thread_id": 28,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E2",
+      "thread_col": 5,
+      "thread_id": 29,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E3",
+      "thread_col": 6,
+      "thread_id": 30,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E4",
+      "thread_col": 7,
+      "thread_id": 31,
+      "thread_row": 3
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E5",
+      "thread_col": 0,
+      "thread_id": 32,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E6",
+      "thread_col": 1,
+      "thread_id": 33,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E7",
+      "thread_col": 2,
+      "thread_id": 34,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E8",
+      "thread_col": 3,
+      "thread_id": 35,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E9",
+      "thread_col": 4,
+      "thread_id": 36,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E10",
+      "thread_col": 5,
+      "thread_id": 37,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E11",
+      "thread_col": 6,
+      "thread_id": 38,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "RAW_PARAMETER",
+      "name": "E12",
+      "thread_col": 7,
+      "thread_id": 39,
+      "thread_row": 4
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "UPPER_GAIN_ALPHA",
+      "thread_col": 0,
+      "thread_id": 40,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "LOWER_GAIN_BETA",
+      "thread_col": 1,
+      "thread_id": 41,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_CHANNEL_RHO1",
+      "thread_col": 2,
+      "thread_id": 42,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_CHANNEL_RHO2",
+      "thread_col": 3,
+      "thread_id": 43,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_CHANNEL_RHO3",
+      "thread_col": 4,
+      "thread_id": 44,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "UPPER_DEPTH",
+      "thread_col": 5,
+      "thread_id": 45,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "LOWER_DEPTH",
+      "thread_col": 6,
+      "thread_id": 46,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "GLOBAL_COMMON_GAIN",
+      "thread_col": 7,
+      "thread_id": 47,
+      "thread_row": 5
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C1",
+      "thread_col": 0,
+      "thread_id": 48,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C2",
+      "thread_col": 1,
+      "thread_id": 49,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C3_MATRIX",
+      "thread_col": 2,
+      "thread_id": 50,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C4",
+      "thread_col": 3,
+      "thread_id": 51,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C5",
+      "thread_col": 4,
+      "thread_id": 52,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "COMPARATOR_C6_TERMINAL",
+      "thread_col": 5,
+      "thread_id": 53,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "LOSHU_ORIENTED_KERNEL_L",
+      "thread_col": 6,
+      "thread_id": 54,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "LOSHU_EVEN_KERNEL_L2",
+      "thread_col": 7,
+      "thread_id": 55,
+      "thread_row": 6
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "MATRIX_GAUGE",
+      "thread_col": 0,
+      "thread_id": 56,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_GAUGE_1",
+      "thread_col": 1,
+      "thread_id": 57,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_GAUGE_2",
+      "thread_col": 2,
+      "thread_id": 58,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "ROW_GAUGE_3",
+      "thread_col": 3,
+      "thread_id": 59,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "WITNESS_AGGREGATE",
+      "thread_col": 4,
+      "thread_id": 60,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "U_SHELL_DEPTH_RATIO",
+      "thread_col": 5,
+      "thread_id": 61,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "SUCCESSOR_RESIDUAL",
+      "thread_col": 6,
+      "thread_id": 62,
+      "thread_row": 7
+    },
+    {
+      "bank_count": 9,
+      "cell_count": 81,
+      "kind": "DERIVED",
+      "name": "GLOBAL_CLOSURE_RECEIPT",
+      "thread_col": 7,
+      "thread_id": 63,
+      "thread_row": 7
+    }
+  ]
+}

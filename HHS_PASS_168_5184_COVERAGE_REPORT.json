@@ -1,0 +1,13 @@
+{
+  "banks_per_thread": 9,
+  "cells_covered": 5184,
+  "cells_per_bank": 9,
+  "cells_per_thread": 81,
+  "duplicate_addresses": 0,
+  "inverse_address_failures": 0,
+  "native_exhaustive_validation": true,
+  "result": "PASS",
+  "schema": "HHS_PASS168_5184_COVERAGE_REPORT_V1",
+  "threads": 64,
+  "unique_global_addresses": 5184
+}

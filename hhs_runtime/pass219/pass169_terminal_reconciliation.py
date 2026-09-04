@@ -29,6 +29,12 @@ PASS169_CONTRACT_PATH = Path(
     "EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md"
 )
 PASS168_COMPLETION_RECEIPT_PATH = Path("HHS_PASS_168_COMPLETION_RECEIPT.json")
+PASS168_CONTRACT_ID = "HHS-P168-VM81-5184-HPC-STCF"
+PASS168_TERMINAL_CLASSIFICATION = (
+    "HHS_PASS_168_VM81_5184_CELL_HARMONICODE_PARAMETER_CIRCUIT_AND_"
+    "SPARSE_TENSOR_CONTROL_FABRIC_VERIFIED"
+)
+PASS168_SOURCE_SHA256 = "fdbee5db0f2fea428b6b88e5ac9b273e6aa3754fa00f84e8923456373275166e"
 PASS169_CANONICAL_CORPUS_PATH = Path("HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode")
 
 I161_EVIDENCE_PATH = Path("evidence/pass219/PASS_219_I161_FEATURE_VALIDATION_33823367993.json")
@@ -228,6 +234,44 @@ def _frozen_evidence(root: Path) -> Dict[str, Any]:
     }
 
 
+def _pass168_terminal_receipt_valid(receipt: Dict[str, Any]) -> bool:
+    exact_true = (
+        "terminal_verified",
+        "verified",
+        "pass167_inheritance_bound",
+        "single_vm81_commit_authority",
+        "hash72_receipts_verified",
+        "hash216_identity_verified",
+        "deterministic_replay_verified",
+        "rollback_verified",
+        "repair_verified",
+        "x86_64_verified",
+        "arm64_verified",
+        "sanitizers_passed",
+        "cli_complete",
+        "http_complete",
+        "parameter_matrix_verified",
+        "evidence_manifest_verified",
+    )
+    return bool(
+        receipt.get("schema") == "HHS_PASS_168_COMPLETION_RECEIPT_V1"
+        and receipt.get("contract_id") == PASS168_CONTRACT_ID
+        and receipt.get("classification") == PASS168_TERMINAL_CLASSIFICATION
+        and receipt.get("fixed_resolution") == FIXED_RESOLUTION
+        and receipt.get("source_bytes") == 424
+        and receipt.get("source_sha256") == PASS168_SOURCE_SHA256
+        and receipt.get("cells_covered") == 5184
+        and receipt.get("threads_registered") == 64
+        and receipt.get("raw_threads") == 40
+        and receipt.get("derived_threads") == 24
+        and receipt.get("comparators_verified") == 6
+        and all(receipt.get(key) is True for key in exact_true)
+        and receipt.get("floating_point_canonical_authority") is False
+        and receipt.get("fallback_used") is False
+        and receipt.get("manifest_path") == "HHS_PASS_168_EVIDENCE_MANIFEST.json"
+    )
+
+
 def build_i164_pass169_terminal_reconciliation(repo_root: str | Path = ".") -> Dict[str, Any]:
     root = Path(repo_root).resolve()
     contract_path = root / PASS169_CONTRACT_PATH
@@ -251,10 +295,7 @@ def build_i164_pass169_terminal_reconciliation(repo_root: str | Path = ".") -> D
     if pass168_receipt_path.is_file():
         try:
             pass168_receipt = _load_json(pass168_receipt_path)
-            pass168_resolved = bool(
-                pass168_receipt.get("terminal_verified") is True
-                or pass168_receipt.get("verified") is True
-            )
+            pass168_resolved = _pass168_terminal_receipt_valid(pass168_receipt)
         except (json.JSONDecodeError, OSError):
             pass168_receipt = None
 

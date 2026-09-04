@@ -1,0 +1,11 @@
+{
+  "candidate_topology": "64 lanes x 81-cell VM81 blocks",
+  "canonical_result_device_independent": true,
+  "gpu_canonical_commit_authority": false,
+  "hardware_gpu_candidate_backend_implemented": false,
+  "hardware_gpu_measurement_applicable": false,
+  "lane_thread_bijection": true,
+  "reason": "Pass168 GPU candidate execution is optional; canonical implementation is exact CPU/native ABI",
+  "result": "PASS",
+  "schema": "HHS_PASS168_GPU_MAPPING_REPORT_V1"
+}

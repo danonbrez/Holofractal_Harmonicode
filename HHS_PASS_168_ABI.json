@@ -1,0 +1,31 @@
+{
+  "aggregate_header": "hhs_runtime/include/hhs_runtime_exact_abi.h",
+  "aggregate_source": "hhs_runtime/c/hhs_runtime_exact_abi.c",
+  "floating_point_canonical_authority": false,
+  "language": "C11",
+  "native_surfaces": [
+    "hhs_pass168_version",
+    "hhs_pass168_source_text",
+    "hhs_pass168_source_stats",
+    "hhs_pass168_parameter_registry",
+    "hhs_pass168_equality_registry",
+    "hhs_pass168_address_encode",
+    "hhs_pass168_address_decode",
+    "hhs_pass168_rational_normalize",
+    "hhs_pass168_matrix_invariants",
+    "hhs_pass168_state_initialize",
+    "hhs_pass168_cell_value",
+    "hhs_pass168_candidate_begin",
+    "hhs_pass168_candidate_set",
+    "hhs_pass168_candidate_validate",
+    "hhs_pass168_candidate_apply",
+    "hhs_pass168_commit_candidate",
+    "hhs_pass168_replay_transition",
+    "hhs_pass168_rollback_transition",
+    "hhs_pass168_repair_transition",
+    "hhs_pass168_self_test",
+    "hhs_pass168_comparator_conformance"
+  ],
+  "schema": "HHS_PASS168_ABI_V1",
+  "single_commit_surface": "hhs_pass168_commit_candidate"
+}

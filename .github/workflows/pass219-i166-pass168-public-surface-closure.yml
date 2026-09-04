@@ -1,0 +1,181 @@
+# Revalidation trigger after exact candidate arithmetic preflight repair.
+name: Pass 219 I166 Pass168 Public Surface Closure
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+      - main
+    paths:
+      - 'hhs_runtime/pass168/**'
+      - 'hhs_python/runtime/hhs_pass168_ctypes_bridge.py'
+      - 'hhs_python/runtime/hhs_pass168_comparator_bridge.py'
+      - 'hhs_backend/pass168_parameter_circuit_routes.py'
+      - 'hhs_backend/public_api_server.py'
+      - 'tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py'
+      - 'hhs_runtime/include/hhs_pass168_parameter_circuit_1_0.h'
+      - 'hhs_runtime/include/hhs_pass168_comparator_1_0.h'
+      - 'hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc'
+      - 'hhs_runtime/c/hhs_pass168_comparator_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - '.github/workflows/pass219-i166-pass168-public-surface-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i166-public:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_PASS168_STATE_DIR: /tmp/pass219-i166-public-state
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx 'cryptography>=45.0,<47.0'
+
+      - name: Build full canonical runtime shared library
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i166-public
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_runtime_init|hhs_pass168_(self_test|commit_candidate|replay_transition|rollback_transition|repair_transition|comparator_conformance)'
+
+      - name: Parse and compile public surfaces
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            hhs_python/runtime/hhs_pass168_ctypes_bridge.py \
+            hhs_python/runtime/hhs_pass168_comparator_bridge.py \
+            hhs_runtime/pass168/public_service.py \
+            hhs_runtime/pass168/cli.py \
+            hhs_backend/pass168_parameter_circuit_routes.py \
+            hhs_backend/public_api_server.py \
+            tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py
+
+      - name: Enforce one canonical gateway and no second FastAPI app
+        run: |
+          set -euo pipefail
+          test ! -e .github/workflows/pass219-i166-public-gateway-patch-once.yml
+          test "$(grep -c 'build_pass168_parameter_circuit_router()' hhs_backend/public_api_server.py)" -eq 1
+          test "$(grep -c 'from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router' hhs_backend/public_api_server.py)" -eq 1
+          ! grep -En 'FastAPI\(' hhs_backend/pass168_parameter_circuit_routes.py
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/pass168/public_service.py \
+            hhs_runtime/pass168/cli.py \
+            hhs_backend/pass168_parameter_circuit_routes.py
+
+      - name: Run dependency-scoped I166 public tests
+        run: |
+          set -euo pipefail
+          rm -rf "$HHS_PASS168_STATE_DIR"
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py
+
+      - name: Validate CLI matrix and deterministic benchmark
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/pass219-i166-cli
+          python -m hhs_runtime.pass168.cli parameter-circuit \
+            --state-dir /tmp/pass219-i166-cli --output json validate \
+            > artifacts/pass219/i166-public/cli_validate.json
+          python -m json.tool artifacts/pass219/i166-public/cli_validate.json >/dev/null
+          python -m hhs_runtime.pass168.cli parameter-circuit \
+            --state-dir /tmp/pass219-i166-cli --output json benchmark --repeats 12 \
+            > artifacts/pass219/i166-public/cli_benchmark.json
+          python -m json.tool artifacts/pass219/i166-public/cli_benchmark.json >/dev/null
+
+      - name: Produce public surface evidence
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
+          from hhs_backend.public_api_server import create_app
+          from hhs_runtime.pass168.cli import REQUIRED_CLI_OPERATIONS
+          from hhs_runtime.pass168.public_service import Pass168ParameterCircuitService
+
+          def pairs(routes):
+              out=set()
+              for route in routes:
+                  path=getattr(route,'path','')
+                  for method in getattr(route,'methods',set()) or set():
+                      if method not in {'HEAD','OPTIONS'}:
+                          out.add((method,path))
+              return out
+
+          router=build_pass168_parameter_circuit_router()
+          route_pairs=pairs(router.routes)
+          assert len(route_pairs)==18
+          app=create_app()
+          openapi_paths=app.openapi()['paths']
+          for method,path in route_pairs:
+              assert path in openapi_paths, (method,path)
+              assert method.lower() in openapi_paths[path], (method,path)
+          assert len(REQUIRED_CLI_OPERATIONS)==21
+
+          rows=[]
+          for index in range(12):
+              service=Pass168ParameterCircuitService(f'/tmp/pass219-i166-repeat-{index}')
+              status=service.status()
+              rows.append(json.dumps(status,sort_keys=True,separators=(',',':')))
+          assert len(set(rows))==1
+          receipt=hashlib.sha256(rows[0].encode()).hexdigest()
+          validation=json.loads(Path('artifacts/pass219/i166-public/cli_validate.json').read_text())
+          bench=json.loads(Path('artifacts/pass219/i166-public/cli_benchmark.json').read_text())
+          assert validation['result']=='PASS'
+          assert validation['native']['status']==0
+          assert validation['ledger_replay_verified'] is True
+          assert bench['repeats']==12
+          assert bench['deterministic_receipt'] is True
+          evidence={
+              'schema':'HHS_PASS219_I166_PASS168_PUBLIC_SURFACE_EVIDENCE_V1',
+              'result':'PASS',
+              'cli_logical_operations':21,
+              'cli_complete':True,
+              'http_required':18,
+              'http_complete':True,
+              'canonical_gateway':'hhs_backend.public_api_server',
+              'canonical_gateway_binding_count':1,
+              'second_fastapi_app_created':False,
+              'native_commit_surface':'hhs_pass168_commit_candidate',
+              'candidate_exact_execution_preflight_bound':True,
+              'durable_ledger_replayed_through_native_authority':True,
+              'status_repeat_count':12,
+              'deterministic_status_receipt_sha256':receipt,
+              'benchmark_repeats':bench['repeats'],
+              'benchmark_deterministic_receipt':bench['deterministic_receipt'],
+              'benchmark_record_hash216':bench['record_hash216'],
+              'floating_point_canonical_authority':False,
+              'new_parallel_vm81_authority':False,
+              'fallback_used':False,
+          }
+          Path('artifacts/pass219/i166-public/public_surface_evidence.json').write_text(
+              json.dumps(evidence,sort_keys=True,indent=2)+'\n',encoding='utf-8'
+          )
+          print(json.dumps(evidence,sort_keys=True))
+          PY
+          python -m json.tool artifacts/pass219/i166-public/public_surface_evidence.json >/dev/null
+
+      - name: Upload I166 public evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i166-pass168-public-${{ github.sha }}
+          path: |
+            artifacts/pass219/i166-public/cli_validate.json
+            artifacts/pass219/i166-public/cli_benchmark.json
+            artifacts/pass219/i166-public/public_surface_evidence.json
+          if-no-files-found: error
+          retention-days: 90
