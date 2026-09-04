@@ -1,0 +1,91 @@
+{
+  "schema": "PASS_219_I150_PASS176_FINAL_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration150-pass176-frozen-ide-reconciliation",
+  "classification": "HHS_PASS176_I150_FINAL_RESTARTABLE_TERMINAL_SEAL",
+  "main_at_final_validation": "e39985e804d04a3447bf3442a68f646decd3c601",
+  "merge_to_main_performed": false,
+  "pass176_terminal": {
+    "head_sha": "c2cb9ca92e21721581d896fdd53f226d6d055f57",
+    "workflow_run_id": 33766747861,
+    "terminal_pass176_completion": true,
+    "terminal_receipt_sha256": "f43d26f4932074d8de5e001a4de4dee2435ce216c4112c4612547f63ef771173",
+    "artifact_id": 9897922155,
+    "artifact_sha256": "b20edde645e16c13eb7629778e3bce3a5f4293684abb605c722a8254cdc86282",
+    "runtime_os_public_root": "/",
+    "pass176_preservation_surface": "/pass176-ide/",
+    "frontend_canonical_authority": false,
+    "singleton_vm81_admission_preserved": true,
+    "hash72_commit_streams": 1,
+    "hash216_mutation_authority": false
+  },
+  "post_binding_validation": {
+    "workflow": "Pass 219 I150 Pass 176 Cumulative Binding",
+    "workflow_run_id": 33820709396,
+    "run_number": 9,
+    "run_attempt": 1,
+    "head_sha": "9799de2f335e8ff9f18658d70bb9acbe11e6ed3a",
+    "tree_sha": "1441ca3a3287e163a93d2a57fa5c040f2a5f6153",
+    "conclusion": "success",
+    "all_required_stages_green": true,
+    "required_stages": [
+      "Verify frozen terminal evidence",
+      "Build aggregate exact runtime",
+      "Build Runtime OS projection",
+      "Pass 176 Node and Python regression",
+      "Rehydrate exact-green Pass 176 terminal artifact",
+      "Pass 176 frozen browser and current verifier evidence",
+      "Run I150 cumulative membrane",
+      "Preserve global defaults latency and multimodal generalization",
+      "Build native conformance objects",
+      "Pass 176 C binding conformance",
+      "Pass 176 C++ binding conformance",
+      "Global-default C conformance",
+      "Global-default C++ conformance",
+      "Emit cumulative receipt"
+    ],
+    "node_tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "python_tests": {
+      "passed": 26,
+      "skipped": 1,
+      "failed": 0
+    },
+    "global_defaults": {
+      "wired_ceiling": 218,
+      "wired_floor": 176,
+      "binding_count": 45,
+      "pass176": "CUMULATIVELY_WIRED_TERMINAL"
+    }
+  },
+  "cumulative_receipt": {
+    "repository_path": "evidence/pass176/i150/PASS_219_I150_PASS176_CUMULATIVE_VALIDATION_RECEIPT.json",
+    "artifact_inner_file_sha256": "0d5ab4725deacc62e33af1c515601388e1b48801e82841a118bb865576d30fcd",
+    "receipt_hash72": "yKX0vK7m*t*Mgnh5-YoDGBJFpUIxl2gIS+/q<Z<(-BDxZfnlhlKM+ECIM211vpdTgwaruAZn",
+    "archive_hash216": "8XqMzQeBDvdSy*j6!ssnAIiw5FZQNz)bTuR?U+Iv(FEHqMJVhmKlOH0eTHkktttxJ3ZqHjc4NHe9uQG/L3l09WCwS9?15Ba5h/LEtxWmN<dx9UWn(OSmGWcQkL<xFcy!od*x99aFm4-PeKG?*qBAJP>0OdR3HhyixcV833-OK*Fu/D2yx*QFtaoQ-?1y4>42!JLF>nvtptSU?MKQMa99Dxlr"
+  },
+  "post_binding_artifact": {
+    "artifact_id": 9918182503,
+    "name": "pass219-i150-pass176-cumulative-binding",
+    "size_in_bytes": 1445,
+    "digest": "sha256:83039d68e6715bea0545a29105b19bb90e81c81b63446f1646f969440461cd49",
+    "expired": false,
+    "created_at": "2026-09-04T00:12:12Z",
+    "expires_at": "2026-10-04T00:12:11Z"
+  },
+  "closure": {
+    "cumulative_pass176_binding_added": true,
+    "terminal_pass176_completion": true,
+    "post_binding_validation_green": true,
+    "global_default_floor_176_count_45": true,
+    "exact_aggregate_abi_green": true,
+    "pass176_c_cpp_binding_green": true,
+    "global_default_c_cpp_validator_green": true,
+    "global_latency_policy_green": true,
+    "multimodal_generalization_green": true,
+    "merge_performed": false,
+    "authoritative_main_verification": false
+  }
+}
