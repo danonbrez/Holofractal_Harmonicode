@@ -1,3 +1,4 @@
+# Revalidation trigger after exact 3x3 cofactor repair.
 name: Pass 219 I166 Pass168 Terminal Parent Closure
 
 on:
