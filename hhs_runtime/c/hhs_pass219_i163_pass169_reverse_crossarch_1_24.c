@@ -14,6 +14,12 @@ extern int hhs219_i163_hash72_ring_reverse_witness(
     const char receipt_hash72[HHS_EXACT_PASS219_I163_HASH72_STRLEN]
 );
 
+extern int hhs219_i163_vm81_snapshot_reverse_witness(
+    char out_receipt_hash72[HHS_EXACT_PASS219_I163_HASH72_STRLEN],
+    char out_hash216_identity[HHS_EXACT_PASS219_I163_HASH216_STRLEN],
+    uint16_t *out_vm5184_address
+);
+
 static uint32_t hhs219_i163_version_word(void) {
     return (HHS_EXACT_PASS219_I163_VERSION_MAJOR << 16U) |
            (HHS_EXACT_PASS219_I163_VERSION_MINOR << 8U) |
@@ -68,7 +74,9 @@ HHSExactStatus hhs_exact_pass219_i163_descriptor(
     out_descriptor->version = hhs219_i163_version_word();
     out_descriptor->pass169_reverse_runtime_required = 1U;
     out_descriptor->pass159_reverse_api_used = 1U;
+    out_descriptor->pass159_reverse_is_transition_receipt = 1U;
     out_descriptor->hash72_reverse_state_api_used = 1U;
+    out_descriptor->vm81_transaction_snapshot_restore_required = 1U;
     out_descriptor->interpreter_compiler_equality_required = 1U;
     out_descriptor->prior_committed_state_restoration_required = 1U;
     out_descriptor->cross_architecture_receipt_identity_required = 1U;
@@ -98,6 +106,7 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     HHS159Interpreter *interpreter = NULL;
     HHS159Receipt *forward = NULL;
     HHS159Receipt *reverse = NULL;
+    HHS159Receipt *reverse_repeat = NULL;
     HHS159Receipt *repeat = NULL;
     HHS159Status status;
     HHS159ByteSpan source_span;
@@ -186,11 +195,7 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     out_execution->forward_commit_verified = 1U;
     out_execution->forward_vm81_steps = forward->vm81_steps;
     memcpy(out_execution->forward_semantic_root_hash216,
-           forward->semantic_root,
-           sizeof(out_execution->forward_semantic_root_hash216));
-    memcpy(out_execution->prior_semantic_root_hash216,
-           forward->base.parent_root,
-           sizeof(out_execution->prior_semantic_root_hash216));
+           forward->semantic_root, sizeof(out_execution->forward_semantic_root_hash216));
     memcpy(out_execution->forward_receipt_hash72,
            forward->hash72, sizeof(out_execution->forward_receipt_hash72));
     out_execution->forward_receipt_hash72_valid =
@@ -206,16 +211,22 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     status = hhs159_reverse(context, forward, &reverse);
     if (status != HHS159_STATUS_OK || reverse == NULL ||
         hhs159_artifact_kind(reverse) != HHS159_ARTIFACT_RECEIPT ||
-        reverse->status != HHS159_STATUS_OK) {
+        reverse->status != HHS159_STATUS_OK ||
+        reverse->committed != 0U ||
+        strcmp(reverse->phase, "REVERSE_EXECUTED") != 0 ||
+        strcmp(reverse->base.source_root, forward->base.source_root) != 0 ||
+        strcmp(reverse->base.parent_root, forward->base.hash216) != 0 ||
+        reverse->vm81_steps != forward->vm81_steps ||
+        strcmp(reverse->semantic_root, forward->semantic_root) == 0) {
         out_execution->decision = HHS_EXACT_PASS219_I163_REJECTED;
         out_execution->reason = HHS_EXACT_PASS219_I163_REASON_REVERSE_RUNTIME;
         goto cleanup;
     }
     out_execution->reverse_runtime_verified = 1U;
+    out_execution->reverse_transition_receipt_verified = 1U;
     out_execution->reverse_vm81_steps = reverse->vm81_steps;
     memcpy(out_execution->reverse_semantic_root_hash216,
-           reverse->semantic_root,
-           sizeof(out_execution->reverse_semantic_root_hash216));
+           reverse->semantic_root, sizeof(out_execution->reverse_semantic_root_hash216));
     memcpy(out_execution->reverse_receipt_hash72,
            reverse->hash72, sizeof(out_execution->reverse_receipt_hash72));
     out_execution->reverse_receipt_hash72_valid =
@@ -228,15 +239,32 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
         goto cleanup;
     out_execution->reverse_receipt_hash216_valid = 1U;
 
-    out_execution->reverse_restored_prior_semantic_root =
-        memcmp(out_execution->reverse_semantic_root_hash216,
-               out_execution->prior_semantic_root_hash216,
-               HHS_EXACT_PASS219_I163_HASH216_LEN) == 0 ? 1U : 0U;
-    if (out_execution->reverse_restored_prior_semantic_root != 1U) {
+    status = hhs159_reverse(context, forward, &reverse_repeat);
+    if (status != HHS159_STATUS_OK || reverse_repeat == NULL ||
+        reverse_repeat->status != HHS159_STATUS_OK ||
+        strcmp(reverse_repeat->semantic_root, reverse->semantic_root) != 0 ||
+        strcmp(reverse_repeat->hash72, reverse->hash72) != 0) {
         out_execution->decision = HHS_EXACT_PASS219_I163_REJECTED;
-        out_execution->reason = HHS_EXACT_PASS219_I163_REASON_PRIOR_STATE_MISMATCH;
+        out_execution->reason = HHS_EXACT_PASS219_I163_REASON_REVERSE_RUNTIME;
         goto cleanup;
     }
+    out_execution->reverse_transition_deterministic = 1U;
+
+    if (!hhs219_i163_vm81_snapshot_reverse_witness(
+            out_execution->vm81_receipt_hash72,
+            out_execution->vm81_hash216_identity,
+            &out_execution->vm5184_address) ||
+        out_execution->vm5184_address != 1U ||
+        strcmp(out_execution->vm81_receipt_hash72,
+               "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ") != 0 ||
+        strcmp(out_execution->vm81_hash216_identity,
+               "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18") != 0) {
+        out_execution->decision = HHS_EXACT_PASS219_I163_REJECTED;
+        out_execution->reason = HHS_EXACT_PASS219_I163_REASON_VM81_PRIOR_STATE_RESTORE;
+        goto cleanup;
+    }
+    out_execution->vm81_snapshot_reverse_verified = 1U;
+    out_execution->prior_committed_state_restored = 1U;
 
     memset(&compare_result, 0, sizeof(compare_result));
     compare_result.header.struct_size = (uint32_t)sizeof(compare_result);
@@ -287,6 +315,8 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
 cleanup:
     if (repeat != NULL)
         hhs159_receipt_release(repeat);
+    if (reverse_repeat != NULL)
+        hhs159_receipt_release(reverse_repeat);
     if (reverse != NULL)
         hhs159_receipt_release(reverse);
     if (forward != NULL)
