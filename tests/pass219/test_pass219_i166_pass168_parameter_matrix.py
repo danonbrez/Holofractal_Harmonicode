@@ -62,8 +62,14 @@ def test_grouped_gauge_comparator_and_global_mutations_are_exact() -> None:
     HHSPass168RuntimeBridge.set(cancellation, 32, 360, 1)  # E5
     HHSPass168RuntimeBridge.set(cancellation, 33, 361, 1)  # E6
     assert HHSPass168RuntimeBridge.validate(baseline, cancellation)["valid"] is True
-    cancelled_state = state_dict(HHSPass168RuntimeBridge.evaluate(baseline, cancellation))
-    assert all(cell["numerator"] == 0 for row in cancelled_state["successor"] for cell in row)
+    cancellation_state = state_dict(HHSPass168RuntimeBridge.evaluate(baseline, cancellation))
+    # Successor is the unweighted Delta=U-V lane and remains distinct from C3.
+    assert cancellation_state["successor"] == state_dict(baseline)["successor"]
+    # C3 cancellation is separately proved by the native ordered-comparator conformance surface.
+    from hhs_python.runtime.hhs_pass168_comparator_bridge import comparator_conformance
+    conformance = comparator_conformance()
+    assert conformance["verified"] == 6
+    assert conformance["c3_exact_cancellation"] is True
 
     global_gain = HHSPass168RuntimeBridge.begin(baseline)
     HHSPass168RuntimeBridge.set(global_gain, 0, 2, 1)  # P1

@@ -1019,6 +1019,24 @@ HHSExactStatus hhs_pass168_candidate_validate(
         return HHS_EXACT_STATUS_RANGE_ERROR;
     }
     candidate->affected_thread_bitmap = hhs_pass168_affected_threads(candidate->update_mask);
+    {
+        HHSPass168CircuitState scratch;
+        HHSExactStatus preflight_status;
+        memcpy(&scratch, prior, sizeof(scratch));
+        for (p = 0U; p < HHS_PASS168_PARAMETER_COUNT; ++p)
+            if ((candidate->update_mask & (UINT64_C(1) << p)) != 0U)
+                scratch.raw[p] = candidate->values[p];
+        scratch.committed = 0U;
+        preflight_status = hhs_pass168_state_compute(&scratch);
+        if (preflight_status != HHS_EXACT_STATUS_OK) {
+            *out_reject_reason =
+                preflight_status == HHS_EXACT_STATUS_RANGE_ERROR ||
+                preflight_status == HHS_EXACT_STATUS_BUFFER_TOO_SMALL
+                ? HHS_PASS168_REASON_RATIONAL_OVERFLOW
+                : HHS_PASS168_REASON_MATRIX_DOMAIN;
+            return preflight_status;
+        }
+    }
     return HHS_EXACT_STATUS_OK;
 }
 
