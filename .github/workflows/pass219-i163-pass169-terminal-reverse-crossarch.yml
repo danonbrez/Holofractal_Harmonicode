@@ -224,6 +224,7 @@ jobs:
 
       - name: Preserve I161 typed closure dependency regression
         run: |
+          rm -f hhs_runtime/builds/libhhs_runtime.so
           PYTHONPATH=. python -m pytest -q --tb=short \
             tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
 
