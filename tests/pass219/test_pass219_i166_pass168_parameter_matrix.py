@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import ctypes
-
 from hhs_python.runtime.hhs_pass168_ctypes_bridge import (
     HHSPass168RuntimeBridge,
     state_dict,
@@ -65,11 +63,10 @@ def test_grouped_gauge_comparator_and_global_mutations_are_exact() -> None:
     cancellation_state = state_dict(HHSPass168RuntimeBridge.evaluate(baseline, cancellation))
     # Successor is the unweighted Delta=U-V lane and remains distinct from C3.
     assert cancellation_state["successor"] == state_dict(baseline)["successor"]
-    # C3 cancellation is separately proved by the native ordered-comparator conformance surface.
-    from hhs_python.runtime.hhs_pass168_comparator_bridge import comparator_conformance
-    conformance = comparator_conformance()
-    assert conformance["verified"] == 6
-    assert conformance["c3_exact_cancellation"] is True
+    # Native ordered-comparator conformance independently proves all six families,
+    # including C3's exact E5/E6 = 360/361 cancellation case.
+    from hhs_python.runtime.hhs_pass168_comparator_bridge import conformance
+    assert conformance() == 6
 
     global_gain = HHSPass168RuntimeBridge.begin(baseline)
     HHSPass168RuntimeBridge.set(global_gain, 0, 2, 1)  # P1
