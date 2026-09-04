@@ -4216,6 +4216,23 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="TEN_FROZEN_JOINS_TWO_I160_SOURCE_BOUND_BINDINGS_ONE_REMAINING_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR",
     )
 
+    registry.register_function(
+        name="runtime.pass219.complete_monolithic_boundary_executor",
+        module="hhs_runtime.pass219.complete_monolithic_boundary_executor",
+        function="i161_complete_monolithic_boundary_self_test",
+        service_type="pass219_exact_complete_monolithic_boundary_executor",
+        description="Executes the I161 complete monolithic boundary as typed CLOSURE_EQ over exact scalar-zero phase and renewed-unit closure witnesses. Host 0/0, host scalar 0^4, ordinary scalar A=B, float authority, VM81 mutation, Hash72 mint, and Hash216 persistence remain forbidden; downstream Pass169 VM81 exact symbolic execution remains a separate gate.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_CONTRACT_V1","HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_CONTRACT_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
+        witness_schemas=["HHS_PASS219_I161_TYPED_ZERO_RENEWED_UNIT_PROFILE_V1","HHS_PASS219_I161_SCALAR_ZERO_PHASE_WITNESS_V1","HHS_PASS219_I161_RENEWED_UNIT_CLOSURE_WITNESS_V1","HHS_PASS219_I161_TYPED_MONOLITHIC_BOUNDARY_WITNESS_V1"],
+        validators=["verify_i161_typed_zero_renewed_unit_profile","prove_scalar_zero_phase_relation","prove_renewed_unit_closure_relation","prove_complete_monolithic_boundary","execute_i161_complete_monolithic_boundary","i161_complete_monolithic_boundary_self_test"],
+        guards=["inherited_pass62_typed_equality_frames","inherited_pass129_a2_and_delta_idempotent_closure","scalar_zero_xyzw_I_I3_projection","typed_xy_over_zw_closure_quotient_no_0_over_0","typed_zero_fourth_phase_closure_no_host_pow","scalar_zero_one_noncollapse","source_boundary_structure_preserved","right_scalar_zero_diagnostic_only","closure_eq_not_scalar_equality","all_nine_non_boundary_joins_proved","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["FLOAT_CANONICAL_AUTHORITY_FORBIDDEN","HOST_ZERO_DIVISION_FORBIDDEN","HOST_ZERO_FOURTH_POWER_FORBIDDEN","ORDINARY_SCALAR_BOUNDARY_EQUALITY_FORBIDDEN","I160_EXPECTED_9_1_0_BOUNDARY","EDGE8_FAIL_CLOSED_BOUNDARY_REQUIRED","RIGHT_CLOSURE_NUMERATOR_ZERO_REQUIRED","ALL_NON_BOUNDARY_JOINS_MUST_BE_PROVED","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_TYPED_CLOSURE_EQ_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_ALL_RESOLVED_NEXT_GATE_PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION",
+    )
+
     return registry
 
 
