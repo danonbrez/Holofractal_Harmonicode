@@ -1,0 +1,116 @@
+name: Pass 219 I166 Matrix Inverse Repair Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+    paths:
+      - '.github/workflows/pass219-i166-matrix-inverse-repair-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i166-pass168-terminal-parent-closure
+          fetch-depth: 0
+      - name: Replace cyclic cofactor inverse with explicit cofactors
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc')
+          text=path.read_text(encoding='utf-8')
+          start=text.index('static HHSExactStatus hhs_pass168_matrix_inverse(')
+          end=text.index('\nstatic HHSExactStatus hhs_pass168_matrix_power_q(', start)
+          replacement=r'''static HHSExactStatus hhs_pass168_matrix_inverse(
+              const HHSPass168Matrix3 *m,
+              HHSPass168Matrix3 *out
+          ) {
+              HHSPass168Matrix3 cof;
+              HHSPass168Matrix3 adj;
+              HHSPass168Rational det;
+              HHSExactStatus status;
+              size_t i;
+              static const uint8_t row_a[9] = {1,1,1,0,0,0,0,0,0};
+              static const uint8_t row_b[9] = {2,2,2,2,2,2,1,1,1};
+              static const uint8_t col_a[9] = {1,0,0,1,0,0,1,0,0};
+              static const uint8_t col_b[9] = {2,2,1,2,2,1,2,2,1};
+              static const int8_t sign[9] = {1,-1,1,-1,1,-1,1,-1,1};
+              if (m == NULL || out == NULL)
+                  return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+              status = hhs_pass168_matrix_det(m, &det);
+              if (status != HHS_EXACT_STATUS_OK || det.numerator == 0)
+                  return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+              for (i = 0U; i < 9U; ++i) {
+                  uint8_t r = (uint8_t)(i / 3U);
+                  uint8_t c = (uint8_t)(i % 3U);
+                  uint8_t r1 = row_a[i];
+                  uint8_t r2 = row_b[i];
+                  uint8_t c1 = col_a[i];
+                  uint8_t c2 = col_b[i];
+                  uint8_t other_c1;
+                  uint8_t other_c2;
+                  HHSPass168Rational p1;
+                  HHSPass168Rational p2;
+                  HHSPass168Rational minor;
+                  (void)r;
+                  if (c == 0U) { other_c1 = 1U; other_c2 = 2U; }
+                  else if (c == 1U) { other_c1 = 0U; other_c2 = 2U; }
+                  else { other_c1 = 0U; other_c2 = 1U; }
+                  (void)c1;
+                  (void)c2;
+                  status = hhs_pass168_rat_mul(m->v[3U * r1 + other_c1], m->v[3U * r2 + other_c2], &p1);
+                  if (status != HHS_EXACT_STATUS_OK) return status;
+                  status = hhs_pass168_rat_mul(m->v[3U * r1 + other_c2], m->v[3U * r2 + other_c1], &p2);
+                  if (status != HHS_EXACT_STATUS_OK) return status;
+                  status = hhs_pass168_rat_sub(p1, p2, &minor);
+                  if (status != HHS_EXACT_STATUS_OK) return status;
+                  if (sign[i] < 0)
+                      minor.numerator = -minor.numerator;
+                  cof.v[i] = minor;
+              }
+              for (i = 0U; i < 9U; ++i) {
+                  size_t r = i / 3U;
+                  size_t c = i % 3U;
+                  adj.v[i] = cof.v[3U * c + r];
+              }
+              for (i = 0U; i < 9U; ++i) {
+                  status = hhs_pass168_rat_div(adj.v[i], det, &out->v[i]);
+                  if (status != HHS_EXACT_STATUS_OK) return status;
+              }
+              return HHS_EXACT_STATUS_OK;
+          }
+          '''
+          # Use clearer row complements; strip unused auxiliary tables after constructing replacement.
+          replacement=replacement.replace(
+              '              static const uint8_t row_a[9] = {1,1,1,0,0,0,0,0,0};\n'
+              '              static const uint8_t row_b[9] = {2,2,2,2,2,2,1,1,1};\n'
+              '              static const uint8_t col_a[9] = {1,0,0,1,0,0,1,0,0};\n'
+              '              static const uint8_t col_b[9] = {2,2,1,2,2,1,2,2,1};\n',
+              '              static const uint8_t row_a[9] = {1,1,1,0,0,0,0,0,0};\n'
+              '              static const uint8_t row_b[9] = {2,2,2,2,2,2,1,1,1};\n'
+          ).replace(
+              '                  uint8_t c1 = col_a[i];\n'
+              '                  uint8_t c2 = col_b[i];\n', ''
+          ).replace(
+              '                  (void)c1;\n'
+              '                  (void)c2;\n', ''
+          )
+          path.write_text(text[:start]+replacement+text[end:], encoding='utf-8')
+          PY
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/i166-exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            tools/pass219/pass219_i166_pass168_exact_probe.c /tmp/i166-exact.o -o /tmp/i166-probe
+          /tmp/i166-probe >/tmp/i166.json
+          python -m json.tool /tmp/i166.json >/dev/null
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
+          git commit -m 'Pass 219 I166: repair exact 3x3 cofactor inverse [skip ci]'
+          git push origin HEAD:agent/pass219-i166-pass168-terminal-parent-closure
