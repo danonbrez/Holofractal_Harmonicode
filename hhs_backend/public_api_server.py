@@ -22,6 +22,7 @@ from hhs_runtime.pass190.completion import (
     Pass190CompletionError,
 )
 from hhs_runtime.pass190.shell import lower_shell_command
+from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
 from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 
 APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
@@ -282,6 +283,7 @@ def create_app(
             except RuntimeError:
                 pass
 
+    app.include_router(build_pass168_parameter_circuit_router())
     app.include_router(build_pass169_algebra_router(provider))
 
     return app
