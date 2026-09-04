@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_169_SOURCE_MANIFEST_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "canonical_corpus": {
+    "required_path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "present": false,
+    "reconstruction_from_partial_fixtures_authorized": false
+  },
+  "recoverable_exact_fixtures": [
+    "contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode",
+    "contracts/pass219/PASS_219_MONOLITHIC_UQCEL_NATIVE_VERBATIM_1_20.harmonicode",
+    "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "contracts/pass219/PASS_219_DENOMINATOR_MAGNITUDE_PROJECTION_1_21_8.harmonicode"
+  ],
+  "normative_contract": "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME.md",
+  "candidate_source_ingress": "NONCANONICAL_EXACT_SOURCE_INGRESS",
+  "candidate_source_identity": "sha256_of_exact_utf8_bytes",
+  "candidate_source_may_replace_canonical_corpus": false,
+  "terminal_source_preservation_verified": false
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_169_HASH72_RECEIPT_SCHEMA_V1",
+  "type": "object",
+  "required": ["contract_id", "pass_number", "source_hash72", "source_hash216", "prior_VM81_hash72", "operation_id", "constraint_graph_hash216", "VM81_admission_result", "commit_result", "next_VM81_hash72", "replay_result", "receipt_hash72"],
+  "properties": {
+    "contract_id": {"const": "HHS-P169-HSAE-VM81-ESCPR"},
+    "pass_number": {"const": 169},
+    "source_hash72": {"type": "string"},
+    "source_hash216": {"type": "string"},
+    "prior_VM81_hash72": {"type": "string"},
+    "operation_id": {"type": "string"},
+    "constraint_graph_hash216": {"type": "string"},
+    "VM81_admission_result": {"type": "string"},
+    "commit_result": {"type": "string"},
+    "next_VM81_hash72": {"type": "string"},
+    "replay_result": {"type": "string"},
+    "receipt_hash72": {"type": "string"}
+  },
+  "additionalProperties": true
+}

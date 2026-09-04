@@ -22,6 +22,7 @@ from hhs_runtime.pass190.completion import (
     Pass190CompletionError,
 )
 from hhs_runtime.pass190.shell import lower_shell_command
+from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 
 APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
 _DEFAULT_CONTEXT: Pass190CompletionContext | None = None
@@ -280,6 +281,8 @@ def create_app(
                 await websocket.close()
             except RuntimeError:
                 pass
+
+    app.include_router(build_pass169_algebra_router(provider))
 
     return app
 

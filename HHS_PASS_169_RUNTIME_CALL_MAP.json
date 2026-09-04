@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_PASS_169_RUNTIME_CALL_MAP_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "pass159_calls": ["hhs159_context_create", "hhs159_source_open_bytes", "hhs159_lex", "hhs159_parse_cst", "hhs159_build_ast", "hhs159_typecheck", "hhs159_build_constraint_graph", "hhs159_lower_hir", "hhs159_lower_vmir", "hhs159_interpret", "hhs159_execute", "hhs159_reverse", "hhs159_compare_interpreter_compiler", "hhs159_get_receipt", "hhs159_get_hash216"],
+  "vm81_calls": ["hhs_vm_init", "hhs_vm_step", "hhs_vm_run", "hhs_vm_get_receipt", "hhs_vm_current_hash72", "hhs_vm_previous_hash72"],
+  "sealed_candidate_execution_binding": "hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c",
+  "reverse_crossarch_binding": "hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c",
+  "public_service": "hhs_runtime.pass169.public_service.Pass169AlgebraService",
+  "cli": "hhs_runtime.pass169.cli",
+  "http_router": "hhs_backend.pass169_algebra_routes",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "public_mutation_before_corpus": "FAIL_CLOSED",
+  "host_language_substitute_evaluator": false
+}

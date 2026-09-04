@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PASS219_I165_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I165",
+  "classification": "FEATURE_GREEN_PASS169_PUBLIC_SURFACE_AND_NONCORPUS_ARTIFACT_CLOSURE",
+  "base_main": "33fdd71c6bf04af4e3cfe0b86ce32dbdb0b7cf7d",
+  "branch": "agent/pass219-i165-pass169-public-surface-artifact-closure",
+  "validated_functional_head": "ac73dbf8931f44d4117587c6505e44124b8a4f55",
+  "fixed_resolution": "72^42=5184^21",
+  "canonical_gateway_patch": {
+    "temporary_workflow_run": 33884922868,
+    "patch_commit": "548bd3195f357ffbd165a6b59d44da62827db29e",
+    "temporary_workflow_removed_at": "e5c2cc045f9b0aa6dd00bc25cd4f5daa6325793b",
+    "router_composed_exactly_once": true,
+    "second_fastapi_application": false,
+    "second_vm81_authority": false
+  },
+  "dependency_scoped_validation": {
+    "workflow": "Pass 219 I165 Pass169 Public Surface Artifact Closure",
+    "run_id": 33885806855,
+    "job_id": 101065153766,
+    "conclusion": "success",
+    "python": "3.11.16",
+    "parse_compile": "success",
+    "canonical_gateway_guard": "success",
+    "pytest": {
+      "passed": 6,
+      "failed": 0,
+      "warnings": 2,
+      "duration_seconds": 5.08,
+      "warnings_detail": [
+        "PytestConfigWarning: Unknown config option: asyncio_mode",
+        "StarletteDeprecationWarning: TestClient httpx compatibility warning"
+      ]
+    },
+    "cli_fail_closed_validation": "success",
+    "i164_reconciliation_after_i165": "success",
+    "artifact_upload": "success"
+  },
+  "public_surfaces": {
+    "cli_required": 20,
+    "cli_complete": true,
+    "http_required": 17,
+    "http_complete": true,
+    "canonical_gateway": "hhs_backend.public_api_server:app",
+    "shared_service": "hhs_runtime.pass169.public_service.Pass169AlgebraService"
+  },
+  "source_ingress": {
+    "candidate_exact_utf8_sha256": true,
+    "candidate_classification": "NONCANONICAL_EXACT_SOURCE_INGRESS",
+    "candidate_may_replace_canonical_corpus": false,
+    "canonical_corpus_present": false,
+    "canonical_execution_without_corpus": "FAIL_CLOSED"
+  },
+  "artifact_closure": {
+    "contract_required_root_artifacts_total": 18,
+    "missing": ["HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode"],
+    "noncorpus_required_artifacts_present": 17,
+    "completion_receipt_terminal_verified": false
+  },
+  "reconciled_blockers": [
+    "PASS169_CANONICAL_CORPUS_ABSENT",
+    "PASS169_REQUIRED_ARTIFACT_SET_INCOMPLETE",
+    "PASS168_TERMINAL_PARENT_RECEIPT_UNRESOLVED"
+  ],
+  "removed_blockers": [
+    "PASS169_REQUIRED_CLI_SURFACE_INCOMPLETE",
+    "PASS169_REQUIRED_HTTP_SURFACE_INCOMPLETE"
+  ],
+  "determinism": {
+    "status_repeat_count": 12,
+    "deterministic_status_receipt_sha256": "c4c2e6c3828fa9aa65369af3d76258ffc81d7a55b6db6da1c3c9cbaa98dbd119"
+  },
+  "artifact": {
+    "id": 9941785123,
+    "name": "pass219-i165-pass169-public-surface-ac73dbf8931f44d4117587c6505e44124b8a4f55",
+    "size_bytes": 651,
+    "digest": "sha256:0a892a0fc3454e9df2bf17876bafaf9b59a97338906fe9764ab6e4002b020a52",
+    "expired": false
+  },
+  "authority": {
+    "pass169_terminal_verified": false,
+    "pass168_parent_resolved": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "partial_fixture_corpus_promotion": false
+  },
+  "superseded_validation_runs": [
+    {
+      "run_id": 33885451043,
+      "reason": "Route cardinality test depended on internal FastAPI route method representation; runtime composition and five other tests passed."
+    },
+    {
+      "run_id": 33885671873,
+      "reason": "First compatibility repair still used internal route objects; replaced with canonical OpenAPI path-table proof. Runtime semantics unchanged."
+    }
+  ],
+  "next_boundary": "PASS169_CANONICAL_CORPUS_PROVENANCE_AND_PASS168_PARENT_RESOLUTION",
+  "result": "PASS"
+}

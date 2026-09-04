@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_169_VM81_ADMISSION_SCHEMA_V1",
+  "type": "object",
+  "required": ["source_hash216", "prior_VM81_hash72", "candidate_VM81_hash72", "exactness_verified", "VM81_admission_status", "committed_VM81_hash72", "receipt_hash72", "proof_hash216"],
+  "properties": {
+    "source_hash216": {"type": "string"},
+    "prior_VM81_hash72": {"type": "string"},
+    "candidate_VM81_hash72": {"type": "string"},
+    "exactness_verified": {"type": "boolean"},
+    "VM81_admission_status": {"enum": ["ADMISSIBLE", "REJECTED", "BLOCKED"]},
+    "committed_VM81_hash72": {"type": ["string", "null"]},
+    "receipt_hash72": {"type": ["string", "null"]},
+    "proof_hash216": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

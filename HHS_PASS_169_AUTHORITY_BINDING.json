@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_169_AUTHORITY_BINDING_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "source_authority": "HARMONICODE",
+  "compiler_authority": "PASS159_HARMONICODE_TOOLCHAIN",
+  "canonical_execution_authority": "VM81",
+  "runtime_entry_authority": "INHERITED_RUNTIME_ABI_API",
+  "execution_evidence": "Hash72",
+  "proof_identity": "Hash216",
+  "public_gateway": "hhs_backend.public_api_server:app",
+  "public_service": "hhs_runtime.pass169.public_service.Pass169AlgebraService",
+  "new_vm81_authority": false,
+  "new_hash72_mint_authority": false,
+  "hash216_persistence_authority": false,
+  "floating_point_canonical_authority": false,
+  "canonical_corpus_present": false,
+  "pass168_terminal_parent_resolved": false,
+  "pass169_terminal_verified": false,
+  "classification": "IMPLEMENTATION_VERIFIED_PENDING_CANONICAL_CORPUS_AND_PASS168_PARENT"
+}
