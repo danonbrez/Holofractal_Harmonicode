@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS_169_TEST_MATRIX_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "required_families": ["source_preservation", "symbol_separation", "exact_arithmetic", "ieee_boundary", "constraint_membrane", "coupled_trajectory", "typed_zero_and_infinity", "matrix_tensor", "runtime_call_tracking", "replay_and_reversal", "cross_architecture", "cli_http_reachability"],
+  "frozen_verified": ["I161_TYPED_MONOLITHIC_CLOSURE", "I162_VM81_HASH72_HASH216_REPLAY", "I163_REVERSE_CROSSARCH"],
+  "i165_scope": ["CLI_20_OF_20_REACHABLE", "HTTP_17_OF_17_CANONICAL_GATEWAY_REACHABLE", "EXACT_NONCANONICAL_SOURCE_INGRESS", "MUTATION_FAILS_CLOSED_WITHOUT_CANONICAL_CORPUS", "NO_SECOND_FASTAPI_OR_VM81_AUTHORITY"],
+  "general_corpus_terminal_matrix_complete": false
+}
