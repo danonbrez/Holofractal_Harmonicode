@@ -61,6 +61,13 @@
     "binder_surface": "hhs_exact_pass219_pass169_bind_authority",
     "provider_selection": "I162_VERSIONED_PROVIDER_PREFERRED_I155_FALLBACK_PRESERVED"
   },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i162-pass169-vm81-exact-symbolic-execution.yml",
+    "dependency_scoped": true,
+    "repeat_benchmark_count": 12,
+    "historical_i155_fallback_compile_required": true,
+    "status": "PENDING"
+  },
   "native_proof_requirements": {
     "trust_i161_python_digest_as_native_truth": false,
     "recompute_all_ten_source_bound_joins": true,
