@@ -1,0 +1,53 @@
+name: Pass 219 I166 Public Gateway Patch Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+    paths:
+      - '.github/workflows/pass219-i166-public-gateway-patch-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i166-pass168-terminal-parent-closure
+          fetch-depth: 0
+      - name: Bind Pass168 router once to canonical public gateway
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('hhs_backend/public_api_server.py')
+          text=path.read_text(encoding='utf-8')
+          import_anchor='from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router\n'
+          import_line='from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router\n'
+          include_anchor='    app.include_router(build_pass169_algebra_router(provider))\n'
+          include_line='    app.include_router(build_pass168_parameter_circuit_router())\n'
+          if text.count(import_line) > 1 or text.count(include_line) > 1:
+              raise SystemExit('duplicate Pass168 gateway binding detected')
+          if import_line not in text:
+              if import_anchor not in text:
+                  raise SystemExit('canonical import anchor missing')
+              text=text.replace(import_anchor, import_line+import_anchor, 1)
+          if include_line not in text:
+              if include_anchor not in text:
+                  raise SystemExit('canonical include anchor missing')
+              text=text.replace(include_anchor, include_line+include_anchor, 1)
+          if text.count(import_line) != 1 or text.count(include_line) != 1:
+              raise SystemExit('Pass168 gateway binding is not exactly once')
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile hhs_backend/public_api_server.py hhs_backend/pass168_parameter_circuit_routes.py
+          test "$(grep -c 'build_pass168_parameter_circuit_router()' hhs_backend/public_api_server.py)" -eq 1
+          ! grep -En 'FastAPI\(' hhs_backend/pass168_parameter_circuit_routes.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hhs_backend/public_api_server.py
+          git commit -m 'Pass 219 I166: bind Pass168 router to canonical public gateway [skip ci]'
+          git push origin HEAD:agent/pass219-i166-pass168-terminal-parent-closure
