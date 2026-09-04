@@ -51,7 +51,26 @@ def _route_pairs(routes) -> set[tuple[str, str]]:
 def test_pass168_native_service_exact_commit_replay_and_rollback(tmp_path: Path) -> None:
     service = Pass168ParameterCircuitService(tmp_path)
     status = service.status()
-    assert status["native_self_test"]["terminal_ready"] is True
+    proof = status["native_self_test"]
+    assert proof["status"] == 0
+    assert proof["source_preserved"] is True
+    assert proof["parenthesis_parameters_registered"] == 28
+    assert proof["equality_half_gates_registered"] == 12
+    assert proof["threads_registered"] == 64
+    assert proof["raw_threads"] == 40
+    assert proof["derived_threads"] == 24
+    assert proof["cells_covered"] == 5184
+    assert proof["duplicate_addresses"] == 0
+    assert proof["inverse_address_failures"] == 0
+    assert proof["comparators_verified"] == 6
+    assert proof["sparse_dependency_updates_verified"] is True
+    assert proof["hash72_receipts_verified"] is True
+    assert proof["hash216_identity_verified"] is True
+    assert proof["rollback_verified"] is True
+    assert proof["repair_verified"] is True
+    assert proof["deterministic_replay_verified"] is True
+    assert proof["floating_point_canonical_authority"] is False
+    assert proof["fallback_used"] is False
     assert status["threads_registered"] == 64
     assert status["cells_registered"] == 5184
     assert status["single_vm81_commit_authority"] is True
@@ -69,7 +88,8 @@ def test_pass168_native_service_exact_commit_replay_and_rollback(tmp_path: Path)
     candidate_id = candidate["candidate_id"]
     validation = service.validate_candidate(candidate_id)
     assert validation["status"] == 0
-    assert validation["decision"] == 1
+    assert validation["valid"] is True
+    assert validation["reject_reason"] == 0
     evaluated = service.evaluate_candidate(candidate_id)
     assert evaluated["canonical_state_mutated"] is False
 
@@ -114,6 +134,7 @@ def test_pass168_sparse_topology_and_comparator_surface(tmp_path: Path) -> None:
     comparator = service.compare("C3")
     assert comparator["comparator_id"] == "C3"
     assert comparator["ordered"] is True
+    assert comparator["conformance_verified_count"] == 6
     assert comparator["floating_point_canonical_authority"] is False
 
 
@@ -153,6 +174,7 @@ def test_pass168_http_executes_native_service_without_float_authority(tmp_path: 
         validation = client.post(f"/v1/parameter-circuit/candidates/{candidate_id}/validate")
         assert validation.status_code == 200
         assert validation.json()["status"] == 0
+        assert validation.json()["valid"] is True
         committed = client.post(f"/v1/parameter-circuit/candidates/{candidate_id}/commit")
         assert committed.status_code == 200
         transition_id = committed.json()["transition_id"]
