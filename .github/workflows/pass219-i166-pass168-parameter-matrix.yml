@@ -1,0 +1,53 @@
+name: Pass 219 I166 Pass168 Parameter Matrix
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+      - main
+    paths:
+      - 'tests/pass219/test_pass219_i166_pass168_parameter_matrix.py'
+      - 'hhs_python/runtime/hhs_pass168_ctypes_bridge.py'
+      - 'hhs_runtime/include/hhs_pass168_parameter_circuit_1_0.h'
+      - 'hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc'
+      - '.github/workflows/pass219-i166-pass168-parameter-matrix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-parameter-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest 'cryptography>=45.0,<47.0'
+      - name: Build full canonical runtime
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Run all-parameter exact matrix and deterministic fuzz
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i166_pass168_parameter_matrix.py
+      - name: Publish matrix scope
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass168 deterministic parameter matrix
+          - raw controls: 40 / 40
+          - exact values per control: -2, -1, 0, 1, 2, 3
+          - validation cases: 240
+          - grouped gauge/comparator/global cases: verified
+          - deterministic fixed-seed candidate fuzz cases: 256
+          - floating-point canonical authority: none
+          - canonical mutation during matrix/fuzz: none
+          EOF
