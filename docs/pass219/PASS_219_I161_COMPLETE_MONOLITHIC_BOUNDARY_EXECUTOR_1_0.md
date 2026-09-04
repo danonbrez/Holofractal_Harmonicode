@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTED / VALIDATION PENDING`
+`IMPLEMENTED / FEATURE-GREEN / GOVERNED-REGISTRY-INTEGRATED / EVIDENCE-SEALED / PR-READY`
 
 Base: `main @ 9ab5a7708d9a0332d9ec1f6b98b6cee6ac11b9dc`
 
@@ -49,9 +49,9 @@ For the frozen candidate:
 
 ```text
 x = I
- y = I^3 = -I
+y = I^3 = -I
 z = I
- w = I^3 = -I
+w = I^3 = -I
 ```
 
 therefore both:
@@ -158,7 +158,9 @@ float canonical authority
 source rewrite
 ```
 
-## Expected graph transition
+## Graph transition
+
+Validated transition:
 
 ```text
 I160: 9 PROVED / 1 UNRESOLVED / 0 REJECTED
@@ -169,7 +171,7 @@ Only edge 8 is newly resolved.
 
 ## Authority after I161
 
-I161 may assert:
+I161 asserts:
 
 ```text
 typed_join_execution_complete = true
@@ -192,9 +194,59 @@ deterministic replay verification
 
 Those remain downstream gates.
 
-## Next boundary
+## Validation seal
 
-On successful dependency-scoped validation and governed registry integration:
+The genuine fail-closed feature validation is:
+
+```text
+run 33823367993
+job 100870667515
+validated feature head 4e1ec0e1c302c1f6b149d6ae9da3b44d526c45bc
+7 passed / 0 failed / 1 pytest-config warning
+public self-test PASS
+12-repeat deterministic benchmark PASS
+```
+
+Benchmark receipts:
+
+```text
+execution  09aff788171518d6b3b1d8912e83b51a5141d9b97f0026d2afb78520f06cf2c7
+boundary   b9c277fdd0f244de971e37fefc3998974d110a3a21ce2c7f7a09c4d35bc2463e
+benchmark  dae189d75fd55da0820a166cbd393fc7282ee113fbca26b23317bbdfee9f7909
+```
+
+Artifact:
+
+```text
+ID 9919049829
+size 5064 bytes
+zip SHA256 f3ee51ee9c2a14bb9cd1c38a64e205e7315bde728cbb875cb222403ca8ed485e
+```
+
+The earlier run `33823263216` is explicitly invalid as benchmark evidence: its direct benchmark import failed and the `tee` pipeline masked that failure. The workflow was repaired with repository `PYTHONPATH`, `pipefail`, nonempty artifact checks, and JSON parsing before run `33823367993` was accepted.
+
+The governed registry integration is separately validated by:
+
+```text
+run 33823668709
+job 100871586359
+registry commit 271646906bee20805c96576a2701de22631e42c0
+service runtime.pass219.complete_monolithic_boundary_executor
+isolated governed wrapper dispatch PASS
+10 PROVED / 0 UNRESOLVED
+CLOSURE_EQ
+execution receipt 09aff788171518d6b3b1d8912e83b51a5141d9b97f0026d2afb78520f06cf2c7
+```
+
+The one-shot write-capable patch workflow was removed after the permanent registry entry was committed.
+
+Evidence record:
+
+```text
+evidence/pass219/PASS_219_I161_FEATURE_VALIDATION_33823367993.json
+```
+
+## Next boundary
 
 ```text
 PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION
