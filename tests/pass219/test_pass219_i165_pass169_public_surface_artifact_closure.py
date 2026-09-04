@@ -80,14 +80,9 @@ def test_i165_cli_contract_has_all_twenty_equivalents_and_parses() -> None:
 def test_i165_canonical_public_gateway_exposes_all_seventeen_pass169_routes() -> None:
     app = create_app(context=FakeContext())
     found = set()
-    for route in app.routes:
-        path = getattr(route, "path", None)
-        methods = getattr(route, "methods", None) or set()
-        if path is None:
-            continue
-        for method in methods:
-            normalized_method = str(getattr(method, "value", method)).upper()
-            pair = (normalized_method, path)
+    for path, path_item in app.openapi()["paths"].items():
+        for method in path_item:
+            pair = (method.upper(), path)
             if pair in EXPECTED_HTTP:
                 found.add(pair)
     assert found == EXPECTED_HTTP
