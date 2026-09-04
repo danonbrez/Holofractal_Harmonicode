@@ -86,7 +86,8 @@ def test_i165_canonical_public_gateway_exposes_all_seventeen_pass169_routes() ->
         if path is None:
             continue
         for method in methods:
-            pair = (method, path)
+            normalized_method = str(getattr(method, "value", method)).upper()
+            pair = (normalized_method, path)
             if pair in EXPECTED_HTTP:
                 found.add(pair)
     assert found == EXPECTED_HTTP
