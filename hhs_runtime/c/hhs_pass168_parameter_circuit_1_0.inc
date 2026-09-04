@@ -344,36 +344,52 @@ static HHSExactStatus hhs_pass168_matrix_inverse(
     HHSPass168Matrix3 adj;
     HHSPass168Rational det;
     HHSExactStatus status;
-    size_t r;
-    size_t c;
+    size_t i;
+    static const uint8_t row_a[9] = {1,1,1,0,0,0,0,0,0};
+    static const uint8_t row_b[9] = {2,2,2,2,2,2,1,1,1};
+    static const uint8_t col_a[9] = {1,0,0,1,0,0,1,0,0};
+    static const uint8_t col_b[9] = {2,2,1,2,2,1,2,2,1};
+    static const int8_t sign[9] = {1,-1,1,-1,1,-1,1,-1,1};
     if (m == NULL || out == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     status = hhs_pass168_matrix_det(m, &det);
     if (status != HHS_EXACT_STATUS_OK || det.numerator == 0)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    for (r = 0U; r < 3U; ++r) {
-        for (c = 0U; c < 3U; ++c) {
-            size_t r1 = (r + 1U) % 3U;
-            size_t r2 = (r + 2U) % 3U;
-            size_t c1 = (c + 1U) % 3U;
-            size_t c2 = (c + 2U) % 3U;
-            HHSPass168Rational p1, p2, minor;
-            status = hhs_pass168_rat_mul(m->v[3U * r1 + c1], m->v[3U * r2 + c2], &p1);
-            if (status != HHS_EXACT_STATUS_OK) return status;
-            status = hhs_pass168_rat_mul(m->v[3U * r1 + c2], m->v[3U * r2 + c1], &p2);
-            if (status != HHS_EXACT_STATUS_OK) return status;
-            status = hhs_pass168_rat_sub(p1, p2, &minor);
-            if (status != HHS_EXACT_STATUS_OK) return status;
-            if (((r + c) & 1U) != 0U)
-                minor.numerator = -minor.numerator;
-            cof.v[3U * r + c] = minor;
-        }
+    for (i = 0U; i < 9U; ++i) {
+        uint8_t r = (uint8_t)(i / 3U);
+        uint8_t c = (uint8_t)(i % 3U);
+        uint8_t r1 = row_a[i];
+        uint8_t r2 = row_b[i];
+        uint8_t c1 = col_a[i];
+        uint8_t c2 = col_b[i];
+        uint8_t other_c1;
+        uint8_t other_c2;
+        HHSPass168Rational p1;
+        HHSPass168Rational p2;
+        HHSPass168Rational minor;
+        (void)r;
+        if (c == 0U) { other_c1 = 1U; other_c2 = 2U; }
+        else if (c == 1U) { other_c1 = 0U; other_c2 = 2U; }
+        else { other_c1 = 0U; other_c2 = 1U; }
+        (void)c1;
+        (void)c2;
+        status = hhs_pass168_rat_mul(m->v[3U * r1 + other_c1], m->v[3U * r2 + other_c2], &p1);
+        if (status != HHS_EXACT_STATUS_OK) return status;
+        status = hhs_pass168_rat_mul(m->v[3U * r1 + other_c2], m->v[3U * r2 + other_c1], &p2);
+        if (status != HHS_EXACT_STATUS_OK) return status;
+        status = hhs_pass168_rat_sub(p1, p2, &minor);
+        if (status != HHS_EXACT_STATUS_OK) return status;
+        if (sign[i] < 0)
+            minor.numerator = -minor.numerator;
+        cof.v[i] = minor;
     }
-    for (r = 0U; r < 3U; ++r)
-        for (c = 0U; c < 3U; ++c)
-            adj.v[3U * r + c] = cof.v[3U * c + r];
-    for (r = 0U; r < 9U; ++r) {
-        status = hhs_pass168_rat_div(adj.v[r], det, &out->v[r]);
+    for (i = 0U; i < 9U; ++i) {
+        size_t r = i / 3U;
+        size_t c = i % 3U;
+        adj.v[i] = cof.v[3U * c + r];
+    }
+    for (i = 0U; i < 9U; ++i) {
+        status = hhs_pass168_rat_div(adj.v[i], det, &out->v[i]);
         if (status != HHS_EXACT_STATUS_OK) return status;
     }
     return HHS_EXACT_STATUS_OK;
