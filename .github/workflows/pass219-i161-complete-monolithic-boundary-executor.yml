@@ -27,6 +27,8 @@ permissions:
 jobs:
   validate-i161:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -63,11 +65,17 @@ jobs:
       - name: Public self-test
         run: python -m hhs_runtime.pass219.complete_monolithic_boundary_executor >/tmp/pass219_i161_self_test.json
       - name: Deterministic repeat benchmark
+        shell: bash
         run: |
+          set -o pipefail
           python benchmarks/pass219/pass219_i161_complete_monolithic_boundary_executor_benchmark.py \
             --repeats 12 --enforce | tee /tmp/pass219_i161_benchmark.json
       - name: Seal validation artifact
         run: |
+          test -s /tmp/pass219_i161_self_test.json
+          test -s /tmp/pass219_i161_benchmark.json
+          python -m json.tool /tmp/pass219_i161_self_test.json >/dev/null
+          python -m json.tool /tmp/pass219_i161_benchmark.json >/dev/null
           mkdir -p /tmp/pass219_i161_artifact
           cp /tmp/pass219_i161_self_test.json /tmp/pass219_i161_artifact/self_test.json
           cp /tmp/pass219_i161_benchmark.json /tmp/pass219_i161_artifact/benchmark.json
