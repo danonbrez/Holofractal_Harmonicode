@@ -1,0 +1,177 @@
+name: Pass 219 I163 Pass169 Terminal Reverse and Cross-Architecture Closure
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i163-pass169-terminal-reverse-crossarch
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h'
+      - 'hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c'
+      - 'tools/pass219/pass219_i163_crossarch_exact_probe.c'
+      - 'tools/pass219/pass219_i163_python_exact_probe.py'
+      - 'tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c'
+      - 'contracts/pass219/PASS_219_I163_PASS169_TERMINAL_REVERSE_CROSSARCH_1_0.json'
+      - 'benchmarks/pass219/pass219_i163_reverse_crossarch_benchmark.py'
+      - '.github/workflows/pass219-i163-pass169-terminal-reverse-crossarch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i163:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu qemu-user file
+
+      - name: Enforce I163 authority guards
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h \
+            hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
+            tools/pass219/pass219_i163_crossarch_exact_probe.c \
+            tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c
+          grep -F 'hhs159_reverse' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
+          grep -F 'hhs_hash72_reverse_state' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
+          grep -F 'pass169_terminal_contract_claimed = 0U' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
+
+      - name: Verify I162 parent remains unchanged
+        run: |
+          test "$(git hash-object hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h)" = "9a36b4d9f7e61c2d684ac22f37a102babecd04a7"
+          test "$(git hash-object hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c)" = "9c62d396a69cc3545f17c4d7e2b27b975f777a0d"
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          data=Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          assert len(data)==632
+          assert hashlib.sha256(data).hexdigest()=='3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53'
+          PY
+
+      - name: Build frozen Pass159
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i163-build -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i163-build --parallel 2
+          ctest --test-dir /tmp/pass159-i163-build --output-on-failure
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i163 artifacts/pass219/i163
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i163/exact.o
+
+      - name: Run native reverse conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -Ihhs_runtime/c \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
+            hhs_runtime/c/hhs_runtime_abi.c \
+            tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c \
+            /tmp/pass219-i163/exact.o \
+            -L/tmp/pass159-i163-build -lhhs_pass159 -lcrypto -lm \
+            -Wl,-rpath,/tmp/pass159-i163-build \
+            -o /tmp/pass219-i163/i163-reverse
+          /tmp/pass219-i163/i163-reverse \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Build and run x86-64 exact identity probe
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass219/pass219_i163_crossarch_exact_probe.c \
+            /tmp/pass219-i163/exact.o -o /tmp/pass219-i163/i163-x86
+          file /tmp/pass219-i163/i163-x86 | grep -F 'x86-64'
+          /tmp/pass219-i163/i163-x86 > artifacts/pass219/i163/x86_64_exact_record.json
+          python -m json.tool artifacts/pass219/i163/x86_64_exact_record.json >/dev/null
+
+      - name: Build and run ARM64 exact identity probe
+        run: |
+          aarch64-linux-gnu-gcc -O2 -static -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_runtime_exact_abi.c \
+            tools/pass219/pass219_i163_crossarch_exact_probe.c \
+            -o /tmp/pass219-i163/i163-arm64
+          file /tmp/pass219-i163/i163-arm64 | grep -i 'aarch64'
+          qemu-aarch64 /tmp/pass219-i163/i163-arm64 > artifacts/pass219/i163/arm64_exact_record.json
+          python -m json.tool artifacts/pass219/i163/arm64_exact_record.json >/dev/null
+
+      - name: Build shared exact ABI and run Python binding probe
+        run: |
+          mkdir -p hhs_runtime/builds
+          gcc -O2 -fPIC -shared -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o hhs_runtime/builds/libhhs_runtime.so
+          HHS_DISABLE_C_AUTOBUILD=1 python tools/pass219/pass219_i163_python_exact_probe.py \
+            artifacts/pass219/i163/python_exact_record.json >/tmp/pass219-i163/python-record.txt
+          python -m json.tool artifacts/pass219/i163/python_exact_record.json >/dev/null
+
+      - name: Enforce x86 ARM64 Python exact identity
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          paths={
+              'x86_64':Path('artifacts/pass219/i163/x86_64_exact_record.json'),
+              'arm64':Path('artifacts/pass219/i163/arm64_exact_record.json'),
+              'python':Path('artifacts/pass219/i163/python_exact_record.json'),
+          }
+          rows={name:json.loads(path.read_text()) for name,path in paths.items()}
+          assert rows['x86_64']==rows['arm64']==rows['python']
+          row=rows['x86_64']
+          assert row['schema']=='HHS_PASS219_I163_CROSSARCH_EXACT_RECORD_V1'
+          assert row['status']==0 and row['decision']==1 and row['frame_committed']==1
+          assert row['vm5184_address']==1 and row['frame_bytes']==648
+          assert row['receipt_hash72']=='i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ'
+          assert row['hash216_identity']=='xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18'
+          canonical=json.dumps(row,sort_keys=True,separators=(',',':')).encode()
+          evidence={
+              'schema':'HHS_PASS219_I163_CROSSARCH_PARITY_EVIDENCE_V1',
+              'result':'PASS',
+              'architectures':['x86_64','arm64'],
+              'bindings':['native_c11','python_ctypes'],
+              'records_identical':True,
+              'receipt_hash72':row['receipt_hash72'],
+              'hash216_identity':row['hash216_identity'],
+              'canonical_record_sha256':hashlib.sha256(canonical).hexdigest(),
+              'floating_point_authority':False,
+          }
+          Path('artifacts/pass219/i163/crossarch_parity.json').write_text(
+              json.dumps(evidence,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(evidence,sort_keys=True))
+          PY
+
+      - name: Preserve I162 and I161 dependency-scoped regression
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+
+      - name: Upload I163 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i163-pass169-terminal-reverse-crossarch-${{ github.sha }}
+          path: |
+            artifacts/pass219/i163/x86_64_exact_record.json
+            artifacts/pass219/i163/arm64_exact_record.json
+            artifacts/pass219/i163/python_exact_record.json
+            artifacts/pass219/i163/crossarch_parity.json
+          if-no-files-found: error
+          retention-days: 90
