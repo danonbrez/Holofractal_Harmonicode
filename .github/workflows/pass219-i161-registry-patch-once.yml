@@ -58,12 +58,18 @@ jobs:
         run: |
           python -m py_compile hhs_runtime/hhs_service_registry_v1.py hhs_runtime/pass219/complete_monolithic_boundary_executor.py
           python - <<'PY'
-          from hhs_runtime.hhs_service_registry_v1 import build_default_registry
+          from hhs_runtime.hhs_service_registry_v1 import make_default_service_registry
           from hhs_runtime.pass219.complete_monolithic_boundary_executor import i161_complete_monolithic_boundary_self_test
 
-          registry = build_default_registry()
-          descriptor = registry.get("runtime.pass219.complete_monolithic_boundary_executor")
-          assert descriptor is not None
+          registry = make_default_service_registry()
+          assert registry.has_service("runtime.pass219.complete_monolithic_boundary_executor")
+          descriptor = next(
+              service
+              for service in registry.services()
+              if service["name"] == "runtime.pass219.complete_monolithic_boundary_executor"
+          )
+          assert descriptor["function"] == "i161_complete_monolithic_boundary_self_test"
+          assert "closure_eq_not_scalar_equality" in descriptor["guards"]
           result = i161_complete_monolithic_boundary_self_test()
           assert result['ok'] is True
           assert result['counts']['proved'] == 10
