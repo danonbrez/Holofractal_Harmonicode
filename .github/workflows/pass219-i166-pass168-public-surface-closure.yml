@@ -1,3 +1,4 @@
+# Revalidation trigger after exact candidate arithmetic preflight repair.
 name: Pass 219 I166 Pass168 Public Surface Closure
 
 on:
@@ -150,6 +151,7 @@ jobs:
               'canonical_gateway_binding_count':1,
               'second_fastapi_app_created':False,
               'native_commit_surface':'hhs_pass168_commit_candidate',
+              'candidate_exact_execution_preflight_bound':True,
               'durable_ledger_replayed_through_native_authority':True,
               'status_repeat_count':12,
               'deterministic_status_receipt_sha256':receipt,
