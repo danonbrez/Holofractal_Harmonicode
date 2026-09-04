@@ -1,0 +1,117 @@
+{
+  "all_listed_artifacts_verified": true,
+  "artifact_inventory_count": 21,
+  "artifact_records": [
+    {
+      "bytes": 537,
+      "path": "HHS_PASS_168_CONTRACT.md",
+      "sha256": "aa7c149d2cf00b0634df224da299943459e186cbdbc591bb24161acd91522b76"
+    },
+    {
+      "bytes": 2423,
+      "path": "HHS_PASS_168_AUTHORITY_BINDING.json",
+      "sha256": "11183752c643577374b2ea3cc37a2dba24b83091f88a0bccaff3d8bba4ae2da8"
+    },
+    {
+      "bytes": 424,
+      "path": "HHS_PASS_168_SOURCE_FIXTURE.harmonicode",
+      "sha256": "fdbee5db0f2fea428b6b88e5ac9b273e6aa3754fa00f84e8923456373275166e"
+    },
+    {
+      "bytes": 7222,
+      "path": "HHS_PASS_168_PARAMETER_REGISTRY.json",
+      "sha256": "563cb1603f228b6341320fb719252997b1ec67a068d96624cb8316a89784562c"
+    },
+    {
+      "bytes": 4098,
+      "path": "HHS_PASS_168_EQUALITY_HALF_GATE_REGISTRY.json",
+      "sha256": "3938085bd622b0e523fd1ee4ca76097eaef5bb745c43f6d75eb4e6eee826a502"
+    },
+    {
+      "bytes": 11807,
+      "path": "HHS_PASS_168_THREAD_MAP.json",
+      "sha256": "df83659ffaf5eda86161ce10f0aeb3063bfb4a97543d25692f695df863f8bf78"
+    },
+    {
+      "bytes": 1841584,
+      "path": "HHS_PASS_168_5184_CELL_MAP.json",
+      "sha256": "8198eb35b4c948ddaf97ef4253552524790877d267666f12c2c84441a76bb2b1"
+    },
+    {
+      "bytes": 1196,
+      "path": "HHS_PASS_168_BANK_LAYOUT.json",
+      "sha256": "b0bc0d3e07b24a03501326d29ce3dc605a680783c0391f5d3d8dc4461f1d380e"
+    },
+    {
+      "bytes": 13505,
+      "path": "HHS_PASS_168_DEPENDENCY_GRAPH.json",
+      "sha256": "7e436fe8677baa4a92923896ba2b9c687a04c93a8fbd32d7f97f0eb7e752eb38"
+    },
+    {
+      "bytes": 1058,
+      "path": "HHS_PASS_168_ABI.json",
+      "sha256": "f710a435c1e52bae6dccda5fa6d430c7fcf72182173af8301efbb141a2d0ba08"
+    },
+    {
+      "bytes": 2354,
+      "path": "HHS_PASS_168_API_SCHEMA.json",
+      "sha256": "24bb08daaa0b0ce5b5339a681b64c949e58bb099c80d441ba99cf668143e9272"
+    },
+    {
+      "bytes": 565,
+      "path": "HHS_PASS_168_CLI_MATRIX.json",
+      "sha256": "0800581c4e07e8d4e36dca3ffaebf388d54696f28a2378c2b7bbdb8d4254116d"
+    },
+    {
+      "bytes": 1956,
+      "path": "HHS_PASS_168_POSITIVE_TEST_MATRIX.json",
+      "sha256": "3d81f8bf39718412e1d497dd70b60d6449d93a277fb4a0770b787261d52f3381"
+    },
+    {
+      "bytes": 404,
+      "path": "HHS_PASS_168_NEGATIVE_TEST_MATRIX.json",
+      "sha256": "331dccf0209c3454d0cd7ff034b5feb8040ce54d2b44e901b83af5ccd7a9cf37"
+    },
+    {
+      "bytes": 326,
+      "path": "HHS_PASS_168_5184_COVERAGE_REPORT.json",
+      "sha256": "9408c770395cf8f50558cbf7de75afd54e41ba2990139284c336e809686bd6f1"
+    },
+    {
+      "bytes": 1138,
+      "path": "HHS_PASS_168_SPARSE_UPDATE_REPORT.json",
+      "sha256": "7d2303aaa35db68450bd9290cd3d2804702a00572d3b31c1aadabfbd6d15efcf"
+    },
+    {
+      "bytes": 465,
+      "path": "HHS_PASS_168_GPU_MAPPING_REPORT.json",
+      "sha256": "0873db82898d22b3d2035e47eec45f6bd6ad1153cb608fee85c1537548b817bf"
+    },
+    {
+      "bytes": 321,
+      "path": "HHS_PASS_168_CROSS_ARCH_REPLAY_REPORT.json",
+      "sha256": "5122a468d2a85b33798e2107a44adae3b6c1469b3d843bfd6f12fc57debe9e28"
+    },
+    {
+      "bytes": 248,
+      "path": "HHS_PASS_168_SANITIZER_REPORT.json",
+      "sha256": "d944729ba10e564e949c713744d509948cea8c6220d85f782aa1391f8c6b7c66"
+    },
+    {
+      "bytes": 659,
+      "path": "HHS_PASS_168_BENCHMARK_REPORT.json",
+      "sha256": "d441e13a07d3f8d9f01db65c326d38fc7275c98a6f40dc0c8fee6e0ba759891f"
+    },
+    {
+      "bytes": 2227,
+      "path": "HHS_PASS_168_COMPLETION_RECEIPT.json",
+      "sha256": "a2ebf757410770477909392ae4bb28c198b48db166eba1d8c7bebbd5eb715eeb"
+    }
+  ],
+  "canonical_payload_sha256": "4c62e0ef21314a262119cb772acfa97ddd6c7b5146f37ed33dc3ff24f388eda2",
+  "contract_id": "HHS-P168-VM81-5184-HPC-STCF",
+  "result": "PASS",
+  "schema": "HHS_PASS168_EVIDENCE_MANIFEST_V1",
+  "self_integrity_mode": "NON_RECURSIVE_CANONICAL_PAYLOAD",
+  "self_integrity_rationale": "A raw file SHA cannot recursively contain itself; all other prescribed artifacts are byte-hashed here."
+}

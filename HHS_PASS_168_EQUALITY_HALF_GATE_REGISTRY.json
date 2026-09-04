@@ -1,0 +1,186 @@
+{
+  "count": 12,
+  "rows": [
+    {
+      "comparator_id": "C1",
+      "independently_addressable": true,
+      "native_gate_id": 1,
+      "ordered_edge": [
+        "E1",
+        "UPPER_MATRIX_U",
+        "E2",
+        "ORDERED_PRODUCT_XY"
+      ],
+      "parameter_id": "E1",
+      "side": "LEFT",
+      "source_offset": 165,
+      "thread_id": 28
+    },
+    {
+      "comparator_id": "C1",
+      "independently_addressable": true,
+      "native_gate_id": 2,
+      "ordered_edge": [
+        "E1",
+        "UPPER_MATRIX_U",
+        "E2",
+        "ORDERED_PRODUCT_XY"
+      ],
+      "parameter_id": "E2",
+      "side": "RIGHT",
+      "source_offset": 166,
+      "thread_id": 29
+    },
+    {
+      "comparator_id": "C2",
+      "independently_addressable": true,
+      "native_gate_id": 3,
+      "ordered_edge": [
+        "E3",
+        "ORDERED_PRODUCT_XY",
+        "E4",
+        "UNIT_MODULAR_WITNESS"
+      ],
+      "parameter_id": "E3",
+      "side": "LEFT",
+      "source_offset": 170,
+      "thread_id": 30
+    },
+    {
+      "comparator_id": "C2",
+      "independently_addressable": true,
+      "native_gate_id": 4,
+      "ordered_edge": [
+        "E3",
+        "ORDERED_PRODUCT_XY",
+        "E4",
+        "UNIT_MODULAR_WITNESS"
+      ],
+      "parameter_id": "E4",
+      "side": "RIGHT",
+      "source_offset": 171,
+      "thread_id": 31
+    },
+    {
+      "comparator_id": "C3",
+      "independently_addressable": true,
+      "native_gate_id": 5,
+      "ordered_edge": [
+        "E5",
+        "UPPER_MATRIX_U",
+        "E6",
+        "LOWER_MATRIX_V"
+      ],
+      "parameter_id": "E5",
+      "side": "LEFT",
+      "source_offset": 185,
+      "thread_id": 32
+    },
+    {
+      "comparator_id": "C3",
+      "independently_addressable": true,
+      "native_gate_id": 6,
+      "ordered_edge": [
+        "E5",
+        "UPPER_MATRIX_U",
+        "E6",
+        "LOWER_MATRIX_V"
+      ],
+      "parameter_id": "E6",
+      "side": "RIGHT",
+      "source_offset": 186,
+      "thread_id": 33
+    },
+    {
+      "comparator_id": "C4",
+      "independently_addressable": true,
+      "native_gate_id": 7,
+      "ordered_edge": [
+        "E7",
+        "LOWER_MATRIX_V",
+        "E8",
+        "GROUPED_ORDERED_PRODUCT_XY"
+      ],
+      "parameter_id": "E7",
+      "side": "LEFT",
+      "source_offset": 394,
+      "thread_id": 34
+    },
+    {
+      "comparator_id": "C4",
+      "independently_addressable": true,
+      "native_gate_id": 8,
+      "ordered_edge": [
+        "E7",
+        "LOWER_MATRIX_V",
+        "E8",
+        "GROUPED_ORDERED_PRODUCT_XY"
+      ],
+      "parameter_id": "E8",
+      "side": "RIGHT",
+      "source_offset": 395,
+      "thread_id": 35
+    },
+    {
+      "comparator_id": "C5",
+      "independently_addressable": true,
+      "native_gate_id": 9,
+      "ordered_edge": [
+        "E9",
+        "GROUPED_ORDERED_PRODUCT_XY",
+        "E10",
+        "ZERO_MODULAR_WITNESS"
+      ],
+      "parameter_id": "E9",
+      "side": "LEFT",
+      "source_offset": 401,
+      "thread_id": 36
+    },
+    {
+      "comparator_id": "C5",
+      "independently_addressable": true,
+      "native_gate_id": 10,
+      "ordered_edge": [
+        "E9",
+        "GROUPED_ORDERED_PRODUCT_XY",
+        "E10",
+        "ZERO_MODULAR_WITNESS"
+      ],
+      "parameter_id": "E10",
+      "side": "RIGHT",
+      "source_offset": 402,
+      "thread_id": 37
+    },
+    {
+      "comparator_id": "C6",
+      "independently_addressable": true,
+      "native_gate_id": 11,
+      "ordered_edge": [
+        "E11",
+        "TERMINAL_NORMALIZED_SHELL",
+        "E12",
+        "TERMINAL_ZERO_WITNESS"
+      ],
+      "parameter_id": "E11",
+      "side": "LEFT",
+      "source_offset": 421,
+      "thread_id": 38
+    },
+    {
+      "comparator_id": "C6",
+      "independently_addressable": true,
+      "native_gate_id": 12,
+      "ordered_edge": [
+        "E11",
+        "TERMINAL_NORMALIZED_SHELL",
+        "E12",
+        "TERMINAL_ZERO_WITNESS"
+      ],
+      "parameter_id": "E12",
+      "side": "RIGHT",
+      "source_offset": 422,
+      "thread_id": 39
+    }
+  ],
+  "schema": "HHS_PASS168_EQUALITY_HALF_GATE_REGISTRY_V1"
+}

@@ -1,0 +1,286 @@
+{
+  "count": 28,
+  "rows": [
+    {
+      "close_offset": 415,
+      "native_parameter_id": 1,
+      "nesting_depth": 1,
+      "open_offset": 0,
+      "parameter_id": "P1",
+      "role": "Global outer LHS tensor shell",
+      "source_span_preserved": true,
+      "thread_id": 0
+    },
+    {
+      "close_offset": 184,
+      "native_parameter_id": 2,
+      "nesting_depth": 2,
+      "open_offset": 7,
+      "parameter_id": "P2",
+      "role": "Upper assertion group",
+      "source_span_preserved": true,
+      "thread_id": 1
+    },
+    {
+      "close_offset": 164,
+      "native_parameter_id": 3,
+      "nesting_depth": 3,
+      "open_offset": 11,
+      "parameter_id": "P3",
+      "role": "Upper Mod envelope",
+      "source_span_preserved": true,
+      "thread_id": 2
+    },
+    {
+      "close_offset": 137,
+      "native_parameter_id": 4,
+      "nesting_depth": 4,
+      "open_offset": 23,
+      "parameter_id": "P4",
+      "role": "Upper outer MatrixTimes",
+      "source_span_preserved": true,
+      "thread_id": 3
+    },
+    {
+      "close_offset": 136,
+      "native_parameter_id": 5,
+      "nesting_depth": 5,
+      "open_offset": 39,
+      "parameter_id": "P5",
+      "role": "Upper inner MatrixTimes",
+      "source_span_preserved": true,
+      "thread_id": 4
+    },
+    {
+      "close_offset": 135,
+      "native_parameter_id": 6,
+      "nesting_depth": 6,
+      "open_offset": 93,
+      "parameter_id": "P6",
+      "role": "Upper NcalcMatrixPower group",
+      "source_span_preserved": true,
+      "thread_id": 5
+    },
+    {
+      "close_offset": 134,
+      "native_parameter_id": 7,
+      "nesting_depth": 7,
+      "open_offset": 131,
+      "parameter_id": "P7",
+      "role": "Upper (-1) exponent group",
+      "source_span_preserved": true,
+      "thread_id": 6
+    },
+    {
+      "close_offset": 183,
+      "native_parameter_id": 8,
+      "nesting_depth": 3,
+      "open_offset": 175,
+      "parameter_id": "P8",
+      "role": "Upper Mod(1,u^360) group",
+      "source_span_preserved": true,
+      "thread_id": 7
+    },
+    {
+      "close_offset": 393,
+      "native_parameter_id": 9,
+      "nesting_depth": 2,
+      "open_offset": 190,
+      "parameter_id": "P9",
+      "role": "Lower Mod envelope",
+      "source_span_preserved": true,
+      "thread_id": 8
+    },
+    {
+      "close_offset": 350,
+      "native_parameter_id": 10,
+      "nesting_depth": 3,
+      "open_offset": 202,
+      "parameter_id": "P10",
+      "role": "Lower outer MatrixTimes",
+      "source_span_preserved": true,
+      "thread_id": 9
+    },
+    {
+      "close_offset": 349,
+      "native_parameter_id": 11,
+      "nesting_depth": 4,
+      "open_offset": 218,
+      "parameter_id": "P11",
+      "role": "Lower inner MatrixTimes",
+      "source_span_preserved": true,
+      "thread_id": 10
+    },
+    {
+      "close_offset": 270,
+      "native_parameter_id": 12,
+      "nesting_depth": 5,
+      "open_offset": 227,
+      "parameter_id": "P12",
+      "role": "Lower direct Fibonacci matrix list",
+      "source_span_preserved": true,
+      "thread_id": 11
+    },
+    {
+      "close_offset": 238,
+      "native_parameter_id": 13,
+      "nesting_depth": 6,
+      "open_offset": 232,
+      "parameter_id": "P13",
+      "role": "Lower direct Fibonacci row 1",
+      "source_span_preserved": true,
+      "thread_id": 12
+    },
+    {
+      "close_offset": 253,
+      "native_parameter_id": 14,
+      "nesting_depth": 6,
+      "open_offset": 244,
+      "parameter_id": "P14",
+      "role": "Lower direct Fibonacci row 2",
+      "source_span_preserved": true,
+      "thread_id": 13
+    },
+    {
+      "close_offset": 269,
+      "native_parameter_id": 15,
+      "nesting_depth": 6,
+      "open_offset": 259,
+      "parameter_id": "P15",
+      "role": "Lower direct Fibonacci row 3",
+      "source_span_preserved": true,
+      "thread_id": 14
+    },
+    {
+      "close_offset": 348,
+      "native_parameter_id": 16,
+      "nesting_depth": 5,
+      "open_offset": 288,
+      "parameter_id": "P16",
+      "role": "Lower NcalcMatrixPower group",
+      "source_span_preserved": true,
+      "thread_id": 15
+    },
+    {
+      "close_offset": 342,
+      "native_parameter_id": 17,
+      "nesting_depth": 6,
+      "open_offset": 289,
+      "parameter_id": "P17",
+      "role": "Lower inverse quotient group",
+      "source_span_preserved": true,
+      "thread_id": 16
+    },
+    {
+      "close_offset": 341,
+      "native_parameter_id": 18,
+      "nesting_depth": 7,
+      "open_offset": 298,
+      "parameter_id": "P18",
+      "role": "Lower inverse Fibonacci matrix list",
+      "source_span_preserved": true,
+      "thread_id": 17
+    },
+    {
+      "close_offset": 309,
+      "native_parameter_id": 19,
+      "nesting_depth": 8,
+      "open_offset": 303,
+      "parameter_id": "P19",
+      "role": "Lower inverse Fibonacci row 1",
+      "source_span_preserved": true,
+      "thread_id": 18
+    },
+    {
+      "close_offset": 324,
+      "native_parameter_id": 20,
+      "nesting_depth": 8,
+      "open_offset": 315,
+      "parameter_id": "P20",
+      "role": "Lower inverse Fibonacci row 2",
+      "source_span_preserved": true,
+      "thread_id": 19
+    },
+    {
+      "close_offset": 340,
+      "native_parameter_id": 21,
+      "nesting_depth": 8,
+      "open_offset": 330,
+      "parameter_id": "P21",
+      "role": "Lower inverse Fibonacci row 3",
+      "source_span_preserved": true,
+      "thread_id": 20
+    },
+    {
+      "close_offset": 347,
+      "native_parameter_id": 22,
+      "nesting_depth": 6,
+      "open_offset": 344,
+      "parameter_id": "P22",
+      "role": "Lower (-1) exponent group",
+      "source_span_preserved": true,
+      "thread_id": 21
+    },
+    {
+      "close_offset": 392,
+      "native_parameter_id": 23,
+      "nesting_depth": 3,
+      "open_offset": 356,
+      "parameter_id": "P23",
+      "role": "Lower Lo Shu matrix list",
+      "source_span_preserved": true,
+      "thread_id": 22
+    },
+    {
+      "close_offset": 367,
+      "native_parameter_id": 24,
+      "nesting_depth": 4,
+      "open_offset": 361,
+      "parameter_id": "P24",
+      "role": "Lower Lo Shu row 1",
+      "source_span_preserved": true,
+      "thread_id": 23
+    },
+    {
+      "close_offset": 379,
+      "native_parameter_id": 25,
+      "nesting_depth": 4,
+      "open_offset": 373,
+      "parameter_id": "P25",
+      "role": "Lower Lo Shu row 2",
+      "source_span_preserved": true,
+      "thread_id": 24
+    },
+    {
+      "close_offset": 391,
+      "native_parameter_id": 26,
+      "nesting_depth": 4,
+      "open_offset": 385,
+      "parameter_id": "P26",
+      "role": "Lower Lo Shu row 3",
+      "source_span_preserved": true,
+      "thread_id": 25
+    },
+    {
+      "close_offset": 400,
+      "native_parameter_id": 27,
+      "nesting_depth": 2,
+      "open_offset": 396,
+      "parameter_id": "P27",
+      "role": "Grouped ordered product (x*y)",
+      "source_span_preserved": true,
+      "thread_id": 26
+    },
+    {
+      "close_offset": 414,
+      "native_parameter_id": 28,
+      "nesting_depth": 2,
+      "open_offset": 406,
+      "parameter_id": "P28",
+      "role": "Lower Mod(0,u^360) group",
+      "source_span_preserved": true,
+      "thread_id": 27
+    }
+  ],
+  "schema": "HHS_PASS168_PARAMETER_REGISTRY_V1"
+}

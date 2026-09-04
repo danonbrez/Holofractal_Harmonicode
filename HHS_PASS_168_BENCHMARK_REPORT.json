@@ -1,0 +1,15 @@
+{
+  "cpu_exact_candidate_runtime_measured": true,
+  "deterministic_receipt": true,
+  "floating_point_canonical_authority": false,
+  "gpu_hardware_runtime_measured": false,
+  "gpu_hardware_runtime_required_for_canonical_authority": false,
+  "max_ns": 251967,
+  "median_ns": 221271,
+  "min_ns": 217536,
+  "record_hash216": "(eyX!t*y<3(pOE8Hb+iP0xd5KdLQ3gbW!)l--rxdLgc<S0m)a6VmUYZ0d(+i<W74o1/J70aD-W6JNIqv9**sWq(AyAZcaNwNuUrHoaGUUob3Vs<o*tNj>QrkhMGGPUnKaB3K9CMi?nlT5xatnN4tR7h<(cGxbVpThYRb>p8YKhN!3>!/9b1tST4-yf+aYxTm1<Sj*Ua+FNWRa-t*)Ph+oVW2",
+  "repeats": 12,
+  "result": "PASS",
+  "schema": "HHS_PASS168_BENCHMARK_REPORT_V1",
+  "timing_authoritative": false
+}
