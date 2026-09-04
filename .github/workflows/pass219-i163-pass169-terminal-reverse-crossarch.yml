@@ -89,7 +89,6 @@ jobs:
             hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
             hhs_runtime/c/hhs_runtime_abi.c \
             tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c \
-            /tmp/pass219-i163/exact.o \
             -L/tmp/pass159-i163-build -lhhs_pass159 -lcrypto -lm \
             -Wl,-rpath,/tmp/pass159-i163-build \
             -o /tmp/pass219-i163/i163-reverse
