@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check pytest
       - name: Parse and compile
         run: |
           python -m json.tool contracts/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.json >/dev/null
