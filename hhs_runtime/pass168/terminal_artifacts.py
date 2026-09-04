@@ -134,14 +134,20 @@ def _equality_registry() -> list[dict[str, Any]]:
         raise RuntimeError(f"Pass168 equality registry failed: {status}")
     rows = []
     for index, row in enumerate(values):
-        comparator = f"C{int(row.comparator_id) + 1}"
+        native_comparator_id = int(row.comparator_id)
+        native_side = int(row.side)
+        if not 1 <= native_comparator_id <= 6:
+            raise RuntimeError(f"Pass168 native comparator id out of range: {native_comparator_id}")
+        if native_side not in (0, 1):
+            raise RuntimeError(f"Pass168 native equality side out of range: {native_side}")
+        comparator = f"C{native_comparator_id}"
         edge = COMPARATOR_EDGES[comparator]
         rows.append({
             "parameter_id": f"E{index + 1}",
             "native_gate_id": int(row.gate_id),
             "thread_id": int(row.thread_id),
             "comparator_id": comparator,
-            "side": "LEFT" if int(row.side) == 0 else "RIGHT",
+            "side": "LEFT" if native_side == 0 else "RIGHT",
             "source_offset": int(row.source_offset),
             "ordered_edge": list(edge),
             "independently_addressable": True,
