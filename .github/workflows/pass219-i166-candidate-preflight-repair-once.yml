@@ -1,0 +1,55 @@
+name: Pass 219 I166 Candidate Preflight Repair Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+    paths:
+      - '.github/workflows/pass219-i166-candidate-preflight-repair-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i166-pass168-terminal-parent-closure
+          fetch-depth: 0
+      - name: Bind validation to exact execution preflight
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path=Path('hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc')
+          text=path.read_text(encoding='utf-8')
+          old='''    candidate->affected_thread_bitmap = hhs_pass168_affected_threads(candidate->update_mask);\n    return HHS_EXACT_STATUS_OK;\n}\n\nHHSExactStatus hhs_pass168_candidate_apply(\n'''
+          new='''    candidate->affected_thread_bitmap = hhs_pass168_affected_threads(candidate->update_mask);\n    {\n        HHSPass168CircuitState scratch;\n        HHSExactStatus preflight_status;\n        memcpy(&scratch, prior, sizeof(scratch));\n        for (p = 0U; p < HHS_PASS168_PARAMETER_COUNT; ++p)\n            if ((candidate->update_mask & (UINT64_C(1) << p)) != 0U)\n                scratch.raw[p] = candidate->values[p];\n        scratch.committed = 0U;\n        preflight_status = hhs_pass168_state_compute(&scratch);\n        if (preflight_status != HHS_EXACT_STATUS_OK) {\n            *out_reject_reason =\n                preflight_status == HHS_EXACT_STATUS_RANGE_ERROR ||\n                preflight_status == HHS_EXACT_STATUS_BUFFER_TOO_SMALL\n                ? HHS_PASS168_REASON_RATIONAL_OVERFLOW\n                : HHS_PASS168_REASON_MATRIX_DOMAIN;\n            return preflight_status;\n        }\n    }\n    return HHS_EXACT_STATUS_OK;\n}\n\nHHSExactStatus hhs_pass168_candidate_apply(\n'''
+          if text.count(old) != 1:
+              raise SystemExit('candidate validate tail anchor mismatch')
+          path.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          test_path=Path('tests/pass219/test_pass219_i166_pass168_parameter_matrix.py')
+          test=test_path.read_text(encoding='utf-8')
+          old_test='''    cancellation = HHSPass168RuntimeBridge.begin(baseline)\n    HHSPass168RuntimeBridge.set(cancellation, 32, 360, 1)  # E5\n    HHSPass168RuntimeBridge.set(cancellation, 33, 361, 1)  # E6\n    assert HHSPass168RuntimeBridge.validate(baseline, cancellation)["valid"] is True\n    cancelled_state = state_dict(HHSPass168RuntimeBridge.evaluate(baseline, cancellation))\n    assert all(cell["numerator"] == 0 for row in cancelled_state["successor"] for cell in row)\n\n'''
+          new_test='''    cancellation = HHSPass168RuntimeBridge.begin(baseline)\n    HHSPass168RuntimeBridge.set(cancellation, 32, 360, 1)  # E5\n    HHSPass168RuntimeBridge.set(cancellation, 33, 361, 1)  # E6\n    assert HHSPass168RuntimeBridge.validate(baseline, cancellation)["valid"] is True\n    cancellation_state = state_dict(HHSPass168RuntimeBridge.evaluate(baseline, cancellation))\n    # Successor is the unweighted Delta=U-V lane and remains distinct from C3.\n    assert cancellation_state["successor"] == state_dict(baseline)["successor"]\n    # C3 cancellation is separately proved by the native ordered-comparator conformance surface.\n    from hhs_python.runtime.hhs_pass168_comparator_bridge import comparator_conformance\n    conformance = comparator_conformance()\n    assert conformance["verified"] == 6\n    assert conformance["c3_exact_cancellation"] is True\n\n'''
+          if test.count(old_test) != 1:
+              raise SystemExit('C3 matrix test anchor mismatch')
+          test_path.write_text(test.replace(old_test,new_test,1),encoding='utf-8')
+          PY
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/i166-exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            tools/pass219/pass219_i166_pass168_exact_probe.c /tmp/i166-exact.o -o /tmp/i166-probe
+          /tmp/i166-probe >/tmp/i166-record.json
+          python -m json.tool /tmp/i166-record.json >/dev/null
+          python -m py_compile tests/pass219/test_pass219_i166_pass168_parameter_matrix.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc \
+                  tests/pass219/test_pass219_i166_pass168_parameter_matrix.py
+          git commit -m 'Pass 219 I166: preflight exact candidate arithmetic [skip ci]'
+          git push origin HEAD:agent/pass219-i166-pass168-terminal-parent-closure
