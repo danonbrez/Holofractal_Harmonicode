@@ -8,6 +8,7 @@ on:
     paths:
       - 'hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h'
       - 'hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c'
+      - 'hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c'
       - 'tools/pass219/pass219_i163_crossarch_exact_probe.c'
       - 'tools/pass219/pass219_i163_python_exact_probe.py'
       - 'tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c'
@@ -44,10 +45,11 @@ jobs:
           ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
             hhs_runtime/include/hhs_pass219_i163_pass169_reverse_crossarch_1_24.h \
             hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
+            hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
             tools/pass219/pass219_i163_crossarch_exact_probe.c \
             tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c
           grep -F 'hhs159_reverse' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
-          grep -F 'hhs_hash72_reverse_state' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
+          grep -F 'hhs_hash72_reverse_state' hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c
           grep -F 'pass169_terminal_contract_claimed = 0U' hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c
 
       - name: Verify I162 parent remains unchanged
@@ -84,6 +86,7 @@ jobs:
             -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
             hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
             hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
+            hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
             hhs_runtime/c/hhs_runtime_abi.c \
             tests/pass219/test_pass219_i163_pass169_reverse_crossarch.c \
             /tmp/pass219-i163/exact.o \
