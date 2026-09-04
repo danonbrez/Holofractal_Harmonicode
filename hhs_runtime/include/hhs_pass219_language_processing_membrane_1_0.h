@@ -1,0 +1,159 @@
+#ifndef HHS_PASS219_LANGUAGE_PROCESSING_MEMBRANE_1_0_H
+#define HHS_PASS219_LANGUAGE_PROCESSING_MEMBRANE_1_0_H
+
+#include "hhs_pass219_rna_execution_composer_1_14.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_VERSION_MAJOR 1U
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_VERSION_MINOR 0U
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_VERSION_PATCH 0U
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_MAX_BINDINGS 32U
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_LAYER_COUNT 16U
+#define HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_FULL_LAYER_MASK 0x0000ffffU
+#define HHS_EXACT_PASS219_LANGUAGE_NO_OCCURRENCE 0xffffffffU
+
+typedef enum HHSExactPass219LanguageLayer {
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_VERBATIM_SOURCE = 0,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_TOKEN_TENSOR = 1,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_LEXICAL_RELATION = 2,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_GRAMMAR_SYNTAX = 3,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_PROPOSITION = 4,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_AMBIGUITY = 5,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_TRANSLATION_REGISTER = 6,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_METAPHOR_ANALOGY = 7,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_SEMANTIC_GRAPH = 8,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_CONTEXT_DISCOURSE = 9,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_AUDIO_LANGUAGE = 10,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_MODEL_PROPOSAL = 11,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_TOKENIZATION_INGESTION = 12,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_VECTOR_HYDRATION = 13,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_SYMBOLIC_TRANSLATION = 14,
+    HHS_EXACT_PASS219_LANGUAGE_LAYER_PATTERN_META_AWARENESS = 15
+} HHSExactPass219LanguageLayer;
+
+typedef enum HHSExactPass219LanguageRelation {
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_UNSPECIFIED = 0,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_IDENTITY = 1,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_OCCURRENCE_OF = 2,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_SYNONYM = 3,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_DEFINITION = 4,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_ANTONYM = 5,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_HYPERNYM = 6,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_HYPONYM = 7,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_GRAMMAR = 8,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_PROPOSITION = 9,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_AMBIGUITY_ALTERNATIVE = 10,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_TRANSLATION = 11,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_ANALOGY = 12,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_METAPHOR = 13,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_CONTEXT = 14,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_DISCOURSE = 15,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_AUDIO_TRANSCRIPTION = 16,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_MODEL_CANDIDATE = 17,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_VECTOR_CANDIDATE = 18,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_SYMBOLIC_PROJECTION = 19,
+    HHS_EXACT_PASS219_LANGUAGE_RELATION_PATTERN = 20
+} HHSExactPass219LanguageRelation;
+
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_VERBATIM_PRESERVED             (UINT64_C(1) << 0)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_LEXEME_OCCURRENCE_SEPARATE     (UINT64_C(1) << 1)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_ORDER_PRESERVED                (UINT64_C(1) << 2)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_SCOPE_PRESERVED                (UINT64_C(1) << 3)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_GRAMMAR_ROLE_PRESENT           (UINT64_C(1) << 4)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_DISCOURSE_HISTORY_PRESENT      (UINT64_C(1) << 5)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_AMBIGUITY_PRESERVED            (UINT64_C(1) << 6)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_PROVENANCE_PRESERVED           (UINT64_C(1) << 7)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_NEGATION_PRESERVED             (UINT64_C(1) << 8)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_QUANTIFIER_PRESERVED           (UINT64_C(1) << 9)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_REFERENCE_IDENTITY_PRESERVED   (UINT64_C(1) << 10)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_MODALITY_PRESERVED             (UINT64_C(1) << 11)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_TEMPORALITY_PRESERVED          (UINT64_C(1) << 12)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_UNCERTAINTY_PRESERVED          (UINT64_C(1) << 13)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_TYPED_RELATION                 (UINT64_C(1) << 14)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_METAPHOR_DECLARED              (UINT64_C(1) << 15)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_RECONSTRUCTION_MAP_PRESENT     (UINT64_C(1) << 16)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_NONAUTHORITATIVE               (UINT64_C(1) << 17)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_EXACT_NO_FLOAT                 (UINT64_C(1) << 18)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_REVERSIBLE_PROVENANCE          (UINT64_C(1) << 19)
+#define HHS_EXACT_PASS219_LANGUAGE_FLAG_PATTERN_RECOGNITION_EXPLICIT   (UINT64_C(1) << 20)
+#define HHS_EXACT_PASS219_LANGUAGE_KNOWN_FLAGS ((UINT64_C(1) << 21) - UINT64_C(1))
+
+#define HHS_EXACT_PASS219_LANGUAGE_CORE_FLAGS ( \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_VERBATIM_PRESERVED | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_LEXEME_OCCURRENCE_SEPARATE | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_ORDER_PRESERVED | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_SCOPE_PRESERVED | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_AMBIGUITY_PRESERVED | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_PROVENANCE_PRESERVED | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_TYPED_RELATION | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_NONAUTHORITATIVE | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_EXACT_NO_FLOAT | \
+    HHS_EXACT_PASS219_LANGUAGE_FLAG_REVERSIBLE_PROVENANCE )
+
+typedef struct HHSExactPass219LanguageBindingV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint32_t layer;
+    uint32_t relation;
+    uint64_t invariant_flags;
+    uint32_t source_start;
+    uint32_t source_end;
+    uint32_t occurrence_id;
+    int8_t relation_polarity;
+    uint8_t reserved0[3];
+    char source_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char layer_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char parent_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char reconstruction_root_hash72[HHS_EXACT_HASH72_STRLEN];
+} HHSExactPass219LanguageBindingV1;
+
+typedef struct HHSExactPass219LanguageMembraneV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint32_t binding_count;
+    uint32_t layer_mask;
+    uint64_t aggregate_invariant_flags;
+    uint32_t source_character_count;
+    uint32_t unresolved_ambiguity_count;
+    uint32_t projection_only;
+    uint32_t language_authority;
+    uint32_t vm81_mutation_authority;
+    uint32_t hash72_mint_authority;
+    uint32_t hash216_persistence_authority;
+    uint32_t deterministic_replay_authority;
+    char source_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char membrane_receipt_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    HHSExactPass219LanguageBindingV1 bindings[HHS_EXACT_PASS219_LANGUAGE_MEMBRANE_MAX_BINDINGS];
+} HHSExactPass219LanguageMembraneV1;
+
+typedef struct HHSExactPass219LanguageRNAProjectionV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint32_t binding_count;
+    uint32_t layer_mask;
+    uint32_t projection_only;
+    uint32_t admission_required;
+    uint32_t authority_inherited_from_language;
+    uint32_t vm81_mutation_authority_from_language;
+    uint32_t hash72_mint_authority_from_language;
+    uint32_t hash216_persistence_authority_from_language;
+    char source_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char membrane_receipt_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    HHSExactPass219RNAExecutionPlanV1 execution_plan;
+} HHSExactPass219LanguageRNAProjectionV1;
+
+HHS_EXACT_API uint32_t hhs_exact_pass219_language_membrane_version(void);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_membrane_init(const char source_root_hash72[HHS_EXACT_HASH72_STRLEN], uint32_t source_character_count, HHSExactPass219LanguageMembraneV1 *out_membrane);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_binding_validate(const HHSExactPass219LanguageBindingV1 *binding, uint32_t source_character_count);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_membrane_add(HHSExactPass219LanguageMembraneV1 *membrane, const HHSExactPass219LanguageBindingV1 *binding);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_membrane_validate(const HHSExactPass219LanguageMembraneV1 *membrane);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_membrane_validate_complete(const HHSExactPass219LanguageMembraneV1 *membrane);
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_language_membrane_project_rna_plan(const HHSExactPass219LanguageMembraneV1 *membrane, const HHSExactPass219RNAExecutionPlanV1 *execution_plan, HHSExactPass219LanguageRNAProjectionV1 *out_projection);
+
+#ifdef __cplusplus
+}
+#endif
+#endif

@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_PASS219_LANGUAGE_PROCESSING_CPP_MEMBRANE_V1",
+  "pass": 219,
+  "feature": "LANGUAGE_PROCESSING_CPP_MEMBRANE",
+  "version": "1.0.0",
+  "mode": "APPEND_ONLY_REPAIR_FORWARD",
+  "base_main": "ca407f27a2609f7c1517f7987bdfaa1847cb954a",
+  "authority": {"projection_only": true, "language_authority": false, "vm81_mutation_authority": false, "hash72_mint_authority": false, "hash216_persistence_authority": false, "deterministic_replay_authority": false, "pass169_vm81_gate_advanced": false, "i162_consumed_or_completed": false},
+  "invariants": ["EXACT_SOURCE_RECOVERABLE","LEXEME_IDENTITY_SEPARATE_FROM_OCCURRENCE","ORDER_PRESERVED","SCOPE_PRESERVED","AMBIGUITY_PRESERVED","PROVENANCE_PRESERVED","SYNONYM_AND_DEFINITION_ARE_TYPED_RELATIONS_NOT_IDENTITY_REPLACEMENT","METAPHOR_AND_ANALOGY_ARE_TYPED_RELATIONAL_MAPS_NOT_FORMAL_AUTHORITY","MODEL_AND_SEMANTIC_GRAPH_OUTPUTS_REMAIN_NONAUTHORITATIVE","NO_FLOAT_CANONICAL_AUTHORITY","RNA_PROJECTION_REQUIRES_EXISTING_RNA_EXECUTION_PLAN_AND_ADMISSION"],
+  "layers": [
+    {"id":0,"name":"VERBATIM_SOURCE","sources":["PASS_081_LANGUAGE_TENSOR_INTEGRATION.md","native_projects/hhs_exact_recursive_symbolic_runtime/hhs_pass081_runtime_v1.py","hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py"]},
+    {"id":1,"name":"TOKEN_TENSOR","sources":["native_projects/hhs_exact_recursive_symbolic_runtime/hhs_pass081_runtime_v1.py"]},
+    {"id":2,"name":"LEXICAL_RELATION","sources":["hhs_runtime/hhs_wordnet_relation_enforcer_v1.py","hhs_runtime/hhs_text_semantic_reconstruction_v1.py"]},
+    {"id":3,"name":"GRAMMAR_SYNTAX","sources":["native_projects/hhs_exact_recursive_symbolic_runtime/hhs_pass081_runtime_v1.py","hhs_runtime/hhs_language_learning_crawler_v1.py"]},
+    {"id":4,"name":"PROPOSITION","sources":["hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py"]},
+    {"id":5,"name":"AMBIGUITY","sources":["native_projects/hhs_bifurcation_calibration/hhs_pass096_language_translation_calibration_v1.py","hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py"]},
+    {"id":6,"name":"TRANSLATION_REGISTER","sources":["native_projects/hhs_bifurcation_calibration/hhs_pass096_language_translation_calibration_v1.py"]},
+    {"id":7,"name":"METAPHOR_ANALOGY","sources":["native_projects/hhs_bifurcation_calibration/hhs_pass096_language_translation_calibration_v1.py","hhs_runtime/hhs_text_semantic_reconstruction_v1.py","hhs_runtime/hhs_contextual_meaning_resolution_v1.py"]},
+    {"id":8,"name":"SEMANTIC_GRAPH","sources":["hhs_runtime/pass218/semantic_graph_i22.py","hhs_runtime/pass166/service.py"]},
+    {"id":9,"name":"CONTEXT_DISCOURSE","sources":["hhs_runtime/pass218/contextual_state_i23.py","hhs_runtime/hhs_contextual_meaning_resolution_v1.py"]},
+    {"id":10,"name":"AUDIO_LANGUAGE","sources":["hhs_runtime/hhs_audio_language_adapter_v1.py","hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py"]},
+    {"id":11,"name":"MODEL_PROPOSAL","sources":["hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py","HHS_PASS_162_VM81_CREATIVE_NOVEL_LANGUAGE_MODEL_OPTIMIZATION.md"]},
+    {"id":12,"name":"TOKENIZATION_INGESTION","sources":["hhs_runtime/pass165/ingestion.py"]},
+    {"id":13,"name":"VECTOR_HYDRATION","sources":["hhs_runtime/pass218/hydration.py","hhs_runtime/hhs_semantic_memory_guard_v1.py"]},
+    {"id":14,"name":"SYMBOLIC_TRANSLATION","sources":["hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py","hhs_runtime/hhs_symbolic_reasoning_engine_v1.py"]},
+    {"id":15,"name":"PATTERN_META_AWARENESS","sources":["PASS_096_CALIBRATION_REPORT.md","native_projects/hhs_bifurcation_calibration/hhs_pass096_language_translation_calibration_v1.py","hhs_runtime/pass218/contextual_state_i23.py"]}
+  ],
+  "native_surfaces": ["hhs_runtime/include/hhs_pass219_language_processing_membrane_1_0.h","hhs_runtime/include/hhs_pass219_language_processing_membrane_1_0.hpp","hhs_runtime/c/hhs_pass219_language_processing_membrane_1_0.inc","hhs_runtime/include/hhs_runtime_exact_abi.h","hhs_runtime/c/hhs_runtime_exact_abi.c"],
+  "validation": {"required": ["STRICT_C11_AGGREGATE_COMPILE","C_NATIVE_POSITIVE_AND_NEGATIVE_TEST","CXX17_WRAPPER_TEST","EXPORTED_SYMBOL_CHECK"]}
+}
