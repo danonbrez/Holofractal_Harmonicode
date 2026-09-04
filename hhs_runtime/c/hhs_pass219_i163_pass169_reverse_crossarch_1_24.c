@@ -2,7 +2,6 @@
 
 #include "hhs_pass159_api.h"
 #include "hhs159_internal.h"
-#include "hhs_runtime_abi.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -10,6 +9,10 @@
 
 static const char HHS219_I163_ALPHABET[HHS_EXACT_PASS219_I163_HASH72_STRLEN] =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
+
+extern int hhs219_i163_hash72_ring_reverse_witness(
+    const char receipt_hash72[HHS_EXACT_PASS219_I163_HASH72_STRLEN]
+);
 
 static uint32_t hhs219_i163_version_word(void) {
     return (HHS_EXACT_PASS219_I163_VERSION_MAJOR << 16U) |
@@ -49,35 +52,6 @@ static HHS159Status hhs219_i163_copy_hash216(
         out, HHS_EXACT_PASS219_I163_HASH216_LEN)
         ? HHS159_STATUS_OK
         : HHS159_STATUS_HASH_MISMATCH;
-}
-
-static int hhs219_i163_ring_reverse_witness(const char receipt_hash72[73]) {
-    HHSHash72RingState prior;
-    HHSHash72RingState current;
-    HHSHash72RingState restored;
-    size_t i;
-
-    if (!hhs219_i163_hash_string_valid(receipt_hash72, 72U))
-        return 0;
-
-    hhs_hash72_ring_init(&prior);
-    current = prior;
-    for (i = 0U; i < 72U; ++i) {
-        const char *symbol = strchr(HHS219_I163_ALPHABET, receipt_hash72[i]);
-        int64_t delta;
-        if (symbol == NULL)
-            return 0;
-        delta = (int64_t)(symbol - HHS219_I163_ALPHABET);
-        if (!hhs_hash72_ring_rotate(&current, (uint8_t)i, delta))
-            return 0;
-    }
-    if (!hhs_hash72_dna_validate(&current) ||
-        !hhs_hash72_reverse_state(&current, &restored) ||
-        !hhs_hash72_dna_validate(&restored))
-        return 0;
-
-    return memcmp(prior.positions, restored.positions, sizeof(prior.positions)) == 0 &&
-           memcmp(prior.dna, restored.dna, sizeof(prior.dna)) == 0;
 }
 
 uint32_t hhs_exact_pass219_i163_version(void) {
@@ -277,7 +251,8 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     }
     out_execution->interpreter_compiler_match = 1U;
 
-    if (!hhs219_i163_ring_reverse_witness(out_execution->forward_receipt_hash72)) {
+    if (!hhs219_i163_hash72_ring_reverse_witness(
+            out_execution->forward_receipt_hash72)) {
         out_execution->decision = HHS_EXACT_PASS219_I163_REJECTED;
         out_execution->reason = HHS_EXACT_PASS219_I163_REASON_RING_REVERSE;
         goto cleanup;
