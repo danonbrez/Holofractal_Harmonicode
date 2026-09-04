@@ -1,4 +1,4 @@
-# Retry after complete native self-test projection repair.
+# Final provenance re-seal: bind receipt to the actual checked-out branch head.
 name: Pass 219 I166 Pass168 Terminal Seal Once
 
 on:
@@ -53,13 +53,16 @@ jobs:
           print('Pass169 bare Pass168 receipt rejection: PASS')
           PY
 
-      - name: Generate exact prescribed Pass168 artifact set
+      - name: Generate exact prescribed Pass168 artifact set from actual checkout
         run: |
           set -euo pipefail
+          CHECKED_OUT_HEAD="$(git rev-parse HEAD)"
+          printf '%s\n' "$CHECKED_OUT_HEAD" > /tmp/pass168-checked-out-head
+          test "$CHECKED_OUT_HEAD" = "$(git rev-parse --verify HEAD)"
           rm -rf /tmp/pass168-terminal-artifacts
           python -m hhs_runtime.pass168.terminal_artifacts \
             /tmp/pass168-terminal-artifacts \
-            --branch-head "$GITHUB_SHA" \
+            --branch-head "$CHECKED_OUT_HEAD" \
             --native-run-id 33896435315 \
             --native-artifact-id 9945932317 \
             --native-artifact-digest sha256:777d246f70152054048e002989a3b676912a67b9d81fb74b39ca7ce26c0b44c7 \
@@ -73,15 +76,18 @@ jobs:
           test -s /tmp/pass168-terminal-artifacts/HHS_PASS_168_COMPLETION_RECEIPT.json
           test -s /tmp/pass168-terminal-artifacts/HHS_PASS_168_EVIDENCE_MANIFEST.json
 
-      - name: Validate generated completion receipt and manifest
+      - name: Validate generated completion receipt and manifest provenance
         run: |
           set -euo pipefail
           python - <<'PY'
           import hashlib, json
           from pathlib import Path
           root=Path('/tmp/pass168-terminal-artifacts')
+          expected_head=Path('/tmp/pass168-checked-out-head').read_text().strip()
           receipt=json.loads((root/'HHS_PASS_168_COMPLETION_RECEIPT.json').read_text())
           manifest=json.loads((root/'HHS_PASS_168_EVIDENCE_MANIFEST.json').read_text())
+          assert len(expected_head)==40
+          assert receipt['branch_head_validated']==expected_head
           assert receipt['terminal_verified'] is True and receipt['verified'] is True
           assert receipt['contract_id']=='HHS-P168-VM81-5184-HPC-STCF'
           assert receipt['classification']=='HHS_PASS_168_VM81_5184_CELL_HARMONICODE_PARAMETER_CIRCUIT_AND_SPARSE_TENSOR_CONTROL_FABRIC_VERIFIED'
@@ -100,6 +106,7 @@ jobs:
               assert len(data)==row['bytes']
               assert hashlib.sha256(data).hexdigest()==row['sha256']
           print(json.dumps({
+              'validated_branch_head':expected_head,
               'receipt_sha256':hashlib.sha256((root/'HHS_PASS_168_COMPLETION_RECEIPT.json').read_bytes()).hexdigest(),
               'manifest_sha256':hashlib.sha256((root/'HHS_PASS_168_EVIDENCE_MANIFEST.json').read_bytes()).hexdigest(),
               'artifact_count':22,
@@ -117,17 +124,22 @@ jobs:
               build_i164_pass169_terminal_reconciliation,
               _pass168_terminal_receipt_valid,
           )
+          expected_head=Path('/tmp/pass168-checked-out-head').read_text().strip()
           receipt=json.loads(Path('HHS_PASS_168_COMPLETION_RECEIPT.json').read_text())
+          assert receipt['branch_head_validated']==expected_head
           assert _pass168_terminal_receipt_valid(receipt) is True
           report=build_i164_pass169_terminal_reconciliation('.')
           assert report['terminal_conditions']['pass168_parent_resolved'] is True
           assert 'PASS168_TERMINAL_PARENT_RECEIPT_UNRESOLVED' not in report['blockers']
-          assert 'PASS169_CANONICAL_CORPUS_ABSENT' in report['blockers']
+          assert report['blockers'] == [
+              'PASS169_CANONICAL_CORPUS_ABSENT',
+              'PASS169_REQUIRED_ARTIFACT_SET_INCOMPLETE',
+          ]
           Path('/tmp/pass169-after-pass168.json').write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
           print(json.dumps({'pass168_parent_resolved':True,'remaining_blockers':report['blockers']},sort_keys=True))
           PY
 
-      - name: Commit terminal Pass168 artifact set atomically
+      - name: Commit provenance re-seal without unrelated changes
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
@@ -155,6 +167,15 @@ jobs:
             HHS_PASS_168_BENCHMARK_REPORT.json \
             HHS_PASS_168_EVIDENCE_MANIFEST.json \
             HHS_PASS_168_COMPLETION_RECEIPT.json
-          test "$(git diff --cached --name-only | wc -l)" -eq 22
-          git commit -m 'Pass 219 I166: seal Pass168 terminal parent closure [skip ci]'
+          CHANGED="$(git diff --cached --name-only)"
+          test -n "$CHANGED"
+          while IFS= read -r path; do
+            case "$path" in
+              HHS_PASS_168_CONTRACT.md|HHS_PASS_168_AUTHORITY_BINDING.json|HHS_PASS_168_SOURCE_FIXTURE.harmonicode|HHS_PASS_168_PARAMETER_REGISTRY.json|HHS_PASS_168_EQUALITY_HALF_GATE_REGISTRY.json|HHS_PASS_168_THREAD_MAP.json|HHS_PASS_168_5184_CELL_MAP.json|HHS_PASS_168_BANK_LAYOUT.json|HHS_PASS_168_DEPENDENCY_GRAPH.json|HHS_PASS_168_ABI.json|HHS_PASS_168_API_SCHEMA.json|HHS_PASS_168_CLI_MATRIX.json|HHS_PASS_168_POSITIVE_TEST_MATRIX.json|HHS_PASS_168_NEGATIVE_TEST_MATRIX.json|HHS_PASS_168_5184_COVERAGE_REPORT.json|HHS_PASS_168_SPARSE_UPDATE_REPORT.json|HHS_PASS_168_GPU_MAPPING_REPORT.json|HHS_PASS_168_CROSS_ARCH_REPLAY_REPORT.json|HHS_PASS_168_SANITIZER_REPORT.json|HHS_PASS_168_BENCHMARK_REPORT.json|HHS_PASS_168_EVIDENCE_MANIFEST.json|HHS_PASS_168_COMPLETION_RECEIPT.json) ;;
+              *) echo "unexpected staged path: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$CHANGED"
+          git diff --cached --name-only | grep -Fx HHS_PASS_168_COMPLETION_RECEIPT.json
+          git diff --cached --name-only | grep -Fx HHS_PASS_168_EVIDENCE_MANIFEST.json
+          git commit -m 'Pass 219 I166: bind Pass168 terminal receipt to validated branch head [skip ci]'
           git push origin HEAD:agent/pass219-i166-pass168-terminal-parent-closure
