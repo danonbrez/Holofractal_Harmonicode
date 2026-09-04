@@ -1,0 +1,57 @@
+name: Pass 219 I165 Canonical Gateway Patch Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i165-pass169-public-surface-artifact-closure
+    paths:
+      - .github/workflows/pass219-i165-public-api-patch-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i165-pass169-public-surface-artifact-closure
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Patch canonical public gateway exactly once
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('hhs_backend/public_api_server.py')
+          text = path.read_text(encoding='utf-8')
+          import_line = 'from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router\n'
+          anchor = 'from hhs_runtime.pass190.shell import lower_shell_command\n'
+          if import_line not in text:
+              if text.count(anchor) != 1:
+                  raise SystemExit('I165 import anchor drift')
+              text = text.replace(anchor, anchor + import_line, 1)
+          call = '    app.include_router(build_pass169_algebra_router(provider))\n\n'
+          return_anchor = '    return app\n\n\napp = create_app()'
+          if call not in text:
+              if text.count(return_anchor) != 1:
+                  raise SystemExit('I165 create_app return anchor drift')
+              text = text.replace(return_anchor, call + return_anchor, 1)
+          if text.count(import_line) != 1 or text.count(call) != 1:
+              raise SystemExit('I165 patch cardinality failure')
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile hhs_backend/public_api_server.py hhs_backend/pass169_algebra_routes.py
+          git diff --check
+      - name: Commit exact gateway composition
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hhs_backend/public_api_server.py
+          git diff --cached --exit-code && { echo 'Expected gateway patch missing'; exit 1; } || true
+          git commit -m 'Pass 219 I165: compose Pass169 router into canonical gateway [skip ci]'
+          git push origin HEAD:agent/pass219-i165-pass169-public-surface-artifact-closure
