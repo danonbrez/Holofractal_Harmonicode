@@ -1,0 +1,114 @@
+name: Pass 219 I164 Pass169 Terminal Reconciliation
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i164-pass169-terminal-reconciliation
+    paths:
+      - 'hhs_runtime/pass219/pass169_terminal_reconciliation.py'
+      - 'tests/pass219/test_pass219_i164_pass169_terminal_reconciliation.py'
+      - 'contracts/pass219/PASS_219_I164_PASS169_TERMINAL_RECONCILIATION_1_0.json'
+      - '.github/workflows/pass219-i164-pass169-terminal-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i164:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse and compile I164 surfaces
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I164_PASS169_TERMINAL_RECONCILIATION_1_0.json >/dev/null
+          python -m py_compile hhs_runtime/pass219/pass169_terminal_reconciliation.py
+          python -m py_compile tests/pass219/test_pass219_i164_pass169_terminal_reconciliation.py
+
+      - name: Enforce authority guards
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/pass219/pass169_terminal_reconciliation.py \
+            tests/pass219/test_pass219_i164_pass169_terminal_reconciliation.py
+          grep -F 'reconstruction_from_partial_fixtures_authorized": False' \
+            hhs_runtime/pass219/pass169_terminal_reconciliation.py
+          grep -F 'pass169_terminal_contract_verified": terminal_verified' \
+            hhs_runtime/pass219/pass169_terminal_reconciliation.py
+
+      - name: Verify exact I161-I163 evidence inputs exist
+        run: |
+          test -s evidence/pass219/PASS_219_I161_FEATURE_VALIDATION_33823367993.json
+          test -s evidence/pass219/PASS_219_I162_FEATURE_VALIDATION_33836940374.json
+          test -s evidence/pass219/PASS_219_I163_FEATURE_VALIDATION_33866718853.json
+
+      - name: Run dependency-scoped I164 tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i164_pass169_terminal_reconciliation.py
+
+      - name: Generate exact reconciliation evidence
+        run: |
+          mkdir -p artifacts/pass219/i164
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass169_terminal_reconciliation import (
+              build_i164_pass169_terminal_reconciliation,
+          )
+          report=build_i164_pass169_terminal_reconciliation('.')
+          assert report['frozen_evidence']['all_frozen_evidence_verified'] is True
+          assert report['canonical_corpus']['present'] is False
+          assert report['canonical_corpus']['reconstruction_from_partial_fixtures_authorized'] is False
+          assert report['public_surfaces']['cli']['complete'] is False
+          assert report['public_surfaces']['http']['complete'] is False
+          assert report['pass169_terminal_contract_verified'] is False
+          assert 'PASS169_CANONICAL_CORPUS_ABSENT' in report['blockers']
+          assert 'PASS169_REQUIRED_CLI_SURFACE_INCOMPLETE' in report['blockers']
+          assert 'PASS169_REQUIRED_HTTP_SURFACE_INCOMPLETE' in report['blockers']
+          Path('artifacts/pass219/i164/pass169_terminal_reconciliation.json').write_text(
+              json.dumps(report, sort_keys=True, indent=2)+'\n', encoding='utf-8'
+          )
+          print(json.dumps({
+              'result':'PASS',
+              'blockers':report['blockers'],
+              'recoverable_fixture_count':len(report['canonical_corpus']['recoverable_exact_fixtures']),
+              'pass169_terminal_contract_verified':report['pass169_terminal_contract_verified'],
+          }, sort_keys=True))
+          PY
+          python -m json.tool artifacts/pass219/i164/pass169_terminal_reconciliation.json >/dev/null
+
+      - name: Publish I164 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 I164 Pass169 terminal reconciliation
+          - I161 typed closure evidence: VERIFIED / FROZEN
+          - I162 VM81 + Hash72 + Hash216 + replay evidence: VERIFIED / FROZEN
+          - I163 reverse + cross-architecture evidence: VERIFIED / FROZEN
+          - Pass169 canonical corpus file: ABSENT / FAIL CLOSED
+          - Recoverable partial HARMONICODE fixtures: RECEIPTED / NOT PROMOTED
+          - Required general CLI surface: INCOMPLETE
+          - Required general HTTP surface: INCOMPLETE
+          - Pass169 terminal contract: NOT CLAIMED
+          - Floating-point canonical authority: NONE
+          EOF
+
+      - name: Upload I164 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i164-pass169-terminal-reconciliation-${{ github.sha }}
+          path: artifacts/pass219/i164/pass169_terminal_reconciliation.json
+          if-no-files-found: error
+          retention-days: 90
