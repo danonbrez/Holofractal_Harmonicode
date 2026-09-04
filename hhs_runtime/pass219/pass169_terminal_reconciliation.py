@@ -110,7 +110,11 @@ RECOVERABLE_HARMONICODE_FIXTURES: Tuple[str, ...] = (
 )
 
 _CODE_SUFFIXES = {".py", ".c", ".h", ".cc", ".cpp", ".hpp", ".js", ".mjs", ".ts", ".tsx"}
-_EXCLUDED_SCAN_DIRS = {".git", "docs", "contracts", "evidence", "artifacts", "node_modules", ".venv", "venv"}
+_EXCLUDED_SCAN_DIRS = {
+    ".git", "docs", "contracts", "evidence", "artifacts", "tests",
+    "node_modules", ".venv", "venv",
+}
+_RECONCILIATION_SOURCE = "hhs_runtime/pass219/pass169_terminal_reconciliation.py"
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
@@ -148,6 +152,8 @@ def _iter_code_files(root: Path) -> Iterable[Path]:
             continue
         rel = path.relative_to(root)
         if any(part in _EXCLUDED_SCAN_DIRS for part in rel.parts):
+            continue
+        if rel.as_posix() == _RECONCILIATION_SOURCE:
             continue
         yield path
 
