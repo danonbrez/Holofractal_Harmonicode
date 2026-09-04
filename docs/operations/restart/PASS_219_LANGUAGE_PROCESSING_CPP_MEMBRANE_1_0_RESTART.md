@@ -1,5 +1,9 @@
 # Pass 219 — Language Processing C/C++ Membrane 1.0 Restart
 
+## Classification
+
+`IMPLEMENTED / DEPENDENCY-SCOPED GREEN / PR-READY / AUTHORITY-NEUTRAL`
+
 ## Restart coordinates
 
 ```text
@@ -7,7 +11,11 @@ repository: danonbrez/Holofractal_Harmonicode
 base main: ca407f27a2609f7c1517f7987bdfaa1847cb954a
 branch: agent/pass219-language-processing-cpp-membrane-20260903
 merge target: main
-implementation checkpoint: commit containing this restart record
+PR: #390
+initial implementation checkpoint: 93e0e79c1af6e30e3af9fe3fe9af05560f2701bd
+aggregate-wired head before evidence seal: f5640bc8e2601545786d80923cf38cca4f09b09c
+dedicated validation run: 33835808424
+validation conclusion: SUCCESS
 ```
 
 ## Scope
@@ -30,7 +38,41 @@ tests/pass219/test_pass219_language_processing_membrane_1_0.cpp
 docs/operations/restart/PASS_219_LANGUAGE_PROCESSING_CPP_MEMBRANE_1_0_RESTART.md
 ```
 
-## Local bounded validation before repository commit
+## Integrated language layer classes
+
+```text
+0  VERBATIM_SOURCE
+1  TOKEN_TENSOR
+2  LEXICAL_RELATION
+3  GRAMMAR_SYNTAX
+4  PROPOSITION
+5  AMBIGUITY
+6  TRANSLATION_REGISTER
+7  METAPHOR_ANALOGY
+8  SEMANTIC_GRAPH
+9  CONTEXT_DISCOURSE
+10 AUDIO_LANGUAGE
+11 MODEL_PROPOSAL
+12 TOKENIZATION_INGESTION
+13 VECTOR_HYDRATION
+14 SYMBOLIC_TRANSLATION
+15 PATTERN_META_AWARENESS
+```
+
+## Preserved boundary rules
+
+- exact source recoverability;
+- lexeme identity separate from occurrence identity;
+- order, scope, grammar role, discourse history, ambiguity, and provenance preserved;
+- synonyms and definitions remain typed relations, never identity replacement;
+- metaphor/analogy remain relational maps, never formal authority;
+- metaphor requires declared status plus a reconstruction-map root;
+- model and semantic-graph output remains non-authoritative;
+- symbolic translation preserves reference identity, negation, scope, modality, temporality, and uncertainty;
+- no floating-point canonical authority;
+- RNA projection accepts an existing versioned RNA execution plan and still requires downstream admission.
+
+## Local bounded validation
 
 Performed against a minimal ABI/RNA compatibility stub using the exact repository Hash72 alphabet and native public shapes:
 
@@ -47,6 +89,32 @@ RNA projection remains admission-required and authority-neutral: PASS
 
 ## Repository validation
 
-Pending at this checkpoint until the branch workflow executes against the real aggregate ABI. Required: strict C11 aggregate compile; native C positive/negative test; C++17 wrapper link/test; exported symbol check.
+Dedicated GitHub Actions run `33835808424` on `f5640bc8e2601545786d80923cf38cca4f09b09c` completed successfully.
 
-Queued external CI does not invalidate this restart checkpoint. Repair only this feature's impacted surfaces if the dedicated workflow fails.
+```text
+Strict C11 aggregate compile: SUCCESS
+Native C membrane test: SUCCESS
+C++17 wrapper test: SUCCESS
+Exported symbol gate: SUCCESS
+```
+
+Unrelated repository-wide push workflows are not acceptance evidence for this dependency-scoped feature lane and do not invalidate this checkpoint.
+
+## Authority state after this feature
+
+```text
+language_projection_available: true
+complete_16_layer_native_membrane: true
+existing_RNA_execution_plan_projection: true
+language_authority: false
+vm81_mutation_authority_from_language: false
+hash72_mint_authority_from_language: false
+hash216_persistence_authority_from_language: false
+deterministic_replay_authority_from_language: false
+I162_consumed_or_completed: false
+PASS169_VM81_authority_advanced: false
+```
+
+## Next action
+
+PR #390 is the restartable integration boundary. If merged, verify the exact merge commit on `main`, then continue the independently reserved I162 / `PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION` boundary from repository state rather than reconstructing this feature from conversation history.
