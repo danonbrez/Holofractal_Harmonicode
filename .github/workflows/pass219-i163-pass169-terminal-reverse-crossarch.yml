@@ -71,6 +71,31 @@ jobs:
           cmake --build /tmp/pass159-i163-build --parallel 2
           ctest --test-dir /tmp/pass159-i163-build --output-on-failure
 
+      - name: Census inherited Pass159 reverse semantics
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for path in (
+              Path('/tmp/pass159-i163-build/hhs159_core.c'),
+              Path('/tmp/pass159-i163-build/test_pass159.c'),
+          ):
+              text=path.read_text(encoding='utf-8')
+              print(f'=== {path.name} reverse census ===')
+              cursor=0
+              found=0
+              while True:
+                  index=text.find('hhs159_reverse', cursor)
+                  if index < 0:
+                      break
+                  found += 1
+                  start=max(0, text.rfind('\n', 0, max(0,index-1200)))
+                  end=min(len(text), index+7000)
+                  print(text[start:end])
+                  print('=== reverse occurrence boundary ===')
+                  cursor=index+len('hhs159_reverse')
+              assert found > 0
+          PY
+
       - name: Compile cumulative exact ABI
         run: |
           mkdir -p /tmp/pass219-i163 artifacts/pass219/i163
