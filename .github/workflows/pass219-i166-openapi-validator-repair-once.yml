@@ -1,0 +1,51 @@
+name: Pass 219 I166 OpenAPI Validator Repair Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i166-pass168-terminal-parent-closure
+    paths:
+      - '.github/workflows/pass219-i166-openapi-validator-repair-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i166-pass168-terminal-parent-closure
+          fetch-depth: 0
+      - name: Replace brittle included-route introspection with served OpenAPI verification
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          test_path=Path('tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py')
+          text=test_path.read_text(encoding='utf-8')
+          old='''    app = create_app()\n    pairs = _route_pairs(app.routes)\n    assert REQUIRED_HTTP <= pairs\n    for pair in REQUIRED_HTTP:\n        matches = [\n            route\n            for route in app.routes\n            if getattr(route, "path", "") == pair[1]\n            and pair[0] in (getattr(route, "methods", set()) or set())\n        ]\n        assert len(matches) == 1, pair\n'''
+          new='''    app = create_app()\n    paths = app.openapi()["paths"]\n    for method, path in REQUIRED_HTTP:\n        assert path in paths, (method, path)\n        assert method.lower() in paths[path], (method, path)\n'''
+          if text.count(old) != 1:
+              raise SystemExit('test route-validation anchor mismatch')
+          test_path.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          workflow_path=Path('.github/workflows/pass219-i166-pass168-public-surface-closure.yml')
+          text=workflow_path.read_text(encoding='utf-8')
+          old="""          app=create_app()\n          app_pairs=pairs(app.routes)\n          assert route_pairs <= app_pairs\n          for method,path in route_pairs:\n              assert sum(\n                  1 for route in app.routes\n                  if getattr(route,'path','')==path\n                  and method in (getattr(route,'methods',set()) or set())\n              ) == 1\n          assert len(REQUIRED_CLI_OPERATIONS)==21\n"""
+          new="""          app=create_app()\n          openapi_paths=app.openapi()['paths']\n          for method,path in route_pairs:\n              assert path in openapi_paths, (method,path)\n              assert method.lower() in openapi_paths[path], (method,path)\n          assert len(REQUIRED_CLI_OPERATIONS)==21\n"""
+          if text.count(old) != 1:
+              raise SystemExit('workflow route-validation anchor mismatch')
+          workflow_path.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+          python -m py_compile tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py
+          grep -F "openapi_paths=app.openapi()['paths']" .github/workflows/pass219-i166-pass168-public-surface-closure.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tests/pass219/test_pass219_i166_pass168_terminal_parent_closure.py \
+                  .github/workflows/pass219-i166-pass168-public-surface-closure.yml
+          git rm .github/workflows/pass219-i166-openapi-validator-repair-once.yml
+          git commit -m 'Pass 219 I166: verify served Pass168 OpenAPI surface [skip ci]'
+          git push origin HEAD:agent/pass219-i166-pass168-terminal-parent-closure
