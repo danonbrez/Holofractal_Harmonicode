@@ -1,13 +1,12 @@
 """Pass 219 intrinsic modality constitutional closure.
 
 Every authority-adjacent HHS modality is required to carry the same root
-constitutional invariant membrane.  This module is deterministic,
-non-mutating, and cannot mint VM81, Hash72, Hash216, capability, consent, or
-jurisdiction authority.
+constitutional invariant membrane.  Modality-specific invariants remain typed
+locally rather than being fabricated onto unrelated surfaces.  Code-owned
+constitutional/VM81 boundaries preserve the complete carried union.
 
-Its purpose is to prevent an optimizer from treating representation, storage,
-serialization, planning, inference, caching, or another modality as an
-ethics-neutral transport lane.
+This module is deterministic, non-mutating, and cannot mint VM81, Hash72,
+Hash216, capability, consent, or jurisdiction authority.
 """
 from __future__ import annotations
 
@@ -53,7 +52,11 @@ def _ordered_unique(values: Iterable[str]) -> Tuple[str, ...]:
 
 
 def required_invariants_for(candidate: ConstitutionalEthicsCandidate) -> Tuple[str, ...]:
-    """Return the root plus candidate-carried invariant closure set."""
+    """Return root invariants plus every explicitly carried local invariant.
+
+    This union is for cross-modal authority boundaries. It does not mean that
+    every modality must claim every other modality's local invariant.
+    """
     inherited = []
     for modality in candidate.modalities:
         inherited.extend(modality.mandatory_invariants_present)
@@ -61,12 +64,7 @@ def required_invariants_for(candidate: ConstitutionalEthicsCandidate) -> Tuple[s
 
 
 def intrinsic_trace(modality_id: str, required: Tuple[str, ...]) -> ModalityInvariantTrace:
-    """Create an intrinsic all-preserving trace for code-owned authority gates.
-
-    Only the bridge/membrane may construct these code-owned traces.  They say
-    that these adapters preserve the supplied invariant set; they do not attest
-    that upstream modalities actually satisfied it.
-    """
+    """Create a preserving trace only for code-owned authority boundaries."""
     if modality_id not in INTRINSIC_AUTHORITY_MODALITIES:
         raise ValueError("intrinsic trace may only be minted for code-owned authority modalities")
     return ModalityInvariantTrace(
@@ -83,33 +81,33 @@ def intrinsic_trace(modality_id: str, required: Tuple[str, ...]) -> ModalityInva
 def close_candidate_modalities(candidate: ConstitutionalEthicsCandidate) -> ConstitutionalEthicsCandidate:
     """Fail closed when any participating modality omits the root membrane.
 
-    Missing root invariants cannot be repaired by the bridge.  Instead the
-    upstream modality is rewritten to a deterministic FAIL trace while the two
-    code-owned authority boundary traces are appended intrinsically.  This
-    prevents caller omission from becoming a permissive default.
+    Every modality must explicitly carry and preserve the root invariants and
+    must preserve every additional invariant that it itself declares present.
+    A modality-specific invariant is not automatically imposed on unrelated
+    modalities. Missing evidence is preserved as missing evidence: this helper
+    never rewrites a failed upstream trace to claim an invariant was present.
+
+    The two code-owned authority boundaries preserve the complete carried union
+    so no invariant may disappear while crossing into canonical VM81 authority.
     """
-    required = required_invariants_for(candidate)
-    required_set = set(required)
+    root_set = set(CORE_MANDATORY_INVARIANTS)
+    boundary_required = required_invariants_for(candidate)
     closed = []
     for modality in candidate.modalities:
         present = set(modality.mandatory_invariants_present)
         preserved = set(modality.mandatory_invariants_preserved)
-        complete = required_set.issubset(present) and required_set.issubset(preserved)
+        complete = root_set.issubset(present) and present.issubset(preserved)
         closed.append(
             replace(
                 modality,
                 local_state=modality.local_state if complete else EthicsState.FAIL,
-                mandatory_invariants_present=required,
-                mandatory_invariants_preserved=(
-                    required if complete else _ordered_unique(modality.mandatory_invariants_preserved)
-                ),
             )
         )
 
     by_id = {item.modality_id for item in closed}
     for modality_id in INTRINSIC_AUTHORITY_MODALITIES:
         if modality_id not in by_id:
-            closed.append(intrinsic_trace(modality_id, required))
+            closed.append(intrinsic_trace(modality_id, boundary_required))
 
     return replace(candidate, modalities=tuple(closed))
 
