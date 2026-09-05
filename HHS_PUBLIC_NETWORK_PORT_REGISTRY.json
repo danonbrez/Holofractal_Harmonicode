@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PUBLIC_NETWORK_PORT_REGISTRY_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I170",
+  "version": "1.0.0",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "ports": [
+    {
+      "port_id": "hhs.public.api",
+      "transport": [
+        "HTTP_REST",
+        "WEBSOCKET"
+      ],
+      "host_policy": "ENVIRONMENT_CONFIGURABLE_PUBLIC",
+      "default_host": "0.0.0.0",
+      "default_port": 8000,
+      "environment_override": {
+        "host": "HHS_PUBLIC_API_HOST",
+        "port": "HHS_PUBLIC_API_PORT"
+      },
+      "public_or_private": "PUBLIC_GOVERNED_GATEWAY",
+      "application_entrypoint": "hhs_backend.public_api_server:app",
+      "protocol_version": "1.0.0",
+      "TLS_policy": "TERMINATE_AT_DEPLOYMENT_EDGE_OR_CONFIGURED_ASGI_SERVER",
+      "authentication_policy": "HHS_CAPABILITY_FOR_GOVERNED_OPERATIONS",
+      "allowed_origins": "DEPLOYMENT_CONFIGURATION",
+      "health_endpoint": "/v1/system/status",
+      "OpenAPI_or_protocol_identity": "/openapi.json",
+      "authority_context_id": "HHS-P190-CANONICAL-AUTHORITY-CONTEXT",
+      "startup_order": 100,
+      "shutdown_order": 100
+    }
+  ],
+  "invariants": {
+    "single_public_gateway_required": true,
+    "duplicate_host_port_claims_forbidden": true,
+    "provider_ports_must_be_private_or_disabled": true,
+    "test_fixed_port_binding_forbidden_when_ephemeral_is_sufficient": true,
+    "canonical_state_mutated_by_registry_load": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY"
+}
