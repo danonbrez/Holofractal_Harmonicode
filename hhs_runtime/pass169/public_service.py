@@ -13,10 +13,8 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-from hhs_runtime.pass219.pass169_terminal_reconciliation import (
-    PASS169_CANONICAL_CORPUS_PATH,
-    build_i164_pass169_terminal_reconciliation,
-)
+from hhs_runtime.pass219.pass169_terminal_reconciliation import PASS169_CANONICAL_CORPUS_PATH
+from hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate
 
 CONTRACT_ID = "HHS-P169-HSAE-VM81-ESCPR"
 SURFACE_VERSION = "PASS219-I165-PASS169-PUBLIC-SURFACE-V1"
@@ -87,7 +85,7 @@ class Pass169AlgebraService:
         self._sources: dict[str, CandidateSource] = {}
 
     def _reconciliation(self) -> dict[str, Any]:
-        return build_i164_pass169_terminal_reconciliation(self.repository_root)
+        return build_i167_pass169_terminal_gate(self.repository_root)
 
     def _authority_snapshot(self) -> dict[str, Any]:
         if self.authority_provider is None:
