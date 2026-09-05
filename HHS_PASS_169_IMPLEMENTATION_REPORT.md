@@ -1,19 +1,56 @@
 # HHS Pass 169 Implementation Report
 
-Current classification: `IMPLEMENTATION_VERIFIED_PENDING_GENERAL_RUNTIME_BINDING`.
+Current classification:
 
-Implemented and frozen evidence includes the I161 complete typed monolithic closure, I162 sealed exact VM81 admission/commit with Hash72/Hash216 and deterministic replay, I163 deterministic reverse/cross-architecture identity, I165 complete CLI/HTTP route reachability, and I166 authoritative Pass168 parent closure.
+`HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME_VERIFIED`
 
-I167 establishes `HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode` as the repository canonical source-of-record by copying the already sealed 632-byte combined source **byte for byte**. Its SHA-256 is `3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53`; both the sealed source fixture and canonical path have Git blob SHA-1 `5ef1e3dbcd107666b1f30269d4579afb246de3f5`. No source rewriting or partial-fixture concatenation is used.
+Pass169 terminal implementation closure is reached by cumulative I161–I168 evidence.
 
-`HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json` binds that identity to the frozen I162 source-reconstruction/VM81 evidence and I163 reverse/cross-architecture evidence. It intentionally does not claim recovery of an unavailable original external-prompt byte stream; it establishes the sealed repository source lineage as the canonical source-of-record.
+- I161 froze the complete typed monolithic graph with 10/10 joins proved and no unresolved typed boundary.
+- I162 proved the sealed exact VM81 admission/atomic-commit path, Hash72 execution receipt, Hash216 proof/transition identity, and deterministic replay.
+- I163 proved deterministic reverse-transition lineage, prior transaction-state restoration, interpreter/compiler equality, and cross-architecture exact identity.
+- I165 closed the required CLI and HTTP public route set in the one canonical gateway.
+- I166 resolved the authoritative Pass168 terminal parent.
+- I167 established the byte-for-byte 632-byte canonical repository source-of-record and hardened the terminal gate so corpus presence alone could not mint completion.
+- I168 binds the canonical Pass169 operation set to the deployed shared Runtime ABI and closes the last terminal blocker.
 
-I167 also repairs a masked terminal-gate defect. The I165 public service was route-complete but deliberately returned `PASS169_GENERAL_RUNTIME_BINDING_NOT_YET_VERIFIED` for canonical token/AST/constraint/proof/admission/commit/replay/reverse operations. Therefore canonical-corpus presence cannot by itself satisfy Pass169 terminal closure.
+## I168 shared Runtime ABI
 
-The hardened `hhs_runtime/pass219/pass169_terminal_gate_i167.py` requires a structured `HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json` proving live canonical Runtime ABI execution, single VM81 commit authority, Hash72/Hash216 evidence, interpreter/compiler equality, deterministic replay, reverse prior-state restoration, no fallback, no floating-point canonical authority, and the required canonical operation set.
+The deployed library remains a single ABI surface:
 
-The remaining terminal boundary is exactly:
+`hhs_runtime/builds/libhhs_runtime.so`
 
-`PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED`
+The Makefile materializes the frozen Pass159 C core from its deterministic gzip capsule and links it into that same library with the inherited exact ABI, I162 execution authority, I163 reverse proof, and the I168 adapter. No second runtime or second VM81 mutation authority is created.
 
-No new VM81 authority, Hash72 mint authority, Hash216 persistence authority, or floating-point canonical authority is introduced by I167.
+The new native binding is:
+
+`hhs_exact_pass219_i168_bind_canonical`
+
+It verifies the exact operation mask `4095/4095` for:
+
+`tokens`, `ast`, `constraints`, `typecheck`, `normalize`, `prove`, `evaluate-candidate`, `admit`, `commit`, `receipt`, `replay`, and `reverse`.
+
+The public service now calls the same binding through `hhs_runtime.pass169.runtime_binding.Pass169CanonicalRuntimeBinding`. Python transports Runtime evidence and identifiers only; it does not reconstruct canonical algebra or mint VM81 results.
+
+Canonical source identity remains:
+
+- bytes: `632`
+- SHA-256: `3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53`
+- canonical path: `HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode`
+
+The genuine Runtime binding receipt is:
+
+`HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json`
+
+It records live Runtime ABI execution, a single VM81 commit authority, Hash72 receipts, Hash216 identities, interpreter/compiler equality, deterministic replay, prior-state restoration, no fallback, no floating-point canonical authority, and no Hash216 persistence authority.
+
+## Terminal result
+
+The post-receipt I168 validation at head `df5cbb5e198cc185aae0e980adf714e04ae4d138` passed the hardened terminal gate with:
+
+- `general_runtime_binding_verified=true`
+- `pass169_terminal_contract_verified=true`
+- `blockers=[]`
+- `next_boundary=PASS169_TERMINAL_CLOSURE_VERIFIED`
+
+No new VM81 mutation authority, Hash72 mint authority, Hash216 persistence authority, fallback evaluator, or floating-point canonical authority was introduced.

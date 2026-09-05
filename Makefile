@@ -3,10 +3,22 @@
 
 CC ?= gcc
 CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c
-LDFLAGS ?= -lm
+LDFLAGS ?= -lm -lcrypto
 RUNTIME_BUILD_DIR := hhs_runtime/builds
 ABI_LIB := $(RUNTIME_BUILD_DIR)/libhhs_runtime.so
 EXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)
+PASS159_ROOT := native_projects/hhs_pass159_harmonicode_toolchain
+PASS159_CORE := $(RUNTIME_BUILD_DIR)/pass159/hhs159_core.c
+PASS159_INCLUDES := -I$(PASS159_ROOT)/include -I$(PASS159_ROOT)/src
+PASS169_RUNTIME_BINDING_SRCS := \
+	hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+	hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+	hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+	hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c \
+	hhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \
+	hhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \
+	hhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c \
+	hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c
 VM81_BIN := $(RUNTIME_BUILD_DIR)/hhs_vm81
 
 .PHONY: all c-kernel c-abi vm81 verify-c emulate-c service-registry io-gateway semantic-memory-guard runtime-dataflow-guard persistence-guard runtime-contract foundational-standards hash72-u72 hash72-kernel-authority backend-routes gui-runtime-contract srcg-primitive srcg-api-surface system-closure-harness runtime-reachability runtime-integration-decisions guarded-plugin-adapters plugin-capability-planner guarded-plugin-invocation-executor contract-schema-registry constraint-stack-security-harness runtime-constraint-enforcement zero-bypass-runtime-interposer test clean
@@ -20,8 +32,15 @@ $(RUNTIME_BUILD_DIR):
 
 c-abi: $(ABI_LIB)
 
-$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS) | $(RUNTIME_BUILD_DIR)
-	$(CC) $(CFLAGS) -fPIC -shared hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c -o $(ABI_LIB) $(LDFLAGS)
+$(PASS159_CORE): $(PASS159_ROOT)/src/hhs159_core.c.gz | $(RUNTIME_BUILD_DIR)
+	mkdir -p $(dir $@)
+	gzip -dc $< > $@
+
+$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS) $(PASS159_CORE) $(PASS169_RUNTIME_BINDING_SRCS) | $(RUNTIME_BUILD_DIR)
+	$(CC) $(CFLAGS) $(PASS159_INCLUDES) -fPIC -shared \
+		hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c \
+		$(PASS159_CORE) $(PASS169_RUNTIME_BINDING_SRCS) \
+		-o $(ABI_LIB) $(LDFLAGS)
 
 vm81: $(VM81_BIN)
 

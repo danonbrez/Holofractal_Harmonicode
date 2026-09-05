@@ -1,0 +1,246 @@
+name: Pass 219 I168 Pass169 General Runtime Binding Closure
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i168-pass169-general-runtime-binding-closure
+    paths:
+      - 'Makefile'
+      - 'HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json'
+      - 'HHS_PASS_169_COMPLETION_RECEIPT.json'
+      - 'HHS_PASS_169_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_169_RUNTIME_CALL_MAP.json'
+      - 'HHS_PASS_169_IMPLEMENTATION_REPORT.md'
+      - 'HHS_PASS_169_VALIDATION_REPORT.md'
+      - 'hhs_runtime/include/hhs_pass219_i168_pass169_general_runtime_binding_1_25.h'
+      - 'hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c'
+      - 'hhs_runtime/pass169/runtime_binding.py'
+      - 'hhs_runtime/pass169/public_service.py'
+      - 'tools/pass219/pass219_i168_runtime_binding_probe.c'
+      - 'tests/pass219/test_pass219_i168_pass169_general_runtime_binding.py'
+      - 'contracts/pass219/PASS_219_I168_PASS169_GENERAL_RUNTIME_BINDING_CLOSURE_1_0.json'
+      - '.github/workflows/pass219-i168-pass169-general-runtime-binding-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i168:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Parse and compile I168 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool contracts/pass219/PASS_219_I168_PASS169_GENERAL_RUNTIME_BINDING_CLOSURE_1_0.json >/dev/null
+          python -m py_compile hhs_runtime/pass169/runtime_binding.py
+          python -m py_compile hhs_runtime/pass169/public_service.py
+          python -m py_compile tests/pass219/test_pass219_i168_pass169_general_runtime_binding.py
+
+      - name: Enforce canonical source and authority guards
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          data=Path('HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode').read_bytes()
+          source=Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          assert data == source
+          assert len(data) == 632
+          assert hashlib.sha256(data).hexdigest() == '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53'
+          PY
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_i168_pass169_general_runtime_binding_1_25.h \
+            hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c \
+            tools/pass219/pass219_i168_runtime_binding_probe.c
+          grep -F 'hhs_exact_pass219_pass159_global_witness_produce' hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c
+          grep -F 'hhs_exact_pass219_i162_execute' hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c
+          grep -F 'hhs_exact_pass219_i163_verify_reverse' hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c
+          grep -F 'PASS169_RUNTIME_BINDING_SRCS' Makefile
+          test ! -e .github/workflows/pass219-i168-runtime-wire-patch-once.yml
+
+      - name: Build deployed shared Runtime ABI
+        run: |
+          set -euo pipefail
+          make clean
+          make c-abi
+          test -f hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E 'hhs_runtime_init|hhs_exact_abi_validate|hhs159_context_create|hhs159_lex|hhs159_reverse|hhs_exact_pass219_i168_bind_canonical'
+
+      - name: Run native I168 shared-library probe
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i168 /tmp/pass219-i168
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass219/pass219_i168_runtime_binding_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass219-i168/i168-native-probe
+          /tmp/pass219-i168/i168-native-probe \
+            HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode \
+            > artifacts/pass219/i168/native_runtime_binding.json
+          python -m json.tool artifacts/pass219/i168/native_runtime_binding.json >/dev/null
+          cat artifacts/pass219/i168/native_runtime_binding.json
+
+      - name: Run Python binding through same shared library
+        run: |
+          set -euo pipefail
+          HHS_DISABLE_C_AUTOBUILD=1 python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass169.runtime_binding import Pass169CanonicalRuntimeBinding
+          record=Pass169CanonicalRuntimeBinding('.').record()
+          Path('artifacts/pass219/i168/python_runtime_binding.json').write_text(
+              json.dumps(record,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(record,sort_keys=True))
+          PY
+
+      - name: Enforce native Python Runtime ABI identity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          native=json.loads(Path('artifacts/pass219/i168/native_runtime_binding.json').read_text())
+          py=json.loads(Path('artifacts/pass219/i168/python_runtime_binding.json').read_text())
+          assert native['status'] == 0
+          assert native['decision'] == py['decision'] == 1
+          assert native['operation_verified_mask'] == py['operation_verified_mask'] == 4095
+          assert native['required_operation_mask'] == py['required_operation_mask'] == 4095
+          pairs={
+              'source_hash216':'source_hash216',
+              'tokens_hash216':'tokens_hash216',
+              'ast_hash216':'ast_hash216',
+              'constraint_graph_hash216':'constraint_graph_hash216',
+              'normalized_ir_hash216':'normalized_ir_hash216',
+              'vmir_hash216':'vmir_hash216',
+              'proof_hash216':'proof_hash216',
+              'transition_hash216':'transition_hash216',
+              'reverse_hash216':'reverse_hash216',
+              'receipt_hash72':'receipt_hash72',
+              'replay_hash72':'replay_hash72',
+              'reverse_hash72':'reverse_hash72',
+          }
+          for nk, pk in pairs.items():
+              assert native[nk] == py[pk], (nk, native[nk], py[pk])
+          assert native['receipt_hash72'] == 'i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ'
+          assert native['transition_hash216'] == 'xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18'
+          for key in (
+              'source_identity_exact','pass159_frontend_chain_complete','typed_proof_verified',
+              'interpreter_compiler_match','exact_vm81_admission_verified','atomic_commit_verified',
+              'hash72_receipts_verified','hash216_identities_verified','deterministic_replay_verified',
+              'reverse_restores_prior_state_verified','live_runtime_abi_verified',
+              'canonical_computation_through_runtime_abi','single_vm81_commit_authority',
+          ):
+              assert native[key] == 1, key
+          assert native['fallback_used'] == 0
+          assert native['floating_point_authority'] == 0
+          assert native['hash216_persistence_authority'] == 0
+          PY
+
+      - name: Run dependency-scoped I168 public and runtime tests
+        run: |
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i168_pass169_general_runtime_binding.py
+
+      - name: Verify legacy runtime ABI remains callable
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E 'hhs_runtime_init|hhs_runtime_step|hhs_validate_abi|hhs_hash216_compute'
+
+      - name: Generate genuine I168 runtime-binding receipt candidate
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          py=json.loads(Path('artifacts/pass219/i168/python_runtime_binding.json').read_text())
+          receipt={
+              'schema':'HHS_PASS169_GENERAL_RUNTIME_BINDING_RECEIPT_V1',
+              'contract_id':'HHS-P169-HSAE-VM81-ESCPR',
+              'fixed_resolution':'72^42=5184^21',
+              'canonical_source_path':'HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode',
+              'canonical_source_bytes':632,
+              'canonical_source_sha256':'3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53',
+              'validated_head':os.environ['GITHUB_SHA'],
+              'verified':True,
+              'live_runtime_abi_verified':True,
+              'canonical_computation_through_runtime_abi':True,
+              'single_vm81_commit_authority':True,
+              'hash72_receipts_verified':True,
+              'hash216_identities_verified':True,
+              'deterministic_replay_verified':True,
+              'reverse_restores_prior_state_verified':True,
+              'interpreter_compiler_equality_verified':True,
+              'fallback_used':False,
+              'floating_point_canonical_authority':False,
+              'hash216_persistence_authority':False,
+              'verified_operations':py['verified_operations'],
+              'operation_verified_mask':py['operation_verified_mask'],
+              'source_hash216':py['source_hash216'],
+              'tokens_hash216':py['tokens_hash216'],
+              'ast_hash216':py['ast_hash216'],
+              'type_environment_hash216':py['type_environment_hash216'],
+              'constraint_graph_hash216':py['constraint_graph_hash216'],
+              'normalized_ir_hash216':py['normalized_ir_hash216'],
+              'vmir_hash216':py['vmir_hash216'],
+              'proof_hash216':py['proof_hash216'],
+              'transition_hash216':py['transition_hash216'],
+              'reverse_hash216':py['reverse_hash216'],
+              'receipt_hash72':py['receipt_hash72'],
+              'replay_hash72':py['replay_hash72'],
+              'reverse_hash72':py['reverse_hash72'],
+              'vm5184_address':py['vm5184_address'],
+              'forward_vm81_steps':py['forward_vm81_steps'],
+              'replay_vm81_steps':py['replay_vm81_steps'],
+              'reverse_vm81_steps':py['reverse_vm81_steps'],
+          }
+          canonical=json.dumps(receipt,sort_keys=True,separators=(',',':')).encode()
+          receipt['receipt_sha256']=hashlib.sha256(canonical).hexdigest()
+          Path('artifacts/pass219/i168/runtime_binding_receipt_candidate.json').write_text(
+              json.dumps(receipt,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+
+      - name: Enforce hardened terminal gate state
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate
+          report=build_i167_pass169_terminal_gate('.')
+          receipt_present=Path('HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json').is_file()
+          assert report['canonical_corpus']['provenance']['verified'] is True
+          assert report['pass168_parent']['resolved'] is True
+          assert report['required_artifacts']['complete'] is True
+          assert report['public_surfaces']['cli']['complete'] is True
+          assert report['public_surfaces']['http']['complete'] is True
+          assert report['general_runtime_binding']['verified'] is receipt_present
+          assert report['pass169_terminal_contract_verified'] is receipt_present
+          if receipt_present:
+              assert report['blockers'] == []
+              assert report['next_boundary'] == 'PASS169_TERMINAL_CLOSURE_VERIFIED'
+          else:
+              assert report['blockers'] == ['PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED']
+              assert report['next_boundary'] == 'PASS169_GENERAL_RUNTIME_BINDING_CLOSURE'
+          PY
+
+      - name: Upload I168 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i168-pass169-general-runtime-binding-${{ github.sha }}
+          path: artifacts/pass219/i168/
+          if-no-files-found: error
+          retention-days: 90

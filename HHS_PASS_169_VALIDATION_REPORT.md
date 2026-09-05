@@ -1,52 +1,71 @@
 # HHS Pass 169 Validation Report
 
-Pass169 remains intentionally nonterminal after I167.
+Pass169 has reached terminal validation on the I168 branch under the normative classification:
 
-Frozen inherited evidence remains valid:
-- I161 typed monolithic graph: 10/10 proved, 0 unresolved.
+`HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME_VERIFIED`
+
+## Frozen inherited evidence
+
+- I161 typed monolithic graph: `10/10` proved, `0` unresolved.
 - I162 sealed candidate: exact VM81 admission and atomic commit, Hash72 receipt, Hash216 proof identity, deterministic replay.
 - I163: deterministic reverse restoration, interpreter/compiler agreement, x86-64/ARM64/Python exact record identity.
-- I165: CLI `20/20` and HTTP `17/17` surfaces complete in the one canonical public gateway.
-- I166: Pass168 terminal parent authority resolved.
+- I165: CLI `20/20` and HTTP `17/17` public surfaces complete in the one canonical gateway.
+- I166: authoritative Pass168 terminal parent resolved.
+- I167: 632-byte canonical repository corpus provenance and hardened terminal gate verified.
 
-## I167 canonical corpus provenance and terminal-gate validation
+## I168 phase 1 — genuine shared Runtime binding
 
-Dedicated workflow: `Pass 219 I167 Pass169 Canonical Corpus Terminal Gate`
+Dedicated workflow: `Pass 219 I168 Pass169 General Runtime Binding Closure`
 
-- run: `33932801287`
-- job: `101214708221`
-- validated functional head: `99c3946c9c7160105d39d34c93d2d38b5eec7e28`
+- run: `33935393289`
+- job: `101222203654`
+- validated head: `f40a57f921d1fa7a0ffacaa9e2988a211eb05d6d`
 - result: `SUCCESS`
-- Python: `3.11.16`
-- dependency-scoped pytest: `7 passed, 0 failed, 1 warning in 1.36s`
-- warning: pytest unknown `asyncio_mode` only
-- canonical source bytes: `632`
-- canonical source SHA-256: `3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53`
-- canonical/source Git blob SHA-1: `5ef1e3dbcd107666b1f30269d4579afb246de3f5`
-- byte-for-byte sealed source equality: `VERIFIED`
-- source rewriting: `false`
-- partial-fixture concatenation: `false`
-- original external-prompt byte identity claim: `false`
+- canonical operation mask: `4095/4095`
+- deployed library: `hhs_runtime/builds/libhhs_runtime.so`
+- shared exports verified together: legacy `hhs_runtime_*`, exact ABI, `hhs159_*`, and `hhs_exact_pass219_i168_bind_canonical`
+- native C / Python Runtime ABI identity: exact
+- public/runtime dependency-scoped pytest: `5 passed, 2 warnings in 1.63s`
+- legacy VM81 `--verify`: PASS
+- phase-1 artifact ID: `9959981186`
+- phase-1 artifact size: `7789` bytes
+- phase-1 artifact digest: `sha256:b6238c15c85677e82b54c6066097718037b9257df3a127434cfeab44bbe6350e`
+
+The warnings were non-semantic configuration/deprecation warnings: unknown pytest `asyncio_mode`, and the Starlette TestClient/httpx deprecation notice.
+
+Phase 1 produced the genuine binding evidence used to seal `HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json`.
+
+## I168 phase 2 — post-receipt terminal gate
+
+- run: `33935478551`
+- job: `101222449523`
+- validated head: `df5cbb5e198cc185aae0e980adf714e04ae4d138`
+- result: `SUCCESS`
+- public/runtime dependency-scoped pytest: `5 passed, 2 warnings in 1.62s`
+- operation mask: `4095/4095`
+- phase-2 artifact ID: `9960007664`
+- phase-2 artifact size: `7790` bytes
+- phase-2 artifact digest: `sha256:3ae210c67cef4443cc113c2c238e330c598c0c069d2d741c2fbe747cbe273792`
+
+The hardened I167 terminal gate passed after the genuine root Runtime binding receipt was present:
+
+- canonical corpus provenance: `VERIFIED`
 - Pass168 parent: `RESOLVED`
 - prescribed Pass169 artifact set: `COMPLETE`
-- deterministic status repeats: `12`
-- deterministic status SHA-256: `8b1b0ed957c71f7b3d8b95d970a885d3c6ee2be609c356823f029204f1d7238f`
-- artifact ID: `9959134263`
-- artifact size: `3153` bytes
-- artifact digest: `sha256:3027237a18d50030a856cc538dc5b8a4f19ed07d219d1da2971eed8b6c61d115`
+- CLI surface: `COMPLETE`
+- HTTP surface: `COMPLETE`
+- general Runtime binding: `VERIFIED`
+- terminal blockers: `[]`
+- Pass169 terminal contract: `VERIFIED`
+- next boundary: `PASS169_TERMINAL_CLOSURE_VERIFIED`
 
-The temporary I167 public-service patch workflow completed successfully in run `33932562466`, producing patch commit `f14d3786...`, and was removed from the branch at `986af936c242ea5a03787d1589aed3a88f7bfefd` before accepted I167 feature validation.
+## Preserved exact execution identity
 
-## Hardened terminal boundary
+- VM5184 address: `1`
+- forward VM81 steps: `1`
+- replay VM81 steps: `1`
+- reverse VM81 steps: `3`
+- receipt Hash72: `i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ`
+- transition Hash216: `xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18`
 
-I167 identified and repaired a masked completion defect in the earlier presence-oriented reconciliation. Although the canonical corpus, public surfaces, Pass168 parent, and frozen I161-I163 evidence are now all present, the I165 service still correctly fails canonical operations closed until those operations are bound to a live general Runtime ABI.
-
-The hardened gate therefore requires `HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json` and rejects partial or forged receipts. That receipt must prove the canonical operation set through the shared runtime, including tokenization, AST, constraint graph, typecheck, normalization, proof, candidate evaluation/admission, commit, receipt, replay, and reverse, while preserving the single VM81 authority and exact Hash72/Hash216 evidence.
-
-## Exact remaining blocker
-
-`PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED`
-
-Pass169 terminal classification remains unminted. No second FastAPI app, second VM81 authority, new Hash72 mint authority, Hash216 persistence authority, floating-point canonical authority, fallback path, source rewriting, or partial-fixture corpus promotion was introduced.
-
-Next boundary: `PASS169_GENERAL_RUNTIME_BINDING_CLOSURE`.
+No second FastAPI app, second VM81 authority, new Hash72 mint authority, Hash216 persistence authority, floating-point canonical authority, fallback evaluator, source rewriting, or partial-fixture corpus promotion was introduced.

@@ -1,5 +1,5 @@
 {
-  "schema": "HHS_PASS_169_SYMBOL_REGISTRY_V2",
+  "schema": "HHS_PASS_169_SYMBOL_REGISTRY_V3",
   "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
   "distinct_symbols": ["O", "Pi", "Π", "π", "3.14159265359", "E", "2.71828182846", "I", "i", "u", "0", "0^-1", "ComplexInfinity", "P", "p", "q", "A", "B", "Δ", "t", "m", "s", "f", "x", "y", "z", "w"],
   "mandatory_separations": ["O!=Pi", "O!=Π", "O!=3.14159265359", "E!=2.71828182846_SOURCE_IDENTITY", "xy!=yx_ORDERED_PROVENANCE", "x*y!=y*x_ORDERED_PROVENANCE"],
@@ -13,8 +13,9 @@
     "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
     "provenance_verified": true
   },
+  "canonical_type_environment_hash216": "d41YEq7aPJ*tx<aEy<A3*gL?oM-W9NSgM-3Z1Iz4K)hHkH1!4G03S<gvT6yOiB2GlGO)ePGd++n7v0lmqNSt0wuKKCFCOX/ywJhtB2!g/78PL+wGZrWn5EIIDBezgkVh4tb/ZV8FBFkfsdS?0FDJ(3ATV<l01eeBt*E0pPSBx/41>S?)Fsq)1vEDmKe?!RXxphgj2RTdXhhLwVyC67/<X8X*",
   "canonical_corpus_bound_symbol_count": null,
-  "canonical_corpus_bound_symbol_count_status": "DEFERRED_TO_GENERAL_RUNTIME_BINDING",
-  "general_runtime_binding_verified": false,
-  "pass169_terminal_contract_verified": false
+  "canonical_corpus_bound_symbol_count_status": "NOT_REQUIRED_FOR_TERMINAL_RUNTIME_IDENTITY",
+  "general_runtime_binding_verified": true,
+  "pass169_terminal_contract_verified": true
 }
