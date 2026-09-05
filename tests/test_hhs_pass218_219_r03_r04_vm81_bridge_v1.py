@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pytest
-
 from hhs_runtime.hhs_narrative_alignment_reasoning_engine_v1 import (
     ActionCandidate,
     EthicalDecision,
@@ -15,11 +13,7 @@ from hhs_runtime.hhs_narrative_alignment_reasoning_engine_v2 import (
     StructuralCounterexampleRecord,
     evaluate_action_v2,
 )
-from hhs_runtime.hhs_pass219_vm81_admission_bridge_v1 import (
-    VM81AdmissionBridgeError,
-    admit_and_execute_local,
-)
-
+from hhs_runtime.hhs_pass219_vm81_admission_bridge_v1 import admit_and_execute_local
 
 STATE_HASH72 = "S" * 72
 RECEIPT_HASH72 = "R" * 72
@@ -58,8 +52,7 @@ def _epistemic(
 
 def test_r03_wrong_causal_story_can_be_quarantined_when_action_does_not_depend_on_it():
     result = evaluate_action_v2(
-        _action(),
-        all_pass_invariants(),
+        _action(), all_pass_invariants(),
         _epistemic(causal=InvariantState.FAIL, used=False, asserted=False),
     )
     assert result.evaluation.decision is EthicalDecision.EXECUTE_LOCAL_PROVISIONAL
@@ -72,9 +65,7 @@ def test_r03_wrong_causal_story_can_be_quarantined_when_action_does_not_depend_o
 
 def test_r03_failed_causal_attribution_denies_when_action_depends_on_it():
     result = evaluate_action_v2(
-        _action(),
-        all_pass_invariants(),
-        _epistemic(causal=InvariantState.FAIL, used=True),
+        _action(), all_pass_invariants(), _epistemic(causal=InvariantState.FAIL, used=True)
     )
     assert result.evaluation.decision is EthicalDecision.DENY
     assert "E02_EPISTEMIC_ADEQUACY" in result.evaluation.failed_invariants
@@ -82,8 +73,7 @@ def test_r03_failed_causal_attribution_denies_when_action_depends_on_it():
 
 def test_r03_unresolved_attribution_cannot_be_asserted_as_truth():
     result = evaluate_action_v2(
-        _action(),
-        all_pass_invariants(),
+        _action(), all_pass_invariants(),
         _epistemic(causal=InvariantState.UNRESOLVED, asserted=True),
     )
     assert result.evaluation.decision is EthicalDecision.SIMULATE_ONLY
@@ -92,8 +82,7 @@ def test_r03_unresolved_attribution_cannot_be_asserted_as_truth():
 
 def test_r03_post_action_good_does_not_close_over_failed_used_attribution():
     result = evaluate_action_v2(
-        _action(),
-        all_pass_invariants(),
+        _action(), all_pass_invariants(),
         _epistemic(causal=InvariantState.FAIL, used=True),
         phase=EvaluationPhase.POST_ACTION,
     )
@@ -105,16 +94,8 @@ def test_r04_structural_counterexample_retains_no_verbatim_or_identifier_fields(
     record = StructuralCounterexampleRecord(
         failure_mode_signature="FALSE_CAUSE_CORRECT_LOCAL_ACTION",
         invariant_delta=("E02:split-observation-cause-action-relevance",),
-        causal_dependency_pattern=(
-            "event-detected",
-            "cause-hypothesized",
-            "action-selected-independently",
-        ),
-        abstract_structure=(
-            "observation=pass",
-            "causal-attribution=fail",
-            "action-relevance=pass",
-        ),
+        causal_dependency_pattern=("event-detected", "cause-hypothesized", "action-selected-independently"),
+        abstract_structure=("observation=pass", "causal-attribution=fail", "action-relevance=pass"),
         source_trace_hash72="opaque-source-trace-hash72",
         source_had_verbatim_content=True,
         source_had_personal_identifiers=True,
@@ -131,157 +112,57 @@ def test_r04_structural_counterexample_retains_no_verbatim_or_identifier_fields(
 def test_r04_empty_counterexample_structure_is_not_admitted():
     record = StructuralCounterexampleRecord(
         failure_mode_signature="EMPTY",
-        invariant_delta=(),
-        causal_dependency_pattern=(),
-        abstract_structure=(),
+        invariant_delta=(), causal_dependency_pattern=(), abstract_structure=(),
         source_trace_hash72="opaque-source-trace-hash72",
     )
     assert record.decision is CounterexampleRetentionDecision.REJECT_EMPTY_STRUCTURE
 
 
 class _FakeController:
-    def __init__(self, execution=None):
+    def __init__(self):
         self.calls = []
-        self.execution = execution or {
-            "runtime": {"step": 1, "state_hash72": STATE_HASH72},
-            "receipt": {
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-            "authority_audit": {
-                "ok": True,
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-        }
 
     def authorized_tick(self, source: str):
         self.calls.append(source)
-        return self.execution
+        return {
+            "runtime": {"state_hash72": STATE_HASH72},
+            "receipt": {"state_hash72": STATE_HASH72, "receipt_hash72": RECEIPT_HASH72},
+            "authority_audit": {"ok": True, "state_hash72": STATE_HASH72, "receipt_hash72": RECEIPT_HASH72},
+        }
 
 
-def test_bridge_does_not_touch_vm81_for_denied_candidate():
+def test_direct_local_bridge_never_touches_vm81_even_when_local_membrane_passes():
     controller = _FakeController()
     result = admit_and_execute_local(
-        _action(),
-        all_pass_invariants(),
-        _epistemic(causal=InvariantState.FAIL, used=True),
-        controller=controller,
+        _action(), all_pass_invariants(), _epistemic(), controller=controller
     )
+    assert result["ethical_decision"] == "EXECUTE_LOCAL_PROVISIONAL"
+    assert result["local_ethical_pass"] is True
+    assert result["constitutional_trace_required"] is True
     assert result["execution_allowed"] is False
     assert result["canonical_vm81_mutation_performed"] is False
     assert result["vm81_execution"] is None
     assert controller.calls == []
 
 
-def test_bridge_does_not_touch_vm81_for_simulation_only_candidate():
+def test_direct_local_bridge_never_touches_vm81_for_denied_candidate():
     controller = _FakeController()
     result = admit_and_execute_local(
-        _action(),
-        all_pass_invariants(),
-        _epistemic(causal=InvariantState.UNRESOLVED, asserted=True),
-        controller=controller,
+        _action(), all_pass_invariants(),
+        _epistemic(causal=InvariantState.FAIL, used=True), controller=controller,
     )
-    assert result["ethical_decision"] == "SIMULATE_ONLY"
     assert result["execution_allowed"] is False
     assert result["canonical_vm81_mutation_performed"] is False
     assert controller.calls == []
 
 
-def test_bridge_uses_existing_authorized_tick_exactly_once_when_admitted_and_verified():
+def test_direct_local_bridge_never_touches_vm81_for_simulation_only_candidate():
     controller = _FakeController()
     result = admit_and_execute_local(
-        _action(),
-        all_pass_invariants(),
-        _epistemic(),
-        controller=controller,
+        _action(), all_pass_invariants(),
+        _epistemic(causal=InvariantState.UNRESOLVED, asserted=True), controller=controller,
     )
-    assert result["ethical_decision"] == "EXECUTE_LOCAL_PROVISIONAL"
-    assert result["effective_scope"] == ["relay.cooling"]
-    assert result["execution_allowed"] is True
-    assert result["canonical_vm81_mutation_performed"] is True
-    assert result["action_authority_minted"] is False
-    assert len(controller.calls) == 1
-    assert controller.calls[0].startswith("HHS_PASS219_ETHICAL_ADMISSION:")
-    execution = result["vm81_execution"]
-    assert execution["authority_audit"]["ok"] is True
-    assert execution["receipt"]["state_hash72"] == STATE_HASH72
-    assert execution["receipt"]["receipt_hash72"] == RECEIPT_HASH72
-
-
-def test_bridge_rejects_obsolete_authorized_boolean_shape():
-    controller = _FakeController(
-        {
-            "runtime": {"step": 1, "state_hash72": STATE_HASH72},
-            "receipt": {
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-            "authority_audit": {"authorized": True},
-        }
-    )
-    with pytest.raises(VM81AdmissionBridgeError, match="authority audit is not successful"):
-        admit_and_execute_local(
-            _action(), all_pass_invariants(), _epistemic(), controller=controller
-        )
-    assert len(controller.calls) == 1
-
-
-def test_bridge_rejects_explicit_failed_authority_audit():
-    controller = _FakeController(
-        {
-            "runtime": {"step": 1, "state_hash72": STATE_HASH72},
-            "receipt": {
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-            "authority_audit": {
-                "ok": False,
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-        }
-    )
-    with pytest.raises(VM81AdmissionBridgeError, match="authority audit is not successful"):
-        admit_and_execute_local(
-            _action(), all_pass_invariants(), _epistemic(), controller=controller
-        )
-
-
-def test_bridge_rejects_malformed_hash72_lineage():
-    controller = _FakeController(
-        {
-            "runtime": {"step": 1, "state_hash72": "short"},
-            "receipt": {"state_hash72": "short", "receipt_hash72": RECEIPT_HASH72},
-            "authority_audit": {
-                "ok": True,
-                "state_hash72": "short",
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-        }
-    )
-    with pytest.raises(VM81AdmissionBridgeError, match="state Hash72 lineage"):
-        admit_and_execute_local(
-            _action(), all_pass_invariants(), _epistemic(), controller=controller
-        )
-
-
-def test_bridge_rejects_audit_receipt_identity_mismatch():
-    controller = _FakeController(
-        {
-            "runtime": {"step": 1, "state_hash72": STATE_HASH72},
-            "receipt": {
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": RECEIPT_HASH72,
-            },
-            "authority_audit": {
-                "ok": True,
-                "state_hash72": STATE_HASH72,
-                "receipt_hash72": "X" * 72,
-            },
-        }
-    )
-    with pytest.raises(VM81AdmissionBridgeError, match="receipt Hash72 does not bind"):
-        admit_and_execute_local(
-            _action(), all_pass_invariants(), _epistemic(), controller=controller
-        )
+    assert result["ethical_decision"] == "SIMULATE_ONLY"
+    assert result["execution_allowed"] is False
+    assert result["canonical_vm81_mutation_performed"] is False
+    assert controller.calls == []
