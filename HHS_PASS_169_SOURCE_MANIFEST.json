@@ -1,10 +1,31 @@
 {
-  "schema": "HHS_PASS_169_SOURCE_MANIFEST_V1",
+  "schema": "HHS_PASS_169_SOURCE_MANIFEST_V2",
   "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "fixed_resolution": "72^42=5184^21",
   "canonical_corpus": {
     "required_path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
-    "present": false,
-    "reconstruction_from_partial_fixtures_authorized": false
+    "present": true,
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "git_blob_sha1": "5ef1e3dbcd107666b1f30269d4579afb246de3f5",
+    "authoritative_source_path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "provenance_receipt": "HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json",
+    "byte_for_byte_source_copy": true,
+    "source_rewriting_used": false,
+    "partial_fixture_concatenation_used": false,
+    "reconstruction_from_partial_fixtures_authorized": false,
+    "canonicalization_basis": "SEALED_FULL_COMBINED_SOURCE_LINEAGE",
+    "original_external_prompt_byte_identity_claimed": false,
+    "canonical_repository_source_of_record_established": true
+  },
+  "sealed_source_lineage": {
+    "i162_evidence": "evidence/pass219/PASS_219_I162_FEATURE_VALIDATION_33836940374.json",
+    "i162_source_identity_verified": true,
+    "i162_source_reconstruction_verified": true,
+    "i163_evidence": "evidence/pass219/PASS_219_I163_FEATURE_VALIDATION_33866718853.json",
+    "i163_reverse_verified": true,
+    "i163_cross_architecture_verified": true,
+    "i163_interpreter_compiler_equality_verified": true
   },
   "recoverable_exact_fixtures": [
     "contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode",
@@ -16,5 +37,7 @@
   "candidate_source_ingress": "NONCANONICAL_EXACT_SOURCE_INGRESS",
   "candidate_source_identity": "sha256_of_exact_utf8_bytes",
   "candidate_source_may_replace_canonical_corpus": false,
-  "terminal_source_preservation_verified": false
+  "terminal_source_preservation_verified": true,
+  "general_runtime_binding_verified": false,
+  "pass169_terminal_contract_verified": false
 }
