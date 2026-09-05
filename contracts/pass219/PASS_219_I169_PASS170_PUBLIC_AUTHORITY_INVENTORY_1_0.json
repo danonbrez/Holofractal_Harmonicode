@@ -1,0 +1,68 @@
+{
+  "schema": "HHS_PASS219_I169_CONTRACT_V1",
+  "iteration": "PASS219-I169",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "title": "Pass 170 public authority inventory and fail-closed reconciliation",
+  "base_main": "8a25c30201428fcddf94437d62a16655785e3d22",
+  "target_branch": "main",
+  "inheritance": {
+    "immediate_parent_pass": 169,
+    "required_parent_receipt": "HHS_PASS_169_COMPLETION_RECEIPT.json",
+    "require_terminal_verified": true,
+    "require_operation_verified_mask": 4095,
+    "preserve_single_vm81_authority": true,
+    "preserve_no_new_hash72_mint_authority": true,
+    "preserve_no_hash216_persistence_authority": true,
+    "preserve_no_floating_point_canonical_authority": true
+  },
+  "scope": {
+    "mode": "READ_ONLY_REPOSITORY_AUTHORITY_INVENTORY",
+    "scan_python_public_surfaces": true,
+    "inventory_fastapi_constructors": true,
+    "inventory_route_decorators": true,
+    "inventory_uvicorn_run_sites": true,
+    "inventory_socket_bind_sites": true,
+    "require_canonical_gateway_path": "hhs_backend/public_api_server.py",
+    "require_operation_registry_path": "HHS_PUBLIC_OPERATION_REGISTRY.json",
+    "require_network_port_registry_path": "HHS_PUBLIC_NETWORK_PORT_REGISTRY.json",
+    "route_migration_authorized_in_this_iteration": false,
+    "runtime_authority_replacement_authorized": false,
+    "canonical_state_mutation_authorized": false
+  },
+  "fail_closed_blockers": [
+    "PASS169_TERMINAL_PARENT_RECEIPT_ABSENT",
+    "PASS169_TERMINAL_PARENT_RECEIPT_INVALID",
+    "PASS169_TERMINAL_PARENT_CONTRACT_MISMATCH",
+    "PASS169_TERMINAL_PARENT_NOT_VERIFIED",
+    "PASS169_TERMINAL_PARENT_HAS_BLOCKERS",
+    "PASS169_TERMINAL_PARENT_AUTHORITY_INVARIANT_VIOLATION",
+    "PASS170_PUBLIC_SURFACE_PARSE_ERRORS",
+    "PASS170_CANONICAL_PUBLIC_GATEWAY_ABSENT",
+    "PASS170_PUBLIC_OPERATION_REGISTRY_ABSENT",
+    "PASS170_PUBLIC_NETWORK_PORT_REGISTRY_ABSENT",
+    "PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT"
+  ],
+  "validation": {
+    "python_compile": [
+      "hhs_runtime/pass219/pass170_public_authority_inventory_i169.py",
+      "tests/pass219/test_pass219_i169_pass170_public_authority_inventory.py"
+    ],
+    "pytest": "tests/pass219/test_pass219_i169_pass170_public_authority_inventory.py",
+    "repository_scan": "python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 . --output artifacts/pass219/i169/public_authority_inventory.json",
+    "expected_current_boundary": "PASS170_CANONICAL_GATEWAY_AND_REGISTRY_REPAIR"
+  },
+  "acceptance": {
+    "pass169_parent_verified": true,
+    "inventory_execution_required": true,
+    "deterministic_scan_required": true,
+    "blockers_must_be_explicit": true,
+    "pass170_terminal_must_remain_false": true,
+    "canonical_state_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "completion_classification": "PASS170_PUBLIC_AUTHORITY_INVENTORY_VERIFIED_NONTERMINAL",
+  "next_boundary": "PASS170_CANONICAL_GATEWAY_AND_REGISTRY_REPAIR"
+}
