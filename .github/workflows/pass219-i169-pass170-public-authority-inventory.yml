@@ -70,44 +70,63 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          report=json.loads(Path('artifacts/pass219/i169/public_authority_inventory.json').read_text())
-          assert report['schema'] == 'HHS_PASS219_I169_PASS170_PUBLIC_AUTHORITY_INVENTORY_V1'
-          assert report['parent_pass169']['verified'] is True
-          assert report['parent_pass169']['terminal_verified'] is True
-          assert report['parent_pass169']['operation_verified_mask'] == 4095
-          assert report['inventory_evidence_verified'] is True
-          assert report['inventory']['fastapi_constructor_count'] >= 2
-          assert report['required_surfaces']['canonical_gateway']['present'] is False
-          assert report['required_surfaces']['public_operation_registry']['present'] is False
-          assert report['required_surfaces']['public_network_port_registry']['present'] is False
+
+          report = json.loads(Path('artifacts/pass219/i169/public_authority_inventory.json').read_text())
+          blockers = report['blockers']
+          checks = [
+              ('schema', report['schema'] == 'HHS_PASS219_I169_PASS170_PUBLIC_AUTHORITY_INVENTORY_V1', report['schema']),
+              ('parent_pass169.verified', report['parent_pass169']['verified'] is True, report['parent_pass169']['verified']),
+              ('parent_pass169.terminal_verified', report['parent_pass169']['terminal_verified'] is True, report['parent_pass169']['terminal_verified']),
+              ('parent_pass169.operation_verified_mask', report['parent_pass169']['operation_verified_mask'] == 4095, report['parent_pass169']['operation_verified_mask']),
+              ('inventory_evidence_verified', report['inventory_evidence_verified'] is True, report['inventory_evidence_verified']),
+              ('inventory.fastapi_constructor_count>=2', report['inventory']['fastapi_constructor_count'] >= 2, report['inventory']['fastapi_constructor_count']),
+              ('canonical_gateway_absent', report['required_surfaces']['canonical_gateway']['present'] is False, report['required_surfaces']['canonical_gateway']['present']),
+              ('public_operation_registry_absent', report['required_surfaces']['public_operation_registry']['present'] is False, report['required_surfaces']['public_operation_registry']['present']),
+              ('public_network_port_registry_absent', report['required_surfaces']['public_network_port_registry']['present'] is False, report['required_surfaces']['public_network_port_registry']['present']),
+          ]
           for blocker in (
               'PASS170_CANONICAL_PUBLIC_GATEWAY_ABSENT',
               'PASS170_PUBLIC_OPERATION_REGISTRY_ABSENT',
               'PASS170_PUBLIC_NETWORK_PORT_REGISTRY_ABSENT',
               'PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT',
           ):
-              assert blocker in report['blockers'], (blocker, report['blockers'])
-          assert report['pass170_terminal_contract_verified'] is False
-          assert report['canonical_state_mutated'] is False
-          assert report['new_vm81_authority'] is False
-          assert report['new_hash72_mint_authority'] is False
-          assert report['hash216_persistence_authority'] is False
-          assert report['floating_point_canonical_authority'] is False
-          assert report['next_boundary'] == 'PASS170_CANONICAL_GATEWAY_AND_REGISTRY_REPAIR'
-          print(json.dumps({
+              checks.append((f'blocker:{blocker}', blocker in blockers, blockers))
+          checks.extend([
+              ('pass170_terminal_contract_verified', report['pass170_terminal_contract_verified'] is False, report['pass170_terminal_contract_verified']),
+              ('canonical_state_mutated', report['canonical_state_mutated'] is False, report['canonical_state_mutated']),
+              ('new_vm81_authority', report['new_vm81_authority'] is False, report['new_vm81_authority']),
+              ('new_hash72_mint_authority', report['new_hash72_mint_authority'] is False, report['new_hash72_mint_authority']),
+              ('hash216_persistence_authority', report['hash216_persistence_authority'] is False, report['hash216_persistence_authority']),
+              ('floating_point_canonical_authority', report['floating_point_canonical_authority'] is False, report['floating_point_canonical_authority']),
+              ('next_boundary', report['next_boundary'] == 'PASS170_CANONICAL_GATEWAY_AND_REGISTRY_REPAIR', report['next_boundary']),
+          ])
+
+          failed = []
+          for name, ok, observed in checks:
+              state = 'PASS' if ok else 'FAIL'
+              print(f'{state} {name}: observed={observed!r}')
+              if not ok:
+                  failed.append({'check': name, 'observed': observed})
+
+          summary = {
               'fastapi_constructor_count': report['inventory']['fastapi_constructor_count'],
               'route_decorator_count': report['inventory']['route_decorator_count'],
               'uvicorn_run_site_count': report['inventory']['uvicorn_run_site_count'],
               'socket_bind_site_count': report['inventory']['socket_bind_site_count'],
-              'blockers': report['blockers'],
+              'blockers': blockers,
               'next_boundary': report['next_boundary'],
-          }, sort_keys=True))
+              'failed_checks': failed,
+          }
+          print(json.dumps(summary, sort_keys=True))
+          if failed:
+              raise SystemExit(f'I169 boundary enforcement failed: {json.dumps(failed, sort_keys=True)}')
           PY
 
       - name: Upload I169 inventory evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pass219-i169-pass170-public-authority-inventory-${{ github.sha }}
           path: artifacts/pass219/i169/public_authority_inventory.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 90
