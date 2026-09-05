@@ -1,0 +1,98 @@
+{
+  "schema": "HHS_PASS219_I168_FEATURE_VALIDATION_V1",
+  "pass": 219,
+  "iteration": 168,
+  "classification": "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME_VERIFIED",
+  "base_main": "e439d7cbd46f5865ba2dc6c0761ef611e2299333",
+  "branch": "agent/pass219-i168-pass169-general-runtime-binding-closure",
+  "fixed_resolution": "72^42=5184^21",
+  "canonical_source": {
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "provenance_verified": true
+  },
+  "phase1_runtime_binding": {
+    "workflow_run_id": 33935393289,
+    "job_id": 101222203654,
+    "validated_head": "f40a57f921d1fa7a0ffacaa9e2988a211eb05d6d",
+    "conclusion": "success",
+    "tests": "5 passed, 2 warnings in 1.63s",
+    "operation_verified_mask": 4095,
+    "required_operation_mask": 4095,
+    "native_python_runtime_identity": true,
+    "legacy_runtime_abi_callable": true,
+    "legacy_vm81_verify": true,
+    "artifact": {
+      "id": 9959981186,
+      "name": "pass219-i168-pass169-general-runtime-binding-f40a57f921d1fa7a0ffacaa9e2988a211eb05d6d",
+      "size_bytes": 7789,
+      "digest": "sha256:b6238c15c85677e82b54c6066097718037b9257df3a127434cfeab44bbe6350e"
+    }
+  },
+  "phase2_terminal_gate": {
+    "workflow_run_id": 33935478551,
+    "job_id": 101222449523,
+    "validated_head": "df5cbb5e198cc185aae0e980adf714e04ae4d138",
+    "conclusion": "success",
+    "tests": "5 passed, 2 warnings in 1.62s",
+    "general_runtime_binding_verified": true,
+    "pass169_terminal_contract_verified": true,
+    "terminal_blockers": [],
+    "next_boundary": "PASS169_TERMINAL_CLOSURE_VERIFIED",
+    "artifact": {
+      "id": 9960007664,
+      "name": "pass219-i168-pass169-general-runtime-binding-df5cbb5e198cc185aae0e980adf714e04ae4d138",
+      "size_bytes": 7790,
+      "digest": "sha256:3ae210c67cef4443cc113c2c238e330c598c0c069d2d741c2fbe747cbe273792"
+    }
+  },
+  "deployed_shared_runtime": {
+    "library": "hhs_runtime/builds/libhhs_runtime.so",
+    "single_abi_surface": true,
+    "pass159_core_materialized_into_same_library": true,
+    "exports_verified": [
+      "hhs_runtime_init",
+      "hhs_exact_abi_validate",
+      "hhs159_context_create",
+      "hhs159_lex",
+      "hhs159_reverse",
+      "hhs_exact_pass219_i168_bind_canonical"
+    ]
+  },
+  "runtime_binding": {
+    "receipt": "HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json",
+    "verified_operations": [
+      "tokens", "ast", "constraints", "typecheck", "normalize", "prove",
+      "evaluate-candidate", "admit", "commit", "receipt", "replay", "reverse"
+    ],
+    "operation_verified_mask": 4095,
+    "source_hash216": "Mo(SfVmC>uSen+KVIIHK7*Cd<QbzxOieSKZwt1bM7VRIJ3EC+9r+SPP?UQKWNviALKdxutdXCgYiJlI9QibD+M5YVadOdW!wcD654IOkZ<Z<zZqAyzyyI-3d?>/C!I0Jfe*Sfa+AHAK9gnqSAmv5Eo5r*k3)4!!Yf18sPiOOwqf6/3OzM7WMQVp*(pr6pTW8?p+)Q348OUoJZxL*v41QIPow",
+    "tokens_hash216": "W4e5+fGwXYb*WTO0>ti+nr+t2EbhFKWma?-cGtKqkYhLO8e<DOs6G!U5n<ecqnL3B(b4g1Viyv(w*eenZhvWzlEhEdGd+)LV66IIxvj4d5nwRBt>?o69L7+1cL8T)/KKOP/04/+kvx3hI8<rKbPsH36-txRNpMfj7p*5ZWEg!T12I?T>qUd8X7yis3OKnDjXLt>5LrtqtX5ZPPC?D1E-M6z?",
+    "ast_hash216": "lRFyplkBeujlLO>fRFgc0E-anRZcAniEWhnqeP+oOC>m8jdMvAXjyujOt80gBkQb?y*qKCmlSZ>kI<!7+B<tXHjTK!me?6j2uY2OYl9Fpn(YuBb/nzbRF+PpFwaBbj2/kNVwcjQ5>nE*pxA2!2S!Ley/kbNTc*s6TMyI5VTO8JuLR42/UseI3TUwQvAK(xz8<HpFrL0Bqp0IwCIhXFeJZBDv",
+    "type_environment_hash216": "d41YEq7aPJ*tx<aEy<A3*gL?oM-W9NSgM-3Z1Iz4K)hHkH1!4G03S<gvT6yOiB2GlGO)ePGd++n7v0lmqNSt0wuKKCFCOX/ywJhtB2!g/78PL+wGZrWn5EIIDBezgkVh4tb/ZV8FBFkfsdS?0FDJ(3ATV<l01eeBt*E0pPSBx/41>S?)Fsq)1vEDmKe?!RXxphgj2RTdXhhLwVyC67/<X8X*",
+    "constraint_graph_hash216": "WtzLDf)ztz(()T9TDElNLSLMx3l1499M8eJ(VPCT3yTKBAJLlVQq3yTX2-+<gc5>OTF*IwerpMqN4ueHyCGaUI(Im>Pgs1JYsYw6Q5LaSPs(H>JxJLFUKFrb9<aGQEDSFCSIMn(!kcBMLFoMRdi6(ULSIPbVIsO!u-QrS+RQKg8r>Q5q9/340fzD)ojVvI3FtO0V!C8YI*?t(?BdSRrhqvQ1",
+    "normalized_ir_hash216": "KOtZTV04N1b/rh(laME0NQCscpuuEM7iqI5?kI4YeRYAAx!-ns1I+-3k<zybf6p8r)6Y+0V?DY/8m?Dirh6Xe7L1JKcgjdjr4KzoEv9sqZ11(*!U/oGrWUYGdpEDkl1P)9oP?!W34zxjfMds!for25iuR*1J+JAN3vhg<oEZy!SQEOAemL5V/7!LBrqDZF>2fGkqb*kl20>6n(BWaIARXqhZ",
+    "vmir_hash216": "cUKJpf1d5p7)S3?2Oa0gpaNHJjDtg6u4nHx/oe/e>-(YSO28dy!xR7)oBxqf-(NHvkyCSRA!ht0qwo-Tx/lwWAbYME8pzpQI0Nf2*9w5e*(p5VPngiSW*q/8-EXga1i1923ri9E+5dv/9d/>Pa5t*tK!QzA04SZdW02cd0!9MzUOWhn!?aVosBApe2YqPt5nayeTq)jm7>8ZJpubT2SOpV4P",
+    "proof_hash216": "000000000000000000000000000000000000000000000000000000000000000000000000EJgQXOZr(+32Mq<pULU!GdvquetL4L!Q<ebmgKgR(MJyW4BtVKwqLuLn8/Wo6Tf2nj7RG/F4i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "transition_hash216": "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18",
+    "reverse_hash216": "MYgrjAgrV+kc8!!MLRC/qodjp2DebOtATSfW9RayDacT!SYRfea))kARq7t/F0+Ur<xT1Pu(R>StiPw1Ns5OW)vDR!9AU9wVv0CRO(j0yHT+uBw>3OJQc17?//DgA8cKUuhL(6yGq4u5P<5jXy0hDD2yZDDWlIhi)j1cL1VX3e5Hsm60OY*U0JApLsF-!-9A6iYPxCfvJOJ<YDm-B9l)PKto",
+    "receipt_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "replay_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "reverse_hash72": "IoSIDoYP8l3RbcZl)HU9bLP3oYDhlvgbo?dHWSNKg<AsFxgUb+FC0BUQS+lg1h)B3R-FFE68",
+    "vm5184_address": 1,
+    "forward_vm81_steps": 1,
+    "replay_vm81_steps": 1,
+    "reverse_vm81_steps": 3
+  },
+  "authority": {
+    "new_vm81_mutation_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "fallback_used": false
+  },
+  "pass169_terminal_contract_verified": true,
+  "terminal_blockers": [],
+  "next_boundary": "PASS169_TERMINAL_CLOSURE_VERIFIED"
+}
