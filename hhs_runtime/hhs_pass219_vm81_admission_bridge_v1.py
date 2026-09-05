@@ -1,20 +1,10 @@
 """Pass 219 VM81 ethical admission bridge.
 
-This bridge consumes the Pass 218/219 R03/R04 reference trace, and only when
-the inherited Pass 219 membrane returns EXECUTE_LOCAL_PROVISIONAL does it
-invoke the existing HHSRuntimeController.authorized_tick path.
-
-The bridge does not create capability, consent, scope, or a second state
-authority. Non-executable ethical decisions produce no VM81 mutation.
-
-Repair-forward note
--------------------
-The original #208 implementation treated any return from ``authorized_tick``
-as sufficient evidence that canonical VM81 mutation had occurred.  Current
-runtime authority returns an ``HHSAuthorityAudit.to_dict()`` packet whose
-success field is ``ok`` and whose Hash72 state/receipt lineage is explicit.
-This revision therefore fails closed unless the returned authority audit and
-receipt lineage are both present, successful, and mutually consistent.
+The inherited R03/R04 narrative membrane remains intact.  The expanded
+constitutional/compositional membrane may now be evaluated first and, only
+when it returns PASS, the candidate continues through the existing local
+ethical evaluator and the same HHSRuntimeController.authorized_tick singleton
+VM81 authority path.  No second mutation authority is introduced.
 """
 from __future__ import annotations
 
@@ -32,6 +22,11 @@ from hhs_runtime.hhs_narrative_alignment_reasoning_engine_v2 import (
     StructuralCounterexampleRecord,
     evaluate_action_v2,
 )
+from hhs_runtime.hhs_pass219_constitutional_ethics_membrane_v1 import (
+    ConstitutionalEthicsCandidate,
+    EthicsState,
+    evaluate_constitutional_ethics,
+)
 
 VERSION = "HHS_PASS219_VM81_ETHICAL_ADMISSION_BRIDGE_V1"
 SCHEMA = "HHS_PASS219_VM81_ETHICAL_ADMISSION_RESULT_V1"
@@ -47,17 +42,8 @@ def _is_hash72(value: object) -> bool:
 
 
 def _validated_authorized_tick(execution: object) -> Dict[str, object]:
-    """Validate the current canonical controller return shape fail-closed.
-
-    The bridge does not independently decide VM81 authority.  It only accepts
-    an ``authorized_tick`` result after the inherited controller reports a
-    successful authority audit and the audit is bound to the same 72-character
-    state and receipt identities returned by the committed runtime receipt.
-    """
-
     if not isinstance(execution, Mapping):
         raise VM81AdmissionBridgeError("authorized_tick returned no mapping")
-
     runtime = execution.get("runtime")
     receipt = execution.get("receipt")
     audit = execution.get("authority_audit")
@@ -67,7 +53,6 @@ def _validated_authorized_tick(execution: object) -> Dict[str, object]:
         raise VM81AdmissionBridgeError("authorized_tick receipt packet missing")
     if not isinstance(audit, Mapping):
         raise VM81AdmissionBridgeError("authorized_tick authority audit missing")
-
     if audit.get("ok") is not True:
         raise VM81AdmissionBridgeError("canonical runtime authority audit is not successful")
 
@@ -77,14 +62,12 @@ def _validated_authorized_tick(execution: object) -> Dict[str, object]:
         raise VM81AdmissionBridgeError("committed state Hash72 lineage missing or malformed")
     if not _is_hash72(receipt_hash72):
         raise VM81AdmissionBridgeError("committed receipt Hash72 lineage missing or malformed")
-
     if audit.get("state_hash72") != state_hash72:
         raise VM81AdmissionBridgeError("authority audit state Hash72 does not bind the committed receipt")
     if audit.get("receipt_hash72") != receipt_hash72:
         raise VM81AdmissionBridgeError("authority audit receipt Hash72 does not bind the committed receipt")
     if runtime.get("state_hash72") != state_hash72:
         raise VM81AdmissionBridgeError("runtime state Hash72 does not bind the committed receipt")
-
     return dict(execution)
 
 
@@ -97,8 +80,7 @@ def admit_and_execute_local(
     *,
     controller: Optional[Any] = None,
 ) -> Dict[str, object]:
-    """Evaluate, then enter the inherited VM81 authority path if admitted."""
-
+    """Existing local ethical gate followed by inherited singleton authority."""
     refined = evaluate_action_v2(
         action,
         declared_invariants,
@@ -109,7 +91,6 @@ def admit_and_execute_local(
     )
     ethical = refined.evaluation
     allowed = ethical.decision is EthicalDecision.EXECUTE_LOCAL_PROVISIONAL
-
     result: Dict[str, object] = {
         "schema": SCHEMA,
         "version": VERSION,
@@ -123,18 +104,54 @@ def admit_and_execute_local(
     }
     if not allowed:
         return result
-
     if controller is None:
-        # Lazy import ensures denied/held/simulation-only candidates do not
-        # instantiate the authoritative runtime merely to be rejected.
         from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
-
         controller = HHSRuntimeController()
-
     source = "HHS_PASS219_ETHICAL_ADMISSION:" + refined.trace_receipt_hash72
     execution = _validated_authorized_tick(controller.authorized_tick(source=source))
     result["vm81_execution"] = execution
     result["canonical_vm81_mutation_performed"] = True
+    return result
+
+
+def admit_and_execute_constitutional(
+    constitutional_candidate: ConstitutionalEthicsCandidate,
+    action: ActionCandidate,
+    declared_invariants: Sequence[EthicalInvariantResult],
+    epistemic: EpistemicAdequacyTrace,
+    findings: Sequence[NarrativeFinding] = (),
+    counterexamples: Sequence[StructuralCounterexampleRecord] = (),
+    *,
+    controller: Optional[Any] = None,
+) -> Dict[str, object]:
+    """Global/local constitutional gate before the existing admission bridge.
+
+    FAIL and HOLD never touch the runtime controller.  PASS does not mint new
+    authority; it only permits continuation into ``admit_and_execute_local``.
+    """
+    constitutional = evaluate_constitutional_ethics(constitutional_candidate)
+    if constitutional.state is not EthicsState.PASS:
+        return {
+            "schema": SCHEMA,
+            "version": VERSION,
+            "constitutional_trace": constitutional.to_dict(),
+            "constitutional_state": constitutional.state.value,
+            "execution_allowed": False,
+            "canonical_vm81_mutation_performed": False,
+            "action_authority_minted": False,
+            "vm81_execution": None,
+        }
+
+    result = admit_and_execute_local(
+        action,
+        declared_invariants,
+        epistemic,
+        findings,
+        counterexamples,
+        controller=controller,
+    )
+    result["constitutional_trace"] = constitutional.to_dict()
+    result["constitutional_state"] = constitutional.state.value
     return result
 
 
@@ -144,4 +161,5 @@ __all__ = [
     "HASH72_LENGTH",
     "VM81AdmissionBridgeError",
     "admit_and_execute_local",
+    "admit_and_execute_constitutional",
 ]
