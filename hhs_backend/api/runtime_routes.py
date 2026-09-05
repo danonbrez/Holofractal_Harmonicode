@@ -169,6 +169,10 @@ def _contract_packet(direction: str, source: str, payload: Dict[str, Any], *, io
 
 runtime_clients: List[WebSocket] = []
 
+# One canonical step lane: moving the existing singleton runtime work off the
+# ASGI event loop must not create parallel VM81 mutation authority.
+runtime_step_lock = asyncio.Lock()
+
 # ============================================================================
 # REQUEST MODELS
 # ============================================================================
@@ -268,8 +272,8 @@ async def broadcast_runtime_state():
     if not runtime_clients:
         return
 
-    packet = (
-        runtime_controller.export_multimodal_packet()
+    packet = await asyncio.to_thread(
+        runtime_controller.export_multimodal_packet
     )
 
     dead = []
@@ -305,53 +309,81 @@ async def get_runtime_state():
 
 # ----------------------------------------------------------------------------
 
+def _execute_runtime_step_sync(steps: int) -> Dict[str, Any]:
+    ingress = io_gateway.ingress("api.runtime.step", {"steps": steps})
+
+    result = runtime_emulator.run(
+        steps=steps
+    )
+
+    packet = result.get("last_packet")
+    if packet is not None:
+        runtime_graph.ingest_runtime_state(packet)
+
+    response = {
+        "schema": "HHS_GUARDED_RUNTIME_STEP_RESPONSE_V1",
+        "steps_executed": result["executed_steps"],
+        "runtime": result["runtime"],
+        "emulator": {
+            "boot_id": result["boot_id"],
+            "requested_steps": result["requested_steps"],
+            "capped": result["capped"],
+        },
+        "guarded": True,
+    }
+    response["io"] = {
+        "ingress": ingress,
+        "egress": io_gateway.egress(
+            "api.runtime.step",
+            {
+                "steps_executed": response["steps_executed"],
+                "step": response["runtime"].get("step"),
+            },
+        ),
+    }
+    return _contract_response("/api/runtime/step", "POST", response)
+
+
 @router.post("/step")
 async def runtime_step(
     request: RuntimeStepRequest
 ):
+    async with runtime_step_lock:
+        response = await asyncio.to_thread(
+            _execute_runtime_step_sync,
+            request.steps,
+        )
+        await broadcast_runtime_state()
+        return response
 
-    ingress = io_gateway.ingress("api.runtime.step", {"steps": request.steps})
+# ----------------------------------------------------------------------------
 
-    result = runtime_emulator.run(
-        steps=request.steps
-    )
+@router.post("/authority/tick")
+async def runtime_authority_tick():
+    """Return one explicit singleton VM81-authorized execution packet.
 
-    packet = result.get("last_packet")
-
-    if packet is not None:
-
-        runtime_graph.ingest_runtime_state(packet)
-
-    await broadcast_runtime_state()
-
-    response = {
-
-        "schema":
-            "HHS_GUARDED_RUNTIME_STEP_RESPONSE_V1",
-
-        "steps_executed":
-            result["executed_steps"],
-
-        "runtime":
-            result["runtime"],
-
-        "emulator":
+    This surface does not introduce a second admission path. It serializes the
+    inherited HHSRuntimeController.authorized_tick call behind the same runtime
+    step lock used by the production API, so callers can bind downstream
+    governed jobs to a real state/receipt/audit lineage.
+    """
+    async with runtime_step_lock:
+        execution = await asyncio.to_thread(
+            runtime_controller.authorized_tick,
+            "api.runtime.authority.tick",
+        )
+        await broadcast_runtime_state()
+        return _contract_response(
+            "/api/runtime/authority/tick",
+            "POST",
             {
-                "boot_id": result["boot_id"],
-                "requested_steps": result["requested_steps"],
-                "capped": result["capped"],
+                "schema": "HHS_GUARDED_RUNTIME_AUTHORITY_TICK_RESPONSE_V1",
+                "ok": True,
+                "authority_execution": execution,
+                "singleton_vm81_authority": True,
+                "parallel_commit_authority": False,
             },
-
-        "guarded":
-            True,
-    }
-
-    response["io"] = {
-        "ingress": ingress,
-        "egress": io_gateway.egress("api.runtime.step", {"steps_executed": response["steps_executed"], "step": response["runtime"].get("step")}),
-    }
-
-    return _contract_response("/api/runtime/step", "POST", response)
+        )
 
 # ----------------------------------------------------------------------------
 

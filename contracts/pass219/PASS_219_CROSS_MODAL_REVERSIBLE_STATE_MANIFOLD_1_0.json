@@ -1,0 +1,71 @@
+{
+  "schema": "HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD_V1",
+  "version": "1.0.0",
+  "classification": "ADDITIVE_MANDATORY_DATA_ML_CONSTRAINT_MEMBRANE",
+  "repository_scope": "Pass 219 current I146 lineage plus future compatible data/ML modality integrations",
+  "base_invariants": {
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "addresses": 5184,
+    "singleton_vm81_mutation_authority": true,
+    "hash72_hash216_authority_inherited_only": true,
+    "floating_point_canonical_authority": false
+  },
+  "state_identity": {
+    "genesis_lineage_required": true,
+    "immutable_parent_branch_identity_required": true,
+    "ordered_phase_path_is_identity": true,
+    "phase_order_is_noncommutative": true,
+    "hash216_lineage_binding_required": true,
+    "global_constraint_root_required": true,
+    "modality_registry_root_required": true
+  },
+  "cross_modal_mapping": {
+    "all_required_modalities_must_be_mapped": true,
+    "canonical_hub": "VM81_5184_GLOBAL_CONSTRAINT_MANIFOLD",
+    "lossless_adapter_roundtrip_required": true,
+    "canonical_root_equality_required": true,
+    "pairwise_translation_derivable_through_hub": true,
+    "missing_or_stale_mapping": "FAIL_CLOSED_COMPLETE_PATH"
+  },
+  "reversible_branch_computation": {
+    "git_like_parent_dag": true,
+    "exact_replay_required": true,
+    "reversible_operations_require_inverse_witness": true,
+    "sibling_merge_requires_constraint_reconciliation": true,
+    "branch_planner_canonical_mutation_authority": false
+  },
+  "optimization": {
+    "baseline": "DEPTH_LOCAL_CONSTRAINTS_PLUS_ALL_TO_ALL_DIRECTED_MODALITY_CHECKS",
+    "candidate": "SEALED_PREFIX_REUSE_PLUS_CANONICAL_HUB_ROUNDTRIP",
+    "prefix_reuse_requires": [
+      "parent lineage identity",
+      "Hash216 lineage binding",
+      "global constraint root equality",
+      "modality registry root equality"
+    ],
+    "changed_constraint_behavior": "INVALIDATE_AFFECTED_SUFFIX_AND_BRANCH_ONLY",
+    "fallback": "COMPLETE_BASELINE_VALIDATION",
+    "canonical_authority_check_count_may_not_be_reduced": true,
+    "candidate_optimizer_mutation_authority": false
+  },
+  "mandatory_data_ml_binding": {
+    "guard": "pass219_cross_modal_reversible_state_manifold",
+    "existing_guard": "pass219_mandatory_sudoku_genesis_scaling_data_ml",
+    "all_pass219_data_processing": true,
+    "all_pass219_machine_learning": true
+  },
+  "acceptance": [
+    "C11 exact ABI conformance",
+    "C++17 exact ABI conformance",
+    "deterministic parent-linked replay",
+    "noncommutative phase-order identity separation",
+    "required modality coverage",
+    "lossless adapter round-trip proof",
+    "global constraint and modality registry root binding",
+    "sibling merge conflict detection",
+    "stale prefix proof fail-closed fallback",
+    "exact logical-work reduction with unchanged authority-check count",
+    "no new VM81, Hash72, or Hash216 mutation authority"
+  ]
+}

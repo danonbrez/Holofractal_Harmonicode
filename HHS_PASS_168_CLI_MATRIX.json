@@ -1,0 +1,33 @@
+{
+  "entrypoint": "python -m hhs_runtime.pass168.cli parameter-circuit",
+  "logical_operation_count": 21,
+  "operations": [
+    "status",
+    "inspect",
+    "source",
+    "map",
+    "threads",
+    "banks",
+    "parameters",
+    "get",
+    "set",
+    "evaluate",
+    "evaluate-upper",
+    "evaluate-lower",
+    "compare",
+    "dependencies",
+    "affected-cells",
+    "commit",
+    "rollback",
+    "replay",
+    "receipt",
+    "validate",
+    "benchmark"
+  ],
+  "output_profiles": [
+    "text",
+    "json",
+    "jsonl"
+  ],
+  "schema": "HHS_PASS168_CLI_MATRIX_V1"
+}

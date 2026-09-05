@@ -1,0 +1,18 @@
+{
+  "schema": "HHS_PASS219_I152_REDUNDANT_EVIDENCE_TRIGGER_RUN_V1",
+  "pass": 219,
+  "iteration": "I152",
+  "repository_sha": "da0043c447d94f8d323fe441565d8bbc17470ee5",
+  "workflow_run_id": 33721763395,
+  "job_id": 100542186298,
+  "conclusion": "SUCCESS",
+  "classification": "REDUNDANT_BENCHMARK_RUN_TRIGGERED_BY_RESTART_PATH",
+  "artifact": {
+    "id": 9880472444,
+    "name": "pass219-i152-fixed-hash216-manifold-exhaustion-da0043c447d94f8d323fe441565d8bbc17470ee5",
+    "sha256": "a1dfcc6a1695166dc00f367ae7ca3132aa0a36a4e7c47cdffa5207e481edd3c3"
+  },
+  "trigger_repair_commit": "b0f88861c25fa0d809f610c78d57fb7a9d09756a",
+  "benchmark_result_reused_as_closure": false,
+  "result": "PASS"
+}

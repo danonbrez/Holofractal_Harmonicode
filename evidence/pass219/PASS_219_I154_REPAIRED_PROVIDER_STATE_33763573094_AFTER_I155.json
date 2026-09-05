@@ -1,0 +1,29 @@
+{
+  "schema": "HHS_PASS219_I154_REPAIRED_PROVIDER_STATE_EXACT_MAIN_V1",
+  "pass": 219,
+  "iteration": "I154",
+  "repaired_by_iteration": "I155",
+  "repository_sha": "db820d0aeda88b1c5f20a9f25657bb5b00d97cac",
+  "workflow_run_id": 33763573094,
+  "job_id": 100675632228,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9896526987,
+    "name": "pass219-i154-authorized-four-lane-exhaustion-db820d0aeda88b1c5f20a9f25657bb5b00d97cac",
+    "sha256": "b4058ea29a574bed14bfd837330a1a437cb70c08bc2414790cc69313afc1139f"
+  },
+  "receipts": {
+    "production_provider_probe_sha256": "5a577ed10ef2fc8a942b5c11c9c79514ea42ab8d9a0003f70e5b3754dfeb6a02",
+    "test_fixture_provider_probe_sha256": "cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e",
+    "authorized_four_lane_benchmark_sha256": "9f8d76d5b6676a26742a587f2c75e1d45b8ff5fc3450926c42766b6f858eba39"
+  },
+  "prior_status": "BLOCKED_PROVIDER_UNAVAILABLE",
+  "current_status": "BLOCKED_FULL_SYMBOLIC_RESIDUAL",
+  "runtime_provider_available": true,
+  "authoritative_workload_count": 0,
+  "effective_exhaustion_work_measured": false,
+  "within_81_over_7_claim": null,
+  "canonical_evidence_eligible": false,
+  "global_exhaustion_bound_proven": false,
+  "result": "PASS"
+}

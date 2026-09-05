@@ -1,0 +1,44 @@
+{
+  "schema": "HHS_PASS219_I152_EXACT_MAIN_FIXED_MANIFOLD_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I152",
+  "repository_sha": "2b7b17287f879ffdda429623a425f730e307c39b",
+  "workflow_run_id": 33721542342,
+  "job_id": 100541531423,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9880397637,
+    "name": "pass219-i152-fixed-hash216-manifold-exhaustion-2b7b17287f879ffdda429623a425f730e307c39b",
+    "sha256": "afa91d17b0f91471b84485526799114f41179fc034bfdf3ca80693ef11ccc99a"
+  },
+  "fixed_cardinalities": {
+    "target": {
+      "expression": "72^42=5184^21",
+      "exact_cardinality_decimal": "1018508951079768942856287659839033239780646340393381046433745481643146696720384"
+    },
+    "working_manifold": {
+      "expression": "3*72^72",
+      "exact_cardinality_decimal": "160347058642085998602075900420172615634821804179319834710808621932842456551257099299090591583867565623541495534132018087024926966939648"
+    },
+    "route_multiplicity": {
+      "expression": "3*72^30",
+      "exact_cardinality_decimal": "157433136421721760341373217653428671558776396700106883072"
+    }
+  },
+  "exhaustion_gate": {
+    "required_ratio": "81/7",
+    "max_effective_work_decimal": "88019292068622007407333501467570773808204004725353917593039732981506504654848",
+    "boundary_within_budget": true,
+    "one_unit_over_within_budget": false
+  },
+  "inherited_local_observations": {
+    "raw5184_audio_locally_meets_81_over_7": false,
+    "cross_modal_reversible_state_locally_meets_81_over_7": true
+  },
+  "full_four_lane_exhaustion": {
+    "status": "VALIDATION_REQUIRED",
+    "physical_enumeration_executed": false
+  },
+  "authority_changed": false,
+  "result": "PASS"
+}

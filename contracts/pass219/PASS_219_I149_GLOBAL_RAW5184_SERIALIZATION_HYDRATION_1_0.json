@@ -1,0 +1,48 @@
+{
+  "schema": "HHS_PASS219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "I149",
+  "classification": "ADDITIVE_MANDATORY_GLOBAL_RAW5184_SERIALIZATION_MEMBRANE",
+  "inherits": {
+    "base_main": "2b8a8a15ca3b6f085c4710a3b5c42318f737755f",
+    "i148_schema": "HHS_PASS219_RAW5184_OCTONION_AUDIO_HYDRATION_V1",
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "vm81_cells": 81,
+    "word_bits": 64
+  },
+  "global_boundary": {
+    "public_vm81_frame_import_le": "MANDATORY_HYDRATED",
+    "public_vm81_frame_export_le": "MANDATORY_HYDRATED",
+    "raw_5184_bitstring_import_export": "MANDATORY_HYDRATED",
+    "exact_648_byte_bytecode_copy": "MANDATORY_HYDRATED",
+    "internal_raw_le_primitive": "NON_PUBLIC_BIT_PRESERVING_SUBSTRATE"
+  },
+  "hydration": {
+    "ordered_phase_basis": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "left_mono": ["yx", "x+y", "xy"],
+    "right_mono": ["wz", "z+w", "zw"],
+    "center_relation": "x+y:z+w",
+    "ternary_roles": [-1, 0, 1],
+    "pcm64_roles": [-9223372036854775808, 0, 9223372036854775807],
+    "center_closure": "0/0=u^0 mod(u^72)=1",
+    "center_native_relation": "(x+y)/(z+w)=u^0",
+    "scalar_projection_runtime_authority": false,
+    "runtime_floating_point": false
+  },
+  "authority": {
+    "vm81_mutation_authority_added": false,
+    "hash72_commit_authority_added": false,
+    "hash216_commit_authority_added": false,
+    "projection_persistence_authority_added": false
+  },
+  "acceptance": [
+    "legacy public 648-byte frame ingress remains bit-identical and traverses the I148 hydration validator",
+    "legacy public 648-byte frame egress remains bit-identical and traverses the I148 hydration validator",
+    "5184-character binary string import/export traverses the same hydration validator",
+    "exact x86_64 bytecode copy routes exactly-648-byte payloads through VM81 hydration while other byte lengths retain inherited copy semantics",
+    "no canonical floating-point path is introduced",
+    "I148 dual-stereo, ternary PCM64, u72 closure, and non-authority invariants remain exact"
+  ]
+}

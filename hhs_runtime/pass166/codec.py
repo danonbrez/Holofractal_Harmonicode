@@ -12,6 +12,7 @@ import unicodedata
 import zipfile
 
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+from hhs_runtime.hhs_pass219_global_raw5184_serialization_hydration_v1 import serialize_raw5184_bytes
 
 from .common import (
     COORDINATES,
@@ -215,7 +216,7 @@ def projection(vector: CanonicalVector, model_root: str, aliases: Sequence[str])
             coordinate = int.from_bytes(digest[offset : offset + 2], "big") % COORDINATES
             byte_index, bit_index = divmod(coordinate, 8)
             raw[byte_index] |= 1 << (7 - bit_index)
-    return bytes(raw)
+    return serialize_raw5184_bytes(raw)
 
 
 def build_model(manifest: Word2VecPackageManifest, package_digest: str, vectors: tuple[CanonicalVector, ...]) -> tuple[str, str, tuple[LanguageVectorObject, ...], dict[str, tuple[str, ...]]]:

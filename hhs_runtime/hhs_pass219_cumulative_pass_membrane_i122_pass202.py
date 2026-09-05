@@ -28,8 +28,10 @@ SERVICE_PATH = P("deployment/digitalocean/guarded_auto_update/hhs-guarded-update
 TIMER_PATH = P("deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer")
 VALIDATOR_PATH = P("deployment/digitalocean/guarded_auto_update/validate-candidate.sh")
 BUNDLE_PATH = P("deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py")
+NORMALIZER_PATH = P("deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py")
 DRIFT_PATH = P("deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh")
 CONTRACT_TEST_PATH = P("tests/test_hhs_guarded_auto_update_contract_v1.py")
+PERMISSION_TEST_PATH = P("tests/test_hhs_production_service_permissions_v2.py")
 PASS203_WORKFLOW_PATH = P(".github/workflows/pass203-hydrated-mainframe.yml")
 
 PRIMARY_BASE = "bdf19276b0974481bd69d70ca1154f284f238e48"
@@ -50,16 +52,17 @@ HISTORICAL_BLOBS = {
     str(CONTRACT_TEST_PATH): "709afe1c0d612ad91744a5cd71cb87d8a313aad6",
 }
 
-FROZEN_I121_BLOBS = {
+CURRENT_SUCCESSOR_BLOBS = {
     WORKFLOW_PATH: "e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4",
     SPEC_PATH: "a0634353e26c186bc72e887bd1bbc6bdc5db42c3",
     SERVICE_PATH: "1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5",
     TIMER_PATH: "3296ee9787544542697d3915e01569562ef30046",
-    UPDATER_PATH: "c1815c56e5bceeca2a840c5a693bd22d6e85ef84",
+    UPDATER_PATH: "6b4dc28e3ec90cc42a8e6317a9f142c229b31022",
     ENV_PATH: "7890657593b5d4dd03e4cf5eb2c4c1c7ba25e519",
-    INSTALLER_PATH: "93dfbe6cc3a789de82b5249f32a129a31306aeb5",
-    VALIDATOR_PATH: "729d8e571160239094aaef612a17d039f310ca03",
+    INSTALLER_PATH: "3289544601dfbd54697a6e57ef9c8505d407821f",
+    VALIDATOR_PATH: "53677fea50de3bb2b42025c79b2fe5fd210e9dd0",
     BUNDLE_PATH: "23afbf9c99d77f57acd7334d767c483572d64e0a",
+    NORMALIZER_PATH: "e7b903eed428614d1f2f4bff5b65fb00299812e7",
 }
 
 REQUIRED_OPERATIONS = (
@@ -90,10 +93,10 @@ def _require(path: Path, *fragments: str) -> None:
 
 
 def pass202_membrane_source_evidence() -> Dict[str, Any]:
-    for path, expected in FROZEN_I121_BLOBS.items():
+    for path, expected in CURRENT_SUCCESSOR_BLOBS.items():
         actual = _git_blob(path)
         if actual != expected:
-            raise RuntimeError(f"PASS202_FROZEN_I121_BLOB_DRIFT:{path}:{actual}")
+            raise RuntimeError(f"PASS202_SUCCESSOR_HARDENING_BLOB_DRIFT:{path}:{actual}")
 
     _require(
         SPEC_PATH,
@@ -162,9 +165,23 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
     _require(DRIFT_PATH, "HHS_HOST_DRIFT_MODE", "host_edits_preserved_before_reset")
     _require(BUNDLE_PATH, "repository_sha", "expected-sha", "activate", "restore")
     _require(
+        NORMALIZER_PATH,
+        "HHS_PRODUCTION_CHECKOUT_PERMISSION_RECEIPT_V2",
+        "git",
+        "ls-files",
+        "service user",
+        "cannot traverse",
+        "cannot read",
+    )
+    _require(
         CONTRACT_TEST_PATH,
         "test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_atomic",
         "test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_receipt",
+    )
+    _require(
+        PERMISSION_TEST_PATH,
+        "test_permission_normalizer_repairs_tracked_read_and_parent_traversal_only",
+        "test_installer_requires_healthy_rollback_boundary_before_promotion",
     )
     _require(PASS203_WORKFLOW_PATH, "Run inherited Pass 202 guarded deployment contract tests")
 
@@ -177,7 +194,7 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "bootstrap_merge": BOOTSTRAP_MERGE,
         "frozen_i121": FROZEN_I121,
         "historical_blobs": dict(HISTORICAL_BLOBS),
-        "frozen_i121_blobs": {str(path): value for path, value in FROZEN_I121_BLOBS.items()},
+        "successor_hardened_blobs": {str(path): value for path, value in CURRENT_SUCCESSOR_BLOBS.items()},
         "pass203_successor": successor,
     }
 
@@ -331,7 +348,7 @@ def pass202_membrane_manifest() -> Dict[str, Any]:
         "bootstrap_merge": s["bootstrap_merge"],
         "frozen_i121": s["frozen_i121"],
         "historical_blobs": s["historical_blobs"],
-        "frozen_i121_blobs": s["frozen_i121_blobs"],
+        "successor_hardened_blobs": s["successor_hardened_blobs"],
         "surface": pass202_surface_declaration(),
     }
 

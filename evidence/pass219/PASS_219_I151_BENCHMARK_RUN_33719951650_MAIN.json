@@ -1,0 +1,60 @@
+{
+  "schema": "HHS_PASS219_I151_EXACT_MAIN_BENCHMARK_HISTORY_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "repository_sha": "eb2948e226b896712b3bb3bb5e9676aea030a31d",
+  "workflow_run_id": 33719951650,
+  "job_id": 100536864521,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9879855765,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-eb2948e226b896712b3bb3bb5e9676aea030a31d",
+    "sha256": "e550acaeb6e8c3bd4ece0529a6cf3d67cc6362e55e9aee8fb19f6e1c61c27473",
+    "expires_at": "2026-12-02T05:41:54Z"
+  },
+  "history": {
+    "source_lines": 3,
+    "output_lines": 4,
+    "source_sha256": "e3ff6bcc99f4f70b8872e848b21ec88e159fd763a52aa808363d21ffb44c74eb",
+    "output_sha256": "8a679c45068d4d8ad1a591aebaa99c2bd233977eaf72255993fa4312619cf1ef",
+    "previous_entry_sha256": "4017a904c2308f3a3e3ba573b52281a1fc1d7aab897de70a5e25c36a70e94291",
+    "chain_verified": true,
+    "preserved_run_ids": [
+      33719250898,
+      33719623520
+    ]
+  },
+  "fixed_resolution": {
+    "expression": "5184^21=72^42",
+    "exact_cardinality_decimal": "1018508951079768942856287659839033239780646340393381046433745481643146696720384",
+    "fixed": true,
+    "exhaustive_enumeration_claim": false
+  },
+  "inventory": {
+    "surface_count": 22,
+    "sha256_root": "6e39e5110e1be42252aa8a4fa02454f260626c81929ab338fc33a3f9a47ca187"
+  },
+  "fresh_benchmarks": {
+    "raw5184_audio": {
+      "baseline_total_work": 11466081,
+      "fused_total_work": 5645376,
+      "exact_work_saved": 5820705,
+      "reduction_permille_floor": 507,
+      "receipt_sha256": "da27c0d22e4dae846660178715f9d55d01c49ba99de483a1d18f9cb89c7f23c5",
+      "result": "PASS"
+    },
+    "cross_modal_reversible_state": {
+      "baseline_total_work": 1384512,
+      "selected_total_work": 32228,
+      "exact_work_saved": 1352284,
+      "reduction_permille_floor": 976,
+      "receipt_sha256": "829d31a1daa9f855c21e96498b7435c11624896a09361eb0eb9007e707acf4c8",
+      "result": "PASS"
+    }
+  },
+  "authority": {
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false
+  }
+}

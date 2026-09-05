@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS_169_EXACT_VALUE_PROFILE_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "integer": "ARBITRARY_SIZE_BIGINT",
+  "rational": "NORMALIZED_SIGNED_EXACT_RATIONAL",
+  "radical": "SYMBOLIC_UNLESS_EXACTLY_REDUCED_BY_VM81",
+  "complex": "EXACT_COMPLEX_PAIR",
+  "modular": "EXPLICIT_TYPED_MODULAR_VALUE",
+  "matrix": "ORDERED_EXACT_MATRIX",
+  "tensor": "ORDERED_EXACT_TENSOR",
+  "typed_zero": true,
+  "typed_complex_infinity": true,
+  "tolerance_equality_authorized": false,
+  "float_canonical_authority": false,
+  "sealed_i162_candidate_exact_execution_verified": true,
+  "general_corpus_exact_execution_verified": false
+}

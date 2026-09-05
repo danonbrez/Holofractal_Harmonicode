@@ -1,0 +1,151 @@
+name: Pass 219 I142 Pass 184 Portable Runtime Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration142-pass184-portable-runtime-reconciliation
+    paths:
+      - 'docs/pass184/**'
+      - 'docs/pass219/PASS_219_I142_INHERITED_PASS184_PORTABLE_RUNTIME_BINDING.md'
+      - 'docs/operations/restart/PASS_219_I142_PASS184_PORTABLE_RUNTIME_RECONCILIATION_RESTART.md'
+      - 'hhs_runtime/pass184/**'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i142_pass184.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass185_1_41.*'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass184_1_42.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass185_1_41.inc'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass184_1_42.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_backend/api/pass184_runtime_routes.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'hhs_gui/runtime_os/workspace/Pass184RuntimePackagePanel.tsx'
+      - 'hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx'
+      - 'deployment/pass184/**'
+      - 'scripts/test_pass184_portable_runtime.sh'
+      - 'tests/test_pass184_portable_runtime.py'
+      - 'tests/pass219/test_pass219_cumulative_pass184_membrane_i142.py'
+      - 'tests/pass219/test_pass219_inherited_pass184_1_42.*'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - '.github/workflows/pass219-i142-pass184-portable-runtime.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i142-pass184-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass184-i142:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS184_PACKAGE_ROOT: '/tmp/hhs-pass184-packages'
+      HHS_PASS184_EVIDENCE_DIR: '/tmp/hhs-pass184-evidence'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record lineage and historical Pass-184 branch
+        run: |
+          git fetch origin agent/pass184-portable-runtime-service-authority --no-tags
+          git merge-base --is-ancestor e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191 HEAD
+          git merge-base --is-ancestor ee8247e4432a6f5501e00812f9e17a6500b0bb3a HEAD
+          test "$(git rev-parse 8fc42ee8364bd79cd711c0b0e60808b24a19a20d:docs/pass184/HHS_PASS_184_PORTABLE_HYDRATION_RUNTIME_PACKAGE_AND_SUPERVISED_SERVICE_AUTHORITY.md)" = "33043f3fc5f8446b6513156f7cf6eecdfd9f9c28"
+          test "$(git rev-parse 8fc42ee8364bd79cd711c0b0e60808b24a19a20d:hhs_runtime/pass184/runtime.py)" = "3cc9da85a3098ce819fab55701392b3f50e38167"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0' requests pytest
+      - name: Compile inherited C authority
+        run: timeout 600s bash bin/post_compile
+      - name: Run Pass-184 package and API acceptance
+        run: timeout 900s bash scripts/test_pass184_portable_runtime.sh
+      - name: Run I142 cumulative membrane preflight
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i142_pass184.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass184_membrane_i142.py
+      - name: Preserve mandatory global defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+      - name: Compile exact ABI and I142 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i142
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i142/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i142/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i142/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass184_1_42.c /tmp/pass219-i142/exact.o /tmp/pass219-i142/pass186.o /tmp/pass219-i142/registers.o -o /tmp/pass219-i142/pass184-c
+          /tmp/pass219-i142/pass184-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass184_1_42.cpp /tmp/pass219-i142/exact.o /tmp/pass219-i142/pass186.o /tmp/pass219-i142/registers.o -o /tmp/pass219-i142/pass184-cpp
+          /tmp/pass219-i142/pass184-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i142/exact.o /tmp/pass219-i142/pass186.o /tmp/pass219-i142/registers.o -o /tmp/pass219-i142/defaults-c
+          /tmp/pass219-i142/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i142/exact.o /tmp/pass219-i142/pass186.o /tmp/pass219-i142/registers.o -o /tmp/pass219-i142/defaults-cpp
+          /tmp/pass219-i142/defaults-cpp
+      - name: Typecheck and build current Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+      - name: Smoke exact production Pass-184 routes and root
+        run: |
+          timeout 180s python - <<'PY'
+          import json, os, socket, subprocess, sys, time, urllib.request
+          sock=socket.socket(); sock.bind(("127.0.0.1",0)); port=sock.getsockname()[1]; sock.close()
+          process=subprocess.Popen([sys.executable,"-m","uvicorn","hhs_backend.runtime_os_application_server:app","--host","127.0.0.1","--port",str(port),"--workers","1","--log-level","warning"],env=os.environ.copy())
+          base=f"http://127.0.0.1:{port}"
+          try:
+              deadline=time.monotonic()+90; last=None
+              while time.monotonic()<deadline:
+                  if process.poll() is not None: raise SystemExit(f"production server exited: {process.returncode}")
+                  try:
+                      with urllib.request.urlopen(base+"/api/v1/pass184/status",timeout=2) as r: status=json.loads(r.read())
+                      with urllib.request.urlopen(base+"/",timeout=3) as r: root_status=r.status
+                      if status["public_application"]=="hhs_backend.runtime_os_application_server:app" and root_status==200:
+                          print(json.dumps({"classification":"HHS_PASS184_I142_PRODUCTION_ROUTE_SMOKE_VERIFIED","port":port},sort_keys=True)); break
+                  except Exception as exc:
+                      last=exc; time.sleep(.5)
+              else: raise SystemExit(f"production smoke timeout: {last}")
+          finally:
+              if process.poll() is None:
+                  process.terminate()
+                  try: process.wait(timeout=10)
+                  except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
+          PY
+      - name: Verify local completion receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value=json.loads(Path('/tmp/hhs-pass184-evidence/PASS_184_COMPLETION.json').read_text())
+          assert value['classification']=='HHS_PASS_184_I142_LOCAL_ACCEPTANCE_VERIFIED'
+          assert len(value['completion_receipt_hash72'])==72
+          assert value['evidence_set_hash216']
+          assert value['terminal_pass184_completion_claimed'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i142-pass184-portable-runtime
+          path: /tmp/hhs-pass184-evidence/**
+          if-no-files-found: warn
+          retention-days: 30

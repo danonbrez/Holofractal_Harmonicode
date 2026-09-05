@@ -153,6 +153,11 @@ class GraphicsVectorHydrationStore:
             os.fsync(handle.fileno())
         self._records[str(record["record_hash216"])] = record
 
+    @property
+    def vm81_authority(self):
+        """Return the already-bound Pass 165/163 VM81 authority; never mint a peer runtime."""
+        return self.pass165._vm81
+
     def status(self) -> Dict[str, Any]:
         return {
             "schema": "HHS_P181_GRAPHICS_VECTOR_HYDRATION_STATUS_V1",

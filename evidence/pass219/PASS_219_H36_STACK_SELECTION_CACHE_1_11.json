@@ -1,0 +1,251 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_SELECTION_CACHE_1_11",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "implementation_head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33475578584,
+    "job": 99754022255,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9788037050,
+    "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6"
+  },
+  "cache": {
+    "capacity": 8,
+    "entry_count_tested": 1,
+    "sequence": "1",
+    "workload_signature36": 3734727431,
+    "semantic_result_signature64": "4176962402124975431",
+    "selected_candidate_id": 1,
+    "selected_stack": "H36_KA10_MONITOR",
+    "vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1",
+    "vector_key216_length": 216,
+    "entry_signature64": "4396347223969929149",
+    "replay_signature64": "4030867320796911141",
+    "cache_hit": true,
+    "cache_hit_fresh_selection_exact_equal": true,
+    "deterministic_relookup_receipt_byte_equal": true,
+    "idempotent_store": true,
+    "stale_semantic_signature_rejected": true,
+    "mismatched_vector_key_rejected": true,
+    "unrelated_cache_miss_status": "RANGE_ERROR",
+    "duplicate_sequence_rejected_by_cache_validator": true,
+    "partial_identity_collision_rejected": true,
+    "bounded_full_cache_status": "BUFFER_TOO_SMALL"
+  },
+  "lineage": {
+    "vector_store_metadata_only": true,
+    "hash216_lineage_claim": false,
+    "canonical_hash216_authority": false
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "correctness_validated": true,
+    "performance_benefit_measured": true,
+    "current_validated_target": "GENERALIZE_REQUIRED",
+    "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
+    "cross_platform_inference": false,
+    "real_workload_signatures_validated": 3,
+    "cache_targets_generalize_required": 4,
+    "h36_stack_targets_generalize_required": 3,
+    "h36_stack_local_exceptions": 1
+  },
+  "performance_measurement": {
+    "platform": "linux-x86_64",
+    "samples": 11,
+    "rounds_per_sample": 4096,
+    "exact_identity": {
+      "workload_signature36": 3734727431,
+      "semantic_result_signature64": "4176962402124975431",
+      "selected_candidate_id": 1,
+      "vector_key216": "5nlPI!0Xj!c(aKeM<IZL2nng*h7f>N)RQyPLzEJG6x(+(w27-U8c/AaCSlDdIwXzdTh1ayAOgIGCzpNKFcHCeTQjeQ>nvDGFbmh<KOu>5arETCTAQzeuT8q!M?IORbb-KUXE1kCW59lt7Paz74<G3NwPCa/n+BUc/WKbPPi(54!!Oor!xH7!gP1o!7IC((j--g5xg<KmJJJSWOii5M-Z9Kx1"
+    },
+    "baseline_negative": {
+      "head": "b4c2d5d2d8385fa99fe6f3bf4b59ba66e7f6a041",
+      "run": 33475406279,
+      "artifact_id": 9787977790,
+      "artifact_sha256": "90c5cc826ded2ceaa26fbb30d10e366c779a8c8c3b9b8f5169e5c81519b8f734",
+      "fresh_selection_median_ns": 19011549,
+      "cache_hit_median_ns": 27643766,
+      "winner": "FRESH_SELECTION",
+      "winner_ratio_x1000": 1454,
+      "cache_benefit": false
+    },
+    "optimization_1_remove_duplicate_full_validation": {
+      "head": "8d85461a6d5d0fff18bd2045e3a8cc1d3dde263c",
+      "run": 33475482687,
+      "artifact_id": 9788005261,
+      "artifact_sha256": "11b2ac1191ec79dafcd08c35711a2f8318a0e173995fa8a02fe75365343e841d",
+      "fresh_selection_median_ns": 17855908,
+      "cache_hit_median_ns": 18003153,
+      "winner": "FRESH_SELECTION",
+      "winner_ratio_x1000": 1008,
+      "cache_benefit": false
+    },
+    "optimization_2_dependency_scoped_lookup_validation": {
+      "head": "dc3ea1eada0b5b965fd74a58555da3522e0f5b59",
+      "run": 33475578584,
+      "artifact_id": 9788037050,
+      "artifact_sha256": "00884249f270d2dca8eec4069e26772792dd36f0366669b187582d7558d1faa6",
+      "fresh_selection_median_ns": 18749724,
+      "cache_hit_median_ns": 15671781,
+      "fresh_selection_per_operation_median_ns": 4577,
+      "cache_hit_per_operation_median_ns": 3826,
+      "winner": "CACHE_HIT",
+      "speedup_x1000": 1196,
+      "cache_benefit": true
+    },
+    "interpretation": "Timing is runner-local. The promoted fact is that the optimized cache hit was the exact measured winner for this validated Linux x86_64 workload identity; the 1.196x ratio is not a cross-platform constant."
+  },
+  "multisignature_validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33496909452,
+    "job": 99821090942,
+    "head": "29b6e2018f8431554f226da0c1fed7ad37b13b22",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796096476,
+    "artifact_sha256": "dc1c38271bcf9e4f552bbe9df5b132e256c7edaf89be5ef343b50f88076e422e",
+    "platform": "linux-x86_64",
+    "stack_samples": 7,
+    "stack_rounds_per_sample": 8,
+    "cache_samples": 11,
+    "cache_rounds_per_sample": 4096,
+    "workloads": [
+      {
+        "class": "CONSOLE_FOCUSED",
+        "workload_signature36": 4793332410,
+        "semantic_result_signature64": "6731027650694893003",
+        "h36_median_ns": 20950,
+        "linux_median_ns": 109495,
+        "selected_candidate_id": 1,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5226,
+        "vector_key216": "tfuz(1iI-X7B1jH408c-6n60BAOrYQQLMA3-*O<L+kOiKL<QZ4)ABrcd3BVdRQ!70bDSzLKw2nl2cNHJzYg>(2H>gcld8e8eKYQ/JDf(pnFIan>AVJbRsT01p/8eHt(L5X?fzNw)5El3?D9RG+U!za81-</XVI-Mni(qEzL?6B+/hBs9vck0O8UPIcKHn1gnXA2ZU7eZ+pS1(u2Ujj!E5+wG",
+        "entry_signature64": "6170934417055748247",
+        "replay_signature64": "7010736531221978357",
+        "fresh_selection_median_ns": 18588395,
+        "cache_hit_median_ns": 14973115,
+        "cache_speedup_x1000": 1241,
+        "stack_classification": "GENERALIZE_REQUIRED",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "BINARY_IO_FOCUSED",
+        "workload_signature36": 21509979554,
+        "semantic_result_signature64": "1456447110141201574",
+        "h36_median_ns": 20889,
+        "linux_median_ns": 106910,
+        "selected_candidate_id": 1,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 5118,
+        "vector_key216": "jei)gdf/PEAs9MILOtuHOQXpnUt*Tf47PD?zy3gwy!tZT5)Int*XpA4SKMXYcEMAgr+k>Mtyimln!(PDfX3E?49PUHB2a12t5X2dOb+HT/P6z+x8(124)bX(CZXaW3<-RU(mRMEWy77XtVOU-cU<U?YXV9(aw3hQtZGE-J*6M9Nmc<kBcaIq3JCDgQ48pBMyi(O<qZy1!ag6VRtLP>WnnApX",
+        "entry_signature64": "12161527985123979229",
+        "replay_signature64": "10273493538701160304",
+        "fresh_selection_median_ns": 18790964,
+        "cache_hit_median_ns": 15161769,
+        "cache_speedup_x1000": 1239,
+        "stack_classification": "GENERALIZE_REQUIRED",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      },
+      {
+        "class": "MONITOR_CONTROL_FOCUSED",
+        "workload_signature36": 41886677838,
+        "semantic_result_signature64": "2318081696571468614",
+        "h36_median_ns": 19216,
+        "linux_median_ns": 501,
+        "selected_candidate_id": 2,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "selector_speedup_x1000": 38355,
+        "vector_key216": "q(IxvVjjUvereKtdppA>uu1yyYAvB3fxjJWuY!QVYp1+UiLu9IdfM+rk1m/L7bbkCTUP3ij1nlJiPvfoK)n34B1t!JNsJC>Plr96YIz*ryA9EJ(RHPeJ?bZJgvj77NPrdCO6r2Sr!WI/T!GSFi!jWlIQCPctCXujdyOXett3<ojTipoRPYVdO*+tNp4c/vTx3H8o1N3wiforBk5--61?!Q76",
+        "entry_signature64": "6069454105980554556",
+        "replay_signature64": "222155043648961744",
+        "fresh_selection_median_ns": 18382750,
+        "cache_hit_median_ns": 14817374,
+        "cache_speedup_x1000": 1240,
+        "stack_classification": "LOCAL_EXCEPTION_ALLOWED_NO_MEANINGFUL_BENEFIT_H36",
+        "selected_stack_classification": "LINUX_X86_64_POSIX_MEASURED_WINNER",
+        "cache_classification": "GENERALIZE_REQUIRED"
+      }
+    ],
+    "common_invariants": {
+      "exact_h36_linux_semantic_equal_before_timing": true,
+      "cache_hit_equals_fresh_before_timing": true,
+      "stale_signature_rejected": true,
+      "mismatched_vector_key_rejected": true,
+      "deterministic_replay_receipt": true,
+      "workload_signatures_distinct": true,
+      "authoritative_state_changed": false
+    }
+  },
+  "multisignature_policy_repeat": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33497200386,
+    "job": 99822014646,
+    "head": "97c6f668028a329980e2b624882f18de486ce427",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796212368,
+    "artifact_sha256": "21411216bf4815a3e6d450e3547f3cdb89094d67a314854d655411bcd068517b",
+    "workloads": [
+      {
+        "class": "CONSOLE_FOCUSED",
+        "h36_median_ns": 23033,
+        "linux_median_ns": 106949,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 4643,
+        "fresh_selection_median_ns": 18487262,
+        "cache_hit_median_ns": 15006876,
+        "cache_speedup_x1000": 1231,
+        "cache_benefit": true
+      },
+      {
+        "class": "BINARY_IO_FOCUSED",
+        "h36_median_ns": 23073,
+        "linux_median_ns": 109553,
+        "selected_stack": "H36_KA10_MONITOR",
+        "selector_speedup_x1000": 4748,
+        "fresh_selection_median_ns": 18833265,
+        "cache_hit_median_ns": 14935304,
+        "cache_speedup_x1000": 1260,
+        "cache_benefit": true
+      },
+      {
+        "class": "MONITOR_CONTROL_FOCUSED",
+        "h36_median_ns": 19156,
+        "linux_median_ns": 501,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "selector_speedup_x1000": 38235,
+        "fresh_selection_median_ns": 18398417,
+        "cache_hit_median_ns": 14982943,
+        "cache_speedup_x1000": 1227,
+        "cache_benefit": true
+      }
+    ],
+    "manifest_validation": {
+      "h36_stack_generalize_required": [
+        "h36-ka10-monitor-3734727431",
+        "h36-ka10-monitor-binary-21509979554",
+        "h36-ka10-monitor-console-4793332410"
+      ],
+      "h36_stack_local_exceptions": [
+        "h36-ka10-monitor-monitor-control-41886677838"
+      ],
+      "cache_generalize_required": [
+        "h36-stack-cache-3734727431",
+        "h36-stack-cache-binary-21509979554",
+        "h36-stack-cache-console-4793332410",
+        "h36-stack-cache-monitor-control-41886677838"
+      ]
+    }
+  }
+}

@@ -1,0 +1,124 @@
+name: Pass 219 I165 Pass169 Public Surface Artifact Closure
+
+on:
+  push:
+    branches:
+      - agent/pass219-i165-pass169-public-surface-artifact-closure
+    paths:
+      - hhs_runtime/pass169/**
+      - hhs_backend/pass169_algebra_routes.py
+      - hhs_backend/public_api_server.py
+      - tests/pass219/test_pass219_i165_pass169_public_surface_artifact_closure.py
+      - contracts/pass219/PASS_219_I165_PASS169_PUBLIC_SURFACE_ARTIFACT_CLOSURE_1_0.json
+      - HHS_PASS_169_*.json
+      - HHS_PASS_169_*.md
+      - .github/workflows/pass219-i165-pass169-public-surface-artifact-closure.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i165:
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+      - name: Parse and compile I165 surfaces
+        run: |
+          set -euo pipefail
+          python -m py_compile hhs_runtime/pass169/public_service.py
+          python -m py_compile hhs_runtime/pass169/cli.py
+          python -m py_compile hhs_backend/pass169_algebra_routes.py
+          python -m py_compile hhs_backend/public_api_server.py
+          python -m py_compile tests/pass219/test_pass219_i165_pass169_public_surface_artifact_closure.py
+          python -m json.tool contracts/pass219/PASS_219_I165_PASS169_PUBLIC_SURFACE_ARTIFACT_CLOSURE_1_0.json >/dev/null
+          for f in HHS_PASS_169_*.json; do python -m json.tool "$f" >/dev/null; done
+      - name: Enforce one canonical gateway and remove patch workflow
+        run: |
+          set -euo pipefail
+          test ! -e .github/workflows/pass219-i165-public-api-patch-once.yml
+          test "$(grep -c 'build_pass169_algebra_router(provider)' hhs_backend/public_api_server.py)" -eq 1
+          ! grep -En 'FastAPI\(' hhs_backend/pass169_algebra_routes.py
+          ! grep -En '\b(float|double|long[[:space:]]+double)\b' hhs_runtime/pass169/public_service.py hhs_backend/pass169_algebra_routes.py
+      - name: Run dependency-scoped I165 tests
+        run: PYTHONPATH=. python -m pytest -q --tb=short tests/pass219/test_pass219_i165_pass169_public_surface_artifact_closure.py
+      - name: Verify CLI parity and fail-closed execution
+        run: |
+          set -euo pipefail
+          python -m hhs_runtime.pass169.cli algebra status > /tmp/i165-status.json
+          python -m json.tool /tmp/i165-status.json >/dev/null
+          set +e
+          python -m hhs_runtime.pass169.cli algebra source > /tmp/i165-source-blocked.json
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          python -m json.tool /tmp/i165-source-blocked.json >/dev/null
+          grep -F 'PASS169_CANONICAL_CORPUS_ABSENT' /tmp/i165-source-blocked.json
+      - name: Reconcile I164 blockers after I165 surface closure
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i165
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          from hhs_runtime.pass169.public_service import Pass169AlgebraService
+          from hhs_runtime.pass219.pass169_terminal_reconciliation import build_i164_pass169_terminal_reconciliation
+
+          report = build_i164_pass169_terminal_reconciliation('.')
+          assert report['frozen_evidence']['all_frozen_evidence_verified'] is True
+          assert report['public_surfaces']['cli']['complete'] is True
+          assert report['public_surfaces']['http']['complete'] is True
+          assert report['canonical_corpus']['present'] is False
+          assert report['pass168_parent']['resolved'] is False
+          assert report['pass169_terminal_contract_verified'] is False
+          assert report['required_artifacts']['missing'] == ['HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode']
+          assert 'PASS169_REQUIRED_CLI_SURFACE_INCOMPLETE' not in report['blockers']
+          assert 'PASS169_REQUIRED_HTTP_SURFACE_INCOMPLETE' not in report['blockers']
+          assert 'PASS169_CANONICAL_CORPUS_ABSENT' in report['blockers']
+          assert 'PASS169_REQUIRED_ARTIFACT_SET_INCOMPLETE' in report['blockers']
+          assert 'PASS168_TERMINAL_PARENT_RECEIPT_UNRESOLVED' in report['blockers']
+
+          rows = []
+          for _ in range(12):
+              row = Pass169AlgebraService('.').status()
+              rows.append(json.dumps(row, sort_keys=True, separators=(',', ':'), ensure_ascii=False))
+          assert len(set(rows)) == 1
+          receipt = hashlib.sha256(rows[0].encode('utf-8')).hexdigest()
+          evidence = {
+              'schema': 'HHS_PASS219_I165_PUBLIC_SURFACE_VALIDATION_V1',
+              'result': 'PASS',
+              'cli_required': 20,
+              'cli_complete': True,
+              'http_required': 17,
+              'http_complete': True,
+              'required_artifacts_missing': report['required_artifacts']['missing'],
+              'blockers': report['blockers'],
+              'canonical_corpus_present': False,
+              'pass168_parent_resolved': False,
+              'pass169_terminal_verified': False,
+              'status_repeat_count': 12,
+              'deterministic_status_receipt_sha256': receipt,
+              'new_vm81_authority': False,
+              'new_hash72_mint_authority': False,
+              'floating_point_canonical_authority': False,
+          }
+          Path('artifacts/pass219/i165/pass169_public_surface_validation.json').write_text(
+              json.dumps(evidence, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(evidence, sort_keys=True))
+          PY
+          python -m json.tool artifacts/pass219/i165/pass169_public_surface_validation.json >/dev/null
+      - name: Upload I165 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i165-pass169-public-surface-${{ github.sha }}
+          path: artifacts/pass219/i165/pass169_public_surface_validation.json
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,10 @@
+{
+  "arm64_verified": true,
+  "artifact_digest": "sha256:777d246f70152054048e002989a3b676912a67b9d81fb74b39ca7ce26c0b44c7",
+  "artifact_id": 9945932317,
+  "records_identical": true,
+  "result": "PASS",
+  "schema": "HHS_PASS168_CROSS_ARCH_REPLAY_REPORT_V1",
+  "validation_run_id": 33896435315,
+  "x86_64_verified": true
+}

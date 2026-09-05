@@ -55,6 +55,16 @@ def canonicalize_for_hash72(obj: Any) -> Any:
     return obj
 
 
+def security_hash72_v44(obj: Any, *, domain: str = "HASH72_SECURITY") -> str:
+    """Dependency-scoped repair: delegate to the authoritative kernel hash72.
+
+    Fail-closed: raises HHSRuntimeLoadError if the authoritative kernel or its
+    security_hash72_v44 symbol is unavailable. Never falls back to legacy sha.
+    """
+    kernel = load_authoritative_kernel()
+    return kernel.security_hash72_v44(canonicalize_for_hash72(obj), domain=domain)
+
+
 def canonical_json(obj: Any) -> str:
     return json.dumps(canonicalize_for_hash72(obj), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 

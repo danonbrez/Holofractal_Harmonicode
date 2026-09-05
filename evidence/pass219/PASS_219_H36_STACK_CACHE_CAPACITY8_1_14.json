@@ -1,0 +1,240 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_CACHE_CAPACITY8_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_CACHE_CAPACITY8_1_14",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-h36-fibonacci-branch-reference-cache-runtime",
+  "implementation_head": "9026ca84998468f5f20add4661e62dd59effcbab",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33751463158,
+    "job": 100635741293,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9891731145,
+    "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358"
+  },
+  "cache": {
+    "capacity": 8,
+    "resident_entries": 8,
+    "next_sequence": 9,
+    "ninth_store": {
+      "workload": "BOUNDARY_CONSOLE_ALTERNATE",
+      "workload_signature36": 38935941853,
+      "result": "BUFFER_TOO_SMALL",
+      "count_sequence_unchanged": true
+    },
+    "full_capacity_idempotent_store_ok": true
+  },
+  "residents": [
+    {
+      "name": "FULL_MONITOR",
+      "workload_signature36": 3734727431,
+      "semantic_result_signature64": "4176962402124975431",
+      "selected_candidate_id": 1,
+      "h36_median_ns": 96531,
+      "linux_median_ns": 873043,
+      "fresh_selection_median_ns": 18780865,
+      "occupancy1_lookup_median_ns": 15535969,
+      "occupancy4_lookup_median_ns": 15624012,
+      "occupancy8_lookup_median_ns": 15841961,
+      "occupancy8_vs_fresh_x1000": 1185,
+      "occupancy8_vs_occupancy1_x1000": 1019,
+      "occupancy8_vs_occupancy4_x1000": 1013
+    },
+    {
+      "name": "CONSOLE_FOCUSED",
+      "workload_signature36": 4793332410,
+      "semantic_result_signature64": "6731027650694893003",
+      "selected_candidate_id": 1,
+      "h36_median_ns": 23033,
+      "linux_median_ns": 106949,
+      "fresh_selection_median_ns": 18725241,
+      "occupancy1_lookup_median_ns": 15748680,
+      "occupancy4_lookup_median_ns": 15648459,
+      "occupancy8_lookup_median_ns": 15875783,
+      "occupancy8_vs_fresh_x1000": 1179,
+      "occupancy8_vs_occupancy1_x1000": 1008,
+      "occupancy8_vs_occupancy4_x1000": 1014
+    },
+    {
+      "name": "BINARY_IO_FOCUSED",
+      "workload_signature36": 21509979554,
+      "semantic_result_signature64": "1456447110141201574",
+      "selected_candidate_id": 1,
+      "h36_median_ns": 23073,
+      "linux_median_ns": 109553,
+      "fresh_selection_median_ns": 19103332,
+      "occupancy1_lookup_median_ns": 15723092,
+      "occupancy4_lookup_median_ns": 15795040,
+      "occupancy8_lookup_median_ns": 15993981,
+      "occupancy8_vs_fresh_x1000": 1194,
+      "occupancy8_vs_occupancy1_x1000": 1017,
+      "occupancy8_vs_occupancy4_x1000": 1012
+    },
+    {
+      "name": "MONITOR_CONTROL_FOCUSED",
+      "workload_signature36": 41886677838,
+      "semantic_result_signature64": "2318081696571468614",
+      "selected_candidate_id": 2,
+      "h36_median_ns": 19156,
+      "linux_median_ns": 501,
+      "fresh_selection_median_ns": 18536655,
+      "occupancy1_lookup_median_ns": 15643081,
+      "occupancy4_lookup_median_ns": 15751424,
+      "occupancy8_lookup_median_ns": 15915041,
+      "occupancy8_vs_fresh_x1000": 1164,
+      "occupancy8_vs_occupancy1_x1000": 1017,
+      "occupancy8_vs_occupancy4_x1000": 1010
+    },
+    {
+      "name": "APR_PI_INTERRUPT_FOCUSED",
+      "workload_signature36": 56629000078,
+      "semantic_result_signature64": "6036511113464237678",
+      "selected_candidate_id": 2,
+      "h36_median_ns": 2023,
+      "linux_median_ns": 521,
+      "fresh_selection_median_ns": 18891462,
+      "occupancy1_lookup_median_ns": 15539504,
+      "occupancy4_lookup_median_ns": 15609580,
+      "occupancy8_lookup_median_ns": 15791515,
+      "occupancy8_vs_fresh_x1000": 1196,
+      "occupancy8_vs_occupancy1_x1000": 1016,
+      "occupancy8_vs_occupancy4_x1000": 1011
+    },
+    {
+      "name": "RIM_BOOTSTRAP_FOCUSED",
+      "workload_signature36": 45496969883,
+      "semantic_result_signature64": "15550751547534181799",
+      "selected_candidate_id": 2,
+      "h36_median_ns": 3115,
+      "linux_median_ns": 561,
+      "fresh_selection_median_ns": 18843699,
+      "occupancy1_lookup_median_ns": 15560135,
+      "occupancy4_lookup_median_ns": 15655720,
+      "occupancy8_lookup_median_ns": 15796042,
+      "occupancy8_vs_fresh_x1000": 1192,
+      "occupancy8_vs_occupancy1_x1000": 1015,
+      "occupancy8_vs_occupancy4_x1000": 1008
+    },
+    {
+      "name": "MIXED_CONSOLE_BINARY_IO",
+      "workload_signature36": 19461196675,
+      "semantic_result_signature64": "7100043395069015146",
+      "selected_candidate_id": 1,
+      "h36_median_ns": 22865,
+      "linux_median_ns": 258110,
+      "fresh_selection_median_ns": 19225707,
+      "occupancy1_lookup_median_ns": 15791996,
+      "occupancy4_lookup_median_ns": 15851866,
+      "occupancy8_lookup_median_ns": 16056305,
+      "occupancy8_vs_fresh_x1000": 1197,
+      "occupancy8_vs_occupancy1_x1000": 1016,
+      "occupancy8_vs_occupancy4_x1000": 1012
+    },
+    {
+      "name": "MIXED_SCHEDULER_IO_UUO",
+      "workload_signature36": 25778039250,
+      "semantic_result_signature64": "17797529900924037577",
+      "selected_candidate_id": 1,
+      "h36_median_ns": 21333,
+      "linux_median_ns": 129115,
+      "fresh_selection_median_ns": 19154650,
+      "occupancy1_lookup_median_ns": 15725876,
+      "occupancy4_lookup_median_ns": 15818346,
+      "occupancy8_lookup_median_ns": 16028093,
+      "occupancy8_vs_fresh_x1000": 1195,
+      "occupancy8_vs_occupancy1_x1000": 1019,
+      "occupancy8_vs_occupancy4_x1000": 1013
+    }
+  ],
+  "correctness": {
+    "eight_simultaneous_entries_valid": true,
+    "all_exact_lookups_equal_fresh": true,
+    "cross_signature_hits_rejected": true,
+    "wrong_semantic_signature_rejected": true,
+    "wrong_vector_key_rejected": true,
+    "unrelated_identity_range_error": true,
+    "duplicate_sequence_rejected": true,
+    "duplicate_identity_tamper_rejected": true,
+    "partial_identity_tamper_rejected": true,
+    "ninth_store_buffer_too_small": true,
+    "idempotent_existing_store_at_capacity_ok": true
+  },
+  "performance": {
+    "platform": "linux-x86_64",
+    "all_occupancy8_faster_than_fresh": true,
+    "observed_occupancy8_vs_fresh_x1000_range": [
+      1164,
+      1197
+    ],
+    "interpretation": "Occupancy 8 remains faster than fresh selection for all eight resident workloads. Occupancy 8 adds small linear-scan overhead versus occupancy 1/4 but preserves the cache benefit. Ratios are runner-local only.",
+    "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+    "calibration_repeats": 5,
+    "required_beneficial_repeats": 4,
+    "aggregate_requirement": "occupancy8_total_ns < fresh_selection_total_ns",
+    "one_shot_boolean_authoritative": false,
+    "all_repeat_stability_pass": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "occupancy8": "GENERALIZE_REQUIRED",
+    "cross_platform": "VALIDATION_REQUIRED"
+  },
+  "policy_repeat": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33529443931,
+    "job": 99928529597,
+    "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9809101393,
+    "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345",
+    "resident_ratios_x1000": {
+      "FULL_MONITOR": 1178,
+      "CONSOLE_FOCUSED": 1165,
+      "BINARY_IO_FOCUSED": 1171,
+      "MONITOR_CONTROL_FOCUSED": 1175,
+      "APR_PI_INTERRUPT_FOCUSED": 1195,
+      "RIM_BOOTSTRAP_FOCUSED": 1196,
+      "MIXED_CONSOLE_BINARY_IO": 1193,
+      "MIXED_SCHEDULER_IO_UUO": 1197
+    },
+    "all_occupancy8_faster_than_fresh": true,
+    "stack_manifest_valid": true,
+    "cache_manifest_valid": true,
+    "residency_manifest_valid": true,
+    "capacity8_manifest_valid": true
+  },
+  "repeat_stability_repair_20260903": {
+    "triggering_one_shot_regression": {
+      "head": "73bd07ac207fec9bd6bbc198deb63305b025278b",
+      "run": 33750557466,
+      "job": 100632891223,
+      "resident": "BINARY_IO_FOCUSED",
+      "correctness_green": true,
+      "fresh_selection_median_ns": 8614457,
+      "occupancy8_lookup_median_ns": 9177486
+    },
+    "repair": {
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "alternating_measurement_order": true,
+      "aggregate_requirement": "occupancy8_total_ns < fresh_selection_total_ns"
+    },
+    "repaired_validation": {
+      "head": "9026ca84998468f5f20add4661e62dd59effcbab",
+      "run": 33751463158,
+      "job": 100635741293,
+      "artifact_id": 9891731145,
+      "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358",
+      "all_repeat_stability_pass": true
+    }
+  }
+}

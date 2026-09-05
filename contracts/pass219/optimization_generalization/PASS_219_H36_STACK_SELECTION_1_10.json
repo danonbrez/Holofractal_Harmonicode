@@ -1,0 +1,497 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_1_10.h",
+    "hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_1_10.inc",
+    "tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c",
+    "benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    "benchmarks/pass219/harmonic36_stack_cache_multisignature_benchmark.cpp",
+    "benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp"
+  ],
+  "optimization": {
+    "optimization_id": "H36_KA10_MONITOR_STACK_SELECTION_1_10",
+    "compatible_object_classes": [
+      "software_stack_workload"
+    ],
+    "required_operations": [
+      "EXECUTE",
+      "REPLAY",
+      "MEASURE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+      "HHS_PASS219_H36_STACK_RESULT_V1"
+    ],
+    "exact_equality_before_timing": true,
+    "winner_scope": "WORKLOAD_SIGNATURE_AND_PLATFORM_EVIDENCED"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "software_stack_workload",
+    "operations": [
+      "EXECUTE",
+      "REPLAY",
+      "MEASURE"
+    ],
+    "inputs": [
+      {
+        "name": "workload",
+        "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+      "workload_signature36": 3734727431
+    },
+    "logical_object_id": "linux-x86_64-posix-reference-3734727431",
+    "modality_set": [
+      "LINUX_X86_64_POSIX"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 3734727431
+      },
+      "logical_object_id": "h36-ka10-monitor-3734727431",
+      "modality_set": [
+        "H36_KA10_MONITOR"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 4793332410
+      },
+      "logical_object_id": "h36-ka10-monitor-console-4793332410",
+      "modality_set": [
+        "H36_KA10_MONITOR_CONSOLE"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 21509979554
+      },
+      "logical_object_id": "h36-ka10-monitor-binary-21509979554",
+      "modality_set": [
+        "H36_KA10_MONITOR_BINARY_IO"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 41886677838
+      },
+      "logical_object_id": "h36-ka10-monitor-monitor-control-41886677838",
+      "modality_set": [
+        "H36_KA10_MONITOR_CONTROL"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 56629000078
+      },
+      "logical_object_id": "h36-ka10-apr-pi-56629000078",
+      "modality_set": [
+        "H36_KA10_APR_PI"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 45496969883
+      },
+      "logical_object_id": "h36-ka10-rim-bootstrap-45496969883",
+      "modality_set": [
+        "H36_KA10_RIM_BOOTSTRAP"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 19461196675
+      },
+      "logical_object_id": "h36-ka10-mixed-console-binary-19461196675",
+      "modality_set": [
+        "H36_KA10_MIXED_CONSOLE_BINARY"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": 25778039250
+      },
+      "logical_object_id": "h36-ka10-mixed-scheduler-io-uuo-25778039250",
+      "modality_set": [
+        "H36_KA10_MIXED_SCHEDULER_IO_UUO"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "software_stack_workload",
+      "operations": [
+        "EXECUTE",
+        "REPLAY",
+        "MEASURE"
+      ],
+      "inputs": [
+        {
+          "name": "workload",
+          "type": "HHS_PASS219_H36_STACK_WORKLOAD_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "type": "HHS_PASS219_H36_STACK_RESULT_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_WORKLOAD_V1",
+        "workload_signature36": "OTHER_COMPATIBLE"
+      },
+      "logical_object_id": "h36-compatible-stack-workloads-unvalidated",
+      "modality_set": [
+        "H36_COMPATIBLE_STACK_WORKLOAD"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-ka10-monitor-3734727431",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33462132899,
+      "evidence_job": 99714316241,
+      "exact_result_equal": true,
+      "speedup_x1000": 3850,
+      "selected_candidate_id": 1
+    },
+    {
+      "logical_object_id": "h36-ka10-monitor-console-4793332410",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33496909452,
+      "evidence_job": 99821090942,
+      "exact_result_equal": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 4793332410,
+      "semantic_result_signature64": "6731027650694893003",
+      "h36_median_ns": 20950,
+      "linux_median_ns": 109495,
+      "speedup_x1000": 5226,
+      "selected_candidate_id": 1
+    },
+    {
+      "logical_object_id": "h36-ka10-monitor-binary-21509979554",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33496909452,
+      "evidence_job": 99821090942,
+      "exact_result_equal": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 21509979554,
+      "semantic_result_signature64": "1456447110141201574",
+      "h36_median_ns": 20889,
+      "linux_median_ns": 106910,
+      "speedup_x1000": 5118,
+      "selected_candidate_id": 1
+    },
+    {
+      "logical_object_id": "h36-ka10-monitor-monitor-control-41886677838",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": false,
+      "bounded_exception": "NO_MEANINGFUL_BENEFIT",
+      "exception_evidence": {
+        "run": 33496909452,
+        "job": 99821090942,
+        "platform": "linux-x86_64",
+        "workload_signature36": 41886677838,
+        "semantic_result_signature64": "2318081696571468614",
+        "h36_median_ns": 19216,
+        "linux_median_ns": 501,
+        "selected_candidate_id": 2,
+        "selected_stack": "LINUX_X86_64_POSIX",
+        "winner_ratio_x1000": 38355
+      }
+    },
+    {
+      "logical_object_id": "h36-ka10-apr-pi-56629000078",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": false,
+      "bounded_exception": "NO_MEANINGFUL_BENEFIT",
+      "exception_evidence": {
+        "run": 33528991694,
+        "job": 99927016899,
+        "platform": "linux-x86_64",
+        "workload_signature36": 56629000078,
+        "semantic_result_signature64": "6036511113464237678",
+        "h36_median_ns": 2023,
+        "linux_median_ns": 521,
+        "selected_candidate_id": 2,
+        "selected_stack": "LINUX_X86_64_POSIX"
+      }
+    },
+    {
+      "logical_object_id": "h36-ka10-rim-bootstrap-45496969883",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": false,
+      "bounded_exception": "NO_MEANINGFUL_BENEFIT",
+      "exception_evidence": {
+        "run": 33528991694,
+        "job": 99927016899,
+        "platform": "linux-x86_64",
+        "workload_signature36": 45496969883,
+        "semantic_result_signature64": "15550751547534181799",
+        "h36_median_ns": 3115,
+        "linux_median_ns": 561,
+        "selected_candidate_id": 2,
+        "selected_stack": "LINUX_X86_64_POSIX"
+      }
+    },
+    {
+      "logical_object_id": "h36-ka10-mixed-console-binary-19461196675",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33528991694,
+      "evidence_job": 99927016899,
+      "exact_result_equal": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 19461196675,
+      "semantic_result_signature64": "7100043395069015146",
+      "h36_median_ns": 22865,
+      "linux_median_ns": 258110,
+      "speedup_x1000": 11288,
+      "selected_candidate_id": 1
+    },
+    {
+      "logical_object_id": "h36-ka10-mixed-scheduler-io-uuo-25778039250",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "evidence_run": 33528991694,
+      "evidence_job": 99927016899,
+      "exact_result_equal": true,
+      "platform": "linux-x86_64",
+      "workload_signature36": 25778039250,
+      "semantic_result_signature64": "17797529900924037577",
+      "h36_median_ns": 21333,
+      "linux_median_ns": 129115,
+      "speedup_x1000": 6052,
+      "selected_candidate_id": 1
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-ka10-mixed-console-binary-19461196675",
+    "h36-ka10-mixed-scheduler-io-uuo-25778039250",
+    "h36-ka10-monitor-3734727431",
+    "h36-ka10-monitor-binary-21509979554",
+    "h36-ka10-monitor-console-4793332410"
+  ],
+  "policy": {
+    "current_signature_promoted": true,
+    "compatible_unvalidated_targets": "VALIDATION_REQUIRED",
+    "no_unmeasured_global_promotion": true,
+    "real_workload_audit_run": 33496909452,
+    "console_4793332410": "GENERALIZE_REQUIRED",
+    "binary_io_21509979554": "GENERALIZE_REQUIRED",
+    "monitor_control_41886677838": "NO_MEANINGFUL_BENEFIT_H36_LOCAL_EXCEPTION_LINUX_WINNER",
+    "cross_platform_inference": false,
+    "capacity8_real_workload_audit_run": 33528991694,
+    "apr_pi_56629000078": "NO_MEANINGFUL_BENEFIT_H36_LOCAL_EXCEPTION_LINUX_WINNER",
+    "rim_bootstrap_45496969883": "NO_MEANINGFUL_BENEFIT_H36_LOCAL_EXCEPTION_LINUX_WINNER",
+    "mixed_console_binary_19461196675": "GENERALIZE_REQUIRED",
+    "mixed_scheduler_io_uuo_25778039250": "GENERALIZE_REQUIRED"
+  }
+}

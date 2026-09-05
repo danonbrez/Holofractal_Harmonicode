@@ -66,8 +66,11 @@ async def probability_status() -> dict[str, Any]:
     return {
         **status,
         "api": "/api/v1/probability",
-        "studio": "/probability-hydration/",
+        "legacy_studio": "/probability-hydration/",
+        "runtime_os_workspace_tab": "Probability",
         "jobs_persistent": True,
+        "hash216_archival_only": True,
+        "legacy_native_hash_witness_canonical": False,
         "websocket_events": True,
     }
 

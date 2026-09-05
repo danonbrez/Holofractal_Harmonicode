@@ -3,6 +3,10 @@
 #include <string.h>
 
 #if defined(__GNUC__) || defined(__clang__)
+extern HHSExactStatus hhs_pass169_verify_combined_gate_authority_i162_1_23(
+    const HHSExactPass219Pass159GlobalWitnessProvenanceV1 *provenance,
+    HHSExactPass219Pass169AuthorityProofV1 *out_proof
+) __attribute__((weak));
 extern HHSExactStatus hhs_pass169_verify_combined_gate_authority_1_21_11(
     const HHSExactPass219Pass159GlobalWitnessProvenanceV1 *provenance,
     HHSExactPass219Pass169AuthorityProofV1 *out_proof
@@ -39,10 +43,28 @@ static uint32_t hhs219_i12110_version_word(void) {
 
 static int hhs219_i12111_provider_available(void) {
 #if HHS219_I12111_HAS_WEAK_PROVIDER
-    return hhs_pass169_verify_combined_gate_authority_1_21_11 != NULL;
+    return hhs_pass169_verify_combined_gate_authority_i162_1_23 != NULL ||
+           hhs_pass169_verify_combined_gate_authority_1_21_11 != NULL;
 #else
     return 0;
 #endif
+}
+
+static HHSExactStatus hhs219_i12111_invoke_provider(
+    const HHSExactPass219Pass159GlobalWitnessProvenanceV1 *provenance,
+    HHSExactPass219Pass169AuthorityProofV1 *out_proof
+) {
+#if HHS219_I12111_HAS_WEAK_PROVIDER
+    if (hhs_pass169_verify_combined_gate_authority_i162_1_23 != NULL)
+        return hhs_pass169_verify_combined_gate_authority_i162_1_23(
+            provenance, out_proof);
+    if (hhs_pass169_verify_combined_gate_authority_1_21_11 != NULL)
+        return hhs_pass169_verify_combined_gate_authority_1_21_11(
+            provenance, out_proof);
+#endif
+    (void)provenance;
+    (void)out_proof;
+    return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 }
 
 static int hhs219_i12111_root_nonzero(
@@ -278,7 +300,13 @@ HHSExactStatus hhs_exact_pass219_pass169_bind_authority(
     }
 
     memset(&proof, 0, sizeof(proof));
-    status = hhs_pass169_verify_combined_gate_authority_1_21_11(provenance, &proof);
+    status = hhs219_i12111_invoke_provider(provenance, &proof);
+    if (status == HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN) {
+        out_result->decision = HHS_EXACT_PASS219_PASS169_BINDING_UNRESOLVED;
+        out_result->reason_mask =
+            HHS_EXACT_PASS219_PASS169_BINDING_REASON_FULL_SYMBOLIC_UNRESOLVED;
+        return HHS_EXACT_STATUS_OK;
+    }
     if (status != HHS_EXACT_STATUS_OK) {
         out_result->decision = HHS_EXACT_PASS219_PASS169_BINDING_REJECT;
         out_result->reason_mask = HHS_EXACT_PASS219_PASS169_BINDING_REASON_PROVIDER_REJECTED;

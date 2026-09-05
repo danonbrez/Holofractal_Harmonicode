@@ -1,0 +1,148 @@
+{
+  "schema": "HHS_PASS219_I161_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I161",
+  "classification": "FEATURE_GREEN_GOVERNED_REGISTRY_INTEGRATED_EVIDENCE_SEALED",
+  "base_main": "9ab5a7708d9a0332d9ec1f6b98b6cee6ac11b9dc",
+  "branch": "agent/pass219-i161-complete-monolithic-boundary-executor",
+  "pull_request": 389,
+  "validated_feature_head": "4e1ec0e1c302c1f6b149d6ae9da3b44d526c45bc",
+  "governed_registry_commit": "271646906bee20805c96576a2701de22631e42c0",
+  "temporary_registry_workflow_removed_at": "abc20162a687349a5100e4ef08e5d3e4175512f4",
+  "declared_typed_relations": {
+    "scalar_zero": "0=x+y+z+w=I+I^3",
+    "renewed_unit": "u^0=xy/zw=P^2-pq=a^2/Delta=0^4",
+    "provenance": "USER_DECLARED_I161_BOUNDARY_RELATION"
+  },
+  "semantic_guards": {
+    "xy_over_zw_operator": "TYPED_CLOSURE_QUOTIENT",
+    "host_zero_division_used": false,
+    "zero_fourth_operator": "TYPED_FOURTH_PHASE_CLOSURE",
+    "host_scalar_zero_fourth_power_used": false,
+    "scalar_zero_equals_scalar_one": false,
+    "boundary_equality_frame": "CLOSURE_EQ",
+    "ordinary_scalar_A_equals_B_claimed": false,
+    "ordinary_scalar_A_equals_P2_claimed": false,
+    "ordinary_scalar_B_equals_P2_claimed": false,
+    "right_scalar_zero_used_as_boundary_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "typed_graph_transition": {
+    "before": {
+      "join_count": 10,
+      "proved": 9,
+      "unresolved": 1,
+      "rejected": 0
+    },
+    "after": {
+      "join_count": 10,
+      "proved": 10,
+      "unresolved": 0,
+      "rejected": 0
+    },
+    "newly_resolved_edge": 8,
+    "relation": "TYPED_MONOLITHIC_BOUNDARY_CLOSURE_EQUIVALENCE"
+  },
+  "feature_validation": {
+    "workflow": "Pass 219 I161 Complete Monolithic Boundary Executor",
+    "run_id": 33823367993,
+    "job_id": 100870667515,
+    "conclusion": "success",
+    "python": "3.11.16",
+    "parse_compile": "success",
+    "semantic_guard_scan": "success",
+    "pytest": {
+      "passed": 7,
+      "failed": 0,
+      "warnings": 1,
+      "duration_seconds": 4.06,
+      "warning": "PytestConfigWarning: Unknown config option: asyncio_mode"
+    },
+    "public_self_test": "success",
+    "benchmark": {
+      "schema": "HHS_PASS219_I161_COMPLETE_MONOLITHIC_BOUNDARY_BENCHMARK_V1",
+      "result": "PASS",
+      "repeats": 12,
+      "timing_clock": "perf_counter_ns",
+      "timing_values_are_integer_nanoseconds": true,
+      "min_ns": 8444385,
+      "median_ns": 8588918,
+      "max_ns": 9752236,
+      "deterministic_execution_receipt": true,
+      "typed_join_count": 10,
+      "typed_join_proved": 10,
+      "host_zero_division_used": false,
+      "host_zero_fourth_power_used": false,
+      "ordinary_scalar_boundary_equality_claimed": false,
+      "floating_point_canonical_authority": false,
+      "execution_receipt_sha256": "09aff788171518d6b3b1d8912e83b51a5141d9b97f0026d2afb78520f06cf2c7",
+      "boundary_witness_sha256": "b9c277fdd0f244de971e37fefc3998974d110a3a21ce2c7f7a09c4d35bc2463e",
+      "benchmark_receipt_sha256": "dae189d75fd55da0820a166cbd393fc7282ee113fbca26b23317bbdfee9f7909"
+    },
+    "artifact": {
+      "artifact_id": 9919049829,
+      "size_bytes": 5064,
+      "zip_sha256": "f3ee51ee9c2a14bb9cd1c38a64e205e7315bde728cbb875cb222403ca8ed485e"
+    }
+  },
+  "registry_validation": {
+    "workflow": "Pass 219 I161 Exact Registry Patch Once",
+    "run_id": 33823668709,
+    "job_id": 100871586359,
+    "conclusion": "success",
+    "registry_commit": "271646906bee20805c96576a2701de22631e42c0",
+    "service_name": "runtime.pass219.complete_monolithic_boundary_executor",
+    "module": "hhs_runtime.pass219.complete_monolithic_boundary_executor",
+    "function": "i161_complete_monolithic_boundary_self_test",
+    "service_type": "pass219_exact_complete_monolithic_boundary_executor",
+    "isolated_registry_wrapper_dispatch": "success",
+    "dispatch_execution_receipt_sha256": "09aff788171518d6b3b1d8912e83b51a5141d9b97f0026d2afb78520f06cf2c7",
+    "proved": 10,
+    "unresolved": 0,
+    "equality_frame": "CLOSURE_EQ",
+    "unrelated_optional_service_dependencies_loaded": false
+  },
+  "superseded_validation_attempts": [
+    {
+      "run_id": 33823202848,
+      "job_id": 100870150801,
+      "status": "invalid_feature_evidence",
+      "reason": "Runner lacked pytest; parse/compile and semantic guards passed, dependency-scoped tests did not execute."
+    },
+    {
+      "run_id": 33823263216,
+      "job_id": 100870338830,
+      "status": "invalid_feature_evidence",
+      "reason": "Direct benchmark script failed to import hhs_runtime and the tee pipeline masked the failure. Superseded by fail-closed workflow head 4e1ec0e1c302c1f6b149d6ae9da3b44d526c45bc with PYTHONPATH=. and pipefail."
+    },
+    {
+      "run_id": 33823394585,
+      "job_id": 100870745004,
+      "status": "invalid_registry_evidence",
+      "reason": "Exact insertion passed, temporary validator referenced nonexistent build_default_registry helper; no registry commit occurred."
+    },
+    {
+      "run_id": 33823504990,
+      "job_id": 100871087819,
+      "status": "invalid_registry_evidence",
+      "reason": "Exact insertion passed, full default-registry construction imported unrelated optional FastAPI-dependent services; no registry commit occurred. Superseded by isolated governed registry validation."
+    }
+  ],
+  "authority_after_i161": {
+    "complete_monolithic_boundary_executor_registered": true,
+    "typed_join_execution_complete": true,
+    "canonical_monolithic_boundary_proof": true,
+    "canonical_monolithic_boundary_proof_scope": "READ_ONLY_TYPED_SYMBOLIC_CLOSURE_EQ",
+    "pass169_terminal_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "next_boundary": "PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION",
+  "fixed_resolution": "72^42=5184^21",
+  "result": "PASS"
+}

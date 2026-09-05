@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_PASS_169_HASH216_IDENTITY_SCHEMA_V1",
+  "type": "object",
+  "required": ["identity_kind", "hash216"],
+  "properties": {
+    "identity_kind": {"enum": ["SOURCE_CORPUS", "TOKEN_STREAM", "CST", "AST", "SYMBOL_TABLE", "TYPE_ENVIRONMENT", "CONSTRAINT_GRAPH", "NORMALIZED_EXPRESSION_SET", "EXACT_VALUE_REGISTRY", "MATRIX_REGISTRY", "MODULAR_DOMAIN_REGISTRY", "P_S_F_STATE", "CANDIDATE_PROOF", "COMMITTED_PROOF", "VM81_PROGRAM", "TRANSITION", "ROLLBACK", "REPAIR", "REVERSE_EXECUTION", "REPLAY_RESULT", "RELEASE_EVIDENCE_SET"]},
+    "hash216": {"type": "string", "minLength": 216, "maxLength": 216},
+    "source_hash216": {"type": ["string", "null"]},
+    "parent_hash216": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

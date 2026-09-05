@@ -1,0 +1,9 @@
+{
+  "schema": "HHS_PASS_169_TYPE_REGISTRY_V1",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "canonical_value_types": ["BIGINT", "NORMALIZED_RATIONAL", "SYMBOLIC_RADICAL", "ALGEBRAIC_NUMBER", "SYMBOLIC_EXPONENTIAL", "EXACT_COMPLEX_PAIR", "EXPLICIT_MODULAR_VALUE", "TYPED_BOUNDARY_STATE", "ORDERED_MATRIX", "ORDERED_TENSOR", "RUNTIME_OBJECT_REFERENCE"],
+  "typed_zero_states": ["SCALAR_ZERO", "RATIONAL_ZERO", "MODULAR_ZERO", "ZERO_DELTA", "CANCELLED_ZERO", "FOLD_ZERO", "PHASE_PIVOT_ZERO", "UNINITIALIZED_ZERO"],
+  "matrix_tensor_types": ["MatrixLiteral", "ListMatrixLiteral", "QuaternionicMatrix", "LoShuMatrix", "FibonacciMatrix", "ElementwiseQuotient", "MatrixProduct", "TensorProduct", "FractalNestedProduct", "ExactMatrixPower", "DiagonalOperator", "ModularMatrixEnvelope"],
+  "boundary_types": ["PIVOT_RECIPROCAL", "COMPLEX_INFINITY_BOUNDARY_CARRIER", "TYPED_CLOSURE_QUOTIENT", "TYPED_FOURTH_PHASE_CLOSURE", "CLOSURE_EQ"],
+  "ieee_canonical_authority": false
+}

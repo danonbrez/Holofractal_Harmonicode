@@ -1,0 +1,269 @@
+name: Pass 219 I162 Pass169 VM81 Exact Symbolic Execution
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i162-pass169-vm81-exact-symbolic-execution
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h'
+      - 'hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c'
+      - 'hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c'
+      - 'hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c'
+      - 'tests/pass219/test_pass219_i162_pass169_vm81_exact_symbolic_execution.c'
+      - 'tools/pass219/pass219_i162_pass169_vm81_exact_symbolic_probe.c'
+      - 'benchmarks/pass219/pass219_i162_pass169_vm81_exact_symbolic_execution_benchmark.py'
+      - 'contracts/pass219/PASS_219_I162_PASS169_VM81_EXACT_SYMBOLIC_EXECUTION_1_0.json'
+      - 'docs/pass219/PASS_219_I162_PASS169_VM81_EXACT_SYMBOLIC_EXECUTION_1_0.md'
+      - 'hhs_runtime/pass219/complete_monolithic_boundary_executor.py'
+      - 'contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode'
+      - '.github/workflows/pass219-i162-pass169-vm81-exact-symbolic-execution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i162:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse contract and benchmark
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I162_PASS169_VM81_EXACT_SYMBOLIC_EXECUTION_1_0.json >/dev/null
+          python -m py_compile benchmarks/pass219/pass219_i162_pass169_vm81_exact_symbolic_execution_benchmark.py
+
+      - name: Enforce canonical authority guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h \
+            hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c \
+            tests/pass219/test_pass219_i162_pass169_vm81_exact_symbolic_execution.c \
+            tools/pass219/pass219_i162_pass169_vm81_exact_symbolic_probe.c
+          grep -F 'compatibility_ab_transport_only' \
+            hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h
+          grep -F 'source_ab_definitionally_p2' \
+            hhs_runtime/include/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.h
+          grep -F 'HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1' \
+            hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c
+          grep -F 'hhs_pass169_verify_combined_gate_authority_i162_1_23' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          grep -F 'hhs_pass169_verify_combined_gate_authority_1_21_11' \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c
+          ! grep -F 'HHS_EXACT_UQCEL_PROFILE_FULL_SYMBOLIC_V1' \
+            hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c
+
+      - name: Verify frozen source identity
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          path = Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode')
+          data = path.read_bytes()
+          assert len(data) == 632
+          assert hashlib.sha256(data).hexdigest() == '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53'
+          offsets = []
+          start = 0
+          while True:
+              index = data.find(b'==', start)
+              if index < 0:
+                  break
+              offsets.append(index)
+              start = index + 2
+          assert offsets == [96, 240, 266, 274, 285]
+          print('I162 frozen source identity and gate offsets: PASS')
+          PY
+
+      - name: Build frozen Pass159 provenance authority
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-i162-build \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-i162-build --parallel 2
+          ctest --test-dir /tmp/pass159-i162-build --output-on-failure
+
+      - name: Compile cumulative exact ABI
+        run: |
+          mkdir -p /tmp/pass219-i162 artifacts/pass219/i162
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i162/exact.o
+
+      - name: Compile and run native I162 conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c \
+            tests/pass219/test_pass219_i162_pass169_vm81_exact_symbolic_execution.c \
+            /tmp/pass219-i162/exact.o \
+            -L/tmp/pass159-i162-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i162-build \
+            -o /tmp/pass219-i162/i162-conformance
+          /tmp/pass219-i162/i162-conformance \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Compile native I162 evidence probe
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c \
+            tools/pass219/pass219_i162_pass169_vm81_exact_symbolic_probe.c \
+            /tmp/pass219-i162/exact.o \
+            -L/tmp/pass159-i162-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i162-build \
+            -o /tmp/pass219-i162/i162-probe
+          /tmp/pass219-i162/i162-probe \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i162/pass169_vm81_exact_symbolic_probe.json
+          python -m json.tool artifacts/pass219/i162/pass169_vm81_exact_symbolic_probe.json >/dev/null
+          cat artifacts/pass219/i162/pass169_vm81_exact_symbolic_probe.json
+
+      - name: Preserve I161 dependency-scoped typed closure
+        run: |
+          pytest -q tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+
+      - name: Run deterministic 12-repeat I162 benchmark
+        shell: bash
+        run: |
+          set -o pipefail
+          python benchmarks/pass219/pass219_i162_pass169_vm81_exact_symbolic_execution_benchmark.py \
+            /tmp/pass219-i162/i162-probe \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode \
+            artifacts/pass219/i162/pass169_vm81_exact_symbolic_benchmark.json \
+            --repeats 12 --enforce | tee /tmp/pass219_i162_benchmark.log
+          test -s artifacts/pass219/i162/pass169_vm81_exact_symbolic_benchmark.json
+          python -m json.tool artifacts/pass219/i162/pass169_vm81_exact_symbolic_benchmark.json >/dev/null
+
+      - name: Enforce I162 closure boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          probe = json.loads(Path(
+              'artifacts/pass219/i162/pass169_vm81_exact_symbolic_probe.json'
+          ).read_text(encoding='utf-8'))
+          benchmark = json.loads(Path(
+              'artifacts/pass219/i162/pass169_vm81_exact_symbolic_benchmark.json'
+          ).read_text(encoding='utf-8'))
+          contract = json.loads(Path(
+              'contracts/pass219/PASS_219_I162_PASS169_VM81_EXACT_SYMBOLIC_EXECUTION_1_0.json'
+          ).read_text(encoding='utf-8'))
+
+          assert probe['result'] == 'PASS'
+          assert probe['edge_proved_mask'] == 1023
+          assert probe['typed_join_count'] == probe['typed_join_proved'] == 10
+          assert probe['gate_true_mask'] == 31
+          assert probe['boolean_gate_count'] == probe['boolean_gates_true'] == 5
+          assert probe['P'] == 30 and probe['p'] == 29 and probe['q'] == 31
+          assert probe['delta'] == 1
+          assert probe['typed_scalar_zero_verified'] is True
+          assert probe['typed_renewed_unit_verified'] is True
+          assert probe['ordinary_scalar_boundary_equality_claimed'] is False
+          assert probe['compatibility_ab_transport_only'] is True
+          assert probe['source_ab_definitionally_p2'] is False
+          assert probe['exact_vm81_admission_verified'] is True
+          assert probe['atomic_commit_verified'] is True
+          assert probe['hash72_receipt_verified'] is True
+          assert probe['hash216_proof_identity_verified'] is True
+          assert probe['deterministic_replay_verified'] is True
+          assert probe['source_reconstruction_verified'] is True
+          assert probe['pass169_authority_verified'] is True
+          assert probe['whole_equation_propagated'] is True
+          assert probe['floating_point_authority'] is False
+          assert probe['hash216_persistence_authority'] is False
+          assert probe['proof_hash216'] != probe['transition_hash216']
+          assert probe['receipt_hash72'] == probe['replay_hash72']
+
+          assert benchmark['result'] == 'PASS'
+          assert benchmark['repeats'] == 12
+          assert benchmark['deterministic_execution_receipt'] is True
+          assert benchmark['typed_join_proved'] == 10
+          assert benchmark['boolean_gates_true'] == 5
+          assert benchmark['pass169_sealed_candidate_authority_verified'] is True
+          assert benchmark['pass169_terminal_contract_verified'] is False
+          assert benchmark['compatibility_ab_transport_only'] is True
+          assert benchmark['source_ab_definitionally_p2'] is False
+          assert benchmark['floating_point_authority'] is False
+          assert benchmark['hash216_persistence_authority'] is False
+          assert all(isinstance(benchmark[name], int) for name in ('min_ns','median_ns','max_ns'))
+
+          assert contract['authority_after_green']['sealed_candidate_canonical_monolithic_proof'] is True
+          assert contract['authority_after_green']['pass169_terminal_contract_verified'] is False
+          assert contract['vm81_transport']['compatibility_A_B_are_source_A_B'] is False
+          assert contract['vm81_transport']['legacy_full_symbolic_profile_promoted'] is False
+          assert contract['fixed_resolution']['identity'] == '72^42=5184^21'
+          assert contract['fixed_resolution']['changed'] is False
+          PY
+
+      - name: Verify historical I155 fallback remains source-compatible
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            hhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \
+            hhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \
+            hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \
+            tests/pass219/test_pass219_i155_production_pass169_provider_residual.c \
+            /tmp/pass219-i162/exact.o \
+            -L/tmp/pass159-i162-build -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-i162-build \
+            -o /tmp/pass219-i162/i155-fallback-conformance
+          /tmp/pass219-i162/i155-fallback-conformance \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
+
+      - name: Publish I162 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 I162 Pass169 VM81 exact symbolic execution
+          - Native source-bound joins: 10/10 VERIFIED
+          - Source Boolean gates: 5/5 TRUE
+          - Typed zero / renewed-unit closure: VERIFIED
+          - Ordinary scalar A=B: NOT CLAIMED
+          - Source A/B definitionally P²: NO
+          - VM81 admission / atomic commit: VERIFIED
+          - Runtime Hash72 receipt: VERIFIED
+          - Hash216 proof/transition identity: VERIFIED
+          - Deterministic replay: VERIFIED
+          - Pass159 source reconstruction lineage: VERIFIED
+          - I121.11 whole equation propagation: VERIFIED
+          - Legacy full-symbolic UQCEL V1 promoted: NO
+          - Pass169 sealed candidate execution: VERIFIED
+          - Pass169 terminal contract: NOT YET CLAIMED
+          - Floating-point authority: NONE
+          - Hash216 persistence authority: NONE
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i162-pass169-vm81-exact-symbolic-execution-${{ github.sha }}
+          path: |
+            artifacts/pass219/i162/pass169_vm81_exact_symbolic_probe.json
+            artifacts/pass219/i162/pass169_vm81_exact_symbolic_benchmark.json
+          if-no-files-found: error
+          retention-days: 90

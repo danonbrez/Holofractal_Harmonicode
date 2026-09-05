@@ -1,0 +1,89 @@
+{
+  "schema": "PASS_219_I145_PASS181_VALIDATION_RECEIPT_INDEX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-iteration145-pass181-graphics-hydration-reconciliation",
+  "frozen_predecessor_i144": "132694cee0af4a43113ddc4c50f867c084a22bae",
+  "historical_pass181": {
+    "repaired_green_head": "3ae56827b27500c2c8187126d5825a901d4feb40",
+    "green_workflow_run_id": 30660886113
+  },
+  "repair_history": [
+    {
+      "workflow_run_id": 33573756064,
+      "head_sha": "4b23bfb431e36eca4b93bbf04baa003689cecf3b",
+      "conclusion": "failure",
+      "classification": "EDIT_FORMAT_DEFECT",
+      "detail": "Literal escaped newline sequence in hhs_graphics_constraint_registry_instance_v1.py prevented Python compilation."
+    },
+    {
+      "workflow_run_id": 33573861582,
+      "head_sha": "0c1e59d5b88836ce521dea639d816d55507da646",
+      "conclusion": "cancelled",
+      "classification": "CHECKPOINT_CONCURRENCY_HANDOFF",
+      "detail": "Compilation passed and runtime suite began; run was cancelled by newer repository-visible checkpoint commits."
+    }
+  ],
+  "validated_checkpoint": {
+    "head_sha": "eab95b341373878e41b8e6ddd9e6b0ef053443d0",
+    "workflow_path": ".github/workflows/pass219-i145-pass181-graphics-hydration.yml",
+    "workflow_run_id": 33573986315,
+    "workflow_run_number": 5,
+    "job_id": 100073857751,
+    "conclusion": "success",
+    "classification": "HHS_PASS181_I145_DEPENDENCY_SCOPED_VALIDATION_VERIFIED"
+  },
+  "validation": {
+    "pass181_runtime_suite": "35 passed, 1 warning",
+    "cumulative_i145_membrane": true,
+    "vm81_authority_repair": true,
+    "public_route_authority_repair": true,
+    "global_canonical_defaults": {
+      "classification": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_ENFORCED",
+      "wired_ceiling": 218,
+      "wired_floor": 181,
+      "binding_count": 40
+    },
+    "multimodal_generalization": "HHS_PASS219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_ENFORCED",
+    "aggregate_exact_c_abi": true,
+    "pass181_c_conformance": true,
+    "pass181_cpp_conformance": true,
+    "global_defaults_c_conformance": true,
+    "global_defaults_cpp_conformance": true
+  },
+  "authority": {
+    "singleton_vm81_authority_remains_inherited": true,
+    "constraint_freeze_requires_vm81_commit": true,
+    "constraint_rollback_requires_vm81_commit": true,
+    "legacy_direct_promotion_disabled": true,
+    "independent_vm81_authority": false,
+    "independent_hash72_authority": false,
+    "hash216_mutation_authority": false,
+    "floating_point_canonical_authority": false,
+    "threejs_final_frame_authority": false
+  },
+  "generated_receipt": {
+    "receipt_hash72": "7)DQne2azpiWVa!5kiEt1<Zum(<0qTTUwZ0c70YamlGgk/)gRZ?WI4U8R4lsONFx359a?(3h",
+    "archive_hash216": "gveTLWrC-l-4kkz7w<4IfzOi(r+qNJLC+0xJG-s+SdJVz!d5?ALsOZhtZZdvZItCtrtRhx1q>zT>pl!GtuqgVbC<IbWxaAd>0+QQ4Rwfy0BFKea850)F+!3r?vtjHUvm)RKbqz3<5IW1<dXZT-i9/Q8zwCffbwv5)WE7scfKhl2?tr?15vTYZB(5hc5/frqLlp!0lW(4+N9ZdW9qxTSKC8aO"
+  },
+  "artifact": {
+    "id": 9825982161,
+    "name": "pass219-i145-pass181-graphics-hydration",
+    "size_bytes": 2004,
+    "sha256": "8df1a1ceeb8908cbad8fcab19e451976b800b7b1e625f319a091b757b25260b0",
+    "expires_at": "2026-10-02T00:09:16Z"
+  },
+  "pass181_closure": {
+    "cumulative_exposure": true,
+    "terminal_pass181_completion": false,
+    "repair_forward_required": true,
+    "remaining_terminal_obligation_count": 3,
+    "remaining_terminal_obligations": [
+      "DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY",
+      "THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY",
+      "FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT"
+    ],
+    "merge_performed": false,
+    "authoritative_main_verification": false,
+    "deployment_performed": false
+  }
+}

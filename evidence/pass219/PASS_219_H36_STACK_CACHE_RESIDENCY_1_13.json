@@ -1,0 +1,286 @@
+{
+  "schema": "HHS_PASS219_H36_STACK_CACHE_RESIDENCY_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_STACK_CACHE_RESIDENCY_1_13",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass219-fourth-hydration-lane-36bit-harmonic-vm-i1",
+  "implementation_head": "030561453896265eaf421e52ff2d6eea7220f511",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33498621593,
+    "job": 99826491387,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796760547,
+    "artifact_sha256": "75c2e1cd18b34a2ac4e022538e0f162117c223474b228287a7a93917793a80a7"
+  },
+  "cache": {
+    "capacity": 8,
+    "resident_entries": 4,
+    "next_sequence": 5,
+    "resident_order": [
+      3734727431,
+      4793332410,
+      21509979554,
+      41886677838
+    ]
+  },
+  "correctness": {
+    "four_simultaneous_entries_valid": true,
+    "all_exact_lookups_equal_fresh": true,
+    "deterministic_receipts": true,
+    "cross_signature_hits_rejected": true,
+    "wrong_semantic_signature_rejected": true,
+    "wrong_vector_key_rejected": true,
+    "unrelated_identity_range_error": true,
+    "duplicate_sequence_rejected": true,
+    "duplicate_identity_tamper_rejected": true,
+    "partial_identity_tamper_rejected": true,
+    "idempotent_store_preserves_count_and_sequence": true
+  },
+  "performance": {
+    "platform": "linux-x86_64",
+    "samples": 11,
+    "rounds_per_sample": 4096,
+    "residents": [
+      {
+        "name": "FULL_MONITOR",
+        "workload_signature36": 3734727431,
+        "fresh_selection_median_ns": 12113425,
+        "occupancy1_lookup_median_ns": 10960862,
+        "occupancy4_lookup_median_ns": 11053798,
+        "occupancy4_vs_fresh_x1000": 1095,
+        "occupancy4_vs_occupancy1_x1000": 1008
+      },
+      {
+        "name": "CONSOLE_FOCUSED",
+        "workload_signature36": 4793332410,
+        "fresh_selection_median_ns": 12141518,
+        "occupancy1_lookup_median_ns": 10971904,
+        "occupancy4_lookup_median_ns": 11045319,
+        "occupancy4_vs_fresh_x1000": 1099,
+        "occupancy4_vs_occupancy1_x1000": 1006
+      },
+      {
+        "name": "BINARY_IO_FOCUSED",
+        "workload_signature36": 21509979554,
+        "fresh_selection_median_ns": 12063477,
+        "occupancy1_lookup_median_ns": 10900578,
+        "occupancy4_lookup_median_ns": 10979166,
+        "occupancy4_vs_fresh_x1000": 1098,
+        "occupancy4_vs_occupancy1_x1000": 1007
+      },
+      {
+        "name": "MONITOR_CONTROL_FOCUSED",
+        "workload_signature36": 41886677838,
+        "fresh_selection_median_ns": 12299801,
+        "occupancy1_lookup_median_ns": 11100418,
+        "occupancy4_lookup_median_ns": 11174963,
+        "occupancy4_vs_fresh_x1000": 1100,
+        "occupancy4_vs_occupancy1_x1000": 1006
+      }
+    ],
+    "all_occupancy4_faster_than_fresh": true,
+    "interpretation": "Occupancy-4 adds a small runner-local lookup overhead versus occupancy-1 but preserves a measured cache advantage over fresh selection for all four validated resident identities. No capacity-8 benefit is inferred."
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_mutation": false,
+    "canonical_hash72": false,
+    "canonical_hash216": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "occupancy4": "GENERALIZE_REQUIRED",
+    "occupancy8": "VALIDATION_REQUIRED",
+    "cross_platform_inference": false
+  },
+  "policy_repeat": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33498840150,
+    "job": 99827186656,
+    "head": "6d63b0867ab212df070a109befcddf6e2f64f2fd",
+    "conclusion": "SUCCESS",
+    "artifact_id": 9796845905,
+    "artifact_sha256": "2b8a5b574d974d23f5ff80577e8d4b0a63eed50217e517254b2c40575e433851",
+    "residents": [
+      {
+        "name": "FULL_MONITOR",
+        "fresh_selection_median_ns": 13834066,
+        "occupancy1_lookup_median_ns": 11899838,
+        "occupancy4_lookup_median_ns": 11858079,
+        "occupancy4_vs_fresh_x1000": 1166,
+        "occupancy4_vs_occupancy1_x1000": 996
+      },
+      {
+        "name": "CONSOLE_FOCUSED",
+        "fresh_selection_median_ns": 13522538,
+        "occupancy1_lookup_median_ns": 11724048,
+        "occupancy4_lookup_median_ns": 11797878,
+        "occupancy4_vs_fresh_x1000": 1146,
+        "occupancy4_vs_occupancy1_x1000": 1006
+      },
+      {
+        "name": "BINARY_IO_FOCUSED",
+        "fresh_selection_median_ns": 13901526,
+        "occupancy1_lookup_median_ns": 11783036,
+        "occupancy4_lookup_median_ns": 11760522,
+        "occupancy4_vs_fresh_x1000": 1182,
+        "occupancy4_vs_occupancy1_x1000": 998
+      },
+      {
+        "name": "MONITOR_CONTROL_FOCUSED",
+        "fresh_selection_median_ns": 13599696,
+        "occupancy1_lookup_median_ns": 11763367,
+        "occupancy4_lookup_median_ns": 11820151,
+        "occupancy4_vs_fresh_x1000": 1150,
+        "occupancy4_vs_occupancy1_x1000": 1004
+      }
+    ],
+    "all_occupancy4_faster_than_fresh": true,
+    "residency_manifest_valid": true
+  },
+  "timing_stability_repair_1_15": {
+    "retained_last_green_capacity8_boundary": {
+      "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+      "run": 33529443931,
+      "job": 99928529597,
+      "conclusion": "SUCCESS",
+      "artifact_id": 9809101393,
+      "artifact_sha256": "511e275087622612e7e30a06841318db4d5dd01ab9010409e915fb50dc5da345"
+    },
+    "triggering_one_shot_regression": {
+      "checkpoint_head": "17a83022f70ad35c90dd826bc20e905d123c9acc",
+      "run": 33529740240,
+      "job": 99929569893,
+      "failing_step": "Measure H36 cache occupancy 1 versus 4",
+      "correctness_green": true,
+      "failing_resident": "BINARY_IO_FOCUSED",
+      "fresh_selection_median_ns": 8792668,
+      "occupancy4_lookup_median_ns": 9620458,
+      "one_shot_cache_benefit": false,
+      "disposition": "REPRODUCE_UNDER_BOUNDED_CALIBRATED_SAMPLING"
+    },
+    "calibrated_reproduction": {
+      "benchmark_head": "ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b",
+      "run": 33532945748,
+      "job": 99940293326,
+      "workflow_conclusion": "FAILURE_OLD_SCHEMA_ASSERTION_AFTER_VALID_BENCHMARK_OUTPUT",
+      "benchmark_output_valid": true,
+      "samples_per_repeat": 11,
+      "rounds_per_sample": 4096,
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "alternating_measurement_order": true,
+      "exact_integer_gate": true,
+      "residents": [
+        {
+          "name": "FULL_MONITOR",
+          "beneficial_repeat_count": 5,
+          "fresh_total_ns": 93965429,
+          "occupancy4_total_ns": 78465490,
+          "ratio_x1000": 1197,
+          "repeat_stability_pass": true
+        },
+        {
+          "name": "CONSOLE_FOCUSED",
+          "beneficial_repeat_count": 5,
+          "fresh_total_ns": 94285237,
+          "occupancy4_total_ns": 78674213,
+          "ratio_x1000": 1198,
+          "repeat_stability_pass": true
+        },
+        {
+          "name": "BINARY_IO_FOCUSED",
+          "beneficial_repeat_count": 5,
+          "fresh_total_ns": 94522057,
+          "occupancy4_total_ns": 78821071,
+          "ratio_x1000": 1199,
+          "repeat_stability_pass": true
+        },
+        {
+          "name": "MONITOR_CONTROL_FOCUSED",
+          "beneficial_repeat_count": 5,
+          "fresh_total_ns": 93898186,
+          "occupancy4_total_ns": 78568511,
+          "ratio_x1000": 1195,
+          "repeat_stability_pass": true
+        }
+      ],
+      "regression_reproduced": false,
+      "classification_change_required": false
+    },
+    "repaired_policy": {
+      "kind": "EXACT_INTEGER_REPEAT_STABILITY",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "aggregate_requirement": "occupancy4_total_ns < fresh_selection_total_ns",
+      "one_shot_boolean_authoritative": false,
+      "classification": "GENERALIZE_REQUIRED"
+    },
+    "sealed_rerun": {
+      "head": "157796f80b9806365de7a8578840560f3716617b",
+      "run": 33533279927,
+      "job": 99941365968,
+      "conclusion": "SUCCESS",
+      "artifact_id": 9810601586,
+      "artifact_sha256": "8c21aa52059cbdee58e2c83571146744c591e48de84416c2bb036ff3d2179c48",
+      "occupancy4_stability": {
+        "gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+        "calibration_repeats": 5,
+        "required_beneficial_repeats": 4,
+        "all_repeat_stability_pass": true,
+        "residents": [
+          {
+            "name": "FULL_MONITOR",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94148016,
+            "occupancy4_total_ns": 78326435,
+            "ratio_x1000": 1201
+          },
+          {
+            "name": "CONSOLE_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94484436,
+            "occupancy4_total_ns": 78993075,
+            "ratio_x1000": 1196
+          },
+          {
+            "name": "BINARY_IO_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 95758652,
+            "occupancy4_total_ns": 78694120,
+            "ratio_x1000": 1216
+          },
+          {
+            "name": "MONITOR_CONTROL_FOCUSED",
+            "beneficial_repeat_count": 5,
+            "fresh_total_ns": 94225272,
+            "occupancy4_total_ns": 78570710,
+            "ratio_x1000": 1199
+          }
+        ]
+      },
+      "capacity8_path": {
+        "benchmark_pass": true,
+        "manifests_pass": true,
+        "integration_proof_pass": true,
+        "artifact_sealed": true,
+        "ninth_store_result": "BUFFER_TOO_SMALL",
+        "all_occupancy8_faster_than_fresh": true,
+        "resident_ratios_x1000": {
+          "FULL_MONITOR": 1197,
+          "CONSOLE_FOCUSED": 1169,
+          "BINARY_IO_FOCUSED": 1198,
+          "MONITOR_CONTROL_FOCUSED": 1194,
+          "APR_PI_INTERRUPT_FOCUSED": 1200,
+          "RIM_BOOTSTRAP_FOCUSED": 1119,
+          "MIXED_CONSOLE_BINARY_IO": 1200,
+          "MIXED_SCHEDULER_IO_UUO": 1187
+        }
+      },
+      "disposition": "NO_RECLASSIFICATION; ONE_SHOT ASSERTION REPLACED BY EXACT_INTEGER_REPEAT_STABILITY"
+    }
+  }
+}

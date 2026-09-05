@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 
 from hhs_backend.runtime.hhs_graphics_constraint_registry_v1 import GraphicsConstraintRegistry
+from hhs_backend.runtime.hhs_graphics_vector_hydration_instance_v1 import GRAPHICS_VECTOR_HYDRATION
 
 _repo_root = Path(__file__).resolve().parents[2]
 _base = Path(
@@ -14,4 +15,7 @@ _base = Path(
     )
 )
 
-GRAPHICS_CONSTRAINT_REGISTRY = GraphicsConstraintRegistry(_base / "constraint_registry")
+GRAPHICS_CONSTRAINT_REGISTRY = GraphicsConstraintRegistry(
+    _base / "constraint_registry",
+    vm81=GRAPHICS_VECTOR_HYDRATION.vm81_authority,
+)

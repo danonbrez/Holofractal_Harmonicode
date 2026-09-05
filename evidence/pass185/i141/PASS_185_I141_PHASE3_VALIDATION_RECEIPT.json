@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE3_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE3_BROWSER_LIFECYCLE_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase2_validated_head": "2b972a66743a505937d5f819c839f5e59dda98b4",
+    "phase3_validated_head": "beff7599dedff2624be712f7a215de5c193e8cbe",
+    "phase3_validated_tree": "b20f7834ff439b3fe8f8e3bae3216da7744918e4",
+    "ahead_of_authoritative_main_base": 71,
+    "behind_authoritative_main_base": 0
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-phase3-browser-lifecycle.yml",
+    "run_id": 33294510153,
+    "job_id": 99211758381,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9727030968,
+      "name": "pass219-i141-pass185-phase3-browser-lifecycle",
+      "size_bytes": 162077,
+      "sha256": "6b02d7c0e5677cc13cf7cb75cb3885714a263fe63af30223ddf6fee4cdc472f9"
+    },
+    "seal": {
+      "schema": "HHS_PASS219_I141_PASS185_PHASE3_VALIDATION_SEAL_V1",
+      "receipt_sha256": "db3e973aaf182bf53675210cb92b541659a5669c9f84ede52cae323e8aa99f95",
+      "evidence_sha256": "5caf404779f382b70735461a2fdd5009bbae579ff5fc883e6abd95af98e5ed1f"
+    },
+    "phases": {
+      "real_browser_lifecycle": "success",
+      "impacted_production_root_regressions": "success",
+      "evidence_seal": "success"
+    }
+  },
+  "verified_behaviors": {
+    "exact_production_entrypoint": "hhs_backend.runtime_os_application_server:app",
+    "production_transport_client": "IntegratedRuntimeClient",
+    "runtime_transport_on_demand": true,
+    "runtime_surface_mount_connects_four_channels": true,
+    "runtime_surface_unmount_releases_all_four_channel_subscriptions": true,
+    "backend_stop_observed_without_frontend_authority_fabrication": true,
+    "automatic_reconnect_after_backend_restart": true,
+    "local_calculator_available_while_backend_down": true,
+    "browser_offline_http_failure_observed": true,
+    "online_recovery_without_duplicate_subscriptions": true,
+    "local_calculator_available_while_browser_offline": true,
+    "repeated_runtime_application_navigation_without_listener_growth": true,
+    "full_reload_returns_to_dormant_then_single_subscription_set": true,
+    "local_storage_unavailable_visible_degraded_state": true,
+    "local_storage_unavailable_in_memory_edit_preview_test_zip": true,
+    "concurrent_browser_contexts_isolated_local_storage": true,
+    "concurrent_context_cross_source_leak": false,
+    "concurrent_context_a_saved_status": "SOURCE_WITNESSED",
+    "concurrent_context_b_saved_status": "SOURCE_WITNESSED",
+    "calculator_acceptance": "CALCULATOR_7_PLUS_8_EQUALS_15"
+  },
+  "authority_boundary": {
+    "frontend_runtime_authority": false,
+    "browser_replacement_authority": false,
+    "canonical_backend_authority_only_through_explicit_commands": true,
+    "hash72_authority_minted_in_browser": false,
+    "vm81_authority_minted_in_browser": false
+  },
+  "repair_forward": {
+    "websocket_error_marks_channel_disconnected_and_uses_deduplicated_reconnect": true,
+    "reconnect_timers_deduplicated_per_channel": true,
+    "local_storage_fault_is_visible_and_nonfatal": true,
+    "production_entrypoint_reconciled_to_bootstrap_main_integrated_runtime_client": true,
+    "unused_runtime_shell_experiments_restored": true,
+    "browser_offline_assertion_scoped_to_portable_http_and_recovery_behavior": true,
+    "evidence_json_newline_serialization_repaired": true
+  },
+  "source_blobs": {
+    "hhs_gui/main.tsx": "9e627c5532719fc97749a2318734f377311d9524",
+    "hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx": "1d3a431c6026f0ead6e6415250483439c7afa07e",
+    "hhs_gui/runtime_os/core/IntegratedRuntimeClient.ts": "aacaeecb24ad174071417fd9af92f44494fe031d",
+    "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx": "86a034e5972652d49e80cabfbc6891a6a3f370e9",
+    "hhs_gui/runtime_os/core/RuntimeSocketManager.ts": "29fdd70541f5f0fbd9dd489b035fb7b0772ce87c",
+    "hhs_gui/runtime_os/workspace/Pass185ApplicationLifecyclePanel.tsx": "f87968d0e891c36c3fa1de2509eb3ca6842263e3",
+    "hhs_verification/pass185/phase3_browser_lifecycle_acceptance.py": "7a8152beac164167377efba9e37030b2d0395f99",
+    "docs/pass185/HHS_PASS_185_I141_PHASE3_BROWSER_LIFECYCLE_ACCEPTANCE.md": "9e2011572d2a3d78ac5f7f75e85361115708106a"
+  },
+  "remaining_terminal_scope": [
+    "multimodal document/text workflow",
+    "calculator/general application workflow expansion where required",
+    "2D game workflow",
+    "image/graphics workflow",
+    "audio workflow",
+    "video/audiovisual workflow",
+    "performance and starvation CPU/memory/IO/latency gates",
+    "remaining Pass-185 negative matrix",
+    "cumulative Pass-185 closure receipt",
+    "authoritative-main verification",
+    "external deployment replay"
+  ]
+}

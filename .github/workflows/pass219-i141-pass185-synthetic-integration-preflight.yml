@@ -1,0 +1,275 @@
+name: Pass 219 I141 Pass 185 Synthetic Integration Preflight
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration141-pass185-production-browser-closure-reconciliation
+    paths:
+      - '.github/workflows/pass219-i141-pass185-synthetic-integration-preflight.yml'
+      - 'docs/pass185/HHS_PASS_185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i141-pass185-synthetic-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-integration-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      HHS_EXPECTED_MAIN: 'e8ecb02cc2fc823d0ffb49fa2e6d765a2cc73191'
+      HHS_HISTORICAL_BASE: 'f8aa3337ee023c7d828343eac208987c20a05e67'
+      HHS_PASS185_EVIDENCE: '/tmp/pass185-synthetic-integration'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      PLAYWRIGHT_BROWSERS_PATH: '/tmp/pass185-playwright-browsers'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Synthesize current-main plus Pass-185 without updating refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HHS_PASS185_EVIDENCE"
+          BRANCH_HEAD="$(git rev-parse HEAD)"
+          BRANCH_TREE="$(git rev-parse HEAD^{tree})"
+          git fetch origin main --no-tags
+          MAIN_HEAD="$(git rev-parse origin/main)"
+          if [ "$MAIN_HEAD" != "$HHS_EXPECTED_MAIN" ]; then
+            echo "AUTHORITATIVE_MAIN_MOVED expected=$HHS_EXPECTED_MAIN actual=$MAIN_HEAD" >&2
+            exit 42
+          fi
+          MERGE_BASE="$(git merge-base origin/main HEAD)"
+          test "$MERGE_BASE" = "$HHS_HISTORICAL_BASE"
+          BRANCH_PATHS="$(mktemp)"
+          MAIN_PATHS="$(mktemp)"
+          OVERLAP="$(mktemp)"
+          git diff --name-only "$HHS_HISTORICAL_BASE..$BRANCH_HEAD" | sort -u > "$BRANCH_PATHS"
+          git diff --name-only "$HHS_HISTORICAL_BASE..$MAIN_HEAD" | sort -u > "$MAIN_PATHS"
+          comm -12 "$BRANCH_PATHS" "$MAIN_PATHS" > "$OVERLAP"
+          test ! -s "$OVERLAP"
+          MERGED_TREE="$(git merge-tree --write-tree "$MAIN_HEAD" "$BRANCH_HEAD")"
+          git config user.name hhs-synthetic-validation
+          git config user.email hhs-synthetic-validation@users.noreply.github.com
+          SYNTHETIC_COMMIT="$(printf '%s\n' 'Pass 185 synthetic integration preflight' | git commit-tree "$MERGED_TREE" -p "$MAIN_HEAD" -p "$BRANCH_HEAD")"
+          printf '%s\n' "$BRANCH_HEAD" > "$HHS_PASS185_EVIDENCE/branch-head.txt"
+          printf '%s\n' "$BRANCH_TREE" > "$HHS_PASS185_EVIDENCE/branch-tree.txt"
+          printf '%s\n' "$MAIN_HEAD" > "$HHS_PASS185_EVIDENCE/main-head.txt"
+          printf '%s\n' "$MERGE_BASE" > "$HHS_PASS185_EVIDENCE/merge-base.txt"
+          printf '%s\n' "$MERGED_TREE" > "$HHS_PASS185_EVIDENCE/synthetic-tree.txt"
+          printf '%s\n' "$SYNTHETIC_COMMIT" > "$HHS_PASS185_EVIDENCE/synthetic-commit.txt"
+          cp "$BRANCH_PATHS" "$HHS_PASS185_EVIDENCE/branch-paths.txt"
+          cp "$MAIN_PATHS" "$HHS_PASS185_EVIDENCE/main-paths.txt"
+          cp "$OVERLAP" "$HHS_PASS185_EVIDENCE/overlap-paths.txt"
+          git checkout --detach "$SYNTHETIC_COMMIT"
+          test "$(git rev-parse HEAD^{tree})" = "$MERGED_TREE"
+          git merge-base --is-ancestor "$MAIN_HEAD" HEAD
+          git merge-base --is-ancestor "$BRANCH_HEAD" HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped runtime packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            requests pytest playwright
+
+      - name: Compile inherited native authority
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum hhs_runtime/builds/libhhs_runtime.so \
+            | tee "$HHS_PASS185_EVIDENCE/c-runtime.sha256"
+
+      - name: Validate current-main global defaults
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_multimodal_optimization_generalization.py
+          pytest -q tests/test_core_sandbox_hash72_delegation.py
+
+      - name: Compile exact ABI and policy conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass185-synthetic-abi
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass185-synthetic-abi/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass186_x64_vm81_q144/include \
+            -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c \
+            -o /tmp/pass185-synthetic-abi/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S \
+            -o /tmp/pass185-synthetic-abi/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_canonical_defaults_1_0.c \
+            /tmp/pass185-synthetic-abi/exact.o \
+            /tmp/pass185-synthetic-abi/pass186.o \
+            /tmp/pass185-synthetic-abi/registers.o \
+            -o /tmp/pass185-synthetic-abi/global-defaults-c
+          /tmp/pass185-synthetic-abi/global-defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp \
+            /tmp/pass185-synthetic-abi/exact.o \
+            /tmp/pass185-synthetic-abi/pass186.o \
+            /tmp/pass185-synthetic-abi/registers.o \
+            -o /tmp/pass185-synthetic-abi/global-defaults-cpp
+          /tmp/pass185-synthetic-abi/global-defaults-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.c \
+            /tmp/pass185-synthetic-abi/exact.o \
+            /tmp/pass185-synthetic-abi/pass186.o \
+            /tmp/pass185-synthetic-abi/registers.o \
+            -o /tmp/pass185-synthetic-abi/multimodal-c
+          /tmp/pass185-synthetic-abi/multimodal-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.cpp \
+            /tmp/pass185-synthetic-abi/exact.o \
+            /tmp/pass185-synthetic-abi/pass186.o \
+            /tmp/pass185-synthetic-abi/registers.o \
+            -o /tmp/pass185-synthetic-abi/multimodal-cpp
+          /tmp/pass185-synthetic-abi/multimodal-cpp
+
+      - name: Validate combined singleton authority boundary
+        run: |
+          timeout 480s pytest -q \
+            tests/test_hhs_cumulative_execution_authority_v1.py \
+            tests/test_hhs_hash72_kernel_surface_unification_v1.py \
+            tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py \
+            tests/test_runtime_os_production_root.py
+
+      - name: Typecheck and build combined Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Run combined exact-production cumulative browser closure
+        run: |
+          mkdir -p "$HHS_PASS185_EVIDENCE/cumulative"
+          timeout 1200s python -m \
+            hhs_verification.pass185.cumulative_local_closure_acceptance \
+            --evidence-dir "$HHS_PASS185_EVIDENCE/cumulative"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(
+              Path('/tmp/pass185-synthetic-integration/cumulative/cumulative-local-closure.json').read_text()
+          )
+          assert value['ok'] is True
+          assert value['classification'] == 'HHS_PASS_185_CUMULATIVE_PHASE1_PHASE7_LOCAL_CLOSURE_VERIFIED'
+          assert value['local_unresolved_contract_rows'] == []
+          assert value['local_waivers'] == []
+          assert value['browser']['boot']['state'] in {'INTERACTIVE', 'DEGRADED_INTERACTIVE'}
+          assert value['browser']['page_errors'] == []
+          assert value['browser']['console_errors'] == []
+          assert value['browser']['mobile_touch'] is True
+          assert value['browser']['desktop_pointer_keyboard'] is True
+          PY
+
+      - name: Seal synthetic integration evidence
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+          from hhs_runtime.pass150.genome import Hash216Genome
+          from hhs_runtime.pass166.common import ZERO_HASH216
+
+          root = Path('/tmp/pass185-synthetic-integration')
+          cumulative = json.loads(
+              (root / 'cumulative' / 'cumulative-local-closure.json').read_text()
+          )
+          payload = {
+              'schema': 'HHS_PASS185_I141_SYNTHETIC_INTEGRATION_PREFLIGHT_SEAL_V1',
+              'classification': 'HHS_PASS_185_I141_SYNTHETIC_CURRENT_MAIN_COMBINED_COMPOSITION_VERIFIED',
+              'branch_head': (root / 'branch-head.txt').read_text().strip(),
+              'branch_tree': (root / 'branch-tree.txt').read_text().strip(),
+              'main_head': (root / 'main-head.txt').read_text().strip(),
+              'merge_base': (root / 'merge-base.txt').read_text().strip(),
+              'synthetic_commit': (root / 'synthetic-commit.txt').read_text().strip(),
+              'synthetic_tree': (root / 'synthetic-tree.txt').read_text().strip(),
+              'changed_path_overlap': [
+                  line for line in (root / 'overlap-paths.txt').read_text().splitlines()
+                  if line
+              ],
+              'cumulative_local_evidence_sha256': cumulative['evidence_sha256'],
+              'playwright_trace_sha256': cumulative['browser']['trace']['sha256'],
+              'browser_state': cumulative['browser']['boot']['state'],
+              'page_errors': cumulative['browser']['page_errors'],
+              'console_errors': cumulative['browser']['console_errors'],
+              'local_unresolved_contract_rows': cumulative['local_unresolved_contract_rows'],
+              'local_waivers': cumulative['local_waivers'],
+              'main_global_defaults_preserved': True,
+              'main_multimodal_generalization_preserved': True,
+              'main_hash72_delegation_preserved': True,
+              'main_exact_abi_preserved': True,
+              'pass185_cumulative_closure_preserved': True,
+              'remote_merge_performed': False,
+              'remote_rebase_performed': False,
+              'deployment_performed': False,
+              'authoritative_main_verified': False,
+              'external_deployment_verified': False,
+              'terminal_pass185_completion_claimed': False,
+          }
+          encoded = json.dumps(
+              payload, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['completion_receipt_hash72'] = hash72_digest(
+              {'domain': 'HHS-PASS185-I141-SYNTHETIC-INTEGRATION-PREFLIGHT-V1'},
+              encoded,
+          )
+          payload['evidence_set_hash216'] = Hash216Genome.root(
+              Hash216Genome.positions(
+                  encoded,
+                  previous_root=ZERO_HASH216,
+                  sequence=9,
+              )
+          )
+          seal_bytes = json.dumps(
+              payload, sort_keys=True, separators=(',', ':')
+          ).encode()
+          payload['seal_sha256'] = hashlib.sha256(seal_bytes).hexdigest()
+          (root / 'synthetic-integration-preflight-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i141-pass185-synthetic-integration-preflight
+          path: /tmp/pass185-synthetic-integration/**
+          if-no-files-found: warn
+          retention-days: 30

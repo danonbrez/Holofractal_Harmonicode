@@ -1,0 +1,15 @@
+{
+  "covered": [
+    "zero denominator role",
+    "stale prior state root",
+    "floating point public ingress",
+    "invalid parameter id",
+    "invalid candidate id",
+    "receipt mismatch fail-closed",
+    "cross-architecture divergence comparison",
+    "duplicate address exhaustive detection"
+  ],
+  "fallback_success": false,
+  "result": "PASS",
+  "schema": "HHS_PASS168_NEGATIVE_TEST_MATRIX_V1"
+}

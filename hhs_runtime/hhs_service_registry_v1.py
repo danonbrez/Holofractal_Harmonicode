@@ -4064,6 +4064,40 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
 
 
     registry.register_function(
+        name="runtime.harmonic36_knowledge_graph_bridge.pass219",
+        module="hhs_runtime.hhs_pass219_harmonic36_knowledge_graph_bridge_v1",
+        function="pass219_harmonic36_knowledge_graph_self_test",
+        service_type="canonical_h36_pass128_relation_evidence_bridge",
+        description="Projects exact Harmonic36 VM81/Hash72/Hash216 directional, phase, and harmonic relation evidence into the existing immutable Pass 128 knowledge graph without creating execution, mutation, cache, graph, or persistence authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_HARMONIC36_KNOWLEDGE_EVIDENCE_V1","HHS_PASS219_HARMONIC36_PASS128_EDGE_BINDING_V1","HHS_CANONICAL_KNOWLEDGE_EDGE_V1"],
+        witness_schemas=["HHS_EXACT_PASS219_H36_KNOWLEDGE_EVIDENCE_V1","HHS_CANONICAL_KNOWLEDGE_NODE_V1","HHS_HASH72_KERNEL_WITNESS_V1"],
+        validators=["Harmonic36KnowledgeGraphBridge.evidence_record","Harmonic36KnowledgeGraphBridge.verify_evidence","Harmonic36KnowledgeGraphBridge.relate","Harmonic36KnowledgeGraphBridge.verify_binding","CanonicalKnowledgeGraphEngine.verify_edge","pass219_harmonic36_knowledge_graph_self_test"],
+        guards=["h36_factorization_identity","hash216_directional_identity","exact_confidence_fraction","pass128_supported_relation_only","evidence_root_required","knowledge_graph_projection_only","execution_authority_prohibited","mutation_authority_prohibited","canonical_persistence_authority_prohibited","zero_bypass_runtime_interposer"],
+        rejection_codes=["H36_KG_INVALID_EVIDENCE","H36_KG_UNSUPPORTED_RELATION","H36_KG_AUTHORITY_ESCALATION","H36_KG_ROOT_MISMATCH"],
+        mutation_policy="IMMUTABLE_H36_RELATION_EVIDENCE_ONLY_NO_VM81_GRAPH_OR_RUNTIME_MUTATION",
+        persistence_policy="EXISTING_PASS128_HASH72_GRAPH_RECEIPT_PATH_ONLY_NO_PARALLEL_GRAPH_STORE",
+        boundedness_policy="H36_5184_ADDRESS_216_OCCURRENCE_64_RULE_EXACT_RELATION_BOUNDS",
+    )
+
+    registry.register_function(
+        name="runtime.harmonic36_composition_graph_bridge.pass219",
+        module="hhs_runtime.hhs_pass219_harmonic36_composition_graph_bridge_v1",
+        function="pass219_harmonic36_composition_graph_self_test",
+        service_type="canonical_h36_composition_pass128_evidence_bridge",
+        description="Projects exact Harmonic36 inversion, voicing, cadence, modulation, tendency-resolution, and deterministic progression evidence through the existing H36/Pass128 graph path without creating execution, mutation, cache, graph, or persistence authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_HARMONIC36_COMPOSITION_EVIDENCE_V1","HHS_PASS219_HARMONIC36_COMPOSITION_PASS128_BINDING_V1","HHS_PASS219_HARMONIC36_KNOWLEDGE_EVIDENCE_V1","HHS_CANONICAL_KNOWLEDGE_EDGE_V1"],
+        witness_schemas=["HHS_EXACT_PASS219_H36_COMPOSITION_TRANSITION_V1","HHS_EXACT_PASS219_H36_COMPOSITION_CANDIDATE_V1","HHS_CANONICAL_KNOWLEDGE_NODE_V1","HHS_HASH72_KERNEL_WITNESS_V1"],
+        validators=["Harmonic36CompositionGraphBridge.evidence_record","Harmonic36CompositionGraphBridge.verify_evidence","Harmonic36CompositionGraphBridge.relate","Harmonic36CompositionGraphBridge.verify_binding","Harmonic36KnowledgeGraphBridge.verify_binding","CanonicalKnowledgeGraphEngine.verify_edge","pass219_harmonic36_composition_graph_self_test"],
+        guards=["fixed_operation64_preserved","four_voice_ordered_state","exact_integer_voice_leading","grammar_first_candidate_ranking","hash216_directional_identity","composition_evidence_root_required","pass128_existing_edge_only","execution_authority_prohibited","mutation_authority_prohibited","canonical_persistence_authority_prohibited","zero_bypass_runtime_interposer"],
+        rejection_codes=["H36_COMPOSITION_GRAPH_INVALID_EVIDENCE","H36_COMPOSITION_GRAPH_AUTHORITY_ESCALATION","H36_COMPOSITION_GRAPH_ROOT_MISMATCH"],
+        mutation_policy="IMMUTABLE_H36_COMPOSITION_EVIDENCE_ONLY_NO_VM81_GRAPH_OR_RUNTIME_MUTATION",
+        persistence_policy="EXISTING_PASS128_HASH72_GRAPH_RECEIPT_PATH_ONLY_NO_PARALLEL_COMPOSITION_GRAPH_STORE",
+        boundedness_policy="FIXED_64_OPERATION_BASIS_FOUR_VOICE_INTEGER_COMPOSITION_STATE",
+    )
+
+    registry.register_function(
         name="runtime.default_delta_constraint_envelope.pass130",
         module="hhs_runtime.hhs_pass130_default_delta_constraint_envelope_v1",
         function="pass130_self_test",
@@ -4112,6 +4146,91 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         mutation_policy="READ_ONLY_EVIDENCE_REPLAY_NO_HISTORICAL_EVIDENCE_MUTATION",
         persistence_policy="PRESERVE_PASS132_RELEASE_EVIDENCE_AND_RECONSTRUCTION_RECEIPTS",
         boundedness_policy="EXACTLY_18_COMMITTED_PASS132_WORKLOADS",
+    )
+
+    registry.register_function(
+        name="runtime.pass219.candidate_bound_typed_full_symbolic_values",
+        module="hhs_runtime.pass219.typed_full_symbolic_candidate_values",
+        function="candidate_bound_full_symbolic_value_producer_self_test",
+        service_type="pass219_exact_typed_candidate_value_producer",
+        description="Produces the fifteen frozen Pass 219 monolithic source terms as one Pass159- and local-P-bound typed value graph while preserving modular, tensor, ordered-phase, symbolic-root, and boundary domains without scalar coercion or canonical mutation authority.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1","HHS_PASS219_I157_CANDIDATE_SYMBOL_ENVIRONMENT_V1","HHS_PASS219_I157_PASS159_PROVENANCE_BINDING_V1"],
+        witness_schemas=["HHS_PASS219_I153_LOCAL_HASH216_5184_P_SNAPSHOT_V1","HHS_PASS219_I121_10_PASS159_GLOBAL_WITNESS_PROVENANCE_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1"],
+        validators=["verify_frozen_source_identity","normalize_pass159_provenance","produce_candidate_bound_value_graph","candidate_bound_full_symbolic_value_producer_self_test"],
+        guards=["frozen_monolithic_source_identity","local_P_snapshot_binding","pass159_source_to_vmir_provenance","typed_domain_preservation","modular_pivot_no_scalar_remainder_coercion","A_B_complete_boundary_semantics","ordered_xy_yx_noncommutativity","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["SOURCE_IDENTITY_DRIFT","CANDIDATE_P_SNAPSHOT_DRIFT","PASS159_PROVENANCE_INCOMPLETE","VALUE_DOMAIN_UNREGISTERED","ORDERED_PHASE_NONCOMMUTATIVITY_COLLAPSED","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_TYPED_VALUE_GRAPH_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_GRAPH_IDENTITY_ONLY",
+        boundedness_policy="FIFTEEN_FROZEN_SOURCE_TERMS_TEN_ORDERED_JOINS_ONE_CANDIDATE_TRANSACTION",
+    )
+
+    registry.register_function(
+        name="runtime.pass219.typed_domain_join_execution",
+        module="hhs_runtime.pass219.typed_domain_join_executor",
+        function="typed_domain_join_executor_self_test",
+        service_type="pass219_exact_typed_domain_projection_executor",
+        description="Audits the remaining I157 typed-domain joins without inferring semantics from familiar glyphs: conventional rational-to-modular projection is retained as a nonauthoritative diagnostic counterexample while both Harmonicode modular pivots and the AB/boundary/phase-exponent obligations remain fail-closed.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I158_TYPED_DOMAIN_JOIN_EXECUTION_V1","HHS_PASS219_I158_RATIONAL_TO_MODULAR_PROJECTION_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
+        witness_schemas=["HHS_PASS219_I158_RATIONAL_TO_MODULAR_PROJECTION_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1","HHS_PASS219_I153_LOCAL_HASH216_5184_P_SNAPSHOT_V1"],
+        validators=["project_rational_to_modular","execute_typed_domain_joins","typed_domain_join_executor_self_test"],
+        guards=["i157_graph_sha256_binding","i157_join_topology_binding","conventional_rational_modular_projection_diagnostic_only","harmonicode_Mod_requires_typed_registry","denominator_invertibility","no_reverse_inference","no_scalar_remainder_identity","formal_evaluation_protocol_binding","pass191_x_squared_blocker_binding","pass169_boundary_execution_requirement","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["I157_GRAPH_SHA256_MISMATCH","MODULAR_STATE_ENCODING_INVALID","MODULAR_SCALARIZATION_FORBIDDEN","EXACT_TYPED_MODULAR_CLASS_MISMATCH","PASS191_X_SQUARED_BINDING_CHANGED_REAUDIT_REQUIRED","I157_UPSTREAM_AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_TYPED_DOMAIN_EXECUTION_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_ZERO_NEW_AUTHORIZED_PIVOTS_FIVE_EXPLICIT_TYPED_SEMANTIC_BLOCKERS",
+    )
+
+    registry.register_function(
+        name="runtime.pass219.harmonicode_modular_pivot_phase_binding",
+        module="hhs_runtime.pass219.harmonicode_modular_pivot_phase_binding",
+        function="i159_modular_pivot_self_test",
+        service_type="pass219_exact_harmonicode_modular_pivot_phase_binding",
+        description="Executes the two frozen P^2(MOD)(pq) joins through the inherited Pass157 HHS_MODULAR_NORMALIZATION phase profile, retaining exact quotient and residue witnesses and typed closure/renewed-unit relations without scalar equality, residue-only authority, or canonical mutation.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_V1","HHS_PASS219_I159_MODULAR_NORMALIZATION_PROFILE_V1","HHS_PASS219_I159_EXACT_PHASE_LANE_V1","HHS_PASS219_I159_TYPED_MODULAR_PIVOT_WITNESS_V1"],
+        witness_schemas=["HHS_PASS_157_TYPED_MEMBRANE_V2","HHS_PASS219_I159_EXACT_PHASE_LANE_V1","HHS_PASS219_I159_TYPED_MODULAR_PIVOT_WITNESS_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
+        validators=["verify_pass157_modular_normalization_profile","build_phase_lane","prove_p_fold_closure_to_renewed_unit","prove_renewed_unit_phase_class_join","execute_i159_modular_pivot_phase_bindings","i159_modular_pivot_self_test"],
+        guards=["pass157_hhs_modular_normalization_node_binding","pass157_full_quotient_residue_identity","residue_only_authority_forbidden","typed_closure_residue_to_renewed_unit","candidate_m2_minus_m_binding","same_residue_not_sufficient","ordinary_scalar_identity_forbidden","scalar_zero_one_noncollapse","i157_graph_sha256_binding","no_conventional_mod_projection_authority","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["INHERITED_MODULAR_PROFILE_DRIFT","PHASE_MODULUS_POSITIVE_REQUIRED","PASS157_PHASE_DECOMPOSITION_MISMATCH","P_FOLD_CLOSURE_TO_RENEWED_UNIT_CONSTRAINT_MISMATCH","RENEWED_UNIT_PHASE_CLASS_CONSTRAINT_MISMATCH","P2_MOD_PQ_SOURCE_OPERATOR_DRIFT","P2_MOD_PQ_SCALARIZATION_FORBIDDEN","I157_GRAPH_SHA256_MISMATCH"],
+        mutation_policy="READ_ONLY_TYPED_MODULAR_PHASE_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_PHASE_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_TWO_I159_MODULAR_PIVOT_ADAPTERS_THREE_REMAINING_BOUNDARY_BLOCKERS",
+    )
+
+    registry.register_function(
+        name="runtime.pass219.source_bound_ab_x2_phase_binding",
+        module="hhs_runtime.pass219.source_bound_ab_x2_phase_binding",
+        function="i160_source_bound_binding_self_test",
+        service_type="pass219_exact_source_bound_ab_x2_phase_binding",
+        description="Executes the frozen I160 source-bound P^4=AB product membrane and Pass191 ordered x^2 phase-basis exponent adapter, retaining exact dyadic/quartic witness metadata while leaving the complete monolithic boundary executor fail-closed and forbidding scalar-zero authority escalation.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_CONTRACT_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1","HHS_PASS219_I159_HARMONICODE_MODULAR_PIVOT_PHASE_BINDING_V1"],
+        witness_schemas=["HHS_PASS219_I160_SOURCE_BOUND_AB_PRODUCT_WITNESS_V1","HHS_PASS219_I160_PASS191_ORDERED_PHASE_EXPONENT_WITNESS_V1","HHS_PASS219_I160_BOUNDARY_ZERO_AUDIT_V1","HHS_PASS219_I157_TYPED_CONSTRAINT_JOIN_V1"],
+        validators=["build_source_bound_ab_product_witness","build_pass191_ordered_phase_exponent_witness","audit_complete_boundary_zero_projection","execute_i160_source_bound_bindings","i160_source_bound_binding_self_test"],
+        guards=["source_bound_P4_AB_product_membrane","complete_A_B_not_definitionally_P2","Pass191_ordered_phase_basis_exponent","Pass191_dyadic_coordinate_retained","ordinary_x_squared_forbidden","right_scalar_zero_not_boundary_authority","complete_monolithic_boundary_executor_still_required","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["I159_GRAPH_SHA256_MISMATCH","SOURCE_BOUND_P4_PRODUCT_MISMATCH","COMPLETE_BOUNDARY_SCALARIZATION_FORBIDDEN","PASS191_ORDERED_PHASE_BINDING_MISMATCH","ORDINARY_X_SQUARED_FORBIDDEN","BOUNDARY_ZERO_AUTHORITY_ESCALATION_FORBIDDEN","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_SOURCE_BOUND_TYPED_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_TWO_I160_SOURCE_BOUND_BINDINGS_ONE_REMAINING_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR",
+    )
+
+    registry.register_function(
+        name="runtime.pass219.complete_monolithic_boundary_executor",
+        module="hhs_runtime.pass219.complete_monolithic_boundary_executor",
+        function="i161_complete_monolithic_boundary_self_test",
+        service_type="pass219_exact_complete_monolithic_boundary_executor",
+        description="Executes the I161 complete monolithic boundary as typed CLOSURE_EQ over exact scalar-zero phase and renewed-unit closure witnesses. Host 0/0, host scalar 0^4, ordinary scalar A=B, float authority, VM81 mutation, Hash72 mint, and Hash216 persistence remain forbidden; downstream Pass169 VM81 exact symbolic execution remains a separate gate.",
+        invariant_ids=["HHS-I001","HHS-I002","HHS-I003","HHS-I005","HHS-I006","HHS-I008","HHS-I009","HHS-I010","HHS-I011","HHS-I012","HHS-I013","HHS-I014","HHS-I015"],
+        contract_schemas=["HHS_PASS219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_CONTRACT_V1","HHS_PASS219_I160_SOURCE_BOUND_AB_X2_PHASE_BINDING_CONTRACT_V1","HHS_PASS219_I157_CANDIDATE_BOUND_TYPED_VALUE_GRAPH_V1"],
+        witness_schemas=["HHS_PASS219_I161_TYPED_ZERO_RENEWED_UNIT_PROFILE_V1","HHS_PASS219_I161_SCALAR_ZERO_PHASE_WITNESS_V1","HHS_PASS219_I161_RENEWED_UNIT_CLOSURE_WITNESS_V1","HHS_PASS219_I161_TYPED_MONOLITHIC_BOUNDARY_WITNESS_V1"],
+        validators=["verify_i161_typed_zero_renewed_unit_profile","prove_scalar_zero_phase_relation","prove_renewed_unit_closure_relation","prove_complete_monolithic_boundary","execute_i161_complete_monolithic_boundary","i161_complete_monolithic_boundary_self_test"],
+        guards=["inherited_pass62_typed_equality_frames","inherited_pass129_a2_and_delta_idempotent_closure","scalar_zero_xyzw_I_I3_projection","typed_xy_over_zw_closure_quotient_no_0_over_0","typed_zero_fourth_phase_closure_no_host_pow","scalar_zero_one_noncollapse","source_boundary_structure_preserved","right_scalar_zero_diagnostic_only","closure_eq_not_scalar_equality","all_nine_non_boundary_joins_proved","no_float_canonical_authority","no_vm81_mutation_authority","no_hash72_mint_authority","no_hash216_persistence_authority","zero_bypass_runtime_interposer"],
+        rejection_codes=["FLOAT_CANONICAL_AUTHORITY_FORBIDDEN","HOST_ZERO_DIVISION_FORBIDDEN","HOST_ZERO_FOURTH_POWER_FORBIDDEN","ORDINARY_SCALAR_BOUNDARY_EQUALITY_FORBIDDEN","I160_EXPECTED_9_1_0_BOUNDARY","EDGE8_FAIL_CLOSED_BOUNDARY_REQUIRED","RIGHT_CLOSURE_NUMERATOR_ZERO_REQUIRED","ALL_NON_BOUNDARY_JOINS_MUST_BE_PROVED","AUTHORITY_ESCALATION"],
+        mutation_policy="READ_ONLY_TYPED_CLOSURE_EQ_PROOF_NO_VM81_OR_CANONICAL_STATE_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE_DIAGNOSTIC_SHA256_WITNESSES_ONLY",
+        boundedness_policy="TEN_FROZEN_JOINS_ALL_RESOLVED_NEXT_GATE_PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION",
     )
 
     return registry

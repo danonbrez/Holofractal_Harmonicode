@@ -1,0 +1,99 @@
+{
+  "canonical_gateway": "hhs_backend.public_api_server",
+  "route_count": 18,
+  "router": "hhs_backend.pass168_parameter_circuit_routes",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/candidates/{candidate_id}",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/comparators/{comparator_id}",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/dependencies/{parameter_id}",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/map",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/matrices/lower",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/matrices/upper",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/parameters",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/parameters/{parameter_id}",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/source",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/threads",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/transitions/{transition_id}",
+      "served": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/parameter-circuit/transitions/{transition_id}/receipt",
+      "served": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/parameter-circuit/candidates",
+      "served": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/parameter-circuit/candidates/{candidate_id}/commit",
+      "served": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/parameter-circuit/candidates/{candidate_id}/validate",
+      "served": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/parameter-circuit/transitions/{transition_id}/replay",
+      "served": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/parameter-circuit/transitions/{transition_id}/rollback",
+      "served": true
+    }
+  ],
+  "schema": "HHS_PASS168_API_SCHEMA_V1",
+  "second_fastapi_app_created": false
+}

@@ -1,0 +1,87 @@
+name: Pass 219 I161 Complete Monolithic Boundary Executor
+
+on:
+  push:
+    branches:
+      - agent/pass219-i161-complete-monolithic-boundary-executor
+    paths:
+      - hhs_runtime/pass219/complete_monolithic_boundary_executor.py
+      - tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+      - benchmarks/pass219/pass219_i161_complete_monolithic_boundary_executor_benchmark.py
+      - contracts/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.json
+      - docs/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.md
+      - .github/workflows/pass219-i161-complete-monolithic-boundary-executor.yml
+  pull_request:
+    paths:
+      - hhs_runtime/pass219/complete_monolithic_boundary_executor.py
+      - tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+      - benchmarks/pass219/pass219_i161_complete_monolithic_boundary_executor_benchmark.py
+      - contracts/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.json
+      - docs/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.md
+      - hhs_runtime/hhs_service_registry_v1.py
+      - .github/workflows/pass219-i161-complete-monolithic-boundary-executor.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i161:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Parse and compile
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I161_COMPLETE_MONOLITHIC_BOUNDARY_EXECUTOR_1_0.json >/dev/null
+          python -m py_compile \
+            hhs_runtime/pass219/complete_monolithic_boundary_executor.py \
+            tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py \
+            benchmarks/pass219/pass219_i161_complete_monolithic_boundary_executor_benchmark.py
+      - name: Enforce no host zero division or scalar zero fourth-power authority
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('hhs_runtime/pass219/complete_monolithic_boundary_executor.py').read_text(encoding='utf-8')
+          forbidden = (
+              'Fraction(0, 0)',
+              '0 ** 4',
+              'pow(0, 4)',
+              'ordinary_scalar_A_equals_B_claimed": True',
+              'scalar_zero_equals_scalar_one": True',
+          )
+          hits = [token for token in forbidden if token in source]
+          if hits:
+              raise SystemExit(f'forbidden I161 scalarization tokens: {hits}')
+          print('I161 semantic guard scan passed')
+          PY
+      - name: Dependency-scoped tests
+        run: pytest -q tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+      - name: Public self-test
+        run: python -m hhs_runtime.pass219.complete_monolithic_boundary_executor >/tmp/pass219_i161_self_test.json
+      - name: Deterministic repeat benchmark
+        shell: bash
+        run: |
+          set -o pipefail
+          python benchmarks/pass219/pass219_i161_complete_monolithic_boundary_executor_benchmark.py \
+            --repeats 12 --enforce | tee /tmp/pass219_i161_benchmark.json
+      - name: Seal validation artifact
+        run: |
+          test -s /tmp/pass219_i161_self_test.json
+          test -s /tmp/pass219_i161_benchmark.json
+          python -m json.tool /tmp/pass219_i161_self_test.json >/dev/null
+          python -m json.tool /tmp/pass219_i161_benchmark.json >/dev/null
+          mkdir -p /tmp/pass219_i161_artifact
+          cp /tmp/pass219_i161_self_test.json /tmp/pass219_i161_artifact/self_test.json
+          cp /tmp/pass219_i161_benchmark.json /tmp/pass219_i161_artifact/benchmark.json
+          git rev-parse HEAD > /tmp/pass219_i161_artifact/head_sha.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i161-complete-monolithic-boundary-executor
+          path: /tmp/pass219_i161_artifact
+          if-no-files-found: error

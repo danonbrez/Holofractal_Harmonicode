@@ -1,0 +1,121 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "hhs_runtime/hhs_pass219_cumulative_pass_membrane_i144_pass182.py",
+    "hhs_runtime/pass182/cli.py",
+    "hhs_runtime/pass182/runtime.py"
+  ],
+  "optimization": {
+    "optimization_id": "PASS182_UNIVERSAL_HYDRATION_INCREMENTAL_REUSE",
+    "compatible_object_classes": [
+      "universal_hydration_compiler"
+    ],
+    "required_operations": [
+      "SNAPSHOT",
+      "INCREMENTAL_REHYDRATE",
+      "REPLAY"
+    ],
+    "required_port_types": [
+      "HHS_PASS182_HYDRATION_IR_V1"
+    ],
+    "correctness_gate": "EXACT_TREE_IDENTITY_AND_INHERITED_VM81_ADMISSION",
+    "benefit_gate": "UNCHANGED_OBJECT_IDENTITY_REUSE_AND_BOUNDED_REHYDRATION"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "universal_hydration_compiler",
+    "operations": [
+      "SNAPSHOT",
+      "INCREMENTAL_REHYDRATE",
+      "REPLAY"
+    ],
+    "inputs": [
+      {
+        "name": "source_object",
+        "type": "HHS_PASS182_HYDRATION_IR_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "hydrated_ir",
+        "type": "HHS_PASS182_HYDRATION_IR_V1"
+      }
+    ],
+    "runtime_authority": "INHERITED_VM81_PROMOTION_ONLY",
+    "exactness_domain": "EXACT_SYMBOLIC",
+    "state_schema": {
+      "schema": "HHS_PASS182_UNIVERSAL_HYDRATION_IR_V1"
+    },
+    "logical_object_id": "pass182-repository-tree-hydration-source",
+    "modality_set": [
+      "REPOSITORY_TREE"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "universal_hydration_compiler",
+      "operations": [
+        "SNAPSHOT",
+        "INCREMENTAL_REHYDRATE",
+        "REPLAY"
+      ],
+      "inputs": [
+        {
+          "name": "source_object",
+          "type": "HHS_PASS182_HYDRATION_IR_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "hydrated_ir",
+          "type": "HHS_PASS182_HYDRATION_IR_V1"
+        }
+      ],
+      "runtime_authority": "INHERITED_VM81_PROMOTION_ONLY",
+      "exactness_domain": "EXACT_SYMBOLIC",
+      "state_schema": {
+        "schema": "HHS_PASS182_UNIVERSAL_HYDRATION_IR_V1"
+      },
+      "logical_object_id": "pass182-compatible-multimodal-hydration-adapters",
+      "modality_set": [
+        "TEXT",
+        "AUDIO",
+        "IMAGE",
+        "VIDEO",
+        "REPOSITORY_TREE"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "pass182-compatible-multimodal-hydration-adapters",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "validation_run": 33563563148,
+      "validated_adapter_families": [
+        "text",
+        "audio",
+        "image",
+        "video",
+        "repository_tree"
+      ],
+      "unchanged_identity_reuse": true,
+      "bounded_dependency_scope": true,
+      "singleton_vm81_authority_preserved": true,
+      "independent_hash72_authority": false,
+      "hash216_mutation_authority": false
+    }
+  ],
+  "declared_generalize_required": [
+    "pass182-compatible-multimodal-hydration-adapters"
+  ],
+  "policy": {
+    "automatic_compatible_target_discovery": true,
+    "local_only": false,
+    "no_new_authority": true,
+    "inherited_vm81_promotion_required": true
+  }
+}

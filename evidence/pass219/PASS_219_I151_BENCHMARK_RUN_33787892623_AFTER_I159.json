@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_HISTORY_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "cause": "Pass 219 I159 Harmonicode modular-pivot phase binding benchmark surface",
+  "repository_sha": "ea878c0913be99c4e1e667dfd7d0e090fd22bc66",
+  "workflow_run_id": 33787892623,
+  "job_id": 100757024087,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9906138483,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-ea878c0913be99c4e1e667dfd7d0e090fd22bc66",
+    "sha256": "69e11b15f3491e50cefe6d284a64bf12bfeb25cb5bb80010fa3f04722c6d6410"
+  },
+  "history": {
+    "source_lines": 11,
+    "output_lines": 12,
+    "source_sha256": "83c1f4f8dda1c2128437536dba4a54a93a782bd97dbcc4defe1b70bb6c5ea9f6",
+    "output_sha256": "6cad8a056afd025672aafd0f2c803396a5a5990f3176a817705df015fe0c143a",
+    "previous_entry_sha256": "f2d035c47eb059445c8a14ec506ba0531dbf6a63901f643ffe54d9aa7d39b05a",
+    "appended_entry_sha256": "437bbb355fe06220943ab4fb2e595397f14921e7834cf4019823a5c6082a694a",
+    "chain_verified": true
+  },
+  "inventory": {
+    "surface_count": 33,
+    "sha256_root": "833c2c709b29634c7f0bf519e6c5b8282f51ea28a5dd733bb4b130679cb91481",
+    "i159_surface": {
+      "path": "benchmarks/pass219/pass219_i159_modular_pivot_phase_binding_benchmark.py",
+      "bytes": 5530,
+      "sha256": "8686264127e39e68eb36008a80d55a91f0e2ec70fa56f901564de3b2eb42dd64"
+    }
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "result": "PASS"
+}

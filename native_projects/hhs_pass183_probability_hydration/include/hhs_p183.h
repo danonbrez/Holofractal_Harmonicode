@@ -47,6 +47,7 @@ const char *hhs_p183_factorial72_decimal(void);
 uint32_t hhs_p183_global_modulus(void);
 uint32_t hhs_p183_factorial72_modulus_gcd(void);
 size_t hhs_p183_membrane_count(const hhs_p183_context*);
+const char *hhs_p183_native_receipt_mode(void);
 #ifdef __cplusplus
 }
 #endif

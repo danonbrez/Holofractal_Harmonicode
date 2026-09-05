@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS219_I153_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I153",
+  "validated_head": "5e83245432133a507ff71edee474a6f3fe4fc441",
+  "workflow_run_id": 33744121394,
+  "job_id": 100612582786,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9888918876,
+    "name": "pass219-i153-local-global-equation-search-filter-5e83245432133a507ff71edee474a6f3fe4fc441",
+    "sha256": "cef5928574720ccc4f14d21f2db742c6374825bef0720675614d0c0097308837"
+  },
+  "inherited_source_identity": {
+    "monolithic_bytes": 348,
+    "monolithic_sha256": "ac143798146d89a3fe932f39ccb4d612e4fb3e45c471abc1a8bbbebb0f9c0a6a",
+    "combined_bytes": 632,
+    "combined_sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53"
+  },
+  "bounded_benchmark": {
+    "candidate_count": 4096,
+    "survivor_count": 128,
+    "rejected_count": 3968,
+    "reduction_ratio": "32/1",
+    "reduction_x1000_floor": 32000,
+    "bounded_synthetic_ratio_meets_81_over_7": true,
+    "pass169_truth_claimed": false,
+    "full_four_lane_exhaustion_claimed": false
+  },
+  "authority_changed": false,
+  "result": "PASS"
+}

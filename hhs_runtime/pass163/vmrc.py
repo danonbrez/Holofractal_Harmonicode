@@ -20,6 +20,10 @@ from typing import Any, Iterable, Mapping, Sequence
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.core.hash72_validator_v1 import validate_hash72
 from hhs_runtime.pass150.genome import Hash216Genome
+from hhs_runtime.hhs_pass219_global_raw5184_serialization_hydration_v1 import (
+    deserialize_raw5184_bytes,
+    serialize_raw5184_bytes,
+)
 
 ABI_VERSION = 1
 MAGIC = "HHS-P163-VMRC"
@@ -120,7 +124,11 @@ class VMRCSnapshot:
         candidate = bytes(SNAPSHOT_BYTES) if raw is None else bytes(raw)
         if len(candidate) != SNAPSHOT_BYTES:
             raise VMRCError("VMRC_INCORRECT_EXPANDED_LENGTH")
-        self._raw = bytearray(candidate)
+        try:
+            hydrated = deserialize_raw5184_bytes(candidate)
+        except (ValueError, AssertionError) as exc:
+            raise VMRCError("VMRC_RAW5184_HYDRATION_REJECTED", str(exc)) from exc
+        self._raw = bytearray(hydrated)
 
     @staticmethod
     def coordinate_index(position: int, thread: int) -> int:
@@ -132,7 +140,10 @@ class VMRCSnapshot:
         return VMRCSnapshot(self._raw)
 
     def to_bytes(self) -> bytes:
-        return bytes(self._raw)
+        try:
+            return serialize_raw5184_bytes(self._raw)
+        except (ValueError, AssertionError) as exc:
+            raise VMRCError("VMRC_RAW5184_SERIALIZATION_REJECTED", str(exc)) from exc
 
     def _get_index(self, index: int) -> int:
         byte_index, bit_index = divmod(index, 8)

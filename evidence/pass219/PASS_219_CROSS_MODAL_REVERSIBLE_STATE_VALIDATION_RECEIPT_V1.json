@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_VALIDATION_RECEIPT_V1",
+  "feature": "CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD",
+  "branch": "agent/pass219-i146-cross-modal-reversible-state-manifold",
+  "validation_head": "ad51c2c50f4f05c8ac8482bd920decc5c8343b4c",
+  "workflow_run": 33639218229,
+  "workflow_result": "SUCCESS",
+  "artifact": {
+    "id": 9850097988,
+    "name": "pass219-cross-modal-reversible-state",
+    "sha256": "4636d25de3d662d857607f5e98bccd117e273488d5d14266aa82682fe57279e5"
+  },
+  "gates": {
+    "contract_parse": true,
+    "no_float_exact_authority": true,
+    "cumulative_exact_abi": true,
+    "c11_conformance": true,
+    "cpp17_conformance": true,
+    "deterministic_branch_replay": true,
+    "cross_modal_roundtrip": true,
+    "mandatory_data_ml_binding": true,
+    "execution_composer_binding": true,
+    "exact_logical_work_benchmark": true,
+    "shared_library_build": true,
+    "inherited_i146_pass180_preserved": true
+  },
+  "benchmark_recomputed_from_versioned_cases": {
+    "baseline_total_work": 1384512,
+    "selected_total_work": 32228,
+    "exact_work_saved": 1352284,
+    "reduction_permille_floor": 976,
+    "authority_check_reduction": 0
+  },
+  "authority": {
+    "candidate_mutation_authority": false,
+    "singleton_vm81_mutation_authority": "INHERITED_C_ONLY",
+    "hash72_hash216_authority": "INHERITED_PATHS_ONLY",
+    "canonical_authority_changed": false
+  },
+  "main_observed": "75396e1bbf2fe95920311a5f8005b6ac1cde4cce",
+  "result": "PASS"
+}

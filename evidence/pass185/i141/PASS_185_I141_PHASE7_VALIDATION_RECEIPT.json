@@ -1,0 +1,73 @@
+{
+  "schema": "HHS_PASS185_I141_PHASE7_VALIDATION_RECEIPT_V1",
+  "version": 1,
+  "classification": "HHS_PASS_185_PHASE7_PROCESS_CACHE_NETWORK_PROVIDER_VERIFIED",
+  "terminal_pass185_completion_claimed": false,
+  "pass185_contract": {
+    "identifier": "HHS-P185-PCBAVC-IVC-VM81-H72-H216",
+    "historical_contract_commit": "f260f2b013072a48399d9cdc207d0a76a6c63d2f"
+  },
+  "lineage": {
+    "branch": "agent/pass219-iteration141-pass185-production-browser-closure-reconciliation",
+    "historical_authoritative_main_base": "f8aa3337ee023c7d828343eac208987c20a05e67",
+    "phase6_validated_head": "d716fb50ed8f903ccd8de965d8fa880b08df9027",
+    "phase7_validated_head": "26d06f34a3b074f8f969c80ccc5b9db087fd9430",
+    "phase7_validated_tree": "851ece925d59aa2d8d441b329d39be1f66a65d77",
+    "observed_main": "a1532df2cbcc02d30728055f3a1dfd55a0c1f387",
+    "merge_base_with_observed_main": "f8aa3337ee023c7d828343eac208987c20a05e67"
+  },
+  "validation": {
+    "workflow": ".github/workflows/pass219-i141-pass185-phase7-process-cache-network-provider.yml",
+    "run_id": 33311397439,
+    "run_attempt": 1,
+    "run_created_at": "2026-08-30T12:24:28Z",
+    "run_updated_at": "2026-08-30T12:29:09Z",
+    "job_id": 99256990264,
+    "job_name": "phase7-process-cache-network-provider",
+    "conclusion": "success",
+    "artifact": {
+      "id": 9732140967,
+      "name": "pass219-i141-pass185-phase7-process-cache-network-provider",
+      "size_in_bytes": 131625,
+      "sha256": "267e3e9ebee3f982b0ec24ea867e1ef1904d903d9eda663063134767d97bf5af"
+    },
+    "compiled_c_sha256": "7715239a086696e220486ce1ae7824f8e140be0a2c9bcef3e7875e8793d0312c"
+  },
+  "phase7_seal": {
+    "schema": "HHS_PASS219_I141_PASS185_PHASE7_VALIDATION_SEAL_V1",
+    "classification": "HHS_PASS_185_PHASE7_PROCESS_CACHE_NETWORK_PROVIDER_EXECUTED",
+    "completion_receipt_hash72": "1+kefm067bKb2WwUbHFREa!lJkQuQ2ho-C3)EshQzRNekJDyRV-MfG>JMS<UH9oTvk5Auq0x",
+    "evidence_set_hash216": "2fdd049cdecff96cc5852c1de053c574ff28d7eadc80c064e1ec66ed29322b97",
+    "declared_seal_sha256": "a30c7c81ee1365410d372e5aa578f966471abb549eea1bcb85c4cf99853a2f74",
+    "seal_file_sha256": "52ad077ed651f933e6b65dd1bfb39d8949c15fc914ea7cd663e05792cb84c66a",
+    "matrix_declared_sha256": "2fc806fd97d7b687167f7e5bfac2c85f9c395505a86297506487905c8df02cf5",
+    "matrix_file_sha256": "9ab5ad8e8ea712bf4665ff3fffb9eb6591b23935699d8549179d9633b2884526",
+    "matrix_row_count": 62,
+    "matrix_failed_rows": [],
+    "matrix_waived_rows": [],
+    "authoritative_main_verified": false,
+    "external_deployment_verified": false
+  },
+  "verified_profiles": {
+    "process_socket": "HHS_PASS_185_PHASE7_PROCESS_SOCKET_GAPS_VERIFIED",
+    "browser_cache_network": "HHS_PASS_185_PHASE7_BROWSER_CACHE_NETWORK_GAPS_VERIFIED",
+    "provider_ready_activation_failure": "HHS_PASS_185_PHASE7_PROVIDER_READY_AND_ACTIVATION_FAILURE_VERIFIED",
+    "nonwaivable_matrix": "HHS_PASS_185_PHASE7_NONWAIVABLE_MATRIX_LOCALLY_CLOSED"
+  },
+  "authority_boundary": {
+    "phase1_through_phase6_receipts_rewritten": false,
+    "new_vm81_authority": false,
+    "parallel_hash72_commit_authority": false,
+    "browser_or_cache_mutation_authority_added": false,
+    "authoritative_main_verified": false,
+    "external_deployment_verified": false
+  },
+  "remaining_terminal_scope": [
+    "cumulative Phase-1 through Phase-7 local closure reconciliation",
+    "current-main drift reconciliation without weakening frozen Pass-185 evidence or newer Pass-219 global defaults",
+    "explicit safe integration boundary",
+    "authoritative-main verification after integration",
+    "external production deployment replay",
+    "terminal Pass-185 classification"
+  ]
+}

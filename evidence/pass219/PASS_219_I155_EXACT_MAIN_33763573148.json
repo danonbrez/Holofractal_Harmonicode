@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS219_I155_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I155",
+  "repository_sha": "db820d0aeda88b1c5f20a9f25657bb5b00d97cac",
+  "workflow_run_id": 33763573148,
+  "job_id": 100675632304,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9896520206,
+    "name": "pass219-i155-production-pass169-provider-residual-closure-db820d0aeda88b1c5f20a9f25657bb5b00d97cac",
+    "sha256": "5dc98a275a0af16fd6d0e0a08b95bd2ca4909c3952340b21e28272d278fe327c"
+  },
+  "receipts": {
+    "production_provider_probe_sha256": "5a577ed10ef2fc8a942b5c11c9c79514ea42ab8d9a0003f70e5b3754dfeb6a02",
+    "test_fixture_provider_probe_sha256": "cd06b31db8512981b4e7c2a720510282c3a1cb79b900526099427e867fcf7a8e",
+    "repaired_i154_benchmark_sha256": "9f8d76d5b6676a26742a587f2c75e1d45b8ff5fc3450926c42766b6f858eba39",
+    "i155_benchmark_sha256": "78505c32f05a563adab7986452c3841b5ba8d09ee7c66d687e7a08584dba4c5f",
+    "i155_benchmark_receipt_sha256": "b8bfa9bdf2c2cecbd602a935d2ddf99bddc0c68ff9752070b6653f492fa2e152"
+  },
+  "transition": {
+    "provider_absence_blocker_cleared": true,
+    "production_provider_present": true,
+    "production_provider_non_test": true,
+    "runtime_provider_available": true,
+    "binder_decision": "UNRESOLVED",
+    "binder_reason_mask": 512,
+    "current_blocker": "FULL_SYMBOLIC_UQCEL_MONOLITHIC_EQUALITY_CHAIN",
+    "pass159_provenance_exact": true,
+    "pass169_authority_verified": false,
+    "boolean_gate_results_available": false,
+    "membrane_input_ready": false,
+    "canonical_monolithic_proof": false,
+    "whole_equation_propagated": false
+  },
+  "unresolved_full_symbolic_families": [
+    "T_M_HARMONIC",
+    "TENSOR_S_F_AT_BT",
+    "DELTA_P_ROOT",
+    "MOD_F_U",
+    "MONOLITHIC_EQUALITY_CHAIN"
+  ],
+  "i154_real_exhaustion": {
+    "authoritative_workload_count": 0,
+    "effective_exhaustion_work_measured": false,
+    "within_81_over_7_claim": null,
+    "local_P_snapshot_binding_available": false,
+    "canonical_gate_vector_environment_export_available": false
+  },
+  "fixed_cardinality_changed": false,
+  "authority_changed": false,
+  "result": "PASS"
+}

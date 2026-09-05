@@ -1,0 +1,205 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": false,
+  "changed_paths": [
+    "benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp",
+    ".github/workflows/pass219-harmonic36-default-binding.yml"
+  ],
+  "optimization": {
+    "optimization_id": "H36_STACK_CACHE_RESIDENCY_1_13",
+    "compatible_object_classes": [
+      "stack_selection_cache"
+    ],
+    "required_operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE"
+    ],
+    "required_port_types": [
+      "HHS_PASS219_H36_STACK_SELECTION_V1"
+    ],
+    "correctness_gate": "FOUR_RESIDENT_EXACT_ISOLATION_AND_REPLAY",
+    "benefit_gate": "EXACT_INTEGER_REPEAT_STABILITY: calibration_repeats=5; beneficial_repeat_count>=4; occupancy4_total_ns<fresh_selection_total_ns"
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "stack_selection_cache",
+    "operations": [
+      "STORE",
+      "LOOKUP",
+      "REPLAY",
+      "VALIDATE"
+    ],
+    "inputs": [
+      {
+        "name": "selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cached_selection",
+        "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+      }
+    ],
+    "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+    "exactness_domain": "EXACT_INTEGER",
+    "state_schema": {
+      "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+      "resident_entries": 1
+    },
+    "logical_object_id": "h36-stack-cache-residency-occupancy1-reference",
+    "modality_set": [
+      "H36_STACK_CACHE_RESIDENCY"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "resident_entries": 4
+      },
+      "logical_object_id": "h36-stack-cache-residency-occupancy4-linux-x86_64",
+      "modality_set": [
+        "H36_STACK_CACHE_RESIDENCY"
+      ]
+    },
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "stack_selection_cache",
+      "operations": [
+        "STORE",
+        "LOOKUP",
+        "REPLAY",
+        "VALIDATE"
+      ],
+      "inputs": [
+        {
+          "name": "selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cached_selection",
+          "type": "HHS_PASS219_H36_STACK_SELECTION_V1"
+        }
+      ],
+      "runtime_authority": "CANDIDATE_ONLY_INHERITED_VM81_ADMISSION",
+      "exactness_domain": "EXACT_INTEGER",
+      "state_schema": {
+        "schema": "HHS_PASS219_H36_STACK_SELECTION_CACHE_V1",
+        "resident_entries": 8
+      },
+      "logical_object_id": "h36-stack-cache-residency-occupancy8-unvalidated",
+      "modality_set": [
+        "H36_STACK_CACHE_RESIDENCY"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "h36-stack-cache-residency-occupancy4-linux-x86_64",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "platform": "linux-x86_64",
+      "validation_run": 33498621593,
+      "validation_job": 99826491387,
+      "artifact_id": 9796760547,
+      "artifact_sha256": "75c2e1cd18b34a2ac4e022538e0f162117c223474b228287a7a93917793a80a7",
+      "four_simultaneous_entries_valid": true,
+      "all_exact_lookups_equal_fresh": true,
+      "deterministic_receipts": true,
+      "cross_signature_hits_rejected": true,
+      "stale_and_mismatched_identity_rejected": true,
+      "all_occupancy4_faster_than_fresh": true,
+      "resident_count": 4,
+      "capacity": 8,
+      "authority_escalation": false,
+      "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+      "calibration_repeats": 5,
+      "required_beneficial_repeats": 4,
+      "all_residents_repeat_stability_pass": true,
+      "one_shot_regression_reproduced": false
+    },
+    {
+      "logical_object_id": "h36-stack-cache-residency-occupancy8-unvalidated",
+      "validation_executed": true,
+      "safe": true,
+      "benefit": true,
+      "platform": "linux-x86_64",
+      "validation_run": 33528991694,
+      "validation_job": 99927016899,
+      "artifact_id": 9808920709,
+      "artifact_sha256": "8d44d4268794b17dc8357a8a051461a2b101b9a330f24f5d951e78a4bb12a417",
+      "eight_simultaneous_entries_valid": true,
+      "all_exact_lookups_equal_fresh": true,
+      "cross_signature_hits_rejected": true,
+      "ninth_distinct_store_buffer_too_small": true,
+      "full_capacity_idempotent_store_ok": true,
+      "all_occupancy8_faster_than_fresh": true,
+      "resident_count": 8,
+      "capacity": 8,
+      "authority_escalation": false
+    }
+  ],
+  "declared_generalize_required": [
+    "h36-stack-cache-residency-occupancy4-linux-x86_64",
+    "h36-stack-cache-residency-occupancy8-unvalidated"
+  ],
+  "policy": {
+    "occupancy4_classification": "GENERALIZE_REQUIRED",
+    "occupancy8_classification": "GENERALIZE_REQUIRED",
+    "no_unmeasured_capacity8_promotion": false,
+    "cross_platform_inference": false,
+    "occupancy8_validated_by": "PASS_219_H36_STACK_CACHE_CAPACITY8_1_14",
+    "timing_gate_kind": "EXACT_INTEGER_REPEAT_STABILITY",
+    "calibration_repeats": 5,
+    "required_beneficial_repeats": 4,
+    "aggregate_requirement": "occupancy4_total_ns < fresh_selection_total_ns",
+    "one_shot_benefit_boolean_authoritative": false,
+    "retained_last_green_capacity8_boundary": {
+      "head": "a8834b12553741dc5fd04f3434752de14cfccb1b",
+      "run": 33529443931,
+      "job": 99928529597
+    },
+    "triggering_one_shot_regression": {
+      "head": "17a83022f70ad35c90dd826bc20e905d123c9acc",
+      "run": 33529740240,
+      "job": 99929569893,
+      "resident": "BINARY_IO_FOCUSED",
+      "regression_reproduced_under_calibration": false
+    },
+    "calibrated_reproduction": {
+      "run": 33532945748,
+      "job": 99940293326,
+      "benchmark_head": "ef9b00ee3bc32b3bfdb0e29476a397e1e0c4b21b",
+      "all_residents_beneficial_repeats": 5,
+      "all_repeat_stability_pass": true
+    }
+  }
+}

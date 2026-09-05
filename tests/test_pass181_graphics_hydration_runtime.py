@@ -218,24 +218,20 @@ def test_fidelity_levels_do_not_conflate_visual_and_bitstream_identity() -> None
     assert "MP4_BITSTREAM_IDENTITY_WHEN_ENCODER_STATE_IS_AVAILABLE" not in result["levels"]
 
 
-def test_constraint_promotion_requires_complete_validation_chain(tmp_path: Path) -> None:
+def test_legacy_direct_constraint_promotion_is_fail_closed(tmp_path: Path) -> None:
     runtime = GraphicsHydrationRuntime(tmp_path / "hydration")
-    stages = {stage: True for stage in PROMOTION_STAGES}
-    stages["adversarial_tested"] = False
-    candidate = {
-        "family": "PROVENANCE",
-        "predicate": "all_authoritative_layers_use_native_abi",
-        "evidence": ["test-pass-root"],
-        "stages": stages,
-    }
-    rejected = runtime.promote_constraint(candidate)
-    assert rejected["ok"] is False
-    assert rejected["missing_stages"] == ["adversarial_tested"]
-    candidate["stages"]["adversarial_tested"] = True
-    accepted = runtime.promote_constraint(candidate)
-    assert accepted["ok"] is True
-    assert accepted["constraint"]["state"] == "FROZEN"
-    assert Path(accepted["record_path"]).is_file()
+    with pytest.raises(
+        GraphicsHydrationError,
+        match="P181_LEGACY_DIRECT_CONSTRAINT_PROMOTION_DISABLED_USE_REGISTRY_FREEZE",
+    ):
+        runtime.promote_constraint(
+            {
+                "family": "PROVENANCE",
+                "predicate": "all_authoritative_layers_use_native_abi",
+                "evidence": ["test-pass-root"],
+                "stages": {stage: True for stage in PROMOTION_STAGES},
+            }
+        )
 
 
 def test_trial_residual_classes_are_typed(tmp_path: Path) -> None:

@@ -1,0 +1,58 @@
+{
+  "schema": "HHS_PASS219_I157_EXACT_MAIN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I157",
+  "repository_sha": "36e959341d3f87847fd7fc3600b70d713422e22e",
+  "workflow_run_id": 33780828565,
+  "job_id": 100733771626,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9903482886,
+    "name": "pass219-i157-candidate-bound-typed-value-producer-36e959341d3f87847fd7fc3600b70d713422e22e",
+    "sha256": "d921feb49718d9d8bf5da68f1101b03340d4f19867044d8e13072aa7892bcd99",
+    "benchmark_file_sha256": "32c4875d91b91a36950de9a6b971ed38d74ade8988a68248547d99ef5bf7c1fd"
+  },
+  "benchmark": {
+    "receipt_sha256": "69d806246ca29669a5338bfeb4b22139936e95ea0a6a5762ff3ee11d0378a962",
+    "typed_value_graph_sha256": "8e0050d0828746bcc45e1120886075dd0369bbef6e3ebb77d9d053d05a305bde",
+    "candidate_binding_sha256": "5ee87a232bd348edbda7ecca202d3ec6a6b1f6d3a880fd92c0d6d2451da8f3a9",
+    "term_count": 15,
+    "join_count": 10,
+    "typed_domain_count": 7,
+    "join_status": {
+      "PROVED": 5,
+      "UNRESOLVED": 5,
+      "REJECTED": 0
+    },
+    "graph_decision": "UNRESOLVED",
+    "i156_ratio_projection_term_count": 7,
+    "non_rational_typed_term_count": 8,
+    "i156_full_ratio_packet_eligible": false,
+    "scalar_coercion_used": false,
+    "modular_remainder_scalarization_used": false,
+    "source_A_or_B_definitionally_P2": false,
+    "ordered_xy": 0,
+    "ordered_yx": 36,
+    "ordered_xy_yx_distinct": true,
+    "physical_full_manifold_enumeration_claim": false
+  },
+  "next_required_adapters": [
+    "COMPLETE_BOUNDARY_EXECUTION_REQUIRED",
+    "EXACT_PHASE_EXPONENT_RADICAL_ADAPTER_REQUIRED",
+    "MODULAR_PIVOT_ADAPTER_REQUIRED_NO_SCALAR_REMAINDER_COERCION",
+    "SYMBOLIC_AB_ROOT_EXECUTION_REQUIRED"
+  ],
+  "authority": {
+    "canonical_monolithic_proof": false,
+    "vm81_execution_verified": false,
+    "vm81_mutation_authority": false,
+    "hash72_execution_receipt_verified": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "deterministic_replay_verified": false,
+    "floating_point_authority": false
+  },
+  "fixed_cardinality_changed": false,
+  "next_boundary": "TYPED_DOMAIN_JOIN_EXECUTION_AND_CANONICAL_BOUNDARY_PROOF",
+  "result": "PASS"
+}

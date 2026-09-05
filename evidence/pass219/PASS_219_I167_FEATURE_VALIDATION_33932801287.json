@@ -1,0 +1,62 @@
+{
+  "schema": "HHS_PASS219_I167_FEATURE_VALIDATION_V1",
+  "pass": 219,
+  "iteration": 167,
+  "classification": "CANONICAL_CORPUS_PROVENANCE_VERIFIED_RUNTIME_BINDING_PENDING",
+  "base_main": "177e774f676d57708df0cba7459bf1b6d4835b8e",
+  "validated_head": "99c3946c9c7160105d39d34c93d2d38b5eec7e28",
+  "branch": "agent/pass219-i167-pass169-canonical-corpus-terminal-closure",
+  "workflow": {
+    "name": "Pass 219 I167 Pass169 Canonical Corpus Terminal Gate",
+    "run_id": 33932801287,
+    "job_id": 101214708221,
+    "conclusion": "success"
+  },
+  "canonical_corpus": {
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "authoritative_source_path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "git_blob_sha1": "5ef1e3dbcd107666b1f30269d4579afb246de3f5",
+    "byte_for_byte_copy_verified": true,
+    "source_rewriting_used": false,
+    "partial_fixture_concatenation_used": false,
+    "original_external_prompt_byte_identity_claimed": false,
+    "repository_source_of_record_established": true
+  },
+  "inherited_authority": {
+    "i161_typed_graph_verified": true,
+    "i162_vm81_admission_commit_receipts_verified": true,
+    "i163_reverse_crossarchitecture_verified": true,
+    "i165_cli_http_surfaces_complete": true,
+    "i166_pass168_parent_resolved": true,
+    "required_pass169_artifact_set_complete": true
+  },
+  "hardened_terminal_gate": {
+    "general_runtime_binding_verified": false,
+    "runtime_binding_receipt_present": false,
+    "pass169_terminal_contract_verified": false,
+    "exact_blockers": ["PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED"],
+    "next_boundary": "PASS169_GENERAL_RUNTIME_BINDING_CLOSURE"
+  },
+  "tests": {
+    "result": "7 passed, 1 warning in 1.36s",
+    "warning": "PytestConfigWarning: Unknown config option: asyncio_mode",
+    "deterministic_status_repeats": 12,
+    "status_sha256": "8b1b0ed957c71f7b3d8b95d970a885d3c6ee2be609c356823f029204f1d7238f"
+  },
+  "artifact": {
+    "id": 9959134263,
+    "name": "pass219-i167-pass169-canonical-corpus-terminal-gate-99c3946c9c7160105d39d34c93d2d38b5eec7e28",
+    "size_bytes": 3153,
+    "digest": "sha256:3027237a18d50030a856cc538dc5b8a4f19ed07d219d1da2971eed8b6c61d115"
+  },
+  "authority": {
+    "fixed_resolution": "72^42=5184^21",
+    "new_vm81_mutation_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "fallback_used": false
+  }
+}

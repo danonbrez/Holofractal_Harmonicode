@@ -13,6 +13,12 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py'
+      - 'deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh'
+      - 'deployment/digitalocean/guarded_auto_update/install.sh'
+      - 'deployment/digitalocean/guarded_auto_update/validate-candidate.sh'
+      - 'deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py'
+      - 'tests/test_hhs_guarded_auto_update_contract_v1.py'
+      - 'tests/test_hhs_production_service_permissions_v2.py'
       - 'tests/pass219/test_pass219_inherited_pass202_1_22.c'
       - 'tests/pass219/test_pass219_inherited_pass202_1_22.cpp'
       - 'tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py'
@@ -74,17 +80,18 @@ jobs:
           test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 82250c50fa9d20a82d0b957d2637398760b1c416
           test "$(git rev-parse 83b6fd89cd8adb1962aeb159917fe24ee4485441:tests/test_hhs_guarded_auto_update_contract_v1.py)" = 709afe1c0d612ad91744a5cd71cb87d8a313aad6
 
-      - name: Prove frozen I121 deployment identities
+      - name: Prove current successor-hardened Pass 202 deployment identities
         run: |
           test "$(git hash-object .github/workflows/guarded-continuous-integration.yml)" = e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4
           test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3296ee9787544542697d3915e01569562ef30046
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = c1815c56e5bceeca2a840c5a693bd22d6e85ef84
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 6b4dc28e3ec90cc42a8e6317a9f142c229b31022
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 7890657593b5d4dd03e4cf5eb2c4c1c7ba25e519
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 93dfbe6cc3a789de82b5249f32a129a31306aeb5
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 729d8e571160239094aaef612a17d039f310ca03
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 3289544601dfbd54697a6e57ef9c8505d407821f
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 53677fea50de3bb2b42025c79b2fe5fd210e9dd0
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = 23afbf9c99d77f57acd7334d767c483572d64e0a
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = e7b903eed428614d1f2f4bff5b65fb00299812e7
 
       - name: Reject approximate arithmetic and new authority exports
         run: |
@@ -105,7 +112,8 @@ jobs:
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py
 
       - name: Run inherited Pass 202 deployment contract regression
-        run: python -m pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py
+        run: |
+          python -m pytest -q             tests/test_hhs_guarded_auto_update_contract_v1.py             tests/test_hhs_production_service_permissions_v2.py
 
       - name: Preserve frozen Pass 203 successor membrane
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass203_membrane_i121.py

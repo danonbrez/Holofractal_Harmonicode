@@ -1,0 +1,74 @@
+{
+  "schema": "HHS_PASS219_I156_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I156",
+  "validated_head": "93f0fac10e06e04555c988c3ebc99fa0f2b08367",
+  "workflow_run_id": 33767257127,
+  "job_id": 100688184912,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9898052234,
+    "name": "pass219-i156-full-symbolic-monolithic-lowering-93f0fac10e06e04555c988c3ebc99fa0f2b08367",
+    "sha256": "abfd61edeee81471cbfbf70b6fe32b3f5af7948df3ac8a1f1425495d8199a2ce"
+  },
+  "receipts": {
+    "conformance_sha256": "4202f3370f6395295cb7a44697b4675eb850d72f525ca0f31c7fbe0a9718258b",
+    "benchmark_file_sha256": "7b9c08633bf7e1e10718d8221353ff06dd3cb5d03b2c8b68bf15d26c9a2aa1ed",
+    "benchmark_receipt_sha256": "aabd900272762bac9714c004c116953f99ae9ae3bbbd1eebd38f83759faf5d72"
+  },
+  "accepted_lowering": {
+    "term_count": 15,
+    "equality_edge_count": 10,
+    "required_edge_mask": 1023,
+    "semantic_family_count": 8,
+    "required_family_mask": 255,
+    "historical_residual_mask": 31,
+    "residual_mask_for_complete_witness": 0,
+    "exact_bigint_cross_multiplication": true,
+    "source_identity_required": true,
+    "pass159_provenance_root_required": true,
+    "ordered_xy_yx_required": true,
+    "one_candidate_transaction_required": true
+  },
+  "authority_boundary": {
+    "legacy_v1_full_symbolic_input_sufficient": false,
+    "candidate_value_producer_included": false,
+    "vm81_execution_verified": false,
+    "hash72_execution_receipt_verified": false,
+    "deterministic_replay_verified": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false
+  },
+  "rejected_pre_green_runs": [
+    {
+      "run_id": 33766964070,
+      "head_sha": "1b14a0b4b5b67c65cc4b5fd06199a66f75bc161f",
+      "failure_step": "Compile cumulative exact ABI",
+      "cause": "STRICT_C11_ARRAY_QUALIFIER_COMPATIBILITY"
+    },
+    {
+      "run_id": 33767053587,
+      "head_sha": "0054db6a1d2794931bbf6c50de48906e3a691f25",
+      "failure_step": "Compile cumulative exact ABI",
+      "cause": "INHERITED_SAME_QUALIFIER_DEFECT"
+    },
+    {
+      "run_id": 33767117044,
+      "head_sha": "37d06f6a6b16537d73277d597abb1ec94d4956d1",
+      "failure_step": "Compile cumulative exact ABI",
+      "cause": "INHERITED_SAME_QUALIFIER_DEFECT"
+    },
+    {
+      "run_id": 33767154528,
+      "head_sha": "3e43ddeff1852f7ba9792e29e592e92741998132",
+      "failure_step": "Compile cumulative exact ABI",
+      "cause": "INHERITED_SAME_QUALIFIER_DEFECT"
+    }
+  ],
+  "repair_commit": "93f0fac10e06e04555c988c3ebc99fa0f2b08367",
+  "next_authority_blocker": "CANDIDATE_BOUND_FULL_SYMBOLIC_VALUE_PRODUCER",
+  "fixed_cardinality_changed": false,
+  "result": "PASS"
+}

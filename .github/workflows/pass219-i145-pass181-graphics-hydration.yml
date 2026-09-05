@@ -1,0 +1,192 @@
+name: Pass 219 I145 Pass 181 Graphics Hydration Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration145-pass181-graphics-hydration-reconciliation
+    paths:
+      - 'docs/pass181/**'
+      - 'docs/pass219/PASS_219_I145_INHERITED_PASS181_GRAPHICS_HYDRATION_BINDING.md'
+      - 'docs/operations/restart/PASS_219_I145_PASS181_GRAPHICS_HYDRATION_RESTART.md'
+      - 'hhs_backend/runtime/hhs_graphics_hydration_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_recipe_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_optimization_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py'
+      - 'hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py'
+      - 'hhs_backend/api/graphics_hydration_routes.py'
+      - 'hhs_backend/api/graphics_constraint_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i145_pass181.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass181_1_45.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass181_1_45.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/test_pass181_*.py'
+      - 'tests/pass219/test_pass219_cumulative_pass181_membrane_i145.py'
+      - 'tests/pass219/test_pass219_inherited_pass181_1_45.*'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - '.github/workflows/pass219-i145-pass181-graphics-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i145-pass181-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass181-i145:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_GRAPHICS_HYDRATION_ROOT: '/tmp/hhs-pass181-i145'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'cryptography>=46.0,<47.0'             'httpx>=0.27,<1.0'             'uvicorn>=0.30,<1.0'             pytest
+
+      - name: Install canonical media tools when absent
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | head -1
+          ffprobe -version | head -1
+
+      - name: Verify frozen lineage and historical Pass 181 green head
+        run: |
+          git merge-base --is-ancestor 3ae56827b27500c2c8187126d5825a901d4feb40 HEAD
+          git merge-base --is-ancestor 132694cee0af4a43113ddc4c50f867c084a22bae HEAD
+          grep -F 'HHS-P181-NCSR-GHIR-VM81-H72-H216' docs/pass181/HHS_PASS_181_NATIVE_CINEMATIC_STORY_REEL_GRAPHICS_HYDRATION_RUNTIME.md
+
+      - name: Compile I145 and Pass 181 surfaces
+        run: |
+          python -m py_compile             hhs_backend/runtime/hhs_graphics_hydration_v1.py             hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py             hhs_backend/runtime/hhs_graphics_recipe_v1.py             hhs_backend/runtime/hhs_graphics_optimization_v1.py             hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py             hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py             hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py             hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py             hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py             hhs_backend/api/graphics_hydration_routes.py             hhs_backend/api/graphics_constraint_routes.py             hhs_backend/visual_server.py             hhs_runtime/hhs_pass219_cumulative_pass_membrane_i145_pass181.py
+
+      - name: Run complete current Pass 181 runtime suite
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/test_pass181_graphics_hydration_runtime.py             tests/test_pass181_native_recipe_residuals.py             tests/test_pass181_graphics_optimization.py             tests/test_pass181_graphics_vector_hydration.py             tests/test_pass181_graphics_constraint_registry.py
+
+      - name: Run I145 cumulative membrane
+        run: |
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass181_membrane_i145.py
+
+      - name: Verify public route and VM81 authority repair
+        run: |
+          grep -F 'GRAPHICS_VECTOR_HYDRATION.vm81_authority' hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py
+          grep -F 'P181_GRAPHICS_CONSTRAINT_PROMOTION' hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py
+          grep -F 'HHS_PASS181_GRAPHICS_CONSTRAINT_VM81_ADMISSION_VERIFIED' hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py
+          grep -F 'P181_LEGACY_DIRECT_CONSTRAINT_PROMOTION_DISABLED_USE_REGISTRY_FREEZE' hhs_backend/runtime/hhs_graphics_hydration_v1.py
+          grep -F '/registry/freeze' hhs_backend/api/graphics_constraint_routes.py
+          grep -F '/registry/rollback' hhs_backend/api/graphics_constraint_routes.py
+          grep -F '/registry/replay' hhs_backend/api/graphics_constraint_routes.py
+
+      - name: Preserve global defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Compile exact ABI and I145 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i145
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i145/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i145/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i145/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass181_1_45.c /tmp/pass219-i145/exact.o /tmp/pass219-i145/pass186.o /tmp/pass219-i145/registers.o -o /tmp/pass219-i145/pass181-c
+          /tmp/pass219-i145/pass181-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass181_1_45.cpp /tmp/pass219-i145/exact.o /tmp/pass219-i145/pass186.o /tmp/pass219-i145/registers.o -o /tmp/pass219-i145/pass181-cpp
+          /tmp/pass219-i145/pass181-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i145/exact.o /tmp/pass219-i145/pass186.o /tmp/pass219-i145/registers.o -o /tmp/pass219-i145/defaults-c
+          /tmp/pass219-i145/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i145/exact.o /tmp/pass219-i145/pass186.o /tmp/pass219-i145/registers.o -o /tmp/pass219-i145/defaults-cpp
+          /tmp/pass219-i145/defaults-cpp
+
+      - name: Emit exact-head I145 branch-local receipt
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p evidence/pass181/i145
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          from hhs_runtime.hash72_checkpoint import make_hash72_witness
+          from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i145_pass181 import execute_pass181_membrane_preflight
+
+          preflight=execute_pass181_membrane_preflight()
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          payload={
+              "schema":"PASS_219_I145_PASS181_VALIDATION_RECEIPT_V1",
+              "repository":"danonbrez/Holofractal_Harmonicode",
+              "branch":"agent/pass219-iteration145-pass181-graphics-hydration-reconciliation",
+              "head_sha":head,
+              "tree_sha":tree,
+              "workflow_run_id":int(os.environ["RUN_ID"]),
+              "workflow_run_attempt":int(os.environ["RUN_ATTEMPT"]),
+              "classification":"HHS_PASS181_I145_DEPENDENCY_SCOPED_VALIDATION_VERIFIED",
+              "historical_green":{"head":"3ae56827b27500c2c8187126d5825a901d4feb40","run_id":30660886113},
+              "preflight":preflight,
+              "global_defaults":{"wired_ceiling":218,"wired_floor":181,"binding_count":40},
+              "authority":{
+                  "singleton_vm81_authority_remains_inherited":True,
+                  "constraint_freeze_requires_vm81_commit":True,
+                  "constraint_rollback_requires_vm81_commit":True,
+                  "legacy_direct_promotion_disabled":True,
+                  "independent_vm81_authority":False,
+                  "independent_hash72_authority":False,
+                  "hash216_mutation_authority":False,
+              },
+              "closure":{
+                  "i145_dependency_scoped_validation_green":True,
+                  "terminal_pass181_completion":False,
+                  "remaining_terminal_obligation_count":3,
+                  "merge_performed":False,
+                  "authoritative_main_verification":False,
+                  "deployment_performed":False,
+              },
+          }
+          receipt=make_hash72_witness("pass181:i145:validation",payload,width=72).digest
+          lanes=[
+              make_hash72_witness("pass181:i145:archive:previous",{"head":head,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass181:i145:archive:change",{"tree":tree,"receipt":receipt},width=72).digest,
+              make_hash72_witness("pass181:i145:archive:receipt",payload,width=72).digest,
+          ]
+          payload["receipt_hash72"]=receipt
+          payload["archive_hash216"]="".join(lanes)
+          path=Path("evidence/pass181/i145/PASS_219_I145_PASS181_VALIDATION_RECEIPT.json")
+          path.write_text(json.dumps(payload,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({"classification":payload["classification"],"head":head,"receipt_hash72":receipt,"archive_hash216":payload["archive_hash216"]},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i145-pass181-graphics-hydration
+          path: evidence/pass181/i145/PASS_219_I145_PASS181_VALIDATION_RECEIPT.json
+          if-no-files-found: warn
+          retention-days: 30

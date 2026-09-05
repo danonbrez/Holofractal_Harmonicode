@@ -1,0 +1,123 @@
+{
+  "schema": "HHS_PASS219_I162_FEATURE_VALIDATION_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I162",
+  "classification": "FEATURE_GREEN_PASS169_SEALED_CANDIDATE_VM81_EXECUTION_EVIDENCE_SEALED",
+  "base_main": "ca407f27a2609f7c1517f7987bdfaa1847cb954a",
+  "branch": "agent/pass219-i162-pass169-vm81-exact-symbolic-execution",
+  "validated_functional_head": "5f91b6b2db1034d9d1d9a584d6dda19e877942f9",
+  "post_validation_contract_registration_commit": "97a3c9de67b014e2b7fd936847d77ae51888f187",
+  "source": {
+    "path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "byte_length": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "boolean_gate_offsets": [96, 240, 266, 274, 285],
+    "identity_verified": true
+  },
+  "candidate": {
+    "P": 30,
+    "p": 29,
+    "q": 31,
+    "delta": 1,
+    "t": 30,
+    "m": 267,
+    "P2": 900,
+    "pq": 899,
+    "P4_equals_AB": 810000,
+    "typed_join_count": 10,
+    "typed_join_proved": 10,
+    "edge_proved_mask": 1023,
+    "boolean_gate_count": 5,
+    "boolean_gates_true": 5,
+    "gate_true_mask": 31
+  },
+  "semantic_guards": {
+    "typed_scalar_zero_verified": true,
+    "typed_renewed_unit_verified": true,
+    "ordinary_scalar_boundary_equality_claimed": false,
+    "compatibility_ab_transport_only": true,
+    "source_ab_definitionally_p2": false,
+    "legacy_full_symbolic_uqcel_v1_promoted": false,
+    "floating_point_authority": false,
+    "hash216_persistence_authority": false
+  },
+  "runtime_execution": {
+    "vm5184_address": 1,
+    "vm81_steps": 1,
+    "replay_vm81_steps": 1,
+    "exact_vm81_admission_verified": true,
+    "atomic_commit_verified": true,
+    "hash72_receipt_verified": true,
+    "hash216_proof_identity_verified": true,
+    "deterministic_replay_verified": true,
+    "source_reconstruction_verified": true,
+    "pass169_sealed_candidate_authority_verified": true,
+    "whole_equation_propagated": true,
+    "pass169_terminal_contract_verified": false,
+    "canonical_global_symbol_environment_root": "da28e8224838999759d071a36fb25f924af10a9fffe2acd79b4b2c0c7840851b",
+    "proof_hash216": "000000000000000000000000000000000000000000000000000000000000000000000000EJgQXOZr(+32Mq<pULU!GdvquetL4L!Q<ebmgKgR(MJyW4BtVKwqLuLn8/Wo6Tf2nj7RG/F4i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "transition_hash216": "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18",
+    "receipt_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "replay_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "receipt_replay_identical": true,
+    "proof_transition_distinct": true
+  },
+  "benchmark": {
+    "schema": "HHS_PASS219_I162_PASS169_VM81_EXACT_SYMBOLIC_BENCHMARK_V1",
+    "result": "PASS",
+    "repeats": 12,
+    "timing_clock": "perf_counter_ns",
+    "timing_values_are_integer_nanoseconds": true,
+    "min_ns": 3689605,
+    "median_ns": 3757488,
+    "max_ns": 4016850,
+    "deterministic_execution_receipt": true,
+    "benchmark_receipt_sha256": "bfcf8a48b503fce287cf3752ceb2b100a1abaf743efe09c21711149b85c62780"
+  },
+  "dependency_scoped_validation": {
+    "workflow": "Pass 219 I162 Pass169 VM81 Exact Symbolic Execution",
+    "run_id": 33836940374,
+    "job_id": 100911285183,
+    "conclusion": "success",
+    "python": "3.11.16",
+    "canonical_authority_guard": "success",
+    "frozen_source_identity": "success",
+    "pass159_build": "success",
+    "pass159_ctest": {
+      "passed": 1,
+      "failed": 0
+    },
+    "cumulative_exact_abi_compile": "success",
+    "native_i162_conformance": "success",
+    "native_probe": "success",
+    "i161_dependency_regression": {
+      "passed": 7,
+      "failed": 0,
+      "warnings": 1,
+      "duration_seconds": 3.94,
+      "warning": "PytestConfigWarning: Unknown config option: asyncio_mode"
+    },
+    "repeat_benchmark": "success",
+    "closure_enforcement": "success",
+    "historical_i155_fallback_conformance": "success"
+  },
+  "artifact": {
+    "id": 9923587755,
+    "name": "pass219-i162-pass169-vm81-exact-symbolic-execution-5f91b6b2db1034d9d1d9a584d6dda19e877942f9",
+    "size_bytes": 2298,
+    "digest": "sha256:388409d240e5d37b1ca67b88f3106d6a11fee043980bd9cacd9cf94eec461ee2",
+    "expired": false
+  },
+  "authority_scope": {
+    "classification_on_green": "PASS169_EXACT_SYMBOLIC_SEALED_CANDIDATE_EXECUTION_VERIFIED",
+    "canonical_monolithic_proof_for_sealed_candidate": true,
+    "i121_11_pass169_authority_verified": true,
+    "i121_11_whole_equation_propagated": true,
+    "binder_vm81_mutation_authority": false,
+    "binder_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "pass169_terminal_contract_verified": false
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "next_transition": "PASS169_TERMINAL_REVERSE_AND_CROSS_ARCHITECTURE_CLOSURE"
+}

@@ -1,0 +1,116 @@
+name: Pass 219 I152 Fixed Hash216 Manifold Exhaustion
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i152-fixed-hash216-manifold-exhaustion
+    paths:
+      - 'contracts/pass219/PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION_1_0.json'
+      - 'docs/pass219/PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION_1_0.md'
+      - 'hhs_runtime/pass219/fixed_cardinality_optimization.py'
+      - 'benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py'
+      - 'tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py'
+      - '.github/workflows/pass219-i152-fixed-hash216-manifold-exhaustion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-manifold-exhaustion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse exact I152 surfaces
+        run: |
+          python -m py_compile hhs_runtime/pass219/fixed_cardinality_optimization.py
+          python -m py_compile benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py
+
+      - name: Validate fixed cardinalities and exact ratio boundary
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i152_fixed_manifold_exhaustion.py
+
+      - name: Emit fixed-manifold exhaustion benchmark
+        run: |
+          PYTHONPATH=. python benchmarks/pass219/pass219_i152_fixed_manifold_exhaustion_benchmark.py \
+            artifacts/pass219/i152/fixed_manifold_exhaustion_benchmark.json
+          cat artifacts/pass219/i152/fixed_manifold_exhaustion_benchmark.json
+
+      - name: Enforce I152 contract boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              'contracts/pass219/PASS_219_I152_FIXED_HASH216_WORK_MANIFOLD_EXHAUSTION_1_0.json'
+          ).read_text(encoding='utf-8'))
+          bench = json.loads(Path(
+              'artifacts/pass219/i152/fixed_manifold_exhaustion_benchmark.json'
+          ).read_text(encoding='utf-8'))
+
+          target = 72 ** 42
+          working = 3 * (72 ** 72)
+          routes = 3 * (72 ** 30)
+          bound = target * 7 // 81
+
+          assert contract['fixed_cardinalities']['target_resolution']['exact_cardinality_decimal'] == str(target)
+          assert contract['fixed_cardinalities']['hash216_working_manifold']['exact_cardinality_decimal'] == str(working)
+          assert contract['fixed_cardinalities']['route_multiplicity_per_target_block']['exact_cardinality_decimal'] == str(routes)
+          assert contract['exhaustion_gate']['maximum_effective_work_decimal'] == str(bound)
+
+          fixed = bench['fixed_cardinalities']
+          assert fixed['target']['exact_cardinality_decimal'] == str(target)
+          assert fixed['working_manifold']['exact_cardinality_decimal'] == str(working)
+          assert fixed['route_multiplicity_per_target_block']['exact_cardinality_decimal'] == str(routes)
+          assert fixed['exhaustion_budget']['max_effective_work_decimal'] == str(bound)
+
+          assert bench['factorization']['working_equals_target_times_route_multiplicity'] is True
+          assert all(row['roundtrip_equal'] for row in bench['factorization']['route_roundtrip_cases'])
+          assert bench['exhaustion_gate']['boundary']['within_81_over_7_exhaustion_budget'] is True
+          assert bench['exhaustion_gate']['one_unit_over']['within_81_over_7_exhaustion_budget'] is False
+
+          local = bench['inherited_local_observations']
+          assert local['raw5184_audio']['locally_meets_81_over_7'] is False
+          assert local['cross_modal_reversible_state']['locally_meets_81_over_7'] is True
+
+          full = bench['full_four_lane_exhaustion']
+          assert full['status'] == 'VALIDATION_REQUIRED'
+          assert full['physical_enumeration_executed'] is False
+
+          assert all(value is False for value in bench['authority'].values())
+          assert bench['result'] == 'PASS'
+          PY
+
+      - name: Publish I152 summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219/i152/fixed_manifold_exhaustion_benchmark.json', encoding='utf-8'))
+          print('## Pass 219 I152 fixed cardinality optimization')
+          print('- Target resolution: 72^42 = 5184^21 (fixed)')
+          print('- Hash216 working manifold: 3*72^72 (fixed)')
+          print('- Route multiplicity per target block: 3*72^30')
+          print('- Exhaustion gate: effective_work*81 <= target*7')
+          print('- Full four-lane exhaustion status: VALIDATION_REQUIRED')
+          print('- Physical full-manifold enumeration claimed: NO')
+          print('- Canonical VM81/Hash72/Hash216 authority changed: NO')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i152-fixed-hash216-manifold-exhaustion-${{ github.sha }}
+          path: artifacts/pass219/i152/fixed_manifold_exhaustion_benchmark.json
+          if-no-files-found: error
+          retention-days: 90

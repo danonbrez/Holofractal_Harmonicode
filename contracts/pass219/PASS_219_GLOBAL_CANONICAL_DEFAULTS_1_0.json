@@ -1,0 +1,247 @@
+{
+  "schema": "HHS_PASS219_GLOBAL_CANONICAL_DEFAULTS_V1",
+  "contract_id": "HHS-P219-GLOBAL-CANONICAL-DEFAULTS",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "MANDATORY_CANONICAL_DEFAULT",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "adopted_against_main": "eee4a8d8bb7a89bfe97d61e52c3c2cf7187825bb",
+  "pass_semantics": {
+    "numbered_pass_is_additive_system_version": true,
+    "successful_implementation_must_remain_cumulatively_reachable": true,
+    "standalone_application_classification_allowed": false,
+    "one_off_experiment_classification_allowed": false,
+    "isolated_native_project_substitutes_for_canonical_wiring": false,
+    "unwired_successful_implementation_is_completion": false,
+    "unwired_successful_implementation_classification": "MISSING_CUMULATIVE_EXPOSURE"
+  },
+  "cross_cutting_defaults": {
+    "applies_to_all_applicable_existing_surfaces": true,
+    "applies_to_all_applicable_future_surfaces": true,
+    "retroactive_repair_forward_required": true,
+    "optional": false,
+    "permanent_until_explicit_upgrade_or_deprecation": true,
+    "classes": [
+      "compression",
+      "latency",
+      "caching",
+      "indexing",
+      "memory_efficiency",
+      "branch_prediction",
+      "serialization_efficiency",
+      "security",
+      "cryptographic_integrity",
+      "state_validation",
+      "constraint_enforcement",
+      "exactness_enforcement",
+      "admission_control",
+      "rollback_protection",
+      "deterministic_replay",
+      "data_integrity",
+      "authority_separation"
+    ]
+  },
+  "supersession": {
+    "silence_is_deprecation": false,
+    "omission_is_deprecation": false,
+    "refactoring_is_deprecation": false,
+    "directory_placement_is_deprecation": false,
+    "replacement_requires_explicit_upgrade_or_deprecation": true,
+    "replacement_requires_validation_and_repository_lineage": true
+  },
+  "current_cumulative_binding_census": {
+    "ceiling_pass": 218,
+    "wired_floor_pass": 180,
+    "binding_count": 41,
+    "ordered_bindings": [
+      "218",
+      "217",
+      "216",
+      "215",
+      "214",
+      "213",
+      "212",
+      "211",
+      "210",
+      "209",
+      "208",
+      "207",
+      "206",
+      "205",
+      "204",
+      "203",
+      "202",
+      "201",
+      "200c",
+      "200b",
+      "200a",
+      "199",
+      "198",
+      "197",
+      "196",
+      "195",
+      "194",
+      "193",
+      "192",
+      "191",
+      "190",
+      "189",
+      "188",
+      "187",
+      "186",
+      "185",
+      "184",
+      "183",
+      "182",
+      "181",
+      "180"
+    ],
+    "pass200_variants_are_distinct_bindings": true,
+    "missing_numeric_pass_in_coverage_is_regression": true,
+    "i142_repair_forward": {
+      "iteration": 142,
+      "pass185": "CUMULATIVE_PRODUCTION_CLOSURE_EXPOSED",
+      "pass184": "PORTABLE_RUNTIME_AUTHORITY_BOUND"
+    },
+    "i143_repair_forward": {
+      "iteration": 143,
+      "pass183": "PROBABILITY_HYDRATION_BOUND_WITH_HASH72_THEN_HASH216_ARCHIVAL_ORDER",
+      "legacy_native_hash_witness": "NONCANONICAL_COMPATIBILITY_ONLY"
+    },
+    "i144_repair_forward": {
+      "iteration": 144,
+      "pass182": "UNIVERSAL_MULTIMODAL_HYDRATION_COMPILER_RUNTIME_AND_CUMULATIVE_BINDING",
+      "authority": "SINGLETON_VM81_PROMOTION_ONLY_HASH72_EVIDENCE_HASH216_ARCHIVAL"
+    },
+    "i145_repair_forward": {
+      "iteration": 145,
+      "pass181": "GRAPHICS_HYDRATION_NUCLEUS_CUMULATIVELY_WIRED_NONTERMINAL",
+      "vm81_repair": "CONSTRAINT_FREEZE_AND_ROLLBACK_REQUIRE_INHERITED_VM81_COMMIT",
+      "legacy_direct_promotion": "DISABLED",
+      "remaining_terminal_obligation_count": 3
+    },
+    "i146_repair_forward": {
+      "iteration": 146,
+      "pass180": "APPLICATION_FACTORY_CUMULATIVELY_WIRED_TERMINAL_AFTER_VM81_REPAIR",
+      "vm81_repair": "CREATE_UPSERT_LIFECYCLE_REQUIRE_INHERITED_VM81_COMMIT",
+      "hash72_order": "APPLICATION_RECEIPTS_FOLLOW_VM81_ADMISSION",
+      "remaining_terminal_obligation_count": 0
+    }
+  },
+  "repair_forward": {
+    "wired_but_stale": "REPAIR_FORWARD_REQUIRED",
+    "unwired_successful_implementation": "MISSING_CUMULATIVE_EXPOSURE",
+    "missing_required_implementation": "MISSING_IMPLEMENTATION",
+    "no_grandfather_bypass": true
+  },
+  "known_repair_forward_debt": [
+    {
+      "pass": 181,
+      "contract_id": "HHS-P181-NCSR-GHIR-VM81-H72-H216",
+      "canonical_title": "NATIVE_CINEMATIC_STORY_REEL_GRAPHICS_HYDRATION_RUNTIME",
+      "classification": "WIRED_NONTERMINAL_REPAIR_FORWARD",
+      "cumulative_exposure": true,
+      "mandatory_repair_forward": true,
+      "remaining_terminal_obligations": [
+        "DETERMINISTIC_COLD_START_NATIVE_RECONSTRUCTION_REPLAY",
+        "THREEJS_EDITOR_PREVIEW_ENHANCEMENT_NO_FINAL_FRAME_AUTHORITY",
+        "FULL_90_SECOND_INVERSE_RENDER_AND_ONE_CLICK_EVIDENCE_EXPORT"
+      ],
+      "terminal_completion_claimed": false
+    },
+    {
+      "pass": 157,
+      "contract_id": "HHS-P157-PPF-MPTC",
+      "canonical_title": "PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR",
+      "native_project": "native_projects/hhs_pass157_ppf_mptc",
+      "classification": "MISSING_CUMULATIVE_EXPOSURE",
+      "mandatory_repair_forward": true,
+      "native_project_is_not_canonical_substitute": true
+    }
+  ],
+  "authority": {
+    "singleton_vm81_admission_and_commit_remains_inherited": true,
+    "hash72_execution_evidence_remains_inherited": true,
+    "hash216_archival_identity_remains_inherited": true,
+    "exact_symbolic_authority_required": true,
+    "alternate_mutation_authority_created": false
+  },
+  "executable_enforcement": {
+    "c_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h",
+    "cpp_header": "hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.hpp",
+    "c_implementation": "hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc",
+    "validator": "tools/validate_pass219_global_canonical_defaults.py",
+    "c_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.c",
+    "cpp_test": "tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp",
+    "workflow": ".github/workflows/pass219-global-canonical-defaults.yml",
+    "aggregate_exact_abi_required": true,
+    "global_latency_policy_header": "hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h",
+    "global_latency_policy_implementation": "hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc",
+    "global_latency_registration": "hhs_runtime/hhs_pass219_global_latency_policy_registration_v1.py"
+  },
+  "governing_invariant": [
+    "NO_SUCCESSFUL_IMPLEMENTATION_IS_ORPHANED",
+    "NO_APPLICABLE_CANONICAL_OPTIMIZATION_IS_OPTIONAL",
+    "NO_APPLICABLE_CANONICAL_SECURITY_OR_CONSTRAINT_MECHANISM_IS_BYPASSED",
+    "NO_PREVIOUS_VERSION_IS_GRANDFATHERED_AROUND_A_LATER_GLOBAL_DEFAULT",
+    "ALL_SUCH_GAPS_ARE_REPAIRED_FORWARD",
+    "ONLY_EXPLICIT_UPGRADE_OR_DEPRECATION_MAY_CHANGE_THE_DEFAULT",
+    "ALL_OPTIMIZATIONS_ARE_MULTIMODAL_BY_DEFAULT",
+    "COMPATIBLE_UNTESTED_TARGETS_ARE_VALIDATION_REQUIRED",
+    "COMPATIBLE_SAFE_BENEFICIAL_TARGETS_ARE_GENERALIZE_REQUIRED",
+    "LOCALITY_REQUIRES_AN_EVIDENCED_BOUNDED_EXCEPTION",
+    "VALIDATED_25_OVER_3_LATENCY_POLICY_IS_MANDATORY_FOR_COMPATIBLE_VM81_SURFACES"
+  ],
+  "multimodal_optimization_generalization": {
+    "contract_id": "HHS-P219-MULTIMODAL-OPTIMIZATION-GENERALIZATION",
+    "mandatory": true,
+    "all_optimizations_multimodal_by_default": true,
+    "automatic_compatible_target_discovery": true,
+    "compatible_untested_targets": "VALIDATION_REQUIRED",
+    "compatible_safe_beneficial_targets": "GENERALIZE_REQUIRED",
+    "locality_requires_evidenced_bounded_exception": true,
+    "no_new_user_directive_required_per_modality": true,
+    "canonical_descriptor_schema": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1"
+  },
+  "validated_global_latency_policy": {
+    "contract_id": "HHS_PASS219_GLOBAL_LATENCY_POLICY_25_3_1_0",
+    "mandatory": true,
+    "exact_quantum_ms": {
+      "numerator": 25,
+      "denominator": 3
+    },
+    "exact_identity": [
+      "d^4/c^2 = 25/3",
+      "(b^2+c^2)^2/(a^2+b^2) = 25/3"
+    ],
+    "fps_tiers": [
+      120,
+      60,
+      30
+    ],
+    "tier_multipliers": [
+      1,
+      2,
+      4
+    ],
+    "window_policy": {
+      "mean_max_tier": 1,
+      "p95_max_tier": 2,
+      "max_max_tier": 3
+    },
+    "exact_semantic_equality_required_for_latency_route_selection": true,
+    "timing_noncanonical": true,
+    "performance_guarantee": false,
+    "unmet_budget_preserves_correct_route": true,
+    "singleton_vm81_authority_preserved": true,
+    "hash72_hash216_authority_preserved": true,
+    "validated_run": 33536893755,
+    "validation_classification": "GLOBAL_LATENCY_POLICY_PROMOTION_SUPPORTED",
+    "compatible_existing_surfaces_repair_forward_required": true,
+    "compatible_future_surfaces_must_register_guard": true,
+    "promotion_integration_run": 33537679938,
+    "promotion_integration_exact_job": 99955888052,
+    "promotion_integration_synthetic_job": 99955887958,
+    "exact_and_synthetic_green": true
+  }
+}

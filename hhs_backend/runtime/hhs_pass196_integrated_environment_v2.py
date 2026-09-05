@@ -27,9 +27,10 @@ from hhs_backend.runtime.hhs_pass196_integrated_environment_v1 import (
     _files,
     _pass,
     _roles,
-    _snapshot,
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime import hhs_pass196_integrated_environment_v1 as _pass196_v1
+from hhs_runtime.hhs_pass219_global_raw5184_serialization_hydration_v1 import serialize_raw5184_bytes
 from hhs_runtime.pass163.vmrc import SNAPSHOT_BYTES
 from hhs_runtime.pass174.runtime import Hash216Array
 from hhs_runtime.pass174.storage import PersistentEncryptedVectorStore
@@ -37,6 +38,11 @@ from hhs_runtime.pass174.storage import PersistentEncryptedVectorStore
 VERSION = "HHS_PASS_196_SERIALIZED_PARALLEL_INTEGRATED_ENVIRONMENT_V2_I130_REPAIR"
 REPAIR_SCHEMA = "HHS_PASS_196_I130_REPAIR_V1"
 VECTOR_OPERATION_KEY = "pass196.repository.integration"
+
+
+def _snapshot(payload: dict[str, Any]) -> bytes:
+    """Hydrate the active V2 raw5184 snapshot without mutating frozen V1 provenance."""
+    return serialize_raw5184_bytes(_pass196_v1._snapshot(payload))
 
 
 def _require_hash72_receipt(value: str | None) -> str:

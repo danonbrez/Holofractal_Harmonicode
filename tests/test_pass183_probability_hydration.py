@@ -101,7 +101,11 @@ def test_stochastic_manifest_and_replay_are_deterministic():
     first,_=runtime();second,_=runtime();kwargs=dict(adapter="weighted_choice",equation=ADAPTER_EQUATIONS["weighted_choice"],manifest=CASES["weighted_choice"],seed_class="EXPLICIT_USER_SEED",seed="00112233445566778899aabbccddeeff")
     left=first.execute(**kwargs);right=second.execute(**kwargs)
     assert left["evaluation"]["adapter_domain"]==right["evaluation"]["adapter_domain"]
-    assert left["evaluation"]["hash216"]["logical_identity_sha256"]==right["evaluation"]["hash216"]["logical_identity_sha256"]
+    assert left["evaluation"]["hash216"]["canonical_archival"] is False
+    assert left["evaluation"]["hash216"]["authority_use_prohibited"] is True
+    assert left["hash216_archive"]["archive_root_sha256"]==right["hash216_archive"]["archive_root_sha256"]
+    assert left["hash216_archive"]["created_after_hash72_closure"] is True
+    assert left["hash216_archive"]["mutation_authority"] is False
     assert first.replay()["classification"]=="HHS_PASS_183_DETERMINISTIC_REPLAY_VERIFIED" and second.replay()["replay_root_sha256"]==first.replay()["replay_root_sha256"]
 
 def test_receipt_tamper_is_detected():
@@ -117,4 +121,11 @@ def test_durable_jobs_support_success_failure_cancel_and_retry(tmp_path:Path):
 def test_default_runtime_uses_genuine_pass174_when_repository_available():
     instance=ProbabilityHydrationRuntime();assert isinstance(instance.authority,ProbabilityVM81Authority)
     result=instance.execute(adapter="binomial",equation=ADAPTER_EQUATIONS["binomial"],manifest={"n":4,"p":"1/2"})
-    assert result["authority_receipt"]["payload"]["vmrc_operation_class"]=="VMRC_COMMIT" and instance.replay()["authority_replay"]["singleton_vm81"] is True
+    assert result["authority_receipt"]["payload"]["vmrc_operation_class"]=="VMRC_COMMIT"
+    assert result["authority_receipt"]["payload"]["hash216_input_authority"] is False
+    assert result["hash216_archive"]["created_after_hash72_closure"] is True
+    assert result["hash216_archive"]["mutation_authority"] is False
+    replay=instance.replay()
+    assert replay["authority_replay"]["singleton_vm81"] is True
+    assert replay["hash216_archival_only"] is True
+    assert replay["hash216_precommit_authority"] is False

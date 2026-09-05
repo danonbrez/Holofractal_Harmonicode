@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_169_CONSTRAINT_GRAPH_V3",
+  "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+  "graph_policy": "ORDERED_SOURCE_PRESERVING_SIMULTANEOUS_CONSTRAINT_MEMBRANE",
+  "canonical_source": {
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "provenance_verified": true
+  },
+  "required_global_constraints": ["P^4=AB", "Delta=P^2-pq", "u^72=1", "scalar_zero!=scalar_one", "O!=Pi", "ordered_xy_not_commuted_to_yx"],
+  "typed_boundary_constraints": ["0=x+y+z+w=I+I^3", "u^0=xy/zw=P^2-pq=a^2/Delta=0^4", "EDGE8:CLOSURE_EQ"],
+  "frozen_pass219_typed_graph": {"join_count": 10, "proved": 10, "unresolved": 0, "rejected": 0, "source": "PASS_219_I161_FEATURE_VALIDATION_33823367993.json"},
+  "sealed_candidate_runtime_execution": {"vm81_admission": true, "atomic_commit": true, "hash72_receipt": true, "hash216_proof_identity": true, "deterministic_replay": true, "source": "PASS_219_I162_FEATURE_VALIDATION_33836940374.json"},
+  "reverse_crossarch": {"reverse_verified": true, "interpreter_compiler_equal": true, "cross_architecture_identical": true, "source": "PASS_219_I163_FEATURE_VALIDATION_33866718853.json"},
+  "general_runtime_binding": {
+    "verified": true,
+    "receipt": "HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json",
+    "constraint_graph_hash216": "WtzLDf)ztz(()T9TDElNLSLMx3l1499M8eJ(VPCT3yTKBAJLlVQq3yTX2-+<gc5>OTF*IwerpMqN4ueHyCGaUI(Im>Pgs1JYsYw6Q5LaSPs(H>JxJLFUKFrb9<aGQEDSFCSIMn(!kcBMLFoMRdi6(ULSIPbVIsO!u-QrS+RQKg8r>Q5q9/340fzD)ojVvI3FtO0V!C8YI*?t(?BdSRrhqvQ1",
+    "operation_verified_mask": 4095
+  },
+  "canonical_corpus_bound_complete_graph": true,
+  "general_runtime_binding_verified": true,
+  "pass169_terminal_contract_verified": true,
+  "reason": "PASS169_TERMINAL_CLOSURE_VERIFIED"
+}

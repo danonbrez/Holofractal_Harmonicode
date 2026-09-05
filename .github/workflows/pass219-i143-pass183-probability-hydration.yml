@@ -1,0 +1,181 @@
+name: Pass 219 I143 Pass 183 Probability Hydration Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-iteration143-pass183-probability-hydration-reconciliation
+    paths:
+      - 'docs/pass183/**'
+      - 'docs/pass219/PASS_219_I143_INHERITED_PASS183_PROBABILITY_HYDRATION_BINDING.md'
+      - 'docs/operations/restart/PASS_219_I143_PASS183_PROBABILITY_HYDRATION_RESTART.md'
+      - 'hhs_runtime/pass183/**'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i143_pass183.py'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass183_1_43.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass183_1_43.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'native_projects/hhs_pass183_probability_hydration/**'
+      - 'hhs_backend/api/probability_hydration_routes.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'hhs_gui/runtime_os/workspace/Pass183ProbabilityHydrationPanel.tsx'
+      - 'hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx'
+      - 'tests/test_pass183_probability_hydration.py'
+      - 'tests/test_pass183_api_and_studio.py'
+      - 'tests/pass183_acceptance_harness.py'
+      - 'tests/pass219/test_pass219_cumulative_pass183_membrane_i143.py'
+      - 'tests/pass219/test_pass219_inherited_pass183_1_43.*'
+      - 'contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json'
+      - 'hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc'
+      - 'tools/validate_pass219_global_canonical_defaults.py'
+      - 'tests/pass219/test_pass219_global_canonical_defaults_1_0.*'
+      - '.github/workflows/pass219-i143-pass183-probability-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-i143-pass183-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass183-i143:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '20'
+      HHS_PASS183_JOB_DIR: '/tmp/hhs-pass183-jobs'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify inherited lineage
+        run: |
+          git merge-base --is-ancestor 4a2797ffcf75e29b616ca37b3183ea3521e03a39 HEAD
+          git merge-base --is-ancestor 33004d347337cf8c57f9772609806e49503c1bd0 HEAD
+          test "$(git rev-parse 4a2797ffcf75e29b616ca37b3183ea3521e03a39:hhs_runtime/pass183/core.py)" = "258792532a2475dbba4d439d45b6090dabbc22cd"
+          test "$(git rev-parse 4a2797ffcf75e29b616ca37b3183ea3521e03a39:native_projects/hhs_pass183_probability_hydration/src/hhs_p183.c)" = "eafe99bf3b41ecce2ec21642922d3cefa150939f"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0' requests pytest
+
+      - name: Compile inherited C authority
+        run: timeout 600s bash bin/post_compile
+
+      - name: Run Pass-183 native and Python acceptance
+        run: timeout 1200s bash scripts/test_pass183_probability_hydration.sh
+
+      - name: Run I143 cumulative membrane
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_cumulative_pass_membrane_i143_pass183.py
+          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass183_membrane_i143.py
+
+      - name: Preserve global defaults and multimodal generalization
+        run: |
+          python tools/validate_pass219_global_canonical_defaults.py
+          python tools/validate_pass219_multimodal_optimization_generalization.py
+          python tools/hhs_multimodal_optimization_generalizer.py validate-all
+
+      - name: Compile exact ABI and I143 C/C++ conformance
+        run: |
+          mkdir -p /tmp/pass219-i143
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i143/exact.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass186_x64_vm81_q144/include -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c -o /tmp/pass219-i143/pass186.o
+          gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-i143/registers.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass183_probability_hydration/include -c native_projects/hhs_pass183_probability_hydration/src/hhs_p183.c -o /tmp/pass219-i143/pass183.o
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass183_1_43.c /tmp/pass219-i143/exact.o /tmp/pass219-i143/pass186.o /tmp/pass219-i143/registers.o /tmp/pass219-i143/pass183.o -o /tmp/pass219-i143/pass183-c
+          /tmp/pass219-i143/pass183-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass183_1_43.cpp /tmp/pass219-i143/exact.o /tmp/pass219-i143/pass186.o /tmp/pass219-i143/registers.o /tmp/pass219-i143/pass183.o -o /tmp/pass219-i143/pass183-cpp
+          /tmp/pass219-i143/pass183-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-i143/exact.o /tmp/pass219-i143/pass186.o /tmp/pass219-i143/registers.o -o /tmp/pass219-i143/defaults-c
+          /tmp/pass219-i143/defaults-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-i143/exact.o /tmp/pass219-i143/pass186.o /tmp/pass219-i143/registers.o -o /tmp/pass219-i143/defaults-cpp
+          /tmp/pass219-i143/defaults-cpp
+
+      - name: Typecheck and build current Runtime OS
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+
+      - name: Smoke exact production probability workflow
+        run: |
+          timeout 180s python - <<'PY'
+          import json, os, socket, subprocess, sys, time, urllib.request
+          sock=socket.socket();sock.bind(("127.0.0.1",0));port=sock.getsockname()[1];sock.close()
+          process=subprocess.Popen([sys.executable,"-m","uvicorn","hhs_backend.runtime_os_application_server:app","--host","127.0.0.1","--port",str(port),"--workers","1","--log-level","warning"],env=os.environ.copy())
+          base=f"http://127.0.0.1:{port}"
+          def request(path,payload=None):
+              data=None if payload is None else json.dumps(payload).encode()
+              req=urllib.request.Request(base+path,data=data,headers={"content-type":"application/json","accept":"application/json"})
+              with urllib.request.urlopen(req,timeout=10) as response:return json.loads(response.read())
+          try:
+              deadline=time.monotonic()+90;last=None
+              while time.monotonic()<deadline:
+                  if process.poll() is not None:raise SystemExit(f"server exited:{process.returncode}")
+                  try:
+                      status=request("/api/v1/probability/status")
+                      if status.get("hash216_archival_only") is True:break
+                  except Exception as exc:last=exc;time.sleep(.5)
+              else:raise SystemExit(f"status timeout:{last}")
+              payload={"adapter":"binomial","equation":"sum_(k=0..n)(C(n,k)*p^k*(1-p)^(n-k))=1","manifest":{"n":4,"p":"1/2"},"seed_class":"DETERMINISTIC_ENUMERATION","modulus":1259713,"timeout_ms":30000}
+              job=request("/api/v1/probability/execute",payload)
+              assert job["state"]=="SUCCEEDED"
+              result=job["result"]
+              assert len(result["receipt"]["receipt_hash72"])==72
+              archive=result["hash216_archive"]
+              assert archive["created_after_hash72_closure"] is True
+              assert archive["mutation_authority"] is False
+              assert len(archive["combined_hash216"])==216
+              replay=request("/api/v1/probability/replay",{})
+              assert replay["receipt_chain_valid"] is True
+              assert replay["hash216_archival_only"] is True
+              print(json.dumps({"classification":"HHS_PASS183_I143_PRODUCTION_PROBABILITY_WORKFLOW_VERIFIED","receipt_hash72":result["receipt"]["receipt_hash72"],"hash216_archive_root":archive["archive_root_sha256"]},sort_keys=True))
+          finally:
+              if process.poll() is None:
+                  process.terminate()
+                  try:process.wait(timeout=10)
+                  except subprocess.TimeoutExpired:process.kill();process.wait(timeout=5)
+          PY
+
+      - name: Verify generated Pass-183 completion evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('native_projects/hhs_pass183_probability_hydration/evidence/PASS_183_COMPLETION.json')
+          result=json.loads(path.read_text())
+          assert result['classification']=='HHS_PASS_183_PROBABILITY_EQUATION_HYDRATION_MEMBRANE_RUNTIME_VERIFIED'
+          assert result['authority_mode']=='GENUINE_PASS174_VM81'
+          assert all(result['checks'].values())
+          assert result['replay']['hash216_archival_only'] is True
+          assert result['replay']['hash216_precommit_authority'] is False
+          print(json.dumps({'classification':result['classification'],'receipt_sha256':result['receipt_sha256'],'archive_root':result['replay']['hash216_archive_root_sha256']},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-i143-pass183-probability-hydration
+          path: |
+            native_projects/hhs_pass183_probability_hydration/evidence/PASS_183_COMPLETION.json
+          if-no-files-found: warn
+          retention-days: 30

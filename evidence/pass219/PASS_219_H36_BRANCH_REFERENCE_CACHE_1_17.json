@@ -1,0 +1,111 @@
+{
+  "schema": "HHS_PASS219_H36_BRANCH_REFERENCE_CACHE_1_17_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "H36_BRANCH_REFERENCE_CACHE_1_17",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_main": "735b79633f5e657b70c6b452296ebc4ba788785e",
+  "branch": "agent/pass219-h36-fibonacci-branch-reference-cache-runtime",
+  "implementation_head": "9026ca84998468f5f20add4661e62dd59effcbab",
+  "validation": {
+    "workflow": "Pass 219 Harmonic36 Nested VM",
+    "run": 33751463158,
+    "job": 100635741293,
+    "conclusion": "SUCCESS",
+    "artifact_id": 9891731145,
+    "artifact_sha256": "ec59b68200acee8f94e583caf41c7efd2ca68c0742ed5966bc1c372e1b2a4358"
+  },
+  "runtime": {
+    "version": "1.17",
+    "capacity": 5184,
+    "tiles144": 36,
+    "lanes": 4,
+    "cells_per_lane": 36,
+    "frozen_parent_entries": 4,
+    "append_only_branch_forking": true,
+    "direct_parent_reference": true,
+    "contiguous_fibonacci_identity_index": true,
+    "adaptive_composition_receipt_memoization": true,
+    "memo_thresholds": [
+      3172,
+      6254,
+      12580,
+      19774,
+      35269,
+      87572
+    ]
+  },
+  "production_measurement": {
+    "platform": "linux-x86_64",
+    "samples": 7,
+    "calibration_repeats": 5,
+    "required_beneficial_repeats": 4,
+    "all_paths_beneficial_repeats": 5,
+    "lookup_144": {
+      "parent_cache_total_ns": 32626755,
+      "direct_reference_total_ns": 511161,
+      "speedup_x1000": 63828
+    },
+    "lookup_5184": {
+      "parent_cache_total_ns": 32657051,
+      "direct_reference_total_ns": 545342,
+      "speedup_x1000": 59883
+    },
+    "equivalence_144": {
+      "full_scan_total_ns": 65699,
+      "fibonacci_bucket_total_ns": 28725,
+      "speedup_x1000": 2287
+    },
+    "equivalence_5184": {
+      "full_scan_total_ns": 1865672,
+      "fibonacci_bucket_total_ns": 943222,
+      "speedup_x1000": 1977
+    },
+    "composition_144": {
+      "computed_total_ns": 136306,
+      "memoized_total_ns": 51398,
+      "speedup_x1000": 2651
+    },
+    "all_repeat_stability_pass": true
+  },
+  "correctness": {
+    "strict_c11_exact_abi_compile": true,
+    "branch_count_144_validated": true,
+    "branch_count_5184_validated": true,
+    "frozen_parent_byte_equal": true,
+    "direct_reference_returns_parent_address": true,
+    "fibonacci_additive_subdivision_exact": true,
+    "equivalence_bucket_exact": true,
+    "compact_index_tamper_rejected": true,
+    "branch_receipt_tamper_rejected": true,
+    "memo_receipt_tamper_rejected": true,
+    "parent_signature_tamper_rejected": true,
+    "reverse_to_root_exact": true,
+    "memo_threshold_provenance_preserved_after_growth": true,
+    "full_capacity_boundary_fail_closed": true
+  },
+  "repair_forward": {
+    "initial_production_run": 33751064423,
+    "initial_lookup_paths_green": true,
+    "initial_equivalence_5184_speedup_x1000": 546,
+    "initial_composition_144_speedup_x1000": 1000,
+    "repair": [
+      "REPLACE_LINKED_FIBONACCI_HOT_LOOKUP_WITH_CONTIGUOUS_TOPOLOGY_INDEX",
+      "REMOVE_REDUNDANT_COMPOSITION_RECOMPUTATION_ON_VALID_MEMO_HIT"
+    ],
+    "repaired_exact_head_run": 33751463158,
+    "repaired_all_paths_green": true
+  },
+  "authority": {
+    "candidate_reference_only": true,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false,
+    "canonical_persistence": false,
+    "floating_point": false,
+    "vm81_admission_bypass": false
+  },
+  "generalization": {
+    "linux_x86_64": "GENERALIZE_REQUIRED",
+    "cross_platform": "VALIDATION_REQUIRED"
+  }
+}

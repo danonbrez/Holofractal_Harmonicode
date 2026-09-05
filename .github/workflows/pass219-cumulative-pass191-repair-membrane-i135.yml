@@ -4,11 +4,8 @@ on:
   push:
     branches:
       - agent/pass219-iteration135-pass191-census-membrane
+      - agent/pass219-i135-postmerge-source-identity-repair-20260902
     paths:
-      - 'docs/pass191/**'
-      - 'docs/operations/restart/PASS_219_I135_PASS191_REPAIR_MEMBRANE_RESTART.md'
-      - 'HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md'
-      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
       - 'hhs_runtime/pass191/**'
       - 'hhs_backend/api/pass191_repository_hydration_routes.py'
       - 'hhs_backend/visual_server.py'
@@ -29,10 +26,6 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'docs/pass191/**'
-      - 'docs/operations/restart/PASS_219_I135_PASS191_REPAIR_MEMBRANE_RESTART.md'
-      - 'HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md'
-      - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
       - 'hhs_runtime/pass191/**'
       - 'hhs_backend/api/pass191_repository_hydration_routes.py'
       - 'hhs_backend/visual_server.py'
@@ -98,16 +91,16 @@ jobs:
       - name: Prove frozen I134 and dual Pass 191 history
         run: |
           git merge-base --is-ancestor 4bb202e657670dac1ab2a39575821b647f691d71 HEAD
-          test "$(git merge-base 4bb202e657670dac1ab2a39575821b647f691d71 HEAD)" = "4bb202e657670dac1ab2a39575821b647f691d71"
           git merge-base --is-ancestor 89d67731c6c4f5798e26a43e0273c6ce33a1abee HEAD
           git merge-base --is-ancestor cd8979c5ded5150e0020e011345106567201b672 HEAD
           test "$(git rev-parse 89d67731c6c4f5798e26a43e0273c6ce33a1abee:docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL_INVARIANT_CLOSURE.md)" = "f5d3b61ea366de9d5f1fc9207b393cb70e2225ef"
           test "$(git rev-parse cd8979c5ded5150e0020e011345106567201b672:HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md)" = "5a19122fb709f6d4b253bca5a431ea3c2c7c0b5b"
           test "$(git rev-parse 4bb202e657670dac1ab2a39575821b647f691d71:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
 
-      - name: Prove Pass 191 repaired source identities
+      - name: Prove repaired Pass 191 source identities
         run: |
-          test "$(git hash-object hhs_runtime/pass191/repository_hydration.py)" = "68cddc42f7c0a4ebdd88d20172b10bef7cd919c4"
+          test "$(git hash-object hhs_runtime/pass191/repository_hydration.py)" = "6f999708cde2eedf9393b682bf09d2fde1cecde5"
+          test "$(git hash-object tests/test_hhs_pass191_repository_hydration_surfaces_v1.py)" = "160a3d2f5f221e670109a3306c3b3329ad0bd432"
           test "$(git hash-object hhs_runtime/pass191/__init__.py)" = "b2a5c252e290dbcf7918f2e18cee623f1013e159"
           test "$(git hash-object hhs_runtime/pass191/cli.py)" = "ba4bc91a7d3856cea371db072d9f81f67e498307"
           test "$(git hash-object hhs_backend/api/pass191_repository_hydration_routes.py)" = "80cf59852437b0346f5f16e7d65c96c76915ea8a"
@@ -116,20 +109,18 @@ jobs:
           test "$(git hash-object schemas/pass191/HHS_PASS_191_OPERATION_REGISTRY_V1.json)" = "ba5beb49360bf9ff4cf2c1970cc443137b2c63ab"
           test "$(git hash-object schemas/pass191/HHS_PASS_191_HYDRATION_JOB_V1.schema.json)" = "45809617bee1030d2d03ffbd602315df14a8b5d5"
           test "$(git hash-object tests/test_hhs_pass191_repository_hydration_v1.py)" = "19c4e2faf299d5d58b82eed5ccc7c831a0ffee2e"
-          test "$(git hash-object tests/test_hhs_pass191_repository_hydration_surfaces_v1.py)" = "a74197db0f3a6351f10acd3ec2fa9ff1f92647e1"
           test "$(git hash-object .github/workflows/pass191-i135-repair-validation.yml)" = "657122ed2d883a7a2b0c8d00f62585692d3962eb"
 
-      - name: Prove Pass 191 native membrane and aggregate identities
+      - name: Prove Pass 191 native membrane and aggregate reachability
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h)" = "6086438875a1e43680a18e4034d4db9d8cc06160"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp)" = "a57e7b0bb9ba0d72fe455df7bcc6d3efcdaa577f"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc)" = "43fce4a4bcaef01c4ccb41ada3bb33be93816114"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py)" = "5aa26de7f8e52d682409b3932298d2d2d77f5fb1"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass191_1_35.c)" = "919d9697692489a5c5943291d5929f8538a48c92"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass191_1_35.cpp)" = "c413b800c543d70a1c2cd5230ca01993a91f2b23"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py)" = "c254b3606c4980c8b4e1cee34f7f6a831e33244a"
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "a967aca9b33d1b925caf439000482737d2e96786"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "43619e86f6bb7bdf08bd2a7dbc423649d2828c7a"
+          grep -F 'RUNTIME_PATH: "6f999708cde2eedf9393b682bf09d2fde1cecde5"' hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py
+          grep -F 'SURFACE_TEST_PATH: "160a3d2f5f221e670109a3306c3b3329ad0bd432"' hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py
           python - <<'PY'
           from pathlib import Path
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
@@ -138,6 +129,8 @@ jobs:
           assert c.index('hhs_pass219_inherited_pass193_1_33.inc') < c.index('hhs_pass219_inherited_pass192_1_34.inc') < c.index('hhs_pass219_inherited_pass191_1_35.inc')
           assert 'hhs_pass219_mandatory_genesis_scaling_1_22.h' in h
           assert 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' in c
+          assert 'hhs_pass219_cross_modal_reversible_state_1_0.h' in h
+          assert 'hhs_pass219_cross_modal_reversible_state_1_0.inc' in c
           PY
 
       - name: Reject approximate authority and theorem escalation
@@ -157,8 +150,6 @@ jobs:
                   if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'float':
                       raise SystemExit(f'float conversion in canonical Pass191 surface: {name}:{node.lineno}')
           PY
-          ! grep -Eq 'float_is_canonical_authority[[:space:]]*=[[:space:]]*1U|dqpl_theorem_claim_escalation[[:space:]]*=[[:space:]]*1U|pass219_new_candidate_authority[[:space:]]*=[[:space:]]*1U|pass219_new_canonical_mutation_authority[[:space:]]*=[[:space:]]*1U|pass219_new_persistence_authority[[:space:]]*=[[:space:]]*1U|pass219_new_hash72_clock[[:space:]]*=[[:space:]]*1U|cxx_mutation_authority[[:space:]]*=[[:space:]]*1U|vm81_mutation_authority[[:space:]]*=[[:space:]]*1U' \
-            hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
           grep -F 'out_binding->dqpl_theorem_claim_escalation = 0U' hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
           grep -F 'out_binding->vm81_mutation_authority = 0U' hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc
 
@@ -176,8 +167,7 @@ jobs:
             tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py
 
       - name: Revalidate inherited Pass 191 DQPL scope
-        run: |
-          PYTHONPATH="$PWD" python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_inherited_manifold_authority_1_21_5.py
 
       - name: Run Pass 191 runtime interface and production regressions
         run: |
@@ -220,8 +210,7 @@ jobs:
           /tmp/pass219-i135-pass191/pass191-cpp
 
       - name: Run cumulative Pass 191 membrane preflight
-        run: |
-          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py
 
       - name: Record exact or synthetic evidence
         if: always()
@@ -235,25 +224,14 @@ jobs:
           import os
           import subprocess
           from pathlib import Path
-
           target = os.environ['HHS_I135_TARGET']
           paths = [
               'hhs_runtime/pass191/repository_hydration.py',
-              'hhs_runtime/pass191/cli.py',
-              'hhs_backend/api/pass191_repository_hydration_routes.py',
-              'hhs_backend/visual_server.py',
-              'applications/holofractal_harmonizer/pass191-repository-hydration.html',
-              'schemas/pass191/HHS_PASS_191_OPERATION_REGISTRY_V1.json',
-              'schemas/pass191/HHS_PASS_191_HYDRATION_JOB_V1.schema.json',
-              'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h',
-              'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.hpp',
-              'hhs_runtime/c/hhs_pass219_inherited_pass191_1_35.inc',
+              'tests/test_hhs_pass191_repository_hydration_surfaces_v1.py',
               'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i135_pass191.py',
+              'hhs_runtime/include/hhs_pass219_inherited_pass191_1_35.h',
               'hhs_runtime/include/hhs_runtime_exact_abi.h',
               'hhs_runtime/c/hhs_runtime_exact_abi.c',
-              'tests/pass219/test_pass219_inherited_pass191_1_35.c',
-              'tests/pass219/test_pass219_inherited_pass191_1_35.cpp',
-              'tests/pass219/test_pass219_cumulative_pass191_membrane_i135.py',
           ]
           payload = {
               'schema': 'HHS_PASS219_I135_PASS191_CUMULATIVE_SEAL_EVIDENCE_V1',

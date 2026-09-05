@@ -1,0 +1,139 @@
+name: Pass 219 I149 Global Raw5184 Serialization Hydration
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-iteration149-global-raw5184-serialization-hydration
+    paths:
+      - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
+      - 'hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_raw5184_serialization_hydration_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json'
+      - 'docs/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.md'
+      - 'docs/operations/restart/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_RESTART.md'
+      - 'tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c'
+      - '.github/workflows/pass219-i149-global-raw5184-serialization-hydration.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
+      - 'hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_raw5184_serialization_hydration_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json'
+      - 'docs/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.md'
+      - 'docs/operations/restart/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_RESTART.md'
+      - 'tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c'
+      - '.github/workflows/pass219-i149-global-raw5184-serialization-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-i149-global-raw5184:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Parse I149 contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json >/dev/null
+          python - <<'PY'
+          import json
+          p='contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['inherits']['raw_bits'] == 5184
+          assert d['inherits']['raw_bytes'] == 648
+          assert d['global_boundary']['public_vm81_frame_import_le'] == 'MANDATORY_HYDRATED'
+          assert d['global_boundary']['public_vm81_frame_export_le'] == 'MANDATORY_HYDRATED'
+          assert d['hydration']['left_mono'] == ['yx','x+y','xy']
+          assert d['hydration']['right_mono'] == ['wz','z+w','zw']
+          assert d['hydration']['center_closure'] == '0/0=u^0 mod(u^72)=1'
+          assert d['hydration']['runtime_floating_point'] is False
+          PY
+
+      - name: Reject approximate native serialization authority
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_global_raw5184_serialization_hydration_1_0.h             hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h             hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
+
+      - name: Compile cumulative exact ABI
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-i149 artifacts/pass219/i149-global-raw5184
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i149/exact.o
+
+      - name: Run I149 global serialization conformance
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-i149
+          /tmp/pass219-i149/test-i149
+
+      - name: Preserve inherited I148 raw5184 conformance
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-i148
+          /tmp/pass219-i149/test-i148
+
+      - name: Preserve inherited RNA exact frame round-trip
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_transcription_1_10.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-rna
+          /tmp/pass219-i149/test-rna
+
+      - name: Build shared exact runtime
+        run: |
+          set -euo pipefail
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify existing Python exact bridge inherits hydrated boundary
+        run: |
+          HHS_DISABLE_C_AUTOBUILD=1 python - <<'PY'
+          from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactRuntimeBridge
+          raw=bytes(((i*37+11)&255) for i in range(648))
+          assert HHSExactRuntimeBridge.frame_roundtrip(raw) == raw
+          assert HHSExactRuntimeBridge.x86_bytecode_roundtrip(raw) == raw
+          PY
+
+      - name: Emit validation artifact
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('artifacts/pass219/i149-global-raw5184/validation.json')
+          p.write_text(json.dumps({
+            'schema':'HHS_PASS219_I149_GLOBAL_RAW5184_VALIDATION_V1',
+            'raw_bits':5184,
+            'raw_bytes':648,
+            'vm81_cells':81,
+            'pcm64_samples':81,
+            'public_frame_ingress_hydrated':True,
+            'public_frame_egress_hydrated':True,
+            'bitstring_hydrated':True,
+            'bytecode_648_hydrated':True,
+            'exact_bit_identity':True,
+            'scalar_projection_runtime_authority':False,
+            'runtime_floating_point':False,
+            'result':'PASS'
+          }, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i149-global-raw5184-serialization-hydration
+          path: artifacts/pass219/i149-global-raw5184/*.json
+          if-no-files-found: error

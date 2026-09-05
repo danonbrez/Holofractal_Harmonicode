@@ -1,0 +1,59 @@
+{
+  "E5": {
+    "affected_cells": 405,
+    "affected_thread_bitmap": 10386426644918173696,
+    "affected_thread_count": 5,
+    "affected_threads": [
+      32,
+      50,
+      53,
+      60,
+      63
+    ],
+    "full_5184_rewrite": false,
+    "parameter_id": "E5",
+    "raw_thread_id": 32
+  },
+  "P1": {
+    "affected_cells": 810,
+    "affected_thread_bitmap": 13847868465257381889,
+    "affected_thread_count": 10,
+    "affected_threads": [
+      0,
+      40,
+      41,
+      47,
+      48,
+      50,
+      51,
+      53,
+      62,
+      63
+    ],
+    "full_5184_rewrite": false,
+    "parameter_id": "P1",
+    "raw_thread_id": 0
+  },
+  "P13": {
+    "affected_cells": 648,
+    "affected_thread_bitmap": 13991562540379803648,
+    "affected_thread_count": 8,
+    "affected_threads": [
+      12,
+      42,
+      50,
+      51,
+      53,
+      57,
+      62,
+      63
+    ],
+    "full_5184_rewrite": false,
+    "parameter_id": "P13",
+    "raw_thread_id": 12
+  },
+  "local_mutation_complexity": "O(affected dependency closure)",
+  "result": "PASS",
+  "schema": "HHS_PASS168_SPARSE_UPDATE_REPORT_V1",
+  "unconditional_5184_hot_path_rewrite": false
+}

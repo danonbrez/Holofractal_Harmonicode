@@ -1,0 +1,79 @@
+{
+  "schema": "HHS_PASS219_I163_FEATURE_VALIDATION_V1",
+  "pass": 219,
+  "iteration": 163,
+  "classification": "IMPLEMENTED_FEATURE_GREEN_CROSSARCH_GREEN",
+  "base_main": "36dbd64689a71659d941a8a9d4913e4ca4e4ca5d",
+  "validated_head": "4e787c83c1c40eb9e5803ddbfa4717e5ee7a5db9",
+  "branch": "agent/pass219-i163-pass169-terminal-reverse-crossarch",
+  "workflow": {
+    "name": "Pass 219 I163 Pass169 Terminal Reverse and Cross-Architecture Closure",
+    "run_id": 33866718853,
+    "job_id": 101003137846,
+    "conclusion": "success"
+  },
+  "source": {
+    "path": "contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53"
+  },
+  "i162_parent_immutability": {
+    "header_git_hash_object": "9a36b4d9f7e61c2d684ac22f37a102babecd04a7",
+    "implementation_git_hash_object": "9c62d396a69cc3545f17c4d7e2b27b975f777a0d",
+    "verified": true
+  },
+  "reverse_model": {
+    "pass159_reverse_transition_receipt_verified": true,
+    "pass159_reverse_transition_deterministic": true,
+    "pass159_reverse_is_in_place_state_restore": false,
+    "vm81_prior_transaction_state_restore_verified": true,
+    "hash72_ring_prior_state_restore_verified": true,
+    "persistent_canonical_rollback_claimed": false
+  },
+  "cross_architecture": {
+    "architectures": ["x86_64", "arm64"],
+    "bindings": ["native_c11", "python_ctypes"],
+    "records_identical": true,
+    "canonical_record_sha256": "90e217b0bd4f068b1f480ca09682b3eceb08eace0bb8442afbba188fc6bb91bf",
+    "receipt_hash72": "i91e<BXYyem<yft9yU>pPRowX-aIvY*2esocIG8LVXN6A0TrNm3ttdkrpD4oCN?bS1ID!QoJ",
+    "hash216_identity": "xhfHT5FB/MI5rH*yinth2RcAO1zArnsidZHvZXT6yW3IV!?874xAJdm27yhJa3>yEOt+BMAPV-jCe*8!e41n1piMHtVFwX+SvcErOdWFC<*i/DOv?VO//UlYS<>oJT1Ou>//9S/KRYYUF6AuB6B3xsCfcWb(TUolnSU20VK9fYSDQFVzYco8h/xD)PKQ+!/W>bv(azKhx+S9OwtIuCk-1y18",
+    "vm5184_address": 1,
+    "frame_bytes": 648,
+    "frame_committed": true
+  },
+  "benchmark": {
+    "schema": "HHS_PASS219_I163_REVERSE_CROSSARCH_BENCHMARK_V1",
+    "repeats": 12,
+    "result": "PASS",
+    "min_ns": 2809872,
+    "median_ns": 2847202,
+    "max_ns": 3155611,
+    "benchmark_receipt_sha256": "25c80b20bfdb372ca02fac6e63da53dd7be4d461e1c9d395e14713d9653e99e0"
+  },
+  "regression": {
+    "surface": "tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py",
+    "result": "7 passed, 1 warning in 3.05s",
+    "warning": "PytestConfigWarning: Unknown config option: asyncio_mode"
+  },
+  "artifact": {
+    "id": 9934261663,
+    "name": "pass219-i163-pass169-terminal-reverse-crossarch-4e787c83c1c40eb9e5803ddbfa4717e5ee7a5db9",
+    "size_bytes": 3219,
+    "digest": "sha256:e92c6f7b7dcd4ba3b039506897e14f4f2331e29359f4557b081e843334f2bfa6"
+  },
+  "authority": {
+    "fixed_resolution": "72^42=5184^21",
+    "floating_point_authority": false,
+    "new_canonical_mutation_authority": false,
+    "hash216_persistence_authority": false,
+    "interpreter_compiler_equality_verified": true,
+    "fallback_used": false,
+    "pass169_terminal_contract_verified": false
+  },
+  "bounded_repair": {
+    "problem": "exact-only Python probe library contaminated inherited full-runtime regression",
+    "repair": "remove hhs_runtime/builds/libhhs_runtime.so before I161 regression so normal full-runtime autobuild is authoritative",
+    "runtime_semantics_changed": false,
+    "verified_green": true
+  }
+}

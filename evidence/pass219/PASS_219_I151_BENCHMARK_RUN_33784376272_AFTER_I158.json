@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_HISTORY_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "cause": "Pass 219 I158 typed-domain semantics audit benchmark surface",
+  "repository_sha": "cb092a81e6deab8799690812cdcb576e187f04e9",
+  "workflow_run_id": 33784376272,
+  "job_id": 100745483894,
+  "conclusion": "SUCCESS",
+  "artifact": {
+    "id": 9904830500,
+    "name": "pass219-i151-fixed5184-21-benchmark-history-cb092a81e6deab8799690812cdcb576e187f04e9",
+    "sha256": "2b99684800782560c7abdf2271d4cc08915401c3954f97d838541b4a9148746a"
+  },
+  "history": {
+    "source_lines": 10,
+    "output_lines": 11,
+    "source_sha256": "97a12e5976a4ac8d4a97676ad887f565f0e78f46ee9dff03594a810e025502ee",
+    "output_sha256": "83c1f4f8dda1c2128437536dba4a54a93a782bd97dbcc4defe1b70bb6c5ea9f6",
+    "previous_entry_sha256": "07ab8af96b6cd7f39c35ed6c19a073366e8716d610db006adb7126af70587506",
+    "appended_entry_sha256": "f2d035c47eb059445c8a14ec506ba0531dbf6a63901f643ffe54d9aa7d39b05a",
+    "chain_verified": true
+  },
+  "inventory": {
+    "surface_count": 32,
+    "sha256_root": "887a84fe039df9c939e1d33552b1654afb5177cf71505f1f3d64c44e61c7ae65",
+    "i158_surface": {
+      "path": "benchmarks/pass219/pass219_i158_typed_domain_join_execution_benchmark.py",
+      "bytes": 6153,
+      "sha256": "f16fdd4b3eedbb57c37ec39e46d0c29e725753c647c5e35711fe0acb8c069201"
+    }
+  },
+  "fixed_resolution": "72^42=5184^21",
+  "result": "PASS"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS219_I151_BENCHMARK_RUN_EVIDENCE_V1",
+  "pass": 219,
+  "iteration": "I151",
+  "repository_sha": "7a5928c67da61d50905a7da5161370b3a2b61ac7",
+  "workflow_run_id": 33719404534,
+  "job_id": 100535264894,
+  "workflow_conclusion": "SUCCESS",
+  "history_classification": "REJECTED_FROM_CANONICAL_ACCUMULATION",
+  "reason": "The run re-copied the seed instead of the repository canonical history, so it did not preserve accepted run 33719250898. Fresh benchmark receipts remain valid observations, but this history entry is not canonical.",
+  "artifact": {
+    "id": 9879668277,
+    "sha256": "3ad4b72f3a9c6e22adecaed466868a487b0f39b594f92760da2a29179b36a668"
+  },
+  "fresh_benchmarks": {
+    "raw5184_audio": {
+      "baseline_total_work": 11466081,
+      "fused_total_work": 5645376,
+      "exact_work_saved": 5820705,
+      "reduction_permille_floor": 507,
+      "result": "PASS"
+    },
+    "cross_modal_reversible_state": {
+      "baseline_total_work": 1384512,
+      "selected_total_work": 32228,
+      "exact_work_saved": 1352284,
+      "reduction_permille_floor": 976,
+      "result": "PASS"
+    }
+  },
+  "authority_changed": false
+}

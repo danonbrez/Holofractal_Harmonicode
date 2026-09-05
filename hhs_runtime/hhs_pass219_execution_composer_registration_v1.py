@@ -11,6 +11,32 @@ from __future__ import annotations
 from typing import Any, Dict, MutableMapping, Optional
 
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import execute_surface_preflight
+from hhs_runtime.hhs_pass219_cross_modal_reversible_state_registration_v1 import (
+    MANDATORY_GUARD as CROSS_MODAL_MANIFOLD_GUARD,
+    SCHEMA as CROSS_MODAL_MANIFOLD_SCHEMA,
+    STATE_VALIDATE_SYMBOL as CROSS_MODAL_STATE_VALIDATE_SYMBOL,
+    WORK_PLAN_SYMBOL as CROSS_MODAL_WORK_PLAN_SYMBOL,
+)
+from hhs_runtime.hhs_pass219_raw5184_octonion_audio_hydration_registration_v1 import (
+    BIT_EXPORT_SYMBOL as AUDIO5184_BIT_EXPORT_SYMBOL,
+    BIT_IMPORT_SYMBOL as AUDIO5184_BIT_IMPORT_SYMBOL,
+    FRAME_TO_PCM_SYMBOL as AUDIO5184_FRAME_TO_PCM_SYMBOL,
+    HYDRATE_SYMBOL as AUDIO5184_HYDRATE_SYMBOL,
+    MANDATORY_GUARD as AUDIO5184_GUARD,
+    PCM_TO_FRAME_SYMBOL as AUDIO5184_PCM_TO_FRAME_SYMBOL,
+    PIPELINE_SYMBOL as AUDIO5184_PIPELINE_SYMBOL,
+    SCHEMA as AUDIO5184_SCHEMA,
+    VALIDATE_SYMBOL as AUDIO5184_VALIDATE_SYMBOL,
+)
+
+from hhs_runtime.hhs_pass219_global_latency_policy_registration_v1 import (
+    CLASSIFY_SYMBOL as LATENCY_CLASSIFY_SYMBOL,
+    MANDATORY_LATENCY_GUARD,
+    POLICY_VALIDATE_SYMBOL as LATENCY_POLICY_VALIDATE_SYMBOL,
+    SCHEMA as LATENCY_POLICY_SCHEMA,
+    SELECT_SYMBOL as LATENCY_SELECT_SYMBOL,
+    WINDOW_SYMBOL as LATENCY_WINDOW_SYMBOL,
+)
 from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     GENESIS_SYMBOL,
     GENESIS_VALIDATE_SYMBOL,
@@ -20,7 +46,7 @@ from hhs_runtime.hhs_pass219_mandatory_data_ml_registration_v1 import (
     VERIFY_SYMBOL,
 )
 
-VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22"
+VERSION = "PASS_219_RNA_EXECUTION_COMPOSER_REGISTRATION_1_14_PLUS_MANDATORY_DATA_ML_1_22_PLUS_GLOBAL_LATENCY_25_3_1_0"
 SURFACE_ID = "executor:pass219.rna.execution.compose"
 EXECUTION_SYMBOL = "hhs_exact_pass219_rna_execution_compose"
 PREPARE_SYMBOL = "hhs_exact_pass219_rna_execution_prepare_candidate"
@@ -48,6 +74,9 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_RNA_EXECUTION_COMPOSER_ABI_1_14",
             "HHS_PASS219_POST_PASS218_INDEXED_REUSE_POLICY_1_5_0",
             MANDATORY_DATA_ML_SCHEMA,
+            LATENCY_POLICY_SCHEMA,
+            CROSS_MODAL_MANIFOLD_SCHEMA,
+            AUDIO5184_SCHEMA,
         ],
         "witness_schemas": [
             "HHS_KERNEL_DERIVATION_WITNESS_V1",
@@ -55,6 +84,8 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "HHS_PASS219_RNA_EXECUTION_PLAN_V1",
             "HHS_PASS219_MANDATORY_SCALING_PLAN_V1",
             "HHS_PASS219_MANDATORY_SCALING_WITNESS_V1",
+            "HHS_PASS219_LATENCY_WINDOW_RESULT_V1",
+            "HHS_PASS219_LATENCY_SELECTION_V1",
         ],
         "validators": [
             GENESIS_SYMBOL,
@@ -63,10 +94,26 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             VERIFY_SYMBOL,
             EXECUTION_SYMBOL,
             PREPARE_SYMBOL,
+            LATENCY_POLICY_VALIDATE_SYMBOL,
+            LATENCY_CLASSIFY_SYMBOL,
+            LATENCY_WINDOW_SYMBOL,
+            LATENCY_SELECT_SYMBOL,
+            CROSS_MODAL_STATE_VALIDATE_SYMBOL,
+            CROSS_MODAL_WORK_PLAN_SYMBOL,
+            AUDIO5184_BIT_IMPORT_SYMBOL,
+            AUDIO5184_BIT_EXPORT_SYMBOL,
+            AUDIO5184_FRAME_TO_PCM_SYMBOL,
+            AUDIO5184_PCM_TO_FRAME_SYMBOL,
+            AUDIO5184_HYDRATE_SYMBOL,
+            AUDIO5184_VALIDATE_SYMBOL,
+            AUDIO5184_PIPELINE_SYMBOL,
         ],
         "guards": [
             "kernel_runtime_autocomposer",
             MANDATORY_GUARD,
+            MANDATORY_LATENCY_GUARD,
+            CROSS_MODAL_MANIFOLD_GUARD,
+            AUDIO5184_GUARD,
             "authenticated_indexed_predecessor_gate",
             "dependency_frontier_gate",
             "single_c_vm81_mutation_authority",
@@ -76,6 +123,9 @@ def pass219_execution_surface_declaration() -> Dict[str, Any]:
             "REJECT_PASS219_INDEXED_CONTINUATION_WITHOUT_AUTHENTICATED_PREDECESSOR",
             "REJECT_PASS219_DEPENDENCY_CHANGE_AS_UNSCOPED_GENESIS_REPLAY",
             "REJECT_PASS219_DATA_ML_WITHOUT_MANDATORY_GENESIS_SCALING",
+            "REJECT_PASS219_EXECUTION_WITHOUT_GLOBAL_LATENCY_POLICY",
+            "REJECT_PASS219_EXECUTION_WITHOUT_CROSS_MODAL_MANIFOLD_PROOF",
+            "REJECT_PASS219_EXECUTION_WITHOUT_RAW5184_PCM64_HYDRATION",
             "REJECT_PASS219_CPP_MUTATION_AUTHORITY",
         ],
         "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
@@ -95,6 +145,9 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "default_eligible_route": "INDEXED_CONTINUATION",
         "default_preconditions": [
             "PASS219_MANDATORY_SUDOKU_GENESIS_SCALING_DATA_ML",
+            "PASS219_GLOBAL_LATENCY_POLICY_25_OVER_3",
+            "PASS219_CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD",
+            "PASS219_RAW5184_OCTONION_AUDIO_HYDRATION",
             "AUTHENTICATED_INDEXED_PREDECESSOR",
             "CURRENT_DEPENDENCY_FRONTIER_MATCH",
             "NO_TYPED_BYPASS_REQUEST",
@@ -102,6 +155,15 @@ def pass219_execution_registration_manifest() -> Dict[str, Any]:
         "mandatory_data_ml_guard": MANDATORY_GUARD,
         "mandatory_data_ml_schema": MANDATORY_DATA_ML_SCHEMA,
         "mandatory_genesis_scaling_applies_before_route_selection": True,
+        "mandatory_latency_guard": MANDATORY_LATENCY_GUARD,
+        "mandatory_latency_schema": LATENCY_POLICY_SCHEMA,
+        "mandatory_cross_modal_manifold_guard": CROSS_MODAL_MANIFOLD_GUARD,
+        "mandatory_cross_modal_manifold_schema": CROSS_MODAL_MANIFOLD_SCHEMA,
+        "mandatory_audio5184_guard": AUDIO5184_GUARD,
+        "mandatory_audio5184_schema": AUDIO5184_SCHEMA,
+        "latency_route_selection_requires_exact_semantic_equality": True,
+        "latency_budget_unmet_preserves_correct_route": True,
+        "latency_timing_is_noncanonical": True,
         "typed_bypass_reasons": list(BYPASS_REASONS),
         "genesis_replay_default": False,
         "genesis_data_plane_normalization_default": True,

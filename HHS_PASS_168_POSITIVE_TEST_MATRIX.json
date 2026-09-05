@@ -1,0 +1,62 @@
+{
+  "grouped_cases": [
+    "P13/P19 matched gauge",
+    "P13/P19 mismatched ratio",
+    "E5/E6=360/361 exact cancellation",
+    "P1 global gain",
+    "P13 sparse update",
+    "native commit/replay/rollback/repair"
+  ],
+  "native_self_test": {
+    "arm64_verified": false,
+    "banks_per_thread": 9,
+    "baseline_lower_equals_360L": true,
+    "baseline_upper_equals_361L": true,
+    "cells_covered": 5184,
+    "cells_per_bank": 9,
+    "comparators_verified": 6,
+    "derived_threads": 24,
+    "deterministic_record_hash216": "(eyX!t*y<3(pOE8Hb+iP0xd5KdLQ3gbW!)l--rxdLgc<S0m)a6VmUYZ0d(+i<W74o1/J70aD-W6JNIqv9**sWq(AyAZcaNwNuUrHoaGUUob3Vs<o*tNj>QrkhMGGPUnKaB3K9CMi?nlT5xatnN4tR7h<(cGxbVpThYRb>p8YKhN!3>!/9b1tST4-yf+aYxTm1<Sj*Ua+FNWRa-t*)Ph+oVW2",
+    "deterministic_replay_verified": true,
+    "duplicate_addresses": 0,
+    "equality_half_gates_registered": 12,
+    "exact_rational_authority": true,
+    "fallback_used": false,
+    "floating_point_canonical_authority": false,
+    "gauge_cancellation_verified": true,
+    "hash216_identity_verified": true,
+    "hash72_receipts_verified": true,
+    "inverse_address_failures": 0,
+    "loshu_square_identity": true,
+    "parenthesis_parameters_registered": 28,
+    "ratio_channels_verified": true,
+    "raw_threads": 40,
+    "repair_verified": true,
+    "rollback_verified": true,
+    "single_vm81_commit_authority": true,
+    "source_preserved": true,
+    "sparse_dependency_updates_verified": true,
+    "status": 0,
+    "successor_residual_equals_L": true,
+    "threads_registered": 64,
+    "x86_64_verified": true
+  },
+  "parameter_matrix": {
+    "canonical_mutation_during_matrix": false,
+    "deterministic_fuzz_cases": 256,
+    "raw_controls": 40,
+    "result": "PASS",
+    "validation_cases": 240,
+    "validation_run_id": 33896299969,
+    "values_per_control": [
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "result": "PASS",
+  "schema": "HHS_PASS168_POSITIVE_TEST_MATRIX_V1"
+}
