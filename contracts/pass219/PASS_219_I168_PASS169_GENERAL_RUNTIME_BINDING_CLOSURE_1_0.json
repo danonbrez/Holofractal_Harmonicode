@@ -1,0 +1,76 @@
+{
+  "schema": "HHS_PASS219_I168_PASS169_GENERAL_RUNTIME_BINDING_CLOSURE_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "I168",
+  "contract_id": "HHS-P219-I168-P169-GRBC",
+  "parent_contract": "HHS-P169-HSAE-VM81-ESCPR",
+  "authoritative_base": "e439d7cbd46f5865ba2dc6c0761ef611e2299333",
+  "branch": "agent/pass219-i168-pass169-general-runtime-binding-closure",
+  "fixed_resolution": "72^42=5184^21",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "canonical_source": {
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "provenance_must_remain_verified": true
+  },
+  "shared_runtime": {
+    "library": "hhs_runtime/builds/libhhs_runtime.so",
+    "single_deployed_abi_surface": true,
+    "pass159_core_linked_into_same_library": true,
+    "second_vm81_authority_forbidden": true,
+    "host_substitute_evaluator_forbidden": true,
+    "python_canonical_recomputation_forbidden": true
+  },
+  "required_operations": [
+    "tokens",
+    "ast",
+    "constraints",
+    "typecheck",
+    "normalize",
+    "prove",
+    "evaluate-candidate",
+    "admit",
+    "commit",
+    "receipt",
+    "replay",
+    "reverse"
+  ],
+  "runtime_binding": {
+    "native_symbol": "hhs_exact_pass219_i168_bind_canonical",
+    "operation_mask": 4095,
+    "pass159_frontend_required": true,
+    "i162_typed_proof_vm81_admission_commit_required": true,
+    "i163_reverse_prior_state_restore_required": true,
+    "interpreter_compiler_equality_required": true,
+    "hash72_receipts_required": true,
+    "hash216_identities_required": true,
+    "deterministic_replay_required": true,
+    "fallback_forbidden": true,
+    "floating_point_canonical_authority_forbidden": true,
+    "hash216_persistence_authority_forbidden": true
+  },
+  "public_surface": {
+    "service": "hhs_runtime.pass169.public_service.Pass169AlgebraService",
+    "runtime_adapter": "hhs_runtime.pass169.runtime_binding.Pass169CanonicalRuntimeBinding",
+    "canonical_http_router": "hhs_backend.pass169_algebra_routes",
+    "canonical_source_registration_must_resolve_to_canonical_id": true,
+    "noncanonical_source_may_borrow_canonical_authority": false
+  },
+  "receipt": {
+    "path": "HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json",
+    "may_be_written_only_after_green_native_and_python_validation": true,
+    "must_be_rejected_if_partial_or_forged": true
+  },
+  "terminal_gate": {
+    "hardened_gate": "hhs_runtime.pass219.pass169_terminal_gate_i167.build_i167_pass169_terminal_gate",
+    "terminal_may_be_minted_only_with_zero_blockers": true,
+    "terminal_classification": "HHS_PASS_169_HARMONICODE_SYNTAX_ALGEBRA_ENFORCEMENT_AND_VM81_EXACT_SYMBOLIC_CONSTRAINT_PROOF_RUNTIME_VERIFIED"
+  },
+  "authority_boundaries": {
+    "new_vm81_mutation_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}
