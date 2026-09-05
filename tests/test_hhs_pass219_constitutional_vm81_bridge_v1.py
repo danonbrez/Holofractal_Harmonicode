@@ -66,12 +66,14 @@ class _Controller:
     def __init__(self):
         self.calls = []
 
-    def authorized_tick(self, source: str):
-        self.calls.append(source)
+    def authorized_tick(self, source: str, *, constitutional_trace=None):
+        self.calls.append((source, constitutional_trace))
         return {
             "runtime": {"state_hash72": STATE_HASH72},
             "receipt": {"state_hash72": STATE_HASH72, "receipt_hash72": RECEIPT_HASH72},
             "authority_audit": {"ok": True, "state_hash72": STATE_HASH72, "receipt_hash72": RECEIPT_HASH72},
+            "constitutional_trace": dict(constitutional_trace),
+            "constitutional_receipt_hash72": constitutional_trace["trace_receipt_hash72"],
         }
 
 
@@ -109,7 +111,7 @@ def test_missing_root_modality_invariants_fail_closed_before_vm81():
     assert controller.calls == []
 
 
-def test_constitutional_pass_appends_intrinsic_authority_modalities_and_executes_once():
+def test_constitutional_pass_binds_trace_and_executes_once():
     controller = _Controller()
     result = admit_and_execute_constitutional(
         _constitutional(), _action(), all_pass_invariants(), _epistemic(), controller=controller
@@ -119,7 +121,16 @@ def test_constitutional_pass_appends_intrinsic_authority_modalities_and_executes
     assert result["canonical_vm81_mutation_performed"] is True
     assert result["action_authority_minted"] is False
     assert len(controller.calls) == 1
-    assert controller.calls[0].startswith("HHS_PASS219_CONSTITUTIONAL_ETHICAL_ADMISSION:")
+    source, trace = controller.calls[0]
+    assert source.startswith("HHS_PASS219_CONSTITUTIONAL_ETHICAL_ADMISSION:")
+    assert trace["state"] == "PASS"
+    assert source.startswith(
+        "HHS_PASS219_CONSTITUTIONAL_ETHICAL_ADMISSION:"
+        + trace["trace_receipt_hash72"]
+        + ":"
+    )
+    execution = result["vm81_execution"]
+    assert execution["constitutional_receipt_hash72"] == trace["trace_receipt_hash72"]
     modality_ids = {item["modality_id"] for item in result["constitutional_trace"]["modalities"]}
     assert set(INTRINSIC_AUTHORITY_MODALITIES).issubset(modality_ids)
 
@@ -139,3 +150,18 @@ def test_intrinsic_authority_modalities_preserve_complete_root_invariant_set():
         assert set(CORE_MANDATORY_INVARIANTS).issubset(trace["mandatory_invariants_present"])
         assert set(CORE_MANDATORY_INVARIANTS).issubset(trace["mandatory_invariants_preserved"])
         assert trace["preservation_complete"] is True
+
+
+def test_modality_specific_invariant_does_not_get_fabricated_onto_unrelated_surface():
+    local = MANDATORY + ("VM81_LOCAL_EXACTNESS",)
+    candidate = _constitutional(mandatory=local)
+    controller = _Controller()
+    result = admit_and_execute_constitutional(
+        candidate, _action(), all_pass_invariants(), _epistemic(), controller=controller
+    )
+    upstream = next(
+        item for item in result["constitutional_trace"]["modalities"]
+        if item["modality_id"] == "vm81-candidate"
+    )
+    assert upstream["mandatory_invariants_present"] == list(local)
+    assert upstream["mandatory_invariants_preserved"] == list(local)
