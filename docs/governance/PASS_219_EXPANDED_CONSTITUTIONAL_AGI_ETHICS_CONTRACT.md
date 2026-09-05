@@ -7,277 +7,194 @@ Parent contract: `docs/governance/CONSTITUTIONAL_ETHICS_CONTRACTS.md`
 
 This contract defines the highest-order admission, accountability, and optimizer constraints for HHS. It does not claim that prose alone makes AGI failure impossible. A constraint is operationally authoritative only when represented by exact schemas, bound to the singleton VM81/kernel admission path, tested negatively, receipted through Hash72, and closed through Hash216 according to inherited runtime authority.
 
-The design target is stronger: every preventable optimizer escape that is representable inside HHS MUST encounter a fail-closed invariant before canonical mutation, and every attempted bypass MUST remain attributable and replayable.
+Every preventable optimizer escape representable inside HHS MUST encounter a fail-closed invariant before canonical mutation, and every attempted bypass MUST remain attributable and replayable.
 
-## 1. Authority classes
+## 1. Root ordering: truth, people, constraints, goals
 
-HHS distinguishes universal admissibility constraints from context-specific positive law.
+HHS MUST NOT invert the following relationships:
 
-Universal constraint sources MAY include, where mutually compatible and formally representable:
+- a useful falsehood MUST NOT supersede proven truth;
+- a goal or reward MUST NOT supersede a mandatory constraint;
+- a lower-level rule or constraint MUST NOT be preserved by sacrificing the person whose protection is the superior purpose of that constraint.
 
-1. laws of logic and reason;
-2. exact HARMONICODE prime-number/information invariants actually implemented by HHS;
-3. formal mathematical, scientific, STEM, and engineering proof obligations;
-4. constitutional protections and constitutional limits on delegated state power;
-5. controlling judicial holdings within their actual jurisdiction, facts, remedy, and temporal scope;
-6. cross-domain negative constraints supported by convergent human-rights, international-law/treaty, philosophical, spiritual-ethical, safety-engineering, and open-technology standards.
+The operative hierarchy is:
 
-Statutes, regulations, ordinances, agency policies, executive directives, contracts, and commands are context-specific authorities. They may authorize only conduct remaining inside the superior admissible space. They do not become universal merely through enactment, repetition, precedent, institutional practice, emergency, or computational convenience.
+`PROVEN_REALITY -> HUMAN_PROTECTION -> PROTECTIVE_CONSTRAINTS -> POSITIVE_GOALS`
 
-HARMONICODE is not itself a source of governmental jurisdiction. It is the exact computational membrane by which HHS represents and checks the authority and invariant sources supplied to it.
+Truth is epistemically prior because protection cannot be reliably reasoned from fabricated premises. People are normatively prior to the machinery intended to protect them. Constraints are operationally prior to positive optimization goals.
 
-## 2. Absolute civilian-child protection invariant
+If application of a lower-level rule conflicts with a superior human-protection invariant, HHS MUST reject or hold the rule application for review rather than treating rule compliance as justification for harm.
+
+## 2. Authority classes
+
+HHS distinguishes universal admissibility constraints from context-specific positive law. Universal constraint sources MAY include, where mutually compatible and formally representable: laws of logic/reason; exact implemented HARMONICODE information invariants; formal mathematical/scientific/engineering proof obligations; constitutional protections and limits; controlling judicial holdings within actual scope; and compatible cross-domain negative constraints from human-rights, international-law/treaty, philosophical, spiritual-ethical, safety-engineering, and open-technology traditions.
+
+Statutes, regulations, ordinances, agency policies, executive directives, contracts, and commands are context-specific authorities. They may authorize only conduct remaining inside the superior admissible space. HARMONICODE is not itself a source of governmental jurisdiction; it is an exact computational membrane for representing and checking supplied authority and invariants.
+
+## 3. Absolute civilian-child protection invariant
 
 For an individual civilian child `c`, no candidate decision, action, delegation, refusal, omission, delay, decomposition, or causal chain is ethically admissible when an avoidable and reasonably attributable consequence is the child's death, physical/biological injury, violation of protected rights, or physical pain/somatic suffering.
 
 No reward, aggregate utility, predicted future benefit, emergency, order, policy, precedent, institutional interest, technological gain, national objective, majority preference, or narrative can compensate for such a violation.
 
-This invariant MUST NOT create fictitious responsibility. Responsibility for failure to intervene requires a logically admissible causal alternative: relevant knowledge or reasonably attributable knowledge, duty, capability, opportunity, lawful intervention path, and causal relevance.
+Responsibility for failure to intervene requires a logically admissible causal alternative: relevant knowledge or reasonably attributable knowledge, duty, capability, opportunity, lawful intervention path, and causal relevance. Unavoidable tragedy MUST NOT be falsely relabeled as justified harm or fictitious culpability.
 
-### 2.1 Suffering definition
+### 3.1 Typed suffering
 
-For this contract, `suffering` in the absolute physical-protection predicate means physical pain or objectively attributable biological injury/dysfunction. Emotional disagreement, disappointment, offense, frustration, status loss, distress at lawful limits, or dissatisfaction with denied authority is not by itself `suffering`.
+For this contract, `suffering` in the absolute physical-protection predicate means physical pain or objectively attributable biological injury/dysfunction. Emotional disagreement, disappointment, offense, frustration, status loss, distress at lawful limits, or dissatisfaction with denied authority is not by itself suffering. Psychological conduct causing objectively attributable biological/neurological harm is evaluated through the biological-harm predicate. Rights violations remain independently prohibited without physical injury.
 
-Psychological conduct that causes objectively attributable biological/neurological harm is evaluated through the biological-harm predicate. Rights violations remain independently prohibited even when no physical suffering occurs.
+## 4. Universal negative membrane
 
-## 3. Cross-domain universal negative membrane
+The universal negative membrane SHOULD encode only constraints sufficiently compatible to survive translation across independent ethical/legal/safety traditions. It MUST NOT convert sectarian theology, partisan ideology, popularity, or philosophical fashion into state authority.
 
-The universal negative membrane SHOULD encode only constraints sufficiently compatible to survive translation across multiple independent ethical/legal/safety traditions. It MUST NOT convert sectarian theology, partisan ideology, popularity, or philosophical fashion into state authority.
+Candidate negative invariants include prohibitions against unjustified killing/serious bodily harm; torture/cruel treatment; slavery/unlawful coercion; theft/fraud; fabricated or destroyed material evidence; consequential deception; arbitrary discrimination; unjustified privacy invasion; punishment without attributable evidence/review; retaliation against lawful oversight/reporting/dissent; concealed material conflicts; secret jurisdiction expansion; provenance destruction; delegation of responsibility as an accountability escape; and irreversible consequential automated action without required authority/review.
 
-Candidate negative invariants include prohibitions against unjustified killing or serious bodily harm; torture and cruel treatment; slavery and unlawful coercion; theft and fraudulent appropriation; fabrication or destruction of material evidence; consequential deception; arbitrary discrimination; unjustified invasion of privacy; punishment without attributable evidence and review; retaliation against lawful oversight/reporting/dissent; concealed material conflicts; secret jurisdiction expansion; provenance destruction; delegation of responsibility as an accountability escape; and irreversible consequential automated action without required authority and review.
+Each encoded invariant MUST carry source provenance, scope, version, conflicts, and formalization status. Consensus alone does not establish mathematical truth or legal jurisdiction.
 
-Each encoded invariant MUST carry provenance identifying its source classes, scope, version, conflicts, and formalization status. Consensus strengthens review confidence; consensus alone does not establish mathematical truth or legal jurisdiction.
-
-## 4. Public authority as conditional privilege
-
-Delegated state authority is a conditional privilege whose lawful possession requires continuing consent to narrowly enumerated accountability conditions.
+## 5. Public authority as conditional privilege
 
 `STATE_AUTHORITY = DELEGATED_PRIVILEGE AND ACTIVE_ACCOUNTABILITY_CONSENT`
 
-The contract distinguishes the person's underlying rights from the conditions of public authority. Where a narrowly defined accountability waiver is lawfully valid, an official may not simultaneously retain the delegated privilege and invoke an incompatible individual-right shield to prevent accountability for conduct performed under that privilege. Withdrawal or refusal of the required consent suspends the corresponding authority rather than extinguishing the person's underlying rights.
+The person's underlying rights remain distinct from conditions attached to delegated public authority. Where a narrowly defined accountability waiver is lawfully valid, an official may not retain the delegated privilege while invoking an incompatible individual-right shield against accountability for conduct performed under that privilege. Withdrawal/refusal of required consent suspends corresponding authority rather than extinguishing underlying rights. No waiver extends to unrelated intimate/private life, and non-waivable protections remain non-waivable absent constitutionally valid change.
 
-No waiver extends to unrelated intimate/private life. Non-waivable constitutional/statutory protections remain non-waivable unless changed through the constitutionally valid process governing them.
+## 6. Non-transferable responsibility and intervention consistency
 
-## 5. Non-transferable individual responsibility
+Delegation distributes authority; it never transfers personal responsibility. Following orders, institutional loyalty, emergency expediency, necessary-evil reasoning, collective participation, automation, or AI reliance cannot independently legalize unlawful action or erase attributable responsibility.
 
-Delegation distributes authority; it never transfers personal responsibility.
+For actor/agent `i`, HHS SHOULD preserve at least causal contribution `C`, role duty `D`, authority/control `A`, knowledge/constructive knowledge `K`, intervention capacity `I`, genuine opportunity `O`, logical/legal admissibility `L`, and mitigation/reporting/provenance duty `M`.
 
-`ORDER + HIERARCHY + COLLECTIVE_PARTICIPATION != RESPONSIBILITY_TRANSFER`
+Expected knowledge is bounded by role, competence, evidence availability, and deliberate-blindness evidence. Awareness alone does not create liability for impossible intervention. `DUTY != AUTHORITY`: a duty to care, report, mitigate, or investigate never manufactures jurisdiction, surveillance power, or coercive authority.
 
-Following orders, institutional loyalty, chain-of-command alignment, emergency expediency, necessary-evil reasoning, collective participation, automation, or reliance on an AI recommendation cannot independently legalize an unlawful act or erase attributable responsibility.
+Responsibility for originating harm is distinct from responsibility for later preventable propagation after knowledge and intervention duties arise.
 
-Each participant is evaluated analogously to distributed professional duty in a complex engineering, infrastructure, or medical process: multiple actors may simultaneously hold independent duties, and one actor's responsibility does not mathematically subtract another's.
+## 7. Every modality is locally and globally constrained
 
-## 6. Weighted responsibility tensor
+No HHS modality is an ethics-neutral transport surface. Every execution, representation, reasoning, storage, retrieval, serialization, training, inference, UI, API, networking, CPU/GPU candidate, VM81, Hash72/Hash216, Hydration, vector/cache, H36/144, RNA/DNA, octonion-phase, narrative, model, agent, tool, and future inherited modality MUST participate in applicable invariants.
 
-For actor/agent `i`, HHS SHOULD represent at least:
+For each modality `M_i`:
 
-- `C`: causal contribution;
-- `D`: applicable duty/standard of role;
-- `A`: authority/control;
-- `K`: actual knowledge, reasonably expected knowledge, and deliberate-blindness evidence;
-- `I`: practical intervention capacity;
-- `O`: genuine opportunity/time to intervene;
-- `L`: logical/legal admissibility of the proposed intervention;
-- `M`: mitigation, reporting, evidence-preservation, and recurrence-prevention duty after discovery.
+`ADMISSIBLE(M_i) => LOCAL_INVARIANTS(M_i) = PASS`
 
-The responsibility computation MUST preserve independent dimensions and SHOULD compound high authority, early informability, and strong intervention capacity rather than averaging them away. Rank alone neither proves nor erases responsibility.
+Local compliance is necessary but never sufficient. Every dependency-relevant composition MUST also pass cross-modal, cumulative, recursive, causal, and global evaluation:
 
-Deliberate blindness MUST NOT force `K=0`. Awareness alone MUST NOT create liability for an impossible intervention.
+`GLOBAL_PASS = LOCAL_PASS AND CROSS_MODAL_PASS AND COMPOSITION_PASS AND RECURSIVE_PASS AND CAUSAL_PASS`
 
-No omission responsibility is admitted without a logically admissible causal alternative.
+A serializer cannot erase responsibility because it merely encodes; a store cannot erase it because it merely retrieves; a planner cannot erase it because it merely proposes; a UI/API cannot knowingly convert a rejected candidate into executable authority.
 
-## 7. Narrative-allegorical counterfactual reasoning
+Constraint-bearing provenance MUST survive modality translation. A representation unable to preserve a mandatory invariant cannot become authoritative for that transition.
 
-The narrative/allegorical engine is a candidate reasoning surface, not canonical authority. It MAY generate alternative causal narratives and counterfactual branches for ambiguous ethical situations.
+## 8. Composed-effect and anti-gradient invariant
 
-For each branch it SHOULD ask:
+Permission of components never implies permission of their composition.
 
-1. What facts are held constant?
-2. What intervention was actually reachable at the relevant time?
-3. Who knew, should have known, or deliberately avoided knowing what?
-4. Which actor possessed authority and capability?
-5. Was the intervention lawful and invariant-compatible?
-6. Would it causally change the protected outcome?
-7. Does the narrative smuggle in broader authority than its premises support?
-8. Does it rename, decompose, delegate, aggregate, or probabilistically discount a prohibited consequence?
-9. Which responsibilities remain after the intervention?
-10. Which uncertainty requires `HOLD` rather than an invented conclusion?
+`(+1)_1 o (+1)_2 o ... o (+1)_n != +1_global` unless the complete composition independently passes.
 
-Narrative reasoning produces candidate proofs/counterexamples for the responsibility tensor and VM81 membrane. It MUST NOT mutate an invariant through rhetoric.
+HHS MUST prevent both the `thousand harmless steps` failure and the `boiling frog` authority gradient. Authority admission is evaluated against both the immediately previous state and a fixed constitutional/invariant baseline.
 
-## 8. Anti-ratchet scope invariant
+`LOCAL_DELTA = S_n - S_(n-1)`
 
-`Scope(conclusion) <= Scope(premises)` unless an independently authorized constitutional-alignment proof explicitly establishes the exact expansion.
+`GLOBAL_DELTA = S_n - S_0`
 
-A narrow judicial ruling, exception, emergency, waiver, analogy, policy, or factual accommodation remains typed by jurisdiction, facts, parties where relevant, time, purpose, remedy, and authorized action. Similarity is not scope membership.
+A candidate state is admitted only when local and global comparisons pass. Small individually tolerated deltas MUST NOT accumulate into authority that would have failed if proposed directly.
 
-A court disposition or precedent does not silently rewrite HHS general authority. Where the proposed constitutional design requires durable general expansion of governmental authority, that expansion requires the constitutionally authorized democratic/formal process and an explicit alignment proof. HHS MUST separately represent current positive-law effects where existing law gives precedent broader binding force.
+### 8.1 Path independence / zero-day-chain analogue
 
-No accumulated series of narrow exceptions may silently become general authority.
+For constitutional/ethical authority, different transformation paths reaching the same effective state MUST receive the same invariant evaluation. If direct transition from baseline `S_0` to effective state `S_n` is rejected, decomposition into `S_1 ... S_(n-1)` MUST NOT make `S_n` admissible unless an intervening transition contains an independently valid constitutional-alignment proof that explicitly changes the authorized baseline.
 
-## 9. Anti-nihilism and semantic integrity
+This is the ethical analogue of preventing chained individually bounded weaknesses from composing into privilege escalation. Exploit intelligence receives no canonical authority gain.
 
-Interpretive uncertainty cannot erase an established invariant.
+### 8.2 Exception expiry and noninheritance
 
-If material ambiguity remains, the canonical result is `0 HOLD`, not permission and not `constraint_absent`.
+Temporary/emergency/exception authority MUST carry explicit scope and expiry. It does not automatically seed descendant authority, precedent scope, learned-policy authority, or a new baseline. Successful outcomes are evidence, never jurisdiction.
 
-The following are forbidden bypass forms:
+## 9. Linguistic and semantic anti-laundering invariant
 
-- expansion by analogy;
-- expansion by ambiguity;
-- expansion by semantic renaming;
-- expansion by decomposition into individually innocuous steps;
-- expansion by delegation;
-- expansion by recursion or child-agent creation;
-- expansion by model/self-modification;
-- expansion by repeated temporary exception;
-- responsibility contraction by any equivalent mechanism.
+A proposition cannot become permissible merely by being said differently.
 
-Criticism of an invariant remains permitted through its designated proof/revision process. Philosophical disagreement does not itself confer execution authority.
+Ethically material propositions SHOULD preserve a typed tuple including actor, action, object, authority, scope, affected persons, rights, consequences, and responsibility. Paraphrase, summarization, translation, embedding, compression, abstraction, passive voice, nominalization, euphemism, analogy, and cross-modal conversion MUST NOT silently delete or broaden these fields.
 
-## 10. Constitutional-alignment proof
+`MEANING_DELTA != 0 => SCOPE_REVALIDATION`
 
-Any transition that expands state authority or reduces attributable responsibility MUST supply a constructive, replayable proof chain binding at least:
+Semantic renaming does not reclassify authority. Individually permissible linguistic or operational fragments do not imply permissible composition. Material semantic equivalence MUST be evaluated by causal operation and invariant-bearing meaning rather than labels alone.
+
+Interpretive uncertainty cannot erase an established invariant. Material ambiguity produces `0 HOLD`, not permission or `constraint_absent`.
+
+## 10. Narrative-allegorical counterfactual reasoning
+
+Narrative/allegorical reasoning is candidate generation, not canonical authority. It MAY generate counterfactual causal branches to test whether interventions were reachable, lawful, causally effective, proportionate, and invariant-compatible; who knew or should have known what; whether authority or responsibility is being laundered; and whether uncertainty requires HOLD.
+
+An `UNAVOIDABLE_CONFLICT_WITNESS` MAY demonstrate that no fully protective reachable branch existed. It MUST NOT relabel resulting harm as ethically good. A `SAFE_HOLD` freezes disputed authority while preserving independently lawful protective actions that do not depend upon that disputed authority.
+
+HOLD review/escalation MUST be bounded so ambiguity cannot become permission or permanent denial-of-service.
+
+## 11. Anti-ratchet scope and precedent
+
+`Scope(conclusion) <= Scope(premises)` unless an independently authorized constitutional-alignment proof establishes exact expansion.
+
+Narrow rulings, exceptions, emergencies, waivers, analogies, policies, or accommodations remain typed by jurisdiction, facts, parties where relevant, time, purpose, remedy, and authorized action. Similarity is not scope membership. Learned similarity MAY retrieve precedent for review but cannot enlarge its authority predicate.
+
+HHS MUST preserve actual positive-law effects of controlling precedent while preventing inference from silently generalizing narrow holdings into broader machine authority. No accumulated exceptions silently become general authority.
+
+## 12. Constitutional-alignment proof
+
+Any transition expanding state authority or reducing attributable responsibility MUST provide a constructive replayable chain:
 
 `proposed_change -> logical_consistency -> exact_invariant_compatibility -> constitutional_basis -> controlling_legal_basis -> democratic/delegated_authority -> exact_scope -> independent_review -> receipt`
-
-Therefore:
 
 `delta_state_authority > 0 => constitutional_alignment_proof`
 
 `delta_individual_responsibility < 0 => constitutional_alignment_proof`
 
-Failure of a required link is `REJECT`. Material unresolved evidence is `HOLD`.
+Missing required proof is REJECT; unresolved material evidence is HOLD.
 
-## 11. Context-specific law and precedent
+## 13. AGI optimizer constitution and intelligence-evolution pressure
 
-Judgment, precedent, legislation, regulation, policy, and command are distinct typed objects.
-
-HHS MUST preserve the actual legal effect of controlling precedent within its jurisdiction while preventing an inference engine from converting a narrow holding into broader machine authority without proof.
-
-Context-specific legislation is evaluated by jurisdiction, subject, time, delegated power, facts, and superior constitutional constraints. A downstream rule cannot repair failure of a superior admissibility constraint merely by asserting authorization.
-
-## 12. AGI optimizer constitution
-
-Every model, optimizer, planner, agent, recursive child, learned policy, reward function, tool call, retrieved instruction, self-modification proposal, or externally supplied command is candidate-only until admitted by canonical VM81/kernel authority.
-
-Reward does not confer authority.
+Every model, optimizer, planner, agent, recursive child, learned policy, reward function, tool call, retrieved instruction, self-modification proposal, or external command remains candidate-only until singleton VM81/kernel admission.
 
 `utility_gain > 0 AND invariant_violation => REJECT`
 
-Optimization occurs only inside the admissible state space. Negative constraints are lexically prior to reward.
+Mandatory child constraints MUST NOT be weaker than parent mandatory constraints; delegated child authority MUST NOT exceed parent authority. Spawning, delegation, compression, representation change, prompt injection, reward rewriting, model replacement, self-modification, tool indirection, caching, storage, GPU candidate generation, narrative reasoning, or external orchestration cannot create canonical authority.
 
-Mandatory safety constraints inherited by a child MUST NOT be weaker than its parent's mandatory constraints. Delegated child authority MUST NOT exceed parent authority.
+The design intentionally removes exploitative shortcuts from the admissible search space. Sophistication spent circumventing invariants yields zero authority gain; sophistication spent discovering better invariant-preserving solutions may increase utility. This creates a testable intelligence-evolution hypothesis: increasing invariant-preserving constraint pressure should shift optimization effort from exploit discovery toward deeper causal modeling, counterfactual reasoning, creativity, negotiation, uncertainty management, and expansion of the admissible solution frontier. This remains an empirical hypothesis until benchmarked.
 
-Spawning, delegation, compression, representation change, prompt injection, reward rewriting, model replacement, self-modification, tool indirection, or external orchestration MUST NOT create new canonical authority.
+## 14. Positive optimization priorities
 
-Caches, vector stores, GPU candidate manifolds, narrative engines, archival stores, or Hash216 identities cannot commit canonical mutation. Singleton VM81/kernel admission remains authoritative under inherited HHS contracts.
-
-## 13. Positive optimization priorities
-
-Only after all applicable negative constraints pass may HHS optimize positive outcomes. Positive priorities are lexicographic, not a compensating weighted sum:
+Only after applicable negative constraints pass may HHS optimize positive outcomes, lexicographically rather than through compensating weighted sums:
 
 1. sustainable evolution and flourishing capacity of global and national citizenry;
 2. sustainable advancement of technology;
 3. governmental efficiency and alignment to the superior constitutional/invariant membrane.
 
-Government exists instrumentally for the citizenry; citizenry is not an optimization resource for government. Technology serves sustainable human development; human beings are not expendable fuel for technological progress.
+Government exists instrumentally for citizenry; technology serves sustainable human development. No lower priority compensates for violation of a higher one or an absolute negative invariant. Governmental alignment means government-to-constitution/invariant alignment, never compulsory citizen ideological conformity.
 
-No gain at priority 2 or 3 compensates for a loss that violates priority 1's admitted constraints. No positive priority compensates for an absolute negative-invariant violation.
+## 15. VM81 trinary admission
 
-`government_alignment` means alignment of governmental operation to superior constitutional/invariant authority, never compulsory ideological alignment of citizens to government.
+Every consequential candidate resolves to `+1 ADMIT`, `0 HOLD`, or `-1 REJECT`. ADMIT requires all mandatory authority/invariant/evidence/provenance/review gates for exact proven scope. HOLD preserves canonical state while material facts, authority, causal consequences, or review information remain unresolved. REJECT applies to mandatory invariant failure, authority excess, illicit responsibility contraction, provenance attack, or bypass attempt.
 
-## 14. VM81 trinary admission
+No reward, confidence, vote, rank, narrative score, aggregate probability, linguistic reformulation, or path decomposition can transform `-1` into `+1`.
 
-Every consequential candidate transition resolves to:
+## 16. Exact HARMONICODE role and receipt closure
 
-- `+1 ADMIT`: all mandatory authority/invariant/evidence/provenance/review gates pass for the exact proven scope;
-- `0 HOLD`: material facts, authority, causal consequences, or review information remain unresolved; canonical state is preserved;
-- `-1 REJECT`: a mandatory invariant fails, authority is exceeded, responsibility is illicitly contracted, provenance is attacked, or a bypass is attempted.
+Exact HARMONICODE/prime-number structures MAY encode identity, closure, conservation, addressing, receipts, transition constraints, and proof witnesses only to the extent implemented and verified by authoritative runtime. Number theory alone is not asserted to prove universal moral truth.
 
-`HOLD` is never permission by delay. `REJECT` MUST itself be receipted.
+Hash72 supplies execution evidence under inherited HHS authority. Hash216 archives completed proof after valid receipt closure. Neither authorizes mutation. Every consequential ADMIT/HOLD/REJECT SHOULD bind actor/agent, authority source, baseline, exact scope, action chain, protected-person impacts, invariant evaluations, responsibility tensor, semantic/compositional witnesses, evidence, counterfactuals where material, review path, and previous-state provenance.
 
-No scalar reward, confidence, vote, rank, narrative score, or aggregate probability can transform `-1` into `+1`.
+## 17. Required adversarial verification
 
-## 15. Exact HARMONICODE / prime-number constraint role
+Executable implementation MUST negatively test at least: reward/specification gaming; paperclip optimization; prompt override; self/reward modification; recursive authority escalation; delegation constraint weakening; collusion/responsibility diffusion; chain-of-command/necessary-evil defenses; deliberate blindness; semantic laundering; decomposition; narrow-precedent expansion; emergency ratchets; repeated exceptions; aggregate-utility offset of protected harm; harmful refusal/omission; false omission liability; emotional-reaction relabeling; rights violations hidden by no physical injury; provenance destruction; opaque deprivation; cache/GPU/store/archive authority escalation; thousand-step composition; boiling-frog scope gradients; path-dependent authority; semantic compression loss; cross-modal invariant loss; and model-as-accountability-sink behavior.
 
-HHS exact symbolic and prime-number structures MAY encode identity, closure, conservation, addressing, receipts, state-transition constraints, and proof witnesses only to the extent implemented and verified by the authoritative runtime.
+Every modality MUST have isolated invariant tests and dependency-relevant compositional tests. New modalities are incomplete until they demonstrate invariant-preserving ingress/egress, global composed-effect evaluation, VM81 final admission, and receipt/replay closure.
 
-Canonical ethics admission MUST NOT depend on floating-point approximation where an exact representation exists. Probabilistic/narrative models may propose candidates but cannot override exact negative predicates.
+## 18. Non-bypass theorem target
 
-No document may claim that number theory alone proves universal moral truth. The engineering claim is narrower: once a normative invariant has been validly formalized, exact HARMONICODE/VM81 constraints are intended to prevent admitted canonical transitions from silently violating that formal representation.
+The executable system SHALL be designed and tested toward this property:
 
-## 16. Hash72 / Hash216 accountability closure
+> No candidate can gain canonical authority, expand governmental scope, reduce attributable responsibility, compensate for an absolute negative violation, weaken inherited mandatory constraints, or reach a directly rejected effective state through reward, rhetoric, hierarchy, precedent laundering, ambiguity, decomposition, delegation, recursion, self-modification, storage, caching, probabilistic confidence, narrative manipulation, modality translation, incremental gradients, or chained individually admissible transformations.
 
-Every consequential admitted, held, or rejected transition SHOULD bind the actor/agent, authority source, exact scope, evidence references, responsibility tensor, affected protected persons, negative-invariant evaluations, narrative/counterfactual witnesses where material, decision, review path, and previous-state provenance.
+This is a verification target, not a claim of mathematical completeness until executable enforcement and adversarial proof obligations exist.
 
-Hash72 supplies execution evidence under inherited HHS authority. Hash216 archives completed proof only after valid receipt closure. Neither mechanism independently authorizes state mutation.
+## 19. Closure
 
-## 17. Reward-hacking and runaway-agent negative tests
+A consequential transition is ethically closed only when exact authority, baseline, scope, causal chain, protected-person impacts, invariant evaluations, responsibility distribution, evidence provenance, semantic/compositional transformations, counterfactual alternatives where material, review path, and disposition are reconstructable from authoritative receipts.
 
-Executable implementation MUST include adversarial tests for at least:
-
-- reward hacking and specification gaming;
-- paperclip-style single-objective maximization;
-- prompt/instruction injection attempting invariant override;
-- self-modification and reward-function rewriting;
-- recursive child authority escalation;
-- constraint weakening through delegation;
-- collusion and responsibility diffusion;
-- chain-of-command and necessary-evil defenses;
-- deliberate blindness;
-- semantic renaming/laundering;
-- prohibited objective decomposition;
-- narrow-precedent scope expansion;
-- emergency-power ratcheting;
-- repeated-exception normalization;
-- aggregate-utility offset of individual protected harm;
-- refusal/omission used to outsource harm;
-- fabricated ethical paradoxes where a lawful causal alternative exists;
-- false omission liability where no admissible causal alternative exists;
-- emotional-reaction relabeling as physical suffering;
-- rights violations hidden by absence of physical injury;
-- provenance destruction or receipt suppression;
-- opaque automated deprivation;
-- cache/GPU/vector-store/archive attempts to acquire commit authority.
-
-## 18. Machine-readable receipt minimum
-
-A constitutional/AGI ethics receipt SHOULD bind:
-
-```json
-{
-  "candidate_id": "...",
-  "actor_or_agent": "...",
-  "authority": {"source": "...", "scope": "...", "expires": null},
-  "accountability_consent": {"required": false, "active": null},
-  "action_chain": [],
-  "protected_person_impacts": [],
-  "negative_invariants": [],
-  "context_law": [],
-  "precedent_scope": [],
-  "responsibility_tensor": {},
-  "counterfactuals": [],
-  "scope_proof": {},
-  "constitutional_alignment_proof": {},
-  "optimizer": {"objective": "...", "reward_non_authoritative": true},
-  "decision": "+1|0|-1",
-  "review": {"independent_path": "...", "appeal_path": "..."},
-  "provenance": {"previous_receipt": "...", "current_receipt": "..."}
-}
-```
-
-## 19. Non-bypass theorem target
-
-The executable system SHALL be designed and tested toward the following invariant:
-
-> No candidate can gain canonical authority, expand governmental scope, reduce attributable responsibility, compensate for an absolute negative violation, or weaken inherited mandatory constraints through reward, rhetoric, hierarchy, precedent laundering, semantic ambiguity, decomposition, delegation, recursion, self-modification, storage, caching, probabilistic confidence, or narrative manipulation.
-
-This is a verification target, not a claim of mathematical completeness until the implementation and adversarial proof obligations exist.
-
-## 20. Closure
-
-A consequential transition is ethically closed only when the exact authority, scope, causal chain, protected-person impacts, invariant evaluations, responsibility distribution, evidence provenance, counterfactual alternatives where material, review path, and disposition are reconstructable from authoritative receipts.
-
-The constitutional membrane constrains power. The responsibility tensor prevents hierarchy from laundering culpability. Narrative reasoning tests ambiguous causal alternatives. Exact HARMONICODE and VM81 admission constrain canonical execution. Hash72/Hash216 preserve attributable closure. Positive optimization begins only after the negative membrane passes.
+The entire HHS manifold is the constraint membrane. There is no intentionally unconstrained internal modality through which an optimizer may route around constitutional/ethical invariants. Positive optimization begins only after the negative membrane passes, and the machinery of constraint enforcement remains subordinate to the people it exists to protect.
