@@ -1,0 +1,59 @@
+{
+  "schema": "HHS_PASS219_I170_CONTRACT_V1",
+  "iteration": "PASS219-I170",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "title": "Pass170 canonical public registry and gateway binding repair",
+  "base_main": "55930f91bba1d5dd76f1205813b1615ad4ce821f",
+  "target_branch": "main",
+  "inheritance": {
+    "immediate_repository_parent": "PASS219-I169",
+    "required_pass169_receipt": "HHS_PASS_169_COMPLETION_RECEIPT.json",
+    "preserve_single_vm81_authority": true,
+    "preserve_no_new_hash72_mint_authority": true,
+    "preserve_no_hash216_persistence_authority": true,
+    "preserve_no_floating_point_canonical_authority": true,
+    "preserve_pass190_operation_registry": "native_projects/hhs_pass190_operation_fabric/registry/HHS_OPERATION_REGISTRY_V1.json"
+  },
+  "scope": {
+    "create_public_operation_registry": "HHS_PUBLIC_OPERATION_REGISTRY.json",
+    "create_public_network_port_registry": "HHS_PUBLIC_NETWORK_PORT_REGISTRY.json",
+    "bind_registry_verification_to_canonical_gateway": true,
+    "canonical_gateway": "hhs_backend.public_api_server:app",
+    "canonical_factory": "hhs_backend.public_api_server:create_public_api_app",
+    "preserve_create_app_compatibility_alias": true,
+    "verify_direct_gateway_route_parity": true,
+    "verify_router_delegate_resolution": true,
+    "verify_inherited_pass190_registry_identity": true,
+    "verify_single_public_network_gateway": true,
+    "consolidate_all_legacy_fastapi_constructors_in_this_iteration": false,
+    "complete_router_operation_parity_in_this_iteration": false,
+    "canonical_state_mutation_authorized": false,
+    "runtime_authority_replacement_authorized": false
+  },
+  "acceptance": {
+    "public_operation_registry_present": true,
+    "public_network_port_registry_present": true,
+    "registry_evidence_verified": true,
+    "direct_gateway_route_count": 12,
+    "router_delegate_count": 2,
+    "public_gateway_port_count": 1,
+    "dispatch_source_hash216_length": 216,
+    "i169_missing_registry_blockers_cleared": true,
+    "expected_remaining_i169_blockers": [
+      "PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT"
+    ],
+    "pass170_terminal_contract_verified": false,
+    "canonical_state_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "validation": {
+    "pytest": "tests/pass219/test_pass219_i170_pass170_public_registry.py",
+    "registry_verifier": "hhs_runtime.pass219.pass170_public_registry_i170.verify_public_registries",
+    "inheritance_scan": "python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 . --output artifacts/pass219/i170/i169_authority_inventory.json"
+  },
+  "completion_classification": "PASS170_PUBLIC_REGISTRY_AND_CANONICAL_GATEWAY_BINDING_VERIFIED_NONTERMINAL",
+  "next_boundary": "PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY"
+}

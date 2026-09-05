@@ -1,9 +1,9 @@
-"""Canonical Pass 190 public API gateway.
+"""Canonical Pass170 public API gateway over the inherited Pass190 authority.
 
 The module exposes one FastAPI application identity backed by one lazily
-constructed Pass190CompletionContext. In full-runtime mode the same context
-owns the historical Iteration-7 durable authority. Routes never instantiate
-their own VM81 or operation engine.
+constructed Pass190CompletionContext.  Pass170 adds fail-closed verification
+of the public operation and network registries before the application is
+constructed.  Routes never instantiate their own VM81 or operation engine.
 """
 from __future__ import annotations
 
@@ -17,15 +17,20 @@ from fastapi import FastAPI, Header, HTTPException, WebSocket, WebSocketDisconne
 from pydantic import BaseModel, Field
 
 from hhs_runtime.pass190.completion import (
-    CONTRACT_ID,
+    CONTRACT_ID as PASS190_CONTRACT_ID,
     Pass190CompletionContext,
     Pass190CompletionError,
 )
 from hhs_runtime.pass190.shell import lower_shell_command
+from hhs_runtime.pass219.pass170_public_registry_i170 import (
+    CONTRACT_ID as PASS170_CONTRACT_ID,
+    verify_public_registries,
+)
 from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
 from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 
-APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
+APP_ID = "HHS-P170-CANONICAL-PUBLIC-API-V1"
+LEGACY_APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
 _DEFAULT_CONTEXT: Pass190CompletionContext | None = None
 _DEFAULT_LOCK = threading.Lock()
 
@@ -142,17 +147,23 @@ def _invoke_guarded(
         raise HTTPException(status_code=code, detail=f"{name}:{exc}") from exc
 
 
-def create_app(
-    context: Pass190CompletionContext | None = None,
+def create_public_api_app(
+    authority_context: Pass190CompletionContext | None = None,
+    configuration: Mapping[str, Any] | None = None,
 ) -> FastAPI:
+    config = dict(configuration or {})
+    registry_root = Path(config.get("repository_root", Path(__file__).resolve().parents[1]))
+    registry_report = verify_public_registries(registry_root)
+
     app = FastAPI(
-        title="HHS Pass 190 Canonical Public Gateway",
+        title="HHS Pass 170 Canonical Public Gateway",
         version="1.0.0",
         docs_url="/docs",
         redoc_url=None,
     )
+    app.state.hhs_pass170_public_registry = registry_report
     provider: Callable[[], Pass190CompletionContext] = (
-        (lambda: context) if context is not None else _default_context
+        (lambda: authority_context) if authority_context is not None else _default_context
     )
 
     @app.get("/v1/system/status")
@@ -160,8 +171,13 @@ def create_app(
         ctx = provider()
         return {
             "application": APP_ID,
+            "legacy_application_identity": LEGACY_APP_ID,
+            "pass170_contract": PASS170_CONTRACT_ID,
             **ctx.status(),
             "canonical_gateway": True,
+            "public_registry_verified": registry_report["registry_evidence_verified"],
+            "pass170_terminal_contract_verified": False,
+            "next_boundary": registry_report["next_boundary"],
             "detached_projection": False,
         }
 
@@ -169,7 +185,8 @@ def create_app(
     def operations() -> dict[str, Any]:
         ctx = provider()
         return {
-            "contract": CONTRACT_ID,
+            "contract": PASS190_CONTRACT_ID,
+            "public_contract": PASS170_CONTRACT_ID,
             "registry_hash216": ctx.registry.payload["registry_hash216"],
             "operations": ctx.operations(),
         }
@@ -269,7 +286,8 @@ def create_app(
             await websocket.send_json(
                 {
                     "schema": "HHS_PASS_190_RECEIPT_STREAM_SNAPSHOT_V1",
-                    "contract": CONTRACT_ID,
+                    "contract": PASS190_CONTRACT_ID,
+                    "public_contract": PASS170_CONTRACT_ID,
                     "runtime_mode": ctx.runtime_mode,
                     "receipts": rows,
                     "canonical_state_fabricated": False,
@@ -289,6 +307,17 @@ def create_app(
     return app
 
 
-app = create_app()
+def create_app(context: Pass190CompletionContext | None = None) -> FastAPI:
+    """Compatibility alias for inherited Pass190 callers."""
+    return create_public_api_app(authority_context=context)
 
-__all__ = ["APP_ID", "app", "create_app"]
+
+app = create_public_api_app()
+
+__all__ = [
+    "APP_ID",
+    "LEGACY_APP_ID",
+    "app",
+    "create_app",
+    "create_public_api_app",
+]

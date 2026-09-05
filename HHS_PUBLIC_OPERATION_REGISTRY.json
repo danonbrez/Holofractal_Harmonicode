@@ -1,0 +1,64 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_REGISTRY_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I170",
+  "version": "1.0.0",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "canonical_factory": "hhs_backend.public_api_server:create_public_api_app",
+  "authority_context": {
+    "provider": "hhs_runtime.pass190.completion.Pass190CompletionContext",
+    "singleton_policy": "ONE_CONTEXT_PER_CANONICAL_APPLICATION",
+    "vm81_authority_policy": "INHERIT_EXISTING_SINGLETON_ONLY",
+    "hash72_mint_policy": "INHERIT_EXISTING_AUTHORITY_ONLY",
+    "hash216_persistence_policy": "INHERIT_EXISTING_ARCHIVE_ONLY"
+  },
+  "dispatch_source_registry": {
+    "path": "native_projects/hhs_pass190_operation_fabric/registry/HHS_OPERATION_REGISTRY_V1.json",
+    "schema": "HHS_OPERATION_REGISTRY_V1",
+    "registry_hash216_required_length": 216,
+    "operation_identity_field": "operation_id",
+    "public_dispatch_path": "/v1/operations/{operation_id:path}"
+  },
+  "direct_gateway_routes": [
+    {"method": "GET", "path": "/v1/system/status", "operation_id": "public.system.status", "mutation_class": "none"},
+    {"method": "GET", "path": "/v1/operations", "operation_id": "public.operations.list", "mutation_class": "none"},
+    {"method": "GET", "path": "/v1/operations/{operation_id:path}", "operation_id": "public.operations.describe", "mutation_class": "none"},
+    {"method": "POST", "path": "/v1/operations/{operation_id:path}", "operation_id": "public.operations.invoke", "mutation_class": "registry-defined"},
+    {"method": "POST", "path": "/v1/harmonicode/eval", "operation_id": "public.harmonicode.eval", "mutation_class": "registry-defined"},
+    {"method": "POST", "path": "/v1/python/invoke", "operation_id": "public.python.invoke", "mutation_class": "registry-defined"},
+    {"method": "GET", "path": "/v1/python/compatibility", "operation_id": "public.python.compatibility", "mutation_class": "none"},
+    {"method": "POST", "path": "/v1/shell/execute", "operation_id": "public.shell.execute", "mutation_class": "registry-defined"},
+    {"method": "POST", "path": "/v1/hydration/preview", "operation_id": "public.hydration.preview", "mutation_class": "none"},
+    {"method": "POST", "path": "/v1/replay/{receipt_hash72}", "operation_id": "public.receipt.replay", "mutation_class": "none"},
+    {"method": "GET", "path": "/v1/registry/openapi", "operation_id": "public.registry.openapi", "mutation_class": "none"},
+    {"method": "WEBSOCKET", "path": "/v1/receipts/ws", "operation_id": "public.receipts.websocket", "mutation_class": "none"}
+  ],
+  "router_delegates": [
+    {
+      "operation_id": "pass168.parameter_circuit.router",
+      "route_prefix": "/v1/parameter-circuit",
+      "module": "hhs_backend.pass168_parameter_circuit_routes",
+      "factory": "build_pass168_parameter_circuit_router",
+      "route_parity_status": "PENDING_PASS170_FULL_ROUTE_PARITY"
+    },
+    {
+      "operation_id": "pass169.algebra.router",
+      "route_prefix": "/v1/algebra",
+      "module": "hhs_backend.pass169_algebra_routes",
+      "factory": "build_pass169_algebra_router",
+      "route_parity_status": "PENDING_PASS170_FULL_ROUTE_PARITY"
+    }
+  ],
+  "invariants": {
+    "exact_symbolic_transport": true,
+    "floating_point_canonical_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "canonical_state_mutated_by_registry_load": false,
+    "direct_route_signature_uniqueness_required": true,
+    "operation_identity_uniqueness_required": true
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY"
+}
