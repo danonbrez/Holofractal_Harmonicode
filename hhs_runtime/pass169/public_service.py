@@ -15,6 +15,11 @@ from typing import Any, Callable, Mapping
 
 from hhs_runtime.pass219.pass169_terminal_reconciliation import PASS169_CANONICAL_CORPUS_PATH
 from hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate
+from hhs_runtime.pass169.runtime_binding import (
+    CANONICAL_SOURCE_SHA256,
+    Pass169CanonicalRuntimeBinding,
+    Pass169RuntimeBindingError,
+)
 
 CONTRACT_ID = "HHS-P169-HSAE-VM81-ESCPR"
 SURFACE_VERSION = "PASS219-I165-PASS169-PUBLIC-SURFACE-V1"
@@ -83,6 +88,7 @@ class Pass169AlgebraService:
         self.repository_root = Path(repository_root or Path(__file__).resolve().parents[2]).resolve()
         self.authority_provider = authority_provider
         self._sources: dict[str, CandidateSource] = {}
+        self._canonical_runtime = Pass169CanonicalRuntimeBinding(self.repository_root)
 
     def _reconciliation(self) -> dict[str, Any]:
         return build_i167_pass169_terminal_gate(self.repository_root)
@@ -139,6 +145,15 @@ class Pass169AlgebraService:
         data = source.encode("utf-8")
         digest = sha256(data).hexdigest()
         source_id = f"sha256:{digest}"
+        if digest == CANONICAL_SOURCE_SHA256 and len(data) == 632:
+            canonical = self.get_source(include_text=False)["source"]
+            return {
+                "ok": True,
+                "contract": CONTRACT_ID,
+                "source": canonical,
+                "canonical_state_mutated": False,
+                "canonical_pass169_corpus_replaced": False,
+            }
         record = CandidateSource(source_id, digest, len(data), source)
         self._sources[source_id] = record
         return {
@@ -150,7 +165,7 @@ class Pass169AlgebraService:
         }
 
     def get_source(self, source_id: str | None = None, *, include_text: bool = True) -> dict[str, Any]:
-        if source_id:
+        if source_id and source_id != self._canonical_runtime.canonical_source_id:
             record = self._sources.get(source_id)
             if record is None:
                 raise Pass169PublicSurfaceError("PASS169_SOURCE_ID_NOT_FOUND", http_status=404, details={"source_id": source_id})
@@ -186,12 +201,12 @@ class Pass169AlgebraService:
                 details={"required_path": PASS169_CANONICAL_CORPUS_PATH.as_posix()},
             )
 
-    def _runtime_blocked(self, operation: str, **details: Any) -> dict[str, Any]:
+    def _runtime_execute(self, operation: str, **details: Any) -> dict[str, Any]:
         self._require_canonical_corpus()
-        raise Pass169PublicSurfaceError(
-            "PASS169_GENERAL_RUNTIME_BINDING_NOT_YET_VERIFIED",
-            details={"operation": operation, **details},
-        )
+        try:
+            return self._canonical_runtime.dispatch(operation, **details)
+        except Pass169RuntimeBindingError as exc:
+            raise Pass169PublicSurfaceError(str(exc), details={"operation": operation, **details}) from exc
 
     def dispatch(self, operation: str, **params: Any) -> dict[str, Any]:
         op = operation.strip().lower()
@@ -202,7 +217,7 @@ class Pass169AlgebraService:
         if op == "register-source":
             return self.register_source(str(params.get("source", "")))
         if op in READ_OPERATIONS | MUTATING_OPERATIONS | CANDIDATE_OPERATIONS:
-            return self._runtime_blocked(op, **{k: v for k, v in params.items() if v is not None})
+            return self._runtime_execute(op, **{k: v for k, v in params.items() if v is not None})
         raise Pass169PublicSurfaceError("PASS169_OPERATION_UNKNOWN", http_status=404, details={"operation": operation})
 
 
