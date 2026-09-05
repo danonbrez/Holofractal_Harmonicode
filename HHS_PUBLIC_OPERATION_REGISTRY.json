@@ -1,10 +1,12 @@
 {
   "schema": "HHS_PUBLIC_OPERATION_REGISTRY_V1",
   "contract": "HHS-P170-PAPAE-HLFDCR",
-  "iteration": "PASS219-I170",
-  "version": "1.0.0",
+  "iteration": "PASS219-I171",
+  "version": "1.1.0",
   "canonical_gateway": "hhs_backend.public_api_server:app",
   "canonical_factory": "hhs_backend.public_api_server:create_public_api_app",
+  "production_base_application": "hhs_backend.server:app",
+  "production_dispatch_entrypoint": "hhs_backend.runtime_os_application_server:app",
   "authority_context": {
     "provider": "hhs_runtime.pass190.completion.Pass190CompletionContext",
     "singleton_policy": "ONE_CONTEXT_PER_CANONICAL_APPLICATION",
@@ -39,14 +41,57 @@
       "route_prefix": "/v1/parameter-circuit",
       "module": "hhs_backend.pass168_parameter_circuit_routes",
       "factory": "build_pass168_parameter_circuit_router",
-      "route_parity_status": "PENDING_PASS170_FULL_ROUTE_PARITY"
+      "route_parity_status": "VERIFIED_PASS219_I171",
+      "registry_record_status": "ROUTE_IDENTITY_ONLY_PENDING_FULL_PASS170_OPERATION_RECORDS",
+      "route_count": 18,
+      "routes": [
+        {"method": "GET", "path": "/v1/parameter-circuit", "route_operation_id": "pass168.parameter_circuit.status"},
+        {"method": "GET", "path": "/v1/parameter-circuit/source", "route_operation_id": "pass168.parameter_circuit.source"},
+        {"method": "GET", "path": "/v1/parameter-circuit/map", "route_operation_id": "pass168.parameter_circuit.map"},
+        {"method": "GET", "path": "/v1/parameter-circuit/threads", "route_operation_id": "pass168.parameter_circuit.threads"},
+        {"method": "GET", "path": "/v1/parameter-circuit/parameters", "route_operation_id": "pass168.parameter_circuit.parameters.list"},
+        {"method": "GET", "path": "/v1/parameter-circuit/parameters/{parameter_id}", "route_operation_id": "pass168.parameter_circuit.parameter.get"},
+        {"method": "POST", "path": "/v1/parameter-circuit/candidates", "route_operation_id": "pass168.parameter_circuit.candidate.create"},
+        {"method": "GET", "path": "/v1/parameter-circuit/candidates/{candidate_id}", "route_operation_id": "pass168.parameter_circuit.candidate.get"},
+        {"method": "POST", "path": "/v1/parameter-circuit/candidates/{candidate_id}/validate", "route_operation_id": "pass168.parameter_circuit.candidate.validate"},
+        {"method": "POST", "path": "/v1/parameter-circuit/candidates/{candidate_id}/commit", "route_operation_id": "pass168.parameter_circuit.candidate.commit"},
+        {"method": "GET", "path": "/v1/parameter-circuit/dependencies/{parameter_id}", "route_operation_id": "pass168.parameter_circuit.dependencies.get"},
+        {"method": "GET", "path": "/v1/parameter-circuit/matrices/upper", "route_operation_id": "pass168.parameter_circuit.matrix.upper"},
+        {"method": "GET", "path": "/v1/parameter-circuit/matrices/lower", "route_operation_id": "pass168.parameter_circuit.matrix.lower"},
+        {"method": "GET", "path": "/v1/parameter-circuit/comparators/{comparator_id}", "route_operation_id": "pass168.parameter_circuit.comparator.get"},
+        {"method": "GET", "path": "/v1/parameter-circuit/transitions/{transition_id}", "route_operation_id": "pass168.parameter_circuit.transition.get"},
+        {"method": "POST", "path": "/v1/parameter-circuit/transitions/{transition_id}/replay", "route_operation_id": "pass168.parameter_circuit.transition.replay"},
+        {"method": "POST", "path": "/v1/parameter-circuit/transitions/{transition_id}/rollback", "route_operation_id": "pass168.parameter_circuit.transition.rollback"},
+        {"method": "GET", "path": "/v1/parameter-circuit/transitions/{transition_id}/receipt", "route_operation_id": "pass168.parameter_circuit.transition.receipt"}
+      ]
     },
     {
       "operation_id": "pass169.algebra.router",
       "route_prefix": "/v1/algebra",
       "module": "hhs_backend.pass169_algebra_routes",
       "factory": "build_pass169_algebra_router",
-      "route_parity_status": "PENDING_PASS170_FULL_ROUTE_PARITY"
+      "route_parity_status": "VERIFIED_PASS219_I171",
+      "registry_record_status": "ROUTE_IDENTITY_ONLY_PENDING_FULL_PASS170_OPERATION_RECORDS",
+      "route_count": 17,
+      "routes": [
+        {"method": "GET", "path": "/v1/algebra", "route_operation_id": "pass169.algebra.status"},
+        {"method": "POST", "path": "/v1/algebra/sources", "route_operation_id": "pass169.algebra.source.create"},
+        {"method": "GET", "path": "/v1/algebra/sources/{source_id}", "route_operation_id": "pass169.algebra.source.get"},
+        {"method": "GET", "path": "/v1/algebra/sources/{source_id}/tokens", "route_operation_id": "pass169.algebra.tokens.get"},
+        {"method": "GET", "path": "/v1/algebra/sources/{source_id}/ast", "route_operation_id": "pass169.algebra.ast.get"},
+        {"method": "GET", "path": "/v1/algebra/sources/{source_id}/constraints", "route_operation_id": "pass169.algebra.constraints.get"},
+        {"method": "POST", "path": "/v1/algebra/sources/{source_id}/typecheck", "route_operation_id": "pass169.algebra.typecheck"},
+        {"method": "POST", "path": "/v1/algebra/sources/{source_id}/normalize", "route_operation_id": "pass169.algebra.normalize"},
+        {"method": "POST", "path": "/v1/algebra/sources/{source_id}/candidates", "route_operation_id": "pass169.algebra.candidate.create"},
+        {"method": "GET", "path": "/v1/algebra/candidates/{candidate_id}", "route_operation_id": "pass169.algebra.candidate.get"},
+        {"method": "POST", "path": "/v1/algebra/candidates/{candidate_id}/validate", "route_operation_id": "pass169.algebra.candidate.validate"},
+        {"method": "POST", "path": "/v1/algebra/candidates/{candidate_id}/commit", "route_operation_id": "pass169.algebra.candidate.commit"},
+        {"method": "GET", "path": "/v1/algebra/proofs/{proof_id}", "route_operation_id": "pass169.algebra.proof.get"},
+        {"method": "GET", "path": "/v1/algebra/transitions/{transition_id}", "route_operation_id": "pass169.algebra.transition.get"},
+        {"method": "GET", "path": "/v1/algebra/transitions/{transition_id}/receipt", "route_operation_id": "pass169.algebra.transition.receipt"},
+        {"method": "POST", "path": "/v1/algebra/transitions/{transition_id}/replay", "route_operation_id": "pass169.algebra.transition.replay"},
+        {"method": "POST", "path": "/v1/algebra/transitions/{transition_id}/reverse", "route_operation_id": "pass169.algebra.transition.reverse"}
+      ]
     }
   ],
   "invariants": {
@@ -57,8 +102,11 @@
     "hash216_persistence_authority": false,
     "canonical_state_mutated_by_registry_load": false,
     "direct_route_signature_uniqueness_required": true,
-    "operation_identity_uniqueness_required": true
+    "delegate_route_signature_uniqueness_required": true,
+    "operation_identity_uniqueness_required": true,
+    "production_application_identity_unified": true,
+    "isolated_factory_is_test_ephemeral_only": true
   },
   "pass170_terminal_contract_verified": false,
-  "next_boundary": "PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY"
+  "next_boundary": "PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AND_FULL_ROUTER_MANIFEST"
 }
