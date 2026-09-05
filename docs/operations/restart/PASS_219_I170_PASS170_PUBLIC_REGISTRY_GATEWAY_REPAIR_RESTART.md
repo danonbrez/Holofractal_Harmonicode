@@ -9,7 +9,7 @@
 - merge target: `main`
 - implementation head before checkpoint: `0ee5b3681c5e07b091dae44158677258af862601`
 - first restartable checkpoint / validated branch head: `1ea6cc2eddaca3e6e22f220a0eb10640be3da12b`
-- PR: `#400`
+- PR: `#399`
 - Pass170 contract: `HHS-P170-PAPAE-HLFDCR`
 
 The base commit advanced after I169 only by ancestry reconciliation; its tree matched the verified I169 merge tree, so I170 began without content drift.
@@ -130,6 +130,6 @@ Validated next boundary:
 1. Resume from this branch and repository-visible checkpoint; do not reconstruct I170 from conversation history.
 2. Revalidate the checkpoint-updated head using the dedicated `Pass 219 I170 Pass170 Public Registry Gateway Repair` workflow.
 3. If the checkpoint-only rerun fails, repair only the failed I170 invariant and preserve the already-frozen green evidence from run `33971729680` unless the impacted surface invalidates it.
-4. If green, merge PR `#400` to `main` using the exact validated head and verify the same bounded workflow on exact merged `main`.
+4. If green, merge PR `#399` to `main` using the exact validated head and verify the same bounded workflow on exact merged `main`.
 5. Do not wait on unrelated broad workflows once the dedicated I170 boundary is green.
 6. After merge, begin `PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY` from the verified `main` head.
