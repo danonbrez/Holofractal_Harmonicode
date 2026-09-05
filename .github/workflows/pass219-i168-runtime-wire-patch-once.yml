@@ -1,0 +1,96 @@
+name: Pass 219 I168 Runtime Wire Patch Once
+
+on:
+  push:
+    branches:
+      - agent/pass219-i168-pass169-general-runtime-binding-closure
+    paths:
+      - '.github/workflows/pass219-i168-runtime-wire-patch-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i168-pass169-general-runtime-binding-closure
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Patch Makefile shared Runtime ABI composition
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('Makefile')
+          text=path.read_text(encoding='utf-8')
+          old='''CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c\nLDFLAGS ?= -lm\nRUNTIME_BUILD_DIR := hhs_runtime/builds\nABI_LIB := $(RUNTIME_BUILD_DIR)/libhhs_runtime.so\nEXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)\nVM81_BIN := $(RUNTIME_BUILD_DIR)/hhs_vm81\n'''
+          new='''CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c\nLDFLAGS ?= -lm -lcrypto\nRUNTIME_BUILD_DIR := hhs_runtime/builds\nABI_LIB := $(RUNTIME_BUILD_DIR)/libhhs_runtime.so\nEXACT_ABI_DEPS := hhs_runtime/c/hhs_runtime_exact_abi.c $(wildcard hhs_runtime/c/*.inc)\nPASS159_ROOT := native_projects/hhs_pass159_harmonicode_toolchain\nPASS159_CORE := $(RUNTIME_BUILD_DIR)/pass159/hhs159_core.c\nPASS159_INCLUDES := -I$(PASS159_ROOT)/include -I$(PASS159_ROOT)/src\nPASS169_RUNTIME_BINDING_SRCS := \\\n\thhs_runtime/c/hhs_pass219_pass159_global_witness_producer_1_21_10.c \\\n\thhs_runtime/c/hhs_pass219_pass169_gate_authority_binding_1_21_11.c \\\n\thhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c \\\n\thhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c \\\n\thhs_runtime/c/hhs_pass219_i163_pass169_reverse_crossarch_1_24.c \\\n\thhs_runtime/c/hhs_pass219_i163_hash72_reverse_witness_1_24.c \\\n\thhs_runtime/c/hhs_pass219_i163_vm81_snapshot_reverse_witness_1_24.c \\\n\thhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c\nVM81_BIN := $(RUNTIME_BUILD_DIR)/hhs_vm81\n'''
+          assert text.count(old)==1, 'Makefile variable block drifted'
+          text=text.replace(old,new)
+          old='''$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS) | $(RUNTIME_BUILD_DIR)\n\t$(CC) $(CFLAGS) -fPIC -shared hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c -o $(ABI_LIB) $(LDFLAGS)\n'''
+          new='''$(PASS159_CORE): $(PASS159_ROOT)/src/hhs159_core.c.gz | $(RUNTIME_BUILD_DIR)\n\tmkdir -p $(dir $@)\n\tgzip -dc $< > $@\n\n$(ABI_LIB): hhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c hhs_runtime/c/hhs_runtime_abi.h hhs_runtime/include/hhs_hash216.h $(EXACT_ABI_DEPS) $(PASS159_CORE) $(PASS169_RUNTIME_BINDING_SRCS) | $(RUNTIME_BUILD_DIR)\n\t$(CC) $(CFLAGS) $(PASS159_INCLUDES) -fPIC -shared \\\n\t\thhs_runtime/c/hhs_runtime_abi.c hhs_runtime/src/hhs_hash216.c \\\n\t\t$(PASS159_CORE) $(PASS169_RUNTIME_BINDING_SRCS) \\\n\t\t-o $(ABI_LIB) $(LDFLAGS)\n'''
+          assert text.count(old)==1, 'Makefile ABI target drifted'
+          path.write_text(text.replace(old,new),encoding='utf-8')
+          PY
+          grep -F 'PASS169_RUNTIME_BINDING_SRCS' Makefile
+          grep -F 'hhs_pass219_i168_pass169_general_runtime_binding_1_25.c' Makefile
+          grep -F 'gzip -dc $< > $@' Makefile
+
+      - name: Patch Pass169 public service onto live Runtime ABI
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('hhs_runtime/pass169/public_service.py')
+          text=path.read_text(encoding='utf-8')
+          old='''from hhs_runtime.pass219.pass169_terminal_reconciliation import PASS169_CANONICAL_CORPUS_PATH\nfrom hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate\n'''
+          new='''from hhs_runtime.pass219.pass169_terminal_reconciliation import PASS169_CANONICAL_CORPUS_PATH\nfrom hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate\nfrom hhs_runtime.pass169.runtime_binding import (\n    CANONICAL_SOURCE_SHA256,\n    Pass169CanonicalRuntimeBinding,\n    Pass169RuntimeBindingError,\n)\n'''
+          assert text.count(old)==1, 'public_service imports drifted'
+          text=text.replace(old,new)
+
+          old='''        self.authority_provider = authority_provider\n        self._sources: dict[str, CandidateSource] = {}\n'''
+          new='''        self.authority_provider = authority_provider\n        self._sources: dict[str, CandidateSource] = {}\n        self._canonical_runtime = Pass169CanonicalRuntimeBinding(self.repository_root)\n'''
+          assert text.count(old)==1, 'public_service init drifted'
+          text=text.replace(old,new)
+
+          old='''        record = CandidateSource(source_id, digest, len(data), source)\n        self._sources[source_id] = record\n        return {\n            "ok": True,\n            "contract": CONTRACT_ID,\n            "source": record.public(),\n            "canonical_state_mutated": False,\n            "canonical_pass169_corpus_replaced": False,\n        }\n'''
+          new='''        if digest == CANONICAL_SOURCE_SHA256 and len(data) == 632:\n            canonical = self.get_source(include_text=False)["source"]\n            return {\n                "ok": True,\n                "contract": CONTRACT_ID,\n                "source": canonical,\n                "canonical_state_mutated": False,\n                "canonical_pass169_corpus_replaced": False,\n            }\n        record = CandidateSource(source_id, digest, len(data), source)\n        self._sources[source_id] = record\n        return {\n            "ok": True,\n            "contract": CONTRACT_ID,\n            "source": record.public(),\n            "canonical_state_mutated": False,\n            "canonical_pass169_corpus_replaced": False,\n        }\n'''
+          assert text.count(old)==1, 'register_source block drifted'
+          text=text.replace(old,new)
+
+          old='''        if source_id:\n            record = self._sources.get(source_id)\n            if record is None:\n                raise Pass169PublicSurfaceError("PASS169_SOURCE_ID_NOT_FOUND", http_status=404, details={"source_id": source_id})\n            return {"ok": True, "contract": CONTRACT_ID, "source": record.public(include_text=include_text)}\n'''
+          new='''        if source_id and source_id != self._canonical_runtime.canonical_source_id:\n            record = self._sources.get(source_id)\n            if record is None:\n                raise Pass169PublicSurfaceError("PASS169_SOURCE_ID_NOT_FOUND", http_status=404, details={"source_id": source_id})\n            return {"ok": True, "contract": CONTRACT_ID, "source": record.public(include_text=include_text)}\n'''
+          assert text.count(old)==1, 'get_source identity block drifted'
+          text=text.replace(old,new)
+
+          old='''    def _runtime_blocked(self, operation: str, **details: Any) -> dict[str, Any]:\n        self._require_canonical_corpus()\n        raise Pass169PublicSurfaceError(\n            "PASS169_GENERAL_RUNTIME_BINDING_NOT_YET_VERIFIED",\n            details={"operation": operation, **details},\n        )\n'''
+          new='''    def _runtime_execute(self, operation: str, **details: Any) -> dict[str, Any]:\n        self._require_canonical_corpus()\n        try:\n            return self._canonical_runtime.dispatch(operation, **details)\n        except Pass169RuntimeBindingError as exc:\n            raise Pass169PublicSurfaceError(str(exc), details={"operation": operation, **details}) from exc\n'''
+          assert text.count(old)==1, 'runtime blocker drifted'
+          text=text.replace(old,new)
+
+          old='''        if op in READ_OPERATIONS | MUTATING_OPERATIONS | CANDIDATE_OPERATIONS:\n            return self._runtime_blocked(op, **{k: v for k, v in params.items() if v is not None})\n'''
+          new='''        if op in READ_OPERATIONS | MUTATING_OPERATIONS | CANDIDATE_OPERATIONS:\n            return self._runtime_execute(op, **{k: v for k, v in params.items() if v is not None})\n'''
+          assert text.count(old)==1, 'dispatch runtime block drifted'
+          text=text.replace(old,new)
+          path.write_text(text,encoding='utf-8')
+          PY
+          python -m py_compile hhs_runtime/pass169/runtime_binding.py hhs_runtime/pass169/public_service.py
+          grep -F 'Pass169CanonicalRuntimeBinding' hhs_runtime/pass169/public_service.py
+          ! grep -F 'PASS169_GENERAL_RUNTIME_BINDING_NOT_YET_VERIFIED' hhs_runtime/pass169/public_service.py
+
+      - name: Commit exact runtime wiring
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Makefile hhs_runtime/pass169/public_service.py
+          test "$(git diff --cached --name-only | wc -l)" -eq 2
+          git commit -m 'Pass 219 I168: wire Pass169 into shared Runtime ABI [skip ci]'
+          git push origin HEAD:agent/pass219-i168-pass169-general-runtime-binding-closure
