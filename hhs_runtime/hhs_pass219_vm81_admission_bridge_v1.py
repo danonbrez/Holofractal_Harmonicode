@@ -1,14 +1,13 @@
 """Pass 219 VM81 ethical admission bridge.
 
 Canonical mutation is reachable only after the expanded constitutional and
-compositional membrane passes.  The public local evaluator remains available
-for diagnostics, but it cannot touch the runtime controller.  This closes the
-legacy path in which a caller could invoke the local ethical gate without the
-mandatory local/global modality membrane.
+compositional membrane passes. The public local evaluator remains diagnostic-
+only and cannot touch the runtime controller.
 
-The constitutional path appends code-owned modality traces intrinsically and
-then continues through the inherited HHSRuntimeController.authorized_tick
-singleton VM81 authority.  No second mutation authority is introduced.
+The constitutional path appends code-owned modality traces intrinsically,
+binds the exact PASS trace through HHSRuntimeController.authorized_tick, and
+then relies on the inherited singleton VM81 authority. No second mutation
+authority is introduced.
 """
 from __future__ import annotations
 
@@ -31,9 +30,7 @@ from hhs_runtime.hhs_pass219_constitutional_ethics_membrane_v1 import (
     EthicsState,
     evaluate_constitutional_ethics,
 )
-from hhs_runtime.hhs_pass219_modality_constitutional_trace_v1 import (
-    close_candidate_modalities,
-)
+from hhs_runtime.hhs_pass219_modality_constitutional_trace_v1 import close_candidate_modalities
 
 VERSION = "HHS_PASS219_VM81_ETHICAL_ADMISSION_BRIDGE_V1"
 SCHEMA = "HHS_PASS219_VM81_ETHICAL_ADMISSION_RESULT_V1"
@@ -48,7 +45,11 @@ def _is_hash72(value: object) -> bool:
     return isinstance(value, str) and len(value) == HASH72_LENGTH
 
 
-def _validated_authorized_tick(execution: object) -> Dict[str, object]:
+def _validated_authorized_tick(
+    execution: object,
+    *,
+    expected_constitutional_receipt_hash72: Optional[str] = None,
+) -> Dict[str, object]:
     if not isinstance(execution, Mapping):
         raise VM81AdmissionBridgeError("authorized_tick returned no mapping")
     runtime = execution.get("runtime")
@@ -75,6 +76,16 @@ def _validated_authorized_tick(execution: object) -> Dict[str, object]:
         raise VM81AdmissionBridgeError("authority audit receipt Hash72 does not bind the committed receipt")
     if runtime.get("state_hash72") != state_hash72:
         raise VM81AdmissionBridgeError("runtime state Hash72 does not bind the committed receipt")
+
+    if expected_constitutional_receipt_hash72 is not None:
+        if execution.get("constitutional_receipt_hash72") != expected_constitutional_receipt_hash72:
+            raise VM81AdmissionBridgeError("runtime controller did not bind the constitutional receipt")
+        trace = execution.get("constitutional_trace")
+        if not isinstance(trace, Mapping) or trace.get("state") != "PASS":
+            raise VM81AdmissionBridgeError("runtime controller constitutional PASS trace missing")
+        if trace.get("trace_receipt_hash72") != expected_constitutional_receipt_hash72:
+            raise VM81AdmissionBridgeError("runtime controller constitutional trace receipt mismatch")
+
     return dict(execution)
 
 
@@ -122,12 +133,7 @@ def admit_and_execute_local(
     *,
     controller: Optional[Any] = None,
 ) -> Dict[str, object]:
-    """Evaluate the inherited local membrane without mutation authority.
-
-    ``controller`` is retained only for API compatibility and is deliberately
-    ignored.  Local success is necessary but no longer sufficient for VM81
-    execution.  Callers must use ``admit_and_execute_constitutional``.
-    """
+    """Evaluate inherited local ethics without canonical mutation authority."""
     del controller
     refined = _evaluate_local(action, declared_invariants, epistemic, findings, counterexamples)
     return _local_result(refined)
@@ -140,12 +146,12 @@ def _execute_after_constitutional_pass(
     controller: Optional[Any],
 ) -> Dict[str, object]:
     """Private continuation reachable only from the constitutional gate."""
+    constitutional_payload = constitutional.to_dict()
     result = _local_result(refined)
-    result["constitutional_trace"] = constitutional.to_dict()
+    result["constitutional_trace"] = constitutional_payload
     result["constitutional_state"] = constitutional.state.value
 
-    ethical = refined.evaluation
-    if ethical.decision is not EthicalDecision.EXECUTE_LOCAL_PROVISIONAL:
+    if refined.evaluation.decision is not EthicalDecision.EXECUTE_LOCAL_PROVISIONAL:
         return result
 
     if controller is None:
@@ -158,7 +164,13 @@ def _execute_after_constitutional_pass(
         + ":"
         + refined.trace_receipt_hash72
     )
-    execution = _validated_authorized_tick(controller.authorized_tick(source=source))
+    execution = _validated_authorized_tick(
+        controller.authorized_tick(
+            source=source,
+            constitutional_trace=constitutional_payload,
+        ),
+        expected_constitutional_receipt_hash72=constitutional.trace_receipt_hash72,
+    )
     result["execution_allowed"] = True
     result["vm81_execution"] = execution
     result["canonical_vm81_mutation_performed"] = True
@@ -175,13 +187,7 @@ def admit_and_execute_constitutional(
     *,
     controller: Optional[Any] = None,
 ) -> Dict[str, object]:
-    """Mandatory local/global modality closure before singleton VM81 authority.
-
-    The candidate's participating modalities are closed against the root
-    invariant set.  Missing root invariants fail closed.  The constitutional
-    membrane and VM81 bridge traces are appended intrinsically by code rather
-    than caller choice.  FAIL and HOLD never touch the runtime controller.
-    """
+    """Mandatory local/global modality closure before singleton VM81 authority."""
     closed_candidate = close_candidate_modalities(constitutional_candidate)
     constitutional = evaluate_constitutional_ethics(closed_candidate)
     if constitutional.state is not EthicsState.PASS:
