@@ -1,0 +1,138 @@
+name: Pass 219 I170 Pass170 Public Registry Gateway Repair
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i170-pass170-public-registry-gateway-repair
+    paths:
+      - 'HHS_PUBLIC_OPERATION_REGISTRY.json'
+      - 'HHS_PUBLIC_NETWORK_PORT_REGISTRY.json'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_runtime/pass219/pass170_public_registry_i170.py'
+      - 'hhs_runtime/pass219/pass170_public_authority_inventory_i169.py'
+      - 'tests/pass219/test_pass219_i170_pass170_public_registry.py'
+      - 'contracts/pass219/PASS_219_I170_PASS170_PUBLIC_REGISTRY_GATEWAY_REPAIR_1_0.json'
+      - '.github/workflows/pass219-i170-pass170-public-registry-gateway-repair.yml'
+      - 'docs/operations/restart/PASS_219_I170_PASS170_PUBLIC_REGISTRY_GATEWAY_REPAIR_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PUBLIC_OPERATION_REGISTRY.json'
+      - 'HHS_PUBLIC_NETWORK_PORT_REGISTRY.json'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_runtime/pass219/pass170_public_registry_i170.py'
+      - 'tests/pass219/test_pass219_i170_pass170_public_registry.py'
+      - 'contracts/pass219/PASS_219_I170_PASS170_PUBLIC_REGISTRY_GATEWAY_REPAIR_1_0.json'
+      - '.github/workflows/pass219-i170-pass170-public-registry-gateway-repair.yml'
+      - 'docs/operations/restart/PASS_219_I170_PASS170_PUBLIC_REGISTRY_GATEWAY_REPAIR_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i170:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse registries and compile I170 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_PUBLIC_OPERATION_REGISTRY.json >/dev/null
+          python -m json.tool HHS_PUBLIC_NETWORK_PORT_REGISTRY.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I170_PASS170_PUBLIC_REGISTRY_GATEWAY_REPAIR_1_0.json >/dev/null
+          python -m py_compile hhs_runtime/pass219/pass170_public_registry_i170.py
+          python -m py_compile hhs_backend/public_api_server.py
+          python -m py_compile tests/pass219/test_pass219_i170_pass170_public_registry.py
+
+      - name: Run dependency-scoped I170 tests
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i170_pass170_public_registry.py
+
+      - name: Execute fail-closed public registry verification
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i170
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_public_registry_i170 import verify_public_registries
+
+          report = verify_public_registries(Path('.'))
+          path = Path('artifacts/pass219/i170/public_registry_verification.json')
+          path.write_text(json.dumps(report, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(report, sort_keys=True))
+          PY
+
+      - name: Re-run inherited I169 authority inventory
+        run: |
+          set -euo pipefail
+          python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 . \
+            --output artifacts/pass219/i170/i169_authority_inventory.json
+
+      - name: Enforce I170 repaired boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          registry = json.loads(Path('artifacts/pass219/i170/public_registry_verification.json').read_text())
+          inherited = json.loads(Path('artifacts/pass219/i170/i169_authority_inventory.json').read_text())
+          expected_remaining = ['PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT']
+
+          checks = [
+              ('registry_evidence_verified', registry['registry_evidence_verified'] is True, registry['registry_evidence_verified']),
+              ('registry_blockers_empty', registry['blockers'] == [], registry['blockers']),
+              ('direct_gateway_route_count', registry['direct_gateway_route_count'] == 12, registry['direct_gateway_route_count']),
+              ('registered_direct_gateway_route_count', registry['registered_direct_gateway_route_count'] == 12, registry['registered_direct_gateway_route_count']),
+              ('router_delegate_count', registry['router_delegate_count'] == 2, registry['router_delegate_count']),
+              ('dispatch_source_operation_count', registry['dispatch_source_operation_count'] > 0, registry['dispatch_source_operation_count']),
+              ('dispatch_source_hash216_length', len(registry['dispatch_source_registry_hash216']) == 216, len(registry['dispatch_source_registry_hash216'])),
+              ('public_gateway_port_count', registry['public_gateway_port_count'] == 1, registry['public_gateway_port_count']),
+              ('registry_next_boundary', registry['next_boundary'] == 'PASS170_FASTAPI_CONSTRUCTOR_CONSOLIDATION_AND_ROUTE_PARITY', registry['next_boundary']),
+              ('registry_nonterminal', registry['pass170_terminal_contract_verified'] is False, registry['pass170_terminal_contract_verified']),
+              ('operation_registry_present', inherited['required_surfaces']['public_operation_registry']['present'] is True, inherited['required_surfaces']['public_operation_registry']),
+              ('network_registry_present', inherited['required_surfaces']['public_network_port_registry']['present'] is True, inherited['required_surfaces']['public_network_port_registry']),
+              ('canonical_gateway_present', inherited['required_surfaces']['canonical_gateway']['present'] is True, inherited['required_surfaces']['canonical_gateway']),
+              ('missing_registry_blockers_cleared', all(item not in inherited['blockers'] for item in ('PASS170_PUBLIC_OPERATION_REGISTRY_ABSENT', 'PASS170_PUBLIC_NETWORK_PORT_REGISTRY_ABSENT')), inherited['blockers']),
+              ('remaining_i169_blockers_exact', inherited['blockers'] == expected_remaining, inherited['blockers']),
+              ('inherited_inventory_evidence_verified', inherited['inventory_evidence_verified'] is True, inherited['inventory_evidence_verified']),
+              ('inherited_multiple_fastapi_condition_remains', inherited['inventory']['fastapi_constructor_count'] > 1, inherited['inventory']['fastapi_constructor_count']),
+              ('canonical_state_mutated', registry['canonical_state_mutated'] is False and inherited['canonical_state_mutated'] is False, (registry['canonical_state_mutated'], inherited['canonical_state_mutated'])),
+              ('new_vm81_authority', registry['new_vm81_authority'] is False and inherited['new_vm81_authority'] is False, (registry['new_vm81_authority'], inherited['new_vm81_authority'])),
+              ('new_hash72_mint_authority', registry['new_hash72_mint_authority'] is False and inherited['new_hash72_mint_authority'] is False, (registry['new_hash72_mint_authority'], inherited['new_hash72_mint_authority'])),
+              ('hash216_persistence_authority', registry['hash216_persistence_authority'] is False and inherited['hash216_persistence_authority'] is False, (registry['hash216_persistence_authority'], inherited['hash216_persistence_authority'])),
+              ('floating_point_canonical_authority', registry['floating_point_canonical_authority'] is False and inherited['floating_point_canonical_authority'] is False, (registry['floating_point_canonical_authority'], inherited['floating_point_canonical_authority'])),
+          ]
+
+          failed = []
+          for name, ok, observed in checks:
+              print(f"{'PASS' if ok else 'FAIL'} {name}: observed={observed!r}")
+              if not ok:
+                  failed.append({'check': name, 'observed': observed})
+          if failed:
+              raise SystemExit('I170 boundary enforcement failed: ' + json.dumps(failed, sort_keys=True))
+          PY
+
+      - name: Upload I170 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i170-pass170-public-registry-gateway-repair-${{ github.sha }}
+          path: artifacts/pass219/i170
+          if-no-files-found: warn
+          retention-days: 90
