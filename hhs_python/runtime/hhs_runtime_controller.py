@@ -1,22 +1,6 @@
 # ============================================================================
 # hhs_python/runtime/hhs_runtime_controller.py
-# HARMONICODE / HHS
-# CANONICAL RUNTIME CONTROLLER
-#
-# PURPOSE
-# -------
-# Authoritative runtime execution controller for:
-#
-#   - deterministic VM execution
-#   - receipt-chain ownership
-#   - graph ingestion
-#   - replay execution
-#   - websocket streaming
-#   - sandbox execution
-#   - multimodal orchestration
-#
-# ALL runtime execution MUST flow through this controller.
-#
+# HARMONICODE / HHS — CANONICAL RUNTIME CONTROLLER
 # ============================================================================
 
 from __future__ import annotations
@@ -26,229 +10,97 @@ import uuid
 import threading
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Callable, Any
+from typing import Dict, List, Optional, Callable, Any, Mapping
 
-from hhs_python.runtime.hhs_ctypes_bridge import (
-    HHSRuntimeBridge
-)
+from hhs_python.runtime.hhs_ctypes_bridge import HHSRuntimeBridge
 from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
 from hhs_runtime.hhs_unified_hash72_ledger_v1 import append_payload
 
-# ============================================================================
-# RUNTIME EVENTS
-# ============================================================================
-
 EVENT_RUNTIME_STEP = "runtime_step"
-
 EVENT_RUNTIME_HALT = "runtime_halt"
-
 EVENT_RECEIPT_COMMIT = "receipt_commit"
-
 EVENT_CONVERGENCE = "runtime_convergence"
-
 EVENT_ORBIT = "runtime_orbit"
+HASH72_LENGTH = 72
+PASS219_CONSTITUTIONAL_SOURCE_PREFIX = "HHS_PASS219_CONSTITUTIONAL_ETHICAL_ADMISSION:"
 
-# ============================================================================
-# SANDBOX
-# ============================================================================
 
 @dataclass
 class HHSSandbox:
-
     sandbox_id: str
-
     created_at: float
-
     runtime: HHSRuntimeBridge
-
     active: bool = True
-
     metadata: Dict[str, Any] = field(default_factory=dict)
 
-# ============================================================================
-# RUNTIME CONTROLLER
-# ============================================================================
 
 class HHSRuntimeController:
-
-    """
-    Canonical runtime execution authority.
-    """
+    """Canonical runtime execution authority."""
 
     def __init__(self):
-
         self.runtime = HHSRuntimeBridge()
-
         self.runtime_lock = threading.RLock()
-
-        self.listeners: Dict[
-            str,
-            List[Callable]
-        ] = {}
-
-        self.sandboxes: Dict[
-            str,
-            HHSSandbox
-        ] = {}
-
+        self.listeners: Dict[str, List[Callable]] = {}
+        self.sandboxes: Dict[str, HHSSandbox] = {}
         self.execution_history = []
-
         self.replay_cache = []
-
         self.authority_audit_cache = []
 
-    # =====================================================================
-    # EVENT SYSTEM
-    # =====================================================================
-
-    def add_listener(
-        self,
-        event_name: str,
-        callback: Callable
-    ):
-
+    def add_listener(self, event_name: str, callback: Callable):
         if event_name not in self.listeners:
             self.listeners[event_name] = []
-
         self.listeners[event_name].append(callback)
 
-    # ---------------------------------------------------------------------
-
-    def emit_event(
-        self,
-        event_name: str,
-        payload: Dict
-    ):
-
-        listeners = self.listeners.get(
-            event_name,
-            []
-        )
-
-        for callback in listeners:
-
+    def emit_event(self, event_name: str, payload: Dict):
+        for callback in self.listeners.get(event_name, []):
             try:
                 callback(payload)
-
             except Exception as e:
-
-                print(
-                    f"[HHS EVENT ERROR] {event_name}: {e}"
-                )
-
-    # =====================================================================
-    # EXECUTION
-    # =====================================================================
+                print(f"[HHS EVENT ERROR] {event_name}: {e}")
 
     def step(self):
-
         with self.runtime_lock:
-
-            previous_step = self.runtime.step
-
             self.runtime.runtime_step()
-
-            runtime_state = (
-                self.runtime.export_runtime_dict()
-            )
-
+            runtime_state = self.runtime.export_runtime_dict()
             self.execution_history.append(runtime_state)
-
-            self.emit_event(
-                EVENT_RUNTIME_STEP,
-                runtime_state
-            )
-
+            self.emit_event(EVENT_RUNTIME_STEP, runtime_state)
             if runtime_state["converged"]:
-
-                self.emit_event(
-                    EVENT_CONVERGENCE,
-                    runtime_state
-                )
-
+                self.emit_event(EVENT_CONVERGENCE, runtime_state)
             if runtime_state["halted"]:
-
-                self.emit_event(
-                    EVENT_RUNTIME_HALT,
-                    runtime_state
-                )
-
+                self.emit_event(EVENT_RUNTIME_HALT, runtime_state)
             return runtime_state
 
-    # ---------------------------------------------------------------------
-
-    def run_steps(
-        self,
-        count: int
-    ):
-
+    def run_steps(self, count: int):
         results = []
-
         for _ in range(count):
-
             if self.runtime.halted:
                 break
-
-            result = self.step()
-
-            results.append(result)
-
+            results.append(self.step())
         return results
 
-    # ---------------------------------------------------------------------
-
     def halt(self):
-
         with self.runtime_lock:
-
             self.runtime.runtime_halt()
-
-            runtime_state = (
-                self.runtime.export_runtime_dict()
-            )
-
-            self.emit_event(
-                EVENT_RUNTIME_HALT,
-                runtime_state
-            )
-
+            runtime_state = self.runtime.export_runtime_dict()
+            self.emit_event(EVENT_RUNTIME_HALT, runtime_state)
             return runtime_state
 
-    # =====================================================================
-    # RECEIPTS
-    # =====================================================================
-
     def commit_receipt(self):
-
         with self.runtime_lock:
-
             self.runtime.receipt_commit()
-
             receipt_data = {
-
-                "step":
-                    self.runtime.step,
-
-                "state_hash72":
-                    self.runtime.state_hash72,
-
-                "receipt_hash72":
-                    self.runtime.receipt_hash72,
+                "step": self.runtime.step,
+                "state_hash72": self.runtime.state_hash72,
+                "receipt_hash72": self.runtime.receipt_hash72,
             }
-
-            runtime_state = (
-                self.runtime.export_runtime_dict()
-            )
-
+            runtime_state = self.runtime.export_runtime_dict()
             authority_audit = assert_runtime_authorized(
                 runtime_state,
                 source="HHSRuntimeController.commit_receipt",
                 receipt=receipt_data,
                 require_receipt=True,
             ).to_dict()
-
             receipt_data["authority_audit"] = authority_audit
-
             unified_ledger = append_payload(
                 "RUNTIME_RECEIPT",
                 "HHSRuntimeController.commit_receipt",
@@ -259,264 +111,158 @@ class HHSRuntimeController:
                 "tip_hash72": unified_ledger.get("tip_hash72"),
                 "ledger_hash72": unified_ledger.get("ledger_hash72"),
             }
-
             self.replay_cache.append(receipt_data)
             self.authority_audit_cache.append(authority_audit)
-
-            self.emit_event(
-                EVENT_RECEIPT_COMMIT,
-                receipt_data
-            )
-
+            self.emit_event(EVENT_RECEIPT_COMMIT, receipt_data)
             return receipt_data
 
-    # ---------------------------------------------------------------------
+    @staticmethod
+    def _validate_pass219_constitutional_trace(
+        source: str,
+        constitutional_trace: Optional[Mapping[str, Any]],
+    ) -> Optional[Dict[str, Any]]:
+        """Validate proof continuity for the Pass-219 constitutional path.
 
-    def authorized_tick(self, source: str = "HHSRuntimeController.authorized_tick"):
+        Existing inherited callers remain callable during migration.  However,
+        a caller claiming the Pass-219 constitutional source domain cannot
+        cross this controller without the exact PASS trace whose receipt is
+        embedded in the source string.  This prevents bridge-to-controller
+        proof stripping while the broader legacy call-site migration proceeds.
+        """
+        if not source.startswith(PASS219_CONSTITUTIONAL_SOURCE_PREFIX):
+            return None
+        if not isinstance(constitutional_trace, Mapping):
+            raise RuntimeError("PASS219_CONSTITUTIONAL_TRACE_REQUIRED")
+        if constitutional_trace.get("state") != "PASS":
+            raise RuntimeError("PASS219_CONSTITUTIONAL_TRACE_NOT_PASS")
+        receipt_hash72 = constitutional_trace.get("trace_receipt_hash72")
+        if not isinstance(receipt_hash72, str) or len(receipt_hash72) != HASH72_LENGTH:
+            raise RuntimeError("PASS219_CONSTITUTIONAL_RECEIPT_INVALID")
+        expected_prefix = PASS219_CONSTITUTIONAL_SOURCE_PREFIX + receipt_hash72 + ":"
+        if not source.startswith(expected_prefix):
+            raise RuntimeError("PASS219_CONSTITUTIONAL_RECEIPT_SOURCE_MISMATCH")
+        return dict(constitutional_trace)
+
+    def authorized_tick(
+        self,
+        source: str = "HHSRuntimeController.authorized_tick",
+        *,
+        constitutional_trace: Optional[Mapping[str, Any]] = None,
+    ):
         """Advance one runtime step and commit through the authority gate.
 
-        This is the canonical automatic execution path for emulator/API/GUI
-        callers. Direct ``step`` remains available for low-level diagnostics,
-        but production execution chains should use this method so Hash72 and
-        invariant validation cannot be bypassed.
+        Pass-219 constitutional callers must carry their PASS trace through the
+        controller boundary.  Other inherited call sites remain temporarily
+        compatible until their modality migration is completed; they are not
+        thereby classified as constitutionally integrated.
         """
-
+        bound_constitutional = self._validate_pass219_constitutional_trace(
+            source, constitutional_trace
+        )
         with self.runtime_lock:
-
             runtime_state = self.step()
             receipt_data = self.commit_receipt()
-
             authority_audit = assert_runtime_authorized(
                 runtime_state,
                 source=source,
                 receipt=receipt_data,
                 require_receipt=True,
             ).to_dict()
-
-            return {
+            result = {
                 "runtime": runtime_state,
                 "receipt": receipt_data,
                 "authority_audit": authority_audit,
             }
+            if bound_constitutional is not None:
+                result["constitutional_trace"] = bound_constitutional
+                result["constitutional_receipt_hash72"] = bound_constitutional[
+                    "trace_receipt_hash72"
+                ]
+            return result
 
-    # =====================================================================
-    # SANDBOXES
-    # =====================================================================
-
-    def create_sandbox(
-        self,
-        metadata: Optional[Dict] = None
-    ) -> HHSSandbox:
-
-        sandbox_id = str(uuid.uuid4())
-
+    def create_sandbox(self, metadata: Optional[Dict] = None) -> HHSSandbox:
         sandbox = HHSSandbox(
-
-            sandbox_id=sandbox_id,
-
+            sandbox_id=str(uuid.uuid4()),
             created_at=time.time(),
-
             runtime=HHSRuntimeBridge(),
-
-            metadata=metadata or {}
+            metadata=metadata or {},
         )
-
-        self.sandboxes[sandbox_id] = sandbox
-
+        self.sandboxes[sandbox.sandbox_id] = sandbox
         return sandbox
 
-    # ---------------------------------------------------------------------
-
-    def destroy_sandbox(
-        self,
-        sandbox_id: str
-    ):
-
+    def destroy_sandbox(self, sandbox_id: str):
         if sandbox_id in self.sandboxes:
-
             self.sandboxes[sandbox_id].active = False
-
             del self.sandboxes[sandbox_id]
 
-    # ---------------------------------------------------------------------
-
-    def sandbox_step(
-        self,
-        sandbox_id: str
-    ):
-
+    def sandbox_step(self, sandbox_id: str):
         sandbox = self.sandboxes[sandbox_id]
-
         sandbox.runtime.runtime_step()
         sandbox.runtime.receipt_commit()
-
         runtime_state = sandbox.runtime.export_runtime_dict()
         receipt_data = {
             "step": sandbox.runtime.step,
             "state_hash72": sandbox.runtime.state_hash72,
             "receipt_hash72": sandbox.runtime.receipt_hash72,
         }
-
         authority_audit = assert_runtime_authorized(
             runtime_state,
             source="HHSRuntimeController.sandbox_step",
             receipt=receipt_data,
             require_receipt=True,
         ).to_dict()
-
         runtime_state["authority_audit"] = authority_audit
         runtime_state["receipt"] = receipt_data
-
         return runtime_state
 
-    # =====================================================================
-    # REPLAY
-    # =====================================================================
-
-    def replay_from_index(
-        self,
-        start_index: int
-    ):
-
+    def replay_from_index(self, start_index: int):
         if start_index < 0:
             start_index = 0
-
         return self.execution_history[start_index:]
 
-    # ---------------------------------------------------------------------
-
     def latest_runtime_state(self):
-
         return self.runtime.export_runtime_dict()
 
-    # =====================================================================
-    # GRAPH INGESTION
-    # =====================================================================
-
     def export_graph_node(self):
-
-        runtime_state = (
-            self.runtime.export_runtime_dict()
-        )
-
+        runtime_state = self.runtime.export_runtime_dict()
         return {
-
-            "node_type":
-                "runtime_state",
-
-            "step":
-                runtime_state["step"],
-
-            "state_hash72":
-                runtime_state["state_hash72"],
-
-            "receipt_hash72":
-                runtime_state["receipt_hash72"],
-
-            "transport_flux":
-                runtime_state["transport_flux"],
-
-            "orientation_flux":
-                runtime_state["orientation_flux"],
-
-            "constraint_flux":
-                runtime_state["constraint_flux"],
-
-            "converged":
-                runtime_state["converged"],
-
-            "halted":
-                runtime_state["halted"],
+            "node_type": "runtime_state",
+            "step": runtime_state["step"],
+            "state_hash72": runtime_state["state_hash72"],
+            "receipt_hash72": runtime_state["receipt_hash72"],
+            "transport_flux": runtime_state["transport_flux"],
+            "orientation_flux": runtime_state["orientation_flux"],
+            "constraint_flux": runtime_state["constraint_flux"],
+            "converged": runtime_state["converged"],
+            "halted": runtime_state["halted"],
         }
-
-    # =====================================================================
-    # VECTOR CACHE
-    # =====================================================================
 
     def export_vector_record(self):
-
-        runtime_state = (
-            self.runtime.export_runtime_dict()
-        )
-
+        runtime_state = self.runtime.export_runtime_dict()
         hash72 = runtime_state["state_hash72"]
-
-        vector = []
-
-        for ch in hash72:
-
-            vector.append(
-                ord(ch) / 255.0
-            )
-
-        return {
-
-            "hash72":
-                hash72,
-
-            "vector":
-                vector,
-
-            "step":
-                runtime_state["step"]
-        }
-
-    # =====================================================================
-    # MULTIMODAL ENVELOPE
-    # =====================================================================
+        vector = [ord(ch) / 255.0 for ch in hash72]
+        return {"hash72": hash72, "vector": vector, "step": runtime_state["step"]}
 
     def export_multimodal_packet(self):
-
-        runtime_state = (
-            self.runtime.export_runtime_dict()
-        )
-
+        runtime_state = self.runtime.export_runtime_dict()
         return {
-
-            "runtime":
-                runtime_state,
-
-            "graph_node":
-                self.export_graph_node(),
-
-            "vector_record":
-                self.export_vector_record(),
+            "runtime": runtime_state,
+            "graph_node": self.export_graph_node(),
+            "vector_record": self.export_vector_record(),
         }
 
-# ============================================================================
-# SELF TEST
-# ============================================================================
 
 def controller_self_test():
-
     controller = HHSRuntimeController()
-
     controller.run_steps(5)
-
     controller.commit_receipt()
-
-    print()
-
-    print("RUNTIME STATE")
-
+    print("\nRUNTIME STATE")
     print(controller.latest_runtime_state())
-
-    print()
-
-    print("GRAPH NODE")
-
+    print("\nGRAPH NODE")
     print(controller.export_graph_node())
-
-    print()
-
-    print("VECTOR RECORD")
-
+    print("\nVECTOR RECORD")
     print(controller.export_vector_record())
 
-# ============================================================================
-# MAIN
-# ============================================================================
 
 if __name__ == "__main__":
-
     controller_self_test()
