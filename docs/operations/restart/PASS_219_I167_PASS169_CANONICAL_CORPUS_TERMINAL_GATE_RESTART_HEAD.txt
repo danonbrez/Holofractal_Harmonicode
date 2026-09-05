@@ -1,0 +1,7 @@
+Pass 219 I167 restart head marker
+branch=agent/pass219-i167-pass169-canonical-corpus-terminal-closure
+base_main=177e774f676d57708df0cba7459bf1b6d4835b8e
+functional_validation_head=99c3946c9c7160105d39d34c93d2d38b5eec7e28
+restart_checkpoint_parent=eb583c62266421a8b67de0d6d778bbebb5e4c65f
+next_boundary=PASS169_GENERAL_RUNTIME_BINDING_CLOSURE
+exact_blocker=PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED

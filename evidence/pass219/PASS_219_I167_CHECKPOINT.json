@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS219_I167_RESTART_CHECKPOINT_V1",
+  "pass": 219,
+  "iteration": 167,
+  "branch": "agent/pass219-i167-pass169-canonical-corpus-terminal-closure",
+  "base_main": "177e774f676d57708df0cba7459bf1b6d4835b8e",
+  "functional_validation_head": "99c3946c9c7160105d39d34c93d2d38b5eec7e28",
+  "functional_validation_run": 33932801287,
+  "functional_validation_job": 101214708221,
+  "functional_validation_result": "success",
+  "canonical_corpus_provenance_verified": true,
+  "pass168_parent_resolved": true,
+  "required_pass169_artifact_set_complete": true,
+  "public_surfaces_complete": true,
+  "general_runtime_binding_verified": false,
+  "pass169_terminal_contract_verified": false,
+  "exact_blockers": ["PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED"],
+  "next_boundary": "PASS169_GENERAL_RUNTIME_BINDING_CLOSURE",
+  "temporary_write_workflows_present": false
+}

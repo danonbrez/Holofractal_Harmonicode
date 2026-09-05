@@ -1,0 +1,136 @@
+name: Pass 219 I167 Pass169 Canonical Corpus Terminal Gate
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i167-pass169-canonical-corpus-terminal-closure
+    paths:
+      - 'HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode'
+      - 'HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json'
+      - 'HHS_PASS_169_SOURCE_MANIFEST.json'
+      - 'HHS_PASS_169_SYMBOL_REGISTRY.json'
+      - 'HHS_PASS_169_CONSTRAINT_GRAPH.json'
+      - 'HHS_PASS_169_COMPLETION_RECEIPT.json'
+      - 'HHS_PASS_169_IMPLEMENTATION_REPORT.md'
+      - 'HHS_PASS_169_VALIDATION_REPORT.md'
+      - 'hhs_runtime/pass219/pass169_terminal_gate_i167.py'
+      - 'hhs_runtime/pass169/public_service.py'
+      - 'tests/pass219/test_pass219_i167_pass169_canonical_corpus_terminal_gate.py'
+      - 'contracts/pass219/PASS_219_I167_PASS169_CANONICAL_CORPUS_TERMINAL_GATE_1_0.json'
+      - '.github/workflows/pass219-i167-pass169-canonical-corpus-terminal-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i167:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Parse and compile I167 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json >/dev/null
+          python -m json.tool HHS_PASS_169_SOURCE_MANIFEST.json >/dev/null
+          python -m json.tool HHS_PASS_169_SYMBOL_REGISTRY.json >/dev/null
+          python -m json.tool HHS_PASS_169_CONSTRAINT_GRAPH.json >/dev/null
+          python -m json.tool HHS_PASS_169_COMPLETION_RECEIPT.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I167_PASS169_CANONICAL_CORPUS_TERMINAL_GATE_1_0.json >/dev/null
+          python -m py_compile hhs_runtime/pass219/pass169_terminal_gate_i167.py
+          python -m py_compile hhs_runtime/pass169/public_service.py
+          python -m py_compile tests/pass219/test_pass219_i167_pass169_canonical_corpus_terminal_gate.py
+
+      - name: Verify exact sealed source identity and copy
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from hashlib import sha1, sha256
+          from pathlib import Path
+          source=Path('contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode').read_bytes()
+          corpus=Path('HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode').read_bytes()
+          def blob(data): return sha1(f'blob {len(data)}\0'.encode()+data).hexdigest()
+          assert source == corpus
+          assert len(corpus) == 632
+          assert sha256(corpus).hexdigest() == '3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53'
+          assert blob(source) == blob(corpus) == '5ef1e3dbcd107666b1f30269d4579afb246de3f5'
+          print('Pass169 sealed canonical source identity: PASS')
+          PY
+
+      - name: Enforce authority and provenance guards
+        run: |
+          set -euo pipefail
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/pass219/pass169_terminal_gate_i167.py \
+            tests/pass219/test_pass219_i167_pass169_canonical_corpus_terminal_gate.py
+          grep -F 'original_external_prompt_byte_identity_claimed' HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json
+          grep -F '"original_external_prompt_byte_identity_claimed": false' HHS_PASS_169_CANONICAL_CORPUS_RECEIPT.json
+          grep -F 'PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED' hhs_runtime/pass219/pass169_terminal_gate_i167.py
+          grep -F 'build_i167_pass169_terminal_gate' hhs_runtime/pass169/public_service.py
+          test ! -e .github/workflows/pass219-i167-public-service-gate-patch-once.yml
+          test ! -e HHS_PASS_169_RUNTIME_BINDING_RECEIPT.json
+
+      - name: Run dependency-scoped I167 tests
+        run: |
+          PYTHONPATH=. python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i167_pass169_canonical_corpus_terminal_gate.py
+
+      - name: Generate I167 reconciliation evidence
+        run: |
+          mkdir -p artifacts/pass219/i167
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          from hhs_runtime.pass169.public_service import Pass169AlgebraService
+          from hhs_runtime.pass219.pass169_terminal_gate_i167 import build_i167_pass169_terminal_gate
+          report=build_i167_pass169_terminal_gate('.')
+          assert report['canonical_corpus']['provenance']['verified'] is True
+          assert report['pass168_parent']['resolved'] is True
+          assert report['required_artifacts']['complete'] is True
+          assert report['public_surfaces']['cli']['complete'] is True
+          assert report['public_surfaces']['http']['complete'] is True
+          assert report['general_runtime_binding']['verified'] is False
+          assert report['blockers'] == ['PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED']
+          assert report['pass169_terminal_contract_verified'] is False
+          assert report['next_boundary'] == 'PASS169_GENERAL_RUNTIME_BINDING_CLOSURE'
+          statuses=[Pass169AlgebraService('.').status() for _ in range(12)]
+          assert all(row==statuses[0] for row in statuses)
+          payload=json.dumps(report,sort_keys=True,indent=2)+'\n'
+          Path('artifacts/pass219/i167/pass169_i167_terminal_gate.json').write_text(payload)
+          canonical=json.dumps(statuses[0],sort_keys=True,separators=(',',':')).encode()
+          receipt={
+              'schema':'HHS_PASS219_I167_VALIDATION_RECEIPT_V1',
+              'result':'PASS',
+              'canonical_corpus_provenance_verified':True,
+              'pass168_parent_resolved':True,
+              'required_artifact_set_complete':True,
+              'general_runtime_binding_verified':False,
+              'pass169_terminal_contract_verified':False,
+              'exact_blockers':['PASS169_GENERAL_RUNTIME_BINDING_NOT_VERIFIED'],
+              'status_deterministic_repeats':12,
+              'status_sha256':hashlib.sha256(canonical).hexdigest(),
+              'floating_point_canonical_authority':False,
+              'next_boundary':'PASS169_GENERAL_RUNTIME_BINDING_CLOSURE',
+          }
+          Path('artifacts/pass219/i167/validation_receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+
+      - name: Upload I167 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i167-pass169-canonical-corpus-terminal-gate-${{ github.sha }}
+          path: artifacts/pass219/i167/
+          if-no-files-found: error
+          retention-days: 90

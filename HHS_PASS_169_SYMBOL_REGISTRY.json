@@ -1,11 +1,20 @@
 {
-  "schema": "HHS_PASS_169_SYMBOL_REGISTRY_V1",
+  "schema": "HHS_PASS_169_SYMBOL_REGISTRY_V2",
   "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
   "distinct_symbols": ["O", "Pi", "Π", "π", "3.14159265359", "E", "2.71828182846", "I", "i", "u", "0", "0^-1", "ComplexInfinity", "P", "p", "q", "A", "B", "Δ", "t", "m", "s", "f", "x", "y", "z", "w"],
   "mandatory_separations": ["O!=Pi", "O!=Π", "O!=3.14159265359", "E!=2.71828182846_SOURCE_IDENTITY", "xy!=yx_ORDERED_PROVENANCE", "x*y!=y*x_ORDERED_PROVENANCE"],
   "base_constants": {"a^2": 1, "b^2": 2, "c^2": 3, "d^2": 5},
   "extended_constants": {"e^2": 8, "f^2": 13, "g^2": 21},
   "implicit_symbol_substitution_authorized": false,
+  "canonical_corpus": {
+    "present": true,
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53",
+    "provenance_verified": true
+  },
   "canonical_corpus_bound_symbol_count": null,
-  "canonical_corpus_present": false
+  "canonical_corpus_bound_symbol_count_status": "DEFERRED_TO_GENERAL_RUNTIME_BINDING",
+  "general_runtime_binding_verified": false,
+  "pass169_terminal_contract_verified": false
 }
