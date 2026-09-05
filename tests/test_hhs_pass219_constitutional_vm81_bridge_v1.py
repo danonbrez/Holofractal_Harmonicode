@@ -12,11 +12,15 @@ from hhs_runtime.hhs_pass219_constitutional_ethics_membrane_v1 import (
     EthicsState,
     ModalityInvariantTrace,
 )
+from hhs_runtime.hhs_pass219_modality_constitutional_trace_v1 import (
+    CORE_MANDATORY_INVARIANTS,
+    INTRINSIC_AUTHORITY_MODALITIES,
+)
 from hhs_runtime.hhs_pass219_vm81_admission_bridge_v1 import admit_and_execute_constitutional
 
 STATE_HASH72 = "S" * 72
 RECEIPT_HASH72 = "R" * 72
-MANDATORY = ("truth", "human_protection", "authority_scope", "responsibility")
+MANDATORY = CORE_MANDATORY_INVARIANTS
 
 
 def _action():
@@ -38,12 +42,12 @@ def _epistemic():
     )
 
 
-def _constitutional(*, direct=True, composed=EthicsState.PASS):
+def _constitutional(*, direct=True, composed=EthicsState.PASS, mandatory=MANDATORY):
     modality = ModalityInvariantTrace(
         modality_id="vm81-candidate",
         local_state=EthicsState.PASS,
-        mandatory_invariants_present=MANDATORY,
-        mandatory_invariants_preserved=MANDATORY,
+        mandatory_invariants_present=mandatory,
+        mandatory_invariants_preserved=mandatory,
     )
     return ConstitutionalEthicsCandidate(
         candidate_id="relay",
@@ -91,7 +95,21 @@ def test_composed_effect_fail_never_reaches_vm81_controller():
     assert controller.calls == []
 
 
-def test_constitutional_pass_continues_through_existing_singleton_bridge_once():
+def test_missing_root_modality_invariants_fail_closed_before_vm81():
+    controller = _Controller()
+    result = admit_and_execute_constitutional(
+        _constitutional(mandatory=("HUMAN_PROTECTION",)),
+        _action(), all_pass_invariants(), _epistemic(), controller=controller,
+    )
+    assert result["constitutional_state"] == "FAIL"
+    assert any(
+        item.startswith("LOCAL_MODALITY_FAIL:vm81-candidate")
+        for item in result["constitutional_trace"]["failed_predicates"]
+    )
+    assert controller.calls == []
+
+
+def test_constitutional_pass_appends_intrinsic_authority_modalities_and_executes_once():
     controller = _Controller()
     result = admit_and_execute_constitutional(
         _constitutional(), _action(), all_pass_invariants(), _epistemic(), controller=controller
@@ -101,3 +119,23 @@ def test_constitutional_pass_continues_through_existing_singleton_bridge_once():
     assert result["canonical_vm81_mutation_performed"] is True
     assert result["action_authority_minted"] is False
     assert len(controller.calls) == 1
+    assert controller.calls[0].startswith("HHS_PASS219_CONSTITUTIONAL_ETHICAL_ADMISSION:")
+    modality_ids = {item["modality_id"] for item in result["constitutional_trace"]["modalities"]}
+    assert set(INTRINSIC_AUTHORITY_MODALITIES).issubset(modality_ids)
+
+
+def test_intrinsic_authority_modalities_preserve_complete_root_invariant_set():
+    controller = _Controller()
+    result = admit_and_execute_constitutional(
+        _constitutional(), _action(), all_pass_invariants(), _epistemic(), controller=controller
+    )
+    intrinsic = {
+        item["modality_id"]: item
+        for item in result["constitutional_trace"]["modalities"]
+        if item["modality_id"] in INTRINSIC_AUTHORITY_MODALITIES
+    }
+    for modality_id in INTRINSIC_AUTHORITY_MODALITIES:
+        trace = intrinsic[modality_id]
+        assert set(CORE_MANDATORY_INVARIANTS).issubset(trace["mandatory_invariants_present"])
+        assert set(CORE_MANDATORY_INVARIANTS).issubset(trace["mandatory_invariants_preserved"])
+        assert trace["preservation_complete"] is True
