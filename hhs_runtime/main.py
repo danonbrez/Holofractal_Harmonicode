@@ -457,7 +457,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
 
-        "hhs_runtime.main:app",
+        "hhs_backend.public_api_server:app",
 
         host=host,
 
