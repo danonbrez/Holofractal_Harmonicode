@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_ADMISSION_OVERLAY_I176_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I176",
+  "operation_id": "public.audio_language.feedback.run",
+  "parent_record": "contracts/pass219/pass170_operation_records_i175/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_V1.json",
+  "authorization_scope": "PENDING_PASS170_CAPABILITY_BINDING",
+  "admission_policy": "FAIL_CLOSED_UNTIL_AUTHORITATIVE_SCOPE_BOUND",
+  "public_transport_status": "REFUSES_BEFORE_AUXILIARY_PERSISTENCE_OR_TRAINING",
+  "typed_refusal": {
+    "http_status": 503,
+    "detail": "HHS_PASS170_AUDIO_CAPABILITY_MODEL_UNRESOLVED"
+  },
+  "internal_adapter_remains_callable": true,
+  "invariants": {
+    "unresolved_policy_can_execute_publicly": false,
+    "new_capability_scope_invented": false,
+    "pass190_registry_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "public_crypto_authority": false
+  },
+  "next_boundary": "PASS170_PUBLIC_CAPABILITY_MODEL_EXTENSION_AND_CONSTRUCTOR_RETIREMENT"
+}
