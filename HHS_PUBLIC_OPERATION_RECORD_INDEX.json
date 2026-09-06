@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_INDEX_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I173",
+  "version": "1.0.0",
+  "parent_registry": "HHS_PUBLIC_OPERATION_REGISTRY.json",
+  "record_schema": "HHS_PUBLIC_OPERATION_RECORD_SHARD_V1",
+  "required_fields": [
+    "operation_id",
+    "canonical_name",
+    "contract_id",
+    "introduced_by_pass",
+    "semantic_version",
+    "operation_class",
+    "mutation_class",
+    "HTTP_method",
+    "HTTP_path",
+    "WebSocket_channel",
+    "CLI_command",
+    "native_ABI_symbol",
+    "language_binding_symbol",
+    "request_schema",
+    "response_schema",
+    "capability_scope",
+    "authorization_scope",
+    "admission_policy",
+    "Runtime_call_sequence",
+    "VM81_commit_required",
+    "receipt_class",
+    "replay_supported",
+    "reverse_supported",
+    "idempotency_policy",
+    "timeout_policy",
+    "resource_bounds",
+    "deprecated_aliases",
+    "test_ids"
+  ],
+  "shards": [
+    {
+      "shard_id": "direct",
+      "path": "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_DIRECT_V1.json",
+      "record_count": 12
+    },
+    {
+      "shard_id": "pass168-a",
+      "path": "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS168_A_V1.json",
+      "record_count": 9
+    },
+    {
+      "shard_id": "pass168-b",
+      "path": "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS168_B_V1.json",
+      "record_count": 9
+    },
+    {
+      "shard_id": "pass169-a",
+      "path": "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS169_A_V1.json",
+      "record_count": 9
+    },
+    {
+      "shard_id": "pass169-b",
+      "path": "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS169_B_V1.json",
+      "record_count": 8
+    }
+  ],
+  "aggregate_record_count": 47,
+  "source_binding_modules": [
+    "hhs_backend.public_api_server",
+    "hhs_backend.pass168_parameter_circuit_routes",
+    "hhs_backend.pass169_algebra_routes"
+  ],
+  "invariants": {
+    "one_record_per_registered_route": true,
+    "record_operation_identity_unique": true,
+    "route_signature_unique": true,
+    "executable_source_binding_required": true,
+    "documentation_only_records_forbidden": true,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "canonical_state_mutated_by_index_load": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_PUBLIC_PARITY_COMPLETION"
+}
