@@ -91,7 +91,26 @@
       "auxiliary_persistence": true,
       "canonical_vm81_mutation": false,
       "new_hash72_mint_authority": false,
-      "new_hash216_persistence_authority": false
+      "new_hash216_persistence_authority": false,
+      "cross_cutting_roles": [
+        "LOCAL_AUDIO_LANGUAGE_APPLICATION",
+        "HARMONIC_TIME_AUDIO_ERROR_CORRECTION_WITNESS_SOURCE",
+        "INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_ENFORCEMENT_SIGNAL"
+      ],
+      "error_correction_binding": {
+        "inherited_module": "hhs_runtime.hhs_reality_to_manifold_translation_v1",
+        "witness_factory": "make_harmonic_time_audio_witness",
+        "witness_schema": "HHS_HARMONIC_TIME_AUDIO_PHASE_ECC_WITNESS_V1",
+        "required_when_temporal": true,
+        "fail_closed_on_invalid_witness": true
+      },
+      "post_quantum_security_binding": {
+        "scope": "INTERNAL_CONSTRAINT_ENFORCEMENT_ONLY",
+        "public_crypto_primitive": false,
+        "standardized_pq_crypto_claim": false,
+        "independent_key_or_kem_authority": false,
+        "role": "REDUNDANT_AUDIO_PHASE_WITNESS_FOR_INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_BOUNDARY"
+      }
     }
   ]
 }
