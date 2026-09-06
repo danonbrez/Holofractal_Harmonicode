@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS219_I175_PASS170_AUDIO_ROUTE_MIGRATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I175",
+  "version": "1.0.0",
+  "base_main": "95c17e6430ce9c182c6a94ce41848805e2be96ae",
+  "parent": {
+    "iteration": "PASS219-I174",
+    "exact_main_run": 34045997663,
+    "artifact": 9993120344,
+    "artifact_digest": "sha256:92922ab3f30b4823b33e68a82fd19c801373cfc3aef3c624fff66ef0b856a64a"
+  },
+  "required_changes": [
+    "MIGRATE_AUDIO_LANGUAGE_ROUTE_TO_CANONICAL_PASS170_COMPOSITION",
+    "PRESERVE_LEGACY_API_AUDIO_LANGUAGE_ALIAS",
+    "RETIRE_PLUS_V1_INDEPENDENT_ROUTE_OWNERSHIP",
+    "REDIRECT_PLUS_V1_SELF_LAUNCH_TO_CANONICAL_GATEWAY",
+    "EXTEND_FROZEN_I173_OPERATION_RECORD_SET_47_TO_48",
+    "FORMALIZE_AUDIO_HARMONIC_TIME_ERROR_CORRECTION_ROLE",
+    "FORMALIZE_AUDIO_INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_ENFORCEMENT_ROLE",
+    "PRESERVE_SINGLE_CANONICAL_VM81_HASH72_HASH216_AUTHORITY"
+  ],
+  "acceptance": {
+    "parent_operation_records": 47,
+    "successor_operation_records": 48,
+    "new_operation_id": "public.audio_language.feedback.run",
+    "canonical_audio_route": "/v1/audio-language/run",
+    "legacy_audio_alias": "/api/audio-language/run",
+    "observed_uvicorn_launchers": 6,
+    "canonical_gateway_launchers": 5,
+    "pending_launchers": 1,
+    "pending_launcher_paths": [
+      "hhs_backend/server.py"
+    ],
+    "fastapi_constructor_count_preserved": 10,
+    "audio_ecc_required_when_temporal": true,
+    "audio_invalid_ecc_witness_fails_closed": true,
+    "audio_pq_role_internal_only": true,
+    "public_independent_crypto_operation": false,
+    "standardized_post_quantum_security_claim": false
+  },
+  "expected_target_blockers": [
+    "PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT",
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN",
+    "PASS170_PUBLIC_AUDIO_CAPABILITY_BINDING_PENDING",
+    "PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "forbidden": {
+    "new_vm81_authority": true,
+    "new_hash72_mint_authority": true,
+    "hash216_persistence_authority": true,
+    "floating_point_canonical_authority": true,
+    "public_audio_crypto_primitive": true,
+    "audio_security_bypass_of_other_constraints": true,
+    "terminal_pass170_claim": true
+  },
+  "next_boundary": "PASS170_CANONICAL_BASE_LAUNCHER_REDIRECT_AND_PUBLIC_CAPABILITY_PARITY"
+}
