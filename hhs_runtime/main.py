@@ -23,7 +23,7 @@ def main() -> None:
     import uvicorn
 
     uvicorn.run(
-        CANONICAL_TARGET,
+        "hhs_backend.public_api_server:app",
         host="0.0.0.0",
         port=8000,
         reload=False,
