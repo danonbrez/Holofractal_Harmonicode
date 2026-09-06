@@ -1,0 +1,78 @@
+{
+  "schema": "HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I174",
+  "base_main": "cb39509ec5e16dc884d9556ed65cfc1a40d8c5d8",
+  "parent_i172_registry": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json",
+  "parent_i173_exact_main_run": 34030977410,
+  "parent_i173_exact_main_artifact": 9988603949,
+  "parent_i173_exact_main_artifact_digest": "sha256:a96c116ae5c32679f4b2372bf589618417c972a2eb7f58f3cee53e79d39721cb",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "launcher_records": [
+    {
+      "path": "hhs_backend/runtime/runtime_server.py",
+      "expected_target": "hhs_backend.public_api_server:app",
+      "status": "VERIFIED_CANONICAL_GATEWAY_REDIRECT_I174",
+      "source_role": "LEGACY_RUNTIME_CALLABLE_EXPORTS_RETAINED",
+      "constructor_retired": false
+    },
+    {
+      "path": "hhs_backend/server.py",
+      "expected_target": "hhs_backend.server:app",
+      "status": "PENDING_CANONICAL_BASE_SELF_LAUNCH_REDIRECT",
+      "source_role": "CANONICAL_PRODUCTION_BASE_CONSTRUCTOR",
+      "constructor_retired": false
+    },
+    {
+      "path": "hhs_runtime/main.py",
+      "expected_target": "hhs_backend.public_api_server:app",
+      "status": "VERIFIED_CANONICAL_GATEWAY_REDIRECT_I174",
+      "source_role": "LEGACY_RUNTIME_CALLABLE_EXPORTS_RETAINED",
+      "constructor_retired": false
+    },
+    {
+      "path": "hhs_runtime/runtime_ws_server.py",
+      "expected_target": "hhs_backend.public_api_server:app",
+      "status": "VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I172",
+      "source_role": "PASS170_COMPATIBILITY_LAUNCHER",
+      "constructor_retired": true
+    },
+    {
+      "path": "hhs_runtime_api_server_plus_v1.py",
+      "expected_target": "hhs_runtime_api_server_plus_v1:app",
+      "status": "PENDING_AUDIO_LANGUAGE_ROUTE_MIGRATION_AND_CANONICAL_REDIRECT",
+      "source_role": "LEGACY_AUDIO_LANGUAGE_COMPATIBILITY_LAUNCHER",
+      "constructor_retired": false
+    },
+    {
+      "path": "hhs_runtime_api_server_v1.py",
+      "expected_target": "hhs_backend.public_api_server:app",
+      "status": "VERIFIED_CANONICAL_GATEWAY_REDIRECT_I174",
+      "source_role": "LEGACY_RUNTIME_API_CALLABLE_EXPORTS_RETAINED",
+      "constructor_retired": false
+    }
+  ],
+  "newly_redirected_paths": [
+    "hhs_backend/runtime/runtime_server.py",
+    "hhs_runtime/main.py",
+    "hhs_runtime_api_server_v1.py"
+  ],
+  "pending_paths": [
+    "hhs_backend/server.py",
+    "hhs_runtime_api_server_plus_v1.py"
+  ],
+  "invariants": {
+    "launcher_count_expected": 6,
+    "canonical_redirect_count_expected": 4,
+    "pending_launcher_count_expected": 2,
+    "legacy_callable_exports_preserved": true,
+    "operation_record_layer_mutated": false,
+    "canonical_state_mutated_by_verification": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CANONICAL_BASE_LAUNCHER_AND_AUDIO_ROUTE_MIGRATION"
+}
