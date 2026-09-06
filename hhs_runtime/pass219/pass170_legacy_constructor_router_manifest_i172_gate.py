@@ -38,7 +38,7 @@ def verify_i172_legacy_constructor_router_manifest(
     try:
         inherited_i171 = verify_i171_public_app_route_parity(root)
     except Exception as exc:
-        inherited_i171 = {"evidence_verified": False, "blockers": [f"{type(exc).__name__}:{exc}"]}
+        inherited_i171 = {"i171_evidence_verified": False, "blockers": [f"{type(exc).__name__}:{exc}"]}
         evidence_blockers.append("PASS170_I172_INHERITED_I171_INVALID")
 
     inherited_inventory = build_i169_pass170_public_authority_inventory(root)
@@ -59,7 +59,7 @@ def verify_i172_legacy_constructor_router_manifest(
     evidence_blockers.extend(constructor_blockers)
     evidence_blockers.extend(router_blockers)
 
-    if inherited_i171.get("evidence_verified") is not True:
+    if inherited_i171.get("i171_evidence_verified") is not True:
         evidence_blockers.append("PASS170_I172_INHERITED_I171_NOT_VERIFIED")
     if inherited_i171.get("delegate_route_count") != 35:
         evidence_blockers.append("PASS170_I172_INHERITED_DELEGATE_ROUTE_COUNT_MISMATCH")
@@ -82,7 +82,7 @@ def verify_i172_legacy_constructor_router_manifest(
         "base_main": BASE_MAIN,
         "repository_root": str(root),
         "classification": CLASSIFICATION if evidence_verified else "PASS170_I172_EVIDENCE_FAILED",
-        "inherited_i171_verified": inherited_i171.get("evidence_verified") is True,
+        "inherited_i171_verified": inherited_i171.get("i171_evidence_verified") is True,
         "inherited_raw_constructor_count": inherited_inventory.get("inventory", {}).get("fastapi_constructor_count"),
         "constructor_registry_verified": not constructor_blockers,
         "constructor_evidence": constructor_evidence,
