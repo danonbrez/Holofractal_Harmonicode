@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I172",
+  "version": "1.0.0",
+  "authoritative_base": "08bd2db30706a88d3e6ffee2e8c3ff8ca592788c",
+  "inherits": {
+    "iteration": "PASS219-I171",
+    "classification": "PASS170_PRODUCTION_APPLICATION_IDENTITY_AND_DELEGATE_ROUTE_PARITY_VERIFIED_NONTERMINAL",
+    "required_delegate_route_count": 35,
+    "required_combined_registered_route_count": 47
+  },
+  "scope": [
+    "classify every repository-visible FastAPI constructor without suppressing raw I169 evidence",
+    "classify every repository-visible uvicorn launcher and prove its literal target",
+    "repair the Pass045 websocket compatibility launcher to the Pass170 canonical gateway",
+    "establish one ordered machine-readable public router manifest",
+    "bind the manifest to deterministic Pass201 sorted hhs_backend.api package closure",
+    "preserve explicit source-only degraded gateway as a nonterminal exception",
+    "preserve all inherited VM81 Hash72 Hash216 and exact no-float authority invariants"
+  ],
+  "required_surfaces": [
+    "HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json",
+    "HHS_PUBLIC_ROUTER_MANIFEST.json",
+    "hhs_runtime/runtime_ws_server.py",
+    "hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172.py",
+    "hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172_gate.py",
+    "tests/pass219/test_pass219_i172_pass170_legacy_constructor_router_manifest.py"
+  ],
+  "acceptance": {
+    "inherited_i171_verified": true,
+    "raw_fastapi_constructor_count": 10,
+    "registered_fastapi_constructor_count": 10,
+    "registered_uvicorn_launcher_count": 6,
+    "websocket_compatibility_launcher_target": "hhs_backend.public_api_server:app",
+    "router_manifest_stage_count": 9,
+    "direct_pass170_routes": 12,
+    "pass168_delegate_routes": 18,
+    "pass169_delegate_routes": 17,
+    "combined_registered_route_signatures": 47,
+    "router_manifest_verified": true,
+    "expected_target_blockers": [
+      "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+      "PASS170_FULL_OPERATION_RECORDS_PENDING",
+      "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+      "PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN"
+    ],
+    "pass170_terminal_contract_verified": false
+  },
+  "forbidden": {
+    "canonical_state_mutated": true,
+    "new_vm81_authority": true,
+    "new_hash72_mint_authority": true,
+    "hash216_persistence_authority": true,
+    "floating_point_canonical_authority": true,
+    "hide_or_reclassify_raw_constructor_evidence": true,
+    "claim_source_only_degraded_gateway_is_pass170_verified": true
+  },
+  "completion_classification": "PASS170_CONSTRUCTOR_AUTHORITY_AND_FULL_ROUTER_MANIFEST_VERIFIED_NONTERMINAL",
+  "next_boundary": "PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_FULL_OPERATION_RECORD_COMPLETION"
+}
