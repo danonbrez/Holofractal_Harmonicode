@@ -79,11 +79,18 @@ jobs:
             hhs_runtime/pass219/pass170_native_audio_replay_i179.py \
             tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
 
-      - name: Strict-compile additive exact ABI
+      - name: Strict-compile additive I179 membrane and cumulative exact ABI
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i179
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC -shared \
+          gcc -x c -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc \
+            -o /tmp/pass219-i179/audio_security_transport.o
+          # The cumulative exact ABI includes frozen Pass168 GNU __int128 exact
+          # arithmetic, so aggregate validation keeps warnings-as-errors but
+          # intentionally does not apply ISO-pedantic rejection to that inherited surface.
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
             -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i179/libhhs_runtime_exact.so
           nm -D /tmp/pass219-i179/libhhs_runtime_exact.so | grep -F 'hhs_exact_pass219_audio_security_transport_admit'
@@ -101,7 +108,7 @@ jobs:
       - name: Run exact C negative and positive tests
         run: |
           set -euo pipefail
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_i179_audio_security_transport.c \
             hhs_runtime/c/hhs_runtime_exact_abi.c \
