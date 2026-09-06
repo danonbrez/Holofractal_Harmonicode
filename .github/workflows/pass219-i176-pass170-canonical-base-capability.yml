@@ -45,8 +45,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install bounded validation dependency
-        run: python -m pip install pytest
+      - name: Install bounded validation dependencies
+        run: python -m pip install pytest fastapi
       - name: Parse manifests and compile I176 surfaces
         run: |
           python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I176.json >/dev/null
