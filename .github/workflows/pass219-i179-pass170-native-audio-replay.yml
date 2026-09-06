@@ -1,0 +1,177 @@
+name: Pass 219 I179 Pass170 Native Audio ABI Replay
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i179-pass170-native-audio-abi-replay
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_audio_security_transport_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/pass219/pass170_audio_native_abi_i179.py'
+      - 'hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py'
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_runtime/pass219/pass170_audio_transport_i178.py'
+      - 'hhs_runtime/pass219/pass170_native_audio_replay_i179.py'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json'
+      - 'contracts/pass219/pass170_operation_records_i179/**'
+      - 'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json'
+      - 'tests/pass219/test_pass219_i179_audio_security_transport.c'
+      - 'tests/pass219/test_pass219_i179_pass170_native_audio_replay.py'
+      - '.github/workflows/pass219-i179-pass170-native-audio-replay.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_audio_security_transport_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/pass219/pass170_audio_native_abi_i179.py'
+      - 'hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py'
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_runtime/pass219/pass170_audio_transport_i178.py'
+      - 'hhs_runtime/pass219/pass170_native_audio_replay_i179.py'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json'
+      - 'contracts/pass219/pass170_operation_records_i179/**'
+      - 'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json'
+      - 'tests/pass219/test_pass219_i179_audio_security_transport.c'
+      - 'tests/pass219/test_pass219_i179_pass170_native_audio_replay.py'
+      - '.github/workflows/pass219-i179-pass170-native-audio-replay.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-i179:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx
+
+      - name: Parse manifests and compile I179 Python surfaces
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in (
+              'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json',
+              'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json',
+              'contracts/pass219/pass170_operation_records_i179/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_NATIVE_REPLAY_V1.json',
+              'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json',
+          ):
+              json.loads(Path(path).read_text(encoding='utf-8'))
+          PY
+          python -m py_compile \
+            hhs_runtime/pass219/pass170_audio_native_abi_i179.py \
+            hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py \
+            hhs_backend/pass170_audio_language_routes.py \
+            hhs_runtime/pass219/pass170_audio_transport_i178.py \
+            hhs_runtime/pass219/pass170_native_audio_replay_i179.py \
+            tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
+
+      - name: Strict-compile additive exact ABI
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-i179
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC -shared \
+            -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i179/libhhs_runtime_exact.so
+          nm -D /tmp/pass219-i179/libhhs_runtime_exact.so | grep -F 'hhs_exact_pass219_audio_security_transport_admit'
+          nm -D /tmp/pass219-i179/libhhs_runtime_exact.so | grep -F 'hhs_exact_pass219_audio5184_hydrate'
+
+      - name: Build full runtime ABI required by inherited Hash72 authority
+        run: |
+          set -euo pipefail
+          make c-abi
+          test -f hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_exact_pass219_audio_security_transport_admit'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_exact_pass219_audio5184_hydrate'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_hash72_ring_init'
+
+      - name: Run exact C negative and positive tests
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_i179_audio_security_transport.c \
+            hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i179/test_audio_security_transport
+          /tmp/pass219-i179/test_audio_security_transport
+
+      - name: Run real native audio and replay integration tests
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          HHS_PASS170_AUDIO_NATIVE_LIB: ${{ github.workspace }}/hhs_runtime/builds/libhhs_runtime.so
+        run: python -m pytest -q tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
+
+      - name: Execute I179 repository gate
+        run: |
+          mkdir -p artifacts/pass219/i179
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_native_audio_replay_i179 import verify_i179_native_audio_replay
+          report = verify_i179_native_audio_replay('.')
+          Path('artifacts/pass219/i179/native_audio_replay.json').write_text(
+              json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+
+      - name: Enforce I179 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass219/i179/native_audio_replay.json').read_text())
+          assert report['schema'] == 'HHS_PASS219_I179_PASS170_NATIVE_AUDIO_REPLAY_V1'
+          assert report['parent_i178_exact_main_verified'] is True
+          assert report['parent_i178_exact_main_run'] == 34066947332
+          assert report['parent_i178_exact_main_artifact'] == 9999243782
+          assert report['parent_i178_exact_main_artifact_digest'] == 'sha256:0c00e896cac4832a366091c295f1fb973f8a41d783c0794bb8987baac9ab7344'
+          assert report['evidence_verified'] is True
+          assert report['fastapi_constructor_count'] == 8
+          assert report['newly_retired_constructor_count'] == 0
+          assert report['unsafe_constructor_retirement_performed'] is False
+          assert report['observed_launcher_count'] == 6
+          assert report['canonical_redirect_count'] == 6
+          assert report['aggregate_operation_count'] == 48
+          assert report['audio_native_abi_verified'] is True
+          assert report['audio_receipt_replay_verified'] is True
+          assert report['audio_replay_reexecutes_operation'] is False
+          assert report['audio_internal_ecc_pq_boundary_preserved'] is True
+          for key in (
+              'new_capability_token_authority',
+              'new_vm81_authority',
+              'new_hash72_mint_authority',
+              'hash216_persistence_authority',
+              'floating_point_canonical_authority',
+              'public_crypto_primitive_created',
+              'standardized_pq_crypto_claim',
+          ):
+              assert report[key] is False
+          assert report['target_blockers'] == [
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
+              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
+          ]
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['next_boundary'] == 'PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY'
+          PY
+
+      - name: Upload I179 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i179-pass170-native-audio-replay-${{ github.sha }}
+          path: artifacts/pass219/i179/native_audio_replay.json
+          if-no-files-found: error
