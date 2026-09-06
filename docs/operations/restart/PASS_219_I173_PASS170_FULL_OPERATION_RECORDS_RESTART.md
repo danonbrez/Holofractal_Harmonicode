@@ -6,6 +6,7 @@
 - Base authoritative main: `0a199e422e1bf10318b4dbfe0530afc3ba36fdef`
 - Branch: `agent/pass219-i173-pass170-launcher-operation-records`
 - Merge target: `main`
+- Pull request: `#402`
 - Parent boundary: Pass219 I172 / Pass170 constructor authority + full router manifest
 - Parent exact-main workflow: `34029649123`
 - Parent exact-main artifact: `9988180039`
@@ -41,15 +42,31 @@ The operation records are explicit repository-visible JSON shards, not documenta
 
 Every record carries the complete Pass170 Section-9 field set plus an executable `source_binding` and explicit current parity status.
 
-## Expected successful I173 evidence
+## Verified I173 evidence
+
+Dedicated PR workflow run `34030753197` completed successfully against branch content headed by checkpoint commit `73e50b19a395c340a367d3e65ae30343600074e9`.
+
+- job: `validate-i173`
+- parse/compile: success
+- dependency-scoped I173 tests: success
+- fail-closed operation-record gate: success
+- bounded nonterminal enforcement: success
+- evidence upload: success
+- artifact: `9988530355`
+- artifact digest: `sha256:3e46fbdecb2ccc6548b3e52a3d7c5a1e6d915d7f142de8e64feed92dd05b762a`
+
+Observed enforced cardinality:
 
 - inherited I172 evidence verified
 - frozen I171 route-identity registry retained
+- 5 record shards
 - 47 expected registered route identities
 - 47 operation records
 - 47 unique operation IDs
 - 47 unique route signatures
 - 47 executable source-bound handlers
+- 46 non-streaming records still explicitly pending CLI/native/language-binding parity
+- 47 records still explicitly pending public end-to-end receipt/replay proof
 - `PASS170_FULL_OPERATION_RECORDS_PENDING` cleared
 - canonical state not mutated by verification
 - no new VM81 authority
@@ -58,7 +75,7 @@ Every record carries the complete Pass170 Section-9 field set plus an executable
 - no floating-point canonical authority
 - Pass170 remains nonterminal
 
-## Expected nonterminal target blockers
+## Current nonterminal target blockers
 
 - `PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS`
 - `PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN`
@@ -66,7 +83,7 @@ Every record carries the complete Pass170 Section-9 field set plus an executable
 - `PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING`
 - `PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING`
 
-The last two blockers are explicit because the new records intentionally do not falsely claim native ABI/language-binding parity or end-to-end public receipt/replay proof that has not yet been executed.
+The last two blockers remain explicit because I173 does not falsely claim native ABI/language-binding parity or end-to-end public receipt/replay proof that has not yet been executed.
 
 ## Validation command
 
@@ -88,19 +105,16 @@ Dedicated workflow:
 
 `Pass 219 I173 Pass170 Full Operation Records`
 
-## Validation state at checkpoint creation
+## Current closure state
 
-Repository-visible implementation is complete. Dedicated CI is pending/active after workflow creation. No green CI result is claimed in this checkpoint until the exact branch head succeeds.
+The executable I173 head has a green dedicated gate and sealed artifact. This checkpoint-only documentation update intentionally retriggers the same bounded workflow. Do not merge until that final exact branch head is also green.
 
 ## Remaining closure sequence
 
-1. Run/observe the dedicated I173 workflow on the exact checkpoint head.
-2. If I173 fails, repair only the concrete I173 mismatch; do not weaken parent evidence or target blockers.
-3. Record the successful workflow run and artifact identity in this restart record.
-4. Open/refresh the I173 PR against `main`.
-5. Merge only an exact I173 head with a green dedicated gate.
-6. Verify the dedicated I173 push gate on the resulting exact `main` commit.
-7. Begin `PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_PUBLIC_PARITY_COMPLETION` from that exact main state.
+1. Verify the dedicated I173 workflow on the final checkpoint-only branch head.
+2. If it remains green, merge PR #402 with exact-head protection.
+3. Verify the dedicated I173 push gate on the resulting exact `main` commit.
+4. Begin `PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_PUBLIC_PARITY_COMPLETION` from that exact main state.
 
 ## Restart rule
 
