@@ -25,6 +25,7 @@ from pydantic import BaseModel, Field
 from hhs_backend import server as production_base
 from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
 from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
+from hhs_backend.pass170_audio_language_routes import build_pass170_audio_language_router
 from hhs_runtime.pass190.completion import (
     CONTRACT_ID as PASS190_CONTRACT_ID,
     Pass190CompletionContext,
@@ -301,6 +302,7 @@ def build_pass170_router(authority_provider: Callable[[], Pass190CompletionConte
             except RuntimeError:
                 pass
 
+    router.include_router(build_pass170_audio_language_router())
     router.include_router(build_pass168_parameter_circuit_router())
     router.include_router(build_pass169_algebra_router(authority_provider))
     return router
