@@ -1,9 +1,15 @@
 """Canonical Pass170 public API gateway over the inherited Pass190 authority.
 
-The module exposes one FastAPI application identity backed by one lazily
-constructed Pass190CompletionContext.  Pass170 adds fail-closed verification
-of the public operation and network registries before the application is
-constructed.  Routes never instantiate their own VM81 or operation engine.
+Pass219 I171 keeps the contract-level ``create_public_api_app`` factory while
+removing the second production application identity introduced during the I170
+registry repair.  The module-level ``app`` now composes Pass170 onto the same
+``hhs_backend.server:app`` object inherited by the cumulative production IDE.
+
+``create_app`` remains an explicit isolated compatibility/test factory so the
+older Pass168/Pass169/Pass190 dependency-scoped tests can exercise the gateway
+without starting the cumulative production lifespan.  That isolated path is
+non-deployment/test-ephemeral authority and is never exported as the public
+network entrypoint.
 """
 from __future__ import annotations
 
@@ -13,9 +19,12 @@ from pathlib import Path
 import threading
 from typing import Any, Callable, Mapping, Optional
 
-from fastapi import FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
+from hhs_backend import server as production_base
+from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
+from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 from hhs_runtime.pass190.completion import (
     CONTRACT_ID as PASS190_CONTRACT_ID,
     Pass190CompletionContext,
@@ -26,11 +35,12 @@ from hhs_runtime.pass219.pass170_public_registry_i170 import (
     CONTRACT_ID as PASS170_CONTRACT_ID,
     verify_public_registries,
 )
-from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
-from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 
 APP_ID = "HHS-P170-CANONICAL-PUBLIC-API-V1"
 LEGACY_APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
+PRODUCTION_BASE_ENTRYPOINT = "hhs_backend.server:app"
+I171_CLASSIFICATION = "PASS170_PRODUCTION_APP_IDENTITY_AND_DELEGATE_ROUTE_PARITY_I171"
+I171_NEXT_BOUNDARY = "PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AND_FULL_ROUTER_MANIFEST"
 _DEFAULT_CONTEXT: Pass190CompletionContext | None = None
 _DEFAULT_LOCK = threading.Lock()
 
@@ -147,43 +157,33 @@ def _invoke_guarded(
         raise HTTPException(status_code=code, detail=f"{name}:{exc}") from exc
 
 
-def create_public_api_app(
-    authority_context: Pass190CompletionContext | None = None,
-    configuration: Mapping[str, Any] | None = None,
-) -> FastAPI:
-    config = dict(configuration or {})
-    registry_root = Path(config.get("repository_root", Path(__file__).resolve().parents[1]))
-    registry_report = verify_public_registries(registry_root)
+def build_pass170_router(authority_provider: Callable[[], Pass190CompletionContext]) -> APIRouter:
+    """Build the Pass170 route set without constructing another application."""
 
-    app = FastAPI(
-        title="HHS Pass 170 Canonical Public Gateway",
-        version="1.0.0",
-        docs_url="/docs",
-        redoc_url=None,
-    )
-    app.state.hhs_pass170_public_registry = registry_report
-    provider: Callable[[], Pass190CompletionContext] = (
-        (lambda: authority_context) if authority_context is not None else _default_context
-    )
+    router = APIRouter()
 
-    @app.get("/v1/system/status")
+    @router.get("/v1/system/status")
     def system_status() -> dict[str, Any]:
-        ctx = provider()
+        ctx = authority_provider()
+        registry_report = getattr(router, "hhs_registry_report", {})
         return {
             "application": APP_ID,
             "legacy_application_identity": LEGACY_APP_ID,
+            "production_base_entrypoint": PRODUCTION_BASE_ENTRYPOINT,
             "pass170_contract": PASS170_CONTRACT_ID,
             **ctx.status(),
             "canonical_gateway": True,
-            "public_registry_verified": registry_report["registry_evidence_verified"],
+            "production_application_identity_unified": True,
+            "public_registry_verified": registry_report.get("registry_evidence_verified", False),
             "pass170_terminal_contract_verified": False,
-            "next_boundary": registry_report["next_boundary"],
+            "classification": I171_CLASSIFICATION,
+            "next_boundary": I171_NEXT_BOUNDARY,
             "detached_projection": False,
         }
 
-    @app.get("/v1/operations")
+    @router.get("/v1/operations")
     def operations() -> dict[str, Any]:
-        ctx = provider()
+        ctx = authority_provider()
         return {
             "contract": PASS190_CONTRACT_ID,
             "public_contract": PASS170_CONTRACT_ID,
@@ -191,28 +191,28 @@ def create_public_api_app(
             "operations": ctx.operations(),
         }
 
-    @app.get("/v1/operations/{operation_id:path}")
+    @router.get("/v1/operations/{operation_id:path}")
     def operation_record(operation_id: str) -> dict[str, Any]:
         try:
-            return provider().resolve_operation(operation_id)
+            return authority_provider().resolve_operation(operation_id)
         except Exception as exc:
             raise HTTPException(status_code=404, detail=f"HHS_P190_OPERATION_NOT_FOUND:{operation_id}") from exc
 
-    @app.post("/v1/operations/{operation_id:path}")
+    @router.post("/v1/operations/{operation_id:path}")
     def invoke_operation(
         operation_id: str,
         body: OperationBody,
         authorization: Optional[str] = Header(default=None),
     ) -> dict[str, Any]:
-        return _invoke_guarded(provider(), operation_id, body, authorization)
+        return _invoke_guarded(authority_provider(), operation_id, body, authorization)
 
-    @app.post("/v1/harmonicode/eval")
+    @router.post("/v1/harmonicode/eval")
     def harmonicode_eval(
         body: HarmonicodeBody,
         authorization: Optional[str] = Header(default=None),
     ) -> dict[str, Any]:
         try:
-            return provider().invoke_constructor(
+            return authority_provider().invoke_constructor(
                 body.expression,
                 authorization_token=_token_from_header(authorization),
             )
@@ -221,7 +221,7 @@ def create_public_api_app(
         except Exception as exc:
             raise HTTPException(status_code=400, detail=f"{type(exc).__name__}:{exc}") from exc
 
-    @app.post("/v1/python/invoke")
+    @router.post("/v1/python/invoke")
     def python_invoke(
         body: PythonBody,
         authorization: Optional[str] = Header(default=None),
@@ -229,7 +229,7 @@ def create_public_api_app(
         _reject_float(body.args, "args")
         _reject_float(body.kwargs, "kwargs")
         try:
-            return provider().invoke_python(
+            return authority_provider().invoke_python(
                 body.identity,
                 body.args,
                 body.kwargs,
@@ -238,50 +238,50 @@ def create_public_api_app(
         except Pass190CompletionError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    @app.get("/v1/python/compatibility")
+    @router.get("/v1/python/compatibility")
     def python_compatibility() -> dict[str, Any]:
-        return provider().compatibility_registry()
+        return authority_provider().compatibility_registry()
 
-    @app.post("/v1/shell/execute")
+    @router.post("/v1/shell/execute")
     def shell_execute(
         body: ShellBody,
         authorization: Optional[str] = Header(default=None),
     ) -> dict[str, Any]:
         try:
             return lower_shell_command(
-                provider(),
+                authority_provider(),
                 body.command,
                 authorization_token=_token_from_header(authorization),
             )
         except Pass190CompletionError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    @app.post("/v1/hydration/preview")
+    @router.post("/v1/hydration/preview")
     def hydration_preview(body: HydrationBody) -> dict[str, Any]:
         try:
-            return provider().hydration_preview(
+            return authority_provider().hydration_preview(
                 commit=body.commit,
                 since_commit=body.since_commit,
             )
         except Exception as exc:
             raise HTTPException(status_code=409, detail=f"{type(exc).__name__}:{exc}") from exc
 
-    @app.post("/v1/replay/{receipt_hash72}")
+    @router.post("/v1/replay/{receipt_hash72}")
     def replay(receipt_hash72: str) -> dict[str, Any]:
         try:
-            return provider().replay(receipt_hash72)
+            return authority_provider().replay(receipt_hash72)
         except Exception as exc:
             raise HTTPException(status_code=409, detail=f"{type(exc).__name__}:{exc}") from exc
 
-    @app.get("/v1/registry/openapi")
+    @router.get("/v1/registry/openapi")
     def registry_openapi() -> dict[str, Any]:
-        return provider().openapi_registry_document()
+        return authority_provider().openapi_registry_document()
 
-    @app.websocket("/v1/receipts/ws")
+    @router.websocket("/v1/receipts/ws")
     async def receipt_stream(websocket: WebSocket) -> None:
         await websocket.accept()
         try:
-            ctx = provider()
+            ctx = authority_provider()
             rows = ctx.authority.receipts_after(0, 100)
             await websocket.send_json(
                 {
@@ -301,23 +301,87 @@ def create_public_api_app(
             except RuntimeError:
                 pass
 
-    app.include_router(build_pass168_parameter_circuit_router())
-    app.include_router(build_pass169_algebra_router(provider))
+    router.include_router(build_pass168_parameter_circuit_router())
+    router.include_router(build_pass169_algebra_router(authority_provider))
+    return router
 
-    return app
+
+def _compose_pass170(
+    target: FastAPI,
+    *,
+    authority_context: Pass190CompletionContext | None,
+    registry_report: Mapping[str, Any],
+) -> FastAPI:
+    if authority_context is not None:
+        target.state.hhs_pass170_authority_context = authority_context
+
+    def provider() -> Pass190CompletionContext:
+        explicit = getattr(target.state, "hhs_pass170_authority_context", None)
+        return explicit if explicit is not None else _default_context()
+
+    target.state.hhs_pass170_public_registry = dict(registry_report)
+    if getattr(target.state, "hhs_pass170_routes_composed", False) is not True:
+        router = build_pass170_router(provider)
+        router.hhs_registry_report = dict(registry_report)  # type: ignore[attr-defined]
+        target.include_router(router)
+        target.state.hhs_pass170_routes_composed = True
+        target.state.hhs_pass170_production_base_entrypoint = PRODUCTION_BASE_ENTRYPOINT
+    target.openapi_schema = None
+    return target
+
+
+def create_public_api_app(
+    authority_context: Pass190CompletionContext | None = None,
+    configuration: Mapping[str, Any] | None = None,
+) -> FastAPI:
+    config = dict(configuration or {})
+    registry_root = Path(config.get("repository_root", Path(__file__).resolve().parents[1]))
+    registry_report = verify_public_registries(registry_root)
+    isolated_ephemeral = bool(config.get("isolated_ephemeral", False))
+
+    if isolated_ephemeral:
+        target = FastAPI(
+            title="HHS Pass 170 Isolated Compatibility Gateway",
+            version="1.1.0-i171-test-ephemeral",
+            docs_url="/docs",
+            redoc_url=None,
+        )
+        target.state.hhs_pass170_test_ephemeral = True
+    else:
+        target = production_base.app
+        target.state.hhs_pass170_test_ephemeral = False
+
+    return _compose_pass170(
+        target,
+        authority_context=authority_context,
+        registry_report=registry_report,
+    )
 
 
 def create_app(context: Pass190CompletionContext | None = None) -> FastAPI:
-    """Compatibility alias for inherited Pass190 callers."""
-    return create_public_api_app(authority_context=context)
+    """Compatibility factory for isolated dependency-scoped tests/callers.
+
+    Production exports the module-level ``app`` below.  This alias deliberately
+    requests a non-deployment ephemeral application so inherited tests do not
+    start the cumulative production lifespan.
+    """
+
+    return create_public_api_app(
+        authority_context=context,
+        configuration={"isolated_ephemeral": True},
+    )
 
 
 app = create_public_api_app()
 
 __all__ = [
     "APP_ID",
+    "I171_CLASSIFICATION",
+    "I171_NEXT_BOUNDARY",
     "LEGACY_APP_ID",
+    "PRODUCTION_BASE_ENTRYPOINT",
     "app",
+    "build_pass170_router",
     "create_app",
     "create_public_api_app",
 ]

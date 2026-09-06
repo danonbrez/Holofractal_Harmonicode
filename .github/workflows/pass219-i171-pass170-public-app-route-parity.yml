@@ -1,0 +1,157 @@
+name: Pass 219 I171 Pass170 Public App Route Parity
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i171-pass170-public-app-route-parity
+    paths:
+      - 'HHS_PUBLIC_OPERATION_REGISTRY.json'
+      - 'HHS_PUBLIC_NETWORK_PORT_REGISTRY.json'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'hhs_backend/pass168_parameter_circuit_routes.py'
+      - 'hhs_backend/pass169_algebra_routes.py'
+      - 'hhs_runtime/pass219/pass170_public_app_route_parity_i171.py'
+      - 'hhs_runtime/pass219/pass170_public_registry_i170.py'
+      - 'hhs_runtime/pass219/pass170_public_authority_inventory_i169.py'
+      - 'tests/pass219/test_pass219_i171_pass170_public_app_route_parity.py'
+      - 'tests/pass219/test_pass219_i170_pass170_public_registry.py'
+      - 'contracts/pass219/PASS_219_I171_PASS170_PUBLIC_APP_ROUTE_PARITY_1_0.json'
+      - '.github/workflows/pass219-i171-pass170-public-app-route-parity.yml'
+      - 'docs/operations/restart/PASS_219_I171_PASS170_PUBLIC_APP_ROUTE_PARITY_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PUBLIC_OPERATION_REGISTRY.json'
+      - 'HHS_PUBLIC_NETWORK_PORT_REGISTRY.json'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_backend/runtime_os_application_server.py'
+      - 'hhs_backend/pass168_parameter_circuit_routes.py'
+      - 'hhs_backend/pass169_algebra_routes.py'
+      - 'hhs_runtime/pass219/pass170_public_app_route_parity_i171.py'
+      - 'hhs_runtime/pass219/pass170_public_registry_i170.py'
+      - 'hhs_runtime/pass219/pass170_public_authority_inventory_i169.py'
+      - 'tests/pass219/test_pass219_i171_pass170_public_app_route_parity.py'
+      - 'tests/pass219/test_pass219_i170_pass170_public_registry.py'
+      - 'contracts/pass219/PASS_219_I171_PASS170_PUBLIC_APP_ROUTE_PARITY_1_0.json'
+      - '.github/workflows/pass219-i171-pass170-public-app-route-parity.yml'
+      - 'docs/operations/restart/PASS_219_I171_PASS170_PUBLIC_APP_ROUTE_PARITY_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i171:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse contract and compile I171 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_PUBLIC_OPERATION_REGISTRY.json >/dev/null
+          python -m json.tool HHS_PUBLIC_NETWORK_PORT_REGISTRY.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I171_PASS170_PUBLIC_APP_ROUTE_PARITY_1_0.json >/dev/null
+          python -m py_compile hhs_backend/public_api_server.py
+          python -m py_compile hhs_backend/runtime_os_application_server.py
+          python -m py_compile hhs_runtime/pass219/pass170_public_app_route_parity_i171.py
+          python -m py_compile tests/pass219/test_pass219_i171_pass170_public_app_route_parity.py
+
+      - name: Revalidate inherited I170 registry boundary
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i170_pass170_public_registry.py
+
+      - name: Run dependency-scoped I171 tests
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i171_pass170_public_app_route_parity.py
+
+      - name: Execute I171 production identity and route parity verifier
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i171
+          python -m hhs_runtime.pass219.pass170_public_app_route_parity_i171 . \
+            --output artifacts/pass219/i171/public_app_route_parity.json
+
+      - name: Re-run inherited I169 raw authority inventory
+        run: |
+          set -euo pipefail
+          python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 . \
+            --output artifacts/pass219/i171/i169_authority_inventory.json
+
+      - name: Enforce I171 bounded nonterminal boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('artifacts/pass219/i171/public_app_route_parity.json').read_text())
+          inherited = json.loads(Path('artifacts/pass219/i171/i169_authority_inventory.json').read_text())
+          expected_target = [
+              'PASS170_FULL_OPERATION_RECORDS_PENDING',
+              'PASS170_FULL_ROUTER_MANIFEST_PENDING',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+          ]
+          expected_i169 = ['PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT']
+
+          delegate_counts = {
+              item['operation_id']: item['observed_route_count']
+              for item in report['delegate_reports']
+          }
+          checks = [
+              ('i171_evidence_verified', report['i171_evidence_verified'] is True, report['i171_evidence_verified']),
+              ('evidence_blockers_empty', report['evidence_blockers'] == [], report['evidence_blockers']),
+              ('classification', report['classification'] == 'PASS170_PRODUCTION_APPLICATION_IDENTITY_AND_DELEGATE_ROUTE_PARITY_VERIFIED_NONTERMINAL', report['classification']),
+              ('production_application_identity', report['production_application_identity_verified'] is True, report['production_application_identity_verified']),
+              ('delegate_count', report['delegate_count'] == 2, report['delegate_count']),
+              ('delegate_route_count', report['delegate_route_count'] == 35, report['delegate_route_count']),
+              ('delegate_route_operation_ids', report['delegate_route_operation_id_count'] == 35, report['delegate_route_operation_id_count']),
+              ('pass168_routes', delegate_counts.get('pass168.parameter_circuit.router') == 18, delegate_counts),
+              ('pass169_routes', delegate_counts.get('pass169.algebra.router') == 17, delegate_counts),
+              ('direct_routes_preserved', report['direct_gateway_route_count'] == 12, report['direct_gateway_route_count']),
+              ('combined_routes', report['combined_registered_route_count'] == 47, report['combined_registered_route_count']),
+              ('target_blockers_exact', report['target_blockers'] == expected_target, report['target_blockers']),
+              ('raw_constructor_count', report['raw_fastapi_constructor_count'] > 1, report['raw_fastapi_constructor_count']),
+              ('inherited_i169_blockers_report', report['inherited_i169_blockers'] == expected_i169, report['inherited_i169_blockers']),
+              ('inherited_i169_blockers_artifact', inherited['blockers'] == expected_i169, inherited['blockers']),
+              ('inherited_inventory_verified', inherited['inventory_evidence_verified'] is True, inherited['inventory_evidence_verified']),
+              ('pass170_nonterminal', report['pass170_terminal_contract_verified'] is False, report['pass170_terminal_contract_verified']),
+              ('next_boundary', report['next_boundary'] == 'PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AND_FULL_ROUTER_MANIFEST', report['next_boundary']),
+              ('canonical_state_mutated', report['canonical_state_mutated'] is False, report['canonical_state_mutated']),
+              ('new_vm81_authority', report['new_vm81_authority'] is False, report['new_vm81_authority']),
+              ('new_hash72_mint_authority', report['new_hash72_mint_authority'] is False, report['new_hash72_mint_authority']),
+              ('hash216_persistence_authority', report['hash216_persistence_authority'] is False, report['hash216_persistence_authority']),
+              ('floating_point_canonical_authority', report['floating_point_canonical_authority'] is False, report['floating_point_canonical_authority']),
+          ]
+
+          failed = []
+          for name, ok, observed in checks:
+              print(f"{'PASS' if ok else 'FAIL'} {name}: observed={observed!r}")
+              if not ok:
+                  failed.append({'check': name, 'observed': observed})
+          if failed:
+              raise SystemExit('I171 boundary enforcement failed: ' + json.dumps(failed, sort_keys=True))
+          PY
+
+      - name: Upload I171 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i171-pass170-public-app-route-parity-${{ github.sha }}
+          path: artifacts/pass219/i171
+          if-no-files-found: warn
+          retention-days: 90
