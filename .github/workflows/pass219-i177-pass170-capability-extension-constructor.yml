@@ -1,0 +1,119 @@
+name: Pass 219 I177 Pass170 Capability Extension Constructor Retirement
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i177-pass170-capability-extension-constructor-retirement
+    paths:
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_backend/heroku_server.py'
+      - 'HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I177.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I177.json'
+      - 'contracts/pass219/pass170_operation_records_i177/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_CAPABILITY_V1.json'
+      - 'contracts/pass219/PASS_219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_1_0.json'
+      - 'hhs_runtime/pass219/pass170_capability_extension_constructor_i177.py'
+      - 'tests/pass219/test_pass219_i177_pass170_capability_extension_constructor.py'
+      - '.github/workflows/pass219-i177-pass170-capability-extension-constructor.yml'
+      - 'docs/operations/restart/PASS_219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_backend/heroku_server.py'
+      - 'HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I177.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I177.json'
+      - 'contracts/pass219/pass170_operation_records_i177/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_CAPABILITY_V1.json'
+      - 'contracts/pass219/PASS_219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_1_0.json'
+      - 'hhs_runtime/pass219/pass170_capability_extension_constructor_i177.py'
+      - 'tests/pass219/test_pass219_i177_pass170_capability_extension_constructor.py'
+      - '.github/workflows/pass219-i177-pass170-capability-extension-constructor.yml'
+      - 'docs/operations/restart/PASS_219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i177:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded validation dependencies
+        run: python -m pip install pytest fastapi httpx
+      - name: Parse manifests and compile I177 surfaces
+        run: |
+          python -m json.tool HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json >/dev/null
+          python -m json.tool HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I177.json >/dev/null
+          python -m json.tool HHS_PUBLIC_OPERATION_RECORD_INDEX_I177.json >/dev/null
+          python -m json.tool contracts/pass219/pass170_operation_records_i177/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_CAPABILITY_V1.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_1_0.json >/dev/null
+          python -m py_compile hhs_backend/pass170_audio_language_routes.py
+          python -m py_compile hhs_backend/heroku_server.py
+          python -m py_compile hhs_runtime/pass219/pass170_capability_extension_constructor_i177.py
+          python -m py_compile tests/pass219/test_pass219_i177_pass170_capability_extension_constructor.py
+      - name: Run dependency-scoped I177 tests
+        run: PYTHONPATH=. python -m pytest -q --tb=short tests/pass219/test_pass219_i177_pass170_capability_extension_constructor.py
+      - name: Execute I177 fail-closed gate
+        run: |
+          mkdir -p artifacts/pass219/i177
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_capability_extension_constructor_i177 import verify_i177_capability_extension_constructor
+          report = verify_i177_capability_extension_constructor('.', fail_closed=False)
+          target = Path('artifacts/pass219/i177/capability_extension_constructor.json')
+          target.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2, sort_keys=True))
+          PY
+      - name: Enforce I177 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass219/i177/capability_extension_constructor.json').read_text(encoding='utf-8'))
+          expected = [
+            'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+            'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+            'PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING',
+            'PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING',
+          ]
+          assert report['schema'] == 'HHS_PASS219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_V1'
+          assert report['evidence_verified'] is True, report['evidence_blockers']
+          assert report['evidence_blockers'] == []
+          assert report['parent_i176_exact_main_verified'] is True
+          assert report['audio_capability_scope'] == 'pass170.audio_language.feedback'
+          assert report['audio_capability_binding_verified'] is True
+          assert report['audio_public_signed_admission_verified'] is True
+          assert report['audio_internal_ecc_pq_boundary_preserved'] is True
+          assert report['pass190_token_verifier_reused'] is True
+          assert report['new_capability_scope_registered'] is True
+          assert report['new_capability_token_authority'] is False
+          assert report['parent_fastapi_constructor_count'] == 10
+          assert report['fastapi_constructor_count'] == 9
+          assert report['retired_constructor_count'] == 1
+          assert report['retired_constructor_path'] == 'hhs_backend/heroku_server.py'
+          assert report['observed_launcher_count'] == 6
+          assert report['canonical_redirect_count'] == 6
+          assert report['target_blockers'] == expected
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['canonical_state_mutated'] is False
+          assert report['new_vm81_authority'] is False
+          assert report['new_hash72_mint_authority'] is False
+          assert report['hash216_persistence_authority'] is False
+          assert report['floating_point_canonical_authority'] is False
+          assert report['next_boundary'] == 'PASS170_CONSTRUCTOR_RETIREMENT_TRANCHE_B_AND_PUBLIC_TRANSPORT_PARITY'
+          PY
+      - name: Upload I177 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i177-pass170-capability-extension-constructor-${{ github.sha }}
+          path: artifacts/pass219/i177/capability_extension_constructor.json
+          if-no-files-found: warn
