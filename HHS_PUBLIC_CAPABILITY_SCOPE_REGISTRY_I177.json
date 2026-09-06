@@ -1,0 +1,62 @@
+{
+  "schema": "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I177",
+  "base_main": "0707cedbbe41cae8478b498f60db56117da5c462",
+  "parent_reconciliation": "HHS_PUBLIC_CAPABILITY_MODEL_RECONCILIATION_I176.json",
+  "inherited_token_authority": {
+    "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+    "authorization_scheme": "HHS-Capability",
+    "verifier": "hhs_runtime.pass190.completion.verify_capability_token",
+    "secret_environment": "HHS_PASS190_CAPABILITY_SECRET",
+    "pass190_registry_mutated": false,
+    "new_token_issuer_created": false,
+    "new_signature_algorithm_created": false
+  },
+  "scope_count": 1,
+  "scope_records": [
+    {
+      "scope_id": "pass170.audio_language.feedback",
+      "operation_ids": [
+        "public.audio_language.feedback.run"
+      ],
+      "status": "AUTHORIZED_PASS170_SCOPE_EXTENSION_I177",
+      "purpose": "Authorize public invocation of the auxiliary audio-language feedback operation only.",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "required_on_public_http": true,
+      "anonymous_admission": false,
+      "legacy_alias_requires_same_scope": true,
+      "allowed_effects": [
+        "AUXILIARY_AUDIO_LANGUAGE_FEEDBACK_EXECUTION"
+      ],
+      "explicitly_excluded_authority": [
+        "CANONICAL_VM81_COMMIT",
+        "HASH72_MINT",
+        "HASH216_CANONICAL_PERSISTENCE",
+        "CAPABILITY_TOKEN_ISSUANCE",
+        "KEY_OR_KEM_AUTHORITY",
+        "PUBLIC_CRYPTO_PRIMITIVE",
+        "INTERNAL_HARMONIC_TIME_AUDIO_ECC_SECURITY_AUTHORITY"
+      ]
+    }
+  ],
+  "audio_security_boundary": {
+    "harmonic_time_audio_ecc_remains_internal": true,
+    "post_quantum_oriented_security_signal_remains_internal": true,
+    "public_scope_does_not_expose_internal_security_witness": true,
+    "standardized_post_quantum_crypto_claim": false
+  },
+  "invariants": {
+    "new_capability_scope_registered": true,
+    "new_capability_authority_created": false,
+    "pass190_operation_registry_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "classification": "PASS170_AUDIO_CAPABILITY_SCOPE_EXTENSION_BOUND_TO_INHERITED_SIGNED_TOKEN_AUTHORITY",
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CONSTRUCTOR_RETIREMENT_TRANCHE_B_AND_PUBLIC_TRANSPORT_PARITY"
+}
