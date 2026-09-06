@@ -869,7 +869,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
 
-        "hhs_backend.server:app",
+        "hhs_backend.public_api_server:app",
 
         host="0.0.0.0",
 
