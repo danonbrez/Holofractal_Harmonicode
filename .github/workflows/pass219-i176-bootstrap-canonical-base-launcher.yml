@@ -1,0 +1,54 @@
+name: Pass 219 I176 Bootstrap Canonical Base Launcher
+
+on:
+  push:
+    branches:
+      - agent/pass219-i176-pass170-canonical-base-capability-parity
+    paths:
+      - 'tools/pass219_i176_redirect_canonical_base_launcher.py'
+      - '.github/workflows/pass219-i176-bootstrap-canonical-base-launcher.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  redirect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass219-i176-pass170-canonical-base-capability-parity
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Apply exact launcher redirect
+        run: python tools/pass219_i176_redirect_canonical_base_launcher.py --apply
+
+      - name: Verify bounded source delta
+        run: |
+          python tools/pass219_i176_redirect_canonical_base_launcher.py
+          git diff -- hhs_backend/server.py
+          python - <<'PY'
+          import subprocess
+          diff = subprocess.check_output(['git', 'diff', '--unified=0', '--', 'hhs_backend/server.py'], text=True)
+          removed = [line for line in diff.splitlines() if line.startswith('-') and not line.startswith('---')]
+          added = [line for line in diff.splitlines() if line.startswith('+') and not line.startswith('+++')]
+          assert removed == ['-        "hhs_backend.server:app",'], removed
+          assert added == ['+        "hhs_backend.public_api_server:app",'], added
+          PY
+
+      - name: Commit source migration if needed
+        run: |
+          if git diff --quiet -- hhs_backend/server.py; then
+            echo 'canonical base launcher already redirected'
+            exit 0
+          fi
+          git config user.name 'danonbrez'
+          git config user.email '153354844+danonbrez@users.noreply.github.com'
+          git add hhs_backend/server.py
+          git commit -m 'Pass 219 I176: redirect canonical base self-launch'
+          git push origin HEAD:agent/pass219-i176-pass170-canonical-base-capability-parity
