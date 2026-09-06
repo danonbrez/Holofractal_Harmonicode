@@ -1,0 +1,100 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_REPLACEMENT_SHARD_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I178",
+  "shard_id": "audio-language-transport-replacement",
+  "replaces_shard": "contracts/pass219/pass170_operation_records_i177/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_CAPABILITY_V1.json",
+  "replacement_count": 1,
+  "replaced_operation_ids": [
+    "public.audio_language.feedback.run"
+  ],
+  "records": [
+    {
+      "operation_id": "public.audio_language.feedback.run",
+      "canonical_name": "public.audio_language.feedback.run",
+      "contract_id": "HHS-P170-PAPAE-HLFDCR",
+      "introduced_by_pass": 170,
+      "semantic_version": "1.2.0",
+      "operation_class": "MULTIMODAL_FEEDBACK",
+      "mutation_class": "auxiliary-persistence",
+      "HTTP_method": "POST",
+      "HTTP_path": "/v1/audio-language/run",
+      "WebSocket_channel": null,
+      "CLI_command": "python -m hhs_runtime.pass219.pass170_audio_transport_i178 invoke",
+      "native_ABI_symbol": null,
+      "language_binding_symbol": "hhs_runtime.pass219.pass170_audio_transport_i178.invoke_audio_language_python",
+      "request_schema": "hhs_backend.pass170_audio_language_routes.AudioLanguageRunRequest",
+      "response_schema": "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1.AudioLanguageFeedbackReceipt",
+      "capability_scope": "pass170.audio_language.feedback",
+      "authorization_scope": "pass170.audio_language.feedback",
+      "admission_policy": "SIGNED_HHS_CAPABILITY_REQUIRED_FAIL_CLOSED",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "Runtime_call_sequence": [
+        "transport-specific binding",
+        "hhs_backend.pass170_audio_language_routes:enforce_audio_public_admission",
+        "hhs_runtime.pass190.completion:verify_capability_token",
+        "hhs_backend.pass170_audio_language_routes:execute_audio_language_feedback_request",
+        "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1:run_audio_language_feedback_cycle"
+      ],
+      "VM81_commit_required": false,
+      "receipt_class": "AudioLanguageFeedbackReceipt",
+      "replay_supported": false,
+      "reverse_supported": false,
+      "idempotency_policy": "NOT_PROVEN_AUXILIARY_PERSISTENCE",
+      "timeout_policy": "PENDING_PASS170_RESOURCE_POLICY",
+      "resource_bounds": {
+        "max_expression_chars": 131072,
+        "canonical_float_authority": false
+      },
+      "deprecated_aliases": [
+        {
+          "HTTP_method": "POST",
+          "HTTP_path": "/api/audio-language/run",
+          "requires_same_capability_scope": true
+        }
+      ],
+      "test_ids": [
+        "PASS219-I178:public.audio_language.feedback.run:http-cli-python-parity"
+      ],
+      "source_binding": {
+        "http_module": "hhs_backend.pass170_audio_language_routes",
+        "http_factory": "build_pass170_audio_language_router",
+        "admission_gate": "enforce_audio_public_admission",
+        "shared_adapter": "execute_audio_language_feedback_request",
+        "transport_module": "hhs_runtime.pass219.pass170_audio_transport_i178",
+        "python_binding": "invoke_audio_language_python",
+        "cli_entry": "main"
+      },
+      "implementation_status": "EXECUTABLE_SOURCE_BOUND_CAPABILITY_GATED_MULTI_TRANSPORT",
+      "transport_parity_status": "HTTP_CLI_PYTHON_EXECUTABLE_NATIVE_ABI_PENDING",
+      "receipt_replay_status": "PENDING_PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PROOF",
+      "capability_binding_status": "VERIFIED_PASS170_SCOPE_BOUND_I177",
+      "auxiliary_persistence": true,
+      "canonical_vm81_mutation": false,
+      "new_hash72_mint_authority": false,
+      "new_hash216_persistence_authority": false,
+      "new_capability_token_authority": false,
+      "transport_invariants": {
+        "http_cli_python_share_admission_gate": true,
+        "http_cli_python_share_internal_adapter": true,
+        "cli_executes_real_operation": true,
+        "python_binding_executes_real_operation": true,
+        "native_abi_claimed": false,
+        "parallel_operation_engine_created": false
+      },
+      "cross_cutting_roles": [
+        "LOCAL_AUDIO_LANGUAGE_APPLICATION",
+        "HARMONIC_TIME_AUDIO_ERROR_CORRECTION_WITNESS_SOURCE",
+        "INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_ENFORCEMENT_SIGNAL"
+      ],
+      "security_boundary": {
+        "internal_audio_ecc_exposed_by_public_transport": false,
+        "internal_pq_oriented_signal_exposed_by_public_transport": false,
+        "public_crypto_primitive": false,
+        "standardized_pq_crypto_claim": false,
+        "independent_key_or_kem_authority": false
+      }
+    }
+  ]
+}
