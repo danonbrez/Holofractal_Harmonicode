@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I176_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I176",
+  "base_main": "8d9ab8a0ec453b2e3f527c8420542929e29cb9d0",
+  "parent_i175_exact_main_run": 34062282668,
+  "parent_i175_exact_main_artifact": 9997852836,
+  "parent_i175_exact_main_artifact_digest": "sha256:6af6f3cf900f2502f8e531ed2b5cd35fad866dc349c65814b0287195db890476",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "launcher_records": [
+    {"path":"hhs_backend/runtime/runtime_server.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I174"},
+    {"path":"hhs_backend/server.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_I176"},
+    {"path":"hhs_runtime/main.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I174"},
+    {"path":"hhs_runtime/runtime_ws_server.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I172"},
+    {"path":"hhs_runtime_api_server_plus_v1.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I175"},
+    {"path":"hhs_runtime_api_server_v1.py","expected_target":"hhs_backend.public_api_server:app","status":"VERIFIED_CANONICAL_GATEWAY_REDIRECT_INHERITED_I174"}
+  ],
+  "newly_redirected_paths": ["hhs_backend/server.py"],
+  "pending_paths": [],
+  "invariants": {
+    "launcher_count_expected": 6,
+    "canonical_redirect_count_expected": 6,
+    "pending_launcher_count_expected": 0,
+    "canonical_base_constructor_preserved": true,
+    "canonical_state_mutated_by_verification": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_PUBLIC_CAPABILITY_MODEL_EXTENSION_AND_CONSTRUCTOR_RETIREMENT"
+}

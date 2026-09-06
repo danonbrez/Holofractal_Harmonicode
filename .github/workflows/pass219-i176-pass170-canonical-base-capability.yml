@@ -1,0 +1,114 @@
+name: Pass 219 I176 Pass170 Canonical Base Capability
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i176-pass170-canonical-base-capability-parity
+    paths:
+      - 'hhs_backend/server.py'
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I176.json'
+      - 'HHS_PUBLIC_CAPABILITY_MODEL_RECONCILIATION_I176.json'
+      - 'HHS_PUBLIC_OPERATION_ADMISSION_OVERLAY_I176.json'
+      - 'hhs_runtime/pass219/pass170_canonical_base_capability_i176.py'
+      - 'tests/pass219/test_pass219_i176_pass170_canonical_base_capability.py'
+      - 'contracts/pass219/PASS_219_I176_PASS170_CANONICAL_BASE_CAPABILITY_1_0.json'
+      - 'tools/pass219_i176_redirect_canonical_base_launcher.py'
+      - '.github/workflows/pass219-i176-pass170-canonical-base-capability.yml'
+      - 'docs/operations/restart/PASS_219_I176_PASS170_CANONICAL_BASE_CAPABILITY_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/server.py'
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I176.json'
+      - 'HHS_PUBLIC_CAPABILITY_MODEL_RECONCILIATION_I176.json'
+      - 'HHS_PUBLIC_OPERATION_ADMISSION_OVERLAY_I176.json'
+      - 'hhs_runtime/pass219/pass170_canonical_base_capability_i176.py'
+      - 'tests/pass219/test_pass219_i176_pass170_canonical_base_capability.py'
+      - 'contracts/pass219/PASS_219_I176_PASS170_CANONICAL_BASE_CAPABILITY_1_0.json'
+      - 'tools/pass219_i176_redirect_canonical_base_launcher.py'
+      - '.github/workflows/pass219-i176-pass170-canonical-base-capability.yml'
+      - 'docs/operations/restart/PASS_219_I176_PASS170_CANONICAL_BASE_CAPABILITY_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i176:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded validation dependencies
+        run: python -m pip install pytest fastapi
+      - name: Parse manifests and compile I176 surfaces
+        run: |
+          python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I176.json >/dev/null
+          python -m json.tool HHS_PUBLIC_CAPABILITY_MODEL_RECONCILIATION_I176.json >/dev/null
+          python -m json.tool HHS_PUBLIC_OPERATION_ADMISSION_OVERLAY_I176.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I176_PASS170_CANONICAL_BASE_CAPABILITY_1_0.json >/dev/null
+          python -m py_compile hhs_backend/server.py
+          python -m py_compile hhs_backend/pass170_audio_language_routes.py
+          python -m py_compile hhs_runtime/pass219/pass170_canonical_base_capability_i176.py
+          python -m py_compile tests/pass219/test_pass219_i176_pass170_canonical_base_capability.py
+          python tools/pass219_i176_redirect_canonical_base_launcher.py
+      - name: Run dependency-scoped I176 tests
+        run: PYTHONPATH=. python -m pytest -q --tb=short tests/pass219/test_pass219_i176_pass170_canonical_base_capability.py
+      - name: Execute I176 fail-closed gate
+        run: |
+          mkdir -p artifacts/pass219/i176
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_canonical_base_capability_i176 import verify_i176_canonical_base_capability
+          report = verify_i176_canonical_base_capability('.', fail_closed=False)
+          target = Path('artifacts/pass219/i176/canonical_base_capability.json')
+          target.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2, sort_keys=True))
+          PY
+      - name: Enforce I176 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass219/i176/canonical_base_capability.json').read_text(encoding='utf-8'))
+          expected = [
+            'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+            'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+            'PASS170_PUBLIC_AUDIO_CAPABILITY_BINDING_PENDING',
+            'PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING',
+            'PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING',
+          ]
+          assert report['schema'] == 'HHS_PASS219_I176_PASS170_CANONICAL_BASE_CAPABILITY_V1'
+          assert report['evidence_verified'] is True, report['evidence_blockers']
+          assert report['evidence_blockers'] == []
+          assert report['observed_launcher_count'] == 6
+          assert report['canonical_redirect_count'] == 6
+          assert report['pending_launcher_count'] == 0
+          assert report['all_public_launchers_canonical'] is True
+          assert report['audio_capability_scope_resolved'] is False
+          assert report['audio_public_admission_fail_closed'] is True
+          assert report['new_capability_scope_created'] is False
+          assert report['fastapi_constructor_count_preserved'] == 10
+          assert report['target_blockers'] == expected
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['canonical_state_mutated'] is False
+          assert report['new_vm81_authority'] is False
+          assert report['new_hash72_mint_authority'] is False
+          assert report['hash216_persistence_authority'] is False
+          assert report['floating_point_canonical_authority'] is False
+          assert report['next_boundary'] == 'PASS170_PUBLIC_CAPABILITY_MODEL_EXTENSION_AND_CONSTRUCTOR_RETIREMENT'
+          PY
+      - name: Upload I176 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i176-pass170-canonical-base-capability-${{ github.sha }}
+          path: artifacts/pass219/i176/canonical_base_capability.json
+          if-no-files-found: warn
