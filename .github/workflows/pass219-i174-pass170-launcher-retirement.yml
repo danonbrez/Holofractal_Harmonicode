@@ -1,0 +1,141 @@
+name: Pass 219 I174 Pass170 Launcher Retirement
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i174-pass170-launcher-retirement
+    paths:
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime/main.py'
+      - 'hhs_runtime_api_server_v1.py'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX.json'
+      - 'hhs_runtime/pass219/pass170_launcher_retirement_i174.py'
+      - 'tests/pass219/test_pass219_i174_pass170_launcher_retirement.py'
+      - 'contracts/pass219/PASS_219_I174_PASS170_LAUNCHER_RETIREMENT_1_0.json'
+      - '.github/workflows/pass219-i174-pass170-launcher-retirement.yml'
+      - 'docs/operations/restart/PASS_219_I174_PASS170_LAUNCHER_RETIREMENT_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime/main.py'
+      - 'hhs_runtime_api_server_v1.py'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX.json'
+      - 'hhs_runtime/pass219/pass170_launcher_retirement_i174.py'
+      - 'tests/pass219/test_pass219_i174_pass170_launcher_retirement.py'
+      - 'contracts/pass219/PASS_219_I174_PASS170_LAUNCHER_RETIREMENT_1_0.json'
+      - '.github/workflows/pass219-i174-pass170-launcher-retirement.yml'
+      - 'docs/operations/restart/PASS_219_I174_PASS170_LAUNCHER_RETIREMENT_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i174:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse manifests and compile I174 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json >/dev/null
+          python -m json.tool HHS_PUBLIC_OPERATION_RECORD_INDEX.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I174_PASS170_LAUNCHER_RETIREMENT_1_0.json >/dev/null
+          python -m py_compile hhs_backend/runtime/runtime_server.py
+          python -m py_compile hhs_runtime/main.py
+          python -m py_compile hhs_runtime_api_server_v1.py
+          python -m py_compile hhs_runtime/pass219/pass170_launcher_retirement_i174.py
+          python -m py_compile tests/pass219/test_pass219_i174_pass170_launcher_retirement.py
+
+      - name: Run dependency-scoped I174 tests
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i174_pass170_launcher_retirement.py
+
+      - name: Execute I174 fail-closed launcher gate
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i174
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_launcher_retirement_i174 import verify_i174_launcher_retirement
+
+          report = verify_i174_launcher_retirement(Path('.'))
+          Path('artifacts/pass219/i174/launcher_retirement_verification.json').write_text(
+              json.dumps(report, sort_keys=True, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(report, sort_keys=True))
+          PY
+
+      - name: Enforce I174 bounded nonterminal boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('artifacts/pass219/i174/launcher_retirement_verification.json').read_text())
+          expected_pending = [
+              'hhs_backend/server.py',
+              'hhs_runtime_api_server_plus_v1.py',
+          ]
+          expected_blockers = [
+              'PASS170_AUDIO_LANGUAGE_ROUTE_MIGRATION_PENDING',
+              'PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT',
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+              'PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN',
+              'PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING',
+              'PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING',
+          ]
+          checks = [
+              ('evidence_verified', report['evidence_verified'] is True, report['evidence_verified']),
+              ('evidence_blockers_empty', report['evidence_blockers'] == [], report['evidence_blockers']),
+              ('i173_record_count', report['i173_operation_record_count_preserved'] == 47, report['i173_operation_record_count_preserved']),
+              ('launcher_count', report['observed_launcher_count'] == 6, report['observed_launcher_count']),
+              ('redirect_count', report['canonical_redirect_count'] == 4, report['canonical_redirect_count']),
+              ('pending_count', report['pending_launcher_count'] == 2, report['pending_launcher_count']),
+              ('pending_paths', report['pending_launcher_paths'] == expected_pending, report['pending_launcher_paths']),
+              ('constructor_count', report['fastapi_constructor_count_preserved'] == 10, report['fastapi_constructor_count_preserved']),
+              ('target_blockers', report['target_blockers'] == expected_blockers, report['target_blockers']),
+              ('pass170_nonterminal', report['pass170_terminal_contract_verified'] is False, report['pass170_terminal_contract_verified']),
+              ('canonical_state_mutated', report['canonical_state_mutated'] is False, report['canonical_state_mutated']),
+              ('new_vm81_authority', report['new_vm81_authority'] is False, report['new_vm81_authority']),
+              ('new_hash72_mint_authority', report['new_hash72_mint_authority'] is False, report['new_hash72_mint_authority']),
+              ('hash216_persistence_authority', report['hash216_persistence_authority'] is False, report['hash216_persistence_authority']),
+              ('floating_point_canonical_authority', report['floating_point_canonical_authority'] is False, report['floating_point_canonical_authority']),
+              ('next_boundary', report['next_boundary'] == 'PASS170_CANONICAL_BASE_LAUNCHER_AND_AUDIO_ROUTE_MIGRATION', report['next_boundary']),
+          ]
+          failed = []
+          for name, ok, observed in checks:
+              print(f"{'PASS' if ok else 'FAIL'} {name}: observed={observed!r}")
+              if not ok:
+                  failed.append({'check': name, 'observed': observed})
+          if failed:
+              raise SystemExit('I174 boundary enforcement failed: ' + json.dumps(failed, sort_keys=True))
+          PY
+
+      - name: Upload I174 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i174-pass170-launcher-retirement-${{ github.sha }}
+          path: artifacts/pass219/i174
+          if-no-files-found: warn
+          retention-days: 90
