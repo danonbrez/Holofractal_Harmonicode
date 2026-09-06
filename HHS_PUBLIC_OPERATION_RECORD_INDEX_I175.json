@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I175_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I175",
+  "version": "1.0.0",
+  "frozen_parent_index": "HHS_PUBLIC_OPERATION_RECORD_INDEX.json",
+  "frozen_parent_iteration": "PASS219-I173",
+  "frozen_parent_record_count": 47,
+  "extension_shards": [
+    {
+      "shard_id": "audio-language-extension",
+      "path": "contracts/pass219/pass170_operation_records_i175/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_V1.json",
+      "record_count": 1
+    }
+  ],
+  "aggregate_record_count": 48,
+  "new_operation_ids": [
+    "public.audio_language.feedback.run"
+  ],
+  "security_role_profile": "HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json",
+  "invariants": {
+    "parent_records_immutable": true,
+    "extension_operation_identity_unique": true,
+    "executable_source_binding_required": true,
+    "audio_ecc_role_is_inherited_internal_constraint": true,
+    "audio_pq_role_is_internal_enforcement_signal_only": true,
+    "public_crypto_primitive_created": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CANONICAL_BASE_LAUNCHER_REDIRECT_AND_PUBLIC_CAPABILITY_PARITY"
+}
