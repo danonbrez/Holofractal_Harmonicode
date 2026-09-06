@@ -6,7 +6,8 @@
 - Base authoritative main: `95c17e6430ce9c182c6a94ce41848805e2be96ae`
 - Branch: `agent/pass219-i175-pass170-audio-route-migration`
 - Merge target: `main`
-- Implementation head before this checkpoint: `ab9e4bea58a157a9ad0147e32b9117cb58ac610e`
+- Green checkpoint head before this evidence update: `a14553c2759c15967ca6a8f19ac947e5152f221a`
+- PR: `#404`
 - Parent: Pass219 I174 / Pass170 launcher retirement tranche A
 - Parent exact-main workflow: `34045997663`
 - Parent exact-main artifact: `9993120344`
@@ -25,30 +26,31 @@
    - composes the audio-language router directly into the canonical Pass170 router.
 
 3. `hhs_runtime_api_server_plus_v1.py`
-   - converted to a compatibility shim over `hhs_backend.public_api_server:app`;
-   - no longer owns an independent FastAPI route;
+   - compatibility shim over `hhs_backend.public_api_server:app`;
+   - no independent FastAPI route ownership;
    - self-launch redirects to `hhs_backend.public_api_server:app`;
    - historical Python names remain exported.
 
 4. Operation-record successor layer
-   - frozen I173 operation record index remains `47` records;
-   - I175 adds exactly one operation: `public.audio_language.feedback.run`;
-   - successor aggregate is `48` records;
-   - historical I173 index/shards are not rewritten.
+   - frozen I173 operation index remains `47` records;
+   - I175 adds exactly `public.audio_language.feedback.run`;
+   - successor aggregate is `48`;
+   - inherited I173 index/shards remain unchanged.
 
 5. Launcher successor layer
-   - observed launchers remain `6`;
-   - canonical redirects become `5`;
-   - only `hhs_backend/server.py` remains pending.
+   - observed launchers: `6`;
+   - canonical redirects: `5`;
+   - pending launchers: `1`;
+   - only pending path: `hhs_backend/server.py`.
 
 6. Audio error-correction and security role
    - local application role remains the audio-language feedback service;
-   - inherited harmonic-time/audio phase witness is formalized as a redundant error-correction/admissibility input;
-   - temporal audio ECC is required to fail closed when invalid;
-   - audio is also formalized as a redundant signal inside the inherited internal post-quantum-oriented security boundary;
-   - no public crypto primitive, KEM/key authority, standardized post-quantum security proof, or bypass authority is claimed.
+   - inherited `make_harmonic_time_audio_witness` is formalized as a redundant error-correction/admissibility input;
+   - temporal audio ECC fails closed when invalid;
+   - audio is a redundant signal inside the inherited internal post-quantum-oriented security boundary;
+   - no public crypto primitive, KEM/key authority, standardized post-quantum security proof, VM81 authority, Hash72 mint authority, Hash216 persistence authority, or bypass authority is created.
 
-## Repository evidence added
+## Repository evidence
 
 - `HHS_PUBLIC_OPERATION_RECORD_INDEX_I175.json`
 - `HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I175.json`
@@ -60,7 +62,27 @@
 - `.github/workflows/pass219-i175-pass170-audio-route-migration.yml`
 - this restart record
 
-## Expected verified state
+## Verified branch evidence
+
+Dedicated workflow: `Pass 219 I175 Pass170 Audio Route Migration`
+
+Exact green PR-head evidence:
+
+- head: `a14553c2759c15967ca6a8f19ac947e5152f221a`
+- workflow run: `34062127829`
+- conclusion: `success`
+- artifact: `9997808943`
+- artifact digest: `sha256:d5a5e2d818d9f13d4192ec278557fffe27857bc2b47899acbff81ab13c6bfa6f`
+
+Green stages:
+
+- manifest parsing and Python compilation;
+- five dependency-scoped I175 tests;
+- independent fail-closed I175 audio migration verifier;
+- exact nonterminal blocker enforcement;
+- evidence artifact upload.
+
+Verified state:
 
 - frozen parent operation records: `47`
 - successor operation records: `48`
@@ -88,40 +110,13 @@
 
 Pass170 remains nonterminal.
 
-## Dependency-scoped validation
-
-Dedicated workflow:
-
-`Pass 219 I175 Pass170 Audio Route Migration`
-
-Equivalent bounded commands:
-
-```bash
-python -m json.tool HHS_PUBLIC_OPERATION_RECORD_INDEX_I175.json >/dev/null
-python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I175.json >/dev/null
-python -m json.tool HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json >/dev/null
-python -m json.tool contracts/pass219/pass170_operation_records_i175/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_V1.json >/dev/null
-python -m json.tool contracts/pass219/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_1_0.json >/dev/null
-python -m py_compile hhs_backend/pass170_audio_language_routes.py
-python -m py_compile hhs_backend/public_api_server.py
-python -m py_compile hhs_runtime_api_server_plus_v1.py
-python -m py_compile hhs_runtime/pass219/pass170_audio_route_migration_i175.py
-PYTHONPATH=. python -m pytest -q --tb=short tests/pass219/test_pass219_i175_pass170_audio_route_migration.py
-```
-
-## Validation state at checkpoint creation
-
-Implementation and restartable evidence are complete. Dedicated I175 CI has not yet been claimed green at checkpoint creation.
-
 ## Remaining closure sequence
 
-1. Open I175 PR against exact `main @ 95c17e6430ce9c182c6a94ce41848805e2be96ae`.
-2. Observe the dedicated I175 workflow on exact PR head.
-3. Repair only concrete I175 defects; do not weaken ECC fail-closed behavior, the internal PQ boundary, or remaining Pass170 blockers.
-4. Seal workflow run/artifact identity in this checkpoint if an update is needed.
-5. Merge only an exact green head.
-6. Verify the dedicated I175 push workflow on merged exact main.
-7. Continue with `PASS170_CANONICAL_BASE_LAUNCHER_REDIRECT_AND_PUBLIC_CAPABILITY_PARITY`.
+1. Revalidate this checkpoint-only head with the dedicated I175 workflow.
+2. If the exact checkpoint head remains green, merge PR #404 with exact-head protection.
+3. Verify `main` points to the signed merge commit.
+4. Verify the dedicated I175 push workflow on exact merged `main` and seal its artifact identity.
+5. Continue with `PASS170_CANONICAL_BASE_LAUNCHER_REDIRECT_AND_PUBLIC_CAPABILITY_PARITY`.
 
 ## Restart rule
 
