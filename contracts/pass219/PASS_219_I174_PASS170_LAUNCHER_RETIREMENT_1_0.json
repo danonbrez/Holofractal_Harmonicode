@@ -1,0 +1,60 @@
+{
+  "schema": "HHS_PASS219_ITERATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I174",
+  "title": "Pass170 Legacy Launcher Retirement Tranche A",
+  "version": "1.0.0",
+  "base_main": "cb39509ec5e16dc884d9556ed65cfc1a40d8c5d8",
+  "classification_on_success": "PASS170_LEGACY_LAUNCHER_RETIREMENT_TRANCHE_A_VERIFIED_NONTERMINAL",
+  "scope": {
+    "redirect_launchers": [
+      "hhs_backend/runtime/runtime_server.py",
+      "hhs_runtime/main.py",
+      "hhs_runtime_api_server_v1.py"
+    ],
+    "preserve_pending_launchers": [
+      "hhs_backend/server.py",
+      "hhs_runtime_api_server_plus_v1.py"
+    ],
+    "successor_registry": "HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json",
+    "verifier": "hhs_runtime/pass219/pass170_launcher_retirement_i174.py",
+    "tests": "tests/pass219/test_pass219_i174_pass170_launcher_retirement.py"
+  },
+  "frozen_parent_evidence": {
+    "i173_main": "cb39509ec5e16dc884d9556ed65cfc1a40d8c5d8",
+    "i173_workflow_run": 34030977410,
+    "i173_artifact": 9988603949,
+    "i173_artifact_digest": "sha256:a96c116ae5c32679f4b2372bf589618417c972a2eb7f58f3cee53e79d39721cb",
+    "operation_record_count": 47
+  },
+  "success_criteria": [
+    "all six uvicorn launchers are inventoried by executable AST scan",
+    "hhs_backend/runtime/runtime_server.py self-launches hhs_backend.public_api_server:app",
+    "hhs_runtime/main.py self-launches hhs_backend.public_api_server:app",
+    "hhs_runtime_api_server_v1.py self-launches hhs_backend.public_api_server:app",
+    "the inherited runtime_ws compatibility launcher remains canonical",
+    "exactly two launchers remain explicitly pending",
+    "the Pass219-I173 47-operation record index remains preserved",
+    "the FastAPI constructor census remains 10",
+    "no canonical state mutation or new VM81/Hash72/Hash216 authority is introduced"
+  ],
+  "expected_target_blockers": [
+    "PASS170_AUDIO_LANGUAGE_ROUTE_MIGRATION_PENDING",
+    "PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT",
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN",
+    "PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "forbidden": {
+    "claim_pass170_terminal": true,
+    "delete_legacy_callable_exports": true,
+    "migrate_audio_language_route_without_operation_record": true,
+    "new_vm81_authority": true,
+    "new_hash72_mint_authority": true,
+    "hash216_persistence_authority": true,
+    "floating_point_canonical_authority": true
+  },
+  "next_boundary": "PASS170_CANONICAL_BASE_LAUNCHER_AND_AUDIO_ROUTE_MIGRATION"
+}
