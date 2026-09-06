@@ -1,0 +1,146 @@
+name: Pass 219 I172 Pass170 Legacy Constructor Router Manifest
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i172-pass170-legacy-constructor-router-manifest
+    paths:
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json'
+      - 'HHS_PUBLIC_ROUTER_MANIFEST.json'
+      - 'hhs_runtime/runtime_ws_server.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172_gate.py'
+      - 'tests/pass219/test_pass219_i172_pass170_legacy_constructor_router_manifest.py'
+      - 'contracts/pass219/PASS_219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_1_0.json'
+      - '.github/workflows/pass219-i172-pass170-legacy-constructor-router-manifest.yml'
+      - 'docs/operations/restart/PASS_219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json'
+      - 'HHS_PUBLIC_ROUTER_MANIFEST.json'
+      - 'hhs_runtime/runtime_ws_server.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172_gate.py'
+      - 'tests/pass219/test_pass219_i172_pass170_legacy_constructor_router_manifest.py'
+      - 'contracts/pass219/PASS_219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_1_0.json'
+      - '.github/workflows/pass219-i172-pass170-legacy-constructor-router-manifest.yml'
+      - 'docs/operations/restart/PASS_219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i172:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse manifests and compile I172 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json >/dev/null
+          python -m json.tool HHS_PUBLIC_ROUTER_MANIFEST.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I172_PASS170_LEGACY_CONSTRUCTOR_ROUTER_MANIFEST_1_0.json >/dev/null
+          python -m py_compile hhs_runtime/runtime_ws_server.py
+          python -m py_compile hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172.py
+          python -m py_compile hhs_runtime/pass219/pass170_legacy_constructor_router_manifest_i172_gate.py
+          python -m py_compile tests/pass219/test_pass219_i172_pass170_legacy_constructor_router_manifest.py
+
+      - name: Run dependency-scoped I172 tests
+        run: |
+          set -euo pipefail
+          python -m pytest -q --tb=short tests/pass219/test_pass219_i172_pass170_legacy_constructor_router_manifest.py
+
+      - name: Execute I172 fail-closed manifest gate
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/i172
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_legacy_constructor_router_manifest_i172_gate import verify_i172_legacy_constructor_router_manifest
+
+          report = verify_i172_legacy_constructor_router_manifest(Path('.'))
+          Path('artifacts/pass219/i172/constructor_router_manifest_verification.json').write_text(
+              json.dumps(report, sort_keys=True, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(report, sort_keys=True))
+          PY
+
+      - name: Preserve inherited raw I169 constructor inventory
+        run: |
+          set -euo pipefail
+          python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 . \
+            --output artifacts/pass219/i172/i169_authority_inventory.json
+
+      - name: Enforce I172 bounded nonterminal boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('artifacts/pass219/i172/constructor_router_manifest_verification.json').read_text())
+          inherited = json.loads(Path('artifacts/pass219/i172/i169_authority_inventory.json').read_text())
+          expected = [
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_FULL_OPERATION_RECORDS_PENDING',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+              'PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN',
+          ]
+          checks = [
+              ('evidence_verified', report['evidence_verified'] is True, report['evidence_verified']),
+              ('evidence_blockers_empty', report['evidence_blockers'] == [], report['evidence_blockers']),
+              ('inherited_i171_verified', report['inherited_i171_verified'] is True, report['inherited_i171_verified']),
+              ('raw_constructor_count', report['inherited_raw_constructor_count'] == 10, report['inherited_raw_constructor_count']),
+              ('constructor_registry_verified', report['constructor_registry_verified'] is True, report['constructor_registry_verified']),
+              ('registered_constructor_count', report['constructor_evidence']['registered_constructor_count'] == 10, report['constructor_evidence']['registered_constructor_count']),
+              ('canonical_constructor_count', report['constructor_evidence']['canonical_constructor_count'] == 1, report['constructor_evidence']['canonical_constructor_count']),
+              ('degraded_gateway_count', report['constructor_evidence']['degraded_gateway_count'] == 1, report['constructor_evidence']['degraded_gateway_count']),
+              ('launcher_count', report['constructor_evidence']['registered_launcher_count'] == 6, report['constructor_evidence']['registered_launcher_count']),
+              ('pending_launcher_count', report['constructor_evidence']['pending_launcher_count'] == 5, report['constructor_evidence']['pending_launcher_count']),
+              ('router_manifest_verified', report['router_manifest_verified'] is True, report['router_manifest_verified']),
+              ('router_stage_count', report['router_evidence']['stage_count'] == 9, report['router_evidence']['stage_count']),
+              ('route_summary', report['router_evidence']['route_summary']['direct_plus_delegate_routes'] == 47, report['router_evidence']['route_summary']),
+              ('target_blockers_exact', report['target_blockers'] == expected, report['target_blockers']),
+              ('full_router_manifest_blocker_cleared', 'PASS170_FULL_ROUTER_MANIFEST_PENDING' not in report['target_blockers'], report['target_blockers']),
+              ('raw_multiple_constructor_evidence_preserved', 'PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT' in inherited['blockers'], inherited['blockers']),
+              ('raw_inventory_verified', inherited['inventory_evidence_verified'] is True, inherited['inventory_evidence_verified']),
+              ('pass170_nonterminal', report['pass170_terminal_contract_verified'] is False, report['pass170_terminal_contract_verified']),
+              ('canonical_state_mutated', report['canonical_state_mutated'] is False, report['canonical_state_mutated']),
+              ('new_vm81_authority', report['new_vm81_authority'] is False, report['new_vm81_authority']),
+              ('new_hash72_mint_authority', report['new_hash72_mint_authority'] is False, report['new_hash72_mint_authority']),
+              ('hash216_persistence_authority', report['hash216_persistence_authority'] is False, report['hash216_persistence_authority']),
+              ('floating_point_canonical_authority', report['floating_point_canonical_authority'] is False, report['floating_point_canonical_authority']),
+              ('next_boundary', report['next_boundary'] == 'PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_FULL_OPERATION_RECORD_COMPLETION', report['next_boundary']),
+          ]
+          failed = []
+          for name, ok, observed in checks:
+              print(f"{'PASS' if ok else 'FAIL'} {name}: observed={observed!r}")
+              if not ok:
+                  failed.append({'check': name, 'observed': observed})
+          if failed:
+              raise SystemExit('I172 boundary enforcement failed: ' + json.dumps(failed, sort_keys=True))
+          PY
+
+      - name: Upload I172 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i172-pass170-constructor-router-manifest-${{ github.sha }}
+          path: artifacts/pass219/i172
+          if-no-files-found: warn
+          retention-days: 90
