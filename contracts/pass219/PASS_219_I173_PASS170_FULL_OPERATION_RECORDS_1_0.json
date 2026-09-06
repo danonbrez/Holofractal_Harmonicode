@@ -1,0 +1,95 @@
+{
+  "schema": "HHS_PASS219_I173_PASS170_FULL_OPERATION_RECORDS_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I173",
+  "version": "1.0.0",
+  "base_main": "0a199e422e1bf10318b4dbfe0530afc3ba36fdef",
+  "parent_iteration": "PASS219-I172",
+  "classification": "IMPLEMENT_AND_VERIFY_NONTERMINAL",
+  "purpose": "Complete one stable Pass170 Section-9 operation record for every I171 registered public route identity and prove each record against executable decorated source without modifying canonical VM81/Hash72/Hash216 authority.",
+  "inheritance": {
+    "i172_exact_main_required_green": true,
+    "i171_route_identity_registry_frozen": true,
+    "registered_direct_route_count": 12,
+    "registered_delegate_route_count": 35,
+    "registered_total_route_count": 47,
+    "raw_constructor_inventory_preserved": true
+  },
+  "authoritative_surfaces": {
+    "parent_route_identity_registry": "HHS_PUBLIC_OPERATION_REGISTRY.json",
+    "operation_record_index": "HHS_PUBLIC_OPERATION_RECORD_INDEX.json",
+    "record_shards": [
+      "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_DIRECT_V1.json",
+      "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS168_A_V1.json",
+      "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS168_B_V1.json",
+      "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS169_A_V1.json",
+      "contracts/pass219/pass170_operation_records_i173/HHS_PUBLIC_OPERATION_RECORDS_PASS169_B_V1.json"
+    ],
+    "executable_sources": [
+      "hhs_backend/public_api_server.py",
+      "hhs_backend/pass168_parameter_circuit_routes.py",
+      "hhs_backend/pass169_algebra_routes.py"
+    ],
+    "verifier": "hhs_runtime/pass219/pass170_full_operation_records_i173.py",
+    "tests": "tests/pass219/test_pass219_i173_pass170_full_operation_records.py"
+  },
+  "required_record_fields": [
+    "operation_id",
+    "canonical_name",
+    "contract_id",
+    "introduced_by_pass",
+    "semantic_version",
+    "operation_class",
+    "mutation_class",
+    "HTTP_method",
+    "HTTP_path",
+    "WebSocket_channel",
+    "CLI_command",
+    "native_ABI_symbol",
+    "language_binding_symbol",
+    "request_schema",
+    "response_schema",
+    "capability_scope",
+    "authorization_scope",
+    "admission_policy",
+    "Runtime_call_sequence",
+    "VM81_commit_required",
+    "receipt_class",
+    "replay_supported",
+    "reverse_supported",
+    "idempotency_policy",
+    "timeout_policy",
+    "resource_bounds",
+    "deprecated_aliases",
+    "test_ids"
+  ],
+  "success_criteria": {
+    "parent_i172_verified": true,
+    "record_count": 47,
+    "unique_operation_id_count": 47,
+    "unique_route_signature_count": 47,
+    "executable_source_bound_count": 47,
+    "full_operation_records_verified": true,
+    "full_operation_records_pending_blocker_cleared": true,
+    "pass170_terminal_contract_verified": false
+  },
+  "expected_nonterminal_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN",
+    "PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "invariants": {
+    "documentation_only_records_forbidden": true,
+    "one_record_per_registered_route": true,
+    "source_handler_parity_required": true,
+    "frozen_parent_registry_not_rewritten": true,
+    "canonical_state_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "next_boundary": "PASS170_LEGACY_LAUNCHER_RETIREMENT_AND_PUBLIC_PARITY_COMPLETION"
+}
