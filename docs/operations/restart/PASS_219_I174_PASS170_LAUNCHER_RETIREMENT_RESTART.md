@@ -6,7 +6,7 @@
 - Base authoritative main: `cb39509ec5e16dc884d9556ed65cfc1a40d8c5d8`
 - Branch: `agent/pass219-i174-pass170-launcher-retirement`
 - Merge target: `main`
-- I174 implementation head before this checkpoint: `48b654d9fce1606c7998eb88a4e27fd4a072253e`
+- Green implementation/checkpoint head before this validation-record update: `98fbad1a3fea0957b002ed27202e095e487ee27f`
 - Parent: Pass219 I173 / Pass170 full operation records
 - Parent exact-main workflow: `34030977410`
 - Parent exact-main artifact: `9988603949`
@@ -51,7 +51,7 @@ Two launchers remain nonterminal:
    - imports the v1 legacy app and adds `/api/audio-language/run`;
    - SHALL NOT be redirected until that route is migrated into canonical composition and receives a governed Pass170 operation identity/record.
 
-## New repository-visible evidence
+## Repository-visible evidence
 
 - `HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json`
 - `hhs_runtime/pass219/pass170_launcher_retirement_i174.py`
@@ -60,7 +60,7 @@ Two launchers remain nonterminal:
 - `.github/workflows/pass219-i174-pass170-launcher-retirement.yml`
 - this restart record
 
-## Expected verified census
+## Verified census
 
 - observed uvicorn launchers: `6`
 - canonical gateway redirects: `4`
@@ -68,7 +68,7 @@ Two launchers remain nonterminal:
 - FastAPI constructors preserved: `10`
 - I173 operation records preserved: `47`
 
-## Expected successful target blockers
+## Verified nonterminal target blockers
 
 - `PASS170_AUDIO_LANGUAGE_ROUTE_MIGRATION_PENDING`
 - `PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT`
@@ -82,7 +82,7 @@ Pass170 remains nonterminal.
 
 ## Dependency-scoped validation
 
-Canonical local-equivalent CI commands:
+Canonical validation commands:
 
 ```bash
 python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I174.json >/dev/null
@@ -100,19 +100,28 @@ Dedicated workflow:
 
 `Pass 219 I174 Pass170 Launcher Retirement`
 
-## Validation state at checkpoint creation
+## Green branch-head evidence
 
-Implementation and repository-visible evidence are complete. Dedicated I174 CI has not yet been claimed green at checkpoint creation.
+Exact tested head: `98fbad1a3fea0957b002ed27202e095e487ee27f`
+
+- workflow run: `34045787293`
+- job: `validate-i174`
+- parse/compile: success
+- five dependency-scoped tests: success
+- independent fail-closed launcher scan: success
+- bounded nonterminal enforcement: success
+- artifact upload: success
+- artifact: `9993053740`
+- artifact digest: `sha256:8915429736b1505bbb458363325ab213dd874f6600b7454ea82f705be243510d`
+
+This checkpoint update changes documentation only and therefore triggers one final exact-head I174 rerun before merge.
 
 ## Remaining closure sequence
 
-1. Open the I174 PR against exact `main @ cb39509ec5e16dc884d9556ed65cfc1a40d8c5d8`.
-2. Run/observe the dedicated I174 workflow on the exact PR head.
-3. If it fails, repair only the concrete launcher/verifier mismatch; do not weaken the two pending launcher blockers.
-4. Record green workflow run/artifact evidence in this restart record if another checkpoint update is needed.
-5. Merge only the exact green I174 head.
-6. Verify the dedicated I174 push workflow on merged exact main.
-7. Continue with `PASS170_CANONICAL_BASE_LAUNCHER_AND_AUDIO_ROUTE_MIGRATION`.
+1. Verify the dedicated I174 workflow on the checkpoint-updated exact PR head.
+2. Merge only that exact green head.
+3. Verify the dedicated I174 push workflow on merged exact main.
+4. Continue with `PASS170_CANONICAL_BASE_LAUNCHER_AND_AUDIO_ROUTE_MIGRATION`.
 
 ## Non-authoritative auxiliary refs
 
