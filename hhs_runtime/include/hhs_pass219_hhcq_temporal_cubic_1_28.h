@@ -26,6 +26,7 @@ typedef struct HHSExactPass219HHCQTemporalCubicDescriptorV1 {
     uint8_t z72_root_scan;
     uint8_t composite_ring_root_count_variable;
     uint8_t discrete_neighbor_direction;
+    uint8_t temporal_regret_composition;
     uint8_t phase5_resolution_locked;
     uint8_t fixed_size_policy_state;
     uint8_t candidate_only;
@@ -35,7 +36,6 @@ typedef struct HHSExactPass219HHCQTemporalCubicDescriptorV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
-    uint8_t reserved0;
 } HHSExactPass219HHCQTemporalCubicDescriptorV1;
 
 typedef struct HHSExactPass219HHCQTemporalCubicWitnessV1 {
@@ -101,6 +101,30 @@ typedef struct HHSExactPass219HHCQTemporalZ72RootsV1 {
     uint64_t root_signature64;
 } HHSExactPass219HHCQTemporalZ72RootsV1;
 
+typedef struct HHSExactPass219HHCQTemporalRegretDecisionV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    HHSExactPass219HHCQJointDecisionV1 base_decision;
+    HHSExactPass219HHCQCollapseWitnessV1 collapse;
+    HHSExactPass219HHCQTemporalCubicWitnessV1 temporal;
+    HHSExactPass219HHCQTemporalZ72RootsV1 roots;
+    uint64_t regret_margin_units;
+    uint64_t regret_quantum_units;
+    uint8_t margin_bucket;
+    uint8_t update_pressure;
+    int8_t temporal_alignment;
+    uint8_t updated;
+    uint8_t phase5_resolution_locked;
+    uint32_t inherited_policy_state_bytes;
+    uint32_t update_count;
+    uint64_t step_count;
+    uint64_t decision_signature64;
+    uint8_t candidate_only;
+    uint8_t exact_integer_only;
+    uint8_t canonical_authority_changed;
+    uint8_t floating_point_authority;
+} HHSExactPass219HHCQTemporalRegretDecisionV1;
+
 HHS_EXACT_API uint32_t hhs_exact_pass219_hhcq_temporal_cubic_version(void);
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hhcq_temporal_cubic_descriptor(
@@ -131,6 +155,14 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hhcq_temporal_z72_roots(
     int32_t z,
     uint8_t phase_hint72,
     HHSExactPass219HHCQTemporalZ72RootsV1 *out_roots);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hhcq_temporal_regret_step(
+    const HHSExactPass219HHCQJointPreparedV1 *prepared,
+    uint8_t feedback_lane,
+    uint64_t regret_margin_units,
+    uint64_t regret_quantum_units,
+    HHSExactPass219HHCQJointStateV1 *state,
+    HHSExactPass219HHCQTemporalRegretDecisionV1 *out_decision);
 
 #ifdef __cplusplus
 }
