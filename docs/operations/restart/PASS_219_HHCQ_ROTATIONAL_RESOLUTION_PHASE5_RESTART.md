@@ -28,7 +28,7 @@ Implement a candidate-only exact HHCQ rotational resolution membrane derived fro
 7. Bind the membrane to the existing aggregate exact C ABI; candidate-only authority remains zero for mutation, Hash72, Hash216, persistence, and floating point.
 8. Add dependency-scoped C tests plus a native Phase 5 benchmark/workflow. The benchmark must exercise all 72 ring positions and all trinary directions, prove all selected resolutions divide 5184, exercise all 35 divisors, prove exact reconstruction on deterministic frames, and report deterministic signatures.
 
-## Planned files
+## Implemented files
 
 - `hhs_runtime/include/hhs_pass219_hhcq_rotational_resolution_1_25.h`
 - `hhs_runtime/c/hhs_pass219_hhcq_rotational_resolution_1_25.inc`
@@ -37,15 +37,27 @@ Implement a candidate-only exact HHCQ rotational resolution membrane derived fro
 - `tests/pass219/test_pass219_hhcq_rotational_resolution_1_25.c`
 - `benchmarks/pass219/hhcq_rotational_resolution_phase5_benchmark.cpp`
 - `.github/workflows/pass219-hhcq-rotational-resolution-phase5.yml`
-- this restart record, updated with final validation evidence.
+- this restart record.
 
-## Validation state at checkpoint creation
+## Implementation checkpoints
 
-- Phase 5 implementation: not yet written.
-- Dependency-scoped validation: pending.
-- CI: pending.
-- Blockers: none known.
+- scope checkpoint: `c86a3698ad907a2ea8c4dfb01a7ded27ddfe1318`
+- ABI header: `ee9716dbc77baebb83294037a0cbc790bf6b35e7`
+- C implementation: `f41c68444ecfacd4d59726fa7abce6a456636753`
+- focused C test: `a325670dbdc7a2699dfc93c3d55bde81b4c86178`
+- native benchmark: `b36a56b8f808828bacf68b8c2cadd35665ba7d54`
+- aggregate header binding: `68fcc8de69f8b9dbe8876adf7fe5c86f8887f16b`
+- aggregate implementation binding: `8ed0f4b8a41d10ae17240f9841370437dd26bfe6`
+- Phase 5 workflow: `b52655c23543cbca49ad1b1ac162dafbc380d0e7`
+
+## Validation state
+
+- Exact ABI implementation: written and aggregate-bound.
+- Dependency-scoped C invariants: workflow-triggered validation pending.
+- Native Phase 5 benchmark: workflow-triggered validation pending.
+- Expected benchmark gates: 15,552 selections (`72*72*3`), all 72 quotient positions, all 72 rotated positions, all 35 exact divisors, 181,440 coordinate identity checks (`35*5184`), exact roundtrip at every divisor, zero canonical authority changes.
+- Blockers: none known before first Phase 5 CI execution.
 
 ## Exact next action
 
-Create the Phase 5 ABI header and implementation on this branch, wire them additively into `hhs_runtime_exact_abi.{h,c}`, add focused tests/benchmark, then create the Phase 5 workflow last so incomplete intermediate commits do not trigger the new experiment.
+Inspect the Phase 5 workflow run triggered by this restart-record update. If compilation or an exact invariant fails, repair only the impacted Phase 5 surface, preserve the failed run as evidence, rerun the bounded workflow, and then update this record with the accepted run/job/artifact/signatures. No PR/merge/promotion is authorized.
