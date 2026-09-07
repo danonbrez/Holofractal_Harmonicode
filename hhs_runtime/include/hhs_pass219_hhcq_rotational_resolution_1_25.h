@@ -1,7 +1,6 @@
 #ifndef HHS_PASS219_HHCQ_ROTATIONAL_RESOLUTION_1_25_H
 #define HHS_PASS219_HHCQ_ROTATIONAL_RESOLUTION_1_25_H
 
-#include "hhs_pass219_core_holographic_four_lane_1_24.h"
 #include "hhs_pass219_octonion_runtime_1_19.h"
 
 #include <stdint.h>
