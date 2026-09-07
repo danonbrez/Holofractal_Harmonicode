@@ -6,7 +6,9 @@
 - Base: `main @ b6c1980a014fc050c8ae562b92c3afe03e38b094`
 - Branch: `agent/pass219-core-dynamic-circuit-20260907`
 - Intended target: experiment only; no merge authorized yet
-- Latest implementation commit before this record: `4a99ed06adb6011b4552555b18bf259a1831fa4b`
+- Validated experiment head: `56181b6facd306657d6c85671e11442438197943`
+- GitHub Actions run: `34127851354` — `SUCCESS`
+- Evidence artifact: `pass219-core-dynamic-circuit-experiment`, artifact ID `10020836246`
 
 ## Experiment scope
 
@@ -37,6 +39,7 @@ The circuit derives the canonical replacements rather than embedding semantic ma
 - `hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc`
 - `tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c`
 - `benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp`
+- `.github/workflows/pass219-core-dynamic-circuit-experiment.yml`
 - this restart record
 
 ## Implemented behavior
@@ -54,49 +57,68 @@ The circuit derives the canonical replacements rather than embedding semantic ma
 6. Bridge the existing global raw-5184 hydration API to the circuit only after inherited exact frame/audio-hydration validation succeeds.
 7. Preserve candidate-only authority boundaries.
 
-## Validation already completed outside repository CI
+## Repository-native validation — SUCCESS
 
-A local isolated syntax harness with mock exact-ABI carrier types compiled the new C circuit under:
+Run `34127851354` validated exact head `56181b6facd306657d6c85671e11442438197943` on Ubuntu 24.04.
 
-`gcc -std=c11 -Wall -Wextra -pedantic -fsyntax-only`
+The workflow completed all dependency-scoped gates:
 
-A local comparative benchmark of the circuit implementation against an exact reference extractor produced:
+1. `make c-abi` built `hhs_runtime/builds/libhhs_runtime.so` successfully.
+2. Dynamic-circuit exports were present:
+   - `hhs_exact_pass219_core_circuit_descriptor`
+   - `hhs_exact_pass219_core_circuit_extract`
+   - `hhs_exact_pass219_core_circuit_step`
+   - `hhs_exact_pass219_global_raw5184_dynamic_circuit`
+3. The inherited global raw-5184 native C test passed.
+4. The new dynamic-circuit native C test passed.
+5. The built shared library returned exactly 542 source bytes with SHA-256 `ee76a902272fd41b44258468335ff40e60c58805fa06ec5e85788847d60073d0`.
+6. The comparative fused-hydration benchmark compiled and passed all deterministic gates.
+7. The benchmark JSON was uploaded as artifact ID `10020836246`.
+
+### Authoritative experimental measurements
 
 - exact feature parity: `true`
 - reference passes: `18`
 - fused passes: `1`
 - reference word visits: `1458`
 - fused word visits: `81`
-- algorithmic work reduction: `18.000x`
-- observed local wall speedup: `3.214x`
+- deterministic algorithmic work reduction: `18.000x`
+- reference batch median: `6,801,342 ns`
+- fused batch median: `2,403,686 ns`
+- observed runner wall speedup: `2.829x`
 - synthetic calibration pre-training accuracy: `55.8%`
 - synthetic calibration post-training accuracy: `99.6%`
-- updates: `152`
+- learning updates: `152`
 - training steps: `3072`
 
-These local timings are observational only; repository-native CI must establish the authoritative experimental result.
+The wall-time result is observational, not canonical. The exact feature parity and 18x reduction in frame-word visits are deterministic properties of this benchmark construction. The synthetic calibration result establishes that the bounded integer update circuit learns the benchmark's held calibration rule; it does not by itself establish general-purpose ML accuracy improvement.
 
-## Repository validation remaining
+## Earlier local cross-check
 
-Create/run a branch-scoped GitHub Actions experiment that must:
+Before repository-native execution, an isolated local syntax harness compiled the circuit under:
 
-1. build `hhs_runtime/builds/libhhs_runtime.so` with `make c-abi`;
-2. verify the new exported symbols;
-3. run the inherited global raw-5184 C test;
-4. run the new dynamic-circuit C test;
-5. recompute the 542-byte source SHA-256 from the built shared library;
-6. compile/run `benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp`;
-7. require exact feature parity and the deterministic 18x word-visit reduction;
-8. require synthetic post-training accuracy to exceed pre-training accuracy;
-9. record wall timing without using it as canonical authority.
+`gcc -std=c11 -Wall -Wextra -pedantic -fsyntax-only`
 
-## Environment note
+The local comparative run independently observed exact parity, the same deterministic 18x word-visit reduction, `3.214x` wall speedup, and the same `55.8% -> 99.6%` synthetic calibration improvement. Repository-native run `34127851354` supersedes the local timing as experiment evidence.
 
-Direct container cloning was unavailable because the execution container could not resolve `github.com`; repository writes and reads are therefore being performed through the connected native GitHub API, and repository-native execution is delegated only to GitHub Actions on this branch.
+## Result classification
+
+`SUCCESS — BENEFIT DEMONSTRATED IN EXPERIMENTAL SCOPE`
+
+The circuit demonstrated two distinct benefits without changing canonical authority:
+
+- deterministic fusion benefit: 18 reference scans collapse to one VM81 scan while preserving the benchmark feature result exactly;
+- dynamic-learning capability: bounded exact-integer online updates improved the synthetic calibration rule from 55.8% to 99.6% accuracy.
+
+Observed wall latency improved by 2.829x on the GitHub runner. This is supporting performance evidence, not a universal runtime guarantee.
+
+## Remaining work before any promotion
+
+No additional work is required to close the isolated experiment. Promotion to a global/default runtime path would require a separate authorization and broader workload validation, including representative hydration, Hash216/vector-store, H36, RNA, compression, and application workloads. Any promotion must continue to preserve exact VM81 equality and authority boundaries unless those contracts are separately and explicitly changed.
 
 ## Next action
 
-Add the branch-scoped experiment workflow, allow its push-triggered run to execute, inspect job logs/artifacts, repair forward if needed, and update this restart record with the exact run ID and measured results.
+Await an explicit instruction to either keep the experiment isolated, extend it across additional hydration/ML workloads, open a PR, or merge/promote it.
 
 ## Merge status
 
