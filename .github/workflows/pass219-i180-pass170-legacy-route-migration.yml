@@ -45,7 +45,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install bounded validation dependencies
-        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
 
       - name: Parse manifests and compile I180 Python surfaces
         run: |
