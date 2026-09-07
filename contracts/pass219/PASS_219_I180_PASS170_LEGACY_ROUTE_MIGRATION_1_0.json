@@ -1,0 +1,64 @@
+{
+  "schema": "HHS_PASS219_I180_PASS170_LEGACY_ROUTE_MIGRATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I180",
+  "version": "1.0.0",
+  "base_main": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+  "merge_target": "main",
+  "parent_i179": {
+    "verified": true,
+    "terminal_for_iteration": true,
+    "main_commit": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+    "workflow_run": 34077531408,
+    "artifact": 10002586241,
+    "artifact_digest": "sha256:daecc1c3a6bbeaa431f03f2cd900460853fe643662b56ff5131952d79f460b7f"
+  },
+  "scope": {
+    "migration_sources": [
+      "hhs_backend/runtime/runtime_server.py",
+      "hhs_runtime_api_server_v1.py"
+    ],
+    "canonical_adapter": "hhs_backend/pass170_legacy_runtime_routes.py",
+    "federation_entry": "hhs_backend/api/pass170_legacy_runtime_routes.py",
+    "migrated_http_route_count": 11,
+    "canonical_websocket_replacement_count": 4,
+    "new_operation_record_count": 11,
+    "parent_operation_record_count": 48,
+    "aggregate_operation_record_count": 59,
+    "parent_fastapi_constructor_count": 8,
+    "expected_fastapi_constructor_count": 8,
+    "constructor_retirement_in_this_iteration": false
+  },
+  "capability_bindings": {
+    "token_authority": "hhs_runtime.pass190.completion.verify_capability_token",
+    "authorization_scheme": "HHS-Capability",
+    "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+    "runtime_execute_scope": "pass170.runtime.execute",
+    "runtime_event_inject_scope": "pass170.runtime.event.inject",
+    "runtime_certification_scope": "pass170.runtime.certification",
+    "new_token_authority": false
+  },
+  "acceptance": {
+    "exact_http_route_signatures": 11,
+    "adapter_registers_zero_websocket_routes": true,
+    "canonical_ws_replacements_present": 4,
+    "legacy_ws_duplicate_evidence_present": 4,
+    "pass201_federation_missing_signatures_only": true,
+    "sensitive_routes_signed_capability_gated": true,
+    "read_only_status_routes_anonymous": true,
+    "aggregate_operation_count": 59,
+    "constructor_count_unchanged": 8,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "expected_nonterminal_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING",
+    "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING"
+  ],
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_AND_REMAINING_TRANSPORT_PARITY"
+}
