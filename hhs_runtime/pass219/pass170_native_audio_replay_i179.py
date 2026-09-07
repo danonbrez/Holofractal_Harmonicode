@@ -265,7 +265,7 @@ def verify_i179_native_audio_replay(
             blockers.append(f"PASS170_I179_ROUTE_TOKEN_MISSING:{token}")
     for token in (
         "execute_audio_language_public_request",
-        "replay_audio_language_public_replay",
+        "execute_audio_language_public_replay",
         "native_abi_invoked",
         'sub.add_parser("replay")',
     ):
