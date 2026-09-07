@@ -1,0 +1,136 @@
+name: Pass219 Core Dynamic Circuit Experiment
+
+on:
+  push:
+    branches:
+      - agent/pass219-core-dynamic-circuit-20260907
+    paths:
+      - 'hhs_runtime/**'
+      - 'tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c'
+      - 'tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c'
+      - 'benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp'
+      - '.github/workflows/pass219-core-dynamic-circuit-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build native exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify dynamic circuit exports
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_extract'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_step'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_global_raw5184_dynamic_circuit'
+
+      - name: Run dependency-scoped native tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_global_raw5184
+          /tmp/test_global_raw5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_core_dynamic_circuit
+          /tmp/test_core_dynamic_circuit
+
+      - name: Verify verbatim circuit source identity
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          python - <<'PY'
+          import ctypes
+          import hashlib
+          from pathlib import Path
+
+          lib = ctypes.CDLL(str(Path('hhs_runtime/builds/libhhs_runtime.so').resolve()))
+          fn = lib.hhs_exact_pass219_core_circuit_source
+          fn.argtypes = [ctypes.POINTER(ctypes.c_uint8), ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
+          fn.restype = ctypes.c_int
+          buf = (ctypes.c_uint8 * 542)()
+          n = ctypes.c_size_t()
+          rc = fn(buf, len(buf), ctypes.byref(n))
+          assert rc == 0, rc
+          assert n.value == 542, n.value
+          digest = hashlib.sha256(bytes(buf)).hexdigest()
+          expected = 'ee76a902272fd41b44258468335ff40e60c58805fa06ec5e85788847d60073d0'
+          assert digest == expected, (digest, expected)
+          print(f'verbatim_source_bytes={n.value}')
+          print(f'verbatim_source_sha256={digest}')
+          PY
+
+      - name: Run comparative fused hydration benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/pass219
+          c++ -O3 -std=c++17 -Wall -Wextra -Ihhs_runtime/include \
+            benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/core_constraint_dynamic_circuit_benchmark
+          /tmp/core_constraint_dynamic_circuit_benchmark \
+            | tee artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+
+      - name: Validate deterministic experiment gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json')
+          data = json.loads(path.read_text())
+          assert data['exact_feature_equal'] is True
+          assert data['reference_passes'] == 18
+          assert data['fused_passes'] == 1
+          assert data['reference_word_visits'] == 1458
+          assert data['fused_word_visits'] == 81
+          assert data['algorithmic_work_reduction_x1000'] == 18000
+          assert data['synthetic_posttrain_accuracy_x1000'] > data['synthetic_pretrain_accuracy_x1000']
+          assert data['training_steps'] == 3072
+          print(json.dumps(data, indent=2, sort_keys=True))
+          PY
+
+      - name: Record experiment summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 core dynamic circuit experiment'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json; then
+              echo '- Benchmark:'
+              echo '```json'
+              cat artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+          if-no-files-found: warn
