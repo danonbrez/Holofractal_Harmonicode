@@ -8,7 +8,10 @@ on:
       - 'hhs_runtime/**'
       - 'tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c'
       - 'tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c'
+      - 'tests/pass219/test_pass219_core_holographic_four_lane_1_24.c'
+      - 'tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp'
       - 'benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp'
+      - 'benchmarks/pass219/core_constraint_holographic_four_lane_benchmark.cpp'
       - '.github/workflows/pass219-core-dynamic-circuit-experiment.yml'
   workflow_dispatch:
 
@@ -17,7 +20,7 @@ permissions:
 
 jobs:
   experiment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Check out experiment branch
@@ -33,28 +36,67 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Verify dynamic circuit exports
+      - name: Verify dynamic and holographic circuit exports
         run: |
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_descriptor'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_extract'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_extract_cells'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_step'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_global_raw5184_dynamic_circuit'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_prepare'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_score_lane'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_finalize'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_route'
 
-      - name: Run dependency-scoped native tests
+      - name: Run dependency-scoped native C tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
         run: |
-          cc -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include \
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
             -o /tmp/test_global_raw5184
           /tmp/test_global_raw5184
 
-          cc -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include \
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
             -o /tmp/test_core_dynamic_circuit
           /tmp/test_core_dynamic_circuit
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_holographic_four_lane_1_24.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_core_holographic_four_lane
+          /tmp/test_core_holographic_four_lane
+
+      - name: Run C++ RNA cell-wall parallel equivalence
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p /tmp/pass219-holo4
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c \
+            -o /tmp/pass219-holo4/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S \
+            -o /tmp/pass219-holo4/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c \
+            -o /tmp/pass219-holo4/pass189.o
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp \
+            /tmp/pass219-holo4/pass188.o \
+            /tmp/pass219-holo4/pass188-x86.o \
+            /tmp/pass219-holo4/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-holo4/test-rna-cell-wall
+          /tmp/pass219-holo4/test-rna-cell-wall
 
       - name: Verify verbatim circuit source identity
         env:
@@ -86,12 +128,23 @@ jobs:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
         run: |
           mkdir -p artifacts/pass219
-          c++ -O3 -std=c++17 -Wall -Wextra -Ihhs_runtime/include \
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
             -o /tmp/core_constraint_dynamic_circuit_benchmark
           /tmp/core_constraint_dynamic_circuit_benchmark \
             | tee artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+
+      - name: Run holographic four-lane learning benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219/core_constraint_holographic_four_lane_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/core_constraint_holographic_four_lane_benchmark
+          /tmp/core_constraint_holographic_four_lane_benchmark \
+            | tee artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
 
       - name: Validate deterministic experiment gates
         run: |
@@ -99,17 +152,33 @@ jobs:
           import json
           from pathlib import Path
 
-          path = Path('artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json')
-          data = json.loads(path.read_text())
-          assert data['exact_feature_equal'] is True
-          assert data['reference_passes'] == 18
-          assert data['fused_passes'] == 1
-          assert data['reference_word_visits'] == 1458
-          assert data['fused_word_visits'] == 81
-          assert data['algorithmic_work_reduction_x1000'] == 18000
-          assert data['synthetic_posttrain_accuracy_x1000'] > data['synthetic_pretrain_accuracy_x1000']
-          assert data['training_steps'] == 3072
-          print(json.dumps(data, indent=2, sort_keys=True))
+          phase1 = json.loads(Path('artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json').read_text())
+          assert phase1['exact_feature_equal'] is True
+          assert phase1['reference_passes'] == 18
+          assert phase1['fused_passes'] == 1
+          assert phase1['reference_word_visits'] == 1458
+          assert phase1['fused_word_visits'] == 81
+          assert phase1['algorithmic_work_reduction_x1000'] == 18000
+          assert phase1['synthetic_posttrain_accuracy_x1000'] > phase1['synthetic_pretrain_accuracy_x1000']
+          assert phase1['training_steps'] == 3072
+
+          holo4 = json.loads(Path('artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json').read_text())
+          assert holo4['schema'] == 'HHS_PASS219_CORE_HOLOGRAPHIC_FOUR_LANE_BENCHMARK_V1'
+          assert holo4['cell_count'] == 81
+          assert holo4['sudoku_peers_per_cell'] == 20
+          assert holo4['directed_graph_edges'] == 1620
+          assert holo4['lane_count'] == 4
+          assert holo4['phase_modulus'] == 72
+          assert holo4['update_quantum'] == 5
+          assert holo4['naive_independent_lane_work'] == 7164
+          assert holo4['shared_tensor_four_lane_work'] == 2061
+          assert holo4['deterministic_work_reduction_x1000'] == 3475
+          assert holo4['heldout_posttrain_accuracy_x1000'] > holo4['heldout_pretrain_accuracy_x1000']
+          assert holo4['training_steps'] == 1536
+          assert holo4['candidate_only'] is True
+          assert holo4['canonical_authority_changed'] is False
+
+          print(json.dumps({'phase1': phase1, 'holo4': holo4}, indent=2, sort_keys=True))
           PY
 
       - name: Record experiment summary
@@ -120,9 +189,15 @@ jobs:
             echo
             echo "- Commit: \`$(git rev-parse HEAD)\`"
             if test -f artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json; then
-              echo '- Benchmark:'
+              echo '- Phase 1 fused benchmark:'
               echo '```json'
               cat artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+              echo '```'
+            fi
+            if test -f artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json; then
+              echo '- Phase 2 holographic four-lane benchmark:'
+              echo '```json'
+              cat artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
               echo '```'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
@@ -132,5 +207,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pass219-core-dynamic-circuit-experiment
-          path: artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+          path: |
+            artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+            artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
           if-no-files-found: warn
