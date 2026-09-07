@@ -1,0 +1,91 @@
+{
+  "schema": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I179",
+  "base_main": "9f74da54706e252e64a081e68598197a01c5c9c0",
+  "frozen_parent_registry": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I178.json",
+  "parent_active_constructor_count": 8,
+  "active_constructor_count": 8,
+  "cumulative_retired_constructor_count": 2,
+  "newly_retired_constructor_count": 0,
+  "canonical_public_gateway": "hhs_backend.public_api_server:app",
+  "canonical_production_base": "hhs_backend.server:app",
+  "tranche_c_decision": {
+    "classification": "NO_SAFE_CONSTRUCTOR_RETIREMENT_WITHOUT_ROUTE_MIGRATION",
+    "hhs_backend/runtime/runtime_server.py": "ACTIVE_DEPENDENCY_AND_ROUTE_MIGRATION_REQUIRED",
+    "hhs_runtime_api_server_v1.py": "ACTIVE_ROUTE_MIGRATION_REQUIRED",
+    "hhs_backend/runtime_os_source_only_server.py": "EXPLICIT_DEGRADED_SAFETY_SHELL_RECONCILIATION_REQUIRED",
+    "unsafe_forced_retirement_performed": false
+  },
+  "cumulative_retired_constructor_records": [
+    {
+      "path": "hhs_backend/heroku_server.py",
+      "retired_iteration": "PASS219-I177",
+      "compatibility_target": "hhs_backend.public_api_server:app"
+    },
+    {
+      "path": "hhs_runtime/main.py",
+      "retired_iteration": "PASS219-I178",
+      "compatibility_target": "hhs_backend.public_api_server:app"
+    }
+  ],
+  "active_constructor_records": [
+    {
+      "path": "applications/holofractal_harmonizer/ux_lab/server.py",
+      "classification": "PRIVATE_DEVELOPMENT_UX_LAB",
+      "retirement_status": "PRIVATE_NONPRODUCTION_ALLOWED"
+    },
+    {
+      "path": "hhs_backend/public_api_server.py",
+      "classification": "PASS170_ISOLATED_EPHEMERAL_FACTORY_FALLBACK",
+      "retirement_status": "TEST_EPHEMERAL_COMPATIBILITY_ONLY"
+    },
+    {
+      "path": "hhs_backend/runtime/runtime_server.py",
+      "classification": "LEGACY_TEST_AUDIT_RUNTIME_SUBJECT",
+      "retirement_status": "ROUTE_MIGRATION_REQUIRED_BEFORE_CONSTRUCTOR_RETIREMENT"
+    },
+    {
+      "path": "hhs_backend/runtime_os_source_only_server.py",
+      "classification": "EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY",
+      "retirement_status": "DEGRADED_SAFETY_SHELL_RECONCILIATION_REQUIRED"
+    },
+    {
+      "path": "hhs_backend/server.py",
+      "classification": "CANONICAL_PRODUCTION_BASE_CONSTRUCTOR",
+      "retirement_status": "REQUIRED_CANONICAL_BASE"
+    },
+    {
+      "path": "hhs_runtime_api_server_v1.py",
+      "classification": "LEGACY_RUNTIME_API_SERVER",
+      "retirement_status": "ROUTE_MIGRATION_REQUIRED_BEFORE_CONSTRUCTOR_RETIREMENT"
+    },
+    {
+      "path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "classification": "PRIVATE_NATIVE_PROGRAM_FACTORY",
+      "retirement_status": "PRIVATE_PROGRAM_FACTORY_ALLOWED"
+    },
+    {
+      "path": "scripts/pass204_inherited_pass203_validation.py",
+      "classification": "TEST_FIXTURE_APPLICATION",
+      "retirement_status": "TEST_EPHEMERAL_ALLOWED"
+    }
+  ],
+  "launcher_state": {
+    "launcher_count_expected": 6,
+    "canonical_redirect_count_expected": 6,
+    "pending_launcher_count_expected": 0
+  },
+  "invariants": {
+    "all_active_fastapi_constructors_classified": true,
+    "route_bearing_legacy_constructors_not_retired_without_route_migration": true,
+    "source_only_degraded_gateway_not_silently_removed": true,
+    "normal_public_gateway_count_required": 1,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY"
+}

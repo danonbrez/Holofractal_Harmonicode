@@ -2,30 +2,41 @@
 
 The local/internal adapter owns no VM81, Hash72 mint, Hash216 persistence,
 semantic database, training, or cryptographic authority. Pass219 I177 binds
-the public HTTP surface to a Pass170-owned capability scope while reusing the
-inherited Pass190 signed-token verifier and secret. The audio ECC and internal
-post-quantum-oriented security roles remain internal constraint signals and do
-not become public cryptographic capabilities.
+the public surface to a Pass170-owned capability scope while reusing the
+inherited Pass190 signed-token verifier and secret. Pass219 I179 adds the exact
+native admissibility membrane and non-reexecuting auxiliary receipt replay.
+Audio ECC and the internal post-quantum-oriented security signal remain
+internal constraints; neither becomes a public cryptographic capability.
 """
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Mapping
 
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
 from hhs_runtime.hhs_audio_language_feedback_orchestrator_v1 import (
+    AudioLanguageFeedbackReplayError,
+    DEFAULT_SEMANTIC_DB_PATH,
+    replay_audio_language_feedback_receipt,
     run_audio_language_feedback_cycle,
 )
 from hhs_runtime.pass190.completion import verify_capability_token
+from hhs_runtime.pass219.pass170_audio_native_abi_i179 import (
+    Pass170AudioNativeABIError,
+    admit_audio_native_replay,
+    admit_audio_native_transport,
+)
 
 OPERATION_ID = "public.audio_language.feedback.run"
 CANONICAL_PATH = "/v1/audio-language/run"
 LEGACY_ALIAS_PATH = "/api/audio-language/run"
+REPLAY_PATH = "/v1/audio-language/replay/{receipt_hash72}"
 AUDIO_CAPABILITY_SCOPE = "pass170.audio_language.feedback"
 AUTHORIZATION_SCHEME = "HHS-Capability"
 CAPABILITY_SECRET_ENV = "HHS_PASS190_CAPABILITY_SECRET"
+SEMANTIC_DB_ENV = "HHS_PASS170_AUDIO_SEMANTIC_DB"
 
 
 class AudioLanguageRunRequest(BaseModel):
@@ -79,8 +90,20 @@ def enforce_audio_public_admission(
     }
 
 
+def _request_mapping(req: AudioLanguageRunRequest) -> Dict[str, Any]:
+    if hasattr(req, "model_dump"):
+        return dict(req.model_dump())
+    return dict(req.dict())
+
+
+def _semantic_db_path() -> str:
+    return os.environ.get(SEMANTIC_DB_ENV, DEFAULT_SEMANTIC_DB_PATH)
+
+
 async def execute_audio_language_feedback_request(
     req: AudioLanguageRunRequest,
+    *,
+    transport_security_binding: Mapping[str, Any] | None = None,
 ) -> Dict[str, Any]:
     """Internal/governed adapter; public routes must pass admission first."""
     result = run_audio_language_feedback_cycle(
@@ -88,14 +111,78 @@ async def execute_audio_language_feedback_request(
         display_items=req.items,
         audio_manifest=req.audio_manifest,
         audio_roundtrip_receipt=req.audio_roundtrip_receipt,
+        semantic_db_path=_semantic_db_path(),
+        transport_security_binding=transport_security_binding,
     )
     payload = result.to_dict()
     payload["operation_id"] = OPERATION_ID
     payload["canonical_path"] = CANONICAL_PATH
     payload["compatibility_alias"] = LEGACY_ALIAS_PATH
+    payload["replay_path"] = REPLAY_PATH.replace("{receipt_hash72}", payload["receipt_hash72"])
     payload["vm81_commit_required"] = False
     payload["auxiliary_persistence"] = True
     return payload
+
+
+async def execute_audio_language_public_request(
+    req: AudioLanguageRunRequest,
+    *,
+    capability_admission: Mapping[str, Any],
+) -> Dict[str, Any]:
+    """Execute public audio only after signed capability + exact native admission."""
+    try:
+        native_binding = admit_audio_native_transport(
+            capability_admission,
+            _request_mapping(req),
+        )
+    except Pass170AudioNativeABIError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"HHS_PASS170_AUDIO_NATIVE_ABI_REQUIRED:{exc}",
+        ) from exc
+    payload = await execute_audio_language_feedback_request(
+        req,
+        transport_security_binding=native_binding,
+    )
+    payload["capability_admission"] = dict(capability_admission)
+    payload["native_security_binding"] = native_binding
+    return payload
+
+
+def execute_audio_language_public_replay(
+    receipt_hash72: str,
+    *,
+    capability_admission: Mapping[str, Any],
+) -> Dict[str, Any]:
+    """Replay one stored auxiliary receipt without re-running the operation."""
+    try:
+        replay = replay_audio_language_feedback_receipt(
+            receipt_hash72,
+            semantic_db_path=_semantic_db_path(),
+        )
+    except AudioLanguageFeedbackReplayError as exc:
+        message = str(exc)
+        status = 404 if "NOT_FOUND" in message else 409
+        raise HTTPException(status_code=status, detail=message) from exc
+    try:
+        native_replay = admit_audio_native_replay(
+            capability_admission,
+            receipt_hash72=receipt_hash72,
+            original_security_binding=replay.get("security_binding") or {},
+        )
+    except Pass170AudioNativeABIError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"HHS_PASS170_AUDIO_NATIVE_REPLAY_ABI_REQUIRED:{exc}",
+        ) from exc
+    return {
+        **replay,
+        "operation_id": OPERATION_ID,
+        "capability_admission": dict(capability_admission),
+        "native_replay_binding": native_replay,
+        "canonical_path": CANONICAL_PATH,
+        "replay_path": REPLAY_PATH.replace("{receipt_hash72}", receipt_hash72),
+    }
 
 
 def build_pass170_audio_language_router() -> APIRouter:
@@ -108,9 +195,21 @@ def build_pass170_audio_language_router() -> APIRouter:
         authorization: str | None = Header(default=None),
     ) -> Dict[str, Any]:
         admission = enforce_audio_public_admission(authorization)
-        payload = await execute_audio_language_feedback_request(req)
-        payload["capability_admission"] = admission
-        return payload
+        return await execute_audio_language_public_request(
+            req,
+            capability_admission=admission,
+        )
+
+    @router.get(REPLAY_PATH)
+    async def audio_language_feedback_replay(
+        receipt_hash72: str,
+        authorization: str | None = Header(default=None),
+    ) -> Dict[str, Any]:
+        admission = enforce_audio_public_admission(authorization)
+        return execute_audio_language_public_replay(
+            receipt_hash72,
+            capability_admission=admission,
+        )
 
     return router
 
@@ -123,7 +222,11 @@ __all__ = [
     "CAPABILITY_SECRET_ENV",
     "LEGACY_ALIAS_PATH",
     "OPERATION_ID",
+    "REPLAY_PATH",
+    "SEMANTIC_DB_ENV",
     "build_pass170_audio_language_router",
     "enforce_audio_public_admission",
     "execute_audio_language_feedback_request",
+    "execute_audio_language_public_replay",
+    "execute_audio_language_public_request",
 ]

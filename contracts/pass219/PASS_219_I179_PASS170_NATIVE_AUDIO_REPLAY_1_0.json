@@ -1,0 +1,87 @@
+{
+  "schema": "HHS_PASS219_ITERATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I179",
+  "version": "1.0.0",
+  "title": "Pass170 Native Audio Security ABI and Non-Reexecuting Receipt Replay",
+  "base_main": "9f74da54706e252e64a081e68598197a01c5c9c0",
+  "branch": "agent/pass219-i179-pass170-native-audio-abi-replay",
+  "merge_target": "main",
+  "frozen_parent_evidence": {
+    "iteration": "PASS219-I178",
+    "exact_main_sha": "9f74da54706e252e64a081e68598197a01c5c9c0",
+    "workflow_run": 34066947332,
+    "artifact_id": 9999243782,
+    "artifact_digest": "sha256:0c00e896cac4832a366091c295f1fb973f8a41d783c0794bb8987baac9ab7344"
+  },
+  "authorized_scope": {
+    "operation_id": "public.audio_language.feedback.run",
+    "additive_exact_native_abi": true,
+    "native_role": "ADMISSIBILITY_AND_SECURITY_BINDING_MEMBRANE_ONLY",
+    "reuse_pass190_signed_capability_verifier": true,
+    "bind_raw5184_audio_hydration": true,
+    "require_harmonic_time_audio_ecc": true,
+    "require_internal_pq_oriented_security_signal": true,
+    "persist_receipt_in_existing_auxiliary_semantic_sqlite": true,
+    "public_non_reexecuting_receipt_replay": true,
+    "preserve_operation_identity_count": 48,
+    "constructor_tranche_c": "RETIRE_ONLY_IF_ROUTE_MIGRATION_ALREADY_PROVEN"
+  },
+  "forbidden_scope": {
+    "new_capability_token_authority": false,
+    "new_native_audio_operation_engine": false,
+    "public_crypto_primitive": false,
+    "standardized_post_quantum_crypto_claim": false,
+    "independent_key_or_kem_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "parallel_receipt_ledger": false,
+    "replay_by_reexecuting_training_or_writes": false,
+    "unsafe_constructor_retirement_without_route_migration": false
+  },
+  "implementation_surfaces": [
+    "hhs_runtime/include/hhs_pass219_audio_security_transport_1_0.h",
+    "hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    "hhs_runtime/pass219/pass170_audio_native_abi_i179.py",
+    "hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py",
+    "hhs_backend/pass170_audio_language_routes.py",
+    "hhs_runtime/pass219/pass170_audio_transport_i178.py",
+    "contracts/pass219/pass170_operation_records_i179/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_NATIVE_REPLAY_V1.json",
+    "HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json",
+    "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json",
+    "hhs_runtime/pass219/pass170_native_audio_replay_i179.py"
+  ],
+  "verification_surfaces": {
+    "c_test": "tests/pass219/test_pass219_i179_audio_security_transport.c",
+    "python_test": "tests/pass219/test_pass219_i179_pass170_native_audio_replay.py",
+    "verifier": "hhs_runtime/pass219/pass170_native_audio_replay_i179.py",
+    "workflow": ".github/workflows/pass219-i179-pass170-native-audio-replay.yml"
+  },
+  "required_proofs": [
+    "strict C11 exact ABI compile with warnings as errors",
+    "native exported symbol exists in libhhs_runtime",
+    "native gate rejects missing ECC and forbidden public crypto flags",
+    "signed Pass170 audio capability is verified before native binding",
+    "raw5184 audio hydration symbol is present in the same exact runtime",
+    "harmonic-time audio ECC is valid before public side effects",
+    "real audio adapter/training/database workload executes through native admission",
+    "receipt replay opens the same auxiliary semantic database read-only",
+    "receipt hash and stored state/trace/link referential integrity are verified",
+    "replay does not reexecute training or mutate auxiliary/canonical state",
+    "all six uvicorn launchers remain canonical",
+    "FastAPI constructor census remains eight because remaining route-bearing constructors are not yet safe to retire",
+    "48 public operation identities remain preserved"
+  ],
+  "expected_target_blockers_after_success": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING",
+    "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING"
+  ],
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY"
+}
