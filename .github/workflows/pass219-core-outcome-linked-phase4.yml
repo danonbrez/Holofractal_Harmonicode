@@ -1,0 +1,127 @@
+name: Pass219 Core Outcome Linked Phase4
+
+on:
+  push:
+    branches:
+      - agent/pass219-core-dynamic-circuit-20260907
+    paths:
+      - 'benchmarks/pass219/core_holographic_pass215_outcome_linked_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_CORE_HOLOGRAPHIC_OUTCOME_LINKED_PHASE4_RESTART.md'
+      - '.github/workflows/pass219-core-outcome-linked-phase4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  outcome-linked:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build native exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Reuse frozen Phase3 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Run held-out outcome-linked routing benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase4
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/core_holographic_pass215_outcome_linked_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase4-outcome-linked
+          /tmp/pass219-phase4-outcome-linked "$FRAME" \
+            | tee artifacts/pass219/phase4/outcome_linked_routing_benchmark.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase4/phase3_frame.sha256
+
+      - name: Validate Phase4 evidence gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/pass219/phase4/outcome_linked_routing_benchmark.json')
+          d = json.loads(p.read_text())
+          assert d['schema'] == 'HHS_PASS219_PHASE4_OUTCOME_LINKED_ROUTING_V1'
+          assert d['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert d['summary_records'] == 529
+          assert d['unique_content_digests'] == 489
+          assert d['semantic_equivalence_count'] == 2116
+          assert d['all_four_lanes_exact_for_all_records'] is True
+          assert d['timing_repetitions_per_lane_record'] == 7
+          assert d['timing_is_observational'] is True
+          assert len(d['winner_counts']) == 4 and sum(d['winner_counts']) == 529
+          assert len(d['lane_median_ns']) == 4 and all(v > 0 for v in d['lane_median_ns'])
+          assert d['training_reference_count'] + d['heldout_reference_count'] == 529
+          assert d['training_reference_count'] > 0 and d['heldout_reference_count'] > 0
+          assert d['training_unique_digest_count'] + d['heldout_unique_digest_count'] == 489
+          assert d['train_heldout_digest_overlap'] == 0
+          assert sum(d['training_winner_counts']) == d['training_reference_count']
+          assert sum(d['heldout_winner_counts']) == d['heldout_reference_count']
+          assert d['training_epochs'] == 8
+          assert d['training_steps'] == d['training_reference_count'] * d['training_epochs']
+          assert d['heldout_prediction_replay_equal'] is True
+          assert d['candidate_only'] is True
+          assert d['canonical_authority_changed'] is False
+          assert d['classification'] in {
+              'HELDOUT_IMPROVEMENT',
+              'HELDOUT_PARTIAL_IMPROVEMENT',
+              'NO_HELDOUT_IMPROVEMENT',
+              'HELDOUT_REGRESSION',
+          }
+          print(json.dumps(d, indent=2, sort_keys=True))
+          PY
+
+      - name: Record Phase4 summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 Phase4 outcome-linked held-out routing'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase4/outcome_linked_routing_benchmark.json; then
+              echo '```json'
+              cat artifacts/pass219/phase4/outcome_linked_routing_benchmark.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-core-outcome-linked-phase4
+          path: artifacts/pass219/phase4
+          if-no-files-found: warn
