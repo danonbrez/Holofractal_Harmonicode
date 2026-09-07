@@ -1,0 +1,56 @@
+{
+  "schema": "HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I180",
+  "base_main": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+  "parent_i179_exact_main": {
+    "commit": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+    "run": 34077531408,
+    "artifact": 10002586241,
+    "artifact_digest": "sha256:daecc1c3a6bbeaa431f03f2cd900460853fe643662b56ff5131952d79f460b7f"
+  },
+  "federation_module": "hhs_backend.api.pass170_legacy_runtime_routes",
+  "adapter_module": "hhs_backend.pass170_legacy_runtime_routes",
+  "http_route_count": 11,
+  "http_routes": [
+    {"method":"GET","path":"/api/healthz","operation_id":"public.runtime.health","legacy_source":"hhs_backend.runtime.runtime_server:healthz","capability_scope":null,"anonymous_read_only":true},
+    {"method":"GET","path":"/api/runtime/metrics","operation_id":"public.runtime.metrics","legacy_source":"hhs_backend.runtime.runtime_server:runtime_metrics","capability_scope":null,"anonymous_read_only":true},
+    {"method":"POST","path":"/api/hhs/solve","operation_id":"public.runtime.solve","legacy_source":"hhs_backend.runtime.runtime_server:solve","capability_scope":"pass170.runtime.execute","anonymous_read_only":false},
+    {"method":"POST","path":"/api/runtime/event","operation_id":"public.runtime.event.inject","legacy_source":"hhs_backend.runtime.runtime_server:inject_runtime_event","capability_scope":"pass170.runtime.event.inject","anonymous_read_only":false},
+    {"method":"GET","path":"/api/runtime/replay","operation_id":"public.runtime.replay.status","legacy_source":"hhs_backend.runtime.runtime_server:runtime_replay","capability_scope":null,"anonymous_read_only":true},
+    {"method":"GET","path":"/api/runtime/graph","operation_id":"public.runtime.graph.status","legacy_source":"hhs_backend.runtime.runtime_server:runtime_graph","capability_scope":null,"anonymous_read_only":true},
+    {"method":"GET","path":"/api/runtime/transport","operation_id":"public.runtime.transport.status","legacy_source":"hhs_backend.runtime.runtime_server:runtime_transport","capability_scope":null,"anonymous_read_only":true},
+    {"method":"GET","path":"/api/status","operation_id":"public.runtime.api.status","legacy_source":"hhs_runtime_api_server_v1:api_status","capability_scope":null,"anonymous_read_only":true},
+    {"method":"POST","path":"/api/calculator/evaluate","operation_id":"public.runtime.calculator.evaluate","legacy_source":"hhs_runtime_api_server_v1:api_calculator_evaluate","capability_scope":"pass170.runtime.execute","anonymous_read_only":false},
+    {"method":"POST","path":"/api/agent/run-loop","operation_id":"public.runtime.agent.run_loop","legacy_source":"hhs_runtime_api_server_v1:api_agent_run_loop","capability_scope":"pass170.runtime.execute","anonymous_read_only":false},
+    {"method":"GET","path":"/api/certification","operation_id":"public.runtime.certification","legacy_source":"hhs_runtime_api_server_v1:api_certification","capability_scope":"pass170.runtime.certification","anonymous_read_only":false}
+  ],
+  "websocket_replacement_count": 4,
+  "websocket_replacements": [
+    {"path":"/ws/runtime","canonical_source":"hhs_backend.runtime.runtime_ws:runtime_ws","legacy_duplicate":"hhs_runtime_api_server_v1:ws_runtime"},
+    {"path":"/ws/replay","canonical_source":"hhs_backend.runtime.runtime_ws:replay_ws","legacy_duplicate":"hhs_runtime_api_server_v1:ws_replay"},
+    {"path":"/ws/graph","canonical_source":"hhs_backend.runtime.runtime_ws:graph_ws","legacy_duplicate":"hhs_runtime_api_server_v1:ws_graph"},
+    {"path":"/ws/transport","canonical_source":"hhs_backend.runtime.runtime_ws:transport_ws","legacy_duplicate":"hhs_runtime_api_server_v1:ws_transport"}
+  ],
+  "constructor_state": {
+    "parent_active_constructor_count": 8,
+    "active_constructor_count": 8,
+    "constructor_retirement_performed": false,
+    "retirement_deferred_until_migrated_route_evidence_green": true
+  },
+  "invariants": {
+    "production_federation_missing_signatures_only": true,
+    "legacy_http_handlers_preserved": true,
+    "sensitive_http_routes_fail_closed_on_capability": true,
+    "websocket_duplicate_paths_not_double_registered": true,
+    "canonical_websocket_replacements_preserved": true,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "classification": "PASS170_LEGACY_HTTP_ROUTE_MIGRATION_AND_CANONICAL_WS_REPLACEMENT_BOUND_NONTERMINAL",
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_AND_REMAINING_TRANSPORT_PARITY"
+}
