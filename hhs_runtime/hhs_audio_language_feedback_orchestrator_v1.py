@@ -141,7 +141,7 @@ def _receipt_hash(
     links: List[Dict[str, Any]],
     security_binding: Mapping[str, Any] | None,
 ) -> str:
-    components: List[Any] = [
+    legacy_components: List[Any] = [
         "hhs_audio_language_feedback_receipt_v1",
         dict(adapter_receipt),
         training_receipt_hash72,
@@ -149,9 +149,31 @@ def _receipt_hash(
         list(stored_state_hashes),
         list(links),
     ]
-    if security_binding is not None:
-        components.append(dict(security_binding))
-    return hash72_digest(tuple(components), width=24)
+    if security_binding is None:
+        # Preserve the inherited internal receipt identity when no I179 public
+        # security binding participates.
+        return hash72_digest(tuple(legacy_components), width=24)
+
+    # I179 receipts must survive JSON persistence/reload exactly. The legacy
+    # local digest consumes str(object), which is insertion-order-sensitive for
+    # mappings. Canonical JSON removes that incidental ordering from the public
+    # replay receipt preimage without introducing a new Hash72 authority.
+    canonical_preimage = {
+        "schema": "HHS_AUDIO_LANGUAGE_FEEDBACK_RECEIPT_HASH_I179_V1",
+        "adapter_receipt": dict(adapter_receipt),
+        "training_receipt_hash72": training_receipt_hash72,
+        "semantic_db_summary": dict(summary),
+        "stored_state_hashes": list(stored_state_hashes),
+        "cross_links": list(links),
+        "security_binding": dict(security_binding),
+    }
+    return hash72_digest(
+        (
+            "hhs_audio_language_feedback_receipt_i179_v1",
+            _canonical_json(canonical_preimage),
+        ),
+        width=24,
+    )
 
 
 def run_audio_language_feedback_cycle(
