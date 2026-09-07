@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I180_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I180",
+  "base_main": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+  "frozen_parent_registry": "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json",
+  "inherited_token_authority": {
+    "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+    "authorization_scheme": "HHS-Capability",
+    "verifier": "hhs_runtime.pass190.completion.verify_capability_token",
+    "secret_environment": "HHS_PASS190_CAPABILITY_SECRET",
+    "pass190_registry_mutated": false,
+    "new_token_issuer_created": false,
+    "new_signature_algorithm_created": false
+  },
+  "scope_count": 4,
+  "scope_records": [
+    {
+      "scope_id": "pass170.audio_language.feedback",
+      "operation_ids": ["public.audio_language.feedback.run"],
+      "status": "INHERITED_VERIFIED_PASS170_SCOPE_I177",
+      "required_on_public_http": true,
+      "anonymous_admission": false
+    },
+    {
+      "scope_id": "pass170.runtime.execute",
+      "operation_ids": [
+        "public.runtime.solve",
+        "public.runtime.calculator.evaluate",
+        "public.runtime.agent.run_loop"
+      ],
+      "status": "AUTHORIZED_PASS170_SCOPE_EXTENSION_I180",
+      "purpose": "Authorize legacy-compatible runtime evaluation surfaces after migration into the canonical gateway.",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "required_on_public_http": true,
+      "anonymous_admission": false,
+      "allowed_effects": ["RUNTIME_EVALUATION_WITH_INHERITED_RECEIPT_PATHS"],
+      "explicitly_excluded_authority": [
+        "CAPABILITY_TOKEN_ISSUANCE",
+        "NEW_VM81_AUTHORITY",
+        "NEW_HASH72_MINT_AUTHORITY",
+        "HASH216_CANONICAL_PERSISTENCE",
+        "PUBLIC_CRYPTO_PRIMITIVE"
+      ]
+    },
+    {
+      "scope_id": "pass170.runtime.event.inject",
+      "operation_ids": ["public.runtime.event.inject"],
+      "status": "AUTHORIZED_PASS170_SCOPE_EXTENSION_I180",
+      "purpose": "Authorize explicit canonical runtime-event propagation through the inherited event schema and websocket projection path.",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "required_on_public_http": true,
+      "anonymous_admission": false,
+      "allowed_effects": ["RUNTIME_EVENT_PROPAGATION"],
+      "explicitly_excluded_authority": [
+        "CAPABILITY_TOKEN_ISSUANCE",
+        "NEW_VM81_AUTHORITY",
+        "NEW_HASH72_MINT_AUTHORITY",
+        "HASH216_CANONICAL_PERSISTENCE"
+      ]
+    },
+    {
+      "scope_id": "pass170.runtime.certification",
+      "operation_ids": ["public.runtime.certification"],
+      "status": "AUTHORIZED_PASS170_SCOPE_EXTENSION_I180",
+      "purpose": "Authorize execution of the inherited backend final-certification surface.",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "required_on_public_http": true,
+      "anonymous_admission": false,
+      "allowed_effects": ["BACKEND_CERTIFICATION_EXECUTION"],
+      "explicitly_excluded_authority": [
+        "CAPABILITY_TOKEN_ISSUANCE",
+        "NEW_VM81_AUTHORITY",
+        "NEW_HASH72_MINT_AUTHORITY",
+        "HASH216_CANONICAL_PERSISTENCE"
+      ]
+    }
+  ],
+  "anonymous_read_only_operations": [
+    "public.runtime.health",
+    "public.runtime.metrics",
+    "public.runtime.replay.status",
+    "public.runtime.graph.status",
+    "public.runtime.transport.status",
+    "public.runtime.api.status"
+  ],
+  "invariants": {
+    "pass190_signed_token_verifier_reused": true,
+    "new_capability_token_authority": false,
+    "pass190_operation_registry_mutated": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "classification": "PASS170_LEGACY_RUNTIME_SCOPE_EXTENSION_BOUND_TO_INHERITED_PASS190_TOKEN_AUTHORITY",
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_AND_REMAINING_TRANSPORT_PARITY"
+}
