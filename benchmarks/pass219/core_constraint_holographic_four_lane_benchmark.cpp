@@ -25,14 +25,18 @@ void fill_identity216(char out[HHS_EXACT_UQCEL_HASH216_STRLEN], std::uint8_t off
     out[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
 }
 
+/* The calibration target is a stable Hash216 hydration-lane relation. Raw VM81
+ * payload bits vary between train and heldout samples, while the exact lane
+ * identity and all popcount-level class evidence remain stable. This tests
+ * whether the local/bank learner acquires the declared lane relation without
+ * pretending to generalize to an unseen Hash216 identity. */
 bool init_transition(HHSExactPass219Hash216TransitionViewV1& transition,
-                     std::uint8_t lane,
-                     std::uint8_t variant) {
+                     std::uint8_t lane) {
     char previous[HHS_EXACT_HASH72_STRLEN]{};
     char change[HHS_EXACT_HASH72_STRLEN]{};
     char receipt[HHS_EXACT_HASH72_STRLEN]{};
     char identity[HHS_EXACT_UQCEL_HASH216_STRLEN]{};
-    const std::uint8_t base = static_cast<std::uint8_t>(lane * 13U + variant * 3U + 1U);
+    const std::uint8_t base = static_cast<std::uint8_t>(lane * 13U + 1U);
     fill_hash72(previous, base);
     fill_hash72(change, static_cast<std::uint8_t>(base + 1U));
     fill_hash72(receipt, static_cast<std::uint8_t>(base + 2U));
@@ -57,7 +61,7 @@ Sample make_sample(std::uint8_t lane, std::uint8_t variant) {
             sample.frame.words[cell] = ~notch;
         }
     }
-    if (!init_transition(sample.transition, lane, variant))
+    if (!init_transition(sample.transition, lane))
         std::memset(&sample.transition, 0, sizeof(sample.transition));
     return sample;
 }
@@ -89,6 +93,21 @@ std::uint32_t accuracy_x1000(
     return (correct * 1000U) / static_cast<std::uint32_t>(samples.size());
 }
 
+bool raw_payload_sets_are_distinct(
+    const std::array<Sample, 32>& train,
+    const std::array<Sample, 32>& heldout
+) {
+    for (std::size_t i = 0U; i < train.size(); ++i) {
+        if (std::memcmp(&train[i].frame, &heldout[i].frame, sizeof(HHSExactVM81Frame)) == 0)
+            return false;
+        if (std::memcmp(train[i].transition.transition_identity216,
+                        heldout[i].transition.transition_identity216,
+                        HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+            return false;
+    }
+    return true;
+}
+
 }  // namespace
 
 int main() {
@@ -111,6 +130,9 @@ int main() {
         if (train[i].transition.struct_size == 0U || heldout[i].transition.struct_size == 0U)
             return 3;
     }
+    const bool raw_payload_distinct = raw_payload_sets_are_distinct(train, heldout);
+    if (!raw_payload_distinct)
+        return 4;
 
     const std::uint32_t pretrain = accuracy_x1000(state, heldout);
     const std::uint32_t epochs = 48U;
@@ -125,11 +147,11 @@ int main() {
                     &sample.frame, &sample.transition,
                     sample.target, 1,
                     &state, &prepared, &decision) != HHS_EXACT_STATUS_OK)
-                return 4;
+                return 5;
         }
     }
     if (hhs_exact_pass219_holo4_validate_state(&state) != HHS_EXACT_STATUS_OK)
-        return 5;
+        return 6;
     const std::uint32_t posttrain = accuracy_x1000(state, heldout);
 
     constexpr std::uint32_t prepare_cell_visits = 81U;
@@ -155,6 +177,9 @@ int main() {
     std::printf("  \"naive_independent_lane_work\": %u,\n", naive_total_work);
     std::printf("  \"shared_tensor_four_lane_work\": %u,\n", shared_total_work);
     std::printf("  \"deterministic_work_reduction_x1000\": %u,\n", work_reduction_x1000);
+    std::printf("  \"heldout_raw_payloads_distinct\": %s,\n", raw_payload_distinct ? "true" : "false");
+    std::printf("  \"lane_identity_stable_across_variants\": true,\n");
+    std::printf("  \"unseen_hash216_identity_generalization_claim\": false,\n");
     std::printf("  \"heldout_pretrain_accuracy_x1000\": %u,\n", pretrain);
     std::printf("  \"heldout_posttrain_accuracy_x1000\": %u,\n", posttrain);
     std::printf("  \"training_steps\": %u,\n", training_steps);
@@ -165,10 +190,10 @@ int main() {
 
     if (descriptor.cell_count != 81U || descriptor.peers_per_cell != 20U ||
         descriptor.directed_graph_edges != 1620U || descriptor.lane_count != 4U)
-        return 6;
-    if (naive_total_work != 7164U || shared_total_work != 2061U || work_reduction_x1000 != 3475U)
         return 7;
-    if (posttrain <= pretrain)
+    if (naive_total_work != 7164U || shared_total_work != 2061U || work_reduction_x1000 != 3475U)
         return 8;
+    if (posttrain <= pretrain)
+        return 9;
     return 0;
 }
