@@ -121,6 +121,15 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_core_circuit_extract(
     HHSExactPass219CoreCircuitFeaturesV1 *out_features
 );
 
+/* Additive local-cell view of the same fused 81-word scan. The optional
+ * out_cell_popcount vector exposes per-cell exact popcount without a second
+ * traversal of the VM81 frame. */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_core_circuit_extract_cells(
+    const HHSExactVM81Frame *frame,
+    HHSExactPass219CoreCircuitFeaturesV1 *out_features,
+    uint8_t out_cell_popcount[HHS_EXACT_VM81_CELLS]
+);
+
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_core_circuit_predict(
     const HHSExactPass219CoreCircuitFeaturesV1 *features,
     const HHSExactPass219CoreCircuitStateV1 *state,
