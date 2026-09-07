@@ -215,7 +215,7 @@ async def api_agent_run_loop(req: AgentRunLoopRequest) -> Dict[str, Any]:
 
 
 @legacy_router.get("/api/certification")
-async def api_certification() -> Dict[str, Any] | JSONResponse:
+async def api_certification() -> Any:
     try:
         result = HHSBackendFinalCertificationV1().run_all()
         asyncio.create_task(
