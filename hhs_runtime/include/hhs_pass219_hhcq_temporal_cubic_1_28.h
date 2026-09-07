@@ -26,7 +26,6 @@ typedef struct HHSExactPass219HHCQTemporalCubicDescriptorV1 {
     uint8_t z72_root_scan;
     uint8_t composite_ring_root_count_variable;
     uint8_t discrete_neighbor_direction;
-    uint8_t temporal_regret_composition;
     uint8_t phase5_resolution_locked;
     uint8_t fixed_size_policy_state;
     uint8_t candidate_only;
@@ -36,6 +35,7 @@ typedef struct HHSExactPass219HHCQTemporalCubicDescriptorV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
+    uint8_t reserved0;
 } HHSExactPass219HHCQTemporalCubicDescriptorV1;
 
 typedef struct HHSExactPass219HHCQTemporalCubicWitnessV1 {
