@@ -65,6 +65,7 @@
 #include "hhs_pass219_dynamic_paradox_phase_cycle_1_0.h"
 #include "hhs_pass219_core_constraint_dynamic_circuit_1_23.h"
 #include "hhs_pass219_core_holographic_four_lane_1_24.h"
+#include "hhs_pass219_hhcq_rotational_resolution_1_25.h"
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.h"
 #include "hhs_pass219_audio_security_transport_1_0.h"
 #include "hhs_pass219_global_raw5184_serialization_hydration_1_0.h"
