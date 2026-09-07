@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS219_ITERATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I181",
+  "version": "1.0.0",
+  "base_main": "2e8bfa52ede8af64bd4c39cc9e6318f40f6844bf",
+  "classification": "PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AFTER_ROUTE_MIGRATION",
+  "inherits": {
+    "iteration": "PASS219-I180",
+    "exact_main_run": 34078826576,
+    "artifact_id": 10002996393,
+    "artifact_digest": "sha256:69d16fd63ab9b763998541e11ef28a725ed09ee4a74e8ae36108948b1a08a7e8"
+  },
+  "scope": {
+    "retire_independent_fastapi_constructors": [
+      "hhs_backend/runtime/runtime_server.py",
+      "hhs_runtime_api_server_v1.py"
+    ],
+    "preserve_i180_migrated_http_route_count": 11,
+    "preserve_canonical_websocket_replacement_count": 4,
+    "preserve_legacy_handler_callables": true,
+    "legacy_app_target": "hhs_backend.public_api_server:app",
+    "expected_constructor_count": 6,
+    "expected_newly_retired_constructor_count": 2,
+    "expected_cumulative_retired_constructor_count": 4
+  },
+  "fail_closed_invariants": {
+    "route_migration_must_precede_constructor_retirement": true,
+    "legacy_app_must_resolve_to_exact_canonical_app": true,
+    "legacy_files_must_not_construct_fastapi": true,
+    "source_only_degraded_gateway_not_silently_removed": true,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "expected_nonterminal_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING",
+    "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING"
+  ],
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_AND_DEGRADED_GATEWAY_RECONCILIATION"
+}
