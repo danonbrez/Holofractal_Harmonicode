@@ -1,0 +1,130 @@
+name: Pass 219 I180 Pass170 Legacy Route Migration
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i180-pass170-legacy-route-migration
+    paths:
+      - 'hhs_backend/pass170_legacy_runtime_routes.py'
+      - 'hhs_backend/api/pass170_legacy_runtime_routes.py'
+      - 'HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I180.json'
+      - 'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json'
+      - 'contracts/pass219/pass170_operation_records_i180/**'
+      - 'contracts/pass219/PASS_219_I180_PASS170_LEGACY_ROUTE_MIGRATION_1_0.json'
+      - 'hhs_runtime/pass219/pass170_legacy_route_migration_i180.py'
+      - 'tests/pass219/test_pass219_i180_pass170_legacy_route_migration.py'
+      - '.github/workflows/pass219-i180-pass170-legacy-route-migration.yml'
+      - 'docs/operations/restart/PASS_219_I180_PASS170_LEGACY_ROUTE_MIGRATION_RESTART.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/pass170_legacy_runtime_routes.py'
+      - 'hhs_backend/api/pass170_legacy_runtime_routes.py'
+      - 'HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I180.json'
+      - 'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json'
+      - 'contracts/pass219/pass170_operation_records_i180/**'
+      - 'contracts/pass219/PASS_219_I180_PASS170_LEGACY_ROUTE_MIGRATION_1_0.json'
+      - 'hhs_runtime/pass219/pass170_legacy_route_migration_i180.py'
+      - 'tests/pass219/test_pass219_i180_pass170_legacy_route_migration.py'
+      - '.github/workflows/pass219-i180-pass170-legacy-route-migration.yml'
+      - 'docs/operations/restart/PASS_219_I180_PASS170_LEGACY_ROUTE_MIGRATION_RESTART.md'
+  workflow_dispatch:
+
+jobs:
+  validate-i180:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
+
+      - name: Parse manifests and compile I180 Python surfaces
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in (
+              'HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I180.json',
+              'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json',
+              'HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json',
+              'contracts/pass219/pass170_operation_records_i180/HHS_PUBLIC_OPERATION_RECORDS_LEGACY_RUNTIME_MIGRATION_V1.json',
+              'contracts/pass219/PASS_219_I180_PASS170_LEGACY_ROUTE_MIGRATION_1_0.json',
+          ):
+              json.loads(Path(path).read_text(encoding='utf-8'))
+          PY
+          python -m py_compile \
+            hhs_backend/pass170_legacy_runtime_routes.py \
+            hhs_backend/api/pass170_legacy_runtime_routes.py \
+            hhs_runtime/pass219/pass170_legacy_route_migration_i180.py \
+            tests/pass219/test_pass219_i180_pass170_legacy_route_migration.py
+
+      - name: Run dependency-scoped I180 tests
+        run: python -m pytest -q tests/pass219/test_pass219_i180_pass170_legacy_route_migration.py
+
+      - name: Execute I180 repository gate
+        run: |
+          mkdir -p artifacts/pass219/i180
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_legacy_route_migration_i180 import verify_i180_legacy_route_migration
+          report = verify_i180_legacy_route_migration('.')
+          Path('artifacts/pass219/i180/legacy_route_migration.json').write_text(
+              json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+
+      - name: Enforce I180 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass219/i180/legacy_route_migration.json').read_text())
+          assert report['schema'] == 'HHS_PASS219_I180_PASS170_LEGACY_ROUTE_MIGRATION_V1'
+          assert report['parent_i179_exact_main_verified'] is True
+          assert report['parent_i179_exact_main_run'] == 34077531408
+          assert report['parent_i179_exact_main_artifact'] == 10002586241
+          assert report['parent_i179_exact_main_artifact_digest'] == 'sha256:daecc1c3a6bbeaa431f03f2cd900460853fe643662b56ff5131952d79f460b7f'
+          assert report['evidence_verified'] is True
+          assert report['migrated_http_route_count'] == 11
+          assert report['canonical_websocket_replacement_count'] == 4
+          assert report['aggregate_operation_count'] == 59
+          assert report['new_operation_count'] == 11
+          assert report['fastapi_constructor_count'] == 8
+          assert report['constructor_retirement_performed'] is False
+          assert report['pass190_token_verifier_reused'] is True
+          for key in (
+              'new_capability_token_authority',
+              'new_vm81_authority',
+              'new_hash72_mint_authority',
+              'hash216_persistence_authority',
+              'floating_point_canonical_authority',
+          ):
+              assert report[key] is False
+          assert report['target_blockers'] == [
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
+              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
+          ]
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['next_boundary'] == 'PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_AND_REMAINING_TRANSPORT_PARITY'
+          PY
+
+      - name: Upload I180 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i180-pass170-legacy-route-migration-${{ github.sha }}
+          path: artifacts/pass219/i180/legacy_route_migration.json
+          if-no-files-found: warn
