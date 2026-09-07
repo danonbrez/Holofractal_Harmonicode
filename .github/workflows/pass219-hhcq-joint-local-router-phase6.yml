@@ -1,0 +1,151 @@
+name: Pass219 HHCQ Joint Local Router Phase6
+
+on:
+  push:
+    branches:
+      - agent/pass219-core-dynamic-circuit-20260907
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_hhcq_joint_local_router_1_26.h'
+      - 'hhs_runtime/c/hhs_pass219_hhcq_joint_local_router_1_26.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_hhcq_joint_local_router_1_26.c'
+      - 'benchmarks/pass219/hhcq_joint_local_router_phase6_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_HHCQ_JOINT_LOCAL_ROUTER_PHASE6_RESTART.md'
+      - '.github/workflows/pass219-hhcq-joint-local-router-phase6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  phase6:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build exact ABI
+        run: |
+          set -o pipefail
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and run strict Phase6 C invariants
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_joint_local_router_1_26.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase6-test
+          /tmp/pass219-phase6-test
+
+      - name: Reuse frozen Phase3 authenticated hydrated-weight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Compile and run Phase6 hydrated joint local benchmark
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase6
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_joint_local_router_phase6_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase6-benchmark
+          /tmp/pass219-phase6-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase6/hhcq_joint_local_router.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase6/phase3_frame.sha256
+
+      - name: Validate Phase6 evidence gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/pass219/phase6/hhcq_joint_local_router.json')
+          d = json.loads(p.read_text())
+          assert d['schema'] == 'HHS_PASS219_HHCQ_JOINT_LOCAL_ROUTER_PHASE6_V1'
+          assert d['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert d['summary_records'] == 529
+          assert d['anchors_per_record'] == 9
+          assert d['local_samples'] == 4761
+          assert d['whole_frame_semantic_checks'] == 2116
+          assert d['phase5_exact_roundtrip_checks'] == 4761
+          assert d['lane_local_container_identity_checks'] == 19044
+          assert len(d['global_lane_median_ns']) == 4 and all(v > 0 for v in d['global_lane_median_ns'])
+          assert d['timing_repetitions_per_lane_record'] == 3
+          assert d['timing_is_observational'] is True
+          assert d['local_cost_is_normalized_observational_timing_times_exact_native_width_amplification'] is True
+          assert d['native_width_bits'] == [8,64,64,36]
+          assert len(d['target_lane_counts']) == 4 and sum(d['target_lane_counts']) == 4761
+          assert d['target_lane_diversity'] >= 1
+          assert d['resolution_diversity'] >= 2
+          assert d['training_reference_count'] + d['heldout_reference_count'] == 529
+          assert d['training_local_samples'] + d['heldout_local_samples'] == 4761
+          assert d['training_unique_digest_count'] + d['heldout_unique_digest_count'] == 489
+          assert d['train_heldout_digest_overlap'] == 0
+          assert d['training_epochs'] == 12
+          assert d['training_steps'] == d['training_local_samples'] * d['training_epochs']
+          assert d['fixed_policy_state_bytes'] > 0
+          assert d['heldout_prediction_replay_equal'] is True
+          assert d['phase5_resolution_locked_during_learning'] is True
+          assert d['fixed_size_policy_state'] is True
+          assert d['candidate_only'] is True
+          assert d['canonical_authority_changed'] is False
+          assert d['floating_point_authority'] is False
+          assert d['classification'] in {
+              'HELDOUT_IMPROVEMENT',
+              'HELDOUT_PARTIAL_IMPROVEMENT',
+              'NO_HELDOUT_IMPROVEMENT',
+              'HELDOUT_REGRESSION',
+          }
+          print(json.dumps(d, indent=2, sort_keys=True))
+          PY
+
+      - name: Record Phase6 summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 HHCQ joint local router Phase6'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase6/hhcq_joint_local_router.json; then
+              echo '```json'
+              cat artifacts/pass219/phase6/hhcq_joint_local_router.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase6 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-hhcq-joint-local-router-phase6
+          path: artifacts/pass219/phase6
+          if-no-files-found: warn
