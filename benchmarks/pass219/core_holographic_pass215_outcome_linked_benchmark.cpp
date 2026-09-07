@@ -177,7 +177,7 @@ bool eval_octonion_audio(const Record& r, const HHSExactVM81Frame& frame) {
         hydration.typed_ternary_quotient_preserved != 1U ||
         hydration.floating_point_authority != 0U)
         return false;
-    g_sink ^= pcm.samples[0] ^ pcm.samples[80] ^ hydration.quads[0].octonion.xy;
+    g_sink ^= pcm.samples_bits[0] ^ pcm.samples_bits[80] ^ hydration.quads[0].octonion.xy;
     return frame_equals_bytes(replay, r);
 }
 
