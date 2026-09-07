@@ -1,0 +1,117 @@
+name: Pass 219 I181 Pass170 Legacy Constructor Retirement
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i181-pass170-legacy-constructor-retirement
+    paths:
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime_api_server_v1.py'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py'
+      - 'tests/pass219/test_pass219_i181_pass170_legacy_constructor_retirement.py'
+      - 'contracts/pass219/PASS_219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_1_0.json'
+      - '.github/workflows/pass219-i181-pass170-legacy-constructor-retirement.yml'
+      - 'docs/operations/restart/PASS_219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_RESTART.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime_api_server_v1.py'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py'
+      - 'tests/pass219/test_pass219_i181_pass170_legacy_constructor_retirement.py'
+      - 'contracts/pass219/PASS_219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_1_0.json'
+      - '.github/workflows/pass219-i181-pass170-legacy-constructor-retirement.yml'
+      - 'docs/operations/restart/PASS_219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i181:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
+
+      - name: Parse registry and compile I181 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_1_0.json >/dev/null
+          python -m py_compile \
+            hhs_backend/runtime/runtime_server.py \
+            hhs_runtime_api_server_v1.py \
+            hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py \
+            tests/pass219/test_pass219_i181_pass170_legacy_constructor_retirement.py
+
+      - name: Run dependency-scoped I181 tests
+        run: python -m pytest -q --tb=short tests/pass219/test_pass219_i181_pass170_legacy_constructor_retirement.py
+
+      - name: Execute I181 repository gate
+        run: |
+          mkdir -p artifacts/pass219/i181
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_legacy_constructor_retirement_i181 import verify_i181_legacy_constructor_retirement
+          report = verify_i181_legacy_constructor_retirement('.')
+          Path('artifacts/pass219/i181/legacy_constructor_retirement.json').write_text(
+              json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+
+      - name: Enforce I181 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass219/i181/legacy_constructor_retirement.json').read_text())
+          assert report['schema'] == 'HHS_PASS219_I181_PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_V1'
+          assert report['parent_i180_exact_main_verified'] is True
+          assert report['parent_i180_exact_main_run'] == 34078826576
+          assert report['parent_i180_exact_main_artifact'] == 10002996393
+          assert report['parent_i180_exact_main_artifact_digest'] == 'sha256:69d16fd63ab9b763998541e11ef28a725ed09ee4a74e8ae36108948b1a08a7e8'
+          assert report['evidence_verified'] is True
+          assert report['fastapi_constructor_count'] == 6
+          assert report['newly_retired_constructor_count'] == 2
+          assert report['cumulative_retired_constructor_count'] == 4
+          assert report['migrated_http_route_count'] == 11
+          assert report['canonical_websocket_replacement_count'] == 4
+          assert report['legacy_fastapi_constructor_blocker_cleared'] is True
+          assert report['target_blockers'] == [
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
+              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
+          ]
+          for key in (
+              'new_capability_token_authority',
+              'new_vm81_authority',
+              'new_hash72_mint_authority',
+              'hash216_persistence_authority',
+              'floating_point_canonical_authority',
+          ):
+              assert report[key] is False
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['next_boundary'] == 'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_AND_DEGRADED_GATEWAY_RECONCILIATION'
+          PY
+
+      - name: Upload I181 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i181-pass170-legacy-constructor-retirement-${{ github.sha }}
+          path: artifacts/pass219/i181/legacy_constructor_retirement.json
+          if-no-files-found: warn
+          retention-days: 90
