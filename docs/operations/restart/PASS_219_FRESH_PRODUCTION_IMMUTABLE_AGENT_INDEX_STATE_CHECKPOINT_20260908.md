@@ -1,121 +1,105 @@
-# Pass 219 Fresh Production Local-Closure Diagnostic Checkpoint — 2026-09-08
+# Pass 219 Fresh Production Local-Closure Checkpoint — 2026-09-08
 
 ## Restart authority
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
 - Branch: `agent/pass219-fresh-production-bootstrap-73652c12-20260908`
-- Branch head before this checkpoint update: `27707a1e18121ade18728be3e47171a22ad3be32`
-- Immutable-agent state repair commit: `dd1f9727f745a780865dbba57963f99b99ec8232`
 - Exact production source authority: `main@73652c122ffff6a8b9bde9de00020610964d704c`
+- Immutable-agent state repair: `dd1f9727f745a780865dbba57963f99b99ec8232`
+- Successful-bootstrap checkpoint: `5bd389fe05e6f94580d5bcee4d23db90ae8a6b06`
+- Read-only diagnostic implementation: `6bdd36307c498cc9117908d0ff7d9f410758b2ba`
 - Production host: `hhs-production-01` / `165.227.220.193`
 - Production checkout: `/opt/hhs/app`
 - Service identity: `hhs:hhs`
 
-## Frozen completed state
+## Frozen green state
 
-The fresh-host deployment has passed these boundaries and they must not be rerun without an impacted-surface reason:
+The fresh-host deployment has passed and frozen:
 
-1. pinned Ed25519 host identity validation;
-2. deployment SSH key authentication;
-3. exact clean production checkout at `73652c122ffff6a8b9bde9de00020610964d704c` on `main`;
-4. Python environment installation;
-5. native C ABI build and readable `libhhs_runtime.so`;
-6. exact Runtime OS build, seal, transfer, stage and activation input preservation;
-7. runtime-certification state isolation under `/var/lib/hhs/runtime-certification`;
-8. Storybook Reel state isolation under `/var/lib/hhs/storybook-reels`;
-9. Runtime OS exact-release root traversal repair while preserving sealed payload files;
-10. immutable-agent SQLite state isolation at `/var/lib/hhs/immutable-agent-index/hhs-agent-index.sqlite3` through canonical `HHS_AGENT_INDEX_DB`;
-11. immutable-agent state repair health, ownership and `PRAGMA quick_check` validation;
-12. resumed exact-main fresh-host bootstrap;
-13. guarded continuous deployment installation;
-14. Let's Encrypt browser-trusted short-lived IP certificate issuance for `165.227.220.193`;
-15. nginx configuration validation and enablement;
-16. `hhs-certbot-renew.timer` enablement;
-17. fresh-production initialization receipt creation and bootstrap-side validation.
+1. pinned Ed25519 host identity and deployment-key authentication;
+2. exact production `main@73652c122ffff6a8b9bde9de00020610964d704c` hydration;
+3. Python environment and native C ABI build;
+4. Runtime OS build/seal/transfer/stage/activation;
+5. runtime-certification, Storybook, data-root and immutable-agent writable-state isolation under `/var/lib/hhs`;
+6. immutable-agent SQLite ownership and `PRAGMA quick_check`;
+7. exact Runtime OS release traversal/readability;
+8. resumed exact-main fresh-host bootstrap;
+9. guarded continuous deployment installation;
+10. Let's Encrypt browser-trusted IP certificate issuance for `165.227.220.193`;
+11. nginx configuration/enablement;
+12. `hhs-certbot-renew.timer` enablement;
+13. valid `HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1` with outcome `INITIALIZED`, exact repository SHA, and `rollback_receipt_fabricated=false`.
 
-## Exact bootstrap receipt
+## Named local-closure diagnostic
 
-Run `34284624465`, job `102257215108`, produced:
+Read-only workflow:
 
-```json
-{
-  "assistant_ready": false,
-  "language_status_schema": "HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1",
-  "outcome": "INITIALIZED",
-  "public_ip": "165.227.220.193",
-  "repository_root": "/opt/hhs/app",
-  "repository_sha": "73652c122ffff6a8b9bde9de00020610964d704c",
-  "rollback_receipt_fabricated": false,
-  "runtime_os_release": "/var/lib/hhs/runtime-os/releases/73652c122ffff6a8b9bde9de00020610964d704c",
-  "schema": "HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1",
-  "ssh_host_trust": "PINNED_ED25519_OUT_OF_BAND_VERIFIED",
-  "timestamp": "2026-09-08T22:13:35.902507+00:00"
-}
-```
+- Workflow: `Pass219 Fresh Production Local Closure Diagnostic`
+- Run: `34285135120`
+- Job: `102258841791`
+- Commit: `6bdd36307c498cc9117908d0ff7d9f410758b2ba`
 
-The bootstrap then emitted:
+The diagnostic remote block passed its no-mutation self-check and used the already pinned SSH identity. Results:
 
 ```text
-HHS_FRESH_PRODUCTION_INITIALIZATION_VERIFIED=1
-HHS_PRODUCTION_SHA=73652c122ffff6a8b9bde9de00020610964d704c
-HHS_PRODUCTION_PUBLIC_IP=165.227.220.193
+HHS_LOCAL_CLOSURE_HEAD_EXACT=PASS
+HHS_LOCAL_CLOSURE_ORIGIN_MAIN_EXACT=PASS
+HHS_LOCAL_CLOSURE_BRANCH_MAIN=PASS
+HHS_LOCAL_CLOSURE_WORKTREE_ENTRY=?? .hhs/
+HHS_LOCAL_CLOSURE_WORKTREE_CLEAN=FAIL:DIRTY
+HHS_LOCAL_CLOSURE_UNIT_HHS_SERVICE=PASS
+HHS_LOCAL_CLOSURE_UNIT_HHS_GUARDED_UPDATE_TIMER=PASS
+HHS_LOCAL_CLOSURE_UNIT_NGINX=PASS
+HHS_LOCAL_CLOSURE_UNIT_HHS_CERTBOT_RENEW_TIMER=PASS
+HHS_LOCAL_CLOSURE_LOOPBACK_SYSTEM_STATUS=PASS
+HHS_LOCAL_CLOSURE_RECEIPT_SCHEMA=PASS
+HHS_LOCAL_CLOSURE_RECEIPT_OUTCOME=PASS
+HHS_LOCAL_CLOSURE_RECEIPT_REPOSITORY_SHA=PASS
+HHS_LOCAL_CLOSURE_RECEIPT_ROLLBACK_RECEIPT_FABRICATED=PASS
+HHS_LOCAL_CLOSURE_INITIALIZATION_RECEIPT=PASS
+HHS_LOCAL_CLOSURE_FAILURE_COUNT=1
 ```
 
-## Current failure
-
-The same run completed `Resume exact-main fresh-host bootstrap` successfully, then failed the next step, `Verify initialization receipt and local authority`, with exit code `1`.
-
-The verification step uses quiet predicates under `set -euo pipefail` and emitted no failing predicate name. The ordered predicates are:
-
-1. production `HEAD == TARGET_SHA`;
-2. `origin/main == TARGET_SHA`;
-3. branch is `main`;
-4. production Git worktree is clean;
-5. `hhs.service` active;
-6. `hhs-guarded-update.timer` active;
-7. `nginx` active;
-8. `hhs-certbot-renew.timer` active;
-9. loopback `/api/system/status` responds successfully;
-10. initialization receipt exists and matches schema/outcome/SHA/non-fabricated rollback assertions.
-
-Because the exact bootstrap and receipt were already green, the next operation is diagnostic only. Do not infer which quiet predicate failed and do not repeat the mutating bootstrap to discover it.
-
-## Stage matrix
+This identifies the exact predicate that caused the prior quiet local-closure failure: the production source checkout contains one untracked top-level runtime-state directory:
 
 ```text
-Check out recovery authority                    SUCCESS
-Validate recovery scripts                       SUCCESS
-Configure verified pinned SSH authority         SUCCESS
-Verify exact partial bootstrap state             SUCCESS
-Repair runtime certification state boundary     SUCCESS
-Resume exact-main fresh-host bootstrap           SUCCESS
-Verify initialization receipt/local authority   FAILURE (silent predicate)
-Verify browser-trusted public HTTPS             SKIPPED
-Production assistant authority                  SKIPPED downstream
+/opt/hhs/app/.hhs/
 ```
+
+All other local authority, service, loopback, and initialization-receipt predicates are green.
+
+## Current blocker
+
+`PRODUCTION_WORKTREE_RUNTIME_STATE_DRIFT / .hhs/`
+
+The repository contains multiple runtime components whose local-development defaults use `.hhs/...` when their production environment override is absent. Therefore `.hhs/` must not be deleted blindly. Its contents and owning runtime surface must be identified before mutation.
 
 ## Invariant
 
-Do not make `/opt/hhs/app` generally writable. Do not alter exact source authority `73652c12` for a host-state diagnosis. Do not rerun already-green mutating bootstrap/state-repair stages merely to identify a quiet verification failure.
+- Do not make `/opt/hhs/app` generally writable.
+- Do not ignore `.hhs/` via `.gitignore` merely to make the gate pass.
+- Do not delete `.hhs/` before identifying whether it contains durable runtime state/evidence.
+- Do not rerun already-green bootstrap/state-repair work.
+- Production writable state belongs under `/var/lib/hhs`; any source-tree runtime state must be relocated through the component's canonical environment/configuration surface where available.
 
 ## Exact next action
 
-Create and run a separate pinned-SSH, read-only local-closure diagnostic workflow on this recovery branch. It must print a named result for every predicate above, preserve strict host-key checking, perform no production mutation, and fail only after reporting the complete matrix.
+Use the pinned-SSH diagnostic workflow only, with no host mutation, to inventory `/opt/hhs/app/.hhs/`:
 
-After that diagnostic completes:
+- relative paths;
+- file types;
+- ownership and modes;
+- file sizes;
+- symlink targets if any.
 
-- if every local predicate is green, classify the prior failure as transient/race and proceed with a read-only public HTTPS closure gate without repeating bootstrap;
-- if one or more local predicates are red, checkpoint the exact failing predicate(s) and repair only that newly observed boundary;
-- do not begin production-assistant remediation until local and public HTTPS closure are established.
+Then map the resulting subpaths to repository-defined `.hhs` defaults/environment overrides. Checkpoint the exact owner/runtime surface before performing any relocation or cleanup.
 
 ## Validation remaining
 
-- named local-authority diagnostic matrix;
+- read-only `.hhs/` inventory and source-owner mapping;
+- scoped state relocation/cleanup if required;
+- clean-worktree local closure recheck;
 - browser-trusted public HTTPS exact-main verification;
 - production assistant authority verification.
-
-## Current blocker classification
-
-`LOCAL_CLOSURE_VERIFICATION_UNKNOWN_QUIET_PREDICATE`
 
 No production-completion claim is valid yet.
