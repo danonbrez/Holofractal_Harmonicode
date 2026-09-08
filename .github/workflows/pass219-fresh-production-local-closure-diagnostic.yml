@@ -31,10 +31,33 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ! grep -q 'StrictHostKeyChecking=no' .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
-          ! grep -q 'ssh-keyscan' .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
-          ! grep -Eq 'systemctl (start|stop|restart|enable|disable|reset-failed)|chmod |chown |install -d|apt-get|git (checkout|reset|clean|pull|fetch)|sqlite3 .* (INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)' \
-            .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
+          workflow=.github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
+          ! grep -q 'StrictHostKeyChecking=no' "$workflow"
+          ! grep -q 'ssh-keyscan' "$workflow"
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          path = Path('.github/workflows/pass219-fresh-production-local-closure-diagnostic.yml')
+          text = path.read_text(encoding='utf-8')
+          marker = "<<'REMOTE'\n"
+          if marker not in text:
+              raise SystemExit('remote diagnostic block missing')
+          remote = text.split(marker, 1)[1].split('\n          REMOTE', 1)[0]
+          forbidden = [
+              r'\bsystemctl\s+(?:start|stop|restart|enable|disable|reset-failed)\b',
+              r'\bchmod\b',
+              r'\bchown\b',
+              r'\binstall\s+-d\b',
+              r'\bapt-get\b',
+              r'\bgit\s+(?:checkout|reset|clean|pull|fetch)\b',
+              r'\bsqlite3\b.*\b(?:INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b',
+          ]
+          violations = [pattern for pattern in forbidden if re.search(pattern, remote, flags=re.I)]
+          if violations:
+              raise SystemExit('remote diagnostic contains mutation-capable command: ' + ', '.join(violations))
+          print('HHS_LOCAL_CLOSURE_REMOTE_READ_ONLY_CONTRACT=PASS')
+          PY
 
       - name: Configure verified pinned SSH authority
         shell: bash
