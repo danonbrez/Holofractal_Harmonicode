@@ -1,0 +1,158 @@
+name: Pass219 Fresh Production Local Closure Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-local-closure-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_SHA: 73652c122ffff6a8b9bde9de00020610964d704c
+  HHS_PRODUCTION_HOST: 165.227.220.193
+  HHS_PRODUCTION_USER: root
+  HHS_EXPECTED_HOST_FINGERPRINT: SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+
+jobs:
+  diagnose-local-closure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out diagnostic authority
+        uses: actions/checkout@v4
+
+      - name: Validate read-only diagnostic contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q 'StrictHostKeyChecking=no' .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
+          ! grep -q 'ssh-keyscan' .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
+          ! grep -Eq 'systemctl (start|stop|restart|enable|disable|reset-failed)|chmod |chown |install -d|apt-get|git (checkout|reset|clean|pull|fetch)|sqlite3 .* (INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)' \
+            .github/workflows/pass219-fresh-production-local-closure-diagnostic.yml
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 deployment/digitalocean/known_hosts/hhs-production-01.ed25519 "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Report every local closure predicate
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -u
+          failures=0
+
+          pass() {
+            printf 'HHS_LOCAL_CLOSURE_%s=PASS\n' "$1"
+          }
+
+          fail() {
+            printf 'HHS_LOCAL_CLOSURE_%s=FAIL:%s\n' "$1" "$2"
+            failures=$((failures + 1))
+          }
+
+          expect_equal() {
+            local label=$1 expected=$2 actual=$3
+            if [[ "$actual" == "$expected" ]]; then
+              pass "$label"
+            else
+              fail "$label" "expected=$expected actual=$actual"
+            fi
+          }
+
+          head_sha=$(git -C /opt/hhs/app rev-parse HEAD 2>&1) || head_sha="COMMAND_ERROR:$?"
+          expect_equal HEAD_EXACT "$TARGET_SHA" "$head_sha"
+
+          origin_sha=$(git -C /opt/hhs/app rev-parse origin/main 2>&1) || origin_sha="COMMAND_ERROR:$?"
+          expect_equal ORIGIN_MAIN_EXACT "$TARGET_SHA" "$origin_sha"
+
+          branch=$(git -C /opt/hhs/app branch --show-current 2>&1) || branch="COMMAND_ERROR:$?"
+          expect_equal BRANCH_MAIN main "$branch"
+
+          if git_status=$(git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal 2>&1); then
+            if [[ -z "$git_status" ]]; then
+              pass WORKTREE_CLEAN
+            else
+              printf '%s\n' "$git_status" | sed 's/^/HHS_LOCAL_CLOSURE_WORKTREE_ENTRY=/'
+              fail WORKTREE_CLEAN DIRTY
+            fi
+          else
+            fail WORKTREE_CLEAN GIT_STATUS_COMMAND_FAILED
+          fi
+
+          for unit in hhs.service hhs-guarded-update.timer nginx hhs-certbot-renew.timer; do
+            label=$(printf '%s' "$unit" | tr '.-' '__' | tr '[:lower:]' '[:upper:]')
+            state=$(systemctl is-active "$unit" 2>&1) || true
+            expect_equal "UNIT_${label}" active "$state"
+          done
+
+          if body=$(curl -fsS --connect-timeout 5 --max-time 15 http://127.0.0.1:8080/api/system/status 2>&1); then
+            pass LOOPBACK_SYSTEM_STATUS
+            printf 'HHS_LOCAL_CLOSURE_LOOPBACK_RESPONSE_BYTES=%s\n' "${#body}"
+          else
+            rc=$?
+            fail LOOPBACK_SYSTEM_STATUS "curl_rc=$rc"
+            printf '%s\n' "$body" | sed 's/^/HHS_LOCAL_CLOSURE_LOOPBACK_ERROR=/'
+          fi
+
+          if python3 - "$TARGET_SHA" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          target = sys.argv[1]
+          path = Path('/var/lib/hhs-guarded-update/initialization.json')
+          if not path.is_file():
+              raise SystemExit('receipt_missing')
+          receipt = json.loads(path.read_text(encoding='utf-8'))
+          checks = {
+              'schema': receipt.get('schema') == 'HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1',
+              'outcome': receipt.get('outcome') == 'INITIALIZED',
+              'repository_sha': receipt.get('repository_sha') == target,
+              'rollback_receipt_fabricated': receipt.get('rollback_receipt_fabricated') is False,
+          }
+          for name, ok in checks.items():
+              print(f'HHS_LOCAL_CLOSURE_RECEIPT_{name.upper()}={"PASS" if ok else "FAIL"}')
+          if not all(checks.values()):
+              raise SystemExit(1)
+          print('HHS_LOCAL_CLOSURE_RECEIPT_TIMESTAMP=' + str(receipt.get('timestamp', '')))
+          print('HHS_LOCAL_CLOSURE_RECEIPT_ASSISTANT_READY=' + str(receipt.get('assistant_ready')).lower())
+          PY
+          then
+            pass INITIALIZATION_RECEIPT
+          else
+            fail INITIALIZATION_RECEIPT INVALID_OR_UNREADABLE
+          fi
+
+          printf 'HHS_LOCAL_CLOSURE_FAILURE_COUNT=%d\n' "$failures"
+          if (( failures != 0 )); then
+            exit 1
+          fi
+          printf 'HHS_FRESH_PRODUCTION_LOCAL_CLOSURE_DIAGNOSTIC=PASS\n'
+          REMOTE
