@@ -1,0 +1,90 @@
+{
+  "schema": "HHS_PASS219_I182_HARMONIC_GEOMETRY_CIRCUIT_CONTRACT_V1",
+  "iteration": "PASS219-I182",
+  "title": "Holofractal HARMONIC Geometry Circuit Constraint Enforcement Computational Physics First Iteration",
+  "authoritative_base_main": "73652c122ffff6a8b9bde9de00020610964d704c",
+  "parent_contract": "contracts/pass219/PASS_219_HARMONIC_GEOMETRY_CIRCUIT_CONSTRAINT_ENFORCEMENT_COMPUTATIONAL_PHYSICS_1_0.md",
+  "canonical_arithmetic": "EXACT_INTEGER_NO_FLOAT_AUTHORITY",
+  "hydration_quantum": 5184,
+  "required_factorizations": [
+    [72, 72],
+    [64, 81],
+    [36, 144],
+    [48, 108]
+  ],
+  "pentagonal_quantization": {
+    "half_sector": 36,
+    "external": 72,
+    "interior": 108,
+    "supplementary": 144,
+    "sides": 5,
+    "cycle": 360,
+    "required_equalities": [
+      "36*144=5184",
+      "72*72=5184",
+      "108*48=5184",
+      "5*72=360",
+      "3*36=108",
+      "180-72=108",
+      "180-36=144"
+    ]
+  },
+  "platonic_pairs": [
+    [3, 3],
+    [4, 3],
+    [3, 4],
+    [5, 3],
+    [3, 5]
+  ],
+  "platonic_constraints": [
+    "pF=2E",
+    "qV=2E",
+    "V-E+F=2"
+  ],
+  "dodecahedral_closure": {
+    "p": 5,
+    "q": 3,
+    "vertices": 20,
+    "edges": 30,
+    "faces": 12,
+    "authoritative_vertex_table_used": false
+  },
+  "first_iteration_surfaces": [
+    "hhs_runtime/pass219/harmonic_geometry_circuit_i182.py",
+    "tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py",
+    "contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json",
+    ".github/workflows/pass219-i182-harmonic-geometry-circuit.yml",
+    "docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md"
+  ],
+  "authority_boundaries": {
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "rendering_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "fail_closed": true,
+  "negative_gates": [
+    "nonintegral_canonical_input",
+    "invalid_5184_factorization",
+    "inadmissible_platonic_pair",
+    "face_edge_incidence_mismatch",
+    "vertex_edge_incidence_mismatch",
+    "euler_closure_failure",
+    "receipt_digest_mismatch",
+    "authority_escalation"
+  ],
+  "remaining_nonterminal_scope": [
+    "native_c_cpp_membrane_abi_enforcement",
+    "public_operation_schema_registration",
+    "capability_binding",
+    "public_api_exposure",
+    "live_vm81_admission_binding",
+    "live_hash72_receipt_emission",
+    "hash216_archival_integration",
+    "live_vm81_deterministic_replay",
+    "downstream_rendering_export_adapters",
+    "exact_main_merge_and_verification"
+  ],
+  "terminal": false
+}
