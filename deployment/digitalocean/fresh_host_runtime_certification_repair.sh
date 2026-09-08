@@ -7,6 +7,9 @@ APP_ROOT=${HHS_APP_ROOT:-/opt/hhs/app}
 STATE_DIR=${HHS_RUNTIME_CERTIFICATION_STATE_DIR:-/var/lib/hhs/runtime-certification}
 STORYBOOK_DIR=${HHS_STORYBOOK_REEL_STATE_DIR:-/var/lib/hhs/storybook-reels}
 DATA_ROOT=${HHS_DATA_ROOT_STATE_DIR:-/var/lib/hhs/data}
+RUNTIME_OS_ROOT=${HHS_RUNTIME_OS_ROOT:-/var/lib/hhs/runtime-os}
+RUNTIME_OS_RELEASE="$RUNTIME_OS_ROOT/releases/$TARGET_SHA"
+RUNTIME_OS_TOOL="$APP_ROOT/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py"
 DROPIN_DIR=${HHS_SERVICE_DROPIN_DIR:-/etc/systemd/system/hhs.service.d}
 DROPIN_PATH="$DROPIN_DIR/10-runtime-certification-state.conf"
 HEALTH_URL=${HHS_HEALTH_URL:-http://127.0.0.1:8080/api/system/status}
@@ -56,6 +59,41 @@ BindPaths=$STATE_DIR:$APP_ROOT/runtime_certification
 EOF
 chmod 0644 "$DROPIN_PATH"
 
+# runtime-os-bundle.py stages into tempfile.mkdtemp(), whose root is 0700.
+# Its recursive mode normalization covers descendants but not the stage root
+# itself. Repair only the already sealed exact release root: keep it root-owned
+# and non-writable while allowing the hhs service to traverse/read the bundle.
+[[ -d "$RUNTIME_OS_RELEASE" ]] || {
+  echo "exact Runtime OS release missing: $RUNTIME_OS_RELEASE" >&2
+  exit 9
+}
+[[ -f "$RUNTIME_OS_RELEASE/index.html" ]] || {
+  echo "Runtime OS index missing: $RUNTIME_OS_RELEASE/index.html" >&2
+  exit 10
+}
+[[ -d "$RUNTIME_OS_RELEASE/assets" ]] || {
+  echo "Runtime OS assets missing: $RUNTIME_OS_RELEASE/assets" >&2
+  exit 11
+}
+[[ -f "$RUNTIME_OS_RELEASE/.hhs-runtime-os-manifest.json" ]] || {
+  echo "Runtime OS release manifest missing" >&2
+  exit 12
+}
+[[ -f "$RUNTIME_OS_TOOL" ]] || {
+  echo "Runtime OS verifier missing: $RUNTIME_OS_TOOL" >&2
+  exit 13
+}
+chmod 0755 "$RUNTIME_OS_RELEASE"
+runuser -u hhs -- test -x "$RUNTIME_OS_RELEASE"
+runuser -u hhs -- test -r "$RUNTIME_OS_RELEASE/index.html"
+python3 "$RUNTIME_OS_TOOL" verify --root "$RUNTIME_OS_ROOT" --expected-sha "$TARGET_SHA" >/dev/null
+
+after_mode=$(stat -c '%a' "$RUNTIME_OS_RELEASE")
+[[ "$after_mode" == 755 ]] || {
+  echo "Runtime OS release root mode repair failed: $after_mode" >&2
+  exit 14
+}
+
 systemctl daemon-reload
 systemctl reset-failed hhs.service || true
 systemctl restart hhs.service
@@ -79,6 +117,7 @@ pid=$(systemctl show -p MainPID --value hhs.service)
 nsenter -t "$pid" -m -- runuser -u hhs -- test -w "$APP_ROOT/runtime_certification"
 runuser -u hhs -- test -w "$STORYBOOK_DIR"
 runuser -u hhs -- test -w "$DATA_ROOT"
+runuser -u hhs -- test -r "$RUNTIME_OS_RELEASE/index.html"
 [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
   echo 'state-path repair introduced repository drift' >&2
   git -C "$APP_ROOT" status --short >&2
@@ -89,4 +128,5 @@ test -s /tmp/hhs-runtime-certification-repair-health.json
 printf 'HHS_RUNTIME_CERTIFICATION_STATE_BIND_VERIFIED=1\n'
 printf 'HHS_STORYBOOK_REEL_STATE_ROOT_VERIFIED=%s\n' "$STORYBOOK_DIR"
 printf 'HHS_DATA_ROOT_VERIFIED=%s\n' "$DATA_ROOT"
+printf 'HHS_RUNTIME_OS_RELEASE_READABILITY_VERIFIED=%s\n' "$RUNTIME_OS_RELEASE"
 printf 'HHS_RUNTIME_CERTIFICATION_TARGET_SHA=%s\n' "$TARGET_SHA"
