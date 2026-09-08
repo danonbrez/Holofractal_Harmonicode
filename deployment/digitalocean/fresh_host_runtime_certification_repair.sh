@@ -7,6 +7,8 @@ APP_ROOT=${HHS_APP_ROOT:-/opt/hhs/app}
 STATE_DIR=${HHS_RUNTIME_CERTIFICATION_STATE_DIR:-/var/lib/hhs/runtime-certification}
 STORYBOOK_DIR=${HHS_STORYBOOK_REEL_STATE_DIR:-/var/lib/hhs/storybook-reels}
 DATA_ROOT=${HHS_DATA_ROOT_STATE_DIR:-/var/lib/hhs/data}
+AGENT_INDEX_DIR=${HHS_AGENT_INDEX_STATE_DIR:-/var/lib/hhs/immutable-agent-index}
+AGENT_INDEX_DB=${HHS_AGENT_INDEX_DB_PATH:-$AGENT_INDEX_DIR/hhs-agent-index.sqlite3}
 RUNTIME_OS_ROOT=${HHS_RUNTIME_OS_ROOT:-/var/lib/hhs/runtime-os}
 RUNTIME_OS_RELEASE="$RUNTIME_OS_ROOT/releases/$TARGET_SHA"
 RUNTIME_OS_TOOL="$APP_ROOT/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py"
@@ -49,12 +51,17 @@ grep -Fq 'User=hhs' /etc/systemd/system/hhs.service
 grep -Fq 'ProtectSystem=full' /etc/systemd/system/hhs.service
 grep -Fq 'ReadWritePaths=/var/lib/hhs' /etc/systemd/system/hhs.service
 
-install -d -o hhs -g hhs -m 0750 "$STATE_DIR" "$STORYBOOK_DIR" "$DATA_ROOT"
+install -d -o hhs -g hhs -m 0750 \
+  "$STATE_DIR" \
+  "$STORYBOOK_DIR" \
+  "$DATA_ROOT" \
+  "$AGENT_INDEX_DIR"
 install -d -m 0755 "$DROPIN_DIR"
 cat >"$DROPIN_PATH" <<EOF
 [Service]
 Environment=HHS_STORYBOOK_REEL_ARTIFACT_ROOT=$STORYBOOK_DIR
 Environment=HHS_DATA_ROOT=$DATA_ROOT
+Environment=HHS_AGENT_INDEX_DB=$AGENT_INDEX_DB
 BindPaths=$STATE_DIR:$APP_ROOT/runtime_certification
 EOF
 chmod 0644 "$DROPIN_PATH"
@@ -94,6 +101,8 @@ after_mode=$(stat -c '%a' "$RUNTIME_OS_RELEASE")
   exit 14
 }
 
+runuser -u hhs -- test -w "$AGENT_INDEX_DIR"
+
 systemctl daemon-reload
 systemctl reset-failed hhs.service || true
 systemctl restart hhs.service
@@ -117,16 +126,29 @@ pid=$(systemctl show -p MainPID --value hhs.service)
 nsenter -t "$pid" -m -- runuser -u hhs -- test -w "$APP_ROOT/runtime_certification"
 runuser -u hhs -- test -w "$STORYBOOK_DIR"
 runuser -u hhs -- test -w "$DATA_ROOT"
+runuser -u hhs -- test -w "$AGENT_INDEX_DIR"
 runuser -u hhs -- test -r "$RUNTIME_OS_RELEASE/index.html"
+
+[[ -s "$AGENT_INDEX_DB" ]] || {
+  echo "immutable agent index database was not created: $AGENT_INDEX_DB" >&2
+  exit 22
+}
+[[ "$(stat -c '%U:%G' "$AGENT_INDEX_DB")" == 'hhs:hhs' ]] || {
+  echo "immutable agent index database ownership mismatch: $(stat -c '%U:%G' "$AGENT_INDEX_DB")" >&2
+  exit 23
+}
+runuser -u hhs -- sqlite3 "$AGENT_INDEX_DB" 'PRAGMA quick_check;' | grep -Fxq 'ok'
+
 [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
   echo 'state-path repair introduced repository drift' >&2
   git -C "$APP_ROOT" status --short >&2
-  exit 22
+  exit 24
 }
 
 test -s /tmp/hhs-runtime-certification-repair-health.json
 printf 'HHS_RUNTIME_CERTIFICATION_STATE_BIND_VERIFIED=1\n'
 printf 'HHS_STORYBOOK_REEL_STATE_ROOT_VERIFIED=%s\n' "$STORYBOOK_DIR"
 printf 'HHS_DATA_ROOT_VERIFIED=%s\n' "$DATA_ROOT"
+printf 'HHS_AGENT_INDEX_DB_VERIFIED=%s\n' "$AGENT_INDEX_DB"
 printf 'HHS_RUNTIME_OS_RELEASE_READABILITY_VERIFIED=%s\n' "$RUNTIME_OS_RELEASE"
 printf 'HHS_RUNTIME_CERTIFICATION_TARGET_SHA=%s\n' "$TARGET_SHA"
