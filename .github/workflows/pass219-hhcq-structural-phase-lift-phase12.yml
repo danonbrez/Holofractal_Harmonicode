@@ -1,0 +1,172 @@
+name: Pass219 HHCQ Structural Phase Lift Phase12
+
+on:
+  push:
+    branches:
+      - agent/pass219-hhcq-structural-phase-lift-phase12-20260908
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_hhcq_structural_phase_lift_1_33.h'
+      - 'hhs_runtime/c/hhs_pass219_hhcq_structural_phase_lift_1_33.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_hhcq_structural_phase_lift_1_33.c'
+      - 'benchmarks/pass219/hhcq_structural_phase_lift_phase12_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_PHASE12_STRUCTURAL_PHASE_LIFT_RESTART_20260908.md'
+      - '.github/workflows/pass219-hhcq-structural-phase-lift-phase12.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  structural-lift:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+    steps:
+      - name: Check out structural lift branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build exact ABI
+        run: |
+          set -o pipefail
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Run inherited Pass219B structural grammar regression
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_phase_quantized_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219b-phase-grammar-test
+          /tmp/pass219b-phase-grammar-test
+
+      - name: Run inherited Phase11 symbolic type-authority regression
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_symbolic_phase_gear_1_32.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase11-symbolic-test
+          /tmp/pass219-phase11-symbolic-test
+
+      - name: Compile and run strict Phase12 structural lift invariants
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_structural_phase_lift_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase12-structural-test
+          /tmp/pass219-phase12-structural-test
+
+      - name: Reuse frozen Phase3 authenticated hydrated-weight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Run inherited authenticated Phase11 regression
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase12-structural-lift
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_symbolic_phase_gear_phase11_repair_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase11-symbolic-benchmark
+          /tmp/pass219-phase11-symbolic-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase12-structural-lift/phase11_symbolic_regression.json
+
+      - name: Compile and run authenticated Phase12 structural lift benchmark
+        run: |
+          set -o pipefail
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_structural_phase_lift_phase12_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase12-structural-benchmark
+          /tmp/pass219-phase12-structural-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase12-structural-lift/hhcq_structural_phase_lift.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase12-structural-lift/phase3_frame.sha256
+
+      - name: Validate Phase12 evidence gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p11 = json.loads(Path('artifacts/pass219/phase12-structural-lift/phase11_symbolic_regression.json').read_text())
+          assert p11['classification'] == 'SYMBOLIC_TYPE_AUTHORITY_REPAIRED'
+          assert p11['raw_zero_xy_projection_count'] == 2
+          assert p11['raw_zero_xy_admitted'] == 0
+          assert p11['raw_phase_residue_authority'] is False
+          assert p11['scalar_x_parity_authority'] is False
+          p12 = json.loads(Path('artifacts/pass219/phase12-structural-lift/hhcq_structural_phase_lift.json').read_text())
+          assert p12['schema'] == 'HHS_PASS219_HHCQ_STRUCTURAL_PHASE_LIFT_PHASE12_V1'
+          assert p12['classification'] == 'STRUCTURAL_PHASE_LIFT_VALIDATED'
+          assert p12['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert p12['summary_records'] == 529
+          assert p12['authenticated_unique_digests'] == 489
+          assert p12['local_samples'] == 4761
+          assert p12['phase5_exact_roundtrip_checks'] == 4761
+          assert p12['structural_lift_checks'] == 4761
+          assert p12['structural_replay_checks'] == 4761
+          assert p12['structural_role_checks'] == 38088
+          assert p12['xy_direct_ring_checks'] == 4761
+          assert p12['zw_reverse_ring_checks'] == 4761
+          assert p12['mixed_carrier_checks'] == 4761
+          assert p12['raw_residue_semantic_promotions'] == 0
+          assert p12['raw_phase_residue_authority'] is False
+          assert p12['scalar_integer_semantic_authority'] is False
+          assert p12['phase_position_semantic_authority'] is False
+          assert p12['candidate_only'] is True
+          assert p12['canonical_authority_changed'] is False
+          assert p12['floating_point_authority'] is False
+          print(json.dumps(p12, indent=2, sort_keys=True))
+          PY
+
+      - name: Record structural lift summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 Phase12 structural phase lift'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase12-structural-lift/hhcq_structural_phase_lift.json; then
+              echo '```json'
+              cat artifacts/pass219/phase12-structural-lift/hhcq_structural_phase_lift.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase12 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-hhcq-structural-phase-lift-phase12
+          path: artifacts/pass219/phase12-structural-lift
+          if-no-files-found: warn
