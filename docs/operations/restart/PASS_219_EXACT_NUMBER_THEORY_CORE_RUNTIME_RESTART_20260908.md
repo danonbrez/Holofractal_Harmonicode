@@ -6,6 +6,7 @@
 - Authoritative base: `main@73652c122ffff6a8b9bde9de00020610964d704c`
 - Branch: `agent/pass219-exact-number-theory-core-runtime-20260908`
 - Merge target: `main`
+- Validated implementation head: `4dfca40ffcba7ea0027b3e562c04e7c77939c0b0`
 
 ## Scope
 
@@ -43,36 +44,70 @@ Admission fails closed when any required relation witness is absent, when equali
 
 The runtime embeds the supplied UTF-8 equation text verbatim, including `∆`, `√`, superscript powers, the original recursive `==` syntax, and the clarification `P⁴≠1 because P²-pq=1`. The source is protected by FNV-1a-64 identity `0x0e44447d9b2d1a4a`.
 
-## Validation state
+## Validation receipts
 
-Completed before repository publication:
+### Isolated exact circuit
+
+Command shape:
 
 ```text
 gcc -std=c11 -Wall -Wextra -Werror -pedantic \
-  -I<isolated>/hhs_runtime/include \
-  -x c hhs_pass219_exact_number_theory_core_1_0.inc \
-  test_hhs_pass219_exact_number_theory_core_runtime.c
+  -Ihhs_runtime/include \
+  -x c hhs_runtime/c/hhs_pass219_exact_number_theory_core_1_0.inc \
+  tests/test_hhs_pass219_exact_number_theory_core_runtime.c
 ```
 
-Result: PASS for both the initial and verbatim UTF-8 source forms.
+Result: PASS for the verbatim UTF-8 source form.
 
-The isolated test verifies positive propagation plus fail-closed cases for missing `AB=P⁴`, lost equality-chain preservation, scalar-projection authority, lost noncommutative ordering, and floating-point authority.
+The test verifies positive propagation plus fail-closed cases for missing `AB=P⁴`, lost equality-chain preservation, scalar-projection authority, lost noncommutative ordering, and floating-point authority.
 
-Repository integration validation is assigned to `.github/workflows/pass219-exact-number-theory-core-runtime.yml`, which performs the isolated `-Werror -pedantic` test, `make c-abi`, and exported-symbol checks against `libhhs_runtime.so`.
+### Exact runtime ABI integration
 
-## Current checkpoint history
+Targeted workflow: `Pass219 Exact Number Theory Core Runtime`
+
+- workflow run: `34194484097`
+- tested head: `4dfca40ffcba7ea0027b3e562c04e7c77939c0b0`
+- job: `exact-number-theory-core`
+- conclusion: SUCCESS
+
+Completed green steps:
+
+1. checkout
+2. isolated exact number-theory circuit compile/test with `-Werror -pedantic`
+3. full `make c-abi` exact runtime shared-library build
+4. exported-symbol verification for all new exact number-theory ABI functions
+
+The exact runtime ABI now exports:
+
+- `hhs_exact_pass219_number_theory_version`
+- `hhs_exact_pass219_number_theory_required_mask`
+- `hhs_exact_pass219_number_theory_equation_set`
+- `hhs_exact_pass219_number_theory_source_fnv1a64`
+- `hhs_exact_pass219_number_theory_selfcheck`
+- `hhs_exact_pass219_number_theory_evaluate`
+
+### Unrelated repository-wide relay state
+
+Two global workflows reported immediate failure on the same branch head but created zero jobs:
+
+- validation relay run `34194469259`
+- acceptance gate run `34194482694`
+
+These are classified as pre-job orchestration/relay failures. No C/runtime test from either workflow executed, so they do not contradict the targeted exact-runtime green receipt. Repair, if desired, is a separate workflow-orchestration scope.
+
+## Checkpoint history
 
 - Initial implementation commit: `96cdfe704373969c991b85df0a96058bac8b2ed7`
-- Initial workflow run: `34194110244`; isolated exact-number-theory compile/test completed successfully before the exact runtime ABI aggregate build began.
-- A follow-up checkpoint supersedes only the embedded lexical source identity by preserving the supplied equation text verbatim; semantics and gate structure are unchanged.
+- Verbatim exact-source implementation and validated code head: `4dfca40ffcba7ea0027b3e562c04e7c77939c0b0`
+- Targeted green workflow: `34194484097`
 
-## Remaining work
+## Merge state
 
-1. Publish the verbatim-source follow-up commit on the branch.
-2. Observe the branch workflow result for that exact head.
-3. If green, record the exact workflow receipt in the next restart checkpoint if further work continues.
-4. If red, repair only the impacted runtime surface and rerun the dependency-scoped workflow.
-5. Merge to `main` only when explicitly requested/authorized.
+Not merged. No pull request or merge was performed because the authorized scope was to create a new branch, update the kernel runtime, validate it, and preserve restartable state.
+
+## Next action
+
+The implementation is ready for the next Pass 219 iteration or an explicit merge/PR instruction. If continuing development on this branch, start from the current branch head and preserve `4dfca40ffcba7ea0027b3e562c04e7c77939c0b0` as the validated implementation boundary.
 
 ## Restart rule
 
