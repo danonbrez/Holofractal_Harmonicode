@@ -1,6 +1,30 @@
-#define main hhs_pass219_phase11_symbolic_reference_main
-#include "hhcq_symbolic_phase_gear_phase11_repair_benchmark.cpp"
+#define main hhs_pass219_phase6_reference_main
+#include "hhcq_joint_local_router_phase6_benchmark.cpp"
 #undef main
+
+namespace {
+
+bool symbolic_clean(const HHSExactPass219HHCQSymbolicManifoldV1& m) {
+    return m.symbolic_carrier_admitted == 1U &&
+           m.global_relation_graph_exact == 1U &&
+           m.symbolic_equilibrium_exact == 1U &&
+           m.symbolic_square_gate_exact == 1U &&
+           m.ordered_products_exact == 1U &&
+           m.constraint_intersection_satisfied == 1U &&
+           m.raw_projection_authority == 0U &&
+           m.scalar_integer_semantic_authority == 0U &&
+           m.gate.scalar_x_parity_evaluated == 0U &&
+           m.gate.phase10_projection_authority == 0U &&
+           m.gate.x_squared_symbol == HHS_EXACT_PASS219_HHCQ_PHASE_SYMBOL_I2 &&
+           m.gate.negative_xy_symbol == HHS_EXACT_PASS219_HHCQ_PHASE_SYMBOL_I2 &&
+           m.canonical_mutation_authority == 0U &&
+           m.canonical_hash72_authority == 0U &&
+           m.canonical_hash216_authority == 0U &&
+           m.canonical_persistence_authority == 0U &&
+           m.floating_point_authority == 0U;
+}
+
+}  // namespace
 
 int main(int argc, char** argv) {
     if (argc != 2) {
