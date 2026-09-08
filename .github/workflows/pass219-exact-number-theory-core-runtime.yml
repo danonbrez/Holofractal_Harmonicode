@@ -1,0 +1,42 @@
+name: Pass219 Exact Number Theory Core Runtime
+
+on:
+  push:
+    branches:
+      - agent/pass219-exact-number-theory-core-runtime-20260908
+    paths:
+      - 'hhs_runtime/c/hhs_pass219_exact_number_theory_core_1_0.inc'
+      - 'hhs_runtime/include/hhs_pass219_exact_number_theory_core_1_0.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/test_hhs_pass219_exact_number_theory_core_runtime.c'
+      - '.github/workflows/pass219-exact-number-theory-core-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-number-theory-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile isolated exact number-theory circuit
+        run: |
+          mkdir -p /tmp/pass219-number-theory
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -x c hhs_runtime/c/hhs_pass219_exact_number_theory_core_1_0.inc \
+            tests/test_hhs_pass219_exact_number_theory_core_runtime.c \
+            -o /tmp/pass219-number-theory/test_exact_number_theory_core
+          /tmp/pass219-number-theory/test_exact_number_theory_core
+
+      - name: Build exact runtime ABI aggregate
+        run: make c-abi
+
+      - name: Verify exported exact circuit surface
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_version
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_required_mask
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_equation_set
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_source_fnv1a64
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_selfcheck
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep hhs_exact_pass219_number_theory_evaluate
