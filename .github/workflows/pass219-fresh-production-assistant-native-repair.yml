@@ -1,0 +1,175 @@
+name: Pass219 Fresh Production Native Assistant Repair
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-assistant-native-repair.yml'
+      - 'deployment/digitalocean/fresh_host_production_assistant_native_repair.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_SHA: 73652c122ffff6a8b9bde9de00020610964d704c
+  HHS_PRODUCTION_HOST: 165.227.220.193
+  HHS_PRODUCTION_USER: root
+  HHS_EXPECTED_HOST_FINGERPRINT: SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+
+jobs:
+  repair-and-verify-native-assistant:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out scoped repair authority
+        uses: actions/checkout@v4
+
+      - name: Validate hosted-assistant repair contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow=.github/workflows/pass219-fresh-production-assistant-native-repair.yml
+          script=deployment/digitalocean/fresh_host_production_assistant_native_repair.sh
+          bash -n "$script"
+          grep -Fq 'HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0' "$script"
+          grep -Fq 'HHS_PASS166_STORAGE_DIR=' "$script"
+          grep -Fq 'tests/test_hhs_production_public_app_v1.py' "$script"
+          weak_host='StrictHostKeyChecking''=no'
+          weak_scan='ssh-key''scan'
+          ! grep -Fq "$weak_host" "$workflow"
+          ! grep -Fq "$weak_scan" "$workflow"
+          echo 'HHS_HOSTED_ASSISTANT_REPAIR_CONTRACT=PASS'
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 deployment/digitalocean/known_hosts/hhs-production-01.ed25519 "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Repair hosted native assistant environment and state path
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" \
+            < deployment/digitalocean/fresh_host_production_assistant_native_repair.sh
+
+      - name: Verify browser-trusted public assistant health
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 5 --retry-delay 2 --connect-timeout 10 --max-time 30 \
+            "https://$HHS_PRODUCTION_HOST/api/assistant/health" \
+            >/tmp/hhs-public-assistant-health.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/hhs-public-assistant-health.json').read_text(encoding='utf-8'))
+          assert payload['schema'] == 'HHS_PRODUCTION_ASSISTANT_STATUS_V2', payload
+          assert payload['ok'] is True and payload['online'] is True, payload
+          assert payload['status'] == 'HHS_PRODUCTION_ASSISTANT_READY', payload
+          assert payload['selected_provider_id'] == 'provider:hhs.local.text', payload
+          assert payload['effective_mode'] == 'HHS_NATIVE_LITERT_COMPATIBLE', payload
+          installation = payload['native_hhs']['installation']
+          assert installation['ready'] is True, installation
+          assert installation['word2vec_required'] is False, installation
+          assert payload['runtime_mutation_admitted'] is False, payload
+          print('HHS_PUBLIC_ASSISTANT_HEALTH=PASS')
+          print('HHS_PUBLIC_ASSISTANT_STATUS_ROOT_HASH72=' + str(payload['status_root_hash72']))
+          PY
+
+      - name: Execute real public HTTPS assistant turn
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --connect-timeout 10 --max-time 60 \
+            -H 'Content-Type: application/json' \
+            --data '{"project_id":"project:pass219-production-closure","title":"Pass 219 production closure","content":"AB=P^4"}' \
+            "https://$HHS_PRODUCTION_HOST/api/assistant/chat" \
+            >/tmp/hhs-public-assistant-turn.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          turn = json.loads(Path('/tmp/hhs-public-assistant-turn.json').read_text(encoding='utf-8'))
+          assert turn['ok'] is True, turn
+          assert turn['effective_mode'] == 'HHS_NATIVE_LITERT_COMPATIBLE', turn
+          message = turn.get('assistant_message') or {}
+          assert str(message.get('content') or '').strip(), turn
+          assert message.get('message_root_hash72'), turn
+          invocation = turn.get('provider_invocation_receipt') or {}
+          assert invocation.get('provider_invocation_receipt_hash72'), turn
+          ingress = turn.get('provider_result_ingress') or {}
+          assert ingress.get('provider_result_ingress_root_hash72'), turn
+          assert turn.get('turn_root_hash72'), turn
+          assert turn.get('runtime_mutation_admitted') is False, turn
+          print('HHS_PUBLIC_ASSISTANT_REAL_TURN=PASS')
+          print('HHS_PUBLIC_ASSISTANT_MESSAGE_BYTES=' + str(len(str(message['content']).encode('utf-8'))))
+          print('HHS_PUBLIC_ASSISTANT_MESSAGE_ROOT_HASH72=' + str(message['message_root_hash72']))
+          print('HHS_PUBLIC_ASSISTANT_INVOCATION_RECEIPT_HASH72=' + str(invocation['provider_invocation_receipt_hash72']))
+          print('HHS_PUBLIC_ASSISTANT_RESULT_INGRESS_ROOT_HASH72=' + str(ingress['provider_result_ingress_root_hash72']))
+          print('HHS_PUBLIC_ASSISTANT_TURN_ROOT_HASH72=' + str(turn['turn_root_hash72']))
+          PY
+
+      - name: Verify exact clean production post-state
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -euo pipefail
+          test "$(git -C /opt/hhs/app rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app rev-parse origin/main)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app branch --show-current)" = main
+          test -z "$(git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal)"
+          test ! -e /opt/hhs/app/.hhs
+          test -d /var/lib/hhs/pass166
+          runuser -u hhs -- test -w /var/lib/hhs/pass166
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-guarded-update.timer
+          systemctl is-active --quiet nginx
+          systemctl is-active --quiet hhs-certbot-renew.timer
+          curl -fsS --connect-timeout 5 --max-time 20 http://127.0.0.1:8080/api/assistant/health \
+            | python3 -c 'import json,sys; p=json.load(sys.stdin); assert p["ok"] and p["selected_provider_id"] == "provider:hhs.local.text"'
+          echo 'HHS_FRESH_PRODUCTION_ASSISTANT_POST_STATE_CLEAN=PASS'
+          REMOTE
+
+      - name: Reconfirm public Runtime OS closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --connect-timeout 10 --max-time 30 \
+            "https://$HHS_PRODUCTION_HOST/api/system/status" >/dev/null
+          curl -fsS --connect-timeout 10 --max-time 30 \
+            "https://$HHS_PRODUCTION_HOST/" >/tmp/hhs-runtime-os-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-runtime-os-root.html
+          echo 'HHS_FRESH_PRODUCTION_RUNTIME_OS_STILL_PUBLIC=PASS'
