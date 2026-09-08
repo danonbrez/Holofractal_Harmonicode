@@ -22,9 +22,7 @@ Inherited authority remains unchanged:
 - floating point restricted to bounded noncanonical projection lanes;
 - existing Pass078, Pass174, Pass213, and execution-geometry surfaces remain inherited and additive.
 
-## I182 first iteration — implemented
-
-The first executable constraint kernel for the new layer is implemented without claiming terminal production closure.
+## I182 Python constraint kernel — validated
 
 Implemented surfaces:
 
@@ -34,72 +32,81 @@ Implemented surfaces:
 4. `.github/workflows/pass219-i182-harmonic-geometry-circuit.yml`
 5. this restart record
 
-The first iteration enforces:
+The kernel enforces exact `5184 = 72^2 = 64*81 = 36*144 = 48*108`, pentagonal `36/72/108/144`, fivefold `5*72=360` zero-phase closure, all five regular convex Platonic `{p,q}` incidence/Euler closures, and the derived `{5,3}` dodecahedron without authoritative final vertex-table storage.
 
-- exact `5184 = 72^2 = 64*81 = 36*144 = 48*108` witnesses;
-- exact pentagonal `36/72/108/144` derivation;
-- exact fivefold `5*72=360` zero-phase cycle closure;
-- generic Platonic `{p,q}` incidence and Euler closure;
-- first-principles derivation of all five regular convex Platonic `(V,E,F)` closures from `{p,q}` constraints;
-- exact dodecahedral `(V,E,F)=(20,30,12)` derivation from `{5,3}` without an authoritative stored final vertex table;
-- fail-closed rejection of malformed factorization, noninteger canonical inputs, inadmissible Platonic pairs, incidence drift, Euler drift, receipt tampering, and authority escalation;
-- deterministic witness payload generation using exact integer canonical geometry values;
-- explicit non-escalation: this first iteration does not mint VM81 authority, Hash72 authority, Hash216 persistence authority, or rendering authority.
+Frozen Python evidence:
 
-## Branch implementation history
+- dedicated workflow run: `34187819690`
+- workflow head: `3da32e26376814fbaa3490065541ef631daba8c7`
+- job: `101939600856`
+- conclusion: `success`
+- artifact: `10041120811`
+- artifact digest: `sha256:edbf6f8290f5593714f2201d2a91f9cd108150094ebdab727e6dbd985ea646f9`
 
-- Start checkpoint: `8a4bb1bddcba88d32349922daa40f02910e1f5ae`
-- Exact geometry kernel: `0d920c281a7ae7631b2b132207e5f973f748b576`
-- Dependency-scoped tests: `a4107343395af77b8ea4c4bc3d6ca6dd27c21dfc`
-- Machine-readable contract: `7bfe2966ec57096378cbff84166cf052f1e6970f`
-- Dedicated bounded workflow head: `3da32e26376814fbaa3490065541ef631daba8c7`
+## I182 native C/C++ membrane — implemented, repository CI pending
 
-## Verified branch evidence
+Native source checkpoint:
 
-Dedicated workflow: `Pass 219 I182 HARMONIC Geometry Circuit`
+- parent restart checkpoint: `9f884171da22a8227e4d8b0e300f40a3a6920afa`
+- native source commit: `c4f622eb77332c26549dad24721e8db801865086`
 
-- Run: `34187819690`
-- Workflow head SHA: `3da32e26376814fbaa3490065541ef631daba8c7`
-- Status: `completed`
-- Conclusion: `success`
-- Job: `exact-geometry-constraint-gate`
-- Job ID: `101939600856`
+Implemented native surfaces:
 
-All bounded steps passed:
+1. `hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h`
+2. `hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp`
+3. `hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc`
+4. `tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c`
+5. `tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp`
+6. aggregate binding in `hhs_runtime/include/hhs_runtime_exact_abi.h`
+7. aggregate binding in `hhs_runtime/c/hhs_runtime_exact_abi.c`
 
-1. checkout/setup;
-2. bounded pytest dependency install;
-3. JSON contract validation;
-4. exact kernel compile;
-5. no-float/no-authoritative-final-vertex-table source enforcement;
-6. dependency-scoped I182 test suite;
-7. deterministic geometry witness emission;
-8. deterministic witness artifact upload.
+The native membrane mirrors the exact Python constraint algebra using fixed-width integer arithmetic. It derives the Platonic closures from `{p,q}` constraints, derives the dodecahedral branch from `{5,3}`, validates exact candidate equality, rejects malformed factorization and authority escalation, and exposes a C++20 wrapper over the same C ABI record.
 
-Artifact evidence:
+Authority remains additive and singleton:
 
-- Artifact: `10041120811`
-- Name: `pass219-i182-harmonic-geometry-witness`
-- Digest: `sha256:edbf6f8290f5593714f2201d2a91f9cd108150094ebdab727e6dbd985ea646f9`
-- Artifact workflow head SHA: `3da32e26376814fbaa3490065541ef631daba8c7`
+- canonical integer geometry authority: enabled for this constraint evaluator;
+- authoritative final vertex-table storage: forbidden;
+- new VM81 authority: `0`;
+- direct VM81 mutation authority: `0`;
+- new Hash72 mint authority: `0`;
+- Hash216 persistence authority: `0`;
+- C++ mutation authority: `0`;
+- public-operation authority: `0`;
+- capability-binding authority: `0`;
+- rendering authority: `0`.
 
-The repository also triggered unrelated historical workflows on branch pushes. Their failures are not I182 dependency-scoped evidence and are not reclassified as geometry-circuit failures. I182 acceptance is bound to the dedicated exact-head workflow above.
+Isolated pre-publication validation completed before repository publication:
 
-## Dependency-scoped validation commands represented by the workflow
+```text
+gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic ... native unit + C test
+PASS219 I182 native HARMONIC geometry membrane C ABI: PASS
+
+g++ -O2 -std=c++20 -Wall -Wextra -Werror -pedantic ... native unit + C++ test
+PASS219 I182 native HARMONIC geometry membrane C++ wrapper: PASS
+```
+
+This isolated check proves syntax and the new unit's direct invariants only. It is not substituted for repository aggregate-ABI CI evidence.
+
+## Dedicated dependency-scoped repository gate
+
+The updated I182 workflow must validate at its exact branch head:
 
 ```text
 python -m json.tool contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json
 python -m py_compile hhs_runtime/pass219/harmonic_geometry_circuit_i182.py
 pytest -q tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py
+gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c
+gcc ... test_pass219_i182_harmonic_geometry_membrane_1_0.c ...
+g++ -std=c++20 ... test_pass219_i182_harmonic_geometry_membrane_1_0.cpp ...
 ```
 
-The workflow additionally parses the authoritative Python kernel AST to reject floating-point literals/calls and rejects authoritative final Platonic vertex-table tokens.
+The workflow also rejects native production use of noncanonical scalar type tokens and authoritative final vertex-table tokens, then emits both Python and native membrane evidence in the bounded I182 artifact.
 
 ## Remaining nonterminal scope
 
-Not yet authorized as complete in this checkpoint:
+Not yet authorized as complete:
 
-- C/C++ membrane ABI enforcement;
+- exact-head native repository workflow evidence and artifact receipt;
 - public operation/schema registration;
 - capability binding;
 - public API exposure;
@@ -111,12 +118,8 @@ Not yet authorized as complete in this checkpoint:
 - branch PR/merge;
 - exact-main post-merge workflow and artifact verification.
 
-This checkpoint therefore freezes a **validated first iteration**, not terminal geometry-layer closure.
+This checkpoint freezes implemented native source while preserving the previously validated Python evidence. It does not claim terminal geometry-layer closure.
 
 ## Exact restart action
 
-Resume from the current checkpoint head on `agent/pass219-i182-harmonic-geometry-circuit`.
-
-Treat run `34187819690`, job `101939600856`, and artifact `10041120811` with digest `sha256:edbf6f8290f5593714f2201d2a91f9cd108150094ebdab727e6dbd985ea646f9` as frozen executable I182 first-iteration evidence.
-
-Next implementation boundary: bind this exact constraint kernel into the native C/C++ Pass219 membrane while preserving singleton VM81 authority and no-float canonical geometry. Add only dependency-scoped native ABI tests and a new bounded workflow/checkpoint before any public-operation or rendering authority expansion. Do not rerun unrelated historical pass suites unless an impacted dependency requires it.
+Observe the dedicated `Pass 219 I182 HARMONIC Geometry Circuit` workflow for the branch head containing this workflow configuration. If the aggregate C11 compile, C ABI test, C++20 wrapper test, Python gate, or artifact emission fails, repair only the impacted I182/native aggregate surface and rerun the bounded gate. When green, update this restart record with the exact workflow head, run/job IDs, artifact ID/digest, and commit a documentation-only restart checkpoint before proceeding to public operation/schema registration. Do not rerun unrelated historical pass suites unless an impacted dependency requires it.

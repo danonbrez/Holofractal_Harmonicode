@@ -7,19 +7,31 @@ on:
       - agent/pass219-i182-harmonic-geometry-circuit
     paths:
       - 'contracts/pass219/PASS_219_HARMONIC_GEOMETRY_CIRCUIT_CONSTRAINT_ENFORCEMENT_COMPUTATIONAL_PHYSICS_1_0.md'
-      - 'hhs_runtime/pass219/harmonic_geometry_circuit_i182.py'
-      - 'tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py'
       - 'contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json'
+      - 'hhs_runtime/pass219/harmonic_geometry_circuit_i182.py'
+      - 'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp'
       - '.github/workflows/pass219-i182-harmonic-geometry-circuit.yml'
-      - 'docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md'
   pull_request:
     paths:
       - 'contracts/pass219/PASS_219_HARMONIC_GEOMETRY_CIRCUIT_CONSTRAINT_ENFORCEMENT_COMPUTATIONAL_PHYSICS_1_0.md'
-      - 'hhs_runtime/pass219/harmonic_geometry_circuit_i182.py'
-      - 'tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py'
       - 'contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json'
+      - 'hhs_runtime/pass219/harmonic_geometry_circuit_i182.py'
+      - 'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h'
+      - 'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp'
+      - 'hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c'
+      - 'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp'
       - '.github/workflows/pass219-i182-harmonic-geometry-circuit.yml'
-      - 'docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md'
 
 permissions:
   contents: read
@@ -44,7 +56,7 @@ jobs:
       - name: Compile exact geometry kernel
         run: python -m py_compile hhs_runtime/pass219/harmonic_geometry_circuit_i182.py
 
-      - name: Enforce no-float and no-authoritative-vertex-table source boundary
+      - name: Enforce Python no-float and no-authoritative-vertex-table source boundary
         run: |
           python - <<'PY'
           import ast
@@ -66,8 +78,58 @@ jobs:
                   raise SystemExit(f'authoritative final vertex table token detected: {token}')
           PY
 
-      - name: Run dependency-scoped I182 tests
+      - name: Enforce native exact-arithmetic and no-final-vertex-table boundary
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          paths = [
+              Path('hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h'),
+              Path('hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp'),
+              Path('hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc'),
+          ]
+          scalar_type = re.compile(r'\b(?:float|double)\b')
+          forbidden_vertex_authority = ('VERTEX_TABLE', 'DODECAHEDRON_VERTICES', 'ICOSAHEDRON_VERTICES')
+          for path in paths:
+              source = path.read_text(encoding='utf-8')
+              if scalar_type.search(source):
+                  raise SystemExit(f'noncanonical scalar type token detected in {path}')
+              for token in forbidden_vertex_authority:
+                  if token in source:
+                      raise SystemExit(f'authoritative final vertex table token detected in {path}: {token}')
+          PY
+
+      - name: Compile native exact ABI aggregate
+        run: |
+          mkdir -p /tmp/pass219-i182
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-i182/exact.o
+
+      - name: Compile native C and C++ membrane tests
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c \
+            /tmp/pass219-i182/exact.o \
+            -o /tmp/pass219-i182/test-native-c
+          g++ -O3 -std=c++20 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp \
+            /tmp/pass219-i182/exact.o \
+            -o /tmp/pass219-i182/test-native-cpp
+
+      - name: Run dependency-scoped I182 Python tests
         run: pytest -q tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py
+
+      - name: Run native C/C++ membrane gates
+        run: |
+          mkdir -p evidence/pass219/i182
+          /tmp/pass219-i182/test-native-c | tee evidence/pass219/i182/PASS_219_I182_NATIVE_GEOMETRY_MEMBRANE.txt
+          /tmp/pass219-i182/test-native-cpp | tee -a evidence/pass219/i182/PASS_219_I182_NATIVE_GEOMETRY_MEMBRANE.txt
+          printf 'workflow_head=%s\n' "$GITHUB_SHA" >> evidence/pass219/i182/PASS_219_I182_NATIVE_GEOMETRY_MEMBRANE.txt
 
       - name: Emit deterministic geometry witness artifact
         run: |
@@ -84,9 +146,9 @@ jobs:
           )
           PY
 
-      - name: Upload deterministic witness
+      - name: Upload deterministic witnesses
         uses: actions/upload-artifact@v4
         with:
           name: pass219-i182-harmonic-geometry-witness
-          path: evidence/pass219/i182/PASS_219_I182_HARMONIC_GEOMETRY_WITNESS.json
+          path: evidence/pass219/i182/
           if-no-files-found: error

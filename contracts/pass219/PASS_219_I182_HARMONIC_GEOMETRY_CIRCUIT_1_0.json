@@ -51,15 +51,36 @@
   },
   "first_iteration_surfaces": [
     "hhs_runtime/pass219/harmonic_geometry_circuit_i182.py",
+    "hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h",
+    "hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp",
+    "hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc",
+    "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "hhs_runtime/c/hhs_runtime_exact_abi.c",
     "tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py",
+    "tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c",
+    "tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp",
     "contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json",
     ".github/workflows/pass219-i182-harmonic-geometry-circuit.yml",
     "docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md"
   ],
+  "native_membrane_requirements": {
+    "c_abi": true,
+    "cxx_wrapper": true,
+    "aggregate_exact_abi_binding": true,
+    "derive_platonic_by_constraints": true,
+    "derive_dodecahedron_from_5_3": true,
+    "canonical_integer_authority": true,
+    "authoritative_vertex_table_used": false,
+    "fail_closed_authority_escalation": true
+  },
   "authority_boundaries": {
     "new_vm81_authority": false,
+    "vm81_direct_mutation_authority": false,
     "new_hash72_mint_authority": false,
     "hash216_persistence_authority": false,
+    "cxx_mutation_authority": false,
+    "public_operation_authority": false,
+    "capability_binding_authority": false,
     "rendering_authority": false,
     "floating_point_canonical_authority": false
   },
@@ -75,7 +96,6 @@
     "authority_escalation"
   ],
   "remaining_nonterminal_scope": [
-    "native_c_cpp_membrane_abi_enforcement",
     "public_operation_schema_registration",
     "capability_binding",
     "public_api_exposure",
