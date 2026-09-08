@@ -225,7 +225,10 @@ HHSExactStatus hhs_exact_pass219_hhcq_reciprocal_economy_evaluate(
         candidate->intrinsic_resolution_index < candidate->required_resolution_index &&
         out_result->effective_resolution_met != 0U &&
         out_result->information_one_to_one != 0U &&
-        candidate->lossy_information_units != 0U;
+        candidate->lossy_information_units != 0U &&
+        candidate->exact_reconstruction != 0U &&
+        candidate->exact_semantic_closure != 0U &&
+        candidate->all_native_modalities_translatable != 0U;
     out_result->exact_semantic_closure = candidate->exact_semantic_closure;
     out_result->exact_reconstruction = candidate->exact_reconstruction;
     out_result->all_native_modalities_translatable =
