@@ -55,14 +55,20 @@ Run: `34196847576`
 
 Target: `137.184.223.84:22`
 
-Observed result:
+Initial attempt, GitHub-hosted Ubuntu runner in `centralus`:
 
 ```text
 HHS_PRODUCTION_SSH_TCP_REACHABLE=0
 error=TimeoutError:timed out
 ```
 
-No SSH banner was received within 15 seconds. Host-key discovery was not attempted.
+A targeted rerun of only the failed reachability job was executed at `2026-09-08T11:48Z`. The rerun used a different GitHub-hosted runner region (`eastus`) and reproduced the same terminal result:
+
+```text
+HHS_PRODUCTION_SSH_TCP_REACHABLE=0 host=137.184.223.84 error=TimeoutError:timed out
+```
+
+No SSH banner was received within 15 seconds on either attempt. Host-key discovery was not attempted. The reproduction across two runner regions makes a transient single-runner routing defect unlikely and confirms that TCP/22 remains externally blocked/unreachable at checkpoint time.
 
 Therefore the current production delivery has **two independent external prerequisites**:
 
@@ -108,11 +114,12 @@ If the retry fails after connectivity is restored, repair only the newly impacte
 
 ## Merge state
 
-- Recovery workflow changes: not merged.
+- Recovery workflow changes: committed on the recovery branch and intentionally not merged.
 - Production exact-main promotion: not completed.
 - Public HTTPS exact-main verification: not completed.
 - Main intentionally unchanged at `73652c122ffff6a8b9bde9de00020610964d704c`.
+- A pull request may be opened against `main`, but it must remain unmerged until exact-main production closure because merging would advance `origin/main` and invalidate the guarded target-SHA equality.
 
 ## Restart instruction
 
-Resume from this branch and record. Do not reconstruct the failure from conversational context. Use the recorded workflow runs, exact SHA, and branch state as the authoritative recovery receipt.
+Resume from this branch and record. Do not reconstruct the failure from conversational context. Use the recorded workflow runs, exact SHA, branch state, and the latest TCP/22 diagnostic attempt as the authoritative recovery receipt.
