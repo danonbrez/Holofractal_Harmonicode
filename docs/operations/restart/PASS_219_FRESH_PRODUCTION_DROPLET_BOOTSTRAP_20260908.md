@@ -59,6 +59,31 @@ HHS_PRODUCTION_HOST_KEY_CANDIDATE_USE_FOR_DEPLOYMENT=0
 
 No observed network key is accepted automatically.
 
+### Replacement-host reachability receipt
+
+GitHub Actions run `34267887235`, job `102201765150`, executed from a `centralus` Ubuntu runner after the replacement droplet became active.
+
+Observed network state:
+
+```text
+HHS_PRODUCTION_SSH_BANNER_VALID=1 banner=SSH-2.0-OpenSSH_9.6p1 Ubuntu-3ubuntu13.16
+HHS_PRODUCTION_TCP_22=reachable
+HHS_PRODUCTION_TCP_80=unreachable detail=ConnectionRefusedError:[Errno 111] Connection refused
+HHS_PRODUCTION_TCP_443=unreachable detail=ConnectionRefusedError:[Errno 111] Connection refused
+HHS_PRODUCTION_TCP_8080=unreachable detail=ConnectionRefusedError:[Errno 111] Connection refused
+```
+
+This closes the former all-port network outage: the replacement host is publicly reachable and SSH is listening. Ports 80, 443, and 8080 are refused rather than timed out because nginx and the HHS production service have not yet been installed on the fresh Ubuntu host.
+
+The diagnostic observed, but did not trust, this Ed25519 host-key candidate:
+
+```text
+165.227.220.193 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA1Nj/yZ1JtFnjy7I5ORTZcLJ18dk4BgcD8W4+FfecU1
+SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+```
+
+The HTTPS probe failed with curl exit `7`, which is expected before the public web boundary exists. No production application deployment has occurred yet.
+
 ## Fresh-host semantic difference
 
 The existing exact-main workflow was designed for an already-installed host. Its remote path assumes all of the following already exist:
@@ -86,7 +111,7 @@ Host-local provider credentials remain secrets and must not be committed. The Pa
 
 The fresh droplet has a new SSH host identity. The destroyed host's `known_hosts` value must not be reused.
 
-Before GitHub deployment authority is enabled, obtain the new host's Ed25519 public host key through an authenticated administrative path tied to droplet `598826630` (preferably the DigitalOcean web console), verify its fingerprint, and then pin the resulting `known_hosts` entry for `165.227.220.193`.
+Before GitHub deployment authority is enabled, obtain the new host's Ed25519 public host key through an authenticated administrative path tied to droplet `598826630` (preferably the DigitalOcean web console), verify its fingerprint against the observed candidate above, and then pin the resulting `known_hosts` entry for `165.227.220.193`.
 
 The deployment path must continue to use:
 
@@ -110,8 +135,8 @@ until this exact payload has been initialized and publicly verified on the repla
 
 ## Exact resumable next action
 
-1. Verify TCP/22 and the SSH banner for `165.227.220.193` from GitHub-hosted runners.
-2. Obtain and verify the new droplet Ed25519 host key through the DigitalOcean console and pin it for deployment.
+1. Through the authenticated DigitalOcean web console for droplet `598826630`, run `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub -E sha256` and require the result to equal `SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc`; also capture `cat /etc/ssh/ssh_host_ed25519_key.pub`.
+2. Pin the verified Ed25519 key for `165.227.220.193` as production deployment trust material.
 3. Add a recovery-branch-only fresh-host bootstrap workflow or bootstrap path that:
    - installs Ubuntu host prerequisites;
    - creates the `hhs` service account and protected state roots;
@@ -128,6 +153,6 @@ until this exact payload has been initialized and publicly verified on the repla
 
 ## Terminal state at this checkpoint
 
-**IN PROGRESS — replacement infrastructure exists and is active; production software is not yet initialized.**
+**IN PROGRESS — replacement infrastructure exists, is active, and is SSH-reachable; production software is not yet initialized.**
 
 No claim is made that `73652c12` is in production yet.
