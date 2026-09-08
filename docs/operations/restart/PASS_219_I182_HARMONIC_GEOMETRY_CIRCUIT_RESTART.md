@@ -43,12 +43,14 @@ Frozen Python evidence:
 - artifact: `10041120811`
 - artifact digest: `sha256:edbf6f8290f5593714f2201d2a91f9cd108150094ebdab727e6dbd985ea646f9`
 
-## I182 native C/C++ membrane — implemented, repository CI pending
+## I182 native C/C++ membrane — implemented and repository-validated
 
-Native source checkpoint:
+Native source lineage:
 
 - parent restart checkpoint: `9f884171da22a8227e4d8b0e300f40a3a6920afa`
 - native source commit: `c4f622eb77332c26549dad24721e8db801865086`
+- native workflow/contract checkpoint: `642ce27e19c894eb18f82ae8da6e76a2c5cfb857`
+- aggregate compiler-policy repair: `f73e48bac7ab058a908895deca541ea854db9589`
 
 Implemented native surfaces:
 
@@ -75,7 +77,9 @@ Authority remains additive and singleton:
 - capability-binding authority: `0`;
 - rendering authority: `0`.
 
-Isolated pre-publication validation completed before repository publication:
+## Validation evidence
+
+### Isolated pre-publication validation
 
 ```text
 gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic ... native unit + C test
@@ -85,28 +89,53 @@ g++ -O2 -std=c++20 -Wall -Wextra -Werror -pedantic ... native unit + C++ test
 PASS219 I182 native HARMONIC geometry membrane C++ wrapper: PASS
 ```
 
-This isolated check proves syntax and the new unit's direct invariants only. It is not substituted for repository aggregate-ABI CI evidence.
+This isolated check established syntax and direct native invariants before repository publication.
 
-## Dedicated dependency-scoped repository gate
+### Initial aggregate CI failure — diagnosed and repaired forward
 
-The updated I182 workflow must validate at its exact branch head:
+- failed run: `34242219082`
+- failed job: `102115010640`
+- workflow head: `642ce27e19c894eb18f82ae8da6e76a2c5cfb857`
+- failing step: `Compile native exact ABI aggregate`
+- failure cause: the workflow applied `-pedantic -Werror` to the entire inherited aggregate, while inherited `hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc` intentionally uses GCC `__int128`; GCC therefore rejected the inherited extension as a pedantic error before the I182 native tests ran.
 
-```text
-python -m json.tool contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json
-python -m py_compile hhs_runtime/pass219/harmonic_geometry_circuit_i182.py
-pytest -q tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py
-gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c
-gcc ... test_pass219_i182_harmonic_geometry_membrane_1_0.c ...
-g++ -std=c++20 ... test_pass219_i182_harmonic_geometry_membrane_1_0.cpp ...
-```
+Repair-forward scope was workflow-only. No validated I182 geometry algebra or inherited Pass168 implementation was changed. The repaired gate now:
 
-The workflow also rejects native production use of noncanonical scalar type tokens and authoritative final vertex-table tokens, then emits both Python and native membrane evidence in the bounded I182 artifact.
+1. compiles the new I182 native unit itself with strict C11 `-pedantic -Werror`;
+2. compiles the inherited aggregate with repository-compatible `-std=c11 -Wall -Wextra -Werror`, preserving its intentional GNU `__int128` extension;
+3. keeps strict C11/C++20 warning gates on the I182 C and C++ tests.
+
+### Exact-head repaired repository gate — green
+
+- repair/source head: `f73e48bac7ab058a908895deca541ea854db9589`
+- dedicated workflow run: `34242503421`
+- job: `102115978546`
+- job name: `exact-geometry-constraint-gate`
+- conclusion: `success`
+- artifact: `10062570000`
+- artifact name: `pass219-i182-harmonic-geometry-witness`
+- artifact digest: `sha256:407436ef3086fa04ebe402f5314e8c183ba0f4d75df1732f4804188e43d412f7`
+
+All bounded steps completed successfully at the exact repair/source head:
+
+- JSON contract validation;
+- Python exact geometry kernel compilation;
+- Python no-float/no-authoritative-final-vertex-table source gate;
+- native exact-arithmetic/no-authoritative-final-vertex-table source gate;
+- pedantic C11 compilation of the I182 native membrane unit;
+- inherited exact ABI aggregate compilation;
+- native C and C++ membrane test compilation;
+- dependency-scoped I182 Python tests;
+- native C ABI and C++20 wrapper runtime gates;
+- deterministic geometry witness emission;
+- artifact upload.
+
+The native I182 membrane is therefore implemented and validated at exact source head `f73e48bac7ab058a908895deca541ea854db9589`.
 
 ## Remaining nonterminal scope
 
 Not yet authorized as complete:
 
-- exact-head native repository workflow evidence and artifact receipt;
 - public operation/schema registration;
 - capability binding;
 - public API exposure;
@@ -118,8 +147,8 @@ Not yet authorized as complete:
 - branch PR/merge;
 - exact-main post-merge workflow and artifact verification.
 
-This checkpoint freezes implemented native source while preserving the previously validated Python evidence. It does not claim terminal geometry-layer closure.
+This documentation checkpoint freezes the green native membrane evidence while preserving the previously validated Python evidence. It does not claim terminal geometry-layer closure and does not mint any additional runtime authority.
 
 ## Exact restart action
 
-Observe the dedicated `Pass 219 I182 HARMONIC Geometry Circuit` workflow for the branch head containing this workflow configuration. If the aggregate C11 compile, C ABI test, C++20 wrapper test, Python gate, or artifact emission fails, repair only the impacted I182/native aggregate surface and rerun the bounded gate. When green, update this restart record with the exact workflow head, run/job IDs, artifact ID/digest, and commit a documentation-only restart checkpoint before proceeding to public operation/schema registration. Do not rerun unrelated historical pass suites unless an impacted dependency requires it.
+Resume from this documentation checkpoint on `agent/pass219-i182-harmonic-geometry-circuit`. Treat `f73e48bac7ab058a908895deca541ea854db9589` as the exact validated native source head and workflow run `34242503421` / artifact `10062570000` as the frozen native evidence. Proceed next to bounded public operation/schema registration only. Preserve singleton VM81 authority and keep registration non-mutating: it must not itself mint VM81, Hash72, Hash216 persistence, C++ mutation, rendering, or capability authority. Run only dependency-scoped registration/geometry gates and create another repository-visible restart checkpoint before capability binding or live VM81 admission work.
