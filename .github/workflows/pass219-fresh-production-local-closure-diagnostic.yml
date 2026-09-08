@@ -40,10 +40,9 @@ jobs:
 
           path = Path('.github/workflows/pass219-fresh-production-local-closure-diagnostic.yml')
           text = path.read_text(encoding='utf-8')
-          marker = "<<'REMOTE'\n"
-          if marker not in text:
+          remotes = re.findall(r"<<'REMOTE'\n(.*?)\n\s*REMOTE", text, flags=re.S)
+          if not remotes:
               raise SystemExit('remote diagnostic block missing')
-          remote = text.split(marker, 1)[1].split('\n          REMOTE', 1)[0]
           forbidden = [
               r'\bsystemctl\s+(?:start|stop|restart|enable|disable|reset-failed)\b',
               r'\bchmod\b',
@@ -52,10 +51,18 @@ jobs:
               r'\bapt-get\b',
               r'\bgit\s+(?:checkout|reset|clean|pull|fetch)\b',
               r'\bsqlite3\b.*\b(?:INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b',
+              r'\brm\b',
+              r'\bmv\b',
+              r'\bcp\b',
           ]
-          violations = [pattern for pattern in forbidden if re.search(pattern, remote, flags=re.I)]
+          violations = []
+          for index, remote in enumerate(remotes, start=1):
+              for pattern in forbidden:
+                  if re.search(pattern, remote, flags=re.I):
+                      violations.append(f'block={index}:{pattern}')
           if violations:
               raise SystemExit('remote diagnostic contains mutation-capable command: ' + ', '.join(violations))
+          print(f'HHS_LOCAL_CLOSURE_REMOTE_READ_ONLY_BLOCKS={len(remotes)}')
           print('HHS_LOCAL_CLOSURE_REMOTE_READ_ONLY_CONTRACT=PASS')
           PY
 
@@ -74,6 +81,41 @@ jobs:
           actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
           test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
           ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Inventory untracked .hhs state read-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "bash -s" <<'REMOTE'
+          set -euo pipefail
+          root=/opt/hhs/app/.hhs
+          if [[ ! -d "$root" ]]; then
+            echo 'HHS_LOCAL_CLOSURE_HHS_ROOT=ABSENT'
+            exit 0
+          fi
+          echo 'HHS_LOCAL_CLOSURE_HHS_ROOT=PRESENT'
+          printf 'HHS_LOCAL_CLOSURE_HHS_ROOT_META='
+          stat -c '%A|%a|%U:%G|%s|%n' "$root"
+          count=$(find "$root" -xdev -maxdepth 6 -printf '.' | wc -c)
+          printf 'HHS_LOCAL_CLOSURE_HHS_ENTRY_COUNT_MAXDEPTH6=%s\n' "$count"
+          find "$root" -xdev -maxdepth 6 \
+            -printf 'HHS_LOCAL_CLOSURE_HHS_ENTRY=%y|%M|%m|%u:%g|%s|%p|%l\n' \
+            | LC_ALL=C sort \
+            | head -n 500
+          if (( count > 500 )); then
+            echo 'HHS_LOCAL_CLOSURE_HHS_INVENTORY_TRUNCATED=1'
+          else
+            echo 'HHS_LOCAL_CLOSURE_HHS_INVENTORY_TRUNCATED=0'
+          fi
+          REMOTE
 
       - name: Report every local closure predicate
         shell: bash
