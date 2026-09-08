@@ -1,0 +1,218 @@
+name: Pass219 Fresh Production Assistant Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-assistant-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_SHA: 73652c122ffff6a8b9bde9de00020610964d704c
+  HHS_PRODUCTION_HOST: 165.227.220.193
+  HHS_PRODUCTION_USER: root
+  HHS_EXPECTED_HOST_FINGERPRINT: SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+
+jobs:
+  diagnose-production-assistant:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out diagnostic authority
+        uses: actions/checkout@v4
+
+      - name: Validate read-only diagnostic contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow=.github/workflows/pass219-fresh-production-assistant-diagnostic.yml
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          text = Path('.github/workflows/pass219-fresh-production-assistant-diagnostic.yml').read_text(encoding='utf-8')
+          remotes = re.findall(r"<<'REMOTE'\n(.*?)\n\s*REMOTE", text, flags=re.S)
+          if len(remotes) != 1:
+              raise SystemExit(f'expected exactly one remote diagnostic block, got {len(remotes)}')
+          forbidden = [
+              r'\bsystemctl\s+(?:start|stop|restart|enable|disable|reset-failed)\b',
+              r'\bchmod\b', r'\bchown\b', r'\binstall\b', r'\bmkdir\b',
+              r'\brm\b', r'\bmv\b', r'\bcp\b', r'\btouch\b', r'\btee\b',
+              r'\bgit\s+(?:checkout|reset|clean|pull|fetch|add|commit)\b',
+              r'\bsqlite3\b.*\b(?:INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|VACUUM)\b',
+              r'install_production_language_assets\.py',
+              r'/api/assistant/(?:status|health|chat|threads)',
+          ]
+          violations = [pattern for pattern in forbidden if re.search(pattern, remotes[0], flags=re.I)]
+          if violations:
+              raise SystemExit('remote diagnostic is not read-only: ' + ', '.join(violations))
+          print('HHS_ASSISTANT_DIAGNOSTIC_REMOTE_READ_ONLY_CONTRACT=PASS')
+          PY
+          weak_host='StrictHostKeyChecking''=no'
+          weak_scan='ssh-key''scan'
+          ! grep -Fq "$weak_host" "$workflow"
+          ! grep -Fq "$weak_scan" "$workflow"
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 deployment/digitalocean/known_hosts/hhs-production-01.ed25519 "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Diagnose assistant authority without importing provider runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -euo pipefail
+
+          test "$(git -C /opt/hhs/app rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app rev-parse origin/main)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app branch --show-current)" = main
+          test -z "$(git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal)"
+          echo 'HHS_ASSISTANT_DIAGNOSTIC_EXACT_CLEAN_PRODUCTION=PASS'
+
+          status=/var/lib/hhs/language-assets/production_language_assets_status.json
+          test -s "$status"
+          python3 - "$status" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          payload = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          assert payload.get('schema') == 'HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1'
+
+          def emit(key, value):
+              if value is None:
+                  value = 'null'
+              elif isinstance(value, bool):
+                  value = str(value).lower()
+              elif isinstance(value, (dict, list)):
+                  value = json.dumps(value, sort_keys=True, separators=(',', ':'))
+              print(f'HHS_ASSISTANT_EVIDENCE_{key}={value}')
+
+          emit('ASSISTANT_READY', payload.get('assistant_ready'))
+          emit('SELECTED_PROVIDER', payload.get('selected_provider'))
+
+          gemma = payload.get('gemma') or {}
+          emit('GEMMA_READY', gemma.get('ready'))
+          emit('GEMMA_MODEL', gemma.get('configured_model_id'))
+          emit('GEMMA_REGISTERED_MODEL_COUNT', len(gemma.get('registered_model_ids') or []))
+          emit('GEMMA_ERROR', gemma.get('error'))
+
+          cli = payload.get('litert_lm_cli') or {}
+          emit('LITERT_CLI_INSTALLED', cli.get('installed'))
+          emit('LITERT_CLI_EXECUTABLE', cli.get('executable'))
+          emit('LITERT_CLI_ERROR', cli.get('error'))
+
+          word = payload.get('word2vec') or {}
+          after = word.get('after') or {}
+          emit('WORD2VEC_READY', word.get('ready'))
+          emit('WORD2VEC_MANIFEST_CONFIGURED', word.get('manifest_configured'))
+          emit('WORD2VEC_INSTALL_ATTEMPTED', word.get('install_attempted'))
+          emit('WORD2VEC_ACTIVE_MODEL_ID', after.get('active_model_id'))
+          emit('WORD2VEC_OFFLINE_READY', after.get('offline_ready'))
+          emit('WORD2VEC_INSTALLED_MODELS', after.get('installed_models'))
+
+          native = payload.get('native_hhs') or {}
+          emit('NATIVE_READY', native.get('ready'))
+          emit('NATIVE_SEMANTIC_MEMBRANE_READY', native.get('semantic_membrane_ready'))
+          emit('NATIVE_BOUNDED_REASONER_READY', native.get('bounded_reasoner_ready'))
+          emit('NATIVE_WORD2VEC_REQUIRED', native.get('word2vec_required'))
+          emit('NATIVE_WORD2VEC_READY', native.get('word2vec_ready'))
+          emit('NATIVE_ERRORS', native.get('errors'))
+          PY
+
+          # Inspect only specific non-secret production configuration keys.
+          unit=/etc/systemd/system/hhs.service
+          envfile=/etc/hhs/pass196.env
+          for key in \
+            HHS_PASS166_STORAGE_DIR \
+            HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC \
+            HHS_LITERT_LM_BASE_URL \
+            HHS_LITERT_LM_MODEL \
+            HHS_LITERT_LM_BIN \
+            HHS_WORD2VEC_MANIFEST \
+            HHS_WORD2VEC_MANIFEST_JSON \
+            HHS_WORD2VEC_MODEL_ID \
+            HHS_WORD2VEC_ACCEPT_LICENSE; do
+            if grep -Eq "^[[:space:]]*Environment=${key}=" "$unit" 2>/dev/null || \
+               grep -Eq "^[[:space:]]*(export[[:space:]]+)?${key}=" "$envfile" 2>/dev/null; then
+              printf 'HHS_ASSISTANT_CONFIG_%s=PRESENT\n' "$key"
+            else
+              printf 'HHS_ASSISTANT_CONFIG_%s=ABSENT\n' "$key"
+            fi
+          done
+
+          if ss -H -ltn 'sport = :9379' | grep -q .; then
+            echo 'HHS_ASSISTANT_LITERT_PORT_9379=LISTENING'
+          else
+            echo 'HHS_ASSISTANT_LITERT_PORT_9379=NOT_LISTENING'
+          fi
+
+          if command -v litert-lm >/dev/null 2>&1; then
+            echo 'HHS_ASSISTANT_LITERT_CLI_PATH=SYSTEM_PATH_PRESENT'
+          elif test -x /opt/hhs/venv/bin/litert-lm; then
+            echo 'HHS_ASSISTANT_LITERT_CLI_PATH=VENV_PRESENT'
+          else
+            echo 'HHS_ASSISTANT_LITERT_CLI_PATH=ABSENT'
+          fi
+
+          for candidate in \
+            /var/lib/hhs/pass166 \
+            /root/.hhs/pass166 \
+            /opt/hhs/app/.hhs/pass166; do
+            label=$(printf '%s' "$candidate" | sed 's#^/##; s#[^A-Za-z0-9]#_#g' | tr '[:lower:]' '[:upper:]')
+            if test -d "$candidate"; then
+              printf 'HHS_ASSISTANT_STATE_%s=PRESENT\n' "$label"
+              if test -f "$candidate/models/word2vec/registry.json"; then
+                printf 'HHS_ASSISTANT_STATE_%s_REGISTRY=PRESENT\n' "$label"
+              else
+                printf 'HHS_ASSISTANT_STATE_%s_REGISTRY=ABSENT\n' "$label"
+              fi
+              if test -f "$candidate/models/word2vec/active/active.json"; then
+                printf 'HHS_ASSISTANT_STATE_%s_ACTIVE=PRESENT\n' "$label"
+                python3 - "$candidate/models/word2vec/active/active.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          value = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8')).get('model_id')
+          print('HHS_ASSISTANT_STATE_ACTIVE_MODEL_ID=' + str(value))
+          PY
+              else
+                printf 'HHS_ASSISTANT_STATE_%s_ACTIVE=ABSENT\n' "$label"
+              fi
+            else
+              printf 'HHS_ASSISTANT_STATE_%s=ABSENT\n' "$label"
+            fi
+          done
+
+          # Confirm the diagnostic itself did not reintroduce source-tree state.
+          test -z "$(git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal)"
+          test ! -e /opt/hhs/app/.hhs
+          echo 'HHS_ASSISTANT_DIAGNOSTIC_NO_PRODUCTION_MUTATION=PASS'
+          REMOTE
