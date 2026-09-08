@@ -1,0 +1,41 @@
+name: Pass219 Exact Main SSH Reachability Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/pass219-exact-main-73652c12-ssh-pinning-recovery-20260908
+    paths:
+      - '.github/workflows/pass219-exact-main-ssh-reachability-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ssh-reachability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '137.184.223.84' }}
+    steps:
+      - name: Verify TCP/22 and SSH banner without host-key discovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          import socket
+          host = os.environ['HHS_PRODUCTION_HOST']
+          try:
+              with socket.create_connection((host, 22), timeout=15) as sock:
+                  sock.settimeout(15)
+                  banner = sock.recv(512)
+          except Exception as exc:
+              raise SystemExit(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=0 host={host} error={type(exc).__name__}:{exc}')
+          if not banner.startswith(b'SSH-'):
+              raise SystemExit(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=1 SSH_BANNER_VALID=0 host={host} banner={banner[:80]!r}')
+          safe_banner = banner.decode('ascii', errors='replace').strip()
+          print(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=1 host={host}')
+          print(f'HHS_PRODUCTION_SSH_BANNER_VALID=1 banner={safe_banner}')
+          print('HHS_PRODUCTION_HOST_KEY_DISCOVERY_ATTEMPTED=0')
+          PY
