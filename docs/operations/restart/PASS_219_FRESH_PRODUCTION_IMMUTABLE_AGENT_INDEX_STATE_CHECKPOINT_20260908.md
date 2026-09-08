@@ -1,4 +1,4 @@
-# Pass 219 Fresh Production Local-Closure Checkpoint — 2026-09-08
+# Pass 219 Fresh Production Language-Status Drift Checkpoint — 2026-09-08
 
 ## Restart authority
 
@@ -7,99 +7,109 @@
 - Exact production source authority: `main@73652c122ffff6a8b9bde9de00020610964d704c`
 - Immutable-agent state repair: `dd1f9727f745a780865dbba57963f99b99ec8232`
 - Successful-bootstrap checkpoint: `5bd389fe05e6f94580d5bcee4d23db90ae8a6b06`
-- Read-only diagnostic implementation: `6bdd36307c498cc9117908d0ff7d9f410758b2ba`
+- Named local diagnostic: `6bdd36307c498cc9117908d0ff7d9f410758b2ba`
+- `.hhs` inventory diagnostic: `24173b29e5251451ea26e45889e1d0098ad1c814`
 - Production host: `hhs-production-01` / `165.227.220.193`
 - Production checkout: `/opt/hhs/app`
 - Service identity: `hhs:hhs`
 
 ## Frozen green state
 
-The fresh-host deployment has passed and frozen:
+The fresh-host deployment has passed and frozen: pinned SSH authority; exact production main hydration; Python and native C ABI; sealed Runtime OS activation; writable runtime-state isolation under `/var/lib/hhs`; immutable-agent SQLite integrity; exact-main bootstrap; guarded update installation; browser-trusted Let's Encrypt IP certificate issuance; nginx; certificate-renewal timer; healthy loopback API; and a valid exact-SHA `HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1`.
 
-1. pinned Ed25519 host identity and deployment-key authentication;
-2. exact production `main@73652c122ffff6a8b9bde9de00020610964d704c` hydration;
-3. Python environment and native C ABI build;
-4. Runtime OS build/seal/transfer/stage/activation;
-5. runtime-certification, Storybook, data-root and immutable-agent writable-state isolation under `/var/lib/hhs`;
-6. immutable-agent SQLite ownership and `PRAGMA quick_check`;
-7. exact Runtime OS release traversal/readability;
-8. resumed exact-main fresh-host bootstrap;
-9. guarded continuous deployment installation;
-10. Let's Encrypt browser-trusted IP certificate issuance for `165.227.220.193`;
-11. nginx configuration/enablement;
-12. `hhs-certbot-renew.timer` enablement;
-13. valid `HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1` with outcome `INITIALIZED`, exact repository SHA, and `rollback_receipt_fabricated=false`.
+Do not rerun those mutating stages without an impacted-surface reason.
 
-## Named local-closure diagnostic
+## Exact local-closure failure
 
-Read-only workflow:
-
-- Workflow: `Pass219 Fresh Production Local Closure Diagnostic`
-- Run: `34285135120`
-- Job: `102258841791`
-- Commit: `6bdd36307c498cc9117908d0ff7d9f410758b2ba`
-
-The diagnostic remote block passed its no-mutation self-check and used the already pinned SSH identity. Results:
+Read-only workflow run `34285135120`, job `102258841791`, proved that every local predicate is green except worktree cleanliness:
 
 ```text
-HHS_LOCAL_CLOSURE_HEAD_EXACT=PASS
-HHS_LOCAL_CLOSURE_ORIGIN_MAIN_EXACT=PASS
-HHS_LOCAL_CLOSURE_BRANCH_MAIN=PASS
-HHS_LOCAL_CLOSURE_WORKTREE_ENTRY=?? .hhs/
-HHS_LOCAL_CLOSURE_WORKTREE_CLEAN=FAIL:DIRTY
-HHS_LOCAL_CLOSURE_UNIT_HHS_SERVICE=PASS
-HHS_LOCAL_CLOSURE_UNIT_HHS_GUARDED_UPDATE_TIMER=PASS
-HHS_LOCAL_CLOSURE_UNIT_NGINX=PASS
-HHS_LOCAL_CLOSURE_UNIT_HHS_CERTBOT_RENEW_TIMER=PASS
-HHS_LOCAL_CLOSURE_LOOPBACK_SYSTEM_STATUS=PASS
-HHS_LOCAL_CLOSURE_RECEIPT_SCHEMA=PASS
-HHS_LOCAL_CLOSURE_RECEIPT_OUTCOME=PASS
-HHS_LOCAL_CLOSURE_RECEIPT_REPOSITORY_SHA=PASS
-HHS_LOCAL_CLOSURE_RECEIPT_ROLLBACK_RECEIPT_FABRICATED=PASS
-HHS_LOCAL_CLOSURE_INITIALIZATION_RECEIPT=PASS
-HHS_LOCAL_CLOSURE_FAILURE_COUNT=1
+HEAD_EXACT=PASS
+ORIGIN_MAIN_EXACT=PASS
+BRANCH_MAIN=PASS
+WORKTREE_CLEAN=FAIL:DIRTY
+UNIT_HHS_SERVICE=PASS
+UNIT_HHS_GUARDED_UPDATE_TIMER=PASS
+UNIT_NGINX=PASS
+UNIT_HHS_CERTBOT_RENEW_TIMER=PASS
+LOOPBACK_SYSTEM_STATUS=PASS
+INITIALIZATION_RECEIPT=PASS
+FAILURE_COUNT=1
 ```
 
-This identifies the exact predicate that caused the prior quiet local-closure failure: the production source checkout contains one untracked top-level runtime-state directory:
+The only Git drift is:
 
 ```text
-/opt/hhs/app/.hhs/
+?? .hhs/
 ```
 
-All other local authority, service, loopback, and initialization-receipt predicates are green.
+## Read-only `.hhs` inventory
 
-## Current blocker
+Workflow run `34285285179`, job `102259319026`, used two remote blocks that passed the workflow's no-mutation contract. The complete inventory is only two filesystem entries:
 
-`PRODUCTION_WORKTREE_RUNTIME_STATE_DRIFT / .hhs/`
+```text
+/opt/hhs/app/.hhs
+  type: directory
+  mode: 0755
+  owner: root:root
 
-The repository contains multiple runtime components whose local-development defaults use `.hhs/...` when their production environment override is absent. Therefore `.hhs/` must not be deleted blindly. Its contents and owning runtime surface must be identified before mutation.
+/opt/hhs/app/.hhs/production_language_assets_status.json
+  type: regular file
+  mode: 0644
+  owner: root:root
+  size: 3106 bytes
+```
 
-## Invariant
+No additional entries exist through depth 6 and the inventory was not truncated.
 
-- Do not make `/opt/hhs/app` generally writable.
-- Do not ignore `.hhs/` via `.gitignore` merely to make the gate pass.
-- Do not delete `.hhs/` before identifying whether it contains durable runtime state/evidence.
-- Do not rerun already-green bootstrap/state-repair work.
-- Production writable state belongs under `/var/lib/hhs`; any source-tree runtime state must be relocated through the component's canonical environment/configuration surface where available.
+## Canonical source owner
+
+Exact-source file:
+
+`tools/install_production_language_assets.py`
+
+at `73652c122ffff6a8b9bde9de00020610964d704c` defines:
+
+```python
+STATUS_PATH = ROOT / ".hhs" / "production_language_assets_status.json"
+```
+
+and, after building `HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1`, executes:
+
+```python
+STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
+STATUS_PATH.write_text(...)
+```
+
+The fresh-host bootstrap invokes that tool as root in `probe_language_authority()`, then `write_initialization_receipt()` reads the same `.hhs/production_language_assets_status.json` to derive `assistant_ready` and `language_status_schema`. The current receipt has already captured those values successfully.
+
+Therefore the sole production worktree drift is generated by the bootstrap's production-language diagnostic status artifact. It is not application source and there is no evidence of additional durable state beneath `.hhs`.
+
+## Current blocker classification
+
+`PRODUCTION_LANGUAGE_STATUS_ARTIFACT_IN_SOURCE_TREE`
+
+## Repair invariant
+
+- Preserve the exact 3106-byte language-status artifact before source-tree cleanup.
+- Move deployment diagnostic state under `/var/lib/hhs`, not into tracked source.
+- Verify source and relocated artifact hashes match before deleting the source copy.
+- Remove only the proven single source artifact and then the empty `.hhs` directory; refuse cleanup if any unexpected entry appears.
+- Keep production `HEAD`, `origin/main`, and branch unchanged.
+- Recheck worktree cleanliness, service/timer state, loopback status, and initialization receipt after relocation.
+- Do not rerun the full bootstrap.
 
 ## Exact next action
 
-Use the pinned-SSH diagnostic workflow only, with no host mutation, to inventory `/opt/hhs/app/.hhs/`:
+Create a scoped pinned-SSH language-status relocation workflow that:
 
-- relative paths;
-- file types;
-- ownership and modes;
-- file sizes;
-- symlink targets if any.
+1. requires exact production SHA/branch and exactly `?? .hhs/` as pre-state;
+2. validates `.hhs` contains only `production_language_assets_status.json` and that its schema is `HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1`;
+3. preserves it at `/var/lib/hhs/language-assets/production_language_assets_status.json` with a hash-equality proof;
+4. removes only the verified source copy and now-empty `.hhs` directory;
+5. requires a clean production worktree and all previously-green local closure predicates;
+6. then performs a browser-trusted public HTTPS exact-main read-only check from the GitHub runner.
 
-Then map the resulting subpaths to repository-defined `.hhs` defaults/environment overrides. Checkpoint the exact owner/runtime surface before performing any relocation or cleanup.
-
-## Validation remaining
-
-- read-only `.hhs/` inventory and source-owner mapping;
-- scoped state relocation/cleanup if required;
-- clean-worktree local closure recheck;
-- browser-trusted public HTTPS exact-main verification;
-- production assistant authority verification.
+Only after those gates pass should production-assistant authority be evaluated.
 
 No production-completion claim is valid yet.
