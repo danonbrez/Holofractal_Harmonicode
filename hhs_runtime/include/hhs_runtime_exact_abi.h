@@ -71,6 +71,7 @@
 #include "hhs_pass219_hhcq_temporal_cubic_1_28.h"
 #include "hhs_pass219_hhcq_reciprocal_economy_1_29.h"
 #include "hhs_pass219_hhcq_prime_rational_expansion_1_30.h"
+#include "hhs_pass219_hhcq_8basis_equilibrium_parity_1_31.h"
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.h"
 #include "hhs_pass219_audio_security_transport_1_0.h"
 #include "hhs_pass219_global_raw5184_serialization_hydration_1_0.h"
