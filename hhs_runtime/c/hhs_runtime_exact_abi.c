@@ -1,4 +1,4 @@
-/* Additive exact ABI aggregate through Pass 180 inherited application-factory binding, preserving current-main global latency and H36 policy surfaces. */
+/* Additive exact ABI aggregate through Pass 219 I182 native HARMONIC geometry membrane, preserving inherited singleton VM81 authority and global latency/H36 policy surfaces. */
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
@@ -83,5 +83,6 @@
 #include "hhs_pass219_harmonic36_branch_reference_cache_1_17.inc"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.inc"
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.inc"
+#include "hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc"
 #include "hhs_pass168_parameter_circuit_1_0.inc"
 #include "hhs_pass168_comparator_1_0.inc"
