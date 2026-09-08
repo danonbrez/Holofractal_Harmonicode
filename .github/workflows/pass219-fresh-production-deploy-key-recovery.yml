@@ -1,0 +1,36 @@
+name: Pass219 Fresh Production Deploy Key Recovery
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-deploy-key-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  derive-public-key:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Derive safe public deployment identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          ssh-keygen -y -f "$HOME/.ssh/hhs-production" > /tmp/hhs-production.pub
+          chmod 0644 /tmp/hhs-production.pub
+          printf 'HHS_GITHUB_DEPLOY_PUBLIC_KEY=%s\n' "$(cat /tmp/hhs-production.pub)"
+          printf 'HHS_GITHUB_DEPLOY_PUBLIC_KEY_FINGERPRINT='
+          ssh-keygen -lf /tmp/hhs-production.pub -E sha256 | awk '{print $2}'
