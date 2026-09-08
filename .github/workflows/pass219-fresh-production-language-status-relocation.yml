@@ -1,0 +1,121 @@
+name: Pass219 Fresh Production Language Status Relocation
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-language-status-relocation.yml'
+      - 'deployment/digitalocean/fresh_host_language_status_relocation.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_SHA: 73652c122ffff6a8b9bde9de00020610964d704c
+  HHS_PRODUCTION_HOST: 165.227.220.193
+  HHS_PRODUCTION_USER: root
+  HHS_EXPECTED_HOST_FINGERPRINT: SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+
+jobs:
+  relocate-and-close-local:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out scoped repair authority
+        uses: actions/checkout@v4
+
+      - name: Validate scoped repair scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n deployment/digitalocean/fresh_host_language_status_relocation.sh
+          ! grep -q 'StrictHostKeyChecking=no' .github/workflows/pass219-fresh-production-language-status-relocation.yml
+          ! grep -q 'ssh-keyscan' .github/workflows/pass219-fresh-production-language-status-relocation.yml
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 deployment/digitalocean/known_hosts/hhs-production-01.ed25519 "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Relocate only verified language status artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" \
+            < deployment/digitalocean/fresh_host_language_status_relocation.sh
+
+      - name: Verify browser-trusted public HTTPS exact-main surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --connect-timeout 10 --max-time 30 \
+            "https://$HHS_PRODUCTION_HOST/api/system/status" \
+            >/tmp/hhs-public-system-status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/hhs-public-system-status.json').read_text(encoding='utf-8'))
+          if not isinstance(payload, dict):
+              raise SystemExit('public system status is not a JSON object')
+          if payload.get('ok') is False:
+              raise SystemExit('public system status reports ok=false')
+          print('HHS_PUBLIC_HTTPS_SYSTEM_STATUS_JSON=PASS')
+          PY
+          curl -fsS --connect-timeout 10 --max-time 30 \
+            "https://$HHS_PRODUCTION_HOST/" \
+            >/tmp/hhs-public-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-root.html
+          echo 'HHS_PUBLIC_HTTPS_RUNTIME_OS_ROOT=PASS'
+          echo 'HHS_BROWSER_TRUSTED_PUBLIC_HTTPS_EXACT_MAIN=PASS'
+
+      - name: Verify exact local post-state read-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            -o ConnectTimeout=15 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -euo pipefail
+          test "$(git -C /opt/hhs/app rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app rev-parse origin/main)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app branch --show-current)" = main
+          test -z "$(git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal)"
+          test ! -e /opt/hhs/app/.hhs
+          test -s /var/lib/hhs/language-assets/production_language_assets_status.json
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-guarded-update.timer
+          systemctl is-active --quiet nginx
+          systemctl is-active --quiet hhs-certbot-renew.timer
+          curl -fsS --connect-timeout 5 --max-time 15 http://127.0.0.1:8080/api/system/status >/dev/null
+          echo 'HHS_FRESH_PRODUCTION_LOCAL_CLOSURE_VERIFIED=1'
+          REMOTE
