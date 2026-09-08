@@ -25,9 +25,9 @@ int main(void) {
     assert(hhs_exact_pass219_number_theory_selfcheck());
     assert(hhs_exact_pass219_number_theory_source_fnv1a64() ==
            HHS_EXACT_PASS219_NUMBER_THEORY_SOURCE_FNV1A64);
-    assert(strstr(equation_set, "P^2-pq=1") != NULL);
-    assert(strstr(equation_set, "AB=P^4") != NULL);
-    assert(strstr(equation_set, "b^6c^4") != NULL);
+    assert(strstr(equation_set, "P²-pq=1") != NULL);
+    assert(strstr(equation_set, "AB=P⁴") != NULL);
+    assert(strstr(equation_set, "b⁶c⁴") != NULL);
     assert(strstr(equation_set, "x+y+z+w+xy+yx+zw+wz") != NULL);
     assert(strstr(equation_set, "NcalcMatrixPower") != NULL);
 

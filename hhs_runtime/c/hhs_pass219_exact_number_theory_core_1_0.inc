@@ -12,19 +12,18 @@
  * a^2,b^2,c^2,d^2 bindings and never replace the source graph.
  */
 static const char HHS219_EXACT_NUMBER_THEORY_EQUATION_SET[] =
-    "P^2/{(t^3-t=(P^3-P/(P^2-pq)=(t^3-t)/Delta=P^2(MOD)(pq))=m^2-m)-(({{"
-    "b^4,c^4,c^2-u^(b^6c^4)},{c^2,(((b^2)*(c^2)-(a^2))=((a^2+b^2==c^2)+("
-    "a^2+a^2==b^2))/(c^2-b^2)==d^2/a^2==((b^((x*y)+(z*w))+c^((x*y)+(z*w"
-    ")))*I^(x^b^4+y^b^4+z^b^4+w^b^4))/(((x*y)*z)*w))/u^((s==(b^(2c^2)c^b"
-    "^4)^2)/((b^6c^4)P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*("
-    "c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At"
-    "==Mod(f/u,((b^6c^4)*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+Delta)-P"
-    "^2)/(t^3-t)*u^72}\nDelta/P=Sqrt(pq+u^72)^x^2\nb^2P-(p+q)=x+y+z+w+xy+yx+"
-    "zw+wz\na^2=(NcalcMatrixPower((List(List(x,w,(y*x)),List((w*z),x+y+z+w,(z*w"
-    ")),List((x*y),z,y))/List(List(I,I^3,I^2),List(I^2,0,I^4),List(I^4,I,I^3"
-    "))),4))^b^4\nSqrt((A*B))*(A*B)/Sqrt((A*B))==A/B*B/A==((-x*y)^(((x+y^2)*"
-    "(y+x^2))/((x^2+y^2)^2*Sqrt((a*b)))))^x^2\nA,B are primes; AB=P^4; P^2-pq"
-    "=1";
+    "P^2/{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(({{b^4,c^4,c^2"
+    "-u^(b⁶c⁴)},{c^2,(((b^2)*(c^2)-(a^2))=((a^2+b^2==c^2)+(a^2+a^2==b^2))/("
+    "c^2-b^2)==d^2/a^2==((b^((x*y)+(z*w))+c^((x*y)+(z*w)))*I^(x^b^4+y^b^4+z"
+    "^b^4+w^b^4))/(((x*y)*z)*w))/u^((s==(b^(2c^2)c^b^4)^2)/((b⁶c⁴)P^2)),((b"
+    "^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c"
+    "^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,((b⁶c⁴)*(pq+xy)))/B"
+    "t==AB/P^2==Sqrt[AB])==(AB/(pq+∆)-P^2)/(t^3-t)*u^72} where ∆/P=√(pq+u⁷²"
+    ")^x² and b²P-(p+q)=x+y+z+w+xy+yx+zw+wz\n\na²=(NcalcMatrixPower((List(Lis"
+    "t(x,w,(y*x)),List((w*z),x+y+z+w,(z*w)),List((x*y),z,y))/List(List(I,I^"
+    "3,I^2),List(I^2,0,I^4),List(I^4,I,I^3))),4))^b⁴\n\n\nSqrt((A*B))*(A*B)/Sq"
+    "rt((A*B))==A/B*B/A==((-x*y)^(((x+y^2)*(y+x^2))/((x²+y²)²*Sqrt((a*b))))"
+    ")^x² where A,B are two primes and AB=P⁴\nP⁴≠1 because P²-pq=1";
 
 enum {
     HHS219_NT_PROOF_A2 = 1,
@@ -100,11 +99,11 @@ int hhs_exact_pass219_number_theory_selfcheck(void) {
     if (hhs_exact_pass219_number_theory_source_fnv1a64() !=
         HHS_EXACT_PASS219_NUMBER_THEORY_SOURCE_FNV1A64)
         return 0;
-    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "P^2-pq=1") == NULL)
+    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "P²-pq=1") == NULL)
         return 0;
-    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "AB=P^4") == NULL)
+    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "AB=P⁴") == NULL)
         return 0;
-    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "b^6c^4") == NULL)
+    if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET, "b⁶c⁴") == NULL)
         return 0;
     if (strstr(HHS219_EXACT_NUMBER_THEORY_EQUATION_SET,
                "x+y+z+w+xy+yx+zw+wz") == NULL)
