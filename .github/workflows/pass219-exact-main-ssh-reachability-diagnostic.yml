@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
-      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '137.184.223.84' }}
+      HHS_PRODUCTION_HOST: '165.227.220.193'
     steps:
       - name: Probe production TCP surfaces without host-key discovery
         shell: bash
@@ -56,6 +56,22 @@ jobs:
           if results[22][0] == 'unreachable':
               print('HHS_PRODUCTION_SSH_RECOVERY_REQUIRED=1')
           PY
+
+      - name: Observe new-host Ed25519 key candidate without trusting it
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidate="$(ssh-keyscan -T 10 -t ed25519 "$HHS_PRODUCTION_HOST" 2>/dev/null | head -n 1)"
+          [[ -n "$candidate" ]] || {
+            echo '::error::No Ed25519 SSH host-key candidate was observable.'
+            exit 1
+          }
+          printf '%s\n' "$candidate" >/tmp/hhs-production-host-key-candidate
+          echo "HHS_PRODUCTION_HOST_KEY_CANDIDATE=$candidate"
+          echo -n 'HHS_PRODUCTION_HOST_KEY_CANDIDATE_FINGERPRINT='
+          ssh-keygen -lf /tmp/hhs-production-host-key-candidate -E sha256 | awk '{print $2}'
+          echo 'HHS_PRODUCTION_HOST_KEY_CANDIDATE_TRUSTED=0'
+          echo 'HHS_PRODUCTION_HOST_KEY_CANDIDATE_USE_FOR_DEPLOYMENT=0'
 
       - name: Probe public HTTPS health if reachable
         shell: bash
