@@ -125,7 +125,8 @@ int main(void) {
     overspent.ecc_spend_units = 5000U;
     assert(hhs_exact_pass219_hhcq_reciprocal_economy_evaluate(&overspent, &result) ==
            HHS_EXACT_STATUS_OK);
-    assert(result.net_budget_units == -928);
+    assert(result.total_spend_units == 12000U);
+    assert(result.net_budget_units == -2928);
     assert(result.budget_nonnegative == 0U);
     assert(result.decision == HHS_EXACT_PASS219_HHCQ_ECONOMY_DECISION_REJECTED);
 
