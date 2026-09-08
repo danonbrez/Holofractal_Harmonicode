@@ -1,0 +1,243 @@
+name: Pass219 Fresh Production Bootstrap
+
+on:
+  push:
+    branches:
+      - agent/pass219-fresh-production-bootstrap-73652c12-20260908
+    paths:
+      - '.github/workflows/pass219-fresh-production-bootstrap.yml'
+      - 'deployment/digitalocean/fresh_host_bootstrap.sh'
+      - 'deployment/digitalocean/known_hosts/hhs-production-01.ed25519'
+      - 'docs/operations/restart/PASS_219_FRESH_PRODUCTION_BOOTSTRAP_73652C12_20260908.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass219-fresh-production-bootstrap-73652c12
+  cancel-in-progress: false
+
+env:
+  TARGET_SHA: 73652c122ffff6a8b9bde9de00020610964d704c
+  HHS_PRODUCTION_HOST: 165.227.220.193
+  HHS_PRODUCTION_USER: root
+  HHS_EXPECTED_HOST_FINGERPRINT: SHA256:PcLB4oPPvDDmMFVe61ep5Wy9tbrUqbKSVAUoIOeX9Lc
+
+jobs:
+  validate-bootstrap-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out recovery source
+        uses: actions/checkout@v4
+
+      - name: Validate fresh-host shell contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n deployment/digitalocean/fresh_host_bootstrap.sh
+          ! grep -q 'StrictHostKeyChecking=no' .github/workflows/pass219-fresh-production-bootstrap.yml
+          ! grep -q 'ssh-keyscan' .github/workflows/pass219-fresh-production-bootstrap.yml
+          ! grep -q 'ssh-keyscan' deployment/digitalocean/fresh_host_bootstrap.sh
+
+      - name: Verify authenticated pinned host identity metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          PINNED=deployment/digitalocean/known_hosts/hhs-production-01.ed25519
+          test -s "$PINNED"
+          grep -Fxq '165.227.220.193 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA1Nj/yZ1JtFnjy7I5ORTZcLJ18dk4BgcD8W4+FfecU1' "$PINNED"
+          actual=$(ssh-keygen -lf "$PINNED" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          echo "HHS_PRODUCTION_PINNED_HOST_FINGERPRINT=$actual"
+
+  bootstrap-exact-main:
+    needs: validate-bootstrap-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out recovery source
+        uses: actions/checkout@v4
+        with:
+          path: recovery
+
+      - name: Check out exact canonical production payload
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          path: payload
+          fetch-depth: 1
+
+      - name: Set up canonical frontend build runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]] || {
+            echo '::error::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is absent.'
+            exit 2
+          }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 \
+            recovery/deployment/digitalocean/known_hosts/hhs-production-01.ed25519 \
+            "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+          cat > "$HOME/.ssh/config" <<EOF
+          Host $HHS_PRODUCTION_HOST
+            User $HHS_PRODUCTION_USER
+            IdentityFile $HOME/.ssh/hhs-production
+            BatchMode yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile $HOME/.ssh/known_hosts
+            UpdateHostKeys no
+            ConnectTimeout 15
+            ServerAliveInterval 30
+            ServerAliveCountMax 20
+          EOF
+          chmod 0600 "$HOME/.ssh/config"
+          echo 'HHS_PRODUCTION_PINNED_HOST_TRUST_CONFIGURED=1'
+
+      - name: Prove SSH authentication before mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh "$HHS_PRODUCTION_HOST" \
+            "test \"\$(id -u)\" = 0 && test \"\$(hostname)\" = hhs-production-01"
+          echo 'HHS_FRESH_PRODUCTION_SSH_AUTHENTICATION_VERIFIED=1'
+
+      - name: Build and seal exact Runtime OS bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C payload rev-parse HEAD)" = "$TARGET_SHA"
+          pushd payload/hhs_gui >/dev/null
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          popd >/dev/null
+
+          BUNDLE_ARCHIVE="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.tar.gz"
+          BUNDLE_MANIFEST="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.manifest.json"
+          VERIFY_ROOT="$RUNNER_TEMP/hhs-runtime-os-verify"
+          python3 payload/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py create \
+            --dist payload/hhs_gui/dist \
+            --repository-sha "$TARGET_SHA" \
+            --archive "$BUNDLE_ARCHIVE" \
+            --manifest "$BUNDLE_MANIFEST"
+          release=$(python3 payload/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py stage \
+            --root "$VERIFY_ROOT" \
+            --archive "$BUNDLE_ARCHIVE" \
+            --manifest "$BUNDLE_MANIFEST" \
+            --expected-sha "$TARGET_SHA")
+          python3 payload/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py verify \
+            --root "$VERIFY_ROOT" --expected-sha "$TARGET_SHA" >/dev/null
+          grep -Fq 'HHS Visual Runtime OS Workspace' "$release/index.html"
+          sha256sum "$BUNDLE_ARCHIVE" "$BUNDLE_MANIFEST"
+
+      - name: Transfer exact Runtime OS bundle to fresh host
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUNDLE_ARCHIVE="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.tar.gz"
+          BUNDLE_MANIFEST="$RUNNER_TEMP/hhs-runtime-os-${TARGET_SHA}.manifest.json"
+          REMOTE_INCOMING="/var/lib/hhs/runtime-os/incoming/${TARGET_SHA}"
+          ssh "$HHS_PRODUCTION_HOST" \
+            "install -d -m 0755 '$REMOTE_INCOMING' && rm -f '$REMOTE_INCOMING/runtime-os.tar.gz.tmp' '$REMOTE_INCOMING/manifest.json.tmp'"
+          scp "$BUNDLE_ARCHIVE" "$HHS_PRODUCTION_HOST:$REMOTE_INCOMING/runtime-os.tar.gz.tmp"
+          scp "$BUNDLE_MANIFEST" "$HHS_PRODUCTION_HOST:$REMOTE_INCOMING/manifest.json.tmp"
+          ssh "$HHS_PRODUCTION_HOST" \
+            "mv '$REMOTE_INCOMING/runtime-os.tar.gz.tmp' '$REMOTE_INCOMING/runtime-os.tar.gz' && mv '$REMOTE_INCOMING/manifest.json.tmp' '$REMOTE_INCOMING/manifest.json' && chmod 0644 '$REMOTE_INCOMING/runtime-os.tar.gz' '$REMOTE_INCOMING/manifest.json'"
+
+      - name: Initialize fresh Ubuntu production host from exact main
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh "$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' HHS_PUBLIC_IP='$HHS_PRODUCTION_HOST' bash -s" \
+            < recovery/deployment/digitalocean/fresh_host_bootstrap.sh
+
+      - name: Verify exact-main initialization receipt and local authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh "$HHS_PRODUCTION_HOST" "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -euo pipefail
+          test "$(git -C /opt/hhs/app rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app rev-parse origin/main)" = "$TARGET_SHA"
+          test "$(git -C /opt/hhs/app branch --show-current)" = main
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-guarded-update.timer
+          systemctl is-active --quiet nginx
+          systemctl is-active --quiet hhs-certbot-renew.timer
+          curl -fsS --max-time 15 http://127.0.0.1:8080/api/system/status >/tmp/hhs-runner-loopback-status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          target = '73652c122ffff6a8b9bde9de00020610964d704c'
+          receipt = json.loads(Path('/var/lib/hhs-guarded-update/initialization.json').read_text(encoding='utf-8'))
+          assert receipt['schema'] == 'HHS_FRESH_PRODUCTION_INITIALIZATION_RECEIPT_V1'
+          assert receipt['outcome'] == 'INITIALIZED'
+          assert receipt['repository_sha'] == target
+          assert receipt['rollback_receipt_fabricated'] is False
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+          REMOTE
+
+      - name: Verify browser-trusted public HTTPS exact-main surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 8 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json
+          curl -fsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/" >/tmp/hhs-public-root.html
+          test -s /tmp/hhs-public-system-status.json
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-root.html
+          echo 'HHS_FRESH_PRODUCTION_PUBLIC_HTTPS_VERIFIED=1'
+
+  verify-production-assistant:
+    needs: bootstrap-exact-main
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out pinned recovery authority
+        uses: actions/checkout@v4
+
+      - name: Configure verified pinned SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]]
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          install -m 0600 deployment/digitalocean/known_hosts/hhs-production-01.ed25519 "$HOME/.ssh/known_hosts"
+          actual=$(ssh-keygen -lf "$HOME/.ssh/known_hosts" -E sha256 | awk '{print $2}')
+          test "$actual" = "$HHS_EXPECTED_HOST_FINGERPRINT"
+
+      - name: Require inherited production assistant authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "cd /opt/hhs/app && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
+          echo 'HHS_FRESH_PRODUCTION_ASSISTANT_AUTHORITY_VERIFIED=1'
