@@ -71,6 +71,7 @@
 #include "hhs_pass219_hhcq_collapse_regret_1_27.inc"
 #include "hhs_pass219_hhcq_temporal_cubic_1_28.inc"
 #include "hhs_pass219_hhcq_temporal_regret_1_28.inc"
+#include "hhs_pass219_hhcq_reciprocal_economy_1_29.inc"
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc"
 #include "hhs_pass219_audio_security_transport_1_0.inc"
 #include "hhs_pass219_global_raw5184_serialization_hydration_1_0.inc"
