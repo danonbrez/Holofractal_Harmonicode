@@ -32,9 +32,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          workflow=.github/workflows/pass219-fresh-production-language-status-relocation.yml
           bash -n deployment/digitalocean/fresh_host_language_status_relocation.sh
-          ! grep -q 'StrictHostKeyChecking=no' .github/workflows/pass219-fresh-production-language-status-relocation.yml
-          ! grep -q 'ssh-keyscan' .github/workflows/pass219-fresh-production-language-status-relocation.yml
+          echo 'HHS_LANGUAGE_STATUS_RELOCATION_SCRIPT_SYNTAX=PASS'
+          weak_host='StrictHostKeyChecking''=no'
+          weak_scan='ssh-key''scan'
+          if grep -Fq "$weak_host" "$workflow"; then
+            echo '::error::weak SSH host-key checking found'
+            exit 3
+          fi
+          if grep -Fq "$weak_scan" "$workflow"; then
+            echo '::error::runtime host-key scanning found'
+            exit 4
+          fi
+          echo 'HHS_LANGUAGE_STATUS_RELOCATION_PINNED_SSH_CONTRACT=PASS'
 
       - name: Configure verified pinned SSH authority
         shell: bash
