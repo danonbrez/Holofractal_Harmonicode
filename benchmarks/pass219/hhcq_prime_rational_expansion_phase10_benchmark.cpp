@@ -1,5 +1,5 @@
-#define main hhs_pass219_phase9_reference_main
-#include "hhcq_reciprocal_economy_phase9_benchmark.cpp"
+#define main hhs_pass219_phase6_reference_main
+#include "hhcq_joint_local_router_phase6_benchmark.cpp"
 #undef main
 
 namespace {
@@ -40,8 +40,24 @@ void phase_pair10(
     if (x == 0U && y == 0U) y = 1U;
 }
 
+bool find_resolution_index10(std::uint32_t parameters, std::uint8_t& out_index) {
+    if (parameters == 0U || parameters > HHS_EXACT_PASS219_HHCQ_PARAMETER_COUNT)
+        return false;
+    for (std::uint8_t i = 0U;
+         i < static_cast<std::uint8_t>(HHS_EXACT_PASS219_HHCQ_DIVISOR_COUNT); ++i) {
+        std::uint16_t value = 0U;
+        if (hhs_exact_pass219_hhcq_resolution_divisor(i, &value) != HHS_EXACT_STATUS_OK)
+            return false;
+        if (value == parameters) {
+            out_index = i;
+            return true;
+        }
+    }
+    return false;
+}
+
 HHSExactPass219HHCQPrimeRationalCandidateV1 direct_candidate10(
-    const HHSExactPass219HHCQPreparedLocalV1& prepared,
+    const HHSExactPass219HHCQJointPreparedV1& prepared,
     std::uint16_t p,
     std::uint16_t q,
     std::uint8_t x,
@@ -73,7 +89,7 @@ HHSExactPass219HHCQPrimeRationalCandidateV1 direct_candidate10(
 }
 
 bool lower_unproven_candidate10(
-    const HHSExactPass219HHCQPreparedLocalV1& prepared,
+    const HHSExactPass219HHCQJointPreparedV1& prepared,
     std::uint16_t factor,
     std::uint8_t x,
     std::uint8_t y,
@@ -86,7 +102,7 @@ bool lower_unproven_candidate10(
     std::uint8_t intrinsic_index = 0U;
     if (factor != 2U && factor != 3U) return false;
     if (target_parameters > HHS_EXACT_PASS219_HHCQ_PARAMETER_COUNT ||
-        !find_resolution_index9(target_parameters, intrinsic_index) ||
+        !find_resolution_index10(target_parameters, intrinsic_index) ||
         intrinsic_index >= prepared.resolution.resolution_index)
         return false;
 
@@ -101,7 +117,7 @@ bool lower_unproven_candidate10(
     out.x_phase72 = x;
     out.y_phase72 = y;
     out.intrinsic_resolution_index = intrinsic_index;
-    out.effective_resolution_index = prepared.resolution.resolution_index;
+    out.effective_resolution_index = intrinsic_index;
     out.required_resolution_index = prepared.resolution.resolution_index;
     out.latency_units = coarse_units;
     out.memory_units = coarse_units;
@@ -168,8 +184,10 @@ int main(int argc, char** argv) {
     }
     std::uint32_t exhaustive_resolution_coverage = 0U;
     std::uint32_t exhaustive_phase_coverage = 0U;
-    for (std::uint8_t v : exhaustive_resolution_seen) exhaustive_resolution_coverage += v != 0U;
-    for (std::uint8_t v : exhaustive_phase_seen) exhaustive_phase_coverage += v != 0U;
+    for (std::uint8_t v : exhaustive_resolution_seen)
+        exhaustive_resolution_coverage += v != 0U ? 1U : 0U;
+    for (std::uint8_t v : exhaustive_phase_seen)
+        exhaustive_phase_coverage += v != 0U ? 1U : 0U;
     if (exhaustive_resolution_coverage != 35U || exhaustive_phase_coverage != 72U)
         return 5;
 
@@ -201,6 +219,7 @@ int main(int argc, char** argv) {
     std::uint32_t unproven_rational_bounds_met = 0U;
     std::uint32_t unproven_budget_positive = 0U;
     std::uint32_t unproven_information_one_to_one = 0U;
+    std::uint32_t unproven_expanded_resolution_met = 0U;
     std::uint32_t unproven_admitted = 0U;
     std::array<std::uint32_t, 35> authenticated_polynomial_resolution_counts{};
     std::array<std::uint32_t, 35> authenticated_expanded_resolution_counts{};
@@ -220,7 +239,7 @@ int main(int argc, char** argv) {
             return 12;
 
         for (std::size_t anchor = 0U; anchor < kAnchorCount; ++anchor) {
-            HHSExactPass219HHCQPreparedLocalV1 prepared{};
+            HHSExactPass219HHCQJointPreparedV1 prepared{};
             if (!prepare_local(frame, core, anchor, prepared)) return 13;
             if (!phase5_roundtrip_exact(frame, prepared)) return 14;
             ++phase5_roundtrip_checks;
@@ -289,6 +308,7 @@ int main(int argc, char** argv) {
                 if (r.rational_bounds_met != 0U) ++unproven_rational_bounds_met;
                 if (r.budget_nonnegative != 0U) ++unproven_budget_positive;
                 if (r.information_one_to_one != 0U) ++unproven_information_one_to_one;
+                if (r.expanded_resolution_met != 0U) ++unproven_expanded_resolution_met;
                 if (r.decision == HHS_EXACT_PASS219_HHCQ_PRIME_RATIONAL_DECISION_ADMITTED)
                     ++unproven_admitted;
                 signature ^= r.result_signature64;
@@ -303,6 +323,7 @@ int main(int argc, char** argv) {
                 if (r.rational_bounds_met != 0U) ++unproven_rational_bounds_met;
                 if (r.budget_nonnegative != 0U) ++unproven_budget_positive;
                 if (r.information_one_to_one != 0U) ++unproven_information_one_to_one;
+                if (r.expanded_resolution_met != 0U) ++unproven_expanded_resolution_met;
                 if (r.decision == HHS_EXACT_PASS219_HHCQ_PRIME_RATIONAL_DECISION_ADMITTED)
                     ++unproven_admitted;
                 signature ^= r.result_signature64;
@@ -320,6 +341,7 @@ int main(int argc, char** argv) {
         unproven_rational_bounds_met != unproven_candidates ||
         unproven_budget_positive != unproven_candidates ||
         unproven_information_one_to_one != unproven_candidates ||
+        unproven_expanded_resolution_met == 0U ||
         unproven_admitted != 0U || finer_expansions == 0U)
         return 20;
 
@@ -360,6 +382,8 @@ int main(int argc, char** argv) {
     std::printf("  \"unproven_rational_bounds_met\": %u,\n", unproven_rational_bounds_met);
     std::printf("  \"unproven_budget_positive\": %u,\n", unproven_budget_positive);
     std::printf("  \"unproven_information_1to1\": %u,\n", unproven_information_one_to_one);
+    std::printf("  \"unproven_expanded_resolution_met\": %u,\n",
+                unproven_expanded_resolution_met);
     std::printf("  \"unproven_admitted\": %u,\n", unproven_admitted);
     std::printf("  \"ab_equals_p4_constructor\": true,\n");
     std::printf("  \"reciprocal_ab_ba_closure\": true,\n");
