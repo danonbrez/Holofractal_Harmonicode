@@ -45,6 +45,7 @@ typedef struct HHSExactPass219HHCQ8BasisParityDescriptorV1 {
     uint8_t squared_coordinate_orientation_gate;
     uint8_t x2_parity_equals_x_parity;
     uint8_t symbolic_exponent_retained;
+    uint8_t native_zero_over_zero_u0_closure;
     uint8_t ordinary_negative_base_exponent_evaluated;
     uint8_t matrix_order_contract_preserved;
     uint8_t phase10_prime_rational_semantics_inherited;
@@ -56,7 +57,7 @@ typedef struct HHSExactPass219HHCQ8BasisParityDescriptorV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
-    uint8_t reserved0[3];
+    uint8_t reserved0[2];
 } HHSExactPass219HHCQ8BasisParityDescriptorV1;
 
 typedef struct HHSExactPass219HHCQ8BasisEquilibriumV1 {
@@ -102,13 +103,20 @@ typedef struct HHSExactPass219HHCQParityGateV1 {
     uint8_t ordered_wz_phase;
     uint8_t matrix_order_exact;
     uint8_t symbolic_exponent_retained;
+    uint8_t native_zero_over_zero_u0_closure;
+    uint8_t phase10_expansion_executed;
+    uint8_t prime_rational_constructor_closure_exact;
+    uint8_t polynomial_or_native_closure_exact;
     uint8_t ordinary_negative_base_exponent_evaluated;
     uint8_t x2_parity_identity_exact;
+    uint8_t effective_resolution_index;
+    uint8_t resolution_noncoarsening;
+    uint16_t effective_resolution_parameters;
+    uint16_t effective_region_count;
     uint8_t candidate_only;
     uint8_t exact_integer_only;
     uint8_t canonical_authority_changed;
     uint8_t floating_point_authority;
-    uint8_t reserved0[2];
     HHSExactPass219HHCQPrimeRationalExpansionV1 expansion;
     uint64_t parity_signature64;
 } HHSExactPass219HHCQParityGateV1;
@@ -121,9 +129,13 @@ typedef struct HHSExactPass219HHCQ8BasisManifoldV1 {
     uint8_t octonion_state_valid;
     uint8_t full_octonion_surface_validated;
     uint8_t phase10_product_closure_valid;
+    uint8_t native_zero_over_zero_u0_closure;
+    uint8_t prime_macro_closure_valid;
+    uint8_t polynomial_or_native_closure_valid;
     uint8_t matrix_order_exact;
     uint8_t equilibrium_exact;
     uint8_t parity_orientation_exact;
+    uint8_t resolution_noncoarsening;
     uint8_t constraint_intersection_satisfied;
     uint8_t candidate_only;
     uint8_t exact_integer_only;
@@ -132,7 +144,7 @@ typedef struct HHSExactPass219HHCQ8BasisManifoldV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
-    uint8_t reserved0[2];
+    uint8_t reserved0[6];
     uint64_t manifold_signature64;
 } HHSExactPass219HHCQ8BasisManifoldV1;
 
