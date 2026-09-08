@@ -77,7 +77,7 @@ typedef struct HHSExactPass219HHCQPrimeRationalExpansionV1 {
     uint8_t sqrt_ab_equals_p2;
     uint8_t reciprocal_product_equals_one;
     uint8_t polynomial_fraction_reduced;
-    uint8_t symbolic_sqrt_ab_retained;
+    uint8_t symbolic_sqrt_a_times_b_retained;
     uint8_t noncoarsening;
     uint8_t candidate_only;
     uint8_t exact_integer_only;
