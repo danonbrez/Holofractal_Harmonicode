@@ -1,4 +1,4 @@
-name: Pass219 Exact Main SSH Reachability Diagnostic
+name: Pass219 Exact Main Production Reachability Diagnostic
 
 on:
   push:
@@ -12,30 +12,60 @@ permissions:
   contents: read
 
 jobs:
-  ssh-reachability:
+  production-reachability:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
       HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '137.184.223.84' }}
     steps:
-      - name: Verify TCP/22 and SSH banner without host-key discovery
+      - name: Probe production TCP surfaces without host-key discovery
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import os
           import socket
+
           host = os.environ['HHS_PRODUCTION_HOST']
-          try:
-              with socket.create_connection((host, 22), timeout=15) as sock:
-                  sock.settimeout(15)
-                  banner = sock.recv(512)
-          except Exception as exc:
-              raise SystemExit(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=0 host={host} error={type(exc).__name__}:{exc}')
-          if not banner.startswith(b'SSH-'):
-              raise SystemExit(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=1 SSH_BANNER_VALID=0 host={host} banner={banner[:80]!r}')
-          safe_banner = banner.decode('ascii', errors='replace').strip()
-          print(f'HHS_PRODUCTION_SSH_TCP_REACHABLE=1 host={host}')
-          print(f'HHS_PRODUCTION_SSH_BANNER_VALID=1 banner={safe_banner}')
+          results = {}
+          for port in (22, 80, 443, 8080):
+              try:
+                  with socket.create_connection((host, port), timeout=10) as sock:
+                      results[port] = ('reachable', None)
+                      if port == 22:
+                          sock.settimeout(5)
+                          try:
+                              banner = sock.recv(512)
+                          except Exception as exc:
+                              results[port] = ('reachable-no-banner', f'{type(exc).__name__}:{exc}')
+                          else:
+                              if banner.startswith(b'SSH-'):
+                                  print(f'HHS_PRODUCTION_SSH_BANNER_VALID=1 banner={banner.decode("ascii", errors="replace").strip()}')
+                              else:
+                                  results[port] = ('reachable-invalid-banner', repr(banner[:80]))
+              except Exception as exc:
+                  results[port] = ('unreachable', f'{type(exc).__name__}:{exc}')
+
+          for port in (22, 80, 443, 8080):
+              state, detail = results[port]
+              print(f'HHS_PRODUCTION_TCP_{port}={state}' + (f' detail={detail}' if detail else ''))
           print('HHS_PRODUCTION_HOST_KEY_DISCOVERY_ATTEMPTED=0')
+
+          if all(results[p][0] == 'unreachable' for p in results):
+              raise SystemExit('all probed production TCP surfaces are unreachable')
+          if results[22][0] == 'unreachable':
+              print('HHS_PRODUCTION_SSH_RECOVERY_REQUIRED=1')
           PY
+
+      - name: Probe public HTTPS health if reachable
+        shell: bash
+        run: |
+          set -u
+          if curl -kfsS --connect-timeout 10 --max-time 20 "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json; then
+            echo 'HHS_PRODUCTION_PUBLIC_HTTPS_HEALTH=1'
+            test -s /tmp/hhs-public-system-status.json
+          else
+            rc=$?
+            echo "HHS_PRODUCTION_PUBLIC_HTTPS_HEALTH=0 curl_exit=${rc}"
+            exit "$rc"
+          fi
