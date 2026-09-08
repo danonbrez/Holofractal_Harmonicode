@@ -100,10 +100,17 @@ jobs:
                       raise SystemExit(f'authoritative final vertex table token detected in {path}: {token}')
           PY
 
-      - name: Compile native exact ABI aggregate
+      - name: Compile I182 native unit with pedantic C11 boundary
         run: |
           mkdir -p /tmp/pass219-i182
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+          gcc -x c -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc \
+            -o /tmp/pass219-i182/i182-native.o
+
+      - name: Compile inherited native exact ABI aggregate
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror \
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i182/exact.o
