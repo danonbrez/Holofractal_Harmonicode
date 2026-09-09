@@ -91,7 +91,7 @@ jobs:
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 3289544601dfbd54697a6e57ef9c8505d407821f
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 53677fea50de3bb2b42025c79b2fe5fd210e9dd0
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = 23afbf9c99d77f57acd7334d767c483572d64e0a
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = e7b903eed428614d1f2f4bff5b65fb00299812e7
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = f018af53e15c3425ab00cd8500b95f845cf6ac2c
 
       - name: Reject approximate arithmetic and new authority exports
         run: |
