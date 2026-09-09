@@ -107,12 +107,5 @@
 #include "hhs_pass219_harmonic36_branch_reference_cache_1_17.inc"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.inc"
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.inc"
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#endif
 #include "hhs_pass168_parameter_circuit_1_0.inc"
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
 #include "hhs_pass168_comparator_1_0.inc"
