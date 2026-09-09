@@ -37,6 +37,9 @@ FOCUSED_WORKFLOW_PATH = P(".github/workflows/pass192-i134-repair-validation.yml"
 NATIVE_HEADER_PATH = P("hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h")
 NATIVE_HPP_PATH = P("hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp")
 NATIVE_INC_PATH = P("hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc")
+MEMBRANE_PATH = P("hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py")
+EXACT_ABI_HEADER_PATH = P("hhs_runtime/include/hhs_runtime_exact_abi.h")
+EXACT_ABI_INC_PATH = P("hhs_runtime/c/hhs_runtime_exact_abi.c")
 
 PASS193_MEMBRANE_PATH = P("hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py")
 PASS193_HEADER_PATH = P("hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h")
@@ -45,8 +48,10 @@ PASS193_INC_PATH = P("hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc")
 
 CONTRACT_AUTHORIZATION_COMMIT = "c3da7e2b7125754b65f08fb8922a151bf01df2b8"
 FROZEN_I133 = "8380d2dbc9cf1b0245f006eaa440b47a921d4901"
+PASS192_I134_BASELINE_COMMIT = "2f8b36e44ca6019dbc2785ea02d2f2289f329f33"
 
-SOURCE_BLOBS = {
+# These Pass 192 implementation blobs remain immutable on the current tree.
+STABLE_SOURCE_BLOBS = {
     CONTRACT_PATH: "cab24f1b2e7510321f6449814302ea31b704d5a8",
     COMPRESSION_HEADER_PATH: "8e2d0a1620ff8ce88f588ce9dc55d79f5503f354",
     COMPRESSION_INC_PATH: "2034a9cacb07d09c4b5786ccec28e61d64de635b",
@@ -55,7 +60,6 @@ SOURCE_BLOBS = {
     SDK_PATH: "2e0727e9e078fdbb5ad9f866d05f6d886576a9e1",
     CLI_PATH: "1718211edd8739c43837aea9ba53d8de613e3f1b",
     API_PATH: "1e2f9f37f46310d0dffecba66b5c044958b585bc",
-    VISUAL_SERVER_PATH: "aefc759cccf3ebd75f81f220814a225a592b4140",
     TENSOR_SCHEMA_PATH: "697b0bf3ba811f82ef0a62b4e9bd3615d59bdcb9",
     OPERATION_REGISTRY_PATH: "33384a6886117c45b6b6ff96514ac85477fbb14d",
     PRECONTRACT_TEST_PATH: "a72e7b8ab6dc0f891540fe2192d92d80f4a0cf52",
@@ -65,6 +69,17 @@ SOURCE_BLOBS = {
     CLI_TEST_PATH: "250275392c6b1ee2809512673d7f1864243527a3",
     VISUAL_TEST_PATH: "c56aa9e67f331bbc61430317667ea80272549bc2",
     FOCUSED_WORKFLOW_PATH: "7d23c8867cb9647295b34c0975b5842e6c96adc0",
+}
+# Backwards-compatible name used by the boundary validators.
+SOURCE_BLOBS = STABLE_SOURCE_BLOBS
+
+# These were exact I134 identities, but are intentionally compositional successor
+# surfaces. Prove their old blobs at the I134 baseline and validate current semantics.
+I134_BASELINE_EVOLVING_BLOBS = {
+    VISUAL_SERVER_PATH: "aefc759cccf3ebd75f81f220814a225a592b4140",
+    MEMBRANE_PATH: "820c810e447af90ec4e842768261f945894baa72",
+    EXACT_ABI_HEADER_PATH: "4b2bd2b2fd4b92c230b1dec428e29c9778dd3c6c",
+    EXACT_ABI_INC_PATH: "ebec4fd407f5388ee4124f01ef85bdc77d6745cd",
 }
 NATIVE_BLOBS = {
     NATIVE_HEADER_PATH: "5f3245022447dcd3a1cce215f373e4f899946944",
@@ -100,12 +115,8 @@ def _git_blob(path: Path) -> str:
 
 def _git(*args: str) -> str:
     completed = subprocess.run(
-        ["git", *args],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
+        ["git", *args], cwd=ROOT, check=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
     )
     return completed.stdout.strip()
 
@@ -117,12 +128,16 @@ def _require(path: Path, *fragments: str) -> None:
             raise RuntimeError(f"PASS192_SOURCE_DRIFT:{path}:{fragment}")
 
 
-def _frozen_pass193_successor_evidence() -> Dict[str, Any]:
-    _git("merge-base", "--is-ancestor", FROZEN_I133, "HEAD")
-    for path, expected in PASS193_FROZEN_BLOBS.items():
-        actual = _git("rev-parse", f"{FROZEN_I133}:{path}")
+def _prove_historical_blob_set(commit: str, blobs: Dict[Path, str], label: str) -> None:
+    _git("merge-base", "--is-ancestor", commit, "HEAD")
+    for path, expected in blobs.items():
+        actual = _git("rev-parse", f"{commit}:{path}")
         if actual != expected:
-            raise RuntimeError(f"PASS192_PASS193_FROZEN_SUCCESSOR_DRIFT:{path}")
+            raise RuntimeError(f"{label}:{path}")
+
+
+def _frozen_pass193_successor_evidence() -> Dict[str, Any]:
+    _prove_historical_blob_set(FROZEN_I133, PASS193_FROZEN_BLOBS, "PASS192_PASS193_FROZEN_SUCCESSOR_DRIFT")
     return {
         "pass_number": 193,
         "frozen_commit": FROZEN_I133,
@@ -139,51 +154,38 @@ def pass192_membrane_source_evidence() -> Dict[str, Any]:
     if _git("merge-base", "HEAD", FROZEN_I133) != FROZEN_I133:
         raise RuntimeError("PASS192_FROZEN_I133_LINEAGE_DRIFT")
     historical_contract = _git("rev-parse", f"{CONTRACT_AUTHORIZATION_COMMIT}:{CONTRACT_PATH}")
-    if historical_contract != SOURCE_BLOBS[CONTRACT_PATH]:
+    if historical_contract != STABLE_SOURCE_BLOBS[CONTRACT_PATH]:
         raise RuntimeError("PASS192_HISTORICAL_CONTRACT_DRIFT")
-    for path, expected in {**SOURCE_BLOBS, **NATIVE_BLOBS}.items():
+    _prove_historical_blob_set(
+        PASS192_I134_BASELINE_COMMIT,
+        I134_BASELINE_EVOLVING_BLOBS,
+        "PASS192_I134_BASELINE_SOURCE_DRIFT",
+    )
+    for path, expected in {**STABLE_SOURCE_BLOBS, **NATIVE_BLOBS}.items():
         if _git_blob(path) != expected:
             raise RuntimeError(f"PASS192_IMPLEMENTED_SOURCE_DRIFT:{path}")
 
     _require(
         RUNTIME_PATH,
-        "CANONICAL_SOURCE",
-        "SEED_WITNESSES",
-        "LO_SHU",
-        "MaterializationBounds",
-        "_validated_authorized_tick",
-        "Hash216 must contain exactly three Hash72 witnesses",
-        "FINITE_REQUESTED_PREFIX_REQUIRED",
-        "NON_DESTRUCTIVE_DEPTH_MODULUS_METADATA",
-        "OUTER_MODULUS_NON_DESTRUCTIVE_LOCAL",
-        "HHS-P192-FILE",
-        "hashlib.sha256",
-        "def replay(self",
+        "CANONICAL_SOURCE", "SEED_WITNESSES", "LO_SHU", "MaterializationBounds",
+        "_validated_authorized_tick", "Hash216 must contain exactly three Hash72 witnesses",
+        "FINITE_REQUESTED_PREFIX_REQUIRED", "NON_DESTRUCTIVE_DEPTH_MODULUS_METADATA",
+        "OUTER_MODULUS_NON_DESTRUCTIVE_LOCAL", "HHS-P192-FILE", "hashlib.sha256", "def replay(self",
     )
     _require(
         API_PATH,
-        'prefix="/v1/tensors/fibonacci"',
-        "_encode_ref",
-        "_decode_ref",
-        "authority_execution",
-        "/materialize",
-        "/validate",
-        "/replay",
+        'prefix="/v1/tensors/fibonacci"', "_encode_ref", "_decode_ref", "authority_execution",
+        "/materialize", "/validate", "/replay",
     )
     _require(
         CLI_PATH,
-        'prog="hhs"',
-        'add_parser("tensor")',
-        'add_parser("fibonacci")',
-        'add_parser("create")',
-        'add_parser("materialize")',
-        'add_parser("validate")',
+        'prog="hhs"', 'add_parser("tensor")', 'add_parser("fibonacci")',
+        'add_parser("create")', 'add_parser("materialize")', 'add_parser("validate")',
         'add_parser("replay")',
     )
     _require(
         VISUAL_SERVER_PATH,
-        "pass192_fibonacci_router",
-        "/v1/tensors/fibonacci/status",
+        "pass192_fibonacci_router", "/v1/tensors/fibonacci/status",
         "app.include_router(pass192_fibonacci_router)",
         '"pass192_fibonacci_api": "/v1/tensors/fibonacci"',
         '"pass192_cellular_fibonacci": "HHS-P192-LSCFNT-MMD-VM81-H72-H216"',
@@ -197,11 +199,8 @@ def pass192_membrane_source_evidence() -> Dict[str, Any]:
 
     _require(
         OPERATION_REGISTRY_PATH,
-        "P192.CellularFibonacciTensor",
-        "P192.MaterializeTensorPrefix",
-        "P192.ValidateTensor",
-        "P192.ReplayTensor",
-        "INHERITED_SINGLETON_VM81",
+        "P192.CellularFibonacciTensor", "P192.MaterializeTensorPrefix", "P192.ValidateTensor",
+        "P192.ReplayTensor", "INHERITED_SINGLETON_VM81",
     )
     _require(
         FOCUSED_WORKFLOW_PATH,
@@ -212,11 +211,29 @@ def pass192_membrane_source_evidence() -> Dict[str, Any]:
         "Run dedicated Pass 192 runtime API CLI and production registration",
         "Compile inherited aggregate exact C ABI",
     )
+    exact_h = _text(EXACT_ABI_HEADER_PATH)
+    exact_c = _text(EXACT_ABI_INC_PATH)
+    if not (
+        exact_h.index("hhs_pass219_inherited_pass194_1_32.h")
+        < exact_h.index("hhs_pass219_inherited_pass193_1_33.h")
+        < exact_h.index("hhs_pass219_inherited_pass192_1_34.h")
+    ):
+        raise RuntimeError("PASS192_CURRENT_EXACT_ABI_HEADER_ORDER_DRIFT")
+    if not (
+        exact_c.index("hhs_pass219_inherited_pass194_1_32.inc")
+        < exact_c.index("hhs_pass219_inherited_pass193_1_33.inc")
+        < exact_c.index("hhs_pass219_inherited_pass192_1_34.inc")
+    ):
+        raise RuntimeError("PASS192_CURRENT_EXACT_ABI_IMPLEMENTATION_ORDER_DRIFT")
+
     successor = _frozen_pass193_successor_evidence()
     return {
         "contract_authorization_commit": CONTRACT_AUTHORIZATION_COMMIT,
         "frozen_i133": FROZEN_I133,
-        "source_blobs": {str(path): value for path, value in SOURCE_BLOBS.items()},
+        "i134_baseline_commit": PASS192_I134_BASELINE_COMMIT,
+        "stable_source_blobs": {str(path): value for path, value in STABLE_SOURCE_BLOBS.items()},
+        "baseline_evolving_blobs": {str(path): value for path, value in I134_BASELINE_EVOLVING_BLOBS.items()},
+        "current_evolving_blobs": {str(path): _git_blob(path) for path in I134_BASELINE_EVOLVING_BLOBS},
         "native_blobs": {str(path): value for path, value in NATIVE_BLOBS.items()},
         "pass193_successor": successor,
     }
@@ -228,7 +245,9 @@ def validate_pass192_contract_and_lineage() -> Dict[str, Any]:
         "ok": True,
         "contract_authorization_commit": evidence["contract_authorization_commit"],
         "frozen_i133": evidence["frozen_i133"],
+        "i134_baseline_commit": evidence["i134_baseline_commit"],
         "historical_contract_preserved": True,
+        "historical_i134_evolving_surface_identities_preserved": True,
         "classification": PASS192_CENSUS_CLASSIFICATION,
     }
 
@@ -236,14 +255,9 @@ def validate_pass192_contract_and_lineage() -> Dict[str, Any]:
 def validate_pass192_exact_tensor_boundary() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "canonical_source_preserved": True,
-        "lo_shu_cells": 9,
-        "lo_shu_magic_sum": 15,
-        "magnitude_rows": [1, 2, 3, 5, 8],
-        "seed_witnesses": 5,
-        "exact_arithmetic": "INTEGER_AND_RATIONAL",
-        "float_canonical_authority": False,
+        "ok": True, "canonical_source_preserved": True, "lo_shu_cells": 9,
+        "lo_shu_magic_sum": 15, "magnitude_rows": [1, 2, 3, 5, 8], "seed_witnesses": 5,
+        "exact_arithmetic": "INTEGER_AND_RATIONAL", "float_canonical_authority": False,
         "hash216_canonical_identity": True,
     }
 
@@ -251,16 +265,11 @@ def validate_pass192_exact_tensor_boundary() -> Dict[str, Any]:
 def validate_pass192_materialization_replay_boundary() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "declarative_depth": "UNBOUNDED",
-        "execution_materialization": "FINITE_PREFIX_ONLY",
+        "ok": True, "declarative_depth": "UNBOUNDED", "execution_materialization": "FINITE_PREFIX_ONLY",
         "bounded_depth_nodes_serialization_memory_steps_quota": True,
-        "membrane_rule": "n_mod_n_plus_1_equals_n",
-        "membrane_is_non_destructive_metadata": True,
-        "outer_modulus": 1259713,
-        "outer_modulus_applied_locally": False,
-        "safe_filesystem_locator": "SHA256_HEX_PROJECTION",
-        "filesystem_locator_is_canonical_authority": False,
+        "membrane_rule": "n_mod_n_plus_1_equals_n", "membrane_is_non_destructive_metadata": True,
+        "outer_modulus": 1259713, "outer_modulus_applied_locally": False,
+        "safe_filesystem_locator": "SHA256_HEX_PROJECTION", "filesystem_locator_is_canonical_authority": False,
         "hash72_replay_chain_verified": True,
     }
 
@@ -268,48 +277,40 @@ def validate_pass192_materialization_replay_boundary() -> Dict[str, Any]:
 def validate_pass192_interface_parity_boundary() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "operation_registry": "HHS_PASS_192_OPERATION_REGISTRY_V1",
-        "python_sdk": "hhs_runtime.pass192",
-        "cli_grammar": "hhs tensor fibonacci",
-        "openapi_prefix": "/v1/tensors/fibonacci",
-        "create_inspect_materialize_validate_replay": True,
-        "canonical_hash216_transport_unchanged": True,
-        "path_reference_transport": "REVERSIBLE_BASE64URL",
+        "ok": True, "operation_registry": "HHS_PASS_192_OPERATION_REGISTRY_V1",
+        "python_sdk": "hhs_runtime.pass192", "cli_grammar": "hhs tensor fibonacci",
+        "openapi_prefix": "/v1/tensors/fibonacci", "create_inspect_materialize_validate_replay": True,
+        "canonical_hash216_transport_unchanged": True, "path_reference_transport": "REVERSIBLE_BASE64URL",
     }
 
 
 def validate_pass192_inherited_compression_boundary() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "pass219_1_9_compression_preserved": True,
-        "compression_header_blob": SOURCE_BLOBS[COMPRESSION_HEADER_PATH],
-        "compression_inc_blob": SOURCE_BLOBS[COMPRESSION_INC_PATH],
-        "compression_reference_blob": SOURCE_BLOBS[COMPRESSION_REFERENCE_PATH],
-        "shared_schedule_deduplicated": True,
-        "lossless_exact_descriptor": True,
+        "ok": True, "pass219_1_9_compression_preserved": True,
+        "compression_header_blob": STABLE_SOURCE_BLOBS[COMPRESSION_HEADER_PATH],
+        "compression_inc_blob": STABLE_SOURCE_BLOBS[COMPRESSION_INC_PATH],
+        "compression_reference_blob": STABLE_SOURCE_BLOBS[COMPRESSION_REFERENCE_PATH],
+        "shared_schedule_deduplicated": True, "lossless_exact_descriptor": True,
         "outer_modulus_preserved": True,
     }
 
 
 def validate_pass192_production_registration_boundary() -> Dict[str, Any]:
-    pass192_membrane_source_evidence()
+    evidence = pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "production_router_registered": True,
-        "registration_precedes_public_federation": True,
-        "public_api_federation_preserved": True,
-        "system_status_api_exposed": True,
-        "canonical_server_remains_runtime_authority": True,
+        "ok": True, "production_router_registered": True,
+        "registration_precedes_public_federation": True, "public_api_federation_preserved": True,
+        "system_status_api_exposed": True, "canonical_server_remains_runtime_authority": True,
+        "historical_visual_server_blob": evidence["baseline_evolving_blobs"][str(VISUAL_SERVER_PATH)],
+        "current_visual_server_blob": evidence["current_evolving_blobs"][str(VISUAL_SERVER_PATH)],
     }
 
 
 def validate_pass192_successor_binding() -> Dict[str, Any]:
     successor = pass192_membrane_source_evidence()["pass193_successor"]
     return {
-        "ok": True,
-        "successor_pass": successor["pass_number"],
+        "ok": True, "successor_pass": successor["pass_number"],
         "successor_frozen_commit": successor["frozen_commit"],
         "successor_membrane_blob": successor["membrane_blob"],
         "successor_preserved": successor["successor_preserved"],
@@ -319,14 +320,10 @@ def validate_pass192_successor_binding() -> Dict[str, Any]:
 def validate_pass192_no_new_authority() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "ok": True,
-        "i134_new_candidate_authority": False,
-        "i134_new_canonical_mutation_authority": False,
-        "i134_new_persistence_authority": False,
-        "i134_new_hash72_clock": False,
-        "cxx_mutation_authority": False,
-        "vm81_mutation_authority": False,
-        "float_canonical_authority": False,
+        "ok": True, "i134_new_candidate_authority": False,
+        "i134_new_canonical_mutation_authority": False, "i134_new_persistence_authority": False,
+        "i134_new_hash72_clock": False, "cxx_mutation_authority": False,
+        "vm81_mutation_authority": False, "float_canonical_authority": False,
         "filesystem_locator_canonical_authority": False,
         "public_api_federation_is_vm81_authority": False,
         "singleton_vm81_authority_remains_inherited": True,
@@ -336,44 +333,29 @@ def validate_pass192_no_new_authority() -> Dict[str, Any]:
 def pass192_surface_declaration() -> Dict[str, Any]:
     pass192_membrane_source_evidence()
     return {
-        "surface_id": PASS192_SURFACE_ID,
-        "surface_type": "VALIDATOR",
+        "surface_id": PASS192_SURFACE_ID, "surface_type": "VALIDATOR",
         "module": "hhs_runtime.hhs_pass219_cumulative_pass_membrane_i134_pass192",
         "symbol": "validate_pass192_contract_and_lineage",
         "invariant_ids": ["HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I014"],
         "contract_schemas": ["HHS-P192-LSCFNT-MMD-VM81-H72-H216"],
-        "witness_schemas": [
-            "HHSExactPass192CellularFibonacciTensorAuthorityWitnessV1",
-            "HHSExactPass219InheritedPass192BindingV1",
-        ],
+        "witness_schemas": ["HHSExactPass192CellularFibonacciTensorAuthorityWitnessV1", "HHSExactPass219InheritedPass192BindingV1"],
         "validators": [PASS192_BIND_SYMBOL, "validate_pass192_contract_and_lineage"],
         "guards": [
-            "pass192_historical_contract_identity",
-            "pass192_canonical_source_identity",
-            "pass192_exact_fibonacci_identity",
-            "pass192_bounded_materialization",
-            "pass192_non_destructive_membrane",
-            "pass192_outer_modulus_separation",
-            "pass192_inherited_1_9_compression",
-            "pass192_interface_parity",
-            "pass192_safe_filesystem_projection",
-            "pass192_production_registration",
-            "pass192_frozen_pass193_successor",
-            "pass192_no_new_authority",
+            "pass192_historical_contract_identity", "pass192_i134_historical_evolving_identity",
+            "pass192_canonical_source_identity", "pass192_exact_fibonacci_identity",
+            "pass192_bounded_materialization", "pass192_non_destructive_membrane",
+            "pass192_outer_modulus_separation", "pass192_inherited_1_9_compression",
+            "pass192_interface_parity", "pass192_safe_filesystem_projection",
+            "pass192_production_registration", "pass192_current_aggregate_order",
+            "pass192_frozen_pass193_successor", "pass192_no_new_authority",
         ],
         "rejection_codes": [
-            "REJECT_PASS192_CONTRACT_DRIFT",
-            "REJECT_PASS192_SOURCE_IDENTITY_DRIFT",
-            "REJECT_PASS192_FLOAT_CANONICAL_AUTHORITY",
-            "REJECT_PASS192_UNBOUNDED_MATERIALIZATION",
-            "REJECT_PASS192_MEMBRANE_DESTRUCTIVE_REDUCTION",
-            "REJECT_PASS192_OUTER_MODULUS_LOCAL_REDUCTION",
-            "REJECT_PASS192_VM81_RECEIPT_BYPASS",
-            "REJECT_PASS192_FILESYSTEM_IDENTITY_CONFUSION",
-            "REJECT_PASS192_INTERFACE_PARITY_DRIFT",
-            "REJECT_PASS192_PRODUCTION_REGISTRATION_DRIFT",
-            "REJECT_PASS192_FROZEN_SUCCESSOR_DRIFT",
-            "REJECT_PASS192_AUTHORITY_ESCALATION",
+            "REJECT_PASS192_CONTRACT_DRIFT", "REJECT_PASS192_SOURCE_IDENTITY_DRIFT",
+            "REJECT_PASS192_FLOAT_CANONICAL_AUTHORITY", "REJECT_PASS192_UNBOUNDED_MATERIALIZATION",
+            "REJECT_PASS192_MEMBRANE_DESTRUCTIVE_REDUCTION", "REJECT_PASS192_OUTER_MODULUS_LOCAL_REDUCTION",
+            "REJECT_PASS192_VM81_RECEIPT_BYPASS", "REJECT_PASS192_FILESYSTEM_IDENTITY_CONFUSION",
+            "REJECT_PASS192_INTERFACE_PARITY_DRIFT", "REJECT_PASS192_PRODUCTION_REGISTRATION_DRIFT",
+            "REJECT_PASS192_FROZEN_SUCCESSOR_DRIFT", "REJECT_PASS192_AUTHORITY_ESCALATION",
         ],
         "mutation_policy": "INHERITED_SINGLETON_VM81_AUTHORIZED_MUTATIONS_ONLY",
         "persistence_policy": "PASS192_TENSOR_MATERIALIZATION_DATA_ONLY_NO_NEW_VM81_AUTHORITY",
@@ -385,29 +367,22 @@ def pass192_surface_declaration() -> Dict[str, Any]:
 def pass192_membrane_manifest() -> Dict[str, Any]:
     evidence = pass192_membrane_source_evidence()
     return {
-        "schema": "HHS_PASS219_CUMULATIVE_PASS_MEMBRANE_ENTRY_V1",
-        "version": VERSION,
-        "pass_number": PASS192_NUMBER,
-        "classification": PASS192_CLASSIFICATION,
+        "schema": "HHS_PASS219_CUMULATIVE_PASS_MEMBRANE_ENTRY_V1", "version": VERSION,
+        "pass_number": PASS192_NUMBER, "classification": PASS192_CLASSIFICATION,
         "census_classification": PASS192_CENSUS_CLASSIFICATION,
         "contract_authorization_commit": evidence["contract_authorization_commit"],
         "frozen_predecessor": evidence["frozen_i133"],
-        "surface": pass192_surface_declaration(),
-        "declared_operations": list(REQUIRED_OPERATIONS),
+        "i134_baseline_commit": evidence["i134_baseline_commit"],
+        "surface": pass192_surface_declaration(), "declared_operations": list(REQUIRED_OPERATIONS),
     }
 
 
 def execute_pass192_membrane_preflight() -> Dict[str, Any]:
     declaration = pass192_surface_declaration()
-    rows = [
-        execute_surface_preflight(declaration, operation=operation)
-        for operation in REQUIRED_OPERATIONS
-    ]
+    rows = [execute_surface_preflight(declaration, operation=operation) for operation in REQUIRED_OPERATIONS]
     return {
-        "schema": "HHS_PASS219_I134_PASS192_PREFLIGHT_V1",
-        "version": VERSION,
-        "ok": all(row.get("ok") is True for row in rows),
-        "surface_id": PASS192_SURFACE_ID,
+        "schema": "HHS_PASS219_I134_PASS192_PREFLIGHT_V1", "version": VERSION,
+        "ok": all(row.get("ok") is True for row in rows), "surface_id": PASS192_SURFACE_ID,
         "operations": rows,
     }
 
