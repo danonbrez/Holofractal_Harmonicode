@@ -15,8 +15,14 @@ on:
       - 'hhs_backend/pass170_audio_language_routes.py'
       - 'hhs_runtime/pass219/pass170_audio_transport_i178.py'
       - 'hhs_runtime/pass219/pass170_native_audio_replay_i179.py'
+      - 'hhs_runtime/pass219/pass170_native_audio_replay_i179_successor.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py'
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime_api_server_v1.py'
       - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json'
       - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json'
+      - 'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json'
       - 'contracts/pass219/pass170_operation_records_i179/**'
       - 'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json'
       - 'tests/pass219/test_pass219_i179_audio_security_transport.c'
@@ -34,8 +40,14 @@ on:
       - 'hhs_backend/pass170_audio_language_routes.py'
       - 'hhs_runtime/pass219/pass170_audio_transport_i178.py'
       - 'hhs_runtime/pass219/pass170_native_audio_replay_i179.py'
+      - 'hhs_runtime/pass219/pass170_native_audio_replay_i179_successor.py'
+      - 'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py'
+      - 'hhs_backend/runtime/runtime_server.py'
+      - 'hhs_runtime_api_server_v1.py'
       - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json'
       - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json'
+      - 'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json'
+      - 'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json'
       - 'contracts/pass219/pass170_operation_records_i179/**'
       - 'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json'
       - 'tests/pass219/test_pass219_i179_audio_security_transport.c'
@@ -57,7 +69,7 @@ jobs:
       - name: Install bounded validation dependencies
         run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx
 
-      - name: Parse manifests and compile I179 Python surfaces
+      - name: Parse manifests and compile I179 successor-aware Python surfaces
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -66,6 +78,8 @@ jobs:
           for path in (
               'HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json',
               'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json',
+              'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json',
+              'HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json',
               'contracts/pass219/pass170_operation_records_i179/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_NATIVE_REPLAY_V1.json',
               'contracts/pass219/PASS_219_I179_PASS170_NATIVE_AUDIO_REPLAY_1_0.json',
           ):
@@ -77,6 +91,8 @@ jobs:
             hhs_backend/pass170_audio_language_routes.py \
             hhs_runtime/pass219/pass170_audio_transport_i178.py \
             hhs_runtime/pass219/pass170_native_audio_replay_i179.py \
+            hhs_runtime/pass219/pass170_native_audio_replay_i179_successor.py \
+            hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py \
             tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
 
       - name: Strict-compile additive I179 membrane and cumulative exact ABI
@@ -87,9 +103,8 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc \
             -o /tmp/pass219-i179/audio_security_transport.o
-          # The cumulative exact ABI includes frozen Pass168 GNU __int128 exact
-          # arithmetic, so aggregate validation keeps warnings-as-errors but
-          # intentionally does not apply ISO-pedantic rejection to that inherited surface.
+          # The isolated I179 membrane receives the strict ISO-pedantic check;
+          # the cumulative inherited aggregate remains warnings-as-errors.
           gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
             -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i179/libhhs_runtime_exact.so
@@ -121,20 +136,22 @@ jobs:
           HHS_PASS170_AUDIO_NATIVE_LIB: ${{ github.workspace }}/hhs_runtime/builds/libhhs_runtime.so
         run: python -m pytest -q tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
 
-      - name: Execute I179 repository gate
+      - name: Execute I179 frozen-baseline and I181 successor repository gate
         run: |
           mkdir -p artifacts/pass219/i179
           python - <<'PY'
           import json
           from pathlib import Path
-          from hhs_runtime.pass219.pass170_native_audio_replay_i179 import verify_i179_native_audio_replay
-          report = verify_i179_native_audio_replay('.')
+          from hhs_runtime.pass219.pass170_native_audio_replay_i179_successor import (
+              verify_i179_native_audio_replay_successor,
+          )
+          report = verify_i179_native_audio_replay_successor('.')
           Path('artifacts/pass219/i179/native_audio_replay.json').write_text(
               json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8'
           )
           PY
 
-      - name: Enforce I179 bounded nonterminal boundary
+      - name: Enforce I179 bounded historical boundary and current successor
         run: |
           python - <<'PY'
           import json
@@ -146,11 +163,16 @@ jobs:
           assert report['parent_i178_exact_main_artifact'] == 9999243782
           assert report['parent_i178_exact_main_artifact_digest'] == 'sha256:0c00e896cac4832a366091c295f1fb973f8a41d783c0794bb8987baac9ab7344'
           assert report['evidence_verified'] is True
-          assert report['fastapi_constructor_count'] == 8
+          assert report['i179_baseline_fastapi_constructor_count'] == 8
+          assert report['fastapi_constructor_count'] == 6
           assert report['newly_retired_constructor_count'] == 0
           assert report['unsafe_constructor_retirement_performed'] is False
+          assert report['i181_successor_verified'] is True
+          assert report['i181_newly_retired_constructor_count'] == 2
+          assert report['i181_cumulative_retired_constructor_count'] == 4
           assert report['observed_launcher_count'] == 6
           assert report['canonical_redirect_count'] == 6
+          assert report['launcher_successor_resolution_verified'] is True
           assert report['aggregate_operation_count'] == 48
           assert report['audio_native_abi_verified'] is True
           assert report['audio_receipt_replay_verified'] is True
@@ -172,8 +194,14 @@ jobs:
               'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
               'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
           ]
+          assert report['current_successor_target_blockers'] == [
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
+              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
+          ]
           assert report['pass170_terminal_contract_verified'] is False
           assert report['next_boundary'] == 'PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY'
+          assert report['current_successor_next_boundary'] == 'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_AND_DEGRADED_GATEWAY_RECONCILIATION'
           PY
 
       - name: Upload I179 evidence
