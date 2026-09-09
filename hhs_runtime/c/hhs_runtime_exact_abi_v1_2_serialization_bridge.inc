@@ -1,7 +1,7 @@
 /* Additive successor bridge: preserve frozen exact-v1.1 source identity while
  * retaining the global raw5184 serialization checks introduced after v1.1.
- * The frozen implementation is compiled under *_v1_1_raw internal names by
- * hhs_runtime_exact_abi.c before this bridge publishes the current ABI names.
+ * The frozen implementation is compiled under the established *_raw internal
+ * names by hhs_runtime_exact_abi.c before this bridge publishes current names.
  */
 
 static HHSExactStatus hhs_exact_vm81_frame_global_serialization_validate(
@@ -13,7 +13,7 @@ HHSExactStatus hhs_exact_vm81_frame_import_le(
     size_t length,
     HHSExactVM81Frame *out_frame
 ) {
-    HHSExactStatus status = hhs_exact_vm81_frame_import_le_v1_1_raw(
+    HHSExactStatus status = hhs_exact_vm81_frame_import_le_raw(
         bytes, length, out_frame);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
@@ -39,7 +39,7 @@ HHSExactStatus hhs_exact_vm81_frame_export_le(
     status = hhs_exact_vm81_frame_global_serialization_validate(frame);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
-    return hhs_exact_vm81_frame_export_le_v1_1_raw(
+    return hhs_exact_vm81_frame_export_le_raw(
         frame, out_bytes, capacity, out_length);
 }
 
@@ -64,6 +64,6 @@ HHSExactStatus hhs_x86_64_bytecode_copy_exact(
         return hhs_exact_vm81_frame_export_le(
             &frame, output, capacity, out_length);
     }
-    return hhs_x86_64_bytecode_copy_exact_v1_1_raw(
+    return hhs_x86_64_bytecode_copy_exact_raw(
         input, length, output, capacity, out_length);
 }

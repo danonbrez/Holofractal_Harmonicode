@@ -2,11 +2,11 @@
 #include "../include/hhs_runtime_exact_abi.h"
 
 /* Keep the immutable exact-v1.1 source blob byte-identical. Compile the three
- * serialization entry points under internal raw names, then publish the
- * post-v1.1 guarded behavior from an additive successor bridge. */
-#define hhs_exact_vm81_frame_import_le hhs_exact_vm81_frame_import_le_v1_1_raw
-#define hhs_exact_vm81_frame_export_le hhs_exact_vm81_frame_export_le_v1_1_raw
-#define hhs_x86_64_bytecode_copy_exact hhs_x86_64_bytecode_copy_exact_v1_1_raw
+ * serialization entry points under the established internal raw names, then
+ * publish the post-v1.1 guarded behavior from an additive successor bridge. */
+#define hhs_exact_vm81_frame_import_le hhs_exact_vm81_frame_import_le_raw
+#define hhs_exact_vm81_frame_export_le hhs_exact_vm81_frame_export_le_raw
+#define hhs_x86_64_bytecode_copy_exact hhs_x86_64_bytecode_copy_exact_raw
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
 #undef hhs_exact_vm81_frame_import_le
 #undef hhs_exact_vm81_frame_export_le
