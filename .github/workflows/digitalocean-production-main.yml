@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - agent/pass219-exact-main-73652c12-ssh-pinning-recovery-20260908
   pull_request:
     branches: [main]
     paths:
@@ -35,8 +34,6 @@ jobs:
     steps:
       - name: Check out deployment candidate
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name == 'agent/pass219-exact-main-73652c12-ssh-pinning-recovery-20260908' && '73652c122ffff6a8b9bde9de00020610964d704c' || github.sha }}
       - name: Validate guarded deployment contract
         shell: bash
         run: |
@@ -73,7 +70,7 @@ jobs:
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
       HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
-      TARGET_SHA: ${{ github.ref_name == 'agent/pass219-exact-main-73652c12-ssh-pinning-recovery-20260908' && '73652c122ffff6a8b9bde9de00020610964d704c' || github.sha }}
+      TARGET_SHA: ${{ github.sha }}
 
     steps:
       - name: Check out exact main source
