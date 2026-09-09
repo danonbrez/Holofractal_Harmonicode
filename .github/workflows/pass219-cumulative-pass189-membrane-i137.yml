@@ -86,7 +86,7 @@ jobs:
 
       - name: Prove frozen I136 and Pass 189 historical lineage
         run: |
-          for commit in             3a76667eb463f8027e2bfaea4a2f76cff470c564             9dfd373d5ccd66b9172313b750c8439435d90f49             54ffe9d89d1aa928a6be75a3663ad51f709b7b9d             a1a55a4f621ff3678f5af81119439e9558cf9db4             c3cc477cd1b573eb5a318c7f38a1197e428d7014             f3ceba745ce5b478ca850c14a543a18189cc7d6c             7a99674997974262b171a0aee05665cbeab42ab9             0ee579aa574fa8f8b4c827518ae4249bbad4e8be             8ac51f5de0be323513577863fcbde71578ef4e14
+          for commit in             3a76667eb463f8027e2bfaea4a2f76cff470c564             9dfd373d5ccd66b9172313b750c8439435d90f49             54ffe9d89d1aa928a6be75a3663ad51f709b7b9d             a1a55a4f621ff3678f5af81119439e9558cf9db4             c3cc477cd1b573eb5a318c7f38a1197e428d7014             f3ceba745ce5b478ca850c14a543a18189cc7d6c             7a99674997974262b171a0aee05665cbeab42ab9             0ee579aa574fa8f8b4c827518ae4249bbad4e8be             8ac51f5de0be323513577863fcbde71578ef4e14             56253bcbeb626919240d0b360c7904e36a7aacc2
           do
             git merge-base --is-ancestor "$commit" HEAD
           done
@@ -113,14 +113,14 @@ jobs:
           test "$(git hash-object native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_4_VALIDATION_RECEIPT.json)" = "c383e5232d1d16ba2b9f66cbe9a7bda09e432d9d"
           test "$(git hash-object native_projects/hhs_native_dns_gate/config/service_registry.json)" = "16a264268f91301ba499c8beb253b18677873390"
 
-      - name: Prove I137 membrane identities and additive ABI order
+      - name: Prove I137 membrane baseline and current additive ABI successor order
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass189_1_37.h)" = "f487d7e67402cce3b97124dea531347e10b4be07"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass189_1_37.hpp)" = "610bcb4c9b823c457d3a049c45426ff57d5c992c"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass189_1_37.inc)" = "a3c054c8b4592a3a22944e5418a8847958156556"
           test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i137_pass189.py)" = "2ef0c3bf89b5ff367b9da8a9fbf7d8ab78f761cb"
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "80b3480b96ec897804f44ca561b3f575f070c9bb"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "e22eba55fcd054984ca1c2d883d093130e4ab974"
+          test "$(git rev-parse 56253bcbeb626919240d0b360c7904e36a7aacc2:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "80b3480b96ec897804f44ca561b3f575f070c9bb"
+          test "$(git rev-parse 56253bcbeb626919240d0b360c7904e36a7aacc2:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "e22eba55fcd054984ca1c2d883d093130e4ab974"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass189_1_37.c)" = "dfd03c3f8e7994895b638959cf4ffa27b593740f"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass189_1_37.cpp)" = "f933310df2820a574203b7e4fb68206dd2f3fa16"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass189_membrane_i137.py)" = "372b156e242e071de5eba042adaa49dfeacbf566"
@@ -188,6 +188,9 @@ jobs:
               'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
               'frozen_i136': '3a76667eb463f8027e2bfaea4a2f76cff470c564',
+              'i137_membrane_commit': '56253bcbeb626919240d0b360c7904e36a7aacc2',
+              'historical_i137_exact_abi_h_blob': '80b3480b96ec897804f44ca561b3f575f070c9bb',
+              'historical_i137_exact_abi_c_blob': 'e22eba55fcd054984ca1c2d883d093130e4ab974',
               'classification': 'HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS',
               'contextual_addresses': 51648192,
               'real_hardware_execution_authorized': False,
