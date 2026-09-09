@@ -2,7 +2,8 @@ name: DigitalOcean Production Exact Main
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
     branches: [main]
     paths:
@@ -68,13 +69,14 @@ jobs:
       HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '137.184.223.84' }}
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
       TARGET_SHA: ${{ github.sha }}
 
     steps:
       - name: Check out exact main source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ env.TARGET_SHA }}
           fetch-depth: 1
 
       - name: Set up canonical frontend build runtime
@@ -87,8 +89,12 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${HHS_SSH_PRIVATE_KEY}" ]]; then
-            echo "::error::Missing repository secret HHS_DIGITALOCEAN_SSH_PRIVATE_KEY. Production cannot prove or promote exact main without host authority."
+            echo "::error::Missing repository secret HHS_DIGITALOCEAN_SSH_PRIVATE_KEY. Production cannot prove or promote exact main without SSH authority."
             exit 2
+          fi
+          if [[ -z "${HHS_PINNED_KNOWN_HOSTS}" ]]; then
+            echo "::error::Missing repository secret HHS_DIGITALOCEAN_KNOWN_HOSTS. Runtime host-key discovery is forbidden; provision the audited production known_hosts entry."
+            exit 3
           fi
           [[ -n "${HHS_PRODUCTION_HOST}" ]]
           [[ -n "${HHS_PRODUCTION_USER}" ]]
@@ -129,8 +135,23 @@ jobs:
           install -d -m 0700 "$HOME/.ssh"
           printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
           chmod 0600 "$HOME/.ssh/hhs-production"
-          ssh-keyscan -T 15 -H "${HHS_PRODUCTION_HOST}" > "$HOME/.ssh/known_hosts"
-          test -s "$HOME/.ssh/known_hosts"
+          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          if ! ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null; then
+            echo "::error::Pinned HHS_DIGITALOCEAN_KNOWN_HOSTS does not contain the configured production host ${HHS_PRODUCTION_HOST}."
+            exit 4
+          fi
+          cat > "$HOME/.ssh/config" <<EOF
+          Host ${HHS_PRODUCTION_HOST}
+            IdentityFile $HOME/.ssh/hhs-production
+            BatchMode yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile $HOME/.ssh/known_hosts
+            UpdateHostKeys no
+          EOF
+          chmod 0600 "$HOME/.ssh/config"
+          ! grep -q 'ssh-keyscan' "$HOME/.ssh/config"
+          echo "HHS_PRODUCTION_PINNED_HOST_TRUST_CONFIGURED=1"
 
       - name: Transfer exact Runtime OS bundle
         shell: bash
