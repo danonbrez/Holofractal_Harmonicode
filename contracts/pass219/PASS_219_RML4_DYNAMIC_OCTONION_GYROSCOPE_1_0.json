@@ -84,5 +84,17 @@
     "hhs_runtime/pass219/dynamic_octonion_gyroscope.py",
     "tests/pass219/test_pass219_dynamic_octonion_gyroscope.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "validation": {
+    "workflow": "Pass 219 Dynamic Octonion Gyroscope",
+    "run_id": 34415997445,
+    "job_id": 102680894089,
+    "validated_head": "a0f29ed9e0294dbc4cb5556f902dfd27d04de63c",
+    "scope": "RML1+RML2+RML3+RML4+I148",
+    "passed": 47,
+    "failed": 0,
+    "warnings": 1,
+    "elapsed_seconds": "63.43",
+    "warning_classification": "INHERITED_PYTEST_ASYNCIO_MODE_CONFIG_WARNING"
+  },
+  "status": "IMPLEMENTED_VALIDATED"
 }
