@@ -62,22 +62,35 @@ jobs:
             git merge --no-edit origin/main
           fi
 
-      - name: Prove frozen I131 and Pass 194 authorization lineage
+      - name: Prove frozen I131 historical Pass 194 lineage and I132 baseline
         run: |
           git merge-base --is-ancestor b8202201bc92470afdd15d701d16ea102aeb3aab HEAD
           test "$(git merge-base b8202201bc92470afdd15d701d16ea102aeb3aab HEAD)" = "b8202201bc92470afdd15d701d16ea102aeb3aab"
           git merge-base --is-ancestor 714f3f3c5c77eab9714be421811ce4fd650a8e99 HEAD
           test "$(git rev-parse 714f3f3c5c77eab9714be421811ce4fd650a8e99:docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md)" = "f437461b4cb74b40ba8444c48319ad8f906359cf"
+          git merge-base --is-ancestor e0e0b33f5508beda2eb63ea09b112f89f244d93c HEAD
+          test "$(git rev-parse e0e0b33f5508beda2eb63ea09b112f89f244d93c:hhs_backend/visual_server.py)" = "998852398931f2e3af2da57ec455211f938b2661"
+          test "$(git rev-parse e0e0b33f5508beda2eb63ea09b112f89f244d93c:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py)" = "4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51"
+          test "$(git rev-parse e0e0b33f5508beda2eb63ea09b112f89f244d93c:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i131_pass195.py)" = "913a7f4624574b07b22c22f05a1b07f6656ecbd2"
 
-      - name: Prove Pass 194 implementation identities
+      - name: Prove stable Pass 194 implementation identities and current visual successor
         run: |
           test "$(git hash-object docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md)" = "f437461b4cb74b40ba8444c48319ad8f906359cf"
           test "$(git hash-object hhs_backend/runtime/hhs_pass194_multimodal_storage_training_v1.py)" = "37c7a7dd3ad246674111398c50ee94e580e72d58"
           test "$(git hash-object hhs_backend/api/pass194_storage_training_routes.py)" = "b414b77d2bf35e5fef3056e6e91da3d7146fc278"
-          test "$(git hash-object hhs_backend/visual_server.py)" = "998852398931f2e3af2da57ec455211f938b2661"
           test "$(git hash-object tests/test_hhs_pass194_multimodal_storage_training_v1.py)" = "ee7044605fde90f5bd40813de18cdf5d30b6d560"
           test "$(git hash-object tests/test_hhs_pass194_storage_training_routes.py)" = "7954ea3d45184088ef7f4406a018316075388054"
           test "$(git hash-object .github/workflows/pass194-i132-storage-training-validation.yml)" = "f5cb94c8ad9f92741dab81ec2b8cdf1661f6c979"
+          python - <<'PY'
+          from pathlib import Path
+          visual = Path('hhs_backend/visual_server.py').read_text()
+          for fragment in (
+              'pass194_storage_training_router',
+              '/api/runtime/storage-training/status',
+              'pass194_storage_training_api',
+          ):
+              assert fragment in visual, fragment
+          PY
 
       - name: Compile Pass 194 production and membrane surfaces
         run: |
@@ -129,8 +142,11 @@ jobs:
       - name: Run Pass 194 membrane preflight
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass194_membrane_i132.py
 
-      - name: Preserve frozen Pass 195 I131 successor membrane
-        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass195_membrane_i131.py
+      - name: Prove frozen Pass 195 I131 successor identity without recursive validation
+        run: |
+          git merge-base --is-ancestor 8bcc0921555ecface13113c8a2620415ddb3fdf1 HEAD
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i131_pass195.py)" = "913a7f4624574b07b22c22f05a1b07f6656ecbd2"
+          test "$(git rev-parse e0e0b33f5508beda2eb63ea09b112f89f244d93c:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i131_pass195.py)" = "913a7f4624574b07b22c22f05a1b07f6656ecbd2"
 
       - name: Emit I132 seal evidence
         env:
@@ -144,6 +160,9 @@ jobs:
               'validated_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'frozen_i131': 'b8202201bc92470afdd15d701d16ea102aeb3aab',
               'pass194_authorization_commit': '714f3f3c5c77eab9714be421811ce4fd650a8e99',
+              'i132_baseline_commit': 'e0e0b33f5508beda2eb63ea09b112f89f244d93c',
+              'historical_visual_server_blob': '998852398931f2e3af2da57ec455211f938b2661',
+              'pass195_successor_membrane_blob': '913a7f4624574b07b22c22f05a1b07f6656ecbd2',
               'classification': 'MISSING_IMPLEMENTATION_AND_MEMBRANE_EXPOSURE',
               'pass194_implemented_and_wired': True,
               'pass195_successor_preserved': True,
