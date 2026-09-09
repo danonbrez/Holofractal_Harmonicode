@@ -1,5 +1,17 @@
 /* Additive exact ABI aggregate through Pass 180 inherited application-factory binding, preserving current-main global latency and H36 policy surfaces. */
+#include "../include/hhs_runtime_exact_abi.h"
+
+/* Keep the immutable exact-v1.1 source blob byte-identical. Compile the three
+ * serialization entry points under internal raw names, then publish the
+ * post-v1.1 guarded behavior from an additive successor bridge. */
+#define hhs_exact_vm81_frame_import_le hhs_exact_vm81_frame_import_le_v1_1_raw
+#define hhs_exact_vm81_frame_export_le hhs_exact_vm81_frame_export_le_v1_1_raw
+#define hhs_x86_64_bytecode_copy_exact hhs_x86_64_bytecode_copy_exact_v1_1_raw
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
+#undef hhs_exact_vm81_frame_import_le
+#undef hhs_exact_vm81_frame_export_le
+#undef hhs_x86_64_bytecode_copy_exact
+#include "hhs_runtime_exact_abi_v1_2_serialization_bridge.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
 #include "hhs_runtime_uqcel_1_8_receipt.inc"
