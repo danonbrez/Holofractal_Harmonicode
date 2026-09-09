@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS219_RML3_PRODUCTION_PHASE_RUNTIME_BINDING_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML3_PRODUCTION_PHASE_BINDING",
+  "classification": "ADDITIVE_READ_ONLY_PRODUCTION_PHASE_GEOMETRY_RUNTIME_BINDING",
+  "base_main": "1b66fc81216e8c9a1540c0cbbf2e5e6007438573",
+  "inherits": {
+    "rml1": "HHS_PASS219_RECURSIVE_MANIFOLD_LEARNING_RECEIPT_V1",
+    "rml2": "HHS_PASS219_RML2_PHASE_GEOMETRIC_LEARNING_RECEIPT_V1",
+    "raw5184_hydration": "HHS_PASS219_I150_GLOBAL_RAW5184_COMPATIBILITY_HYDRATION_V1",
+    "octonion_audio_hydration": "HHS_PASS219_RAW5184_OCTONION_AUDIO_HYDRATION_V1",
+    "pass169_runtime": "HHS_PASS219_I168_RUNTIME_BINDING_RECORD_V1"
+  },
+  "physical_source": {
+    "raw_bits": 5184,
+    "raw_bytes": 648,
+    "vm81_cells": 81,
+    "phase_quads": 20,
+    "phase_banks": 4,
+    "quads_per_bank": 5,
+    "phase_modulus": 72,
+    "phase_channels": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "directional_product_rules": {
+      "xy": "(x+y) mod 72",
+      "yx": "(y+x+36) mod 72",
+      "zw": "(z+w) mod 72",
+      "wz": "(w+z+36) mod 72"
+    },
+    "raw_frame_replay_must_be_bit_identical": true
+  },
+  "geometry_binding": {
+    "rotors": {
+      "x": {"plane": "PRIMARY_XZ", "direction": "CW"},
+      "z": {"plane": "PRIMARY_XZ", "direction": "CCW"},
+      "y": {"plane": "ORTHOGONAL_YW", "direction": "CCW"},
+      "w": {"plane": "ORTHOGONAL_YW", "direction": "CW"}
+    },
+    "leaf_fold_tree": [["x", "z"], ["y", "w"]],
+    "nested_topology": "4 ordered bank circuits x 5 physical phase-quad leaves",
+    "shared_phase_circuit_root_across_four_hydration_lanes": true,
+    "child_order_is_semantic_identity": true,
+    "parenthesization_is_semantic_identity": true
+  },
+  "runtime_evidence_binding": {
+    "canonical_proof": "proof_hash216",
+    "canonical_transition": "transition_hash216",
+    "canonical_receipt": "receipt_hash72",
+    "canonical_replay": "replay_hash72",
+    "vm5184_address_preserved": true,
+    "phase_root_binding_mode": "DETERMINISTIC_READ_ONLY_SIDECAR",
+    "canonical_transition_hash216_modified": false,
+    "canonical_replay_hash72_modified": false,
+    "phase_root_embedded_inside_existing_hash216_payload_claimed": false,
+    "native_raw_frame_digest_inside_pass169_hash216_proven": false,
+    "phase_root_preserved_with_transition_identity": true,
+    "phase_root_preserved_with_replay_identity": true
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "canonical_pass169_runtime_authority_remains_single": true
+  },
+  "failure_policy": {
+    "wrong_raw5184_length": "FAIL_CLOSED",
+    "phase_channel_order_drift": "FAIL_CLOSED",
+    "directional_product_collapse": "FAIL_CLOSED",
+    "rml_lane_binding_drift": "FAIL_CLOSED",
+    "pass169_runtime_evidence_incomplete": "FAIL_CLOSED",
+    "replay_not_verified": "FAIL_CLOSED",
+    "authority_escalation": "FAIL_CLOSED"
+  },
+  "implementation": [
+    "hhs_runtime/pass219/production_phase_geometry_binding.py",
+    "tests/pass219/test_pass219_production_phase_geometry_binding.py"
+  ],
+  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+}
