@@ -19,15 +19,7 @@
   },
   "reversible_chart": {
     "dimension": 7,
-    "ordered_parameters": [
-      "xy_generator_track_code",
-      "zw_generator_track_code",
-      "xy_phase72",
-      "yx_phase72",
-      "zw_phase72",
-      "wz_phase72",
-      "chirality_sector"
-    ],
+    "ordered_parameters": ["xy_generator_track_code", "zw_generator_track_code", "xy_phase72", "yx_phase72", "zw_phase72", "wz_phase72", "chirality_sector"],
     "xy_generator_track_code": "72*x+y",
     "zw_generator_track_code": "72*z+w",
     "chirality_sector_count": 4,
@@ -48,14 +40,7 @@
     "injectivity_proof": "REVERSIBLE_BASE72_TRACK_PACKING_PLUS_EXPLICIT_PRODUCTS_AND_CHIRAL_SECTOR_THEN_INVERTIBLE_STEREOGRAPHIC_CHART"
   },
   "transition_preservation": {
-    "rml5_generators": [
-      "COUPLED_X_PRODUCT_Z72_MOVE",
-      "COUPLED_Y_PRODUCT_Z72_MOVE",
-      "COUPLED_Z_PRODUCT_Z72_MOVE",
-      "COUPLED_W_PRODUCT_Z72_MOVE",
-      "U36_CHIRAL_PAIR_FLIP_XY_YX",
-      "U36_CHIRAL_PAIR_FLIP_ZW_WZ"
-    ],
+    "rml5_generators": ["COUPLED_X_PRODUCT_Z72_MOVE", "COUPLED_Y_PRODUCT_Z72_MOVE", "COUPLED_Z_PRODUCT_Z72_MOVE", "COUPLED_W_PRODUCT_Z72_MOVE", "U36_CHIRAL_PAIR_FLIP_XY_YX", "U36_CHIRAL_PAIR_FLIP_ZW_WZ"],
     "coupled_z72_residues_per_generator": 72,
     "finite_generator_audit_cases": 290,
     "inverse_transition_must_restore_exact_s7_point": true,
@@ -69,8 +54,8 @@
     "physical_spherical_hardware_topology": false
   },
   "repair_forward_topology_obligations": {
-    "discrete_S7_embedding": "IMPLEMENTED_VALIDATION_REQUIRED",
-    "RML5_generator_closure_on_S7": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "discrete_S7_embedding": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "RML5_generator_closure_on_S7": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
     "Hopf_fibration_preservation": "REPAIR_FORWARD_REQUIRED",
     "Bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
   },
@@ -81,9 +66,17 @@
     "floating_point_authority": false,
     "scalar_projection_substitution_authority": false
   },
-  "implementation": [
-    "hhs_runtime/pass219/discrete_s7_embedding.py",
-    "tests/pass219/test_pass219_discrete_s7_embedding.py"
-  ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "implementation": ["hhs_runtime/pass219/discrete_s7_embedding.py", "tests/pass219/test_pass219_discrete_s7_embedding.py"],
+  "validation": {
+    "workflow": "Pass 219 Discrete S7 Embedding",
+    "run_id": 34420155680,
+    "job_id": 102693587051,
+    "validated_implementation_head": "de081a3e4405b40ac07386d465029954c2810a09",
+    "result": "67 passed, 0 failed, 1 inherited pytest-config warning",
+    "elapsed_seconds": "9.55",
+    "dependency_scope": "RML4_RML5_RML6",
+    "generator_cases": 290,
+    "conclusion": "SUCCESS"
+  },
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
 }
