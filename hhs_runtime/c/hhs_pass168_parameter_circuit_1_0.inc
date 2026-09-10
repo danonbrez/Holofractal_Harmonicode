@@ -14,16 +14,15 @@ static const char HHS_PASS168_SOURCE_SHA256[] =
 static const int64_t HHS_PASS168_LOSHU[9] = {4,9,2,3,5,7,8,1,6};
 static const int64_t HHS_PASS168_FIB[9] = {3,5,8,13,21,34,55,89,144};
 
+typedef struct HHSPass168U128 {
+    uint64_t hi;
+    uint64_t lo;
+} HHSPass168U128;
+
 static uint64_t hhs_pass168_abs_i64(int64_t value) {
     if (value >= 0)
         return (uint64_t)value;
     return (uint64_t)(-(value + 1)) + UINT64_C(1);
-}
-
-static unsigned __int128 hhs_pass168_abs_i128(__int128 value) {
-    if (value >= 0)
-        return (unsigned __int128)value;
-    return (unsigned __int128)(-(value + 1)) + (unsigned __int128)1;
 }
 
 static uint64_t hhs_pass168_gcd_u64(uint64_t a, uint64_t b) {
@@ -35,38 +34,154 @@ static uint64_t hhs_pass168_gcd_u64(uint64_t a, uint64_t b) {
     return a == 0U ? 1U : a;
 }
 
-static unsigned __int128 hhs_pass168_gcd_u128(unsigned __int128 a, unsigned __int128 b) {
-    while (b != 0U) {
-        unsigned __int128 r = a % b;
-        a = b;
-        b = r;
-    }
-    return a == 0U ? 1U : a;
+static int hhs_pass168_u128_compare(HHSPass168U128 a, HHSPass168U128 b) {
+    if (a.hi < b.hi) return -1;
+    if (a.hi > b.hi) return 1;
+    if (a.lo < b.lo) return -1;
+    if (a.lo > b.lo) return 1;
+    return 0;
 }
 
-static HHSExactStatus hhs_pass168_rat_from_i128(
-    __int128 numerator,
-    unsigned __int128 denominator,
-    HHSPass168Rational *out
+static HHSPass168U128 hhs_pass168_u128_mul_u64(uint64_t a, uint64_t b) {
+    const uint64_t mask32 = UINT64_C(0xffffffff);
+    const uint64_t a0 = a & mask32;
+    const uint64_t a1 = a >> 32U;
+    const uint64_t b0 = b & mask32;
+    const uint64_t b1 = b >> 32U;
+    const uint64_t w0 = a0 * b0;
+    const uint64_t t = a1 * b0 + (w0 >> 32U);
+    uint64_t w1 = t & mask32;
+    const uint64_t w2 = t >> 32U;
+    HHSPass168U128 out;
+    w1 += a0 * b1;
+    out.hi = a1 * b1 + w2 + (w1 >> 32U);
+    out.lo = (w1 << 32U) | (w0 & mask32);
+    return out;
+}
+
+static int hhs_pass168_u128_add(
+    HHSPass168U128 a,
+    HHSPass168U128 b,
+    HHSPass168U128 *out
 ) {
-    unsigned __int128 g;
-    unsigned __int128 absn;
-    if (out == NULL || denominator == 0U)
+    uint64_t lo;
+    uint64_t carry;
+    uint64_t hi0;
+    uint64_t hi;
+    if (out == NULL)
+        return 0;
+    lo = a.lo + b.lo;
+    carry = lo < a.lo ? 1U : 0U;
+    hi0 = a.hi + b.hi;
+    if (hi0 < a.hi)
+        return 0;
+    hi = hi0 + carry;
+    if (hi < hi0)
+        return 0;
+    out->hi = hi;
+    out->lo = lo;
+    return 1;
+}
+
+static HHSPass168U128 hhs_pass168_u128_sub(
+    HHSPass168U128 a,
+    HHSPass168U128 b
+) {
+    HHSPass168U128 out;
+    const uint64_t borrow = a.lo < b.lo ? 1U : 0U;
+    out.lo = a.lo - b.lo;
+    out.hi = a.hi - b.hi - borrow;
+    return out;
+}
+
+static uint64_t hhs_pass168_u128_mod_u64(HHSPass168U128 value, uint64_t divisor) {
+    uint64_t remainder = 0U;
+    int bit_index;
+    if (divisor <= 1U)
+        return 0U;
+    for (bit_index = 127; bit_index >= 0; --bit_index) {
+        uint64_t bit;
+        if (bit_index >= 64)
+            bit = (value.hi >> (unsigned)(bit_index - 64)) & UINT64_C(1);
+        else
+            bit = (value.lo >> (unsigned)bit_index) & UINT64_C(1);
+        if (remainder >= divisor - remainder)
+            remainder = remainder - (divisor - remainder);
+        else
+            remainder += remainder;
+        if (bit != 0U) {
+            if (remainder == divisor - 1U)
+                remainder = 0U;
+            else
+                ++remainder;
+        }
+    }
+    return remainder;
+}
+
+static int hhs_pass168_u128_div_exact_fit_u64(
+    HHSPass168U128 value,
+    uint64_t divisor,
+    uint64_t limit,
+    uint64_t *out
+) {
+    uint64_t low;
+    uint64_t high;
+    if (out == NULL || divisor == 0U)
+        return 0;
+    if (value.hi == 0U) {
+        uint64_t quotient;
+        if (value.lo % divisor != 0U)
+            return 0;
+        quotient = value.lo / divisor;
+        if (quotient > limit)
+            return 0;
+        *out = quotient;
+        return 1;
+    }
+    if (limit == 0U ||
+        hhs_pass168_u128_compare(value, hhs_pass168_u128_mul_u64(limit, divisor)) > 0)
+        return 0;
+    low = 0U;
+    high = limit;
+    while (low < high) {
+        const uint64_t middle = low + ((high - low) >> 1U);
+        const HHSPass168U128 product = hhs_pass168_u128_mul_u64(middle, divisor);
+        if (hhs_pass168_u128_compare(product, value) < 0)
+            low = middle + 1U;
+        else
+            high = middle;
+    }
+    if (hhs_pass168_u128_compare(hhs_pass168_u128_mul_u64(low, divisor), value) != 0)
+        return 0;
+    *out = low;
+    return 1;
+}
+
+static HHSExactStatus hhs_pass168_i64_from_sign_magnitude(
+    int negative,
+    uint64_t magnitude,
+    int64_t *out
+) {
+    const uint64_t min_magnitude = UINT64_C(1) << 63U;
+    if (out == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (numerator == 0) {
-        out->numerator = 0;
-        out->denominator = 1U;
+    if (magnitude == 0U) {
+        *out = 0;
         return HHS_EXACT_STATUS_OK;
     }
-    absn = hhs_pass168_abs_i128(numerator);
-    g = hhs_pass168_gcd_u128(absn, denominator);
-    numerator /= (__int128)g;
-    denominator /= g;
-    if (numerator > (__int128)INT64_MAX || numerator < (__int128)INT64_MIN ||
-        denominator > (unsigned __int128)UINT64_MAX)
-        return HHS_EXACT_STATUS_RANGE_ERROR;
-    out->numerator = (int64_t)numerator;
-    out->denominator = (uint64_t)denominator;
+    if (negative) {
+        if (magnitude > min_magnitude)
+            return HHS_EXACT_STATUS_RANGE_ERROR;
+        if (magnitude == min_magnitude)
+            *out = INT64_MIN;
+        else
+            *out = -(int64_t)magnitude;
+    } else {
+        if (magnitude > (uint64_t)INT64_MAX)
+            return HHS_EXACT_STATUS_RANGE_ERROR;
+        *out = (int64_t)magnitude;
+    }
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -75,8 +190,9 @@ HHSExactStatus hhs_pass168_rational_normalize(
     uint64_t denominator,
     HHSPass168Rational *out
 ) {
+    uint64_t magnitude;
     uint64_t g;
-    uint64_t absn;
+    HHSExactStatus status;
     if (out == NULL || denominator == 0U)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (numerator == 0) {
@@ -84,10 +200,14 @@ HHSExactStatus hhs_pass168_rational_normalize(
         out->denominator = 1U;
         return HHS_EXACT_STATUS_OK;
     }
-    absn = hhs_pass168_abs_i64(numerator);
-    g = hhs_pass168_gcd_u64(absn, denominator);
-    out->numerator = numerator / (int64_t)g;
-    out->denominator = denominator / g;
+    magnitude = hhs_pass168_abs_i64(numerator);
+    g = hhs_pass168_gcd_u64(magnitude, denominator);
+    magnitude /= g;
+    denominator /= g;
+    status = hhs_pass168_i64_from_sign_magnitude(numerator < 0, magnitude, &out->numerator);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    out->denominator = denominator;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -102,24 +222,102 @@ static int hhs_pass168_rat_equal(HHSPass168Rational a, HHSPass168Rational b) {
     return a.numerator == b.numerator && a.denominator == b.denominator;
 }
 
+static HHSExactStatus hhs_pass168_rat_addsub(
+    HHSPass168Rational a,
+    HHSPass168Rational b,
+    int subtract_b,
+    HHSPass168Rational *out
+) {
+    uint64_t g;
+    uint64_t a_factor;
+    uint64_t b_factor;
+    uint64_t reduction;
+    uint64_t numerator_magnitude;
+    uint64_t denominator;
+    uint64_t numerator_limit;
+    int a_negative;
+    int b_negative;
+    int result_negative;
+    int comparison;
+    HHSPass168U128 a_magnitude;
+    HHSPass168U128 b_magnitude;
+    HHSPass168U128 result_magnitude;
+    HHSPass168U128 denominator_wide;
+    HHSExactStatus status;
+    if (out == NULL || a.denominator == 0U || b.denominator == 0U)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    status = hhs_pass168_rational_normalize(a.numerator, a.denominator, &a);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_pass168_rational_normalize(b.numerator, b.denominator, &b);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    if (a.numerator == 0) {
+        if (!subtract_b) {
+            *out = b;
+            return HHS_EXACT_STATUS_OK;
+        }
+        if (b.numerator == INT64_MIN)
+            return HHS_EXACT_STATUS_RANGE_ERROR;
+        out->numerator = -b.numerator;
+        out->denominator = b.denominator;
+        return HHS_EXACT_STATUS_OK;
+    }
+    if (b.numerator == 0) {
+        *out = a;
+        return HHS_EXACT_STATUS_OK;
+    }
+    g = hhs_pass168_gcd_u64(a.denominator, b.denominator);
+    a_factor = b.denominator / g;
+    b_factor = a.denominator / g;
+    a_magnitude = hhs_pass168_u128_mul_u64(hhs_pass168_abs_i64(a.numerator), a_factor);
+    b_magnitude = hhs_pass168_u128_mul_u64(hhs_pass168_abs_i64(b.numerator), b_factor);
+    a_negative = a.numerator < 0;
+    b_negative = (b.numerator < 0) != (subtract_b != 0);
+    if (a_negative == b_negative) {
+        if (!hhs_pass168_u128_add(a_magnitude, b_magnitude, &result_magnitude))
+            return HHS_EXACT_STATUS_RANGE_ERROR;
+        result_negative = a_negative;
+    } else {
+        comparison = hhs_pass168_u128_compare(a_magnitude, b_magnitude);
+        if (comparison == 0) {
+            out->numerator = 0;
+            out->denominator = 1U;
+            return HHS_EXACT_STATUS_OK;
+        }
+        if (comparison > 0) {
+            result_magnitude = hhs_pass168_u128_sub(a_magnitude, b_magnitude);
+            result_negative = a_negative;
+        } else {
+            result_magnitude = hhs_pass168_u128_sub(b_magnitude, a_magnitude);
+            result_negative = b_negative;
+        }
+    }
+    reduction = hhs_pass168_gcd_u64(
+        hhs_pass168_u128_mod_u64(result_magnitude, g), g);
+    numerator_limit = result_negative ?
+        (UINT64_C(1) << 63U) : (uint64_t)INT64_MAX;
+    if (!hhs_pass168_u128_div_exact_fit_u64(
+            result_magnitude, reduction, numerator_limit, &numerator_magnitude))
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    denominator_wide = hhs_pass168_u128_mul_u64(a.denominator / g, b.denominator);
+    if (!hhs_pass168_u128_div_exact_fit_u64(
+            denominator_wide, reduction, UINT64_MAX, &denominator) || denominator == 0U)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    status = hhs_pass168_i64_from_sign_magnitude(
+        result_negative, numerator_magnitude, &out->numerator);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    out->denominator = denominator;
+    return HHS_EXACT_STATUS_OK;
+}
+
 static HHSExactStatus hhs_pass168_rat_add(
     HHSPass168Rational a,
     HHSPass168Rational b,
     HHSPass168Rational *out
 ) {
-    uint64_t g;
-    uint64_t ad;
-    uint64_t bd;
-    __int128 n;
-    unsigned __int128 d;
-    if (out == NULL || a.denominator == 0U || b.denominator == 0U)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    g = hhs_pass168_gcd_u64(a.denominator, b.denominator);
-    ad = a.denominator / g;
-    bd = b.denominator / g;
-    n = (__int128)a.numerator * (__int128)bd + (__int128)b.numerator * (__int128)ad;
-    d = (unsigned __int128)ad * (unsigned __int128)b.denominator;
-    return hhs_pass168_rat_from_i128(n, d, out);
+    return hhs_pass168_rat_addsub(a, b, 0, out);
 }
 
 static HHSExactStatus hhs_pass168_rat_sub(
@@ -127,19 +325,7 @@ static HHSExactStatus hhs_pass168_rat_sub(
     HHSPass168Rational b,
     HHSPass168Rational *out
 ) {
-    uint64_t g;
-    uint64_t ad;
-    uint64_t bd;
-    __int128 n;
-    unsigned __int128 d;
-    if (out == NULL || a.denominator == 0U || b.denominator == 0U)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    g = hhs_pass168_gcd_u64(a.denominator, b.denominator);
-    ad = a.denominator / g;
-    bd = b.denominator / g;
-    n = (__int128)a.numerator * (__int128)bd - (__int128)b.numerator * (__int128)ad;
-    d = (unsigned __int128)ad * (unsigned __int128)b.denominator;
-    return hhs_pass168_rat_from_i128(n, d, out);
+    return hhs_pass168_rat_addsub(a, b, 1, out);
 }
 
 static HHSExactStatus hhs_pass168_rat_mul(
@@ -147,31 +333,51 @@ static HHSExactStatus hhs_pass168_rat_mul(
     HHSPass168Rational b,
     HHSPass168Rational *out
 ) {
+    uint64_t a_magnitude;
+    uint64_t b_magnitude;
     uint64_t g1;
     uint64_t g2;
-    uint64_t an;
-    uint64_t bn;
-    __int128 n;
-    unsigned __int128 d;
-    int sign = 1;
+    uint64_t numerator_magnitude;
+    uint64_t denominator_left;
+    uint64_t denominator_right;
+    uint64_t denominator;
+    uint64_t numerator_limit;
+    int negative;
+    HHSExactStatus status;
     if (out == NULL || a.denominator == 0U || b.denominator == 0U)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    status = hhs_pass168_rational_normalize(a.numerator, a.denominator, &a);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_pass168_rational_normalize(b.numerator, b.denominator, &b);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
     if (a.numerator == 0 || b.numerator == 0)
         return hhs_pass168_rational_normalize(0, 1U, out);
-    an = hhs_pass168_abs_i64(a.numerator);
-    bn = hhs_pass168_abs_i64(b.numerator);
-    g1 = hhs_pass168_gcd_u64(an, b.denominator);
-    g2 = hhs_pass168_gcd_u64(bn, a.denominator);
-    an /= g1;
-    bn /= g2;
-    if ((a.numerator < 0) != (b.numerator < 0))
-        sign = -1;
-    n = (__int128)an * (__int128)bn;
-    if (sign < 0)
-        n = -n;
-    d = (unsigned __int128)(a.denominator / g2) *
-        (unsigned __int128)(b.denominator / g1);
-    return hhs_pass168_rat_from_i128(n, d, out);
+    a_magnitude = hhs_pass168_abs_i64(a.numerator);
+    b_magnitude = hhs_pass168_abs_i64(b.numerator);
+    g1 = hhs_pass168_gcd_u64(a_magnitude, b.denominator);
+    g2 = hhs_pass168_gcd_u64(b_magnitude, a.denominator);
+    a_magnitude /= g1;
+    b_magnitude /= g2;
+    negative = (a.numerator < 0) != (b.numerator < 0);
+    numerator_limit = negative ? (UINT64_C(1) << 63U) : (uint64_t)INT64_MAX;
+    if (a_magnitude != 0U && b_magnitude > numerator_limit / a_magnitude)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    numerator_magnitude = a_magnitude * b_magnitude;
+    denominator_left = a.denominator / g2;
+    denominator_right = b.denominator / g1;
+    if (denominator_left != 0U && denominator_right > UINT64_MAX / denominator_left)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    denominator = denominator_left * denominator_right;
+    if (denominator == 0U)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    status = hhs_pass168_i64_from_sign_magnitude(
+        negative, numerator_magnitude, &out->numerator);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    out->denominator = denominator;
+    return HHS_EXACT_STATUS_OK;
 }
 
 static HHSExactStatus hhs_pass168_rat_div(
@@ -179,22 +385,79 @@ static HHSExactStatus hhs_pass168_rat_div(
     HHSPass168Rational b,
     HHSPass168Rational *out
 ) {
-    HHSPass168Rational reciprocal;
-    uint64_t absn;
-    if (out == NULL || b.numerator == 0 || a.denominator == 0U || b.denominator == 0U)
+    uint64_t a_magnitude;
+    uint64_t b_magnitude;
+    uint64_t g1;
+    uint64_t g2;
+    uint64_t numerator_left;
+    uint64_t numerator_right;
+    uint64_t numerator_magnitude;
+    uint64_t denominator_left;
+    uint64_t denominator_right;
+    uint64_t denominator;
+    uint64_t numerator_limit;
+    int negative;
+    HHSExactStatus status;
+    if (out == NULL || a.denominator == 0U || b.denominator == 0U || b.numerator == 0)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    absn = hhs_pass168_abs_i64(b.numerator);
-    if (b.numerator < 0) {
-        if (b.denominator > (uint64_t)INT64_MAX)
-            return HHS_EXACT_STATUS_RANGE_ERROR;
-        reciprocal.numerator = -(int64_t)b.denominator;
-    } else {
-        if (b.denominator > (uint64_t)INT64_MAX)
-            return HHS_EXACT_STATUS_RANGE_ERROR;
-        reciprocal.numerator = (int64_t)b.denominator;
-    }
-    reciprocal.denominator = absn;
-    return hhs_pass168_rat_mul(a, reciprocal, out);
+    status = hhs_pass168_rational_normalize(a.numerator, a.denominator, &a);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    status = hhs_pass168_rational_normalize(b.numerator, b.denominator, &b);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    if (a.numerator == 0)
+        return hhs_pass168_rational_normalize(0, 1U, out);
+    a_magnitude = hhs_pass168_abs_i64(a.numerator);
+    b_magnitude = hhs_pass168_abs_i64(b.numerator);
+    g1 = hhs_pass168_gcd_u64(a_magnitude, b_magnitude);
+    g2 = hhs_pass168_gcd_u64(b.denominator, a.denominator);
+    numerator_left = a_magnitude / g1;
+    numerator_right = b.denominator / g2;
+    negative = (a.numerator < 0) != (b.numerator < 0);
+    numerator_limit = negative ? (UINT64_C(1) << 63U) : (uint64_t)INT64_MAX;
+    if (numerator_left != 0U && numerator_right > numerator_limit / numerator_left)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    numerator_magnitude = numerator_left * numerator_right;
+    denominator_left = a.denominator / g2;
+    denominator_right = b_magnitude / g1;
+    if (denominator_left != 0U && denominator_right > UINT64_MAX / denominator_left)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    denominator = denominator_left * denominator_right;
+    if (denominator == 0U)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    status = hhs_pass168_i64_from_sign_magnitude(
+        negative, numerator_magnitude, &out->numerator);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    out->denominator = denominator;
+    return HHS_EXACT_STATUS_OK;
+}
+
+static HHSExactStatus hhs_pass168_rat_negate(
+    HHSPass168Rational value,
+    HHSPass168Rational *out
+) {
+    HHSExactStatus status;
+    if (out == NULL || value.denominator == 0U)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    status = hhs_pass168_rational_normalize(value.numerator, value.denominator, &value);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    if (value.numerator == INT64_MIN)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    out->numerator = -value.numerator;
+    out->denominator = value.denominator;
+    return HHS_EXACT_STATUS_OK;
+}
+
+static HHSExactStatus hhs_pass168_one_minus_i64(int64_t value, int64_t *out) {
+    if (out == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (value == INT64_MIN)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    *out = INT64_C(1) - value;
+    return HHS_EXACT_STATUS_OK;
 }
 
 static HHSExactStatus hhs_pass168_matrix_identity(HHSPass168Matrix3 *out) {
@@ -379,8 +642,10 @@ static HHSExactStatus hhs_pass168_matrix_inverse(
         if (status != HHS_EXACT_STATUS_OK) return status;
         status = hhs_pass168_rat_sub(p1, p2, &minor);
         if (status != HHS_EXACT_STATUS_OK) return status;
-        if (sign[i] < 0)
-            minor.numerator = -minor.numerator;
+        if (sign[i] < 0) {
+            status = hhs_pass168_rat_negate(minor, &minor);
+            if (status != HHS_EXACT_STATUS_OK) return status;
+        }
         cof.v[i] = minor;
     }
     for (i = 0U; i < 9U; ++i) {
@@ -771,8 +1036,10 @@ static HHSExactStatus hhs_pass168_state_compute(HHSPass168CircuitState *state) {
     }
     if (state->raw[6].denominator != 1U || state->raw[21].denominator != 1U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    du = 1 - state->raw[6].numerator;
-    dv = 1 - state->raw[21].numerator;
+    status = hhs_pass168_one_minus_i64(state->raw[6].numerator, &du);
+    if (status != HHS_EXACT_STATUS_OK) return status;
+    status = hhs_pass168_one_minus_i64(state->raw[21].numerator, &dv);
+    if (status != HHS_EXACT_STATUS_OK) return status;
     if (du < -HHS_PASS168_MAX_ABS_INVERSE_DEPTH || du > HHS_PASS168_MAX_ABS_INVERSE_DEPTH ||
         dv < -HHS_PASS168_MAX_ABS_INVERSE_DEPTH || dv > HHS_PASS168_MAX_ABS_INVERSE_DEPTH)
         return HHS_EXACT_STATUS_RANGE_ERROR;
@@ -980,6 +1247,7 @@ HHSExactStatus hhs_pass168_candidate_validate(
     uint32_t p;
     int64_t du;
     int64_t dv;
+    HHSExactStatus depth_status;
     if (prior == NULL || candidate == NULL || out_reject_reason == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     *out_reject_reason = HHS_PASS168_REASON_NONE;
@@ -1011,8 +1279,16 @@ HHSExactStatus hhs_pass168_candidate_validate(
         *out_reject_reason = HHS_PASS168_REASON_INVERSE_DEPTH_DOMAIN;
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
-    du = 1 - candidate->values[6].numerator;
-    dv = 1 - candidate->values[21].numerator;
+    depth_status = hhs_pass168_one_minus_i64(candidate->values[6].numerator, &du);
+    if (depth_status != HHS_EXACT_STATUS_OK) {
+        *out_reject_reason = HHS_PASS168_REASON_INVERSE_DEPTH_DOMAIN;
+        return depth_status;
+    }
+    depth_status = hhs_pass168_one_minus_i64(candidate->values[21].numerator, &dv);
+    if (depth_status != HHS_EXACT_STATUS_OK) {
+        *out_reject_reason = HHS_PASS168_REASON_INVERSE_DEPTH_DOMAIN;
+        return depth_status;
+    }
     if (du < -HHS_PASS168_MAX_ABS_INVERSE_DEPTH || du > HHS_PASS168_MAX_ABS_INVERSE_DEPTH ||
         dv < -HHS_PASS168_MAX_ABS_INVERSE_DEPTH || dv > HHS_PASS168_MAX_ABS_INVERSE_DEPTH) {
         *out_reject_reason = HHS_PASS168_REASON_INVERSE_DEPTH_DOMAIN;

@@ -1,0 +1,122 @@
+{
+  "schema": "HHS_PASS219_RML12_RECIPROCAL_ROUTE_OPTIMIZER_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML12_RECIPROCAL_ROUTE_OPTIMIZER",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_RECIPROCAL_ROUTE_METADATA_AND_DETERMINISTIC_SELECTOR",
+  "base_checkpoint": "ec5aa8ac857bcd811fda1d3e388078653a0badb6",
+  "parent_validation": {
+    "rml11_run_id": 34432290908,
+    "rml11_job_id": 102730127210,
+    "rml11_validated_head": "01bfb38b10976ac23dabc418441035522e656bc1",
+    "rml11_contract_validation_seal": "4a269beb765892ae8a3957dde21db4d01118cd91",
+    "rml11_green_restart_seal": "ec5aa8ac857bcd811fda1d3e388078653a0badb6",
+    "rml11_result": "15 passed, 0 failed, 1 inherited pytest-config warning in 21.35s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "route_construction": {
+    "stage_1": "align chiral sign sectors with self-inverse u^36 pair flips",
+    "stage_2": "align x,y,z,w in fixed canonical order with coupled generator/product Z72 moves",
+    "generator_order": ["x", "y", "z", "w"],
+    "product_dependency": ["x->xy", "y->yx", "z->zw", "w->wz"],
+    "all_edges_must_remain_product_geometry_admissible": true,
+    "all_edges_must_have_exact_inverse": true,
+    "reverse_edge_sequence_must_restore_source": true,
+    "target_must_be_reached_exactly": true,
+    "rml5_constructive_connectivity_witness_retained": true
+  },
+  "route_metadata": {
+    "hopf_axis": [
+      "FIBER_PRESERVING_SAME_HOPF_BASE",
+      "BASE_MOVING_HOPF_TRANSPORT"
+    ],
+    "clifford_axis": [
+      "FULL_CL08_MODULE_INTERTWINER",
+      "EVEN_CLIFFORD_CHIRALITY_SECTOR_PRESERVING",
+      "ODD_CLIFFORD_CHIRALITY_SECTOR_SWAPPING",
+      "RESIDUAL_U72_PHASE_PRESERVED_NO_COMPLETE_CLIFFORD_LIFT"
+    ],
+    "hopf_and_clifford_axes_are_orthogonal": true,
+    "residual_u72_phase_is_never_discarded": true,
+    "classification_metadata_has_transition_authority": false
+  },
+  "deterministic_selection": {
+    "candidate_delta_policies": [
+      "SHORTEST_SIGNED_Z72",
+      "COMPLEMENTARY_WRAP_Z72"
+    ],
+    "u36_tie_rule": "positive shortest representative retained",
+    "selection_method": "EXACT_LEXICOGRAPHIC_INTEGER_VECTOR",
+    "selection_vector_order": [
+      "move_count",
+      "total_phase_transport_units",
+      "residual_u72_edges",
+      "hopf_base_moving_edges",
+      "clifford_chirality_swap_edges",
+      "policy_preference"
+    ],
+    "weighted_scalar_objective_used": false,
+    "gradient_descent_used": false,
+    "loss_function_used": false,
+    "probabilistic_search_used": false,
+    "floating_score_used": false
+  },
+  "finite_generator_audit_required": {
+    "coupled_z72_cases": 288,
+    "u36_pair_flip_cases": 2,
+    "total_cases": 290,
+    "exact_inverse_failures_required": 0,
+    "inherited_complete_clifford_lift_cases": 18,
+    "inherited_residual_u72_phase_cases": 272,
+    "inherited_full_cl08_module_intertwiner_cases": 10,
+    "inherited_odd_chirality_sector_swapping_cases": 8,
+    "inherited_hopf_same_base_cases": 4,
+    "inherited_hopf_base_moving_cases": 286,
+    "route_metadata_cross_tab_must_partition_all_290_cases": true,
+    "observed_cross_tab": {
+      "BASE_MOVING_HOPF_TRANSPORT|FULL_CL08_MODULE_INTERTWINER": 6,
+      "BASE_MOVING_HOPF_TRANSPORT|ODD_CLIFFORD_CHIRALITY_SECTOR_SWAPPING": 8,
+      "BASE_MOVING_HOPF_TRANSPORT|RESIDUAL_U72_PHASE_PRESERVED_NO_COMPLETE_CLIFFORD_LIFT": 272,
+      "FIBER_PRESERVING_SAME_HOPF_BASE|FULL_CL08_MODULE_INTERTWINER": 4
+    },
+    "observed_cross_tab_total": 290,
+    "observed_exact_inverse_failures": 0
+  },
+  "validation": {
+    "workflow": "Pass 219 Reciprocal Route Optimizer",
+    "run_id": 34436975540,
+    "job_id": 102743988934,
+    "validated_head": "7806163e541fa400ffbe2ad65a28cde6418d2ca3",
+    "pytest_result": "14 passed, 0 failed, 1 inherited pytest-config warning in 38.66s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "route_selector_has_canonical_transition_authority": false,
+    "existing_single_vm81_authority_preserved": true
+  },
+  "claims_deliberately_not_promoted": {
+    "lexicographic_route_is_global_graph_geodesic": false,
+    "hopf_same_base_is_always_preferred_over_shorter_transport": false,
+    "clifford_intertwiner_is_always_preferred_over_shorter_transport": false,
+    "classification_metadata_can_commit_runtime_state": false,
+    "physical_zero_entropy_theorem": false
+  },
+  "implementation": [
+    "hhs_runtime/pass219/reciprocal_route_optimizer.py",
+    "tests/pass219/test_pass219_reciprocal_route_optimizer.py"
+  ],
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
+}

@@ -1,0 +1,49 @@
+name: Pass 219 RML14 Route Bound Receipt Successor
+
+on:
+  push:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rml14_route_bound_receipt_successor_1_27.h'
+      - 'hhs_runtime/c/hhs_pass219_rml14_route_bound_receipt_successor_1_27.c'
+      - 'native_projects/hhs_pass219_rml14_route_bound_receipt/**'
+      - 'hhs_runtime/pass219/route_bound_receipt_successor.py'
+      - 'tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py'
+      - 'contracts/pass219/PASS_219_RML14_ROUTE_BOUND_RECEIPT_SUCCESSOR_1_0.json'
+      - '.github/workflows/pass219-rml14-route-bound-receipt-successor.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rml14_route_bound_receipt_successor_1_27.h'
+      - 'hhs_runtime/c/hhs_pass219_rml14_route_bound_receipt_successor_1_27.c'
+      - 'native_projects/hhs_pass219_rml14_route_bound_receipt/**'
+      - 'hhs_runtime/pass219/route_bound_receipt_successor.py'
+      - 'tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py'
+      - 'contracts/pass219/PASS_219_RML14_ROUTE_BOUND_RECEIPT_SUCCESSOR_1_0.json'
+      - '.github/workflows/pass219-rml14-route-bound-receipt-successor.yml'
+  workflow_dispatch:
+
+jobs:
+  targeted-rml14-route-bound-receipt:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+      - name: Build RML13 parent and RML14 native successor
+        run: make -C native_projects/hhs_pass219_rml14_route_bound_receipt validate
+      - name: Validate inherited Pass 188 native Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+      - name: Prove canonical hash and frozen I168 exports remain available
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_hash72_compute$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_hash216_compute$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_i168_bind_canonical$'
+      - name: Run RML13 through RML14 dependency scope plus frozen I168 regression
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_i168_pass169_general_runtime_binding.py

@@ -1,0 +1,105 @@
+{
+  "schema": "HHS_PASS219_RML2_OCTONION_PHASE_GEOMETRY_CONTRACT_V1",
+  "pass": 219,
+  "iteration": "RML2_PHASE_GEOMETRY",
+  "version": "1.0.0",
+  "extends": "HHS_PASS219_RECURSIVE_MANIFOLD_LEARNING_RECEIPT_V1",
+  "implementation_base_checkpoint": "9cb7f1f7b1afd9a77ed2c6496daddca325ee036e",
+  "merge_target": "main",
+  "phase_geometry": {
+    "phase_modulus": 72,
+    "quarter_cycle": 18,
+    "half_cycle": 36,
+    "full_cycle": 72,
+    "closure": "u^72=u^0",
+    "typed_u0_is_scalar_zero": false,
+    "rotor_order": ["x", "y", "z", "w"],
+    "rotors": {
+      "x": {"plane": "PRIMARY_XZ", "direction": "CW", "signed_orientation": 1},
+      "y": {"plane": "ORTHOGONAL_YW", "direction": "CCW", "signed_orientation": -1},
+      "z": {"plane": "PRIMARY_XZ", "direction": "CCW", "signed_orientation": -1},
+      "w": {"plane": "ORTHOGONAL_YW", "direction": "CW", "signed_orientation": 1}
+    },
+    "reciprocal_pairs": [
+      {"plane": "PRIMARY_XZ", "cw": "x", "ccw": "z"},
+      {"plane": "ORTHOGONAL_YW", "cw": "w", "ccw": "y"}
+    ],
+    "directional_channels": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "directional_identity_collapse_forbidden": true
+  },
+  "folding": {
+    "representation": "ORDERED_BINARY_NONASSOCIATIVE_FOLD_TREE",
+    "fold_order_is_semantic_identity": true,
+    "parenthesization_is_semantic_identity": true,
+    "commutative_reorder_permitted": false,
+    "nonassociative_rewrite_permitted": false,
+    "cross_plane_transition_is_preserved": true
+  },
+  "nested_circuits": {
+    "leaf": "OCTONION_PHASE_STRING",
+    "internal_node": "ORDERED_PHASE_CIRCUIT",
+    "children_may_be": ["OCTONION_PHASE_STRING", "ORDERED_PHASE_CIRCUIT"],
+    "child_order_is_semantic_identity": true,
+    "parent_child_binding_required": true,
+    "recursive_circuit_root_sha256_required": true,
+    "validation_nesting_guard": 81,
+    "validation_nesting_guard_is_ontological_limit": false
+  },
+  "phase_closure_measure": {
+    "primary_pair": "cyclic_distance(x,z) over oriented u^0..u^71 steps",
+    "orthogonal_pair": "cyclic_distance(y,w) over oriented u^0..u^71 steps",
+    "net_signed_phase": "cyclic_distance((x-z-y+w) mod 72,0)",
+    "phase_closed": "primary_pair=0 AND orthogonal_pair=0 AND net_signed_phase=0"
+  },
+  "rml_integration": {
+    "same_four_lanes": [
+      "RAW5184_X86_64",
+      "VM81_HASH72_HASH216",
+      "OCTONION_DUAL_STEREO_TERNARY",
+      "HARMONIC36_144X36"
+    ],
+    "all_four_lanes_bind_same_phase_circuit_root": true,
+    "lane_phase_node_ids_must_match_rml1_candidate": true,
+    "lane_candidate_transition_hash216_must_match_rml1_candidate": true,
+    "typed_disequilibrium_vector": [
+      "constraint_units",
+      "primary_pair_units",
+      "orthogonal_pair_units",
+      "net_signed_phase_units",
+      "nonclosed_leaf_count"
+    ],
+    "cross_domain_scalar_loss_forbidden": true,
+    "frontier_rule": "PARETO_NONDOMINATED_TYPED_DISEQUILIBRIUM",
+    "zero_frontier_action": "FORWARD_TO_EXISTING_VM81_ADMISSION_AUTHORITY"
+  },
+  "authority_boundary": {
+    "scalar_projection_substitution_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "implementation": {
+    "runtime": "hhs_runtime/pass219/phase_geometry_learning.py",
+    "tests": "tests/pass219/test_pass219_phase_geometry_learning.py",
+    "workflow": ".github/workflows/pass219-phase-geometry-learning.yml"
+  },
+  "scope": {
+    "implemented": [
+      "two_plane_four_rotor_phase_geometry",
+      "typed_u0_u36_u72_cycle_semantics",
+      "ordered_noncommutative_channel_identity",
+      "explicit_nonassociative_fold_tree",
+      "recursive_nested_octonion_phase_circuits",
+      "four_lane_rml1_binding",
+      "typed_pareto_learning_frontier"
+    ],
+    "not_claimed": [
+      "independent_vm81_authority",
+      "hash_mint_authority",
+      "scalar_substitution_authority",
+      "complete_fluidic_thermodynamics_solver",
+      "physical_thermodynamic_equivalence"
+    ]
+  }
+}

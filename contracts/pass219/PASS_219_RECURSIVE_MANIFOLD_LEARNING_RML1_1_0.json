@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS219_RECURSIVE_MANIFOLD_LEARNING_CONTRACT_V1",
+  "contract_id": "HHS-P219-RML1-HASH216-VM81-5184-4LANE",
+  "pass": 219,
+  "iteration": "RML1",
+  "version": "1.0.0",
+  "base_main": "1b66fc81216e8c9a1540c0cbbf2e5e6007438573",
+  "merge_target": "main",
+  "classification": "RECURSIVE_NONCOMMUTATIVE_NONASSOCIATIVE_CONSTRAINT_MANIFOLD_DEEP_LEARNING",
+  "inherits": {
+    "i153": "HHS_PASS219_I153_LOCAL_GLOBAL_EQUATION_SEARCH_FILTER_V1",
+    "i154": "HHS_PASS219_I154_AUTHORIZED_FOUR_LANE_EXHAUSTION_PLAN_V1",
+    "vm81_singleton_authority": true,
+    "hash72_ordered_receipts": true,
+    "hash216_transition_identity": true,
+    "hydration_bits": 5184,
+    "four_lanes": [
+      "RAW5184_X86_64",
+      "VM81_HASH72_HASH216",
+      "OCTONION_DUAL_STEREO_TERNARY",
+      "HARMONIC36_144X36"
+    ]
+  },
+  "learning_semantics": {
+    "all_equality_tokens_are_constraint_edges": true,
+    "edge_constructor": "A:=LHS;B:=RHS",
+    "admitted_truth_state": "A=P^2=B",
+    "global_closure_correspondence": "P^2=sqrt(AB)=sqrt(BA)=pq+1",
+    "scalar_projection_is_rational_correspondence_only": true,
+    "scalar_projection_substitution_authority": false,
+    "equal_state_collapses_variable_identity": false,
+    "noncommutative_operand_order_is_semantic_state": true,
+    "nonassociative_parenthesization_is_semantic_state": true,
+    "four_lane_views_form_one_entangled_manifold": true,
+    "learning_metric": "exact count of unsatisfied admitted-state correspondences on preserved equality edges",
+    "learning_loop": [
+      "authorized parent hydration state",
+      "candidate branch witness construction",
+      "four-lane preserved equality-edge evaluation",
+      "constraint disequilibrium ranking",
+      "minimum disequilibrium frontier",
+      "recursive continuation or VM81 admission frontier",
+      "existing VM81 authority decides canonical admission",
+      "existing Hash72/Hash216 authority emits canonical receipt/identity"
+    ]
+  },
+  "authority_boundaries": {
+    "creates_vm81_mutation_authority": false,
+    "creates_hash72_mint_authority": false,
+    "creates_hash216_persistence_authority": false,
+    "requires_i154_authorized_propagating_parent_on_all_four_lanes": true,
+    "requires_exact_parent_transition_hash216_binding": true,
+    "requires_authority_packet_sha256_binding": true,
+    "floating_point_canonical_authority": false
+  },
+  "syntax_invariants": {
+    "operator_set": [
+      "=",
+      "=="
+    ],
+    "source_offset_preserved": true,
+    "nesting_path_preserved": true,
+    "lhs_rhs_node_identity_preserved": true,
+    "parenthesization_sha256_required": true,
+    "ordered_operands_sha256_required": true,
+    "commutative_reorder_forbidden": true,
+    "nonassociative_rewrite_forbidden": true,
+    "directional_phase_channels": [
+      "x",
+      "y",
+      "z",
+      "w",
+      "xy",
+      "yx",
+      "zw",
+      "wz"
+    ],
+    "directional_phase_node_collapse_forbidden": true
+  },
+  "validation": {
+    "targeted_test": "tests/pass219/test_pass219_recursive_manifold_learning.py",
+    "workflow": ".github/workflows/pass219-recursive-manifold-learning.yml",
+    "expected_cases": 10
+  }
+}

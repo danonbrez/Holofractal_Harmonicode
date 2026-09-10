@@ -1,0 +1,128 @@
+{
+  "schema": "HHS_PASS219_RML10_REAL_CLIFFORD_MORITA_WITNESS_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML10_REAL_CLIFFORD_MORITA_WITNESS",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_INTEGER_CLIFFORD_MORITA_CONSTRUCTIVE_WITNESS",
+  "base_checkpoint": "fc98f5be073fd07ed61e1a4a937b64e9db26384c",
+  "parent_validation": {
+    "rml9_run_id": 34428473042,
+    "rml9_job_id": 102718664741,
+    "rml9_validated_head": "22cf66ccb2f511f7187343df1f64bf6d4c4dacee",
+    "rml9_contract_validation_seal": "365a0b7d38549f98e95e0679f720ac3aa707d33d",
+    "rml9_green_restart_seal": "fc98f5be073fd07ed61e1a4a937b64e9db26384c",
+    "rml9_result": "43 passed, 0 failed, 1 inherited pytest-config warning in 11.40s",
+    "pass188_native_validation": "GREEN",
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "validation": {
+    "workflow": "Pass 219 Real Clifford Morita Witness",
+    "run_id": 34431130138,
+    "job_id": 102726687935,
+    "validated_head": "6f34ad65377e48ed12b417c54e73a5e4f5f0c553",
+    "result": "18 passed, 0 failed, 1 inherited pytest-config warning in 15.57s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3",
+    "green_restart_checkpoint": "684e3a1ee1b2a3aebe1026ee26f35610b4627d7b",
+    "terminal_restart_checkpoint": "8eca98478c87016aaf9bcccffc3810690c970080"
+  },
+  "repository_type_alignment": {
+    "pass169_canonical_value_type": "ORDERED_MATRIX",
+    "pass169_matrix_tensor_types_reused": ["MatrixProduct", "TensorProduct"],
+    "pass193_exact_coordinate_types_reused": ["ExactMatrix", "CliffordRotor"],
+    "new_parallel_scalar_algebra_introduced": false
+  },
+  "cl08_constructive_isomorphism": {
+    "signature": "Cl_(0,8)",
+    "generator_convention": "e_i^2=-I",
+    "generator_count": 8,
+    "matrix_order": 16,
+    "matrix_entry_domain": "EXACT_INTEGERS_SUBRING_OF_REALS",
+    "generator_square_checks_required": 8,
+    "pairwise_anticommutation_checks_required": 28,
+    "clifford_word_count_required": 256,
+    "target_matrix_space_real_dimension": 256,
+    "frobenius_orthogonal_word_basis_required": true,
+    "cl08_to_m16r_exact_isomorphism_required": true,
+    "floating_point_authority": false
+  },
+  "matrix_morita_context": {
+    "matrix_order": 16,
+    "matrix_unit_count": 256,
+    "matrix_unit_law": "E_ij*E_kl=delta_(j,k)*E_il",
+    "matrix_unit_index_relation_cases": 65536,
+    "corner_idempotent": "E_00",
+    "full_corner_identity": "sum_i E_i0*E_00*E_0i=I_16",
+    "corner_identification": "E_00*M16(A)*E_00 ~= A",
+    "standard_column_module": "A^16",
+    "full_corner_morita_context_required": true,
+    "full_arbitrary_functor_coherence_runtime_formalization_required": false
+  },
+  "real_clifford_residue_models": [
+    "Cl_(0,0)=R",
+    "Cl_(0,1)=C",
+    "Cl_(0,2)=H",
+    "Cl_(0,3)=H+H",
+    "Cl_(0,4)=M2(H)",
+    "Cl_(0,5)=M4(C)",
+    "Cl_(0,6)=M8(R)",
+    "Cl_(0,7)=M8(R)+M8(R)"
+  ],
+  "period8_lift_models": [
+    "Cl_(0,8)=M16(R)",
+    "Cl_(0,9)=M16(C)",
+    "Cl_(0,10)=M16(H)",
+    "Cl_(0,11)=M16(H)+M16(H)",
+    "Cl_(0,12)=M32(H)",
+    "Cl_(0,13)=M64(C)",
+    "Cl_(0,14)=M128(R)",
+    "Cl_(0,15)=M128(R)+M128(R)"
+  ],
+  "period8_witness": {
+    "classical_tensor_factorization_reference": "Cl_(0,n+8)=Cl_(0,n) tensor Cl_(0,8)",
+    "constructive_cl08_factor": "M16(R)",
+    "exact_dimension_factor": 256,
+    "matrix_factor_morita_equivalent_to_base": true,
+    "all_eight_native_b8_residues_receive_witness": true
+  },
+  "native_topology_binding": {
+    "ordered_b8": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "rml6_s7_ancestry_retained": true,
+    "rml7_s4_hopf_ancestry_retained": true,
+    "rml8_pass188_native_packet_retained": true,
+    "rml9_ko_stable_o_reference_retained": true,
+    "live_phase72_values_retained": true,
+    "phase_state_reinterpreted_as_clifford_matrix_state": false
+  },
+  "generator_bridge": {
+    "inherited_generator_cases": 290,
+    "same_base_identity_cases": 4,
+    "base_moving_hopf_transport_cases": 286,
+    "inverse_restoration_failures": 0,
+    "generator_motion_reclassified_by_clifford_model": false
+  },
+  "claims_deliberately_not_promoted": {
+    "hhs_reproves_full_classical_bott_theorem": false,
+    "full_arbitrary_module_functor_coherence_formalized": false,
+    "full_s3_fiber_closure_of_rml6_discrete_image": false,
+    "full_rml5_generator_fiber_equivariance": false,
+    "physical_topological_hardware_theorem": false
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "existing_single_vm81_authority_preserved": true
+  },
+  "implementation": [
+    "hhs_runtime/pass219/real_clifford_morita_witness.py",
+    "tests/pass219/test_pass219_real_clifford_morita_witness.py"
+  ],
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
+}

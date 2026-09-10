@@ -1,0 +1,97 @@
+{
+  "schema": "HHS_PASS219_RML5_GYROSCOPE_PROOF_ADMISSION_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML5_GYROSCOPE_PROOF_ADMISSION_MEMBRANE",
+  "classification": "ADDITIVE_READ_ONLY_PROOF_AND_ADMISSION_MEMBRANE",
+  "base_checkpoint": "b80baaa72e8b46ac1ea17117b577d7965548f807",
+  "inherits": {
+    "rml4": "HHS_PASS219_RML4_EIGHT_CHANNEL_DYNAMIC_GYROSCOPE_V1",
+    "genesis_severance_constants": "PASS_038_GENESIS_SEVERANCE_PROTOCOL_V1",
+    "phase_modulus": 72,
+    "ambient_phase_state_count": 722204136308736,
+    "ambient_phase_state_expression": "72^8"
+  },
+  "genesis_exact_rational_binding": {
+    "resonator_constant_q": "179971179971/1000000",
+    "closure_constant_q": "1001/1000",
+    "a_squared_q": "1",
+    "floating_point_representation_authority": false,
+    "repository_canonical_constants_must_match": true
+  },
+  "chirality_polarity_projection": {
+    "pairs": [["xy", "yx"], ["zw", "wz"]],
+    "required_relation": "forward_sign == -reverse_sign",
+    "typed_polarities": ["+a^2", "-a^2"],
+    "polarity_projection_replaces_rotor_state": false,
+    "ordered_rotational_ancestry_preserved": true,
+    "scalar_projection_substitution_authority": false
+  },
+  "prime_boundary_projection": {
+    "requires_upstream_verified_prime_witness": true,
+    "requires_odd_P_greater_than_two": true,
+    "p_lower_boundary": "P-1",
+    "q_upper_boundary": "P+1",
+    "verified_projection_surfaces": ["p+q=2P", "pq=P^2-1", "P^2=pq+1"],
+    "projection_only": true,
+    "runtime_scalar_substitution_authority": false
+  },
+  "reciprocal_transition_closure": {
+    "forward_transition": "S_i --delta--> S_j",
+    "inverse_transition": "S_j ---delta--> S_i",
+    "phase_coordinates_must_restore": true,
+    "ambient_state_index_must_restore": true,
+    "product_geometry_must_restore": true,
+    "receipt_ancestry_erased": false,
+    "hash216_preimage_inversion_claimed": false,
+    "physical_thermodynamic_entropy_claimed": false,
+    "information_discarded_by_phase_transform": false
+  },
+  "chiral_pair_half_turn": {
+    "operator": "u^36",
+    "phase_steps": 36,
+    "meaning": "EXACT_PAIR_CHIRALITY_INVERSION_BETWEEN_PLUS_AND_MINUS_U18",
+    "both_members_of_pair_flip_together": true,
+    "opposed_plus_minus_a_squared_polarity_preserved": true,
+    "self_inverse": true
+  },
+  "constructive_connectivity": {
+    "admitted_manifold": "BALANCED_CHIRALITY_RML4_PRODUCT_ADMISSIBLE_STATES",
+    "proof_method": "U36_PAIR_FLIPS_PLUS_COUPLED_Z72_GENERATOR_PRODUCT_MOVES",
+    "requires_exhaustive_72_pow_8_enumeration": false,
+    "strong_connectivity_target": true,
+    "all_constructed_moves_reversible": true,
+    "dead_end_state_permitted_after_rml5_admission": false
+  },
+  "state_admission": {
+    "required": ["rml4_product_geometry_admissible", "opposed_chiral_pairs", "exact_genesis_rational_constants", "verified_odd_prime_witness", "P_minus_1_P_plus_1_projection_equalities", "Omega_true", "Delta_e_zero_constraint_verified", "Psi_zero_constraint_verified"],
+    "success_decision": "RML5_STATE_READY_FOR_RECIPROCAL_TRANSITION_PROOF",
+    "final_bundle_decision": "READY_FOR_EXISTING_VM81_ADMISSION_AUTHORITY"
+  },
+  "repair_forward_topology_obligations": {
+    "balanced_chirality_manifold_strong_connectivity": "IMPLEMENTED_CONSTRUCTIVE_PROOF_OPERATOR",
+    "discrete_S7_embedding": "REPAIR_FORWARD_REQUIRED",
+    "Hopf_fibration_preservation": "REPAIR_FORWARD_REQUIRED",
+    "Bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "existing_vm81_authority_remains_single": true
+  },
+  "implementation": ["hhs_runtime/pass219/gyroscope_admission_membrane.py", "tests/pass219/test_pass219_gyroscope_admission_membrane.py"],
+  "validation": {
+    "workflow": "Pass 219 Gyroscope Proof Admission Membrane",
+    "run_id": 34418531519,
+    "job_id": 102688673573,
+    "validated_implementation_head": "dd4769118e17c90fcafad80084d7bea412d20f56",
+    "result": "60 passed, 0 failed, 1 inherited pytest-config warning",
+    "elapsed_seconds": "69.39",
+    "dependency_scope": "RML1_RML2_RML3_RML4_RML5_I148",
+    "conclusion": "SUCCESS"
+  },
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
+}
