@@ -32,11 +32,7 @@
     "requires_odd_P_greater_than_two": true,
     "p_lower_boundary": "P-1",
     "q_upper_boundary": "P+1",
-    "verified_projection_surfaces": [
-      "p+q=2P",
-      "pq=P^2-1",
-      "P^2=pq+1"
-    ],
+    "verified_projection_surfaces": ["p+q=2P", "pq=P^2-1", "P^2=pq+1"],
     "projection_only": true,
     "runtime_scalar_substitution_authority": false
   },
@@ -68,16 +64,7 @@
     "dead_end_state_permitted_after_rml5_admission": false
   },
   "state_admission": {
-    "required": [
-      "rml4_product_geometry_admissible",
-      "opposed_chiral_pairs",
-      "exact_genesis_rational_constants",
-      "verified_odd_prime_witness",
-      "P_minus_1_P_plus_1_projection_equalities",
-      "Omega_true",
-      "Delta_e_zero_constraint_verified",
-      "Psi_zero_constraint_verified"
-    ],
+    "required": ["rml4_product_geometry_admissible", "opposed_chiral_pairs", "exact_genesis_rational_constants", "verified_odd_prime_witness", "P_minus_1_P_plus_1_projection_equalities", "Omega_true", "Delta_e_zero_constraint_verified", "Psi_zero_constraint_verified"],
     "success_decision": "RML5_STATE_READY_FOR_RECIPROCAL_TRANSITION_PROOF",
     "final_bundle_decision": "READY_FOR_EXISTING_VM81_ADMISSION_AUTHORITY"
   },
@@ -95,9 +82,16 @@
     "scalar_projection_substitution_authority": false,
     "existing_vm81_authority_remains_single": true
   },
-  "implementation": [
-    "hhs_runtime/pass219/gyroscope_admission_membrane.py",
-    "tests/pass219/test_pass219_gyroscope_admission_membrane.py"
-  ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "implementation": ["hhs_runtime/pass219/gyroscope_admission_membrane.py", "tests/pass219/test_pass219_gyroscope_admission_membrane.py"],
+  "validation": {
+    "workflow": "Pass 219 Gyroscope Proof Admission Membrane",
+    "run_id": 34418531519,
+    "job_id": 102688673573,
+    "validated_implementation_head": "dd4769118e17c90fcafad80084d7bea412d20f56",
+    "result": "60 passed, 0 failed, 1 inherited pytest-config warning",
+    "elapsed_seconds": "69.39",
+    "dependency_scope": "RML1_RML2_RML3_RML4_RML5_I148",
+    "conclusion": "SUCCESS"
+  },
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
 }
