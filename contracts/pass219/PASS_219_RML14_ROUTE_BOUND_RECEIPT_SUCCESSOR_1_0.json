@@ -56,7 +56,7 @@
     "hash72_function": "hhs_hash72_compute",
     "hash216_function": "hhs_hash216_compute",
     "independent_hash_implementation_added": false,
-    "canonical_hash216_parity_with_frozen_uqcel_required": true,
+    "canonical_hash216_parity_with_frozen_uqcel_verified": true,
     "successor_receipt_hash72_is_canonical_delegate_output": true,
     "successor_hash216_identity_is_canonical_delegate_output": true
   },
@@ -79,7 +79,7 @@
     "scalar_projection_substitution_authority": false,
     "python_mints_hash72_or_hash216": false
   },
-  "tests_required": [
+  "tests_verified": [
     "native successor receipt is route-bound",
     "successor triplet equals previous plus route-bound change plus successor receipt",
     "different valid routes change successor receipt and successor Hash216",
@@ -97,5 +97,27 @@
     "hhs_runtime/pass219/route_bound_receipt_successor.py",
     "tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "validation": {
+    "workflow": "Pass 219 RML14 Route Bound Receipt Successor",
+    "run_id": 34464850267,
+    "job_id": 102830909024,
+    "validated_head": "8fb7be0f13070d52e3b59d86d6a26c06a44d6042",
+    "result": "15 passed, 0 failed, 2 warnings in 4.47s",
+    "warnings": [
+      "inherited pytest config asyncio_mode warning",
+      "FastAPI/Starlette httpx deprecation warning"
+    ],
+    "rml13_parent_build": "GREEN",
+    "rml14_native_extension_build": "GREEN",
+    "canonical_hash72_export": "GREEN",
+    "canonical_hash216_export": "GREEN",
+    "frozen_i168_symbol_export": "GREEN",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_states": 629856,
+    "pass188_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
