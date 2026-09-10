@@ -89,9 +89,9 @@
   "honesty_boundary": {
     "frozen_uqcel_v1_receipt_material_includes_candidate_frame": false,
     "receipt_hash72_directly_route_bound": false,
-    "different_route_witness_expected_to_change_change_hash72": true,
-    "different_route_witness_expected_to_change_hash216_identity": true,
-    "different_route_witness_expected_to_change_frozen_receipt_hash72": false,
+    "different_route_witness_changes_change_hash72": true,
+    "different_route_witness_changes_hash216_identity": true,
+    "different_route_witness_changes_frozen_receipt_hash72": false,
     "historical_i162_i168_hashes_rewritten": false,
     "rml13_claims_global_graph_geodesic": false
   },
@@ -103,7 +103,7 @@
     "scalar_projection_substitution_authority": false,
     "python_mints_hash72_or_hash216": false
   },
-  "negative_tests_required": [
+  "negative_tests_verified": [
     "inconsistent route partition rejected natively",
     "different valid RML12 route changes prehash frame/change/hash216",
     "frozen UQCEL receipt remains route-neutral",
@@ -116,5 +116,27 @@
     "hhs_runtime/pass219/native_route_witness_binding.py",
     "tests/pass219/test_pass219_rml13_native_route_witness_binding.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "validation": {
+    "first_run_id": 34438142834,
+    "first_job_id": 102747417114,
+    "first_run_result": "CI dependency failure before test execution: fastapi missing",
+    "ci_dependency_repair_commit": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "green_run_id": 34464110690,
+    "green_job_id": 102828527303,
+    "validated_head": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "pytest_result": "16 passed, 0 failed, 2 warnings in 26.39s",
+    "warnings": [
+      "inherited pytest config asyncio_mode warning",
+      "FastAPI/Starlette httpx deprecation warning"
+    ],
+    "rml13_native_extension_build": "GREEN",
+    "frozen_i168_symbol_export": "GREEN",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_states": 629856,
+    "pass188_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
