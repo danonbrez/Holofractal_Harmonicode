@@ -101,3 +101,10 @@ A newly red workflow is part of the branch regression surface until shown to be 
 ## Exact next action
 
 Implement the additive structural lift ABI on top of `hhs_pass219b_phase_quantized_hydration_1_0` and `hhs_pass219_hhcq_symbolic_phase_gear_1_32`, then run strict structural tests before authenticated benchmarking.
+
+## Repair-forward mainline reconciliation — 2026-09-10
+
+- Canonical main merged into this lineage through reconciliation nucleus `fad9885c9518785cdc474ccbb8dcb0c788638ea4`, preserving both histories.
+- I179 validation-environment repair checkpoint: `877d6a2cb8a2a6f4d17f9c30d8f00d8d7c5b64ef`; only the bounded workflow dependency set changed, adding `cryptography` required by the inherited I181 successor gate.
+- This restart-record update intentionally touches a Phase12 workflow path so the exact combined Phase12 structural-lift surface is revalidated after mainline reconciliation.
+- Merge remains gated on the dedicated Phase12 proof plus bounded current-main/cumulative integration checks; no canonical authority expansion is introduced by this checkpoint.
