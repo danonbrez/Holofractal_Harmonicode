@@ -10,6 +10,14 @@
     "rml6_validated_head": "de081a3e4405b40ac07386d465029954c2810a09",
     "rml6_result": "67 passed, 0 failed, 1 inherited pytest-config warning in 9.55s"
   },
+  "validation": {
+    "workflow": "Pass 219 Exact Hopf Projection",
+    "run_id": 34420516153,
+    "job_id": 102694683447,
+    "validated_head": "71fa0ef9dd64376862585feb33e61f9e3b815457",
+    "result": "88 passed, 0 failed, 1 inherited pytest-config warning in 12.20s",
+    "dependency_scope_validated": true
+  },
   "domain": "RML6_EXACT_RATIONAL_S7_EMBEDDING",
   "quaternionic_hopf_map": {
     "split": "S7_POINT_AS_PAIR_OF_QUATERNIONS_Q1_Q2",
@@ -39,8 +47,13 @@
   "rml5_generator_classification": {
     "generator_classes": ["COUPLED_Z72_GENERATOR_PRODUCT_MOVE", "U36_CHIRAL_PAIR_FLIP"],
     "finite_cases": 290,
-    "allowed_classifications": ["FIBER_PRESERVING_SAME_HOPF_BASE", "BASE_MOVING_HOPF_TRANSPORT"],
-    "classification_must_partition_all_cases": true,
+    "same_base_fiber_preserving_cases": 4,
+    "base_moving_hopf_transport_cases": 286,
+    "same_base_cases_are_exactly_zero_step_identity_moves": ["x:0", "y:0", "z:0", "w:0"],
+    "u36_pair_flips_same_base_cases": 0,
+    "u36_pair_flips_are_base_moving_but_self_restoring": true,
+    "classification_partition_complete": true,
+    "explicit_inverse_restoration_failures": 0,
     "explicit_inverse_must_restore_exact_source_hopf_base": true,
     "all_generators_assumed_fiber_preserving": false
   },
@@ -52,9 +65,9 @@
     "physical_topological_hardware_claim": false
   },
   "repair_forward_obligations": {
-    "exact_hopf_s7_to_s4_projection": "IMPLEMENTED_VALIDATION_REQUIRED",
-    "q8_fiber_invariance": "IMPLEMENTED_VALIDATION_REQUIRED",
-    "rml5_generator_hopf_classification": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "exact_hopf_s7_to_s4_projection": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "q8_fiber_invariance": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "rml5_generator_hopf_classification": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
     "full_s3_fiber_closure_of_discrete_image": "REPAIR_FORWARD_REQUIRED",
     "generator_fiber_equivariance": "REPAIR_FORWARD_REQUIRED",
     "bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
@@ -70,5 +83,5 @@
     "hhs_runtime/pass219/discrete_hopf_projection.py",
     "tests/pass219/test_pass219_discrete_hopf_projection.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
 }
