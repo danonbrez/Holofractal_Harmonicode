@@ -148,9 +148,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          make -C native_projects/hhs_pass188_bott_runtime clean all test
-          native_projects/hhs_pass188_bott_runtime/build/hhs_pass188_cli hydrate | tee /tmp/pass188_transport_control.txt
-          grep -F 'states=1259712 active=629856 collapse=629856 checksum=11e3bbf0214751c3' /tmp/pass188_transport_control.txt
+          make -C native_projects/hhs_pass188_bott_runtime clean all
+          native_projects/hhs_pass188_bott_runtime/build/hhs_pass188_test | tee /tmp/pass188_runtime_test.txt
+          grep -F 'HHS_PASS_188_BOTT_RUNTIME_PASS states=1259712 active=629856 collapse=629856 checksum=11e3bbf0214751c3' /tmp/pass188_runtime_test.txt
+          native_projects/hhs_pass188_bott_runtime/build/hhs_pass188_cli hydrate | tee /tmp/pass188_transport_control.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path('/tmp/pass188_transport_control.json').read_text(encoding='utf-8'))
+          assert d['classification'] == 'HHS_PASS_188_FULL_HYDRATION_VERIFIED'
+          assert d['hydrated_states'] == 1259712
+          assert d['active_period_two_states'] == 629856
+          assert d['asymmetric_collapse_states'] == 629856
+          assert d['gear_preserved_states'] == 1259712
+          assert d['coordinate_drift_states'] == 0
+          assert d['deterministic_checksum_u64'] == '11e3bbf0214751c3'
+          print('PASS219_TRANSPORT_PASS188_FROZEN_CONTROL')
+          PY
 
       - uses: actions/upload-artifact@v4
         if: always()
