@@ -25,6 +25,17 @@ typedef struct HHSPass219RML17TransportAddressV1 {
     uint8_t direction4;
 } HHSPass219RML17TransportAddressV1;
 
+typedef struct HHSPass219RML17TransportParityRowV1 {
+    uint64_t source_index;
+    uint64_t target_index;
+    HHSPass219RML17TransportAddressV1 source;
+    HHSPass219RML17TransportAddressV1 target;
+    int8_t source_flux;
+    uint8_t reciprocal_direction4;
+    uint8_t zero_canonical_diffusion;
+    uint8_t exact_reverse_restores_source;
+} HHSPass219RML17TransportParityRowV1;
+
 typedef struct HHSPass219RML17TransportReportV1 {
     uint64_t node_count;
     uint64_t address_count;
@@ -71,6 +82,11 @@ int hhs_pass219_rml17_transport_successor(
 int hhs_pass219_rml17_transport_zero_diffusion(
     const HHSPass219RML17TransportAddressV1* source,
     uint8_t* out_zero_diffusion
+);
+int hhs_pass219_rml17_transport_export_parity_rows(
+    uint64_t start_index,
+    uint64_t row_count,
+    HHSPass219RML17TransportParityRowV1* out_rows
 );
 int hhs_pass219_rml17_transport_audit(HHSPass219RML17TransportReportV1* out_report);
 
