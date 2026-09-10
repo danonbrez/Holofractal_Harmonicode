@@ -1,0 +1,267 @@
+name: Pass 219 RML19 Route Composition Conservation Acceleration
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml19-route-composition-conservation-acceleration-20260910
+    paths:
+      - 'hhs_runtime/pass219/rml19_route_composition_conservation_acceleration.py'
+      - 'tests/pass219/test_pass219_rml19_route_composition_conservation_acceleration.py'
+      - '.github/workflows/pass219-rml19-route-composition-conservation-acceleration.yml'
+      - 'evidence/pass219_rml19/**'
+      - 'docs/operations/restart/PASS_219_RML19_ROUTE_COMPOSITION_CONSERVATION_ACCELERATION_CHECKPOINT_20260910.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rml19-route-composition-conservation-acceleration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Guard frozen RML18 parent and bounded RML19 scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=76cd6f995668dac3f1bfb10ae25a8301b2233237
+          expected_tree=3e1b1e3844cfa7757e49cc2112886fd09c9d40cd
+          test "$(git rev-parse "$base^{tree}")" = "$expected_tree"
+          git diff --name-only "$base"...HEAD | tee /tmp/pass219_rml19_changed.txt
+          python - <<'PY'
+          from pathlib import Path
+
+          allowed = {
+              '.github/workflows/pass219-rml19-route-composition-conservation-acceleration.yml',
+              'hhs_runtime/pass219/rml19_route_composition_conservation_acceleration.py',
+              'tests/pass219/test_pass219_rml19_route_composition_conservation_acceleration.py',
+              'docs/operations/restart/PASS_219_RML19_ROUTE_COMPOSITION_CONSERVATION_ACCELERATION_CHECKPOINT_20260910.md',
+              'evidence/pass219_rml19/PASS_219_RML19_ROUTE_COMPOSITION_CONSERVATION_ACCELERATION_RECEIPT.json',
+          }
+          changed = [
+              line for line in Path('/tmp/pass219_rml19_changed.txt').read_text().splitlines()
+              if line
+          ]
+          illegal = [path for path in changed if path not in allowed]
+          assert not illegal, illegal
+          assert not any(path.startswith('hhs_runtime/pass219/rml18_') for path in changed)
+          assert 'hhs_runtime/pass219/discrete_transport_conservation.py' not in changed
+          print('PASS219_RML19_BOUNDED_SCOPE', len(changed), 'files')
+          PY
+
+      - name: Compile RML19 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/rml19_route_composition_conservation_acceleration.py \
+            tests/pass219/test_pass219_rml19_route_composition_conservation_acceleration.py
+
+      - name: Revalidate frozen RML18 exact membrane
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py
+
+      - name: Validate RML19 exact parity and fail-closed cache
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml19_route_composition_conservation_acceleration.py
+
+      - name: Benchmark residual route and composition audits
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/rml19-route-composition-conservation-acceleration
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          from statistics import median
+          from time import perf_counter_ns
+
+          from hhs_runtime.pass219.dynamic_octonion_gyroscope import (
+              build_gyroscope_state,
+              expected_product_phase,
+          )
+          from hhs_runtime.pass219.reciprocal_route_cache import clear_reciprocal_route_cache
+          from hhs_runtime.pass219 import rml18_transport_conservation_acceleration as rml18
+          from hhs_runtime.pass219 import rml19_route_composition_conservation_acceleration as rml19
+
+          SIGNS = {'xy': 1, 'yx': -1, 'zw': 1, 'wz': -1}
+
+          def state(state_id, *, x=7, y=19, z=31, w=43):
+              phases = {
+                  'x': x,
+                  'y': y,
+                  'z': z,
+                  'w': w,
+                  'xy': expected_product_phase(x, SIGNS['xy']),
+                  'yx': expected_product_phase(y, SIGNS['yx']),
+                  'zw': expected_product_phase(z, SIGNS['zw']),
+                  'wz': expected_product_phase(w, SIGNS['wz']),
+              }
+              return build_gyroscope_state(phases, SIGNS, state_id=state_id)
+
+          def timed(callable_):
+              started = perf_counter_ns()
+              value = callable_()
+              return perf_counter_ns() - started, value
+
+          parent = rml19.verify_frozen_rml18_parent()
+          assert parent['status'] == rml18.ADMITTED, parent
+          assert rml18.exact_invariant_1001(parent['invariant']) is True
+
+          clear_reciprocal_route_cache()
+          route_source = state('rml19:benchmark:route:source')
+          route_target = state('rml19:benchmark:route:target', x=10, z=35)
+          route_id = 'rml19:benchmark:route'
+
+          # Warm inherited RML16 route construction so the baseline measures the
+          # residual RML17/RML18 conservation audit rather than cold route build.
+          warm_route = rml18.gate_route_candidate(route_source, route_target, route_id=route_id)
+          assert warm_route['status'] == rml18.ADMITTED
+          route_baseline_ns = []
+          route_baseline_record = None
+          for _ in range(3):
+              elapsed, record = timed(
+                  lambda: rml18.gate_route_candidate(route_source, route_target, route_id=route_id)
+              )
+              route_baseline_ns.append(elapsed)
+              route_baseline_record = record
+
+          rml19.clear_rml19_certificate_cache()
+          route_prime = rml19.gate_route_candidate(route_source, route_target, route_id=route_id)
+          assert route_prime == route_baseline_record
+          route_accelerated_ns = []
+          route_accelerated_record = None
+          for _ in range(101):
+              elapsed, record = timed(
+                  lambda: rml19.gate_route_candidate(route_source, route_target, route_id=route_id)
+              )
+              route_accelerated_ns.append(elapsed)
+              route_accelerated_record = record
+          assert route_accelerated_record == route_baseline_record
+
+          clear_reciprocal_route_cache()
+          composition_states = [
+              state('rml19:benchmark:composition:s0'),
+              state('rml19:benchmark:composition:s1', x=8),
+              state('rml19:benchmark:composition:s2', x=8, y=23),
+          ]
+          composition_id = 'rml19:benchmark:composition'
+          warm_composition = rml18.gate_composed_route_candidate(
+              composition_states,
+              composition_id=composition_id,
+          )
+          assert warm_composition['status'] == rml18.ADMITTED
+          composition_baseline_ns = []
+          composition_baseline_record = None
+          for _ in range(3):
+              elapsed, record = timed(
+                  lambda: rml18.gate_composed_route_candidate(
+                      composition_states,
+                      composition_id=composition_id,
+                  )
+              )
+              composition_baseline_ns.append(elapsed)
+              composition_baseline_record = record
+
+          rml19.clear_rml19_certificate_cache()
+          composition_prime = rml19.gate_composed_route_candidate(
+              composition_states,
+              composition_id=composition_id,
+          )
+          assert composition_prime == composition_baseline_record
+          composition_accelerated_ns = []
+          composition_accelerated_record = None
+          for _ in range(101):
+              elapsed, record = timed(
+                  lambda: rml19.gate_composed_route_candidate(
+                      composition_states,
+                      composition_id=composition_id,
+                  )
+              )
+              composition_accelerated_ns.append(elapsed)
+              composition_accelerated_record = record
+          assert composition_accelerated_record == composition_baseline_record
+
+          route_baseline_median = int(median(route_baseline_ns))
+          route_accelerated_median = int(median(route_accelerated_ns))
+          composition_baseline_median = int(median(composition_baseline_ns))
+          composition_accelerated_median = int(median(composition_accelerated_ns))
+          route_speedup_floor = route_baseline_median // max(route_accelerated_median, 1)
+          composition_speedup_floor = composition_baseline_median // max(composition_accelerated_median, 1)
+
+          assert route_speedup_floor >= 10, (route_baseline_median, route_accelerated_median)
+          assert composition_speedup_floor >= 10, (
+              composition_baseline_median,
+              composition_accelerated_median,
+          )
+          assert rml18.exact_invariant_1001(route_accelerated_record['invariant']) is True
+          assert rml18.exact_invariant_1001(composition_accelerated_record['invariant']) is True
+
+          stats = rml19.cache_stats()
+          receipt = {
+              'schema': 'HHS_PASS219_RML19_ROUTE_COMPOSITION_BENCHMARK_V1',
+              'pass': 219,
+              'iteration': rml19.ITERATION,
+              'result': 'PASS',
+              'frozen_rml18_parent_commit': rml19.FROZEN_RML18_PARENT_COMMIT,
+              'frozen_rml18_tree_sha': rml19.FROZEN_RML18_TREE_SHA,
+              'exact_invariant': {
+                  'numerator': 1001,
+                  'denominator': 1000,
+                  'decimal': '1.001',
+                  'binary_floating_point_used': False,
+              },
+              'route': {
+                  'baseline_samples_ns': route_baseline_ns,
+                  'baseline_median_ns': route_baseline_median,
+                  'accelerated_samples': len(route_accelerated_ns),
+                  'accelerated_median_ns': route_accelerated_median,
+                  'integer_speedup_floor': route_speedup_floor,
+                  'exact_parent_output_equal': route_accelerated_record == route_baseline_record,
+              },
+              'composition': {
+                  'baseline_samples_ns': composition_baseline_ns,
+                  'baseline_median_ns': composition_baseline_median,
+                  'accelerated_samples': len(composition_accelerated_ns),
+                  'accelerated_median_ns': composition_accelerated_median,
+                  'integer_speedup_floor': composition_speedup_floor,
+                  'exact_parent_output_equal': composition_accelerated_record == composition_baseline_record,
+              },
+              'cache_stats_after_composition': stats,
+              'rejections_cached': False,
+              'timing_participates_in_admission': False,
+              'digest_participates_in_cache_lookup': False,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash72_mint_authority': False,
+              'canonical_hash216_persistence_authority': False,
+              'floating_point_authority': False,
+              'scalar_projection_substitution_authority': False,
+              'route_selection_authority': False,
+              'cache_authority': False,
+              'omega': True,
+          }
+          path = Path(
+              'artifacts/pass219/rml19-route-composition-conservation-acceleration/'
+              'benchmark_receipt.json'
+          )
+          path.write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml19-route-composition-conservation-acceleration
+          path: artifacts/pass219/rml19-route-composition-conservation-acceleration/benchmark_receipt.json
+          if-no-files-found: error
