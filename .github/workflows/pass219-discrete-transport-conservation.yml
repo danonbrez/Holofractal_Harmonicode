@@ -1,0 +1,174 @@
+name: Pass 219 Discrete Transport Conservation
+
+on:
+  push:
+    branches:
+      - agent/pass219-native-transport-conservation-20260910
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_discrete_transport_conservation_1_29.hpp'
+      - 'native_projects/hhs_pass219_discrete_transport_conservation/**'
+      - '.github/workflows/pass219-discrete-transport-conservation.yml'
+      - 'docs/operations/restart/PASS_219_DISCRETE_TRANSPORT_CONSERVATION_CONTRACT_CHECKPOINT_20260910.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-transport-conservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Guard additive successor scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=f41f7cec2e126d2d2114bc3463dfbc0e9b7518ec
+          git diff --name-only "$base"...HEAD | tee /tmp/pass219_transport_changed.txt
+          python - <<'PY'
+          from pathlib import Path
+          allowed_exact = {
+              'hhs_runtime/include/hhs_pass219_discrete_transport_conservation_1_29.hpp',
+              '.github/workflows/pass219-discrete-transport-conservation.yml',
+              'docs/operations/restart/PASS_219_DISCRETE_TRANSPORT_CONSERVATION_CONTRACT_CHECKPOINT_20260910.md',
+          }
+          allowed_prefix = 'native_projects/hhs_pass219_discrete_transport_conservation/'
+          changed = [line for line in Path('/tmp/pass219_transport_changed.txt').read_text().splitlines() if line]
+          illegal = [p for p in changed if p not in allowed_exact and not p.startswith(allowed_prefix)]
+          assert not illegal, illegal
+          assert not any(p.startswith('hhs_runtime/c/') for p in changed)
+          assert not any(p.startswith('hhs_runtime/pass219/') for p in changed)
+          print('PASS219_TRANSPORT_SCOPE', len(changed), 'files')
+          PY
+
+      - name: Rebuild inherited exact C authority and RML15 reverse-replay ABI
+        run: |
+          make c-abi
+          make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Validate RML4 phase and reciprocal geometry matches native table
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_runtime.pass219.dynamic_octonion_gyroscope import (
+              PHASE_MODULUS,
+              PRIMITIVES,
+              PRIMITIVE_GEOMETRY,
+              PRODUCT_RELATIONS,
+          )
+          assert PHASE_MODULUS == 72
+          assert PRIMITIVES == ('x', 'y', 'z', 'w')
+          assert tuple(PRIMITIVE_GEOMETRY[k]['signed_orientation'] for k in PRIMITIVES) == (1, -1, -1, 1)
+          assert PRODUCT_RELATIONS['xy'] == {'generator': 'x', 'reciprocal': 'y'}
+          assert PRODUCT_RELATIONS['yx'] == {'generator': 'y', 'reciprocal': 'x'}
+          assert PRODUCT_RELATIONS['zw'] == {'generator': 'z', 'reciprocal': 'w'}
+          assert PRODUCT_RELATIONS['wz'] == {'generator': 'w', 'reciprocal': 'z'}
+          print('PASS219_TRANSPORT_RML4_GEOMETRY_MATCH')
+          PY
+
+      - name: Run exhaustive 1,492,992-address native conservation contract
+        run: |
+          mkdir -p artifacts/pass219/discrete-transport-conservation
+          make -C native_projects/hhs_pass219_discrete_transport_conservation validate \
+            OUT="$GITHUB_WORKSPACE/artifacts/pass219/discrete-transport-conservation/native_contract.json"
+          cat artifacts/pass219/discrete-transport-conservation/native_contract.json
+
+      - name: Validate five-gate native evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/discrete-transport-conservation/native_contract.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['schema'] == 'HHS_PASS219_DISCRETE_TRANSPORT_CONSERVATION_1_29_V1'
+          assert d['result'] == 'PASS'
+          assert d['node_count'] == 373248
+          assert d['address_count'] == 1492992
+          assert d['discrete_divergence_nodes_checked'] == 373248
+          for key in (
+              'reciprocal_edge_addresses_checked',
+              'admission_preservation_addresses_checked',
+              'zero_diffusion_addresses_checked',
+              'composed_reverse_addresses_checked',
+              'unique_target_addresses',
+          ):
+              assert d[key] == 1492992, (key, d[key])
+          assert d['failure_count'] == 0
+          for key in (
+              'discrete_divergence_gate',
+              'reciprocal_edge_balance_gate',
+              'admission_preservation_gate',
+              'zero_canonical_diffusion_gate',
+              'composed_reverse_closure_gate',
+              'exhaustive_address_coverage',
+              'target_map_bijective',
+              'table_driven_direction_logic',
+              'exact_integer_phase_arithmetic',
+              'rna_admission_authority_delegated',
+              'rna_admission_anchor_verified',
+              'rna_record_immutable_under_transport',
+          ):
+              assert d[key] is True, (key, d[key])
+          for key in (
+              'lossy_compression_used',
+              'neighbor_averaging_used',
+              'hash216_cryptographic_inversion_used',
+              'canonical_vm81_mutation_authority',
+              'canonical_hash72_mint_authority',
+              'canonical_hash216_persistence_authority',
+              'floating_point_canonical_authority',
+              'scalar_projection_substitution_authority',
+              'timing_authority',
+          ):
+              assert d[key] is False, (key, d[key])
+          print('PASS219_TRANSPORT_FIVE_GATES_PASS')
+          PY
+
+      - name: Revalidate impacted RML4 RML12 RML15 RML16 semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Preserve frozen Pass 188 manifold control
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass188_bott_runtime clean all
+          native_projects/hhs_pass188_bott_runtime/build/hhs_pass188_test | tee /tmp/pass188_runtime_test.txt
+          grep -F 'HHS_PASS_188_BOTT_RUNTIME_PASS states=1259712 active=629856 collapse=629856 checksum=11e3bbf0214751c3' /tmp/pass188_runtime_test.txt
+          native_projects/hhs_pass188_bott_runtime/build/hhs_pass188_cli hydrate | tee /tmp/pass188_transport_control.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path('/tmp/pass188_transport_control.json').read_text(encoding='utf-8'))
+          assert d['classification'] == 'HHS_PASS_188_FULL_HYDRATION_VERIFIED'
+          assert d['hydrated_states'] == 1259712
+          assert d['active_period_two_states'] == 629856
+          assert d['asymmetric_collapse_states'] == 629856
+          assert d['gear_preserved_states'] == 1259712
+          assert d['coordinate_drift_states'] == 0
+          assert d['deterministic_checksum_u64'] == '11e3bbf0214751c3'
+          print('PASS219_TRANSPORT_PASS188_FROZEN_CONTROL')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-discrete-transport-conservation
+          path: artifacts/pass219/discrete-transport-conservation/native_contract.json
+          if-no-files-found: error
