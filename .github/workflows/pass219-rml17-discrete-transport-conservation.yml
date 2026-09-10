@@ -1,0 +1,51 @@
+name: Pass 219 RML17 Discrete Transport Conservation
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml17-discrete-transport-conservation-20260910
+    paths:
+      - 'hhs_runtime/pass219/discrete_transport_conservation.py'
+      - 'tests/pass219/test_pass219_rml17_discrete_transport_conservation.py'
+      - '.github/workflows/pass219-rml17-discrete-transport-conservation.yml'
+      - 'docs/operations/restart/PASS_219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discrete-transport-conservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Validate inherited native RML13 through RML15 chain
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Revalidate RML16 cache and exact signed-permutation successor
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            tests/pass219/test_pass219_rml16_signed_permutation_clifford_integration.py
+
+      - name: Validate RML17 operator contract including exhaustive 1492992-address scan
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py
+
+      - name: Revalidate impacted route semantics through reverse replay
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
