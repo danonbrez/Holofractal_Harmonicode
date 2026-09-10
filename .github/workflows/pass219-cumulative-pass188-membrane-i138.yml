@@ -141,12 +141,12 @@ jobs:
           test "$(git hash-object native_projects/hhs_pass188_license_lineage/evidence/P188_I138_VALIDATION_RECEIPT.json)" = "deb3db71cbea47e2ad25cd184b84c775582f1fe2"
           test "$(git hash-object docs/pass188/HHS_PASS_188_I138_LICENSE_LINEAGE_IMPLEMENTATION_REPORT.md)" = "5238ff48f9556160356cbb3ffbe7da65c76264bd"
 
-      - name: Prove I138 membrane baseline and current additive ABI successor order
+      - name: Prove frozen I138 membrane baseline and current additive ABI successor order
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.h)" = "fe13e2e53301b0cb73210879fd41d49c0c101f9b"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass188_1_38.hpp)" = "bc957286ce8a6fcbcdceca170dd49aa17801b414"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass188_1_38.inc)" = "a38cd30c383cd6f2e1140036865cfd7008d839c2"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py)" = "2cf7b7e8694e11678f9d84fce7bb2f54785d5c59"
+          test "$(git rev-parse 87d51271c744be28afc6242e4247959849c0e985:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i138_pass188.py)" = "2cf7b7e8694e11678f9d84fce7bb2f54785d5c59"
           test "$(git rev-parse 87d51271c744be28afc6242e4247959849c0e985:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "fa6cd855f64bf9f76dc3a26743f69b3a8109c84c"
           test "$(git rev-parse 87d51271c744be28afc6242e4247959849c0e985:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "95ccd25f2bd06ed3afdb6d3dfb5c3ac6ae438698"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass188_1_38.c)" = "c4294e57038890d60e052d374c3281e5b07544af"
