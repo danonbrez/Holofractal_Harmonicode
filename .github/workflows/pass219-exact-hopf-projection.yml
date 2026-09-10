@@ -1,0 +1,37 @@
+name: Pass 219 Exact Hopf Projection
+
+on:
+  push:
+    paths:
+      - 'hhs_runtime/pass219/discrete_hopf_projection.py'
+      - 'tests/pass219/test_pass219_discrete_hopf_projection.py'
+      - 'contracts/pass219/PASS_219_RML7_EXACT_HOPF_PROJECTION_1_0.json'
+      - '.github/workflows/pass219-exact-hopf-projection.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass219/discrete_hopf_projection.py'
+      - 'tests/pass219/test_pass219_discrete_hopf_projection.py'
+      - 'contracts/pass219/PASS_219_RML7_EXACT_HOPF_PROJECTION_1_0.json'
+      - '.github/workflows/pass219-exact-hopf-projection.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-rml7-hopf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run RML5 through RML7 topology dependency scope
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_gyroscope_admission_membrane.py \
+            tests/pass219/test_pass219_discrete_s7_embedding.py \
+            tests/pass219/test_pass219_discrete_hopf_projection.py
