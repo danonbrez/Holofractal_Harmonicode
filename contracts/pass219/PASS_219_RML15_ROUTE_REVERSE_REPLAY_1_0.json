@@ -17,6 +17,23 @@
     "pass188_coordinate_drift_states": 0,
     "pass188_checksum_hex": "0x11e3bbf0214751c3"
   },
+  "validation": {
+    "workflow": "Pass 219 RML15 Route Reverse Replay",
+    "run_id": 34466181156,
+    "job_id": 102835196552,
+    "validated_head": "452ddb502158cf488bbb000f6af2664b06b57ac8",
+    "result": "22 passed, 0 failed, 2 warnings in 3.90s",
+    "native_rml15_build": "GREEN",
+    "canonical_hash72_export": "GREEN",
+    "canonical_hash216_export": "GREEN",
+    "frozen_i163_reverse_export": "GREEN",
+    "frozen_i168_binding_export": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_states": 629856,
+    "pass188_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
   "reverse_semantics": {
     "forward_replay_requires_exact_rml14_identity_equality": true,
     "reverse_source": "retained selected RML12 edge ancestry",
@@ -98,5 +115,5 @@
     "hhs_runtime/pass219/route_reverse_replay.py",
     "tests/pass219/test_pass219_rml15_route_reverse_replay.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
