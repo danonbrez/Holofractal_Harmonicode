@@ -8,6 +8,7 @@
 - Pull request: `#414`
 - Parent RML7 validated head: `71fa0ef9dd64376862585feb33e61f9e3b815457`
 - Parent RML7 validation seal: `429f4f4104deb6f26db4f3129f7e0d6466300f68`
+- RML7 green restart seal: `81e66c2e874333a5684beead39fbf813d142401e`
 - RML8 implementation: `6ed16bcf65ff7f890845dce0e7d0011945bd7035`
 - RML8 tests: `9845865df562ad4f7718fb040d71702bd111f653`
 - RML8 contract initial: `c9795757ced93b3494e152ca30a920e789ec719e`
@@ -15,6 +16,8 @@
 - RML8 workflow / validated head: `47854f340aa4910c620ccff11e0c02399605db67`
 - RML8 dependency-scoped contract validation seal: `32eba62c6771cc180a591110e567ede1cbc82a84`
 - RML8 contract/restart cross-seal: `419b6f46e40c42a2b1b9580a670ff23e8d97b149`
+- RML8 green restart seal: `052300c8039e26465891eda151a7fc371591587b`
+- RML7 post-RML8 cross-link metadata: `a80c5b0d5f293f58fc8ee1ee7e088a5445d33626`
 
 ## Parent validation frozen
 
@@ -76,7 +79,7 @@ H8 = Z2(xy) tensor Z2(zw) tensor Z2(I/Z^72)
 q  = 4q2 + 2q1 + q0
 ```
 
-The live RML4 channel order now has a validated exact correspondence with this native Pass188 `basis8` order.
+The live RML4 channel order has a validated exact correspondence with this native Pass188 `basis8` order.
 
 ## Pass188 projection law preserved exactly
 
@@ -112,7 +115,7 @@ The `basis8` projection remains a typed classifier/projection only. It is explic
 
 All eight live phases remain receipt-visible.
 
-RML8 also validates repository-internal period-eight grade closure:
+RML8 validates repository-internal period-eight grade closure:
 
 ```text
 grade(n+8) mod 8 = grade(n) mod 8
@@ -122,7 +125,7 @@ with ordered B8 identity preserved under the `+8` grade shift.
 
 ## Full native hydration parity
 
-Both the inherited native runtime and the RML8 Python recomputation agree exactly over all `1,259,712` addresses:
+Both inherited native runtime and RML8 Python recomputation agree exactly over all `1,259,712` addresses:
 
 ```text
 hydrated states:             1,259,712
@@ -151,20 +154,9 @@ The partition remains unchanged through the Bott8 bridge.
 
 ## Authority boundary
 
-RML8 adds no:
+RML8 adds no canonical VM81 mutation, Hash72 mint, Hash216 persistence, floating-point, or scalar-projection substitution authority.
 
-- canonical VM81 mutation authority;
-- Hash72 mint authority;
-- Hash216 persistence authority;
-- floating-point authority;
-- scalar-projection substitution authority.
-
-It does not claim:
-
-- full `S^3` closure of the RML6 discrete image;
-- full RML5 generator fiber-equivariance;
-- the full classical K-theory Bott periodicity theorem;
-- a physical topological hardware theorem.
+It does not claim full `S^3` closure of the RML6 discrete image, full RML5 generator fiber-equivariance, the complete classical K-theory Bott periodicity theorem, or a physical topological hardware theorem.
 
 ## Required next action
 
@@ -180,6 +172,6 @@ RML4 dynamic B8 gyroscope
 -> RML8 native Pass187/188 Bott8 bridge
 ```
 
-but must keep the inherited Pass188 non-bijective `basis8` projection separate from reversible phase-state authority and must not promote physical topology beyond proof.
+while keeping the inherited Pass188 non-bijective `basis8` projection separate from reversible phase-state authority and without promoting physical topology beyond proof.
 
 Do not rewrite frozen RML1-RML8, I148, Pass187/188, or Pass169 evidence in place.
