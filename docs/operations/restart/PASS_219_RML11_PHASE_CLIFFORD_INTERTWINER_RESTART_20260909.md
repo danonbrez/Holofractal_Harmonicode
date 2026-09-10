@@ -10,8 +10,9 @@
 - Parent RML10 validated head: `6f34ad65377e48ed12b417c54e73a5e4f5f0c553`
 - RML11 implementation: `773fe9d3a083b76fc30bfbdaf42f624e6757310d`
 - RML11 tests: `616b0e93307d444883ba36620c045ca93eee80be`
-- RML11 contract: `774c649db23b90b6b4390ee2d0d9c5307707aad5`
-- RML11 workflow / validation target: `01bfb38b10976ac23dabc418441035522e656bc1`
+- RML11 contract initial: `774c649db23b90b6b4390ee2d0d9c5307707aad5`
+- RML11 workflow / validated head: `01bfb38b10976ac23dabc418441035522e656bc1`
+- RML11 dependency-scoped contract validation seal: `4a269beb765892ae8a3957dde21db4d01118cd91`
 
 The unrelated temporary ref `agent/pass219-recursive-manifold-learning-20260909-rml9-temp` remains non-authoritative and is not a restart source.
 
@@ -28,7 +29,27 @@ RML10 remains dependency-scoped validated:
 - Pass188 coordinate drift: `0`
 - Pass188 checksum: `0x11e3bbf0214751c3`
 
-## RML11 implementation purpose
+## RML11 validation frozen green
+
+- Workflow: `Pass 219 Phase Clifford Intertwiner`
+- Run: `34432290908`
+- Job: `102730127210`
+- Validated head: `01bfb38b10976ac23dabc418441035522e656bc1`
+- Result: `15 passed, 0 failed, 1 inherited pytest-config warning in 21.35s`
+
+Inherited Pass188 native validation succeeded inside the same gate:
+
+```text
+HHS_PASS_188_BOTT_RUNTIME_PASS
+states=1259712
+active=629856
+collapse=629856
+checksum=11e3bbf0214751c3
+```
+
+The native surface again reported `coordinate_drift_states=0`, five Python native tests green, HTTP/WebSocket/visual smoke green, C11/x86_64 build green, and no checked floating arithmetic instructions in the branchless Bott step.
+
+## RML11 validated purpose
 
 RML11 binds the RML4 `SIGNED_IMAGINARY_PHASE_ROTATION` transition surface to the constructive RML10 `Cl_(0,8) ~= M16(R)` witness without replacing native `u^72` phase state with matrix state.
 
@@ -48,7 +69,7 @@ zw -> e_z e_w
 wz -> e_w e_z
 ```
 
-The exact matrix projection requires:
+The exact validated matrix projection proves:
 
 ```text
 xy = -yx
@@ -59,7 +80,7 @@ while ordered channel identity and RML4 reciprocal construction metadata remain 
 
 ## Exact u72 / Clifford boundary
 
-A signed phase delta is decomposed as
+A signed phase delta is decomposed exactly as
 
 ```text
 delta = 18*q + r
@@ -73,13 +94,13 @@ with sign-symmetric remainder.
 - No residual is rounded, discarded, or scalarized.
 - A complete Clifford lift is claimed only when every residual is zero.
 
-This preserves all 72 phase states while allowing exact Clifford grading at the `u^18` boundary.
+This preserves all 72 phase states rather than reducing the native phase ring to four Clifford states.
 
-## Exact Clifford classification
+## Exact Clifford grading validated
 
 Let `Omega_8` be the exact volume/chirality operator of the validated RML10 `Cl_(0,8)` representation.
 
-RML11 proves:
+RML11 validates:
 
 ```text
 primitive actions x,y,z,w          anticommute with Omega_8
@@ -97,9 +118,9 @@ ODD_CLIFFORD_CHIRALITY_SECTOR_SWAPPING
 
 A full module intertwiner must commute with all eight RML10 `Cl_(0,8)` generators. Sector-preserving and sector-swapping classifications are therefore not conflated with full module endomorphism.
 
-## Noncommutative inverse discipline
+## Noncommutative inverse discipline validated
 
-The forward Clifford factor sequence uses the preserved channel order
+The forward Clifford factor sequence preserves the channel order
 
 ```text
 x,y,z,w,xy,yx,zw,wz
@@ -107,9 +128,9 @@ x,y,z,w,xy,yx,zw,wz
 
 and the exact inverse reverses factor order before applying inverse powers.
 
-RML11 explicitly does not assume that a same-order list of negated exponents is the inverse of a noncommutative product.
+RML11 explicitly rejects the assumption that a same-order list of negated exponents is automatically the inverse of a noncommutative product.
 
-## Unified +, *, ^ bridge
+## Unified +, *, ^ bridge validated
 
 The existing RML4 operator identity remains receipt-visible:
 
@@ -121,9 +142,9 @@ The existing RML4 operator identity remains receipt-visible:
 
 All three retain `SIGNED_IMAGINARY_PHASE_ROTATION` as the underlying phase primitive. Coincident Clifford matrix projections never collapse the source operator or operand ordering.
 
-## Expected finite RML5 audit
+## Complete finite RML5 audit validated
 
-The existing RML5 generator family has exactly:
+The existing RML5 generator family remains exactly:
 
 ```text
 288 coupled Z72 generator/product moves
@@ -131,7 +152,7 @@ The existing RML5 generator family has exactly:
 290 total
 ```
 
-RML11's executable expected partition is:
+The RML11 executable Clifford partition is validated as:
 
 ```text
 18  complete Clifford lifts
@@ -143,7 +164,7 @@ within the 18 complete lifts:
 8  odd chirality-sector swaps
 ```
 
-The existing Hopf partition remains independent and must remain:
+The existing Hopf partition is retained independently:
 
 ```text
 4   same-base identities
@@ -151,7 +172,19 @@ The existing Hopf partition remains independent and must remain:
 0   inverse restoration failures
 ```
 
-RML11 does not claim that Hopf classification equals Clifford classification.
+Therefore Hopf-base motion and Clifford-module grading are now explicitly proven to be orthogonal classifications rather than aliases for one another.
+
+## Authority boundary
+
+RML11 adds no:
+
+- canonical VM81 mutation authority;
+- Hash72 mint authority;
+- Hash216 persistence authority;
+- floating-point canonical authority;
+- scalar-projection substitution authority.
+
+It does not replace the native phase state with a Clifford matrix state and does not claim that every `u^72` step has a complete Clifford lift.
 
 ## Files added
 
@@ -161,17 +194,10 @@ RML11 does not claim that Hopf classification equals Clifford classification.
 - `.github/workflows/pass219-phase-clifford-intertwiner.yml`
 - `docs/operations/restart/PASS_219_RML11_PHASE_CLIFFORD_INTERTWINER_RESTART_20260909.md`
 
-## Validation status at checkpoint creation
-
-- Workflow: `Pass 219 Phase Clifford Intertwiner`
-- Run: `34432290908`
-- Job: `102730127210`
-- Validation target head: `01bfb38b10976ac23dabc418441035522e656bc1`
-- Status at checkpoint creation: `in_progress`
-
 ## Required next action
 
-1. Inspect run `34432290908`, job `102730127210`.
-2. If green, record exact native Pass188 output and exact RML10-RML11 pytest count/time, promote the RML11 contract to dependency-scoped validated, and seal this restart record.
-3. If red, repair only RML11 and rerun the same targeted dependency scope.
-4. Preserve frozen RML1-RML10, Pass187/188, I148, and Pass169 evidence in place.
+RML11 is complete, dependency-scoped validated, and restartable.
+
+The next bounded successor may bind this exact Clifford grading back into the RML5/RML7 navigation logic so the optimizer can use the distinction between residual phase motion, full intertwiners, and chirality-sector swaps as typed route metadata without turning the Clifford layer into transition authority.
+
+Do not rewrite frozen RML1-RML11, Pass187/188, I148, or Pass169 evidence in place.
