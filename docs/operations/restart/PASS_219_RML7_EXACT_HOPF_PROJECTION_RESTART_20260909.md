@@ -8,155 +8,104 @@
 - Pull request: `#414`
 - Parent RML6 validated head: `de081a3e4405b40ac07386d465029954c2810a09`
 - RML6 validation seal: `de3b12440a18734dc9c6d55501fe9210f679cb5f`
-- RML6 green restart update: `ade1f0e44a41d6d2845bf76559d925caa844383b`
 - RML7 implementation: `e9c7b16fab14f95ccf7810ae1c5d8ab9467f7481`
 - RML7 tests: `b7a89e7ef977e9a30f6fec3ccd109c1ac6926c89`
-- RML7 contract: `a4bb88dd719dbf45cda4f789a5c5791ef58b1697`
-- RML7 workflow / validation target head: `71fa0ef9dd64376862585feb33e61f9e3b815457`
+- RML7 workflow / validated head: `71fa0ef9dd64376862585feb33e61f9e3b815457`
+- RML7 dependency-scoped validation seal: `429f4f4104deb6f26db4f3129f7e0d6466300f68`
 
-## Parent validation frozen
+## RML7 validation frozen green
 
-RML6 is dependency-scoped validated:
+- Workflow: `Pass 219 Exact Hopf Projection`
+- Run: `34420516153`
+- Job: `102694683447`
+- Result: `88 passed, 0 failed, 1 inherited pytest-config warning in 12.20s`
+- Validated dependency scope: RML5 through RML7 topology tests.
 
-- Workflow: `Pass 219 Discrete S7 Embedding`
-- Run: `34420155680`
-- Job: `102693587051`
-- Result: `67 passed, 0 failed, 1 inherited pytest-config warning in 9.55s`
-- Generator audit: `290` finite RML5 generator cases
-
-## RML7 purpose
-
-RML7 defines an exact quaternionic Hopf projection candidate over the validated RML6 rational `S^7` embedding.
-
-For an RML6 point split into two quaternions
+Observed complete generator partition on the canonical audit fixture:
 
 ```text
-(q1,q2) in H^2
-|q1|^2 + |q2|^2 = 1
+4   FIBER_PRESERVING_SAME_HOPF_BASE
+286 BASE_MOVING_HOPF_TRANSPORT
+0   inverse Hopf-base restoration failures
+---
+290 total generator cases
 ```
 
-RML7 applies
+The four same-base cases are exactly the zero-step identity moves:
+
+```text
+x:0
+y:0
+z:0
+w:0
+```
+
+Both `u^36` chiral-pair flips are base-moving under the RML7 Hopf candidate, but each exact self-inverse restores the original Hopf base.
+
+## Exact topology result
+
+RML7 consumes the validated RML6 rational `S^7` embedding and applies the exact quaternionic map
 
 ```text
 H(q1,q2) = (2*q1*conjugate(q2), |q1|^2-|q2|^2)
 ```
 
-and represents the result as an exact rational point in `S^4`.
+with no float authority.
 
-No float or trigonometric approximation is used.
-
-## Exact S4 norm proof
-
-With integer numerator norms
+The exact unit `S^4` identity is verified from
 
 ```text
-A = |q1_num|^2
-B = |q2_num|^2
-D = common S7 denominator
 A+B = D^2
-```
-
-and quaternion product numerator `p=q1_num*conjugate(q2_num)`, RML7 verifies
-
-```text
-|p|^2 = A*B
-```
-
-then the five Hopf base numerators are
-
-```text
-(2*p0,2*p1,2*p2,2*p3,A-B)
-```
-
-with common denominator `D^2`.
-
-Exact unit norm follows from
-
-```text
+|q1*conjugate(q2)|^2 = A*B
 4*A*B + (A-B)^2 = (A+B)^2 = D^4.
 ```
 
-## Concrete fiber witness
-
-RML7 implements the exact quaternion group
+RML7 also proves exact Hopf-base invariance under the discrete quaternion subgroup
 
 ```text
 Q8 = {+1,-1,+i,-i,+j,-j,+k,-k}
 ```
 
-as simultaneous right multiplication:
+acting simultaneously on the right of `(q1,q2)`.
 
-```text
-(q1,q2) -> (q1*h,q2*h).
-```
+## Authority and claim boundary
 
-For each unit `h in Q8`, exact arithmetic must verify
+RML7 proves:
 
-```text
-H(q1*h,q2*h) = H(q1,q2).
-```
+- exact rational `S^7 -> S^4` Hopf projection on the RML6 image;
+- exact unit-norm `S^4` output;
+- exact `Q8` fiber invariance;
+- complete classification of all 290 RML5 generator cases;
+- exact inverse restoration of the source Hopf base in every case.
 
-This is a real fiber-invariance witness for an exact discrete subgroup of the `S^3` Hopf fiber.
-
-RML7 deliberately does not claim that the transformed Q8 point is necessarily inside the RML6 discrete image, nor that the full `S^3` fiber action is closed on that image.
-
-## RML5 generator classification
-
-The full finite RML5 generator family remains the audit target:
-
-```text
-288 coupled generator/product Z72 cases
-  2 u36 chiral-pair flips
----
-290 total cases
-```
-
-Each case is classified from exact source/target `S^4` base hashes as either:
-
-```text
-FIBER_PRESERVING_SAME_HOPF_BASE
-BASE_MOVING_HOPF_TRANSPORT
-```
-
-No move is assumed to be fiber-preserving in advance.
-
-Every explicit inverse must restore the exact original Hopf base point.
-
-## Claims not promoted
-
-RML7 does not yet claim:
+RML7 does not claim:
 
 - closure of the entire RML6 discrete image under the full `S^3` fiber action;
 - full RML5 generator fiber-equivariance;
-- Hopf-fibration preservation as a global runtime invariant;
-- Bott-periodicity correspondence;
-- a physical topological hardware theorem.
+- classical Bott-periodicity theorem correspondence;
+- physical topological hardware authority.
 
-## Files added
+## Repair-forward successor already started
 
-- `hhs_runtime/pass219/discrete_hopf_projection.py`
-- `tests/pass219/test_pass219_discrete_hopf_projection.py`
-- `contracts/pass219/PASS_219_RML7_EXACT_HOPF_PROJECTION_1_0.json`
-- `.github/workflows/pass219-exact-hopf-projection.yml`
-- `docs/operations/restart/PASS_219_RML7_EXACT_HOPF_PROJECTION_RESTART_20260909.md`
+RML8 binds the validated RML7 topology packet to the inherited Pass 187/188 native Bott substrate instead of creating a parallel Bott abstraction.
 
-## Validation status at checkpoint creation
+Current RML8 lineage at this update:
 
-- Workflow: `Pass 219 Exact Hopf Projection`
-- Run: `34420516153`
-- Job: `102694683447`
-- Validation target head: `71fa0ef9dd64376862585feb33e61f9e3b815457`
-- Status: `queued`
-
-No RML7 failure has been observed at checkpoint creation.
+- implementation: `6ed16bcf65ff7f890845dce0e7d0011945bd7035`
+- tests: `9845865df562ad4f7718fb040d71702bd111f653`
+- contract: `c9795757ced93b3494e152ca30a920e789ec719e`
+- checksum contract repair: `87e7b0171032c77197934d04c0b4c321cc189f8d`
+- workflow / target head: `47854f340aa4910c620ccff11e0c02399605db67`
+- targeted run: `34425763871`
+- targeted job: `102710529097`
+- current status: queued
 
 ## Required next action
 
-1. Inspect run `34420516153`, job `102694683447`.
-2. If green, freeze exact pass count / elapsed time and promote the RML7 contract to dependency-scoped validated.
-3. Record the generator audit partition: same-base cases versus base-moving cases.
-4. If red, repair only RML7 and rerun the exact topology dependency scope.
-5. After RML7 is green, use the observed classification and Q8 fiber witness to decide the next repair-forward step toward full discrete-image fiber closure/equivariance.
-6. Keep Bott periodicity non-canonical until that fiber-preservation layer is demonstrated.
+1. Resolve RML8 run `34425763871`, job `102710529097`.
+2. If green, freeze both native Pass188 `make validate` and RML5-RML8 Python dependency evidence.
+3. If red, repair only the impacted RML8/native bridge surface.
+4. Keep the Pass188 `basis8` asymmetric-collapse map typed as a classifier/projection; it must not overwrite RML5 reciprocal phase-state authority.
+5. Only after the repository-internal Bott8 bridge is green should any stronger classical Bott-periodicity correspondence be attempted.
 
-Do not rewrite frozen RML1-RML6, I148, or Pass169 evidence in place.
+Do not rewrite frozen RML1-RML7, I148, Pass187/188, or Pass169 evidence in place.
