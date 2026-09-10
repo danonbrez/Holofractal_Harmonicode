@@ -351,7 +351,15 @@ def audit_rml16_route_conservation(
     *,
     route_id: str,
 ) -> dict[str, Any]:
-    """Audit one RML16 route against the RML17 operator contract."""
+    """Audit one RML16 route against the RML17 operator contract.
+
+    RML12 route identity has two intentionally distinct layers.  Internal
+    generated edge ancestry is chained by state SHA256.  Endpoint equivalence
+    is the inherited exact phase-state relation (phases/signs/ambient index),
+    not equality between the transition-generated terminal state's state_id
+    hash and the separately supplied target state's state_id hash.  RML15
+    independently binds and reverses the supplied target receipt identity.
+    """
     _reject_float(source)
     _reject_float(target)
     bundle = build_and_select_reciprocal_route_cached(
@@ -367,8 +375,19 @@ def audit_rml16_route_conservation(
             "RML17_SELECTED_ROUTE_EDGE_LIST_REQUIRED"
         )
 
-    chain_identity = plan.get("source_state_sha256") == source.get("state_sha256")
+    source_endpoint_bound = (
+        plan.get("source_state_sha256") == source.get("state_sha256")
+        and plan.get("source_ambient_state_index") == source.get("ambient_state_index")
+    )
+    supplied_target_receipt_bound = (
+        plan.get("target_state_sha256") == target.get("state_sha256")
+        and plan.get("target_ambient_state_index") == target.get("ambient_state_index")
+    )
+
+    edge_hash_chain_contiguous = source_endpoint_bound
+    edge_ambient_chain_contiguous = source_endpoint_bound
     current_sha = plan.get("source_state_sha256")
+    current_ambient = plan.get("source_ambient_state_index")
     reciprocal_edge_balance = True
     admission_preserved = source.get("admissible_product_geometry") is True
     zero_diffusion = True
@@ -380,8 +399,12 @@ def audit_rml16_route_conservation(
                 "RML17_ROUTE_EDGE_MAPPING_REQUIRED"
             )
         if edge.get("source_state_sha256") != current_sha:
-            chain_identity = False
+            edge_hash_chain_contiguous = False
+        if edge.get("source_ambient_state_index") != current_ambient:
+            edge_ambient_chain_contiguous = False
+
         current_sha = edge.get("target_state_sha256")
+        current_ambient = edge.get("target_ambient_state_index")
         admission_preserved = (
             admission_preserved
             and edge.get("target_product_geometry_admissible") is True
@@ -400,11 +423,23 @@ def audit_rml16_route_conservation(
         if edge.get("exact_inverse_restores_source_phase_state") is not True:
             reciprocal_edge_balance = False
 
-    chain_identity = (
-        chain_identity
-        and current_sha == plan.get("target_state_sha256")
-        and plan.get("target_state_sha256") == target.get("state_sha256")
+    # A transition-generated terminal state can carry a different state_id/hash
+    # from the caller-supplied target while representing exactly the same RML12
+    # phase state. Ambient identity is therefore the correct terminal geometry
+    # witness here; RML15 separately binds the supplied target receipt/hash.
+    terminal_phase_geometry_identity = (
+        current_ambient == plan.get("target_ambient_state_index")
+        and plan.get("target_ambient_state_index") == target.get("ambient_state_index")
+        and plan.get("target_reached_exactly") is True
     )
+    route_edge_chain_identity = (
+        source_endpoint_bound
+        and supplied_target_receipt_bound
+        and edge_hash_chain_contiguous
+        and edge_ambient_chain_contiguous
+        and terminal_phase_geometry_identity
+    )
+
     admission_preserved = (
         admission_preserved
         and target.get("admissible_product_geometry") is True
@@ -429,7 +464,7 @@ def audit_rml16_route_conservation(
         and reverse_summary.get("hash216_cryptographic_inversion_used") is False
         and int(reverse_witness.edge_count) == len(edges)
     )
-    information_loss = 0 if reverse_closure and chain_identity else 1
+    information_loss = 0 if reverse_closure and route_edge_chain_identity else 1
 
     result = {
         "schema": ROUTE_AUDIT_SCHEMA,
@@ -440,6 +475,10 @@ def audit_rml16_route_conservation(
         "selected_route_sha256": plan.get("route_sha256"),
         "source_state_sha256": source.get("state_sha256"),
         "target_state_sha256": target.get("state_sha256"),
+        "generated_terminal_state_sha256": current_sha,
+        "source_ambient_state_index": source.get("ambient_state_index"),
+        "target_ambient_state_index": target.get("ambient_state_index"),
+        "generated_terminal_ambient_state_index": current_ambient,
         "edge_count": len(edges),
         "reciprocal_flux_pairs": reciprocal_flux_pairs,
         "zero_discrete_route_divergence": all(
@@ -448,7 +487,13 @@ def audit_rml16_route_conservation(
         ),
         "reciprocal_edge_balance": reciprocal_edge_balance,
         "admission_preserved": admission_preserved,
-        "route_edge_chain_identity_preserved": chain_identity,
+        "source_endpoint_receipt_identity_bound": source_endpoint_bound,
+        "supplied_target_receipt_identity_bound": supplied_target_receipt_bound,
+        "route_edge_hash_chain_contiguous": edge_hash_chain_contiguous,
+        "route_edge_ambient_chain_contiguous": edge_ambient_chain_contiguous,
+        "terminal_phase_geometry_identity_preserved": terminal_phase_geometry_identity,
+        "generated_terminal_hash_required_to_equal_supplied_target_hash": False,
+        "route_edge_chain_identity_preserved": route_edge_chain_identity,
         "nu_h": 0,
         "l_h_equivalent_zero": zero_diffusion,
         "canonical_diffusion_operator_present": not zero_diffusion,
@@ -514,6 +559,7 @@ def audit_composed_transport_conservation(
 
     chain_linked = all(
         left["target_state_sha256"] == right["source_state_sha256"]
+        and left["target_ambient_state_index"] == right["source_ambient_state_index"]
         for left, right in zip(route_audits, route_audits[1:])
     )
     every_prefix_admitted = all(audit["admission_preserved"] for audit in route_audits)
