@@ -16,6 +16,7 @@ record does not expose a native raw-frame digest inside its Hash216 payload.
 """
 from __future__ import annotations
 
+from functools import lru_cache
 import hashlib
 import json
 import string
@@ -217,6 +218,28 @@ def _normalize_pass169_runtime_record(record: Mapping[str, Any]) -> dict[str, An
     return normalized
 
 
+@lru_cache(maxsize=1)
+def _octonion_basis_receipt_summary() -> tuple[tuple[str, ...], int, str]:
+    """Cache only validated, immutable source-independent table identity fields.
+
+    The authoritative table implementation still constructs and Hash72-seals all
+    64 ordered cells on the first call. RML3 consumes only basis, ring, and the
+    resulting receipt identity, so repeated raw-frame hydrations reuse those
+    immutable facts instead of reminting the same non-state-changing witness.
+    """
+    basis_receipt = table_receipt()
+    basis = tuple(basis_receipt.get("basis", ()))
+    if basis != tuple(OCTONION_DNA_BASIS):
+        raise ProductionPhaseBindingError("OCTONION_BASIS_RECEIPT_DRIFT")
+    phase_ring = int(basis_receipt.get("phase_ring", -1))
+    if phase_ring != PHASE_RING:
+        raise ProductionPhaseBindingError("OCTONION_PHASE_RING_RECEIPT_DRIFT")
+    receipt_hash72 = basis_receipt.get("receipt_hash72")
+    if not isinstance(receipt_hash72, str) or not receipt_hash72:
+        raise ProductionPhaseBindingError("OCTONION_BASIS_RECEIPT_HASH72_REQUIRED")
+    return basis, phase_ring, receipt_hash72
+
+
 def _quad_channel_map(quad: Any) -> dict[str, int]:
     bases = tuple(channel.basis for channel in quad.channels)
     if bases != tuple(I148_PHASE_CHANNELS) or bases != tuple(PHASE_CHANNELS):
@@ -316,11 +339,7 @@ def build_raw5184_phase_source(payload: bytes | bytearray | memoryview) -> dict[
     if evaluated["nested_circuit_count"] != PHASE_BANKS:
         raise ProductionPhaseBindingError("RML3_PHASE_BANK_COUNT_DRIFT")
 
-    basis_receipt = table_receipt()
-    if tuple(basis_receipt.get("basis", ())) != tuple(OCTONION_DNA_BASIS):
-        raise ProductionPhaseBindingError("OCTONION_BASIS_RECEIPT_DRIFT")
-    if int(basis_receipt.get("phase_ring", -1)) != PHASE_RING:
-        raise ProductionPhaseBindingError("OCTONION_PHASE_RING_RECEIPT_DRIFT")
+    _, _, basis_receipt_hash72 = _octonion_basis_receipt_summary()
 
     source = {
         "schema": SOURCE_SCHEMA,
@@ -342,7 +361,7 @@ def build_raw5184_phase_source(payload: bytes | bytearray | memoryview) -> dict[
         "phase_circuit_evaluation_sha256": _sha256(evaluated),
         "channel_ledger": channel_ledger,
         "i150_validation_receipt": raw5184_validation_receipt(raw),
-        "octonion_basis_receipt_hash72": basis_receipt["receipt_hash72"],
+        "octonion_basis_receipt_hash72": basis_receipt_hash72,
         "raw_frame_replayed_bit_identically": True,
         "scalar_projection_runtime_authority": False,
         "floating_point_authority": False,
