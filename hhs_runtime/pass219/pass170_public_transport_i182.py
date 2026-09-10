@@ -33,7 +33,7 @@ EXPECTED_AGGREGATE_RECORDS = 59
 EXPECTED_HTTP_RECORDS = 58
 EXPECTED_STREAMING_RECORDS = 1
 AUDIO_OPERATION_ID = "public.audio_language.feedback.run"
-AUDIO_NATIVE_SYMBOL = "hhs_pass219_audio_security_admit_v1"
+AUDIO_NATIVE_SYMBOL = "hhs_exact_pass219_audio_security_transport_admit"
 
 _PATH_PARAMETER = re.compile(r"\{([^}:]+)(?::[^}]+)?\}")
 
