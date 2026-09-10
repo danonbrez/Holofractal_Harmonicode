@@ -26,7 +26,8 @@
     "pass188_active_period_two_states": 629856,
     "pass188_asymmetric_collapse_states": 629856,
     "pass188_coordinate_drift_states": 0,
-    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+    "pass188_checksum_hex": "0x11e3bbf0214751c3",
+    "green_restart_checkpoint": "684e3a1ee1b2a3aebe1026ee26f35610b4627d7b"
   },
   "repository_type_alignment": {
     "pass169_canonical_value_type": "ORDERED_MATRIX",
