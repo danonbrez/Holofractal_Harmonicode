@@ -98,6 +98,33 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
+      - name: Diagnose exact canonical route parity
+        run: |
+          python - <<'PY'
+          import json
+          from hhs_runtime.pass219.pass170_public_transport_i182 import operation_records
+          from hhs_runtime.pass219.pass170_transport_degraded_reconciliation_i182 import _canonical_route_signatures
+          records = operation_records('.')
+          signatures, identity = _canonical_route_signatures()
+          expected = []
+          for operation_id, record in records.items():
+              method = record.get('HTTP_method')
+              path = record.get('HTTP_path')
+              if isinstance(method, str) and isinstance(path, str):
+                  expected.append((operation_id, method.upper(), path))
+          missing = [
+              {'operation_id': operation_id, 'method': method, 'path': path}
+              for operation_id, method, path in expected
+              if (method, path) not in signatures
+          ]
+          print(json.dumps({
+              'canonical_identity': identity,
+              'observed_signature_count': len(signatures),
+              'expected_http_count': len(expected),
+              'missing': missing,
+          }, indent=2, sort_keys=True))
+          PY
+
       - name: Run I182 dependency-scoped contract tests
         run: |
           PYTHONPATH="$PWD" python -m pytest -q --tb=short \
