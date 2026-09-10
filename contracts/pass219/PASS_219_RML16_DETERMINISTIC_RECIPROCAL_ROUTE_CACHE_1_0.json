@@ -1,0 +1,75 @@
+{
+  "schema": "HHS_PASS219_RML16_DETERMINISTIC_RECIPROCAL_ROUTE_CACHE_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML16_DETERMINISTIC_RECIPROCAL_ROUTE_CACHE",
+  "classification": "BOUNDED_EXACT_REQUEST_MEMOIZATION_REPAIR_FORWARD",
+  "base_checkpoint": "468b49b6fdd84df2b411fc7a84effb7be3583313",
+  "implementation_head": "504bc1025f8c7e6d7776fecc0fe9725dddc9e556",
+  "measured_trigger": {
+    "validated_run_id": 34473645645,
+    "validated_job_id": 102859140974,
+    "rml12_all20_route_median_ns": 3244016348,
+    "rml12_stage_share_basis_points_floor": 9900,
+    "rml3_cached_phase_source_median_ns": 7036181,
+    "e2e_lcg_median_ns": 3765406531,
+    "semantic_tests": "36 passed, 0 failed, 1 inherited warning in 5.15s",
+    "pass188_hydrated_states": 1259712,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "cache_identity": {
+    "source": "complete validated RML12 source gyroscope mapping",
+    "target": "complete validated RML12 target gyroscope mapping",
+    "route_id": "exact string route identity",
+    "canonical_key": "RML12 canonical no-float serialization of source+target+route_id",
+    "capacity": 256,
+    "eviction": "least-recently-used",
+    "scope": "process-local",
+    "persistent": false
+  },
+  "semantic_requirements": {
+    "rml12_endpoint_validation_before_every_lookup": true,
+    "cold_miss_uses_original_rml12_constructor": true,
+    "cache_hit_exactly_equals_original_rml12_bundle": true,
+    "route_id_participates_in_identity": true,
+    "caller_mutation_cannot_modify_cached_value": true,
+    "returned_cache_hit_is_fresh_deep_copy": true,
+    "shortest_and_complementary_candidates_preserved": true,
+    "hopf_metadata_preserved": true,
+    "clifford_metadata_preserved": true,
+    "reverse_route_witness_preserved": true,
+    "selection_receipt_preserved": true
+  },
+  "benchmark_method": {
+    "baseline_harness_file_unchanged": "benchmarks/pass219/pass219_rml16_full_hydration_benchmark.py",
+    "adapter": "benchmarks/pass219/pass219_rml16_cached_route_benchmark.py",
+    "only_replaced_global": "build_and_select_reciprocal_route",
+    "stage_repeats": 7,
+    "warmups": 1,
+    "native_repeats": 3,
+    "e2e_repeats": 3,
+    "semantic_equality_required_before_latency_use": true
+  },
+  "cold_path_followup_candidates": [
+    "exact S7/S4 Hopf point reuse keyed by phase/chirality mathematical state",
+    "reuse RML12-built transition in RML7/RML11 classification instead of rebuilding",
+    "cache source-independent Clifford lift core keyed by ordered signed steps and product chirality"
+  ],
+  "authority_boundary": {
+    "cache_vm81_mutation_authority": false,
+    "cache_hash72_mint_authority": false,
+    "cache_hash216_persistence_authority": false,
+    "cache_timing_canonical_authority": false,
+    "cache_floating_point_canonical_authority": false,
+    "cache_scalar_projection_substitution_authority": false,
+    "cache_changes_rml12_route_selection": false
+  },
+  "validation": {
+    "workflow": "Pass 219 RML16 Deterministic Route Cache",
+    "run_id": 34482172946,
+    "job_id": 102887419866,
+    "state_at_contract_write": "QUEUED"
+  },
+  "status": "IMPLEMENTED_VALIDATION_QUEUED"
+}
