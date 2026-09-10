@@ -43,7 +43,7 @@ audit: $(TEST)
 	LD_LIBRARY_PATH=$(ROOT)/hhs_runtime/builds ./$(TEST) > $(OUT)
 	test -s $(OUT)
 
-validate: audit
+validate: $(LIB) audit
 	nm $(LIB) | grep 'audit_entire_address_manifold'
 	nm -D $(RUNTIME) | grep ' hhs_exact_pass219_rna_admit_composed$$'
 	nm -D $(RUNTIME) | grep ' hhs_exact_uqcel_source_sha256$$'
