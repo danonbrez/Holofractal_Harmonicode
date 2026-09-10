@@ -39,8 +39,8 @@ typedef enum HHSExactPass219RML13ReasonV1 {
 
 /*
  * Fixed-width route witness packet produced from one validated RML12 selected
- * route.  All digests are raw SHA-256 bytes decoded from the corresponding
- * RML12 hexadecimal fields.  The packet has no transition authority by itself.
+ * route. All digests are raw SHA-256 bytes decoded from corresponding RML12
+ * hexadecimal fields. The packet has no transition authority by itself.
  */
 typedef struct HHSExactPass219RML13RouteWitnessV1 {
     uint32_t struct_size;
@@ -52,6 +52,7 @@ typedef struct HHSExactPass219RML13RouteWitnessV1 {
     uint32_t hopf_base_moving_edges;
     uint32_t clifford_full_intertwiner_edges;
     uint32_t clifford_chirality_swap_edges;
+    uint32_t clifford_even_sector_preserving_edges;
     uint32_t residual_u72_edges;
     uint32_t product_geometry_admissible;
     uint32_t all_edges_reversible;
@@ -93,6 +94,7 @@ typedef struct HHSExactPass219RML13BindingV1 {
     uint32_t hopf_base_moving_edges;
     uint32_t clifford_full_intertwiner_edges;
     uint32_t clifford_chirality_swap_edges;
+    uint32_t clifford_even_sector_preserving_edges;
     uint32_t residual_u72_edges;
     uint16_t vm5184_address;
     uint16_t reserved0;
