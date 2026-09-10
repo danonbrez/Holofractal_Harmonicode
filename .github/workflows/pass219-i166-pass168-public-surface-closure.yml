@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - agent/pass219-i166-pass168-terminal-parent-closure
+      - agent/pass219-post-hhcq-main-repair-reverse-contract-20260910
       - main
     paths:
       - 'hhs_runtime/pass168/**'
@@ -41,7 +42,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install bounded validation dependencies
-        run: python -m pip install --disable-pip-version-check pytest fastapi httpx 'cryptography>=45.0,<47.0'
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx uvicorn 'cryptography>=45.0,<47.0'
 
       - name: Build full canonical runtime shared library
         run: |
