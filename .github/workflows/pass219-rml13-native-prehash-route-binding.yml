@@ -30,8 +30,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install targeted test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
       - name: Build frozen runtime and RML13 versioned native extension
         run: make -C native_projects/hhs_pass219_rml13_route_binding validate
       - name: Validate inherited Pass 188 native Bott runtime
