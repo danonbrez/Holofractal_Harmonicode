@@ -6,17 +6,25 @@ on:
       - agent/pass219-scalar-projection-proof-registry-20260910
     paths:
       - hhs_runtime/pass219/scalar_projection_proofs.py
+      - hhs_runtime/pass219/scalar_projection_theorems.py
       - tests/pass219/test_pass219_scalar_projection_proofs.py
+      - tests/pass219/test_pass219_scalar_projection_theorems.py
       - contracts/pass219/PASS_219_SCALAR_PROJECTION_PROOF_REGISTRY_1_0.json
+      - contracts/pass219/PASS_219_SCALAR_PROJECTION_THEOREM_REGISTRY_1_1.json
       - docs/pass219/PASS_219_SCALAR_PROJECTION_PROOF_SYSTEM_1_0.md
+      - docs/pass219/HARMONICODE_SCALAR_PROJECTION_PROOF_REFERENCE_1_1.md
       - docs/operations/restart/PASS_219_SCALAR_PROJECTION_PROOF_REGISTRY_RESTART_20260910.md
       - .github/workflows/pass219-scalar-projection-proof-registry.yml
   pull_request:
     paths:
       - hhs_runtime/pass219/scalar_projection_proofs.py
+      - hhs_runtime/pass219/scalar_projection_theorems.py
       - tests/pass219/test_pass219_scalar_projection_proofs.py
+      - tests/pass219/test_pass219_scalar_projection_theorems.py
       - contracts/pass219/PASS_219_SCALAR_PROJECTION_PROOF_REGISTRY_1_0.json
+      - contracts/pass219/PASS_219_SCALAR_PROJECTION_THEOREM_REGISTRY_1_1.json
       - docs/pass219/PASS_219_SCALAR_PROJECTION_PROOF_SYSTEM_1_0.md
+      - docs/pass219/HARMONICODE_SCALAR_PROJECTION_PROOF_REFERENCE_1_1.md
       - docs/operations/restart/PASS_219_SCALAR_PROJECTION_PROOF_REGISTRY_RESTART_20260910.md
       - .github/workflows/pass219-scalar-projection-proof-registry.yml
 
@@ -31,4 +39,7 @@ jobs:
       - name: Install focused test dependency
         run: python -m pip install pytest
       - name: Run dependency-scoped scalar projection proof tests
-        run: python -m pytest -q tests/pass219/test_pass219_scalar_projection_proofs.py
+        run: >-
+          python -m pytest -q
+          tests/pass219/test_pass219_scalar_projection_proofs.py
+          tests/pass219/test_pass219_scalar_projection_theorems.py
