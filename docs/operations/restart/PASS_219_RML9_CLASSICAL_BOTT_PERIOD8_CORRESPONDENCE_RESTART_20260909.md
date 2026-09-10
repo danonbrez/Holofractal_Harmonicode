@@ -10,8 +10,9 @@
 - Parent RML8 latest contract seal before RML9: `dbafc95e089b5330936971dcf24d8a40f5e4cc19`
 - RML9 implementation: `3989e6df15111a7cacb2d25979c8a3aeee99c6b6`
 - RML9 tests: `3699151d818f9ee22618c1f477f2db6831a39c5d`
-- RML9 contract: `f43e63f1d969c79fd4e47757542333e9d40f0715`
-- RML9 workflow / validation target head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
+- RML9 contract initial: `f43e63f1d969c79fd4e47757542333e9d40f0715`
+- RML9 workflow / validated head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
+- RML9 dependency-scoped contract validation seal: `365a0b7d38549f98e95e0679f720ac3aa707d33d`
 
 An unused temporary ref `agent/pass219-recursive-manifold-learning-20260909-rml9-temp` was accidentally created from the pre-RML9 feature branch while checking branch ancestry. No RML9 implementation commit was written to that ref. The connected GitHub surface exposed no branch-deletion action, so it is explicitly non-authoritative and must not be used as a restart source.
 
@@ -30,7 +31,27 @@ RML8 is dependency-scoped validated:
 - Coordinate drift: `0`
 - Checksum: `0x11e3bbf0214751c3`
 
-## RML9 purpose
+## RML9 validation frozen green
+
+- Workflow: `Pass 219 Classical Bott Correspondence`
+- Run: `34428473042`
+- Job: `102718664741`
+- Validated head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
+- Result: `43 passed, 0 failed, 1 inherited pytest-config warning in 11.40s`
+
+Inherited Pass188 native validation also succeeded again:
+
+```text
+HHS_PASS_188_BOTT_RUNTIME_PASS
+states=1259712
+active=629856
+collapse=629856
+checksum=11e3bbf0214751c3
+```
+
+Additional inherited native checks remained green: C11/static/shared build, x86_64 branchless Bott step, no checked floating arithmetic instructions, zero coordinate drift, five Python native tests, surface smoke, and Python compile checks.
+
+## RML9 validated purpose
 
 RML9 adds a typed correspondence between the validated RML8 native eight-grade Bott carrier and standard real Bott-periodicity reference data.
 
@@ -48,7 +69,7 @@ KO_q(pt):  Z, Z2, Z2, 0, Z, 0, 0, 0
 pi_q(O):   Z2, Z2, 0, Z, 0, 0, 0, Z
 ```
 
-and verifies at the encoded table level:
+and validates at the encoded table level:
 
 ```text
 KO_(q+8)(pt) = KO_q(pt)
@@ -56,21 +77,15 @@ pi_(q+8)(O)  = pi_q(O)
 pi_q(O)      = KO_(q+1)(pt)
 ```
 
-for every residue `q=0..7` and for arbitrary signed integer grades through reduction modulo 8.
+for every residue `q=0..7` and arbitrary signed integer grades through reduction modulo 8.
 
 ## Semantic boundary
 
 The classical reference is annotation over the same exact native grade residue; it is not a scalar replacement of HARMONICODE state.
 
-RML9 explicitly preserves:
+RML9 preserves all eight live `phase72` values, RML6 exact rational `S7` ancestry, RML7 exact rational `S4` Hopf ancestry, the RML8 Pass187/188 `B8/H8` packet, and the complete `4 same-base / 286 base-moving / 0 inverse-failure` generator partition.
 
-- all eight live `phase72` values;
-- RML6 exact rational `S7` witness ancestry;
-- RML7 exact rational `S4` Hopf-base ancestry;
-- RML8 Pass187/188 `B8/H8` native packet;
-- the complete `4 same-base / 286 base-moving / 0 inverse-failure` generator partition.
-
-RML9 explicitly forbids these reinterpretations:
+It explicitly forbids:
 
 ```text
 phase channel == KO element
@@ -81,9 +96,9 @@ Pass188 classifier becomes reversible phase authority
 
 ## Classical theorem boundary
 
-RML9 uses the standard period-eight real KO/stable-O coefficient patterns as reference invariants. It does not claim that HHS reproves the classical Bott periodicity theorem, constructs a full Clifford-module category equivalence, proves full S3 closure of the RML6 image, or proves a physical topological hardware theorem.
+RML9 uses the standard period-eight real KO/stable-O patterns as reference invariants. It does not claim that HHS reproves Bott periodicity, constructs a full Clifford-module category equivalence, proves full S3 closure of the RML6 image, or proves a physical topological hardware theorem.
 
-The real-Clifford period-eight Morita relation is retained as a typed classical reference only; no runtime Clifford matrix isomorphism is constructed in this pass.
+The real-Clifford period-eight Morita relation is a typed reference only in RML9. No runtime Clifford matrix isomorphism is constructed there.
 
 ## Files added
 
@@ -93,21 +108,8 @@ The real-Clifford period-eight Morita relation is retained as a typed classical 
 - `.github/workflows/pass219-classical-bott-correspondence.yml`
 - `docs/operations/restart/PASS_219_RML9_CLASSICAL_BOTT_PERIOD8_CORRESPONDENCE_RESTART_20260909.md`
 
-## Validation status at checkpoint creation
-
-- Workflow: `Pass 219 Classical Bott Correspondence`
-- Run: `34428473042`
-- Job: `102718664741`
-- Validation target head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
-- Status: `queued`
-
-No RML9 failure has been observed at checkpoint creation.
-
 ## Required next action
 
-1. Inspect run `34428473042`, job `102718664741`.
-2. If green, record exact native Pass188 validation output and exact RML7-RML9 pytest count/time; promote the RML9 contract to dependency-scoped validated and freeze a green restart seal.
-3. If red, repair only the impacted RML9/classical-reference bridge and rerun the same targeted gate.
-4. Once green, the next stronger successor may construct an explicit real-Clifford module/Morita witness if repository-native exact matrix machinery can support it without changing VM81/Hash authority.
+RML9 is complete, dependency-scoped validated, and restartable.
 
-Do not rewrite frozen RML1-RML8, Pass187/188, I148, or Pass169 evidence in place.
+The next bounded successor is RML10: inspect and reuse repository-native exact matrix / Clifford machinery to construct a concrete real-Clifford/Morita period-eight witness, without changing VM81/Hash authority and without rewriting frozen RML1-RML9 or inherited Pass187/188 evidence.
