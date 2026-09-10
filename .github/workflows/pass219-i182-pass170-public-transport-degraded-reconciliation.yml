@@ -8,6 +8,7 @@ on:
     paths:
       - 'HHS_PUBLIC_TRANSPORT_PARITY_I182.json'
       - 'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json'
+      - 'hhs_backend/public_api_server.py'
       - 'hhs_runtime/pass219/pass170_public_transport_i182.py'
       - 'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py'
       - 'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'HHS_PUBLIC_TRANSPORT_PARITY_I182.json'
       - 'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json'
+      - 'hhs_backend/public_api_server.py'
       - 'hhs_runtime/pass219/pass170_public_transport_i182.py'
       - 'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py'
       - 'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py'
@@ -61,6 +63,7 @@ jobs:
           allowed = {
               'HHS_PUBLIC_TRANSPORT_PARITY_I182.json',
               'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json',
+              'hhs_backend/public_api_server.py',
               'hhs_runtime/pass219/pass170_public_transport_i182.py',
               'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py',
               'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py',
@@ -88,6 +91,7 @@ jobs:
           python -m json.tool HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json >/dev/null
           python -m json.tool contracts/pass219/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_1_0.json >/dev/null
           python -m py_compile \
+            hhs_backend/public_api_server.py \
             hhs_runtime/pass219/pass170_public_transport_i182.py \
             hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py \
             tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py
