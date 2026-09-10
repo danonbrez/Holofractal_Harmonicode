@@ -1,0 +1,169 @@
+name: Pass 219 RML16 Signed Permutation Post Integration
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-cold-route-profile-20260910
+    paths:
+      - 'hhs_runtime/pass219/rml16_signed_permutation_clifford.py'
+      - 'hhs_runtime/pass219/reciprocal_route_cache.py'
+      - 'tests/pass219/test_pass219_rml16_signed_permutation_clifford_integration.py'
+      - 'benchmarks/pass219/pass219_rml16_cold_route_substage_benchmark.py'
+      - 'benchmarks/pass219/pass219_rml16_cached_route_benchmark.py'
+      - '.github/workflows/pass219-rml16-signed-permutation-post-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  post-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Differential integration tests across RML11 RML12 and RML16
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml16_signed_permutation_clifford_integration.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Rebuild and validate native RML13 through RML15
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Exhaust Pass 188 hydrated state manifold and pin checksum
+        run: |
+          mkdir -p artifacts/pass219/rml16-signed-permutation-integration
+          make -C native_projects/hhs_pass188_bott_runtime validate \
+            | tee artifacts/pass219/rml16-signed-permutation-integration/pass188_validate.log
+          grep -F 'HHS_PASS_188_BOTT_RUNTIME_PASS states=1259712 active=629856 collapse=629856 checksum=11e3bbf0214751c3' \
+            artifacts/pass219/rml16-signed-permutation-integration/pass188_validate.log
+
+      - name: Revalidate native receipt and reverse-replay chain
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py
+
+      - name: Run cold route profiler with production RML16 acceleration active
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          import runpy
+          import sys
+
+          # Importing the RML16 production route surface activates the validated
+          # private RML11 signed-permutation successor in this same process.
+          import hhs_runtime.pass219.reciprocal_route_cache  # noqa: F401
+          from hhs_runtime.pass219.rml16_signed_permutation_clifford import (
+              rml16_signed_permutation_clifford_info,
+          )
+
+          before = rml16_signed_permutation_clifford_info()
+          assert before['installed'] is True
+          assert before['dense_exact_fallback_preserved'] is True
+          assert before['rml11_public_abi_changed'] is False
+          assert before['rml12_public_abi_changed'] is False
+
+          output = Path('artifacts/pass219/rml16-signed-permutation-integration/cold_profile.json')
+          sys.argv = [
+              'pass219_rml16_cold_route_substage_benchmark.py',
+              '--output', str(output),
+              '--states', '16',
+          ]
+          try:
+              runpy.run_path(
+                  'benchmarks/pass219/pass219_rml16_cold_route_substage_benchmark.py',
+                  run_name='__main__',
+              )
+          except SystemExit as exc:
+              if exc.code not in (None, 0):
+                  raise
+
+          after = rml16_signed_permutation_clifford_info()
+          assert after['installed'] is True
+          assert after['descriptor_cache']['hits'] > before['descriptor_cache']['hits']
+          assert after['descriptor_cache']['currsize'] > 0
+          Path('artifacts/pass219/rml16-signed-permutation-integration/acceleration_info.json').write_text(
+              json.dumps({'before': before, 'after': after}, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Validate accelerated cold-route semantic receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = json.loads(Path('artifacts/pass219/rml16-signed-permutation-integration/cold_profile.json').read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['state_count'] == 16
+          assert d['all_source_state_hashes_unique'] is True
+          assert all(d['semantic_gates'].values())
+          assert d['timing_is_canonical'] is False
+          assert d['canonical_vm81_mutation_authority'] is False
+          assert d['canonical_hash72_mint_authority'] is False
+          assert d['canonical_hash216_persistence_authority'] is False
+          assert d['floating_point_canonical_authority'] is False
+          assert d['scalar_projection_substitution_authority'] is False
+          assert d['diagnostics']['exact_request_route_cache_hits_possible_by_design'] is False
+
+          timing = d['substage_timing']
+          print('RML16_POST_COLD_LIFT_MEDIAN_NS', timing['RML11_CLIFFORD_LIFT']['median_ns'])
+          print('RML16_POST_COLD_CLASSIFIER_MEDIAN_NS', timing['RML11_CLIFFORD_CLASSIFIER']['median_ns'])
+          print('RML16_POST_COLD_EDGE_MEDIAN_NS', timing['RML12_COUPLED_EDGE']['median_ns'])
+          print('RML16_POST_COLD_PLAN_MEDIAN_NS', timing['RML12_SHORTEST_PLAN']['median_ns'])
+          print('RML16_POST_COLD_BUNDLE_MEDIAN_NS', timing['RML12_FULL_SHORTEST_PLUS_COMPLEMENTARY_BUNDLE']['median_ns'])
+          for row in d['ranking']:
+              print('RML16_POST_COLD_RANK', row['surface'], row['median_ns'], row['samples'])
+          PY
+
+      - name: Run Pass 214 compound semantic control
+        run: |
+          PYTHONPATH="$PWD" python tools/pass214_final_compound_benchmark.py \
+            --output artifacts/pass219/rml16-signed-permutation-integration/pass214_compound.json
+
+      - name: Execute established full-hydration route-cache control sequence
+        run: |
+          PYTHONPATH="$PWD" python benchmarks/pass219/pass219_rml16_cached_route_benchmark.py \
+            --output artifacts/pass219/rml16-signed-permutation-integration/full_hydration.json \
+            --repeats 7 --warmups 1 --native-repeats 3 --e2e-repeats 3
+
+      - name: Validate full-hydration semantic and authority closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = json.loads(Path('artifacts/pass219/rml16-signed-permutation-integration/full_hydration.json').read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert all(d['semantic_gates'].values())
+          assert all(value is False for value in d['authority'].values())
+          route = next(row for row in d['bottleneck_ranking'] if row['stage'] == 'RML12_ROUTE_SELECT_ALL_20_GYROSCOPES')
+          print('RML16_POST_FULL_ROUTE_MEDIAN_NS', route['median_ns'])
+          for name, row in d['end_to_end_full_hydration'].items():
+              print('RML16_POST_FULL_E2E', name, row['timing']['median_ns'], row['timing']['p95_ns'], row['timing']['max_ns'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-signed-permutation-post-integration
+          path: artifacts/pass219/rml16-signed-permutation-integration
+          if-no-files-found: error

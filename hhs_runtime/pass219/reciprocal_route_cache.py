@@ -11,6 +11,11 @@ validation still executes before every lookup. The cache is bounded, process
 local, non-persistent, and has no VM81/Hash authority. Values are stored and
 returned through private deep copies so caller mutation cannot poison a future
 cache hit.
+
+RML16 also activates the validated exact signed-permutation Clifford product
+successor for this route surface.  The historical RML11 implementation remains
+unchanged in repository history; matrices outside the exact signed-permutation
+class retain the frozen dense exact multiplication path.
 """
 from __future__ import annotations
 
@@ -24,11 +29,19 @@ from hhs_runtime.pass219.reciprocal_route_optimizer import (
     _require_admissible_state,
     build_and_select_reciprocal_route as _build_and_select_reciprocal_route_uncached,
 )
+from hhs_runtime.pass219.rml16_signed_permutation_clifford import (
+    install_rml16_signed_permutation_clifford_acceleration,
+)
 
 PASS = 219
 ITERATION = "RML16_DETERMINISTIC_RECIPROCAL_ROUTE_CACHE"
 CACHE_SCHEMA = "HHS_PASS219_RML16_DETERMINISTIC_RECIPROCAL_ROUTE_CACHE_V1"
 CACHE_CAPACITY = 256
+
+# Repair-forward RML16 acceleration only.  Installation changes one private
+# RML11 helper implementation while preserving every RML11/RML12 public
+# callable and exact output.  It is process-local and carries no state authority.
+_RML16_CLIFFORD_ACCELERATION = install_rml16_signed_permutation_clifford_acceleration()
 
 _CACHE: OrderedDict[bytes, dict[str, Any]] = OrderedDict()
 _CACHE_LOCK = RLock()
