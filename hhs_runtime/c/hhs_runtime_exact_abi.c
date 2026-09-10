@@ -1,5 +1,17 @@
-/* Additive exact ABI aggregate through Pass 219 I182 native HARMONIC geometry membrane, preserving inherited singleton VM81 authority and global latency/H36 policy surfaces. */
+/* Additive exact ABI aggregate through Pass 180 inherited application-factory binding, preserving current-main global latency and H36 policy surfaces. */
+#include "../include/hhs_runtime_exact_abi.h"
+
+/* Keep the immutable exact-v1.1 source blob byte-identical. Compile the three
+ * serialization entry points under the established internal raw names, then
+ * publish the post-v1.1 guarded behavior from an additive successor bridge. */
+#define hhs_exact_vm81_frame_import_le hhs_exact_vm81_frame_import_le_raw
+#define hhs_exact_vm81_frame_export_le hhs_exact_vm81_frame_export_le_raw
+#define hhs_x86_64_bytecode_copy_exact hhs_x86_64_bytecode_copy_exact_raw
 #include "hhs_runtime_exact_abi_v1_1_base.inc"
+#undef hhs_exact_vm81_frame_import_le
+#undef hhs_exact_vm81_frame_export_le
+#undef hhs_x86_64_bytecode_copy_exact
+#include "hhs_runtime_exact_abi_v1_2_serialization_bridge.inc"
 #include "hhs_runtime_uqcel_1_8_bigint.inc"
 #include "hhs_runtime_uqcel_1_8_validate.inc"
 #include "hhs_runtime_uqcel_1_8_receipt.inc"
@@ -64,6 +76,18 @@
 #include "hhs_pass219_mandatory_genesis_scaling_1_22.inc"
 #include "hhs_pass219_cross_modal_reversible_state_1_0.inc"
 #include "hhs_pass219_dynamic_paradox_phase_cycle_1_0.inc"
+#include "hhs_pass219_core_constraint_dynamic_circuit_1_23.inc"
+#include "hhs_pass219_core_holographic_four_lane_1_24.inc"
+#include "hhs_pass219_hhcq_rotational_resolution_1_25.inc"
+#include "hhs_pass219_hhcq_joint_local_router_1_26.inc"
+#include "hhs_pass219_hhcq_collapse_regret_1_27.inc"
+#include "hhs_pass219_hhcq_temporal_cubic_1_28.inc"
+#include "hhs_pass219_hhcq_temporal_regret_1_28.inc"
+#include "hhs_pass219_hhcq_reciprocal_economy_1_29.inc"
+#include "hhs_pass219_hhcq_prime_rational_expansion_1_30.inc"
+#include "hhs_pass219_hhcq_8basis_equilibrium_parity_1_31.inc"
+#include "hhs_pass219_hhcq_symbolic_phase_gear_1_32.inc"
+#include "hhs_pass219_hhcq_structural_phase_lift_1_33.inc"
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc"
 #include "hhs_pass219_audio_security_transport_1_0.inc"
 #include "hhs_pass219_global_raw5184_serialization_hydration_1_0.inc"
