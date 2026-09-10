@@ -1,0 +1,177 @@
+name: Pass 219 RML16 Full Hydration Benchmark Calibration
+
+on:
+  push:
+    branches:
+      - agent/pass219-recursive-manifold-learning-20260909
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_full_hydration_benchmark.py'
+      - 'contracts/pass219/PASS_219_RML16_FULL_HYDRATION_BENCHMARK_CALIBRATION_1_0.json'
+      - 'hhs_runtime/pass219/**'
+      - 'hhs_runtime/core_sandbox/hhs_octonion_digital_dna_u72_table_v1.py'
+      - 'hhs_runtime/hhs_pass219_raw5184_octonion_audio_hydration_v1.py'
+      - 'hhs_runtime/hhs_pass219_global_raw5184_serialization_hydration_v1.py'
+      - 'hhs_runtime/c/hhs_pass219_rml1*.c'
+      - 'hhs_runtime/include/hhs_pass219_rml1*.h'
+      - 'native_projects/hhs_pass219_rml1*/**'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+      - 'benchmarks/pass219/harmonic36_*benchmark.cpp'
+      - 'tools/pass214_final_compound_benchmark.py'
+      - '.github/workflows/pass219-rml16-full-hydration-benchmark.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-hydration-baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded benchmark dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Build and validate route-aware native stack through RML15
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Exhaust native Pass188 Bott hydration
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+
+      - name: Run Pass214 compound semantic control
+        run: |
+          mkdir -p artifacts/pass219/rml16-full-hydration
+          PYTHONPATH="$PWD" python tools/pass214_final_compound_benchmark.py \
+            --output artifacts/pass219/rml16-full-hydration/pass214_compound.json
+
+      - name: Build exact H36 benchmark ABI
+        run: |
+          mkdir -p /tmp/h36 artifacts/pass219/rml16-full-hydration/h36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36/exact-opt.o
+
+      - name: H36 optimization benchmark
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_optimization_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/optimization
+          /tmp/h36/optimization artifacts/pass219/rml16-full-hydration/h36/optimization.json
+
+      - name: H36 stack selection benchmark
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/stack-selection
+          /tmp/h36/stack-selection artifacts/pass219/rml16-full-hydration/h36/stack_selection.json
+
+      - name: H36 stack-selection cache benchmark
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_selection_cache_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/stack-cache
+          /tmp/h36/stack-cache artifacts/pass219/rml16-full-hydration/h36/stack_cache.json
+
+      - name: H36 cache residency calibration
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_residency_1_13_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/cache-residency
+          /tmp/h36/cache-residency artifacts/pass219/rml16-full-hydration/h36/cache_residency.json
+
+      - name: H36 cache capacity calibration
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_stack_cache_capacity8_1_14_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/cache-capacity
+          /tmp/h36/cache-capacity artifacts/pass219/rml16-full-hydration/h36/cache_capacity8.json
+
+      - name: H36 branch reference cache benchmark
+        run: |
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/harmonic36_branch_reference_cache_1_17_benchmark.cpp \
+            /tmp/h36/exact-opt.o -o /tmp/h36/branch-reference
+          /tmp/h36/branch-reference artifacts/pass219/rml16-full-hydration/h36/branch_reference_cache.json
+
+      - name: Validate H36 semantic-before-timing receipts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('artifacts/pass219/rml16-full-hydration/h36')
+          optimization = json.loads((root/'optimization.json').read_text())
+          assert optimization['physical_gpu_measured'] is False
+          assert optimization['authoritative_state_changed'] is False
+          assert optimization['transcode']['exact_result_equal'] is True
+          assert optimization['hfc_reconstruction']['exact_result_equal'] is True
+          assert optimization['gpu_locality_cpu_reference']['exact_selected_equal'] is True
+          assert optimization['native_cache_address']['exact_result_equal'] is True
+          selection = json.loads((root/'stack_selection.json').read_text())
+          assert selection['workload']['exact_result_equal_before_timing'] is True
+          assert selection['selection']['exact_equality_before_timing'] is True
+          assert selection['authoritative_state_changed'] is False
+          cache = json.loads((root/'stack_cache.json').read_text())
+          assert cache['correctness']['cache_hit_equals_fresh_before_timing'] is True
+          assert cache['correctness']['deterministic_replay_receipt'] is True
+          assert cache['measurement']['benefit_verified'] is True
+          for name in ('cache_residency.json','cache_capacity8.json','branch_reference_cache.json'):
+              value = json.loads((root/name).read_text())
+              assert value.get('authoritative_state_changed', False) is False
+          print('RML16_H36_CALIBRATION_RECEIPTS_GREEN')
+          PY
+
+      - name: Deep RML16 full-hydration timing baseline
+        run: |
+          PYTHONPATH="$PWD" python benchmarks/pass219/pass219_rml16_full_hydration_benchmark.py \
+            --output artifacts/pass219/rml16-full-hydration/baseline.json \
+            --repeats 7 --warmups 1 --native-repeats 3 --e2e-repeats 3
+
+      - name: Revalidate impacted semantic surfaces
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_production_phase_geometry_binding.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py
+
+      - name: Print calibration summary
+        run: |
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/rml16-full-hydration/baseline.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert all(d['semantic_gates'].values())
+          assert all(value is False for value in d['authority'].values())
+          print('RML16_BASELINE_BOTTLENECKS')
+          for row in d['bottleneck_ranking']:
+              print(row['stage'], row['median_ns'], row['median_share_basis_points_floor'])
+          print('RML16_OCTONION_TABLE_MEDIAN_NS', d['octonion_u72_table_receipt']['timing']['median_ns'])
+          for name,row in d['native_route_profiles'].items():
+              print('RML16_NATIVE', name,
+                    row['RML13_PREHASH']['median_ns'],
+                    row['RML14_ROUTE_BOUND_RECEIPT']['median_ns'],
+                    row['RML15_REVERSE_REPLAY_INCLUSIVE']['median_ns'])
+          for name,row in d['end_to_end_full_hydration'].items():
+              print('RML16_E2E', name, row['timing']['median_ns'], row['timing']['p95_ns'], row['timing']['max_ns'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-full-hydration-baseline
+          path: artifacts/pass219/rml16-full-hydration
+          if-no-files-found: warn
