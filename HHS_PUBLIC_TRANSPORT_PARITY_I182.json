@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PUBLIC_TRANSPORT_PARITY_I182_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I182",
+  "base_main": "c7f079ad3c0ed67d39bb0be840d47b8d52b24c05",
+  "frozen_parent_index": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json",
+  "frozen_parent_record_count": 59,
+  "http_operation_count": 58,
+  "streaming_operation_count": 1,
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "python_binding": "hhs_runtime.pass219.pass170_public_transport_i182.invoke_public_operation_python",
+  "async_python_binding": "hhs_runtime.pass219.pass170_public_transport_i182.invoke_public_operation_python_async",
+  "cli_binding": "python -m hhs_runtime.pass219.pass170_public_transport_i182 invoke",
+  "dispatch_policy": "IN_PROCESS_ASGI_CANONICAL_GATEWAY_ROUTE_DISPATCH",
+  "native_abi_policy": "REQUIRED_ONLY_WHEN_OPERATION_RECORD_DECLARES_NATIVE_ABI_SYMBOL",
+  "declared_native_operation_count": 1,
+  "declared_native_operation_ids": [
+    "public.audio_language.feedback.run"
+  ],
+  "inherited_native_audio_symbol": "hhs_exact_pass219_audio_security_transport_admit",
+  "streaming_policy": "WEBSOCKET_REMAINS_STREAMING_ONLY_NO_HTTP_OR_CLI_SCALAR_SUBSTITUTE",
+  "invariants": {
+    "all_http_records_bound_to_same_canonical_asgi_app": true,
+    "generic_transport_reimplements_operation_semantics": false,
+    "cli_and_python_share_same_transport_function": true,
+    "http_method_and_path_come_from_frozen_operation_record": true,
+    "path_parameters_must_match_exactly": true,
+    "floating_payloads_rejected_by_transport": true,
+    "authorization_forwarded_without_token_rewriting": true,
+    "streaming_operation_not_scalarized": true,
+    "native_abi_not_invented_for_operations_without_declared_symbol": true,
+    "i179_audio_native_and_replay_evidence_inherited": true,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "canonical_state_mutated_by_transport_registry": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF"
+}
