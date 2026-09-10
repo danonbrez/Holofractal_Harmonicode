@@ -1,0 +1,149 @@
+name: Pass 219 I182 Pass170 Public Transport Degraded Reconciliation
+
+on:
+  push:
+    branches:
+      - agent/pass219-i182-pass170-public-transport-degraded-reconciliation-20260910
+      - main
+    paths:
+      - 'HHS_PUBLIC_TRANSPORT_PARITY_I182.json'
+      - 'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json'
+      - 'hhs_runtime/pass219/pass170_public_transport_i182.py'
+      - 'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py'
+      - 'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py'
+      - 'contracts/pass219/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_1_0.json'
+      - '.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml'
+      - 'docs/operations/restart/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_RESTART.md'
+  pull_request:
+    paths:
+      - 'HHS_PUBLIC_TRANSPORT_PARITY_I182.json'
+      - 'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json'
+      - 'hhs_runtime/pass219/pass170_public_transport_i182.py'
+      - 'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py'
+      - 'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py'
+      - 'contracts/pass219/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_1_0.json'
+      - '.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml'
+      - 'docs/operations/restart/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i182:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_PASS190_DATABASE: /tmp/pass219-i182/pass190.sqlite3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded inherited dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx uvicorn 'cryptography>=45.0,<47.0'
+
+      - name: Guard I182 scope and frozen parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=c7f079ad3c0ed67d39bb0be840d47b8d52b24c05
+          git merge-base --is-ancestor "$base" HEAD
+          git diff --name-only "$base"...HEAD | tee /tmp/pass219_i182_changed.txt
+          python - <<'PY'
+          from pathlib import Path
+          allowed = {
+              'HHS_PUBLIC_TRANSPORT_PARITY_I182.json',
+              'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json',
+              'hhs_runtime/pass219/pass170_public_transport_i182.py',
+              'hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py',
+              'tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py',
+              'contracts/pass219/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_1_0.json',
+              '.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml',
+              'docs/operations/restart/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_RESTART.md',
+          }
+          changed = [line for line in Path('/tmp/pass219_i182_changed.txt').read_text().splitlines() if line]
+          illegal = [path for path in changed if path not in allowed]
+          assert not illegal, illegal
+          frozen = {
+              'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py',
+              'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json',
+              'HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json',
+              'hhs_backend/runtime_os_source_only_server.py',
+              'hhs_backend/runtime_os_application_server.py',
+          }
+          assert not frozen.intersection(changed), sorted(frozen.intersection(changed))
+          print('PASS219_I182_SCOPE', len(changed), 'files')
+          PY
+
+      - name: Parse manifests and compile I182
+        run: |
+          python -m json.tool HHS_PUBLIC_TRANSPORT_PARITY_I182.json >/dev/null
+          python -m json.tool HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_1_0.json >/dev/null
+          python -m py_compile \
+            hhs_runtime/pass219/pass170_public_transport_i182.py \
+            hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py \
+            tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py
+
+      - name: Build inherited canonical runtime authority
+        run: |
+          mkdir -p /tmp/pass219-i182 artifacts/pass219/i182
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Run I182 dependency-scoped contract tests
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py
+
+      - name: Execute canonical I182 verifier and enforce boundary
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_transport_degraded_reconciliation_i182 import (
+              verify_i182_transport_degraded_reconciliation,
+          )
+          report = verify_i182_transport_degraded_reconciliation(Path('.'))
+          assert report['evidence_verified'] is True, report
+          assert report['aggregate_operation_count'] == 59
+          assert report['http_operation_count'] == 58
+          assert report['streaming_only_operation_count'] == 1
+          assert report['native_declared_operation_count'] == 1
+          assert report['canonical_http_routes_verified'] == 58
+          assert report['canonical_application_identity_verified'] is True
+          assert report['generic_cli_transport_bound'] is True
+          assert report['generic_python_transport_bound'] is True
+          assert report['semantic_engine_reimplemented'] is False
+          assert report['source_only_degraded_shell_reconciled'] is True
+          assert report['source_only_degraded_shell_retained_fail_closed'] is True
+          assert report['target_blockers'] == ['PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING']
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['next_boundary'] == 'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF'
+          for key in (
+              'new_capability_token_authority',
+              'new_vm81_authority',
+              'new_hash72_mint_authority',
+              'hash216_persistence_authority',
+              'floating_point_canonical_authority',
+              'canonical_state_mutated_by_verifier',
+          ):
+              assert report[key] is False, (key, report[key])
+          out = Path('artifacts/pass219/i182/public_transport_degraded_reconciliation.json')
+          out.write_text(json.dumps(report, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(report, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i182-pass170-public-transport-degraded-${{ github.sha }}
+          path: artifacts/pass219/i182/public_transport_degraded_reconciliation.json
+          if-no-files-found: error
+          retention-days: 90
