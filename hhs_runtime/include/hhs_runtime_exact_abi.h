@@ -89,5 +89,6 @@
 #include "hhs_pass219_harmonic36_branch_reference_cache_1_17.h"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.h"
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.h"
+#include "hhs_pass219_i182_harmonic_geometry_membrane_1_0.h"
 #include "hhs_pass168_parameter_circuit_1_0.h"
 #endif
