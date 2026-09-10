@@ -1,0 +1,164 @@
+name: Pass219 HHCQ Collapse Regret Phase7
+
+on:
+  push:
+    branches:
+      - agent/pass219-hhcq-collapse-regret-phase7-20260907
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_hhcq_collapse_regret_1_27.h'
+      - 'hhs_runtime/c/hhs_pass219_hhcq_collapse_regret_1_27.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_hhcq_collapse_regret_1_27.c'
+      - 'benchmarks/pass219/hhcq_collapse_regret_phase7_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_HHCQ_COLLAPSE_REGRET_PHASE7_RESTART.md'
+      - '.github/workflows/pass219-hhcq-collapse-regret-phase7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  phase7:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+    steps:
+      - name: Check out Phase7 branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build exact ABI
+        run: |
+          set -o pipefail
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and run strict Phase7 C invariants
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_collapse_regret_1_27.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase7-test
+          /tmp/pass219-phase7-test
+
+      - name: Reuse frozen Phase3 authenticated hydrated-weight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Compile and run Phase7 collapse regret benchmark
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase7
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_collapse_regret_phase7_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase7-benchmark
+          /tmp/pass219-phase7-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase7/hhcq_collapse_regret.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase7/phase3_frame.sha256
+
+      - name: Validate Phase7 exactness evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/pass219/phase7/hhcq_collapse_regret.json')
+          d = json.loads(p.read_text())
+          assert d['schema'] == 'HHS_PASS219_HHCQ_COLLAPSE_REGRET_PHASE7_V1'
+          assert d['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert d['summary_records'] == 529
+          assert d['local_samples'] == 4761
+          assert d['phase5_exact_roundtrip_checks'] == 4761
+          assert d['lane_local_container_identity_checks'] == 19044
+          assert d['resolution_diversity'] == 35
+          assert d['target_lane_diversity'] == 4
+          assert len(d['target_lane_counts']) == 4 and sum(d['target_lane_counts']) == 4761
+          assert len(d['global_lane_median_ns']) == 4 and all(v > 0 for v in d['global_lane_median_ns'])
+          assert d['training_local_samples'] == 3456
+          assert d['heldout_local_samples'] == 1305
+          assert d['training_unique_digest_count'] == 352
+          assert d['heldout_unique_digest_count'] == 137
+          assert d['train_heldout_digest_overlap'] == 0
+          assert d['tuning_fit_samples'] > 0
+          assert d['tuning_validation_samples'] > 0
+          assert d['tuning_candidate_count'] == 24
+          assert d['selected_regret_quantum_units'] > 0
+          assert d['selected_training_epochs'] in {4,8,12,16}
+          assert d['fixed_policy_state_bytes'] == 112
+          assert d['heldout_prediction_replay_equal'] is True
+          assert d['collapse_polynomial_exact_integer'] is True
+          assert d['canonical_sqrt_or_division_used'] is False
+          assert d['phase5_resolution_locked_during_learning'] is True
+          assert d['fixed_size_policy_state'] is True
+          assert d['candidate_only'] is True
+          assert d['canonical_authority_changed'] is False
+          assert d['floating_point_authority'] is False
+          assert len(d['collapse_direction_counts_minus_zero_plus']) == 3
+          assert len(d['update_pressure_counts_0_to_9']) == 10
+          assert d['classification'] in {
+              'HELDOUT_FIXED_BASELINE_BEATEN',
+              'HELDOUT_IMPROVEMENT_FIXED_BASELINE_NOT_BEATEN',
+              'NO_HELDOUT_IMPROVEMENT',
+              'HELDOUT_REGRESSION',
+          }
+          print(json.dumps(d, indent=2, sort_keys=True))
+          PY
+
+      - name: Record Phase7 summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 HHCQ collapse-regret Phase7'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase7/hhcq_collapse_regret.json; then
+              echo '```json'
+              cat artifacts/pass219/phase7/hhcq_collapse_regret.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase7 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-hhcq-collapse-regret-phase7
+          path: artifacts/pass219/phase7
+          if-no-files-found: warn
+
+      - name: Enforce Phase7 heldout performance closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path('artifacts/pass219/phase7/hhcq_collapse_regret.json').read_text())
+          assert d['classification'] == 'HELDOUT_FIXED_BASELINE_BEATEN'
+          assert d['heldout_posttrain_mean_regret'] < d['heldout_pretrain_mean_regret']
+          assert d['heldout_posttrain_mean_regret'] < d['heldout_fixed_lane_mean_regret']
+          PY

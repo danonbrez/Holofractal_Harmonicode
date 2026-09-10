@@ -1,0 +1,150 @@
+name: Pass219 HHCQ Prime Rational Expansion Phase10
+
+on:
+  push:
+    branches:
+      - agent/pass219-hhcq-prime-rational-expansion-phase10-20260907
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_hhcq_prime_rational_expansion_1_30.h'
+      - 'hhs_runtime/c/hhs_pass219_hhcq_prime_rational_expansion_1_30.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_hhcq_prime_rational_expansion_1_30.c'
+      - 'benchmarks/pass219/hhcq_prime_rational_expansion_phase10_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_HHCQ_PRIME_RATIONAL_EXPANSION_PHASE10_RESTART.md'
+      - '.github/workflows/pass219-hhcq-prime-rational-expansion-phase10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  phase10:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+    steps:
+      - name: Check out Phase10 branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build exact ABI
+        run: |
+          set -o pipefail
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and run strict Phase10 C invariants
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_prime_rational_expansion_1_30.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase10-test
+          /tmp/pass219-phase10-test
+
+      - name: Reuse frozen Phase3 authenticated hydrated-weight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Compile and run Phase10 authenticated expansion benchmark
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase10
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_prime_rational_expansion_phase10_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase10-benchmark
+          /tmp/pass219-phase10-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase10/hhcq_prime_rational_expansion.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase10/phase3_frame.sha256
+
+      - name: Validate Phase10 evidence gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/phase10/hhcq_prime_rational_expansion.json')
+          d = json.loads(p.read_text())
+          assert d['schema'] == 'HHS_PASS219_HHCQ_PRIME_RATIONAL_EXPANSION_PHASE10_V1'
+          assert d['classification'] == 'PRIME_RATIONAL_EXPANSION_FAIL_CLOSED_PRE_RECONSTRUCTION'
+          assert d['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert d['extension_source_bytes'] == 135
+          assert d['extension_source_sha256'] == '6d91bf7d4a70edf34ec5cd30a4ea7d04cc08af5013f7631576b118c369b2ea14'
+          assert d['economy_parity_units'] == 5184
+          assert d['exhaustive_phase72_coverage'] == 72
+          assert d['exhaustive_phase5_resolution_coverage'] == 35
+          assert d['summary_records'] == 529
+          assert d['authenticated_unique_digests'] == 489
+          assert d['local_samples'] == 4761
+          assert d['phase5_exact_roundtrip_checks'] == 4761
+          assert d['expansion_replay_checks'] == 4761
+          assert d['noncoarsening_checks'] == 4761
+          assert d['finer_expansions'] > 0
+          assert d['finer_expansions'] + d['equal_expansions'] == 4761
+          assert d['authenticated_polynomial_resolution_diversity'] > 1
+          assert d['authenticated_expanded_resolution_diversity'] > 1
+          assert d['direct_lossless_admitted'] == 4761
+          assert d['factor2_lower_resolution_candidates'] > 0
+          assert d['factor3_lower_resolution_candidates'] > 0
+          assert d['unproven_lower_resolution_candidates'] > 0
+          assert d['unproven_rational_bounds_met'] == d['unproven_lower_resolution_candidates']
+          assert d['unproven_budget_positive'] == d['unproven_lower_resolution_candidates']
+          assert d['unproven_information_1to1'] == d['unproven_lower_resolution_candidates']
+          assert d['unproven_admitted'] == 0
+          assert d['ab_equals_p4_constructor'] is True
+          assert d['reciprocal_ab_ba_closure'] is True
+          assert d['symbolic_sqrt_a_times_b_retained'] is True
+          assert d['lower_resolution_execution_measured'] is False
+          assert d['exact_reconstruction_required_before_admission'] is True
+          assert d['fixed_policy_state_bytes'] == 112
+          assert d['candidate_only'] is True
+          assert d['canonical_authority_changed'] is False
+          assert d['floating_point_authority'] is False
+          print(json.dumps(d, indent=2, sort_keys=True))
+          PY
+
+      - name: Record Phase10 summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 HHCQ prime-rational polynomial expansion Phase10'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase10/hhcq_prime_rational_expansion.json; then
+              echo '```json'
+              cat artifacts/pass219/phase10/hhcq_prime_rational_expansion.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase10 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-hhcq-prime-rational-expansion-phase10
+          path: artifacts/pass219/phase10
+          if-no-files-found: warn

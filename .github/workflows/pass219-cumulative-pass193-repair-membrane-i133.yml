@@ -104,30 +104,34 @@ jobs:
           git merge-base --is-ancestor d311cd243845456851518ce1fef026a7d3cac45e HEAD
           test "$(git merge-base d311cd243845456851518ce1fef026a7d3cac45e HEAD)" = "d311cd243845456851518ce1fef026a7d3cac45e"
           git merge-base --is-ancestor eebc47a52de143df4a9acf807735f576ad0ce844 HEAD
+          git merge-base --is-ancestor b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308 HEAD
+          git merge-base --is-ancestor a5db8abf3b2b5a8ef4dc14cd7b1f08fbf91cc3cf HEAD
           test "$(git rev-parse eebc47a52de143df4a9acf807735f576ad0ce844:docs/pass193/HHS_PASS_193_REUSABLE_HYPERSOLID_FRACTAL_MANIFOLD_NATIVE_COMPILATION_AND_SAFE_NFT_EXECUTABLES.md)" = "2452a5d5184bd9275e150b4b4afd840928e723fd"
           test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i132_pass194.py)" = "4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51"
           test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/include/hhs_pass219_inherited_pass194_1_32.h)" = "def3dcf6044fb29db58af04e3928cd14c227ce77"
           test "$(git rev-parse d311cd243845456851518ce1fef026a7d3cac45e:hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc)" = "ef1625c9badd2f71929953ec376562834d94ccf0"
 
-      - name: Prove repaired Pass 193 source identities
+      - name: Prove repaired Pass 193 baseline and current successor source identities
         run: |
           test "$(git hash-object hhs_backend/runtime/hhs_pass193_hypersolid_native_egress_v1.py)" = "c5c961b406a67c75f277299c4c617c15bb4544cf"
           test "$(git hash-object hhs_backend/api/pass193_hypersolid_routes.py)" = "76482bce7fa1d9940df05b86603ccf43db8bacb2"
-          test "$(git hash-object hhs_backend/visual_server.py)" = "d09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b"
+          test "$(git rev-parse b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308:hhs_backend/visual_server.py)" = "d09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b"
+          test "$(git rev-parse a5db8abf3b2b5a8ef4dc14cd7b1f08fbf91cc3cf:hhs_backend/visual_server.py)" = "409d451a7db39945c07b919bbb9faa3626dc0bc6"
+          test "$(git hash-object hhs_backend/visual_server.py)" = "409d451a7db39945c07b919bbb9faa3626dc0bc6"
           test "$(git hash-object tests/test_hhs_pass193_hypersolid_native_egress_v1.py)" = "c003362aabf2a7a8cc7b2c9fc424b398b96f7050"
           test "$(git hash-object tests/test_hhs_pass193_hypersolid_routes.py)" = "28abf4097fa5cb2ea7aeaaaded896d5eb6f02cd3"
           test "$(git hash-object tests/test_hhs_pass193_native_targets_v1.py)" = "21c9d05101b42fd32eecda5f95aafbae0772b7af"
           test "$(git hash-object tests/test_hhs_pass193_visual_registration.py)" = "af461a5be0b8148c941b5fa0e3e78fe10d325dba"
           test "$(git hash-object .github/workflows/pass193-i133-repair-validation.yml)" = "1d6e216f6f4b7dc6666906a8f50f379b8ef7d089"
 
-      - name: Prove Pass 193 native membrane identities and aggregate order
+      - name: Prove Pass 193 native membrane baseline and current aggregate order
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h)" = "81605d5e7931041205bfe987e2e64e53572899c8"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.hpp)" = "ecca12d28cb0f2b42cb72e6887339fdba231541b"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc)" = "12485b95b762a6dd5db1a62dfa16aaa3580e8b16"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "12dc633b44f56ce8a4d131eda7df892e960d1397"
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "5a1281937c2ff46bdd7b776b2c705147f2c4ded7"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "bd186317732141e3b285624fc23dee15beba215e"
+          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "e68215f00b28771662bc8c2df69363d52b327287"
+          test "$(git rev-parse b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "5a1281937c2ff46bdd7b776b2c705147f2c4ded7"
+          test "$(git rev-parse b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "bd186317732141e3b285624fc23dee15beba215e"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.c)" = "7a6e40e417494b4ac565a508c7765c9dee670e7d"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass193_1_33.cpp)" = "e1deb2b07c988aa7f88e3cb2666e6e30763a54c1"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass193_membrane_i133.py)" = "456576418326a056a0cdfb14f7438d01e67eb289"
@@ -236,6 +240,12 @@ jobs:
               'frozen_i132': 'd311cd243845456851518ce1fef026a7d3cac45e',
               'pass193_authorization': 'eebc47a52de143df4a9acf807735f576ad0ce844',
               'pass194_frozen_successor_membrane_blob': '4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51',
+              'i133_seal_commit': 'b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308',
+              'historical_i133_visual_server_blob': 'd09fa35a4033e2c7576f11cdd0ac2f5f7b46ea1b',
+              'visual_server_successor_commit': 'a5db8abf3b2b5a8ef4dc14cd7b1f08fbf91cc3cf',
+              'current_visual_server_blob': '409d451a7db39945c07b919bbb9faa3626dc0bc6',
+              'historical_i133_exact_abi_h_blob': '5a1281937c2ff46bdd7b776b2c705147f2c4ded7',
+              'historical_i133_exact_abi_c_blob': 'bd186317732141e3b285624fc23dee15beba215e',
               'source_blobs': {
                   path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
                   for path in paths

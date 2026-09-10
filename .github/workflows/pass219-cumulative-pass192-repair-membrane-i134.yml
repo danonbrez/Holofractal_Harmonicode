@@ -94,7 +94,7 @@ jobs:
             git merge --no-edit origin/main
           fi
 
-      - name: Prove frozen I133 and historical Pass 192 lineage
+      - name: Prove frozen I133 historical Pass 192 lineage and I134 baseline
         run: |
           git merge-base --is-ancestor 8380d2dbc9cf1b0245f006eaa440b47a921d4901 HEAD
           test "$(git merge-base 8380d2dbc9cf1b0245f006eaa440b47a921d4901 HEAD)" = "8380d2dbc9cf1b0245f006eaa440b47a921d4901"
@@ -103,9 +103,15 @@ jobs:
           test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i133_pass193.py)" = "12dc633b44f56ce8a4d131eda7df892e960d1397"
           test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/include/hhs_pass219_inherited_pass193_1_33.h)" = "81605d5e7931041205bfe987e2e64e53572899c8"
           test "$(git rev-parse 8380d2dbc9cf1b0245f006eaa440b47a921d4901:hhs_runtime/c/hhs_pass219_inherited_pass193_1_33.inc)" = "12485b95b762a6dd5db1a62dfa16aaa3580e8b16"
+          git merge-base --is-ancestor 2f8b36e44ca6019dbc2785ea02d2f2289f329f33 HEAD
+          test "$(git rev-parse 2f8b36e44ca6019dbc2785ea02d2f2289f329f33:hhs_backend/visual_server.py)" = "aefc759cccf3ebd75f81f220814a225a592b4140"
+          test "$(git rev-parse 2f8b36e44ca6019dbc2785ea02d2f2289f329f33:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
+          test "$(git rev-parse 2f8b36e44ca6019dbc2785ea02d2f2289f329f33:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "4b2bd2b2fd4b92c230b1dec428e29c9778dd3c6c"
+          test "$(git rev-parse 2f8b36e44ca6019dbc2785ea02d2f2289f329f33:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "ebec4fd407f5388ee4124f01ef85bdc77d6745cd"
 
-      - name: Prove Pass 192 core source identities
+      - name: Prove stable Pass 192 core source identities
         run: |
+          test "$(git hash-object docs/pass192/HHS_PASS_192_LO_SHU_CELLULAR_FIBONACCI_NESTING_TENSOR_AND_MODULAR_MEMBRANE_DEPTH_AUTHORITY.md)" = "cab24f1b2e7510321f6449814302ea31b704d5a8"
           test "$(git hash-object hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h)" = "8e2d0a1620ff8ce88f588ce9dc55d79f5503f354"
           test "$(git hash-object hhs_runtime/c/hhs_pass192_fibonacci_compression_1_9.inc)" = "2034a9cacb07d09c4b5786ccec28e61d64de635b"
           test "$(git hash-object hhs_runtime/pass219_fibonacci_compression_reference_v1.py)" = "bda83c1a8791dd4bd9e807a88e0a419848d1d140"
@@ -113,7 +119,6 @@ jobs:
           test "$(git hash-object hhs_runtime/pass192/__init__.py)" = "2e0727e9e078fdbb5ad9f866d05f6d886576a9e1"
           test "$(git hash-object hhs_runtime/pass192/cli.py)" = "1718211edd8739c43837aea9ba53d8de613e3f1b"
           test "$(git hash-object hhs_backend/api/pass192_fibonacci_routes.py)" = "1e2f9f37f46310d0dffecba66b5c044958b585bc"
-          test "$(git hash-object hhs_backend/visual_server.py)" = "aefc759cccf3ebd75f81f220814a225a592b4140"
           test "$(git hash-object schemas/pass192/HHS_PASS_192_CELLULAR_FIBONACCI_TENSOR_V1.schema.json)" = "697b0bf3ba811f82ef0a62b4e9bd3615d59bdcb9"
           test "$(git hash-object schemas/pass192/HHS_PASS_192_OPERATION_REGISTRY_V1.json)" = "33384a6886117c45b6b6ff96514ac85477fbb14d"
           test "$(git hash-object tests/pass192_193/test_pass192_193_contract_invariants.py)" = "a72e7b8ab6dc0f891540fe2192d92d80f4a0cf52"
@@ -124,23 +129,31 @@ jobs:
           test "$(git hash-object tests/test_hhs_pass192_visual_registration.py)" = "c56aa9e67f331bbc61430317667ea80272549bc2"
           test "$(git hash-object .github/workflows/pass192-i134-repair-validation.yml)" = "7d23c8867cb9647295b34c0975b5842e6c96adc0"
 
-      - name: Prove Pass 192 native membrane identities and aggregate order
+      - name: Prove Pass 192 native identities and current successor composition
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.h)" = "5f3245022447dcd3a1cce215f373e4f899946944"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass192_1_34.hpp)" = "0f645b5164d8b4b337ff7191c07558cc28f9261f"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass192_1_34.inc)" = "ef39790111aa37640bf282cec27804597f44dee4"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py)" = "820c810e447af90ec4e842768261f945894baa72"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.c)" = "87349989276f76a579b186f7579f0536814f466c"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass192_1_34.cpp)" = "90f244736c61dc91f2a7d17b145aaab942a5eae7"
           test "$(git hash-object tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py)" = "bbca5ecd535c0bc45f3f74a23b138ea979d789c4"
-          test "$(git hash-object hhs_runtime/include/hhs_runtime_exact_abi.h)" = "4b2bd2b2fd4b92c230b1dec428e29c9778dd3c6c"
-          test "$(git hash-object hhs_runtime/c/hhs_runtime_exact_abi.c)" = "ebec4fd407f5388ee4124f01ef85bdc77d6745cd"
           python - <<'PY'
           from pathlib import Path
           h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
           c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          v = Path('hhs_backend/visual_server.py').read_text()
           assert h.index('hhs_pass219_inherited_pass194_1_32.h') < h.index('hhs_pass219_inherited_pass193_1_33.h') < h.index('hhs_pass219_inherited_pass192_1_34.h')
           assert c.index('hhs_pass219_inherited_pass194_1_32.inc') < c.index('hhs_pass219_inherited_pass193_1_33.inc') < c.index('hhs_pass219_inherited_pass192_1_34.inc')
+          required = (
+              'pass192_fibonacci_router', '/v1/tensors/fibonacci/status',
+              'app.include_router(pass192_fibonacci_router)',
+              '"pass192_fibonacci_api": "/v1/tensors/fibonacci"',
+              '"pass192_cellular_fibonacci": "HHS-P192-LSCFNT-MMD-VM81-H72-H216"',
+              'PUBLIC_API_REGISTRATION = register_public_api_federation(app)',
+          )
+          for fragment in required:
+              assert fragment in v, fragment
+          assert v.index('app.include_router(pass192_fibonacci_router)') < v.index('PUBLIC_API_REGISTRATION = register_public_api_federation(app)')
           PY
 
       - name: Reject approximate authority and authority escalation
@@ -198,8 +211,7 @@ jobs:
           /tmp/pass219-i134-pass192/pass192-cpp
 
       - name: Run cumulative Pass 192 membrane preflight
-        run: |
-          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass192_membrane_i134.py
 
       - name: Record exact or synthetic evidence
         if: always()
@@ -213,7 +225,6 @@ jobs:
           import os
           import subprocess
           from pathlib import Path
-
           target = os.environ['HHS_I134_TARGET']
           paths = [
               'hhs_runtime/pass192/runtime.py',
@@ -239,10 +250,17 @@ jobs:
               'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
               'frozen_i133': '8380d2dbc9cf1b0245f006eaa440b47a921d4901',
               'pass192_authorization': 'c3da7e2b7125754b65f08fb8922a151bf01df2b8',
+              'i134_baseline_commit': '2f8b36e44ca6019dbc2785ea02d2f2289f329f33',
               'pass193_frozen_successor_membrane_blob': '12dc633b44f56ce8a4d131eda7df892e960d1397',
               'source_blobs': {
                   path: subprocess.check_output(['git', 'hash-object', path], text=True).strip()
                   for path in paths
+              },
+              'historical_evolving_blobs': {
+                  'hhs_backend/visual_server.py': 'aefc759cccf3ebd75f81f220814a225a592b4140',
+                  'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i134_pass192.py': '820c810e447af90ec4e842768261f945894baa72',
+                  'hhs_runtime/include/hhs_runtime_exact_abi.h': '4b2bd2b2fd4b92c230b1dec428e29c9778dd3c6c',
+                  'hhs_runtime/c/hhs_runtime_exact_abi.c': 'ebec4fd407f5388ee4124f01ef85bdc77d6745cd',
               },
               'vm81_authority': 'INHERITED_SINGLETON',
               'canonical_float_authority': False,

@@ -132,3 +132,18 @@ HHSExactStatus hhs_exact_pass219_global_raw5184_bytecode_copy(
     return hhs_x86_64_bytecode_copy_exact(
         input, length, output, capacity, out_length);
 }
+
+HHSExactStatus hhs_exact_pass219_global_raw5184_dynamic_circuit(
+    const HHSExactVM81Frame *frame,
+    int8_t feedback_trinary,
+    HHSExactPass219CoreCircuitStateV1 *state,
+    HHSExactPass219CoreCircuitFeaturesV1 *out_features,
+    HHSExactPass219CoreCircuitDecisionV1 *out_decision
+) {
+    HHSExactStatus status =
+        hhs_exact_vm81_frame_global_serialization_validate(frame);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    return hhs_exact_pass219_core_circuit_step(
+        frame, feedback_trinary, state, out_features, out_decision);
+}

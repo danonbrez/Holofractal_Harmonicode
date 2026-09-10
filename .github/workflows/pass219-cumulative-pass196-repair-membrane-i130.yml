@@ -74,14 +74,21 @@ jobs:
           git merge-base --is-ancestor 40e6e07d5f4a401541a6255339223e853846e713 HEAD
           git merge-base --is-ancestor 37687d479f2a9f1d996d225a4ba3556d9db72a86 HEAD
           git merge-base --is-ancestor 959729c9070399fcdf0015702cd8777079e05dcc HEAD
+          git merge-base --is-ancestor a69f7331d17882f49d1f629a71041081c5426444 HEAD
+          git merge-base --is-ancestor 551aee2a03d0f3ba529433f80f520c4a10b025ee HEAD
           test "$(git merge-base 0142d9a6199f8acf9f23e287f471e6d80b9acd2a 37687d479f2a9f1d996d225a4ba3556d9db72a86)" = "1d3c7588a242e3a83304f5083c2ec5a974f19399"
           test "$(git merge-base a2c21e4dab7a0dcb5e3366db2f817b023d413231 959729c9070399fcdf0015702cd8777079e05dcc)" = "dd7f6aec3408c807c1cde0d6770aefe610c27e29"
 
-      - name: Prove accepted V1 provenance and repaired identities
+      - name: Prove historical V1, I130 V2 baseline, and I150 hydration successor identities
         run: |
           test "$(git rev-parse 37687d479f2a9f1d996d225a4ba3556d9db72a86:hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py)" = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
           test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py)" = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
-          test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py)" = "196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6"
+          test "$(git rev-parse a69f7331d17882f49d1f629a71041081c5426444:hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py)" = "196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6"
+          test "$(git rev-parse 551aee2a03d0f3ba529433f80f520c4a10b025ee:hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py)" = "bd28c60f5409b50e7dd934caa212e79b562aaae6"
+          test "$(git hash-object hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py)" = "bd28c60f5409b50e7dd934caa212e79b562aaae6"
+          grep -F 'serialize_raw5184_bytes' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+          grep -F '_pass196_v1._snapshot(payload)' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
+          grep -F 'Hydrate the active V2 raw5184 snapshot without mutating frozen V1 provenance' hhs_backend/runtime/hhs_pass196_integrated_environment_v2.py
           test "$(git hash-object hhs_backend/api/pass196_integration_routes.py)" = "39187c3376591c64758019090d9b115c6a43f6ee"
           test "$(git hash-object applications/holofractal_harmonizer/src/pass196-integration.mjs)" = "1503903c844c9e601133853eed9ed597f6fd2274"
           test "$(git hash-object applications/holofractal_harmonizer/src/pass196-projection-refresh.mjs)" = "44254e10f90e929a4f8c1a18a75b3ca14a2c05ed"
@@ -157,9 +164,14 @@ jobs:
               'frozen_i129': '40e6e07d5f4a401541a6255339223e853846e713',
               'accepted_pass196_merge': '37687d479f2a9f1d996d225a4ba3556d9db72a86',
               'accepted_topology_merge': '959729c9070399fcdf0015702cd8777079e05dcc',
+              'v2_i130_baseline_commit': 'a69f7331d17882f49d1f629a71041081c5426444',
+              'historical_v2_i130_blob': '196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6',
+              'v2_i150_hydration_commit': '551aee2a03d0f3ba529433f80f520c4a10b025ee',
+              'current_v2_i150_blob': 'bd28c60f5409b50e7dd934caa212e79b562aaae6',
               'review_finding_count': 10,
               'classification': 'INHERITED_IMPLEMENTATION_REPAIR_AND_MEMBRANE_EXPOSURE',
               'pass196_repaired_and_wired': True,
+              'i150_hydration_successor_preserved': True,
               'new_authority_minted': False,
           }
           with open(f'/tmp/pass219-i130-pass196-{os.environ["TARGET"]}.json', 'w', encoding='utf-8') as handle:
