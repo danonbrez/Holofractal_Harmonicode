@@ -402,15 +402,23 @@ def test_state_root_resolution_uses_data_dir_when_explicit_absent(monkeypatch, t
 
 
 def test_runtime_os_entrypoints_install_lifecycle_before_public_projection() -> None:
+    # The visual entrypoint installs and projects directly. The application
+    # entrypoint is now a dispatcher; its full-composition target owns the
+    # lifecycle installation and projection ordering, so validate that target
+    # and separately prove the dispatcher delegates to it.
     for relative in (
         "hhs_backend/runtime_os_visual_server.py",
-        "hhs_backend/runtime_os_application_server.py",
+        "hhs_backend/runtime_os_application_server_full.py",
     ):
         source = (ROOT / relative).read_text("utf-8")
         install_at = source.index("PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)")
         project_at = source.index("project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)")
         assert install_at < project_at
         assert "PASS218_RUNTIME_STATUS_PATH" in source
+
+    dispatcher = (ROOT / "hhs_backend/runtime_os_application_server.py").read_text("utf-8")
+    assert "from hhs_backend.runtime_os_application_server_full import *" in dispatcher
+    assert "from hhs_backend.runtime_os_application_server_full import __all__ as _FULL_ALL" in dispatcher
 
 
 def test_digitalocean_service_provisions_persistent_pass218_state_root() -> None:
