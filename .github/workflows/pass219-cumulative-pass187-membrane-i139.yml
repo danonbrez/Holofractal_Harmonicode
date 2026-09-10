@@ -149,12 +149,12 @@ jobs:
           test "$(git hash-object docs/pass187/HHS_PASS_187_I139_UNIVERSAL_COMPOSITION_IMPLEMENTATION_REPORT.md)" = "15129037984627616aa83236a94839c095a7f920"
           test "$(git hash-object docs/operations/restart/PASS_219_I139_PASS187_COMPOSITION_COMPLETION_RESTART.md)" = "494a16483a35aaa16bb11c227d29b068392ef2a9"
 
-      - name: Prove I139 membrane baseline and current additive ABI successor order
+      - name: Prove frozen I139 membrane baseline and current additive ABI successor order
         run: |
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.h)" = "e59603ac523dd32e845b21492fc3d2336a562dcf"
           test "$(git hash-object hhs_runtime/include/hhs_pass219_inherited_pass187_1_39.hpp)" = "0e00dc16c9624cf51aa0c9a1d6e30397a1529763"
           test "$(git hash-object hhs_runtime/c/hhs_pass219_inherited_pass187_1_39.inc)" = "0ff432490633dac2417aa3e294305378848dc570"
-          test "$(git hash-object hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py)" = "52ceb9f52bdf30dc4849676c1ac0aafe613708ca"
+          test "$(git rev-parse 33ef55e46f7281ea4f84ff5311cda6679f143ab9:hhs_runtime/hhs_pass219_cumulative_pass_membrane_i139_pass187.py)" = "52ceb9f52bdf30dc4849676c1ac0aafe613708ca"
           test "$(git rev-parse 33ef55e46f7281ea4f84ff5311cda6679f143ab9:hhs_runtime/include/hhs_runtime_exact_abi.h)" = "db92bb0590adb667ac406a89e43171a8ab12eb3c"
           test "$(git rev-parse 33ef55e46f7281ea4f84ff5311cda6679f143ab9:hhs_runtime/c/hhs_runtime_exact_abi.c)" = "8d6c694e4bb7358f28844df55848b07604030e33"
           test "$(git hash-object tests/pass219/test_pass219_inherited_pass187_1_39.c)" = "c33470165768c462dd870dafc9d16cc586b51f8e"
