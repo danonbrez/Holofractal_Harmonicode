@@ -15,6 +15,19 @@
     "pass188_hydrated_states": 1259712,
     "pass188_checksum_hex": "0x11e3bbf0214751c3"
   },
+  "validation": {
+    "workflow": "Pass 219 Classical Bott Correspondence",
+    "run_id": 34428473042,
+    "job_id": 102718664741,
+    "validated_head": "22cf66ccb2f511f7187343df1f64bf6d4c4dacee",
+    "result": "43 passed, 0 failed, 1 inherited pytest-config warning in 11.40s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
   "native_period8_carrier": {
     "ordered_b8": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
     "grade_carrier": "basis8 residue q in Z/8Z",
@@ -72,5 +85,5 @@
     "hhs_runtime/pass219/classical_bott_correspondence.py",
     "tests/pass219/test_pass219_classical_bott_correspondence.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
