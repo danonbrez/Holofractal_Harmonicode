@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PASS219_RML11_PHASE_CLIFFORD_INTERTWINER_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML11_PHASE_CLIFFORD_INTERTWINER",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_U72_TO_CLIFFORD_QUARTER_COMPONENT_BRIDGE",
+  "base_checkpoint": "5b055bded3a5891344848d936682625705c87458",
+  "parent_validation": {
+    "rml10_run_id": 34431130138,
+    "rml10_job_id": 102726687935,
+    "rml10_validated_head": "6f34ad65377e48ed12b417c54e73a5e4f5f0c553",
+    "rml10_result": "18 passed, 0 failed, 1 inherited pytest-config warning in 15.57s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "one_gyroscope_clifford_action": {
+    "primitive_channels": ["x", "y", "z", "w"],
+    "primitive_actions": ["e_x", "e_y", "e_z", "e_w"],
+    "dependent_product_channels": ["xy", "yx", "zw", "wz"],
+    "dependent_product_actions": ["e_x*e_y", "e_y*e_x", "e_z*e_w", "e_w*e_z"],
+    "xy_equals_negative_yx_matrix_projection_required": true,
+    "zw_equals_negative_wz_matrix_projection_required": true,
+    "products_promoted_to_independent_gyroscope_axes": false,
+    "ordered_identity_survives_coincident_matrix_projection": true,
+    "ambient_clifford_representation": "validated RML10 Cl_(0,8) ~= M16(R)"
+  },
+  "phase_to_clifford_lift": {
+    "phase_modulus": 72,
+    "quarter_cycle_steps": 18,
+    "exact_decomposition": "delta = 18*q + r with |r| < 18",
+    "quarter_units_lifted_to_clifford_action": true,
+    "residual_phase_retained_exactly": true,
+    "residual_phase_rounded_or_discarded": false,
+    "complete_clifford_lift_requires_zero_residual_on_all_channels": true,
+    "full_u72_phase_replaced_by_four_state_clifford_model": false
+  },
+  "clifford_grading": {
+    "chirality_volume": "Omega_8=e_0*e_1*e_2*e_3*e_4*e_5*e_6*e_7",
+    "chirality_volume_squared": "+I",
+    "primitive_quarter_actions": "anticommute with Omega_8",
+    "dependent_product_bivectors": "commute with Omega_8",
+    "complete_lift_classes": [
+      "FULL_CL08_MODULE_INTERTWINER",
+      "EVEN_CLIFFORD_CHIRALITY_SECTOR_PRESERVING",
+      "ODD_CLIFFORD_CHIRALITY_SECTOR_SWAPPING"
+    ],
+    "full_module_intertwiner_definition": "commutes with all eight RML10 Cl_(0,8) generators",
+    "sector_preserving_definition": "commutes with Omega_8 but not all generators",
+    "sector_swapping_definition": "anticommutes with Omega_8"
+  },
+  "noncommutative_inverse": {
+    "forward_factor_order": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "inverse_reverses_factor_order": true,
+    "same_order_negated_factor_sequence_assumed_inverse": false,
+    "ordered_inverse_identity_required": true
+  },
+  "unified_phase_operation_bridge": {
+    "operators": ["+", "*", "^"],
+    "underlying_primitive": "SIGNED_IMAGINARY_PHASE_ROTATION",
+    "addition_mode": "coupled phase displacement to ordered Clifford action",
+    "multiplication_mode": "ordered dependent product bivector quarter-turn",
+    "exponentiation_mode": "recursive phase orbit to repeated Clifford action",
+    "operator_identity_preserved": true,
+    "operand_order_preserved": true,
+    "coincident_matrix_projection_collapses_operator_identity": false
+  },
+  "rml5_generator_audit_expected": {
+    "coupled_z72_cases": 288,
+    "u36_pair_flip_cases": 2,
+    "total_cases": 290,
+    "complete_clifford_lift_cases": 18,
+    "residual_u72_phase_cases": 272,
+    "full_cl08_module_intertwiner_cases": 10,
+    "even_chirality_sector_preserving_nonintertwiner_cases": 0,
+    "odd_chirality_sector_swapping_cases": 8,
+    "inherited_hopf_same_base_cases": 4,
+    "inherited_hopf_base_moving_cases": 286,
+    "inherited_hopf_inverse_failures": 0,
+    "hopf_and_clifford_classifications_are_orthogonal": true
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "phase_state_reinterpreted_as_clifford_matrix_state": false,
+    "existing_single_vm81_authority_preserved": true
+  },
+  "claims_deliberately_not_promoted": {
+    "every_u72_phase_step_has_complete_clifford_matrix_lift": false,
+    "clifford_class_equals_hopf_fiber_class": false,
+    "full_s3_fiber_equivariance": false,
+    "physical_topological_hardware_theorem": false
+  },
+  "implementation": [
+    "hhs_runtime/pass219/phase_clifford_intertwiner.py",
+    "tests/pass219/test_pass219_phase_clifford_intertwiner.py"
+  ],
+  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+}
