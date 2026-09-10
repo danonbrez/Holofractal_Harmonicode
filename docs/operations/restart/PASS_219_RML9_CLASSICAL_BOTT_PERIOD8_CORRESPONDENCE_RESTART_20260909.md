@@ -13,6 +13,8 @@
 - RML9 contract initial: `f43e63f1d969c79fd4e47757542333e9d40f0715`
 - RML9 workflow / validated head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
 - RML9 dependency-scoped contract validation seal: `365a0b7d38549f98e95e0679f720ac3aa707d33d`
+- RML9 green restart seal: `fc98f5be073fd07ed61e1a4a937b64e9db26384c`
+- Child RML10 green restart seal: `9a57853e0da0a2ea8227692363ca35be06c96428`
 
 An unused temporary ref `agent/pass219-recursive-manifold-learning-20260909-rml9-temp` was accidentally created from the pre-RML9 feature branch while checking branch ancestry. No RML9 implementation commit was written to that ref. The connected GitHub surface exposed no branch-deletion action, so it is explicitly non-authoritative and must not be used as a restart source.
 
@@ -49,7 +51,7 @@ collapse=629856
 checksum=11e3bbf0214751c3
 ```
 
-Additional inherited native checks remained green: C11/static/shared build, x86_64 branchless Bott step, no checked floating arithmetic instructions, zero coordinate drift, five Python native tests, surface smoke, and Python compile checks.
+Additional inherited native checks succeeded: C11/static/shared build, x86_64 branchless Bott step, no checked floating arithmetic instructions, zero coordinate drift, five Python native tests, surface smoke, and Python compile checks.
 
 ## RML9 validated purpose
 
@@ -98,7 +100,7 @@ Pass188 classifier becomes reversible phase authority
 
 RML9 uses the standard period-eight real KO/stable-O patterns as reference invariants. It does not claim that HHS reproves Bott periodicity, constructs a full Clifford-module category equivalence, proves full S3 closure of the RML6 image, or proves a physical topological hardware theorem.
 
-The real-Clifford period-eight Morita relation is a typed reference only in RML9. No runtime Clifford matrix isomorphism is constructed there.
+The real-Clifford period-eight Morita relation is a typed reference only in RML9. RML10 is the additive child that subsequently constructs the exact `Cl_(0,8) ~= M16(R)` representation-level witness and matrix-unit full-corner Morita context.
 
 ## Files added
 
@@ -110,6 +112,6 @@ The real-Clifford period-eight Morita relation is a typed reference only in RML9
 
 ## Required next action
 
-RML9 is complete, dependency-scoped validated, and restartable.
+RML9 is complete, dependency-scoped validated, and inherited by validated RML10.
 
-The next bounded successor is RML10: inspect and reuse repository-native exact matrix / Clifford machinery to construct a concrete real-Clifford/Morita period-eight witness, without changing VM81/Hash authority and without rewriting frozen RML1-RML9 or inherited Pass187/188 evidence.
+Restart new work from the latest RML10 green restart seal rather than this parent checkpoint unless specifically repairing RML9.
