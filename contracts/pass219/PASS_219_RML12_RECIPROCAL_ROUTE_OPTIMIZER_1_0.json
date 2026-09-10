@@ -76,7 +76,27 @@
     "inherited_hopf_same_base_cases": 4,
     "inherited_hopf_base_moving_cases": 286,
     "route_metadata_cross_tab_must_partition_all_290_cases": true,
-    "observed_cross_tab": "VALIDATION_PENDING"
+    "observed_cross_tab": {
+      "BASE_MOVING_HOPF_TRANSPORT|FULL_CL08_MODULE_INTERTWINER": 6,
+      "BASE_MOVING_HOPF_TRANSPORT|ODD_CLIFFORD_CHIRALITY_SECTOR_SWAPPING": 8,
+      "BASE_MOVING_HOPF_TRANSPORT|RESIDUAL_U72_PHASE_PRESERVED_NO_COMPLETE_CLIFFORD_LIFT": 272,
+      "FIBER_PRESERVING_SAME_HOPF_BASE|FULL_CL08_MODULE_INTERTWINER": 4
+    },
+    "observed_cross_tab_total": 290,
+    "observed_exact_inverse_failures": 0
+  },
+  "validation": {
+    "workflow": "Pass 219 Reciprocal Route Optimizer",
+    "run_id": 34436975540,
+    "job_id": 102743988934,
+    "validated_head": "7806163e541fa400ffbe2ad65a28cde6418d2ca3",
+    "pytest_result": "14 passed, 0 failed, 1 inherited pytest-config warning in 38.66s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
   },
   "authority_boundary": {
     "canonical_vm81_mutation_authority": false,
@@ -98,5 +118,5 @@
     "hhs_runtime/pass219/reciprocal_route_optimizer.py",
     "tests/pass219/test_pass219_reciprocal_route_optimizer.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
