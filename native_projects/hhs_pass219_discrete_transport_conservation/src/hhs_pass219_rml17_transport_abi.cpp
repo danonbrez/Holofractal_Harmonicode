@@ -32,6 +32,21 @@ HHSPass219RML17TransportAddressV1 to_c(const DirectedAddress& address) noexcept 
     };
 }
 
+HHSPass219RML17TransportParityRowV1 parity_row(std::uint64_t source_index) noexcept {
+    const DirectedAddress source = hhs::pass219::transport::unflatten_address(source_index);
+    const auto edge = hhs::pass219::transport::witness_edge(source);
+    return HHSPass219RML17TransportParityRowV1{
+        source_index,
+        hhs::pass219::transport::flatten_address(edge.target),
+        to_c(source),
+        to_c(edge.target),
+        edge.source_flux,
+        static_cast<std::uint8_t>(edge.target.direction),
+        static_cast<std::uint8_t>(edge.zero_canonical_diffusion),
+        static_cast<std::uint8_t>(edge.exact_reverse_restores_source),
+    };
+}
+
 }  // namespace
 
 extern "C" {
@@ -106,6 +121,20 @@ int hhs_pass219_rml17_transport_zero_diffusion(
     *out_zero_diffusion = static_cast<std::uint8_t>(
         witness.zero_canonical_diffusion && witness.exact_reverse_restores_source
     );
+    return 1;
+}
+
+int hhs_pass219_rml17_transport_export_parity_rows(
+    uint64_t start_index,
+    uint64_t row_count,
+    HHSPass219RML17TransportParityRowV1* out_rows
+) {
+    if (out_rows == nullptr || start_index > hhs::pass219::transport::kAddressCount)
+        return 0;
+    if (row_count > hhs::pass219::transport::kAddressCount - start_index)
+        return 0;
+    for (std::uint64_t offset = 0U; offset < row_count; ++offset)
+        out_rows[offset] = parity_row(start_index + offset);
     return 1;
 }
 
