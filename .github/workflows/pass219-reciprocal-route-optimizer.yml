@@ -1,0 +1,35 @@
+name: Pass 219 Reciprocal Route Optimizer
+
+on:
+  push:
+    paths:
+      - 'hhs_runtime/pass219/reciprocal_route_optimizer.py'
+      - 'tests/pass219/test_pass219_reciprocal_route_optimizer.py'
+      - 'contracts/pass219/PASS_219_RML12_RECIPROCAL_ROUTE_OPTIMIZER_1_0.json'
+      - '.github/workflows/pass219-reciprocal-route-optimizer.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass219/reciprocal_route_optimizer.py'
+      - 'tests/pass219/test_pass219_reciprocal_route_optimizer.py'
+      - 'contracts/pass219/PASS_219_RML12_RECIPROCAL_ROUTE_OPTIMIZER_1_0.json'
+      - '.github/workflows/pass219-reciprocal-route-optimizer.yml'
+  workflow_dispatch:
+
+jobs:
+  targeted-rml12-route-optimizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate inherited Pass 188 native Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+      - name: Run RML11 through RML12 reciprocal route dependency scope
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py
