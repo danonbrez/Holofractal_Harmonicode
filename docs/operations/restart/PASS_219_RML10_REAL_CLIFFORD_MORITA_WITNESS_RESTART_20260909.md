@@ -9,6 +9,7 @@
 - Parent RML9 validated head: `22cf66ccb2f511f7187343df1f64bf6d4c4dacee`
 - Parent RML9 contract validation seal: `365a0b7d38549f98e95e0679f720ac3aa707d33d`
 - Parent RML9 green restart seal: `fc98f5be073fd07ed61e1a4a937b64e9db26384c`
+- Parent RML9 post-RML10 cross-link metadata: `da33451ec7062c7d3e48b5cbc84a96f61dc187ae`
 - RML10 implementation: `ac7c5e8d9b515e7974d4d8146456ad8845b14279`
 - RML10 tests: `68ec3d9855485bde8fa5eba2295f256012400b6d`
 - RML10 contract initial: `865db5c7ad5f37606ab7f6f129f93d8e3db1a443`
