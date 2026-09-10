@@ -1,0 +1,126 @@
+name: Pass 219 RML16 Residual Internal Profile
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-residual-internal-profile-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_residual_internal_profile.py'
+      - '.github/workflows/pass219-rml16-residual-internal-profile.yml'
+      - 'docs/operations/restart/PASS_219_RML16_RESIDUAL_INTERNAL_PROFILE_CHECKPOINT_20260910.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  residual-internal-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Guard profiler-only dependency scope
+        env:
+          PARENT_HEAD: f41f7cec2e126d2d2114bc3463dfbc0e9b7518ec
+        run: |
+          changed="$(git diff --name-only "$PARENT_HEAD"...HEAD)"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^hhs_runtime/'; then
+            echo 'Production runtime source changed in profiler-only iteration' >&2
+            exit 1
+          fi
+
+      - name: Revalidate inherited RML10 RML11 RML12 RML16 semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Run residual internal profiler
+        run: |
+          mkdir -p artifacts/pass219/rml16-residual-internal
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml16_residual_internal_profile.py \
+            --output artifacts/pass219/rml16-residual-internal/profile.json \
+            --states 8
+
+      - name: Validate semantic-before-attribution receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('artifacts/pass219/rml16-residual-internal/profile.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          assert data['result'] == 'PASS'
+          assert data['parent_head'] == 'f41f7cec2e126d2d2114bc3463dfbc0e9b7518ec'
+          assert data['state_count'] == 8
+          assert data['case_count'] == 32
+          assert data['all_source_state_hashes_unique'] is True
+          assert data['rml16_signed_permutation_successor_loaded_before_profile'] is True
+          assert data['optimization_selected_by_profiler'] is False
+          assert data['production_source_modified_by_profiler'] is False
+          assert data['exact_request_route_cache_used'] is False
+          assert data['timing_is_canonical'] is False
+          assert data['canonical_vm81_mutation_authority'] is False
+          assert data['canonical_hash72_mint_authority'] is False
+          assert data['canonical_hash216_persistence_authority'] is False
+          assert data['floating_point_canonical_authority'] is False
+          assert data['scalar_projection_substitution_authority'] is False
+
+          expected = {
+              'RML11_CLIFFORD_CLASSIFIER',
+              'RML11_CLIFFORD_LIFT',
+              'RML7_HOPF_CLASSIFIER',
+          }
+          rows = {row['surface']: row for row in data['surfaces']}
+          assert set(rows) == expected
+          assert {row['surface'] for row in data['surface_ranking']} == expected
+          for name, row in rows.items():
+              assert row['semantic_equal_count'] == 32, (name, row)
+              assert row['profiled_semantic_equal_count'] == 32, (name, row)
+              assert row['unprofiled_timing']['samples'] == 32, (name, row)
+              assert row['unprofiled_timing']['median_ns'] > 0, (name, row)
+              assert row['helper_ranking'], (name, row)
+              assert row['dominant_helper'] == row['helper_ranking'][0]['helper']
+              assert row['dominant_helper_self_share_basis_points_floor'] > 0
+              print(
+                  'RML16_RESIDUAL_SURFACE',
+                  name,
+                  row['unprofiled_timing']['median_ns'],
+                  row['dominant_helper'],
+                  row['dominant_helper_self_share_basis_points_floor'],
+              )
+              for helper in row['helper_ranking'][:10]:
+                  print(
+                      'RML16_RESIDUAL_HELPER',
+                      name,
+                      helper['helper'],
+                      helper['self_ns_floor'],
+                      helper['cumulative_ns_floor'],
+                      helper['self_share_basis_points_floor'],
+                      helper['calls'],
+                  )
+          print('RML16_RESIDUAL_RANKING', json.dumps(data['surface_ranking'], sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-residual-internal-profile
+          path: artifacts/pass219/rml16-residual-internal/profile.json
+          if-no-files-found: error
