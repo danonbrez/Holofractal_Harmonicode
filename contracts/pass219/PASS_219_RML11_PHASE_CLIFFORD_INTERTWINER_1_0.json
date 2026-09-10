@@ -65,7 +65,7 @@
     "operand_order_preserved": true,
     "coincident_matrix_projection_collapses_operator_identity": false
   },
-  "rml5_generator_audit_expected": {
+  "rml5_generator_audit_validated": {
     "coupled_z72_cases": 288,
     "u36_pair_flip_cases": 2,
     "total_cases": 290,
@@ -78,6 +78,19 @@
     "inherited_hopf_base_moving_cases": 286,
     "inherited_hopf_inverse_failures": 0,
     "hopf_and_clifford_classifications_are_orthogonal": true
+  },
+  "validation": {
+    "workflow": "Pass 219 Phase Clifford Intertwiner",
+    "run_id": 34432290908,
+    "job_id": 102730127210,
+    "validated_head": "01bfb38b10976ac23dabc418441035522e656bc1",
+    "python_result": "15 passed, 0 failed, 1 inherited pytest-config warning in 21.35s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
   },
   "authority_boundary": {
     "canonical_vm81_mutation_authority": false,
@@ -98,5 +111,5 @@
     "hhs_runtime/pass219/phase_clifford_intertwiner.py",
     "tests/pass219/test_pass219_phase_clifford_intertwiner.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
