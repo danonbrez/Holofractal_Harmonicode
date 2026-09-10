@@ -15,6 +15,19 @@
     "pass188_native_validation": "GREEN",
     "pass188_checksum_hex": "0x11e3bbf0214751c3"
   },
+  "validation": {
+    "workflow": "Pass 219 Real Clifford Morita Witness",
+    "run_id": 34431130138,
+    "job_id": 102726687935,
+    "validated_head": "6f34ad65377e48ed12b417c54e73a5e4f5f0c553",
+    "result": "18 passed, 0 failed, 1 inherited pytest-config warning in 15.57s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_period_two_states": 629856,
+    "pass188_asymmetric_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
   "repository_type_alignment": {
     "pass169_canonical_value_type": "ORDERED_MATRIX",
     "pass169_matrix_tensor_types_reused": ["MatrixProduct", "TensorProduct"],
@@ -109,5 +122,5 @@
     "hhs_runtime/pass219/real_clifford_morita_witness.py",
     "tests/pass219/test_pass219_real_clifford_morita_witness.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
 }
