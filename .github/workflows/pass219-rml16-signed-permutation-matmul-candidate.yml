@@ -79,6 +79,9 @@ jobs:
           print('RML16_SIGNED_PERM_DESCRIPTOR_CACHE', d['descriptor_cache'])
           PY
 
+      - name: Build inherited native RML13 through RML15 route extensions
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
       - name: Revalidate impacted RML11 through RML16 route semantics
         run: |
           PYTHONPATH="$PWD" python -m pytest -q \
