@@ -98,31 +98,54 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Diagnose exact canonical route parity
+      - name: Diagnose Pass170 route retention stages
         run: |
           python - <<'PY'
+          import importlib
           import json
-          from hhs_runtime.pass219.pass170_public_transport_i182 import operation_records
-          from hhs_runtime.pass219.pass170_transport_degraded_reconciliation_i182 import _canonical_route_signatures
-          records = operation_records('.')
-          signatures, identity = _canonical_route_signatures()
-          expected = []
-          for operation_id, record in records.items():
-              method = record.get('HTTP_method')
-              path = record.get('HTTP_path')
-              if isinstance(method, str) and isinstance(path, str):
-                  expected.append((operation_id, method.upper(), path))
-          missing = [
-              {'operation_id': operation_id, 'method': method, 'path': path}
-              for operation_id, method, path in expected
-              if (method, path) not in signatures
-          ]
-          print(json.dumps({
-              'canonical_identity': identity,
-              'observed_signature_count': len(signatures),
-              'expected_http_count': len(expected),
-              'missing': missing,
-          }, indent=2, sort_keys=True))
+
+          def signatures(app):
+              result = set()
+              for route in app.router.routes:
+                  path = str(getattr(route, 'path', ''))
+                  methods = getattr(route, 'methods', None)
+                  if methods:
+                      for method in methods:
+                          if method not in {'HEAD', 'OPTIONS'}:
+                              result.add((str(method), path))
+              return result
+
+          stages = []
+          public = importlib.import_module('hhs_backend.public_api_server')
+          expected = set()
+          for route in public.build_pass170_router(lambda: None).routes:
+              methods = getattr(route, 'methods', None)
+              if methods:
+                  for method in methods:
+                      if method not in {'HEAD', 'OPTIONS'}:
+                          expected.add((str(method), str(getattr(route, 'path', ''))))
+          stages.append(('public_api_server', public.app, len(expected - signatures(public.app))))
+
+          for name in (
+              'hhs_backend.production_server',
+              'hhs_backend.production_ide_server',
+              'hhs_backend.pass174_server',
+              'hhs_backend.application_ide_server',
+              'hhs_backend.runtime_os_application_server_full',
+          ):
+              module = importlib.import_module(name)
+              stages.append((name, module.app, len(expected - signatures(module.app))))
+
+          payload = []
+          for name, app, missing_count in stages:
+              payload.append({
+                  'stage': name,
+                  'same_app': app is public.app,
+                  'route_count': len(app.router.routes),
+                  'pass170_bundle_missing_count': missing_count,
+                  'compose_flag': getattr(app.state, 'hhs_pass170_routes_composed', False),
+              })
+          print(json.dumps(payload, indent=2, sort_keys=True))
           PY
 
       - name: Run I182 dependency-scoped contract tests
