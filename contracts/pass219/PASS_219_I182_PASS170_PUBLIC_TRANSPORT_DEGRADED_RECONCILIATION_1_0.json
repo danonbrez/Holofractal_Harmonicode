@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PASS219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I182",
+  "version": "1.0.0",
+  "base_main": "c7f079ad3c0ed67d39bb0be840d47b8d52b24c05",
+  "parent_boundary": "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_RETIRED_WITH_I180_ROUTE_PARITY_PRESERVED",
+  "purpose": "Bind all remaining non-streaming public operation records to shared CLI/Python dispatch through the canonical Pass170 ASGI application and reconcile the explicit source-only degraded shell as a governed fail-closed noncanonical safety surface.",
+  "required_state": {
+    "aggregate_operation_records": 59,
+    "http_operation_records": 58,
+    "streaming_only_operation_records": 1,
+    "canonical_gateway": "hhs_backend.public_api_server:app",
+    "generic_cli_python_dispatch": "IN_PROCESS_ASGI_CANONICAL_GATEWAY_ROUTE_DISPATCH",
+    "native_binding_policy": "DECLARED_NATIVE_SYMBOLS_ONLY",
+    "source_only_degraded_shell_retained": true,
+    "source_only_degraded_shell_canonical_authority": false,
+    "remaining_target_blockers": [
+      "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING"
+    ],
+    "pass170_terminal": false,
+    "next_boundary": "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF"
+  },
+  "invariants": {
+    "frozen_i181_parent_preserved": true,
+    "frozen_operation_record_chain_preserved": true,
+    "operation_semantics_not_reimplemented": true,
+    "same_canonical_asgi_application_used_by_http_cli_python": true,
+    "websocket_stream_not_scalarized": true,
+    "native_abi_not_invented_where_record_declares_none": true,
+    "i179_audio_native_replay_proof_inherited": true,
+    "degraded_shell_requires_explicit_request_and_missing_runtime": true,
+    "degraded_shell_remains_fail_closed": true,
+    "degraded_shell_does_not_become_canonical_gateway": true,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "canonical_state_mutation_by_transport_layer": false
+  }
+}
