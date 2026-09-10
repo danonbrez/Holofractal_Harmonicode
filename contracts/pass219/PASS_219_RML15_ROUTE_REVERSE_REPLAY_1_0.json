@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PASS219_RML15_ROUTE_REVERSE_REPLAY_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML15_ROUTE_REVERSE_REPLAY",
+  "classification": "VERSIONED_NATIVE_ROUTE_AWARE_REVERSE_REPLAY_ANCESTRY_WITNESS",
+  "base_checkpoint": "e7f82b4ed521583b76ffb4cc03053aa920ae5355",
+  "parent_rml14_validation": {
+    "workflow": "Pass 219 RML14 Route Bound Receipt Successor",
+    "run_id": 34464850267,
+    "job_id": 102830909024,
+    "validated_head": "8fb7be0f13070d52e3b59d86d6a26c06a44d6042",
+    "contract_validation_seal": "892c0a9b8327d3a15c495460c0dd16e6304f67a1",
+    "green_restart_seal": "e7f82b4ed521583b76ffb4cc03053aa920ae5355",
+    "result": "15 passed, 0 failed, 2 warnings in 4.47s",
+    "pass188_hydrated_states": 1259712,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "reverse_semantics": {
+    "forward_replay_requires_exact_rml14_identity_equality": true,
+    "reverse_source": "retained selected RML12 edge ancestry",
+    "hash216_cryptographic_inversion_claimed": false,
+    "original_source_hash_is_retained_ancestry_not_derived_by_reverse_hashing": true,
+    "exact_state_restoration_scope": [
+      "eight ordered u72 phase coordinates",
+      "four ordered reciprocal quarter-turn signs",
+      "radix-72 ambient state index"
+    ],
+    "state_id_or_receipt_ancestry_erasure_claimed": false
+  },
+  "native_reverse_engine": {
+    "abi_version": "1.28.0",
+    "max_edges": 6,
+    "channel_order": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "product_order": ["xy", "yx", "zw", "wz"],
+    "coupled_move_inverse": "negate retained signed Z72 displacement on generator and dependent product",
+    "pair_flip_inverse": "reapply exact self-inverse u36 to retained chiral pair",
+    "product_quarter_turn_steps": 18,
+    "pair_half_turn_steps": 36,
+    "intermediate_product_geometry_required": true,
+    "intermediate_chirality_opposition_required": true,
+    "ambient_index_recomputed_natively": true
+  },
+  "chain_preservation": {
+    "historical_uqcel_receipt_preserved": true,
+    "historical_rml13_transition_preserved": true,
+    "rml14_successor_receipt_preserved": true,
+    "rml14_successor_transition_preserved": true,
+    "rml14_forward_invoked_twice_for_replay_equality": true
+  },
+  "reverse_receipt": {
+    "classification": "ANCESTRY_WITNESS_NOT_HASH_INVERSE",
+    "instruction_root_algorithm": "SHA-256 evidence only",
+    "material_root_algorithm": "SHA-256 evidence only",
+    "receipt_hash72_delegate": "hhs_hash72_compute",
+    "witness_hash216_delegate": "hhs_hash216_compute",
+    "parallel_hash_algorithm_added": false,
+    "receipt_material_contains": [
+      "selected route/source/target SHA-256 ancestry",
+      "native reverse instruction root",
+      "RML14 witness/environment/candidate-frame roots",
+      "restored source ambient index",
+      "historical previous/change/UQCEL receipt chain",
+      "RML14 successor receipt",
+      "historical RML13 transition",
+      "RML14 successor transition"
+    ]
+  },
+  "authority_boundary": {
+    "new_vm81_commit_primitive_added": false,
+    "optimizer_transition_authority": false,
+    "floating_point_authority": false,
+    "hash216_persistence_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "hash216_cryptographic_inversion_used": false,
+    "python_mints_hash72_or_hash216": false
+  },
+  "tests_required": [
+    "retained selected RML12 route builds exact reverse instruction sequence",
+    "native RML14 forward and replay identities are equal",
+    "native reverse restores all eight phase coordinates and four quarter-turn signs",
+    "native reverse restores exact radix-72 ambient state index",
+    "intermediate reciprocal-quarter-turn geometry remains admissible",
+    "intermediate paired chirality remains opposed",
+    "historical UQCEL and RML13 evidence remains unchanged",
+    "RML14 successor receipt and transition remain preserved",
+    "repeated RML15 invocation is deterministic",
+    "different valid route changes reverse receipt/witness",
+    "endpoint mismatch rejected before native execution",
+    "corrupted reverse instruction rejected natively",
+    "Pass188 and frozen I168 regressions remain green"
+  ],
+  "implementation": [
+    "hhs_runtime/include/hhs_pass219_rml15_route_reverse_replay_1_28.h",
+    "hhs_runtime/c/hhs_pass219_rml15_route_reverse_replay_1_28.c",
+    "native_projects/hhs_pass219_rml15_route_reverse_replay/Makefile",
+    "hhs_runtime/pass219/route_reverse_replay.py",
+    "tests/pass219/test_pass219_rml15_route_reverse_replay.py"
+  ],
+  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+}
