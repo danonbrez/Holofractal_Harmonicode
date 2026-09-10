@@ -13,6 +13,18 @@
     "rml7_base_moving_cases": 286,
     "rml7_inverse_failures": 0
   },
+  "validation": {
+    "workflow": "Pass 219 Bott8 Native Correspondence",
+    "run_id": 34425763871,
+    "job_id": 102710529097,
+    "validated_head": "47854f340aa4910c620ccff11e0c02399605db67",
+    "native_pass188_make_validate": "SUCCESS",
+    "native_pass188_summary": "HHS_PASS_188_BOTT_RUNTIME_PASS states=1259712 active=629856 collapse=629856 checksum=11e3bbf0214751c3",
+    "native_pass188_python_unittest": "5 passed",
+    "native_pass188_surface_smoke": "HHS_PASS_188_HTTP_WEBSOCKET_VISUAL_SURFACES_PASS",
+    "rml5_through_rml8_result": "94 passed, 0 failed, 1 inherited pytest-config warning in 12.82s",
+    "dependency_scope_validated": true
+  },
   "inherited_native_bott_substrate": {
     "pass187_contract": "HHS-P187-BP-XNOR-IPRE-VM81-Q144-G243-X64",
     "pass188_runtime": "native_projects/hhs_pass188_bott_runtime",
@@ -38,13 +50,14 @@
   "native_parity": {
     "python_transcription_of_pass188_branchless_step_required": true,
     "full_1259712_address_recomputation_required": true,
-    "active_period_two_states_expected": 629856,
-    "asymmetric_collapse_states_expected": 629856,
-    "gear_preserved_states_expected": 1259712,
-    "coordinate_drift_expected": 0,
-    "deterministic_checksum_expected": 1289080558382961091,
-    "deterministic_checksum_hex_expected": "0x11e3bbf0214751c3",
-    "native_make_validate_required_in_ci": true
+    "active_period_two_states": 629856,
+    "asymmetric_collapse_states": 629856,
+    "gear_preserved_states": 1259712,
+    "coordinate_drift_states": 0,
+    "deterministic_checksum": 1289080558382961091,
+    "deterministic_checksum_hex": "0x11e3bbf0214751c3",
+    "native_make_validate_required_in_ci": true,
+    "native_and_python_bridge_checksum_equal": true
   },
   "authority_separation": {
     "pass188_basis_projection_is_full_phase_transition_authority": false,
@@ -59,9 +72,9 @@
   },
   "rml7_generator_bridge": {
     "finite_generator_cases": 290,
-    "same_base_fiber_preserving_cases_expected": 4,
-    "base_moving_hopf_transport_cases_expected": 286,
-    "inverse_restoration_failures_expected": 0,
+    "same_base_fiber_preserving_cases": 4,
+    "base_moving_hopf_transport_cases": 286,
+    "inverse_restoration_failures": 0,
     "bott8_order_structurally_invariant_across_generator_targets": true
   },
   "claims_deliberately_not_promoted": {
@@ -71,14 +84,14 @@
     "physical_topological_hardware_theorem": false
   },
   "repair_forward_obligations": {
-    "repository_internal_bott8_native_correspondence": "IMPLEMENTED_VALIDATION_REQUIRED",
-    "pass188_native_runtime_parity": "IMPLEMENTED_VALIDATION_REQUIRED",
-    "rml7_hopf_to_pass188_bott8_bridge": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "repository_internal_bott8_native_correspondence": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "pass188_native_runtime_parity": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "rml7_hopf_to_pass188_bott8_bridge": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
     "classical_bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
   },
   "implementation": [
     "hhs_runtime/pass219/bott8_native_correspondence.py",
     "tests/pass219/test_pass219_bott8_native_correspondence.py"
   ],
-  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
 }
