@@ -1,0 +1,74 @@
+{
+  "schema": "HHS_PASS219_RML7_EXACT_HOPF_PROJECTION_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML7_EXACT_HOPF_PROJECTION_CANDIDATE",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_RATIONAL_HOPF_TOPOLOGY_CANDIDATE",
+  "parent_validation": {
+    "rml6_run_id": 34420155680,
+    "rml6_job_id": 102693587051,
+    "rml6_validated_head": "de081a3e4405b40ac07386d465029954c2810a09",
+    "rml6_result": "67 passed, 0 failed, 1 inherited pytest-config warning in 9.55s"
+  },
+  "domain": "RML6_EXACT_RATIONAL_S7_EMBEDDING",
+  "quaternionic_hopf_map": {
+    "split": "S7_POINT_AS_PAIR_OF_QUATERNIONS_Q1_Q2",
+    "map": "H(q1,q2)=(2*q1*conjugate(q2), |q1|^2-|q2|^2)",
+    "target": "S4_SUBSET_OF_Q5",
+    "all_arithmetic": "EXACT_INTEGER_NUMERATORS_WITH_COMMON_DENOMINATOR",
+    "quaternion_product_norm_identity_required": true,
+    "exact_unit_s4_identity_required": true,
+    "floating_point_authority": false
+  },
+  "exact_norm_proof": {
+    "A": "|q1_numerator|^2",
+    "B": "|q2_numerator|^2",
+    "s7_identity": "A+B=D^2",
+    "quaternion_product_identity": "|q1*conjugate(q2)|^2=A*B",
+    "s4_identity": "4AB+(A-B)^2=(A+B)^2=D^4"
+  },
+  "fiber_witness": {
+    "exact_subgroup": "Q8",
+    "elements": ["+1", "-1", "+i", "-i", "+j", "-j", "+k", "-k"],
+    "action": "SIMULTANEOUS_RIGHT_MULTIPLICATION_(q1,q2)->(q1*h,q2*h)",
+    "required_invariance": "H(q1*h,q2*h)=H(q1,q2)",
+    "q8_fiber_invariance_proven_by_exact_arithmetic": true,
+    "transformed_q8_point_required_to_be_in_rml6_discrete_image": false,
+    "full_s3_fiber_closure_claimed": false
+  },
+  "rml5_generator_classification": {
+    "generator_classes": ["COUPLED_Z72_GENERATOR_PRODUCT_MOVE", "U36_CHIRAL_PAIR_FLIP"],
+    "finite_cases": 290,
+    "allowed_classifications": ["FIBER_PRESERVING_SAME_HOPF_BASE", "BASE_MOVING_HOPF_TRANSPORT"],
+    "classification_must_partition_all_cases": true,
+    "explicit_inverse_must_restore_exact_source_hopf_base": true,
+    "all_generators_assumed_fiber_preserving": false
+  },
+  "claims_deliberately_not_promoted": {
+    "full_rml6_discrete_image_s3_fiber_closure": false,
+    "full_rml5_generator_fiber_equivariance": false,
+    "hopf_fibration_preservation_as_global_runtime_invariant": false,
+    "bott_periodicity_correspondence": false,
+    "physical_topological_hardware_claim": false
+  },
+  "repair_forward_obligations": {
+    "exact_hopf_s7_to_s4_projection": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "q8_fiber_invariance": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "rml5_generator_hopf_classification": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "full_s3_fiber_closure_of_discrete_image": "REPAIR_FORWARD_REQUIRED",
+    "generator_fiber_equivariance": "REPAIR_FORWARD_REQUIRED",
+    "bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false
+  },
+  "implementation": [
+    "hhs_runtime/pass219/discrete_hopf_projection.py",
+    "tests/pass219/test_pass219_discrete_hopf_projection.py"
+  ],
+  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+}
