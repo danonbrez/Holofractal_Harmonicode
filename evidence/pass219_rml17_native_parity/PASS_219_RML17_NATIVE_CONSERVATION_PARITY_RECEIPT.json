@@ -1,0 +1,72 @@
+{
+  "schema": "HHS_PASS219_RML17_NATIVE_CONSERVATION_PARITY_SEAL_V1",
+  "pass": 219,
+  "iteration": "RML17_DISCRETE_TRANSPORT_CONSERVATION",
+  "date": "2026-09-10",
+  "result": "PASS",
+  "lineage": {
+    "rml16_parent": "f41f7cec2e126d2d2114bc3463dfbc0e9b7518ec",
+    "sealed_python_rml17": "c76011464b59b9888df628c2e61e9ed589c69136",
+    "sealed_native_conservation": "b14d699401da2b96055423d031868ecc8d39faac",
+    "two_parent_integration_merge": "09c861bf81b1507571e8ea1aacc52d03d366cdea",
+    "validated_head": "b2cdd1d2fdea504224bbd597fc373cd827a27fd7"
+  },
+  "finite_manifold": {
+    "operation_count": 64,
+    "phase_count": 72,
+    "cell_count": 81,
+    "direction_count": 4,
+    "node_count": 373248,
+    "address_count": 1492992,
+    "coordinate_order": ["operation64", "phase72", "cell81", "direction4"],
+    "direction_order": ["x", "y", "z", "w"],
+    "signed_flux": [1, -1, -1, 1],
+    "reciprocal_direction_index": [1, 0, 3, 2]
+  },
+  "parity": {
+    "addresses_compared": 1492992,
+    "python_address_count": 1492992,
+    "native_address_count": 1492992,
+    "source_encoding_mismatches": 0,
+    "target_encoding_mismatches": 0,
+    "successor_mismatches": 0,
+    "flux_orientation_mismatches": 0,
+    "reciprocal_alignment_mismatches": 0,
+    "zero_diffusion_classification_mismatches": 0,
+    "reverse_closure_mismatches": 0,
+    "mismatch_total": 0,
+    "python_native_extensional_equality": true,
+    "native_exhaustive_contract_pass": true,
+    "audit_sha256": "1b6e9edde3efee1ab6a779c4ef1ff540dbd35dfc796e27dacaf6c91f2542ef19"
+  },
+  "authority": {
+    "native_abi_beneath_rml17": true,
+    "native_abi_transition_authority_closed": true,
+    "canonical_transition_authority_expanded": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "existing_rna_uqcel_authority_preserved": true
+  },
+  "validation": {
+    "workflow": "Pass 219 RML17 Native Conservation Parity",
+    "run_id": 34512539027,
+    "job_id": 102989954149,
+    "workflow_result": "success",
+    "dependency_scoped_pytest_passed": 42,
+    "dependency_scoped_pytest_deselected": 1,
+    "native_rebuild": "PASS",
+    "abi_authority_export_guard": "PASS",
+    "exhaustive_python_cpp_parity": "PASS",
+    "artifact_id": 10166395136,
+    "artifact_zip_sha256": "7cc9317327cb9a70e8e804c041d1c9a80faaaad314f3691334889b652584adfe"
+  },
+  "repair_forward": {
+    "initial_run_id": 34512225270,
+    "initial_failure_class": "orchestration prerequisite",
+    "initial_failure_reason": "Inherited RML14/RML15 shared libraries were not rebuilt before the Python route regression.",
+    "semantic_parity_failure_observed": false,
+    "repair": "Rebuild the inherited RML13 -> RML14 -> RML15 native route chain before conservation validation."
+  },
+  "omega": true
+}
