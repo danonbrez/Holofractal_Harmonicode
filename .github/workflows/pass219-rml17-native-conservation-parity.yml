@@ -76,9 +76,10 @@ jobs:
             hhs_runtime/pass219/native_transport_conservation.py \
             tests/pass219/test_pass219_rml17_discrete_transport_conservation.py
 
-      - name: Rebuild inherited C authority and native conservation ABI
+      - name: Rebuild inherited native route chain and conservation ABI
         run: |
           make c-abi
+          make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
           make -C native_projects/hhs_pass219_discrete_transport_conservation clean validate
 
       - name: Verify subordinate ABI exports no transition authority
