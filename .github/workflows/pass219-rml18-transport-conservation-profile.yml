@@ -1,0 +1,49 @@
+name: Pass 219 RML18 Transport Conservation Profile
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml18-transport-conservation-acceleration-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml18_transport_conservation_profile.py'
+      - '.github/workflows/pass219-rml18-transport-conservation-profile.yml'
+      - 'docs/operations/restart/PASS_219_RML18_TRANSPORT_CONSERVATION_ACCELERATION_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport-conservation-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded profiling dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Revalidate frozen RML17 before profiling
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py
+
+      - name: Profile frozen RML17 conservation surfaces
+        run: |
+          mkdir -p artifacts/pass219_rml18
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml18_transport_conservation_profile.py \
+            --output artifacts/pass219_rml18/rml18_transport_profile.json \
+            --route-cases 6
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml18-transport-conservation-profile
+          path: artifacts/pass219_rml18/rml18_transport_profile.json
+          if-no-files-found: error
