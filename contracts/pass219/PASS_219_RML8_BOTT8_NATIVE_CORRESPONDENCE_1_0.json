@@ -1,0 +1,84 @@
+{
+  "schema": "HHS_PASS219_RML8_BOTT8_NATIVE_CORRESPONDENCE_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML8_BOTT8_NATIVE_CORRESPONDENCE",
+  "classification": "ADDITIVE_READ_ONLY_NATIVE_BOTT8_TOPOLOGY_BRIDGE",
+  "parent_validation": {
+    "rml7_run_id": 34420516153,
+    "rml7_job_id": 102694683447,
+    "rml7_validated_head": "71fa0ef9dd64376862585feb33e61f9e3b815457",
+    "rml7_result": "88 passed, 0 failed, 1 inherited pytest-config warning in 12.20s",
+    "rml7_same_base_cases": 4,
+    "rml7_base_moving_cases": 286,
+    "rml7_inverse_failures": 0
+  },
+  "inherited_native_bott_substrate": {
+    "pass187_contract": "HHS-P187-BP-XNOR-IPRE-VM81-Q144-G243-X64",
+    "pass188_runtime": "native_projects/hhs_pass188_bott_runtime",
+    "ordered_b8": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "h8": "Z2(xy) tensor Z2(zw) tensor Z2(I/Z^72)",
+    "transition_table": [1, 0, 0, 0, 0, 0, 7, 6],
+    "hydrated_addresses": 1259712,
+    "expected_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "bott8_correspondence": {
+    "rml4_channel_order_must_equal_pass188_b8_order": true,
+    "all_eight_live_phase72_coordinates_retained": true,
+    "basis8_q_encoding": "q=4q2+2q1+q0",
+    "h8_axis_order": [
+      "Z2_XY_YX_ORDERED_RAIL",
+      "Z2_ZW_WZ_ORDERED_RAIL",
+      "Z2_I_Z72_FORMAL_CLOSURE_STEM"
+    ],
+    "period8_grade_rule": "grade(n+8) mod 8 = grade(n) mod 8",
+    "ordered_tag_preserved_under_period8_grade_shift": true,
+    "rml7_exact_s4_hopf_base_bound_to_packet": true
+  },
+  "native_parity": {
+    "python_transcription_of_pass188_branchless_step_required": true,
+    "full_1259712_address_recomputation_required": true,
+    "active_period_two_states_expected": 629856,
+    "asymmetric_collapse_states_expected": 629856,
+    "gear_preserved_states_expected": 1259712,
+    "coordinate_drift_expected": 0,
+    "deterministic_checksum_expected": 1289086031022039491,
+    "deterministic_checksum_hex_expected": "0x11e3bbf0214751c3",
+    "native_make_validate_required_in_ci": true
+  },
+  "authority_separation": {
+    "pass188_basis_projection_is_full_phase_transition_authority": false,
+    "pass188_asymmetric_collapse_may_overwrite_rml5_reversible_phase_state": false,
+    "rml5_reciprocal_phase_reversibility_preserved": true,
+    "append_only_receipt_ancestry_preserved": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false
+  },
+  "rml7_generator_bridge": {
+    "finite_generator_cases": 290,
+    "same_base_fiber_preserving_cases_expected": 4,
+    "base_moving_hopf_transport_cases_expected": 286,
+    "inverse_restoration_failures_expected": 0,
+    "bott8_order_structurally_invariant_across_generator_targets": true
+  },
+  "claims_deliberately_not_promoted": {
+    "classical_k_theory_bott_periodicity_theorem_proven": false,
+    "full_s3_fiber_closure_of_rml6_discrete_image": false,
+    "full_rml5_generator_fiber_equivariance": false,
+    "physical_topological_hardware_theorem": false
+  },
+  "repair_forward_obligations": {
+    "repository_internal_bott8_native_correspondence": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "pass188_native_runtime_parity": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "rml7_hopf_to_pass188_bott8_bridge": "IMPLEMENTED_VALIDATION_REQUIRED",
+    "classical_bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
+  },
+  "implementation": [
+    "hhs_runtime/pass219/bott8_native_correspondence.py",
+    "tests/pass219/test_pass219_bott8_native_correspondence.py"
+  ],
+  "status": "IMPLEMENTED_VALIDATION_REQUIRED"
+}
