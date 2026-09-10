@@ -1,0 +1,67 @@
+{
+  "schema": "HHS_PASS219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RECEIPT_V1",
+  "pass": 219,
+  "iteration": "RML17_DISCRETE_TRANSPORT_CONSERVATION",
+  "base_lineage": "agent/pass219-recursive-manifold-learning-20260909",
+  "base_commit": "f41f7cec2e126d2d2114bc3463dfbc0e9b7518ec",
+  "working_branch": "agent/pass219-rml17-discrete-transport-conservation-20260910",
+  "merge_target": "agent/pass219-recursive-manifold-learning-20260909",
+  "implementation_commit": "37856b278dec0a71b587568977501e113b6240d5",
+  "repair_commit": "904c01ac3340641c95b43271b6580dc2dc0f5def",
+  "operator_contract": {
+    "discrete_divergence_zero": "Div_H(s)=0",
+    "reciprocal_edge_balance": "J(s,d)=-J(T_H(s,d),d^-1)",
+    "admission_preservation": "C(s)=1 and T_H(s,d)=s' => C(s')=1",
+    "zero_canonical_diffusion": "nu_H L_H(s)=0",
+    "reverse_identity": "R^-1(R(s))=s",
+    "structural_information_loss": "Delta_loss=0",
+    "latency_is_viscosity_definition": false
+  },
+  "address_manifold": {
+    "lanes": 4,
+    "operations_per_cell": 64,
+    "phase_states": 72,
+    "cells": 81,
+    "addresses": 1492992,
+    "exhaustive_validation": true,
+    "cross_lane_transition_authority_added": false
+  },
+  "initial_validation": {
+    "workflow_run_id": 34507670537,
+    "head_sha": "37856b278dec0a71b587568977501e113b6240d5",
+    "conclusion": "failure",
+    "native_rml13_rml15": "pass",
+    "rml16_tests_passed": 10,
+    "rml17_tests_passed": 10,
+    "rml17_tests_failed": 3,
+    "failure_class": "endpoint_identity_layer_mismatch",
+    "repair_forward": true
+  },
+  "validated_repair": {
+    "workflow_run_id": 34508463313,
+    "head_sha": "904c01ac3340641c95b43271b6580dc2dc0f5def",
+    "conclusion": "success",
+    "native_rml13_rml15": "pass",
+    "rml16_tests_passed": 10,
+    "rml17_tests_passed": 13,
+    "rml17_exhaustive_address_count": 1492992,
+    "impacted_route_tests_passed": 12,
+    "impacted_route_tests_deselected": 1,
+    "discrete_divergence_gate": "pass",
+    "reciprocal_edge_balance_gate": "pass",
+    "admission_preservation_gate": "pass",
+    "zero_canonical_diffusion_gate": "pass",
+    "composed_reverse_closure_gate": "pass",
+    "structural_information_loss_zero_gate": "pass"
+  },
+  "authority": {
+    "rml17_additive_read_only_membrane": true,
+    "rml16_operator_semantics_changed": false,
+    "vm81_mutation_authority_added": false,
+    "hash72_mint_authority_added": false,
+    "hash216_persistence_authority_added": false,
+    "floating_point_authority_added": false,
+    "scalar_projection_substitution_authority_added": false,
+    "hash216_cryptographic_inversion_used": false
+  }
+}

@@ -6,6 +6,8 @@
 - Base lineage: `agent/pass219-recursive-manifold-learning-20260909`
 - Working branch: `agent/pass219-rml17-discrete-transport-conservation-20260910`
 - Merge target: `agent/pass219-recursive-manifold-learning-20260909`
+- Initial implementation commit: `37856b278dec0a71b587568977501e113b6240d5`
+- Endpoint-identity repair commit: `904c01ac3340641c95b43271b6580dc2dc0f5def`
 - Pass: `219`
 - Iteration: `RML17_DISCRETE_TRANSPORT_CONSERVATION`
 
@@ -53,7 +55,8 @@ invent cross-lane transition authority.
 For selected RML16 routes, RML17 requires:
 
 - every source and successor remains admitted;
-- edge source/target hashes compose without gaps;
+- internal generated edge SHA256 ancestry composes without gaps;
+- internal ambient-state ancestry composes without gaps;
 - every directed edge carries an exact inverse witness;
 - every forward/reverse transport-flux pair sums to zero;
 - only inherited exact reversible RML12 edge kinds participate;
@@ -64,16 +67,29 @@ For selected RML16 routes, RML17 requires:
 - structural information loss is zero;
 - admitted multi-route compositions preserve all of the same properties.
 
+RML17 preserves the inherited RML12 endpoint identity semantics. A generated
+terminal transition state may have a transition-derived `state_id` and SHA256
+that differ from the separately supplied target receipt while still being the
+same exact phase state. Therefore:
+
+- generated edge ancestry is checked by SHA256 and ambient index internally;
+- terminal route equality is checked by the inherited exact phase geometry /
+  ambient identity;
+- the supplied target SHA256 remains independently bound to the route plan;
+- RML15 independently validates and reverses the supplied target receipt.
+
+The repair does not weaken receipt identity; it removes an invalid equality
+between two deliberately distinct identity layers.
+
 ## Files
 
 - `hhs_runtime/pass219/discrete_transport_conservation.py`
 - `tests/pass219/test_pass219_rml17_discrete_transport_conservation.py`
 - `.github/workflows/pass219-rml17-discrete-transport-conservation.yml`
 - `docs/operations/restart/PASS_219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RESTART.md`
+- `evidence/pass219_rml17/PASS_219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RECEIPT.json`
 
-## Validation
-
-Required dependency-scoped sequence:
+## Validation commands
 
 ```bash
 make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
@@ -91,21 +107,64 @@ PYTHONPATH="$PWD" python -m pytest -q \
   -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
 ```
 
-## Validation state at initial checkpoint
+## Validation evidence
 
-- Static Python syntax compilation of the new module and tests: PASS.
-- Standalone exhaustive address-manifold audit with the repository-independent
-  constants/functions: PASS; 1,492,992 addresses, zero failures across
-  bijection, divergence, reciprocal-neighbor, and reciprocal-flux gates.
-- Exact repository dependency-scoped execution: pending GitHub Actions because
-  the interactive container has no network-mounted repository checkout.
-- Do not claim RML17 validated or merge-ready until exact-head CI is green.
+### Initial exact-head run
+
+Dedicated workflow run `34507670537` at implementation head
+`37856b278dec0a71b587568977501e113b6240d5` correctly exposed an RML17-only
+endpoint identity defect after inherited validation was green:
+
+- native RML13 -> RML14 -> RML15 rebuild/ABI: PASS;
+- RML16 cache + signed-permutation integration: 10 passed;
+- RML17: 10 passed, 3 failed;
+- impacted trailing route regression: skipped after the RML17 failure.
+
+The failed predicate incorrectly required a transition-generated terminal
+state SHA256 to equal the separately supplied target state SHA256. RML12 exact
+route equality is phase/sign/ambient equality, while generated transition
+state identity and supplied target receipt identity are intentionally distinct.
+
+### Repair-forward run
+
+Dedicated workflow run `34508463313` at exact repair head
+`904c01ac3340641c95b43271b6580dc2dc0f5def`: **PASS**.
+
+Validated results:
+
+- native RML13 -> RML14 -> RML15 rebuild and ABI checks: PASS;
+- RML16 cache + exact signed-permutation successor: **10 passed**;
+- RML17 discrete transport contract: **13 passed**;
+- exhaustive `4 x 64 x 72 x 81` address scan participated in the RML17 test
+  gate and completed green across all **1,492,992 addresses**;
+- impacted RML12 optimizer + RML15 reverse/replay regression:
+  **12 passed, 1 intentionally deselected** (the known expensive 290-case
+  cross-tab excluded from this dependency-scoped run).
+
+The RML17 green gate therefore covers the five required executable invariants:
+zero discrete divergence, reciprocal edge balance, admission preservation,
+zero canonical diffusion, and composed reverse closure with zero structural
+information loss.
+
+The pytest configuration emitted the inherited unknown `asyncio_mode` warning;
+it did not affect test results. GitHub Actions also emitted the platform Node
+runtime deprecation warning for `actions/checkout@v4` / `actions/setup-python@v5`;
+it did not affect validation.
+
+## Validation remaining
+
+The implementation and dependency-scoped validation are complete at
+`904c01ac3340641c95b43271b6580dc2dc0f5def`. This restart/evidence update is a
+documentation-only checkpoint above that validated implementation. If a final
+exact-head workflow is triggered by this documentation commit, it is follow-up
+confirmation rather than a reason to reopen the already-green implementation.
 
 ## Next action
 
-1. Run the exact-head RML17 workflow.
-2. Repair forward only if the new contract or an impacted dependency fails.
-3. When green, update this restart record with the run/commit evidence.
-4. Merge the complete RML17 history into
+1. Open the integration PR from
+   `agent/pass219-rml17-discrete-transport-conservation-20260910` into
    `agent/pass219-recursive-manifold-learning-20260909`.
-5. Verify the resulting lineage head and preserve RML16/RML17 evidence.
+2. Preserve the two-commit implementation/repair history; do not squash it.
+3. Merge once branch integration requirements permit.
+4. Verify the canonical RML lineage head contains RML16 unchanged plus the
+   additive RML17 conservation membrane and evidence.
