@@ -1,0 +1,82 @@
+name: Pass 219 RML16 Deterministic Route Cache
+
+on:
+  push:
+    branches:
+      - agent/pass219-recursive-manifold-learning-20260909
+    paths:
+      - hhs_runtime/pass219/reciprocal_route_cache.py
+      - tests/pass219/test_pass219_rml16_reciprocal_route_cache.py
+      - benchmarks/pass219/pass219_rml16_cached_route_benchmark.py
+      - .github/workflows/pass219-rml16-deterministic-route-cache.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-route-cache:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Build and validate native route stack through RML15
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Exhaust finite Pass188 hydration control
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+
+      - name: Validate cache equality mutation isolation and RML12 semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Revalidate impacted production hydration and native receipt surfaces
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_production_phase_geometry_binding.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py
+
+      - name: Run Pass214 compound semantic control
+        run: |
+          mkdir -p artifacts/pass219/rml16-route-cache
+          PYTHONPATH="$PWD" python tools/pass214_final_compound_benchmark.py \
+            --output artifacts/pass219/rml16-route-cache/pass214_compound.json
+
+      - name: Run identical full-hydration harness through deterministic route cache
+        run: |
+          PYTHONPATH="$PWD" python benchmarks/pass219/pass219_rml16_cached_route_benchmark.py \
+            --output artifacts/pass219/rml16-route-cache/optimized.json \
+            --repeats 7 --warmups 1 --native-repeats 3 --e2e-repeats 3
+
+      - name: Validate optimized semantic and latency receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/rml16-route-cache/optimized.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert all(d['semantic_gates'].values())
+          assert all(value is False for value in d['authority'].values())
+          r = next(row for row in d['bottleneck_ranking'] if row['stage'] == 'RML12_ROUTE_SELECT_ALL_20_GYROSCOPES')
+          print('RML16_CACHED_ROUTE_MEDIAN_NS', r['median_ns'])
+          for name, row in d['end_to_end_full_hydration'].items():
+              print('RML16_CACHED_E2E', name, row['timing']['median_ns'], row['timing']['p95_ns'], row['timing']['max_ns'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-rml16-deterministic-route-cache
+          path: artifacts/pass219/rml16-route-cache
