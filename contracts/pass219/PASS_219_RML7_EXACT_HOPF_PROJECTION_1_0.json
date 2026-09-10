@@ -16,7 +16,8 @@
     "job_id": 102694683447,
     "validated_head": "71fa0ef9dd64376862585feb33e61f9e3b815457",
     "result": "88 passed, 0 failed, 1 inherited pytest-config warning in 12.20s",
-    "dependency_scope_validated": true
+    "dependency_scope_validated": true,
+    "restart_green_seal": "81e66c2e874333a5684beead39fbf813d142401e"
   },
   "domain": "RML6_EXACT_RATIONAL_S7_EMBEDDING",
   "quaternionic_hopf_map": {
@@ -70,7 +71,7 @@
     "rml5_generator_hopf_classification": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
     "full_s3_fiber_closure_of_discrete_image": "REPAIR_FORWARD_REQUIRED",
     "generator_fiber_equivariance": "REPAIR_FORWARD_REQUIRED",
-    "bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
+    "bott_periodicity_correspondence": "RML8_REPOSITORY_INTERNAL_BRIDGE_VALIDATED_CLASSICAL_THEOREM_REMAINS_REPAIR_FORWARD"
   },
   "authority_boundary": {
     "canonical_vm81_mutation_authority": false,
