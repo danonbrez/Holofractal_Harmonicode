@@ -24,7 +24,7 @@
     "native_pass188_surface_smoke": "HHS_PASS_188_HTTP_WEBSOCKET_VISUAL_SURFACES_PASS",
     "rml5_through_rml8_result": "94 passed, 0 failed, 1 inherited pytest-config warning in 12.82s",
     "dependency_scope_validated": true,
-    "restart_record_seal": "2fb763d0d6a4699a1befb8104281f0985d2cfa24"
+    "restart_record_seal": "b33902ea2b35005dd2e6b3c050e33d73e5014841"
   },
   "inherited_native_bott_substrate": {
     "pass187_contract": "HHS-P187-BP-XNOR-IPRE-VM81-Q144-G243-X64",
