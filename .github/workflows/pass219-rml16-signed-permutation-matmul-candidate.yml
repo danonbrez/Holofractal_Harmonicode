@@ -1,0 +1,101 @@
+name: Pass 219 RML16 Signed Permutation Matmul Candidate
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-cold-route-profile-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_signed_permutation_matmul_candidate.py'
+      - '.github/workflows/pass219-rml16-signed-permutation-matmul-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signed-permutation-matmul-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Revalidate frozen RML10 RML11 RML12 semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Benchmark exact signed-permutation matmul candidate
+        run: |
+          mkdir -p artifacts/pass219/rml16-signed-permutation
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml16_signed_permutation_matmul_candidate.py \
+            --output artifacts/pass219/rml16-signed-permutation/candidate.json \
+            --states 8
+
+      - name: Validate semantic identity before timing
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = json.loads(Path('artifacts/pass219/rml16-signed-permutation/candidate.json').read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['state_count'] == 8
+          assert d['primitive_exact_product_checks'] == 81
+          assert d['semantic_identity_equality_counts'] == {
+              'RML11_CLIFFORD_LIFT': 32,
+              'RML11_CLIFFORD_CLASSIFIER': 32,
+              'RML12_COUPLED_EDGE': 32,
+              'RML12_SHORTEST_PLAN': 8,
+              'RML12_FULL_BUNDLE': 8,
+          }
+          assert d['fast_path_calls'] > 0
+          assert d['fallback_preserves_dense_exact_matmul'] is True
+          assert d['public_rml10_abi_changed'] is False
+          assert d['public_rml11_abi_changed'] is False
+          assert d['public_rml12_abi_changed'] is False
+          assert d['candidate_integrated_into_production'] is False
+          assert d['timing_is_canonical'] is False
+          assert d['canonical_vm81_mutation_authority'] is False
+          assert d['canonical_hash72_mint_authority'] is False
+          assert d['canonical_hash216_persistence_authority'] is False
+          assert d['floating_point_canonical_authority'] is False
+          assert d['scalar_projection_substitution_authority'] is False
+          for name, row in d['speed'].items():
+              assert row['candidate_faster'] is True, (name, row)
+              print('RML16_SIGNED_PERM_SPEED', name, row)
+          print('RML16_SIGNED_PERM_PATHS', d['fast_path_calls'], d['fallback_calls'])
+          print('RML16_SIGNED_PERM_DESCRIPTOR_CACHE', d['descriptor_cache'])
+          PY
+
+      - name: Build inherited native RML13 through RML15 route extensions
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Revalidate impacted RML11 through RML16 route semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-signed-permutation-matmul-candidate
+          path: artifacts/pass219/rml16-signed-permutation/candidate.json
+          if-no-files-found: error

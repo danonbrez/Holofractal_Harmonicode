@@ -1,0 +1,79 @@
+{
+  "artifact": {
+    "id": 10167552199,
+    "name": "pass219-rml19-route-composition-conservation-acceleration",
+    "zip_sha256": "72e1496b5a81840429b28f513296314cef2155b580d3059d23638b4d9d13e0e6"
+  },
+  "authority": {
+    "cache_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "digest_participates_in_cache_lookup": false,
+    "floating_point_authority": false,
+    "performance_is_observational_not_admission_authority": true,
+    "rejections_cached": false,
+    "route_selection_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "timing_participates_in_admission": false
+  },
+  "benchmark": {
+    "composition": {
+      "accelerated_median_ns": 460544,
+      "accelerated_samples": 101,
+      "baseline_median_ns": 4643351,
+      "baseline_samples_ns": [4655177, 4643351, 4601905],
+      "exact_parent_output_equal": true,
+      "integer_speedup_floor": 10,
+      "strictly_faster_than_parent": true
+    },
+    "route": {
+      "accelerated_median_ns": 335246,
+      "accelerated_samples": 101,
+      "baseline_median_ns": 2948631,
+      "baseline_samples_ns": [3004425, 2935220, 2948631],
+      "exact_parent_output_equal": true,
+      "integer_speedup_floor": 8,
+      "strictly_faster_than_parent": true
+    }
+  },
+  "bounded_cache": {
+    "max_composition_certificates": 5184,
+    "max_route_certificates": 5184,
+    "only_admitted_parent_records_cached": true,
+    "complete_typed_candidate_identity": true,
+    "copy_isolated_return_records": true,
+    "frozen_parent_revalidated_before_reuse": true
+  },
+  "exact_invariant": {
+    "binary_floating_point_used": false,
+    "decimal": "1.001",
+    "denominator": 1000,
+    "numerator": 1001
+  },
+  "frozen_parent": {
+    "branch": "agent/pass219-recursive-manifold-learning-20260909",
+    "commit": "76cd6f995668dac3f1bfb10ae25a8301b2233237",
+    "rml18_module_git_blob_sha1": "d7c38ce7807f8bff386a765fdb37cbc254b6cd49",
+    "tree": "3e1b1e3844cfa7757e49cc2112886fd09c9d40cd"
+  },
+  "implementation_validation": {
+    "head": "e21b3ed716a86ca46087e6bec41078d2815e408b",
+    "job_id": 103000078121,
+    "rml18_regression": {
+      "passed": 11,
+      "warning_count": 1
+    },
+    "rml19_regression": {
+      "passed": 12,
+      "warning_count": 1
+    },
+    "workflow_run_id": 34515595850
+  },
+  "iteration": "RML19_ROUTE_COMPOSITION_CONSERVATION_ACCELERATION",
+  "omega": true,
+  "pass": 219,
+  "pull_request": 419,
+  "result": "PASS",
+  "schema": "HHS_PASS219_RML19_ROUTE_COMPOSITION_CONSERVATION_ACCELERATION_SEAL_V1"
+}

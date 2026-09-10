@@ -1,0 +1,78 @@
+name: Pass 219 RML16 Clifford Lift Internal Profile
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-cold-route-profile-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_clifford_lift_internal_profile.py'
+      - '.github/workflows/pass219-rml16-clifford-lift-internal-profile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clifford-lift-internal-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Revalidate frozen RML10 RML11 RML12 semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Run exact RML11 internal lift profiler
+        run: |
+          mkdir -p artifacts/pass219/rml16-clifford-internal
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml16_clifford_lift_internal_profile.py \
+            --output artifacts/pass219/rml16-clifford-internal/profile.json \
+            --states 8
+
+      - name: Validate profiler semantic and authority gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = json.loads(Path('artifacts/pass219/rml16-clifford-internal/profile.json').read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['case_count'] == 32
+          assert d['semantic_identity_verified'] is True
+          assert d['semantic_identity_equality_count'] == 32
+          assert d['production_source_modified_by_profiler'] is False
+          assert d['public_rml10_abi_changed'] is False
+          assert d['public_rml11_abi_changed'] is False
+          assert d['public_rml12_abi_changed'] is False
+          assert d['timing_is_canonical'] is False
+          assert d['canonical_vm81_mutation_authority'] is False
+          assert d['canonical_hash72_mint_authority'] is False
+          assert d['canonical_hash216_persistence_authority'] is False
+          assert d['floating_point_canonical_authority'] is False
+          assert d['scalar_projection_substitution_authority'] is False
+          assert d['profile']['ranking']
+          print('RML16_CLIFFORD_INTERNAL_DOMINANT', d['dominant_exclusive_helper'], d['dominant_exclusive_share_basis_points'])
+          for row in d['profile']['ranking'][:8]:
+              print('RML16_CLIFFORD_INTERNAL_RANK', row['helper'], row['exclusive_ns_total'], row['exclusive_share_basis_points'], row['calls'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-clifford-lift-internal-profile
+          path: artifacts/pass219/rml16-clifford-internal/profile.json
+          if-no-files-found: error
