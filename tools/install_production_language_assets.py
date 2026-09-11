@@ -25,7 +25,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-STATUS_PATH = ROOT / ".hhs" / "production_language_assets_status.json"
+
+def _production_status_path() -> Path:
+    configured = os.getenv("HHS_PRODUCTION_LANGUAGE_STATUS_PATH", "").strip()
+    if configured:
+        return Path(configured)
+    return ROOT / ".hhs" / "production_language_assets_status.json"
+
+
+STATUS_PATH = _production_status_path()
 
 
 def _truthy(name: str, default: bool = False) -> bool:
@@ -273,6 +281,7 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
         "native_hhs": native,
         "require_assistant": require_assistant,
         "fixture_substitution_allowed": False,
+        "status_path": str(STATUS_PATH),
     }
     STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
     STATUS_PATH.write_text(
@@ -282,7 +291,8 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
     if require_assistant and not assistant_ready:
         raise RuntimeError(
             "production assistant installation is incomplete: configure a reachable "
-            "LiteRT-LM Gemma model or install an authoritative Pass 166 Word2Vec manifest"
+            "LiteRT-LM Gemma model, enable the native HHS language provider contract, "
+            "or install an authoritative Pass 166 Word2Vec manifest"
         )
     return report
 
