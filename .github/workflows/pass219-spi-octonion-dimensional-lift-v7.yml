@@ -1,0 +1,148 @@
+name: Pass 219 SPI Octonion Dimensional Lift v7
+
+on:
+  push:
+    branches:
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_octonion_dimensional_lift_v1.py'
+      - 'hhs_spi_octonion_dimensional_lift_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v7.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v7.py'
+      - 'contracts/pass219/PASS_219_SPI_OCTONION_RECIPROCAL_BASEPAIR_DIMENSIONAL_LIFT_V1.md'
+      - '.github/workflows/pass219-spi-octonion-dimensional-lift-v7.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_octonion_dimensional_lift_v1.py'
+      - 'hhs_spi_octonion_dimensional_lift_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v7.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v7.py'
+      - 'contracts/pass219/PASS_219_SPI_OCTONION_RECIPROCAL_BASEPAIR_DIMENSIONAL_LIFT_V1.md'
+      - '.github/workflows/pass219-spi-octonion-dimensional-lift-v7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-octonion-dimensional-lift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile octonion dimensional lift stack
+        run: |
+          python -m py_compile \
+            hhs_spi_octonion_dimensional_lift_v1.py \
+            hhs_spi_octonion_dimensional_lift_tests_v1.py \
+            hhs_spi_scalar_projection_registry_v7.py \
+            hhs_spi_scalar_projection_registry_tests_v7.py
+
+      - name: Run dimensional lift and typed rotation tests
+        run: python hhs_spi_octonion_dimensional_lift_tests_v1.py
+
+      - name: Validate registry v7
+        run: |
+          python hhs_spi_scalar_projection_registry_v7.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v7.py
+
+      - name: Regress registry v6 unchanged
+        run: |
+          python hhs_spi_constraint_evolution_optimizer_tests_v1.py
+          python hhs_spi_scalar_projection_registry_v6.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v6.py
+
+      - name: Regress inherited RML2 and RML4 gyroscope geometry
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_phase_geometry_learning.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py
+
+      - name: Verify relation separation and exact dimensional closure
+        run: |
+          python - <<'PY'
+          from hhs_spi_octonion_dimensional_lift_v1 import (
+              A2_UNIT,
+              ORDERED_RECIPROCAL_OPERAND,
+              PHASE_OPPOSITE,
+              SYMBOLIC_BASE_PAIR,
+              dimensional_lift,
+              dimensional_lift_witness,
+          )
+          assert PHASE_OPPOSITE == {'x':'z','z':'x','w':'y','y':'w'}
+          assert ORDERED_RECIPROCAL_OPERAND == {'x':'y','y':'x','z':'w','w':'z'}
+          assert SYMBOLIC_BASE_PAIR == {'x':'Ixy','y':'I-yx','z':'Izw','w':'I-wz'}
+          for source in ('x','y','z','w'):
+              lift = dimensional_lift(source, 12)
+              assert lift['explicit_relational_dimensions'] == 4
+              assert lift['recursive_reference_dimensions'] == 8
+              assert lift['same_octonion_algebra_all_dimensions'] is True
+              assert lift['new_basis_elements_introduced'] is False
+              assert lift['combinatorial_materialization_required'] is False
+              witness = dimensional_lift_witness(source, phase72=18, dimension=12)
+              assert witness['a2_projection_compatibility']['a2_projection'] == A2_UNIT
+              assert witness['imaginary_rotation_round_trip']['exact_round_trip'] is True
+              assert witness['imaginary_rotation_carrier']['phase_coordinate_alone_claimed_lossless'] is False
+          print('relation separation / dimensional closure: PASS')
+          PY
+
+      - name: Regress frozen SPI corpus evidence
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --validate
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_spi_scalar_projection_corpus_reconciliation_v2 import reconciliation_manifest_v2
+          data = reconciliation_manifest_v2(Path('.'))
+          assert data['resolved_candidate_counts'] == {
+              'MISSING_PROJECTION': 0,
+              'PROVEN': 429,
+              'SYMBOLIC': 43,
+              'UNSUPPORTED_DOMAIN': 0,
+          }
+          assert data['manifest_sha256'] == '481c0bb0264ad0771344ae068624dcfd7c9c5ba853a8c7963ad9a22971389aee'
+          assert data['scalar_value_complete'] is False
+          print(data['manifest_sha256'])
+          PY
+
+      - name: Emit deterministic dimensional lift evidence
+        run: |
+          mkdir -p /tmp/pass219_spi_octonion_dimensional_lift
+          python - <<'PY' > /tmp/pass219_spi_octonion_dimensional_lift/octonion_dimensional_lift_v1.json
+          import json
+          from hhs_spi_octonion_dimensional_lift_v1 import dimensional_lift_witness
+          print(json.dumps(dimensional_lift_witness('x', phase72=18, dimension=12), indent=2, sort_keys=True, ensure_ascii=False))
+          PY
+          python hhs_spi_scalar_projection_registry_v7.py --manifest > /tmp/pass219_spi_octonion_dimensional_lift/spi_registry_v7.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          witness = json.loads(Path('/tmp/pass219_spi_octonion_dimensional_lift/octonion_dimensional_lift_v1.json').read_text(encoding='utf-8'))
+          registry = json.loads(Path('/tmp/pass219_spi_octonion_dimensional_lift/spi_registry_v7.json').read_text(encoding='utf-8'))
+          assert witness['invariants']['typed_imaginary_rotation_round_trip_lossless'] is True
+          assert witness['invariants']['same_octonion_algebra_all_dimensions'] is True
+          assert witness['invariants']['a2_unit_projection_preserved'] is True
+          assert registry['validation']['ok'] is True
+          assert registry['validation']['changed_predecessor_proof_ids'] == []
+          print(json.dumps({
+              'dimensional_lift_receipt_sha256': witness['receipt_sha256'],
+              'typed_rotation_carrier_sha256': witness['imaginary_rotation_carrier']['carrier_sha256'],
+              'registry_v7_manifest_sha256': registry['manifest_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload dimensional lift evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-octonion-dimensional-lift-v7
+          path: /tmp/pass219_spi_octonion_dimensional_lift
+          if-no-files-found: error
