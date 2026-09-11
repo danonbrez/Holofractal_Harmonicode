@@ -14,10 +14,9 @@ This checkpoint does **not** create canonical transition authority. VM81 remains
 - Working branch: `agent/pass219-spi-scalar-projection-registry-v1-20260910`
 - Previous restart checkpoint: `ac452f0b1506eaea2ac07b0726a5162e47b60161`
 - Validated v2 semantic head: `8714ea86a938433575e01cda1c4b81290c4814b0`
-- Restart checkpoint anchor: `b6caa79adbf9443b45618b74bb854b45feeaec9a`
-- Documentation-only checkpoint successor: `7cc004fa0e42d6a2656f610e81b55a76c9caf816`
+- Restart checkpoint lineage: `b6caa79adbf9443b45618b74bb854b45feeaec9a` → `7cc004fa0e42d6a2656f610e81b55a76c9caf816`
 - Pull request: `#427`
-- Branch relation at checkpoint anchor: 22 commits ahead / 0 behind `main`.
+- Validated branch relation: ahead of `main`, with `main` still at the authoritative base above.
 
 ## Frozen predecessor evidence
 
@@ -68,15 +67,7 @@ The additive AST recognizes these syntax surfaces without scalar evaluation:
 
 ### Chained powers
 
-The source:
-
-`c^b^4`
-
-is preserved as a `PowerChain` with ordered operands:
-
-`[c, b, 4]`
-
-and:
+The source `c^b^4` is preserved as a `PowerChain` with ordered operands `[c, b, 4]` and:
 
 - `associativity = UNRESOLVED_SOURCE_CHAIN`
 - `algebraic_associativity_selected = false`
@@ -87,13 +78,7 @@ The parser does not rewrite the source into `(c^b)^4` or `c^(b^4)`.
 
 ### Radical exponent surface
 
-The source:
-
-`√(pq+u⁷²)^x²`
-
-is preserved as a `RadicalPowerSurface` with ordered operands:
-
-`[(pq+u⁷²), x²]`
+The source `√(pq+u⁷²)^x²` is preserved as a `RadicalPowerSurface` with ordered operands `[(pq+u⁷²), x²]`.
 
 The contained `u⁷²` and `x²` superscript surfaces retain explicit `SuperscriptPower` nodes. This records source structure only; it does not supply a scalar value for the radical, `x²`, or the complete expression.
 
@@ -191,30 +176,19 @@ Run `34574371362` emitted:
 
 ## Authority boundary
 
-This pass does not authorize or perform:
-
-- VM81 mutation;
-- canonical Hash72 or Hash216 minting;
-- canonical state persistence;
-- source rewriting;
-- ordered-product commutation;
-- chained-power associativity selection;
-- conversion of projection equality into native identity;
-- scalarization of unresolved formal phase or radical surfaces.
+This pass does not authorize or perform VM81 mutation, canonical Hash72/Hash216 minting, canonical state persistence, source rewriting, ordered-product commutation, chained-power associativity selection, conversion of projection equality into native identity, or scalarization of unresolved formal phase/radical surfaces.
 
 ## Remaining proof obligations
 
 The parser-limit provenance defect is closed. The next scalar-proof work should proceed against actual semantic obligations rather than lexical prefixes.
 
-Primary next obligations:
-
-1. **O2 ordered matrix-power scalar witness** — bind the existing matrix-power source to an exact ordered matrix/tensor proof object without introducing approximate matrix arithmetic or changing source ordering.
+1. **O2 ordered matrix-power scalar witness** — bind the existing matrix-power source to an exact ordered matrix/tensor proof object without approximate matrix arithmetic or source-order changes.
 2. **O3 `f == t/m` provenance** — establish the exact repository-authorized derivation/projection lineage or leave it fail-closed if the required premise is absent.
 3. Formal phase surfaces such as `I²`, `I³`, and `x²` remain symbolic unless an existing repository projection explicitly authorizes scalar treatment.
 
 ## Restart procedure
 
-Resume from `7cc004fa0e42d6a2656f610e81b55a76c9caf816`. Verify `main` is still at the recorded base or reconcile forward if it has advanced. Preserve the frozen v1 manifests and the v2 manifest hashes above. Do not rerun unrelated suites unless a dependency changes.
+Use the latest branch head carrying this file. The stable semantic validation anchor is `8714ea86a938433575e01cda1c4b81290c4814b0`; later commits in this checkpoint lineage are documentation-only. Verify `main` is still at the recorded base or reconcile forward if it has advanced. Preserve the frozen v1 manifests and the v2 manifest hashes above. Do not rerun unrelated suites unless a dependency changes.
 
 Next implementation action:
 
