@@ -10,6 +10,8 @@ on:
       - 'hhs_spi_scalar_projection_registry_tests_v1.py'
       - 'hhs_spi_scalar_projection_corpus_v1.py'
       - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py'
       - '*.harmonicode'
       - 'contracts/pass219/*.harmonicode'
       - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
@@ -20,6 +22,8 @@ on:
       - 'hhs_spi_scalar_projection_registry_tests_v1.py'
       - 'hhs_spi_scalar_projection_corpus_v1.py'
       - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py'
       - '*.harmonicode'
       - 'contracts/pass219/*.harmonicode'
       - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
@@ -48,7 +52,9 @@ jobs:
             hhs_spi_scalar_projection_registry_v1.py \
             hhs_spi_scalar_projection_registry_tests_v1.py \
             hhs_spi_scalar_projection_corpus_v1.py \
-            hhs_spi_scalar_projection_corpus_tests_v1.py
+            hhs_spi_scalar_projection_corpus_tests_v1.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_v1.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py
 
       - name: Validate scalar projection registry
         run: python hhs_spi_scalar_projection_registry_v1.py --validate
@@ -62,7 +68,7 @@ jobs:
       - name: Run repository corpus coverage tests
         run: python hhs_spi_scalar_projection_corpus_tests_v1.py
 
-      - name: Prove strict completion fails closed while obligations remain
+      - name: Prove raw census fails strict completion while gaps remain
         run: |
           set +e
           python hhs_spi_scalar_projection_corpus_v1.py --strict-complete > /tmp/pass219_spi_strict_complete.json
@@ -70,11 +76,33 @@ jobs:
           set -e
           cat /tmp/pass219_spi_strict_complete.json
           if [ "$rc" -eq 0 ]; then
-            echo 'strict completion unexpectedly succeeded while missing projections remain' >&2
+            echo 'raw census strict completion unexpectedly succeeded' >&2
             exit 1
           fi
           if [ "$rc" -ne 2 ]; then
-            echo "unexpected strict-complete exit code: $rc" >&2
+            echo "unexpected raw strict-complete exit code: $rc" >&2
+            exit "$rc"
+          fi
+
+      - name: Validate corpus projection reconciliation
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --validate
+
+      - name: Run corpus projection reconciliation tests
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py
+
+      - name: Prove symbolic value obligations remain fail closed
+        run: |
+          set +e
+          python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --require-scalar-values > /tmp/pass219_spi_scalar_values.json
+          rc=$?
+          set -e
+          cat /tmp/pass219_spi_scalar_values.json
+          if [ "$rc" -eq 0 ]; then
+            echo 'scalar-value completion unexpectedly succeeded while symbolic phase/parser profiles remain' >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 2 ]; then
+            echo "unexpected scalar-value completion exit code: $rc" >&2
             exit "$rc"
           fi
 
@@ -107,12 +135,35 @@ jobs:
           assert data['coverage_policy']['nested_expression_ast_complete'] is False
           assert data['coverage_policy']['all_unregistered_fail_closed'] is True
           assert data['authority_boundary']['canonical_admission_authority'] is False
-          assert data['missing_projection_count'] >= 1
+          assert data['missing_projection_count'] == 56
           assert data['strict_complete'] is False
           print(json.dumps({
               'candidate_counts': data['candidate_counts'],
               'manifest_sha256': data['manifest_sha256'],
               'missing_projection_count': data['missing_projection_count'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Emit deterministic reconciled corpus manifest
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --manifest > /tmp/pass219_spi_repository_corpus_reconciled.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_repository_corpus_reconciled.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['base_corpus_manifest_sha256'] == 'fc421b2f84d7186693ba02e40515d7dcf471efe4fd6ade3b3a3ab662e36ef5a7'
+          assert data['resolved_candidate_counts']['MISSING_PROJECTION'] == 0
+          assert data['resolved_candidate_counts']['PROVEN'] == 429
+          assert data['resolved_candidate_counts']['SYMBOLIC'] == 43
+          assert data['classification_complete'] is True
+          assert data['scalar_value_complete'] is False
+          assert data['authority_boundary']['canonical_admission_authority'] is False
+          print(json.dumps({
+              'resolved_candidate_counts': data['resolved_candidate_counts'],
+              'classification_complete': data['classification_complete'],
+              'scalar_value_complete': data['scalar_value_complete'],
+              'manifest_sha256': data['manifest_sha256'],
           }, indent=2, sort_keys=True))
           PY
 
@@ -128,4 +179,11 @@ jobs:
         with:
           name: pass219-spi-repository-corpus-coverage
           path: /tmp/pass219_spi_repository_corpus_coverage.json
+          if-no-files-found: error
+
+      - name: Upload reconciled repository corpus manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-repository-corpus-reconciled
+          path: /tmp/pass219_spi_repository_corpus_reconciled.json
           if-no-files-found: error
