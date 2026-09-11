@@ -37,6 +37,8 @@ Cycle 2 delegates every admitted update to `RNACellWallAlignmentTrainer` from Cy
 
 ## Four independently gated objectives
 
+The four independently gated objectives remain type-distinct throughout training admission and accounting.
+
 All planes require:
 
 ```text
