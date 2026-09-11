@@ -68,7 +68,12 @@ def test_permission_verifier_uses_target_identity_mode_bits() -> None:
         assert module._service_access(current_user, directory, "-x") is True
         assert module._service_access(current_user, payload, "-r") is True
 
-        directory.chmod(0o600)
+        # Remove payload read authority while the parent is still traversable,
+        # then independently remove directory traversal authority. Keeping the
+        # two checks ordered avoids making the payload itself unreachable before
+        # chmod can exercise its own read-bit boundary.
         payload.chmod(0o200)
-        assert module._service_access(current_user, directory, "-x") is False
         assert module._service_access(current_user, payload, "-r") is False
+
+        directory.chmod(0o600)
+        assert module._service_access(current_user, directory, "-x") is False
