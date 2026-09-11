@@ -29,6 +29,7 @@ TIMER_PATH = P("deployment/digitalocean/guarded_auto_update/hhs-guarded-update.t
 VALIDATOR_PATH = P("deployment/digitalocean/guarded_auto_update/validate-candidate.sh")
 BUNDLE_PATH = P("deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py")
 NORMALIZER_PATH = P("deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py")
+LANGUAGE_INSTALLER_PATH = P("tools/install_production_language_assets.py")
 DRIFT_PATH = P("deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh")
 CONTRACT_TEST_PATH = P("tests/test_hhs_guarded_auto_update_contract_v1.py")
 PERMISSION_TEST_PATH = P("tests/test_hhs_production_service_permissions_v2.py")
@@ -55,14 +56,15 @@ HISTORICAL_BLOBS = {
 CURRENT_SUCCESSOR_BLOBS = {
     WORKFLOW_PATH: "e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4",
     SPEC_PATH: "a0634353e26c186bc72e887bd1bbc6bdc5db42c3",
-    SERVICE_PATH: "1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5",
+    SERVICE_PATH: "645650a70efde6df130b90e21acbf063ebc0ff0d",
     TIMER_PATH: "3296ee9787544542697d3915e01569562ef30046",
     UPDATER_PATH: "6b4dc28e3ec90cc42a8e6317a9f142c229b31022",
-    ENV_PATH: "7890657593b5d4dd03e4cf5eb2c4c1c7ba25e519",
+    ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
     INSTALLER_PATH: "3289544601dfbd54697a6e57ef9c8505d407821f",
     VALIDATOR_PATH: "53677fea50de3bb2b42025c79b2fe5fd210e9dd0",
     BUNDLE_PATH: "23afbf9c99d77f57acd7334d767c483572d64e0a",
-    NORMALIZER_PATH: "f018af53e15c3425ab00cd8500b95f845cf6ac2c",
+    NORMALIZER_PATH: "cb6e57ce4f418f835de9b4354c2116a5032d0ca2",
+    LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
 }
 
 REQUIRED_OPERATIONS = (
@@ -139,6 +141,8 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "HHS_GIT_BRANCH=main",
         "HHS_EXPECTED_REPOSITORY=danonbrez/Holofractal_Harmonicode",
         "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt",
+        "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0",
+        "HHS_PRODUCTION_LANGUAGE_STATUS_PATH=/var/lib/hhs/runtime-bootstrap/production_language_assets_status.json",
         "HHS_UPDATE_DRY_RUN=1",
     )
     _require(
@@ -152,7 +156,14 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "systemctl stop hhs-guarded-update.timer",
         "systemctl start hhs-guarded-update.service",
     )
-    _require(SERVICE_PATH, "Type=oneshot", "NoNewPrivileges=true", "TimeoutStartSec=90min")
+    _require(
+        SERVICE_PATH,
+        "Type=oneshot",
+        "NoNewPrivileges=true",
+        "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0",
+        "Environment=HHS_PRODUCTION_LANGUAGE_STATUS_PATH=/var/lib/hhs/runtime-bootstrap/production_language_assets_status.json",
+        "TimeoutStartSec=90min",
+    )
     _require(TIMER_PATH, "OnUnitActiveSec=5min", "RandomizedDelaySec=30s")
     _require(
         VALIDATOR_PATH,
@@ -167,11 +178,18 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
     _require(
         NORMALIZER_PATH,
         "HHS_PRODUCTION_CHECKOUT_PERMISSION_RECEIPT_V2",
-        "git",
-        "ls-files",
+        "_identity_group_ids",
+        "mode-bits-with-resolved-supplementary-groups",
         "service user",
         "cannot traverse",
         "cannot read",
+    )
+    _require(
+        LANGUAGE_INSTALLER_PATH,
+        "HHS_PRODUCTION_LANGUAGE_STATUS_PATH",
+        '"provider:hhs.local.text"',
+        "native HHS language provider contract",
+        '"status_path": str(STATUS_PATH)',
     )
     _require(
         CONTRACT_TEST_PATH,
