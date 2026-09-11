@@ -172,7 +172,13 @@ def main() -> int:
         os.close(slave_fd)
         slave_fd = -1
 
-        title_segment = wait_for(master_fd, transcript, "phase=TITLE", 0)
+        wait_for(master_fd, transcript, "phase=TITLE", 0)
+        # phase=TITLE is emitted near the beginning of the title frame. Consume
+        # the remainder of that same terminal burst before asserting prompt and
+        # viewport content, otherwise scheduler/PTY chunking can make the
+        # verifier race bytes that the renderer has already written.
+        drain(master_fd, transcript, 0.15)
+        title_segment = strip_ansi(bytes(transcript))
         if "Press ENTER to start" not in title_segment or "+--------------------+" not in title_segment:
             raise RuntimeError("title presentation is incomplete")
         observations["title"] = {"phase": "TITLE", "prompt": "PRESENT", "viewport": "PRESENT"}
@@ -220,7 +226,7 @@ def main() -> int:
 
         reset_offset = len(transcript)
         send_key(master_fd, b"r")
-        reset_segment = wait_for(master_fd, transcript, "phase=RUNNING", reset_offset)
+        wait_for(master_fd, transcript, "phase=RUNNING", reset_offset)
         drain(master_fd, transcript, 0.12)
         reset_segment = strip_ansi(bytes(transcript[reset_offset:]))
         reset_frames = frame_numbers(reset_segment)
