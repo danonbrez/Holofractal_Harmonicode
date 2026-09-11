@@ -9,6 +9,7 @@ ConditionPathExists=/etc/hhs/guarded-update.env
 Type=oneshot
 User=root
 Group=root
+Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0
 EnvironmentFile=/etc/hhs/guarded-update.env
 ExecStart=/usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
 TimeoutStartSec=90min
