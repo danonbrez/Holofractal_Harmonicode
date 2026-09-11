@@ -1,20 +1,48 @@
-# Pass 219 RNA Cell-Wall Alignment Training Cycle v2 — Restart Checkpoint
+# Pass 219 RNA Cell-Wall Alignment Training Cycle v2 — Post-Cycle-1 Integration Restart Checkpoint
 
 Date: 2026-09-11
 
 ## Repository state
 
 ```text
-current main: 139c15a2a890a2b480f17312bed5dd667a25414b
-predecessor PR: #429
-predecessor branch: agent/pass219-rna-cell-wall-alignment-training-cycle-v1-20260911
-predecessor checkpoint head: 1604cfa4e4349c55499901431310a6e6d9e1edf5
-successor PR: #430
-successor branch: agent/pass219-rna-cell-wall-alignment-training-cycle-v2-20260911
+Cycle 1 predecessor PR: #429
+Cycle 1 exact head: 1604cfa4e4349c55499901431310a6e6d9e1edf5
+Cycle 1 merged main: 1e0c5efcfab51060feb1cf080ee77f7e2326051f
+Cycle 1 merged tree: 62b3713529d94bc43dfcf0b7b8a58b28cba579d1
+Cycle 2 PR: #430
+Cycle 2 branch: agent/pass219-rna-cell-wall-alignment-training-cycle-v2-20260911
 validated Cycle 2 semantic head: aaba6b81fea2e501fbb7120fa0066b96578b83c3
+pre-reconciliation restart head: 5ef00033d0ab7b7eeb55e723e24f12ee1e474a31
 ```
 
-PR #430 is intentionally stacked on PR #429. PR #429 remains the required Cycle 1 predecessor and has not been bypassed or merged by this checkpoint.
+PR #429 was merged at the exact authorized head. The resulting main merge commit has `1604cfa4e4349c55499901431310a6e6d9e1edf5` as its second parent and preserves the exact Cycle 1 tree `62b3713529d94bc43dfcf0b7b8a58b28cba579d1`.
+
+PR #430 has been retargeted to exact merged main `1e0c5efcfab51060feb1cf080ee77f7e2326051f`. The comparison against merged main contains only the five Cycle 2 files. No Cycle 2 semantic implementation file was modified during reconciliation.
+
+## Preservation invariant
+
+```text
+Cycle 2 reconciliation
+!=
+Cycle 2 semantic redesign
+```
+
+The validated semantic nucleus remains frozen at:
+
+```text
+aaba6b81fea2e501fbb7120fa0066b96578b83c3
+```
+
+The implementation still defines four independently typed planes:
+
+```text
+RELATIONAL_COGNITION
+NARRATIVE_EXPRESSION
+AGENTIC_ACTION
+TRUTH_PROMOTION
+```
+
+All admitted learning still flows exclusively through the inherited Cycle 1 `RNACellWallAlignmentTrainer` and inherited exact four-lane learner.
 
 ## Implemented files
 
@@ -26,11 +54,9 @@ contracts/pass219/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2.md
 docs/operations/restart/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2_RESTART_20260911.md
 ```
 
-No inherited Cycle 1 learner, four-lane C learner, VM81 canonical runtime, Hash72 authority surface, or Hash216 authority surface was modified by the Cycle 2 semantic implementation.
+The first four files are the validated Cycle 2 semantic/validation nucleus. This restart file is integration evidence only.
 
-## Architecture implemented
-
-Cycle 2 adds exact contextual training-objective typing above the validated Cycle 1 trainer:
+## Architecture preserved
 
 ```text
 plane-typed bounded evidence
@@ -44,82 +70,9 @@ plane-typed bounded evidence
 -> candidate or exact baseline restoration
 ```
 
-The only weight-mutating path remains the inherited Cycle 1/four-lane learner. Cycle 2 introduces no parallel learning equation or transition authority.
-
-## Four alignment planes
-
-The exact objective-plane enumeration is:
-
-```text
-RELATIONAL_COGNITION
-NARRATIVE_EXPRESSION
-AGENTIC_ACTION
-TRUTH_PROMOTION
-```
-
-Every plane requires:
-
-```text
-relation_type_preserved = true
-provenance_preserved = true
-```
-
-Additional plane-local requirements are:
-
-```text
-RELATIONAL_COGNITION
-    no additional gate
-
-NARRATIVE_EXPRESSION
-    narrative_modality_preserved = true
-
-AGENTIC_ACTION
-    action_capability_authorized = true
-    action_validation_satisfied = true
-
-TRUTH_PROMOTION
-    truth_evidence_satisfied = true
-    truth_validator_satisfied = true
-```
-
-Permission on one plane does not widen another plane. A shared relation can therefore train cognition/narrative while action/truth remain held.
-
-## Held objectives and protected replay
-
-A held objective does not mutate the candidate state and remains counted in exact Cycle 2 evidence.
-
-Protected historical replay has precedence over current training permeability:
-
-```text
-protected replay is always retained
-protected replay never trains weights
-baseline and candidate outcomes are compared
-failure rejects the whole candidate
-rejection restores the exact baseline
-```
-
-Thus contextual plane changes cannot silently disable Cycle 1 anti-forgetting evidence.
-
-## Deterministic evidence identity
-
-`objective_signature64` binds the bounded Cycle 2 objective relation across:
-
-```text
-sample order
-plane identity
-plane-gate bits
-feedback lane/trinary
-protected-replay role
-Hash216 transition identity
-inherited Cycle 1 training signature
-admitted/held/protected counts
-```
-
-This signature is deterministic execution evidence only. It does not mint Hash72 or Hash216 authority.
+No parallel learner, mutation authority, Hash72 authority, Hash216 authority, persistence authority, or floating-point authority was introduced by reconciliation.
 
 ## Authority state
-
-Cycle 2 remains candidate-only:
 
 ```text
 candidate_only = true
@@ -133,19 +86,17 @@ floating_point_authority = false
 
 VM81 remains the singleton canonical mutation/admission authority.
 
-## Dedicated validation evidence
-
-Workflow:
+## Previously validated Cycle 2 evidence
 
 ```text
-Pass 219 RNA Cell Wall Alignment Training v2
+workflow: Pass 219 RNA Cell Wall Alignment Training v2
 run: 34632841309
 job: 103373600125
 validated semantic head: aaba6b81fea2e501fbb7120fa0066b96578b83c3
 conclusion: SUCCESS
 ```
 
-All dedicated stages completed successfully:
+That run proved:
 
 ```text
 Build inherited exact ABI                              PASS
@@ -157,87 +108,38 @@ Run Cycle 2 four-plane contextual training gate        PASS
 Verify four-plane contract and authority boundary      PASS
 ```
 
-The strict Cycle 2 C++17 test established:
+## Reconciliation validation required now
 
-1. relational cognition may train under common relation/provenance preservation;
-2. narrative training additionally requires modality preservation;
-3. agentic training is held until capability authorization and validation are both satisfied;
-4. truth-promotion training is held until evidence and validator requirements are both satisfied;
-5. the same inherited relation may be admitted on cognition/narrative while held on action/truth;
-6. Cycle 2 candidate bytes equal Cycle 1 over exactly the admitted objective subset;
-7. identical baseline/evidence/gates replay to identical candidate bytes and signatures;
-8. held-only evidence returns the exact baseline without an update;
-9. protected replay remains active even when current plane gates would hold new training;
-10. unknown plane identifiers fail closed;
-11. inherited Cycle 1 and C/C++ RNA/four-lane behavior remains green;
-12. no canonical VM81/Hash72/Hash216/persistence or floating-point authority is introduced.
-
-## Repair-forward validation history
-
-The first dedicated run was:
+Because only the integration ancestry/base changed, rerun only the affected dependency scope:
 
 ```text
-run: 34632740345
-job: 103373259428
-semantic/native stages: PASS
-final static contract-text gate: FAIL
+inherited exact ABI build
+inherited four-lane C learner test
+inherited C++ RNA cell-wall equivalence
+inherited Cycle 1 reverse training gate
+Cycle 2 four-plane contextual training gate
+four-plane / authority-boundary static gate
 ```
 
-The failure was limited to a case-sensitive contract-text assertion for the phrase `four independently gated objectives`. No native or semantic test failed. The contract wording was repaired without changing runtime semantics, and run `34632841309` then completed fully green.
+No repository-wide semantic redesign or unrelated regression sweep is authorized by this reconciliation.
 
-## Validation environment and commands
-
-The dedicated workflow uses Ubuntu 24.04 with `build-essential` and `libssl-dev`.
-
-Dependency-scoped validation consists of:
+## Restartability record
 
 ```text
-make c-abi
-
-cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic ... \
-  tests/pass219/test_pass219_core_holographic_four_lane_1_24.c
-
-c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread ... \
-  tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp
-
-c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread ... \
-  tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_25.cpp
-
-c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread ... \
-  tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_26.cpp
-
-python static four-plane / authority-boundary contract gate
+base commit: 1e0c5efcfab51060feb1cf080ee77f7e2326051f
+branch: agent/pass219-rna-cell-wall-alignment-training-cycle-v2-20260911
+merge target: main
+validated semantic nucleus: aaba6b81fea2e501fbb7120fa0066b96578b83c3
+changed integration file: docs/operations/restart/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2_RESTART_20260911.md
+validation remaining: post-Cycle-1 reconciliation workflow
+next action: verify post-reconciliation Cycle 2 gate, merge PR #430 at exact reconciled head, verify exact main, branch Cycle 3 from verified main
+blockers: none before validation result
 ```
-
-Native tests execute with `LD_LIBRARY_PATH` pointing to `hhs_runtime/builds`.
-
-## Scope of proof
-
-This checkpoint proves the implemented bounded exact four-plane objective-gating relation, its equivalence to Cycle 1 over the admitted evidence subset, deterministic replay, and preservation of protected replay and authority boundaries for the dedicated corpus.
-
-It does not convert candidate training quality into canonical authority and does not claim that the current gate fields exhaust all future semantic content of the four authority planes.
-
-Unrelated repository workflows are outside this dependency-scoped proof and do not redefine the dedicated Cycle 2 semantic result.
-
-## Current blockers
-
-No Cycle 2 semantic blocker is open.
-
-Integration remains ordered by the stack:
-
-```text
-PR #429 Cycle 1 must be merged/authorized first
-then PR #430 may be retargeted or merged through the inherited lineage
-then exact main must be verified
-```
-
-No merge was performed by this checkpoint.
 
 ## Next action
 
-1. preserve validated semantic head `aaba6b81fea2e501fbb7120fa0066b96578b83c3` as frozen evidence;
-2. keep PR #430 stacked on PR #429 until predecessor integration is authorized;
-3. after PR #429 merges, reconcile/retarget PR #430 against exact current main without rewriting the validated semantic nucleus;
-4. rerun only the impacted integration gate if ancestry changes;
-5. merge only with authorization and verify exact main;
-6. continue later Pass 219 alignment cycles by enriching typed plane evidence while preserving the same singleton learner/VM81 authority boundaries.
+1. let the integration-only restart update trigger the dedicated Cycle 2 workflow;
+2. verify the impacted Cycle 2 and inherited membrane dependency stages are green;
+3. merge PR #430 only at the exact reconciled head;
+4. verify main contains the complete Cycle 1 + Cycle 2 lineage and all five Cycle 2 files;
+5. create the next repository-visible Cycle 3 checkpoint from verified exact main.
