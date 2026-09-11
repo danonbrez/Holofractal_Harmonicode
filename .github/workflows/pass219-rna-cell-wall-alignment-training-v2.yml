@@ -1,0 +1,152 @@
+name: Pass 219 RNA Cell Wall Alignment Training v2
+
+on:
+  push:
+    branches:
+      - agent/pass219-rna-cell-wall-alignment-training-cycle-v2-20260911
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_25.hpp'
+      - 'hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp'
+      - 'hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp'
+      - 'hhs_runtime/include/hhs_pass219_core_holographic_four_lane_1_24.h'
+      - 'hhs_runtime/c/hhs_pass219_core_holographic_four_lane_1_24.inc'
+      - 'tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_25.cpp'
+      - 'tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_26.cpp'
+      - 'tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp'
+      - 'tests/pass219/test_pass219_core_holographic_four_lane_1_24.c'
+      - 'contracts/pass219/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2.md'
+      - 'docs/operations/restart/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2_RESTART_20260911.md'
+      - '.github/workflows/pass219-rna-cell-wall-alignment-training-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out cycle branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build inherited exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_prepare'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_finalize'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_route'
+
+      - name: Run inherited four-lane C learner test
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_holographic_four_lane_1_24.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test-core-holo4
+          /tmp/test-core-holo4
+
+      - name: Build Pass188 and Pass189 C++ membrane dependencies
+        run: |
+          mkdir -p /tmp/pass219-rna-align-v2
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c \
+            -o /tmp/pass219-rna-align-v2/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S \
+            -o /tmp/pass219-rna-align-v2/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c \
+            -o /tmp/pass219-rna-align-v2/pass189.o
+
+      - name: Run inherited C++ RNA cell-wall equivalence
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp \
+            /tmp/pass219-rna-align-v2/pass188.o \
+            /tmp/pass219-rna-align-v2/pass188-x86.o \
+            /tmp/pass219-rna-align-v2/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-rna-align-v2/test-rna-wall
+          /tmp/pass219-rna-align-v2/test-rna-wall
+
+      - name: Run inherited Cycle 1 reverse training gate
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_25.cpp \
+            /tmp/pass219-rna-align-v2/pass188.o \
+            /tmp/pass219-rna-align-v2/pass188-x86.o \
+            /tmp/pass219-rna-align-v2/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-rna-align-v2/test-rna-alignment-training-v1
+          /tmp/pass219-rna-align-v2/test-rna-alignment-training-v1
+
+      - name: Run Cycle 2 four-plane contextual training gate
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_rna_cell_wall_alignment_training_1_26.cpp \
+            /tmp/pass219-rna-align-v2/pass188.o \
+            /tmp/pass219-rna-align-v2/pass188-x86.o \
+            /tmp/pass219-rna-align-v2/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-rna-align-v2/test-rna-alignment-training-v2
+          /tmp/pass219-rna-align-v2/test-rna-alignment-training-v2
+
+      - name: Verify four-plane contract and authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          header = Path('hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp').read_text()
+          contract = Path('contracts/pass219/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V2.md').read_text()
+          for needle in (
+              'RELATIONAL_COGNITION',
+              'NARRATIVE_EXPRESSION',
+              'AGENTIC_ACTION',
+              'TRUTH_PROMOTION',
+              'narrative_modality_preserved',
+              'action_capability_authorized',
+              'action_validation_satisfied',
+              'truth_evidence_satisfied',
+              'truth_validator_satisfied',
+              'RNACellWallAlignmentTrainer inherited_',
+              'canonical_mutation_authority{false}',
+              'canonical_hash72_authority{false}',
+              'canonical_hash216_authority{false}',
+              'canonical_persistence_authority{false}',
+              'floating_point_authority{false}',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'four independently gated objectives',
+              'does not create a second learner',
+              'Permission on one plane does not imply permission on any other plane.',
+              'Protected historical replay evidence is always retained',
+              'candidate_only = true',
+              'VM81 remains the singleton canonical mutation/admission authority',
+          ):
+              assert needle in contract, needle
+          print('rna_alignment_training_v2_contract_gate=PASS')
+          PY
