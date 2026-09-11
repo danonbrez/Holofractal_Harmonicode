@@ -3,6 +3,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from native_projects.hhs_harmonicode_language.hhs_harmonicode_parser_v1 import parse_source as parse_source_v1
 from native_projects.hhs_harmonicode_language.hhs_harmonicode_nested_expression_ast_v2 import (
@@ -11,7 +16,6 @@ from native_projects.hhs_harmonicode_language.hhs_harmonicode_nested_expression_
     parse_source,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = REPO_ROOT / "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode"
 
 
