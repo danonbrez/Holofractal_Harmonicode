@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-repair.sqlite3
     steps:
       - name: Checkout exact merge tree
         uses: actions/checkout@v4

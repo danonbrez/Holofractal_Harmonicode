@@ -1,19 +1,41 @@
 name: HHS Consensus Gate
 
 on:
+  push:
+    branches:
+      - agent/pass219-main-determinism-repair-20260911
   pull_request:
     branches: [main, work]
 
+permissions:
+  contents: read
+
 jobs:
+  workflow-syntax-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - name: Install pinned actionlint
+        run: go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+      - name: Compile-check all workflows
+        run: |
+          ACTIONLINT="$(go env GOPATH)/bin/actionlint"
+          "$ACTIONLINT" -shellcheck= -color
+
   verify:
     strategy:
       matrix:
-        node: [1,2,3]
+        node: [1, 2, 3]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
+        with:
+          python-version: '3.11'
       - run: python hhs_runtime/hhs_commit_acceptance_gate_v1.py
       - run: python hhs_runtime/hhs_distributed_verification_v1.py
       - uses: actions/upload-artifact@v4
@@ -25,16 +47,25 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: {path: receipts}
+        with:
+          path: receipts
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
-      - run: |
-          python - << 'EOF'
-import json,glob
-from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
-recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
-res=evaluate_consensus(recs)
-print(res)
-assert res.status=='CONSENSUS_ACCEPTED'
-EOF
+        with:
+          python-version: '3.11'
+      - name: Evaluate deterministic consensus
+        run: |
+          python - <<'PY'
+          import glob
+          import json
+          from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
+
+          receipts = [
+              json.load(open(path, encoding='utf-8'))
+              for path in glob.glob('receipts/**/*.json', recursive=True)
+          ]
+          result = evaluate_consensus(receipts)
+          print(result)
+          assert result.status == 'CONSENSUS_ACCEPTED'
+          PY
