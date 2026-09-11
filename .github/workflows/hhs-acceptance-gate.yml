@@ -36,8 +36,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python hhs_runtime/hhs_commit_acceptance_gate_v1.py
-      - run: python hhs_runtime/hhs_distributed_verification_v1.py
+      - name: Run commit acceptance gate as repository module
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.hhs_commit_acceptance_gate_v1
+      - name: Run distributed verification as repository module
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.hhs_distributed_verification_v1
       - uses: actions/upload-artifact@v4
         with:
           name: receipt-${{ matrix.node }}
@@ -56,14 +58,14 @@ jobs:
           python-version: '3.11'
       - name: Evaluate deterministic consensus
         run: |
-          python - <<'PY'
+          PYTHONPATH="$PWD" python - <<'PY'
           import glob
           import json
           from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
 
           receipts = [
               json.load(open(path, encoding='utf-8'))
-              for path in glob.glob('receipts/**/*.json', recursive=True)
+              for path in sorted(glob.glob('receipts/**/*.json', recursive=True))
           ]
           result = evaluate_consensus(receipts)
           print(result)
