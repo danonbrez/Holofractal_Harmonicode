@@ -21,4 +21,6 @@ jobs:
       - name: Install actionlint
         run: go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
       - name: Compile-check all workflows
-        run: "$(go env GOPATH)/bin/actionlint -color"
+        run: |
+          ACTIONLINT="$(go env GOPATH)/bin/actionlint"
+          "$ACTIONLINT" -shellcheck= -color
