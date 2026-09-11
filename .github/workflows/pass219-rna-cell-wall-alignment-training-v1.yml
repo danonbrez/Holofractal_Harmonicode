@@ -13,6 +13,7 @@ on:
       - 'tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp'
       - 'tests/pass219/test_pass219_core_holographic_four_lane_1_24.c'
       - 'contracts/pass219/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V1.md'
+      - 'docs/operations/restart/PASS_219_RNA_CELL_WALL_ALIGNMENT_TRAINING_CYCLE_V1_RESTART_20260911.md'
       - '.github/workflows/pass219-rna-cell-wall-alignment-training-v1.yml'
   workflow_dispatch:
 
