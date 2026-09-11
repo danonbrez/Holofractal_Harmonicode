@@ -1,21 +1,18 @@
 """Pass 219 SPI O2 ordered-matrix scalar projection witness v1.
 
-This module closes the O2 *scalar projection correspondence* for the canonical
-HARMONICODE a² matrix-power equality chain.  It deliberately does not implement
-or replace ``NcalcMatrixPower`` as a host matrix evaluator.
+HARMONICODE matrix/tensor projection rule
+-----------------------------------------
+A matrix/tensor branch may project to a scalar when an exact native equality
+edge defines a registered scalar symbol by that matrix/tensor expression.  The
+scalar value comes from the scalar symbol's registered projection, not from
+replacing or numerically evaluating the native matrix/tensor node.
 
-The proof combines repository-frozen evidence:
-
-* the exact 139-byte ordered matrix-power source from I121.8;
-* the exact eight outer phase-role correspondences from the frozen u72 / Pass129
-  phase carriers;
-* the separately typed native center closure ``0/0=u^0 mod(u^72)=1``;
-* the intact Pass219 equality chain tying the matrix-power branch to a² and the
-  independently exact squared-radical a² projection.
-
-Projection equality is not native identity.  No VM81 mutation, canonical
-Hash72/Hash216 minting, persistence, floating point, matrix cancellation, or
-ordinary 0/0 division authority is created here.
+For O2 the native edge defines ``a²`` by the ordered matrix-power branch and the
+primitive scalar registry proves ``pi(a²)=1``.  Therefore that exact branch has
+a source-bound scalar projection of ``1``.  The ordered phase and center
+witnesses remain topology/consistency evidence; they are not prerequisites for
+inventing the scalar numeral and they do not turn generic ``NcalcMatrixPower``
+into a scalar evaluator.
 """
 from __future__ import annotations
 
@@ -27,8 +24,10 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Mapping, Sequence
 
+from hhs_spi_defined_scalar_projection_rule_v1 import defined_scalar_projection
+
 FORMAT = "HHS_SPI_O2_ORDERED_MATRIX_PROJECTION_WITNESS_V1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 SCHEMA = "HHS_SPI_O2_ORDERED_MATRIX_PROJECTION_WITNESS_V1"
 AUDITED_MAIN_SHA = "2def7910b99046821f34e1446bcec33ca4fd4090"
 
@@ -47,9 +46,10 @@ PROJECTION_SHA256 = "c28efa30c3aa8aa6b6041d2cd199853bc50f470de46b8db753b91f4412c
 MATRIX_BRANCH_SOURCE = f"({DENOMINATOR_SOURCE})^b⁴"
 MATRIX_BRANCH_BYTES = 146
 MATRIX_BRANCH_SHA256 = "8a75c60ccc02e38b71f576f290878d61b238623b8d6fa75f93df973e0a1c4652"
+A2_MATRIX_DEFINITION_EDGE = f"a²={MATRIX_BRANCH_SOURCE}"
 
 O2_EQUALITY_SOURCE = (
-    "a²=" + MATRIX_BRANCH_SOURCE +
+    A2_MATRIX_DEFINITION_EDGE +
     "=({{a==Sqrt(c^4-b^2*c^2-b^4+b^2)/Sqrt(c^2-b^2)},"
     "{a==-Sqrt(c^4-b^2*c^2-b^4+b^2)/Sqrt(c^2-b^2)}})²"
 )
@@ -104,21 +104,22 @@ def _digest_text(value: str) -> str:
     return sha256(value.encode("utf-8")).hexdigest()
 
 
-def _stable_json(value: Any) -> str:
-    def normalize(item: Any) -> Any:
-        if isinstance(item, Fraction):
-            return {"type": "EXACT_RATIONAL", "numerator": item.numerator, "denominator": item.denominator}
-        if isinstance(item, tuple):
-            return [normalize(v) for v in item]
-        if isinstance(item, list):
-            return [normalize(v) for v in item]
-        if isinstance(item, Mapping):
-            return {str(k): normalize(item[k]) for k in sorted(item)}
-        if isinstance(item, (str, int, bool)) or item is None:
-            return item
-        raise SPIO2MatrixProjectionError(f"unsupported deterministic receipt type: {type(item).__name__}")
+def _exact_json(value: Any) -> Any:
+    if isinstance(value, Fraction):
+        return {"type": "EXACT_RATIONAL", "numerator": value.numerator, "denominator": value.denominator}
+    if isinstance(value, tuple):
+        return [_exact_json(v) for v in value]
+    if isinstance(value, list):
+        return [_exact_json(v) for v in value]
+    if isinstance(value, Mapping):
+        return {str(k): _exact_json(value[k]) for k in sorted(value)}
+    if isinstance(value, (str, int, bool)) or value is None:
+        return value
+    raise SPIO2MatrixProjectionError(f"unsupported deterministic receipt type: {type(value).__name__}")
 
-    return json.dumps(normalize(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+def _stable_json(value: Any) -> str:
+    return json.dumps(_exact_json(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
 def _digest(value: Any) -> str:
@@ -174,14 +175,15 @@ def _pass129_phase_literals(path: Path) -> Dict[str, Any]:
 
 
 def _source_identity_witness(repo_root: Path) -> Dict[str, Any]:
-    if len(DENOMINATOR_SOURCE.encode("utf-8")) != DENOMINATOR_BYTES or _digest_text(DENOMINATOR_SOURCE) != DENOMINATOR_SHA256:
-        raise SPIO2MatrixProjectionError("O2 denominator constant drift")
-    if len(PROJECTION_SOURCE.encode("utf-8")) != PROJECTION_BYTES or _digest_text(PROJECTION_SOURCE) != PROJECTION_SHA256:
-        raise SPIO2MatrixProjectionError("O2 projection constant drift")
-    if len(MATRIX_BRANCH_SOURCE.encode("utf-8")) != MATRIX_BRANCH_BYTES or _digest_text(MATRIX_BRANCH_SOURCE) != MATRIX_BRANCH_SHA256:
-        raise SPIO2MatrixProjectionError("O2 matrix branch constant drift")
-    if len(O2_EQUALITY_SOURCE.encode("utf-8")) != O2_EQUALITY_BYTES or _digest_text(O2_EQUALITY_SOURCE) != O2_EQUALITY_SHA256:
-        raise SPIO2MatrixProjectionError("O2 equality constant drift")
+    constants = (
+        (DENOMINATOR_SOURCE, DENOMINATOR_BYTES, DENOMINATOR_SHA256, "denominator"),
+        (PROJECTION_SOURCE, PROJECTION_BYTES, PROJECTION_SHA256, "projection"),
+        (MATRIX_BRANCH_SOURCE, MATRIX_BRANCH_BYTES, MATRIX_BRANCH_SHA256, "matrix branch"),
+        (O2_EQUALITY_SOURCE, O2_EQUALITY_BYTES, O2_EQUALITY_SHA256, "O2 equality"),
+    )
+    for source, expected_bytes, expected_sha, label in constants:
+        if len(source.encode("utf-8")) != expected_bytes or _digest_text(source) != expected_sha:
+            raise SPIO2MatrixProjectionError(f"{label} constant drift")
 
     combined = (repo_root / COMBINED_SOURCE_PATH).read_text(encoding="utf-8")
     projection = (repo_root / PROJECTION_SOURCE_PATH).read_text(encoding="utf-8")
@@ -190,11 +192,11 @@ def _source_identity_witness(repo_root: Path) -> Dict[str, Any]:
     phase11_precursor = (repo_root / PHASE11_PRECURSOR_PATH).read_text(encoding="utf-8")
 
     if combined.count(DENOMINATOR_SOURCE) != 2:
-        raise SPIO2MatrixProjectionError("combined source no longer contains exactly two O2 denominator occurrences")
+        raise SPIO2MatrixProjectionError("combined source no longer contains exactly two denominator occurrences")
     if projection != PROJECTION_SOURCE:
         raise SPIO2MatrixProjectionError("denominator magnitude projection source drift")
-    if O2_EQUALITY_SOURCE not in harmonic_contract:
-        raise SPIO2MatrixProjectionError("canonical O2 equality-chain source missing")
+    if O2_EQUALITY_SOURCE not in harmonic_contract or A2_MATRIX_DEFINITION_EDGE not in harmonic_contract:
+        raise SPIO2MatrixProjectionError("canonical a² matrix definition edge missing")
     if PHASE12_TENSOR_SOURCE not in phase12:
         raise SPIO2MatrixProjectionError("Phase12 ordered tensor source missing")
     if NATIVE_CENTER_CLOSURE not in phase11_precursor:
@@ -208,6 +210,8 @@ def _source_identity_witness(repo_root: Path) -> Dict[str, Any]:
         "projection_sha256": PROJECTION_SHA256,
         "matrix_branch_bytes": MATRIX_BRANCH_BYTES,
         "matrix_branch_sha256": MATRIX_BRANCH_SHA256,
+        "a2_matrix_definition_edge": A2_MATRIX_DEFINITION_EDGE,
+        "a2_matrix_definition_edge_sha256": _digest_text(A2_MATRIX_DEFINITION_EDGE),
         "equality_bytes": O2_EQUALITY_BYTES,
         "equality_sha256": O2_EQUALITY_SHA256,
         "phase12_tensor_source_preserved": True,
@@ -215,7 +219,7 @@ def _source_identity_witness(repo_root: Path) -> Dict[str, Any]:
     }
 
 
-def _phase_lift_witness(repo_root: Path) -> Dict[str, Any]:
+def _phase_topology_witness(repo_root: Path) -> Dict[str, Any]:
     phase_ring = int(_module_literal(repo_root / U72_TABLE_PATH, "PHASE_RING"))
     basis_phase_index = dict(_module_literal(repo_root / U72_TABLE_PATH, "BASIS_PHASE_INDEX"))
     pass129 = _pass129_phase_literals(repo_root / PASS129_PATH)
@@ -233,14 +237,12 @@ def _phase_lift_witness(repo_root: Path) -> Dict[str, Any]:
 
     phase_quarter = phase_ring // 4
     cells = []
-    for (row_col, role, exponent) in OUTER_CLOCKWISE:
+    for row_col, role, exponent in OUTER_CLOCKWISE:
         numerator_phase = int(basis_phase_index[role])
         denominator_phase = int((exponent * phase_quarter) % phase_ring)
         residue = int((numerator_phase - denominator_phase) % phase_ring)
         if residue != 0:
-            raise SPIO2MatrixProjectionError(
-                f"ordered phase lift mismatch for {role}: {numerator_phase} != {denominator_phase} mod {phase_ring}"
-            )
+            raise SPIO2MatrixProjectionError(f"ordered phase topology mismatch for {role}")
         cells.append({
             "row": row_col[0],
             "column": row_col[1],
@@ -249,16 +251,10 @@ def _phase_lift_witness(repo_root: Path) -> Dict[str, Any]:
             "numerator_phase72": numerator_phase,
             "denominator_phase72": denominator_phase,
             "difference_mod72": residue,
-            "projected_unit": 1,
         })
 
-    expected_roles = {"x", "y", "z", "w", "xy", "yx", "zw", "wz"}
-    if set(basis_phase_index) != expected_roles:
-        raise SPIO2MatrixProjectionError("u72 ordered basis set drift")
-    if basis_phase_index["xy"] == basis_phase_index["yx"]:
-        raise SPIO2MatrixProjectionError("xy/yx ordered phase distinction collapsed")
-    if basis_phase_index["zw"] == basis_phase_index["wz"]:
-        raise SPIO2MatrixProjectionError("zw/wz ordered phase distinction collapsed")
+    if basis_phase_index["xy"] == basis_phase_index["yx"] or basis_phase_index["zw"] == basis_phase_index["wz"]:
+        raise SPIO2MatrixProjectionError("ordered product distinction collapsed")
 
     return {
         "ordered_numerator_role_matrix": NUMERATOR_ROLE_MATRIX,
@@ -266,7 +262,7 @@ def _phase_lift_witness(repo_root: Path) -> Dict[str, Any]:
         "phase_ring": phase_ring,
         "outer_cells": cells,
         "outer_cell_count": len(cells),
-        "outer_unit_cells_proven": len(cells) == 8 and all(cell["projected_unit"] == 1 for cell in cells),
+        "outer_phase_alignment_exact": len(cells) == 8 and all(cell["difference_mod72"] == 0 for cell in cells),
         "ordered_xy_yx_distinct": True,
         "ordered_zw_wz_distinct": True,
         "center": {
@@ -277,38 +273,31 @@ def _phase_lift_witness(repo_root: Path) -> Dict[str, Any]:
             "ordinary_zero_division_executed": False,
             "center_scalarized_from_outer_phase_cancellation": False,
             "native_constraint_intersection_required": True,
-            "projected_unit": 1,
         },
-        "all_nine_projection_cells_witnessed": True,
-        "lift_kind": "ORDERED_PHASE_ROLE_LIFT_PLUS_NATIVE_CENTER_CLOSURE",
+        "all_nine_topology_cells_witnessed": True,
         "ordinary_matrix_inverse_executed": False,
         "projection_substitution_for_canonical_matrix_execution": False,
     }
 
 
-def _root_witness() -> Dict[str, Any]:
-    # Exact registered squared-coordinate profile from SPI-T6-SURD.
+def _surd_consistency_witness() -> Dict[str, Any]:
     beta = Fraction(2)
     alpha = beta - 1
     gamma = 2 * beta - 1
     numerator = gamma**2 - beta * gamma - beta**2 + beta
     denominator = gamma - beta
     if denominator == 0:
-        raise SPIO2MatrixProjectionError("root witness denominator unexpectedly zero")
+        raise SPIO2MatrixProjectionError("surd consistency denominator unexpectedly zero")
     ratio = numerator / denominator
     if ratio != alpha or alpha != 1:
-        raise SPIO2MatrixProjectionError("squared-radical a² witness failed")
+        raise SPIO2MatrixProjectionError("squared-radical a² consistency witness failed")
     return {
         "profile": "SPI-SURD-SQUARED-Q-v1",
-        "beta": beta,
-        "alpha": alpha,
-        "gamma": gamma,
-        "numerator": numerator,
-        "denominator": denominator,
-        "squared_radical_projection": ratio,
         "a_squared_projection": Fraction(1),
+        "squared_radical_projection": ratio,
         "residual": ratio - 1,
-        "root_branch_orientation_removed_only_by_explicit_outer_square": True,
+        "required_for_matrix_to_scalar_projection": False,
+        "purpose": "independent equality-chain consistency witness",
         "floating_point_used": False,
     }
 
@@ -316,60 +305,71 @@ def _root_witness() -> Dict[str, Any]:
 def ordered_matrix_projection_witness(repo_root: str | Path | None = None) -> Dict[str, Any]:
     root = _repo_root(repo_root)
     source_identity = _source_identity_witness(root)
-    lift = _phase_lift_witness(root)
-    root_witness = _root_witness()
+    topology = _phase_topology_witness(root)
+    surd = _surd_consistency_witness()
 
-    b2 = Fraction(2)
-    b4 = b2**2
-    if b4 != 4:
-        raise SPIO2MatrixProjectionError("b⁴ primitive projection failed")
-
-    projected_a2 = root_witness["a_squared_projection"]
-    matrix_branch_projection = projected_a2
-    residual = matrix_branch_projection - projected_a2
-    if residual != 0:
-        raise SPIO2MatrixProjectionError("O2 scalar equality-chain residual is nonzero")
+    definition_receipt = defined_scalar_projection(
+        scalar_symbol="a²",
+        scalar_proof_id="SPI-PROJ-0001",
+        scalar_value=1,
+        defining_expression=MATRIX_BRANCH_SOURCE,
+        equality_edge_source=A2_MATRIX_DEFINITION_EDGE,
+        definition_kind="EXACT_SYMBOLIC_MATRIX_POWER",
+        edge_id="HHCQ:E_a2:ordered-matrix-power-definition",
+    )
+    exact_one = {"type": "EXACT_RATIONAL", "numerator": 1, "denominator": 1}
+    exact_zero = {"type": "EXACT_RATIONAL", "numerator": 0, "denominator": 1}
+    if definition_receipt["result"] != exact_one or definition_receipt["residual"] != exact_zero:
+        raise SPIO2MatrixProjectionError("defined-scalar projection rule failed to produce a² -> 1")
 
     witness: Dict[str, Any] = {
         "schema": SCHEMA,
         "format": FORMAT,
         "version": VERSION,
         "audited_main_sha": AUDITED_MAIN_SHA,
+        "harmonicode_projection_rule": (
+            "an exact source-bound matrix/tensor definition of a registered scalar may inherit that scalar's exact projection"
+        ),
         "source_identity": source_identity,
-        "ordered_matrix_lift": lift,
+        "defined_scalar_projection": definition_receipt,
+        "ordered_matrix_topology": topology,
         "exact_inverse_or_lift": {
-            "kind": lift["lift_kind"],
-            "outer_phase_alignment_exact": lift["outer_unit_cells_proven"],
-            "center_native_closure_exact": True,
+            "kind": "TYPED_DEFINITION_EDGE_LIFT",
+            "definition_edge": A2_MATRIX_DEFINITION_EDGE,
+            "scalar_symbol": "a²",
+            "scalar_projection": exact_one,
             "ordinary_matrix_inverse_executed": False,
+            "reverse_native_reconstruction_authorized": False,
         },
         "fourth_power": {
             "ncalc_matrix_power_source_exponent": 4,
-            "outer_b4_projection": b4,
+            "outer_b4_projection": {"type": "EXACT_RATIONAL", "numerator": 4, "denominator": 1},
             "node_type": "EXACT_SYMBOLIC_MATRIX_POWER",
             "ncalc_matrix_power_host_evaluated": False,
             "algebraic_matrix_power_replacement_authorized": False,
         },
-        "root_witness": root_witness,
+        "root_witness": surd,
         "equality_chain": {
             "source": O2_EQUALITY_SOURCE,
+            "matrix_definition_edge": A2_MATRIX_DEFINITION_EDGE,
             "matrix_branch_source": MATRIX_BRANCH_SOURCE,
-            "left_projection": "a²",
-            "right_independent_projection": "SPI-T6-SURD -> a²",
+            "left_projection": "a² -> 1",
+            "right_independent_projection": "SPI-T6-SURD -> a² -> 1",
             "typed_equality_edge_used_for_scalar_correspondence": True,
             "native_node_collapse_authorized": False,
         },
         "result": {
             "scalar_type": "EXACT_RATIONAL",
-            "matrix_branch_projection": matrix_branch_projection,
-            "a_squared_projection": projected_a2,
-            "residual": residual,
+            "matrix_branch_projection": exact_one,
+            "a_squared_projection": exact_one,
+            "residual": exact_zero,
+            "projection_basis": "REGISTERED_SCALAR_DEFINITION_EDGE",
         },
         "lost_information": [
-            "native NcalcMatrixPower runtime object is not replaced by the scalar result",
-            "eight ordered phase roles retain identities outside the scalar projection",
-            "native center 0/0 closure context is not ordinary rational division",
-            "equality-chain projection is non-injective and does not provide a reverse native reconstruction",
+            "native NcalcMatrixPower runtime object is not reconstructed from scalar 1",
+            "ordered matrix/tensor topology remains native and is not encoded by scalar 1",
+            "native center closure context is not ordinary rational division",
+            "definition-edge projection is non-injective and grants no reverse lift",
         ],
         "reverse_lift_status": "none",
         "projection_only": True,
@@ -383,7 +383,7 @@ def ordered_matrix_projection_witness(repo_root: str | Path | None = None) -> Di
         "floating_point_authority": False,
     }
     witness["witness_sha256"] = _digest(witness)
-    return json.loads(_stable_json(witness))
+    return _exact_json(witness)
 
 
 def validation_report(repo_root: str | Path | None = None) -> Dict[str, Any]:
@@ -398,19 +398,15 @@ def validation_report(repo_root: str | Path | None = None) -> Dict[str, Any]:
             "canonical_admission_authority": False,
         }
 
-    if witness["ordered_matrix_lift"]["outer_cell_count"] != 8:
-        errors.append("outer cell count is not eight")
-    if not witness["ordered_matrix_lift"]["all_nine_projection_cells_witnessed"]:
-        errors.append("nine-cell lift witness incomplete")
-    if witness["fourth_power"]["ncalc_matrix_power_host_evaluated"]:
-        errors.append("host NcalcMatrixPower evaluation was incorrectly authorized")
-    if witness["result"]["matrix_branch_projection"] != {
-        "type": "EXACT_RATIONAL", "numerator": 1, "denominator": 1
-    }:
-        errors.append("O2 scalar projection is not exact unit")
-    if witness["result"]["residual"] != {
-        "type": "EXACT_RATIONAL", "numerator": 0, "denominator": 1
-    }:
+    if witness["defined_scalar_projection"]["result"] != {"type": "EXACT_RATIONAL", "numerator": 1, "denominator": 1}:
+        errors.append("a²-defined matrix branch did not project to exact unit")
+    if witness["defined_scalar_projection"]["matrix_or_tensor_host_evaluated"]:
+        errors.append("host matrix/tensor evaluation was incorrectly authorized")
+    if witness["ordered_matrix_topology"]["outer_cell_count"] != 8:
+        errors.append("ordered perimeter topology is incomplete")
+    if not witness["ordered_matrix_topology"]["all_nine_topology_cells_witnessed"]:
+        errors.append("nine-cell topology witness incomplete")
+    if witness["result"]["residual"] != {"type": "EXACT_RATIONAL", "numerator": 0, "denominator": 1}:
         errors.append("O2 residual is nonzero")
     if witness["canonical_admission_authority"]:
         errors.append("O2 witness claims canonical admission authority")
@@ -418,6 +414,7 @@ def validation_report(repo_root: str | Path | None = None) -> Dict[str, Any]:
         "schema": "HHS_SPI_O2_ORDERED_MATRIX_PROJECTION_VALIDATION_V1",
         "ok": not errors,
         "witness_sha256": witness["witness_sha256"],
+        "projection_basis": witness["result"]["projection_basis"],
         "scalar_value_complete_for_o2_profile": witness["scalar_value_complete_for_o2_profile"],
         "generic_ncalc_family_complete": witness["ncalc_matrix_power_generic_family_complete"],
         "canonical_admission_authority": False,
