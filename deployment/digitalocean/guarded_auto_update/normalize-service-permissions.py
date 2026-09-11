@@ -45,16 +45,38 @@ def _set_group_mode(path: Path, gid: int, *, directory: bool, allow_chown: bool)
         os.chmod(path, desired)
 
 
+def _identity_group_ids(user: str) -> tuple[int, frozenset[int]]:
+    """Resolve the service identity without spawning a privileged helper.
+
+    The guarded updater is intentionally hardened with NoNewPrivileges=true.
+    Calling runuser/su from that unit can therefore fail for PAM/setuid reasons
+    even when the target path is actually accessible. Resolve the service UID,
+    primary GID, and supplementary groups directly and evaluate DAC mode bits
+    instead so verification has the same result inside and outside systemd.
+    """
+    identity = pwd.getpwnam(user)
+    gids = {identity.pw_gid}
+    for group in grp.getgrall():
+        if user in group.gr_mem:
+            gids.add(group.gr_gid)
+    return identity.pw_uid, frozenset(gids)
+
+
 def _service_access(user: str, path: Path, flag: str) -> bool:
-    if pwd.getpwuid(os.geteuid()).pw_name == user:
-        return os.access(path, os.X_OK if flag == "-x" else os.R_OK)
-    completed = subprocess.run(
-        ["runuser", "-u", user, "--", "test", flag, str(path)],
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    return completed.returncode == 0
+    if flag not in {"-x", "-r"}:
+        raise ValueError(f"unsupported service access flag: {flag}")
+
+    uid, gids = _identity_group_ids(user)
+    current = path.stat()
+    mode = stat.S_IMODE(current.st_mode)
+
+    if current.st_uid == uid:
+        required = stat.S_IXUSR if flag == "-x" else stat.S_IRUSR
+    elif current.st_gid in gids:
+        required = stat.S_IXGRP if flag == "-x" else stat.S_IRGRP
+    else:
+        required = stat.S_IXOTH if flag == "-x" else stat.S_IROTH
+    return bool(mode & required)
 
 
 def normalize_checkout(
@@ -149,6 +171,7 @@ def normalize_checkout(
         "tracked_directories_normalized": len(tracked_dirs),
         "backend_init_readable": True,
         "parent_traversal_verified": [str(path) for path in required_dirs],
+        "service_access_verification": "mode-bits-with-resolved-supplementary-groups",
         "runtime_library_path": str(runtime_library),
         "runtime_library_present": runtime_library_present,
         "runtime_library_readable": runtime_library_readable,
