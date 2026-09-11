@@ -21,6 +21,8 @@ Rollback restored repository SHA `73652c122ffff6a8b9bde9de00020610964d704c`, the
 
 The rollback checkout also contained untracked `.hhs/`. Repository inspection proved `tools/install_production_language_assets.py` writes `production_language_assets_status.json` beneath `ROOT/.hhs` by default, so the production post-merge check itself can dirty the live checkout and violate exact-main cleanliness after an otherwise successful promotion.
 
+The first PR #425 cumulative Pass202 run then failed only at `Prove current successor-hardened Pass 202 deployment identities`; both historical Pass202 identity steps passed. The failure was therefore a successor hash-sentinel mismatch caused by the authorized production boundary changes, not frozen Pass202 drift.
+
 ## Implemented changes
 
 1. `deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service`
@@ -50,6 +52,12 @@ The rollback checkout also contained untracked `.hhs/`. Repository inspection pr
    - regression guard that permission verification does not spawn `runuser`;
    - executable mode-bit access checks using the current test identity.
 
+6. `.github/workflows/pass219-cumulative-pass202-membrane-i122.yml`
+   - preserves all historical Pass202 source identity pins unchanged;
+   - updates only current successor deployment identities for the repaired service, environment, permission normalizer, and production language installer;
+   - expands path coverage to all affected production-boundary files;
+   - expands the inherited Pass202 deployment regression to the five dependency-scoped production tests.
+
 ## Commits
 
 - `140bf794f12a699ea520e12bc0fb65fbbe6f73a3` — align guarded updater native language authority
@@ -60,41 +68,42 @@ The rollback checkout also contained untracked `.hhs/`. Repository inspection pr
 - `cb2d8293f1ec42354e0ea279fe6929603c1ad68d` — document external production language status path
 - `a62f1bc1f338ce88a63feed840128c57a73a8eb6` — externalize production language status state
 - `b65bbbbb6b8e2f5f89cbbdb3e54e90f596de917a` — cover clean-checkout production status boundary
+- `6aa5c24c8d020b1a94b5bb7bc9a6e669c2982703` — expand DigitalOcean repair checkpoint with clean-checkout boundary
+- `180fb2fdd1a787fe2d8cf38de9f3f044e6fb5a10` — reconcile Pass202 successor deployment identities
 
-## Validation completed before this checkpoint
+## Validation completed
 
 - Production host Pass205 bounded test set: `12 passed in 33.07s`.
+- Production four-file light gate completed successfully on exact `c7f079ad...`.
 - Host rollback checkout confirmed at `73652c122ffff6a8b9bde9de00020610964d704c`.
+- Host permission normalizer returned `HHS_PRODUCTION_CHECKOUT_PERMISSIONS_VERIFIED=1` with backend/runtime library readable.
 - Host permission chain confirmed mode `0755` for `/opt`, `/opt/hhs`, `/opt/hhs/app`, and `/opt/hhs/app/hhs_backend`.
-- Direct `runuser -u hhs -- test -x` checks succeeded for `/opt`, `/opt/hhs`, and `/opt/hhs/app` outside the hardened updater service.
-- Repository source inspection confirmed `bin/post_compile` already defines `HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0`, while the guarded updater's configured direct post-merge command bypasses that export.
-- Repository source inspection identified `ROOT/.hhs/production_language_assets_status.json` as the source of the live checkout's untracked `.hhs/` state.
-- PR `#425` opened from the repair branch to `main`; branch CI was queued after PR creation.
+- Known-good `hhs.service` restored and active.
+- Loopback `/api/system/status` and `/api/interface/status` returned healthy Runtime OS status.
+- Public HTTPS `/api/system/status` and `/api/interface/status` returned the same healthy state.
+- Runtime OS asset root is `/var/lib/hhs/runtime-os/releases/73652c122ffff6a8b9bde9de00020610964d704c`.
+- `hhs-guarded-update.timer` remains intentionally inactive.
+- PR #425 targeted Production Root Browser Acceptance, Production Public API Verification, Guarded Continuous Integration, DigitalOcean contract validation, and Runtime OS smoke were green on the pre-I122-repair head.
+- First cumulative Pass202 exact and synthetic jobs passed frozen I121/Pass202 integration and historical Pass202 source identities, then failed only on stale current successor deployment hashes.
 
 ## Validation remaining
 
-1. Run dependency-scoped tests on this branch, at minimum:
-   - `tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py`
-   - `tests/test_hhs_guarded_auto_update_contract_v1.py`
-   - `tests/test_hhs_production_service_permissions_v2.py`
-   - `tests/test_hhs_production_checkout_readability_repair_v1.py`
-   - `tests/test_hhs_production_public_app_v1.py`
-2. Validate shell/Python parsing for guarded updater assets.
-3. Repair-forward branch-local CI failures only; do not rerun unrelated frozen evidence.
-4. Merge PR `#425` to `main` when the dependency-scoped gate is green.
-5. Verify exact `main` SHA after merge.
-6. Restore the known-good production service at `73652c12...` if still stopped, without re-enabling the updater timer until the repair is merged.
-7. Reconcile/remove only the generated `.hhs/production_language_assets_status.json` host drift after preserving its diagnostic content; exact-main deployment requires a clean checkout.
-8. Rerun `DigitalOcean Production Exact Main` against the new exact `main` SHA.
-9. Require a terminal `PROMOTED` receipt, clean production checkout, SHA-matched Runtime OS release, active `hhs.service`, active updater timer, and loopback/public HTTPS verification.
+1. Require the new cumulative Pass202 exact and synthetic jobs triggered by `180fb2fd...` to pass the successor identity step and the five-test deployment regression.
+2. Repair-forward only branch-local impacted failures, if any.
+3. Merge PR `#425` to `main` when the dependency-scoped gate is green.
+4. Verify exact `main` SHA after merge.
+5. Preserve then remove only the generated rollback-era `.hhs/` checkout drift before exact-main promotion so `/opt/hhs/app` is clean.
+6. Rerun/newly execute `DigitalOcean Production Exact Main` against the merged exact `main` SHA, not the historical c7f run.
+7. Require a terminal `PROMOTED` receipt, clean production checkout, SHA-matched Runtime OS release, active `hhs.service`, active updater timer, and loopback/public HTTPS verification.
 
 ## Environment state / blockers
 
-- Production updater timer intentionally remains stopped after the failed promotion.
-- Production checkout is rolled back but contains generated untracked `.hhs/` diagnostic state from the pre-repair production language installer.
-- The failed deployment did not establish a `PROMOTED` receipt for `c7f079ad...`.
-- PR `#425` is the current repair vehicle; its CI must validate the new head before merge.
+- Production is healthy on rollback SHA `73652c122ffff6a8b9bde9de00020610964d704c`.
+- Production updater timer intentionally remains stopped.
+- Production checkout still has generated untracked `.hhs/` diagnostic state unless separately archived/removed after this checkpoint.
+- The failed c7f deployment established `VALIDATED` but not `PROMOTED`.
+- PR `#425` is the repair vehicle; cumulative Pass202 successor validation is the current repository gate.
 
 ## Next action
 
-Keep the updater timer stopped. Restore/verify the known-good `hhs.service` on `73652c12...`, preserve then remove the generated `.hhs/` checkout drift, validate PR `#425`, merge when green, verify exact `main`, then rerun exact-main production deployment.
+Wait only on the already-triggered cumulative Pass202 successor gate for `180fb2fd...`; repair-forward any branch-local failure, merge PR #425 when green, verify the new exact main SHA, clean/preserve the rollback-era `.hhs/` host drift, and deploy the new exact main with the timer held until promotion succeeds.
