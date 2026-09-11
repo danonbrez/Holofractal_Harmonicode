@@ -1,4 +1,4 @@
-# Pass 219 RNA Cell-Wall Alignment Training Cycle v1 — Restart Checkpoint
+# Pass 219 RNA Cell-Wall Alignment Training Cycle v1 — Validated Restart Checkpoint
 
 Date: 2026-09-11
 
@@ -6,11 +6,12 @@ Date: 2026-09-11
 
 ```text
 base main: 139c15a2a890a2b480f17312bed5dd667a25414b
+validated semantic head: 044259698aded6cc5927a03656f2bbece752247c
 branch: agent/pass219-rna-cell-wall-alignment-training-cycle-v1-20260911
 merged predecessor: PR #428
 ```
 
-PR #428 merged the SPI v8 documentation release before this cycle began.
+PR #428 merged the SPI v8 documentation release before this cycle began. Main was re-read after validation and remained exactly `139c15a2a890a2b480f17312bed5dd667a25414b`.
 
 ## Implemented files
 
@@ -63,41 +64,55 @@ floating_point_authority = false
 
 VM81 remains the singleton canonical mutation/admission authority.
 
-## Validation designed
+## Dedicated validation evidence
 
-The dedicated workflow performs:
+Workflow:
 
 ```text
-make c-abi
-inherited four-lane C learner regression
-inherited C++ RNA cell-wall sequential/parallel equivalence
-strict C++17 compile of the new cycle under -Wall -Wextra -Werror -pedantic
-reverse-order candidate equality against manual inherited updates
-deterministic cycle replay
-changed-frontier evidence
-protected historical replay rejection
-baseline restoration after rejection
-malformed feedback rejection
-contract authority-boundary checks
+Pass 219 RNA Cell Wall Alignment Training v1
+run: 34627265350
+job: 103355279871
+validated head: 044259698aded6cc5927a03656f2bbece752247c
+conclusion: SUCCESS
 ```
 
-## Current validation status
+All dedicated steps completed successfully:
 
-At this checkpoint the implementation and dedicated gate are committed. The dedicated workflow is to be executed on the next branch push after this restart file is wired into its path filter.
+```text
+Build inherited exact ABI                         PASS
+Run inherited four-lane C learner test            PASS
+Build Pass188 and Pass189 C++ membrane deps       PASS
+Run inherited C++ RNA cell-wall equivalence       PASS
+Run reverse alignment training/anti-forgetting    PASS
+Verify contract authority boundary                PASS
+```
 
-Repository-wide workflows unrelated to this dependency scope may run or fail independently and do not redefine this cycle's semantic result.
+The strict C++17 cycle test therefore established:
+
+1. baseline learner bytes remain unchanged;
+2. the candidate state equals manual execution of the inherited learner over the same evidence in reverse order;
+3. identical baseline/evidence replay produces identical candidate bytes and training signature;
+4. the inherited exact learner produces a bounded observable dependency delta;
+5. protected historical replay detects the forced learned regression workload;
+6. replay rejection restores the exact baseline state;
+7. malformed feedback fails before training admission;
+8. inherited C and C++ RNA/four-lane behavior remains green;
+9. canonical VM81/Hash72/Hash216/persistence authority remains absent from this training membrane.
+
+## Scope of proof
+
+This gate proves the implemented deterministic training relation and regression behavior for its explicit bounded test corpus. It does not convert observational training quality into canonical state authority and does not claim a general solution to alignment.
+
+Repository-wide workflows unrelated to this dependency scope may run or fail independently and do not redefine this cycle's validated semantic result.
 
 ## Next action
 
-1. add this restart path to the dedicated workflow trigger;
-2. run the dedicated validation gate;
-3. repair only failures attributable to this cycle;
-4. freeze exact green run/job evidence;
-5. open a merge-ready PR against current main;
-6. after merge authorization, verify main;
-7. continue cycle 2 with typed four-plane alignment objectives:
-   - RELATIONAL_COGNITION
-   - NARRATIVE_EXPRESSION
-   - AGENTIC_ACTION
-   - TRUTH_PROMOTION
-   while preserving reverse bounded credit, protected replay, candidate isolation, and singleton VM81 authority.
+1. keep the validated semantic evidence frozen at `044259698aded6cc5927a03656f2bbece752247c`;
+2. open a merge-ready PR against exact current main;
+3. merge only with authorization and then verify main;
+4. continue cycle 2 with typed four-plane alignment objectives:
+   - `RELATIONAL_COGNITION`
+   - `NARRATIVE_EXPRESSION`
+   - `AGENTIC_ACTION`
+   - `TRUTH_PROMOTION`
+5. preserve reverse bounded credit, protected replay, candidate isolation, exact integer learning, and singleton VM81 authority.
