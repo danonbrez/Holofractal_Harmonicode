@@ -131,10 +131,22 @@ def test_runtime_authority_boots_and_reports_real_workflow_state():
     asyncio.run(verify())
 
 
-def test_procfile_boots_final_application_ide_over_pass174_overlay():
+def test_procfile_boots_runtime_os_over_inherited_application_ide():
     procfile = Path("Procfile").read_text(encoding="utf-8")
-    assert "hhs_backend.application_ide_server:app" in procfile
+    assert "hhs_backend.runtime_os_application_server:app" in procfile
+    assert "hhs_backend.application_ide_server:app" not in procfile
     assert "hhs_backend.heroku_server:app" not in procfile
+
+    dispatcher_source = Path("hhs_backend/runtime_os_application_server.py").read_text(
+        encoding="utf-8"
+    )
+    assert "hhs_backend.runtime_os_application_server_full import *" in dispatcher_source
+    assert "PASS170_PRODUCTION_APPLICATION_IDENTITY_DIVERGED" in dispatcher_source
+
+    runtime_os_source = Path("hhs_backend/runtime_os_application_server_full.py").read_text(
+        encoding="utf-8"
+    )
+    assert "from hhs_backend.application_ide_server import app as inherited_app" in runtime_os_source
 
     final_source = Path("hhs_backend/application_ide_server.py").read_text(encoding="utf-8")
     assert "pass174_server as pass174" in final_source
