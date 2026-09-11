@@ -1,0 +1,69 @@
+name: Pass 219 SPI Scalar Projection Registry
+
+on:
+  push:
+    branches:
+      - main
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_scalar_projection_registry_v1.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
+      - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_scalar_projection_registry_v1.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
+      - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-spi-projection-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile SPI proof layer
+        run: |
+          python -m py_compile \
+            hhs_spi_scalar_projection_registry_v1.py \
+            hhs_spi_scalar_projection_registry_tests_v1.py
+
+      - name: Validate scalar projection registry
+        run: python hhs_spi_scalar_projection_registry_v1.py --validate
+
+      - name: Run exact SPI proof and negative tests
+        run: python hhs_spi_scalar_projection_registry_tests_v1.py
+
+      - name: Emit deterministic coverage manifest
+        run: |
+          python hhs_spi_scalar_projection_registry_v1.py --manifest > /tmp/pass219_spi_scalar_projection_manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_scalar_projection_manifest.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['validation']['ok'] is True
+          assert data['validation']['canonical_admission_authority'] is False
+          assert data['validation']['coverage']['MISSING_PROJECTION'] >= 1
+          assert data['validation']['coverage']['SYMBOLIC'] >= 1
+          print(json.dumps(data['validation'], indent=2, sort_keys=True))
+          PY
+
+      - name: Upload scalar proof coverage manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-scalar-projection-manifest
+          path: /tmp/pass219_spi_scalar_projection_manifest.json
+          if-no-files-found: error
