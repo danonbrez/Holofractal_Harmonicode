@@ -37,7 +37,11 @@ def _is_identifier_start(char: str) -> bool:
 
 
 def _is_identifier_char(char: str) -> bool:
-    return bool(char) and (char.isalnum() or char in _IDENTIFIER_EXTRA or char in "₀₁₂₃₄₅₆₇₈₉")
+    return (
+        bool(char)
+        and char not in _SUPERSCRIPT_DIGITS
+        and (char.isalnum() or char in _IDENTIFIER_EXTRA or char in "₀₁₂₃₄₅₆₇₈₉")
+    )
 
 
 def _quoted_offsets(source: str) -> set[int]:
