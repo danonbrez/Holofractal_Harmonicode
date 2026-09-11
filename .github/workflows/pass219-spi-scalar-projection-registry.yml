@@ -8,12 +8,20 @@ on:
     paths:
       - 'hhs_spi_scalar_projection_registry_v1.py'
       - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - '*.harmonicode'
+      - 'contracts/pass219/*.harmonicode'
       - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
       - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
   pull_request:
     paths:
       - 'hhs_spi_scalar_projection_registry_v1.py'
       - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - '*.harmonicode'
+      - 'contracts/pass219/*.harmonicode'
       - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
       - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
   workflow_dispatch:
@@ -34,11 +42,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Compile SPI proof layer
+      - name: Compile SPI proof and corpus layers
         run: |
           python -m py_compile \
             hhs_spi_scalar_projection_registry_v1.py \
-            hhs_spi_scalar_projection_registry_tests_v1.py
+            hhs_spi_scalar_projection_registry_tests_v1.py \
+            hhs_spi_scalar_projection_corpus_v1.py \
+            hhs_spi_scalar_projection_corpus_tests_v1.py
 
       - name: Validate scalar projection registry
         run: python hhs_spi_scalar_projection_registry_v1.py --validate
@@ -46,7 +56,29 @@ jobs:
       - name: Run exact SPI proof and negative tests
         run: python hhs_spi_scalar_projection_registry_tests_v1.py
 
-      - name: Emit deterministic coverage manifest
+      - name: Validate repository Harmonicode corpus coverage
+        run: python hhs_spi_scalar_projection_corpus_v1.py --validate
+
+      - name: Run repository corpus coverage tests
+        run: python hhs_spi_scalar_projection_corpus_tests_v1.py
+
+      - name: Prove strict completion fails closed while obligations remain
+        run: |
+          set +e
+          python hhs_spi_scalar_projection_corpus_v1.py --strict-complete > /tmp/pass219_spi_strict_complete.json
+          rc=$?
+          set -e
+          cat /tmp/pass219_spi_strict_complete.json
+          if [ "$rc" -eq 0 ]; then
+            echo 'strict completion unexpectedly succeeded while missing projections remain' >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 2 ]; then
+            echo "unexpected strict-complete exit code: $rc" >&2
+            exit "$rc"
+          fi
+
+      - name: Emit deterministic scalar proof manifest
         run: |
           python hhs_spi_scalar_projection_registry_v1.py --manifest > /tmp/pass219_spi_scalar_projection_manifest.json
           python - <<'PY'
@@ -61,9 +93,39 @@ jobs:
           print(json.dumps(data['validation'], indent=2, sort_keys=True))
           PY
 
+      - name: Emit deterministic repository corpus coverage manifest
+        run: |
+          python hhs_spi_scalar_projection_corpus_v1.py --manifest > /tmp/pass219_spi_repository_corpus_coverage.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_repository_corpus_coverage.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['inventory']['path_count'] == 6
+          assert data['inventory']['unique_source_hash_count'] == 5
+          assert data['parser_error_count'] == 0
+          assert data['coverage_policy']['nested_expression_ast_complete'] is False
+          assert data['coverage_policy']['all_unregistered_fail_closed'] is True
+          assert data['authority_boundary']['canonical_admission_authority'] is False
+          assert data['missing_projection_count'] >= 1
+          assert data['strict_complete'] is False
+          print(json.dumps({
+              'candidate_counts': data['candidate_counts'],
+              'manifest_sha256': data['manifest_sha256'],
+              'missing_projection_count': data['missing_projection_count'],
+          }, indent=2, sort_keys=True))
+          PY
+
       - name: Upload scalar proof coverage manifest
         uses: actions/upload-artifact@v4
         with:
           name: pass219-spi-scalar-projection-manifest
           path: /tmp/pass219_spi_scalar_projection_manifest.json
+          if-no-files-found: error
+
+      - name: Upload repository corpus coverage manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-repository-corpus-coverage
+          path: /tmp/pass219_spi_repository_corpus_coverage.json
           if-no-files-found: error
