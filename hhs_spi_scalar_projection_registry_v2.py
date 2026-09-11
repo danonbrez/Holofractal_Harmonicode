@@ -1,9 +1,19 @@
 """Pass 219 SPI Scalar Projection Registry v2.
 
-Additive successor to the frozen v1 registry.  The only proof-status transition
-is O2: the canonical ordered matrix-power *scalar equality-chain projection*
-closes through the exact O2 witness.  This does not make generic
-NcalcMatrixPower calls scalar-valued and does not create canonical authority.
+Additive successor to the frozen v1 registry.  The sole v1 proof-status
+transition is O2.  O2 closes through two explicit HARMONICODE projection rules:
+
+1. MATRIX/TENSOR-DEFINED SCALAR
+   If an exact native equality edge defines a registered scalar S by a specific
+   ordered matrix/tensor expression E and pi(S)=v is already registered, then
+   this exact edge permits the downstream correspondence pi_edge(E)=v.
+
+2. SYMMETRIC UNIT-PRODUCT LAYER
+   If a complete symmetric matrix/tensor projection surface has exact unit
+   product on every symmetry orbit, it may emit a new scalar layer a²=xy=1.
+
+Neither rule promotes scalar equality to native identity, commutes xy/yx,
+replaces NcalcMatrixPower, or acquires VM81/Hash72/Hash216 authority.
 """
 from __future__ import annotations
 
@@ -13,12 +23,11 @@ from fractions import Fraction
 from hashlib import sha256
 import json
 from pathlib import Path
-from typing import Any, Dict, Mapping, Sequence
+from typing import Any, Dict, Sequence
 
-from hhs_spi_ordered_matrix_projection_witness_v1 import (
+from hhs_spi_ordered_matrix_projection_witness_v2 import (
     AUDITED_MAIN_SHA,
-    O2_EQUALITY_SOURCE,
-    ordered_matrix_projection_witness,
+    ordered_matrix_projection_witness_v2,
 )
 from hhs_spi_scalar_projection_registry_v1 import (
     CLOSED,
@@ -35,9 +44,9 @@ from hhs_spi_scalar_projection_registry_v1 import (
 )
 
 FORMAT = "HHS_SPI_SCALAR_PROJECTION_REGISTRY_V2"
-VERSION = "2.0.0"
+VERSION = "2.2.0"
 SCHEMA = "HHS_SPI_SCALAR_PROJECTION_REGISTRY_MANIFEST_V2"
-O2_PROFILE = "SPI-O2-ORDERED-MATRIX-EQUALITY-Q-v2"
+O2_PROFILE = "MATRIX-TENSOR-DEFINED-SCALAR+SYMMETRIC-UNIT-PRODUCT-v2"
 
 
 class SPIRegistryV2Error(ValueError):
@@ -57,69 +66,80 @@ def _repo_root(root: str | Path | None = None) -> Path:
 
 
 def _o2_closed_proof(repo_root: Path) -> ProjectionProof:
-    witness = ordered_matrix_projection_witness(repo_root)
-    if witness["scalar_value_complete_for_o2_profile"] is not True:
-        raise SPIRegistryV2Error("O2 witness did not close its bounded scalar profile")
-    if witness["ncalc_matrix_power_generic_family_complete"] is not False:
-        raise SPIRegistryV2Error("O2 witness overclaimed the generic NcalcMatrixPower family")
+    witness = ordered_matrix_projection_witness_v2(repo_root)
+    exact_one = {"type": "EXACT_RATIONAL", "numerator": 1, "denominator": 1}
+    if witness["result"]["a²"] != exact_one or witness["result"]["xy"] != exact_one:
+        raise SPIRegistryV2Error("O2 unit layer did not close at a²=xy=1")
+    if witness["result"]["relation"] != "a²=xy=1":
+        raise SPIRegistryV2Error("O2 unit-layer relation drifted")
+    if witness["generic_matrix_tensor_scalarization_authorized"] is not False:
+        raise SPIRegistryV2Error("O2 overclaimed generic matrix/tensor scalarization")
+    if witness["native_a2_xy_identity_authorized"] is not False:
+        raise SPIRegistryV2Error("O2 promoted projection equality to native identity")
+    if witness["xy_yx_commutation_authorized"] is not False:
+        raise SPIRegistryV2Error("O2 commuted xy/yx")
     if witness["canonical_admission_authority"] is not False:
-        raise SPIRegistryV2Error("O2 witness claims canonical authority")
+        raise SPIRegistryV2Error("O2 claims canonical authority")
 
+    matrix_definition = witness["matrix_defined_scalar_projection"]
+    unit_surface = witness["symmetric_unit_product_surface"]["unit_layer_receipt"]
     return ProjectionProof(
         proof_id="SPI-O2-MATRIX",
-        source_expression=O2_EQUALITY_SOURCE,
+        source_expression=matrix_definition["equality_edge_source"],
         profile=O2_PROFILE,
         premises=(
-            "SPI-PROJ-0001",
-            "SPI-PROJ-0002",
-            "SPI-PROJ-0004",
-            "SPI-T6-SURD",
-            "I121.8 exact ordered phase-projection witness",
-            "Phase12 ordered symbolic relation-role lift",
-            "inherited native center 0/0=u^0 mod(u^72)=1 closure",
+            "SPI-PROJ-0001: pi(a²)=1",
+            "exact source-bound a² matrix/tensor definition edge",
+            "MATRIX_TENSOR_DEFINED_SCALAR_PROJECTION-v1",
+            "complete nine-cell O2 magnitude projection",
+            "SYMMETRIC-UNIT-PRODUCT-LAYER-v1",
+            "Pass129 rational membrane precedent: pi(xy)=1 under unit closure",
         ),
         domain=(
-            "canonical Pass219 O2 equality-chain projection; exact ordered matrix source; "
-            "eight frozen u72 perimeter correspondences; separately typed native center closure; "
-            "no host NcalcMatrixPower evaluation"
+            "exact ordered O2 matrix/tensor definition edge plus complete symmetric unit-product projection surface; "
+            "all component/orbit witnesses exact; no float; no generic matrix evaluation"
         ),
         derivation=(
-            "preserve the exact 139-byte ordered NcalcMatrixPower source and its noncommutative role order",
-            "witness all eight perimeter numerator/denominator phase differences as 0 mod 72 without commuting roles",
-            "witness the center separately through the inherited native 0/0=u^0 mod(u^72)=1 constraint-intersection closure",
-            "retain NcalcMatrixPower(...,4) as an EXACT_SYMBOLIC_MATRIX_POWER node; do not replace it by host matrix arithmetic",
-            "project b⁴ from b²=2 as (b²)²=4 without choosing a sign for b",
-            "use the intact equality chain to bind the matrix branch to the independently exact SPI-T6-SURD squared-radical a² projection",
-            "SPI-T6-SURD gives a²->1 with exact residual 0; therefore the bounded O2 matrix branch scalar correspondence is 1 with residual 0",
+            "preserve the exact ordered matrix/tensor node and its defining equality edge",
+            "inherit pi(a²)=1 across that exact definition edge without host evaluation or substitution",
+            "retain all eight ordered perimeter roles and the separately typed center closure",
+            "derive the projected nine-cell all-ones magnitude surface",
+            "verify complete transpose symmetry and unit product for every symmetry orbit",
+            "apply the registered Pass129 xy-unit projection precedent",
+            "emit the new projection layer a²=xy=1 with exact residual 0",
         ),
         result={
-            "matrix_branch_projection": witness["result"]["matrix_branch_projection"],
-            "a_squared_projection": witness["result"]["a_squared_projection"],
-            "ordered_outer_cell_count": witness["ordered_matrix_lift"]["outer_cell_count"],
-            "all_nine_projection_cells_witnessed": witness["ordered_matrix_lift"]["all_nine_projection_cells_witnessed"],
-            "ncalc_matrix_power_host_evaluated": False,
-            "generic_ncalc_matrix_power_family_complete": False,
-            "o2_witness_sha256": witness["witness_sha256"],
+            "a²": exact_one,
+            "xy": exact_one,
+            "relation": "a²=xy=1",
+            "relation_kind": "SCALAR_PROJECTION_LAYER_ONLY",
+            "matrix_definition_profile": matrix_definition["profile"],
+            "matrix_definition_receipt_sha256": matrix_definition["receipt_sha256"],
+            "symmetric_unit_profile": unit_surface["profile"],
+            "symmetric_unit_receipt_sha256": unit_surface["receipt_sha256"],
+            "o2_witness_v2_sha256": witness["witness_sha256"],
+            "generic_matrix_tensor_scalarization_authorized": False,
         },
         modulus=None,
         residual=Fraction(0),
         lost_information=(
-            "native NcalcMatrixPower runtime object is retained rather than reconstructed from scalar 1",
-            "ordered x/y/z/w/xy/yx/zw/wz role identity is lost by the terminal scalar projection unless ancestry is retained",
-            "native center 0/0 closure context cannot be reverse-lifted from scalar 1",
-            "the equality-chain projection does not authorize generic NcalcMatrixPower evaluation or substitution",
+            "native NcalcMatrixPower/matrix/tensor object is not reconstructible from scalar 1",
+            "ordered x/y/z/w/xy/yx/zw/wz topology is not encoded by the unit scalar layer",
+            "native a² and native xy remain distinct typed objects",
+            "xy/yx ordering and native equality-edge provenance must remain attached",
         ),
         reverse_lift_status=NONE,
         proof_status=CLOSED,
         implementation_status=IMPLEMENTED,
         receipt_status=VERIFIED,
         coverage_state=PROVEN,
-        scalar_type="EXACT_RATIONAL_EQUALITY_CHAIN_PROJECTION",
+        scalar_type="EXACT_RATIONAL_PROJECTION_LAYER",
         authority=PROJECTION_ONLY,
         canonical_admission=False,
         notes=(
-            "O2 scalar projection closure is narrower than the generic NcalcMatrixPower function family.",
-            "Projection equality is not native identity.",
+            "A specific matrix/tensor definition may inherit its registered scalar target without evaluating the native matrix/tensor.",
+            "A symmetric complete unit-product surface may emit the projection layer a²=xy=1.",
+            "Neither rule implies native a²≡xy or xy=yx.",
         ),
     )
 
@@ -131,7 +151,7 @@ def build_registry_v2(repo_root: str | Path | None = None) -> Dict[str, Projecti
     if predecessor is None:
         raise SPIRegistryV2Error("v1 O2 proof missing")
     if predecessor.proof_status != OPEN or predecessor.coverage_state != SYMBOLIC:
-        raise SPIRegistryV2Error("v1 O2 predecessor is not the frozen OPEN/SYMBOLIC proof")
+        raise SPIRegistryV2Error("v1 O2 predecessor is not frozen OPEN/SYMBOLIC")
     successor = dict(base)
     successor["SPI-O2-MATRIX"] = _o2_closed_proof(root)
     return successor
@@ -165,6 +185,8 @@ def validation_report(repo_root: str | Path | None = None) -> Dict[str, Any]:
         and o2.receipt_status == VERIFIED
         and o2.coverage_state == PROVEN
         and o2.canonical_admission is False
+        and o2.profile == O2_PROFILE
+        and o2.result.get("relation") == "a²=xy=1"
     ):
         errors.append("O2 successor did not close exactly")
     o3 = registry["SPI-O3-PROVENANCE"]
@@ -189,8 +211,9 @@ def validation_report(repo_root: str | Path | None = None) -> Dict[str, Any]:
             "MISSING_PROJECTION": counts.get(MISSING_PROJECTION, 0),
         },
         "o2_profile": o2.profile,
+        "o2_relation": o2.result.get("relation"),
         "o2_receipt_sha256": o2.receipt_sha256(),
-        "o2_generic_ncalc_family_complete": False,
+        "generic_matrix_tensor_scalarization_authorized": False,
         "canonical_admission_authority": False,
         "errors": errors,
     }
@@ -206,11 +229,17 @@ def coverage_manifest_v2(repo_root: str | Path | None = None) -> Dict[str, Any]:
         "audited_main_sha": AUDITED_MAIN_SHA,
         "predecessor_format": "HHS_SPI_SCALAR_PROJECTION_REGISTRY_V1",
         "transition_policy": "ADDITIVE_SUCCESSOR_O2_ONLY",
+        "projection_rules": [
+            "MATRIX_TENSOR_DEFINED_SCALAR_PROJECTION-v1",
+            "SYMMETRIC-UNIT-PRODUCT-LAYER-v1",
+        ],
         "proofs": [registry[key].to_dict() for key in sorted(registry)],
         "validation": validation,
         "authority_boundary": {
             "projection_only": True,
-            "generic_ncalc_matrix_power_execution": False,
+            "native_a2_xy_identity": False,
+            "xy_yx_commutation": False,
+            "generic_matrix_tensor_scalarization": False,
             "vm81_mutation": False,
             "canonical_hash72_hash216_minting": False,
             "canonical_persistence": False,
