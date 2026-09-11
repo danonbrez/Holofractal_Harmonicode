@@ -10,6 +10,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 DEPLOY = ROOT / "deployment" / "digitalocean" / "guarded_auto_update"
 PERMISSION_TOOL = DEPLOY / "normalize-service-permissions.py"
+LANGUAGE_INSTALLER = ROOT / "tools" / "install_production_language_assets.py"
 
 
 def _load_permission_module():
@@ -31,6 +32,18 @@ def test_guarded_updater_inherits_word2vec_optional_native_provider_contract() -
     assert "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in example
     assert 'export HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC="${HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC:-0}"' in post_compile
     assert "NoNewPrivileges=true" in service
+
+
+def test_production_language_status_is_externalized_from_live_checkout() -> None:
+    service = (DEPLOY / "hhs-guarded-update.service").read_text(encoding="utf-8")
+    example = (DEPLOY / "hhs-guarded-update.env.example").read_text(encoding="utf-8")
+    installer = LANGUAGE_INSTALLER.read_text(encoding="utf-8")
+    status_path = "/var/lib/hhs/runtime-bootstrap/production_language_assets_status.json"
+
+    assert f"Environment=HHS_PRODUCTION_LANGUAGE_STATUS_PATH={status_path}" in service
+    assert f"HHS_PRODUCTION_LANGUAGE_STATUS_PATH={status_path}" in example
+    assert 'os.getenv("HHS_PRODUCTION_LANGUAGE_STATUS_PATH", "").strip()' in installer
+    assert '"status_path": str(STATUS_PATH)' in installer
 
 
 def test_permission_verifier_does_not_spawn_runuser_under_no_new_privileges() -> None:
