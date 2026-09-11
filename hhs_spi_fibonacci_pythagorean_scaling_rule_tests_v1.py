@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from fractions import Fraction
 
 from hhs_spi_fibonacci_pythagorean_scaling_rule_v1 import (
     GOLDEN_POLYNOMIAL,
@@ -43,7 +44,14 @@ def test_square_state_sequence_is_fibonacci_from_a2_b2_seed():
 
 def test_finite_stage_ratios_are_exact_and_not_phi_substitutions():
     ratios = finite_stage_ratios(6)
-    assert ratios == (2, 3/2, 5/3, 8/5, 13/8, 21/13)
+    assert ratios == (
+        Fraction(2, 1),
+        Fraction(3, 2),
+        Fraction(5, 3),
+        Fraction(8, 5),
+        Fraction(13, 8),
+        Fraction(21, 13),
+    )
     ladder = scale_ladder_witness(9)
     assert ladder["golden_limit"]["polynomial"] == GOLDEN_POLYNOMIAL
     assert ladder["golden_limit"]["positive_root"] is True
@@ -75,24 +83,21 @@ def test_unequal_sum_does_not_false_close():
 
 
 def test_adjacent_cross_stage_translation_is_exact():
-    expected = ((0, 1, 2), (1, 2, 3/2), (2, 3, 5/3), (3, 5, 8/5))
-    for source_stage, source_q, ratio in expected:
+    expectations = (
+        (0, Q(1), Q(2), Q(2)),
+        (1, Q(2), Q(3), Q(3, 2)),
+        (2, Q(3), Q(5), Q(5, 3)),
+        (3, Q(5), Q(8), Q(8, 5)),
+    )
+    for source_stage, source_q, target_q, ratio in expectations:
         witness = cross_stage_translation_witness(
             invariant_sum=15,
             source_stage=source_stage,
             target_stage=source_stage + 1,
         )
-        assert witness["source_square_state"] == Q(source_q)
-        target = (2, 3, 5, 8)[source_stage]
-        assert witness["target_square_state"] == Q(target)
-        if source_stage == 0:
-            assert witness["finite_scale_ratio"] == Q(2)
-        elif source_stage == 1:
-            assert witness["finite_scale_ratio"] == Q(3, 2)
-        elif source_stage == 2:
-            assert witness["finite_scale_ratio"] == Q(5, 3)
-        else:
-            assert witness["finite_scale_ratio"] == Q(8, 5)
+        assert witness["source_square_state"] == source_q
+        assert witness["target_square_state"] == target_q
+        assert witness["finite_scale_ratio"] == ratio
         assert witness["residual"] == Q(0)
         assert witness["finite_ratio_replaced_by_phi"] is False
 
