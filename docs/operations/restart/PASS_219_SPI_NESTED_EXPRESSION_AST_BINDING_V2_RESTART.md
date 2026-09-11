@@ -14,7 +14,7 @@ This checkpoint does **not** create canonical transition authority. VM81 remains
 - Working branch: `agent/pass219-spi-scalar-projection-registry-v1-20260910`
 - Previous restart checkpoint: `ac452f0b1506eaea2ac07b0726a5162e47b60161`
 - Validated v2 semantic head: `8714ea86a938433575e01cda1c4b81290c4814b0`
-- Restart checkpoint lineage: `b6caa79adbf9443b45618b74bb854b45feeaec9a` → `7cc004fa0e42d6a2656f610e81b55a76c9caf816`
+- Restart checkpoint lineage begins at: `b6caa79adbf9443b45618b74bb854b45feeaec9a`
 - Pull request: `#427`
 - Validated branch relation: ahead of `main`, with `main` still at the authoritative base above.
 
@@ -52,18 +52,11 @@ The v2 layer is additive. It does not rewrite or replace the frozen predecessor 
 
 ## Nested-expression AST contract
 
-Parser version:
-
-`HHS_HARMONICODE_NESTED_EXPRESSION_AST_PASS_219_V2`
+Parser version: `HHS_HARMONICODE_NESTED_EXPRESSION_AST_PASS_219_V2`.
 
 The Pass 075 statement parser remains frozen. The v2 membrane records its predecessor parser version, predecessor AST root, original source SHA, source length, and predecessor statement nodes.
 
-The additive AST recognizes these syntax surfaces without scalar evaluation:
-
-- `SuperscriptPower`
-- `PowerSurface`
-- `PowerChain`
-- `RadicalPowerSurface`
+The additive AST recognizes `SuperscriptPower`, `PowerSurface`, `PowerChain`, and `RadicalPowerSurface` syntax surfaces without scalar evaluation.
 
 ### Chained powers
 
@@ -106,7 +99,6 @@ Result:
 - canonical admission authority: false
 
 Nested AST binding manifest SHA-256:
-
 `874e4b15850cece6996bf461d2f6d87d16ad455bfd117c2c3dd684051a2604ef`
 
 ## Reconciliation v2 result
@@ -130,7 +122,6 @@ Additional invariants:
 - canonical admission authority: false
 
 Reconciliation v2 manifest SHA-256:
-
 `481c0bb0264ad0771344ae068624dcfd7c9c5ba853a8c7963ad9a22971389aee`
 
 ## Validation
@@ -163,16 +154,11 @@ Fail-closed checks also passed:
 
 Run `34574371362` emitted:
 
-- `10189019717` — `pass219-spi-scalar-projection-manifest`
-  - ZIP SHA-256: `f20a252c57d20742ec7a654702e466872e234c34b931d6497d048981a4972ec8`
-- `10189020319` — `pass219-spi-repository-corpus-coverage`
-  - ZIP SHA-256: `e9b7403ac3cc2428745437e40cbabd6b6780fb773bb6acd0dc157953c4d53bdd`
-- `10189020875` — `pass219-spi-repository-corpus-reconciled-v1`
-  - ZIP SHA-256: `af374d735e962d07d7bceecbaa76871d0e93b53bc546ff683715606a16b269ec`
-- `10189021456` — `pass219-spi-nested-ast-binding-v2`
-  - ZIP SHA-256: `223db7650a15470eb2918b4f8646776a6960941d1c545f1c622458a52bc7a30a`
-- `10189021997` — `pass219-spi-repository-corpus-reconciled-v2`
-  - ZIP SHA-256: `9ff4fc58042c085e5e82a163d65f7b45e291bf8d3b168ff4a7237c807f3c9907`
+- `10189019717` — `pass219-spi-scalar-projection-manifest` — ZIP SHA-256 `f20a252c57d20742ec7a654702e466872e234c34b931d6497d048981a4972ec8`
+- `10189020319` — `pass219-spi-repository-corpus-coverage` — ZIP SHA-256 `e9b7403ac3cc2428745437e40cbabd6b6780fb773bb6acd0dc157953c4d53bdd`
+- `10189020875` — `pass219-spi-repository-corpus-reconciled-v1` — ZIP SHA-256 `af374d735e962d07d7bceecbaa76871d0e93b53bc546ff683715606a16b269ec`
+- `10189021456` — `pass219-spi-nested-ast-binding-v2` — ZIP SHA-256 `223db7650a15470eb2918b4f8646776a6960941d1c545f1c622458a52bc7a30a`
+- `10189021997` — `pass219-spi-repository-corpus-reconciled-v2` — ZIP SHA-256 `9ff4fc58042c085e5e82a163d65f7b45e291bf8d3b168ff4a7237c807f3c9907`
 
 ## Authority boundary
 
