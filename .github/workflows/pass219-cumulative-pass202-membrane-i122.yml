@@ -14,11 +14,17 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py'
       - 'deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh'
+      - 'deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service'
+      - 'deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example'
       - 'deployment/digitalocean/guarded_auto_update/install.sh'
       - 'deployment/digitalocean/guarded_auto_update/validate-candidate.sh'
       - 'deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py'
+      - 'tools/install_production_language_assets.py'
+      - 'tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py'
       - 'tests/test_hhs_guarded_auto_update_contract_v1.py'
       - 'tests/test_hhs_production_service_permissions_v2.py'
+      - 'tests/test_hhs_production_checkout_readability_repair_v1.py'
+      - 'tests/test_hhs_production_public_app_v1.py'
       - 'tests/pass219/test_pass219_inherited_pass202_1_22.c'
       - 'tests/pass219/test_pass219_inherited_pass202_1_22.cpp'
       - 'tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py'
@@ -84,14 +90,15 @@ jobs:
         run: |
           test "$(git hash-object .github/workflows/guarded-continuous-integration.yml)" = e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4
           test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 645650a70efde6df130b90e21acbf063ebc0ff0d
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3296ee9787544542697d3915e01569562ef30046
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 6b4dc28e3ec90cc42a8e6317a9f142c229b31022
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 7890657593b5d4dd03e4cf5eb2c4c1c7ba25e519
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 8d24f5825e0aaaa6e633877021c5bf4d5df0aee7
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 3289544601dfbd54697a6e57ef9c8505d407821f
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 53677fea50de3bb2b42025c79b2fe5fd210e9dd0
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = 23afbf9c99d77f57acd7334d767c483572d64e0a
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = f018af53e15c3425ab00cd8500b95f845cf6ac2c
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = cb6e57ce4f418f835de9b4354c2116a5032d0ca2
+          test "$(git hash-object tools/install_production_language_assets.py)" = 35de0676b137139554c20ee53d67be12aab65ac3
 
       - name: Reject approximate arithmetic and new authority exports
         run: |
@@ -113,7 +120,12 @@ jobs:
 
       - name: Run inherited Pass 202 deployment contract regression
         run: |
-          python -m pytest -q             tests/test_hhs_guarded_auto_update_contract_v1.py             tests/test_hhs_production_service_permissions_v2.py
+          python -m pytest -q \
+            tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py \
+            tests/test_hhs_guarded_auto_update_contract_v1.py \
+            tests/test_hhs_production_service_permissions_v2.py \
+            tests/test_hhs_production_checkout_readability_repair_v1.py \
+            tests/test_hhs_production_public_app_v1.py
 
       - name: Preserve frozen Pass 203 successor membrane
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass203_membrane_i121.py
