@@ -14,7 +14,9 @@ This checkpoint does **not** create canonical transition authority. VM81 remains
 - Working branch: `agent/pass219-spi-scalar-projection-registry-v1-20260910`
 - Previous restart checkpoint: `ac452f0b1506eaea2ac07b0726a5162e47b60161`
 - Validated v2 semantic head: `8714ea86a938433575e01cda1c4b81290c4814b0`
+- Restart checkpoint anchor: `b6caa79adbf9443b45618b74bb854b45feeaec9a`
 - Pull request: `#427`
+- Branch relation at checkpoint anchor: 22 commits ahead / 0 behind `main`.
 
 ## Frozen predecessor evidence
 
@@ -211,7 +213,7 @@ Primary next obligations:
 
 ## Restart procedure
 
-Resume from the branch head containing this checkpoint. Verify `main` is still at the recorded base or reconcile forward if it has advanced. Preserve the frozen v1 manifests and the v2 manifest hashes above. Do not rerun unrelated suites unless a dependency changes.
+Resume from `b6caa79adbf9443b45618b74bb854b45feeaec9a` or the direct documentation-only successor that adds this explicit anchor. Verify `main` is still at the recorded base or reconcile forward if it has advanced. Preserve the frozen v1 manifests and the v2 manifest hashes above. Do not rerun unrelated suites unless a dependency changes.
 
 Next implementation action:
 
