@@ -1,0 +1,149 @@
+name: Pass 219 SPI Constraint Evolution v6
+
+on:
+  push:
+    branches:
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_constraint_evolution_optimizer_v1.py'
+      - 'hhs_spi_constraint_evolution_optimizer_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v6.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v6.py'
+      - 'contracts/pass219/PASS_219_SPI_CONSTRAINT_EVOLUTION_LEARNING_OPTIMIZER_V1.md'
+      - '.github/workflows/pass219-spi-constraint-evolution-v6.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_constraint_evolution_optimizer_v1.py'
+      - 'hhs_spi_constraint_evolution_optimizer_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v6.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v6.py'
+      - 'contracts/pass219/PASS_219_SPI_CONSTRAINT_EVOLUTION_LEARNING_OPTIMIZER_V1.md'
+      - '.github/workflows/pass219-spi-constraint-evolution-v6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-constraint-evolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile constraint evolution projection stack
+        run: |
+          python -m py_compile \
+            hhs_spi_constraint_evolution_optimizer_v1.py \
+            hhs_spi_constraint_evolution_optimizer_tests_v1.py \
+            hhs_spi_scalar_projection_registry_v6.py \
+            hhs_spi_scalar_projection_registry_tests_v6.py
+
+      - name: Run exact constraint evolution optimizer tests
+        run: python hhs_spi_constraint_evolution_optimizer_tests_v1.py
+
+      - name: Validate registry v6
+        run: |
+          python hhs_spi_scalar_projection_registry_v6.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v6.py
+
+      - name: Regress tensor translation registry v5 unchanged
+        run: |
+          python hhs_spi_tensor_pair_translation_stack_tests_v1.py
+          python hhs_spi_scalar_projection_registry_v5.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v5.py
+
+      - name: Regress Law-of-1 and O2 projection membranes
+        run: |
+          python hhs_spi_scalar_projection_registry_v4.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v4.py
+          python hhs_spi_ordered_matrix_projection_witness_v2.py --validate
+          python hhs_spi_ordered_matrix_projection_witness_tests_v2.py
+
+      - name: Check VM5184 and four-lane inherited geometry
+        run: |
+          python - <<'PY'
+          from hhs_spi_constraint_evolution_optimizer_v1 import (
+              HYDRATION_LANE_COUNT,
+              VM5184_ADDRESS_COUNT,
+              decode_vm5184_address,
+              vm5184_address,
+          )
+          from hhs_runtime.pass219.discrete_transport_conservation import (
+              ADDRESS_COUNT,
+              CELL_COUNT,
+              LANE_COUNT,
+              OPERATIONS_PER_CELL,
+              PHASE_COUNT,
+          )
+          assert VM5184_ADDRESS_COUNT == 81 * 64 == 5184
+          assert HYDRATION_LANE_COUNT == LANE_COUNT == 4
+          assert OPERATIONS_PER_CELL == 64
+          assert CELL_COUNT == 81
+          assert PHASE_COUNT == 72
+          assert ADDRESS_COUNT == 4 * 64 * 72 * 81 == 1492992
+          for cell, operation in ((0, 0), (40, 31), (80, 63)):
+              address = vm5184_address(cell, operation)
+              assert decode_vm5184_address(address) == (cell, operation)
+          print('VM5184/four-lane geometry: PASS')
+          PY
+
+      - name: Regress frozen SPI corpus evidence
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --validate
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_spi_scalar_projection_corpus_reconciliation_v2 import reconciliation_manifest_v2
+          data = reconciliation_manifest_v2(Path('.'))
+          assert data['resolved_candidate_counts'] == {
+              'MISSING_PROJECTION': 0,
+              'PROVEN': 429,
+              'SYMBOLIC': 43,
+              'UNSUPPORTED_DOMAIN': 0,
+          }
+          assert data['manifest_sha256'] == '481c0bb0264ad0771344ae068624dcfd7c9c5ba853a8c7963ad9a22971389aee'
+          assert data['scalar_value_complete'] is False
+          print(data['manifest_sha256'])
+          PY
+
+      - name: Emit deterministic constraint evolution evidence
+        run: |
+          mkdir -p /tmp/pass219_spi_constraint_evolution
+          python - <<'PY' > /tmp/pass219_spi_constraint_evolution/optimizer_cycle_v1.json
+          import json
+          from hhs_spi_constraint_evolution_optimizer_v1 import reference_optimizer_cycle
+          print(json.dumps(reference_optimizer_cycle(), indent=2, sort_keys=True, ensure_ascii=False))
+          PY
+          python hhs_spi_scalar_projection_registry_v6.py --manifest > /tmp/pass219_spi_constraint_evolution/spi_registry_v6.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cycle = json.loads(Path('/tmp/pass219_spi_constraint_evolution/optimizer_cycle_v1.json').read_text(encoding='utf-8'))
+          registry = json.loads(Path('/tmp/pass219_spi_constraint_evolution/spi_registry_v6.json').read_text(encoding='utf-8'))
+          assert cycle['lifecycle']['OPTIMIZE'] == 'PASS'
+          assert cycle['lifecycle']['CANONIZE'] == 'PROJECTION_RECEIPT_ELIGIBLE'
+          assert cycle['lifecycle']['ITERATE'] == 'NEXT_CYCLE_SEED_EMITTED'
+          assert cycle['semantic_label_used_for_selection'] is False
+          assert cycle['empirical_speedup_claimed'] is False
+          assert cycle['authority']['canonical_admission'] is False
+          assert registry['validation']['ok'] is True
+          assert registry['validation']['changed_predecessor_proof_ids'] == []
+          print(json.dumps({
+              'optimizer_cycle_receipt_sha256': cycle['receipt_sha256'],
+              'iteration_seed_sha256': cycle['iteration_seed']['seed_sha256'],
+              'registry_v6_manifest_sha256': registry['manifest_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload constraint evolution evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-constraint-evolution-v6
+          path: /tmp/pass219_spi_constraint_evolution
+          if-no-files-found: error
