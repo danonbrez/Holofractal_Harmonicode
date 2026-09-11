@@ -4,33 +4,45 @@ Operator-supplied additive rule:
 
     1=a²,x⁴,y⁴,z⁴,w⁴,∆,P²-pq,t³-t,m²-m,e^x²O,c²-b²,b²/2u⁷²
 
-The rule is intentionally projection-scoped.  It does not identify the native
-expressions with one another and it does not erase phase, source, ordering,
-parenthesization, matrix/tensor, or equality-edge provenance.
+Normalization hierarchy
+-----------------------
+``∆`` is the system-wide universal denominator unit in scalar projection:
 
-Local law:
-    every admitted Law-of-1 member projects to exact scalar 1 in a registered
-    scalar-normalization layer.
+    D_univ := pi(∆) = 1.
 
-Global law:
-    every valid layer-to-layer normalization preserves the unit scalar:
-        N[L_i -> L_j](1_Li) = 1_Lj.
+``a²`` is the local scaling factor.  Every admitted local scalar layer binds its
+scale to the universal denominator through the projection bridge:
 
-Therefore any finite product of already-projected Law-of-1 values is also one.
-This is a theorem about projection values only, never a license to commute or
-multiply native HARMONICODE objects before projection.
+    S_L := pi_L(a²) = pi_L(∆) = 1.
+
+Thus local normalization and cross-layer normalization share one unit without
+collapsing the native ``a²`` and ``∆`` source nodes.  A convenient exact form is
+
+    LocalNormalize_L(v) = v / pi_L(a²)
+    UniversalNormalize_L(v) = v / pi_L(∆)
+
+and, on an admitted Law-of-1 layer, both denominators are exact unit and the
+normalization maps are value-preserving.
+
+The rule is projection-scoped.  It never identifies the native expressions with
+one another, never promotes ``a²=∆`` to native node identity, and never erases
+phase, source, ordering, parenthesization, matrix/tensor, or equality-edge
+provenance.
 """
 from __future__ import annotations
 
 from fractions import Fraction
 from hashlib import sha256
 import json
-from typing import Any, Dict, Iterable, Mapping, Sequence, Tuple
+from typing import Any, Dict, Mapping, Sequence, Tuple
 
 FORMAT = "HHS_SPI_LAW_OF_ONE_PROJECTION_RULE_V1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 PROFILE = "HARMONICODE-LAW-OF-ONE-v1"
 OPERATOR_SOURCE = "1=a²,x⁴,y⁴,z⁴,w⁴,∆,P²-pq,t³-t,m²-m,e^x²O,c²-b²,b²/2u⁷²"
+UNIVERSAL_DENOMINATOR_SYMBOL = "∆"
+LOCAL_SCALE_SYMBOL = "a²"
+LOCAL_GLOBAL_SCALE_BRIDGE = "a²=∆=1"
 
 LAW_OF_ONE_MEMBERS: Tuple[str, ...] = (
     "a²",
@@ -69,7 +81,7 @@ EVIDENCE_KIND: Mapping[str, str] = {
 }
 
 REPOSITORY_PREMISES: Mapping[str, Tuple[str, ...]] = {
-    "a²": ("SPI-PROJ-0001: pi(a²)=1",),
+    "a²": ("SPI-PROJ-0001: pi(a²)=1", "Law-of-1 local scale bridge pi_L(a²)=pi_L(∆)"),
     "∆": ("Pass129: ∆=t³-t=m²-m=xy=P²-pq, ∆!=0; rational projection gives ∆=1",),
     "P²-pq": ("SPI-T1: P²=pq+1", "Pass129 rational residue projection"),
     "t³-t": ("Pass129 common rational residue projection",),
@@ -85,6 +97,15 @@ class SPILawOfOneError(ValueError):
 
 def _exact_one() -> Fraction:
     return Fraction(1, 1)
+
+
+def _q(value: Any) -> Fraction:
+    if isinstance(value, bool) or isinstance(value, float):
+        raise SPILawOfOneError("normalization requires exact non-float scalar input")
+    try:
+        return Fraction(value)
+    except (TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SPILawOfOneError(f"invalid exact scalar: {value!r}") from exc
 
 
 def _exact_json(value: Any) -> Any:
@@ -120,6 +141,8 @@ def member_witness(member: str, *, conditional_bridge: bool = False) -> Dict[str
         "evidence_kind": EVIDENCE_KIND[member],
         "repository_premises": REPOSITORY_PREMISES.get(member, ()),
         "conditional_bridge": conditional_bridge,
+        "universal_denominator_member": member == UNIVERSAL_DENOMINATOR_SYMBOL,
+        "local_scale_member": member == LOCAL_SCALE_SYMBOL,
         "projection_only": True,
         "native_identity_with_other_members": False,
         "native_commutation_authorized": False,
@@ -135,6 +158,92 @@ def member_witness(member: str, *, conditional_bridge: bool = False) -> Dict[str
     return _exact_json(witness)
 
 
+def scale_bridge_witness(layer_id: str) -> Dict[str, Any]:
+    """Bind the local scale a² to the universal scalar denominator ∆.
+
+    This is a projection relation only:
+        pi_L(a²)=pi_L(∆)=1.
+    It never claims native ``a² ≡ ∆``.
+    """
+    if not layer_id:
+        raise SPILawOfOneError("layer_id is required")
+    a2 = member_witness(LOCAL_SCALE_SYMBOL)
+    delta = member_witness(UNIVERSAL_DENOMINATOR_SYMBOL)
+    receipt: Dict[str, Any] = {
+        "schema": "HHS_SPI_LAW_OF_ONE_SCALE_BRIDGE_WITNESS_V1",
+        "profile": PROFILE,
+        "layer_id": layer_id,
+        "relation": LOCAL_GLOBAL_SCALE_BRIDGE,
+        "local_scale_symbol": LOCAL_SCALE_SYMBOL,
+        "universal_denominator_symbol": UNIVERSAL_DENOMINATOR_SYMBOL,
+        "local_scale": _exact_one(),
+        "universal_denominator": _exact_one(),
+        "residual": Fraction(0),
+        "a2_member_receipt_sha256": a2["receipt_sha256"],
+        "delta_member_receipt_sha256": delta["receipt_sha256"],
+        "projection_only": True,
+        "native_a2_delta_identity_authorized": False,
+        "canonical_admission_authority": False,
+    }
+    receipt["receipt_sha256"] = sha256(_stable_json(receipt).encode("utf-8")).hexdigest()
+    return _exact_json(receipt)
+
+
+def universal_denominator_witness(value: Any, *, layer_id: str) -> Dict[str, Any]:
+    """Normalize an exact scalar through the universal denominator unit ∆=1."""
+    if not layer_id:
+        raise SPILawOfOneError("layer_id is required")
+    scalar = _q(value)
+    denominator = _exact_one()
+    normalized = scalar / denominator
+    receipt: Dict[str, Any] = {
+        "schema": "HHS_SPI_LAW_OF_ONE_UNIVERSAL_DENOMINATOR_WITNESS_V1",
+        "profile": PROFILE,
+        "layer_id": layer_id,
+        "input_scalar": scalar,
+        "denominator_symbol": UNIVERSAL_DENOMINATOR_SYMBOL,
+        "denominator_scalar": denominator,
+        "rule": "UniversalNormalize(v)=v/pi(∆)",
+        "normalized_scalar": normalized,
+        "residual": normalized - scalar,
+        "value_preserved": normalized == scalar,
+        "projection_only": True,
+        "native_division_by_delta_executed": False,
+        "canonical_admission_authority": False,
+    }
+    receipt["receipt_sha256"] = sha256(_stable_json(receipt).encode("utf-8")).hexdigest()
+    return _exact_json(receipt)
+
+
+def local_scale_witness(value: Any, *, layer_id: str) -> Dict[str, Any]:
+    """Normalize an exact scalar by the local scale a², then bridge to ∆."""
+    if not layer_id:
+        raise SPILawOfOneError("layer_id is required")
+    scalar = _q(value)
+    scale = _exact_one()
+    normalized = scalar / scale
+    bridge = scale_bridge_witness(layer_id)
+    receipt: Dict[str, Any] = {
+        "schema": "HHS_SPI_LAW_OF_ONE_LOCAL_SCALE_WITNESS_V1",
+        "profile": PROFILE,
+        "layer_id": layer_id,
+        "input_scalar": scalar,
+        "local_scale_symbol": LOCAL_SCALE_SYMBOL,
+        "local_scale_scalar": scale,
+        "rule": "LocalNormalize_L(v)=v/pi_L(a²)",
+        "normalized_scalar": normalized,
+        "bridge_relation": LOCAL_GLOBAL_SCALE_BRIDGE,
+        "bridge_receipt_sha256": bridge["receipt_sha256"],
+        "residual": normalized - scalar,
+        "value_preserved": normalized == scalar,
+        "projection_only": True,
+        "native_division_by_a2_executed": False,
+        "canonical_admission_authority": False,
+    }
+    receipt["receipt_sha256"] = sha256(_stable_json(receipt).encode("utf-8")).hexdigest()
+    return _exact_json(receipt)
+
+
 def normalization_witness(member: str, source_layer: str, target_layer: str) -> Dict[str, Any]:
     if not source_layer or not target_layer:
         raise SPILawOfOneError("source_layer and target_layer are required")
@@ -142,6 +251,8 @@ def normalization_witness(member: str, source_layer: str, target_layer: str) -> 
     if member not in LAW_OF_ONE_MEMBERS and not conditional:
         raise SPILawOfOneError(f"unregistered unit member: {member!r}")
     witness = member_witness(member, conditional_bridge=conditional)
+    source_scale = scale_bridge_witness(source_layer)
+    target_scale = scale_bridge_witness(target_layer)
     receipt: Dict[str, Any] = {
         "schema": "HHS_SPI_LAW_OF_ONE_NORMALIZATION_WITNESS_V1",
         "profile": PROFILE,
@@ -150,7 +261,11 @@ def normalization_witness(member: str, source_layer: str, target_layer: str) -> 
         "target_layer": target_layer,
         "source_scalar": _exact_one(),
         "target_scalar": _exact_one(),
-        "rule": "N[L_i->L_j](1_Li)=1_Lj",
+        "universal_denominator_symbol": UNIVERSAL_DENOMINATOR_SYMBOL,
+        "local_scale_symbol": LOCAL_SCALE_SYMBOL,
+        "source_scale_bridge_sha256": source_scale["receipt_sha256"],
+        "target_scale_bridge_sha256": target_scale["receipt_sha256"],
+        "rule": "N[L_i->L_j](1_Li)=1_Lj with pi_L(a²)=pi_L(∆)=1",
         "member_receipt_sha256": witness["receipt_sha256"],
         "unit_preserved": True,
         "projection_only": True,
@@ -181,8 +296,8 @@ def projected_product_witness(
         else:
             raise SPILawOfOneError(f"member is not admitted in this unit-product proof: {member!r}")
         member_receipts.append(receipt)
-        # Multiply only already-projected exact scalar values.  Never multiply
-        # or reorder native HARMONICODE expressions here.
+        # Multiply only already-projected exact scalar values. Never multiply or
+        # reorder native HARMONICODE expressions here.
         product *= _exact_one()
     result: Dict[str, Any] = {
         "schema": "HHS_SPI_LAW_OF_ONE_PRODUCT_WITNESS_V1",
@@ -192,6 +307,8 @@ def projected_product_witness(
         "member_receipts": member_receipts,
         "projected_product": product,
         "unit_product": product == 1,
+        "universal_denominator": _exact_one(),
+        "local_scale": _exact_one(),
         "native_product_evaluated": False,
         "native_reordering_authorized": False,
         "projection_only": True,
@@ -210,16 +327,18 @@ def global_law_of_one_manifest(
         raise SPILawOfOneError("normalization_layers must be non-empty stable identifiers")
 
     members = [member_witness(member) for member in LAW_OF_ONE_MEMBERS]
+    scale_bridges = [scale_bridge_witness(layer) for layer in layers]
     normalization_edges = []
     for i in range(len(layers) - 1):
         source_layer, target_layer = layers[i], layers[i + 1]
-        # A single explicit unit edge is sufficient because member witnesses
-        # establish that all admitted members enter normalization as exact 1.
         normalization_edges.append({
             "source_layer": source_layer,
             "target_layer": target_layer,
             "source_unit": _exact_one(),
             "target_unit": _exact_one(),
+            "universal_denominator": _exact_one(),
+            "source_local_scale": _exact_one(),
+            "target_local_scale": _exact_one(),
             "unit_preserved": True,
         })
 
@@ -232,13 +351,29 @@ def global_law_of_one_manifest(
         "members": members,
         "member_count": len(members),
         "conditional_unit_bridges": [member_witness("xy", conditional_bridge=True)],
-        "local_rule": "for every admitted member E in layer L: pi_L(E)=1_L",
-        "global_rule": "for every valid normalization edge L_i->L_j: N(1_Li)=1_Lj",
+        "universal_denominator": {
+            "symbol": UNIVERSAL_DENOMINATOR_SYMBOL,
+            "scalar": _exact_one(),
+            "rule": "D_univ=pi(∆)=1",
+            "system_wide_for_scalar_normalization": True,
+        },
+        "local_scale": {
+            "symbol": LOCAL_SCALE_SYMBOL,
+            "scalar": _exact_one(),
+            "bridge": LOCAL_GLOBAL_SCALE_BRIDGE,
+            "rule": "S_L=pi_L(a²)=pi_L(∆)=1",
+        },
+        "scale_bridges": scale_bridges,
+        "local_rule": "for every admitted member E in layer L: pi_L(E)=1_L and S_L=pi_L(a²)=pi_L(∆)=1",
+        "global_rule": "for every valid normalization edge L_i->L_j: N(1_Li)=1_Lj using universal denominator pi(∆)=1",
+        "universal_denominator_rule": "UniversalNormalize_L(v)=v/pi_L(∆)=v",
+        "local_scale_rule": "LocalNormalize_L(v)=v/pi_L(a²)=v",
         "finite_projected_product_rule": "product(pi_L(E_k))=1 for any finite admitted Law-of-1 member sequence",
         "normalization_layers": layers,
         "normalization_edges": normalization_edges,
         "symmetry_rule_link": "a complete symmetric matrix/tensor surface whose projected orbit products are unit may emit a²=xy=1",
         "projection_only": True,
+        "native_a2_delta_identity": False,
         "native_member_collapse": False,
         "native_commutation_or_reassociation": False,
         "canonical_admission_authority": False,
