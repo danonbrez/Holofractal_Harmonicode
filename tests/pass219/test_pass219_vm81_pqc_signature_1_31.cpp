@@ -95,6 +95,8 @@ static int run_signed(
     bool invalid_constraint
 ) {
     CHECK(install_root_key());
+    CHECK(hhs_exact_pass219_vm81_environment_version() ==
+          HHS_EXACT_PASS219_VM81_ENV_VERSION);
 
     HHSExactPass219Hash216TransitionViewV1 parent{};
     CHECK(hhs_exact_pass219_vm81_pqc_hash216_genesis_reference(&parent) ==
@@ -113,10 +115,11 @@ static int run_signed(
     HHSExactPass219RNAAdmissionV1 admission{};
     HHSExactPass219VM81PQCFirewallReceiptV1 firewall{};
     HHSExactPass219VM81PQCSignatureReceiptV1 signature{};
+    HHSExactPass219VM81EnvironmentReceiptV1 environment{};
 
     const bool provider_available =
         hhs_exact_pass219_vm81_pqc_signature_provider_available(algorithm) == 1U;
-    const HHSExactStatus status = hhs_exact_pass219_vm81_pqc_admit_signed(
+    const HHSExactStatus status = hhs_exact_pass219_vm81_environment_admit_signed(
         220U,
         algorithm,
         &input,
@@ -129,8 +132,15 @@ static int run_signed(
         &committed,
         &admission,
         &firewall,
-        &signature);
+        &signature,
+        &environment);
 
+    CHECK(environment.struct_size == sizeof(environment));
+    CHECK(environment.version == HHS_EXACT_PASS219_VM81_ENV_VERSION);
+    CHECK(environment.security_epoch == HHS_EXACT_PASS219_VM81_ENV_SECURITY_EPOCH);
+    CHECK(environment.recovery_candidate_only == 1U);
+    CHECK(environment.canonical_mutation_authority == 0U);
+    CHECK(environment.canonical_receipt_authority == 0U);
     CHECK(signature.struct_size == sizeof(signature));
     CHECK(signature.version == HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION);
     CHECK(signature.algorithm == algorithm);
@@ -140,16 +150,26 @@ static int run_signed(
 
     if (!provider_available) {
         CHECK(status == HHS_EXACT_STATUS_INVARIANT_FAILURE);
-        CHECK(signature.decision ==
-              HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_PROVIDER_UNAVAILABLE);
+        CHECK(environment.state == HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        CHECK(environment.decision == HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN);
+        CHECK(environment.reason == HHS_EXACT_PASS219_VM81_ENV_REASON_ENVIRONMENT_SIGNATURE);
+        CHECK(environment.environment_signature_verified == 0U);
         CHECK(firewall.decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED);
         CHECK(firewall.halt_reason ==
-              HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_PROVIDER_UNAVAILABLE);
+              HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE);
         CHECK(firewall.inherited_rna_authority_invoked == 0U);
         CHECK(frame_is_zero(committed));
         std::printf("PQC_PROVIDER_UNAVAILABLE_FAIL_CLOSED algorithm=%u\n", algorithm);
         return 0;
     }
+
+    CHECK(environment.state == HHS_EXACT_PASS219_VM81_ENV_STATE_RUNNING);
+    CHECK(environment.decision == HHS_EXACT_PASS219_VM81_ENV_DECISION_READY);
+    CHECK(environment.reason == HHS_EXACT_PASS219_VM81_ENV_REASON_NONE);
+    CHECK(environment.genesis_verified == 1U);
+    CHECK(environment.witness_verified == 1U);
+    CHECK(environment.environment_signature_verified == 1U);
+    CHECK(environment.witness_sequence >= 1U);
 
     CHECK(signature.provider_available == 1U);
     CHECK(signature.key_derived_from_kernel_root == 1U);
@@ -182,8 +202,10 @@ static int run_signed(
     CHECK(frames_equal(committed, candidate));
     CHECK(hhs_exact_pass219_vm81_pqc_hash216_reference_verify(&admission.transition) ==
           HHS_EXACT_STATUS_OK);
-    std::printf("PQC_SIGNED_COMMIT algorithm=%u signature_length=%u\n",
-                algorithm, signature.signature_length);
+    std::printf("PQC_SIGNED_COMMIT algorithm=%u signature_length=%u witness=%llu\n",
+                algorithm,
+                signature.signature_length,
+                static_cast<unsigned long long>(environment.witness_sequence));
     return 0;
 }
 
@@ -200,15 +222,16 @@ static int run_bad_profile() {
     HHSExactPass219RNAAdmissionV1 admission{};
     HHSExactPass219VM81PQCFirewallReceiptV1 firewall{};
     HHSExactPass219VM81PQCSignatureReceiptV1 signature{};
+    HHSExactPass219VM81EnvironmentReceiptV1 environment{};
 
-    CHECK(hhs_exact_pass219_vm81_pqc_admit_signed(
+    CHECK(hhs_exact_pass219_vm81_environment_admit_signed(
               220U, 99U, &input, &candidate, &parent,
               0, 0U, HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0,
-              &committed, &admission, &firewall, &signature) ==
+              &committed, &admission, &firewall, &signature, &environment) ==
           HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    CHECK(firewall.halt_reason ==
-          HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_SIGNATURE_PROFILE);
+    CHECK(firewall.decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED);
     CHECK(firewall.inherited_rna_authority_invoked == 0U);
+    CHECK(environment.decision == HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN);
     CHECK(frame_is_zero(committed));
     return 0;
 }
@@ -228,18 +251,19 @@ static int run_bad_parent() {
     HHSExactPass219RNAAdmissionV1 admission{};
     HHSExactPass219VM81PQCFirewallReceiptV1 firewall{};
     HHSExactPass219VM81PQCSignatureReceiptV1 signature{};
+    HHSExactPass219VM81EnvironmentReceiptV1 environment{};
 
-    CHECK(hhs_exact_pass219_vm81_pqc_admit_signed(
+    CHECK(hhs_exact_pass219_vm81_environment_admit_signed(
               220U,
               HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65,
               &input, &candidate, &parent,
               0, 0U, HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0,
-              &committed, &admission, &firewall, &signature) ==
+              &committed, &admission, &firewall, &signature, &environment) ==
           HHS_EXACT_STATUS_INVARIANT_FAILURE);
     CHECK(firewall.halt_reason ==
-          HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH216_REFERENCE);
+          HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH216_REFERENCE ||
+          firewall.halt_reason == HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE);
     CHECK(firewall.inherited_rna_authority_invoked == 0U);
-    CHECK(signature.signature_verified_before_vm81 == 0U);
     CHECK(frame_is_zero(committed));
     return 0;
 }
@@ -247,6 +271,8 @@ static int run_bad_parent() {
 int main(int argc, char** argv) {
     CHECK(hhs_exact_pass219_vm81_pqc_signature_version() ==
           HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION);
+    CHECK(hhs_exact_pass219_vm81_environment_version() ==
+          HHS_EXACT_PASS219_VM81_ENV_VERSION);
     if (argc != 2) {
         std::fprintf(stderr, "mode required\n");
         return 2;
