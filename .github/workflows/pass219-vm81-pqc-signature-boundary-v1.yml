@@ -1,0 +1,206 @@
+name: Pass 219 VM81 PQC Signature Boundary v1
+
+on:
+  push:
+    branches:
+      - agent/pass219-external-runtime-authority-closure-v1-20260912
+    paths:
+      - 'GNUmakefile'
+      - 'contracts/pass219/PASS_219_VM81_PQC_*'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp'
+      - 'tests/pass219/test_pass219_vm81_pqc_*'
+      - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
+      - '.github/workflows/pass219-vm81-pqc-signature-boundary-v1.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'GNUmakefile'
+      - 'contracts/pass219/PASS_219_VM81_PQC_*'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp'
+      - 'tests/pass219/test_pass219_vm81_pqc_*'
+      - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
+      - '.github/workflows/pass219-vm81-pqc-signature-boundary-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  system-provider:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          openssl version -a
+
+      - name: Preserve inherited Makefile exactly
+        run: |
+          test "$(git rev-parse e157ef775f5da94281573a2d428e2ddb811c385e:Makefile)" = "$(git hash-object Makefile)"
+
+      - name: Build exact ABI with C++ RNA cell wall
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit dynamic mutation authority
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit
+          do
+            if grep -q " ${forbidden}$" /tmp/hhs.symbols; then
+              echo "forbidden dynamic mutation authority exported: ${forbidden}" >&2
+              exit 1
+            fi
+          done
+
+      - name: Compile strict firewall/reference test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_pqc_firewall_1_30.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pqc-reference
+          /tmp/test-pqc-reference
+
+      - name: Compile strict signed-boundary test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_pqc_signature_1_31.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pqc-signature
+
+      - name: Verify system-provider behavior and security halts
+        run: |
+          /tmp/test-pqc-signature ml
+          /tmp/test-pqc-signature slh
+          /tmp/test-pqc-signature bad-profile
+          /tmp/test-pqc-signature bad-parent
+
+      - name: Regress post-219 candidate development surface
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_post219_compositional_development_1_29.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-post219-development
+          /tmp/test-post219-development
+
+      - name: Static no-self-vouching audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          signed = Path('hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h').read_text()
+          facade = Path('hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp').read_text()
+          contract = Path('contracts/pass219/PASS_219_VM81_PQC_SIGNATURE_BOUNDARY_V1.md').read_text()
+          legacy_cpp = Path('hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.hpp')
+          assert not legacy_cpp.exists(), 'caller-resolver C++ firewall facade must be removed'
+          for forbidden in ('Hash216IndexResolverV1', 'private signing key', 'signature bytes'):
+              if forbidden == 'Hash216IndexResolverV1':
+                  assert forbidden not in signed
+          assert 'hhs_exact_pass219_vm81_pqc_admit_signed' in signed
+          assert 'submit_pqc_canonical_request_signed' in facade
+          assert 'asymmetric_pqc_signature_required{true}' in facade
+          assert 'unsigned_canonical_submit_disabled{true}' in facade
+          assert 'No unsigned production fallback is permitted.' in contract
+          print('pqc_signature_authority_closure_static=PASS')
+          PY
+
+  openssl-35-positive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build OpenSSL 3.5.0 provider locally
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          curl -fsSL \
+            https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+            -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          /tmp/openssl35/bin/openssl version -a
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'SLH-DSA'
+
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+          ldd hhs_runtime/builds/libhhs_runtime.so | grep '/tmp/openssl35/lib'
+
+      - name: Compile signed-boundary test against OpenSSL 3.5 runtime
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -I/tmp/openssl35/include \
+            tests/pass219/test_pass219_vm81_pqc_signature_1_31.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -L/tmp/openssl35/lib -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -Wl,-rpath,/tmp/openssl35/lib \
+            -o /tmp/test-pqc-signature
+
+      - name: Prove ML-DSA-65 and SLH-DSA-SHA2-192s before VM81
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          /tmp/test-pqc-signature ml | tee /tmp/ml.log
+          grep -q 'PQC_SIGNED_COMMIT' /tmp/ml.log
+          /tmp/test-pqc-signature slh | tee /tmp/slh.log
+          grep -q 'PQC_SIGNED_COMMIT' /tmp/slh.log
+          /tmp/test-pqc-signature constraint | tee /tmp/constraint.log
+          grep -q 'PQC_SIGNED_CANONICAL_REJECTION' /tmp/constraint.log
+
+      - name: Re-audit sole exported production mutator
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit
+          do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
