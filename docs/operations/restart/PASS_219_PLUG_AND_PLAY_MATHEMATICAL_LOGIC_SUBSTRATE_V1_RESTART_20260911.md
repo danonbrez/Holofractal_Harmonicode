@@ -10,7 +10,7 @@ base branch: main
 base commit: b33b079399146e3d145aa3f6839979c87baf9605
 working branch: agent/pass219-plug-and-play-math-logic-substrate-v1-20260911
 merge target: main
-integration PR: #431
+integration PR: #432
 ```
 
 The base is the merged Pass 219 Cycle 2 four-plane contextual-alignment main state.
@@ -51,9 +51,10 @@ e13bbac5ae89d978151b41832397df7f440fd3c4  add plug-and-play substrate validation
 5b37c18d77de81fb96dd9275aa830d4ad539c7a4  freeze initial restart checkpoint
 9486f9e8aa2bff1c144a4638f3086f72ef672d2f  run substrate gate on pull requests
 e890d471da12f9f0a83c930e2e0f3a12c9798dab  correct deterministic profile rejection vector
+03faa1d0a9ef0d6af675b9fbd3e21d32c358107b  freeze validated restart checkpoint
 ```
 
-This file update is the validated restart-state freeze following those commits.
+This file update corrects the integration PR number after concurrent repository activity allocated `#431` to the independent main-determinism repair branch.
 
 ## Implemented runtime laws
 
@@ -158,7 +159,7 @@ Repository/API inspection before implementation:
 main base: b33b079399146e3d145aa3f6839979c87baf9605
 PR #429: merged
 PR #430: merged
-PR #431: opened for this implementation
+PR #432: opened for this implementation
 ```
 
 Dedicated workflow:
@@ -166,7 +167,7 @@ Dedicated workflow:
 ```text
 name: Pass 219 Plug-and-Play Math Logic Substrate v1
 run id: 34664506691
-validated head: e890d471da12f9f0a83c930e2e0f3a12c9798dab
+validated code head: e890d471da12f9f0a83c930e2e0f3a12c9798dab
 status: completed
 conclusion: success
 ```
@@ -197,7 +198,7 @@ hhs_exact_vm81_frame_export_le
 hhs_exact_vm81_admit_uqcel
 ```
 
-Therefore the v1 substrate implementation is dependency-scoped green at the repaired branch head.
+Therefore the v1 substrate implementation is dependency-scoped green at the repaired code head. The commits after `e890d471...` modify only this restart document, so the validated executable dependency surface is unchanged.
 
 Repository-wide inherited matrices may continue independently; they are not a reason to invalidate or delay this dependency-scoped checkpoint unless they expose a failure caused by these changed files.
 
@@ -210,11 +211,11 @@ implementation: complete
 contract: complete
 dedicated validation: PASS
 restartability: complete
-PR: #431
+integration PR: #432
 merge target: main
 ```
 
-After this restart-state commit, rerun/observe the dedicated gate on the new documentation-only head, then mark PR #431 ready and merge if the dependency-scoped gate remains green. Verify exact merged main afterward.
+The executable surface was validated at `e890d471...`; subsequent commits are documentation-only restart-state corrections. PR #432 may be marked ready and integrated if it remains mergeable. Verify exact merged main afterward.
 
 ## Next implementation layer
 
