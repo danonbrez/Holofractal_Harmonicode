@@ -60,7 +60,8 @@ jobs:
           git diff --name-only "$base"...HEAD | tee /tmp/pass219_i182_changed.txt
           python - <<'PY'
           from pathlib import Path
-          allowed = {
+
+          transport_allowed = {
               'HHS_PUBLIC_TRANSPORT_PARITY_I182.json',
               'HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182.json',
               'hhs_backend/public_api_server.py',
@@ -71,9 +72,32 @@ jobs:
               '.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml',
               'docs/operations/restart/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_RESTART.md',
           }
+          validated_harmonic_sibling = {
+              '.github/workflows/pass219-i182-harmonic-geometry-circuit.yml',
+              'contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json',
+              'docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md',
+              'hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc',
+              'hhs_runtime/c/hhs_runtime_exact_abi.c',
+              'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h',
+              'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.hpp',
+              'hhs_runtime/include/hhs_runtime_exact_abi.h',
+              'hhs_runtime/pass219/harmonic_geometry_circuit_i182.py',
+              'tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py',
+              'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c',
+              'tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp',
+          }
+          allowed = transport_allowed | validated_harmonic_sibling
           changed = [line for line in Path('/tmp/pass219_i182_changed.txt').read_text().splitlines() if line]
-          illegal = [path for path in changed if path not in allowed]
+          changed_set = set(changed)
+          illegal = sorted(changed_set - allowed)
           assert not illegal, illegal
+
+          # The sibling lineage was intentionally merged into this I182 branch and
+          # already has its own exact geometry gate. Require the complete sibling
+          # surface rather than weakening the transport scope guard generically.
+          missing_sibling = sorted(validated_harmonic_sibling - changed_set)
+          assert not missing_sibling, missing_sibling
+
           frozen = {
               'hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py',
               'HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I181.json',
@@ -81,8 +105,9 @@ jobs:
               'hhs_backend/runtime_os_source_only_server.py',
               'hhs_backend/runtime_os_application_server.py',
           }
-          assert not frozen.intersection(changed), sorted(frozen.intersection(changed))
+          assert not frozen.intersection(changed_set), sorted(frozen.intersection(changed_set))
           print('PASS219_I182_SCOPE', len(changed), 'files')
+          print('PASS219_I182_VALIDATED_HARMONIC_SIBLING', len(validated_harmonic_sibling), 'files')
           PY
 
       - name: Parse manifests and compile I182
