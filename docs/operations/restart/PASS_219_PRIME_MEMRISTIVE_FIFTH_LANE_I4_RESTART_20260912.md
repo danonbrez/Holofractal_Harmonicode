@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI QUEUED**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI GREEN**
 
 ## Repository state
 
@@ -38,73 +38,64 @@ docs/operations/restart/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_I4_RESTART_20260912
 9. deliberate Hash216 alias references retained unchanged across route weakening/recovery;
 10. no VM81, Hash72, Hash216, or canonical persistence authority added.
 
-## Deterministic workload
-
-The I4 test builds 4096 fifth-lane circuit records with one deliberate two-record alias onto a single inherited Hash216 reference. It searches for a record that is uniquely isolated by the learned `5 -> 7 -> 11` route but not by `5` alone, so the insufficient-reduction fallback case is proven rather than assumed.
-
-Expected acceptance surfaces:
-
-```text
-learned route strengthened and selected
-negative feedback weakens it below alternate route
-positive feedback recovers it
-decay moves utility toward zero
-16 repeated warm queries preserve exact indexed/linear parity
-missing context falls back cold
-stale context falls back cold
-p=5-only insufficient route falls back cold
-Hash216 alias group unchanged
-Holo4 state byte-identical
-```
-
-## Dedicated repository CI
+## Dedicated repository CI evidence
 
 ```text
 workflow: Pass 219 Prime Memristive Fifth Lane Adaptive Context I4
 run id: 34709874389
 job id: 103596559375
 head: a81c3331a2733bb53c57a8a7c61a1684053ddaef
-state at checkpoint: QUEUED
+conclusion: SUCCESS
 ```
 
-Required dependency-scoped gates are:
+All dependency-scoped gates passed:
 
 ```text
-I4 static authority/fallback contract
-inherited I1 fifth-lane test
-inherited exact ABI build
-inherited I2 adapter/index benchmark
-inherited I3 Hash216 context benchmark
-I4 adaptive multi-context/fallback benchmark
-inherited Holo4 four-lane C regression
+Verify I4 adaptive authority and fallback contract: PASS
+Run inherited I1 fifth-lane test: PASS
+Build inherited exact ABI: PASS
+Run inherited I2 adapter index benchmark: PASS
+Run inherited I3 Hash216 context benchmark: PASS
+Run I4 adaptive context fallback benchmark: PASS
+Verify inherited four-lane authority remains green: PASS
 ```
 
-Broad legacy workflows may also trigger on feature-branch pushes. Their unrelated failures are outside the I4 dependency surface unless the dedicated I4 workflow exposes a touched inherited dependency failure.
-
-## Validation completed / remaining
-
-Completed:
+Exact I4 benchmark receipt:
 
 ```text
-I4 contract committed
-I4 implementation committed
-restartable repository-visible state committed
-workflow accepted by GitHub Actions
+lane5_i4=PASS target=0 repeated_warm=16 warm_selector_avoided=3072 missing_fallback=1 stale_fallback=1 reduction_fallback=1 alias_records=2 unique_hash216=4095
 ```
 
-Remaining:
+The deterministic 4096-record workload proved that the learned `5 -> 7 -> 11` route can be selected, weakened below an alternate route by negative feedback, recovered by positive feedback, and decayed toward zero without deleting or rewriting any inherited Hash216 identity. Sixteen repeated warm queries retained indexed/linear parity while bypassing 3072 cold selector evaluations. Missing-context, stale-context, and insufficient-reduction fallback each executed exactly once. The deliberate two-record alias remained one canonical inherited Hash216 identity while the full corpus exposed 4095 unique inherited Hash216 references.
+
+These are exact structural counters for this workload, not universal latency or asymptotic-complexity claims.
+
+## Authority boundary frozen
 
 ```text
-dedicated I4 workflow run 34709874389 must leave queue and execute
-if green: freeze exact benchmark receipt and SUCCESS evidence
-if red: repair only the failing I4 dependency surface and rerun
+candidate_only = true
+exact_integer_only = true
+route_utility_only = true
+hash216_reference_only = true
+canonical_mutation_authority = false
+canonical_hash72_authority = false
+canonical_hash216_authority = false
+canonical_persistence_authority = false
+floating_point_authority = false
+requires_inherited_vm81_hash216_admission = true
 ```
+
+Route weakening or pruning semantics do not imply knowledge deletion. Hash216 references and VM81 final admission authority remain inherited and canonical.
+
+## Remaining validation
+
+No I4 dependency-scoped validation remains.
 
 No main merge or production deployment has been attempted.
 
-## Next implementation cycle after I4 closure
+## Next implementation cycle
 
-If I4 is green, advance additively to I5:
+Advance additively to I5:
 
 1. make adaptive context utility composable across multiple query modalities while preserving exact integer authority;
 2. add hierarchical context inheritance so broad routes can seed narrower context routes without copying canonical knowledge;
@@ -120,14 +111,13 @@ Resume from:
 branch: agent/pass219-prime-memristive-fifth-lane-i4-20260912
 implementation head: a81c3331a2733bb53c57a8a7c61a1684053ddaef
 implementation tree: 25e36b5f6de7185bec0c9955b5d0facb391eb06d
-workflow: 34709874389 QUEUED
+workflow evidence: 34709874389 SUCCESS
 ```
 
-First restart action:
+First action on restart:
 
 ```text
-inspect workflow 34709874389
-freeze green evidence or repair-forward only its failing dependency surface
+advance to I5 multimodal context inheritance + bounded route tombstones
 ```
 
-Do not reopen already-green I1/I2/I3 work unless I4 touches and breaks that exact dependency surface.
+Do not reopen already-green I1/I2/I3/I4 work unless I5 touches and breaks that exact dependency surface.
