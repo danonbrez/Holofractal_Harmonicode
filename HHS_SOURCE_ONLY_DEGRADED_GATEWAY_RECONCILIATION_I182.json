@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_SOURCE_ONLY_DEGRADED_GATEWAY_RECONCILIATION_I182_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I182",
+  "base_main": "c7f079ad3c0ed67d39bb0be840d47b8d52b24c05",
+  "dispatcher": "hhs_backend/runtime_os_application_server.py",
+  "source_only_shell": "hhs_backend/runtime_os_source_only_server.py",
+  "canonical_gateway": "hhs_backend.public_api_server:app",
+  "classification": "GOVERNED_FAIL_CLOSED_SOURCE_ONLY_SAFETY_SHELL",
+  "selection": {
+    "explicit_degraded_request_required": true,
+    "compiled_runtime_must_be_unavailable": true,
+    "normal_production_selects_canonical_pass170_gateway": true,
+    "degraded_shell_is_normal_public_authority": false
+  },
+  "degraded_authority": {
+    "canonical_runtime_authority_active": false,
+    "canonical_mutation_permitted": false,
+    "python_replacement_authority": false,
+    "browser_replacement_authority": false,
+    "frontend_is_authority": false,
+    "assistant_runtime_mutation_admitted": false,
+    "unmatched_api_requests_fail_with_503": true
+  },
+  "constructor_policy": {
+    "independent_fastapi_constructor_retained": true,
+    "retention_reason": "FAIL_CLOSED_SOURCE_EDIT_PREVIEW_EXPORT_WHEN_COMPILED_RUNTIME_IS_EXPLICITLY_UNAVAILABLE",
+    "canonical_public_gateway_constructor": false,
+    "public_port_authority": false,
+    "vm81_authority": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false
+  },
+  "reconciliation": {
+    "explicit_source_only_degraded_gateway_blocker_cleared_by_governed_classification": true,
+    "degraded_safety_behavior_removed": false,
+    "degraded_behavior_promoted_to_canonical_authority": false,
+    "fallback_runtime_fabricated": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF"
+}
