@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / LOCAL GREEN / DEP-SCOPED CI PARTIALLY GREEN**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI GREEN**
 
 ## Repository state
 
@@ -14,6 +14,7 @@ branch: agent/pass219-prime-memristive-fifth-lane-i1-20260912
 contract commit: 11d7c5381469d1ab6c54456c7808e960d4256a0c
 implementation commit: f15d61591464280ce5a126497e1393f6235ce8f4
 implementation tree: 5c2e0766f7d305e1dd3c1f1cd56e29a0cf2118bb
+checkpoint evidence commit: 0d9ca327a42c51fcc58ed89d925305465097a0c7
 ```
 
 ## Implemented files
@@ -156,34 +157,29 @@ run id: 34705498978
 head: f15d61591464280ce5a126497e1393f6235ce8f4
 ```
 
-Observed step state:
+Observed final step state:
 
 ```text
 Check out fifth-lane branch: PASS
 Install native build dependencies: PASS
 Verify exact prime envelope and contract: PASS
 Run fifth-lane implementation test: PASS
-Build inherited exact ABI: IN PROGRESS
-Verify inherited four-lane authority remains green: PENDING
+Build inherited exact ABI: PASS
+Verify inherited four-lane authority remains green: PASS
+workflow conclusion: SUCCESS
 ```
 
-External CI is not a reason to delay this restartable checkpoint.
+The implementation commit is therefore dependency-scoped green against its inherited exact ABI and four-lane authority surface.
 
 ## Remaining validation
 
-Dependency-scoped validation remaining after this checkpoint:
-
-```text
-complete inherited exact ABI build
-run inherited four-lane C regression
-inspect any CI failure if either remaining step turns red
-```
+No I1 dependency-scoped validation remains. A documentation-only checkpoint push may create a redundant workflow run; it is not required to reopen the already-green implementation evidence unless code changes.
 
 No production deployment or main merge has been attempted for this iteration.
 
 ## Next implementation cycle
 
-After the remaining I1 validation is green, the next additive iteration should:
+With I1 dependency-scoped validation green, the next additive iteration should:
 
 1. add an adapter from the existing Pass 219 RNA/VM81 prepared 81-cell surface into the Lane-5 fingerprint input without changing the four-lane ABI;
 2. construct an in-memory inverted index keyed by selected `(p,u,v,rho)` coordinates;
@@ -205,9 +201,8 @@ implementation head: f15d61591464280ce5a126497e1393f6235ce8f4
 First action on restart:
 
 ```text
-inspect workflow run 34705498978
+confirm branch head still descends from f15d61591464280ce5a126497e1393f6235ce8f4
+advance to the RNA/VM81 adapter + candidate-index benchmark cycle
 ```
 
-If green, advance directly to the RNA/VM81 adapter + candidate-index benchmark cycle.
-
-If red, repair only the failed dependency-scoped surface and rerun the Lane-5 workflow; do not reopen already-green arithmetic or standalone implementation gates unless the repair touches them.
+Workflow run `34705498978` is frozen green evidence for the I1 implementation commit. Do not reopen already-green arithmetic, standalone implementation, exact-ABI, or four-lane gates unless a later repair touches their dependency surface.
