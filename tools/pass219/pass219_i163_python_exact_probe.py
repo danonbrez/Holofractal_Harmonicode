@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-from hhs_python.runtime.hhs_uqcel_ctypes_bridge import HHSUQCELRuntimeBridge
+from hhs_python.runtime import hhs_uqcel_ctypes_bridge as uq
 
 ENV_ROOT = bytes.fromhex(
     "da28e8224838999759d071a36fb25f924af10a9fffe2acd79b4b2c0c7840851b"
@@ -30,8 +30,8 @@ def build_frame() -> bytes:
     return b"".join(word.to_bytes(8, "little") for word in words)
 
 
-def canonical_record() -> dict[str, object]:
-    result = HHSUQCELRuntimeBridge.admit_vm81(
+def boundary_record() -> dict[str, object]:
+    result = uq.HHSUQCELRuntimeBridge.admit_vm81(
         build_frame(),
         P=30,
         p=29,
@@ -45,26 +45,41 @@ def canonical_record() -> dict[str, object]:
         previous_hash72="0" * 72,
     )
     admission = result["admission"]
-    assert result["status"] == 0
-    assert result["admitted"] is True
-    assert result["committed_frame"] == build_frame()
+    hidden_composed_mutator_exported = (
+        getattr(uq._LIB, "hhs_exact_pass219_admit_composed", None) is not None
+    )
+    public_environment_signed_exported = (
+        getattr(uq._LIB, "hhs_exact_pass219_vm81_environment_admit_signed", None) is not None
+    )
+
+    # Pass 219 1.31/1.32 closes dynamic mutation through the historical
+    # composed/UQCEL compatibility surface. A valid candidate may still be
+    # validated, but canonical mutation must fail closed and the successor
+    # environmental signed authority must remain exported.
+    assert result["status"] == 5
+    assert result["admitted"] is False
+    assert result["committed_frame"] == bytes(uq.HHS_EXACT_VM81_FRAME_BYTES)
     assert isinstance(admission, dict)
+    assert admission["decision"] == uq.HHS_EXACT_UQCEL_DECISION_ADMIT
+    assert admission["frame_committed"] is False
+    assert hidden_composed_mutator_exported is False
+    assert public_environment_signed_exported is True
+
     return {
-        "schema": "HHS_PASS219_I163_CROSSARCH_EXACT_RECORD_V1",
-        "status": 0,
-        "decision": admission["decision"],
+        "schema": "HHS_PASS219_I163_PYTHON_AUTHORITY_BOUNDARY_V1",
+        "status": int(result["status"]),
+        "validation_decision": int(admission["decision"]),
+        "admitted": bool(result["admitted"]),
         "frame_committed": 1 if admission["frame_committed"] else 0,
-        "vm5184_address": admission["vm5184_address"],
+        "committed_frame_zero": result["committed_frame"] == bytes(uq.HHS_EXACT_VM81_FRAME_BYTES),
         "frame_bytes": len(result["committed_frame"]),
-        "change_hash72": admission["change_hash72"],
-        "receipt_hash72": admission["receipt_hash72"],
-        "hash216_triplet": admission["hash216_triplet"],
-        "hash216_identity": admission["hash216_identity"],
+        "hidden_composed_mutator_exported": hidden_composed_mutator_exported,
+        "public_environment_signed_exported": public_environment_signed_exported,
     }
 
 
 def main() -> int:
-    record = canonical_record()
+    record = boundary_record()
     payload = json.dumps(record, sort_keys=True, separators=(",", ":"))
     if len(sys.argv) > 1:
         Path(sys.argv[1]).write_text(payload + "\n", encoding="utf-8")
