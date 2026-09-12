@@ -9,6 +9,12 @@
 extern "C" {
 #endif
 
+#if defined(_WIN32)
+#define HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_INTERNAL_API
+#else
+#define HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_INTERNAL_API __attribute__((visibility("hidden")))
+#endif
+
 #define HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION UINT32_C(0x0001001F)
 #define HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_SHA256_BYTES UINT32_C(32)
 #define HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65 UINT32_C(1)
@@ -48,16 +54,12 @@ HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_signature_provider_available(
 );
 
 /*
- * Production successor to hhs_exact_pass219_vm81_pqc_admit.
- *
- * The caller selects only one of the two fixed allowed algorithm profiles.
- * It cannot provide a key, a resolver, a verifier, or a signature.  The
- * kernel derives a deterministic PQC keypair from the already-required
- * 512-bit firewall root, signs the exact cell-wall-bound VM81 instruction
- * internally, and verifies that signature before invoking hidden RNA/VM81
- * mutation authority.  Provider absence or signature failure is a HALT.
+ * 1.31 remains an internal signed primitive beneath the 1.32 environmental
+ * successor.  It must not remain an independent production dynamic mutation
+ * surface after Pass 219 environmental authority reconciliation.
  */
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_pqc_admit_signed(
+HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_INTERNAL_API HHSExactStatus
+hhs_exact_pass219_vm81_pqc_admit_signed(
     uint32_t pass_number,
     uint32_t signature_algorithm,
     const HHSExactUQCELInputV1 *input,
