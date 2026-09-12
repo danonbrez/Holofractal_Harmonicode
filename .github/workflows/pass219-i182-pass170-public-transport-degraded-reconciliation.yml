@@ -162,26 +162,15 @@ jobs:
           import importlib
           import json
 
-          def signatures(app):
-              result = set()
-              for route in app.router.routes:
-                  path = str(getattr(route, 'path', ''))
-                  methods = getattr(route, 'methods', None)
-                  if methods:
-                      for method in methods:
-                          if method not in {'HEAD', 'OPTIONS'}:
-                              result.add((str(method), path))
-              return result
-
           stages = []
           public = importlib.import_module('hhs_backend.public_api_server')
-          expected = set()
-          for route in public.build_pass170_router(lambda: None).routes:
-              methods = getattr(route, 'methods', None)
-              if methods:
-                  for method in methods:
-                      if method not in {'HEAD', 'OPTIONS'}:
-                          expected.add((str(method), str(getattr(route, 'path', ''))))
+
+          def signatures(app):
+              return public._http_route_signatures(app.router.routes)
+
+          expected = public._http_route_signatures(
+              public.build_pass170_router(lambda: None).routes
+          )
           stages.append(('public_api_server', public.app, len(expected - signatures(public.app))))
 
           for name in (
