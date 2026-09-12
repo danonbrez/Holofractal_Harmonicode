@@ -137,15 +137,13 @@ jobs:
           file /tmp/pass219-i163/i163-arm64 | grep -i 'aarch64'
           qemu-aarch64 /tmp/pass219-i163/i163-arm64 > artifacts/pass219/i163/arm64_exact_record.json
           python -m json.tool artifacts/pass219/i163/arm64_exact_record.json >/dev/null
-      - name: Build shared exact ABI and run Python binding probe
+      - name: Build full runtime ABI and run Python binding probe
         run: |
-          mkdir -p hhs_runtime/builds
-          gcc -O2 -fPIC -shared -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
-            /tmp/pass219-i163/link-support/hhs_hash216.o \
-            /tmp/pass219-i163/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
-            -lcrypto -lstdc++ -pthread -lm \
-            -o hhs_runtime/builds/libhhs_runtime.so
+          set -euo pipefail
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_runtime_init'
           HHS_DISABLE_C_AUTOBUILD=1 python tools/pass219/pass219_i163_python_exact_probe.py artifacts/pass219/i163/python_exact_record.json >/tmp/pass219-i163/python-record.txt
           python -m json.tool artifacts/pass219/i163/python_exact_record.json >/dev/null
       - name: Enforce x86 ARM64 Python exact identity
