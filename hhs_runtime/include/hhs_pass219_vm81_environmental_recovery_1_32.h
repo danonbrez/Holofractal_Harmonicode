@@ -118,12 +118,13 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_environment_hash216_registry
 );
 
 /*
- * Recovery verifies an internally authenticated checkpoint, anti-rollback
- * floor, full ordered Hash216 registry, and deterministic candidate identity.
- * On success it returns a candidate only.  The candidate MUST still traverse
- * hhs_exact_pass219_vm81_environment_admit_signed before canonical mutation.
+ * Internal 1.32 primitive.  Public recovery is the Pass213 evidence-bound 1.33
+ * successor.  This primitive still verifies the authenticated native checkpoint,
+ * anti-rollback floor, ordered Hash216 registry, and candidate identity, and it
+ * returns a candidate only.
  */
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_environment_recover_candidate(
+HHS_EXACT_PASS219_VM81_ENV_INTERNAL_API HHSExactStatus
+hhs_exact_pass219_vm81_environment_recover_candidate(
     const HHSExactPass219VM81RecoveryCheckpointV1 *checkpoint,
     const HHSExactPass219VM81Hash216RegistryEntryV1 *registry_entries,
     size_t registry_entry_count,
