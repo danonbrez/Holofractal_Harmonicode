@@ -38,7 +38,10 @@ typedef enum HHSExactPass219VM81PQCHaltReasonV1 {
     HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_SIGNATURE_PROFILE = 11,
     HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_PROVIDER_UNAVAILABLE = 12,
     HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_GENERATION_FAILED = 13,
-    HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_VERIFICATION_FAILED = 14
+    HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_VERIFICATION_FAILED = 14,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE = 15,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_RECOVERY_HALTED = 16,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_SIGNATURE_FAILED = 17
 } HHSExactPass219VM81PQCHaltReasonV1;
 
 typedef enum HHSExactPass219VM81PQCFirewallDecisionV1 {
@@ -78,13 +81,6 @@ typedef struct HHSExactPass219VM81PQCFirewallReceiptV1 {
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_version(void);
 
-/*
- * Build/verify a canonical Hash216 reference using the firewall-owned
- * positional SHA-256 resolver. These functions are non-mutating and may be
- * used by callers to obtain a parent reference for a subsequent guarded
- * request. The transition identity is derived from the three Hash72 lanes;
- * it is never caller-authoritative.
- */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_pqc_hash216_reference_init(
     const char previous_hash72[HHS_EXACT_HASH72_STRLEN],
     const char change_hash72[HHS_EXACT_HASH72_STRLEN],
@@ -103,12 +99,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_pqc_hash216_reference_verify
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_halted(void);
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_halt_reason(void);
 
-/*
- * Internal unsigned predecessor retained only so the signed 1.31 successor
- * can reuse the already-verified HMAC/Hash216 machinery during migration.
- * It is deliberately hidden from the dynamic ABI.  Production callers must
- * use hhs_exact_pass219_vm81_pqc_admit_signed from the 1.31 successor.
- */
+/* Internal unsigned predecessor retained only for the signed successor chain. */
 HHS_EXACT_PASS219_VM81_PQC_INTERNAL_API HHSExactStatus hhs_exact_pass219_vm81_pqc_admit(
     uint32_t pass_number,
     const HHSExactUQCELInputV1 *input,
