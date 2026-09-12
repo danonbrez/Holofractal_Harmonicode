@@ -31,6 +31,8 @@ struct Post219DevelopmentResultV1 final {
     bool pass219_substrate_required{true};
     bool pass219_rna_lowering_available{true};
     bool canonical_handoff_required{true};
+    bool pqc_firewall_required{true};
+    bool legacy_direct_canonical_submit_disabled{true};
     bool external_invocation_is_authority{false};
     bool canonical_mutation_authority{false};
     bool canonical_hash72_authority{false};
@@ -131,21 +133,28 @@ public:
             &out_coordinate);
     }
 
+    /*
+     * Compatibility trapdoor closure (Pass 219 1.30 successor rule):
+     *
+     * Prior to the VM81 PQC firewall, this convenience method delegated
+     * directly to the profile-specific canonical handoff.  That would allow a
+     * later pass to construct a candidate and request canonical admission
+     * without proving RNA cell-wall provenance, a valid parent Hash216 array,
+     * or the post-quantum authentication token.
+     *
+     * The source symbol remains so existing code fails closed instead of
+     * failing to compile.  Canonical requests must use
+     * VM81PQCInstructionFirewallV1::admit_or_halt from the additive 1.30
+     * successor header.
+     */
     static HHSExactStatus submit_uqcel_canonical_request(
-        const Post219DevelopmentResultV1& development,
-        const hhs::substrate::ProfileValidationResultV1& profile,
-        const HHSExactUQCELInputV1& uqcel_input,
+        const Post219DevelopmentResultV1&,
+        const hhs::substrate::ProfileValidationResultV1&,
+        const HHSExactUQCELInputV1&,
         hhs::substrate::CanonicalHandoffResultV1& out_result
     ) noexcept {
         out_result = hhs::substrate::CanonicalHandoffResultV1{};
-        if (!development_ready(development))
-            return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-
-        return hhs::substrate::Pass219UQCELCanonicalHandoffV1::commit(
-            development.composition,
-            profile,
-            uqcel_input,
-            out_result);
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
     static constexpr bool pass_number_valid(std::uint32_t pass_number) noexcept {
@@ -186,6 +195,8 @@ private:
                development.pass219_substrate_required &&
                development.pass219_rna_lowering_available &&
                development.canonical_handoff_required &&
+               development.pqc_firewall_required &&
+               development.legacy_direct_canonical_submit_disabled &&
                !development.external_invocation_is_authority &&
                !development.canonical_mutation_authority &&
                !development.canonical_hash72_authority &&
