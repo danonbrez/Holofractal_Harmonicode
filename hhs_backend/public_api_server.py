@@ -20,6 +20,10 @@ import threading
 from typing import Any, Callable, Mapping, Optional
 
 from fastapi import APIRouter, FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect
+try:
+    from fastapi.routing import iter_route_contexts
+except ImportError:  # pragma: no cover - compatibility with older FastAPI releases
+    iter_route_contexts = None  # type: ignore[assignment]
 from pydantic import BaseModel, Field
 
 from hhs_backend import server as production_base
@@ -134,15 +138,21 @@ def _payload_size(value: Any) -> int:
     )
 
 
+def _route_contexts(routes: Any) -> Any:
+    if iter_route_contexts is None:
+        return routes
+    return iter_route_contexts(routes)
+
+
 def _http_route_signatures(routes: Any) -> set[tuple[str, str]]:
     signatures: set[tuple[str, str]] = set()
-    for route in routes:
+    for route in _route_contexts(routes):
         path = str(getattr(route, "path", ""))
         methods = getattr(route, "methods", None)
         if not methods:
             continue
         for method in methods:
-            method_name = str(method).upper()
+            method_name = str(getattr(method, "value", method)).upper()
             if method_name not in {"HEAD", "OPTIONS"}:
                 signatures.add((method_name, path))
     return signatures
