@@ -1,23 +1,27 @@
 # Pass 219 I182 — Pass170 Public Transport / Degraded Gateway Reconciliation Restart Checkpoint
 
-Date: 2026-09-10
-Status: RESTARTABLE — I182 route-parity repair is implemented and inherited gateway regressions are green; the dedicated exact-head I182 gate is still pending runner execution, so I182 is not yet claimed green or merge-ready.
+Date: 2026-09-12
+Status: RESTARTABLE — I182 route-parity repair and the merged harmonic-geometry sibling are preserved. Two CI scope defects have been repair-forwarded; dedicated validation of the latest exact branch head remains required before merge.
 
 ## Restart identity
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
 - Merge target: `main`
 - Base / repaired main at I182 start: `c7f079ad3c0ed67d39bb0be840d47b8d52b24c05`
+- Current main observed during 2026-09-12 reconciliation: `506034954c3056f288e654b0c6c62cde54cbb3d3`
 - Active branch: `agent/pass219-i182-pass170-public-transport-degraded-reconciliation-20260910`
 - Integration PR: `#423`
 - Parent reverse-pass boundary: I181 / Pass170 legacy constructor retirement
 - Intended successor after verified I182 merge: `PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF`
+- Harmonic sibling merge head before scope repair: `ff69ca1fa9d32da8f96bbe034c3c67ab946f9ccd`
+- Exact-sibling scope repair: `5ec3e6c13de387f2c36e24d3654fa3e7105280ad`
+- Event-lineage scope repair: `b0f0f71023ddc8340593fc540e7e26da21d6c2f4`
 
 ## I182 implementation
 
 I182 binds the frozen 59-operation Pass170 record chain across the existing canonical public gateway, generic Python transport, and generic CLI transport while retaining the one receipt WebSocket as streaming-only and inheriting native ABI only for the operation that already declares a native symbol.
 
-Implemented I182 surfaces:
+Implemented I182 transport surfaces:
 
 1. `.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml`
 2. `HHS_PUBLIC_TRANSPORT_PARITY_I182.json`
@@ -26,8 +30,10 @@ Implemented I182 surfaces:
 5. `hhs_runtime/pass219/pass170_public_transport_i182.py`
 6. `hhs_runtime/pass219/pass170_transport_degraded_reconciliation_i182.py`
 7. `tests/pass219/test_pass219_i182_pass170_public_transport_degraded_reconciliation.py`
-8. `hhs_backend/public_api_server.py` — composition-only repair described below
+8. `hhs_backend/public_api_server.py`
 9. this restart record
+
+The branch also intentionally inherits the separately validated 12-file I182 harmonic-geometry sibling lineage merged at `ff69ca1fa9d32da8f96bbe034c3c67ab946f9ccd`. The transport scope guard admits that sibling only as an exact named set; arbitrary additional paths remain rejected.
 
 ## Frozen / inherited authority constraints
 
@@ -51,65 +57,73 @@ Required authority properties remain:
 - the receipt WebSocket remains streaming-only and is not scalarized into HTTP/CLI;
 - I179 audio native/replay authority remains inherited rather than duplicated.
 
-## First dedicated failure
+## Route-parity failure and repair
 
-The initial I182 dedicated validation established a single actionable blocker:
+The initial I182 dedicated validation established:
 
 `PASS170_I182_CANONICAL_HTTP_ROUTE_PARITY_MISMATCH`
 
-The run otherwise completed dependency installation, manifest parsing, Python compilation, canonical C ABI build, the generic Python transport smoke path, and seven of eight I182 dependency-scoped tests.
+A route-retention diagnostic localized the mismatch before later RuntimeOS composition layers. `HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json` extended the frozen parent record chain by 11 governed legacy-runtime HTTP operations, but `hhs_backend.public_api_server:build_pass170_router` did not mount their already-authoritative adapter owner `hhs_backend.pass170_legacy_runtime_routes:build_pass170_legacy_runtime_router`.
 
-A subsequent route-retention diagnostic localized the mismatch before the later RuntimeOS composition layers:
+Repair-forward commits:
 
-- `hhs_backend.public_api_server.app`: 11 Pass170 bundle HTTP signatures absent;
-- production/pass174 composition stages: the same 11 absent;
-- application-IDE/full RuntimeOS composition: one overlapping route supplied elsewhere, leaving 10 absent.
+- `391b13b4457df32107f0a26104190ae5b47bfe93` — expanded the I182 workflow path/scope guard to admit canonical gateway composition and compiled it inside the gate.
+- `68b72f03e105ca2e53a7513be3c0df7325d7cdc4` — mounted the existing I180 legacy runtime router from `hhs_backend.public_api_server:build_pass170_router`.
 
-This disproved the earlier hypothesis that later ASGI composition was dropping the routes.
+The repair adds no duplicate legacy handler implementation and no secondary transition authority.
 
-## Root cause
+## Inherited validation after route repair
 
-`HHS_PUBLIC_OPERATION_RECORD_INDEX_I180.json` extends the frozen parent record chain by exactly 11 governed legacy-runtime HTTP operations:
-
-- `public.runtime.health`
-- `public.runtime.metrics`
-- `public.runtime.solve`
-- `public.runtime.event.inject`
-- `public.runtime.replay.status`
-- `public.runtime.graph.status`
-- `public.runtime.transport.status`
-- `public.runtime.api.status`
-- `public.runtime.calculator.evaluate`
-- `public.runtime.agent.run_loop`
-- `public.runtime.certification`
-
-Their existing authoritative adapter owner is `hhs_backend.pass170_legacy_runtime_routes:build_pass170_legacy_runtime_router`. I180 had implemented and dependency-tested that router, but `hhs_backend.public_api_server:build_pass170_router` did not mount it. Therefore all 11 I180 records were genuinely absent from the canonical Pass170 router bundle; this was not route-template normalization or a stale verifier census.
-
-## Repair-forward applied
-
-Two bounded repair commits were applied after the failure census:
-
-- `391b13b4457df32107f0a26104190ae5b47bfe93` — expands the I182 workflow path/scope guard to admit the canonical gateway composition file and compiles it inside the I182 gate.
-- `68b72f03e105ca2e53a7513be3c0df7325d7cdc4` — imports `build_pass170_legacy_runtime_router` and mounts that already-governed I180 router from `hhs_backend.public_api_server:build_pass170_router`.
-
-The repair adds no duplicate legacy handler implementation. It changes only canonical router composition so the existing I180 adapters become reachable through the already-authoritative Pass170 application.
-
-## Inherited validation after the repair
-
-The modified gateway has already passed the inherited I170 and I171 PR gates on the repaired code:
+The repaired gateway passed inherited I170 and I171 PR gates:
 
 - I170 run `34541554104`: SUCCESS.
-- I171 run `34541554134`: SUCCESS, including compile, inherited registry revalidation, dependency-scoped tests, production application identity and route-parity verification, authority inventory, bounded nonterminal enforcement, and evidence upload.
+- I171 run `34541554134`: SUCCESS, including compile, inherited registry revalidation, dependency-scoped tests, production application identity and route parity, authority inventory, bounded nonterminal enforcement, and evidence upload.
 
-An I175 workflow run `34541554159` is red, but its failure is an expected frozen-boundary mismatch against later I181 state rather than a new route-composition regression. Its reported blockers are the retired constructor/launcher differences already introduced by later Pass170 iterations: `PASS170_I175_FASTAPI_CONSTRUCTOR_COUNT_DRIFT` plus legacy launcher target mismatches for `hhs_backend/runtime/runtime_server.py`, `hhs_backend/server.py`, and `hhs_runtime_api_server_v1.py`. The modified `public_api_server.py` compiled successfully before that historical verifier failed. I175 is not repaired backward.
+Historical I175 failures remain frozen-boundary drift against later I181 state and are not repaired backward.
 
-## Dedicated I182 validation state
+## 2026-09-12 composite-head scope reconciliation
 
-PR `#423` is open and mergeable. The exact-head dedicated I182 workflow has been queued by GitHub Actions; queue state is not treated as success.
+### Failure A — merged harmonic sibling rejected by transport scope
+
+At composite head `ff69ca1fa9d32da8f96bbe034c3c67ab946f9ccd`, dedicated I182 run `34542287691` stopped at `Guard I182 scope and frozen parent`; all later implementation/test steps were skipped. The harmonic-geometry I182 gate on that same head was green.
+
+Comparison from the frozen I182 start base showed exactly 21 changed paths: the nine Pass170 reconciliation paths plus the twelve harmonic-geometry sibling paths. Commit `5ec3e6c13de387f2c36e24d3654fa3e7105280ad` changed the guard to admit those exact two sets while continuing to reject every other path and every frozen-parent mutation.
+
+### Failure B — PR synthetic merge compared against stale frozen base
+
+The PR-triggered run on `5ec3e6c13de387f2c36e24d3654fa3e7105280ad`, run `34709728618`, again stopped at the scope guard. The checkout was GitHub's synthetic merge commit `c563e71572cdc1c38ee0c65048252e3217ca9f68`, combining the I182 head with then-current `main` `506034954c3056f288e654b0c6c62cde54cbb3d3`.
+
+The workflow still diffed the synthetic merge against the original frozen base `c7f079ad3c0ed67d39bb0be840d47b8d52b24c05`, so unrelated mainline work merged after I182 started appeared as illegal I182 scope. This was a validation-frame defect, not evidence that the I182 branch had mutated those paths.
+
+Commit `b0f0f71023ddc8340593fc540e7e26da21d6c2f4` repair-forwarded the guard with event-aware lineage:
+
+- `pull_request`: compare current PR base SHA to PR head SHA;
+- push to the I182 branch: compare frozen I182 base to exact pushed head;
+- push to `main`: compare the event's previous main SHA to the new main SHA;
+- `workflow_dispatch`: compare frozen I182 base to dispatched head;
+- every mode still requires the frozen I182 base to be an ancestor of the validated head;
+- the exact 9+12 allowed surface remains fail-closed;
+- the five frozen parent authority paths remain prohibited.
+
+## Commands / validations executed in this reconciliation cycle
+
+Repository/API equivalent operations completed:
+
+- resolved current `main` and the highest merged Pass170 restart frontier;
+- confirmed I163 is inherited and main reaches I181;
+- resolved existing I182 branch and PR `#423` rather than creating a duplicate branch;
+- compared `c7f079ad3c0ed67d39bb0be840d47b8d52b24c05...ff69ca1fa9d32da8f96bbe034c3c67ab946f9ccd` and enumerated the exact 21-path composite delta;
+- inspected exact-head I182 workflow run `34542287691`;
+- committed exact harmonic-sibling scope reconciliation at `5ec3e6c13de387f2c36e24d3654fa3e7105280ad`;
+- inspected follow-up PR run `34709728618` and its job log;
+- identified GitHub synthetic merge checkout `c563e71572cdc1c38ee0c65048252e3217ca9f68` as the validation frame causing inherited-current-main paths to pollute the frozen-base diff;
+- committed event-lineage scope reconciliation at `b0f0f71023ddc8340593fc540e7e26da21d6c2f4`.
+
+## Dedicated I182 validation contract
 
 Required I182 closure remains:
 
-1. execute the dedicated I182 workflow on the final exact branch head;
+1. execute the dedicated I182 workflow on the final exact branch/PR head;
 2. require all eight dependency-scoped tests green;
 3. require `canonical_http_routes_verified == 58`;
 4. require canonical application identity true;
@@ -120,7 +134,7 @@ Required I182 closure remains:
 9. merge PR `#423` only after exact-head green validation;
 10. verify resulting `main`, then create the Pass170 terminal E2E successor from that exact main.
 
-## Environment / validation contract
+## Environment
 
 Dedicated I182 workflow environment:
 
@@ -131,14 +145,14 @@ Dedicated I182 workflow environment:
 - `HHS_PASS190_DATABASE=/tmp/pass219-i182/pass190.sqlite3`
 - explicit `make c-abi` before I182 tests
 
-No production deployment or DigitalOcean mutation belongs to I182. The separate DigitalOcean known-hosts fail-closed condition remains untouched.
+No production deployment or DigitalOcean mutation belongs to I182.
 
 ## Current blocker
 
 `PASS170_I182_EXACT_HEAD_VALIDATION_PENDING`
 
-The earlier canonical HTTP route-parity failure has a concrete repair applied, but it is not cleared until the dedicated exact-head gate proves the repaired topology.
+The route topology repair is implemented. The two observed scope-guard defects have concrete repair-forward commits. No I182 green or merge-ready claim is made until the dedicated workflow passes on the latest exact checkpoint head.
 
 ## Next action
 
-Run/observe the dedicated I182 gate on this final checkpoint head. Repair only a concrete new failure. If the gate is green, merge PR `#423` with exact-head protection, verify `main`, and proceed immediately to `PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF`.
+Run/observe the dedicated I182 gate on the checkpoint containing this restart record. Repair only a concrete new I182 failure. If green, merge PR `#423` with exact-head protection, verify `main`, and proceed immediately to `PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF`.
