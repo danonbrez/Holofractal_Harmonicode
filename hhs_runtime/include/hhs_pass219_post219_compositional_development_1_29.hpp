@@ -3,6 +3,7 @@
 
 #include "hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp"
 #include "hhs_pass219_rna_transcription_1_10.hpp"
+#include "hhs_pass219_vm81_pqc_signature_1_31.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -32,6 +33,8 @@ struct Post219DevelopmentResultV1 final {
     bool pass219_rna_lowering_available{true};
     bool canonical_handoff_required{true};
     bool pqc_firewall_required{true};
+    bool asymmetric_pqc_signature_required{true};
+    bool unsigned_canonical_submit_disabled{true};
     bool legacy_direct_canonical_submit_disabled{true};
     bool external_invocation_is_authority{false};
     bool canonical_mutation_authority{false};
@@ -134,18 +137,8 @@ public:
     }
 
     /*
-     * Compatibility trapdoor closure (Pass 219 1.30 successor rule):
-     *
-     * Prior to the VM81 PQC firewall, this convenience method delegated
-     * directly to the profile-specific canonical handoff.  That would allow a
-     * later pass to construct a candidate and request canonical admission
-     * without proving RNA cell-wall provenance, a valid parent Hash216 array,
-     * or the post-quantum authentication token.
-     *
-     * The source symbol remains so existing code fails closed instead of
-     * failing to compile.  Canonical requests must use
-     * VM81PQCInstructionFirewallV1::admit_or_halt from the additive 1.30
-     * successor header.
+     * Historical direct handoff is intentionally retained as a compile-time
+     * fail-closed compatibility surface. It can never request mutation.
      */
     static HHSExactStatus submit_uqcel_canonical_request(
         const Post219DevelopmentResultV1&,
@@ -155,6 +148,50 @@ public:
     ) noexcept {
         out_result = hhs::substrate::CanonicalHandoffResultV1{};
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    /*
+     * Sole Pass 220+ production canonical-request path.  The caller may select
+     * one of the fixed PQ signature profiles, but supplies no key, resolver,
+     * verifier, or signature.  Candidate construction remains owned by this
+     * facade; actual mutation remains owned by the signed Pass 219 firewall.
+     */
+    static HHSExactStatus submit_pqc_canonical_request_signed(
+        const Post219DevelopmentResultV1& development,
+        const hhs::substrate::ProfileValidationResultV1& profile,
+        std::uint32_t signature_algorithm,
+        const HHSExactUQCELInputV1& uqcel_input,
+        const HHSExactPass219Hash216TransitionViewV1& parent_hash216_reference,
+        std::int8_t lo_shu_group,
+        std::uint16_t g243,
+        std::uint8_t feedback_lane,
+        std::int8_t feedback_trinary,
+        HHSExactVM81Frame& out_committed_frame,
+        HHSExactPass219RNAAdmissionV1& out_admission,
+        HHSExactPass219VM81PQCFirewallReceiptV1& out_firewall_receipt,
+        HHSExactPass219VM81PQCSignatureReceiptV1& out_signature_receipt
+    ) noexcept {
+        out_committed_frame = HHSExactVM81Frame{};
+        out_admission = HHSExactPass219RNAAdmissionV1{};
+        out_firewall_receipt = HHSExactPass219VM81PQCFirewallReceiptV1{};
+        out_signature_receipt = HHSExactPass219VM81PQCSignatureReceiptV1{};
+        if (!development_ready(development) || !profile_ready(profile))
+            return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+        return hhs_exact_pass219_vm81_pqc_admit_signed(
+            development.pass_number,
+            signature_algorithm,
+            &uqcel_input,
+            &development.composition.candidate,
+            &parent_hash216_reference,
+            lo_shu_group,
+            g243,
+            feedback_lane,
+            feedback_trinary,
+            &out_committed_frame,
+            &out_admission,
+            &out_firewall_receipt,
+            &out_signature_receipt);
     }
 
     static constexpr bool pass_number_valid(std::uint32_t pass_number) noexcept {
@@ -183,6 +220,19 @@ private:
                !composition.floating_point_authority;
     }
 
+    static bool profile_ready(
+        const hhs::substrate::ProfileValidationResultV1& profile
+    ) noexcept {
+        return profile.status == HHS_EXACT_STATUS_OK &&
+               profile.accepted &&
+               profile.validator_only &&
+               !profile.canonical_mutation_authority &&
+               !profile.canonical_hash72_authority &&
+               !profile.canonical_hash216_authority &&
+               !profile.canonical_persistence_authority &&
+               !profile.floating_point_authority;
+    }
+
     static bool development_ready(
         const Post219DevelopmentResultV1& development
     ) noexcept {
@@ -196,6 +246,8 @@ private:
                development.pass219_rna_lowering_available &&
                development.canonical_handoff_required &&
                development.pqc_firewall_required &&
+               development.asymmetric_pqc_signature_required &&
+               development.unsigned_canonical_submit_disabled &&
                development.legacy_direct_canonical_submit_disabled &&
                !development.external_invocation_is_authority &&
                !development.canonical_mutation_authority &&
