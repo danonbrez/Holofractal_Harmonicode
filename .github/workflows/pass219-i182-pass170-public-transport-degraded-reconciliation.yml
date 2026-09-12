@@ -101,11 +101,15 @@ jobs:
               '.github/workflows/pass219-i182-pass170-public-transport-degraded-reconciliation.yml',
               'docs/operations/restart/PASS_219_I182_PASS170_PUBLIC_TRANSPORT_DEGRADED_RECONCILIATION_RESTART.md',
               'docs/operations/restart/PASS_219_I182_EXACT_MAIN_RECONCILIATION_PRECHECKPOINT_20260912.md',
+              'docs/operations/restart/PASS_219_I182_PUBLIC_TRANSPORT_PRE_REPAIR_CHECKPOINT_20260912.md',
+              'docs/operations/restart/PASS_219_I182_PUBLIC_TRANSPORT_POST_REPAIR_CHECKPOINT_20260912.md',
           }
           validated_harmonic_sibling = {
               '.github/workflows/pass219-i182-harmonic-geometry-circuit.yml',
               'contracts/pass219/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_1_0.json',
               'docs/operations/restart/PASS_219_I182_HARMONIC_GEOMETRY_CIRCUIT_RESTART.md',
+              'docs/operations/restart/PASS_219_I182_GEOMETRY_LINK_PRE_REPAIR_CHECKPOINT_20260912.md',
+              'docs/operations/restart/PASS_219_I182_GEOMETRY_LINK_POST_REPAIR_CHECKPOINT_20260912.md',
               'hhs_runtime/c/hhs_pass219_i182_harmonic_geometry_membrane_1_0.inc',
               'hhs_runtime/c/hhs_runtime_exact_abi.c',
               'hhs_runtime/include/hhs_pass219_i182_harmonic_geometry_membrane_1_0.h',
