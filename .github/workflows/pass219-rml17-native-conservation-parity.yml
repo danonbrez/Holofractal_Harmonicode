@@ -1,0 +1,201 @@
+name: Pass 219 RML17 Native Conservation Parity
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml17-native-conservation-parity-20260910
+    paths:
+      - 'hhs_runtime/pass219/discrete_transport_conservation.py'
+      - 'hhs_runtime/pass219/native_transport_conservation.py'
+      - 'hhs_runtime/pass219/rml18_transport_conservation_acceleration.py'
+      - 'hhs_runtime/include/hhs_pass219_discrete_transport_conservation_1_29.hpp'
+      - 'hhs_runtime/include/hhs_pass219_rml17_transport_abi_1_30.h'
+      - 'native_projects/hhs_pass219_discrete_transport_conservation/**'
+      - 'tests/pass219/test_pass219_rml17_discrete_transport_conservation.py'
+      - 'tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py'
+      - '.github/workflows/pass219-rml17-native-conservation-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rml17-native-conservation-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped Python dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Guard integration authority boundary against current RML18 base
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=76cd6f995668dac3f1bfb10ae25a8301b2233237
+          git diff --name-only "$base"...HEAD | tee /tmp/pass219_rml17_native_parity_changed.txt
+          python - <<'PY'
+          from pathlib import Path
+          allowed_exact = {
+              '.github/workflows/pass219-discrete-transport-conservation.yml',
+              '.github/workflows/pass219-rml17-native-conservation-parity.yml',
+              'docs/operations/restart/PASS_219_DISCRETE_TRANSPORT_CONSERVATION_CONTRACT_CHECKPOINT_20260910.md',
+              'docs/operations/restart/PASS_219_RML17_NATIVE_CONSERVATION_PARITY_CHECKPOINT_20260910.md',
+              'docs/operations/restart/PASS_219_RML17_NATIVE_CONSERVATION_PARITY_RML18_RESEAL_20260910.md',
+              'evidence/pass219_rml17_native_parity/PASS_219_RML17_NATIVE_CONSERVATION_PARITY_RECEIPT.json',
+              'evidence/pass219_rml17_native_parity/PASS_219_RML18_RESEAL_ON_NATIVE_PARITY_RECEIPT.json',
+              'hhs_runtime/pass219/discrete_transport_conservation.py',
+              'hhs_runtime/pass219/native_transport_conservation.py',
+              'hhs_runtime/pass219/rml18_transport_conservation_acceleration.py',
+              'hhs_runtime/include/hhs_pass219_discrete_transport_conservation_1_29.hpp',
+              'hhs_runtime/include/hhs_pass219_rml17_transport_abi_1_30.h',
+              'tests/pass219/test_pass219_rml17_discrete_transport_conservation.py',
+              'tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py',
+          }
+          allowed_prefix = 'native_projects/hhs_pass219_discrete_transport_conservation/'
+          changed = [
+              line for line in Path('/tmp/pass219_rml17_native_parity_changed.txt').read_text().splitlines()
+              if line
+          ]
+          illegal = [
+              path for path in changed
+              if path not in allowed_exact and not path.startswith(allowed_prefix)
+          ]
+          assert not illegal, illegal
+          assert not any(path.startswith('hhs_runtime/c/') for path in changed)
+          print('PASS219_RML17_NATIVE_PARITY_SCOPE', len(changed), 'files')
+          PY
+
+      - name: Compile Python parity and RML18 reseal surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/discrete_transport_conservation.py \
+            hhs_runtime/pass219/native_transport_conservation.py \
+            hhs_runtime/pass219/rml18_transport_conservation_acceleration.py \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py \
+            tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py
+
+      - name: Rebuild inherited native route chain and conservation ABI
+        run: |
+          make c-abi
+          make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+          make -C native_projects/hhs_pass219_discrete_transport_conservation clean validate
+
+      - name: Verify subordinate ABI exports no transition authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          so=native_projects/hhs_pass219_discrete_transport_conservation/build/libhhs_pass219_rml17_transport_abi.so
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_flatten$'
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_unflatten$'
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_successor$'
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_export_parity_rows$'
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_audit$'
+          nm -D "$so" | grep ' hhs_pass219_rml17_transport_has_transition_authority$'
+          if nm -D "$so" | grep -E ' hhs_exact_pass219_rna_admit_composed$| hhs_exact_vm81_.*commit| hhs_exact_.*hash72.*mint| hhs_exact_.*hash216.*persist'; then
+            echo 'forbidden authority export detected' >&2
+            exit 1
+          fi
+
+      - name: Run reconciled RML17 contract and inherited route regression
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Prove exhaustive Python RML17 to native C++ parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/rml17-native-conservation-parity
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.discrete_transport_conservation import (
+              audit_native_execution_parity,
+          )
+
+          receipt = audit_native_execution_parity(chunk_size=8192)
+          assert receipt['result'] == 'PASS', receipt
+          assert receipt['addresses_compared'] == 1_492_992
+          assert receipt['python_address_count'] == 1_492_992
+          assert receipt['native_address_count'] == 1_492_992
+          assert receipt['mismatch_total'] == 0
+          assert receipt['source_encoding_mismatches'] == 0
+          assert receipt['target_encoding_mismatches'] == 0
+          assert receipt['successor_mismatches'] == 0
+          assert receipt['flux_orientation_mismatches'] == 0
+          assert receipt['reciprocal_alignment_mismatches'] == 0
+          assert receipt['zero_diffusion_classification_mismatches'] == 0
+          assert receipt['reverse_closure_mismatches'] == 0
+          assert receipt['python_native_extensional_equality'] is True
+          assert receipt['native_exhaustive_contract_pass'] is True
+          assert receipt['native_abi_transition_authority_closed'] is True
+          assert receipt['canonical_transition_authority_expanded'] is False
+          path = Path('artifacts/pass219/rml17-native-conservation-parity/parity_receipt.json')
+          path.write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
+      - name: Revalidate RML18 successor against reconciled parity nucleus
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py
+
+      - name: Seal RML18 differential identity for this run
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.rml18_transport_conservation_acceleration import (
+              FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256,
+              FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256,
+              accelerated_address_manifold_certificate,
+              compare_accelerated_certificate_to_exhaustive,
+          )
+
+          certificate = accelerated_address_manifold_certificate()
+          differential = compare_accelerated_certificate_to_exhaustive()
+          assert certificate['status'] == 'ADMITTED', certificate
+          assert certificate['invariant']['numerator'] == 1001
+          assert certificate['invariant']['denominator'] == 1000
+          assert certificate['invariant']['decimal'] == '1.001'
+          assert certificate['binary_floating_point_authority'] is False if 'binary_floating_point_authority' in certificate else True
+          assert certificate['python_native_extensional_equality'] is True
+          assert certificate['native_abi_transition_authority_closed'] is True
+          assert certificate['canonical_transition_authority'] is False
+          assert differential['status'] == 'ADMITTED', differential
+          assert differential['accelerated_certificate_equal'] is True
+          assert differential['exhaustive_rml17_audit_sha256'] == FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256
+          assert differential['native_parity_audit_sha256'] == FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256
+          path = Path('artifacts/pass219/rml17-native-conservation-parity/rml18_reseal_receipt.json')
+          path.write_text(json.dumps({
+              'certificate': certificate,
+              'differential': differential,
+          }, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          print('PASS219_RML18_RESEAL_PASS')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml17-native-conservation-parity
+          path: |
+            artifacts/pass219/discrete-transport-conservation/native_contract.json
+            artifacts/pass219/rml17-native-conservation-parity/parity_receipt.json
+            artifacts/pass219/rml17-native-conservation-parity/rml18_reseal_receipt.json
+          if-no-files-found: error
