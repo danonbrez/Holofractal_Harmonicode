@@ -335,3 +335,69 @@ canonical kernel            = mutation + canonical receipt ownership
 Compatibility symbols MAY remain callable for inherited internal composition and dependency-scoped validation, but they SHALL NOT be interpreted or exposed as independent production canonical authorities.
 
 Therefore the handoff is extensible in accepted candidate structure while non-extensible in canonical ownership.
+
+---
+
+## 11. Mandatory VM81 PQC cell-wall firewall
+
+The canonical handoff SHALL enforce the normative firewall contract:
+
+```text
+contracts/pass219/PASS_219_VM81_PQC_CELL_WALL_FIREWALL_V1.md
+```
+
+Accordingly, the canonical path is strengthened to:
+
+```text
+generic/profile accepted candidate
+      ↓
+Pass 219 RNA cell-wall lowering
+      ↓
+canonical instruction envelope
+      ↓
+VM81 PQC cell-wall firewall
+      ↓ ADMIT only
+inherited canonical admission authority
+      ↓ canonical revalidation
+canonical VM81 commit + Hash72 / Hash216 lineage
+```
+
+The handoff SHALL NOT invoke canonical VM81 dispatch unless the firewall proves, for the exact instruction envelope:
+
+```text
+valid membrane source/path
+∧ valid predecessor Hash72 lineage
+∧ valid predecessor Hash216 identity
+∧ valid required Hash216 array references
+∧ valid authorized PQC signature
+∧ valid anti-replay/freshness state
+∧ no authority escalation
+```
+
+Any failure SHALL hard-reject before VM81 dispatch, canonical mutation, canonical Hash72 issuance, canonical Hash216 issuance, or persistence.
+
+Firewall admission remains necessary but not sufficient for canonical commit:
+
+```text
+firewall ADMIT
+∧ inherited canonical authority ADMIT
+⇒ canonical commit
+```
+
+while:
+
+```text
+firewall REJECT
+⇒ canonical authority not invoked
+⇒ committed_frame = 0
+```
+
+and:
+
+```text
+firewall ADMIT
+∧ inherited canonical authority REJECT
+⇒ canonical commit = false
+```
+
+The firewall therefore strengthens the canonical handoff without changing singleton canonical ownership.
