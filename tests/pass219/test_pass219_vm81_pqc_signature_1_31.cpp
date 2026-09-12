@@ -43,7 +43,7 @@ static bool frames_equal(
     return std::memcmp(&left, &right, sizeof(left)) == 0;
 }
 
-static void install_root_key() {
+static bool install_root_key() {
     std::string hex;
     hex.reserve(HHS_EXACT_PASS219_VM81_PQC_KEY_HEX_CHARS);
     static constexpr char digits[] = "0123456789abcdef";
@@ -52,7 +52,7 @@ static void install_root_key() {
         hex.push_back(digits[(value >> 4U) & 0x0FU]);
         hex.push_back(digits[value & 0x0FU]);
     }
-    CHECK(setenv(HHS_EXACT_PASS219_VM81_PQC_KEY_ENV, hex.c_str(), 1) == 0);
+    return setenv(HHS_EXACT_PASS219_VM81_PQC_KEY_ENV, hex.c_str(), 1) == 0;
 }
 
 static HHSExactVM81Frame build_candidate() noexcept {
@@ -94,7 +94,7 @@ static int run_signed(
     std::uint32_t algorithm,
     bool invalid_constraint
 ) {
-    install_root_key();
+    CHECK(install_root_key());
 
     HHSExactPass219Hash216TransitionViewV1 parent{};
     CHECK(hhs_exact_pass219_vm81_pqc_hash216_genesis_reference(&parent) ==
@@ -188,7 +188,7 @@ static int run_signed(
 }
 
 static int run_bad_profile() {
-    install_root_key();
+    CHECK(install_root_key());
     HHSExactPass219Hash216TransitionViewV1 parent{};
     CHECK(hhs_exact_pass219_vm81_pqc_hash216_genesis_reference(&parent) ==
           HHS_EXACT_STATUS_OK);
@@ -214,7 +214,7 @@ static int run_bad_profile() {
 }
 
 static int run_bad_parent() {
-    install_root_key();
+    CHECK(install_root_key());
     HHSExactPass219Hash216TransitionViewV1 parent{};
     CHECK(hhs_exact_pass219_vm81_pqc_hash216_genesis_reference(&parent) ==
           HHS_EXACT_STATUS_OK);
