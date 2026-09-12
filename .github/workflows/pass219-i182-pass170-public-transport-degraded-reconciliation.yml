@@ -55,9 +55,38 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base=c7f079ad3c0ed67d39bb0be840d47b8d52b24c05
-          git merge-base --is-ancestor "$base" HEAD
-          git diff --name-only "$base"...HEAD | tee /tmp/pass219_i182_changed.txt
+          frozen_base=c7f079ad3c0ed67d39bb0be840d47b8d52b24c05
+
+          case "$GITHUB_EVENT_NAME" in
+            pull_request)
+              scope_base='${{ github.event.pull_request.base.sha }}'
+              scope_head='${{ github.event.pull_request.head.sha }}'
+              ;;
+            push)
+              if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+                scope_base='${{ github.event.before }}'
+                scope_head="$GITHUB_SHA"
+              else
+                scope_base="$frozen_base"
+                scope_head="$GITHUB_SHA"
+              fi
+              ;;
+            *)
+              scope_base="$frozen_base"
+              scope_head="$GITHUB_SHA"
+              ;;
+          esac
+
+          test -n "$scope_base"
+          test -n "$scope_head"
+          git cat-file -e "${scope_base}^{commit}"
+          git cat-file -e "${scope_head}^{commit}"
+          git merge-base --is-ancestor "$frozen_base" "$scope_head"
+          git diff --name-only "$scope_base"..."$scope_head" | tee /tmp/pass219_i182_changed.txt
+          printf 'PASS219_I182_SCOPE_EVENT=%s\n' "$GITHUB_EVENT_NAME"
+          printf 'PASS219_I182_SCOPE_BASE=%s\n' "$scope_base"
+          printf 'PASS219_I182_SCOPE_HEAD=%s\n' "$scope_head"
+
           python - <<'PY'
           from pathlib import Path
 
