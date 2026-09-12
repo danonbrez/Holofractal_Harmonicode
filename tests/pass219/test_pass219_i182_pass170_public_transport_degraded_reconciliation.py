@@ -109,6 +109,44 @@ def test_generic_python_transport_executes_through_canonical_full_app() -> None:
     assert result["floating_point_canonical_authority"] is False
 
 
+def test_stale_composition_marker_reconciles_complete_i180_bundle_once() -> None:
+    from fastapi import FastAPI
+
+    from hhs_backend import public_api_server
+    from hhs_backend.pass170_legacy_runtime_routes import MIGRATED_HTTP_SIGNATURES
+
+    target = FastAPI()
+    target.state.hhs_pass170_routes_composed = True
+
+    public_api_server._compose_pass170(  # type: ignore[attr-defined]
+        target,
+        authority_context=None,
+        registry_report={},
+    )
+
+    signatures = set()
+    for route in target.router.routes:
+        path = str(getattr(route, "path", ""))
+        methods = getattr(route, "methods", None)
+        if methods:
+            for method in methods:
+                method_name = str(method).upper()
+                if method_name not in {"HEAD", "OPTIONS"}:
+                    signatures.add((method_name, path))
+
+    required = set(MIGRATED_HTTP_SIGNATURES)
+    assert required <= signatures
+    assert target.state.hhs_pass170_route_bundle_revision == public_api_server.PASS170_ROUTE_BUNDLE_REVISION
+
+    route_count = len(target.router.routes)
+    public_api_server._compose_pass170(  # type: ignore[attr-defined]
+        target,
+        authority_context=None,
+        registry_report={},
+    )
+    assert len(target.router.routes) == route_count
+
+
 def test_degraded_shell_remains_fail_closed_and_noncanonical() -> None:
     from hhs_backend.runtime_os_source_only_server import app
 
