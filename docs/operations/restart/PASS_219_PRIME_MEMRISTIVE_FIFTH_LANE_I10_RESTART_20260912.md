@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE IMPLEMENTATION / DEDICATED CI PENDING**
+Status: **RESTARTABLE IMPLEMENTATION / DEDICATED CI QUEUED**
 
 ## Repository state
 
@@ -13,7 +13,7 @@ branch: agent/pass219-prime-memristive-fifth-lane-i10-20260912
 I10 contract commit: bfda20b89c3cd7801c9da4a06c7dc82f0cb1c806
 I10 runtime commit: 28a6566328db62e860865aacb485679968ca69de
 I10 benchmark commit: d30b885318fcb47327a39785ff0ee13fa8e2797f
-I10 workflow commit: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+I10 workflow / validation head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
 ```
 
 ## I10 files
@@ -94,11 +94,34 @@ requires_inherited_vm81_hash216_admission = true
 HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4
 ```
 
+## Dedicated repository CI — exact queued state
+
+```text
+workflow: Pass 219 Prime Memristive Fifth Lane Sparse Arbitration I10
+run id: 34718573455
+job id: 103620101378
+head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+status: queued
+conclusion: none
+```
+
+At checkpoint time, no validation step has executed and no I10 failure has been observed. The queued state is external runner scheduling, not acceptance evidence and not a repository defect.
+
 No main merge or production deployment has been attempted.
 
 ## Next action
 
-1. resolve only the dedicated I10 dependency-scoped workflow triggered by `cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb`;
+1. resolve only run `34718573455` / job `103620101378`;
 2. if red, repair only the exact I10-touched dependency surface;
-3. if green, freeze run/job IDs, exact `lane5_i10` receipt, validated head/tree, and next additive cycle here;
-4. do not reopen I1-I9 unless I10 reproduces a regression on their directly touched surface.
+3. if green, freeze the exact `lane5_i10` receipt, validated head/tree, and next additive cycle here;
+4. only after I10 is green, advance into I11 sparse-winner allocation execution;
+5. do not reopen I1-I9 unless I10 reproduces a regression on their directly touched surface.
+
+## Restart point
+
+```text
+branch: agent/pass219-prime-memristive-fifth-lane-i10-20260912
+validation head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+dedicated workflow: 34718573455 QUEUED
+job: 103620101378 QUEUED
+```
