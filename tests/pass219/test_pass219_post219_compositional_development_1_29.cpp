@@ -10,7 +10,6 @@ using hhs::pass219::Post219DevelopmentDecisionV1;
 using hhs::pass219::Post219DevelopmentResultV1;
 using hhs::substrate::AdmissionProfileAdapterV1;
 using hhs::substrate::AlgebraicModuleV1;
-using hhs::substrate::CanonicalHandoffDecisionV1;
 using hhs::substrate::CanonicalHandoffResultV1;
 using hhs::substrate::ProfileValidationResultV1;
 
@@ -215,6 +214,8 @@ int main() {
     CHECK(development.pass219_substrate_required);
     CHECK(development.pass219_rna_lowering_available);
     CHECK(development.canonical_handoff_required);
+    CHECK(development.pqc_firewall_required);
+    CHECK(development.legacy_direct_canonical_submit_disabled);
     CHECK(!development.external_invocation_is_authority);
     CHECK(!development.canonical_mutation_authority);
     CHECK(!development.canonical_hash72_authority);
@@ -285,37 +286,20 @@ int main() {
     HHSExactUQCELInputV1 valid_input{};
     CHECK(build_uqcel_input(owners, valid_input) == HHS_EXACT_STATUS_OK);
 
-    /* Canonical success is a delegated request, not Pass 220 authority. */
-    CanonicalHandoffResultV1 committed{};
+    /* Direct post-219 canonical submission is now a fail-closed compatibility trapdoor. */
+    CanonicalHandoffResultV1 direct{};
     CHECK(Post219CompositionalDevelopmentABIV1::submit_uqcel_canonical_request(
-              development, accepted, valid_input, committed) == HHS_EXACT_STATUS_OK);
-    CHECK(committed.decision == CanonicalHandoffDecisionV1::COMMITTED);
-    CHECK(committed.delegated_to_inherited_c_authority);
-    CHECK(committed.inherited_authority_revalidated);
-    CHECK(!committed.adapter_is_canonical_authority);
-    CHECK(committed.canonical_receipt_owned_by_inherited_authority);
-    CHECK(frames_equal(committed.committed_frame, development.composition.candidate));
+              development, accepted, valid_input, direct) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+    CHECK(!direct.delegated_to_inherited_c_authority);
+    CHECK(frame_is_zero(direct.committed_frame));
 
-    /* Invalid canonical inputs remain rejectable after every high-level precheck passes. */
-    UQCELOwners invalid_owners{};
-    invalid_owners.delta = 2U;
-    HHSExactUQCELInputV1 invalid_input{};
-    CHECK(build_uqcel_input(invalid_owners, invalid_input) == HHS_EXACT_STATUS_OK);
-    CanonicalHandoffResultV1 canonical_rejected{};
-    CHECK(Post219CompositionalDevelopmentABIV1::submit_uqcel_canonical_request(
-              development, accepted, invalid_input, canonical_rejected) ==
-          HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
-    CHECK(canonical_rejected.decision == CanonicalHandoffDecisionV1::DELEGATED_REJECTED);
-    CHECK(canonical_rejected.delegated_to_inherited_c_authority);
-    CHECK(frame_is_zero(canonical_rejected.committed_frame));
-
-    /* Forged development authority metadata cannot cross the handoff. */
+    /* Forged development metadata remains unable to use the closed legacy handoff. */
     Post219DevelopmentResultV1 forged = development;
     forged.canonical_hash216_authority = true;
     CanonicalHandoffResultV1 forged_result{};
     CHECK(Post219CompositionalDevelopmentABIV1::submit_uqcel_canonical_request(
               forged, accepted, valid_input, forged_result) ==
-          HHS_EXACT_STATUS_INVALID_ARGUMENT);
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
     CHECK(!forged_result.delegated_to_inherited_c_authority);
     CHECK(frame_is_zero(forged_result.committed_frame));
 
