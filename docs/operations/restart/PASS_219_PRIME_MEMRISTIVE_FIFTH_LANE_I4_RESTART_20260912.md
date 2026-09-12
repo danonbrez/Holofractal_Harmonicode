@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTATION PENDING REPOSITORY CI**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI QUEUED**
 
 ## Repository state
 
@@ -11,6 +11,8 @@ repository: danonbrez/Holofractal_Harmonicode
 base I3 frozen head: 710c6a2446fc1b8d393d25d5877f056c0c814455
 branch: agent/pass219-prime-memristive-fifth-lane-i4-20260912
 I4 contract commit: 2a8d528e5e7925c6389c8754c8d0c27770abb50e
+I4 implementation commit: a81c3331a2733bb53c57a8a7c61a1684053ddaef
+implementation tree: 25e36b5f6de7185bec0c9955b5d0facb391eb06d
 ```
 
 ## I4 files
@@ -55,7 +57,17 @@ Hash216 alias group unchanged
 Holo4 state byte-identical
 ```
 
-## Dedicated repository CI target
+## Dedicated repository CI
+
+```text
+workflow: Pass 219 Prime Memristive Fifth Lane Adaptive Context I4
+run id: 34709874389
+job id: 103596559375
+head: a81c3331a2733bb53c57a8a7c61a1684053ddaef
+state at checkpoint: QUEUED
+```
+
+Required dependency-scoped gates are:
 
 ```text
 I4 static authority/fallback contract
@@ -67,12 +79,55 @@ I4 adaptive multi-context/fallback benchmark
 inherited Holo4 four-lane C regression
 ```
 
-## Next action
+Broad legacy workflows may also trigger on feature-branch pushes. Their unrelated failures are outside the I4 dependency surface unless the dedicated I4 workflow exposes a touched inherited dependency failure.
 
-After the implementation commit is created:
+## Validation completed / remaining
 
-1. observe only the dedicated I4 workflow for dependency-scoped acceptance;
-2. repair only the failing I4 dependency surface if red;
-3. freeze workflow run ID, exact benchmark receipt, implementation commit/tree, and remaining action on success;
-4. do not reopen already-green I1/I2/I3 gates unless touched;
-5. do not merge to main or deploy production unless separately authorized.
+Completed:
+
+```text
+I4 contract committed
+I4 implementation committed
+restartable repository-visible state committed
+workflow accepted by GitHub Actions
+```
+
+Remaining:
+
+```text
+dedicated I4 workflow run 34709874389 must leave queue and execute
+if green: freeze exact benchmark receipt and SUCCESS evidence
+if red: repair only the failing I4 dependency surface and rerun
+```
+
+No main merge or production deployment has been attempted.
+
+## Next implementation cycle after I4 closure
+
+If I4 is green, advance additively to I5:
+
+1. make adaptive context utility composable across multiple query modalities while preserving exact integer authority;
+2. add hierarchical context inheritance so broad routes can seed narrower context routes without copying canonical knowledge;
+3. add bounded route-pruning/tombstone metadata that removes obsolete access paths without deleting Hash216 references;
+4. benchmark context inheritance, route reuse, alias stability, and cold fallback over multiple deterministic corpus partitions;
+5. retain inherited VM81/Hash216 final verification and admission authority.
+
+## Restart point
+
+Resume from:
+
+```text
+branch: agent/pass219-prime-memristive-fifth-lane-i4-20260912
+implementation head: a81c3331a2733bb53c57a8a7c61a1684053ddaef
+implementation tree: 25e36b5f6de7185bec0c9955b5d0facb391eb06d
+workflow: 34709874389 QUEUED
+```
+
+First restart action:
+
+```text
+inspect workflow 34709874389
+freeze green evidence or repair-forward only its failing dependency surface
+```
+
+Do not reopen already-green I1/I2/I3 work unless I4 touches and breaks that exact dependency surface.
