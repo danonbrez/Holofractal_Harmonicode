@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS219_SCALAR_PROJECTION_THEOREM_REGISTRY_CONTRACT_V1",
+  "contract_id": "HHS-P219-SCALAR-PROJECTION-THEOREM-REGISTRY-1.1",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "HHS-P219-SCALAR-PROJECTION-PROOF-REGISTRY-1.0",
+    "HARMONICODE_AXIOM_AND_PROJECTION_REGISTRY",
+    "PASS_129_INVARIANT_DELTA_RATIONAL_PROJECTION",
+    "PASS_219_HHCQ_PRIME_RATIONAL_PHASE10",
+    "PASS_219_HHCQ_8BASIS_EQUILIBRIUM_PHASE11",
+    "PASS_219_HARMONIC_THREE_SQUARE_UNIFIED_PHYSICS_PROOF_CONTRACT_2_0"
+  ],
+  "canonical_pass169_source": {
+    "path": "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode",
+    "bytes": 632,
+    "sha256": "3315641c8d6aa9fc4f3918eccda8e3a40c8445cc417a65e5dea683f68020cf53"
+  },
+  "current_hhcq_authority": {
+    "path": "contracts/pass219/PASS_219_HARMONIC_THREE_SQUARE_UNIFIED_PHYSICS_PROOF_CONTRACT_2_0.md",
+    "git_blob_sha": "24a4f265e8bf9df084ae84b820c3c45361c9d856"
+  },
+  "theorem_count": 87,
+  "projection_classes": [
+    "FIXED_SCALAR",
+    "PARAMETERIZED_SCALAR",
+    "MULTIBRANCH_SCALAR",
+    "SYMBOLIC_SCALAR",
+    "UNSUPPORTED_DOMAIN",
+    "TYPED_NONSCALAR"
+  ],
+  "coverage_families": [
+    "primitive_square_and_loshu_polynomials",
+    "base_symbol_root_branching",
+    "pass129_P_p_q_Delta_rational_projection",
+    "t_m_residue_without_native_symbol_solving",
+    "ordered_x_y_z_w_xy_yx_zw_wz_integer_phase_views",
+    "Phi8_macro_micro_equilibrium",
+    "UCE_integer_symmetric_A_B_AB_P4",
+    "Phase10_prime_rational_A_B_reciprocal_envelope",
+    "u_phase72_and_polynomial_consequences",
+    "b2_u72_constraint_surface",
+    "u0_RealSurd_exact_algebraic_projection",
+    "symbolic_Pi_O_E_and_I_phase_identity",
+    "full_symbolic_residual_fail_closed_classification",
+    "ordered_matrix_symbolic_projection"
+  ],
+  "required_invariants": {
+    "projection_equality_implies_native_identity": false,
+    "same_native_symbol_may_have_multiple_registered_projections": true,
+    "source_rewrite_authorized": false,
+    "commutative_reorder_authorized": false,
+    "nonassociative_reassociation_authorized": false,
+    "unresolved_projection_may_be_approximated": false,
+    "floating_point_canonical_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false
+  },
+  "runtime_module": "hhs_runtime.pass219.scalar_projection_theorems",
+  "focused_test": "tests/pass219/test_pass219_scalar_projection_theorems.py"
+}
