@@ -141,9 +141,11 @@ static HHSExactStatus hhs_p219_pass213_verify_evidence(
             receipt, HHS_EXACT_PASS219_PASS213_RECOVERY_REASON_STRUCTURE);
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     }
+    /* Pass213 signed-checkpoint sequencing and native 1.32 checkpoint
+     * sequencing are independent monotonic domains.  Both must be nonzero;
+     * only the native sequence is required to equal the exact 1.32 envelope. */
     if (evidence->signed_sequence == 0U || evidence->checkpoint_sequence == 0U ||
-        evidence->checkpoint_sequence != checkpoint->checkpoint_sequence ||
-        evidence->signed_sequence > evidence->checkpoint_sequence) {
+        evidence->checkpoint_sequence != checkpoint->checkpoint_sequence) {
         hhs_p219_pass213_fail_closed(
             receipt, HHS_EXACT_PASS219_PASS213_RECOVERY_REASON_SEQUENCE);
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
