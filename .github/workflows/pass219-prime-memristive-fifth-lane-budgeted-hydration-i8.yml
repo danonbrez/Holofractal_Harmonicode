@@ -53,7 +53,7 @@ jobs:
               'local_activation_budget_only = true',
               'multi_hop_predictive_hydration_only = true',
               'reversible_budget_receipt_only = true',
-              'hop_cost',
+              'fixed integer hop quantum',
               'budget exhaustion != canonical mutation',
               'predictive hydration result != canonical admission',
               'HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4',
