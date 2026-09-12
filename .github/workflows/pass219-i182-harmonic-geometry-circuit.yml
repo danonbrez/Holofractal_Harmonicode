@@ -115,17 +115,26 @@ jobs:
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i182/exact.o
 
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i182/link-support full
+
       - name: Compile native C and C++ membrane tests
         run: |
           gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.c \
             /tmp/pass219-i182/exact.o \
+            /tmp/pass219-i182/link-support/hhs_hash216.o \
+            /tmp/pass219-i182/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-i182/test-native-c
           g++ -O3 -std=c++20 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_i182_harmonic_geometry_membrane_1_0.cpp \
             /tmp/pass219-i182/exact.o \
+            /tmp/pass219-i182/link-support/hhs_hash216.o \
+            /tmp/pass219-i182/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
             -o /tmp/pass219-i182/test-native-cpp
 
       - name: Run dependency-scoped I182 Python tests
