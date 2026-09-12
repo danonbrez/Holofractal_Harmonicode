@@ -10,6 +10,7 @@ base branch: main
 base commit: b33b079399146e3d145aa3f6839979c87baf9605
 working branch: agent/pass219-plug-and-play-math-logic-substrate-v1-20260911
 merge target: main
+integration PR: #431
 ```
 
 The base is the merged Pass 219 Cycle 2 four-plane contextual-alignment main state.
@@ -40,14 +41,19 @@ tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp
 docs/operations/restart/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1_RESTART_20260911.md
 ```
 
-## Commit sequence before this restart file
+## Commit sequence
 
 ```text
 a4ab959fcdf4ee0d45889b8d7e67e1fc3a23c155  formalize plug-and-play mathematical logic substrate
 14133f4f747add7a551f9348cebced3a23f02b4e  implement generic math logic candidate substrate
 e13a0b19addb85f2601adb19ef2a6ed405f3ab56  test plug-and-play math logic substrate
 e13bbac5ae89d978151b41832397df7f440fd3c4  add plug-and-play substrate validation workflow
+5b37c18d77de81fb96dd9275aa830d4ad539c7a4  freeze initial restart checkpoint
+9486f9e8aa2bff1c144a4638f3086f72ef672d2f  run substrate gate on pull requests
+e890d471da12f9f0a83c930e2e0f3a12c9798dab  correct deterministic profile rejection vector
 ```
+
+This file update is the validated restart-state freeze following those commits.
 
 ## Implemented runtime laws
 
@@ -128,7 +134,7 @@ A profile-accepted candidate still requires handoff to the inherited singleton V
 
 ## Dedicated conformance coverage
 
-The added C++ test covers:
+The C++ conformance test covers:
 
 ```text
 subject-blind insertion of exact operations
@@ -142,45 +148,75 @@ swappable profile acceptance/rejection
 profile authority-boundary rejection
 ```
 
-## Validation status
+During pre-merge review, the intended negative profile test was found to use candidate value `100` against `mod 5 == 0`, which is an accepting vector. Commit `e890d471da12f9f0a83c930e2e0f3a12c9798dab` corrected the negative vector to `mod 5 == 1`, preserving the runtime logic and making the rejection assertion mathematically valid.
 
-Repository/API inspection completed before implementation:
+## Validation evidence
 
-```text
-main observed at b33b079399146e3d145aa3f6839979c87baf9605
-PR #429 merged
-PR #430 merged
-```
-
-A dedicated GitHub Actions workflow was added at:
+Repository/API inspection before implementation:
 
 ```text
-.github/workflows/pass219-plug-and-play-math-logic-substrate-v1.yml
+main base: b33b079399146e3d145aa3f6839979c87baf9605
+PR #429: merged
+PR #430: merged
+PR #431: opened for this implementation
 ```
 
-It is configured to:
+Dedicated workflow:
 
 ```text
-make c-abi
-verify inherited VM81 import/export and hhs_exact_vm81_admit_uqcel symbols
-compile the new test with strict C++17 -Wall -Wextra -Werror -pedantic
-execute the new test
-run static subject-blindness / authority-boundary contract assertions
+name: Pass 219 Plug-and-Play Math Logic Substrate v1
+run id: 34664506691
+validated head: e890d471da12f9f0a83c930e2e0f3a12c9798dab
+status: completed
+conclusion: success
 ```
 
-The connected GitHub commit-workflow lookup did not yet expose a run for commit `e13bbac5ae89d978151b41832397df7f440fd3c4` at checkpoint time. No CI success claim is frozen here.
+Successful steps:
 
-A direct local clone/compile attempt from the execution container could not be performed because that container had no DNS/network access to github.com. This is an environment limitation, not a source-validation result.
+```text
+Check out substrate branch                         PASS
+Install native build dependencies                  PASS
+Build inherited exact ABI                          PASS
+Verify singleton VM81 handoff symbols              PASS
+Compile strict C++17 substrate test                 PASS
+Run plug-and-play substrate conformance             PASS
+Verify subject blindness and authority boundary     PASS
+```
 
-## Remaining validation
+The strict compiler invocation uses:
 
-1. Observe the dedicated workflow run for the final branch head.
-2. If strict compilation or conformance fails, repair only the new substrate surface and rerun the dedicated gate.
-3. Once green, open or update the integration PR to `main`.
-4. Merge only after the new surface is green and its authority boundary remains intact.
-5. Verify exact merged main and retain this checkpoint as the restart nucleus.
+```text
+-O2 -std=c++17 -Wall -Wextra -Werror -pedantic
+```
 
-## Next implementation layer after v1 validation
+The ABI/handoff gate verifies the inherited surfaces including:
+
+```text
+hhs_exact_vm81_frame_import_le
+hhs_exact_vm81_frame_export_le
+hhs_exact_vm81_admit_uqcel
+```
+
+Therefore the v1 substrate implementation is dependency-scoped green at the repaired branch head.
+
+Repository-wide inherited matrices may continue independently; they are not a reason to invalidate or delay this dependency-scoped checkpoint unless they expose a failure caused by these changed files.
+
+## Integration state
+
+At this checkpoint:
+
+```text
+implementation: complete
+contract: complete
+dedicated validation: PASS
+restartability: complete
+PR: #431
+merge target: main
+```
+
+After this restart-state commit, rerun/observe the dedicated gate on the new documentation-only head, then mark PR #431 ready and merge if the dependency-scoped gate remains green. Verify exact merged main afterward.
+
+## Next implementation layer
 
 The next layer should bind profile-accepted generic candidates into an explicit canonical VM81 handoff adapter without hard-coding UQCEL as the substrate definition.
 
