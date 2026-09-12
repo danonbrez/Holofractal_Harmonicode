@@ -10,6 +10,12 @@
 extern "C" {
 #endif
 
+#if defined(_WIN32)
+#define HHS_EXACT_PASS219_VM81_PQC_INTERNAL_API
+#else
+#define HHS_EXACT_PASS219_VM81_PQC_INTERNAL_API __attribute__((visibility("hidden")))
+#endif
+
 #define HHS_EXACT_PASS219_VM81_PQC_VERSION UINT32_C(0x0001001E)
 #define HHS_EXACT_PASS219_VM81_PQC_MIN_PASS UINT32_C(220)
 #define HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES UINT32_C(64)
@@ -28,7 +34,11 @@ typedef enum HHSExactPass219VM81PQCHaltReasonV1 {
     HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_AUTHENTICATOR = 7,
     HHS_EXACT_PASS219_VM81_PQC_HALT_AUTHORITY_ESCALATION = 8,
     HHS_EXACT_PASS219_VM81_PQC_HALT_CHILD_HASH216_INVARIANT = 9,
-    HHS_EXACT_PASS219_VM81_PQC_HALT_LATCHED = 10
+    HHS_EXACT_PASS219_VM81_PQC_HALT_LATCHED = 10,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_SIGNATURE_PROFILE = 11,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_PROVIDER_UNAVAILABLE = 12,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_GENERATION_FAILED = 13,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_VERIFICATION_FAILED = 14
 } HHSExactPass219VM81PQCHaltReasonV1;
 
 typedef enum HHSExactPass219VM81PQCFirewallDecisionV1 {
@@ -94,18 +104,12 @@ HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_halted(void);
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_halt_reason(void);
 
 /*
- * The sole public post-219 canonical mutation request.
- *
- * No resolver callback or key is accepted from the caller. The implementation
- * revalidates the parent Hash216 array with its built-in positional SHA-256
- * resolver, routes through the Pass 219 C++ RNA cell wall, seals/validates the
- * PQC authentication record with a kernel-held key, and only then invokes the
- * hidden inherited RNA canonical authority. A provenance failure permanently
- * latches this firewall instance for the process and returns a zero committed
- * frame. A mathematical/constraint rejection remains a normal rejection and
- * does not latch the firewall.
+ * Internal unsigned predecessor retained only so the signed 1.31 successor
+ * can reuse the already-verified HMAC/Hash216 machinery during migration.
+ * It is deliberately hidden from the dynamic ABI.  Production callers must
+ * use hhs_exact_pass219_vm81_pqc_admit_signed from the 1.31 successor.
  */
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_pqc_admit(
+HHS_EXACT_PASS219_VM81_PQC_INTERNAL_API HHSExactStatus hhs_exact_pass219_vm81_pqc_admit(
     uint32_t pass_number,
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
