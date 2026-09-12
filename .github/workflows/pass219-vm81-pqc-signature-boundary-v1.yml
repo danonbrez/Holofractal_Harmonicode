@@ -173,7 +173,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential perl curl ca-certificates
-          curl -fsSL \
+          curl -fsSL --retry 3 --retry-delay 2 \
             https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
             -o /tmp/openssl-3.5.0.tar.gz
           tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
@@ -181,6 +181,8 @@ jobs:
           ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
           make -j2
           make install_sw
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+          export PATH="/tmp/openssl35/bin:${PATH}"
           /tmp/openssl35/bin/openssl version -a
           /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
           /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'SLH-DSA'
