@@ -21,12 +21,6 @@ extern "C" {
 #define HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN 216U
 #define HHS_EXACT_UQCEL_HASH216_STRLEN 217U
 
-#if defined(_WIN32)
-#  define HHS_UQCEL_INTERNAL_API
-#else
-#  define HHS_UQCEL_INTERNAL_API __attribute__((visibility("hidden")))
-#endif
-
 #define HHS_UQCEL_CONSTRAINT_SOURCE UINT64_C(0x0001)
 #define HHS_UQCEL_CONSTRAINT_BIGINT_CANONICAL UINT64_C(0x0002)
 #define HHS_UQCEL_CONSTRAINT_LOSHU UINT64_C(0x0004)
@@ -154,15 +148,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_uqcel_receipt_material(
     size_t capacity,
     size_t *out_length
 );
-
-/*
- * Internal compatibility primitive only.
- *
- * Pass 219 1.30 closes this symbol from the public dynamic ABI.  Internal
- * composed/RNA implementation units may continue to call it, but external
- * callers must use the composed/RNA/cell-wall authority path.
- */
-HHS_UQCEL_INTERNAL_API HHSExactStatus hhs_exact_vm81_admit_uqcel(
+HHS_EXACT_API HHSExactStatus hhs_exact_vm81_admit_uqcel(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
     HHSExactVM81Frame *out_committed_frame,
