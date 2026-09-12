@@ -79,7 +79,7 @@ No duplicate legacy handler implementation or secondary transition authority was
 
 ### Failure A — harmonic sibling rejected
 
-Dedicated I182 run `34542287691` at composite head `ff69ca1fa9d32da8f96bbe865b5625eb19e93ddbc`/successor lineage stopped at the scope guard. Comparison from the frozen I182 base established an exact 21-path delta: nine Pass170 I182 paths plus twelve harmonic-geometry sibling paths.
+Dedicated I182 run `34542287691` at composite head `ff69ca1fa9d32da8f96bbe034c3c67ab946f9ccd` stopped at the scope guard. Comparison from the frozen I182 base established an exact 21-path delta: nine Pass170 I182 paths plus twelve harmonic-geometry sibling paths.
 
 Commit `5ec3e6c13de387f2c36e24d3654fa3e7105280ad` admitted those exact two sets while retaining fail-closed rejection of every other path.
 
@@ -169,7 +169,7 @@ Current PR state at that observation:
 
 - PR `#423`: open;
 - mergeable: true;
-- exact PR head: `b3f205dfa601408c578a5f5fc8c37d782e343f50` before this restart-record commit;
+- exact PR head: `b3f205dfa601408c578a5f5fc8c37d782e343f50` before restart-record commits;
 - `main`: `506034954c3056f288e654b0c6c62cde54cbb3d3`.
 
 ## Dedicated I182 validation contract
