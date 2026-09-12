@@ -1,4 +1,4 @@
-#include "hhs_runtime_uqcel_1_8.h"
+#include "hhs_pass192_fibonacci_compression_1_9.h"
 
 #include <inttypes.h>
 #include <stdio.h>
@@ -53,16 +53,17 @@ int main(void) {
     static const uint8_t D_BYTES[] = {0x01U};
     static const uint8_t P2_BYTES[] = {0x03U,0x84U};
     HHSExactUQCELInputV1 input;
-    HHSExactUQCELAdmissionV1 admission;
+    HHSExactPass219ComposedAdmissionV1 composed;
     HHSExactVM81Frame candidate;
     HHSExactVM81Frame committed;
     uint8_t source_sha[32];
     uint8_t frame_bytes[HHS_EXACT_VM81_FRAME_BYTES];
     size_t frame_length = 0U;
     HHSExactStatus status;
+    const HHSExactUQCELAdmissionV1 *admission;
 
     memset(&input, 0, sizeof(input));
-    memset(&admission, 0, sizeof(admission));
+    memset(&composed, 0, sizeof(composed));
     memset(&committed, 0, sizeof(committed));
     build_frame(&candidate);
 
@@ -86,11 +87,12 @@ int main(void) {
     memset(input.previous_hash72, '0', HHS_EXACT_HASH72_LEN);
     input.previous_hash72[HHS_EXACT_HASH72_LEN] = '\0';
 
-    status = hhs_exact_vm81_admit_uqcel(
-        &input, &candidate, &committed, &admission);
+    status = hhs_exact_pass219_admit_composed(
+        &input, &candidate, &committed, &composed);
+    admission = &composed.uqcel;
     if (status != HHS_EXACT_STATUS_OK ||
-        admission.decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
-        admission.frame_committed != 1U ||
+        admission->decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
+        admission->frame_committed != 1U ||
         memcmp(&candidate, &committed, sizeof(candidate)) != 0)
         return 3;
 
@@ -104,13 +106,13 @@ int main(void) {
            "\"vm5184_address\":%u,\"frame_bytes\":%zu,"
            "\"change_hash72\":\"%s\",\"receipt_hash72\":\"%s\","
            "\"hash216_triplet\":\"%s\",\"hash216_identity\":\"%s\"}\n",
-           admission.decision,
-           admission.frame_committed,
-           admission.vm5184_address,
+           admission->decision,
+           admission->frame_committed,
+           admission->vm5184_address,
            frame_length,
-           admission.change_hash72,
-           admission.receipt_hash72,
-           admission.hash216_triplet,
-           admission.hash216_identity);
+           admission->change_hash72,
+           admission->receipt_hash72,
+           admission->hash216_triplet,
+           admission->hash216_identity);
     return 0;
 }
