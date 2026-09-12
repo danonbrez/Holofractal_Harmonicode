@@ -1,0 +1,135 @@
+name: Pass 219 SPI Law of One Normalization v4
+
+on:
+  push:
+    branches:
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_law_of_one_projection_rule_v1.py'
+      - 'hhs_spi_law_of_one_projection_rule_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v3.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v3.py'
+      - 'hhs_spi_scalar_projection_registry_v4.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v4.py'
+      - 'contracts/pass219/PASS_219_SPI_LAW_OF_ONE_SCALAR_NORMALIZATION_V1.md'
+      - '.github/workflows/pass219-spi-law-of-one-normalization-v4.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_law_of_one_projection_rule_v1.py'
+      - 'hhs_spi_law_of_one_projection_rule_tests_v1.py'
+      - 'hhs_spi_scalar_projection_registry_v3.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v3.py'
+      - 'hhs_spi_scalar_projection_registry_v4.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v4.py'
+      - 'contracts/pass219/PASS_219_SPI_LAW_OF_ONE_SCALAR_NORMALIZATION_V1.md'
+      - '.github/workflows/pass219-spi-law-of-one-normalization-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-law-of-one-normalization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Law-of-1 and projection successors
+        run: |
+          python -m py_compile \
+            hhs_spi_law_of_one_projection_rule_v1.py \
+            hhs_spi_law_of_one_projection_rule_tests_v1.py \
+            hhs_spi_scalar_projection_registry_v3.py \
+            hhs_spi_scalar_projection_registry_tests_v3.py \
+            hhs_spi_scalar_projection_registry_v4.py \
+            hhs_spi_scalar_projection_registry_tests_v4.py
+
+      - name: Run Law-of-1 rule tests
+        run: python hhs_spi_law_of_one_projection_rule_tests_v1.py
+
+      - name: Validate registry v3 Law-of-1 membership
+        run: |
+          python hhs_spi_scalar_projection_registry_v3.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v3.py
+
+      - name: Validate registry v4 denominator and local-scale hierarchy
+        run: |
+          python hhs_spi_scalar_projection_registry_v4.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v4.py
+
+      - name: Regress O2 projection constructors
+        run: |
+          python hhs_spi_defined_scalar_projection_rule_tests_v1.py
+          python hhs_spi_symmetric_unit_product_projection_rule_tests_v1.py
+          python hhs_spi_ordered_matrix_projection_witness_v1.py --validate
+          python hhs_spi_ordered_matrix_projection_witness_tests_v1.py
+          python hhs_spi_ordered_matrix_projection_witness_v2.py --validate
+          python hhs_spi_ordered_matrix_projection_witness_tests_v2.py
+          python hhs_spi_scalar_projection_registry_v2.py --validate
+          python hhs_spi_scalar_projection_registry_tests_v2.py
+
+      - name: Regress frozen SPI v1 and corpus reconciliation v2
+        run: |
+          python hhs_spi_scalar_projection_registry_tests_v1.py
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --validate
+          python hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_spi_scalar_projection_corpus_reconciliation_v2 import reconciliation_manifest_v2
+          data = reconciliation_manifest_v2(Path('.'))
+          assert data['resolved_candidate_counts'] == {
+              'MISSING_PROJECTION': 0,
+              'PROVEN': 429,
+              'SYMBOLIC': 43,
+              'UNSUPPORTED_DOMAIN': 0,
+          }
+          assert data['manifest_sha256'] == '481c0bb0264ad0771344ae068624dcfd7c9c5ba853a8c7963ad9a22971389aee'
+          assert data['scalar_value_complete'] is False
+          print(data['manifest_sha256'])
+          PY
+
+      - name: Emit deterministic Law-of-1 evidence
+        run: |
+          mkdir -p /tmp/pass219_spi_law1
+          python - <<'PY' > /tmp/pass219_spi_law1/law_of_one_manifest_v1.json
+          import json
+          from hhs_spi_law_of_one_projection_rule_v1 import global_law_of_one_manifest
+          print(json.dumps(global_law_of_one_manifest(), indent=2, sort_keys=True, ensure_ascii=False))
+          PY
+          python hhs_spi_scalar_projection_registry_v3.py --manifest > /tmp/pass219_spi_law1/spi_registry_v3.json
+          python hhs_spi_scalar_projection_registry_v4.py --manifest > /tmp/pass219_spi_law1/spi_registry_v4.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          law = json.loads(Path('/tmp/pass219_spi_law1/law_of_one_manifest_v1.json').read_text(encoding='utf-8'))
+          v3 = json.loads(Path('/tmp/pass219_spi_law1/spi_registry_v3.json').read_text(encoding='utf-8'))
+          v4 = json.loads(Path('/tmp/pass219_spi_law1/spi_registry_v4.json').read_text(encoding='utf-8'))
+          assert law['universal_denominator']['symbol'] == '∆'
+          assert law['local_scale']['symbol'] == 'a²'
+          assert law['local_scale']['bridge'] == 'a²=∆=1'
+          assert law['native_a2_delta_identity'] is False
+          assert v3['validation']['ok'] is True
+          assert v4['validation']['ok'] is True
+          assert v4['validation']['universal_denominator'] == '∆=1'
+          assert v4['validation']['local_scale_bridge'] == 'a²=∆=1'
+          assert v4['authority_boundary']['native_a2_delta_identity'] is False
+          print(json.dumps({
+              'law_of_one_manifest_sha256': law['manifest_sha256'],
+              'registry_v3_manifest_sha256': v3['manifest_sha256'],
+              'registry_v4_manifest_sha256': v4['manifest_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload Law-of-1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-law-of-one-normalization-v4
+          path: /tmp/pass219_spi_law1
+          if-no-files-found: error

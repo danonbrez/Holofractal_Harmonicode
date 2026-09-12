@@ -1,0 +1,161 @@
+name: Pass 219 Plug-and-Play Math Logic Substrate v1
+
+on:
+  push:
+    branches:
+      - agent/pass219-plug-and-play-math-logic-substrate-v1-20260911
+      - agent/pass219-plug-and-play-canonical-handoff-v1-20260911
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h'
+      - 'tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp'
+      - 'tests/pass219/test_pass219_plug_and_play_canonical_handoff_1_28.cpp'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
+      - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1_RESTART_20260911.md'
+      - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_CANONICAL_HANDOFF_V1_RESTART_20260911.md'
+      - '.github/workflows/pass219-plug-and-play-math-logic-substrate-v1.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'hhs_runtime/include/hhs_pass192_fibonacci_compression_1_9.h'
+      - 'tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp'
+      - 'tests/pass219/test_pass219_plug_and_play_canonical_handoff_1_28.cpp'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
+      - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1_RESTART_20260911.md'
+      - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_CANONICAL_HANDOFF_V1_RESTART_20260911.md'
+      - '.github/workflows/pass219-plug-and-play-math-logic-substrate-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out substrate branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build inherited exact ABI and verify singleton handoff surface
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_vm81_frame_import_le'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_vm81_frame_export_le'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_vm81_admit_uqcel'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_admit_composed'
+
+      - name: Compile strict C++17 plug-and-play substrate test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp \
+            -o /tmp/test-pass219-plug-and-play-substrate
+
+      - name: Run plug-and-play substrate conformance
+        run: |
+          /tmp/test-pass219-plug-and-play-substrate
+
+      - name: Compile strict C++17 canonical handoff integration test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_plug_and_play_canonical_handoff_1_28.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-plug-and-play-canonical-handoff
+
+      - name: Run canonical handoff integration conformance
+        run: |
+          LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/hhs_runtime/builds:${LD_LIBRARY_PATH:-}" \
+            /tmp/test-pass219-plug-and-play-canonical-handoff
+
+      - name: Verify subject blindness and authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          header = Path('hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp').read_text()
+          handoff = Path('hhs_runtime/include/hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp').read_text()
+          contract = Path('contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md').read_text()
+          test = Path('tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp').read_text()
+          handoff_test = Path('tests/pass219/test_pass219_plug_and_play_canonical_handoff_1_28.cpp').read_text()
+
+          for needle in (
+              'semantic_descriptor_opaque{true}',
+              'fixed_subject_catalog_required{false}',
+              'publication_form_required{false}',
+              'deterministic_replay_required{true}',
+              'vm81_handoff_required{true}',
+              'canonical_mutation_authority{false}',
+              'canonical_hash72_authority{false}',
+              'canonical_hash216_authority{false}',
+              'canonical_persistence_authority{false}',
+              'floating_point_authority{false}',
+              'verify_representation_equivalence',
+              'validate_profile',
+          ):
+              assert needle in header, needle
+
+          for forbidden in (
+              'switch (subject',
+              'if (subject',
+              'NUMBER_THEORY =',
+              'GEOMETRY =',
+              'TOPOLOGY =',
+          ):
+              assert forbidden not in header, forbidden
+
+          for needle in (
+              'hhs_exact_pass219_admit_composed',
+              'adapter_is_canonical_authority{false}',
+              'profile_precheck_is_commit_authority{false}',
+              'delegated_to_inherited_c_authority',
+              'inherited_authority_revalidated',
+              'canonical_receipt_owned_by_inherited_authority{true}',
+          ):
+              assert needle in handoff, needle
+          assert 'hhs_exact_vm81_admit_uqcel(' not in handoff
+
+          for needle in (
+              'The substrate is not a subject catalog',
+              'representation identity ≠ semantic identity',
+              'Profile adapters are payload constraints, not substrate axioms',
+              'singleton inherited VM81/kernel path',
+              'publication formalism              = optional, non-execution prerequisite',
+              'local proof != canonical receipt',
+          ):
+              assert needle in contract, needle
+
+          for needle in (
+              'Order is semantic data',
+              'Distinct presentations can prove equivalent',
+              'Nondeterminism is detected',
+              'Profile validation is swappable',
+          ):
+              assert needle in test, needle
+
+          for needle in (
+              'Positive path: generic candidate reaches canonical authority only by delegation',
+              'Generic profile rejection prevents any invocation of canonical authority',
+              'A permissive generic profile cannot bypass inherited UQCEL authority',
+              'Tampered candidate metadata cannot gain a canonical handoff',
+          ):
+              assert needle in handoff_test, needle
+
+          print('plug_and_play_math_logic_substrate_and_canonical_handoff_gate=PASS')
+          PY

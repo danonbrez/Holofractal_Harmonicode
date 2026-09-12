@@ -1,0 +1,143 @@
+name: Pass 219 SPI O2 Matrix Tensor Projection v2
+
+on:
+  push:
+    branches:
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_defined_scalar_projection_rule_v1.py'
+      - 'hhs_spi_defined_scalar_projection_rule_tests_v1.py'
+      - 'hhs_spi_symmetric_unit_product_projection_rule_v1.py'
+      - 'hhs_spi_symmetric_unit_product_projection_rule_tests_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_tests_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_v2.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_tests_v2.py'
+      - 'hhs_spi_scalar_projection_registry_v2.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v2.py'
+      - 'contracts/pass219/PASS_219_SPI_MATRIX_TENSOR_SCALAR_PROJECTION_RULES_V1.md'
+      - '.github/workflows/pass219-spi-o2-matrix-tensor-projection-v2.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_defined_scalar_projection_rule_v1.py'
+      - 'hhs_spi_defined_scalar_projection_rule_tests_v1.py'
+      - 'hhs_spi_symmetric_unit_product_projection_rule_v1.py'
+      - 'hhs_spi_symmetric_unit_product_projection_rule_tests_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_tests_v1.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_v2.py'
+      - 'hhs_spi_ordered_matrix_projection_witness_tests_v2.py'
+      - 'hhs_spi_scalar_projection_registry_v2.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v2.py'
+      - 'contracts/pass219/PASS_219_SPI_MATRIX_TENSOR_SCALAR_PROJECTION_RULES_V1.md'
+      - '.github/workflows/pass219-spi-o2-matrix-tensor-projection-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-o2-matrix-tensor-projection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile O2 projection layers
+        run: |
+          python -m py_compile \
+            hhs_spi_defined_scalar_projection_rule_v1.py \
+            hhs_spi_defined_scalar_projection_rule_tests_v1.py \
+            hhs_spi_symmetric_unit_product_projection_rule_v1.py \
+            hhs_spi_symmetric_unit_product_projection_rule_tests_v1.py \
+            hhs_spi_ordered_matrix_projection_witness_v1.py \
+            hhs_spi_ordered_matrix_projection_witness_tests_v1.py \
+            hhs_spi_ordered_matrix_projection_witness_v2.py \
+            hhs_spi_ordered_matrix_projection_witness_tests_v2.py \
+            hhs_spi_scalar_projection_registry_v2.py \
+            hhs_spi_scalar_projection_registry_tests_v2.py
+
+      - name: Run matrix tensor defined-scalar rule tests
+        run: python hhs_spi_defined_scalar_projection_rule_tests_v1.py
+
+      - name: Run symmetric unit-product rule tests
+        run: python hhs_spi_symmetric_unit_product_projection_rule_tests_v1.py
+
+      - name: Validate O2 ordered matrix witness v1
+        run: python hhs_spi_ordered_matrix_projection_witness_v1.py --validate
+
+      - name: Run O2 ordered matrix witness v1 tests
+        run: python hhs_spi_ordered_matrix_projection_witness_tests_v1.py
+
+      - name: Validate O2 symmetric unit-layer witness v2
+        run: python hhs_spi_ordered_matrix_projection_witness_v2.py --validate
+
+      - name: Run O2 symmetric unit-layer witness v2 tests
+        run: python hhs_spi_ordered_matrix_projection_witness_tests_v2.py
+
+      - name: Validate scalar projection registry v2
+        run: python hhs_spi_scalar_projection_registry_v2.py --validate
+
+      - name: Run scalar projection registry v2 tests
+        run: python hhs_spi_scalar_projection_registry_tests_v2.py
+
+      - name: Regress frozen SPI v1 proofs
+        run: python hhs_spi_scalar_projection_registry_tests_v1.py
+
+      - name: Regress corpus reconciliation v2
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --validate
+          python hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_spi_scalar_projection_corpus_reconciliation_v2 import reconciliation_manifest_v2
+          data = reconciliation_manifest_v2(Path('.'))
+          assert data['resolved_candidate_counts'] == {
+              'MISSING_PROJECTION': 0,
+              'PROVEN': 429,
+              'SYMBOLIC': 43,
+              'UNSUPPORTED_DOMAIN': 0,
+          }
+          assert data['manifest_sha256'] == '481c0bb0264ad0771344ae068624dcfd7c9c5ba853a8c7963ad9a22971389aee'
+          assert data['scalar_value_complete'] is False
+          print(data['manifest_sha256'])
+          PY
+
+      - name: Emit deterministic O2 witness and registry manifests
+        run: |
+          mkdir -p /tmp/pass219_spi_o2
+          python hhs_spi_ordered_matrix_projection_witness_v1.py --manifest > /tmp/pass219_spi_o2/o2_matrix_defined_scalar_v1.json
+          python hhs_spi_ordered_matrix_projection_witness_v2.py --manifest > /tmp/pass219_spi_o2/o2_symmetric_unit_layer_v2.json
+          python hhs_spi_scalar_projection_registry_v2.py --manifest > /tmp/pass219_spi_o2/spi_registry_v2.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_o2/o2_symmetric_unit_layer_v2.json')
+          o2 = json.loads(p.read_text(encoding='utf-8'))
+          assert o2['result']['relation'] == 'a²=xy=1'
+          assert o2['native_a2_xy_identity_authorized'] is False
+          assert o2['xy_yx_commutation_authorized'] is False
+          r = json.loads(Path('/tmp/pass219_spi_o2/spi_registry_v2.json').read_text(encoding='utf-8'))
+          assert r['validation']['ok'] is True
+          assert r['validation']['changed_proof_ids'] == ['SPI-O2-MATRIX']
+          assert r['validation']['o2_relation'] == 'a²=xy=1'
+          assert r['authority_boundary']['generic_matrix_tensor_scalarization'] is False
+          print(json.dumps({
+              'o2_witness_sha256': o2['witness_sha256'],
+              'registry_manifest_sha256': r['manifest_sha256'],
+              'o2_receipt_sha256': r['validation']['o2_receipt_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload O2 scalar projection evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-o2-matrix-tensor-projection-v2
+          path: /tmp/pass219_spi_o2
+          if-no-files-found: error
