@@ -3,7 +3,7 @@
 
 #include "hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp"
 #include "hhs_pass219_rna_transcription_1_10.hpp"
-#include "hhs_pass219_vm81_pqc_signature_1_31.h"
+#include "hhs_pass219_vm81_environmental_recovery_1_32.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -34,6 +34,8 @@ struct Post219DevelopmentResultV1 final {
     bool canonical_handoff_required{true};
     bool pqc_firewall_required{true};
     bool asymmetric_pqc_signature_required{true};
+    bool environmental_witness_required{true};
+    bool verified_recovery_candidate_only{true};
     bool unsigned_canonical_submit_disabled{true};
     bool legacy_direct_canonical_submit_disabled{true};
     bool external_invocation_is_authority{false};
@@ -136,10 +138,7 @@ public:
             &out_coordinate);
     }
 
-    /*
-     * Historical direct handoff is intentionally retained as a compile-time
-     * fail-closed compatibility surface. It can never request mutation.
-     */
+    /* Historical direct handoff remains compile-time fail-closed. */
     static HHSExactStatus submit_uqcel_canonical_request(
         const Post219DevelopmentResultV1&,
         const hhs::substrate::ProfileValidationResultV1&,
@@ -151,10 +150,54 @@ public:
     }
 
     /*
-     * Sole Pass 220+ production canonical-request path.  The caller may select
-     * one of the fixed PQ signature profiles, but supplies no key, resolver,
-     * verifier, or signature.  Candidate construction remains owned by this
-     * facade; actual mutation remains owned by the signed Pass 219 firewall.
+     * Public Pass 220+ canonical request path.  1.32 first verifies the
+     * environmental epoch/witness, then delegates through the internal 1.31
+     * PQ signature gate, 1.30 provenance membrane, and hidden RNA/VM81 path.
+     */
+    static HHSExactStatus submit_environmental_pqc_canonical_request_signed(
+        const Post219DevelopmentResultV1& development,
+        const hhs::substrate::ProfileValidationResultV1& profile,
+        std::uint32_t signature_algorithm,
+        const HHSExactUQCELInputV1& uqcel_input,
+        const HHSExactPass219Hash216TransitionViewV1& parent_hash216_reference,
+        std::int8_t lo_shu_group,
+        std::uint16_t g243,
+        std::uint8_t feedback_lane,
+        std::int8_t feedback_trinary,
+        HHSExactVM81Frame& out_committed_frame,
+        HHSExactPass219RNAAdmissionV1& out_admission,
+        HHSExactPass219VM81PQCFirewallReceiptV1& out_firewall_receipt,
+        HHSExactPass219VM81PQCSignatureReceiptV1& out_signature_receipt,
+        HHSExactPass219VM81EnvironmentReceiptV1& out_environment_receipt
+    ) noexcept {
+        out_committed_frame = HHSExactVM81Frame{};
+        out_admission = HHSExactPass219RNAAdmissionV1{};
+        out_firewall_receipt = HHSExactPass219VM81PQCFirewallReceiptV1{};
+        out_signature_receipt = HHSExactPass219VM81PQCSignatureReceiptV1{};
+        out_environment_receipt = HHSExactPass219VM81EnvironmentReceiptV1{};
+        if (!development_ready(development) || !profile_ready(profile))
+            return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+        return hhs_exact_pass219_vm81_environment_admit_signed(
+            development.pass_number,
+            signature_algorithm,
+            &uqcel_input,
+            &development.composition.candidate,
+            &parent_hash216_reference,
+            lo_shu_group,
+            g243,
+            feedback_lane,
+            feedback_trinary,
+            &out_committed_frame,
+            &out_admission,
+            &out_firewall_receipt,
+            &out_signature_receipt,
+            &out_environment_receipt);
+    }
+
+    /*
+     * Source-compatible alias.  It no longer calls the 1.31 mutator directly;
+     * all mutation requests are routed through the 1.32 environmental gate.
      */
     static HHSExactStatus submit_pqc_canonical_request_signed(
         const Post219DevelopmentResultV1& development,
@@ -171,27 +214,22 @@ public:
         HHSExactPass219VM81PQCFirewallReceiptV1& out_firewall_receipt,
         HHSExactPass219VM81PQCSignatureReceiptV1& out_signature_receipt
     ) noexcept {
-        out_committed_frame = HHSExactVM81Frame{};
-        out_admission = HHSExactPass219RNAAdmissionV1{};
-        out_firewall_receipt = HHSExactPass219VM81PQCFirewallReceiptV1{};
-        out_signature_receipt = HHSExactPass219VM81PQCSignatureReceiptV1{};
-        if (!development_ready(development) || !profile_ready(profile))
-            return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-
-        return hhs_exact_pass219_vm81_pqc_admit_signed(
-            development.pass_number,
+        HHSExactPass219VM81EnvironmentReceiptV1 environment_receipt{};
+        return submit_environmental_pqc_canonical_request_signed(
+            development,
+            profile,
             signature_algorithm,
-            &uqcel_input,
-            &development.composition.candidate,
-            &parent_hash216_reference,
+            uqcel_input,
+            parent_hash216_reference,
             lo_shu_group,
             g243,
             feedback_lane,
             feedback_trinary,
-            &out_committed_frame,
-            &out_admission,
-            &out_firewall_receipt,
-            &out_signature_receipt);
+            out_committed_frame,
+            out_admission,
+            out_firewall_receipt,
+            out_signature_receipt,
+            environment_receipt);
     }
 
     static constexpr bool pass_number_valid(std::uint32_t pass_number) noexcept {
@@ -247,6 +285,8 @@ private:
                development.canonical_handoff_required &&
                development.pqc_firewall_required &&
                development.asymmetric_pqc_signature_required &&
+               development.environmental_witness_required &&
+               development.verified_recovery_candidate_only &&
                development.unsigned_canonical_submit_disabled &&
                development.legacy_direct_canonical_submit_disabled &&
                !development.external_invocation_is_authority &&
