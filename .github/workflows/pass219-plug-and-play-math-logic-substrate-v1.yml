@@ -12,6 +12,17 @@ on:
       - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
       - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1_RESTART_20260911.md'
       - '.github/workflows/pass219-plug-and-play-math-logic-substrate-v1.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/include/hhs_runtime_uqcel_1_8.h'
+      - 'tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
+      - 'docs/operations/restart/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1_RESTART_20260911.md'
+      - '.github/workflows/pass219-plug-and-play-math-logic-substrate-v1.yml'
   workflow_dispatch:
 
 permissions:
