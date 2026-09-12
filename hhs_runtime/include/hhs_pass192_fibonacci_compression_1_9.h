@@ -21,6 +21,12 @@ extern "C" {
 #define HHS_EXACT_PASS219_COMPOSED_VERSION_MINOR 0U
 #define HHS_EXACT_PASS219_COMPOSED_VERSION_PATCH 0U
 
+#if defined(_WIN32)
+#  define HHS_PASS219_COMPOSED_INTERNAL_API
+#else
+#  define HHS_PASS219_COMPOSED_INTERNAL_API __attribute__((visibility("hidden")))
+#endif
+
 typedef struct HHSExactPass192FibonacciCompressionV1 {
     uint32_t struct_size;
     uint32_t version;
@@ -65,7 +71,15 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass192_fibonacci_validate_descriptor(
     size_t descriptor_length
 );
 
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_admit_composed(
+/*
+ * Internal canonical composition primitive.
+ *
+ * Pass 219 1.30 preserves this function for in-DSO RNA composition and
+ * inherited regression, but removes it from the public dynamic ABI. External
+ * post-219 mutation requests must enter through
+ * hhs_exact_pass219_vm81_pqc_admit().
+ */
+HHS_PASS219_COMPOSED_INTERNAL_API HHSExactStatus hhs_exact_pass219_admit_composed(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
     HHSExactVM81Frame *out_committed_frame,
