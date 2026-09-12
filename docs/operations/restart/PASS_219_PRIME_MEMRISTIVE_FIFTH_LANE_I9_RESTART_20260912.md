@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE IMPLEMENTATION / DEDICATED CI IN PROGRESS**
+Status: **RESTARTABLE REPAIR-FORWARD / REPAIRED DEDICATED CI IN PROGRESS**
 
 ## Repository state
 
@@ -12,9 +12,10 @@ base I8 frozen green head: 1839d6e19d3f7e4fafa463ebf2afc84ddd1d88cd
 branch: agent/pass219-prime-memristive-fifth-lane-i9-20260912
 I9 contract commit: 649cc045e652639f3a7546aa44687c97b1983a84
 I9 runtime commit: 10343eef32ef4cd33aa6f67aaff0b7614f8dccd8
-I9 benchmark commit: e776422fa8c70677122c78bb3f6bbd25e642a19e
-I9 workflow / validation head: a73d1da8ab6f81846b68a7bb5d71b12cc659b23d
-validation-head tree: 3bf447a9cbf889c658670c6c4f4454eb21f75f73
+I9 initial benchmark commit: e776422fa8c70677122c78bb3f6bbd25e642a19e
+I9 workflow commit: a73d1da8ab6f81846b68a7bb5d71b12cc659b23d
+I9 benchmark repair: 78fd1b80eadcccd14a625dc115bc15b3e6d45bfe
+repair tree: 4f7a7cc32a441c2c9b90a4cdf841b2e36eec6ad4
 ```
 
 ## I9 files
@@ -84,24 +85,41 @@ requires_inherited_vm81_hash216_admission = true
 HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4
 ```
 
-## Dedicated repository CI — exact pending state
+## Dedicated repository CI — repair-forward history
+
+Initial I9 run:
 
 ```text
-workflow: Pass 219 Prime Memristive Fifth Lane Verified Metabolism I9
 run id: 34714442795
 job id: 103608965671
 head: a73d1da8ab6f81846b68a7bb5d71b12cc659b23d
+contract gate: PASS
+exact ABI build: PASS
+inherited I8 benchmark: PASS
+I9 benchmark: FAIL during compilation
+Holo4 regression: skipped after I9 failure
+```
+
+The failure was test-composition only: I9 embedded the I8 test, while I8 itself embeds I7, producing nested `main` macro redefinition and duplicate `main()` compilation errors. No I9 runtime/metabolic assertion executed and no inherited runtime regression was observed.
+
+Repair commit `78fd1b80eadcccd14a625dc115bc15b3e6d45bfe` removes nested test inclusion. The workflow already runs I8 as its own preceding dependency gate; the I9 test now owns its local `CHECK` harness and validates only I9 behavior.
+
+Repaired dedicated run:
+
+```text
+run id: 34714513846
+job id: 103609193133
+head: 78fd1b80eadcccd14a625dc115bc15b3e6d45bfe
 status: in_progress
 last observed step: Install native build dependencies
-contract/build/I8/I9/Holo4 acceptance steps: pending at checkpoint time
 ```
 
 No main merge or production deployment has been attempted.
 
 ## Next action
 
-1. resolve only run `34714442795` / job `103608965671`;
-2. if red, repair only the exact I9-touched dependency surface;
+1. resolve only repaired run `34714513846` / job `103609193133`;
+2. if red, repair only the exact remaining I9-touched dependency surface;
 3. if green, freeze the exact `lane5_i9` receipt and validated tree here;
 4. only then advance to the next additive fifth-lane cycle;
 5. do not reopen I1-I8 unless I9 reproduces a regression on their touched surface.
@@ -110,8 +128,8 @@ No main merge or production deployment has been attempted.
 
 ```text
 branch: agent/pass219-prime-memristive-fifth-lane-i9-20260912
-validation head: a73d1da8ab6f81846b68a7bb5d71b12cc659b23d
-validation tree: 3bf447a9cbf889c658670c6c4f4454eb21f75f73
-dedicated workflow: 34714442795 IN_PROGRESS
-job: 103608965671 IN_PROGRESS
+repair head: 78fd1b80eadcccd14a625dc115bc15b3e6d45bfe
+repair tree: 4f7a7cc32a441c2c9b90a4cdf841b2e36eec6ad4
+dedicated workflow: 34714513846 IN_PROGRESS
+job: 103609193133 IN_PROGRESS
 ```
