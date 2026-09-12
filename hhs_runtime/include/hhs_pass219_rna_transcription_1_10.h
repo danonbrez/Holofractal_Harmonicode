@@ -20,6 +20,12 @@ extern "C" {
 #define HHS_EXACT_PASS219_LO_SHU_GROUP_MIN (-20)
 #define HHS_EXACT_PASS219_LO_SHU_GROUP_MAX 20
 
+#if defined(_WIN32)
+#  define HHS_PASS219_RNA_INTERNAL_API
+#else
+#  define HHS_PASS219_RNA_INTERNAL_API __attribute__((visibility("hidden")))
+#endif
+
 typedef enum HHSExactPass219Hash216LaneRole {
     HHS_EXACT_PASS219_HASH216_LANE_PREVIOUS = 0,
     HHS_EXACT_PASS219_HASH216_LANE_CHANGE = 1,
@@ -165,7 +171,12 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_coordinate_to_pass189(
     uint16_t *out_g243
 );
 
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rna_admit_composed(
+/*
+ * Internal canonical RNA commit primitive. Public callers must use the
+ * Pass 219 VM81 PQC firewall gateway, which owns the Hash216 resolver and
+ * cryptographic provenance check.
+ */
+HHS_PASS219_RNA_INTERNAL_API HHSExactStatus hhs_exact_pass219_rna_admit_composed(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
     int8_t lo_shu_group,
