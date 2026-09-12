@@ -547,3 +547,41 @@ independent canonical persistence authority
 ```
 
 This separation is permanent unless a future contract explicitly supersedes this contract and re-proves singleton-authority closure.
+
+---
+
+## 17. Canonical firewall boundary
+
+The generic substrate remains candidate-only and does not perform canonical PQC admission itself.
+
+When a substrate candidate is promoted toward canonical execution, the selected canonical handoff SHALL apply:
+
+```text
+contracts/pass219/PASS_219_VM81_PQC_CELL_WALL_FIREWALL_V1.md
+```
+
+The substrate MAY carry or help construct exact routing/security metadata needed by the firewall, including:
+
+```text
+source cell coordinate
+ordered cell-wall route
+predecessor Hash72 reference
+predecessor Hash216 identity
+required Hash216 array references
+canonical candidate identity/digest
+anti-replay sequence
+PQC key identity/signature carrier
+```
+
+but all such metadata remains proposal data until independently verified at the canonical firewall boundary.
+
+Therefore:
+
+```text
+substrate candidate != firewall admission
+substrate route witness != canonical route authority
+substrate Hash216 reference != canonical Hash216 membership proof
+substrate PQC carrier != verified PQC authentication
+```
+
+A candidate that cannot be lowered into a firewall-valid canonical instruction envelope SHALL remain noncanonical and SHALL NOT reach VM81 dispatch.
