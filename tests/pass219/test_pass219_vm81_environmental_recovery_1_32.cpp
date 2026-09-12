@@ -46,6 +46,11 @@ static HHSExactVM81Frame candidate_frame() noexcept {
     return frame;
 }
 
+static bool frame_is_zero(const HHSExactVM81Frame& frame) noexcept {
+    HHSExactVM81Frame zero{};
+    return std::memcmp(&frame, &zero, sizeof(frame)) == 0;
+}
+
 static void append_u32_be(std::uint8_t* out, std::size_t& cursor, std::uint32_t value) {
     out[cursor++] = static_cast<std::uint8_t>(value >> 24U);
     out[cursor++] = static_cast<std::uint8_t>(value >> 16U);
@@ -236,7 +241,7 @@ int main() {
     CHECK(recovery.decision == HHS_EXACT_PASS219_VM81_ENV_DECISION_RECOVERY_REJECTED);
     CHECK(hhs_exact_pass219_vm81_environment_state() ==
           HHS_EXACT_PASS219_VM81_ENV_STATE_RECOVERY_HALTED);
-    CHECK(std::memcmp(&recovered, &HHSExactVM81Frame{}, sizeof(recovered)) == 0);
+    CHECK(frame_is_zero(recovered));
 
     std::puts("VM81_ENVIRONMENTAL_RECOVERY_1_32_PASS");
     return 0;
