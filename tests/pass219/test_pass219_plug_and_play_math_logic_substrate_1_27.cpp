@@ -224,7 +224,7 @@ int main() {
     static constexpr char PROFILE_EVEN[] =
         "profile=word0-even";
     static constexpr char PROFILE_MOD5[] =
-        "profile=word0-mod5-equals-zero";
+        "profile=word0-mod5-equals-one";
 
     UnaryWordContext add_three{0U, UINT64_C(3)};
     UnaryWordContext multiply_five{0U, UINT64_C(5)};
@@ -377,7 +377,7 @@ int main() {
     CHECK(!even_result.canonical_persistence_authority);
     CHECK(!even_result.floating_point_authority);
 
-    ProfileContext mod5_context{0U, UINT64_C(5), UINT64_C(0)};
+    ProfileContext mod5_context{0U, UINT64_C(5), UINT64_C(1)};
     AdmissionProfileAdapterV1 mod5_profile{};
     mod5_profile.profile_identity64 = UINT64_C(0xE000000000000002);
     mod5_profile.profile_descriptor = reinterpret_cast<const std::uint8_t*>(PROFILE_MOD5);
