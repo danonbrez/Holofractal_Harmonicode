@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTATION PENDING REPOSITORY CI**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI QUEUED**
 
 ## Repository state
 
@@ -11,6 +11,8 @@ repository: danonbrez/Holofractal_Harmonicode
 base I6 frozen head: 1fc686806586c5a0b7fcc85f28ee84b45972e007
 branch: agent/pass219-prime-memristive-fifth-lane-i7-20260912
 I7 contract commit: dd612a4c42b5710b0e06f203b066a6a4801cb9d9
+I7 implementation commit: eb71a96e14dc12701c86eb944115193fdc289f6b
+implementation tree: b6f150c18163a3b1222bf014caae1bd0f7cf0436
 ```
 
 ## I7 files
@@ -58,7 +60,17 @@ Hash216 alias bytes and membership unchanged
 Holo4 state byte-identical
 ```
 
-## Dedicated repository CI target
+## Dedicated repository CI
+
+```text
+workflow: Pass 219 Prime Memristive Fifth Lane Replay Prefetch I7
+run id: 34712992330
+job id: 103605033907
+head: eb71a96e14dc12701c86eb944115193fdc289f6b
+state at checkpoint: QUEUED
+```
+
+Required dependency-scoped gates:
 
 ```text
 I7 static replay-prefetch authority contract
@@ -68,12 +80,75 @@ I7 replay-conditioned neighborhood prefetch benchmark
 inherited Holo4 four-lane C regression
 ```
 
-## Next action
+Broad legacy feature-branch workflows may also fire. Their unrelated failures are not I7 acceptance evidence unless the dedicated I7 workflow exposes the same touched dependency failure.
 
-After the implementation commit is created:
+## Validation completed / remaining
 
-1. observe only the dedicated I7 workflow for dependency-scoped acceptance;
-2. repair only the failing I7 dependency surface if red;
-3. on success, freeze run ID, exact benchmark receipt, implementation commit/tree, and next action here;
-4. do not reopen already-green I1-I6 gates unless touched;
-5. do not merge to main or deploy production unless separately authorized.
+Completed:
+
+```text
+I7 formal contract committed
+I7 implementation committed
+I7 restart state committed
+I7 dedicated workflow registered by GitHub Actions
+```
+
+Remaining:
+
+```text
+workflow 34712992330 must leave queue and execute
+if green: freeze exact I7 benchmark receipt and SUCCESS evidence
+if red: repair only the failing I7 dependency surface and rerun
+```
+
+## Authority boundary
+
+```text
+candidate_only = true
+exact_integer_only = true
+hash216_reference_only = true
+route_utility_only = true
+multimodal_route_metadata_only = true
+neighborhood_reference_only = true
+replay_receipt_only = true
+transition_association_only = true
+predictive_prefetch_only = true
+canonical_mutation_authority = false
+canonical_hash72_authority = false
+canonical_hash216_authority = false
+canonical_persistence_authority = false
+floating_point_authority = false
+requires_inherited_vm81_hash216_admission = true
+HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4
+```
+
+No main merge or production deployment has been attempted.
+
+## Next implementation cycle after I7 closure
+
+If I7 is green, advance additively to I8:
+
+1. add exact per-neighborhood activation/energy budgets;
+2. use I7 transition + I6 replay scores for bounded multi-hop predictive hydration;
+3. decrement exact activation budget by hop/reference work and stop deterministically at the membrane;
+4. generate replayable energy/hop receipts and reversible budget accounting;
+5. preserve deterministic cold fallback when the local budget is exhausted or no admissible path exists;
+6. retain inherited VM81/Hash216 final verification and admission authority.
+
+## Restart point
+
+```text
+branch: agent/pass219-prime-memristive-fifth-lane-i7-20260912
+implementation head: eb71a96e14dc12701c86eb944115193fdc289f6b
+implementation tree: b6f150c18163a3b1222bf014caae1bd0f7cf0436
+workflow: 34712992330 QUEUED
+```
+
+First restart action:
+
+```text
+inspect workflow 34712992330
+freeze green evidence or repair-forward only its failing I7 dependency surface
+```
+
+Do not reopen already-green I1/I2/I3/I4/I5/I6 work unless I7 touches and breaks that exact dependency surface.
