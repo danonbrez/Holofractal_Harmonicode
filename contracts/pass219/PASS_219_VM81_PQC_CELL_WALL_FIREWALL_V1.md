@@ -446,3 +446,32 @@ and:
 ```
 
 This firewall is therefore a mandatory structural admission membrane around canonical VM81 execution, not an optional network-side handshake and not an alternate canonical state machine.
+
+---
+
+## 17. Environmental witness and verified recovery extension
+
+The normative environmental-integrity and recovery contract is:
+
+```text
+contracts/pass219/PASS_219_VM81_ENVIRONMENTAL_WITNESS_RECOVERY_V1.md
+```
+
+Canonical execution SHALL additionally require the fresh environmental witness predicate defined by that contract.
+
+Therefore the effective pre-dispatch condition is strengthened to:
+
+```text
+CanonicalVM81Dispatch(I_t)
+⇒ VM81_PQC_FIREWALL_ADMIT(I_t)
+∧ ENVIRONMENT_OK(W_t, G_e)
+∧ instruction_binds_witness(I_t, root(W_t))
+∧ ¬ FREEZE
+∧ inherited_singleton_kernel_revalidation(I_t)
+```
+
+A confirmed environmental divergence SHALL latch the recovery contract's fail-secure freeze state before any further canonical dispatch.
+
+Recovery MAY reconstruct a candidate only from independently authenticated checkpoint, inventory, Hash216-registry, and epoch material. It SHALL NOT become a second canonical commit surface.
+
+Canonical execution after recovery remains possible only through this ordinary firewall followed by the inherited singleton VM81 authority.
