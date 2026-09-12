@@ -11,9 +11,10 @@ CXXFLAGS ?= -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
 	-Inative_projects/hhs_pass189_hqlh_runtime/include
 PASS219_PQC_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp
 PASS219_PQC_CELL_WALL_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_vm81_pqc_cell_wall_1_30.o
+PASS219_VM81_AUTHORITY_EXPORT_MAP := hhs_runtime/c/hhs_pass219_vm81_authority_exports.map
 
 PASS169_RUNTIME_BINDING_SRCS += $(PASS219_PQC_CELL_WALL_OBJ)
-LDFLAGS += -lstdc++ -pthread
+LDFLAGS += -lstdc++ -pthread -Wl,--version-script=$(PASS219_VM81_AUTHORITY_EXPORT_MAP)
 
 $(PASS219_PQC_CELL_WALL_OBJ): $(PASS219_PQC_CELL_WALL_SRC) \
 		hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h \
@@ -24,7 +25,7 @@ $(PASS219_PQC_CELL_WALL_OBJ): $(PASS219_PQC_CELL_WALL_SRC) \
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS219_PQC_CELL_WALL_SRC) -o $@
 
-$(ABI_LIB): $(PASS219_PQC_CELL_WALL_OBJ)
+$(ABI_LIB): $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_VM81_AUTHORITY_EXPORT_MAP)
 
 .PHONY: test-gfcc test-gfcc-negative test-gfcc-replay verify-gfcc package-pass-152 verify-pass-152 setup start setup-start benchmark-ledger
 
@@ -41,9 +42,6 @@ verify-gfcc:
 	$(MAKE) -C native_projects/hhs_gfcc_pass152 verify-gfcc
 
 package-pass-152:
-	$(MAKE) -C native_projects/hhs_gfcc_pass152 package-pass-152
-
-verify-pass-152:
 	$(MAKE) pass152-full
 	$(MAKE) -C native_projects/hhs_gfcc_pass152 verify-pass-152
 
