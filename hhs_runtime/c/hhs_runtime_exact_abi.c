@@ -110,3 +110,4 @@
 #include "hhs_pass168_parameter_circuit_1_0.inc"
 #include "hhs_pass168_comparator_1_0.inc"
 #include "hhs_pass219_vm81_pqc_firewall_1_30.inc"
+#include "hhs_pass219_vm81_pqc_signature_1_31.inc"
