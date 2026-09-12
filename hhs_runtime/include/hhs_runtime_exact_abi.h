@@ -66,6 +66,7 @@
 #include "hhs_pass219_core_constraint_dynamic_circuit_1_23.h"
 #include "hhs_pass219_core_holographic_four_lane_1_24.h"
 #include "hhs_pass219_vm81_pqc_firewall_1_30.h"
+#include "hhs_pass219_vm81_pqc_signature_1_31.h"
 #include "hhs_pass219_hhcq_rotational_resolution_1_25.h"
 #include "hhs_pass219_hhcq_joint_local_router_1_26.h"
 #include "hhs_pass219_hhcq_collapse_regret_1_27.h"
