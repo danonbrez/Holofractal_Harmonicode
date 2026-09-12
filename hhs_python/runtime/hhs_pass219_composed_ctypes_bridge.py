@@ -160,8 +160,10 @@ class HHSExactPass219RuntimeBridge:
 
         base = uq._admission_dict(admission.uqcel)
         base_receipt = base["receipt_hash72"]
+        base_triplet = base["hash216_triplet"]
         base_identity = base["hash216_identity"]
         base["base_receipt_hash72"] = base_receipt
+        base["base_hash216_triplet"] = base_triplet
         base["base_hash216_identity"] = base_identity
         base["receipt_hash72"] = _char_field(bytes(admission.final_receipt_hash72))
         base["hash216_triplet"] = _char_field(bytes(admission.final_hash216_triplet))
