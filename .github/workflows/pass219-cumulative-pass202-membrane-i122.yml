@@ -18,9 +18,11 @@ on:
       - 'deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example'
       - 'deployment/digitalocean/guarded_auto_update/install.sh'
       - 'deployment/digitalocean/guarded_auto_update/validate-candidate.sh'
+      - 'deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py'
       - 'deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py'
       - 'tools/install_production_language_assets.py'
       - 'tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py'
+      - 'tests/test_hhs_runtime_os_release_permission_repair_v1.py'
       - 'tests/test_hhs_guarded_auto_update_contract_v1.py'
       - 'tests/test_hhs_production_service_permissions_v2.py'
       - 'tests/test_hhs_production_checkout_readability_repair_v1.py'
@@ -92,11 +94,11 @@ jobs:
           test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 645650a70efde6df130b90e21acbf063ebc0ff0d
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3296ee9787544542697d3915e01569562ef30046
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 6b4dc28e3ec90cc42a8e6317a9f142c229b31022
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 1248ce5f9cc8c1a49a1ef83aab7f47d1bd4ad180
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 8d24f5825e0aaaa6e633877021c5bf4d5df0aee7
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 3289544601dfbd54697a6e57ef9c8505d407821f
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 53677fea50de3bb2b42025c79b2fe5fd210e9dd0
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = 23afbf9c99d77f57acd7334d767c483572d64e0a
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = fd6973697a39b94b445c35f6af7dd0aa3f727728
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = cb6e57ce4f418f835de9b4354c2116a5032d0ca2
           test "$(git hash-object tools/install_production_language_assets.py)" = 35de0676b137139554c20ee53d67be12aab65ac3
 
@@ -122,6 +124,7 @@ jobs:
         run: |
           python -m pytest -q \
             tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py \
+            tests/test_hhs_runtime_os_release_permission_repair_v1.py \
             tests/test_hhs_guarded_auto_update_contract_v1.py \
             tests/test_hhs_production_service_permissions_v2.py \
             tests/test_hhs_production_checkout_readability_repair_v1.py \

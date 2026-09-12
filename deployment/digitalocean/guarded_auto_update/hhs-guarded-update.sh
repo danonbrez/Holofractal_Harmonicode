@@ -125,10 +125,12 @@ reconcile_host_drift() {
 
 sync_installed_assets() {
   [[ "$SYNC_SELF" == "1" ]] || return 0
-  local source="$REPO_ROOT/deployment/digitalocean/guarded_auto_update"
-  local hhs_service="$REPO_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+  local controller_root=${1:-$REPO_ROOT}
+  local service_root=${2:-$controller_root}
+  local source="$controller_root/deployment/digitalocean/guarded_auto_update"
+  local hhs_service="$service_root/deploy/digitalocean/hhs-pass196-integrated-environment.service"
   [[ -d "$source" ]] || return 0
-  log "Synchronizing guarded updater and canonical production service assets"
+  log "Synchronizing guarded updater from $controller_root and production service from $service_root"
   install -d -m 0755 /usr/local/lib/hhs-guarded-update
   [[ -f "$source/hhs-guarded-update.sh" ]] && install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
   [[ -f "$source/validate-candidate.sh" ]] && install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
@@ -169,6 +171,7 @@ restore_previous_runtime_os() {
 
 rollback_live_checkout() {
   local reason=$1
+  local rollback_controller_root="$CURRENT_CANDIDATE"
   log "Promotion failed: $reason"
   stop_units || true
   restore_previous_runtime_os
@@ -177,7 +180,20 @@ rollback_live_checkout() {
     log "Rebuilding restored native authority"
     (cd "$REPO_ROOT" && timeout --signal=TERM --kill-after=30s "$VALIDATE_TIMEOUT" bash -lc "$ROLLBACK_COMMAND") || true
   fi
-  sync_installed_assets || true
+
+  # Rollback restores the previous application/service definition, but the
+  # transaction controller must not downgrade itself to the exact predecessor
+  # that the current candidate was created to repair. The isolated candidate
+  # remains available until the EXIT trap, so retain its already-validated
+  # updater, bundle, drift, and permission tools while restoring only the
+  # production hhs.service definition from PREVIOUS_SHA.
+  if [[ -n "$rollback_controller_root" && -d "$rollback_controller_root/deployment/digitalocean/guarded_auto_update" ]]; then
+    sync_installed_assets "$rollback_controller_root" "$REPO_ROOT" || true
+  else
+    log "Validated rollback controller worktree unavailable; retaining installed controller assets"
+    local rollback_service="$REPO_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+    [[ -f "$rollback_service" ]] && install -m 0644 "$rollback_service" /etc/systemd/system/hhs.service
+  fi
   systemctl daemon-reload
   start_units
   if wait_for_health; then

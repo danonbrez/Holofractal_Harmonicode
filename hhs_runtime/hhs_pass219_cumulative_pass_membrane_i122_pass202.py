@@ -58,11 +58,11 @@ CURRENT_SUCCESSOR_BLOBS = {
     SPEC_PATH: "a0634353e26c186bc72e887bd1bbc6bdc5db42c3",
     SERVICE_PATH: "645650a70efde6df130b90e21acbf063ebc0ff0d",
     TIMER_PATH: "3296ee9787544542697d3915e01569562ef30046",
-    UPDATER_PATH: "6b4dc28e3ec90cc42a8e6317a9f142c229b31022",
+    UPDATER_PATH: "1248ce5f9cc8c1a49a1ef83aab7f47d1bd4ad180",
     ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
     INSTALLER_PATH: "3289544601dfbd54697a6e57ef9c8505d407821f",
     VALIDATOR_PATH: "53677fea50de3bb2b42025c79b2fe5fd210e9dd0",
-    BUNDLE_PATH: "23afbf9c99d77f57acd7334d767c483572d64e0a",
+    BUNDLE_PATH: "fd6973697a39b94b445c35f6af7dd0aa3f727728",
     NORMALIZER_PATH: "cb6e57ce4f418f835de9b4354c2116a5032d0ca2",
     LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
 }
@@ -134,6 +134,8 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "require_candidate_bundle",
         "activate_candidate_runtime_os",
         "restore_previous_runtime_os",
+        'sync_installed_assets "$rollback_controller_root" "$REPO_ROOT"',
+        "transaction controller must not downgrade itself",
         "HHS_UPDATE_DRY_RUN",
     )
     _require(
@@ -174,7 +176,16 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "/api/runtime/workspace/session",
     )
     _require(DRIFT_PATH, "HHS_HOST_DRIFT_MODE", "host_edits_preserved_before_reset")
-    _require(BUNDLE_PATH, "repository_sha", "expected-sha", "activate", "restore")
+    _require(
+        BUNDLE_PATH,
+        "repository_sha",
+        "expected-sha",
+        "activate",
+        "restore",
+        "RELEASE_DIR_MODE = 0o755",
+        "normalize_release_permissions",
+        "verify_release_permissions",
+    )
     _require(
         NORMALIZER_PATH,
         "HHS_PRODUCTION_CHECKOUT_PERMISSION_RECEIPT_V2",
@@ -275,6 +286,8 @@ def validate_pass202_successor_hardening() -> Dict[str, Any]:
         "historical_host_drift_blocked": True,
         "current_host_drift_preserved_and_reconciled": True,
         "runtime_os_bundle_sha_bound": True,
+        "runtime_os_release_permissions_normalized": True,
+        "rollback_controller_not_downgraded": True,
         "production_bundle_mode": "prebuilt",
         "exclusive_updater_ownership": True,
         "recovery_receipt_gated": True,
