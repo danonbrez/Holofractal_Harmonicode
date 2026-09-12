@@ -1,28 +1,20 @@
-name: HHS Production HTTPS Mobile Closure
+name: HHS Production HTTPS Runtime OS Closure
 
 on:
   push:
     branches: [main]
     paths:
       - scripts/complete_hhs_production_https_mobile.sh
-      - applications/holofractal_harmonizer/src/sha256.mjs
-      - applications/holofractal_harmonizer/src/core.mjs
-      - applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
-      - applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
-      - applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
-      - applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
-      - applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
+      - hhs_backend/runtime_os_projection.py
+      - hhs_backend/runtime_os_visual_server.py
+      - deploy/digitalocean/hhs-pass196-integrated-environment.service
       - .github/workflows/hhs-production-https-mobile-closure.yml
   pull_request:
     paths:
       - scripts/complete_hhs_production_https_mobile.sh
-      - applications/holofractal_harmonizer/src/sha256.mjs
-      - applications/holofractal_harmonizer/src/core.mjs
-      - applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
-      - applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
-      - applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
-      - applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
-      - applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
+      - hhs_backend/runtime_os_projection.py
+      - hhs_backend/runtime_os_visual_server.py
+      - deploy/digitalocean/hhs-pass196-integrated-environment.service
       - .github/workflows/hhs-production-https-mobile-closure.yml
   workflow_dispatch:
 
@@ -35,20 +27,40 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
       - name: Validate production closure shell
         run: bash -n scripts/complete_hhs_production_https_mobile.sh
-      - name: Validate browser modules
+      - name: Reject legacy frontend mutation authority
+        shell: bash
         run: |
-          node --check applications/holofractal_harmonizer/src/sha256.mjs
-          node --check applications/holofractal_harmonizer/src/core.mjs
-          node --check applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
-          node --check applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
-          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
-      - name: Run insecure-context and mobile first-paint regressions
+          set -euo pipefail
+          script=scripts/complete_hhs_production_https_mobile.sh
+          grep -Fq 'HHS Visual Runtime OS Workspace' "$script"
+          grep -Fq '/api/interface/status' "$script"
+          grep -Fq 'legacy_harmonizer_is_public_root' "$script"
+          grep -Fq '/var/lib/hhs/runtime-os/releases/' "$script"
+          grep -Fq 'proxy_pass ${HHS_BACKEND}' "$script"
+          grep -Fq 'location ^~ /.well-known/acme-challenge/' "$script"
+          grep -Fq -- '--deploy-hook /usr/local/sbin/hhs-certbot-deploy-renew' "$script"
+          if grep -Fq 'atomic_install_from_main' "$script"; then
+            echo 'legacy origin/main frontend copy path is forbidden in production closure' >&2
+            exit 1
+          fi
+          if grep -Fq 'applications/holofractal_harmonizer/src/' "$script"; then
+            echo 'legacy Harmonizer source must not be a production deployment input' >&2
+            exit 1
+          fi
+          if grep -Fq '/src/sha256.mjs' "$script" || grep -Fq '/src/mobile-first-paint-fix.mjs' "$script"; then
+            echo 'legacy /src browser assets must not be production acceptance authority' >&2
+            exit 1
+          fi
+          if grep -Fq 'systemctl stop nginx' "$script"; then
+            echo 'certificate renewal must keep Nginx online' >&2
+            exit 1
+          fi
+      - name: Verify repository production authority contract
+        shell: bash
         run: |
-          node --test \
-            applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs \
-            applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
+          set -euo pipefail
+          grep -Fq 'os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT")' hhs_backend/runtime_os_projection.py
+          grep -Fq '"legacy_harmonizer_is_public_root": False' hhs_backend/runtime_os_projection.py
+          grep -Fq 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current' deploy/digitalocean/hhs-pass196-integrated-environment.service
