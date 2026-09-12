@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI QUEUED**
+Status: **CLOSED GREEN / RESTARTABLE FROZEN EVIDENCE**
 
 ## Repository state
 
@@ -38,67 +38,66 @@ docs/operations/restart/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_I7_RESTART_20260912
 9. structural prefetch metrics and ranking signature for replay/determinism checks;
 10. no VM81, Hash72, Hash216, or canonical persistence authority added.
 
-## Deterministic workload target
-
-The I7 test retains the 4096-record candidate graph and deliberate two-record Hash216 alias. It reuses the inherited `5 -> 7 -> 11` target, I5 hierarchy distance 1, and I6 replay weight.
-
-Acceptance requires:
-
-```text
-I6 benchmark remains green
-I6 replay association reaches exact target weight 192
-transition reinforcement creates deterministic target ordering
-target score combines transition weight 128 + replay weight 192 = 320
-alternate route score 256 initially ranks second
-vision-only higher transition is excluded from text prefetch
-16 repeated text prefetches return the same inherited target identity set
-warm inherited-reference work < equivalent cold posting work
-negative transition feedback demotes target without deleting it
-vision modality selects the vision neighborhood
-unknown transition origin executes exact cold fallback
-Hash216 alias bytes and membership unchanged
-Holo4 state byte-identical
-```
-
-## Dedicated repository CI
+## Dedicated repository CI — frozen green evidence
 
 ```text
 workflow: Pass 219 Prime Memristive Fifth Lane Replay Prefetch I7
 run id: 34712992330
 job id: 103605033907
 head: eb71a96e14dc12701c86eb944115193fdc289f6b
-state at checkpoint: QUEUED
+run attempt: 1
+status: completed
+conclusion: success
+completed: 2026-09-12T19:11:44Z
 ```
 
-Required dependency-scoped gates:
+All dependency-scoped gates passed:
 
 ```text
-I7 static replay-prefetch authority contract
-inherited exact ABI build
-inherited I6 neighborhood replay benchmark
-I7 replay-conditioned neighborhood prefetch benchmark
-inherited Holo4 four-lane C regression
+I7 static replay-prefetch authority contract = PASS
+inherited exact ABI build = PASS
+inherited I6 Hash216 neighborhood replay benchmark = PASS
+I7 replay-conditioned neighborhood prefetch benchmark = PASS
+inherited Holo4 four-lane C regression = PASS
 ```
 
-Broad legacy feature-branch workflows may also fire. Their unrelated failures are not I7 acceptance evidence unless the dedicated I7 workflow exposes the same touched dependency failure.
+## Exact benchmark receipts
 
-## Validation completed / remaining
-
-Completed:
+Inherited I6 receipt:
 
 ```text
-I7 formal contract committed
-I7 implementation committed
-I7 restart state committed
-I7 dedicated workflow registered by GitHub Actions
+lane5_i6=PASS
+target=0
+inherited_distance=1
+neighborhood_members=1
+composed_members=2
+duplicate_collapsed=1
+replay_receipts=3
+replay_weight=192
+repeated_warm=16
+warm_reference_reads=16
+cold_posting_work=3936
+alias_records=2
+unique_hash216=4095
 ```
 
-Remaining:
+I7 receipt:
 
 ```text
-workflow 34712992330 must leave queue and execute
-if green: freeze exact I7 benchmark receipt and SUCCESS evidence
-if red: repair only the failing I7 dependency surface and rerun
+lane5_i7=PASS
+target=0
+inherited_distance=1
+replay_weight=192
+initial_prefetch_score=320
+demoted_prefetch_score=256
+transitions=3
+repeated_prefetch=16
+warm_reference_reads=16
+cold_posting_work=3936
+modality_rejections=2
+fallbacks=1
+alias_records=2
+unique_hash216=4095
 ```
 
 ## Authority boundary
@@ -124,9 +123,9 @@ HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4
 
 No main merge or production deployment has been attempted.
 
-## Next implementation cycle after I7 closure
+## Next implementation cycle — I8
 
-If I7 is green, advance additively to I8:
+Advance additively to I8 from this frozen green lineage:
 
 1. add exact per-neighborhood activation/energy budgets;
 2. use I7 transition + I6 replay scores for bounded multi-hop predictive hydration;
@@ -139,16 +138,10 @@ If I7 is green, advance additively to I8:
 
 ```text
 branch: agent/pass219-prime-memristive-fifth-lane-i7-20260912
-implementation head: eb71a96e14dc12701c86eb944115193fdc289f6b
+frozen implementation head: eb71a96e14dc12701c86eb944115193fdc289f6b
 implementation tree: b6f150c18163a3b1222bf014caae1bd0f7cf0436
-workflow: 34712992330 QUEUED
+dedicated workflow: 34712992330 SUCCESS
+job: 103605033907 SUCCESS
 ```
 
-First restart action:
-
-```text
-inspect workflow 34712992330
-freeze green evidence or repair-forward only its failing I7 dependency surface
-```
-
-Do not reopen already-green I1/I2/I3/I4/I5/I6 work unless I7 touches and breaks that exact dependency surface.
+Do not reopen already-green I1/I2/I3/I4/I5/I6/I7 work unless a later additive cycle touches and breaks that exact dependency surface.
