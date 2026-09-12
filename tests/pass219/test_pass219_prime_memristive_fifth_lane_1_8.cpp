@@ -1,8 +1,16 @@
 #include "hhs_pass219_prime_memristive_fifth_lane_1_8.hpp"
 
-#define main hhs_pass219_i8_embedded_main
-#include "test_pass219_prime_memristive_fifth_lane_1_7.cpp"
-#undef main
+#include <cstdio>
+#include <cstring>
+
+using namespace hhs::rna;
+
+#define CHECK(expr) do { \
+    if (!(expr)) { \
+        std::fprintf(stderr, "CHECK failed: %s:%d: %s\n", __FILE__, __LINE__, #expr); \
+        return 1; \
+    } \
+} while (false)
 
 static bool same_receipt(
     const PrimeLaneMetabolicReceiptV9& a,
@@ -40,7 +48,6 @@ static PrimeLaneVerifiedOutcomeV9 outcome(
 }
 
 int main() {
-    CHECK(hhs_pass219_i8_embedded_main() == 0);
     CHECK(HHS_EXACT_PASS219_HOLO4_LANE_COUNT == 4U);
     CHECK(hhs_pass219_prime_lane_verified_metabolism_authority_valid(
         PrimeLaneVerifiedMetabolismAuthorityV9{}));
