@@ -124,16 +124,9 @@ def test_stale_composition_marker_reconciles_complete_i180_bundle_once() -> None
         registry_report={},
     )
 
-    signatures = set()
-    for route in target.router.routes:
-        path = str(getattr(route, "path", ""))
-        methods = getattr(route, "methods", None)
-        if methods:
-            for method in methods:
-                method_name = str(method).upper()
-                if method_name not in {"HEAD", "OPTIONS"}:
-                    signatures.add((method_name, path))
-
+    signatures = public_api_server._http_route_signatures(  # type: ignore[attr-defined]
+        target.router.routes
+    )
     required = set(MIGRATED_HTTP_SIGNATURES)
     assert required <= signatures
     assert target.state.hhs_pass170_route_bundle_revision == public_api_server.PASS170_ROUTE_BUNDLE_REVISION
