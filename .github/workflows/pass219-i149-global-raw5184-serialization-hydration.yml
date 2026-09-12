@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - agent/pass219-iteration149-global-raw5184-serialization-hydration
+      - agent/pass219-exact-main-inherited-link-closure-20260912
     paths:
       - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
       - 'hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc'
@@ -12,6 +13,9 @@ on:
       - 'hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json'
       - 'docs/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_RESTART.md'
@@ -26,6 +30,9 @@ on:
       - 'hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.json'
       - 'docs/pass219/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0.md'
       - 'docs/operations/restart/PASS_219_I149_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_RESTART.md'
@@ -72,27 +79,28 @@ jobs:
       - name: Reject approximate native serialization authority
         run: |
           set -euo pipefail
-          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_global_raw5184_serialization_hydration_1_0.h             hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h             hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
+          ! grep -REn '\b(float|double)\b' hhs_runtime/include/hhs_pass219_global_raw5184_serialization_hydration_1_0.h hhs_runtime/c/hhs_pass219_global_raw5184_serialization_hydration_1_0.inc hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
 
-      - name: Compile cumulative exact ABI
+      - name: Compile cumulative exact ABI and inherited link support
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i149 artifacts/pass219/i149-global-raw5184
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i149/exact.o
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i149/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i149/link-support full
 
       - name: Run I149 global serialization conformance
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-i149
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c /tmp/pass219-i149/exact.o /tmp/pass219-i149/link-support/hhs_hash216.o /tmp/pass219-i149/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-i149/test-i149
           /tmp/pass219-i149/test-i149
 
       - name: Preserve inherited I148 raw5184 conformance
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-i148
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c /tmp/pass219-i149/exact.o /tmp/pass219-i149/link-support/hhs_hash216.o /tmp/pass219-i149/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-i149/test-i148
           /tmp/pass219-i149/test-i148
 
       - name: Preserve inherited RNA exact frame round-trip
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_transcription_1_10.c             /tmp/pass219-i149/exact.o             -o /tmp/pass219-i149/test-rna
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_rna_transcription_1_10.c /tmp/pass219-i149/exact.o /tmp/pass219-i149/link-support/hhs_hash216.o /tmp/pass219-i149/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-i149/test-rna
           /tmp/pass219-i149/test-rna
 
       - name: Build shared exact runtime

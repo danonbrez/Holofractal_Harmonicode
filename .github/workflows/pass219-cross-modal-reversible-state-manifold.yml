@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - agent/pass219-i146-cross-modal-reversible-state-manifold
+      - agent/pass219-exact-main-inherited-link-closure-20260912
     paths:
       - 'hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.h'
       - 'hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.hpp'
@@ -14,6 +15,9 @@ on:
       - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD_1_0.json'
       - 'tests/pass219/test_pass219_cross_modal_reversible_state_1_0.c'
       - 'tests/pass219/test_pass219_cross_modal_reversible_state_1_0.cpp'
@@ -33,6 +37,9 @@ on:
       - 'hhs_runtime/hhs_pass219_mandatory_data_ml_registration_v1.py'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD_1_0.json'
       - 'tests/pass219/test_pass219_cross_modal_reversible_state_1_0.c'
       - 'tests/pass219/test_pass219_cross_modal_reversible_state_1_0.cpp'
@@ -57,14 +64,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install dependency-scoped test dependency
         run: python -m pip install --disable-pip-version-check pytest
-
       - name: Parse normative contract
         run: |
           python -m json.tool contracts/pass219/PASS_219_CROSS_MODAL_REVERSIBLE_STATE_MANIFOLD_1_0.json >/dev/null
@@ -77,36 +81,31 @@ jobs:
           assert d['cross_modal_mapping']['lossless_adapter_roundtrip_required'] is True
           assert d['optimization']['canonical_authority_check_count_may_not_be_reduced'] is True
           PY
-
       - name: Reject approximate authority in new exact ABI
         run: |
           set -euo pipefail
-          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.h             hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.hpp             hhs_runtime/c/hhs_pass219_cross_modal_reversible_state_1_0.inc
-
-      - name: Compile cumulative exact ABI
+          ! grep -REn '\b(float|double)\b' hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.h hhs_runtime/include/hhs_pass219_cross_modal_reversible_state_1_0.hpp hhs_runtime/c/hhs_pass219_cross_modal_reversible_state_1_0.inc
+      - name: Compile cumulative exact ABI and inherited link support
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-xmodal artifacts/pass219/cross-modal-reversible-state
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-xmodal/exact.o
-
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-xmodal/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-xmodal/link-support full
       - name: Run C conformance
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_cross_modal_reversible_state_1_0.c             /tmp/pass219-xmodal/exact.o             -o /tmp/pass219-xmodal/test-c
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_cross_modal_reversible_state_1_0.c /tmp/pass219-xmodal/exact.o /tmp/pass219-xmodal/link-support/hhs_hash216.o /tmp/pass219-xmodal/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-xmodal/test-c
           /tmp/pass219-xmodal/test-c
-
       - name: Run C++ conformance
         run: |
-          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_cross_modal_reversible_state_1_0.cpp             /tmp/pass219-xmodal/exact.o             -o /tmp/pass219-xmodal/test-cpp
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_cross_modal_reversible_state_1_0.cpp /tmp/pass219-xmodal/exact.o /tmp/pass219-xmodal/link-support/hhs_hash216.o /tmp/pass219-xmodal/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-xmodal/test-cpp
           /tmp/pass219-xmodal/test-cpp
-
       - name: Run deterministic branch and mapping tests
         run: |
-          python -m pytest -q --tb=short             tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py             tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py
+          python -m pytest -q --tb=short tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py
           python tests/pass219/test_pass219_execution_composer_registration_v1.py
-
       - name: Run exact logical-work benchmark
         run: |
-          python benchmarks/pass219/pass219_cross_modal_reversible_state_benchmark.py             artifacts/pass219/cross-modal-reversible-state/benchmark.json
+          python benchmarks/pass219/pass219_cross_modal_reversible_state_benchmark.py artifacts/pass219/cross-modal-reversible-state/benchmark.json
           python - <<'PY'
           import json
           p='artifacts/pass219/cross-modal-reversible-state/benchmark.json'
@@ -116,19 +115,15 @@ jobs:
           assert d['proof_requirements']['authority_check_count_reduced'] is False
           assert d['canonical_authority_changed'] is False
           PY
-
       - name: Build exact runtime library fail closed
         run: |
           set -euo pipefail
           timeout 600s make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
-
       - name: Preserve current I146 Pass180 membrane
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
-        run: |
-          PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass180_membrane_i146.py
-
+        run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass180_membrane_i146.py
       - uses: actions/upload-artifact@v4
         with:
           name: pass219-cross-modal-reversible-state

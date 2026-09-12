@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - agent/pass219-i166-pass168-terminal-parent-closure
+      - agent/pass219-exact-main-inherited-link-closure-20260912
       - main
     paths:
       - 'hhs_runtime/include/hhs_pass168_parameter_circuit_1_0.h'
@@ -13,6 +14,10 @@ on:
       - 'hhs_runtime/c/hhs_pass168_comparator_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'tools/pass219/build_aarch64_openssl35.sh'
       - 'tools/pass219/pass219_i166_pass168_exact_probe.c'
       - '.github/workflows/pass219-i166-pass168-terminal-parent-closure.yml'
   workflow_dispatch:
@@ -23,7 +28,7 @@ permissions:
 jobs:
   validate-i166-native:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
 
@@ -35,7 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu qemu-user file
+          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu qemu-user file curl perl
 
       - name: Enforce exact authority guards
         run: |
@@ -47,37 +52,48 @@ jobs:
             hhs_runtime/c/hhs_pass168_comparator_1_0.inc \
             tools/pass219/pass219_i166_pass168_exact_probe.c
           grep -F 'HHS_PASS168_SOURCE_BYTES 424U' hhs_runtime/include/hhs_pass168_parameter_circuit_1_0.h
-          grep -F 'fdbee5db0f2fea428b6b88e5ac9b273e6aa3754fa00f84e8923456373275166e' \
-            hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
+          grep -F 'fdbee5db0f2fea428b6b88e5ac9b273e6aa3754fa00f84e8923456373275166e' hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
           grep -F '#include "hhs_pass168_parameter_circuit_1_0.inc"' hhs_runtime/c/hhs_runtime_exact_abi.c
           grep -F '#include "hhs_pass168_comparator_1_0.inc"' hhs_runtime/c/hhs_runtime_exact_abi.c
-          grep -F 'preflight_status = hhs_pass168_state_compute(&scratch);' \
-            hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
+          grep -F 'preflight_status = hhs_pass168_state_compute(&scratch);' hhs_runtime/c/hhs_pass168_parameter_circuit_1_0.inc
 
       - name: Strict compile cumulative exact ABI and x86-64 probe
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i166 artifacts/pass219/i166
-          gcc -O2 -std=c11 -Wall -Wextra -Werror \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-i166/exact.o
-          gcc -O2 -std=c11 -Wall -Wextra -Werror \
-            -Ihhs_runtime/include \
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i166/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i166/link-support full
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
             tools/pass219/pass219_i166_pass168_exact_probe.c \
             /tmp/pass219-i166/exact.o \
+            /tmp/pass219-i166/link-support/hhs_hash216.o \
+            /tmp/pass219-i166/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-i166/i166-x86
           file /tmp/pass219-i166/i166-x86 | grep -F 'x86-64'
           /tmp/pass219-i166/i166-x86 > artifacts/pass219/i166/x86_64_exact_record.json
           python -m json.tool artifacts/pass219/i166/x86_64_exact_record.json >/dev/null
 
+      - name: Build ARM64 OpenSSL and exact link support
+        run: |
+          set -euo pipefail
+          bash tools/pass219/build_aarch64_openssl35.sh /tmp/hhs-openssl35-aarch64
+          CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ \
+            CFLAGS='-I/tmp/hhs-openssl35-aarch64/include' \
+            CXXFLAGS='-I/tmp/hhs-openssl35-aarch64/include' \
+            bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i166/arm-link-support full
+
       - name: Cross compile and execute ARM64 exact probe
         run: |
           set -euo pipefail
           aarch64-linux-gnu-gcc -O2 -static -std=c11 -Wall -Wextra -Werror \
-            -Ihhs_runtime/include \
+            -Ihhs_runtime/include -I/tmp/hhs-openssl35-aarch64/include \
             hhs_runtime/c/hhs_runtime_exact_abi.c \
             tools/pass219/pass219_i166_pass168_exact_probe.c \
+            /tmp/pass219-i166/arm-link-support/hhs_hash216.o \
+            /tmp/pass219-i166/arm-link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -L/tmp/hhs-openssl35-aarch64/lib \
+            -lcrypto -lstdc++ -pthread -ldl -lm \
             -o /tmp/pass219-i166/i166-arm64
           file /tmp/pass219-i166/i166-arm64 | grep -i 'aarch64'
           qemu-aarch64 /tmp/pass219-i166/i166-arm64 > artifacts/pass219/i166/arm64_exact_record.json
@@ -103,18 +119,8 @@ jobs:
           assert x['fallback_used']==0
           assert x['source_sha256']=='fdbee5db0f2fea428b6b88e5ac9b273e6aa3754fa00f84e8923456373275166e'
           canonical=json.dumps(x,sort_keys=True,separators=(',',':')).encode()
-          evidence={
-              'schema':'HHS_PASS219_I166_PASS168_CROSSARCH_PARITY_V1',
-              'result':'PASS',
-              'architectures':['x86_64','arm64'],
-              'records_identical':True,
-              'canonical_record_sha256':hashlib.sha256(canonical).hexdigest(),
-              'record_hash216':x['record_hash216'],
-              'floating_point_canonical_authority':False,
-              'fallback_used':False,
-          }
-          Path('artifacts/pass219/i166/crossarch_parity.json').write_text(
-              json.dumps(evidence,sort_keys=True,indent=2)+'\n')
+          evidence={'schema':'HHS_PASS219_I166_PASS168_CROSSARCH_PARITY_V1','result':'PASS','architectures':['x86_64','arm64'],'records_identical':True,'canonical_record_sha256':hashlib.sha256(canonical).hexdigest(),'record_hash216':x['record_hash216'],'floating_point_canonical_authority':False,'fallback_used':False}
+          Path('artifacts/pass219/i166/crossarch_parity.json').write_text(json.dumps(evidence,sort_keys=True,indent=2)+'\n')
           print(json.dumps(evidence,sort_keys=True))
           PY
 
@@ -126,9 +132,11 @@ jobs:
             -Ihhs_runtime/include \
             hhs_runtime/c/hhs_runtime_exact_abi.c \
             tools/pass219/pass219_i166_pass168_exact_probe.c \
+            /tmp/pass219-i166/link-support/hhs_hash216.o \
+            /tmp/pass219-i166/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-i166/i166-sanitize
-          ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 \
-          UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+          ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
             /tmp/pass219-i166/i166-sanitize > artifacts/pass219/i166/sanitizer_exact_record.json
           python -m json.tool artifacts/pass219/i166/sanitizer_exact_record.json >/dev/null
           cmp artifacts/pass219/i166/x86_64_exact_record.json artifacts/pass219/i166/sanitizer_exact_record.json
@@ -138,9 +146,11 @@ jobs:
           set -euo pipefail
           gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
             -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
+            /tmp/pass219-i166/link-support/hhs_hash216.o \
+            /tmp/pass219-i166/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-i166/libhhs_runtime.so
-          nm -D /tmp/pass219-i166/libhhs_runtime.so | grep -E \
-            'hhs_pass168_(version|source_stats|address_encode|address_decode|state_initialize|candidate_begin|candidate_set|candidate_validate|commit_candidate|replay_transition|rollback_transition|repair_transition|self_test|comparator_conformance)'
+          nm -D /tmp/pass219-i166/libhhs_runtime.so | grep -E 'hhs_pass168_(version|source_stats|address_encode|address_decode|state_initialize|candidate_begin|candidate_set|candidate_validate|commit_candidate|replay_transition|rollback_transition|repair_transition|self_test|comparator_conformance)'
 
       - name: Produce bounded feature evidence
         run: |
@@ -151,49 +161,8 @@ jobs:
           row=json.loads(Path('artifacts/pass219/i166/x86_64_exact_record.json').read_text())
           parity=json.loads(Path('artifacts/pass219/i166/crossarch_parity.json').read_text())
           evidence={
-              'schema':'HHS_PASS219_I166_PASS168_NATIVE_FEATURE_EVIDENCE_V1',
-              'result':'PASS',
-              'source_preserved':True,
-              'source_bytes':424,
-              'source_sha256':row['source_sha256'],
-              'parenthesis_parameters_registered':28,
-              'equality_half_gates_registered':12,
-              'threads_registered':64,
-              'raw_threads':40,
-              'derived_threads':24,
-              'cells_covered':5184,
-              'duplicate_addresses':0,
-              'inverse_address_failures':0,
-              'banks_per_thread':9,
-              'cells_per_bank':9,
-              'exact_rational_authority':True,
-              'floating_point_canonical_authority':False,
-              'baseline_upper_equals_361L':True,
-              'baseline_lower_equals_360L':True,
-              'successor_residual_equals_L':True,
-              'loshu_square_identity':True,
-              'gauge_cancellation_verified':True,
-              'ratio_channels_verified':True,
-              'comparators_verified':6,
-              'sparse_dependency_updates_verified':True,
-              'single_exact_abi_commit_surface':True,
-              'candidate_exact_execution_preflight_verified':True,
-              'hash72_receipts_verified':True,
-              'hash216_identity_verified':True,
-              'rollback_verified':True,
-              'repair_verified':True,
-              'deterministic_replay_verified':True,
-              'x86_64_verified':True,
-              'arm64_verified':True,
-              'sanitizers_passed':True,
-              'fallback_used':False,
-              'crossarch_record_hash216':row['record_hash216'],
-              'crossarch_record_sha256':parity['canonical_record_sha256'],
-              'pass168_terminal_verified':False,
-              'reason_terminal_false':'PUBLIC_SURFACES_EVIDENCE_MANIFEST_AND_FINAL_COMPLETION_RECEIPT_NOT_YET_SEALED',
-          }
-          Path('artifacts/pass219/i166/native_feature_evidence.json').write_text(
-              json.dumps(evidence,sort_keys=True,indent=2)+'\n')
+              'schema':'HHS_PASS219_I166_PASS168_NATIVE_FEATURE_EVIDENCE_V1','result':'PASS','source_preserved':True,'source_bytes':424,'source_sha256':row['source_sha256'],'parenthesis_parameters_registered':28,'equality_half_gates_registered':12,'threads_registered':64,'raw_threads':40,'derived_threads':24,'cells_covered':5184,'duplicate_addresses':0,'inverse_address_failures':0,'banks_per_thread':9,'cells_per_bank':9,'exact_rational_authority':True,'floating_point_canonical_authority':False,'baseline_upper_equals_361L':True,'baseline_lower_equals_360L':True,'successor_residual_equals_L':True,'loshu_square_identity':True,'gauge_cancellation_verified':True,'ratio_channels_verified':True,'comparators_verified':6,'sparse_dependency_updates_verified':True,'single_exact_abi_commit_surface':True,'candidate_exact_execution_preflight_verified':True,'hash72_receipts_verified':True,'hash216_identity_verified':True,'rollback_verified':True,'repair_verified':True,'deterministic_replay_verified':True,'x86_64_verified':True,'arm64_verified':True,'sanitizers_passed':True,'fallback_used':False,'crossarch_record_hash216':row['record_hash216'],'crossarch_record_sha256':parity['canonical_record_sha256'],'pass168_terminal_verified':False,'reason_terminal_false':'PUBLIC_SURFACES_EVIDENCE_MANIFEST_AND_FINAL_COMPLETION_RECEIPT_NOT_YET_SEALED'}
+          Path('artifacts/pass219/i166/native_feature_evidence.json').write_text(json.dumps(evidence,sort_keys=True,indent=2)+'\n')
           print(json.dumps(evidence,sort_keys=True))
           PY
 
