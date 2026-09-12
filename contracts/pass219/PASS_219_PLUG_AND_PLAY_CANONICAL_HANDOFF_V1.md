@@ -401,3 +401,45 @@ firewall ADMIT
 ```
 
 The firewall therefore strengthens the canonical handoff without changing singleton canonical ownership.
+
+---
+
+## 12. Environmental witness and verified recovery gate
+
+The canonical handoff SHALL also enforce:
+
+```text
+contracts/pass219/PASS_219_VM81_ENVIRONMENTAL_WITNESS_RECOVERY_V1.md
+```
+
+Every canonical request must bind a fresh environmental witness accepted under the active immutable Genesis Security Root.
+
+The canonical path is therefore further constrained to:
+
+```text
+firewall ADMIT
+∧ ENVIRONMENT_OK(W_t, G_e)
+∧ instruction_binds_witness(I_t, root(W_t))
+∧ FREEZE = false
+      ↓ delegation only
+inherited singleton VM81/kernel authority
+```
+
+A confirmed environmental mismatch SHALL latch `FREEZE` before further canonical dispatch.
+
+The recovery state machine may produce only a verified candidate. It SHALL NOT call the inherited canonical delegate directly and SHALL NOT mint canonical Hash72/Hash216 receipts.
+
+A recovered candidate may become executable only after:
+
+```text
+authenticated checkpoint validation
+∧ anti-rollback validation
+∧ persistent inventory reconciliation
+∧ exhaustive Hash216 registry reconciliation
+∧ deterministic rebuild equality
+∧ fresh environment re-measurement
+∧ ordinary VM81 PQC firewall ADMIT
+∧ inherited singleton canonical revalidation
+```
+
+Thus environmental recovery strengthens availability without creating a recovery-side transition authority.
