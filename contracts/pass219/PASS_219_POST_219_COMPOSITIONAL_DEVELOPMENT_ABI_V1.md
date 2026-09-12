@@ -395,3 +395,58 @@ Presentation authority = optional and non-executive
 ```
 
 Pass 220+ is therefore free to evolve HARMONICODE indefinitely through composition over stable Pass 219 APIs without reopening external runtime-kernel authority.
+
+---
+
+## 15. Mandatory PQC firewall inheritance
+
+Every Pass 220+ canonical request SHALL inherit the Pass 219 VM81 PQC cell-wall firewall contract:
+
+```text
+contracts/pass219/PASS_219_VM81_PQC_CELL_WALL_FIREWALL_V1.md
+```
+
+The permanent post-219 execution relation is therefore strengthened to:
+
+```text
+P_(n+1)
+    ↓ compose / verify
+Lower_RNA219(P_(n+1))
+    ↓
+construct exact canonical instruction envelope
+    ↓
+VM81_PQC_FIREWALL
+    ↓ ADMIT only
+delegate to inherited singleton VM81 authority
+    ↓
+COMMIT + canonical Hash72 / Hash216 lineage
+OR REJECT
+```
+
+For every pass `P_n` with `n >= 220`:
+
+```text
+canonical_request(P_n)
+⇒ valid_cell_wall_path(P_n)
+∧ valid_predecessor_hash72(P_n)
+∧ valid_predecessor_hash216(P_n)
+∧ valid_hash216_array_references(P_n)
+∧ valid_pqc_authentication(P_n)
+∧ valid_freshness(P_n)
+∧ delegated_to_singleton_kernel_on_firewall_admit_only
+```
+
+A later pass MAY construct the request envelope, but it MAY NOT self-assert firewall admission, bypass firewall evaluation, forge canonical Hash216 membership, or treat possession of a PQC key/signature as canonical transition authority.
+
+The following closure is REQUIRED:
+
+```text
+firewall reject
+⇒ no canonical VM81 dispatch
+∧ no canonical mutation
+∧ no canonical Hash72 issuance
+∧ no canonical Hash216 issuance
+∧ no canonical persistence
+```
+
+Thus Pass 220+ remains unrestricted at the compositional-development layer while every canonical execution request is security-bound to the Pass 219 cell-wall/hash/PQC membrane.
