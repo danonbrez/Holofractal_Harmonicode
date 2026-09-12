@@ -26,7 +26,10 @@ from hhs_backend import server as production_base
 from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
 from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 from hhs_backend.pass170_audio_language_routes import build_pass170_audio_language_router
-from hhs_backend.pass170_legacy_runtime_routes import build_pass170_legacy_runtime_router
+from hhs_backend.pass170_legacy_runtime_routes import (
+    MIGRATED_HTTP_SIGNATURES,
+    build_pass170_legacy_runtime_router,
+)
 from hhs_runtime.pass190.completion import (
     CONTRACT_ID as PASS190_CONTRACT_ID,
     Pass190CompletionContext,
@@ -43,6 +46,7 @@ LEGACY_APP_ID = "HHS-P190-CANONICAL-PUBLIC-API-V1"
 PRODUCTION_BASE_ENTRYPOINT = "hhs_backend.server:app"
 I171_CLASSIFICATION = "PASS170_PRODUCTION_APP_IDENTITY_AND_DELEGATE_ROUTE_PARITY_I171"
 I171_NEXT_BOUNDARY = "PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AND_FULL_ROUTER_MANIFEST"
+PASS170_ROUTE_BUNDLE_REVISION = "PASS170-I182-I180-LEGACY-RUNTIME"
 _DEFAULT_CONTEXT: Pass190CompletionContext | None = None
 _DEFAULT_LOCK = threading.Lock()
 
@@ -128,6 +132,20 @@ def _payload_size(value: Any) -> int:
             allow_nan=False,
         ).encode("utf-8")
     )
+
+
+def _http_route_signatures(routes: Any) -> set[tuple[str, str]]:
+    signatures: set[tuple[str, str]] = set()
+    for route in routes:
+        path = str(getattr(route, "path", ""))
+        methods = getattr(route, "methods", None)
+        if not methods:
+            continue
+        for method in methods:
+            method_name = str(method).upper()
+            if method_name not in {"HEAD", "OPTIONS"}:
+                signatures.add((method_name, path))
+    return signatures
 
 
 def _invoke_guarded(
@@ -328,8 +346,28 @@ def _compose_pass170(
         router = build_pass170_router(provider)
         router.hhs_registry_report = dict(registry_report)  # type: ignore[attr-defined]
         target.include_router(router)
-        target.state.hhs_pass170_routes_composed = True
-        target.state.hhs_pass170_production_base_entrypoint = PRODUCTION_BASE_ENTRYPOINT
+    else:
+        required_legacy = set(MIGRATED_HTTP_SIGNATURES)
+        present = _http_route_signatures(target.router.routes)
+        missing_legacy = required_legacy - present
+        if missing_legacy:
+            if missing_legacy != required_legacy:
+                raise RuntimeError(
+                    "PASS170_I182_PARTIAL_LEGACY_RUNTIME_ROUTE_BUNDLE:"
+                    + ",".join(f"{method} {path}" for method, path in sorted(missing_legacy))
+                )
+            target.include_router(build_pass170_legacy_runtime_router())
+
+    remaining_legacy = set(MIGRATED_HTTP_SIGNATURES) - _http_route_signatures(target.router.routes)
+    if remaining_legacy:
+        raise RuntimeError(
+            "PASS170_I182_LEGACY_RUNTIME_ROUTE_RECONCILIATION_FAILED:"
+            + ",".join(f"{method} {path}" for method, path in sorted(remaining_legacy))
+        )
+
+    target.state.hhs_pass170_routes_composed = True
+    target.state.hhs_pass170_route_bundle_revision = PASS170_ROUTE_BUNDLE_REVISION
+    target.state.hhs_pass170_production_base_entrypoint = PRODUCTION_BASE_ENTRYPOINT
     target.openapi_schema = None
     return target
 
@@ -383,6 +421,7 @@ __all__ = [
     "I171_CLASSIFICATION",
     "I171_NEXT_BOUNDARY",
     "LEGACY_APP_ID",
+    "PASS170_ROUTE_BUNDLE_REVISION",
     "PRODUCTION_BASE_ENTRYPOINT",
     "app",
     "build_pass170_router",
