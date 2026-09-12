@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTATION PENDING REPOSITORY CI**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI QUEUED**
 
 ## Repository state
 
@@ -11,6 +11,8 @@ repository: danonbrez/Holofractal_Harmonicode
 base I5 frozen head: 7cf7362bbf67fe1b8a5b75f7007c334a5a40f618
 branch: agent/pass219-prime-memristive-fifth-lane-i6-20260912
 I6 contract commit: dc1dfd41f3c027ef63e28700059df11f07ac8c60
+I6 implementation commit: e80535c91ffd5dcf4f12dcc7a9a31034e4c7f6c4
+implementation tree: 96bd1e534908dd1497ae2a77658a01b20eba6ad9
 ```
 
 ## I6 files
@@ -36,7 +38,7 @@ docs/operations/restart/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_I6_RESTART_20260912
 9. reversible last-receipt application and rejection of non-tip reversal;
 10. no VM81, Hash72, Hash216, or canonical persistence authority added.
 
-## Deterministic workload target
+## Deterministic workload
 
 The I6 test builds 4096 fifth-lane circuit records with one deliberate two-record alias onto one inherited Hash216 identity. It reuses the I5 condition where fibre 5 alone is insufficient and `5 -> 7 -> 11` uniquely isolates a target.
 
@@ -59,7 +61,17 @@ Hash216 alias bytes and membership unchanged
 Holo4 state byte-identical
 ```
 
-## Dedicated repository CI target
+## Dedicated repository CI
+
+```text
+workflow: Pass 219 Prime Memristive Fifth Lane Hash216 Neighborhood Replay I6
+run id: 34711947550
+job id: 103602174031
+head: e80535c91ffd5dcf4f12dcc7a9a31034e4c7f6c4
+state at checkpoint: QUEUED
+```
+
+Required dependency-scoped gates:
 
 ```text
 I6 static neighborhood/replay authority contract
@@ -69,12 +81,45 @@ I6 Hash216 neighborhood replay benchmark
 inherited Holo4 four-lane C regression
 ```
 
-## Next action
+Broad legacy feature-branch workflows may also fire. Their unrelated failures are not I6 acceptance evidence unless the dedicated I6 workflow exposes the same touched dependency failure.
 
-After creating the implementation commit:
+## Validation completed / remaining
 
-1. observe only the dedicated I6 workflow for dependency-scoped acceptance;
-2. repair only the failing I6 dependency surface if red;
-3. on success, freeze run ID, exact benchmark receipt, implementation commit/tree, and next action here;
-4. do not reopen already-green I1/I2/I3/I4/I5 gates unless touched;
-5. do not merge to main or deploy production unless separately authorized.
+Completed:
+
+```text
+I6 formal contract committed
+I6 implementation committed
+I6 restart state committed
+I6 dedicated workflow registered by GitHub Actions
+```
+
+Remaining:
+
+```text
+workflow 34711947550 must leave queue and execute
+if green: freeze exact I6 benchmark receipt and SUCCESS evidence
+if red: repair only the failing I6 dependency surface and rerun
+```
+
+No main merge or production deployment has been attempted.
+
+## Restart point
+
+Resume from:
+
+```text
+branch: agent/pass219-prime-memristive-fifth-lane-i6-20260912
+implementation head: e80535c91ffd5dcf4f12dcc7a9a31034e4c7f6c4
+implementation tree: 96bd1e534908dd1497ae2a77658a01b20eba6ad9
+workflow: 34711947550 QUEUED
+```
+
+First restart action:
+
+```text
+inspect workflow 34711947550
+freeze green evidence or repair-forward only its failing I6 dependency surface
+```
+
+Do not reopen already-green I1/I2/I3/I4/I5 work unless I6 touches and breaks that exact dependency surface.
