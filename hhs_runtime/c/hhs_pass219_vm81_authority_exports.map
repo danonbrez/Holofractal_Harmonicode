@@ -6,4 +6,5 @@
         hhs_exact_pass219_vm81_pqc_admit;
         hhs_exact_pass219_vm81_pqc_admit_signed;
         hhs_exact_pass219_vm81_environment_checkpoint_seal;
+        hhs_exact_pass219_vm81_environment_recover_candidate;
 };
