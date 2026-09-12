@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / LOCAL DEP-SCOPED GREEN / REPOSITORY CI PENDING**
+Status: **RESTARTABLE CHECKPOINT / IMPLEMENTED / DEP-SCOPED CI GREEN**
 
 ## Repository state
 
@@ -11,6 +11,8 @@ repository: danonbrez/Holofractal_Harmonicode
 base I1 branch head: 46b7ae3de8f1c6cd89a48043ae2b21f9b53d9fec
 branch: agent/pass219-prime-memristive-fifth-lane-i2-20260912
 I2 contract commit: 1987be05dc688c415d0516060e56dc7de9e6c695
+I2 implementation commit: 1923da9ea2db5e5d8fcc40db4a76f1d84d1c0143
+implementation tree: 182cfb0351c6d6e48a71dbece676ae31894215a7
 ```
 
 ## I2 files
@@ -71,23 +73,76 @@ The learned alternate route was:
 
 and converged to the same single target record as the corresponding linear oracle.
 
-## Repository CI expected gates
+## Repository CI evidence
+
+Dedicated workflow:
 
 ```text
-I2 static authority/stopping contract
-inherited I1 fifth-lane test
-inherited exact ABI build
-real Holo4 prepared-state adapter integration
-4096-record I2 index/intersection benchmark
-inherited Holo4 four-lane C regression
+name: Pass 219 Prime Memristive Fifth Lane Index I2
+run id: 34706833562
+head: 1923da9ea2db5e5d8fcc40db4a76f1d84d1c0143
+job: validate
+conclusion: SUCCESS
 ```
 
-## Next action
+All dependency-scoped steps passed:
 
-After the implementation commit is created:
+```text
+Verify I2 authority and exact stopping contract: PASS
+Run inherited I1 fifth-lane test: PASS
+Build inherited exact ABI: PASS
+Run I2 adapter index intersection benchmark: PASS
+Verify inherited four-lane authority remains green: PASS
+```
 
-1. observe only the dedicated I2 workflow for dependency-scoped validation;
-2. if green, freeze the workflow run ID and measured output in this restart file;
-3. if red, repair only the failing I2 dependency surface;
-4. do not reopen already-green I1 arithmetic/prime-envelope work unless touched;
-5. after I2 is green, advance to Hash216 cache-reference binding and context-dependent reusable route composition while retaining inherited final admission authority.
+The exact ABI build exported both inherited surfaces required by the adapter path:
+
+```text
+hhs_exact_pass219_holo4_prepare
+hhs_exact_pass219_holo4_route
+```
+
+Repository benchmark output:
+
+```text
+lane5_i2=PASS neutral_axes=1 neutral_postings=1 linear_records=4096 learned_axes=3 learned_postings=282 learned_linear_records=4096
+```
+
+This proves candidate-set parity for the exercised indexed routes against the linear oracle and demonstrates fewer examined posting entries on this deterministic workload. It is not a universal latency or asymptotic-complexity claim.
+
+Other legacy repository workflows that trigger broadly on feature-branch pushes remain outside this I2 dependency surface and are not used as acceptance evidence.
+
+## Remaining validation
+
+No I2 dependency-scoped validation remains.
+
+No main merge or production deployment has been attempted for this iteration.
+
+## Next implementation cycle
+
+Advance additively to I3:
+
+1. bind indexed candidate records to existing Hash216 cache/state references without minting new canonical identity;
+2. compose multiple cached route plans by query context while retaining exact deterministic ordering;
+3. permit route-cache reuse to seed the I1 conductance selector without mutating canonical knowledge;
+4. add exact collision/alias handling when different circuit coordinates resolve to the same inherited Hash216 state;
+5. benchmark repeated-query reuse against cold indexed lookup and the linear oracle;
+6. require final candidate verification and transition admission through inherited VM81/Hash216 authority;
+7. preserve restartable dependency-scoped evidence and avoid reopening I1/I2 gates unless touched.
+
+## Restart point
+
+Resume from:
+
+```text
+branch: agent/pass219-prime-memristive-fifth-lane-i2-20260912
+implementation head: 1923da9ea2db5e5d8fcc40db4a76f1d84d1c0143
+workflow evidence: 34706833562 SUCCESS
+```
+
+First action on restart:
+
+```text
+confirm branch head descends from 1923da9ea2db5e5d8fcc40db4a76f1d84d1c0143
+advance to Hash216 reference binding + contextual route-composition I3
+```
