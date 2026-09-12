@@ -8,6 +8,7 @@ from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactVM81Frame
 
 HHS_EXACT_PASS192_FIB_MAX_DESCRIPTOR_BYTES = 2048
 HHS_EXACT_PASS219_UCE_FIBONACCI_DEPTH = 10
+HHS_EXACT_STATUS_INVARIANT_FAILURE = 5
 
 
 class HHSExactPass192FibonacciCompressionV1(Structure):
@@ -31,6 +32,8 @@ class HHSExactPass192FibonacciCompressionV1(Structure):
 
 
 class HHSExactPass219ComposedAdmissionV1(Structure):
+    """Historical layout retained for readers/tests; no longer a mutation bridge."""
+
     _fields_ = [
         ("struct_size", c_uint32),
         ("version", c_uint32),
@@ -59,13 +62,9 @@ _LIB.hhs_exact_pass192_fibonacci_validate_descriptor.argtypes = [
     c_size_t,
 ]
 _LIB.hhs_exact_pass192_fibonacci_validate_descriptor.restype = ctypes.c_int
-_LIB.hhs_exact_pass219_admit_composed.argtypes = [
-    ctypes.POINTER(uq.HHSExactUQCELInputV1),
-    ctypes.POINTER(HHSExactVM81Frame),
-    ctypes.POINTER(HHSExactVM81Frame),
-    ctypes.POINTER(HHSExactPass219ComposedAdmissionV1),
-]
-_LIB.hhs_exact_pass219_admit_composed.restype = ctypes.c_int
+# Deliberately DO NOT bind hhs_exact_pass219_admit_composed.  Pass 219 1.31
+# hides that mutator from the dynamic ABI; production canonical requests use
+# hhs_exact_pass219_vm81_pqc_admit_signed instead.
 
 
 def _char_field(value: bytes) -> str:
@@ -117,7 +116,13 @@ def compress_pass192_fibonacci(depth: int) -> dict[str, object]:
 
 
 class HHSExactPass219RuntimeBridge:
-    """Canonical Pass 219 admission composer: UCE/UQCEL + inherited Pass 192/216 compression."""
+    """Historical Python compatibility surface after external-authority closure.
+
+    This class may still validate UQCEL and materialize the inherited Pass 192
+    compression descriptor, but it cannot commit a VM81 frame or mint canonical
+    Hash72/Hash216 receipts.  Positive canonical mutation is intentionally
+    available only through the signed Pass 219 PQC firewall ABI.
+    """
 
     @staticmethod
     def admit_vm81(
@@ -135,6 +140,7 @@ class HHSExactPass219RuntimeBridge:
             profile=profile, source_hash=source_hash, previous_hash72=previous_hash72,
         )
         _ = owners
+
         raw_owner = (c_uint8 * len(raw_frame)).from_buffer_copy(raw_frame)
         candidate = HHSExactVM81Frame()
         ingress = int(_LIB.hhs_exact_vm81_frame_import_le(
@@ -143,40 +149,45 @@ class HHSExactPass219RuntimeBridge:
         if ingress != uq.HHS_EXACT_STATUS_OK:
             raise RuntimeError(f"VM81 frame ingress failed: {ingress}")
 
-        committed = HHSExactVM81Frame()
-        admission = HHSExactPass219ComposedAdmissionV1()
-        status = int(_LIB.hhs_exact_pass219_admit_composed(
-            ctypes.byref(input_value), ctypes.byref(candidate),
-            ctypes.byref(committed), ctypes.byref(admission)
+        validation = uq.HHSExactUQCELAdmissionV1()
+        validation_status = int(_LIB.hhs_exact_uqcel_validate(
+            ctypes.byref(input_value), ctypes.byref(validation)
         ))
+        base = uq._admission_dict(validation)
 
-        output = (c_uint8 * uq.HHS_EXACT_VM81_FRAME_BYTES)()
-        written = c_size_t()
-        egress = int(_LIB.hhs_exact_vm81_frame_export_le(
-            ctypes.byref(committed), output, len(output), ctypes.byref(written)
-        ))
-        if egress != uq.HHS_EXACT_STATUS_OK:
-            raise RuntimeError(f"VM81 frame egress failed: {egress}")
+        # Preserve exact validation failures as diagnostics. No candidate frame
+        # is ever committed on this compatibility surface.
+        if validation_status != uq.HHS_EXACT_STATUS_OK:
+            return {
+                "status": validation_status,
+                "admitted": False,
+                "validated_candidate": False,
+                "compatibility_mutation_disabled": True,
+                "admission": base,
+                "committed_frame": bytes(uq.HHS_EXACT_VM81_FRAME_BYTES),
+            }
 
-        base = uq._admission_dict(admission.uqcel)
-        base_receipt = base["receipt_hash72"]
-        base_triplet = base["hash216_triplet"]
-        base_identity = base["hash216_identity"]
-        base["base_receipt_hash72"] = base_receipt
-        base["base_hash216_triplet"] = base_triplet
-        base["base_hash216_identity"] = base_identity
-        base["receipt_hash72"] = _char_field(bytes(admission.final_receipt_hash72))
-        base["hash216_triplet"] = _char_field(bytes(admission.final_hash216_triplet))
-        base["hash216_identity"] = _char_field(bytes(admission.final_hash216_identity))
-        base["fibonacci"] = _fib_dict(admission.fibonacci)
-        base["pass219_composed_version"] = int(admission.version)
+        fibonacci_result = compress_pass192_fibonacci(HHS_EXACT_PASS219_UCE_FIBONACCI_DEPTH)
+        base["fibonacci"] = fibonacci_result["compression"]
+        base["pass219_composed_version"] = 0
+        base["base_receipt_hash72"] = ""
+        base["base_hash216_triplet"] = ""
+        base["base_hash216_identity"] = ""
+        base["receipt_hash72"] = ""
+        base["hash216_triplet"] = ""
+        base["hash216_identity"] = ""
+        base["frame_committed"] = False
 
+        # A valid legacy candidate is intentionally not a canonical admission.
         return {
-            "status": status,
-            "admitted": status == uq.HHS_EXACT_STATUS_OK
-            and base["decision"] == uq.HHS_EXACT_UQCEL_DECISION_ADMIT,
+            "status": HHS_EXACT_STATUS_INVARIANT_FAILURE,
+            "validation_status": validation_status,
+            "admitted": False,
+            "validated_candidate": True,
+            "compatibility_mutation_disabled": True,
+            "requires_signed_pqc_admission": True,
             "admission": base,
-            "committed_frame": bytes(output[: written.value]),
+            "committed_frame": bytes(uq.HHS_EXACT_VM81_FRAME_BYTES),
         }
 
 
@@ -186,4 +197,5 @@ __all__ = [
     "HHSExactPass219ComposedAdmissionV1",
     "compress_pass192_fibonacci",
     "HHS_EXACT_PASS219_UCE_FIBONACCI_DEPTH",
+    "HHS_EXACT_STATUS_INVARIANT_FAILURE",
 ]
