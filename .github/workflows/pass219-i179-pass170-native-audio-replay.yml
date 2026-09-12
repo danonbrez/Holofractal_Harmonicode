@@ -5,11 +5,15 @@ on:
     branches:
       - main
       - agent/pass219-i179-pass170-native-audio-abi-replay
+      - agent/pass219-exact-main-inherited-link-closure-20260912
     paths:
       - 'hhs_runtime/include/hhs_pass219_audio_security_transport_1_0.h'
       - 'hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'hhs_runtime/pass219/pass170_audio_native_abi_i179.py'
       - 'hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py'
       - 'hhs_backend/pass170_audio_language_routes.py'
@@ -35,6 +39,9 @@ on:
       - 'hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'hhs_runtime/pass219/pass170_audio_native_abi_i179.py'
       - 'hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py'
       - 'hhs_backend/pass170_audio_language_routes.py'
@@ -61,14 +68,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install bounded validation dependencies
         run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
-
       - name: Parse manifests and compile I179 successor-aware Python surfaces
         run: |
           set -euo pipefail
@@ -85,32 +89,16 @@ jobs:
           ):
               json.loads(Path(path).read_text(encoding='utf-8'))
           PY
-          python -m py_compile \
-            hhs_runtime/pass219/pass170_audio_native_abi_i179.py \
-            hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py \
-            hhs_backend/pass170_audio_language_routes.py \
-            hhs_runtime/pass219/pass170_audio_transport_i178.py \
-            hhs_runtime/pass219/pass170_native_audio_replay_i179.py \
-            hhs_runtime/pass219/pass170_native_audio_replay_i179_successor.py \
-            hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py \
-            tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
-
+          python -m py_compile hhs_runtime/pass219/pass170_audio_native_abi_i179.py hhs_runtime/hhs_audio_language_feedback_orchestrator_v1.py hhs_backend/pass170_audio_language_routes.py hhs_runtime/pass219/pass170_audio_transport_i178.py hhs_runtime/pass219/pass170_native_audio_replay_i179.py hhs_runtime/pass219/pass170_native_audio_replay_i179_successor.py hhs_runtime/pass219/pass170_legacy_constructor_retirement_i181.py tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
       - name: Strict-compile additive I179 membrane and cumulative exact ABI
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i179
-          gcc -x c -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc \
-            -o /tmp/pass219-i179/audio_security_transport.o
-          # The isolated I179 membrane receives the strict ISO-pedantic check;
-          # the cumulative inherited aggregate remains warnings-as-errors.
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
-            -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-i179/libhhs_runtime_exact.so
+          gcc -x c -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC -Ihhs_runtime/include -c hhs_runtime/c/hhs_pass219_audio_security_transport_1_0.inc -o /tmp/pass219-i179/audio_security_transport.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i179/link-support full
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared -Ihhs_runtime/include hhs_runtime/c/hhs_runtime_exact_abi.c /tmp/pass219-i179/link-support/hhs_hash216.o /tmp/pass219-i179/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-i179/libhhs_runtime_exact.so
           nm -D /tmp/pass219-i179/libhhs_runtime_exact.so | grep -F 'hhs_exact_pass219_audio_security_transport_admit'
           nm -D /tmp/pass219-i179/libhhs_runtime_exact.so | grep -F 'hhs_exact_pass219_audio5184_hydrate'
-
       - name: Build full runtime ABI required by inherited Hash72 authority
         run: |
           set -euo pipefail
@@ -119,38 +107,26 @@ jobs:
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_exact_pass219_audio_security_transport_admit'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_exact_pass219_audio5184_hydrate'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F 'hhs_hash72_ring_init'
-
       - name: Run exact C negative and positive tests
         run: |
           set -euo pipefail
-          gcc -O2 -std=c11 -Wall -Wextra -Werror \
-            -Ihhs_runtime/include \
-            tests/pass219/test_pass219_i179_audio_security_transport.c \
-            hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-i179/test_audio_security_transport
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include tests/pass219/test_pass219_i179_audio_security_transport.c hhs_runtime/c/hhs_runtime_exact_abi.c /tmp/pass219-i179/link-support/hhs_hash216.o /tmp/pass219-i179/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-i179/test_audio_security_transport
           /tmp/pass219-i179/test_audio_security_transport
-
       - name: Run real native audio and replay integration tests
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
           HHS_PASS170_AUDIO_NATIVE_LIB: ${{ github.workspace }}/hhs_runtime/builds/libhhs_runtime.so
         run: python -m pytest -q tests/pass219/test_pass219_i179_pass170_native_audio_replay.py
-
       - name: Execute I179 frozen-baseline and I181 successor repository gate
         run: |
           mkdir -p artifacts/pass219/i179
           python - <<'PY'
           import json
           from pathlib import Path
-          from hhs_runtime.pass219.pass170_native_audio_replay_i179_successor import (
-              verify_i179_native_audio_replay_successor,
-          )
+          from hhs_runtime.pass219.pass170_native_audio_replay_i179_successor import verify_i179_native_audio_replay_successor
           report = verify_i179_native_audio_replay_successor('.')
-          Path('artifacts/pass219/i179/native_audio_replay.json').write_text(
-              json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8'
-          )
+          Path('artifacts/pass219/i179/native_audio_replay.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
           PY
-
       - name: Enforce I179 bounded historical boundary and current successor
         run: |
           python - <<'PY'
@@ -178,32 +154,14 @@ jobs:
           assert report['audio_receipt_replay_verified'] is True
           assert report['audio_replay_reexecutes_operation'] is False
           assert report['audio_internal_ecc_pq_boundary_preserved'] is True
-          for key in (
-              'new_capability_token_authority',
-              'new_vm81_authority',
-              'new_hash72_mint_authority',
-              'hash216_persistence_authority',
-              'floating_point_canonical_authority',
-              'public_crypto_primitive_created',
-              'standardized_pq_crypto_claim',
-          ):
+          for key in ('new_capability_token_authority','new_vm81_authority','new_hash72_mint_authority','hash216_persistence_authority','floating_point_canonical_authority','public_crypto_primitive_created','standardized_pq_crypto_claim'):
               assert report[key] is False
-          assert report['target_blockers'] == [
-              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
-              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
-              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
-              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
-          ]
-          assert report['current_successor_target_blockers'] == [
-              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
-              'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING',
-              'PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING',
-          ]
+          assert report['target_blockers'] == ['PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS','PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN','PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING','PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING']
+          assert report['current_successor_target_blockers'] == ['PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS','PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_PENDING','PASS170_FULL_PUBLIC_E2E_TERMINAL_PROOF_PENDING']
           assert report['pass170_terminal_contract_verified'] is False
           assert report['next_boundary'] == 'PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY'
           assert report['current_successor_next_boundary'] == 'PASS170_REMAINING_PUBLIC_OPERATION_TRANSPORT_PARITY_AND_DEGRADED_GATEWAY_RECONCILIATION'
           PY
-
       - name: Upload I179 evidence
         uses: actions/upload-artifact@v4
         with:
