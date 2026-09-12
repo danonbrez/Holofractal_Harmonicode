@@ -67,17 +67,9 @@ def _canonical_route_signatures() -> tuple[set[tuple[str, str]], bool]:
         runtime_os_application_server.PASS170_PUBLIC_GATEWAY_IDENTITY_VERIFIED is True
         and runtime_os_application_server.app is public_api_server.app
     )
-    signatures: set[tuple[str, str]] = set()
-    for route in runtime_os_application_server.app.routes:
-        path = str(getattr(route, "path", ""))
-        methods = getattr(route, "methods", None)
-        if methods:
-            for method in methods:
-                method_name = str(method).upper()
-                if method_name not in {"HEAD", "OPTIONS"}:
-                    signatures.add((method_name, path))
-        elif getattr(route, "path", None) is not None and route.__class__.__name__.lower().startswith("apiwebsocket"):
-            signatures.add(("WEBSOCKET", path))
+    signatures = public_api_server._http_route_signatures(  # type: ignore[attr-defined]
+        runtime_os_application_server.app.routes
+    )
     return signatures, identity
 
 
