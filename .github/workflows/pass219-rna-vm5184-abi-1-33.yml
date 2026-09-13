@@ -1,0 +1,87 @@
+name: Pass 219 I183 RNA VM5184 ABI 1.33
+
+on:
+  push:
+    branches:
+      - agent/pass219-rna-cell-wall-vm5184-abi-20260913
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
+      - 'tests/pass219/test_pass219_rna_vm5184_abi_1_33.c'
+      - '.github/workflows/pass219-rna-vm5184-abi-1-33.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rna-vm5184-abi:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Verify inherited generation-integrity seal
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+
+      - name: Build exact VM81 ABI with C++ RNA bridge
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify public candidate ABI and closed mutation boundary
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_vm5184_abi_version$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_vm5184_abi_descriptor$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_vm5184_route$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_raw5184_route$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed$'
+
+      - name: Run C-to-C++ VM5184 parity and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass219_rna_vm5184_abi_1_33
+          /tmp/test_pass219_rna_vm5184_abi_1_33
+
+      - name: Run inherited C++ RNA cell-wall equivalence regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p /tmp/pass219-rna-vm5184
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c \
+            -o /tmp/pass219-rna-vm5184/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S \
+            -o /tmp/pass219-rna-vm5184/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c \
+            -o /tmp/pass219-rna-vm5184/pass189.o
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp \
+            /tmp/pass219-rna-vm5184/pass188.o \
+            /tmp/pass219-rna-vm5184/pass188-x86.o \
+            /tmp/pass219-rna-vm5184/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-rna-vm5184/test-rna-cell-wall
+          /tmp/pass219-rna-vm5184/test-rna-cell-wall
