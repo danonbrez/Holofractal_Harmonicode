@@ -94,4 +94,6 @@
 #include "hhs_pass219_harmonic36_global_latency_policy_1_16.h"
 #include "hhs_pass219_i182_harmonic_geometry_membrane_1_0.h"
 #include "hhs_pass168_parameter_circuit_1_0.h"
+#include "hhs_pass219_lane5_global_holographic_nucleus_1_34.h"
+#include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h"
 #endif
