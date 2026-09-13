@@ -112,6 +112,8 @@ jobs:
         run: |
           c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass219/test_pass219_unified_intelligence_external_model_pqc_boundary_1_11.cpp \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
@@ -124,6 +126,8 @@ jobs:
         run: |
           c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_hardening.cpp \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
