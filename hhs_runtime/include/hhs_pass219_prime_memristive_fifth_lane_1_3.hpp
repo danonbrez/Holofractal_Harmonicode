@@ -162,12 +162,17 @@ public:
         auto context_it = routes_.find(context_signature64);
         if (context_it == routes_.end())
             return false;
+        const std::int64_t exact_quantum = static_cast<std::int64_t>(quantum);
         for (auto& pair : context_it->second) {
             auto& value = pair.second.utility_q10;
-            if (value > 0)
-                value = std::max<std::int32_t>(0, value - static_cast<std::int32_t>(quantum));
-            else if (value < 0)
-                value = std::min<std::int32_t>(0, value + static_cast<std::int32_t>(quantum));
+            const std::int64_t exact_value = static_cast<std::int64_t>(value);
+            if (value > 0) {
+                const std::int64_t decayed = exact_value - exact_quantum;
+                value = static_cast<std::int32_t>(std::max<std::int64_t>(0, decayed));
+            } else if (value < 0) {
+                const std::int64_t decayed = exact_value + exact_quantum;
+                value = static_cast<std::int32_t>(std::min<std::int64_t>(0, decayed));
+            }
         }
         return true;
     }
