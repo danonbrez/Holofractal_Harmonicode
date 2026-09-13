@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: **RESTARTABLE IMPLEMENTATION / DEDICATED CI QUEUED**
+Status: **FROZEN GREEN / RESTARTABLE**
 
 ## Repository state
 
@@ -13,7 +13,7 @@ branch: agent/pass219-prime-memristive-fifth-lane-i10-20260912
 I10 contract commit: bfda20b89c3cd7801c9da4a06c7dc82f0cb1c806
 I10 runtime commit: 28a6566328db62e860865aacb485679968ca69de
 I10 benchmark commit: d30b885318fcb47327a39785ff0ee13fa8e2797f
-I10 workflow / validation head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+I10 validation head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
 ```
 
 ## I10 files
@@ -39,35 +39,38 @@ docs/operations/restart/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_I10_RESTART_2026091
 9. duplicate neighborhood candidates rejected before competition;
 10. no I8 debit, I9 reinforcement, Hash72/Hash216 mutation, Holo4 mutation, or persistence authority.
 
-## Deterministic workload target
-
-The dedicated I10 benchmark constructs eight routes:
+## Frozen validation evidence
 
 ```text
-A: query/text, score=320, vitality=74, budget=48
-B: query/text, score=256, vitality=120, budget=64
-C: query/text, score=192, vitality=200, budget=64
-D: query/text, score=-64, vitality=20, budget=64
-E: wrong query
-F: wrong modality
-G: insufficient budget (16 < exact hop floor 17)
-H: invalid candidate authority
+workflow: Pass 219 Prime Memristive Fifth Lane Sparse Arbitration I10
+run id: 34718573455
+job id: 103620101378
+head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+status: completed
+conclusion: success
 ```
 
-With `max_active=2` and `per_route_work_cap=40`:
+All dependency-scoped steps passed:
+
+- I10 authority contract gate;
+- inherited exact ABI build and required symbol exports;
+- inherited I8 budgeted hydration benchmark;
+- inherited I9 verified-metabolism benchmark;
+- I10 exact sparse-arbitration benchmark;
+- inherited four-lane authority regression.
+
+Exact I10 terminal receipt:
 
 ```text
-A raw=1476, inhibition=0, final=1476 => winner 1, work=40
-B raw=1328, inhibition=32, final=1296 => winner 2, work=40
-C raw=1232, inhibition=64, final=1168 => sparse-limit exclusion
-D raw=-152, inhibition=96, final=-248 => inhibited exclusion
-E => query rejection
-F => modality rejection
-G => budget rejection
-H => authority rejection
+lane5_i10=PASS considered=8 eligible=4 winners=2 work=80 signature=16907222121440925823 query_reject=1 modality_reject=1 authority_reject=1 budget_reject=1 inhibited=1 sparse=1 winner1=11745387828182253569 winner2=11745387828182253570
 ```
 
-Acceptance additionally requires reversed candidate input order to produce the exact same ordered receipts and arbitration signature, duplicate input to fail closed, and I8/I9/Holo4 state to remain unchanged.
+Inherited receipts remained green:
+
+```text
+lane5_i8=PASS hops=3 energy=51 path_signature=16715788279626231867 repeated_path_signature=16715788279626231867 budget_stops=1 cycle_stops=1 fallbacks=2 alias_records=2 unique_hash216=511
+lane5_i9=PASS verified=4 vitality=74 budget=48 positive=2 negative=2 decay=18 credit=16 duplicate_rejected=1 speculative_rejected=1 unverified_rejected=1 replay_receipts=4 capped_vitality=256 capped_budget=64
+```
 
 ## Authority boundary
 
@@ -94,34 +97,20 @@ requires_inherited_vm81_hash216_admission = true
 HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4
 ```
 
-## Dedicated repository CI — exact queued state
-
-```text
-workflow: Pass 219 Prime Memristive Fifth Lane Sparse Arbitration I10
-run id: 34718573455
-job id: 103620101378
-head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
-status: queued
-conclusion: none
-```
-
-At checkpoint time, no validation step has executed and no I10 failure has been observed. The queued state is external runner scheduling, not acceptance evidence and not a repository defect.
-
 No main merge or production deployment has been attempted.
 
-## Next action
+## Next additive cycle
 
-1. resolve only run `34718573455` / job `103620101378`;
-2. if red, repair only the exact I10-touched dependency surface;
-3. if green, freeze the exact `lane5_i10` receipt, validated head/tree, and next additive cycle here;
-4. only after I10 is green, advance into I11 sparse-winner allocation execution;
-5. do not reopen I1-I9 unless I10 reproduces a regression on their directly touched surface.
+I11 may consume only I10 winners. Its execution layer must preserve the I8 debit membrane and I9 verified-outcome reinforcement boundary.
+
+The next authorized extension is to bind each sparse winner to one compact, reversible full five-lane hydration address using the inherited Pass 133 canonical BigInt serialization and Pass 211 deterministic framing authority. The address membrane must remain indexing/routing metadata and cannot become a second canonical transition authority.
 
 ## Restart point
 
 ```text
 branch: agent/pass219-prime-memristive-fifth-lane-i10-20260912
-validation head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
-dedicated workflow: 34718573455 QUEUED
-job: 103620101378 QUEUED
+validated head: cc5f8b7b1e8f97b400f35ee47ad45a0dced89afb
+dedicated workflow: 34718573455 SUCCESS
+job: 103620101378 SUCCESS
+next: I11 winner execution + Pass133/211 five-lane BigInt address membrane
 ```
