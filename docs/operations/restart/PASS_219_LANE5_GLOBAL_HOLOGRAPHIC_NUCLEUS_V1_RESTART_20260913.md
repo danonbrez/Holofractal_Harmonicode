@@ -19,6 +19,7 @@ mediation core commit: a59c70308e3805efff5628ef6b1fecb1eb31fc0e
 test commit: 78b2353daf0b357035aa9bb9c893b62f19801b9e
 exact-ABI aggregation commit: fccfda9130d825e5b1ec8f1e337fafc27b12ec15
 validation source/workflow head: 53cb28ae4cd124170d145fb9537146bd9d134439
+restartable checkpoint head before this annotation: 83d67dc89066c6f32928a3945dfbe6ae31832be7
 ```
 
 The branch after `53cb28ae...` contains only restart-document cleanup/update commits. No runtime, ABI, contract, test, workflow, or build dependency in the dedicated validation trigger set changed after `53cb28ae...`.
