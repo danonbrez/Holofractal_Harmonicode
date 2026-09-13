@@ -16,6 +16,15 @@ from hhs_runtime.palindromic_ecc import (
 )
 
 
+def expect_rejected(raw: bytes, needle: str) -> None:
+    try:
+        frame_native_address(raw)
+    except Pass219I11AddressError as exc:
+        assert needle in str(exc), str(exc)
+    else:
+        raise AssertionError(f"I11 address unexpectedly accepted: {raw.hex()}")
+
+
 def validate_native_hex(hex_text: str) -> dict[str, int | str]:
     raw = bytes.fromhex(hex_text.strip())
     assert raw
@@ -43,12 +52,9 @@ def validate_native_hex(hex_text: str) -> dict[str, int | str]:
     repeated = frame_native_address(raw)
     assert repeated.to_dict() == framed.to_dict()
 
-    try:
-        frame_native_address(b"\x00" + raw)
-    except Pass219I11AddressError as exc:
-        assert "NONCANONICAL_LEADING_ZERO" in str(exc)
-    else:
-        raise AssertionError("leading-zero I11 address was not rejected")
+    expect_rejected(b"\x00" + raw, "NONCANONICAL_LEADING_ZERO")
+    expect_rejected(b"\x01", "NAMESPACE_MISMATCH")
+    expect_rejected(bigint_to_bytes(0x21912), "NAMESPACE_MISMATCH")
 
     return {
         "address_bytes": len(raw),
@@ -70,7 +76,8 @@ def main() -> int:
         f"pass211_shards={receipt['pass211_shards']} "
         f"pass211_carrier_bytes={receipt['pass211_carrier_bytes']} "
         f"package_root216={receipt['package_root216']} "
-        f"package_receipt_hash72={receipt['package_receipt_hash72']}"
+        f"package_receipt_hash72={receipt['package_receipt_hash72']} "
+        "namespace_rejections=2 leading_zero_rejected=1"
     )
     return 0
 
