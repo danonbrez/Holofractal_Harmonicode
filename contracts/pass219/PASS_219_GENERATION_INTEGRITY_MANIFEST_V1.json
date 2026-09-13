@@ -1,0 +1,150 @@
+{
+  "schema": "HHS_PASS219_GENERATION_INTEGRITY_MANIFEST_V1",
+  "version": 1,
+  "base_main_commit": "e380023bd5ae2c1b6cc59382ed555c8f4d2aa84c",
+  "policy": {
+    "generation_is_untrusted_until_verified": true,
+    "halt_on_structural_drift": true,
+    "halt_on_artifact_identity_drift": true,
+    "halt_on_abi_drift": true,
+    "halt_on_authority_drift": true,
+    "creates_canonical_mutation_authority": false,
+    "provider_scratch_is_canonical_state": false
+  },
+  "structural_constants": {
+    "path": "hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h",
+    "values": {
+      "HHS_EXACT_HASH72_COORDS": 5184,
+      "HHS_EXACT_VM81_CELLS": 81,
+      "HHS_EXACT_VM81_WORD_BITS": 64,
+      "HHS_EXACT_VM81_FRAME_BITS": 5184,
+      "HHS_EXACT_VM81_FRAME_BYTES": 648
+    }
+  },
+  "protected_artifacts": [
+    {
+      "path": "hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h",
+      "git_blob_sha1": "8b9e76a17f3fe05403312a7a643af34db3792b6e",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/include/hhs_pass219_generation_integrity_v1.h",
+      "git_blob_sha1": "26364956cbbae0ebf1bef7fd1f15eb7e4ee725eb",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h",
+      "git_blob_sha1": "355181ed7b7b3905f882e49491b82b717a293a75",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h",
+      "git_blob_sha1": "b1845de7342056811ba819d816d9074f8fb8bc0a",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h",
+      "git_blob_sha1": "eb904aa173f41c991dd691b91ad6b5f93f20b808",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc",
+      "git_blob_sha1": "691fe620d74d3ed036b9c848a8277fb0b1f201f2",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map",
+      "git_blob_sha1": "17aab4041025c24482c47338cde321873c236574",
+      "sha256": ""
+    },
+    {
+      "path": "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
+      "git_blob_sha1": "aa43fafd189d0be5056981b51c9de813e490260b",
+      "sha256": ""
+    },
+    {
+      "path": "tools/pass219/build_exact_abi_link_support.sh",
+      "git_blob_sha1": "d1892eb93968611fc8ca41ff19aa9fc9efac3b27",
+      "sha256": ""
+    }
+  ],
+  "required_tokens": {
+    "hhs_runtime/include/hhs_pass219_generation_integrity_v1.h": [
+      "HHS_PASS219_GENERATION_INTEGRITY_NO_UNCHECKED_CANONICAL_MUTATION",
+      "HHS_PASS219_GENERATION_INTEGRITY_NO_HOST_ESCALATION",
+      "HHS_PASS219_GENERATION_INTEGRITY_HALT_ON_DIVERGENCE",
+      "sizeof(HHSExactVM81Frame) == HHS_PASS219_GENERATION_INTEGRITY_VM81_BYTES"
+    ],
+    "hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h": [
+      "#include \"hhs_pass219_generation_integrity_v1.h\"",
+      "hhs_exact_pass219_vm81_pqc_admit_signed"
+    ],
+    "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h": [
+      "recovery_candidate_only",
+      "canonical_mutation_authority",
+      "hhs_exact_pass219_vm81_environment_admit_signed"
+    ],
+    "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp": [
+      "HHS_P219_PQC_INTERNAL",
+      "route_parallel",
+      "noexcept"
+    ],
+    "tools/pass219/build_exact_abi_link_support.sh": [
+      "set -euo pipefail",
+      "-Werror -pedantic -fPIC",
+      "full|cell-wall-only"
+    ]
+  },
+  "forbidden_regex": {
+    "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp": [
+      "\\b(?:malloc|calloc|realloc|free)\\s*\\(",
+      "\\b(?:system|popen|fork|execv|execve|execvp)\\s*\\("
+    ],
+    "hhs_runtime/include/hhs_pass219_generation_integrity_v1.h": [
+      "HHS_PASS219_GENERATION_INTEGRITY_HALT_ON_DIVERGENCE\\s+UINT32_C\\(0\\)",
+      "HHS_PASS219_GENERATION_INTEGRITY_NO_HOST_ESCALATION\\s+UINT32_C\\(0\\)"
+    ]
+  },
+  "provider_scratch": {
+    "path": "hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc",
+    "openssl_malloc_count": 2,
+    "openssl_free_count": 2,
+    "required_tokens": [
+      "pub = OPENSSL_malloc(public_length);",
+      "signature = OPENSSL_malloc(signature_length);",
+      "OPENSSL_cleanse(signature, signature_length);",
+      "OPENSSL_free(signature);",
+      "OPENSSL_free(pub);",
+      "signature_verified_before_vm81 = 1U"
+    ],
+    "forbidden_regex": [
+      "\\b(?:malloc|calloc|realloc|free)\\s*\\("
+    ]
+  },
+  "authority_map": {
+    "path": "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map",
+    "required_local_symbols": [
+      "hhs_exact_vm81_admit_uqcel",
+      "hhs_exact_pass219_admit_composed",
+      "hhs_exact_pass219_rna_admit_composed",
+      "hhs_exact_pass219_vm81_pqc_admit",
+      "hhs_exact_pass219_vm81_pqc_admit_signed",
+      "hhs_exact_pass219_vm81_environment_checkpoint_seal"
+    ]
+  },
+  "abi": {
+    "required_public_symbols": [
+      "hhs_exact_pass219_vm81_environment_version",
+      "hhs_exact_pass219_vm81_environment_state",
+      "hhs_exact_pass219_vm81_environment_admit_signed"
+    ],
+    "forbidden_dynamic_exports": [
+      "hhs_exact_vm81_admit_uqcel",
+      "hhs_exact_pass219_admit_composed",
+      "hhs_exact_pass219_rna_admit_composed",
+      "hhs_exact_pass219_vm81_pqc_admit",
+      "hhs_exact_pass219_vm81_pqc_admit_signed",
+      "hhs_exact_pass219_vm81_environment_checkpoint_seal"
+    ]
+  }
+}
