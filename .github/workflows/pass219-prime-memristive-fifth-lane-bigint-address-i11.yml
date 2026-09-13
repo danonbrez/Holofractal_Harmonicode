@@ -70,7 +70,7 @@ jobs:
               'N\' = N * radix + digit',
               'I11_NAMESPACE = 0x21911',
               'HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4',
-              'VM81/Hash216 remain canonical state/transition authority.',
+              'Hash216/VM81 remain canonical state/transition authority.',
           ):
               assert needle in contract, needle
           print('prime_memristive_fifth_lane_i11_contract_gate=PASS')
