@@ -414,6 +414,7 @@ private:
 };
 
 struct PrimeLaneSparseWinnerExecutionReceiptV11 final {
+    std::uint64_t arbitration_signature64{};
     std::uint64_t source_neighborhood_binding_signature64{};
     std::uint64_t target_neighborhood_binding_signature64{};
     std::uint32_t winner_ordinal{};
@@ -428,6 +429,8 @@ struct PrimeLaneSparseWinnerExecutionReceiptV11 final {
 class PrimeLaneSparseWinnerExecutorV11 final {
 public:
     bool execute_one_hop(
+        const PrimeLaneSparseRouteArbiterV10& arbiter,
+        const PrimeLaneSparseArbitrationResultV10& arbitration,
         const PrimeLaneArbitrationCandidateReceiptV10& winner,
         const HHSExactPass219Holo4PreparedV1& prepared,
         const PrimeLaneFingerprintV1& fingerprint,
@@ -441,8 +444,10 @@ public:
         PrimeLaneBudgetedPredictiveHydratorV8& hydrator,
         PrimeLaneSparseWinnerExecutionReceiptV11& out) const {
         out = PrimeLaneSparseWinnerExecutionReceiptV11{};
-        if (!winner_valid(winner) || candidate_budget == 0U ||
-            active_modality_mask == 0U ||
+        if (!arbiter.winner_emitted(arbitration, winner) ||
+            arbitration.metrics.arbitration_signature64 == 0U ||
+            candidate_budget == 0U || active_modality_mask == 0U ||
+            active_modality_mask != winner.active_modality_mask ||
             (active_modality_mask & static_cast<std::uint8_t>(~HHS_PASS219_PRIME_LANE_MODALITY_ALL)) != 0U)
             return false;
 
@@ -488,9 +493,11 @@ public:
                 winner.neighborhood_binding_signature64 ||
             hydration.receipts.front().target_neighborhood_binding_signature64 !=
                 chosen.neighborhood.binding_signature64 ||
-            hydration.receipts.front().exact_hop_cost != exact_cost)
+            hydration.receipts.front().exact_hop_cost != exact_cost ||
+            hydration.receipts.front().receipt_signature64 == 0U)
             return false;
 
+        out.arbitration_signature64 = arbitration.metrics.arbitration_signature64;
         out.source_neighborhood_binding_signature64 = winner.neighborhood_binding_signature64;
         out.target_neighborhood_binding_signature64 = chosen.neighborhood.binding_signature64;
         out.winner_ordinal = winner.winner_ordinal;
@@ -502,16 +509,6 @@ public:
         return hhs_pass219_prime_lane_bigint_address_authority_valid(out.authority) &&
                hhs_pass219_prime_lane_budgeted_hydration_authority_valid(
                    out.inherited_budget_receipt.authority);
-    }
-
-private:
-    static bool winner_valid(const PrimeLaneArbitrationCandidateReceiptV10& winner) noexcept {
-        return hhs_pass219_prime_lane_sparse_arbitration_authority_valid(winner.authority) &&
-               winner.winner && winner.eligible && winner.winner_ordinal != 0U &&
-               winner.exclusion == PrimeLaneArbitrationExclusionV10::none &&
-               winner.neighborhood_binding_signature64 != 0U &&
-               winner.work_allocation >= winner.exact_hop_floor &&
-               winner.exact_hop_floor >= HHS_PASS219_PRIME_LANE_HOP_ENERGY_QUANTUM + 1U;
     }
 };
 
