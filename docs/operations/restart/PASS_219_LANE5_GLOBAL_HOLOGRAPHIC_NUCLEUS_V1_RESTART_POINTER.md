@@ -1,0 +1,1 @@
+Resume implementation from PR #445 on branch `agent/pass219-lane5-global-holographic-nucleus-contract-20260913`. Next exact action: patch cumulative ABI aggregation and export map, then run the dedicated workflow. Do not merge while the PR is draft or before the validation gate is green.
