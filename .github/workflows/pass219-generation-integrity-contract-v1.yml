@@ -1,0 +1,141 @@
+name: Pass 219 Generation Integrity Contract V1
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-generation-integrity-contract-v1-20260912
+    paths:
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/include/hhs_pass219_generation_integrity_v1.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h'
+      - 'hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'tools/pass219/verify_generation_integrity_v1.py'
+      - 'tools/pass219/pass219_generation_integrity_make_v1.mk'
+      - 'tests/pass219/test_pass219_generation_integrity_v1.py'
+      - 'contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json'
+      - 'contracts/pass219/PASS_219_GENERATION_INTEGRITY_AND_ADVERSARIAL_PERTURBATION_CONTRACT_V1.md'
+      - '.github/workflows/pass219-generation-integrity-contract-v1.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/include/hhs_pass219_generation_integrity_v1.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h'
+      - 'hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h'
+      - 'hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'tools/pass219/verify_generation_integrity_v1.py'
+      - 'tools/pass219/pass219_generation_integrity_make_v1.mk'
+      - 'tests/pass219/test_pass219_generation_integrity_v1.py'
+      - 'contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json'
+      - 'contracts/pass219/PASS_219_GENERATION_INTEGRITY_AND_ADVERSARIAL_PERTURBATION_CONTRACT_V1.md'
+      - '.github/workflows/pass219-generation-integrity-contract-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generation-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse contract surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json >/dev/null
+          python -m py_compile tools/pass219/verify_generation_integrity_v1.py
+          python -m py_compile tests/pass219/test_pass219_generation_integrity_v1.py
+
+      - name: Emit protected-artifact seal candidate
+        run: |
+          set -euo pipefail
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --print-seal
+
+      - name: Compile active C invariant proof header
+        run: |
+          set -euo pipefail
+          cat > /tmp/pass219-generation-integrity-c.c <<'EOF'
+          #include "hhs_pass219_vm81_pqc_signature_1_31.h"
+          int main(void) { return HHS_PASS219_GENERATION_INTEGRITY_HALT_ON_DIVERGENCE == 1U ? 0 : 1; }
+          EOF
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            -c /tmp/pass219-generation-integrity-c.c \
+            -o /tmp/pass219-generation-integrity-c.o
+
+      - name: Compile active C++ invariant proof header and cell wall
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC \
+            -Ihhs_runtime/include -Ihhs_runtime/c \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp \
+            -o /tmp/pass219-generation-integrity-cell-wall.o
+
+      - name: Enforce sealed source integrity
+        run: |
+          set -euo pipefail
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+          make --no-builtin-rules -f tools/pass219/pass219_generation_integrity_make_v1.mk verify
+
+      - name: Run generation-integrity negative tests
+        run: python -m pytest -q --tb=short tests/pass219/test_pass219_generation_integrity_v1.py
+
+      - name: Build full runtime ABI
+        run: |
+          set -euo pipefail
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Enforce dynamic ABI and emit evidence receipt
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass219/generation-integrity
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --library hhs_runtime/builds/libhhs_runtime.so \
+            --require-sealed \
+            --evidence artifacts/pass219/generation-integrity/evidence.json
+          python -m json.tool artifacts/pass219/generation-integrity/evidence.json >/dev/null
+
+      - name: Publish generation-integrity summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 generation-integrity contract
+          - compile-time VM81/Hash72 geometry assertions: ENFORCED
+          - protected artifact Git identity + SHA-256 + byte length: ENFORCED
+          - fail-closed dedicated build semantics: ENFORCED
+          - internal authority exports remain hidden: VERIFIED
+          - environmental signed successor remains public: VERIFIED
+          - negative perturbation tests: VERIFIED
+          - new canonical mutation authority: NONE
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-generation-integrity-evidence
+          path: artifacts/pass219/generation-integrity/evidence.json
