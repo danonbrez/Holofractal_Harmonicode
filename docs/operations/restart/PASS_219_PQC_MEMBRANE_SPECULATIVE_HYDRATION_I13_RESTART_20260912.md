@@ -8,10 +8,14 @@
 - Integration PR: `#441`
 - I12 repair/verified head: `3a3788216fe20ecf01a49da58cd5a88f58896d8a`
 - I12 green workflow: `34733496053`
+- I13 implementation commit: `0063f89d28ed3704a9fdc7541dd23621469fb1c8`
+- I13 implementation tree: `bee5c39816c8eb3c9a632c37efeb64a2626ca19e`
+- I13 green workflow: `34733753439`
+- I13 green job: `103661301721`
 
 ## I12 closure inherited
 
-I12 was repair-forwarded after its first executable compile omitted the inherited Pass 188/189 include directories. The repair added only those dependency include paths. The resulting I12 workflow completed green across:
+I12 was repair-forwarded after its first executable compile omitted the inherited Pass 188/189 include directories. The repair added only those dependency include paths. Workflow `34733496053` then completed green across:
 
 - contract/manifest parse;
 - static authority and residency checks;
@@ -37,6 +41,8 @@ I13 adds a typed C PQC speculative-hydration membrane with:
 - direct-model/non-VM81 commit rejection;
 - static-inline delegation to `hhs_exact_pass219_vm81_environment_admit_signed` only.
 
+The crossing ABI contains no probabilistic scalar type. The imported source remains outside the PQC cell wall; only byte/integer provenance, exact lane coordinates, exact proof flags, and the inherited exact UQCEL/VM81 transport reach the admission boundary.
+
 ## Changed files in I13 implementation commit
 
 - `hhs_runtime/include/hhs_pass219_pqc_membrane_speculative_hydration_i13.h`
@@ -46,18 +52,39 @@ I13 adds a typed C PQC speculative-hydration membrane with:
 - `.github/workflows/pass219-pqc-membrane-speculative-hydration-i13.yml`
 - `docs/operations/restart/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13_RESTART_20260912.md`
 
-## Validation required
+## Dedicated I13 validation — CLOSED GREEN
 
-The dedicated I13 gate must establish all of the following before I13 is closed:
+Workflow `34733753439`, job `103661301721`, on implementation head `0063f89d28ed3704a9fdc7541dd23621469fb1c8` completed successfully.
 
-1. JSON/contract/header static rules pass.
-2. Current exact ABI builds.
-3. `hhs_exact_pass219_vm81_environment_admit_signed` remains dynamically exported.
-4. `hhs_exact_pass219_pqc_membrane_ingest_i13` is not a dynamic mutation symbol.
-5. I13 positive and negative executable tests pass.
-6. The inherited I12 executable membrane still passes.
-7. The sealed generation-integrity manifest still verifies.
+All dedicated stages passed:
 
-## Restart action
+1. `Parse I13 contract and verify static membrane rules` — PASS.
+2. `Build inherited exact ABI` — PASS.
+3. `Verify singleton dynamic mutation authority` — PASS.
+   - `hhs_exact_pass219_vm81_environment_admit_signed` remains dynamically exported.
+   - `hhs_exact_pass219_pqc_membrane_ingest_i13` is not a dynamic mutation symbol.
+4. `Compile and run I13 membrane` — PASS.
+   - valid provenance/five-lane/exact-closure candidate accepted by the I13 membrane;
+   - candidate frame is canonically serialized and Hash72-bound before delegation;
+   - mismatched frame/proof binding fails before VM81 delegation;
+   - residency, Holo4/H5 authority, H2 range, closure, probabilistic-payload, direct-commit, and premature-autonomy negative cases reject;
+   - signed VM81 environmental admission remains the downstream commit path.
+5. `Re-run inherited I12 executable membrane` — PASS.
+6. `Verify generation-integrity seal remains valid` — PASS.
+7. `Publish I13 summary` — PASS.
 
-If the I13 gate fails, repair only the first failing dependency or membrane surface, rerun the dedicated I13 gate, and preserve the singleton VM81 authority boundary. Do not add a second public mutation function, do not make H5 canonical, and do not weaken exact closure or source-residency requirements to obtain a pass.
+## Frozen authority conclusions
+
+- `PQC-W1`: external source archive and weights remain outside PQC.
+- `PQC-W2`: only verified exact projections may cross.
+- `PQC-W3`: immutable source identity and Hash216 projection-root provenance are retained.
+- `PQC-W4`: projection cannot self-commit; VM81 signed environmental admission remains singleton mutation authority.
+- `PQC-W5`: oracle severance is evidence-gated by verified native route coverage.
+- Holo4 canonical hydration lane count remains exactly `4`.
+- H5 remains additive and candidate-only.
+- Source model, AGI/LM/ML role, solver, GPU, cache, H2, and H5 gain no canonical state authority.
+- No new Hash72, Hash216, receipt, persistence, or probabilistic arithmetic authority was introduced.
+
+## Next restart action
+
+I13 itself is closed. The next iteration may begin from the branch checkpoint containing this record. Any I14 work should consume the I13 typed membrane rather than bypass it. A natural next dependency-scoped target is durable multi-source convergence evidence: cryptographically bind each frozen-source manifest to independently admitted canonical route identities, then prove deduplication only after VM81/Hash216 equality rather than from model agreement alone.
