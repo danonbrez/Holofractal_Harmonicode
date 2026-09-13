@@ -197,17 +197,23 @@ public:
         std::uint32_t candidate_budget,
         PrimeLaneCandidateResultV2& out) const {
         out = PrimeLaneCandidateResultV2{};
-        if (!hhs_pass219_prime_lane_authority_valid(decision.authority) ||
-            decision.selected_count > HHS_PASS219_PRIME_LANE_FIBRE_COUNT ||
-            candidate_budget == 0U) {
+        if (!decision_valid(decision) || candidate_budget == 0U)
             return false;
+
+        if (decision.selected_count == 0U) {
+            out.record_ids.reserve(records_.size());
+            for (const auto& record : records_)
+                out.record_ids.push_back(record.record_id);
+            std::sort(out.record_ids.begin(), out.record_ids.end());
+            out.record_ids.erase(std::unique(out.record_ids.begin(), out.record_ids.end()), out.record_ids.end());
+            out.candidate_budget_reached = out.record_ids.size() <= candidate_budget;
+            return true;
         }
 
         bool initialized = false;
         std::vector<std::uint32_t> candidates{};
         for (std::size_t slot = 0U; slot < decision.selected_count; ++slot) {
             const std::size_t fibre = decision.fibre_index[slot];
-            if (fibre >= HHS_PASS219_PRIME_LANE_FIBRE_COUNT) return false;
             const PrimeLaneIndexKeyV2 key{
                 static_cast<std::uint8_t>(fibre),
                 decision.u[slot], decision.v[slot], decision.rho[slot]};
@@ -243,11 +249,16 @@ public:
         std::uint16_t axes_used,
         PrimeLaneLinearResultV2& out) const {
         out = PrimeLaneLinearResultV2{};
-        if (!hhs_pass219_prime_lane_authority_valid(decision.authority) ||
+        if (!decision_valid(decision) ||
             axes_used > decision.selected_count ||
-            axes_used > HHS_PASS219_PRIME_LANE_FIBRE_COUNT) {
+            axes_used > HHS_PASS219_PRIME_LANE_FIBRE_COUNT)
             return false;
+
+        for (std::size_t slot = 0U; slot < axes_used; ++slot) {
+            if (decision.fibre_index[slot] >= HHS_PASS219_PRIME_LANE_FIBRE_COUNT)
+                return false;
         }
+
         for (const auto& record : records_) {
             ++out.record_visits;
             bool match = true;
@@ -267,6 +278,17 @@ public:
     }
 
 private:
+    static bool decision_valid(const PrimeLaneRouteDecisionV1& decision) noexcept {
+        if (!hhs_pass219_prime_lane_authority_valid(decision.authority) ||
+            decision.selected_count > HHS_PASS219_PRIME_LANE_FIBRE_COUNT)
+            return false;
+        for (std::size_t slot = 0U; slot < decision.selected_count; ++slot) {
+            if (decision.fibre_index[slot] >= HHS_PASS219_PRIME_LANE_FIBRE_COUNT)
+                return false;
+        }
+        return true;
+    }
+
     static std::vector<std::uint32_t> intersect_sorted(
         const std::vector<std::uint32_t>& a,
         const std::vector<std::uint32_t>& b,
