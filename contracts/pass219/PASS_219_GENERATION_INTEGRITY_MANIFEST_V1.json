@@ -24,48 +24,57 @@
   "protected_artifacts": [
     {
       "path": "hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h",
+      "byte_length": 4353,
       "git_blob_sha1": "8b9e76a17f3fe05403312a7a643af34db3792b6e",
-      "sha256": ""
+      "sha256": "4ff607ce353020ab3a015ff79512a99c457cb18c8f8a4c130ddb243518c51394"
     },
     {
       "path": "hhs_runtime/include/hhs_pass219_generation_integrity_v1.h",
+      "byte_length": 3196,
       "git_blob_sha1": "26364956cbbae0ebf1bef7fd1f15eb7e4ee725eb",
-      "sha256": ""
+      "sha256": "ba9ca0890d46d03f9239f751f0531bf0abf76f83d532cad32a843dd3a09372e1"
     },
     {
       "path": "hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h",
+      "byte_length": 4904,
       "git_blob_sha1": "355181ed7b7b3905f882e49491b82b717a293a75",
-      "sha256": ""
+      "sha256": "9bd7de6d1be988169109cee1f9bd8dfdf7705d666a9b7e8e5403db3023356190"
     },
     {
       "path": "hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h",
+      "byte_length": 3104,
       "git_blob_sha1": "b1845de7342056811ba819d816d9074f8fb8bc0a",
-      "sha256": ""
+      "sha256": "76d1569c02664ce20e77077ced0ef5e29efd27b5d80c519b5410050257c2b70a"
     },
     {
       "path": "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h",
+      "byte_length": 7036,
       "git_blob_sha1": "eb904aa173f41c991dd691b91ad6b5f93f20b808",
-      "sha256": ""
+      "sha256": "f087419a2d0294b2ed66c33c527b798b2ef35b5f2b2743ac3c9116fc1dc417fa"
     },
     {
       "path": "hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc",
+      "byte_length": 23172,
       "git_blob_sha1": "691fe620d74d3ed036b9c848a8277fb0b1f201f2",
-      "sha256": ""
+      "sha256": "ed6a7ca2373b7b084440560a4e6f4829306ce3dea404ecba0645ff41f644dcc6"
     },
     {
       "path": "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map",
+      "byte_length": 291,
       "git_blob_sha1": "17aab4041025c24482c47338cde321873c236574",
-      "sha256": ""
+      "sha256": "8e55668dc5554fc062b1c1aa6251c44ba6f34c29de9127986f54385fc1bedcb6"
     },
     {
       "path": "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
+      "byte_length": 1750,
       "git_blob_sha1": "aa43fafd189d0be5056981b51c9de813e490260b",
-      "sha256": ""
+      "sha256": "4148c0ec945e24ce2d6bf5fdaf1b74d839f1e68a129a2a8d97d42b24fae17cd8"
     },
     {
       "path": "tools/pass219/build_exact_abi_link_support.sh",
+      "byte_length": 1452,
       "git_blob_sha1": "d1892eb93968611fc8ca41ff19aa9fc9efac3b27",
-      "sha256": ""
+      "sha256": "5984bf03a41c2f09d0000ef1c1b5b172e933407a62cb9c32ac93fdca1b9bf75d"
     }
   ],
   "required_tokens": {
