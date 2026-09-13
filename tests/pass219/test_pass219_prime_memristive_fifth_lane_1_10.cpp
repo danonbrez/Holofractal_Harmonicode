@@ -174,13 +174,14 @@ int main() {
     auto target = candidate(
         query_context, source_context, composition, target_binding,
         HHS_PASS219_PRIME_LANE_MODALITY_TEXT, 320);
+    const PrimeLaneReplayAssociationKeyV6 target_association = target.transition.key.target;
     PrimeLaneReplayConditionedPrefetchV7 prefetch{};
-    CHECK(prefetch.register_target(target.transition.key, target.neighborhood));
-    CHECK(prefetch.observe_transition(source_binding, target.transition.key, 1, 1U));
+    CHECK(prefetch.register_target(target_association, target.neighborhood));
+    CHECK(prefetch.observe_transition(source_binding, target_association, 1, 1U));
 
     PrimeLaneAdaptiveReplayLedgerV6 replay{};
     PrimeLaneReplayEventV6 replay_event{};
-    replay_event.key = target.transition.key;
+    replay_event.key = target_association;
     replay_event.admission_feedback_trinary = 1;
     replay_event.warm_reference_work = 1U;
     replay_event.cold_posting_work = 32U;
