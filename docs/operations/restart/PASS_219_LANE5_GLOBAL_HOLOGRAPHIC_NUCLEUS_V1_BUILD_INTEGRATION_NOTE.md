@@ -1,0 +1,1 @@
+Build integration is intentionally the next dependency-scoped step. Required files to patch are the cumulative exact ABI aggregation source and VM81 authority export map; no alternate library or pass-local runtime should be created.
