@@ -9,6 +9,7 @@
 #include <limits>
 #include <map>
 #include <set>
+#include <utility>
 #include <vector>
 
 namespace hhs::rna {
@@ -77,6 +78,7 @@ struct PrimeLaneEnergyHopReceiptV8 final {
     std::int32_t prefetch_score{};
     std::uint64_t ranking_signature64{};
     std::uint64_t debit_ordinal{};
+    std::uint64_t receipt_signature64{};
     PrimeLaneBudgetedHydrationAuthorityV8 authority{};
 };
 
@@ -229,16 +231,24 @@ public:
             receipt.target_neighborhood_binding_signature64 = target;
             receipt.budget_before = budget.available;
             receipt.exact_hop_cost = cost;
+            receipt.budget_after = budget.available - cost;
             receipt.member_reference_work = member_work;
             receipt.prefetch_score = chosen.prefetch_score;
             receipt.ranking_signature64 = ranking_metrics.ranking_signature64;
+            receipt.debit_ordinal = budget.debit_ordinal + 1U;
+            receipt.receipt_signature64 = energy_receipt_signature(receipt);
+            const auto receipt_key = std::make_pair(
+                receipt.source_neighborhood_binding_signature64,
+                receipt.debit_ordinal);
+            if (receipt.receipt_signature64 == 0U ||
+                issued_receipts_.find(receipt_key) != issued_receipts_.end())
+                return false;
 
-            budget.available -= cost;
+            budget.available = receipt.budget_after;
             budget.consumed_total += cost;
-            ++budget.debit_ordinal;
+            budget.debit_ordinal = receipt.debit_ordinal;
+            issued_receipts_.emplace(receipt_key, receipt.receipt_signature64);
 
-            receipt.budget_after = budget.available;
-            receipt.debit_ordinal = budget.debit_ordinal;
             out.hydrated.push_back(chosen);
             out.receipts.push_back(receipt);
             ++out.metrics.hops_completed;
@@ -272,7 +282,15 @@ public:
             if (budget_it == budgets_.end())
                 return false;
             const auto& budget = budget_it->second;
+            const auto receipt_key = std::make_pair(
+                it->source_neighborhood_binding_signature64,
+                it->debit_ordinal);
+            const auto issued = issued_receipts_.find(receipt_key);
             if (!hhs_pass219_prime_lane_budgeted_hydration_authority_valid(it->authority) ||
+                it->receipt_signature64 == 0U ||
+                it->receipt_signature64 != energy_receipt_signature(*it) ||
+                issued == issued_receipts_.end() ||
+                issued->second != it->receipt_signature64 ||
                 it->exact_hop_cost == 0U ||
                 it->budget_before < it->budget_after ||
                 it->budget_before - it->budget_after != it->exact_hop_cost ||
@@ -288,16 +306,36 @@ public:
             budget.available = it->budget_before;
             budget.consumed_total -= it->exact_hop_cost;
             --budget.debit_ordinal;
+            issued_receipts_.erase(std::make_pair(
+                it->source_neighborhood_binding_signature64,
+                it->debit_ordinal));
         }
         return true;
     }
 
     std::size_t budget_count() const noexcept { return budgets_.size(); }
+    std::size_t issued_receipt_count() const noexcept { return issued_receipts_.size(); }
 
 private:
     static bool valid_modality_mask(std::uint8_t mask) noexcept {
         return mask != 0U &&
             (mask & static_cast<std::uint8_t>(~HHS_PASS219_PRIME_LANE_MODALITY_ALL)) == 0U;
+    }
+
+    static std::uint64_t energy_receipt_signature(
+        const PrimeLaneEnergyHopReceiptV8& receipt) noexcept {
+        std::uint64_t hash = UINT64_C(1469598103934665603);
+        mix(hash, receipt.hop_index);
+        mix(hash, receipt.source_neighborhood_binding_signature64);
+        mix(hash, receipt.target_neighborhood_binding_signature64);
+        mix(hash, receipt.budget_before);
+        mix(hash, receipt.exact_hop_cost);
+        mix(hash, receipt.budget_after);
+        mix(hash, receipt.member_reference_work);
+        mix(hash, static_cast<std::uint64_t>(static_cast<std::int64_t>(receipt.prefetch_score)));
+        mix(hash, receipt.ranking_signature64);
+        mix(hash, receipt.debit_ordinal);
+        return hash;
     }
 
     static std::uint64_t path_signature(
@@ -315,6 +353,7 @@ private:
                 static_cast<std::int64_t>(receipt.prefetch_score)));
             mix(hash, receipt.ranking_signature64);
             mix(hash, receipt.debit_ordinal);
+            mix(hash, receipt.receipt_signature64);
         }
         mix(hash, receipts.size());
         return hash;
@@ -328,6 +367,7 @@ private:
     }
 
     std::map<std::uint64_t, PrimeLaneActivationBudgetStateV8> budgets_{};
+    std::map<std::pair<std::uint64_t, std::uint64_t>, std::uint64_t> issued_receipts_{};
 };
 
 } // namespace hhs::rna
