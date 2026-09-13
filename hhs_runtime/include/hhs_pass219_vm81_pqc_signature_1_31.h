@@ -2,6 +2,7 @@
 #define HHS_PASS219_VM81_PQC_SIGNATURE_1_31_H
 
 #include "hhs_pass219_vm81_pqc_firewall_1_30.h"
+#include "hhs_pass219_generation_integrity_v1.h"
 
 #include <stdint.h>
 
