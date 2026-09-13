@@ -1,0 +1,136 @@
+name: Pass 219 RLM20 Lane 5 Internal State Closure 1.37
+
+on:
+  push:
+    branches:
+      - agent/pass219-rlm20-lane5-internal-state-closure-1-37-20260913
+    paths:
+      - 'contracts/pass219/PASS_219_RLM20_LANE5_INTERNAL_STATE_CLOSURE_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h'
+      - 'hhs_runtime/c/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
+      - 'tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c'
+      - '.github/workflows/pass219-rlm20-lane5-internal-state-closure-1-37.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_RLM20_LANE5_INTERNAL_STATE_CLOSURE_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h'
+      - 'hhs_runtime/c/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
+      - 'tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c'
+      - '.github/workflows/pass219-rlm20-lane5-internal-state-closure-1-37.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lane5-internal-state-closure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install exact ABI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-fastapi
+
+      - name: Preserve inherited Makefile
+        run: |
+          test "$(git rev-parse e157ef775f5da94281573a2d428e2ddb811c385e:Makefile)" = "$(git hash-object Makefile)"
+
+      - name: Build exact ABI and RNA C++ nucleus
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit public and hidden authority surfaces
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_rlm20_lane5_closure_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_rlm20_lane5_closure_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_runtime_preflight$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal \
+            hhs_exact_pass219_vm81_environment_admit_signed_raw
+          do
+            if grep -q " ${forbidden}$" /tmp/hhs.symbols; then
+              echo "forbidden canonical bypass exported: ${forbidden}" >&2
+              exit 1
+            fi
+          done
+
+      - name: Validate RLM20 Lane 5 closure 1.37
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rlm20-lane5-closure
+          /tmp/test-rlm20-lane5-closure
+
+      - name: Regress RNA VM5184 candidate ABI
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+      - name: Regress signed environmental failure-closed paths
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_pqc_signature_1_31.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pqc-signature
+          /tmp/test-pqc-signature bad-profile
+          /tmp/test-pqc-signature bad-parent
+
+      - name: Static mediation topology audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_RLM20_LANE5_INTERNAL_STATE_CLOSURE_V1.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h').read_text()
+          impl = Path('hhs_runtime/c/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc').read_text()
+          aggregate = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          exports = Path('hhs_runtime/c/hhs_pass219_vm81_authority_exports.map').read_text()
+          assert 'environment_hardware_bytecode_interception_required = FALSE' in contract
+          assert 'canonical state may not mutate without Lane5 mediation + signed environmental VM81 admission' in contract
+          assert 'inherited_equations_unchanged' in header
+          assert 'inherited_dataflow_unchanged' in header
+          assert 'hhs_exact_pass219_lane5_runtime_preflight(' in impl
+          assert 'hhs_exact_pass219_lane5_mediate_candidate(&request, &mediation)' in impl
+          assert 'return hhs_exact_pass219_vm81_environment_admit_signed_raw(' in impl
+          assert '#define hhs_exact_pass219_vm81_environment_admit_signed \\\n    hhs_exact_pass219_vm81_environment_admit_signed_raw' in aggregate
+          assert 'hhs_exact_pass219_rlm20_lane5_internal_state_closure_1_37.inc' in aggregate
+          assert 'hhs_exact_pass219_vm81_environment_admit_signed_raw;' in exports
+          print('rlm20_lane5_internal_state_closure_static=PASS')
+          PY
