@@ -20,6 +20,7 @@ inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_METABOLIC_PENALTY = UINT64
 inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_METABOLIC_BUDGET_CREDIT = UINT64_C(8);
 inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_METABOLIC_DECAY_QUANTUM = UINT64_C(1);
 inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_METABOLIC_DECAY_STEP_LIMIT = UINT64_C(16);
+inline constexpr std::size_t HHS_PASS219_PRIME_LANE_VERIFIED_OUTCOME_ISSUANCE_LIMIT = 1024U;
 
 struct PrimeLaneVerifiedMetabolismAuthorityV9 final {
     bool candidate_only{true};
@@ -62,6 +63,178 @@ struct PrimeLaneVerifiedOutcomeV9 final {
     HHSExactPass219VM81PQCSignatureReceiptV1 pqc_signature{};
     HHSExactPass219VM81EnvironmentReceiptV1 environment{};
     bool speculative_only{};
+};
+
+inline bool hhs_pass219_prime_lane_verified_outcome_evidence_valid(
+    const PrimeLaneVerifiedOutcomeV9& event) noexcept {
+    const auto& firewall = event.firewall;
+    const auto& signature = event.pqc_signature;
+    const auto& environment = event.environment;
+    const auto& transition = event.admission.transition;
+
+    if (event.verdict_signature64 == 0U ||
+        event.neighborhood_binding_signature64 == 0U ||
+        event.sequence == 0U ||
+        (event.admission_feedback_trinary != 1 && event.admission_feedback_trinary != -1) ||
+        event.speculative_only)
+        return false;
+
+    if (firewall.struct_size != sizeof(firewall) ||
+        firewall.version != HHS_EXACT_PASS219_VM81_PQC_VERSION ||
+        firewall.pass_number < HHS_EXACT_PASS219_VM81_PQC_MIN_PASS ||
+        firewall.decision != HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED ||
+        firewall.halt_reason != HHS_EXACT_PASS219_VM81_PQC_HALT_NONE ||
+        firewall.halted != 0U || firewall.pqc_authenticated != 1U ||
+        firewall.parent_hash216_verified != 1U || firewall.child_hash216_verified != 1U ||
+        firewall.rna_cell_wall_routed != 1U ||
+        firewall.inherited_rna_authority_invoked != 1U ||
+        firewall.canonical_receipt_owned_by_inherited_authority != 1U ||
+        firewall.firewall_is_canonical_authority != 0U ||
+        firewall.decision_signature64 == 0U ||
+        event.verdict_signature64 != firewall.decision_signature64)
+        return false;
+
+    auto bytes_nonzero = [](const std::uint8_t* bytes, std::size_t length) noexcept {
+        if (bytes == nullptr || length == 0U)
+            return false;
+        std::uint8_t aggregate = 0U;
+        for (std::size_t i = 0U; i < length; ++i)
+            aggregate = static_cast<std::uint8_t>(aggregate | bytes[i]);
+        return aggregate != 0U;
+    };
+
+    if (signature.struct_size != sizeof(signature) ||
+        signature.version != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION ||
+        (signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65 &&
+         signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_SLH_DSA_SHA2_192S) ||
+        signature.decision != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERIFIED ||
+        signature.signature_length == 0U || signature.provider_available != 1U ||
+        signature.key_derived_from_kernel_root != 1U ||
+        signature.signature_generated_inside_kernel != 1U ||
+        signature.signature_verified_before_vm81 != 1U ||
+        signature.external_key_authority != 0U ||
+        signature.external_signature_authority != 0U ||
+        signature.signature_is_canonical_receipt != 0U ||
+        !bytes_nonzero(signature.signed_message_sha256, sizeof(signature.signed_message_sha256)) ||
+        !bytes_nonzero(signature.signature_sha256, sizeof(signature.signature_sha256)))
+        return false;
+
+    if (environment.struct_size != sizeof(environment) ||
+        environment.version != HHS_EXACT_PASS219_VM81_ENV_VERSION ||
+        environment.state != HHS_EXACT_PASS219_VM81_ENV_STATE_RUNNING ||
+        environment.decision != HHS_EXACT_PASS219_VM81_ENV_DECISION_READY ||
+        environment.reason != HHS_EXACT_PASS219_VM81_ENV_REASON_NONE ||
+        environment.signature_algorithm != signature.algorithm ||
+        environment.security_epoch != HHS_EXACT_PASS219_VM81_ENV_SECURITY_EPOCH ||
+        environment.witness_sequence == 0U ||
+        environment.genesis_verified != 1U || environment.witness_verified != 1U ||
+        environment.environment_signature_verified != 1U ||
+        environment.recovery_candidate_only != 1U ||
+        environment.canonical_mutation_authority != 0U ||
+        environment.canonical_receipt_authority != 0U ||
+        !bytes_nonzero(environment.witness_sha256, sizeof(environment.witness_sha256)) ||
+        !bytes_nonzero(environment.environment_signature_sha256,
+                       sizeof(environment.environment_signature_sha256)))
+        return false;
+
+    if (transition.struct_size != sizeof(transition) ||
+        hhs_exact_pass219_vm81_pqc_hash216_reference_verify(&transition) != HHS_EXACT_STATUS_OK ||
+        std::memcmp(firewall.child_hash216_identity,
+                    transition.transition_identity216,
+                    HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+        return false;
+
+    return true;
+}
+
+class PrimeLaneVerifiedOutcomeIssuerV9 final {
+public:
+    bool admit_and_issue(
+        std::uint32_t pass_number,
+        std::uint32_t signature_algorithm,
+        const HHSExactUQCELInputV1& input,
+        const HHSExactVM81Frame& candidate_frame,
+        const HHSExactPass219Hash216TransitionViewV1& parent_hash216_reference,
+        std::int8_t lo_shu_group,
+        std::uint16_t g243,
+        std::uint8_t feedback_lane,
+        std::uint64_t neighborhood_binding_signature64,
+        std::uint64_t metabolic_sequence,
+        std::int8_t admission_feedback_trinary,
+        HHSExactVM81Frame& out_committed_frame,
+        PrimeLaneVerifiedOutcomeV9& out) {
+        out = PrimeLaneVerifiedOutcomeV9{};
+        out_committed_frame = HHSExactVM81Frame{};
+        if (neighborhood_binding_signature64 == 0U || metabolic_sequence == 0U ||
+            (admission_feedback_trinary != 1 && admission_feedback_trinary != -1) ||
+            issued_.size() >= HHS_PASS219_PRIME_LANE_VERIFIED_OUTCOME_ISSUANCE_LIMIT)
+            return false;
+
+        HHSExactPass219RNAAdmissionV1 admission{};
+        HHSExactPass219VM81PQCFirewallReceiptV1 firewall{};
+        HHSExactPass219VM81PQCSignatureReceiptV1 signature{};
+        HHSExactPass219VM81EnvironmentReceiptV1 environment{};
+        const HHSExactStatus status = hhs_exact_pass219_vm81_environment_admit_signed(
+            pass_number,
+            signature_algorithm,
+            &input,
+            &candidate_frame,
+            &parent_hash216_reference,
+            lo_shu_group,
+            g243,
+            feedback_lane,
+            admission_feedback_trinary,
+            &out_committed_frame,
+            &admission,
+            &firewall,
+            &signature,
+            &environment);
+        if (status != HHS_EXACT_STATUS_OK)
+            return false;
+
+        out.verdict_signature64 = firewall.decision_signature64;
+        out.neighborhood_binding_signature64 = neighborhood_binding_signature64;
+        out.sequence = metabolic_sequence;
+        out.admission_feedback_trinary = admission_feedback_trinary;
+        out.admission = admission;
+        out.firewall = firewall;
+        out.pqc_signature = signature;
+        out.environment = environment;
+        out.speculative_only = false;
+        if (!hhs_pass219_prime_lane_verified_outcome_evidence_valid(out))
+            return false;
+
+        const auto [it, inserted] = issued_.emplace(out.verdict_signature64, out);
+        if (!inserted && !same_outcome(it->second, out))
+            return false;
+        return true;
+    }
+
+    bool issued(const PrimeLaneVerifiedOutcomeV9& event) const noexcept {
+        if (!hhs_pass219_prime_lane_verified_outcome_evidence_valid(event))
+            return false;
+        const auto it = issued_.find(event.verdict_signature64);
+        return it != issued_.end() && same_outcome(it->second, event);
+    }
+
+    std::size_t issued_count() const noexcept { return issued_.size(); }
+
+private:
+    static bool same_outcome(
+        const PrimeLaneVerifiedOutcomeV9& a,
+        const PrimeLaneVerifiedOutcomeV9& b) noexcept {
+        return a.verdict_signature64 == b.verdict_signature64 &&
+               a.neighborhood_binding_signature64 == b.neighborhood_binding_signature64 &&
+               a.sequence == b.sequence &&
+               a.admission_feedback_trinary == b.admission_feedback_trinary &&
+               a.speculative_only == b.speculative_only &&
+               std::memcmp(&a.admission, &b.admission, sizeof(a.admission)) == 0 &&
+               std::memcmp(&a.firewall, &b.firewall, sizeof(a.firewall)) == 0 &&
+               std::memcmp(&a.pqc_signature, &b.pqc_signature, sizeof(a.pqc_signature)) == 0 &&
+               std::memcmp(&a.environment, &b.environment, sizeof(a.environment)) == 0;
+    }
+
+    std::map<std::uint64_t, PrimeLaneVerifiedOutcomeV9> issued_{};
 };
 
 struct PrimeLaneMetabolicStateV9 final {
@@ -122,11 +295,13 @@ public:
     }
 
     bool apply_verified_outcome(
+        const PrimeLaneVerifiedOutcomeIssuerV9& issuer,
         const PrimeLaneVerifiedOutcomeV9& event,
         PrimeLaneBudgetedPredictiveHydratorV8& hydrator,
         PrimeLaneMetabolicReceiptV9& out) {
         out = PrimeLaneMetabolicReceiptV9{};
-        if (!event_valid(event) || consumed_verdicts_.find(event.verdict_signature64) != consumed_verdicts_.end())
+        if (!issuer.issued(event) ||
+            consumed_verdicts_.find(event.verdict_signature64) != consumed_verdicts_.end())
             return false;
 
         auto state_it = states_.find(event.neighborhood_binding_signature64);
@@ -210,87 +385,6 @@ public:
     std::size_t consumed_verdict_count() const noexcept { return consumed_verdicts_.size(); }
 
 private:
-    static bool bytes_nonzero(const std::uint8_t* bytes, std::size_t length) noexcept {
-        if (bytes == nullptr || length == 0U)
-            return false;
-        std::uint8_t aggregate = 0U;
-        for (std::size_t i = 0U; i < length; ++i)
-            aggregate = static_cast<std::uint8_t>(aggregate | bytes[i]);
-        return aggregate != 0U;
-    }
-
-    static bool event_valid(const PrimeLaneVerifiedOutcomeV9& event) noexcept {
-        const auto& firewall = event.firewall;
-        const auto& signature = event.pqc_signature;
-        const auto& environment = event.environment;
-        const auto& transition = event.admission.transition;
-
-        if (event.verdict_signature64 == 0U ||
-            event.neighborhood_binding_signature64 == 0U ||
-            event.sequence == 0U ||
-            (event.admission_feedback_trinary != 1 && event.admission_feedback_trinary != -1) ||
-            event.speculative_only)
-            return false;
-
-        if (firewall.struct_size != sizeof(firewall) ||
-            firewall.version != HHS_EXACT_PASS219_VM81_PQC_VERSION ||
-            firewall.pass_number < HHS_EXACT_PASS219_VM81_PQC_MIN_PASS ||
-            firewall.decision != HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED ||
-            firewall.halt_reason != HHS_EXACT_PASS219_VM81_PQC_HALT_NONE ||
-            firewall.halted != 0U || firewall.pqc_authenticated != 1U ||
-            firewall.parent_hash216_verified != 1U || firewall.child_hash216_verified != 1U ||
-            firewall.rna_cell_wall_routed != 1U ||
-            firewall.inherited_rna_authority_invoked != 1U ||
-            firewall.canonical_receipt_owned_by_inherited_authority != 1U ||
-            firewall.firewall_is_canonical_authority != 0U ||
-            firewall.decision_signature64 == 0U ||
-            event.verdict_signature64 != firewall.decision_signature64)
-            return false;
-
-        if (signature.struct_size != sizeof(signature) ||
-            signature.version != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION ||
-            (signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65 &&
-             signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_SLH_DSA_SHA2_192S) ||
-            signature.decision != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERIFIED ||
-            signature.signature_length == 0U || signature.provider_available != 1U ||
-            signature.key_derived_from_kernel_root != 1U ||
-            signature.signature_generated_inside_kernel != 1U ||
-            signature.signature_verified_before_vm81 != 1U ||
-            signature.external_key_authority != 0U ||
-            signature.external_signature_authority != 0U ||
-            signature.signature_is_canonical_receipt != 0U ||
-            !bytes_nonzero(signature.signed_message_sha256, sizeof(signature.signed_message_sha256)) ||
-            !bytes_nonzero(signature.signature_sha256, sizeof(signature.signature_sha256)))
-            return false;
-
-        if (environment.struct_size != sizeof(environment) ||
-            environment.version != HHS_EXACT_PASS219_VM81_ENV_VERSION ||
-            environment.state != HHS_EXACT_PASS219_VM81_ENV_STATE_RUNNING ||
-            environment.decision != HHS_EXACT_PASS219_VM81_ENV_DECISION_READY ||
-            environment.reason != HHS_EXACT_PASS219_VM81_ENV_REASON_NONE ||
-            environment.signature_algorithm != signature.algorithm ||
-            environment.security_epoch != HHS_EXACT_PASS219_VM81_ENV_SECURITY_EPOCH ||
-            environment.witness_sequence == 0U ||
-            environment.genesis_verified != 1U || environment.witness_verified != 1U ||
-            environment.environment_signature_verified != 1U ||
-            environment.recovery_candidate_only != 1U ||
-            environment.canonical_mutation_authority != 0U ||
-            environment.canonical_receipt_authority != 0U ||
-            !bytes_nonzero(environment.witness_sha256, sizeof(environment.witness_sha256)) ||
-            !bytes_nonzero(environment.environment_signature_sha256,
-                           sizeof(environment.environment_signature_sha256)))
-            return false;
-
-        if (transition.struct_size != sizeof(transition) ||
-            hhs_exact_pass219_vm81_pqc_hash216_reference_verify(&transition) != HHS_EXACT_STATUS_OK ||
-            std::memcmp(firewall.child_hash216_identity,
-                        transition.transition_identity216,
-                        HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
-            return false;
-
-        return true;
-    }
-
     static std::uint64_t decay_steps(
         std::uint64_t last_sequence,
         std::uint64_t sequence) noexcept {
