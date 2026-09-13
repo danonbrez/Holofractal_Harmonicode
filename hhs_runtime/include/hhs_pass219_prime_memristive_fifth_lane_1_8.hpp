@@ -2,9 +2,11 @@
 #define HHS_PASS219_PRIME_MEMRISTIVE_FIFTH_LANE_1_8_HPP
 
 #include "hhs_pass219_prime_memristive_fifth_lane_1_7.hpp"
+#include "hhs_pass219_vm81_environmental_recovery_1_32.h"
 
 #include <algorithm>
 #include <cstdint>
+#include <cstring>
 #include <limits>
 #include <map>
 #include <set>
@@ -55,7 +57,10 @@ struct PrimeLaneVerifiedOutcomeV9 final {
     std::uint64_t neighborhood_binding_signature64{};
     std::uint64_t sequence{};
     std::int8_t admission_feedback_trinary{};
-    bool vm81_hash216_verified{};
+    HHSExactPass219RNAAdmissionV1 admission{};
+    HHSExactPass219VM81PQCFirewallReceiptV1 firewall{};
+    HHSExactPass219VM81PQCSignatureReceiptV1 pqc_signature{};
+    HHSExactPass219VM81EnvironmentReceiptV1 environment{};
     bool speculative_only{};
 };
 
@@ -205,12 +210,85 @@ public:
     std::size_t consumed_verdict_count() const noexcept { return consumed_verdicts_.size(); }
 
 private:
+    static bool bytes_nonzero(const std::uint8_t* bytes, std::size_t length) noexcept {
+        if (bytes == nullptr || length == 0U)
+            return false;
+        std::uint8_t aggregate = 0U;
+        for (std::size_t i = 0U; i < length; ++i)
+            aggregate = static_cast<std::uint8_t>(aggregate | bytes[i]);
+        return aggregate != 0U;
+    }
+
     static bool event_valid(const PrimeLaneVerifiedOutcomeV9& event) noexcept {
-        return event.verdict_signature64 != 0U &&
-               event.neighborhood_binding_signature64 != 0U &&
-               event.sequence != 0U &&
-               (event.admission_feedback_trinary == 1 || event.admission_feedback_trinary == -1) &&
-               event.vm81_hash216_verified && !event.speculative_only;
+        const auto& firewall = event.firewall;
+        const auto& signature = event.pqc_signature;
+        const auto& environment = event.environment;
+        const auto& transition = event.admission.transition;
+
+        if (event.verdict_signature64 == 0U ||
+            event.neighborhood_binding_signature64 == 0U ||
+            event.sequence == 0U ||
+            (event.admission_feedback_trinary != 1 && event.admission_feedback_trinary != -1) ||
+            event.speculative_only)
+            return false;
+
+        if (firewall.struct_size != sizeof(firewall) ||
+            firewall.version != HHS_EXACT_PASS219_VM81_PQC_VERSION ||
+            firewall.pass_number < HHS_EXACT_PASS219_VM81_PQC_MIN_PASS ||
+            firewall.decision != HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED ||
+            firewall.halt_reason != HHS_EXACT_PASS219_VM81_PQC_HALT_NONE ||
+            firewall.halted != 0U || firewall.pqc_authenticated != 1U ||
+            firewall.parent_hash216_verified != 1U || firewall.child_hash216_verified != 1U ||
+            firewall.rna_cell_wall_routed != 1U ||
+            firewall.inherited_rna_authority_invoked != 1U ||
+            firewall.canonical_receipt_owned_by_inherited_authority != 1U ||
+            firewall.firewall_is_canonical_authority != 0U ||
+            firewall.decision_signature64 == 0U ||
+            event.verdict_signature64 != firewall.decision_signature64)
+            return false;
+
+        if (signature.struct_size != sizeof(signature) ||
+            signature.version != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERSION ||
+            (signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65 &&
+             signature.algorithm != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_SLH_DSA_SHA2_192S) ||
+            signature.decision != HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERIFIED ||
+            signature.signature_length == 0U || signature.provider_available != 1U ||
+            signature.key_derived_from_kernel_root != 1U ||
+            signature.signature_generated_inside_kernel != 1U ||
+            signature.signature_verified_before_vm81 != 1U ||
+            signature.external_key_authority != 0U ||
+            signature.external_signature_authority != 0U ||
+            signature.signature_is_canonical_receipt != 0U ||
+            !bytes_nonzero(signature.signed_message_sha256, sizeof(signature.signed_message_sha256)) ||
+            !bytes_nonzero(signature.signature_sha256, sizeof(signature.signature_sha256)))
+            return false;
+
+        if (environment.struct_size != sizeof(environment) ||
+            environment.version != HHS_EXACT_PASS219_VM81_ENV_VERSION ||
+            environment.state != HHS_EXACT_PASS219_VM81_ENV_STATE_RUNNING ||
+            environment.decision != HHS_EXACT_PASS219_VM81_ENV_DECISION_READY ||
+            environment.reason != HHS_EXACT_PASS219_VM81_ENV_REASON_NONE ||
+            environment.signature_algorithm != signature.algorithm ||
+            environment.security_epoch != HHS_EXACT_PASS219_VM81_ENV_SECURITY_EPOCH ||
+            environment.witness_sequence == 0U ||
+            environment.genesis_verified != 1U || environment.witness_verified != 1U ||
+            environment.environment_signature_verified != 1U ||
+            environment.recovery_candidate_only != 1U ||
+            environment.canonical_mutation_authority != 0U ||
+            environment.canonical_receipt_authority != 0U ||
+            !bytes_nonzero(environment.witness_sha256, sizeof(environment.witness_sha256)) ||
+            !bytes_nonzero(environment.environment_signature_sha256,
+                           sizeof(environment.environment_signature_sha256)))
+            return false;
+
+        if (transition.struct_size != sizeof(transition) ||
+            hhs_exact_pass219_vm81_pqc_hash216_reference_verify(&transition) != HHS_EXACT_STATUS_OK ||
+            std::memcmp(firewall.child_hash216_identity,
+                        transition.transition_identity216,
+                        HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+            return false;
+
+        return true;
     }
 
     static std::uint64_t decay_steps(
