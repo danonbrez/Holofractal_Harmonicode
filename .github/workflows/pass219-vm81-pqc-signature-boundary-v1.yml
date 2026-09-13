@@ -4,18 +4,22 @@ on:
   push:
     branches:
       - agent/pass219-external-runtime-authority-closure-v1-20260912
+      - agent/pass219-delta-reciprocal-constructor-1-36-20260913
     paths:
       - 'GNUmakefile'
       - 'contracts/pass219/PASS_219_VM81_PQC_*'
       - 'contracts/pass219/PASS_219_VM81_ENVIRONMENTAL_*'
       - 'contracts/pass219/PASS_219_VM81_EXTERNAL_ENVIRONMENTAL_*'
       - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'contracts/pass219/PASS_219_DELTA_RECIPROCAL_CONSTRUCTOR_MANIFOLD_V1.md'
       - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/include/hhs_pass219_vm81_environmental_*'
       - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/include/hhs_pass219_delta_reciprocal_constructor_1_36.h'
       - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_pass219_vm81_environmental_*'
       - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/c/hhs_pass219_delta_reciprocal_constructor_1_36.inc'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
@@ -23,6 +27,7 @@ on:
       - 'tests/pass219/test_pass219_vm81_pqc_*'
       - 'tests/pass219/test_pass219_vm81_environmental_*'
       - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - 'tests/pass219/test_pass219_delta_reciprocal_constructor_1_36.c'
       - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
       - 'tests/test_hhs_pass117_vm81_deterministic_quantum_simulation_v1.py'
       - 'tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py'
@@ -35,12 +40,15 @@ on:
       - 'contracts/pass219/PASS_219_VM81_ENVIRONMENTAL_*'
       - 'contracts/pass219/PASS_219_VM81_EXTERNAL_ENVIRONMENTAL_*'
       - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'contracts/pass219/PASS_219_DELTA_RECIPROCAL_CONSTRUCTOR_MANIFOLD_V1.md'
       - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/include/hhs_pass219_vm81_environmental_*'
       - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/include/hhs_pass219_delta_reciprocal_constructor_1_36.h'
       - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_pass219_vm81_environmental_*'
       - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/c/hhs_pass219_delta_reciprocal_constructor_1_36.inc'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
@@ -48,6 +56,7 @@ on:
       - 'tests/pass219/test_pass219_vm81_pqc_*'
       - 'tests/pass219/test_pass219_vm81_environmental_*'
       - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - 'tests/pass219/test_pass219_delta_reciprocal_constructor_1_36.c'
       - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
       - 'tests/test_hhs_pass117_vm81_deterministic_quantum_simulation_v1.py'
       - 'tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py'
@@ -105,6 +114,11 @@ jobs:
           grep -q ' hhs_exact_pass219_lane5_boundary_qt_version$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_lane5_boundary_preflight$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_thermo_reciprocal_closure$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_delta_constructor_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_delta_constructor_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_full_manifold_modulus72_72$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_full_manifold_residue_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_delta_p_domain_validate$' /tmp/hhs.symbols
 
       - name: Validate Lane 5 exact boundary quantum thermodynamics 1.35
         env:
@@ -117,6 +131,18 @@ jobs:
             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
             -o /tmp/test-lane5-boundary-qt
           /tmp/test-lane5-boundary-qt
+
+      - name: Validate Delta reciprocal constructor 1.36
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_delta_reciprocal_constructor_1_36.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-delta-constructor
+          /tmp/test-delta-constructor
 
       - name: Regress inherited exact quantum and symbolic services
         run: |
@@ -177,7 +203,9 @@ jobs:
           signed = Path('hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h').read_text()
           env = Path('hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h').read_text()
           facade = Path('hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp').read_text()
-          contract = Path('contracts/pass219/PASS_219_VM81_EXTERNAL_ENVIRONMENTAL_AUTHORITY_RECONCILIATION_V1.md').read_text()
+          authority_contract = Path('contracts/pass219/PASS_219_VM81_EXTERNAL_ENVIRONMENTAL_AUTHORITY_RECONCILIATION_V1.md').read_text()
+          delta_contract = Path('contracts/pass219/PASS_219_DELTA_RECIPROCAL_CONSTRUCTOR_MANIFOLD_V1.md').read_text()
+          delta_header = Path('hhs_runtime/include/hhs_pass219_delta_reciprocal_constructor_1_36.h').read_text()
           legacy_cpp = Path('hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.hpp')
           assert not legacy_cpp.exists(), 'caller-resolver C++ firewall facade must be removed'
           assert 'HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_INTERNAL_API HHSExactStatus' in signed
@@ -189,9 +217,13 @@ jobs:
           assert 'verified_recovery_candidate_only{true}' in facade
           assert 'hhs_exact_pass219_vm81_environment_admit_signed' in facade
           assert 'hhs_exact_pass219_vm81_pqc_admit_signed(' not in facade
-          assert 'hhs_exact_pass219_vm81_environment_admit_signed' in contract
-          assert 'recovered candidate must still use the ordinary 1.32 production admission path' in contract.lower()
-          print('pqc_environmental_authority_closure_static=PASS')
+          assert 'hhs_exact_pass219_vm81_environment_admit_signed' in authority_contract
+          assert 'recovered candidate must still use the ordinary 1.32 production admission path' in authority_contract.lower()
+          assert '6f30f211439bdc8a2dccf21801800983530b94e029a5be56426130873f7e612b' in delta_contract
+          assert 'full_delta_constructor_evaluator_available = FALSE' in delta_contract
+          assert 'A/B*B/A -> 1' in delta_contract
+          assert 'directional_reciprocity_not_scalarized' in delta_header
+          print('pqc_environmental_delta_constructor_authority_static=PASS')
           PY
 
   openssl-35-positive:
