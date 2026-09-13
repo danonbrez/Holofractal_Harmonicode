@@ -8,6 +8,8 @@
 - PR: `#441`
 - I13 checkpoint: `b8d908915cf91b70691746c3a46d01a14efdead8`
 - I13 workflow: `34733753439`, job `103661301721`, SUCCESS
+- I14 implementation commit: `d7ee681efaac1b192dff490ae60c595cf04082e1`
+- I14 implementation tree: `9c2201e29a5736a51fbabe2811970ce66175f6fc`
 
 ## I14 scope
 
@@ -24,6 +26,16 @@ I14 does not infer convergence from model consensus or numerical proximity and d
 - `.github/workflows/pass219-multisource-convergence-i14.yml`
 - `docs/operations/restart/PASS_219_MULTISOURCE_CONVERGENCE_I14_RESTART_20260913.md`
 
+## Implemented contract
+
+- at least two distinct immutable source hashes are required;
+- every source must satisfy the I13 exact projection contract and carry post-I13 committed VM81/RNA/PQC/environment evidence;
+- each source receives a deterministic source-route Hash216 evidence binding that retains provenance while pointing at the admitted native route;
+- model agreement, architecture identity, logit proximity, and floating-point similarity cannot authorize deduplication;
+- convergence requires byte-identical committed VM81 frames, identical canonical frame Hash72, and identical admitted child Hash216 identity;
+- valid but different native routes return `NOT_CONVERGED` and cannot deduplicate;
+- I14 is `static inline`, non-mutating, and creates no dynamic mutation, Hash216, receipt, or persistence authority.
+
 ## Validation plan
 
 1. Static contract/manifest verification and no-float scan.
@@ -34,6 +46,10 @@ I14 does not infer convergence from model consensus or numerical proximity and d
 6. Inherited I13 executable regression.
 7. Generation-integrity seal.
 
+## Environment note
+
+The inherited I13 GitHub runner used OpenSSL `3.0.13`. I14 therefore explicitly distinguishes deterministic convergence-logic fixtures from live PQC multi-source evidence. A runner without the required ML-DSA provider may validate fail-closed semantics and the I14 verifier, but it may not claim two live I13 PQC admissions occurred.
+
 ## Restart action
 
-If the dedicated I14 gate fails, repair only the first failing I14 or inherited dependency surface. Do not weaken I13 admission requirements, do not treat fixture evidence as live PQC evidence, and do not create a second canonical transition authority.
+The implementation is committed and the dedicated I14 workflow is the next authority gate. If it fails, repair only the first failing I14 or inherited dependency surface. Do not weaken I13 admission requirements, do not treat fixture evidence as live PQC evidence, and do not create a second canonical transition authority.
