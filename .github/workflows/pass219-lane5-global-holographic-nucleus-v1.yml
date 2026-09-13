@@ -8,7 +8,7 @@ on:
       - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
       - 'hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h'
       - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
-      - 'hhs_runtime/c/hhs_runtime_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
       - 'tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c'
       - 'tests/pass219/test_pass219_rna_vm5184_abi_1_33.c'
@@ -36,7 +36,7 @@ jobs:
           from pathlib import Path
           contract = Path('contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md').read_text()
           header = Path('hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h').read_text()
-          abi = Path('hhs_runtime/c/hhs_runtime_abi.c').read_text()
+          abi = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
           exports = Path('hhs_runtime/c/hhs_pass219_vm81_authority_exports.map').read_text()
           vm5184 = Path('hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h').read_text()
           for needle in (
@@ -68,18 +68,21 @@ jobs:
               assert needle in header, needle
           assert 'candidate_only' in vm5184
           assert 'hhs_pass219_lane5_global_holographic_nucleus_1_34.inc' in abi
-          for symbol in (
+          for hidden in (
+              'hhs_exact_vm81_admit_uqcel;',
+              'hhs_exact_pass219_admit_composed;',
+              'hhs_exact_pass219_rna_admit_composed;',
+              'hhs_exact_pass219_vm81_pqc_admit;',
+              'hhs_exact_pass219_vm81_pqc_admit_signed;',
+              'hhs_exact_pass219_vm81_environment_checkpoint_seal;',
+          ):
+              assert hidden in exports, hidden
+          for public_lane5 in (
               'hhs_exact_pass219_lane5_nucleus_version;',
               'hhs_exact_pass219_lane5_nucleus_authority;',
               'hhs_exact_pass219_lane5_mediate_candidate;',
-              'hhs_exact_pass219_vm81_environment_admit_signed;',
           ):
-              assert symbol in exports, symbol
-          for forbidden in (
-              'hhs_exact_pass219_vm81_pqc_admit;',
-              'hhs_exact_pass219_vm81_pqc_admit_signed;',
-          ):
-              assert forbidden not in exports, forbidden
+              assert public_lane5 not in exports, public_lane5
           print('lane5_global_holographic_nucleus_static=PASS')
           PY
 
@@ -96,8 +99,12 @@ jobs:
           grep -q ' hhs_exact_pass219_lane5_nucleus_authority$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_lane5_mediate_candidate$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_vm81_admit_uqcel$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_rna_admit_composed$' /tmp/hhs.symbols
           ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
           ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_environment_checkpoint_seal$' /tmp/hhs.symbols
 
       - name: Run Lane 5 nucleus native contract test
         env:
