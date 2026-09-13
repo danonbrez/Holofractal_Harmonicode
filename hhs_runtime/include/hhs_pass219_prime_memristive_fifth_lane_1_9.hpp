@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -19,6 +20,7 @@ inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_ARBITRATION_BUDGET_SCORE_C
 inline constexpr std::int64_t HHS_PASS219_PRIME_LANE_ARBITRATION_INHIBITION_QUANTUM = INT64_C(32);
 inline constexpr std::uint32_t HHS_PASS219_PRIME_LANE_ARBITRATION_ACTIVE_LIMIT = UINT32_C(8);
 inline constexpr std::uint64_t HHS_PASS219_PRIME_LANE_ARBITRATION_WORK_CAP = UINT64_C(4096);
+inline constexpr std::size_t HHS_PASS219_PRIME_LANE_ARBITRATION_ISSUANCE_LIMIT = 1024U;
 
 struct PrimeLaneSparseArbitrationAuthorityV10 final {
     bool candidate_only{true};
@@ -136,7 +138,8 @@ public:
         PrimeLaneSparseArbitrationResultV10& out) const {
         out = PrimeLaneSparseArbitrationResultV10{};
         if (!request_valid(request) || candidates.empty() ||
-            candidates.size() > HHS_PASS219_PRIME_LANE_PREFETCH_LIMIT)
+            candidates.size() > HHS_PASS219_PRIME_LANE_PREFETCH_LIMIT ||
+            issued_.size() >= HHS_PASS219_PRIME_LANE_ARBITRATION_ISSUANCE_LIMIT)
             return false;
 
         std::set<std::uint64_t> seen_bindings{};
@@ -275,12 +278,47 @@ public:
 
         std::sort(out.receipts.begin(), out.receipts.end(), output_order);
         out.metrics.arbitration_signature64 = signature(request, out.receipts, out.metrics);
-        return hhs_pass219_prime_lane_sparse_arbitration_authority_valid(out.authority) &&
-               hhs_pass219_prime_lane_sparse_arbitration_authority_valid(out.metrics.authority) &&
-               out.metrics.arbitration_signature64 != 0U;
+        if (!hhs_pass219_prime_lane_sparse_arbitration_authority_valid(out.authority) ||
+            !hhs_pass219_prime_lane_sparse_arbitration_authority_valid(out.metrics.authority) ||
+            out.metrics.arbitration_signature64 == 0U)
+            return false;
+
+        IssuedArbitrationV10 issued{};
+        issued.request = request;
+        issued.receipts = out.receipts;
+        issued.metrics = out.metrics;
+        const auto [it, inserted] = issued_.emplace(out.metrics.arbitration_signature64, std::move(issued));
+        if (!inserted && !same_issued(it->second, request, out))
+            return false;
+        return true;
     }
 
+    bool winner_emitted(
+        const PrimeLaneSparseArbitrationResultV10& result,
+        const PrimeLaneArbitrationCandidateReceiptV10& winner) const noexcept {
+        if (!hhs_pass219_prime_lane_sparse_arbitration_authority_valid(result.authority) ||
+            !hhs_pass219_prime_lane_sparse_arbitration_authority_valid(result.metrics.authority) ||
+            result.metrics.arbitration_signature64 == 0U)
+            return false;
+        const auto issued = issued_.find(result.metrics.arbitration_signature64);
+        if (issued == issued_.end() || !same_issued(issued->second, issued->second.request, result))
+            return false;
+        for (const auto& receipt : issued->second.receipts) {
+            if (same_receipt(receipt, winner))
+                return winner_valid(receipt, issued->second.request);
+        }
+        return false;
+    }
+
+    std::size_t issued_result_count() const noexcept { return issued_.size(); }
+
 private:
+    struct IssuedArbitrationV10 final {
+        PrimeLaneSparseArbitrationRequestV10 request{};
+        std::vector<PrimeLaneArbitrationCandidateReceiptV10> receipts{};
+        PrimeLaneSparseArbitrationMetricsV10 metrics{};
+    };
+
     static bool request_valid(const PrimeLaneSparseArbitrationRequestV10& request) noexcept {
         return request.query_context_signature64 != 0U &&
                request.active_modality_mask != 0U &&
@@ -310,6 +348,83 @@ private:
         for (const auto& member : candidate.neighborhood.members) {
             if (!hhs_pass219_prime_lane_neighborhood_replay_authority_valid(member.authority) ||
                 member.identity_signature64 == 0U || member.alias_cardinality == 0U)
+                return false;
+        }
+        return true;
+    }
+
+    static bool winner_valid(
+        const PrimeLaneArbitrationCandidateReceiptV10& winner,
+        const PrimeLaneSparseArbitrationRequestV10& request) noexcept {
+        return hhs_pass219_prime_lane_sparse_arbitration_authority_valid(winner.authority) &&
+               winner.winner && winner.eligible && winner.winner_ordinal != 0U &&
+               winner.exclusion == PrimeLaneArbitrationExclusionV10::none &&
+               winner.query_context_signature64 == request.query_context_signature64 &&
+               winner.active_modality_mask == request.active_modality_mask &&
+               winner.neighborhood_binding_signature64 != 0U &&
+               winner.work_allocation == std::min(winner.remaining_budget, request.per_route_work_cap) &&
+               winner.work_allocation >= winner.exact_hop_floor &&
+               winner.exact_hop_floor >= HHS_PASS219_PRIME_LANE_HOP_ENERGY_QUANTUM + 1U;
+    }
+
+    static bool same_receipt(
+        const PrimeLaneArbitrationCandidateReceiptV10& a,
+        const PrimeLaneArbitrationCandidateReceiptV10& b) noexcept {
+        return a.query_context_signature64 == b.query_context_signature64 &&
+               a.active_modality_mask == b.active_modality_mask &&
+               a.neighborhood_binding_signature64 == b.neighborhood_binding_signature64 &&
+               a.composition_signature64 == b.composition_signature64 &&
+               a.inherited_prefetch_score == b.inherited_prefetch_score &&
+               a.verified_vitality == b.verified_vitality &&
+               a.remaining_budget == b.remaining_budget &&
+               a.route_component == b.route_component &&
+               a.vitality_component == b.vitality_component &&
+               a.budget_component == b.budget_component &&
+               a.raw_score == b.raw_score &&
+               a.stronger_candidate_count == b.stronger_candidate_count &&
+               a.inhibition == b.inhibition &&
+               a.final_score == b.final_score &&
+               a.exact_hop_floor == b.exact_hop_floor &&
+               a.work_allocation == b.work_allocation &&
+               a.competition_rank == b.competition_rank &&
+               a.winner_ordinal == b.winner_ordinal &&
+               a.exclusion == b.exclusion && a.eligible == b.eligible && a.winner == b.winner &&
+               hhs_pass219_prime_lane_sparse_arbitration_authority_valid(a.authority) &&
+               hhs_pass219_prime_lane_sparse_arbitration_authority_valid(b.authority);
+    }
+
+    static bool same_metrics(
+        const PrimeLaneSparseArbitrationMetricsV10& a,
+        const PrimeLaneSparseArbitrationMetricsV10& b) noexcept {
+        return a.candidates_considered == b.candidates_considered &&
+               a.candidates_eligible == b.candidates_eligible &&
+               a.winners == b.winners &&
+               a.query_rejections == b.query_rejections &&
+               a.modality_rejections == b.modality_rejections &&
+               a.authority_rejections == b.authority_rejections &&
+               a.metabolic_rejections == b.metabolic_rejections &&
+               a.budget_rejections == b.budget_rejections &&
+               a.inhibited_rejections == b.inhibited_rejections &&
+               a.sparse_limit_rejections == b.sparse_limit_rejections &&
+               a.total_work_allocated == b.total_work_allocated &&
+               a.arbitration_signature64 == b.arbitration_signature64 &&
+               hhs_pass219_prime_lane_sparse_arbitration_authority_valid(a.authority) &&
+               hhs_pass219_prime_lane_sparse_arbitration_authority_valid(b.authority);
+    }
+
+    static bool same_issued(
+        const IssuedArbitrationV10& issued,
+        const PrimeLaneSparseArbitrationRequestV10& request,
+        const PrimeLaneSparseArbitrationResultV10& result) noexcept {
+        if (issued.request.query_context_signature64 != request.query_context_signature64 ||
+            issued.request.active_modality_mask != request.active_modality_mask ||
+            issued.request.max_active != request.max_active ||
+            issued.request.per_route_work_cap != request.per_route_work_cap ||
+            !same_metrics(issued.metrics, result.metrics) ||
+            issued.receipts.size() != result.receipts.size())
+            return false;
+        for (std::size_t i = 0U; i < issued.receipts.size(); ++i) {
+            if (!same_receipt(issued.receipts[i], result.receipts[i]))
                 return false;
         }
         return true;
@@ -394,6 +509,8 @@ private:
             hash *= UINT64_C(1099511628211);
         }
     }
+
+    mutable std::map<std::uint64_t, IssuedArbitrationV10> issued_{};
 };
 
 } // namespace hhs::rna
