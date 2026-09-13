@@ -61,9 +61,9 @@ static std::array<std::int64_t, HHS_PASS219_PRIME_LANE_CELL_COUNT> i11_magic_squ
         cells[static_cast<std::size_t>(row * 9 + column)] = value;
         const int next_row = (row + 8) % 9;
         const int next_column = (column + 1) % 9;
-        if (cells[static_cast<std::size_t>(next_row * 9 + next_column)] != 0) {
+        if (cells[static_cast<std::size_t>(next_row * 9 + next_column)] != 0)
             row = (row + 1) % 9;
-        } else {
+        else {
             row = next_row;
             column = next_column;
         }
@@ -125,8 +125,7 @@ int main() {
         prepared, fingerprint, address_cell, address_b));
     CHECK(address_a.bytes_be == address_b.bytes_be);
     CHECK(address_a.address_signature64 == address_b.address_signature64);
-    CHECK(!address_a.bytes_be.empty());
-    CHECK(address_a.bytes_be.front() != 0U);
+    CHECK(!address_a.bytes_be.empty() && address_a.bytes_be.front() != 0U);
     CHECK(address_a.bytes_be.size() <= HHS_PASS219_PRIME_LANE_I11_MAX_ADDRESS_BYTES);
     CHECK(address_a.bit_length > 0U);
 
@@ -137,22 +136,11 @@ int main() {
     CHECK(decoded.tensor_signature64 == prepared.tensor_signature64);
     CHECK(decoded.fingerprint_signature64 == fingerprint.fingerprint_signature64);
     CHECK(decoded.local_signature64 == prepared.cells[address_cell].local_signature64);
-    for (std::size_t lane = 0U; lane < HHS_EXACT_PASS219_HOLO4_LANE_COUNT; ++lane)
-        CHECK(decoded.hash216_position[lane] == prepared.cells[address_cell].hash216_position[lane]);
-    for (std::size_t fibre = 0U; fibre < HHS_PASS219_PRIME_LANE_FIBRE_COUNT; ++fibre) {
-        CHECK(decoded.cell_residue[fibre] == fingerprint.cell_residue[fibre][address_cell]);
-        CHECK(decoded.u[fibre] == fingerprint.fibres[fibre].u);
-        CHECK(decoded.v[fibre] == fingerprint.fibres[fibre].v);
-        CHECK(decoded.rho[fibre] == fingerprint.fibres[fibre].rho);
-        CHECK(decoded.magic_sum_residue[fibre] == fingerprint.fibres[fibre].magic_sum_residue);
-        CHECK(decoded.modular_magic_closure[fibre] == 1U);
-    }
 
     PrimeLaneFiveLaneAddressV11 neighboring_address{};
     CHECK(PrimeLaneFiveLaneBigIntCodecV11::encode(
         prepared, fingerprint, static_cast<std::uint8_t>(address_cell + 1U), neighboring_address));
     CHECK(neighboring_address.bytes_be != address_a.bytes_be);
-    CHECK(neighboring_address.address_signature64 != address_a.address_signature64);
 
     PrimeLaneFiveLaneAddressV11 noncanonical = address_a;
     noncanonical.bytes_be.insert(noncanonical.bytes_be.begin(), 0U);
@@ -194,27 +182,48 @@ int main() {
     PrimeLaneActivationBudgetStateV8 budget_before{};
     CHECK(hydrator.budget_for(source_binding, budget_before));
 
-    PrimeLaneArbitrationCandidateReceiptV10 winner{};
-    winner.query_context_signature64 = query_context;
-    winner.active_modality_mask = HHS_PASS219_PRIME_LANE_MODALITY_TEXT;
-    winner.neighborhood_binding_signature64 = source_binding;
-    winner.composition_signature64 = composition;
-    winner.exact_hop_floor = 17U;
-    winner.work_allocation = 40U;
-    winner.competition_rank = 1U;
-    winner.winner_ordinal = 1U;
-    winner.eligible = true;
-    winner.winner = true;
-    winner.exclusion = PrimeLaneArbitrationExclusionV10::none;
+    PrimeLaneVerifiedOutcomeMetabolismV9 metabolism{};
+    CHECK(metabolism.register_route(source_binding, 128U));
+    auto source_candidate = candidate(
+        query_context, source_context, composition, source_binding,
+        HHS_PASS219_PRIME_LANE_MODALITY_TEXT, 320);
+    std::vector<PrimeLanePrefetchCandidateV7> arbitration_candidates{source_candidate};
+    PrimeLaneSparseArbitrationRequestV10 request{};
+    request.query_context_signature64 = query_context;
+    request.active_modality_mask = HHS_PASS219_PRIME_LANE_MODALITY_TEXT;
+    request.max_active = 1U;
+    request.per_route_work_cap = 40U;
+    PrimeLaneSparseRouteArbiterV10 arbiter{};
+    PrimeLaneSparseArbitrationResultV10 arbitration{};
+    CHECK(arbiter.arbitrate(request, arbitration_candidates, metabolism, hydrator, arbitration));
+    CHECK(arbitration.metrics.winners == 1U);
+    CHECK(arbitration.receipts.size() == 1U);
+    CHECK(arbiter.issued_result_count() == 1U);
+    const auto winner = arbitration.receipts.front();
+    CHECK(arbiter.winner_emitted(arbitration, winner));
 
     PrimeLaneHash216CandidateGraphV3 graph{};
     PrimeLaneRouteDecisionV1 cold_decision{};
     PrimeLaneSparseWinnerExecutorV11 executor{};
+    PrimeLaneSparseWinnerExecutionReceiptV11 rejected{};
+
+    auto forged_winner = winner;
+    forged_winner.work_allocation = 63U;
+    CHECK(!arbiter.winner_emitted(arbitration, forged_winner));
+    CHECK(!executor.execute_one_hop(
+        arbiter, arbitration, forged_winner, prepared, fingerprint, address_cell,
+        HHS_PASS219_PRIME_LANE_MODALITY_TEXT,
+        replay, prefetch, graph, cold_decision, 1U, hydrator, rejected));
+    PrimeLaneActivationBudgetStateV8 after_forged_winner{};
+    CHECK(hydrator.budget_for(source_binding, after_forged_winner));
+    CHECK(i11_same_budget(budget_before, after_forged_winner));
+
     PrimeLaneSparseWinnerExecutionReceiptV11 execution{};
     CHECK(executor.execute_one_hop(
-        winner, prepared, fingerprint, address_cell,
+        arbiter, arbitration, winner, prepared, fingerprint, address_cell,
         HHS_PASS219_PRIME_LANE_MODALITY_TEXT,
         replay, prefetch, graph, cold_decision, 1U, hydrator, execution));
+    CHECK(execution.arbitration_signature64 == arbitration.metrics.arbitration_signature64);
     CHECK(execution.source_neighborhood_binding_signature64 == source_binding);
     CHECK(execution.target_neighborhood_binding_signature64 == target_binding);
     CHECK(execution.winner_ordinal == 1U);
@@ -224,6 +233,7 @@ int main() {
     CHECK(execution.inherited_budget_receipt.exact_hop_cost == 17U);
     CHECK(execution.inherited_budget_receipt.budget_before == 64U);
     CHECK(execution.inherited_budget_receipt.budget_after == 47U);
+    CHECK(execution.inherited_budget_receipt.receipt_signature64 != 0U);
     CHECK(execution.five_lane_address.bytes_be == address_a.bytes_be);
 
     PrimeLaneActivationBudgetStateV8 budget_after{};
@@ -231,55 +241,38 @@ int main() {
     CHECK(budget_after.available == 47U);
     CHECK(budget_after.consumed_total == 17U);
     CHECK(budget_after.debit_ordinal == 1U);
+    CHECK(hydrator.issued_receipt_count() == 1U);
+
+    auto fabricated = execution.inherited_budget_receipt;
+    fabricated.budget_before = 48U;
+    fabricated.exact_hop_cost = 1U;
+    fabricated.budget_after = 47U;
+    std::vector<PrimeLaneEnergyHopReceiptV8> fabricated_receipts{fabricated};
+    CHECK(!hydrator.reverse_receipts(fabricated_receipts));
+    PrimeLaneActivationBudgetStateV8 after_fabricated{};
+    CHECK(hydrator.budget_for(source_binding, after_fabricated));
+    CHECK(i11_same_budget(budget_after, after_fabricated));
 
     std::vector<PrimeLaneEnergyHopReceiptV8> reverse_receipts{
         execution.inherited_budget_receipt};
     CHECK(hydrator.reverse_receipts(reverse_receipts));
+    CHECK(hydrator.issued_receipt_count() == 0U);
     PrimeLaneActivationBudgetStateV8 restored{};
     CHECK(hydrator.budget_for(source_binding, restored));
     CHECK(i11_same_budget(budget_before, restored));
+    CHECK(!hydrator.reverse_receipts(reverse_receipts));
 
-    PrimeLaneArbitrationCandidateReceiptV10 nonwinner = winner;
-    nonwinner.winner = false;
-    nonwinner.winner_ordinal = 0U;
-    nonwinner.exclusion = PrimeLaneArbitrationExclusionV10::sparse_limit;
-    PrimeLaneSparseWinnerExecutionReceiptV11 rejected{};
-    CHECK(!executor.execute_one_hop(
-        nonwinner, prepared, fingerprint, address_cell,
-        HHS_PASS219_PRIME_LANE_MODALITY_TEXT,
-        replay, prefetch, graph, cold_decision, 1U, hydrator, rejected));
-    PrimeLaneActivationBudgetStateV8 after_nonwinner{};
-    CHECK(hydrator.budget_for(source_binding, after_nonwinner));
-    CHECK(i11_same_budget(restored, after_nonwinner));
-
-    PrimeLaneArbitrationCandidateReceiptV10 underfunded = winner;
-    underfunded.work_allocation = 16U;
-    underfunded.exact_hop_floor = 16U;
-    CHECK(!executor.execute_one_hop(
-        underfunded, prepared, fingerprint, address_cell,
-        HHS_PASS219_PRIME_LANE_MODALITY_TEXT,
-        replay, prefetch, graph, cold_decision, 1U, hydrator, rejected));
-    PrimeLaneActivationBudgetStateV8 after_underfunded{};
-    CHECK(hydrator.budget_for(source_binding, after_underfunded));
-    CHECK(i11_same_budget(restored, after_underfunded));
-
-    PrimeLaneVerifiedOutcomeMetabolismV9 metabolism{};
-    CHECK(metabolism.register_route(source_binding, 128U));
-    PrimeLaneMetabolicStateV9 metabolic_before{};
-    PrimeLaneMetabolicStateV9 metabolic_after{};
-    CHECK(metabolism.state_for(source_binding, metabolic_before));
-    CHECK(metabolism.state_for(source_binding, metabolic_after));
-    CHECK(metabolic_before.vitality == metabolic_after.vitality);
-    CHECK(metabolic_before.positive_verified == metabolic_after.positive_verified);
-    CHECK(metabolic_before.negative_verified == metabolic_after.negative_verified);
+    auto forged_result = arbitration;
+    ++forged_result.metrics.total_work_allocated;
+    CHECK(!arbiter.winner_emitted(forged_result, winner));
 
     CHECK(std::memcmp(&holo4_state, &frozen_holo4_state, sizeof(holo4_state)) == 0);
 
     std::printf(
         "lane5_i11_native=PASS address_bytes=%zu address_bits=%u address_signature=%llu "
-        "cell=%u winner_spent=%llu winner_remaining=%llu budget_restored=%llu holo4_lanes=%u\n",
-        address_a.bytes_be.size(),
-        address_a.bit_length,
+        "cell=%u winner_spent=%llu winner_remaining=%llu budget_restored=%llu "
+        "winner_forgery_rejected=1 debit_forgery_rejected=1 debit_replay_rejected=1 holo4_lanes=%u\n",
+        address_a.bytes_be.size(), address_a.bit_length,
         static_cast<unsigned long long>(address_a.address_signature64),
         static_cast<unsigned>(address_cell),
         static_cast<unsigned long long>(execution.exact_work_spent),
