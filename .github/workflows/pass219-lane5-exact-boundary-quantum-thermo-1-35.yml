@@ -1,0 +1,141 @@
+name: Pass 219 Lane 5 Exact Boundary Quantum Thermo 1.35
+
+on:
+  push:
+    branches:
+      - agent/pass219-lane5-exact-boundary-quantum-thermo-manifold-20260913
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - '.github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Static exact-boundary authority gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          contract = Path('contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md').read_text('utf-8')
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h').read_text('utf-8')
+          source = Path('hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc').read_text('utf-8')
+          aggregate_h = Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text('utf-8')
+          aggregate_c = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text('utf-8')
+
+          boundary = """(P²=pq+(2P/(p+q)) /{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(({{b^4,c^4,(c^2-u^(b⁶c⁴))=b²/2u⁷²=((b^(b^2/12))^72==2^6)},{c^2,((b^2)(c^2)-(a^2))/u^((s==(b^(2c^2)c^b^4)^2)/((b⁶c⁴)P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,((b⁶c⁴)(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+∆)-P^2)/(t^3-t)u^72} where ∆/P=√(pq+u⁷²)^x² and b²P-(p+q)=x+y+z+w+xy+yx+zw+wz=((b^(b^2/(b^4c^2)))^(b^6c^4)/(c^b^2-a^b^2)^(b^2*c^2)-a^2==c^2-b^2-a^2)
+
+(u^(Mod(72^72,5184)-Factorial((u^v/(((xy)z)w)))-(x+y+z+w+(xy)+(yx)+(zw)+(w*z)))t^3)/u^72-t==(u^0+E^(x^2Pi))/(t^3-t)=P²-pq-c²+b²+a²"""
+          assert len(boundary.encode('utf-8')) == 681
+          assert hashlib.sha256(boundary.encode('utf-8')).hexdigest() == '938a39487f1841999609d7c75f944b26694c5aadfc6e540c29576c1bb7d57d8d'
+          assert boundary in contract
+          for needle in (
+              'indivisible constraint surface',
+              'HHS_UQCEL_RESIDUAL_MONOLITHIC_EQUALITY_CHAIN',
+              'Mod(72^72, 5184) = 0',
+              'physical_quantum_execution_claim = FALSE',
+              'requires_lane5_mediation = TRUE',
+              'requires_signed_environmental_vm81_admission = TRUE',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'initial_full_residual_evaluator_available',
+              'physical_quantum_execution_claim',
+              'floating_point_canonical_authority',
+              'hhs_exact_pass219_lane5_boundary_preflight',
+              'hhs_exact_pass219_thermo_reciprocal_closure',
+          ):
+              assert needle in header, needle
+          assert '#include "hhs_pass219_lane5_global_holographic_nucleus_1_34.h"' in aggregate_h
+          assert '#include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h"' in aggregate_h
+          assert '#include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc"' in aggregate_c
+          assert 'HHS_PASS219_LANE5_BOUNDARY_SOURCE' in source
+          print('lane5_boundary_qt_static=PASS')
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit candidate versus mutation exports
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_boundary_qt_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_boundary_preflight$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_thermo_reciprocal_closure$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediate_candidate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_vm81_admit_uqcel$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_rna_admit_composed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_environment_checkpoint_seal$' /tmp/hhs.symbols
+
+      - name: Run native exact-boundary and thermodynamic witnesses
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-boundary-qt
+          /tmp/test-lane5-boundary-qt
+
+      - name: Regress sealed Lane 5 nucleus
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
+
+      - name: Regress inherited I183 RNA VM5184 ABI
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+      - name: Regress inherited exact quantum and symbolic services
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass117_vm81_deterministic_quantum_simulation_v1.py \
+            tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py
+
+      - name: Verify inherited unresolved full symbolic residual remains binding
+        run: |
+          grep -F 'HHS_UQCEL_RESIDUAL_MONOLITHIC_EQUALITY_CHAIN' hhs_runtime/include/hhs_runtime_uqcel_1_8.h
+          grep -F 'HHS_EXACT_UQCEL_REASON_FULL_SYMBOLIC_RESIDUAL' hhs_runtime/c/hhs_pass219_pass169_runtime_provider_1_21_13.c
+          grep -F 'initial_full_residual_evaluator_available = 0U' hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc
