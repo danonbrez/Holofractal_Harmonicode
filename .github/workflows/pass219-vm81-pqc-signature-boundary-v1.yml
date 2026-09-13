@@ -69,7 +69,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-fastapi
           openssl version -a
 
       - name: Preserve inherited Makefile exactly
