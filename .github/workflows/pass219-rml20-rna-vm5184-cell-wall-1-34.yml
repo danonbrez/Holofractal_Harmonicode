@@ -1,0 +1,92 @@
+name: Pass 219 RML20 RNA VM5184 Cell Wall 1.34
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-rml20-rna-vm5184-cell-wall-20260913
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_rml20_rna_vm5184_bridge_1_34.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rml20_rna_vm5184_bridge_1_34.cpp'
+      - 'hhs_runtime/pass219/rml20_rna_vm5184_cell_wall_bridge.py'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_bridge_1_34.c'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_cell_wall_bridge.py'
+      - '.github/workflows/pass219-rml20-rna-vm5184-cell-wall-1-34.yml'
+  pull_request:
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_rml20_rna_vm5184_bridge_1_34.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rml20_rna_vm5184_bridge_1_34.cpp'
+      - 'hhs_runtime/pass219/rml20_rna_vm5184_cell_wall_bridge.py'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_bridge_1_34.c'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_cell_wall_bridge.py'
+      - '.github/workflows/pass219-rml20-rna-vm5184-cell-wall-1-34.yml'
+  workflow_dispatch:
+
+jobs:
+  rml20-rna-vm5184-cell-wall:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Verify inherited generation-integrity seal
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+
+      - name: Build exact ABI with RNA cell wall and RML20 bridge
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify RML20 public candidate surface and closed mutation boundary
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rml20_rna_vm5184_version$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rml20_rna_vm5184_descriptor$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rml20_transport_address_encode$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rml20_transport_neighbor$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rml20_rna_vm5184_route$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed$'
+
+      - name: Run native RML20 transport and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rml20_rna_vm5184_bridge_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass219_rml20_rna_vm5184_bridge_1_34
+          /tmp/test_pass219_rml20_rna_vm5184_bridge_1_34
+
+      - name: Run inherited I183 RNA VM5184 regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass219_rna_vm5184_abi_1_33
+          /tmp/test_pass219_rna_vm5184_abi_1_33
+
+      - name: Prove Python RML17 to native C++ parity
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_RML20_NATIVE_LIB: ${{ github.workspace }}/hhs_runtime/builds/libhhs_runtime.so
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_rml20_rna_vm5184_cell_wall_bridge.py \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py \
+            -k 'rml20 or address_cardinality or address_encode_decode or local_discrete_divergence or transport_address_range'
