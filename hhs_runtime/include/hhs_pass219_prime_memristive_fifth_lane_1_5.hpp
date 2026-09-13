@@ -187,8 +187,9 @@ public:
         std::map<std::string, PrimeLaneHash216NeighborhoodMemberV6> merged{};
         std::uint64_t newest = 0U;
         for (const auto& input : inputs) {
-            if (!valid_neighborhood(input) ||
-                (input.key.modality_mask & active_modality_mask) == 0U)
+            if (!valid_neighborhood(input))
+                return false;
+            if ((input.key.modality_mask & active_modality_mask) == 0U)
                 continue;
             ++metrics.composed_reference_inputs;
             newest = std::max(newest, input.observed_sequence);
