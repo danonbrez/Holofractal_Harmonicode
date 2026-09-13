@@ -2,7 +2,7 @@
 
 Date: 2026-09-13
 
-Status: **IMPLEMENTED / CUMULATIVE ABI WIRED / DEDICATED VALIDATION QUEUED / RESTARTABLE CHECKPOINT FROZEN**
+Status: **FROZEN GREEN / MERGE-READY**
 
 ## Repository state
 
@@ -11,80 +11,62 @@ repository: danonbrez/Holofractal_Harmonicode
 base main: ddba578c7677ea851ac7065522a5de54a5d997c6
 branch: agent/pass219-lane5-global-holographic-nucleus-contract-20260913
 merge target: main
-draft PR: #445
-PR mergeability at checkpoint: mergeable
-contract commit: a98c8447ab1acf9e594837ae5d0b6299444b1892
-ABI header commit: 26176db735aa9d772e0eda6ca2a2eaad9ea8fed2
-mediation core commit: a59c70308e3805efff5628ef6b1fecb1eb31fc0e
-test commit: 78b2353daf0b357035aa9bb9c893b62f19801b9e
-exact-ABI aggregation commit: fccfda9130d825e5b1ec8f1e337fafc27b12ec15
-validation source/workflow head: 53cb28ae4cd124170d145fb9537146bd9d134439
-restartable checkpoint head before this annotation: 83d67dc89066c6f32928a3945dfbe6ae31832be7
+PR: #445
+validated source head: 53cb28ae4cd124170d145fb9537146bd9d134439
 ```
 
-The branch after `53cb28ae...` contains only restart-document cleanup/update commits. No runtime, ABI, contract, test, workflow, or build dependency in the dedicated validation trigger set changed after `53cb28ae...`.
+No runtime, ABI, contract, test, workflow, or build dependency changed after the validated source head; later branch changes are restart/evidence documentation only.
 
-## Dedicated validation
+## Frozen dedicated validation
 
 ```text
 workflow: Pass 219 Lane 5 Global Holographic Nucleus v1
 run: 34760553526
 job: 103732522462
 validated source head: 53cb28ae4cd124170d145fb9537146bd9d134439
-observed status at freeze: queued
-conclusion: pending
+conclusion: success
 ```
 
-Do not reinterpret queued external-runner state as acceptance or failure.
+Green stages:
 
-## Changed-file closure
+1. static Lane 5 authority contract gate;
+2. cumulative exact ABI build;
+3. exported-authority audit;
+4. native Lane 5 positive/deterministic/negative contract test;
+5. inherited I183 RNA VM5184 ABI regression;
+6. Holo4 remains exactly four canonical hydration lanes.
 
-PR #445 contains exactly these seven intentional paths:
+Exact receipt:
 
 ```text
-.github/workflows/pass219-lane5-global-holographic-nucleus-v1.yml
-contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md
-docs/operations/restart/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1_RESTART_20260913.md
-hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
-hhs_runtime/c/hhs_runtime_exact_abi.c
-hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h
-tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c
+PASS219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_PASS closure=16135982010503584114 mediation=9301200936769468968 hash216_refs=3 capabilities=4
 ```
 
-Temporary checkpoint files created during build-surface discovery were deleted and are not part of the PR diff.
+Inherited I183 receipt remained byte/field stable:
 
-## Implemented surface
+```text
+PASS219_RNA_VM5184_ABI_PASS selected_lane=0 graph=11914523994900484021 tensor=6394692411501895880 decision=8297363811489228814
+```
 
-- normative Lane 5 global holographic nucleus contract;
-- public exact C ABI authority descriptor;
-- candidate-only global mediation request/receipt types;
-- deterministic exact-integer closure and mediation signatures;
-- explicit global-root orchestration and global-traffic mediation flags;
-- validated-Hash216-read-only and per-position SHA-256 addressing flags;
-- inherited four-lane hydration composition without increasing Holo4 lane count;
-- Pass 133 canonical BigInt and Pass 211 HFC compatibility flags;
-- nested modular Fibonacci / compression-reuse integration flag;
-- graphics/vector hydration and complete API-registry visibility flags;
-- existing FORMALIZE -> PROVE -> IMPLEMENT -> OPTIMIZE -> CANONIZE -> ITERATE learning-cycle flag;
-- RNA C++ cell-wall / exact VM5184 binding;
-- zero canonical VM81/Hash72/Hash216/persistence/PQC/receipt-clock authority;
-- mandatory signed environmental VM81 admission downstream;
-- negative tests for wrong namespace, malformed Hash216 references, malformed capability references, missing RNA evidence and excessive reference counts;
-- cumulative aggregation through `hhs_runtime/c/hhs_runtime_exact_abi.c` rather than a parallel library.
+The independent VM81 PQC + Environmental Authority Boundary workflow at the same validated source head also completed green for both the system-provider and OpenSSL-3.5 positive paths, preserving the signed environmental VM81 boundary as the sole public canonical mutation seam.
 
-## Authority boundary
+## Sealed authority model
 
-Lane 5 is the highest-level semantic nucleus and lowest-level exact-address nucleus of one Pass 219 C++ RNA cellular candidate manifold.
+Lane 5 is the mandatory global candidate-mediation plane and bidirectional holographic nucleus spanning:
 
 ```text
 Language
 <-> HARMONICODE symbolic algebra
 <-> Hash72 native token/state-change representation
 <-> Hash216 ordered lineage + per-character SHA-256 positions
-<-> canonical BigInt coordinate
-<-> nested modular Fibonacci / lossless reuse
+<-> Pass 133 canonical BigInt coordinate
+<-> Pass 211 HFC carrier
+<-> nested modular Fibonacci / proof-preserving compression reuse
 <-> four-lane Hydration_5184
-<-> RNA C++ cellular candidate
+<-> graphics/vector hydration
+<-> complete API capability topology
+<-> FORMALIZE -> PROVE -> IMPLEMENT -> OPTIMIZE -> CANONIZE -> ITERATE
+<-> RNA C++ cellular candidate manifold
 <-> VM5184
 -> Lane 5 global closure mediation
 -> signed environmental VM81 authority
@@ -93,26 +75,14 @@ Language
 -> Hash216
 ```
 
-Lane 5 has global read/retrieve/compose/hydrate/reason/route/service-invoke/candidate-submit scope. It has no canonical write scope.
+Lane 5 has global read/retrieve/compose/hydrate/reason/route/service-invoke/candidate-submit scope. It has no canonical write, Hash72 mint, canonical Hash216 mint, persistence, PQC-key, receipt-clock, or floating-point canonical authority.
 
-## Dedicated workflow acceptance surface
+## Merge instruction
 
-The queued gate is required to prove:
+PR #445 may be marked ready and merged with history preserved because:
 
-1. static contract/ABI invariants;
-2. cumulative `make c-abi` build;
-3. public export of exactly the three new Lane 5 mediation symbols;
-4. continued export of `hhs_exact_pass219_vm81_environment_admit_signed`;
-5. continued hiding of raw VM81/RNA/PQC/checkpoint mutation surfaces;
-6. native Lane 5 positive/deterministic/negative test;
-7. inherited I183 RNA VM5184 ABI regression;
-8. Holo4 canonical lane count remains four.
+- dedicated dependency-scoped acceptance is green;
+- current main remains the exact validated base `ddba578c7677ea851ac7065522a5de54a5d997c6`;
+- unrelated repository workflows are not part of this dependency-scoped acceptance surface unless they reproduce a Lane 5/I183/environmental-boundary regression.
 
-## Next action
-
-Resolve only run `34760553526` / job `103732522462` for this cycle.
-
-- If green: capture the exact Lane 5 receipt and validated tree/head; update this restart record to frozen green; mark PR #445 non-draft; compare/reconcile with current `main` if it advanced; rerun only the impacted dependency-scoped gates; merge and verify `main`.
-- If red: inspect the first concrete failing stage, repair only the affected Lane 5/runtime aggregation surface, rerun the dedicated workflow, and record the replacement exact evidence.
-- Do not reopen inherited Pass 219 surfaces unless the dedicated gate reproduces an inherited regression.
-- Do not create a parallel kernel, runtime library, receipt clock, Hash72/Hash216 authority, or canonical persistence path.
+After merge, verify main contains the seven intended Lane 5 paths and the exact exported authority split, then branch the next Pass 219 iteration from verified main.
