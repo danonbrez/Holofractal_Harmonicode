@@ -2,7 +2,7 @@
 
 Date: 2026-09-13
 
-Status: **IMPLEMENTED / CUMULATIVE ABI WIRED / DEDICATED VALIDATION QUEUED**
+Status: **IMPLEMENTED / CUMULATIVE ABI WIRED / DEDICATED VALIDATION QUEUED / RESTARTABLE CHECKPOINT FROZEN**
 
 ## Repository state
 
@@ -12,14 +12,16 @@ base main: ddba578c7677ea851ac7065522a5de54a5d997c6
 branch: agent/pass219-lane5-global-holographic-nucleus-contract-20260913
 merge target: main
 draft PR: #445
+PR mergeability at checkpoint: mergeable
 contract commit: a98c8447ab1acf9e594837ae5d0b6299444b1892
 ABI header commit: 26176db735aa9d772e0eda6ca2a2eaad9ea8fed2
 mediation core commit: a59c70308e3805efff5628ef6b1fecb1eb31fc0e
 test commit: 78b2353daf0b357035aa9bb9c893b62f19801b9e
 exact-ABI aggregation commit: fccfda9130d825e5b1ec8f1e337fafc27b12ec15
 validation source/workflow head: 53cb28ae4cd124170d145fb9537146bd9d134439
-latest documentation-only cleanup head before this record: 815ea8a52df076ca0980e7acfa85926fbb5dffbc
 ```
+
+The branch after `53cb28ae...` contains only restart-document cleanup/update commits. No runtime, ABI, contract, test, workflow, or build dependency in the dedicated validation trigger set changed after `53cb28ae...`.
 
 ## Dedicated validation
 
@@ -28,11 +30,27 @@ workflow: Pass 219 Lane 5 Global Holographic Nucleus v1
 run: 34760553526
 job: 103732522462
 validated source head: 53cb28ae4cd124170d145fb9537146bd9d134439
-observed status at checkpoint: queued
+observed status at freeze: queued
 conclusion: pending
 ```
 
-The later branch commits before this restart update remove temporary documentation only. They do not modify any path in the dedicated workflow trigger set and do not change the runtime/test source being validated by run `34760553526`.
+Do not reinterpret queued external-runner state as acceptance or failure.
+
+## Changed-file closure
+
+PR #445 contains exactly these seven intentional paths:
+
+```text
+.github/workflows/pass219-lane5-global-holographic-nucleus-v1.yml
+contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md
+docs/operations/restart/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1_RESTART_20260913.md
+hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+hhs_runtime/c/hhs_runtime_exact_abi.c
+hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h
+tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c
+```
+
+Temporary checkpoint files created during build-surface discovery were deleted and are not part of the PR diff.
 
 ## Implemented surface
 
@@ -93,7 +111,7 @@ The queued gate is required to prove:
 
 Resolve only run `34760553526` / job `103732522462` for this cycle.
 
-- If green: capture the exact Lane 5 receipt, validated tree/head, update this restart record to frozen green, mark PR #445 non-draft, reconcile with current main if it advanced, rerun only impacted dependency-scoped gates, then merge and verify main.
-- If red: inspect the first concrete failing stage, repair only the affected Lane 5/runtime aggregation surface, rerun the dedicated workflow, and record the new exact evidence.
+- If green: capture the exact Lane 5 receipt and validated tree/head; update this restart record to frozen green; mark PR #445 non-draft; compare/reconcile with current `main` if it advanced; rerun only the impacted dependency-scoped gates; merge and verify `main`.
+- If red: inspect the first concrete failing stage, repair only the affected Lane 5/runtime aggregation surface, rerun the dedicated workflow, and record the replacement exact evidence.
 - Do not reopen inherited Pass 219 surfaces unless the dedicated gate reproduces an inherited regression.
 - Do not create a parallel kernel, runtime library, receipt clock, Hash72/Hash216 authority, or canonical persistence path.
