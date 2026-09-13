@@ -16,6 +16,21 @@ on:
       - 'tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py'
       - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
       - '.github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass117_vm81_deterministic_quantum_simulation_v1.py'
+      - 'hhs_runtime/hhs_pass118_symbolic_harmonicode_runtime_v1.py'
+      - 'tests/test_hhs_pass117_vm81_deterministic_quantum_simulation_v1.py'
+      - 'tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - '.github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml'
   workflow_dispatch:
 
 permissions:
