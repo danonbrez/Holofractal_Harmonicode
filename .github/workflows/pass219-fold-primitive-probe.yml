@@ -8,13 +8,16 @@ on:
       - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
       - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
       - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
       - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
+      - 'tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py'
       - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
+      - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   pull_request:
     paths:
@@ -23,13 +26,16 @@ on:
       - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
       - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
       - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
       - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
+      - 'tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py'
       - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
+      - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   workflow_dispatch:
 
@@ -78,7 +84,8 @@ jobs:
             tests/pass219/test_pass219_fold_primitive_probe.py \
             tests/pass219/test_pass219_platonic_multistate_fold_probe.py \
             tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py \
-            tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py
+            tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py \
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
       - name: Emit exact combined fold probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.fold_primitive_probe
       - name: Emit exact Platonic multi-state probe
@@ -90,3 +97,82 @@ jobs:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe
+
+  signed-environmental-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install OpenSSL 3.5 build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          python -m pip install --disable-pip-version-check pytest
+      - name: Build OpenSSL 3.5.0 with ML-DSA provider
+        run: |
+          curl -fsSL --retry 3 --retry-delay 2 \
+            https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+            -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          /tmp/openssl35/bin/openssl version -a
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          ldd hhs_runtime/builds/libhhs_runtime.so | grep '/tmp/openssl35/lib'
+      - name: Re-audit sole canonical mutation export
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_rna_vm5184_route$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_rna_raw5184_route$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
+      - name: Build BigInt signed environmental native probe
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -I/tmp/openssl35/include \
+            tests/pass219/test_pass219_bigint_environment_admission_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -L/tmp/openssl35/lib -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -Wl,-rpath,/tmp/openssl35/lib \
+            -o /tmp/test_pass219_bigint_environment_admission_native_probe
+          test -x /tmp/test_pass219_bigint_environment_admission_native_probe
+      - name: Prove BigInt signed environmental commit and negative closure
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+      - name: Emit exact signed environmental admission report
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.vm81_rna_bigint_environment_admission_probe
