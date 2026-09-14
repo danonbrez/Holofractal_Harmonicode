@@ -1,0 +1,31 @@
+name: Pass 219 Fold Primitive Probe
+
+on:
+  push:
+    paths:
+      - 'hhs_runtime/pass219/fold_primitive_probe.py'
+      - 'tests/pass219/test_pass219_fold_primitive_probe.py'
+      - '.github/workflows/pass219-fold-primitive-probe.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass219/fold_primitive_probe.py'
+      - 'tests/pass219/test_pass219_fold_primitive_probe.py'
+      - '.github/workflows/pass219-fold-primitive-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fold-primitive-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run focused primitive tests
+        run: python -m pytest -q tests/pass219/test_pass219_fold_primitive_probe.py
+      - name: Emit exact combined probe
+        run: python -m hhs_runtime.pass219.fold_primitive_probe
