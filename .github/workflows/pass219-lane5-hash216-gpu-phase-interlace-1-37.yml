@@ -14,6 +14,7 @@ on:
       - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.c'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
+      - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
     branches:
@@ -28,6 +29,7 @@ on:
       - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.c'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
+      - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
 
