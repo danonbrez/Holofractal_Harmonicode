@@ -1,0 +1,29 @@
+name: Pass 219 Phase Geometry Learning
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - hhs_runtime/pass219/phase_geometry_learning.py
+      - hhs_runtime/pass219/recursive_manifold_learning.py
+      - tests/pass219/test_pass219_phase_geometry_learning.py
+      - tests/pass219/test_pass219_recursive_manifold_learning.py
+      - contracts/pass219/PASS_219_RML2_OCTONION_PHASE_GEOMETRY_1_0.json
+      - .github/workflows/pass219-phase-geometry-learning.yml
+
+jobs:
+  targeted-rml2-phase-geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run RML1 regression and RML2 phase geometry validation
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_recursive_manifold_learning.py \
+            tests/pass219/test_pass219_phase_geometry_learning.py

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import ctypes
-from ctypes import POINTER, Structure, c_char, c_int64, c_size_t, c_uint8, c_uint16, c_uint32, c_uint64
+from ctypes import POINTER, Structure, c_char, c_int64, c_uint8, c_uint16, c_uint32, c_uint64
 
 from hhs_python.runtime import hhs_exact_ctypes_bridge as exact_mod
-from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactVM81Frame
 
 HHS_EXACT_HASH72_LEN = 72
 HHS_EXACT_VM81_FRAME_BYTES = 648
@@ -93,13 +92,6 @@ _LIB.hhs_exact_uqcel_validate.argtypes = [
     POINTER(HHSExactUQCELAdmissionV1),
 ]
 _LIB.hhs_exact_uqcel_validate.restype = ctypes.c_int
-_LIB.hhs_exact_vm81_admit_uqcel.argtypes = [
-    POINTER(HHSExactUQCELInputV1),
-    POINTER(HHSExactVM81Frame),
-    POINTER(HHSExactVM81Frame),
-    POINTER(HHSExactUQCELAdmissionV1),
-]
-_LIB.hhs_exact_vm81_admit_uqcel.restype = ctypes.c_int
 
 
 def _int_to_min_bytes(value: int) -> bytes:
@@ -179,6 +171,15 @@ def _build_input(
 
 
 class HHSUQCELRuntimeBridge:
+    """UQCEL validation plus a compatibility admission facade.
+
+    The raw ``hhs_exact_vm81_admit_uqcel`` symbol is internal-only as of the
+    Pass 219 1.30 authority closure.  ``admit_vm81`` remains source-compatible
+    for inherited callers but delegates through the composed Pass 219 bridge
+    and projects the embedded UQCEL admission record back to the historical
+    shape.
+    """
+
     @staticmethod
     def source_sha256() -> bytes:
         output = (c_uint8 * 32)()
@@ -213,38 +214,45 @@ class HHSUQCELRuntimeBridge:
         source_hash: bytes = HHS_EXACT_UQCEL_SOURCE_SHA256,
         previous_hash72: str = "0" * HHS_EXACT_HASH72_LEN,
     ) -> dict[str, object]:
-        if len(raw_frame) != HHS_EXACT_VM81_FRAME_BYTES:
-            raise ValueError("VM81 exact frame must be exactly 648 bytes")
-        input_value, owners = _build_input(
-            P=P, p=p, q=q, delta=delta, A=A, B=B,
-            cell81=cell81, left_basis8=left_basis8, right_basis8=right_basis8,
-            profile=profile, source_hash=source_hash, previous_hash72=previous_hash72,
+        # Lazy import avoids a module cycle: the composed bridge imports this
+        # module for shared ctypes structures, while this compatibility method
+        # is only invoked after module initialization has completed.
+        from hhs_python.runtime.hhs_pass219_composed_ctypes_bridge import (
+            HHSExactPass219RuntimeBridge,
         )
-        _ = owners
-        raw_owner = (c_uint8 * len(raw_frame)).from_buffer_copy(raw_frame)
-        candidate = HHSExactVM81Frame()
-        ingress = int(_LIB.hhs_exact_vm81_frame_import_le(raw_owner, len(raw_frame), ctypes.byref(candidate)))
-        if ingress != HHS_EXACT_STATUS_OK:
-            raise RuntimeError(f"VM81 frame ingress failed: {ingress}")
-        committed = HHSExactVM81Frame()
-        admission = HHSExactUQCELAdmissionV1()
-        status = int(_LIB.hhs_exact_vm81_admit_uqcel(
-            ctypes.byref(input_value), ctypes.byref(candidate), ctypes.byref(committed), ctypes.byref(admission)
-        ))
-        output = (c_uint8 * HHS_EXACT_VM81_FRAME_BYTES)()
-        written = c_size_t()
-        egress = int(_LIB.hhs_exact_vm81_frame_export_le(
-            ctypes.byref(committed), output, len(output), ctypes.byref(written)
-        ))
-        if egress != HHS_EXACT_STATUS_OK:
-            raise RuntimeError(f"VM81 frame egress failed: {egress}")
-        data = bytes(output[: written.value])
-        admission_dict = _admission_dict(admission)
+
+        result = HHSExactPass219RuntimeBridge.admit_vm81(
+            raw_frame,
+            P=P,
+            p=p,
+            q=q,
+            delta=delta,
+            A=A,
+            B=B,
+            cell81=cell81,
+            left_basis8=left_basis8,
+            right_basis8=right_basis8,
+            profile=profile,
+            source_hash=source_hash,
+            previous_hash72=previous_hash72,
+        )
+        composed_admission = dict(result["admission"])
+        historical_keys = tuple(_admission_dict(HHSExactUQCELAdmissionV1()).keys())
+        admission = {key: composed_admission[key] for key in historical_keys}
+        admission["receipt_hash72"] = composed_admission.get(
+            "base_receipt_hash72", admission["receipt_hash72"]
+        )
+        admission["hash216_triplet"] = composed_admission.get(
+            "base_hash216_triplet", admission["hash216_triplet"]
+        )
+        admission["hash216_identity"] = composed_admission.get(
+            "base_hash216_identity", admission["hash216_identity"]
+        )
         return {
-            "status": status,
-            "admitted": status == HHS_EXACT_STATUS_OK and admission_dict["decision"] == HHS_EXACT_UQCEL_DECISION_ADMIT,
-            "admission": admission_dict,
-            "committed_frame": data,
+            "status": result["status"],
+            "admitted": result["admitted"],
+            "admission": admission,
+            "committed_frame": result["committed_frame"],
         }
 
 

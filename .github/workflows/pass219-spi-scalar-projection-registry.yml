@@ -1,0 +1,302 @@
+name: Pass 219 SPI Scalar Projection Registry
+
+on:
+  push:
+    branches:
+      - main
+      - 'agent/pass219-spi-scalar-projection-registry-v1-*'
+    paths:
+      - 'hhs_spi_scalar_projection_registry_v1.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_ast_binding_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_ast_binding_tests_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py'
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_v2.py'
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_tests_v2.py'
+      - '*.harmonicode'
+      - 'contracts/pass219/*.harmonicode'
+      - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
+      - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
+  pull_request:
+    paths:
+      - 'hhs_spi_scalar_projection_registry_v1.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py'
+      - 'hhs_spi_scalar_projection_corpus_ast_binding_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_ast_binding_tests_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_v2.py'
+      - 'hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py'
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_v2.py'
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_tests_v2.py'
+      - '*.harmonicode'
+      - 'contracts/pass219/*.harmonicode'
+      - 'contracts/pass219/PASS_219_SPI_SCALAR_PROJECTION_PROOF_LAYER_V2.md'
+      - '.github/workflows/pass219-spi-scalar-projection-registry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-spi-projection-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile SPI proof and corpus layers
+        run: |
+          python -m py_compile \
+            hhs_spi_scalar_projection_registry_v1.py \
+            hhs_spi_scalar_projection_registry_tests_v1.py \
+            hhs_spi_scalar_projection_corpus_v1.py \
+            hhs_spi_scalar_projection_corpus_tests_v1.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_v1.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py \
+            hhs_spi_scalar_projection_corpus_ast_binding_v2.py \
+            hhs_spi_scalar_projection_corpus_ast_binding_tests_v2.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_v2.py \
+            hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py \
+            native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_v2.py \
+            native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_tests_v2.py
+
+      - name: Validate scalar projection registry
+        run: python hhs_spi_scalar_projection_registry_v1.py --validate
+
+      - name: Run exact SPI proof and negative tests
+        run: python hhs_spi_scalar_projection_registry_tests_v1.py
+
+      - name: Validate repository Harmonicode corpus coverage
+        run: python hhs_spi_scalar_projection_corpus_v1.py --validate
+
+      - name: Run repository corpus coverage tests
+        run: python hhs_spi_scalar_projection_corpus_tests_v1.py
+
+      - name: Prove raw census fails strict completion while gaps remain
+        run: |
+          set +e
+          python hhs_spi_scalar_projection_corpus_v1.py --strict-complete > /tmp/pass219_spi_strict_complete.json
+          rc=$?
+          set -e
+          cat /tmp/pass219_spi_strict_complete.json
+          if [ "$rc" -eq 0 ]; then
+            echo 'raw census strict completion unexpectedly succeeded' >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 2 ]; then
+            echo "unexpected raw strict-complete exit code: $rc" >&2
+            exit "$rc"
+          fi
+
+      - name: Validate corpus projection reconciliation v1
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --validate
+
+      - name: Run corpus projection reconciliation tests v1
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_tests_v1.py
+
+      - name: Prove v1 symbolic value obligations remain fail closed
+        run: |
+          set +e
+          python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --require-scalar-values > /tmp/pass219_spi_scalar_values_v1.json
+          rc=$?
+          set -e
+          cat /tmp/pass219_spi_scalar_values_v1.json
+          if [ "$rc" -eq 0 ]; then
+            echo 'v1 scalar-value completion unexpectedly succeeded' >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 2 ]; then
+            echo "unexpected v1 scalar-value completion exit code: $rc" >&2
+            exit "$rc"
+          fi
+
+      - name: Run nested expression AST v2 tests
+        run: python native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_tests_v2.py
+
+      - name: Validate nested AST corpus bindings v2
+        run: python hhs_spi_scalar_projection_corpus_ast_binding_v2.py --validate
+
+      - name: Run nested AST corpus binding tests v2
+        run: python hhs_spi_scalar_projection_corpus_ast_binding_tests_v2.py
+
+      - name: Validate corpus projection reconciliation v2
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --validate
+
+      - name: Run corpus projection reconciliation tests v2
+        run: python hhs_spi_scalar_projection_corpus_reconciliation_tests_v2.py
+
+      - name: Prove v2 scalar values remain fail closed
+        run: |
+          set +e
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --require-scalar-values > /tmp/pass219_spi_scalar_values_v2.json
+          rc=$?
+          set -e
+          cat /tmp/pass219_spi_scalar_values_v2.json
+          if [ "$rc" -eq 0 ]; then
+            echo 'v2 scalar-value completion unexpectedly succeeded' >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 2 ]; then
+            echo "unexpected v2 scalar-value completion exit code: $rc" >&2
+            exit "$rc"
+          fi
+
+      - name: Emit deterministic scalar proof manifest
+        run: |
+          python hhs_spi_scalar_projection_registry_v1.py --manifest > /tmp/pass219_spi_scalar_projection_manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_scalar_projection_manifest.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['validation']['ok'] is True
+          assert data['validation']['canonical_admission_authority'] is False
+          assert data['validation']['coverage']['MISSING_PROJECTION'] >= 1
+          assert data['validation']['coverage']['SYMBOLIC'] >= 1
+          print(json.dumps(data['validation'], indent=2, sort_keys=True))
+          PY
+
+      - name: Emit deterministic repository corpus coverage manifest
+        run: |
+          python hhs_spi_scalar_projection_corpus_v1.py --manifest > /tmp/pass219_spi_repository_corpus_coverage.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_repository_corpus_coverage.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['inventory']['path_count'] == 6
+          assert data['inventory']['unique_source_hash_count'] == 5
+          assert data['parser_error_count'] == 0
+          assert data['coverage_policy']['nested_expression_ast_complete'] is False
+          assert data['coverage_policy']['all_unregistered_fail_closed'] is True
+          assert data['authority_boundary']['canonical_admission_authority'] is False
+          assert data['missing_projection_count'] == 56
+          assert data['strict_complete'] is False
+          print(json.dumps({
+              'candidate_counts': data['candidate_counts'],
+              'manifest_sha256': data['manifest_sha256'],
+              'missing_projection_count': data['missing_projection_count'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Emit deterministic reconciled corpus manifest v1
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v1.py --manifest > /tmp/pass219_spi_repository_corpus_reconciled_v1.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_repository_corpus_reconciled_v1.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['base_corpus_manifest_sha256'] == 'fc421b2f84d7186693ba02e40515d7dcf471efe4fd6ade3b3a3ab662e36ef5a7'
+          assert data['resolved_candidate_counts']['MISSING_PROJECTION'] == 0
+          assert data['resolved_candidate_counts']['PROVEN'] == 429
+          assert data['resolved_candidate_counts']['SYMBOLIC'] == 43
+          assert data['classification_complete'] is True
+          assert data['scalar_value_complete'] is False
+          assert data['authority_boundary']['canonical_admission_authority'] is False
+          print(json.dumps({
+              'resolved_candidate_counts': data['resolved_candidate_counts'],
+              'classification_complete': data['classification_complete'],
+              'scalar_value_complete': data['scalar_value_complete'],
+              'manifest_sha256': data['manifest_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Emit deterministic nested AST binding manifest v2
+        run: |
+          python hhs_spi_scalar_projection_corpus_ast_binding_v2.py --manifest > /tmp/pass219_spi_nested_ast_binding_v2.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_nested_ast_binding_v2.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['raw_corpus_manifest_sha256'] == 'fc421b2f84d7186693ba02e40515d7dcf471efe4fd6ade3b3a3ab662e36ef5a7'
+          assert data['reconciliation_v1_manifest_sha256'] == 'd726356e1651df8e43ad56a47885b2d4aacbb4b5c56a106476cf48519dc50b4f'
+          assert data['parser_limit_occurrence_count_before'] == 5
+          assert data['parser_limit_occurrence_count_after'] == 0
+          assert data['ast_bound_symbolic_occurrence_count'] == 5
+          assert data['syntax_binding_complete'] is True
+          assert data['scalar_value_complete'] is False
+          print(json.dumps({
+              'manifest_sha256': data['manifest_sha256'],
+              'parser_limit_occurrence_count_after': data['parser_limit_occurrence_count_after'],
+              'ast_bound_symbolic_occurrence_count': data['ast_bound_symbolic_occurrence_count'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Emit deterministic reconciled corpus manifest v2
+        run: |
+          python hhs_spi_scalar_projection_corpus_reconciliation_v2.py --manifest > /tmp/pass219_spi_repository_corpus_reconciled_v2.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass219_spi_repository_corpus_reconciled_v2.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['resolved_candidate_counts'] == {
+              'MISSING_PROJECTION': 0,
+              'PROVEN': 429,
+              'SYMBOLIC': 43,
+              'UNSUPPORTED_DOMAIN': 0,
+          }
+          assert data['migrated_resolution_family_count'] == 2
+          assert data['migrated_occurrence_count'] == 5
+          assert data['parser_limit_profile_occurrence_count'] == 0
+          assert data['syntax_provenance_complete_for_migrated_profiles'] is True
+          assert data['scalar_value_complete'] is False
+          assert data['authority_boundary']['canonical_admission_authority'] is False
+          print(json.dumps({
+              'resolved_candidate_counts': data['resolved_candidate_counts'],
+              'manifest_sha256': data['manifest_sha256'],
+              'parser_limit_profile_occurrence_count': data['parser_limit_profile_occurrence_count'],
+              'scalar_value_complete': data['scalar_value_complete'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload scalar proof coverage manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-scalar-projection-manifest
+          path: /tmp/pass219_spi_scalar_projection_manifest.json
+          if-no-files-found: error
+
+      - name: Upload repository corpus coverage manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-repository-corpus-coverage
+          path: /tmp/pass219_spi_repository_corpus_coverage.json
+          if-no-files-found: error
+
+      - name: Upload reconciled repository corpus manifest v1
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-repository-corpus-reconciled-v1
+          path: /tmp/pass219_spi_repository_corpus_reconciled_v1.json
+          if-no-files-found: error
+
+      - name: Upload nested AST binding manifest v2
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-nested-ast-binding-v2
+          path: /tmp/pass219_spi_nested_ast_binding_v2.json
+          if-no-files-found: error
+
+      - name: Upload reconciled repository corpus manifest v2
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-spi-repository-corpus-reconciled-v2
+          path: /tmp/pass219_spi_repository_corpus_reconciled_v2.json
+          if-no-files-found: error

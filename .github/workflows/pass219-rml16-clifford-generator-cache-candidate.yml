@@ -1,0 +1,102 @@
+name: Pass 219 RML16 Clifford Generator Cache Candidate
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-cold-route-profile-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_clifford_generator_cache_candidate.py'
+      - '.github/workflows/pass219-rml16-clifford-generator-cache-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clifford-generator-cache-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Validate inherited native route stack through RML15
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Validate RML10 RML11 and RML12 reference semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Benchmark immutable Clifford generator cache candidate
+        run: |
+          mkdir -p artifacts/pass219/rml16-cl08-cache-candidate
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml16_clifford_generator_cache_candidate.py \
+            --output artifacts/pass219/rml16-cl08-cache-candidate/candidate.json \
+            --states 8
+
+      - name: Validate semantic identity before candidate timing
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/pass219/rml16-cl08-cache-candidate/candidate.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['state_count'] == 8
+          assert d['generator_tuple_exact_equal_to_uncached_reference'] is True
+          assert d['generator_tuple_immutable'] is True
+          expected = {
+              'RML11_CLIFFORD_LIFT': 32,
+              'RML11_CLIFFORD_CLASSIFIER': 32,
+              'RML12_COUPLED_EDGE': 32,
+              'RML12_SHORTEST_PLAN': 8,
+              'RML12_FULL_BUNDLE': 8,
+          }
+          assert d['semantic_identity_equality_counts'] == expected
+          assert d['public_rml10_abi_changed'] is False
+          assert d['public_rml11_abi_changed'] is False
+          assert d['public_rml12_abi_changed'] is False
+          assert d['candidate_integrated_into_production'] is False
+          assert d['timing_is_canonical'] is False
+          assert d['canonical_vm81_mutation_authority'] is False
+          assert d['canonical_hash72_mint_authority'] is False
+          assert d['canonical_hash216_persistence_authority'] is False
+          assert d['floating_point_canonical_authority'] is False
+          assert d['scalar_projection_substitution_authority'] is False
+          assert d['cache_info']['maxsize'] == 1
+          assert d['cache_info']['currsize'] == 1
+          for name, row in d['speed'].items():
+              assert row['candidate_faster'] is True, (name, row)
+              print('RML16_CL08_CACHE_SPEED', name, row)
+          print('RML16_CL08_CACHE_INFO', d['cache_info'])
+          PY
+
+      - name: Revalidate impacted production route semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_production_phase_geometry_binding.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-clifford-generator-cache-candidate
+          path: artifacts/pass219/rml16-cl08-cache-candidate/candidate.json
+          if-no-files-found: error

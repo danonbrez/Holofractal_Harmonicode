@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS219_I176_PASS170_CANONICAL_BASE_CAPABILITY_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I176",
+  "version": "1.0.0",
+  "base_main": "8d9ab8a0ec453b2e3f527c8420542929e29cb9d0",
+  "parent": {
+    "iteration": "PASS219-I175",
+    "exact_main_run": 34062282668,
+    "artifact": 9997852836,
+    "artifact_digest": "sha256:6af6f3cf900f2502f8e531ed2b5cd35fad866dc349c65814b0287195db890476"
+  },
+  "required_changes": [
+    "REDIRECT_CANONICAL_BASE_SELF_LAUNCH_TO_PASS170_GATEWAY",
+    "VERIFY_ALL_SIX_UVICORN_LAUNCHERS_TARGET_CANONICAL_GATEWAY",
+    "PRESERVE_CANONICAL_BASE_FASTAPI_CONSTRUCTOR_AND_ROUTES",
+    "RECONCILE_AUDIO_OPERATION_WITH_INHERITED_PASS190_CAPABILITY_MODEL",
+    "FAIL_CLOSED_PUBLIC_AUDIO_TRANSPORT_UNTIL_AUTHORITATIVE_SCOPE_BOUND",
+    "DO_NOT_INVENT_CAPABILITY_SCOPE_IN_I176",
+    "PRESERVE_I175_AUDIO_ECC_AND_INTERNAL_PQ_SECURITY_ROLE",
+    "PRESERVE_SINGLE_VM81_HASH72_HASH216_CANONICAL_AUTHORITY"
+  ],
+  "acceptance": {
+    "observed_uvicorn_launchers": 6,
+    "canonical_gateway_launchers": 6,
+    "pending_launchers": 0,
+    "fastapi_constructor_count_preserved": 10,
+    "audio_capability_scope_resolved": false,
+    "audio_public_admission_fail_closed": true,
+    "new_capability_scope_created": false,
+    "typed_audio_refusal_status": 503,
+    "typed_audio_refusal_detail": "HHS_PASS170_AUDIO_CAPABILITY_MODEL_UNRESOLVED"
+  },
+  "expected_target_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_PUBLIC_AUDIO_CAPABILITY_BINDING_PENDING",
+    "PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "cleared_by_i176": [
+    "PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT",
+    "PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN"
+  ],
+  "forbidden": {
+    "new_vm81_authority": true,
+    "new_hash72_mint_authority": true,
+    "hash216_persistence_authority": true,
+    "floating_point_canonical_authority": true,
+    "invented_unregistered_audio_capability_scope": true,
+    "pending_audio_policy_fallthrough": true,
+    "terminal_pass170_claim": true
+  },
+  "next_boundary": "PASS170_PUBLIC_CAPABILITY_MODEL_EXTENSION_AND_CONSTRUCTOR_RETIREMENT"
+}

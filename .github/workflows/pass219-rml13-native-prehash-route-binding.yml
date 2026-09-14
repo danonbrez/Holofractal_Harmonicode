@@ -1,0 +1,46 @@
+name: Pass 219 RML13 Native Prehash Route Binding
+
+on:
+  push:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rml13_native_route_witness_binding_1_26.h'
+      - 'hhs_runtime/c/hhs_pass219_rml13_native_route_witness_binding_1_26.c'
+      - 'native_projects/hhs_pass219_rml13_route_binding/**'
+      - 'hhs_runtime/pass219/native_route_witness_binding.py'
+      - 'tests/pass219/test_pass219_rml13_native_route_witness_binding.py'
+      - 'contracts/pass219/PASS_219_RML13_NATIVE_PREHASH_ROUTE_BINDING_1_0.json'
+      - '.github/workflows/pass219-rml13-native-prehash-route-binding.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_rml13_native_route_witness_binding_1_26.h'
+      - 'hhs_runtime/c/hhs_pass219_rml13_native_route_witness_binding_1_26.c'
+      - 'native_projects/hhs_pass219_rml13_route_binding/**'
+      - 'hhs_runtime/pass219/native_route_witness_binding.py'
+      - 'tests/pass219/test_pass219_rml13_native_route_witness_binding.py'
+      - 'contracts/pass219/PASS_219_RML13_NATIVE_PREHASH_ROUTE_BINDING_1_0.json'
+      - '.github/workflows/pass219-rml13-native-prehash-route-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  targeted-rml13-native-prehash:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+      - name: Build frozen runtime and RML13 versioned native extension
+        run: make -C native_projects/hhs_pass219_rml13_route_binding validate
+      - name: Validate inherited Pass 188 native Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+      - name: Prove frozen I168 symbol remains exported
+        run: nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_i168_bind_canonical$'
+      - name: Run RML12 through RML13 dependency scope plus frozen I168 regression
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_i168_pass169_general_runtime_binding.py

@@ -1,0 +1,143 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_REPLACEMENT_SHARD_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I179",
+  "shard_id": "audio-language-native-replay-replacement",
+  "replaces_shard": "contracts/pass219/pass170_operation_records_i178/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_TRANSPORT_V1.json",
+  "replacement_count": 1,
+  "replaced_operation_ids": [
+    "public.audio_language.feedback.run"
+  ],
+  "records": [
+    {
+      "operation_id": "public.audio_language.feedback.run",
+      "canonical_name": "public.audio_language.feedback.run",
+      "contract_id": "HHS-P170-PAPAE-HLFDCR",
+      "introduced_by_pass": 170,
+      "semantic_version": "1.3.0",
+      "operation_class": "MULTIMODAL_FEEDBACK",
+      "mutation_class": "auxiliary-persistence",
+      "HTTP_method": "POST",
+      "HTTP_path": "/v1/audio-language/run",
+      "replay_HTTP_method": "GET",
+      "replay_HTTP_path": "/v1/audio-language/replay/{receipt_hash72}",
+      "WebSocket_channel": null,
+      "CLI_command": "python -m hhs_runtime.pass219.pass170_audio_transport_i178 invoke",
+      "CLI_replay_command": "python -m hhs_runtime.pass219.pass170_audio_transport_i178 replay <receipt_hash72>",
+      "native_ABI_symbol": "hhs_exact_pass219_audio_security_transport_admit",
+      "native_ABI_version_symbol": "hhs_exact_pass219_audio_security_transport_version",
+      "language_binding_symbol": "hhs_runtime.pass219.pass170_audio_transport_i178.invoke_audio_language_python",
+      "language_replay_binding_symbol": "hhs_runtime.pass219.pass170_audio_transport_i178.replay_audio_language_python",
+      "request_schema": "hhs_backend.pass170_audio_language_routes.AudioLanguageRunRequest",
+      "response_schema": "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1.AudioLanguageFeedbackReceipt",
+      "replay_response_schema": "HHS_AUDIO_LANGUAGE_FEEDBACK_REPLAY_I179_V1",
+      "capability_scope": "pass170.audio_language.feedback",
+      "authorization_scope": "pass170.audio_language.feedback",
+      "admission_policy": "SIGNED_HHS_CAPABILITY_AND_EXACT_NATIVE_AUDIO_SECURITY_BINDING_REQUIRED_FAIL_CLOSED",
+      "authorization_scheme": "HHS-Capability",
+      "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+      "Runtime_call_sequence": [
+        "transport-specific binding",
+        "hhs_backend.pass170_audio_language_routes:enforce_audio_public_admission",
+        "hhs_runtime.pass190.completion:verify_capability_token",
+        "hhs_runtime.pass219.pass170_audio_native_abi_i179:admit_audio_native_transport",
+        "hhs_exact_pass219_audio_security_transport_admit",
+        "hhs_backend.pass170_audio_language_routes:execute_audio_language_feedback_request",
+        "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1:run_audio_language_feedback_cycle"
+      ],
+      "replay_call_sequence": [
+        "hhs_backend.pass170_audio_language_routes:enforce_audio_public_admission",
+        "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1:replay_audio_language_feedback_receipt",
+        "hhs_runtime.pass219.pass170_audio_native_abi_i179:admit_audio_native_replay",
+        "hhs_exact_pass219_audio_security_transport_admit"
+      ],
+      "VM81_commit_required": false,
+      "receipt_class": "AudioLanguageFeedbackReceipt",
+      "replay_supported": true,
+      "replay_reexecutes_operation": false,
+      "reverse_supported": false,
+      "idempotency_policy": "AUXILIARY_RECEIPT_KEYED_NON_REEXECUTING_REPLAY",
+      "timeout_policy": "PENDING_PASS170_RESOURCE_POLICY",
+      "resource_bounds": {
+        "max_expression_chars": 131072,
+        "canonical_float_authority": false
+      },
+      "deprecated_aliases": [
+        {
+          "HTTP_method": "POST",
+          "HTTP_path": "/api/audio-language/run",
+          "requires_same_capability_scope": true,
+          "requires_same_native_security_binding": true
+        }
+      ],
+      "test_ids": [
+        "PASS219-I179:public.audio_language.feedback.run:native-admission",
+        "PASS219-I179:public.audio_language.feedback.run:receipt-replay"
+      ],
+      "source_binding": {
+        "http_module": "hhs_backend.pass170_audio_language_routes",
+        "http_factory": "build_pass170_audio_language_router",
+        "admission_gate": "enforce_audio_public_admission",
+        "native_binding_module": "hhs_runtime.pass219.pass170_audio_native_abi_i179",
+        "native_binding": "admit_audio_native_transport",
+        "shared_adapter": "execute_audio_language_feedback_request",
+        "transport_module": "hhs_runtime.pass219.pass170_audio_transport_i178",
+        "python_binding": "invoke_audio_language_python",
+        "python_replay_binding": "replay_audio_language_python",
+        "receipt_store": "hhs_runtime.hhs_audio_language_feedback_orchestrator_v1",
+        "receipt_replay": "replay_audio_language_feedback_receipt",
+        "cli_entry": "main"
+      },
+      "implementation_status": "EXECUTABLE_SOURCE_BOUND_CAPABILITY_GATED_NATIVE_BOUND_REPLAYABLE",
+      "transport_parity_status": "HTTP_CLI_PYTHON_NATIVE_ABI_EXECUTABLE_VERIFIED_I179",
+      "receipt_replay_status": "VERIFIED_NON_REEXECUTING_AUXILIARY_RECEIPT_REPLAY_I179",
+      "capability_binding_status": "VERIFIED_PASS170_SCOPE_BOUND_I177",
+      "auxiliary_persistence": true,
+      "canonical_vm81_mutation": false,
+      "new_hash72_mint_authority": false,
+      "new_hash216_persistence_authority": false,
+      "new_capability_token_authority": false,
+      "native_abi_role": "ADMISSIBILITY_AND_SECURITY_BINDING_MEMBRANE_ONLY",
+      "native_abi_invariants": {
+        "pass190_remains_signed_token_authority": true,
+        "raw5184_audio_hydration_surface_must_exist": true,
+        "harmonic_time_audio_ecc_required": true,
+        "internal_pq_oriented_signal_required": true,
+        "receipt_replay_binding_required": true,
+        "native_audio_engine_created": false,
+        "native_token_verifier_created": false,
+        "public_crypto_primitive_created": false,
+        "standardized_pq_crypto_claim": false,
+        "independent_key_or_kem_authority": false
+      },
+      "replay_invariants": {
+        "same_auxiliary_semantic_sqlite_store": true,
+        "read_only_replay_connection": true,
+        "receipt_hash_recomputed": true,
+        "stored_states_verified": true,
+        "transition_trace_verified": true,
+        "cross_modality_links_verified": true,
+        "training_reexecuted": false,
+        "auxiliary_persistence_mutated_during_replay": false,
+        "vm81_replay_claimed": false,
+        "parallel_receipt_ledger_created": false
+      },
+      "cross_cutting_roles": [
+        "LOCAL_AUDIO_LANGUAGE_APPLICATION",
+        "HARMONIC_TIME_AUDIO_ERROR_CORRECTION_WITNESS_SOURCE",
+        "INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_ENFORCEMENT_SIGNAL"
+      ],
+      "security_boundary": {
+        "internal_audio_ecc_exposed_as_public_crypto": false,
+        "internal_pq_oriented_signal_exposed_as_public_crypto": false,
+        "public_crypto_primitive": false,
+        "standardized_pq_crypto_claim": false,
+        "independent_key_or_kem_authority": false,
+        "canonical_vm81_mutation_authority": false,
+        "new_hash72_mint_authority": false,
+        "hash216_persistence_authority": false,
+        "floating_point_canonical_authority": false
+      }
+    }
+  ]
+}

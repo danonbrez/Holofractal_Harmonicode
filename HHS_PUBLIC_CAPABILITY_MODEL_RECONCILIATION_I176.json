@@ -1,0 +1,37 @@
+{
+  "schema": "HHS_PUBLIC_CAPABILITY_MODEL_RECONCILIATION_I176_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I176",
+  "base_main": "8d9ab8a0ec453b2e3f527c8420542929e29cb9d0",
+  "inherited_capability_model": {
+    "module": "hhs_runtime.pass190.completion",
+    "context": "Pass190CompletionContext",
+    "verifier": "verify_capability",
+    "public_or_none_scope_requires_token": false,
+    "non_public_scope_requires_capability_secret": true,
+    "non_public_scope_requires_signed_token": true,
+    "operation_scope_source": "record.raw.capability_scope"
+  },
+  "audio_operation": {
+    "operation_id": "public.audio_language.feedback.run",
+    "record": "contracts/pass219/pass170_operation_records_i175/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_V1.json",
+    "current_authorization_scope": "PENDING_PASS170_CAPABILITY_BINDING",
+    "current_admission_policy": "PENDING_PASS170_CAPABILITY_BINDING",
+    "reconciliation_status": "UNRESOLVED_NO_AUTHORITATIVE_INHERITED_AUDIO_SCOPE",
+    "invent_new_scope_in_i176": false,
+    "admit_without_resolved_policy": false,
+    "next_required_action": "AUTHORIZE_AND_REGISTER_EXPLICIT_PASS170_AUDIO_CAPABILITY_SCOPE_OR_BIND_TO_PROVEN_EXISTING_SCOPE"
+  },
+  "invariants": {
+    "fail_closed_until_capability_model_resolved": true,
+    "pass190_registry_mutated": false,
+    "new_capability_authority_created": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "classification": "PASS170_CAPABILITY_MODEL_RECONCILED_UNRESOLVED_FAIL_CLOSED",
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_PUBLIC_CAPABILITY_MODEL_EXTENSION_AND_CONSTRUCTOR_RETIREMENT"
+}

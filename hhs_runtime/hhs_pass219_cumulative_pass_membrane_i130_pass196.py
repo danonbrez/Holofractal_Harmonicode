@@ -31,8 +31,12 @@ ACCEPTED_PRIMARY_MERGE = "37687d479f2a9f1d996d225a4ba3556d9db72a86"
 ACCEPTED_TOPOLOGY_MERGE = "959729c9070399fcdf0015702cd8777079e05dcc"
 FROZEN_I129 = "40e6e07d5f4a401541a6255339223e853846e713"
 HISTORICAL_V1_BLOB = "d2cff008db58a29bf27be20cb3547b9e0018f5e1"
+V2_I130_BASELINE_COMMIT = "a69f7331d17882f49d1f629a71041081c5426444"
+HISTORICAL_V2_I130_BLOB = "196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6"
+V2_I150_HYDRATION_COMMIT = "551aee2a03d0f3ba529433f80f520c4a10b025ee"
+CURRENT_V2_I150_BLOB = "bd28c60f5409b50e7dd934caa212e79b562aaae6"
 REPAIRED_BLOBS = {
-    V2_PATH: "196b1fbdbbb3610ccb47e7fd638d4c3f2cdc67f6",
+    V2_PATH: CURRENT_V2_I150_BLOB,
     API_PATH: "39187c3376591c64758019090d9b115c6a43f6ee",
     FRONTEND_PATH: "1503903c844c9e601133853eed9ed597f6fd2274",
     PROJECTION_PATH: "44254e10f90e929a4f8c1a18a75b3ca14a2c05ed",
@@ -84,6 +88,14 @@ def pass196_membrane_source_evidence() -> Dict[str, Any]:
         raise RuntimeError("PASS196_FROZEN_I129_LINEAGE_DRIFT")
     if _git_blob(V1_PATH) != HISTORICAL_V1_BLOB:
         raise RuntimeError("PASS196_HISTORICAL_V1_DRIFT")
+    if _git("merge-base", "--is-ancestor", V2_I130_BASELINE_COMMIT, "HEAD") != "":
+        raise RuntimeError("PASS196_V2_I130_BASELINE_ANCESTRY_OUTPUT")
+    if _git("rev-parse", f"{V2_I130_BASELINE_COMMIT}:{V2_PATH.as_posix()}") != HISTORICAL_V2_I130_BLOB:
+        raise RuntimeError("PASS196_HISTORICAL_V2_I130_DRIFT")
+    if _git("merge-base", "--is-ancestor", V2_I150_HYDRATION_COMMIT, "HEAD") != "":
+        raise RuntimeError("PASS196_V2_I150_HYDRATION_ANCESTRY_OUTPUT")
+    if _git("rev-parse", f"{V2_I150_HYDRATION_COMMIT}:{V2_PATH.as_posix()}") != CURRENT_V2_I150_BLOB:
+        raise RuntimeError("PASS196_V2_I150_HYDRATION_IDENTITY_DRIFT")
     for path, expected in REPAIRED_BLOBS.items():
         if _git_blob(path) != expected:
             raise RuntimeError(f"PASS196_REPAIRED_SOURCE_DRIFT:{path}")
@@ -95,6 +107,9 @@ def pass196_membrane_source_evidence() -> Dict[str, Any]:
         "_restore_vector_lineage",
         "PASS196_CURRENT_MANIFEST_QUARANTINED",
         "last_good_is_historical_only",
+        "serialize_raw5184_bytes",
+        "_pass196_v1._snapshot(payload)",
+        "Hydrate the active V2 raw5184 snapshot without mutating frozen V1 provenance",
     )
     _require(API_PATH, "StrictBool", "PASS196_PERSIST_VECTOR_STRICT_BOOL_REQUIRED", "_scan_http_error")
     _require(PROJECTION_PATH,
@@ -114,6 +129,10 @@ def pass196_membrane_source_evidence() -> Dict[str, Any]:
         "accepted_topology_merge": ACCEPTED_TOPOLOGY_MERGE,
         "frozen_i129": FROZEN_I129,
         "historical_v1_blob": HISTORICAL_V1_BLOB,
+        "v2_i130_baseline_commit": V2_I130_BASELINE_COMMIT,
+        "historical_v2_i130_blob": HISTORICAL_V2_I130_BLOB,
+        "v2_i150_hydration_commit": V2_I150_HYDRATION_COMMIT,
+        "current_v2_i150_blob": CURRENT_V2_I150_BLOB,
         "repaired_blobs": {str(path): value for path, value in REPAIRED_BLOBS.items()},
         "review_finding_ids": list(REVIEW_FINDING_IDS),
         "pass197_successor": successor,

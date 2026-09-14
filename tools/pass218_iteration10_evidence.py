@@ -118,7 +118,7 @@ def main() -> None:
                 namespace,
                 "iteration10-owner-a",
                 "iteration10-host-a",
-                3,
+                9,
             ),
         )
         host_b = Pass218DistributedRuntimeLifecycle(
@@ -129,7 +129,7 @@ def main() -> None:
                 namespace,
                 "iteration10-owner-b",
                 "iteration10-host-b",
-                6,
+                9,
             ),
         )
 
@@ -160,9 +160,12 @@ def main() -> None:
 
         # Do not renew host A. The lease-bound etcd owner key expires while its
         # local process and local I9 lock remain alive, modeling host isolation
-        # from consensus rather than a graceful shutdown.
+        # from consensus rather than a graceful shutdown. The 9-second lease is
+        # the same validated test lease used by the Iteration 10 suite; the
+        # observation window remains bounded while allowing CI variance before
+        # the intentional expiry point.
         takeover_status = None
-        for _ in range(8):
+        for _ in range(14):
             time.sleep(1)
             takeover_status = host_b.attempt_ownership_takeover()
             if takeover_status["distributed_state"] == "PRIMARY":

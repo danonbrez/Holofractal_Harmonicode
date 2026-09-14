@@ -1,0 +1,348 @@
+name: Pass219 Core Dynamic Circuit Experiment
+
+on:
+  push:
+    branches:
+      - agent/pass219-core-dynamic-circuit-20260907
+    paths:
+      - 'hhs_runtime/**'
+      - 'tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c'
+      - 'tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c'
+      - 'tests/pass219/test_pass219_core_holographic_four_lane_1_24.c'
+      - 'tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp'
+      - 'benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp'
+      - 'benchmarks/pass219/core_constraint_holographic_four_lane_benchmark.cpp'
+      - 'benchmarks/pass219/prepare_pass215_hydrated_weight_frames.py'
+      - 'benchmarks/pass219/core_holographic_pass215_hydrated_weights_benchmark.cpp'
+      - '.github/workflows/pass219-core-dynamic-circuit-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PASS215_P3_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_P3_PROMPT: 'Hello world!'
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build native exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify dynamic and holographic circuit exports
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_extract'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_extract_cells'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_core_circuit_step'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_global_raw5184_dynamic_circuit'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_prepare'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_score_lane'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_finalize'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_route'
+
+      - name: Run dependency-scoped native C tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_global_raw5184
+          /tmp/test_global_raw5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_core_dynamic_circuit
+          /tmp/test_core_dynamic_circuit
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_holographic_four_lane_1_24.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test_core_holographic_four_lane
+          /tmp/test_core_holographic_four_lane
+
+      - name: Run representative integrated hydration workloads
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p /tmp/pass219-phase3-real
+          for test_source in \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c \
+            tests/pass219/test_pass219_i179_audio_security_transport.c \
+            tests/pass219/test_pass219_harmonic36_hash216_rna_binding_1_0.c \
+            tests/pass219/test_pass219_harmonic36_stack_selection_1_10.c \
+            tests/pass219/test_pass219_harmonic36_stack_selection_cache_1_11.c \
+            tests/pass219/test_pass219_harmonic36_branch_reference_cache_1_17.c
+          do
+            name="$(basename "$test_source" .c)"
+            cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+              "$test_source" -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+              -o "/tmp/pass219-phase3-real/$name"
+            "/tmp/pass219-phase3-real/$name"
+          done
+
+      - name: Run C++ RNA cell-wall parallel equivalence
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p /tmp/pass219-holo4
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c \
+            -o /tmp/pass219-holo4/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S \
+            -o /tmp/pass219-holo4/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c \
+            -o /tmp/pass219-holo4/pass189.o
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_core_holographic_rna_cell_wall_1_24.cpp \
+            /tmp/pass219-holo4/pass188.o \
+            /tmp/pass219-holo4/pass188-x86.o \
+            /tmp/pass219-holo4/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-holo4/test-rna-cell-wall
+          /tmp/pass219-holo4/test-rna-cell-wall
+
+      - name: Verify verbatim circuit source identity
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          python - <<'PY'
+          import ctypes
+          import hashlib
+          from pathlib import Path
+
+          lib = ctypes.CDLL(str(Path('hhs_runtime/builds/libhhs_runtime.so').resolve()))
+          fn = lib.hhs_exact_pass219_core_circuit_source
+          fn.argtypes = [ctypes.POINTER(ctypes.c_uint8), ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
+          fn.restype = ctypes.c_int
+          buf = (ctypes.c_uint8 * 542)()
+          n = ctypes.c_size_t()
+          rc = fn(buf, len(buf), ctypes.byref(n))
+          assert rc == 0, rc
+          assert n.value == 542, n.value
+          digest = hashlib.sha256(bytes(buf)).hexdigest()
+          expected = 'ee76a902272fd41b44258468335ff40e60c58805fa06ec5e85788847d60073d0'
+          assert digest == expected, (digest, expected)
+          print(f'verbatim_source_bytes={n.value}')
+          print(f'verbatim_source_sha256={digest}')
+          PY
+
+      - name: Run comparative fused hydration benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219/core_constraint_dynamic_circuit_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/core_constraint_dynamic_circuit_benchmark
+          /tmp/core_constraint_dynamic_circuit_benchmark \
+            | tee artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+
+      - name: Run holographic four-lane learning benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          set -o pipefail
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219/core_constraint_holographic_four_lane_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/core_constraint_holographic_four_lane_benchmark
+          /tmp/core_constraint_holographic_four_lane_benchmark \
+            | tee artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
+
+      - name: Download authenticated Pass215 transformer source
+        run: |
+          ROOT="$RUNNER_TEMP/pass219-phase3-model"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_P3_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Reproduce terminal hydrated language-model checkpoints
+        run: |
+          ROOT="$RUNNER_TEMP/pass219-phase3-model"
+          PYTHONPATH=. python tools/pass215_iteration20_shared_checkpoint_terminal.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_P3_PROMPT" \
+            --expected-sha256 "$PASS215_P3_MODEL_SHA256" \
+            --bundle-output "$ROOT/PASS_215_I20_SHARED_BUNDLE.json" \
+            --output "$ROOT/PASS_215_I20_EVIDENCE.json"
+          PYTHONPATH=. python tools/pass215_iteration20_shared_checkpoint_terminal.py \
+            --validate "$ROOT/PASS_215_I20_EVIDENCE.json" \
+            --output "$ROOT/PASS_215_I20_VALIDATION.json"
+
+      - name: Prepare authenticated hydrated-weight VM81 workload
+        run: |
+          set -o pipefail
+          ROOT="$RUNNER_TEMP/pass219-phase3-model"
+          PYTHONPATH=. python benchmarks/pass219/prepare_pass215_hydrated_weight_frames.py \
+            --bundle "$ROOT/PASS_215_I20_SHARED_BUNDLE.json" \
+            --evidence "$ROOT/PASS_215_I20_EVIDENCE.json" \
+            --output-bin "$ROOT/PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin" \
+            --output-meta artifacts/pass219/pass215_hydrated_weight_frame_manifest.json \
+            | tee artifacts/pass219/pass215_hydrated_weight_frame_prepare.json
+
+      - name: Run both circuits across hydrated language-model weights
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          set -o pipefail
+          ROOT="$RUNNER_TEMP/pass219-phase3-model"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            benchmarks/pass219/core_holographic_pass215_hydrated_weights_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/core_holographic_pass215_hydrated_weights_benchmark
+          /tmp/core_holographic_pass215_hydrated_weights_benchmark \
+            "$ROOT/PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin" \
+            | tee artifacts/pass219/pass215_hydrated_weight_routing_benchmark.json
+          cp "$ROOT/PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin" \
+            artifacts/pass219/PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin
+          cp "$ROOT/PASS_215_I20_EVIDENCE.json" artifacts/pass219/PASS_215_I20_EVIDENCE.json
+          cp "$ROOT/PASS_215_I20_VALIDATION.json" artifacts/pass219/PASS_215_I20_VALIDATION.json
+
+      - name: Validate deterministic experiment gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('artifacts/pass219')
+          phase1 = json.loads((root/'core_constraint_dynamic_circuit_benchmark.json').read_text())
+          assert phase1['exact_feature_equal'] is True
+          assert phase1['reference_passes'] == 18
+          assert phase1['fused_passes'] == 1
+          assert phase1['reference_word_visits'] == 1458
+          assert phase1['fused_word_visits'] == 81
+          assert phase1['algorithmic_work_reduction_x1000'] == 18000
+          assert phase1['synthetic_posttrain_accuracy_x1000'] > phase1['synthetic_pretrain_accuracy_x1000']
+          assert phase1['training_steps'] == 3072
+
+          holo4 = json.loads((root/'core_constraint_holographic_four_lane_benchmark.json').read_text())
+          assert holo4['schema'] == 'HHS_PASS219_CORE_HOLOGRAPHIC_FOUR_LANE_BENCHMARK_V1'
+          assert holo4['cell_count'] == 81
+          assert holo4['sudoku_peers_per_cell'] == 20
+          assert holo4['directed_graph_edges'] == 1620
+          assert holo4['lane_count'] == 4
+          assert holo4['phase_modulus'] == 72
+          assert holo4['update_quantum'] == 5
+          assert holo4['naive_independent_lane_work'] == 7164
+          assert holo4['shared_tensor_four_lane_work'] == 2061
+          assert holo4['deterministic_work_reduction_x1000'] == 3475
+          assert holo4['heldout_raw_payloads_distinct'] is True
+          assert holo4['lane_identity_stable_across_variants'] is True
+          assert holo4['unseen_hash216_identity_generalization_claim'] is False
+          assert holo4['heldout_posttrain_accuracy_x1000'] > holo4['heldout_pretrain_accuracy_x1000']
+          assert holo4['training_steps'] == 1536
+          assert holo4['candidate_only'] is True
+          assert holo4['canonical_authority_changed'] is False
+
+          meta = json.loads((root/'pass215_hydrated_weight_frame_manifest.json').read_text())
+          assert meta['schema'] == 'HHS_PASS219_PHASE3_PASS215_HYDRATED_WEIGHT_FRAMES_V1'
+          assert meta['source_model_sha256'] == '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+          assert meta['shared_content_store_root_hash216'] == 'b7a9eb1678f263f20c5b61c0d9d3f01b76b152e2786b7e887ecb8265cbe454da'
+          assert meta['shared_checkpoint_bundle_root_hash216'] == '14953737a095ee9365386e436706cedd7a77328a04eb4dc3d5e45935cd367c8a'
+          assert meta['total_chunk_references'] == 529
+          assert meta['total_frame_records'] == 2116
+          assert meta['shared_store_unique_chunk_count'] == 489
+          assert meta['reused_unique_chunk_count'] == 36
+          assert meta['later_incremental_unique_chunk_count'] == 242
+          assert meta['all_raw_chunk_bytes_feed_summary_frame'] is True
+          assert meta['local_exact_raw_segments_per_reference'] == 3
+          assert meta['summary_projection_is_bijective'] is False
+          assert meta['canonical_authority_promoted'] is False
+          assert [row['referenced_chunk_count'] for row in meta['checkpoints']] == [249, 280]
+
+          model = json.loads((root/'pass215_hydrated_weight_routing_benchmark.json').read_text())
+          assert model['schema'] == 'HHS_PASS219_PHASE3_PASS215_HYDRATED_WEIGHT_ROUTING_V1'
+          assert model['record_count'] == meta['total_frame_records']
+          assert model['feature_parity_count'] == meta['total_frame_records']
+          assert model['phase1_direct_and_phase2_embedded_core_equal'] is True
+          assert model['transition_identity_preserved_count'] == meta['total_frame_records']
+          assert model['deterministic_replay_equal'] is True
+          assert model['unique_content_chunks_observed'] == 489
+          assert model['reused_summary_chunk_digests'] == 36
+          assert model['short_chunk_zero_padding_count'] == 0
+          assert model['candidate_only'] is True
+          assert model['canonical_authority_changed'] is False
+          assert model['phase2_shared_work_reduction_x1000'] == 3475
+          assert model['combined_shared_work_reduction_x1000'] == 3382
+          assert model['summary_reference_counts'] == [249, 280]
+          for key in ('summary_lane_counts','head_lane_counts','middle_lane_counts','tail_lane_counts'):
+              assert sum(model[key][0]) == 249
+              assert sum(model[key][1]) == 280
+          migration = model['reused_summary_lane_migration_matrix']
+          assert sum(sum(row) for row in migration) == 36
+          assert model['reused_summary_lane_stable'] + model['reused_summary_lane_changed_with_checkpoint_provenance'] == 36
+
+          print(json.dumps({'phase1': phase1, 'holo4': holo4, 'pass215_meta': meta, 'pass215_routing': model}, indent=2, sort_keys=True))
+          PY
+
+      - name: Record experiment summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 core dynamic circuit experiment'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json; then
+              echo '- Phase 1 fused benchmark:'
+              echo '```json'
+              cat artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+              echo '```'
+            fi
+            if test -f artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json; then
+              echo '- Phase 2 holographic four-lane benchmark:'
+              echo '```json'
+              cat artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
+              echo '```'
+            fi
+            if test -f artifacts/pass219/pass215_hydrated_weight_routing_benchmark.json; then
+              echo '- Phase 3 Pass215 hydrated language-model routing:'
+              echo '```json'
+              cat artifacts/pass219/pass215_hydrated_weight_routing_benchmark.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: |
+            artifacts/pass219/core_constraint_dynamic_circuit_benchmark.json
+            artifacts/pass219/core_constraint_holographic_four_lane_benchmark.json
+            artifacts/pass219/pass215_hydrated_weight_frame_manifest.json
+            artifacts/pass219/pass215_hydrated_weight_frame_prepare.json
+            artifacts/pass219/pass215_hydrated_weight_routing_benchmark.json
+            artifacts/pass219/PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin
+            artifacts/pass219/PASS_215_I20_EVIDENCE.json
+            artifacts/pass219/PASS_215_I20_VALIDATION.json
+          if-no-files-found: warn

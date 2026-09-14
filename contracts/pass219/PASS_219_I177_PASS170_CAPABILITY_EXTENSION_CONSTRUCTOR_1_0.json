@@ -1,0 +1,92 @@
+{
+  "schema": "HHS_PASS219_I177_PASS170_CAPABILITY_EXTENSION_CONSTRUCTOR_CONTRACT_V1",
+  "version": "1.0.0",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I177",
+  "base_main": "0707cedbbe41cae8478b498f60db56117da5c462",
+  "parent_exact_main_evidence": {
+    "iteration": "PASS219-I176",
+    "main_sha": "0707cedbbe41cae8478b498f60db56117da5c462",
+    "workflow_run": 34065089119,
+    "artifact_id": 9998685624,
+    "artifact_digest": "sha256:01ac05b0614a2ac68f0d8506bc1439a7f6aaf5a54f61ad007e30a1b3ecd78e1e",
+    "classification": "EXACT_MAIN_VERIFIED"
+  },
+  "objective": "Register one explicit Pass170 audio-language application capability scope on the inherited Pass190 signed-token verifier, retire the legacy Heroku FastAPI constructor to the canonical gateway, and preserve the internal audio ECC/post-quantum-oriented security boundary without creating parallel authority.",
+  "authorized_scope": {
+    "scope_id": "pass170.audio_language.feedback",
+    "operation_id": "public.audio_language.feedback.run",
+    "token_schema": "HHS_PASS_190_CAPABILITY_V1",
+    "authorization_scheme": "HHS-Capability",
+    "secret_environment": "HHS_PASS190_CAPABILITY_SECRET",
+    "verifier": "hhs_runtime.pass190.completion.verify_capability_token"
+  },
+  "constructor_retirement": {
+    "path": "hhs_backend/heroku_server.py",
+    "parent_classification": "LEGACY_DISABLED_HOSTED_SERVER",
+    "replacement_target": "hhs_backend.public_api_server:app",
+    "expected_parent_constructor_count": 10,
+    "expected_successor_constructor_count": 9
+  },
+  "inherited_invariants": {
+    "single_canonical_public_gateway": "hhs_backend.public_api_server:app",
+    "all_six_uvicorn_launchers_remain_canonical": true,
+    "parent_operation_count": 48,
+    "successor_operation_count": 48,
+    "pass190_operation_registry_immutable": true,
+    "pass190_token_authority_reused": true,
+    "audio_ecc_internal_constraint_preserved": true,
+    "audio_post_quantum_oriented_security_signal_internal_only": true,
+    "public_crypto_primitive_forbidden": true,
+    "standardized_pq_crypto_claim_forbidden": true,
+    "independent_key_or_kem_authority_forbidden": true,
+    "new_vm81_authority_forbidden": true,
+    "new_hash72_mint_authority_forbidden": true,
+    "new_hash216_persistence_authority_forbidden": true,
+    "floating_point_canonical_authority_forbidden": true
+  },
+  "implementation_surfaces": [
+    "hhs_backend/pass170_audio_language_routes.py",
+    "hhs_backend/heroku_server.py",
+    "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json",
+    "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I177.json",
+    "HHS_PUBLIC_OPERATION_RECORD_INDEX_I177.json",
+    "contracts/pass219/pass170_operation_records_i177/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_CAPABILITY_V1.json",
+    "hhs_runtime/pass219/pass170_capability_extension_constructor_i177.py",
+    "tests/pass219/test_pass219_i177_pass170_capability_extension_constructor.py"
+  ],
+  "acceptance": {
+    "audio_scope_registered": true,
+    "anonymous_public_audio_execution_rejected": true,
+    "wrong_scope_public_audio_execution_rejected": true,
+    "valid_inherited_signed_token_with_audio_scope_admitted": true,
+    "legacy_audio_alias_requires_same_scope": true,
+    "internal_audio_adapter_preserved": true,
+    "new_token_authority": false,
+    "heroku_independent_fastapi_constructor": false,
+    "fastapi_constructor_count": 9,
+    "uvicorn_launcher_count": 6,
+    "canonical_launcher_count": 6,
+    "operation_count": 48,
+    "pass170_terminal_contract_verified": false
+  },
+  "fail_closed_conditions": [
+    "PASS170_I177_AUDIO_SCOPE_ID_INVALID",
+    "PASS170_I177_AUDIO_SCOPE_AUTHORITY_EXCLUSIONS_INCOMPLETE",
+    "PASS170_I177_AUDIO_RECORD_SCOPE_MISMATCH",
+    "PASS170_I177_AUDIO_RECORD_ADMISSION_POLICY_INVALID",
+    "PASS170_I177_HEROKU_FASTAPI_CONSTRUCTOR_REMAINS",
+    "PASS170_I177_FASTAPI_CONSTRUCTOR_COUNT_NOT_REDUCED",
+    "PASS170_I177_CANONICAL_LAUNCHER_PARITY_REGRESSED",
+    "PASS170_I177_AUDIO_PQ_PUBLIC_SCOPE_LEAK",
+    "PASS170_I177_STANDARDIZED_PQ_CLAIM_FORBIDDEN"
+  ],
+  "expected_nonterminal_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CONSTRUCTOR_RETIREMENT_TRANCHE_B_AND_PUBLIC_TRANSPORT_PARITY"
+}

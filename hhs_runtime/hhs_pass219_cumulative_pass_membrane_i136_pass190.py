@@ -54,6 +54,8 @@ CONTRACT_AUTHORIZATION_COMMIT = "88e7ae935990b1c36db6d39bc46d3b89b2e465cb"
 ITERATION7_MERGE = "7b4825ae1437c2325bc9bb348086c0957cfd5c28"
 FROZEN_I135 = "5e593b384732ffb065480cdd2d1098f1f32a990e"
 VALIDATED_CORE_HEAD = "fbbc3ff37b6dea6c31e73612731e4e323a54475f"
+PUBLIC_API_SUCCESSOR_COMMIT = "8c44250da2962fc0616e0f2ddab68711b45e6351"
+PUBLIC_API_SUCCESSOR_BLOB = "5beff33c413afc384cff874581574cc71154243e"
 VALIDATED_CORE_RUN = 33160480090
 VALIDATED_CORE_JOB = 98813463244
 VALIDATED_CORE_ARTIFACT = 9681415380
@@ -155,6 +157,7 @@ def pass190_membrane_source_evidence() -> Dict[str, Any]:
         ITERATION7_MERGE,
         FROZEN_I135,
         VALIDATED_CORE_HEAD,
+        PUBLIC_API_SUCCESSOR_COMMIT,
     ):
         _git("merge-base", "--is-ancestor", commit, "HEAD")
     if _git("merge-base", "HEAD", FROZEN_I135) != FROZEN_I135:
@@ -172,7 +175,14 @@ def pass190_membrane_source_evidence() -> Dict[str, Any]:
     for path, expected in CORE_BLOBS.items():
         if _git("rev-parse", f"{VALIDATED_CORE_HEAD}:{path}") != expected:
             raise RuntimeError(f"PASS190_VALIDATED_CORE_DRIFT:{path}")
-        if _git_blob(path) != expected:
+        if path == PUBLIC_API_PATH:
+            if _git(
+                "rev-parse", f"{PUBLIC_API_SUCCESSOR_COMMIT}:{path}"
+            ) != PUBLIC_API_SUCCESSOR_BLOB:
+                raise RuntimeError("PASS190_PUBLIC_API_SUCCESSOR_DRIFT")
+            if _git_blob(path) != PUBLIC_API_SUCCESSOR_BLOB:
+                raise RuntimeError("PASS190_CURRENT_PUBLIC_API_SUCCESSOR_DRIFT")
+        elif _git_blob(path) != expected:
             raise RuntimeError(f"PASS190_CURRENT_CORE_DRIFT:{path}")
 
     if _git(

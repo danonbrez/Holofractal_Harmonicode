@@ -1,0 +1,24 @@
+name: Pass 219 Recursive Manifold Learning
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - hhs_runtime/pass219/recursive_manifold_learning.py
+      - tests/pass219/test_pass219_recursive_manifold_learning.py
+      - contracts/pass219/PASS_219_RECURSIVE_MANIFOLD_LEARNING_RML1_1_0.json
+      - .github/workflows/pass219-recursive-manifold-learning.yml
+
+jobs:
+  targeted-rml1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run recursive manifold learning validation
+        run: PYTHONPATH="$PWD" python -m pytest -q tests/pass219/test_pass219_recursive_manifold_learning.py

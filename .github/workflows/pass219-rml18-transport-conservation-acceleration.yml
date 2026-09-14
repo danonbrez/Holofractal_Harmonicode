@@ -1,0 +1,56 @@
+name: Pass 219 RML18 Transport Conservation Acceleration
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml18-transport-conservation-acceleration-20260910
+    paths:
+      - 'hhs_runtime/pass219/rml18_transport_conservation_acceleration.py'
+      - 'tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py'
+      - 'benchmarks/pass219/pass219_rml18_transport_conservation_acceleration_benchmark.py'
+      - '.github/workflows/pass219-rml18-transport-conservation-acceleration.yml'
+      - 'evidence/pass219_rml18/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport-conservation-acceleration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Revalidate frozen RML17 equality baseline
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml17_discrete_transport_conservation.py
+
+      - name: Validate RML18 exact 1.001 fail-closed acceleration membrane
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml18_transport_conservation_acceleration.py
+
+      - name: Benchmark exhaustive RML17 versus accelerated certificate reuse
+        run: |
+          mkdir -p artifacts/pass219_rml18
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml18_transport_conservation_acceleration_benchmark.py \
+            --output artifacts/pass219_rml18/rml18_transport_acceleration.json \
+            --certificate-samples 101
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml18-transport-conservation-acceleration
+          path: artifacts/pass219_rml18/rml18_transport_acceleration.json
+          if-no-files-found: error

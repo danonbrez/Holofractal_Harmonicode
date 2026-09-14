@@ -1,0 +1,41 @@
+{
+  "schema": "HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I175",
+  "local_application_operation_id": "public.audio_language.feedback.run",
+  "local_application_route": "/v1/audio-language/run",
+  "error_correction": {
+    "role": "HARMONIC_TIME_AUDIO_PHASE_REDUNDANCY_AND_ERROR_CORRECTION",
+    "witness_module": "hhs_runtime.hhs_reality_to_manifold_translation_v1",
+    "witness_factory": "make_harmonic_time_audio_witness",
+    "witness_schema": "HHS_HARMONIC_TIME_AUDIO_PHASE_ECC_WITNESS_V1",
+    "security_policy_factory": "make_non_silent_security_policy",
+    "required_security_policy_token": "harmonic_time_audio_coherence_when_temporal",
+    "required_when_temporal": true,
+    "invalid_witness_must_fail_closed": true,
+    "security_harness_module": "hhs_runtime.hhs_constraint_stack_security_harness_v1",
+    "security_harness_case": "invalid_harmonic_time_audio_ecc",
+    "security_harness_rejection": "REJECTED_TEMPORAL_COHERENCE_DRIFT"
+  },
+  "post_quantum_security": {
+    "role": "INTERNAL_POST_QUANTUM_ORIENTED_SECURITY_ENFORCEMENT_SIGNAL",
+    "boundary": "INTERNAL_KERNEL_AND_INTEGRATED_RUNTIME_ONLY",
+    "public_independent_crypto_operation": false,
+    "public_key_or_kem_authority": false,
+    "standardized_post_quantum_security_claim": false,
+    "audio_witness_can_bypass_other_security_layers": false,
+    "audio_witness_is_redundant_constraint_input": true,
+    "required_architecture_source": "ARCHITECTURE.md",
+    "required_architecture_token": "The post-quantum security construction is internal to the kernel and integrated runtime"
+  },
+  "authority_invariants": {
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "audio_local_application_can_commit_canonical_state": false,
+    "audio_security_role_can_mint_public_crypto_authority": false
+  },
+  "classification": "AUDIO_LOCAL_APPLICATION_PLUS_INTERNAL_ECC_PQ_SECURITY_ENFORCEMENT_ROLE",
+  "pass170_terminal_contract_verified": false
+}

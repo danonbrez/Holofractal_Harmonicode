@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I179_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I179",
+  "version": "1.0.0",
+  "frozen_parent_index": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I178.json",
+  "frozen_parent_iteration": "PASS219-I178",
+  "frozen_parent_record_count": 48,
+  "replacement_shards": [
+    {
+      "shard_id": "audio-language-native-replay-replacement",
+      "path": "contracts/pass219/pass170_operation_records_i179/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_NATIVE_REPLAY_V1.json",
+      "replacement_count": 1,
+      "replaced_operation_ids": [
+        "public.audio_language.feedback.run"
+      ]
+    }
+  ],
+  "aggregate_record_count": 48,
+  "new_operation_ids": [],
+  "capability_scope_registry": "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I177.json",
+  "constructor_registry": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json",
+  "transport_binding": "hhs_runtime.pass219.pass170_audio_transport_i178",
+  "native_binding": "hhs_runtime.pass219.pass170_audio_native_abi_i179",
+  "transport_state": {
+    "http": "EXECUTABLE_VERIFIED_TARGET",
+    "cli": "EXECUTABLE_VERIFIED_TARGET",
+    "python": "EXECUTABLE_VERIFIED_TARGET",
+    "native_abi": "EXECUTABLE_VERIFIED_TARGET",
+    "receipt_replay": "NON_REEXECUTING_EXECUTABLE_VERIFIED_TARGET"
+  },
+  "security_role_profile": "HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json",
+  "invariants": {
+    "parent_records_immutable": true,
+    "replacement_preserves_operation_identity": true,
+    "aggregate_operation_count_preserved": true,
+    "signed_capability_admission_preserved": true,
+    "http_cli_python_native_share_operation_admission": true,
+    "native_abi_is_binding_membrane_not_parallel_engine": true,
+    "receipt_replay_is_non_reexecuting": true,
+    "receipt_replay_uses_same_auxiliary_store": true,
+    "audio_ecc_role_is_inherited_internal_constraint": true,
+    "audio_pq_role_is_internal_enforcement_signal_only": true,
+    "public_crypto_primitive_created": false,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_ROUTE_MIGRATION_AND_REMAINING_PUBLIC_OPERATION_PARITY"
+}

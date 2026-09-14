@@ -1,0 +1,142 @@
+{
+  "schema": "HHS_PASS219_RML13_NATIVE_PREHASH_ROUTE_BINDING_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML13_NATIVE_ROUTE_WITNESS_BINDING",
+  "classification": "VERSIONED_NATIVE_PREHASH_ROUTE_WITNESS_ADMISSION_SUCCESSOR",
+  "base_checkpoint": "356b60ef25321e86c6c54f173e3e0a554e7be747",
+  "parent_rml12_validation": {
+    "workflow": "Pass 219 Reciprocal Route Optimizer",
+    "run_id": 34436975540,
+    "job_id": 102743988934,
+    "validated_head": "7806163e541fa400ffbe2ad65a28cde6418d2ca3",
+    "contract_validation_seal": "f7d8b056dde95c5c66cca91d4f0ca5fa3e4afb77",
+    "green_restart_seal": "356b60ef25321e86c6c54f173e3e0a554e7be747",
+    "result": "14 passed, 0 failed, 1 inherited pytest-config warning in 38.66s"
+  },
+  "frozen_native_path_inspected": {
+    "i162_execution": "hhs_runtime/c/hhs_pass219_i162_pass169_vm81_exact_symbolic_execution_1_23.c",
+    "i168_binding": "hhs_runtime/c/hhs_pass219_i168_pass169_general_runtime_binding_1_25.c",
+    "uqcel_header": "hhs_runtime/include/hhs_runtime_uqcel_1_8.h",
+    "uqcel_receipt": "hhs_runtime/c/hhs_runtime_uqcel_1_8_receipt.inc",
+    "observed_hash_sequence": [
+      "candidate VM81 frame export -> change_hash72",
+      "UQCEL admission material -> receipt_hash72",
+      "previous_hash72 || change_hash72 || receipt_hash72 -> hash216_triplet",
+      "hash216_triplet -> hash216_identity"
+    ],
+    "i168_copies_hashes_after_i162_issuance": true
+  },
+  "successor_design": {
+    "native_abi_version": "1.26.0",
+    "legacy_i162_modified": false,
+    "legacy_i168_modified": false,
+    "legacy_uqcel_v1_modified": false,
+    "root_runtime_makefile_modified": false,
+    "native_extension": "hhs_runtime/builds/libhhs_pass219_rml13.so",
+    "native_extension_links_existing_runtime": true,
+    "native_extension_uses_existing_uqcel_commit_entrypoint": true,
+    "new_vm81_commit_primitive_added": false
+  },
+  "route_witness_packet": {
+    "digests": [
+      "selected_route_sha256",
+      "selection_sha256",
+      "bundle_sha256",
+      "source_state_sha256",
+      "target_state_sha256"
+    ],
+    "exact_counts": [
+      "edge_count",
+      "pair_flip_edges",
+      "coupled_move_edges",
+      "hopf_same_base_edges",
+      "hopf_base_moving_edges",
+      "clifford_full_intertwiner_edges",
+      "clifford_chirality_swap_edges",
+      "clifford_even_sector_preserving_edges",
+      "residual_u72_edges"
+    ],
+    "required_true": [
+      "product_geometry_admissible",
+      "all_edges_reversible",
+      "target_reached_exactly",
+      "reverse_restores_source_exactly"
+    ],
+    "required_zero": [
+      "optimizer_transition_authority",
+      "floating_point_authority"
+    ],
+    "partition_counts_must_equal_edge_count": true,
+    "all_sha256_roots_nonzero": true
+  },
+  "prehash_binding": {
+    "pass159_source_provenance_required": true,
+    "witness_packet_serialized_with_explicit_big_endian_u32_fields": true,
+    "witness_root_algorithm": "SHA-256",
+    "route_environment_root_includes": [
+      "Pass159 global_symbol_environment_root",
+      "Pass159 combined_source_sha256",
+      "RML13 witness_root_sha256"
+    ],
+    "candidate_frame_bytes": 648,
+    "candidate_frame_embeds_route_witness_before_uqcel_admission": true,
+    "change_hash72_is_computed_after_witness_embedding": true,
+    "hash216_triplet_contains_witness_bound_change_hash72": true,
+    "hash216_identity_is_witness_bound": true,
+    "deterministic_replay_required": true
+  },
+  "honesty_boundary": {
+    "frozen_uqcel_v1_receipt_material_includes_candidate_frame": false,
+    "receipt_hash72_directly_route_bound": false,
+    "different_route_witness_changes_change_hash72": true,
+    "different_route_witness_changes_hash216_identity": true,
+    "different_route_witness_changes_frozen_receipt_hash72": false,
+    "historical_i162_i168_hashes_rewritten": false,
+    "rml13_claims_global_graph_geodesic": false
+  },
+  "authority_boundary": {
+    "single_existing_vm81_commit_entrypoint_preserved": true,
+    "optimizer_has_transition_authority": false,
+    "floating_point_authority": false,
+    "hash216_persistence_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "python_mints_hash72_or_hash216": false
+  },
+  "negative_tests_verified": [
+    "inconsistent route partition rejected natively",
+    "different valid RML12 route changes prehash frame/change/hash216",
+    "frozen UQCEL receipt remains route-neutral",
+    "legacy I168 regression remains green"
+  ],
+  "implementation": [
+    "hhs_runtime/include/hhs_pass219_rml13_native_route_witness_binding_1_26.h",
+    "hhs_runtime/c/hhs_pass219_rml13_native_route_witness_binding_1_26.c",
+    "native_projects/hhs_pass219_rml13_route_binding/Makefile",
+    "hhs_runtime/pass219/native_route_witness_binding.py",
+    "tests/pass219/test_pass219_rml13_native_route_witness_binding.py"
+  ],
+  "validation": {
+    "first_run_id": 34438142834,
+    "first_job_id": 102747417114,
+    "first_run_result": "CI dependency failure before test execution: fastapi missing",
+    "ci_dependency_repair_commit": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "green_run_id": 34464110690,
+    "green_job_id": 102828527303,
+    "validated_head": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "pytest_result": "16 passed, 0 failed, 2 warnings in 26.39s",
+    "warnings": [
+      "inherited pytest config asyncio_mode warning",
+      "FastAPI/Starlette httpx deprecation warning"
+    ],
+    "rml13_native_extension_build": "GREEN",
+    "frozen_i168_symbol_export": "GREEN",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_states": 629856,
+    "pass188_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
+}

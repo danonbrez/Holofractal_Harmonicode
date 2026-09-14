@@ -5,6 +5,7 @@ on:
       - main
       - agent/pass219-global-canonical-defaults-main-repair
       - agent/h36-latency-merge-watch-repair-20260901
+      - agent/pass219-exact-main-inherited-link-closure-20260912
     paths:
       - contracts/pass219/PASS_219_GLOBAL_CANONICAL_DEFAULTS_1_0.json
       - contracts/pass219/PASS_219_MULTIMODAL_OPTIMIZATION_GENERALIZATION_1_0.json
@@ -21,6 +22,9 @@ on:
       - docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
       - hhs_runtime/include/hhs_runtime_exact_abi.h
       - hhs_runtime/c/hhs_runtime_exact_abi.c
+      - hhs_runtime/src/hhs_hash216.c
+      - hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp
+      - tools/pass219/build_exact_abi_link_support.sh
       - hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.*
       - hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc
       - tools/validate_pass219_global_canonical_defaults.py
@@ -43,6 +47,9 @@ on:
       - docs/pass219/PASS_219_I140_INHERITED_PASS186_FULL_BINDING.md
       - hhs_runtime/include/hhs_runtime_exact_abi.h
       - hhs_runtime/c/hhs_runtime_exact_abi.c
+      - hhs_runtime/src/hhs_hash216.c
+      - hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp
+      - tools/pass219/build_exact_abi_link_support.sh
       - hhs_runtime/include/hhs_pass219_global_canonical_defaults_1_0.*
       - hhs_runtime/c/hhs_pass219_global_canonical_defaults_1_0.inc
       - tools/validate_pass219_global_canonical_defaults.py
@@ -66,10 +73,11 @@ jobs:
         run: python -m pip install --disable-pip-version-check pytest
       - name: Validate contract census and repair-forward debt
         run: python tools/validate_pass219_global_canonical_defaults.py
-      - name: Compile aggregate exact ABI
+      - name: Compile aggregate exact ABI and inherited link support
         run: |
           mkdir -p /tmp/pass219-global-defaults
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-global-defaults/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-global-defaults/link-support full
       - name: Revalidate current inherited tail
         run: make -C native_projects/hhs_pass186_x64_vm81_q144 clean test disassemble
       - name: Compile current Pass 186 dependency objects
@@ -78,24 +86,24 @@ jobs:
           gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S -o /tmp/pass219-global-defaults/registers.o
       - name: Run global-default C conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/global-defaults-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-global-defaults/global-defaults-c
           /tmp/pass219-global-defaults/global-defaults-c
       - name: Run global-default C++ conformance
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/global-defaults-cpp
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_canonical_defaults_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-global-defaults/global-defaults-cpp
           /tmp/pass219-global-defaults/global-defaults-cpp
       - name: Run promoted global latency policy conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/latency-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-global-defaults/latency-c
           /tmp/pass219-global-defaults/latency-c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/latency-cpp
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_global_latency_policy_25_3_1_0.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-global-defaults/latency-cpp
           /tmp/pass219-global-defaults/latency-cpp
           python -m pytest -q tests/pass219/test_pass219_global_latency_policy_registration_v1.py
       - name: Preserve current I140 C/C++ membrane conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/pass186-c
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.c /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-global-defaults/pass186-c
           /tmp/pass219-global-defaults/pass186-c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o -o /tmp/pass219-global-defaults/pass186-cpp
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass186_1_40.cpp /tmp/pass219-global-defaults/exact.o /tmp/pass219-global-defaults/pass186.o /tmp/pass219-global-defaults/registers.o /tmp/pass219-global-defaults/link-support/hhs_hash216.o /tmp/pass219-global-defaults/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-global-defaults/pass186-cpp
           /tmp/pass219-global-defaults/pass186-cpp
       - name: Emit policy receipt
         if: always()

@@ -1,0 +1,79 @@
+{
+  "schema": "HHS_PASS219_I171_CONTRACT_V1",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I171",
+  "title": "Pass170 Production Application Identity and Delegated Route Parity",
+  "version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base": "44b9852cd86e6a7584f81f1b214d5faa469880e7",
+  "branch": "agent/pass219-i171-pass170-public-app-route-parity",
+  "merge_target": "main",
+  "inheritance": {
+    "immediate_parent_iteration": "PASS219-I170",
+    "parent_merge": "44b9852cd86e6a7584f81f1b214d5faa469880e7",
+    "parent_classification": "PASS170_PUBLIC_REGISTRY_AND_CANONICAL_GATEWAY_BINDING_VERIFIED_NONTERMINAL",
+    "parent_exact_main_workflow_run": 33971918645,
+    "parent_artifact_id": 9971173510,
+    "parent_artifact_digest": "sha256:f8a1a7d9c26196c108e2dba080930c4281187d5a226e104df642f1f69abdf85f",
+    "frozen_parent_blocker": "PASS170_MULTIPLE_FASTAPI_CONSTRUCTORS_PRESENT"
+  },
+  "scope": {
+    "production_application_identity": {
+      "canonical_gateway": "hhs_backend.public_api_server:app",
+      "production_base_application": "hhs_backend.server:app",
+      "production_dispatch_entrypoint": "hhs_backend.runtime_os_application_server:app",
+      "require_same_object_in_full_runtime": true,
+      "source_only_degraded_profile_is_not_canonical_authority": true
+    },
+    "compatibility_factory": {
+      "symbol": "hhs_backend.public_api_server:create_app",
+      "classification": "TEST_EPHEMERAL_COMPATIBILITY_ONLY",
+      "may_construct_isolated_fastapi": true,
+      "may_bind_public_network_port": false,
+      "may_be_production_entrypoint": false
+    },
+    "delegate_route_parity": {
+      "pass168_expected_routes": 18,
+      "pass169_expected_routes": 17,
+      "total_expected_delegate_routes": 35,
+      "direct_gateway_routes_preserved": 12,
+      "combined_registered_routes": 47,
+      "route_signature_uniqueness_required": true,
+      "route_operation_identity_uniqueness_required": true
+    }
+  },
+  "mandatory_invariants": {
+    "pass169_terminal_parent_preserved": true,
+    "pass190_registry_and_authority_preserved": true,
+    "single_inherited_vm81_authority": true,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false,
+    "canonical_state_mutated_by_verification": false,
+    "pass170_terminal_contract_verified": false
+  },
+  "acceptance": {
+    "i170_public_registry_verifier_must_remain_green": true,
+    "i170_dependency_scoped_tests_must_remain_green": true,
+    "i171_dependency_scoped_tests_must_pass": true,
+    "production_application_identity_verified": true,
+    "pass168_delegate_route_parity_verified": true,
+    "pass169_delegate_route_parity_verified": true,
+    "inherited_i169_raw_constructor_blocker_must_remain_visible": true,
+    "expected_target_blockers": [
+      "PASS170_FULL_OPERATION_RECORDS_PENDING",
+      "PASS170_FULL_ROUTER_MANIFEST_PENDING",
+      "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN"
+    ]
+  },
+  "evidence": {
+    "verifier": "hhs_runtime.pass219.pass170_public_app_route_parity_i171.verify_i171_public_app_route_parity",
+    "pytest": "tests/pass219/test_pass219_i171_pass170_public_app_route_parity.py",
+    "inherited_i170_pytest": "tests/pass219/test_pass219_i170_pass170_public_registry.py",
+    "inherited_i169_inventory": "python -m hhs_runtime.pass219.pass170_public_authority_inventory_i169 .",
+    "workflow": ".github/workflows/pass219-i171-pass170-public-app-route-parity.yml"
+  },
+  "completion_classification": "PASS170_PRODUCTION_APPLICATION_IDENTITY_AND_DELEGATE_ROUTE_PARITY_VERIFIED_NONTERMINAL",
+  "next_boundary": "PASS170_LEGACY_FASTAPI_CONSTRUCTOR_RETIREMENT_AND_FULL_ROUTER_MANIFEST"
+}

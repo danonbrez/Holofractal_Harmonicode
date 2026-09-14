@@ -1,0 +1,106 @@
+{
+  "schema": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I177_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I177",
+  "base_main": "0707cedbbe41cae8478b498f60db56117da5c462",
+  "frozen_parent_registry": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY.json",
+  "frozen_parent_iteration": "PASS219-I172",
+  "parent_constructor_count": 10,
+  "active_constructor_count": 9,
+  "retired_constructor_count": 1,
+  "canonical_public_gateway": "hhs_backend.public_api_server:app",
+  "canonical_production_base": "hhs_backend.server:app",
+  "retired_constructor_records": [
+    {
+      "path": "hhs_backend/heroku_server.py",
+      "parent_classification": "LEGACY_DISABLED_HOSTED_SERVER",
+      "status": "RETIRED_TO_CANONICAL_GATEWAY_ALIAS_I177",
+      "compatibility_export": "app",
+      "compatibility_target": "hhs_backend.public_api_server:app",
+      "independent_fastapi_constructor": false,
+      "public_port_authority": false
+    }
+  ],
+  "active_constructor_records": [
+    {
+      "path": "applications/holofractal_harmonizer/ux_lab/server.py",
+      "classification": "PRIVATE_DEVELOPMENT_UX_LAB",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "PRIVATE_NONPRODUCTION_ALLOWED"
+    },
+    {
+      "path": "hhs_backend/public_api_server.py",
+      "classification": "PASS170_ISOLATED_EPHEMERAL_FACTORY_FALLBACK",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "TEST_EPHEMERAL_COMPATIBILITY_ONLY"
+    },
+    {
+      "path": "hhs_backend/runtime/runtime_server.py",
+      "classification": "LEGACY_TEST_AUDIT_RUNTIME_SUBJECT",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "SELF_LAUNCH_CANONICAL_CONSTRUCTOR_RETIREMENT_PENDING"
+    },
+    {
+      "path": "hhs_backend/runtime_os_source_only_server.py",
+      "classification": "EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY",
+      "public_port_authority": true,
+      "canonical_authority": false,
+      "retirement_status": "EXPLICIT_DEGRADED_EXCEPTION_NONTERMINAL"
+    },
+    {
+      "path": "hhs_backend/server.py",
+      "classification": "CANONICAL_PRODUCTION_BASE_CONSTRUCTOR",
+      "public_port_authority": false,
+      "canonical_authority": true,
+      "retirement_status": "INHERITED_BY_PASS170_CANONICAL_GATEWAY"
+    },
+    {
+      "path": "hhs_runtime/main.py",
+      "classification": "LEGACY_RUNTIME_SERVER",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "SELF_LAUNCH_CANONICAL_CONSTRUCTOR_RETIREMENT_PENDING"
+    },
+    {
+      "path": "hhs_runtime_api_server_v1.py",
+      "classification": "LEGACY_RUNTIME_API_SERVER",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "SELF_LAUNCH_CANONICAL_CONSTRUCTOR_RETIREMENT_PENDING"
+    },
+    {
+      "path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "classification": "PRIVATE_NATIVE_PROGRAM_FACTORY",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "PRIVATE_PROGRAM_FACTORY_ALLOWED"
+    },
+    {
+      "path": "scripts/pass204_inherited_pass203_validation.py",
+      "classification": "TEST_FIXTURE_APPLICATION",
+      "public_port_authority": false,
+      "canonical_authority": false,
+      "retirement_status": "TEST_EPHEMERAL_ALLOWED"
+    }
+  ],
+  "launcher_state_inherited_from_i176": {
+    "launcher_count": 6,
+    "canonical_redirect_count": 6,
+    "pending_launcher_count": 0
+  },
+  "invariants": {
+    "all_active_fastapi_constructors_classified": true,
+    "retired_constructor_has_no_independent_fastapi_call": true,
+    "normal_public_gateway_count_required": 1,
+    "source_only_degraded_gateway_is_explicit_exception": true,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CONSTRUCTOR_RETIREMENT_TRANCHE_B_AND_PUBLIC_TRANSPORT_PARITY"
+}

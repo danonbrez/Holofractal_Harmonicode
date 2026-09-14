@@ -1,0 +1,82 @@
+{
+  "schema": "HHS_PASS219_RML6_DISCRETE_S7_EMBEDDING_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML6_DISCRETE_S7_EMBEDDING",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_RATIONAL_TOPOLOGY_EMBEDDING",
+  "base_checkpoint": "534b96aafb92ce77c9c62148addcd6ac08f911b5",
+  "validated_parent": {
+    "rml5_run_id": 34418531519,
+    "rml5_job_id": 102688673573,
+    "rml5_validated_head": "dd4769118e17c90fcafad80084d7bea412d20f56",
+    "rml5_result": "60 passed, 0 failed, 1 inherited pytest-config warning"
+  },
+  "domain": {
+    "name": "RML5_BALANCED_CHIRALITY_PRODUCT_ADMISSIBLE_MANIFOLD",
+    "ambient_phase_space": "72^8",
+    "ambient_phase_state_count": 722204136308736,
+    "ambient_space_exhaustively_enumerated": false
+  },
+  "reversible_chart": {
+    "dimension": 7,
+    "ordered_parameters": ["xy_generator_track_code", "zw_generator_track_code", "xy_phase72", "yx_phase72", "zw_phase72", "wz_phase72", "chirality_sector"],
+    "xy_generator_track_code": "72*x+y",
+    "zw_generator_track_code": "72*z+w",
+    "chirality_sector_count": 4,
+    "all_four_ordered_product_phases_explicit": true,
+    "chart_roundtrip_exact": true,
+    "floating_point_chart_authority": false
+  },
+  "inverse_stereographic_embedding": {
+    "source_space": "Z^7_FINITE_RML5_CHART",
+    "target_space": "S^7_SUBSET_OF_Q^8",
+    "radius_squared": "r2=sum(t_i^2)",
+    "common_denominator": "1+r2",
+    "coordinate_numerators": ["1-r2", "2*t0", "2*t1", "2*t2", "2*t3", "2*t4", "2*t5", "2*t6"],
+    "unit_norm_identity": "(1-r2)^2+4*r2=(1+r2)^2",
+    "unit_norm_verified_with_exact_integers": true,
+    "inverse_chart_identity": "t_i=s_i/(1+s0)",
+    "discrete_embedding_injective": true,
+    "injectivity_proof": "REVERSIBLE_BASE72_TRACK_PACKING_PLUS_EXPLICIT_PRODUCTS_AND_CHIRAL_SECTOR_THEN_INVERTIBLE_STEREOGRAPHIC_CHART"
+  },
+  "transition_preservation": {
+    "rml5_generators": ["COUPLED_X_PRODUCT_Z72_MOVE", "COUPLED_Y_PRODUCT_Z72_MOVE", "COUPLED_Z_PRODUCT_Z72_MOVE", "COUPLED_W_PRODUCT_Z72_MOVE", "U36_CHIRAL_PAIR_FLIP_XY_YX", "U36_CHIRAL_PAIR_FLIP_ZW_WZ"],
+    "coupled_z72_residues_per_generator": 72,
+    "finite_generator_audit_cases": 290,
+    "inverse_transition_must_restore_exact_s7_point": true,
+    "generator_closure_is_not_full_ambient_enumeration": true
+  },
+  "claims_deliberately_not_promoted": {
+    "isometry": false,
+    "geodesic_preservation": false,
+    "hopf_fibration_preservation": false,
+    "bott_periodicity_correspondence": false,
+    "physical_spherical_hardware_topology": false
+  },
+  "repair_forward_topology_obligations": {
+    "discrete_S7_embedding": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "RML5_generator_closure_on_S7": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED",
+    "Hopf_fibration_preservation": "REPAIR_FORWARD_REQUIRED",
+    "Bott_periodicity_correspondence": "REPAIR_FORWARD_REQUIRED"
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false
+  },
+  "implementation": ["hhs_runtime/pass219/discrete_s7_embedding.py", "tests/pass219/test_pass219_discrete_s7_embedding.py"],
+  "validation": {
+    "workflow": "Pass 219 Discrete S7 Embedding",
+    "run_id": 34420155680,
+    "job_id": 102693587051,
+    "validated_implementation_head": "de081a3e4405b40ac07386d465029954c2810a09",
+    "result": "67 passed, 0 failed, 1 inherited pytest-config warning",
+    "elapsed_seconds": "9.55",
+    "dependency_scope": "RML4_RML5_RML6",
+    "generator_cases": 290,
+    "conclusion": "SUCCESS"
+  },
+  "status": "IMPLEMENTED_DEPENDENCY_SCOPED_VALIDATED"
+}

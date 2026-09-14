@@ -1,0 +1,123 @@
+{
+  "schema": "HHS_PASS219_RML14_ROUTE_BOUND_RECEIPT_SUCCESSOR_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML14_ROUTE_BOUND_RECEIPT_SUCCESSOR",
+  "classification": "VERSIONED_NATIVE_CANONICAL_HASH_DELEGATED_ROUTE_BOUND_RECEIPT_SUCCESSOR",
+  "base_checkpoint": "738f32dea8a68894df3b395841f96aeb4d1241c6",
+  "parent_rml13_validation": {
+    "workflow": "Pass 219 RML13 Native Prehash Route Binding",
+    "first_run_id": 34438142834,
+    "first_job_id": 102747417114,
+    "ci_dependency_repair_commit": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "green_run_id": 34464110690,
+    "green_job_id": 102828527303,
+    "validated_head": "d2b8d7e236bcc5c5172b5146c765bf133b91eab9",
+    "contract_validation_seal": "99e1f3b03244629ad49f172985a9f73d1a1db1d1",
+    "green_restart_seal": "738f32dea8a68894df3b395841f96aeb4d1241c6",
+    "result": "16 passed, 0 failed, 2 warnings in 26.39s",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "problem_closed": {
+    "rml13_change_hash72_route_bound": true,
+    "rml13_hash216_identity_route_bound": true,
+    "frozen_uqcel_v1_receipt_directly_route_bound": false,
+    "rml14_adds_versioned_route_bound_receipt": true,
+    "frozen_uqcel_v1_receipt_rewritten": false,
+    "frozen_rml13_transition_rewritten": false
+  },
+  "successor_receipt_material": {
+    "domain": "HHS-P219-RML14-ROUTE-BOUND-RECEIPT-SUCCESSOR-V1",
+    "exact_integer_serialization": true,
+    "contains": [
+      "RML13 witness_root_sha256",
+      "RML13 route_environment_root_sha256",
+      "RML13 candidate_frame_sha256",
+      "RML12 selected route_sha256",
+      "RML12 selection_sha256",
+      "RML12 bundle_sha256",
+      "RML12 source_state_sha256",
+      "RML12 target_state_sha256",
+      "exact route edge partitions",
+      "vm5184_address",
+      "inherited previous_hash72",
+      "route-bound change_hash72",
+      "frozen UQCEL v1 receipt_hash72",
+      "frozen RML13 transition_hash216"
+    ],
+    "receipt_material_sha256_is_evidence_only": true,
+    "receipt_material_contains_route_witness_root": true,
+    "receipt_material_contains_route_bound_change_hash72": true
+  },
+  "canonical_hash_delegation": {
+    "hash72_function": "hhs_hash72_compute",
+    "hash216_function": "hhs_hash216_compute",
+    "independent_hash_implementation_added": false,
+    "canonical_hash216_parity_with_frozen_uqcel_verified": true,
+    "successor_receipt_hash72_is_canonical_delegate_output": true,
+    "successor_hash216_identity_is_canonical_delegate_output": true
+  },
+  "successor_hash216": {
+    "triplet": "previous_hash72 || route_bound_change_hash72 || route_bound_successor_receipt_hash72",
+    "previous_hash72_inherited": true,
+    "change_hash72_inherited_from_validated_rml13": true,
+    "receipt_hash72_replaced_only_in_successor_identity": true,
+    "all_three_components_are_preserved_as_typed_witnesses": true,
+    "historical_hash216_identity_rewritten": false
+  },
+  "authority_boundary": {
+    "rml14_calls_rml13_parent_binding": true,
+    "new_vm81_commit_primitive_added": false,
+    "single_existing_vm81_commit_authority_preserved": true,
+    "optimizer_transition_authority": false,
+    "parallel_hash_algorithm_authority_added": false,
+    "floating_point_authority": false,
+    "hash216_persistence_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "python_mints_hash72_or_hash216": false
+  },
+  "tests_verified": [
+    "native successor receipt is route-bound",
+    "successor triplet equals previous plus route-bound change plus successor receipt",
+    "different valid routes change successor receipt and successor Hash216",
+    "frozen UQCEL receipt remains unchanged across route choices",
+    "canonical Hash216 delegate reproduces frozen UQCEL identity",
+    "repeated invocation is deterministic",
+    "invalid parent route witness is rejected",
+    "RML13 and frozen I168 regressions remain green",
+    "Pass188 native runtime remains green"
+  ],
+  "implementation": [
+    "hhs_runtime/include/hhs_pass219_rml14_route_bound_receipt_successor_1_27.h",
+    "hhs_runtime/c/hhs_pass219_rml14_route_bound_receipt_successor_1_27.c",
+    "native_projects/hhs_pass219_rml14_route_bound_receipt/Makefile",
+    "hhs_runtime/pass219/route_bound_receipt_successor.py",
+    "tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py"
+  ],
+  "validation": {
+    "workflow": "Pass 219 RML14 Route Bound Receipt Successor",
+    "run_id": 34464850267,
+    "job_id": 102830909024,
+    "validated_head": "8fb7be0f13070d52e3b59d86d6a26c06a44d6042",
+    "result": "15 passed, 0 failed, 2 warnings in 4.47s",
+    "warnings": [
+      "inherited pytest config asyncio_mode warning",
+      "FastAPI/Starlette httpx deprecation warning"
+    ],
+    "rml13_parent_build": "GREEN",
+    "rml14_native_extension_build": "GREEN",
+    "canonical_hash72_export": "GREEN",
+    "canonical_hash216_export": "GREEN",
+    "frozen_i168_symbol_export": "GREEN",
+    "pass188_native_validation": "GREEN",
+    "pass188_hydrated_states": 1259712,
+    "pass188_active_states": 629856,
+    "pass188_collapse_states": 629856,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "status": "DEPENDENCY_SCOPED_VALIDATED"
+}

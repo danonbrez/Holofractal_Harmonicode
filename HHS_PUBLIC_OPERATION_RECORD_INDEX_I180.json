@@ -1,0 +1,71 @@
+{
+  "schema": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I180_V1",
+  "contract": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I180",
+  "version": "1.0.0",
+  "base_main": "8b02d3a26eee0a9161939f78b19804b6fb2b7065",
+  "frozen_parent_index": "HHS_PUBLIC_OPERATION_RECORD_INDEX_I179.json",
+  "frozen_parent_iteration": "PASS219-I179",
+  "frozen_parent_record_count": 48,
+  "extension_shards": [
+    {
+      "shard_id": "legacy-runtime-migration",
+      "path": "contracts/pass219/pass170_operation_records_i180/HHS_PUBLIC_OPERATION_RECORDS_LEGACY_RUNTIME_MIGRATION_V1.json",
+      "record_count": 11,
+      "operation_ids": [
+        "public.runtime.health",
+        "public.runtime.metrics",
+        "public.runtime.solve",
+        "public.runtime.event.inject",
+        "public.runtime.replay.status",
+        "public.runtime.graph.status",
+        "public.runtime.transport.status",
+        "public.runtime.api.status",
+        "public.runtime.calculator.evaluate",
+        "public.runtime.agent.run_loop",
+        "public.runtime.certification"
+      ]
+    }
+  ],
+  "aggregate_record_count": 59,
+  "new_operation_ids": [
+    "public.runtime.health",
+    "public.runtime.metrics",
+    "public.runtime.solve",
+    "public.runtime.event.inject",
+    "public.runtime.replay.status",
+    "public.runtime.graph.status",
+    "public.runtime.transport.status",
+    "public.runtime.api.status",
+    "public.runtime.calculator.evaluate",
+    "public.runtime.agent.run_loop",
+    "public.runtime.certification"
+  ],
+  "capability_scope_registry": "HHS_PUBLIC_CAPABILITY_SCOPE_REGISTRY_I180.json",
+  "constructor_registry": "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I179.json",
+  "legacy_route_migration_manifest": "HHS_PUBLIC_LEGACY_ROUTE_MIGRATION_I180.json",
+  "transport_state": {
+    "legacy_http": "11_EXECUTABLE_MIGRATED_TARGETS_I180",
+    "legacy_websocket": "4_EXISTING_CANONICAL_REPLACEMENTS_BOUND_I180",
+    "cli": "PENDING_REMAINING_PUBLIC_OPERATION_PARITY",
+    "python": "PENDING_REMAINING_PUBLIC_OPERATION_PARITY",
+    "native_abi": "PENDING_WHERE_APPLICABLE",
+    "full_e2e_receipt_replay": "PENDING_PASS170_TERMINAL_PROOF"
+  },
+  "invariants": {
+    "parent_records_immutable": true,
+    "new_operation_ids_registered": true,
+    "aggregate_operation_count_is_parent_plus_extension": true,
+    "pass190_signed_capability_verifier_reused": true,
+    "legacy_http_handlers_preserved_during_migration": true,
+    "legacy_websocket_duplicates_not_double_registered": true,
+    "constructor_retirement_deferred_until_route_evidence_green": true,
+    "new_capability_token_authority": false,
+    "new_vm81_authority": false,
+    "new_hash72_mint_authority": false,
+    "hash216_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_LEGACY_CONSTRUCTOR_RETIREMENT_AND_REMAINING_TRANSPORT_PARITY"
+}

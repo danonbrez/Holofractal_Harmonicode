@@ -36,6 +36,9 @@ PASS194_INC_PATH = P("hhs_runtime/c/hhs_pass219_inherited_pass194_1_32.inc")
 CONTRACT_AUTHORIZATION_COMMIT = "eebc47a52de143df4a9acf807735f576ad0ce844"
 CONTRACT_BASELINE_COMMIT = "c3da7e2b7125754b65f08fb8922a151bf01df2b8"
 FROZEN_I132 = "d311cd243845456851518ce1fef026a7d3cac45e"
+IMPLEMENTED_BASELINE_COMMIT = "b608efe7a73c8d9ae3a667d5bb2c3fbb75bb8308"
+VISUAL_SERVER_SUCCESSOR_COMMIT = "a5db8abf3b2b5a8ef4dc14cd7b1f08fbf91cc3cf"
+VISUAL_SERVER_SUCCESSOR_BLOB = "409d451a7db39945c07b919bbb9faa3626dc0bc6"
 PASS194_AUTHORIZATION_COMMIT = "714f3f3c5c77eab9714be421811ce4fd650a8e99"
 PASS194_CONTRACT_BLOB = "f437461b4cb74b40ba8444c48319ad8f906359cf"
 PASS194_MEMBRANE_BLOB = "4ef6bdf72f6afd2b17ffb3500bba71cc9bc05a51"
@@ -119,13 +122,28 @@ def _pass194_frozen_successor_evidence() -> Dict[str, Any]:
 def pass193_membrane_source_evidence() -> Dict[str, Any]:
     if _git("merge-base", "--is-ancestor", CONTRACT_AUTHORIZATION_COMMIT, "HEAD") != "":
         raise RuntimeError("PASS193_AUTHORIZATION_ANCESTRY_OUTPUT")
+    if _git("merge-base", "--is-ancestor", IMPLEMENTED_BASELINE_COMMIT, "HEAD") != "":
+        raise RuntimeError("PASS193_IMPLEMENTED_BASELINE_NOT_ANCESTOR")
+    if _git("merge-base", "--is-ancestor", VISUAL_SERVER_SUCCESSOR_COMMIT, "HEAD") != "":
+        raise RuntimeError("PASS193_VISUAL_SERVER_SUCCESSOR_NOT_ANCESTOR")
     if _git("merge-base", "HEAD", FROZEN_I132) != FROZEN_I132:
         raise RuntimeError("PASS193_FROZEN_I132_LINEAGE_DRIFT")
     historical_contract = _git("rev-parse", f"{CONTRACT_AUTHORIZATION_COMMIT}:{CONTRACT_PATH}")
     if historical_contract != SOURCE_BLOBS[CONTRACT_PATH]:
         raise RuntimeError("PASS193_HISTORICAL_CONTRACT_DRIFT")
     for path, expected in SOURCE_BLOBS.items():
-        if _git_blob(path) != expected:
+        if path == VISUAL_SERVER_PATH:
+            if _git(
+                "rev-parse", f"{IMPLEMENTED_BASELINE_COMMIT}:{path}"
+            ) != expected:
+                raise RuntimeError("PASS193_VISUAL_SERVER_BASELINE_DRIFT")
+            if _git(
+                "rev-parse", f"{VISUAL_SERVER_SUCCESSOR_COMMIT}:{path}"
+            ) != VISUAL_SERVER_SUCCESSOR_BLOB:
+                raise RuntimeError("PASS193_VISUAL_SERVER_SUCCESSOR_DRIFT")
+            if _git_blob(path) != VISUAL_SERVER_SUCCESSOR_BLOB:
+                raise RuntimeError("PASS193_CURRENT_VISUAL_SERVER_SUCCESSOR_DRIFT")
+        elif _git_blob(path) != expected:
             raise RuntimeError(f"PASS193_IMPLEMENTED_SOURCE_DRIFT:{path}")
 
     _require(

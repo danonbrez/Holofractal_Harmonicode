@@ -1,0 +1,151 @@
+name: Pass219 HHCQ 8-Basis Equilibrium Parity Phase11
+
+on:
+  push:
+    branches:
+      - agent/pass219-hhcq-8basis-parity-phase11-20260908
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_hhcq_8basis_equilibrium_parity_1_31.h'
+      - 'hhs_runtime/c/hhs_pass219_hhcq_8basis_equilibrium_parity_1_31.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_hhcq_8basis_equilibrium_parity_1_31.c'
+      - 'benchmarks/pass219/hhcq_8basis_equilibrium_parity_phase11_benchmark.cpp'
+      - 'docs/operations/restart/PASS_219_HHCQ_8BASIS_EQUILIBRIUM_PARITY_PHASE11_RESTART.md'
+      - 'docs/operations/restart/PASS_219_HHCQ_8BASIS_EQUILIBRIUM_PARITY_PHASE11_IMPLEMENTED_CHECKPOINT.md'
+      - '.github/workflows/pass219-hhcq-8basis-equilibrium-parity-phase11.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  phase11:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+    steps:
+      - name: Check out Phase11 branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build exact ABI
+        run: |
+          set -o pipefail
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and run strict Phase11 C invariants
+        run: |
+          set -o pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hhcq_8basis_equilibrium_parity_1_31.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase11-test
+          /tmp/pass219-phase11-test
+
+      - name: Reuse frozen Phase3 authenticated hydrated-weight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pass219-core-dynamic-circuit-experiment
+          path: /tmp/pass219-phase3-artifact
+          github-token: ${{ github.token }}
+          repository: danonbrez/Holofractal_Harmonicode
+          run-id: 34138427959
+
+      - name: Verify frozen Phase3 frame binary
+        run: |
+          FRAME="$(find /tmp/pass219-phase3-artifact -name PASS_219_PHASE3_HYDRATED_WEIGHT_FRAMES.bin -print -quit)"
+          test -n "$FRAME"
+          test -s "$FRAME"
+          echo '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433  '"$FRAME" | sha256sum -c -
+          printf '%s\n' "$FRAME" > /tmp/pass219-phase3-frame-path
+          sha256sum "$FRAME" > /tmp/pass219-phase3-frame.sha256
+
+      - name: Compile and run Phase11 authenticated manifold benchmark
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/pass219/phase11
+          FRAME="$(cat /tmp/pass219-phase3-frame-path)"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhcq_8basis_equilibrium_parity_phase11_benchmark.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/pass219-phase11-benchmark
+          /tmp/pass219-phase11-benchmark "$FRAME" \
+            | tee artifacts/pass219/phase11/hhcq_8basis_equilibrium_parity.json
+          cp /tmp/pass219-phase3-frame.sha256 artifacts/pass219/phase11/phase3_frame.sha256
+
+      - name: Validate Phase11 evidence gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/phase11/hhcq_8basis_equilibrium_parity.json')
+          d = json.loads(p.read_text())
+          assert d['schema'] == 'HHS_PASS219_HHCQ_8BASIS_EQUILIBRIUM_PARITY_PHASE11_V1'
+          assert d['classification'] == 'EIGHT_BASIS_EQUILIBRIUM_PARITY_EXACT_PRE_TRANSPORT'
+          assert d['phase3_frame_binary_sha256'] == '63d0f8816d4c04e10eb5d9644c9c60015b8cdd3b1235f114b3f1821ef08a3433'
+          assert d['source_bytes'] == 700
+          assert d['source_sha256'] == '7d87d468e528f30df6768b130f626077ab9786e82d2dbe577a120753cdaedc60'
+          assert d['derived_update_quantum'] == 5
+          assert d['derived_phase_modulus'] == 72
+          assert d['derived_parameter_count'] == 5184
+          assert d['exhaustive_direct_orientations'] == 36
+          assert d['exhaustive_reversed_orientations'] == 36
+          assert d['summary_records'] == 529
+          assert d['authenticated_unique_digests'] == 489
+          assert d['local_samples'] == 4761
+          assert d['phase5_exact_roundtrip_checks'] == 4761
+          assert d['full_octonion_surface_checks'] == 4761
+          assert d['equilibrium_constructor_checks'] == 4761
+          assert d['independent_equilibrium_checks'] == 4761
+          assert d['deterministic_replay_checks'] == 4761
+          assert d['matrix_order_checks'] == 4761
+          assert d['phase10_product_closure_checks'] == 4761
+          assert d['constraint_intersection_checks'] == 4761
+          assert d['transport_drift_detection_checks'] == 4761
+          assert d['transport_drift_fail_closed_checks'] == 4761
+          assert d['integer_macro_p_states'] + d['half_integer_macro_p_states'] == 4761
+          assert d['authenticated_direct_orientations'] > 0
+          assert d['authenticated_reversed_orientations'] > 0
+          assert d['x2_parity_equals_x_parity'] is True
+          assert d['ordinary_negative_base_exponent_evaluated'] is False
+          assert d['symbolic_exponent_retained'] is True
+          assert d['actual_phase_transport_mutation_performed'] is False
+          assert d['candidate_transport_delta_only'] is True
+          assert d['fixed_policy_state_bytes'] == 112
+          assert d['candidate_only'] is True
+          assert d['canonical_authority_changed'] is False
+          assert d['floating_point_authority'] is False
+          print(json.dumps(d, indent=2, sort_keys=True))
+          PY
+
+      - name: Record Phase11 summary
+        if: always()
+        run: |
+          {
+            echo '### Pass219 HHCQ 8-basis equilibrium + parity Phase11'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            if test -f artifacts/pass219/phase11/hhcq_8basis_equilibrium_parity.json; then
+              echo '```json'
+              cat artifacts/pass219/phase11/hhcq_8basis_equilibrium_parity.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Phase11 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-hhcq-8basis-equilibrium-parity-phase11
+          path: artifacts/pass219/phase11
+          if-no-files-found: warn

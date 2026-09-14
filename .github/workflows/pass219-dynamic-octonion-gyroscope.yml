@@ -1,0 +1,37 @@
+name: Pass 219 Dynamic Octonion Gyroscope
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - hhs_runtime/pass219/dynamic_octonion_gyroscope.py
+      - hhs_runtime/pass219/production_phase_geometry_binding.py
+      - hhs_runtime/pass219/phase_geometry_learning.py
+      - hhs_runtime/pass219/recursive_manifold_learning.py
+      - tests/pass219/test_pass219_dynamic_octonion_gyroscope.py
+      - tests/pass219/test_pass219_production_phase_geometry_binding.py
+      - tests/pass219/test_pass219_phase_geometry_learning.py
+      - tests/pass219/test_pass219_recursive_manifold_learning.py
+      - tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py
+      - contracts/pass219/PASS_219_RML4_DYNAMIC_OCTONION_GYROSCOPE_1_0.json
+      - .github/workflows/pass219-dynamic-octonion-gyroscope.yml
+
+jobs:
+  targeted-rml4-dynamic-gyroscope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run RML1 through RML4 dependency-scope validation
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_recursive_manifold_learning.py \
+            tests/pass219/test_pass219_phase_geometry_learning.py \
+            tests/pass219/test_pass219_production_phase_geometry_binding.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py

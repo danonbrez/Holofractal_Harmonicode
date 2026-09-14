@@ -1,0 +1,95 @@
+name: Pass 219 RML16 Cold Route Substage Calibration
+
+on:
+  push:
+    branches:
+      - agent/pass219-rml16-cold-route-profile-20260910
+    paths:
+      - 'benchmarks/pass219/pass219_rml16_cold_route_substage_benchmark.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/discrete_s7_embedding.py'
+      - 'hhs_runtime/pass219/discrete_hopf_projection.py'
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'hhs_runtime/pass219/reciprocal_route_optimizer.py'
+      - 'hhs_runtime/pass219/reciprocal_route_cache.py'
+      - '.github/workflows/pass219-rml16-cold-route-substage-profile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cold-route-substage-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Validate inherited native route stack through RML15
+        run: make -C native_projects/hhs_pass219_rml15_route_reverse_replay validate
+
+      - name: Preserve frozen RML16 exact-route cache semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_rml16_reciprocal_route_cache.py \
+            tests/pass219/test_pass219_reciprocal_route_optimizer.py \
+            -k 'not complete_290_case_route_metadata_cross_tab_is_reversible'
+
+      - name: Run cold-route dependency profiler
+        run: |
+          mkdir -p artifacts/pass219/rml16-cold-route
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/pass219_rml16_cold_route_substage_benchmark.py \
+            --output artifacts/pass219/rml16-cold-route/profile.json \
+            --states 16
+
+      - name: Validate semantic-before-timing profile receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('artifacts/pass219/rml16-cold-route/profile.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          assert data['result'] == 'PASS'
+          assert data['all_source_state_hashes_unique'] is True
+          assert data['state_count'] == 16
+          assert all(data['semantic_gates'].values())
+          assert data['timing_is_canonical'] is False
+          assert data['canonical_vm81_mutation_authority'] is False
+          assert data['canonical_hash72_mint_authority'] is False
+          assert data['canonical_hash216_persistence_authority'] is False
+          assert data['floating_point_canonical_authority'] is False
+          assert data['scalar_projection_substitution_authority'] is False
+          assert data['diagnostics']['exact_request_route_cache_hits_possible_by_design'] is False
+
+          print('RML16_COLD_ROUTE_RANKING')
+          for row in data['ranking']:
+              print(row['surface'], row['median_ns'], row['samples'])
+          print('RML16_COLD_ROUTE_DIAGNOSTICS', json.dumps(data['diagnostics'], sort_keys=True))
+          PY
+
+      - name: Revalidate impacted production route semantics
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_production_phase_geometry_binding.py \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_rml13_native_route_witness_binding.py \
+            tests/pass219/test_pass219_rml14_route_bound_receipt_successor.py \
+            tests/pass219/test_pass219_rml15_route_reverse_replay.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass219-rml16-cold-route-substage-profile
+          path: artifacts/pass219/rml16-cold-route/profile.json
+          if-no-files-found: error

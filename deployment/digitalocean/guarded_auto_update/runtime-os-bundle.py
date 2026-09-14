@@ -25,6 +25,8 @@ INTERFACE = "HHS_VISUAL_RUNTIME_OS_WORKSPACE"
 INDEX_IDENTITY = "HHS Visual Runtime OS Workspace"
 ASSET_PREFIX = "/assets/index-"
 RELEASE_MANIFEST = ".hhs-runtime-os-manifest.json"
+RELEASE_DIR_MODE = 0o755
+RELEASE_FILE_MODE = 0o644
 
 
 def sha256_file(path: Path) -> str:
@@ -99,7 +101,7 @@ def deterministic_archive(dist: Path, records: list[dict[str, Any]], archive: Pa
                 for relative in sorted(directories, key=lambda item: (item.count("/"), item)):
                     info = tarfile.TarInfo(relative)
                     info.type = tarfile.DIRTYPE
-                    info.mode = 0o755
+                    info.mode = RELEASE_DIR_MODE
                     info.uid = info.gid = 0
                     info.uname = info.gname = "root"
                     info.mtime = 0
@@ -108,7 +110,7 @@ def deterministic_archive(dist: Path, records: list[dict[str, Any]], archive: Pa
                     source = dist / record["path"]
                     info = tarfile.TarInfo(record["path"])
                     info.size = record["bytes"]
-                    info.mode = 0o644
+                    info.mode = RELEASE_FILE_MODE
                     info.uid = info.gid = 0
                     info.uname = info.gname = "root"
                     info.mtime = 0
@@ -169,6 +171,50 @@ def verify_tree(root: Path, manifest: dict[str, Any]) -> None:
     validate_dist(root)
 
 
+def normalize_release_permissions(root: Path) -> None:
+    """Normalize only Runtime OS release modes; never alter content bytes.
+
+    ``tempfile.mkdtemp`` intentionally creates the staging directory as 0700.
+    The production service runs as the unprivileged ``hhs`` identity, so the
+    release root itself must be traversable before the atomically activated
+    ``current`` symlink can be consumed. Descendants were historically chmod'd,
+    but omitting the stage root left otherwise valid releases inaccessible.
+    """
+    if not root.is_dir() or root.is_symlink():
+        raise SystemExit(f"Runtime OS release root is not a real directory: {root}")
+    os.chmod(root, RELEASE_DIR_MODE)
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise SystemExit(f"symlink found while normalizing Runtime OS release: {path}")
+        if path.is_dir():
+            os.chmod(path, RELEASE_DIR_MODE)
+        elif path.is_file():
+            os.chmod(path, RELEASE_FILE_MODE)
+        else:
+            raise SystemExit(f"unsupported Runtime OS filesystem entry: {path}")
+
+
+def verify_release_permissions(root: Path) -> None:
+    """Fail closed unless every release path is service-readable/traversable."""
+    paths = [root, *sorted(root.rglob("*"))]
+    for path in paths:
+        if path.is_symlink():
+            raise SystemExit(f"symlink found while verifying Runtime OS permissions: {path}")
+        mode = stat.S_IMODE(path.stat().st_mode)
+        if path.is_dir():
+            if mode != RELEASE_DIR_MODE:
+                raise SystemExit(
+                    f"Runtime OS directory mode mismatch: {path}: {oct(mode)} != {oct(RELEASE_DIR_MODE)}"
+                )
+        elif path.is_file():
+            if mode != RELEASE_FILE_MODE:
+                raise SystemExit(
+                    f"Runtime OS file mode mismatch: {path}: {oct(mode)} != {oct(RELEASE_FILE_MODE)}"
+                )
+        else:
+            raise SystemExit(f"unsupported Runtime OS filesystem entry: {path}")
+
+
 def command_create(args: argparse.Namespace) -> None:
     dist = Path(args.dist).resolve()
     archive = Path(args.archive).resolve()
@@ -217,7 +263,7 @@ def extract_verified(archive: Path, destination: Path, manifest: dict[str, Any])
                 raise SystemExit(f"unable to read Runtime OS archive member: {relative}")
             with target.open("wb") as handle:
                 shutil.copyfileobj(source, handle)
-            os.chmod(target, 0o644)
+            os.chmod(target, RELEASE_FILE_MODE)
     if seen != expected:
         missing = sorted(expected - seen)
         raise SystemExit(f"archive missing Runtime OS files: {missing[:10]}")
@@ -236,15 +282,20 @@ def command_stage(args: argparse.Namespace) -> None:
     if sha256_file(archive) != manifest.get("archive_sha256"):
         raise SystemExit("Runtime OS archive SHA-256 mismatch")
 
+    root.mkdir(parents=True, exist_ok=True)
+    os.chmod(root, RELEASE_DIR_MODE)
     releases = root / "releases"
     releases.mkdir(parents=True, exist_ok=True)
+    os.chmod(releases, RELEASE_DIR_MODE)
     release = releases / sha
     if release.exists():
         stored_manifest = release / RELEASE_MANIFEST
         existing = load_manifest(stored_manifest, sha)
         if existing.get("archive_sha256") != manifest.get("archive_sha256"):
             raise SystemExit(f"existing Runtime OS release conflicts with bundle for {sha}")
+        normalize_release_permissions(release)
         verify_tree(release, existing)
+        verify_release_permissions(release)
         print(str(release))
         return
 
@@ -253,9 +304,10 @@ def command_stage(args: argparse.Namespace) -> None:
         extract_verified(archive, stage, manifest)
         verify_tree(stage, manifest)
         (stage / RELEASE_MANIFEST).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        for path in stage.rglob("*"):
-            os.chmod(path, 0o755 if path.is_dir() else 0o644)
+        normalize_release_permissions(stage)
+        verify_release_permissions(stage)
         os.replace(stage, release)
+        verify_release_permissions(release)
     except BaseException:
         shutil.rmtree(stage, ignore_errors=True)
         raise
@@ -268,6 +320,7 @@ def release_for(root: Path, sha: str) -> Path:
         raise SystemExit(f"Runtime OS release missing: {release}")
     manifest = load_manifest(release / RELEASE_MANIFEST, sha)
     verify_tree(release, manifest)
+    verify_release_permissions(release)
     return release
 
 

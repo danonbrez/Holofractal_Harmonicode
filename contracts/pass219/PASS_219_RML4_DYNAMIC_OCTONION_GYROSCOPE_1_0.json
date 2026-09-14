@@ -1,0 +1,100 @@
+{
+  "schema": "HHS_PASS219_RML4_DYNAMIC_OCTONION_GYROSCOPE_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML4_DYNAMIC_OCTONION_GYROSCOPE",
+  "classification": "ADDITIVE_READ_ONLY_EIGHT_CHANNEL_DYNAMIC_IMAGINARY_PHASE_GYROSCOPE",
+  "base_checkpoint": "0efe1dded141f1e3bf3a2d9ecc18fd026938f4dc",
+  "inherits": {
+    "rml2": "HHS_PASS219_RML2_PHASE_GEOMETRIC_LEARNING_RECEIPT_V1",
+    "rml3": "HHS_PASS219_RML3_PRODUCTION_PHASE_RUNTIME_BINDING_V1",
+    "phase_modulus": 72,
+    "quarter_turn_steps": 18,
+    "half_turn_steps": 36,
+    "full_cycle_steps": 72,
+    "full_cycle_degrees": 360,
+    "degrees_per_phase_step": 5
+  },
+  "eight_channel_gyroscope": {
+    "ordered_channels": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "primitive_channels": ["x", "y", "z", "w"],
+    "product_channels": ["xy", "yx", "zw", "wz"],
+    "ambient_phase_state_count": 722204136308736,
+    "ambient_phase_state_count_expression": "72^8",
+    "ambient_state_count_is_admissible_state_count_claim": false,
+    "all_eight_channels_are_one_gyroscope": true,
+    "all_eight_channels_are_continuously_rotating": true,
+    "local_signed_motion": "+/- exact integer phase steps mod 72",
+    "typed_u0_is_scalar_zero": false
+  },
+  "primitive_geometry": {
+    "x": {"plane": "PRIMARY_XZ", "direction": "CW"},
+    "z": {"plane": "PRIMARY_XZ", "direction": "CCW"},
+    "y": {"plane": "ORTHOGONAL_YW", "direction": "CCW"},
+    "w": {"plane": "ORTHOGONAL_YW", "direction": "CW"}
+  },
+  "product_geometry": {
+    "xy": {"generator": "x", "reciprocal": "y"},
+    "yx": {"generator": "y", "reciprocal": "x"},
+    "zw": {"generator": "z", "reciprocal": "w"},
+    "wz": {"generator": "w", "reciprocal": "z"},
+    "meaning": "SAME_GYROSCOPE_DIRECTED_QUARTER_TURN_TOWARD_ORDERED_RECIPROCAL",
+    "quarter_turn_magnitude_steps": 18,
+    "quarter_turn_magnitude_degrees": 90,
+    "quarter_turn_sign_must_remain_explicit": true,
+    "quarter_turn_sign_may_not_be_inferred_by_commutative_reorder": true,
+    "product_channels_are_second_gyroscope": false
+  },
+  "unified_operation_engine": {
+    "primitive": "SIGNED_IMAGINARY_PHASE_ROTATION",
+    "addition": "COUPLED_PHASE_ROTATION",
+    "multiplication": "ORDERED_RECIPROCAL_QUARTER_TURN",
+    "exponentiation": "RECURSIVE_PHASE_ORBIT",
+    "source_operator_identity_preserved": true,
+    "operand_order_preserved": true,
+    "parenthesization_and_ancestry_preserved": true,
+    "ordinary_scalar_sum_materialized": false,
+    "ordinary_scalar_product_materialized": false,
+    "ordinary_scalar_power_materialized": false
+  },
+  "rml3_successor_binding": {
+    "primitive_x_y_z_w_phase72_inherited_exactly_from_i148": true,
+    "frozen_i148_xy_yx_zw_wz_preserved_as_provenance": true,
+    "frozen_i148_products_reinterpreted_in_place": false,
+    "rml4_dynamic_products_generated_as_reciprocal_quarter_turn_images": true,
+    "rml3_raw5184_sha256_preserved": true,
+    "rml3_phase_circuit_root_sha256_preserved": true
+  },
+  "authority_boundary": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "scalar_projection_substitution_authority": false
+  },
+  "failure_policy": {
+    "float_input": "FAIL_CLOSED",
+    "phase_out_of_u72_range": "FAIL_CLOSED",
+    "channel_order_drift": "FAIL_CLOSED",
+    "quarter_turn_sign_not_plus_or_minus_one": "FAIL_CLOSED",
+    "multiplication_operand_order_drift": "FAIL_CLOSED",
+    "rml3_source_schema_drift": "FAIL_CLOSED"
+  },
+  "implementation": [
+    "hhs_runtime/pass219/dynamic_octonion_gyroscope.py",
+    "tests/pass219/test_pass219_dynamic_octonion_gyroscope.py"
+  ],
+  "validation": {
+    "workflow": "Pass 219 Dynamic Octonion Gyroscope",
+    "run_id": 34415997445,
+    "job_id": 102680894089,
+    "validated_head": "a0f29ed9e0294dbc4cb5556f902dfd27d04de63c",
+    "scope": "RML1+RML2+RML3+RML4+I148",
+    "passed": 47,
+    "failed": 0,
+    "warnings": 1,
+    "elapsed_seconds": "63.43",
+    "warning_classification": "INHERITED_PYTEST_ASYNCIO_MODE_CONFIG_WARNING"
+  },
+  "status": "IMPLEMENTED_VALIDATED"
+}

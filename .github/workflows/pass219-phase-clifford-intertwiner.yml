@@ -1,0 +1,48 @@
+name: Pass 219 Phase Clifford Intertwiner
+
+on:
+  push:
+    branches:
+      - agent/pass219-recursive-manifold-learning-20260909
+    paths:
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'tests/pass219/test_pass219_phase_clifford_intertwiner.py'
+      - 'contracts/pass219/PASS_219_RML11_PHASE_CLIFFORD_INTERTWINER_1_0.json'
+      - '.github/workflows/pass219-phase-clifford-intertwiner.yml'
+      - 'hhs_runtime/pass219/real_clifford_morita_witness.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'tests/pass219/test_pass219_phase_clifford_intertwiner.py'
+      - 'contracts/pass219/PASS_219_RML11_PHASE_CLIFFORD_INTERTWINER_1_0.json'
+      - '.github/workflows/pass219-phase-clifford-intertwiner.yml'
+      - 'hhs_runtime/pass219/real_clifford_morita_witness.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-rml11-phase-clifford:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate inherited Pass 188 native Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+      - name: Run RML10 through RML11 phase Clifford dependency scope
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py

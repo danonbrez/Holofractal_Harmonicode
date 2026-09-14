@@ -1,0 +1,122 @@
+{
+  "schema": "HHS_PASS219_RML16_FULL_HYDRATION_BENCHMARK_CALIBRATION_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "RML16_FULL_HYDRATION_BENCHMARK_CALIBRATION",
+  "classification": "DEEP_FOUR_LANE_HYDRATION_MEASUREMENT_AND_REPAIR_FORWARD_CALIBRATION",
+  "base_checkpoint": "626827195261a620203eb6e02e0f20f9145fab56",
+  "validated_parent": {
+    "rml15_workflow": "Pass 219 RML15 Route Reverse Replay",
+    "run_id": 34466181156,
+    "job_id": 102835196552,
+    "validated_head": "452ddb502158cf488bbb000f6af2664b06b57ac8",
+    "contract_validation_seal": "f8748f950761625b0f18c154a2fd6f0cb9b5a526",
+    "green_restart_seal": "626827195261a620203eb6e02e0f20f9145fab56",
+    "result": "22 passed, 0 failed, 2 warnings in 3.90s",
+    "pass188_hydrated_states": 1259712,
+    "pass188_coordinate_drift_states": 0,
+    "pass188_checksum_hex": "0x11e3bbf0214751c3"
+  },
+  "integrated_lanes": [
+    "RAW5184_X86_64",
+    "VM81_HASH72_HASH216",
+    "OCTONION_DUAL_STEREO_TERNARY",
+    "HARMONIC36_144X36"
+  ],
+  "fixed_resolution": {
+    "identity": "5184^21=72^42",
+    "exhaustive_enumeration_claim": false,
+    "finite_native_spaces_must_be_exhausted_when_practical": true
+  },
+  "measurement_rules": {
+    "timing_unit": "integer_nanoseconds",
+    "timing_is_canonical": false,
+    "timing_defines_state_identity": false,
+    "semantic_equality_required_before_performance_comparison": true,
+    "cold_and_warm_measurements_required": true,
+    "integer_median_required": true,
+    "integer_nearest_rank_p95_required": true,
+    "integer_floor_mean_required": true,
+    "python_peak_allocation_is_observational": true,
+    "physical_gpu_claim_requires_physical_gpu_evidence": true
+  },
+  "latency_policy": {
+    "exact_unit": "25/3 ms",
+    "tier1": "25/3 ms = 1/120 s",
+    "tier2": "50/3 ms = 1/60 s",
+    "tier3": "100/3 ms = 1/30 s",
+    "classification_uses_integer_cross_multiplication": true,
+    "repeated_window_rule": "mean<=T1,p95<=T2,max<=T3"
+  },
+  "required_corpus": [
+    "ZERO",
+    "ONES",
+    "ALTERNATING",
+    "RAMP",
+    "SPARSE17",
+    "LCG_DETERMINISTIC"
+  ],
+  "required_python_stage_measurements": [
+    "I150/I148 exact raw5184 hydration",
+    "RML3 physical nested phase source",
+    "RML4 lift of all 20 physical phase quads into dynamic gyroscopes",
+    "RML12 selected reciprocal routes across all 20 gyroscopes",
+    "radix72 encode/decode microbenchmark",
+    "RML13 native prehash route binding",
+    "RML14 route-bound successor receipt",
+    "RML15 deterministic reverse/replay",
+    "end-to-end raw frame through route-aware reverse/replay",
+    "octonion u72 multiplication-table receipt"
+  ],
+  "required_native_hydration_measurements": {
+    "pass188_full_hydration": {
+      "all_1259712_states_required": true,
+      "zero_coordinate_drift_required": true,
+      "checksum_required": "0x11e3bbf0214751c3"
+    },
+    "harmonic36": {
+      "exact_144x36_lane_required": true,
+      "stack_selection_required": true,
+      "stack_selection_cache_required": true,
+      "cache_residency_calibration_required": true,
+      "cache_capacity_calibration_required": true,
+      "branch_reference_cache_required": true,
+      "semantic_equality_before_timing_required": true
+    },
+    "pass214_compound_semantic_control_required": true
+  },
+  "route_profiles": {
+    "ONE_EDGE": 1,
+    "FOUR_EDGE": 4,
+    "MAX_SIX_EDGE": 6
+  },
+  "calibration_method": {
+    "baseline_must_be_measured_before_runtime_optimization": true,
+    "bottlenecks_ranked_by_measured_integer_stage_cost": true,
+    "repair_forward_only_measured_dominant_surfaces": true,
+    "candidate_cache_requires_exact_semantic_identity": true,
+    "candidate_cache_requires_immutable_source_identity": true,
+    "candidate_cache_must_not_gain_authority": true,
+    "post_optimization_same_harness_rerun_required": true,
+    "speedup_reported_as_exact_integer_ratio_or_permille_floor": true
+  },
+  "first_hypothesis_to_test": {
+    "surface": "RML3 octonion u72 immutable table receipt",
+    "observation": "build_raw5184_phase_source currently invokes table_receipt which rebuilds and hashes 64 ordered multiplication cells",
+    "optimization_not_yet_authorized_by_measurement": true,
+    "allowed_repair_if_dominant": "memoize only the immutable RML3 receipt summary fields actually consumed; preserve inherited table implementation and receipt_hash72"
+  },
+  "authority_boundary": {
+    "benchmark_vm81_mutation_authority": false,
+    "benchmark_hash72_mint_authority": false,
+    "benchmark_hash216_persistence_authority": false,
+    "timing_canonical_authority": false,
+    "floating_point_canonical_authority": false,
+    "scalar_projection_substitution_authority": false,
+    "gpu_candidate_commit_authority": false
+  },
+  "implementation": [
+    "benchmarks/pass219/pass219_rml16_full_hydration_benchmark.py"
+  ],
+  "status": "BASELINE_BENCHMARK_IMPLEMENTED_VALIDATION_REQUIRED"
+}

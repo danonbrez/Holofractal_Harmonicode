@@ -62,6 +62,7 @@ BOTT_MERGE_COMMIT = "5db45d6b72b93132997f815d16df4540fd13adfc"
 PASS188_BOTT_RUNTIME_COMMIT = "c77e3feef42448a111d8b8912a1d1cb157d51925"
 COMPOSITION_COMPLETION_HEAD = "c36beacd8d6748f65c30ca3b02ac237eac38c34d"
 FROZEN_I138 = "6f59481b48903759395dfbe94a4dc61097b306b1"
+I139_MEMBRANE_COMMIT = "33ef55e46f7281ea4f84ff5311cda6679f143ab9"
 FOCUSED_COMPOSITION_RUN = 33186767175
 FOCUSED_COMPOSITION_JOB = 98901660703
 
@@ -95,6 +96,8 @@ NATIVE_BLOBS = {
     NATIVE_HEADER_PATH: "e59603ac523dd32e845b21492fc3d2336a562dcf",
     NATIVE_HPP_PATH: "0e00dc16c9624cf51aa0c9a1d6e30397a1529763",
     NATIVE_INC_PATH: "0ff432490633dac2417aa3e294305378848dc570",
+}
+HISTORICAL_EXACT_ABI_BLOBS = {
     EXACT_HEADER_PATH: "db92bb0590adb667ac406a89e43171a8ab12eb3c",
     EXACT_SOURCE_PATH: "8d6c694e4bb7358f28844df55848b07604030e33",
 }
@@ -144,6 +147,37 @@ def _require(path: Path, *fragments: str) -> None:
             raise RuntimeError(f"PASS187_SOURCE_DRIFT:{path}:{fragment}")
 
 
+def _validate_current_exact_abi_successor() -> Dict[str, Any]:
+    header = _text(EXACT_HEADER_PATH)
+    source = _text(EXACT_SOURCE_PATH)
+    try:
+        header_order = (
+            header.index('hhs_pass219_inherited_pass189_1_37.h')
+            < header.index('hhs_pass219_inherited_pass188_1_38.h')
+            < header.index('hhs_pass219_inherited_pass187_1_39.h')
+        )
+        source_order = (
+            source.index('hhs_pass219_inherited_pass189_1_37.inc')
+            < source.index('hhs_pass219_inherited_pass188_1_38.inc')
+            < source.index('hhs_pass219_inherited_pass187_1_39.inc')
+        )
+    except ValueError as exc:
+        raise RuntimeError("PASS187_CURRENT_EXACT_ABI_SUCCESSOR_MISSING") from exc
+    if not header_order or not source_order:
+        raise RuntimeError("PASS187_CURRENT_EXACT_ABI_SUCCESSOR_ORDER_DRIFT")
+    if 'hhs_pass219_mandatory_genesis_scaling_1_22.h' not in header:
+        raise RuntimeError("PASS187_CURRENT_EXACT_ABI_GENESIS_HEADER_DRIFT")
+    if 'hhs_pass219_mandatory_genesis_scaling_1_22.inc' not in source:
+        raise RuntimeError("PASS187_CURRENT_EXACT_ABI_GENESIS_SOURCE_DRIFT")
+    return {
+        "historical_i139_commit": I139_MEMBRANE_COMMIT,
+        "historical_i139_preserved": True,
+        "current_additive_successor_order": True,
+        "current_header_blob": _git_blob(EXACT_HEADER_PATH),
+        "current_source_blob": _git_blob(EXACT_SOURCE_PATH),
+    }
+
+
 def _frozen_pass188_successor_evidence() -> Dict[str, Any]:
     _git("merge-base", "--is-ancestor", FROZEN_I138, "HEAD")
     for path, expected in PASS188_FROZEN_BLOBS.items():
@@ -168,6 +202,7 @@ def pass187_membrane_source_evidence() -> Dict[str, Any]:
         PASS188_BOTT_RUNTIME_COMMIT,
         COMPOSITION_COMPLETION_HEAD,
         FROZEN_I138,
+        I139_MEMBRANE_COMMIT,
     ):
         _git("merge-base", "--is-ancestor", commit, "HEAD")
     if _git("merge-base", "HEAD", FROZEN_I138) != FROZEN_I138:
@@ -182,6 +217,10 @@ def pass187_membrane_source_evidence() -> Dict[str, Any]:
     for path, expected in NATIVE_BLOBS.items():
         if _git_blob(path) != expected:
             raise RuntimeError(f"PASS187_NATIVE_MEMBRANE_DRIFT:{path}")
+    for path, expected in HISTORICAL_EXACT_ABI_BLOBS.items():
+        actual = _git("rev-parse", f"{I139_MEMBRANE_COMMIT}:{path}")
+        if actual != expected:
+            raise RuntimeError(f"PASS187_HISTORICAL_EXACT_ABI_DRIFT:{path}")
 
     if _git(
         "rev-parse", f"{COMPOSITION_CONTRACT_COMMIT}:{COMPOSITION_CONTRACT_PATH}"
@@ -238,6 +277,7 @@ def pass187_membrane_source_evidence() -> Dict[str, Any]:
         "make -C native_projects/hhs_pass187_composition_fabric validate",
     )
 
+    exact_successor = _validate_current_exact_abi_successor()
     successor = _frozen_pass188_successor_evidence()
     return {
         "composition_contract_commit": COMPOSITION_CONTRACT_COMMIT,
@@ -250,6 +290,10 @@ def pass187_membrane_source_evidence() -> Dict[str, Any]:
         "historical_blobs": {str(path): value for path, value in HISTORICAL_BLOBS.items()},
         "composition_blobs": {str(path): value for path, value in COMPOSITION_BLOBS.items()},
         "native_blobs": {str(path): value for path, value in NATIVE_BLOBS.items()},
+        "historical_exact_abi_blobs": {
+            str(path): value for path, value in HISTORICAL_EXACT_ABI_BLOBS.items()
+        },
+        "current_exact_abi_successor": exact_successor,
         "pass188_successor": successor,
     }
 

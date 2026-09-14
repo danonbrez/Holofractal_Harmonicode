@@ -1,0 +1,150 @@
+name: Pass 219 Post-219 Compositional Development ABI v1
+
+on:
+  push:
+    branches:
+      - agent/pass219-post219-compositional-development-abi-v1-20260912
+    paths:
+      - 'contracts/pass219/PASS_219_POST_219_COMPOSITIONAL_DEVELOPMENT_ABI_V1.md'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_CANONICAL_HANDOFF_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.hpp'
+      - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
+      - '.github/workflows/pass219-post219-compositional-development-abi-v1.yml'
+      - 'docs/operations/restart/PASS_219_POST_219_COMPOSITIONAL_DEVELOPMENT_ABI_V1_RESTART_20260912.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_POST_219_COMPOSITIONAL_DEVELOPMENT_ABI_V1.md'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md'
+      - 'contracts/pass219/PASS_219_PLUG_AND_PLAY_CANONICAL_HANDOFF_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_math_logic_substrate_1_27.hpp'
+      - 'hhs_runtime/include/hhs_pass219_plug_and_play_canonical_handoff_1_28.hpp'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.h'
+      - 'hhs_runtime/include/hhs_pass219_rna_transcription_1_10.hpp'
+      - 'tests/pass219/test_pass219_post219_compositional_development_1_29.cpp'
+      - '.github/workflows/pass219-post219-compositional-development-abi-v1.yml'
+      - 'docs/operations/restart/PASS_219_POST_219_COMPOSITIONAL_DEVELOPMENT_ABI_V1_RESTART_20260912.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Build inherited exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_admit_composed'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_native_phase_witness'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_coordinate_from_pass189'
+
+      - name: Compile strict C++17 post-219 development ABI test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_post219_compositional_development_1_29.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-post219-development
+
+      - name: Run post-219 development ABI conformance
+        run: |
+          LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/hhs_runtime/builds:${LD_LIBRARY_PATH:-}" \
+            /tmp/test-pass219-post219-development
+
+      - name: Regress generic substrate and canonical handoff
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_plug_and_play_math_logic_substrate_1_27.cpp \
+            -o /tmp/test-pass219-substrate
+          /tmp/test-pass219-substrate
+
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_plug_and_play_canonical_handoff_1_28.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-handoff
+          LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/hhs_runtime/builds:${LD_LIBRARY_PATH:-}" \
+            /tmp/test-pass219-handoff
+
+      - name: Audit permanent authority closure and development preservation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          facade = Path('hhs_runtime/include/hhs_pass219_post219_compositional_development_1_29.hpp').read_text()
+          contract = Path('contracts/pass219/PASS_219_POST_219_COMPOSITIONAL_DEVELOPMENT_ABI_V1.md').read_text()
+          substrate = Path('contracts/pass219/PASS_219_PLUG_AND_PLAY_MATHEMATICAL_LOGIC_SUBSTRATE_V1.md').read_text()
+          handoff = Path('contracts/pass219/PASS_219_PLUG_AND_PLAY_CANONICAL_HANDOFF_V1.md').read_text()
+          test = Path('tests/pass219/test_pass219_post219_compositional_development_1_29.cpp').read_text()
+
+          for needle in (
+              'HHS_PASS219_POST219_MIN_PASS_V1 = 220U',
+              'candidate_only{true}',
+              'pass219_substrate_required{true}',
+              'pass219_rna_lowering_available{true}',
+              'canonical_handoff_required{true}',
+              'external_invocation_is_authority{false}',
+              'canonical_mutation_authority{false}',
+              'canonical_hash72_authority{false}',
+              'canonical_hash216_authority{false}',
+              'canonical_persistence_authority{false}',
+              'lower_native_phase',
+              'lower_hydration_coordinate',
+              'submit_uqcel_canonical_request',
+              'Pass219UQCELCanonicalHandoffV1::commit',
+          ):
+              assert needle in facade, needle
+
+          for forbidden in (
+              'hhs_exact_vm81_admit_uqcel(',
+              'hhs_exact_pass219_admit_composed(',
+          ):
+              assert forbidden not in facade, forbidden
+
+          for needle in (
+              'development authority != transition authority',
+              'Pass 220+ may define, compose, lower, verify, optimize, route, and request canonical execution.',
+              'Pass 219 as permanent lowering membrane',
+              'ExternalCapability ⊆ Proposal + Invocation + Observation',
+              'CanonicalAuthority = SingletonVM81Kernel',
+              'extensibility is unbounded at the development layer;',
+              'canonical ownership is singleton at the execution layer.',
+          ):
+              assert needle in contract, needle
+
+          assert 'Post-219 recursive development preservation' in substrate
+          assert 'Post-219 development and permanent authority closure' in handoff
+
+          for needle in (
+              'Pass 220+ composes through the stable Pass 219 substrate.',
+              'Composition order remains semantic data for later passes.',
+              'Pass 220+ receives RNA C++ cell-wall lowering/witness services without authority.',
+              'Canonical success is a delegated request, not Pass 220 authority.',
+              'Forged development authority metadata cannot cross the handoff.',
+          ):
+              assert needle in test, needle
+
+          print('post219_compositional_development_authority_closure=PASS')
+          PY

@@ -2,6 +2,7 @@
 #define HHS_PASS219_GLOBAL_RAW5184_SERIALIZATION_HYDRATION_1_0_H
 
 #include "hhs_pass219_raw5184_octonion_audio_hydration_1_0.h"
+#include "hhs_pass219_core_constraint_dynamic_circuit_1_23.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,6 +64,14 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_raw5184_bytecode_copy(
     uint8_t *output,
     size_t capacity,
     size_t *out_length
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_global_raw5184_dynamic_circuit(
+    const HHSExactVM81Frame *frame,
+    int8_t feedback_trinary,
+    HHSExactPass219CoreCircuitStateV1 *state,
+    HHSExactPass219CoreCircuitFeaturesV1 *out_features,
+    HHSExactPass219CoreCircuitDecisionV1 *out_decision
 );
 
 #ifdef __cplusplus

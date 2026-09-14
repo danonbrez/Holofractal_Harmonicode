@@ -1,0 +1,97 @@
+{
+  "schema": "HHS_PASS219_I178_PASS170_CONSTRUCTOR_TRANSPORT_CONTRACT_V1",
+  "version": "1.0.0",
+  "contract_id": "HHS-P170-PAPAE-HLFDCR",
+  "iteration": "PASS219-I178",
+  "base_main": "a01a63eaa05f88bdb3cfda1963bd733a0f542113",
+  "parent_exact_main_evidence": {
+    "iteration": "PASS219-I177",
+    "main_sha": "a01a63eaa05f88bdb3cfda1963bd733a0f542113",
+    "workflow_run": 34065675606,
+    "artifact_id": 9998859961,
+    "artifact_digest": "sha256:9b4d91010dcc3cd791d75979e798b391f248374eec721c8fbf73c42ef2edaeea",
+    "classification": "EXACT_MAIN_VERIFIED"
+  },
+  "objective": "Retire the independent hhs_runtime.main FastAPI constructor while preserving canonical direct execution, and prove executable HTTP/CLI/Python parity for the capability-bound audio-language operation without claiming native ABI or public receipt replay before those proofs exist.",
+  "constructor_retirement": {
+    "path": "hhs_runtime/main.py",
+    "parent_classification": "LEGACY_RUNTIME_SERVER",
+    "replacement_target": "hhs_backend.public_api_server:app",
+    "direct_execution_preserved": true,
+    "expected_parent_active_constructor_count": 9,
+    "expected_successor_active_constructor_count": 8,
+    "expected_launcher_count": 6,
+    "expected_canonical_launcher_count": 6
+  },
+  "audio_transport_parity": {
+    "operation_id": "public.audio_language.feedback.run",
+    "required_scope": "pass170.audio_language.feedback",
+    "http_path": "/v1/audio-language/run",
+    "cli_command": "python -m hhs_runtime.pass219.pass170_audio_transport_i178 invoke",
+    "python_binding": "hhs_runtime.pass219.pass170_audio_transport_i178.invoke_audio_language_python",
+    "native_abi_symbol": null,
+    "verified_target_surfaces": [
+      "HTTP",
+      "CLI",
+      "PYTHON"
+    ],
+    "pending_surfaces": [
+      "NATIVE_ABI"
+    ],
+    "shared_signed_admission_gate_required": true,
+    "shared_internal_adapter_required": true,
+    "parallel_operation_engine_forbidden": true
+  },
+  "inherited_security_invariants": {
+    "audio_ecc_internal_constraint_preserved": true,
+    "audio_post_quantum_oriented_security_signal_internal_only": true,
+    "public_transport_must_not_expose_internal_audio_security_witness": true,
+    "public_crypto_primitive_forbidden": true,
+    "standardized_pq_crypto_claim_forbidden": true,
+    "independent_key_or_kem_authority_forbidden": true,
+    "new_capability_token_authority_forbidden": true,
+    "new_vm81_authority_forbidden": true,
+    "new_hash72_mint_authority_forbidden": true,
+    "new_hash216_persistence_authority_forbidden": true,
+    "floating_point_canonical_authority_forbidden": true
+  },
+  "operation_inheritance": {
+    "parent_aggregate_operation_count": 48,
+    "successor_aggregate_operation_count": 48,
+    "new_operation_ids": [],
+    "replacement_operation_id": "public.audio_language.feedback.run"
+  },
+  "implementation_surfaces": [
+    "hhs_runtime/main.py",
+    "hhs_runtime/pass219/pass170_audio_transport_i178.py",
+    "HHS_FASTAPI_CONSTRUCTOR_REGISTRY_I178.json",
+    "HHS_PUBLIC_OPERATION_RECORD_INDEX_I178.json",
+    "contracts/pass219/pass170_operation_records_i178/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_TRANSPORT_V1.json",
+    "hhs_runtime/pass219/pass170_constructor_transport_i178.py",
+    "tests/pass219/test_pass219_i178_pass170_constructor_transport.py"
+  ],
+  "acceptance": {
+    "parent_i177_exact_main_verified": true,
+    "active_fastapi_constructor_count": 8,
+    "runtime_main_independent_fastapi_constructor": false,
+    "runtime_main_direct_launch_targets_canonical_gateway": true,
+    "uvicorn_launcher_count": 6,
+    "canonical_launcher_count": 6,
+    "http_transport_executable": true,
+    "cli_transport_executable": true,
+    "python_transport_executable": true,
+    "native_abi_verified": false,
+    "audio_scope_preserved": true,
+    "internal_audio_ecc_pq_boundary_preserved": true,
+    "operation_count": 48,
+    "pass170_terminal_contract_verified": false
+  },
+  "expected_nonterminal_blockers": [
+    "PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS",
+    "PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN",
+    "PASS170_PUBLIC_NATIVE_ABI_PARITY_PENDING",
+    "PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING"
+  ],
+  "pass170_terminal_contract_verified": false,
+  "next_boundary": "PASS170_CONSTRUCTOR_RETIREMENT_TRANCHE_C_NATIVE_AUDIO_ABI_AND_RECEIPT_REPLAY"
+}

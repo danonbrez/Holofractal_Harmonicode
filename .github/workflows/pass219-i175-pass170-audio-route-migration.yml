@@ -1,0 +1,133 @@
+name: Pass 219 I175 Pass170 Audio Route Migration
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass219-i175-pass170-audio-route-migration
+    paths:
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_runtime_api_server_plus_v1.py'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX.json'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I175.json'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I175.json'
+      - 'HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json'
+      - 'contracts/pass219/pass170_operation_records_i175/**'
+      - 'contracts/pass219/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_1_0.json'
+      - 'hhs_runtime/pass219/pass170_audio_route_migration_i175.py'
+      - 'tests/pass219/test_pass219_i175_pass170_audio_route_migration.py'
+      - '.github/workflows/pass219-i175-pass170-audio-route-migration.yml'
+      - 'docs/operations/restart/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_RESTART.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/pass170_audio_language_routes.py'
+      - 'hhs_backend/public_api_server.py'
+      - 'hhs_runtime_api_server_plus_v1.py'
+      - 'HHS_PUBLIC_OPERATION_RECORD_INDEX_I175.json'
+      - 'HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I175.json'
+      - 'HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json'
+      - 'contracts/pass219/pass170_operation_records_i175/**'
+      - 'contracts/pass219/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_1_0.json'
+      - 'hhs_runtime/pass219/pass170_audio_route_migration_i175.py'
+      - 'tests/pass219/test_pass219_i175_pass170_audio_route_migration.py'
+      - '.github/workflows/pass219-i175-pass170-audio-route-migration.yml'
+      - 'docs/operations/restart/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_RESTART.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-i175:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependency
+        run: python -m pip install pytest
+
+      - name: Parse manifests and compile I175 surfaces
+        run: |
+          python -m json.tool HHS_PUBLIC_OPERATION_RECORD_INDEX_I175.json >/dev/null
+          python -m json.tool HHS_PUBLIC_LAUNCHER_RETIREMENT_REGISTRY_I175.json >/dev/null
+          python -m json.tool HHS_AUDIO_ERROR_CORRECTION_PQ_SECURITY_PROFILE_I175.json >/dev/null
+          python -m json.tool contracts/pass219/pass170_operation_records_i175/HHS_PUBLIC_OPERATION_RECORDS_AUDIO_LANGUAGE_V1.json >/dev/null
+          python -m json.tool contracts/pass219/PASS_219_I175_PASS170_AUDIO_ROUTE_MIGRATION_1_0.json >/dev/null
+          python -m py_compile hhs_backend/pass170_audio_language_routes.py
+          python -m py_compile hhs_backend/public_api_server.py
+          python -m py_compile hhs_runtime_api_server_plus_v1.py
+          python -m py_compile hhs_runtime/pass219/pass170_audio_route_migration_i175.py
+          python -m py_compile tests/pass219/test_pass219_i175_pass170_audio_route_migration.py
+
+      - name: Run dependency-scoped I175 tests
+        run: PYTHONPATH=. python -m pytest -q --tb=short tests/pass219/test_pass219_i175_pass170_audio_route_migration.py
+
+      - name: Execute I175 fail-closed audio migration gate
+        run: |
+          mkdir -p artifacts/pass219/i175
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_runtime.pass219.pass170_audio_route_migration_i175 import verify_i175_audio_route_migration
+
+          report = verify_i175_audio_route_migration('.', fail_closed=False)
+          target = Path('artifacts/pass219/i175/audio_route_migration.json')
+          target.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2, sort_keys=True))
+          PY
+
+      - name: Enforce I175 bounded nonterminal boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('artifacts/pass219/i175/audio_route_migration.json').read_text(encoding='utf-8'))
+          expected_blockers = [
+              'PASS170_CANONICAL_BASE_SELF_LAUNCH_PENDING_REDIRECT',
+              'PASS170_EXPLICIT_SOURCE_ONLY_DEGRADED_GATEWAY_REMAINS',
+              'PASS170_LEGACY_FASTAPI_CONSTRUCTORS_REMAIN',
+              'PASS170_LEGACY_SELF_LAUNCH_BYPASSES_REMAIN',
+              'PASS170_PUBLIC_AUDIO_CAPABILITY_BINDING_PENDING',
+              'PASS170_PUBLIC_CLI_NATIVE_LANGUAGE_PARITY_PENDING',
+              'PASS170_PUBLIC_E2E_RECEIPT_REPLAY_PENDING',
+          ]
+          assert report['schema'] == 'HHS_PASS219_I175_PASS170_AUDIO_ROUTE_MIGRATION_V1'
+          assert report['evidence_verified'] is True, report['evidence_blockers']
+          assert report['evidence_blockers'] == []
+          assert report['frozen_parent_operation_record_count'] == 47
+          assert report['successor_operation_record_count'] == 48
+          assert report['audio_operation_id'] == 'public.audio_language.feedback.run'
+          assert report['audio_canonical_route'] == '/v1/audio-language/run'
+          assert report['audio_ecc_role_verified'] is True
+          assert report['audio_internal_pq_security_role_verified'] is True
+          assert report['public_crypto_authority_created'] is False
+          assert report['observed_launcher_count'] == 6
+          assert report['canonical_redirect_count'] == 5
+          assert report['pending_launcher_count'] == 1
+          assert report['pending_launcher_paths'] == ['hhs_backend/server.py']
+          assert report['fastapi_constructor_count_preserved'] == 10
+          assert report['target_blockers'] == expected_blockers
+          assert report['pass170_terminal_contract_verified'] is False
+          assert report['canonical_state_mutated'] is False
+          assert report['new_vm81_authority'] is False
+          assert report['new_hash72_mint_authority'] is False
+          assert report['hash216_persistence_authority'] is False
+          assert report['floating_point_canonical_authority'] is False
+          assert report['next_boundary'] == 'PASS170_CANONICAL_BASE_LAUNCHER_REDIRECT_AND_PUBLIC_CAPABILITY_PARITY'
+          PY
+
+      - name: Upload I175 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-i175-pass170-audio-route-migration-${{ github.sha }}
+          path: artifacts/pass219/i175/audio_route_migration.json
+          if-no-files-found: warn

@@ -1,0 +1,52 @@
+name: Pass 219 Bott8 Native Correspondence
+
+on:
+  push:
+    branches:
+      - agent/pass219-recursive-manifold-learning-20260909
+    paths:
+      - 'hhs_runtime/pass219/bott8_native_correspondence.py'
+      - 'tests/pass219/test_pass219_bott8_native_correspondence.py'
+      - 'contracts/pass219/PASS_219_RML8_BOTT8_NATIVE_CORRESPONDENCE_1_0.json'
+      - '.github/workflows/pass219-bott8-native-correspondence.yml'
+      - 'hhs_runtime/pass219/discrete_hopf_projection.py'
+      - 'hhs_runtime/pass219/discrete_s7_embedding.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass219/bott8_native_correspondence.py'
+      - 'tests/pass219/test_pass219_bott8_native_correspondence.py'
+      - 'contracts/pass219/PASS_219_RML8_BOTT8_NATIVE_CORRESPONDENCE_1_0.json'
+      - '.github/workflows/pass219-bott8-native-correspondence.yml'
+      - 'hhs_runtime/pass219/discrete_hopf_projection.py'
+      - 'hhs_runtime/pass219/discrete_s7_embedding.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'native_projects/hhs_pass188_bott_runtime/**'
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-rml8-bott8-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate inherited Pass 188 native Bott runtime
+        run: make -C native_projects/hhs_pass188_bott_runtime validate
+      - name: Run RML5 through RML8 Bott8 topology dependency scope
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_gyroscope_admission_membrane.py \
+            tests/pass219/test_pass219_discrete_s7_embedding.py \
+            tests/pass219/test_pass219_discrete_hopf_projection.py \
+            tests/pass219/test_pass219_bott8_native_correspondence.py
