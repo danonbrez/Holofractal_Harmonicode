@@ -3,21 +3,33 @@ name: Pass 219 Fold Primitive Probe
 on:
   push:
     paths:
+      - 'GNUmakefile'
       - 'hhs_runtime/pass219/fold_primitive_probe.py'
       - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
       - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
+      - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
+      - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   pull_request:
     paths:
+      - 'GNUmakefile'
       - 'hhs_runtime/pass219/fold_primitive_probe.py'
       - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
       - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
+      - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
+      - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   workflow_dispatch:
 
@@ -27,23 +39,54 @@ permissions:
 jobs:
   fold-primitive-probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install targeted test dependency
-        run: python -m pip install --disable-pip-version-check pytest
-      - name: Run focused primitive tests
+      - name: Install focused dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+      - name: Build exact VM81 ABI with C++ RNA bridge
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Verify public RNA candidate ABI and closed mutation boundary
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_vm5184_route$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_raw5184_route$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed$'
+      - name: Build exact BigInt RNA native probe
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_bigint_rna_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass219_bigint_rna_native_probe
+          test -x /tmp/test_pass219_bigint_rna_native_probe
+      - name: Run focused primitive and execution-binding tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
         run: |
           PYTHONPATH="$PWD" python -m pytest -q -s \
             tests/pass219/test_pass219_fold_primitive_probe.py \
             tests/pass219/test_pass219_platonic_multistate_fold_probe.py \
-            tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py
+            tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py \
+            tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py
       - name: Emit exact combined fold probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.fold_primitive_probe
       - name: Emit exact Platonic multi-state probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.platonic_multistate_fold_probe
       - name: Emit exact nonary qudit BigInt assembly probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.nonary_qudit_bigint_assembly_probe
+      - name: Emit exact VM81 RNA BigInt execution binding probe
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe
