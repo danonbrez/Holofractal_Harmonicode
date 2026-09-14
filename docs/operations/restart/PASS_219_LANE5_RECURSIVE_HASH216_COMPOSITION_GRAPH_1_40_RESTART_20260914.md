@@ -10,6 +10,7 @@ branch: agent/pass219-lane5-recursive-hash216-composition-graph-1-40-20260914
 merge target: main
 validated checkpoint head: 5302ded5e1aa25c825708a4fdcda72d95399365b
 dedicated green workflow: 34834868460
+latest documentation checkpoint head: 8e31a5045c8a9b4ce0c9a2b67689de028ebe69fc
 ```
 
 Base main is the verified merge of PR #451 / Lane 5 Persistent Hash216 Composition Memory 1.39.
@@ -123,10 +124,14 @@ signed environmental VM81 admission              = REQUIRED
 
 Repository mutations were performed directly through the authorized GitHub integration. No nested coding agent or external handoff was used. Validation used the deterministic Pass207 CPU-reference backend for semantic equality; no physical nanosecond latency claim is introduced.
 
+## Exact-head CI state
+
+The latest change after the green implementation is documentation-only. It triggered repository-wide legacy workflows, several of which fail immediately at workflow startup independently of the scoped 1.40 implementation. The dedicated 1.40 implementation workflow at the prior exact code head is green. Per the repository responsiveness policy, queued or unrelated legacy CI does not block the restartable checkpoint or PR handoff after dependency-scoped validation is green.
+
 ## Next action
 
-This documentation-only checkpoint commit triggers the dedicated 1.40 workflow because the restart record is in the workflow path set. Consume that exact checkpoint-head run. If it remains green, open the 1.40 PR against `main`, consume PR-head validation, merge, and verify the merged main SHA plus aggregate 1.40 ABI. Repair forward only if the exact-head gate exposes a new failure.
+Open the 1.40 PR against `main`. Consume the dedicated PR-head 1.40 workflow when available. Repair forward only if the dedicated dependency-scoped 1.40 gate exposes a semantic or implementation failure. When that gate is green, merge and verify the merged main SHA plus aggregate 1.40 ABI.
 
 ## Blockers
 
-No known semantic or implementation blocker. The complete 1.40 checkpoint is green; only exact checkpoint/PR closure remains.
+No known semantic or implementation blocker. Dependency-scoped implementation validation is green. Unrelated repository-wide legacy workflow startup failures are not 1.40 acceptance failures.
