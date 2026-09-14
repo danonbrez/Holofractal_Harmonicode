@@ -1,16 +1,16 @@
 """Persistent recursive Lane 5 superedge hierarchy, Pass 219 1.41.
 
-A superedge promotes a previously authenticated 1.40 route, or an ordered route
-of lower-level superedges, into one encrypted terminal VM5184 candidate object.
-Direct reuse performs one persistent snapshot retrieval while preserving exact
-flattened level-0 provenance and the inherited signed-environmental VM81
-canonical-admission boundary.
+A superedge promotes an authenticated 1.40 route, or an ordered route of
+lower-level superedges, into one encrypted terminal VM5184 candidate object.
+Direct reuse performs one persistent snapshot retrieval while retaining exact
+flattened level-0 provenance and the signed-environmental VM81 admission wall.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from hashlib import sha256
 import json
+import operator
 from pathlib import Path
 import sqlite3
 from typing import Any, Mapping, Sequence
@@ -39,6 +39,8 @@ from hhs_python.runtime.hhs_pass219_lane5_superedge_hierarchy_bridge import (
 from hhs_runtime.pass174.runtime import Hash216Array
 
 SCHEMA = "HHS_PASS_219_LANE5_SUPEREDGE_HIERARCHY_1_41"
+UINT64_MAX = (1 << 64) - 1
+CELL_COUNT = 81
 
 
 def _reject_float(value: Any, path: str = "$") -> None:
@@ -63,21 +65,36 @@ def _canonical(value: Any) -> bytes:
     ).encode("utf-8")
 
 
-def _json_tuple(raw: str) -> tuple[str, ...]:
+def _exact_state(words: Sequence[int]) -> tuple[int, ...]:
+    if len(words) != CELL_COUNT:
+        raise ValueError(f"VM5184 state requires exactly {CELL_COUNT} exact integer words")
+    result: list[int] = []
+    for ordinal, value in enumerate(words):
+        try:
+            integer = operator.index(value)
+        except TypeError as exc:
+            raise TypeError(f"VM5184 word {ordinal} must be an exact integer") from exc
+        if integer < 0 or integer > UINT64_MAX:
+            raise ValueError(f"VM5184 word {ordinal} outside uint64")
+        result.append(int(integer))
+    return tuple(result)
+
+
+def _json_strings(raw: str) -> tuple[str, ...]:
     value = json.loads(raw)
     if not isinstance(value, list):
-        raise ValueError("superedge persisted list is malformed")
+        raise ValueError("superedge persisted string list malformed")
     return tuple(str(item) for item in value)
 
 
-def _json_int_tuple(raw: str) -> tuple[int, ...]:
+def _json_ints(raw: str) -> tuple[int, ...]:
     value = json.loads(raw)
     if not isinstance(value, list):
-        raise ValueError("superedge persisted integer list is malformed")
-    result = tuple(int(item) for item in value)
+        raise ValueError("superedge persisted integer list malformed")
+    result = tuple(operator.index(item) for item in value)
     if any(item < 0 for item in result):
         raise ValueError("superedge persisted integer list contains negative value")
-    return result
+    return tuple(int(item) for item in result)
 
 
 @dataclass(frozen=True)
@@ -227,44 +244,44 @@ class Pass219Lane5SuperedgeHierarchy:
             "leaf_jump_ids": [str(value) for value in leaf_jump_ids],
         }
 
-    def _metadata_core(
-        self,
-        *,
-        superedge_id: str,
-        hierarchy_level: int,
-        parent_hash216: str,
-        child_hash216: str,
-        route_hash216: str,
-        hierarchy_hash216: str,
-        total_span: int,
-        base_hops: int,
-        phase_slot: int,
-        cycle_index: int,
-        layer_index: int,
-        component_ids: Sequence[str],
-        component_levels: Sequence[int],
-        component_seals: Sequence[str],
-        leaf_jump_ids: Sequence[str],
-        changed_bits: int,
-    ) -> dict[str, Any]:
+    def _metadata_core(self, record: PersistentSuperedgeRecord | None = None, **kwargs: Any) -> dict[str, Any]:
+        if record is not None:
+            kwargs = {
+                "superedge_id": record.superedge_id,
+                "hierarchy_level": record.hierarchy_level,
+                "parent_hash216": record.parent_hash216,
+                "child_hash216": record.child_hash216,
+                "route_hash216": record.route_hash216,
+                "hierarchy_hash216": record.hierarchy_hash216,
+                "total_span": record.total_span,
+                "base_hops": record.base_hops,
+                "phase_slot": record.phase_slot,
+                "cycle_index": record.cycle_index,
+                "layer_index": record.layer_index,
+                "component_ids": record.component_ids,
+                "component_levels": record.component_levels,
+                "component_seals": record.component_seals,
+                "leaf_jump_ids": record.leaf_jump_ids,
+                "changed_bits": record.changed_bits,
+            }
         return {
             "schema": "HHS_PASS_219_LANE5_SUPEREDGE_METADATA_1_41",
-            "superedge_id": superedge_id,
-            "hierarchy_level": int(hierarchy_level),
-            "parent_hash216": parent_hash216,
-            "child_hash216": child_hash216,
-            "route_hash216": route_hash216,
-            "hierarchy_hash216": hierarchy_hash216,
-            "total_span": int(total_span),
-            "base_hops": int(base_hops),
-            "phase_slot": int(phase_slot),
-            "cycle_index": int(cycle_index),
-            "layer_index": int(layer_index),
-            "component_ids": [str(value) for value in component_ids],
-            "component_levels": [int(value) for value in component_levels],
-            "component_seals": [str(value) for value in component_seals],
-            "leaf_jump_ids": [str(value) for value in leaf_jump_ids],
-            "changed_bits": int(changed_bits),
+            "superedge_id": str(kwargs["superedge_id"]),
+            "hierarchy_level": int(kwargs["hierarchy_level"]),
+            "parent_hash216": str(kwargs["parent_hash216"]),
+            "child_hash216": str(kwargs["child_hash216"]),
+            "route_hash216": str(kwargs["route_hash216"]),
+            "hierarchy_hash216": str(kwargs["hierarchy_hash216"]),
+            "total_span": int(kwargs["total_span"]),
+            "base_hops": int(kwargs["base_hops"]),
+            "phase_slot": int(kwargs["phase_slot"]),
+            "cycle_index": int(kwargs["cycle_index"]),
+            "layer_index": int(kwargs["layer_index"]),
+            "component_ids": [str(v) for v in kwargs["component_ids"]],
+            "component_levels": [int(v) for v in kwargs["component_levels"]],
+            "component_seals": [str(v) for v in kwargs["component_seals"]],
+            "leaf_jump_ids": [str(v) for v in kwargs["leaf_jump_ids"]],
+            "changed_bits": int(kwargs["changed_bits"]),
             "candidate_only": True,
             "canonical_vm81_mutation_authority": False,
             "canonical_hash72_authority": False,
@@ -292,10 +309,10 @@ class Pass219Lane5SuperedgeHierarchy:
             phase_slot=int(row["phase_slot"]),
             cycle_index=int(row["cycle_index"]),
             layer_index=int(row["layer_index"]),
-            component_ids=_json_tuple(str(row["component_ids_json"])),
-            component_levels=_json_int_tuple(str(row["component_levels_json"])),
-            component_seals=_json_tuple(str(row["component_seals_json"])),
-            leaf_jump_ids=_json_tuple(str(row["leaf_jump_ids_json"])),
+            component_ids=_json_strings(str(row["component_ids_json"])),
+            component_levels=_json_ints(str(row["component_levels_json"])),
+            component_seals=_json_strings(str(row["component_seals_json"])),
+            leaf_jump_ids=_json_strings(str(row["leaf_jump_ids_json"])),
             native_receipt_signature64=int(row["native_receipt_signature64"]),
             changed_bits=int(row["changed_bits"]),
             quarantined=bool(row["quarantined"]),
@@ -306,9 +323,8 @@ class Pass219Lane5SuperedgeHierarchy:
             record.route_hash216,
             record.hierarchy_hash216,
             record.metadata_hash216,
+            *record.component_seals,
         ):
-            split_hash216(value)
-        for value in record.component_seals:
             split_hash216(value)
         if record.direct_component_count != len(record.component_ids):
             raise ValueError("superedge direct component count mismatch")
@@ -319,29 +335,6 @@ class Pass219Lane5SuperedgeHierarchy:
         if record.base_hops != len(record.leaf_jump_ids):
             raise ValueError("superedge flattened leaf count mismatch")
         return record
-
-    def _record_core(self, record: PersistentSuperedgeRecord) -> dict[str, Any]:
-        return self._metadata_core(
-            superedge_id=record.superedge_id,
-            hierarchy_level=record.hierarchy_level,
-            parent_hash216=record.parent_hash216,
-            child_hash216=record.child_hash216,
-            route_hash216=record.route_hash216,
-            hierarchy_hash216=record.hierarchy_hash216,
-            total_span=record.total_span,
-            base_hops=record.base_hops,
-            phase_slot=record.phase_slot,
-            cycle_index=record.cycle_index,
-            layer_index=record.layer_index,
-            component_ids=record.component_ids,
-            component_levels=record.component_levels,
-            component_seals=record.component_seals,
-            leaf_jump_ids=record.leaf_jump_ids,
-            changed_bits=record.changed_bits,
-        )
-
-    def _metadata_valid(self, record: PersistentSuperedgeRecord) -> bool:
-        return self.native.hash216_bytes(_canonical(self._record_core(record))) == record.metadata_hash216
 
     def _hierarchy_valid(self, record: PersistentSuperedgeRecord) -> bool:
         payload = self._hierarchy_payload(
@@ -359,13 +352,15 @@ class Pass219Lane5SuperedgeHierarchy:
         )
         return self.native.hash216_bytes(_canonical(payload)) == record.hierarchy_hash216
 
+    def _metadata_valid(self, record: PersistentSuperedgeRecord) -> bool:
+        return self.native.hash216_bytes(_canonical(self._metadata_core(record))) == record.metadata_hash216
+
     def _leaf_dependencies_live(self, record: PersistentSuperedgeRecord) -> bool:
         base = {item.jump_id: item for item in self.memory.records()}
-        for jump_id in record.leaf_jump_ids:
-            item = base.get(jump_id)
-            if item is None or item.quarantined:
-                return False
-        return True
+        return all(
+            jump_id in base and not base[jump_id].quarantined
+            for jump_id in record.leaf_jump_ids
+        )
 
     def _quarantine_record(self, record: PersistentSuperedgeRecord) -> None:
         self._connection.execute(
@@ -382,22 +377,18 @@ class Pass219Lane5SuperedgeHierarchy:
         )
 
     def _load_index(self) -> None:
-        rows = self._connection.execute(
-            "SELECT * FROM lane5_superedges ORDER BY sequence"
-        ).fetchall()
+        rows = self._connection.execute("SELECT * FROM lane5_superedges ORDER BY sequence").fetchall()
         for row in rows:
             try:
                 record = self._record_from_row(row)
-                valid = (
+                self._records[record.superedge_id] = record
+                if not (
                     self._metadata_valid(record)
                     and self._hierarchy_valid(record)
                     and self._leaf_dependencies_live(record)
-                )
-                if not valid:
+                ):
                     self._quarantine_record(record)
                     record = self._records[record.superedge_id]
-                else:
-                    self._records[record.superedge_id] = record
                 self._by_parent.setdefault(record.parent_hash216, []).append(record.superedge_id)
             except Exception:
                 self._connection.execute(
@@ -437,6 +428,18 @@ class Pass219Lane5SuperedgeHierarchy:
             "synchronous_full": synchronous == 2,
         }
 
+    def _component_identity(self, ids: Sequence[str], levels: Sequence[int], seals: Sequence[str]) -> str:
+        return sha256(
+            b"HHS-P219-LANE5-SUPEREDGE-COMPONENT-LINEAGE-1.41\0"
+            + _canonical([[str(i), int(l), str(s)] for i, l, s in zip(ids, levels, seals)])
+        ).hexdigest()
+
+    def _leaf_identity(self, leaves: Sequence[str]) -> str:
+        return sha256(
+            b"HHS-P219-LANE5-SUPEREDGE-FLATTENED-LEAVES-1.41\0"
+            + _canonical([str(value) for value in leaves])
+        ).hexdigest()
+
     def _persist_superedge(
         self,
         *,
@@ -461,9 +464,7 @@ class Pass219Lane5SuperedgeHierarchy:
             raise ValueError("superedge hierarchy level must be positive")
         if len(component_ids) < 2:
             raise ValueError("superedge promotion requires at least two components")
-        if not (
-            len(component_ids) == len(component_levels) == len(component_seals)
-        ):
+        if not (len(component_ids) == len(component_levels) == len(component_seals)):
             raise ValueError("superedge component metadata lengths differ")
         if base_hops != len(leaf_jump_ids) or base_hops < len(component_ids):
             raise ValueError("superedge flattened base-hop accounting mismatch")
@@ -474,29 +475,13 @@ class Pass219Lane5SuperedgeHierarchy:
         if int(tick) < 0 or int(cycle_index) < 0 or int(layer_index) < 0:
             raise ValueError("superedge coordinates must be nonnegative")
 
-        parent = tuple(int(value) for value in parent_state)
-        terminal = tuple(int(value) for value in terminal_state)
+        parent = _exact_state(parent_state)
+        terminal = _exact_state(terminal_state)
         parent_hash216 = self.native.state_root(parent)
         child_hash216 = self.native.state_root(terminal)
         split_hash216(route_hash216)
         for seal in component_seals:
             split_hash216(seal)
-
-        existing = self._connection.execute(
-            "SELECT * FROM lane5_superedges WHERE superedge_id=?",
-            (superedge_id,),
-        ).fetchone()
-        if existing is not None:
-            record = self._record_from_row(existing)
-            return {
-                "schema": "HHS_PASS_219_LANE5_SUPEREDGE_PROMOTION_1_41",
-                "superedge_id": record.superedge_id,
-                "hierarchy_hash216": record.hierarchy_hash216,
-                "vector_object_id": record.vector_object_id,
-                "idempotent": True,
-                "candidate_only": True,
-            }
-
         phase_slot = int(tick) % CYCLE
         effective_cycle = int(cycle_index) + int(tick) // CYCLE
         hierarchy_payload = self._hierarchy_payload(
@@ -533,21 +518,61 @@ class Pass219Lane5SuperedgeHierarchy:
             changed_bits=changed_bits,
         )
         metadata_hash216 = self.native.hash216_bytes(_canonical(metadata_core))
-        component_lineage_identity = sha256(
-            b"HHS-P219-LANE5-SUPEREDGE-COMPONENT-LINEAGE-1.41\0"
-            + _canonical(
-                [
-                    [str(component_id), int(component_level), str(component_seal)]
-                    for component_id, component_level, component_seal in zip(
-                        component_ids, component_levels, component_seals
-                    )
-                ]
+
+        existing_row = self._connection.execute(
+            "SELECT * FROM lane5_superedges WHERE superedge_id=?", (superedge_id,)
+        ).fetchone()
+        if existing_row is not None:
+            existing = self._record_from_row(existing_row)
+            requested = (
+                hierarchy_level,
+                parent_hash216,
+                child_hash216,
+                route_hash216,
+                hierarchy_hash216,
+                metadata_hash216,
+                int(total_span),
+                int(base_hops),
+                tuple(str(v) for v in component_ids),
+                tuple(int(v) for v in component_levels),
+                tuple(str(v) for v in component_seals),
+                tuple(str(v) for v in leaf_jump_ids),
+                phase_slot,
+                effective_cycle,
+                int(layer_index),
             )
-        ).hexdigest()
-        flattened_leaf_identity = sha256(
-            b"HHS-P219-LANE5-SUPEREDGE-FLATTENED-LEAVES-1.41\0"
-            + _canonical([str(value) for value in leaf_jump_ids])
-        ).hexdigest()
+            persisted = (
+                existing.hierarchy_level,
+                existing.parent_hash216,
+                existing.child_hash216,
+                existing.route_hash216,
+                existing.hierarchy_hash216,
+                existing.metadata_hash216,
+                existing.total_span,
+                existing.base_hops,
+                existing.component_ids,
+                existing.component_levels,
+                existing.component_seals,
+                existing.leaf_jump_ids,
+                existing.phase_slot,
+                existing.cycle_index,
+                existing.layer_index,
+            )
+            if requested != persisted:
+                raise ValueError("superedge ID collision with different immutable hierarchy identity")
+            if existing.quarantined:
+                raise ValueError("superedge ID refers to quarantined record")
+            return {
+                "schema": "HHS_PASS_219_LANE5_SUPEREDGE_PROMOTION_1_41",
+                "superedge_id": existing.superedge_id,
+                "hierarchy_hash216": existing.hierarchy_hash216,
+                "vector_object_id": existing.vector_object_id,
+                "idempotent": True,
+                "candidate_only": True,
+            }
+
+        component_identity = self._component_identity(component_ids, component_levels, component_seals)
+        leaf_identity = self._leaf_identity(leaf_jump_ids)
         native_receipt = self.abi.validate(
             hierarchy_level=hierarchy_level,
             direct_component_count=len(component_ids),
@@ -561,8 +586,8 @@ class Pass219Lane5SuperedgeHierarchy:
             route_hash216=route_hash216,
             hierarchy_hash216=hierarchy_hash216,
             metadata_hash216=metadata_hash216,
-            component_lineage_identity=component_lineage_identity,
-            flattened_leaf_identity=flattened_leaf_identity,
+            component_lineage_identity=component_identity,
+            flattened_leaf_identity=leaf_identity,
         )
         if not native_receipt["accepted"] or not native_receipt["one_snapshot_direct_reuse"]:
             raise RuntimeError("native superedge hierarchy membrane rejected promotion")
@@ -577,9 +602,7 @@ class Pass219Lane5SuperedgeHierarchy:
         segments = split_hash216(hierarchy_hash216)
         logical_step = effective_cycle * CYCLE + phase_slot
         indexed_hash216 = Hash216Array.build(
-            segments[0],
-            segments[1],
-            segments[2],
+            segments[0], segments[1], segments[2],
             genesis_identity=GENESIS_IDENTITY,
             logical_step=logical_step,
             operation_identity=operation_identity,
@@ -593,17 +616,11 @@ class Pass219Lane5SuperedgeHierarchy:
             + bytes.fromhex(indexed_hash216.index_root_sha256)
             + metadata_hash216.encode("ascii")
         ).hexdigest()
-        parent_hash72 = _state_hash72(
-            "HHS-P219-LANE5-SUPEREDGE-PARENT-HASH72-1.41", parent_hash216
-        )
-        child_hash72 = _state_hash72(
-            "HHS-P219-LANE5-SUPEREDGE-CHILD-HASH72-1.41", child_hash216
-        )
         vector_object = self.vector_store.admit(
             operation_key=operation_key,
             logical_step=logical_step,
-            input_hash72=parent_hash72,
-            output_hash72=child_hash72,
+            input_hash72=_state_hash72("HHS-P219-LANE5-SUPEREDGE-PARENT-HASH72-1.41", parent_hash216),
+            output_hash72=_state_hash72("HHS-P219-LANE5-SUPEREDGE-CHILD-HASH72-1.41", child_hash216),
             operation_identity_sha256=operation_identity,
             hash216=indexed_hash216,
             output_snapshot=_pack_state(terminal),
@@ -614,30 +631,21 @@ class Pass219Lane5SuperedgeHierarchy:
             parent_object_id=None,
         )
         record = PersistentSuperedgeRecord(
-            superedge_id=superedge_id,
-            hierarchy_level=int(hierarchy_level),
-            parent_hash216=parent_hash216,
-            child_hash216=child_hash216,
-            route_hash216=route_hash216,
-            hierarchy_hash216=hierarchy_hash216,
-            metadata_hash216=metadata_hash216,
-            vector_object_id=vector_object.object_id,
-            operation_key=operation_key,
-            operation_identity_sha256=operation_identity,
+            superedge_id=str(superedge_id), hierarchy_level=int(hierarchy_level),
+            parent_hash216=parent_hash216, child_hash216=child_hash216,
+            route_hash216=route_hash216, hierarchy_hash216=hierarchy_hash216,
+            metadata_hash216=metadata_hash216, vector_object_id=vector_object.object_id,
+            operation_key=operation_key, operation_identity_sha256=operation_identity,
             hash216_index_root_sha256=indexed_hash216.index_root_sha256,
-            total_span=int(total_span),
-            base_hops=int(base_hops),
-            direct_component_count=len(component_ids),
-            phase_slot=phase_slot,
-            cycle_index=effective_cycle,
-            layer_index=int(layer_index),
-            component_ids=tuple(str(value) for value in component_ids),
-            component_levels=tuple(int(value) for value in component_levels),
-            component_seals=tuple(str(value) for value in component_seals),
-            leaf_jump_ids=tuple(str(value) for value in leaf_jump_ids),
+            total_span=int(total_span), base_hops=int(base_hops),
+            direct_component_count=len(component_ids), phase_slot=phase_slot,
+            cycle_index=effective_cycle, layer_index=int(layer_index),
+            component_ids=tuple(str(v) for v in component_ids),
+            component_levels=tuple(int(v) for v in component_levels),
+            component_seals=tuple(str(v) for v in component_seals),
+            leaf_jump_ids=tuple(str(v) for v in leaf_jump_ids),
             native_receipt_signature64=int(native_receipt["hierarchy_receipt_signature64"]),
-            changed_bits=changed_bits,
-            quarantined=False,
+            changed_bits=changed_bits, quarantined=False,
         )
         if not self._metadata_valid(record) or not self._hierarchy_valid(record):
             self.vector_store.quarantine(vector_object.object_id)
@@ -645,44 +653,27 @@ class Pass219Lane5SuperedgeHierarchy:
         if not self._leaf_dependencies_live(record):
             self.vector_store.quarantine(vector_object.object_id)
             raise RuntimeError("superedge contains unavailable or quarantined level-0 dependency")
-
         self._connection.execute(
-            """
-            INSERT INTO lane5_superedges(
-                superedge_id, hierarchy_level, parent_hash216, child_hash216,
-                route_hash216, hierarchy_hash216, metadata_hash216,
-                vector_object_id, operation_key, operation_identity_sha256,
-                hash216_index_root_sha256, total_span, base_hops,
-                direct_component_count, phase_slot, cycle_index, layer_index,
-                component_ids_json, component_levels_json, component_seals_json,
-                leaf_jump_ids_json, native_receipt_signature64, changed_bits,
-                quarantined
-            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)
-            """,
+            """INSERT INTO lane5_superedges(
+                superedge_id,hierarchy_level,parent_hash216,child_hash216,route_hash216,
+                hierarchy_hash216,metadata_hash216,vector_object_id,operation_key,
+                operation_identity_sha256,hash216_index_root_sha256,total_span,base_hops,
+                direct_component_count,phase_slot,cycle_index,layer_index,component_ids_json,
+                component_levels_json,component_seals_json,leaf_jump_ids_json,
+                native_receipt_signature64,changed_bits,quarantined
+            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)""",
             (
-                record.superedge_id,
-                record.hierarchy_level,
-                record.parent_hash216,
-                record.child_hash216,
-                record.route_hash216,
-                record.hierarchy_hash216,
-                record.metadata_hash216,
-                record.vector_object_id,
-                record.operation_key,
-                record.operation_identity_sha256,
-                record.hash216_index_root_sha256,
-                record.total_span,
-                record.base_hops,
-                record.direct_component_count,
-                record.phase_slot,
-                str(record.cycle_index),
-                record.layer_index,
+                record.superedge_id, record.hierarchy_level, record.parent_hash216,
+                record.child_hash216, record.route_hash216, record.hierarchy_hash216,
+                record.metadata_hash216, record.vector_object_id, record.operation_key,
+                record.operation_identity_sha256, record.hash216_index_root_sha256,
+                record.total_span, record.base_hops, record.direct_component_count,
+                record.phase_slot, str(record.cycle_index), record.layer_index,
                 json.dumps(list(record.component_ids), separators=(",", ":")),
                 json.dumps(list(record.component_levels), separators=(",", ":")),
                 json.dumps(list(record.component_seals), separators=(",", ":")),
                 json.dumps(list(record.leaf_jump_ids), separators=(",", ":")),
-                str(record.native_receipt_signature64),
-                record.changed_bits,
+                str(record.native_receipt_signature64), record.changed_bits,
             ),
         )
         self._connection.commit()
@@ -725,10 +716,11 @@ class Pass219Lane5SuperedgeHierarchy:
         tick: int,
         cycle_index: int,
     ) -> dict[str, Any]:
+        parent = _exact_state(current_state)
         if len(jump_ids) < 2:
             raise ValueError("level-1 superedge requires at least two persistent route edges")
         reused = self.graph.reuse_path(
-            current_state=current_state,
+            current_state=parent,
             jump_ids=jump_ids,
             goal_hash216=goal_hash216,
             tick=tick,
@@ -747,13 +739,13 @@ class Pass219Lane5SuperedgeHierarchy:
         return self._persist_superedge(
             superedge_id=superedge_id,
             hierarchy_level=1,
-            parent_state=current_state,
+            parent_state=parent,
             terminal_state=reused["terminal_state"],
             route_hash216=path["path_hash216"],
             total_span=int(path["total_span"]),
             base_hops=len(ordered),
             component_ids=[record.jump_id for record in ordered],
-            component_levels=[0 for _ in ordered],
+            component_levels=[0] * len(ordered),
             component_seals=[record.composition_hash216 for record in ordered],
             leaf_jump_ids=[record.jump_id for record in ordered],
             tick=tick,
@@ -771,13 +763,13 @@ class Pass219Lane5SuperedgeHierarchy:
         tick: int,
         cycle_index: int,
     ) -> dict[str, Any]:
+        parent = _exact_state(current_state)
         split_hash216(goal_hash216)
         if len(component_superedge_ids) < 2:
             raise ValueError("higher-level superedge requires at least two component superedges")
-        current = tuple(int(value) for value in current_state)
-        start_hash216 = self.native.state_root(current)
+        current = parent
         component_records: list[PersistentSuperedgeRecord] = []
-        leaf_ids: list[str] = []
+        leaves: list[str] = []
         for component_id in component_superedge_ids:
             try:
                 record = self._records[str(component_id)]
@@ -786,31 +778,27 @@ class Pass219Lane5SuperedgeHierarchy:
             if record.quarantined:
                 raise ValueError("cannot compose quarantined superedge")
             reused = self.reuse(current_state=current, superedge_id=record.superedge_id)
-            current = tuple(int(value) for value in reused["child_state"])
+            current = _exact_state(reused["child_state"])
             component_records.append(record)
-            leaf_ids.extend(record.leaf_jump_ids)
-        terminal_hash216 = self.native.state_root(current)
-        if terminal_hash216 != goal_hash216:
+            leaves.extend(record.leaf_jump_ids)
+        if self.native.state_root(current) != goal_hash216:
             raise ValueError("higher-level superedge terminal does not equal requested exact goal")
         layers = {record.layer_index for record in component_records}
         if len(layers) != 1:
             raise ValueError("higher-level superedge components must share one layer index")
-        route_payload = {
+        route_hash216 = self.native.hash216_bytes(_canonical({
             "schema": "HHS_PASS_219_LANE5_SUPEREDGE_ROUTE_1_41",
-            "start_hash216": start_hash216,
+            "start_hash216": self.native.state_root(parent),
             "goal_hash216": goal_hash216,
             "component_ids": [record.superedge_id for record in component_records],
-            "component_hierarchy_hash216": [
-                record.hierarchy_hash216 for record in component_records
-            ],
+            "component_hierarchy_hash216": [record.hierarchy_hash216 for record in component_records],
             "cycle_index": int(cycle_index) + int(tick) // CYCLE,
             "phase_slot": int(tick) % CYCLE,
-        }
-        route_hash216 = self.native.hash216_bytes(_canonical(route_payload))
+        }))
         return self._persist_superedge(
             superedge_id=superedge_id,
             hierarchy_level=1 + max(record.hierarchy_level for record in component_records),
-            parent_state=current_state,
+            parent_state=parent,
             terminal_state=current,
             route_hash216=route_hash216,
             total_span=sum(record.total_span for record in component_records),
@@ -818,28 +806,13 @@ class Pass219Lane5SuperedgeHierarchy:
             component_ids=[record.superedge_id for record in component_records],
             component_levels=[record.hierarchy_level for record in component_records],
             component_seals=[record.hierarchy_hash216 for record in component_records],
-            leaf_jump_ids=leaf_ids,
+            leaf_jump_ids=leaves,
             tick=tick,
             cycle_index=cycle_index,
             layer_index=next(iter(layers)),
         )
 
     def _native_record_receipt(self, record: PersistentSuperedgeRecord) -> dict[str, Any]:
-        component_lineage_identity = sha256(
-            b"HHS-P219-LANE5-SUPEREDGE-COMPONENT-LINEAGE-1.41\0"
-            + _canonical(
-                [
-                    [component_id, component_level, component_seal]
-                    for component_id, component_level, component_seal in zip(
-                        record.component_ids, record.component_levels, record.component_seals
-                    )
-                ]
-            )
-        ).hexdigest()
-        flattened_leaf_identity = sha256(
-            b"HHS-P219-LANE5-SUPEREDGE-FLATTENED-LEAVES-1.41\0"
-            + _canonical(list(record.leaf_jump_ids))
-        ).hexdigest()
         receipt = self.abi.validate(
             hierarchy_level=record.hierarchy_level,
             direct_component_count=record.direct_component_count,
@@ -853,27 +826,24 @@ class Pass219Lane5SuperedgeHierarchy:
             route_hash216=record.route_hash216,
             hierarchy_hash216=record.hierarchy_hash216,
             metadata_hash216=record.metadata_hash216,
-            component_lineage_identity=component_lineage_identity,
-            flattened_leaf_identity=flattened_leaf_identity,
+            component_lineage_identity=self._component_identity(
+                record.component_ids, record.component_levels, record.component_seals
+            ),
+            flattened_leaf_identity=self._leaf_identity(record.leaf_jump_ids),
         )
         if int(receipt["hierarchy_receipt_signature64"]) != record.native_receipt_signature64:
             raise ValueError("superedge native receipt signature mismatch")
         return receipt
 
-    def reuse(
-        self,
-        *,
-        current_state: Sequence[int],
-        superedge_id: str,
-    ) -> dict[str, Any]:
+    def reuse(self, *, current_state: Sequence[int], superedge_id: str) -> dict[str, Any]:
+        parent = _exact_state(current_state)
         try:
             record = self._records[superedge_id]
         except KeyError as exc:
             raise KeyError(f"unknown superedge: {superedge_id}") from exc
         if record.quarantined:
             raise ValueError("superedge is quarantined")
-        current_root = self.native.state_root(current_state)
-        if current_root != record.parent_hash216:
+        if self.native.state_root(parent) != record.parent_hash216:
             raise ValueError("superedge parent does not match current state Hash216")
         try:
             if not self._metadata_valid(record):
@@ -896,15 +866,13 @@ class Pass219Lane5SuperedgeHierarchy:
                 raise ValueError("superedge vector hierarchy Hash216 mismatch")
             if vector_object.hash216.index_root_sha256 != record.hash216_index_root_sha256:
                 raise ValueError("superedge vector Hash216 index root mismatch")
-            expected_parent_hash72 = _state_hash72(
+            if vector_object.input_hash72 != _state_hash72(
                 "HHS-P219-LANE5-SUPEREDGE-PARENT-HASH72-1.41", record.parent_hash216
-            )
-            expected_child_hash72 = _state_hash72(
-                "HHS-P219-LANE5-SUPEREDGE-CHILD-HASH72-1.41", record.child_hash216
-            )
-            if vector_object.input_hash72 != expected_parent_hash72:
+            ):
                 raise ValueError("superedge parent Hash72 binding mismatch")
-            if vector_object.output_hash72 != expected_child_hash72:
+            if vector_object.output_hash72 != _state_hash72(
+                "HHS-P219-LANE5-SUPEREDGE-CHILD-HASH72-1.41", record.child_hash216
+            ):
                 raise ValueError("superedge child Hash72 binding mismatch")
             child_state = _unpack_state(frame)
             if self.native.state_root(child_state) != record.child_hash216:
@@ -953,8 +921,9 @@ class Pass219Lane5SuperedgeHierarchy:
         min_level: int = 1,
         top_k: int = 32,
     ) -> dict[str, Any]:
+        parent = _exact_state(current_state)
         split_hash216(goal_hash216)
-        parent_hash216 = self.native.state_root(current_state)
+        parent_hash216 = self.native.state_root(parent)
         records = [
             self._records[superedge_id]
             for superedge_id in self._by_parent.get(parent_hash216, [])
@@ -964,6 +933,15 @@ class Pass219Lane5SuperedgeHierarchy:
         if layer_index is not None:
             records = [record for record in records if record.layer_index == int(layer_index)]
         live = [record for record in records if self._leaf_dependencies_live(record)]
+        if not live:
+            return {
+                "schema": SCHEMA,
+                "ranked": [],
+                "superedge_hierarchy": True,
+                "parent_hash216": parent_hash216,
+                "active_superedge_candidates": 0,
+                "candidate_only": True,
+            }
         candidates = [
             Hash216CompositionCandidate(
                 candidate_id=record.superedge_id,
@@ -979,7 +957,7 @@ class Pass219Lane5SuperedgeHierarchy:
             candidates=candidates,
             tick=int(tick),
             cycle_index=int(cycle_index),
-            top_k=max(1, int(top_k)),
+            top_k=max(1, min(int(top_k), len(candidates))),
         )
         ranked["superedge_hierarchy"] = True
         ranked["parent_hash216"] = parent_hash216
