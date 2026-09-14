@@ -4,12 +4,16 @@ on:
   push:
     paths:
       - 'hhs_runtime/pass219/fold_primitive_probe.py'
+      - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
+      - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   pull_request:
     paths:
       - 'hhs_runtime/pass219/fold_primitive_probe.py'
+      - 'hhs_runtime/pass219/platonic_multistate_fold_probe.py'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
+      - 'tests/pass219/test_pass219_platonic_multistate_fold_probe.py'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   workflow_dispatch:
 
@@ -28,6 +32,11 @@ jobs:
       - name: Install targeted test dependency
         run: python -m pip install --disable-pip-version-check pytest
       - name: Run focused primitive tests
-        run: PYTHONPATH="$PWD" python -m pytest -q -s tests/pass219/test_pass219_fold_primitive_probe.py
-      - name: Emit exact combined probe
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_fold_primitive_probe.py \
+            tests/pass219/test_pass219_platonic_multistate_fold_probe.py
+      - name: Emit exact combined fold probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.fold_primitive_probe
+      - name: Emit exact Platonic multi-state probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.platonic_multistate_fold_probe
