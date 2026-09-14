@@ -1,0 +1,130 @@
+name: Pass 219 Lane 5 Hash216 Composition Jump Store 1.38
+
+on:
+  push:
+    branches:
+      - agent/pass219-lane5-hash216-composition-jump-store-1-38-20260914
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_hash216_composition_jump_store_1_38.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hash216_composition_jump_store_1_38.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_composition_jump_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_composition_jump_store_1_38.py'
+      - 'tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.c'
+      - 'tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py'
+      - '.github/workflows/pass219-lane5-hash216-composition-jump-store-1-38.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38_RESTART_20260914.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_hash216_composition_jump_store_1_38.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hash216_composition_jump_store_1_38.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_composition_jump_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_composition_jump_store_1_38.py'
+      - 'tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.c'
+      - 'tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py'
+      - '.github/workflows/pass219-lane5-hash216-composition-jump-store-1-38.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38_RESTART_20260914.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Static Lane 5 composition-jump contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_hash216_composition_jump_store_1_38.h').read_text()
+          runtime = Path('hhs_backend/runtime/hhs_pass219_lane5_hash216_composition_jump_store_1_38.py').read_text()
+          for needle in (
+              'full phase cycle = 20,020',
+              'intermediate_transitions_executed_on_reuse = 0',
+              'exact registration replay required       = TRUE',
+              'canonical Hash216 authority               = FALSE',
+              'signed environmental VM81 admission       = REQUIRED',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'validated_hash216_jump_store',
+              'exact_registration_replay_required',
+              'direct_candidate_reuse_allowed',
+              'recursive_layer_tagged',
+              'canonical_vm81_mutation_authority',
+              'requires_signed_environmental_vm81_admission',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'build_validated_jump', 'verify_jump_replay', 'search_hash216',
+              'intermediate_transitions_executed_on_reuse', 'composition_hash216',
+          ):
+              assert needle in runtime, needle
+          print('lane5_hash216_composition_jump_static=PASS')
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.38 exported symbols
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_composition_jump_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_composition_jump_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_composition_jump_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_phase_interlace_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native Lane 5 composition-jump membrane test
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-composition-jump
+          /tmp/test-lane5-composition-jump
+
+      - name: Run real Hash216 composition-jump integration
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py \
+            tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
+            tests/test_hhs_pass207_gpu_driver_v1.py
+
+      - name: Regress inherited Lane 5 authority
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
