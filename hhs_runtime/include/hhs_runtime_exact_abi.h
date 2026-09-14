@@ -100,4 +100,5 @@
 #include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.h"
 #include "hhs_pass219_lane5_hash216_composition_jump_store_1_38.h"
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.h"
+#include "hhs_pass219_lane5_recursive_hash216_composition_graph_1_40.h"
 #endif
