@@ -8,6 +8,8 @@ Date: 2026-09-14
 base main: ad903743a840708505310853aae737e0b2f55fa5
 branch: agent/pass219-lane5-recursive-hash216-composition-graph-1-40-20260914
 merge target: main
+validated checkpoint head: 5302ded5e1aa25c825708a4fdcda72d95399365b
+dedicated green workflow: 34834868460
 ```
 
 Base main is the verified merge of PR #451 / Lane 5 Persistent Hash216 Composition Memory 1.39.
@@ -34,20 +36,69 @@ tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py
 docs/operations/restart/PASS_219_LANE5_RECURSIVE_HASH216_COMPOSITION_GRAPH_1_40_RESTART_20260914.md
 ```
 
-## Intended validation
+## Dedicated validation — GREEN
+
+Workflow `34834868460` completed successfully against exact checkpoint head `5302ded5e1aa25c825708a4fdcda72d95399365b`.
 
 ```text
-static contract gate
-make clean && make c-abi
-1.40 + inherited symbol audit
-strict native 1.40 C membrane
-real three-edge persistent/restart graph integration
-inherited 1.39 / 1.38 / 1.37 / Pass207 tests
-inherited Pass194 encrypted storage regression
-inherited Lane5 1.34 authority regression
+static recursive graph contract gate                     PASS
+make clean && make c-abi                                  PASS
+1.40 + inherited symbol audit                             PASS
+strict native 1.40 C membrane                             PASS
+real recursive persistent graph integration               PASS
+inherited Pass194 encrypted-storage regression            PASS
+inherited Lane5 1.34 native authority regression          PASS
 ```
 
-The primary integration constructs three exact Pass205-validated persistent edges, closes the process, reopens the same encrypted 1.39 memory root, searches the exact three-hop route, and reuses the route with zero represented intermediate VM81 transition executions.
+Native result:
+
+```text
+PASS219_LANE5_RECURSIVE_HASH216_COMPOSITION_GRAPH_PASS hops=3 span=24 phase=15015 graph=1665595979797202128
+```
+
+Primary Python integration bundle:
+
+```text
+14 passed, 1 warning in 2.64s
+```
+
+Inherited Pass194 storage regression:
+
+```text
+7 passed, 1 warning in 0.38s
+```
+
+The warning is the inherited pytest `asyncio_mode` configuration warning and does not affect the scoped tests.
+
+## Evidence established
+
+- a real three-edge graph is constructed from exact Pass205-validated jumps;
+- each edge is persisted through inherited 1.39 encrypted candidate memory;
+- the process is closed and the same graph is reconstructed after reopening the persistent state root;
+- edge connectivity is exact native Hash216 equality, never approximate vector similarity;
+- each graph frontier is ranked through inherited 1.37/Pass207 Hash216 vector search;
+- the test route crosses the full 20,020 phase boundary starting at tick 20,018 while maintaining correct cycle rollover;
+- exact target search returns ordered route `edge-1 -> edge-2 -> edge-3`;
+- underlying validated spans `4 + 6 + 8 = 18` are represented by the returned route;
+- direct three-edge route reuse performs three authenticated persistent edge retrievals and zero represented intermediate VM81 transition executions;
+- the recovered terminal 81-word VM5184 candidate equals the exact third-edge child state;
+- the ordered route is sealed by native Hash216 and accepted by the 1.40 native candidate-only descriptor membrane;
+- wrong edge order and wrong start state fail exact adjacency;
+- quarantining the middle edge prevents exact target traversal and direct reuse through that edge;
+- inherited 1.39/1.38/1.37, Pass207, Pass194, and Lane5 1.34 behavior remains green.
+
+## Work relation
+
+For a sealed route `P=(E_0,...,E_h-1)`:
+
+```text
+total_span(P) = sum(E_i.jump_span)
+represented_transition_work(P, r) = total_span(P) * r
+persistent_edge_retrievals(P, r) = hop_count(P) * r
+intermediate_vm81_transitions_executed_during_reuse = 0
+```
+
+This is validated state-graph work reuse, not a physical latency claim.
 
 ## Authority boundary
 
@@ -70,12 +121,12 @@ signed environmental VM81 admission              = REQUIRED
 
 ## Environment state
 
-Repository mutations were performed directly through the authorized GitHub integration. No nested coding agent or external handoff was used. Validation uses the deterministic Pass207 CPU-reference backend for semantic equality; no physical nanosecond latency claim is introduced.
+Repository mutations were performed directly through the authorized GitHub integration. No nested coding agent or external handoff was used. Validation used the deterministic Pass207 CPU-reference backend for semantic equality; no physical nanosecond latency claim is introduced.
 
 ## Next action
 
-Consume the dedicated 1.40 branch workflow. Repair forward only the impacted dependency-scoped surface if it fails. Once green, update this restart record with the exact validated head/run, open a PR against `main`, consume exact PR-head validation, merge, and verify the 1.40 ABI on main.
+This documentation-only checkpoint commit triggers the dedicated 1.40 workflow because the restart record is in the workflow path set. Consume that exact checkpoint-head run. If it remains green, open the 1.40 PR against `main`, consume PR-head validation, merge, and verify the merged main SHA plus aggregate 1.40 ABI. Repair forward only if the exact-head gate exposes a new failure.
 
 ## Blockers
 
-Validation pending.
+No known semantic or implementation blocker. The complete 1.40 checkpoint is green; only exact checkpoint/PR closure remains.
