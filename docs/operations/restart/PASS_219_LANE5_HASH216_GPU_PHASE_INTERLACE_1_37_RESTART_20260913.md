@@ -1,6 +1,6 @@
 # Pass 219 — Lane 5 Hash216 GPU Phase-Interlace Optimizer 1.37 Restart Record
 
-Date: 2026-09-13
+Date: 2026-09-13 / repair-forward 2026-09-14
 
 ## Repository state
 
@@ -8,7 +8,9 @@ Date: 2026-09-13
 base main: cec9c55a9a088d7a29be385f8e7daba28ea4f967
 branch: agent/pass219-lane5-hash216-gpu-phase-interlace-1-37-20260913
 merge target: main
-implementation head before this restart record: 742d242428908ab5d4467de26807ed43ad65b311
+PR: #449
+implementation checkpoint before CI repair: 47ab144dd2f317b2a78f3bb6b9cc09894610bfd2
+CI dependency repair commit: 2d5e99b6e39e8b4b12c27d1270874f2f8085d076
 ```
 
 The base is the verified main merge of PR #447 / Pass 219 Delta reciprocal constructor 1.36.
@@ -42,11 +44,9 @@ docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_
 - Canonical VM81 mutation, Hash72 minting, Hash216 minting, persistence, PQC keys and receipt-clock authority remain outside Lane 5 and still require the inherited signed environmental VM81 admission seam.
 - Nanosecond-class dispatch remains a physical hardware benchmark target, not an acceptance claim of this software-only cycle.
 
-## Validation completed
+## Local dependency-scoped validation completed
 
-A dependency-scoped local prototype validation was run before repository publication using a minimal predecessor ABI stub matching the required `HHSExactStatus` surface.
-
-Successful commands:
+Successful isolated validation commands:
 
 ```text
 python -m py_compile \
@@ -76,38 +76,88 @@ PASS219_LANE5_HASH216_GPU_PHASE_INTERLACE_PASS unique=20020 route=8593,14597,626
 
 This proves the isolated 1.37 C surface under strict C11 warnings-as-errors, including exhaustive 20,020 address uniqueness and fail-closed prime-route validation. Python source compilation also passed.
 
-## Validation remaining
+## First dedicated CI attempt
 
-The local container has no direct network checkout of the GitHub repository, so the full cumulative repository build and real inherited Pass 205/207 integration are delegated to the branch/PR workflow already committed in this cycle.
-
-Required remaining gates:
+Dedicated workflow run:
 
 ```text
-make clean
-make c-abi
-nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so
-strict native 1.37 C test against libhhs_runtime.so
+run: 34801296089
+job: 103844350310
+```
+
+The following repository-level gates passed before the failure:
+
+```text
+Static Lane 5 optimizer contract gate: PASS
+Build cumulative exact ABI: PASS
+Audit 1.37 exported symbols: PASS
+Native Lane 5 20,020-cycle contract test: PASS
+```
+
+The full repository-native C test returned:
+
+```text
+PASS219_LANE5_HASH216_GPU_PHASE_INTERLACE_PASS unique=20020 route=8593,14597,6262,738 signature=171017217134822350
+```
+
+The next step failed before test collection with the environmental dependency error:
+
+```text
+/usr/bin/python: No module named pytest
+```
+
+Therefore no 1.37 Python integration assertion failed. The inherited Lane 5 1.34 regression was skipped only because the workflow stopped at the missing test-runner dependency.
+
+## Repair-forward applied
+
+The dedicated workflow now installs the missing Ubuntu test dependency explicitly:
+
+```text
+sudo apt-get install -y build-essential libssl-dev python3-pytest
+```
+
+Repair commit:
+
+```text
+2d5e99b6e39e8b4b12c27d1270874f2f8085d076
+Repair Lane 5 1.37 CI pytest dependency
+```
+
+No runtime, ABI, Hash216, phase-interlace, GPU-ranking, authority, or canonical-admission semantics were modified by this repair.
+
+Replacement dedicated run:
+
+```text
+run: 34801938942
+status at checkpoint: queued
+```
+
+## Validation remaining
+
+Only the previously blocked gates remain for the repaired head:
+
+```text
 pytest new 1.37 optimizer test + inherited Pass207 GPU-driver test
 regress inherited Lane5 1.34 native authority test
 ```
 
-The Python integration test exercises the real repository Pass 205 native Hash216 generator, Pass 207 `rank_hash72_vectors`, exact CPU-reference candidate execution and negative authority paths.
+The already-green cumulative ABI build, exported-symbol audit and exhaustive native 20,020-cycle test are frozen evidence unless a later change impacts those surfaces.
 
 ## Environment state
 
 - Repository mutations were made directly through the authorized GitHub integration.
 - No nested coding agent or external work handoff was used.
-- Local validation used the container-only isolated source harness because the container cannot resolve github.com.
 - No physical GPU is available in the local validation environment. CI uses the repository-supported `CPU_REFERENCE` Pass 207 backend for deterministic semantic parity; physical GPU performance remains a later hardware benchmark.
+- The first CI failure was environmental (`pytest` absent), not a demonstrated implementation defect.
+- Per forward-progress policy, the repaired repository-visible checkpoint is committed without waiting indefinitely for the queued external runner.
 
 ## Next action
 
-1. Open the 1.37 branch PR to `main`.
-2. Run the dedicated dependency-scoped workflow and inspect failures if any.
-3. Repair forward only the affected 1.37/inherited integration surface.
-4. When required checks are green, merge to `main`.
-5. Verify the merged main SHA, exported 1.37 symbols, exact authority flags and repository-clean restart state.
+1. Inspect dedicated run `34801938942` when it executes.
+2. If the two remaining gates are green, verify PR #449 mergeability and merge to `main`.
+3. Verify merged main SHA and the 1.37 exported symbols / authority invariants on main.
+4. If a remaining gate fails, repair only the affected surface and retain all frozen green evidence.
 
 ## Blockers
 
-No known semantic blocker at checkpoint. Full cumulative ABI / inherited Pass205-Pass207 integration remains unverified until CI executes.
+No known semantic blocker. The only current blocker is the queued external CI runner for repaired head `2d5e99b6e39e8b4b12c27d1270874f2f8085d076`.
