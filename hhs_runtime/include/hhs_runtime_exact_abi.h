@@ -102,4 +102,5 @@
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.h"
 #include "hhs_pass219_lane5_recursive_hash216_composition_graph_1_40.h"
 #include "hhs_pass219_lane5_superedge_hierarchy_1_41.h"
+#include "hhs_pass219_lane5_automatic_superedge_routing_1_42.h"
 #endif
