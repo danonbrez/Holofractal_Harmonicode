@@ -18,14 +18,16 @@ permissions:
 
 jobs:
   fold-primitive-probe:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
       - name: Run focused primitive tests
-        run: python -m pytest -q tests/pass219/test_pass219_fold_primitive_probe.py
+        run: PYTHONPATH="$PWD" python -m pytest -q -s tests/pass219/test_pass219_fold_primitive_probe.py
       - name: Emit exact combined probe
-        run: python -m hhs_runtime.pass219.fold_primitive_probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.fold_primitive_probe
