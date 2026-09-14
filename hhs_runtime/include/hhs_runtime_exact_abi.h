@@ -97,4 +97,5 @@
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.h"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h"
 #include "hhs_pass219_delta_reciprocal_constructor_1_36.h"
+#include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.h"
 #endif
