@@ -5,6 +5,10 @@ import json
 from pathlib import Path
 import sys
 
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from hhs_runtime.hhs_pass219_raw5184_octonion_audio_hydration_v1 import (
     PCM64_NOISE_FLOOR,
     PCM64_SATURATION_CEILING,
