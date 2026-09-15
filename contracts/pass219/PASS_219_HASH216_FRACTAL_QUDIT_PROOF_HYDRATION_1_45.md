@@ -108,6 +108,141 @@ For cell `c`, 1.45 reads the Lo Shu value at `c mod 9`. Its reciprocal antipode 
 
 This is the integer metadata behind the `1:9 <-> 9:1` quantization. The runtime does not approximate the reciprocal relation.
 
+The exact rational gain is
+
+```text
+g(n) = n / (10 - n)
+```
+
+which yields
+
+```text
+1/9, 1/4, 3/7, 2/3, 1, 3/2, 7/3, 4, 9
+```
+
+and obeys `g(10-n) = 1/g(n)` with zero reciprocal drift. The reduced prime support of these gains is `{2,3,7}`.
+
+## Typed binary quantization projection
+
+The local trinary appearance is not treated as a primitive three-valued machine state. 1.45 now records the tested decomposition into typed binary relations:
+
+```text
+B+  = {0,+1}
+B-  = {0,-1}
+B+- = {-1,+1}
+```
+
+Null-separated three-cell traversal is a composition of two typed binary half-transitions:
+
+```text
+(+1,0) + (0,-1) -> (+1,0,-1)
+(-1,0) + (0,+1) -> (-1,0,+1)
+```
+
+Both complete groups are exact zero-sum reversals of one another. The relation type is part of interpretation; identical scalar values in different typed binary relations are not assumed to have identical transition roles.
+
+The 81-cell qudit projection is factored as nine phase rows by nine Lo Shu magnitude positions. The phase row order fixed by this cycle is:
+
+```text
+x, y, z, w, xy, yx, zw, wz, null
+```
+
+For `cell81`:
+
+```text
+phase_slot     = cell81 / 9
+magnitude_slot = cell81 % 9
+lo_shu_n       = LO_SHU[magnitude_slot]
+gain           = lo_shu_n / (10 - lo_shu_n)
+```
+
+The first eight phase rows are active and the ninth is the shared null row. Therefore:
+
+```text
+81 = 9 * 9
+72 = 8 * 9 active channels
+9  = 1 * 9 null channels
+81 = 72 + 9
+```
+
+The eight active phase rows are paired into four typed binary carrier families:
+
+```text
+(x,y)
+(z,w)
+(xy,yx)
+(zw,wz)
+```
+
+so the active channel count also factors as:
+
+```text
+72 = 4 carrier families * 2 member orientations * 9 rational magnitudes
+```
+
+The member-orientation bit identifies which symbol in the typed pair is selected. This contract does not collapse the member bit into an untyped scalar sign; the group-level `{0,+1}`, `{0,-1}`, and `{-1,+1}` relation determines transition semantics.
+
+## Deterministic location/depth decoding
+
+The already-canonical 5184 local address makes the quantization projection computationally deterministic. For every local state:
+
+```text
+local5184 = 64 * cell81 + operation64
+cell81    = local5184 / 64
+operation64 = local5184 % 64
+```
+
+Combining this with the typed 81-cell projection gives a collision-free local key:
+
+```text
+(phase_slot, magnitude_slot, operation64)
+```
+
+Across the complete local block this enumerates exactly:
+
+```text
+9 * 9 * 64 = 5184
+```
+
+states. The 72 active logical channels each coexist with the 64-state operation/control coordinate; the nine null logical channels do the same. The operation coordinate is not reinterpreted by this cycle as phase truth or canonical mutation authority.
+
+For a non-negative BigInt `N`, the local block at depth `k` is determined exactly by positional arithmetic:
+
+```text
+r_k = floor(N / 5184^k) mod 5184
+```
+
+and the typed local state is the deterministic decode of `r_k`. Thus, within a fixed serialization version:
+
+```text
+(N,k) -> r_k -> (cell81,operation64) -> typed phase/magnitude projection
+```
+
+contains no probabilistic state-selection step.
+
+Within the canonical Hash72 window:
+
+```text
+0 <= N < 72^72 = 5184^36
+0 <= k < 36
+```
+
+so all 36 depth coordinates are finite and exact. The generic positional equation itself is valid for arbitrary non-negative BigInt depth, but 1.45 does **not** expand canonical Hash72 admission beyond its existing 36-block modulus. Arbitrary-depth positional decoding is therefore tested as mathematical serialization behavior, not silently admitted as a larger Hash72 canonical state.
+
+The same `local5184` value at two different depths has the same local typed projection but is not the same global position because its positional contribution is `local5184 * 5184^k`. Depth is therefore part of global state identity even when local geometry repeats.
+
+## Palindromic reciprocal kernel
+
+The tested scalar projection of the local null-separated circuit is:
+
+```text
+ 1  0 -1
+ 0  0  0
+-1  0  1
+```
+
+A clockwise quarter-turn produces its sign-reversed reciprocal orientation, a half-turn restores the original kernel, and reversing both axes preserves it. Every row and every column is zero-sum. This property is treated as a local projection/witness; it does not replace the typed symbolic phase identities carried by `x,y,z,w,xy,yx,zw,wz`.
+
 ## Mass factorization
 
 The proof witness evaluates only checked signed integer arithmetic for:
@@ -163,6 +298,8 @@ floating_point_canonical_authority = 0
 
 It records that inherited canonical admission was verified; it does not claim that the proof hydrator performed that admission.
 
+The typed quantization/location-depth projection added by this cycle is likewise read-only. It may determine the logical interpretation of an already-addressed state, but it cannot commit VM81 state, advance Hash72/Hash216 lineage, persist canonical state, sign receipts, or select a canonical candidate through similarity search.
+
 ## Deterministic replay
 
 `hhs_exact_pass219_hash216_fractal_qudit_receipt_replay` reconstructs the entire proof receipt from the original exact input, committed frame, parent, inherited receipts, and witness. Byte inequality with the archived proof is a replay failure.
@@ -174,3 +311,5 @@ hydrate(S) <=> every declared 1.45 projection of S reproduces the same admitted 
 ```
 
 A claim that disagrees with executable geometry, arithmetic, phase/address structure, canonical lineage, or signed environmental admission cannot produce a valid 1.45 proof hydration receipt.
+
+The new deterministic quantization tests additionally require that every legal local address decode to exactly one typed `(phase,magnitude,operation)` key, that all 5184 keys are collision-free, that all 81 logical channels partition exactly into 72 active plus nine null channels, and that `(BigInt,depth)` replay returns the same local typed state on every execution.
