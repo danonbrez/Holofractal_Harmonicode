@@ -11,6 +11,7 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - 'tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp'
       - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
   pull_request:
@@ -23,6 +24,7 @@ on:
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - 'tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp'
       - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
   workflow_dispatch:
@@ -42,9 +44,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
 
-      - name: Run exact fractal qudit scaling equations
+      - name: Run exact fractal qudit scaling and typed quantization equations
         run: |
-          python -m pytest -q tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py
+          python -m pytest -q \
+            tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py \
+            tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py
 
       - name: Build cumulative exact ABI
         run: |
@@ -115,7 +119,7 @@ jobs:
         run: |
           python -m pytest -q tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
 
-      - name: Static 1.45 authority and receipt contract gate
+      - name: Static 1.45 authority and typed quantization contract gate
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -126,13 +130,16 @@ jobs:
               'canonical_vm81_mutation_authority = 0',
               'canonical_hash216_authority = 0',
               '72^72 = (72^2)^36 = 5184^36',
+              '81 = 72 + 9',
+              '72 = 4 carrier families * 2 member orientations * 9 rational magnitudes',
+              'r_k = floor(N / 5184^k) mod 5184',
               'D = -t*x*y + t^4 + t^3 - t^2',
               'N = D * (D - 8A)',
           ):
               assert needle in contract, needle
           assert 'hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof' in header
           assert 'hhs_exact_pass219_hash216_fractal_qudit_admit_signed' not in header
-          print('hash216_fractal_qudit_authority_static=PASS')
+          print('hash216_fractal_qudit_authority_typed_quantization_static=PASS')
           PY
 
       - name: Emit 1.45 deterministic evidence
@@ -143,6 +150,8 @@ jobs:
           modulus = 72 ** 72
           assert radix == 72 ** 2 == 81 * 64
           assert modulus == radix ** 36
+          assert 81 == 72 + 9
+          assert 72 == 4 * 2 * 9
           assert Fraction(1, 9) * Fraction(9, 1) == 1
           assert Fraction(1, 4) * Fraction(4, 1) == 1
           assert Fraction(3, 7) * Fraction(7, 3) == 1
@@ -150,7 +159,8 @@ jobs:
           print(
               'PASS219_HASH216_FRACTAL_QUDIT_SCALING_EVIDENCE '
               f'radix={radix} levels=36 modulus_bits={modulus.bit_length()} '
-              f'hash72_pair=72x72 vm81_lane=81x64 loshu_reciprocal=PASS '
+              f'hash72_pair=72x72 vm81_lane=81x64 typed_channels=72+9 '
+              'typed_binary=PASS bigint_depth_decode=PASS loshu_reciprocal=PASS '
               'lane5_hash216_chain=1.37..1.44 native_proof_hydration=COMPILED'
           )
           PY
@@ -163,6 +173,7 @@ jobs:
 
       - name: Build OpenSSL 3.5.0 PQ providers locally
         run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y build-essential perl curl ca-certificates
           curl -fsSL --retry 3 --retry-delay 2 \
@@ -173,7 +184,13 @@ jobs:
           ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
           make -j2
           make install_sw
-          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+          export LD_LIBRARY_PATH=/tmp/openssl35/lib
+          export OPENSSL_MODULES=/tmp/openssl35/lib/ossl-modules
+          /tmp/openssl35/bin/openssl version -a
+          /tmp/openssl35/bin/openssl list -providers
+          /tmp/openssl35/bin/openssl list -signature-algorithms -provider default \
+            | tee /tmp/openssl35-signatures.txt
+          grep -Eiq 'ML-DSA-(44|65|87)' /tmp/openssl35-signatures.txt
 
       - name: Build exact ABI against OpenSSL 3.5
         env:
@@ -181,6 +198,7 @@ jobs:
           CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
           LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
           LD_LIBRARY_PATH: /tmp/openssl35/lib
+          OPENSSL_MODULES: /tmp/openssl35/lib/ossl-modules
         run: |
           make clean
           make c-abi
@@ -189,6 +207,7 @@ jobs:
       - name: Compile and run signed proof hydration end to end
         env:
           LD_LIBRARY_PATH: /tmp/openssl35/lib
+          OPENSSL_MODULES: /tmp/openssl35/lib/ossl-modules
         run: |
           c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include -I/tmp/openssl35/include \
