@@ -5,7 +5,9 @@ Date: 2026-09-15
 ## Base and target
 
 - Verified base main: `c7e56777b3e0c6cb883047248263f54d150233f2`
+- Frozen validated implementation head: `69b40599b80cd80ce47339bb0473677899544ffd`
 - Branch: `agent/pass219-lane5-unbounded-real-world-scaling-1-48-20260915`
+- PR: #464 — Pass 219: Lane 5 unbounded real-world workload scaling 1.48
 - Merge target: `main`
 - Predecessor: merged PR #463 / Lane 5 real-world workload benchmark 1.47
 
@@ -40,25 +42,40 @@ Remove the fixed candidate-array and 64-bit represented-span limits from Lane 5 
 - Lane 5 remains candidate-only and has zero canonical VM81 mutation, Hash72, Hash216, persistence, PQC-key, or receipt-clock authority.
 - Canonical commitment still requires signed environmental VM81 admission.
 
-## Validation encoded but pending CI at this checkpoint
+## Exact validation completed on implementation head
 
-The dedicated 1.48 workflow is configured to run:
+Dedicated workflow run `35005834019` completed successfully on exact head `69b40599b80cd80ce47339bb0473677899544ffd`.
 
-- cumulative exact ABI build;
-- six 1.48 export checks;
-- native `72^72 - 1` admission and `72^72` rejection;
-- noncanonical BigInt rejection;
-- 1,000,000-candidate constant-memory stream sweep;
-- candidate-counter saturation continuation;
-- mixed-workload stream rejection;
-- Python workload-class tests for text, JSON, source, generic binary, image-like, audio-like, video-like, tensor/model-like, compressed, and empty payloads;
-- repository file streaming at multiple chunk sizes;
-- expanded 1.47 repository workload benchmark with 32 files and 1,000 Hash72 ledger entries;
-- inherited Lane 5 1.37–1.46 and qudit 1.45 regressions;
-- Pass 214 15×11 compound benchmark;
-- full 50,388,480-position hydration verification;
-- raw5184 audio workload benchmark;
-- evidence sealing and artifact upload.
+The green gate completed all configured dependency-scoped stages:
+
+- verified merged 1.47 base lineage;
+- rejected new floating/approximate canonical authority;
+- built cumulative exact ABI;
+- audited all six callable 1.48 exports;
+- compiled the native full-manifold streaming gate;
+- admitted `72^72 - 1` and rejected `72^72`;
+- rejected noncanonical BigInt coordinates;
+- streamed 1,000,000 candidates through constant-size native state;
+- verified candidate processing continues after observational counters saturate at `UINT64_MAX`;
+- rejected mixed-workload candidate streams;
+- compiled and tested the Python workload bridge;
+- exercised workload classes for text, JSON, source, generic binary, image-like, audio-like, video-like, tensor/model-like, compressed, and empty payloads;
+- reran expanded 1.47 repository workloads with 32 files and 1,000 Hash72 ledger entries;
+- reran inherited Lane 5 1.37–1.46 plus qudit 1.45 regressions;
+- reran the Pass 214 15×11 exact compound workload;
+- reran full 50,388,480-position hydration verification;
+- reran the raw5184 audio workload benchmark;
+- sealed and uploaded 1.48 evidence.
+
+Workflow job: `validate-unbounded-workload-scaling` / job `104505225660` / result `success`.
+
+## PR and ambient CI state at checkpoint creation
+
+Before this restart-record commit, PR #464 was open, non-draft, `mergeable: true`, and `rebaseable: true` against exact base `c7e56777b3e0c6cb883047248263f54d150233f2`.
+
+The dedicated 1.48 gate is green. The same implementation head also has inherited-success runs for the predecessor Lane 5 surfaces, Hash216 fractal qudit scaling, VM81 PQC/environmental authority, raw5184, I149 serialization hydration, cross-modal state manifold, global canonical defaults, and production-root validation.
+
+A number of older broad cumulative workflows report failures on the same PR head. Those are not silently reclassified as 1.48 failures: no dependency-scoped 1.48 gate failed. If later delivery policy requires those historical/broad workflow failures to block merge, inspect their concrete job failures and repair forward only the affected surfaces.
 
 ## Restart commands / validation intent
 
@@ -82,19 +99,13 @@ HHS_DISABLE_C_AUTOBUILD=1 LD_LIBRARY_PATH="$PWD/hhs_runtime/builds" \
 
 No external mutable service is required for the 1.48 gate. GitHub Actions uses Ubuntu 24.04 with build-essential, OpenSSL development libraries, pytest, and cryptography. Timing measurements are observational only and do not affect canonical selection.
 
-## Validation done
-
-- PR #463 was fully repaired, benchmarked, merged, and verified on `main` before this branch was created.
-- Repository code review identified the concrete prior scaling limits: 1.46 fixed route arrays and `uint64_t represented_span` versus the 445-bit full-manifold coordinate.
-- 1.48 implementation is repository-visible and wired into the cumulative exact ABI.
-
 ## Validation remaining
 
-- Execute the dedicated 1.48 workflow on the exact PR head.
-- Repair forward any C compiler, ABI layout, ctypes, workload, or inherited regression failure without weakening authority or exactness boundaries.
-- Freeze the exact green implementation head in this restart record.
-- Merge once dependency-scoped gates are green and verify resulting `main`.
+- This restart-record-only commit may trigger a fresh 1.48 workflow because the workflow watches the restart file; do not block checkpoint creation waiting for that queued run.
+- Before merge, confirm PR #464 still resolves cleanly against current `main` and that no new dependency-scoped regression was introduced after the frozen implementation head.
+- If `main` moved, reconcile only the resulting concrete conflict/regression and rerun the impacted gates.
+- Merge the exact validated/reconciled PR head and verify resulting `main`.
 
 ## Next action
 
-Open the 1.48 PR, execute the dedicated workflow, inspect every concrete failure, repair forward on this branch, then merge the exact validated head and verify main.
+Resume from this repository-visible checkpoint. Treat `69b40599b80cd80ce47339bb0473677899544ffd` as the frozen green implementation head. Inspect only new changes after it, confirm current PR mergeability/main drift, repair forward any concrete dependency-scoped regression, merge PR #464, and verify `main`.
