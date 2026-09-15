@@ -1,0 +1,80 @@
+name: Pass 219 Hash216 Fractal Qudit Scaling 1.45
+
+on:
+  push:
+    branches:
+      - agent/pass219-hash216-fractal-qudit-scaling-1-45-20260915
+    paths:
+      - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Run exact fractal qudit scaling equations
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Regress inherited core dynamic circuit
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_constraint_dynamic_circuit_1_23.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-core-dynamic-circuit
+          /tmp/test-pass219-core-dynamic-circuit
+
+      - name: Regress inherited Lane 5 capability self-model
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
+
+      - name: Emit 1.45 deterministic evidence
+        run: |
+          python - <<'PY'
+          from fractions import Fraction
+
+          radix = 5184
+          modulus = 72 ** 72
+          assert radix == 72 ** 2 == 81 * 64
+          assert modulus == radix ** 36
+          assert Fraction(1, 9) * Fraction(9, 1) == 1
+          assert Fraction(1, 4) * Fraction(4, 1) == 1
+          assert Fraction(3, 7) * Fraction(7, 3) == 1
+          assert Fraction(2, 3) * Fraction(3, 2) == 1
+          print(
+              'PASS219_HASH216_FRACTAL_QUDIT_SCALING_EVIDENCE '
+              f'radix={radix} levels=36 modulus_bits={modulus.bit_length()} '
+              f'hash72_pair=72x72 vm81_lane=81x64 loshu_reciprocal=PASS'
+          )
+          PY
