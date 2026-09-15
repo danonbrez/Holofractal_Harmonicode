@@ -3,11 +3,12 @@ import type { RuntimeOS } from "../core/RuntimeOS"
 import { ApprovalStatusPanel } from "./ApprovalStatusPanel"
 import { AuthorityOperationsPanel } from "./AuthorityOperationsPanel"
 import { HHSWorkspaceShell } from "./HHSWorkspaceShell"
+import { ProductionMobileControlCenter } from "./ProductionMobileControlCenter"
 import { RegistryVisualProgrammer } from "./RegistryVisualProgrammer"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
 type Json = Record<string, any>
-type ProductSurface = "program" | "workspace" | "authority"
+type ProductSurface = "control" | "program" | "workspace" | "authority"
 
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
@@ -20,8 +21,17 @@ async function requestJson(url: string, timeoutMs = 20000): Promise<Json> {
       headers: { accept: "application/json" },
       signal: controller.signal,
     })
-    const body = record(await response.json())
-    if (!response.ok) throw new Error(text(body.detail ?? body.error ?? body.status, response.statusText))
+    const raw = await response.text()
+    let body: Json = {}
+    try {
+      body = raw ? record(JSON.parse(raw)) : {}
+    } catch {
+      body = { detail: raw || response.statusText }
+    }
+    if (!response.ok) {
+      const detail = record(body.detail)
+      throw new Error(text(detail.classification ?? detail.detail ?? body.detail ?? body.error ?? body.status, `${response.status} ${response.statusText}`))
+    }
     return body
   } finally {
     window.clearTimeout(timeout)
@@ -35,12 +45,11 @@ export interface HHSProductWorkspaceProps {
 }
 
 /**
- * Product composition for the public Runtime OS.
+ * Public production composition for the HHS Runtime OS.
  *
- * The registry canvas is the primary object-oriented programming surface.
- * The conventional workspace and Pass 218 authority surfaces remain mounted
- * on demand, so inactive modules do not consume resources and canonical
- * authority stays entirely backend-owned.
+ * Mobile Control is the default click-through application server surface.
+ * Heavy programming, workspace, and authority modules remain mounted only
+ * when selected, preserving the existing backend-owned authority boundaries.
  */
 export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   runtimeOS,
@@ -48,7 +57,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   transportError,
 }) => {
   const commandClient = useMemo(() => new WorkspaceCommandClient(), [])
-  const [surface, setSurface] = useState<ProductSurface>("program")
+  const [surface, setSurface] = useState<ProductSurface>("control")
   const [session, setSession] = useState<Json>({})
   const [sessionError, setSessionError] = useState<string | null>(null)
   const [productHealth, setProductHealth] = useState<Json>({})
@@ -81,7 +90,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   }, [])
 
   useEffect(() => {
-    if (surface === "program") void refreshSession()
+    if (surface === "program" || surface === "control") void refreshSession()
   }, [surface])
 
   const project = record(session.project)
@@ -108,19 +117,21 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
     setExternalResultCount((count) => count + 1)
   }
 
+  const tabClass = (id: ProductSurface): string => `min-h-10 shrink-0 rounded-xl px-3 text-xs ${surface === id ? "bg-cyan-900 text-white shadow-lg" : "bg-neutral-900 text-neutral-400"}`
+
   return (
     <section data-testid="hhs-product-workspace" className="min-h-screen bg-neutral-950 text-white">
-      <nav className="sticky top-0 z-50 border-b border-cyan-950 bg-black/95 p-2 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1800px] flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0">
-            <div className="truncate text-sm font-semibold text-cyan-200">HHS Visual Runtime OS</div>
+      <nav className="sticky top-0 z-50 border-b border-cyan-950 bg-black/95 px-2 py-2 backdrop-blur-xl md:px-4">
+        <div className="mx-auto flex max-w-[1800px] items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-sm font-semibold text-cyan-200">HHS Runtime OS</div>
             <div className="truncate text-[9px] text-neutral-500">
-              {projectId ? `${text(project.name, "Workspace")} · ${projectId.slice(0, 12)}…` : "Registry-driven modular programming"}
+              {projectId ? `${text(project.name, "Workspace")} · ${projectId.slice(0, 12)}…` : "Production application server"}
               {externalResultCount > 0 ? ` · ${externalResultCount} registry dispatches` : ""}
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-2">
+          <div className="hidden items-center gap-2 lg:flex">
             <button type="button" onClick={() => void refreshHealth()} className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900 px-2 py-1 text-[9px]">
               <span className={`h-2 w-2 rounded-full ${runtimeOnline ? "bg-emerald-400" : "bg-red-400"}`} />
               runtime {runtimeOnline ? "online" : "offline"}
@@ -129,12 +140,14 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
               <span className={`h-2 w-2 rounded-full ${assistantOnline ? "bg-emerald-400" : "bg-red-400"}`} />
               assistant {assistantOnline ? assistantMode.toLowerCase() : "offline"}
             </button>
-            <div className="grid grid-cols-3 gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
-              <button type="button" onClick={() => setSurface("program")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "program" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Visual Program</button>
-              <button type="button" onClick={() => setSurface("workspace")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "workspace" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Workspace</button>
-              <button type="button" onClick={() => setSurface("authority")} className={`min-h-9 rounded-lg px-3 text-xs ${surface === "authority" ? "bg-cyan-900 text-white" : "text-neutral-400"}`}>Authority</button>
-            </div>
           </div>
+        </div>
+
+        <div className="mx-auto mt-2 flex max-w-[1800px] gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <button type="button" onClick={() => setSurface("control")} className={tabClass("control")}>Control</button>
+          <button type="button" onClick={() => setSurface("program")} className={tabClass("program")}>Visual Program</button>
+          <button type="button" onClick={() => setSurface("workspace")} className={tabClass("workspace")}>Workspace</button>
+          <button type="button" onClick={() => setSurface("authority")} className={tabClass("authority")}>Authority</button>
         </div>
       </nav>
 
@@ -142,11 +155,17 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
         <div className="m-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">Execution authority health request failed: {healthError}</div>
       ) : null}
 
-      {sessionError ? (
+      {sessionError && surface !== "control" ? (
         <div className="m-3 rounded-xl border border-amber-900 bg-amber-950/30 p-3 text-xs text-amber-200">Workspace session unavailable: {sessionError}. Registry services and application modules remain independently callable.</div>
       ) : null}
 
-      {surface === "program" ? (
+      {surface === "control" ? (
+        <ProductionMobileControlCenter
+          projectId={projectId}
+          projectName={text(project.name, "HHS Mobile Ingress")}
+          onNavigate={(next) => setSurface(next)}
+        />
+      ) : surface === "program" ? (
         <RegistryVisualProgrammer
           runtimeOS={runtimeOS}
           projectId={projectId}
