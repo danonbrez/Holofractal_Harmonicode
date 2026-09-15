@@ -1,0 +1,144 @@
+name: Pass 219 PQC Membrane Speculative Hydration I13
+
+on:
+  push:
+    branches:
+      - agent/pass219-prime-memristive-fifth-lane-i11-bigint-address-20260912
+    paths:
+      - 'contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.md'
+      - 'contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.json'
+      - 'hhs_runtime/include/hhs_pass219_pqc_membrane_speculative_hydration_i13.h'
+      - 'tests/pass219/test_pass219_pqc_membrane_speculative_hydration_i13.cpp'
+      - '.github/workflows/pass219-pqc-membrane-speculative-hydration-i13.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.md'
+      - 'contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.json'
+      - 'hhs_runtime/include/hhs_pass219_pqc_membrane_speculative_hydration_i13.h'
+      - 'tests/pass219/test_pass219_pqc_membrane_speculative_hydration_i13.cpp'
+      - '.github/workflows/pass219-pqc-membrane-speculative-hydration-i13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Parse I13 contract and verify static membrane rules
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.json >/dev/null
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          manifest = json.loads(Path('contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.json').read_text())
+          contract = Path('contracts/pass219/PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_pqc_membrane_speculative_hydration_i13.h').read_text()
+
+          assert manifest['inherits']['i12_repair_verified_head'] == '3a3788216fe20ecf01a49da58cd5a88f58896d8a'
+          assert manifest['crossing_payload']['projection_lane_count'] == 5
+          assert manifest['crossing_payload']['canonical_holo4_lane_count'] == 4
+          assert manifest['crossing_payload']['fifth_lane_candidate_only'] is True
+          assert manifest['crossing_payload']['probabilistic_payload_allowed'] is False
+          assert manifest['authority']['public_mutation_abi'] == 'hhs_exact_pass219_vm81_environment_admit_signed'
+          assert manifest['authority']['new_dynamic_mutation_symbol'] is False
+
+          for invariant in ('PQC-W1', 'PQC-W2', 'PQC-W3', 'PQC-W4', 'PQC-W5'):
+              assert invariant in contract
+          for needle in (
+              'hhs_exact_pass219_pqc_membrane_ingest_i13',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+              'candidate_frame_hash72',
+              'canonical_holo4_lane_count',
+              'fifth_lane_candidate_only',
+              'delta_e_zero',
+              'psi_zero',
+              'omega_true',
+              'probabilistic_payload_present',
+              'HHS_EXACT_PASS219_NATIVE_AUTONOMY',
+          ):
+              assert needle in header, needle
+
+          code = re.sub(r'/\*.*?\*/', '', header, flags=re.S)
+          code = re.sub(r'//.*', '', code)
+          assert not re.search(r'\b(float|double)\b', code)
+          assert 'static inline HHSExactStatus hhs_exact_pass219_pqc_membrane_ingest_i13' in header
+          print('pass219_pqc_membrane_i13_static_contract=PASS')
+          PY
+
+      - name: Build inherited exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify singleton dynamic mutation authority
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-i13.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-i13.symbols
+          if grep -q ' hhs_exact_pass219_pqc_membrane_ingest_i13$' /tmp/hhs-i13.symbols; then
+            echo 'I13 membrane unexpectedly exported as a dynamic mutation symbol' >&2
+            exit 1
+          fi
+
+      - name: Compile and run I13 membrane
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_pqc_membrane_speculative_hydration_i13.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-pqc-membrane-i13
+          /tmp/test-pass219-pqc-membrane-i13
+
+      - name: Re-run inherited I12 executable membrane
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_unified_intelligence_external_model_pqc_boundary_1_11.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-unified-intelligence-pqc-i12
+          /tmp/test-pass219-unified-intelligence-pqc-i12
+
+      - name: Verify generation-integrity seal remains valid
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+
+      - name: Publish I13 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 PQC Membrane Speculative Hydration I13
+          - PQC-W1: frozen source weights stay outside PQC
+          - PQC-W2: only verified exact projections cross
+          - PQC-W3: immutable source identity and Hash216 projection root retained
+          - PQC-W4: I13 is source-level only; VM81 environmental signed admit remains sole mutation successor
+          - PQC-W5: oracle severance requires explicit verified-route evidence
+          - projection bundle: four canonical Holo4 lanes + additive candidate-only H5
+          - candidate VM81 frame: canonical Hash72-bound before delegation
+          - probabilistic crossing payload: forbidden
+          - new Hash72/Hash216/persistence authority: none
+          EOF
