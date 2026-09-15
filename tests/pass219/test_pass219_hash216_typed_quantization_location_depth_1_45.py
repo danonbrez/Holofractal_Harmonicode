@@ -246,6 +246,6 @@ def test_palindromic_null_kernel_reverses_phase_on_quarter_turn_and_closes_on_ha
 
     assert quarter == negate(kernel)
     assert half == kernel
-    assert tuple(reversed(tuple(reversed(row)) for row in kernel)) == kernel
+    assert tuple(tuple(reversed(row)) for row in reversed(kernel)) == kernel
     assert all(sum(row) == 0 for row in kernel)
     assert all(sum(kernel[row][col] for row in range(3)) == 0 for col in range(3))
