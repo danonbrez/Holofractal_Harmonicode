@@ -144,7 +144,11 @@ class Pass219Lane5CapabilitySelfModelBridge:
         )
         if status != HHS_EXACT_STATUS_OK:
             raise RuntimeError(f"Lane 5 capability self-model authority failed: {status}")
-        return {name: int(getattr(value, name)) for name, _ in value._fields_}
+        return {
+            name: int(getattr(value, name))
+            for name, _ in value._fields_
+            if not name.startswith("reserved")
+        }
 
     def validate_snapshot(
         self,
