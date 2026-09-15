@@ -5,6 +5,7 @@ on:
     paths:
       - 'benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py'
       - 'benchmarks/pass219/pass219_lane5_direct_witness_native_benchmark_1_47.c'
+      - 'benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py'
       - 'contracts/pass219/PASS_219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47.md'
       - '.github/workflows/pass219-lane5-real-world-workload-benchmark-1-47.yml'
       - 'hhs_runtime/**'
