@@ -35,6 +35,7 @@ jobs:
     timeout-minutes: 90
     env:
       LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+      CPATH: ${{ github.workspace }}/native_projects/hhs_pass188_bott_runtime/include:${{ github.workspace }}/native_projects/hhs_pass189_hqlh_runtime/include
     steps:
       - name: Checkout consolidation branch
         uses: actions/checkout@v4
