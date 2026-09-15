@@ -15,6 +15,9 @@ on:
       - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_2.json'
       - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c'
       - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp'
@@ -35,6 +38,9 @@ on:
       - 'hhs_runtime/hhs_pass219_execution_composer_registration_v1.py'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
       - 'contracts/pass219/PASS_219_I148_RAW5184_OCTONION_AUDIO_HYDRATION_1_2.json'
       - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c'
       - 'tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp'
@@ -88,20 +94,21 @@ jobs:
           set -euo pipefail
           ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp             hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
 
-      - name: Compile cumulative exact ABI
+      - name: Compile cumulative exact ABI and inherited link support
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i148 artifacts/pass219/i148-raw5184-audio
           gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i148/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i148/link-support full
 
       - name: Run C exact round-trip conformance
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-c
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i148/exact.o             /tmp/pass219-i148/link-support/hhs_hash216.o             /tmp/pass219-i148/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -lstdc++ -pthread -lm             -o /tmp/pass219-i148/test-c
           /tmp/pass219-i148/test-c
 
       - name: Run C++ exact conformance
         run: |
-          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-cpp
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp             /tmp/pass219-i148/exact.o             /tmp/pass219-i148/link-support/hhs_hash216.o             /tmp/pass219-i148/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -pthread -lm             -o /tmp/pass219-i148/test-cpp
           /tmp/pass219-i148/test-cpp
 
       - name: Run Python serialization and inherited registration regressions
@@ -132,12 +139,12 @@ jobs:
 
       - name: Preserve inherited ordered octonion surface
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_octonion_runtime_1_19.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-oct
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_octonion_runtime_1_19.c             /tmp/pass219-i148/exact.o             /tmp/pass219-i148/link-support/hhs_hash216.o             /tmp/pass219-i148/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -lstdc++ -pthread -lm             -o /tmp/pass219-i148/test-oct
           /tmp/pass219-i148/test-oct
 
       - name: Preserve inherited H36 factorization surface
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-h36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c             /tmp/pass219-i148/exact.o             /tmp/pass219-i148/link-support/hhs_hash216.o             /tmp/pass219-i148/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -lstdc++ -pthread -lm             -o /tmp/pass219-i148/test-h36
           /tmp/pass219-i148/test-h36
 
       - uses: actions/upload-artifact@v4
