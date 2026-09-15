@@ -12,7 +12,7 @@ from hhs_python.runtime.hhs_pass219_lane5_persistent_composition_memory_bridge i
 
 VERSION = 0x0001002C
 NAMESPACE = 0x0002192C
-MAX_ENTRIES = 2048
+MAX_ENTRIES = 4096
 HHS_EXACT_STATUS_OK = 0
 
 SOURCE_PUBLIC_REGISTRY = 1
