@@ -158,11 +158,12 @@ jobs:
         run: |
           mkdir -p /tmp/pass219-consolidation
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-consolidation/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-consolidation/link-support full
 
       - name: Run exact octonion and monolithic ABI regressions
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_octonion_runtime_1_19.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/oct && /tmp/pass219-consolidation/oct
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/mono && /tmp/pass219-consolidation/mono
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_octonion_runtime_1_19.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/oct && /tmp/pass219-consolidation/oct
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/mono && /tmp/pass219-consolidation/mono
 
       - name: Run I121 proof-preserving Python regressions
         run: |
@@ -175,15 +176,15 @@ jobs:
 
       - name: Run I121 compiled conformance
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/glyph && /tmp/pass219-consolidation/glyph
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c /tmp/pass219-consolidation/exact.o hhs_runtime/src/hhs_hash216.c -o /tmp/pass219-consolidation/global && /tmp/pass219-consolidation/global
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-consolidation/glyph && /tmp/pass219-consolidation/glyph
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/global && /tmp/pass219-consolidation/global
 
       - name: Run Pass219B I7 and I8 conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.c /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i7 && /tmp/pass219-consolidation/i7
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.cpp /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i7cpp && /tmp/pass219-consolidation/i7cpp
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i8 && /tmp/pass219-consolidation/i8
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp /tmp/pass219-consolidation/exact.o -o /tmp/pass219-consolidation/i8cpp && /tmp/pass219-consolidation/i8cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/i7 && /tmp/pass219-consolidation/i7
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_selective_projection_1_0.cpp /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-consolidation/i7cpp && /tmp/pass219-consolidation/i7cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/i8 && /tmp/pass219-consolidation/i8
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_sparse_dirty_projection_1_0.cpp /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-consolidation/i8cpp && /tmp/pass219-consolidation/i8cpp
 
       - name: Run standalone VM81 exact verification
         run: |
