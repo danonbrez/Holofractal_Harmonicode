@@ -5,13 +5,25 @@ on:
     branches:
       - agent/pass219-hash216-fractal-qudit-scaling-1-45-20260915
     paths:
+      - 'contracts/pass219/PASS_219_HASH216_FRACTAL_QUDIT_PROOF_HYDRATION_1_45.md'
+      - 'hhs_runtime/include/hhs_pass219_hash216_fractal_qudit_admission_1_45.h'
+      - 'hhs_runtime/c/hhs_pass219_hash216_fractal_qudit_admission_1_45.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - 'tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp'
       - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
   pull_request:
     branches:
       - main
     paths:
+      - 'contracts/pass219/PASS_219_HASH216_FRACTAL_QUDIT_PROOF_HYDRATION_1_45.md'
+      - 'hhs_runtime/include/hhs_pass219_hash216_fractal_qudit_admission_1_45.h'
+      - 'hhs_runtime/c/hhs_pass219_hash216_fractal_qudit_admission_1_45.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py'
+      - 'tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp'
       - '.github/workflows/pass219-hash216-fractal-qudit-scaling-1-45.yml'
   workflow_dispatch:
 
@@ -39,6 +51,36 @@ jobs:
           make clean
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit proof hydration exports and singleton canonical mutator
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_admission_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_witness_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_receipt_replay$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_hash216_fractal_qudit_admit_signed$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
+
+      - name: Compile native 1.45 proof hydration test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-fractal-qudit-hydration
 
       - name: Regress inherited core dynamic circuit
         env:
@@ -73,11 +115,30 @@ jobs:
         run: |
           python -m pytest -q tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
 
+      - name: Static 1.45 authority and receipt contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_HASH216_FRACTAL_QUDIT_PROOF_HYDRATION_1_45.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_hash216_fractal_qudit_admission_1_45.h').read_text()
+          for needle in (
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+              'canonical_vm81_mutation_authority = 0',
+              'canonical_hash216_authority = 0',
+              '72^72 = (72^2)^36 = 5184^36',
+              'D = -t*x*y + t^4 + t^3 - t^2',
+              'N = D * (D - 8A)',
+          ):
+              assert needle in contract, needle
+          assert 'hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof' in header
+          assert 'hhs_exact_pass219_hash216_fractal_qudit_admit_signed' not in header
+          print('hash216_fractal_qudit_authority_static=PASS')
+          PY
+
       - name: Emit 1.45 deterministic evidence
         run: |
           python - <<'PY'
           from fractions import Fraction
-
           radix = 5184
           modulus = 72 ** 72
           assert radix == 72 ** 2 == 81 * 64
@@ -90,6 +151,69 @@ jobs:
               'PASS219_HASH216_FRACTAL_QUDIT_SCALING_EVIDENCE '
               f'radix={radix} levels=36 modulus_bits={modulus.bit_length()} '
               f'hash72_pair=72x72 vm81_lane=81x64 loshu_reciprocal=PASS '
-              'lane5_hash216_chain=1.37..1.44'
+              'lane5_hash216_chain=1.37..1.44 native_proof_hydration=COMPILED'
           )
           PY
+
+  openssl-35-proof-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build OpenSSL 3.5.0 PQ providers locally
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          curl -fsSL --retry 3 --retry-delay 2 \
+            https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+            -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+          ldd hhs_runtime/builds/libhhs_runtime.so | grep '/tmp/openssl35/lib'
+
+      - name: Compile and run signed proof hydration end to end
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -I/tmp/openssl35/include \
+            tests/pass219/test_pass219_hash216_fractal_qudit_admission_1_45.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -L/tmp/openssl35/lib -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -Wl,-rpath,/tmp/openssl35/lib \
+            -o /tmp/test-fractal-qudit-hydration
+          /tmp/test-fractal-qudit-hydration | tee /tmp/fractal-qudit.log
+          grep -q 'PASS219_HASH216_FRACTAL_QUDIT_ADMISSION_1_45_PASS' /tmp/fractal-qudit.log
+
+      - name: Re-audit singleton canonical mutation authority
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_hash216_fractal_qudit_admit_signed$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
