@@ -77,20 +77,39 @@ export class WorkspaceCommandClient {
       }
     }
 
+    const endpoint = `${this.baseUrl}/api/runtime/workspace/command`
     const controller = new AbortController()
     const timeout = window.setTimeout(() => controller.abort(), this.timeoutMs)
     try {
-      const response = await fetch(`${this.baseUrl}/api/runtime/workspace/command`, {
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { accept: "application/json", "content-type": "application/json" },
         body: JSON.stringify(envelope),
         signal: controller.signal,
       })
-      const body = await response.json()
+      const raw = await response.text()
+      let body: any = {}
+      try {
+        body = raw ? JSON.parse(raw) : {}
+      } catch {
+        body = { detail: raw || response.statusText }
+      }
       if (!response.ok) {
-        throw new Error(String(body?.detail ?? body?.error ?? body?.status ?? response.statusText))
+        const detail = body?.detail && typeof body.detail === "object" ? body.detail : {}
+        const message = detail?.classification
+          ?? detail?.detail
+          ?? body?.detail
+          ?? body?.error
+          ?? body?.status
+          ?? response.statusText
+        throw new Error(`workspace authority ${response.status} at ${endpoint}: ${String(message)}`)
       }
       return body
+    } catch (reason) {
+      if (reason instanceof DOMException && reason.name === "AbortError") {
+        throw new Error(`workspace authority timed out after ${this.timeoutMs} ms at ${endpoint}`)
+      }
+      throw reason
     } finally {
       window.clearTimeout(timeout)
     }
