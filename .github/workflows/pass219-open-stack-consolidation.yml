@@ -159,6 +159,9 @@ jobs:
           mkdir -p /tmp/pass219-consolidation
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-consolidation/exact.o
           bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-consolidation/link-support full
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/pass219-consolidation/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/pass219-consolidation/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/pass219-consolidation/pass189.o
 
       - name: Run exact octonion and monolithic ABI regressions
         run: |
@@ -176,7 +179,7 @@ jobs:
 
       - name: Run I121 compiled conformance
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -pthread -lm -o /tmp/pass219-consolidation/glyph && /tmp/pass219-consolidation/glyph
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -pthread -Ihhs_runtime/include -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include tests/pass219/test_pass219_orthogonal_glyph_membrane_1_21.cpp /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o /tmp/pass219-consolidation/pass188.o /tmp/pass219-consolidation/pass188-x86.o /tmp/pass219-consolidation/pass189.o -lcrypto -pthread -lm -o /tmp/pass219-consolidation/glyph && /tmp/pass219-consolidation/glyph
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c /tmp/pass219-consolidation/exact.o /tmp/pass219-consolidation/link-support/hhs_hash216.o /tmp/pass219-consolidation/link-support/hhs_pass219_vm81_pqc_cell_wall.o -lcrypto -lstdc++ -pthread -lm -o /tmp/pass219-consolidation/global && /tmp/pass219-consolidation/global
 
       - name: Run Pass219B I7 and I8 conformance
