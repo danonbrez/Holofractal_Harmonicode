@@ -1,6 +1,7 @@
 # Pass 219 VM81/RNA BigInt Signed Environmental Admission Restart
 
 Date: 2026-09-14
+Last repair checkpoint update: 2026-09-15
 
 ## Repository state
 
@@ -10,10 +11,13 @@ Date: 2026-09-14
 - Merge target: `main`
 - Original PR base: `e94d00d242c25e915989be0013e0124e478dc005`
 - Prior green execution-binding checkpoint: `ee7a2057213c50dcfadcbca17d95fe386e74a824`
-- Current implementation head before this restart-only checkpoint: `e67a53cbb5bda340ce2ca8c4b5ab2a3c82a47c1c`
-- Focused workflow run: `34873152722` — **QUEUED** when this checkpoint was written
+- Signed-environmental implementation head that produced the first focused run: `e67a53cbb5bda340ce2ca8c4b5ab2a3c82a47c1c`
+- Pre-troubleshooting restart checkpoint: `2c346444dd8d1cbc87a619ff2884bdb86a029895`
+- OpenSSL bootstrap repair checkpoint: `5d5065b242bdaf7b18e9e6040ea38328ddc82371`
+- Failed focused workflow run: `34873152722`
+- Current focused repair run: `34920405115`
 
-This is a restart-only checkpoint. The restart document is not included in the focused workflow path filter, so validation evidence for this cycle remains bound to implementation head `e67a53cbb5bda340ce2ca8c4b5ab2a3c82a47c1c`.
+The repair checkpoint changes only `.github/workflows/pass219-fold-primitive-probe.yml`. The commit contains exactly two added environment exports required to execute the locally installed OpenSSL 3.5 runtime. No HHS source, ABI, mutation, receipt, admission, Hash72, Hash216, or test logic changed.
 
 ## Inherited green evidence
 
@@ -103,11 +107,11 @@ The pure diagnostic test runs without a native provider and verifies authority d
 
 ## Workflow extension
 
-`.github/workflows/pass219-fold-primitive-probe.yml` now has two dependency-scoped jobs.
+`.github/workflows/pass219-fold-primitive-probe.yml` has two dependency-scoped jobs.
 
-The inherited `fold-primitive-probe` job remains the fast system-provider gate and now includes the pure environmental-admission diagnostic test.
+The inherited `fold-primitive-probe` job remains the fast system-provider gate and includes the pure environmental-admission diagnostic test.
 
-A new `signed-environmental-admission` job:
+The `signed-environmental-admission` job:
 
 - builds OpenSSL `3.5.0` locally using the repository's already-established positive-provider procedure;
 - verifies ML-DSA provider availability;
@@ -118,6 +122,24 @@ A new `signed-environmental-admission` job:
 - emits the exact signed environmental admission report.
 
 This avoids treating the Ubuntu system OpenSSL 3.0 provider limitation as a canonical admission failure. The positive PQC path is tested against the same OpenSSL 3.5 provider class already used by the repository's inherited environmental-boundary workflow.
+
+## Bootstrap failure and repair
+
+Focused run `34873152722` produced two different results:
+
+- `fold-primitive-probe`: green through the complete inherited fold/BigInt execution-binding path;
+- `signed-environmental-admission`: failed during `Build OpenSSL 3.5.0 with ML-DSA provider`, before the HHS ABI build, export audit, native signed-admission probe, positive/negative closure test, or report emission ran.
+
+The failing workflow installed OpenSSL 3.5 under `/tmp/openssl35` and then executed `/tmp/openssl35/bin/openssl` without first exporting the corresponding shared-library path. The repository's established working OpenSSL 3.5 positive-provider workflow exports the local library path before invoking the new binary.
+
+Repair checkpoint `5d5065b242bdaf7b18e9e6040ea38328ddc82371` adds only:
+
+```sh
+export LD_LIBRARY_PATH="/tmp/openssl35/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export PATH="/tmp/openssl35/bin:${PATH}"
+```
+
+before the OpenSSL version/provider probes. This is a bootstrap/environment repair only; it does not alter signed environmental/PQC admission semantics.
 
 ## Authority boundary
 
@@ -134,17 +156,29 @@ ordered_pq_qp_collapse = false
 
 A successful positive result means only that the previously serialized typed VM81 frame can pass through the already-authoritative signed environmental admission path and emerge as an exact committed frame with the inherited canonical receipt. It does not make arbitrary BigInts executable or bypass UQCEL/PQC/environmental admission.
 
-## Validation state at checkpoint
+## Validation state at repair checkpoint
 
-Focused run `34873152722` is queued. Do not claim this cycle green until both jobs complete successfully.
+Focused repair run `34920405115` was started from commit `5d5065b242bdaf7b18e9e6040ea38328ddc82371`.
 
-No repair is authorized from queued state alone.
+At the time of this checkpoint:
+
+- dependency installation is green in both jobs;
+- the fast job has advanced into the exact VM81 ABI build;
+- the signed-environmental job has advanced into the repaired OpenSSL 3.5 build step;
+- no new HHS admission result has yet been observed from the repair run.
+
+Do not claim the signed environmental cycle green until both jobs complete successfully.
 
 ## Restart action
 
-1. Inspect focused run `34873152722`.
-2. If both jobs are green, freeze the exact emitted environmental-admission report, test count, report SHA-256, and OpenSSL provider evidence.
-3. If the fast job fails, repair only the new pure-test/workflow dependency surface.
-4. If the OpenSSL 3.5 job fails, inspect only the signed-environmental-admission job and distinguish build/provider failure from an admission assertion failure.
-5. Do not weaken the signed environmental/PQC boundary, expose hidden predecessor mutators, or bypass canonical receipt ownership merely to make the test pass.
-6. After a green result, the next scientific cycle should test replay/persistence of the resulting committed Hash216 transition through the durable composition-memory boundary, with quarantine/tamper protections inherited from the current persistence hardening work.
+1. Inspect focused repair run `34920405115`.
+2. Confirm whether `Build OpenSSL 3.5.0 with ML-DSA provider` is now green.
+3. If bootstrap is green, classify the first downstream result without weakening authority boundaries:
+   - ABI/link failure -> repair only OpenSSL 3.5 build/link integration;
+   - export audit failure -> repair only symbol-visibility mismatch while preserving the sole canonical mutation surface;
+   - native probe compile failure -> repair only the test/probe ABI binding;
+   - positive admission failure -> inspect repository-defined status semantics before changing runtime logic;
+   - negative closure failure -> repair fail-closed behavior without widening admissibility.
+4. If both jobs are green, freeze the exact emitted environmental-admission report, test count, report SHA-256, and OpenSSL provider evidence.
+5. After a green result, advance to replay/persistence of the resulting committed Hash216 transition through the durable composition-memory boundary, with quarantine/tamper protections inherited from the current persistence hardening work.
+6. Before any long troubleshooting branch, create another repository-visible restart checkpoint recording the exact failing step and next action.
