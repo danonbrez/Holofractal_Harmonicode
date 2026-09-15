@@ -1,19 +1,20 @@
-"""Pass 219 RML18 frozen-RML17 transport conservation acceleration.
+"""Pass 219 RML18 reconciled-RML17 transport conservation acceleration.
 
 RML18 does not modify RML17. It accelerates the dominant repeated global
 address-manifold validation by replacing a fresh 1,492,992-address traversal
-with an exact certificate bound to the frozen RML17 source blob, frozen RML17
-receipt blob, and the deterministic exhaustive RML17 audit digest established
-by the RML18 profiling run.
+with an exact certificate bound to the reconciled RML17 source blob, the sealed
+RML17 <-> native C++ parity receipt, and the deterministic exhaustive RML17
+audit digest.
 
 The user-specified admission invariant 1.001 is represented exactly as
 1001/1000 plus the canonical decimal string "1.001". It is not a binary float,
 threshold, residual, or timing score. A candidate that does not satisfy every
-required frozen-RML17 equality predicate receives NULL/UNDEFINED immediately.
+required reconciled-RML17 equality predicate receives NULL/UNDEFINED
+immediately.
 
 Timing remains observational. RML18 has no VM81 mutation, Hash72 mint,
-Hash216 persistence, scalar-projection substitution, or route-selection
-authority.
+Hash216 persistence, scalar-projection substitution, route-selection, or
+canonical transition authority.
 """
 from __future__ import annotations
 
@@ -34,40 +35,32 @@ INVARIANT_NUMERATOR = 1001
 INVARIANT_DENOMINATOR = 1000
 INVARIANT_DECIMAL = "1.001"
 
-FROZEN_RML17_MERGE_COMMIT = "eea9fcf5fa90589cb9adf2b26260af50e10fb377"
-FROZEN_RML17_TREE_SHA = "7f6271f39bda52a24946ac7d2786f8be8b93a3dd"
-FROZEN_RML17_MODULE_GIT_BLOB_SHA1 = "1a257cf8cae245d71336a0f507e0a8e39b482c65"
-FROZEN_RML17_RECEIPT_GIT_BLOB_SHA1 = "4e10c6e3443ad2b67752782b4776b28b2e263d29"
-FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256 = "f5710359f5439d0bac98b5c8c01ddc64044d30744b9b4c874cf2095d1b56904a"
+# Reconciled RML17/native parity nucleus. The compatibility names are retained
+# for callers of the original RML18 surface, but now bind the validated parity
+# successor rather than the superseded six-direction RML17-only certificate.
+FROZEN_RML17_PARITY_VALIDATED_COMMIT = "b2cdd1d2fdea504224bbd597fc373cd827a27fd7"
+FROZEN_RML17_MERGE_COMMIT = FROZEN_RML17_PARITY_VALIDATED_COMMIT
+FROZEN_RML17_TREE_SHA = "445d62087b19ec737813c35b7dfd6308b073bf13"
+FROZEN_RML17_MODULE_GIT_BLOB_SHA1 = "0658be67137027d7c4169540b8a99067577b8b37"
+FROZEN_RML17_RECEIPT_GIT_BLOB_SHA1 = "e561c8f2e9827a4f550ca54e2c02e9c28a61a5aa"
+FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256 = "b4ad90ee50eab47070b22118b7d3a120592ea1b750ce4e2725730d9ab49a8d67"
+FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256 = "1b6e9edde3efee1ab6a779c4ef1ff540dbd35dfc796e27dacaf6c91f2542ef19"
 
 ROOT = Path(__file__).resolve().parents[2]
 RML17_MODULE_PATH = ROOT / "hhs_runtime" / "pass219" / "discrete_transport_conservation.py"
-RML17_RECEIPT_PATH = ROOT / "evidence" / "pass219_rml17" / "PASS_219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RECEIPT.json"
-
-_EXPECTED_DIRECTIONS = (
-    "operation_forward",
-    "operation_reverse",
-    "phase_forward",
-    "phase_reverse",
-    "cell_forward",
-    "cell_reverse",
+RML17_RECEIPT_PATH = (
+    ROOT
+    / "evidence"
+    / "pass219_rml17_native_parity"
+    / "PASS_219_RML17_NATIVE_CONSERVATION_PARITY_RECEIPT.json"
 )
-_EXPECTED_INVERSE = {
-    "operation_forward": "operation_reverse",
-    "operation_reverse": "operation_forward",
-    "phase_forward": "phase_reverse",
-    "phase_reverse": "phase_forward",
-    "cell_forward": "cell_reverse",
-    "cell_reverse": "cell_forward",
-}
-_EXPECTED_FLUX = {
-    "operation_forward": 1,
-    "operation_reverse": -1,
-    "phase_forward": 1,
-    "phase_reverse": -1,
-    "cell_forward": 1,
-    "cell_reverse": -1,
-}
+
+_EXPECTED_DIRECTIONS = ("x", "y", "z", "w")
+_EXPECTED_INVERSE = {"x": "y", "y": "x", "z": "w", "w": "z"}
+_EXPECTED_INVERSE_INDEX = (1, 0, 3, 2)
+_EXPECTED_FLUX = {"x": 1, "y": -1, "z": -1, "w": 1}
+_EXPECTED_FLUX_INDEX = (1, -1, -1, 1)
+_EXPECTED_COORDINATE_ORDER = ("operation64", "phase72", "cell81", "direction4")
 
 
 class RML18TransportAccelerationError(RuntimeError):
@@ -118,6 +111,7 @@ def _undefined(surface: str, reason: str, **context: Any) -> dict[str, Any]:
         "invariant": None,
         "rml17_equality_baseline_match": False,
         "reason": reason,
+        "canonical_transition_authority": False,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_mint_authority": False,
         "canonical_hash216_persistence_authority": False,
@@ -140,6 +134,7 @@ def _admitted(surface: str, **context: Any) -> dict[str, Any]:
         "omega_closure": True,
         "invariant": _invariant_token(),
         "rml17_equality_baseline_match": True,
+        "canonical_transition_authority": False,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_mint_authority": False,
         "canonical_hash216_persistence_authority": False,
@@ -152,67 +147,77 @@ def _admitted(surface: str, **context: Any) -> dict[str, Any]:
 
 
 def _receipt_equal_to_frozen_baseline(receipt: Mapping[str, Any]) -> tuple[bool, str]:
-    if receipt.get("schema") != "HHS_PASS219_RML17_DISCRETE_TRANSPORT_CONSERVATION_RECEIPT_V1":
-        return False, "RML17_RECEIPT_SCHEMA_MISMATCH"
+    """Validate the sealed RML17 <-> native C++ parity evidence exactly."""
+    if receipt.get("schema") != "HHS_PASS219_RML17_NATIVE_CONSERVATION_PARITY_SEAL_V1":
+        return False, "RML17_NATIVE_PARITY_RECEIPT_SCHEMA_MISMATCH"
     if receipt.get("iteration") != "RML17_DISCRETE_TRANSPORT_CONSERVATION":
-        return False, "RML17_RECEIPT_ITERATION_MISMATCH"
+        return False, "RML17_NATIVE_PARITY_RECEIPT_ITERATION_MISMATCH"
+    if receipt.get("result") != "PASS" or receipt.get("omega") is not True:
+        return False, "RML17_NATIVE_PARITY_RECEIPT_RESULT_MISMATCH"
 
-    address = receipt.get("address_manifold")
-    if not isinstance(address, Mapping):
-        return False, "RML17_ADDRESS_MANIFOLD_RECEIPT_MISSING"
+    manifold = receipt.get("finite_manifold")
+    if not isinstance(manifold, Mapping):
+        return False, "RML17_NATIVE_PARITY_MANIFOLD_MISSING"
     if (
-        address.get("lanes") != 4
-        or address.get("operations_per_cell") != 64
-        or address.get("phase_states") != 72
-        or address.get("cells") != 81
-        or address.get("addresses") != 1_492_992
-        or address.get("exhaustive_validation") is not True
-        or address.get("cross_lane_transition_authority_added") is not False
+        manifold.get("operation_count") != 64
+        or manifold.get("phase_count") != 72
+        or manifold.get("cell_count") != 81
+        or manifold.get("direction_count") != 4
+        or manifold.get("node_count") != 373_248
+        or manifold.get("address_count") != 1_492_992
+        or tuple(manifold.get("coordinate_order", ())) != _EXPECTED_COORDINATE_ORDER
+        or tuple(manifold.get("direction_order", ())) != _EXPECTED_DIRECTIONS
+        or tuple(manifold.get("signed_flux", ())) != _EXPECTED_FLUX_INDEX
+        or tuple(manifold.get("reciprocal_direction_index", ())) != _EXPECTED_INVERSE_INDEX
     ):
-        return False, "RML17_ADDRESS_MANIFOLD_RECEIPT_MISMATCH"
+        return False, "RML17_NATIVE_PARITY_MANIFOLD_MISMATCH"
 
-    validated = receipt.get("validated_repair")
-    if not isinstance(validated, Mapping):
-        return False, "RML17_VALIDATED_REPAIR_RECEIPT_MISSING"
-    required_gate_keys = (
-        "discrete_divergence_gate",
-        "reciprocal_edge_balance_gate",
-        "admission_preservation_gate",
-        "zero_canonical_diffusion_gate",
-        "composed_reverse_closure_gate",
-        "structural_information_loss_zero_gate",
+    parity = receipt.get("parity")
+    if not isinstance(parity, Mapping):
+        return False, "RML17_NATIVE_PARITY_PROOF_MISSING"
+    mismatch_keys = (
+        "source_encoding_mismatches",
+        "target_encoding_mismatches",
+        "successor_mismatches",
+        "flux_orientation_mismatches",
+        "reciprocal_alignment_mismatches",
+        "zero_diffusion_classification_mismatches",
+        "reverse_closure_mismatches",
+        "mismatch_total",
     )
     if (
-        validated.get("conclusion") != "success"
-        or validated.get("rml17_tests_passed") != 13
-        or validated.get("rml17_exhaustive_address_count") != 1_492_992
-        or any(validated.get(key) != "pass" for key in required_gate_keys)
+        parity.get("addresses_compared") != 1_492_992
+        or parity.get("python_address_count") != 1_492_992
+        or parity.get("native_address_count") != 1_492_992
+        or any(parity.get(key) != 0 for key in mismatch_keys)
+        or parity.get("python_native_extensional_equality") is not True
+        or parity.get("native_exhaustive_contract_pass") is not True
+        or parity.get("audit_sha256") != FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256
     ):
-        return False, "RML17_VALIDATED_REPAIR_GATE_MISMATCH"
+        return False, "RML17_NATIVE_PARITY_PROOF_MISMATCH"
 
     authority = receipt.get("authority")
     if not isinstance(authority, Mapping):
-        return False, "RML17_AUTHORITY_RECEIPT_MISSING"
+        return False, "RML17_NATIVE_PARITY_AUTHORITY_MISSING"
     if (
-        authority.get("rml17_additive_read_only_membrane") is not True
-        or authority.get("rml16_operator_semantics_changed") is not False
-        or authority.get("vm81_mutation_authority_added") is not False
-        or authority.get("hash72_mint_authority_added") is not False
-        or authority.get("hash216_persistence_authority_added") is not False
-        or authority.get("floating_point_authority_added") is not False
-        or authority.get("scalar_projection_substitution_authority_added") is not False
-        or authority.get("hash216_cryptographic_inversion_used") is not False
+        authority.get("native_abi_beneath_rml17") is not True
+        or authority.get("native_abi_transition_authority_closed") is not True
+        or authority.get("canonical_transition_authority_expanded") is not False
+        or authority.get("canonical_vm81_mutation_authority") is not False
+        or authority.get("canonical_hash72_mint_authority") is not False
+        or authority.get("canonical_hash216_persistence_authority") is not False
+        or authority.get("existing_rna_uqcel_authority_preserved") is not True
     ):
-        return False, "RML17_AUTHORITY_RECEIPT_MISMATCH"
-    return True, "RML17_RECEIPT_EQUAL"
+        return False, "RML17_NATIVE_PARITY_AUTHORITY_MISMATCH"
+    return True, "RML17_NATIVE_PARITY_RECEIPT_EQUAL"
 
 
 def verify_frozen_rml17_nucleus() -> dict[str, Any]:
-    """Verify the exact repository-visible RML17 source/receipt nucleus."""
+    """Verify the exact repository-visible reconciled RML17/native nucleus."""
     if not RML17_MODULE_PATH.is_file():
         return _undefined("RML17_NUCLEUS", "RML17_MODULE_MISSING")
     if not RML17_RECEIPT_PATH.is_file():
-        return _undefined("RML17_NUCLEUS", "RML17_RECEIPT_MISSING")
+        return _undefined("RML17_NUCLEUS", "RML17_NATIVE_PARITY_RECEIPT_MISSING")
 
     module_bytes = RML17_MODULE_PATH.read_bytes()
     receipt_bytes = RML17_RECEIPT_PATH.read_bytes()
@@ -227,30 +232,33 @@ def verify_frozen_rml17_nucleus() -> dict[str, Any]:
     if receipt_blob != FROZEN_RML17_RECEIPT_GIT_BLOB_SHA1:
         return _undefined(
             "RML17_NUCLEUS",
-            "RML17_RECEIPT_BLOB_MISMATCH",
+            "RML17_NATIVE_PARITY_RECEIPT_BLOB_MISMATCH",
             observed_receipt_blob_sha1=receipt_blob,
         )
 
     try:
         receipt = json.loads(receipt_bytes.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
-        return _undefined("RML17_NUCLEUS", "RML17_RECEIPT_PARSE_FAILED")
+        return _undefined("RML17_NUCLEUS", "RML17_NATIVE_PARITY_RECEIPT_PARSE_FAILED")
     if not isinstance(receipt, Mapping):
-        return _undefined("RML17_NUCLEUS", "RML17_RECEIPT_MAPPING_REQUIRED")
+        return _undefined("RML17_NUCLEUS", "RML17_NATIVE_PARITY_RECEIPT_MAPPING_REQUIRED")
 
     receipt_ok, reason = _receipt_equal_to_frozen_baseline(receipt)
     if not receipt_ok:
         return _undefined("RML17_NUCLEUS", reason)
 
     runtime_shape_ok = (
-        rml17.LANE_COUNT == 4
-        and rml17.OPERATIONS_PER_CELL == 64
+        rml17.OPERATIONS_PER_CELL == 64
         and rml17.PHASE_COUNT == 72
         and rml17.CELL_COUNT == 81
+        and rml17.DIRECTION_COUNT == 4
+        and rml17.NODE_COUNT == 373_248
         and rml17.ADDRESS_COUNT == 1_492_992
         and tuple(rml17.DIRECTIONS) == _EXPECTED_DIRECTIONS
         and dict(rml17.INVERSE_DIRECTION) == _EXPECTED_INVERSE
+        and tuple(rml17.INVERSE_DIRECTION_INDEX) == _EXPECTED_INVERSE_INDEX
         and dict(rml17.DIRECTION_FLUX) == _EXPECTED_FLUX
+        and tuple(rml17.DIRECTION_FLUX_INDEX) == _EXPECTED_FLUX_INDEX
     )
     if not runtime_shape_ok:
         return _undefined("RML17_NUCLEUS", "RML17_RUNTIME_SHAPE_MISMATCH")
@@ -258,46 +266,53 @@ def verify_frozen_rml17_nucleus() -> dict[str, Any]:
     return _admitted(
         "RML17_NUCLEUS",
         frozen_rml17_merge_commit=FROZEN_RML17_MERGE_COMMIT,
+        frozen_rml17_parity_validated_commit=FROZEN_RML17_PARITY_VALIDATED_COMMIT,
         frozen_rml17_tree_sha=FROZEN_RML17_TREE_SHA,
         frozen_rml17_module_git_blob_sha1=module_blob,
         frozen_rml17_receipt_git_blob_sha1=receipt_blob,
         frozen_rml17_exhaustive_audit_sha256=FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256,
+        frozen_rml17_native_parity_audit_sha256=FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256,
         frozen_address_count=rml17.ADDRESS_COUNT,
         frozen_exhaustive_validation=True,
+        native_cpp_parity_proven=True,
+        native_abi_transition_authority_closed=True,
     )
 
 
 def accelerated_address_manifold_certificate() -> dict[str, Any]:
-    """Return the O(1) prevalidated RML17 global conservation certificate."""
+    """Return the O(1) prevalidated reconciled-RML17 global certificate."""
     nucleus = verify_frozen_rml17_nucleus()
     if nucleus.get("status") != ADMITTED or not exact_invariant_1001(nucleus.get("invariant")):
         return _undefined(
             "GLOBAL_ADDRESS_MANIFOLD",
-            "FROZEN_RML17_NUCLEUS_NOT_1_001",
+            "RECONCILED_RML17_NUCLEUS_NOT_1_001",
             nucleus_reason=nucleus.get("reason"),
         )
 
     return _admitted(
         "GLOBAL_ADDRESS_MANIFOLD",
-        proof_method="FROZEN_RML17_EXHAUSTIVE_CERTIFICATE_REUSE",
+        proof_method="RECONCILED_RML17_NATIVE_PARITY_CERTIFICATE_REUSE",
         exhaustive_runtime_scan_executed=False,
         frozen_exhaustive_scan_address_count=1_492_992,
         frozen_rml17_exhaustive_audit_sha256=FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256,
+        frozen_rml17_native_parity_audit_sha256=FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256,
         zero_discrete_divergence=True,
         reciprocal_edge_balance=True,
         admission_preservation=True,
         zero_canonical_diffusion=True,
         composed_reverse_closure=True,
         structural_information_loss_zero=True,
+        python_native_extensional_equality=True,
         latency_participates_in_viscosity_definition=False,
         rml17_source_blob_verified=True,
-        rml17_receipt_blob_verified=True,
+        rml17_native_parity_receipt_blob_verified=True,
+        native_abi_transition_authority_closed=True,
         optimized_runtime_path=True,
     )
 
 
 def compare_accelerated_certificate_to_exhaustive() -> dict[str, Any]:
-    """Validation-only direct equality comparison to a fresh frozen RML17 scan."""
+    """Validation-only equality comparison to a fresh reconciled RML17 scan."""
     candidate = accelerated_address_manifold_certificate()
     if candidate.get("status") != ADMITTED:
         return _undefined(
@@ -308,10 +323,16 @@ def compare_accelerated_certificate_to_exhaustive() -> dict[str, Any]:
     gates_equal = (
         exhaustive.get("result") == "PASS"
         and exhaustive.get("visited_address_count") == 1_492_992
+        and exhaustive.get("unique_target_addresses") == 1_492_992
+        and exhaustive.get("all_nodes_zero_discrete_divergence") is True
         and exhaustive.get("all_addresses_zero_discrete_divergence") is True
         and exhaustive.get("all_address_edges_reciprocal") is True
         and exhaustive.get("all_address_edge_fluxes_balanced") is True
+        and exhaustive.get("all_addresses_zero_canonical_diffusion") is True
         and exhaustive.get("all_addresses_encode_decode_bijective") is True
+        and exhaustive.get("target_map_bijective") is True
+        and exhaustive.get("native_cell_wall_semantics") is True
+        and exhaustive.get("lane_coordinate_present") is False
         and exhaustive.get("audit_sha256") == FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256
         and candidate.get("zero_discrete_divergence") is True
         and candidate.get("reciprocal_edge_balance") is True
@@ -319,6 +340,8 @@ def compare_accelerated_certificate_to_exhaustive() -> dict[str, Any]:
         and candidate.get("zero_canonical_diffusion") is True
         and candidate.get("composed_reverse_closure") is True
         and candidate.get("structural_information_loss_zero") is True
+        and candidate.get("python_native_extensional_equality") is True
+        and candidate.get("native_abi_transition_authority_closed") is True
     )
     if not gates_equal:
         return _undefined(
@@ -330,13 +353,15 @@ def compare_accelerated_certificate_to_exhaustive() -> dict[str, Any]:
         "GLOBAL_ADDRESS_MANIFOLD_DIFFERENTIAL",
         exhaustive_rml17_result="PASS",
         exhaustive_rml17_audit_sha256=exhaustive["audit_sha256"],
+        native_parity_audit_sha256=FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256,
         accelerated_certificate_equal=True,
         exhaustive_address_count=exhaustive["visited_address_count"],
+        native_cpp_parity_proven=True,
     )
 
 
 def gate_transport_address_candidate(address: Any) -> dict[str, Any]:
-    """Fail closed unless one transport address returns the frozen 1.001 invariant."""
+    """Fail closed unless one transport address returns the reconciled 1.001 invariant."""
     global_certificate = accelerated_address_manifold_certificate()
     if global_certificate.get("status") != ADMITTED:
         return _undefined("TRANSPORT_ADDRESS", "GLOBAL_RML17_CERTIFICATE_UNDEFINED")
@@ -350,9 +375,12 @@ def gate_transport_address_candidate(address: Any) -> dict[str, Any]:
         )
     local_equal = (
         local.get("encode_decode_bijective") is True
+        and local.get("native_mixed_radix_order") is True
+        and local.get("exact_phase_only_successor") is True
         and local.get("zero_discrete_divergence") is True
         and local.get("reciprocal_neighbor_edges") is True
         and local.get("reciprocal_edge_flux_balance") is True
+        and local.get("zero_canonical_diffusion") is True
         and local.get("address_neighborhood_has_canonical_transition_authority") is False
     )
     if not local_equal:
@@ -365,6 +393,7 @@ def gate_transport_address_candidate(address: Any) -> dict[str, Any]:
         "TRANSPORT_ADDRESS",
         address=local["address"],
         coordinates=local["coordinates"],
+        direction=local["direction"],
         rml17_local_audit_sha256=local["audit_sha256"],
         global_certificate_reused=True,
     )
@@ -400,7 +429,7 @@ def gate_route_candidate(
     *,
     route_id: str,
 ) -> dict[str, Any]:
-    """Return 1.001 only for a route exactly equal to every frozen RML17 gate."""
+    """Return 1.001 only for a route exactly equal to every reconciled RML17 gate."""
     global_certificate = accelerated_address_manifold_certificate()
     if global_certificate.get("status") != ADMITTED:
         return _undefined("ROUTE", "GLOBAL_RML17_CERTIFICATE_UNDEFINED")
@@ -494,6 +523,7 @@ def enforce_candidate_1001(record: Any) -> dict[str, Any]:
         and record.get("status") == ADMITTED
         and record.get("defined") is True
         and record.get("rml17_equality_baseline_match") is True
+        and record.get("canonical_transition_authority") is False
         and exact_invariant_1001(record.get("invariant"))
     ):
         return dict(record)
@@ -505,6 +535,8 @@ __all__ = [
     "FROZEN_RML17_EXHAUSTIVE_AUDIT_SHA256",
     "FROZEN_RML17_MERGE_COMMIT",
     "FROZEN_RML17_MODULE_GIT_BLOB_SHA1",
+    "FROZEN_RML17_NATIVE_PARITY_AUDIT_SHA256",
+    "FROZEN_RML17_PARITY_VALIDATED_COMMIT",
     "FROZEN_RML17_RECEIPT_GIT_BLOB_SHA1",
     "FROZEN_RML17_TREE_SHA",
     "INVARIANT_DECIMAL",

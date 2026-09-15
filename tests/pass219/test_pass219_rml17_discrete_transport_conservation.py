@@ -7,9 +7,11 @@ import pytest
 from hhs_runtime.pass219.discrete_transport_conservation import (
     ADDRESS_COUNT,
     CELL_COUNT,
+    DIRECTION_COUNT,
     DIRECTIONS,
-    INVERSE_DIRECTION,
-    LANE_COUNT,
+    DIRECTION_FLUX_INDEX,
+    INVERSE_DIRECTION_INDEX,
+    NODE_COUNT,
     OPERATIONS_PER_CELL,
     PHASE_COUNT,
     DiscreteTransportConservationError,
@@ -20,8 +22,10 @@ from hhs_runtime.pass219.discrete_transport_conservation import (
     decode_transport_address,
     discrete_divergence,
     encode_transport_address,
+    reciprocal_direction_index,
     signed_address_flux,
     transport_neighbor,
+    zero_diffusion_classification,
 )
 from hhs_runtime.pass219.dynamic_octonion_gyroscope import (
     build_gyroscope_state,
@@ -53,47 +57,67 @@ def _state(
     return build_gyroscope_state(phases, SIGNS, state_id=state_id)
 
 
-def test_address_cardinality_is_exact_four_by_64_by_72_by_81() -> None:
-    assert LANE_COUNT == 4
+def test_address_cardinality_is_exact_64_by_72_by_81_by_direction4() -> None:
     assert OPERATIONS_PER_CELL == 64
     assert PHASE_COUNT == 72
     assert CELL_COUNT == 81
+    assert DIRECTION_COUNT == 4
+    assert NODE_COUNT == 373_248
     assert ADDRESS_COUNT == 1_492_992
+    assert DIRECTIONS == ("x", "y", "z", "w")
+    assert DIRECTION_FLUX_INDEX == (1, -1, -1, 1)
+    assert INVERSE_DIRECTION_INDEX == (1, 0, 3, 2)
 
 
 @pytest.mark.parametrize(
     "coordinates",
     [
         (0, 0, 0, 0),
-        (0, 63, 71, 80),
-        (1, 7, 19, 31),
-        (2, 31, 36, 40),
-        (3, 63, 71, 80),
+        (0, 0, 0, 3),
+        (7, 19, 31, 1),
+        (31, 36, 40, 2),
+        (63, 71, 80, 3),
     ],
 )
-def test_address_encode_decode_is_exact_bijection(
+def test_address_encode_decode_is_exact_native_mixed_radix_bijection(
     coordinates: tuple[int, int, int, int],
 ) -> None:
     address = encode_transport_address(*coordinates)
     assert decode_transport_address(address) == coordinates
 
 
+def test_native_flux_orientation_reciprocal_alignment_and_phase_only_step() -> None:
+    operation = 31
+    phase = 36
+    cell = 40
+    for direction in range(DIRECTION_COUNT):
+        address = encode_transport_address(operation, phase, cell, direction)
+        target = transport_neighbor(address)
+        target_coordinates = decode_transport_address(target)
+        inverse = reciprocal_direction_index(direction)
+
+        assert target_coordinates == (
+            operation,
+            (phase + DIRECTION_FLUX_INDEX[direction]) % PHASE_COUNT,
+            cell,
+            inverse,
+        )
+        assert transport_neighbor(target) == address
+        assert signed_address_flux(address) == -signed_address_flux(target)
+        assert zero_diffusion_classification(address) is True
+        assert discrete_divergence(address) == 0
+
+
 def test_local_discrete_divergence_and_reciprocal_edge_balance() -> None:
-    address = encode_transport_address(2, 31, 36, 40)
+    address = encode_transport_address(31, 36, 40, 2)
     audit = audit_transport_address(address)
     assert audit["zero_discrete_divergence"] is True
     assert audit["reciprocal_neighbor_edges"] is True
     assert audit["reciprocal_edge_flux_balance"] is True
+    assert audit["zero_canonical_diffusion"] is True
+    assert audit["exact_phase_only_successor"] is True
+    assert audit["native_mixed_radix_order"] is True
     assert audit["address_neighborhood_has_canonical_transition_authority"] is False
-    assert discrete_divergence(address) == 0
-
-    for direction in DIRECTIONS:
-        target = transport_neighbor(address, direction)
-        inverse = INVERSE_DIRECTION[direction]
-        assert transport_neighbor(target, inverse) == address
-        assert signed_address_flux(address, direction) == -signed_address_flux(
-            target, inverse
-        )
 
 
 def test_transport_address_range_is_fail_closed() -> None:
@@ -107,15 +131,32 @@ def test_transport_address_range_is_fail_closed() -> None:
 def test_exhaustive_1492992_address_manifold_conservation() -> None:
     receipt = audit_transport_address_manifold()
     assert receipt["result"] == "PASS"
+    assert receipt["node_count"] == 373_248
     assert receipt["visited_address_count"] == 1_492_992
+    assert receipt["unique_target_addresses"] == 1_492_992
     assert receipt["cardinality_exact"] is True
+    assert receipt["coordinate_order"] == [
+        "operation64",
+        "phase72",
+        "cell81",
+        "direction4",
+    ]
+    assert receipt["direction_names"] == ["x", "y", "z", "w"]
+    assert receipt["direction_flux"] == [1, -1, -1, 1]
+    assert receipt["reciprocal_direction_index"] == [1, 0, 3, 2]
     assert receipt["bijection_failures"] == 0
     assert receipt["discrete_divergence_failures"] == 0
     assert receipt["reciprocal_neighbor_failures"] == 0
     assert receipt["reciprocal_flux_failures"] == 0
-    assert receipt["all_addresses_zero_discrete_divergence"] is True
+    assert receipt["zero_diffusion_failures"] == 0
+    assert receipt["target_map_failures"] == 0
+    assert receipt["all_nodes_zero_discrete_divergence"] is True
     assert receipt["all_address_edges_reciprocal"] is True
     assert receipt["all_address_edge_fluxes_balanced"] is True
+    assert receipt["all_addresses_zero_canonical_diffusion"] is True
+    assert receipt["target_map_bijective"] is True
+    assert receipt["native_cell_wall_semantics"] is True
+    assert receipt["lane_coordinate_present"] is False
     assert receipt["exhaustive_scan"] is True
     assert receipt["optimized_runtime_path"] is False
 
