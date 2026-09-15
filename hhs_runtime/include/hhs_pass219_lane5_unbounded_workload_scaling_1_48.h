@@ -137,6 +137,16 @@ typedef struct HHSExactPass219Lane5UnboundedWorkloadStreamV1 {
     uint64_t admissible_candidates;
     uint64_t rejected_candidates;
     uint64_t workload_binding_signature64;
+    uint64_t bound_workload_byte_count;
+    uint32_t bound_previous_address_length;
+    uint32_t bound_current_address_length;
+    uint32_t bound_goal_address_length;
+    uint8_t bound_previous_address_be[HHS_EXACT_PASS219_LANE5_UNBOUNDED_ADDRESS_BYTES];
+    uint8_t bound_current_address_be[HHS_EXACT_PASS219_LANE5_UNBOUNDED_ADDRESS_BYTES];
+    uint8_t bound_goal_address_be[HHS_EXACT_PASS219_LANE5_UNBOUNDED_ADDRESS_BYTES];
+    uint8_t bound_workload_sha256[HHS_EXACT_PASS219_LANE5_UNBOUNDED_WORKLOAD_DIGEST_BYTES];
+    uint8_t bound_provenance_sha256[HHS_EXACT_PASS219_LANE5_UNBOUNDED_WORKLOAD_DIGEST_BYTES];
+    uint8_t bound_forbidden_boundary_sha256[HHS_EXACT_PASS219_LANE5_UNBOUNDED_WORKLOAD_DIGEST_BYTES];
     uint8_t count_saturated;
     uint8_t has_binding;
     uint8_t has_best;
