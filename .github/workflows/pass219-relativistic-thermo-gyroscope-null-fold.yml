@@ -1,0 +1,126 @@
+name: Pass 219 Relativistic Thermo Gyroscope Null Fold
+
+on:
+  push:
+    branches:
+      - agent/pass219-relativistic-thermo-gyroscope-null-fold-20260914
+    paths:
+      - 'hhs_runtime/pass219/relativistic_thermo_gyroscope_null_fold.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'tests/pass219/test_pass219_relativistic_thermo_gyroscope_null_fold.py'
+      - 'tests/pass219/test_pass219_dynamic_octonion_gyroscope.py'
+      - 'tests/pass219/test_pass219_gyroscope_admission_membrane.py'
+      - 'contracts/pass219/PASS_219_RELATIVISTIC_THERMO_GYROSCOPE_NULL_FOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - '.github/workflows/pass219-relativistic-thermo-gyroscope-null-fold.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass219/relativistic_thermo_gyroscope_null_fold.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'tests/pass219/test_pass219_relativistic_thermo_gyroscope_null_fold.py'
+      - 'tests/pass219/test_pass219_dynamic_octonion_gyroscope.py'
+      - 'tests/pass219/test_pass219_gyroscope_admission_membrane.py'
+      - 'contracts/pass219/PASS_219_RELATIVISTIC_THERMO_GYROSCOPE_NULL_FOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - '.github/workflows/pass219-relativistic-thermo-gyroscope-null-fold.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-null-fold:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Static projection authority gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          contract = Path('contracts/pass219/PASS_219_RELATIVISTIC_THERMO_GYROSCOPE_NULL_FOLD_V1.md').read_text('utf-8')
+          module = Path('hhs_runtime/pass219/relativistic_thermo_gyroscope_null_fold.py').read_text('utf-8')
+          for needle in (
+              'rho^2 = 1 - kappa',
+              'HYPERBOLIC_ZERO_SUM_FOLD',
+              'u^36(u^36(S)) = S',
+              'Phi(G) + Phi(G^-1)',
+              'canonical_vm81_mutation_authority = FALSE',
+              'canonical_hash72_mint_authority = FALSE',
+              'canonical_hash216_persistence_authority = FALSE',
+              'floating_point_canonical_authority = FALSE',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'COMMUTATIVE_METRIC_PROJECTION',
+              'HYPERBOLIC_ZERO_SUM_FOLD',
+              'NONCOMMUTATIVE_PHASE_PROJECTION',
+              'flip_chiral_pair_half_turn',
+              'square_root_evaluated',
+              'reciprocal_closure_identity',
+              'canonical_vm81_mutation_authority',
+          ):
+              assert needle in module, needle
+          print('relativistic_thermo_gyroscope_static=PASS')
+          PY
+
+      - name: Run inherited and new exact gyroscope tests
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_gyroscope_admission_membrane.py \
+            tests/pass219/test_pass219_relativistic_thermo_gyroscope_null_fold.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Regress native exact thermodynamic closure
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-boundary-qt
+          /tmp/test-pass219-lane5-boundary-qt
+
+      - name: Audit inherited canonical authority seam
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_thermo_reciprocal_closure$' /tmp/hhs.symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
