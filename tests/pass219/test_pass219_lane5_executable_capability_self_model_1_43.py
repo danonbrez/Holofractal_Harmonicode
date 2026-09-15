@@ -113,10 +113,25 @@ def test_transitive_native_export_discovery_is_rooted_at_aggregate_header(tmp_pa
     assert "hhs_exact_unreachable_probe" not in names
 
 
-def test_restricted_public_capabilities_remain_visible() -> None:
+def test_restricted_public_classification_is_preserved_when_present() -> None:
     builder = Pass219Lane5ExecutableCapabilitySelfModel()
     catalog = builder._public_catalog()
-    nodes = [builder._public_node(item)[0] for item in catalog]
-    restricted = [node for node in nodes if node["authority_class"] == AUTH_RESTRICTED_OR_UNAVAILABLE]
-    assert restricted
-    assert all(node["source_kind"] == "PUBLIC_REGISTRY" for node in restricted)
+    live_nodes = [builder._public_node(item)[0] for item in catalog]
+    assert len(live_nodes) == len(catalog)
+
+    synthetic = {
+        "capability_id": "PUB-RESTRICTED-PROBE",
+        "capability_hash72": "0" * 72,
+        "surface_type": "CLI",
+        "classification": "EXPLICITLY_RESTRICTED_BY_CONTRACT",
+        "capabilities": [],
+        "reversibility_class": "REJECTED_AS_UNSAFE",
+        "mutating": False,
+        "argv": ["restricted-probe"],
+        "parameters": [],
+        "description": "classification preservation probe",
+    }
+    node, edges = builder._public_node(synthetic)
+    assert node["authority_class"] == AUTH_RESTRICTED_OR_UNAVAILABLE
+    assert node["source_kind"] == "PUBLIC_REGISTRY"
+    assert edges == []
