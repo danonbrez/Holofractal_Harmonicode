@@ -16,6 +16,8 @@ int main(void) {
     HHSExactPass219Lane5PersistentCompositionDescriptorV1 tampered;
     HHSExactPass219Lane5PersistentCompositionReceiptV1 receipt_a;
     HHSExactPass219Lane5PersistentCompositionReceiptV1 receipt_b;
+    uint64_t swap64;
+    uint32_t swap32;
 
     memset(&authority, 0, sizeof(authority));
     CHECK(hhs_exact_pass219_lane5_persistent_composition_memory_version() ==
@@ -98,6 +100,24 @@ int main(void) {
     tampered.canonical_persistence_authority = 1U;
     CHECK(hhs_exact_pass219_lane5_persistent_composition_validate(&tampered, &receipt_b) ==
           HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    tampered = descriptor;
+    swap64 = tampered.parent_signature64;
+    tampered.parent_signature64 = tampered.child_signature64;
+    tampered.child_signature64 = swap64;
+    CHECK(hhs_exact_pass219_lane5_persistent_composition_validate(&tampered, &receipt_b) ==
+          HHS_EXACT_STATUS_OK);
+    CHECK(receipt_b.descriptor_signature64 != receipt_a.descriptor_signature64);
+    CHECK(receipt_b.persistence_signature64 != receipt_a.persistence_signature64);
+
+    tampered = descriptor;
+    swap32 = tampered.jump_span;
+    tampered.jump_span = tampered.layer_index;
+    tampered.layer_index = swap32;
+    CHECK(hhs_exact_pass219_lane5_persistent_composition_validate(&tampered, &receipt_b) ==
+          HHS_EXACT_STATUS_OK);
+    CHECK(receipt_b.descriptor_signature64 != receipt_a.descriptor_signature64);
+    CHECK(receipt_b.persistence_signature64 != receipt_a.persistence_signature64);
 
     printf(
         "PASS219_LANE5_PERSISTENT_HASH216_COMPOSITION_MEMORY_PASS span=%u phase=%u layer=%u persistence=%llu\n",

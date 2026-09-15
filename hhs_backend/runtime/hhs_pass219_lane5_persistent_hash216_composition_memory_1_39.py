@@ -14,6 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import json
+import operator
 from pathlib import Path
 import sqlite3
 import struct
@@ -36,10 +37,14 @@ from hhs_python.runtime.hhs_pass205_continuation_bridge import (
     CELL_COUNT,
     Pass205NativeBridge,
 )
+from hhs_python.runtime.hhs_pass219_lane5_composition_jump_bridge import (
+    signature64_from_hash216,
+)
 from hhs_python.runtime.hhs_pass219_lane5_persistent_composition_memory_bridge import (
     CYCLE,
     SNAPSHOT_BYTES,
     Pass219Lane5PersistentCompositionMemoryBridge,
+    signature64_from_text,
 )
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.pass174.runtime import Hash216Array
@@ -47,6 +52,7 @@ from hhs_runtime.pass174.storage import PersistentEncryptedVectorStore
 
 SCHEMA = "HHS_PASS_219_LANE5_PERSISTENT_HASH216_COMPOSITION_MEMORY_1_39"
 UINT64_MAX = (1 << 64) - 1
+_MASK64 = UINT64_MAX
 _STATE_STRUCT = struct.Struct("<81Q")
 
 
@@ -94,15 +100,23 @@ def _canonical(value: Any) -> bytes:
     ).encode("utf-8")
 
 
-def _pack_state(words: Sequence[int]) -> bytes:
+def _exact_uint64_words(words: Sequence[int], *, name: str) -> tuple[int, ...]:
     if len(words) != CELL_COUNT:
-        raise ValueError(f"VM5184 state requires exactly {CELL_COUNT} uint64 words")
-    canonical = []
+        raise ValueError(f"{name} requires exactly {CELL_COUNT} uint64 words")
+    canonical: list[int] = []
     for index, value in enumerate(words):
-        integer = int(value)
+        try:
+            integer = operator.index(value)
+        except TypeError as exc:
+            raise ValueError(f"{name} word {index} must be an exact integer") from exc
         if integer < 0 or integer > UINT64_MAX:
-            raise ValueError(f"VM5184 word {index} outside uint64")
-        canonical.append(integer)
+            raise ValueError(f"{name} word {index} outside uint64")
+        canonical.append(int(integer))
+    return tuple(canonical)
+
+
+def _pack_state(words: Sequence[int]) -> bytes:
+    canonical = _exact_uint64_words(words, name="VM5184 state")
     frame = _STATE_STRUCT.pack(*canonical)
     if len(frame) != SNAPSHOT_BYTES:
         raise RuntimeError("VM5184 persistent frame length mismatch")
@@ -166,6 +180,36 @@ def _trace_roots_from_json(raw: str) -> TraceRoots:
             split_hash216(part)
         roots.append(canonical)  # type: ignore[arg-type]
     return tuple(roots)
+
+
+def _legacy_mix64(value: int) -> int:
+    value &= _MASK64
+    value ^= value >> 30
+    value = (value * 0xBF58476D1CE4E5B9) & _MASK64
+    value ^= value >> 27
+    value = (value * 0x94D049BB133111EB) & _MASK64
+    value ^= value >> 31
+    return value & _MASK64
+
+
+def _legacy_persistence_signature64(record: PersistentHash216CompositionRecord) -> int:
+    descriptor = 0x4C35504552533139
+    descriptor ^= _legacy_mix64(record.jump_span)
+    descriptor ^= _legacy_mix64(record.phase_slot << 32)
+    descriptor ^= _legacy_mix64(record.cycle_index)
+    descriptor ^= _legacy_mix64(record.layer_index)
+    descriptor ^= _legacy_mix64(SNAPSHOT_BYTES)
+    descriptor ^= _legacy_mix64(signature64_from_hash216(record.parent_hash216))
+    descriptor ^= _legacy_mix64(signature64_from_hash216(record.child_hash216))
+    descriptor ^= _legacy_mix64(signature64_from_hash216(record.composition_hash216))
+    metadata_signature = signature64_from_hash216(record.metadata_hash216)
+    vector_signature = signature64_from_text(record.vector_object_id)
+    descriptor ^= _legacy_mix64(metadata_signature)
+    descriptor ^= _legacy_mix64(vector_signature)
+    descriptor = _legacy_mix64(descriptor)
+    return _legacy_mix64(
+        descriptor ^ metadata_signature ^ vector_signature ^ 0x2002005005130139
+    )
 
 
 class Pass219Lane5PersistentHash216CompositionMemory:
@@ -260,8 +304,9 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         trace_roots: TraceRoots,
         registration_receipt_signature64: int,
         changed_bits: int,
+        quarantined: bool = False,
     ) -> dict[str, Any]:
-        return {
+        core: dict[str, Any] = {
             "schema": "HHS_PASS_219_LANE5_PERSISTENT_COMPOSITION_METADATA_1_39",
             "jump_id": jump_id,
             "parent_hash216": parent_hash216,
@@ -281,6 +326,9 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             "canonical_persistence_authority": False,
             "requires_signed_environmental_vm81_admission": True,
         }
+        if quarantined:
+            core["quarantined"] = True
+        return core
 
     def _metadata_hash216(self, core: Mapping[str, Any]) -> str:
         return self.native.hash216_bytes(_canonical(dict(core)))
@@ -298,6 +346,7 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             trace_roots=record.trace_roots,
             registration_receipt_signature64=record.registration_receipt_signature64,
             changed_bits=record.changed_bits,
+            quarantined=record.quarantined,
         )
 
     def _record_from_row(self, row: sqlite3.Row) -> PersistentHash216CompositionRecord:
@@ -355,18 +404,94 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             raise RuntimeError("native persistent composition membrane rejected record")
         if receipt["canonical_mutation_authority"] or receipt["canonical_persistence_authority"]:
             raise RuntimeError("persistent composition membrane exposed canonical authority")
-        if int(receipt["persistence_signature64"]) != record.persistence_signature64:
-            raise ValueError("persistent composition native receipt signature mismatch")
+        expected_signature = int(receipt["persistence_signature64"])
+        if expected_signature != record.persistence_signature64:
+            if record.persistence_signature64 != _legacy_persistence_signature64(record):
+                raise ValueError("persistent composition native receipt signature mismatch")
+            self._connection.execute(
+                "UPDATE lane5_composition_memory SET persistence_signature64=? WHERE jump_id=?",
+                (str(expected_signature), record.jump_id),
+            )
+            self._connection.commit()
+            replacement = PersistentHash216CompositionRecord(
+                **{**record.__dict__, "persistence_signature64": expected_signature}
+            )
+            self._records[record.jump_id] = replacement
+            receipt["legacy_receipt_migrated"] = True
+        else:
+            receipt["legacy_receipt_migrated"] = False
         return receipt
 
-    def _quarantine_record(self, record: PersistentHash216CompositionRecord) -> None:
+    def _quarantine_record(
+        self,
+        record: PersistentHash216CompositionRecord,
+    ) -> PersistentHash216CompositionRecord:
+        replacement = PersistentHash216CompositionRecord(
+            **{**record.__dict__, "quarantined": True}
+        )
+        try:
+            metadata_hash216 = self._metadata_hash216(self._record_core(replacement))
+            provisional = PersistentHash216CompositionRecord(
+                **{
+                    **replacement.__dict__,
+                    "metadata_hash216": metadata_hash216,
+                    "persistence_signature64": 0,
+                }
+            )
+            receipt = self.abi.validate_descriptor(
+                parent_hash216=provisional.parent_hash216,
+                child_hash216=provisional.child_hash216,
+                composition_hash216=provisional.composition_hash216,
+                metadata_hash216=provisional.metadata_hash216,
+                vector_object_id=provisional.vector_object_id,
+                jump_span=provisional.jump_span,
+                phase_slot=provisional.phase_slot,
+                cycle_index=provisional.cycle_index,
+                layer_index=provisional.layer_index,
+            )
+            if not receipt["accepted"]:
+                raise RuntimeError("native quarantine receipt rejected")
+            replacement = PersistentHash216CompositionRecord(
+                **{
+                    **provisional.__dict__,
+                    "persistence_signature64": int(receipt["persistence_signature64"]),
+                }
+            )
+            self._connection.execute(
+                """
+                UPDATE lane5_composition_memory
+                   SET metadata_hash216=?, persistence_signature64=?, quarantined=1
+                 WHERE jump_id=?
+                """,
+                (
+                    replacement.metadata_hash216,
+                    str(replacement.persistence_signature64),
+                    replacement.jump_id,
+                ),
+            )
+        except Exception:
+            self._connection.execute(
+                "UPDATE lane5_composition_memory SET quarantined=1 WHERE jump_id=?",
+                (record.jump_id,),
+            )
+        self._connection.commit()
+        self._records[record.jump_id] = replacement
+        try:
+            self.vector_store.quarantine(record.vector_object_id)
+        except Exception:
+            pass
+        return replacement
+
+    def _quarantine_malformed_row(self, row: sqlite3.Row) -> None:
         self._connection.execute(
-            "UPDATE lane5_composition_memory SET quarantined=1 WHERE jump_id=?",
-            (record.jump_id,),
+            "UPDATE lane5_composition_memory SET quarantined=1 WHERE sequence=?",
+            (row["sequence"],),
         )
         self._connection.commit()
         try:
-            self.vector_store.quarantine(record.vector_object_id)
+            vector_object_id = str(row["vector_object_id"])
+            if vector_object_id:
+                self.vector_store.quarantine(vector_object_id)
         except Exception:
             pass
 
@@ -375,24 +500,32 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             "SELECT * FROM lane5_composition_memory ORDER BY sequence"
         ).fetchall()
         for row in rows:
-            record = self._record_from_row(row)
+            try:
+                record = self._record_from_row(row)
+            except Exception:
+                self._quarantine_malformed_row(row)
+                continue
             valid = self._metadata_valid(record) and self._composition_seal_valid(record)
             if not valid:
-                self._quarantine_record(record)
-                record = PersistentHash216CompositionRecord(
-                    **{**record.__dict__, "quarantined": True}
-                )
+                record = self._quarantine_record(record)
             self._records[record.jump_id] = record
             self._by_parent.setdefault(record.parent_hash216, []).append(record.jump_id)
 
     def status(self) -> dict[str, Any]:
         vector = self.vector_store.storage_status()
-        quarantined = sum(1 for record in self._records.values() if record.quarantined)
+        persistent_records = int(
+            self._connection.execute("SELECT COUNT(*) FROM lane5_composition_memory").fetchone()[0]
+        )
+        quarantined = int(
+            self._connection.execute(
+                "SELECT COUNT(*) FROM lane5_composition_memory WHERE quarantined != 0"
+            ).fetchone()[0]
+        )
         synchronous = int(self._connection.execute("PRAGMA synchronous").fetchone()[0])
         return {
             "schema": SCHEMA,
             "authority": self.abi.authority(),
-            "persistent_records": len(self._records),
+            "persistent_records": persistent_records,
             "quarantined_records": quarantined,
             "database_path": str(self.database_path),
             "vector_store": vector,
@@ -417,8 +550,12 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         parent_state: Sequence[int],
         jump: ValidatedHash216CompositionJump,
     ) -> dict[str, Any]:
-        if self.native.state_root(parent_state) != jump.parent_hash216:
+        parent_words = _exact_uint64_words(parent_state, name="persistent composition parent state")
+        child_words = _exact_uint64_words(jump.child_state, name="persistent composition child state")
+        if self.native.state_root(parent_words) != jump.parent_hash216:
             raise ValueError("persistent composition parent state/root mismatch")
+        if not self.jump_store.verify_jump_replay(parent_state=parent_words, jump=jump):
+            raise ValueError("persistent composition exact replay provenance mismatch")
         registration_receipt = self.jump_store._validate_record(jump)
         if not registration_receipt["accepted"]:
             raise ValueError("1.38 composition jump not admitted for persistence")
@@ -441,8 +578,6 @@ class Pass219Lane5PersistentHash216CompositionMemory:
                 "candidate_only": True,
             }
 
-        parent_words = tuple(int(value) for value in parent_state)
-        child_words = tuple(int(value) for value in jump.child_state)
         parent_frame = _pack_state(parent_words)
         child_frame = _pack_state(child_words)
         changed_bits = sum(
@@ -611,6 +746,17 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             "requires_signed_environmental_vm81_admission": True,
         }
 
+    @staticmethod
+    def _dedupe_destinations(
+        records: Sequence[PersistentHash216CompositionRecord],
+    ) -> list[PersistentHash216CompositionRecord]:
+        selected: dict[str, PersistentHash216CompositionRecord] = {}
+        for record in records:
+            prior = selected.get(record.child_hash216)
+            if prior is None or (-record.jump_span, record.jump_id) < (-prior.jump_span, prior.jump_id):
+                selected[record.child_hash216] = record
+        return sorted(selected.values(), key=lambda item: (item.child_hash216, item.jump_id))
+
     def search(
         self,
         *,
@@ -621,7 +767,8 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         layer_index: int | None = None,
         top_k: int = 32,
     ) -> dict[str, Any]:
-        parent_hash216 = self.native.state_root(current_state)
+        current_words = _exact_uint64_words(current_state, name="persistent composition search state")
+        parent_hash216 = self.native.state_root(current_words)
         records = [
             self._records[jump_id]
             for jump_id in self._by_parent.get(parent_hash216, [])
@@ -629,6 +776,8 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         ]
         if layer_index is not None:
             records = [record for record in records if record.layer_index == int(layer_index)]
+        route_count = len(records)
+        records = self._dedupe_destinations(records)
         candidates = [
             Hash216CompositionCandidate(
                 candidate_id=record.jump_id,
@@ -648,6 +797,7 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         )
         result["persistent_composition_memory"] = True
         result["restart_rehydrated_candidates"] = len(records)
+        result["persistent_routes_considered"] = route_count
         result["parent_hash216"] = parent_hash216
         result["candidate_only"] = True
         return result
@@ -664,7 +814,8 @@ class Pass219Lane5PersistentHash216CompositionMemory:
             raise KeyError(f"unknown persistent composition jump: {jump_id}") from exc
         if record.quarantined:
             raise ValueError("persistent composition jump is quarantined")
-        current_root = self.native.state_root(current_state)
+        current_words = _exact_uint64_words(current_state, name="persistent composition reuse state")
+        current_root = self.native.state_root(current_words)
         if current_root != record.parent_hash216:
             raise ValueError("persistent composition parent does not match current canonical state identity")
         if not self._metadata_valid(record):
@@ -738,16 +889,16 @@ class Pass219Lane5PersistentHash216CompositionMemory:
         except KeyError as exc:
             raise KeyError(f"unknown persistent composition jump: {jump_id}") from exc
         self._quarantine_record(record)
-        replacement = PersistentHash216CompositionRecord(
-            **{**record.__dict__, "quarantined": True}
-        )
-        self._records[jump_id] = replacement
 
     def records(self) -> tuple[PersistentHash216CompositionRecord, ...]:
         rows = self._connection.execute(
             "SELECT jump_id FROM lane5_composition_memory ORDER BY sequence"
         ).fetchall()
-        return tuple(self._records[str(row["jump_id"])] for row in rows)
+        return tuple(
+            self._records[str(row["jump_id"])]
+            for row in rows
+            if str(row["jump_id"]) in self._records
+        )
 
 
 __all__ = [
