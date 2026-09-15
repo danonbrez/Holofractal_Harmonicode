@@ -121,6 +121,8 @@ jobs:
           ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
           make -j2
           make install_sw
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+          export PATH="/tmp/openssl35/bin:${PATH}"
           /tmp/openssl35/bin/openssl version -a
           /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
       - name: Build exact ABI against OpenSSL 3.5
