@@ -49,6 +49,7 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-rna-retrieval/link-support full
 
       - name: Run 1.13 C authenticated retrieval conformance
         run: |
@@ -56,6 +57,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_state_retrieval_1_13.c \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-c
           /tmp/pass219-rna-retrieval/test-c
 
@@ -65,6 +69,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_state_retrieval_1_13.cpp \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-cpp
           /tmp/pass219-rna-retrieval/test-cpp
 
@@ -74,6 +81,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-112-c
           /tmp/pass219-rna-retrieval/test-112-c
 
@@ -83,6 +93,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.cpp \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-112-cpp
           /tmp/pass219-rna-retrieval/test-112-cpp
 
@@ -92,6 +105,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-111-c
           /tmp/pass219-rna-retrieval/test-111-c
 
@@ -101,5 +117,8 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.c \
             /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_hash216.o \
+            /tmp/pass219-rna-retrieval/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-rna-retrieval/test-110-c
           /tmp/pass219-rna-retrieval/test-110-c
