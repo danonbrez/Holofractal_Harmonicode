@@ -105,7 +105,7 @@ typedef struct HHSExactPass219Hash216FractalQuditReceiptV1 {
     uint8_t parent_hash216_verified;
     uint8_t child_hash216_verified;
     uint8_t signed_environment_verified;
-    uint8_t canonical_admission_delegated;
+    uint8_t inherited_canonical_admission_verified;
     uint8_t proof_transition_indexed;
     uint8_t canonical_vm81_mutation_authority;
     uint8_t canonical_hash72_authority;
@@ -118,7 +118,7 @@ typedef struct HHSExactPass219Hash216FractalQuditReceiptV1 {
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_hash216_fractal_qudit_admission_version(void);
 
-/* Pure pre-admission verifier. It cannot mutate VM81 or create canonical receipts. */
+/* Pure pre-hydration verifier. It cannot mutate VM81 or create canonical receipts. */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hash216_fractal_qudit_witness_validate(
     const HHSExactUQCELInputV1 *input,
     const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
@@ -126,32 +126,29 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hash216_fractal_qudit_witness_val
 );
 
 /*
- * Additive signed successor. The fractal-qudit witness must close before the
- * inherited environmental/PQC admission boundary can be invoked. Canonical
- * VM81 and canonical Hash216 authority remain owned by the inherited path.
+ * Proof-carrying Hash216 hydration gate. It accepts only an already-successful
+ * canonical result produced by hhs_exact_pass219_vm81_environment_admit_signed,
+ * verifies the equation/geometry witness against that result, and emits a
+ * non-authoritative indexed Hash216 proof transition. It cannot mutate VM81,
+ * sign, persist, advance a receipt clock, or replace inherited canonical
+ * Hash72/Hash216 authority.
  */
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hash216_fractal_qudit_admit_signed(
-    uint32_t pass_number,
-    uint32_t signature_algorithm,
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof(
     const HHSExactUQCELInputV1 *input,
-    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactVM81Frame *committed_frame,
     const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
+    const HHSExactPass219RNAAdmissionV1 *admission,
+    const HHSExactPass219VM81PQCFirewallReceiptV1 *firewall_receipt,
+    const HHSExactPass219VM81PQCSignatureReceiptV1 *signature_receipt,
+    const HHSExactPass219VM81EnvironmentReceiptV1 *environment_receipt,
     const HHSExactPass219Hash216FractalQuditWitnessV1 *witness,
-    int8_t lo_shu_group,
-    uint16_t g243,
-    uint8_t feedback_lane,
-    int8_t feedback_trinary,
-    HHSExactVM81Frame *out_committed_frame,
-    HHSExactPass219RNAAdmissionV1 *out_admission,
-    HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
-    HHSExactPass219VM81PQCSignatureReceiptV1 *out_signature_receipt,
-    HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt,
     HHSExactPass219Hash216FractalQuditReceiptV1 *out_proof_receipt
 );
 
 /* Deterministic proof replay; no mutation, signing, persistence, or clock authority. */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_hash216_fractal_qudit_receipt_replay(
     const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *committed_frame,
     const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
     const HHSExactPass219RNAAdmissionV1 *admission,
     const HHSExactPass219VM81PQCFirewallReceiptV1 *firewall_receipt,
