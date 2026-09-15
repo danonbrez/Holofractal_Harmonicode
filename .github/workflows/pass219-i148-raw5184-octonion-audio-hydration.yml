@@ -55,6 +55,7 @@ jobs:
     env:
       PYTHONHASHSEED: '0'
       PYTHONPATH: '.'
+      LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,31 +87,49 @@ jobs:
       - name: Reject approximate C and C++ authority
         run: |
           set -euo pipefail
-          ! grep -REn '\b(float|double)\b'             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h             hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp             hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
+          ! grep -REn '\b(float|double)\b' \
+            hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.h \
+            hhs_runtime/include/hhs_pass219_raw5184_octonion_audio_hydration_1_0.hpp \
+            hhs_runtime/c/hhs_pass219_raw5184_octonion_audio_hydration_1_0.inc
 
-      - name: Compile cumulative exact ABI
+      - name: Build cumulative exact ABI
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-i148 artifacts/pass219/i148-raw5184-audio
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-i148/exact.o
+          timeout 600s make clean
+          timeout 600s make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Run C exact round-trip conformance
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-c
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-i148/test-c
           /tmp/pass219-i148/test-c
 
       - name: Run C++ exact conformance
         run: |
-          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-cpp
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_1_0.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-i148/test-cpp
           /tmp/pass219-i148/test-cpp
 
       - name: Run Python serialization and inherited registration regressions
         run: |
-          python -m pytest -q --tb=short             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py             tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py             tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py             tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py
+          python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py \
+            tests/pass219/test_pass219_mandatory_data_ml_registration_v1.py \
+            tests/pass219/test_pass219_cross_modal_reversible_state_manifold_v1.py \
+            tests/pass219/test_pass219_dynamic_paradox_phase_cycle_v1.py
 
       - name: Run exact serialization benchmark
         run: |
-          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py             artifacts/pass219/i148-raw5184-audio/benchmark.json
+          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py \
+            artifacts/pass219/i148-raw5184-audio/benchmark.json
           python - <<'PY'
           import json
           p='artifacts/pass219/i148-raw5184-audio/benchmark.json'
@@ -124,20 +143,22 @@ jobs:
           assert d['sine_q62']['runtime_float'] is False
           PY
 
-      - name: Build shared exact runtime
-        run: |
-          set -euo pipefail
-          timeout 600s make c-abi
-          test -s hhs_runtime/builds/libhhs_runtime.so
-
       - name: Preserve inherited ordered octonion surface
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_octonion_runtime_1_19.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-oct
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_octonion_runtime_1_19.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-i148/test-oct
           /tmp/pass219-i148/test-oct
 
       - name: Preserve inherited H36 factorization surface
         run: |
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c             /tmp/pass219-i148/exact.o             -o /tmp/pass219-i148/test-h36
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_factorization_fabric_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-i148/test-h36
           /tmp/pass219-i148/test-h36
 
       - uses: actions/upload-artifact@v4
