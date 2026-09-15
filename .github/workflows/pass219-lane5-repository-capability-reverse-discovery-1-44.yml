@@ -1,0 +1,161 @@
+name: Pass 219 Lane 5 Repository Capability Reverse Discovery 1.44
+
+on:
+  push:
+    branches:
+      - agent/pass219-lane5-repository-capability-reverse-discovery-1-44-20260915
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_repository_capability_reverse_discovery_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.py'
+      - 'tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.c'
+      - 'tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py'
+      - '.github/workflows/pass219-lane5-repository-capability-reverse-discovery-1-44.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44_RESTART_20260915.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_repository_capability_reverse_discovery_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.py'
+      - 'tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.c'
+      - 'tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py'
+      - '.github/workflows/pass219-lane5-repository-capability-reverse-discovery-1-44.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44_RESTART_20260915.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static repository capability contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.h').read_text()
+          runtime = Path('hhs_backend/runtime/hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.py').read_text()
+          for needle in (
+              'Pass214 structural Python operation-registry coverage = COMPLETE',
+              'repository-total historical capability coverage = NOT YET CLAIMED',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+              'automatic Hash216 composition promotion',
+              'automatic superedge promotion',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'SOURCE_PYTHON_OPERATION_REGISTRY',
+              'python_operation_registry_snapshot',
+              'auto_hash216_composition_promotion',
+              'auto_superedge_promotion',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'extract_python_operation_registry_keys',
+              'DISCOVERY_ONLY_UNCLASSIFIED',
+              'hash216_composition_eligible',
+              'superedge_promotion_eligible',
+              'repository_total_historical_capability_complete',
+          ):
+              assert needle in runtime, needle
+          print('lane5_repository_capability_static=PASS')
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.44 exports and inherited authority seam
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_repository_capability_reverse_discovery_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_repository_capability_reverse_discovery_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_repository_capability_reverse_discovery_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_capability_self_model_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native repository capability membrane test
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-repository-capability
+          /tmp/test-lane5-repository-capability
+
+      - name: Run repository capability reverse discovery integration
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
+
+      - name: Emit deterministic repository capability evidence
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python - <<'PY'
+          from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import build_repository_capability_reverse_discovery
+          model = build_repository_capability_reverse_discovery()
+          counts = model['counts']
+          manifest = model['python_registry_manifest']
+          receipt = model['native_receipt']
+          print(
+              'PASS219_LANE5_REPOSITORY_CAPABILITY_EVIDENCE '
+              f"public={counts['public_registry']} "
+              f"native={counts['native_exact_abi']} "
+              f"python={counts['python_operation_registry']} "
+              f"total={counts['total']} "
+              f"registry_files={manifest['python_registry_files']} "
+              f"registries={manifest['python_operation_registries']} "
+              f"boundaries={counts['canonical_boundaries']} "
+              f"public_root={model['public_catalog_root_hash72']} "
+              f"native_root={model['native_export_root_sha256']} "
+              f"python_root={model['python_registry_root_sha256']} "
+              f"dependency_root={model['dependency_root_sha256']} "
+              f"model_root={model['model_root_sha256']} "
+              f"descriptor={receipt['descriptor_signature64']} "
+              f"receipt={receipt['receipt_signature64']}"
+          )
+          PY
+
+      - name: Regress inherited 1.43 and automatic routing 1.42
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py
+          python -m pytest -q tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
