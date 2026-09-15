@@ -144,12 +144,12 @@ int main(int argc, char **argv) {
     HHSExactPass219VM81PQCSignatureReceiptV1 signature;
     HHSExactPass219VM81EnvironmentReceiptV1 environment;
     HHSExactStatus status;
-    uint8_t P = 5U;
-    uint8_t p = 4U;
-    uint8_t q = 6U;
+    uint8_t P = 4U;
+    uint8_t p = 3U;
+    uint8_t q = 5U;
     uint8_t delta = 1U;
-    uint8_t A = 25U;
-    uint8_t B = 25U;
+    uint8_t A = 16U;
+    uint8_t B = 16U;
     const HHSExactUQCELInputV1 *input_ptr;
     int committed_exact;
     int transition_verified;
