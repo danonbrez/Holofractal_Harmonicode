@@ -49,6 +49,7 @@ typedef struct HHSExactPass219Hash216FractalQuditWitnessV1 {
     uint32_t version;
     uint64_t declared_scope_mask;
     uint16_t local5184;
+    uint16_t bigint5184[HHS_EXACT_PASS219_HASH216_FRACTAL_QUDIT_LEVELS];
     uint8_t hash72_major;
     uint8_t hash72_minor;
     uint8_t cell81;
@@ -76,6 +77,7 @@ typedef struct HHSExactPass219Hash216FractalQuditReceiptV1 {
     uint64_t verified_scope_mask;
     uint64_t failed_scope_mask;
     uint16_t local5184;
+    uint16_t bigint5184[HHS_EXACT_PASS219_HASH216_FRACTAL_QUDIT_LEVELS];
     uint8_t hash72_major;
     uint8_t hash72_minor;
     uint8_t cell81;
