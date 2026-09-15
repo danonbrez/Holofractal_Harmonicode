@@ -1,0 +1,187 @@
+name: Pass 219 Lane 5 Real World Workload Benchmark 1.47
+
+on:
+  pull_request:
+    paths:
+      - 'benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py'
+      - 'benchmarks/pass219/pass219_lane5_direct_witness_native_benchmark_1_47.c'
+      - 'contracts/pass219/PASS_219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47.md'
+      - '.github/workflows/pass219-lane5-real-world-workload-benchmark-1-47.yml'
+      - 'hhs_runtime/**'
+      - 'hhs_backend/**'
+      - 'contracts/pass214/**'
+      - 'tools/pass214_final_compound_benchmark.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile native Lane 5 benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/pass219_lane5_direct_witness_native_benchmark_1_47.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-lane5-native-benchmark-1-47
+
+      - name: Run native Lane 5 candidate scaling benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/pass219/1.47
+          /tmp/pass219-lane5-native-benchmark-1-47 | tee artifacts/pass219/1.47/lane5-native.json
+          python -m json.tool artifacts/pass219/1.47/lane5-native.json >/dev/null
+
+      - name: Run repository-native real-world workloads
+        run: |
+          python benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py \
+            --output artifacts/pass219/1.47/repository-real-world.json \
+            --files-per-class 3 \
+            --ledger-entries 500
+
+      - name: Run frozen Pass 214 15-family 11-mode compound benchmark
+        run: |
+          python tools/pass214_final_compound_benchmark.py \
+            --output artifacts/pass219/1.47/pass214-final-compound.json
+          python tools/pass214_final_compound_benchmark.py \
+            --output /tmp/pass214-unused.json \
+            --validate artifacts/pass219/1.47/pass214-final-compound.json
+
+      - name: Run full 50,388,480-position hydration verification
+        run: |
+          python tools/generate_pass212_full_hydration_evidence.py --check
+
+      - name: Run raw5184 audio serialization benchmark
+        run: |
+          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py \
+            artifacts/pass219/1.47/raw5184-audio.json
+
+      - name: Regress Lane 5 1.37 through 1.46 and qudit 1.45
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py \
+            tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py \
+            tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py \
+            tests/pass219/test_pass219_lane5_persistent_hash216_composition_memory_1_39.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
+            tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
+            tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
+            tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py \
+            tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-direct-witness-1-46
+          /tmp/test-lane5-direct-witness-1-46
+
+      - name: Seal comprehensive benchmark summary
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('artifacts/pass219/1.47')
+          native = json.loads((root / 'lane5-native.json').read_text())
+          real = json.loads((root / 'repository-real-world.json').read_text())
+          pass214 = json.loads((root / 'pass214-final-compound.json').read_text())
+          audio = json.loads((root / 'raw5184-audio.json').read_text())
+
+          assert native['result'] == 'PASS'
+          assert native['negative_control_passed'] is True
+          assert [row['candidate_count'] for row in native['cases']] == [4, 16, 64, 256]
+          assert all(row['materialized_intermediate_states'] == 0 for row in native['cases'])
+          assert native['cases'][-1]['selected_index'] == 255
+          assert native['cases'][-1]['represented_span'] == 256_000_000
+          assert native['cases'][-1]['avoided_intermediate_states'] == 255_999_999
+
+          assert real['result'] == 'PASS'
+          repo = real['repository_workloads']
+          assert repo['record_count'] == 12
+          assert repo['all_source_hashes_exact'] is True
+          assert repo['all_projection_hash72_present'] is True
+          assert repo['all_warm_reused'] is True
+          assert repo['all_replay_deterministic'] is True
+          assert repo['all_cross_process_equal'] is True
+          assert real['hash72_ledger']['verification_ok'] is True
+          assert real['hash72_ledger']['entries'] == 500
+
+          assert len(pass214['workloads']) == 15
+          assert all(len(row['mode_records']) == 11 for row in pass214['workloads'].values())
+          assert pass214['incremental_full_equality'] is True
+          assert pass214['recovery_replay_semantic_equality'] is True
+          assert pass214['cross_process_replay_semantic_equality'] is True
+          assert pass214['negative_controls_fail_closed'] is True
+          assert pass214['complete_cost_accounting'] is True
+          assert pass214['compression_incidence_complete_physical_accounting'] is True
+
+          assert audio['result'] == 'PASS'
+          assert audio['aggregate']['exact_work_saved'] > 0
+          assert audio['authority']['vm81_mutation_changed'] is False
+          assert audio['authority']['hash216_changed'] is False
+
+          summary = {
+              'schema': 'HHS_PASS219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_SUMMARY_1_47',
+              'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'result': 'PASS',
+              'real_repository_files': repo['record_count'],
+              'real_repository_bytes': repo['total_source_bytes'],
+              'real_cold_bytes_per_second_floor': repo['observational']['cold_bytes_per_second_floor'],
+              'ledger_entries': real['hash72_ledger']['entries'],
+              'ledger_appends_per_second_floor': real['hash72_ledger']['appends_per_second_floor'],
+              'pass214_workload_families': len(pass214['workloads']),
+              'pass214_modes_per_family': 11,
+              'pass214_total_mode_executions': len(pass214['workloads']) * 11,
+              'lane5_native_candidate_counts': [row['candidate_count'] for row in native['cases']],
+              'lane5_native_cases': native['cases'],
+              'raw5184_exact_work_saved': audio['aggregate']['exact_work_saved'],
+              'timing_authority': 'OBSERVATIONAL_ONLY',
+              'canonical_floating_point_authority': False,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash216_authority': False,
+              'requires_signed_environmental_vm81_admission': True,
+          }
+          canonical = json.dumps(summary, sort_keys=True, separators=(',', ':')).encode()
+          summary['receipt_sha256'] = hashlib.sha256(canonical).hexdigest()
+          (root / 'summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          print('PASS219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47_PASS')
+          PY
+
+      - name: Upload benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-real-world-workload-benchmark-1-47
+          path: artifacts/pass219/1.47/
+          if-no-files-found: error
