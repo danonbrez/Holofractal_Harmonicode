@@ -105,4 +105,5 @@
 #include "hhs_pass219_lane5_automatic_superedge_routing_1_42.h"
 #include "hhs_pass219_lane5_executable_capability_self_model_1_43.h"
 #include "hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.h"
+#include "hhs_pass219_hash216_fractal_qudit_admission_1_45.h"
 #endif
