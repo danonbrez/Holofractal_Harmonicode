@@ -57,7 +57,7 @@ jobs:
       HHS_LEDGER_FSYNC: "0"
       HHS_COGNITION_AUTO_TICK: "1"
       HHS_COGNITION_REPLAY_HORIZON: "4"
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
+      HHS_AGENT_INDEX_DB: /tmp/hhs-agent-index.sqlite3
 
     steps:
       - name: Checkout
@@ -68,6 +68,8 @@ jobs:
       - name: Materialize immutable agent index implementation
         if: ${{ hashFiles('.github/bootstrap_immutable_agent_index/part-*.b64') != '' }}
         shell: bash
+        env:
+          HHS_HEAD_REF: ${{ github.head_ref }}
         run: |
           cat .github/bootstrap_immutable_agent_index/part-*.b64 \
             | base64 --decode \
@@ -80,7 +82,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Implement immutable agent SQL evidence index"
             if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-              git push origin "HEAD:${{ github.head_ref }}"
+              git push origin "HEAD:${HHS_HEAD_REF}"
             elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
               git push origin "HEAD:${GITHUB_REF_NAME}"
             fi

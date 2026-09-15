@@ -29,7 +29,7 @@ jobs:
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "1"
       HHS_PASS174_BOOT_TIMEOUT_SECONDS: "2"
-      HHS_PASS174_STATE_DIR: ${{ runner.temp }}/hhs/pass174
+      HHS_PASS174_STATE_DIR: /tmp/hhs/pass174
     steps:
       - name: Check out source revision
         uses: actions/checkout@v4

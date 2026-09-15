@@ -99,7 +99,7 @@ jobs:
     env:
       PYTHONFAULTHANDLER: '1'
       PYTHONUNBUFFERED: '1'
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-continuation.sqlite3
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4

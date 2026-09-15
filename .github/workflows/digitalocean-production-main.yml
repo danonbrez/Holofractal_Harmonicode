@@ -16,6 +16,7 @@ on:
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "tests/test_hhs_guarded_recovery_state_v1.py"
       - "tests/test_runtime_os_production_root.py"
       - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
   workflow_dispatch:
@@ -46,7 +47,9 @@ jobs:
             deployment/digitalocean/guarded_auto_update/install.sh
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
-            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py
+            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py \
+            deployment/digitalocean/guarded_auto_update/recovery-state.py \
+            tests/test_hhs_guarded_recovery_state_v1.py
           python3 - <<'PY'
           import runpy
           namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")
@@ -59,6 +62,7 @@ jobs:
               test()
               print(f"{name}: PASS")
           PY
+          python3 tests/test_hhs_guarded_recovery_state_v1.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
@@ -243,28 +247,11 @@ jobs:
               ss -H -ltnp 'sport = :8080' >&2 || true
               exit 16
             fi
-            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-          path = Path(os.environ['RECEIPT_LOG_VALUE'])
-          if not path.is_file():
-              raise SystemExit('exact-main recovery requires guarded-update receipts')
-          records = []
-          for line in path.read_text(encoding='utf-8').splitlines():
-              line = line.strip()
-              if not line:
-                  continue
-              try:
-                  records.append(json.loads(line))
-              except json.JSONDecodeError:
-                  continue
-          if not records or records[-1].get('outcome') != 'ROLLBACK_HEALTH_FAILED':
-              raise SystemExit(f"exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
-          print('HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1')
-          PY
+            # Receipt/check-out identity is classified once, inside the target
+            # install.sh using the target tree's recovery-state.py. This remote
+            # owner only detects the inactive/no-listener condition.
             RECOVERY_MODE=1
-            echo "HHS_EXACT_MAIN_RECOVERY_MODE=1"
+            echo "HHS_EXACT_MAIN_RECOVERY_MODE_REQUESTED=1"
           fi
 
           systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
