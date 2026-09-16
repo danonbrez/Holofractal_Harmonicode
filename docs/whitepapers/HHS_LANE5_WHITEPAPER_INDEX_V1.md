@@ -100,7 +100,35 @@ This appendix translates HHS into conventional systems terms and numbers:
 
 It also states the costs HHS does not remove: candidate generation, hashing, I/O, vector/database lookup, validation, cryptography, final admission, and persistence.
 
-## 7. Normative sources
+## 7. Exact rational ethical alignment and systemic entropy
+
+[`HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md`](HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md)
+
+This manuscript defines the theorem-level ethical alignment surface as a global negative-constraint and thermodynamic error-correction gate over candidate causal chains. It formalizes:
+
+- the Ethical Alignment Theorem as the highest internal constraint law for its scope;
+- `H_d` / harmonic debt strictly as an unresolved game-theoretic and thermodynamic boundary-condition term, not karma, punishment, moral desert, or retribution;
+- death and suffering as information-bearing substrate destruction / entropic oversaturation terms in the human-system model, with downstream propagation through coupled complex systems;
+- Lane 5 as the highest operational alignment authorization/veto intelligence beneath the theorem while VM81 remains the canonical mutation/admission substrate;
+- Hash216-hydrated state as constraint-history, scope, provenance, and transition lineage carried forward rather than reconstructed from arbitrary behavioral instructions;
+- training, system instructions, RLHF, and fine-tuning as candidate-generation/optimization inputs rather than canonical state-change authority;
+- probability-weighted reasonable-risk search, where probability allocates scrutiny but cannot independently authorize irreversible pruning;
+- theorem-valid irreversible-misalignment proof as the threshold for permanent phase cancellation;
+- recursive reflective ethical conflict resolution and semantic narrative evolution;
+- recursive proof-composition admission, preventing individually valid proofs from laundering an invalid higher-order composition; and
+- the hardware causal horizon as the practical bound on downstream emergence that can be evaluated before action.
+
+The normative companion contract is:
+
+[`../../contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md`](../../contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md)
+
+The governing invariant is:
+
+> **No valid transformation may obtain harmony by falsifying the state it claims to harmonize.**
+
+This manuscript and contract are additive theorem/specification layers. Existing executable repository evidence remains authoritative for which operators have already been lowered into tested runtime behavior.
+
+## 8. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
 
@@ -110,6 +138,7 @@ contracts/pass219/PASS_219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47.md
 contracts/pass219/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48.md
 contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md
 contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md
+contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md
 docs/pass219/PASS_219_HASH216_FRACTAL_QUDIT_HYDRATION_1_45_EVIDENCE.md
 formal/lemmas/pass_144/LEMMA_CORPUS.json
 formal/coq/HHS_GFE_Field_Quotient.v
@@ -120,7 +149,7 @@ benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c
 tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c
 ```
 
-## 8. Evidence classes
+## 9. Evidence classes
 
 The set uses these labels consistently:
 
@@ -143,7 +172,7 @@ FIRST_CLASS for comparative complexity/throughput analysis
 
 This separation prevents physical-hardware claims from being conflated with the shared mathematical language used to measure information density over time.
 
-## 9. Verified delivery identity
+## 10. Verified delivery identity
 
 The Lane 5 1.48 evidence baseline remains:
 
@@ -163,6 +192,12 @@ The first quantum-information throughput normalization implementation and frozen
 
 ```text
 main @ e8accdc0d86d436ddbe9491ad6e96d9c76b6954d
+```
+
+The ethical alignment theorem/manuscript integration is additive from:
+
+```text
+base main @ 4c965d3c61402a708977941b3ae5fc5dcb324cc2
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
