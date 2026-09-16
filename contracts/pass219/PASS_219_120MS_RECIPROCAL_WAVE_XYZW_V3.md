@@ -6,47 +6,40 @@
 
 ## 1. Objective
 
-Measure HHS/Lane 5 and the optimized exact conventional comparator against **one frozen deterministic workload W**, with all four x,y,z,w executions required to converge to the same exact state whenever the runner provides a reasonable per-leg completion interval.
+Measure HHS/Lane 5 and the optimized exact conventional comparator against the **same deterministic workload at every gradient sample**, with A/B/C/D required to converge to the same exact state whenever the runner provides a reasonable completion interval.
 
-The timing authority is one global measured pass budget:
+The only measured batch authority is:
 
 ```text
 T_global = 120,000,000 ns = 120 ms
 ```
 
-`120 ms` is NOT a per-leg allowance. If the batch contains `N` statistical samples, the four legs of every sample share the same global budget:
+The 120 ms limit is global. It is never multiplied by sample count or by four reciprocal legs.
+
+## 2. Same-state reciprocal workload
+
+For gradient sample `n`, define one deterministic workload:
 
 ```text
-leg_budget_ns = floor(T_global / (4*N))
-nominal_measured_budget_ns = 4*N*leg_budget_ns <= T_global
+W_n = ordered prefix of Query(seed_W, i)
+      for i = 0 .. query_scale_n-1
 ```
 
-No batching strategy may multiply the global 120 ms observation budget.
-
-## 2. One workload, four exact routes
-
-Use one deterministic lazy workload:
+and execute it four ways:
 
 ```text
-W_i = Query(seed_W, i)
-W = ordered prefix of dataset_queries queries
+A / x = HHS exact execution of W_n
+B / y = optimized conventional exact execution of W_n
+C / z = optimized conventional exact replay of W_n
+D / w = HHS exact replay of W_n
 ```
 
-Every sample executes the identical W four ways:
+A/B/C/D may differ in execution mechanism and completion time. They may not differ in seed, order, query count, modulus, or mathematical target.
+
+The exact state identity is:
 
 ```text
-A / x = HHS exact execution of W
-B / y = optimized conventional exact execution of W
-C / z = optimized conventional exact replay of W
-D / w = HHS exact replay of W
-```
-
-A/B/C/D may differ in execution mechanism and completion time. They may not differ in seed, query ordering, query count, arithmetic modulus, target state, or admission semantics applicable to their architecture.
-
-The full frozen state identity is:
-
-```text
-State(W) = (
+State(W_n) = (
   query_count,
   represented_transition_sum,
   descriptor_bits,
@@ -55,11 +48,11 @@ State(W) = (
 )
 ```
 
-When all four complete, all five fields MUST be identical across A/B/C/D and MUST equal the independently generated reference State(W).
+Whenever all four legs complete, all four MUST equal `State(W_n)` exactly.
 
 ## 3. Architectures
 
-### HHS architecture: A and D
+### HHS — A and D
 
 Each query requires:
 
@@ -81,83 +74,97 @@ canonical Hash216 authority = 0
 signed environmental VM81 admission required
 ```
 
-### Optimized conventional architecture: B and C
+### Optimized conventional — B and C
 
-Each query uses exact 2x2 homogeneous matrix exponentiation by squaring over the same modular integer arithmetic. It has no Lane 5 admission step.
+Each query uses exact 2x2 homogeneous matrix exponentiation by squaring over the same modular integer arithmetic.
 
-The comparator therefore changes execution route, not the mathematical target.
+The comparator changes execution route, not the target state.
 
-## 4. Runner-calibrated reasonable-completion threshold
+## 4. Untimed runner calibration
 
-Before the measured 120 ms pass begins, the executable performs an untimed setup/calibration phase on the same W. Calibration is outside the measured global pass and exists only to estimate the minimum reasonable per-leg interval on the current runner.
+Before the measured 120 ms batch, the runner executes the base workload once through both architectures with no time limit.
 
-The runner records:
+Record:
 
 ```text
 calibration_hhs_completion_ns
 calibration_conventional_completion_ns
 ```
 
-and derives:
+Define the initial predicted reasonable threshold:
 
 ```text
-base_completion_ns = max(calibration_hhs_completion_ns,
-                         calibration_conventional_completion_ns)
-reasonable_completion_threshold_ns = base_completion_ns
-                                   + max(base_completion_ns/2, 100000 ns)
+base_ns = max(calibration_hhs_completion_ns,
+              calibration_conventional_completion_ns)
+
+predicted_threshold_0 = base_ns
+                      + max(base_ns/2, 100000 ns)
 ```
 
-The batch chooses the largest sample count up to the configured maximum for which:
+Calibration is not part of the 120 ms measured pass.
+
+## 5. Adaptive scaling gradient
+
+The batch begins at:
 
 ```text
-floor(T_global / (4*N)) >= reasonable_completion_threshold_ns
+query_scale_0 = configured base query count
 ```
 
-If no positive N satisfies the inequality, N=1 and the evidence explicitly records that the 30 ms per-leg slice is below the measured reasonable-completion threshold.
-
-This gives more samples only when the runner is fast enough to preserve exact completion inside the same 120 ms global pass.
-
-## 5. Completion rule
-
-The normative case is:
+At the beginning of each sample, let:
 
 ```text
-leg_budget_ns >= reasonable_completion_threshold_ns
+remaining_ns = T_global - measured_batch_elapsed_ns
+leg_budget_n = floor(remaining_ns / 4)
 ```
 
-In that case every A/B/C/D workload in every sample MUST:
+Thus all four legs in a sample receive the same ceiling and the sample can never reserve more time than remains globally.
+
+If all four legs complete exactly, the next workload scale is:
 
 ```text
-complete all queries in W
-produce State(W)
-prove exact endpoint/descriptor identity
+query_scale_(n+1) = 2 * query_scale_n
 ```
 
-Any incomplete leg is a hard failure.
-
-Only when:
+The next predicted completion threshold is conservatively derived from the slowest completed leg:
 
 ```text
-leg_budget_ns < reasonable_completion_threshold_ns
+slow_n = max(t_A, t_B, t_C, t_D)
+predicted_threshold_(n+1)
+    = 2*slow_n + max(slow_n, 100000 ns)
 ```
 
-may a timed leg terminate at the boundary before W is complete. Such an incomplete leg is not treated as a different valid state. It is recorded as incomplete work caused by an intentionally sub-threshold time slice and must still match the exact independently replayed prefix it claims to have completed.
+The runner continues increasing workload while the global time budget remains positive and at least a minimum fair four-leg slice remains.
 
-Thus the benchmark never treats architecture-specific partial work as equivalent to completion.
+A completed sample therefore converts unused time into **greater mathematical difficulty**, not a larger time allowance for one architecture.
 
-## 6. Signed time/work residual
+## 6. Reasonable-completion rule
 
-Physical wall-clock time remains non-negative. HHS "negative time" in this benchmark is represented as signed slack relative to the common per-leg boundary.
+For sample `n`:
 
-For a completed leg i:
+```text
+subthreshold_n = leg_budget_n < predicted_threshold_n
+```
+
+If `subthreshold_n == false`, every A/B/C/D leg MUST complete `W_n` and equal `State(W_n)`. Any incomplete leg is a hard failure.
+
+If `subthreshold_n == true`, an incomplete leg may terminate at the common boundary, but it is not treated as a completed state. Its claimed prefix MUST independently replay exactly.
+
+The first incomplete gradient sample terminates further scale growth because the crossover boundary has been reached for the remaining global budget.
+
+## 7. Signed time/work residual
+
+Physical wall-clock time is never negative. Signed HHS time is represented as slack around the common leg boundary.
+
+For a completed leg:
 
 ```text
 epsilon_i = (completion_elapsed_ns - leg_budget_ns) / leg_budget_ns
 ```
 
-so early completion is negative and exact-boundary completion is zero.
+so early completion is negative.
 
-For an incomplete sub-threshold leg i:
+For an incomplete sub-threshold leg:
 
 ```text
 epsilon_i = (target_represented_work - completed_represented_work)
@@ -166,40 +173,41 @@ epsilon_i = (target_represented_work - completed_represented_work)
 
 which is positive remaining-work deficit.
 
-This gives one signed coordinate system in which early exact completion and unfinished work have opposite signs without asserting negative physical clock time.
+This gives early exact completion and unfinished work opposite signs in one dimensionless normalization.
 
-## 7. x,y,z,w state vector
+## 8. x,y,z,w vector
 
-For sample n define:
+For each gradient sample:
 
 ```text
 Psi_n = (x_n, y_n, z_n, w_n)
       = (epsilon_A, epsilon_B, epsilon_C, epsilon_D)
 ```
 
-The state target is identical for all four legs; the x,y,z,w channels therefore encode execution displacement around one exact state, rather than four different datasets.
+All channels refer to the same `W_n`.
 
-Secondary evidence SHALL preserve:
+Secondary evidence preserves:
 
 ```text
+query scale
+leg budget
+predicted threshold
 completion time
-completed query count
+completed queries
 represented transitions
-represented transitions/second
 descriptor bits
-matrix/affine operation counts
+exact operation counts
 Lane 5 admissions
 endpoint digest
 descriptor digest
 ```
 
-## 8. Relational tensor
+## 9. Relational tensor
 
-The dimensionless signed residuals may be projected directly into the ordered relational surface:
+Project the dimensionless signed residuals into:
 
 ```text
 T(x,y,z,w) =
-
 List(
   List((x*y), x+y, (y*x)),
   List(
@@ -211,17 +219,15 @@ List(
 )
 ```
 
-with reciprocal imbalance:
+with:
 
 ```text
 Delta_xyzw = x*y - z*w
 ```
 
-The ordered labels remain preserved even where this scalar projection has commutative numeric products.
+## 10. Statistical balance and wave fit
 
-## 9. Probabilistic cancellation hypothesis
-
-Across N samples, the analyzer may test signed architecture balance. Define:
+For each sample:
 
 ```text
 H_n = (epsilon_A + epsilon_D)/2
@@ -235,76 +241,81 @@ The empirical cancellation hypothesis is:
 E[B_n] = 0
 ```
 
-This is a statistical hypothesis, not an admission assumption. The analyzer reports the sample mean and confidence interval.
+It is measured, not assumed.
 
-When all four routes complete in every sample, all residuals may have the same sign; in that regime the cancellation test is reported but is not required for benchmark correctness. Positive incomplete-work terms arise only in an explicitly sub-threshold regime.
-
-## 10. Discrete reciprocal wave equation
-
-At least three samples are required for a second-difference test. With fixed sample spacing defined by the four-leg allocation inside the global pass:
+For at least three gradient samples, fit the discrete reciprocal equation:
 
 ```text
-D2 Psi_n = Psi_(n+1) - 2*Psi_n + Psi_(n-1)
+D2 Psi_n + lambda * L_reciprocal(Psi_n) = eta_n
 ```
 
-Use the reciprocal graph:
+on graph edges:
 
 ```text
 x <-> z
 y <-> w
 ```
 
-and fit:
+and report `lambda` plus normalized residual.
+
+## 11. Bounded supremacy observation inside the gradient
+
+A sample is marked as a bounded HHS-over-conventional completion observation when, under the identical `leg_budget_n` and identical `W_n`:
 
 ```text
-D2 Psi_n + lambda * L_reciprocal(Psi_n) = eta_n
+A complete
+D complete
+(B incomplete OR C incomplete)
 ```
 
-where `L_reciprocal` is the graph Laplacian and `eta_n` is measured residual. The fit SHALL report lambda and normalized residual; it does not silently assume that eta_n=0.
+with exact HHS state verification and Lane 5 admission intact.
 
-## 11. Global timing acceptance
+This is an empirical bounded completion observation for the optimized conventional comparator used by v3. It is not automatically a theorem about all classical algorithms.
 
-The executable starts one monotonic batch timer immediately before sample 0/A and stops it immediately after sample N/D.
+The separate time-bounded supremacy contracts remain authoritative for theorem/comparator-class claims.
 
-It SHALL report:
+## 12. Global timing acceptance
+
+One monotonic timer begins immediately before sample `0/A` and ends after the final completed or boundary sample.
+
+The batch SHALL report:
 
 ```text
 global_budget_ns = 120000000
-sample_count = N
-leg_budget_ns
-nominal_measured_budget_ns = 4*N*leg_budget_ns
+sample_count
 batch_elapsed_ns
+remaining_budget_ns
+boundary_sample_seen
 ```
 
 Acceptance requires:
 
 ```text
-nominal_measured_budget_ns <= 120000000
+batch_elapsed_ns <= 120 ms + declared timer/current-query tolerance
 ```
 
-and the batch wall-clock duration must remain within the declared bounded current-query/timer-observation tolerance of the 120 ms global budget. Early completion does not get reassigned to enlarge another leg's nominal budget.
+No sample receives time from outside this measured envelope.
 
-## 12. Acceptance
+## 13. Acceptance
 
 The v3 cycle passes only if:
 
 ```text
-one frozen W is used by A/B/C/D
+A/B/C/D use the same W_n at every sample
 all four execute sequentially with one active benchmark thread
-A and D use the identical HHS route
-B and C use the identical optimized conventional route
-4*N*leg_budget_ns <= 120 ms
-runner calibration and derived threshold are recorded
-if leg_budget_ns >= threshold: every leg completes W
-if every leg completes: all four produce exactly State(W)
-any incomplete sub-threshold leg proves its exact completed prefix
+A and D use the same HHS route
+B and C use the same optimized conventional route
+all four legs in a sample have the same leg budget
+query scale grows exactly by 2 after exact four-way completion
+above predicted threshold: all four complete State(W_n)
+sub-threshold incomplete legs prove exact prefixes
 all HHS endpoints pass independent verification and Lane 5 admission
 HHS materialized_intermediate_states remains zero
-raw integer evidence is preserved before signed/tensor calculations
+the total measured batch remains inside the 120 ms global envelope
 ```
 
-## 13. Claim scope
+## 14. Claim scope
 
-This benchmark measures four exact execution routes to one deterministic state under one globally bounded 120 ms pass, with runner-adaptive statistical sampling. It makes signed early-completion slack and unfinished-work deficit commensurable as dimensionless benchmark residuals.
+This benchmark measures same-state reciprocal execution while adaptively increasing problem scale inside one globally bounded 120 ms pass. It is designed to expose completion gradients and crossover behavior without changing mathematical targets between architectures.
 
-It does not claim negative physical wall-clock time, does not treat incomplete work as a completed state, and does not assume a zero-residual wave equation or universal architecture superiority.
+It does not claim negative physical time, does not count incomplete work as a completed state, and does not by itself prove universal classical-computing supremacy.
