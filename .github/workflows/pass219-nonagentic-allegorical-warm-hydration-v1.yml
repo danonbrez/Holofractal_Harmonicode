@@ -6,6 +6,7 @@ on:
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'contracts/pass219/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1_RESTART_20260916.md'
       - '.github/workflows/pass219-nonagentic-allegorical-warm-hydration-v1.yml'
   push:
     branches: [main]
@@ -13,6 +14,7 @@ on:
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'contracts/pass219/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1_RESTART_20260916.md'
       - '.github/workflows/pass219-nonagentic-allegorical-warm-hydration-v1.yml'
 
 permissions:
