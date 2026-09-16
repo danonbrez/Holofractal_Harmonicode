@@ -1,0 +1,73 @@
+{
+  "schema": "HHS-P219-OPEN-SOURCE-MULTIMODAL-INGRESS-REGISTRY-V1",
+  "generated_on": "2026-09-16",
+  "policy": {
+    "immutable_revision_required_for_ingestion": true,
+    "publicly_downloadable_is_not_equivalent_to_open_source": true,
+    "candidate_projection_only": true,
+    "canonical_vm81_commit_authority": false,
+    "allowed_license_ids": [
+      "apache-2.0",
+      "mit",
+      "bsd-2-clause",
+      "bsd-3-clause",
+      "cc-by-4.0"
+    ]
+  },
+  "references": [
+    {
+      "provider": "HUGGING_FACE",
+      "repo_id": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+      "repo_kind": "MODEL",
+      "license_id": "apache-2.0",
+      "modalities": ["TEXT"],
+      "languages": "50+",
+      "role": "MULTILINGUAL_SEMANTIC_ALIGNMENT_CANDIDATE",
+      "discovery_only": true,
+      "revision": null,
+      "ingestion_revision_required": true
+    },
+    {
+      "provider": "HUGGING_FACE",
+      "repo_id": "sentence-transformers/clip-ViT-B-32-multilingual-v1",
+      "repo_kind": "MODEL",
+      "license_id": "apache-2.0",
+      "modalities": ["TEXT", "IMAGE"],
+      "languages": "50+ text languages aligned to image space",
+      "role": "MULTILINGUAL_CROSS_MODAL_ALIGNMENT_CANDIDATE",
+      "discovery_only": true,
+      "revision": null,
+      "ingestion_revision_required": true
+    },
+    {
+      "provider": "GITHUB",
+      "repo_id": "huggingface/sentence-transformers",
+      "repo_kind": "CODE",
+      "license_id": "apache-2.0",
+      "modalities": ["TEXT", "IMAGE", "AUDIO", "VIDEO"],
+      "role": "OPEN_SOURCE_MULTIMODAL_EMBEDDING_RUNTIME_REFERENCE",
+      "discovery_only": false,
+      "revision": "2236e4f6ec18191ef73b91dbd17f60fbbfd97bc6",
+      "ingestion_revision_required": true
+    },
+    {
+      "provider": "GITHUB",
+      "repo_id": "huggingface/transformers",
+      "repo_kind": "CODE",
+      "license_id": "apache-2.0",
+      "modalities": ["TEXT", "IMAGE", "AUDIO", "VIDEO", "MULTIMODAL"],
+      "role": "OPEN_SOURCE_MODEL_DEFINITION_RUNTIME_REFERENCE",
+      "discovery_only": false,
+      "revision": "af980eefb90517d6ae767fba968ad7d33df2b4b7",
+      "ingestion_revision_required": true
+    }
+  ],
+  "excluded_examples": [
+    {
+      "provider": "HUGGING_FACE",
+      "repo_id": "facebook/nllb-200-distilled-600M",
+      "license_id": "cc-by-nc-4.0",
+      "reason": "NONCOMMERCIAL_LICENSE_NOT_IN_PRODUCTION_OPEN_SOURCE_ALLOWLIST"
+    }
+  ]
+}
