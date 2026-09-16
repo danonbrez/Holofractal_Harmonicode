@@ -42,9 +42,11 @@ assert(content.projection.includes("/api/runtime/authority/status"), "runtime au
 assert(content.projection.includes("WebSockets are on-demand projection channels"), "projection channel role is not explicit")
 
 for (const token of [
-  'useState<ProductSurface>("program")',
+  'useState<ProductSurface>("control")',
+  "Control",
   "Visual Program",
   "Workspace",
+  "Authority",
   "RegistryVisualProgrammer",
   "HHSWorkspaceShell",
   "executeWorkspaceOperation",
