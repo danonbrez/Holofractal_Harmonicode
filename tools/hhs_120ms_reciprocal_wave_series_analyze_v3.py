@@ -8,14 +8,13 @@ import math
 import os
 from pathlib import Path
 import platform
-import statistics
 import subprocess
 from typing import Any
 
 getcontext().prec = 90
-BENCH_SCHEMA = "HHS_120MS_RECIPROCAL_WAVE_XYZW_V3"
-EVIDENCE_SCHEMA = "HHS_120MS_RECIPROCAL_WAVE_XYZW_V3_SERIES_EVIDENCE"
-WINDOW_NS = 120_000_000
+SCHEMA = "HHS_120MS_GLOBAL_RECIPROCAL_WAVE_XYZW_V3"
+EVIDENCE_SCHEMA = "HHS_120MS_GLOBAL_RECIPROCAL_WAVE_XYZW_V3_EVIDENCE"
+GLOBAL_BUDGET_NS = 120_000_000
 Z95 = Decimal("1.959963984540054")
 
 
@@ -39,19 +38,9 @@ def _memory_kib() -> int | None:
 
 def _cc_version() -> str:
     try:
-        return subprocess.run(
-            ["cc", "--version"], check=True, capture_output=True, text=True
-        ).stdout.splitlines()[0]
+        return subprocess.run(["cc", "--version"], check=True, capture_output=True, text=True).stdout.splitlines()[0]
     except Exception:
         return "unknown"
-
-
-def _rate(value: int, window_ns: int = WINDOW_NS) -> Decimal:
-    return Decimal(value) * Decimal(1_000_000_000) / Decimal(window_ns)
-
-
-def _seconds(ns: int) -> Decimal:
-    return Decimal(ns) / Decimal(1_000_000_000)
 
 
 def _mean(xs: list[Decimal]) -> Decimal:
@@ -62,288 +51,205 @@ def _sample_sd(xs: list[Decimal]) -> Decimal:
     if len(xs) < 2:
         return Decimal(0)
     mu = _mean(xs)
-    variance = sum((x - mu) * (x - mu) for x in xs) / Decimal(len(xs) - 1)
-    return variance.sqrt()
+    return (sum((x - mu) ** 2 for x in xs) / Decimal(len(xs) - 1)).sqrt()
+
+
+def _laplacian(v: list[Decimal]) -> list[Decimal]:
+    x, y, z, w = v
+    return [x - z, y - w, z - x, w - y]
 
 
 def _dot(a: list[Decimal], b: list[Decimal]) -> Decimal:
     return sum((x * y for x, y in zip(a, b)), Decimal(0))
 
 
-def _sub(a: list[Decimal], b: list[Decimal]) -> list[Decimal]:
-    return [x - y for x, y in zip(a, b)]
+def _wave_fit(vectors: list[list[Decimal]]) -> dict[str, Any]:
+    if len(vectors) < 3:
+        return {"available": False, "reason": "at least three gradient samples are required"}
+    d2s: list[list[Decimal]] = []
+    laps: list[list[Decimal]] = []
+    for i in range(1, len(vectors) - 1):
+        d2 = [vectors[i + 1][j] - Decimal(2) * vectors[i][j] + vectors[i - 1][j] for j in range(4)]
+        d2s.append(d2)
+        laps.append(_laplacian(vectors[i]))
+    denom = sum((_dot(l, l) for l in laps), Decimal(0))
+    lam = Decimal(0) if denom == 0 else -sum((_dot(d2, l) for d2, l in zip(d2s, laps)), Decimal(0)) / denom
+    residuals = [[d2[j] + lam * lap[j] for j in range(4)] for d2, lap in zip(d2s, laps)]
+    residual_sq = sum((_dot(r, r) for r in residuals), Decimal(0))
+    signal_sq = sum((_dot(d2, d2) for d2 in d2s), Decimal(0))
+    nrms = Decimal(0) if signal_sq == 0 else (residual_sq / signal_sq).sqrt()
+    return {
+        "available": True,
+        "equation": "D2 Psi_n + lambda * L_reciprocal(Psi_n) = eta_n",
+        "lambda": str(lam),
+        "normalized_residual_rms": str(nrms),
+        "interior_sample_count": len(residuals),
+        "reciprocal_graph_edges": ["x<->z", "y<->w"],
+    }
 
 
-def _add(a: list[Decimal], b: list[Decimal]) -> list[Decimal]:
-    return [x + y for x, y in zip(a, b)]
-
-
-def _scale(s: Decimal, a: list[Decimal]) -> list[Decimal]:
-    return [s * x for x in a]
-
-
-def _laplacian(v: list[Decimal]) -> list[Decimal]:
-    # Reciprocal graph edges: x <-> z and y <-> w.
-    x, y, z, w = v
-    return [x - z, y - w, z - x, w - y]
-
-
-def _tensor(v: list[Decimal]) -> list[list[str]]:
-    x, y, z, w = v
-    xy, yx, zw, wz = x * y, y * x, z * w, w * z
-    return [
-        [str(xy), str(x + y), str(yx)],
-        [str(xy - zw), str(x + y - z - w + xy + yx - zw - wz), str(wz - yx)],
-        [str(wz), str(z + w), str(zw)],
-    ]
-
-
-def _boundary_residual(consumer: dict[str, Any], producer: dict[str, Any]) -> Decimal:
-    """Signed reciprocal boundary residual.
-
-    completed early -> negative normalized time slack
-    incomplete at boundary -> positive remaining represented-work fraction
-    exact boundary completion -> zero
-    """
-    if bool(consumer["dataset_complete"]):
-        completion_ns = int(consumer["completion_elapsed_ns"])
-        return (Decimal(completion_ns) - Decimal(WINDOW_NS)) / Decimal(WINDOW_NS)
-    target = Decimal(int(producer["represented_transitions"]))
-    done = Decimal(int(consumer["represented_transitions"]))
-    if target <= 0 or done < 0 or done > target:
-        raise ValueError("invalid producer/consumer represented-work relation")
-    return (target - done) / target
-
-
-def _parse_samples(path: Path) -> list[dict[str, Any]]:
-    samples: list[dict[str, Any]] = []
-    current: dict[str, Any] | None = None
+def _parse(path: Path) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    meta = None
+    target = None
+    records: list[dict[str, Any]] = []
+    batch_result = None
     for raw in path.read_text(encoding="utf-8").splitlines():
         raw = raw.strip()
         if not raw:
             continue
         rec = json.loads(raw)
         kind = rec.get("type")
-        if kind == "meta":
-            if current is not None:
-                raise ValueError("new sample began before previous result")
-            current = {"meta": rec, "benchmarks": {}, "verifications": {}}
-        elif current is None:
-            raise ValueError("record appeared outside a sample")
+        if kind == "batch_meta":
+            meta = rec
+        elif kind == "target_state":
+            target = rec
         elif kind == "benchmark":
-            current["benchmarks"][str(rec["id"])] = rec
-        elif kind == "verification":
-            current["verifications"][str(rec["dataset"])] = rec
-        elif kind == "result":
-            if rec.get("result") != "PASS":
-                raise ValueError("sample terminal result was not PASS")
-            samples.append(current)
-            current = None
-    if current is not None:
-        raise ValueError("unterminated sample")
-    if not samples:
-        raise ValueError("no reciprocal samples found")
-    return samples
+            records.append(rec)
+        elif kind == "batch_result":
+            batch_result = rec
+    if meta is None or target is None or batch_result is None or batch_result.get("result") != "PASS":
+        raise ValueError("incomplete reciprocal-wave batch")
+    return meta, target, records, batch_result
 
 
-def _validate_sample(sample: dict[str, Any], index: int) -> dict[str, Any]:
-    meta = sample["meta"]
-    benches = sample["benchmarks"]
-    verifications = sample["verifications"]
-    if meta.get("schema") != BENCH_SCHEMA:
-        raise ValueError(f"sample {index}: wrong schema")
-    if int(meta["window_ns"]) != WINDOW_NS:
-        raise ValueError(f"sample {index}: window is not exactly 120ms")
-    if int(meta.get("active_threads_per_benchmark", 0)) != 1:
-        raise ValueError(f"sample {index}: benchmark is not single-threaded")
-    if not bool(meta.get("benchmarks_sequential")):
-        raise ValueError(f"sample {index}: A/B/C/D are not sequential")
-    if int(meta["seed_X"]) == int(meta["seed_Y"]):
-        raise ValueError(f"sample {index}: X/Y streams are not domain-separated")
-    if set(benches) != {"A", "B", "C", "D"}:
-        raise ValueError(f"sample {index}: A/B/C/D records missing")
-    if set(verifications) != {"X", "Y"}:
-        raise ValueError(f"sample {index}: X/Y verification records missing")
-
-    expected = {
-        "A": ("x", "hhs", "X", "capacity_120ms"),
-        "B": ("y", "conventional_matrix", "Y", "capacity_120ms"),
-        "C": ("z", "conventional_matrix", "X", "reciprocal_120ms"),
-        "D": ("w", "hhs", "Y", "reciprocal_120ms"),
-    }
-    tolerance = 10_000_000
-    for ident, rec in benches.items():
-        axis, arch, dataset, mode = expected[ident]
-        if (rec.get("axis"), rec.get("architecture"), rec.get("dataset"), rec.get("mode")) != (
-            axis, arch, dataset, mode
-        ):
-            raise ValueError(f"sample {index}: {ident} identity mismatch")
-        if int(rec["completed_queries"]) <= 0:
-            raise ValueError(f"sample {index}: {ident} completed no work")
-        elapsed = int(rec["elapsed_ns"])
-        if ident in ("A", "B"):
-            if elapsed < WINDOW_NS or elapsed > WINDOW_NS + tolerance:
-                raise ValueError(f"sample {index}: {ident} violated 120ms producer bound")
-        else:
-            complete = bool(rec["dataset_complete"])
-            if elapsed > WINDOW_NS + tolerance:
-                raise ValueError(f"sample {index}: {ident} exceeded 120ms reciprocal bound")
-            if not complete and elapsed < WINDOW_NS:
-                raise ValueError(f"sample {index}: {ident} stopped early without completing dataset")
-            if complete:
-                completion = int(rec["completion_elapsed_ns"])
-                if completion <= 0 or completion > WINDOW_NS + tolerance:
-                    raise ValueError(f"sample {index}: {ident} invalid completion time")
-
-    a, b, c, d = (benches[k] for k in ("A", "B", "C", "D"))
-    if int(c["dataset_limit_queries"]) != int(a["completed_queries"]):
-        raise ValueError(f"sample {index}: C target != A dataset")
-    if int(d["dataset_limit_queries"]) != int(b["completed_queries"]):
-        raise ValueError(f"sample {index}: D target != B dataset")
-    if int(c["completed_queries"]) > int(a["completed_queries"]):
-        raise ValueError(f"sample {index}: C exceeded X")
-    if int(d["completed_queries"]) > int(b["completed_queries"]):
-        raise ValueError(f"sample {index}: D exceeded Y")
-
-    for consumer_id, producer_id, dataset in (("C", "A", "X"), ("D", "B", "Y")):
-        consumer, producer = benches[consumer_id], benches[producer_id]
-        v = verifications[dataset]
-        if not bool(v.get("exact")):
-            raise ValueError(f"sample {index}: {dataset} prefix did not verify")
-        if str(v.get("producer")) != producer_id or str(v.get("consumer")) != consumer_id:
-            raise ValueError(f"sample {index}: {dataset} producer/consumer mismatch")
-        if int(v["verified_prefix_queries"]) != int(consumer["completed_queries"]):
-            raise ValueError(f"sample {index}: {dataset} prefix count mismatch")
-        for field in ("represented_transitions", "descriptor_bits", "endpoint_digest", "descriptor_digest"):
-            if int(v[field]) != int(consumer[field]):
-                raise ValueError(f"sample {index}: {dataset} prefix mismatch at {field}")
-        if bool(consumer["dataset_complete"]):
-            for field in ("completed_queries", "represented_transitions", "descriptor_bits", "endpoint_digest", "descriptor_digest"):
-                if int(consumer[field]) != int(producer[field]):
-                    raise ValueError(f"sample {index}: completed {dataset} != producer at {field}")
-
-    for ident in ("A", "D"):
-        rec = benches[ident]
-        if int(rec.get("lane5_admissions", -1)) != int(rec["completed_queries"]):
-            raise ValueError(f"sample {index}: {ident} missing Lane 5 admissions")
-        if int(rec.get("materialized_intermediate_states", -1)) != 0:
-            raise ValueError(f"sample {index}: {ident} materialized intermediates")
-
-    rates = [_rate(int(benches[k]["represented_transitions"])) for k in ("A", "B", "C", "D")]
-    epsilon_c = _boundary_residual(c, a)
-    epsilon_d = _boundary_residual(d, b)
-    balance = epsilon_c + epsilon_d
-    state_bits = Decimal(str(math.log2(int(meta["modulus"]))))
-
-    return {
-        "index": index,
-        "rates": rates,
-        "tensor": _tensor(rates),
-        "delta_xyzw": rates[0] * rates[1] - rates[2] * rates[3],
-        "rho_X": rates[0] / rates[2] if rates[2] != 0 else None,
-        "rho_Y": rates[3] / rates[1] if rates[1] != 0 else None,
-        "epsilon_C": epsilon_c,
-        "epsilon_D": epsilon_d,
-        "balance": balance,
-        "endpoint_bits_rates": [
-            state_bits * _rate(int(benches[k]["completed_queries"])) for k in ("A", "B", "C", "D")
-        ],
-        "dataset_complete_C": bool(c["dataset_complete"]),
-        "dataset_complete_D": bool(d["dataset_complete"]),
-        "raw": {k: benches[k] for k in ("A", "B", "C", "D")},
-    }
+def _state_tuple(rec: dict[str, Any]) -> tuple[int, int, int, int, int]:
+    return (
+        int(rec["completed_queries"]),
+        int(rec["represented_transitions"]),
+        int(rec["descriptor_bits"]),
+        int(rec["endpoint_digest"]),
+        int(rec["descriptor_digest"]),
+    )
 
 
-def _wave_fit(vectors: list[list[Decimal]]) -> dict[str, Any]:
-    if len(vectors) < 3:
-        return {
-            "available": False,
-            "reason": "at least three samples are required",
-        }
-    dt = Decimal(WINDOW_NS) / Decimal(1_000_000_000)
-    dt2 = dt * dt
-    d2s: list[list[Decimal]] = []
-    laps: list[list[Decimal]] = []
-    for i in range(1, len(vectors) - 1):
-        d2 = _scale(Decimal(1) / dt2, _add(_sub(vectors[i + 1], _scale(Decimal(2), vectors[i])), vectors[i - 1]))
-        lap = _laplacian(vectors[i])
-        d2s.append(d2)
-        laps.append(lap)
-    denom = sum((_dot(l, l) for l in laps), Decimal(0))
-    lam = Decimal(0) if denom == 0 else -sum((_dot(d2, l) for d2, l in zip(d2s, laps)), Decimal(0)) / denom
-    residuals = [_add(d2, _scale(lam, lap)) for d2, lap in zip(d2s, laps)]
-    residual_norm_sq = sum((_dot(r, r) for r in residuals), Decimal(0))
-    d2_norm_sq = sum((_dot(d2, d2) for d2 in d2s), Decimal(0))
-    normalized_rms = Decimal(0)
-    if d2_norm_sq > 0:
-        normalized_rms = (residual_norm_sq / d2_norm_sq).sqrt()
-    mean_residual = [
-        sum((r[j] for r in residuals), Decimal(0)) / Decimal(len(residuals)) for j in range(4)
-    ]
-    return {
-        "available": True,
-        "equation": "D2_t Psi_n + lambda * L_reciprocal * Psi_n = eta_n",
-        "reciprocal_graph_edges": ["x<->z", "y<->w"],
-        "lambda_s_inverse_2": str(lam),
-        "lambda_positive_restoring": lam > 0,
-        "normalized_residual_rms": str(normalized_rms),
-        "mean_residual_vector": [str(x) for x in mean_residual],
-        "interior_sample_count": len(residuals),
-    }
+def _target_tuple(target: dict[str, Any]) -> tuple[int, int, int, int, int]:
+    return (
+        int(target["completed_queries"]),
+        int(target["represented_transitions"]),
+        int(target["descriptor_bits"]),
+        int(target["endpoint_digest"]),
+        int(target["descriptor_digest"]),
+    )
 
 
-def analyze(samples: list[dict[str, Any]]) -> dict[str, Any]:
-    validated = [_validate_sample(sample, i) for i, sample in enumerate(samples)]
-    vectors = [s["rates"] for s in validated]
-    balances = [s["balance"] for s in validated]
-    eps_c = [s["epsilon_C"] for s in validated]
-    eps_d = [s["epsilon_D"] for s in validated]
-    mean_balance = _mean(balances)
-    sd_balance = _sample_sd(balances)
-    se_balance = sd_balance / Decimal(len(balances)).sqrt() if len(balances) > 1 else Decimal(0)
-    ci_low = mean_balance - Z95 * se_balance
-    ci_high = mean_balance + Z95 * se_balance
-    cancellation_supported = ci_low <= 0 <= ci_high
+def _signed_residual(rec: dict[str, Any], target: dict[str, Any], leg_budget_ns: int) -> Decimal:
+    if bool(rec["dataset_complete"]):
+        return (Decimal(int(rec["completion_elapsed_ns"])) - Decimal(leg_budget_ns)) / Decimal(leg_budget_ns)
+    target_work = Decimal(int(target["represented_transitions"]))
+    done = Decimal(int(rec["represented_transitions"]))
+    if target_work <= 0 or done < 0 or done > target_work:
+        raise ValueError("invalid incomplete-work relation")
+    return (target_work - done) / target_work
 
-    means = [_mean([v[j] for v in vectors]) for j in range(4)]
-    sds = [_sample_sd([v[j] for v in vectors]) for j in range(4)]
-    wave = _wave_fit(vectors)
 
-    sample_out: list[dict[str, Any]] = []
-    for s in validated:
-        sample_out.append({
-            "index": s["index"],
-            "xyzw_transition_rates_per_second": [str(v) for v in s["rates"]],
-            "xyzw_endpoint_bits_equivalent_per_second": [str(v) for v in s["endpoint_bits_rates"]],
-            "delta_xyzw": str(s["delta_xyzw"]),
-            "rho_X": None if s["rho_X"] is None else str(s["rho_X"]),
-            "rho_Y": None if s["rho_Y"] is None else str(s["rho_Y"]),
-            "epsilon_C": str(s["epsilon_C"]),
-            "epsilon_D": str(s["epsilon_D"]),
-            "reciprocal_boundary_balance": str(s["balance"]),
-            "C_dataset_complete": s["dataset_complete_C"],
-            "D_dataset_complete": s["dataset_complete_D"],
-            "tensor": s["tensor"],
+def analyze(meta: dict[str, Any], target: dict[str, Any], records: list[dict[str, Any]], batch_result: dict[str, Any]) -> dict[str, Any]:
+    if meta.get("schema") != SCHEMA:
+        raise ValueError("unexpected schema")
+    if int(meta["global_budget_ns"]) != GLOBAL_BUDGET_NS:
+        raise ValueError("global pass is not exactly 120ms")
+    if int(meta.get("active_threads_per_benchmark", 0)) != 1 or not bool(meta.get("benchmarks_sequential")):
+        raise ValueError("benchmark must be sequential and single-threaded")
+    sample_count = int(meta["sample_count"])
+    if sample_count <= 0:
+        raise ValueError("sample_count must be positive")
+    if len(records) != 4 * sample_count:
+        raise ValueError("expected exactly four legs per sample")
+    if int(meta["nominal_measured_budget_ns"]) > GLOBAL_BUDGET_NS:
+        raise ValueError("nominal budget exceeds global 120ms")
+    if int(batch_result["batch_elapsed_ns"]) > GLOBAL_BUDGET_NS + 10_000_000:
+        raise ValueError("measured batch exceeded timing tolerance")
+
+    leg_budget_ns = int(meta["leg_budget_ns"])
+    threshold_ns = int(meta["reasonable_completion_threshold_ns"])
+    subthreshold = bool(meta["subthreshold"])
+    if subthreshold != (leg_budget_ns < threshold_ns):
+        raise ValueError("subthreshold classification mismatch")
+
+    target_state = _target_tuple(target)
+    grouped: dict[int, dict[str, dict[str, Any]]] = {}
+    for rec in records:
+        sample = int(rec["sample"])
+        ident = str(rec["id"])
+        grouped.setdefault(sample, {})[ident] = rec
+    if set(grouped) != set(range(sample_count)):
+        raise ValueError("sample indices are not contiguous")
+
+    vectors: list[list[Decimal]] = []
+    balances: list[Decimal] = []
+    sample_evidence: list[dict[str, Any]] = []
+    supremacy_samples: list[int] = []
+    for i in range(sample_count):
+        legs = grouped[i]
+        if set(legs) != {"A", "B", "C", "D"}:
+            raise ValueError(f"sample {i} missing A/B/C/D")
+        expected_arch = {"A": "hhs", "B": "conventional_matrix", "C": "conventional_matrix", "D": "hhs"}
+        expected_axis = {"A": "x", "B": "y", "C": "z", "D": "w"}
+        for ident, rec in legs.items():
+            if rec.get("architecture") != expected_arch[ident] or rec.get("axis") != expected_axis[ident] or rec.get("dataset") != "W":
+                raise ValueError(f"sample {i} {ident}: route identity mismatch")
+            if int(rec["dataset_limit_queries"]) != int(target["completed_queries"]):
+                raise ValueError(f"sample {i} {ident}: target size mismatch")
+            if ident in ("A", "D"):
+                if int(rec.get("lane5_admissions", -1)) != int(rec["completed_queries"]):
+                    raise ValueError(f"sample {i} {ident}: Lane 5 admission mismatch")
+                if int(rec.get("materialized_intermediate_states", -1)) != 0:
+                    raise ValueError(f"sample {i} {ident}: intermediate materialization")
+
+        completed = {k: bool(v["dataset_complete"]) for k, v in legs.items()}
+        if not subthreshold and not all(completed.values()):
+            raise ValueError(f"sample {i}: incomplete work above reasonable threshold")
+        if all(completed.values()):
+            for ident, rec in legs.items():
+                if _state_tuple(rec) != target_state:
+                    raise ValueError(f"sample {i} {ident}: completed state != State(W)")
+        if completed["A"] and completed["D"] and (not completed["B"] or not completed["C"]):
+            supremacy_samples.append(i)
+
+        eps = [_signed_residual(legs[k], target, leg_budget_ns) for k in ("A", "B", "C", "D")]
+        vectors.append(eps)
+        balance = (eps[0] + eps[3]) / Decimal(2) + (eps[1] + eps[2]) / Decimal(2)
+        balances.append(balance)
+        sample_evidence.append({
+            "sample": i,
+            "query_scale": int(target["completed_queries"]),
+            "xyzw_signed_residuals": [str(x) for x in eps],
+            "architecture_balance": str(balance),
+            "completion": completed,
+            "completion_elapsed_ns": {k: int(v["completion_elapsed_ns"]) for k, v in legs.items()},
+            "represented_transitions": {k: int(v["represented_transitions"]) for k, v in legs.items()},
         })
+
+    mean_balance = _mean(balances)
+    sd = _sample_sd(balances)
+    se = Decimal(0) if sample_count < 2 else sd / Decimal(sample_count).sqrt()
+    ci_low = mean_balance - Z95 * se
+    ci_high = mean_balance + Z95 * se
 
     return {
         "schema": EVIDENCE_SCHEMA,
         "result": "PASS",
-        "sample_count": len(validated),
-        "window_ns_each_leg": WINDOW_NS,
-        "window_seconds_each_leg": "0.12",
-        "measurement_definition": {
-            "x": "HHS represented-transition rate on producer Dataset X",
-            "y": "optimized conventional represented-transition rate on producer Dataset Y",
-            "z": "optimized conventional represented-transition progress rate on frozen Dataset X",
-            "w": "HHS represented-transition progress rate on frozen Dataset Y",
-            "signed_boundary_residual": {
-                "completed_early": "(completion_elapsed_ns - Delta_t) / Delta_t; negative",
-                "incomplete": "(target_represented_work - completed_represented_work) / target_represented_work; positive",
-                "boundary": "0",
-            },
-            "cancellation_hypothesis": "E[epsilon_C + epsilon_D] = 0",
+        "global_budget_ns": GLOBAL_BUDGET_NS,
+        "batch_elapsed_ns": int(batch_result["batch_elapsed_ns"]),
+        "sample_count": sample_count,
+        "leg_budget_ns": leg_budget_ns,
+        "reasonable_completion_threshold_ns": threshold_ns,
+        "subthreshold": subthreshold,
+        "target_state": {
+            "queries": target_state[0],
+            "represented_transitions": target_state[1],
+            "descriptor_bits": target_state[2],
+            "endpoint_digest": target_state[3],
+            "descriptor_digest": target_state[4],
         },
+        "probabilistic_balance": {
+            "mean": str(mean_balance),
+            "sample_sd": str(sd),
+            "confidence_95_low": str(ci_low),
+            "confidence_95_high": str(ci_high),
+            "zero_inside_95_percent_interval": ci_low <= 0 <= ci_high,
+        },
+        "discrete_reciprocal_wave_fit": _wave_fit(vectors),
+        "bounded_supremacy_observation_samples": supremacy_samples,
         "runner": {
             "cpu_model": _cpu_model(),
             "logical_cpu_count": os.cpu_count(),
@@ -356,49 +262,26 @@ def analyze(samples: list[dict[str, Any]]) -> dict[str, Any]:
             "image_version_env": os.getenv("ImageVersion"),
             "cc_version": _cc_version(),
         },
-        "xyzw_rate_statistics": {
-            "mean": [str(x) for x in means],
-            "sample_sd": [str(x) for x in sds],
-            "reference_unit": "1 represented transition / second",
-        },
-        "probabilistic_cancellation": {
-            "mean_epsilon_C": str(_mean(eps_c)),
-            "mean_epsilon_D": str(_mean(eps_d)),
-            "mean_balance": str(mean_balance),
-            "sample_sd_balance": str(sd_balance),
-            "standard_error": str(se_balance),
-            "confidence_95_low": str(ci_low),
-            "confidence_95_high": str(ci_high),
-            "zero_inside_95_percent_interval": cancellation_supported,
-            "status": "SUPPORTED_AT_95_PERCENT" if cancellation_supported else "NOT_SUPPORTED_AT_95_PERCENT",
-            "note": "This statistic tests the cancellation hypothesis; benchmark integrity PASS does not depend on the hypothesis being true.",
-        },
-        "discrete_reciprocal_wave_fit": wave,
-        "samples": sample_out,
+        "samples": sample_evidence,
         "claim_scope": {
+            "same_exact_state_required_when_above_threshold": True,
             "physical_negative_time_claim": False,
-            "negative_time_semantics": "negative signed slack relative to the fixed 120ms normalization boundary",
-            "physical_wavefunction_claim": False,
-            "wave_equation_semantics": "discrete benchmark-space wave equation on the reciprocal x<->z, y<->w graph",
-            "universal_computing_supremacy_claim": False,
+            "universal_classical_supremacy_claim": False,
         },
     }
 
 
 def main() -> int:
     p = argparse.ArgumentParser()
-    p.add_argument("stream_ndjson", type=Path)
+    p.add_argument("batch_ndjson", type=Path)
     p.add_argument("output", type=Path)
-    p.add_argument("--min-samples", type=int, default=16)
     args = p.parse_args()
-    samples = _parse_samples(args.stream_ndjson)
-    if len(samples) < args.min_samples:
-        raise SystemExit(f"need at least {args.min_samples} samples, found {len(samples)}")
-    evidence = analyze(samples)
+    meta, target, records, batch_result = _parse(args.batch_ndjson)
+    evidence = analyze(meta, target, records, batch_result)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(evidence, indent=2, sort_keys=True))
-    print("HHS_120MS_RECIPROCAL_WAVE_XYZW_V3_SERIES_PASS")
+    print("HHS_120MS_GLOBAL_RECIPROCAL_WAVE_XYZW_V3_PASS")
     return 0
 
 
