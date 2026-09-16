@@ -1,0 +1,79 @@
+name: Pass 219 120s Infinite Stream Throughput v1
+
+on:
+  pull_request:
+    paths:
+      - "contracts/pass219/PASS_219_120S_INFINITE_STREAM_THROUGHPUT_V1.md"
+      - "benchmarks/pass219/hhs_lane5_120s_infinite_stream_throughput_v1.c"
+      - "tools/hhs_120s_infinite_stream_throughput_analyze_v1.py"
+      - "tests/pass219/test_pass219_120s_infinite_stream_throughput_v1.py"
+      - ".github/workflows/pass219-120s-infinite-stream-throughput-v1.yml"
+      - "hhs_runtime/**"
+  push:
+    branches: [main]
+    paths:
+      - "contracts/pass219/PASS_219_120S_INFINITE_STREAM_THROUGHPUT_V1.md"
+      - "benchmarks/pass219/hhs_lane5_120s_infinite_stream_throughput_v1.c"
+      - "tools/hhs_120s_infinite_stream_throughput_analyze_v1.py"
+      - "tests/pass219/test_pass219_120s_infinite_stream_throughput_v1.py"
+      - ".github/workflows/pass219-120s-infinite-stream-throughput-v1.yml"
+      - "hhs_runtime/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-120s-infinite-stream-throughput:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      PYTHONHASHSEED: "0"
+      PYTHONDONTWRITEBYTECODE: "1"
+      HHS_STREAM_WINDOW_NS: "120000000000"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+      - name: Validate stream contract and analyzer
+        run: python -m pytest -q tests/pass219/test_pass219_120s_infinite_stream_throughput_v1.py
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Compile native 120-second stream benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_120s_infinite_stream_throughput_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-120s-infinite-stream-throughput-v1
+      - name: Run equal 120-second sequential epochs
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/120s-infinite-stream-throughput-v1
+          /tmp/hhs-120s-infinite-stream-throughput-v1 \
+            | tee artifacts/120s-infinite-stream-throughput-v1/stream.ndjson
+          grep -F '"result":"PASS"' artifacts/120s-infinite-stream-throughput-v1/stream.ndjson
+      - name: Analyze real-time information throughput
+        run: |
+          python tools/hhs_120s_infinite_stream_throughput_analyze_v1.py \
+            artifacts/120s-infinite-stream-throughput-v1/stream.ndjson \
+            artifacts/120s-infinite-stream-throughput-v1/evidence.json \
+            | tee artifacts/120s-infinite-stream-throughput-v1/analysis.txt
+          grep -F 'HHS_120S_INFINITE_STREAM_THROUGHPUT_V1_PASS' artifacts/120s-infinite-stream-throughput-v1/analysis.txt
+      - name: Capture workflow identity
+        run: |
+          printf '%s\n' "commit=${GITHUB_SHA}" > artifacts/120s-infinite-stream-throughput-v1/workflow.txt
+          printf '%s\n' "run_id=${GITHUB_RUN_ID}" >> artifacts/120s-infinite-stream-throughput-v1/workflow.txt
+          printf '%s\n' "runner=${RUNNER_OS}/${RUNNER_ARCH}" >> artifacts/120s-infinite-stream-throughput-v1/workflow.txt
+          printf '%s\n' "image=${ImageOS}/${ImageVersion}" >> artifacts/120s-infinite-stream-throughput-v1/workflow.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hhs-120s-infinite-stream-throughput-v1
+          path: artifacts/120s-infinite-stream-throughput-v1/
+          if-no-files-found: error

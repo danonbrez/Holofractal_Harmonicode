@@ -1,0 +1,100 @@
+name: Pass 219 120ms Reciprocal Wave XYZW v3
+
+on:
+  pull_request:
+    paths:
+      - "contracts/pass219/PASS_219_120MS_RECIPROCAL_WAVE_XYZW_V3.md"
+      - "benchmarks/pass219/hhs_lane5_120ms_reciprocal_wave_xyzw_v3.c"
+      - "benchmarks/pass219/hhs_lane5_120ms_reciprocal_wave_xyzw_v3_strict.c"
+      - "tools/hhs_120ms_reciprocal_wave_series_analyze_v3.py"
+      - "tools/hhs_120ms_reciprocal_wave_series_analyze_v3_strict.py"
+      - "tests/pass219/test_pass219_120ms_reciprocal_wave_xyzw_v3.py"
+      - ".github/workflows/pass219-120ms-reciprocal-wave-xyzw-v3.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "contracts/pass219/PASS_219_120MS_RECIPROCAL_WAVE_XYZW_V3.md"
+      - "benchmarks/pass219/hhs_lane5_120ms_reciprocal_wave_xyzw_v3.c"
+      - "benchmarks/pass219/hhs_lane5_120ms_reciprocal_wave_xyzw_v3_strict.c"
+      - "tools/hhs_120ms_reciprocal_wave_series_analyze_v3.py"
+      - "tools/hhs_120ms_reciprocal_wave_series_analyze_v3_strict.py"
+      - "tests/pass219/test_pass219_120ms_reciprocal_wave_xyzw_v3.py"
+      - ".github/workflows/pass219-120ms-reciprocal-wave-xyzw-v3.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+  PYTHONDONTWRITEBYTECODE: "1"
+  HHS_RECIPROCAL_WAVE_DATASET_QUERIES: "2"
+
+jobs:
+  validate-120ms-reciprocal-wave-xyzw:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Validate strict same-state no-clamp contract
+        run: python -m pytest -q tests/pass219/test_pass219_120ms_reciprocal_wave_xyzw_v3.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile strict adaptive reciprocal wave benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_120ms_reciprocal_wave_xyzw_v3_strict.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-120ms-reciprocal-wave-xyzw-v3-strict
+
+      - name: Run one strict adaptive 120ms global reciprocal batch
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/120ms-reciprocal-wave-xyzw-v3
+          /tmp/hhs-120ms-reciprocal-wave-xyzw-v3-strict \
+            | tee artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          grep -F '"type":"batch_result"' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          grep -F '"invalid_trial_seen":false' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          grep -F '"result":"PASS"' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          if grep -F '"type":"invalid_trial"' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson; then
+            echo "invalid reciprocal trial entered output" >&2
+            exit 1
+          fi
+
+      - name: Analyze strict gradients and exact-state convergence
+        run: |
+          python tools/hhs_120ms_reciprocal_wave_series_analyze_v3_strict.py \
+            artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson \
+            artifacts/120ms-reciprocal-wave-xyzw-v3/evidence.json \
+            | tee artifacts/120ms-reciprocal-wave-xyzw-v3/analysis.txt
+          grep -F 'HHS_120MS_GLOBAL_RECIPROCAL_WAVE_XYZW_V3_STRICT_PASS' \
+            artifacts/120ms-reciprocal-wave-xyzw-v3/analysis.txt
+
+      - name: Capture workflow identity
+        run: |
+          printf '%s\n' "commit=${GITHUB_SHA}" > artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "run_id=${GITHUB_RUN_ID}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "runner=${RUNNER_OS}/${RUNNER_ARCH}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "image=${ImageOS}/${ImageVersion}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "global_budget_ns=120000000" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "strict_positive_residual=true" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "clamping_permitted=false" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hhs-120ms-reciprocal-wave-xyzw-v3-strict
+          path: artifacts/120ms-reciprocal-wave-xyzw-v3/
+          if-no-files-found: error

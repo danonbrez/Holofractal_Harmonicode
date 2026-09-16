@@ -1,0 +1,41 @@
+name: HHS Lane 5 Whitepapers v1
+
+on:
+  pull_request:
+    paths:
+      - "docs/whitepapers/HHS_*LANE5*V1.md"
+      - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
+      - "docs/README.md"
+      - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
+      - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
+      - "formal/lean/HHS_GFE_Field_Quotient.lean"
+      - "formal/coq/HHS_GFE_Field_Quotient.v"
+      - ".github/workflows/hhs-lane5-whitepapers-v1.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/whitepapers/HHS_*LANE5*V1.md"
+      - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
+      - "docs/README.md"
+      - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
+      - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
+      - "formal/lean/HHS_GFE_Field_Quotient.lean"
+      - "formal/coq/HHS_GFE_Field_Quotient.v"
+      - ".github/workflows/hhs-lane5-whitepapers-v1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-whitepapers:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate exact equations, evidence constants, and claim boundaries
+        run: python -m pytest -q tests/docs/test_hhs_lane5_whitepapers_v1.py

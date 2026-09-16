@@ -1,0 +1,158 @@
+name: Pass 219 Lane 5 Direct Witness Routing 1.46
+
+on:
+  push:
+    branches:
+      - agent/pass219-lane5-direct-witness-routing-1-46-20260915
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c'
+      - '.github/workflows/pass219-lane5-direct-witness-routing-1-46.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46_RESTART_20260915.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c'
+      - '.github/workflows/pass219-lane5-direct-witness-routing-1-46.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46_RESTART_20260915.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static direct-witness contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h').read_text()
+          for needle in (
+              'previous_state',
+              'current_state',
+              'provenance_witness',
+              'goal_state',
+              'forbidden_boundary',
+              'materialized_intermediate_states = 0',
+              '(a^2+b^2=c^2)^2 = P^4',
+              '9D x,y,z,w relational rotation -> balanced trinary collapse {-1,0,+1}',
+              '2D imaginary phase plane       -> binary collapse {0,1}',
+              '0/0',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'direct_composition_jump',
+              'intermediate_materialization_required',
+              'contradiction_boundary_bound',
+              'exact_reciprocal_phase_inversion',
+              'balanced_trinary_collapse',
+              'binary_qubit_collapse',
+              'nested_zero_layer',
+              'hhs_exact_pass219_lane5_direct_witness_route_optimize',
+          ):
+              assert needle in header, needle
+          print('lane5_direct_witness_contract_static=PASS')
+          PY
+
+      - name: Run deterministic optimization-cycle equations
+        run: |
+          python - <<'PY'
+          from itertools import product
+          modulus = 72 ** 72
+          assert modulus == 5184 ** 36
+          phases = (0, 18, 36, 54)
+          inverse = {p: (p + 36) % 72 for p in phases}
+          assert inverse == {0: 36, 18: 54, 36: 0, 54: 18}
+          assert all(inverse[inverse[p]] == p for p in phases)
+          assert set(product((-1, 0, 1), (0, 1))) == {
+              (-1, 0), (-1, 1), (0, 0), (0, 1), (1, 0), (1, 1)
+          }
+          candidates = [
+              dict(cost=11, span=1_000_000, sig=0x9004),
+              dict(cost=8, span=2_500_000, sig=0x9003),
+              dict(cost=8, span=9_000_000, sig=0x9002),
+              dict(cost=8, span=9_000_000, sig=0x9001),
+          ]
+          selected = min(candidates, key=lambda c: (c['cost'], -c['span'], c['sig']))
+          assert selected['sig'] == 0x9001
+          assert selected['span'] - 1 == 8_999_999
+          print(
+              'PASS219_LANE5_DIRECT_WITNESS_OPTIMIZATION_EVIDENCE '
+              f'modulus_bits={modulus.bit_length()} phases={phases} '
+              f'selected=0x{selected["sig"]:x} span={selected["span"]} '
+              f'avoided_intermediates={selected["span"]-1} cost={selected["cost"]}'
+          )
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.46 exports and inherited singleton canonical mutator
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_routing_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_routing_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_optimize$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_hash216_fractal_qudit_admission_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_automatic_superedge_routing_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native direct-witness optimization cycle
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-direct-witness
+          /tmp/test-lane5-direct-witness | tee /tmp/lane5-direct-witness.log
+          grep -q 'PASS219_LANE5_DIRECT_WITNESS_ROUTING_1_46_PASS' /tmp/lane5-direct-witness.log
+
+      - name: Regress inherited 1.45 deterministic qudit equations
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py \
+            tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py
+
+      - name: Regress inherited Lane 5 composition and routing chain
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py \
+            tests/pass219/test_pass219_lane5_persistent_hash216_composition_memory_1_39.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
+            tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
+            tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
+            tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py \
+            tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py

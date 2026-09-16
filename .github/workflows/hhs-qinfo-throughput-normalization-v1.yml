@@ -1,0 +1,92 @@
+name: HHS Quantum Information Throughput Normalization v1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md'
+      - 'tools/hhs_qinfo_throughput_normalize_v1.py'
+      - 'tests/docs/test_hhs_qinfo_throughput_normalization_v1.py'
+      - '.github/workflows/hhs-qinfo-throughput-normalization-v1.yml'
+      - 'tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c'
+      - 'hhs_runtime/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qinfo-normalization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped native tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Run exact normalization unit tests
+        run: python -m pytest -q tests/docs/test_hhs_qinfo_throughput_normalization_v1.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile Lane 5 1.48 native benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-unbounded-1-48
+
+      - name: Run million-candidate runner-normalization benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/qinfo-v1
+          /tmp/test-pass219-lane5-unbounded-1-48 | tee artifacts/qinfo-v1/native-scaling.txt
+          head -n 1 artifacts/qinfo-v1/native-scaling.txt | python -m json.tool > artifacts/qinfo-v1/native-scaling.json
+          grep -F 'PASS219_LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48_PASS' artifacts/qinfo-v1/native-scaling.txt
+
+      - name: Normalize quantum-information complexity density on this runner
+        run: |
+          python tools/hhs_qinfo_throughput_normalize_v1.py \
+            artifacts/qinfo-v1/native-scaling.json \
+            artifacts/qinfo-v1/qinfo-throughput-normalization.json \
+            | tee artifacts/qinfo-v1/qinfo-normalizer-output.txt
+          grep -F 'HHS_QINFO_THROUGHPUT_NORMALIZATION_V1_PASS' artifacts/qinfo-v1/qinfo-normalizer-output.txt
+
+      - name: Validate hardware and authority record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('artifacts/qinfo-v1/qinfo-throughput-normalization.json').read_text())
+          assert value['result'] == 'PASS'
+          assert value['logical_state_space']['hilbert_space_equivalent_dimension'] == str(72**72)
+          assert value['logical_state_space']['qudit_dimension'] == 72
+          assert value['logical_state_space']['qudit_count'] == 72
+          assert value['logical_state_space']['binary_embedding_bits'] == 445
+          assert value['hardware_normalization']['provider_declared_vcpu'] == 4
+          assert value['hardware_normalization']['provider_declared_ram_gb'] == 16
+          assert value['hardware_normalization']['provider_declared_storage_gb'] == 14
+          assert value['hardware_normalization']['observed_logical_cpu_count']
+          assert value['hardware_normalization']['observed_cpu_model']
+          assert value['authority']['observational_only'] is True
+          assert value['authority']['physical_quantum_hardware_claim'] is False
+          assert value['authority']['canonical_vm81_mutation_authority'] is False
+          assert value['authority']['canonical_hash216_authority'] is False
+          PY
+
+      - name: Upload runner-normalized evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-qinfo-throughput-normalization-v1
+          path: artifacts/qinfo-v1/
+          if-no-files-found: error

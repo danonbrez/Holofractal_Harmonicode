@@ -1,0 +1,100 @@
+name: Pass 219 120s Reciprocal XYZW v2
+
+on:
+  pull_request:
+    paths:
+      - "contracts/pass219/PASS_219_120S_RECIPROCAL_XYZW_V2.md"
+      - "benchmarks/pass219/hhs_lane5_120s_reciprocal_xyzw_v2.c"
+      - "tools/hhs_120s_reciprocal_xyzw_analyze_v2.py"
+      - "tests/pass219/test_pass219_120s_reciprocal_xyzw_v2.py"
+      - ".github/workflows/pass219-120s-reciprocal-xyzw-v2.yml"
+      - "hhs_runtime/**"
+  push:
+    branches: [main]
+    paths:
+      - "contracts/pass219/PASS_219_120S_RECIPROCAL_XYZW_V2.md"
+      - "benchmarks/pass219/hhs_lane5_120s_reciprocal_xyzw_v2.c"
+      - "tools/hhs_120s_reciprocal_xyzw_analyze_v2.py"
+      - "tests/pass219/test_pass219_120s_reciprocal_xyzw_v2.py"
+      - ".github/workflows/pass219-120s-reciprocal-xyzw-v2.yml"
+      - "hhs_runtime/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-120s-reciprocal-xyzw:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: "0"
+      PYTHONDONTWRITEBYTECODE: "1"
+      HHS_RECIPROCAL_WINDOW_NS: "120000000000"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Validate reciprocal contract and analyzer
+        run: python -m pytest -q tests/pass219/test_pass219_120s_reciprocal_xyzw_v2.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile native reciprocal benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_120s_reciprocal_xyzw_v2.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-120s-reciprocal-xyzw-v2
+
+      - name: Smoke reciprocal matrix at 50 ms capacity
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_RECIPROCAL_WINDOW_NS: "50000000"
+        run: |
+          /tmp/hhs-120s-reciprocal-xyzw-v2 > /tmp/reciprocal-smoke.ndjson
+          grep -F '"id":"A"' /tmp/reciprocal-smoke.ndjson
+          grep -F '"id":"B"' /tmp/reciprocal-smoke.ndjson
+          grep -F '"id":"C"' /tmp/reciprocal-smoke.ndjson
+          grep -F '"id":"D"' /tmp/reciprocal-smoke.ndjson
+          grep -F '"result":"PASS"' /tmp/reciprocal-smoke.ndjson
+
+      - name: Run A/B 120s capacity and C/D reciprocal completion
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_RECIPROCAL_WINDOW_NS: "120000000000"
+        run: |
+          mkdir -p artifacts/120s-reciprocal-xyzw-v2
+          /tmp/hhs-120s-reciprocal-xyzw-v2 \
+            | tee artifacts/120s-reciprocal-xyzw-v2/xyzw.ndjson
+          grep -F '"result":"PASS"' artifacts/120s-reciprocal-xyzw-v2/xyzw.ndjson
+
+      - name: Analyze reciprocal x,y,z,w evidence
+        run: |
+          python tools/hhs_120s_reciprocal_xyzw_analyze_v2.py \
+            artifacts/120s-reciprocal-xyzw-v2/xyzw.ndjson \
+            artifacts/120s-reciprocal-xyzw-v2/evidence.json \
+            | tee artifacts/120s-reciprocal-xyzw-v2/analysis.txt
+          grep -F 'HHS_120S_RECIPROCAL_XYZW_V2_PASS' artifacts/120s-reciprocal-xyzw-v2/analysis.txt
+
+      - name: Capture workflow identity
+        run: |
+          printf '%s\n' "commit=${GITHUB_SHA}" > artifacts/120s-reciprocal-xyzw-v2/workflow.txt
+          printf '%s\n' "run_id=${GITHUB_RUN_ID}" >> artifacts/120s-reciprocal-xyzw-v2/workflow.txt
+          printf '%s\n' "runner=${RUNNER_OS}/${RUNNER_ARCH}" >> artifacts/120s-reciprocal-xyzw-v2/workflow.txt
+          printf '%s\n' "image=${ImageOS}/${ImageVersion}" >> artifacts/120s-reciprocal-xyzw-v2/workflow.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hhs-120s-reciprocal-xyzw-v2
+          path: artifacts/120s-reciprocal-xyzw-v2/
+          if-no-files-found: error

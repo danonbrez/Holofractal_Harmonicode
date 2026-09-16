@@ -1,0 +1,155 @@
+name: Pass 219 Lane 5 Executable Capability Self-Model 1.43
+
+on:
+  push:
+    branches:
+      - agent/pass219-lane5-capability-self-model-1-43-20260915
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_executable_capability_self_model_1_43.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_executable_capability_self_model_1_43.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_capability_self_model_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_executable_capability_self_model_1_43.py'
+      - 'tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c'
+      - 'tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py'
+      - '.github/workflows/pass219-lane5-executable-capability-self-model-1-43.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43_RESTART_20260915.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_executable_capability_self_model_1_43.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_executable_capability_self_model_1_43.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_capability_self_model_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_executable_capability_self_model_1_43.py'
+      - 'tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c'
+      - 'tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py'
+      - '.github/workflows/pass219-lane5-executable-capability-self-model-1-43.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43_RESTART_20260915.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static capability self-model contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_executable_capability_self_model_1_43.h').read_text()
+          runtime = Path('hhs_backend/runtime/hhs_pass219_lane5_executable_capability_self_model_1_43.py').read_text()
+          for needle in (
+              'Pass147 public registry coverage = COMPLETE',
+              'cumulative exact ABI export coverage = COMPLETE',
+              'repository-total historical capability coverage = NOT YET CLAIMED',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+          ):
+              assert needle in contract, needle
+          for needle in (
+              'global_capability_discovery',
+              'canonical_boundary_singleton',
+              'canonical_vm81_mutation_authority',
+              'requires_signed_environmental_vm81_admission',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'PublicSurfaceRegistry',
+              '_reachable_headers',
+              '_native_exports',
+              'CANONICAL_BOUNDARY_EXPORT',
+              'repository_total_historical_capability_complete',
+          ):
+              assert needle in runtime, needle
+          print('lane5_capability_self_model_static=PASS')
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.43 exported symbols and inherited authority seam
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_capability_self_model_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_capability_self_model_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_capability_self_model_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_automatic_superedge_routing_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native capability self-model membrane test
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-capability-self-model
+          /tmp/test-lane5-capability-self-model
+
+      - name: Run repository-discovered capability self-model integration
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py
+
+      - name: Emit deterministic capability self-model evidence
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python - <<'PY'
+          from hhs_backend.runtime.hhs_pass219_lane5_executable_capability_self_model_1_43 import build_capability_self_model
+          model = build_capability_self_model()
+          counts = model['counts']
+          receipt = model['native_receipt']
+          print(
+              'PASS219_LANE5_CAPABILITY_SELF_MODEL_EVIDENCE '
+              f"public={counts['public_registry']} "
+              f"native={counts['native_exact_abi']} "
+              f"total={counts['total']} "
+              f"restricted={counts['restricted']} "
+              f"boundaries={counts['canonical_boundaries']} "
+              f"public_root={model['public_catalog_root_hash72']} "
+              f"native_root={model['native_export_root_sha256']} "
+              f"dependency_root={model['dependency_root_sha256']} "
+              f"model_root={model['model_root_sha256']} "
+              f"descriptor={receipt['descriptor_signature64']} "
+              f"receipt={receipt['receipt_signature64']}"
+          )
+          PY
+
+      - name: Regress inherited automatic routing and Lane 5 nucleus
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus

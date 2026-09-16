@@ -1,0 +1,41 @@
+name: Pass 219 Translation-Invariant Multimodal Ingress v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_translation_invariant_multimodal_ingress_v1.py'
+      - 'tests/pass219/test_hhs_pass219_translation_invariant_multimodal_ingress_v1.py'
+      - 'data/pass219/open_source_multimodal_ingress_registry_v1.json'
+      - 'contracts/pass219/PASS_219_TRANSLATION_INVARIANT_MULTIMODAL_OPEN_SOURCE_INGRESS_V1.md'
+      - '.github/workflows/pass219-translation-invariant-multimodal-ingress-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_translation_invariant_multimodal_ingress_v1.py'
+      - 'tests/pass219/test_hhs_pass219_translation_invariant_multimodal_ingress_v1.py'
+      - 'data/pass219/open_source_multimodal_ingress_registry_v1.json'
+      - 'contracts/pass219/PASS_219_TRANSLATION_INVARIANT_MULTIMODAL_OPEN_SOURCE_INGRESS_V1.md'
+      - '.github/workflows/pass219-translation-invariant-multimodal-ingress-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  translation-invariant-ingress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile bounded surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_translation_invariant_multimodal_ingress_v1.py
+          python -m py_compile tests/pass219/test_hhs_pass219_translation_invariant_multimodal_ingress_v1.py
+      - name: Validate registry JSON
+        run: python -m json.tool data/pass219/open_source_multimodal_ingress_registry_v1.json >/dev/null
+      - name: Run translation-invariant ingress tests
+        run: pytest -q tests/pass219/test_hhs_pass219_translation_invariant_multimodal_ingress_v1.py

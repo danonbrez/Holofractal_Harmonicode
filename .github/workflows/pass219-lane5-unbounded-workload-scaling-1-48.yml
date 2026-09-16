@@ -1,0 +1,229 @@
+name: Pass 219 Lane 5 Unbounded Workload Scaling 1.48
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_unbounded_workload_scaling_1_48.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c'
+      - 'tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.py'
+      - 'contracts/pass219/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48.md'
+      - 'docs/operations/restart/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48_RESTART_20260915.md'
+      - '.github/workflows/pass219-lane5-unbounded-workload-scaling-1-48.yml'
+      - 'benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py'
+      - 'benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  validate-unbounded-workload-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependency-scoped build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Verify merged 1.47 base lineage
+        run: |
+          git merge-base --is-ancestor c7e56777b3e0c6cb883047248263f54d150233f2 HEAD
+
+      - name: Reject new approximate or canonical authority
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_lane5_unbounded_workload_scaling_1_48.h \
+            hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc
+          grep -F 'constant_memory_candidate_reduction' \
+            hhs_runtime/include/hhs_pass219_lane5_unbounded_workload_scaling_1_48.h
+          grep -F 'fixed_candidate_batch_required = 0U' \
+            hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc
+          grep -F 'materialized_intermediate_states != 0U' \
+            hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc
+          grep -F 'requires_signed_environmental_vm81_admission = 1U' \
+            hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit callable 1.48 exports
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_scaling_version$' /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_scaling_authority$' /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_route_validate$' /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_stream_init$' /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_stream_consider$' /tmp/hhs-1-48.symbols
+          grep -q ' hhs_exact_pass219_lane5_unbounded_workload_stream_finalize$' /tmp/hhs-1-48.symbols
+
+      - name: Compile native full-manifold streaming scalability gate
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-unbounded-1-48
+
+      - name: Run million-candidate constant-memory native scaling gate
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/pass219/1.48
+          /tmp/test-pass219-lane5-unbounded-1-48 | tee artifacts/pass219/1.48/native-scaling.txt
+          grep -F 'PASS219_LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48_PASS' artifacts/pass219/1.48/native-scaling.txt
+          head -n 1 artifacts/pass219/1.48/native-scaling.txt | python -m json.tool > artifacts/pass219/1.48/native-scaling.json
+
+      - name: Compile Python workload bridge
+        run: |
+          python -m py_compile \
+            hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py \
+            tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.py
+
+      - name: Run workload-class agnostic streaming tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.py
+
+      - name: Re-run merged 1.47 repository workloads at expanded file coverage
+        run: |
+          python benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py \
+            --output artifacts/pass219/1.48/repository-real-world-expanded.json \
+            --files-per-class 8 \
+            --ledger-entries 1000
+
+      - name: Regress Lane 5 1.37 through 1.46 and qudit 1.45
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_hash216_fractal_qudit_scaling_1_45.py \
+            tests/pass219/test_pass219_hash216_typed_quantization_location_depth_1_45.py \
+            tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py \
+            tests/pass219/test_pass219_lane5_persistent_hash216_composition_memory_1_39.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
+            tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
+            tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
+            tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.py \
+            tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-direct-witness-1-46
+          /tmp/test-lane5-direct-witness-1-46
+
+      - name: Re-run Pass 214 exact compound workload
+        run: |
+          python tools/pass214_final_compound_benchmark.py \
+            --output artifacts/pass219/1.48/pass214-final-compound.json
+          python tools/pass214_final_compound_benchmark.py \
+            --output /tmp/pass214-unused.json \
+            --validate artifacts/pass219/1.48/pass214-final-compound.json
+
+      - name: Re-run full 50,388,480-position hydration verification
+        run: python tools/generate_pass212_full_hydration_evidence.py --check
+
+      - name: Re-run raw5184 real workload benchmark
+        run: |
+          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py \
+            artifacts/pass219/1.48/raw5184-audio.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path('artifacts/pass219/1.48/raw5184-audio.json').read_text())
+          assert value['result'] == 'PASS'
+          assert value['aggregate']['exact_work_saved'] > 0
+          assert value['authority']['vm81_mutation_changed'] is False
+          assert value['authority']['hash216_changed'] is False
+          PY
+
+      - name: Seal 1.48 evidence
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('artifacts/pass219/1.48')
+          native = json.loads((root / 'native-scaling.json').read_text())
+          real = json.loads((root / 'repository-real-world-expanded.json').read_text())
+          compound = json.loads((root / 'pass214-final-compound.json').read_text())
+          raw = json.loads((root / 'raw5184-audio.json').read_text())
+          assert native['result'] == 'PASS'
+          assert native['full_manifold_address_bytes'] == 56
+          assert native['scale_candidates'] == 1_000_000
+          assert native['materialized_intermediate_states'] == 0
+          assert native['count_saturation_continues'] is True
+          assert real['result'] == 'PASS'
+          assert real['repository_workloads']['record_count'] == 32
+          assert real['repository_workloads']['all_replay_deterministic'] is True
+          assert real['repository_workloads']['all_cross_process_equal'] is True
+          assert real['hash72_ledger']['entries'] == 1000
+          assert len(compound['workloads']) == 15
+          assert compound['incremental_full_equality'] is True
+          assert compound['recovery_replay_semantic_equality'] is True
+          assert compound['cross_process_replay_semantic_equality'] is True
+          assert compound['negative_controls_fail_closed'] is True
+          assert raw['result'] == 'PASS'
+          summary = {
+              'schema': 'HHS_PASS219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_EVIDENCE_1_48',
+              'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'result': 'PASS',
+              'full_manifold_address_bytes': 56,
+              'full_manifold_modulus': '72^72',
+              'native_scale_candidates': native['scale_candidates'],
+              'native_stream_state_bytes': native['stream_state_bytes'],
+              'native_candidates_per_second_floor': native['candidates_per_second_floor'],
+              'materialized_intermediate_states': 0,
+              'counter_saturation_continues': True,
+              'expanded_repository_files': real['repository_workloads']['record_count'],
+              'expanded_repository_bytes': real['repository_workloads']['total_source_bytes'],
+              'ledger_entries': real['hash72_ledger']['entries'],
+              'pass214_mode_executions': 15 * 11,
+              'raw5184_exact_work_saved': raw['aggregate']['exact_work_saved'],
+              'workload_class_agnostic': True,
+              'candidate_only': True,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash216_authority': False,
+              'requires_signed_environmental_vm81_admission': True,
+              'timing_authority': 'OBSERVATIONAL_ONLY',
+          }
+          canonical = json.dumps(summary, sort_keys=True, separators=(',', ':')).encode()
+          summary['receipt_sha256'] = sha256(canonical).hexdigest()
+          (root / 'summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          print('PASS219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48_PASS')
+          PY
+
+      - name: Upload 1.48 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-unbounded-real-world-workload-scaling-1-48
+          path: artifacts/pass219/1.48/
+          if-no-files-found: error

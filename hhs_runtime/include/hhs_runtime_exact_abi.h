@@ -102,4 +102,10 @@
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.h"
 #include "hhs_pass219_lane5_recursive_hash216_composition_graph_1_40.h"
 #include "hhs_pass219_lane5_superedge_hierarchy_1_41.h"
+#include "hhs_pass219_lane5_automatic_superedge_routing_1_42.h"
+#include "hhs_pass219_lane5_executable_capability_self_model_1_43.h"
+#include "hhs_pass219_lane5_repository_capability_reverse_discovery_1_44.h"
+#include "hhs_pass219_hash216_fractal_qudit_admission_1_45.h"
+#include "hhs_pass219_lane5_direct_witness_routing_1_46.h"
+#include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.h"
 #endif

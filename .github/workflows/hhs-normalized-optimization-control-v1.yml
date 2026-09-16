@@ -1,0 +1,119 @@
+name: HHS Normalized Optimization Control v1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md'
+      - 'tools/hhs_optimization_control_v1.py'
+      - 'benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c'
+      - 'tests/docs/test_hhs_optimization_control_v1.py'
+      - 'docs/whitepapers/HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md'
+      - 'docs/tutorials/HHS_LANE5_OPTIMIZATION_CONTROL_TUTORIAL_V1.md'
+      - 'docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md'
+      - 'docs/README.md'
+      - 'docs/tutorials/README.md'
+      - '.github/workflows/hhs-normalized-optimization-control-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md'
+      - 'tools/hhs_optimization_control_v1.py'
+      - 'benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c'
+      - 'tests/docs/test_hhs_optimization_control_v1.py'
+      - 'docs/whitepapers/HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md'
+      - 'docs/tutorials/HHS_LANE5_OPTIMIZATION_CONTROL_TUTORIAL_V1.md'
+      - 'docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md'
+      - 'docs/README.md'
+      - 'docs/tutorials/README.md'
+      - '.github/workflows/hhs-normalized-optimization-control-v1.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  validate-optimization-control:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Validate optimization-control documents and math
+        run: python -m pytest -q tests/docs/test_hhs_optimization_control_v1.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile Lane 5 million-candidate control
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-lane5-control
+
+      - name: Run current normalized control observation
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/optimization-control-v1
+          /tmp/hhs-lane5-control | tee artifacts/optimization-control-v1/native.txt
+          head -n 1 artifacts/optimization-control-v1/native.txt | python -m json.tool > artifacts/optimization-control-v1/native.json
+          grep -F 'PASS219_LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48_PASS' artifacts/optimization-control-v1/native.txt
+          python tools/hhs_qinfo_throughput_normalize_v1.py \
+            artifacts/optimization-control-v1/native.json \
+            artifacts/optimization-control-v1/qinfo.json
+          python tools/hhs_optimization_control_v1.py \
+            artifacts/optimization-control-v1/qinfo.json \
+            artifacts/optimization-control-v1/control-index.json
+
+      - name: Compile ordinary von Neumann materialization control
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-von-neumann-control
+
+      - name: Run ordinary materialization control
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          /tmp/hhs-von-neumann-control | tee artifacts/optimization-control-v1/von-neumann-control.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/optimization-control-v1/von-neumann-control.json')
+          v = json.loads(p.read_text())
+          assert v['result'] == 'PASS'
+          assert v['stream_state_bytes'] == 568
+          assert v['minimal_id_materialization_bytes_1m'] == 8_000_000
+          assert v['full_coordinate_materialization_bytes_1m'] == 56_000_000
+          assert v['minimal_id_materialization_bytes_256m'] == 2_048_000_000
+          assert v['full_coordinate_materialization_bytes_256m'] == 14_336_000_000
+          assert v['fixed_batch_route_bytes_1m'] > v['full_coordinate_materialization_bytes_1m']
+          assert v['route_batch_to_stream_memory_ratio'] > 1
+          assert v['coordinate_materialization_to_stream_ratio_1m'] > 1
+          print(json.dumps(v, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload normalized optimization evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-normalized-optimization-control-v1
+          path: artifacts/optimization-control-v1/
+          if-no-files-found: error
