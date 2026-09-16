@@ -1,0 +1,39 @@
+name: Pass 219 Live Acquisition Replay Worker v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_live_acquisition_replay_worker_v1.py'
+      - 'tests/pass219/test_hhs_pass219_live_acquisition_replay_worker_v1.py'
+      - 'contracts/pass219/PASS_219_LIVE_ACQUISITION_REPLAY_WORKER_V1.md'
+      - 'docs/operations/restart/PASS_219_LIVE_ACQUISITION_REPLAY_WORKER_V1_RESTART_20260916.md'
+      - '.github/workflows/pass219-live-acquisition-replay-worker-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_live_acquisition_replay_worker_v1.py'
+      - 'tests/pass219/test_hhs_pass219_live_acquisition_replay_worker_v1.py'
+      - 'contracts/pass219/PASS_219_LIVE_ACQUISITION_REPLAY_WORKER_V1.md'
+      - 'docs/operations/restart/PASS_219_LIVE_ACQUISITION_REPLAY_WORKER_V1_RESTART_20260916.md'
+      - '.github/workflows/pass219-live-acquisition-replay-worker-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  live-acquisition-replay-worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile acquisition/replay surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_live_acquisition_replay_worker_v1.py
+          python -m py_compile tests/pass219/test_hhs_pass219_live_acquisition_replay_worker_v1.py
+      - name: Run bounded acquisition/replay tests
+        run: pytest -q tests/pass219/test_hhs_pass219_live_acquisition_replay_worker_v1.py
