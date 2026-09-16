@@ -56,7 +56,51 @@ tests/docs/test_hhs_qinfo_throughput_normalization_v1.py
 
 The quantum-information layer is analytical and comparative. The physical runner layer and canonical HHS authority layer remain separately identified.
 
-## 5. Normative sources
+## 5. Normalized optimization control
+
+Normative contract:
+
+[`../../contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md`](../../contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md)
+
+The first executed runner-normalized observation is now the historical index `1.0` control for optimization tracking:
+
+```text
+R_ref = 323,557 candidates/s
+Gamma_basis_ref = 143.7352145 Mbit-equivalent/s
+Gamma_route_ref = 574.9408580 Mbit-equivalent/s
+Gamma_qudit_ref = 23,296,104 coordinate-symbols/s
+Gamma_VM5184_ref = 11,648,052 block-coordinates/s
+stream state = 568 bytes
+materialized intermediate states = 0
+```
+
+Optimizations must preserve exact replay and authority boundaries before their performance/resource deltas are considered. Historical indices are complemented by paired same-runner controls wherever practical.
+
+Executable optimization control:
+
+```text
+tools/hhs_optimization_control_v1.py
+benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c
+.github/workflows/hhs-normalized-optimization-control-v1.yml
+```
+
+## 6. Practical applications and ordinary stored-program comparison
+
+[`HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md`](HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md)
+
+This appendix translates HHS into conventional systems terms and numbers:
+
+- exact 445-bit logical address space / 56-byte state keys;
+- proof-carrying shortcut edges rather than mandatory intermediate materialization;
+- fixed-memory streaming `argmin` candidate reduction;
+- content/provenance identity and deterministic replay;
+- signed transactional admission after candidate computation;
+- explicit byte costs for 1M and 256M materialized-state controls;
+- graph routing, constraint solving, AI proposal admission, multimodal vector retrieval, event sourcing, simulation/digital twins, compression/hydration, and knowledge-graph applications.
+
+It also states the costs HHS does not remove: candidate generation, hashing, I/O, vector/database lookup, validation, cryptography, final admission, and persistence.
+
+## 7. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
 
@@ -65,16 +109,18 @@ contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md
 contracts/pass219/PASS_219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47.md
 contracts/pass219/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48.md
 contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md
+contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md
 docs/pass219/PASS_219_HASH216_FRACTAL_QUDIT_HYDRATION_1_45_EVIDENCE.md
 formal/lemmas/pass_144/LEMMA_CORPUS.json
 formal/coq/HHS_GFE_Field_Quotient.v
 formal/lean/HHS_GFE_Field_Quotient.lean
 benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py
 benchmarks/pass219/pass219_lane5_direct_witness_native_benchmark_1_47.c
+benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c
 tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c
 ```
 
-## 6. Evidence classes
+## 8. Evidence classes
 
 The set uses these labels consistently:
 
@@ -97,7 +143,7 @@ FIRST_CLASS for comparative complexity/throughput analysis
 
 This separation prevents physical-hardware claims from being conflated with the shared mathematical language used to measure information density over time.
 
-## 7. Verified delivery identity
+## 9. Verified delivery identity
 
 The Lane 5 1.48 evidence baseline remains:
 
@@ -111,6 +157,12 @@ The first unified white-paper integration was merged at:
 
 ```text
 1c4787258b954b7ef700e7d1ea706da2c1f763b7
+```
+
+The first quantum-information throughput normalization implementation and frozen evidence were merged through:
+
+```text
+main @ e8accdc0d86d436ddbe9491ad6e96d9c76b6954d
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
