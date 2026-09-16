@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass219-iteration134-pass192-census-membrane",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "981fe0f796b019fd6e1da9185f1fc4dc77aa82e748aa335d5c0473336a5eac41",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 33133389947,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "d3dd6d8d7c589254c33b24367e1a641f74fc86f1"
+}
