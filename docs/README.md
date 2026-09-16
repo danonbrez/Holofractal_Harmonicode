@@ -2,6 +2,17 @@
 
 Repository code, versioned contracts, executable tests, and sealed receipts are authoritative. Documentation is organized so current reference material can evolve without rewriting frozen historical evidence.
 
+## HHS Lane 5 1.48 evidence-focused white papers
+
+Current expanded set based on verified main `a8fc0646e21b2a67804468575f364fef1762ec6a`:
+
+- [`whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md`](whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md) — entry point and evidence classification.
+- [`whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md`](whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md) — unified system architecture, exact manifold mathematics, Lane 5 logic, formal status, and verified results.
+- [`whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md`](whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md) — canonical/development equation registry, typed logic, reciprocal/phase/tensor relations, and reference-only physics surfaces.
+- [`whitepapers/HHS_LANE5_PERFORMANCE_VERIFICATION_EVIDENCE_V1.md`](whitepapers/HHS_LANE5_PERFORMANCE_VERIFICATION_EVIDENCE_V1.md) — primary benchmark/evidence annex for Lane 5 1.47–1.48, Pass 214, hydration, raw5184, and authority-preserving negative tests.
+
+This set explicitly separates `CANONICAL_VERBATIM`, `DEVELOPMENT_VERBATIM`, `EXECUTED_EXACT`, `HHS_NATIVE_SEMANTIC`, `REFERENCE_ONLY`, and `OBSERVATIONAL` claims so source equations, exact proofs, HHS-native qudit semantics, reference physics, and host timings are not conflated.
+
 ## Current Pass 219 SPI v8 reference
 
 Start with:
@@ -17,11 +28,13 @@ Formal papers:
 - [`whitepapers/HARMONICODE_RECEIPT_BOUND_ETHICAL_CONSTRAINT_ALIGNMENT_ARCHITECTURE.md`](whitepapers/HARMONICODE_RECEIPT_BOUND_ETHICAL_CONSTRAINT_ALIGNMENT_ARCHITECTURE.md)
 - [`whitepapers/PASS_219_SPI_V8_WHITEPAPER_INDEX.md`](whitepapers/PASS_219_SPI_V8_WHITEPAPER_INDEX.md)
 
-Current merged baseline documented by this set:
+Current merged baseline documented by the SPI v8 set:
 
 ```text
 main @ 18f6a1899d4009bdeeeaf95d536dfe2857198458
 ```
+
+The Lane 5 1.48 white-paper set above is newer and additive; it does not retroactively rewrite that frozen SPI v8 baseline.
 
 ## Normative Pass 219 SPI contracts
 
