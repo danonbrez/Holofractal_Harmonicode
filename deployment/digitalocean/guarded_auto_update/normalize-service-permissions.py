@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
-"""Normalize HHS production checkout read/traverse permissions for hhs.service.
+"""Normalize the HHS production service boundary before guarded promotion.
 
-This is intentionally independent of native compilation and language-model
-installation so it can repair both promotion and rollback service boundaries.
+The primary responsibility remains checkout read/traverse permissions.  A
+narrow recovery hook also repairs *only* derivable unified Hash72 journal
+transition metadata when all of the following are true:
+
+* the authoritative ledger entry chain independently verifies;
+* the ledger verifier reports only transition-metadata mismatches;
+* guarded-update receipts terminate in ``ROLLBACK_HEALTH_FAILED``; and
+* no production listener remains after hhs.service is stopped.
+
+That hook exists because this tool executes before the guarded installer's
+pre-promotion health gate, including rollback recovery.  It never repairs entry
+payloads/hashes or snapshot authority and emits an out-of-ledger backup/receipt.
 Git-tracked source plus the canonical generated native runtime library boundary
-are normalized; unrelated untracked host state, .git internals, runtime state,
-and secrets remain untouched.
+are normalized; unrelated untracked host state and secrets remain untouched.
 """
 from __future__ import annotations
 
@@ -17,6 +26,8 @@ from pathlib import Path
 import pwd
 import stat
 import subprocess
+import sys
+import time
 from typing import Any
 
 
@@ -46,14 +57,8 @@ def _set_group_mode(path: Path, gid: int, *, directory: bool, allow_chown: bool)
 
 
 def _identity_group_ids(user: str) -> tuple[int, frozenset[int]]:
-    """Resolve the service identity without spawning a privileged helper.
+    """Resolve service identity without spawning a privileged PAM helper."""
 
-    The guarded updater is intentionally hardened with NoNewPrivileges=true.
-    Calling runuser/su from that unit can therefore fail for PAM/setuid reasons
-    even when the target path is actually accessible. Resolve the service UID,
-    primary GID, and supplementary groups directly and evaluate DAC mode bits
-    instead so verification has the same result inside and outside systemd.
-    """
     identity = pwd.getpwnam(user)
     gids = {identity.pw_gid}
     for group in grp.getgrall():
@@ -184,20 +189,144 @@ def normalize_checkout(
     }
 
 
+def _terminal_guarded_update_receipt(state_root: Path) -> dict[str, Any] | None:
+    path = state_root / "receipts.jsonl"
+    if not path.is_file():
+        return None
+    terminal: dict[str, Any] | None = None
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        raw = raw.strip()
+        if not raw:
+            continue
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict):
+            terminal = parsed
+    return terminal
+
+
+def _production_listener_present() -> bool:
+    result = subprocess.run(
+        ["ss", "-H", "-ltn", "sport = :8080"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return bool(result.stdout.strip())
+
+
+def _stop_production_service_and_verify_quiescent() -> None:
+    subprocess.run(["systemctl", "stop", "hhs.service"], check=False)
+    deadline = time.monotonic() + 20.0
+    while time.monotonic() < deadline:
+        if not _production_listener_present():
+            return
+        time.sleep(0.25)
+    raise RuntimeError("refusing ledger recovery while production port 8080 still has a listener")
+
+
+def recover_unified_ledger_rollback_boundary(
+    root: Path,
+    *,
+    state_root: Path = Path("/var/lib/hhs-guarded-update"),
+    runtime_output_dir: Path = Path("/var/lib/hhs/data/runtime"),
+) -> dict[str, Any]:
+    """Repair transition-only ledger corruption after a proven failed rollback.
+
+    The candidate recovery implementation is loaded from the guarded-update
+    source worktree, while HHS_REPO_ROOT remains bound to the live checkout so
+    the already-built canonical native Hash72 runtime remains authoritative.
+    """
+
+    ledger_path = runtime_output_dir / "hhs_unified_hash72_ledger.json"
+    if not ledger_path.is_file():
+        return {
+            "schema": "HHS_PRODUCTION_UNIFIED_LEDGER_RECOVERY_BOUNDARY_V1",
+            "status": "NO_LEDGER_PRESENT",
+            "ledger_path": str(ledger_path),
+            "result": "PASS",
+        }
+
+    source_root = Path(__file__).resolve().parents[3]
+    if str(source_root) not in sys.path:
+        sys.path.insert(0, str(source_root))
+    os.environ["HHS_REPO_ROOT"] = str(root.resolve())
+    os.environ.setdefault("HHS_RUNTIME_OUTPUT_DIR", str(runtime_output_dir))
+
+    from hhs_runtime.hhs_unified_hash72_ledger_recovery_v1 import (  # noqa: PLC0415
+        inspect_transition_metadata_recovery,
+        repair_transition_metadata,
+    )
+
+    inspection = inspect_transition_metadata_recovery(ledger_path)
+    if inspection.get("status") == "VALID_NO_REPAIR_REQUIRED":
+        return {
+            "schema": "HHS_PRODUCTION_UNIFIED_LEDGER_RECOVERY_BOUNDARY_V1",
+            "status": "LEDGER_VALID",
+            "ledger_path": str(ledger_path),
+            "result": "PASS",
+        }
+
+    terminal = _terminal_guarded_update_receipt(state_root)
+    if not terminal or terminal.get("outcome") != "ROLLBACK_HEALTH_FAILED":
+        raise RuntimeError(
+            "recoverable unified ledger corruption requires terminal "
+            f"ROLLBACK_HEALTH_FAILED receipt, found {terminal}"
+        )
+
+    _stop_production_service_and_verify_quiescent()
+    recovery_root = state_root / "unified-ledger-recovery"
+    repaired = repair_transition_metadata(
+        ledger_path,
+        backup_root=recovery_root,
+        require_repair=True,
+    )
+
+    subprocess.run(["systemctl", "reset-failed", "hhs.service"], check=False)
+    subprocess.run(["systemctl", "start", "hhs.service"], check=True)
+    return {
+        "schema": "HHS_PRODUCTION_UNIFIED_LEDGER_RECOVERY_BOUNDARY_V1",
+        "status": "TRANSITION_METADATA_REPAIRED",
+        "terminal_guarded_update_outcome": terminal.get("outcome"),
+        "ledger_path": str(ledger_path),
+        "recovery_receipt_path": repaired.get("receipt_path"),
+        "backup_directory": repaired.get("backup_directory"),
+        "entry_count": repaired.get("entry_count"),
+        "ledger_hash72": repaired.get("ledger_hash72"),
+        "tip_hash72": repaired.get("tip_hash72"),
+        "service_restart_requested": True,
+        "result": "PASS",
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default="/opt/hhs/app")
     parser.add_argument("--service-user", default="hhs")
     parser.add_argument("--service-group", default="hhs")
     args = parser.parse_args()
+    root = Path(args.repo_root)
     receipt = normalize_checkout(
-        Path(args.repo_root),
+        root,
         service_user=args.service_user,
         service_group=args.service_group,
         require_root=True,
     )
     print(json.dumps(receipt, sort_keys=True))
     print("HHS_PRODUCTION_CHECKOUT_PERMISSIONS_VERIFIED=1")
+
+    recovery = recover_unified_ledger_rollback_boundary(
+        root,
+        state_root=Path(os.environ.get("HHS_UPDATE_STATE_ROOT", "/var/lib/hhs-guarded-update")),
+        runtime_output_dir=Path(os.environ.get("HHS_RUNTIME_OUTPUT_DIR", "/var/lib/hhs/data/runtime")),
+    )
+    print(json.dumps(recovery, sort_keys=True, default=str))
+    if recovery.get("status") == "TRANSITION_METADATA_REPAIRED":
+        print("HHS_PRODUCTION_UNIFIED_LEDGER_RECOVERY_VERIFIED=1")
+    else:
+        print("HHS_PRODUCTION_UNIFIED_LEDGER_BOUNDARY_VALID=1")
     return 0
 
 
