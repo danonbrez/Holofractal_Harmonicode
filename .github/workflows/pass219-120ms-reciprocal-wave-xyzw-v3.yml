@@ -24,8 +24,8 @@ permissions:
 env:
   PYTHONHASHSEED: "0"
   PYTHONDONTWRITEBYTECODE: "1"
-  HHS_RECIPROCAL_WAVE_WINDOW_NS: "120000000"
-  HHS_RECIPROCAL_WAVE_SAMPLES: "32"
+  HHS_RECIPROCAL_WAVE_DATASET_QUERIES: "2"
+  HHS_RECIPROCAL_WAVE_MAX_SAMPLES: "16"
 
 jobs:
   validate-120ms-reciprocal-wave-xyzw:
@@ -38,7 +38,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest
 
-      - name: Validate wave contract and analyzer semantics
+      - name: Validate global-budget wave contract and analyzer semantics
         run: python -m pytest -q tests/pass219/test_pass219_120ms_reciprocal_wave_xyzw_v3.py
 
       - name: Build cumulative exact ABI
@@ -47,7 +47,7 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Compile native 120ms reciprocal wave benchmark
+      - name: Compile native adaptive reciprocal wave benchmark
         run: |
           cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
@@ -56,26 +56,23 @@ jobs:
             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
             -o /tmp/hhs-120ms-reciprocal-wave-xyzw-v3
 
-      - name: Run 32 reciprocal four-leg samples
+      - name: Run one adaptive 120ms global reciprocal batch
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
         run: |
           mkdir -p artifacts/120ms-reciprocal-wave-xyzw-v3
-          : > artifacts/120ms-reciprocal-wave-xyzw-v3/series.ndjson
-          for i in $(seq 1 "${HHS_RECIPROCAL_WAVE_SAMPLES}"); do
-            /tmp/hhs-120ms-reciprocal-wave-xyzw-v3 \
-              >> artifacts/120ms-reciprocal-wave-xyzw-v3/series.ndjson
-          done
-          test "$(grep -c '"result":"PASS"' artifacts/120ms-reciprocal-wave-xyzw-v3/series.ndjson)" -eq "${HHS_RECIPROCAL_WAVE_SAMPLES}"
+          /tmp/hhs-120ms-reciprocal-wave-xyzw-v3 \
+            | tee artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          grep -F '"type":"batch_result"' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
+          grep -F '"result":"PASS"' artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson
 
-      - name: Analyze signed cancellation and reciprocal wave fit
+      - name: Analyze gradients, exact-state convergence, and wave residual
         run: |
           python tools/hhs_120ms_reciprocal_wave_series_analyze_v3.py \
-            artifacts/120ms-reciprocal-wave-xyzw-v3/series.ndjson \
+            artifacts/120ms-reciprocal-wave-xyzw-v3/batch.ndjson \
             artifacts/120ms-reciprocal-wave-xyzw-v3/evidence.json \
-            --min-samples "${HHS_RECIPROCAL_WAVE_SAMPLES}" \
             | tee artifacts/120ms-reciprocal-wave-xyzw-v3/analysis.txt
-          grep -F 'HHS_120MS_RECIPROCAL_WAVE_XYZW_V3_SERIES_PASS' \
+          grep -F 'HHS_120MS_GLOBAL_RECIPROCAL_WAVE_XYZW_V3_PASS' \
             artifacts/120ms-reciprocal-wave-xyzw-v3/analysis.txt
 
       - name: Capture workflow identity
@@ -84,7 +81,7 @@ jobs:
           printf '%s\n' "run_id=${GITHUB_RUN_ID}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
           printf '%s\n' "runner=${RUNNER_OS}/${RUNNER_ARCH}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
           printf '%s\n' "image=${ImageOS}/${ImageVersion}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
-          printf '%s\n' "samples=${HHS_RECIPROCAL_WAVE_SAMPLES}" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
+          printf '%s\n' "global_budget_ns=120000000" >> artifacts/120ms-reciprocal-wave-xyzw-v3/workflow.txt
 
       - uses: actions/upload-artifact@v4
         with:
