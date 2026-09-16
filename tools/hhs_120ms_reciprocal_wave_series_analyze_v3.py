@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 from decimal import Decimal, getcontext
 import json
-import math
 import os
 from pathlib import Path
 import platform
@@ -88,10 +87,10 @@ def _wave_fit(vectors: list[list[Decimal]]) -> dict[str, Any]:
     }
 
 
-def _parse(path: Path) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+def _parse(path: Path) -> tuple[dict[str, Any], list[dict[str, Any]], dict[int, dict[str, Any]], dict[str, Any]]:
     meta = None
-    target = None
     records: list[dict[str, Any]] = []
+    refs: dict[int, dict[str, Any]] = {}
     batch_result = None
     for raw in path.read_text(encoding="utf-8").splitlines():
         raw = raw.strip()
@@ -101,94 +100,94 @@ def _parse(path: Path) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, A
         kind = rec.get("type")
         if kind == "batch_meta":
             meta = rec
-        elif kind == "target_state":
-            target = rec
         elif kind == "benchmark":
             records.append(rec)
+        elif kind == "sample_reference":
+            refs[int(rec["sample"])] = rec
         elif kind == "batch_result":
             batch_result = rec
-    if meta is None or target is None or batch_result is None or batch_result.get("result") != "PASS":
+    if meta is None or batch_result is None or batch_result.get("result") != "PASS":
         raise ValueError("incomplete reciprocal-wave batch")
-    return meta, target, records, batch_result
+    return meta, records, refs, batch_result
 
 
 def _state_tuple(rec: dict[str, Any]) -> tuple[int, int, int, int, int]:
     return (
-        int(rec["completed_queries"]),
-        int(rec["represented_transitions"]),
-        int(rec["descriptor_bits"]),
-        int(rec["endpoint_digest"]),
-        int(rec["descriptor_digest"]),
+        int(rec["completed_queries"]), int(rec["represented_transitions"]), int(rec["descriptor_bits"]),
+        int(rec["endpoint_digest"]), int(rec["descriptor_digest"]),
     )
 
 
-def _target_tuple(target: dict[str, Any]) -> tuple[int, int, int, int, int]:
+def _reference_tuple(ref: dict[str, Any]) -> tuple[int, int, int, int, int]:
     return (
-        int(target["completed_queries"]),
-        int(target["represented_transitions"]),
-        int(target["descriptor_bits"]),
-        int(target["endpoint_digest"]),
-        int(target["descriptor_digest"]),
+        int(ref["completed_queries"]), int(ref["represented_transitions"]), int(ref["descriptor_bits"]),
+        int(ref["endpoint_digest"]), int(ref["descriptor_digest"]),
     )
 
 
-def _signed_residual(rec: dict[str, Any], target: dict[str, Any], leg_budget_ns: int) -> Decimal:
+def _signed_residual(rec: dict[str, Any], ref: dict[str, Any]) -> Decimal:
+    budget = Decimal(int(rec["leg_budget_ns"]))
     if bool(rec["dataset_complete"]):
-        return (Decimal(int(rec["completion_elapsed_ns"])) - Decimal(leg_budget_ns)) / Decimal(leg_budget_ns)
-    target_work = Decimal(int(target["represented_transitions"]))
+        return (Decimal(int(rec["completion_elapsed_ns"])) - budget) / budget
+    target = Decimal(int(ref["represented_transitions"]))
     done = Decimal(int(rec["represented_transitions"]))
-    if target_work <= 0 or done < 0 or done > target_work:
+    if target <= 0 or done < 0 or done > target:
         raise ValueError("invalid incomplete-work relation")
-    return (target_work - done) / target_work
+    return (target - done) / target
 
 
-def analyze(meta: dict[str, Any], target: dict[str, Any], records: list[dict[str, Any]], batch_result: dict[str, Any]) -> dict[str, Any]:
-    if meta.get("schema") != SCHEMA:
-        raise ValueError("unexpected schema")
-    if int(meta["global_budget_ns"]) != GLOBAL_BUDGET_NS:
-        raise ValueError("global pass is not exactly 120ms")
+def analyze(meta: dict[str, Any], records: list[dict[str, Any]], refs: dict[int, dict[str, Any]], batch_result: dict[str, Any]) -> dict[str, Any]:
+    if meta.get("schema") != SCHEMA or int(meta["global_budget_ns"]) != GLOBAL_BUDGET_NS:
+        raise ValueError("unexpected schema/global budget")
     if int(meta.get("active_threads_per_benchmark", 0)) != 1 or not bool(meta.get("benchmarks_sequential")):
         raise ValueError("benchmark must be sequential and single-threaded")
-    sample_count = int(meta["sample_count"])
-    if sample_count <= 0:
-        raise ValueError("sample_count must be positive")
-    if len(records) != 4 * sample_count:
-        raise ValueError("expected exactly four legs per sample")
-    if int(meta["nominal_measured_budget_ns"]) > GLOBAL_BUDGET_NS:
-        raise ValueError("nominal budget exceeds global 120ms")
-    if int(batch_result["batch_elapsed_ns"]) > GLOBAL_BUDGET_NS + 10_000_000:
-        raise ValueError("measured batch exceeded timing tolerance")
+    sample_count = int(batch_result["sample_count"])
+    if sample_count <= 0 or len(records) != 4 * sample_count or set(refs) != set(range(sample_count)):
+        raise ValueError("sample cardinality mismatch")
+    batch_elapsed = int(batch_result["batch_elapsed_ns"])
+    if batch_elapsed > GLOBAL_BUDGET_NS + 10_000_000:
+        raise ValueError("measured batch exceeded global timing tolerance")
 
-    leg_budget_ns = int(meta["leg_budget_ns"])
-    threshold_ns = int(meta["reasonable_completion_threshold_ns"])
-    subthreshold = bool(meta["subthreshold"])
-    if subthreshold != (leg_budget_ns < threshold_ns):
-        raise ValueError("subthreshold classification mismatch")
-
-    target_state = _target_tuple(target)
     grouped: dict[int, dict[str, dict[str, Any]]] = {}
     for rec in records:
-        sample = int(rec["sample"])
-        ident = str(rec["id"])
-        grouped.setdefault(sample, {})[ident] = rec
+        grouped.setdefault(int(rec["sample"]), {})[str(rec["id"])] = rec
     if set(grouped) != set(range(sample_count)):
         raise ValueError("sample indices are not contiguous")
 
     vectors: list[list[Decimal]] = []
     balances: list[Decimal] = []
-    sample_evidence: list[dict[str, Any]] = []
-    supremacy_samples: list[int] = []
+    evidence_samples: list[dict[str, Any]] = []
+    bounded_supremacy_samples: list[int] = []
+    previous_scale = 0
+
     for i in range(sample_count):
         legs = grouped[i]
+        ref = refs[i]
         if set(legs) != {"A", "B", "C", "D"}:
-            raise ValueError(f"sample {i} missing A/B/C/D")
+            raise ValueError(f"sample {i}: missing A/B/C/D")
+        scale = int(ref["query_scale"])
+        if scale <= previous_scale:
+            raise ValueError("gradient query scale did not increase")
+        if i > 0 and scale != previous_scale * 2:
+            raise ValueError("gradient factor must be exactly 2")
+        previous_scale = scale
         expected_arch = {"A": "hhs", "B": "conventional_matrix", "C": "conventional_matrix", "D": "hhs"}
         expected_axis = {"A": "x", "B": "y", "C": "z", "D": "w"}
+        budgets = {int(v["leg_budget_ns"]) for v in legs.values()}
+        thresholds = {int(v["predicted_threshold_ns"]) for v in legs.values()}
+        if len(budgets) != 1 or len(thresholds) != 1:
+            raise ValueError(f"sample {i}: unequal reciprocal leg budget/threshold")
+        leg_budget = next(iter(budgets))
+        threshold = next(iter(thresholds))
+        subthreshold = bool(ref["subthreshold"])
+        if subthreshold != (leg_budget < threshold):
+            raise ValueError(f"sample {i}: subthreshold classification mismatch")
+
         for ident, rec in legs.items():
             if rec.get("architecture") != expected_arch[ident] or rec.get("axis") != expected_axis[ident] or rec.get("dataset") != "W":
                 raise ValueError(f"sample {i} {ident}: route identity mismatch")
-            if int(rec["dataset_limit_queries"]) != int(target["completed_queries"]):
-                raise ValueError(f"sample {i} {ident}: target size mismatch")
+            if int(rec["dataset_limit_queries"]) != scale or int(rec["query_scale"]) != scale:
+                raise ValueError(f"sample {i} {ident}: workload scale mismatch")
             if ident in ("A", "D"):
                 if int(rec.get("lane5_admissions", -1)) != int(rec["completed_queries"]):
                     raise ValueError(f"sample {i} {ident}: Lane 5 admission mismatch")
@@ -196,27 +195,35 @@ def analyze(meta: dict[str, Any], target: dict[str, Any], records: list[dict[str
                     raise ValueError(f"sample {i} {ident}: intermediate materialization")
 
         completed = {k: bool(v["dataset_complete"]) for k, v in legs.items()}
+        ref_state = _reference_tuple(ref)
         if not subthreshold and not all(completed.values()):
-            raise ValueError(f"sample {i}: incomplete work above reasonable threshold")
+            raise ValueError(f"sample {i}: incomplete work above predicted reasonable threshold")
         if all(completed.values()):
             for ident, rec in legs.items():
-                if _state_tuple(rec) != target_state:
-                    raise ValueError(f"sample {i} {ident}: completed state != State(W)")
+                if _state_tuple(rec) != ref_state:
+                    raise ValueError(f"sample {i} {ident}: completed state differs from State(W_n)")
         if completed["A"] and completed["D"] and (not completed["B"] or not completed["C"]):
-            supremacy_samples.append(i)
+            bounded_supremacy_samples.append(i)
 
-        eps = [_signed_residual(legs[k], target, leg_budget_ns) for k in ("A", "B", "C", "D")]
+        eps = [_signed_residual(legs[k], ref) for k in ("A", "B", "C", "D")]
         vectors.append(eps)
-        balance = (eps[0] + eps[3]) / Decimal(2) + (eps[1] + eps[2]) / Decimal(2)
+        hhs_balance = (eps[0] + eps[3]) / Decimal(2)
+        conventional_balance = (eps[1] + eps[2]) / Decimal(2)
+        balance = hhs_balance + conventional_balance
         balances.append(balance)
-        sample_evidence.append({
+        evidence_samples.append({
             "sample": i,
-            "query_scale": int(target["completed_queries"]),
+            "query_scale": scale,
+            "leg_budget_ns": leg_budget,
+            "predicted_threshold_ns": threshold,
+            "subthreshold": subthreshold,
             "xyzw_signed_residuals": [str(x) for x in eps],
+            "hhs_mean_residual": str(hhs_balance),
+            "conventional_mean_residual": str(conventional_balance),
             "architecture_balance": str(balance),
             "completion": completed,
-            "completion_elapsed_ns": {k: int(v["completion_elapsed_ns"]) for k, v in legs.items()},
-            "represented_transitions": {k: int(v["represented_transitions"]) for k, v in legs.items()},
+            "same_state_if_complete": all((not completed[k]) or _state_tuple(legs[k]) == ref_state for k in legs),
+            "target_represented_transitions": int(ref["represented_transitions"]),
         })
 
     mean_balance = _mean(balances)
@@ -229,42 +236,29 @@ def analyze(meta: dict[str, Any], target: dict[str, Any], records: list[dict[str
         "schema": EVIDENCE_SCHEMA,
         "result": "PASS",
         "global_budget_ns": GLOBAL_BUDGET_NS,
-        "batch_elapsed_ns": int(batch_result["batch_elapsed_ns"]),
+        "batch_elapsed_ns": batch_elapsed,
+        "remaining_budget_ns": int(batch_result["remaining_budget_ns"]),
         "sample_count": sample_count,
-        "leg_budget_ns": leg_budget_ns,
-        "reasonable_completion_threshold_ns": threshold_ns,
-        "subthreshold": subthreshold,
-        "target_state": {
-            "queries": target_state[0],
-            "represented_transitions": target_state[1],
-            "descriptor_bits": target_state[2],
-            "endpoint_digest": target_state[3],
-            "descriptor_digest": target_state[4],
-        },
+        "gradient_factor": int(meta["gradient_factor"]),
+        "base_dataset_queries": int(meta["base_dataset_queries"]),
         "probabilistic_balance": {
-            "mean": str(mean_balance),
-            "sample_sd": str(sd),
-            "confidence_95_low": str(ci_low),
-            "confidence_95_high": str(ci_high),
+            "mean": str(mean_balance), "sample_sd": str(sd),
+            "confidence_95_low": str(ci_low), "confidence_95_high": str(ci_high),
             "zero_inside_95_percent_interval": ci_low <= 0 <= ci_high,
         },
         "discrete_reciprocal_wave_fit": _wave_fit(vectors),
-        "bounded_supremacy_observation_samples": supremacy_samples,
+        "bounded_supremacy_observation_samples": bounded_supremacy_samples,
         "runner": {
-            "cpu_model": _cpu_model(),
-            "logical_cpu_count": os.cpu_count(),
-            "memory_kib": _memory_kib(),
-            "platform": platform.platform(),
-            "kernel_release": platform.release(),
-            "runner_os_env": os.getenv("RUNNER_OS"),
-            "runner_arch_env": os.getenv("RUNNER_ARCH"),
-            "image_os_env": os.getenv("ImageOS"),
-            "image_version_env": os.getenv("ImageVersion"),
+            "cpu_model": _cpu_model(), "logical_cpu_count": os.cpu_count(), "memory_kib": _memory_kib(),
+            "platform": platform.platform(), "kernel_release": platform.release(),
+            "runner_os_env": os.getenv("RUNNER_OS"), "runner_arch_env": os.getenv("RUNNER_ARCH"),
+            "image_os_env": os.getenv("ImageOS"), "image_version_env": os.getenv("ImageVersion"),
             "cc_version": _cc_version(),
         },
-        "samples": sample_evidence,
+        "samples": evidence_samples,
         "claim_scope": {
-            "same_exact_state_required_when_above_threshold": True,
+            "same_exact_state_required_above_threshold": True,
+            "positive_global_time_drives_larger_gradient_workloads": True,
             "physical_negative_time_claim": False,
             "universal_classical_supremacy_claim": False,
         },
@@ -276,8 +270,8 @@ def main() -> int:
     p.add_argument("batch_ndjson", type=Path)
     p.add_argument("output", type=Path)
     args = p.parse_args()
-    meta, target, records, batch_result = _parse(args.batch_ndjson)
-    evidence = analyze(meta, target, records, batch_result)
+    meta, records, refs, batch_result = _parse(args.batch_ndjson)
+    evidence = analyze(meta, records, refs, batch_result)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(evidence, indent=2, sort_keys=True))
