@@ -72,6 +72,8 @@ Gamma_VM5184 = 11,648,052 block-coordinates/s
 
 These rates describe the logical address complexity carried by validated candidate observations. They are not DRAM bandwidth and not physical quantum-gate rates.
 
+A later optimization-control run on another fresh `ubuntu-24.04` VM exposed an `INTEL(R) XEON(R) PLATINUM 8573C` and measured `249,290 candidates/s`, or historical index `0.770467...`, while every exact invariant remained green. This is direct evidence that host timing is environment-sensitive even under the same public runner label. It is why HHS keeps the frozen historical index for longitudinal reference but prefers a **paired same-runner control and candidate** for deciding whether a code change is an optimization.
+
 ## A.4 What zero intermediate materialization means in bytes
 
 A conventional explicit-path representation must store something for each intermediate item. Even a deliberately optimistic reference representation costs memory proportional to path length.
@@ -95,9 +97,11 @@ Lane 5 reducer:           568 bytes
 Thus, before counting object headers, allocator metadata, edges, receipts, or payloads:
 
 ```text
-1M minimal-ID materialization / Lane5 stream ~= 14,084x more auxiliary bytes
-1M full-coordinate materialization / Lane5 stream ~= 98,592x more auxiliary bytes
+1M minimal-ID materialization / Lane5 stream ~= 14,084.5x more auxiliary bytes
+1M full-coordinate materialization / Lane5 stream ~= 98,591.5x more auxiliary bytes
 ```
+
+The executable C control reports integer-floor ratios; for the full-coordinate case it records `98,591x`.
 
 For the historical 256,000,000 represented-state example:
 
@@ -110,18 +114,76 @@ A naive explicit full-coordinate path at that span is already of the same order 
 
 This is the clearest ordinary-hardware significance of direct witness routing: **logical route span and physical working-set size are decoupled when a valid summarized proof edge already exists.**
 
-## A.5 Fixed candidate batches versus streaming reduction
+## A.5 Executed von Neumann materialization control
+
+The repository now compiles the actual C ABI and measures an explicit stored-program control on the same workflow that re-runs Lane 5.
+
+Executed control run:
+
+```text
+workflow: HHS Normalized Optimization Control v1
+run: 35088407303
+runner: ubuntu-24.04
+CPU: INTEL(R) XEON(R) PLATINUM 8573C
+compiler: GCC 13.3.0
+```
+
+The native ABI sizes and byte controls were:
+
+| Quantity | Executed result |
+|---|---:|
+| `sizeof(HHSExactPass219Lane5UnboundedWorkloadRouteV1)` | **296 bytes** |
+| `sizeof(HHSExactPass219Lane5UnboundedWorkloadStreamV1)` | **568 bytes** |
+| 1M fixed route descriptors | **296,000,000 bytes** (~282.29 MiB) |
+| 1M minimal 64-bit IDs | **8,000,000 bytes** (~7.63 MiB) |
+| 1M full 56-byte coordinates | **56,000,000 bytes** (~53.41 MiB) |
+| 256M minimal 64-bit IDs | **2,048,000,000 bytes** (~1.91 GiB) |
+| 256M full 56-byte coordinates | **14,336,000,000 bytes** (~13.35 GiB) |
+| fixed 1M route batch / 568-byte stream | **521,126×** integer-floor ratio |
+| 1M coordinates / 568-byte stream | **98,591×** integer-floor ratio |
+
+The deliberately minimal 1,000,000-element `uint64_t` memory loop measured:
+
+```text
+allocate + fill 8 MB ID array: 1,830,589 ns (~1.831 ms)
+scan/XOR 8 MB ID array:        1,218,198 ns (~1.218 ms)
+```
+
+These millisecond timings are a **memory-traffic lower bound**, not a semantic speed comparison with Lane 5. The loop does not validate route proofs, provenance, forbidden boundaries, reciprocal phase, collapse metadata, workload binding, or canonical authority. Its purpose is to show the ordinary cost of merely materializing/scanning a minimal representation.
+
+The same-run Lane 5 control performed the full one-million candidate validation/reduction path in:
+
+```text
+4,011,378,559 ns
+249,290 candidates/s floor
+0 intermediate states materialized
+568-byte streaming reducer
+```
+
+Comparing `4.011 s` directly with the `1.218 ms` ID scan would be invalid because the semantic work is radically different. The valid comparison is:
+
+- **memory/materialization comparison:** explicit arrays scale with represented/candidate count; Lane 5 reducer auxiliary memory remains fixed;
+- **semantic throughput comparison:** compare Lane 5 control and optimized Lane 5 candidate with the same validation contract on the same runner;
+- **end-to-end application comparison:** compare equivalent complete workloads and outputs, including candidate generation, I/O, hashing, lookup, validation, admission, and persistence.
+
+## A.6 Fixed candidate batches versus streaming reduction
 
 A traditional batch selector commonly materializes an array of candidate descriptors and then scans/sorts/reduces it. Lane 5 1.48 instead accepts one route at a time and retains only the bound stream state plus current best receipt.
 
 For `C` candidates:
 
 ```text
-fixed batch bytes = C * sizeof(route descriptor)
-Lane 5 candidate-reducer bytes = sizeof(stream state) = 568
+fixed batch bytes = C * 296 bytes       [current verified native ABI]
+Lane 5 candidate-reducer bytes = 568
 ```
 
-The repository's von Neumann control benchmark records the actual native `sizeof(route descriptor)` on the same compiler/ABI, so this comparison remains machine-verifiable rather than depending on a hand-calculated C layout.
+At one million candidates:
+
+```text
+fixed route batch = 296,000,000 bytes
+stream reducer    = 568 bytes
+integer-floor memory ratio = 521,126x
+```
 
 The algorithmic distinction is:
 
@@ -132,9 +194,9 @@ Lane 5 reducer auxiliary memory: O(1)
 
 Both still require work proportional to candidates actually validated. Lane 5's memory result is not a claim of constant-time search.
 
-## A.6 Practical application classes
+## A.7 Practical application classes
 
-### A.6.1 Large graph and route planning
+### A.7.1 Large graph and route planning
 
 Conventional graph traversal often constructs or visits nodes/edges between source and destination. When HHS already possesses a validated composition witness, Lane 5 can treat that witness as a direct proof-carrying edge.
 
@@ -149,7 +211,7 @@ Practical use:
 
 The gain comes from reusing proven route composition, not from claiming that arbitrary unseen paths can be skipped without proof.
 
-### A.6.2 Constraint solvers and configuration systems
+### A.7.2 Constraint solvers and configuration systems
 
 HHS candidate routes bind goal, provenance, forbidden boundary, phase/inverse metadata, and contradiction evidence before canonical mutation.
 
@@ -161,7 +223,7 @@ In conventional terms this is useful for:
 - dependency/version resolution;
 - exact symbolic solving where invalid branches must never be silently committed.
 
-### A.6.3 AI/ML inference orchestration
+### A.7.3 AI/ML inference orchestration
 
 Lane 5 can act as a deterministic candidate/routing membrane around model-generated proposals:
 
@@ -177,7 +239,7 @@ This is useful when model inference may remain approximate but the **commit path
 
 Ordinary-system analogy: an accelerator/search service behind a strongly typed transactional validation layer.
 
-### A.6.4 Multimodal vector-store ingestion and retrieval
+### A.7.4 Multimodal vector-store ingestion and retrieval
 
 The 1.48 workload interface is byte-class agnostic. Text, source, structured data, image-like, audio-like, compressed, and tensor/model-like payloads can share the same exact digest/provenance route boundary.
 
@@ -189,7 +251,7 @@ Practical use:
 - evidence-bearing RAG/vector search;
 - file-ingestion systems requiring deterministic replay.
 
-### A.6.5 Event sourcing, audit, and security
+### A.7.5 Event sourcing, audit, and security
 
 Hash72/Hash216 receipts and replay constraints translate naturally to:
 
@@ -202,7 +264,7 @@ Hash72/Hash216 receipts and replay constraints translate naturally to:
 
 The important distinction from a generic log is that transition validity is checked before the candidate receives canonical authority.
 
-### A.6.6 Compression, hydration, and reusable computation
+### A.7.6 Compression, hydration, and reusable computation
 
 The hydration/composition architecture is useful where exact results or route components recur.
 
@@ -217,7 +279,7 @@ Ordinary analogy:
 
 The raw5184 workload currently records `5,820,705` exact work units saved while preserving its authority comparison. This is evidence for reuse on that workload, not a universal compression ratio for arbitrary data.
 
-### A.6.7 Simulation and digital twins
+### A.7.7 Simulation and digital twins
 
 A simulator commonly needs to move among valid discrete states while preserving how each state was reached. HHS's exact coordinates, direct witnesses, inverses, contradiction boundaries, and receipts fit:
 
@@ -227,7 +289,7 @@ A simulator commonly needs to move among valid discrete states while preserving 
 - safety envelopes;
 - deterministic rollback/replay.
 
-### A.6.8 Database/query and knowledge-graph execution
+### A.7.8 Database/query and knowledge-graph execution
 
 A composition jump resembles a materialized transitive relation whose proof and provenance travel with the result.
 
@@ -239,7 +301,7 @@ Potential uses include:
 - knowledge-graph relation composition;
 - exact invalidation when parent evidence changes.
 
-## A.7 Comparison with legacy architecture patterns
+## A.8 Comparison with legacy architecture patterns
 
 HHS does not replace the von Neumann machine that hosts it. It changes what the host is asked to materialize and what evidence must accompany a result.
 
@@ -255,7 +317,7 @@ HHS does not replace the von Neumann machine that hosts it. It changes what the 
 
 The practical value is strongest when workloads contain repeated structure, reusable proof paths, expensive intermediate representations, strict audit requirements, or a large candidate space with a much smaller admitted result set.
 
-## A.8 Where HHS does not eliminate classical cost
+## A.9 Where HHS does not eliminate classical cost
 
 HHS still executes on classical hardware. The following costs remain real:
 
@@ -271,7 +333,7 @@ HHS still executes on classical hardware. The following costs remain real:
 
 A direct witness only avoids work that is legitimately represented by an already-valid witness. It does not make arbitrary computation free.
 
-## A.9 Optimization control interpretation
+## A.10 Optimization control interpretation
 
 The normalized controls now answer four separate engineering questions:
 
@@ -284,9 +346,11 @@ The normalized controls now answer four separate engineering questions:
 
 An optimization is therefore not accepted merely because wall-clock time falls. It must preserve exact replay and authority and improve at least one declared resource objective without unacceptable regression in the paired normalized control.
 
-## A.10 Current quantitative baseline
+The current run's `0.770467...` historical throughput index is not treated as a regression because it ran on a different underlying Xeon VM from the historical reference. It is environmental evidence supporting the paired-control rule. A true optimization decision compares control and candidate on the same runner whenever possible.
 
-The current baseline should be read as:
+## A.11 Current quantitative baseline
+
+The frozen historical baseline should be read as:
 
 ```text
 323,557 complete candidate validations/reductions per second
@@ -306,3 +370,17 @@ In the shared quantum-information language, the same observation is:
 ```
 
 In ordinary systems language, it is a serial proof-carrying candidate reducer with exact large-key addressing, fixed auxiliary memory, deterministic replay, and a privileged transactional commit boundary.
+
+The newly executed materialization control adds the concrete native comparison:
+
+```text
+296-byte route descriptor
+296 MB for a 1M fixed route batch
+568-byte streaming reducer
+521,126x integer-floor auxiliary-memory ratio
+56 MB for 1M full coordinates
+98,591x integer-floor coordinate-materialization ratio
+14.336 GB for 256M full coordinates
+```
+
+Those numbers now form part of the ordinary-hardware interpretation of future optimization results.
