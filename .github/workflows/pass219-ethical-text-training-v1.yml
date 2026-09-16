@@ -1,0 +1,42 @@
+name: Pass 219 Ethical Text Training v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - '.github/workflows/pass219-ethical-text-training-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - '.github/workflows/pass219-ethical-text-training-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-training-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile changed Python surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_ethical_text_training_v1.py
+          python -m py_compile scripts/pass219_ethical_text_training_cycle_v1.py
+          python -m py_compile tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
+      - name: Run bounded ethical training-cycle tests
+        run: pytest -q tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
