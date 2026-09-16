@@ -4,14 +4,23 @@ Repository code, versioned contracts, executable tests, and sealed receipts are 
 
 ## HHS Lane 5 1.48 evidence-focused white papers
 
-Current expanded set based on verified main `a8fc0646e21b2a67804468575f364fef1762ec6a`:
+Current expanded set:
 
 - [`whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md`](whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md) — entry point and evidence classification.
 - [`whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md`](whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md) — unified system architecture, exact manifold mathematics, Lane 5 logic, formal status, and verified results.
-- [`whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md`](whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md) — canonical/development equation registry, typed logic, reciprocal/phase/tensor relations, and reference-only physics surfaces.
+- [`whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md`](whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md) — canonical/development equation registry, typed logic, reciprocal/phase/tensor relations, and standard quantum/relativistic comparison surfaces.
 - [`whitepapers/HHS_LANE5_PERFORMANCE_VERIFICATION_EVIDENCE_V1.md`](whitepapers/HHS_LANE5_PERFORMANCE_VERIFICATION_EVIDENCE_V1.md) — primary benchmark/evidence annex for Lane 5 1.47–1.48, Pass 214, hydration, raw5184, and authority-preserving negative tests.
+- [`whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md`](whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md) — uniform quantum-information/classical-runner vocabulary for Hilbert-space dimension, qudit/qubit-equivalent address complexity, deterministic-shot rate, information-density throughput, replay fidelity, and runner-normalized comparison.
 
-This set explicitly separates `CANONICAL_VERBATIM`, `DEVELOPMENT_VERBATIM`, `EXECUTED_EXACT`, `HHS_NATIVE_SEMANTIC`, `REFERENCE_ONLY`, and `OBSERVATIONAL` claims so source equations, exact proofs, HHS-native qudit semantics, reference physics, and host timings are not conflated.
+The white-paper set distinguishes `CANONICAL_VERBATIM`, `DEVELOPMENT_VERBATIM`, `EXECUTED_EXACT`, `HHS_NATIVE_SEMANTIC`, `REFERENCE_ONLY`, and `OBSERVATIONAL` authority classes. `REFERENCE_ONLY` means a quantum/physics equation is not itself canonical state-commit authority; it does **not** mean the equation is excluded from human-facing complexity and throughput analysis.
+
+The quantum-information normalization layer is executable through:
+
+```text
+tools/hhs_qinfo_throughput_normalize_v1.py
+tests/docs/test_hhs_qinfo_throughput_normalization_v1.py
+.github/workflows/hhs-qinfo-throughput-normalization-v1.yml
+```
 
 ## Current Pass 219 SPI v8 reference
 
@@ -34,7 +43,7 @@ Current merged baseline documented by the SPI v8 set:
 main @ 18f6a1899d4009bdeeeaf95d536dfe2857198458
 ```
 
-The Lane 5 1.48 white-paper set above is newer and additive; it does not retroactively rewrite that frozen SPI v8 baseline.
+The Lane 5 1.48 white-paper set is newer and additive; it does not retroactively rewrite that frozen SPI v8 baseline.
 
 ## Normative Pass 219 SPI contracts
 
