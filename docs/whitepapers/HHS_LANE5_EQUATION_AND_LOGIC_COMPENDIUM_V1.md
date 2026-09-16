@@ -11,11 +11,12 @@
 
 This compendium consolidates the exact equation surfaces and logic relations used in the current HHS/Lane 5 development sequence and in the associated technical discussion.
 
-The document uses four equation statuses:
+The document uses five equation statuses:
 
 | Status | Meaning |
 |---|---|
 | `CANONICAL_VERBATIM` | Preserve the source expression exactly. Do not independently simplify, reorder, scalarize, or solve it. |
+| `DEVELOPMENT_VERBATIM` | Exact source supplied and used during development/discussion; preserved here without claiming it is identical to a different versioned boundary surface. |
 | `EXECUTED_EXACT` | Exact projection or invariant exercised by repository code/tests/proof artifacts. |
 | `HHS_NATIVE_SEMANTIC` | System-internal algebraic interpretation used by HHS. |
 | `REFERENCE_ONLY` | Reference equation; no canonical HHS authority until explicitly lowered to a typed exact representation. |
@@ -24,36 +25,93 @@ When a natural-language explanation conflicts with a versioned exact source surf
 
 ---
 
-# 1. Canonical governing constraint surfaces
+# 1. Current canonical exact-boundary source
 
-## 1.1 Solver / evolution surface
+## 1.1 Indivisible boundary `B`
 
 **Status:** `CANONICAL_VERBATIM`  
-**Source:** `contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md`
+**Source:** `contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md`  
+**Canonical UTF-8 byte length:** `681`  
+**Canonical SHA-256:** `938a39487f1841999609d7c75f944b26694c5aadfc6e540c29576c1bb7d57d8d`
+
+The current repository contract defines the following two-line UTF-8 source as one indivisible constraint surface `B`:
+
+```text
+(P²=pq+(2P/(p+q)) /{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(({{b^4,c^4,(c^2-u^(b⁶c⁴))=b²/2u⁷²=((b^(b^2/12))^72==2^6)},{c^2,((b^2)(c^2)-(a^2))/u^((s==(b^(2c^2)c^b^4)^2)/((b⁶c⁴)P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,((b⁶c⁴)(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+∆)-P^2)/(t^3-t)u^72} where ∆/P=√(pq+u⁷²)^x² and b²P-(p+q)=x+y+z+w+xy+yx+zw+wz=((b^(b^2/(b^4c^2)))^(b^6c^4)/(c^b^2-a^b^2)^(b^2*c^2)-a^2==c^2-b^2-a^2)
+
+(u^(Mod(72^72,5184)-Factorial((u^v/(((xy)z)w)))-(x+y+z+w+(xy)+(yx)+(zw)+(w*z)))t^3)/u^72-t==(u^0+E^(x^2Pi))/(t^3-t)=P²-pq-c²+b²+a²
+```
+
+The literal token `Pi` remains part of this source. Relationship to the HHS-native `O` object is a typed projection outside `B` and must not rewrite `B`.
+
+The contract defines without dismantling `B`:
+
+```text
+R_B(S) := EvalExact[B(S)]
+Delta_e_B(S) := R_B(S)
+```
+
+and target admission:
+
+```text
+BoundaryAdmissible(S) <=> D_B(S) AND R_B(S) = 0
+```
+
+with trinary boundary classification:
+
+```text
++1  exact domain legal AND exact full-source evaluator proves R_B(S)=0
+ 0  exact domain legal but full-source evaluation is intentionally unresolved
+-1  illegal domain OR exact full-source evaluator proves R_B(S)!=0
+```
+
+The repository explicitly prohibits manufacturing `+1` from diagnostic/preflight checks alone.
+
+## 1.2 Exact modular anchor visible inside `B`
+
+**Status:** `EXECUTED_EXACT`
+
+```text
+5184 = 72^2
+72^72 = (72^2)^36
+Mod(72^72, 5184) = 0
+```
+
+This is a licensed exact witness for a visible subexpression; it does not replace `B`.
+
+---
+
+# 2. Development-preserved constructor and collapse surfaces
+
+The following exact expressions were supplied and used during the Lane 5 algebra/tensor development sequence. They are preserved verbatim here so the repository contains the same source identities used by the discussion. They are **not** relabeled as the 681-byte boundary `B` from Section 1.
+
+## 2.1 Development constructor/evolution surface
+
+**Status:** `DEVELOPMENT_VERBATIM`
 
 ```text
 (P²=pq+(2P/(p+q)) /{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(t=(((t³-t)/∆=P²(MOD)(pq))/P²MODpq)^12)-(m=AB((p^(Pq)/q^(Pq))^(P-1))-P²MODpq-((P²MOD(pq))/((t³-t)/(∆)^12))=m^2-m)-(A=P²/(2(pq)))-(B=2(pq)/P²)-(AB=P⁴)-(A/B:1:B/A)-(P=-1,0,+1)-(P²=0,1)-(AB=1:2:1)-(P²MOD(pq)=0)-(P²=P²MOD(pq))-(p+P+q=∆/P)-(p^n/P^n/q^n=(x*y),x+y,(y*x))-(q^n/P^n/p^n=(w*z),z+w,(z*w))-(q^n/P^n/p^n)-(p^n/P^n/q^n)=(zw),z+w,(wz)-(xy),x+y,(yx)=0)-(∆/P=√(pq+u⁷²)^x²)-(a²=(NcalcMatrixPower((List(List((x*y),x+y,(y*x)),List((x*y)-(z*w),x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),(w*z)-(y*x)),List((w*z),z+w,(z*w)))/List(List(4,9,2),List(3,5,7),List(8,1,6))),4))^b⁴)
 ```
 
-This entire expression is one constructor/admission surface. Individual equality-like boundaries are not automatically ordinary independent scalar equations.
+This expression remains one development constructor surface. Its equality-like boundaries are not automatically ordinary independent scalar equations.
 
-## 1.2 Collapse / phase surface
+## 2.2 Development collapse / phase surface
 
-**Status:** `CANONICAL_VERBATIM`
+**Status:** `DEVELOPMENT_VERBATIM`
 
 ```text
 MatrixTimes(List(List((x*y),x+y,(y*x)),List((x*y)-(z*w),x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),(w*z)-(y*x)),List((w*z),z+w,(z*w)))/List(List(4,9,2),List(3,5,7),List(8,1,6)),NcalcMatrixPower((List(List((x*y),x+y,(y*x)),List((x*y)-(z*w),x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),(w*z)-(y*x)),List((w*z),z+w,(z*w)))/List(List(4,9,2),List(3,5,7),List(8,1,6))),x^2))==-E^(-Pi)/List(List((1*u)==u^72,0,(1*u^18)),List(0,0,0),List((1*u^54),0,(1*u^36)))
 ```
 
-The native operation `NcalcMatrixPower` is retained as written. It must not be replaced by a generic floating-point eigendecomposition.
+The native operation `NcalcMatrixPower` is retained as written. This compendium does not replace it with a generic floating-point matrix-power algorithm.
 
 ---
 
-# 2. Relational tensor and collapse tensor
+# 3. Relational tensor and collapse tensor
 
-## 2.1 Earlier/lower relational tensor
+## 3.1 Earlier/lower relational tensor
 
-**Status:** `CANONICAL_VERBATIM` / `HHS_NATIVE_SEMANTIC`
+**Status:** `DEVELOPMENT_VERBATIM` / `HHS_NATIVE_SEMANTIC`
 
 ```text
 List(List((x*y),x+y,(y*x)),List((x*y)-(z*w),x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),(w*z)-(y*x)),List((w*z),z+w,(z*w)))
@@ -92,7 +150,7 @@ A representative directional collapse relation used by the system discussion is:
 
 The equality here is an HHS typed projection relation, not a claim that the symbols are ordinary scalars in every context.
 
-## 2.2 Local imaginary phase-plane collapse tensor
+## 3.2 Local imaginary phase-plane collapse tensor
 
 The local right-hand collapse surface exposes quarter-cycle positions:
 
@@ -124,9 +182,9 @@ No fixed mapping of `x,y,z,w` to the four corners is asserted here unless orient
 
 ---
 
-# 3. HHS zero, division, nesting, and collapse semantics
+# 4. HHS zero, division, nesting, and collapse semantics
 
-## 3.1 Native zero
+## 4.1 Native zero
 
 **Status:** `HHS_NATIVE_SEMANTIC`
 
@@ -138,7 +196,7 @@ Inside the designated HHS algebraic boundary:
 
 Therefore a visible `0` in the phase/collapse tensor is not automatically an empty or invalid cell.
 
-## 3.2 Native zero-over-zero
+## 4.2 Native zero-over-zero
 
 **Status:** `HHS_NATIVE_SEMANTIC`
 
@@ -148,7 +206,7 @@ Therefore a visible `0` in the phase/collapse tensor is not automatically an emp
 
 The numerator-zero and denominator-zero are typed closed phase states. `/` is permitted to encode their relation within the HHS boundary. This convention is scoped to HHS and does not redefine ordinary field division outside the typed runtime.
 
-## 3.3 Binary and trinary collapse surfaces
+## 4.3 Binary and trinary collapse surfaces
 
 ```text
 P in {-1,0,+1}
@@ -171,9 +229,9 @@ binary collapse = 0 or 1
 
 ---
 
-# 4. Fundamental exact constants and phase closure
+# 5. Fundamental exact constants and phase closure
 
-## 4.1 HHS constant basis
+## 5.1 HHS constant basis
 
 **Status:** `HHS_NATIVE_SEMANTIC`
 
@@ -192,7 +250,7 @@ f²=13
 g²=21
 ```
 
-## 4.2 HHS Euler / O identity
+## 5.2 HHS Euler / O identity
 
 **Status:** `HHS_NATIVE_SEMANTIC`
 
@@ -204,7 +262,7 @@ E^(O x)=x²
 
 `O` must not be replaced by an isolated projection such as `O²==O`.
 
-## 4.3 72-cycle closure
+## 5.3 72-cycle closure
 
 ```text
 u^72 = u^0
@@ -228,17 +286,15 @@ with involutive consistency.
 
 ---
 
-# 5. Reciprocal geometry and phase inversion
+# 6. Reciprocal geometry and phase inversion
 
-## 5.1 Pythagorean-square reciprocal surface
+## 6.1 Pythagorean-square reciprocal surface
 
-**Status:** `HHS_NATIVE_SEMANTIC` in the current discussion; preserve intact
+**Status:** `HHS_NATIVE_SEMANTIC` in the current development discussion; preserved intact
 
 ```text
 (a²+b²=c²)²=P⁴
 ```
-
-This is used as the reciprocal entanglement / phase-inverted geometry law in the current Lane 5 reasoning.
 
 Associated surfaces:
 
@@ -248,25 +304,20 @@ AB=P⁴
 A/B : 1 : B/A
 ```
 
-The HHS-native inversion requirements can be expressed conceptually as:
+The HHS-native inversion requirement can be expressed conceptually as:
 
 ```text
 I(I(S)) = S
 ```
 
-and phase cancellation as a balanced junction between reciprocal partners. The operator notation is explanatory unless and until bound by a versioned ABI contract.
+The operator notation is explanatory unless and until bound by a versioned ABI contract.
 
-## 5.2 Macro reciprocal projection
+## 6.2 Macro reciprocal projection
 
-The boundary contains:
+Development uses:
 
 ```text
 P² = pq + 2P/(p+q)
-```
-
-and development also uses the exact licensed branch:
-
-```text
 P² - pq = 1
 ```
 
@@ -283,13 +334,13 @@ Therefore `p,q` satisfy the derived quadratic:
 lambda² - 2P lambda + (P²-1) = 0
 ```
 
-This derivation is a projection result. It does not replace the intact canonical constructor surface.
+This derivation is a projection result. It does not replace an intact canonical constructor surface.
 
 ---
 
-# 6. Lo Shu / VM81 / Hash72 exact geometry
+# 7. Lo Shu / VM81 / Hash72 exact geometry
 
-## 6.1 Lo Shu normalization surface
+## 7.1 Lo Shu normalization surface
 
 The tensor source uses:
 
@@ -297,15 +348,15 @@ The tensor source uses:
 List(List(4,9,2),List(3,5,7),List(8,1,6))
 ```
 
-whose standard row/column/diagonal invariant is:
+whose literal standard row/column/principal-diagonal invariant is:
 
 ```text
 15
 ```
 
-The repository boundary contract uses that Lo Shu invariant. HHS may use recursively hydrated or scaled interpretations elsewhere, but the literal `3×3` square above sums to `15` on each standard row, column, and principal diagonal.
+The current repository boundary contract uses that Lo Shu invariant. Recursively hydrated/scaled interpretations elsewhere do not change the literal `3×3` arithmetic.
 
-## 6.2 Local cardinality identities
+## 7.2 Local cardinality identities
 
 **Status:** `EXECUTED_EXACT`
 
@@ -317,7 +368,7 @@ The repository boundary contract uses that Lo Shu invariant. HHS may use recursi
 72^72 = 5184^36
 ```
 
-## 6.3 Exact full-manifold cardinality
+## 7.3 Exact full-manifold cardinality
 
 ```text
 72^72 =
@@ -337,7 +388,7 @@ Native address container:
 56 bytes = 448 available bits
 ```
 
-## 6.4 Base-72 serialization
+## 7.4 Base-72 serialization
 
 Conceptual exact coordinate:
 
@@ -349,7 +400,7 @@ N = sum(i=0..71) g_i * 72^i
 
 The runtime uses canonical BigInt byte serialization rather than host floats.
 
-## 6.5 Dual local address readout
+## 7.5 Dual local address readout
 
 ```text
 local = 72*hash72_major + hash72_minor
@@ -359,9 +410,9 @@ local = 64*cell81 + operation64
 
 ---
 
-# 7. Hash216 transition witness logic
+# 8. Hash216 transition witness logic
 
-## 7.1 Three-part transition structure
+## 8.1 Three-part transition structure
 
 HHS uses the conceptual three-part witness relation:
 
@@ -374,7 +425,7 @@ previous state
 
 with three 72-symbol witness surfaces composing the 216-symbol representation.
 
-## 7.2 Direct witness route
+## 8.2 Direct witness route
 
 **Status:** `EXECUTED_EXACT` contract structure
 
@@ -394,7 +445,7 @@ W_direct =
 
 The route is candidate-only and is not allowed to synthesize authoritative canonical Hash216 state.
 
-## 7.3 Decision relation used in current Lane 5 reasoning
+## 8.3 Decision relation used in current Lane 5 reasoning
 
 Conceptual candidate tuple:
 
@@ -428,9 +479,9 @@ These set expressions document the decision logic; the executable ABI remains au
 
 ---
 
-# 8. Lane 5 1.48 stream equations and invariants
+# 9. Lane 5 1.48 stream equations and invariants
 
-## 8.1 Address invariant
+## 9.1 Address invariant
 
 ```text
 0 <= address < 72^72
@@ -443,7 +494,7 @@ Boundary tests:
 72^72     -> rejected
 ```
 
-## 8.2 Stream-memory invariant
+## 9.2 Stream-memory invariant
 
 The native stream reducer consumes one route at a time:
 
@@ -465,7 +516,7 @@ O(1)
 
 This does not claim that external candidate generation or persistent vector storage is `O(1)`.
 
-## 8.3 Counter saturation
+## 9.3 Counter saturation
 
 For observational counters:
 
@@ -475,7 +526,7 @@ count_(k+1) = min(UINT64_MAX, count_k + 1)
 
 while candidate processing continues and a saturation flag is recorded. Counter saturation does not alter exact route ordering or canonical authority.
 
-## 8.4 Zero-intermediate invariant
+## 9.4 Zero-intermediate invariant
 
 ```text
 materialized_intermediate_states = 0
@@ -485,7 +536,7 @@ is required for an admitted direct route.
 
 ---
 
-# 9. Integer translation-pair logic
+# 10. Integer translation-pair logic
 
 **Status:** `EXECUTED_EXACT` when used through the boundary contract
 
@@ -525,9 +576,9 @@ This reciprocal pair is used as an integer-preserving translation surface rather
 
 ---
 
-# 10. Exact phase-radius and hyperbolic drift projections
+# 11. Exact phase-radius and hyperbolic drift projections
 
-## 10.1 Phase radius
+## 11.1 Phase radius
 
 **Status:** exact candidate/projection when lowered to rational arithmetic
 
@@ -541,7 +592,7 @@ with sign branch tied to:
 P in {-1,0,+1}
 ```
 
-## 10.2 Reference hyperbolic metric
+## 11.2 Reference hyperbolic metric
 
 **Status:** `REFERENCE_ONLY` until exact lowering/admission
 
@@ -569,9 +620,9 @@ The labels are reference semantics unless the values are represented by the exac
 
 ---
 
-# 11. GFE reciprocal thermodynamic algebra
+# 12. GFE reciprocal thermodynamic algebra
 
-## 11.1 Exact reciprocal closure
+## 12.1 Exact reciprocal closure
 
 For admitted nonzero `G`:
 
@@ -594,7 +645,7 @@ Fixed point:
 G=1
 ```
 
-## 11.2 Exact rational state ideal
+## 12.2 Exact rational state ideal
 
 For `alpha in Q`, `alpha != 0`:
 
@@ -613,7 +664,7 @@ Q[g,h,rho] / I_alpha ~= Q
 
 The generic reciprocal ideal is not being asserted to be a field; the field result is for the instantiated state ideal.
 
-## 11.3 Calibration alpha=5/4
+## 12.3 Calibration alpha=5/4
 
 ```text
 alpha      = 5/4
@@ -633,9 +684,9 @@ The Coq mirror includes explicit S-polynomial membership/reduction certificates 
 
 ---
 
-# 12. Entropy-like and thermodynamic reference surfaces
+# 13. Entropy-like and thermodynamic reference surfaces
 
-## 12.1 Entropy-like exact/symbolic relation
+## 13.1 Entropy-like exact/symbolic relation
 
 ```text
 S_q = ln(Omega_q)
@@ -643,7 +694,7 @@ S_q = ln(Omega_q)
 
 Only a valid positive exact rational `Omega_q` or an explicitly symbolic logarithm is admitted by the relevant exact boundary. Host floating logarithms do not become canonical merely by evaluation.
 
-## 12.2 Thermodynamic pair
+## 13.2 Thermodynamic pair
 
 **Status:** `REFERENCE_ONLY` unless exactly lowered
 
@@ -654,7 +705,7 @@ d epsilon = theta d sigma
 
 ---
 
-# 13. Exact deterministic PRNG surfaces
+# 14. Exact deterministic PRNG surfaces
 
 **Status:** exact integer reference/candidate logic
 
@@ -682,7 +733,7 @@ The exact rational form avoids granting floating approximation canonical authori
 
 ---
 
-# 14. Standard quantum equations retained as reference-only surfaces
+# 15. Standard quantum equations retained as reference-only surfaces
 
 The Lane 5 boundary contract contains standard quantum-mechanical equations for comparison/reference. They do **not** carry canonical HHS authority unless lowered to an exact typed representation.
 
@@ -739,9 +790,9 @@ These equations are included to make the boundary explicit, not to claim that th
 
 ---
 
-# 15. Performance equations and measurement semantics
+# 16. Performance equations and measurement semantics
 
-## 15.1 Candidate throughput
+## 16.1 Candidate throughput
 
 For a measured candidate count `C` and observational duration `T_ns`:
 
@@ -760,7 +811,7 @@ floor throughput = 263,727 candidates/s
 
 This is a real host benchmark of candidate validation/reduction.
 
-## 15.2 Cold workload byte throughput
+## 16.2 Cold workload byte throughput
 
 For exact source bytes `B` and accumulated observational cold time `T_ns`:
 
@@ -776,7 +827,7 @@ B = 1,984,238 bytes
 floor = 197,797 bytes/s
 ```
 
-## 15.3 Ledger append floor
+## 16.3 Ledger append floor
 
 For `L` verified append operations:
 
@@ -792,7 +843,7 @@ L = 1,000
 floor = 223 appends/s
 ```
 
-## 15.4 Represented span is not executed-state throughput
+## 16.4 Represented span is not executed-state throughput
 
 If a candidate receipt says a route represents a span of many logical states, the optimizer does not thereby execute those states one by one. Therefore:
 
@@ -804,7 +855,7 @@ is an amortized represented-space ratio, not physical per-state execution throug
 
 ---
 
-# 16. Formal lemma equations
+# 17. Formal lemma equations
 
 The Pass 144 corpus records the following named mathematical obligations.
 
@@ -825,7 +876,7 @@ The executed exact residual is tied to the reciprocal construction and its ratio
 ln(G) + (-ln(G)) = 0
 ```
 
-inside the symbolic reciprocal sum, yielding the rational closure in Section 11.
+inside the symbolic reciprocal sum, yielding the rational closure in Section 12.
 
 ## HHS-L144-004 state-ideal quotient field
 
@@ -859,29 +910,30 @@ Inherited frozen parent artifacts retain their recorded byte identities/hashes u
 
 ---
 
-# 17. Equation provenance matrix
+# 18. Equation provenance matrix
 
 | Surface | Status | Primary authority |
 |---|---|---|
-| Full solver/evolution equation | `CANONICAL_VERBATIM` | exact boundary contract |
-| MatrixTimes/Ncalc collapse equation | `CANONICAL_VERBATIM` | exact boundary contract |
-| x/y/z/w relational tensor | `CANONICAL_VERBATIM` | exact boundary + development source |
+| 681-byte exact boundary `B` | `CANONICAL_VERBATIM` | exact boundary contract |
+| Development constructor/evolution surface | `DEVELOPMENT_VERBATIM` | current development equation registry |
+| MatrixTimes/Ncalc collapse surface | `DEVELOPMENT_VERBATIM` | current development equation registry |
+| x/y/z/w relational tensor | `DEVELOPMENT_VERBATIM` / `HHS_NATIVE_SEMANTIC` | current development equation registry |
 | `72^72=5184^36` | `EXECUTED_EXACT` | 1.45/1.46/1.48 tests |
 | `[0,72^72)` address validation | `EXECUTED_EXACT` | 1.48 ABI/test |
 | direct witness tuple | `EXECUTED_EXACT` contract structure | 1.46 |
 | zero intermediate states | `EXECUTED_EXACT` | 1.46/1.47/1.48 |
 | reciprocal GFE closure | exact symbolic/rational | formal corpus / Coq mirror |
 | `(a²+b²=c²)²=P⁴` inversion surface | `HHS_NATIVE_SEMANTIC` | current HHS development semantics |
-| `0/0` entanglement slot | `HHS_NATIVE_SEMANTIC` | typed HHS boundary semantics |
+| `0/0` entanglement slot | `HHS_NATIVE_SEMANTIC` | typed HHS development semantics |
 | `E^(O x)=x²` | `HHS_NATIVE_SEMANTIC` | HARMONICODE O definition |
-| standard quantum equations | `REFERENCE_ONLY` | exact boundary reference section |
+| standard quantum equations | `REFERENCE_ONLY` | exact boundary reference manifold |
 | host timings | `OBSERVATIONAL` | benchmark evidence |
 
 ---
 
-# 18. Non-reduction closure
+# 19. Non-reduction closure
 
-The purpose of collecting these equations in one place is not to flatten them into a conventional scalar model. HHS uses multiple exact readout surfaces—integer, rational, tensor, phase, binary, trinary, BigInt, VM81, Hash72, and Hash216—to constrain and cross-check the same admitted computational state.
+The purpose of collecting these equations in one place is not to flatten them into a conventional scalar model. HHS uses multiple exact readout surfaces—integer, rational, tensor, phase, binary, trinary, BigInt, VM81, Hash72, and Hash216—to constrain and cross-check admitted computational states.
 
 Accordingly:
 
@@ -899,4 +951,4 @@ exact typed admission
 
 for canonical authority.
 
-The companion performance paper documents which of these equations have executable workload evidence and which remain semantic/reference surfaces.
+The companion performance paper documents which equations have executable workload evidence and which remain semantic/reference surfaces.
