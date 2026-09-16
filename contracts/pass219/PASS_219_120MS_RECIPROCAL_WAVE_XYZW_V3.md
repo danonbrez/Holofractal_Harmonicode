@@ -1,4 +1,4 @@
-# Pass 219 — 120 ms Reciprocal x,y,z,w Wave-Normalization Benchmark v3
+# Pass 219 — 120 ms Global Reciprocal x,y,z,w Wave Benchmark v3
 
 **Date:** 2026-09-16  
 **Status:** normative benchmark contract  
@@ -6,57 +6,62 @@
 
 ## 1. Objective
 
-Measure HHS/Lane 5 and an optimized exact conventional architecture in a reciprocal four-pass design where **all four measurements have the identical wall-clock bound**:
+Measure HHS/Lane 5 and the optimized exact conventional comparator against **one frozen deterministic workload W**, with all four x,y,z,w executions required to converge to the same exact state whenever the runner provides a reasonable per-leg completion interval.
+
+The timing authority is one global measured pass budget:
 
 ```text
-Delta_t = 120,000,000 ns = 120 ms
-
-A / x = HHS maximum exact capacity on stream X during Delta_t
-B / y = optimized conventional maximum exact capacity on stream Y during Delta_t
-C / z = optimized conventional progress on frozen Dataset X during Delta_t
-D / w = HHS progress on frozen Dataset Y during Delta_t
+T_global = 120,000,000 ns = 120 ms
 ```
 
-The equal `Delta_t` makes `x,y,z,w` directly comparable rate/amplitude channels. No leg receives an unbounded completion interval.
-
-## 2. Two datasets, two observations each
-
-Use two deterministic domain-separated lazy streams:
+`120 ms` is NOT a per-leg allowance. If the batch contains `N` statistical samples, the four legs of every sample share the same global budget:
 
 ```text
-X_i = Query(seed_X, i)
-Y_i = Query(seed_Y, i)
-seed_X != seed_Y
+leg_budget_ns = floor(T_global / (4*N))
+nominal_measured_budget_ns = 4*N*leg_budget_ns <= T_global
 ```
 
-A alone selects Dataset X by processing the longest complete prefix it can finish inside its 120 ms producer window.
+No batching strategy may multiply the global 120 ms observation budget.
 
-B alone selects Dataset Y by processing the longest complete prefix it can finish inside its 120 ms producer window.
+## 2. One workload, four exact routes
 
-The frozen dataset identities are:
+Use one deterministic lazy workload:
 
 ```text
-Dataset X = (seed_X, A.query_count, A transition sum, A descriptor bits, A descriptor digest, A endpoint digest)
-Dataset Y = (seed_Y, B.query_count, B transition sum, B descriptor bits, B descriptor digest, B endpoint digest)
+W_i = Query(seed_W, i)
+W = ordered prefix of dataset_queries queries
 ```
 
-C may process only Dataset X, in original order, for 120 ms.
-D may process only Dataset Y, in original order, for 120 ms.
-
-Thus each dataset appears in exactly two passes:
+Every sample executes the identical W four ways:
 
 ```text
-X: A -> C
-Y: B -> D
+A / x = HHS exact execution of W
+B / y = optimized conventional exact execution of W
+C / z = optimized conventional exact replay of W
+D / w = HHS exact replay of W
 ```
 
-Neither reciprocal pass may choose a new dataset, alter a seed, reorder queries, or process beyond the frozen producer prefix.
+A/B/C/D may differ in execution mechanism and completion time. They may not differ in seed, query ordering, query count, arithmetic modulus, target state, or admission semantics applicable to their architecture.
+
+The full frozen state identity is:
+
+```text
+State(W) = (
+  query_count,
+  represented_transition_sum,
+  descriptor_bits,
+  ordered_descriptor_digest,
+  ordered_endpoint_digest
+)
+```
+
+When all four complete, all five fields MUST be identical across A/B/C/D and MUST equal the independently generated reference State(W).
 
 ## 3. Architectures
 
 ### HHS architecture: A and D
 
-Each completed query requires:
+Each query requires:
 
 ```text
 exact affine composition
@@ -78,169 +83,228 @@ signed environmental VM81 admission required
 
 ### Optimized conventional architecture: B and C
 
-Each completed query uses exact 2x2 homogeneous matrix exponentiation by squaring over the same modular integer arithmetic. It has no Lane 5 admission step.
+Each query uses exact 2x2 homogeneous matrix exponentiation by squaring over the same modular integer arithmetic. It has no Lane 5 admission step.
 
-This is the optimized skip-ahead comparator. The v1 literal-step comparator remains separate evidence.
+The comparator therefore changes execution route, not the mathematical target.
 
-## 4. Equal-time timing rule
+## 4. Runner-calibrated reasonable-completion threshold
 
-Every pass receives exactly the same nominal bound:
+Before the measured 120 ms pass begins, the executable performs an untimed setup/calibration phase on the same W. Calibration is outside the measured global pass and exists only to estimate the minimum reasonable per-leg interval on the current runner.
+
+The runner records:
 
 ```text
-Delta_t = 120 ms
+calibration_hhs_completion_ns
+calibration_conventional_completion_ns
 ```
 
-Producer passes A/B stop starting new queries once the clock reaches `Delta_t`.
-
-Reciprocal passes C/D stop when either:
+and derives:
 
 ```text
-(a) the full frozen dataset is complete, or
-(b) Delta_t is reached.
+base_completion_ns = max(calibration_hhs_completion_ns,
+                         calibration_conventional_completion_ns)
+reasonable_completion_threshold_ns = base_completion_ns
+                                   + max(base_completion_ns/2, 100000 ns)
 ```
 
-If the reciprocal architecture completes the frozen dataset early, it records `dataset_complete=true` and the exact `completion_elapsed_ns`, but its normalized measurement interval remains `Delta_t`. The unused interval is not reused for a different dataset.
-
-The analyzer permits only bounded current-query overrun and rejects any pass outside the declared timing tolerance.
-
-## 5. Reciprocal prefix identity
-
-When C or D does not finish its frozen dataset inside 120 ms, it must still prove that its completed prefix is exactly the producer's corresponding prefix.
-
-For every reciprocal pass report:
+The batch chooses the largest sample count up to the configured maximum for which:
 
 ```text
-completed prefix query count
-completed prefix represented-transition sum
-completed prefix descriptor bits
-ordered descriptor digest
-ordered endpoint digest
+floor(T_global / (4*N)) >= reasonable_completion_threshold_ns
 ```
 
-The producer prefix of the same length is independently replayed and MUST match all five fields.
+If no positive N satisfies the inequality, N=1 and the evidence explicitly records that the 30 ms per-leg slice is below the measured reasonable-completion threshold.
 
-If the reciprocal pass completes the full dataset, these fields MUST equal the full producer dataset identity.
+This gives more samples only when the runner is fast enough to preserve exact completion inside the same 120 ms global pass.
 
-## 6. Raw x,y,z,w measurement channels
+## 5. Completion rule
 
-For one common `Delta_t`, define raw completed represented work:
+The normative case is:
 
 ```text
-x = A.represented_transitions_completed
-    [HHS on X during Delta_t]
-
-y = B.represented_transitions_completed
-    [conventional on Y during Delta_t]
-
-z = C.represented_transitions_completed
-    [conventional on frozen X during Delta_t]
-
-w = D.represented_transitions_completed
-    [HHS on frozen Y during Delta_t]
+leg_budget_ns >= reasonable_completion_threshold_ns
 ```
 
-Because all four use the same time interval, their rates are simply:
+In that case every A/B/C/D workload in every sample MUST:
 
 ```text
-R_x = x / Delta_t
-R_y = y / Delta_t
-R_z = z / Delta_t
-R_w = w / Delta_t
+complete all queries in W
+produce State(W)
+prove exact endpoint/descriptor identity
 ```
 
-The benchmark SHALL also report query counts, descriptor bits, endpoint state-space bits-equivalent, exact control-operation counts, dataset completion fractions, and early-completion timestamps.
+Any incomplete leg is a hard failure.
 
-## 7. Dimensionless normalized amplitudes
-
-To insert measured values into an algebraic `x,y,z,w` tensor without mixing physical units, first normalize the four same-unit rates against one fixed positive reference `Gamma_0`:
+Only when:
 
 ```text
-x_hat = R_x / Gamma_0
-y_hat = R_y / Gamma_0
-z_hat = R_z / Gamma_0
-w_hat = R_w / Gamma_0
+leg_budget_ns < reasonable_completion_threshold_ns
 ```
 
-`Gamma_0` SHALL be recorded explicitly. v3 uses a fixed unit reference of one represented transition per second for the primary transition-rate tensor, so the numerical amplitudes equal the measured rates while remaining dimensionless by definition of the normalization unit.
+may a timed leg terminate at the boundary before W is complete. Such an incomplete leg is not treated as a different valid state. It is recorded as incomplete work caused by an intentionally sub-threshold time slice and must still match the exact independently replayed prefix it claims to have completed.
 
-A second endpoint-information tensor may use one endpoint bit-equivalent per second as its reference.
+Thus the benchmark never treats architecture-specific partial work as equivalent to completion.
 
-## 8. HHS reciprocal measurement tensor
+## 6. Signed time/work residual
 
-The measured dimensionless channels may be projected into the existing ordered relational surface:
+Physical wall-clock time remains non-negative. HHS "negative time" in this benchmark is represented as signed slack relative to the common per-leg boundary.
+
+For a completed leg i:
 
 ```text
-T(x_hat,y_hat,z_hat,w_hat) =
+epsilon_i = (completion_elapsed_ns - leg_budget_ns) / leg_budget_ns
+```
+
+so early completion is negative and exact-boundary completion is zero.
+
+For an incomplete sub-threshold leg i:
+
+```text
+epsilon_i = (target_represented_work - completed_represented_work)
+            / target_represented_work
+```
+
+which is positive remaining-work deficit.
+
+This gives one signed coordinate system in which early exact completion and unfinished work have opposite signs without asserting negative physical clock time.
+
+## 7. x,y,z,w state vector
+
+For sample n define:
+
+```text
+Psi_n = (x_n, y_n, z_n, w_n)
+      = (epsilon_A, epsilon_B, epsilon_C, epsilon_D)
+```
+
+The state target is identical for all four legs; the x,y,z,w channels therefore encode execution displacement around one exact state, rather than four different datasets.
+
+Secondary evidence SHALL preserve:
+
+```text
+completion time
+completed query count
+represented transitions
+represented transitions/second
+descriptor bits
+matrix/affine operation counts
+Lane 5 admissions
+endpoint digest
+descriptor digest
+```
+
+## 8. Relational tensor
+
+The dimensionless signed residuals may be projected directly into the ordered relational surface:
+
+```text
+T(x,y,z,w) =
 
 List(
-  List((x_hat*y_hat), x_hat+y_hat, (y_hat*x_hat)),
+  List((x*y), x+y, (y*x)),
   List(
-    (x_hat*y_hat)-(z_hat*w_hat),
-    x_hat+y_hat-z_hat-w_hat
-      +(x_hat*y_hat)+(y_hat*x_hat)
-      -(z_hat*w_hat)-(w_hat*z_hat),
-    (w_hat*z_hat)-(y_hat*x_hat)
+    (x*y)-(z*w),
+    x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),
+    (w*z)-(y*x)
   ),
-  List((w_hat*z_hat), z_hat+w_hat, (z_hat*w_hat))
+  List((w*z), z+w, (z*w))
 )
 ```
 
-The scalar numeric projection is commutative, so numerically `x_hat*y_hat == y_hat*x_hat` and `z_hat*w_hat == w_hat*z_hat`. The ordered labels remain preserved in evidence because HHS operator direction is a typed semantic channel even when this scalar benchmark projection has equal product magnitudes.
-
-The central reciprocal imbalance observable is:
+with reciprocal imbalance:
 
 ```text
-Delta_xyzw = x_hat*y_hat - z_hat*w_hat
+Delta_xyzw = x*y - z*w
 ```
 
-and the paired same-dataset capacity ratios are:
+The ordered labels remain preserved even where this scalar projection has commutative numeric products.
+
+## 9. Probabilistic cancellation hypothesis
+
+Across N samples, the analyzer may test signed architecture balance. Define:
 
 ```text
-rho_X = x / z     if z > 0
-rho_Y = w / y     if y > 0
+H_n = (epsilon_A + epsilon_D)/2
+C_n = (epsilon_B + epsilon_C)/2
+B_n = H_n + C_n
 ```
 
-`rho_X` asks how much producer-X represented work HHS resolves in the common window relative to conventional progress on the same frozen X.
-
-`rho_Y` asks how much HHS progresses on conventional-produced Y relative to the conventional capacity that created Y.
-
-## 9. Discrete-time wave series
-
-One four-pass execution produces one reciprocal state vector:
+The empirical cancellation hypothesis is:
 
 ```text
-Psi_n = (x_hat_n, y_hat_n, z_hat_n, w_hat_n)
+E[B_n] = 0
 ```
 
-Repeated executions with the same benchmark definition and common `Delta_t` form a discrete series. Only with at least three successive normalized observations may a second-time difference be reported:
+This is a statistical hypothesis, not an admission assumption. The analyzer reports the sample mean and confidence interval.
+
+When all four routes complete in every sample, all residuals may have the same sign; in that regime the cancellation test is reported but is not required for benchmark correctness. Positive incomplete-work terms arise only in an explicitly sub-threshold regime.
+
+## 10. Discrete reciprocal wave equation
+
+At least three samples are required for a second-difference test. With fixed sample spacing defined by the four-leg allocation inside the global pass:
 
 ```text
-D2_t Psi_n = (Psi_(n+1) - 2*Psi_n + Psi_(n-1)) / Delta_t^2
+D2 Psi_n = Psi_(n+1) - 2*Psi_n + Psi_(n-1)
 ```
 
-This is the precise discrete wave/curvature comparison observable for benchmark evolution over time. A single four-pass run defines `Psi_n` and `T(Psi_n)`; it does not by itself establish a physical wave equation.
+Use the reciprocal graph:
 
-## 10. Acceptance
+```text
+x <-> z
+y <-> w
+```
+
+and fit:
+
+```text
+D2 Psi_n + lambda * L_reciprocal(Psi_n) = eta_n
+```
+
+where `L_reciprocal` is the graph Laplacian and `eta_n` is measured residual. The fit SHALL report lambda and normalized residual; it does not silently assume that eta_n=0.
+
+## 11. Global timing acceptance
+
+The executable starts one monotonic batch timer immediately before sample 0/A and stops it immediately after sample N/D.
+
+It SHALL report:
+
+```text
+global_budget_ns = 120000000
+sample_count = N
+leg_budget_ns
+nominal_measured_budget_ns = 4*N*leg_budget_ns
+batch_elapsed_ns
+```
+
+Acceptance requires:
+
+```text
+nominal_measured_budget_ns <= 120000000
+```
+
+and the batch wall-clock duration must remain within the declared bounded current-query/timer-observation tolerance of the 120 ms global budget. Early completion does not get reassigned to enlarge another leg's nominal budget.
+
+## 12. Acceptance
 
 The v3 cycle passes only if:
 
 ```text
-A/B/C/D all use the same Delta_t = 120 ms
-all four execute sequentially on one runner with one active benchmark thread
-A and D use the identical HHS architecture
-B and C use the identical optimized conventional architecture
-X is selected only by A and consumed only by C
-Y is selected only by B and consumed only by D
-C's completed prefix exactly matches A's prefix of equal length
-D's completed prefix exactly matches B's prefix of equal length
-no reciprocal pass processes beyond its frozen dataset
+one frozen W is used by A/B/C/D
+all four execute sequentially with one active benchmark thread
+A and D use the identical HHS route
+B and C use the identical optimized conventional route
+4*N*leg_budget_ns <= 120 ms
+runner calibration and derived threshold are recorded
+if leg_budget_ns >= threshold: every leg completes W
+if every leg completes: all four produce exactly State(W)
+any incomplete sub-threshold leg proves its exact completed prefix
 all HHS endpoints pass independent verification and Lane 5 admission
 HHS materialized_intermediate_states remains zero
-raw integer evidence is preserved before normalized/tensor calculations
+raw integer evidence is preserved before signed/tensor calculations
 ```
 
-## 11. Claim scope
+## 13. Claim scope
 
-This benchmark creates a falsifiable equal-time reciprocal architecture comparison on two exact deterministic datasets. It defines a mathematically uniform `x,y,z,w` measurement surface and discrete-time normalization suitable for HHS relational analysis.
+This benchmark measures four exact execution routes to one deterministic state under one globally bounded 120 ms pass, with runner-adaptive statistical sampling. It makes signed early-completion slack and unfinished-work deficit commensurable as dimensionless benchmark residuals.
 
-It does not claim that the scalar benchmark tensor is a physical quantum wavefunction, nor does it by itself establish universal classical-computing supremacy.
+It does not claim negative physical wall-clock time, does not treat incomplete work as a completed state, and does not assume a zero-residual wave equation or universal architecture superiority.
