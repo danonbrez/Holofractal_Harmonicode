@@ -1,0 +1,39 @@
+name: Pass 219 Non-Agentic Allegorical Warm Hydration v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
+      - 'tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
+      - 'contracts/pass219/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1_RESTART_20260916.md'
+      - '.github/workflows/pass219-nonagentic-allegorical-warm-hydration-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
+      - 'tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
+      - 'contracts/pass219/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_219_NONAGENTIC_ALLEGORICAL_WARM_HYDRATION_V1_RESTART_20260916.md'
+      - '.github/workflows/pass219-nonagentic-allegorical-warm-hydration-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-allegorical-warm-hydration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile changed Python surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py
+          python -m py_compile tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py
+      - name: Run bounded non-agentic allegorical warm-hydration tests
+        run: pytest -q tests/pass219/test_hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py
