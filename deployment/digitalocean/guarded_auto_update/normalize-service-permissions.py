@@ -214,7 +214,12 @@ def normalize_unified_ledger_permissions(
 ) -> dict[str, Any]:
     """Normalize only the canonical unified-ledger service permission surface."""
 
-    runtime_output_dir = runtime_output_dir.resolve()
+    requested_runtime_output_dir = Path(runtime_output_dir)
+    if requested_runtime_output_dir.is_symlink():
+        raise RuntimeError(
+            f"refusing symlink in unified ledger permission boundary: {requested_runtime_output_dir}"
+        )
+    runtime_output_dir = requested_runtime_output_dir.resolve()
     if require_root and os.geteuid() != 0:
         raise PermissionError("runtime ledger permission normalization requires root")
     if not runtime_output_dir.is_dir():
@@ -232,6 +237,13 @@ def normalize_unified_ledger_permissions(
     ledger_path = runtime_output_dir / "hhs_unified_hash72_ledger.json"
     journal_path = Path(f"{ledger_path}.journal.jsonl")
 
+    # Preflight the complete exact boundary before changing any mode or group.
+    # This guarantees a symlink refusal is zero-write rather than a partial
+    # permission mutation followed by failure.
+    for path in (runtime_output_dir, ledger_path, journal_path):
+        if path.is_symlink():
+            raise RuntimeError(f"refusing symlink in unified ledger permission boundary: {path}")
+
     candidates: list[tuple[Path, bool]] = [(runtime_output_dir, True)]
     if ledger_path.exists():
         candidates.append((ledger_path, False))
@@ -240,8 +252,6 @@ def normalize_unified_ledger_permissions(
 
     changed: list[str] = []
     for path, directory in candidates:
-        if path.is_symlink():
-            raise RuntimeError(f"refusing symlink in unified ledger permission boundary: {path}")
         before = path.stat()
         before_identity = (before.st_gid, stat.S_IMODE(before.st_mode))
         _set_group_mode(
