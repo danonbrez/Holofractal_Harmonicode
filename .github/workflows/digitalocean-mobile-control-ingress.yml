@@ -1,0 +1,51 @@
+name: DigitalOcean Mobile Control and Vector Ingress
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx'
+      - 'hhs_gui/runtime_os/workspace/WorkspaceCommandClient.ts'
+      - 'hhs_gui/scripts/live-gui-e2e-source-verify.mjs'
+      - '.github/workflows/digitalocean-production-main.yml'
+      - '.github/workflows/digitalocean-mobile-control-ingress.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-mobile-control:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Runtime OS dependencies
+        working-directory: hhs_gui
+        run: npm install --no-audit --no-fund
+      - name: Verify integrated source contracts
+        working-directory: hhs_gui
+        run: npm run test:e2e:source
+      - name: Typecheck mobile production control
+        working-directory: hhs_gui
+        run: npm run typecheck
+      - name: Build production Runtime OS
+        working-directory: hhs_gui
+        run: npm run build
+      - name: Verify mobile ingress bundle contract
+        run: |
+          set -euo pipefail
+          test -s hhs_gui/dist/index.html
+          grep -R -q '/api/v1/pass174/sdlc/run' hhs_gui/dist/assets
+          grep -R -q '/api/v1/pass174/hash216/query' hhs_gui/dist/assets
+          grep -R -q 'Hydrate vector store' hhs_gui/dist/assets
+          grep -Fq "165.227.220.193" .github/workflows/digitalocean-production-main.yml
+          grep -Fq "StrictHostKeyChecking=yes" .github/workflows/digitalocean-production-main.yml
+          grep -Fq "Stale pinned production SSH host key" .github/workflows/digitalocean-production-main.yml
+          ! grep -Fq "137.184.223.84" .github/workflows/digitalocean-production-main.yml
+          echo 'HHS_DIGITALOCEAN_MOBILE_CONTROL_VECTOR_INGRESS_GATE=PASS'
