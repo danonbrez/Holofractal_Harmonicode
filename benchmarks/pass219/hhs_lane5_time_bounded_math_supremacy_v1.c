@@ -194,7 +194,7 @@ static void fill_digest(uint8_t out[32], uint64_t seed) {
     }
 }
 
-static int lane5_admit(uint64_t current, uint64_t goal, uint64_t cost, uint64_t workload, uint64_t *admission_ns) {
+static int lane5_admit(uint64_t current, uint64_t goal, uint64_t math_compositions, uint64_t workload, uint64_t *admission_ns) {
     HHSExactPass219Lane5UnboundedWorkloadRouteV1 route;
     HHSExactPass219Lane5UnboundedWorkloadReceiptV1 receipt;
     uint8_t z[1] = {0U}, cb[8], gb[8];
@@ -209,12 +209,14 @@ static int lane5_admit(uint64_t current, uint64_t goal, uint64_t cost, uint64_t 
     fill_digest(route.provenance_sha256, current ^ UINT64_C(0xa5a5));
     fill_digest(route.forbidden_boundary_sha256, UINT64_C(0x33));
     fill_digest(route.reciprocal_witness_sha256, goal ^ UINT64_C(0x44));
-    fill_digest(route.route_witness_sha256, cost ^ goal ^ UINT64_C(0x55));
-    route.workload_byte_count = workload; route.integer_route_cost = cost;
-    route.evidence_count = 5U; route.contradiction_check_count = 1U;
+    fill_digest(route.route_witness_sha256, math_compositions ^ goal ^ UINT64_C(0x55));
+    route.workload_byte_count = workload;
+    route.evidence_count = 5U;
+    route.contradiction_check_count = 1U;
+    route.integer_route_cost = (uint64_t)route.evidence_count + (uint64_t)route.contradiction_check_count + UINT64_C(1);
     route.materialized_intermediate_states = 0U;
     route.phase_slot = 54U; route.inverse_phase_slot = 18U;
-    route.trinary_collapse = 1; route.binary_collapse = 1U; route.nested_zero_slot = 1U;
+    route.trinary_collapse = 0; route.binary_collapse = 0U; route.nested_zero_slot = 1U;
     route.workload_serialization_exact = 1U; route.source_digest_verified = 1U;
     route.replay_witness_verified = 1U; route.exact_goal_reached = 1U; route.contradiction_free = 1U;
     route.reciprocal_phase_verified = 1U; route.bigint_serialization_addressed = 1U;
@@ -222,10 +224,10 @@ static int lane5_admit(uint64_t current, uint64_t goal, uint64_t cost, uint64_t 
     REQUIRE(clock_gettime(CLOCK_MONOTONIC, &s) == 0);
     if (hhs_exact_pass219_lane5_unbounded_workload_route_validate(&route, &receipt) != HHS_EXACT_STATUS_OK) return 0;
     REQUIRE(clock_gettime(CLOCK_MONOTONIC, &e) == 0); *admission_ns = elapsed_ns(&s, &e);
-    return receipt.accepted == 1U && receipt.materialized_intermediate_states == 0U &&
-           receipt.candidate_only == 1U && receipt.canonical_mutation_authority == 0U &&
-           receipt.canonical_hash72_authority == 0U && receipt.canonical_hash216_authority == 0U &&
-           receipt.requires_signed_environmental_vm81_admission == 1U;
+    return receipt.accepted == 1U && receipt.integer_route_cost == UINT64_C(7) &&
+           receipt.materialized_intermediate_states == 0U && receipt.candidate_only == 1U &&
+           receipt.canonical_mutation_authority == 0U && receipt.canonical_hash72_authority == 0U &&
+           receipt.canonical_hash216_authority == 0U && receipt.requires_signed_environmental_vm81_admission == 1U;
 }
 
 static uint64_t time_bound(void) {
