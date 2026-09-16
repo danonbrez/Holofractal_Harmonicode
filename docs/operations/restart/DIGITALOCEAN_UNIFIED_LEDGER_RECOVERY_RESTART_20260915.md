@@ -5,9 +5,12 @@
 - Base exact main: `09f4366a0dc565a41ca41be4708bd015c5fca0fe`
 - Branch: `agent/digitalocean-ledger-recovery-20260915`
 - Pull request: `#467` — `Repair production Hash72 ledger recovery and isolate status probe writes`
-- Implementation head before this restart record: `f84e94e984fad4fe515a13830acdbae14c089a59`
+- Green implementation head: `f84e94e984fad4fe515a13830acdbae14c089a59`
+- Pre-merge restart head: `8bec9e57b73849dce82abd5f472b533168d12dd6`
+- Merged exact main: `bf0fc25ed06073dcc4ade384ce05b9d7c7826aa6`
 - Merge target: `main`
 - Failed exact-main production run that triggered this repair: `35038495093`
+- Current exact-main production recovery run: `35054474028`
 
 ## Frozen production evidence
 
@@ -107,29 +110,49 @@ Implementation head `f84e94e984fad4fe515a13830acdbae14c089a59`:
 - `DigitalOcean Production Exact Main` PR run `35054349726`: **SUCCESS**.
   - `validate-deployment-contract`: PASS;
   - live deploy correctly skipped for pull-request context.
-- PR #467 observed open, non-draft, and mergeable on implementation head.
+- PR #467 observed open, non-draft, and mergeable on implementation head before merge.
+
+Merged exact main `bf0fc25ed06073dcc4ade384ce05b9d7c7826aa6`:
+
+- `HHS Ledger Latency Repairs` run `35054474004`: **SUCCESS** on merged main.
+- `DigitalOcean Production Exact Main` run `35054474028`:
+  - deployment contract: PASS;
+  - exact main checkout: PASS;
+  - canonical frontend build runtime: PASS;
+  - DigitalOcean SSH authority requirement: PASS;
+  - Runtime OS bundle build/seal: PASS;
+  - pinned SSH target configuration: PASS;
+  - strict pinned SSH host/deploy credential preflight: PASS;
+  - exact Runtime OS bundle transfer: PASS;
+  - `Bootstrap guarded updater and promote exact main`: **IN PROGRESS** at this checkpoint;
+  - public HTTPS Runtime OS verification: pending behind guarded promotion.
+- DigitalOcean droplet `598826630` (`hhs-production-01`, `165.227.220.193`, `nyc3`) remained `active`; no reboot/shutdown/rebuild was issued.
+- Independent HTTPS probes during the owner-held recovery transaction returned no listener. This is not accepted as a terminal deployment result while guarded promotion remains active.
+
+The installer ordering was rechecked on merged main: `normalize_production_checkout` executes before the rollback-boundary `wait_for_production_health` loop. Therefore the transition-only recovery hook is positioned before the 600-second rollback-boundary health wait, and the later portion of the same GitHub step also includes the synchronous candidate updater/promotion.
 
 Unrelated Pass 218/219 workflows are not deployment blockers for this dependency-scoped recovery under repository policy.
 
 ## Production mutation state
 
-No production ledger repair was executed from the PR branch. The live production ledger remains unchanged until an exact-main deployment includes this recovery code and passes the existing guarded recovery conditions.
+PR #467 is merged. Production run `35054474028` owns the live guarded deployment transaction. Do not start a competing deployment, reboot the droplet, delete/rebuild the ledger, or push another deployment-triggering commit to `main` while that run owns the transaction.
+
+At this checkpoint the GitHub API does not expose partial text logs for the in-progress deploy job, so there is not yet repository-visible proof that the live transition repair itself completed. Treat the live repair, service recovery, candidate promotion, and public HTTPS result as pending until run `35054474028` reaches a terminal state and its sealed job log can be inspected.
 
 ## Exact next action
 
 ```text
-1. Confirm PR #467 is still mergeable and main remains based on 09f4366a0dc565a41ca41be4708bd015c5fca0fe.
-2. Merge #467 with an expected-head guard.
-3. Verify the new exact main SHA.
-4. Inspect the resulting DigitalOcean Production Exact Main run.
-5. Require evidence of:
-   - SSH preflight PASS;
-   - transition-only ledger recovery receipt and backup;
-   - recovered rollback-boundary service health;
-   - exact-main candidate validation/promotion;
+1. Inspect DigitalOcean Production Exact Main run 35054474028 first; do not launch a competing promotion.
+2. If the run succeeds, inspect the sealed deploy job log and require evidence of:
+   - HHS_PRODUCTION_UNIFIED_LEDGER_RECOVERY_VERIFIED=1 (or a valid-ledger no-op if another authoritative repair already occurred);
+   - recovery backup/receipt path under /var/lib/hhs-guarded-update/unified-ledger-recovery when repair occurred;
+   - rollback-boundary health restoration;
+   - exact-main promotion of bf0fc25ed06073dcc4ade384ce05b9d7c7826aa6;
    - public HTTPS Runtime OS verification.
-6. Verify public `/api/system/status`, `/api/interface/status`, `/`, `/health`, and `/api/v1/pass174/status`.
-7. Execute one real multimodal file ingress through `/api/v1/pass174/sdlc/run` and persisted-vector readback through `/api/v1/pass174/hash216/query` when an operation key is returned.
+3. If the run fails, fetch job 104661694062 logs and repair forward only the newly proven failing boundary. Do not weaken ledger verification.
+4. After successful promotion verify public /api/system/status, /api/interface/status, /, /health, and /api/v1/pass174/status.
+5. Execute one real multimodal file ingress through /api/v1/pass174/sdlc/run and persisted-vector readback through /api/v1/pass174/hash216/query when an operation key is returned.
+6. Verify exact main remains the deployed source authority and record final production receipts.
 ```
 
 Do not replace this repair with ledger deletion, blind rebuild/compaction, validation suppression, multiple competing writers, SSH trust weakening, or a lightweight semantic-memory substitute for the Pass 174 persistent vector store.
