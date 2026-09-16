@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ctypes
 import hashlib
+import operator
 import os
 import pathlib
 import platform
@@ -17,6 +18,8 @@ VERSION = 0x00010027
 CYCLE = 20_020
 SNAPSHOT_BYTES = 648
 HHS_EXACT_STATUS_OK = 0
+UINT32_MAX = (1 << 32) - 1
+UINT64_MAX = (1 << 64) - 1
 
 
 class HHSExactPass219Lane5PersistentCompositionAuthorityV1(Structure):
@@ -133,6 +136,16 @@ def signature64_from_text(value: str) -> int:
     return int.from_bytes(digest[:8], "little") or 1
 
 
+def _exact_unsigned(value: object, *, name: str, maximum: int) -> int:
+    try:
+        integer = operator.index(value)
+    except TypeError as exc:
+        raise ValueError(f"{name} must be an exact integer") from exc
+    if integer < 0 or integer > maximum:
+        raise ValueError(f"{name} outside unsigned ABI range")
+    return int(integer)
+
+
 class Pass219Lane5PersistentCompositionMemoryBridge:
     def __init__(self) -> None:
         self.lib = _load_runtime()
@@ -173,16 +186,17 @@ class Pass219Lane5PersistentCompositionMemoryBridge:
         cycle_index: int,
         layer_index: int,
     ) -> dict[str, int | bool]:
-        coordinates = (jump_span, phase_slot, cycle_index, layer_index)
-        if any(int(value) < 0 for value in coordinates):
-            raise ValueError("persistent composition coordinates must be nonnegative")
+        jump_span_exact = _exact_unsigned(jump_span, name="jump_span", maximum=UINT32_MAX)
+        phase_slot_exact = _exact_unsigned(phase_slot, name="phase_slot", maximum=UINT32_MAX)
+        cycle_index_exact = _exact_unsigned(cycle_index, name="cycle_index", maximum=UINT64_MAX)
+        layer_index_exact = _exact_unsigned(layer_index, name="layer_index", maximum=UINT32_MAX)
         value = HHSExactPass219Lane5PersistentCompositionDescriptorV1()
         value.struct_size = ctypes.sizeof(value)
         value.version = VERSION
-        value.jump_span = int(jump_span)
-        value.phase_slot = int(phase_slot)
-        value.cycle_index = int(cycle_index)
-        value.layer_index = int(layer_index)
+        value.jump_span = jump_span_exact
+        value.phase_slot = phase_slot_exact
+        value.cycle_index = cycle_index_exact
+        value.layer_index = layer_index_exact
         value.snapshot_bytes = SNAPSHOT_BYTES
         value.parent_signature64 = signature64_from_hash216(parent_hash216)
         value.child_signature64 = signature64_from_hash216(child_hash216)
