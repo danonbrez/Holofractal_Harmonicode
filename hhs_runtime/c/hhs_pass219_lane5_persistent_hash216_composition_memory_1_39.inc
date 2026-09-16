@@ -11,21 +11,32 @@ static uint64_t hhs_lane5_persistent_mix64(uint64_t x) {
     return x;
 }
 
+static uint64_t hhs_lane5_persistent_absorb64(
+    uint64_t state,
+    uint64_t role,
+    uint64_t value
+) {
+    uint64_t tagged = hhs_lane5_persistent_mix64(
+        value ^ hhs_lane5_persistent_mix64(role ^ UINT64_C(0x1395a17e21605184))
+    );
+    return hhs_lane5_persistent_mix64(state ^ tagged ^ role);
+}
+
 static uint64_t hhs_lane5_persistent_descriptor_signature(
     const HHSExactPass219Lane5PersistentCompositionDescriptorV1 *d
 ) {
     uint64_t x = UINT64_C(0x4c35504552533139);
-    x ^= hhs_lane5_persistent_mix64((uint64_t)d->jump_span);
-    x ^= hhs_lane5_persistent_mix64((uint64_t)d->phase_slot << 32);
-    x ^= hhs_lane5_persistent_mix64(d->cycle_index);
-    x ^= hhs_lane5_persistent_mix64((uint64_t)d->layer_index);
-    x ^= hhs_lane5_persistent_mix64((uint64_t)d->snapshot_bytes);
-    x ^= hhs_lane5_persistent_mix64(d->parent_signature64);
-    x ^= hhs_lane5_persistent_mix64(d->child_signature64);
-    x ^= hhs_lane5_persistent_mix64(d->composition_signature64);
-    x ^= hhs_lane5_persistent_mix64(d->metadata_signature64);
-    x ^= hhs_lane5_persistent_mix64(d->vector_object_signature64);
-    return hhs_lane5_persistent_mix64(x);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x01), (uint64_t)d->jump_span);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x02), (uint64_t)d->phase_slot);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x03), d->cycle_index);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x04), (uint64_t)d->layer_index);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x05), (uint64_t)d->snapshot_bytes);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x06), d->parent_signature64);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x07), d->child_signature64);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x08), d->composition_signature64);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x09), d->metadata_signature64);
+    x = hhs_lane5_persistent_absorb64(x, UINT64_C(0x0a), d->vector_object_signature64);
+    return x;
 }
 
 uint32_t hhs_exact_pass219_lane5_persistent_composition_memory_version(void) {
@@ -69,6 +80,7 @@ HHSExactStatus hhs_exact_pass219_lane5_persistent_composition_validate(
 ) {
     HHSExactPass219Lane5PersistentCompositionReceiptV1 receipt;
     uint64_t signature;
+    uint64_t persistence_signature;
     if (descriptor == NULL || out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (descriptor->struct_size != sizeof(*descriptor) ||
@@ -96,6 +108,21 @@ HHSExactStatus hhs_exact_pass219_lane5_persistent_composition_validate(
 
     memset(&receipt, 0, sizeof(receipt));
     signature = hhs_lane5_persistent_descriptor_signature(descriptor);
+    persistence_signature = hhs_lane5_persistent_absorb64(
+        signature,
+        UINT64_C(0x0b),
+        descriptor->metadata_signature64
+    );
+    persistence_signature = hhs_lane5_persistent_absorb64(
+        persistence_signature,
+        UINT64_C(0x0c),
+        descriptor->vector_object_signature64
+    );
+    persistence_signature = hhs_lane5_persistent_absorb64(
+        persistence_signature,
+        UINT64_C(0x0d),
+        UINT64_C(0x2002005005130139)
+    );
     receipt.struct_size = (uint32_t)sizeof(receipt);
     receipt.version = HHS_EXACT_PASS219_LANE5_PERSISTENT_COMPOSITION_MEMORY_VERSION;
     receipt.jump_span = descriptor->jump_span;
@@ -104,10 +131,7 @@ HHSExactStatus hhs_exact_pass219_lane5_persistent_composition_validate(
     receipt.layer_index = descriptor->layer_index;
     receipt.snapshot_bytes = descriptor->snapshot_bytes;
     receipt.descriptor_signature64 = signature;
-    receipt.persistence_signature64 = hhs_lane5_persistent_mix64(
-        signature ^ descriptor->metadata_signature64 ^
-        descriptor->vector_object_signature64 ^ UINT64_C(0x2002005005130139)
-    );
+    receipt.persistence_signature64 = persistence_signature;
     receipt.accepted = 1U;
     receipt.restart_rehydratable = 1U;
     receipt.encrypted_vector_bound = 1U;

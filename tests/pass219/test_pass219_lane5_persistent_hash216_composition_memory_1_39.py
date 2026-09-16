@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import sqlite3
 
 import pytest
@@ -193,6 +194,17 @@ def test_persistent_parent_mismatch_and_manual_quarantine_fail_closed(tmp_path) 
         memory.quarantine("parent-bound")
         assert memory.status()["quarantined_records"] == 1
 
+    database_path = root / "lane5_composition_memory.sqlite3"
+    connection = sqlite3.connect(database_path)
+    try:
+        connection.execute(
+            "UPDATE lane5_composition_memory SET quarantined=0 WHERE jump_id=?",
+            ("parent-bound",),
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
     with Pass219Lane5PersistentHash216CompositionMemory(
         root,
         vector_key=key,
@@ -201,3 +213,215 @@ def test_persistent_parent_mismatch_and_manual_quarantine_fail_closed(tmp_path) 
         assert reopened.status()["quarantined_records"] == 1
         with pytest.raises(ValueError, match="quarantined"):
             reopened.reuse(current_state=parent, jump_id="parent-bound")
+
+
+def test_external_jump_requires_exact_replay_provenance(tmp_path) -> None:
+    root = tmp_path / "replay-memory"
+    parent = _state(31)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=bytes([7]) * 32) as memory:
+        jump = memory.jump_store.build_validated_jump(
+            jump_id="replay-source",
+            parent_state=parent,
+            steps=_steps(6, 11),
+            tick=101,
+            cycle_index=12,
+            layer_index=2,
+        )
+        forged_steps = list(jump.steps)
+        first_step = list(forged_steps[0])
+        cell, control, mask = first_step[0]
+        first_step[0] = (cell, control, mask ^ (1 << 63))
+        forged_steps[0] = tuple(first_step)
+        forged = replace(jump, jump_id="replay-forged", steps=tuple(forged_steps))
+        with pytest.raises(ValueError, match="exact replay provenance"):
+            memory.persist_validated_jump(parent_state=parent, jump=forged)
+        assert memory.status()["persistent_records"] == 0
+
+
+def test_fractional_vm5184_words_are_rejected_before_hashing_or_persistence(tmp_path) -> None:
+    root = tmp_path / "fractional-memory"
+    parent = _state(43)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=bytes([8]) * 32) as memory:
+        jump = memory.jump_store.build_validated_jump(
+            jump_id="fractional",
+            parent_state=parent,
+            steps=_steps(4, 3),
+            tick=9,
+            cycle_index=2,
+            layer_index=1,
+        )
+        fractional_parent = list(parent)
+        fractional_parent[0] = float(fractional_parent[0]) + 0.75
+        with pytest.raises(ValueError, match="exact integer"):
+            memory.persist_validated_jump(parent_state=fractional_parent, jump=jump)
+
+        fractional_child = list(jump.child_state)
+        fractional_child[1] = float(fractional_child[1]) + 0.25
+        forged = replace(jump, child_state=tuple(fractional_child))
+        with pytest.raises(ValueError, match="exact integer"):
+            memory.persist_validated_jump(parent_state=parent, jump=forged)
+        assert memory.status()["persistent_records"] == 0
+
+
+def test_abi_coordinate_overflow_is_rejected_before_ctypes_wrap(tmp_path) -> None:
+    root = tmp_path / "overflow-memory"
+    parent = _state(47)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=bytes([9]) * 32) as memory:
+        jump = memory.jump_store.build_validated_jump(
+            jump_id="overflow",
+            parent_state=parent,
+            steps=_steps(4, 7),
+            tick=19,
+            cycle_index=5,
+            layer_index=1,
+        )
+        stored = memory.persist_validated_jump(parent_state=parent, jump=jump)
+        record = memory.records()[0]
+        with pytest.raises(ValueError, match="cycle_index outside unsigned ABI range"):
+            memory.abi.validate_descriptor(
+                parent_hash216=record.parent_hash216,
+                child_hash216=record.child_hash216,
+                composition_hash216=record.composition_hash216,
+                metadata_hash216=record.metadata_hash216,
+                vector_object_id=stored["vector_object_id"],
+                jump_span=record.jump_span,
+                phase_slot=record.phase_slot,
+                cycle_index=1 << 64,
+                layer_index=record.layer_index,
+            )
+        with pytest.raises(ValueError, match="jump_span outside unsigned ABI range"):
+            memory.abi.validate_descriptor(
+                parent_hash216=record.parent_hash216,
+                child_hash216=record.child_hash216,
+                composition_hash216=record.composition_hash216,
+                metadata_hash216=record.metadata_hash216,
+                vector_object_id=stored["vector_object_id"],
+                jump_span=1 << 32,
+                phase_slot=record.phase_slot,
+                cycle_index=record.cycle_index,
+                layer_index=record.layer_index,
+            )
+
+
+def test_malformed_row_is_quarantined_without_aborting_other_rehydration(tmp_path) -> None:
+    root = tmp_path / "malformed-memory"
+    key = bytes([10]) * 32
+    parent = _state(53)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=key) as memory:
+        bad = memory.jump_store.build_validated_jump(
+            jump_id="bad-row",
+            parent_state=parent,
+            steps=_steps(4, 13),
+            tick=17,
+            cycle_index=6,
+            layer_index=1,
+        )
+        good = memory.jump_store.build_validated_jump(
+            jump_id="good-row",
+            parent_state=parent,
+            steps=_steps(5, 15),
+            tick=18,
+            cycle_index=7,
+            layer_index=1,
+        )
+        memory.persist_validated_jump(parent_state=parent, jump=bad)
+        memory.persist_validated_jump(parent_state=parent, jump=good)
+        good_hash = good.child_hash216
+
+    database_path = root / "lane5_composition_memory.sqlite3"
+    connection = sqlite3.connect(database_path)
+    try:
+        connection.execute(
+            "UPDATE lane5_composition_memory SET trace_roots_json=? WHERE jump_id=?",
+            ("{malformed-json", "bad-row"),
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=key) as reopened:
+        status = reopened.status()
+        assert status["persistent_records"] == 2
+        assert status["quarantined_records"] == 1
+        ranked = reopened.search(
+            current_state=parent,
+            goal_hash216=good_hash,
+            tick=22,
+            cycle_index=8,
+        )
+        assert ranked["ranked"][0]["candidate_id"] == "good-row"
+        assert ranked["ranked"][0]["hash216_distance"] == 0
+        with pytest.raises(KeyError, match="unknown persistent composition jump"):
+            reopened.reuse(current_state=parent, jump_id="bad-row")
+
+
+def test_duplicate_destinations_are_deduplicated_before_optimizer(tmp_path) -> None:
+    root = tmp_path / "duplicate-destination-memory"
+    parent = _state(59)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=bytes([11]) * 32) as memory:
+        steps = _steps(6, 21)
+        route_a = memory.jump_store.build_validated_jump(
+            jump_id="route-a",
+            parent_state=parent,
+            steps=steps,
+            tick=33,
+            cycle_index=9,
+            layer_index=2,
+        )
+        route_b = memory.jump_store.build_validated_jump(
+            jump_id="route-b",
+            parent_state=parent,
+            steps=steps,
+            tick=33,
+            cycle_index=10,
+            layer_index=2,
+        )
+        assert route_a.child_hash216 == route_b.child_hash216
+        assert route_a.composition_hash216 != route_b.composition_hash216
+        memory.persist_validated_jump(parent_state=parent, jump=route_a)
+        memory.persist_validated_jump(parent_state=parent, jump=route_b)
+
+        ranked = memory.search(
+            current_state=parent,
+            goal_hash216=route_a.child_hash216,
+            tick=34,
+            cycle_index=11,
+            top_k=8,
+        )
+        assert ranked["persistent_routes_considered"] == 2
+        assert ranked["restart_rehydrated_candidates"] == 1
+        assert len(ranked["ranked"]) == 1
+        assert ranked["ranked"][0]["candidate_id"] == "route-a"
+        assert ranked["ranked"][0]["hash216_distance"] == 0
+
+
+def test_reuse_failure_quarantines_cached_record_immediately(tmp_path, monkeypatch) -> None:
+    root = tmp_path / "reuse-failure-memory"
+    parent = _state(61)
+    with Pass219Lane5PersistentHash216CompositionMemory(root, vector_key=bytes([12]) * 32) as memory:
+        jump = memory.jump_store.build_validated_jump(
+            jump_id="reuse-failure",
+            parent_state=parent,
+            steps=_steps(4, 25),
+            tick=41,
+            cycle_index=12,
+            layer_index=3,
+        )
+        memory.persist_validated_jump(parent_state=parent, jump=jump)
+
+        def _fail_retrieve(*_args, **_kwargs):
+            raise ValueError("synthetic authenticated retrieval failure")
+
+        monkeypatch.setattr(memory.vector_store, "retrieve", _fail_retrieve)
+        with pytest.raises(ValueError, match="synthetic authenticated retrieval failure"):
+            memory.reuse(current_state=parent, jump_id="reuse-failure")
+
+        assert memory.records()[0].quarantined is True
+        ranked = memory.search(
+            current_state=parent,
+            goal_hash216=jump.child_hash216,
+            tick=42,
+            cycle_index=13,
+        )
+        assert ranked["restart_rehydrated_candidates"] == 0
+        assert ranked["ranked"] == []
