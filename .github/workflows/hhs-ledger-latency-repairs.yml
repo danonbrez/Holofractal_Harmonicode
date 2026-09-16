@@ -4,11 +4,18 @@ on:
   pull_request:
     paths:
       - "hhs_runtime/hhs_unified_hash72_ledger_v1.py"
+      - "hhs_runtime/hhs_unified_hash72_ledger_recovery_v1.py"
       - "hhs_runtime/hhs_io_gateway_v1.py"
+      - "hhs_backend/runtime_status_probe.py"
+      - "deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py"
       - "tests/test_hhs_unified_hash72_ledger_incremental_v1.py"
+      - "tests/test_hhs_unified_hash72_ledger_recovery_v1.py"
+      - "tests/test_hhs_runtime_status_probe_ledger_isolation_v1.py"
+      - "tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py"
       - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
       - "tests/test_hhs_io_gateway_v1.py"
       - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "tools/repair_unified_hash72_ledger_transition_metadata.py"
       - "GNUmakefile"
       - "init.sh"
       - "start.sh"
@@ -18,11 +25,18 @@ on:
       - main
     paths:
       - "hhs_runtime/hhs_unified_hash72_ledger_v1.py"
+      - "hhs_runtime/hhs_unified_hash72_ledger_recovery_v1.py"
       - "hhs_runtime/hhs_io_gateway_v1.py"
+      - "hhs_backend/runtime_status_probe.py"
+      - "deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py"
       - "tests/test_hhs_unified_hash72_ledger_incremental_v1.py"
+      - "tests/test_hhs_unified_hash72_ledger_recovery_v1.py"
+      - "tests/test_hhs_runtime_status_probe_ledger_isolation_v1.py"
+      - "tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py"
       - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
       - "tests/test_hhs_io_gateway_v1.py"
       - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "tools/repair_unified_hash72_ledger_transition_metadata.py"
       - "GNUmakefile"
       - "init.sh"
       - "start.sh"
@@ -68,13 +82,20 @@ jobs:
         run: |
           python -m py_compile \
             hhs_runtime/hhs_unified_hash72_ledger_v1.py \
+            hhs_runtime/hhs_unified_hash72_ledger_recovery_v1.py \
             hhs_runtime/hhs_io_gateway_v1.py \
-            tools/benchmark_hhs_ledger_append_v1.py
+            hhs_backend/runtime_status_probe.py \
+            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py \
+            tools/benchmark_hhs_ledger_append_v1.py \
+            tools/repair_unified_hash72_ledger_transition_metadata.py
 
       - name: Run dependency-scoped regression tests
         run: |
           python -m pytest -q \
             tests/test_hhs_unified_hash72_ledger_incremental_v1.py \
+            tests/test_hhs_unified_hash72_ledger_recovery_v1.py \
+            tests/test_hhs_runtime_status_probe_ledger_isolation_v1.py \
+            tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py \
             tests/test_hhs_io_gateway_receipt_reuse_v1.py \
             tests/test_hhs_io_gateway_v1.py \
             tests/test_hhs_hash72_kernel_authority_v1.py
