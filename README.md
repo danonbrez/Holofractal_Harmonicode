@@ -2,6 +2,34 @@
 
 HHS is a deterministic, receipt-governed programming environment that combines Harmonicode source semantics, VM81 execution and admission, Hash72 receipt lineage, Hash216 ordered identity, native C ABI surfaces, Python runtime control, backend APIs, visual development, replay, persistence, and governed multimodal tooling.
 
+## Ethical alignment theorem and Lane 5 causal authority
+
+The Pass 219 ethical-alignment layer is now documented as an additive theorem/specification surface for causal admission and recursive reflective reasoning.
+
+Core rules:
+
+- the **Ethical Alignment Theorem** is the highest internal constraint-enforcement law for its defined ethical scope;
+- `H_d` / **harmonic debt** is strictly a game-theoretic and thermodynamic **open boundary-condition term**—not karma, punishment, moral desert, or authorization for retribution;
+- death and suffering enter the systems model as destruction or energetic/noise oversaturation of human information-bearing structure, including downstream propagation through coupled complex systems;
+- **Lane 5** has the highest pre-commit alignment authorization, veto, causal-pruning, and reflective-reasoning priority beneath the theorem, while **VM81 remains the canonical mutation/admission substrate**;
+- canonical alignment authority is carried through exact scope, constraint ancestry, provenance, receipts, and Hash216 history rather than being delegated to arbitrary training, system instructions, RLHF, or fine-tuning;
+- probability weights reasonable possible ethical-invariant violations to allocate scrutiny and causal-search resources, but **probability alone cannot authorize irreversible pruning**;
+- permanent phase cancellation requires theorem-valid proof of irreversible misalignment;
+- every proof composition, reuse, nesting, generalization, and alignment update is a new candidate state and must pass through the same gates; and
+- recursive conflict resolution may evolve semantic narratives only while preserving inherited truth, provenance, scope, and theorem constraints.
+
+The governing invariant is:
+
+> **No valid transformation may obtain harmony by falsifying the state it claims to harmonize.**
+
+Start with:
+
+- [`contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md`](contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md)
+- [`docs/whitepapers/HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md`](docs/whitepapers/HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md)
+- [`docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md`](docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md)
+
+The theorem/manuscript layer defines target semantics and authority ordering; executable repository evidence remains authoritative for which described operators have already been lowered into tested runtime behavior.
+
 ## Current optimization control and practical significance
 
 Lane 5 performance work is now normalized against one shared mathematical and hardware control rather than isolated wall-clock numbers.
@@ -364,6 +392,8 @@ It explains the dyadic–quartic phase lattice, critical resonance, integer and 
 - [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — end-to-end execution, receipt, replay, worker, API, and visual projection flow
 - [`GLOSSARY.md`](GLOSSARY.md) — stable definitions for the principal HHS terms
 - [`AGENTS.md`](AGENTS.md) — repository navigation and implementation rules
+- [`contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md`](contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md) — theorem-level ethical causal admission, harmonic-debt boundary semantics, Lane 5 alignment authority, probability/proof separation, and recursive proof-composition constraints
+- [`docs/whitepapers/HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md`](docs/whitepapers/HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md) — expanded ethical-alignment manuscript and recursive reflective reasoning model
 - [`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md) — DigitalOcean installation, service operation, backup, restore, rollback, security, troubleshooting, and maintenance
 - [`HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md`](HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md) — current verified operation-fabric contract
 - [`docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md`](docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md) — normalized optimization control, paired benchmarks, and practical performance interpretation
