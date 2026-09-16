@@ -2,6 +2,39 @@
 
 HHS is a deterministic, receipt-governed programming environment that combines Harmonicode source semantics, VM81 execution and admission, Hash72 receipt lineage, Hash216 ordered identity, native C ABI surfaces, Python runtime control, backend APIs, visual development, replay, persistence, and governed multimodal tooling.
 
+## Current optimization control and practical significance
+
+Lane 5 performance work is now normalized against one shared mathematical and hardware control rather than isolated wall-clock numbers.
+
+```text
+D = 72^72
+H_addr = log2(D)
+       = 444.234600103846490129... bits-equivalent
+minimum binary embedding = 445 bits
+native exact address = 56 bytes
+
+reference candidate rate = 323,557/s
+reference basis-coordinate density = 143.735 Mbit-equivalent/s
+reference four-address route-capacity density = 574.941 Mbit-equivalent/s
+reference qudit-coordinate density = 23,296,104/s
+reference VM5184 block-coordinate density = 11,648,052/s
+reference Lane 5 stream state = 568 bytes
+reference represented intermediate states materialized = 0
+```
+
+These values are the historical normalization index `1.0`, not universal hardware constants. Every optimization must preserve exact replay, fail-closed negative controls, Lane 5 candidate-only authority, and signed VM81 admission before performance deltas are considered. Paired same-runner control/candidate measurements are preferred for merge decisions.
+
+In ordinary von Neumann terms, Lane 5 is a proof-carrying streaming candidate reducer. A valid direct witness can summarize a logical route without allocating every represented intermediate state. For one million explicitly materialized items, even a minimal 64-bit-ID path needs `8,000,000` bytes and a full 56-byte-coordinate path needs `56,000,000` bytes, compared with the verified `568`-byte Lane 5 reducer state. At 256,000,000 represented items, those controls rise to `2,048,000,000` and `14,336,000,000` bytes respectively, before route metadata, receipts, or payloads.
+
+Practical application classes include repeated graph/dependency routing, exact constraint solving, deterministic AI proposal admission, multimodal vector-store retrieval, provenance/audit event sourcing, reusable hydration/cache paths, simulation/digital twins, and provenance-aware knowledge graphs—specifically where a valid summarized route or reusable proof already exists.
+
+Start with:
+
+- [`contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md`](contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md)
+- [`docs/whitepapers/HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md`](docs/whitepapers/HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md)
+- [`docs/tutorials/HHS_LANE5_OPTIMIZATION_CONTROL_TUTORIAL_V1.md`](docs/tutorials/HHS_LANE5_OPTIMIZATION_CONTROL_TUTORIAL_V1.md)
+- [`docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md`](docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md)
+
 The name Holofractal HARMONICODE is not an abstract metaphor or stylistic label; it is a literal, technical specification of the system’s mathematical, structural, and computational architecture.
 Every component of the phrase directly names an exact operational mechanism within the runtime:
 1. HOLO- (Holographic Coordinate Projection)
@@ -333,6 +366,7 @@ It explains the dyadic–quartic phase lattice, critical resonance, integer and 
 - [`AGENTS.md`](AGENTS.md) — repository navigation and implementation rules
 - [`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md) — DigitalOcean installation, service operation, backup, restore, rollback, security, troubleshooting, and maintenance
 - [`HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md`](HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md) — current verified operation-fabric contract
+- [`docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md`](docs/manuals/HHS_OPTIMIZATION_AND_PERFORMANCE_MANUAL_V1.md) — normalized optimization control, paired benchmarks, and practical performance interpretation
 
 ## Baseline validation
 
