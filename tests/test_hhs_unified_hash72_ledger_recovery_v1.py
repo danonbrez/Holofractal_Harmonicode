@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import stat
 
 import pytest
 
@@ -63,6 +64,15 @@ def test_repairs_only_off_by_one_transition_metadata_and_preserves_entries(tmp_p
     )
     _write_records(path, records)
 
+    journal_path = _journal_path(path)
+    journal_path.chmod(0o640)
+    journal_stat_before = journal_path.stat()
+    journal_identity_before = (
+        journal_stat_before.st_uid,
+        journal_stat_before.st_gid,
+        stat.S_IMODE(journal_stat_before.st_mode),
+    )
+
     verification = ledger.verify_unified_ledger(path)
     assert verification["ok"] is False
     reasons = {item["reason"] for item in verification["invalid"]}
@@ -84,10 +94,24 @@ def test_repairs_only_off_by_one_transition_metadata_and_preserves_entries(tmp_p
         require_repair=True,
     )
 
+    journal_stat_after = journal_path.stat()
+    journal_identity_after = (
+        journal_stat_after.st_uid,
+        journal_stat_after.st_gid,
+        stat.S_IMODE(journal_stat_after.st_mode),
+    )
     assert result["status"] == "REPAIRED_TRANSITION_METADATA"
     assert result["authoritative_entries_preserved"] is True
     assert result["entry_payloads_modified"] is False
     assert result["entry_hashes_modified"] is False
+    assert result["journal_metadata_preserved"] is True
+    assert journal_identity_after == journal_identity_before
+    assert result["journal_metadata_before"] == {
+        "uid": journal_identity_before[0],
+        "gid": journal_identity_before[1],
+        "mode": journal_identity_before[2],
+    }
+    assert result["journal_metadata_after"] == result["journal_metadata_before"]
     assert path.read_bytes() == snapshot_before
     assert [record["entry"] for record in _records(path)] == entries_before
     assert ledger.verify_unified_ledger(path)["ok"] is True

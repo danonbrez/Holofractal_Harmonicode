@@ -10,6 +10,7 @@ The recovery contract is deliberately narrower than ``rebuild_unified_ledger``:
 * every verifier error must be a journal transition-metadata error;
 * the original snapshot and journal are backed up before mutation;
 * the journal is replaced atomically while preserving each authoritative entry;
+* the replacement preserves the original journal UID, GID, and mode;
 * the complete ledger must verify after replacement or the original journal is
   restored; and
 * a standalone recovery receipt is emitted outside the ledger being repaired.
@@ -23,6 +24,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 from typing import Any
 
 from hhs_runtime import hhs_unified_hash72_ledger_v1 as ledger
@@ -52,6 +54,38 @@ class _VerifiedEntryChain:
     initial_journal_ledger_hash72: str
 
 
+@dataclass(frozen=True)
+class _FileMetadata:
+    uid: int
+    gid: int
+    mode: int
+
+    def to_dict(self) -> dict[str, int]:
+        return {"uid": self.uid, "gid": self.gid, "mode": self.mode}
+
+
+def _file_metadata(path: Path) -> _FileMetadata:
+    current = path.stat()
+    return _FileMetadata(
+        uid=current.st_uid,
+        gid=current.st_gid,
+        mode=stat.S_IMODE(current.st_mode),
+    )
+
+
+def _apply_file_metadata(path: Path, metadata: _FileMetadata) -> None:
+    current = path.stat()
+    if current.st_uid != metadata.uid or current.st_gid != metadata.gid:
+        try:
+            os.chown(path, metadata.uid, metadata.gid)
+        except PermissionError as exc:
+            raise UnifiedLedgerRecoveryError(
+                "cannot preserve journal ownership during atomic recovery: "
+                f"wanted uid={metadata.uid} gid={metadata.gid} path={path}"
+            ) from exc
+    os.chmod(path, metadata.mode)
+
+
 def _sha256(path: Path) -> str | None:
     if not path.is_file():
         return None
@@ -64,6 +98,7 @@ def _sha256(path: Path) -> str | None:
 
 def _atomic_write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    original_metadata = _file_metadata(path) if path.exists() else None
     temporary = path.with_name(f".{path.name}.{os.getpid()}.recovery.tmp")
     try:
         with temporary.open("w", encoding="utf-8") as handle:
@@ -71,18 +106,31 @@ def _atomic_write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
                 handle.write(ledger._canonical_payload(record) + "\n")
             handle.flush()
             os.fsync(handle.fileno())
+        if original_metadata is not None:
+            _apply_file_metadata(temporary, original_metadata)
         os.replace(temporary, path)
+        if original_metadata is not None and _file_metadata(path) != original_metadata:
+            raise UnifiedLedgerRecoveryError(
+                "atomic recovery changed journal ownership or mode after replacement"
+            )
     finally:
         if temporary.exists():
             temporary.unlink()
 
 
 def _atomic_restore(source: Path, destination: Path) -> None:
+    original_metadata = _file_metadata(destination) if destination.exists() else None
     temporary = destination.with_name(f".{destination.name}.{os.getpid()}.restore.tmp")
     shutil.copy2(source, temporary)
+    if original_metadata is not None:
+        _apply_file_metadata(temporary, original_metadata)
     with temporary.open("rb") as handle:
         os.fsync(handle.fileno())
     os.replace(temporary, destination)
+    if original_metadata is not None and _file_metadata(destination) != original_metadata:
+        raise UnifiedLedgerRecoveryError(
+            "journal restore changed ownership or mode"
+        )
 
 
 def _verify_authoritative_entry_chain(path: Path) -> _VerifiedEntryChain:
@@ -249,6 +297,7 @@ def repair_transition_metadata(
         if not journal_path.is_file():
             raise UnifiedLedgerRecoveryError("transition errors exist but journal file is missing")
 
+        journal_metadata_before = _file_metadata(journal_path)
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
         incident_hash = hashlib.sha256(
             ledger._canonical_payload(invalid).encode("utf-8")
@@ -309,6 +358,12 @@ def repair_transition_metadata(
                 )
             raise
 
+        journal_metadata_after = _file_metadata(journal_path)
+        if journal_metadata_after != journal_metadata_before:
+            raise UnifiedLedgerRecoveryError(
+                "repaired journal ownership/mode differs from pre-repair authority"
+            )
+
         receipt = {
             "schema": RECOVERY_SCHEMA,
             "status": "REPAIRED_TRANSITION_METADATA",
@@ -320,6 +375,9 @@ def repair_transition_metadata(
             "authoritative_entries_preserved": True,
             "entry_payloads_modified": False,
             "entry_hashes_modified": False,
+            "journal_metadata_preserved": True,
+            "journal_metadata_before": journal_metadata_before.to_dict(),
+            "journal_metadata_after": journal_metadata_after.to_dict(),
             "repaired_journal_records": len(repaired_records),
             "invalid_before": invalid,
             "before_hashes": before_hashes,
