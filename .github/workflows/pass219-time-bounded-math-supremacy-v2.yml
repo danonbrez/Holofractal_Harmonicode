@@ -1,0 +1,90 @@
+name: Pass 219 Time-Bounded Math Supremacy v2
+
+on:
+  pull_request:
+    paths:
+      - "contracts/pass219/PASS_219_TIME_BOUNDED_MATH_SUPREMACY_V2.md"
+      - "benchmarks/pass219/hhs_lane5_time_bounded_math_supremacy_v2.c"
+      - "tools/hhs_time_bounded_math_supremacy_analyze_v2.py"
+      - "tests/pass219/test_pass219_time_bounded_math_supremacy_v2.py"
+      - ".github/workflows/pass219-time-bounded-math-supremacy-v2.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "contracts/pass219/PASS_219_TIME_BOUNDED_MATH_SUPREMACY_V2.md"
+      - "benchmarks/pass219/hhs_lane5_time_bounded_math_supremacy_v2.c"
+      - "tools/hhs_time_bounded_math_supremacy_analyze_v2.py"
+      - "tests/pass219/test_pass219_time_bounded_math_supremacy_v2.py"
+      - ".github/workflows/pass219-time-bounded-math-supremacy-v2.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+  PYTHONDONTWRITEBYTECODE: "1"
+  HHS_SUPREMACY_V2_BOUND_NS: "120000000"
+  HHS_SUPREMACY_V2_K0: "1000"
+  HHS_SUPREMACY_V2_MAX_K: "1000000000000"
+
+jobs:
+  validate-bounded-math-supremacy-v2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Validate theorem/comparator contract
+        run: python -m pytest -q tests/pass219/test_pass219_time_bounded_math_supremacy_v2.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile exact adaptive supremacy benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_time_bounded_math_supremacy_v2.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/hhs-time-bounded-math-supremacy-v2
+
+      - name: Find first 120ms bounded supremacy witness
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/time-bounded-math-supremacy-v2
+          /tmp/hhs-time-bounded-math-supremacy-v2 \
+            | tee artifacts/time-bounded-math-supremacy-v2/math.ndjson
+          grep -F '"result":"BOUNDED_SUPREMACY_WITNESS"' artifacts/time-bounded-math-supremacy-v2/math.ndjson
+          grep -F '"type":"result","result":"PASS"' artifacts/time-bounded-math-supremacy-v2/math.ndjson
+
+      - name: Analyze and seal bounded witness
+        run: |
+          python tools/hhs_time_bounded_math_supremacy_analyze_v2.py \
+            artifacts/time-bounded-math-supremacy-v2/math.ndjson \
+            artifacts/time-bounded-math-supremacy-v2/evidence.json \
+            | tee artifacts/time-bounded-math-supremacy-v2/analysis.txt
+          grep -F 'HHS_TIME_BOUNDED_MATH_SUPREMACY_V2_PASS' artifacts/time-bounded-math-supremacy-v2/analysis.txt
+
+      - name: Capture workflow identity
+        run: |
+          printf '%s\n' "commit=${GITHUB_SHA}" > artifacts/time-bounded-math-supremacy-v2/workflow.txt
+          printf '%s\n' "run_id=${GITHUB_RUN_ID}" >> artifacts/time-bounded-math-supremacy-v2/workflow.txt
+          printf '%s\n' "runner=${RUNNER_OS}/${RUNNER_ARCH}" >> artifacts/time-bounded-math-supremacy-v2/workflow.txt
+          printf '%s\n' "image=${ImageOS}/${ImageVersion}" >> artifacts/time-bounded-math-supremacy-v2/workflow.txt
+          printf '%s\n' "deadline_ns=120000000" >> artifacts/time-bounded-math-supremacy-v2/workflow.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hhs-time-bounded-math-supremacy-v2
+          path: artifacts/time-bounded-math-supremacy-v2/
+          if-no-files-found: error
