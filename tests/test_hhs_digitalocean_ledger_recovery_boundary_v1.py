@@ -171,13 +171,17 @@ def test_runtime_ledger_permission_normalizer_repairs_only_canonical_surfaces(tm
     assert unrelated.read_bytes() == b"untouched"
 
 
-def test_runtime_ledger_permission_normalizer_refuses_symlink_boundary(tmp_path: Path, monkeypatch):
+def test_runtime_ledger_permission_normalizer_refuses_symlink_boundary_without_mutation(tmp_path: Path, monkeypatch):
     runtime = tmp_path / "runtime"
     runtime.mkdir()
+    runtime.chmod(0o700)
     target = tmp_path / "target.json"
     target.write_text("{}\n", encoding="utf-8")
+    target.chmod(0o600)
     ledger_path = runtime / "hhs_unified_hash72_ledger.json"
     ledger_path.symlink_to(target)
+    runtime_before = runtime.stat()
+    target_before = target.stat()
 
     real_gid = runtime.stat().st_gid
     monkeypatch.setattr(normalizer.os, "geteuid", lambda: 1000)
@@ -204,3 +208,11 @@ def test_runtime_ledger_permission_normalizer_refuses_symlink_boundary(tmp_path:
             service_group="svc-hhs",
             require_root=False,
         )
+
+    runtime_after = runtime.stat()
+    target_after = target.stat()
+    assert stat.S_IMODE(runtime_after.st_mode) == stat.S_IMODE(runtime_before.st_mode)
+    assert runtime_after.st_gid == runtime_before.st_gid
+    assert stat.S_IMODE(target_after.st_mode) == stat.S_IMODE(target_before.st_mode)
+    assert target_after.st_gid == target_before.st_gid
+    assert target.read_text(encoding="utf-8") == "{}\n"
