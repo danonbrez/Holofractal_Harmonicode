@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include "hhs_runtime_exact_abi_v1_1_base.h"
 #include "native_bench_common_v2.h"
 
