@@ -29,6 +29,12 @@ Environment=HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204
 Environment=HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3
 Environment=HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218
 Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
+Environment=HHS_P219_PROJECTOR_PYTHON=/opt/hhs/pass219-projector-venv/bin/python
+Environment=HHS_P219_PROJECTOR_TIMEOUT_SECONDS=900
+Environment=HHS_P219_PROJECTOR_DEVICE=cpu
+Environment=HF_HOME=/var/lib/hhs/models/huggingface
+Environment=HF_HUB_DISABLE_TELEMETRY=1
+Environment=TOKENIZERS_PARALLELISM=false
 Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
