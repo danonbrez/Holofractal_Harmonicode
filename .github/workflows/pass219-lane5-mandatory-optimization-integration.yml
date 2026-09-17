@@ -6,6 +6,7 @@ on:
       - pass219/saturation-deadline-warm-cache-benchmark-v3
     paths:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'
@@ -39,6 +40,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           dispatcher = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py').read_text()
+          implementation = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py').read_text()
           facade = Path('hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py').read_text()
           latency_h = Path('hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h').read_text()
           latency_c = Path('hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc').read_text()
@@ -56,7 +58,10 @@ jobs:
               'RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE',
               'compose_or_reuse',
           ):
-              assert needle in dispatcher, needle
+              assert needle in implementation, needle
+          assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
+          assert 'HHS_PASS219_LANE5_STATE_ROOT' in dispatcher
+          assert '.hhs/pass219/lane5' in dispatcher
           assert 'Pass219Lane5MandatoryOptimizationDispatcher' in facade
           assert 'Pass219Lane5Hash216GPUPhaseInterlaceOptimizer' not in facade
           for needle in (
@@ -75,6 +80,7 @@ jobs:
         run: |
           python -m py_compile \
             hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py \
+            hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py \
             hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py \
             hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py
 
