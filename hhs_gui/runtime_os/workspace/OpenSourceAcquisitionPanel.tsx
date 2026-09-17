@@ -47,10 +47,13 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
   const [status, setStatus] = useState<Json>({})
   const [history, setHistory] = useState<Json[]>([])
   const [selected, setSelected] = useState<Json>({})
+  const [projectorId, setProjectorId] = useState("SOURCE_ONLY_V1")
+  const [evidenceText, setEvidenceText] = useState("")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const adapters = Array.isArray(status.projectors) ? status.projectors : []
+  const executionProfiles = Array.isArray(status.execution_profiles) ? status.execution_profiles : []
   const completed = useMemo(() => history.filter((job) => text(job.status) === "COMPLETED").length, [history])
 
   const refresh = async (): Promise<void> => {
@@ -69,6 +72,15 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
 
   const setField = (key: keyof typeof emptyForm, value: string): void => setForm((current) => ({ ...current, [key]: value }))
 
+  const parseProjectionEvidence = (): Json[] => {
+    if (projectorId !== "EXTERNAL_EVIDENCE_V1") return []
+    if (!evidenceText.trim()) throw new Error("EXTERNAL_EVIDENCE_V1 requires projector evidence JSON.")
+    const parsed = JSON.parse(evidenceText)
+    const rows = Array.isArray(parsed) ? parsed : [parsed]
+    if (rows.length === 0 || rows.some((row) => !row || typeof row !== "object")) throw new Error("Projection evidence must be a JSON object or non-empty array of objects.")
+    return rows.map((row) => record(row))
+  }
+
   const submit = async (): Promise<void> => {
     setBusy(true)
     setError(null)
@@ -76,7 +88,7 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
       const result = await requestJson("/api/v1/pass174/acquisition/jobs", {
         method: "POST",
         body: JSON.stringify({
-          projector_id: "SOURCE_ONLY_V1",
+          projector_id: projectorId,
           source: {
             repository: {
               provider: form.provider,
@@ -93,7 +105,7 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
             declared_media_type: form.mediaType,
             source_language: form.sourceLanguage.trim() || null,
           },
-          projection_evidence: [],
+          projection_evidence: parseProjectionEvidence(),
         }),
       })
       setSelected(result)
@@ -140,16 +152,18 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
 
       {error ? <div className="mt-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">{error}</div> : null}
 
-      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
         <Mini label="Service" value={text(status.classification, "not loaded")} />
         <Mini label="Recent jobs" value={String(history.length)} />
         <Mini label="Completed" value={String(completed)} />
-        <Mini label="Adapters" value={String(adapters.length)} />
+        <Mini label="Job adapters" value={String(adapters.length)} />
+        <Mini label="Execution profiles" value={String(executionProfiles.length)} />
       </div>
 
       <details className="mt-3 rounded-2xl border border-neutral-800 bg-black/30 p-3" open>
         <summary className="cursor-pointer text-xs font-medium text-indigo-200">New verified source job</summary>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <Field label="Job adapter"><select value={projectorId} onChange={(event) => setProjectorId(event.target.value)} className="runtime-input w-full"><option value="SOURCE_ONLY_V1">SOURCE_ONLY_V1</option><option value="EXTERNAL_EVIDENCE_V1">EXTERNAL_EVIDENCE_V1</option></select></Field>
           <Field label="Provider"><select value={form.provider} onChange={(event) => setField("provider", event.target.value)} className="runtime-input w-full"><option>GITHUB</option><option>HUGGING_FACE</option></select></Field>
           <Field label="Repository"><input value={form.repoId} onChange={(event) => setField("repoId", event.target.value)} className="runtime-input w-full" /></Field>
           <Field label="Immutable 40-hex revision"><input value={form.revision} onChange={(event) => setField("revision", event.target.value)} placeholder="commit/model revision" className="runtime-input w-full font-mono" /></Field>
@@ -161,11 +175,25 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
           <Field label="Source URL"><input value={form.sourceUrl} onChange={(event) => setField("sourceUrl", event.target.value)} className="runtime-input w-full" /></Field>
           <Field label="Language"><input value={form.sourceLanguage} onChange={(event) => setField("sourceLanguage", event.target.value)} className="runtime-input w-full" /></Field>
         </div>
+        {projectorId === "EXTERNAL_EVIDENCE_V1" ? (
+          <label className="mt-3 block text-[10px] text-neutral-500">
+            <span className="mb-1 block">Approved projector evidence JSON</span>
+            <textarea value={evidenceText} onChange={(event) => setEvidenceText(event.target.value)} rows={8} placeholder="Paste the object emitted by hhs_pass219_approved_projector_execution_v1" className="runtime-input w-full font-mono text-[10px]" />
+          </label>
+        ) : null}
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button type="button" disabled={busy} onClick={() => void submit()} className="runtime-button min-h-10 px-4 text-xs">{busy ? "Working…" : "Acquire + verify"}</button>
-          <span className="text-[10px] text-neutral-600">Mobile form uses SOURCE_ONLY_V1. EXTERNAL_EVIDENCE_V1 is available through the same API for model-backed projection receipts.</span>
+          <button type="button" disabled={busy} onClick={() => void submit()} className="runtime-button min-h-10 px-4 text-xs">{busy ? "Working…" : projectorId === "EXTERNAL_EVIDENCE_V1" ? "Acquire + sealed projection" : "Acquire + verify"}</button>
+          <span className="text-[10px] text-neutral-600">Model execution stays outside the canonical server. The approved worker emits sealed evidence here; the job service verifies source bytes again before admitting it as candidate-only.</span>
         </div>
       </details>
+
+      <section className="mt-3 rounded-2xl border border-neutral-800 bg-black/20 p-3">
+        <div className="text-xs font-medium text-neutral-300">Approved execution profiles</div>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {executionProfiles.map((profile: Json) => <div key={text(profile.profile_id)} className="rounded-xl border border-neutral-800 bg-neutral-950/50 p-2"><div className="text-[10px] font-medium text-indigo-200">{text(profile.profile_id)}</div><div className={`mt-1 text-[9px] ${profile.production_approved ? "text-emerald-400" : "text-amber-400"}`}>{profile.production_approved ? "production approved" : "blocked / calibration only"}</div>{profile.blocked_reason ? <div className="mt-1 text-[9px] leading-4 text-neutral-600">{text(profile.blocked_reason)}</div> : null}</div>)}
+          {executionProfiles.length === 0 ? <div className="text-xs text-neutral-600">Execution profiles have not loaded.</div> : null}
+        </div>
+      </section>
 
       <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <section className="rounded-2xl border border-neutral-800 bg-black/30 p-3">
