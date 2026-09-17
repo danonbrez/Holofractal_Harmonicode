@@ -4,11 +4,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from hhs_backend.runtime.hhs_lo_shu_harmonic_phase_energy_v1 import (
+# This tool is invoked by path from tools/pass219. Make repository packages
+# importable without relying on an ambient PYTHONPATH.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from hhs_backend.runtime.hhs_lo_shu_harmonic_phase_energy_v1 import (  # noqa: E402
     exact_percentile_gradient,
     run_harmonic_phase_energy,
 )
@@ -26,10 +33,6 @@ ENERGY_PER_PAIR = 450
 
 def frac_obj(value: Fraction) -> dict[str, int]:
     return {"numerator": value.numerator, "denominator": value.denominator}
-
-
-def frac_text(value: Fraction) -> str:
-    return f"{value.numerator}/{value.denominator}"
 
 
 def load_records(path: Path) -> list[dict[str, Any]]:
@@ -92,7 +95,7 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
         which = arm["arm"]
         if phase not in EXPECTED_SLOTS or which not in ("A", "B"):
             raise SystemExit("unknown phase/arm")
-        if tuple((arm["phase_slot"], arm["inverse_phase_slot"])) != EXPECTED_SLOTS[phase]:
+        if (arm["phase_slot"], arm["inverse_phase_slot"]) != EXPECTED_SLOTS[phase]:
             raise SystemExit(f"phase geometry mismatch for {phase}")
         expected_gradient = exact_percentile_gradient(rank, 9)
         observed_gradient = Fraction(
@@ -162,12 +165,12 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "normalized_ab_basis_points_floor": (ab.numerator * 10_000) // ab.denominator,
             }
         )
-        t = phase_totals[phase]
-        t["a_completed"] += int(a["completed"])
-        t["a_elapsed"] += int(a["elapsed_ns"])
-        t["b_completed"] += int(b["completed"])
-        t["b_elapsed"] += int(b["elapsed_ns"])
-        t["samples"] += 1
+        totals = phase_totals[phase]
+        totals["a_completed"] += int(a["completed"])
+        totals["a_elapsed"] += int(a["elapsed_ns"])
+        totals["b_completed"] += int(b["completed"])
+        totals["b_elapsed"] += int(b["elapsed_ns"])
+        totals["samples"] += 1
         ranks_seen.add(rank)
 
     if set(p for _, p in paired) != set(PHASES):
@@ -176,26 +179,32 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
     phase_summary: dict[str, Any] = {}
     all_a_completed = all_a_elapsed = all_b_completed = all_b_elapsed = 0
     for phase in PHASES:
-        t = phase_totals[phase]
-        if t["samples"] == 0:
+        totals = phase_totals[phase]
+        if totals["samples"] == 0:
             raise SystemExit(f"no samples for {phase}")
-        ratio = Fraction(t["a_completed"] * t["b_elapsed"], t["b_completed"] * t["a_elapsed"])
+        ratio = Fraction(
+            totals["a_completed"] * totals["b_elapsed"],
+            totals["b_completed"] * totals["a_elapsed"],
+        )
         phase_summary[phase] = {
-            "samples": t["samples"],
-            "a_completed": t["a_completed"],
-            "a_elapsed_ns": t["a_elapsed"],
-            "b_completed": t["b_completed"],
-            "b_elapsed_ns": t["b_elapsed"],
+            "samples": totals["samples"],
+            "a_completed": totals["a_completed"],
+            "a_elapsed_ns": totals["a_elapsed"],
+            "b_completed": totals["b_completed"],
+            "b_elapsed_ns": totals["b_elapsed"],
             "aggregate_normalized_ab_throughput_ratio": frac_obj(ratio),
             "aggregate_normalized_ab_basis_points_floor": (ratio.numerator * 10_000) // ratio.denominator,
             "energy_gate": energy[phase],
         }
-        all_a_completed += t["a_completed"]
-        all_a_elapsed += t["a_elapsed"]
-        all_b_completed += t["b_completed"]
-        all_b_elapsed += t["b_elapsed"]
+        all_a_completed += totals["a_completed"]
+        all_a_elapsed += totals["a_elapsed"]
+        all_b_completed += totals["b_completed"]
+        all_b_elapsed += totals["b_elapsed"]
 
-    global_ratio = Fraction(all_a_completed * all_b_elapsed, all_b_completed * all_a_elapsed)
+    global_ratio = Fraction(
+        all_a_completed * all_b_elapsed,
+        all_b_completed * all_a_elapsed,
+    )
     return {
         "schema": "HHS_PASS219_FOUR_PHASE_AB_DIFFICULTY_ENERGY_CALIBRATION_RESULT_V1",
         "native_schema": meta["schema"],
@@ -222,7 +231,7 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def write_report(result: dict[str, Any], path: Path) -> None:
-    g = result["global_normalized_ab_throughput_ratio"]
+    global_ratio = result["global_normalized_ab_throughput_ratio"]
     lines = [
         "# Pass 219 — Four-Phase Reciprocal A:B Difficulty/Energy Calibration",
         "",
@@ -231,7 +240,7 @@ def write_report(result: dict[str, Any], path: Path) -> None:
         f"- Native/calibration result: **{result['result']}**",
         f"- Paired phase samples: `{result['paired_phase_samples']}`",
         f"- Difficulty ranks observed: `{result['difficulty_ranks_seen']}`",
-        f"- Global normalized A:B throughput ratio: `{g['numerator']}/{g['denominator']}` "
+        f"- Global normalized A:B throughput ratio: `{global_ratio['numerator']}/{global_ratio['denominator']}` "
         f"(`{result['global_normalized_ab_basis_points_floor']} bp` floor)",
         "- Logical reciprocal-pair energy normalization: `450` conserved Lo Shu units per phase gate.",
         "- Physical joules were not measured; the energy rating is the repository's exact Pass 067.1 logical energy quantity.",
@@ -242,11 +251,12 @@ def write_report(result: dict[str, Any], path: Path) -> None:
         "|---|---:|---:|---:|---:|---:|",
     ]
     for phase in PHASES:
-        p = result["phase_summary"][phase]
-        r = p["aggregate_normalized_ab_throughput_ratio"]
+        phase_result = result["phase_summary"][phase]
+        ratio = phase_result["aggregate_normalized_ab_throughput_ratio"]
         lines.append(
-            f"| {phase} | {p['samples']} | {p['a_completed']} | {p['b_completed']} | "
-            f"{r['numerator']}/{r['denominator']} | {p['aggregate_normalized_ab_basis_points_floor']} |"
+            f"| {phase} | {phase_result['samples']} | {phase_result['a_completed']} | "
+            f"{phase_result['b_completed']} | {ratio['numerator']}/{ratio['denominator']} | "
+            f"{phase_result['aggregate_normalized_ab_basis_points_floor']} |"
         )
     lines += [
         "",
