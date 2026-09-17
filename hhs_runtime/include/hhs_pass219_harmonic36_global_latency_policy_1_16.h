@@ -1,7 +1,7 @@
 #ifndef HHS_PASS219_HARMONIC36_GLOBAL_LATENCY_POLICY_1_16_H
 #define HHS_PASS219_HARMONIC36_GLOBAL_LATENCY_POLICY_1_16_H
 
-#include "hhs_pass219_harmonic36_stack_selection_1_10.h"
+#include "hhs_pass219_harmonic36_branch_reference_cache_1_17.h"
 #include "hhs_pass219_global_latency_policy_25_3_1_0.h"
 
 #include <stdint.h>
@@ -34,12 +34,46 @@ typedef struct HHSExactPass219H36GlobalLatencySelectionV1 {
 HHS_EXACT_API uint32_t
 hhs_exact_pass219_h36_global_latency_policy_version(void);
 
+/* Existing fresh-selection compatibility surface. */
 HHS_EXACT_API HHSExactStatus
 hhs_exact_pass219_h36_global_latency_select(
     const HHSExactPass219H36StackCandidateEvidenceV1 *first,
     const HHSExactPass219H36StackCandidateEvidenceV1 *second,
     uint32_t requested_tier,
     HHSExactPass219H36GlobalLatencySelectionV1 *out_selection);
+
+/*
+ * Mandatory optimized surfaces. A selection that has already passed the exact
+ * stack-selector membrane must not be recomputed merely to enter the latency
+ * policy. Cached and branch-reference variants prove their own replay receipts
+ * before delegating to the prevalidated selector below.
+ */
+HHS_EXACT_API HHSExactStatus
+hhs_exact_pass219_h36_global_latency_select_prevalidated(
+    const HHSExactPass219H36StackSelectionV1 *selection,
+    uint32_t requested_tier,
+    HHSExactPass219H36GlobalLatencySelectionV1 *out_selection);
+
+HHS_EXACT_API HHSExactStatus
+hhs_exact_pass219_h36_global_latency_select_cached(
+    const HHSExactPass219H36StackCacheV1 *cache,
+    uint64_t workload_signature36,
+    uint64_t semantic_result_signature64,
+    const char vector_key216[HHS_EXACT_UQCEL_HASH216_STRLEN],
+    uint32_t requested_tier,
+    HHSExactPass219H36GlobalLatencySelectionV1 *out_selection,
+    HHSExactPass219H36StackCacheReceiptV1 *out_cache_receipt);
+
+HHS_EXACT_API HHSExactStatus
+hhs_exact_pass219_h36_global_latency_select_branch_ref(
+    HHSExactPass219H36BranchReferenceCacheV1 *branch_cache,
+    const HHSExactPass219H36StackCacheV1 *frozen_parent_cache,
+    uint32_t branch_id,
+    uint8_t target_lane_role,
+    uint32_t requested_tier,
+    HHSExactPass219H36GlobalLatencySelectionV1 *out_selection,
+    HHSExactPass219H36BranchReceiptV1 *out_branch_receipt,
+    HHSExactPass219H36CompositionReceiptMemoV1 *out_composition_receipt);
 
 HHS_EXACT_API HHSExactStatus
 hhs_exact_pass219_h36_global_latency_selection_validate(
