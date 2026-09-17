@@ -1,0 +1,48 @@
+name: HHS Phase-Inverted Pythagorean Theorem v1
+
+on:
+  pull_request:
+    paths:
+      - "docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md"
+      - "contracts/pass219/PASS_219_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md"
+      - "hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "hhs_spi_fibonacci_pythagorean_scaling_rule_v1.py"
+      - "hhs_spi_fibonacci_pythagorean_scaling_rule_tests_v1.py"
+      - "tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - ".github/workflows/hhs-phase-inverted-pythagorean-theorem-v1.yml"
+  push:
+    branches:
+      - "pass219/phase-inverted-pythagorean-collapse-v1"
+      - main
+    paths:
+      - "docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md"
+      - "contracts/pass219/PASS_219_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md"
+      - "hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "hhs_spi_fibonacci_pythagorean_scaling_rule_v1.py"
+      - "hhs_spi_fibonacci_pythagorean_scaling_rule_tests_v1.py"
+      - "tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - ".github/workflows/hhs-phase-inverted-pythagorean-theorem-v1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  exact-theorem-implementation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile exact implementation surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py
+          python -m py_compile hhs_spi_fibonacci_pythagorean_scaling_rule_v1.py
+          python -m py_compile tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
+      - name: Run dependency-scoped theorem tests
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py \
+            hhs_spi_fibonacci_pythagorean_scaling_rule_tests_v1.py
