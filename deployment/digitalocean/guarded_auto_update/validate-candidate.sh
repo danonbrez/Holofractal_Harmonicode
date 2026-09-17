@@ -18,6 +18,8 @@ BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
 BUNDLE_TOOL=${HHS_RUNTIME_OS_BUNDLE_TOOL:-$ROOT/deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py}
 RUNTIME_OS_ROOT=""
+PRODUCTION_GATEWAY_ENTRYPOINT=hhs_backend.production_visual_server:app
+APPLICATION_AUTHORITY_ENTRYPOINT=hhs_backend.runtime_os_application_server:app
 
 cd "$ROOT"
 
@@ -181,7 +183,7 @@ if [[ "$BOOT" == "1" ]]; then
   env -u HHS_RUNTIME_OS_ROOT \
     HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
     HHS_PASS205_DB="$PASS205_DB" \
-    "$PYTHON" -m uvicorn hhs_backend.production_visual_server:app \
+    "$PYTHON" -m uvicorn "$PRODUCTION_GATEWAY_ENTRYPOINT" \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
       >"$LOG_FILE" 2>&1 &
   server_pid=$!
