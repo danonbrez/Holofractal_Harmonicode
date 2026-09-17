@@ -12,6 +12,7 @@ from hhs_backend.pass219_acquisition_job_service import (
     AcquisitionJobService,
     AcquisitionJobServiceError,
 )
+from hhs_runtime.hhs_pass219_approved_projector_execution_v1 import execution_profiles
 
 router = APIRouter(
     prefix="/api/v1/pass174/acquisition",
@@ -77,14 +78,17 @@ def _payload(model: BaseModel) -> dict[str, Any]:
 def acquisition_status() -> Dict[str, Any]:
     service = get_acquisition_service()
     history = service.list(10)
+    profiles = execution_profiles()
     return {
         "schema": "HHS-P219-ACQUISITION-SERVICE-STATUS-V1",
         "classification": "HHS_P219_ACQUISITION_SERVICE_READY",
         "state_root": str(service.root),
         "recent_job_count": history["count"],
         "projectors": service.projectors()["projectors"],
+        "execution_profiles": profiles["profiles"],
         "live_network_transport": True,
         "persistent_replay_bundles": True,
+        "model_execution_external_to_canonical_kernel": True,
         "candidate_only": True,
         "canonical_authority_minted": False,
     }
@@ -93,6 +97,11 @@ def acquisition_status() -> Dict[str, Any]:
 @router.get("/projectors")
 def projectors() -> Dict[str, Any]:
     return get_acquisition_service().projectors()
+
+
+@router.get("/execution/profiles")
+def projector_execution_profiles() -> Dict[str, Any]:
+    return execution_profiles()
 
 
 @router.post("/jobs")
