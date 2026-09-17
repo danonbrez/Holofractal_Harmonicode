@@ -50,6 +50,8 @@ typedef struct HHSExactPass219Lane5PythagoreanPhaseAuthorityV1 {
     uint32_t pass192_fibonacci_max_depth;
     uint8_t pythagorean_constant_projection_exact;
     uint8_t lo_shu_denominator_geometry_exact;
+    uint8_t lo_shu_complement_involution_exact;
+    uint8_t finite_corner_phase_correspondence_exact;
     uint8_t reciprocal_phase_involution_exact;
     uint8_t directional_pair_involution_exact;
     uint8_t shared_fourth_power_is_typed_projection;
@@ -60,7 +62,7 @@ typedef struct HHSExactPass219Lane5PythagoreanPhaseAuthorityV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_canonical_authority;
-    uint8_t reserved0[4];
+    uint8_t reserved0[2];
 } HHSExactPass219Lane5PythagoreanPhaseAuthorityV1;
 
 typedef struct HHSExactPass219Lane5PythagoreanPhaseInputV1 {
@@ -85,6 +87,8 @@ typedef struct HHSExactPass219Lane5PythagoreanPhaseReceiptV1 {
     uint32_t inverse_phase_slot;
     uint32_t lo_shu_cell_index;
     uint32_t lo_shu_denominator;
+    uint32_t inverse_lo_shu_cell_index;
+    uint32_t inverse_lo_shu_denominator;
     uint32_t fibonacci_depth;
     uint32_t pass192_fibonacci_version;
     uint32_t a2;
@@ -97,6 +101,11 @@ typedef struct HHSExactPass219Lane5PythagoreanPhaseReceiptV1 {
     uint8_t phase_involution_verified;
     uint8_t pair_involution_verified;
     uint8_t lo_shu_cell_verified;
+    uint8_t lo_shu_complement_verified;
+    uint8_t lo_shu_phase_half_turn_verified;
+    uint8_t finite_phase_anchor_cell;
+    uint8_t finite_phase_anchor_consistent;
+    uint8_t continuation_cell;
     uint8_t fibonacci_depth_within_pass192;
     uint8_t shared_fourth_power_match;
     uint8_t collapse_candidate_admissible;
@@ -105,7 +114,7 @@ typedef struct HHSExactPass219Lane5PythagoreanPhaseReceiptV1 {
     uint8_t canonical_hash72_authority;
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
-    uint8_t reserved0[4];
+    uint8_t reserved0[3];
 } HHSExactPass219Lane5PythagoreanPhaseReceiptV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_lane5_pythagorean_phase_geometry_version(void);
