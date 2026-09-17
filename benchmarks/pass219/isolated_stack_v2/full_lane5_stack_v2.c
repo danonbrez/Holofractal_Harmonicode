@@ -45,6 +45,7 @@ static void build_route_from_record(
     uint8_t current[8],
     uint8_t goal[8]
 ) {
+    (void)record_ordinal;
     memcpy(previous, record + 0U, 8U);
     memcpy(current, record + 8U, 8U);
     memcpy(goal, record + 16U, 8U);
@@ -67,7 +68,7 @@ static void build_route_from_record(
     route->workload_byte_count = BENCH_RECORD_BYTES;
     route->evidence_count = 5U;
     route->contradiction_check_count = 1U;
-    route->integer_route_cost = UINT64_C(7) + (record_ordinal & UINT64_C(3));
+    route->integer_route_cost = UINT64_C(7);
     route->materialized_intermediate_states = 0U;
     route->phase_slot = phase_slot;
     route->inverse_phase_slot = inverse_phase_slot;
