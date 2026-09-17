@@ -13,6 +13,7 @@ const control = read("hhs_gui/runtime_os/workspace/ProductionMobileControlCenter
 const server = read("hhs_backend/pass174_server.py")
 const routes = read("hhs_backend/api/pass219_acquisition_routes.py")
 const service = read("hhs_backend/pass219_acquisition_job_service.py")
+const projector = read("hhs_runtime/hhs_pass219_approved_projector_execution_v1.py")
 
 assert(control.includes('import OpenSourceAcquisitionPanel from "./OpenSourceAcquisitionPanel"'), "mobile control center does not import acquisition panel")
 assert(control.includes("<OpenSourceAcquisitionPanel />"), "mobile control center does not mount acquisition panel")
@@ -21,19 +22,31 @@ for (const token of [
   "/api/v1/pass174/acquisition/jobs",
   "/replay",
   "SOURCE_ONLY_V1",
-  "Acquire + verify",
+  "EXTERNAL_EVIDENCE_V1",
+  "Approved projector evidence JSON",
+  "Acquire + sealed projection",
   "Replay offline",
 ]) assert(panel.includes(token), `acquisition panel missing ${token}`)
 
 for (const token of [
   '@router.get("/status")',
   '@router.get("/projectors")',
+  '@router.get("/execution/profiles")',
   '@router.post("/jobs")',
   '@router.get("/jobs")',
   '@router.get("/jobs/{job_id}")',
   '@router.get("/jobs/{job_id}/receipt")',
   '@router.post("/jobs/{job_id}/replay")',
 ]) assert(routes.includes(token), `acquisition routes missing ${token}`)
+
+for (const token of [
+  "MULTILINGUAL_MPNET_TEXT_V1",
+  "79f2382ceacceacdf38563d7c5d16b9ff8d725d6",
+  "MULTILINGUAL_CLIP_IMAGE_TEXT_V1",
+  "P219_APE_PROFILE_NOT_PRODUCTION_APPROVED",
+  "trust_remote_code",
+  "use_safetensors",
+]) assert(projector.includes(token), `approved projector missing ${token}`)
 
 assert(server.includes("pass219_acquisition_router"), "Pass 174 server does not import acquisition router")
 assert(server.indexOf("app.include_router(pass219_acquisition_router)") < server.indexOf("app.router.routes.extend(_deferred_api_fallback_routes)"), "acquisition router is registered after API fallback")
@@ -43,8 +56,9 @@ assert(service.includes("canonical_authority_minted"), "candidate authority boun
 
 console.log(JSON.stringify({
   ok: true,
-  surface: "PASS219_ACQUISITION_JOB_UI_V1",
+  surface: "PASS219_APPROVED_PROJECTOR_EXECUTION_UI_V1",
   mobile_panel: true,
+  external_evidence: true,
   persistent_jobs: true,
   replay: true,
   route_order: "BEFORE_FALLBACK",
