@@ -12,6 +12,11 @@ from hhs_backend.pass219_acquisition_job_service import (
     AcquisitionJobService,
     AcquisitionJobServiceError,
 )
+from hhs_backend.pass219_server_projector_execution import (
+    ServerProjectorExecutionError,
+    execute_and_persist_server_projection,
+    server_execution_status,
+)
 from hhs_runtime.hhs_pass219_approved_projector_execution_v1 import execution_profiles
 
 router = APIRouter(
@@ -64,10 +69,31 @@ def _raise(exc: Exception) -> None:
     }) from exc
 
 
+def _raise_execution(exc: Exception) -> None:
+    classification = str(exc) or type(exc).__name__
+    unavailable = {
+        "P219_SPE_PROJECTOR_RUNTIME_UNAVAILABLE",
+        "P219_APE_SENTENCE_TRANSFORMERS_REQUIRED",
+        "P219_SPE_PROJECTOR_PROCESS_START_FAILED",
+    }
+    status = 503 if classification in unavailable else 504 if classification == "P219_SPE_PROJECTOR_TIMEOUT" else 422
+    raise HTTPException(status_code=status, detail={
+        "schema": "HHS-P219-SERVER-PROJECTOR-EXECUTION-REJECTION-V1",
+        "classification": classification,
+        "candidate_only": True,
+        "canonical_authority_minted": False,
+    }) from exc
+
+
 class AcquisitionJobRequest(BaseModel):
     projector_id: str = "SOURCE_ONLY_V1"
     source: Dict[str, Any]
     projection_evidence: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class ApprovedExecutionJobRequest(BaseModel):
+    source: Dict[str, Any]
+    execution: Dict[str, Any]
 
 
 def _payload(model: BaseModel) -> dict[str, Any]:
@@ -86,6 +112,7 @@ def acquisition_status() -> Dict[str, Any]:
         "recent_job_count": history["count"],
         "projectors": service.projectors()["projectors"],
         "execution_profiles": profiles["profiles"],
+        "server_execution": server_execution_status(),
         "live_network_transport": True,
         "persistent_replay_bundles": True,
         "model_execution_external_to_canonical_kernel": True,
@@ -101,7 +128,9 @@ def projectors() -> Dict[str, Any]:
 
 @router.get("/execution/profiles")
 def projector_execution_profiles() -> Dict[str, Any]:
-    return execution_profiles()
+    payload = execution_profiles()
+    payload["server_execution"] = server_execution_status()
+    return payload
 
 
 @router.post("/jobs")
@@ -110,6 +139,14 @@ def create_job(request: AcquisitionJobRequest) -> Dict[str, Any]:
         return get_acquisition_service().submit(_payload(request))
     except (AcquisitionJobServiceError, ValueError, TypeError) as exc:
         _raise(exc)
+
+
+@router.post("/jobs/execute")
+def execute_approved_projector_job(request: ApprovedExecutionJobRequest) -> Dict[str, Any]:
+    try:
+        return execute_and_persist_server_projection(get_acquisition_service(), _payload(request))
+    except (ServerProjectorExecutionError, AcquisitionJobServiceError, ValueError, TypeError) as exc:
+        _raise_execution(exc)
 
 
 @router.get("/jobs")
@@ -141,4 +178,9 @@ def replay_job(job_id: str) -> Dict[str, Any]:
         _raise(exc)
 
 
-__all__ = ["AcquisitionJobRequest", "get_acquisition_service", "router"]
+__all__ = [
+    "AcquisitionJobRequest",
+    "ApprovedExecutionJobRequest",
+    "get_acquisition_service",
+    "router",
+]
