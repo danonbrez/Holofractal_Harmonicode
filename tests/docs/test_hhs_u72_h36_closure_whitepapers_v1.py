@@ -114,7 +114,7 @@ def test_h36_paper_is_explicitly_dynamic_not_static() -> None:
         "algebraic transition",
         "metadata evolution",
         "dependency evolution",
-        "u^72 dynamic resonance frame",
+        "`u^72` dynamic resonance frame",
         "materialized_intermediate_states = 0",
         "BigInt exact state",
         "VM81/C++ RNA admitted operation path",
