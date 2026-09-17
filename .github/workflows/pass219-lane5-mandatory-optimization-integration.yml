@@ -9,6 +9,8 @@ on:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py'
+      - 'hhs_python/runtime/hhs_pass219_lane5_direct_witness_routing_bridge.py'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc'
       - 'tests/pass219/test_lane5_mandatory_optimization_dispatcher.py'
@@ -57,6 +59,8 @@ jobs:
               'LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48',
               'RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE',
               'compose_or_reuse',
+              'optimize_direct_witness_routes',
+              'optimize_unbounded_workload',
           ):
               assert needle in implementation, needle
           assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
@@ -82,7 +86,9 @@ jobs:
             hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py \
             hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py \
             hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py \
-            hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py
+            hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py \
+            hhs_python/runtime/hhs_pass219_lane5_direct_witness_routing_bridge.py \
+            hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py
 
       - name: Build cumulative exact ABI
         run: |
@@ -126,8 +132,12 @@ jobs:
             hhs_exact_pass219_h36_branch_ref_resolve \
             hhs_exact_pass219_h36_branch_ref_composition_receipt \
             hhs_exact_pass219_lane5_automatic_route_validate \
+            hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof \
             hhs_exact_pass219_lane5_direct_witness_route_validate \
+            hhs_exact_pass219_lane5_direct_witness_route_optimize \
             hhs_exact_pass219_lane5_unbounded_workload_route_validate \
+            hhs_exact_pass219_lane5_unbounded_workload_stream_consider \
+            hhs_exact_pass219_lane5_unbounded_workload_stream_finalize \
             hhs_exact_pass219_vm81_environment_admit_signed; do
             grep -q " ${symbol}$" /tmp/hhs.symbols || {
               echo "missing mandatory Lane 5 export: ${symbol}" >&2
