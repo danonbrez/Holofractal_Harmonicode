@@ -7,6 +7,7 @@ on:
     paths:
       - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
       - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
+      - 'docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md'
       - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
       - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c'
       - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
       - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
+      - 'docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md'
       - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
       - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c'
       - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
@@ -40,8 +42,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
 
-      - name: Validate white-paper source identity and dependency geometry
-        run: python -m pytest -q tests/docs/test_hhs_lane5_pythagorean_phase_geometry_v1.py
+      - name: Validate theorem source identity and dependency geometry
+        run: |
+          python -m pytest -q tests/docs/test_hhs_lane5_pythagorean_phase_geometry_v1.py
+          python -m pytest -q hhs_spi_fibonacci_pythagorean_scaling_rule_tests_v1.py
 
       - name: Build cumulative exact ABI
         run: |
@@ -61,7 +65,7 @@ jobs:
             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
             -o /tmp/test-lane5-pythagorean-phase
           /tmp/test-lane5-pythagorean-phase | tee /tmp/lane5-pythagorean-phase.log
-          grep -q 'PASS219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49_PASS projections=288 c4=9 phase_cycle=72' \
+          grep -q 'PASS219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49_PASS projections=288 collapse=32 continuation=160 c4=9 phase_cycle=72' \
             /tmp/lane5-pythagorean-phase.log
 
       - name: Regress inherited 1.46 reciprocal phase routing
