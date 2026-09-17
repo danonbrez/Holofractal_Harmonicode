@@ -1,0 +1,130 @@
+name: Pass 219 Lane 5 Mandatory Optimization Integration
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
+      - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc'
+      - 'tests/pass219/test_lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c'
+      - '.github/workflows/pass219-lane5-mandatory-optimization-integration.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_MANDATORY_OPTIMIZATION_INTEGRATION_RESTART_20260917.md'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mandatory-optimization-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static mandatory reachability gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          dispatcher = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py').read_text()
+          facade = Path('hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py').read_text()
+          latency_h = Path('hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h').read_text()
+          latency_c = Path('hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc').read_text()
+          for needle in (
+              'LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38',
+              'LANE5_PERSISTENT_HASH216_COMPOSITION_MEMORY_1_39',
+              'LANE5_RECURSIVE_HASH216_COMPOSITION_GRAPH_1_40',
+              'LANE5_SUPEREDGE_HIERARCHY_1_41',
+              'LANE5_AUTOMATIC_SUPEREDGE_ROUTING_1_42',
+              'LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43',
+              'LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44',
+              'HASH216_FRACTAL_QUDIT_ADMISSION_1_45',
+              'LANE5_DIRECT_WITNESS_ROUTING_1_46',
+              'LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48',
+              'RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE',
+              'compose_or_reuse',
+          ):
+              assert needle in dispatcher, needle
+          assert 'Pass219Lane5MandatoryOptimizationDispatcher' in facade
+          assert 'Pass219Lane5Hash216GPUPhaseInterlaceOptimizer' not in facade
+          for needle in (
+              'hhs_exact_pass219_h36_global_latency_select_cached',
+              'hhs_exact_pass219_h36_global_latency_select_branch_ref',
+              'hhs_exact_pass219_h36_global_latency_select_prevalidated',
+          ):
+              assert needle in latency_h, needle
+              assert needle in latency_c, needle
+          assert 'hhs_exact_pass219_h36_branch_ref_resolve' in latency_c
+          assert 'hhs_exact_pass219_h36_branch_ref_composition_receipt' in latency_c
+          print('mandatory_lane5_optimization_reachability=PASS')
+          PY
+
+      - name: Python compile
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py \
+            hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py \
+            hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Run native cached and branch-reference latency integration
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-h36-global-latency
+          /tmp/test-h36-global-latency
+
+      - name: Run mandatory dispatcher and accumulated Lane 5 regressions
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_lane5_mandatory_optimization_dispatcher.py \
+            tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
+            tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
+            tests/pass219/test_pass219_lane5_persistent_hash216_composition_memory_1_39.py \
+            tests/pass219/test_pass219_lane5_hash216_composition_jump_store_1_38.py \
+            tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
+            tests/pass219/test_pass219_rml19_route_composition_conservation_acceleration.py
+
+      - name: Audit mandatory native exports
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          for symbol in \
+            hhs_exact_pass219_h36_global_latency_select_cached \
+            hhs_exact_pass219_h36_global_latency_select_branch_ref \
+            hhs_exact_pass219_h36_branch_ref_resolve \
+            hhs_exact_pass219_h36_branch_ref_composition_receipt \
+            hhs_exact_pass219_lane5_automatic_route_validate \
+            hhs_exact_pass219_lane5_direct_witness_route_validate \
+            hhs_exact_pass219_lane5_unbounded_workload_route_validate \
+            hhs_exact_pass219_vm81_environment_admit_signed; do
+            grep -q " ${symbol}$" /tmp/hhs.symbols || {
+              echo "missing mandatory Lane 5 export: ${symbol}" >&2
+              exit 1
+            }
+          done
