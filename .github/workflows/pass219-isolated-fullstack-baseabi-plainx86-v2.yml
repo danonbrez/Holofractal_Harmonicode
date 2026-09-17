@@ -46,7 +46,7 @@ jobs:
             echo "kernel=$(uname -srmo)"
             echo "nproc=$(nproc)"
             echo "gcc=$(gcc --version | head -n 1)"
-            echo "cpu_model=$(awk -F: '/model name/{gsub(/^ +/,\"\",$2); print $2; exit}' /proc/cpuinfo)"
+            echo "cpu_model=$(sed -n 's/^model name[[:space:]]*: //p' /proc/cpuinfo | head -n 1)"
             echo "common_cflags=-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic"
           } | tee /tmp/isolated-stack-v2/runner.txt
 
