@@ -1,0 +1,217 @@
+name: Pass 219 Saturation Deadline Warm Cache Benchmark v3
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'benchmarks/pass219/saturation_deadline_v3/**'
+      - 'tools/pass219/run_saturation_deadline_benchmark_v3.py'
+      - 'tools/pass219/run_saturation_deadline_benchmark_v3_long.py'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_stack_selection_cache_1_11.inc'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_stack_selection_cache_1_11.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_branch_reference_cache_1_17.inc'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_branch_reference_cache_1_17.h'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-saturation-deadline-warm-cache-v3.yml'
+      - 'docs/operations/restart/PASS_219_SATURATION_DEADLINE_WARM_CACHE_BENCHMARK_V3_*_20260917.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'benchmarks/pass219/saturation_deadline_v3/**'
+      - 'tools/pass219/run_saturation_deadline_benchmark_v3.py'
+      - 'tools/pass219/run_saturation_deadline_benchmark_v3_long.py'
+      - '.github/workflows/pass219-saturation-deadline-warm-cache-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  saturation-deadline-warm-cache:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Capture controlled runner identity
+        run: |
+          mkdir -p /tmp/pass219-saturation-v3
+          test "$(uname -m)" = "x86_64"
+          test -x "$(command -v taskset)"
+          {
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            echo "kernel=$(uname -srmo)"
+            echo "nproc=$(nproc)"
+            echo "affinity=$(taskset -pc $$ 2>&1)"
+            echo "gcc=$(gcc --version | head -n 1)"
+            echo "gxx=$(g++ --version | head -n 1)"
+            echo "cpu_model=$(sed -n 's/^model name[[:space:]]*: //p' /proc/cpuinfo | head -n 1)"
+            echo "common_cflags=-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic"
+          } | tee /tmp/pass219-saturation-v3/runner.txt
+
+      - name: Compile benchmark controller
+        run: |
+          python -m py_compile \
+            tools/pass219/run_saturation_deadline_benchmark_v3.py \
+            tools/pass219/run_saturation_deadline_benchmark_v3_long.py
+
+      - name: Compile A full HHS cold and warm stack
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-saturation-v3/aggregate-abi.o
+          bash tools/pass219/build_exact_abi_link_support.sh \
+            /tmp/pass219-saturation-v3/link-support full
+          gcc $CFLAGS \
+            -Ihhs_runtime/include \
+            -Ibenchmarks/pass219/saturation_deadline_v3 \
+            benchmarks/pass219/saturation_deadline_v3/full_hhs_saturation_v3.c \
+            /tmp/pass219-saturation-v3/aggregate-abi.o \
+            /tmp/pass219-saturation-v3/link-support/hhs_hash216.o \
+            /tmp/pass219-saturation-v3/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-saturation-v3/arm-a
+
+      - name: Compile B immutable base ABI only
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS -Ihhs_runtime/include -x c \
+            -c hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc \
+            -o /tmp/pass219-saturation-v3/base-abi-only.o
+          gcc $CFLAGS \
+            -Ihhs_runtime/include \
+            -Ibenchmarks/pass219/saturation_deadline_v3 \
+            benchmarks/pass219/saturation_deadline_v3/base_abi_saturation_v3.c \
+            /tmp/pass219-saturation-v3/base-abi-only.o \
+            -o /tmp/pass219-saturation-v3/arm-b
+
+      - name: Compile C cold plain Ubuntu x86_64
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS \
+            -Ibenchmarks/pass219/saturation_deadline_v3 \
+            benchmarks/pass219/saturation_deadline_v3/plain_x86_saturation_v3.c \
+            -o /tmp/pass219-saturation-v3/arm-c
+
+      - name: Prove binary and optimization isolation boundaries
+        run: |
+          nm -g --defined-only /tmp/pass219-saturation-v3/base-abi-only.o \
+            | tee /tmp/pass219-saturation-v3/baseabi-symbols.txt
+          if grep -E 'pass219|lane5|harmonic36|hash216' \
+              /tmp/pass219-saturation-v3/baseabi-symbols.txt; then
+            echo 'B base ABI object contains forbidden optimization symbol' >&2
+            exit 1
+          fi
+
+          nm -a /tmp/pass219-saturation-v3/arm-c \
+            | tee /tmp/pass219-saturation-v3/plainx86-symbols.txt >/dev/null
+          if grep -E '[[:space:]]hhs_|[[:space:]]HHS_' \
+              /tmp/pass219-saturation-v3/plainx86-symbols.txt; then
+            echo 'C plain x86 binary contains HHS symbol' >&2
+            exit 1
+          fi
+
+          nm -g /tmp/pass219-saturation-v3/arm-a \
+            | tee /tmp/pass219-saturation-v3/fullhhs-symbols.txt >/dev/null
+          for symbol in \
+            hhs_exact_pass219_h36_stack_cache_lookup \
+            hhs_exact_pass219_h36_branch_ref_resolve \
+            hhs_exact_pass219_h36_branch_ref_composition_receipt \
+            hhs_exact_pass219_h36_hash216_m_exponent_validate \
+            hhs_exact_pass219_lane5_unbounded_workload_route_validate; do
+            grep -q "${symbol}" /tmp/pass219-saturation-v3/fullhhs-symbols.txt || {
+              echo "A missing required optimization/runtime symbol: ${symbol}" >&2
+              exit 1
+            }
+          done
+
+          ldd /tmp/pass219-saturation-v3/arm-a \
+            | tee /tmp/pass219-saturation-v3/fullhhs-ldd.txt
+          ldd /tmp/pass219-saturation-v3/arm-b \
+            | tee /tmp/pass219-saturation-v3/baseabi-ldd.txt
+          ldd /tmp/pass219-saturation-v3/arm-c \
+            | tee /tmp/pass219-saturation-v3/plainx86-ldd.txt
+
+      - name: Run long all-core saturation and reverse cross-feed
+        run: |
+          python tools/pass219/run_saturation_deadline_benchmark_v3_long.py \
+            /tmp/pass219-saturation-v3/arm-a \
+            /tmp/pass219-saturation-v3/arm-b \
+            /tmp/pass219-saturation-v3/arm-c \
+            /tmp/pass219-saturation-v3/result.json \
+            /tmp/pass219-saturation-v3/report.md \
+            | tee /tmp/pass219-saturation-v3/controller.log
+
+      - name: Validate v3 evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('/tmp/pass219-saturation-v3/result.json')
+          x = json.loads(path.read_text())
+          assert x['schema'] == 'HHS_PASS219_SATURATION_DEADLINE_CONTROLLER_V3'
+          assert x['result'] == 'PASS'
+          assert x['method']['capacity_windows_ns'] == [5_000_000_000, 20_000_000_000, 60_000_000_000]
+          assert x['method']['final_deadline_ns'] == 60_000_000_000
+          assert x['method']['c_measured_first'] is True
+          assert x['method']['reverse_cross_feed'] is True
+          assert x['method']['all_available_cpus'] is True
+          assert x['method']['cpu_pinning'] is True
+          assert x['method']['no_target_headroom'] is True
+          assert x['method']['virtual_workset'] is True
+          assert x['method']['long_window_authoritative'] is True
+          assert x['method']['deadline_requires_elapsed_within_window'] is True
+          assert x['worker_count'] >= 1
+          assert x['workset_digest64'] != 0
+          assert x['workset_bytes'] == 648 * 65536
+          assert x['warm_fill_max_ns'] + 1_000_000_000 < x['method']['prestart_runway_ns']
+          for arm in ('C', 'B', 'A_warm', 'A_cold'):
+              assert len(x['capacity_curves'][arm]) == 3
+              assert all(row['normalized_capacity'] > 0 for row in x['capacity_curves'][arm])
+          for source in ('C', 'B', 'A_warm'):
+              target = x['cross_feed'][source]['target_records']
+              assert target == x['source_targets'][source]
+              assert target > 0
+              for consumer in ('C', 'B', 'A_warm'):
+                  row = x['cross_feed'][source]['consumers'][consumer]
+                  assert row['target_total'] == target
+                  assert row['workset_digest64'] == x['workset_digest64']
+          assert x['authority']['canonical_vm81_mutation'] is False
+          assert x['authority']['canonical_hash72'] is False
+          assert x['authority']['canonical_hash216'] is False
+          assert x['authority']['canonical_persistence'] is False
+          assert x['authority']['timing_authority'] is False
+          print(json.dumps({
+              'result': x['result'],
+              'worker_count': x['worker_count'],
+              'source_targets': x['source_targets'],
+              'warm_vs_cold_60s': x['warm_vs_cold_60s'],
+              'warm_fill_max_ns': x['warm_fill_max_ns'],
+          }, sort_keys=True))
+          PY
+          cat /tmp/pass219-saturation-v3/report.md
+
+      - name: Upload saturation benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-saturation-deadline-warm-cache-v3
+          path: |
+            /tmp/pass219-saturation-v3/result.json
+            /tmp/pass219-saturation-v3/report.md
+            /tmp/pass219-saturation-v3/controller.log
+            /tmp/pass219-saturation-v3/runner.txt
+            /tmp/pass219-saturation-v3/baseabi-symbols.txt
+            /tmp/pass219-saturation-v3/plainx86-symbols.txt
+            /tmp/pass219-saturation-v3/fullhhs-symbols.txt
+            /tmp/pass219-saturation-v3/fullhhs-ldd.txt
+            /tmp/pass219-saturation-v3/baseabi-ldd.txt
+            /tmp/pass219-saturation-v3/plainx86-ldd.txt
+          if-no-files-found: error
