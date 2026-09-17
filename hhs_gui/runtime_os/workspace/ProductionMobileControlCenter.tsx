@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import OpenSourceAcquisitionPanel from "./OpenSourceAcquisitionPanel"
 
 type Json = Record<string, any>
 type Surface = "program" | "workspace" | "authority"
@@ -220,7 +221,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
           <div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production control</div>
             <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS application server</h1>
-            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">One mobile surface for runtime health, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, and click-through application control.</p>
+            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">One mobile surface for runtime health, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, open-source acquisition/replay jobs, and click-through application control.</p>
           </div>
           <button type="button" onClick={() => void refresh().catch((reason) => setError(String(reason)))} className="runtime-button min-h-11 px-4 text-sm">Refresh server</button>
         </div>
@@ -240,6 +241,8 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         <LaunchCard title="Workspace" detail="Source, compiler, emulator, assistant, jobs and receipts" onClick={() => onNavigate("workspace")} />
         <LaunchCard title="Authority" detail="Approvals and governed production operations" onClick={() => onNavigate("authority")} />
       </section>
+
+      <OpenSourceAcquisitionPanel />
 
       <section className="rounded-3xl border border-neutral-800 bg-neutral-900/60 p-3 md:p-5">
         <header className="flex flex-wrap items-center justify-between gap-3">
