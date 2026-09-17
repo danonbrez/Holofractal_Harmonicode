@@ -20,6 +20,24 @@ static uint32_t hhs_lane5_p149_inverse_phase(uint32_t phase_slot) {
            HHS_EXACT_PASS219_LANE5_PYTHAGOREAN_PHASE_CYCLE;
 }
 
+static uint32_t hhs_lane5_p149_inverse_lo_shu_cell(uint32_t cell_index) {
+    return (HHS_EXACT_PASS219_LANE5_PYTHAGOREAN_LO_SHU_CELLS - UINT32_C(1)) - cell_index;
+}
+
+static int hhs_lane5_p149_corner_phase(uint32_t denominator, uint32_t *out_phase) {
+    uint32_t phase;
+    switch (denominator) {
+        case UINT32_C(4): phase = UINT32_C(0); break;
+        case UINT32_C(2): phase = UINT32_C(18); break;
+        case UINT32_C(6): phase = UINT32_C(36); break;
+        case UINT32_C(8): phase = UINT32_C(54); break;
+        default: return 0;
+    }
+    if (out_phase != NULL)
+        *out_phase = phase;
+    return 1;
+}
+
 static uint64_t hhs_lane5_p149_mix64(uint64_t x) {
     x ^= x >> 30;
     x *= UINT64_C(0xbf58476d1ce4e5b9);
@@ -33,7 +51,9 @@ static uint64_t hhs_lane5_p149_signature(
     const HHSExactPass219Lane5PythagoreanPhaseInputV1 *input,
     uint32_t inverse_orientation,
     uint32_t inverse_phase_slot,
-    uint32_t lo_shu_denominator
+    uint32_t lo_shu_denominator,
+    uint32_t inverse_lo_shu_cell_index,
+    uint32_t inverse_lo_shu_denominator
 ) {
     uint64_t state = UINT64_C(0x4c35503134395047);
     state = hhs_lane5_p149_mix64(state ^ (uint64_t)input->pair_kind);
@@ -43,6 +63,8 @@ static uint64_t hhs_lane5_p149_signature(
     state = hhs_lane5_p149_mix64(state ^ ((uint64_t)inverse_phase_slot << 32));
     state = hhs_lane5_p149_mix64(state ^ ((uint64_t)input->lo_shu_cell_index << 40));
     state = hhs_lane5_p149_mix64(state ^ ((uint64_t)lo_shu_denominator << 48));
+    state = hhs_lane5_p149_mix64(state ^ ((uint64_t)inverse_lo_shu_cell_index << 4));
+    state = hhs_lane5_p149_mix64(state ^ ((uint64_t)inverse_lo_shu_denominator << 12));
     state = hhs_lane5_p149_mix64(state ^ (uint64_t)input->fibonacci_depth);
     state = hhs_lane5_p149_mix64(state ^ input->projected_p4);
     return state;
@@ -77,6 +99,8 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_geometry_authority(
     value.pass192_fibonacci_max_depth = HHS_EXACT_PASS192_FIB_MAX_DEPTH;
     value.pythagorean_constant_projection_exact = 1U;
     value.lo_shu_denominator_geometry_exact = 1U;
+    value.lo_shu_complement_involution_exact = 1U;
+    value.finite_corner_phase_correspondence_exact = 1U;
     value.reciprocal_phase_involution_exact = 1U;
     value.directional_pair_involution_exact = 1U;
     value.shared_fourth_power_is_typed_projection = 1U;
@@ -100,6 +124,12 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
     uint32_t inverse_orientation;
     uint32_t inverse_phase_slot;
     uint32_t lo_shu_denominator;
+    uint32_t inverse_lo_shu_cell_index;
+    uint32_t inverse_lo_shu_denominator;
+    uint32_t expected_phase = UINT32_C(0);
+    uint32_t expected_inverse_phase = UINT32_C(0);
+    int finite_corner;
+    int inverse_finite_corner;
 
     if (input == NULL || out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -117,6 +147,10 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
     inverse_orientation = input->orientation ^ UINT32_C(1);
     inverse_phase_slot = hhs_lane5_p149_inverse_phase(input->phase_slot);
     lo_shu_denominator = (uint32_t)hhs_lane5_p149_lo_shu_denominators[input->lo_shu_cell_index];
+    inverse_lo_shu_cell_index = hhs_lane5_p149_inverse_lo_shu_cell(input->lo_shu_cell_index);
+    inverse_lo_shu_denominator = (uint32_t)hhs_lane5_p149_lo_shu_denominators[inverse_lo_shu_cell_index];
+    finite_corner = hhs_lane5_p149_corner_phase(lo_shu_denominator, &expected_phase);
+    inverse_finite_corner = hhs_lane5_p149_corner_phase(inverse_lo_shu_denominator, &expected_inverse_phase);
 
     memset(&receipt, 0, sizeof(receipt));
     receipt.struct_size = (uint32_t)sizeof(receipt);
@@ -129,6 +163,8 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
     receipt.inverse_phase_slot = inverse_phase_slot;
     receipt.lo_shu_cell_index = input->lo_shu_cell_index;
     receipt.lo_shu_denominator = lo_shu_denominator;
+    receipt.inverse_lo_shu_cell_index = inverse_lo_shu_cell_index;
+    receipt.inverse_lo_shu_denominator = inverse_lo_shu_denominator;
     receipt.fibonacci_depth = input->fibonacci_depth;
     receipt.pass192_fibonacci_version = hhs_exact_pass192_fibonacci_version();
     receipt.a2 = HHS_EXACT_PASS219_LANE5_PYTHAGOREAN_A2;
@@ -140,7 +176,9 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
         input,
         inverse_orientation,
         inverse_phase_slot,
-        lo_shu_denominator
+        lo_shu_denominator,
+        inverse_lo_shu_cell_index,
+        inverse_lo_shu_denominator
     );
     receipt.pythagorean_identity_verified =
         (receipt.a2 + receipt.b2 == receipt.c2) &&
@@ -150,6 +188,16 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
     receipt.pair_involution_verified =
         (inverse_orientation ^ UINT32_C(1)) == input->orientation;
     receipt.lo_shu_cell_verified = 1U;
+    receipt.lo_shu_complement_verified =
+        inverse_lo_shu_denominator == (UINT32_C(10) - lo_shu_denominator) &&
+        hhs_lane5_p149_inverse_lo_shu_cell(inverse_lo_shu_cell_index) == input->lo_shu_cell_index;
+    receipt.finite_phase_anchor_cell = finite_corner ? 1U : 0U;
+    receipt.finite_phase_anchor_consistent =
+        finite_corner && input->phase_slot == expected_phase ? 1U : 0U;
+    receipt.continuation_cell = finite_corner ? 0U : 1U;
+    receipt.lo_shu_phase_half_turn_verified =
+        finite_corner && inverse_finite_corner &&
+        expected_inverse_phase == hhs_lane5_p149_inverse_phase(expected_phase) ? 1U : 0U;
     receipt.fibonacci_depth_within_pass192 = 1U;
     receipt.shared_fourth_power_match =
         input->projected_p4 == (uint64_t)HHS_EXACT_PASS219_LANE5_PYTHAGOREAN_C4;
@@ -158,6 +206,9 @@ HHSExactStatus hhs_exact_pass219_lane5_pythagorean_phase_project(
         receipt.phase_involution_verified &&
         receipt.pair_involution_verified &&
         receipt.lo_shu_cell_verified &&
+        receipt.lo_shu_complement_verified &&
+        receipt.lo_shu_phase_half_turn_verified &&
+        receipt.finite_phase_anchor_consistent &&
         receipt.fibonacci_depth_within_pass192 &&
         receipt.shared_fourth_power_match;
     receipt.candidate_only = 1U;
