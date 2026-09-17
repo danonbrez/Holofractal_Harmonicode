@@ -155,6 +155,30 @@ tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
 
 The implementation remains projection-only and has no canonical VM81/Hash72/Hash216 admission authority.
 
+## 8A. H36 / Hash216 direct M-exponent lattice
+
+[`HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md`](HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md)
+
+This theorem lowers the shared `{2,3}` prime-exponent geometry directly into the inherited Harmonic36/Hash216 native 5,184-address binding. It formalizes:
+
+- `36 -> (2,2)`, `72 -> (3,2)`, `216 -> (3,3)`, `5184 -> (6,4)`, and `M -> (216,144)`;
+- exact closure `M=72^72=5184^36=2^216*3^144`;
+- H36-to-Hash72 as one binary exponent step and Hash72-to-Hash216 as one ternary exponent step;
+- the existing exact identity among `72x72`, `144x36`, and `81x64` address factorizations;
+- the Lo Shu local exponent surface `1:(0,0)`, `2:(1,0)`, `4:(2,0)`, `8:(3,0)`, `6:(1,1)`, `9:(0,2)`;
+- the licensed projection `AB=P^4=c^4=9` and `1=P^4/9`; and
+- a direct shared-state witness with `translator_required=0`, while retaining zero independent VM81/Hash72/Hash216/persistence/floating authority.
+
+The executable ABI, contract, exhaustive 216-occurrence test, and dedicated CI are:
+
+```text
+hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h
+hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc
+contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md
+tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c
+.github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
@@ -167,6 +191,7 @@ contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md
 contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md
 contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md
 contracts/pass219/PASS_219_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md
+contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md
 docs/pass219/PASS_219_HASH216_FRACTAL_QUDIT_HYDRATION_1_45_EVIDENCE.md
 formal/lemmas/pass_144/LEMMA_CORPUS.json
 formal/coq/HHS_GFE_Field_Quotient.v
@@ -232,6 +257,12 @@ The phase-inverted Pythagorean theorem implementation begins from:
 
 ```text
 base main @ 3ec0aa0c33a0b197dece135f00bf55c2518b9e27
+```
+
+The H36 / Hash216 direct M-exponent-lattice implementation begins from:
+
+```text
+base main @ 9b36a5322dbb6a92c2879b4b8eb22f9da67a8c72
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
