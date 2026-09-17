@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - pass219/lane5-pythagorean-phase-geometry-1-49
     paths:
       - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
       - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
