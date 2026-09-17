@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-17  
 **Repository base:** `3ec0aa0c33a0b197dece135f00bf55c2518b9e27`  
-**Scope:** Pass 219 / Lane 5 unified scalar closure, dynamic H36 correspondence, and Pass 220 Lo Shu nucleus collapse formalization
+**Scope:** Pass 219 / Lane 5 unified scalar closure, dynamic H36 correspondence, Pass 220 Lo Shu nucleus collapse formalization, and typed Lo Shu `1` BigInt scientific-position binding
 
 This additive index extends the existing Lane 5 white-paper corpus without rewriting its frozen evidence baselines.
 
@@ -52,7 +52,27 @@ Formalizes the clarified nucleus controller:
 
 This Pass 220 paper is the controlling clarification for the nucleus-collapse semantics where earlier explanatory wording is less specific.
 
-## 4. Inherited authoritative sources
+## 4. Typed Lo Shu `1` / BigInt scientific-position binding
+
+[`HHS_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md`](HHS_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md)
+
+Formalizes the terminal `1` binding that:
+
+- `1` in the current `... - u^72 == 1` constructor is the typed Lo Shu value-`1` cell, not a complete generic scalar-unity interpretation;
+- the canonical cell is one-based `(row=3,column=2)` in `[[4,9,2],[3,5,7],[8,1,6]]`;
+- that cell identity is preserved through the corresponding BigInt string position in the `10*10` scientific-notation matrix;
+- the inherited `HHS_HASH72_BIGINT_FLOATING_STRING_SERIALIZATION_V1` carrier remains the exact serialization anchor;
+- the explanatory annotation `1_LS(3,2)->BI_10x10` does not replace the canonical verbatim constructor;
+- no universal numeric BigInt string index is invented: any materialized index must be entailed by the authoritative serialized state; and
+- round-trip provenance must recover scientific-position binding -> BigInt string provenance -> Lo Shu `(3,2)` -> typed value `1` -> terminal `u^72` closure target.
+
+The corresponding machine-readable contract is:
+
+```text
+contracts/pass219/pass_219_lo_shu_1_bigint_scientific_position_binding_v1.json
+```
+
+## 5. Inherited authoritative sources
 
 These papers remain subordinate to the existing repository authority chain, including:
 
@@ -64,11 +84,14 @@ contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md
 hhs_runtime/HARMONICODE_VM_RUNTIME.c
 hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc
 hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py
+hhs_runtime/hhs_reality_to_manifold_translation_v1.py
+release_artifacts/pass132/PASS_132_IMPLEMENTATION_REPORT.md
+docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md
 ```
 
 The existing canonical source equations remain verbatim and controlling where designated.
 
-## 5. Evidence classification
+## 6. Evidence classification
 
 The addendum uses the established labels:
 
@@ -81,9 +104,9 @@ REFERENCE_ONLY
 OBSERVATIONAL
 ```
 
-The closure reading is `HHS_NATIVE_SEMANTIC` unless an individual statement is already exercised by exact repository code/tests. Exact factorization identities such as `8*9=72`, `64*81=5184`, `5184^36=72^72`, the Lo Shu fold sums, and exact base-72/nonary residues are `EXECUTED_EXACT` where inherited or focused tests establish them.
+The closure reading is `HHS_NATIVE_SEMANTIC` unless an individual statement is already exercised by exact repository code/tests. Exact factorization identities such as `8*9=72`, `64*81=5184`, `5184^36=72^72`, the Lo Shu fold sums, and exact base-72/nonary residues are `EXECUTED_EXACT` where inherited or focused tests establish them. The Lo Shu `1` coordinate `(3,2)` and the exact BigInt scientific-string construction are inherited exact anchors; the newly declared `10*10` position binding is `HHS_NATIVE_SEMANTIC` until a runtime mapping materializes and verifies a concrete position.
 
-## 6. Implementation handoff
+## 7. Implementation handoff
 
 The next code cycle is constrained to preserve:
 
@@ -91,6 +114,10 @@ The next code cycle is constrained to preserve:
 exact BigInt/rational identity
 ordered phase/nonary identity
 Lo Shu cell-operation identity
+typed Lo Shu 1 at one-based (3,2)
+BigInt string-position provenance
+10*10 scientific-notation matrix binding
+no invented hard-coded BigInt position
 cell-7 collapse-tensor constraint
 Az=Bx / Bz=Ax reciprocal dependency geometry
 A != B with ordered AB/BA path history

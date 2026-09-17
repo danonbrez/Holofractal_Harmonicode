@@ -9,6 +9,7 @@ WHITEPAPER = ROOT / "docs" / "whitepapers" / "HHS_LO_SHU_1_BIGINT_SCIENTIFIC_POS
 CONTRACT_MD = ROOT / "contracts" / "pass219" / "PASS_219_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md"
 CONTRACT_JSON = ROOT / "contracts" / "pass219" / "pass_219_lo_shu_1_bigint_scientific_position_binding_v1.json"
 SERIALIZER = ROOT / "hhs_runtime" / "hhs_reality_to_manifold_translation_v1.py"
+INDEX = ROOT / "docs" / "whitepapers" / "HHS_U72_H36_WHITEPAPER_ADDENDUM_INDEX_V1.md"
 
 
 def read(path: Path) -> str:
@@ -83,3 +84,12 @@ def test_inherited_exact_serializer_remains_anchor() -> None:
 def test_contract_adds_no_authority() -> None:
     data = json.loads(read(CONTRACT_JSON))
     assert not any(data["authority"].values())
+
+
+def test_addendum_index_exposes_lo_shu_one_binding() -> None:
+    text = read(INDEX)
+    assert WHITEPAPER.name in text
+    assert "typed Lo Shu 1 at one-based (3,2)" in text
+    assert "BigInt string-position provenance" in text
+    assert "10*10 scientific-notation matrix binding" in text
+    assert "no invented hard-coded BigInt position" in text

@@ -7,10 +7,14 @@ on:
       - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
       - "docs/whitepapers/HHS_U72_UNIFIED_SCALAR_HOLOGRAPHIC_CLOSURE_V1.md"
       - "docs/whitepapers/HHS_U72_H36_WHITEPAPER_ADDENDUM_INDEX_V1.md"
+      - "docs/whitepapers/HHS_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md"
       - "docs/README.md"
       - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
       - "tests/docs/test_hhs_u72_h36_closure_whitepapers_v1.py"
+      - "tests/docs/test_hhs_lo_shu_1_bigint_scientific_position_binding_v1.py"
       - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
+      - "contracts/pass219/PASS_219_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md"
+      - "contracts/pass219/pass_219_lo_shu_1_bigint_scientific_position_binding_v1.json"
       - "formal/lean/HHS_GFE_Field_Quotient.lean"
       - "formal/coq/HHS_GFE_Field_Quotient.v"
       - ".github/workflows/hhs-lane5-whitepapers-v1.yml"
@@ -22,10 +26,14 @@ on:
       - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
       - "docs/whitepapers/HHS_U72_UNIFIED_SCALAR_HOLOGRAPHIC_CLOSURE_V1.md"
       - "docs/whitepapers/HHS_U72_H36_WHITEPAPER_ADDENDUM_INDEX_V1.md"
+      - "docs/whitepapers/HHS_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md"
       - "docs/README.md"
       - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
       - "tests/docs/test_hhs_u72_h36_closure_whitepapers_v1.py"
+      - "tests/docs/test_hhs_lo_shu_1_bigint_scientific_position_binding_v1.py"
       - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
+      - "contracts/pass219/PASS_219_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1.md"
+      - "contracts/pass219/pass_219_lo_shu_1_bigint_scientific_position_binding_v1.json"
       - "formal/lean/HHS_GFE_Field_Quotient.lean"
       - "formal/coq/HHS_GFE_Field_Quotient.v"
       - ".github/workflows/hhs-lane5-whitepapers-v1.yml"
@@ -47,4 +55,5 @@ jobs:
         run: |
           python -m pytest -q \
             tests/docs/test_hhs_lane5_whitepapers_v1.py \
-            tests/docs/test_hhs_u72_h36_closure_whitepapers_v1.py
+            tests/docs/test_hhs_u72_h36_closure_whitepapers_v1.py \
+            tests/docs/test_hhs_lo_shu_1_bigint_scientific_position_binding_v1.py
