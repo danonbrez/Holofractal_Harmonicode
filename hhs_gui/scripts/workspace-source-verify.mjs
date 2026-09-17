@@ -9,6 +9,7 @@ const content = {
   canonicalIDE: read("runtime_os/core/CanonicalRuntimeIDE.tsx"),
   client: read("runtime_os/core/IntegratedRuntimeClient.ts"),
   product: read("runtime_os/workspace/HHSProductWorkspace.tsx"),
+  quickBuild: read("runtime_os/workspace/MobileQuickBuildPanel.tsx"),
   programmer: read("runtime_os/workspace/RegistryVisualProgrammer.tsx"),
   shell: read("runtime_os/workspace/HHSWorkspaceShell.tsx"),
   assistant: read("runtime_os/assistant/RuntimeAssistantPanel.tsx"),
@@ -16,10 +17,13 @@ const content = {
   commandClient: read("runtime_os/workspace/WorkspaceCommandClient.ts"),
   applicationRegistry: read("runtime_os/core/RuntimeApplicationRegistry.tsx"),
   productionServer: readRepo("hhs_backend/production_server.py"),
+  productionGateway: readRepo("hhs_backend/production_visual_server.py"),
+  applicationServer: readRepo("hhs_backend/runtime_os_application_server.py"),
+  applicationServerFull: readRepo("hhs_backend/runtime_os_application_server_full.py"),
   postCompile: readRepo("bin/post_compile"),
 }
 
-const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.product}\n${content.programmer}\n${content.shell}`
+const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.product}\n${content.quickBuild}\n${content.programmer}\n${content.shell}`
 for (const token of [
   "hhs-canonical-runtime-ide",
   "hhs-product-workspace",
@@ -27,6 +31,7 @@ for (const token of [
   "hhs-visual-runtime-os-workspace",
   "CanonicalRuntimeIDE",
   "HHSProductWorkspace",
+  "MobileQuickBuildPanel",
   "RegistryVisualProgrammer",
   "HHSWorkspaceShell",
   "IntegratedRuntimeClient",
@@ -43,10 +48,11 @@ assert(content.projection.includes("WebSockets are on-demand projection channels
 
 for (const token of [
   'useState<ProductSurface>("control")',
-  "Control",
+  "Build",
   "Visual Program",
   "Workspace",
   "Authority",
+  "MobileQuickBuildPanel",
   "RegistryVisualProgrammer",
   "HHSWorkspaceShell",
   "executeWorkspaceOperation",
@@ -55,6 +61,18 @@ for (const token of [
   "assistantOnline",
 ]) {
   assert(content.product.includes(token), `product composition missing ${token}`)
+}
+
+for (const token of [
+  "Paste → build → run",
+  "/api/v1/pass174/sdlc/run",
+  "source_b64",
+  "Build & Run",
+  "RUNTIME_OS_MOBILE_QUICK_BUILD",
+  "P174_MOBILE_APPLICATION_DEVELOPMENT_PIPELINE",
+  "sandbox=\"allow-scripts\"",
+]) {
+  assert(content.quickBuild.includes(token), `Quick Build missing ${token}`)
 }
 
 for (const token of [
@@ -156,6 +174,11 @@ for (const token of [
 ]) {
   assert(content.productionServer.includes(token), `production authority composition missing ${token}`)
 }
+
+assert(content.productionGateway.includes("from hhs_backend.runtime_os_application_server import app as authoritative_app"), "DigitalOcean production gateway does not project the full Runtime OS application composition")
+assert(content.applicationServer.includes("runtime_os_application_server_full"), "full Runtime OS application dispatcher is not selected")
+assert(content.applicationServerFull.includes("from hhs_backend.application_ide_server import app as inherited_app"), "Runtime OS application composition lost the inherited production workspace/product route chain")
+assert(content.applicationServerFull.includes("project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)"), "Runtime OS application composition no longer projects the public Runtime OS")
 assert(content.postCompile.includes("--require-assistant"), "deployment can publish without an executable assistant provider")
 assert(content.postCompile.includes("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC"), "hosted native assistant mode is not explicit")
 
@@ -178,6 +201,7 @@ for (const forbidden of [
   "ProductionApp",
   "runtime_application_missing",
   "visual_shell_only: true",
+  "signal is aborted without reason",
 ]) {
   assert(!publicSource.includes(forbidden), `obsolete public fallback leaked: ${forbidden}`)
 }
