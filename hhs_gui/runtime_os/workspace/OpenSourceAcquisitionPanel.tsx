@@ -18,12 +18,22 @@ async function requestJson(url: string, init?: RequestInit, timeoutMs = 90000): 
       headers: { accept: "application/json", ...(init?.body ? { "content-type": "application/json" } : {}), ...(init?.headers ?? {}) },
     })
     const raw = await response.text()
-    const body = raw ? record(JSON.parse(raw)) : {}
+    let body: Json = {}
+    try {
+      body = raw ? record(JSON.parse(raw)) : {}
+    } catch {
+      body = { detail: raw || response.statusText }
+    }
     if (!response.ok) {
       const detail = record(body.detail)
-      throw new Error(text(detail.classification ?? body.detail ?? body.error, `${response.status} ${response.statusText}`))
+      throw new Error(text(detail.classification ?? detail.detail ?? body.detail ?? body.error ?? body.status, `${response.status} ${response.statusText}`))
     }
     return body
+  } catch (reason) {
+    if (reason instanceof DOMException && reason.name === "AbortError") {
+      throw new Error(`${url} timed out after ${Math.round(timeoutMs / 1000)} seconds`)
+    }
+    throw reason
   } finally {
     window.clearTimeout(timeout)
   }
@@ -57,17 +67,26 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
   const completed = useMemo(() => history.filter((job) => text(job.status) === "COMPLETED").length, [history])
 
   const refresh = async (): Promise<void> => {
-    const [service, jobs] = await Promise.all([
+    const [service, jobs] = await Promise.allSettled([
       requestJson("/api/v1/pass174/acquisition/status", undefined, 15000),
       requestJson("/api/v1/pass174/acquisition/jobs?limit=20", undefined, 15000),
     ])
-    setStatus(service)
-    setHistory(Array.isArray(jobs.jobs) ? jobs.jobs : [])
-    setError(null)
+    const failures: string[] = []
+    if (service.status === "fulfilled") {
+      setStatus(service.value)
+    } else {
+      failures.push(service.reason instanceof Error ? service.reason.message : String(service.reason))
+    }
+    if (jobs.status === "fulfilled") {
+      setHistory(Array.isArray(jobs.value.jobs) ? jobs.value.jobs : [])
+    } else {
+      failures.push(jobs.reason instanceof Error ? jobs.reason.message : String(jobs.reason))
+    }
+    setError(failures.length ? failures.join(" · ") : null)
   }
 
   useEffect(() => {
-    void refresh().catch((reason) => setError(reason instanceof Error ? reason.message : String(reason)))
+    void refresh()
   }, [])
 
   const setField = (key: keyof typeof emptyForm, value: string): void => setForm((current) => ({ ...current, [key]: value }))
@@ -150,7 +169,7 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
         <button type="button" onClick={() => void refresh()} className="runtime-button min-h-10 px-3 text-xs">Refresh jobs</button>
       </header>
 
-      {error ? <div className="mt-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">{error}</div> : null}
+      {error ? <div className="mt-3 rounded-xl border border-amber-900 bg-amber-950/20 p-3 text-xs text-amber-200">Acquisition status is still warming: {error}</div> : null}
 
       <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
         <Mini label="Service" value={text(status.classification, "not loaded")} />
