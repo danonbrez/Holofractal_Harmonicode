@@ -1,0 +1,66 @@
+{
+  "schema": "HHS_PASS_219_LO_SHU_1_BIGINT_SCIENTIFIC_POSITION_BINDING_V1",
+  "version": "1.0",
+  "date": "2026-09-17",
+  "terminal_binding": {
+    "symbol": "1",
+    "semantics": "addressed_closure_admission_predicate",
+    "generic_scalar_unity_complete_interpretation": false,
+    "lo_shu": {
+      "layout": [
+        [
+          4,
+          9,
+          2
+        ],
+        [
+          3,
+          5,
+          7
+        ],
+        [
+          8,
+          1,
+          6
+        ]
+      ],
+      "value": 1,
+      "row_1_based": 3,
+      "column_1_based": 2
+    },
+    "u72_terminal_surface": "... - u^72 == 1"
+  },
+  "bigint_scientific_binding": {
+    "carrier_schema": "HHS_HASH72_BIGINT_FLOATING_STRING_SERIALIZATION_V1",
+    "position_binding": "bigint_string_position",
+    "position_source": "authoritative_serialized_bigint_state",
+    "numeric_index": null,
+    "numeric_index_policy": "must_not_be_invented_or_hard_coded",
+    "scientific_matrix_shape": [
+      10,
+      10
+    ],
+    "scientific_notation_authority": "exact_bigint_decimal_string",
+    "floating_point_position_authority": false,
+    "round_trip_provenance_required": true
+  },
+  "typed_annotation": {
+    "text": "1_LS(3,2)->BI_10x10",
+    "authoritative_source_replacement": false
+  },
+  "authority": {
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_minting": false,
+    "canonical_hash216_persistence": false,
+    "canonical_receipt": false,
+    "pqc_key": false,
+    "receipt_clock": false
+  },
+  "inherited_anchors": [
+    "release_artifacts/pass132/PASS_132_IMPLEMENTATION_REPORT.md",
+    "docs/pass219/PASS_219B_PHASE_QUANTIZED_SELECTIVE_HYDRATION_1_0.md",
+    "hhs_runtime/hhs_reality_to_manifold_translation_v1.py",
+    "contracts/pass219/PASS_219_U72_H36_DYNAMIC_SCALAR_OPTIMIZATION_V1.md",
+    "docs/whitepapers/HHS_PASS_220_LO_SHU_PYTHAGOREAN_COLLAPSE_V1.md"
+  ]
+}
