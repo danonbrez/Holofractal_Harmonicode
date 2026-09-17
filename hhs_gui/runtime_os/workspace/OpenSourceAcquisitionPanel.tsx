@@ -42,18 +42,38 @@ const emptyForm = {
   sourceLanguage: "en",
 }
 
+const sourcePayload = (form: typeof emptyForm): Json => ({
+  repository: {
+    provider: form.provider,
+    repo_id: form.repoId,
+    revision: form.revision.trim(),
+    license_id: form.licenseId.trim(),
+    repo_kind: "CODE",
+    source_url: form.sourceUrl.trim(),
+    modalities: [form.mediaType],
+  },
+  artifact_path: form.artifactPath.trim(),
+  expected_sha256: form.expectedSha256.trim().toLowerCase(),
+  expected_byte_length: Number(form.expectedByteLength),
+  declared_media_type: form.mediaType,
+  source_language: form.sourceLanguage.trim() || null,
+})
+
 export const OpenSourceAcquisitionPanel: React.FC = () => {
   const [form, setForm] = useState(emptyForm)
   const [status, setStatus] = useState<Json>({})
   const [history, setHistory] = useState<Json[]>([])
   const [selected, setSelected] = useState<Json>({})
-  const [projectorId, setProjectorId] = useState("SOURCE_ONLY_V1")
+  const [projectorId, setProjectorId] = useState("SERVER_APPROVED_EXECUTION_V1")
+  const [executionProfileId, setExecutionProfileId] = useState("MULTILINGUAL_MPNET_TEXT_V1")
+  const [pivotText, setPivotText] = useState("Semantic similarity candidate")
   const [evidenceText, setEvidenceText] = useState("")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const adapters = Array.isArray(status.projectors) ? status.projectors : []
   const executionProfiles = Array.isArray(status.execution_profiles) ? status.execution_profiles : []
+  const serverExecution = record(status.server_execution)
   const completed = useMemo(() => history.filter((job) => text(job.status) === "COMPLETED").length, [history])
 
   const refresh = async (): Promise<void> => {
@@ -85,29 +105,30 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
     setBusy(true)
     setError(null)
     try {
-      const result = await requestJson("/api/v1/pass174/acquisition/jobs", {
-        method: "POST",
-        body: JSON.stringify({
-          projector_id: projectorId,
-          source: {
-            repository: {
-              provider: form.provider,
-              repo_id: form.repoId,
-              revision: form.revision.trim(),
-              license_id: form.licenseId.trim(),
-              repo_kind: "CODE",
-              source_url: form.sourceUrl.trim(),
-              modalities: [form.mediaType],
-            },
-            artifact_path: form.artifactPath.trim(),
-            expected_sha256: form.expectedSha256.trim().toLowerCase(),
-            expected_byte_length: Number(form.expectedByteLength),
-            declared_media_type: form.mediaType,
-            source_language: form.sourceLanguage.trim() || null,
-          },
-          projection_evidence: parseProjectionEvidence(),
-        }),
-      })
+      const source = sourcePayload(form)
+      const serverSide = projectorId === "SERVER_APPROVED_EXECUTION_V1"
+      const result = serverSide
+        ? await requestJson("/api/v1/pass174/acquisition/jobs/execute", {
+            method: "POST",
+            body: JSON.stringify({
+              source,
+              execution: {
+                profile_id: executionProfileId,
+                pivot_text: pivotText.trim(),
+                pivot_language: "en",
+                semantic_labels: [],
+                translation_chain: [form.sourceLanguage.trim() || "unknown", "en"],
+              },
+            }),
+          }, 600000)
+        : await requestJson("/api/v1/pass174/acquisition/jobs", {
+            method: "POST",
+            body: JSON.stringify({
+              projector_id: projectorId,
+              source,
+              projection_evidence: parseProjectionEvidence(),
+            }),
+          })
       setSelected(result)
       await refresh()
     } catch (reason) {
@@ -139,21 +160,29 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
     }
   }
 
+  const selectedJob = record(selected.job ?? selected)
+  const selectedResult = record(selectedJob.result)
+  const selectedReport = record(selectedResult.report)
+  const selectedIngress = record(selectedReport.ingress_record)
+  const selectedReceipt = record(selectedResult.receipt)
+  const selectedExecution = record(selected.execution)
+
   return (
     <section data-testid="open-source-acquisition-panel" className="rounded-3xl border border-indigo-950 bg-indigo-950/10 p-3 md:p-5">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="text-[10px] uppercase tracking-[0.22em] text-indigo-400">Pass 219 external ingress</div>
           <h2 className="mt-1 text-base font-semibold text-indigo-100">Open-source acquisition + replay jobs</h2>
-          <p className="mt-1 max-w-3xl text-[11px] leading-5 text-neutral-500">Fetch only immutable GitHub/Hugging Face revisions, verify exact bytes before projection, persist replay bundles, and keep every result candidate-only until later validation.</p>
+          <p className="mt-1 max-w-3xl text-[11px] leading-5 text-neutral-500">Fetch immutable GitHub/Hugging Face revisions, verify exact bytes before inference, run approved models in an isolated subprocess, persist sealed evidence, and replay without network or model execution.</p>
         </div>
         <button type="button" onClick={() => void refresh()} className="runtime-button min-h-10 px-3 text-xs">Refresh jobs</button>
       </header>
 
       {error ? <div className="mt-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">{error}</div> : null}
 
-      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-6">
         <Mini label="Service" value={text(status.classification, "not loaded")} />
+        <Mini label="Server projector" value={serverExecution.runtime_ready ? "ready" : "unavailable"} />
         <Mini label="Recent jobs" value={String(history.length)} />
         <Mini label="Completed" value={String(completed)} />
         <Mini label="Job adapters" value={String(adapters.length)} />
@@ -163,7 +192,7 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
       <details className="mt-3 rounded-2xl border border-neutral-800 bg-black/30 p-3" open>
         <summary className="cursor-pointer text-xs font-medium text-indigo-200">New verified source job</summary>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          <Field label="Job adapter"><select value={projectorId} onChange={(event) => setProjectorId(event.target.value)} className="runtime-input w-full"><option value="SOURCE_ONLY_V1">SOURCE_ONLY_V1</option><option value="EXTERNAL_EVIDENCE_V1">EXTERNAL_EVIDENCE_V1</option></select></Field>
+          <Field label="Execution path"><select value={projectorId} onChange={(event) => setProjectorId(event.target.value)} className="runtime-input w-full"><option value="SERVER_APPROVED_EXECUTION_V1">Approved server projector</option><option value="SOURCE_ONLY_V1">Verify source only</option><option value="EXTERNAL_EVIDENCE_V1">Manual sealed evidence</option></select></Field>
           <Field label="Provider"><select value={form.provider} onChange={(event) => setField("provider", event.target.value)} className="runtime-input w-full"><option>GITHUB</option><option>HUGGING_FACE</option></select></Field>
           <Field label="Repository"><input value={form.repoId} onChange={(event) => setField("repoId", event.target.value)} className="runtime-input w-full" /></Field>
           <Field label="Immutable 40-hex revision"><input value={form.revision} onChange={(event) => setField("revision", event.target.value)} placeholder="commit/model revision" className="runtime-input w-full font-mono" /></Field>
@@ -174,7 +203,11 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
           <Field label="Media type"><select value={form.mediaType} onChange={(event) => setField("mediaType", event.target.value)} className="runtime-input w-full"><option>TEXT</option><option>MARKDOWN</option><option>JSON</option><option>CSV</option><option>IMAGE</option><option>AUDIO</option><option>VIDEO</option><option>BINARY_OBJECT</option></select></Field>
           <Field label="Source URL"><input value={form.sourceUrl} onChange={(event) => setField("sourceUrl", event.target.value)} className="runtime-input w-full" /></Field>
           <Field label="Language"><input value={form.sourceLanguage} onChange={(event) => setField("sourceLanguage", event.target.value)} className="runtime-input w-full" /></Field>
+          {projectorId === "SERVER_APPROVED_EXECUTION_V1" ? <Field label="Approved profile"><select value={executionProfileId} onChange={(event) => setExecutionProfileId(event.target.value)} className="runtime-input w-full">{executionProfiles.filter((profile: Json) => profile.production_approved).map((profile: Json) => <option key={text(profile.profile_id)} value={text(profile.profile_id)}>{text(profile.profile_id)}</option>)}</select></Field> : null}
         </div>
+        {projectorId === "SERVER_APPROVED_EXECUTION_V1" ? (
+          <Field label="Semantic pivot text"><textarea value={pivotText} onChange={(event) => setPivotText(event.target.value)} rows={3} className="runtime-input w-full" /></Field>
+        ) : null}
         {projectorId === "EXTERNAL_EVIDENCE_V1" ? (
           <label className="mt-3 block text-[10px] text-neutral-500">
             <span className="mb-1 block">Approved projector evidence JSON</span>
@@ -182,8 +215,8 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
           </label>
         ) : null}
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button type="button" disabled={busy} onClick={() => void submit()} className="runtime-button min-h-10 px-4 text-xs">{busy ? "Working…" : projectorId === "EXTERNAL_EVIDENCE_V1" ? "Acquire + sealed projection" : "Acquire + verify"}</button>
-          <span className="text-[10px] text-neutral-600">Model execution stays outside the canonical server. The approved worker emits sealed evidence here; the job service verifies source bytes again before admitting it as candidate-only.</span>
+          <button type="button" disabled={busy} onClick={() => void submit()} className="runtime-button min-h-10 px-4 text-xs">{busy ? "Working…" : projectorId === "SERVER_APPROVED_EXECUTION_V1" ? "Acquire + run approved model" : projectorId === "EXTERNAL_EVIDENCE_V1" ? "Acquire + sealed projection" : "Acquire + verify"}</button>
+          <span className="text-[10px] text-neutral-600">Approved inference runs in an isolated ML subprocess outside canonical VM81 authority. Source bytes are verified first; persistence reuses the same captured bytes and offline replay never reruns the model.</span>
         </div>
       </details>
 
@@ -211,14 +244,29 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
         </section>
         <section className="rounded-2xl border border-neutral-800 bg-black/30 p-3">
           <div className="text-xs font-medium text-neutral-300">Selected job / replay receipt</div>
-          {Object.keys(selected).length ? <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap break-all text-[10px] leading-4 text-neutral-500">{JSON.stringify(selected, null, 2)}</pre> : <div className="mt-3 text-xs text-neutral-600">Select a job to inspect exact provenance, receipt identity, HOLD/candidate classification, or replay closure.</div>}
+          {Object.keys(selected).length ? (
+            <div className="mt-2 space-y-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <Mini label="Status" value={text(selected.status ?? selectedJob.status, "result")} />
+                <Mini label="Job" value={short(selectedJob.job_id)} />
+                <Mini label="Classification" value={text(selectedIngress.classification ?? record(selected.replay).ingress_record?.classification, "—")} />
+                <Mini label="Receipt" value={short(selectedReceipt.job_receipt_hash72 ?? selectedJob.receipt_hash72)} />
+                <Mini label="Profile" value={text(selectedExecution.profile_id, "—")} />
+                <Mini label="Replay closure" value={short(selectedReport.replay_closure_hash72 ?? record(selected.replay).replay_closure_hash72)} />
+              </div>
+              <details className="rounded-xl border border-neutral-800 bg-neutral-950/50 p-2">
+                <summary className="cursor-pointer text-[10px] text-neutral-400">Exact receipt / diagnostic JSON</summary>
+                <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[10px] leading-4 text-neutral-600">{JSON.stringify(selected, null, 2)}</pre>
+              </details>
+            </div>
+          ) : <div className="mt-3 text-xs text-neutral-600">Select a job to inspect provenance, receipt identity, candidate classification, or replay closure.</div>}
         </section>
       </div>
     </section>
   )
 }
 
-const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => <label className="block text-[10px] text-neutral-500"><span className="mb-1 block">{label}</span>{children}</label>
+const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => <label className="mt-3 block text-[10px] text-neutral-500"><span className="mb-1 block">{label}</span>{children}</label>
 const Mini: React.FC<{ label: string; value: string }> = ({ label, value }) => <div className="rounded-xl border border-neutral-800 bg-black/30 p-2"><div className="text-[9px] text-neutral-600">{label}</div><div className="mt-1 truncate text-[10px] text-neutral-300" title={value}>{value}</div></div>
 
 export default OpenSourceAcquisitionPanel
