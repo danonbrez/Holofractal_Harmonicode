@@ -1,0 +1,86 @@
+name: Pass 219 Lane 5 Pythagorean Phase Geometry 1.49
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
+      - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
+      - 'docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c'
+      - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
+      - 'tests/docs/test_hhs_lane5_pythagorean_phase_geometry_v1.py'
+      - '.github/workflows/pass219-lane5-pythagorean-phase-geometry-1-49.yml'
+  push:
+    branches:
+      - main
+      - pass219/lane5-pythagorean-phase-geometry-1-49
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
+      - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
+      - 'docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c'
+      - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
+      - 'tests/docs/test_hhs_lane5_pythagorean_phase_geometry_v1.py'
+      - '.github/workflows/pass219-lane5-pythagorean-phase-geometry-1-49.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Validate theorem source identity and dependency geometry
+        run: |
+          python -m pytest -q tests/docs/test_hhs_lane5_pythagorean_phase_geometry_v1.py
+          python -m pytest -q hhs_spi_fibonacci_pythagorean_scaling_rule_tests_v1.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and execute 1.49 candidate projection
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c \
+            tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-pythagorean-phase
+          /tmp/test-lane5-pythagorean-phase | tee /tmp/lane5-pythagorean-phase.log
+          grep -q 'PASS219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49_PASS projections=288 collapse=32 continuation=160 c4=9 phase_cycle=72' \
+            /tmp/lane5-pythagorean-phase.log
+
+      - name: Regress inherited 1.46 reciprocal phase routing
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-direct-witness
+          /tmp/test-lane5-direct-witness | tee /tmp/lane5-direct-witness.log
+          grep -q 'PASS219_LANE5_DIRECT_WITNESS_ROUTING_1_46_PASS' /tmp/lane5-direct-witness.log
+
+      - name: Regress unified Lane 5 white-paper corpus
+        run: python -m pytest -q tests/docs/test_hhs_lane5_whitepapers_v1.py
