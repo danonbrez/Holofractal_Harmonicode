@@ -18,10 +18,15 @@ def run_arm(exe: str, dataset: str, sample: dict) -> dict:
             str(sample["phase_slot"]),
             str(sample["inverse_phase_slot"]),
         ],
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"arm failed: exe={exe} returncode={proc.returncode} "
+            f"sample={sample['sample_id']} stdout={proc.stdout!r} stderr={proc.stderr!r}"
+        )
     lines = [line for line in proc.stdout.splitlines() if line.strip()]
     if len(lines) != 1:
         raise RuntimeError(f"expected one JSON line from {exe}, got {len(lines)}: {proc.stdout!r}")
