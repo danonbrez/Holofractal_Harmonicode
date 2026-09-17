@@ -8,6 +8,7 @@ WHITEPAPERS = ROOT / "docs" / "whitepapers"
 
 U72 = WHITEPAPERS / "HHS_U72_UNIFIED_SCALAR_HOLOGRAPHIC_CLOSURE_V1.md"
 H36 = WHITEPAPERS / "HHS_H36_DYNAMIC_LANE5_CORRESPONDENCE_V1.md"
+PASS220 = WHITEPAPERS / "HHS_PASS_220_LO_SHU_PYTHAGOREAN_COLLAPSE_V1.md"
 INDEX = WHITEPAPERS / "HHS_U72_H36_WHITEPAPER_ADDENDUM_INDEX_V1.md"
 DIRECT = ROOT / "contracts" / "pass219" / "PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md"
 NONARY_PROBE = ROOT / "hhs_runtime" / "pass219" / "nonary_qudit_bigint_assembly_probe.py"
@@ -42,6 +43,8 @@ def test_nucleus_boundary_arithmetic_is_exact() -> None:
     assert 81 - 9 == 72
     assert 45 == 5 * 9
     assert 45 % 9 == 0
+    assert (9 + 3) // 2 == 6
+    assert 15 % 9 == 6
 
 
 def test_seven_cell_nested_normalizer_closes_exactly() -> None:
@@ -60,6 +63,25 @@ def test_seven_cell_nested_normalizer_closes_exactly() -> None:
     assert outer == 7
     assert b4 + c2 == 7
     assert ((b6 - xy) * (b4 + c2)) // outer == 7
+    assert 7**2 % 9 == 4
+
+
+def test_pass220_modulus_offset_geometry_is_exact() -> None:
+    cells = (4, 9, 2, 3, 5, 7, 8, 1, 6)
+    offsets = tuple((-cell) % 9 for cell in cells)
+    assert offsets == (5, 0, 7, 6, 4, 2, 1, 8, 3)
+    assert sum(cells) == 45
+    assert sum(offsets) == 36
+    assert sum(cells) + sum(offsets) == 81 == 9**2
+
+
+def test_pass220_base72_nucleus_folds_to_normalization_cell() -> None:
+    cells = (4, 9, 2, 3, 5, 7, 8, 1, 6)
+    packed = 0
+    for cell in cells:
+        packed = packed * 72 + cell
+    assert packed == 2979376632189006
+    assert packed % 9 == 6
 
 
 def test_u72_paper_preserves_unified_scalar_closure_reading() -> None:
@@ -103,16 +125,61 @@ def test_h36_paper_is_explicitly_dynamic_not_static() -> None:
         assert needle in text, needle
 
 
-def test_addendum_index_links_both_new_papers() -> None:
+def test_pass220_paper_freezes_nucleus_controller_semantics() -> None:
+    text = read(PASS220)
+    required = (
+        "HHS_PASS_220_LO_SHU_PYTHAGOREAN_COLLAPSE_V1",
+        "HHS-L144-011",
+        "Az=Bx",
+        "Bz=Ax",
+        "A != B",
+        "AB !=path BA",
+        "AB=P^4=BA",
+        "P^4=c^4=9",
+        "6=(9+sqrt(9))/2=(9+3)/2",
+        "cell `1` is the typed reciprocal of the boundary modulus",
+        "Cell `7` is the nucleus collapse tensor",
+        "(AB+BA=P^4)/(a^2+b^2=c^2)=u",
+        "45+36=81=9^2",
+        "2979376632189006 mod 9 = 6",
+        "H36(5184)=5184^36=(72^2)^36=72^72",
+        "u^0==u^72",
+        "does **not** assert raw commutativity",
+    )
+    for needle in required:
+        assert needle in text, needle
+
+
+def test_pass220_paper_preserves_verbatim_constructor_fragments() -> None:
+    text = read(PASS220)
+    for needle in (
+        "MatrixTimes(List(List((xy),x+y,(yx))",
+        "NcalcMatrixPower",
+        "COMPLEX INFINITY=(P²=pq+((q-p)P/(p+q))",
+        "∆/P=√(pq+u⁷²)^x²",
+        "b²P-(p+q)=x+y+z+w+xy+yx+zw+wz",
+    ):
+        assert needle in text, needle
+
+
+def test_addendum_index_links_all_closure_papers() -> None:
     index = read(INDEX)
     assert U72.name in index
     assert H36.name in index
+    assert PASS220.name in index
     for label in (
         "EXECUTED_EXACT",
         "HHS_NATIVE_SEMANTIC",
         "DEVELOPMENT_VERBATIM",
     ):
         assert label in index
+    for needle in (
+        "Az=Bx",
+        "Bz=Ax",
+        "AB=P^4=BA",
+        "cell-7 collapse-tensor constraint",
+    ):
+        assert needle in index, needle
 
 
 def test_inherited_direct_route_and_nonary_probe_supply_executable_evidence() -> None:
