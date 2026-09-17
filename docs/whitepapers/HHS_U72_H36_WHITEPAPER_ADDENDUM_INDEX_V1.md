@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-17  
 **Repository base:** `3ec0aa0c33a0b197dece135f00bf55c2518b9e27`  
-**Scope:** Pass 219 / Lane 5 unified scalar closure and dynamic H36 correspondence
+**Scope:** Pass 219 / Lane 5 unified scalar closure, dynamic H36 correspondence, and Pass 220 Lo Shu nucleus collapse formalization
 
 This additive index extends the existing Lane 5 white-paper corpus without rewriting its frozen evidence baselines.
 
@@ -34,7 +34,25 @@ Formalizes the implementation-facing correspondence that:
 - direct-witness optimization may avoid intermediate materialization but may not bypass inherited algebraic dependencies; and
 - the next optimization cycle must prove BigInt -> factorization -> admitted VM81/C++ RNA operation -> exact result -> BigInt recomposition identity against the authoritative reference path.
 
-## 3. Inherited authoritative sources
+## 3. Pass 220 Lo Shu nucleus offset / Pythagorean collapse
+
+[`HHS_PASS_220_LO_SHU_PYTHAGOREAN_COLLAPSE_V1.md`](HHS_PASS_220_LO_SHU_PYTHAGOREAN_COLLAPSE_V1.md)
+
+Formalizes the clarified nucleus controller:
+
+- the 3x3 Lo Shu matrix is the native modular cellular folding algorithm;
+- binary `{0,1}` collapse state is carried through fermionic `q=-1` trinary `{-1,0,+1}` phase geometry, giving the exact `2*3=6` local normalization count;
+- `6=(9+sqrt(9))/2=(9+3)/2` is the dyadic normalization mean between the invariant `9` boundary and magnitude root `3`;
+- `5` is the decimal/magnitude complement fixed point, cell `1` is the typed reciprocal boundary-modulus operation, and cell `7` is the collapse tensor / nested normalization-modulus constraint;
+- reciprocal phase exchange is explicitly constrained by `Az=Bx` and `Bz=Ax`;
+- `A != B` and ordered paths remain distinct while nucleus closure admits `AB=P^4=BA` without asserting raw commutativity;
+- the `u` surface carries global state on each local cell through its modulus offset from the `9` boundary;
+- the exact cell/offset sums satisfy `45+36=81=9^2`, and the base-72 serialized Lo Shu nucleus folds to residue `6 mod 9`;
+- the nucleus squares through the 81-cell Sudoku qudit constraint surface and remains dynamically enforced through the same `u^72` resonance law used by Lane 5.
+
+This Pass 220 paper is the controlling clarification for the nucleus-collapse semantics where earlier explanatory wording is less specific.
+
+## 4. Inherited authoritative sources
 
 These papers remain subordinate to the existing repository authority chain, including:
 
@@ -50,7 +68,7 @@ hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py
 
 The existing canonical source equations remain verbatim and controlling where designated.
 
-## 4. Evidence classification
+## 5. Evidence classification
 
 The addendum uses the established labels:
 
@@ -63,9 +81,9 @@ REFERENCE_ONLY
 OBSERVATIONAL
 ```
 
-The new closure reading is `HHS_NATIVE_SEMANTIC` unless an individual statement is already exercised by exact repository code/tests. Exact factorization identities such as `8*9=72`, `64*81=5184`, and `5184^36=72^72` are `EXECUTED_EXACT` where inherited tests/probes establish them.
+The closure reading is `HHS_NATIVE_SEMANTIC` unless an individual statement is already exercised by exact repository code/tests. Exact factorization identities such as `8*9=72`, `64*81=5184`, `5184^36=72^72`, the Lo Shu fold sums, and exact base-72/nonary residues are `EXECUTED_EXACT` where inherited or focused tests establish them.
 
-## 5. Implementation handoff
+## 6. Implementation handoff
 
 The next code cycle is constrained to preserve:
 
@@ -73,6 +91,10 @@ The next code cycle is constrained to preserve:
 exact BigInt/rational identity
 ordered phase/nonary identity
 Lo Shu cell-operation identity
+cell-7 collapse-tensor constraint
+Az=Bx / Bz=Ax reciprocal dependency geometry
+A != B with ordered AB/BA path history
+AB=P^4=BA typed nucleus closure
 u^72 reciprocal/phase dependencies
 VM81/C++ RNA admission authority
 replay/provenance identity
