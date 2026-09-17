@@ -46,6 +46,7 @@ for path in \
   hhs_backend/runtime_os_projection.py \
   hhs_backend/runtime_os_visual_server.py \
   hhs_backend/runtime_os_application_server.py \
+  hhs_backend/runtime_os_application_server_full.py \
   hhs_backend/production_visual_server.py \
   hhs_backend/application_ide_server.py \
   hhs_backend/production_ide_server.py \
@@ -180,7 +181,7 @@ if [[ "$BOOT" == "1" ]]; then
   env -u HHS_RUNTIME_OS_ROOT \
     HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
     HHS_PASS205_DB="$PASS205_DB" \
-    "$PYTHON" -m uvicorn hhs_backend.runtime_os_application_server:app \
+    "$PYTHON" -m uvicorn hhs_backend.production_visual_server:app \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
       >"$LOG_FILE" 2>&1 &
   server_pid=$!
@@ -197,7 +198,7 @@ if [[ "$BOOT" == "1" ]]; then
 
   ready=0
   for _ in $(seq 1 "$BOOT_TIMEOUT"); do
-    if curl --fail --silent "http://127.0.0.1:${PORT}/api/system/status" >/tmp/hhs-candidate-status.json 2>/dev/null; then
+    if curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/system/status" >/tmp/hhs-candidate-status.json 2>/dev/null; then
       ready=1
       break
     fi
@@ -208,13 +209,16 @@ if [[ "$BOOT" == "1" ]]; then
   done
   [[ "$ready" == "1" ]] || fail_with_log
 
-  curl --fail --silent "http://127.0.0.1:${PORT}/" >/tmp/hhs-candidate-root.html || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/" >/tmp/hhs-candidate-root.html || fail_with_log
   grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-candidate-root.html || fail_with_log
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json || fail_with_log
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json || fail_with_log
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log
-  curl --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/health" >/tmp/hhs-candidate-health.json || fail_with_log
+  curl --max-time 15 --fail --silent "http://127.0.0.1:${PORT}/api/product/health" >/tmp/hhs-candidate-product-health.json || fail_with_log
+  curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json || fail_with_log
+  curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log
+  curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html || fail_with_log
 
   EXPECTED_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" "$PYTHON" - <<'PY'
 import json
@@ -222,6 +226,9 @@ import os
 from pathlib import Path
 for path in (
     "/tmp/hhs-candidate-status.json",
+    "/tmp/hhs-candidate-health.json",
+    "/tmp/hhs-candidate-product-health.json",
+    "/tmp/hhs-candidate-pass174.json",
     "/tmp/hhs-candidate-interface.json",
     "/tmp/hhs-candidate-repository.json",
     "/tmp/hhs-candidate-workspace.json",
@@ -241,6 +248,15 @@ if actual_asset_root != expected_asset_root:
     raise SystemExit(
         f"candidate Runtime OS asset authority mismatch: actual={actual_asset_root} expected={expected_asset_root}"
     )
+workspace = json.loads(Path("/tmp/hhs-candidate-workspace.json").read_text(encoding="utf-8"))
+if "project" not in workspace and "objects" not in workspace:
+    raise SystemExit("candidate workspace session route is not the production workspace surface")
+product = json.loads(Path("/tmp/hhs-candidate-product-health.json").read_text(encoding="utf-8"))
+if "runtime" not in product or "assistant" not in product:
+    raise SystemExit("candidate product health route is not the production product surface")
+pass174 = json.loads(Path("/tmp/hhs-candidate-pass174.json").read_text(encoding="utf-8"))
+if not pass174.get("classification"):
+    raise SystemExit("candidate Pass 174 status route did not return runtime classification")
 pass205 = json.loads(Path("/tmp/hhs-candidate-pass205.json").read_text(encoding="utf-8"))
 payload = pass205.get("payload", pass205)
 if payload.get("state_bits") != 5184:
