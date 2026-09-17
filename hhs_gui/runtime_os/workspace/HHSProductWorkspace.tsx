@@ -3,6 +3,7 @@ import type { RuntimeOS } from "../core/RuntimeOS"
 import { ApprovalStatusPanel } from "./ApprovalStatusPanel"
 import { AuthorityOperationsPanel } from "./AuthorityOperationsPanel"
 import { HHSWorkspaceShell } from "./HHSWorkspaceShell"
+import { MobileQuickBuildPanel } from "./MobileQuickBuildPanel"
 import { ProductionMobileControlCenter } from "./ProductionMobileControlCenter"
 import { RegistryVisualProgrammer } from "./RegistryVisualProgrammer"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
@@ -33,6 +34,11 @@ async function requestJson(url: string, timeoutMs = 20000): Promise<Json> {
       throw new Error(text(detail.classification ?? detail.detail ?? body.detail ?? body.error ?? body.status, `${response.status} ${response.statusText}`))
     }
     return body
+  } catch (reason) {
+    if (reason instanceof DOMException && reason.name === "AbortError") {
+      throw new Error(`${url} timed out after ${Math.round(timeoutMs / 1000)} seconds`)
+    }
+    throw reason
   } finally {
     window.clearTimeout(timeout)
   }
@@ -66,7 +72,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
 
   const refreshSession = async (): Promise<void> => {
     try {
-      setSession(await requestJson("/api/runtime/workspace/session"))
+      setSession(await requestJson("/api/runtime/workspace/session", 12000))
       setSessionError(null)
     } catch (reason) {
       setSessionError(reason instanceof Error ? reason.message : String(reason))
@@ -75,7 +81,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
 
   const refreshHealth = async (): Promise<void> => {
     try {
-      setProductHealth(await requestJson("/api/product/health", 8000))
+      setProductHealth(await requestJson("/api/product/health", 12000))
       setHealthError(null)
     } catch (reason) {
       setHealthError(reason instanceof Error ? reason.message : String(reason))
@@ -85,7 +91,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   useEffect(() => {
     void refreshSession()
     void refreshHealth()
-    const interval = window.setInterval(() => void refreshHealth(), 15000)
+    const interval = window.setInterval(() => void refreshHealth(), 20000)
     return () => window.clearInterval(interval)
   }, [])
 
@@ -117,7 +123,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
     setExternalResultCount((count) => count + 1)
   }
 
-  const tabClass = (id: ProductSurface): string => `min-h-10 shrink-0 rounded-xl px-3 text-xs ${surface === id ? "bg-cyan-900 text-white shadow-lg" : "bg-neutral-900 text-neutral-400"}`
+  const tabClass = (id: ProductSurface): string => `min-h-11 shrink-0 rounded-xl px-3 text-xs ${surface === id ? "bg-cyan-900 text-white shadow-lg" : "bg-neutral-900 text-neutral-400"}`
 
   return (
     <section data-testid="hhs-product-workspace" className="min-h-screen bg-neutral-950 text-white">
@@ -126,25 +132,25 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
           <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-semibold text-cyan-200">HHS Runtime OS</div>
             <div className="truncate text-[9px] text-neutral-500">
-              {projectId ? `${text(project.name, "Workspace")} · ${projectId.slice(0, 12)}…` : "Production application server"}
+              {projectId ? `${text(project.name, "Workspace")} · ${projectId.slice(0, 12)}…` : "Self-hosted application server"}
               {externalResultCount > 0 ? ` · ${externalResultCount} registry dispatches` : ""}
             </div>
           </div>
 
           <div className="hidden items-center gap-2 lg:flex">
             <button type="button" onClick={() => void refreshHealth()} className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900 px-2 py-1 text-[9px]">
-              <span className={`h-2 w-2 rounded-full ${runtimeOnline ? "bg-emerald-400" : "bg-red-400"}`} />
-              runtime {runtimeOnline ? "online" : "offline"}
+              <span className={`h-2 w-2 rounded-full ${runtimeOnline ? "bg-emerald-400" : "bg-amber-400"}`} />
+              runtime {runtimeOnline ? "online" : "warming"}
             </button>
             <button type="button" onClick={() => void refreshHealth()} className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900 px-2 py-1 text-[9px]" title={text(assistantHealth.selected_provider_id, assistantMode)}>
-              <span className={`h-2 w-2 rounded-full ${assistantOnline ? "bg-emerald-400" : "bg-red-400"}`} />
-              assistant {assistantOnline ? assistantMode.toLowerCase() : "offline"}
+              <span className={`h-2 w-2 rounded-full ${assistantOnline ? "bg-emerald-400" : "bg-amber-400"}`} />
+              assistant {assistantOnline ? assistantMode.toLowerCase() : "warming"}
             </button>
           </div>
         </div>
 
         <div className="mx-auto mt-2 flex max-w-[1800px] gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <button type="button" onClick={() => setSurface("control")} className={tabClass("control")}>Control</button>
+          <button type="button" onClick={() => setSurface("control")} className={tabClass("control")}>Build</button>
           <button type="button" onClick={() => setSurface("program")} className={tabClass("program")}>Visual Program</button>
           <button type="button" onClick={() => setSurface("workspace")} className={tabClass("workspace")}>Workspace</button>
           <button type="button" onClick={() => setSurface("authority")} className={tabClass("authority")}>Authority</button>
@@ -152,7 +158,7 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
       </nav>
 
       {healthError ? (
-        <div className="m-3 rounded-xl border border-red-900 bg-red-950/30 p-3 text-xs text-red-200">Execution authority health request failed: {healthError}</div>
+        <div className="m-3 rounded-xl border border-amber-900 bg-amber-950/20 p-3 text-xs text-amber-200">Execution-service status is still warming: {healthError}. Build controls remain available.</div>
       ) : null}
 
       {sessionError && surface !== "control" ? (
@@ -160,11 +166,18 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
       ) : null}
 
       {surface === "control" ? (
-        <ProductionMobileControlCenter
-          projectId={projectId}
-          projectName={text(project.name, "HHS Mobile Ingress")}
-          onNavigate={(next) => setSurface(next)}
-        />
+        <>
+          <MobileQuickBuildPanel
+            projectId={projectId}
+            defaultProjectName={text(project.name, "HHS Mobile App")}
+            onOpenWorkspace={() => setSurface("workspace")}
+          />
+          <ProductionMobileControlCenter
+            projectId={projectId}
+            projectName={text(project.name, "HHS Mobile Ingress")}
+            onNavigate={(next) => setSurface(next)}
+          />
+        </>
       ) : surface === "program" ? (
         <RegistryVisualProgrammer
           runtimeOS={runtimeOS}
