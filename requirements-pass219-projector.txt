@@ -1,0 +1,4 @@
+# Pass 219 external projector runtime.
+# Isolated from the canonical HHS backend venv so PyTorch/Transformers cannot
+# mutate the canonical runtime dependency membrane.
+sentence-transformers==5.1.1
