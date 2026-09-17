@@ -8,6 +8,7 @@ on:
       - "hhs_backend/runtime_os_projection.py"
       - "hhs_backend/runtime_os_visual_server.py"
       - "hhs_backend/runtime_os_application_server.py"
+      - "hhs_backend/runtime_os_application_server_full.py"
       - "hhs_backend/production_visual_server.py"
       - "hhs_backend/cached_visual_server.py"
       - "hhs_backend/visual_server.py"
@@ -31,6 +32,7 @@ on:
       - "hhs_backend/runtime_os_projection.py"
       - "hhs_backend/runtime_os_visual_server.py"
       - "hhs_backend/runtime_os_application_server.py"
+      - "hhs_backend/runtime_os_application_server_full.py"
       - "hhs_backend/production_visual_server.py"
       - "hhs_backend/cached_visual_server.py"
       - "hhs_backend/visual_server.py"
@@ -139,6 +141,7 @@ jobs:
             hhs_backend/runtime_os_projection.py \
             hhs_backend/runtime_os_visual_server.py \
             hhs_backend/runtime_os_application_server.py \
+            hhs_backend/runtime_os_application_server_full.py \
             hhs_backend/cached_visual_server.py \
             hhs_backend/production_visual_server.py \
             tests/test_runtime_os_production_root.py \
@@ -150,7 +153,8 @@ jobs:
           grep -F 'RUNTIME_OS_SOURCE_ROOT = ROOT_DIR / "hhs_gui"' hhs_backend/runtime_os_projection.py
           grep -F 'os.environ.get("HHS_RUNTIME_OS_ASSET_ROOT")' hhs_backend/runtime_os_projection.py
           grep -F 'DEFAULT_PUBLIC_MOUNT_NAME = "hhs-runtime-os-home"' hhs_backend/runtime_os_projection.py
-          grep -F 'from hhs_backend.runtime_os_visual_server import app as authoritative_app' hhs_backend/production_visual_server.py
+          grep -F 'from hhs_backend.runtime_os_application_server import app as authoritative_app' hhs_backend/production_visual_server.py
+          grep -F 'from hhs_backend.application_ide_server import app as inherited_app' hhs_backend/runtime_os_application_server_full.py
           grep -F 'hhs_backend.production_visual_server:app' deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F 'Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current' deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F 'HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT"' deployment/digitalocean/guarded_auto_update/validate-candidate.sh
@@ -165,8 +169,12 @@ jobs:
             echo 'Candidate validation still uses the non-authoritative Runtime OS environment name' >&2
             exit 1
           fi
+          if grep -Fq 'from hhs_backend.runtime_os_visual_server import app as authoritative_app' hhs_backend/production_visual_server.py; then
+            echo 'DigitalOcean production gateway still uses the reduced visual-only Runtime OS composition' >&2
+            exit 1
+          fi
           if grep -Fq 'from hhs_backend.visual_server import app as authoritative_app' hhs_backend/production_visual_server.py; then
-            echo 'DigitalOcean production gateway still bypasses the Runtime OS projection' >&2
+            echo 'DigitalOcean production gateway bypasses the full Runtime OS application composition' >&2
             exit 1
           fi
           if grep -Fq 'hhs_backend.application_ide_server:app' Procfile; then
@@ -178,27 +186,32 @@ jobs:
             exit 1
           fi
 
-      - name: Verify inherited backend routes remain ahead of SPA fallback
+      - name: Verify full production application routes remain ahead of SPA fallback
         env:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
           HHS_RUNTIME_STATUS_PROBE: "0"
         run: |
-          timeout 180s python - <<'PY'
+          timeout 240s python - <<'PY'
           from pathlib import Path
           from hhs_backend.runtime_os_projection import API_FALLBACK_PATH, LEGACY_PUBLIC_ROOT_NAMES
-          from hhs_backend.runtime_os_visual_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT, app
+          from hhs_backend.runtime_os_application_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT, app
 
           assert RUNTIME_OS_ROOT == Path('hhs_gui/dist').resolve()
           routes = list(app.router.routes)
           paths = [str(getattr(route, 'path', '')) for route in routes]
           names = [str(getattr(route, 'name', '')) for route in routes]
           required = {
+              '/health',
+              '/api/product/health',
+              '/api/runtime/workspace/session',
+              '/api/runtime/workspace/command',
+              '/api/v1/pass174/status',
+              '/api/v1/pass174/sdlc/run',
               '/api/system/status',
               '/api/interface/status',
               '/api/runtime/services',
               '/api/runtime/services/dispatch',
-              '/api/runtime/workspace/command',
               '/api/runtime/installation/status',
               '/api/assistant/status',
               '/api/assistant/chat',
@@ -207,9 +220,9 @@ jobs:
           }
           missing = sorted(required - set(paths))
           if missing:
-              raise SystemExit(f'missing inherited production routes: {missing}')
+              raise SystemExit(f'missing inherited production application routes: {missing}')
           if PUBLIC_MOUNT_NAME not in names:
-              raise SystemExit('Runtime OS public root mount missing')
+              raise SystemExit('Runtime OS application public root mount missing')
           root_authorities = [name for name in names if name in LEGACY_PUBLIC_ROOT_NAMES]
           if root_authorities != [PUBLIC_MOUNT_NAME]:
               raise SystemExit(f'expected exactly one Runtime OS public-root authority, got {root_authorities}')
