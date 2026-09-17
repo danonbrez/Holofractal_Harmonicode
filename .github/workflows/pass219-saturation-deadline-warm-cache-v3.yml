@@ -61,7 +61,7 @@ jobs:
             tools/pass219/run_saturation_deadline_benchmark_v3.py \
             tools/pass219/run_saturation_deadline_benchmark_v3_long.py
 
-      - name: Compile A full HHS cold and warm stack
+      - name: Compile A full HHS cold and direct-reference warm stack
         run: |
           CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
           gcc $CFLAGS -Ihhs_runtime/include \
@@ -72,7 +72,7 @@ jobs:
           gcc $CFLAGS \
             -Ihhs_runtime/include \
             -Ibenchmarks/pass219/saturation_deadline_v3 \
-            benchmarks/pass219/saturation_deadline_v3/full_hhs_saturation_v3.c \
+            benchmarks/pass219/saturation_deadline_v3/full_hhs_saturation_v3_optimized.c \
             /tmp/pass219-saturation-v3/aggregate-abi.o \
             /tmp/pass219-saturation-v3/link-support/hhs_hash216.o \
             /tmp/pass219-saturation-v3/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
@@ -176,6 +176,13 @@ jobs:
           for arm in ('C', 'B', 'A_warm', 'A_cold'):
               assert len(x['capacity_curves'][arm]) == 3
               assert all(row['normalized_capacity'] > 0 for row in x['capacity_curves'][arm])
+          for group in x['capacity_curves']['A_warm']:
+              for row in group['workers']:
+                  assert row['branch_cache_entries'] == 144
+                  assert row['memo_threshold'] == 3172
+                  assert row['direct_reference_hot_path'] is True
+                  assert row['stack_cache_lookup_in_timed_loop'] is False
+                  assert row['direct_reference_hits'] == row['completed']
           for source in ('C', 'B', 'A_warm'):
               target = x['cross_feed'][source]['target_records']
               assert target == x['source_targets'][source]
@@ -184,6 +191,10 @@ jobs:
                   row = x['cross_feed'][source]['consumers'][consumer]
                   assert row['target_total'] == target
                   assert row['workset_digest64'] == x['workset_digest64']
+              for row in x['cross_feed'][source]['consumers']['A_warm']['workers']:
+                  assert row['branch_cache_entries'] == 144
+                  assert row['direct_reference_hot_path'] is True
+                  assert row['stack_cache_lookup_in_timed_loop'] is False
           assert x['authority']['canonical_vm81_mutation'] is False
           assert x['authority']['canonical_hash72'] is False
           assert x['authority']['canonical_hash216'] is False
