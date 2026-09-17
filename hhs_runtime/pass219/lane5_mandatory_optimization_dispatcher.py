@@ -12,6 +12,7 @@ from pathlib import Path
 
 from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher_impl import (
     Lane5MandatoryOptimizationError,
+    MANDATORY_CAPABILITY_ROLES,
     MANDATORY_LANE5_LINEAGE,
     Pass219Lane5MandatoryOptimizationDispatcher as _DispatcherImpl,
     SCHEMA,
@@ -53,6 +54,7 @@ __all__ = [
     "DEFAULT_STATE_ROOT",
     "DEFAULT_STATE_ROOT_ENV",
     "Lane5MandatoryOptimizationError",
+    "MANDATORY_CAPABILITY_ROLES",
     "MANDATORY_LANE5_LINEAGE",
     "Pass219Lane5LatencyCompositionAgent",
     "Pass219Lane5MandatoryOptimizationDispatcher",
