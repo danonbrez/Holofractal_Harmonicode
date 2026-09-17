@@ -12,6 +12,7 @@ from hhs_spi_fibonacci_pythagorean_scaling_rule_v1 import (
 
 ROOT = Path(__file__).resolve().parents[2]
 WHITEPAPER = ROOT / "docs" / "whitepapers" / "HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md"
+THEOREM = ROOT / "docs" / "whitepapers" / "HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md"
 CONTRACT = ROOT / "contracts" / "pass219" / "PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md"
 HEADER = ROOT / "hhs_runtime" / "include" / "hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h"
 SOURCE = ROOT / "hhs_runtime" / "c" / "hhs_pass219_lane5_pythagorean_phase_geometry_1_49.c"
@@ -123,7 +124,7 @@ def test_pq_symmetric_antisymmetric_projection_exactly_closes() -> None:
 
 
 def test_runtime_surface_matches_whitepaper_boundary() -> None:
-    paper = read(WHITEPAPER)
+    paper = read(WHITEPAPER) + "\n" + read(THEOREM)
     contract = read(CONTRACT)
     header = read(HEADER)
     source = read(SOURCE)
