@@ -1,0 +1,55 @@
+name: Pass 219 Approved Projector Execution v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_approved_projector_execution_v1.py'
+      - 'hhs_backend/api/pass219_acquisition_routes.py'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
+      - 'tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py'
+      - 'contracts/pass219/PASS_219_APPROVED_PROJECTOR_EXECUTION_V1.md'
+      - '.github/workflows/pass219-approved-projector-execution-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_approved_projector_execution_v1.py'
+      - 'hhs_backend/api/pass219_acquisition_routes.py'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
+      - 'tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py'
+      - 'contracts/pass219/PASS_219_APPROVED_PROJECTOR_EXECUTION_V1.md'
+      - '.github/workflows/pass219-approved-projector-execution-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  approved-projector-execution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic
+      - name: Compile bounded projector surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_approved_projector_execution_v1.py
+          python -m py_compile hhs_backend/api/pass219_acquisition_routes.py
+          python -m py_compile tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py
+      - name: Run exact projector contract tests
+        run: pytest -q tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py
+      - name: Verify production acquisition wiring
+        run: node hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs
+      - name: Install Runtime OS dependencies
+        working-directory: hhs_gui
+        run: npm install --no-audit --no-fund
+      - name: Typecheck and build mobile production surface
+        working-directory: hhs_gui
+        run: npm run build:strict
