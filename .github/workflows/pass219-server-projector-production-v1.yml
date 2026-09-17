@@ -1,0 +1,244 @@
+name: Pass 219 Server Projector Production v1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/pass219_server_projector_execution.py'
+      - 'hhs_backend/api/pass219_acquisition_routes.py'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
+      - 'tools/install_pass219_projector_runtime.sh'
+      - 'requirements-pass219-projector.txt'
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - 'tests/pass219/test_hhs_pass219_server_projector_execution_v1.py'
+      - 'contracts/pass219/PASS_219_SERVER_PROJECTOR_PRODUCTION_V1.md'
+      - '.github/workflows/pass219-server-projector-production-v1.yml'
+  workflow_run:
+    workflows: ['DigitalOcean Production Exact Main']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-server-projector:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic
+      - name: Compile server execution surfaces
+        run: |
+          python -m py_compile hhs_backend/pass219_server_projector_execution.py
+          python -m py_compile hhs_backend/api/pass219_acquisition_routes.py
+          python -m py_compile tests/pass219/test_hhs_pass219_server_projector_execution_v1.py
+          bash -n tools/install_pass219_projector_runtime.sh
+      - name: Run verified-source execution and replay tests
+        run: |
+          pytest -q \
+            tests/pass219/test_hhs_pass219_server_projector_execution_v1.py \
+            tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py \
+            tests/pass219/test_hhs_pass219_acquisition_job_service_v1.py
+      - name: Verify production acquisition wiring
+        run: node hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs
+      - name: Install Runtime OS dependencies
+        working-directory: hhs_gui
+        run: npm install --no-audit --no-fund
+      - name: Typecheck and build click-through mobile control
+        working-directory: hhs_gui
+        run: npm run build:strict
+      - name: Verify isolated production runtime contract
+        run: |
+          set -euo pipefail
+          grep -Fq 'sentence-transformers==5.1.1' requirements-pass219-projector.txt
+          grep -Fq 'HHS_P219_PROJECTOR_PYTHON=/opt/hhs/pass219-projector-venv/bin/python' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fq 'HF_HOME=/var/lib/hhs/models/huggingface' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fq 'HHS_PASS219_PROJECTOR_WARM_CACHE_VERIFIED=1' tools/install_pass219_projector_runtime.sh
+          grep -Fq '/api/v1/pass174/acquisition/jobs/execute' hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx
+          echo 'HHS_PASS219_SERVER_PROJECTOR_DETERMINISTIC_GATE=PASS'
+
+  deploy-and-prove-projector:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '165.227.220.193' }}
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+      TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Check out promoted exact main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+      - name: Require pinned production SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]]
+          [[ -n "$HHS_PINNED_KNOWN_HOSTS" ]]
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+      - name: Install and warm isolated projector runtime on exact main
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=20 \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          APP_ROOT=/opt/hhs/app
+          test "$(git -C "$APP_ROOT" rev-parse HEAD)" = "$TARGET_SHA"
+          test -f "$APP_ROOT/requirements-pass219-projector.txt"
+          test -f "$APP_ROOT/tools/install_pass219_projector_runtime.sh"
+          HHS_REPOSITORY_ROOT="$APP_ROOT" \
+          HHS_P219_PROJECTOR_VENV=/opt/hhs/pass219-projector-venv \
+          HHS_P219_PROJECTOR_CACHE_ROOT=/var/lib/hhs/models/huggingface \
+          HHS_P219_PROJECTOR_WARM_CACHE=1 \
+            bash "$APP_ROOT/tools/install_pass219_projector_runtime.sh"
+          runuser -u hhs -- test -x /opt/hhs/pass219-projector-venv/bin/python
+          systemctl cat hhs.service | grep -Fq 'HHS_P219_PROJECTOR_PYTHON=/opt/hhs/pass219-projector-venv/bin/python'
+          systemctl cat hhs.service | grep -Fq 'HF_HOME=/var/lib/hhs/models/huggingface'
+          echo 'HHS_PASS219_PROJECTOR_RUNTIME_HOST_READY=1'
+          REMOTE
+      - name: Prove live acquisition model persistence and offline replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          APP_ROOT=/opt/hhs/app
+          test "$(git -C "$APP_ROOT" rev-parse HEAD)" = "$TARGET_SHA"
+          curl -fsS --max-time 15 http://127.0.0.1:8080/api/v1/pass174/acquisition/status >/tmp/hhs-p219-acquisition-status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-p219-acquisition-status.json').read_text())
+          runtime = payload.get('server_execution') or {}
+          assert runtime.get('runtime_ready') is True, payload
+          assert runtime.get('profile_id') == 'MULTILINGUAL_MPNET_TEXT_V1', payload
+          PY
+
+          REVISION=2236e4f6ec18191ef73b91dbd17f60fbbfd97bc6
+          SOURCE=/tmp/hhs-p219-real-source.md
+          curl -fsSL --retry 3 --connect-timeout 10 --max-time 60 \
+            "https://raw.githubusercontent.com/huggingface/sentence-transformers/$REVISION/README.md" > "$SOURCE"
+          SOURCE_SHA=$(sha256sum "$SOURCE" | awk '{print $1}')
+          SOURCE_BYTES=$(wc -c < "$SOURCE" | tr -d '[:space:]')
+          SOURCE_SHA="$SOURCE_SHA" SOURCE_BYTES="$SOURCE_BYTES" REVISION="$REVISION" SOURCE="$SOURCE" python3 - <<'PY' >/tmp/hhs-p219-execute-request.json
+          import json, os
+          from pathlib import Path
+          source = Path(os.environ['SOURCE']).read_bytes().decode('utf-8', errors='strict')
+          pivot = ' '.join(source.replace('\x00', ' ').split())[:20000]
+          payload = {
+              'source': {
+                  'repository': {
+                      'provider': 'GITHUB',
+                      'repo_id': 'huggingface/sentence-transformers',
+                      'revision': os.environ['REVISION'],
+                      'license_id': 'apache-2.0',
+                      'repo_kind': 'CODE',
+                      'source_url': 'https://github.com/huggingface/sentence-transformers',
+                      'modalities': ['MARKDOWN'],
+                  },
+                  'artifact_path': 'README.md',
+                  'expected_sha256': os.environ['SOURCE_SHA'],
+                  'expected_byte_length': int(os.environ['SOURCE_BYTES']),
+                  'declared_media_type': 'MARKDOWN',
+                  'source_language': 'en',
+              },
+              'execution': {
+                  'profile_id': 'MULTILINGUAL_MPNET_TEXT_V1',
+                  'pivot_text': pivot,
+                  'pivot_language': 'en',
+                  'semantic_labels': ['production-e2e'],
+                  'translation_chain': ['en'],
+              },
+          }
+          print(json.dumps(payload, separators=(',', ':')))
+          PY
+
+          curl -fsS --max-time 600 \
+            -H 'content-type: application/json' \
+            --data-binary @/tmp/hhs-p219-execute-request.json \
+            http://127.0.0.1:8080/api/v1/pass174/acquisition/jobs/execute \
+            >/tmp/hhs-p219-execute-result.json
+
+          JOB_ID=$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-p219-execute-result.json').read_text())
+          assert payload['status'] == 'COMPLETED', payload
+          assert payload['candidate_only'] is True, payload
+          execution = payload['execution']
+          assert execution['network_fetch_count'] == 1, payload
+          assert execution['external_model_execution_count'] == 1, payload
+          assert execution['persistence_network_fetch_count'] == 0, payload
+          assert execution['persistence_external_model_execution_count'] == 0, payload
+          job = payload['job']
+          assert job['status'] == 'COMPLETED', payload
+          report = job['result']['report']
+          assert report['ingress_record']['classification'] == 'TRANSLATION_INVARIANT_CANDIDATE', payload
+          assert report['vm81_commit_invoked'] is False, payload
+          assert report['canonical_hash216_minted'] is False, payload
+          print(job['job_id'])
+          PY
+          )
+          test -n "$JOB_ID"
+
+          curl -fsS --max-time 60 -X POST \
+            "http://127.0.0.1:8080/api/v1/pass174/acquisition/jobs/$JOB_ID/replay" \
+            >/tmp/hhs-p219-replay-result.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-p219-replay-result.json').read_text())
+          assert payload['status'] == 'REPLAY_VERIFIED', payload
+          assert payload['network_fetch_performed'] is False, payload
+          assert payload['external_model_execution_performed'] is False, payload
+          print('HHS_PASS219_DEPLOYED_PROJECTOR_REPLAY_VERIFIED=1')
+          PY
+          REMOTE
+      - name: Verify public control surface reports projector ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/v1/pass174/acquisition/status" \
+            >/tmp/hhs-pass219-public-acquisition-status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-pass219-public-acquisition-status.json').read_text())
+          assert payload['server_execution']['runtime_ready'] is True, payload
+          assert payload['candidate_only'] is True, payload
+          assert payload['canonical_authority_minted'] is False, payload
+          print('HHS_PASS219_PUBLIC_SERVER_PROJECTOR_READY=1')
+          PY
