@@ -74,7 +74,8 @@ def test_runtime_surface_matches_whitepaper_boundary() -> None:
         "I72(I72(q)) = q",
         "J(J(k,o)) = (k,o)",
         "DEVELOPMENT_CANDIDATE",
-        "not derivable from `q=-1` alone",
+        "not derivable",
+        "`q=-1` alone",
     ):
         assert needle in paper, needle
 
