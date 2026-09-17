@@ -7,13 +7,17 @@ on:
     paths:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_registry.py'
+      - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py'
       - 'hhs_python/runtime/hhs_pass219_lane5_direct_witness_routing_bridge.py'
       - 'hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py'
       - 'hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h'
       - 'hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc'
+      - 'contracts/pass219/optimization_generalization/**'
       - 'tests/pass219/test_lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_lane5_mandatory_optimization_registry.py'
       - 'tests/pass219/test_pass219_harmonic36_global_latency_policy_1_16.c'
       - '.github/workflows/pass219-lane5-mandatory-optimization-integration.yml'
       - 'docs/operations/restart/PASS_219_LANE5_MANDATORY_OPTIMIZATION_INTEGRATION_RESTART_20260917.md'
@@ -43,6 +47,7 @@ jobs:
           from pathlib import Path
           dispatcher = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py').read_text()
           implementation = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py').read_text()
+          registry = Path('hhs_runtime/pass219/lane5_mandatory_optimization_registry.py').read_text()
           facade = Path('hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py').read_text()
           latency_h = Path('hhs_runtime/include/hhs_pass219_harmonic36_global_latency_policy_1_16.h').read_text()
           latency_c = Path('hhs_runtime/c/hhs_pass219_harmonic36_global_latency_policy_1_16.inc').read_text()
@@ -66,6 +71,9 @@ jobs:
           assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
           assert 'HHS_PASS219_LANE5_STATE_ROOT' in dispatcher
           assert '.hhs/pass219/lane5' in dispatcher
+          assert 'build_mandatory_optimization_registry' in dispatcher
+          assert 'validate_manifest' in registry
+          assert 'GENERALIZE_REQUIRED' in registry
           assert 'Pass219Lane5MandatoryOptimizationDispatcher' in facade
           assert 'Pass219Lane5Hash216GPUPhaseInterlaceOptimizer' not in facade
           for needle in (
@@ -85,6 +93,7 @@ jobs:
           python -m py_compile \
             hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py \
             hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py \
+            hhs_runtime/pass219/lane5_mandatory_optimization_registry.py \
             hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py \
             hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_legacy_v1.py \
             hhs_python/runtime/hhs_pass219_lane5_direct_witness_routing_bridge.py \
@@ -115,6 +124,7 @@ jobs:
         run: |
           python -m pytest -q \
             tests/pass219/test_lane5_mandatory_optimization_dispatcher.py \
+            tests/pass219/test_lane5_mandatory_optimization_registry.py \
             tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
             tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
             tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
