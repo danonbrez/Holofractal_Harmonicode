@@ -137,7 +137,7 @@ def test_pass220_paper_freezes_nucleus_controller_semantics() -> None:
         "AB=P^4=BA",
         "P^4=c^4=9",
         "6=(9+sqrt(9))/2=(9+3)/2",
-        "cell `1` is the typed reciprocal of the boundary modulus",
+        "Cell `1` is the typed reciprocal of the boundary modulus",
         "Cell `7` is the nucleus collapse tensor",
         "(AB+BA=P^4)/(a^2+b^2=c^2)=u",
         "45+36=81=9^2",
