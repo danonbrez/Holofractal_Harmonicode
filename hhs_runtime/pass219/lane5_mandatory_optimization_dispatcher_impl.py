@@ -1,18 +1,26 @@
 """Pass 219 Lane 5 mandatory optimization dispatcher.
 
 This module is the production composition/search entry point for the proven
-Lane 5 optimization lineage.  It deliberately preserves the old
+Lane 5 optimization lineage. It deliberately preserves the old
 ``search_hash216`` protocol so older callers keep working, but it no longer
 binds that protocol directly to the 1.37 optimizer.
 
-The dispatcher distinguishes three things that must not be conflated:
+The dispatcher distinguishes typed capabilities rather than pretending every
+optimizer applies to every request:
 
 * stateless Hash216 ranking (1.37), where no exact parent VM5184 state is
-  available and therefore persistent route reuse is not applicable;
+  available and persistent route reuse is not applicable;
 * stateful composition routing (1.38 -> 1.42), where exact persistent jumps,
   recursive paths and promoted superedges are searched before any fresh path;
-* exact route/composition certificate reuse (RML19), which is a separately
-  typed conservation cache and never becomes canonical transition authority.
+* direct exact witness-route optimization (1.46), which selects among already
+  witnessed direct-composition routes without materializing intermediate state;
+* workload-class-agnostic streaming route reduction (1.48), which keeps
+  constant candidate-reduction memory over exact BigInt manifold addresses;
+* exact route/composition certificate reuse (RML19), a separately typed
+  conservation cache;
+* 1.45 fractal-qudit proof hydration, which is mandatory downstream of signed
+  canonical admission and is not misrepresented as a pre-admission latency
+  optimizer.
 
 All optimized results remain candidate-only and still require the inherited
 signed environmental VM81 admission boundary for canonical mutation.
@@ -20,7 +28,7 @@ signed environmental VM81 admission boundary for canonical mutation.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
 from hhs_backend.runtime.hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37 import (
     Hash216CompositionCandidate,
@@ -35,11 +43,20 @@ from hhs_backend.runtime.hhs_pass219_lane5_executable_capability_self_model_1_43
 from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import (
     build_repository_capability_reverse_discovery,
 )
+from hhs_python.runtime.hhs_pass219_lane5_direct_witness_routing_bridge import (
+    Lane5DirectWitnessCandidate,
+    Pass219Lane5DirectWitnessRoutingBridge,
+)
+from hhs_python.runtime.hhs_pass219_lane5_unbounded_workload_scaling_bridge import (
+    Lane5RouteCandidate,
+    Lane5WorkloadEnvelope,
+    Pass219Lane5UnboundedWorkloadBridge,
+)
 from hhs_runtime.pass219 import rml19_route_composition_conservation_acceleration as rml19
 
 SCHEMA = "HHS_PASS219_LANE5_MANDATORY_OPTIMIZATION_DISPATCHER_V1"
 
-# Ordered by dependency.  These are not claims that every surface applies to
+# Ordered by dependency. These are not claims that every surface applies to
 # every request; they are the proven optimization/capability lineage that must
 # remain reachable from the default Lane 5 production dispatcher.
 MANDATORY_LANE5_LINEAGE = (
@@ -57,13 +74,28 @@ MANDATORY_LANE5_LINEAGE = (
     "RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE",
 )
 
+MANDATORY_CAPABILITY_ROLES = {
+    "LANE5_HASH216_GPU_PHASE_INTERLACE_1_37": "STATELESS_HASH216_RANKING",
+    "LANE5_HASH216_COMPOSITION_JUMP_STORE_1_38": "STATEFUL_ROUTE_REUSE",
+    "LANE5_PERSISTENT_HASH216_COMPOSITION_MEMORY_1_39": "STATEFUL_ROUTE_REUSE",
+    "LANE5_RECURSIVE_HASH216_COMPOSITION_GRAPH_1_40": "STATEFUL_ROUTE_REUSE",
+    "LANE5_SUPEREDGE_HIERARCHY_1_41": "STATEFUL_ROUTE_REUSE",
+    "LANE5_AUTOMATIC_SUPEREDGE_ROUTING_1_42": "STATEFUL_ROUTE_REUSE",
+    "LANE5_EXECUTABLE_CAPABILITY_SELF_MODEL_1_43": "CAPABILITY_DISCOVERY",
+    "LANE5_REPOSITORY_CAPABILITY_REVERSE_DISCOVERY_1_44": "CAPABILITY_DISCOVERY",
+    "HASH216_FRACTAL_QUDIT_ADMISSION_1_45": "POST_SIGNED_ADMISSION_PROOF_HYDRATION",
+    "LANE5_DIRECT_WITNESS_ROUTING_1_46": "DIRECT_WITNESS_ROUTE_OPTIMIZATION",
+    "LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48": "STREAMING_WORKLOAD_ROUTE_REDUCTION",
+    "RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE": "EXACT_CERTIFICATE_REUSE",
+}
+
 
 class Lane5MandatoryOptimizationError(RuntimeError):
     """Fail-closed mandatory optimization integration error."""
 
 
 class Pass219Lane5MandatoryOptimizationDispatcher:
-    """Compatibility search API plus exact stateful composition fast paths."""
+    """Compatibility search API plus exact stateful/native fast paths."""
 
     def __init__(
         self,
@@ -88,6 +120,11 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
                 backend=self.backend,
                 require_physical_gpu=self.require_physical_gpu,
             )
+        # Native bridges are loaded lazily. This keeps import and capability
+        # discovery cheap, while each execution method fail-closes if the exact
+        # ABI is unavailable rather than silently dropping the optimization.
+        self._direct_witness_bridge: Pass219Lane5DirectWitnessRoutingBridge | None = None
+        self._unbounded_workload_bridge: Pass219Lane5UnboundedWorkloadBridge | None = None
 
     def __enter__(self) -> "Pass219Lane5MandatoryOptimizationDispatcher":
         return self
@@ -100,6 +137,8 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             self._router.close()
             self._router = None
         self._ranker.close()
+        self._direct_witness_bridge = None
+        self._unbounded_workload_bridge = None
 
     @staticmethod
     def _authority_record() -> dict[str, bool]:
@@ -113,6 +152,26 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             "requires_signed_environmental_vm81_admission": True,
         }
 
+    def _direct_witness(self) -> Pass219Lane5DirectWitnessRoutingBridge:
+        if self._direct_witness_bridge is None:
+            try:
+                self._direct_witness_bridge = Pass219Lane5DirectWitnessRoutingBridge()
+            except Exception as exc:  # exact ABI absence is a mandatory-path failure
+                raise Lane5MandatoryOptimizationError(
+                    f"LANE5_DIRECT_WITNESS_OPTIMIZER_UNAVAILABLE:{exc}"
+                ) from exc
+        return self._direct_witness_bridge
+
+    def _unbounded_workload(self) -> Pass219Lane5UnboundedWorkloadBridge:
+        if self._unbounded_workload_bridge is None:
+            try:
+                self._unbounded_workload_bridge = Pass219Lane5UnboundedWorkloadBridge()
+            except Exception as exc:
+                raise Lane5MandatoryOptimizationError(
+                    f"LANE5_UNBOUNDED_WORKLOAD_OPTIMIZER_UNAVAILABLE:{exc}"
+                ) from exc
+        return self._unbounded_workload_bridge
+
     def status(self) -> dict[str, Any]:
         ranker = self._ranker.status()
         router = self._router.status() if self._router is not None else None
@@ -122,9 +181,16 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             "default_stateless_ranker": "LANE5_HASH216_GPU_PHASE_INTERLACE_1_37",
             "default_stateful_router": "LANE5_AUTOMATIC_SUPEREDGE_ROUTING_1_42",
             "mandatory_lineage": list(MANDATORY_LANE5_LINEAGE),
+            "mandatory_capability_roles": dict(MANDATORY_CAPABILITY_ROLES),
             "stateless_ranker_ready": True,
             "stateful_composition_ready": router is not None,
             "stateful_composition_requires_state_root": True,
+            "direct_witness_native_bridge": "LAZY_MANDATORY",
+            "unbounded_workload_native_bridge": "LAZY_MANDATORY",
+            "fractal_qudit_1_45_role": "POST_SIGNED_ADMISSION_PROOF_HYDRATION",
+            "fractal_qudit_1_45_native_export": (
+                "hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof"
+            ),
             "rml19_exact_certificate_reuse_ready": True,
             "ranker": ranker,
             "router": router,
@@ -132,12 +198,7 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
         }
 
     def capability_snapshot(self) -> dict[str, Any]:
-        """Build the repository-derived capability model through 1.44.
-
-        This is intentionally explicit/lazy because capability discovery scans
-        repository surfaces.  Its result is evidence for reachability, not a
-        replacement execution authority.
-        """
+        """Build repository-derived capability discovery through 1.44."""
         self_model = build_capability_self_model()
         reverse = build_repository_capability_reverse_discovery()
         if self_model.get("canonical_boundary_export") != (
@@ -153,6 +214,7 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             "capability_self_model": self_model,
             "repository_reverse_discovery": reverse,
             "mandatory_lineage": list(MANDATORY_LANE5_LINEAGE),
+            "mandatory_capability_roles": dict(MANDATORY_CAPABILITY_ROLES),
             "authority": self._authority_record(),
         }
 
@@ -169,8 +231,10 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
 
         Persistent route/superedge reuse is not silently attempted here because
         this protocol does not carry the exact parent VM5184 state needed to
-        prove a reusable route's parent identity.  The stateful fast path is
-        ``compose_or_reuse`` below.
+        prove a reusable route's parent identity. The stateful fast path is
+        ``compose_or_reuse`` below; exact direct-witness and arbitrary workload
+        routes are exposed by their typed methods rather than guessed from a
+        Hash216-only candidate.
         """
         canonical: list[Hash216CompositionCandidate] = []
         for raw in candidates:
@@ -203,6 +267,10 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             "LANE5_SUPEREDGE_HIERARCHY_1_41",
             "LANE5_AUTOMATIC_SUPEREDGE_ROUTING_1_42",
         ]
+        result["typed_optimizers_require_typed_inputs"] = [
+            "LANE5_DIRECT_WITNESS_ROUTING_1_46",
+            "LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48",
+        ]
         result["fresh_recomputation_forced"] = False
         return result
 
@@ -218,14 +286,7 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
         fallback_candidates: Sequence[Any] = (),
         fallback_top_k: int = 32,
     ) -> dict[str, Any]:
-        """Search exact persistent composition memory before fresh ranking.
-
-        1.42 is the accumulated stateful router and therefore transitively
-        exposes 1.38 jump reuse, 1.39 restart-persistent memory, 1.40 recursive
-        graph search and 1.41 promoted superedges.  A found plan is executed via
-        the inherited exact candidate-reuse validators and returns without
-        replaying represented intermediate VM81 transitions.
-        """
+        """Search exact persistent composition memory before fresh ranking."""
         if self._router is None:
             raise Lane5MandatoryOptimizationError(
                 "LANE5_STATEFUL_OPTIMIZATION_REQUIRES_STATE_ROOT"
@@ -284,6 +345,62 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
             "authority": self._authority_record(),
         }
 
+    def optimize_direct_witness_routes(
+        self,
+        candidates: Sequence[Lane5DirectWitnessCandidate]
+        | Iterable[Lane5DirectWitnessCandidate],
+    ) -> dict[str, Any]:
+        """Run the proven 1.46 exact direct-composition route optimizer."""
+        receipt = dict(self._direct_witness().optimize(candidates))
+        if receipt.get("accepted") is not True or receipt.get("optimizer_selected") is not True:
+            raise Lane5MandatoryOptimizationError("LANE5_DIRECT_WITNESS_NOT_SELECTED")
+        if receipt.get("canonical_vm81_mutation_authority") is not False:
+            raise Lane5MandatoryOptimizationError("LANE5_DIRECT_WITNESS_AUTHORITY_ESCALATION")
+        return {
+            "schema": SCHEMA,
+            "mode": "DIRECT_WITNESS_OPTIMIZED",
+            "optimization_selected": "LANE5_DIRECT_WITNESS_ROUTING_1_46",
+            "receipt": receipt,
+            "fresh_recomputation_forced": False,
+            "authority": self._authority_record(),
+        }
+
+    def optimize_unbounded_workload(
+        self,
+        *,
+        workload: Lane5WorkloadEnvelope,
+        previous_address: int,
+        current_address: int,
+        goal_address: int,
+        forbidden_boundary_sha256: bytes,
+        candidates: Iterable[Lane5RouteCandidate],
+    ) -> dict[str, Any]:
+        """Run the proven 1.48 constant-memory streaming route reducer."""
+        receipt = dict(
+            self._unbounded_workload().optimize(
+                workload=workload,
+                previous_address=previous_address,
+                current_address=current_address,
+                goal_address=goal_address,
+                forbidden_boundary_sha256=forbidden_boundary_sha256,
+                candidates=candidates,
+            )
+        )
+        if receipt.get("candidate_only") is not True:
+            raise Lane5MandatoryOptimizationError("LANE5_UNBOUNDED_ROUTE_NOT_CANDIDATE_ONLY")
+        if receipt.get("canonical_vm81_mutation_authority") is not False:
+            raise Lane5MandatoryOptimizationError("LANE5_UNBOUNDED_AUTHORITY_ESCALATION")
+        if receipt.get("materialized_intermediate_states") != 0:
+            raise Lane5MandatoryOptimizationError("LANE5_UNBOUNDED_MATERIALIZATION_REGRESSION")
+        return {
+            "schema": SCHEMA,
+            "mode": "UNBOUNDED_STREAMING_ROUTE_REDUCTION",
+            "optimization_selected": "LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48",
+            "receipt": receipt,
+            "fresh_recomputation_forced": False,
+            "authority": self._authority_record(),
+        }
+
     @staticmethod
     def gate_route_candidate(
         source: Mapping[str, Any],
@@ -315,6 +432,7 @@ class Pass219Lane5MandatoryOptimizationDispatcher:
 
 __all__ = [
     "Lane5MandatoryOptimizationError",
+    "MANDATORY_CAPABILITY_ROLES",
     "MANDATORY_LANE5_LINEAGE",
     "Pass219Lane5MandatoryOptimizationDispatcher",
     "SCHEMA",
