@@ -1,0 +1,108 @@
+name: Pass 219 Four-Phase AB Difficulty Energy Calibration v1
+
+on:
+  push:
+    branches:
+      - pass219/four-phase-ab-difficulty-energy-calibration-v1
+    paths:
+      - 'benchmarks/pass219/hhs_lane5_four_phase_ab_gradient_calibration_v1.c'
+      - 'tools/pass219/hhs_four_phase_ab_calibration_analyze_v1.py'
+      - 'contracts/pass219/PASS_219_FOUR_PHASE_AB_DIFFICULTY_ENERGY_CALIBRATION_V1.md'
+      - 'docs/operations/restart/PASS_219_FOUR_PHASE_AB_DIFFICULTY_ENERGY_CALIBRATION_*_20260917.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_backend/runtime/hhs_lo_shu_harmonic_phase_energy_v1.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-four-phase-ab-difficulty-energy-calibration-v1.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'benchmarks/pass219/hhs_lane5_four_phase_ab_gradient_calibration_v1.c'
+      - 'tools/pass219/hhs_four_phase_ab_calibration_analyze_v1.py'
+      - 'contracts/pass219/PASS_219_FOUR_PHASE_AB_DIFFICULTY_ENERGY_CALIBRATION_V1.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_backend/runtime/hhs_lo_shu_harmonic_phase_energy_v1.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-four-phase-ab-difficulty-energy-calibration-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  four-phase-ab-calibration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile aggregate exact ABI
+        run: |
+          mkdir -p /tmp/four-phase-ab
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/four-phase-ab/exact-abi.o
+
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/four-phase-ab/link-support full
+
+      - name: Compile calibration benchmark
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_four_phase_ab_gradient_calibration_v1.c \
+            /tmp/four-phase-ab/exact-abi.o \
+            /tmp/four-phase-ab/link-support/hhs_hash216.o \
+            /tmp/four-phase-ab/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/four-phase-ab/calibration
+
+      - name: Compile analyzer
+        run: python -m py_compile tools/pass219/hhs_four_phase_ab_calibration_analyze_v1.py
+
+      - name: Run time-bounded four-phase calibration
+        run: |
+          /tmp/four-phase-ab/calibration | tee /tmp/four-phase-ab/native.jsonl
+
+      - name: Normalize difficulty and energy calibration
+        run: |
+          python tools/pass219/hhs_four_phase_ab_calibration_analyze_v1.py \
+            /tmp/four-phase-ab/native.jsonl \
+            /tmp/four-phase-ab/result.json \
+            /tmp/four-phase-ab/report.md
+          python - <<'PY'
+          import json
+          p='/tmp/four-phase-ab/result.json'
+          x=json.load(open(p))
+          assert x['result']=='PASS'
+          assert x['four_phase_coverage'] is True
+          assert x['time_bound_verified'] is True
+          assert x['logical_energy_contract_verified'] is True
+          assert x['translator_required'] is False
+          assert set(x['phase_summary'])=={'xy','yx','zw','wz'}
+          print(json.dumps({
+              'result': x['result'],
+              'paired_phase_samples': x['paired_phase_samples'],
+              'difficulty_ranks_seen': x['difficulty_ranks_seen'],
+              'global_normalized_ab_throughput_ratio': x['global_normalized_ab_throughput_ratio'],
+              'global_normalized_ab_basis_points_floor': x['global_normalized_ab_basis_points_floor'],
+          }, sort_keys=True))
+          PY
+          cat /tmp/four-phase-ab/report.md
+
+      - name: Upload calibration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-four-phase-ab-difficulty-energy-calibration-v1
+          path: |
+            /tmp/four-phase-ab/native.jsonl
+            /tmp/four-phase-ab/result.json
+            /tmp/four-phase-ab/report.md
+          if-no-files-found: error
