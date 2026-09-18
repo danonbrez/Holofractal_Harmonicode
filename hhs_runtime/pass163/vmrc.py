@@ -1080,7 +1080,7 @@ class VMRCRuntime:
 
     def _commit_candidate_internal(self, candidate_id: str) -> dict[str, Any]:
         try:
-        validated = self._validated.pop(candidate_id)
+            validated = self._validated.pop(candidate_id)
         except KeyError as exc:
             raise VMRCError("VMRC_VALIDATION_REQUIRED") from exc
         if (
