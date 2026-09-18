@@ -80,6 +80,14 @@ for (const token of [
   "Enter sends",
   "uploaded payloads are not automatically attached to assistant prompts",
   "vector_payload_auto_attached_to_prompt: false",
+  "Settings",
+  "System instructions",
+  "custom_system_instruction",
+  "hhs.production.assistant.custom_system_instruction",
+  "navigator.clipboard?.writeText",
+  "navigator.clipboard?.readText",
+  "Copy",
+  "Paste",
 ]) {
   assert(content.mobileAssistant.includes(token), `mobile LLM assistant surface missing ${token}`)
 }
@@ -87,6 +95,8 @@ for (const token of [
 assert(content.mobileAssistant.includes("min-h-[42vh]"), "mobile assistant chat does not reserve a usable touch viewport")
 assert(content.mobileAssistant.includes("bg-neutral-900/70"), "mobile assistant dark-theme surface missing")
 assert(content.mobileControl.includes("ProductionAssistantChat"), "production mobile control does not mount the LLM assistant")
+assert(content.mobileControl.includes("Inspect technical JSON"), "vector technical JSON does not require explicit inspection")
+assert(content.mobileControl.indexOf("Inspect technical JSON") < content.mobileControl.indexOf("JSON.stringify(vectorQuery"), "vector JSON appears before its inspect control")
 for (const token of [
   "/api/runtime/services",
   "/api/runtime/services/dispatch",
