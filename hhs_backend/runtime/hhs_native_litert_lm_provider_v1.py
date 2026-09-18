@@ -16,6 +16,13 @@ import uuid
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
+    ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+    ASSISTANT_MODE_BOTH,
+    ASSISTANT_MODE_GENERAL_CHAT,
+    DEFAULT_ASSISTANT_MODE,
+    normalize_assistant_mode,
+)
 
 VERSION = "HHS_NATIVE_LITERT_COMPATIBLE_LANGUAGE_PROVIDER_V1"
 PROVIDER_ID = "provider:hhs.local.text"
@@ -73,6 +80,35 @@ def _looks_like_harmonicode_expression(text: str) -> bool:
 
 def _word_count(text: str) -> int:
     return len(re.findall(r"\S+", text))
+
+
+def _assistant_mode_from_messages(messages: Sequence[Mapping[str, Any]]) -> str:
+    for message in messages:
+        if str(message.get("role") or "") != "system":
+            continue
+        content = str(message.get("content") or "")
+        match = re.search(
+            r"HHS_ASSISTANT_MODE=(GENERAL_CHAT|AGENTIC_APPLICATION_DEVELOPMENT|BOTH)",
+            content,
+        )
+        if match:
+            return normalize_assistant_mode(match.group(1))
+    return DEFAULT_ASSISTANT_MODE
+
+
+def _looks_like_development_request(query: str) -> bool:
+    text = query.casefold()
+    terms = (
+        "app", "application", "code", "coding", "implement", "implementation",
+        "repository", "repo", "git", "branch", "commit", "pull request", " pr ",
+        "build", "compile", "compiler", "test", "pytest", "ci", "workflow",
+        "deploy", "deployment", "digitalocean", "runtime", "vm81", "hash72",
+        "hash216", "api", "endpoint", "server", "frontend", "backend", "gui",
+        "typescript", "javascript", "python", "c++", "c#", "java", "linux",
+        "bug", "fix", "refactor", "workspace", "file", "source",
+    )
+    padded = f" {text} "
+    return any(term in padded for term in terms)
 
 
 class HHSNativeLanguageProviderNotReady(RuntimeError):
@@ -223,7 +259,15 @@ class HHSNativeLiteRTLMTransport:
         self,
         query: str,
         tools: Optional[Sequence[Mapping[str, Any]]],
+        *,
+        assistant_mode: str,
     ) -> List[Dict[str, Any]]:
+        mode = normalize_assistant_mode(assistant_mode)
+        if mode == ASSISTANT_MODE_GENERAL_CHAT:
+            return []
+        if mode == ASSISTANT_MODE_BOTH and not _looks_like_development_request(query):
+            return []
+
         available = _available_tool_names(tools)
         text = query.casefold()
         selections: List[tuple[str, Dict[str, Any]]] = []
@@ -251,7 +295,18 @@ class HHSNativeLiteRTLMTransport:
             add("hhs_pass152_status")
             add("hhs_pass152_capabilities")
 
-        if not selections and not _looks_like_harmonicode_expression(query):
+        if (
+            not selections
+            and mode == ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT
+            and not _looks_like_harmonicode_expression(query)
+        ):
+            add("hhs_repository_search", {"query": query, "limit": 5})
+        elif (
+            not selections
+            and mode == ASSISTANT_MODE_BOTH
+            and _looks_like_development_request(query)
+            and not _looks_like_harmonicode_expression(query)
+        ):
             add("hhs_repository_search", {"query": query, "limit": 5})
 
         return [
@@ -371,7 +426,10 @@ class HHSNativeLiteRTLMTransport:
         self,
         query: str,
         receipts: Sequence[Mapping[str, Any]],
+        *,
+        assistant_mode: str,
     ) -> tuple[str, Dict[str, Any]]:
+        mode = normalize_assistant_mode(assistant_mode)
         semantic = self._semantic_analysis(query)
         word2vec = self._word2vec_context(query)
         evidence_sections = self._tool_evidence_lines(receipts)
@@ -444,11 +502,49 @@ class HHSNativeLiteRTLMTransport:
         elif evidence_sections:
             answer = "\n\n".join(evidence_sections)
         else:
-            answer = (
-                "The native HHS provider completed bounded language analysis, but no "
-                "governed evidence surface returned a direct factual result for this query. "
-                "The request remains unresolved rather than receiving a fabricated answer."
-            )
+            if mode == ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT:
+                answer = (
+                    "This request does not appear to be an application-development task. "
+                    "Agentic application development mode is limited to code, workspace, "
+                    "runtime, testing, build, deployment, repository, and related engineering "
+                    "work. Switch to General chat or Both for ordinary conversation."
+                )
+            else:
+                stripped = query.strip()
+                lowered = stripped.casefold()
+                if re.fullmatch(r"(hi|hello|hey|good morning|good afternoon|good evening)[!. ]*", lowered):
+                    answer = "Hello. What would you like to talk about?"
+                elif any(phrase in lowered for phrase in ("thank you", "thanks", "appreciate it")):
+                    answer = "You're welcome."
+                elif any(phrase in lowered for phrase in ("who are you", "what are you")):
+                    answer = (
+                        "I'm the native HHS natural-language assistant. In this mode I can "
+                        "hold ordinary prompt-response conversations, while governed HHS "
+                        "development tools stay separate unless you select Both or Agentic "
+                        "application development."
+                    )
+                else:
+                    topic = str(word2vec.get("token") or "").strip()
+                    neighbors = [
+                        str(item.get("token"))
+                        for item in word2vec.get("neighbors") or []
+                        if isinstance(item, Mapping) and item.get("token")
+                    ]
+                    if topic and neighbors:
+                        answer = (
+                            f"You’re asking about {topic}. The active native language memory "
+                            f"associates it with {', '.join(neighbors[:4])}. I can continue "
+                            "the conversation from that context, explain the idea, compare "
+                            "possibilities, or use retrieved evidence when you explicitly "
+                            "ask for sourced information."
+                        )
+                    else:
+                        answer = (
+                            "I can continue this as a general natural-language conversation. "
+                            "Tell me what you want to understand, create, compare, or reason "
+                            "through, and I’ll respond directly without forcing a developer "
+                            "workflow."
+                        )
 
         if word2vec.get("token"):
             neighbor_names = [
@@ -469,6 +565,11 @@ class HHSNativeLiteRTLMTransport:
             "word2vec_context": word2vec,
             "bounded_reasoning": reasoning,
             "tool_receipt_count": len(receipts),
+            "assistant_mode": mode,
+            "general_chat_prompt_response_cycle": mode in {
+                ASSISTANT_MODE_GENERAL_CHAT,
+                ASSISTANT_MODE_BOTH,
+            },
             "runtime_mutation_admitted": False,
         }
         trace["trace_root_hash72"] = hash72(
@@ -487,13 +588,18 @@ class HHSNativeLiteRTLMTransport:
         del response_format
         self._require_ready()
         message_list = [dict(message) for message in messages]
+        mode = _assistant_mode_from_messages(message_list)
         query = _last_user_content(message_list).strip()
         if not query:
             raise ValueError("native HHS provider requires a user message")
 
         tool_messages = _tool_messages_after_last_user(message_list)
         if not tool_messages:
-            tool_calls = self._select_tool_calls(query, tools)
+            tool_calls = self._select_tool_calls(
+                query,
+                tools,
+                assistant_mode=mode,
+            )
             if tool_calls:
                 return {
                     "id": _completion_id(),
@@ -517,7 +623,11 @@ class HHSNativeLiteRTLMTransport:
                 }
 
         receipts = self._parse_tool_receipts(tool_messages)
-        answer, trace = self._compose_answer(query, receipts)
+        answer, trace = self._compose_answer(
+            query,
+            receipts,
+            assistant_mode=mode,
+        )
         completion_tokens = _word_count(answer)
         return {
             "id": _completion_id(),
