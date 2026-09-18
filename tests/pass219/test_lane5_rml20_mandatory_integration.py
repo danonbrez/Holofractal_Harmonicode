@@ -4,6 +4,10 @@ from pathlib import Path
 
 import pytest
 
+from hhs_runtime.pass219.discrete_transport_conservation import (
+    INDEX_DIRECTION,
+    decode_transport_address,
+)
 from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher import (
     Lane5MandatoryOptimizationError,
     Pass219Lane5LatencyCompositionAgent,
@@ -30,11 +34,13 @@ def test_rml20_is_mandatory_and_visible(tmp_path: Path) -> None:
 
 def test_rml20_is_callable_through_production_agent(tmp_path: Path) -> None:
     assert LIBRARY.is_file(), f"native runtime required: {LIBRARY}"
+    address = 373247
+    direction = INDEX_DIRECTION[decode_transport_address(address)[3]]
     with Pass219Lane5LatencyCompositionAgent(state_root=tmp_path) as agent:
         result = agent.route_rml20_candidate(
             _raw_frame(),
-            373247,
-            "operation_forward",
+            address,
+            direction,
             library_path=LIBRARY,
         )
     assert result["result"] == "PASS"
@@ -58,8 +64,5 @@ def test_rml20_agent_fails_closed_on_bad_carrier(tmp_path: Path) -> None:
             match="RML20_MANDATORY_TRANSPORT_UNAVAILABLE:.*EXACT_648_BYTES_REQUIRED",
         ):
             agent.route_rml20_candidate(
-                bytes(647),
-                0,
-                "operation_forward",
-                library_path=LIBRARY,
+                bytes(647), 0, "x", library_path=LIBRARY
             )
