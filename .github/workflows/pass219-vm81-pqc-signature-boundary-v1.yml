@@ -14,10 +14,12 @@ on:
       - 'contracts/pass219/PASS_219_DELTA_RECIPROCAL_CONSTRUCTOR_MANIFOLD_V1.md'
       - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/include/hhs_pass219_vm81_environmental_*'
+      - 'hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h'
       - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
       - 'hhs_runtime/include/hhs_pass219_delta_reciprocal_constructor_1_36.h'
       - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_pass219_vm81_environmental_*'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
       - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
       - 'hhs_runtime/c/hhs_pass219_delta_reciprocal_constructor_1_36.inc'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
@@ -43,10 +45,12 @@ on:
       - 'contracts/pass219/PASS_219_DELTA_RECIPROCAL_CONSTRUCTOR_MANIFOLD_V1.md'
       - 'hhs_runtime/include/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/include/hhs_pass219_vm81_environmental_*'
+      - 'hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h'
       - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
       - 'hhs_runtime/include/hhs_pass219_delta_reciprocal_constructor_1_36.h'
       - 'hhs_runtime/c/hhs_pass219_vm81_pqc_*'
       - 'hhs_runtime/c/hhs_pass219_vm81_environmental_*'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
       - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
       - 'hhs_runtime/c/hhs_pass219_delta_reciprocal_constructor_1_36.inc'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_*'
@@ -219,6 +223,23 @@ jobs:
           assert 'hhs_exact_pass219_vm81_pqc_admit_signed(' not in facade
           assert 'hhs_exact_pass219_vm81_environment_admit_signed' in authority_contract
           assert 'recovered candidate must still use the ordinary 1.32 production admission path' in authority_contract.lower()
+
+          env_impl = Path('hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc').read_text()
+          signed_impl = Path('hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc').read_text()
+          public_start = env_impl.index('HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(')
+          public_body = env_impl[public_start:]
+          cell_wall_pos = public_body.index('hhs_pass219_vm81_pqc_route_cpp_cell_wall(')
+          lane5_pos = public_body.index('hhs_exact_pass219_lane5_mediate_candidate(')
+          env_gate_pos = public_body.index('hhs_p219_env_gate(')
+          commit_pos = public_body.index('hhs_p219_pqc_admit_signed_with_cell_wall_evidence(')
+          assert cell_wall_pos < lane5_pos < env_gate_pos < commit_pos
+          assert 'hhs_exact_pass219_vm81_pqc_admit_signed(' not in public_body
+
+          helper_start = signed_impl.index('static HHSExactStatus hhs_p219_pqc_admit_signed_with_cell_wall_evidence(')
+          helper_body = signed_impl[helper_start:]
+          assert 'hhs_pass219_vm81_pqc_route_cpp_cell_wall(' not in helper_body
+          assert 'hhs_exact_pass219_rna_admit_composed(' in helper_body
+          assert 'lane5_mediated' in Path('hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h').read_text()
           assert '6f30f211439bdc8a2dccf21801800983530b94e029a5be56426130873f7e612b' in delta_contract
           assert 'full_delta_constructor_evaluator_available = FALSE' in delta_contract
           assert 'A/B*B/A -> 1' in delta_contract
