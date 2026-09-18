@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import OpenSourceAcquisitionPanel from "./OpenSourceAcquisitionPanel"
+import ProductionAssistantChat from "./ProductionAssistantChat"
 
 type Json = Record<string, any>
 type Surface = "program" | "workspace" | "authority"
@@ -219,9 +220,9 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
       <section className="rounded-3xl border border-cyan-950 bg-gradient-to-b from-cyan-950/30 to-neutral-950 p-4 shadow-2xl md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production control</div>
-            <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS application server</h1>
-            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">One mobile surface for runtime health, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, open-source acquisition/replay jobs, and click-through application control.</p>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production assistant</div>
+            <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS natural-language application server</h1>
+            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">A mobile-first dark assistant surface for natural-language control, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, and click-through application workflows.</p>
           </div>
           <button type="button" onClick={() => void refresh().catch((reason) => setError(String(reason)))} className="runtime-button min-h-11 px-4 text-sm">Refresh server</button>
         </div>
@@ -235,6 +236,12 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
       </section>
 
       {error ? <section className="rounded-2xl border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{error}</section> : null}
+
+      <ProductionAssistantChat
+        projectId={projectId}
+        vectorContextId={operationKey ?? text(lastIngress.lifecycle_hash216) || null}
+        onOpenFiles={() => fileInput.current?.click()}
+      />
 
       <section className="grid gap-2 sm:grid-cols-3">
         <LaunchCard title="Visual Program" detail="Registry canvas and executable application objects" onClick={() => onNavigate("program")} />
