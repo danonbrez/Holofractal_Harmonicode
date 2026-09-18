@@ -36,10 +36,23 @@ from hhs_runtime.pass219.rml20_rna_vm5184_cell_wall_bridge import (
 
 DEFAULT_STATE_ROOT_ENV = "HHS_PASS219_LANE5_STATE_ROOT"
 DEFAULT_STATE_ROOT = Path(".hhs/pass219/lane5").resolve()
-RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"\nU72_H36_CAPABILITY_ID = "U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0"\nRML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
+RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"
+U72_H36_CAPABILITY_ID = "U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0"
+RML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
 
-MANDATORY_LANE5_LINEAGE = _BASE_MANDATORY_LANE5_LINEAGE + (\n    RLM20_CLOSURE_CAPABILITY_ID,\n    RML20_CAPABILITY_ID,\n)
-MANDATORY_CAPABILITY_ROLES = dict(_BASE_MANDATORY_CAPABILITY_ROLES)\nMANDATORY_CAPABILITY_ROLES[RLM20_CLOSURE_CAPABILITY_ID] = (\n    "MANDATORY_CANONICAL_ADMISSION_MEDIATION"\n)\nMANDATORY_CAPABILITY_ROLES[RML20_CAPABILITY_ID] = (
+MANDATORY_LANE5_LINEAGE = _BASE_MANDATORY_LANE5_LINEAGE + (
+    RLM20_CLOSURE_CAPABILITY_ID,
+    U72_H36_CAPABILITY_ID,
+    RML20_CAPABILITY_ID,
+)
+MANDATORY_CAPABILITY_ROLES = dict(_BASE_MANDATORY_CAPABILITY_ROLES)
+MANDATORY_CAPABILITY_ROLES[RLM20_CLOSURE_CAPABILITY_ID] = (
+    "MANDATORY_CANONICAL_ADMISSION_MEDIATION"
+)
+MANDATORY_CAPABILITY_ROLES[U72_H36_CAPABILITY_ID] = (
+    "EXACT_DYNAMIC_SCALAR_COORDINATE_OPTIMIZATION"
+)
+MANDATORY_CAPABILITY_ROLES[RML20_CAPABILITY_ID] = (
     "EXACT_RML17_RNA_VM5184_TRANSPORT"
 )
 
@@ -76,7 +89,14 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
     def _inject_rml20_surface(result: dict[str, Any]) -> dict[str, Any]:
         result["mandatory_lineage"] = list(MANDATORY_LANE5_LINEAGE)
         result["mandatory_capability_roles"] = dict(MANDATORY_CAPABILITY_ROLES)
-        result["rlm20_lane5_internal_state_closure"] = "MANDATORY_NATIVE_ADMISSION_SEAM"\n        result["rlm20_preflight_export"] = "hhs_exact_pass219_lane5_runtime_preflight"\n        result["canonical_admission_export"] = "hhs_exact_pass219_vm81_environment_admit_signed"\n        result["raw_environmental_admission_exported"] = False\n        result["rml20_rna_vm5184_transport"] = "LAZY_MANDATORY"\n        result["rml20_typed_inputs"] = [
+        result["rlm20_lane5_internal_state_closure"] = "MANDATORY_NATIVE_ADMISSION_SEAM"
+        result["rlm20_preflight_export"] = "hhs_exact_pass219_lane5_runtime_preflight"
+        result["canonical_admission_export"] = "hhs_exact_pass219_vm81_environment_admit_signed"
+        result["raw_environmental_admission_exported"] = False
+        result["u72_h36_dynamic_scalar_optimizer"] = "CALLABLE_EXACT_PROOF"
+        result["u72_h36_logical_coordinate_work_ratio"] = "1/72"
+        result["rml20_rna_vm5184_transport"] = "LAZY_MANDATORY"
+        result["rml20_typed_inputs"] = [
             "exact_648_byte_vm5184_carrier",
             "rml17_source_address",
             "reciprocal_transport_direction",
@@ -103,10 +123,18 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
         """Preserve Hash216 compatibility while declaring typed RML20 availability."""
         result = dict(super().search_hash216(**kwargs))
         available = list(result.get("optimization_available", ()))
-        for capability_id in (\n            RLM20_CLOSURE_CAPABILITY_ID,\n            U72_H36_CAPABILITY_ID,\n            RML20_CAPABILITY_ID,\n        ):\n            if capability_id not in available:\n                available.append(capability_id)
+        for capability_id in (
+            RLM20_CLOSURE_CAPABILITY_ID,
+            U72_H36_CAPABILITY_ID,
+            RML20_CAPABILITY_ID,
+        ):
+            if capability_id not in available:
+                available.append(capability_id)
         result["optimization_available"] = available
         typed = list(result.get("typed_optimizers_require_typed_inputs", ()))
-        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID):\n            if capability_id not in typed:\n                typed.append(capability_id)
+        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID):
+            if capability_id not in typed:
+                typed.append(capability_id)
         result["typed_optimizers_require_typed_inputs"] = typed
         return result
 
@@ -220,5 +248,8 @@ __all__ = [
     "MANDATORY_LANE5_LINEAGE",
     "Pass219Lane5LatencyCompositionAgent",
     "Pass219Lane5MandatoryOptimizationDispatcher",
-    "RLM20_CLOSURE_CAPABILITY_ID",\n    "RML20_CAPABILITY_ID",\n    "SCHEMA",
+    "RLM20_CLOSURE_CAPABILITY_ID",
+    "RML20_CAPABILITY_ID",
+    "U72_H36_CAPABILITY_ID",
+    "SCHEMA",
 ]
