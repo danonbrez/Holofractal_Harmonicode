@@ -1,4 +1,4 @@
-name: Pass 220 I003-I007 Cold Raw x86_64 Calibration + Conversational Mobile Assistant Integration
+name: Pass 220 I003-I008 Cold Raw x86_64 Calibration + Multimode Native Assistant Integration
 
 on:
   pull_request:
@@ -27,6 +27,10 @@ on:
       - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
       - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
       - 'docs/pass220/PASS_220_I007_ASSISTANT_SETTINGS_CLIPBOARD_CONVERSATIONAL_EGRESS.md'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py'
+      - 'docs/pass220/PASS_220_I008_GENERAL_CHAT_AGENTIC_APPLICATION_DEVELOPMENT_MODES.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -34,6 +38,7 @@ on:
       - 'docs/operations/restart/PASS_220_I005_*'
       - 'docs/operations/restart/PASS_220_I006_*'
       - 'docs/operations/restart/PASS_220_I007_*'
+      - 'docs/operations/restart/PASS_220_I008_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   push:
     branches: [main, pass220-lo-shu-normalization-checkpoint-1]
@@ -61,6 +66,10 @@ on:
       - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
       - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
       - 'docs/pass220/PASS_220_I007_ASSISTANT_SETTINGS_CLIPBOARD_CONVERSATIONAL_EGRESS.md'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py'
+      - 'docs/pass220/PASS_220_I008_GENERAL_CHAT_AGENTIC_APPLICATION_DEVELOPMENT_MODES.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -68,6 +77,7 @@ on:
       - 'docs/operations/restart/PASS_220_I005_*'
       - 'docs/operations/restart/PASS_220_I006_*'
       - 'docs/operations/restart/PASS_220_I007_*'
+      - 'docs/operations/restart/PASS_220_I008_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   workflow_dispatch:
 
@@ -128,7 +138,7 @@ jobs:
             -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
           nm -D hhs_runtime/builds/libhhs_pass207_gpu_driver.so | grep ' hhs_pass207_gpu_vector_distance72$'
 
-      - name: Compile post-calibration I003-I007 Python surfaces
+      - name: Compile post-calibration I003-I008 Python surfaces
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
@@ -139,6 +149,7 @@ jobs:
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
             hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
             hhs_backend/api/litert_lm_assistant_routes.py \
             benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
             tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py \
@@ -147,9 +158,11 @@ jobs:
             tests/pass220/test_hhs_pass220_hf_rag_assistant_v1.py \
             tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py \
             tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py \
-            tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py
+            tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py
 
-      - name: Run dependency-scoped I001-I007 integration tests
+      - name: Run dependency-scoped I001-I008 integration tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -166,6 +179,8 @@ jobs:
             tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py \
             tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py \
             tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
             | tee /tmp/pass220-i003/integration-tests.txt
 
       - name: Record raw-capacity normalization facts
