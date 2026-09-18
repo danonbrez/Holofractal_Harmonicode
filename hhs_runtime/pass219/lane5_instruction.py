@@ -202,7 +202,12 @@ def lower_object_to_lane5_instruction(
         "metadata": dict(metadata or {}),
     }
     if isinstance(source_object, (bytes, bytearray, memoryview)):
-        payload["raw_frame_le"] = bytes(source_object)
+        raw_source = bytes(source_object)
+        if len(raw_source) == 648:
+            payload["raw_frame_le"] = raw_source
+        else:
+            payload["generic_byte_length"] = len(raw_source)
+            payload["generic_byte_sha256"] = sha256(raw_source).hexdigest()
 
     intercepted = intercept_abi_traffic(
         traffic_class=traffic_class,
