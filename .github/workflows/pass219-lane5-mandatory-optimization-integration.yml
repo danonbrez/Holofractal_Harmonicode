@@ -69,6 +69,8 @@ jobs:
           ):
               assert needle in implementation, needle
           assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
+          assert 'RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37' in dispatcher
+          assert 'MANDATORY_CANONICAL_ADMISSION_MEDIATION' in dispatcher
           assert 'HHS_PASS219_LANE5_STATE_ROOT' in dispatcher
           assert '.hhs/pass219/lane5' in dispatcher
           assert 'build_mandatory_optimization_registry' in dispatcher
@@ -125,6 +127,7 @@ jobs:
           python -m pytest -q \
             tests/pass219/test_lane5_mandatory_optimization_dispatcher.py \
             tests/pass219/test_lane5_mandatory_optimization_registry.py \
+            tests/pass219/test_lane5_rlm20_mandatory_integration.py \
             tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
             tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
             tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
