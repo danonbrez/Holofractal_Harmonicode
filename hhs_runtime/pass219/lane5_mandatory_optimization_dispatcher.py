@@ -29,6 +29,10 @@ from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher_impl import (
 from hhs_runtime.pass219.lane5_mandatory_optimization_registry import (
     build_mandatory_optimization_registry,
 )
+from hhs_runtime.pass219.lane5_pythagorean_phase_geometry_1_49_bridge import (
+    Lane5PythagoreanPhaseGeometryError,
+    project_pythagorean_phase_geometry,
+)
 from hhs_runtime.pass219.rml20_rna_vm5184_cell_wall_bridge import (
     RML20NativeBridgeError,
     route_rml17_candidate_through_rna_vm5184,
@@ -39,11 +43,13 @@ DEFAULT_STATE_ROOT = Path(".hhs/pass219/lane5").resolve()
 RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"
 U72_H36_CAPABILITY_ID = "U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0"
 RML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
+P149_CAPABILITY_ID = "LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49"
 
 MANDATORY_LANE5_LINEAGE = _BASE_MANDATORY_LANE5_LINEAGE + (
     RLM20_CLOSURE_CAPABILITY_ID,
     U72_H36_CAPABILITY_ID,
     RML20_CAPABILITY_ID,
+    P149_CAPABILITY_ID,
 )
 MANDATORY_CAPABILITY_ROLES = dict(_BASE_MANDATORY_CAPABILITY_ROLES)
 MANDATORY_CAPABILITY_ROLES[RLM20_CLOSURE_CAPABILITY_ID] = (
@@ -54,6 +60,9 @@ MANDATORY_CAPABILITY_ROLES[U72_H36_CAPABILITY_ID] = (
 )
 MANDATORY_CAPABILITY_ROLES[RML20_CAPABILITY_ID] = (
     "EXACT_RML17_RNA_VM5184_TRANSPORT"
+)
+MANDATORY_CAPABILITY_ROLES[P149_CAPABILITY_ID] = (
+    "EXACT_PYTHAGOREAN_PHASE_PROJECTION"
 )
 
 
@@ -96,6 +105,7 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
         result["u72_h36_dynamic_scalar_optimizer"] = "CALLABLE_EXACT_PROOF"
         result["u72_h36_logical_coordinate_work_ratio"] = "1/72"
         result["rml20_rna_vm5184_transport"] = "LAZY_MANDATORY"
+        result["lane5_pythagorean_phase_geometry_1_49"] = "LAZY_MANDATORY_NATIVE"
         result["rml20_typed_inputs"] = [
             "exact_648_byte_vm5184_carrier",
             "rml17_source_address",
@@ -127,12 +137,13 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
             RLM20_CLOSURE_CAPABILITY_ID,
             U72_H36_CAPABILITY_ID,
             RML20_CAPABILITY_ID,
+            P149_CAPABILITY_ID,
         ):
             if capability_id not in available:
                 available.append(capability_id)
         result["optimization_available"] = available
         typed = list(result.get("typed_optimizers_require_typed_inputs", ()))
-        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID):
+        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID, P149_CAPABILITY_ID):
             if capability_id not in typed:
                 typed.append(capability_id)
         result["typed_optimizers_require_typed_inputs"] = typed
@@ -189,6 +200,53 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
         report["optimization_selected"] = U72_H36_CAPABILITY_ID
         report["fresh_recomputation_forced"] = False
         return report
+
+    def project_pythagorean_phase_geometry_1_49(
+        self,
+        *,
+        pair_kind: str,
+        orientation: int,
+        phase_slot: int,
+        lo_shu_cell_index: int,
+        fibonacci_depth: int = 10,
+        projected_p4: int = 9,
+        library_path: str | Path | None = None,
+    ) -> dict[str, Any]:
+        """Run the proven native Lane 5 1.49 candidate projection."""
+        try:
+            result = dict(
+                project_pythagorean_phase_geometry(
+                    pair_kind=pair_kind,
+                    orientation=orientation,
+                    phase_slot=phase_slot,
+                    lo_shu_cell_index=lo_shu_cell_index,
+                    fibonacci_depth=fibonacci_depth,
+                    projected_p4=projected_p4,
+                    library_path=library_path,
+                )
+            )
+        except Lane5PythagoreanPhaseGeometryError as exc:
+            raise Lane5MandatoryOptimizationError(
+                f"LANE5_P149_MANDATORY_PROJECTION_UNAVAILABLE:{exc}"
+            ) from exc
+        authority = dict(result.get("authority", {}))
+        if authority.get("candidate_only") is not True:
+            raise Lane5MandatoryOptimizationError("LANE5_P149_CANDIDATE_BOUNDARY_DRIFT")
+        for key in (
+            "canonical_vm81_mutation_authority",
+            "canonical_hash72_authority",
+            "canonical_hash216_authority",
+            "canonical_persistence_authority",
+            "floating_point_authority",
+        ):
+            if authority.get(key) is not False:
+                raise Lane5MandatoryOptimizationError(
+                    f"LANE5_P149_AUTHORITY_ESCALATION:{key}"
+                )
+        result["mandatory_optimization_dispatch"] = True
+        result["optimization_selected"] = P149_CAPABILITY_ID
+        result["fresh_recomputation_forced"] = False
+        return result
 
     def route_rml20_candidate(
         self,
@@ -250,6 +308,7 @@ __all__ = [
     "Pass219Lane5MandatoryOptimizationDispatcher",
     "RLM20_CLOSURE_CAPABILITY_ID",
     "RML20_CAPABILITY_ID",
+    "P149_CAPABILITY_ID",
     "U72_H36_CAPABILITY_ID",
     "SCHEMA",
 ]
