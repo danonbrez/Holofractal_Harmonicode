@@ -61,7 +61,7 @@ jobs:
           if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
             workflow=.github/workflows/vm81-game-level10.yml
             sed -i 's/contents: write/contents: read/' "$workflow"
-            sed -i '/fetch-depth: 0/d; /ref: \${{ github.head_ref || github.ref_name }}/d' "$workflow"
+            sed -i '/fetch-depth: 0/d; /ref: .*github.head_ref.*github.ref_name/d' "$workflow"
             awk 'BEGIN { skip=0 } /- name: Materialize staged shared-shader repair/ { skip=1 } /- name: Ensure terminal sprite texture shader and holographic dependencies/ { skip=0 } !skip { print }' "$workflow" > "$workflow.clean"
             mv "$workflow.clean" "$workflow"
             rm -rf .github/vm81-shared-shader-repair
