@@ -13,6 +13,12 @@ from hhs_backend.runtime.hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37 impo
 from hhs_python.runtime.hhs_pass219_lane5_phase_interlace_bridge import (
     Pass219Lane5PhaseInterlaceBridge,
 )
+from hhs_runtime.hhs_phase_inverted_pythagorean_geometry_v1 import (
+    full_geometry_witness,
+)
+from hhs_runtime.pass219.harmonic_geometry_circuit_i182 import (
+    pentagonal_quantization_witness,
+)
 
 
 def _state(seed: int) -> list[int]:
@@ -160,3 +166,99 @@ def test_lane5_candidate_execution_still_requires_pass207_cpu_equality() -> None
         assert result["gpu_may_commit_hash72"] is False
         assert result["vm81_single_admission_authority"] is True
         assert result["logical_lane_dispatches"] == 2 * 5_184
+
+
+def _assert_no_float_tree(value: object) -> None:
+    if isinstance(value, dict):
+        for item in value.values():
+            _assert_no_float_tree(item)
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            _assert_no_float_tree(item)
+    else:
+        assert not isinstance(value, float)
+
+
+def test_lane5_self_enforcement_composes_scaling_phase_and_prime_fingerprint() -> None:
+    """Use repository-native services only; no external symbolic stand-in."""
+
+    geometry = full_geometry_witness()
+    harmonic = pentagonal_quantization_witness()
+
+    # G^3/Pythagorean scaling, 5184 conservation, and exact phase geometry
+    # independently land on the same repository-native geometry.
+    assert geometry["pythagorean"]["triangle_reconstruction"] == [1, 2, 3]
+    assert geometry["manifold"]["72²"] == 5_184
+    assert geometry["manifold"]["81*64"] == 5_184
+    assert geometry["manifold"]["72^72"] == geometry["manifold"]["5184^36"]
+    assert geometry["lo_shu"]["delta_phase"] == 18
+    assert geometry["lo_shu"]["half_turn"] == 36
+
+    assert harmonic["hydration_quantum"] == 5_184
+    assert harmonic["half_sector"] == 36
+    assert harmonic["external"] == 72
+    assert harmonic["interior"] == 108
+    assert harmonic["supplementary"] == 144
+    assert harmonic["zero_phase_closure"] == 0
+
+    _assert_no_float_tree(geometry)
+    _assert_no_float_tree(harmonic)
+
+    base = _state(5_184)
+    one_bit_mutation = list(base)
+    one_bit_mutation[0] ^= 1
+
+    with Pass219Lane5Hash216GPUPhaseInterlaceOptimizer(backend="CPU_REFERENCE") as optimizer:
+        original_hash216 = optimizer.native_state_hash216(base)
+        mutated_hash216 = optimizer.native_state_hash216(one_bit_mutation)
+
+        # Native VM81/Hash216 identity detects the one-bit state mutation.
+        assert original_hash216 != mutated_hash216
+
+        original_matrix, original_offsets = derive_prime_matrix(original_hash216, 72)
+        replay_matrix, replay_offsets = derive_prime_matrix(original_hash216, 72)
+        assert replay_matrix == original_matrix
+        assert replay_offsets == original_offsets
+
+        original_route = optimizer.phase.prime_route(5_005, original_matrix, original_offsets)
+        replay_route = optimizer.phase.prime_route(5_005, replay_matrix, replay_offsets)
+        assert replay_route == original_route
+        assert original_route["prime_cells_validated"] is True
+        assert original_route["upper_triangular"] is True
+        assert original_route["invertible_mod_cycle"] is True
+        assert original_route["candidate_only"] is True
+        assert original_route["canonical_mutation_authority"] is False
+        assert original_route["canonical_hash72_authority"] is False
+        assert original_route["canonical_hash216_authority"] is False
+        assert original_route["requires_exact_cpu_vm81_replay"] is True
+
+        # The one-bit mutation is also visible to the native three-Hash72
+        # Hash216 distance path, rather than only to a local Python comparison.
+        candidates = [
+            Hash216CompositionCandidate("original", original_hash216, True),
+            Hash216CompositionCandidate("one-bit", mutated_hash216, True),
+        ]
+        ranked = optimizer.search_hash216(
+            query_hash216=original_hash216,
+            candidates=candidates,
+            tick=5_005,
+            cycle_index=72,
+            top_k=2,
+        )
+        assert ranked["ranked"][0]["candidate_id"] == "original"
+        assert ranked["ranked"][0]["hash216_distance"] == 0
+        mutated_result = next(item for item in ranked["ranked"] if item["candidate_id"] == "one-bit")
+        assert mutated_result["hash216_distance"] > 0
+        assert len(ranked["hash216_segment_rankings"]) == 3
+
+        # Fingerprint generation consumes the changed Hash216 state.  Search
+        # across a bounded exact cycle-index window so this test does not
+        # assume one particular digest window/offset coincidence.
+        fingerprint_changed = False
+        for cycle_index in range(72):
+            m0, o0 = derive_prime_matrix(original_hash216, cycle_index)
+            m1, o1 = derive_prime_matrix(mutated_hash216, cycle_index)
+            if m0 != m1 or o0 != o1:
+                fingerprint_changed = True
+                break
+        assert fingerprint_changed is True

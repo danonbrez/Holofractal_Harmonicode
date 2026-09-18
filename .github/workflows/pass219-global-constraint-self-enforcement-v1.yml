@@ -1,0 +1,146 @@
+name: Pass 219 Global Constraint Self-Enforcement V1
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tests/pass219/test_pass219_global_constraint_self_enforcement_v1.py'
+      - '.github/workflows/pass219-global-constraint-self-enforcement-v1.yml'
+      - 'docs/operations/restart/PASS_219_GLOBAL_CONSTRAINT_SELF_ENFORCEMENT_PROOF_20260918.md'
+  push:
+    branches:
+      - proof/global-constraint-self-enforcement-20260918
+    paths:
+      - 'tests/pass219/test_pass219_global_constraint_self_enforcement_v1.py'
+      - '.github/workflows/pass219-global-constraint-self-enforcement-v1.yml'
+      - 'docs/operations/restart/PASS_219_GLOBAL_CONSTRAINT_SELF_ENFORCEMENT_PROOF_20260918.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile Python proof surfaces
+        run: |
+          python -m py_compile \
+            tests/pass219/test_pass219_global_constraint_self_enforcement_v1.py \
+            hhs_runtime/pass219/typed_full_symbolic_candidate_values.py \
+            hhs_runtime/pass219/typed_domain_join_executor.py \
+            hhs_runtime/pass219/source_bound_ab_x2_phase_binding.py \
+            hhs_runtime/pass219/complete_monolithic_boundary_executor.py
+
+      - name: Run global tensor reconstruction and mutation proof
+        run: |
+          pytest -q \
+            tests/pass219/test_pass219_global_constraint_self_enforcement_v1.py \
+            tests/pass219/test_pass219_i161_complete_monolithic_boundary_executor.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Run inherited Lane 5 state-fingerprint proof
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          pytest -q tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py
+
+      - name: Run native five-gate global constraint membrane
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-global-membrane
+          /tmp/pass219-global-membrane
+
+      - name: Verify Pass169 constraint graph closure metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          graph = json.loads(Path("HHS_PASS_169_CONSTRAINT_GRAPH.json").read_text(encoding="utf-8"))
+          assert graph["required_global_constraints"] == [
+              "P^4=AB",
+              "Delta=P^2-pq",
+              "u^72=1",
+              "scalar_zero!=scalar_one",
+              "O!=Pi",
+              "ordered_xy_not_commuted_to_yx",
+          ]
+          assert graph["typed_boundary_constraints"] == [
+              "0=x+y+z+w=I+I^3",
+              "u^0=xy/zw=P^2-pq=a^2/Delta=0^4",
+              "EDGE8:CLOSURE_EQ",
+          ]
+          frozen = graph["frozen_pass219_typed_graph"]
+          assert frozen["join_count"] == frozen["proved"] == 10
+          assert frozen["unresolved"] == frozen["rejected"] == 0
+          sealed = graph["sealed_candidate_runtime_execution"]
+          for key in (
+              "vm81_admission",
+              "atomic_commit",
+              "hash72_receipt",
+              "hash216_proof_identity",
+              "deterministic_replay",
+          ):
+              assert sealed[key] is True
+          print("pass169_constraint_graph=PASS")
+          PY
+
+      - name: Build frozen Pass159 execution dependency
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain \
+                -B /tmp/pass159-global-proof \
+                -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-global-proof --parallel 2
+          ctest --test-dir /tmp/pass159-global-proof --output-on-failure
+
+      - name: Compile cumulative exact object for I162
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-global-exact.o
+
+      - name: Run downstream I162 Pass169 VM81 exact symbolic conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          # Use the authoritative full runtime built above. Current main requires
+          # the inherited C++ PQC cell-wall object; hand-linking the C aggregate
+          # alone is an invalid integration surface.
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_i162_pass169_vm81_exact_symbolic_execution.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass219-global-i162
+          /tmp/pass219-global-i162 \
+            contracts/pass219/PASS_219_COMBINED_QUOTIENT_MATRIX_POWER_NATIVE_1_21_8.harmonicode
