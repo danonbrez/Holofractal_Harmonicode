@@ -130,10 +130,23 @@ jobs:
 
       # Everything below this point is post-calibration integration.  It is
       # deliberately excluded from the max-hardware calibration measurement.
+      - name: Set up post-calibration Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install post-calibration integration dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'pytest>=8.0,<9.0' \
+            'pytest-asyncio>=0.23,<1.0'
 
       - name: Build post-calibration exact ABI and Pass 207 CPU-reference driver
         run: |
