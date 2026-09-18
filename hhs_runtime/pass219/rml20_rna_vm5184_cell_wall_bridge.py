@@ -1,12 +1,11 @@
-"""Pass 219 RML20 native RNA/VM5184 bridge for frozen RML17 transport.
+"""Pass 219 RML20 RNA/VM5184 bridge over the current sealed RML17 geometry.
 
-RML20 is additive.  It does not edit the frozen RML17 operator or the RML18/RML19
-acceleration lineage.  Instead, one RML17 transport coordinate is lowered into
-the public exact 648-byte VM5184 candidate ABI, routed through the existing C++
-RNA cell wall, and compared back against the frozen Python operator.
+RML20 is additive. It lowers one current RML17 directed address
+(operation64, phase72, cell81, direction4) into the public exact 648-byte
+VM5184 candidate ABI and C++ RNA cell wall, then proves parity back to RML17.
 
-The native path remains candidate-only.  It has no VM81 mutation, Hash72 mint,
-Hash216 persistence, or floating-point canonical authority.
+The native path remains candidate-only. It has no VM81 mutation, Hash72 mint,
+Hash216 persistence, canonical persistence, or floating-point authority.
 """
 from __future__ import annotations
 
@@ -20,19 +19,20 @@ from hhs_runtime.pass219.discrete_transport_conservation import (
     ADDRESS_COUNT,
     CELL_COUNT,
     DIRECTIONS,
-    INVERSE_DIRECTION,
-    LANE_COUNT,
+    DIRECTION_COUNT,
+    INDEX_DIRECTION,
     OPERATIONS_PER_CELL,
     PHASE_COUNT,
     decode_transport_address,
     discrete_divergence,
+    reciprocal_direction_index,
     signed_address_flux,
     transport_neighbor,
 )
 
 PASS = 219
 ITERATION = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
-SCHEMA = "HHS_PASS219_RML20_RNA_VM5184_CELL_WALL_BRIDGE_V1"
+SCHEMA = "HHS_PASS219_RML20_RNA_VM5184_CELL_WALL_BRIDGE_V2"
 LIBRARY_ENV = "HHS_PASS219_RML20_NATIVE_LIB"
 VM5184_BYTES = 648
 HASH72_STRLEN = 73
@@ -42,14 +42,7 @@ SHA256_BYTES = 32
 HHS_EXACT_STATUS_OK = 0
 INTEGER_SYMMETRIC_PROFILE = 1
 
-NATIVE_DIRECTION = {
-    "operation_forward": 0,
-    "operation_reverse": 1,
-    "phase_forward": 2,
-    "phase_reverse": 3,
-    "cell_forward": 4,
-    "cell_reverse": 5,
-}
+NATIVE_DIRECTION = {name: index for index, name in enumerate(DIRECTIONS)}
 
 
 class RML20NativeBridgeError(RuntimeError):
@@ -126,8 +119,8 @@ class _Descriptor(ctypes.Structure):
         ("direction_count", ctypes.c_uint32),
         ("vm5184_bytes", ctypes.c_uint32),
         ("cpp_rna_cell_wall", ctypes.c_uint8),
-        ("frozen_rml17_parity_surface", ctypes.c_uint8),
-        ("lane_retaining_transport", ctypes.c_uint8),
+        ("current_rml17_parity_surface", ctypes.c_uint8),
+        ("direction_embedded_address", ctypes.c_uint8),
         ("reciprocal_flux_transport", ctypes.c_uint8),
         ("candidate_only", ctypes.c_uint8),
         ("exact_integer_only", ctypes.c_uint8),
@@ -146,15 +139,15 @@ class _Receipt(ctypes.Structure):
         ("version", ctypes.c_uint32),
         ("source_address", ctypes.c_uint32),
         ("target_address", ctypes.c_uint32),
-        ("source_lane", ctypes.c_uint8),
         ("source_operation", ctypes.c_uint8),
         ("source_phase", ctypes.c_uint8),
         ("source_cell", ctypes.c_uint8),
-        ("target_lane", ctypes.c_uint8),
+        ("source_direction", ctypes.c_uint8),
         ("target_operation", ctypes.c_uint8),
         ("target_phase", ctypes.c_uint8),
         ("target_cell", ctypes.c_uint8),
-        ("direction", ctypes.c_uint8),
+        ("target_direction", ctypes.c_uint8),
+        ("requested_direction", ctypes.c_uint8),
         ("inverse_direction", ctypes.c_uint8),
         ("forward_flux", ctypes.c_int8),
         ("reverse_flux", ctypes.c_int8),
@@ -162,7 +155,7 @@ class _Receipt(ctypes.Structure):
         ("encode_decode_bijective", ctypes.c_uint8),
         ("reciprocal_neighbor_restores_source", ctypes.c_uint8),
         ("reciprocal_flux_balanced", ctypes.c_uint8),
-        ("lane_identity_retained", ctypes.c_uint8),
+        ("operation_cell_preserved", ctypes.c_uint8),
         ("zero_discrete_divergence", ctypes.c_uint8),
         ("zero_diffusion_classification", ctypes.c_uint8),
         ("feedback_lane_bound", ctypes.c_uint8),
@@ -209,7 +202,9 @@ def _load_library(path: str | Path | None = None) -> tuple[ctypes.CDLL, Path, _D
     try:
         library = ctypes.CDLL(str(selected))
     except OSError as exc:
-        raise RML20NativeBridgeError(f"RML20_NATIVE_LIBRARY_LOAD_FAILED:{selected}:{exc}") from exc
+        raise RML20NativeBridgeError(
+            f"RML20_NATIVE_LIBRARY_LOAD_FAILED:{selected}:{exc}"
+        ) from exc
 
     required = (
         "hhs_exact_uqcel_version",
@@ -222,9 +217,8 @@ def _load_library(path: str | Path | None = None) -> tuple[ctypes.CDLL, Path, _D
         if not hasattr(library, symbol):
             raise RML20NativeBridgeError(f"RML20_NATIVE_SYMBOL_MISSING:{symbol}")
 
-    uqcel_version = library.hhs_exact_uqcel_version
-    uqcel_version.argtypes = []
-    uqcel_version.restype = ctypes.c_uint32
+    library.hhs_exact_uqcel_version.argtypes = []
+    library.hhs_exact_uqcel_version.restype = ctypes.c_uint32
 
     genesis = library.hhs_exact_pass219_vm81_pqc_hash216_genesis_reference
     genesis.argtypes = [ctypes.POINTER(_Hash216Transition)]
@@ -252,16 +246,16 @@ def _load_library(path: str | Path | None = None) -> tuple[ctypes.CDLL, Path, _D
         raise RML20NativeBridgeError(f"RML20_DESCRIPTOR_REJECTED:status={status}")
 
     expected = (
-        int(descriptor.lane_count) == LANE_COUNT,
+        int(descriptor.lane_count) == DIRECTION_COUNT,
         int(descriptor.operations_per_cell) == OPERATIONS_PER_CELL,
         int(descriptor.phase_count) == PHASE_COUNT,
         int(descriptor.cell_count) == CELL_COUNT,
         int(descriptor.address_count) == ADDRESS_COUNT,
-        int(descriptor.direction_count) == len(DIRECTIONS),
+        int(descriptor.direction_count) == DIRECTION_COUNT,
         int(descriptor.vm5184_bytes) == VM5184_BYTES,
         bool(descriptor.cpp_rna_cell_wall),
-        bool(descriptor.frozen_rml17_parity_surface),
-        bool(descriptor.lane_retaining_transport),
+        bool(descriptor.current_rml17_parity_surface),
+        bool(descriptor.direction_embedded_address),
         bool(descriptor.reciprocal_flux_transport),
         bool(descriptor.candidate_only),
         bool(descriptor.exact_integer_only),
@@ -284,7 +278,9 @@ def _minimal_exact_input(library: ctypes.CDLL) -> tuple[_UQCELInput, ctypes.Arra
     value.profile = INTEGER_SYMMETRIC_PROFILE
     value.delta.struct_size = ctypes.sizeof(_BigUIntView)
     value.delta.byte_length = 1
-    value.delta.bytes_be = ctypes.cast(delta_bytes, ctypes.POINTER(ctypes.c_uint8))
+    value.delta.bytes_be = ctypes.cast(
+        delta_bytes, ctypes.POINTER(ctypes.c_uint8)
+    )
     return value, delta_bytes
 
 
@@ -309,10 +305,7 @@ def route_rml17_candidate_through_rna_vm5184(
     *,
     library_path: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Route one frozen RML17 address edge through the C++ RNA cell wall.
-
-    This is a candidate transport audit, not a canonical VM81 commit call.
-    """
+    """Lower one current RML17 directed address through RNA/VM5184."""
     raw = bytes(raw_frame_le)
     if len(raw) != VM5184_BYTES:
         raise RML20NativeBridgeError(
@@ -324,6 +317,14 @@ def route_rml17_candidate_through_rna_vm5184(
         raise RML20NativeBridgeError("RML20_SOURCE_ADDRESS_OUT_OF_RANGE")
     if direction not in NATIVE_DIRECTION:
         raise RML20NativeBridgeError("RML20_TRANSPORT_DIRECTION_UNSUPPORTED")
+
+    python_source = decode_transport_address(source_address)
+    source_direction = python_source[3]
+    requested_direction = NATIVE_DIRECTION[direction]
+    if requested_direction != source_direction:
+        raise RML20NativeBridgeError(
+            "RML20_DIRECTION_MUST_MATCH_EMBEDDED_RML17_ADDRESS"
+        )
 
     library, selected, descriptor = _load_library(library_path)
     input_value, delta_keepalive = _minimal_exact_input(library)
@@ -338,45 +339,65 @@ def route_rml17_candidate_through_rna_vm5184(
             len(raw),
             ctypes.byref(transition),
             source_address,
-            NATIVE_DIRECTION[direction],
+            requested_direction,
             ctypes.byref(receipt),
         )
     )
     _ = delta_keepalive
     if status != HHS_EXACT_STATUS_OK:
-        raise RML20NativeBridgeError(f"RML20_NATIVE_ROUTE_REJECTED:status={status}")
+        raise RML20NativeBridgeError(
+            f"RML20_NATIVE_ROUTE_REJECTED:status={status}"
+        )
 
-    python_source = decode_transport_address(source_address)
-    python_target = transport_neighbor(source_address, direction)
+    python_target = transport_neighbor(source_address)
     python_target_coordinates = decode_transport_address(python_target)
-    python_forward_flux = signed_address_flux(source_address, direction)
-    inverse = INVERSE_DIRECTION[direction]
-    python_reverse_flux = signed_address_flux(python_target, inverse)
+    python_forward_flux = signed_address_flux(source_address)
+    python_reverse_flux = signed_address_flux(python_target)
     python_divergence = discrete_divergence(source_address)
+    inverse_index = reciprocal_direction_index(source_direction)
+    inverse_name = INDEX_DIRECTION[inverse_index]
 
     native_source = (
-        int(receipt.source_lane),
         int(receipt.source_operation),
         int(receipt.source_phase),
         int(receipt.source_cell),
+        int(receipt.source_direction),
     )
     native_target = (
-        int(receipt.target_lane),
         int(receipt.target_operation),
         int(receipt.target_phase),
         int(receipt.target_cell),
+        int(receipt.target_direction),
     )
 
     parity = {
         "address_encoding_identical": native_source == python_source,
         "neighbor_address_identical": int(receipt.target_address) == python_target,
         "neighbor_coordinates_identical": native_target == python_target_coordinates,
-        "flux_orientation_identical": int(receipt.forward_flux) == python_forward_flux,
-        "reciprocal_flux_identical": int(receipt.reverse_flux) == python_reverse_flux,
-        "zero_divergence_identical": int(receipt.discrete_divergence) == python_divergence == 0,
-        "reciprocal_edge_alignment": bool(receipt.reciprocal_neighbor_restores_source),
-        "zero_diffusion_classification": bool(receipt.zero_diffusion_classification),
-        "lane_identity_retained": bool(receipt.lane_identity_retained),
+        "embedded_direction_guard_identical": (
+            int(receipt.requested_direction) == source_direction
+            and int(receipt.source_direction) == source_direction
+        ),
+        "reciprocal_direction_identical": (
+            int(receipt.inverse_direction) == inverse_index
+            and int(receipt.target_direction) == inverse_index
+        ),
+        "flux_orientation_identical": (
+            int(receipt.forward_flux) == python_forward_flux
+        ),
+        "reciprocal_flux_identical": (
+            int(receipt.reverse_flux) == python_reverse_flux
+        ),
+        "zero_divergence_identical": (
+            int(receipt.discrete_divergence) == python_divergence == 0
+        ),
+        "reciprocal_edge_alignment": bool(
+            receipt.reciprocal_neighbor_restores_source
+        ),
+        "zero_diffusion_classification": bool(
+            receipt.zero_diffusion_classification
+        ),
+        "operation_cell_preserved": bool(receipt.operation_cell_preserved),
         "feedback_lane_bound": bool(receipt.feedback_lane_bound),
         "feedback_trinary_bound": bool(receipt.feedback_trinary_bound),
         "rna_cell_wall_routed": bool(receipt.rna_cell_wall_routed),
@@ -390,10 +411,18 @@ def route_rml17_candidate_through_rna_vm5184(
     authority = {
         "candidate_only": bool(receipt.candidate_only),
         "exact_integer_only": bool(receipt.exact_integer_only),
-        "canonical_vm81_mutation_authority": bool(receipt.canonical_mutation_authority),
-        "canonical_hash72_mint_authority": bool(receipt.canonical_hash72_authority),
-        "canonical_hash216_persistence_authority": bool(receipt.canonical_hash216_authority),
-        "canonical_persistence_authority": bool(receipt.canonical_persistence_authority),
+        "canonical_vm81_mutation_authority": bool(
+            receipt.canonical_mutation_authority
+        ),
+        "canonical_hash72_mint_authority": bool(
+            receipt.canonical_hash72_authority
+        ),
+        "canonical_hash216_persistence_authority": bool(
+            receipt.canonical_hash216_authority
+        ),
+        "canonical_persistence_authority": bool(
+            receipt.canonical_persistence_authority
+        ),
         "floating_point_authority": bool(receipt.floating_point_authority),
     }
     if not (
@@ -407,9 +436,9 @@ def route_rml17_candidate_through_rna_vm5184(
     ):
         raise RML20NativeBridgeError("RML20_NATIVE_AUTHORITY_BOUNDARY_FAILURE")
 
-    transition_identity = bytes(receipt.transition_identity216).split(b"\0", 1)[0].decode(
-        "ascii"
-    )
+    transition_identity = bytes(receipt.transition_identity216).split(
+        b"\0", 1
+    )[0].decode("ascii")
     return {
         "schema": SCHEMA,
         "pass": PASS,
@@ -418,14 +447,14 @@ def route_rml17_candidate_through_rna_vm5184(
         "native_library": str(selected),
         "native_version": int(receipt.version),
         "native_lane_count": int(descriptor.lane_count),
-        "frozen_rml17_lane_count": LANE_COUNT,
+        "current_rml17_direction_count": DIRECTION_COUNT,
         "vm5184_bytes": VM5184_BYTES,
         "source_address": source_address,
         "target_address": int(receipt.target_address),
         "source_coordinates": list(native_source),
         "target_coordinates": list(native_target),
         "direction": direction,
-        "inverse_direction": inverse,
+        "inverse_direction": inverse_name,
         "forward_flux": int(receipt.forward_flux),
         "reverse_flux": int(receipt.reverse_flux),
         "discrete_divergence": int(receipt.discrete_divergence),
