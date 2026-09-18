@@ -14,6 +14,7 @@ on:
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
+      - 'docs/operations/restart/PASS_220_I004_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   push:
     branches: [main, pass220-lo-shu-normalization-checkpoint-1]
@@ -28,6 +29,7 @@ on:
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
+      - 'docs/operations/restart/PASS_220_I004_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   workflow_dispatch:
 
@@ -88,7 +90,7 @@ jobs:
             -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
           nm -D hhs_runtime/builds/libhhs_pass207_gpu_driver.so | grep ' hhs_pass207_gpu_vector_distance72$'
 
-      - name: Compile post-calibration I003 Python surfaces
+      - name: Compile post-calibration I003-I004 Python surfaces
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
