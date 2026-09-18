@@ -165,3 +165,17 @@ def test_target_mismatch_fails_closed() -> None:
             instruction,
             expected_target=TARGET_VM81,
         )
+
+
+def test_non_5184_bytes_remain_generic_plug_and_play_objects() -> None:
+    source = b"arbitrary-plugin-payload"
+    instruction = lower_object_to_lane5_instruction(
+        source,
+        target=TARGET_LINUX,
+        traffic_class="plugin.runtime",
+        operation="inspect-bytes",
+        read_only=True,
+    )
+    assert instruction.source_object_payload == source
+    assert instruction.lane5_state == STATE_OBSERVATION_ADMITTED
+    assert instruction.sandbox_queue_optimized is True
