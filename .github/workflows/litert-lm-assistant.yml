@@ -30,6 +30,7 @@ on:
       - 'tests/test_hhs_litert_lm_assistant_v1.py'
       - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context.py'
       - 'tests/test_hhs_litert_lm_repo_bootstrap_v1.py'
       - 'tests/test_hhs_litert_lm_gpu_runtime_v1.py'
       - 'tests/test_hhs_vulkan_loader_runtime_v1.py'
@@ -87,6 +88,7 @@ jobs:
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
             tests/test_hhs_litert_lm_gpu_runtime_v1.py \
             tests/test_hhs_vulkan_loader_runtime_v1.py
@@ -105,6 +107,7 @@ jobs:
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
             tests/test_hhs_litert_lm_gpu_runtime_v1.py \
             tests/test_hhs_vulkan_loader_runtime_v1.py
