@@ -7,7 +7,8 @@
 **Implementation commit:** `f700b78a5d53f3386c1791c2666b19e1d118783b`
 **Pull request:** `#494`
 **Validation run:** `35354180440` — Pass 219 Lane 5 Hash216 GPU Phase Interlace 1.37 — SUCCESS
-**State:** IMPLEMENTED_AND_DEPENDENCY_SCOPED_VALIDATED
+**Merge commit:** `7a5f414de4ce6c48ea4d47fe06eca4782cb44798`
+**State:** CLOSED_VERIFIED_MAIN
 
 ## Objective
 
@@ -82,14 +83,10 @@ tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py
 
 ## Closure / restart state
 
-The computational proof implementation is dependency-scoped green.
-
-Remaining repository workflow:
+The computational proof implementation is dependency-scoped green, PR #494 is merged, and the resulting files were read back from `main` at merge commit `7a5f414de4ce6c48ea4d47fe06eca4782cb44798`.
 
 ```text
-1. commit this post-task checkpoint
-2. merge PR #494 when GitHub permits
-3. verify resulting main head
+IMPLEMENT -> DEP-SCOPED VALIDATION -> CHECKPOINT -> MERGE -> VERIFY MAIN = COMPLETE
 ```
 
-If interrupted, resume from this branch and checkpoint. No rerun of the already-green implementation head is required unless code/test dependencies change.
+No remaining action is required for this proof task. Future changes to the Lane 5 fingerprint, Hash216 state-root path, harmonic geometry services, or phase-inverted scaling witnesses must rerun this regression.
