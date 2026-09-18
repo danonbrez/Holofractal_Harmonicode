@@ -1,6 +1,9 @@
 import pytest
 
 from hhs_backend.runtime.hhs_pass220_genesis_zero_sum_lane5_gate_v1 import (
+    HARMONIC_INCOHERENCE,
+    HARMONIC_WITNESS_INVALID,
+    HARMONIC_WITNESS_REQUIRED,
     Pass220GenesisZeroSumLane5Gate,
 )
 from hhs_runtime.hhs_pass220_genesis_zero_sum_halt_v1 import (
@@ -14,6 +17,7 @@ from hhs_runtime.hhs_pass220_genesis_zero_sum_halt_v1 import (
 
 
 ZERO81 = (0,) * 81
+HARMONIC_CLOSED_9 = ((2, 2),) * 9
 
 
 def _decision(
@@ -31,6 +35,12 @@ def _decision(
         global_modality_zero_closed=modalities_closed,
         raw_5184_bit_state_change_zero=raw_state_change_zero,
     )
+
+
+def _open_state():
+    current = list(ZERO81)
+    current[0] = 1
+    return current
 
 
 def test_global_zero_sum_closure_halts_exactly():
@@ -148,7 +158,7 @@ def test_witness_shape_is_fail_closed():
 
 class _FailIfInvokedBridge:
     def search(self, **_kwargs):
-        raise AssertionError("Lane 5 must not be invoked after global Genesis closure")
+        raise AssertionError("Lane 5 must not be invoked")
 
     def close(self):
         pass
@@ -170,7 +180,24 @@ class _RecordingBridge:
         pass
 
 
-def test_lane5_gate_returns_before_ranking_on_global_closure():
+def _gate_call(gate, *, current=None, harmonic_nucleus_pairs=None):
+    state = _open_state() if current is None else current
+    return gate.search_or_halt(
+        current_offsets=state,
+        next_offsets=state,
+        nucleus_witnesses=closed_nucleus_witnesses(),
+        global_modality_zero_closed=True,
+        raw_5184_bit_state_change_zero=True,
+        phase="xy",
+        query={"hash216": "unused-by-recording-bridge"},
+        candidates=({"candidate_id": "a"},),
+        tick=0,
+        cycle_index=0,
+        harmonic_nucleus_pairs=harmonic_nucleus_pairs,
+    )
+
+
+def test_lane5_gate_returns_before_ranking_on_global_closure_without_harmonic_requirement():
     gate = Pass220GenesisZeroSumLane5Gate(bridge=_FailIfInvokedBridge())
     result = gate.search_or_halt(
         current_offsets=ZERO81,
@@ -185,30 +212,52 @@ def test_lane5_gate_returns_before_ranking_on_global_closure():
         cycle_index=0,
     )
     assert result["halt"] is True
+    assert result["harmonic_preflight_required"] is False
     assert result["lane5_invoked"] is False
     assert result["candidate_count_input"] == 1
     assert result["candidate_count_ranked"] == 0
     assert result["new_canonical_transition_blocked"] is True
 
 
-def test_lane5_gate_delegates_only_while_closure_is_unresolved():
+def test_unresolved_state_requires_harmonic_witness_before_lane5():
+    gate = Pass220GenesisZeroSumLane5Gate(bridge=_FailIfInvokedBridge())
+    result = _gate_call(gate)
+    assert result["halt"] is False
+    assert result["reason"] == HARMONIC_WITNESS_REQUIRED
+    assert result["harmonic_preflight_admitted"] is False
+    assert result["lane5_invoked"] is False
+    assert result["candidate_expansion_blocked"] is True
+
+
+def test_malformed_harmonic_witness_fails_closed_before_lane5():
+    gate = Pass220GenesisZeroSumLane5Gate(bridge=_FailIfInvokedBridge())
+    result = _gate_call(gate, harmonic_nucleus_pairs=((2, 2),) * 8)
+    assert result["reason"] == HARMONIC_WITNESS_INVALID
+    assert result["lane5_invoked"] is False
+    assert result["new_canonical_transition_blocked"] is True
+
+
+def test_one_incoherent_nucleus_blocks_lane5():
+    gate = Pass220GenesisZeroSumLane5Gate(bridge=_FailIfInvokedBridge())
+    pairs = ((2, 2),) * 8 + ((2, 3),)
+    result = _gate_call(gate, harmonic_nucleus_pairs=pairs)
+    assert result["reason"] == HARMONIC_INCOHERENCE
+    assert result["harmonic_preflight"]["admitted"] is False
+    assert result["lane5_invoked"] is False
+    assert result["candidate_expansion_blocked"] is True
+
+
+def test_lane5_gate_delegates_only_after_harmonic_vm81_fold_closes():
     bridge = _RecordingBridge()
     gate = Pass220GenesisZeroSumLane5Gate(bridge=bridge)
-    current = list(ZERO81)
-    current[0] = 1
-    result = gate.search_or_halt(
-        current_offsets=current,
-        next_offsets=current,
-        nucleus_witnesses=closed_nucleus_witnesses(),
-        global_modality_zero_closed=True,
-        raw_5184_bit_state_change_zero=True,
-        phase="xy",
-        query={"hash216": "unused-by-recording-bridge"},
-        candidates=({"candidate_id": "a"},),
-        tick=0,
-        cycle_index=0,
-    )
+    result = _gate_call(gate, harmonic_nucleus_pairs=HARMONIC_CLOSED_9)
     assert result["halt"] is False
+    assert result["harmonic_preflight_admitted"] is True
+    assert result["harmonic_preflight"]["admitted"] is True
     assert result["lane5_invoked"] is True
     assert result["candidate_count_ranked"] == 1
+    assert result["canonical_vm81_mutation_authority"] is False
+    assert result["hash72_commit_authority"] is False
+    assert result["hash216_commit_authority"] is False
+    assert result["requires_existing_singleton_mutation_authority"] is True
     assert len(bridge.calls) == 1
