@@ -57,7 +57,8 @@ typedef struct HHSExactPass219I162DescriptorV1 {
     uint8_t source_reconstruction_inherited_from_pass159;
     uint8_t floating_point_authority;
     uint8_t hash216_persistence_authority;
-    uint8_t reserved0[2];
+    uint8_t candidate_only_execution;
+    uint8_t requires_environmental_lane5_admission;
 } HHSExactPass219I162DescriptorV1;
 
 typedef struct HHSExactPass219I162ExecutionV1 {
@@ -81,7 +82,8 @@ typedef struct HHSExactPass219I162ExecutionV1 {
     uint8_t source_reconstruction_verified;
     uint8_t floating_point_authority;
     uint8_t hash216_persistence_authority;
-    uint8_t reserved0[2];
+    uint8_t candidate_only_execution_verified;
+    uint8_t requires_environmental_lane5_admission;
     uint32_t P;
     uint32_t p;
     uint32_t q;
@@ -108,8 +110,10 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_i162_descriptor(
 );
 
 /*
- * Verify the sealed I161 source-bound candidate natively, then lower the
- * verified proof state through the inherited VM81 UQCEL admission lane.
+ * Verify the sealed I161 source-bound candidate natively and derive the exact
+ * UQCEL candidate receipt without committing VM81 state. Canonical execution is
+ * deliberately outside I162 and must traverse the C++ cell wall, Lane 5
+ * mediation, and signed environmental VM81 authority.
  *
  * The UQCEL INTEGER_SYMMETRIC_V1 A/B fields are used strictly as compatibility
  * transport witnesses after source-level A/B closure has been independently
