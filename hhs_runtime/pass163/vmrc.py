@@ -917,190 +917,277 @@ class VMRCRuntime:
             **kwargs,
         )
 
-    def validate(self, candidate: CandidateTransition) -> dict[str, Any]:
-        with self._lock:
-            if candidate.epoch != self._epoch:
-                raise VMRCError("VMRC_STALE_EPOCH")
-            if not hmac.compare_digest(
-                candidate.expected_input_hash72,
-                self.state_hash72,
-            ):
-                raise VMRCError("VMRC_STALE_ROOT")
-            if candidate.parameter_root != self._parameters.root():
-                raise VMRCError("VMRC_PARAMETER_ROOT_MISMATCH")
-            if candidate.phase_gear_root != self._gears.root():
-                raise VMRCError("VMRC_PHASE_GEAR_ROOT_MISMATCH")
-            seeds: dict[tuple[int, int], int] = {}
-            for position, trit in candidate.writes:
-                current = self._snapshot.get(position, candidate.thread)
-                seeds[(position, candidate.thread)] = (
-                    current
-                    if trit == 0
-                    else (1 if trit == 1 else 0)
-                )
-            propagated = self._gears.propagate(self._snapshot, seeds)
-            output = self._snapshot.copy()
-            for (position, thread), value in sorted(propagated.items()):
-                output._authority_set(
-                    position,
-                    thread,
-                    value,
-                    self.__authority_token,
-                    self.__authority_token,
-                )
-            output_root = hash72_digest(
-                self._parameters.canonical(),
-                output.to_bytes(),
+    @staticmethod
+    def _lane5_candidate_from_instruction(instruction: Any) -> CandidateTransition:
+        from hhs_runtime.pass219.lane5_instruction import (
+            TARGET_VM81,
+            Lane5InstructionError,
+            require_lane5_instruction,
+        )
+
+        try:
+            admitted = require_lane5_instruction(
+                instruction,
+                expected_target=TARGET_VM81,
+                require_executable=False,
             )
-            if (
-                candidate.expected_output_hash72 is not None
-                and not hmac.compare_digest(
-                    candidate.expected_output_hash72,
-                    output_root,
-                )
-            ):
-                raise VMRCError("VMRC_EXPECTED_OUTPUT_ROOT_MISMATCH")
-            operation_body = {
-                "domain": "HHS-P163-HASH216-OPERATION-V1",
-                "incoming_hash72": candidate.expected_input_hash72,
-                "epoch": candidate.epoch,
-                "thread": candidate.thread,
-                "operation": candidate.operation,
-                "writes": candidate.writes,
-                "parameters": candidate.parameter_root,
-                "dependencies": candidate.dependency_root,
-                "phase": candidate.phase_gear_root,
-                "expected_output": output_root,
-                "abi_version": ABI_VERSION,
-                "capability": candidate.capability_scope,
-                "source_architecture": candidate.source_architecture,
-                "target_architecture": candidate.target_architecture,
-            }
-            positions = Hash216Genome.positions(
-                canonical_bytes(operation_body),
-                previous_root=self._last_operation_root,
-                sequence=self._epoch,
+        except Lane5InstructionError as exc:
+            raise VMRCError("VMRC_LANE5_INSTRUCTION_REQUIRED", str(exc)) from exc
+        candidate = admitted.source_object_payload
+        if not isinstance(candidate, CandidateTransition):
+            raise VMRCError(
+                "VMRC_LANE5_INSTRUCTION_OBJECT_TYPE_MISMATCH",
+                candidate.__class__.__qualname__,
             )
-            operation_root = Hash216Genome.root(positions)
-            validated = ValidatedTransition(
-                candidate=candidate,
-                output_snapshot=output.to_bytes(),
-                output_hash72=output_root,
-                operation_hash216=operation_root,
-                operation_positions_hash216=positions,
-                propagated_writes=tuple(
-                    (position, thread, value)
-                    for (position, thread), value in sorted(propagated.items())
-                ),
+        return candidate
+
+    @staticmethod
+    def _raw_candidate_redirect(candidate: CandidateTransition) -> None:
+        from hhs_runtime.pass219.lane5_instruction import (
+            TARGET_VM81,
+            lower_object_to_lane5_instruction,
+        )
+
+        instruction = lower_object_to_lane5_instruction(
+            candidate,
+            target=TARGET_VM81,
+            traffic_class="vmrc.compatibility",
+            operation=candidate.operation,
+            dependency_root=candidate.dependency_root,
+            metadata={
+                "candidate_id": candidate.candidate_id,
+                "expected_input_hash72": candidate.expected_input_hash72,
+                "capability_scope": candidate.capability_scope,
+            },
+        )
+        raise VMRCError(
+            "VMRC_LANE5_REDIRECT_REQUIRED",
+            instruction.sandbox_queue_ticket,
+        )
+
+    def _validate_candidate_internal(
+        self,
+        candidate: CandidateTransition,
+    ) -> dict[str, Any]:
+        if candidate.epoch != self._epoch:
+            raise VMRCError("VMRC_STALE_EPOCH")
+        if not hmac.compare_digest(
+            candidate.expected_input_hash72,
+            self.state_hash72,
+        ):
+            raise VMRCError("VMRC_STALE_ROOT")
+        if candidate.parameter_root != self._parameters.root():
+            raise VMRCError("VMRC_PARAMETER_ROOT_MISMATCH")
+        if candidate.phase_gear_root != self._gears.root():
+            raise VMRCError("VMRC_PHASE_GEAR_ROOT_MISMATCH")
+        seeds: dict[tuple[int, int], int] = {}
+        for position, trit in candidate.writes:
+            current = self._snapshot.get(position, candidate.thread)
+            seeds[(position, candidate.thread)] = (
+                current
+                if trit == 0
+                else (1 if trit == 1 else 0)
             )
-            self._validated[candidate.candidate_id] = validated
-            return {
-                "validated": {
-                    "candidate": asdict(candidate),
+        propagated = self._gears.propagate(self._snapshot, seeds)
+        output = self._snapshot.copy()
+        for (position, thread), value in sorted(propagated.items()):
+            output._authority_set(
+                position,
+                thread,
+                value,
+                self.__authority_token,
+                self.__authority_token,
+            )
+        output_root = hash72_digest(
+            self._parameters.canonical(),
+            output.to_bytes(),
+        )
+        if (
+            candidate.expected_output_hash72 is not None
+            and not hmac.compare_digest(
+                candidate.expected_output_hash72,
+                output_root,
+            )
+        ):
+            raise VMRCError("VMRC_EXPECTED_OUTPUT_ROOT_MISMATCH")
+        operation_body = {
+            "domain": "HHS-P163-HASH216-OPERATION-V1",
+            "incoming_hash72": candidate.expected_input_hash72,
+            "epoch": candidate.epoch,
+            "thread": candidate.thread,
+            "operation": candidate.operation,
+            "writes": candidate.writes,
+            "parameters": candidate.parameter_root,
+            "dependencies": candidate.dependency_root,
+            "phase": candidate.phase_gear_root,
+            "expected_output": output_root,
+            "abi_version": ABI_VERSION,
+            "capability": candidate.capability_scope,
+            "source_architecture": candidate.source_architecture,
+            "target_architecture": candidate.target_architecture,
+        }
+        positions = Hash216Genome.positions(
+            canonical_bytes(operation_body),
+            previous_root=self._last_operation_root,
+            sequence=self._epoch,
+        )
+        operation_root = Hash216Genome.root(positions)
+        validated = ValidatedTransition(
+            candidate=candidate,
+            output_snapshot=output.to_bytes(),
+            output_hash72=output_root,
+            operation_hash216=operation_root,
+            operation_positions_hash216=positions,
+            propagated_writes=tuple(
+                (position, thread, value)
+                for (position, thread), value in sorted(propagated.items())
+            ),
+        )
+        self._validated[candidate.candidate_id] = validated
+        return {
+            "validated": {
+                "candidate": asdict(candidate),
+                "output_hash72": output_root,
+                "operation_hash216": operation_root,
+                "operation_positions_hash216": list(positions),
+                "propagated_writes": [
+                    list(item)
+                    for item in validated.propagated_writes
+                ],
+                "mutation_authority": False,
+                "vm81_admission": "LANE5_VALIDATED_PENDING_PQC_COMMIT",
+            },
+            "receipt": self._receipt(
+                "P163_VALIDATION_RECEIPT",
+                {
+                    "candidate_id": candidate.candidate_id,
+                    "input_hash72": candidate.expected_input_hash72,
                     "output_hash72": output_root,
                     "operation_hash216": operation_root,
-                    "operation_positions_hash216": list(positions),
-                    "propagated_writes": [
-                        list(item)
-                        for item in validated.propagated_writes
-                    ],
-                    "mutation_authority": False,
-                    "vm81_admission": "VALIDATED_PENDING_COMMIT",
+                    "admitted": True,
+                    "lane5_instruction_required_for_commit": True,
                 },
-                "receipt": self._receipt(
-                    "P163_VALIDATION_RECEIPT",
-                    {
-                        "candidate_id": candidate.candidate_id,
-                        "input_hash72": candidate.expected_input_hash72,
-                        "output_hash72": output_root,
-                        "operation_hash216": operation_root,
-                        "admitted": True,
-                    },
-                    snapshot=output.to_bytes(),
-                ),
-            }
+                snapshot=output.to_bytes(),
+            ),
+        }
 
-    def commit(self, candidate_id: str) -> dict[str, Any]:
+    def validate(self, instruction: Any) -> dict[str, Any]:
         with self._lock:
-            try:
-                validated = self._validated.pop(candidate_id)
-            except KeyError as exc:
-                raise VMRCError("VMRC_VALIDATION_REQUIRED") from exc
-            if (
-                validated.candidate.epoch != self._epoch
-                or validated.candidate.expected_input_hash72 != self.state_hash72
-            ):
-                raise VMRCError("VMRC_STALE_ROOT")
-            input_root = self.state_hash72
-            self._snapshot = VMRCSnapshot(validated.output_snapshot)
-            self._epoch += 1
-            self._last_operation_root = validated.operation_hash216
-            if self.state_hash72 != validated.output_hash72:
-                raise VMRCError("VMRC_INTERNAL_INVARIANT_FAILURE")
-            journal = self._record_journal(
-                "COMMIT",
+            if isinstance(instruction, CandidateTransition):
+                self._raw_candidate_redirect(instruction)
+            candidate = self._lane5_candidate_from_instruction(instruction)
+            return self._validate_candidate_internal(candidate)
+
+    def _commit_candidate_internal(self, candidate_id: str) -> dict[str, Any]:
+        try:
+        validated = self._validated.pop(candidate_id)
+        except KeyError as exc:
+            raise VMRCError("VMRC_VALIDATION_REQUIRED") from exc
+        if (
+            validated.candidate.epoch != self._epoch
+            or validated.candidate.expected_input_hash72 != self.state_hash72
+        ):
+            raise VMRCError("VMRC_STALE_ROOT")
+        input_root = self.state_hash72
+        self._snapshot = VMRCSnapshot(validated.output_snapshot)
+        self._epoch += 1
+        self._last_operation_root = validated.operation_hash216
+        if self.state_hash72 != validated.output_hash72:
+            raise VMRCError("VMRC_INTERNAL_INVARIANT_FAILURE")
+        journal = self._record_journal(
+            "COMMIT",
+            {
+                "candidate": asdict(validated.candidate),
+                "propagated_writes": validated.propagated_writes,
+                "input_hash72": input_root,
+                "output_hash72": self.state_hash72,
+                "operation_hash216": validated.operation_hash216,
+                "epoch_after": self._epoch,
+            },
+        )
+        index = self._index.append(
+            {
+                "record_class": "COMMITTED_TRANSITION",
+                "epoch": self._epoch,
+                "thread": validated.candidate.thread,
+                "hash72_snapshot_identity": self.snapshot_hash72,
+                "hash72_state_identity": self.state_hash72,
+                "hash216_operation_identity": validated.operation_hash216,
+                "parameter_root": validated.candidate.parameter_root,
+                "phase_gear_root": validated.candidate.phase_gear_root,
+                "dependency_root": validated.candidate.dependency_root,
+                "capability_scope": validated.candidate.capability_scope,
+                "architecture_backend": validated.candidate.target_architecture,
+                "continuation_eligible": True,
+                "journal_hash": journal["journal_hash"],
+            },
+            self.__authority_token,
+            self.__authority_token,
+        )
+        key = ContinuationKey(
+            runtime_version=self.RUNTIME_VERSION,
+            abi_version=ABI_VERSION,
+            input_root=input_root,
+            operation_root=validated.operation_hash216,
+            parameter_root=validated.candidate.parameter_root,
+            dependency_root=validated.candidate.dependency_root,
+            capability_scope=validated.candidate.capability_scope,
+            output_root=self.state_hash72,
+        )
+        self._cache.insert(key, self._snapshot.to_bytes())
+        return {
+            "classification": "HHS_PASS_163_COMMIT_ADMITTED",
+            "receipt": self._receipt(
+                "P163_COMMIT_RECEIPT",
                 {
-                    "candidate": asdict(validated.candidate),
-                    "propagated_writes": validated.propagated_writes,
+                    "candidate_id": candidate_id,
+                    "epoch": self._epoch,
                     "input_hash72": input_root,
                     "output_hash72": self.state_hash72,
                     "operation_hash216": validated.operation_hash216,
-                    "epoch_after": self._epoch,
-                },
-            )
-            index = self._index.append(
-                {
-                    "record_class": "COMMITTED_TRANSITION",
-                    "epoch": self._epoch,
-                    "thread": validated.candidate.thread,
-                    "hash72_snapshot_identity": self.snapshot_hash72,
-                    "hash72_state_identity": self.state_hash72,
-                    "hash216_operation_identity": validated.operation_hash216,
-                    "parameter_root": validated.candidate.parameter_root,
-                    "phase_gear_root": validated.candidate.phase_gear_root,
-                    "dependency_root": validated.candidate.dependency_root,
-                    "capability_scope": validated.candidate.capability_scope,
-                    "architecture_backend": validated.candidate.target_architecture,
-                    "continuation_eligible": True,
+                    "index_head_hash216": index["index_head_hash216"],
                     "journal_hash": journal["journal_hash"],
+                    "continuation_key": asdict(key),
                 },
-                self.__authority_token,
-                self.__authority_token,
-            )
-            key = ContinuationKey(
-                runtime_version=self.RUNTIME_VERSION,
-                abi_version=ABI_VERSION,
-                input_root=input_root,
-                operation_root=validated.operation_hash216,
-                parameter_root=validated.candidate.parameter_root,
-                dependency_root=validated.candidate.dependency_root,
-                capability_scope=validated.candidate.capability_scope,
-                output_root=self.state_hash72,
-            )
-            self._cache.insert(key, self._snapshot.to_bytes())
-            return {
-                "classification": "HHS_PASS_163_COMMIT_ADMITTED",
-                "receipt": self._receipt(
-                    "P163_COMMIT_RECEIPT",
-                    {
-                        "candidate_id": candidate_id,
-                        "epoch": self._epoch,
-                        "input_hash72": input_root,
-                        "output_hash72": self.state_hash72,
-                        "operation_hash216": validated.operation_hash216,
-                        "index_head_hash216": index["index_head_hash216"],
-                        "journal_hash": journal["journal_hash"],
-                        "continuation_key": asdict(key),
-                    },
-                ),
-                "index_record": index,
-                "continuation_key": asdict(key),
-            }
+            ),
+            "index_record": index,
+            "continuation_key": asdict(key),
+        }
 
-    def execute(self, candidate: CandidateTransition) -> dict[str, Any]:
-        validation = self.validate(candidate)
-        commit = self.commit(candidate.candidate_id)
-        return {"validation": validation, "commit": commit}
+    def commit(self, instruction: Any) -> dict[str, Any]:
+        from hhs_runtime.pass219.lane5_instruction import (
+            TARGET_VM81,
+            Lane5InstructionError,
+            require_lane5_instruction,
+        )
+
+        with self._lock:
+            if isinstance(instruction, CandidateTransition):
+                self._raw_candidate_redirect(instruction)
+            try:
+                admitted = require_lane5_instruction(
+                    instruction,
+                    expected_target=TARGET_VM81,
+                    require_executable=True,
+                )
+            except Lane5InstructionError as exc:
+                raise VMRCError(
+                    "VMRC_LANE5_PQC_INSTRUCTION_REQUIRED",
+                    str(exc),
+                ) from exc
+            candidate = admitted.source_object_payload
+            if not isinstance(candidate, CandidateTransition):
+                raise VMRCError("VMRC_LANE5_INSTRUCTION_OBJECT_TYPE_MISMATCH")
+            return self._commit_candidate_internal(candidate.candidate_id)
+
+    def execute(self, instruction: Any) -> dict[str, Any]:
+        with self._lock:
+            if isinstance(instruction, CandidateTransition):
+                self._raw_candidate_redirect(instruction)
+            candidate = self._lane5_candidate_from_instruction(instruction)
+            validation = self._validate_candidate_internal(candidate)
+            commit = self.commit(instruction)
+            return {"validation": validation, "commit": commit}
 
     def cache_lookup(self, key: Mapping[str, Any]) -> dict[str, Any]:
         canonical_key = ContinuationKey(**key)
