@@ -62,7 +62,9 @@ jobs:
           assert raw['pqc_present'] is False
           assert sealed['max_serial_abi_bytes'] == raw['max_serial_abi_bytes']
           assert sealed['capacity_unit'] == 'RAW_LINUX_SERIAL_ABI_BYTES'
-          print('raw_linux_serial_abi_capacity=', sealed['max_serial_abi_bytes'])
+          assert sealed['classification'] == 'MEASURED_LOWER_BOUND'
+          assert sealed['production_accepted'] is False
+          print('raw_linux_serial_abi_lower_bound=', sealed['max_serial_abi_bytes'])
           PY
 
       - name: Build cumulative exact ABI after raw calibration
@@ -88,7 +90,8 @@ jobs:
           evidence=json.load(open('/tmp/lane5-cache-calibration.json'))
           calibration=Lane5CacheCalibration.from_evidence(evidence)
           assert calibration.capacity_unit == RAW_CAPACITY_UNIT
-          assert calibration.production_accepted is True
+          assert calibration.production_accepted is False
+          assert calibration.classification == 'MEASURED_LOWER_BOUND'
           assert calibration.max_serial_abi_bytes == evidence['max_serial_abi_bytes']
           assert calibration.derived_5184_frame_slots == evidence['max_serial_abi_bytes'] // 648
           print('derived_frame_slots=', calibration.derived_5184_frame_slots)
