@@ -1,157 +1,220 @@
-# Pass 220 I003 — Four-Phase A:B:C Max-Hardware Query Calibration
+# Pass 220 I003.1 — Cold x86_64 Raw-Byte Max-Hardware Calibration and Post-Calibration Query Integration
 
-Status: IMPLEMENTED CHECKPOINT / BENCHMARK-PENDING-CI / CANDIDATE-ONLY
+Status: IMPLEMENTED REPAIR CHECKPOINT / COLD-CALIBRATION CI PENDING / CANDIDATE-ONLY QUERY INTEGRATION
 
-## 1. Purpose
+## 1. Corrected purpose
 
-I003 integrates the Pass 220 I002 holographic query metadata packet with the inherited Pass 219 Lane 5 Hash216 ranking path and subjects the resulting search stack to the repository's four-phase, time-bounded A:B:C calibration discipline.
+The max-hardware calibration is not an HHS workload.
 
-The calibration is observational. It never changes canonical arithmetic, VM81 admission, Hash72 state, Hash216 state, or persistence authority.
+It is a cold-runner Linux/x86_64 raw-byte calibration executed before package installation, project compilation, Python, HHS services, HARMONICODE services, kernel/runtime ABI logic, Lane 5, VM81, Hash72, or Hash216 code.
 
-## 2. Reused four reciprocal gates
+The I002/I003 query stack is tested only after that calibration and is classified as post-calibration integration.
 
-The benchmark preserves the sealed reciprocal phase geometry:
+This separation ensures that the hardware-capacity witness is not circularly measured through the runtime whose search cost is being optimized.
 
-- xy: 0 -> 36
-- yx: 36 -> 0
-- zw: 18 -> 54
-- wz: 54 -> 18
+## 2. Cold-runner execution order
 
-No global commutativity rule is introduced.
+The dedicated workflow now begins:
 
-## 3. Same-dataset A:B:C arms
+1. checkout repository;
+2. immediately execute the raw Bash/coreutils calibration;
+3. seal raw runner identity, per-sample timing, and max closed bytes;
+4. only then install development packages;
+5. only then build HHS/runtime dependencies;
+6. only then run I001-I003 integration tests.
 
-For each phase and candidate-count coordinate, one deterministic query/candidate dataset is generated and reused across all timed arms.
+No project executable is invoked before step 4.
 
-### A — holographic composition
+## 3. Raw workload
 
-A evaluates the I002 exact hierarchical ranker over pre-hydrated candidate metadata:
+The calibrated data is an exact byte stream:
 
-- Hash216 agreement;
-- multi-prime residue agreement;
-- Fibonacci scale agreement;
-- q=-1 phase signature agreement;
-- modality-perspective root agreement;
-- deterministic exact weighted sampling.
+ZERO_BYTES(N) = N occurrences of byte 0x00.
 
-### B — inherited Lane 5 control
+It is sourced directly from Linux `/dev/zero`.
 
-B evaluates the existing Pass 219 1.37 Hash216 optimizer on exactly the same Hash216 query/candidate identities. Its native ranking surface remains the three ordered Hash72 lanes and Pass 207 exact cyclic 72-symbol vector distance.
+There is no static maximum N.
 
-### C — raw exact control
+The initial N is doubled:
 
-C performs only the direct cyclic HARMONICODE-symbol distance over the same 216-symbol query/candidate words and stable ordering. It does not evaluate I002 metadata and does not call the Lane 5 phase-routing service.
+N_(k+1) = 2*N_k
 
-The raw distance matches the Pass 207 kernel metric per symbol:
+until the cold runner hits an actual time/resource membrane.
 
-d(a,b) = min(|a-b|, 72-|a-b|).
+The default start size is 1 MiB only to avoid calibrating command-startup noise. It is not a maximum or scale ceiling.
 
-## 4. Run-order normalization
+## 4. Raw A:B:C arms
 
-Timed arm order rotates:
+All three arms are ordinary Linux commands over exactly N zero bytes.
+
+### A — direct raw byte drain
+
+`head -c N /dev/zero >/dev/null`
+
+### B — raw pipe/copy path
+
+`head -c N /dev/zero | dd of=/dev/null bs=1M status=none`
+
+### C — raw read + SHA-256 path
+
+`head -c N /dev/zero | sha256sum >/dev/null`
+
+No arm imports, calls, links, shells into, or validates through any HHS/HARMONICODE/runtime ABI surface.
+
+The three paths intentionally exercise different ordinary host byte-processing costs. Their role is runner calibration, not semantic feature equivalence.
+
+## 5. Four calibration cohorts
+
+The labels:
+
+xy
+yx
+zw
+wz
+
+are retained solely as four repeated calibration cohorts so the existing four-phase A:B:C experimental shape remains comparable.
+
+Inside the raw hardware calibration they have no HHS phase meaning and do not invoke phase algebra.
+
+Every cohort starts again from the initial byte size and expands independently on the same cold job.
+
+## 6. Arm-order normalization
+
+The order rotates:
 
 ABC
 BCA
 CAB
 
-so one arm is not permanently first or last with respect to cache/order effects.
+across successive byte sizes.
 
-## 5. Time-bounded max-hardware calibration
+This reduces systematic first/last cache, scheduling, and command-order placement.
 
-The inherited candidate-count ladder begins at:
+## 7. Unbounded-to-runner rule
 
-8,16,32,64,128,256,512,1024,2048.
+The workload has:
 
-The I003 benchmark can continue exact doubling after 2048 until the configured MAX_CANDIDATES ceiling, provided all three arms continue to complete the configured repeat count inside the common per-arm deadline.
+WORKLOAD_SIZE_STATIC_CEILING = 0.
 
-For each phase:
+Scaling continues until one of these runtime-derived stop conditions occurs:
 
-max_hardware_closed_n(phase)
+1. an A/B/C raw arm exceeds the common leg time membrane;
+2. the global benchmark time membrane is reached;
+3. shell integer range would overflow;
+4. an ordinary Linux command fails.
 
-is the largest candidate count for which A, B, and C all close inside the same time membrane on that runner.
+There is no configured maximum byte count or candidate count in the hardware calibration.
 
-The all-phase value is:
+The observed per-cohort value is:
 
-global_max_hardware_closed_n = min_phase max_hardware_closed_n(phase).
+max_closed_bytes(phase)
 
-This is an observational runner calibration, not a canonical system limit.
+and the conservative cold-runner calibration is:
 
-## 6. Fixed-size query identity
+global_max_closed_bytes = min_phase max_closed_bytes(phase).
 
-All three arms operate over the same Hash216 identities. A additionally consumes pre-generated holographic metadata attached to those candidate IDs.
+This value is observational and runner-specific.
 
-This intentionally benchmarks query-time composition and ranking, not modality-ingestion cost. Translation metadata is presumed generated during hydration as formalized in I002.
+## 8. Time membrane
 
-## 7. Exact performance analysis
+The current workflow uses:
 
-Timing is integer nanoseconds. Throughput is analyzed as an exact rational:
+- raw per-arm membrane: 120,000,000 ns;
+- raw global membrane: 30,000,000,000 ns;
+- repeats per arm/size: 3.
 
-R_X = completed_X * 1,000,000,000 / elapsed_ns_X.
+These are time constraints, not workload-size constraints.
 
-A:B, A:C, and B:C ratios are retained as exact Fraction numerator/denominator pairs.
+Each command is guarded by GNU `timeout`; runaway growth therefore remains bounded by time even though byte size itself has no static ceiling.
 
-Decimal timing summaries, if produced by later reports, are presentation-only.
+## 9. Raw evidence format
 
-## 8. Bridge into Lane 5
+The calibration uses shell/coreutils only and emits:
 
-The new bridge:
+- `records.tsv` — phase/cohort, N, order, arm, integer elapsed nanoseconds, repeats, completion, command class, zero-byte dataset description, SHA-256 witness when available;
+- `summary.env` — sourceable integer/raw calibration summary;
+- `report.md` — human-readable result;
+- `runner.txt` — cold runner identity.
 
-hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py
+The summary explicitly records:
 
-composes the I002 ranker and existing Pass 219 Lane 5 optimizer without replacing either surface.
+HHS_SERVICES_USED=0
+HHS_RUNTIME_ABI_USED=0
+PROJECT_COMPILED_CODE_USED=0
+PYTHON_USED=0
+WORKLOAD_SIZE_STATIC_CEILING=0
+TIMING_OBSERVATIONAL_ONLY=1.
 
-It verifies:
+## 10. Relation to the I002/I003 query optimizer
 
-- one identical query Hash216;
-- one identical candidate identity set;
-- preserved reciprocal phase slots;
-- candidate-only semantics;
+The raw calibration does not rank Hash216 candidates and does not execute the holographic query manifold.
+
+After calibration, the workflow may build and test:
+
+- I001 normalized 5184 state;
+- I002 holographic metadata ranking;
+- I003 Lane 5 composition bridge.
+
+Those steps are post-calibration integration only.
+
+They cannot modify the already-recorded cold-runner raw-byte capacity evidence.
+
+The workflow additionally records simple dimensional references after calibration, such as:
+
+global_max_closed_bytes / 5184
+
+and
+
+global_max_closed_bytes / 216.
+
+Those are descriptive byte-equivalent counts only. They are not claims that raw bytes executed HARMONICODE or Hash216 semantics.
+
+## 11. I003 query bridge
+
+The existing bridge remains:
+
+`hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py`.
+
+It composes I002 ranking with the inherited Pass 219 Lane 5 search path while preserving:
+
+- candidate-only execution;
+- identical query/candidate Hash216 identities;
+- no VM81 mutation authority;
 - no Hash72 commit authority;
 - no Hash216 commit authority;
-- no VM81 mutation authority;
-- exact CPU/VM81 replay remains required.
+- exact CPU/VM81 replay requirement.
 
-## 9. Runner workflow
+The bridge is no longer part of the hardware-calibration timing envelope.
 
-The dedicated workflow first executes the inherited sealed Pass 219 raw-runner A:B:C calibration in the same job as a hardware/time-membrane preflight.
+## 12. Superseded I003 benchmark interpretation
 
-Only after that preflight passes does it:
+The earlier Python file:
 
-1. build the cumulative exact ABI;
-2. build the Pass 207 CPU-reference vector driver;
-3. run dependency-scoped I001-I003 tests;
-4. execute I003 A:B:C max-hardware calibration;
-5. analyze exact ratios and per-phase maxima;
-6. upload both inherited preflight and I003 evidence.
+`benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py`
 
-This preserves comparability with the already established runner-normalization methodology.
+is retained as a post-calibration query-comparison harness and test dependency.
 
-## 10. Default dedicated-workflow calibration envelope
+It must not be cited as the cold max-hardware calibration.
 
-The workflow currently supplies:
+The authoritative I003.1 hardware calibration surface is:
 
-- per-leg budget: 120,000,000 ns;
-- global budget: 12,000,000,000 ns;
-- max candidate ceiling: 16,384;
-- repeats per arm/sample: 3;
-- backend: CPU_REFERENCE.
+`benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh`.
 
-These are benchmark parameters, not canonical constants.
+## 13. Authority boundary
 
-## 11. Authority membrane
+Neither the raw calibration nor its timing results have canonical authority.
 
-I003 requires:
+The query integration continues to require:
 
 candidate_only = true
 canonical_vm81_mutation_authority = false
 canonical_hash72_authority = false
-canonical_hash216_authority = false
-timing_observational_only = true
+canonical_hash216_authority = false.
 
-The sampler may choose where to spend search effort. It may not authorize a canonical state.
+Timing and raw byte capacity are observational environment witnesses only.
 
-## 12. Evidence state at checkpoint
+## 14. Evidence state
 
-Implementation files and the dedicated workflow are repository-visible. The workflow is allowed to continue asynchronously after this restartable checkpoint.
+The corrected raw Bash benchmark and corrected workflow ordering are repository-visible.
 
-No performance number is claimed by this document until the dedicated I003 workflow completes and its exact analyzer artifact is sealed.
+No cold-runner byte-capacity number is claimed until the dedicated workflow executes and the raw evidence artifact is available.
