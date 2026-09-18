@@ -42,6 +42,15 @@ STATUS_SCHEMA = "HHS_LITERT_LM_ASSISTANT_STATUS_V1"
 PROVIDER_ID = "provider:hhs.litert_lm.gemma4"
 MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS = 8192
 CUSTOM_SYSTEM_INSTRUCTION_SCHEMA = "HHS_USER_CUSTOM_SYSTEM_INSTRUCTION_V1"
+ASSISTANT_MODE_GENERAL_CHAT = "GENERAL_CHAT"
+ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT = "AGENTIC_APPLICATION_DEVELOPMENT"
+ASSISTANT_MODE_BOTH = "BOTH"
+ASSISTANT_MODES = (
+    ASSISTANT_MODE_GENERAL_CHAT,
+    ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+    ASSISTANT_MODE_BOTH,
+)
+DEFAULT_ASSISTANT_MODE = ASSISTANT_MODE_BOTH
 
 DEFAULT_SYSTEM_INSTRUCTION = """You are the natural-language conversational
 interface to the Holofractal Harmonicode System (HHS). Preserve explicit user
@@ -52,6 +61,56 @@ returns an admitted receipt for that operation. Return clear conversational
 natural-language responses. Summarize technical and tool evidence for the user
 instead of dumping raw JSON unless the user explicitly asks to inspect it.
 Return structured tool-call arguments only when tools are supplied."""
+
+
+def normalize_assistant_mode(value: Optional[str]) -> str:
+    if value is None:
+        return DEFAULT_ASSISTANT_MODE
+    normalized = str(value).strip().upper()
+    aliases = {
+        "GENERAL": ASSISTANT_MODE_GENERAL_CHAT,
+        "CHAT": ASSISTANT_MODE_GENERAL_CHAT,
+        "GENERAL_CHAT": ASSISTANT_MODE_GENERAL_CHAT,
+        "AGENTIC": ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+        "DEVELOPER": ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+        "APPLICATION_DEVELOPMENT": ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+        "AGENTIC_APPLICATION_DEVELOPMENT": ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
+        "BOTH": ASSISTANT_MODE_BOTH,
+        "HYBRID": ASSISTANT_MODE_BOTH,
+    }
+    resolved = aliases.get(normalized)
+    if resolved is None:
+        raise ValueError(
+            "assistant mode must be GENERAL_CHAT, "
+            "AGENTIC_APPLICATION_DEVELOPMENT, or BOTH"
+        )
+    return resolved
+
+
+def assistant_mode_instruction(value: Optional[str]) -> str:
+    mode = normalize_assistant_mode(value)
+    if mode == ASSISTANT_MODE_GENERAL_CHAT:
+        return (
+            "HHS_ASSISTANT_MODE=GENERAL_CHAT. Operate as a general conversational "
+            "natural-language assistant. Use ordinary prompt/response token generation, "
+            "answer the user's actual question directly, and do not initiate application-"
+            "development, repository, runtime, or agentic tool workflows in this mode."
+        )
+    if mode == ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT:
+        return (
+            "HHS_ASSISTANT_MODE=AGENTIC_APPLICATION_DEVELOPMENT. Focus on governed "
+            "application development, code, workspace, runtime, testing, deployment, and "
+            "related engineering tasks. Use available governed tools when they materially "
+            "help. Unrelated general-chat requests should be redirected to General chat or "
+            "Both mode rather than silently changing the selected task domain."
+        )
+    return (
+        "HHS_ASSISTANT_MODE=BOTH. Operate as a normal general conversational assistant "
+        "for ordinary prompts, while also supporting governed agentic application "
+        "development when the user explicitly asks for code, workspace, runtime, build, "
+        "test, deployment, repository, or application-development work. Do not force "
+        "developer tooling into unrelated general conversation."
+    )
 
 
 def normalize_custom_system_instruction(value: Optional[str]) -> Optional[str]:
@@ -419,14 +478,20 @@ class HHSAssistantService:
         self,
         thread: Mapping[str, Any],
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         custom = normalize_custom_system_instruction(custom_system_instruction)
-        system_content = self.config.system_instruction
+        mode = normalize_assistant_mode(assistant_mode)
+        system_content = (
+            f"{self.config.system_instruction.rstrip()}\n\n"
+            f"{assistant_mode_instruction(mode)}"
+        )
         if custom:
             system_content = (
                 f"{system_content.rstrip()}\n\n"
                 "User-configured system instructions follow. Apply them to response style "
-                "and task behavior while preserving the governed HHS authority constraints above.\n"
+                "and task behavior within the selected assistant mode while preserving the "
+                "governed HHS authority constraints above.\n"
                 f"{custom}"
             )
         projected = [{
@@ -472,6 +537,7 @@ class HHSAssistantService:
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         thread = self.threads.get(thread_id)
         if not thread:
@@ -479,6 +545,7 @@ class HHSAssistantService:
 
         custom_instruction = normalize_custom_system_instruction(custom_system_instruction)
         custom_instruction_root = custom_system_instruction_root(custom_instruction)
+        mode = normalize_assistant_mode(assistant_mode)
 
         proposal = build_provider_execution_proposal(
             capability_class="TEXT_GENERATION",
@@ -487,6 +554,7 @@ class HHSAssistantService:
                 "thread_id": thread_id,
                 "message_root_hash72": user_message["message_root_hash72"],
                 "custom_system_instruction_root_hash72": custom_instruction_root,
+                "assistant_mode": mode,
             },
             requested_operation=self.requested_operation,
             constraints={
@@ -519,8 +587,9 @@ class HHSAssistantService:
                 messages=self._model_messages(
                     thread,
                     custom_system_instruction=custom_instruction,
+                    assistant_mode=mode,
                 ),
-                tools=[dict(tool) for tool in (tools or [])] or None,
+                tools=(None if tools is None else [dict(tool) for tool in tools]),
                 response_format=response_format,
             )
             completion = self._extract_completion(raw_response)
@@ -595,6 +664,7 @@ class HHSAssistantService:
             "model_output_is_canonical_without_runtime_admission": False,
             "custom_system_instruction_applied": bool(custom_instruction),
             "custom_system_instruction_root_hash72": custom_instruction_root,
+            "assistant_mode": mode,
             "thread": self.threads.get(thread_id),
             "authority": AUTHORITY,
         }
@@ -609,6 +679,7 @@ class HHSAssistantService:
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not str(content).strip():
             raise ValueError("message content must not be empty")
@@ -625,6 +696,7 @@ class HHSAssistantService:
             tools=tools,
             response_format=response_format,
             custom_system_instruction=custom_system_instruction,
+            assistant_mode=assistant_mode,
         )
 
     async def continue_message(
@@ -635,6 +707,7 @@ class HHSAssistantService:
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -650,6 +723,7 @@ class HHSAssistantService:
             tools=tools,
             response_format=response_format,
             custom_system_instruction=custom_system_instruction,
+            assistant_mode=assistant_mode,
         )
 
 
