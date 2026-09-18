@@ -9,7 +9,9 @@ The scheduler halt is exact:
 - all nine local Lo Shu nuclei close;
 - every local Lo Shu 1-cell anchor is zero-normalized;
 - every local typed AB=P^4, 1/9, and 7-cell witness is closed;
-- the next normalized state is identical to the current normalized state.
+- every authoritative modality aggregate reports the same global zero center;
+- the next normalized state is identical to the current normalized state;
+- the exact raw 5184-bit ABI state reports no change.
 
 HALT does not mint a new canonical transition and does not widen VM81,
 Hash72, or Hash216 authority.
@@ -115,6 +117,8 @@ def genesis_zero_sum_halt_decision(
     current_offsets: Sequence[int],
     next_offsets: Sequence[int],
     nucleus_witnesses: Sequence[Mapping[str, Any]],
+    global_modality_zero_closed: bool,
+    raw_5184_bit_state_change_zero: bool,
 ) -> dict[str, Any]:
     """Return the exact I004 scheduler decision.
 
@@ -125,9 +129,18 @@ def genesis_zero_sum_halt_decision(
     current = _offset_vector(current_offsets, name="current_offsets")
     nxt = _offset_vector(next_offsets, name="next_offsets")
     typed = _canonical_nucleus_witnesses(nucleus_witnesses)
+    modality_zero_closed = _exact_bool(
+        global_modality_zero_closed,
+        name="global_modality_zero_closed",
+    )
+    raw_state_change_zero = _exact_bool(
+        raw_5184_bit_state_change_zero,
+        name="raw_5184_bit_state_change_zero",
+    )
 
     global_zero = all(value == 0 for value in current)
-    state_change_zero = current == nxt
+    normalized_state_change_zero = current == nxt
+    state_change_zero = normalized_state_change_zero and raw_state_change_zero
 
     local = []
     for witness in typed:
@@ -163,7 +176,7 @@ def genesis_zero_sum_halt_decision(
         )
 
     all_nuclei_closed = all(item["nucleus_closed"] for item in local)
-    halt = global_zero and state_change_zero and all_nuclei_closed
+    halt = global_zero and modality_zero_closed and state_change_zero and all_nuclei_closed
 
     result = {
         "schema": SCHEMA,
@@ -173,8 +186,11 @@ def genesis_zero_sum_halt_decision(
         "lo_shu_one_local_index": LO_SHU_ONE_LOCAL_INDEX,
         "lo_shu_seven_local_index": LO_SHU_SEVEN_LOCAL_INDEX,
         "global_zero_sum_closed": global_zero,
+        "global_modality_zero_closed": modality_zero_closed,
         "all_local_nuclei_closed": all_nuclei_closed,
-        "normalized_state_change_zero": state_change_zero,
+        "normalized_state_change_zero": normalized_state_change_zero,
+        "raw_5184_bit_state_change_zero": raw_state_change_zero,
+        "global_state_change_zero": state_change_zero,
         "nuclei": local,
         "halt": halt,
         "reason": HALT_REASON if halt else CONTINUE_REASON,
