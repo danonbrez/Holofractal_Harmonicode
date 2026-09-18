@@ -128,6 +128,8 @@ int main(int argc, char **argv) {
     uint64_t started;
     uint64_t elapsed;
     uint64_t attempts = 0U;
+    uint64_t first_failed_bytes = 0U;
+    int failed_boundary_observed = 0;
 
     if (argc != 2) {
         fprintf(stderr, "usage: %s MAX_PROBE_BYTES\n", argv[0]);
@@ -156,8 +158,11 @@ int main(int argc, char **argv) {
 
     while (probe <= ceiling) {
         ++attempts;
-        if (!probe_is_success(probe, (size_t)page_size))
+        if (!probe_is_success(probe, (size_t)page_size)) {
+            first_failed_bytes = probe;
+            failed_boundary_observed = 1;
             break;
+        }
         low = probe;
         if (probe == ceiling)
             break;
@@ -179,10 +184,13 @@ int main(int argc, char **argv) {
             if (mid <= low)
                 mid = low + page_size;
             ++attempts;
-            if (probe_is_success(mid, (size_t)page_size))
+            if (probe_is_success(mid, (size_t)page_size)) {
                 low = mid;
-            else
+            } else {
                 high = mid;
+                first_failed_bytes = mid;
+                failed_boundary_observed = 1;
+            }
         }
     }
 
@@ -201,6 +209,9 @@ int main(int argc, char **argv) {
         "\"page_size\":%" PRIu64 ","
         "\"benchmark_window_ns\":%" PRIu64 ","
         "\"probe_attempts\":%" PRIu64 ","
+        "\"first_failed_bytes\":%" PRIu64 ","
+        "\"failed_boundary_observed\":%s,"
+        "\"probe_ceiling_reached\":%s,"
         "\"hhs_present\":false,"
         "\"vm81_services_present\":false,"
         "\"lane5_present\":false,"
@@ -215,7 +226,10 @@ int main(int argc, char **argv) {
         ceiling,
         page_size,
         elapsed,
-        attempts
+        attempts,
+        first_failed_bytes,
+        failed_boundary_observed ? "true" : "false",
+        low == ceiling ? "true" : "false"
     );
     return 0;
 #endif
