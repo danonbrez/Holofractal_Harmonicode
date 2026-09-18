@@ -628,5 +628,10 @@ HHSExactStatus hhs_pass169_verify_combined_gate_authority_i162_1_23(
     out_proof->local_symbol_shadowing_detected = 0U;
     out_proof->canonical_monolithic_proof = 1U;
     out_proof->floating_point_authority = 0U;
+    out_proof->candidate_only_execution_verified =
+        execution.candidate_only_execution_verified;
+    out_proof->requires_environmental_lane5_admission =
+        execution.requires_environmental_lane5_admission;
+    out_proof->canonical_admission_lane5_mediated = 0U;
     return HHS_EXACT_STATUS_OK;
 }
