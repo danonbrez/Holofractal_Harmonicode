@@ -113,10 +113,13 @@
 #include "hhs_pass168_comparator_1_0.inc"
 #include "hhs_pass219_vm81_pqc_firewall_1_30.inc"
 #include "hhs_pass219_vm81_pqc_signature_1_31.inc"
+#define hhs_exact_pass219_vm81_environment_admit_signed \\
+    hhs_exact_pass219_vm81_environment_admit_signed_raw
 #include "hhs_pass219_vm81_environmental_recovery_1_32.inc"
+#undef hhs_exact_pass219_vm81_environment_admit_signed
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.inc"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc"
-#include "hhs_pass219_delta_reciprocal_constructor_1_36.inc"
+#include "hhs_pass219_delta_reciprocal_constructor_1_36.inc"\n#include "hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc"
 #include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.inc"
 #include "hhs_pass219_lane5_hash216_composition_jump_store_1_38.inc"
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.inc"
