@@ -8,7 +8,8 @@
 **Workflow integration repair:** `49fdc55823516a431cf0d0e06e7f01065c598c27`
 **Pull request:** `#495`
 **Green validation run:** `35355462064`
-**State:** IMPLEMENTED_DEPENDENCY_SCOPED_GREEN
+**Merge commit:** `0f1aa86e100da7809c83f7b94354b4df8ce8867e`
+**State:** CLOSED_VERIFIED_MAIN
 
 ## Objective
 
@@ -235,14 +236,10 @@ docs/operations/restart/PASS_219_GLOBAL_CONSTRAINT_SELF_ENFORCEMENT_PROOF_202609
 
 ## Current closure state
 
-Implementation and dependency-scoped validation are green.
-
-Remaining repository workflow:
+Implementation and dependency-scoped validation are green. PR #495 is merged at `0f1aa86e100da7809c83f7b94354b4df8ce8867e`, and the regression, workflow, and checkpoint were read back from `main`.
 
 ```text
-merge PR #495
-verify resulting main files/head
-close this checkpoint as VERIFIED_MAIN
+IMPLEMENT -> DEP-SCOPED VALIDATION -> REPAIR FORWARD -> CHECKPOINT -> MERGE -> VERIFY MAIN = COMPLETE
 ```
 
-The green implementation evidence is frozen. Documentation-only checkpoint updates do not invalidate run `35355462064`; rerun is required only if an executable dependency of this proof changes.
+No remaining action is required for this proof cycle. The green implementation evidence from run `35355462064` is frozen. Rerun this regression when an executable dependency of the I157→I162 tensor path, global membrane, or Lane 5 fingerprint path changes.
