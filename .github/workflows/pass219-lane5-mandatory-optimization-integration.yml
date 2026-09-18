@@ -6,7 +6,7 @@ on:
       - pass219/saturation-deadline-warm-cache-benchmark-v3
     paths:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
-      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'\n      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'\n      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'\n      - 'hhs_runtime/c/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc'\n      - 'hhs_runtime/include/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h'\n      - 'tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c'\n      - 'tests/pass219/test_lane5_rlm20_mandatory_integration.py'\n      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher_impl.py'
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_registry.py'
       - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
       - 'hhs_runtime/hhs_pass219_nonagentic_allegorical_warm_hydration_v1.py'
@@ -63,7 +63,7 @@ jobs:
               'LANE5_DIRECT_WITNESS_ROUTING_1_46',
               'LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48',
               'RML19_ROUTE_COMPOSITION_CERTIFICATE_REUSE',
-              'compose_or_reuse',
+              'RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37',\n              'compose_or_reuse',
               'optimize_direct_witness_routes',
               'optimize_unbounded_workload',
           ):
@@ -148,9 +148,18 @@ jobs:
             hhs_exact_pass219_lane5_unbounded_workload_route_validate \
             hhs_exact_pass219_lane5_unbounded_workload_stream_consider \
             hhs_exact_pass219_lane5_unbounded_workload_stream_finalize \
-            hhs_exact_pass219_vm81_environment_admit_signed; do
-            grep -q " ${symbol}$" /tmp/hhs.symbols || {
+            hhs_exact_pass219_lane5_runtime_preflight \\
+            hhs_exact_pass219_rlm20_lane5_closure_authority \\
+            hhs_exact_pass219_vm81_environment_admit_signed; do\n            grep -q " ${symbol}$" /tmp/hhs.symbols || {
               echo "missing mandatory Lane 5 export: ${symbol}" >&2
               exit 1
             }
           done
+
+      - name: Audit RLM20 raw environmental seam remains hidden
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          if grep -q ' hhs_exact_pass219_vm81_environment_admit_signed_raw$' /tmp/hhs.symbols; then
+            echo 'raw environmental admission bypass exported' >&2
+            exit 1
+          fi
