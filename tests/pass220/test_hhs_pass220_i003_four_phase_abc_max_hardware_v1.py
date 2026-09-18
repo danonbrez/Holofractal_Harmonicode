@@ -6,6 +6,7 @@ import pytest
 
 from benchmarks.pass220.hhs_pass220_i003_four_phase_abc_max_hardware_v1 import (
     PHASES,
+    _counts,
     build_dataset,
     cyclic_hash216_distance,
     raw_rank,
@@ -37,6 +38,21 @@ def test_raw_rank_places_exact_hash216_match_first():
     ranked = raw_rank(dataset["query"]["hash216"], dataset["candidates"], 32)
     assert ranked["ranked"][0]["candidate_id"] == dataset["candidates"][0]["candidate_id"]
     assert ranked["ranked"][0]["distance"] == 0
+
+
+def test_synthetic_hash216_candidates_remain_unique_beyond_72():
+    dataset = build_dataset("xy", 0, 36, 256)
+    hashes = [candidate["hash216"] for candidate in dataset["candidates"]]
+    assert len(hashes) == 256
+    assert len(set(hashes)) == 256
+
+
+def test_candidate_count_ladder_obeys_requested_maximum():
+    assert _counts(8) == (8,)
+    assert _counts(2048) == (8, 16, 32, 64, 128, 256, 512, 1024, 2048)
+    assert _counts(8192)[-2:] == (4096, 8192)
+    with pytest.raises(ValueError):
+        _counts(7)
 
 
 def test_all_four_reciprocal_phase_geometries_are_frozen():
@@ -115,6 +131,8 @@ def test_small_real_lane5_abc_integration():
     assert result["result"] == "PASS"
     assert result["phase_max_hardware_closed_n"] == {"xy": 8, "yx": 8, "zw": 8, "wz": 8}
     assert result["global_max_hardware_closed_n"] == 8
+    assert result["four_phase_closed"] is True
+    assert result["within_global_time_bound"] is True
     assert result["canonical_vm81_mutation_authority"] is False
     assert result["canonical_hash72_authority"] is False
     assert result["canonical_hash216_authority"] is False
