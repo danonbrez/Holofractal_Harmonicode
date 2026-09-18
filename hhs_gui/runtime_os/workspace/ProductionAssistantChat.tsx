@@ -8,6 +8,9 @@ type ChatMessage = {
   metadata?: string
 }
 
+const SYSTEM_INSTRUCTION_STORAGE_KEY = "hhs.production.assistant.custom_system_instruction"
+const MAX_SYSTEM_INSTRUCTION_CHARS = 8192
+
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
 const short = (value: unknown): string => {
@@ -57,6 +60,32 @@ function receiptOf(turn: Json): string | null {
   return null
 }
 
+function loadSystemInstruction(): string {
+  try {
+    return window.localStorage.getItem(SYSTEM_INSTRUCTION_STORAGE_KEY) ?? ""
+  } catch {
+    return ""
+  }
+}
+
+function legacyCopy(value: string): boolean {
+  const node = document.createElement("textarea")
+  node.value = value
+  node.setAttribute("readonly", "true")
+  node.style.position = "fixed"
+  node.style.opacity = "0"
+  node.style.pointerEvents = "none"
+  document.body.appendChild(node)
+  node.select()
+  let ok = false
+  try {
+    ok = document.execCommand("copy")
+  } finally {
+    node.remove()
+  }
+  return ok
+}
+
 export interface ProductionAssistantChatProps {
   projectId: string | null
   vectorContextId?: string | null
@@ -74,6 +103,10 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [customSystemInstruction, setCustomSystemInstruction] = useState(loadSystemInstruction)
+  const [clipboardNotice, setClipboardNotice] = useState<string | null>(null)
+  const [copiedMessageIndex, setCopiedMessageIndex] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
   const online = health.online !== false && Object.keys(health).length > 0
@@ -112,11 +145,58 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
     if (node) node.scrollTop = node.scrollHeight
   }, [messages, busy])
 
+  const updateSystemInstruction = (value: string): void => {
+    const bounded = value.slice(0, MAX_SYSTEM_INSTRUCTION_CHARS)
+    setCustomSystemInstruction(bounded)
+    try {
+      if (bounded) window.localStorage.setItem(SYSTEM_INSTRUCTION_STORAGE_KEY, bounded)
+      else window.localStorage.removeItem(SYSTEM_INSTRUCTION_STORAGE_KEY)
+    } catch {
+      // The setting still applies to this browser session when storage is unavailable.
+    }
+  }
+
   const resetThread = (): void => {
     setThreadId(null)
     setMessages([])
     setInput("")
     setError(null)
+  }
+
+  const copyText = async (value: string, index: number): Promise<void> => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value)
+      } else if (!legacyCopy(value)) {
+        throw new Error("clipboard copy is unavailable")
+      }
+      setCopiedMessageIndex(index)
+      setClipboardNotice("Copied")
+      window.setTimeout(() => {
+        setCopiedMessageIndex((current) => current === index ? null : current)
+        setClipboardNotice(null)
+      }, 1600)
+    } catch (reason) {
+      setClipboardNotice(reason instanceof Error ? reason.message : "Clipboard copy failed")
+    }
+  }
+
+  const pasteClipboard = async (): Promise<void> => {
+    setClipboardNotice(null)
+    try {
+      if (!navigator.clipboard?.readText) {
+        throw new Error("Clipboard paste is unavailable here; use your device Paste command.")
+      }
+      const value = await navigator.clipboard.readText()
+      if (!value) {
+        setClipboardNotice("Clipboard is empty")
+        return
+      }
+      setInput((current) => current ? `${current}${current.endsWith("\n") ? "" : "\n"}${value}` : value)
+      setClipboardNotice("Pasted")
+    } catch (reason) {
+      setClipboardNotice(reason instanceof Error ? reason.message : "Clipboard paste failed")
+    }
   }
 
   const send = async (event: FormEvent): Promise<void> => {
@@ -130,6 +210,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
     setMessages((current) => [...current, { role: "user", content }])
 
     try {
+      const instruction = customSystemInstruction.trim()
       const turn = await requestJson("/api/assistant/chat", {
         method: "POST",
         body: JSON.stringify({
@@ -140,8 +221,10 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
             workspace_surface: "production_mobile_control",
             vector_identity_visible_to_user: vectorContextId || null,
             vector_payload_auto_attached_to_prompt: false,
+            custom_system_instruction_present: Boolean(instruction),
           },
           content,
+          custom_system_instruction: instruction || null,
         }),
       }, 120000)
 
@@ -160,6 +243,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
       const metadata = [
         mode,
         `${toolCount} HHS tool${toolCount === 1 ? "" : "s"}`,
+        turn.custom_system_instruction_applied ? "custom instructions" : "",
         receipt ? `receipt ${short(receipt)}` : "",
       ].filter(Boolean).join(" · ")
 
@@ -200,9 +284,40 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
             <span className={`mr-1.5 inline-block h-2 w-2 rounded-full ${online ? "bg-emerald-400" : "bg-amber-400"}`} />
             {modelLabel}
           </button>
+          <button type="button" onClick={() => setSettingsOpen((value) => !value)} className="runtime-button min-h-9 px-3 text-xs" aria-expanded={settingsOpen}>Settings</button>
           <button type="button" onClick={resetThread} className="runtime-button min-h-9 px-3 text-xs">New chat</button>
         </div>
       </header>
+
+      {settingsOpen ? (
+        <section data-testid="assistant-settings" className="border-b border-neutral-800 bg-neutral-950/95 p-3 md:p-4">
+          <div className="mx-auto max-w-4xl">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-semibold text-white">Assistant settings</h3>
+                <p className="mt-1 text-[11px] leading-5 text-neutral-500">Customize how the language model responds. These instructions are added to the inherited HHS system instruction; they do not replace runtime authority controls.</p>
+              </div>
+              <button type="button" onClick={() => setSettingsOpen(false)} className="runtime-button min-h-9 px-3 text-xs">Done</button>
+            </div>
+            <label className="mt-3 block">
+              <span className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">System instructions</span>
+              <textarea
+                data-testid="assistant-system-instructions"
+                value={customSystemInstruction}
+                onChange={(event) => updateSystemInstruction(event.target.value)}
+                maxLength={MAX_SYSTEM_INSTRUCTION_CHARS}
+                rows={6}
+                placeholder="Example: Be concise, explain technical ideas in plain English, and use short paragraphs."
+                className="mt-2 min-h-32 w-full resize-y rounded-2xl border border-neutral-700 bg-black/60 p-3 text-sm leading-6 text-neutral-200 outline-none focus:border-cyan-700"
+              />
+            </label>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[10px] text-neutral-600">
+              <span>{customSystemInstruction.length} / {MAX_SYSTEM_INSTRUCTION_CHARS}</span>
+              <button type="button" onClick={() => updateSystemInstruction("")} className="runtime-button min-h-9 px-3 text-xs">Clear instructions</button>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {error ? <div className="border-b border-red-900/60 bg-red-950/20 px-4 py-2 text-xs text-red-200">{error}</div> : null}
 
@@ -210,11 +325,11 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         {messages.length === 0 ? (
           <div className="m-auto max-w-xl text-center">
             <div className="text-lg font-semibold text-white">How can I help?</div>
-            <p className="mt-2 text-xs leading-5 text-neutral-500">Ask about your HHS workspace, runtime, files, applications, receipts, HARMONICODE, or any natural-language task supported by the configured assistant.</p>
+            <p className="mt-2 text-xs leading-5 text-neutral-500">Ask naturally about your HHS workspace, runtime, files, applications, receipts, HARMONICODE, or any task supported by the configured assistant.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {[
                 "Summarize the current runtime state.",
-                "Explain the latest Hash216 receipt.",
+                "Explain the latest Hash216 receipt in plain language.",
                 "What can I do with the files in this workspace?",
               ].map((prompt) => (
                 <button key={prompt} type="button" onClick={() => setInput(prompt)} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-2 text-[11px] text-neutral-300 hover:border-cyan-800">
@@ -226,10 +341,15 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         ) : messages.map((message, index) => (
           <article
             key={`${message.role}:${index}`}
-            className={`max-w-[92%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-auto border border-cyan-800/50 bg-cyan-950/40 text-white" : "mr-auto border border-neutral-800 bg-black/45 text-neutral-200"}`}
+            className={`group max-w-[92%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-auto border border-cyan-800/50 bg-cyan-950/40 text-white" : "mr-auto border border-neutral-800 bg-black/45 text-neutral-200"}`}
           >
-            {message.content}
-            {message.metadata ? <div className="mt-2 font-mono text-[9px] leading-4 text-neutral-500">{message.metadata}</div> : null}
+            <div>{message.content}</div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <button type="button" onClick={() => void copyText(message.content, index)} className="min-h-8 rounded-lg border border-neutral-800 bg-black/30 px-2.5 text-[10px] text-neutral-400 hover:border-cyan-800 hover:text-cyan-200">
+                {copiedMessageIndex === index ? "Copied" : "Copy"}
+              </button>
+              {message.metadata ? <div className="font-mono text-[9px] leading-4 text-neutral-500">{message.metadata}</div> : null}
+            </div>
           </article>
         ))}
 
@@ -253,7 +373,8 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
           />
           <div className="flex flex-wrap items-center justify-between gap-2 border-t border-neutral-900 pt-2">
             <div className="flex items-center gap-2">
-              <button type="button" onClick={onOpenFiles} className="runtime-button min-h-9 px-3 text-xs">Files</button>
+              <button type="button" onClick={onOpenFiles} className="runtime-button min-h-10 px-3 text-xs">Files</button>
+              <button type="button" onClick={() => void pasteClipboard()} className="runtime-button min-h-10 px-3 text-xs">Paste</button>
               <span className="hidden text-[9px] text-neutral-600 sm:inline">
                 {vectorContextId ? `hydrated vector ${short(vectorContextId)} visible` : "no hydrated vector selected"}
               </span>
@@ -264,7 +385,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
           </div>
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[9px] leading-4 text-neutral-600">
-          <span>Enter sends · Shift+Enter adds a line</span>
+          <span>{clipboardNotice ? `${clipboardNotice} · ` : ""}Enter sends · Shift+Enter adds a line</span>
           <span>File/vector ingress is user-controlled; uploaded payloads are not automatically attached to assistant prompts.</span>
         </div>
       </form>
