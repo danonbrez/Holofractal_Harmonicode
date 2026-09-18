@@ -711,6 +711,12 @@ class VMRCRuntime:
             "index_head_hash216": self._index.head,
             "mutation_authority": True,
             "peer_mutation_authority": False,
+            "execution_object_type": "Lane5Instruction",
+            "direct_candidate_execution": False,
+            "direct_commit_identifier_execution": False,
+            "lane5_redirect_required": True,
+            "rna_cpp_cell_wall_required": True,
+            "signed_pqc_admission_required": True,
         }
 
     def snapshot(self) -> VMRCSnapshot:
