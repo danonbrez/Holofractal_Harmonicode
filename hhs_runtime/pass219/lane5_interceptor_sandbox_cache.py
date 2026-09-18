@@ -82,13 +82,24 @@ def _digest(label: str, value: Any) -> str:
     return sha256(label.encode("ascii") + b"\0" + _canonical_bytes(value)).hexdigest()
 
 
+def _local_cpu_model() -> str:
+    cpuinfo = Path("/proc/cpuinfo")
+    if cpuinfo.is_file():
+        for line in cpuinfo.read_text(
+            encoding="utf-8", errors="replace"
+        ).splitlines():
+            if line.lower().startswith("model name") and ":" in line:
+                return line.split(":", 1)[1].strip()
+    return platform.processor() or "unknown"
+
+
 def _local_environment_id() -> dict[str, Any]:
     uname = platform.uname()
     return {
         "system": uname.system,
         "release": uname.release,
         "machine": uname.machine,
-        "processor": uname.processor,
+        "processor": _local_cpu_model(),
         "logical_cpu_count": os.cpu_count() or 1,
     }
 
@@ -178,7 +189,11 @@ class Lane5CacheCalibration:
         )
 
     @staticmethod
-    def from_evidence(evidence: Mapping[str, Any]) -> "Lane5CacheCalibration":
+    def from_evidence(
+        evidence: Mapping[str, Any],
+        *,
+        require_local_environment: bool = False,
+    ) -> "Lane5CacheCalibration":
         if evidence.get("schema") != CALIBRATION_SCHEMA:
             raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_SCHEMA_INVALID")
         classification = str(evidence.get("classification") or "")
@@ -310,6 +325,20 @@ class Lane5CacheCalibration:
                     f"LANE5_CACHE_CALIBRATION_{label}_REQUIRED"
                 )
 
+        if expected_production and require_local_environment:
+            local_environment = _local_environment_id()
+            for key in (
+                "system",
+                "release",
+                "machine",
+                "processor",
+                "logical_cpu_count",
+            ):
+                if environment.get(key) != local_environment.get(key):
+                    raise Lane5SandboxCacheError(
+                        f"LANE5_CACHE_CALIBRATION_ENVIRONMENT_MISMATCH:{key}"
+                    )
+
         service_flags = {
             "hhs_present": evidence.get("hhs_present"),
             "vm81_services_present": evidence.get("vm81_services_present"),
@@ -369,7 +398,10 @@ def load_calibration(path: str | Path | None = None) -> Lane5CacheCalibration:
             f"LANE5_CACHE_CALIBRATION_FILE_REQUIRED:{source}"
         )
     data = json.loads(source.read_text(encoding="utf-8"))
-    return Lane5CacheCalibration.from_evidence(data)
+    return Lane5CacheCalibration.from_evidence(
+        data,
+        require_local_environment=True,
+    )
 
 
 @dataclass(frozen=True)
