@@ -89,6 +89,14 @@ for (const token of [
   "navigator.clipboard?.readText",
   "Copy",
   "Paste",
+  "Assistant mode",
+  "GENERAL_CHAT",
+  "AGENTIC_APPLICATION_DEVELOPMENT",
+  "BOTH",
+  "General chat",
+  "Agentic application development",
+  "hhs.production.assistant.mode",
+  "assistant_mode: assistantMode",
 ]) {
   assert(content.mobileAssistant.includes(token), `mobile LLM assistant surface missing ${token}`)
 }
