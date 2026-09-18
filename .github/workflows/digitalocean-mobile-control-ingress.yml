@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx'
+      - 'hhs_gui/scripts/workspace-source-verify.mjs'
       - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
       - 'hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx'
       - 'hhs_gui/runtime_os/workspace/WorkspaceCommandClient.ts'
@@ -49,6 +51,11 @@ jobs:
           grep -R -q '/api/v1/pass174/hash216/query' hhs_gui/dist/assets
           grep -R -q '/api/v1/pass174/acquisition/jobs' hhs_gui/dist/assets
           grep -R -q 'Hydrate vector store' hhs_gui/dist/assets
+          grep -R -q '/api/assistant/chat' hhs_gui/dist/assets
+          grep -R -q 'System instructions' hhs_gui/dist/assets
+          grep -R -q 'custom_system_instruction' hhs_gui/dist/assets
+          grep -R -q 'Inspect technical JSON' hhs_gui/dist/assets
+          grep -R -q 'Paste' hhs_gui/dist/assets
           grep -R -q 'Acquire + verify' hhs_gui/dist/assets
           grep -R -q 'Replay offline' hhs_gui/dist/assets
           grep -Fq "165.227.220.193" .github/workflows/digitalocean-production-main.yml
