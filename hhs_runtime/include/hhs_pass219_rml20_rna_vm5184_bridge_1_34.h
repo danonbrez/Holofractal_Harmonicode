@@ -10,24 +10,37 @@
 extern "C" {
 #endif
 
-#define HHS_EXACT_PASS219_RML20_RNA_VM5184_VERSION UINT32_C(0x00010022)
+/*
+ * RML20 repair-forward ABI.
+ *
+ * The historical branch encoded 4 lanes x 64 operations x 72 phases x 81 cells
+ * and accepted a separate six-way transport direction. Current sealed RML17
+ * instead defines one exact directed address:
+ *
+ *   operation64 x phase72 x cell81 x direction4
+ *
+ * with direction4=(x,y,z,w) as the low mixed-radix digit. RML20 preserves its
+ * RNA/VM5184 lowering role, but its transport surface is now extentionally
+ * identical to current RML17.
+ */
+#define HHS_EXACT_PASS219_RML20_RNA_VM5184_VERSION UINT32_C(0x00010023)
 #define HHS_EXACT_PASS219_RML20_OPERATION_COUNT UINT32_C(64)
 #define HHS_EXACT_PASS219_RML20_PHASE_COUNT UINT32_C(72)
 #define HHS_EXACT_PASS219_RML20_CELL_COUNT UINT32_C(81)
-#define HHS_EXACT_PASS219_RML20_DIRECTION_COUNT UINT32_C(6)
-#define HHS_EXACT_PASS219_RML20_ADDRESS_COUNT \
-    (HHS_EXACT_PASS219_HOLO4_LANE_COUNT * \
-     HHS_EXACT_PASS219_RML20_OPERATION_COUNT * \
+#define HHS_EXACT_PASS219_RML20_DIRECTION_COUNT UINT32_C(4)
+#define HHS_EXACT_PASS219_RML20_NODE_COUNT \
+    (HHS_EXACT_PASS219_RML20_OPERATION_COUNT * \
      HHS_EXACT_PASS219_RML20_PHASE_COUNT * \
      HHS_EXACT_PASS219_RML20_CELL_COUNT)
+#define HHS_EXACT_PASS219_RML20_ADDRESS_COUNT \
+    (HHS_EXACT_PASS219_RML20_NODE_COUNT * \
+     HHS_EXACT_PASS219_RML20_DIRECTION_COUNT)
 
 typedef enum HHSExactPass219RML20DirectionV1 {
-    HHS_EXACT_PASS219_RML20_OPERATION_FORWARD = 0,
-    HHS_EXACT_PASS219_RML20_OPERATION_REVERSE = 1,
-    HHS_EXACT_PASS219_RML20_PHASE_FORWARD = 2,
-    HHS_EXACT_PASS219_RML20_PHASE_REVERSE = 3,
-    HHS_EXACT_PASS219_RML20_CELL_FORWARD = 4,
-    HHS_EXACT_PASS219_RML20_CELL_REVERSE = 5
+    HHS_EXACT_PASS219_RML20_X = 0,
+    HHS_EXACT_PASS219_RML20_Y = 1,
+    HHS_EXACT_PASS219_RML20_Z = 2,
+    HHS_EXACT_PASS219_RML20_W = 3
 } HHSExactPass219RML20DirectionV1;
 
 typedef struct HHSExactPass219RML20RNAVM5184DescriptorV1 {
@@ -41,8 +54,8 @@ typedef struct HHSExactPass219RML20RNAVM5184DescriptorV1 {
     uint32_t direction_count;
     uint32_t vm5184_bytes;
     uint8_t cpp_rna_cell_wall;
-    uint8_t frozen_rml17_parity_surface;
-    uint8_t lane_retaining_transport;
+    uint8_t current_rml17_parity_surface;
+    uint8_t direction_embedded_address;
     uint8_t reciprocal_flux_transport;
     uint8_t candidate_only;
     uint8_t exact_integer_only;
@@ -59,15 +72,15 @@ typedef struct HHSExactPass219RML20RNAVM5184ReceiptV1 {
     uint32_t version;
     uint32_t source_address;
     uint32_t target_address;
-    uint8_t source_lane;
     uint8_t source_operation;
     uint8_t source_phase;
     uint8_t source_cell;
-    uint8_t target_lane;
+    uint8_t source_direction;
     uint8_t target_operation;
     uint8_t target_phase;
     uint8_t target_cell;
-    uint8_t direction;
+    uint8_t target_direction;
+    uint8_t requested_direction;
     uint8_t inverse_direction;
     int8_t forward_flux;
     int8_t reverse_flux;
@@ -75,7 +88,7 @@ typedef struct HHSExactPass219RML20RNAVM5184ReceiptV1 {
     uint8_t encode_decode_bijective;
     uint8_t reciprocal_neighbor_restores_source;
     uint8_t reciprocal_flux_balanced;
-    uint8_t lane_identity_retained;
+    uint8_t operation_cell_preserved;
     uint8_t zero_discrete_divergence;
     uint8_t zero_diffusion_classification;
     uint8_t feedback_lane_bound;
@@ -103,24 +116,28 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_descriptor(
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_transport_address_encode(
-    uint8_t lane,
     uint8_t operation,
     uint8_t phase,
     uint8_t cell,
+    uint8_t direction,
     uint32_t *out_address
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_transport_address_decode(
     uint32_t address,
-    uint8_t *out_lane,
     uint8_t *out_operation,
     uint8_t *out_phase,
-    uint8_t *out_cell
+    uint8_t *out_cell,
+    uint8_t *out_direction
 );
 
+/*
+ * The explicit direction is an equality guard against the direction4 embedded
+ * in source_address. It cannot override the RML17 address geometry.
+ */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_transport_neighbor(
     uint32_t source_address,
-    uint8_t direction,
+    uint8_t expected_direction,
     uint32_t *out_target_address
 );
 
@@ -130,11 +147,11 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_transport_flux(
 );
 
 /*
- * Candidate-only RML17 transport binding into the exact 648-byte VM5184
- * carrier and the Pass 219 C++ RNA cell wall.  The source RML17 lane is bound
- * as feedback_lane and the exact signed transport flux (+1/-1) is bound as
- * feedback_trinary.  The route emits evidence only: it cannot commit VM81,
- * mint Hash72/Hash216 lineage, or persist canonical state.
+ * Candidate-only current-RML17 transport binding into the exact 648-byte
+ * VM5184 carrier and Pass 219 C++ RNA cell wall. direction4 is bound to the
+ * Holo4 feedback lane and signed flux (+1/-1) to feedback trinary. Evidence
+ * only: no VM81 commit, Hash72/Hash216 mint/persistence, or canonical state
+ * mutation authority is introduced.
  */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
     const HHSExactUQCELInputV1 *input,
@@ -142,7 +159,7 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
     size_t raw_frame_length,
     const HHSExactPass219Hash216TransitionViewV1 *transition,
     uint32_t source_address,
-    uint8_t direction,
+    uint8_t expected_direction,
     HHSExactPass219RML20RNAVM5184ReceiptV1 *out_receipt
 );
 
