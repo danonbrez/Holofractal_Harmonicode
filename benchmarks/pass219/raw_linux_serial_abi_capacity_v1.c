@@ -46,7 +46,9 @@ static uint64_t parse_u64(const char *text) {
 
 static int child_probe(uint64_t bytes, size_t page_size) {
     uint8_t *buffer;
+    uint8_t *pattern;
     uint64_t offset;
+    size_t i;
     volatile uint64_t checksum = 0U;
 
     if (bytes == 0U || bytes > (uint64_t)SIZE_MAX)
@@ -63,27 +65,46 @@ static int child_probe(uint64_t bytes, size_t page_size) {
     if (buffer == MAP_FAILED)
         return 4;
 
-    for (offset = 0U; offset < bytes; offset += (uint64_t)page_size) {
-        uint8_t value = (uint8_t)((offset >> 12U) ^ (offset >> 20U) ^ UINT64_C(0x5a));
-        buffer[(size_t)offset] = value;
-    }
-    buffer[(size_t)(bytes - 1U)] = (uint8_t)0xA5U;
-
-    for (offset = 0U; offset < bytes; offset += (uint64_t)page_size) {
-        uint8_t expected =
-            (uint8_t)((offset >> 12U) ^ (offset >> 20U) ^ UINT64_C(0x5a));
-        uint8_t actual = buffer[(size_t)offset];
-        if (actual != expected) {
-            (void)munmap(buffer, (size_t)bytes);
-            return 5;
-        }
-        checksum += (uint64_t)actual;
-    }
-    if (buffer[(size_t)(bytes - 1U)] != (uint8_t)0xA5U) {
+    pattern = (uint8_t *)malloc(page_size);
+    if (pattern == NULL) {
         (void)munmap(buffer, (size_t)bytes);
-        return 6;
+        return 5;
+    }
+    for (i = 0U; i < page_size; ++i)
+        pattern[i] = (uint8_t)(((uint64_t)i * UINT64_C(131) + UINT64_C(17)) & UINT64_C(0xff));
+
+    /*
+     * Linear raw-byte write: every byte in the probed serial ABI span is
+     * materialized.  No VM81/HHS framing or service participates.
+     */
+    for (offset = 0U; offset < bytes; offset += (uint64_t)page_size) {
+        uint64_t remaining = bytes - offset;
+        size_t chunk = remaining < (uint64_t)page_size
+            ? (size_t)remaining
+            : page_size;
+        memcpy(buffer + (size_t)offset, pattern, chunk);
     }
 
+    /*
+     * Linear raw-byte verification: every byte is read back through memcmp,
+     * with a small volatile fold preventing the verification loop from being
+     * optimized away as dead work.
+     */
+    for (offset = 0U; offset < bytes; offset += (uint64_t)page_size) {
+        uint64_t remaining = bytes - offset;
+        size_t chunk = remaining < (uint64_t)page_size
+            ? (size_t)remaining
+            : page_size;
+        if (memcmp(buffer + (size_t)offset, pattern, chunk) != 0) {
+            free(pattern);
+            (void)munmap(buffer, (size_t)bytes);
+            return 6;
+        }
+        checksum += (uint64_t)buffer[(size_t)offset];
+        checksum += (uint64_t)buffer[(size_t)(offset + (uint64_t)chunk - 1U)];
+    }
+
+    free(pattern);
     if (munmap(buffer, (size_t)bytes) != 0)
         return 7;
 
