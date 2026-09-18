@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ASSISTANT = ROOT / "hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx"
 CONTROL = ROOT / "hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx"
+ACQUISITION = ROOT / "hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx"
 VERIFY = ROOT / "hhs_gui/scripts/workspace-source-verify.mjs"
 BASE_ASSISTANT = ROOT / "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py"
 HHS_API_ASSISTANT = ROOT / "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
@@ -72,6 +73,18 @@ def test_vector_raw_json_is_hidden_until_explicit_inspection():
     assert "<details className=" in vector_block
     assert "<details open" not in vector_block
     assert "Technical fields stay hidden unless you choose to inspect them." in vector_block
+
+
+def test_acquisition_raw_json_is_hidden_until_explicit_inspection():
+    source = _text(ACQUISITION)
+
+    inspect_at = source.index("Inspect technical JSON")
+    raw_at = source.index("JSON.stringify(selected")
+    assert inspect_at < raw_at
+    selected_block_start = source.rfind("The acquisition or replay operation returned successfully", 0, raw_at)
+    selected_block = source[selected_block_start: raw_at + 80]
+    assert "<details className=" in selected_block
+    assert "<details open" not in selected_block
 
 
 def test_provider_default_is_conversational_and_json_summary_first():
