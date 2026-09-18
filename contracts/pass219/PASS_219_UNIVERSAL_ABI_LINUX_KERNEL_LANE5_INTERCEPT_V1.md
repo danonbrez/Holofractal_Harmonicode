@@ -142,6 +142,55 @@ The implementation SHALL reject at least:
 - Linux-host dispatch marked as HHS canonical mutation;
 - fallback-to-direct after Lane 5 rejection.
 
+## 9.1 Sandboxed execution queue/cache
+
+All traffic classified as bypass/direct/compatibility traffic SHALL enter a Lane 5-owned sandbox queue before downstream dispatch.
+
+The sandbox uses the inherited exact carrier:
+
+```text
+5184 serial bits
+<-> 648 little-endian bytes
+<-> 81 x uint64 VM81 words
+```
+
+The queue/cache SHALL:
+
+- remain candidate-only and non-authoritative;
+- never persist a canonical VM81 state merely because it is cached;
+- retain exact 648-byte carrier identity for cacheable execution candidates;
+- key reusable entries by exact content/provenance identity;
+- reorder only where dependency ordering permits;
+- preserve FIFO order inside one state-affecting dependency chain;
+- prioritize exact cache/replay/composition reuse over fresh recomputation when compatible;
+- send every dequeued state-affecting request back through Lane 5 optimization, RNA/C++ lowering, and signed PQC admission;
+- provide no direct fallback if optimization or admission rejects.
+
+### Hardware calibration
+
+Cache capacity SHALL be expressed in exact 648-byte records.
+
+A hardware calibration receipt SHALL identify:
+
+```text
+serial_bits = 5184
+record_bytes = 648
+byte_order = LITTLE_ENDIAN
+benchmark_window_ns
+measured_linear_records
+measured_linear_bytes = measured_linear_records * 648
+runner / CPU / logical CPU count
+benchmark implementation identity
+```
+
+For one environment, the cache maximum is the largest measured linear 5184-record capacity from the accepted benchmark profile.
+
+When several supported hardware-environment profiles are supplied, the implementation records every profile and the selected environment-specific maximum. It SHALL NOT silently apply a measurement from a different environment as though it were local evidence.
+
+The existing saturation-v3 65,536-record / 42,467,328-byte workset may be used only as a `VERIFIED_WORKSET_FLOOR` when no maximum-capacity receipt is installed. That state is development-safe but is **not production calibration acceptance**.
+
+Cache storage is lazily allocated and evicted to the calibrated byte/record bound; the implementation SHALL NOT preallocate the entire measured maximum.
+
 ## 10. Acceptance
 
 Acceptance requires:
@@ -152,4 +201,4 @@ Acceptance requires:
 4. direct state-affecting dispatch remains blocked until Lane 5 + RNA + PQC evidence is supplied;
 5. read-only traffic is still intercepted;
 6. repository audit identifies unmediated production/runtime crossings;
-7. dependency-scoped repairs drive that violation count to zero for the production runtime scope before deployment acceptance.
+7. dependency-scoped repairs drive that violation count to zero for the production runtime scope before deployment acceptance;\n8. the Lane 5 sandbox cache carries a local hardware `MEASURED_MAXIMUM` calibration receipt rather than only the verified workset floor;\n9. bypass/direct traffic is queued and deterministically reordered through Lane 5 optimization before downstream dispatch.
