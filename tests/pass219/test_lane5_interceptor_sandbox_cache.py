@@ -8,6 +8,7 @@ from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
     Lane5CacheCalibration,
     Lane5InterceptorSandboxCache,
     Lane5SandboxCacheError,
+    MEASURED_LOWER_BOUND,
     MEASURED_MAXIMUM,
     RAW_CAPACITY_UNIT,
     VERIFIED_RAW_BYTE_FLOOR,
@@ -24,6 +25,11 @@ def measured_evidence(max_bytes: int) -> dict[str, object]:
         "probe_ceiling_bytes": max_bytes + 4096,
         "page_size": 4096,
         "probe_attempts": 7,
+        "first_failed_bytes": max_bytes + 4096,
+        "failed_boundary_observed": True,
+        "probe_ceiling_reached": False,
+        "ceiling_source": "TEST_PROBE_FAILURE_BOUNDARY",
+        "ceiling_is_environment_limit": False,
         "benchmark_window_ns": 123456789,
         "benchmark_id": "TEST_RAW_LINUX_SERIAL_ABI_CAPACITY",
         "kernel_id": "Linux test-kernel",
@@ -168,3 +174,30 @@ def test_cache_evicts_against_raw_byte_ceiling() -> None:
     assert sandbox.get_cached_candidate("k0") is None
     assert sandbox.get_cached_candidate("k1") is not None
     assert sandbox.get_cached_candidate("k2") is not None
+
+
+def test_measured_lower_bound_is_not_production_accepted() -> None:
+    evidence = measured_evidence(10_000)
+    evidence["classification"] = MEASURED_LOWER_BOUND
+    evidence["probe_ceiling_bytes"] = 10_000
+    evidence["first_failed_bytes"] = 0
+    evidence["failed_boundary_observed"] = False
+    evidence["probe_ceiling_reached"] = True
+    evidence["ceiling_source"] = "CALLER_SUPPLIED_PROBE_CEILING"
+    evidence["ceiling_is_environment_limit"] = False
+    calibration = Lane5CacheCalibration.from_evidence(evidence)
+    assert calibration.production_accepted is False
+    assert calibration.max_serial_abi_bytes == 10_000
+
+
+def test_environment_hard_ceiling_can_prove_measured_maximum() -> None:
+    evidence = measured_evidence(12_288)
+    evidence["probe_ceiling_bytes"] = 12_288
+    evidence["first_failed_bytes"] = 0
+    evidence["failed_boundary_observed"] = False
+    evidence["probe_ceiling_reached"] = True
+    evidence["ceiling_source"] = "CGROUP_MEMORY_MAX_RAW_BYTE_LIMIT"
+    evidence["ceiling_is_environment_limit"] = True
+    calibration = Lane5CacheCalibration.from_evidence(evidence)
+    assert calibration.production_accepted is True
+    assert calibration.max_serial_abi_bytes == 12_288
