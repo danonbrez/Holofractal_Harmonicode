@@ -49,6 +49,8 @@ class Pass220GenesisZeroSumLane5Gate:
         current_offsets: Sequence[int],
         next_offsets: Sequence[int],
         nucleus_witnesses: Sequence[Mapping[str, Any]],
+        global_modality_zero_closed: bool,
+        raw_5184_bit_state_change_zero: bool,
         phase: str,
         query: Mapping[str, Any],
         candidates: Sequence[Mapping[str, Any]],
@@ -61,6 +63,8 @@ class Pass220GenesisZeroSumLane5Gate:
             current_offsets=current_offsets,
             next_offsets=next_offsets,
             nucleus_witnesses=nucleus_witnesses,
+            global_modality_zero_closed=global_modality_zero_closed,
+            raw_5184_bit_state_change_zero=raw_5184_bit_state_change_zero,
         )
 
         if closure["halt"]:
