@@ -1,24 +1,24 @@
-name: Pass 220 I003 Four Phase ABC Max Hardware
+name: Pass 220 I003 Cold Raw x86_64 Calibration + Query Integration
 
 on:
   pull_request:
     branches: [main]
     paths:
+      - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
       - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
       - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
-      - 'benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
-      - 'tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
+      - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   push:
     branches: [main, pass220-lo-shu-normalization-checkpoint-1]
     paths:
+      - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
       - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
       - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
-      - 'benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
-      - 'tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
+      - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   workflow_dispatch:
@@ -27,63 +27,49 @@ permissions:
   contents: read
 
 jobs:
-  four-phase-abc-max-hardware:
+  cold-raw-calibration-and-integration:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install build dependencies
+      # This MUST remain the first executable workload after checkout.
+      # It invokes no project binary, HHS service, runtime ABI, make target,
+      # compiler, Python interpreter, or package installation.
+      - name: Cold x86_64 raw-byte four-cohort A:B:C hardware calibration
+        env:
+          HHS_PASS220_I003_RAW_START_BYTES: '1048576'
+          HHS_PASS220_I003_RAW_LEG_BUDGET_NS: '120000000'
+          HHS_PASS220_I003_RAW_GLOBAL_BUDGET_NS: '30000000000'
+          HHS_PASS220_I003_RAW_REPEATS: '3'
+        run: |
+          bash benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh \
+            /tmp/pass220-i003/cold-raw
+
+          set -a
+          source /tmp/pass220-i003/cold-raw/summary.env
+          set +a
+
+          test "$ARCH" = "x86_64"
+          test "$ALL_FOUR_COHORTS_EXECUTED" = "1"
+          test "$GLOBAL_MAX_CLOSED_BYTES" -gt 0
+          test "$HHS_SERVICES_USED" = "0"
+          test "$HHS_RUNTIME_ABI_USED" = "0"
+          test "$PROJECT_COMPILED_CODE_USED" = "0"
+          test "$PYTHON_USED" = "0"
+          test "$WORKLOAD_SIZE_STATIC_CEILING" = "0"
+          test "$TIMING_OBSERVATIONAL_ONLY" = "1"
+
+          cat /tmp/pass220-i003/cold-raw/report.md
+
+      # Everything below this point is post-calibration integration.  It is
+      # deliberately excluded from the max-hardware calibration measurement.
+      - name: Install post-calibration integration dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest
 
-      - name: Capture runner hardware profile
-        run: |
-          mkdir -p /tmp/pass220-i003
-          {
-            echo "runner_os=${RUNNER_OS}"
-            echo "runner_arch=${RUNNER_ARCH}"
-            echo "kernel=$(uname -srmo)"
-            echo "nproc=$(nproc)"
-            echo "gcc=$(gcc --version | head -n 1)"
-            echo "python=$(python --version)"
-            echo "cpu_model=$(awk -F: '/model name/{gsub(/^ +/,"",$2); print $2; exit}' /proc/cpuinfo)"
-            echo "mem_kb=$(awk '/MemTotal/{print $2}' /proc/meminfo)"
-          } | tee /tmp/pass220-i003/runner.txt
-
-      - name: Inherited four-phase raw-runner ABC calibration preflight
-        run: |
-          mkdir -p /tmp/pass220-i003/raw-abc/link-support
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass220-i003/raw-abc/exact-abi.o
-          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass220-i003/raw-abc/link-support full
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            benchmarks/pass219/hhs_lane5_raw_runner_abc_gradient_calibration_v1.c \
-            /tmp/pass220-i003/raw-abc/exact-abi.o \
-            /tmp/pass220-i003/raw-abc/link-support/hhs_hash216.o \
-            /tmp/pass220-i003/raw-abc/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
-            -lcrypto -lstdc++ -pthread -lm \
-            -o /tmp/pass220-i003/raw-abc/calibration
-          /tmp/pass220-i003/raw-abc/calibration | tee /tmp/pass220-i003/raw-abc/native.jsonl
-          python tools/pass219/hhs_raw_runner_abc_calibration_analyze_v1.py \
-            /tmp/pass220-i003/raw-abc/native.jsonl \
-            /tmp/pass220-i003/raw-abc/result.json \
-            /tmp/pass220-i003/raw-abc/report.md
-          python - <<'PY'
-          import json
-          x=json.load(open('/tmp/pass220-i003/raw-abc/result.json'))
-          assert x['result']=='PASS'
-          assert x['four_phase_coverage'] is True
-          assert x['same_dataset_verified'] is True
-          assert x['time_bound_verified'] is True
-          print('inherited_raw_runner_abc_preflight=PASS')
-          PY
-
-      - name: Build cumulative exact ABI and Pass 207 CPU-reference driver
+      - name: Build post-calibration exact ABI and Pass 207 CPU-reference driver
         run: |
           make clean
           make c-abi
@@ -94,7 +80,7 @@ jobs:
             -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
           nm -D hhs_runtime/builds/libhhs_pass207_gpu_driver.so | grep ' hhs_pass207_gpu_vector_distance72$'
 
-      - name: Compile I003 Python surfaces
+      - name: Compile post-calibration I003 Python surfaces
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
@@ -103,7 +89,7 @@ jobs:
             tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py \
             tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py
 
-      - name: Run dependency-scoped I001-I003 tests
+      - name: Run dependency-scoped I001-I003 integration tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -113,54 +99,37 @@ jobs:
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py \
             tests/pass220/test_hhs_pass220_holographic_hash216_query_v1.py \
-            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py
+            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            | tee /tmp/pass220-i003/integration-tests.txt
 
-      - name: Run I003 four-phase ABC max-hardware calibration
-        env:
-          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
-          HHS_DISABLE_C_AUTOBUILD: '1'
-          HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
-          HHS_PASS220_I003_LEG_BUDGET_NS: '120000000'
-          HHS_PASS220_I003_GLOBAL_BUDGET_NS: '12000000000'
-          HHS_PASS220_I003_MAX_CANDIDATES: '16384'
-          HHS_PASS220_I003_REPEATS: '3'
+      - name: Record raw-capacity normalization facts
         run: |
-          python benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
-            > /tmp/pass220-i003/native.json
-          python tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py \
-            /tmp/pass220-i003/native.json \
-            /tmp/pass220-i003/result.json \
-            /tmp/pass220-i003/report.md
-          python - <<'PY'
-          import json
-          x=json.load(open('/tmp/pass220-i003/result.json'))
-          assert x['result']=='PASS'
-          assert x['four_phase_coverage'] is True
-          assert x['same_dataset_verified'] is True
-          assert x['global_max_hardware_closed_n'] >= 8
-          assert x['candidate_only'] is True
-          assert x['canonical_vm81_mutation_authority'] is False
-          assert x['canonical_hash72_authority'] is False
-          assert x['canonical_hash216_authority'] is False
-          print(json.dumps({
-              'result':x['result'],
-              'global_max_hardware_closed_n':x['global_max_hardware_closed_n'],
-              'phase_summary':x['phase_summary'],
-              'global':x['global'],
-          }, sort_keys=True))
-          PY
-          cat /tmp/pass220-i003/report.md
+          set -a
+          source /tmp/pass220-i003/cold-raw/summary.env
+          set +a
 
-      - name: Upload I003 calibration evidence
+          {
+            echo "cold_raw_global_max_closed_bytes=$GLOBAL_MAX_CLOSED_BYTES"
+            echo "cold_raw_xy_max_bytes=$PHASE_XY_MAX_BYTES"
+            echo "cold_raw_yx_max_bytes=$PHASE_YX_MAX_BYTES"
+            echo "cold_raw_zw_max_bytes=$PHASE_ZW_MAX_BYTES"
+            echo "cold_raw_wz_max_bytes=$PHASE_WZ_MAX_BYTES"
+            echo "cold_raw_5184_state_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 5184))"
+            echo "cold_raw_hash216_byte_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 216))"
+            echo "hardware_calibration_used_hhs=0"
+            echo "hardware_calibration_used_runtime_abi=0"
+            echo "post_calibration_integration_is_separate=1"
+          } | tee /tmp/pass220-i003/capacity-normalization.txt
+
+      - name: Upload cold calibration and post-calibration integration evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass220-i003-four-phase-abc-max-hardware
+          name: pass220-i003-cold-x86-64-raw-bytes
           path: |
-            /tmp/pass220-i003/native.json
-            /tmp/pass220-i003/result.json
-            /tmp/pass220-i003/report.md
-            /tmp/pass220-i003/runner.txt
-            /tmp/pass220-i003/raw-abc/native.jsonl
-            /tmp/pass220-i003/raw-abc/result.json
-            /tmp/pass220-i003/raw-abc/report.md
+            /tmp/pass220-i003/cold-raw/records.tsv
+            /tmp/pass220-i003/cold-raw/summary.env
+            /tmp/pass220-i003/cold-raw/report.md
+            /tmp/pass220-i003/cold-raw/runner.txt
+            /tmp/pass220-i003/capacity-normalization.txt
+            /tmp/pass220-i003/integration-tests.txt
           if-no-files-found: error
