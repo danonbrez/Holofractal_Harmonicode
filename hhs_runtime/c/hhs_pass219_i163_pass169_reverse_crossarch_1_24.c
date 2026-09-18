@@ -86,6 +86,8 @@ HHSExactStatus hhs_exact_pass219_i163_descriptor(
     out_descriptor->canonical_mutation_authority = 0U;
     out_descriptor->hash216_persistence_authority = 0U;
     out_descriptor->pass169_terminal_contract_claimed = 0U;
+    out_descriptor->candidate_snapshot_only = 1U;
+    out_descriptor->requires_environmental_lane5_admission = 1U;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -265,6 +267,7 @@ HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     }
     out_execution->vm81_snapshot_reverse_verified = 1U;
     out_execution->prior_committed_state_restored = 1U;
+    out_execution->candidate_snapshot_only_verified = 1U;
 
     memset(&compare_result, 0, sizeof(compare_result));
     compare_result.header.struct_size = (uint32_t)sizeof(compare_result);
