@@ -54,6 +54,10 @@ jobs:
           grep -R -q '/api/assistant/chat' hhs_gui/dist/assets
           grep -R -q 'System instructions' hhs_gui/dist/assets
           grep -R -q 'custom_system_instruction' hhs_gui/dist/assets
+          grep -R -q 'Assistant mode' hhs_gui/dist/assets
+          grep -R -q 'GENERAL_CHAT' hhs_gui/dist/assets
+          grep -R -q 'AGENTIC_APPLICATION_DEVELOPMENT' hhs_gui/dist/assets
+          grep -R -q 'Both' hhs_gui/dist/assets
           grep -R -q 'Inspect technical JSON' hhs_gui/dist/assets
           grep -R -q 'Paste' hhs_gui/dist/assets
           grep -R -q 'Acquire + verify' hhs_gui/dist/assets
