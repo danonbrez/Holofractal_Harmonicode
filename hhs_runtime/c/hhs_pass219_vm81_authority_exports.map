@@ -5,5 +5,6 @@
         hhs_exact_pass219_rna_admit_composed;
         hhs_exact_pass219_vm81_pqc_admit;
         hhs_exact_pass219_vm81_pqc_admit_signed;
-        hhs_exact_pass219_vm81_environment_checkpoint_seal;\n        hhs_exact_pass219_vm81_environment_admit_signed_raw;
+        hhs_exact_pass219_vm81_environment_checkpoint_seal;
+        hhs_exact_pass219_vm81_environment_admit_signed_raw;
 };
