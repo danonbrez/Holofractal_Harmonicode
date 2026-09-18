@@ -31,9 +31,10 @@ from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher import (
     Pass219Lane5LatencyCompositionAgent,
 )
 from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
-    BYTE_ORDER as CACHE_BYTE_ORDER,
-    RECORD_BYTES as CACHE_RECORD_BYTES,
-    SERIAL_BITS as CACHE_SERIAL_BITS,
+    FRAME_BYTE_ORDER,
+    FRAME_BYTES,
+    FRAME_SERIAL_BITS,
+    RAW_CAPACITY_UNIT,
     default_sandbox_cache,
 )
 
@@ -154,8 +155,10 @@ class Lane5UniversalTrafficEnvelope:
     sandbox_queue_optimized: bool
     sandbox_queue_reordered: bool
     sandbox_cache_hit: bool
-    sandbox_cache_capacity_records: int
-    sandbox_cache_capacity_bytes: int
+    sandbox_cache_capacity_unit: str
+    sandbox_cache_capacity_raw_serial_abi_bytes: int
+    sandbox_cache_derived_5184_frame_slots: int
+    sandbox_cache_derived_frame_remainder_bytes: int
     sandbox_cache_calibration: str
     sandbox_cache_production_calibrated: bool
     sandbox_serial_bits: int
@@ -265,11 +268,15 @@ def intercept_abi_traffic(
             queue_optimized.get("lane5_reordered")
         ),
         "sandbox_cache_hit": bool(queue_optimized.get("cache_hit")),
-        "sandbox_cache_capacity_records": int(
-            sandbox_status["capacity_records"]
+        "sandbox_cache_capacity_unit": RAW_CAPACITY_UNIT,
+        "sandbox_cache_capacity_raw_serial_abi_bytes": int(
+            sandbox_status["capacity_raw_serial_abi_bytes"]
         ),
-        "sandbox_cache_capacity_bytes": int(
-            sandbox_status["capacity_bytes"]
+        "sandbox_cache_derived_5184_frame_slots": int(
+            sandbox_status["derived_5184_frame_slots"]
+        ),
+        "sandbox_cache_derived_frame_remainder_bytes": int(
+            sandbox_status["derived_frame_remainder_bytes"]
         ),
         "sandbox_cache_calibration": str(
             sandbox_status["calibration"]["classification"]
@@ -277,9 +284,9 @@ def intercept_abi_traffic(
         "sandbox_cache_production_calibrated": bool(
             sandbox_status["production_calibrated"]
         ),
-        "sandbox_serial_bits": CACHE_SERIAL_BITS,
-        "sandbox_record_bytes": CACHE_RECORD_BYTES,
-        "sandbox_byte_order": CACHE_BYTE_ORDER,
+        "sandbox_serial_bits": FRAME_SERIAL_BITS,
+        "sandbox_record_bytes": FRAME_BYTES,
+        "sandbox_byte_order": FRAME_BYTE_ORDER,
         "rna_cpp_cell_wall_required": state_affecting,
         "signed_environmental_pqc_required": state_affecting,
         "singleton_vm81_required_for_canonical_mutation": state_affecting,
@@ -345,11 +352,11 @@ def authorize_downstream_dispatch(
         raise Lane5UniversalTrafficError(
             "LANE5_SANDBOX_QUEUE_OPTIMIZATION_REQUIRED"
         )
-    if envelope.get("sandbox_serial_bits") != CACHE_SERIAL_BITS:
+    if envelope.get("sandbox_serial_bits") != FRAME_SERIAL_BITS:
         raise Lane5UniversalTrafficError("LANE5_SANDBOX_SERIAL_WIDTH_DRIFT")
-    if envelope.get("sandbox_record_bytes") != CACHE_RECORD_BYTES:
+    if envelope.get("sandbox_record_bytes") != FRAME_BYTES:
         raise Lane5UniversalTrafficError("LANE5_SANDBOX_RECORD_WIDTH_DRIFT")
-    if envelope.get("sandbox_byte_order") != CACHE_BYTE_ORDER:
+    if envelope.get("sandbox_byte_order") != FRAME_BYTE_ORDER:
         raise Lane5UniversalTrafficError("LANE5_SANDBOX_BYTE_ORDER_DRIFT")
     if any(
         envelope.get(key) is not False
