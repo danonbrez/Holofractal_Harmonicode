@@ -10,12 +10,17 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 import re
 import time
 import uuid
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime.hhs_pass220_native_causal_lm_generation_v1 import (
+    NativeCausalLMGenerationService,
+    NativeCausalLMNotReady,
+)
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
     ASSISTANT_MODE_BOTH,
@@ -138,8 +143,13 @@ class HHSNativeLiteRTLMTransport:
         *,
         word2vec_service: Any = None,
         require_word2vec: Optional[bool] = None,
+        generation_service: Any = None,
     ) -> None:
         self._word2vec_service = word2vec_service
+        self._generation_service = generation_service
+        self._prototype_cycle: Any = None
+        self._prototype_dataset: Optional[Dict[str, Any]] = None
+        self._prototype_model_id: Optional[str] = None
         self.require_word2vec = (
             os.getenv("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "1").lower()
             not in {"0", "false", "no", "off"}
@@ -153,6 +163,102 @@ class HHSNativeLiteRTLMTransport:
 
             self._word2vec_service = DEFAULT_WORD2VEC_SERVICE
         return self._word2vec_service
+
+    def _causal_generation(self) -> Any:
+        if self._generation_service is None:
+            self._generation_service = NativeCausalLMGenerationService()
+        return self._generation_service
+
+    def _prototype_context(self, query: str, *, top_k: int = 3) -> tuple[str, Dict[str, Any]]:
+        service = self._word2vec()
+        status = dict(service.status())
+        active_model_id = str(status.get("active_model_id") or "")
+        if not active_model_id:
+            return "", {
+                "available": False,
+                "reason": "PASS166_MODEL_NOT_ACTIVE",
+                "prototype_dataset_reused": False,
+                "candidate_count": 0,
+            }
+
+        reused = (
+            self._prototype_cycle is not None
+            and self._prototype_dataset is not None
+            and self._prototype_model_id == active_model_id
+        )
+        if not reused:
+            from hhs_runtime.hhs_pass219_ethical_text_training_v1 import (
+                EthicalTextTrainingCycle,
+                load_prompt_response_jsonl,
+            )
+
+            repository_root = Path(__file__).resolve().parents[2]
+            cycle = EthicalTextTrainingCycle.from_repository(
+                repository_root,
+                word2vec_service=service,
+                model_id=active_model_id,
+            )
+            examples = load_prompt_response_jsonl(
+                repository_root / "data/pass219/ethical_alignment_prompt_response_v1.jsonl"
+            )
+            dataset = cycle.compile_dataset(examples, require_word2vec=True)
+            self._prototype_cycle = cycle
+            self._prototype_dataset = dataset
+            self._prototype_model_id = active_model_id
+
+        assert self._prototype_cycle is not None
+        assert self._prototype_dataset is not None
+        selected = self._prototype_cycle.select_response_candidate(
+            query,
+            self._prototype_dataset,
+            top_k=top_k,
+        )
+        records_by_id = {
+            str(item.get("example_id") or ""): item
+            for item in self._prototype_dataset.get("records", ())
+        }
+
+        context_blocks: List[str] = []
+        candidate_metadata: List[Dict[str, Any]] = []
+        for candidate in selected.get("results", ()):
+            score = dict(candidate.get("score") or {})
+            numerator = int(score.get("numerator") or 0)
+            denominator = int(score.get("denominator") or 1)
+            if numerator <= 0 or denominator <= 0:
+                continue
+            example_id = str(candidate.get("example_id") or "")
+            source_record = records_by_id.get(example_id, {})
+            prompt = str(source_record.get("prompt") or "")
+            response = str(candidate.get("response") or "")
+            if not prompt or not response:
+                continue
+            context_blocks.append(
+                "[admitted prompt/response prototype]\n"
+                f"Prompt: {prompt}\n"
+                f"Response: {response}\n"
+                "[/admitted prompt/response prototype]"
+            )
+            candidate_metadata.append({
+                "example_id": example_id,
+                "score": {"numerator": numerator, "denominator": denominator},
+                "record_hash72": candidate.get("record_hash72"),
+                "hash216_root": candidate.get("hash216_root"),
+                "declared_invariants": list(candidate.get("declared_invariants") or []),
+            })
+
+        return "\n\n".join(context_blocks), {
+            "available": True,
+            "prototype_dataset_reused": reused,
+            "active_word2vec_model_id": active_model_id,
+            "dataset_hash72": self._prototype_dataset.get("dataset_hash72"),
+            "dataset_final_hash216_root": self._prototype_dataset.get("final_hash216_root"),
+            "candidate_set_hash72": selected.get("candidate_set_hash72"),
+            "candidate_count": len(candidate_metadata),
+            "candidates": candidate_metadata,
+            "candidate_only": True,
+            "truth_promotion": False,
+            "vm81_commit_invoked": False,
+        }
 
     def installation_status(self) -> Dict[str, Any]:
         semantic_error = None
@@ -195,6 +301,16 @@ class HHSNativeLiteRTLMTransport:
             and reasoner_ready
             and (word2vec_ready or not self.require_word2vec)
         )
+        try:
+            causal_status = dict(self._causal_generation().status())
+        except Exception as exc:
+            causal_status = {
+                "configured": False,
+                "loaded": False,
+                "ready": False,
+                "load_error": f"{type(exc).__name__}: {exc}",
+            }
+
         status = {
             "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_INSTALLATION_STATUS_V1",
             "version": VERSION,
@@ -206,6 +322,9 @@ class HHSNativeLiteRTLMTransport:
             "word2vec_required": self.require_word2vec,
             "word2vec_ready": word2vec_ready,
             "word2vec": word2vec_status,
+            "causal_lm": causal_status,
+            "causal_lm_generation_supported": True,
+            "causal_lm_required_for_provider_readiness": False,
             "errors": {
                 "semantic": semantic_error,
                 "reasoner": reasoner_error,
@@ -643,10 +762,75 @@ class HHSNativeLiteRTLMTransport:
                 }
 
         receipts = self._parse_tool_receipts(tool_messages)
+
+        ordinary_conversation = (
+            mode in {ASSISTANT_MODE_GENERAL_CHAT, ASSISTANT_MODE_BOTH}
+            and not receipts
+            and (
+                mode == ASSISTANT_MODE_GENERAL_CHAT
+                or not _looks_like_development_request(query)
+            )
+        )
+        causal_failure: Optional[str] = None
+        if ordinary_conversation:
+            try:
+                retrieval_context, prototype_trace = self._prototype_context(query)
+                generated = self._causal_generation().generate(
+                    message_list,
+                    retrieval_context=retrieval_context or None,
+                )
+                answer = str(generated["response"])
+                trace = {
+                    "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                    "assistant_mode": mode,
+                    "generation_path": "NATIVE_CAUSAL_LM_RAG",
+                    "general_chat_prompt_response_cycle": True,
+                    "causal_generation_receipt": dict(generated.get("receipt") or {}),
+                    "causal_generation_status": dict(generated.get("status") or {}),
+                    "prototype_retrieval": prototype_trace,
+                    "tool_receipt_count": 0,
+                    "runtime_mutation_admitted": False,
+                }
+                trace["trace_root_hash72"] = hash72(
+                    "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                    trace,
+                )
+                completion_tokens = _word_count(answer)
+                return {
+                    "id": _completion_id(),
+                    "object": "chat.completion",
+                    "created": int(time.time()),
+                    "model": MODEL_ID,
+                    "choices": [{
+                        "index": 0,
+                        "message": {
+                            "role": "assistant",
+                            "content": answer,
+                        },
+                        "finish_reason": "stop",
+                    }],
+                    "usage": {
+                        "prompt_tokens": _word_count(query),
+                        "completion_tokens": completion_tokens,
+                        "total_tokens": _word_count(query) + completion_tokens,
+                    },
+                    "hhs_native_trace": trace,
+                }
+            except NativeCausalLMNotReady as exc:
+                causal_failure = f"{type(exc).__name__}: {exc}"
+            except Exception as exc:
+                causal_failure = f"{type(exc).__name__}: {exc}"
+
         answer, trace = self._compose_answer(
             query,
             receipts,
             assistant_mode=mode,
+        )
+        trace["generation_path"] = "EXACT_SEMANTIC_FALLBACK"
+        trace["causal_generation_failure"] = causal_failure
+        trace["trace_root_hash72"] = hash72(
+            "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+            {key: value for key, value in trace.items() if key != "trace_root_hash72"},
         )
         completion_tokens = _word_count(answer)
         return {
