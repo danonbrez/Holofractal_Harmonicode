@@ -98,17 +98,26 @@ def _assistant_mode_from_messages(messages: Sequence[Mapping[str, Any]]) -> str:
 
 def _looks_like_development_request(query: str) -> bool:
     text = query.casefold()
-    terms = (
+    tokens = set(re.findall(r"[a-z0-9+#._-]+", text))
+    words = {
         "app", "application", "code", "coding", "implement", "implementation",
-        "repository", "repo", "git", "branch", "commit", "pull request", " pr ",
-        "build", "compile", "compiler", "test", "pytest", "ci", "workflow",
-        "deploy", "deployment", "digitalocean", "runtime", "vm81", "hash72",
-        "hash216", "api", "endpoint", "server", "frontend", "backend", "gui",
-        "typescript", "javascript", "python", "c++", "c#", "java", "linux",
-        "bug", "fix", "refactor", "workspace", "file", "source",
+        "repository", "repo", "git", "branch", "commit", "build", "compile",
+        "compiler", "test", "pytest", "ci", "workflow", "deploy", "deployment",
+        "digitalocean", "runtime", "vm81", "hash72", "hash216", "api",
+        "endpoint", "server", "frontend", "backend", "gui", "typescript",
+        "javascript", "python", "c++", "c#", "java", "linux", "bug", "fix",
+        "refactor", "workspace", "file", "source",
+    }
+    phrases = (
+        "pull request",
+        "application development",
+        "software development",
+        "write code",
+        "create an app",
+        "build an app",
+        "deploy an app",
     )
-    padded = f" {text} "
-    return any(term in padded for term in terms)
+    return bool(tokens & words) or any(phrase in text for phrase in phrases)
 
 
 class HHSNativeLanguageProviderNotReady(RuntimeError):
@@ -202,6 +211,9 @@ class HHSNativeLiteRTLMTransport:
                 "reasoner": reasoner_error,
                 "word2vec": word2vec_error,
             },
+            "general_chat_prompt_response_supported": True,
+            "agentic_application_development_supported": True,
+            "combined_mode_supported": True,
             "runtime_mutation_admitted": False,
         }
         status["status_root_hash72"] = hash72(
