@@ -39,6 +39,7 @@ VERIFIED_RAW_BYTE_FLOOR = 42_467_328
 DEFAULT_CALIBRATION_ENV = "HHS_PASS219_LANE5_INTERCEPT_CACHE_CALIBRATION"
 
 MEASURED_MAXIMUM = "MEASURED_MAXIMUM"
+MEASURED_LOWER_BOUND = "MEASURED_LOWER_BOUND"
 VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR = "VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR"
 
 
@@ -101,6 +102,11 @@ class Lane5CacheCalibration:
     probe_ceiling_bytes: int
     page_size: int
     probe_attempts: int
+    first_failed_bytes: int
+    failed_boundary_observed: bool
+    probe_ceiling_reached: bool
+    ceiling_source: str
+    ceiling_is_environment_limit: bool
     benchmark_window_ns: int
     benchmark_id: str
     kernel_id: str
@@ -145,6 +151,11 @@ class Lane5CacheCalibration:
             "probe_ceiling_bytes": VERIFIED_RAW_BYTE_FLOOR,
             "page_size": 0,
             "probe_attempts": 0,
+            "first_failed_bytes": 0,
+            "failed_boundary_observed": False,
+            "probe_ceiling_reached": True,
+            "ceiling_source": "VERIFIED_RAW_BYTE_FLOOR",
+            "ceiling_is_environment_limit": False,
             "benchmark_window_ns": 0,
             "benchmark_id": "PLAIN_X86_SATURATION_V3_RAW_WORKSET_FLOOR",
             "kernel_id": "UNSEALED_FLOOR",
@@ -170,9 +181,10 @@ class Lane5CacheCalibration:
     def from_evidence(evidence: Mapping[str, Any]) -> "Lane5CacheCalibration":
         if evidence.get("schema") != CALIBRATION_SCHEMA:
             raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_SCHEMA_INVALID")
-        if evidence.get("classification") != MEASURED_MAXIMUM:
+        classification = str(evidence.get("classification") or "")
+        if classification not in {MEASURED_MAXIMUM, MEASURED_LOWER_BOUND}:
             raise Lane5SandboxCacheError(
-                "LANE5_CACHE_CALIBRATION_MEASURED_MAXIMUM_REQUIRED"
+                "LANE5_CACHE_CALIBRATION_CLASSIFICATION_INVALID"
             )
         if evidence.get("capacity_unit") != RAW_CAPACITY_UNIT:
             raise Lane5SandboxCacheError(
@@ -226,6 +238,55 @@ class Lane5CacheCalibration:
                 "LANE5_CACHE_CALIBRATION_PROBE_ATTEMPTS_INVALID"
             )
 
+        first_failed_bytes = evidence.get("first_failed_bytes")
+        failed_boundary_observed = evidence.get("failed_boundary_observed")
+        probe_ceiling_reached = evidence.get("probe_ceiling_reached")
+        ceiling_source = str(evidence.get("ceiling_source") or "")
+        ceiling_is_environment_limit = evidence.get("ceiling_is_environment_limit")
+        if (
+            isinstance(first_failed_bytes, bool)
+            or not isinstance(first_failed_bytes, int)
+            or first_failed_bytes < 0
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_FAILED_BOUNDARY_INVALID"
+            )
+        if failed_boundary_observed not in {True, False}:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_FAILED_BOUNDARY_FLAG_INVALID"
+            )
+        if probe_ceiling_reached not in {True, False}:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_CEILING_REACHED_FLAG_INVALID"
+            )
+        if ceiling_is_environment_limit not in {True, False}:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_ENV_LIMIT_FLAG_INVALID"
+            )
+        if not ceiling_source:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_CEILING_SOURCE_REQUIRED"
+            )
+        if failed_boundary_observed:
+            if first_failed_bytes <= maximum_bytes:
+                raise Lane5SandboxCacheError(
+                    "LANE5_CACHE_CALIBRATION_FAILED_BOUNDARY_ORDER_INVALID"
+                )
+        elif first_failed_bytes != 0:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_SPURIOUS_FAILED_BOUNDARY"
+            )
+
+        maximum_proved = bool(
+            failed_boundary_observed
+            or (probe_ceiling_reached and ceiling_is_environment_limit)
+        )
+        expected_production = classification == MEASURED_MAXIMUM
+        if expected_production != maximum_proved:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_MAXIMUM_PROOF_MISMATCH"
+            )
+
         environment = dict(evidence.get("environment") or {})
         if not environment:
             raise Lane5SandboxCacheError(
@@ -265,12 +326,17 @@ class Lane5CacheCalibration:
                 )
 
         receipt_body = {
-            "classification": MEASURED_MAXIMUM,
+            "classification": classification,
             "capacity_unit": RAW_CAPACITY_UNIT,
             "max_serial_abi_bytes": maximum_bytes,
             "probe_ceiling_bytes": probe_ceiling,
             "page_size": page_size,
             "probe_attempts": probe_attempts,
+            "first_failed_bytes": first_failed_bytes,
+            "failed_boundary_observed": bool(failed_boundary_observed),
+            "probe_ceiling_reached": bool(probe_ceiling_reached),
+            "ceiling_source": ceiling_source,
+            "ceiling_is_environment_limit": bool(ceiling_is_environment_limit),
             "benchmark_window_ns": window_ns,
             "benchmark_id": benchmark_id,
             "kernel_id": kernel_id,
@@ -278,7 +344,7 @@ class Lane5CacheCalibration:
             "compiler_id": compiler_id,
             "environment": environment,
             **service_flags,
-            "production_accepted": True,
+            "production_accepted": expected_production,
         }
         declared = str(evidence.get("evidence_sha256") or "")
         computed = _digest("LANE5_RAW_LINUX_SERIAL_ABI_CALIBRATION", receipt_body)
@@ -686,6 +752,7 @@ __all__ = [
     "Lane5CacheCalibration",
     "Lane5InterceptorSandboxCache",
     "Lane5SandboxCacheError",
+    "MEASURED_LOWER_BOUND",
     "MEASURED_MAXIMUM",
     "QUEUE_RECEIPT_SCHEMA",
     "RAW_CAPACITY_UNIT",
