@@ -1,4 +1,5 @@
 #include "../include/hhs_pass219_vm81_environmental_recovery_1_32.h"
+#include "../include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h"
 
 #include <openssl/crypto.h>
 #include <openssl/evp.h>
@@ -541,6 +542,240 @@ static HHSExactStatus hhs_p219_env_gate(
     return HHS_EXACT_STATUS_OK;
 }
 
+
+static uint64_t hhs_p219_env_lane5_mix_bytes(
+    uint64_t hash,
+    const void *data,
+    size_t length
+) {
+    const uint8_t *bytes = (const uint8_t *)data;
+    size_t i;
+    if (length != 0U && bytes == NULL)
+        return 0U;
+    for (i = 0U; i < length; ++i) {
+        hash ^= (uint64_t)bytes[i];
+        hash *= UINT64_C(1099511628211);
+    }
+    return hash;
+}
+
+static uint64_t hhs_p219_env_lane5_mix_u64(uint64_t hash, uint64_t value) {
+    uint8_t bytes[8];
+    unsigned i;
+    for (i = 0U; i < 8U; ++i)
+        bytes[7U - i] = (uint8_t)(value >> (8U * i));
+    return hhs_p219_env_lane5_mix_bytes(hash, bytes, sizeof(bytes));
+}
+
+static uint64_t hhs_p219_env_lane5_nonzero(uint64_t value) {
+    return value == 0U ? UINT64_C(1) : value;
+}
+
+static int hhs_p219_env_lane5_mix_big_view(
+    uint64_t *hash,
+    const HHSExactBigUIntView *view
+) {
+    if (hash == NULL || view == NULL ||
+        view->struct_size != (uint32_t)sizeof(*view) ||
+        view->byte_length == 0U || view->bytes_be == NULL)
+        return 0;
+    *hash = hhs_p219_env_lane5_mix_u64(*hash, view->byte_length);
+    *hash = hhs_p219_env_lane5_mix_bytes(*hash, view->bytes_be, view->byte_length);
+    return *hash != 0U;
+}
+
+static HHSExactStatus hhs_p219_env_lane5_build_request(
+    uint32_t pass_number,
+    uint32_t signature_algorithm,
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Holo4PreparedV1 *prepared,
+    const HHSExactPass219Holo4DecisionV1 *decision,
+    HHSExactPass219Lane5MediationRequestV1 *out_request
+) {
+    static const uint8_t REQUEST_DOMAIN[] = "HHS-P219-LANE5-ENV-REQUEST-V1";
+    static const uint8_t CANDIDATE_DOMAIN[] = "HHS-P219-LANE5-ENV-CANDIDATE-V1";
+    static const uint8_t PARENT_DOMAIN[] = "HHS-P219-LANE5-ENV-PARENT-V1";
+    static const uint8_t BIGINT_DOMAIN[] = "HHS-P219-LANE5-ENV-BIGINT-V1";
+    static const uint8_t HYDRATION_DOMAIN[] = "HHS-P219-LANE5-ENV-HYDRATION-V1";
+    static const uint8_t CAPABILITY_DOMAIN[] = "HHS-P219-LANE5-ENV-CAPABILITIES-V1";
+    static const uint8_t ITERATION_DOMAIN[] = "HHS-P219-LANE5-ENV-ITERATION-V1";
+    static const uint8_t PREPARED_DOMAIN[] = "HHS-P219-LANE5-ENV-PREPARED-V1";
+    static const uint8_t CAP_CELL_WALL[] = "CoreHolographicRNACellWall";
+    static const uint8_t CAP_LANE5[] = "Lane5GlobalHolographicNucleus";
+    static const uint8_t CAP_ENV[] = "SignedEnvironmentalVM81Admission";
+    uint8_t frame_bytes[HHS_EXACT_VM81_FRAME_BYTES];
+    size_t frame_length = 0U;
+    uint64_t request_sig = UINT64_C(1469598103934665603);
+    uint64_t candidate_sig = UINT64_C(1469598103934665603);
+    uint64_t parent_sig = UINT64_C(1469598103934665603);
+    uint64_t bigint_sig = UINT64_C(1469598103934665603);
+    uint64_t hydration_sig = UINT64_C(1469598103934665603);
+    uint64_t capability_sig = UINT64_C(1469598103934665603);
+    uint64_t iteration_sig = UINT64_C(1469598103934665603);
+    uint64_t prepared_sig = UINT64_C(1469598103934665603);
+    uint64_t ref_sig;
+    HHSExactPass219Lane5MediationRequestV1 request;
+
+    if (input == NULL || candidate_frame == NULL ||
+        parent_hash216_reference == NULL || prepared == NULL ||
+        decision == NULL || out_request == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (hhs_exact_pass219_vm81_pqc_hash216_reference_verify(parent_hash216_reference) !=
+        HHS_EXACT_STATUS_OK ||
+        !hhs_p219_pqc_route_evidence_valid(
+            prepared, decision, parent_hash216_reference))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (hhs_exact_vm81_frame_export_le(
+            candidate_frame, frame_bytes, sizeof(frame_bytes), &frame_length) !=
+            HHS_EXACT_STATUS_OK ||
+        frame_length != sizeof(frame_bytes))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    request_sig = hhs_p219_env_lane5_mix_bytes(
+        request_sig, REQUEST_DOMAIN, sizeof(REQUEST_DOMAIN) - 1U);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, pass_number);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, signature_algorithm);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, (uint8_t)lo_shu_group);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, g243);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, feedback_lane);
+    request_sig = hhs_p219_env_lane5_mix_u64(request_sig, (uint8_t)feedback_trinary);
+    request_sig = hhs_p219_env_lane5_mix_bytes(
+        request_sig, input->source_envelope_sha256,
+        HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES);
+    request_sig = hhs_p219_env_lane5_mix_bytes(
+        request_sig, input->previous_hash72, HHS_EXACT_HASH72_LEN);
+
+    candidate_sig = hhs_p219_env_lane5_mix_bytes(
+        candidate_sig, CANDIDATE_DOMAIN, sizeof(CANDIDATE_DOMAIN) - 1U);
+    candidate_sig = hhs_p219_env_lane5_mix_bytes(
+        candidate_sig, frame_bytes, sizeof(frame_bytes));
+
+    parent_sig = hhs_p219_env_lane5_mix_bytes(
+        parent_sig, PARENT_DOMAIN, sizeof(PARENT_DOMAIN) - 1U);
+    parent_sig = hhs_p219_env_lane5_mix_bytes(
+        parent_sig, parent_hash216_reference->transition_identity216,
+        HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN);
+    parent_sig = hhs_p219_env_lane5_mix_bytes(
+        parent_sig, parent_hash216_reference->transition_word216,
+        HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN);
+
+    bigint_sig = hhs_p219_env_lane5_mix_bytes(
+        bigint_sig, BIGINT_DOMAIN, sizeof(BIGINT_DOMAIN) - 1U);
+    if (!hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->P) ||
+        !hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->p) ||
+        !hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->q) ||
+        !hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->delta) ||
+        !hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->A) ||
+        !hhs_p219_env_lane5_mix_big_view(&bigint_sig, &input->B))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    bigint_sig = hhs_p219_env_lane5_mix_u64(bigint_sig, input->cell81);
+    bigint_sig = hhs_p219_env_lane5_mix_u64(bigint_sig, input->left_basis8);
+    bigint_sig = hhs_p219_env_lane5_mix_u64(bigint_sig, input->right_basis8);
+
+    hydration_sig = hhs_p219_env_lane5_mix_bytes(
+        hydration_sig, HYDRATION_DOMAIN, sizeof(HYDRATION_DOMAIN) - 1U);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(
+        hydration_sig, prepared->graph_signature64);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(
+        hydration_sig, prepared->tensor_signature64);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(
+        hydration_sig, decision->decision_signature64);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(
+        hydration_sig, decision->selected_lane);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(hydration_sig, g243);
+    hydration_sig = hhs_p219_env_lane5_mix_u64(
+        hydration_sig, feedback_lane);
+
+    capability_sig = hhs_p219_env_lane5_mix_bytes(
+        capability_sig, CAPABILITY_DOMAIN, sizeof(CAPABILITY_DOMAIN) - 1U);
+    capability_sig = hhs_p219_env_lane5_mix_u64(
+        capability_sig, HHS_EXACT_PASS219_RNA_VM5184_ABI_VERSION);
+    capability_sig = hhs_p219_env_lane5_mix_u64(
+        capability_sig, HHS_EXACT_PASS219_LANE5_NUCLEUS_VERSION);
+    capability_sig = hhs_p219_env_lane5_mix_u64(
+        capability_sig, HHS_EXACT_PASS219_VM81_ENV_VERSION);
+
+    iteration_sig = hhs_p219_env_lane5_mix_bytes(
+        iteration_sig, ITERATION_DOMAIN, sizeof(ITERATION_DOMAIN) - 1U);
+    iteration_sig = hhs_p219_env_lane5_mix_u64(iteration_sig, pass_number);
+    iteration_sig = hhs_p219_env_lane5_mix_u64(iteration_sig, UINT64_C(5));
+    iteration_sig = hhs_p219_env_lane5_mix_u64(
+        iteration_sig, candidate_sig);
+    iteration_sig = hhs_p219_env_lane5_mix_u64(
+        iteration_sig, parent_sig);
+
+    prepared_sig = hhs_p219_env_lane5_mix_bytes(
+        prepared_sig, PREPARED_DOMAIN, sizeof(PREPARED_DOMAIN) - 1U);
+    prepared_sig = hhs_p219_env_lane5_mix_u64(
+        prepared_sig, prepared->graph_signature64);
+    prepared_sig = hhs_p219_env_lane5_mix_u64(
+        prepared_sig, prepared->tensor_signature64);
+    prepared_sig = hhs_p219_env_lane5_mix_u64(
+        prepared_sig, candidate_sig);
+    prepared_sig = hhs_p219_env_lane5_mix_u64(
+        prepared_sig, parent_sig);
+
+    memset(&request, 0, sizeof(request));
+    request.struct_size = (uint32_t)sizeof(request);
+    request.version = HHS_EXACT_PASS219_LANE5_NUCLEUS_VERSION;
+    request.namespace_id = HHS_EXACT_PASS219_LANE5_NAMESPACE;
+    request.hash216_reference_count = 3U;
+    request.capability_reference_count = 3U;
+    request.learning_stage = 5U;
+    request.request_signature64 = hhs_p219_env_lane5_nonzero(request_sig);
+    request.candidate_signature64 = hhs_p219_env_lane5_nonzero(candidate_sig);
+    request.parent_hash216_signature64 = hhs_p219_env_lane5_nonzero(parent_sig);
+    request.bigint_address_signature64 = hhs_p219_env_lane5_nonzero(bigint_sig);
+    request.hydration_signature64 = hhs_p219_env_lane5_nonzero(hydration_sig);
+    request.compression_signature64 = 0U;
+    request.capability_registry_signature64 =
+        hhs_p219_env_lane5_nonzero(capability_sig);
+    request.learning_iteration_signature64 =
+        hhs_p219_env_lane5_nonzero(iteration_sig);
+    request.rna_prepared_signature64 =
+        hhs_p219_env_lane5_nonzero(prepared_sig);
+    request.rna_decision_signature64 =
+        hhs_p219_env_lane5_nonzero(decision->decision_signature64);
+
+    ref_sig = UINT64_C(1469598103934665603);
+    request.hash216_reference_signature64[0] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, parent_hash216_reference->previous_hash72,
+            HHS_EXACT_HASH72_LEN));
+    ref_sig = UINT64_C(1469598103934665603);
+    request.hash216_reference_signature64[1] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, parent_hash216_reference->change_hash72,
+            HHS_EXACT_HASH72_LEN));
+    ref_sig = UINT64_C(1469598103934665603);
+    request.hash216_reference_signature64[2] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, parent_hash216_reference->receipt_hash72,
+            HHS_EXACT_HASH72_LEN));
+
+    ref_sig = UINT64_C(1469598103934665603);
+    request.capability_reference_signature64[0] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, CAP_CELL_WALL, sizeof(CAP_CELL_WALL) - 1U));
+    ref_sig = UINT64_C(1469598103934665603);
+    request.capability_reference_signature64[1] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, CAP_LANE5, sizeof(CAP_LANE5) - 1U));
+    ref_sig = UINT64_C(1469598103934665603);
+    request.capability_reference_signature64[2] = hhs_p219_env_lane5_nonzero(
+        hhs_p219_env_lane5_mix_bytes(
+            ref_sig, CAP_ENV, sizeof(CAP_ENV) - 1U));
+
+    *out_request = request;
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     uint32_t pass_number,
     uint32_t signature_algorithm,
@@ -557,8 +792,13 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     HHSExactPass219VM81PQCSignatureReceiptV1 *out_signature_receipt,
     HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt
 ) {
+    HHSExactPass219Holo4PreparedV1 prepared;
+    HHSExactPass219Holo4DecisionV1 decision;
+    HHSExactPass219Lane5MediationRequestV1 lane5_request;
+    HHSExactPass219Lane5MediationReceiptV1 lane5_receipt;
     uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
     HHSExactStatus status;
+
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
         out_environment_receipt == NULL)
@@ -569,11 +809,95 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     hhs_p219_pqc_signature_zero_receipt(out_signature_receipt, signature_algorithm);
     hhs_p219_env_zero_receipt(out_environment_receipt, signature_algorithm);
 
-    if (!hhs_p219_pqc_load_key(key)) {
-        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_KERNEL_ROOT_UNAVAILABLE;
+    if (atomic_load(&hhs_p219_pqc_halted) != 0U) {
+        out_firewall_receipt->halt_reason = atomic_load(&hhs_p219_pqc_halt_reason);
+        out_firewall_receipt->decision = HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED;
+        out_firewall_receipt->halted = 1U;
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_LATCHED;
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    if (input == NULL || candidate_frame == NULL || parent_hash216_reference == NULL)
         return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CELL_WALL_PATH,
+            out_committed_frame, out_firewall_receipt);
+    if (pass_number < HHS_EXACT_PASS219_VM81_PQC_MIN_PASS)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PASS_PATH,
+            out_committed_frame, out_firewall_receipt);
+    if (hhs_exact_pass219_vm81_pqc_hash216_reference_verify(parent_hash216_reference) !=
+        HHS_EXACT_STATUS_OK)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH216_REFERENCE,
+            out_committed_frame, out_firewall_receipt);
+    if (memcmp(input->previous_hash72,
+               parent_hash216_reference->receipt_hash72,
+               HHS_EXACT_HASH72_STRLEN) != 0)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH_LINEAGE,
+            out_committed_frame, out_firewall_receipt);
+
+    memset(&prepared, 0, sizeof(prepared));
+    memset(&decision, 0, sizeof(decision));
+    status = hhs_pass219_vm81_pqc_route_cpp_cell_wall(
+        input, candidate_frame, parent_hash216_reference,
+        feedback_lane, feedback_trinary, &prepared, &decision);
+    if (status != HHS_EXACT_STATUS_OK ||
+        !hhs_p219_pqc_route_evidence_valid(
+            &prepared, &decision, parent_hash216_reference)) {
+        out_environment_receipt->reason =
+            HHS_EXACT_PASS219_VM81_ENV_REASON_LANE5_MEDIATION;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CELL_WALL_PATH,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&lane5_request, 0, sizeof(lane5_request));
+    memset(&lane5_receipt, 0, sizeof(lane5_receipt));
+    status = hhs_p219_env_lane5_build_request(
+        pass_number, signature_algorithm, input, candidate_frame,
+        parent_hash216_reference, lo_shu_group, g243,
+        feedback_lane, feedback_trinary,
+        &prepared, &decision, &lane5_request);
+    if (status != HHS_EXACT_STATUS_OK ||
+        hhs_exact_pass219_lane5_mediate_candidate(
+            &lane5_request, &lane5_receipt) != HHS_EXACT_STATUS_OK ||
+        lane5_receipt.decision != HHS_EXACT_PASS219_LANE5_DECISION_CANDIDATE_READY ||
+        lane5_receipt.rna_cell_wall_bound != 1U ||
+        lane5_receipt.exact_vm5184_bound != 1U ||
+        lane5_receipt.zero_sum_closure_passed != 1U ||
+        lane5_receipt.candidate_only != 1U ||
+        lane5_receipt.canonical_mutation_authority != 0U ||
+        lane5_receipt.canonical_hash72_authority != 0U ||
+        lane5_receipt.canonical_hash216_authority != 0U ||
+        lane5_receipt.canonical_persistence_authority != 0U ||
+        lane5_receipt.requires_environmental_admission != 1U ||
+        lane5_receipt.request_signature64 != lane5_request.request_signature64 ||
+        lane5_receipt.candidate_signature64 != lane5_request.candidate_signature64 ||
+        lane5_receipt.parent_hash216_signature64 !=
+            lane5_request.parent_hash216_signature64 ||
+        lane5_receipt.rna_prepared_signature64 !=
+            lane5_request.rna_prepared_signature64 ||
+        lane5_receipt.rna_decision_signature64 !=
+            lane5_request.rna_decision_signature64) {
+        out_environment_receipt->reason =
+            HHS_EXACT_PASS219_VM81_ENV_REASON_LANE5_MEDIATION;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_LANE5_MEDIATION,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    if (!hhs_p219_pqc_load_key(key)) {
+        out_environment_receipt->reason =
+            HHS_EXACT_PASS219_VM81_ENV_REASON_KERNEL_ROOT_UNAVAILABLE;
+        status = hhs_p219_pqc_halt_result(
             HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_KEY,
             out_committed_frame, out_firewall_receipt);
+        out_firewall_receipt->lane5_mediated = 1U;
+        out_firewall_receipt->lane5_zero_sum_closure_passed = 1U;
+        out_firewall_receipt->lane5_candidate_only = 1U;
+        return status;
     }
     status = hhs_p219_env_gate(
         key, signature_algorithm, candidate_frame,
@@ -581,17 +905,25 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     OPENSSL_cleanse(key, sizeof(key));
     if (status != HHS_EXACT_STATUS_OK) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
-        return hhs_p219_pqc_halt_result(
+        status = hhs_p219_pqc_halt_result(
             HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
             out_committed_frame, out_firewall_receipt);
+        out_firewall_receipt->lane5_mediated = 1U;
+        out_firewall_receipt->lane5_zero_sum_closure_passed = 1U;
+        out_firewall_receipt->lane5_candidate_only = 1U;
+        return status;
     }
 
-    status = hhs_exact_pass219_vm81_pqc_admit_signed(
+    status = hhs_p219_pqc_admit_signed_with_cell_wall_evidence(
         pass_number, signature_algorithm, input, candidate_frame,
-        parent_hash216_reference, lo_shu_group, g243,
-        feedback_lane, feedback_trinary,
+        parent_hash216_reference, &prepared, &decision,
+        lo_shu_group, g243, feedback_lane, feedback_trinary,
         out_committed_frame, out_admission,
         out_firewall_receipt, out_signature_receipt);
+    out_firewall_receipt->lane5_mediated = 1U;
+    out_firewall_receipt->lane5_zero_sum_closure_passed = 1U;
+    out_firewall_receipt->lane5_candidate_only = 1U;
+
     if (out_firewall_receipt->decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
         out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
