@@ -37,6 +37,31 @@ def cpu_model() -> str:
     return platform.processor() or "unknown"
 
 
+def detected_linux_byte_limits(page_size: int) -> dict[str, int]:
+    limits: dict[str, int] = {}
+
+    cgroup = Path("/sys/fs/cgroup/memory.max")
+    if cgroup.is_file():
+        text = cgroup.read_text(encoding="utf-8", errors="replace").strip()
+        if text.isdigit():
+            value = int(text)
+            if value > 0:
+                limits["CGROUP_MEMORY_MAX"] = value - (value % page_size)
+
+    meminfo = Path("/proc/meminfo")
+    if meminfo.is_file():
+        for line in meminfo.read_text(
+            encoding="utf-8", errors="replace"
+        ).splitlines():
+            if line.startswith("MemTotal:"):
+                fields = line.split()
+                if len(fields) >= 2 and fields[1].isdigit():
+                    value = int(fields[1]) * 1024
+                    limits["LINUX_MEMTOTAL"] = value - (value % page_size)
+                break
+    return limits
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("raw_result", type=Path)
@@ -68,6 +93,24 @@ def main() -> int:
     ):
         if raw.get(key) is not False:
             raise SystemExit(f"raw benchmark contamination: {key}")
+
+    raw_page_size = int(raw["page_size"])
+    raw_ceiling = int(raw["probe_ceiling_bytes"])
+    detected_limits = detected_linux_byte_limits(raw_page_size)
+    matched_limit_sources = sorted(
+        name for name, value in detected_limits.items()
+        if value == raw_ceiling
+    )
+    if args.ceiling_is_environment_limit and not matched_limit_sources:
+        raise SystemExit(
+            "declared environment ceiling does not match Linux/cgroup byte limit"
+        )
+    ceiling_source = str(args.ceiling_source)
+    if (
+        args.ceiling_is_environment_limit
+        and ceiling_source == "CALLER_SUPPLIED_PROBE_CEILING"
+    ):
+        ceiling_source = "+".join(matched_limit_sources)
 
     failed_boundary = bool(raw.get("failed_boundary_observed"))
     ceiling_reached = bool(raw.get("probe_ceiling_reached"))
@@ -103,7 +146,7 @@ def main() -> int:
         "first_failed_bytes": first_failed_bytes,
         "failed_boundary_observed": failed_boundary,
         "probe_ceiling_reached": ceiling_reached,
-        "ceiling_source": str(args.ceiling_source),
+        "ceiling_source": ceiling_source,
         "ceiling_is_environment_limit": bool(args.ceiling_is_environment_limit),
         "benchmark_window_ns": int(raw["benchmark_window_ns"]),
         "benchmark_id": str(args.benchmark_id),
