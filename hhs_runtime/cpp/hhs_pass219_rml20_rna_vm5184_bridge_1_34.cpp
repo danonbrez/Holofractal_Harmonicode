@@ -1,81 +1,69 @@
 #include "hhs_pass219_rml20_rna_vm5184_bridge_1_34.h"
 
+#include <array>
 #include <cstring>
 
 namespace {
 
 constexpr uint8_t kDirectionCount =
     static_cast<uint8_t>(HHS_EXACT_PASS219_RML20_DIRECTION_COUNT);
+constexpr std::array<int8_t, 4> kSignedFlux = {
+    INT8_C(1), INT8_C(-1), INT8_C(-1), INT8_C(1)
+};
+constexpr std::array<uint8_t, 4> kReciprocalDirection = {1U, 0U, 3U, 2U};
 
 bool valid_direction(uint8_t direction) noexcept {
     return direction < kDirectionCount;
 }
 
 uint8_t inverse_direction(uint8_t direction) noexcept {
-    switch (direction) {
-        case HHS_EXACT_PASS219_RML20_OPERATION_FORWARD:
-            return HHS_EXACT_PASS219_RML20_OPERATION_REVERSE;
-        case HHS_EXACT_PASS219_RML20_OPERATION_REVERSE:
-            return HHS_EXACT_PASS219_RML20_OPERATION_FORWARD;
-        case HHS_EXACT_PASS219_RML20_PHASE_FORWARD:
-            return HHS_EXACT_PASS219_RML20_PHASE_REVERSE;
-        case HHS_EXACT_PASS219_RML20_PHASE_REVERSE:
-            return HHS_EXACT_PASS219_RML20_PHASE_FORWARD;
-        case HHS_EXACT_PASS219_RML20_CELL_FORWARD:
-            return HHS_EXACT_PASS219_RML20_CELL_REVERSE;
-        default:
-            return HHS_EXACT_PASS219_RML20_CELL_FORWARD;
-    }
+    return kReciprocalDirection[direction];
 }
 
 int8_t direction_flux(uint8_t direction) noexcept {
-    switch (direction) {
-        case HHS_EXACT_PASS219_RML20_OPERATION_FORWARD:
-        case HHS_EXACT_PASS219_RML20_PHASE_FORWARD:
-        case HHS_EXACT_PASS219_RML20_CELL_FORWARD:
-            return INT8_C(1);
-        default:
-            return INT8_C(-1);
-    }
+    return kSignedFlux[direction];
 }
 
 HHSExactStatus encode_address(
-    uint8_t lane,
     uint8_t operation,
     uint8_t phase,
     uint8_t cell,
+    uint8_t direction,
     uint32_t *out_address
 ) noexcept {
     if (out_address == nullptr)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (lane >= HHS_EXACT_PASS219_HOLO4_LANE_COUNT ||
-        operation >= HHS_EXACT_PASS219_RML20_OPERATION_COUNT ||
+    if (operation >= HHS_EXACT_PASS219_RML20_OPERATION_COUNT ||
         phase >= HHS_EXACT_PASS219_RML20_PHASE_COUNT ||
-        cell >= HHS_EXACT_PASS219_RML20_CELL_COUNT)
+        cell >= HHS_EXACT_PASS219_RML20_CELL_COUNT ||
+        !valid_direction(direction))
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    *out_address =
-        (((static_cast<uint32_t>(lane) *
-           HHS_EXACT_PASS219_RML20_OPERATION_COUNT + operation) *
-          HHS_EXACT_PASS219_RML20_PHASE_COUNT + phase) *
-         HHS_EXACT_PASS219_RML20_CELL_COUNT + cell);
+    uint32_t index = operation;
+    index = index * HHS_EXACT_PASS219_RML20_PHASE_COUNT + phase;
+    index = index * HHS_EXACT_PASS219_RML20_CELL_COUNT + cell;
+    index = index * HHS_EXACT_PASS219_RML20_DIRECTION_COUNT + direction;
+    *out_address = index;
     return HHS_EXACT_STATUS_OK;
 }
 
 HHSExactStatus decode_address(
     uint32_t address,
-    uint8_t *out_lane,
     uint8_t *out_operation,
     uint8_t *out_phase,
-    uint8_t *out_cell
+    uint8_t *out_cell,
+    uint8_t *out_direction
 ) noexcept {
-    if (out_lane == nullptr || out_operation == nullptr ||
-        out_phase == nullptr || out_cell == nullptr)
+    if (out_operation == nullptr || out_phase == nullptr ||
+        out_cell == nullptr || out_direction == nullptr)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (address >= HHS_EXACT_PASS219_RML20_ADDRESS_COUNT)
         return HHS_EXACT_STATUS_RANGE_ERROR;
 
     uint32_t value = address;
+    *out_direction = static_cast<uint8_t>(
+        value % HHS_EXACT_PASS219_RML20_DIRECTION_COUNT);
+    value /= HHS_EXACT_PASS219_RML20_DIRECTION_COUNT;
     *out_cell = static_cast<uint8_t>(
         value % HHS_EXACT_PASS219_RML20_CELL_COUNT);
     value /= HHS_EXACT_PASS219_RML20_CELL_COUNT;
@@ -84,68 +72,39 @@ HHSExactStatus decode_address(
     value /= HHS_EXACT_PASS219_RML20_PHASE_COUNT;
     *out_operation = static_cast<uint8_t>(
         value % HHS_EXACT_PASS219_RML20_OPERATION_COUNT);
-    value /= HHS_EXACT_PASS219_RML20_OPERATION_COUNT;
-    *out_lane = static_cast<uint8_t>(value);
     return HHS_EXACT_STATUS_OK;
 }
 
 HHSExactStatus neighbor_address(
     uint32_t source_address,
-    uint8_t direction,
+    uint8_t expected_direction,
     uint32_t *out_target_address
 ) noexcept {
-    uint8_t lane = 0U;
     uint8_t operation = 0U;
     uint8_t phase = 0U;
     uint8_t cell = 0U;
+    uint8_t direction = 0U;
 
     if (out_target_address == nullptr)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (!valid_direction(direction))
-        return HHS_EXACT_STATUS_RANGE_ERROR;
 
     HHSExactStatus status = decode_address(
-        source_address, &lane, &operation, &phase, &cell);
+        source_address, &operation, &phase, &cell, &direction);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
+    if (!valid_direction(expected_direction) || expected_direction != direction)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
 
-    switch (direction) {
-        case HHS_EXACT_PASS219_RML20_OPERATION_FORWARD:
-            operation = static_cast<uint8_t>(
-                (static_cast<uint32_t>(operation) + 1U) %
-                HHS_EXACT_PASS219_RML20_OPERATION_COUNT);
-            break;
-        case HHS_EXACT_PASS219_RML20_OPERATION_REVERSE:
-            operation = static_cast<uint8_t>(
-                (static_cast<uint32_t>(operation) +
-                 HHS_EXACT_PASS219_RML20_OPERATION_COUNT - 1U) %
-                HHS_EXACT_PASS219_RML20_OPERATION_COUNT);
-            break;
-        case HHS_EXACT_PASS219_RML20_PHASE_FORWARD:
-            phase = static_cast<uint8_t>(
-                (static_cast<uint32_t>(phase) + 1U) %
-                HHS_EXACT_PASS219_RML20_PHASE_COUNT);
-            break;
-        case HHS_EXACT_PASS219_RML20_PHASE_REVERSE:
-            phase = static_cast<uint8_t>(
-                (static_cast<uint32_t>(phase) +
-                 HHS_EXACT_PASS219_RML20_PHASE_COUNT - 1U) %
-                HHS_EXACT_PASS219_RML20_PHASE_COUNT);
-            break;
-        case HHS_EXACT_PASS219_RML20_CELL_FORWARD:
-            cell = static_cast<uint8_t>(
-                (static_cast<uint32_t>(cell) + 1U) %
-                HHS_EXACT_PASS219_RML20_CELL_COUNT);
-            break;
-        default:
-            cell = static_cast<uint8_t>(
-                (static_cast<uint32_t>(cell) +
-                 HHS_EXACT_PASS219_RML20_CELL_COUNT - 1U) %
-                HHS_EXACT_PASS219_RML20_CELL_COUNT);
-            break;
-    }
+    const int16_t signed_phase =
+        static_cast<int16_t>(phase) + static_cast<int16_t>(direction_flux(direction));
+    const int16_t modulus =
+        static_cast<int16_t>(HHS_EXACT_PASS219_RML20_PHASE_COUNT);
+    const uint8_t target_phase = static_cast<uint8_t>(
+        (signed_phase % modulus + modulus) % modulus);
+    const uint8_t target_direction = inverse_direction(direction);
 
-    return encode_address(lane, operation, phase, cell, out_target_address);
+    return encode_address(
+        operation, target_phase, cell, target_direction, out_target_address);
 }
 
 int8_t discrete_divergence() noexcept {
@@ -198,8 +157,8 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_descriptor(
     out_descriptor->direction_count = HHS_EXACT_PASS219_RML20_DIRECTION_COUNT;
     out_descriptor->vm5184_bytes = HHS_EXACT_VM81_FRAME_BYTES;
     out_descriptor->cpp_rna_cell_wall = 1U;
-    out_descriptor->frozen_rml17_parity_surface = 1U;
-    out_descriptor->lane_retaining_transport = 1U;
+    out_descriptor->current_rml17_parity_surface = 1U;
+    out_descriptor->direction_embedded_address = 1U;
     out_descriptor->reciprocal_flux_transport = 1U;
     out_descriptor->candidate_only = 1U;
     out_descriptor->exact_integer_only = 1U;
@@ -212,32 +171,33 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_descriptor(
 }
 
 extern "C" HHSExactStatus hhs_exact_pass219_rml20_transport_address_encode(
-    uint8_t lane,
     uint8_t operation,
     uint8_t phase,
     uint8_t cell,
+    uint8_t direction,
     uint32_t *out_address
 ) {
-    return encode_address(lane, operation, phase, cell, out_address);
+    return encode_address(operation, phase, cell, direction, out_address);
 }
 
 extern "C" HHSExactStatus hhs_exact_pass219_rml20_transport_address_decode(
     uint32_t address,
-    uint8_t *out_lane,
     uint8_t *out_operation,
     uint8_t *out_phase,
-    uint8_t *out_cell
+    uint8_t *out_cell,
+    uint8_t *out_direction
 ) {
     return decode_address(
-        address, out_lane, out_operation, out_phase, out_cell);
+        address, out_operation, out_phase, out_cell, out_direction);
 }
 
 extern "C" HHSExactStatus hhs_exact_pass219_rml20_transport_neighbor(
     uint32_t source_address,
-    uint8_t direction,
+    uint8_t expected_direction,
     uint32_t *out_target_address
 ) {
-    return neighbor_address(source_address, direction, out_target_address);
+    return neighbor_address(
+        source_address, expected_direction, out_target_address);
 }
 
 extern "C" HHSExactStatus hhs_exact_pass219_rml20_transport_flux(
@@ -258,20 +218,20 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
     size_t raw_frame_length,
     const HHSExactPass219Hash216TransitionViewV1 *transition,
     uint32_t source_address,
-    uint8_t direction,
+    uint8_t expected_direction,
     HHSExactPass219RML20RNAVM5184ReceiptV1 *out_receipt
 ) {
     HHSExactPass219Holo4PreparedV1 prepared{};
     HHSExactPass219Holo4DecisionV1 decision{};
     HHSExactPass219RML20RNAVM5184ReceiptV1 receipt{};
-    uint8_t source_lane = 0U;
     uint8_t source_operation = 0U;
     uint8_t source_phase = 0U;
     uint8_t source_cell = 0U;
-    uint8_t target_lane = 0U;
+    uint8_t source_direction = 0U;
     uint8_t target_operation = 0U;
     uint8_t target_phase = 0U;
     uint8_t target_cell = 0U;
+    uint8_t target_direction = 0U;
     uint32_t target_address = 0U;
     uint32_t reciprocal_address = 0U;
     uint32_t reencoded_source = 0U;
@@ -283,51 +243,63 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (raw_frame_length != HHS_EXACT_VM81_FRAME_BYTES)
         return HHS_EXACT_STATUS_RANGE_ERROR;
-    if (!valid_direction(direction))
-        return HHS_EXACT_STATUS_RANGE_ERROR;
 
     HHSExactStatus status = decode_address(
         source_address,
-        &source_lane,
         &source_operation,
         &source_phase,
-        &source_cell);
+        &source_cell,
+        &source_direction);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
+    if (!valid_direction(expected_direction) ||
+        expected_direction != source_direction)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+
     status = encode_address(
-        source_lane,
         source_operation,
         source_phase,
         source_cell,
+        source_direction,
         &reencoded_source);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
-    status = neighbor_address(source_address, direction, &target_address);
-    if (status != HHS_EXACT_STATUS_OK)
-        return status;
-    status = decode_address(
-        target_address,
-        &target_lane,
-        &target_operation,
-        &target_phase,
-        &target_cell);
-    if (status != HHS_EXACT_STATUS_OK)
-        return status;
-    const uint8_t inverse = inverse_direction(direction);
-    status = neighbor_address(target_address, inverse, &reciprocal_address);
+
+    status = neighbor_address(
+        source_address, source_direction, &target_address);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
-    const int8_t forward_flux = direction_flux(direction);
+    status = decode_address(
+        target_address,
+        &target_operation,
+        &target_phase,
+        &target_cell,
+        &target_direction);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    const uint8_t inverse = inverse_direction(source_direction);
+    status = neighbor_address(
+        target_address, target_direction, &reciprocal_address);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    const int8_t forward_flux = direction_flux(source_direction);
     const int8_t reverse_flux = direction_flux(inverse);
     const int8_t divergence = discrete_divergence();
 
+    /*
+     * Current RML17 direction4 is the exact four-channel coordinate. Bind it
+     * directly to the RNA Holo4 feedback lane; bind signed orientation to
+     * feedback trinary. This is lowering, not a second transport geometry.
+     */
     status = hhs_exact_pass219_rna_raw5184_route(
         input,
         raw_frame_le,
         raw_frame_length,
         transition,
-        source_lane,
+        source_direction,
         forward_flux,
         &prepared,
         &decision);
@@ -340,15 +312,15 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
     receipt.version = HHS_EXACT_PASS219_RML20_RNA_VM5184_VERSION;
     receipt.source_address = source_address;
     receipt.target_address = target_address;
-    receipt.source_lane = source_lane;
     receipt.source_operation = source_operation;
     receipt.source_phase = source_phase;
     receipt.source_cell = source_cell;
-    receipt.target_lane = target_lane;
+    receipt.source_direction = source_direction;
     receipt.target_operation = target_operation;
     receipt.target_phase = target_phase;
     receipt.target_cell = target_cell;
-    receipt.direction = direction;
+    receipt.target_direction = target_direction;
+    receipt.requested_direction = expected_direction;
     receipt.inverse_direction = inverse;
     receipt.forward_flux = forward_flux;
     receipt.reverse_flux = reverse_flux;
@@ -358,17 +330,19 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
         reciprocal_address == source_address ? 1U : 0U;
     receipt.reciprocal_flux_balanced =
         forward_flux == static_cast<int8_t>(-reverse_flux) ? 1U : 0U;
-    receipt.lane_identity_retained = source_lane == target_lane ? 1U : 0U;
+    receipt.operation_cell_preserved =
+        source_operation == target_operation && source_cell == target_cell ? 1U : 0U;
     receipt.zero_discrete_divergence = divergence == 0 ? 1U : 0U;
     receipt.zero_diffusion_classification =
         receipt.reciprocal_neighbor_restores_source == 1U &&
         receipt.reciprocal_flux_balanced == 1U &&
-        receipt.lane_identity_retained == 1U &&
+        receipt.operation_cell_preserved == 1U &&
         receipt.zero_discrete_divergence == 1U &&
-        prepared.reciprocal_phase_closure == 1U
+        target_direction == inverse
             ? 1U
             : 0U;
-    receipt.feedback_lane_bound = decision.feedback_lane == source_lane ? 1U : 0U;
+    receipt.feedback_lane_bound =
+        decision.feedback_lane == source_direction ? 1U : 0U;
     receipt.feedback_trinary_bound =
         decision.feedback_trinary == forward_flux ? 1U : 0U;
     receipt.rna_cell_wall_routed = 1U;
@@ -391,7 +365,7 @@ extern "C" HHSExactStatus hhs_exact_pass219_rml20_rna_vm5184_route(
     if (receipt.encode_decode_bijective != 1U ||
         receipt.reciprocal_neighbor_restores_source != 1U ||
         receipt.reciprocal_flux_balanced != 1U ||
-        receipt.lane_identity_retained != 1U ||
+        receipt.operation_cell_preserved != 1U ||
         receipt.zero_discrete_divergence != 1U ||
         receipt.zero_diffusion_classification != 1U ||
         receipt.feedback_lane_bound != 1U ||
