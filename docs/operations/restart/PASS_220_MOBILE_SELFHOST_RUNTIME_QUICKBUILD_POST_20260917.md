@@ -6,7 +6,7 @@ Date: 2026-09-17
 
 - Base exact main: `63cee69390db05bd4b77da1cfd6f1b8cca4d461f`
 - Branch: `pass220/mobile-selfhost-runtime-quickbuild-v1`
-- Current implementation head before this checkpoint: `29b40b307686356f8e41fe8db42ac799e707c41a`
+- Current repair head before this checkpoint update: `f9f2677b91752d96e0a69210df0eb3ddd6b37a0c`
 - Merge target: `main`
 - Production droplet: `hhs-production-01` (`598826630`)
 - Public IPv4: `165.227.220.193`
@@ -44,16 +44,24 @@ The production systemd service starts `hhs_backend.production_visual_server:app`
 
 ## Validation state
 
-Repository comparison at implementation head: 13 commits ahead of the exact base and 0 behind; all changed source is repository-visible and restartable. A local clone/test runner was attempted from the conversation sandbox but outbound DNS to `github.com` is unavailable there, so no local build result is claimed. The branch is ready for dependency-scoped GitHub PR validation, which is authoritative for the actual repository environment.
+PR #493 is open and mergeable.
 
-Required gates before merge:
+Validated successfully at head `f22d379d5778af77b3caba6a1309bb0cba19582e` before the browser-acceptance repair:
+- DigitalOcean Mobile Control and Vector Ingress: PASS, including integrated source contracts, TypeScript typecheck, production Runtime OS build, and bundle contract.
+- DigitalOcean Production Exact Main deployment-contract job: PASS. The deploy job is correctly skipped on pull requests.
+- Pass 196 Integrated Environment: PASS.
+- Validate HHS Runtime OS Production Root: PASS, including native build, TypeScript build, production projection compilation, full route ordering ahead of the SPA fallback, and dependency-scoped production-root regressions.
 
-- TypeScript `typecheck` and Runtime OS build.
-- `test:e2e:source`, `test:workspace:source`, frontend telemetry source checks.
-- production-root and production-gateway regressions.
-- guarded DigitalOcean deployment-contract validation.
-- exact route-composition boot through `production_visual_server:app`.
+One impacted gate failed: **Validate Full Application IDE**. The server, route, and asset probes all returned HTTP 200. Its Playwright step timed out waiting for `[data-testid="registry-visual-programmer"]` because the new required phone-first **Build** surface is now the default and the Visual Program component is intentionally mounted only after the user selects that tab. This was acceptance-test drift, not a production route failure.
+
+Repair-forward commit `f9f2677b91752d96e0a69210df0eb3ddd6b37a0c` updates the browser acceptance path to:
+1. verify the canonical Runtime OS and product workspace;
+2. verify the default `mobile-quick-build-panel`;
+3. click the real **Visual Program** navigation control;
+4. then require `registry-visual-programmer`.
+
+That commit triggered the dependency-scoped PR workflows again. No queued external CI is required to keep this task restartable.
 
 ## Integration and deployment next action
 
-Open the branch PR to `main`, repair-forward only failing impacted gates, merge after required checks pass, then verify the exact-main DigitalOcean promotion and production endpoints. Do not treat the interface as deployed until the main deployment workflow records successful promotion of the merged SHA.
+Wait only for the impacted PR rerun needed for merge acceptance. If it fails, repair-forward that concrete failure. If it passes and required checks permit merge, merge PR #493, verify main contains the merged head, then verify the exact-main DigitalOcean promotion and live production endpoints. Do not treat the interface as deployed until the main deployment workflow records successful promotion of the merged SHA.
