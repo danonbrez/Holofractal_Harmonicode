@@ -260,19 +260,24 @@ jobs:
               assert response is not None and response.ok, response
               page.wait_for_selector('[data-testid="hhs-canonical-runtime-ide"]', timeout=120000)
               page.wait_for_selector('[data-testid="hhs-product-workspace"]', timeout=120000)
+              page.wait_for_selector('[data-testid="mobile-quick-build-panel"]', timeout=120000)
+              product_nav = page.locator('[data-testid="hhs-product-workspace"] > nav')
+              visual_program = product_nav.get_by_role('button', name='Visual Program', exact=True)
+              visual_program_button = visual_program.count()
+              workspace_button = product_nav.get_by_role('button', name='Workspace', exact=True).count()
+              visual_program.click()
               page.wait_for_selector('[data-testid="registry-visual-programmer"]', timeout=120000)
               mounted = page.locator('[data-testid="hhs-canonical-runtime-ide"]').count()
               product_workspace = page.locator('[data-testid="hhs-product-workspace"]').count()
+              quick_build = page.locator('[data-testid="mobile-quick-build-panel"]').count()
               registry_programmer = page.locator('[data-testid="registry-visual-programmer"]').count()
-              product_nav = page.locator('[data-testid="hhs-product-workspace"] > nav')
-              visual_program_button = product_nav.get_by_role('button', name='Visual Program', exact=True).count()
-              workspace_button = product_nav.get_by_role('button', name='Workspace', exact=True).count()
               title = page.title()
               boot_state = page.locator('html').get_attribute('data-hhs-mounted')
               record = {
                   'ok': all([
                       mounted == 1,
                       product_workspace == 1,
+                      quick_build == 0,
                       registry_programmer == 1,
                       visual_program_button == 1,
                       workspace_button == 1,
@@ -281,6 +286,7 @@ jobs:
                   'title': title,
                   'canonical_runtime_ide_count': mounted,
                   'product_workspace_count': product_workspace,
+                  'quick_build_count_after_navigation': quick_build,
                   'registry_visual_programmer_count': registry_programmer,
                   'visual_program_button_count': visual_program_button,
                   'workspace_button_count': workspace_button,
