@@ -119,7 +119,8 @@
 #undef hhs_exact_pass219_vm81_environment_admit_signed
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.inc"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc"
-#include "hhs_pass219_delta_reciprocal_constructor_1_36.inc"\n#include "hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc"
+#include "hhs_pass219_delta_reciprocal_constructor_1_36.inc"
+#include "hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc"
 #include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.inc"
 #include "hhs_pass219_lane5_hash216_composition_jump_store_1_38.inc"
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.inc"
