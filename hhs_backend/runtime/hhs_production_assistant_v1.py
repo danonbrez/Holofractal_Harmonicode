@@ -295,6 +295,7 @@ class ProductionAssistantService:
         content: str,
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -310,6 +311,7 @@ class ProductionAssistantService:
                 content=content,
                 tools=tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
             )
             if self._completed(gemma_result):
                 gemma_result["effective_mode"] = "GEMMA4_LITERT_LM"
@@ -354,6 +356,7 @@ class ProductionAssistantService:
                 content=content,
                 tools=tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
             )
             if self._completed(native_result):
                 native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
