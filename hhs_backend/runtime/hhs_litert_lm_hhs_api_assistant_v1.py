@@ -264,10 +264,12 @@ class HHSAPIAssistantService(HHSAssistantService):
                 "runtime_mutation_admitted": False,
             },
         )
+        mode = normalize_assistant_mode(result.get("assistant_mode"))
         result["hhs_api_tool_trace"] = trace
         result["hhs_api_tool_trace_root_hash72"] = trace_root
         result["hhs_api_tool_call_count"] = len(trace)
-        result["hhs_api_tools_enabled"] = True
+        result["hhs_api_tools_enabled"] = mode != ASSISTANT_MODE_GENERAL_CHAT
+        result["assistant_mode"] = mode
         result["mutating_model_tool_execution_allowed"] = False
         result["per_thread_request_serialization"] = True
         result["execution_backend"] = self.execution_backend
