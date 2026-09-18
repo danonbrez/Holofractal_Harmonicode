@@ -6,6 +6,7 @@ type Json = Record<string, any>
 type Surface = "program" | "workspace" | "authority"
 
 const MAX_INGRESS_BYTES = 24 * 1024 * 1024
+const MAX_ASSISTANT_CONTEXT_CHARS = 32768
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
 const short = (value: unknown): string => {
@@ -102,6 +103,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
   const [vectorStatus, setVectorStatus] = useState<Json>({})
   const [lastIngress, setLastIngress] = useState<Json>({})
   const [vectorQuery, setVectorQuery] = useState<Json>({})
+  const [assistantContext, setAssistantContext] = useState<Json | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -155,6 +157,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
     setSelectedIndex(0)
     setLastIngress({})
     setVectorQuery({})
+    setAssistantContext(null)
     setError(null)
   }
 
@@ -191,6 +194,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
       }, 90000)
       setLastIngress(result)
       setVectorQuery({})
+      setAssistantContext(null)
       await refresh()
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
@@ -213,6 +217,39 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
     } finally {
       setBusy(false)
     }
+  }
+
+  const attachSelectedContext = (): void => {
+    if (!selected || !operationKey || text(vectorQuery.classification) !== "HHS_PASS_174_VECTOR_QUERY_HIT") {
+      setError("Read the persisted vector before attaching this file to chat.")
+      return
+    }
+
+    const sourceIdentity = text(lastIngress.source_identity_sha256)
+    const lifecycleHash216 = text(lastIngress.lifecycle_hash216)
+    const decoded = previewText.trim()
+    const contextText = decoded
+      ? decoded.slice(0, MAX_ASSISTANT_CONTEXT_CHARS)
+      : [
+          "User-approved multimodal context metadata.",
+          `File: ${selected.name}`,
+          `Modality: ${modality}`,
+          `MIME: ${selected.type || "application/octet-stream"}`,
+          `Size bytes: ${selected.size}`,
+          `Persisted vector operation: ${operationKey}`,
+          "The binary payload itself is not decoded into natural language by this interface.",
+        ].join("\n")
+
+    setAssistantContext({
+      explicit_user_attachment: true,
+      source_name: selected.name,
+      modality,
+      source_identity_sha256: /^[0-9a-f]{64}$/i.test(sourceIdentity) ? sourceIdentity : null,
+      operation_key: operationKey,
+      lifecycle_hash216: /^[0-9a-f]{64}$/i.test(lifecycleHash216) ? lifecycleHash216 : null,
+      text: contextText,
+    })
+    setError(null)
   }
 
   return (
@@ -240,6 +277,8 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
       <ProductionAssistantChat
         projectId={projectId}
         vectorContextId={(operationKey ?? text(lastIngress.lifecycle_hash216)) || null}
+        userContext={assistantContext}
+        onClearContext={() => setAssistantContext(null)}
         onOpenFiles={() => fileInput.current?.click()}
       />
 
@@ -269,7 +308,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
           <div className="mt-4 grid gap-3 lg:grid-cols-[260px_minmax(0,1fr)]">
             <aside className="space-y-2">
               {files.map((file, index) => (
-                <button key={`${file.name}:${file.size}:${index}`} type="button" onClick={() => setSelectedIndex(index)} className={`w-full rounded-xl border p-3 text-left ${index === selectedIndex ? "border-cyan-700 bg-cyan-950/30" : "border-neutral-800 bg-black/30"}`}>
+                <button key={`${file.name}:${file.size}:${index}`} type="button" onClick={() => { if (index !== selectedIndex) setAssistantContext(null); setSelectedIndex(index) }} className={`w-full rounded-xl border p-3 text-left ${index === selectedIndex ? "border-cyan-700 bg-cyan-950/30" : "border-neutral-800 bg-black/30"}`}>
                   <div className="truncate text-xs font-medium text-white">{file.name}</div>
                   <div className="mt-1 text-[10px] text-neutral-500">{modalityFor(file)} · {(file.size / 1024).toFixed(1)} KB</div>
                 </button>
@@ -319,6 +358,20 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                   <p className="mt-1 text-[11px] leading-5 text-neutral-400">
                     The encrypted Hash216 vector-store record was read successfully for this hydration operation. Technical fields stay hidden unless you choose to inspect them.
                   </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => assistantContext ? setAssistantContext(null) : attachSelectedContext()}
+                      className="runtime-button min-h-10 px-4 text-xs"
+                    >
+                      {assistantContext ? "Remove from chat" : "Use in chat"}
+                    </button>
+                    <span className="text-[10px] text-neutral-500">
+                      {assistantContext
+                        ? "This context will be sent only with assistant turns until removed."
+                        : "Nothing from this file is sent to the assistant until you choose Use in chat."}
+                    </span>
+                  </div>
                   <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-neutral-500">
                     <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">status {text(vectorQuery.classification, "available")}</span>
                     <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">operation {short(operationKey)}</span>
