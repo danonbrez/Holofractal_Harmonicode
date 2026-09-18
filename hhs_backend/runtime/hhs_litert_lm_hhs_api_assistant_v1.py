@@ -24,6 +24,7 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     HHSAssistantService,
     LiteRTLMConfig,
     MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+    MAX_USER_CONTEXT_CHARS,
     normalize_assistant_mode,
 )
 from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
@@ -291,6 +292,7 @@ class HHSAPIAssistantService(HHSAssistantService):
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
         assistant_mode: Optional[str] = None,
+        user_context: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -304,6 +306,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                 response_format=response_format,
                 custom_system_instruction=custom_system_instruction,
                 assistant_mode=mode,
+                user_context=user_context,
             )
             return self._decorate_result(thread_id, result)
 
@@ -316,6 +319,7 @@ class HHSAPIAssistantService(HHSAssistantService):
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
         assistant_mode: Optional[str] = None,
+        user_context: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -329,6 +333,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                 response_format=response_format,
                 custom_system_instruction=custom_system_instruction,
                 assistant_mode=mode,
+                user_context=user_context,
             )
             return self._decorate_result(thread_id, result)
 
@@ -342,6 +347,8 @@ class HHSAPIAssistantService(HHSAssistantService):
             "per_thread_request_serialization": True,
             "custom_system_instruction_supported": True,
             "custom_system_instruction_max_characters": MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+            "user_approved_context_supported": True,
+            "user_approved_context_max_characters": MAX_USER_CONTEXT_CHARS,
             "assistant_modes": list(ASSISTANT_MODES),
             "default_assistant_mode": DEFAULT_ASSISTANT_MODE,
             "general_chat_disables_default_hhs_tools": True,
