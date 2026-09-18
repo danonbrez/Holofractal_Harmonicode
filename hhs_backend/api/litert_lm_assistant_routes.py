@@ -32,6 +32,7 @@ class SendMessageRequest(BaseModel):
     response_format: Optional[Dict[str, Any]] = None
     custom_system_instruction: Optional[str] = Field(default=None, max_length=8192)
     assistant_mode: str = Field(default="BOTH", min_length=4, max_length=64)
+    user_context: Optional[Dict[str, Any]] = None
 
 
 class ChatRequest(CreateThreadRequest, SendMessageRequest):
@@ -127,6 +128,7 @@ async def assistant_send_message(
             response_format=request.response_format,
             custom_system_instruction=request.custom_system_instruction,
             assistant_mode=request.assistant_mode,
+            user_context=request.user_context,
         )
     except KeyError as exc:
         raise HTTPException(
@@ -166,6 +168,7 @@ async def assistant_chat(request: ChatRequest) -> Dict[str, Any]:
             response_format=request.response_format,
             custom_system_instruction=request.custom_system_instruction,
             assistant_mode=request.assistant_mode,
+            user_context=request.user_context,
         )
     except KeyError as exc:
         raise HTTPException(
@@ -218,6 +221,7 @@ async def assistant_websocket(websocket: WebSocket, thread_id: str) -> None:
                     response_format=request.get("response_format"),
                     custom_system_instruction=request.get("custom_system_instruction"),
                     assistant_mode=request.get("assistant_mode", "BOTH"),
+                    user_context=request.get("user_context"),
                 )
             except ValueError as exc:
                 await websocket.send_json({
