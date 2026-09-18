@@ -559,7 +559,14 @@ class HHSNativeLiteRTLMTransport:
                             "workflow."
                         )
 
-        if word2vec.get("token"):
+        if (
+            word2vec.get("token")
+            and (
+                semantic
+                or evidence_sections
+                or mode == ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT
+            )
+        ):
             neighbor_names = [
                 str(item.get("token"))
                 for item in word2vec.get("neighbors") or []
@@ -567,7 +574,7 @@ class HHSNativeLiteRTLMTransport:
             ]
             if neighbor_names:
                 answer += (
-                    f"\n\nActive Word2Vec context for “{word2vec['token']}”: "
+                    f"\n\nLanguage-memory context for “{word2vec['token']}”: "
                     + ", ".join(neighbor_names)
                     + "."
                 )
