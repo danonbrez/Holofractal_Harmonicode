@@ -239,7 +239,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
 
       <ProductionAssistantChat
         projectId={projectId}
-        vectorContextId={operationKey ?? text(lastIngress.lifecycle_hash216) || null}
+        vectorContextId={(operationKey ?? text(lastIngress.lifecycle_hash216)) || null}
         onOpenFiles={() => fileInput.current?.click()}
       />
 
