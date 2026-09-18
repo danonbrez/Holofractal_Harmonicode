@@ -210,14 +210,22 @@ async def assistant_websocket(websocket: WebSocket, thread_id: str) -> None:
                     "reason": "message content must not be empty",
                 })
                 continue
-            result = await service.send_message(
-                thread_id,
-                content=content,
-                tools=request.get("tools"),
-                response_format=request.get("response_format"),
-                custom_system_instruction=request.get("custom_system_instruction"),
-                assistant_mode=request.get("assistant_mode", "BOTH"),
-            )
+            try:
+                result = await service.send_message(
+                    thread_id,
+                    content=content,
+                    tools=request.get("tools"),
+                    response_format=request.get("response_format"),
+                    custom_system_instruction=request.get("custom_system_instruction"),
+                    assistant_mode=request.get("assistant_mode", "BOTH"),
+                )
+            except ValueError as exc:
+                await websocket.send_json({
+                    "schema": "HHS_AI_CONVERSATION_MESSAGE_REJECTION_V1",
+                    "ok": False,
+                    "reason": str(exc),
+                })
+                continue
             await websocket.send_json(result)
     except WebSocketDisconnect:
         return
