@@ -59,6 +59,10 @@ jobs:
           grep -R -q 'AGENTIC_APPLICATION_DEVELOPMENT' hhs_gui/dist/assets
           grep -R -q 'Both' hhs_gui/dist/assets
           grep -R -q 'Inspect technical JSON' hhs_gui/dist/assets
+          grep -R -q 'Use in chat' hhs_gui/dist/assets
+          grep -R -q 'Remove from chat' hhs_gui/dist/assets
+          grep -R -q 'Context attached by you' hhs_gui/dist/assets
+          grep -R -q 'explicit_user_attachment' hhs_gui/dist/assets
           grep -R -q 'Paste' hhs_gui/dist/assets
           grep -R -q 'Acquire + verify' hhs_gui/dist/assets
           grep -R -q 'Replay offline' hhs_gui/dist/assets
