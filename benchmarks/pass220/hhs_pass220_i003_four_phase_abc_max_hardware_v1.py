@@ -63,11 +63,23 @@ def _digest(value: Any) -> str:
 
 
 def _word(seed: int) -> str:
-    return "".join(HASH72_ALPHABET[(seed + index) % 72] for index in range(72))
+    """Injectively encode one non-negative seed into one 72-symbol Hash72 word."""
+    value = int(seed)
+    if value < 0 or value >= 72**72:
+        raise ValueError("synthetic Hash72 seed outside exact 72^72 word domain")
+    symbols = []
+    for _ in range(72):
+        symbols.append(HASH72_ALPHABET[value % 72])
+        value //= 72
+    return "".join(symbols)
 
 
 def _hash216(seed: int) -> str:
-    return compose_hash216(_word(seed), _word(seed + 1), _word(seed + 2))
+    value = int(seed)
+    if value < 0 or value > ((72**72) - 3) // 3:
+        raise ValueError("synthetic Hash216 seed outside injective benchmark domain")
+    base = value * 3
+    return compose_hash216(_word(base), _word(base + 1), _word(base + 2))
 
 
 def _phase_signature(phase_slot: int, exact: bool = True) -> tuple[tuple[str, int], ...]:
@@ -218,9 +230,12 @@ def _arm_c(dataset: Mapping[str, Any], repeats: int, budget_ns: int) -> dict[str
 
 
 def _counts(max_candidates: int) -> tuple[int, ...]:
-    values = list(BASE_COUNTS)
-    current = values[-1] * 2
-    while current <= max_candidates:
+    maximum = int(max_candidates)
+    if maximum < BASE_COUNTS[0]:
+        raise ValueError(f"max_candidates must be at least {BASE_COUNTS[0]}")
+    values = [count for count in BASE_COUNTS if count <= maximum]
+    current = BASE_COUNTS[-1] * 2
+    while current <= maximum:
         values.append(current)
         current *= 2
     return tuple(values)
@@ -299,6 +314,12 @@ def run(
         if own_optimizer:
             lane5.close()
     elapsed_global = time.perf_counter_ns() - started_global
+    four_phase_closed = (
+        set(phase_max) == {phase for phase, _, _ in PHASES}
+        and all(int(phase_max.get(phase, 0)) > 0 for phase, _, _ in PHASES)
+    )
+    same_dataset_closed = bool(samples) and all(sample["same_dataset_verified"] for sample in samples)
+    within_global = elapsed_global <= global_budget
     return {
         "schema": SCHEMA,
         "hardware_calibration_authority": False,
@@ -319,14 +340,15 @@ def run(
         "phase_max_hardware_closed_n": phase_max,
         "global_max_hardware_closed_n": min(phase_max.values()) if phase_max else 0,
         "elapsed_global_ns": elapsed_global,
-        "within_global_time_bound": elapsed_global <= global_budget,
+        "within_global_time_bound": within_global,
+        "four_phase_closed": four_phase_closed,
         "same_dataset_required": True,
         "timing_observational_only": True,
         "candidate_only": True,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_hash216_authority": False,
-        "result": "PASS" if samples and all(sample["same_dataset_verified"] for sample in samples) else "FAIL",
+        "result": "PASS" if same_dataset_closed and four_phase_closed and within_global else "FAIL",
     }
 
 
