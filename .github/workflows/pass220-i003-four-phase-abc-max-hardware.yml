@@ -1,4 +1,4 @@
-name: Pass 220 I003-I009 Cold Raw x86_64 Calibration + Native Causal RAG Assistant Integration
+name: Pass 220 I003-I010 Cold Raw x86_64 Calibration + User-Controlled RAG Context Integration
 
 on:
   pull_request:
@@ -34,6 +34,9 @@ on:
       - 'hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - 'docs/pass220/PASS_220_I009_NATIVE_CAUSAL_RAG_PROMPT_RESPONSE_GENERATION.md'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context.py'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py'
+      - 'docs/pass220/PASS_220_I010_USER_APPROVED_VECTOR_CONTEXT_RAG.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -43,6 +46,7 @@ on:
       - 'docs/operations/restart/PASS_220_I007_*'
       - 'docs/operations/restart/PASS_220_I008_*'
       - 'docs/operations/restart/PASS_220_I009_*'
+      - 'docs/operations/restart/PASS_220_I010_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   push:
     branches: [main, pass220-lo-shu-normalization-checkpoint-1]
@@ -77,6 +81,9 @@ on:
       - 'hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - 'docs/pass220/PASS_220_I009_NATIVE_CAUSAL_RAG_PROMPT_RESPONSE_GENERATION.md'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context.py'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py'
+      - 'docs/pass220/PASS_220_I010_USER_APPROVED_VECTOR_CONTEXT_RAG.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -86,6 +93,7 @@ on:
       - 'docs/operations/restart/PASS_220_I007_*'
       - 'docs/operations/restart/PASS_220_I008_*'
       - 'docs/operations/restart/PASS_220_I009_*'
+      - 'docs/operations/restart/PASS_220_I010_*'
       - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
   workflow_dispatch:
 
@@ -159,7 +167,7 @@ jobs:
             -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
           nm -D hhs_runtime/builds/libhhs_pass207_gpu_driver.so | grep ' hhs_pass207_gpu_vector_distance72$'
 
-      - name: Compile post-calibration I003-I009 Python surfaces
+      - name: Compile post-calibration I003-I010 Python surfaces
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
@@ -183,9 +191,11 @@ jobs:
             tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py \
             tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
             tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
-            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py
 
-      - name: Run dependency-scoped I001-I009 integration tests
+      - name: Run dependency-scoped I001-I010 integration tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -205,6 +215,8 @@ jobs:
             tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
             tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py \
             | tee /tmp/pass220-i003/integration-tests.txt
 
       - name: Record raw-capacity normalization facts
