@@ -6,6 +6,10 @@ on:
       - pass219/saturation-deadline-warm-cache-benchmark-v3
     paths:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'hhs_runtime/pass219/u72_h36_dynamic_scalar_optimizer.py'
+      - 'contracts/pass219/PASS_219_U72_H36_DYNAMIC_SCALAR_OPTIMIZATION_V1.md'
+      - 'tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py'
+      - 'tests/pass219/test_lane5_u72_h36_mandatory_integration.py'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
@@ -77,6 +81,8 @@ jobs:
               assert needle in implementation, needle
           assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
           assert 'RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37' in dispatcher
+          assert 'U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0' in dispatcher
+          assert 'optimize_u72_h36_dynamic_cycle' in dispatcher
           assert 'MANDATORY_CANONICAL_ADMISSION_MEDIATION' in dispatcher
           assert 'HHS_PASS219_LANE5_STATE_ROOT' in dispatcher
           assert '.hhs/pass219/lane5' in dispatcher
@@ -135,6 +141,8 @@ jobs:
             tests/pass219/test_lane5_mandatory_optimization_dispatcher.py \
             tests/pass219/test_lane5_mandatory_optimization_registry.py \
             tests/pass219/test_lane5_rlm20_mandatory_integration.py \
+            tests/pass219/test_lane5_u72_h36_mandatory_integration.py \
+            tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py \
             tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
             tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
             tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
