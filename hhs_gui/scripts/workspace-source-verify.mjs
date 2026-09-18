@@ -11,6 +11,7 @@ const content = {
   product: read("runtime_os/workspace/HHSProductWorkspace.tsx"),
   mobileControl: read("runtime_os/workspace/ProductionMobileControlCenter.tsx"),
   mobileAssistant: read("runtime_os/workspace/ProductionAssistantChat.tsx"),
+  acquisition: read("runtime_os/workspace/OpenSourceAcquisitionPanel.tsx"),
   programmer: read("runtime_os/workspace/RegistryVisualProgrammer.tsx"),
   shell: read("runtime_os/workspace/HHSWorkspaceShell.tsx"),
   assistant: read("runtime_os/assistant/RuntimeAssistantPanel.tsx"),
@@ -97,6 +98,8 @@ assert(content.mobileAssistant.includes("bg-neutral-900/70"), "mobile assistant 
 assert(content.mobileControl.includes("ProductionAssistantChat"), "production mobile control does not mount the LLM assistant")
 assert(content.mobileControl.includes("Inspect technical JSON"), "vector technical JSON does not require explicit inspection")
 assert(content.mobileControl.indexOf("Inspect technical JSON") < content.mobileControl.indexOf("JSON.stringify(vectorQuery"), "vector JSON appears before its inspect control")
+assert(content.acquisition.includes("Inspect technical JSON"), "acquisition technical JSON does not require explicit inspection")
+assert(content.acquisition.indexOf("Inspect technical JSON") < content.acquisition.indexOf("JSON.stringify(selected"), "acquisition JSON appears before its inspect control")
 for (const token of [
   "/api/runtime/services",
   "/api/runtime/services/dispatch",
