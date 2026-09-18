@@ -8,6 +8,10 @@ on:
       - 'contracts/pass219/PASS_219_UNIVERSAL_ABI_LINUX_KERNEL_LANE5_INTERCEPT_V1.md'
       - 'hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py'
       - 'hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py'
+      - 'hhs_runtime/pass219/lane5_interceptor_sandbox_cache.py'
+      - 'benchmarks/pass219/raw_linux_serial_abi_capacity_v1.c'
+      - 'tools/pass219/seal_raw_linux_serial_abi_capacity_v1.py'
+      - 'tests/pass219/test_lane5_interceptor_sandbox_cache.py'
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
       - 'tests/pass219/test_lane5_universal_abi_kernel_interceptor.py'
       - 'tools/pass219/audit_lane5_universal_abi_kernel.py'
@@ -32,7 +36,36 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
 
-      - name: Build cumulative exact ABI
+      - name: Calibrate raw Linux serial ABI bytes without HHS services
+        run: |
+          rm -rf hhs_runtime/builds
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            benchmarks/pass219/raw_linux_serial_abi_capacity_v1.c \
+            -o /tmp/raw-linux-serial-capacity
+          ! ldd /tmp/raw-linux-serial-capacity | grep -q 'libhhs_runtime'
+          ! nm -u /tmp/raw-linux-serial-capacity | grep -Eiq 'hhs|vm81|lane5|hash72|hash216|pqc'
+          /tmp/raw-linux-serial-capacity 67108864 > /tmp/raw-linux-capacity.json
+          compiler_id="$(cc --version | head -n1)"
+          python tools/pass219/seal_raw_linux_serial_abi_capacity_v1.py \
+            /tmp/raw-linux-capacity.json \
+            /tmp/lane5-cache-calibration.json \
+            --compiler-id "$compiler_id" \
+            --benchmark-id "CI_RAW_LINUX_SERIAL_ABI_CAPACITY_V1"
+          python - <<'PY'
+          import json
+          raw=json.load(open('/tmp/raw-linux-capacity.json'))
+          sealed=json.load(open('/tmp/lane5-cache-calibration.json'))
+          assert raw['capacity_unit'] == 'RAW_LINUX_SERIAL_ABI_BYTES'
+          assert raw['hhs_present'] is False
+          assert raw['vm81_services_present'] is False
+          assert raw['lane5_present'] is False
+          assert raw['pqc_present'] is False
+          assert sealed['max_serial_abi_bytes'] == raw['max_serial_abi_bytes']
+          assert sealed['capacity_unit'] == 'RAW_LINUX_SERIAL_ABI_BYTES'
+          print('raw_linux_serial_abi_capacity=', sealed['max_serial_abi_bytes'])
+          PY
+
+      - name: Build cumulative exact ABI after raw calibration
         run: |
           make clean
           make c-abi
@@ -43,7 +76,23 @@ jobs:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
         run: |
-          python -m pytest -q tests/pass219/test_lane5_universal_abi_kernel_interceptor.py
+          python -m pytest -q \
+            tests/pass219/test_lane5_interceptor_sandbox_cache.py \
+            tests/pass219/test_lane5_universal_abi_kernel_interceptor.py
+          python - <<'PY'
+          import json
+          from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
+              Lane5CacheCalibration,
+              RAW_CAPACITY_UNIT,
+          )
+          evidence=json.load(open('/tmp/lane5-cache-calibration.json'))
+          calibration=Lane5CacheCalibration.from_evidence(evidence)
+          assert calibration.capacity_unit == RAW_CAPACITY_UNIT
+          assert calibration.production_accepted is True
+          assert calibration.max_serial_abi_bytes == evidence['max_serial_abi_bytes']
+          assert calibration.derived_5184_frame_slots == evidence['max_serial_abi_bytes'] // 648
+          print('derived_frame_slots=', calibration.derived_5184_frame_slots)
+          PY
 
       - name: Regress Pass 036 zero-bypass interposer
         run: |
