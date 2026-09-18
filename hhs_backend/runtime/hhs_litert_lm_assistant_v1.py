@@ -40,14 +40,43 @@ MESSAGE_SCHEMA = "HHS_AI_CONVERSATION_MESSAGE_V1"
 TURN_SCHEMA = "HHS_LITERT_LM_ASSISTANT_TURN_V1"
 STATUS_SCHEMA = "HHS_LITERT_LM_ASSISTANT_STATUS_V1"
 PROVIDER_ID = "provider:hhs.litert_lm.gemma4"
+MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS = 8192
+CUSTOM_SYSTEM_INSTRUCTION_SCHEMA = "HHS_USER_CUSTOM_SYSTEM_INSTRUCTION_V1"
 
 DEFAULT_SYSTEM_INSTRUCTION = """You are the natural-language conversational
 interface to the Holofractal Harmonicode System (HHS). Preserve explicit user
 propositions and HARMONICODE source notation. Treat tool use and runtime
 operations as proposals only. Never claim that a VM81 mutation, repository
 change, receipt, or canonical state transition occurred unless the HHS API
-returns an admitted receipt for that operation. Return concise natural-language
-responses and structured tool-call arguments when tools are supplied."""
+returns an admitted receipt for that operation. Return clear conversational
+natural-language responses. Summarize technical and tool evidence for the user
+instead of dumping raw JSON unless the user explicitly asks to inspect it.
+Return structured tool-call arguments only when tools are supplied."""
+
+
+def normalize_custom_system_instruction(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValueError("custom system instruction must be text")
+    normalized = value.strip()
+    if not normalized:
+        return None
+    if len(normalized) > MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS:
+        raise ValueError(
+            f"custom system instruction exceeds {MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS} characters"
+        )
+    return normalized
+
+
+def custom_system_instruction_root(value: Optional[str]) -> Optional[str]:
+    normalized = normalize_custom_system_instruction(value)
+    if normalized is None:
+        return None
+    return hash72(
+        CUSTOM_SYSTEM_INSTRUCTION_SCHEMA,
+        {"custom_system_instruction": normalized},
+    )
 
 
 def _now_ms() -> int:
@@ -386,10 +415,23 @@ class HHSAssistantService:
                 "error": str(exc),
             }
 
-    def _model_messages(self, thread: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    def _model_messages(
+        self,
+        thread: Mapping[str, Any],
+        custom_system_instruction: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        custom = normalize_custom_system_instruction(custom_system_instruction)
+        system_content = self.config.system_instruction
+        if custom:
+            system_content = (
+                f"{system_content.rstrip()}\n\n"
+                "User-configured system instructions follow. Apply them to response style "
+                "and task behavior while preserving the governed HHS authority constraints above.\n"
+                f"{custom}"
+            )
         projected = [{
             "role": "system",
-            "content": self.config.system_instruction,
+            "content": system_content,
         }]
         for message in thread.get("messages") or []:
             role = str(message.get("role") or "")
@@ -429,10 +471,14 @@ class HHSAssistantService:
         user_message: Mapping[str, Any],
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         thread = self.threads.get(thread_id)
         if not thread:
             raise KeyError(thread_id)
+
+        custom_instruction = normalize_custom_system_instruction(custom_system_instruction)
+        custom_instruction_root = custom_system_instruction_root(custom_instruction)
 
         proposal = build_provider_execution_proposal(
             capability_class="TEXT_GENERATION",
@@ -440,6 +486,7 @@ class HHSAssistantService:
             input_payload={
                 "thread_id": thread_id,
                 "message_root_hash72": user_message["message_root_hash72"],
+                "custom_system_instruction_root_hash72": custom_instruction_root,
             },
             requested_operation=self.requested_operation,
             constraints={
@@ -469,7 +516,10 @@ class HHSAssistantService:
 
         try:
             raw_response = await self.transport.chat_completion(
-                messages=self._model_messages(thread),
+                messages=self._model_messages(
+                    thread,
+                    custom_system_instruction=custom_instruction,
+                ),
                 tools=[dict(tool) for tool in (tools or [])] or None,
                 response_format=response_format,
             )
@@ -543,6 +593,8 @@ class HHSAssistantService:
             "provider_result_ingress": ingress,
             "runtime_mutation_admitted": False,
             "model_output_is_canonical_without_runtime_admission": False,
+            "custom_system_instruction_applied": bool(custom_instruction),
+            "custom_system_instruction_root_hash72": custom_instruction_root,
             "thread": self.threads.get(thread_id),
             "authority": AUTHORITY,
         }
@@ -556,6 +608,7 @@ class HHSAssistantService:
         content: str,
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not str(content).strip():
             raise ValueError("message content must not be empty")
@@ -571,6 +624,7 @@ class HHSAssistantService:
             user_message=user_message,
             tools=tools,
             response_format=response_format,
+            custom_system_instruction=custom_system_instruction,
         )
 
     async def continue_message(
@@ -580,6 +634,7 @@ class HHSAssistantService:
         user_message: Mapping[str, Any],
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -594,6 +649,7 @@ class HHSAssistantService:
             user_message=user_message,
             tools=tools,
             response_format=response_format,
+            custom_system_instruction=custom_system_instruction,
         )
 
 
