@@ -20,6 +20,7 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ConversationThreadStore,
     HHSAssistantService,
     LiteRTLMConfig,
+    MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
 )
 from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
     LiteRTLMAcceleratedTransport,
@@ -319,6 +320,8 @@ class HHSAPIAssistantService(HHSAssistantService):
             "default_hhs_api_tool_count": len(DEFAULT_HHS_ASSISTANT_TOOLS),
             "mutating_model_tool_execution_allowed": False,
             "per_thread_request_serialization": True,
+            "custom_system_instruction_supported": True,
+            "custom_system_instruction_max_characters": MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
             "task_local_tool_traces": True,
             "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
             "execution_backend": self.execution_backend,
