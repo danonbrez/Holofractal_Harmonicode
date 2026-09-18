@@ -8,6 +8,9 @@ type ChatMessage = {
   metadata?: string
 }
 
+type AssistantMode = "GENERAL_CHAT" | "AGENTIC_APPLICATION_DEVELOPMENT" | "BOTH"
+
+const ASSISTANT_MODE_STORAGE_KEY = "hhs.production.assistant.mode"
 const SYSTEM_INSTRUCTION_STORAGE_KEY = "hhs.production.assistant.custom_system_instruction"
 const MAX_SYSTEM_INSTRUCTION_CHARS = 8192
 
@@ -60,6 +63,22 @@ function receiptOf(turn: Json): string | null {
   return null
 }
 
+function loadAssistantMode(): AssistantMode {
+  try {
+    const value = window.localStorage.getItem(ASSISTANT_MODE_STORAGE_KEY)
+    if (value === "GENERAL_CHAT" || value === "AGENTIC_APPLICATION_DEVELOPMENT" || value === "BOTH") return value
+  } catch {
+    // Use the compatibility default.
+  }
+  return "BOTH"
+}
+
+function modeLabel(mode: AssistantMode): string {
+  if (mode === "GENERAL_CHAT") return "General chat"
+  if (mode === "AGENTIC_APPLICATION_DEVELOPMENT") return "Agentic application development"
+  return "Both"
+}
+
 function loadSystemInstruction(): string {
   try {
     return window.localStorage.getItem(SYSTEM_INSTRUCTION_STORAGE_KEY) ?? ""
@@ -104,6 +123,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [assistantMode, setAssistantMode] = useState<AssistantMode>(loadAssistantMode)
   const [customSystemInstruction, setCustomSystemInstruction] = useState(loadSystemInstruction)
   const [clipboardNotice, setClipboardNotice] = useState<string | null>(null)
   const [copiedMessageIndex, setCopiedMessageIndex] = useState<number | null>(null)
@@ -144,6 +164,15 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
     const node = scrollRef.current
     if (node) node.scrollTop = node.scrollHeight
   }, [messages, busy])
+
+  const updateAssistantMode = (value: AssistantMode): void => {
+    setAssistantMode(value)
+    try {
+      window.localStorage.setItem(ASSISTANT_MODE_STORAGE_KEY, value)
+    } catch {
+      // The selected mode still applies to this browser session.
+    }
+  }
 
   const updateSystemInstruction = (value: string): void => {
     const bounded = value.slice(0, MAX_SYSTEM_INSTRUCTION_CHARS)
@@ -222,9 +251,11 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
             vector_identity_visible_to_user: vectorContextId || null,
             vector_payload_auto_attached_to_prompt: false,
             custom_system_instruction_present: Boolean(instruction),
+            assistant_mode: assistantMode,
           },
           content,
           custom_system_instruction: instruction || null,
+          assistant_mode: assistantMode,
         }),
       }, 120000)
 
@@ -238,10 +269,16 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         `Assistant turn completed with status ${text(turn.status, "UNKNOWN")}.`,
       )
       const receipt = receiptOf(turn)
-      const mode = text(turn.effective_mode ?? turn.execution_backend ?? health.effective_mode)
+      const providerMode = text(turn.effective_mode ?? turn.execution_backend ?? health.effective_mode)
+      const returnedAssistantMode = text(turn.assistant_mode, assistantMode)
       const toolCount = Number.isInteger(turn.hhs_api_tool_call_count) ? Number(turn.hhs_api_tool_call_count) : 0
       const metadata = [
-        mode,
+        modeLabel(
+          returnedAssistantMode === "GENERAL_CHAT" || returnedAssistantMode === "AGENTIC_APPLICATION_DEVELOPMENT"
+            ? returnedAssistantMode
+            : "BOTH",
+        ),
+        providerMode,
         `${toolCount} HHS tool${toolCount === 1 ? "" : "s"}`,
         turn.custom_system_instruction_applied ? "custom instructions" : "",
         receipt ? `receipt ${short(receipt)}` : "",
@@ -278,6 +315,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-500">Natural-language control</div>
           <h2 className="mt-1 text-base font-semibold text-white md:text-lg">HHS Assistant</h2>
+          <div className="mt-1 text-[10px] text-neutral-500">{modeLabel(assistantMode)}</div>
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => void refreshHealth()} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-1.5 text-[10px] text-neutral-400">
@@ -299,6 +337,22 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
               </div>
               <button type="button" onClick={() => setSettingsOpen(false)} className="runtime-button min-h-9 px-3 text-xs">Done</button>
             </div>
+            <label className="mt-3 block">
+              <span className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">Assistant mode</span>
+              <select
+                data-testid="assistant-mode"
+                value={assistantMode}
+                onChange={(event) => updateAssistantMode(event.target.value as AssistantMode)}
+                className="runtime-input mt-2 min-h-11 w-full"
+              >
+                <option value="GENERAL_CHAT">General chat</option>
+                <option value="AGENTIC_APPLICATION_DEVELOPMENT">Agentic application development</option>
+                <option value="BOTH">Both</option>
+              </select>
+              <span className="mt-1 block text-[10px] leading-4 text-neutral-600">
+                General chat keeps developer tools off. Agentic application development focuses on code and governed workspace work. Both switches naturally between conversation and development.
+              </span>
+            </label>
             <label className="mt-3 block">
               <span className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">System instructions</span>
               <textarea
@@ -325,7 +379,13 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         {messages.length === 0 ? (
           <div className="m-auto max-w-xl text-center">
             <div className="text-lg font-semibold text-white">How can I help?</div>
-            <p className="mt-2 text-xs leading-5 text-neutral-500">Ask naturally about your HHS workspace, runtime, files, applications, receipts, HARMONICODE, or any task supported by the configured assistant.</p>
+            <p className="mt-2 text-xs leading-5 text-neutral-500">
+              {assistantMode === "GENERAL_CHAT"
+                ? "Chat naturally about any topic supported by the configured language model."
+                : assistantMode === "AGENTIC_APPLICATION_DEVELOPMENT"
+                  ? "Describe the application, code, runtime, test, or deployment work you want to develop."
+                  : "Chat naturally, or ask for governed application-development work when you need it."}
+            </p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {[
                 "Summarize the current runtime state.",
@@ -391,7 +451,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
       </form>
 
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-neutral-900 bg-black/35 px-4 py-2 font-mono text-[9px] text-neutral-600">
-        <span>thread={threadId ? short(threadId) : "new"}</span>
+        <span>thread={threadId ? short(threadId) : "new"} · {modeLabel(assistantMode)}</span>
         <span>{latestReceipt}</span>
       </footer>
     </section>
