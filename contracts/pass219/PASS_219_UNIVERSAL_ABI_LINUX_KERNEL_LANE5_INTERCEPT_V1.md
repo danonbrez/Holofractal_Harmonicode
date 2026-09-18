@@ -41,6 +41,19 @@ Mandatory interception includes, at minimum:
 
 The contract governs HHS-originated traffic. It does not claim control over unrelated host processes outside the HHS runtime/process tree.
 
+## 2.1 Supersession of the earlier host-interception exclusion
+
+For HHS-originated traffic, this contract supersedes the RLM20 1.37 statement that host syscall/hardware-bytecode interception is not required.
+
+The updated rule is:
+
+```text
+HHS process/runtime -> runtime ABI or Linux kernel/host ABI
+    => Lane5 interception REQUIRED
+```
+
+This does not claim authority over unrelated operating-system processes outside the HHS process/runtime tree.
+
 ## 3. Direct-path semantics
 
 A direct runtime/kernel dispatch attempt is never silently accepted.
