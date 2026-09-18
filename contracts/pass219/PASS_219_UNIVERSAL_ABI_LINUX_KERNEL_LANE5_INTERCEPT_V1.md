@@ -168,28 +168,49 @@ The queue/cache SHALL:
 
 ### Hardware calibration
 
-Cache capacity SHALL be expressed in exact 648-byte records.
+The authoritative cache-capacity unit is **raw Linux kernel serial-ABI bytes**.
+
+The capacity benchmark SHALL execute outside HHS and SHALL NOT load or invoke VM81, Lane 5, RNA, Hash72, Hash216, or PQC services.
+
+```text
+plain Linux/x86_64 process
+  -> raw serial ABI byte buffer
+  -> linear byte write/read/copy/verify benchmark
+  -> measured maximum raw serial ABI byte capacity
+```
 
 A hardware calibration receipt SHALL identify:
 
 ```text
-serial_bits = 5184
-record_bytes = 648
-byte_order = LITTLE_ENDIAN
+capacity_unit = RAW_LINUX_SERIAL_ABI_BYTES
+max_serial_abi_bytes
 benchmark_window_ns
-measured_linear_records
-measured_linear_bytes = measured_linear_records * 648
 runner / CPU / logical CPU count
+kernel / libc / compiler identity
 benchmark implementation identity
+hhs_present = false
+vm81_services_present = false
+lane5_present = false
+rna_services_present = false
+hash72_present = false
+hash216_present = false
+pqc_present = false
 ```
 
-For one environment, the cache maximum is the largest measured linear 5184-record capacity from the accepted benchmark profile.
+`max_serial_abi_bytes` is the authoritative hardware-capacity quantity.
 
-When several supported hardware-environment profiles are supplied, the implementation records every profile and the selected environment-specific maximum. It SHALL NOT silently apply a measurement from a different environment as though it were local evidence.
+Only after the raw Linux calibration is sealed may Lane 5 derive framing quantities:
 
-The existing saturation-v3 65,536-record / 42,467,328-byte workset may be used only as a `VERIFIED_WORKSET_FLOOR` when no maximum-capacity receipt is installed. That state is development-safe but is **not production calibration acceptance**.
+```text
+derived_5184_frame_slots = floor(max_serial_abi_bytes / 648)
+derived_frame_remainder_bytes = max_serial_abi_bytes mod 648
+```
 
-Cache storage is lazily allocated and evicted to the calibrated byte/record bound; the implementation SHALL NOT preallocate the entire measured maximum.
+Those derived values are execution/cache framing metadata. They are **not** the calibration unit and SHALL NOT be reported as though VM81 measured the hardware capacity.
+
+The existing plain-x86 saturation-v3 C workset of `42,467,328` raw bytes may be used only as a `VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR` when no measured-maximum receipt is installed. That state is development-safe but is **not production calibration acceptance**.
+
+The sandbox SHALL allocate lazily and evict against the raw-byte ceiling. It SHALL NOT preallocate the measured maximum.
 
 ## 10. Acceptance
 
@@ -201,4 +222,6 @@ Acceptance requires:
 4. direct state-affecting dispatch remains blocked until Lane 5 + RNA + PQC evidence is supplied;
 5. read-only traffic is still intercepted;
 6. repository audit identifies unmediated production/runtime crossings;
-7. dependency-scoped repairs drive that violation count to zero for the production runtime scope before deployment acceptance;\n8. the Lane 5 sandbox cache carries a local hardware `MEASURED_MAXIMUM` calibration receipt rather than only the verified workset floor;\n9. bypass/direct traffic is queued and deterministically reordered through Lane 5 optimization before downstream dispatch.
+7. dependency-scoped repairs drive that violation count to zero for the production runtime scope before deployment acceptance;
+8. the Lane 5 sandbox cache carries a local raw-Linux `MEASURED_MAXIMUM` byte-capacity receipt rather than only the verified raw-byte floor;
+9. bypass/direct traffic is queued and deterministically reordered through Lane 5 optimization before downstream dispatch.
