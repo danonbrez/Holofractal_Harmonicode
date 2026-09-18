@@ -199,6 +199,13 @@ pqc_present = false
 
 `max_serial_abi_bytes` is the authoritative hardware-capacity quantity.
 
+A calibration may be classified `MEASURED_MAXIMUM` only when at least one of these is proven:
+
+- the raw probe observes a failed byte boundary above the largest successful span; or
+- the successful probe reaches a ceiling that is itself identified as the Linux/cgroup environment hard byte limit.
+
+A successful arbitrary caller-supplied ceiling is only `MEASURED_LOWER_BOUND` and SHALL NOT satisfy production calibration acceptance.
+
 Only after the raw Linux calibration is sealed may Lane 5 derive framing quantities:
 
 ```text
