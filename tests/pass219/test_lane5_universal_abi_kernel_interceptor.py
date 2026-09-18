@@ -5,6 +5,11 @@ from pathlib import Path
 import pytest
 
 from hhs_runtime.hhs_zero_bypass_runtime_interposer_v1 import PROPAGATION_SURFACES
+from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
+    RAW_CAPACITY_UNIT,
+    VERIFIED_RAW_BYTE_FLOOR,
+    reset_default_sandbox_for_tests,
+)
 from hhs_runtime.pass219.lane5_universal_abi_kernel_interceptor import (
     ADMIT_DOWNSTREAM,
     BLOCK_DIRECT,
@@ -16,6 +21,11 @@ from hhs_runtime.pass219.lane5_universal_abi_kernel_interceptor import (
     direct_dispatch_rejection,
     intercept_abi_traffic,
 )
+
+
+@pytest.fixture(autouse=True)
+def _reset_sandbox() -> None:
+    reset_default_sandbox_for_tests()
 
 
 def test_all_universal_traffic_classes_are_pass036_surfaces() -> None:
@@ -36,6 +46,14 @@ def test_read_only_runtime_abi_is_still_lane5_intercepted() -> None:
     assert envelope["redirected_through_lane5"] is True
     assert envelope["mandatory_optimization_dispatch"] is True
     assert envelope["mandatory_capability_count"] > 0
+    assert envelope["sandbox_queued"] is True
+    assert envelope["sandbox_queue_optimized"] is True
+    assert envelope["sandbox_cache_capacity_unit"] == RAW_CAPACITY_UNIT
+    assert (
+        envelope["sandbox_cache_capacity_raw_serial_abi_bytes"]
+        == VERIFIED_RAW_BYTE_FLOOR
+    )
+    assert envelope["sandbox_cache_production_calibrated"] is False
     decision = authorize_downstream_dispatch(record)
     assert decision["decision"] == ADMIT_DOWNSTREAM
     assert decision["canonical_mutation_allowed"] is False
@@ -54,6 +72,8 @@ def test_state_affecting_linux_traffic_is_blocked_before_mediation() -> None:
     assert envelope["rna_cpp_cell_wall_required"] is True
     assert envelope["signed_environmental_pqc_required"] is True
     assert envelope["linux_host_result_is_external_evidence"] is True
+    assert envelope["sandbox_queued"] is True
+    assert envelope["sandbox_queue_optimized"] is True
 
     with pytest.raises(
         Lane5UniversalTrafficError,
@@ -105,3 +125,5 @@ def test_direct_dispatch_record_forces_lane5_redirect() -> None:
     assert result["redirect_action"] == "LANE5_REMEDIATION_REQUIRED"
     assert result["direct_fallback_allowed"] is False
     assert result["canonical_mutation_allowed"] is False
+    assert result["sandbox_queued"] is True
+    assert result["sandbox_queue_optimized"] is True
