@@ -108,12 +108,16 @@ function legacyCopy(value: string): boolean {
 export interface ProductionAssistantChatProps {
   projectId: string | null
   vectorContextId?: string | null
+  userContext?: Json | null
+  onClearContext?: () => void
   onOpenFiles: () => void
 }
 
 export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = ({
   projectId,
   vectorContextId,
+  userContext,
+  onClearContext,
   onOpenFiles,
 }) => {
   const [health, setHealth] = useState<Json>({})
@@ -250,12 +254,14 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
             workspace_surface: "production_mobile_control",
             vector_identity_visible_to_user: vectorContextId || null,
             vector_payload_auto_attached_to_prompt: false,
+            user_approved_context_attached: Boolean(userContext),
             custom_system_instruction_present: Boolean(instruction),
             assistant_mode: assistantMode,
           },
           content,
           custom_system_instruction: instruction || null,
           assistant_mode: assistantMode,
+          user_context: userContext || null,
         }),
       }, 120000)
 
@@ -421,6 +427,15 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
       </div>
 
       <form onSubmit={(event) => void send(event)} className="border-t border-neutral-800 bg-black/55 p-3 md:p-4">
+        {userContext ? (
+          <div data-testid="assistant-attached-context" className="mb-2 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-cyan-900 bg-cyan-950/20 px-3 py-2">
+            <div className="min-w-0">
+              <div className="text-[10px] uppercase tracking-[0.12em] text-cyan-500">Context attached by you</div>
+              <div className="truncate text-xs text-cyan-100">{text(userContext.source_name, "Selected vector context")} · {text(userContext.modality, "TEXT")}</div>
+            </div>
+            {onClearContext ? <button type="button" onClick={onClearContext} className="runtime-button min-h-9 px-3 text-xs">Remove</button> : null}
+          </div>
+        ) : null}
         <div className="rounded-2xl border border-neutral-700 bg-neutral-950 p-2 focus-within:border-cyan-700">
           <textarea
             value={input}
@@ -436,7 +451,11 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
               <button type="button" onClick={onOpenFiles} className="runtime-button min-h-10 px-3 text-xs">Files</button>
               <button type="button" onClick={() => void pasteClipboard()} className="runtime-button min-h-10 px-3 text-xs">Paste</button>
               <span className="hidden text-[9px] text-neutral-600 sm:inline">
-                {vectorContextId ? `hydrated vector ${short(vectorContextId)} visible` : "no hydrated vector selected"}
+                {userContext
+                  ? `using ${text(userContext.source_name, "user-approved context")}`
+                  : vectorContextId
+                    ? `hydrated vector ${short(vectorContextId)} available · not attached`
+                    : "no hydrated vector selected"}
               </span>
             </div>
             <button type="submit" disabled={busy || !input.trim()} className="min-h-10 rounded-xl bg-cyan-700 px-5 text-sm font-semibold text-white transition hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500">
@@ -446,7 +465,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[9px] leading-4 text-neutral-600">
           <span>{clipboardNotice ? `${clipboardNotice} · ` : ""}Enter sends · Shift+Enter adds a line</span>
-          <span>File/vector ingress is user-controlled; uploaded payloads are not automatically attached to assistant prompts.</span>
+          <span>File/vector ingress is user-controlled; only context you explicitly attach with Use in chat is sent to the assistant.</span>
         </div>
       </form>
 
