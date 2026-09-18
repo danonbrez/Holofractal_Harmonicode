@@ -314,10 +314,21 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
               ) : null}
 
               {Object.keys(vectorQuery).length > 0 ? (
-                <details open className="rounded-2xl border border-cyan-950 bg-black/40 p-3">
-                  <summary className="cursor-pointer text-xs font-medium text-cyan-300">Persisted vector readback</summary>
-                  <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[10px] text-neutral-400">{JSON.stringify(vectorQuery, null, 2)}</pre>
-                </details>
+                <section className="rounded-2xl border border-cyan-950 bg-cyan-950/10 p-3">
+                  <div className="text-xs font-semibold text-cyan-200">Persisted vector retrieved</div>
+                  <p className="mt-1 text-[11px] leading-5 text-neutral-400">
+                    The encrypted Hash216 vector-store record was read successfully for this hydration operation. Technical fields stay hidden unless you choose to inspect them.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-neutral-500">
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">status {text(vectorQuery.classification, "available")}</span>
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">operation {short(operationKey)}</span>
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">mutation authority {vectorQuery.mutation_authority ? "yes" : "no"}</span>
+                  </div>
+                  <details className="mt-3 rounded-xl border border-neutral-800 bg-black/40 p-3">
+                    <summary className="cursor-pointer text-xs font-medium text-neutral-300">Inspect technical JSON</summary>
+                    <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[10px] text-neutral-500">{JSON.stringify(vectorQuery, null, 2)}</pre>
+                  </details>
+                </section>
               ) : null}
             </div>
           </div>
