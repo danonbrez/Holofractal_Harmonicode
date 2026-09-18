@@ -1,0 +1,95 @@
+name: Pass 219 Universal ABI Linux Kernel Lane 5 Intercept
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'contracts/pass219/PASS_219_UNIVERSAL_ABI_LINUX_KERNEL_LANE5_INTERCEPT_V1.md'
+      - 'hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py'
+      - 'hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_lane5_universal_abi_kernel_interceptor.py'
+      - 'tools/pass219/audit_lane5_universal_abi_kernel.py'
+      - '.github/workflows/pass219-universal-abi-linux-kernel-lane5-intercept.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  universal-intercept-unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install focused dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Validate universal Lane 5 traffic envelope
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_lane5_universal_abi_kernel_interceptor.py
+
+      - name: Regress Pass 036 zero-bypass interposer
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_zero_bypass_runtime_interposer_v1 import (
+              PROPAGATION_SURFACES,
+              zero_bypass_runtime_interposer_self_test,
+          )
+          required={
+              'runtime.abi','linux.kernel.abi','native.ctypes','native.subprocess',
+              'linux.file.io','linux.socket.io','vmrc.compatibility',
+              'cache.replay.commit','api.runtime','websocket.runtime',
+              'plugin.runtime','gpu.worker',
+          }
+          assert required.issubset(PROPAGATION_SURFACES)
+          result=zero_bypass_runtime_interposer_self_test()
+          assert result['ok'] is True, result
+          print('universal_pass036_surfaces=PASS', len(PROPAGATION_SURFACES))
+          PY
+
+      - name: Audit canonical authority exports remain closed
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_environment_admit_signed_raw$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+
+  production-crossing-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit direct runtime and Linux-host crossings
+        run: |
+          set +e
+          python tools/pass219/audit_lane5_universal_abi_kernel.py | tee /tmp/lane5-audit.json
+          status=${PIPESTATUS[0]}
+          set -e
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/lane5-audit.json'))
+          print('finding_count=',r['finding_count'])
+          print('unmediated_count=',r['unmediated_count'])
+          for item in r['unmediated']:
+              print(f"{item['classification']} {item['path']}:{item['line']} {item['pattern']}")
+          PY
+          exit "$status"
