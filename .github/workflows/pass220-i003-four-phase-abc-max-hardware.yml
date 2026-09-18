@@ -1,4 +1,4 @@
-name: Pass 220 I003 Cold Raw x86_64 Calibration + Query Integration
+name: Pass 220 I003-I004 Cold Raw x86_64 Calibration + Genesis Halt Integration
 
 on:
   pull_request:
@@ -7,6 +7,10 @@ on:
       - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
       - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
       - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py'
+      - 'tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'docs/pass220/PASS_220_I004_GENESIS_ZERO_SUM_LO_SHU_GLOBAL_HALT.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -17,6 +21,10 @@ on:
       - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
       - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
       - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py'
+      - 'tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'docs/pass220/PASS_220_I004_GENESIS_ZERO_SUM_LO_SHU_GLOBAL_HALT.md'
       - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
       - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
       - 'docs/operations/restart/PASS_220_I003_*'
@@ -85,11 +93,14 @@ jobs:
           python -m py_compile \
             hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
             hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py \
+            hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py \
+            hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py \
             benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
             tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py \
-            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py
+            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py
 
-      - name: Run dependency-scoped I001-I003 integration tests
+      - name: Run dependency-scoped I001-I004 integration tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -101,6 +112,7 @@ jobs:
             tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py \
             tests/pass220/test_hhs_pass220_holographic_hash216_query_v1.py \
             tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py \
             | tee /tmp/pass220-i003/integration-tests.txt
 
       - name: Record raw-capacity normalization facts
