@@ -326,6 +326,7 @@ class ProductionAssistantService:
                     user_message=user_message,
                     tools=tools,
                     response_format=response_format,
+                    custom_system_instruction=custom_system_instruction,
                 )
                 if self._completed(native_result):
                     native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
