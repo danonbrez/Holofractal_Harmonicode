@@ -18,7 +18,7 @@ from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
 
 
 class CaptureTransport:
-    provider_id = "provider:test.capture"
+    provider_id = "provider:hhs.litert_lm.gemma4"
     requested_operation = "litert_lm.chat_completion"
 
     def __init__(self) -> None:
