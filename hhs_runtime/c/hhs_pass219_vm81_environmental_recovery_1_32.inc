@@ -917,7 +917,7 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     status = hhs_p219_pqc_admit_signed_with_cell_wall_evidence(
         pass_number, signature_algorithm, input, candidate_frame,
         parent_hash216_reference, &prepared, &decision,
-        lo_shu_group, g243, feedback_lane, feedback_trinary,
+        lo_shu_group, g243,
         out_committed_frame, out_admission,
         out_firewall_receipt, out_signature_receipt);
     out_firewall_receipt->lane5_mediated = 1U;
