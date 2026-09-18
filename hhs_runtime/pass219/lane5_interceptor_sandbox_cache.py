@@ -1,16 +1,12 @@
-"""Lane 5 sandboxed bypass queue and exact 5184-bit execution cache.
+"""Lane 5 sandboxed bypass queue and raw-byte-calibrated execution cache.
 
-The cache is a candidate-only optimization surface.  Its payload unit is the
-repository's exact VM81 carrier: 5,184 serial bits == 648 little-endian bytes.
+Hardware capacity authority is measured outside HHS in raw Linux serial-ABI
+bytes.  The benchmark must not load or call VM81, Lane 5, RNA, Hash72,
+Hash216, or PQC services.
 
-Capacity is hardware-calibrated from an explicit linear-workset benchmark
-receipt.  Without such a receipt the implementation may use the already-proven
-65,536-record saturation-v3 workset only as a development floor; that state is
-not production calibration acceptance.
-
-All direct/bypass traffic is queued.  Reordering is deterministic and preserves
-FIFO order within a state-affecting dependency chain.  Cache/replay-compatible
-heads are preferred over fresh work across independent chains.
+Only after that raw byte ceiling is sealed does this cache derive how many
+648-byte / 5,184-bit Lane 5 carrier frames can fit inside the budget.
+Those derived frame counts are not hardware benchmark units.
 """
 from __future__ import annotations
 
@@ -24,24 +20,26 @@ import platform
 from threading import RLock
 from typing import Any, Mapping
 
-SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_SANDBOX_CACHE_V1"
-CALIBRATION_SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_CACHE_CALIBRATION_V1"
-QUEUE_RECEIPT_SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_QUEUE_RECEIPT_V1"
-CACHE_RECEIPT_SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_CACHE_RECEIPT_V1"
+SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_SANDBOX_CACHE_V2"
+CALIBRATION_SCHEMA = "HHS_PASS219_LANE5_RAW_LINUX_SERIAL_ABI_CALIBRATION_V1"
+QUEUE_RECEIPT_SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_QUEUE_RECEIPT_V2"
+CACHE_RECEIPT_SCHEMA = "HHS_PASS219_LANE5_INTERCEPTOR_CACHE_RECEIPT_V2"
 
-SERIAL_BITS = 5184
-RECORD_BYTES = 648
-VM81_WORDS = 81
-WORD_BITS = 64
-BYTE_ORDER = "LITTLE_ENDIAN"
-BIT_ORDER = "LSB0_PER_UINT64_CELL"
+RAW_CAPACITY_UNIT = "RAW_LINUX_SERIAL_ABI_BYTES"
 
-VERIFIED_FLOOR_RECORDS = 65_536
-VERIFIED_FLOOR_BYTES = VERIFIED_FLOOR_RECORDS * RECORD_BYTES
+# Lane 5 framing metadata.  These constants do NOT define hardware capacity.
+FRAME_SERIAL_BITS = 5184
+FRAME_BYTES = 648
+FRAME_BYTE_ORDER = "LITTLE_ENDIAN"
+FRAME_BIT_ORDER = "LSB0_PER_UINT64_CELL"
+
+# Existing plain-x86 saturation-v3 C workset.  It is a verified raw-byte floor,
+# not a measured maximum and therefore is never production calibration.
+VERIFIED_RAW_BYTE_FLOOR = 42_467_328
 DEFAULT_CALIBRATION_ENV = "HHS_PASS219_LANE5_INTERCEPT_CACHE_CALIBRATION"
 
 MEASURED_MAXIMUM = "MEASURED_MAXIMUM"
-VERIFIED_WORKSET_FLOOR = "VERIFIED_WORKSET_FLOOR"
+VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR = "VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR"
 
 
 class Lane5SandboxCacheError(RuntimeError):
@@ -98,43 +96,61 @@ def _local_environment_id() -> dict[str, Any]:
 class Lane5CacheCalibration:
     schema: str
     classification: str
-    serial_bits: int
-    record_bytes: int
-    vm81_words: int
-    word_bits: int
-    byte_order: str
-    bit_order: str
-    max_records: int
-    max_bytes: int
+    capacity_unit: str
+    max_serial_abi_bytes: int
     benchmark_window_ns: int
     benchmark_id: str
     environment: dict[str, Any]
+    hhs_present: bool
+    vm81_services_present: bool
+    lane5_present: bool
+    rna_services_present: bool
+    hash72_present: bool
+    hash216_present: bool
+    pqc_present: bool
     evidence_sha256: str
     production_accepted: bool
 
+    @property
+    def derived_5184_frame_slots(self) -> int:
+        return self.max_serial_abi_bytes // FRAME_BYTES
+
+    @property
+    def derived_frame_remainder_bytes(self) -> int:
+        return self.max_serial_abi_bytes % FRAME_BYTES
+
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        data = asdict(self)
+        data["derived_5184_frame_slots"] = self.derived_5184_frame_slots
+        data["derived_frame_remainder_bytes"] = self.derived_frame_remainder_bytes
+        data["derived_frame_bytes"] = FRAME_BYTES
+        data["derived_frame_serial_bits"] = FRAME_SERIAL_BITS
+        data["derived_frame_byte_order"] = FRAME_BYTE_ORDER
+        data["derived_frame_bit_order"] = FRAME_BIT_ORDER
+        data["derived_values_are_hardware_capacity_authority"] = False
+        return data
 
     @staticmethod
     def verified_floor() -> "Lane5CacheCalibration":
         body = {
-            "classification": VERIFIED_WORKSET_FLOOR,
-            "serial_bits": SERIAL_BITS,
-            "record_bytes": RECORD_BYTES,
-            "vm81_words": VM81_WORDS,
-            "word_bits": WORD_BITS,
-            "byte_order": BYTE_ORDER,
-            "bit_order": BIT_ORDER,
-            "max_records": VERIFIED_FLOOR_RECORDS,
-            "max_bytes": VERIFIED_FLOOR_BYTES,
+            "classification": VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR,
+            "capacity_unit": RAW_CAPACITY_UNIT,
+            "max_serial_abi_bytes": VERIFIED_RAW_BYTE_FLOOR,
             "benchmark_window_ns": 0,
-            "benchmark_id": "SATURATION_V3_WORKSET_FLOOR_65536x648",
+            "benchmark_id": "PLAIN_X86_SATURATION_V3_RAW_WORKSET_FLOOR",
             "environment": _local_environment_id(),
+            "hhs_present": False,
+            "vm81_services_present": False,
+            "lane5_present": False,
+            "rna_services_present": False,
+            "hash72_present": False,
+            "hash216_present": False,
+            "pqc_present": False,
             "production_accepted": False,
         }
         return Lane5CacheCalibration(
             schema=CALIBRATION_SCHEMA,
-            evidence_sha256=_digest("LANE5_CACHE_FLOOR", body),
+            evidence_sha256=_digest("LANE5_RAW_BYTE_FLOOR", body),
             **body,
         )
 
@@ -146,28 +162,30 @@ class Lane5CacheCalibration:
             raise Lane5SandboxCacheError(
                 "LANE5_CACHE_CALIBRATION_MEASURED_MAXIMUM_REQUIRED"
             )
-        required_exact = {
-            "serial_bits": SERIAL_BITS,
-            "record_bytes": RECORD_BYTES,
-            "vm81_words": VM81_WORDS,
-            "word_bits": WORD_BITS,
-            "byte_order": BYTE_ORDER,
-            "bit_order": BIT_ORDER,
-        }
-        for key, expected in required_exact.items():
-            if evidence.get(key) != expected:
-                raise Lane5SandboxCacheError(
-                    f"LANE5_CACHE_CALIBRATION_CARRIER_DRIFT:{key}"
-                )
-        records = evidence.get("max_records")
-        maximum_bytes = evidence.get("max_bytes")
+        if evidence.get("capacity_unit") != RAW_CAPACITY_UNIT:
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_RAW_BYTE_UNIT_REQUIRED"
+            )
+
+        maximum_bytes = evidence.get("max_serial_abi_bytes")
         window_ns = evidence.get("benchmark_window_ns")
-        if isinstance(records, bool) or not isinstance(records, int) or records <= 0:
-            raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_RECORDS_INVALID")
-        if maximum_bytes != records * RECORD_BYTES:
-            raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_BYTES_DRIFT")
-        if isinstance(window_ns, bool) or not isinstance(window_ns, int) or window_ns <= 0:
-            raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_WINDOW_INVALID")
+        if (
+            isinstance(maximum_bytes, bool)
+            or not isinstance(maximum_bytes, int)
+            or maximum_bytes <= 0
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_RAW_BYTES_INVALID"
+            )
+        if (
+            isinstance(window_ns, bool)
+            or not isinstance(window_ns, int)
+            or window_ns <= 0
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_WINDOW_INVALID"
+            )
+
         environment = dict(evidence.get("environment") or {})
         if not environment:
             raise Lane5SandboxCacheError(
@@ -178,18 +196,34 @@ class Lane5CacheCalibration:
             raise Lane5SandboxCacheError(
                 "LANE5_CACHE_CALIBRATION_BENCHMARK_ID_REQUIRED"
             )
+
+        service_flags = {
+            "hhs_present": evidence.get("hhs_present"),
+            "vm81_services_present": evidence.get("vm81_services_present"),
+            "lane5_present": evidence.get("lane5_present"),
+            "rna_services_present": evidence.get("rna_services_present"),
+            "hash72_present": evidence.get("hash72_present"),
+            "hash216_present": evidence.get("hash216_present"),
+            "pqc_present": evidence.get("pqc_present"),
+        }
+        for key, value in service_flags.items():
+            if value is not False:
+                raise Lane5SandboxCacheError(
+                    f"LANE5_CACHE_CALIBRATION_SERVICE_CONTAMINATION:{key}"
+                )
+
         receipt_body = {
             "classification": MEASURED_MAXIMUM,
-            **required_exact,
-            "max_records": records,
-            "max_bytes": maximum_bytes,
+            "capacity_unit": RAW_CAPACITY_UNIT,
+            "max_serial_abi_bytes": maximum_bytes,
             "benchmark_window_ns": window_ns,
             "benchmark_id": benchmark_id,
             "environment": environment,
+            **service_flags,
             "production_accepted": True,
         }
         declared = str(evidence.get("evidence_sha256") or "")
-        computed = _digest("LANE5_CACHE_CALIBRATION", receipt_body)
+        computed = _digest("LANE5_RAW_LINUX_SERIAL_ABI_CALIBRATION", receipt_body)
         if declared and declared != computed:
             raise Lane5SandboxCacheError(
                 "LANE5_CACHE_CALIBRATION_EVIDENCE_DIGEST_DRIFT"
@@ -265,8 +299,16 @@ class Lane5InterceptorSandboxCache:
                 "processed_receipts": len(self._processed),
                 "cache_entries": len(self._cache),
                 "resident_payload_bytes": self._resident_payload_bytes,
-                "capacity_records": self.calibration.max_records,
-                "capacity_bytes": self.calibration.max_bytes,
+                "capacity_unit": RAW_CAPACITY_UNIT,
+                "capacity_raw_serial_abi_bytes": (
+                    self.calibration.max_serial_abi_bytes
+                ),
+                "derived_5184_frame_slots": (
+                    self.calibration.derived_5184_frame_slots
+                ),
+                "derived_frame_remainder_bytes": (
+                    self.calibration.derived_frame_remainder_bytes
+                ),
                 "production_calibrated": self.calibration.production_accepted,
                 "candidate_only": True,
                 "canonical_vm81_mutation_authority": False,
@@ -283,9 +325,9 @@ class Lane5InterceptorSandboxCache:
             value = payload.get(key)
             if isinstance(value, (bytes, bytearray, memoryview)):
                 raw = bytes(value)
-                if len(raw) != RECORD_BYTES:
+                if len(raw) != FRAME_BYTES:
                     raise Lane5SandboxCacheError(
-                        f"LANE5_CACHE_FRAME_MUST_BE_{RECORD_BYTES}_BYTES:{key}"
+                        f"LANE5_CACHE_FRAME_MUST_BE_{FRAME_BYTES}_BYTES:{key}"
                     )
                 return raw
         return None
@@ -309,8 +351,6 @@ class Lane5InterceptorSandboxCache:
             value = payload.get(key)
             if isinstance(value, str) and value:
                 return f"{key}:{value}"
-        # Unknown stateful traffic is serialized as one dependency chain rather
-        # than reordered speculatively.
         return "GLOBAL_STATE_AFFECTING_CHAIN"
 
     def enqueue(
@@ -383,12 +423,20 @@ class Lane5InterceptorSandboxCache:
                 "dependency_root": dependency_root,
                 "cache_hit_at_enqueue": cache_hit,
                 "reusable_hint": reusable_hint,
-                "serial_bits": SERIAL_BITS,
-                "record_bytes": RECORD_BYTES,
-                "byte_order": BYTE_ORDER,
+                "capacity_unit": RAW_CAPACITY_UNIT,
+                "capacity_raw_serial_abi_bytes": (
+                    self.calibration.max_serial_abi_bytes
+                ),
+                "derived_5184_frame_slots": (
+                    self.calibration.derived_5184_frame_slots
+                ),
+                "derived_frame_remainder_bytes": (
+                    self.calibration.derived_frame_remainder_bytes
+                ),
+                "frame_serial_bits": FRAME_SERIAL_BITS,
+                "frame_bytes": FRAME_BYTES,
+                "frame_byte_order": FRAME_BYTE_ORDER,
                 "calibration_classification": self.calibration.classification,
-                "capacity_records": self.calibration.max_records,
-                "capacity_bytes": self.calibration.max_bytes,
                 "production_calibrated": self.calibration.production_accepted,
             }
 
@@ -400,9 +448,6 @@ class Lane5InterceptorSandboxCache:
 
     @staticmethod
     def _priority(item: _QueueItem) -> tuple[int, int, int, int]:
-        # Lower tuple wins.  Reuse/cached candidates are the first optimization
-        # objective across independent chains.  Read-only observation may run
-        # ahead of independent stateful work but never ahead inside one chain.
         return (
             0 if item.cache_hit else 1,
             0 if item.reusable_hint else 1,
@@ -491,9 +536,9 @@ class Lane5InterceptorSandboxCache:
         source_ticket: str,
     ) -> dict[str, Any]:
         raw = bytes(frame_le)
-        if len(raw) != RECORD_BYTES:
+        if len(raw) != FRAME_BYTES:
             raise Lane5SandboxCacheError(
-                f"LANE5_CACHE_FRAME_MUST_BE_{RECORD_BYTES}_BYTES"
+                f"LANE5_CACHE_FRAME_MUST_BE_{FRAME_BYTES}_BYTES"
             )
         result = dict(candidate_result)
         if result.get("candidate_only") is not True:
@@ -512,34 +557,38 @@ class Lane5InterceptorSandboxCache:
         with self._lock:
             prior = self._cache.pop(cache_key, None)
             if prior is not None:
-                self._resident_payload_bytes -= RECORD_BYTES
+                self._resident_payload_bytes -= len(prior.frame_le)
             while (
                 self._cache
-                and (
-                    len(self._cache) >= self.calibration.max_records
-                    or self._resident_payload_bytes + RECORD_BYTES
-                    > self.calibration.max_bytes
-                )
+                and self._resident_payload_bytes + FRAME_BYTES
+                > self.calibration.max_serial_abi_bytes
             ):
                 _, evicted = self._cache.popitem(last=False)
                 self._resident_payload_bytes -= len(evicted.frame_le)
-            if self.calibration.max_records < 1 or self.calibration.max_bytes < RECORD_BYTES:
-                raise Lane5SandboxCacheError("LANE5_CACHE_CALIBRATION_TOO_SMALL")
+            if self.calibration.max_serial_abi_bytes < FRAME_BYTES:
+                raise Lane5SandboxCacheError(
+                    "LANE5_CACHE_RAW_BYTE_CALIBRATION_TOO_SMALL"
+                )
             self._cache[cache_key] = _CacheEntry(
                 key=cache_key,
                 frame_le=raw,
                 candidate_result=_normalize(result),
                 source_ticket=source_ticket,
             )
-            self._resident_payload_bytes += RECORD_BYTES
+            self._resident_payload_bytes += FRAME_BYTES
             return {
                 "schema": CACHE_RECEIPT_SCHEMA,
                 "cache_key": cache_key,
                 "stored": True,
                 "entry_count": len(self._cache),
                 "resident_payload_bytes": self._resident_payload_bytes,
-                "capacity_records": self.calibration.max_records,
-                "capacity_bytes": self.calibration.max_bytes,
+                "capacity_unit": RAW_CAPACITY_UNIT,
+                "capacity_raw_serial_abi_bytes": (
+                    self.calibration.max_serial_abi_bytes
+                ),
+                "derived_5184_frame_slots": (
+                    self.calibration.derived_5184_frame_slots
+                ),
                 "candidate_only": True,
                 "canonical_mutation_authority": False,
             }
@@ -569,20 +618,22 @@ def reset_default_sandbox_for_tests(
 
 
 __all__ = [
-    "BIT_ORDER",
-    "BYTE_ORDER",
     "CALIBRATION_SCHEMA",
+    "CACHE_RECEIPT_SCHEMA",
     "DEFAULT_CALIBRATION_ENV",
+    "FRAME_BIT_ORDER",
+    "FRAME_BYTE_ORDER",
+    "FRAME_BYTES",
+    "FRAME_SERIAL_BITS",
     "Lane5CacheCalibration",
     "Lane5InterceptorSandboxCache",
     "Lane5SandboxCacheError",
     "MEASURED_MAXIMUM",
-    "RECORD_BYTES",
+    "QUEUE_RECEIPT_SCHEMA",
+    "RAW_CAPACITY_UNIT",
     "SCHEMA",
-    "SERIAL_BITS",
-    "VERIFIED_FLOOR_BYTES",
-    "VERIFIED_FLOOR_RECORDS",
-    "VERIFIED_WORKSET_FLOOR",
+    "VERIFIED_RAW_BYTE_FLOOR",
+    "VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR",
     "default_sandbox_cache",
     "load_calibration",
     "reset_default_sandbox_for_tests",
