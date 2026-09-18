@@ -98,8 +98,14 @@ class Lane5CacheCalibration:
     classification: str
     capacity_unit: str
     max_serial_abi_bytes: int
+    probe_ceiling_bytes: int
+    page_size: int
+    probe_attempts: int
     benchmark_window_ns: int
     benchmark_id: str
+    kernel_id: str
+    libc_id: str
+    compiler_id: str
     environment: dict[str, Any]
     hhs_present: bool
     vm81_services_present: bool
@@ -136,8 +142,14 @@ class Lane5CacheCalibration:
             "classification": VERIFIED_RAW_LINUX_SERIAL_BYTE_FLOOR,
             "capacity_unit": RAW_CAPACITY_UNIT,
             "max_serial_abi_bytes": VERIFIED_RAW_BYTE_FLOOR,
+            "probe_ceiling_bytes": VERIFIED_RAW_BYTE_FLOOR,
+            "page_size": 0,
+            "probe_attempts": 0,
             "benchmark_window_ns": 0,
             "benchmark_id": "PLAIN_X86_SATURATION_V3_RAW_WORKSET_FLOOR",
+            "kernel_id": "UNSEALED_FLOOR",
+            "libc_id": "UNSEALED_FLOOR",
+            "compiler_id": "UNSEALED_FLOOR",
             "environment": _local_environment_id(),
             "hhs_present": False,
             "vm81_services_present": False,
@@ -186,16 +198,56 @@ class Lane5CacheCalibration:
                 "LANE5_CACHE_CALIBRATION_WINDOW_INVALID"
             )
 
+        probe_ceiling = evidence.get("probe_ceiling_bytes")
+        page_size = evidence.get("page_size")
+        probe_attempts = evidence.get("probe_attempts")
+        if (
+            isinstance(probe_ceiling, bool)
+            or not isinstance(probe_ceiling, int)
+            or probe_ceiling < maximum_bytes
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_PROBE_CEILING_INVALID"
+            )
+        if (
+            isinstance(page_size, bool)
+            or not isinstance(page_size, int)
+            or page_size <= 0
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_PAGE_SIZE_INVALID"
+            )
+        if (
+            isinstance(probe_attempts, bool)
+            or not isinstance(probe_attempts, int)
+            or probe_attempts <= 0
+        ):
+            raise Lane5SandboxCacheError(
+                "LANE5_CACHE_CALIBRATION_PROBE_ATTEMPTS_INVALID"
+            )
+
         environment = dict(evidence.get("environment") or {})
         if not environment:
             raise Lane5SandboxCacheError(
                 "LANE5_CACHE_CALIBRATION_ENVIRONMENT_REQUIRED"
             )
         benchmark_id = str(evidence.get("benchmark_id") or "")
+        kernel_id = str(evidence.get("kernel_id") or "")
+        libc_id = str(evidence.get("libc_id") or "")
+        compiler_id = str(evidence.get("compiler_id") or "")
         if not benchmark_id:
             raise Lane5SandboxCacheError(
                 "LANE5_CACHE_CALIBRATION_BENCHMARK_ID_REQUIRED"
             )
+        for label, value in (
+            ("KERNEL_ID", kernel_id),
+            ("LIBC_ID", libc_id),
+            ("COMPILER_ID", compiler_id),
+        ):
+            if not value:
+                raise Lane5SandboxCacheError(
+                    f"LANE5_CACHE_CALIBRATION_{label}_REQUIRED"
+                )
 
         service_flags = {
             "hhs_present": evidence.get("hhs_present"),
@@ -216,8 +268,14 @@ class Lane5CacheCalibration:
             "classification": MEASURED_MAXIMUM,
             "capacity_unit": RAW_CAPACITY_UNIT,
             "max_serial_abi_bytes": maximum_bytes,
+            "probe_ceiling_bytes": probe_ceiling,
+            "page_size": page_size,
+            "probe_attempts": probe_attempts,
             "benchmark_window_ns": window_ns,
             "benchmark_id": benchmark_id,
+            "kernel_id": kernel_id,
+            "libc_id": libc_id,
+            "compiler_id": compiler_id,
             "environment": environment,
             **service_flags,
             "production_accepted": True,
