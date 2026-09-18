@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Pass 220 I003 four-phase A:B:C max-hardware query calibration.
+"""Pass 220 I003 post-calibration query-comparison harness.
+
+This module is NOT the max-hardware calibration authority.  I003.1 moved that
+measurement to the cold x86_64 raw-byte Bash workload before any HHS/runtime
+build or service execution.
 
 A = I002 holographic compositional ranking
 B = inherited Pass 219 Lane 5 three-Hash72-segment ranking
-C = raw exact cyclic Hash216 symbol-distance control
+C = exact cyclic Hash216-symbol comparison
 
 All three arms receive the same deterministic query/candidate identities.
-Timing is observational only.
+Timing is observational and post-calibration only.
 """
 from __future__ import annotations
 
@@ -29,7 +33,7 @@ from hhs_runtime.hhs_pass220_holographic_hash216_query_v1 import (
     rank_and_sample_candidates,
 )
 
-SCHEMA = "HHS_PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION_V1"
+SCHEMA = "HHS_PASS_220_I003_POST_CALIBRATION_QUERY_COMPARISON_V1"
 PHASES = (("xy", 0, 36), ("yx", 36, 0), ("zw", 18, 54), ("wz", 54, 18))
 ARMS = ("A", "B", "C")
 BASE_COUNTS = (8, 16, 32, 64, 128, 256, 512, 1024, 2048)
@@ -297,6 +301,9 @@ def run(
     elapsed_global = time.perf_counter_ns() - started_global
     return {
         "schema": SCHEMA,
+        "hardware_calibration_authority": False,
+        "post_calibration_integration_only": True,
+        "cold_raw_byte_calibration_required_for_hardware_claim": True,
         "phases": [phase for phase, _, _ in PHASES],
         "arm_definitions": {
             "A": "I002_HOLOGRAPHIC_COMPOSITION_RANKING",
