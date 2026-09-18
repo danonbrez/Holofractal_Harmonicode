@@ -96,6 +96,7 @@ jobs:
           HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
           HHS_PASS220_I003_INTEGRATION: '1'
         run: |
+          set -o pipefail
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py \
             tests/pass220/test_hhs_pass220_holographic_hash216_query_v1.py \
@@ -114,7 +115,8 @@ jobs:
             echo "cold_raw_yx_max_bytes=$PHASE_YX_MAX_BYTES"
             echo "cold_raw_zw_max_bytes=$PHASE_ZW_MAX_BYTES"
             echo "cold_raw_wz_max_bytes=$PHASE_WZ_MAX_BYTES"
-            echo "cold_raw_5184_state_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 5184))"
+            echo "cold_raw_5184_bit_state_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 648))"
+            echo "cold_raw_5184_bit_state_remainder_bytes=$((GLOBAL_MAX_CLOSED_BYTES % 648))"
             echo "cold_raw_hash216_byte_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 216))"
             echo "hardware_calibration_used_hhs=0"
             echo "hardware_calibration_used_runtime_abi=0"
