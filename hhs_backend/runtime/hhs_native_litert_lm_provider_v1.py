@@ -310,6 +310,7 @@ class HHSNativeLiteRTLMTransport:
         if (
             not selections
             and mode == ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT
+            and _looks_like_development_request(query)
             and not _looks_like_harmonicode_expression(query)
         ):
             add("hhs_repository_search", {"query": query, "limit": 5})
