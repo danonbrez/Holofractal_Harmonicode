@@ -99,6 +99,12 @@ int main(int argc, char **argv) {
                  "source A/B not P2 definitions") ||
         !require(descriptor.full_symbolic_uqcel_v1_promoted == 0U,
                  "legacy full-symbolic UQCEL not silently promoted") ||
+        !require(descriptor.vm81_transport_admission == 0U,
+                 "I162 does not perform canonical VM81 admission") ||
+        !require(descriptor.candidate_only_execution == 1U,
+                 "I162 candidate-only execution") ||
+        !require(descriptor.requires_environmental_lane5_admission == 1U,
+                 "I162 requires Lane 5 environmental admission") ||
         !require(descriptor.floating_point_authority == 0U,
                  "no floating-point authority") ||
         !require(descriptor.hash216_persistence_authority == 0U,
@@ -126,10 +132,14 @@ int main(int argc, char **argv) {
                  "VM81 A/B compatibility transport only") ||
         !require(execution.source_ab_definitionally_p2 == 0U,
                  "source boundaries remain non-P2 definitions") ||
-        !require(execution.exact_vm81_admission_verified == 1U,
-                 "VM81 admission verified") ||
-        !require(execution.atomic_commit_verified == 1U,
-                 "atomic commit verified") ||
+        !require(execution.exact_vm81_admission_verified == 0U,
+                 "I162 does not claim canonical VM81 admission") ||
+        !require(execution.atomic_commit_verified == 0U,
+                 "I162 does not claim atomic canonical commit") ||
+        !require(execution.candidate_only_execution_verified == 1U,
+                 "candidate-only execution verified") ||
+        !require(execution.requires_environmental_lane5_admission == 1U,
+                 "canonical continuation requires Lane 5 environmental admission") ||
         !require(execution.hash72_receipt_verified == 1U,
                  "Hash72 receipt verified") ||
         !require(execution.hash216_proof_identity_verified == 1U,
@@ -138,9 +148,9 @@ int main(int argc, char **argv) {
                  "deterministic replay verified") ||
         !require(execution.source_reconstruction_verified == 1U,
                  "source reconstruction lineage verified") ||
-        !require(execution.vm81_steps == 1U &&
-                     execution.replay_vm81_steps == 1U,
-                 "bounded VM81/replay steps") ||
+        !require(execution.vm81_steps == 0U &&
+                     execution.replay_vm81_steps == 0U,
+                 "candidate replay performs no VM81 commit steps") ||
         !require(strcmp(execution.receipt_hash72,
                         execution.replay_hash72) == 0,
                  "replay receipt identical") ||
@@ -156,10 +166,16 @@ int main(int argc, char **argv) {
                  "I162 direct Pass169 provider") ||
         !require(direct_proof.whole_expression_constraint_graph_verified == 1U,
                  "whole constraint graph verified") ||
-        !require(direct_proof.exact_vm81_admission_verified == 1U,
-                 "proof VM81 admission") ||
-        !require(direct_proof.atomic_commit_verified == 1U,
-                 "proof atomic commit") ||
+        !require(direct_proof.exact_vm81_admission_verified == 0U,
+                 "proof does not claim canonical VM81 admission") ||
+        !require(direct_proof.atomic_commit_verified == 0U,
+                 "proof does not claim atomic canonical commit") ||
+        !require(direct_proof.candidate_only_execution_verified == 1U,
+                 "provider candidate-only execution") ||
+        !require(direct_proof.requires_environmental_lane5_admission == 1U,
+                 "provider requires Lane 5 environmental admission") ||
+        !require(direct_proof.canonical_admission_lane5_mediated == 0U,
+                 "provider itself did not perform canonical admission") ||
         !require(direct_proof.hash72_receipt_verified == 1U,
                  "proof Hash72 receipt") ||
         !require(direct_proof.hash216_proof_identity_verified == 1U,
@@ -209,6 +225,10 @@ int main(int argc, char **argv) {
                  "membrane input ready") ||
         !require(binding.canonical_monolithic_proof == 1U,
                  "binder canonical monolithic proof") ||
+        !require(binding.provider_candidate_only_execution == 1U,
+                 "binder preserves candidate-only provider semantics") ||
+        !require(binding.requires_environmental_lane5_admission == 1U,
+                 "binder requires downstream Lane 5 environmental admission") ||
         !require(binding.whole_equation_propagated == 1U,
                  "whole equation propagated") ||
         !require(binding.membrane_result.all_nested_boolean_gates_true == 1U,
