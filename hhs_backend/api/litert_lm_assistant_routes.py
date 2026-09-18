@@ -31,6 +31,7 @@ class SendMessageRequest(BaseModel):
     tools: Optional[List[Dict[str, Any]]] = None
     response_format: Optional[Dict[str, Any]] = None
     custom_system_instruction: Optional[str] = Field(default=None, max_length=8192)
+    assistant_mode: str = Field(default="BOTH", min_length=4, max_length=64)
 
 
 class ChatRequest(CreateThreadRequest, SendMessageRequest):
@@ -125,6 +126,7 @@ async def assistant_send_message(
             tools=request.tools,
             response_format=request.response_format,
             custom_system_instruction=request.custom_system_instruction,
+            assistant_mode=request.assistant_mode,
         )
     except KeyError as exc:
         raise HTTPException(
@@ -163,6 +165,7 @@ async def assistant_chat(request: ChatRequest) -> Dict[str, Any]:
             tools=request.tools,
             response_format=request.response_format,
             custom_system_instruction=request.custom_system_instruction,
+            assistant_mode=request.assistant_mode,
         )
     except KeyError as exc:
         raise HTTPException(
@@ -171,6 +174,15 @@ async def assistant_chat(request: ChatRequest) -> Dict[str, Any]:
                 "schema": "HHS_AI_CONVERSATION_THREAD_NOT_FOUND_V1",
                 "ok": False,
                 "thread_id": thread_id,
+            },
+        ) from exc
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "schema": "HHS_AI_CONVERSATION_MESSAGE_REJECTION_V1",
+                "ok": False,
+                "reason": str(exc),
             },
         ) from exc
 
@@ -204,6 +216,7 @@ async def assistant_websocket(websocket: WebSocket, thread_id: str) -> None:
                 tools=request.get("tools"),
                 response_format=request.get("response_format"),
                 custom_system_instruction=request.get("custom_system_instruction"),
+                assistant_mode=request.get("assistant_mode", "BOTH"),
             )
             await websocket.send_json(result)
     except WebSocketDisconnect:
