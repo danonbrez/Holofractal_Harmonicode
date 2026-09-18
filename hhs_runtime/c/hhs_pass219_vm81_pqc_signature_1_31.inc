@@ -357,8 +357,6 @@ HHSExactStatus hhs_exact_pass219_vm81_pqc_admit_signed(
     const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
     int8_t lo_shu_group,
     uint16_t g243,
-    uint8_t feedback_lane,
-    int8_t feedback_trinary,
     HHSExactVM81Frame *out_committed_frame,
     HHSExactPass219RNAAdmissionV1 *out_admission,
     HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
