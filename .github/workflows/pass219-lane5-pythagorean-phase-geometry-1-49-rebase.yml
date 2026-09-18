@@ -1,0 +1,99 @@
+name: Pass 219 Lane 5 Pythagorean Phase Geometry 1.49 Rebase
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49.md'
+      - 'docs/whitepapers/HHS_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.inc'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/pass219/lane5_pythagorean_phase_geometry_1_49_bridge.py'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
+      - 'tests/pass219/test_lane5_p149_mandatory_integration.py'
+      - '.github/workflows/pass219-lane5-pythagorean-phase-geometry-1-49-rebase.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-p149-rebase:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static exact-boundary audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          abi=Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          hdr=Path('hhs_runtime/include/hhs_runtime_exact_abi.h').read_text()
+          dispatcher=Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py').read_text()
+          assert '\\n' not in abi
+          assert '\\n' not in hdr
+          assert 'hhs_pass219_lane5_pythagorean_phase_geometry_1_49.inc' in abi
+          assert 'hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h' in hdr
+          assert 'LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49' in dispatcher
+          assert 'project_pythagorean_phase_geometry_1_49' in dispatcher
+          print('p149_static_rebase=PASS')
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.49 exports and canonical boundary
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          for symbol in \
+            hhs_exact_pass219_lane5_pythagorean_phase_geometry_version \
+            hhs_exact_pass219_lane5_pythagorean_phase_geometry_authority \
+            hhs_exact_pass219_lane5_pythagorean_phase_project \
+            hhs_exact_pass219_lane5_runtime_preflight \
+            hhs_exact_pass219_vm81_environment_admit_signed; do
+            grep -q " ${symbol}$" /tmp/hhs.symbols || {
+              echo "missing required export: ${symbol}" >&2
+              exit 1
+            }
+          done
+          ! grep -q ' hhs_exact_pass219_vm81_environment_admit_signed_raw$' /tmp/hhs.symbols
+
+      - name: Execute exhaustive native 1.49 projection
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-p149
+          /tmp/test-p149 | tee /tmp/p149.log
+          grep -q 'PASS219_LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49_PASS projections=288 collapse=32 continuation=160 c4=9 phase_cycle=72' /tmp/p149.log
+
+      - name: Execute production-agent bridge
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q tests/pass219/test_lane5_p149_mandatory_integration.py
+
+      - name: Regress inherited exact theorem oracle
+        run: |
+          python -m pytest -q tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
