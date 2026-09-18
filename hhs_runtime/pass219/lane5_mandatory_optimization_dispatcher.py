@@ -36,8 +36,7 @@ from hhs_runtime.pass219.rml20_rna_vm5184_cell_wall_bridge import (
 
 DEFAULT_STATE_ROOT_ENV = "HHS_PASS219_LANE5_STATE_ROOT"
 DEFAULT_STATE_ROOT = Path(".hhs/pass219/lane5").resolve()
-RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"
-RML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
+RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"\nU72_H36_CAPABILITY_ID = "U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0"\nRML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
 
 MANDATORY_LANE5_LINEAGE = _BASE_MANDATORY_LANE5_LINEAGE + (\n    RLM20_CLOSURE_CAPABILITY_ID,\n    RML20_CAPABILITY_ID,\n)
 MANDATORY_CAPABILITY_ROLES = dict(_BASE_MANDATORY_CAPABILITY_ROLES)\nMANDATORY_CAPABILITY_ROLES[RLM20_CLOSURE_CAPABILITY_ID] = (\n    "MANDATORY_CANONICAL_ADMISSION_MEDIATION"\n)\nMANDATORY_CAPABILITY_ROLES[RML20_CAPABILITY_ID] = (
@@ -104,13 +103,64 @@ class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
         """Preserve Hash216 compatibility while declaring typed RML20 availability."""
         result = dict(super().search_hash216(**kwargs))
         available = list(result.get("optimization_available", ()))
-        for capability_id in (RLM20_CLOSURE_CAPABILITY_ID, RML20_CAPABILITY_ID):\n            if capability_id not in available:\n                available.append(capability_id)
+        for capability_id in (\n            RLM20_CLOSURE_CAPABILITY_ID,\n            U72_H36_CAPABILITY_ID,\n            RML20_CAPABILITY_ID,\n        ):\n            if capability_id not in available:\n                available.append(capability_id)
         result["optimization_available"] = available
         typed = list(result.get("typed_optimizers_require_typed_inputs", ()))
-        if RML20_CAPABILITY_ID not in typed:
-            typed.append(RML20_CAPABILITY_ID)
+        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID):\n            if capability_id not in typed:\n                typed.append(capability_id)
         result["typed_optimizers_require_typed_inputs"] = typed
         return result
+
+    def optimize_u72_h36_dynamic_cycle(
+        self,
+        *,
+        candidate_native_probe: str | None = None,
+        environment_native_probe: str | None = None,
+    ) -> dict[str, Any]:
+        """Execute the proven exact U72/H36 dynamic scalar optimization proof.
+
+        The V1 contract requires every optimized transition to retain exact
+        equality with the full serializer. This production surface therefore
+        exposes the proven cycle as-is rather than weakening it into an
+        unchecked arithmetic shortcut.
+        """
+        from hhs_runtime.pass219.u72_h36_dynamic_scalar_optimizer import (
+            u72_h36_dynamic_scalar_optimizer,
+        )
+
+        report = dict(
+            u72_h36_dynamic_scalar_optimizer(
+                candidate_native_probe=candidate_native_probe,
+                environment_native_probe=environment_native_probe,
+            )
+        )
+        dynamic = dict(report.get("dynamic_cycle", {}))
+        optimization = dict(report.get("optimization", {}))
+        authority = dict(report.get("authority", {}))
+        if dynamic.get("full_u72_cycle_closed") is not True:
+            raise Lane5MandatoryOptimizationError("U72_H36_CYCLE_CLOSURE_DRIFT")
+        if optimization.get("reference_coordinate_visits") != 5184:
+            raise Lane5MandatoryOptimizationError("U72_H36_REFERENCE_WORK_DRIFT")
+        if optimization.get("optimized_coordinate_updates") != 72:
+            raise Lane5MandatoryOptimizationError("U72_H36_OPTIMIZED_WORK_DRIFT")
+        if optimization.get("avoided_coordinate_visits") != 5112:
+            raise Lane5MandatoryOptimizationError("U72_H36_AVOIDED_WORK_DRIFT")
+        for key in (
+            "new_canonical_vm81_mutation_authority",
+            "new_canonical_receipt_authority",
+            "new_hash72_minting_authority",
+            "new_hash216_persistence_authority",
+            "new_pqc_key_authority",
+            "new_receipt_clock_authority",
+            "floating_point_authority",
+        ):
+            if authority.get(key) is not False:
+                raise Lane5MandatoryOptimizationError(
+                    f"U72_H36_AUTHORITY_ESCALATION:{key}"
+                )
+        report["mandatory_optimization_dispatch"] = True
+        report["optimization_selected"] = U72_H36_CAPABILITY_ID
+        report["fresh_recomputation_forced"] = False
+        return report
 
     def route_rml20_candidate(
         self,
