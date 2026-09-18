@@ -88,7 +88,7 @@ def build_pass169_algebra_router(authority_provider: Callable[[], Any]) -> APIRo
 
     @router.post("/v1/algebra/candidates/{candidate_id}/validate")
     def algebra_candidate_validate(candidate_id: str) -> dict[str, Any]:
-        return call("admit", candidate_id=candidate_id)
+        return call("validate", candidate_id=candidate_id)
 
     @router.post("/v1/algebra/candidates/{candidate_id}/commit")
     def algebra_candidate_commit(candidate_id: str) -> dict[str, Any]:
