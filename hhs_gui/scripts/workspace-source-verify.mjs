@@ -106,6 +106,12 @@ assert(content.mobileAssistant.includes("bg-neutral-900/70"), "mobile assistant 
 assert(content.mobileControl.includes("ProductionAssistantChat"), "production mobile control does not mount the LLM assistant")
 assert(content.mobileControl.includes("Inspect technical JSON"), "vector technical JSON does not require explicit inspection")
 assert(content.mobileControl.indexOf("Inspect technical JSON") < content.mobileControl.indexOf("JSON.stringify(vectorQuery"), "vector JSON appears before its inspect control")
+assert(content.mobileControl.includes("Use in chat"), "persisted vector lacks explicit Use in chat control")
+assert(content.mobileControl.includes("Remove from chat"), "attached vector context lacks explicit removal control")
+assert(content.mobileControl.includes("explicit_user_attachment: true"), "vector-to-chat attachment lacks explicit user approval marker")
+assert(content.mobileAssistant.includes("user_context: userContext || null"), "assistant request does not carry explicit user context")
+assert(content.mobileAssistant.includes("Context attached by you"), "assistant composer does not expose attached context")
+assert(content.mobileAssistant.includes("only context you explicitly attach with Use in chat"), "assistant disclosure text does not preserve explicit opt-in")
 assert(content.acquisition.includes("Inspect technical JSON"), "acquisition technical JSON does not require explicit inspection")
 assert(content.acquisition.indexOf("Inspect technical JSON") < content.acquisition.indexOf("JSON.stringify(selected"), "acquisition JSON appears before its inspect control")
 for (const token of [
