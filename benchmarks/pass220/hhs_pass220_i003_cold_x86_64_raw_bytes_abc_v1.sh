@@ -215,32 +215,32 @@ GLOBAL_ELAPSED=$(( $(now_ns) - GLOBAL_STARTED ))
 {
   echo "# Pass 220 I003.1 — cold x86_64 raw-byte A:B:C calibration"
   echo
-  echo "- Architecture: `$arch`"
-  echo "- Workload: deterministic zero-byte streams from `/dev/zero`"
+  printf -- '- Architecture: %s\n' "$arch"
+  echo "- Workload: deterministic zero-byte streams from /dev/zero"
   echo "- Static workload-size ceiling: **none**"
-  echo "- Start bytes: `$START_BYTES`"
-  echo "- Per-arm time membrane: `$LEG_BUDGET_NS ns`"
-  echo "- Global time membrane: `$GLOBAL_BUDGET_NS ns`"
-  echo "- Repeats per arm: `$REPEATS`"
+  printf -- '- Start bytes: %s\n' "$START_BYTES"
+  printf -- '- Per-arm time membrane: %s ns\n' "$LEG_BUDGET_NS"
+  printf -- '- Global time membrane: %s ns\n' "$GLOBAL_BUDGET_NS"
+  printf -- '- Repeats per arm: %s\n' "$REPEATS"
   echo "- HHS services/runtime ABI/project binaries used by calibration: **none**"
   echo "- Python used by calibration: **none**"
   echo
   echo "## Raw A:B:C paths"
   echo
-  echo "- A: `head -c N /dev/zero >/dev/null`"
-  echo "- B: `head -c N /dev/zero | dd of=/dev/null bs=1M status=none`"
-  echo "- C: `head -c N /dev/zero | sha256sum >/dev/null`"
+  echo '- A: head -c N /dev/zero >/dev/null'
+  echo '- B: head -c N /dev/zero | dd of=/dev/null bs=1M status=none'
+  echo '- C: head -c N /dev/zero | sha256sum >/dev/null'
   echo
   echo "The labels xy/yx/zw/wz are repeated calibration cohorts only; the raw-byte benchmark assigns them no HHS phase semantics."
   echo
   echo "## Largest closed raw-byte workload"
   echo
   for phase in "${PHASES[@]}"; do
-    echo "- $phase: `${PHASE_MAX_BYTES[$phase]:-0}` bytes"
+    printf -- '- %s: %s bytes\n' "$phase" "${PHASE_MAX_BYTES[$phase]:-0}"
   done
-  echo "- all-cohort minimum: `$global_max` bytes"
-  echo "- stop reason: `$GLOBAL_STOP_REASON`"
-  echo "- observed global elapsed: `$GLOBAL_ELAPSED ns`"
+  printf -- '- all-cohort minimum: %s bytes\n' "$global_max"
+  printf -- '- stop reason: %s\n' "$GLOBAL_STOP_REASON"
+  printf -- '- observed global elapsed: %s ns\n' "$GLOBAL_ELAPSED"
 } > "$REPORT"
 
 cat "$SUMMARY"
