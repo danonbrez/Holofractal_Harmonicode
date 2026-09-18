@@ -18,9 +18,13 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     AUTHORITY,
     TURN_SCHEMA,
     ConversationThreadStore,
+    ASSISTANT_MODE_GENERAL_CHAT,
+    ASSISTANT_MODES,
+    DEFAULT_ASSISTANT_MODE,
     HHSAssistantService,
     LiteRTLMConfig,
     MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+    normalize_assistant_mode,
 )
 from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
     LiteRTLMAcceleratedTransport,
@@ -107,7 +111,13 @@ class GovernedHHSToolLoopTransport:
     ) -> Dict[str, Any]:
         self._tool_trace.set(())
         working_messages = [dict(message) for message in messages]
-        available_tools = _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
+        available_tools = (
+            [dict(tool) for tool in DEFAULT_HHS_ASSISTANT_TOOLS]
+            if tools is None
+            else []
+            if len(tools) == 0
+            else _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
+        )
         trace: List[Dict[str, Any]] = []
         final_response: Dict[str, Any] = {}
 
@@ -278,16 +288,20 @@ class HHSAPIAssistantService(HHSAssistantService):
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
+        mode = normalize_assistant_mode(assistant_mode)
+        mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
         async with self._thread_lock(thread_id):
             result = await super().send_message(
                 thread_id,
                 content=content,
-                tools=tools,
+                tools=mode_tools,
                 response_format=response_format,
                 custom_system_instruction=custom_system_instruction,
+                assistant_mode=mode,
             )
             return self._decorate_result(thread_id, result)
 
@@ -299,16 +313,20 @@ class HHSAPIAssistantService(HHSAssistantService):
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
         custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
+        mode = normalize_assistant_mode(assistant_mode)
+        mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
         async with self._thread_lock(thread_id):
             result = await super().continue_message(
                 thread_id,
                 user_message=user_message,
-                tools=tools,
+                tools=mode_tools,
                 response_format=response_format,
                 custom_system_instruction=custom_system_instruction,
+                assistant_mode=mode,
             )
             return self._decorate_result(thread_id, result)
 
@@ -322,6 +340,9 @@ class HHSAPIAssistantService(HHSAssistantService):
             "per_thread_request_serialization": True,
             "custom_system_instruction_supported": True,
             "custom_system_instruction_max_characters": MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+            "assistant_modes": list(ASSISTANT_MODES),
+            "default_assistant_mode": DEFAULT_ASSISTANT_MODE,
+            "general_chat_disables_default_hhs_tools": True,
             "task_local_tool_traces": True,
             "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
             "execution_backend": self.execution_backend,
