@@ -8,6 +8,15 @@ on:
       - 'contracts/pass219/PASS_219_UNIVERSAL_ABI_LINUX_KERNEL_LANE5_INTERCEPT_V1.md'
       - 'hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py'
       - 'hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py'
+      - 'hhs_runtime/pass219/lane5_instruction.py'
+      - 'hhs_runtime/pass219/lane5_object_lowering_registry.py'
+      - 'hhs_runtime/pass219/lane5_linux_host_gateway.py'
+      - 'hhs_runtime/pass163/vmrc.py'
+      - 'contracts/pass219/PASS_219_LANE5_INSTRUCTION_OBJECT_BOUNDARY_V1.md'
+      - 'tests/pass219/test_lane5_instruction_object_boundary.py'
+      - 'tests/pass219/test_lane5_object_lowering_registry.py'
+      - 'tests/pass219/test_lane5_linux_host_gateway.py'
+      - 'tests/pass219/test_vmrc_lane5_instruction_only_boundary.py'
       - 'hhs_runtime/pass219/lane5_interceptor_sandbox_cache.py'
       - 'benchmarks/pass219/raw_linux_serial_abi_capacity_v1.c'
       - 'tools/pass219/seal_raw_linux_serial_abi_capacity_v1.py'
@@ -72,6 +81,16 @@ jobs:
           make clean
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile Python Lane 5 boundary modules
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/lane5_interceptor_sandbox_cache.py \
+            hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py \
+            hhs_runtime/pass219/lane5_instruction.py \
+            hhs_runtime/pass219/lane5_object_lowering_registry.py \
+            hhs_runtime/pass219/lane5_linux_host_gateway.py \
+            hhs_runtime/pass163/vmrc.py
 
       - name: Validate universal Lane 5 traffic envelope
         env:
