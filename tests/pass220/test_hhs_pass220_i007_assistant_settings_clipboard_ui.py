@@ -41,8 +41,8 @@ def test_mobile_copy_and_paste_controls_are_explicit_touch_actions():
         "navigator.clipboard?.writeText",
         "navigator.clipboard?.readText",
         'document.execCommand("copy")',
-        ">Copy<",
-        ">Paste<",
+        '"Copied" : "Copy"',
+        ">Paste</button>",
         "min-h-10",
     ):
         assert token in source
