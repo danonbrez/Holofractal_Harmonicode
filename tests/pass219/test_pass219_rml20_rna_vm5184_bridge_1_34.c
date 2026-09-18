@@ -15,41 +15,84 @@ static void init_input(HHSExactUQCELInputV1 *input, uint8_t *one) {
     input->delta.bytes_be = one;
 }
 
+static void decode_source(
+    uint32_t address,
+    uint8_t *operation,
+    uint8_t *phase,
+    uint8_t *cell,
+    uint8_t *direction
+) {
+    assert(hhs_exact_pass219_rml20_transport_address_decode(
+               address, operation, phase, cell, direction) ==
+           HHS_EXACT_STATUS_OK);
+}
+
 static void assert_receipt(
     const HHSExactPass219RML20RNAVM5184ReceiptV1 *receipt,
-    uint32_t source,
-    uint8_t direction
+    uint32_t source
 ) {
     uint32_t target = 0U;
     uint32_t reverse = 0U;
-    int8_t flux = 0;
-    int8_t reverse_flux = 0;
+    uint8_t source_operation = 0U;
+    uint8_t source_phase = 0U;
+    uint8_t source_cell = 0U;
+    uint8_t source_direction = 0U;
+    uint8_t target_operation = 0U;
+    uint8_t target_phase = 0U;
+    uint8_t target_cell = 0U;
+    uint8_t target_direction = 0U;
+    int8_t source_flux = 0;
+    int8_t target_flux = 0;
+
+    decode_source(
+        source,
+        &source_operation,
+        &source_phase,
+        &source_cell,
+        &source_direction);
 
     assert(receipt->struct_size == sizeof(*receipt));
     assert(receipt->version == HHS_EXACT_PASS219_RML20_RNA_VM5184_VERSION);
     assert(receipt->source_address == source);
-    assert(receipt->direction == direction);
-    assert(hhs_exact_pass219_rml20_transport_neighbor(source, direction, &target) ==
-           HHS_EXACT_STATUS_OK);
-    assert(receipt->target_address == target);
+    assert(receipt->source_operation == source_operation);
+    assert(receipt->source_phase == source_phase);
+    assert(receipt->source_cell == source_cell);
+    assert(receipt->source_direction == source_direction);
+    assert(receipt->requested_direction == source_direction);
+
     assert(hhs_exact_pass219_rml20_transport_neighbor(
-               target, receipt->inverse_direction, &reverse) ==
-           HHS_EXACT_STATUS_OK);
+               source, source_direction, &target) == HHS_EXACT_STATUS_OK);
+    assert(receipt->target_address == target);
+    decode_source(
+        target,
+        &target_operation,
+        &target_phase,
+        &target_cell,
+        &target_direction);
+
+    assert(receipt->target_operation == target_operation);
+    assert(receipt->target_phase == target_phase);
+    assert(receipt->target_cell == target_cell);
+    assert(receipt->target_direction == target_direction);
+    assert(receipt->inverse_direction == target_direction);
+
+    assert(hhs_exact_pass219_rml20_transport_neighbor(
+               target, target_direction, &reverse) == HHS_EXACT_STATUS_OK);
     assert(reverse == source);
-    assert(hhs_exact_pass219_rml20_transport_flux(direction, &flux) ==
-           HHS_EXACT_STATUS_OK);
+
     assert(hhs_exact_pass219_rml20_transport_flux(
-               receipt->inverse_direction, &reverse_flux) ==
-           HHS_EXACT_STATUS_OK);
-    assert(receipt->forward_flux == flux);
-    assert(receipt->reverse_flux == reverse_flux);
+               source_direction, &source_flux) == HHS_EXACT_STATUS_OK);
+    assert(hhs_exact_pass219_rml20_transport_flux(
+               target_direction, &target_flux) == HHS_EXACT_STATUS_OK);
+    assert(receipt->forward_flux == source_flux);
+    assert(receipt->reverse_flux == target_flux);
     assert(receipt->forward_flux == -receipt->reverse_flux);
+
     assert(receipt->discrete_divergence == 0);
-    assert(receipt->source_lane == receipt->target_lane);
     assert(receipt->encode_decode_bijective == 1U);
     assert(receipt->reciprocal_neighbor_restores_source == 1U);
     assert(receipt->reciprocal_flux_balanced == 1U);
-    assert(receipt->lane_identity_retained == 1U);
+    assert(receipt->operation_cell_preserved == 1U);
     assert(receipt->zero_discrete_divergence == 1U);
     assert(receipt->zero_diffusion_classification == 1U);
     assert(receipt->feedback_lane_bound == 1U);
@@ -75,19 +118,19 @@ int main(void) {
     uint8_t one = 1U;
     const uint32_t samples[] = {
         0U,
+        1U,
+        2U,
+        3U,
         80U,
-        81U,
-        5183U,
         373247U,
         746496U,
-        1119744U,
         HHS_EXACT_PASS219_RML20_ADDRESS_COUNT - 1U,
     };
     size_t i;
-    uint8_t direction;
 
     assert(hhs_exact_pass219_rml20_rna_vm5184_version() ==
            HHS_EXACT_PASS219_RML20_RNA_VM5184_VERSION);
+
     memset(&descriptor, 0, sizeof(descriptor));
     assert(hhs_exact_pass219_rml20_rna_vm5184_descriptor(&descriptor) ==
            HHS_EXACT_STATUS_OK);
@@ -97,11 +140,11 @@ int main(void) {
     assert(descriptor.phase_count == 72U);
     assert(descriptor.cell_count == 81U);
     assert(descriptor.address_count == 1492992U);
-    assert(descriptor.direction_count == 6U);
+    assert(descriptor.direction_count == 4U);
     assert(descriptor.vm5184_bytes == 648U);
     assert(descriptor.cpp_rna_cell_wall == 1U);
-    assert(descriptor.frozen_rml17_parity_surface == 1U);
-    assert(descriptor.lane_retaining_transport == 1U);
+    assert(descriptor.current_rml17_parity_surface == 1U);
+    assert(descriptor.direction_embedded_address == 1U);
     assert(descriptor.reciprocal_flux_transport == 1U);
     assert(descriptor.candidate_only == 1U);
     assert(descriptor.exact_integer_only == 1U);
@@ -120,20 +163,22 @@ int main(void) {
         raw[i] = (uint8_t)((i * 131U + 17U) & 0xFFU);
 
     for (i = 0U; i < sizeof(samples) / sizeof(samples[0]); ++i) {
-        for (direction = 0U;
-             direction < HHS_EXACT_PASS219_RML20_DIRECTION_COUNT;
-             ++direction) {
-            memset(&receipt, 0, sizeof(receipt));
-            assert(hhs_exact_pass219_rml20_rna_vm5184_route(
-                       &input,
-                       raw,
-                       sizeof(raw),
-                       &transition,
-                       samples[i],
-                       direction,
-                       &receipt) == HHS_EXACT_STATUS_OK);
-            assert_receipt(&receipt, samples[i], direction);
-        }
+        uint8_t operation = 0U;
+        uint8_t phase = 0U;
+        uint8_t cell = 0U;
+        uint8_t direction = 0U;
+        decode_source(
+            samples[i], &operation, &phase, &cell, &direction);
+        memset(&receipt, 0, sizeof(receipt));
+        assert(hhs_exact_pass219_rml20_rna_vm5184_route(
+                   &input,
+                   raw,
+                   sizeof(raw),
+                   &transition,
+                   samples[i],
+                   direction,
+                   &receipt) == HHS_EXACT_STATUS_OK);
+        assert_receipt(&receipt, samples[i]);
     }
 
     memset(&receipt, 0xA5, sizeof(receipt));
@@ -143,7 +188,7 @@ int main(void) {
                sizeof(raw) - 1U,
                &transition,
                0U,
-               HHS_EXACT_PASS219_RML20_OPERATION_FORWARD,
+               HHS_EXACT_PASS219_RML20_X,
                &receipt) == HHS_EXACT_STATUS_RANGE_ERROR);
     assert(receipt.struct_size == 0U);
 
@@ -154,7 +199,7 @@ int main(void) {
                sizeof(raw),
                &transition,
                HHS_EXACT_PASS219_RML20_ADDRESS_COUNT,
-               HHS_EXACT_PASS219_RML20_OPERATION_FORWARD,
+               HHS_EXACT_PASS219_RML20_X,
                &receipt) == HHS_EXACT_STATUS_RANGE_ERROR);
     assert(receipt.struct_size == 0U);
 
@@ -165,7 +210,7 @@ int main(void) {
                sizeof(raw),
                &transition,
                0U,
-               HHS_EXACT_PASS219_RML20_DIRECTION_COUNT,
+               HHS_EXACT_PASS219_RML20_Y,
                &receipt) == HHS_EXACT_STATUS_RANGE_ERROR);
     assert(receipt.struct_size == 0U);
 
