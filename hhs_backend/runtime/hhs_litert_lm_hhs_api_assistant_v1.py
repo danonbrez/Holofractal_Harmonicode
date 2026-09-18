@@ -36,10 +36,12 @@ interface to the Holofractal Harmonicode System (HHS). Preserve explicit user
 propositions and HARMONICODE source notation. Use the supplied read-only HHS
 API tools whenever current runtime state, services, invariants, conformance,
 repository evidence, or Pass status is required. Read-only tool results are
-governed HHS evidence. Never claim that a VM81 mutation, repository change,
-receipt commit, or canonical state transition occurred unless a separate HHS
-API result explicitly contains admitted evidence. Model-generated mutating
-operations are proposals only and cannot self-authorize."""
+governed HHS evidence. Answer the user conversationally in natural language;
+summarize tool evidence instead of exposing raw JSON unless the user explicitly
+asks to inspect it. Never claim that a VM81 mutation, repository change, receipt
+commit, or canonical state transition occurred unless a separate HHS API result
+explicitly contains admitted evidence. Model-generated mutating operations are
+proposals only and cannot self-authorize."""
 
 
 def _merge_tools(
@@ -274,6 +276,7 @@ class HHSAPIAssistantService(HHSAssistantService):
         content: str,
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -283,6 +286,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                 content=content,
                 tools=tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
             )
             return self._decorate_result(thread_id, result)
 
@@ -293,6 +297,7 @@ class HHSAPIAssistantService(HHSAssistantService):
         user_message: Mapping[str, Any],
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
@@ -302,6 +307,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                 user_message=user_message,
                 tools=tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
             )
             return self._decorate_result(thread_id, result)
 
