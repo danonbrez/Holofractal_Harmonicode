@@ -30,6 +30,12 @@ from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher import (
     MANDATORY_LANE5_LINEAGE,
     Pass219Lane5LatencyCompositionAgent,
 )
+from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
+    BYTE_ORDER as CACHE_BYTE_ORDER,
+    RECORD_BYTES as CACHE_RECORD_BYTES,
+    SERIAL_BITS as CACHE_SERIAL_BITS,
+    default_sandbox_cache,
+)
 
 SCHEMA = "HHS_PASS219_UNIVERSAL_ABI_LINUX_KERNEL_LANE5_INTERCEPT_V1"
 VERSION = "1.0.0"
@@ -143,6 +149,18 @@ class Lane5UniversalTrafficEnvelope:
     mandatory_optimization_dispatch: bool
     mandatory_capability_count: int
     mandatory_capability_lineage: tuple[str, ...]
+    sandbox_queued: bool
+    sandbox_queue_ticket: str
+    sandbox_queue_optimized: bool
+    sandbox_queue_reordered: bool
+    sandbox_cache_hit: bool
+    sandbox_cache_capacity_records: int
+    sandbox_cache_capacity_bytes: int
+    sandbox_cache_calibration: str
+    sandbox_cache_production_calibrated: bool
+    sandbox_serial_bits: int
+    sandbox_record_bytes: int
+    sandbox_byte_order: str
     rna_cpp_cell_wall_required: bool
     signed_environmental_pqc_required: bool
     singleton_vm81_required_for_canonical_mutation: bool
@@ -208,6 +226,15 @@ def intercept_abi_traffic(
         )
 
     caps = _mandatory_capability_snapshot()
+    sandbox = default_sandbox_cache()
+    queue_enqueue = sandbox.enqueue(
+        traffic_class=traffic_class,
+        operation=operation,
+        payload=dict(payload or {}),
+        read_only=bool(read_only),
+    )
+    queue_optimized = sandbox.optimize_until(str(queue_enqueue["ticket"]))
+    sandbox_status = sandbox.status()
     body = {
         "schema": SCHEMA,
         "version": VERSION,
@@ -229,6 +256,30 @@ def intercept_abi_traffic(
         ),
         "mandatory_capability_count": int(caps["mandatory_lineage_count"]),
         "mandatory_capability_lineage": tuple(caps["mandatory_lineage"]),
+        "sandbox_queued": bool(queue_enqueue.get("queued")),
+        "sandbox_queue_ticket": str(queue_enqueue.get("ticket") or ""),
+        "sandbox_queue_optimized": bool(
+            queue_optimized.get("lane5_queue_optimized")
+        ),
+        "sandbox_queue_reordered": bool(
+            queue_optimized.get("lane5_reordered")
+        ),
+        "sandbox_cache_hit": bool(queue_optimized.get("cache_hit")),
+        "sandbox_cache_capacity_records": int(
+            sandbox_status["capacity_records"]
+        ),
+        "sandbox_cache_capacity_bytes": int(
+            sandbox_status["capacity_bytes"]
+        ),
+        "sandbox_cache_calibration": str(
+            sandbox_status["calibration"]["classification"]
+        ),
+        "sandbox_cache_production_calibrated": bool(
+            sandbox_status["production_calibrated"]
+        ),
+        "sandbox_serial_bits": CACHE_SERIAL_BITS,
+        "sandbox_record_bytes": CACHE_RECORD_BYTES,
+        "sandbox_byte_order": CACHE_BYTE_ORDER,
         "rna_cpp_cell_wall_required": state_affecting,
         "signed_environmental_pqc_required": state_affecting,
         "singleton_vm81_required_for_canonical_mutation": state_affecting,
@@ -257,6 +308,9 @@ def intercept_abi_traffic(
         "envelope": envelope.to_dict(),
         "zero_bypass": interposed,
         "capability_snapshot": caps,
+        "queue_enqueue": queue_enqueue,
+        "queue_optimization": queue_optimized,
+        "sandbox_status": sandbox_status,
     }
 
 
@@ -285,6 +339,18 @@ def authorize_downstream_dispatch(
         raise Lane5UniversalTrafficError(
             "LANE5_MANDATORY_OPTIMIZATION_PROOF_REQUIRED"
         )
+    if envelope.get("sandbox_queued") is not True:
+        raise Lane5UniversalTrafficError("LANE5_SANDBOX_QUEUE_PROOF_REQUIRED")
+    if envelope.get("sandbox_queue_optimized") is not True:
+        raise Lane5UniversalTrafficError(
+            "LANE5_SANDBOX_QUEUE_OPTIMIZATION_REQUIRED"
+        )
+    if envelope.get("sandbox_serial_bits") != CACHE_SERIAL_BITS:
+        raise Lane5UniversalTrafficError("LANE5_SANDBOX_SERIAL_WIDTH_DRIFT")
+    if envelope.get("sandbox_record_bytes") != CACHE_RECORD_BYTES:
+        raise Lane5UniversalTrafficError("LANE5_SANDBOX_RECORD_WIDTH_DRIFT")
+    if envelope.get("sandbox_byte_order") != CACHE_BYTE_ORDER:
+        raise Lane5UniversalTrafficError("LANE5_SANDBOX_BYTE_ORDER_DRIFT")
     if any(
         envelope.get(key) is not False
         for key in (
@@ -307,6 +373,11 @@ def authorize_downstream_dispatch(
             "read_only": True,
             "canonical_mutation_allowed": False,
             "pqc_required": False,
+            "sandbox_queue_optimized": True,
+            "sandbox_queue_reordered": bool(
+                envelope.get("sandbox_queue_reordered")
+            ),
+            "sandbox_cache_hit": bool(envelope.get("sandbox_cache_hit")),
             "lane5_intercept_sha256": envelope.get("envelope_sha256"),
         }
 
@@ -340,6 +411,11 @@ def authorize_downstream_dispatch(
         "read_only": False,
         "canonical_mutation_allowed": True,
         "pqc_required": True,
+        "sandbox_queue_optimized": True,
+        "sandbox_queue_reordered": bool(
+            envelope.get("sandbox_queue_reordered")
+        ),
+        "sandbox_cache_hit": bool(envelope.get("sandbox_cache_hit")),
         "lane5_intercept_sha256": envelope.get("envelope_sha256"),
         "lane5_receipt_sha256": _digest(lane5),
         "pqc_receipt_sha256": _digest(pqc),
@@ -356,6 +432,17 @@ def direct_dispatch_rejection(
         raise Lane5UniversalTrafficError(
             f"LANE5_UNREGISTERED_TRAFFIC_CLASS:{traffic_class}"
         )
+    sandbox = default_sandbox_cache()
+    queued = sandbox.enqueue(
+        traffic_class=traffic_class,
+        operation=operation,
+        payload={
+            "schema": "HHS_PASS219_DIRECT_BYPASS_REDIRECT_V1",
+            "bypass_attempt": True,
+        },
+        read_only=False,
+    )
+    optimized = sandbox.optimize_until(str(queued["ticket"]))
     return {
         "schema": "HHS_PASS219_UNIVERSAL_ABI_KERNEL_DIRECT_BLOCK_V1",
         "traffic_class": traffic_class,
@@ -365,6 +452,14 @@ def direct_dispatch_rejection(
         "redirect_action": REDIRECT_REQUIRED,
         "direct_fallback_allowed": False,
         "canonical_mutation_allowed": False,
+        "sandbox_queued": True,
+        "sandbox_queue_ticket": queued["ticket"],
+        "sandbox_queue_optimized": bool(
+            optimized.get("lane5_queue_optimized")
+        ),
+        "sandbox_queue_reordered": bool(
+            optimized.get("lane5_reordered")
+        ),
     }
 
 
