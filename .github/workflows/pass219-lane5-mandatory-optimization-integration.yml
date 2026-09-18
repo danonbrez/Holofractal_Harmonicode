@@ -6,6 +6,11 @@ on:
       - pass219/saturation-deadline-warm-cache-benchmark-v3
     paths:
       - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'hhs_runtime/pass219/lane5_pythagorean_phase_geometry_1_49_bridge.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_pythagorean_phase_geometry_1_49.inc'
+      - 'tests/pass219/test_lane5_p149_mandatory_integration.py'
+      - 'tests/pass219/test_pass219_lane5_pythagorean_phase_geometry_1_49.c'
       - 'hhs_runtime/pass219/u72_h36_dynamic_scalar_optimizer.py'
       - 'contracts/pass219/PASS_219_U72_H36_DYNAMIC_SCALAR_OPTIMIZATION_V1.md'
       - 'tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py'
@@ -82,6 +87,8 @@ jobs:
           assert 'Pass219Lane5LatencyCompositionAgent' in dispatcher
           assert 'RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37' in dispatcher
           assert 'U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0' in dispatcher
+          assert 'LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49' in dispatcher
+          assert 'project_pythagorean_phase_geometry_1_49' in dispatcher
           assert 'optimize_u72_h36_dynamic_cycle' in dispatcher
           assert 'MANDATORY_CANONICAL_ADMISSION_MEDIATION' in dispatcher
           assert 'HHS_PASS219_LANE5_STATE_ROOT' in dispatcher
@@ -142,6 +149,7 @@ jobs:
             tests/pass219/test_lane5_mandatory_optimization_registry.py \
             tests/pass219/test_lane5_rlm20_mandatory_integration.py \
             tests/pass219/test_lane5_u72_h36_mandatory_integration.py \
+            tests/pass219/test_lane5_p149_mandatory_integration.py \
             tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py \
             tests/pass219/test_pass219_lane5_automatic_superedge_routing_1_42.py \
             tests/pass219/test_pass219_lane5_superedge_hierarchy_1_41.py \
@@ -166,6 +174,9 @@ jobs:
             hhs_exact_pass219_lane5_unbounded_workload_route_validate \
             hhs_exact_pass219_lane5_unbounded_workload_stream_consider \
             hhs_exact_pass219_lane5_unbounded_workload_stream_finalize \
+            hhs_exact_pass219_lane5_pythagorean_phase_geometry_version \
+            hhs_exact_pass219_lane5_pythagorean_phase_geometry_authority \
+            hhs_exact_pass219_lane5_pythagorean_phase_project \
             hhs_exact_pass219_lane5_runtime_preflight \
             hhs_exact_pass219_rlm20_lane5_closure_authority \
             hhs_exact_pass219_vm81_environment_admit_signed; do
