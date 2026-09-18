@@ -17,7 +17,11 @@ import os
 import time
 from typing import Any, Dict, List, Mapping, Optional
 
-from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import LiteRTLMConfig
+from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
+    ASSISTANT_MODES,
+    DEFAULT_ASSISTANT_MODE,
+    LiteRTLMConfig,
+)
 from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
     DEFAULT_HHS_API_ASSISTANT_SERVICE,
     HHSAPIAssistantService,
@@ -60,9 +64,12 @@ class ProductionAssistantService:
                 seed=72,
                 reasoning_effort="bounded",
                 system_instruction=(
-                    "Use native HHS semantics, bounded reasoning, active Word2Vec memory, "
-                    "and governed read-only HHS tools. Preserve source identity and never "
-                    "claim canonical mutation without admitted runtime evidence."
+                    "You are the native HHS natural-language assistant. Support ordinary "
+                    "conversational prompt-response generation as well as governed application "
+                    "development according to the selected assistant mode. Use bounded reasoning "
+                    "and active Word2Vec memory. Use governed HHS tools only when the selected "
+                    "mode permits them. Preserve source identity and never claim canonical "
+                    "mutation without admitted runtime evidence."
                 ),
             )
             native_service = HHSAPIAssistantService(
@@ -199,6 +206,10 @@ class ProductionAssistantService:
             },
             "same_template_response_enabled": False,
             "repository_search_is_provider": False,
+            "assistant_modes": list(ASSISTANT_MODES),
+            "default_assistant_mode": DEFAULT_ASSISTANT_MODE,
+            "general_chat_prompt_response_supported": True,
+            "agentic_application_development_supported": True,
             "runtime_mutation_admitted": False,
             "public_interface_mode": "PRODUCTION",
         }
