@@ -43,4 +43,6 @@ audit=<|
  "passedCount"->Count[Values[checks],True],
  "allPassed"->And@@Values[checks]
 |>;
-ExportString[audit,"RawJSON","Compact"->False]
+json=ExportString[audit,"RawJSON","Compact"->True];
+Export["evidence/pass220/i020_wolfram_audit_v1.output.json",json,"String"];
+Print[json];
