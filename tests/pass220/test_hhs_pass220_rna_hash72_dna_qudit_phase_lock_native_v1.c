@@ -77,6 +77,9 @@ int main(void) {
     REQUIRE(witness.double_reverse_exact == 1U);
     REQUIRE(witness.palindromic_precision_exact == 1U);
     REQUIRE(witness.ordered_phase_lock == 1U);
+    REQUIRE(witness.serialized_operand_phase_binding == 1U);
+    REQUIRE(witness.all_cells_cover_operation64 == 1U);
+    REQUIRE(witness.ordered_phase_binding_signature64 != 0U);
     REQUIRE(witness.complete_state_is_operand == 1U);
 
     static const uint8_t expected_rows[3][3] = {
@@ -100,6 +103,8 @@ int main(void) {
     REQUIRE(witness.q_minus_one_phase[1] == -1);
     REQUIRE(witness.q_minus_one_phase[2] == 1);
     REQUIRE(witness.q_minus_one_phase[3] == -1);
+    for (size_t phase = 0U; phase < 4U; ++phase)
+        REQUIRE(witness.q_minus_one_pair_counts[phase] == 324U);
 
     REQUIRE(witness.canonical_vm81_mutation_authority == 0U);
     REQUIRE(witness.canonical_hash72_authority == 0U);
@@ -110,6 +115,8 @@ int main(void) {
     REQUIRE(hhs_exact_pass220_phase_lock_analyze(
         changed, HHS_EXACT_PASS220_SERIALIZED_CHARACTERS, &changed_witness) == HHS_EXACT_STATUS_OK);
     REQUIRE(changed_witness.state_offset_signature64 != witness.state_offset_signature64);
+    REQUIRE(changed_witness.ordered_phase_binding_signature64 !=
+            witness.ordered_phase_binding_signature64);
     REQUIRE(memcmp(
         changed_witness.scaled_palindrome_signature64,
         witness.scaled_palindrome_signature64,
