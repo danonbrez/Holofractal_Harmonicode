@@ -4233,6 +4233,55 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="TEN_FROZEN_JOINS_ALL_RESOLVED_NEXT_GATE_PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION",
     )
 
+    registry.register_function(
+        name="pass220.g41_sudoku_fingerprint.self_test",
+        module="hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1",
+        function="g41_fingerprint_self_test",
+        service_type="pass220_exact_reference_projection",
+        description=(
+            "Validate the exact 81-oriented/41-reciprocal-class nine-cell "
+            "Sudoku fingerprint algebra, four wrapped x/y/z/w direction "
+            "families, Lo Shu-relative bigint projection, and exhaustive "
+            "finite reachability codec without widening canonical mutation "
+            "or Hash72/Hash216 authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_G41_SURFACE_REACHABILITY_WITNESS_V1",
+        ],
+        validators=[
+            "validate_g41_surface_reachability",
+            "g41_fingerprint_self_test",
+        ],
+        guards=[
+            "exact_integer_cell_equations",
+            "reciprocal_fingerprint_involution",
+            "exhaustive_81_anchor_reachability",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G41_FINGERPRINT_CLASS_MISMATCH",
+            "REJECT_G41_REACHABILITY_ROUNDTRIP_FAILURE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_REFERENCE_WITNESS_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "EXHAUSTIVE_81_ANCHORS_41_RECIPROCAL_CLASSES"
+        ),
+    )
+
     return registry
 
 
