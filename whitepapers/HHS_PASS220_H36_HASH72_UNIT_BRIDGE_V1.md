@@ -25,7 +25,10 @@ xy=1
 zw=1
 q-p=2
 H36=36
-HASH72_projection=u^144_projection=36
+u^144_exponent = 72*(b^2/a^4) = 144
+u^144_projection = (b^6*c^4)/(c^2-a^2) = 36
+HASH72_projection = b^4*P^4 = 36
+(mc^2)_projection = (a^2+b^2)^2*b^4 = 36
 ```
 
 all four ratios close exactly:
@@ -37,15 +40,19 @@ e/H36 = 1
 (xy+zw)/(q-p) = 1
 ```
 
-The bridge therefore records the exact projection locks
+The repair-forward bridge now computes the three value paths independently:
 
 ```text
-e_projection = H36 = 36
-(mc^2)_projection = u^144_projection = HASH72_projection = 36
+u^144: 72*(b^2/a^4)=144, then (b^6*c^4)/(c^2-a^2)=36
+HASH72: b^4*P^4=36
+mc^2:   (a^2+b^2)^2*b^4=36
 ```
 
-without rebinding typed `e` to any unrelated basis symbol and without solving
-the native `m` appearing elsewhere in the universal constraint.
+Only after those independent evaluations does the bridge compare them. The
+`mc^2/u^144` ratio therefore no longer reuses one projected value as both
+numerator and denominator. Typed `e` is not rebound to any unrelated basis
+symbol, and the native `m` appearing elsewhere in the universal constraint is
+not solved.
 
 ## P^4 boundary
 
@@ -66,10 +73,38 @@ The two are not flattened into the same scalar role.
 ## Universal-constraint dependency
 
 I018 binds to the repository-authoritative
-`CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE` and its SHA-256, requiring the
-source fragments `P^2-pq`, `m^2-m`, `u^72`, `pq+xy`, `AB/P^2`,
-`Sqrt[AB]`, and `Delta/P` to remain present. I018 therefore composes with
-the existing monolithic equation instead of replacing or reparsing it.
+`CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE` and recomputes its SHA-256.
+The recomputed digest, the Python canonical digest, and the separately pinned
+native UQCEL digest must all equal
+
+```text
+7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42
+```
+
+in addition to requiring the source fragments `P^2-pq`, `m^2-m`,
+`u^72`, `pq+xy`, `AB/P^2`, `Sqrt[AB]`, and `Delta/P`.
+
+## Complete ordered phase
+
+The bridge now calls the inherited I017 ordered-curvature witness and requires
+
+```text
+(sx,sz,xy,yx,zw,wz) = (0,0,+1,-1,+1,-1)
+```
+
+before evaluating `(xy+zw)/(q-p)`. A scalar-equivalent altered `yx` or
+`wz` witness is rejected.
+
+## Reproducible Wolfram audit evidence
+
+The repair-forward exact audit is repository-visible at:
+
+- `evidence/pass220/i018_repair_wolfram_audit_v1.wl`
+- `evidence/pass220/i018_repair_wolfram_audit_v1.output.json`
+- `evidence/pass220/i018_repair_wolfram_audit_v1.receipt.json`
+
+The exact-head workflow verifies the sealed input/output SHA-256 values and all
+15 recorded audit checks before running the Python regressions.
 
 ## Authority
 
