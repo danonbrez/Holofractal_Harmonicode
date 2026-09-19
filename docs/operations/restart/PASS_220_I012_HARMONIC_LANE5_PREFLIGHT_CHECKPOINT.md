@@ -1,6 +1,6 @@
 # Pass 220 I012 restart checkpoint — harmonic VM81/Lane-5 preflight binding
 
-Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — DEPENDENCY-SCOPED CI PENDING**
+Status: **DEPENDENCY-SCOPED GREEN — READY FOR MAIN RECONCILIATION**
 
 ## Lineage
 
@@ -9,10 +9,11 @@ Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — DEPENDENCY-SCOPED CI PENDING
 - PR: #491
 - predecessor I011 checkpoint: `6a74f5cec9ef6d3d02cf8a68253c8836db1dfded`
 - I012 preimplementation checkpoint: `02c8fa55cd011a8d507612225ee9243232bf3076`
+- implementation checkpoint before validation: `905e09681823782ed5c574a651c47068c70ca5e4`
 
 ## Verified predecessor
 
-I011 dedicated run `35389299991` completed successfully before I012 implementation.
+I011 dedicated run `35389299991` completed successfully.
 
 Observed I011 job:
 
@@ -59,33 +60,46 @@ requires_existing_singleton_mutation_authority = true
 
 It does not invoke, replace, or bypass `hhs_exact_pass219_vm81_environment_admit_signed`.
 
-## Test surface
+## Dependency-scoped validation
 
-I012 extends the I004 test module to verify:
+Dedicated workflow:
 
-1. closed Genesis state halts without requiring a harmonic witness;
-2. unresolved state without a witness fails closed before ranking;
-3. malformed eight-nucleus witness fails closed;
-4. one incoherent nucleus blocks Lane 5;
-5. nine coherent nuclei permit the inherited candidate ranking bridge;
-6. permitted ranking still carries no canonical commit/mutation authority.
+- workflow: `Pass 220 I012 Harmonic Lane5 Preflight`
+- run: `35401973387`
+- job: `exact-preflight`
+- conclusion: **success**
 
-The dedicated workflow also reruns the 12 I011 tests because I012 directly consumes the I011 exact witness.
-
-Expected focused total:
+The workflow executed:
 
 ```text
-12 I011 tests
-+ 13 I004/I012 tests
-= 25 dependency-scoped tests
+tests/pass220/test_hhs_pass220_mobius_quarter_phase_v1.py
+tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py
 ```
 
-## CI state at checkpoint creation
+and the combined I011/I012 exact dependency surface completed green.
 
-The new workflow was committed at `e803cdecc19e5faadd868d875ebcf62587fcba4b`. A PR-associated run was not yet returned by the GitHub run lookup at checkpoint creation, so no result is claimed.
+Validated properties include:
 
-Per forward-progress policy, this checkpoint is sealed now rather than waiting on external CI.
+1. exact Möbius C4 and reciprocal half-cycle;
+2. exact harmonic involution and translated reciprocal branches;
+3. exact Q(sqrt(5)) golden/norm covariance;
+4. nine-nucleus VM81 harmonic AND-fold;
+5. Genesis global closure still halts before any harmonic or Lane-5 work;
+6. missing/invalid/incoherent harmonic witnesses block before ranking;
+7. coherent nine-nucleus harmonic witness permits only the inherited candidate-ranking bridge;
+8. all resulting surfaces retain no Hash72, Hash216, or VM81 canonical mutation authority.
+
+## Main reconciliation state before merge
+
+At validation readback:
+
+- current `main`: `cfb4679e433597081ed2ef76303a4af3956226d6`
+- branch head before this green-status update: `905e09681823782ed5c574a651c47068c70ca5e4`
+- branch relation: 139 commits ahead / 12 commits behind
+- PR #491: mergeable
+
+The 12 main-side commits are the verified Lane-5/global self-enforcement lineage. GitHub reports no merge conflict. Main reconciliation may therefore occur at the PR merge boundary while preserving both parent histories.
 
 ## Next action
 
-Inspect only the new I012 dependency-scoped run when it appears. If green, update the cumulative Pass 220 delivery evidence and proceed to current-main reconciliation of PR #491. If red, repair forward from this checkpoint without rerunning unrelated historical suites.
+Mark PR #491 ready, merge it against current `main` with an expected-head guard, then verify the resulting main files and exact merged head. Do not wait on unrelated queued historical workflows; repair forward only if the merge or verified-main readback exposes a directly impacted defect.
