@@ -191,6 +191,15 @@ sqrt(differential) = 32 sqrt(410)/9
 10*41 = 410
 ```
 
+The independent audit is now sealed in-repository:
+
+- `evidence/pass220/i020_wolfram_audit_v1.wl`
+- `evidence/pass220/i020_wolfram_audit_v1.output.json`
+- `evidence/pass220/i020_wolfram_audit_v1.receipt.json`
+
+The I020 exact-head workflow verifies both evidence SHA-256 values and all
+18 audit checks before running the executable proof regressions.
+
 ## 6. Authority
 
 I020 is a read-only proof layer:

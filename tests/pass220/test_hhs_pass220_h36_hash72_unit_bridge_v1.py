@@ -1,7 +1,14 @@
+from pathlib import Path
+import re
+
 import pytest
 
+from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
+    HHS_EXACT_UQCEL_SOURCE_SHA256,
+)
 from hhs_runtime.hhs_pass220_h36_hash72_unit_bridge_v1 import (
     H36,
+    PINNED_UCE_SHA256_HEX,
     Pass220H36Hash72BridgeError,
     VERBATIM_UNIT_RATIO,
     h36_hash72_unit_bridge_self_test,
@@ -36,6 +43,16 @@ def test_h36_hash72_u144_numeric_projection_locks_at_36():
     assert witness["u144_projection"] == 36
     assert witness["H36_equals_HASH72_projection"] is True
     assert witness["u144_equals_HASH72_projection"] is True
+    u144 = witness["u144_independent_derivation"]
+    assert u144["exponent"] == 144
+    assert u144["projection_value"] == 36
+    assert u144["hash72_value_read"] is False
+    assert u144["lhs_numerator"] == 72
+    assert u144["lhs_denominator"] == 2
+    mc2 = witness["mc2_independent_derivation"]
+    assert mc2["projection_value"] == 36
+    assert mc2["u144_value_read"] is False
+    assert mc2["hash72_value_read"] is False
 
 
 def test_energy_and_mc2_are_projection_locks_not_symbol_rebindings():
@@ -57,12 +74,44 @@ def test_middle_and_ordered_ratios_close_exactly_to_one():
     assert witness["middle_ratio_denominator"] == 9
     assert witness["xy_plus_zw"] == 2
     assert witness["q_minus_p"] == 2
+    assert witness["ordered_phase_complete"] is True
+    assert witness["ordered_phase_witness"]["ordered_phase"] == {
+        "sx": 0,
+        "sz": 0,
+        "xy": 1,
+        "yx": -1,
+        "zw": 1,
+        "wz": -1,
+    }
+
+
+def test_native_c_uqcel_digest_literal_matches_pinned_digest():
+    root = Path(__file__).resolve().parents[2]
+    source = (
+        root / "hhs_runtime" / "c" / "hhs_runtime_uqcel_1_8_bigint.inc"
+    ).read_text(encoding="utf-8")
+    match = re.search(
+        r"HHS_EXACT_UQCEL_SOURCE_SHA256[^=]*=\s*\{(?P<body>.*?)\};",
+        source,
+        flags=re.S,
+    )
+    assert match is not None
+    byte_values = tuple(
+        int(value, 16)
+        for value in re.findall(r"0x([0-9a-fA-F]{2})U", match.group("body"))
+    )
+    assert len(byte_values) == 32
+    assert bytes(byte_values).hex() == PINNED_UCE_SHA256_HEX
 
 
 def test_canonical_universal_constraint_dependency_is_bound():
     witness = h36_hash72_unit_ratio_witness()
     assert witness["canonical_universal_constraint_fragments_present"] is True
-    assert len(witness["canonical_universal_constraint_sha256"]) == 64
+    assert witness["canonical_universal_constraint_digest_matches_pinned"] is True
+    assert witness["canonical_universal_constraint_sha256"] == PINNED_UCE_SHA256_HEX
+    assert witness["canonical_universal_constraint_recomputed_sha256"] == PINNED_UCE_SHA256_HEX
+    assert witness["canonical_universal_constraint_pinned_sha256"] == PINNED_UCE_SHA256_HEX
+    assert HHS_EXACT_UQCEL_SOURCE_SHA256.hex() == PINNED_UCE_SHA256_HEX
 
 
 @pytest.mark.parametrize(
@@ -74,8 +123,12 @@ def test_canonical_universal_constraint_dependency_is_bound():
         {"p4": 1},
         {"p4": 8},
         {"p2_minus_pq": 2},
+        {"sx": 1},
+        {"sz": 1},
         {"xy": 2},
+        {"yx": 1},
         {"zw": -1},
+        {"wz": 1},
         {"q_minus_p": 3},
         {"energy_e_projection": 35},
         {"mc2_projection": 35},

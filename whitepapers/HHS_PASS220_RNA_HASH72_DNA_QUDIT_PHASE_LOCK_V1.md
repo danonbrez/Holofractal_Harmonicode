@@ -91,9 +91,20 @@ wz = -1
 ```
 
 The existing nine-symbol ordered palindrome and phase matrix remain inherited
-from I015.  The new circuit binds these phase semantics to the same 5,184
-character positions used by RNA, Hash72 chunk geometry, and VM81/Qudit local64
-coordinates.
+from I015. The repair-forward binding now derives the phase relation from the
+actual 5,184-character operand rather than merely copying the four q=-1
+constants into the receipt.
+
+Each canonical 64-character qudit token is treated as the inherited
+`operation64` address plane. For every serialized character, `local64`
+decodes to its ordered `{x,y,z,w}^3` RNA triplet. The first two symbols select
+the ordered phase pair, so the serialized operand itself supplies the
+`xy/yx/zw/wz` relationship. The binding witness covers all 64 operation
+addresses in every one of the 81 cells and hashes the actual character,
+cell/address, decoded triplet, pair, and projected q=-1 value together.
+
+Thus a payload mutation changes the serialized phase-binding root even when the
+global phase table itself remains valid.
 
 ## Native C++ surface
 

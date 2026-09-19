@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - agent/pass219-consolidate-green-stacks
+      - main
   pull_request:
     branches:
       - main
@@ -53,10 +54,22 @@ jobs:
           git fetch origin main
           git fetch origin agent/pass219-orthogonal-glyph-parallel-membrane-1-21
           git fetch origin agent/pass219b-i8-sparse-dirty-projection-optimization
-          git merge-base --is-ancestor origin/main HEAD
+      - name: Verify checkout against stable event base
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            test -n "${PR_BASE_SHA}"
+            git merge-base --is-ancestor "${PR_BASE_SHA}" HEAD
+          elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          else
+            git merge-base --is-ancestor origin/main HEAD
+          fi
 
       - name: Merge I121.12 superset stack when missing
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/agent/pass219-consolidate-green-stacks'
         run: |
           set -euo pipefail
           source_ref=origin/agent/pass219-orthogonal-glyph-parallel-membrane-1-21
@@ -101,7 +114,7 @@ jobs:
           git push origin HEAD:agent/pass219-consolidate-green-stacks
 
       - name: Merge Pass219B I7-I8 superset when missing
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/agent/pass219-consolidate-green-stacks'
         run: |
           set -euo pipefail
           source_ref=origin/agent/pass219b-i8-sparse-dirty-projection-optimization
@@ -276,7 +289,17 @@ jobs:
       - name: Validate machine-readable evidence
         run: python -m json.tool docs/pass219/PASS_219B_I7_SELECTIVE_PROJECTION_EVIDENCE.json >/dev/null
 
-      - name: Verify current-main synthetic integration
+      - name: Verify stable event-base or exact-main integration
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
+          set -euo pipefail
           git fetch origin main
-          git merge-base --is-ancestor origin/main HEAD
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            test -n "${PR_BASE_SHA}"
+            git merge-base --is-ancestor "${PR_BASE_SHA}" HEAD
+          elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          else
+            git merge-base --is-ancestor origin/main HEAD
+          fi

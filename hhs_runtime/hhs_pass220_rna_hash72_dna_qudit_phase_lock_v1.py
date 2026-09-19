@@ -37,7 +37,7 @@ from hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1 import (
 )
 
 SCHEMA = "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1"
-VERSION = "1.0.0-checkpoint.19"
+VERSION = "1.0.1-repair.19"
 PROFILE = "PASS220-I019-RNA-HASH72-DNA-QUDIT-PHASE-LOCK-v1"
 
 RNA_WINDOW_CHARACTERS = 3
@@ -49,6 +49,7 @@ H36_SIDE = 6
 H36_MAGIC_LINE = 111
 PRECISION_DENOMINATOR = 1000
 SCALE_ROWS: Tuple[Tuple[int, int, int], ...] = FRACTAL_123
+DNA_ALPHABET: Tuple[str, ...] = ("x", "y", "z", "w")
 
 
 class Pass220RNAHash72DNAPhaseLockError(ValueError):
@@ -190,6 +191,106 @@ def coordinate_phase_lock_witness() -> Dict[str, Any]:
     }
 
 
+def operation64_rna_triplet(operation64: int) -> Tuple[str, str, str]:
+    """Decode one local64 address as the ordered 4^3 RNA/Digital-DNA word."""
+    if isinstance(operation64, bool) or not isinstance(operation64, int):
+        raise Pass220RNAHash72DNAPhaseLockError(
+            "operation64 must be an exact integer"
+        )
+    if not 0 <= operation64 < CELL_TOKEN_CHARACTERS:
+        raise Pass220RNAHash72DNAPhaseLockError(
+            "operation64 must lie in 0..63"
+        )
+    d0, remainder = divmod(operation64, 16)
+    d1, d2 = divmod(remainder, 4)
+    return DNA_ALPHABET[d0], DNA_ALPHABET[d1], DNA_ALPHABET[d2]
+
+
+def serialized_ordered_phase_binding(serialized: str) -> Dict[str, Any]:
+    """Bind ordered xy/yx/zw/wz phase to every actual serialized character.
+
+    The 64 characters of each canonical cell token are the 64 local operation
+    addresses.  Each local64 address decodes to one ordered 4^3 RNA triplet.
+    The first two RNA symbols determine the ordered phase pair; canonical
+    q=-1 pairs are evaluated through the inherited I015 projection.  The
+    binding root includes the actual serialized character at every position,
+    so a payload mutation cannot retain the same phase-binding witness.
+    """
+    _require_serialized(serialized)
+    state_root = _root(serialized)
+    records = []
+    pair_counts = {name: 0 for name in ("xy", "yx", "zw", "wz")}
+    pair_payloads = {name: [] for name in ("xy", "yx", "zw", "wz")}
+    per_cell_operation_sets = [set() for _ in range(VM81_CELLS)]
+
+    for index, character in enumerate(serialized):
+        coordinate = coordinate_5184(index)
+        cell = coordinate["vm81_cell"]
+        local64 = coordinate["local64"]
+        triplet = operation64_rna_triplet(local64)
+        pair = triplet[0] + triplet[1]
+        projected = Q_MINUS_ONE_PROJECTION.get(pair)
+        per_cell_operation_sets[cell].add(local64)
+        if projected is not None:
+            pair_counts[pair] += 1
+            pair_payloads[pair].append((index, character, triplet[2]))
+        records.append(
+            (
+                index,
+                character,
+                cell,
+                local64,
+                triplet,
+                pair,
+                projected,
+            )
+        )
+
+    expected_operation_set = set(range(CELL_TOKEN_CHARACTERS))
+    all_cells_cover_operation64 = all(
+        operation_set == expected_operation_set
+        for operation_set in per_cell_operation_sets
+    )
+    expected_pair_count = VM81_CELLS * len(DNA_ALPHABET)
+    derived_ordered_products = tuple(
+        (name, Q_MINUS_ONE_PROJECTION[name])
+        for name in ("xy", "yx", "zw", "wz")
+        if pair_counts[name] == expected_pair_count
+    )
+    if not all_cells_cover_operation64:
+        raise Pass220RNAHash72DNAPhaseLockError(
+            "serialized state did not cover operation64 in every qudit cell"
+        )
+    if derived_ordered_products != (
+        ("xy", 1),
+        ("yx", -1),
+        ("zw", 1),
+        ("wz", -1),
+    ):
+        raise Pass220RNAHash72DNAPhaseLockError(
+            "serialized operand ordered-phase derivation failed"
+        )
+
+    return {
+        "schema": "HHS_PASS_220_SERIALIZED_ORDERED_PHASE_BINDING_V1",
+        "bound_state_root_sha256": state_root,
+        "serialized_characters_bound": len(records),
+        "qudit_cells": VM81_CELLS,
+        "operation64_per_cell": CELL_TOKEN_CHARACTERS,
+        "all_cells_cover_operation64": all_cells_cover_operation64,
+        "pair_counts": pair_counts,
+        "expected_pair_count_each": expected_pair_count,
+        "derived_ordered_products": derived_ordered_products,
+        "pair_payload_roots_sha256": {
+            name: _root(pair_payloads[name])
+            for name in ("xy", "yx", "zw", "wz")
+        },
+        "complete_binding_root_sha256": _root(records),
+        "phase_values_derived_from_serialized_operand": True,
+        "ordered_products_collapsed": False,
+    }
+
+
 def palindromic_precision_lanes() -> Tuple[Dict[str, Any], ...]:
     lanes = []
     for scale, row in enumerate(SCALE_ROWS, start=1):
@@ -244,6 +345,8 @@ def phase_locked_state_witness(serialized: str) -> Dict[str, Any]:
     chunks = hash72_rows_from_5184(serialized)
     state_root = _root(serialized)
 
+    phase_binding = serialized_ordered_phase_binding(serialized)
+
     lane_bindings = tuple({
         **lane,
         "full_state_palindrome_root_sha256": _scaled_state_palindrome_root(
@@ -252,10 +355,7 @@ def phase_locked_state_witness(serialized: str) -> Dict[str, Any]:
         "bound_state_root_sha256": state_root,
     } for lane in lanes)
 
-    q_minus_one = tuple(
-        (name, Q_MINUS_ONE_PROJECTION[name])
-        for name in ("xy", "yx", "zw", "wz")
-    )
+    q_minus_one = tuple(phase_binding["derived_ordered_products"])
 
     checks = {
         "canonical_5184_roundtrip": serialize_offsets_5184(offsets) == serialized,
@@ -289,6 +389,13 @@ def phase_locked_state_witness(serialized: str) -> Dict[str, Any]:
             ("zw", 1),
             ("wz", -1),
         ),
+        "ordered_xyzw_phase_bound_to_serialized_operand": (
+            phase_binding["phase_values_derived_from_serialized_operand"]
+            and phase_binding["bound_state_root_sha256"] == state_root
+            and phase_binding["serialized_characters_bound"]
+            == SERIALIZED_CHARACTERS
+            and phase_binding["all_cells_cover_operation64"]
+        ),
         "vm81_qudit_cells": len(offsets) == VM81_CELLS,
     }
     if not all(checks.values()):
@@ -311,6 +418,7 @@ def phase_locked_state_witness(serialized: str) -> Dict[str, Any]:
             "phase_path": PHASE_PATH,
             "phase_matrix": PHASE_MATRIX,
             "q_minus_one_ordered_products": q_minus_one,
+            "serialized_operand_phase_binding": phase_binding,
             "ordered_products_collapsed": False,
         },
         "qudit": {
