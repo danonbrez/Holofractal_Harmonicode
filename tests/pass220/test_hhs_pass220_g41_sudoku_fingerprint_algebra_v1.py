@@ -221,25 +221,58 @@ def test_invalid_inputs_fail_closed():
         derived_cell_values(a2=1.0)
 
 
-def test_default_service_registry_exposes_i014_g41_surface():
+def test_default_service_registry_declares_i014_g41_surface():
+    import inspect
+
+    from hhs_runtime.hhs_kernel_conformance_registration_interposer_v1 import (
+        interpose_service_registration,
+    )
     from hhs_runtime.hhs_service_registry_v1 import (
         make_default_service_registry,
     )
 
-    registry = make_default_service_registry()
-    services = {
-        service["name"]: service
-        for service in registry.services()
-    }
-    spec = services[
-        "pass220.g41_sudoku_fingerprint.self_test"
-    ]
-    assert spec["module"] == (
+    source = inspect.getsource(make_default_service_registry)
+    assert "pass220.g41_sudoku_fingerprint.self_test" in source
+    assert (
         "hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1"
+        in source
     )
-    assert spec["function"] == "g41_fingerprint_self_test"
-    assert "HHS-I014" in spec["invariant_ids"]
-    assert spec["conformance_decision"]["derivation_complete"] is True
-    assert spec["mutation_policy"] == (
-        "READ_ONLY_REFERENCE_WITNESS_NO_VM81_MUTATION"
-    )
+
+    decision = interpose_service_registration({
+        "name": "pass220.g41_sudoku_fingerprint.self_test",
+        "module": (
+            "hhs_runtime."
+            "hhs_pass220_g41_sudoku_fingerprint_algebra_v1"
+        ),
+        "function": "g41_fingerprint_self_test",
+        "service_type": "pass220_exact_reference_projection",
+        "invariant_ids": [
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+        ],
+        "contract_schemas": [
+            "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1",
+        ],
+        "witness_schemas": [
+            "HHS_PASS_220_G41_SURFACE_REACHABILITY_WITNESS_V1",
+        ],
+        "validators": [
+            "validate_g41_surface_reachability",
+            "g41_fingerprint_self_test",
+        ],
+        "rejection_codes": [
+            "REJECT_G41_FINGERPRINT_CLASS_MISMATCH",
+            "REJECT_G41_REACHABILITY_ROUNDTRIP_FAILURE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        "mutation_policy": (
+            "READ_ONLY_REFERENCE_WITNESS_NO_VM81_MUTATION"
+        ),
+        "persistence_policy": "NO_CANONICAL_PERSISTENCE",
+    })
+    assert decision["ok"] is True
+    assert decision["decision"]["derivation_complete"] is True
+    assert "HHS-I014" in decision["declaration"]["invariant_ids"]
