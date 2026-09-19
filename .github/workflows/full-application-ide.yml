@@ -263,8 +263,16 @@ jobs:
               page.wait_for_selector('[data-testid="mobile-quick-build-panel"]', timeout=120000)
               mounted = page.locator('[data-testid="hhs-canonical-runtime-ide"]').count()
               product_workspace = page.locator('[data-testid="hhs-product-workspace"]').count()
+              product_nav = page.locator('[data-testid="hhs-product-workspace"] > nav')
               visual_program = product_nav.get_by_role('button', name='Visual Program', exact=True)
               visual_program_button = visual_program.count()
+              workspace_button = product_nav.get_by_role('button', name='Workspace', exact=True).count()
+              if visual_program_button != 1:
+                  raise SystemExit({"visual_program_button_count": visual_program_button})
+              visual_program.click()
+              page.wait_for_selector('[data-testid="registry-visual-programmer"]', timeout=120000)
+              registry_programmer = page.locator('[data-testid="registry-visual-programmer"]').count()
+              quick_build = page.locator('[data-testid="mobile-quick-build-panel"]').count()
               title = page.title()
               boot_state = page.locator('html').get_attribute('data-hhs-mounted')
               record = {
