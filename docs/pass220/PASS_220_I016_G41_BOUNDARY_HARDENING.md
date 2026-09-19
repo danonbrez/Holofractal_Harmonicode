@@ -1,6 +1,6 @@
 # Pass 220 I016 — G41 Boundary Hardening
 
-Status: **IMPLEMENTED — EXACT-HEAD VALIDATION PENDING**
+Status: **IMPLEMENTED — EXACT-HEAD GREEN — MERGE PENDING**
 
 This is a repair-forward hardening cycle for the G41 implementation originally
 introduced by PR #500 and now inherited on main.
@@ -101,14 +101,31 @@ The G41 suite now explicitly verifies:
 - `0b7fd2dfe75287c91a4a384b1652a0285c4ff8b2` — I014 normalization trigger repair
 - `372453aa91231ee5f9c0eb23abfa9c7e2a7b21b8` — I015 inherited trigger repair
 - `804ccf6f2a1655974fcc53e79d514a3aae232e93` — negative regression tests
+- `f39dd79294d86c1f6c5956239d3f08f545098350` — restartable checkpoint
+- `4f7ddd27004ddfda3117497a10874a14b9cf8fd6` — I016 exact-head workflow
+
+## Dependency-scoped validation
+
+PR #503 exact-head results at `4f7ddd27004ddfda3117497a10874a14b9cf8fd6`:
+
+- I014 G41 exact gate `35446513390`: **success**;
+- I015 inherited integration gate `35446513408`: **success**;
+- I016 hardening exact-head gate `35446513458`: **success**;
+- I016 dependency surface: **47 passed**, one pre-existing pytest
+  `asyncio_mode` configuration warning.
+
+The I016 gate includes the G41, palindromic ordered-phase, and Lo Shu
+normalization suites. All four reported P2 boundaries now have negative
+regression coverage.
 
 ## Validation remaining
 
-Run the I016 exact-head gate across:
+- rerun I016 exact-head after this checkpoint-only documentation commit;
+- merge PR #503 if the new head remains green;
+- read back and record the resulting main identity.
 
-- I016/I014 G41 boundary and algebra tests;
-- I015 palindromic ordered-phase integration tests;
-- I001 normalization tests.
+## Next action
 
-Merge only after the exact-head gate is green; then verify the resulting main
-commit and record the terminal receipt.
+Consume the exact-head result for this documentation checkpoint, then merge and
+verify main.
+
