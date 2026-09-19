@@ -4511,6 +4511,64 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.rna_operation64_c4_g41_radical_proof.self_test",
+        module="hhs_runtime.hhs_pass220_rna_operation64_c4_g41_radical_proof_v1",
+        function="i020_self_test",
+        service_type="pass220_exact_constructive_phase_geometry_proof",
+        description=(
+            "Prove the exact 4^3 RNA triplet to 8^2 operation64 address "
+            "bijection, the I011 dyadic C4 identity x_D^3=y_D, and the "
+            "constructive I014 reciprocal-class to Z_41 radical-factor bridge."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1",
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1",
+            "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1",
+            "HHS_PASS_220_MOBIUS_QUARTER_PHASE_HARMONIC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1_VALIDATION",
+        ],
+        validators=[
+            "validate_i020_proof",
+            "i020_self_test",
+        ],
+        guards=[
+            "rna_triplet_4cubed_operation64_8squared_bijection",
+            "ordered_triplet_identity_roundtrip",
+            "dyadic_C4_xD_cubed_equals_yD",
+            "genesis_radical_32_sqrt410_over9",
+            "i014_classes_biject_Z41",
+            "radicand_410_equals_10_times_41",
+            "i019_5184_coordinate_lock",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_RNA_OPERATION64_CODEC_DRIFT",
+            "REJECT_DYADIC_C4_CUBIC_CONJUGATE_DRIFT",
+            "REJECT_GENESIS_RADICAL_IDENTITY_DRIFT",
+            "REJECT_G41_RADICAL_CLASS_BRIDGE_DRIFT",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_CONSTRUCTIVE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_EXHAUSTIVE_64_RNA_STATES_41_G41_CLASSES"
+        ),
+    )
+
     return registry
 
 
