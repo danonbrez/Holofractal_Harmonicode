@@ -6,6 +6,28 @@ on:
       - "hhs_runtime/hhs_pass220_h36_hash72_unit_bridge_v1.py"
       - "tests/pass220/test_hhs_pass220_h36_hash72_unit_bridge_v1.py"
       - "hhs_runtime/hhs_pass220_multidimensional_constraint_manifold_v1.py"
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "hhs_runtime/c/hhs_runtime_uqcel_1_8_bigint.inc"
+      - "hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc"
+      - "hhs_python/runtime/hhs_uqcel_ctypes_bridge.py"
+      - "contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.wl"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.output.json"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.receipt.json"
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "hhs_runtime/c/hhs_runtime_uqcel_1_8_bigint.inc"
+      - "hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc"
+      - "hhs_python/runtime/hhs_uqcel_ctypes_bridge.py"
+      - "contracts/pass219/PASS_219_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE_1_8_0.harmonicode"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.wl"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.output.json"
+      - "evidence/pass220/i018_repair_wolfram_audit_v1.receipt.json"
       - "tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py"
       - "hhs_runtime/hhs_pass219_dynamic_paradox_phase_cycle_v1.py"
       - "contracts/pass219/PASS_219_I147_DYNAMIC_PARADOX_PHASE_CYCLE_H36_1_0.json"
@@ -43,6 +65,25 @@ jobs:
           python-version: "3.12"
       - name: Install pytest
         run: python -m pip install --disable-pip-version-check pytest
+      - name: Verify sealed Wolfram audit evidence
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib
+          root = pathlib.Path(".")
+          receipt_path = root / "evidence/pass220/i018_repair_wolfram_audit_v1.receipt.json"
+          receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+          for kind in ("input", "output"):
+              path = root / receipt[f"{kind}_path"]
+              actual = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert actual == receipt[f"{kind}_sha256"], (kind, actual)
+          output = json.loads((root / receipt["output_path"]).read_text(encoding="utf-8"))
+          assert output["allPassed"] is True
+          assert output["checkCount"] == output["passedCount"] == 15
+          assert receipt["all_passed"] is True
+          assert receipt["check_count"] == receipt["passed_count"] == 15
+          PY
       - name: Run I018 and inherited exact surfaces
         env:
           PYTHONPATH: .
