@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1 import (
@@ -22,7 +24,9 @@ from hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1 import (
     local_bigint_projection,
     number_theory_witness,
     opposite_anchor,
+    ordered_zero_cell_witness,
     position_anchor,
+    quadratic3_mul,
     quadratic3_norm,
     quadratic3_pow,
     reciprocal_fingerprint,
@@ -37,6 +41,32 @@ def test_cell_equations_project_exactly_to_0_through_9():
     assert zero_cell_value() == 0
     assert derived_cell_values() == {i: i for i in range(10)}
     assert symbol_radix() == 10
+
+
+def test_c0_preserves_and_constrains_ordered_composite_identity():
+    witness = ordered_zero_cell_witness()
+    assert witness["ordered_composites"] == {
+        "sx": 0,
+        "sz": 0,
+        "xy": 1,
+        "yx": -1,
+        "zw": 1,
+        "wz": -1,
+    }
+    assert witness["ordered_terms"] == (
+        "SX", "-SZ", "-WZ", "+XY", "+YX", "-ZW"
+    )
+    assert witness["identity_preserved"] is True
+    assert witness["value"] == 0
+
+    # This scalar-cancels to zero but destroys the canonical ordered products.
+    with pytest.raises(Pass220G41FingerprintError):
+        zero_cell_value(xy=2, yx=-2, zw=1, wz=-1)
+
+    # Direct scalar C0 injection is not an admissible replacement for the
+    # ordered-composite witness, even when the injected scalar is zero.
+    with pytest.raises(Pass220G41FingerprintError):
+        derived_cell_values(c0=0)
 
 
 def test_canonical_seed_is_exact_sudoku():
@@ -162,6 +192,17 @@ def test_full_81_cell_bigint_and_5184_character_serialization_roundtrip():
     assert witness["roundtrip"] is True
 
 
+def test_quadratic_number_theory_rejects_float_bool_and_malformed_pairs():
+    for value in ((1.0, 0), (1, 0.0), (True, 0), (1, False), (1,)):
+        with pytest.raises(Pass220G41FingerprintError):
+            quadratic3_norm(value)
+
+    with pytest.raises(Pass220G41FingerprintError):
+        quadratic3_mul((1.0, 0), (1, 0))
+    with pytest.raises(Pass220G41FingerprintError):
+        quadratic3_mul((1, 0), (True, 0))
+
+
 def test_quadratic_number_theory_bridge_is_exact_integer_pair_algebra():
     witness = number_theory_witness(8)
     assert witness["G"] == (2, 1)
@@ -180,6 +221,28 @@ def test_quadratic_number_theory_bridge_is_exact_integer_pair_algebra():
     )
 
 
+def test_noncanonical_but_valid_sudoku_cannot_mint_g41_canonical_receipts():
+    swapped = tuple(
+        tuple(2 if value == 1 else 1 if value == 2 else value for value in row)
+        for row in SUDOKU81
+    )
+    assert swapped != SUDOKU81
+    assert validate_sudoku_seed(swapped) is True
+
+    # Generic local fingerprint inspection remains possible.
+    assert len(fingerprint(4, 4, seed=swapped)) == 3
+
+    # Canonical G41 receipts/classes/serialization fail closed for a different
+    # valid Sudoku because the 41-class/fixed-center theorem was proved only
+    # for SUDOKU81.
+    with pytest.raises(Pass220G41FingerprintError):
+        g41_surface_reachability_witness(swapped)
+    with pytest.raises(Pass220G41FingerprintError):
+        enumerate_fingerprint_classes(swapped)
+    with pytest.raises(Pass220G41FingerprintError):
+        full_sudoku_serialization_witness(swapped)
+
+
 def test_composed_reachability_witness_reports_41_classes_and_4d_geometry():
     witness = g41_surface_reachability_witness()
     assert witness["four_dimensions"] == ("x", "y", "z", "w")
@@ -191,6 +254,9 @@ def test_composed_reachability_witness_reports_41_classes_and_4d_geometry():
         "size_1": 1,
         "size_2": 40,
     }
+    assert witness["fixed_class_count"] == 1
+    assert witness["fixed_class_positions"] == (41,)
+    assert witness["single_fixed_class_position"] == 41
     assert witness["center_is_lo_shu"] is True
     assert witness["reachability_codec_roundtrip_all_81"] is True
     assert witness["floating_point_authority"] is False
@@ -203,6 +269,29 @@ def test_self_test_closes_without_authority_escalation():
     assert result["canonical_vm81_mutation_authority"] is False
     assert result["canonical_hash72_authority"] is False
     assert result["canonical_hash216_authority"] is False
+
+
+def test_ci_path_filters_cover_normalization_and_inherited_dependencies():
+    normalization_paths = (
+        "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
+        "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py",
+    )
+    i014 = Path(
+        ".github/workflows/pass220-i014-g41-sudoku-fingerprint-algebra.yml"
+    ).read_text(encoding="utf-8")
+    for dependency in normalization_paths:
+        assert i014.count(f'"{dependency}"') >= 2
+
+    i015 = Path(
+        ".github/workflows/pass220-i015-palindromic-ordered-phase.yml"
+    ).read_text(encoding="utf-8")
+    inherited_paths = (
+        "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py",
+        "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py",
+        *normalization_paths,
+    )
+    for dependency in inherited_paths:
+        assert i015.count(f'"{dependency}"') >= 2
 
 
 def test_invalid_inputs_fail_closed():
