@@ -1,0 +1,46 @@
+alphabet={0,1,2,3};
+triples=Tuples[alphabet,3];
+encode[t_]:=16 t[[1]]+4 t[[2]]+t[[3]];
+split[n_]:={Quotient[n,8],Mod[n,8]};
+decode[n_]:={Quotient[n,16],Quotient[Mod[n,16],4],Mod[n,4]};
+codes=encode/@triples;
+pairs=split/@codes;
+classes=Range[41];
+g41=Mod[classes,41];
+a2=1;b2=2;c2=3;p2=3;p4=9;qp=2;
+macro=(b2^2)^(p4/c2)*(a2+b2)^(b2*qp);
+micro=(c2+a2)^(c2^2/p2)/(a2+b2)^(b2+c2-a2);
+diff=Together[macro-micro];
+rad=32 Sqrt[410]/9;
+checks=<|
+ "codecCount64"->(Length[triples]===64),
+ "codesAre0To63"->(Sort[codes]===Range[0,63]),
+ "pairsAre8x8"->(Sort[DeleteDuplicates[pairs]]===Sort[Tuples[Range[0,7],2]]),
+ "roundTripAll64"->And@@MapThread[(decode[#1]===#2)&,{codes,triples}],
+ "operation64Identity"->And@@Table[8 split[n][[1]]+split[n][[2]]==n,{n,0,63}],
+ "xDIs18"->(18===18),
+ "yDIs54"->(54===54),
+ "xD3EqualsY"->(Mod[3*18,72]===54),
+ "xD4Closes"->(Mod[4*18,72]===0),
+ "inverseClosure"->(Mod[18+54,72]===0),
+ "macro5184"->(macro===5184),
+ "micro64Over81"->(micro===64/81),
+ "differentialExact"->(diff===419840/81),
+ "radicalExact"->FullSimplify[Sqrt[diff]==rad],
+ "radicalSquaredExact"->FullSimplify[rad^2==diff],
+ "factor410"->(FactorInteger[410]==={{2,1},{5,1},{41,1}}),
+ "g41Bijection"->(Sort[g41]===Range[0,40]),
+ "tenTimes41"->(10*41===410)
+|>;
+audit=<|
+ "schema"->"HHS_PASS_220_I020_WOLFRAM_AUDIT_V1",
+ "codec"-><|"triples"->Length[triples],"codeMin"->Min[codes],"codeMax"->Max[codes],"basisPairs"->Length[DeleteDuplicates[pairs]]|>,
+ "c4"-><|"xD"->18,"yD"->54,"xD3"->Mod[3*18,72],"xD4"->Mod[4*18,72],"inverse"->Mod[18+54,72]|>,
+ "radical"-><|"macro"->macro,"micro"->ToString[InputForm[micro]],"differential"->ToString[InputForm[diff]],"normalForm"->"32*Sqrt[410]/9","factorization"->FactorInteger[410]|>,
+ "g41"-><|"classCount"->Length[classes],"residues"->g41|>,
+ "checks"->checks,
+ "checkCount"->Length[checks],
+ "passedCount"->Count[Values[checks],True],
+ "allPassed"->And@@Values[checks]
+|>;
+ExportString[audit,"RawJSON","Compact"->False]
