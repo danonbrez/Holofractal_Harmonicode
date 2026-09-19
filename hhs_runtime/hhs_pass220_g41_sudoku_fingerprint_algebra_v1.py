@@ -23,7 +23,7 @@ from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
 )
 
 SCHEMA = "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1"
-VERSION = "1.0.0-checkpoint.14"
+VERSION = "1.0.1-hardening.16"
 PROFILE = "PASS220-I014-G41-SUDOKU-FINGERPRINT-ALGEBRA-v1"
 REACHABILITY_SCHEMA = "HHS_PASS_220_G41_SURFACE_REACHABILITY_WITNESS_V1"
 
@@ -71,6 +71,15 @@ CELL_EQUATIONS: Dict[int, str] = {
     9: "c2^2",
 }
 
+CANONICAL_ORDERED_ZERO_COMPOSITES: Dict[str, int] = {
+    "sx": 0,
+    "sz": 0,
+    "xy": 1,
+    "yx": -1,
+    "zw": 1,
+    "wz": -1,
+}
+
 
 class Pass220G41FingerprintError(ValueError):
     pass
@@ -92,6 +101,49 @@ def _exact_int(value: Any, *, name: str) -> int:
     return value
 
 
+def ordered_zero_cell_witness(
+    *,
+    sx: int = 0,
+    sz: int = 0,
+    xy: int = 1,
+    yx: int = -1,
+    zw: int = 1,
+    wz: int = -1,
+) -> Dict[str, Any]:
+    """Preserve and validate the ordered composites that produce C0.
+
+    The I014 scalar cell projection admits only the canonical Genesis ordered
+    phase closure. Algebraically equivalent scalar cancellations are rejected
+    so that XY/YX/ZW/WZ identity cannot be erased before the witness is made.
+    """
+    values = {"sx": sx, "sz": sz, "xy": xy, "yx": yx, "zw": zw, "wz": wz}
+    checked = {
+        name: _exact_int(value, name=name)
+        for name, value in values.items()
+    }
+    if checked != CANONICAL_ORDERED_ZERO_COMPOSITES:
+        raise Pass220G41FingerprintError(
+            "unsupported ordered C0 composites; canonical XY/YX/ZW/WZ "
+            "identity must be preserved"
+        )
+    value = (
+        checked["sx"]
+        - checked["sz"]
+        - checked["wz"]
+        + checked["xy"]
+        + checked["yx"]
+        - checked["zw"]
+    )
+    return {
+        "schema": "HHS_PASS_220_ORDERED_C0_WITNESS_V1",
+        "expression": CELL_EQUATIONS[0],
+        "ordered_composites": checked,
+        "ordered_terms": ("SX", "-SZ", "-WZ", "+XY", "+YX", "-ZW"),
+        "value": value,
+        "identity_preserved": True,
+    }
+
+
 def zero_cell_value(
     *,
     sx: int = 0,
@@ -101,15 +153,10 @@ def zero_cell_value(
     zw: int = 1,
     wz: int = -1,
 ) -> int:
-    """Evaluate C0 from typed additive/ordered phase composites.
-
-    sx denotes x+y and sz denotes z+w. xy/yx/zw/wz stay independently
-    supplied ordered composites; this function does not commute them.
-    """
-    values = {"sx": sx, "sz": sz, "xy": xy, "yx": yx, "zw": zw, "wz": wz}
-    for name, value in values.items():
-        _exact_int(value, name=name)
-    return sx - sz - wz + xy + yx - zw
+    """Return C0 only after preserving canonical ordered-composite identity."""
+    return ordered_zero_cell_witness(
+        sx=sx, sz=sz, xy=xy, yx=yx, zw=zw, wz=wz
+    )["value"]
 
 
 def derived_cell_values(
@@ -118,7 +165,12 @@ def derived_cell_values(
     a = _exact_int(a2, name="a2")
     b = _exact_int(b2, name="b2")
     c = _exact_int(c2, name="c2")
-    zero = zero_cell_value() if c0 is None else _exact_int(c0, name="c0")
+    if c0 is not None:
+        _exact_int(c0, name="c0")
+        raise Pass220G41FingerprintError(
+            "direct c0 override is unsupported; derive C0 from ordered composites"
+        )
+    zero = zero_cell_value()
     return {
         0: zero,
         1: a,
@@ -159,6 +211,37 @@ def validate_sudoku_seed(seed: Sequence[Sequence[int]] = SUDOKU81) -> bool:
             if block != target:
                 return False
     return True
+
+
+def _seed_rows(seed: Sequence[Sequence[int]]) -> Tuple[Tuple[int, ...], ...]:
+    return tuple(tuple(row) for row in seed)
+
+
+def _require_canonical_g41_seed(
+    seed: Sequence[Sequence[int]],
+) -> Tuple[Tuple[int, ...], ...]:
+    rows = _seed_rows(seed)
+    if not validate_sudoku_seed(rows):
+        raise Pass220G41FingerprintError("invalid Sudoku seed")
+    if rows != SUDOKU81:
+        raise Pass220G41FingerprintError(
+            "unsupported noncanonical Sudoku seed for G41 canonical receipts"
+        )
+    return rows
+
+
+def _exact_quadratic_pair(
+    value: Sequence[int],
+    *,
+    name: str,
+) -> Tuple[int, int]:
+    pair = tuple(value)
+    if len(pair) != 2:
+        raise Pass220G41FingerprintError(f"{name} must contain exactly two integers")
+    return (
+        _exact_int(pair[0], name=f"{name}[0]"),
+        _exact_int(pair[1], name=f"{name}[1]"),
+    )
 
 
 def _anchor(row: int, column: int) -> Tuple[int, int]:
@@ -294,8 +377,7 @@ def local_bigint_projection(matrix: Sequence[Sequence[int]]) -> int:
 def enumerate_fingerprint_classes(
     seed: Sequence[Sequence[int]] = SUDOKU81,
 ) -> Tuple[Dict[str, Any], ...]:
-    if not validate_sudoku_seed(seed):
-        raise Pass220G41FingerprintError("invalid canonical Sudoku seed")
+    seed = _require_canonical_g41_seed(seed)
     records = []
     seen_keys = set()
     for class_id in range(1, 42):
@@ -331,8 +413,7 @@ def enumerate_fingerprint_classes(
 def full_sudoku_serialization_witness(
     seed: Sequence[Sequence[int]] = SUDOKU81,
 ) -> Dict[str, Any]:
-    if not validate_sudoku_seed(seed):
-        raise Pass220G41FingerprintError("invalid canonical Sudoku seed")
+    seed = _require_canonical_g41_seed(seed)
     flat = tuple(value for row in seed for value in row)
     reference = repeated_lo_shu_reference()
     offsets = normalize_offsets(flat, reference=reference, modulus=9)
@@ -355,10 +436,8 @@ def quadratic3_mul(
     left: Tuple[int, int],
     right: Tuple[int, int],
 ) -> Tuple[int, int]:
-    a, b = left
-    c, d = right
-    for name, value in (("a", a), ("b", b), ("c", c), ("d", d)):
-        _exact_int(value, name=name)
+    a, b = _exact_quadratic_pair(left, name="left")
+    c, d = _exact_quadratic_pair(right, name="right")
     return a * c + 3 * b * d, a * d + b * c
 
 
@@ -379,7 +458,7 @@ def quadratic3_pow(exponent: int) -> Tuple[int, int]:
 
 
 def quadratic3_norm(value: Tuple[int, int]) -> int:
-    a, b = value
+    a, b = _exact_quadratic_pair(value, name="value")
     return a * a - 3 * b * b
 
 
@@ -414,8 +493,7 @@ def number_theory_witness(depth: int = 8) -> Dict[str, Any]:
 def g41_surface_reachability_witness(
     seed: Sequence[Sequence[int]] = SUDOKU81,
 ) -> Dict[str, Any]:
-    if not validate_sudoku_seed(seed):
-        raise Pass220G41FingerprintError("invalid canonical Sudoku seed")
+    seed = _require_canonical_g41_seed(seed)
     oriented = tuple(
         fingerprint(*position_anchor(position), seed=seed)
         for position in range(1, 82)
@@ -437,6 +515,11 @@ def g41_surface_reachability_witness(
             canonical_fingerprint_key(item), []
         ).append(position)
     class_sizes = tuple(sorted(len(value) for value in class_buckets.values()))
+    fixed_positions = tuple(
+        position
+        for position, item in enumerate(oriented, start=1)
+        if reciprocal_fingerprint(item) == item
+    )
     reachability_roundtrip = all(
         decode_anchor_reachability(
             *encode_anchor_reachability(*position_anchor(position))
@@ -467,7 +550,11 @@ def g41_surface_reachability_witness(
             "size_1": class_sizes.count(1),
             "size_2": class_sizes.count(2),
         },
-        "single_fixed_class_position": 41,
+        "fixed_class_count": len(fixed_positions),
+        "fixed_class_positions": fixed_positions,
+        "single_fixed_class_position": (
+            fixed_positions[0] if len(fixed_positions) == 1 else None
+        ),
         "center_fingerprint": center,
         "center_is_lo_shu": center == LO_SHU,
         "center_self_reciprocal": reciprocal_fingerprint(center) == center,
@@ -491,11 +578,14 @@ def validate_g41_surface_reachability() -> Dict[str, Any]:
         validate_sudoku_seed(),
         derived_cell_values() == {index: index for index in range(10)},
         zero_cell_value() == 0,
+        ordered_zero_cell_witness()["identity_preserved"],
         symbol_radix() == 10,
         len(classes) == 41,
         witness["unique_oriented_fingerprint_count"] == 81,
         witness["entangled_fingerprint_class_count"] == 41,
         witness["class_size_histogram"] == {"size_1": 1, "size_2": 40},
+        witness["fixed_class_count"] == 1,
+        witness["single_fixed_class_position"] == 41,
         witness["center_is_lo_shu"],
         witness["center_self_reciprocal"],
         witness["reciprocal_relation_all_81"],
