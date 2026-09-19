@@ -109,4 +109,5 @@
 #include "hhs_pass219_hash216_fractal_qudit_admission_1_45.h"
 #include "hhs_pass219_lane5_direct_witness_routing_1_46.h"
 #include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.h"
+#include "hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
 #endif
