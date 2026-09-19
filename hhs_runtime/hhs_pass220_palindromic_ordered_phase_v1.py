@@ -217,14 +217,28 @@ def projected_edge_sequence(edges: Sequence[Sequence[str]]) -> Tuple[int, ...]:
     return tuple(Q_MINUS_ONE_PROJECTION[edge_class(edge)] for edge in edges)
 
 
+def _rewrite_once(word: str) -> str:
+    """One left-to-right, non-overlapping ordered-word rewrite pass."""
+    output = []
+    index = 0
+    while index < len(word):
+        for source, target in WORD_REWRITE_RULES:
+            if word.startswith(source, index):
+                output.append(target)
+                index += len(source)
+                break
+        else:
+            output.append(word[index])
+            index += 1
+    return "".join(output)
+
+
 def rewrite_word(word: str, *, limit: int = 100) -> str:
     if not isinstance(word, str) or any(ch not in "xyzw" for ch in word):
         raise Pass220PalindromicPhaseError("word must contain only x,y,z,w")
     current = word
     for _ in range(limit):
-        updated = current
-        for source, target in WORD_REWRITE_RULES:
-            updated = updated.replace(source, target)
+        updated = _rewrite_once(current)
         if updated == current:
             return current
         current = updated
