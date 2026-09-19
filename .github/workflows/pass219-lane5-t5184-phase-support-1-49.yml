@@ -97,7 +97,7 @@ jobs:
 
       - name: Reject approximate or authority escalation
         run: |
-          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+          ! grep -REn '\\b(float|double|long[[:space:]]+double)\\b' \
             hhs_runtime/include/hhs_pass219_lane5_t5184_phase_support_1_49.h \
             hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc
           grep -F 'full_state_identity_still_required = 1U' \
@@ -164,6 +164,22 @@ jobs:
             tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py \
             tests/pass220/test_hhs_pass220_h36_hash72_unit_bridge_v1.py
 
+      - name: Run required repository baseline suites
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: ./hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          set -o pipefail
+          python hhs_runtime_smoke_tests_v1.py \
+            | tee artifacts/pass219/1.49/runtime-smoke.txt
+          python hhs_regression_suite_v1.py \
+            | tee artifacts/pass219/1.49/regression-suite.txt
+          python hhs_v1_bundle_runner.py \
+            | tee artifacts/pass219/1.49/bundle-runner.txt
+          make -C native_projects/hhs_pass190_operation_fabric validate \
+            | tee artifacts/pass219/1.49/pass190-validate.txt
+
       - name: Seal structural optimization evidence
         run: |
           python - <<'PY'
@@ -181,8 +197,17 @@ jobs:
           assert native['support_fraction'] == '1/4'
           assert native['bypass_fraction'] == '3/4'
           assert native['pair_count_each'] == 324
+          assert native['exact_local64_classification'] is True
           assert native['candidate_only'] is True
           assert native['full_state_identity_still_required'] is True
+          for name in (
+              'runtime-smoke.txt',
+              'regression-suite.txt',
+              'bundle-runner.txt',
+              'pass190-validate.txt',
+          ):
+              assert (root / name).is_file()
+              assert (root / name).stat().st_size > 0
           summary = {
               'schema': 'HHS_PASS219_LANE5_T5184_PHASE_SUPPORT_EVIDENCE_1_49',
               'source_commit': subprocess.check_output(
@@ -196,6 +221,9 @@ jobs:
               'whole_runtime_speedup_claimed': False,
               'ordered_pair_count_each': 324,
               'support_mask_hex': '0f00f000000f00f0',
+              'exact_local64_classification': True,
+              'repository_baselines_passed': True,
+              'repository_baseline_count': 4,
               'candidate_only': True,
               'full_state_identity_still_required': True,
               'requires_exact_cpu_vm81_replay': True,
