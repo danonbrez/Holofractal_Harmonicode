@@ -97,7 +97,6 @@ for (const token of [
   "Message HHS",
   "How can I help?",
   "Enter sends",
-  "uploaded payloads are not automatically attached to assistant prompts",
   "vector_payload_auto_attached_to_prompt: false",
   "Settings",
   "System instructions",
