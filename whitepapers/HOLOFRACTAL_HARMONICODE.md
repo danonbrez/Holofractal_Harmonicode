@@ -1212,3 +1212,47 @@ widen canonical VM81, Hash72, Hash216, persistence, or mutation authority.
 
 Full derivation and executable boundaries are in
 `whitepapers/HHS_PASS220_G41_SUDOKU_FINGERPRINT_CELL_ALGEBRA_V1.md`.
+
+
+## Pass 220 I015 — Palindromic ordered-phase mirror algebra
+
+Pass 220 I015 binds the supplied four-coordinate carriers
+`x=(0,1,1,0)` and `y=(0,-1,1,0)` to the ordered phase surface. Exact
+evaluation gives `x.y=0`, equal squared norms `2`, and an involutive mirror
+that flips the second coordinate and exchanges x with y.
+
+The ordered edge equalities
+
+`xw=xy, wx=wz, yz=yx, zy=zw`
+
+produce two directional traversals of the same nine-symbol palindromic carrier:
+
+`x y z w x w z y x`.
+
+Its 3x3 phase projection is centrosymmetric:
+
+`[[x,y,z],[w,x,w],[z,y,x]]`.
+
+The forward edge path `(xy,yz,zw,wx)` and mirror path
+`(xw,wz,zy,yx)` preserve distinct order before projection, while their
+component representatives occupy the same four edge classes. Under the
+licensed q=-1 scalar projection both views become exactly
+`(+1,-1,+1,-1)` with product `+1`.
+
+The residual surface remains invariant under the new mirror representatives.
+Using associativity without commuting x and y, the supplied braid
+`xyx=yxy` together with `yx=-x` derives `x^2=xy`; therefore
+`xw=xy=x^2` and `yz=yx=-x`. Combined with the typed reciprocal
+`xy=1/y`, the internal extension is `x^2=1/y`.
+
+The local rewrite subset reduces `X=xyz` to `yxy` and `Y=wxy` to
+`wzw`; the higher `X=YXY` equality is retained as an explicit constraint
+rather than incorrectly claimed as a consequence of those lower rules alone.
+
+The centrosymmetric phase matrix composes directly with the I014 reciprocal
+Sudoku involution. Exhaustive evaluation over all 81 anchors preserves all 41
+combined digit+phase fingerprint classes and leaves the central Lo Shu+phase
+tensor fixed. A consolidated Wolfram audit completed 23/23 exact checks.
+
+Implementation and complete derivation:
+`whitepapers/HHS_PASS220_PALINDROMIC_ORDERED_PHASE_MIRROR_ALGEBRA_V1.md`.

@@ -1,6 +1,6 @@
 # Pass 220 I014 — G41 Sudoku Fingerprint Algebra and Reachability
 
-Status: **IMPLEMENTED — REPAIR-FORWARD CHECKPOINT; FOCUSED CI RERUN ACTIVE**
+Status: **MERGED — FOCUSED CI GREEN — VERIFIED MAIN**
 
 Schema: `HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1`
 
@@ -172,18 +172,21 @@ reachability assertion. It now verifies both:
 This removes an unrelated optional-dependency requirement from the focused
 proof without weakening the reachability claim.
 
-At checkpoint time the replacement focused PR run `35440589032` was
-in progress. A push-triggered sibling run `35440592208` was queued.
-The existing HHS delivery watch may complete validation/repair-forward if
-those checks finish after interactive control returns.
+The repaired branch subsequently passed both focused runs:
 
-## Validation remaining
+- PR run `35440628804`: success;
+- push run `35440631125`: success.
 
-- record the terminal focused-I014 CI receipt for the current branch head;
-- repair only an I014/I001 dependency-scoped failure if one appears;
-- merge PR #500 when the focused branch state is green and required checks
-  permit integration;
-- verify merged `main` and record the merge/head identity.
+PR #500 was then merged. The verified main merge commit is:
+
+`adf663b3d35c62d74d65d937a0fbda8281b276ac`.
+
+## Terminal closure
+
+I014 dependency-scoped validation is complete. PR #500 is merged and the
+resulting main identity was read back directly from the repository.
+
+No I014 validation remains.
 
 ## Current commit sequence
 
@@ -196,13 +199,13 @@ those checks finish after interactive control returns.
 - `134db1c6136b24b134fbfe5b1028dfd950297229` — canonical whitepaper summary / first PR head
 - `523b035e2108d4ffd5de4f3df635efe49695e8a8` — repair-forward focused registry proof
 
-## Pull request and next action
+## Pull request and closure
 
-- PR: #500 — `Pass 220 I014: G41 reciprocal Sudoku fingerprint algebra`
-- Merge target: `main`
-- Current pre-checkpoint validated code head:
-  `523b035e2108d4ffd5de4f3df635efe49695e8a8`
+- PR: #500 — merged
+- Merge commit / verified main:
+  `adf663b3d35c62d74d65d937a0fbda8281b276ac`
+- Focused PR CI: `35440628804` — success
+- Focused push CI: `35440631125` — success
 
-Next action: consume the terminal focused-I014 workflow result, repair forward
-only if the I014/I001 dependency surface fails, then merge PR #500 and verify
-the resulting `main` identity.
+I014 is the inherited base for Pass 220 I015.
+

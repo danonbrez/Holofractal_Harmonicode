@@ -4282,6 +4282,56 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.palindromic_ordered_phase.self_test",
+        module="hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1",
+        function="palindromic_ordered_phase_self_test",
+        service_type="pass220_exact_ordered_phase_projection",
+        description=(
+            "Validate the exact four-vector mirror, nine-symbol palindromic "
+            "x/y/z/w path, paired ordered-edge representatives, braid "
+            "consequence, Lo Shu/G41 reciprocal involution, and q=-1 "
+            "projection without commuting the typed ordered phase algebra."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_PALINDROMIC_ORDERED_PHASE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_PALINDROMIC_PHASE_CLOSURE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_palindromic_ordered_phase",
+            "palindromic_ordered_phase_self_test",
+        ],
+        guards=[
+            "ordered_edge_classes_preserved",
+            "palindromic_phase_path_exact",
+            "g41_combined_reciprocal_involution",
+            "conventional_scalar_projection_fail_closed",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_PALINDROMIC_PHASE_MIRROR_MISMATCH",
+            "REJECT_ORDERED_EDGE_CLASS_COLLAPSE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_ORDERED_PHASE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_9_SYMBOL_8_EDGE_81_ANCHOR_41_CLASS_EXACT_PROOF"
+        ),
+    )
+
     return registry
 
 
