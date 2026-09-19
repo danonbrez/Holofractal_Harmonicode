@@ -24,7 +24,12 @@ from hhs_runtime.hhs_pass219_dynamic_paradox_phase_cycle_v1 import (
     h36_identity_witness,
 )
 from hhs_runtime.hhs_pass220_multidimensional_constraint_manifold_v1 import (
+    PHASE_CELLS,
     hash72_algebraic_projection_witness,
+    ordered_curvature_tensor_witness,
+)
+from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
+    HHS_EXACT_UQCEL_SOURCE_SHA256 as PINNED_NATIVE_UCE_SHA256,
 )
 from hhs_runtime.pass219_native_universal_constraint_v1 import (
     CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SHA256,
@@ -32,9 +37,13 @@ from hhs_runtime.pass219_native_universal_constraint_v1 import (
 )
 
 SCHEMA = "HHS_PASS_220_H36_HASH72_UNIT_BRIDGE_V1"
-VERSION = "1.0.0-checkpoint.18"
+VERSION = "1.0.1-repair.18"
 PROFILE = "PASS220-I018-H36-HASH72-UNIT-BRIDGE-v1"
 WITNESS_SCHEMA = "HHS_PASS_220_H36_HASH72_UNIT_RATIO_WITNESS_V1"
+PINNED_UCE_SHA256_HEX = (
+    "7eb0cc5707a4a58a5a8e4879e0e2e3bd"
+    "ab22c15fe4503fb3a3b0e16596343d42"
+)
 
 VERBATIM_UNIT_RATIO = (
     "(e/H36=(mc^2)/u^144)="
@@ -73,6 +82,77 @@ def _exact_int(value: Any, *, name: str) -> int:
     return value
 
 
+def _independent_u144_projection_witness(
+    *,
+    a2: int,
+    b2: int,
+    c2: int,
+) -> Dict[str, Any]:
+    """Derive the u^144 scalar-facing projection without reading HASH72.
+
+    The exponent is independently obtained from the I017 dyadic phase rule
+    72*(b^2/a^4).  The projected value is then evaluated through the H36
+    left branch b^6*c^4/(c^2-a^2), which is algebraically independent of the
+    HASH72 branch b^4*P^4 used by I017.
+    """
+    a = _exact_int(a2, name="u144.a2")
+    b = _exact_int(b2, name="u144.b2")
+    c = _exact_int(c2, name="u144.c2")
+    a4 = a * a
+    if a4 == 0 or b % a4:
+        raise Pass220H36Hash72BridgeError(
+            "u^144 dyadic exponent requires exact b^2/a^4"
+        )
+    pair_exponent = b // a4
+    exponent = PHASE_CELLS * pair_exponent
+    b4 = b * b
+    b6 = b4 * b
+    c4 = c * c
+    denominator = c - a
+    numerator = b6 * c4
+    if denominator == 0 or numerator % denominator:
+        raise Pass220H36Hash72BridgeError(
+            "u^144 H36 projection requires an exact nonzero denominator"
+        )
+    value = numerator // denominator
+    if exponent != 144:
+        raise Pass220H36Hash72BridgeError(
+            "u^144 exponent derivation drifted from 144"
+        )
+    return {
+        "phase_cells": PHASE_CELLS,
+        "a4": a4,
+        "b2_over_a4": pair_exponent,
+        "exponent": exponent,
+        "lhs_numerator": numerator,
+        "lhs_denominator": denominator,
+        "projection_value": value,
+        "derivation": (
+            "u^(72*(b^2/a^4)); scalar projection via "
+            "b^6*c^4/(c^2-a^2)"
+        ),
+        "hash72_value_read": False,
+    }
+
+
+def _independent_mc2_projection_witness(
+    *,
+    a2: int,
+    b2: int,
+) -> Dict[str, Any]:
+    """Derive the mc^2 projection from the independent H36 right branch."""
+    a = _exact_int(a2, name="mc2.a2")
+    b = _exact_int(b2, name="mc2.b2")
+    b4 = b * b
+    value = (a + b) ** 2 * b4
+    return {
+        "projection_value": value,
+        "derivation": "(a^2+b^2)^2*b^4",
+        "u144_value_read": False,
+        "hash72_value_read": False,
+    }
+
+
 def h36_hash72_unit_ratio_witness(
     *,
     a2: int = 1,
@@ -80,8 +160,12 @@ def h36_hash72_unit_ratio_witness(
     c2: int = 3,
     p4: int = 9,
     p2_minus_pq: int = 1,
+    sx: int = 0,
+    sz: int = 0,
     xy: int = 1,
+    yx: int = -1,
     zw: int = 1,
+    wz: int = -1,
     q_minus_p: int = 2,
     energy_e_projection: int = H36,
     mc2_projection: int | None = None,
@@ -99,8 +183,12 @@ def h36_hash72_unit_ratio_witness(
             "c2": c2,
             "p4": p4,
             "p2_minus_pq": p2_minus_pq,
+            "sx": sx,
+            "sz": sz,
             "xy": xy,
+            "yx": yx,
             "zw": zw,
+            "wz": wz,
             "q_minus_p": q_minus_p,
             "energy_e_projection": energy_e_projection,
         }.items()
@@ -121,6 +209,17 @@ def h36_hash72_unit_ratio_witness(
         raise Pass220H36Hash72BridgeError(
             "P^4!=1 boundary violated"
         )
+    ordered_phase = ordered_curvature_tensor_witness(
+        a2=checked["a2"],
+        b2=checked["b2"],
+        c2=checked["c2"],
+        sx=checked["sx"],
+        sz=checked["sz"],
+        xy=checked["xy"],
+        yx=checked["yx"],
+        zw=checked["zw"],
+        wz=checked["wz"],
+    )
     if checked["xy"] + checked["zw"] != checked["b2"]:
         raise Pass220H36Hash72BridgeError(
             "xy+zw must equal b^2 on the admitted ordered projection"
@@ -142,9 +241,18 @@ def h36_hash72_unit_ratio_witness(
         c2=checked["c2"],
         p2_minus_pq=checked["p2_minus_pq"],
     )
-    u144_projection = hash72["HASH72_projection"]
+    u144 = _independent_u144_projection_witness(
+        a2=checked["a2"],
+        b2=checked["b2"],
+        c2=checked["c2"],
+    )
+    u144_projection = u144["projection_value"]
+    mc2_witness = _independent_mc2_projection_witness(
+        a2=checked["a2"],
+        b2=checked["b2"],
+    )
     mc2 = (
-        u144_projection
+        mc2_witness["projection_value"]
         if mc2_projection is None
         else _exact_int(mc2_projection, name="mc2_projection")
     )
@@ -174,6 +282,17 @@ def h36_hash72_unit_ratio_witness(
         )
 
     source_text = CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SOURCE
+    recomputed_source_sha256 = sha256(source_text.encode("utf-8")).digest()
+    source_digest_matches_pinned = (
+        recomputed_source_sha256
+        == CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SHA256
+        == PINNED_NATIVE_UCE_SHA256
+        and recomputed_source_sha256.hex() == PINNED_UCE_SHA256_HEX
+    )
+    if not source_digest_matches_pinned:
+        raise Pass220H36Hash72BridgeError(
+            "canonical universal-constraint pinned SHA-256 mismatch"
+        )
     required_fragments = (
         "P^2-pq",
         "m^2-m",
@@ -206,6 +325,8 @@ def h36_hash72_unit_ratio_witness(
         "H36": H36,
         "H36_identity": h36,
         "u144_projection": u144_projection,
+        "u144_independent_derivation": u144,
+        "mc2_independent_derivation": mc2_witness,
         "HASH72_projection": hash72["HASH72_projection"],
         "u144_equals_HASH72_projection": (
             u144_projection == hash72["HASH72_projection"]
@@ -225,6 +346,18 @@ def h36_hash72_unit_ratio_witness(
             * (checked["a2"] + checked["b2"])
         ),
         "middle_ratio_denominator": checked["p4"],
+        "ordered_phase_witness": ordered_phase,
+        "ordered_phase_complete": (
+            ordered_phase["ordered_phase"]
+            == {
+                "sx": 0,
+                "sz": 0,
+                "xy": checked["a2"],
+                "yx": -checked["a2"],
+                "zw": checked["a2"],
+                "wz": -checked["a2"],
+            }
+        ),
         "xy_plus_zw": checked["xy"] + checked["zw"],
         "q_minus_p": checked["q_minus_p"],
         "P4": checked["p4"],
@@ -235,6 +368,13 @@ def h36_hash72_unit_ratio_witness(
         "typed_e_symbol_not_rebound_to_basis_e": True,
         "canonical_universal_constraint_sha256": (
             CANONICAL_NATIVE_UNIVERSAL_CONSTRAINT_SHA256.hex()
+        ),
+        "canonical_universal_constraint_recomputed_sha256": (
+            recomputed_source_sha256.hex()
+        ),
+        "canonical_universal_constraint_pinned_sha256": PINNED_UCE_SHA256_HEX,
+        "canonical_universal_constraint_digest_matches_pinned": (
+            source_digest_matches_pinned
         ),
         "canonical_universal_constraint_fragments_present": fragments_present,
         "canonical_hash72_mint_authority": False,
@@ -262,7 +402,14 @@ def validate_h36_hash72_unit_bridge() -> Dict[str, Any]:
         "P4_nonunit": witness["P4_not_one"],
         "uce_source_bound": (
             witness["canonical_universal_constraint_fragments_present"]
+            and witness["canonical_universal_constraint_digest_matches_pinned"]
         ),
+        "u144_independently_derived": (
+            witness["u144_independent_derivation"]["hash72_value_read"] is False
+            and witness["u144_independent_derivation"]["exponent"] == 144
+            and witness["u144_projection"] == 36
+        ),
+        "ordered_phase_complete": witness["ordered_phase_complete"],
         "typed_m_preserved": not witness["native_m_symbol_solved"],
     }
     return _receipt({
