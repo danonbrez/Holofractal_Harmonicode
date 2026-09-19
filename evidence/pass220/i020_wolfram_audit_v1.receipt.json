@@ -5,9 +5,11 @@
   "command": "wolframscript -file evidence/pass220/i020_wolfram_audit_v1.wl",
   "input_path": "evidence/pass220/i020_wolfram_audit_v1.wl",
   "output_path": "evidence/pass220/i020_wolfram_audit_v1.output.json",
-  "input_sha256": "5403f787c490b2cc0e55eb92174874d21eee3484bb3dd86f2f0a13c97a4d4711",
-  "output_sha256": "3ad31896dd0a409606ddc8da1c89591deb6313ca82b4e1f1465d58cb3460014e",
+  "input_sha256": "906965253f042e9bcdc96db26dc2b815e2f05d2657fbca193ce3e8fd04e4016a",
+  "output_sha256": "123291427035ad44edf57fe8de820dc4ff53152add9d2b61ff5deb06b668e9e3",
   "check_count": 18,
   "passed_count": 18,
-  "all_passed": true
+  "all_passed": true,
+  "self_exports_output": true,
+  "rawjson_compact": true
 }
