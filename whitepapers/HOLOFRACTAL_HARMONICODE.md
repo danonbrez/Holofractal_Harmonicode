@@ -1176,3 +1176,39 @@ Separate threat model plus dedicated formal/cryptographic verification; not infe
 
 A.30 Appendix Conclusion
 The algebraic core of Pass 219 is not one formula but a typed tower of exact representations. Polynomial numeral lifts establish stable symbolic integers; noncommutative words preserve ordered phase identity; the 72-state ring supplies finite cyclic transport; Lo Shu and quadratic-reciprocity laws bind exact orientation; the u_phase/u_q split prevents metric/phase conflation; quotient-remainder maps prove finite coordinate bijections; Hash72/Hash216 preserve positional lineage; UCE/UQCEL conjoin exact admission predicates; Fibonacci descriptors provide an exact shared recurrence witness; and the RNA grammar composes deterministic partial transitions with rollback. Where earlier HHS discussions use additional symbolic geometry or legacy zero-energy notation, this appendix retains those equations while clearly separating domain-specific definitions from conventional mathematical identities and from repository-enforced claims.
+
+
+## Pass 220 I014 — G41 reciprocal Sudoku fingerprint algebra
+
+Pass 220 I014 adds a constructive exact theorem for the canonical 81-cell
+Sudoku/Lo Shu geometry. Every anchor exposes a wrapped nine-cell neighborhood
+consisting of center plus the positive/negative members of the four inherited
+direction families `x,y,z,w`. All 81 oriented neighborhoods are distinct.
+
+With reciprocal transform
+
+[
+\rho(F)_{i,j}=10-F_{2-i,2-j},
+]
+
+the canonical seed satisfies `rho(F[r,c]) = F[8-r,8-c]` for all 81 anchors.
+The transform is involutive, the center is the unique fixed fingerprint, and
+that center is exactly the canonical Lo Shu nucleus. Therefore the oriented
+81-state surface quotiented by reciprocal entanglement contains exactly
+`40 * 2 + 1 = 41` nine-cell fingerprint classes.
+
+The iteration provides the exhaustive reversible address codec
+`p <-> (min(p,82-p), orientation)`, binds every local fingerprint to the
+Lo Shu-relative radix-5184 bigint projection, round-trips the full 81-cell
+state through the fixed 5184-character carrier, and registers the read-only
+self-test as `pass220.g41_sudoku_fingerprint.self_test` under HHS-I014
+surface-reachability closure.
+
+The exact arithmetic-number-theory companion uses integer pairs for
+`a+bP`, `P^2=3`, obtaining `G=(2,1)`, `G^2=(7,4)`,
+`G^3=(26,15)`, norm `A_n^2-3B_n^2=1`, and recurrence
+`X_(n+1)=4X_n-X_(n-1)`. The implementation remains read-only and does not
+widen canonical VM81, Hash72, Hash216, persistence, or mutation authority.
+
+Full derivation and executable boundaries are in
+`whitepapers/HHS_PASS220_G41_SUDOKU_FINGERPRINT_CELL_ALGEBRA_V1.md`.
