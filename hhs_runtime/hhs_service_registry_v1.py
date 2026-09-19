@@ -4332,6 +4332,67 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.multidimensional_constraint_manifold.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_multidimensional_constraint_manifold_v1"
+        ),
+        function="multidimensional_constraint_manifold_self_test",
+        service_type="pass220_exact_multidimensional_constraint_projection",
+        description=(
+            "Enforce the exact Pass 220 multidimensional constraint manifold: "
+            "72-phase periodic transport plus invariant 3x3 nucleus inside "
+            "3^4=81 geometry, symbolic 1D/2D/3D/4D phase lifts, ordered "
+            "xy/yx/zw/wz curvature, decimal 9+0 nesting, the algebraic "
+            "HASH72/Q/P/L projection, and inherited I014/I015 G41/palindromic "
+            "closure without floating-point, scalar-flattening, Hash72 mint, "
+            "Hash216 persistence, or VM81 mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_MANIFOLD_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_multidimensional_constraint_manifold",
+            "multidimensional_constraint_manifold_self_test",
+        ],
+        guards=[
+            "exact_72_phase_periodicity",
+            "exact_3_power_4_81_equals_72_plus_9_geometry",
+            "ordered_xy_yx_zw_wz_curvature_preserved",
+            "decimal_9_plus_0_nested_layer_closure",
+            "hash72_symbol_is_algebraic_projection_not_digest_mint",
+            "g41_joint_reciprocal_involution_preserved",
+            "palindromic_ordered_phase_preserved",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_MULTIDIMENSIONAL_CONSTRAINT_DRIFT",
+            "REJECT_ORDERED_CURVATURE_COLLAPSE",
+            "REJECT_HASH72_ALGEBRAIC_PROJECTION_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_EXACT_CONSTRAINT_ADMISSION_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_72_PHASE_81_ADDRESS_41_CLASS_EXACT_PROJECTION"
+        ),
+    )
+
     return registry
 
 
