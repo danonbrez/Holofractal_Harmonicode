@@ -78,6 +78,30 @@ void fill_scale_rows(HHSExactPass220PhaseLockWitnessV1 *witness) noexcept {
     }
 }
 
+bool project_q_minus_one_pair(
+    uint8_t left,
+    uint8_t right,
+    uint8_t *slot,
+    int8_t *phase
+) noexcept {
+    if (slot == nullptr || phase == nullptr)
+        return false;
+    /* x=0, y=1, z=2, w=3 from the exact 4^3 operation64 codec. */
+    if (left == 0U && right == 1U) {
+        *slot = 0U; *phase = 1; return true;   /* xy */
+    }
+    if (left == 1U && right == 0U) {
+        *slot = 1U; *phase = -1; return true;  /* yx */
+    }
+    if (left == 2U && right == 3U) {
+        *slot = 2U; *phase = 1; return true;   /* zw */
+    }
+    if (left == 3U && right == 2U) {
+        *slot = 3U; *phase = -1; return true;  /* wz */
+    }
+    return false;
+}
+
 bool palindrome_rows_exact(const HHSExactPass220PhaseLockWitnessV1& witness) noexcept {
     for (std::size_t scale = 0; scale < 3U; ++scale) {
         for (std::size_t j = 0; j < 6U; ++j) {
@@ -168,6 +192,11 @@ extern "C" HHSExactStatus hhs_exact_pass220_phase_lock_analyze(
 
     uint64_t forward = FNV_OFFSET;
     uint64_t reverse = FNV_OFFSET;
+    uint64_t ordered_phase_binding = FNV_OFFSET;
+    uint64_t operation64_masks[HHS_EXACT_PASS220_QUDIT_CELLS]{};
+    uint32_t q_minus_one_pair_counts[4]{};
+    int8_t q_minus_one_pair_phase[4]{};
+    bool q_minus_one_pair_phase_seen[4]{};
     bool double_reverse_exact = true;
     bool coordinate_bijection = true;
     for (std::size_t i = 0; i < HHS_EXACT_PASS220_SERIALIZED_CHARACTERS; ++i) {
@@ -183,6 +212,41 @@ extern "C" HHSExactStatus hhs_exact_pass220_phase_lock_analyze(
         const std::size_t symbol = within % HHS_EXACT_PASS220_RNA_WINDOW_CHARACTERS;
         const std::size_t cell = i / HHS_EXACT_PASS220_CELL_TOKEN_CHARACTERS;
         const std::size_t local64 = i % HHS_EXACT_PASS220_CELL_TOKEN_CHARACTERS;
+        operation64_masks[cell] |= (UINT64_C(1) << local64);
+
+        const uint8_t d0 = static_cast<uint8_t>(local64 / 16U);
+        const uint8_t remainder4 = static_cast<uint8_t>(local64 % 16U);
+        const uint8_t d1 = static_cast<uint8_t>(remainder4 / 4U);
+        const uint8_t d2 = static_cast<uint8_t>(remainder4 % 4U);
+        uint8_t phase_slot = 0U;
+        int8_t phase_value = 0;
+        const bool canonical_pair = project_q_minus_one_pair(
+            d0, d1, &phase_slot, &phase_value);
+        ordered_phase_binding = mix_u64(ordered_phase_binding, i);
+        ordered_phase_binding = mix_byte(
+            ordered_phase_binding, static_cast<uint8_t>(serialized[i]));
+        ordered_phase_binding = mix_u64(ordered_phase_binding, cell);
+        ordered_phase_binding = mix_u64(ordered_phase_binding, local64);
+        ordered_phase_binding = mix_byte(ordered_phase_binding, d0);
+        ordered_phase_binding = mix_byte(ordered_phase_binding, d1);
+        ordered_phase_binding = mix_byte(ordered_phase_binding, d2);
+        if (canonical_pair) {
+            ++q_minus_one_pair_counts[phase_slot];
+            if (q_minus_one_pair_phase_seen[phase_slot] &&
+                q_minus_one_pair_phase[phase_slot] != phase_value)
+                return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+            q_minus_one_pair_phase_seen[phase_slot] = true;
+            q_minus_one_pair_phase[phase_slot] = phase_value;
+            ordered_phase_binding = mix_byte(
+                ordered_phase_binding,
+                static_cast<uint8_t>(phase_slot + 1U));
+            ordered_phase_binding = mix_byte(
+                ordered_phase_binding,
+                static_cast<uint8_t>(static_cast<int>(phase_value) + 1));
+        } else {
+            ordered_phase_binding = mix_byte(ordered_phase_binding, 0U);
+        }
+
         if (HHS_EXACT_PASS220_HASH72_CHUNK_CHARACTERS * chunk +
                     HHS_EXACT_PASS220_RNA_WINDOW_CHARACTERS * triplet + symbol != i ||
             HHS_EXACT_PASS220_CELL_TOKEN_CHARACTERS * cell + local64 != i)
@@ -227,10 +291,35 @@ extern "C" HHSExactStatus hhs_exact_pass220_phase_lock_analyze(
         witness.scaled_palindrome_signature64[scale] = signature;
     }
 
-    witness.q_minus_one_phase[0] = 1;
-    witness.q_minus_one_phase[1] = -1;
-    witness.q_minus_one_phase[2] = 1;
-    witness.q_minus_one_phase[3] = -1;
+    bool all_cells_cover_operation64 = true;
+    for (std::size_t cell = 0; cell < HHS_EXACT_PASS220_QUDIT_CELLS; ++cell) {
+        if (operation64_masks[cell] != UINT64_MAX) {
+            all_cells_cover_operation64 = false;
+            break;
+        }
+    }
+    const uint32_t expected_pair_count =
+        HHS_EXACT_PASS220_QUDIT_CELLS * UINT32_C(4);
+    bool serialized_phase_binding = all_cells_cover_operation64;
+    for (std::size_t slot = 0; slot < 4U; ++slot) {
+        if (!q_minus_one_pair_phase_seen[slot] ||
+            q_minus_one_pair_counts[slot] != expected_pair_count)
+            serialized_phase_binding = false;
+        witness.q_minus_one_pair_counts[slot] =
+            q_minus_one_pair_counts[slot];
+        witness.q_minus_one_phase[slot] = q_minus_one_pair_phase[slot];
+    }
+    if (witness.q_minus_one_phase[0] != 1 ||
+        witness.q_minus_one_phase[1] != -1 ||
+        witness.q_minus_one_phase[2] != 1 ||
+        witness.q_minus_one_phase[3] != -1)
+        serialized_phase_binding = false;
+
+    witness.ordered_phase_binding_signature64 = ordered_phase_binding;
+    witness.serialized_operand_phase_binding =
+        serialized_phase_binding ? 1U : 0U;
+    witness.all_cells_cover_operation64 =
+        all_cells_cover_operation64 ? 1U : 0U;
 
     witness.canonical_token_layout = 1U;
     witness.canonical_roundtrip_shape = 1U;
@@ -238,14 +327,17 @@ extern "C" HHSExactStatus hhs_exact_pass220_phase_lock_analyze(
     witness.double_reverse_exact = double_reverse_exact ? 1U : 0U;
     witness.palindromic_precision_exact =
         palindrome_rows_exact(witness) ? 1U : 0U;
-    witness.ordered_phase_lock = 1U;
+    witness.ordered_phase_lock =
+        witness.serialized_operand_phase_binding;
     witness.phase_locked =
         witness.canonical_token_layout == 1U &&
         witness.canonical_roundtrip_shape == 1U &&
         witness.coordinate_bijection == 1U &&
         witness.double_reverse_exact == 1U &&
         witness.palindromic_precision_exact == 1U &&
-        witness.ordered_phase_lock == 1U;
+        witness.ordered_phase_lock == 1U &&
+        witness.serialized_operand_phase_binding == 1U &&
+        witness.all_cells_cover_operation64 == 1U;
     witness.complete_state_is_operand = 1U;
     witness.candidate_only = 1U;
     witness.canonical_vm81_mutation_authority = 0U;
