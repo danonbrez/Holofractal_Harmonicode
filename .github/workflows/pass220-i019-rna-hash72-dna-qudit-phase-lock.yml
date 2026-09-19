@@ -1,0 +1,78 @@
+name: Pass 220 I019 RNA Hash72 DNA Qudit Phase Lock
+
+on:
+  push:
+    paths:
+      - "GNUmakefile"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/include/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
+      - "hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp"
+      - "hhs_runtime/hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py"
+      - "tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py"
+      - "tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "hhs_runtime/hhs_pass220_h36_hash72_unit_bridge_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "whitepapers/HHS_PASS220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1.md"
+      - "docs/pass220/PASS_220_I019_RNA_HASH72_DNA_QUDIT_PHASE_LOCK.md"
+      - ".github/workflows/pass220-i019-rna-hash72-dna-qudit-phase-lock.yml"
+  pull_request:
+    paths:
+      - "GNUmakefile"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/include/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
+      - "hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp"
+      - "hhs_runtime/hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py"
+      - "tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py"
+      - "tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "hhs_runtime/hhs_pass220_h36_hash72_unit_bridge_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "whitepapers/HHS_PASS220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1.md"
+      - "docs/pass220/PASS_220_I019_RNA_HASH72_DNA_QUDIT_PHASE_LOCK.md"
+      - ".github/workflows/pass220-i019-rna-hash72-dna-qudit-phase-lock.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install native and Python test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+      - name: Build exact ABI with native I019 membrane
+        run: make -f GNUmakefile c-abi
+      - name: Verify native I019 symbols
+        run: |
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_phase_lock_descriptor$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_phase_lock_analyze$'
+      - name: Compile and run native I019 regression
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -o /tmp/pass220_i019_native
+          LD_LIBRARY_PATH="$PWD/hhs_runtime/builds" /tmp/pass220_i019_native
+      - name: Run I019 and inherited exact surfaces
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+          tests/pass220/test_hhs_pass220_h36_hash72_unit_bridge_v1.py
+          tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py

@@ -4452,6 +4452,65 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.rna_hash72_dna_qudit_phase_lock.self_test",
+        module="hhs_runtime.hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1",
+        function="phase_lock_self_test",
+        service_type="pass220_exact_full_state_phase_lock_projection",
+        description=(
+            "Validate the complete 5184-character HARMONICODE state through "
+            "72x72 Hash72 chunk folding, bidirectional three-character RNA "
+            "windows, 81x64 qudit coordinates, ordered x/y/z/w Digital DNA, "
+            "and the H36 1/2/3 palindromic precision constructor."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1",
+            "HHS_PASS_220_LO_SHU_NORMALIZATION_V1",
+            "HHS_PASS_220_PALINDROMIC_ORDERED_PHASE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1_VALIDATION",
+        ],
+        validators=[
+            "validate_phase_locked_state",
+            "phase_lock_self_test",
+        ],
+        guards=[
+            "exact_5184_character_roundtrip",
+            "72x72_hash72_chunk_partition",
+            "72x24x3_rna_window_partition",
+            "81x64_qudit_coordinate_bijection",
+            "bidirectional_rna_double_reverse",
+            "123_246_369_palindromic_precision",
+            "h36_scaled_remainder_111_222_333_over_1000",
+            "ordered_xy_yx_zw_wz_phase_preserved",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_5184_SERIALIZATION_DRIFT",
+            "REJECT_RNA_WINDOW_PHASE_LOCK_DRIFT",
+            "REJECT_H36_PRECISION_PALINDROME_DRIFT",
+            "REJECT_XYZW_ORDER_COLLAPSE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_FULL_STATE_PHASE_LOCK_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_5184_CHARACTER_72_CHUNK_1728_WINDOW_EXACT_SCAN"
+        ),
+    )
+
     return registry
 
 
