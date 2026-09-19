@@ -20,6 +20,8 @@ PASS209_PROBE_PATH = Path("hhs_backend/runtime_status_probe.py")
 PASS209_GATEWAY_PATH = Path("hhs_backend/cached_visual_server.py")
 PASS209_PRODUCTION_GATEWAY_PATH = Path("hhs_backend/production_visual_server.py")
 PASS209_RUNTIME_OS_BRIDGE_PATH = Path("hhs_backend/runtime_os_visual_server.py")
+PASS209_RUNTIME_OS_APPLICATION_PATH = Path("hhs_backend/runtime_os_application_server.py")
+PASS209_RUNTIME_OS_APPLICATION_FULL_PATH = Path("hhs_backend/runtime_os_application_server_full.py")
 PASS209_SERVICE_PATH = Path("deploy/digitalocean/hhs-pass196-integrated-environment.service")
 PASS210_CONTRACT_PATH = Path("contracts/pass210/PASS_210_CONTRACT.json")
 
@@ -81,6 +83,8 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
     gateway = _text(PASS209_GATEWAY_PATH)
     production = _text(PASS209_PRODUCTION_GATEWAY_PATH)
     runtime_os_bridge = _text(PASS209_RUNTIME_OS_BRIDGE_PATH)
+    runtime_os_application = _text(PASS209_RUNTIME_OS_APPLICATION_PATH)
+    runtime_os_application_full = _text(PASS209_RUNTIME_OS_APPLICATION_FULL_PATH)
     service = _text(PASS209_SERVICE_PATH)
     successor_contract = _load(PASS210_CONTRACT_PATH)
     successor = pass210_membrane_source_evidence()
@@ -146,7 +150,10 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
 
     direct_visual = "from hhs_backend.visual_server import app as authoritative_app" in production
     runtime_os_visual = "from hhs_backend.runtime_os_visual_server import app as authoritative_app" in production
-    if not (direct_visual or runtime_os_visual):
+    runtime_os_application_projection = (
+        "from hhs_backend.runtime_os_application_server import app as authoritative_app" in production
+    )
+    if not (direct_visual or runtime_os_visual or runtime_os_application_projection):
         raise RuntimeError("PASS209_AUTHORITATIVE_BACKEND_BRIDGE_DRIFT")
     if runtime_os_visual:
         for token in (
@@ -157,6 +164,19 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
         ):
             if token not in runtime_os_bridge:
                 raise RuntimeError("PASS209_RUNTIME_OS_BACKEND_PRESERVATION_DRIFT:" + token)
+    if runtime_os_application_projection:
+        for token in (
+            "runtime_os_application_server_full",
+            "HHS_RUNTIME_OS_SOURCE_ONLY",
+        ):
+            if token not in runtime_os_application:
+                raise RuntimeError("PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:" + token)
+        for token in (
+            "from hhs_backend.application_ide_server import app as inherited_app",
+            "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)",
+        ):
+            if token not in runtime_os_application_full:
+                raise RuntimeError("PASS209_RUNTIME_OS_APPLICATION_AUTHORITY_DRIFT:" + token)
 
     for token in (
         "StateDirectory=hhs",
@@ -185,7 +205,8 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
         "restart": restart,
         "successor_pass210": successor,
         "status_catalog": list(PRODUCTION_STATUS_PATHS),
-        "current_runtime_os_projection": runtime_os_visual,
+        "current_runtime_os_projection": runtime_os_visual or runtime_os_application_projection,
+        "current_runtime_os_application_projection": runtime_os_application_projection,
         **FROZEN,
     }
 
@@ -237,6 +258,7 @@ def pass209_membrane_manifest() -> Dict[str, Any]:
         "canonical_backend_authority_preserved": True,
         "cache_projection_noncanonical": True,
         "current_runtime_os_projection": source["current_runtime_os_projection"],
+        "current_runtime_os_application_projection": source["current_runtime_os_application_projection"],
         "pass210_successor_bound": True,
         "pass219_new_canonical_mutation_authority": False,
         "cxx_mutation_authority": False,

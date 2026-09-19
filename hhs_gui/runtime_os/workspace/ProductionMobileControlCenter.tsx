@@ -39,6 +39,11 @@ async function requestJson(url: string, init?: RequestInit, timeoutMs = 30000): 
       throw new Error(text(detail.classification ?? detail.detail ?? body.detail ?? body.error ?? body.status, `${response.status} ${response.statusText}`))
     }
     return body
+  } catch (reason) {
+    if (reason instanceof DOMException && reason.name === "AbortError") {
+      throw new Error(`${url} timed out after ${Math.round(timeoutMs / 1000)} seconds`)
+    }
+    throw reason
   } finally {
     window.clearTimeout(timeout)
   }
@@ -106,27 +111,39 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
   const [assistantContext, setAssistantContext] = useState<Json | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [vectorWarning, setVectorWarning] = useState<string | null>(null)
 
   const selected = files[selectedIndex] ?? null
   const modality = selected ? modalityFor(selected) : "—"
   const persistentStore = record(vectorStatus.persistent_vector_store)
-  const runtimeReady = text(health.status).toLowerCase() === "healthy"
+  const runtimeReady = Boolean(health.ok ?? text(health.status).toLowerCase() === "healthy")
   const vectorReady = Boolean(vectorStatus.classification) && Boolean(vectorStatus.persistent_vector_store)
   const operationKey = useMemo(() => findOperationKey(lastIngress), [lastIngress])
 
   const refresh = async (): Promise<void> => {
-    const [healthResult, vectorResult] = await Promise.all([
+    const [healthResult, vectorResult] = await Promise.allSettled([
       requestJson("/health", undefined, 8000),
-      requestJson("/api/v1/pass174/status", undefined, 12000),
+      requestJson("/api/v1/pass174/status", undefined, 18000),
     ])
-    setHealth(healthResult)
-    setVectorStatus(vectorResult)
-    setError(null)
+
+    if (healthResult.status === "fulfilled") {
+      setHealth(healthResult.value)
+      setError(null)
+    } else {
+      setError(healthResult.reason instanceof Error ? healthResult.reason.message : String(healthResult.reason))
+    }
+
+    if (vectorResult.status === "fulfilled") {
+      setVectorStatus(vectorResult.value)
+      setVectorWarning(null)
+    } else {
+      setVectorWarning(vectorResult.reason instanceof Error ? vectorResult.reason.message : String(vectorResult.reason))
+    }
   }
 
   useEffect(() => {
-    void refresh().catch((reason) => setError(reason instanceof Error ? reason.message : String(reason)))
-    const interval = window.setInterval(() => void refresh().catch(() => undefined), 15000)
+    void refresh()
+    const interval = window.setInterval(() => void refresh(), 20000)
     return () => window.clearInterval(interval)
   }, [])
 
@@ -254,25 +271,26 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
 
   return (
     <main data-testid="production-mobile-control-center" className="mx-auto max-w-6xl space-y-3 p-3 pb-24 md:p-5">
-      <section className="rounded-3xl border border-cyan-950 bg-gradient-to-b from-cyan-950/30 to-neutral-950 p-4 shadow-2xl md:p-6">
+      <section className="rounded-3xl border border-neutral-800 bg-neutral-900/50 p-4 md:p-5">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production assistant</div>
             <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS natural-language application server</h1>
             <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">A mobile-first dark assistant surface for natural-language control, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, and click-through application workflows.</p>
           </div>
-          <button type="button" onClick={() => void refresh().catch((reason) => setError(String(reason)))} className="runtime-button min-h-11 px-4 text-sm">Refresh server</button>
+          <button type="button" onClick={() => void refresh()} className="runtime-button min-h-11 px-4 text-sm">Refresh status</button>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
-          <StatusCard label="Runtime" value={runtimeReady ? "online" : "check"} ready={runtimeReady} />
-          <StatusCard label="Vector store" value={vectorReady ? "persistent" : "check"} ready={vectorReady} />
+          <StatusCard label="Runtime" value={runtimeReady ? "online" : "warming"} ready={runtimeReady} />
+          <StatusCard label="Vector store" value={vectorReady ? "persistent" : "warming"} ready={vectorReady} />
           <StatusCard label="Project" value={projectId ? short(projectId) : "auto-create"} ready={Boolean(projectId)} />
           <StatusCard label="Ingress" value={lastIngress.classification ? "hydrated" : "ready"} ready={Boolean(lastIngress.classification)} />
         </div>
       </section>
 
-      {error ? <section className="rounded-2xl border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{error}</section> : null}
+      {error ? <section className="rounded-2xl border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">Runtime liveness failed: {error}</section> : null}
+      {vectorWarning ? <section className="rounded-2xl border border-amber-900 bg-amber-950/20 p-3 text-xs text-amber-200">Vector-store status is still warming: {vectorWarning}. Runtime and Build controls remain usable.</section> : null}
 
       <ProductionAssistantChat
         projectId={projectId}
@@ -288,20 +306,18 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         <LaunchCard title="Authority" detail="Approvals and governed production operations" onClick={() => onNavigate("authority")} />
       </section>
 
-      <OpenSourceAcquisitionPanel />
-
       <section className="rounded-3xl border border-neutral-800 bg-neutral-900/60 p-3 md:p-5">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold text-cyan-200">Files → multimodal ingress → vector store</h2>
-            <p className="mt-1 text-[11px] leading-5 text-neutral-500">Files are read locally for preview, then transmitted as exact base64 source bytes through the Pass 174 SDLC route into the persistent encrypted Hash216 vector-store continuation.</p>
+            <p className="mt-1 text-[11px] leading-5 text-neutral-500">Read files locally for preview, then send exact source bytes through the Pass 174 SDLC pipeline into persistent Hash216 vector hydration.</p>
           </div>
           <button type="button" onClick={() => fileInput.current?.click()} className="runtime-button min-h-11 px-4 text-sm">Choose files</button>
           <input ref={fileInput} type="file" multiple className="hidden" onChange={(event) => { chooseFiles(event.currentTarget.files); event.currentTarget.value = "" }} />
         </header>
 
         {files.length === 0 ? (
-          <button type="button" onClick={() => fileInput.current?.click()} className="mt-4 min-h-40 w-full rounded-2xl border border-dashed border-neutral-700 bg-black/30 p-6 text-center text-sm text-neutral-400">
+          <button type="button" onClick={() => fileInput.current?.click()} className="mt-4 min-h-32 w-full rounded-2xl border border-dashed border-neutral-700 bg-black/30 p-6 text-center text-sm text-neutral-400">
             Tap to select text, source, JSON, CSV, PDF, image, audio, video, or binary files
           </button>
         ) : (
@@ -322,7 +338,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                     <div className="truncate text-sm font-medium text-white">{selected?.name}</div>
                     <div className="mt-1 text-[10px] text-neutral-500">{modality} · {selected?.type || "application/octet-stream"} · {selected ? `${selected.size} bytes` : ""}</div>
                   </div>
-                  <button type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-10 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
+                  <button type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-11 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
                 </div>
 
                 <div className="mt-3 min-h-48 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
@@ -342,7 +358,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                       <div className="text-xs font-semibold text-emerald-300">{text(lastIngress.classification)}</div>
                       <div className="mt-1 font-mono text-[9px] text-neutral-500">source {short(lastIngress.source_identity_sha256)} · Hash216 {short(lastIngress.lifecycle_hash216)}</div>
                     </div>
-                    {operationKey ? <button type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-9 px-3 text-xs">Read persisted vector</button> : null}
+                    {operationKey ? <button type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-10 px-3 text-xs">Read persisted vector</button> : null}
                   </div>
                   {Array.isArray(lastIngress.stages) ? (
                     <div className="mt-3 grid grid-cols-2 gap-1 sm:grid-cols-4 lg:grid-cols-7">
@@ -392,9 +408,15 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         <div className="flex items-center justify-between gap-3"><h2 className="text-xs font-semibold text-cyan-200">Persistent vector-store status</h2><span className="text-[9px] text-neutral-500">Pass 174</span></div>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {Object.entries(persistentStore).slice(0, 8).map(([key, value]) => <div key={key} className="rounded-lg bg-black/40 p-2"><div className="truncate text-[9px] text-neutral-600">{key}</div><div className="mt-1 truncate font-mono text-[10px] text-neutral-300" title={String(value)}>{String(value)}</div></div>)}
-          {Object.keys(persistentStore).length === 0 ? <div className="col-span-2 text-xs text-neutral-600">Vector-store status has not loaded.</div> : null}
+          {Object.keys(persistentStore).length === 0 ? <div className="col-span-2 text-xs text-neutral-600">Vector-store status has not loaded yet.</div> : null}
         </div>
       </section>
+
+      <details className="rounded-3xl border border-indigo-950 bg-indigo-950/10 p-3 md:p-5">
+        <summary className="cursor-pointer text-sm font-semibold text-indigo-200">Advanced: open-source acquisition and replay</summary>
+        <p className="mt-2 text-[11px] leading-5 text-neutral-500">Immutable external source acquisition is separate from normal app building. Open this only when importing a pinned GitHub or Hugging Face artifact.</p>
+        <div className="mt-3"><OpenSourceAcquisitionPanel /></div>
+      </details>
     </main>
   )
 }

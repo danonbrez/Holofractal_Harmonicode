@@ -16,12 +16,21 @@ def test_runtime_os_build_is_repository_visible():
     assert "/assets/index-" in html
 
 
-def test_digitalocean_gateway_selects_runtime_os_projection_by_source():
+def test_digitalocean_gateway_selects_full_runtime_os_application_projection_by_source():
     source = Path("hhs_backend/production_visual_server.py").read_text(encoding="utf-8")
+    application_source = Path("hhs_backend/runtime_os_application_server.py").read_text(
+        encoding="utf-8"
+    )
+    full_source = Path("hhs_backend/runtime_os_application_server_full.py").read_text(
+        encoding="utf-8"
+    )
 
-    assert "from hhs_backend.runtime_os_visual_server import app as authoritative_app" in source
-    assert "from hhs_backend.visual_server import app as authoritative_app" not in source
+    assert "from hhs_backend.runtime_os_application_server import app as authoritative_app" in source
+    assert "from hhs_backend.runtime_os_visual_server import app as authoritative_app" not in source
     assert "Pass Runtime OS HTML/assets through unchanged" in source
+    assert "runtime_os_application_server_full" in application_source
+    assert "from hhs_backend.application_ide_server import app as inherited_app" in full_source
+    assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in full_source
 
 
 def test_procfile_selects_full_runtime_os_application_projection():
@@ -32,9 +41,7 @@ def test_procfile_selects_full_runtime_os_application_projection():
 
     assert "hhs_backend.runtime_os_application_server:app" in procfile
     assert "hhs_backend.application_ide_server:app" not in procfile
-    assert "from hhs_backend.application_ide_server import app as inherited_app" in application_source
-    assert "install_pass218_i18_terminal_closure_control_plane" in application_source
-    assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in application_source
+    assert "runtime_os_application_server_full" in application_source
 
 
 def test_runtime_os_projection_replaces_only_legacy_public_root():

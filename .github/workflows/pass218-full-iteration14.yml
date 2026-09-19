@@ -9,6 +9,7 @@ on:
       - 'hhs_runtime/pass218/**'
       - 'hhs_backend/runtime_os_pass218_approval_i14.py'
       - 'hhs_backend/runtime_os_application_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
       - 'hhs_gui/**'
       - 'scripts/pass218_iteration12_operational_validation.py'
       - 'scripts/pass218_iteration14_approval_validation.py'
@@ -111,10 +112,12 @@ jobs:
           panel = Path('hhs_gui/runtime_os/workspace/ApprovalStatusPanel.tsx').read_text('utf-8')
           workspace = Path('hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx').read_text('utf-8')
           server = Path('hhs_backend/runtime_os_application_server.py').read_text('utf-8')
+          full_server = Path('hhs_backend/runtime_os_application_server_full.py').read_text('utf-8')
           approval = Path('hhs_backend/runtime_os_pass218_approval_i14.py').read_text('utf-8')
           assert '/api/runtime/pass218/authority/approval/status' in panel
           assert 'ApprovalStatusPanel' in workspace
-          assert 'install_pass218_i14_approval_control_plane' in server
+          assert 'runtime_os_application_server_full import *' in server
+          assert 'install_pass218_i14_approval_control_plane' in full_server
           assert '/api/runtime/pass218/authority/approval/revocations/record' in approval
           assert 'preflight_rechecks_recorded_revocations' in approval
           assert '/evaluate' not in panel
