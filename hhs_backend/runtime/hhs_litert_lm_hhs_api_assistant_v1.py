@@ -18,8 +18,14 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     AUTHORITY,
     TURN_SCHEMA,
     ConversationThreadStore,
+    ASSISTANT_MODE_GENERAL_CHAT,
+    ASSISTANT_MODES,
+    DEFAULT_ASSISTANT_MODE,
     HHSAssistantService,
     LiteRTLMConfig,
+    MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+    MAX_USER_CONTEXT_CHARS,
+    normalize_assistant_mode,
 )
 from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
     LiteRTLMAcceleratedTransport,
@@ -36,10 +42,12 @@ interface to the Holofractal Harmonicode System (HHS). Preserve explicit user
 propositions and HARMONICODE source notation. Use the supplied read-only HHS
 API tools whenever current runtime state, services, invariants, conformance,
 repository evidence, or Pass status is required. Read-only tool results are
-governed HHS evidence. Never claim that a VM81 mutation, repository change,
-receipt commit, or canonical state transition occurred unless a separate HHS
-API result explicitly contains admitted evidence. Model-generated mutating
-operations are proposals only and cannot self-authorize."""
+governed HHS evidence. Answer the user conversationally in natural language;
+summarize tool evidence instead of exposing raw JSON unless the user explicitly
+asks to inspect it. Never claim that a VM81 mutation, repository change, receipt
+commit, or canonical state transition occurred unless a separate HHS API result
+explicitly contains admitted evidence. Model-generated mutating operations are
+proposals only and cannot self-authorize."""
 
 
 def _merge_tools(
@@ -104,7 +112,13 @@ class GovernedHHSToolLoopTransport:
     ) -> Dict[str, Any]:
         self._tool_trace.set(())
         working_messages = [dict(message) for message in messages]
-        available_tools = _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
+        available_tools = (
+            [dict(tool) for tool in DEFAULT_HHS_ASSISTANT_TOOLS]
+            if tools is None
+            else []
+            if len(tools) == 0
+            else _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
+        )
         trace: List[Dict[str, Any]] = []
         final_response: Dict[str, Any] = {}
 
@@ -251,10 +265,12 @@ class HHSAPIAssistantService(HHSAssistantService):
                 "runtime_mutation_admitted": False,
             },
         )
+        mode = normalize_assistant_mode(result.get("assistant_mode"))
         result["hhs_api_tool_trace"] = trace
         result["hhs_api_tool_trace_root_hash72"] = trace_root
         result["hhs_api_tool_call_count"] = len(trace)
-        result["hhs_api_tools_enabled"] = True
+        result["hhs_api_tools_enabled"] = mode != ASSISTANT_MODE_GENERAL_CHAT
+        result["assistant_mode"] = mode
         result["mutating_model_tool_execution_allowed"] = False
         result["per_thread_request_serialization"] = True
         result["execution_backend"] = self.execution_backend
@@ -274,15 +290,23 @@ class HHSAPIAssistantService(HHSAssistantService):
         content: str,
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
+        user_context: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
+        mode = normalize_assistant_mode(assistant_mode)
+        mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
         async with self._thread_lock(thread_id):
             result = await super().send_message(
                 thread_id,
                 content=content,
-                tools=tools,
+                tools=mode_tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
+                assistant_mode=mode,
+                user_context=user_context,
             )
             return self._decorate_result(thread_id, result)
 
@@ -293,15 +317,23 @@ class HHSAPIAssistantService(HHSAssistantService):
         user_message: Mapping[str, Any],
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
+        custom_system_instruction: Optional[str] = None,
+        assistant_mode: Optional[str] = None,
+        user_context: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
+        mode = normalize_assistant_mode(assistant_mode)
+        mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
         async with self._thread_lock(thread_id):
             result = await super().continue_message(
                 thread_id,
                 user_message=user_message,
-                tools=tools,
+                tools=mode_tools,
                 response_format=response_format,
+                custom_system_instruction=custom_system_instruction,
+                assistant_mode=mode,
+                user_context=user_context,
             )
             return self._decorate_result(thread_id, result)
 
@@ -313,6 +345,13 @@ class HHSAPIAssistantService(HHSAssistantService):
             "default_hhs_api_tool_count": len(DEFAULT_HHS_ASSISTANT_TOOLS),
             "mutating_model_tool_execution_allowed": False,
             "per_thread_request_serialization": True,
+            "custom_system_instruction_supported": True,
+            "custom_system_instruction_max_characters": MAX_CUSTOM_SYSTEM_INSTRUCTION_CHARS,
+            "user_approved_context_supported": True,
+            "user_approved_context_max_characters": MAX_USER_CONTEXT_CHARS,
+            "assistant_modes": list(ASSISTANT_MODES),
+            "default_assistant_mode": DEFAULT_ASSISTANT_MODE,
+            "general_chat_disables_default_hhs_tools": True,
             "task_local_tool_traces": True,
             "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
             "execution_backend": self.execution_backend,

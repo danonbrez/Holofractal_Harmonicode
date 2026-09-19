@@ -1,0 +1,253 @@
+name: Pass 220 I003-I010 Cold Raw x86_64 Calibration + User-Controlled RAG Context Integration
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
+      - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py'
+      - 'tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'docs/pass220/PASS_220_I004_GENESIS_ZERO_SUM_LO_SHU_GLOBAL_HALT.md'
+      - 'hhs_backend/runtime/hhs_pass220_hf_rag_assistant_v1.py'
+      - 'tests/pass220/test_hhs_pass220_hf_rag_assistant_v1.py'
+      - 'docs/pass220/PASS_220_I005_HUGGING_FACE_RAG_NATURAL_LANGUAGE_ASSISTANT.md'
+      - 'hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx'
+      - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/workspace-source-verify.mjs'
+      - 'tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py'
+      - 'docs/pass220/PASS_220_I006_MOBILE_DARK_LLM_VECTOR_INGRESS_CONTROL_SURFACE.md'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/api/litert_lm_assistant_routes.py'
+      - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
+      - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
+      - 'docs/pass220/PASS_220_I007_ASSISTANT_SETTINGS_CLIPBOARD_CONVERSATIONAL_EGRESS.md'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py'
+      - 'docs/pass220/PASS_220_I008_GENERAL_CHAT_AGENTIC_APPLICATION_DEVELOPMENT_MODES.md'
+      - 'hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'docs/pass220/PASS_220_I009_NATIVE_CAUSAL_RAG_PROMPT_RESPONSE_GENERATION.md'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context.py'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py'
+      - 'docs/pass220/PASS_220_I010_USER_APPROVED_VECTOR_CONTEXT_RAG.md'
+      - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
+      - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
+      - 'docs/operations/restart/PASS_220_I003_*'
+      - 'docs/operations/restart/PASS_220_I004_*'
+      - 'docs/operations/restart/PASS_220_I005_*'
+      - 'docs/operations/restart/PASS_220_I006_*'
+      - 'docs/operations/restart/PASS_220_I007_*'
+      - 'docs/operations/restart/PASS_220_I008_*'
+      - 'docs/operations/restart/PASS_220_I009_*'
+      - 'docs/operations/restart/PASS_220_I010_*'
+      - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
+  push:
+    branches: [main, pass220-lo-shu-normalization-checkpoint-1]
+    paths:
+      - 'benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh'
+      - 'hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py'
+      - 'tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py'
+      - 'docs/pass220/PASS_220_I004_GENESIS_ZERO_SUM_LO_SHU_GLOBAL_HALT.md'
+      - 'hhs_backend/runtime/hhs_pass220_hf_rag_assistant_v1.py'
+      - 'tests/pass220/test_hhs_pass220_hf_rag_assistant_v1.py'
+      - 'docs/pass220/PASS_220_I005_HUGGING_FACE_RAG_NATURAL_LANGUAGE_ASSISTANT.md'
+      - 'hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx'
+      - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/workspace-source-verify.mjs'
+      - 'tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py'
+      - 'docs/pass220/PASS_220_I006_MOBILE_DARK_LLM_VECTOR_INGRESS_CONTROL_SURFACE.md'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/api/litert_lm_assistant_routes.py'
+      - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
+      - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
+      - 'docs/pass220/PASS_220_I007_ASSISTANT_SETTINGS_CLIPBOARD_CONVERSATIONAL_EGRESS.md'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py'
+      - 'docs/pass220/PASS_220_I008_GENERAL_CHAT_AGENTIC_APPLICATION_DEVELOPMENT_MODES.md'
+      - 'hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'docs/pass220/PASS_220_I009_NATIVE_CAUSAL_RAG_PROMPT_RESPONSE_GENERATION.md'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context.py'
+      - 'tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py'
+      - 'docs/pass220/PASS_220_I010_USER_APPROVED_VECTOR_CONTEXT_RAG.md'
+      - 'tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py'
+      - 'docs/pass220/PASS_220_I003_FOUR_PHASE_ABC_MAX_HARDWARE_QUERY_CALIBRATION.md'
+      - 'docs/operations/restart/PASS_220_I003_*'
+      - 'docs/operations/restart/PASS_220_I004_*'
+      - 'docs/operations/restart/PASS_220_I005_*'
+      - 'docs/operations/restart/PASS_220_I006_*'
+      - 'docs/operations/restart/PASS_220_I007_*'
+      - 'docs/operations/restart/PASS_220_I008_*'
+      - 'docs/operations/restart/PASS_220_I009_*'
+      - 'docs/operations/restart/PASS_220_I010_*'
+      - '.github/workflows/pass220-i003-four-phase-abc-max-hardware.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cold-raw-calibration-and-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # This MUST remain the first executable workload after checkout.
+      # It invokes no project binary, HHS service, runtime ABI, make target,
+      # compiler, Python interpreter, or package installation.
+      - name: Cold x86_64 raw-byte four-cohort A:B:C hardware calibration
+        env:
+          HHS_PASS220_I003_RAW_START_BYTES: '1048576'
+          HHS_PASS220_I003_RAW_LEG_BUDGET_NS: '120000000'
+          HHS_PASS220_I003_RAW_GLOBAL_BUDGET_NS: '30000000000'
+          HHS_PASS220_I003_RAW_REPEATS: '3'
+        run: |
+          bash benchmarks/pass220/hhs_pass220_i003_cold_x86_64_raw_bytes_abc_v1.sh \
+            /tmp/pass220-i003/cold-raw
+
+          set -a
+          source /tmp/pass220-i003/cold-raw/summary.env
+          set +a
+
+          test "$ARCH" = "x86_64"
+          test "$ALL_FOUR_COHORTS_EXECUTED" = "1"
+          test "$GLOBAL_MAX_CLOSED_BYTES" -gt 0
+          test "$HHS_SERVICES_USED" = "0"
+          test "$HHS_RUNTIME_ABI_USED" = "0"
+          test "$PROJECT_COMPILED_CODE_USED" = "0"
+          test "$PYTHON_USED" = "0"
+          test "$WORKLOAD_SIZE_STATIC_CEILING" = "0"
+          test "$TIMING_OBSERVATIONAL_ONLY" = "1"
+
+          cat /tmp/pass220-i003/cold-raw/report.md
+
+      # Everything below this point is post-calibration integration.  It is
+      # deliberately excluded from the max-hardware calibration measurement.
+      - name: Set up post-calibration Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install post-calibration integration dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'fastapi==0.128.2' \
+            'starlette==0.50.0' \
+            'pydantic>=2.7,<3.0' \
+            'httpx>=0.27,<1.0' \
+            'pytest>=8.0,<9.0' \
+            'pytest-asyncio>=0.23,<1.0'
+
+      - name: Build post-calibration exact ABI and Pass 207 CPU-reference driver
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          cc -std=c11 -O3 -Wall -Wextra -Werror -pedantic -fPIC -shared \
+            hhs_runtime/c/hhs_pass207_gpu_driver.c \
+            -Ihhs_runtime/c -ldl \
+            -o hhs_runtime/builds/libhhs_pass207_gpu_driver.so
+          nm -D hhs_runtime/builds/libhhs_pass207_gpu_driver.so | grep ' hhs_pass207_gpu_vector_distance72$'
+
+      - name: Compile post-calibration I003-I010 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_holographic_hash216_query_v1.py \
+            hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py \
+            hhs_runtime/hhs_pass220_genesis_zero_sum_halt_v1.py \
+            hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py \
+            hhs_backend/runtime/hhs_pass220_hf_rag_assistant_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
+            hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py \
+            hhs_backend/api/litert_lm_assistant_routes.py \
+            benchmarks/pass220/hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            tools/pass220/hhs_pass220_i003_four_phase_abc_analyze_v1.py \
+            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py \
+            tests/pass220/test_hhs_pass220_hf_rag_assistant_v1.py \
+            tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py \
+            tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py \
+            tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py
+
+      - name: Run dependency-scoped I001-I010 integration tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+          HHS_PASS220_I003_INTEGRATION: '1'
+        run: |
+          set -o pipefail
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py \
+            tests/pass220/test_hhs_pass220_holographic_hash216_query_v1.py \
+            tests/pass220/test_hhs_pass220_i003_four_phase_abc_max_hardware_v1.py \
+            tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py \
+            tests/pass220/test_hhs_pass220_hf_rag_assistant_v1.py \
+            tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py \
+            tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py \
+            tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
+            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py \
+            | tee /tmp/pass220-i003/integration-tests.txt
+
+      - name: Record raw-capacity normalization facts
+        run: |
+          set -a
+          source /tmp/pass220-i003/cold-raw/summary.env
+          set +a
+
+          {
+            echo "cold_raw_global_max_closed_bytes=$GLOBAL_MAX_CLOSED_BYTES"
+            echo "cold_raw_xy_max_bytes=$PHASE_XY_MAX_BYTES"
+            echo "cold_raw_yx_max_bytes=$PHASE_YX_MAX_BYTES"
+            echo "cold_raw_zw_max_bytes=$PHASE_ZW_MAX_BYTES"
+            echo "cold_raw_wz_max_bytes=$PHASE_WZ_MAX_BYTES"
+            echo "cold_raw_5184_bit_state_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 648))"
+            echo "cold_raw_5184_bit_state_remainder_bytes=$((GLOBAL_MAX_CLOSED_BYTES % 648))"
+            echo "cold_raw_hash216_byte_equivalent=$((GLOBAL_MAX_CLOSED_BYTES / 216))"
+            echo "hardware_calibration_used_hhs=0"
+            echo "hardware_calibration_used_runtime_abi=0"
+            echo "post_calibration_integration_is_separate=1"
+          } | tee /tmp/pass220-i003/capacity-normalization.txt
+
+      - name: Upload cold calibration and post-calibration integration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i003-cold-x86-64-raw-bytes
+          path: |
+            /tmp/pass220-i003/cold-raw/records.tsv
+            /tmp/pass220-i003/cold-raw/summary.env
+            /tmp/pass220-i003/cold-raw/report.md
+            /tmp/pass220-i003/cold-raw/runner.txt
+            /tmp/pass220-i003/capacity-normalization.txt
+            /tmp/pass220-i003/integration-tests.txt
+          if-no-files-found: error

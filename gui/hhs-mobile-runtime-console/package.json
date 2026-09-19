@@ -1,1 +1,19 @@
-{"scripts":{"dev":"vite --host 0.0.0.0","build":"vite build","preview":"vite preview --host 0.0.0.0"},"dependencies":{"@vitejs/plugin-react":"latest","vite":"latest","typescript":"latest","react":"latest","react-dom":"latest","three":"latest","@react-three/fiber":"latest","@react-three/drei":"latest","lucide-react":"latest"},"devDependencies":{}}
+{
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "latest",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "three": "latest",
+    "@react-three/fiber": "9.7.0",
+    "@react-three/drei": "latest",
+    "lucide-react": "latest"
+  },
+  "devDependencies": {}
+}

@@ -211,7 +211,23 @@ export const OpenSourceAcquisitionPanel: React.FC = () => {
         </section>
         <section className="rounded-2xl border border-neutral-800 bg-black/30 p-3">
           <div className="text-xs font-medium text-neutral-300">Selected job / replay receipt</div>
-          {Object.keys(selected).length ? <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap break-all text-[10px] leading-4 text-neutral-500">{JSON.stringify(selected, null, 2)}</pre> : <div className="mt-3 text-xs text-neutral-600">Select a job to inspect exact provenance, receipt identity, HOLD/candidate classification, or replay closure.</div>}
+          {Object.keys(selected).length ? (
+            <div className="mt-3">
+              <div className="rounded-xl border border-indigo-950 bg-indigo-950/10 p-3">
+                <div className="text-sm font-medium text-indigo-100">{text(selected.status ?? selected.classification, "Result available")}</div>
+                <p className="mt-1 text-[11px] leading-5 text-neutral-500">The acquisition or replay operation returned successfully. Exact provenance and receipt fields remain available for inspection without making raw JSON the default view.</p>
+                <div className="mt-2 flex flex-wrap gap-2 text-[9px] text-neutral-600">
+                  {selected.job_id ? <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">job {short(selected.job_id)}</span> : null}
+                  {selected.receipt_hash72 ? <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">receipt {short(selected.receipt_hash72)}</span> : null}
+                  {selected.projector_id ? <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">{text(selected.projector_id)}</span> : null}
+                </div>
+              </div>
+              <details className="mt-3 rounded-xl border border-neutral-800 bg-neutral-950/50 p-3">
+                <summary className="cursor-pointer text-xs font-medium text-neutral-300">Inspect technical JSON</summary>
+                <pre className="mt-3 max-h-80 overflow-auto whitespace-pre-wrap break-all text-[10px] leading-4 text-neutral-500">{JSON.stringify(selected, null, 2)}</pre>
+              </details>
+            </div>
+          ) : <div className="mt-3 text-xs text-neutral-600">Select a job to inspect exact provenance, receipt identity, HOLD/candidate classification, or replay closure.</div>}
         </section>
       </div>
     </section>

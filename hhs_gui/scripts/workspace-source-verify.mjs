@@ -9,6 +9,9 @@ const content = {
   canonicalIDE: read("runtime_os/core/CanonicalRuntimeIDE.tsx"),
   client: read("runtime_os/core/IntegratedRuntimeClient.ts"),
   product: read("runtime_os/workspace/HHSProductWorkspace.tsx"),
+  mobileControl: read("runtime_os/workspace/ProductionMobileControlCenter.tsx"),
+  mobileAssistant: read("runtime_os/workspace/ProductionAssistantChat.tsx"),
+  acquisition: read("runtime_os/workspace/OpenSourceAcquisitionPanel.tsx"),
   programmer: read("runtime_os/workspace/RegistryVisualProgrammer.tsx"),
   shell: read("runtime_os/workspace/HHSWorkspaceShell.tsx"),
   assistant: read("runtime_os/assistant/RuntimeAssistantPanel.tsx"),
@@ -57,6 +60,60 @@ for (const token of [
   assert(content.product.includes(token), `product composition missing ${token}`)
 }
 
+for (const token of [
+  "ProductionAssistantChat",
+  "/api/v1/pass174/sdlc/run",
+  "/api/v1/pass174/hash216/query",
+  "Hydrate vector store",
+  "Files → multimodal ingress → vector store",
+  "type=\"file\"",
+  "multiple",
+]) {
+  assert(content.mobileControl.includes(token), `mobile control surface missing ${token}`)
+}
+
+for (const token of [
+  "/api/assistant/health",
+  "/api/assistant/chat",
+  "New chat",
+  "Message HHS",
+  "How can I help?",
+  "Enter sends",
+  "uploaded payloads are not automatically attached to assistant prompts",
+  "vector_payload_auto_attached_to_prompt: false",
+  "Settings",
+  "System instructions",
+  "custom_system_instruction",
+  "hhs.production.assistant.custom_system_instruction",
+  "navigator.clipboard?.writeText",
+  "navigator.clipboard?.readText",
+  "Copy",
+  "Paste",
+  "Assistant mode",
+  "GENERAL_CHAT",
+  "AGENTIC_APPLICATION_DEVELOPMENT",
+  "BOTH",
+  "General chat",
+  "Agentic application development",
+  "hhs.production.assistant.mode",
+  "assistant_mode: assistantMode",
+]) {
+  assert(content.mobileAssistant.includes(token), `mobile LLM assistant surface missing ${token}`)
+}
+
+assert(content.mobileAssistant.includes("min-h-[42vh]"), "mobile assistant chat does not reserve a usable touch viewport")
+assert(content.mobileAssistant.includes("bg-neutral-900/70"), "mobile assistant dark-theme surface missing")
+assert(content.mobileControl.includes("ProductionAssistantChat"), "production mobile control does not mount the LLM assistant")
+assert(content.mobileControl.includes("Inspect technical JSON"), "vector technical JSON does not require explicit inspection")
+assert(content.mobileControl.indexOf("Inspect technical JSON") < content.mobileControl.indexOf("JSON.stringify(vectorQuery"), "vector JSON appears before its inspect control")
+assert(content.mobileControl.includes("Use in chat"), "persisted vector lacks explicit Use in chat control")
+assert(content.mobileControl.includes("Remove from chat"), "attached vector context lacks explicit removal control")
+assert(content.mobileControl.includes("explicit_user_attachment: true"), "vector-to-chat attachment lacks explicit user approval marker")
+assert(content.mobileAssistant.includes("user_context: userContext || null"), "assistant request does not carry explicit user context")
+assert(content.mobileAssistant.includes("Context attached by you"), "assistant composer does not expose attached context")
+assert(content.mobileAssistant.includes("only context you explicitly attach with Use in chat"), "assistant disclosure text does not preserve explicit opt-in")
+assert(content.acquisition.includes("Inspect technical JSON"), "acquisition technical JSON does not require explicit inspection")
+assert(content.acquisition.indexOf("Inspect technical JSON") < content.acquisition.indexOf("JSON.stringify(selected"), "acquisition JSON appears before its inspect control")
 for (const token of [
   "/api/runtime/services",
   "/api/runtime/services/dispatch",
