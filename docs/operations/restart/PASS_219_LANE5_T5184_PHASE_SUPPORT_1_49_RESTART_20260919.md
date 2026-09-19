@@ -4,7 +4,9 @@
 **Base main:** `ce0898979ceaa6d0a33fe00a257e8a71344f8de5`  
 **Branch:** `pass219/lane5-t5184-phase-support-1-49`  
 **Merge target:** `main`  
-**Source/docs head before this checkpoint record:** `ba0fb77a6d2a6c80dd1a7737b9a0cabaa16e11b1`
+**PR:** `#509`  
+**Reviewed defect head:** `1aa8ab9acb8a828bd71fdd077eea16c1ca33b40c`  
+**Repair head before this checkpoint record:** `7661fa86c8a3cd8c99299f13a24222b228d06070`
 
 ## Objective
 
@@ -63,7 +65,71 @@ evidence/pass219/lane5_t5184_phase_support_1_49.output.json
 evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json
 ```
 
+## PR #509 review repair
+
+Two post-review blockers on `1aa8ab9acb8a828bd71fdd077eea16c1ca33b40c` were repaired forward on the existing PR branch.
+
+### Exact local64 classification proof
+
+Commit:
+
+```text
+ee2b8a52b7817449ea66022dace10f3f62d9961d
+```
+
+The native 1.49 test now derives the expected tuple independently for every local64 address and asserts, for all 81 VM81 cells:
+
+```text
+phase_bearing
+requires_phase_specific_check
+phase_code
+phase_sign
+representative_phase_code
+support_ordinal
+```
+
+The exact ordered classification is:
+
+```text
+4..7   -> xy, +1, representative xy, ordinals 0..3
+16..19 -> yx, -1, representative yx, ordinals 4..7
+44..47 -> zw, +1, representative xy, ordinals 8..11
+56..59 -> wz, -1, representative yx, ordinals 12..15
+other   -> none, 0, representative none, ordinal UINT32_MAX
+```
+
+This closes the aggregate-count weakness that could previously allow swapped codes or incorrect individual signs to pass.
+
+### Mandatory baseline coverage before evidence seal
+
+Commit:
+
+```text
+7661fa86c8a3cd8c99299f13a24222b228d06070
+```
+
+The 1.49 workflow now runs, before sealing evidence:
+
+```bash
+python hhs_runtime_smoke_tests_v1.py
+python hhs_regression_suite_v1.py
+python hhs_v1_bundle_runner.py
+make -C native_projects/hhs_pass190_operation_fabric validate
+```
+
+Each baseline writes an artifact log, and the evidence-seal step requires all four logs to exist and be non-empty. The sealed summary also records:
+
+```text
+exact_local64_classification = true
+repository_baselines_passed = true
+repository_baseline_count = 4
+```
+
+These fields are emitted only after the preceding commands return successfully.
+
 ## Changed files
+
+Original 1.49 implementation surface:
 
 ```text
 hhs_runtime/include/hhs_pass219_lane5_t5184_phase_support_1_49.h
@@ -81,22 +147,45 @@ evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json
 docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md
 ```
 
+Review-repair files:
+
+```text
+tests/pass219/test_pass219_lane5_t5184_phase_support_1_49.c
+.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml
+docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md
+```
+
+## Validation completed before this checkpoint
+
+Repository-visible review verification confirmed:
+
+1. PR #509 remains open and mergeable.
+2. The two reported findings are present on reviewed head `1aa8ab9acb...`.
+3. The runtime classifier implementation already encodes the intended exact ordered ranges; the second finding is a proof-coverage defect rather than a production-classifier defect.
+4. `AGENTS.md` requires the smoke, regression, bundle-runner, and Pass 190 validation baselines.
+5. The repair commits above are present on the same PR branch.
+
+No claim is made here that the new final head is green until CI executes the repaired workflow.
+
 ## Validation remaining
 
-Repository CI must still:
+On the final checkpoint head, repository CI must still:
 
 1. build the cumulative exact C ABI;
 2. verify all four 1.49 exported symbols;
 3. run the exhaustive native 5,184-position classifier;
-4. reproduce 1,296 support / 3,888 bypass / 324-per-pair counts;
-5. rerun Lane 5 1.48 full-manifold streaming;
-6. rerun Pass 220 I019 native and Python ordered-phase binding;
-7. verify sealed Wolfram evidence SHA-256 values;
-8. merge only after latest-head green, then verify the main-push 1.49 gate.
+4. prove the exact code, sign, representative, and support ordinal for every local64 address across all 81 cells;
+5. reproduce 1,296 support / 3,888 bypass / 324-per-pair counts;
+6. rerun Lane 5 1.48 full-manifold streaming;
+7. rerun Pass 220 I019 native and Python ordered-phase binding;
+8. run the required runtime smoke, regression, legacy bundle-runner, and Pass 190 validation suites;
+9. verify sealed Wolfram evidence SHA-256 values;
+10. seal and upload the 1.49 artifact only after all preceding stages pass;
+11. merge only on latest-head green, then verify the main-push 1.49 gate and current-main integration.
 
 ## Environment state
 
-No canonical runtime state was mutated by the derivation. The new Lane 5 surface remains:
+No canonical runtime state was mutated by the repair. The Lane 5 surface remains:
 
 ```text
 candidate_only = true
@@ -113,4 +202,4 @@ The separate Runtime OS deployment composition fault is outside this optimizatio
 
 ## Next action
 
-Open the 1.49 PR, inspect the dependency-scoped gates, repair forward only any impacted failure, merge on latest-head green, then verify exact main.
+Use the final checkpoint commit as the PR #509 review-repair head. Inspect the dependency-scoped CI result. Repair forward only an impacted failure. Merge only after the repaired 1.49 gate and required repository baselines are green, then verify exact main before continuing the Pass 219 sequence.
