@@ -1,3 +1,6 @@
+from pathlib import Path
+import re
+
 import pytest
 
 from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
@@ -80,6 +83,25 @@ def test_middle_and_ordered_ratios_close_exactly_to_one():
         "zw": 1,
         "wz": -1,
     }
+
+
+def test_native_c_uqcel_digest_literal_matches_pinned_digest():
+    root = Path(__file__).resolve().parents[2]
+    source = (
+        root / "hhs_runtime" / "c" / "hhs_runtime_uqcel_1_8_bigint.inc"
+    ).read_text(encoding="utf-8")
+    match = re.search(
+        r"HHS_EXACT_UQCEL_SOURCE_SHA256[^=]*=\s*\{(?P<body>.*?)\};",
+        source,
+        flags=re.S,
+    )
+    assert match is not None
+    byte_values = tuple(
+        int(value, 16)
+        for value in re.findall(r"0x([0-9a-fA-F]{2})U", match.group("body"))
+    )
+    assert len(byte_values) == 32
+    assert bytes(byte_values).hex() == PINNED_UCE_SHA256_HEX
 
 
 def test_canonical_universal_constraint_dependency_is_bound():
