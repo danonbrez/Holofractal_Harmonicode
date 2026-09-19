@@ -18,6 +18,7 @@ from hhs_runtime.hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1 import (
     palindromic_precision_lanes,
     phase_lock_self_test,
     phase_locked_state_witness,
+    serialized_ordered_phase_binding,
 )
 
 
@@ -108,6 +109,46 @@ def test_hash72_rna_dna_and_qudit_share_one_state_index():
         ("wz", -1),
     )
     assert witness["digital_dna"]["ordered_products_collapsed"] is False
+    binding = witness["digital_dna"]["serialized_operand_phase_binding"]
+    assert binding["phase_values_derived_from_serialized_operand"] is True
+    assert binding["bound_state_root_sha256"] == witness["state_root_sha256"]
+    assert witness["checks"]["ordered_xyzw_phase_bound_to_serialized_operand"] is True
+
+
+def test_ordered_phase_is_derived_from_actual_serialized_operand():
+    _, serialized = canonical_state()
+    binding = serialized_ordered_phase_binding(serialized)
+    assert binding["bound_state_root_sha256"]
+    assert binding["serialized_characters_bound"] == 5184
+    assert binding["qudit_cells"] == 81
+    assert binding["operation64_per_cell"] == 64
+    assert binding["all_cells_cover_operation64"] is True
+    assert binding["pair_counts"] == {
+        "xy": 324,
+        "yx": 324,
+        "zw": 324,
+        "wz": 324,
+    }
+    assert binding["expected_pair_count_each"] == 324
+    assert binding["derived_ordered_products"] == (
+        ("xy", 1),
+        ("yx", -1),
+        ("zw", 1),
+        ("wz", -1),
+    )
+    assert binding["phase_values_derived_from_serialized_operand"] is True
+    assert binding["ordered_products_collapsed"] is False
+
+
+def test_serialized_mutation_changes_ordered_phase_binding_root():
+    offsets, serialized = canonical_state()
+    changed = list(offsets)
+    changed[0] = (changed[0] + 1) % 9
+    changed_serialized = serialize_offsets_5184(tuple(changed))
+    left = serialized_ordered_phase_binding(serialized)
+    right = serialized_ordered_phase_binding(changed_serialized)
+    assert left["bound_state_root_sha256"] != right["bound_state_root_sha256"]
+    assert left["complete_binding_root_sha256"] != right["complete_binding_root_sha256"]
 
 
 def test_state_mutation_changes_phase_locked_identity():
