@@ -1,6 +1,6 @@
 # Pass 220 I014 — G41 Sudoku Fingerprint Algebra and Reachability
 
-Status: **IMPLEMENTED — DEPENDENCY-SCOPED VALIDATION IN PROGRESS**
+Status: **IMPLEMENTED — REPAIR-FORWARD CHECKPOINT; FOCUSED CI RERUN ACTIVE**
 
 Schema: `HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1`
 
@@ -147,13 +147,43 @@ before registry integration with result:
 The branch test file now additionally verifies guarded service-registry
 reachability.
 
+## Validation and repair-forward status
+
+Initial focused PR run `35440546905` executed the combined I014 + inherited
+I001 surface and reached:
+
+`26 passed, 1 failed`
+
+The only failure was the registry reachability assertion invoking the complete
+default registry in a minimal focused runner. That transitively imported the
+Pass 213 PQC enclosure and failed because the focused workflow intentionally
+installed only pytest and therefore did not contain the optional
+`cryptography` package. The mathematical/runtime I014 tests and all inherited
+I001 tests had already passed.
+
+Repair-forward commit
+`523b035e2108d4ffd5de4f3df635efe49695e8a8` changed only the registry
+reachability assertion. It now verifies both:
+
+1. the actual declaration is present in `make_default_service_registry`; and
+2. that exact declaration is admitted by the kernel conformance registration
+   interposer with `HHS-I014`.
+
+This removes an unrelated optional-dependency requirement from the focused
+proof without weakening the reachability claim.
+
+At checkpoint time the replacement focused PR run `35440589032` was
+in progress. A push-triggered sibling run `35440592208` was queued.
+The existing HHS delivery watch may complete validation/repair-forward if
+those checks finish after interactive control returns.
+
 ## Validation remaining
 
-- run the final branch-focused GitHub Actions workflow;
-- inspect any dependency-scoped service-registry failure and repair forward;
-- record final branch head and workflow receipt;
-- merge only after the focused branch state is green;
-- verify the merged main identity and record it here.
+- record the terminal focused-I014 CI receipt for the current branch head;
+- repair only an I014/I001 dependency-scoped failure if one appears;
+- merge PR #500 when the focused branch state is green and required checks
+  permit integration;
+- verify merged `main` and record the merge/head identity.
 
 ## Current commit sequence
 
@@ -163,9 +193,16 @@ reachability.
 - `e067b517d47c00a7c5507cf0f9528cf57eda38ed` — registry reachability assertion
 - `3149b2e43adf8c3c7a24d295e42ab237b1587454` — white paper
 - `36d70d173e17a32ec83ac3c08ce982eb5575ca51` — focused CI workflow
+- `134db1c6136b24b134fbfe5b1028dfd950297229` — canonical whitepaper summary / first PR head
+- `523b035e2108d4ffd5de4f3df635efe49695e8a8` — repair-forward focused registry proof
 
-## Next action
+## Pull request and next action
 
-Open the branch PR, execute the focused workflow, repair only impacted
-surfaces if needed, then update this checkpoint with the terminal branch
-receipt and merge/verified-main identity.
+- PR: #500 — `Pass 220 I014: G41 reciprocal Sudoku fingerprint algebra`
+- Merge target: `main`
+- Current pre-checkpoint validated code head:
+  `523b035e2108d4ffd5de4f3df635efe49695e8a8`
+
+Next action: consume the terminal focused-I014 workflow result, repair forward
+only if the I014/I001 dependency surface fails, then merge PR #500 and verify
+the resulting `main` identity.
