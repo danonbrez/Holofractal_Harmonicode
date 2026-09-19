@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 1.48
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.49
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -179,6 +179,23 @@ tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c
 .github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml
 ```
 
+## 8B. T5184 ordered phase-support optimization
+
+[`HHS_LANE5_T5184_PHASE_SUPPORT_OPTIMIZATION_1_49_V1.md`](HHS_LANE5_T5184_PHASE_SUPPORT_OPTIMIZATION_1_49_V1.md)
+
+Lane 5 1.49 lowers the repaired Pass 220 operation64 ordered-phase geometry into an exact native scheduling optimization. Wolfram and the C ABI identify the 16 phase-bearing local64 positions per VM81 cell, giving 1,296 ordered-phase support positions and 3,888 positions that can bypass the phase-specific inspection loop while the complete 5,184-position state identity remains mandatory.
+
+The normative contract and reproducible audit are:
+
+```text
+contracts/pass219/PASS_219_LANE5_T5184_PHASE_SUPPORT_OPTIMIZER_1_49.md
+evidence/pass219/lane5_t5184_phase_support_1_49.wl
+evidence/pass219/lane5_t5184_phase_support_1_49.output.json
+evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json
+```
+
+The exact structural reduction is 3/4 of phase-specific slot inspections only; it is not presented as a whole-runtime speedup. Canonical VM81/Hash72/Hash216 authority remains unchanged and exact CPU/VM81 replay remains required.
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
@@ -187,6 +204,7 @@ These papers are subordinate to versioned/executable repository authority, inclu
 contracts/pass219/PASS_219_LANE5_DIRECT_WITNESS_ROUTING_1_46.md
 contracts/pass219/PASS_219_LANE5_REAL_WORLD_WORKLOAD_BENCHMARK_1_47.md
 contracts/pass219/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48.md
+contracts/pass219/PASS_219_LANE5_T5184_PHASE_SUPPORT_OPTIMIZER_1_49.md
 contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md
 contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md
 contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md
@@ -266,3 +284,9 @@ base main @ 9b36a5322dbb6a92c2879b4b8eb22f9da67a8c72
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
+
+The Lane 5 1.49 T5184 ordered phase-support optimization begins from repaired exact-main:
+
+```text
+base main @ ce0898979ceaa6d0a33fe00a257e8a71344f8de5
+```
