@@ -1,0 +1,45 @@
+name: Pass 220 I013 Explicit Mutation Ownership
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_explicit_mutation_ownership_v1.py"
+      - "hhs_backend/runtime/hhs_pass220_i013_owned_lane5_handoff_v1.py"
+      - "tests/pass220/test_hhs_pass220_explicit_mutation_ownership_v1.py"
+      - "tests/pass220/test_hhs_pass220_mobius_quarter_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py"
+      - "docs/pass220/PASS_220_I013_EXPLICIT_MUTATION_OWNERSHIP.md"
+      - ".github/workflows/pass220-i013-explicit-mutation-ownership.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_explicit_mutation_ownership_v1.py"
+      - "hhs_backend/runtime/hhs_pass220_i013_owned_lane5_handoff_v1.py"
+      - "tests/pass220/test_hhs_pass220_explicit_mutation_ownership_v1.py"
+      - "tests/pass220/test_hhs_pass220_mobius_quarter_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py"
+      - "docs/pass220/PASS_220_I013_EXPLICIT_MUTATION_OWNERSHIP.md"
+      - ".github/workflows/pass220-i013-explicit-mutation-ownership.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-ownership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run I011-I013 dependency surface
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_mobius_quarter_phase_v1.py
+          tests/pass220/test_hhs_pass220_genesis_zero_sum_halt_v1.py
+          tests/pass220/test_hhs_pass220_explicit_mutation_ownership_v1.py
