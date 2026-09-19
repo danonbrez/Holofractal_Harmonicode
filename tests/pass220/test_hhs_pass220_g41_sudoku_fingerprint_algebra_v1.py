@@ -219,3 +219,27 @@ def test_invalid_inputs_fail_closed():
         )
     with pytest.raises(Pass220G41FingerprintError):
         derived_cell_values(a2=1.0)
+
+
+def test_default_service_registry_exposes_i014_g41_surface():
+    from hhs_runtime.hhs_service_registry_v1 import (
+        make_default_service_registry,
+    )
+
+    registry = make_default_service_registry()
+    services = {
+        service["name"]: service
+        for service in registry.services()
+    }
+    spec = services[
+        "pass220.g41_sudoku_fingerprint.self_test"
+    ]
+    assert spec["module"] == (
+        "hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1"
+    )
+    assert spec["function"] == "g41_fingerprint_self_test"
+    assert "HHS-I014" in spec["invariant_ids"]
+    assert spec["conformance_decision"]["derivation_complete"] is True
+    assert spec["mutation_policy"] == (
+        "READ_ONLY_REFERENCE_WITNESS_NO_VM81_MUTATION"
+    )
