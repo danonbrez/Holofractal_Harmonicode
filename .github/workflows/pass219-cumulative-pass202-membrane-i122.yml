@@ -113,9 +113,10 @@ jobs:
         run: |
           mkdir -p /tmp/hhs-i122
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/hhs-i122/exact.o
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass202_1_22.c /tmp/hhs-i122/exact.o -o /tmp/hhs-i122/pass202-c
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/hhs-i122/link-support full
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass202_1_22.c             /tmp/hhs-i122/exact.o             /tmp/hhs-i122/link-support/hhs_hash216.o             /tmp/hhs-i122/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -lstdc++ -pthread -lm             -o /tmp/hhs-i122/pass202-c
           /tmp/hhs-i122/pass202-c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass202_1_22.cpp /tmp/hhs-i122/exact.o -o /tmp/hhs-i122/pass202-cpp
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass202_1_22.cpp             /tmp/hhs-i122/exact.o             /tmp/hhs-i122/link-support/hhs_hash216.o             /tmp/hhs-i122/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -pthread -lm             -o /tmp/hhs-i122/pass202-cpp
           /tmp/hhs-i122/pass202-cpp
 
       - name: Run kernel-derived Pass 202 membrane preflight
