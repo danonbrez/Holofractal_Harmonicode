@@ -25,6 +25,7 @@ from hhs_runtime.hhs_pass219_dynamic_paradox_phase_cycle_v1 import (
 )
 from hhs_runtime.hhs_pass220_multidimensional_constraint_manifold_v1 import (
     PHASE_CELLS,
+    Pass220MultidimensionalConstraintError,
     hash72_algebraic_projection_witness,
     ordered_curvature_tensor_witness,
 )
@@ -209,17 +210,22 @@ def h36_hash72_unit_ratio_witness(
         raise Pass220H36Hash72BridgeError(
             "P^4!=1 boundary violated"
         )
-    ordered_phase = ordered_curvature_tensor_witness(
-        a2=checked["a2"],
-        b2=checked["b2"],
-        c2=checked["c2"],
-        sx=checked["sx"],
-        sz=checked["sz"],
-        xy=checked["xy"],
-        yx=checked["yx"],
-        zw=checked["zw"],
-        wz=checked["wz"],
-    )
+    try:
+        ordered_phase = ordered_curvature_tensor_witness(
+            a2=checked["a2"],
+            b2=checked["b2"],
+            c2=checked["c2"],
+            sx=checked["sx"],
+            sz=checked["sz"],
+            xy=checked["xy"],
+            yx=checked["yx"],
+            zw=checked["zw"],
+            wz=checked["wz"],
+        )
+    except Pass220MultidimensionalConstraintError as exc:
+        raise Pass220H36Hash72BridgeError(
+            "complete ordered q=-1 phase witness failed"
+        ) from exc
     if checked["xy"] + checked["zw"] != checked["b2"]:
         raise Pass220H36Hash72BridgeError(
             "xy+zw must equal b^2 on the admitted ordered projection"
