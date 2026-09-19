@@ -1,0 +1,16 @@
+{
+  "schema": "HHS_PASS_219_LANE5_T5184_PHASE_SUPPORT_WOLFRAM_AUDIT_RECEIPT_1_49",
+  "date": "2026-09-19",
+  "engine": "Wolfram Language",
+  "execution_surface": "Wolfram Language kernel",
+  "reproducible_command": "wolframscript -file evidence/pass219/lane5_t5184_phase_support_1_49.wl",
+  "input_path": "evidence/pass219/lane5_t5184_phase_support_1_49.wl",
+  "input_sha256": "a4b11076ac6f0dd446f80e15ba4b5156925e5ee994de3a135d2d29deb9acb5f8",
+  "output_path": "evidence/pass219/lane5_t5184_phase_support_1_49.output.json",
+  "output_sha256": "8c4d2c9e379b4a3c67bf1a428d3c97def7e757672408ae5766c8154a5f2af609",
+  "check_count": 18,
+  "passed_count": 18,
+  "all_passed": true,
+  "floating_point_authority": false,
+  "canonical_state_authority": false
+}

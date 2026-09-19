@@ -1,0 +1,219 @@
+name: Pass 219 Lane 5 T5184 Phase Support 1.49
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_t5184_phase_support_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_t5184_phase_support_1_49.c'
+      - 'contracts/pass219/PASS_219_LANE5_T5184_PHASE_SUPPORT_OPTIMIZER_1_49.md'
+      - 'docs/whitepapers/HHS_LANE5_T5184_PHASE_SUPPORT_OPTIMIZATION_1_49_V1.md'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.wl'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.output.json'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json'
+      - 'hhs_runtime/hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h'
+      - 'hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp'
+      - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
+      - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
+      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_t5184_phase_support_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_t5184_phase_support_1_49.c'
+      - 'contracts/pass219/PASS_219_LANE5_T5184_PHASE_SUPPORT_OPTIMIZER_1_49.md'
+      - 'docs/whitepapers/HHS_LANE5_T5184_PHASE_SUPPORT_OPTIMIZATION_1_49_V1.md'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.wl'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.output.json'
+      - 'evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json'
+      - 'hhs_runtime/hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h'
+      - 'hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp'
+      - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
+      - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
+      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  exact-phase-support:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify repaired Pass 220 proof closure is inherited
+        run: git merge-base --is-ancestor ce0898979ceaa6d0a33fe00a257e8a71344f8de5 HEAD
+
+      - name: Verify sealed Wolfram audit
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path('evidence/pass219/lane5_t5184_phase_support_1_49.receipt.json').read_text()
+          )
+          for kind in ('input', 'output'):
+              path = Path(receipt[f'{kind}_path'])
+              assert sha256(path.read_bytes()).hexdigest() == receipt[f'{kind}_sha256']
+          output = json.loads(Path(receipt['output_path']).read_text())
+          assert output['allPassed'] is True
+          assert output['checkCount'] == output['passedCount'] == 18
+          assert output['supportMaskHex'] == '0f00f000000f00f0'
+          assert output['supportOps'] == [
+              4,5,6,7,16,17,18,19,44,45,46,47,56,57,58,59
+          ]
+          assert output['countsVM81'] == {'xy':324,'yx':324,'zw':324,'wz':324}
+          PY
+
+      - name: Reject approximate or authority escalation
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass219_lane5_t5184_phase_support_1_49.h \
+            hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc
+          grep -F 'full_state_identity_still_required = 1U' \
+            hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc
+          grep -F 'requires_exact_cpu_vm81_replay = 1U' \
+            hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc
+          grep -F 'canonical_hash216_authority = 0U' \
+            hhs_runtime/c/hhs_pass219_lane5_t5184_phase_support_1_49.inc
+
+      - name: Build cumulative exact ABI
+        run: |
+          make -f GNUmakefile clean
+          make -f GNUmakefile c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit callable 1.49 exports
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-1-49.symbols
+          grep -q ' hhs_exact_pass219_lane5_t5184_phase_support_version$' /tmp/hhs-1-49.symbols
+          grep -q ' hhs_exact_pass219_lane5_t5184_phase_support_authority$' /tmp/hhs-1-49.symbols
+          grep -q ' hhs_exact_pass219_lane5_t5184_phase_support_local64$' /tmp/hhs-1-49.symbols
+          grep -q ' hhs_exact_pass219_lane5_t5184_phase_support_classify$' /tmp/hhs-1-49.symbols
+
+      - name: Compile and run native 1.49 exact support gate
+        run: |
+          mkdir -p artifacts/pass219/1.49
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_t5184_phase_support_1_49.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-t5184-1-49
+          /tmp/test-pass219-lane5-t5184-1-49 | tee artifacts/pass219/1.49/native-phase-support.txt
+          grep -F 'PASS219_LANE5_T5184_PHASE_SUPPORT_1_49_PASS' \
+            artifacts/pass219/1.49/native-phase-support.txt
+          head -n 1 artifacts/pass219/1.49/native-phase-support.txt | \
+            python -m json.tool > artifacts/pass219/1.49/native-phase-support.json
+
+      - name: Regress Lane 5 1.48 full-manifold streaming
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-1-48
+          /tmp/test-pass219-lane5-1-48 > /tmp/lane5-1-48.txt
+          grep -F 'PASS219_LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48_PASS' /tmp/lane5-1-48.txt
+
+      - name: Regress Pass 220 I019 serialized ordered phase
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: ./hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-i019-native
+          /tmp/pass220-i019-native
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py \
+            tests/pass220/test_hhs_pass220_h36_hash72_unit_bridge_v1.py
+
+      - name: Seal structural optimization evidence
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('artifacts/pass219/1.49')
+          native = json.loads((root / 'native-phase-support.json').read_text())
+          assert native['result'] == 'PASS'
+          assert native['full_state_positions'] == 5184
+          assert native['phase_specific_checks'] == 1296
+          assert native['phase_specific_slots_skipped'] == 3888
+          assert native['support_fraction'] == '1/4'
+          assert native['bypass_fraction'] == '3/4'
+          assert native['pair_count_each'] == 324
+          assert native['candidate_only'] is True
+          assert native['full_state_identity_still_required'] is True
+          summary = {
+              'schema': 'HHS_PASS219_LANE5_T5184_PHASE_SUPPORT_EVIDENCE_1_49',
+              'source_commit': subprocess.check_output(
+                  ['git','rev-parse','HEAD'], text=True
+              ).strip(),
+              'result': 'PASS',
+              'full_state_positions': 5184,
+              'phase_specific_checks': 1296,
+              'phase_specific_slots_skipped': 3888,
+              'structural_phase_inspection_reduction': '3/4',
+              'whole_runtime_speedup_claimed': False,
+              'ordered_pair_count_each': 324,
+              'support_mask_hex': '0f00f000000f00f0',
+              'candidate_only': True,
+              'full_state_identity_still_required': True,
+              'requires_exact_cpu_vm81_replay': True,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash72_authority': False,
+              'canonical_hash216_authority': False,
+              'floating_point_canonical_authority': False,
+          }
+          canonical = json.dumps(summary, sort_keys=True, separators=(',',':')).encode()
+          summary['receipt_sha256'] = sha256(canonical).hexdigest()
+          (root / 'summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-t5184-phase-support-1-49
+          path: artifacts/pass219/1.49/
+          if-no-files-found: error
