@@ -1,6 +1,6 @@
 # Pass 220 I019 — RNA / Hash72 / DNA / Qudit Phase Lock
 
-Status: **IMPLEMENTED — CI VALIDATION PENDING**
+Status: **MERGED AT I019 — SERIALIZED-PHASE REPAIR-FORWARD IN PROGRESS**
 
 ## Restart identity
 
@@ -84,3 +84,23 @@ The focused workflow must:
 Commit these documentation surfaces, open the PR, run the focused exact-head
 gate, repair forward only impacted failures, merge after latest-head green, and
 verify main.
+
+
+## September 19 serialized phase-binding repair
+
+The post-merge review found that I019 carried the inherited
+`xy/yx/zw/wz` constants but did not derive their relationship from the
+supplied 5,184-character operand.
+
+The repair-forward implementation now:
+
+- decodes every `local64` position into its ordered `{x,y,z,w}^3` RNA word;
+- binds the actual serialized character at that position to the decoded word;
+- derives the ordered pair from the first two RNA symbols;
+- verifies all 81 cells cover every operation64 address exactly once;
+- proves each canonical q=-1 pair occurs `81*4=324` times;
+- seals a complete state-dependent ordered-phase binding root;
+- verifies that a canonical serialized mutation changes that binding root.
+
+The resulting ordered phase is therefore a deterministic projection of the
+actual serialized operand, not detached receipt metadata.
