@@ -2,6 +2,9 @@ from pathlib import Path
 
 import pytest
 
+from hhs_backend.runtime.hhs_pass220_i013_owned_lane5_handoff_v1 import (
+    Pass220OwnedLane5HandoffGate,
+)
 from hhs_runtime.hhs_pass220_explicit_mutation_ownership_v1 import (
     CANONICAL_MUTATION_OWNER,
     HANDOFF_CONTRACT_VALID,
@@ -230,3 +233,74 @@ def test_source_authority_verifier_fails_if_owner_declaration_is_missing():
 
 def test_witness_receipt_is_deterministic():
     assert _valid_handoff()["witness_sha256"] == _valid_handoff()["witness_sha256"]
+
+
+class _FakeI012Gate:
+    def __init__(self, result):
+        self.result = result
+        self.calls = []
+
+    def search_or_halt(self, **kwargs):
+        self.calls.append(kwargs)
+        return dict(self.result)
+
+    def close(self):
+        pass
+
+
+def _owned_gate_call(gate, *, request=False, policy=None):
+    values = {} if policy is None else dict(policy)
+    return gate.search_and_bind_owner(
+        current_offsets=(0,) * 81,
+        next_offsets=(0,) * 81,
+        nucleus_witnesses=(),
+        global_modality_zero_closed=False,
+        raw_5184_bit_state_change_zero=False,
+        phase="xy",
+        query={},
+        candidates=(),
+        tick=0,
+        cycle_index=0,
+        harmonic_nucleus_pairs=((2, 2),) * 9,
+        request_canonical_handoff=request,
+        **values,
+    )
+
+
+def test_composed_gate_keeps_admitted_candidate_proposal_only_without_handoff():
+    fake = _FakeI012Gate(_i012_admitted())
+    gate = Pass220OwnedLane5HandoffGate(gate=fake)
+    result = _owned_gate_call(gate)
+    assert result["mutation_ownership"]["status"] == PROPOSAL_ONLY
+    assert result["canonical_handoff_contract_valid"] is False
+    assert result["mutation_performed"] is False
+    assert result["canonical_vm81_mutation_authority"] is False
+    assert len(fake.calls) == 1
+
+
+def test_composed_gate_builds_only_a_validated_owner_handoff_not_a_mutation():
+    fake = _FakeI012Gate(_i012_admitted())
+    gate = Pass220OwnedLane5HandoffGate(gate=fake)
+    result = _owned_gate_call(
+        gate,
+        request=True,
+        policy=canonical_mutation_policy(),
+    )
+    assert result["canonical_handoff_contract_valid"] is True
+    assert result["mutation_ownership"]["owner_surface"] == CANONICAL_MUTATION_OWNER
+    assert result["mutation_performed"] is False
+    assert result["canonical_vm81_mutation_authority"] is False
+    assert result["canonical_receipt_authority"] is False
+
+
+def test_composed_gate_cannot_promote_blocked_i012_result():
+    fake = _FakeI012Gate(_i012_blocked())
+    gate = Pass220OwnedLane5HandoffGate(gate=fake)
+    result = _owned_gate_call(
+        gate,
+        request=True,
+        policy=canonical_mutation_policy(),
+    )
+    assert result["canonical_handoff_contract_valid"] is False
+    assert result["mutation_ownership"]["reason"] == REJECT_I012_NOT_ADMITTED
+    assert result["mutation_performed"] is False
