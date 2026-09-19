@@ -20,7 +20,8 @@ on:
       - 'hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
-      - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'\n      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'
+      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
   pull_request:
     branches:
       - main
@@ -40,7 +41,8 @@ on:
       - 'hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
-      - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'\n      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'
+      - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
   workflow_dispatch:
 
 permissions:
