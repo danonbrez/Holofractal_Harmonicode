@@ -194,7 +194,8 @@ def palindromic_precision_lanes() -> Tuple[Dict[str, Any], ...]:
     lanes = []
     for scale, row in enumerate(SCALE_ROWS, start=1):
         palindrome = tuple(row) + tuple(reversed(row))
-        remainder = Fraction(H36_MAGIC_LINE * scale, PRECISION_DENOMINATOR)
+        raw_remainder_numerator = H36_MAGIC_LINE * scale
+        remainder = Fraction(raw_remainder_numerator, PRECISION_DENOMINATOR)
         if palindrome != tuple(reversed(palindrome)):
             raise AssertionError("1/2/3 precision word lost palindrome symmetry")
         if remainder / scale != Fraction(H36_MAGIC_LINE, PRECISION_DENOMINATOR):
@@ -204,9 +205,10 @@ def palindromic_precision_lanes() -> Tuple[Dict[str, Any], ...]:
             "tensor_row": tuple(row),
             "palindrome": palindrome,
             "palindrome_digits": "".join(str(value) for value in palindrome),
-            "remainder_numerator": remainder.numerator,
-            "remainder_denominator": remainder.denominator,
-            "remainder_exact": f"{remainder.numerator}/{remainder.denominator}",
+            "remainder_numerator": raw_remainder_numerator,
+            "remainder_denominator": PRECISION_DENOMINATOR,
+            "remainder_exact": f"{raw_remainder_numerator}/{PRECISION_DENOMINATOR}",
+            "remainder_reduced_exact": f"{remainder.numerator}/{remainder.denominator}",
             "base_remainder_exact": "111/1000",
             "mod2": tuple(value % 2 for value in row),
             "mod3": tuple(value % 3 for value in row),
