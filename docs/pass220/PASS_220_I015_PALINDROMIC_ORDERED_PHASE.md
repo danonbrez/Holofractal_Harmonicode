@@ -1,6 +1,6 @@
 # Pass 220 I015 — Palindromic Ordered Phase
 
-Status: **IMPLEMENTED — DEPENDENCY-SCOPED VALIDATION PENDING**
+Status: **MERGED — FOCUSED CI GREEN — VERIFIED MAIN**
 
 Schema: `HHS_PASS_220_PALINDROMIC_ORDERED_PHASE_V1`
 
@@ -180,19 +180,56 @@ Persistence policy:
 - `93e52d34538c55f981c5326afa6e0bd8a417c32e` — guarded service registration
 - `7773f3e5c3a718e8b06fe1a7cbf549181c06fc1b` — white paper
 - `9bab9b8dfe3beab86af854152443c3f62b16f7a4` — focused CI workflow
+- `cc9d94285a3e857120d256139980b74a1b967bc9` — canonical white-paper summary
+- `cb37b9261c47425c89704e731e874d91f43a0aee` — inherited I014 terminal seal
+- `e86d50da3ba29f7e4046fd6d342ff62a2007982c` — repair-forward nonoverlapping word rewrite semantics
 
-## Validation remaining
+## Validation and repair-forward closure
 
-Run the focused workflow over:
+The first integrated focused run reached:
 
-- I015 palindromic ordered phase tests;
-- inherited I014 G41 fingerprint tests;
-- inherited I001 Lo Shu normalization tests.
+`42 passed, 1 failed`
 
-Repair only the impacted dependency surface if necessary. After green
-validation, open/merge the PR and verify the resulting main commit.
+The only failure was the exact normal form of the expanded `YXY` word.
+The implementation had applied Python string replacements sequentially across
+the whole word, while the Wolfram proof used one left-to-right,
+non-overlapping rewrite pass per iteration.
+
+Repair-forward commit
+`e86d50da3ba29f7e4046fd6d342ff62a2007982c`
+changed the runtime rewriter to the same non-overlapping semantics used in the
+Wolfram audit.
+
+The repaired dependency-scoped PR run:
+
+- workflow: `35446173998`
+- result: **success**
+- tests: **43 passed**
+- warning: one pre-existing pytest configuration warning for `asyncio_mode`
+
+PR #501 was merged after that green focused result.
+
+Merged / verified main:
+
+`1316518d714013b3d5b2ee0f620782125d99ba17`
+
+The same focused workflow then executed on merged main:
+
+- workflow: `35446250778`
+- event: push
+- result: **success**
+- tests: **43 passed**
+
+## Terminal closure
+
+I015 implementation, dependency-scoped validation, merge, and verified-main
+replay are complete.
+
+No I015 validation remains.
 
 ## Next action
 
-Complete canonical white-paper summary, run focused CI, repair forward if
-needed, then merge and verify main.
+Proceed from verified main
+`1316518d714013b3d5b2ee0f620782125d99ba17`
+for the next Pass 220 iteration.
+
