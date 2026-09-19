@@ -4393,6 +4393,65 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.h36_hash72_unit_bridge.self_test",
+        module="hhs_runtime.hhs_pass220_h36_hash72_unit_bridge_v1",
+        function="h36_hash72_unit_bridge_self_test",
+        service_type="pass220_exact_h36_hash72_unit_bridge_projection",
+        description=(
+            "Bind the inherited Pass 219 H36 exact identity and canonical "
+            "native universal-constraint source to the Pass 220 I017 "
+            "multidimensional manifold through the exact e/H36, mc2/u144, "
+            "P4 magnitude, and ordered xy+zw over q-p unit-ratio relation "
+            "without solving the native m symbol or minting Hash72 authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_H36_HASH72_UNIT_BRIDGE_V1",
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_MANIFOLD_V1",
+            "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_H36_HASH72_UNIT_RATIO_WITNESS_V1",
+            "HHS_PASS219_H36_CLOSURE_IDENTITY_V1",
+        ],
+        validators=[
+            "validate_h36_hash72_unit_bridge",
+            "h36_hash72_unit_bridge_self_test",
+        ],
+        guards=[
+            "h36_exact_identity_36",
+            "u144_hash72_algebraic_projection_lock",
+            "p4_nonunit_boundary",
+            "xy_plus_zw_q_minus_p_unit_ratio",
+            "native_m_symbol_not_scalar_solved",
+            "canonical_universal_constraint_source_bound",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_H36_HASH72_UNIT_RATIO_DRIFT",
+            "REJECT_P4_NONUNIT_BOUNDARY",
+            "REJECT_UCE_SOURCE_DEPENDENCY_DRIFT",
+            "REJECT_NATIVE_M_SCALARIZATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_EXACT_H36_HASH72_UNIT_BRIDGE_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_EXACT_UNIT_RATIO_COMPOSITION_WITH_INHERITED_H36_UCE_I017"
+        ),
+    )
+
     return registry
 
 
