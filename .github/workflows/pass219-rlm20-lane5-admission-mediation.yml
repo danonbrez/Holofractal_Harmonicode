@@ -1,0 +1,140 @@
+name: Pass 219 RLM20 Mandatory Lane 5 Admission Mediation
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_pass219_vm81_authority_exports.map'
+      - 'hhs_runtime/include/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h'
+      - 'hhs_runtime/c/hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'hhs_runtime/include/hhs_pass219_rml20_rna_vm5184_bridge_1_34.h'
+      - 'hhs_runtime/cpp/hhs_pass219_rml20_rna_vm5184_bridge_1_34.cpp'
+      - 'hhs_runtime/pass219/rml20_rna_vm5184_cell_wall_bridge.py'
+      - 'tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c'
+      - 'tests/pass219/test_lane5_rlm20_mandatory_integration.py'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_bridge_1_34.c'
+      - 'tests/pass219/test_pass219_rml20_rna_vm5184_cell_wall_bridge.py'
+      - '.github/workflows/pass219-rlm20-lane5-admission-mediation.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rlm20-lane5-admission-mediation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install exact ABI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Build current cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit sole public admission and hidden raw bypass
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          for symbol in \
+            hhs_exact_pass219_vm81_environment_admit_signed \
+            hhs_exact_pass219_rlm20_lane5_closure_version \
+            hhs_exact_pass219_rlm20_lane5_closure_authority \
+            hhs_exact_pass219_lane5_runtime_preflight \
+            hhs_exact_pass219_lane5_mediate_candidate \
+            hhs_exact_pass219_lane5_direct_witness_route_optimize \
+            hhs_exact_pass219_lane5_unbounded_workload_stream_finalize; do
+            grep -q " ${symbol}$" /tmp/hhs.symbols || {
+              echo "missing required mediated Lane 5 export: ${symbol}" >&2
+              exit 1
+            }
+          done
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal \
+            hhs_exact_pass219_vm81_environment_admit_signed_raw; do
+            if grep -q " ${forbidden}$" /tmp/hhs.symbols; then
+              echo "canonical bypass exported: ${forbidden}" >&2
+              exit 1
+            fi
+          done
+
+      - name: Validate RLM20 closure against current aggregate
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rlm20_lane5_internal_state_closure_1_37.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rlm20-lane5-closure
+          /tmp/test-rlm20-lane5-closure
+
+      - name: Regress repaired RML20 RNA VM5184 transport
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_RML20_NATIVE_LIB: ${{ github.workspace }}/hhs_runtime/builds/libhhs_runtime.so
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rml20_rna_vm5184_bridge_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rml20-rna-vm5184
+          /tmp/test-rml20-rna-vm5184
+          python -m pytest -q \
+            tests/pass219/test_pass219_rml20_rna_vm5184_cell_wall_bridge.py \
+            tests/pass219/test_lane5_rml20_mandatory_integration.py \
+            tests/pass219/test_lane5_rlm20_mandatory_integration.py
+
+      - name: Regress signed environmental fail-closed paths
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_pqc_signature_1_31.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pqc-signature
+          /tmp/test-pqc-signature bad-profile
+          /tmp/test-pqc-signature bad-parent
+
+      - name: Semantic mediation topology audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          aggregate = Path('hhs_runtime/c/hhs_runtime_exact_abi.c').read_text()
+          exports = Path('hhs_runtime/c/hhs_pass219_vm81_authority_exports.map').read_text()
+          dispatcher = Path('hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py').read_text()
+
+          env = '#include "hhs_pass219_vm81_environmental_recovery_1_32.inc"'
+          rlm20 = '#include "hhs_pass219_rlm20_lane5_internal_state_closure_1_37.inc"'
+          lane137 = '#include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.inc"'
+          lane148 = '#include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc"'
+
+          assert 'hhs_exact_pass219_vm81_environment_admit_signed_raw' in aggregate
+          assert env in aggregate and rlm20 in aggregate and lane137 in aggregate and lane148 in aggregate
+          assert aggregate.index(env) < aggregate.index(rlm20) < aggregate.index(lane137) < aggregate.index(lane148)
+          assert 'hhs_exact_pass219_vm81_environment_admit_signed_raw;' in exports
+          assert 'RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37' in dispatcher
+          assert 'MANDATORY_CANONICAL_ADMISSION_MEDIATION' in dispatcher
+          print('rlm20_lane5_mediation_topology=PASS')
+          PY

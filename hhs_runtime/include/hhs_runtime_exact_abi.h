@@ -98,6 +98,7 @@
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.h"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h"
 #include "hhs_pass219_delta_reciprocal_constructor_1_36.h"
+#include "hhs_pass219_rlm20_lane5_internal_state_closure_1_37.h"
 #include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.h"
 #include "hhs_pass219_lane5_hash216_composition_jump_store_1_38.h"
 #include "hhs_pass219_lane5_persistent_hash216_composition_memory_1_39.h"
@@ -109,4 +110,5 @@
 #include "hhs_pass219_hash216_fractal_qudit_admission_1_45.h"
 #include "hhs_pass219_lane5_direct_witness_routing_1_46.h"
 #include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.h"
+#include "hhs_pass219_lane5_pythagorean_phase_geometry_1_49.h"
 #endif

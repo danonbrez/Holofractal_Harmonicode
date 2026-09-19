@@ -1,0 +1,85 @@
+name: Pass 219 U72 H36 Mandatory Dynamic Scalar Optimizer
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'hhs_runtime/pass219/u72_h36_dynamic_scalar_optimizer.py'
+      - 'contracts/pass219/PASS_219_U72_H36_DYNAMIC_SCALAR_OPTIMIZATION_V1.md'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py'
+      - 'tests/pass219/test_lane5_u72_h36_mandatory_integration.py'
+      - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
+      - '.github/workflows/pass219-u72-h36-mandatory-optimizer.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  u72-h36-mandatory-optimizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install focused dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Build current cumulative ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Build exact BigInt RNA candidate probe
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_bigint_rna_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test_pass219_bigint_rna_native_probe
+          test -x /tmp/test_pass219_bigint_rna_native_probe
+
+      - name: Run exact optimizer and production agent integration
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py \
+            tests/pass219/test_lane5_u72_h36_mandatory_integration.py
+
+      - name: Emit current exact U72 H36 report
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+        run: |
+          python -m hhs_runtime.pass219.u72_h36_dynamic_scalar_optimizer > /tmp/u72-h36.json
+          python - <<'PY'
+          import json
+          report=json.load(open('/tmp/u72-h36.json'))
+          assert report['dynamic_cycle']['full_u72_cycle_closed'] is True
+          assert report['optimization']['reference_coordinate_visits'] == 5184
+          assert report['optimization']['optimized_coordinate_updates'] == 72
+          assert report['optimization']['avoided_coordinate_visits'] == 5112
+          assert report['candidate_rna_anchors']['all_candidate_routes_green'] is True
+          assert report['authority']['new_canonical_vm81_mutation_authority'] is False
+          assert report['authority']['new_hash216_persistence_authority'] is False
+          print('u72_h36_dynamic_scalar_optimizer=PASS')
+          PY
+
+      - name: Audit mediated canonical boundary remains sole authority
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_runtime_preflight$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_environment_admit_signed_raw$' /tmp/hhs.symbols

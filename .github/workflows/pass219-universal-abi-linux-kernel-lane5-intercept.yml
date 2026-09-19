@@ -1,0 +1,166 @@
+name: Pass 219 Universal ABI Linux Kernel Lane 5 Intercept
+
+on:
+  push:
+    branches:
+      - pass219/saturation-deadline-warm-cache-benchmark-v3
+    paths:
+      - 'contracts/pass219/PASS_219_UNIVERSAL_ABI_LINUX_KERNEL_LANE5_INTERCEPT_V1.md'
+      - 'hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py'
+      - 'hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py'
+      - 'hhs_runtime/pass219/lane5_instruction.py'
+      - 'hhs_runtime/pass219/lane5_object_lowering_registry.py'
+      - 'hhs_runtime/pass219/lane5_linux_host_gateway.py'
+      - 'hhs_runtime/pass163/vmrc.py'
+      - 'contracts/pass219/PASS_219_LANE5_INSTRUCTION_OBJECT_BOUNDARY_V1.md'
+      - 'tests/pass219/test_lane5_instruction_object_boundary.py'
+      - 'tests/pass219/test_lane5_object_lowering_registry.py'
+      - 'tests/pass219/test_lane5_linux_host_gateway.py'
+      - 'tests/pass219/test_vmrc_lane5_instruction_only_boundary.py'
+      - 'hhs_runtime/pass219/lane5_interceptor_sandbox_cache.py'
+      - 'benchmarks/pass219/raw_linux_serial_abi_capacity_v1.c'
+      - 'tools/pass219/seal_raw_linux_serial_abi_capacity_v1.py'
+      - 'tests/pass219/test_lane5_interceptor_sandbox_cache.py'
+      - 'hhs_runtime/pass219/lane5_mandatory_optimization_dispatcher.py'
+      - 'tests/pass219/test_lane5_universal_abi_kernel_interceptor.py'
+      - 'tools/pass219/audit_lane5_universal_abi_kernel.py'
+      - '.github/workflows/pass219-universal-abi-linux-kernel-lane5-intercept.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  universal-intercept-unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install focused dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Calibrate raw Linux serial ABI bytes without HHS services
+        run: |
+          rm -rf hhs_runtime/builds
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            benchmarks/pass219/raw_linux_serial_abi_capacity_v1.c \
+            -o /tmp/raw-linux-serial-capacity
+          ! ldd /tmp/raw-linux-serial-capacity | grep -q 'libhhs_runtime'
+          ! nm -u /tmp/raw-linux-serial-capacity | grep -Eiq 'hhs|vm81|lane5|hash72|hash216|pqc'
+          /tmp/raw-linux-serial-capacity 67108864 > /tmp/raw-linux-capacity.json
+          compiler_id="$(cc --version | head -n1)"
+          python tools/pass219/seal_raw_linux_serial_abi_capacity_v1.py \
+            /tmp/raw-linux-capacity.json \
+            /tmp/lane5-cache-calibration.json \
+            --compiler-id "$compiler_id" \
+            --benchmark-id "CI_RAW_LINUX_SERIAL_ABI_CAPACITY_V1"
+          python - <<'PY'
+          import json
+          raw=json.load(open('/tmp/raw-linux-capacity.json'))
+          sealed=json.load(open('/tmp/lane5-cache-calibration.json'))
+          assert raw['capacity_unit'] == 'RAW_LINUX_SERIAL_ABI_BYTES'
+          assert raw['hhs_present'] is False
+          assert raw['vm81_services_present'] is False
+          assert raw['lane5_present'] is False
+          assert raw['pqc_present'] is False
+          assert sealed['max_serial_abi_bytes'] == raw['max_serial_abi_bytes']
+          assert sealed['capacity_unit'] == 'RAW_LINUX_SERIAL_ABI_BYTES'
+          assert sealed['classification'] == 'MEASURED_LOWER_BOUND'
+          assert sealed['production_accepted'] is False
+          print('raw_linux_serial_abi_lower_bound=', sealed['max_serial_abi_bytes'])
+          PY
+
+      - name: Build cumulative exact ABI after raw calibration
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile Python Lane 5 boundary modules
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/lane5_interceptor_sandbox_cache.py \
+            hhs_runtime/pass219/lane5_universal_abi_kernel_interceptor.py \
+            hhs_runtime/pass219/lane5_instruction.py \
+            hhs_runtime/pass219/lane5_object_lowering_registry.py \
+            hhs_runtime/pass219/lane5_linux_host_gateway.py \
+            hhs_runtime/pass163/vmrc.py
+
+      - name: Validate universal Lane 5 traffic envelope
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_lane5_interceptor_sandbox_cache.py \
+            tests/pass219/test_lane5_universal_abi_kernel_interceptor.py
+          python - <<'PY'
+          import json
+          from hhs_runtime.pass219.lane5_interceptor_sandbox_cache import (
+              Lane5CacheCalibration,
+              RAW_CAPACITY_UNIT,
+          )
+          evidence=json.load(open('/tmp/lane5-cache-calibration.json'))
+          calibration=Lane5CacheCalibration.from_evidence(evidence)
+          assert calibration.capacity_unit == RAW_CAPACITY_UNIT
+          assert calibration.production_accepted is False
+          assert calibration.classification == 'MEASURED_LOWER_BOUND'
+          assert calibration.max_serial_abi_bytes == evidence['max_serial_abi_bytes']
+          assert calibration.derived_5184_frame_slots == evidence['max_serial_abi_bytes'] // 648
+          print('derived_frame_slots=', calibration.derived_5184_frame_slots)
+          PY
+
+      - name: Regress Pass 036 zero-bypass interposer
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_zero_bypass_runtime_interposer_v1 import (
+              PROPAGATION_SURFACES,
+              zero_bypass_runtime_interposer_self_test,
+          )
+          required={
+              'runtime.abi','linux.kernel.abi','native.ctypes','native.subprocess',
+              'linux.file.io','linux.socket.io','vmrc.compatibility',
+              'cache.replay.commit','api.runtime','websocket.runtime',
+              'plugin.runtime','gpu.worker',
+          }
+          assert required.issubset(PROPAGATION_SURFACES)
+          result=zero_bypass_runtime_interposer_self_test()
+          assert result['ok'] is True, result
+          print('universal_pass036_surfaces=PASS', len(PROPAGATION_SURFACES))
+          PY
+
+      - name: Audit canonical authority exports remain closed
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_environment_admit_signed_raw$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+
+  production-crossing-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit direct runtime and Linux-host crossings
+        run: |
+          set +e
+          python tools/pass219/audit_lane5_universal_abi_kernel.py | tee /tmp/lane5-audit.json
+          status=${PIPESTATUS[0]}
+          set -e
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/lane5-audit.json'))
+          print('finding_count=',r['finding_count'])
+          print('unmediated_count=',r['unmediated_count'])
+          for item in r['unmediated']:
+              print(f"{item['classification']} {item['path']}:{item['line']} {item['pattern']}")
+          PY
+          exit "$status"

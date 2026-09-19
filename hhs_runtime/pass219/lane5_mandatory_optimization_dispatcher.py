@@ -1,0 +1,314 @@
+"""Production facade for the Pass 219 mandatory Lane 5 optimizer.
+
+The implementation is kept in ``lane5_mandatory_optimization_dispatcher_impl``.
+This facade supplies the mandatory persistent state root so stateful composition
+reuse is available by default instead of requiring an opt-in constructor
+argument. It also binds the repository's validated optimization-generalization
+manifests into the production capability/status surface so newly proven
+compatible optimizations cannot become invisible to the latency/composition
+agent.
+
+RML20 is also bound here as a typed native transport capability. It requires an
+exact 648-byte VM5184 carrier plus a frozen RML17 address/direction coordinate;
+it is therefore visible to the production agent without being guessed onto
+Hash216-only requests that do not carry those typed inputs.
+"""
+from __future__ import annotations
+
+import os
+from pathlib import Path
+from typing import Any
+
+from hhs_runtime.pass219.lane5_mandatory_optimization_dispatcher_impl import (
+    Lane5MandatoryOptimizationError,
+    MANDATORY_CAPABILITY_ROLES as _BASE_MANDATORY_CAPABILITY_ROLES,
+    MANDATORY_LANE5_LINEAGE as _BASE_MANDATORY_LANE5_LINEAGE,
+    Pass219Lane5MandatoryOptimizationDispatcher as _DispatcherImpl,
+    SCHEMA,
+)
+from hhs_runtime.pass219.lane5_mandatory_optimization_registry import (
+    build_mandatory_optimization_registry,
+)
+from hhs_runtime.pass219.lane5_pythagorean_phase_geometry_1_49_bridge import (
+    Lane5PythagoreanPhaseGeometryError,
+    project_pythagorean_phase_geometry,
+)
+from hhs_runtime.pass219.rml20_rna_vm5184_cell_wall_bridge import (
+    RML20NativeBridgeError,
+    route_rml17_candidate_through_rna_vm5184,
+)
+
+DEFAULT_STATE_ROOT_ENV = "HHS_PASS219_LANE5_STATE_ROOT"
+DEFAULT_STATE_ROOT = Path(".hhs/pass219/lane5").resolve()
+RLM20_CLOSURE_CAPABILITY_ID = "RLM20_LANE5_INTERNAL_STATE_CLOSURE_1_37"
+U72_H36_CAPABILITY_ID = "U72_H36_DYNAMIC_SCALAR_OPTIMIZER_1_0"
+RML20_CAPABILITY_ID = "RML20_RNA_VM5184_CELL_WALL_BRIDGE"
+P149_CAPABILITY_ID = "LANE5_PYTHAGOREAN_PHASE_GEOMETRY_1_49"
+
+MANDATORY_LANE5_LINEAGE = _BASE_MANDATORY_LANE5_LINEAGE + (
+    RLM20_CLOSURE_CAPABILITY_ID,
+    U72_H36_CAPABILITY_ID,
+    RML20_CAPABILITY_ID,
+    P149_CAPABILITY_ID,
+)
+MANDATORY_CAPABILITY_ROLES = dict(_BASE_MANDATORY_CAPABILITY_ROLES)
+MANDATORY_CAPABILITY_ROLES[RLM20_CLOSURE_CAPABILITY_ID] = (
+    "MANDATORY_CANONICAL_ADMISSION_MEDIATION"
+)
+MANDATORY_CAPABILITY_ROLES[U72_H36_CAPABILITY_ID] = (
+    "EXACT_DYNAMIC_SCALAR_COORDINATE_OPTIMIZATION"
+)
+MANDATORY_CAPABILITY_ROLES[RML20_CAPABILITY_ID] = (
+    "EXACT_RML17_RNA_VM5184_TRANSPORT"
+)
+MANDATORY_CAPABILITY_ROLES[P149_CAPABILITY_ID] = (
+    "EXACT_PYTHAGOREAN_PHASE_PROJECTION"
+)
+
+
+class Pass219Lane5MandatoryOptimizationDispatcher(_DispatcherImpl):
+    """Mandatory dispatcher with persistent composition memory enabled by default."""
+
+    def __init__(
+        self,
+        *,
+        backend: str = "CPU_REFERENCE",
+        require_physical_gpu: bool = False,
+        state_root: str | Path | None = None,
+        vector_key: bytes | None = None,
+    ) -> None:
+        resolved_state_root = Path(
+            state_root
+            or os.getenv(DEFAULT_STATE_ROOT_ENV)
+            or DEFAULT_STATE_ROOT
+        ).resolve()
+        super().__init__(
+            backend=backend,
+            require_physical_gpu=require_physical_gpu,
+            state_root=resolved_state_root,
+            vector_key=vector_key,
+        )
+
+    @staticmethod
+    def optimization_registry_snapshot() -> dict[str, Any]:
+        """Validate and expose all repository-declared optimization obligations."""
+        return build_mandatory_optimization_registry()
+
+    @staticmethod
+    def _inject_rml20_surface(result: dict[str, Any]) -> dict[str, Any]:
+        result["mandatory_lineage"] = list(MANDATORY_LANE5_LINEAGE)
+        result["mandatory_capability_roles"] = dict(MANDATORY_CAPABILITY_ROLES)
+        result["rlm20_lane5_internal_state_closure"] = "MANDATORY_NATIVE_ADMISSION_SEAM"
+        result["rlm20_preflight_export"] = "hhs_exact_pass219_lane5_runtime_preflight"
+        result["canonical_admission_export"] = "hhs_exact_pass219_vm81_environment_admit_signed"
+        result["raw_environmental_admission_exported"] = False
+        result["u72_h36_dynamic_scalar_optimizer"] = "CALLABLE_EXACT_PROOF"
+        result["u72_h36_logical_coordinate_work_ratio"] = "1/72"
+        result["rml20_rna_vm5184_transport"] = "LAZY_MANDATORY"
+        result["lane5_pythagorean_phase_geometry_1_49"] = "LAZY_MANDATORY_NATIVE"
+        result["rml20_typed_inputs"] = [
+            "exact_648_byte_vm5184_carrier",
+            "rml17_source_address",
+            "reciprocal_transport_direction",
+        ]
+        return result
+
+    def status(self) -> dict[str, Any]:
+        result = self._inject_rml20_surface(dict(super().status()))
+        result["optimization_generalization_registry"] = (
+            self.optimization_registry_snapshot()
+        )
+        result["manifest_proven_optimizations_visible"] = True
+        return result
+
+    def capability_snapshot(self) -> dict[str, Any]:
+        result = self._inject_rml20_surface(dict(super().capability_snapshot()))
+        result["optimization_generalization_registry"] = (
+            self.optimization_registry_snapshot()
+        )
+        result["manifest_proven_optimizations_visible"] = True
+        return result
+
+    def search_hash216(self, **kwargs: Any) -> dict[str, Any]:
+        """Preserve Hash216 compatibility while declaring typed RML20 availability."""
+        result = dict(super().search_hash216(**kwargs))
+        available = list(result.get("optimization_available", ()))
+        for capability_id in (
+            RLM20_CLOSURE_CAPABILITY_ID,
+            U72_H36_CAPABILITY_ID,
+            RML20_CAPABILITY_ID,
+            P149_CAPABILITY_ID,
+        ):
+            if capability_id not in available:
+                available.append(capability_id)
+        result["optimization_available"] = available
+        typed = list(result.get("typed_optimizers_require_typed_inputs", ()))
+        for capability_id in (U72_H36_CAPABILITY_ID, RML20_CAPABILITY_ID, P149_CAPABILITY_ID):
+            if capability_id not in typed:
+                typed.append(capability_id)
+        result["typed_optimizers_require_typed_inputs"] = typed
+        return result
+
+    def optimize_u72_h36_dynamic_cycle(
+        self,
+        *,
+        candidate_native_probe: str | None = None,
+        environment_native_probe: str | None = None,
+    ) -> dict[str, Any]:
+        """Execute the proven exact U72/H36 dynamic scalar optimization proof.
+
+        The V1 contract requires every optimized transition to retain exact
+        equality with the full serializer. This production surface therefore
+        exposes the proven cycle as-is rather than weakening it into an
+        unchecked arithmetic shortcut.
+        """
+        from hhs_runtime.pass219.u72_h36_dynamic_scalar_optimizer import (
+            u72_h36_dynamic_scalar_optimizer,
+        )
+
+        report = dict(
+            u72_h36_dynamic_scalar_optimizer(
+                candidate_native_probe=candidate_native_probe,
+                environment_native_probe=environment_native_probe,
+            )
+        )
+        dynamic = dict(report.get("dynamic_cycle", {}))
+        optimization = dict(report.get("optimization", {}))
+        authority = dict(report.get("authority", {}))
+        if dynamic.get("full_u72_cycle_closed") is not True:
+            raise Lane5MandatoryOptimizationError("U72_H36_CYCLE_CLOSURE_DRIFT")
+        if optimization.get("reference_coordinate_visits") != 5184:
+            raise Lane5MandatoryOptimizationError("U72_H36_REFERENCE_WORK_DRIFT")
+        if optimization.get("optimized_coordinate_updates") != 72:
+            raise Lane5MandatoryOptimizationError("U72_H36_OPTIMIZED_WORK_DRIFT")
+        if optimization.get("avoided_coordinate_visits") != 5112:
+            raise Lane5MandatoryOptimizationError("U72_H36_AVOIDED_WORK_DRIFT")
+        for key in (
+            "new_canonical_vm81_mutation_authority",
+            "new_canonical_receipt_authority",
+            "new_hash72_minting_authority",
+            "new_hash216_persistence_authority",
+            "new_pqc_key_authority",
+            "new_receipt_clock_authority",
+            "floating_point_authority",
+        ):
+            if authority.get(key) is not False:
+                raise Lane5MandatoryOptimizationError(
+                    f"U72_H36_AUTHORITY_ESCALATION:{key}"
+                )
+        report["mandatory_optimization_dispatch"] = True
+        report["optimization_selected"] = U72_H36_CAPABILITY_ID
+        report["fresh_recomputation_forced"] = False
+        return report
+
+    def project_pythagorean_phase_geometry_1_49(
+        self,
+        *,
+        pair_kind: str,
+        orientation: int,
+        phase_slot: int,
+        lo_shu_cell_index: int,
+        fibonacci_depth: int = 10,
+        projected_p4: int = 9,
+        library_path: str | Path | None = None,
+    ) -> dict[str, Any]:
+        """Run the proven native Lane 5 1.49 candidate projection."""
+        try:
+            result = dict(
+                project_pythagorean_phase_geometry(
+                    pair_kind=pair_kind,
+                    orientation=orientation,
+                    phase_slot=phase_slot,
+                    lo_shu_cell_index=lo_shu_cell_index,
+                    fibonacci_depth=fibonacci_depth,
+                    projected_p4=projected_p4,
+                    library_path=library_path,
+                )
+            )
+        except Lane5PythagoreanPhaseGeometryError as exc:
+            raise Lane5MandatoryOptimizationError(
+                f"LANE5_P149_MANDATORY_PROJECTION_UNAVAILABLE:{exc}"
+            ) from exc
+        authority = dict(result.get("authority", {}))
+        if authority.get("candidate_only") is not True:
+            raise Lane5MandatoryOptimizationError("LANE5_P149_CANDIDATE_BOUNDARY_DRIFT")
+        for key in (
+            "canonical_vm81_mutation_authority",
+            "canonical_hash72_authority",
+            "canonical_hash216_authority",
+            "canonical_persistence_authority",
+            "floating_point_authority",
+        ):
+            if authority.get(key) is not False:
+                raise Lane5MandatoryOptimizationError(
+                    f"LANE5_P149_AUTHORITY_ESCALATION:{key}"
+                )
+        result["mandatory_optimization_dispatch"] = True
+        result["optimization_selected"] = P149_CAPABILITY_ID
+        result["fresh_recomputation_forced"] = False
+        return result
+
+    def route_rml20_candidate(
+        self,
+        raw_frame_le: bytes | bytearray | memoryview,
+        source_address: int,
+        direction: str,
+        *,
+        library_path: str | Path | None = None,
+    ) -> dict[str, Any]:
+        """Run the proven RML20 RML17->RNA/VM5184 exact transport bridge."""
+        try:
+            result = dict(
+                route_rml17_candidate_through_rna_vm5184(
+                    raw_frame_le,
+                    source_address,
+                    direction,
+                    library_path=library_path,
+                )
+            )
+        except RML20NativeBridgeError as exc:
+            raise Lane5MandatoryOptimizationError(
+                f"RML20_MANDATORY_TRANSPORT_UNAVAILABLE:{exc}"
+            ) from exc
+
+        authority = dict(result.get("authority", {}))
+        required_false = (
+            "canonical_vm81_mutation_authority",
+            "canonical_hash72_mint_authority",
+            "canonical_hash216_persistence_authority",
+            "canonical_persistence_authority",
+            "floating_point_authority",
+        )
+        if authority.get("candidate_only") is not True:
+            raise Lane5MandatoryOptimizationError("RML20_CANDIDATE_ONLY_BOUNDARY_DRIFT")
+        if authority.get("exact_integer_only") is not True:
+            raise Lane5MandatoryOptimizationError("RML20_EXACT_INTEGER_BOUNDARY_DRIFT")
+        if any(authority.get(key) is not False for key in required_false):
+            raise Lane5MandatoryOptimizationError("RML20_CANONICAL_AUTHORITY_ESCALATION")
+        if not all(dict(result.get("parity", {})).values()):
+            raise Lane5MandatoryOptimizationError("RML20_RML17_NATIVE_PARITY_DRIFT")
+
+        result["mandatory_optimization_dispatch"] = True
+        result["optimization_selected"] = RML20_CAPABILITY_ID
+        result["fresh_recomputation_forced"] = False
+        return result
+
+
+# Explicit name for the production latency-search/composition role.
+Pass219Lane5LatencyCompositionAgent = Pass219Lane5MandatoryOptimizationDispatcher
+
+
+__all__ = [
+    "DEFAULT_STATE_ROOT",
+    "DEFAULT_STATE_ROOT_ENV",
+    "Lane5MandatoryOptimizationError",
+    "MANDATORY_CAPABILITY_ROLES",
+    "MANDATORY_LANE5_LINEAGE",
+    "Pass219Lane5LatencyCompositionAgent",
+    "Pass219Lane5MandatoryOptimizationDispatcher",
+    "RLM20_CLOSURE_CAPABILITY_ID",
+    "RML20_CAPABILITY_ID",
+    "P149_CAPABILITY_ID",
+    "U72_H36_CAPABILITY_ID",
+    "SCHEMA",
+]

@@ -66,6 +66,18 @@ PROPAGATION_SURFACES = {
     "persistence.write": "filesystem/export/persistence write operations",
     "api.egress": "API response egress envelopes",
     "websocket.broadcast": "websocket/runtime event egress broadcasts",
+    "runtime.abi": "all HHS runtime ABI crossings, including compatibility and exact ABI calls",
+    "linux.kernel.abi": "all HHS-controlled Linux host/kernel ABI crossings",
+    "native.ctypes": "all HHS-controlled ctypes/native shared-library crossings",
+    "native.subprocess": "all HHS-controlled subprocess/native worker launches",
+    "linux.file.io": "all HHS runtime filesystem I/O crossing into the Linux host",
+    "linux.socket.io": "all HHS runtime socket/network I/O crossing into the Linux host",
+    "vmrc.compatibility": "all legacy/reference VMRC state-affecting compatibility calls",
+    "cache.replay.commit": "all cache/vector/replay operations capable of affecting canonical state",
+    "api.runtime": "all HTTP API runtime ingress/egress traffic",
+    "websocket.runtime": "all WebSocket runtime ingress/egress traffic",
+    "plugin.runtime": "all plugin/runtime adapter traffic",
+    "gpu.worker": "all GPU/worker candidate traffic before canonical admission",
 }
 
 
@@ -702,7 +714,7 @@ def zero_bypass_runtime_interposer_self_test(payload: Optional[Mapping[str, Any]
     manifest = build_pass_036_artifacts()
     summary = manifest["summary"]
     ok = (
-        summary["surface_count"] == 10
+        summary["surface_count"] == 22
         and summary["scenario_count"] == 12
         and summary["direct_bypass_rejections"] == 6
         and summary["allowed_count"] == 4

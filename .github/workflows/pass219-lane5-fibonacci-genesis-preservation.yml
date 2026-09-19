@@ -1,0 +1,37 @@
+name: Pass 219 Lane 5 Fibonacci Genesis Preservation
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/pass219/lane5_fibonacci_genesis_preservation.py"
+      - "tests/pass219/test_lane5_fibonacci_genesis_preservation.py"
+      - "contracts/pass219/PASS_219_LANE5_FIBONACCI_GENESIS_PRESERVATION_V1.md"
+      - "docs/whitepapers/HHS_LANE5_FIBONACCI_GENESIS_PRESERVATION_THEOREM_V1.md"
+      - ".github/workflows/pass219-lane5-fibonacci-genesis-preservation.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/pass219/lane5_fibonacci_genesis_preservation.py"
+      - "tests/pass219/test_lane5_fibonacci_genesis_preservation.py"
+      - "contracts/pass219/PASS_219_LANE5_FIBONACCI_GENESIS_PRESERVATION_V1.md"
+      - "docs/whitepapers/HHS_LANE5_FIBONACCI_GENESIS_PRESERVATION_THEOREM_V1.md"
+      - ".github/workflows/pass219-lane5-fibonacci-genesis-preservation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  exact-preservation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused test dependency
+        run: python -m pip install pytest
+      - name: Run Lane 5 preservation and inherited geometry regression
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q             tests/pass219/test_lane5_fibonacci_genesis_preservation.py             tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
