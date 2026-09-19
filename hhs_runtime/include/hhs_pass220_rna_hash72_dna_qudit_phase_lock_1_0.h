@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-#define HHS_EXACT_PASS220_PHASE_LOCK_VERSION UINT32_C(0x00010001)
+#define HHS_EXACT_PASS220_PHASE_LOCK_VERSION UINT32_C(0x00010002)
 #define HHS_EXACT_PASS220_SERIALIZED_CHARACTERS UINT32_C(5184)
 #define HHS_EXACT_PASS220_HASH72_CHUNKS UINT32_C(72)
 #define HHS_EXACT_PASS220_HASH72_CHUNK_CHARACTERS UINT32_C(72)
@@ -69,6 +69,10 @@ typedef struct HHSExactPass220PhaseLockWitnessV1 {
     uint8_t scale_rows[3][3];
     uint8_t palindrome_rows[3][6];
     int8_t q_minus_one_phase[4];
+    uint32_t q_minus_one_pair_counts[4];
+    uint64_t ordered_phase_binding_signature64;
+    uint8_t serialized_operand_phase_binding;
+    uint8_t all_cells_cover_operation64;
     uint8_t canonical_token_layout;
     uint8_t canonical_roundtrip_shape;
     uint8_t coordinate_bijection;
@@ -83,7 +87,7 @@ typedef struct HHSExactPass220PhaseLockWitnessV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_authority;
-    uint8_t reserved0[2];
+    uint8_t reserved0[4];
 } HHSExactPass220PhaseLockWitnessV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass220_phase_lock_version(void);
