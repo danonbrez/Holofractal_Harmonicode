@@ -29,23 +29,25 @@ class _Authority:
         }
 
 
-def test_i168_deployed_runtime_binding_proves_all_required_operations() -> None:
+def test_i168_deployed_runtime_binding_proves_candidate_operations_only() -> None:
     record = Pass169CanonicalRuntimeBinding(ROOT).record()
-    assert record["operation_verified_mask"] == record["required_operation_mask"] == 0x0FFF
+    assert record["operation_verified_mask"] == record["required_operation_mask"] == 0x0E7F
     assert record["verified_operations"] == list(VERIFIED_OPERATIONS)
     assert record["canonical_source_sha256"] == CANONICAL_SOURCE_SHA256
     assert record["source_identity_exact"] is True
     assert record["pass159_frontend_chain_complete"] is True
     assert record["typed_proof_verified"] is True
     assert record["interpreter_compiler_equality_verified"] is True
-    assert record["exact_vm81_admission_verified"] is True
-    assert record["atomic_commit_verified"] is True
+    assert record["exact_vm81_admission_verified"] is False
+    assert record["atomic_commit_verified"] is False
+    assert record["candidate_only_execution_verified"] is True
+    assert record["requires_environmental_lane5_admission"] is True
     assert record["hash72_receipts_verified"] is True
     assert record["hash216_identities_verified"] is True
     assert record["deterministic_replay_verified"] is True
     assert record["reverse_restores_prior_state_verified"] is True
     assert record["live_runtime_abi_verified"] is True
-    assert record["canonical_computation_through_runtime_abi"] is True
+    assert record["canonical_computation_through_runtime_abi"] is False
     assert record["single_vm81_commit_authority"] is True
     assert record["fallback_used"] is False
     assert record["floating_point_canonical_authority"] is False
@@ -67,7 +69,7 @@ def test_i168_deployed_runtime_binding_proves_all_required_operations() -> None:
         assert len(record[key]) == 216
 
 
-def test_i168_public_service_executes_canonical_operation_chain() -> None:
+def test_i168_public_service_stops_at_candidate_boundary() -> None:
     service = Pass169AlgebraService(ROOT, authority_provider=lambda: _Authority())
     canonical_text = (ROOT / "HHS_PASS_169_CANONICAL_ALGEBRA_CORPUS.harmonicode").read_text()
     registered = service.register_source(canonical_text)
@@ -89,13 +91,21 @@ def test_i168_public_service_executes_canonical_operation_chain() -> None:
     candidate = service.dispatch("evaluate-candidate", source_id=source_id)
     candidate_id = candidate["candidate_id"]
     assert candidate["candidate_verified"] is True
-    admitted = service.dispatch("admit", candidate_id=candidate_id)
-    assert admitted["admitted"] is True
-    committed = service.dispatch("commit", candidate_id=candidate_id)
-    transition_id = committed["transition_id"]
-    assert committed["atomic_commit_verified"] is True
-    assert committed["receipt_hash72"] == EXPECTED_RECEIPT_HASH72
+    assert candidate["candidate_only"] is True
+    assert candidate["requires_environmental_lane5_admission"] is True
 
+    validated = service.dispatch("validate", candidate_id=candidate_id)
+    assert validated["candidate_validated"] is True
+    assert validated["admitted"] is False
+    assert validated["requires_environmental_lane5_admission"] is True
+
+    for operation in ("admit", "commit"):
+        with pytest.raises(Pass169PublicSurfaceError) as caught:
+            service.dispatch(operation, candidate_id=candidate_id)
+        assert str(caught.value) == "PASS169_CANONICAL_ADMISSION_REQUIRES_LANE5_ENVIRONMENTAL_GATE"
+
+    runtime_record = Pass169CanonicalRuntimeBinding(ROOT).record()
+    transition_id = runtime_record["transition_id"]
     receipt = service.dispatch("receipt", transition_id=transition_id)
     assert receipt["hash72_receipt_verified"] is True
     replay = service.dispatch("replay", transition_id=transition_id)
@@ -103,9 +113,7 @@ def test_i168_public_service_executes_canonical_operation_chain() -> None:
     reverse = service.dispatch("reverse", transition_id=transition_id)
     assert reverse["prior_state_restored"] is True
     assert service.dispatch("divergence", transition_id=transition_id)["divergence_detected"] is False
-    assert service.dispatch("inspect", node=f"transition:{transition_id}")["transition_id"] == transition_id
     assert service.dispatch("export-proof", transition_id=proof["proof_id"])["proof_id"] == proof["proof_id"]
-    assert service.dispatch("validate")["admitted"] is True
 
     status = service.status()
     assert status["authority"]["canonical_gateway_bound"] is True
@@ -167,11 +175,19 @@ def test_i168_canonical_http_chain_uses_one_router_and_runtime_binding() -> None
     assert candidate_response.status_code == 200
     candidate_id = candidate_response.json()["candidate_id"]
     assert client.get(f"/v1/algebra/candidates/{candidate_id}").status_code == 200
-    assert client.post(f"/v1/algebra/candidates/{candidate_id}/validate").status_code == 200
+    validate = client.post(f"/v1/algebra/candidates/{candidate_id}/validate")
+    assert validate.status_code == 200
+    assert validate.json()["candidate_validated"] is True
+    assert validate.json()["admitted"] is False
+    assert validate.json()["requires_environmental_lane5_admission"] is True
+
     commit = client.post(f"/v1/algebra/candidates/{candidate_id}/commit")
-    assert commit.status_code == 200
-    transition_id = commit.json()["transition_id"]
-    proof_id = Pass169CanonicalRuntimeBinding(ROOT).record()["proof_id"]
+    assert commit.status_code == 409
+    assert commit.json()["detail"]["error"] == "PASS169_CANONICAL_ADMISSION_REQUIRES_LANE5_ENVIRONMENTAL_GATE"
+
+    runtime_record = Pass169CanonicalRuntimeBinding(ROOT).record()
+    transition_id = runtime_record["transition_id"]
+    proof_id = runtime_record["proof_id"]
     assert client.get(f"/v1/algebra/proofs/{proof_id}").status_code == 200
     assert client.get(f"/v1/algebra/transitions/{transition_id}").status_code == 200
     assert client.get(f"/v1/algebra/transitions/{transition_id}/receipt").status_code == 200

@@ -53,7 +53,8 @@ typedef struct HHSExactPass219I163DescriptorV1 {
     uint8_t canonical_mutation_authority;
     uint8_t hash216_persistence_authority;
     uint8_t pass169_terminal_contract_claimed;
-    uint8_t reserved0[2];
+    uint8_t candidate_snapshot_only;
+    uint8_t requires_environmental_lane5_admission;
 } HHSExactPass219I163DescriptorV1;
 
 typedef struct HHSExactPass219I163ReverseExecutionV1 {
@@ -80,7 +81,7 @@ typedef struct HHSExactPass219I163ReverseExecutionV1 {
     uint8_t canonical_mutation_authority;
     uint8_t hash216_persistence_authority;
     uint8_t pass169_terminal_contract_claimed;
-    uint8_t reserved0;
+    uint8_t candidate_snapshot_only_verified;
     uint16_t vm5184_address;
     uint64_t forward_vm81_steps;
     uint64_t reverse_vm81_steps;
@@ -103,14 +104,13 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_i163_descriptor(
 
 /*
  * Execute the exact submitted source through the inherited Pass159 Runtime ABI,
- * require a committed forward receipt, and invoke hhs159_reverse.  Frozen
- * Pass159 defines hhs159_reverse as a deterministic reverse-transition receipt,
- * not as an in-place state restore.  I163 therefore verifies that receipt as
- * lineage evidence and separately proves the required prior-state restoration
- * with an exact VM81 transactional snapshot plus hhs_hash72_reverse_state.
- * The snapshot is local proof state only: no persistent/canonical mutation is
- * authorized.  Internal Pass159 receipt fields are diagnostic views only;
- * authoritative execution still enters through public Runtime ABI calls.
+ * require a deterministic candidate receipt, and invoke hhs159_reverse.
+ * Frozen Pass159 defines hhs159_reverse as a deterministic reverse-transition
+ * receipt, not as an in-place state restore. I163 therefore verifies that
+ * receipt as lineage evidence and separately proves candidate-snapshot
+ * reversibility plus hhs_hash72_reverse_state. No VM81 commit is performed by
+ * this witness; canonical execution requires the Lane-5-mediated environmental
+ * authority path. Internal Pass159 receipt fields are diagnostic views only.
  */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_i163_verify_reverse(
     const uint8_t *source_bytes,

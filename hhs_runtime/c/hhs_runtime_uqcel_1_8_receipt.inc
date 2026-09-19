@@ -107,10 +107,9 @@ HHSExactStatus hhs_exact_uqcel_receipt_material(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_vm81_admit_uqcel(
+HHSExactStatus hhs_exact_uqcel_candidate_receipt(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
-    HHSExactVM81Frame *out_committed_frame,
     HHSExactUQCELAdmissionV1 *out_admission
 ) {
     HHSExactStatus validation_status;
@@ -123,11 +122,11 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
     uint8_t material[HHS_EXACT_UQCEL_MAX_RECEIPT_BYTES];
     size_t material_length = 0U;
 
-    if (input == NULL || candidate_frame == NULL || out_committed_frame == NULL || out_admission == NULL)
+    if (input == NULL || candidate_frame == NULL || out_admission == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
 
-    memset(out_committed_frame, 0, sizeof(*out_committed_frame));
     validation_status = hhs_exact_uqcel_validate(input, out_admission);
+    out_admission->frame_committed = 0U;
 
     if (!hhs_exact_hash72_text_valid(input->previous_hash72)) {
         out_admission->decision = HHS_EXACT_UQCEL_DECISION_REJECT;
@@ -163,12 +162,28 @@ HHSExactStatus hhs_exact_vm81_admit_uqcel(
         HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN,
         identity);
     memcpy(out_admission->hash216_identity, identity, HHS_EXACT_UQCEL_HASH216_STRLEN);
+    out_admission->frame_committed = 0U;
+    return validation_status;
+}
 
-    if (validation_status == HHS_EXACT_STATUS_OK &&
+HHSExactStatus hhs_exact_vm81_admit_uqcel(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactUQCELAdmissionV1 *out_admission
+) {
+    HHSExactStatus status;
+    if (input == NULL || candidate_frame == NULL ||
+        out_committed_frame == NULL || out_admission == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+    memset(out_committed_frame, 0, sizeof(*out_committed_frame));
+    status = hhs_exact_uqcel_candidate_receipt(
+        input, candidate_frame, out_admission);
+    if (status == HHS_EXACT_STATUS_OK &&
         out_admission->decision == HHS_EXACT_UQCEL_DECISION_ADMIT) {
         memcpy(out_committed_frame, candidate_frame, sizeof(*out_committed_frame));
         out_admission->frame_committed = 1U;
-        return HHS_EXACT_STATUS_OK;
     }
-    return validation_status;
+    return status;
 }

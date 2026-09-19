@@ -227,7 +227,7 @@ static void hhs219_i162_set_big_view(
     view->bytes_be = bytes;
 }
 
-static HHSExactStatus hhs219_i162_vm81_commit_and_replay(
+static HHSExactStatus hhs219_i162_candidate_receipt_and_replay(
     const uint8_t environment_root[
         HHS_EXACT_PASS219_PASS169_BINDING_SHA256_BYTES
     ],
@@ -240,8 +240,6 @@ static HHSExactStatus hhs219_i162_vm81_commit_and_replay(
     static const uint8_t COMPAT_P2_BYTES[] = {0x03U, 0x84U};
     HHSExactUQCELInputV1 input;
     HHSExactVM81Frame candidate;
-    HHSExactVM81Frame committed;
-    HHSExactVM81Frame replay_committed;
     HHSExactUQCELAdmissionV1 admission;
     HHSExactUQCELAdmissionV1 replay;
     uint8_t uqcel_source_sha256[HHS_EXACT_UQCEL_SOURCE_SHA256_BYTES];
@@ -251,8 +249,6 @@ static HHSExactStatus hhs219_i162_vm81_commit_and_replay(
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
 
     memset(&input, 0, sizeof(input));
-    memset(&committed, 0, sizeof(committed));
-    memset(&replay_committed, 0, sizeof(replay_committed));
     memset(&admission, 0, sizeof(admission));
     memset(&replay, 0, sizeof(replay));
     hhs219_i162_build_candidate_frame(environment_root, &candidate);
@@ -279,21 +275,16 @@ static HHSExactStatus hhs219_i162_vm81_commit_and_replay(
            (unsigned char)HHS_EXACT_HASH72_ALPHABET[0], HHS_EXACT_HASH72_LEN);
     input.previous_hash72[HHS_EXACT_HASH72_LEN] = '\0';
 
-    status = hhs_exact_vm81_admit_uqcel(
-        &input, &candidate, &committed, &admission);
+    status = hhs_exact_uqcel_candidate_receipt(&input, &candidate, &admission);
     if (status != HHS_EXACT_STATUS_OK ||
         admission.decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
-        admission.frame_committed != 1U ||
-        memcmp(&candidate, &committed, sizeof(candidate)) != 0)
+        admission.frame_committed != 0U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
-    status = hhs_exact_vm81_admit_uqcel(
-        &input, &candidate, &replay_committed, &replay);
+    status = hhs_exact_uqcel_candidate_receipt(&input, &candidate, &replay);
     if (status != HHS_EXACT_STATUS_OK ||
         replay.decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
-        replay.frame_committed != 1U ||
-        memcmp(&candidate, &replay_committed, sizeof(candidate)) != 0 ||
-        memcmp(&committed, &replay_committed, sizeof(committed)) != 0 ||
+        replay.frame_committed != 0U ||
         strcmp(admission.change_hash72, replay.change_hash72) != 0 ||
         strcmp(admission.receipt_hash72, replay.receipt_hash72) != 0 ||
         strcmp(admission.hash216_triplet, replay.hash216_triplet) != 0 ||
@@ -301,13 +292,15 @@ static HHSExactStatus hhs219_i162_vm81_commit_and_replay(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     out_execution->vm5184_address = admission.vm5184_address;
-    out_execution->vm81_steps = 1U;
-    out_execution->replay_vm81_steps = 1U;
-    out_execution->exact_vm81_admission_verified = 1U;
-    out_execution->atomic_commit_verified = 1U;
+    out_execution->vm81_steps = 0U;
+    out_execution->replay_vm81_steps = 0U;
+    out_execution->exact_vm81_admission_verified = 0U;
+    out_execution->atomic_commit_verified = 0U;
     out_execution->hash72_receipt_verified = 1U;
     out_execution->hash216_proof_identity_verified = 1U;
     out_execution->deterministic_replay_verified = 1U;
+    out_execution->candidate_only_execution_verified = 1U;
+    out_execution->requires_environmental_lane5_admission = 1U;
     memcpy(out_execution->proof_hash216,
            admission.hash216_triplet, sizeof(out_execution->proof_hash216));
     memcpy(out_execution->transition_hash216,
@@ -340,13 +333,15 @@ HHSExactStatus hhs_exact_pass219_i162_descriptor(
     out_descriptor->compatibility_ab_transport_only = 1U;
     out_descriptor->source_ab_definitionally_p2 = 0U;
     out_descriptor->full_symbolic_uqcel_v1_promoted = 0U;
-    out_descriptor->vm81_transport_admission = 1U;
+    out_descriptor->vm81_transport_admission = 0U;
     out_descriptor->hash72_execution_receipt = 1U;
     out_descriptor->hash216_proof_transition_identity = 1U;
     out_descriptor->deterministic_replay = 1U;
     out_descriptor->source_reconstruction_inherited_from_pass159 = 1U;
     out_descriptor->floating_point_authority = 0U;
     out_descriptor->hash216_persistence_authority = 0U;
+    out_descriptor->candidate_only_execution = 1U;
+    out_descriptor->requires_environmental_lane5_admission = 1U;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -514,12 +509,12 @@ HHSExactStatus hhs_exact_pass219_i162_execute(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
-    status = hhs219_i162_vm81_commit_and_replay(
+    status = hhs219_i162_candidate_receipt_and_replay(
         out_execution->canonical_global_symbol_environment_root,
         out_execution);
     if (status != HHS_EXACT_STATUS_OK) {
         out_execution->decision = HHS_EXACT_PASS219_I162_REJECTED;
-        out_execution->reason = HHS_EXACT_PASS219_I162_REASON_VM81_ADMISSION;
+        out_execution->reason = HHS_EXACT_PASS219_I162_REASON_RECEIPT;
         return status;
     }
 
@@ -633,5 +628,10 @@ HHSExactStatus hhs_pass169_verify_combined_gate_authority_i162_1_23(
     out_proof->local_symbol_shadowing_detected = 0U;
     out_proof->canonical_monolithic_proof = 1U;
     out_proof->floating_point_authority = 0U;
+    out_proof->candidate_only_execution_verified =
+        execution.candidate_only_execution_verified;
+    out_proof->requires_environmental_lane5_admission =
+        execution.requires_environmental_lane5_admission;
+    out_proof->canonical_admission_lane5_mediated = 0U;
     return HHS_EXACT_STATUS_OK;
 }

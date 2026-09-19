@@ -212,18 +212,43 @@ static int hhs219_i12111_receipt_identity_valid(
         !hhs219_i12111_hash_string_valid(
             proof->receipt_hash72, HHS_EXACT_PASS219_PASS169_BINDING_HASH72_LEN) ||
         !hhs219_i12111_hash_string_valid(
-            proof->replay_hash72, HHS_EXACT_PASS219_PASS169_BINDING_HASH72_LEN) ||
-        proof->vm81_steps == 0U || proof->replay_vm81_steps == 0U)
+            proof->replay_hash72, HHS_EXACT_PASS219_PASS169_BINDING_HASH72_LEN))
         return 0;
-    return 1;
+
+    if (proof->candidate_only_execution_verified == 1U) {
+        return proof->vm81_steps == 0U &&
+               proof->replay_vm81_steps == 0U &&
+               proof->exact_vm81_admission_verified == 0U &&
+               proof->atomic_commit_verified == 0U &&
+               proof->requires_environmental_lane5_admission == 1U &&
+               proof->canonical_admission_lane5_mediated == 0U;
+    }
+
+    return proof->vm81_steps != 0U &&
+           proof->replay_vm81_steps != 0U &&
+           proof->exact_vm81_admission_verified == 1U &&
+           proof->atomic_commit_verified == 1U &&
+           proof->canonical_admission_lane5_mediated == 1U;
 }
 
 static int hhs219_i12111_authority_evidence_complete(
     const HHSExactPass219Pass169AuthorityProofV1 *proof
 ) {
+    const int candidate_only =
+        proof->candidate_only_execution_verified == 1U &&
+        proof->requires_environmental_lane5_admission == 1U &&
+        proof->exact_vm81_admission_verified == 0U &&
+        proof->atomic_commit_verified == 0U &&
+        proof->canonical_admission_lane5_mediated == 0U;
+
+    const int canonical_admission =
+        proof->candidate_only_execution_verified == 0U &&
+        proof->exact_vm81_admission_verified == 1U &&
+        proof->atomic_commit_verified == 1U &&
+        proof->canonical_admission_lane5_mediated == 1U;
+
     return proof->whole_expression_constraint_graph_verified == 1U &&
-           proof->exact_vm81_admission_verified == 1U &&
-           proof->atomic_commit_verified == 1U &&
+           (candidate_only || canonical_admission) &&
            proof->hash72_receipt_verified == 1U &&
            proof->hash216_proof_identity_verified == 1U &&
            proof->deterministic_replay_verified == 1U &&
@@ -380,6 +405,10 @@ HHSExactStatus hhs_exact_pass219_pass169_bind_authority(
     out_result->boolean_gate_results_available = 1U;
     out_result->membrane_input_ready = 1U;
     out_result->canonical_monolithic_proof = 1U;
+    out_result->provider_candidate_only_execution =
+        proof.candidate_only_execution_verified;
+    out_result->requires_environmental_lane5_admission =
+        proof.requires_environmental_lane5_admission;
     memcpy(out_result->proof_hash216, proof.proof_hash216, sizeof(out_result->proof_hash216));
     memcpy(out_result->transition_hash216, proof.transition_hash216, sizeof(out_result->transition_hash216));
     memcpy(out_result->receipt_hash72, proof.receipt_hash72, sizeof(out_result->receipt_hash72));

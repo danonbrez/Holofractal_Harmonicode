@@ -23,7 +23,7 @@ CONTRACT_ID = "HHS-P169-HSAE-VM81-ESCPR"
 
 HHS_EXACT_STATUS_OK = 0
 HHS_EXACT_PASS219_I168_VERIFIED = 1
-HHS_EXACT_PASS219_I168_ALL_OPS = 0x0FFF
+HHS_EXACT_PASS219_I168_CANDIDATE_OPS = 0x0E7F
 
 VERIFIED_OPERATIONS = (
     "tokens",
@@ -33,8 +33,6 @@ VERIFIED_OPERATIONS = (
     "normalize",
     "prove",
     "evaluate-candidate",
-    "admit",
-    "commit",
     "receipt",
     "replay",
     "reverse",
@@ -66,7 +64,8 @@ class HHSExactPass219I168RuntimeBindingV1(Structure):
         ("floating_point_authority", c_uint8),
         ("hash216_persistence_authority", c_uint8),
         ("vm5184_address", c_uint16),
-        ("reserved0", c_uint16),
+        ("candidate_only_execution_verified", c_uint8),
+        ("requires_environmental_lane5_admission", c_uint8),
         ("forward_vm81_steps", c_uint64),
         ("replay_vm81_steps", c_uint64),
         ("reverse_vm81_steps", c_uint64),
@@ -136,8 +135,11 @@ class Pass169CanonicalRuntimeBinding:
             raise Pass169RuntimeBindingError(
                 f"PASS169_I168_RUNTIME_BINDING_REJECTED_REASON_{binding.reason}"
             )
-        if binding.operation_verified_mask != HHS_EXACT_PASS219_I168_ALL_OPS:
-            raise Pass169RuntimeBindingError("PASS169_I168_OPERATION_MASK_INCOMPLETE")
+        if (
+            binding.operation_verified_mask != HHS_EXACT_PASS219_I168_CANDIDATE_OPS
+            or binding.required_operation_mask != HHS_EXACT_PASS219_I168_CANDIDATE_OPS
+        ):
+            raise Pass169RuntimeBindingError("PASS169_I168_CANDIDATE_OPERATION_MASK_INCOMPLETE")
 
         record = {
             "schema": "HHS_PASS219_I168_RUNTIME_BINDING_RECORD_V1",
@@ -183,24 +185,29 @@ class Pass169CanonicalRuntimeBinding:
             "fallback_used": bool(binding.fallback_used),
             "floating_point_canonical_authority": bool(binding.floating_point_authority),
             "hash216_persistence_authority": bool(binding.hash216_persistence_authority),
+            "candidate_only_execution_verified": bool(binding.candidate_only_execution_verified),
+            "requires_environmental_lane5_admission": bool(binding.requires_environmental_lane5_admission),
         }
         required_true = (
             "source_identity_exact",
             "pass159_frontend_chain_complete",
             "typed_proof_verified",
             "interpreter_compiler_equality_verified",
-            "exact_vm81_admission_verified",
-            "atomic_commit_verified",
             "hash72_receipts_verified",
             "hash216_identities_verified",
             "deterministic_replay_verified",
             "reverse_restores_prior_state_verified",
             "live_runtime_abi_verified",
-            "canonical_computation_through_runtime_abi",
             "single_vm81_commit_authority",
+            "candidate_only_execution_verified",
+            "requires_environmental_lane5_admission",
         )
         if not all(record[name] is True for name in required_true):
-            raise Pass169RuntimeBindingError("PASS169_I168_AUTHORITY_EVIDENCE_INCOMPLETE")
+            raise Pass169RuntimeBindingError("PASS169_I168_CANDIDATE_EVIDENCE_INCOMPLETE")
+        if record["exact_vm81_admission_verified"] or record["atomic_commit_verified"]:
+            raise Pass169RuntimeBindingError("PASS169_I168_CANDIDATE_PATH_CLAIMED_CANONICAL_COMMIT")
+        if record["canonical_computation_through_runtime_abi"]:
+            raise Pass169RuntimeBindingError("PASS169_I168_CANDIDATE_PATH_CLAIMED_CANONICAL_EXECUTION")
         if record["fallback_used"] or record["floating_point_canonical_authority"] or record["hash216_persistence_authority"]:
             raise Pass169RuntimeBindingError("PASS169_I168_AUTHORITY_BOUNDARY_VIOLATION")
 
@@ -250,11 +257,28 @@ class Pass169CanonicalRuntimeBinding:
         if op in {"prove", "prove-constraint", "export-proof"}:
             return {**common, "proof_id": record["proof_id"], "proof_hash216": record["proof_hash216"], "typed_proof_verified": True}
         if op == "evaluate-candidate":
-            return {**common, "candidate_id": record["candidate_id"], "proof_hash216": record["proof_hash216"], "candidate_verified": True}
-        if op in {"admit", "validate"}:
-            return {**common, "candidate_id": record["candidate_id"], "admitted": True, "vm5184_address": record["vm5184_address"]}
-        if op == "commit":
-            return {**common, "candidate_id": record["candidate_id"], "transition_id": record["transition_id"], "transition_hash216": record["transition_hash216"], "receipt_hash72": record["receipt_hash72"], "atomic_commit_verified": True}
+            return {
+                **common,
+                "candidate_id": record["candidate_id"],
+                "proof_hash216": record["proof_hash216"],
+                "candidate_verified": True,
+                "candidate_only": True,
+                "requires_environmental_lane5_admission": True,
+            }
+        if op == "validate":
+            return {
+                **common,
+                "candidate_id": record["candidate_id"],
+                "candidate_validated": True,
+                "admitted": False,
+                "candidate_only": True,
+                "requires_environmental_lane5_admission": True,
+                "vm5184_address": record["vm5184_address"],
+            }
+        if op in {"admit", "commit"}:
+            raise Pass169RuntimeBindingError(
+                "PASS169_CANONICAL_ADMISSION_REQUIRES_LANE5_ENVIRONMENTAL_GATE"
+            )
         if op == "receipt":
             return {**common, "transition_id": record["transition_id"], "transition_hash216": record["transition_hash216"], "receipt_hash72": record["receipt_hash72"], "hash72_receipt_verified": True}
         if op == "replay":
