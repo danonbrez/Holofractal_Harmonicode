@@ -1,6 +1,6 @@
 # Pass 220 I012 restart checkpoint — harmonic VM81/Lane-5 preflight binding
 
-Status: **DEPENDENCY-SCOPED GREEN — READY FOR MAIN RECONCILIATION**
+Status: **CLOSED_VERIFIED_MAIN**
 
 ## Lineage
 
@@ -100,6 +100,39 @@ At validation readback:
 
 The 12 main-side commits are the verified Lane-5/global self-enforcement lineage. GitHub reports no merge conflict. Main reconciliation may therefore occur at the PR merge boundary while preserving both parent histories.
 
-## Next action
+## Merge and verified-main closure
 
-Mark PR #491 ready, merge it against current `main` with an expected-head guard, then verify the resulting main files and exact merged head. Do not wait on unrelated queued historical workflows; repair forward only if the merge or verified-main readback exposes a directly impacted defect.
+PR #491 was marked ready and merged with the expected-head guard on branch head:
+
+```text
+c9f0a84580bc5ef60beaa8d2162f734fc858d249
+```
+
+Merge commit:
+
+```text
+e3c4c993a21a2e737b604ee0346dd2d44121d371
+```
+
+Verified-main readback confirmed:
+
+- `hhs_runtime/hhs_pass220_mobius_quarter_phase_v1.py` is present on `main`;
+- `hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py` is present on `main` with the I012 harmonic preflight;
+- this restart checkpoint is present on `main`;
+- PR #491 is closed and merged;
+- branch head is fully contained by `main` (`behind_by=0` from branch to main);
+- the 12 pre-existing main-side self-enforcement commits are preserved in the merged ancestry.
+
+Closure law:
+
+```text
+IMPLEMENT
+-> DEP-SCOPED VALIDATION
+-> RESTARTABLE CHECKPOINT
+-> READY PR
+-> MERGE
+-> VERIFY MAIN
+= COMPLETE
+```
+
+No further action is required for I012 unless a later dependent change invalidates the exact harmonic preflight or singleton-authority boundary.
