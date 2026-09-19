@@ -1,6 +1,6 @@
 # Pass 220 I020 — RNA operation64 / C4 / G41 Radical Proof
 
-Status: **IMPLEMENTED — CI VALIDATION PENDING**
+Status: **MERGED AT I020 — REPAIR-FORWARD EVIDENCE SEAL IN PROGRESS**
 
 ## Restart identity
 
@@ -54,3 +54,17 @@ Wolfram verified all three surfaces exactly:
 Run I020 plus inherited I019, I011, I015, I014, and I001 exact suites.
 Repair forward only impacted failures, then merge after latest-head green and
 verify the same gate on main.
+
+
+## September 19 repair-forward
+
+The original I020 implementation is unchanged in theorem scope. The
+repair-forward branch `pass220/repair-i018-i020-proof-closure-v1` adds the
+previously missing reproducible Wolfram evidence:
+
+- `evidence/pass220/i020_wolfram_audit_v1.wl`
+- `evidence/pass220/i020_wolfram_audit_v1.output.json`
+- `evidence/pass220/i020_wolfram_audit_v1.receipt.json`
+
+The exact-head gate now verifies the sealed hashes and reruns I018, I019, I020,
+I017, I015, I014, I011, and I001 surfaces together.
