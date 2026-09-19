@@ -13,9 +13,6 @@ on:
       - "evidence/pass220/i020_wolfram_audit_v1.wl"
       - "evidence/pass220/i020_wolfram_audit_v1.output.json"
       - "evidence/pass220/i020_wolfram_audit_v1.receipt.json"
-      - "evidence/pass220/i020_wolfram_audit_v1.wl"
-      - "evidence/pass220/i020_wolfram_audit_v1.output.json"
-      - "evidence/pass220/i020_wolfram_audit_v1.receipt.json"
       - "whitepapers/HHS_PASS220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1.md"
       - "docs/pass220/PASS_220_I020_RNA_OPERATION64_C4_G41_RADICAL_PROOF.md"
       - ".github/workflows/pass220-i020-rna-operation64-c4-g41-radical-proof.yml"
@@ -28,6 +25,9 @@ on:
       - "hhs_runtime/hhs_pass220_mobius_quarter_phase_v1.py"
       - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
+      - "evidence/pass220/i020_wolfram_audit_v1.wl"
+      - "evidence/pass220/i020_wolfram_audit_v1.output.json"
+      - "evidence/pass220/i020_wolfram_audit_v1.receipt.json"
       - "whitepapers/HHS_PASS220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1.md"
       - "docs/pass220/PASS_220_I020_RNA_OPERATION64_C4_G41_RADICAL_PROOF.md"
       - ".github/workflows/pass220-i020-rna-operation64-c4-g41-radical-proof.yml"
@@ -73,6 +73,8 @@ jobs:
           python -m pytest -q
           tests/pass220/test_hhs_pass220_rna_operation64_c4_g41_radical_proof_v1.py
           tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+          tests/pass220/test_hhs_pass220_h36_hash72_unit_bridge_v1.py
+          tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
           tests/pass220/test_hhs_pass220_mobius_quarter_phase_v1.py
           tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
           tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py
