@@ -203,3 +203,18 @@ The separate Runtime OS deployment composition fault is outside this optimizatio
 ## Next action
 
 Use the final checkpoint commit as the PR #509 review-repair head. Inspect the dependency-scoped CI result. Repair forward only an impacted failure. Merge only after the repaired 1.49 gate and required repository baselines are green, then verify exact main before continuing the Pass 219 sequence.
+
+
+## Latest-head gate binding
+
+The repair also closes a path-filter edge case discovered after the first checkpoint commit. A documentation-only checkpoint advanced the PR head without scheduling the path-filtered 1.49 workflow, while an older Open Stack run could be cancelled by the newer head.
+
+Commit:
+
+```text
+1d259c7b78989676bb33496f0d5f38f4c9da470e
+```
+
+adds this restart checkpoint file itself to both the push and pull-request path filters for the 1.49 workflow. Therefore this checkpoint update schedules the repaired 1.49 gate on the actual latest PR head rather than relying on a green or queued run from an ancestor commit.
+
+The final acceptance rule remains unchanged: do not merge until the latest-head 1.49 gate and required integration gates are green.
