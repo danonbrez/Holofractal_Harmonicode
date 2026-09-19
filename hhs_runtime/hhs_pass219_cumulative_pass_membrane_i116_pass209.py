@@ -167,7 +167,9 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
     if runtime_os_application_projection:
         for token in (
             "runtime_os_application_server_full",
-            "HHS_RUNTIME_OS_SOURCE_ONLY",
+            "_SOURCE_ONLY_DEGRADED",
+            "runtime_os_source_only_server",
+            "PASS170_PUBLIC_GATEWAY_IDENTITY_VERIFIED",
         ):
             if token not in runtime_os_application:
                 raise RuntimeError("PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:" + token)
