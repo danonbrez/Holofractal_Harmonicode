@@ -116,7 +116,7 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
     probe_normalized = " ".join(probe.split())
     for token in (
         "invokes status routes sequentially",
-        "never mutates canonical runtime state",
+        "must never mutate canonical runtime state",
         "async def invoke_get",
         "async def run",
         "HHS_RUNTIME_STATUS_PROBE_RECORD_V1",
