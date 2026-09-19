@@ -11,6 +11,49 @@
     } \
 } while (0)
 
+static uint8_t expected_phase_for_local64(
+    uint32_t local64,
+    uint8_t *out_phase_code,
+    int8_t *out_phase_sign,
+    uint8_t *out_representative_phase_code,
+    uint32_t *out_support_ordinal
+) {
+    *out_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_NONE;
+    *out_phase_sign = 0;
+    *out_representative_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_NONE;
+    *out_support_ordinal = UINT32_MAX;
+
+    if (local64 >= 4U && local64 <= 7U) {
+        *out_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_XY;
+        *out_phase_sign = 1;
+        *out_representative_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_XY;
+        *out_support_ordinal = local64 - 4U;
+        return 1U;
+    }
+    if (local64 >= 16U && local64 <= 19U) {
+        *out_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_YX;
+        *out_phase_sign = -1;
+        *out_representative_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_YX;
+        *out_support_ordinal = 4U + local64 - 16U;
+        return 1U;
+    }
+    if (local64 >= 44U && local64 <= 47U) {
+        *out_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_ZW;
+        *out_phase_sign = 1;
+        *out_representative_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_XY;
+        *out_support_ordinal = 8U + local64 - 44U;
+        return 1U;
+    }
+    if (local64 >= 56U && local64 <= 59U) {
+        *out_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_WZ;
+        *out_phase_sign = -1;
+        *out_representative_phase_code = HHS_EXACT_PASS219_LANE5_T5184_PHASE_YX;
+        *out_support_ordinal = 12U + local64 - 56U;
+        return 1U;
+    }
+    return 0U;
+}
+
 int main(void) {
     HHSExactPass219Lane5T5184PhaseSupportAuthorityV1 authority;
     HHSExactPass219Lane5T5184PhaseSlotV1 slot;
@@ -75,6 +118,18 @@ int main(void) {
 
     for (cell = 0U; cell < HHS_EXACT_PASS219_LANE5_T5184_VM81_CELLS; ++cell) {
         for (local64 = 0U; local64 < HHS_EXACT_PASS219_LANE5_T5184_OPERATION64; ++local64) {
+            uint8_t expected_code;
+            int8_t expected_sign;
+            uint8_t expected_representative;
+            uint32_t expected_ordinal;
+            uint8_t expected_bearing = expected_phase_for_local64(
+                local64,
+                &expected_code,
+                &expected_sign,
+                &expected_representative,
+                &expected_ordinal
+            );
+
             CHECK(hhs_exact_pass219_lane5_t5184_phase_support_classify(
                 cell, local64, &slot
             ) == HHS_EXACT_STATUS_OK);
@@ -83,22 +138,18 @@ int main(void) {
             CHECK(slot.full_state_identity_required == 1U);
             CHECK(slot.candidate_only == 1U);
 
-            if (slot.phase_bearing == 1U) {
+            CHECK(slot.phase_bearing == expected_bearing);
+            CHECK(slot.requires_phase_specific_check == expected_bearing);
+            CHECK(slot.phase_code == expected_code);
+            CHECK(slot.phase_sign == expected_sign);
+            CHECK(slot.representative_phase_code == expected_representative);
+            CHECK(slot.support_ordinal == expected_ordinal);
+
+            if (expected_bearing == 1U) {
                 ++support_count;
-                CHECK(slot.phase_code >= HHS_EXACT_PASS219_LANE5_T5184_PHASE_XY);
-                CHECK(slot.phase_code <= HHS_EXACT_PASS219_LANE5_T5184_PHASE_WZ);
-                ++pair_counts[slot.phase_code];
-                CHECK(slot.phase_sign == 1 || slot.phase_sign == -1);
-                if (slot.phase_code == HHS_EXACT_PASS219_LANE5_T5184_PHASE_ZW)
-                    CHECK(slot.representative_phase_code ==
-                          HHS_EXACT_PASS219_LANE5_T5184_PHASE_XY);
-                if (slot.phase_code == HHS_EXACT_PASS219_LANE5_T5184_PHASE_WZ)
-                    CHECK(slot.representative_phase_code ==
-                          HHS_EXACT_PASS219_LANE5_T5184_PHASE_YX);
+                ++pair_counts[expected_code];
             } else {
                 ++bypass_count;
-                CHECK(slot.requires_phase_specific_check == 0U);
-                CHECK(slot.phase_code == HHS_EXACT_PASS219_LANE5_T5184_PHASE_NONE);
             }
         }
     }
@@ -130,7 +181,8 @@ int main(void) {
         "\"phase_specific_checks\":%u,\"phase_specific_slots_skipped\":%u,"
         "\"support_fraction\":\"1/4\",\"bypass_fraction\":\"3/4\","
         "\"support_mask_hex\":\"0f00f000000f00f0\","
-        "\"pair_count_each\":324,\"candidate_only\":true,"
+        "\"pair_count_each\":324,\"exact_local64_classification\":true,"
+        "\"candidate_only\":true,"
         "\"full_state_identity_still_required\":true}\n",
         support_count,
         bypass_count
