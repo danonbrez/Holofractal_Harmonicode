@@ -1,0 +1,66 @@
+name: Pass 219 Lane 5 Raw x86 VM5184 Kernel 1.57
+
+on:
+  push:
+    branches:
+      - pass219/lane5-raw-x86-vm5184-kernel-1-57
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_raw_x86_vm5184_kernel_1_57.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_raw_x86_vm5184_kernel_1_57.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_raw_x86_vm5184_kernel_1_57.c'
+      - 'contracts/pass219/PASS_219_LANE5_RAW_X86_VM5184_KERNEL_1_57.md'
+      - '.github/workflows/pass219-lane5-raw-x86-vm5184-kernel-1-57.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-rna-self-ingestion-bytecode-1-56
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raw-x86-vm5184-kernel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build exact ABI
+        run: make c-abi
+
+      - name: Verify exported kernel symbols
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_raw_x86_vm5184_version'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_raw_x86_vm5184_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_raw_x86_vm5184_step'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_raw_x86_vm5184_stream'
+
+      - name: Compile native conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_raw_x86_vm5184_kernel_1_57.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-lane5-raw-x86-vm5184
+
+      - name: Execute native conformance
+        run: /tmp/test-lane5-raw-x86-vm5184
+
+      - name: Dependency-scoped inherited native validation
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-global-raw5184
+          /tmp/test-global-raw5184
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-raw-x86-vm5184-kernel-1-57
+          path: hhs_runtime/builds/libhhs_runtime.so
+          if-no-files-found: error
