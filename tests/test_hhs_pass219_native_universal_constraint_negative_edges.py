@@ -162,6 +162,9 @@ def test_public_uqcel_compatibility_surface_cannot_mint_canonical_receipts() -> 
     assert admission["receipt_hash72"] == ""
     assert admission["hash216_triplet"] == ""
     assert admission["hash216_identity"] == ""
+
+    # Hash primitives remain available as deterministic transport utilities;
+    # they do not imply that the compatibility facade owns commit authority.
     assert len(_canonical_hash72(raw_frame)) == 72
     assert len(_canonical_hash216(b"0" * 216)) == 216
 
