@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS219_LANE5_RECIPROCAL_PHASE_BOUNDARY_WOLFRAM_RECEIPT_V1",
+  "theorem_id": "HHS-T5184-002",
+  "result": "PASS",
+  "checks_passed": 18,
+  "checks_total": 18,
+  "source_path": "evidence/pass219/hhs_lane5_reciprocal_phase_boundary_v1.wl",
+  "source_bytes": 4733,
+  "source_sha256": "923ee37cbf2c5cec1e6a5cd26e58b5aa6ab6ff1db3582f6abd5e94897a045c78",
+  "output_path": "evidence/pass219/hhs_lane5_reciprocal_phase_boundary_v1.output.json",
+  "output_bytes": 1305,
+  "output_sha256": "d2f9c2db6eadf5e32af554c2aef2040892f36e6f8ca7194ff33458fa5fe12c9a",
+  "execution": "connected Wolfram Language evaluator",
+  "note": "HC* symbols are deliberately held native carriers; undefined-symbol warnings are informational."
+}
