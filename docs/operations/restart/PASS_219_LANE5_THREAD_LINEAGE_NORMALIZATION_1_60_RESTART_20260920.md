@@ -81,3 +81,32 @@ Current parent CI at the time of this checkpoint was queued/in progress due exte
 ## Next action
 
 Fetch the latest exact-head workflow runs for this branch and the current 1.59 parent. Repair only demonstrated implementation divergence. Preserve the established equations, ordering, types, provenance, scope, and authority boundaries.
+
+## Parent repair-forward inheritance — current cycle
+
+The 1.59 parent repair head is:
+
+```text
+68a2374a3ebe860e2e53f6bebb98c0767dc67d52
+```
+
+The dependency repair was mirrored into 1.60 without changing the 1.60 thread-lineage implementation. The exact 1.60 mirrored-repair head before this checkpoint-only documentation commit is:
+
+```text
+722aec3f24d4f8f92a8912113050f476a2896b90
+```
+
+Inherited repair semantics:
+
+- UQCEL validation remains exact, but validation/compatibility surfaces have zero canonical mutation authority;
+- positive canonical mutation remains only through Lane 5 -> RNA -> PQC -> VM81/Hash72;
+- historical exact-ABI tests link against the internal hidden-authority regression archive instead of forcing private symbols back into the public ABI;
+- the Universal Quantization gate now checks that obsolete public mutation exports remain absent.
+
+The four repaired dependency files are byte-aligned with the corresponding 1.59 repair versions. A formal parent merge-parent synchronization is still pending; do not claim the new 1.59 repair SHA as the 1.60 merge base until that repository transition is recorded.
+
+Next action:
+
+- consume exact-head validation for #519 and #520;
+- if #519 remains green, record the parent synchronization transition on 1.60;
+- repair any demonstrated 1.60-only divergence without altering the thread-memory or authority contracts.
