@@ -1,0 +1,68 @@
+name: Pass 219 Lane 5 Virtual BIOS Control Plane 1.58
+
+on:
+  push:
+    branches:
+      - pass219/lane5-virtual-bios-control-plane-1-58
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_virtual_bios_control_plane_1_58.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_virtual_bios_control_plane_1_58.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_raw_x86_vm5184_kernel_1_57.inc'
+      - 'tests/pass219/test_pass219_lane5_virtual_bios_control_plane_1_58.c'
+      - 'contracts/pass219/PASS_219_LANE5_VIRTUAL_BIOS_CONTROL_PLANE_1_58.md'
+      - '.github/workflows/pass219-lane5-virtual-bios-control-plane-1-58.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-raw-x86-vm5184-kernel-1-57
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lane5-virtual-bios:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build exact ABI
+        run: make c-abi
+
+      - name: Verify BIOS exports
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_virtual_bios_version'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_virtual_bios_descriptor'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_lane5_virtual_bios_validate'
+
+      - name: Compile BIOS conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_virtual_bios_control_plane_1_58.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-lane5-bios
+
+      - name: Execute BIOS conformance
+        run: /tmp/test-lane5-bios
+
+      - name: Compile inherited raw kernel conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_raw_x86_vm5184_kernel_1_57.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-lane5-raw
+
+      - name: Execute inherited raw kernel conformance
+        run: /tmp/test-lane5-raw
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-virtual-bios-control-plane-1-58
+          path: hhs_runtime/builds/libhhs_runtime.so
+          if-no-files-found: error
