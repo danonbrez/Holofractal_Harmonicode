@@ -103,10 +103,25 @@ Inherited repair semantics:
 - historical exact-ABI tests link against the internal hidden-authority regression archive instead of forcing private symbols back into the public ABI;
 - the Universal Quantization gate now checks that obsolete public mutation exports remain absent.
 
-The four repaired dependency files are byte-aligned with the corresponding 1.59 repair versions. A formal parent merge-parent synchronization is still pending; do not claim the new 1.59 repair SHA as the 1.60 merge base until that repository transition is recorded.
+The complete five-file 1.59 repair delta was synchronized byte-for-byte into the child branch, including the 1.59 restart record. A repository-visible two-parent merge commit then recorded the ancestry transition:
+
+```text
+1.60 pre-merge head = 1e584d0c9efa5faf998d96e2ae5a4960c8e4dff5
+1.59 parent head    = 7516c206ec99fdfe2b5d6a90e7611c1e79f74761
+merge commit        = dcd4df433534d8f9e03d063841333ba3193ee11e
+```
+
+Post-merge compare reports the current 1.59 head as the merge base with `behind_by=0`. The 1.60 stack is therefore formally parent-synchronized without weakening the hidden-authority boundaries.
+
+Current 1.59 validation evidence from the repair head includes:
+
+- Native RNA 1.10 run `35535244542`: **SUCCESS**, including the formerly failing inherited composer regression subset;
+- Lane 5 1.59 run `35535244499`: main gate **SUCCESS**; OpenSSL 3.5 positive job still running at this checkpoint;
+- Universal Quantization run `35535244540`: running on the repaired gate;
+- Generation Integrity run `35535244601`: running.
 
 Next action:
 
 - consume exact-head validation for #519 and #520;
-- if #519 remains green, record the parent synchronization transition on 1.60;
-- repair any demonstrated 1.60-only divergence without altering the thread-memory or authority contracts.
+- repair any demonstrated 1.60-only divergence without altering the thread-memory or authority contracts;
+- once dependency-scoped evidence is green, freeze receipts and return control without merging the stacked PRs unless explicitly authorized.
