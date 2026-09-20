@@ -49,3 +49,20 @@ All optimization surfaces remain candidate-only and require VM81 admission.
 3. compile/execute BIOS conformance;
 4. rerun 1.57 raw kernel conformance;
 5. freeze exact green head/run.
+
+
+## Restartable validation checkpoint
+
+Implementation/workflow head:
+
+```text
+head = df2be5414e442fab008b11ca979c673fd4c1ea10
+workflow = Pass 219 Lane 5 Virtual BIOS Control Plane 1.58
+run = 35518816040
+job = 106099218161
+status at checkpoint = IN_PROGRESS
+```
+
+The exact ABI build is the current running stage. No executable changes are required before its result is known.
+
+Per forward-progress policy, this repository-visible checkpoint returns control without waiting on external CI. If the gate fails, repair only the impacted 1.58 dependency surface; if it passes, freeze this implementation head as the validated BIOS baseline.
