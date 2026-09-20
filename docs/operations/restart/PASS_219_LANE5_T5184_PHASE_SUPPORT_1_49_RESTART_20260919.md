@@ -230,3 +230,110 @@ Added the locked typed constants, machine-readable contract, 11/11 Wolfram certi
 Completed validation: connected Wolfram Language exact geometric audit `11/11 PASS`, including independent 4/4 orders, specialization, HMod covariance, built-in Mod exclusion, no machine-real constructor terms, `I_H^2=-Identity(2)`, `O->Pi`, `K->E`, and exponential closure.
 
 Remaining: latest-head 1.49, Open Stack, and Pass 217 integration CI, then exact-main verification after merge. Queued CI is not an implementation blocker; repair forward only substantive failures.
+
+## P1 coupled-chain and Wolfram provenance repair
+
+**Parent:** `bb476d9c072e7cae633c281ea04eb512a437d040`  
+**Core repair commit:** `76751fc8b5d027ef6951cf5a8ba52d4d8938b976`
+
+Two post-green P1 review findings were repaired forward without changing canonical VM81/Hash72/Hash216 authority.
+
+### Full coupled equality-chain execution
+
+The geometric Wolfram audit was replaced by V2 semantics:
+
+```text
+schema = HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V2
+semantics = typed_geometric_non_scalar_coupled_chain
+candidate state = HHS-P219-GEO-I-PI-E-CANDIDATE-V2
+```
+
+It now builds the complete four-term HARMONICODE chain as typed AST:
+
+```text
+x²
+== GeoDiv[GeoPow[genericBase, x*genericPhase], xy]
+== GeoDiv[AssertEq[GeoPow[explicitBase, x*explicitPhase], -xy], a²]
+== GeoPow[K, x*O]
+```
+
+The evaluator binds the generic and explicit base lanes to `K`, both phase lanes to `O`, keeps all four terms in one candidate-state binding, and evaluates the typed operators rather than checking disconnected fragments.
+
+Exact result:
+
+```text
+checkCount = passedCount = 23
+all four terms = -Identity(2)
+chain edge count = 3
+nested AssertEq witness = PASS
+all terms resolved = PASS
+edge 1 = PASS
+edge 2 = PASS
+edge 3 = PASS
+complete coupled chain = PASS
+```
+
+The nested witness releases its common matrix value only after the assertion succeeds, matching the repository HARMONICODE rule that `==` is assertion/witness equality.
+
+### Cryptographic provenance binding
+
+The new receipt is:
+
+```text
+HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_RECEIPT_V2
+```
+
+and seals:
+
+```text
+source:
+evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl
+SHA-256 145059c5d08dbcd0781e50271276ceb2c517b9f70e7751992c42efdb996f102c
+bytes 4917
+
+output:
+evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json
+SHA-256 c413e4ac0712e725b1ac12b7787de94a97bec4e5ba13f6d005927a7d6f1d6fc0
+bytes 2649
+```
+
+CI now recomputes both byte counts and both SHA-256 values before reading any `allPassed` or test Boolean.
+
+### Files changed by the core repair
+
+```text
+evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl
+evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json
+evidence/pass219/hhs_geometric_i_pi_e_closure_v1.receipt.json
+contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.json
+contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md
+tests/pass219/test_hhs_geometric_i_pi_e_constants_v1.py
+.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml
+```
+
+### Validation completed before this documentation checkpoint
+
+Connected Wolfram Language kernel:
+
+```text
+23/23 PASS
+complete_coupled_chain_passes = true
+same_candidate_state_binding = true
+all_chain_terms_resolved = true
+nested_assertion_witness_resolved = true
+```
+
+Repository byte identities were independently computed before commit and are now enforced by both pytest and the dedicated 1.49 workflow.
+
+### Validation remaining
+
+Latest-head PR gates must rerun after this documentation commit:
+
+```text
+Pass 219 Lane 5 T5184 Phase Support 1.49
+Pass 219 Open Stack Consolidation
+Pass 217 Current Main Integration
+```
+
+Do not merge from the earlier green `bb476d9c...` head. Merge only from the final repaired latest head after those required gates are terminal green, then verify exact main.
+

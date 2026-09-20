@@ -295,6 +295,6 @@ base main @ ce0898979ceaa6d0a33fe00a257e8a71344f8de5
 
 [`HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md`](HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md)
 
-Locks `I_H`, `O`, `K`, independent `4/4` channel order, exact metrics `2*Sqrt[6]` and `6`, and the anti-flattening rule. The Wolfram geometric audit is `11/11 PASS`; `HMod` remains typed and built-in scalar `Mod` is excluded.
+Locks `I_H`, `O`, `K`, independent `4/4` channel order, exact metrics `2*Sqrt[6]` and `6`, and the anti-flattening rule. The strengthened Wolfram geometric audit is `23/23 PASS`; it executes the complete four-term coupled chain, requires all three equality edges in one candidate state, and cryptographically binds source/output SHA-256 before CI trusts the result. `HMod` remains typed and built-in scalar `Mod` is excluded.
 
 Normative contract: `../../contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md`.
