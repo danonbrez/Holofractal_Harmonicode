@@ -142,6 +142,9 @@ def test_xy_and_yx_profiles_validate_exactly_without_public_mutation_authority()
         assert admission["observed_phase"] == phase
         assert admission["ordered_tag"] == tag
 
+    # The inherited compatibility facade may validate the candidate, but the
+    # zero-bypass authority closure forbids it from committing or minting a
+    # canonical receipt outside the signed PQC -> VM81 path.
     compatibility = _call(4, 3, 5)
     assert compatibility["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
     assert compatibility["admitted"] is False
