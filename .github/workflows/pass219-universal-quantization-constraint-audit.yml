@@ -122,7 +122,7 @@ jobs:
               -lcrypto -lstdc++ -lm -pthread \
               -o "/tmp/pass219-uqcel/pass${pass}-cpp"
             "/tmp/pass219-uqcel/pass${pass}-cpp"
-            python "tests/pass219/test_pass219_cumulative_pass${pass}_membrane_i${iter}.py"
+            PYTHONPATH="$PWD" python "tests/pass219/test_pass219_cumulative_pass${pass}_membrane_i${iter}.py"
           done <<'EOF'
           119 205 19
           120 204 20
