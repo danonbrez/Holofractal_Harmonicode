@@ -21,7 +21,7 @@ HHSExactStatus hhs_exact_pass219_lane5_raw_x86_vm5184_descriptor(
     out_descriptor->local_states_per_cell = HHS_EXACT_PHASE_PAIR_COUNT;
     out_descriptor->vm5184_addresses = HHS_EXACT_VM81_FRAME_BITS;
     out_descriptor->direct_raw_x86_ingress = 1U;
-    out_descriptor->direct_vm81_kernel_execution = 1U;
+    out_descriptor->direct_vm81_kernel_execution = 0U;
     out_descriptor->exact_raw_egress = 1U;
     out_descriptor->format_translation_layer = 0U;
     out_descriptor->floating_point_authority = 0U;
@@ -54,7 +54,7 @@ static void hhs_lane5_raw_x86_vm5184_receipt_init(
     receipt->hydration_signature64 = hydration_signature64;
     receipt->exact_byte_identity = byte_identity;
     receipt->direct_raw_x86_ingress = 1U;
-    receipt->direct_vm81_kernel_execution = 1U;
+    receipt->direct_vm81_kernel_execution = 0U;
     receipt->format_translation_layer = 0U;
     receipt->floating_point_authority = 0U;
     receipt->host_instruction_execution_authority = 0U;
@@ -110,10 +110,14 @@ HHSExactStatus hhs_exact_pass219_lane5_raw_x86_vm5184_step(
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
-    status = hhs_exact_pass219_global_raw5184_dynamic_circuit(
-        &frame, feedback_trinary, state, out_features, out_decision);
-    if (status != HHS_EXACT_STATUS_OK)
-        return status;
+    /*
+     * Pass 219 Lane 5 1.59 supersession: this legacy surface is exact raw
+     * transport only. Canonical/runtime computation is available only through
+     * hhs_exact_pass219_lane5_gateway_admit_raw5184.
+     */
+    (void)feedback_trinary;
+    memset(out_features, 0, sizeof(*out_features));
+    memset(out_decision, 0, sizeof(*out_decision));
 
     status = hhs_exact_vm81_frame_export_le(
         &frame, output, capacity, &egress_length);
@@ -130,8 +134,8 @@ HHSExactStatus hhs_exact_pass219_lane5_raw_x86_vm5184_step(
         (uint32_t)length,
         (uint32_t)egress_length,
         1U,
-        out_decision->step_count,
-        out_features->hydration_signature64,
+        state->step_count,
+        UINT64_C(0),
         1U
     );
     return HHS_EXACT_STATUS_OK;
