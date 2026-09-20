@@ -5,6 +5,7 @@ from pathlib import Path
 
 from hhs_python.runtime.hhs_pass219_composed_ctypes_bridge import (
     HHSExactPass219RuntimeBridge,
+    HHS_EXACT_STATUS_INVARIANT_FAILURE,
     compress_pass192_fibonacci,
 )
 from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
@@ -142,8 +143,8 @@ def test_outer_hydration_modulus_is_namespace_not_destructive_local_reduction() 
 
 def test_canonical_pass219_admission_composes_fibonacci_before_commit_and_lineage() -> None:
     raw = _frame()
-    low_level = HHSUQCELRuntimeBridge.admit_vm81(
-        raw, P=4, p=3, q=5, delta=1, A=16, B=16,
+    low_level = HHSUQCELRuntimeBridge.validate(
+        P=4, p=3, q=5, delta=1, A=16, B=16,
         cell81=41, left_basis8=0, right_basis8=1,
     )
     composed = HHSExactPass219RuntimeBridge.admit_vm81(
@@ -151,9 +152,13 @@ def test_canonical_pass219_admission_composes_fibonacci_before_commit_and_lineag
         cell81=41, left_basis8=0, right_basis8=1,
     )
     assert low_level["status"] == HHS_EXACT_STATUS_OK
-    assert composed["status"] == HHS_EXACT_STATUS_OK
-    assert composed["admitted"] is True
-    assert composed["committed_frame"] == raw
+    assert low_level["admission"]["decision"] == 1
+    assert low_level["admission"]["frame_committed"] is False
+    assert composed["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
+    assert composed["validation_status"] == HHS_EXACT_STATUS_OK
+    assert composed["validated_candidate"] is True
+    assert composed["admitted"] is False
+    assert composed["committed_frame"] == bytes(648)
     admission = composed["admission"]
     fib = admission["fibonacci"]
     assert fib["depth"] == 10
@@ -162,10 +167,10 @@ def test_canonical_pass219_admission_composes_fibonacci_before_commit_and_lineag
     assert fib["expanded_schedule_count"] == 45
     assert fib["shared_schedule_count"] == 1
     assert fib["compression_applied"] is True
-    assert admission["base_receipt_hash72"] == low_level["admission"]["receipt_hash72"]
-    assert admission["receipt_hash72"] != admission["base_receipt_hash72"]
-    assert admission["hash216_triplet"][144:] == admission["receipt_hash72"]
-    assert len(admission["hash216_identity"]) == 216
+    assert admission["base_receipt_hash72"] == ""
+    assert admission["receipt_hash72"] == ""
+    assert admission["hash216_triplet"] == ""
+    assert admission["hash216_identity"] == ""
 
 
 def test_composed_gate_preserves_rejection_and_unsupported_fail_closed_behavior() -> None:
@@ -176,7 +181,7 @@ def test_composed_gate_preserves_rejection_and_unsupported_fail_closed_behavior(
     assert rejected["status"] == HHS_EXACT_STATUS_CONSTRAINT_REJECTED
     assert rejected["admitted"] is False
     assert rejected["committed_frame"] == bytes(648)
-    assert rejected["admission"]["fibonacci"]["compression_applied"] is False
+    assert "fibonacci" not in rejected["admission"]
 
     unresolved = HHSExactPass219RuntimeBridge.admit_vm81(
         _frame(), P=4, p=3, q=5, delta=1, A=16, B=16,
