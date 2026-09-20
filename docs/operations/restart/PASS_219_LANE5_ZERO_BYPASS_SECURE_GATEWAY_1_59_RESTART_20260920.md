@@ -97,3 +97,39 @@ Validation remaining:
 - consume the new PR #519 exact-head workflow results;
 - repair only demonstrated failures from the new head;
 - once dependency-scoped gates are green, freeze receipts and return control without merging unless explicitly authorized.
+
+## Exact-head repair checkpoint — inherited membrane import path
+
+The first repaired Universal Quantization rerun `35535244540` established that the authority-topology repair itself is correct:
+
+- protected symbol topology: PASS;
+- Pass 192 oracle: 37 passed;
+- UQCEL/constraint/Fibonacci targeted set: 56 passed;
+- exact ABI non-inherited subset: 8 passed, 6 intentionally deselected;
+- hidden-authority C/C++ archive linkage reached and executed.
+
+The remaining failure was a workflow environment defect only: the cumulative Pass205 membrane script was launched without repository `PYTHONPATH`, producing `ModuleNotFoundError: No module named 'hhs_runtime'` after the native hidden-authority linkage had succeeded.
+
+Repair commit:
+
+```text
+084c744fc30cfe21f48d49ba1afac9fdedce05af
+```
+
+The gate now launches each cumulative membrane script with `PYTHONPATH="$PWD"`. No runtime, algebra, authority, or admission semantics were changed.
+
+Additional evidence already green on the prior repair head:
+
+- Native RNA 1.10 `35535244542`: SUCCESS;
+- Lane 5 1.59 `35535244499`: SUCCESS in both the OpenSSL 3.5 positive lane and the system-provider gate;
+- Generation Integrity `35535244601`: SUCCESS.
+
+Current exact-head reruns from `084c744fc30cfe21f48d49ba1afac9fdedce05af` include:
+
+- Universal Quantization `35535435234`;
+- Lane 5 1.59 `35535435152`;
+- Native RNA 1.10 `35535435203`;
+- Generation Integrity `35535435179`.
+
+These may complete asynchronously. This checkpoint is restartable and does not authorize merging PR #519.
+
