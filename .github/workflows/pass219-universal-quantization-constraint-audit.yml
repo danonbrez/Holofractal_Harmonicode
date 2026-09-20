@@ -66,22 +66,71 @@ jobs:
           test -s hhs_runtime/builds/libhhs_runtime.so
       - name: Verify integrated shared ABI
         run: test -s hhs_runtime/builds/libhhs_runtime.so
-      - name: Verify UQCEL and Fibonacci composition symbol exports
-        run: >-
-          nm -D hhs_runtime/builds/libhhs_runtime.so |
-          grep -E 'hhs_exact_uqcel_version|hhs_exact_uqcel_source_sha256|hhs_exact_uqcel_validate|hhs_exact_uqcel_receipt_material|hhs_exact_vm81_admit_uqcel|hhs_exact_pass192_fibonacci_version|hhs_exact_pass192_fibonacci_compress|hhs_exact_pass192_fibonacci_validate_descriptor|hhs_exact_pass219_admit_composed|hhs_hash72_compute_bytes|hhs_hash216_compute_bytes'
+      - name: Verify validation/hash exports and hidden canonical mutation surfaces
+        run: |
+          symbols="$(nm -D hhs_runtime/builds/libhhs_runtime.so)"
+          for symbol in \
+            hhs_exact_uqcel_version \
+            hhs_exact_uqcel_source_sha256 \
+            hhs_exact_uqcel_validate \
+            hhs_exact_pass192_fibonacci_version \
+            hhs_exact_pass192_fibonacci_compress \
+            hhs_exact_pass192_fibonacci_validate_descriptor \
+            hhs_hash72_compute_bytes \
+            hhs_hash216_compute_bytes
+          do
+            grep -q "[[:space:]]${symbol}$" <<<"$symbols"
+          done
+          for hidden in hhs_exact_vm81_admit_uqcel hhs_exact_pass219_admit_composed
+          do
+            if grep -q "[[:space:]]${hidden}$" <<<"$symbols"; then
+              echo "forbidden public mutation export: ${hidden}" >&2
+              exit 1
+            fi
+          done
       - name: Run inherited Pass 192 Fibonacci contract oracle
         run: python -m pytest -q tests/pass192_193/test_pass192_193_contract_invariants.py
       - name: Run UQCEL correspondence, enforcement, inherited conformance, monolithic residual, and Fibonacci composition audits
-        run: >-
-          python -m pytest -q
-          tests/pass219/test_pass219_inherited_runtime_conformance_i6_repair.py
-          tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py
-          tests/test_hhs_pass219_quantization_constraint_law.py
-          tests/test_hhs_pass219_native_universal_constraint_enforcement.py
-          tests/test_hhs_pass219_native_universal_constraint_negative_edges.py
-          tests/test_hhs_pass219_fibonacci_compression_compliance.py
-          tests/test_hhs_exact_runtime_abi_v1.py
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_inherited_runtime_conformance_i6_repair.py \
+            tests/pass219/test_pass219_monolithic_uqcel_residual_boundary_1_15.py \
+            tests/pass219/test_pass219_uqcel_validation_only_authority_closure_1_31.py \
+            tests/test_hhs_pass219_quantization_constraint_law.py \
+            tests/test_hhs_pass219_native_universal_constraint_enforcement.py \
+            tests/test_hhs_pass219_native_universal_constraint_negative_edges.py \
+            tests/test_hhs_pass219_fibonacci_compression_compliance.py
+          python -m pytest -q tests/test_hhs_exact_runtime_abi_v1.py \
+            -k 'not test_pass219_i119_pass205_binding_and_membrane_conformance and not test_pass219_i120_pass204_binding_and_membrane_conformance and not test_pass219_i121_pass203_binding_and_membrane_conformance and not test_pass219_i122_pass202_binding_and_membrane_conformance and not test_pass219_i123_pass201_binding_and_membrane_conformance and not test_pass219_i124_pass200c_binding_and_membrane_conformance'
+      - name: Verify inherited exact-ABI conformance through hidden-authority regression archive
+        run: |
+          mkdir -p /tmp/pass219-uqcel
+          bash .github/scripts/build_pass219_exact_internal_archive.sh \
+            /tmp/pass219-uqcel/libhhs_exact_internal.a /tmp/pass219-uqcel/objects
+          while read -r iter pass suffix; do
+            gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+              -Ihhs_runtime/include \
+              "tests/pass219/test_pass219_inherited_pass${pass}_1_${suffix}.c" \
+              /tmp/pass219-uqcel/libhhs_exact_internal.a \
+              -lcrypto -lstdc++ -lm -pthread \
+              -o "/tmp/pass219-uqcel/pass${pass}-c"
+            "/tmp/pass219-uqcel/pass${pass}-c"
+            g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+              -Ihhs_runtime/include \
+              "tests/pass219/test_pass219_inherited_pass${pass}_1_${suffix}.cpp" \
+              /tmp/pass219-uqcel/libhhs_exact_internal.a \
+              -lcrypto -lstdc++ -lm -pthread \
+              -o "/tmp/pass219-uqcel/pass${pass}-cpp"
+            "/tmp/pass219-uqcel/pass${pass}-cpp"
+            python "tests/pass219/test_pass219_cumulative_pass${pass}_membrane_i${iter}.py"
+          done <<'EOF'
+          119 205 19
+          120 204 20
+          121 203 21
+          122 202 22
+          123 201 23
+          124 200c 24
+          EOF
       - name: Verify historical standalone public C ABI link contract
         run: >-
           python -m pytest -q
