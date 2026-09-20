@@ -402,3 +402,47 @@ Raw IEEE-754 words are permitted as exact payload bytes. The raw transport prese
 The Lane 5 optimizer does not choose a result. Its routing is constrained by the tensor/qudit geometry and inherited admission predicates. Hash216 reuses only validated scoped computations; a Hash216 hit cannot authorize a canonical commit.
 
 The inherited public 1.32 admission name is retained only as a compatibility redirect into the 1.59 gateway. Its original implementation is hidden. The inherited 1.57 raw step/stream surfaces are transport-only after 1.59 and cannot execute the dynamic circuit directly.
+
+
+## 21. Normalized concurrent thread-memory flow
+
+Pass 219 Lane 5 1.60 keeps external Linux/FastAPI/CLI behavior conventional while binding internal concurrent memory to the native HHS boundary geometry.
+
+```text
+caller request
+→ Lane 5 zero-bypass interposition
+→ boundary-derived Thread216 namespace
+→ namespace/scoped Hash216 memory prefilter
+→ H36/four-lane candidate computation
+→ RNA/PQC/VM81 canonical admission when mutation is required
+→ Hash72 receipt
+→ Hash216 validated continuation
+→ thread-qualified durable SQL/vector reference
+→ normal API/CLI response
+```
+
+The VM81 normalized origin is 81 zero offsets serialized by the inherited exact 5,184-character HARMONICODE serializer. The zero coordinate does not erase topology, phase, provenance or authority state.
+
+Thread identity is not an OS thread number. It is derived from exact scope, evolutionary lineage, PQC witness and BigInt/palindromic serialization state. Multiple callers may share one Linux process and one physical SQL/vector database without sharing computational memory.
+
+Persistent hierarchy:
+
+```text
+shared SQLite/WAL/FULL fabric
+└── Scope216
+    └── Thread216
+        └── Lineage216
+            └── Object216
+```
+
+The logical index key is `(Scope216, Thread216, Lineage216, Object216)`.
+
+Cross-thread access is fail-closed by default. A directed bridge is legal only when the threads have matching admitted lineage and the shared capabilities are a subset of the intersection of both thread scopes:
+
+```text
+SharedScope subseteq Scope(A) intersection Scope(B)
+```
+
+The namespace filter runs before vector search/ranking. A content/hash match cannot widen visibility.
+
+The thread layer has no canonical VM81, Hash72 or Hash216 commit authority. It supplies long-term validated computational memory to the same single production mutation path established by Lane 5 1.59.
