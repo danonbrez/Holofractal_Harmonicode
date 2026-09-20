@@ -1,0 +1,155 @@
+name: Pass 219 Lane 5 IEEE754 Palindromic Pivot 1.54
+
+on:
+  push:
+    branches:
+      - pass219/lane5-ieee754-palindromic-pivot-1-54
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_ieee754_palindromic_pivot_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_ieee754_palindromic_pivot_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md'
+      - 'contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.wl'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-ieee754-palindromic-pivot-1-54.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-reciprocal-phase-boundary-1-53
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_ieee754_palindromic_pivot_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_ieee754_palindromic_pivot_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md'
+      - 'contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.wl'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-ieee754-palindromic-pivot-1-54.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  ieee754-palindromic-pivot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run 1.54 and inherited exact tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_harmonicode_lane5_ieee754_palindromic_pivot_v1.py \
+            tests/pass219/test_harmonicode_lane5_reciprocal_phase_boundary_v1.py \
+            tests/pass219/test_harmonicode_lane5_bigint_transcription_v1.py \
+            tests/test_hhs_pass114_palindromic_decimal_state_v1.py
+          python -m hhs_runtime.harmonicode_lane5_ieee754_palindromic_pivot_v1 > /tmp/hhs-lane5-1-54.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/hhs-lane5-1-54.json'))
+          assert d['result']=='PASS'
+          assert d['check_count']==24
+          assert all(d['checks'].values())
+          assert d['binary16_patterns_exhausted']==65536
+          assert d['block_size_digits']==72
+          assert d['serializer_characters']==5184
+          assert d['authority']['ieee_arithmetic_authority'] is False
+          assert d['authority']['host_float_authority'] is False
+          PY
+
+      - name: Verify theorem record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.json').read_text())
+          t=d['hhs_exact_formalization']
+          assert t['theorem_id']=='HHS-T5184-003'
+          assert t['status']=='EXECUTED_EXACT'
+          assert t['definitions']['block_size_digits']==72
+          assert t['definitions']['serializer_characters']==5184
+          assert t['proof_evidence']['binary16_exhaustive_patterns']==65536
+          assert t['authority']['host_float_authority'] is False
+          PY
+
+      - name: Verify sealed Wolfram proof
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path('evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.receipt.json').read_text())
+          for kind in ('source','output'):
+              path=Path(receipt[f'{kind}_path'])
+              raw=path.read_bytes()
+              assert len(raw)==receipt[f'{kind}_bytes']
+              assert sha256(raw).hexdigest()==receipt[f'{kind}_sha256']
+          out=json.loads(Path(receipt['output_path']).read_text())
+          assert receipt['result']=='PASS'
+          assert receipt['checks_passed']==receipt['checks_total']==18
+          assert out['status']=='PASS'
+          assert all(out['checks'].values())
+          assert out['point_one_frame_digits']==72
+          assert out['min_sub_frame_digits']==768
+          assert out['min_sub_block_count']==11
+          assert out['host_float_authority'] is False
+          assert out['ieee_arithmetic_authority'] is False
+          PY
+
+      - name: Seal summary
+        run: |
+          mkdir -p artifacts/pass219/1.54
+          cp /tmp/hhs-lane5-1-54.json artifacts/pass219/1.54/runtime-validation.json
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          summary={
+            'schema':'HHS_PASS219_LANE5_IEEE754_PALINDROMIC_PIVOT_EVIDENCE_1_54',
+            'theorem_id':'HHS-T5184-003',
+            'result':'PASS',
+            'runtime_checks':24,
+            'wolfram_checks':18,
+            'binary16_patterns_exhausted':65536,
+            'block_size_digits':72,
+            'serializer_characters':5184,
+            'direction_a':'FORWARD_LHS_EDGE_TO_PIVOT',
+            'direction_b':'REVERSE_RHS_EDGE_TO_PIVOT',
+            'host_float_authority':False,
+            'ieee_arithmetic_authority':False,
+            'canonical_vm81_mutation_authority':False,
+            'canonical_hash72_authority':False,
+            'canonical_hash216_authority':False,
+            'source_complete_formalization_status':'IN_PROGRESS',
+          }
+          canonical=json.dumps(summary,sort_keys=True,separators=(',',':')).encode()
+          summary['receipt_sha256']=sha256(canonical).hexdigest()
+          Path('artifacts/pass219/1.54/summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-ieee754-palindromic-pivot-1-54
+          path: artifacts/pass219/1.54/
+          if-no-files-found: error
