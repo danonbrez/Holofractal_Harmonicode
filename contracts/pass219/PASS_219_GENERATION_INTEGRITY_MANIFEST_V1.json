@@ -9,7 +9,12 @@
     "halt_on_abi_drift": true,
     "halt_on_authority_drift": true,
     "creates_canonical_mutation_authority": false,
-    "provider_scratch_is_canonical_state": false
+    "provider_scratch_is_canonical_state": false,
+    "lane5_zero_bypass_required": true,
+    "valid_legacy_traffic_redirect_required": true,
+    "raw_ieee754_payload_allowed": true,
+    "floating_point_canonical_authority": false,
+    "hash216_cache_is_commit_authority": false
   },
   "structural_constants": {
     "path": "hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h",
@@ -48,9 +53,9 @@
     },
     {
       "path": "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h",
-      "byte_length": 7036,
-      "git_blob_sha1": "eb904aa173f41c991dd691b91ad6b5f93f20b808",
-      "sha256": "f087419a2d0294b2ed66c33c527b798b2ef35b5f2b2743ac3c9116fc1dc417fa"
+      "byte_length": 7932,
+      "git_blob_sha1": "17cfda679c6ed52da549580a9126ed6bcaefec74",
+      "sha256": "f1050b3b210baffd803313a536e4e41ff767c9d1b7252e0d25e394d24c82f42b"
     },
     {
       "path": "hhs_runtime/c/hhs_pass219_vm81_pqc_signature_1_31.inc",
@@ -60,9 +65,9 @@
     },
     {
       "path": "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map",
-      "byte_length": 291,
-      "git_blob_sha1": "17aab4041025c24482c47338cde321873c236574",
-      "sha256": "8e55668dc5554fc062b1c1aa6251c44ba6f34c29de9127986f54385fc1bedcb6"
+      "byte_length": 357,
+      "git_blob_sha1": "9ea7fe768ed10e2b6d132fa55e834d82915fed06",
+      "sha256": "265925cbd86d79b5242958cae39b4560cc29d17eee60f7ca5da7243dbe01044f"
     },
     {
       "path": "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
@@ -91,7 +96,8 @@
     "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h": [
       "recovery_candidate_only",
       "canonical_mutation_authority",
-      "hhs_exact_pass219_vm81_environment_admit_signed"
+      "hhs_exact_pass219_vm81_environment_admit_signed",
+      "hhs_exact_pass219_vm81_environment_admit_signed_internal"
     ],
     "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp": [
       "HHS_P219_PQC_INTERNAL",
@@ -138,14 +144,20 @@
       "hhs_exact_pass219_rna_admit_composed",
       "hhs_exact_pass219_vm81_pqc_admit",
       "hhs_exact_pass219_vm81_pqc_admit_signed",
-      "hhs_exact_pass219_vm81_environment_checkpoint_seal"
+      "hhs_exact_pass219_vm81_environment_checkpoint_seal",
+      "hhs_exact_pass219_vm81_environment_admit_signed_internal"
     ]
   },
   "abi": {
     "required_public_symbols": [
       "hhs_exact_pass219_vm81_environment_version",
       "hhs_exact_pass219_vm81_environment_state",
-      "hhs_exact_pass219_vm81_environment_admit_signed"
+      "hhs_exact_pass219_vm81_environment_admit_signed",
+      "hhs_exact_pass219_lane5_zero_bypass_gateway_version",
+      "hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor",
+      "hhs_exact_pass219_lane5_zero_bypass_gateway_validate",
+      "hhs_exact_pass219_lane5_payload_roundtrip_exact",
+      "hhs_exact_pass219_lane5_gateway_admit_raw5184"
     ],
     "forbidden_dynamic_exports": [
       "hhs_exact_vm81_admit_uqcel",
@@ -153,7 +165,8 @@
       "hhs_exact_pass219_rna_admit_composed",
       "hhs_exact_pass219_vm81_pqc_admit",
       "hhs_exact_pass219_vm81_pqc_admit_signed",
-      "hhs_exact_pass219_vm81_environment_checkpoint_seal"
+      "hhs_exact_pass219_vm81_environment_checkpoint_seal",
+      "hhs_exact_pass219_vm81_environment_admit_signed_internal"
     ]
   }
 }
