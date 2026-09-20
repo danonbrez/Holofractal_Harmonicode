@@ -22,7 +22,7 @@ HHSExactStatus hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor(
     out_descriptor->hydration_lanes = HHS_EXACT_PASS219_HOLO4_LANE_COUNT;
     out_descriptor->phase_modulus = HHS_EXACT_PASS219_CORE_CIRCUIT_PHASE_MODULUS;
 
-    out_descriptor->single_public_mutation_gateway = 1U;
+    out_descriptor->single_production_mutation_path = 1U;
     out_descriptor->linux_api_redirect_required = 1U;
     out_descriptor->raw_x86_ingress_allowed = 1U;
     out_descriptor->ieee754_payload_passthrough_allowed = 1U;
@@ -63,7 +63,7 @@ HHSExactStatus hhs_exact_pass219_lane5_zero_bypass_gateway_validate(void) {
     if (status != HHS_EXACT_STATUS_OK)
         return status;
 
-    if (d.single_public_mutation_gateway != 1U ||
+    if (d.single_production_mutation_path != 1U ||
         d.linux_api_redirect_required != 1U ||
         d.raw_x86_ingress_allowed != 1U ||
         d.ieee754_payload_passthrough_allowed != 1U ||
