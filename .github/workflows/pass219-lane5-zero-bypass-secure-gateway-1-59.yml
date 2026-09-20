@@ -23,3 +23,36 @@ jobs:
         run: |
           gcc -O2 -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Ihhs_runtime/include tests/pass219/test_pass219_lane5_zero_bypass_secure_gateway_1_59.c -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t159
           /tmp/t159
+
+  openssl-35-positive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build OpenSSL 3.5.0
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          curl -fsSL --retry 3 --retry-delay 2 https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+      - name: Prove full Lane 5 secure admission
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+          HHS_REQUIRE_PQC_PROVIDER: "1"
+        run: |
+          gcc -O2 -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Ihhs_runtime/include -I/tmp/openssl35/include tests/pass219/test_pass219_lane5_zero_bypass_secure_gateway_1_59.c -Lhhs_runtime/builds -lhhs_runtime -L/tmp/openssl35/lib -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -Wl,-rpath,/tmp/openssl35/lib -o /tmp/t159-pqc
+          /tmp/t159-pqc
