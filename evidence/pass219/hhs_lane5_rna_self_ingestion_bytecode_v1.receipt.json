@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS219_LANE5_RNA_SELF_INGESTION_BYTECODE_WOLFRAM_RECEIPT_V1",
+  "experiment_id": "HHS-X5184-001",
+  "result": "PASS",
+  "checks_passed": 18,
+  "checks_total": 18,
+  "source_path": "evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.wl",
+  "source_bytes": 3638,
+  "source_sha256": "9f691bd9d0c636a698a241ed37321e20189965caff8bf486e9f95d0563118c6f",
+  "output_path": "evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.output.json",
+  "output_bytes": 954,
+  "output_sha256": "fb9ee9dad7af534b3e125a15eda994ebcd09b8bbb912274855b87c11a0452699",
+  "execution": "connected Wolfram Language evaluator",
+  "note": "Exact finite-state analysis; byte strings are data and are never executed as machine instructions."
+}
