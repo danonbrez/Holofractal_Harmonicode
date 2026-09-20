@@ -123,3 +123,30 @@ output sha256 = fb9ee9dad7af534b3e125a15eda994ebcd09b8bbb912274855b87c11a0452699
 3. Freeze the green implementation head/run.
 4. Create/update the stacked draft PR.
 5. Do not promote the experimental ASCII projection to canonical authority.
+
+
+## Validation closure — GREEN
+
+Validated implementation head:
+
+```text
+head = c1bd09237f689e6c999d7962bcd4a45133e073f9
+workflow = Pass 219 Lane 5 RNA Self Ingestion Bytecode 1.56
+run = 35517274021
+job = 106095216431
+result = SUCCESS
+pytest = 15 passed, 1 pre-existing config warning
+runtime checks = 15/15
+Wolfram checks = 18/18
+typed fixed points = 64/64
+external projection image size = 4
+fixed points = {wyw,wzx,wzy,wzz}
+basin size = 16 each
+maximum transient = 1
+native byte payload words = 64
+native byte payload forms = 3
+```
+
+The exact native byte membrane preserved compact ASCII, explicit multiplicative ASCII, and typed operation64 bytes for every T64 word. No payload was executed as a machine instruction.
+
+The experiment is closed as read-only evidence. The ASCII-BigInt/mod64 quotient remains explicitly noncanonical.
