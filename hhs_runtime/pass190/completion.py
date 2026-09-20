@@ -14,6 +14,10 @@ import sys
 from typing import Any, Iterable, Mapping, Optional
 
 from hhs_runtime.pass191.repository_hydration import RepositoryHydrationRuntime
+from hhs_runtime.pass219.lane5_linux_api_interposer_1_59 import (
+    Lane5LinuxAPIInterpositionError,
+    interpose_linux_api_request,
+)
 
 from .python_compat import (
     EXECUTABLE_MAPPINGS,
@@ -153,6 +157,12 @@ class Pass190CompletionContext:
             "new_vm81_authority": False,
             "new_receipt_clock": False,
             "floating_point_canonical_authority": False,
+            "lane5_zero_bypass_required": True,
+            "lane5_linux_api_redirect_required": True,
+            "lane5_native_gateway": "hhs_exact_pass219_lane5_gateway_admit_raw5184",
+            "lane5_constraint_forced_execution": True,
+            "lane5_policy_choice_authority": False,
+            "lane5_hash216_validated_scoped_reuse_only": True,
         }
 
     def operations(self) -> list[dict[str, Any]]:
@@ -194,6 +204,20 @@ class Pass190CompletionContext:
             authorization_token,
             str(record.raw["capability_scope"]),
         )
+        try:
+            lane5_interposition = interpose_linux_api_request(
+                operation_id=operation_id,
+                surface="authorized_execution.call",
+                payload={
+                    "source_surface": surface,
+                    "mutation_class": str(record.raw.get("mutation_class", "unknown")),
+                    "capability_scope": str(record.raw.get("capability_scope", "none")),
+                },
+            )
+        except Lane5LinuxAPIInterpositionError as exc:
+            raise Pass190CompletionError(str(exc)) from exc
+        if not lane5_interposition.get("redirected"):
+            raise Pass190CompletionError("HHS_P190_LANE5_REDIRECT_REQUIRED")
         result = self.authority.invoke(
             operation_id,
             arguments,
