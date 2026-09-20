@@ -6,6 +6,9 @@ from pathlib import Path
 
 import pytest
 
+from hhs_python.runtime.hhs_pass219_composed_ctypes_bridge import (
+    HHS_EXACT_STATUS_INVARIANT_FAILURE,
+)
 from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
     HHSUQCELRuntimeBridge,
     HHS_EXACT_STATUS_CONSTRAINT_REJECTED,
@@ -81,6 +84,27 @@ def _call(P: int, p: int, q: int, *, profile: int = 1, **overrides: object) -> d
     return HHSUQCELRuntimeBridge.admit_vm81(_frame(), **values)  # type: ignore[arg-type]
 
 
+def _validate_call(P: int, p: int, q: int, *, profile: int = 1, **overrides: object) -> dict[str, object]:
+    witness = build_integer_symmetric_witness(P, p, q)
+    left, right = expected_phase_basis_pair(witness)
+    values: dict[str, object] = {
+        "P": witness.P,
+        "p": witness.p,
+        "q": witness.q,
+        "delta": witness.delta,
+        "A": witness.A,
+        "B": witness.B,
+        "cell81": 41,
+        "left_basis8": left,
+        "right_basis8": right,
+        "profile": profile,
+        "source_hash": HHS_EXACT_UQCEL_SOURCE_SHA256,
+        "previous_hash72": ZERO72,
+    }
+    values.update(overrides)
+    return HHSUQCELRuntimeBridge.validate(**values)  # type: ignore[arg-type]
+
+
 def _presentation_normalize(source: str) -> str:
     """Normalize source-glyph spelling only; do not rewrite the algebra."""
     return (
@@ -105,28 +129,34 @@ def test_native_uce_fixture_and_c_source_hash_are_exact() -> None:
     assert HHSUQCELRuntimeBridge.source_sha256() == HHS_EXACT_UQCEL_SOURCE_SHA256
 
 
-def test_xy_and_yx_profiles_admit_and_commit_exact_vm81_frame() -> None:
-    xy = _call(4, 3, 5)
-    yx = _call(5, 3, 7)
+def test_xy_and_yx_profiles_validate_exactly_without_public_mutation_authority() -> None:
+    xy = _validate_call(4, 3, 5)
+    yx = _validate_call(5, 3, 7)
     for result, bit, phase, tag in ((xy, 0, 0, 0x5859), (yx, 1, 36, 0x5958)):
         admission = result["admission"]
         assert result["status"] == HHS_EXACT_STATUS_OK
-        assert result["admitted"] is True
-        assert result["committed_frame"] == _frame()
-        assert admission["frame_committed"] is True
+        assert admission["decision"] == 1
+        assert admission["frame_committed"] is False
         assert admission["qr_bit"] == bit
         assert admission["expected_phase"] == phase
         assert admission["observed_phase"] == phase
         assert admission["ordered_tag"] == tag
 
+    # The inherited compatibility facade may validate the candidate, but the
+    # zero-bypass authority closure forbids it from committing or minting a
+    # canonical receipt outside the signed PQC -> VM81 path.
+    compatibility = _call(4, 3, 5)
+    assert compatibility["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
+    assert compatibility["admitted"] is False
+    assert compatibility["committed_frame"] == bytes(648)
 
-def test_bigint_p_above_uint64_is_admitted_without_narrowing() -> None:
+
+def test_bigint_p_above_uint64_validates_without_narrowing_or_public_commit() -> None:
     P = (1 << 130) + 1
     p = 3
     q = 5
     p2 = P * P
-    result = HHSUQCELRuntimeBridge.admit_vm81(
-        _frame(),
+    result = HHSUQCELRuntimeBridge.validate(
         P=P,
         p=p,
         q=q,
@@ -138,8 +168,9 @@ def test_bigint_p_above_uint64_is_admitted_without_narrowing() -> None:
         right_basis8=1,
     )
     assert result["status"] == HHS_EXACT_STATUS_OK
-    assert result["admitted"] is True
-    assert result["committed_frame"] == _frame()
+    assert result["admission"]["decision"] == 1
+    assert result["admission"]["bigint_domain_exact"] is True
+    assert result["admission"]["frame_committed"] is False
 
 
 def test_wrong_delta_rejects_and_never_commits_candidate() -> None:
@@ -204,22 +235,23 @@ def test_full_symbolic_a_b_are_lhs_rhs_not_integer_symmetric_aliases() -> None:
     assert result["committed_frame"] == bytes(648)
 
 
-def test_hash72_hash216_receipt_lineage_is_deterministic_and_typed() -> None:
-    first = _call(5, 3, 7)
-    second = _call(5, 3, 7)
-    a = first["admission"]
-    b = second["admission"]
-    assert a["change_hash72"] == b["change_hash72"]
-    assert a["receipt_hash72"] == b["receipt_hash72"]
-    assert a["hash216_triplet"] == b["hash216_triplet"]
-    assert a["hash216_identity"] == b["hash216_identity"]
-    assert len(a["change_hash72"]) == 72
-    assert len(a["receipt_hash72"]) == 72
-    assert len(a["hash216_triplet"]) == 216
-    assert len(a["hash216_identity"]) == 216
-    assert a["hash216_triplet"][:72] == ZERO72
-    assert a["hash216_triplet"][72:144] == a["change_hash72"]
-    assert a["hash216_triplet"][144:] == a["receipt_hash72"]
+def test_validation_surface_cannot_mint_hash72_hash216_commit_lineage() -> None:
+    first = _validate_call(5, 3, 7)
+    second = _validate_call(5, 3, 7)
+    for result in (first, second):
+        admission = result["admission"]
+        assert result["status"] == HHS_EXACT_STATUS_OK
+        assert admission["decision"] == 1
+        assert admission["frame_committed"] is False
+        assert admission["change_hash72"] == ""
+        assert admission["receipt_hash72"] == ""
+        assert admission["hash216_triplet"] == ""
+        assert admission["hash216_identity"] == ""
+
+    compatibility = _call(5, 3, 7)
+    assert compatibility["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
+    assert compatibility["admitted"] is False
+    assert compatibility["committed_frame"] == bytes(648)
 
 
 def test_uqcel_metric_and_required_constraint_mask_are_exact() -> None:
