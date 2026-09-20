@@ -90,6 +90,14 @@ HHSExactStatus hhs_exact_pass219_lane5_raw_x86_vm5184_step(
     if (capacity < HHS_EXACT_VM81_FRAME_BYTES)
         return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
 
+    /*
+     * Lane 5 smart optimization is resident BIOS/control-plane state.
+     * Validate it as a kernel precondition without inserting a payload stage.
+     */
+    status = hhs_exact_pass219_lane5_virtual_bios_validate();
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
     status = hhs_x86_64_bytecode_copy_exact(
         input, length, ingress, sizeof(ingress), &ingress_length);
     if (status != HHS_EXACT_STATUS_OK)
