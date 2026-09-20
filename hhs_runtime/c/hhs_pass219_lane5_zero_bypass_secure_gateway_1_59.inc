@@ -242,7 +242,7 @@ HHSExactStatus hhs_exact_pass219_lane5_gateway_admit_raw5184(
         return status;
 
     memset(&committed, 0, sizeof(committed));
-    status = hhs_exact_pass219_vm81_environment_admit_signed(
+    status = hhs_exact_pass219_vm81_environment_admit_signed_internal(
         pass_number,
         signature_algorithm,
         input,
@@ -310,4 +310,65 @@ HHSExactStatus hhs_exact_pass219_lane5_gateway_admit_raw5184(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     return HHS_EXACT_STATUS_OK;
+}
+
+
+HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
+    uint32_t pass_number,
+    uint32_t signature_algorithm,
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactPass219RNAAdmissionV1 *out_admission,
+    HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
+    HHSExactPass219VM81PQCSignatureReceiptV1 *out_signature_receipt,
+    HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt
+) {
+    uint8_t raw[HHS_EXACT_VM81_FRAME_BYTES];
+    uint8_t committed_raw[HHS_EXACT_VM81_FRAME_BYTES];
+    size_t raw_length = 0U;
+    size_t committed_length = 0U;
+    HHSExactPass219Lane5ZeroBypassGatewayReceiptV1 gateway_receipt;
+    HHSExactStatus status;
+
+    if (candidate_frame == NULL || out_committed_frame == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(out_committed_frame, 0, sizeof(*out_committed_frame));
+    memset(&gateway_receipt, 0, sizeof(gateway_receipt));
+
+    status = hhs_exact_vm81_frame_export_le(
+        candidate_frame, raw, sizeof(raw), &raw_length);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    status = hhs_exact_pass219_lane5_gateway_admit_raw5184(
+        pass_number,
+        signature_algorithm,
+        input,
+        raw,
+        raw_length,
+        parent_hash216_reference,
+        lo_shu_group,
+        g243,
+        feedback_lane,
+        feedback_trinary,
+        committed_raw,
+        sizeof(committed_raw),
+        &committed_length,
+        out_admission,
+        out_firewall_receipt,
+        out_signature_receipt,
+        out_environment_receipt,
+        &gateway_receipt
+    );
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    return hhs_exact_vm81_frame_import_le(
+        committed_raw, committed_length, out_committed_frame);
 }
