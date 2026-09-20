@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_PASS219_LANE5_BIGINT_NESTED_TRANSCRIPTION_WOLFRAM_RECEIPT_V1",
+  "result": "PASS",
+  "checks_passed": 15,
+  "checks_total": 15,
+  "source_path": "evidence/pass219/hhs_lane5_bigint_nested_transcription_v1.wl",
+  "source_bytes": 2559,
+  "source_sha256": "f4ebf72f3ef7e9c0b6ae2232f7147baa760feb2810268001a03b2435faaff147",
+  "output_path": "evidence/pass219/hhs_lane5_bigint_nested_transcription_v1.output.json",
+  "output_bytes": 1033,
+  "output_sha256": "d8cd8db0674b17fe93039b6586eeecb6a9b07836cfcaade8fc6b41f23814bee0",
+  "execution": "connected Wolfram Language evaluator",
+  "note": "Held HC* symbols are intentional custom carriers; undefined-symbol warning is informational."
+}
