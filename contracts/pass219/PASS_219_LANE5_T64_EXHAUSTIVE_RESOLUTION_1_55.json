@@ -1,0 +1,54 @@
+{
+  "hhs_exact_formalization": {
+    "theorem_id": "HHS-T5184-004",
+    "title": "Bijective Constructor Provenance and Exhaustive 64-State Resolution",
+    "status": "EXECUTED_EXACT",
+    "arithmetic_closure": "∆e=0",
+    "definitions": {
+      "kappa_bijection": {
+        "term": "Address Encoding Operator",
+        "source": "x=00,y=01,z=10,w=11",
+        "map": "{x,y,z,w}^3 <-> {0,1}^6 <-> 8x8"
+      },
+      "T64": {
+        "term": "Local Constructor Manifold",
+        "cardinality": 64,
+        "ordered": true
+      },
+      "VM81_decomposition": {
+        "term": "Serialization Geometry",
+        "equation": "81*64=5184=72^2"
+      }
+    },
+    "resolution_algorithm": [
+      "ordered triplet -> operation64",
+      "operation64 -> left_basis8,right_basis8",
+      "native ordered phase product",
+      "reciprocal_phase=(-phase) mod72",
+      "phase+reciprocal_phase=0 mod72",
+      "((0,-2)+(-2,0))/2=(-1,-1)"
+    ],
+    "core_theorem": {
+      "equation": "forall s in T64, Resolve(s)=(-1,-1)",
+      "exhaustive_count": 64,
+      "provenance_roots_unique": 64
+    },
+    "evidence": {
+      "python_checks": "16/16",
+      "wolfram_checks": "18/18",
+      "wolfram_source_sha256": "d7ef7a9bc8beeb40dfdbc114f5c0f2f0d0d711672524cd979a884d86362c977c",
+      "wolfram_output_sha256": "654a95a4ff3c737fc5066d1ab3866fc30d16a30459090be6029963d46022a1ae",
+      "native_phase_pairs_required": 64,
+      "native_vm5184_addresses_required": 5184
+    },
+    "authority": {
+      "delta_cancellation_authority": false,
+      "commutation_authority": false,
+      "canonical_vm81_mutation_authority": false,
+      "canonical_hash72_authority": false,
+      "canonical_hash216_authority": false,
+      "canonical_persistence_authority": false,
+      "floating_point_authority": false
+    }
+  }
+}
