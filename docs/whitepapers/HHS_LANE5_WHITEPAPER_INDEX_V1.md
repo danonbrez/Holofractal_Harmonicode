@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.52
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.53
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -329,3 +329,16 @@ The cycle also freezes the universal nested boundary denominator `(P=√(pq+(P�
 Connected Wolfram evidence is 15/15 PASS and is SHA-256-bound to its source/output files.
 
 Normative contract: `../../contracts/pass219/PASS_219_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52.md`.
+
+
+## 8G. Reciprocal phase-boundary theorem
+
+[`HHS_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53_V1.md`](HHS_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53_V1.md)
+
+Pass 219 Lane 5 1.53 formalizes `HHS-T5184-002`: the directed reciprocal chain `∞ -> ∆ -> x=Γ_x`, the ordered phase gear `Γ_x=u^(18/72mod72)*u^36`, explicit `P≠∞`, the scale reconstruction `(P/∞)^(x^2)=P`, the universal boundary recurrence `∆=(∞^(x^2))/∆`, and the native P-state fixed point `P=P/∆`.
+
+The cycle makes `∆` non-cancellation executable as a negative authority constraint. It also rejects ordinary reciprocal involution, scalar inverse identities, Γ_x factor reordering, and exponent combination. The theorem reuses the 1.52 `transcribe_5184` circuit rather than introducing a second normalization or I/O path.
+
+Connected Wolfram evidence is 18/18 PASS and SHA-256-bound. Runtime validation contains 20 typed checks.
+
+Normative contract: `../../contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53.md`.
