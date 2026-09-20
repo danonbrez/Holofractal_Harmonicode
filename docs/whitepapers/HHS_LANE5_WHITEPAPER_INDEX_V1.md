@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.54
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.55
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -357,3 +357,16 @@ The runtime exhausts all 65,536 binary16 bit patterns and preserves signed zero,
 Connected Wolfram evidence is 18/18 PASS and SHA-256-bound.
 
 Normative contract: `../../contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md`.
+
+
+## 8I. T64 bijective constructor provenance and exhaustive resolution
+
+[`HHS_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55_V1.md`](HHS_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55_V1.md)
+
+Pass 219 Lane 5 1.55 formalizes `HHS-T5184-004`. It composes the inherited Pass 220 I020 `{x,y,z,w}^3 <-> operation64 <-> 8x8` bijection with the native exact phase product, the reciprocal mod-72 closure law, and the orthogonal `(-1,-1)` anchor.
+
+The theorem exhausts all 64 ordered triplets, preserves 64 unique provenance roots, and requires native C parity across all 64 phase products plus all 5,184 VM5184 addresses.
+
+Connected Wolfram evidence is 18/18 PASS.
+
+Normative contract: `../../contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md`.
