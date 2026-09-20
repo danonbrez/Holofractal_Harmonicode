@@ -528,3 +528,61 @@ hhs_runtime/harmonicode_directed_constraint_semantics_v1.py
 Normative contract:
 
 contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md
+
+
+---
+
+## 16. BigInt nested transcription manifold
+
+The canonical fixed-width 5,184-character BigInt serialization is an executable transcription surface rather than a passive decimal string around a second codec.
+
+Pass 219 Lane 5 1.52 exposes one typed operation:
+
+```text
+transcribe_5184
+```
+
+which traverses the inherited serializer in either direction:
+
+```text
+81 exact normalization offsets <-> 5184-character HARMONICODE serialization
+```
+
+For admitted states the read/write roundtrip must be exact. Leading zero state is preserved by the fixed-width 64-character token geometry.
+
+The transcription geometry binds:
+
+```text
+G123 = ((1,2,3),(2,4,6),(3,6,9))
+1+2+3 = 1*2*3 = 6
+6*6 = 36
+sum(1..36) = 666
+666/6 = 111
+(4*3)^2 = 144
+144*36 = 5184 = 72^2 = 81*64
+palindromic lanes = 123321, 246642, 369963
+```
+
+The visible `123321.111` seed is a projection/witness of the complete serialized operand and never replaces that operand.
+
+Rationals, matrices, continued fractions, tensors, ordered phase variables and other nested payloads remain typed boundary objects. The registered universal nesting boundary is:
+
+```harmonicode
+(P=√(pq+(P⁴/AB)))/∆
+```
+
+Every nested object remains under that shared global denominator unless an explicitly registered subordinate boundary law is supplied. Nesting does not grant independent scalar-normalization, commutation, or substitution authority.
+
+The inherited directed constraint semantics remain active at every nested level, and the inherited ordered identities remain distinct.
+
+Executable reference:
+
+```text
+hhs_runtime/harmonicode_lane5_bigint_transcription_v1.py
+```
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52.md
+```

@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.49
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.52
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -316,3 +316,16 @@ The cycle also makes ordered orientation executable: AB remains distinct from BA
 The predecessor scalar diagnostics remain diagnostic projections only. The successor coverage label is SOURCE_COMPLETE_FORMALIZATION_IN_PROGRESS: remaining work is executable formalization of every verbatim source symbol/operator/edge, not a downgrading of the governing theorem.
 
 Normative contract: ../../contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md
+
+
+## 8F. BigInt nested transcription manifold
+
+[`HHS_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52_V1.md`](HHS_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52_V1.md)
+
+Pass 219 Lane 5 1.52 composes the already-implemented 5,184-character BigInt serializer, Lo Shu normalization, G123/H36 palindromic precision geometry and Pass 220 I019 full-state RNA/Hash72/DNA/qudit phase lock behind one bidirectional `transcribe_5184` callable. It proves fixed-width roundtrip and leading-zero preservation without introducing parallel ingress/egress algorithms.
+
+The cycle also freezes the universal nested boundary denominator `(P=√(pq+(P⁴/AB)))/∆` for registered rational, matrix, continued-fraction, tensor and ordered phase objects. Nested payloads retain their type and inherited noncommutative orientation while sharing the same global denominator.
+
+Connected Wolfram evidence is 15/15 PASS and is SHA-256-bound to its source/output files.
+
+Normative contract: `../../contracts/pass219/PASS_219_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52.md`.
