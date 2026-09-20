@@ -42,20 +42,18 @@ jobs:
                   raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
           PY
 
-      - name: Compile exact C ABI with strict warnings
+      - name: Build cumulative exact ABI with strict repository authority
         run: |
           mkdir -p /tmp/pass219-rna-retrieval
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Run 1.13 C authenticated retrieval conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_state_retrieval_1_13.c \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-c
           /tmp/pass219-rna-retrieval/test-c
 
@@ -64,7 +62,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_state_retrieval_1_13.cpp \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-cpp
           /tmp/pass219-rna-retrieval/test-cpp
 
@@ -73,7 +71,7 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-112-c
           /tmp/pass219-rna-retrieval/test-112-c
 
@@ -82,7 +80,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.cpp \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-112-cpp
           /tmp/pass219-rna-retrieval/test-112-cpp
 
@@ -91,7 +89,7 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-111-c
           /tmp/pass219-rna-retrieval/test-111-c
 
@@ -100,6 +98,6 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.c \
-            /tmp/pass219-rna-retrieval/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-retrieval/test-110-c
           /tmp/pass219-rna-retrieval/test-110-c
