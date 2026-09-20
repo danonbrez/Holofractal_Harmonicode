@@ -586,3 +586,47 @@ Normative contract:
 ```text
 contracts/pass219/PASS_219_LANE5_BIGINT_NESTED_TRANSCRIPTION_1_52.md
 ```
+
+
+---
+
+## 17. Reciprocal phase-boundary theorem
+
+Pass 219 Lane 5 1.53 registers `HHS-T5184-002` as a typed native theorem over the existing BigInt transcription circuit.
+
+The governing source laws are:
+
+```harmonicode
+(P=√(pq+(P⁴/AB)))/∆
+P=(Bx^5184)/∆
+∞∆=Bx^5184
+R(∞)=∆
+R(∆)=x
+x=Γ_x
+Γ_x=u^(18/72mod72)*u^36
+P≠∞
+(P/∞)^(x^2)=P
+∆=(∞^(x^2))/∆
+P=P/∆
+Cancel_∆(S)=forbidden
+```
+
+`∆` is the universal denominator/boundary and is never cancelled. A shared `∆` boundary does not authorize the rewrite `P=∞`.
+
+`R` is a directed reciprocal traversal, not ordinary scalar inversion. The implementation therefore does not infer `R²=id`, `∆^-1*∆=1`, or `∆*∆^-1=1`.
+
+`Γ_x` preserves its source order exactly. The factors `u^(18/72mod72)` and `u^36` may not be combined or reordered without an explicit native rule.
+
+The P-state boundary fixed point `P=P/∆` is a native boundary relation. It does not imply `∆=1` and does not authorize denominator removal.
+
+Executable reference:
+
+```text
+hhs_runtime/harmonicode_lane5_reciprocal_phase_boundary_v1.py
+```
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53.md
+```
