@@ -1,0 +1,166 @@
+name: Pass 219 Lane 5 Rational P-Manifold 1.50
+
+on:
+  push:
+    branches:
+      - main
+      - pass219/lane5-rational-p-manifold-1-50
+    paths:
+      - 'contracts/pass219/PASS_219_RATIONAL_P_MANIFOLD_LANE5_1_50.md'
+      - 'docs/whitepapers/HHS_RATIONAL_P_MANIFOLD_ORDERED_PHASE_V1.md'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.wl'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.output.json'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.receipt.json'
+      - 'tests/pass219/test_hhs_rational_p_manifold_lane5_v1.py'
+      - 'tests/pass219/test_pass219_rational_p_manifold_lane5_1_50.c'
+      - 'docs/operations/restart/PASS_219_LANE5_RATIONAL_P_MANIFOLD_1_50_RESTART_20260920.md'
+      - '.github/workflows/pass219-lane5-rational-p-manifold-1-50.yml'
+  pull_request:
+    branches:
+      - main
+      - pass219/lane5-t5184-phase-support-1-49
+    paths:
+      - 'contracts/pass219/PASS_219_RATIONAL_P_MANIFOLD_LANE5_1_50.md'
+      - 'docs/whitepapers/HHS_RATIONAL_P_MANIFOLD_ORDERED_PHASE_V1.md'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.wl'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.output.json'
+      - 'evidence/pass219/hhs_rational_p_manifold_lane5_v1.receipt.json'
+      - 'tests/pass219/test_hhs_rational_p_manifold_lane5_v1.py'
+      - 'tests/pass219/test_pass219_rational_p_manifold_lane5_1_50.c'
+      - 'docs/operations/restart/PASS_219_LANE5_RATIONAL_P_MANIFOLD_1_50_RESTART_20260920.md'
+      - '.github/workflows/pass219-lane5-rational-p-manifold-1-50.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  exact-rational-p-manifold:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify stacked 1.49 ancestry
+        run: git merge-base --is-ancestor acebbe6ed4a12f667b46f3f6c1c4a6b37f899c94 HEAD
+
+      - name: Verify sealed Wolfram proof and negative guards
+        run: |
+          python -m pytest -q tests/pass219/test_hhs_rational_p_manifold_lane5_v1.py
+
+      - name: Reject floating canonical arithmetic in 1.50 native gate
+        run: |
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b'             tests/pass219/test_pass219_rational_p_manifold_lane5_1_50.c
+
+      - name: Build cumulative exact ABI
+        run: |
+          make -f GNUmakefile clean
+          make -f GNUmakefile c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile and execute 373248 native hydration cycles
+        run: |
+          mkdir -p artifacts/pass219/1.50
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_rational_p_manifold_lane5_1_50.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread             -Wl,-rpath,"$PWD/hhs_runtime/builds"             -o /tmp/test-pass219-rational-p-manifold-1-50
+          /tmp/test-pass219-rational-p-manifold-1-50             | tee artifacts/pass219/1.50/native-rational-p-manifold.txt
+          grep -F 'PASS219_RATIONAL_P_MANIFOLD_LANE5_1_50_PASS'             artifacts/pass219/1.50/native-rational-p-manifold.txt
+          head -n 1 artifacts/pass219/1.50/native-rational-p-manifold.txt             | python -m json.tool             > artifacts/pass219/1.50/native-rational-p-manifold.json
+
+      - name: Regress inherited 1.49 full classifier
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_t5184_phase_support_1_49.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread             -Wl,-rpath,"$PWD/hhs_runtime/builds"             -o /tmp/test-pass219-lane5-t5184-1-49
+          /tmp/test-pass219-lane5-t5184-1-49             > artifacts/pass219/1.50/inherited-1-49.txt
+          grep -F 'PASS219_LANE5_T5184_PHASE_SUPPORT_1_49_PASS'             artifacts/pass219/1.50/inherited-1-49.txt
+
+      - name: Run required repository baseline suites
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: ./hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          set -o pipefail
+          python hhs_runtime_smoke_tests_v1.py             | tee artifacts/pass219/1.50/runtime-smoke.txt
+          python hhs_regression_suite_v1.py             | tee artifacts/pass219/1.50/regression-suite.txt
+          python hhs_v1_bundle_runner.py             | tee artifacts/pass219/1.50/bundle-runner.txt
+          make -C native_projects/hhs_pass190_operation_fabric validate             | tee artifacts/pass219/1.50/pass190-validate.txt
+
+      - name: Seal 1.50 execution summary
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('artifacts/pass219/1.50')
+          native = json.loads((root / 'native-rational-p-manifold.json').read_text())
+          assert native['result'] == 'PASS'
+          assert native['P_count'] == 72
+          assert native['state_slot_checks'] == 373248
+          assert native['phase_bearing_checks'] == 93312
+          assert native['non_phase_checks'] == 279936
+          assert native['bridge_correction'] == '1'
+          assert native['candidate_only'] is True
+
+          for name in (
+              'runtime-smoke.txt',
+              'regression-suite.txt',
+              'bundle-runner.txt',
+              'pass190-validate.txt',
+              'inherited-1-49.txt',
+          ):
+              path = root / name
+              assert path.is_file() and path.stat().st_size > 0
+
+          summary = {
+              'schema': 'HHS_PASS219_RATIONAL_P_MANIFOLD_LANE5_EVIDENCE_1_50',
+              'source_commit': subprocess.check_output(
+                  ['git', 'rev-parse', 'HEAD'], text=True
+              ).strip(),
+              'result': 'PASS',
+              'P_count': 72,
+              'state_slot_checks': 373248,
+              'phase_bearing_checks': 93312,
+              'non_phase_checks': 279936,
+              'macro_projection': 'p=P-1;q=P+1',
+              'bridge_correction': '1',
+              'ordered_phase_gate': 'independent',
+              'whole_system_single_parameter_status': 'OPEN_FULL_MANIFOLD_OBLIGATION',
+              'repository_baselines_passed': True,
+              'candidate_only': True,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash72_authority': False,
+              'canonical_hash216_authority': False,
+          }
+          canonical = json.dumps(
+              summary, sort_keys=True, separators=(',', ':')
+          ).encode()
+          summary['receipt_sha256'] = sha256(canonical).hexdigest()
+          (root / 'summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-rational-p-manifold-1-50
+          path: artifacts/pass219/1.50/
+          if-no-files-found: error

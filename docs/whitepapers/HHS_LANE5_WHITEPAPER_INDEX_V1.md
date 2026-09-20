@@ -298,3 +298,10 @@ base main @ ce0898979ceaa6d0a33fe00a257e8a71344f8de5
 Locks `I_H`, `O`, `K`, independent `4/4` channel order, exact metrics `2*Sqrt[6]` and `6`, and the anti-flattening rule. The strengthened Wolfram geometric audit is `23/23 PASS`; it executes the complete four-term coupled chain, requires all three equality edges in one candidate state, and cryptographically binds source/output SHA-256 before CI trusts the result. `HMod` remains typed and built-in scalar `Mod` is excluded.
 
 Normative contract: `../../contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md`.
+## 8D. Rational P-manifold and ordered-phase compatibility
+
+[`HHS_RATIONAL_P_MANIFOLD_ORDERED_PHASE_V1.md`](HHS_RATIONAL_P_MANIFOLD_ORDERED_PHASE_V1.md)
+
+Pass 219 Lane 5 1.50 separates the inherited rational macro projection from the independent ordered `q=-1` phase gate and executes their compatibility across 72 exact nonzero P states times all 5,184 VM81/operation64 positions: `373,248 / 373,248 PASS`. The Wolfram negative guards also prove that the isolated bridge does not itself establish single-parameter authority and that rationality alone does not force the phase gate. Full-source unique closure from `P` remains an explicit typed-manifold obligation.
+
+Normative contract: `../../contracts/pass219/PASS_219_RATIONAL_P_MANIFOLD_LANE5_1_50.md`.
