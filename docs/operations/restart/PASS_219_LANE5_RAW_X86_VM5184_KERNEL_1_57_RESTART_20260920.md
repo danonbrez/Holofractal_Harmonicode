@@ -52,3 +52,32 @@ No tail padding, coercion, or fabricated bytes.
 3. compile and execute native 1.57 conformance;
 4. rerun dependency-scoped inherited raw5184/T64 byte membrane tests;
 5. freeze exact green head/run.
+
+
+## Validation closure — GREEN
+
+Validated implementation head:
+
+```text
+head = 3b6003965ae31abd6b85fc29ebf5039385f040ff
+workflow = Pass 219 Lane 5 Raw x86 VM5184 Kernel 1.57
+run = 35517982817
+result = SUCCESS
+```
+
+Validated:
+
+```text
+shared exact ABI build = PASS
+new native symbols exported = PASS
+native 1.57 conformance = PASS
+648-byte raw ingress/egress identity = PASS
+5184/5184 VM5184 address encode/decode = PASS
+2-frame stateful stream identity = PASS
+incomplete-tail fail-closed = PASS
+inherited global raw5184 native regression = PASS
+```
+
+The implementation therefore directly binds the raw x86_64 exact ABI membrane to the inherited VM5184 dynamic circuit without a format-translation or floating-point layer.
+
+Subsequent changes to this restart record or RUNTIME_FLOW documentation do not alter the validated executable dependency surface.
