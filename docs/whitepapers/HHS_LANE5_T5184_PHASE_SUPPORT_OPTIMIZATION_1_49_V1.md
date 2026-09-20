@@ -242,3 +242,7 @@ Acceptance requires:
 The normative contract is:
 
 `contracts/pass219/PASS_219_LANE5_T5184_PHASE_SUPPORT_OPTIMIZER_1_49.md`.
+
+## Geometric I / O / K constant closure
+
+Lane 5 1.49 inherits `PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1`. Ordered phase geometry MUST NOT be scalarized. The paired fourth-order witnesses remain independently derived, `HMod` remains typed, and Wolfram derives the fundamental `O->Pi` and `K->E` geometric projections. Audit: `11/11 PASS`.

@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V1",
+  "semantics": "typed_geometric_non_scalar",
+  "allPassed": true,
+  "checkCount": 11,
+  "passedCount": 11,
+  "tests": {
+    "independent_order_xy_is_4": true,
+    "independent_order_yx_is_4": true,
+    "generic_base_specializes_exactly": true,
+    "generic_phase_specializes_exactly": true,
+    "HMod_channel_swap_covariance": true,
+    "builtin_Mod_not_invoked": true,
+    "no_machine_real_in_constructor": true,
+    "I_geometric_square": true,
+    "O_fundamental_half_turn_is_Pi": true,
+    "K_fundamental_positive_base_is_E": true,
+    "geometric_Euler_closure": true
+  },
+  "details": {
+    "phase_orders": [4, 4],
+    "I_operator": [[0, -1], [1, 0]],
+    "I_square": [[-1, 0], [0, -1]],
+    "O_branch": "O == Pi on 0 < O < 2 Pi",
+    "K_branch": "K == E on K > 0 and 0 < Log[K] < 2",
+    "base_metric": "2*Sqrt[6]",
+    "phase_metric": 6,
+    "mod_semantics": "HMod held as typed geometric membrane; Wolfram built-in Mod not invoked"
+  }
+}

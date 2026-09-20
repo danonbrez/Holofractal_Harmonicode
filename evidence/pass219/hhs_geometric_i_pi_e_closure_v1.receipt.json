@@ -1,0 +1,11 @@
+{
+  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_RECEIPT_V1",
+  "executed_in": "connected Wolfram Language kernel",
+  "semantics": "typed_geometric_non_scalar",
+  "input_path": "evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl",
+  "output_path": "evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json",
+  "check_count": 11,
+  "passed_count": 11,
+  "all_passed": true,
+  "parent_head": "b13d795f58aa8fca4e7bb0f3ed6f808f22f561ea"
+}

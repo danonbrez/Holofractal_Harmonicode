@@ -21,6 +21,13 @@ on:
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
       - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'
+      - 'tests/pass219/test_hhs_geometric_i_pi_e_constants_v1.py'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.receipt.json'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl'
+      - 'docs/whitepapers/HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md'
+      - 'contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.json'
+      - 'contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md'
       - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
   pull_request:
     branches:
@@ -42,6 +49,13 @@ on:
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py'
       - 'tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_native_v1.c'
       - 'docs/operations/restart/PASS_219_LANE5_T5184_PHASE_SUPPORT_1_49_RESTART_20260919.md'
+      - 'tests/pass219/test_hhs_geometric_i_pi_e_constants_v1.py'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.receipt.json'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json'
+      - 'evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl'
+      - 'docs/whitepapers/HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md'
+      - 'contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.json'
+      - 'contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md'
       - '.github/workflows/pass219-lane5-t5184-phase-support-1-49.yml'
   workflow_dispatch:
 
@@ -95,6 +109,21 @@ jobs:
               4,5,6,7,16,17,18,19,44,45,46,47,56,57,58,59
           ]
           assert output['countsVM81'] == {'xy':324,'yx':324,'zw':324,'wz':324}
+          PY
+
+      - name: Verify locked geometric I/O/K constants
+        run: |
+          python -m pytest -q tests/pass219/test_hhs_geometric_i_pi_e_constants_v1.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json').read_text())
+          assert data['allPassed'] is True
+          assert data['checkCount']==data['passedCount']==11
+          assert data['tests']['builtin_Mod_not_invoked'] is True
+          assert data['tests']['I_geometric_square'] is True
+          assert data['tests']['O_fundamental_half_turn_is_Pi'] is True
+          assert data['tests']['K_fundamental_positive_base_is_E'] is True
           PY
 
       - name: Reject approximate or authority escalation

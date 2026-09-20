@@ -218,3 +218,15 @@ Commit:
 adds this restart checkpoint file itself to both the push and pull-request path filters for the 1.49 workflow. Therefore this checkpoint update schedules the repaired 1.49 gate on the actual latest PR head rather than relying on a green or queued run from an ancestor commit.
 
 The final acceptance rule remains unchanged: do not merge until the latest-head 1.49 gate and required integration gates are green.
+
+## Geometric I / O / K constants update
+
+**Parent branch head:** `b13d795f58aa8fca4e7bb0f3ed6f808f22f561ea`
+**Branch:** `pass219/lane5-t5184-phase-support-1-49`
+**Merge target:** `main`
+
+Added the locked typed constants, machine-readable contract, 11/11 Wolfram certificate, CI verifier, and white-paper/compendium updates. No VM81/Hash72/Hash216 authority changed.
+
+Completed validation: connected Wolfram Language exact geometric audit `11/11 PASS`, including independent 4/4 orders, specialization, HMod covariance, built-in Mod exclusion, no machine-real constructor terms, `I_H^2=-Identity(2)`, `O->Pi`, `K->E`, and exponential closure.
+
+Remaining: latest-head 1.49, Open Stack, and Pass 217 integration CI, then exact-main verification after merge. Queued CI is not an implementation blocker; repair forward only substantive failures.

@@ -290,3 +290,11 @@ The Lane 5 1.49 T5184 ordered phase-support optimization begins from repaired ex
 ```text
 base main @ ce0898979ceaa6d0a33fe00a257e8a71344f8de5
 ```
+
+## 8C. Geometric I / Pi / E HARMONICODE closure
+
+[`HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md`](HHS_GEOMETRIC_I_PI_E_HARMONICODE_CLOSURE_V1.md)
+
+Locks `I_H`, `O`, `K`, independent `4/4` channel order, exact metrics `2*Sqrt[6]` and `6`, and the anti-flattening rule. The Wolfram geometric audit is `11/11 PASS`; `HMod` remains typed and built-in scalar `Mod` is excluded.
+
+Normative contract: `../../contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1.md`.
