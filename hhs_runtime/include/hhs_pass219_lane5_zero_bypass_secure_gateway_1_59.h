@@ -25,7 +25,7 @@ typedef struct HHSExactPass219Lane5ZeroBypassGatewayDescriptorV1 {
     uint32_t hydration_lanes;
     uint32_t phase_modulus;
 
-    uint8_t single_public_mutation_gateway;
+    uint8_t single_production_mutation_path;
     uint8_t linux_api_redirect_required;
     uint8_t raw_x86_ingress_allowed;
     uint8_t ieee754_payload_passthrough_allowed;
