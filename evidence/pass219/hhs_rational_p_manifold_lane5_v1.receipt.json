@@ -1,0 +1,24 @@
+{
+  "authority": {
+    "canonical_hash216_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "whole_system_single_parameter_status": "OPEN_FULL_MANIFOLD_OBLIGATION"
+  },
+  "check_summary": {
+    "all_required_positive_checks_passed": true,
+    "bridge_only_grid_cells": 5184,
+    "bridge_only_verified_states": 752,
+    "lane5_state_slot_checks": 373248,
+    "lane5_state_slot_passes": 373248,
+    "macro_P_values": 72
+  },
+  "engine": "Wolfram Language kernel",
+  "output_bytes": 1749,
+  "output_path": "evidence/pass219/hhs_rational_p_manifold_lane5_v1.output.json",
+  "output_sha256": "d9efc95da116fd3353817c091ec398f6c9207af53144cd72e3ce36a5b7b6e071",
+  "schema": "HHS_PASS219_RATIONAL_P_MANIFOLD_LANE5_WOLFRAM_RECEIPT_V1",
+  "source_bytes": 5404,
+  "source_path": "evidence/pass219/hhs_rational_p_manifold_lane5_v1.wl",
+  "source_sha256": "a3179b6b348ef655b7aa3f6da9535735c786a1ce0c6fc91878d290a8bf4bf477"
+}
