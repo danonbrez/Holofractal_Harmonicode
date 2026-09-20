@@ -42,18 +42,20 @@ jobs:
                   raise SystemExit(f'forbidden authority token {match.group(1)!r} in {path}')
           PY
 
-      - name: Build cumulative exact ABI with strict repository authority
+      - name: Build production ABI and internal hidden-authority regression archive
         run: |
           mkdir -p /tmp/pass219-rna-lower
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
+          bash .github/scripts/build_pass219_exact_internal_archive.sh \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a /tmp/pass219-rna-lower/objects
 
       - name: Run 1.12 C stable lowering conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-c
           /tmp/pass219-rna-lower/test-c
 
@@ -62,7 +64,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.cpp \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-cpp
           /tmp/pass219-rna-lower/test-cpp
 
@@ -71,7 +73,7 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-111-c
           /tmp/pass219-rna-lower/test-111-c
 
@@ -80,7 +82,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.cpp \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-111-cpp
           /tmp/pass219-rna-lower/test-111-cpp
 
@@ -89,7 +91,7 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.c \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-110-c
           /tmp/pass219-rna-lower/test-110-c
 
@@ -98,6 +100,6 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.cpp \
-            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            /tmp/pass219-rna-lower/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna-lower/test-110-cpp
           /tmp/pass219-rna-lower/test-110-cpp
