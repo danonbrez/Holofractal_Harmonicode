@@ -73,3 +73,27 @@ generation-integrity run 35520676517:
 The protected environmental header and authority export map are now resealed, the internal 1.32 mutator is explicitly local, and the dedicated positive lane builds OpenSSL 3.5 before requiring ML-DSA.
 
 No additional executable change is required merely because CI is queued. On a real failure, repair forward only the affected 1.59 surface.
+
+## Repair-forward cycle — inherited regression reconciliation
+
+The exact 1.59 repair head before this checkpoint-only documentation commit is:
+
+```text
+68a2374a3ebe860e2e53f6bebb98c0767dc67d52
+```
+
+Repairs applied:
+
+- converted inherited UQCEL positive-path regressions from obsolete public mutation expectations to exact validation-only assertions;
+- preserved fail-closed compatibility behavior: valid legacy candidates return invariant failure and cannot commit a VM81 frame or mint Hash72/Hash216 lineage;
+- preserved Fibonacci descriptor validation while removing the obsolete expectation that the compatibility facade can commit;
+- changed the Universal Quantization gate to require validation/hash exports while explicitly rejecting public `hhs_exact_vm81_admit_uqcel` and `hhs_exact_pass219_admit_composed` mutation exports;
+- routed inherited Pass205..Pass200c exact-ABI regression binaries through the existing hidden-authority static archive rather than re-exporting private PQC/RNA/VM81 symbols.
+
+The previously observed failures were therefore classified as regression-harness divergence from the sealed authority topology, not as grounds to weaken the zero-bypass membrane.
+
+Validation remaining:
+
+- consume the new PR #519 exact-head workflow results;
+- repair only demonstrated failures from the new head;
+- once dependency-scoped gates are green, freeze receipts and return control without merging unless explicitly authorized.
