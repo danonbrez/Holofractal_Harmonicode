@@ -103,3 +103,40 @@ No new canonical VM81 mutation, Hash72 mint, Hash216 persistence, float authorit
 ## Next action
 
 Run the exact-head 1.52 workflow. Repair forward only affected failures. Keep the stacked PR draft until 1.51 and its predecessor obligations close.
+
+
+## Post-stack checkpoint
+
+Parent 1.51 repair validation is now green:
+
+```text
+commit = 1b2e7d218af6d8316f10e051e4e67cd2d52c6984
+workflow = Pass 219 Lane 5 Directed Constraint Semantics 1.51
+run = 35510283459
+result = SUCCESS
+```
+
+The 1.52 draft PR is #512. Its initial stacked head before this restart update was:
+
+```text
+615d7f058a0d8a7311dbdb528c75263098de2615
+```
+
+Validation already executed outside repository CI:
+
+```text
+connected Wolfram structural witness = 15/15 PASS
+source/output digests frozen in receipt
+```
+
+Validation remaining at this checkpoint:
+
+```text
+1.52 dependency-scoped GitHub Actions gate
+new runtime/test surface
+inherited I019 Python phase-lock regression
+inherited 1.51 Python directed-constraint regression
+sealed receipt replay in CI
+```
+
+No C/ABI source changed. Do not rerun unrelated full hydration workloads unless a later change impacts those dependencies.
