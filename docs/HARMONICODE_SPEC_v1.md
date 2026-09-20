@@ -501,3 +501,30 @@ The compiler is forbidden from accepting a program as executable unless:
 8. Global invariants hold.
 
 Failure emits quarantine, not implicit success.
+
+
+---
+
+## 15. Directed recursive constraint semantics
+
+HARMONICODE equality is a directional constraint, not a symmetric substitution rule.
+
+For every native edge LHS = RHS:
+
+RHS enforced closure -> admissible LHS manifold -> local values -> emergent local tensor asymmetry.
+
+The RHS is true by constraint enforcement from the perspective of the dependent LHS. Local asymmetries may be necessary consequences of closure; they must not be modeled as the cause of the global RHS law.
+
+This direction applies recursively at every nested expression node. For N/D, the numerator is the local LHS branch and denominator the local RHS branch; both preserve their own nested tensor structure.
+
+Ordered expressions retain source identity. In AB=P^4, the parent dependency is P^4 -> AB, while the local product has A=LHS and B=RHS. AB and BA are distinct unless an explicit native equality gate proves otherwise. The same identity rule applies to A/B and B/A as reciprocal ordered objects.
+
+Metric equations such as a^2=1, b^2=2 and c^2=3 are projection statements. The scalar is a one-dimensional readout of the manifold geometry, not a replacement mapping. Projection equality never grants native substitution authority.
+
+Executable reference:
+
+hhs_runtime/harmonicode_directed_constraint_semantics_v1.py
+
+Normative contract:
+
+contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md

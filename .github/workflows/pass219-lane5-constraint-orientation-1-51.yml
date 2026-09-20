@@ -1,0 +1,162 @@
+name: Pass 219 Lane 5 Directed Constraint Semantics 1.51
+
+on:
+  push:
+    branches:
+      - main
+      - pass219/lane5-directed-constraint-semantics-1-51
+    paths:
+      - 'hhs_runtime/harmonicode_directed_constraint_semantics_v1.py'
+      - 'tests/pass219/test_harmonicode_directed_constraint_semantics_v1.py'
+      - 'contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.wl'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.output.json'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.receipt.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - '.github/workflows/pass219-lane5-constraint-orientation-1-51.yml'
+  pull_request:
+    branches:
+      - main
+      - pass219/lane5-rational-p-manifold-1-50
+    paths:
+      - 'hhs_runtime/harmonicode_directed_constraint_semantics_v1.py'
+      - 'tests/pass219/test_harmonicode_directed_constraint_semantics_v1.py'
+      - 'contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.wl'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.output.json'
+      - 'evidence/pass219/hhs_constraint_orientation_v1.receipt.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - '.github/workflows/pass219-lane5-constraint-orientation-1-51.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  directed-constraint-semantics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify 1.50 ancestry
+        run: git merge-base --is-ancestor b34d13de36d371e19e87de7e95ad2df9c5592a36 HEAD
+
+      - name: Validate directed constraint semantics
+        run: |
+          python -m pytest -q tests/pass219/test_harmonicode_directed_constraint_semantics_v1.py
+          PYTHONPATH="$PWD" python -m hhs_runtime.harmonicode_directed_constraint_semantics_v1 > /tmp/hhs-1-51.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/hhs-1-51.json'))
+          assert d['result']=='PASS'
+          assert d['check_count']==13
+          assert all(d['checks'].values())
+          assert d['unresolved_statement_count']==0
+          PY
+
+      - name: Verify sealed Wolfram witness
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path('evidence/pass219/hhs_constraint_orientation_v1.receipt.json').read_text())
+          for kind in ('source','output'):
+              path=Path(receipt[f'{kind}_path'])
+              raw=path.read_bytes()
+              assert len(raw)==receipt[f'{kind}_bytes']
+              assert sha256(raw).hexdigest()==receipt[f'{kind}_sha256']
+          output=json.loads(Path(receipt['output_path']).read_text())
+          assert receipt['result']=='PASS'
+          assert receipt['checks_passed']==receipt['checks_total']==7
+          assert output['status']=='PASS'
+          assert all(output['checks'].values())
+          assert output['AB_P4']['parent_dependency']=='P^4_TO_AB'
+          assert output['AB_P4']['BA_native_identity'] is False
+          assert output['rational']['reciprocal_noncommutative'] is True
+          assert output['projection']['substitution_authority'] is False
+          assert output['local_asymmetry_generates_global_rhs'] is False
+          PY
+
+      - name: Build cumulative exact ABI
+        run: |
+          make -f GNUmakefile clean
+          make -f GNUmakefile c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Replay inherited 373248 hydration cycles
+        run: |
+          mkdir -p artifacts/pass219/1.51
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rational_p_manifold_lane5_1_50.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/test-pass219-1-51
+          /tmp/test-pass219-1-51 | tee artifacts/pass219/1.51/inherited-hydration.txt
+          grep -F 'PASS219_RATIONAL_P_MANIFOLD_LANE5_1_50_PASS' artifacts/pass219/1.51/inherited-hydration.txt
+
+      - name: Run required repository baselines
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: ./hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          set -o pipefail
+          python hhs_runtime_smoke_tests_v1.py | tee artifacts/pass219/1.51/runtime-smoke.txt
+          python hhs_regression_suite_v1.py | tee artifacts/pass219/1.51/regression-suite.txt
+          python hhs_v1_bundle_runner.py | tee artifacts/pass219/1.51/bundle-runner.txt
+          make -C native_projects/hhs_pass190_operation_fabric validate | tee artifacts/pass219/1.51/pass190-validate.txt
+
+      - name: Seal 1.51 summary
+        run: |
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          summary={
+            'schema':'HHS_PASS219_LANE5_DIRECTED_CONSTRAINT_SEMANTICS_EVIDENCE_1_51',
+            'result':'PASS',
+            'rhs_to_lhs':True,
+            'recursive_orthogonal_constraints':True,
+            'ab_ba_distinct':True,
+            'ordered_reciprocal_rationals':True,
+            'scalar_substitution_authority':False,
+            'local_asymmetry_generates_global_rhs':False,
+            'inherited_hydration_cycles':373248,
+            'source_complete_formalization_status':'IN_PROGRESS',
+            'candidate_only':True,
+            'canonical_vm81_mutation_authority':False,
+            'canonical_hash72_authority':False,
+            'canonical_hash216_authority':False,
+          }
+          canonical=json.dumps(summary,sort_keys=True,separators=(',',':')).encode()
+          summary['receipt_sha256']=sha256(canonical).hexdigest()
+          Path('artifacts/pass219/1.51/summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-directed-constraint-semantics-1-51
+          path: artifacts/pass219/1.51/
+          if-no-files-found: error

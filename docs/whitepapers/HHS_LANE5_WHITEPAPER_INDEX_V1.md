@@ -305,3 +305,14 @@ Normative contract: `../../contracts/pass219/PASS_219_GEOMETRIC_I_PI_E_CONSTANTS
 Pass 219 Lane 5 1.50 separates the inherited rational macro projection from the independent ordered `q=-1` phase gate and executes their compatibility across 72 exact nonzero P states times all 5,184 VM81/operation64 positions: `373,248 / 373,248 PASS`. The Wolfram negative guards also prove that the isolated bridge does not itself establish single-parameter authority and that rationality alone does not force the phase gate. Full-source unique closure from `P` remains an explicit typed-manifold obligation.
 
 Normative contract: `../../contracts/pass219/PASS_219_RATIONAL_P_MANIFOLD_LANE5_1_50.md`.
+
+
+## 8E. Directed recursive constraint semantics
+
+Pass 219 Lane 5 1.51 formalizes the native dependency law used by the governing HARMONICODE manifold. Every equality edge is recorded RHS-to-LHS; the same direction recurses through nested products, powers, and numerator/denominator rational frames. Local tensor asymmetry is represented as a consequence of closure and is explicitly forbidden from being promoted into the cause of the global RHS law.
+
+The cycle also makes ordered orientation executable: AB remains distinct from BA, A/B remains distinct from B/A, and scalar metric values a^2=1, b^2=2, c^2=3 are emitted as pi_1D projection witnesses without native substitution authority.
+
+The predecessor scalar diagnostics remain diagnostic projections only. The successor coverage label is SOURCE_COMPLETE_FORMALIZATION_IN_PROGRESS: remaining work is executable formalization of every verbatim source symbol/operator/edge, not a downgrading of the governing theorem.
+
+Normative contract: ../../contracts/pass219/PASS_219_CONSTRAINT_ORIENTATION_1_51.md

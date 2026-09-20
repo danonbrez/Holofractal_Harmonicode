@@ -1,0 +1,14 @@
+{
+  "canonical_mutation_authority": false,
+  "checks_passed": 7,
+  "checks_total": 7,
+  "output_bytes": 772,
+  "output_path": "evidence/pass219/hhs_constraint_orientation_v1.output.json",
+  "output_sha256": "5ba13f3639160d2a944cf858b098e14b01f02cc6b6491935c861ec0fb1e2d952",
+  "result": "PASS",
+  "schema": "HHS_PASS219_CONSTRAINT_ORIENTATION_WOLFRAM_RECEIPT_V1",
+  "source_bytes": 1306,
+  "source_path": "evidence/pass219/hhs_constraint_orientation_v1.wl",
+  "source_sha256": "a294cc69be8995ce651500492b6cf5cae8ada2487355b76050e7f21f4bf7ce3c",
+  "symbolic_globals_intentionally_held": true
+}
