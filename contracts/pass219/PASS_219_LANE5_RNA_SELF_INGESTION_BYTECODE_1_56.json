@@ -1,0 +1,79 @@
+{
+  "hhs_exact_experiment": {
+    "experiment_id": "HHS-X5184-001",
+    "title": "RNA Self-Ingestion Through Typed and Untyped Bytecode Numbers",
+    "status": "EXECUTED_EXACT",
+    "parent_invariant": "HHS-T5184-004",
+    "inputs": {
+      "state_count": 64,
+      "alphabet": [
+        "x",
+        "y",
+        "z",
+        "w"
+      ],
+      "word_length": 3
+    },
+    "typed_native_path": {
+      "encoding": "kappa -> operation64 -> one byte",
+      "image_size": 64,
+      "fixed_point_count": 64,
+      "provenance_preserved": true
+    },
+    "external_numeric_projection": {
+      "id": "EXPERIMENTAL_NONCANONICAL_ASCII_BIGINT_MOD64",
+      "definition": "BigInt(ASCII bytes) mod 64",
+      "exact_law": "256 mod 64 = 0 => N mod64 = final_byte mod64",
+      "image_size": 4,
+      "projected_operations": [
+        55,
+        56,
+        57,
+        58
+      ],
+      "fixed_points": [
+        "wyw",
+        "wzx",
+        "wzy",
+        "wzz"
+      ],
+      "basin_counts": {
+        "wyw": 16,
+        "wzx": 16,
+        "wzy": 16,
+        "wzz": 16
+      },
+      "maximum_transient_length": 1,
+      "cycle_lengths": [
+        1
+      ],
+      "canonical_authority": false
+    },
+    "inherited_resolution": {
+      "theorem_id": "HHS-T5184-004",
+      "input_count": 64,
+      "resolved_count": 64,
+      "terminal_root": [
+        -1,
+        -1
+      ],
+      "unique_postprojection_operation64": 4
+    },
+    "evidence": {
+      "runtime_checks": "15/15",
+      "wolfram_checks": "18/18",
+      "wolfram_source_sha256": "9f691bd9d0c636a698a241ed37321e20189965caff8bf486e9f95d0563118c6f",
+      "wolfram_output_sha256": "fb9ee9dad7af534b3e125a15eda994ebcd09b8bbb912274855b87c11a0452699",
+      "native_byte_membrane_payload_groups": 3,
+      "native_byte_membrane_words": 64
+    },
+    "authority": {
+      "external_ascii_projection_canonical_authority": false,
+      "byte_execution_authority": false,
+      "canonical_vm81_mutation_authority": false,
+      "canonical_hash72_authority": false,
+      "canonical_hash216_authority": false,
+      "canonical_persistence_authority": false
+    }
+  }
+}
