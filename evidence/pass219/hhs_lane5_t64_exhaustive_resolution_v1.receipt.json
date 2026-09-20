@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS219_LANE5_T64_EXHAUSTIVE_RESOLUTION_WOLFRAM_RECEIPT_V1",
+  "theorem_id": "HHS-T5184-004",
+  "result": "PASS",
+  "checks_passed": 18,
+  "checks_total": 18,
+  "source_path": "evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.wl",
+  "source_bytes": 3917,
+  "source_sha256": "d7ef7a9bc8beeb40dfdbc114f5c0f2f0d0d711672524cd979a884d86362c977c",
+  "output_path": "evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.output.json",
+  "output_bytes": 769,
+  "output_sha256": "654a95a4ff3c737fc5066d1ab3866fc30d16a30459090be6029963d46022a1ae",
+  "execution": "connected Wolfram Language evaluator",
+  "note": "Exact integer/Boolean/provenance proof over all 64 constructor states."
+}
