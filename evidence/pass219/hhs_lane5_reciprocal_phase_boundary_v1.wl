@@ -97,8 +97,8 @@ result = <|
     "reciprocal_chain" -> "R(Infinity)=Delta;R(Delta)=x",
     "gamma_x" -> "Gamma_x=u^(18/72mod72)*u^36",
     "p_not_infinity" -> "P!=Infinity",
-    "p_scale_closure" -> "(P/Infinity)^x^2=P",
-    "delta_recurrence" -> "Delta=(Infinity^x^2)/Delta",
+    "p_scale_closure" -> "(P/Infinity)^(x^2)=P",
+    "delta_recurrence" -> "Delta=(Infinity^(x^2))/Delta",
     "p_delta_fixed_point" -> "P=P/Delta",
     "delta_cancel" -> "forbidden"
   |>,
