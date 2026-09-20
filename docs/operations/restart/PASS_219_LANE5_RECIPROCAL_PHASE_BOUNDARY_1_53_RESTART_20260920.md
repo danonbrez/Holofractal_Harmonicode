@@ -115,3 +115,26 @@ canonical_hash216_authority
 ## Next action
 
 Run the exact-head 1.53 workflow. Repair forward only dependency-scoped failures. Keep the stack draft until 1.52 and predecessor obligations close. After green, update this restart record with the validated head and workflow run ID.
+
+
+## Stacked predecessor status
+
+The immediate 1.52 parent checkpoint is green:
+
+```text
+parent head = e2f2e3b097b666a1fac45c1f5c14b644a7513919
+workflow = Pass 219 Lane 5 BigInt Nested Transcription 1.52
+run = 35510597138
+result = SUCCESS
+```
+
+Draft stacked PR:
+
+```text
+PR = #513
+title = Pass 219 Lane 5 1.53: reciprocal phase-boundary theorem
+base = pass219/lane5-bigint-nested-transcription-1-52
+initial PR head = f67499ae701991b036ee3186b6223044b8639d38
+```
+
+The parent result is frozen. Do not rerun 1.52 independently unless a later 1.53 repair changes one of its dependencies.
