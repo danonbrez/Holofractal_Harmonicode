@@ -147,7 +147,28 @@ hhs_exact_pass219_vm81_environment_checkpoint_seal(
  * witness before delegating to the hidden 1.31 signed firewall.  Recovery and
  * environment code never owns VM81 or canonical receipt authority.
  */
-HHS_EXACT_PASS219_VM81_ENV_INTERNAL_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
+HHS_EXACT_PASS219_VM81_ENV_INTERNAL_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed_internal(
+    uint32_t pass_number,
+    uint32_t signature_algorithm,
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactPass219RNAAdmissionV1 *out_admission,
+    HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
+    HHSExactPass219VM81PQCSignatureReceiptV1 *out_signature_receipt,
+    HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt
+);
+
+/*
+ * Source-compatible public alias. Pass 219 Lane 5 1.59 interposes this legacy
+ * entry and redirects it through the zero-bypass Lane 5 secure gateway.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     uint32_t pass_number,
     uint32_t signature_algorithm,
     const HHSExactUQCELInputV1 *input,
