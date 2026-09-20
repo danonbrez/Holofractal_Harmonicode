@@ -38,3 +38,38 @@ Dedicated 1.59 and generation-integrity workflows are running for the current im
 ## Next action
 
 Freeze the first exact green 1.59 implementation head/run, update PR #519 with receipts, then return control. Do not merge without explicit authorization.
+
+## Restartable checkpoint — complete 1.59 implementation
+
+Executable/documentation candidate head before this checkpoint-only commit:
+
+```text
+84c02d9eb5b56aab3f33d44f0d1caa786b5aa043
+```
+
+Current external validation:
+
+```text
+Lane 5 Zero Bypass Secure Gateway 1.59 run = 35521117713
+  gate job = 106105256668 (queued at checkpoint)
+  OpenSSL 3.5 positive job = 106105256880 (queued at checkpoint)
+
+Generation Integrity Contract V1 run = 35521117651
+  job = 106105256646 (queued at checkpoint)
+```
+
+Earlier dependency evidence on this cycle:
+
+```text
+1.58 parent run 35518816040 = SUCCESS
+1.59 initial run 35520547763:
+  exact ABI build = PASS
+  dynamic symbol topology = PASS
+  native positive test stopped only at unavailable system ML-DSA provider
+generation-integrity run 35520676517:
+  correctly halted on authorized protected-header drift before reseal
+```
+
+The protected environmental header and authority export map are now resealed, the internal 1.32 mutator is explicitly local, and the dedicated positive lane builds OpenSSL 3.5 before requiring ML-DSA.
+
+No additional executable change is required merely because CI is queued. On a real failure, repair forward only the affected 1.59 surface.
