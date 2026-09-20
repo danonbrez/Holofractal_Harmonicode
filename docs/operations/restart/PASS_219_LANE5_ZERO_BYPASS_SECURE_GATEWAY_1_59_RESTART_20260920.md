@@ -133,3 +133,38 @@ Current exact-head reruns from `084c744fc30cfe21f48d49ba1afac9fdedce05af` includ
 
 These may complete asynchronously. This checkpoint is restartable and does not authorize merging PR #519.
 
+## Repair-forward checkpoint — Pass209 dispatcher membrane
+
+Universal Quantization rerun `35535435234` proved the repository import-path repair and advanced the inherited archive gate through native C/C++ linkage plus Python execution. The next demonstrated failure was:
+
+```text
+PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:HHS_RUNTIME_OS_SOURCE_ONLY
+```
+
+Inspection showed that Pass209's cumulative membrane was checking for the source-only status token in the dispatcher module even though the current cumulative application architecture correctly moved that status into `hhs_backend/runtime_os_source_only_server.py`. The dispatcher still explicitly imports the source-only module for degraded operation and the full application module for normal production.
+
+Repair sequence:
+
+```text
+70a8f6833b7f1840e07858038328246acf82b5d4
+  repair Pass209 membrane to verify:
+    dispatcher -> runtime_os_application_server_full
+    dispatcher -> runtime_os_source_only_server
+    source-only module -> HHS_RUNTIME_OS_SOURCE_ONLY_PUBLIC_ROOT
+
+e0782935f82cd918330b3f77c9bbbfe7f225ba27
+  bind Universal Quantization workflow paths to cumulative membrane modules,
+  cumulative membrane tests, and the hidden-authority archive builder
+```
+
+This is a regression-evidence repair. It does not modify Pass209 runtime dispatch, canonical mutation authority, Lane 5 routing, RNA/PQC/VM81/Hash72 semantics, or HARMONICODE algebra.
+
+Current exact-head validation from `e0782935f82cd918330b3f77c9bbbfe7f225ba27`:
+
+- Universal Quantization `35535570166`: queued at checkpoint;
+- Lane 5 1.59 `35535570186`: queued;
+- Native RNA 1.10 `35535570121`: queued;
+- Generation Integrity `35535570104`: queued.
+
+Previously established green evidence remains valid for unchanged surfaces. Continue only by repairing demonstrated failures; do not reinterpret a harness drift as a canonical HHS limitation.
+
