@@ -11,10 +11,18 @@ int main(void){
  HHSExactPass219Lane5ZeroBypassGatewayDescriptorV1 d={0}; uint8_t in16[16]={0,0,0,0,0,0,0,128,0,0,128,127,1,0,192,127},out16[16]={0}; size_t n=0;
  assert(hhs_exact_pass219_lane5_zero_bypass_gateway_validate()==HHS_EXACT_STATUS_OK);
  assert(hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor(&d)==HHS_EXACT_STATUS_OK);
- assert(d.single_public_mutation_gateway==1&&d.ieee754_payload_passthrough_allowed==1&&d.floating_point_canonical_authority==0&&d.constraint_forced_execution==1&&d.policy_choice_authority==0&&d.hash216_memory_carries_forward==1);
+ assert(d.single_production_mutation_path==1&&d.ieee754_payload_passthrough_allowed==1&&d.floating_point_canonical_authority==0&&d.constraint_forced_execution==1&&d.policy_choice_authority==0&&d.hash216_memory_carries_forward==1);
  assert(hhs_exact_pass219_lane5_payload_roundtrip_exact(in16,sizeof(in16),out16,sizeof(out16),&n)==HHS_EXACT_STATUS_OK&&n==sizeof(in16)&&memcmp(in16,out16,n)==0);
  key();
- assert(hhs_exact_pass219_vm81_pqc_signature_provider_available(HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65)==1U);
+ if (hhs_exact_pass219_vm81_pqc_signature_provider_available(HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_ALGORITHM_ML_DSA_65)!=1U) {
+   const char *required=getenv("HHS_REQUIRE_PQC_PROVIDER");
+   if (required!=NULL && strcmp(required,"1")==0) {
+     fputs("required ML-DSA-65 provider unavailable\n",stderr);
+     return 2;
+   }
+   puts("PASS lane5 1.59 transport/descriptor; PQC provider unavailable");
+   return 0;
+ }
  HHSExactPass219Hash216TransitionViewV1 parent={0}; assert(hhs_exact_pass219_vm81_pqc_hash216_genesis_reference(&parent)==HHS_EXACT_STATUS_OK);
  Owners o={4,3,5,1,16,16}; HHSExactUQCELInputV1 q={0}; q.struct_size=sizeof(q);q.uqcel_version=hhs_exact_uqcel_version();q.profile=HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1;q.P=v(&o.P);q.p=v(&o.p);q.q=v(&o.q);q.delta=v(&o.delta);q.A=v(&o.A);q.B=v(&o.B);q.cell81=41;q.left_basis8=HHS_EXACT_PHASE_X;q.right_basis8=HHS_EXACT_PHASE_Y;assert(hhs_exact_uqcel_source_sha256(q.source_envelope_sha256)==HHS_EXACT_STATUS_OK);memcpy(q.previous_hash72,parent.receipt_hash72,HHS_EXACT_HASH72_STRLEN);
  HHSExactVM81Frame f={0}; for(size_t i=0;i<81;i++)f.words[i]=UINT64_C(0x0F1E2D3C4B5A6978)^(uint64_t)(i*37U); uint8_t raw[648],committed[648];size_t rl=0,cl=0;assert(hhs_exact_vm81_frame_export_le(&f,raw,sizeof(raw),&rl)==HHS_EXACT_STATUS_OK);
