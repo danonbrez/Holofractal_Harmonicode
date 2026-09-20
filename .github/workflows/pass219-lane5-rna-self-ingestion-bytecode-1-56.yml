@@ -1,0 +1,175 @@
+name: Pass 219 Lane 5 RNA Self Ingestion Bytecode 1.56
+
+on:
+  push:
+    branches:
+      - pass219/lane5-rna-self-ingestion-bytecode-1-56
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_rna_self_ingestion_bytecode_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_rna_self_ingestion_bytecode_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_rna_self_ingestion_native_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.md'
+      - 'contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.wl'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-rna-self-ingestion-bytecode-1-56.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-t64-exhaustive-resolution-1-55
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_rna_self_ingestion_bytecode_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_rna_self_ingestion_bytecode_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_rna_self_ingestion_native_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.md'
+      - 'contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.wl'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-rna-self-ingestion-bytecode-1-56.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  rna-self-ingestion-bytecode:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Build exact native byte membrane
+        run: make c-abi
+
+      - name: Run self-ingestion and inherited T64 tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_harmonicode_lane5_rna_self_ingestion_bytecode_v1.py \
+            tests/pass219/test_harmonicode_lane5_rna_self_ingestion_native_v1.py \
+            tests/pass219/test_harmonicode_lane5_t64_exhaustive_resolution_v1.py \
+            tests/pass219/test_harmonicode_lane5_t64_resolution_native_v1.py
+          python -m hhs_runtime.harmonicode_lane5_rna_self_ingestion_bytecode_v1 > /tmp/hhs-lane5-1-56.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/hhs-lane5-1-56.json'))
+          assert d['result']=='PASS'
+          assert d['check_count']==15
+          assert all(d['checks'].values())
+          assert d['typed_native']['image_size']==64
+          assert d['typed_native']['fixed_point_count']==64
+          p=d['external_numeric_projection']
+          assert p['image_size_after_one_step']==4
+          assert p['fixed_points']==['wyw','wzx','wzy','wzz']
+          assert p['basin_counts']=={'wyw':16,'wzx':16,'wzy':16,'wzz':16}
+          assert p['maximum_transient_length']==1
+          assert p['all_cycles_length_one'] is True
+          assert p['canonical_authority'] is False
+          post=d['post_projection_t004_resolution']
+          assert post['resolved_count']==64
+          assert post['terminal_root']==[-1,-1]
+          assert post['unique_postprojection_operation64']==4
+          PY
+
+      - name: Verify experiment record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.json').read_text())
+          x=d['hhs_exact_experiment']
+          assert x['experiment_id']=='HHS-X5184-001'
+          assert x['status']=='EXECUTED_EXACT'
+          assert x['typed_native_path']['image_size']==64
+          assert x['typed_native_path']['fixed_point_count']==64
+          p=x['external_numeric_projection']
+          assert p['image_size']==4
+          assert p['fixed_points']==['wyw','wzx','wzy','wzz']
+          assert p['basin_counts']=={'wyw':16,'wzx':16,'wzy':16,'wzz':16}
+          assert p['canonical_authority'] is False
+          assert x['authority']['byte_execution_authority'] is False
+          PY
+
+      - name: Verify sealed Wolfram experiment
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path('evidence/pass219/hhs_lane5_rna_self_ingestion_bytecode_v1.receipt.json').read_text())
+          for kind in ('source','output'):
+              path=Path(receipt[f'{kind}_path'])
+              raw=path.read_bytes()
+              assert len(raw)==receipt[f'{kind}_bytes']
+              assert sha256(raw).hexdigest()==receipt[f'{kind}_sha256']
+          out=json.loads(Path(receipt['output_path']).read_text())
+          assert receipt['result']=='PASS'
+          assert receipt['checks_passed']==receipt['checks_total']==18
+          assert out['status']=='PASS'
+          assert all(out['checks'].values())
+          assert out['typed_image_size']==64
+          assert out['external_projection_image_size']==4
+          assert out['fixed_points']==['wyw','wzx','wzy','wzz']
+          assert out['basin_counts']=={'wyw':16,'wzx':16,'wzy':16,'wzz':16}
+          assert out['projected_operations']==[55,56,57,58]
+          assert out['canonical_authority'] is False
+          assert out['bytes_executed_as_machine_instructions'] is False
+          PY
+
+      - name: Seal summary
+        run: |
+          mkdir -p artifacts/pass219/1.56
+          cp /tmp/hhs-lane5-1-56.json artifacts/pass219/1.56/runtime-validation.json
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          summary={
+            'schema':'HHS_PASS219_LANE5_RNA_SELF_INGESTION_BYTECODE_EVIDENCE_1_56',
+            'experiment_id':'HHS-X5184-001',
+            'result':'PASS',
+            'runtime_checks':15,
+            'wolfram_checks':18,
+            'typed_fixed_points':64,
+            'external_projection_image_size':4,
+            'external_fixed_points':['wyw','wzx','wzy','wzz'],
+            'basin_size_each':16,
+            'maximum_transient_length':1,
+            'native_byte_payload_words':64,
+            'native_byte_payload_forms':3,
+            'bytes_executed_as_machine_instructions':False,
+            'external_projection_canonical_authority':False,
+            'canonical_vm81_mutation_authority':False,
+            'canonical_hash72_authority':False,
+            'canonical_hash216_authority':False,
+          }
+          canonical=json.dumps(summary,sort_keys=True,separators=(',',':')).encode()
+          summary['receipt_sha256']=sha256(canonical).hexdigest()
+          Path('artifacts/pass219/1.56/summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-rna-self-ingestion-bytecode-1-56
+          path: artifacts/pass219/1.56/
+          if-no-files-found: error
