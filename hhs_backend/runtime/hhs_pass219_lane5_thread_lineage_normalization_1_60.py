@@ -14,7 +14,6 @@ import re
 import sqlite3
 from typing import Any, Iterable, Mapping
 
-from hhs_backend.runtime.hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37 import split_hash216
 from hhs_python.runtime.hhs_pass205_continuation_bridge import Pass205NativeBridge
 from hhs_runtime.harmonicode_lane5_bigint_transcription_v1 import transcribe_5184
 from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
@@ -28,6 +27,9 @@ THEOREM_ID = "HHS-T5184-005"
 ZERO_OFFSETS = (0,) * VM81_CELLS
 ZERO_SERIALIZATION_5184 = serialize_offsets_5184(ZERO_OFFSETS)
 _SAFE_KIND = re.compile(r"^[A-Za-z0-9_.-]{1,64}$")
+_HASH72_ALPHABET = frozenset(
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?"
+)
 
 
 class ThreadLineageMemoryError(ValueError):
@@ -53,10 +55,10 @@ def _canonical(value: Any) -> bytes:
 
 
 def _validate_hash216(value: str, name: str) -> str:
-    try:
-        split_hash216(value)
-    except Exception as exc:
-        raise ThreadLineageMemoryError(f"{name} is not canonical Hash216") from exc
+    if not isinstance(value, str) or len(value) != 216:
+        raise ThreadLineageMemoryError(f"{name} is not canonical Hash216")
+    if any(symbol not in _HASH72_ALPHABET for symbol in value):
+        raise ThreadLineageMemoryError(f"{name} is not canonical Hash216")
     return value
 
 
