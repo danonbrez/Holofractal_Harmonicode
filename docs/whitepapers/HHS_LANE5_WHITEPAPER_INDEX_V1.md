@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.55
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.56
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -370,3 +370,16 @@ The theorem exhausts all 64 ordered triplets, preserves 64 unique provenance roo
 Connected Wolfram evidence is 18/18 PASS.
 
 Normative contract: `../../contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md`.
+
+
+## 8J. RNA self-ingestion bytecode experiment
+
+[`HHS_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56_V1.md`](HHS_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56_V1.md)
+
+Pass 219 Lane 5 1.56 executes `HHS-X5184-001` over the green T64 invariant. Typed operation64-byte self-ingestion preserves all 64 ordered RNA words as fixed points. A deliberately noncanonical external ASCII-BigInt/mod64 projection instead collapses the 64-state space to four exact attractors: `wyw`, `wzx`, `wzy`, and `wzz`, each with a 16-state basin.
+
+The collapse is explained exactly by `256 mod64=0`: only the final source byte survives the bare numeric projection. All projected states remain valid T64 states and still resolve to `(-1,-1)`, but source provenance contracts from 64 operation identities to four.
+
+Connected Wolfram evidence is 18/18 PASS. Native CI must prove exact byte ingress/egress without executing the byte strings as machine code.
+
+Experiment contract: `../../contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.md`.
