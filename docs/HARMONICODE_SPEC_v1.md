@@ -761,3 +761,81 @@ Normative contract:
 ```text
 contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md
 ```
+
+
+---
+
+## 20. RNA self-ingestion bytecode experiment
+
+Pass 219 Lane 5 1.56 registers read-only experiment `HHS-X5184-001` over the green `HHS-T5184-004` T64 invariant.
+
+Two representations are intentionally kept distinct.
+
+Typed native self-ingestion:
+
+```text
+{x,y,z,w}^3
+ -> kappa
+ -> operation64
+ -> one exact byte
+ -> operation64
+ -> inverse kappa
+ -> same ordered word
+```
+
+This path is an exact 64-state identity.
+
+Experimental untyped projection:
+
+```text
+Pi_ascii(W) = BigInt(ASCII(W)) mod64
+```
+
+with no canonical authority.
+
+Because a big-endian byte string is a base-256 integer and:
+
+```text
+256 mod64 = 0
+```
+
+the projection satisfies:
+
+```text
+Pi_ascii(W) = final_byte(W) mod64.
+```
+
+For the four terminal RNA symbols:
+
+```text
+w -> 55 -> wyw
+x -> 56 -> wzx
+y -> 57 -> wzy
+z -> 58 -> wzz
+```
+
+Therefore all 64 T64 words collapse in one projected step to exactly four fixed points:
+
+```text
+{wyw,wzx,wzy,wzz}
+```
+
+with basin size 16 for each.
+
+The external ASCII-BigInt/mod64 projection is explicitly noncanonical. It demonstrates that exact byte transport does not by itself preserve typed ordered provenance.
+
+All projected states remain inside T64 and still resolve under `HHS-T5184-004` to `(-1,-1)`, but only four unique projected operation64 identities remain.
+
+The native exact bytecode membrane is used only for ingress/egress identity. No self-ingested bytes are executed as machine instructions.
+
+Executable reference:
+
+```text
+hhs_runtime/harmonicode_lane5_rna_self_ingestion_bytecode_v1.py
+```
+
+Experiment contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.md
+```
