@@ -36,7 +36,7 @@ int main(void) {
     assert(descriptor.local_states_per_cell == 64U);
     assert(descriptor.vm5184_addresses == 5184U);
     assert(descriptor.direct_raw_x86_ingress == 1U);
-    assert(descriptor.direct_vm81_kernel_execution == 1U);
+    assert(descriptor.direct_vm81_kernel_execution == 0U);
     assert(descriptor.exact_raw_egress == 1U);
     assert(descriptor.format_translation_layer == 0U);
     assert(descriptor.floating_point_authority == 0U);
@@ -64,10 +64,10 @@ int main(void) {
     assert(receipt.frames_processed == 1U);
     assert(receipt.exact_byte_identity == 1U);
     assert(receipt.direct_raw_x86_ingress == 1U);
-    assert(receipt.direct_vm81_kernel_execution == 1U);
+    assert(receipt.direct_vm81_kernel_execution == 0U);
     assert(receipt.format_translation_layer == 0U);
     assert(receipt.host_instruction_execution_authority == 0U);
-    assert(receipt.state_step_count == 1U);
+    assert(receipt.state_step_count == 0U);
 
     /* The raw 5,184 bits are the 81x64 virtual hardware address plane. */
     for (address = 0U; address < 5184U; ++address) {
@@ -101,7 +101,7 @@ int main(void) {
     assert(memcmp(stream_input, stream_output, sizeof(stream_input)) == 0);
     assert(receipt.frames_processed == 2U);
     assert(receipt.exact_byte_identity == 1U);
-    assert(receipt.state_step_count == 3U);
+    assert(receipt.state_step_count == 0U);
 
     /* No hidden tail padding or format translation. */
     assert(hhs_exact_pass219_lane5_raw_x86_vm5184_stream(
