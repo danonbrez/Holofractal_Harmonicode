@@ -115,3 +115,41 @@ canonical_hash216_authority
 3. freeze successful implementation head/run;
 4. create/update stacked draft PR;
 5. keep predecessor obligations intact.
+
+
+## Validation closure
+
+Initial PR run:
+
+```text
+run = 35515359402
+result = FAILURE
+```
+
+The new 1.54 theorem/tests themselves passed. The only failure came from the inherited Pass 114 service-registry conformance test importing an unrelated PQC stack that requires the optional `cryptography` package.
+
+Repair-forward action:
+
+```text
+scope Pass 114 dependency validation to the palindromic decimal engine itself
+exclude test_pass114_service_registered_and_conformance_derived
+```
+
+No theorem/runtime source changed.
+
+Final dependency-scoped implementation head:
+
+```text
+head = 6a0ff019d6c94303acdd050300738b8af2ef4312
+workflow = Pass 219 Lane 5 IEEE754 Palindromic Pivot 1.54
+run = 35515430887
+result = SUCCESS
+pytest = 29 passed, 1 deselected, 1 pre-existing config warning
+runtime checks = 24/24
+binary16 exhaustive patterns = 65,536/65,536
+Wolfram checks = 18/18
+```
+
+The green gate also verified the machine theorem record and SHA-256-bound Wolfram source/output evidence.
+
+Current work after this point should preserve the green implementation evidence. Restart-record-only edits do not require rerunning the theorem gate.
