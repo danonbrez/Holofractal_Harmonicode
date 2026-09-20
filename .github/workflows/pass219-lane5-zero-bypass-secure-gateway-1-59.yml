@@ -2,6 +2,8 @@ name: Pass 219 Lane 5 Zero Bypass Secure Gateway 1.59
 on:
   push:
     branches: [pass219/lane5-zero-bypass-secure-gateway-1-59]
+  pull_request:
+    branches: [pass219/lane5-virtual-bios-control-plane-1-58]
   workflow_dispatch:
 permissions:
   contents: read
