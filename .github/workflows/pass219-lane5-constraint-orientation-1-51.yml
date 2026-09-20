@@ -63,7 +63,7 @@ jobs:
       - name: Validate directed constraint semantics
         run: |
           python -m pytest -q tests/pass219/test_harmonicode_directed_constraint_semantics_v1.py
-          python hhs_runtime/harmonicode_directed_constraint_semantics_v1.py > /tmp/hhs-1-51.json
+          PYTHONPATH="$PWD" python -m hhs_runtime.harmonicode_directed_constraint_semantics_v1 > /tmp/hhs-1-51.json
           python - <<'PY'
           import json
           d=json.load(open('/tmp/hhs-1-51.json'))
