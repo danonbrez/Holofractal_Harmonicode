@@ -691,3 +691,73 @@ Normative contract:
 ```text
 contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md
 ```
+
+
+---
+
+## 19. T64 bijective constructor provenance and exhaustive resolution
+
+Pass 219 Lane 5 1.55 registers `HHS-T5184-004`.
+
+The local ordered constructor manifold is:
+
+```harmonicode
+{x,y,z,w}^3 <-> {0,1}^6 <-> 8x8
+```
+
+with:
+
+```text
+x=00
+y=01
+z=10
+w=11
+operation64=16*d0+4*d1+d2
+operation64=8*left_basis8+right_basis8
+```
+
+Distinct ordered triplets retain distinct six-bit addresses and distinct provenance roots.
+
+The exhaustive resolution path is:
+
+```text
+triplet
+ -> operation64
+ -> ordered native phase product
+ -> reciprocal_phase=(-phase) mod72
+ -> phase zero-sum closure
+ -> ((0,-2)+(-2,0))/2
+ -> (-1,-1)
+```
+
+Acceptance requires:
+
+```text
+64/64 ordered triplet round-trips
+64/64 unique operation64 addresses
+64/64 unique provenance roots
+64/64 reciprocal phase closures
+64/64 (-1,-1) terminal resolutions
+64/64 native C phase cross-checks
+5184/5184 native VM5184 address round-trips
+```
+
+The structural geometry is:
+
+```text
+81*64=5184=72^2
+```
+
+No commutation or canonical mutation authority is introduced.
+
+Executable reference:
+
+```text
+hhs_runtime/harmonicode_lane5_t64_exhaustive_resolution_v1.py
+```
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md
+```
