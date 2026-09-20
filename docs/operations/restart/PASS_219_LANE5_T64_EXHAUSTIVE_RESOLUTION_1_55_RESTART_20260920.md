@@ -89,3 +89,26 @@ No canonical mutation/persistence authority is introduced. Commutation remains p
 ## Next action
 
 Run exact-head CI. Repair forward only impacted failures. Once green, freeze this theorem as the baseline for a separate read-only RNA self-ingestion experiment over its own ordered x/y/z/w code representations.
+
+
+## Validation closure — GREEN
+
+Validated implementation head:
+
+```text
+head = 053a33d4f408b2c4b1deb9846c57af9df2512437
+workflow = Pass 219 Lane 5 T64 Exhaustive Resolution 1.55
+run = 35516843395
+result = SUCCESS
+pytest = 32 passed, 1 pre-existing config warning
+runtime checks = 16/16
+Wolfram checks = 18/18
+triplet states exhausted = 64/64
+native phase pairs cross-checked = 64/64
+native VM5184 addresses cross-checked = 5184/5184
+terminal (-1,-1) count = 64/64
+```
+
+The compiled `hhs_exact_phase_product` results matched the theorem reference for every ordered 8x8 pair, and the compiled VM5184 address encoder/decoder round-tripped the complete 81x64 plane.
+
+This proves the T64 invariant is now suitable as the frozen baseline for the next read-only RNA self-ingestion experiment.
