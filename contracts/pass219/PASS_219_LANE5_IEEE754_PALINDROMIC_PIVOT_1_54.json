@@ -1,0 +1,57 @@
+{
+  "hhs_exact_formalization": {
+    "theorem_id": "HHS-T5184-003",
+    "title": "Bidirectional IEEE-754 Palindromic Pivot and 72-Block Concatenation",
+    "status": "EXECUTED_EXACT",
+    "parent": "HHS-T5184-002",
+    "definitions": {
+      "pivot_carrier": "C(F)=F.Reverse(F)",
+      "direction_A": "forward/LHS/left-edge-to-pivot",
+      "direction_B": "reverse/RHS/right-edge-to-pivot",
+      "dyadic_decimal_identity": "n/2^k=n*5^k/10^k",
+      "block_size_digits": 72,
+      "serializer_characters": 5184,
+      "g3_rna_transcription": "(y-x)-u^72=G^3",
+      "genesis_palindrome_seed": "123321.111",
+      "universal_denominator": "(P=√(pq+(P⁴/AB)))/∆"
+    },
+    "lemmas": [
+      {
+        "id": "HHS-L5184-024",
+        "title": "Finite IEEE Dyadic Decimal Termination",
+        "statement": "Every finite admitted IEEE binary16/32/64 value decodes exactly to n/2^k and therefore to n*5^k/10^k."
+      },
+      {
+        "id": "HHS-L5184-025",
+        "title": "Independent Pivot Recovery",
+        "statement": "Direction A and direction B independently reconstruct the same canonical frame F and therefore the same source IEEE state."
+      },
+      {
+        "id": "HHS-L5184-026",
+        "title": "72-Block Concatenation",
+        "statement": "Concat(Block72(F))=F for arbitrary admitted F; reverse-side block traversal independently reconstructs F."
+      },
+      {
+        "id": "HHS-L5184-027",
+        "title": "Nonfinite Bit Identity",
+        "statement": "Infinity and NaN encodings retain exact sign/payload bit identity but no numeric-value authority."
+      }
+    ],
+    "proof_evidence": {
+      "binary16_exhaustive_patterns": 65536,
+      "wolfram_checks": "18/18",
+      "binary64_point_one_frame_digits": 72,
+      "binary64_min_subnormal_frame_digits": 768,
+      "binary64_min_subnormal_blocks": 11,
+      "binary64_max_finite_frame_digits": 326,
+      "binary64_max_finite_blocks": 5
+    },
+    "authority": {
+      "ieee_arithmetic_authority": false,
+      "host_float_authority": false,
+      "canonical_vm81_mutation_authority": false,
+      "canonical_hash72_authority": false,
+      "canonical_hash216_authority": false
+    }
+  }
+}

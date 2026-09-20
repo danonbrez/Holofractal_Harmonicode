@@ -630,3 +630,64 @@ Normative contract:
 ```text
 contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53.md
 ```
+
+
+---
+
+## 18. IEEE-754 palindromic decimal-pivot transcription
+
+Pass 219 Lane 5 1.54 registers `HHS-T5184-003`.
+
+IEEE source state is admitted as an exact bit-pattern ingress/egress surface. Host floating-point arithmetic remains non-authoritative.
+
+For a canonical digit frame `F`:
+
+```harmonicode
+C(F) = F . Reverse(F)
+```
+
+The decimal point is the directional pivot.
+
+Direction A reads forward from the left edge to the pivot. Direction B reads independently from the far right edge backward to the pivot.
+
+For finite IEEE binary16, binary32 and binary64 states:
+
+```text
+v = (-1)^s n/2^k
+n/2^k = n*5^k/10^k
+```
+
+so the source state has an exact terminating decimal coefficient and scale. Both A and B reconstruct the same exact rational and original sign/exponent/fraction bit pattern.
+
+Infinity and NaN retain exact sign/payload bit identity but receive no numeric-value authority.
+
+The 72-position unit is a block size rather than a global numeral ceiling:
+
+```text
+F = C0 || C1 || ... || C(n-1)
+|Ci| <= 72
+Concat(Block72(F)) = F
+```
+
+and the reverse-side block traversal independently reconstructs the same `F`.
+
+The executable theorem also preserves:
+
+```text
+(y-x)-u^72=G^3
+123321.111
+(P=√(pq+(P⁴/AB)))/∆
+5184=72^2=81*64
+```
+
+Executable reference:
+
+```text
+hhs_runtime/harmonicode_lane5_ieee754_palindromic_pivot_v1.py
+```
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md
+```

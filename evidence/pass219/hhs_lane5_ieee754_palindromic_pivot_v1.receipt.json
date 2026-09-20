@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS219_LANE5_IEEE754_PALINDROMIC_PIVOT_WOLFRAM_RECEIPT_V1",
+  "theorem_id": "HHS-T5184-003",
+  "result": "PASS",
+  "checks_passed": 18,
+  "checks_total": 18,
+  "source_path": "evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.wl",
+  "source_bytes": 3691,
+  "source_sha256": "5d3fba26de0911b5ce0f5268387569d2a151425ceccc726858790291c0142b69",
+  "output_path": "evidence/pass219/hhs_lane5_ieee754_palindromic_pivot_v1.output.json",
+  "output_bytes": 1207,
+  "output_sha256": "a77554fbd4d74d2ae4ff3a519b8fc4fd40cdf18946d2f27986b4fb0aba6ccd32",
+  "execution": "connected Wolfram Language evaluator",
+  "note": "Exact integer/rational/string proof only; no host floating-point arithmetic is used."
+}

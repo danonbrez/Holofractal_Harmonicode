@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.53
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.54
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -342,3 +342,18 @@ The cycle makes `∆` non-cancellation executable as a negative authority constr
 Connected Wolfram evidence is 18/18 PASS and SHA-256-bound. Runtime validation contains 20 typed checks.
 
 Normative contract: `../../contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_BOUNDARY_1_53.md`.
+
+
+## 8H. IEEE-754 palindromic decimal-pivot transcription
+
+[`HHS_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54_V1.md`](HHS_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54_V1.md)
+
+Pass 219 Lane 5 1.54 formalizes `HHS-T5184-003`: exact IEEE binary16/32/64 bit-pattern ingress and egress through two independent directional readers around one palindromic decimal pivot.
+
+Finite IEEE values are decoded as exact dyadic rationals and reconstructed through the identity `n/2^k=n*5^k/10^k`. The 72-position BigInt unit is proven to be a concatenation block, not a global exact-value limit. The binary64 0.1 source frame lands at exactly 72 digits, the minimum positive binary64 subnormal spans 768 digits / 11 blocks, and the maximum finite binary64 state spans 326 digits / 5 blocks.
+
+The runtime exhausts all 65,536 binary16 bit patterns and preserves signed zero, infinity, and NaN payload identity. Binary32/64 use the same constructive integer inverse plus deterministic class/boundary checks. Host float and IEEE arithmetic authority remain false.
+
+Connected Wolfram evidence is 18/18 PASS and SHA-256-bound.
+
+Normative contract: `../../contracts/pass219/PASS_219_LANE5_IEEE754_PALINDROMIC_PIVOT_1_54.md`.
