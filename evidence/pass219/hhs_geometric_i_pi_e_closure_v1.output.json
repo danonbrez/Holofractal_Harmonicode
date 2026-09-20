@@ -1,30 +1,125 @@
 {
-  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V1",
-  "semantics": "typed_geometric_non_scalar",
+  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V2",
+  "semantics": "typed_geometric_non_scalar_coupled_chain",
   "allPassed": true,
-  "checkCount": 11,
-  "passedCount": 11,
+  "checkCount": 23,
+  "passedCount": 23,
   "tests": {
-    "independent_order_xy_is_4": true,
-    "independent_order_yx_is_4": true,
-    "generic_base_specializes_exactly": true,
-    "generic_phase_specializes_exactly": true,
+    "order_xy_exact_4": true,
+    "order_yx_exact_4": true,
+    "generic_base_role_binds_K": true,
+    "generic_phase_role_binds_O": true,
+    "explicit_base_role_binds_K": true,
+    "explicit_phase_role_binds_O": true,
+    "full_chain_term_count_4": true,
+    "full_chain_has_outer_power": true,
+    "full_chain_has_outer_division": true,
+    "full_chain_has_nested_assert": true,
+    "full_chain_has_terminal_KxO": true,
+    "same_candidate_state_binding": true,
     "HMod_channel_swap_covariance": true,
     "builtin_Mod_not_invoked": true,
-    "no_machine_real_in_constructor": true,
+    "no_machine_real_in_chain": true,
+    "all_chain_terms_resolved": true,
+    "nested_assertion_witness_resolved": true,
+    "chain_edge_1_x2_equals_generic_division": true,
+    "chain_edge_2_generic_equals_assertion_normalization": true,
+    "chain_edge_3_normalization_equals_KxO": true,
+    "complete_coupled_chain_passes": true,
     "I_geometric_square": true,
-    "O_fundamental_half_turn_is_Pi": true,
-    "K_fundamental_positive_base_is_E": true,
     "geometric_Euler_closure": true
   },
   "details": {
-    "phase_orders": [4, 4],
-    "I_operator": [[0, -1], [1, 0]],
-    "I_square": [[-1, 0], [0, -1]],
-    "O_branch": "O == Pi on 0 < O < 2 Pi",
-    "K_branch": "K == E on K > 0 and 0 < Log[K] < 2",
-    "base_metric": "2*Sqrt[6]",
-    "phase_metric": 6,
-    "mod_semantics": "HMod held as typed geometric membrane; Wolfram built-in Mod not invoked"
+    "candidate_state_id": "HHS-P219-GEO-I-PI-E-CANDIDATE-V2",
+    "phase_orders": [
+      4,
+      4
+    ],
+    "role_bindings": {
+      "generic_base": "K",
+      "generic_phase": "O",
+      "explicit_base": "K",
+      "explicit_phase": "O"
+    },
+    "candidate_state_projection": {
+      "I_H": [
+        [
+          0,
+          -1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "X2": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "XY": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "a2": 1,
+      "O": "Pi on fundamental half-turn branch",
+      "K": "E on fundamental positive-base branch"
+    },
+    "chain_edge_count": 3,
+    "chain_values": [
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ]
+    ],
+    "mod_semantics": "HMod held as typed geometric membrane; Wolfram built-in Mod not invoked",
+    "assert_semantics": "HARMONICODE == is assertion/witness equality; the common matrix value is released only after AssertEq passes"
   }
 }

@@ -115,15 +115,40 @@ jobs:
         run: |
           python -m pytest -q tests/pass219/test_hhs_geometric_i_pi_e_constants_v1.py
           python - <<'PY'
+          from hashlib import sha256
           import json
           from pathlib import Path
-          data=json.loads(Path('evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json').read_text())
-          assert data['allPassed'] is True
-          assert data['checkCount']==data['passedCount']==11
-          assert data['tests']['builtin_Mod_not_invoked'] is True
-          assert data['tests']['I_geometric_square'] is True
-          assert data['tests']['O_fundamental_half_turn_is_Pi'] is True
-          assert data['tests']['K_fundamental_positive_base_is_E'] is True
+
+          receipt = json.loads(
+              Path('evidence/pass219/hhs_geometric_i_pi_e_closure_v1.receipt.json').read_text()
+          )
+          for kind in ('input', 'output'):
+              path = Path(receipt[f'{kind}_path'])
+              assert path.stat().st_size == receipt[f'{kind}_bytes']
+              assert sha256(path.read_bytes()).hexdigest() == receipt[f'{kind}_sha256']
+
+          output = json.loads(Path(receipt['output_path']).read_text())
+          assert receipt['schema'] == 'HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_RECEIPT_V2'
+          assert receipt['check_count'] == receipt['passed_count'] == 23
+          assert receipt['all_passed'] is True
+          assert output['schema'] == 'HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V2'
+          assert output['semantics'] == 'typed_geometric_non_scalar_coupled_chain'
+          assert output['allPassed'] is True
+          assert output['checkCount'] == output['passedCount'] == 23
+          assert output['tests']['same_candidate_state_binding'] is True
+          assert output['tests']['all_chain_terms_resolved'] is True
+          assert output['tests']['nested_assertion_witness_resolved'] is True
+          assert output['tests']['chain_edge_1_x2_equals_generic_division'] is True
+          assert output['tests']['chain_edge_2_generic_equals_assertion_normalization'] is True
+          assert output['tests']['chain_edge_3_normalization_equals_KxO'] is True
+          assert output['tests']['complete_coupled_chain_passes'] is True
+          assert output['details']['chain_edge_count'] == 3
+          assert output['details']['chain_values'] == [
+              [[-1,0],[0,-1]],
+              [[-1,0],[0,-1]],
+              [[-1,0],[0,-1]],
+              [[-1,0],[0,-1]],
+          ]
           PY
 
       - name: Reject approximate or authority escalation
