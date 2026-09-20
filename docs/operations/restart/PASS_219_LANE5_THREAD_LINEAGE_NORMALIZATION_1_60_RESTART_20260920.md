@@ -140,3 +140,33 @@ The synchronized delta only restores `PYTHONPATH="$PWD"` for inherited cumulativ
 
 Post-merge requirement: compare 1.59 -> 1.60 must remain `behind_by=0`. Exact-head 1.60 CI may complete asynchronously; repair-forward only demonstrated 1.60-specific failures.
 
+## Restart closure — Pass209 repair inherited
+
+The final parent checkpoint for this cycle is now inherited as a real merge parent:
+
+```text
+1.59 executable repair head = e0782935f82cd918330b3f77c9bbbfe7f225ba27
+1.59 restart head           = a14d3035afbbc9e82163c3f77792a7d4c1237e9b
+1.60 pre-merge sync head    = 04b80cc6abeee83b92659c8ab445fc7bf3df88cd
+1.60 parent merge           = 02603199c92b832bfd726fa26eedf37f9a0cf6b9
+```
+
+The inherited repair updates only cumulative Pass209 regression evidence and Universal Quantization dependency scoping. It verifies the current split between the normal full application dispatcher and the explicit source-only degraded server instead of requiring a stale literal token in the dispatcher file.
+
+Authority remains unchanged:
+
+```text
+Lane5 -> RNA -> PQC -> VM81/Hash72 -> validated Hash216 continuation
+```
+
+No new thread-memory mutation authority is introduced. The 1.60 branch must remain zero commits behind the current 1.59 restart head before any later integration claim.
+
+Parent exact-head jobs from the executable repair head are allowed to finish asynchronously:
+
+- Universal Quantization `35535570166`;
+- Lane 5 1.59 `35535570186`;
+- Native RNA 1.10 `35535570121`;
+- Generation Integrity `35535570104`.
+
+Next action is to consume those results plus the current 1.60 exact-head gate, repair only demonstrated impacted failures, and freeze green evidence. PR #519 and PR #520 remain draft and must not be merged without explicit authorization.
+
