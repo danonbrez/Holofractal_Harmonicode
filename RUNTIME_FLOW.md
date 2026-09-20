@@ -124,6 +124,30 @@ Different encodings retain different instruction identities even when their visi
 
 Unsafe, malformed, unavailable, privileged, or host-escaping operations are trapped, modeled, rejected, or quarantined.
 
+### 6.1 Lane 5 direct raw VM5184 kernel
+
+Pass 219 Lane 5 1.57 exposes the 5,184-bit VM81 carrier itself as a direct raw x86_64 ABI virtual-hardware kernel quantum:
+
+```text
+648 raw bytes
+= 5,184 raw bits
+= 81 cells × 64 ordered local addresses
+
+raw x86_64 byte stream
+→ exact byte membrane
+→ public VM81 raw frame ingress
+→ global raw5184 hydration validation
+→ Lane 5 dynamic circuit
+→ public VM81 raw frame egress
+→ byte-identical raw x86_64 stream
+```
+
+No intermediate float conversion, model-specific numeric translator, or alternate serialization authority is inserted into this path.
+
+`hhs_exact_pass219_lane5_raw_x86_vm5184_step` executes one complete 648-byte frame. `hhs_exact_pass219_lane5_raw_x86_vm5184_stream` composes complete frames while preserving the same dynamic-circuit state between them. Incomplete tails fail closed rather than being padded.
+
+The raw bytes are virtual-hardware state and are not dispatched as host CPU instructions by this surface.
+
 ## 7. Retained native egress
 
 ```text
