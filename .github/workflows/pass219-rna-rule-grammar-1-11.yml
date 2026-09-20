@@ -42,20 +42,18 @@ jobs:
                   raise SystemExit(f'floating authority token {match.group(1)!r} in {path}')
           PY
 
-      - name: Compile exact C ABI with strict warnings
+      - name: Build cumulative exact ABI with strict repository authority
         run: |
           mkdir -p /tmp/pass219-rna-rule
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Run 1.11 C rule conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.c \
-            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-rule/test-c
           /tmp/pass219-rna-rule/test-c
 
@@ -64,7 +62,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_rule_grammar_1_11.cpp \
-            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-rule/test-cpp
           /tmp/pass219-rna-rule/test-cpp
 
@@ -73,7 +71,7 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.c \
-            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-rule/test-110-c
           /tmp/pass219-rna-rule/test-110-c
 
@@ -82,6 +80,6 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.cpp \
-            /tmp/pass219-rna-rule/hhs_runtime_exact_abi.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-rna-rule/test-110-cpp
           /tmp/pass219-rna-rule/test-110-cpp
