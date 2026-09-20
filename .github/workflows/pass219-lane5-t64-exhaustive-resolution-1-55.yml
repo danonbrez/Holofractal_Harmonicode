@@ -1,0 +1,159 @@
+name: Pass 219 Lane 5 T64 Exhaustive Resolution 1.55
+
+on:
+  push:
+    branches:
+      - pass219/lane5-t64-exhaustive-resolution-1-55
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_t64_exhaustive_resolution_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_t64_exhaustive_resolution_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_t64_resolution_native_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md'
+      - 'contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.wl'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-t64-exhaustive-resolution-1-55.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-ieee754-palindromic-pivot-1-54
+    paths:
+      - 'hhs_runtime/harmonicode_lane5_t64_exhaustive_resolution_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_t64_exhaustive_resolution_v1.py'
+      - 'tests/pass219/test_harmonicode_lane5_t64_resolution_native_v1.py'
+      - 'contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.md'
+      - 'contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.json'
+      - 'docs/HARMONICODE_SPEC_v1.md'
+      - 'docs/whitepapers/HHS_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.wl'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.output.json'
+      - 'evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.receipt.json'
+      - '.github/workflows/pass219-lane5-t64-exhaustive-resolution-1-55.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  t64-exhaustive-resolution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Build exact native ABI
+        run: make c-abi
+
+      - name: Run exact T64 and inherited tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_harmonicode_lane5_t64_exhaustive_resolution_v1.py \
+            tests/pass219/test_harmonicode_lane5_t64_resolution_native_v1.py \
+            tests/pass219/test_harmonicode_lane5_ieee754_palindromic_pivot_v1.py \
+            tests/pass220/test_hhs_pass220_rna_operation64_c4_g41_radical_proof_v1.py
+          python -m hhs_runtime.harmonicode_lane5_t64_exhaustive_resolution_v1 > /tmp/hhs-lane5-1-55.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/hhs-lane5-1-55.json'))
+          assert d['result']=='PASS'
+          assert d['check_count']==16
+          assert all(d['checks'].values())
+          assert d['triplet_count']==64
+          assert d['address_count']==64
+          assert d['resolved_terminal_count']==64
+          assert d['serialization_geometry']==5184
+          assert d['terminal_root']==[-1,-1]
+          PY
+
+      - name: Verify theorem record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('contracts/pass219/PASS_219_LANE5_T64_EXHAUSTIVE_RESOLUTION_1_55.json').read_text())
+          t=d['hhs_exact_formalization']
+          assert t['theorem_id']=='HHS-T5184-004'
+          assert t['status']=='EXECUTED_EXACT'
+          assert t['core_theorem']['exhaustive_count']==64
+          assert t['core_theorem']['provenance_roots_unique']==64
+          assert t['evidence']['native_phase_pairs_required']==64
+          assert t['evidence']['native_vm5184_addresses_required']==5184
+          assert t['authority']['commutation_authority'] is False
+          PY
+
+      - name: Verify sealed Wolfram proof
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path('evidence/pass219/hhs_lane5_t64_exhaustive_resolution_v1.receipt.json').read_text())
+          for kind in ('source','output'):
+              path=Path(receipt[f'{kind}_path'])
+              raw=path.read_bytes()
+              assert len(raw)==receipt[f'{kind}_bytes']
+              assert sha256(raw).hexdigest()==receipt[f'{kind}_sha256']
+          out=json.loads(Path(receipt['output_path']).read_text())
+          assert receipt['result']=='PASS'
+          assert receipt['checks_passed']==receipt['checks_total']==18
+          assert out['status']=='PASS'
+          assert all(out['checks'].values())
+          assert out['triplet_count']==64
+          assert out['address_count']==64
+          assert out['resolved_terminal_count']==64
+          assert out['terminal_root']==[-1,-1]
+          assert out['serialization_geometry']==5184
+          PY
+
+      - name: Seal summary
+        run: |
+          mkdir -p artifacts/pass219/1.55
+          cp /tmp/hhs-lane5-1-55.json artifacts/pass219/1.55/runtime-validation.json
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          summary={
+            'schema':'HHS_PASS219_LANE5_T64_EXHAUSTIVE_RESOLUTION_EVIDENCE_1_55',
+            'theorem_id':'HHS-T5184-004',
+            'result':'PASS',
+            'runtime_checks':16,
+            'wolfram_checks':18,
+            'triplet_states_exhausted':64,
+            'native_phase_pairs_crosschecked':64,
+            'native_vm5184_addresses_crosschecked':5184,
+            'resolved_terminal_count':64,
+            'terminal_root':[-1,-1],
+            'commutation_authority':False,
+            'canonical_vm81_mutation_authority':False,
+            'canonical_hash72_authority':False,
+            'canonical_hash216_authority':False,
+          }
+          canonical=json.dumps(summary,sort_keys=True,separators=(',',':')).encode()
+          summary['receipt_sha256']=sha256(canonical).hexdigest()
+          Path('artifacts/pass219/1.55/summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-t64-exhaustive-resolution-1-55
+          path: artifacts/pass219/1.55/
+          if-no-files-found: error
