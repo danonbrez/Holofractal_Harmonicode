@@ -138,3 +138,21 @@ initial PR head = f67499ae701991b036ee3186b6223044b8639d38
 ```
 
 The parent result is frozen. Do not rerun 1.52 independently unless a later 1.53 repair changes one of its dependencies.
+
+
+## Dependency-scoped validation — GREEN
+
+The first complete 1.53 exact-head gate is green:
+
+```text
+validated implementation head = f67499ae701991b036ee3186b6223044b8639d38
+workflow = Pass 219 Lane 5 Reciprocal Phase Boundary 1.53
+run = 35513081679
+result = SUCCESS
+```
+
+The gate validated the new 1.53 theorem surface together with the inherited 1.52 transcription, 1.51 directed-constraint, and Pass 220 I019 phase-lock tests, then verified the machine theorem record and the sealed 18/18 Wolfram receipt.
+
+Current branch head differs only by restart-record documentation commits after that validated implementation head. Under dependency-scoped repair-forward policy, the green implementation evidence is frozen and is not rerun for restart-only edits.
+
+Remaining stack work is predecessor/review integration rather than 1.53 implementation repair.
