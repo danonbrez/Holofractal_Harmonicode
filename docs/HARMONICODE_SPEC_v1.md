@@ -883,3 +883,84 @@ Hash216Hit(H) ↛ CanonicalCommit(H).
 Only the inherited VM81/Hash72 authority can complete canonical admission. Lane 5, RNA/PQC membranes, caches, GPU/vector routing, APIs and compatibility aliases remain noncanonical.
 
 The public Linux/FastAPI operation surfaces are interposed by the Lane 5 zero-bypass control plane. Canonical mutation still enters the native 648-byte/5184-bit gateway and the existing RNA/PQC/VM81 chain.
+
+
+---
+
+## 22. Thread-lineage normalization and hierarchical memory
+
+Pass 219 Lane 5 1.60 registers `HHS-T5184-005`.
+
+The normalized Genesis/closure coordinate is the inherited exact VM81 offset state:
+
+```text
+Q0 = (0,...,0), |Q0| = 81
+Ser5184(Q0) = 81 exact 64-character rational-scientific zero tokens
+```
+
+The phrase `0^5184` in the structural theorem denotes the zero coordinate geometry. The authoritative serialized object remains the fixed-width 5,184-character HARMONICODE rational-scientific representation; normalization does not replace it with a variable-width host integer or raw text-zero buffer.
+
+The transition law is preserved by coordinate conjugacy:
+
+```text
+F_N = N o F o N^-1
+F_N(N(S),I) = N(F(S,I))
+```
+
+No native phase, RNA, H36, VM81, Hash72 or Hash216 law is rewritten.
+
+A thread address is a projection of the complete admitted boundary:
+
+```text
+Scope216  = Hash216(Capabilities)
+Pal216    = Hash216(Ser5184 || Reverse(Ser5184))
+Thread216 = Hash216(
+              Scope216 ||
+              Evolution216 ||
+              Lineage216 ||
+              PQCWitness216 ||
+              Pal216 ||
+              Ser5184
+            )
+```
+
+Therefore a thread root is not a detached OS/thread index. Same-process residency does not imply shared computational namespace.
+
+Scope composition is monotone:
+
+```text
+Scope(composition) = intersection(required scopes)
+Scope(next) subseteq Scope(current)
+```
+
+Cross-thread reads require an explicit directed shared-scope bridge, matching admitted evolutionary lineage, and capabilities contained in both source and target scopes. Scope union is forbidden.
+
+Persistent memory uses one physical SQLite/WAL/FULL fabric with boundary-qualified logical indexes:
+
+```text
+(scope_hash216, thread_root_hash216, lineage_hash216, object_hash216)
+```
+
+The virtual hierarchy is:
+
+```text
+/scope/<Scope216>/thread/<Thread216>/lineage/<Lineage216>/<type>/<Object216>
+```
+
+Authorization filtering is applied before any vector-distance/ranking stage. Objects outside the admitted namespace never enter the searchable candidate population.
+
+The PQC witness is bound into the thread boundary but does not create a second signature or canonical-commit authority. Canonical execution remains the inherited Lane 5 -> RNA -> PQC -> VM81/Hash72 path; Hash216 remains validated compositional memory.
+
+Wolfram evidence for `HHS-T5184-005` is source/output digest-bound and reports 17/17 exact structural checks passing.
+
+Executable reference:
+
+```text
+hhs_backend/runtime/hhs_pass219_lane5_thread_lineage_normalization_1_60.py
+```
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_LANE5_THREAD_LINEAGE_NORMALIZATION_1_60.md
+```
