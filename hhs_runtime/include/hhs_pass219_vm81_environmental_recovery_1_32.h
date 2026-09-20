@@ -147,7 +147,7 @@ hhs_exact_pass219_vm81_environment_checkpoint_seal(
  * witness before delegating to the hidden 1.31 signed firewall.  Recovery and
  * environment code never owns VM81 or canonical receipt authority.
  */
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
+HHS_EXACT_PASS219_VM81_ENV_INTERNAL_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     uint32_t pass_number,
     uint32_t signature_algorithm,
     const HHSExactUQCELInputV1 *input,
