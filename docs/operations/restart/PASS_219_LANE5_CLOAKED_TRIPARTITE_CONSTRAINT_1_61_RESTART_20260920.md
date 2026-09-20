@@ -16,6 +16,8 @@ Implement HHS-T5184-005 as an executable exact Lane 5 tripartite constraint veri
 - hhs_runtime/c/hhs_pass219_lane5_cloaked_tripartite_constraint_1_61.inc
 - hhs_runtime/include/hhs_runtime_exact_abi.h
 - hhs_runtime/c/hhs_runtime_exact_abi.c
+- hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+- hhs_runtime/c/hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.inc
 - tests/pass219/test_pass219_lane5_cloaked_tripartite_constraint_1_61.c
 - tests/pass219/test_pass219_lane5_cloaked_tripartite_stress_1_61.c
 - contracts/pass219/PASS_219_LANE5_CLOAKED_TRIPARTITE_CONSTRAINT_1_61.md
@@ -61,10 +63,11 @@ The complete 5,184-character state is Hash216-bound into the receipt. The receip
 - wired 1.61 into cumulative exact ABI
 - removed a strict-build unused temporary before validation
 - added contract and extensive CI workflow
+- repaired inherited 1.34 and 1.37 bare-header includes after the historical standalone public C ABI audit exposed the include-path divergence
 
 ## Remaining validation
 
-Exact-head GitHub Actions results must be inspected. Any implementation or integration failure must be repaired forward on this branch; no canonical equation or authority invariant is to be weakened to satisfy a test.
+The first exact-head lane5-extensive job passed, including 3,583 stress cases and 53 Python regressions. The inherited Universal Quantization Constraint Audit then exposed a historical standalone public C ABI include-path divergence in Lane 5 1.34; the same bare-header form was also present in 1.37. Both were repaired forward with relative include paths. Validate the repaired exact head without weakening any canonical equation or authority invariant.
 
 ## Next action
 
