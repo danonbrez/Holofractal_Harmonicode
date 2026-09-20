@@ -125,3 +125,18 @@ Next action:
 - consume exact-head validation for #519 and #520;
 - repair any demonstrated 1.60-only divergence without altering the thread-memory or authority contracts;
 - once dependency-scoped evidence is green, freeze receipts and return control without merging the stacked PRs unless explicitly authorized.
+
+## Final parent synchronization checkpoint
+
+The follow-up 1.59 workflow-only repair was inherited and ancestry-closed without changing 1.60 runtime semantics:
+
+```text
+1.59 final repair checkpoint = 4b81466f3d1326bad090c7615e160d4910515c5c
+1.60 pre-merge head          = a88a22623bed46a243b4e286dce9ef0cc1ce62e1
+1.60 merge commit            = 0377a4d9c93c1b78ade869c459563d0866bfffb7
+```
+
+The synchronized delta only restores `PYTHONPATH="$PWD"` for inherited cumulative membrane scripts in the Universal Quantization workflow and records the 1.59 restart evidence. It does not alter Lane 5, RNA, PQC, VM81/Hash72, Hash216, thread-memory, or HHS algebra semantics.
+
+Post-merge requirement: compare 1.59 -> 1.60 must remain `behind_by=0`. Exact-head 1.60 CI may complete asynchronously; repair-forward only demonstrated 1.60-specific failures.
+
