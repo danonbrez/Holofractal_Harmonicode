@@ -272,7 +272,7 @@ HHSExactStatus hhs_exact_pass219_lane5_tripartite_verify(
 ) {
     HHS_P219_T5184_Big gamma, rho, sigma, omega, P, p, q;
     HHS_P219_T5184_Big phase_denominator, p_sq, pq;
-    HHS_P219_T5184_Big tmp1, tmp2, curvature_rhs;
+    HHS_P219_T5184_Big tmp1, curvature_rhs;
     HHS_P219_T5184_Big transition_lhs_mag, payload_lhs_mag, payload_rhs;
     HHS_P219_T5184_Signed q_minus_p, transition, curvature_lhs, transition_lhs, payload_lhs;
     uint8_t material[HHS_P219_T5184_COMMIT_MATERIAL_CAPACITY];
