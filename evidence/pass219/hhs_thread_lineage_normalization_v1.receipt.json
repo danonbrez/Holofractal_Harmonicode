@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS219_THREAD_LINEAGE_NORMALIZATION_WOLFRAM_RECEIPT_V1",
+  "result": "PASS",
+  "theorem": "HHS-T5184-005",
+  "checks_passed": 17,
+  "checks_total": 17,
+  "source_path": "evidence/pass219/hhs_thread_lineage_normalization_v1.wl",
+  "source_bytes": 6658,
+  "source_sha256": "8202e1d088300fa395d69326782ff790ba0f17b396be616b5cd7d1c85b901e09",
+  "output_path": "evidence/pass219/hhs_thread_lineage_normalization_v1.output.json",
+  "output_bytes": 1422,
+  "output_sha256": "f22a43087d1629322b9d880aeed7a1064fcee003d43e93382a64efc18a1c1285",
+  "execution": "connected Wolfram Language evaluator",
+  "exact_arithmetic_only": true,
+  "native_phase_algebra_held_opaque": true,
+  "note": "The certificate proves structural normalization, scope, lineage, namespace and fail-closed admission identities without scalarizing native HHS phase algebra."
+}
