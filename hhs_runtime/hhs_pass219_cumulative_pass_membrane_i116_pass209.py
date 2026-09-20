@@ -22,6 +22,7 @@ PASS209_PRODUCTION_GATEWAY_PATH = Path("hhs_backend/production_visual_server.py"
 PASS209_RUNTIME_OS_BRIDGE_PATH = Path("hhs_backend/runtime_os_visual_server.py")
 PASS209_RUNTIME_OS_APPLICATION_PATH = Path("hhs_backend/runtime_os_application_server.py")
 PASS209_RUNTIME_OS_APPLICATION_FULL_PATH = Path("hhs_backend/runtime_os_application_server_full.py")
+PASS209_RUNTIME_OS_SOURCE_ONLY_PATH = Path("hhs_backend/runtime_os_source_only_server.py")
 PASS209_SERVICE_PATH = Path("deploy/digitalocean/hhs-pass196-integrated-environment.service")
 PASS210_CONTRACT_PATH = Path("contracts/pass210/PASS_210_CONTRACT.json")
 
@@ -85,6 +86,7 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
     runtime_os_bridge = _text(PASS209_RUNTIME_OS_BRIDGE_PATH)
     runtime_os_application = _text(PASS209_RUNTIME_OS_APPLICATION_PATH)
     runtime_os_application_full = _text(PASS209_RUNTIME_OS_APPLICATION_FULL_PATH)
+    runtime_os_source_only = _text(PASS209_RUNTIME_OS_SOURCE_ONLY_PATH)
     service = _text(PASS209_SERVICE_PATH)
     successor_contract = _load(PASS210_CONTRACT_PATH)
     successor = pass210_membrane_source_evidence()
@@ -167,10 +169,16 @@ def pass209_membrane_source_evidence() -> Dict[str, Any]:
     if runtime_os_application_projection:
         for token in (
             "runtime_os_application_server_full",
-            "HHS_RUNTIME_OS_SOURCE_ONLY",
+            "runtime_os_source_only_server",
         ):
             if token not in runtime_os_application:
                 raise RuntimeError("PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:" + token)
+        for token in (
+            "HHS_RUNTIME_OS_SOURCE_ONLY_PUBLIC_ROOT",
+            "source_only_degraded_mode",
+        ):
+            if token not in runtime_os_source_only:
+                raise RuntimeError("PASS209_RUNTIME_OS_SOURCE_ONLY_DRIFT:" + token)
         for token in (
             "from hhs_backend.application_ide_server import app as inherited_app",
             "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)",
