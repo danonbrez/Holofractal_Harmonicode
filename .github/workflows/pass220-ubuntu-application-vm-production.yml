@@ -139,7 +139,6 @@ jobs:
 
           runuser -u hhs -- env \
             HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env \
-            HHS_APPLICATION_VM_PUBLIC_BASE="https://$HHS_PUBLIC_HOST/vm-api" \
             bash "$APP_ROOT/deployment/ubuntu/application_vm/verify.sh"
 
           listener=$(ss -H -ltn 'sport = :8720')
