@@ -162,3 +162,66 @@ PR `#308` remains validation-only, draft, and unmerged. Canonical main remains u
 This documentation-inclusive commit is the final I122 seal candidate. Only the documentation-affected dedicated I122 exact/synthetic gate must be revalidated unless the seal reveals lineage or source-identity drift.
 
 After final seal success, the next reverse-census target is Pass 201 strictly from the frozen I122 checkpoint.
+
+
+## September 21, 2026 successor reseal — production Runtime OS repair
+
+The exact-main Runtime OS production-composition repair changed the supported
+guarded-deployment successor surfaces after the earlier Pass 220 reseal.
+
+Historical Pass 202 identity remains frozen and unchanged:
+
+- historical installer blob at commit 83b6fd89...:
+  97ab585e3e96122cbaded47e1a436fc0e143bac1
+- historical candidate-validator blob at commit 83b6fd89...:
+  82250c50fa9d20a82d0b957d2637398760b1c416
+
+The current successor-hardened identities are now:
+
+- installer:
+  9832e410e9aadf2cdda6c8ce3bc70cfd9590f18f
+- candidate validator:
+  4b31210535a863f7328040a0c2e0b35399bceb0f
+
+The installer successor adds the production validation-timeout floor while
+preserving larger operator bounds. The validator successor binds the exact
+production gateway, bounded /api/health liveness, /api/interface/status
+public-root proof, exact Runtime OS asset authority, workspace/product/Pass174
+surfaces, and the existing Pass205 continuation evidence.
+
+Repair branch:
+
+- repair/pass202-successor-production-reseal
+- base: ef11047ea64762c875434487362d490930c61775
+
+Repository-visible repair commits:
+
+- d62861aa8f5f15c9edb975036ebbf80599fefa26 — reseal workflow successor
+  installer/validator identities while preserving frozen historical hashes;
+- eeb9db03187240de26474395d0ce11b81c158a06 — reseal the Python membrane and
+  require the new timeout/liveness/interface production fragments;
+- c547ff30188e0c6bafeae12ef6bc7c95a697e550 — bind DigitalOcean PR validation
+  to Pass202 successor-integrity changes;
+- c9f8117a8364cf19b8f33791ad906e3cb387157f — bind Runtime OS production-root
+  validation to the same successor-integrity head;
+- e007468980474831adfd1b806990ac4de203c9ca — bind Full Application IDE
+  validation to the same successor-integrity head.
+
+Acceptance for this reseal requires one PR head to produce:
+
+1. Pass 219 Cumulative Pass 202 Membrane I122 exact job — SUCCESS;
+2. Pass 219 Cumulative Pass 202 Membrane I122 synthetic job — SUCCESS;
+3. DigitalOcean Production Exact Main PR contract — SUCCESS;
+4. Validate HHS Runtime OS Production Root — SUCCESS with production artifact
+   upload reached;
+5. Validate Full Application IDE — SUCCESS.
+
+Only CURRENT_SUCCESSOR_BLOBS and current-successor workflow expectations are
+advanced. HISTORICAL_BLOBS and the historical git-rev-parse proofs remain
+unchanged. No deployment authority, canonical mutation authority, persistence
+authority, Hash72/Hash216 authority, or VM81 mutation authority is added.
+
+After a green exact-head PR, merge this reseal to main and rerun the exact-main
+DigitalOcean promotion/public HTTPS verification. A production promotion is not
+claimed until the exact merged SHA receives a PROMOTED guarded-update receipt
+and the public HTTPS Runtime OS checks complete.
