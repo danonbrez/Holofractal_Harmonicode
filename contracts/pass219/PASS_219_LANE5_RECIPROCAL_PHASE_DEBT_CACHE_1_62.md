@@ -332,4 +332,81 @@ The implementation checkpoint is accepted only when:
 12. inherited Lane 5 1.61, reciprocal-boundary, raw VM5184, RNA, and security
     membranes remain green;
 13. no new float, parallel bigint/hash authority, or canonical mutation path
-    appears.
+    appears;
+14. every event receipt binds deterministic parent and result unresolved-stack
+    roots;
+15. collision regressions prove distinct unresolved parent histories cannot
+    produce identical event or commit/status receipts when aggregates match.
+
+
+## 16. Parent-debt receipt binding repair
+
+A transition receipt is not complete if it binds only the current event and
+aggregate counters. The unresolved reciprocal frame stack is history-dependent
+state and is therefore part of the transition boundary.
+
+Define the deterministic unresolved-stack root recursively:
+
+~~~text
+R_0 = Hash216("HHS|P219|LANE5|PHASE-DEBT|STACK|1.62|EMPTY")
+
+R_{i+1} = Hash216(
+    R_i
+    || frame_index_i
+    || class_id_i
+    || opening_orientation_i
+    || opening_phase_i
+    || clock_direction_i
+    || quantized_ninth_numerator_i
+    || operation64_i
+    || validated_witness_i
+    || lineage_token_i
+    || canonical_sudoku_fingerprint_i
+)
+~~~
+
+The ordering is stack order; no frame sorting or scalar reduction is allowed.
+
+For every event transition, the receipt binds both:
+
+~~~text
+parent_stack_root = R_before
+result_stack_root = R_after
+~~~
+
+and the event receipt hash includes both roots. Thus the receipt describes a
+directed state edge:
+
+~~~text
+R_before --event--> R_after.
+~~~
+
+Rejected events bind the same root on both sides because the unresolved debt
+stack is not mutated.
+
+Commit/status receipts bind the current unresolved-stack root as well.
+
+Before accepting another event or issuing commit status, the runtime recomputes
+the root from caller-provided frames and compares it to the root retained in the
+cache. Direct frame mutation therefore fails closed with invariant failure.
+
+This is a receipt-binding repair only. It does not promote Hash216 receipt
+material to canonical Hash216 commit authority.
+
+## 17. Collision regression obligation
+
+The regression suite must construct at least two distinct unresolved parent
+stacks having equal aggregate depth, counters, closed-pair mask, lifted phase,
+and current clock phase. Applying an identical child event to both stacks must
+produce different:
+
+- parent stack roots;
+- result stack roots;
+- event receipt hashes.
+
+The same requirement applies to identical rejected events and to commit/status
+receipts while the distinct unresolved stacks remain live.
+
+This test closes the P1 case where distinct debt histories could previously
+produce identical receipts whenever event fields and aggregate counters were
+equal.
