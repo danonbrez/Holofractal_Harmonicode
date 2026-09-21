@@ -216,3 +216,10 @@ def test_runtime_ledger_permission_normalizer_refuses_symlink_boundary_without_m
     assert stat.S_IMODE(target_after.st_mode) == stat.S_IMODE(target_before.st_mode)
     assert target_after.st_gid == target_before.st_gid
     assert target.read_text(encoding="utf-8") == "{}\n"
+
+def test_recovery_import_root_is_explicit_repository_not_installed_helper_path() -> None:
+    source = NORMALIZER_PATH.read_text(encoding="utf-8")
+    assert "source_root = root.resolve()" in source
+    assert "Path(__file__).resolve().parents[3]" not in source
+    assert 'os.environ["HHS_REPO_ROOT"] = str(source_root)' in source
+
