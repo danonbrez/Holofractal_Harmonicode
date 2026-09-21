@@ -166,12 +166,31 @@ Parent evidence remains green:
 - lane5-extensive SUCCESS;
 - openssl-35-positive SUCCESS.
 
+
+Final exact-head validation after registering the restart record in the workflow
+path set:
+
+- validated head: d214486d68189c5e8459ff30e4462c2c18a6c324
+- workflow run: 35546819811
+- job: 106174108243
+- result: SUCCESS
+- native conformance: PASS
+- recursive stress: accepted=8256 rejected=200 epochs=100 max_depth=128
+  witness_replays=1024
+- Pass220/cross-check membrane: 52 passed, 1 warning
+- Lane 5 Python membrane: 53 passed, 2 warnings
+- evidence receipt SHA-256:
+  5f29fdb32ffb74397ae122f90a8d0036f4a30b5c68c9efad76791fbe7e92fbf6
+- artifact ID: 10615824327
+- artifact digest:
+  sha256:77c8c13c17b0f1585876265fba7a96e87df0b89361ede79d51565d3b348bd8ea
+- artifact expires: 2026-12-20
+
 ## Validation remaining
 
-This documentation update and the workflow path registration that follows it
-must receive one final exact-head 1.62 run so the restart record itself is
-included in the validated repository-visible checkpoint. Repair forward only
-if that final exact-head run exposes a 1.62-caused failure.
+No 1.62 dependency-scoped implementation validation remains. Broad inherited
+repository workflows may continue independently; only a newly introduced
+1.62-caused failure should reopen this checkpoint.
 
 ## Environment state
 
@@ -191,7 +210,6 @@ as part of 1.62 unless it becomes an actual dependency blocker.
 
 ## Next action
 
-Register this restart record in the 1.62 workflow path set, run one final
-exact-head dependency-scoped validation, then record final head/run evidence on
-PR #522. If green, the branch is a restartable completed 1.62 checkpoint ready
-for the next stacked integration cycle.
+Treat this branch as the restartable completed 1.62 checkpoint. Preserve the
+green dependency-scoped evidence, repair forward only newly impacted failures,
+and continue the next stacked Lane 5 integration cycle from PR #522.
