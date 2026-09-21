@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shlex
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -125,7 +126,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             if not words:
                 raise ApplicationVMError("HHS_APPLICATION_VM_SHELL_COMMAND_REQUIRED")
             result = control.shell(
-                " ".join(words),
+                shlex.join(words),
                 authorization_token=token,
             )
         elif args.command == "invoke":
