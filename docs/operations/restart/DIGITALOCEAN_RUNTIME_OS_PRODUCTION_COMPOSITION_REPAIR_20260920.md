@@ -129,3 +129,33 @@ After merge to main:
 Open the repair PR, run dependency-scoped CI, repair forward only impacted
 composition/deployment failures, then merge when green and verify exact-main
 promotion plus public HTTPS.
+
+
+## PR checkpoint
+
+- PR: #526
+- current head: 2ca36e949c850775b8e6c6c9cf7f2ad7dad7f758
+- base: main 59e0d7abfa1e4f9ee60bb0f30a0f8eb225cc6226
+- branch divergence at checkpoint: 0 behind main
+- PR state: draft pending dependency-scoped validation
+
+Additional repair commit:
+
+- 2ca36e949c850775b8e6c6c9cf7f2ad7dad7f758 — preserves the production
+  gateway's frozen source-selection token while retaining the new import-time
+  Runtime OS projection assertion.
+
+Queued exact-head checks:
+
+- DigitalOcean Production Exact Main PR contract:
+  run 35558731171
+- Validate HHS Runtime OS Production Root:
+  run 35558731082
+
+A separate branch-push Pass205 workflow reports an immediate workflow-level
+failure without a job on this repair branch. It is not used as evidence for
+this composition repair unless dependency-scoped validation demonstrates that
+the changed production files caused it.
+
+Per the forward-progress rule, the implementation is repository-visible and
+restartable while the two relevant deployment gates wait for runners.
