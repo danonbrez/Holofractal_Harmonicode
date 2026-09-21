@@ -27,11 +27,8 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
-from hhs_backend.runtime_os_application_server import (
-    PUBLIC_MOUNT_NAME,
-    RUNTIME_OS_ROOT,
-    app as authoritative_app,
-)
+from hhs_backend.runtime_os_application_server import app as authoritative_app
+from hhs_backend.runtime_os_application_server import PUBLIC_MOUNT_NAME, RUNTIME_OS_ROOT
 from hhs_backend.runtime_os_projection import LEGACY_PUBLIC_ROOT_NAMES
 
 def _verify_production_runtime_os_projection() -> None:
