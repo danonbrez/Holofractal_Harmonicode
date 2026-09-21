@@ -225,3 +225,35 @@ After a green exact-head PR, merge this reseal to main and rerun the exact-main
 DigitalOcean promotion/public HTTPS verification. A production promotion is not
 claimed until the exact merged SHA receives a PROMOTED guarded-update receipt
 and the public HTTPS Runtime OS checks complete.
+
+### Repair-forward after first reseal run
+
+The first reseal run proved the historical and current Pass 202 blob identities,
+C/C++ conformance, and no-new-authority checks, then failed inside the inherited
+Pass 209 source membrane:
+
+PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:HHS_RUNTIME_OS_SOURCE_ONLY
+
+That token belonged to an older dispatcher representation. The current
+production dispatcher preserves the source-only boundary differently:
+
+- degraded source-only import requires an explicit
+  HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT or HHS_DISABLE_C_AUTOBUILD request;
+- _SOURCE_ONLY_DEGRADED additionally requires the native runtime library to be
+  absent;
+- full production dispatch imports runtime_os_application_server_full;
+- Pass170 application identity is checked before the full composition is
+  accepted;
+- the delegated source-only module retains
+  HHS_RUNTIME_OS_SOURCE_ONLY_PUBLIC_ROOT, source_only_degraded_mode=true, and
+  frontend_is_authority=false.
+
+Repair commit:
+
+- af07c76b7765435a2ed6fd193afe0813772b4226 — update only the Pass 209
+  read-only membrane source evidence to bind the current explicit degraded
+  dispatcher plus delegated source-only status surface. The frozen Pass 209
+  evidence dictionary and historical Pass 202 identities remain untouched.
+
+The next Pass 202 exact/synthetic run must reach the inherited deployment
+regressions and Pass 203 successor check before this reseal is accepted.
