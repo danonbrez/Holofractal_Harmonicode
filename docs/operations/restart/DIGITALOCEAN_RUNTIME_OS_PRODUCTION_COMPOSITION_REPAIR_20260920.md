@@ -181,3 +181,42 @@ Repair-forward commit:
 This does not weaken validation or convert timeout into success. It only ensures
 the current bounded validator receives its intended production budget rather
 than an inherited shorter deployment-era value.
+
+
+## Final implementation checkpoint before CI
+
+Implementation head before this restart-record commit:
+
+- 153ad50fb18bf97dd24f9633304bda5c357373cd
+- base main: 59e0d7abfa1e4f9ee60bb0f30a0f8eb225cc6226
+- PR: #526
+- branch: repair/digitalocean-runtime-os-production-composition
+- merge target: main
+
+Additional repository-visible commits after the initial PR checkpoint:
+
+- c9d8846b4cd3deab4fb12bf49193bc39cac9eda9 — normalize stale production
+  HHS_VALIDATE_TIMEOUT_SECONDS to a minimum of 3600 seconds during promotion;
+- ed6932138ca2a71f19c2cc27ed8d69dccd386f62 — add guarded-updater timeout
+  normalization regression;
+- 153ad50fb18bf97dd24f9633304bda5c357373cd — align the frozen Pass176
+  degraded-mode liveness source contract with sole-owner bounded liveness.
+
+Relevant exact-head validation launched for 153ad50f:
+
+- Validate HHS Runtime OS Production Root: run 35558862710 — queued;
+- DigitalOcean Production Exact Main PR contract: run 35558862714 — queued;
+- Validate Full Application IDE: run 35558862585 — queued.
+
+Validation still required:
+
+1. the three dependency-scoped runs above must complete successfully;
+2. PR #526 must then be marked ready and merged to main;
+3. the resulting exact-main DigitalOcean workflow must promote the merged SHA;
+4. candidate /api/health must return bounded liveness before timeout;
+5. /api/interface/status and / must prove the versioned Runtime OS root;
+6. systemd production entrypoint must remain
+   hhs_backend.production_visual_server:app;
+7. public HTTPS Runtime OS verification must run and pass.
+
+No merge or production promotion has been claimed at this checkpoint.
