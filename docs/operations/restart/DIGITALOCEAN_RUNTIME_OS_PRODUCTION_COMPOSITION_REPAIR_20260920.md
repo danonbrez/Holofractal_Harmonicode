@@ -220,3 +220,35 @@ Validation still required:
 7. public HTTPS Runtime OS verification must run and pass.
 
 No merge or production promotion has been claimed at this checkpoint.
+
+## Exact-head CI repair after 646d4df
+
+At head 646d4df7d381b662f9f934db42e1e41b46b66ca5:
+
+- DigitalOcean Production Exact Main PR contract 35558948261: SUCCESS.
+- Validate Full Application IDE 35558948175: SUCCESS.
+- Validate HHS Runtime OS Production Root 35558948258: FAILURE only in the
+  dependency-scoped pytest step; all build, source, compile, public-root, and
+  route-ordering steps before it passed.
+
+The two failing regressions exposed test/import-order details rather than a
+canonical runtime-authority failure:
+
+1. runtime_os_visual_server could be imported after the full Runtime OS
+   application had already been composed. Because all HHS projections share
+   the same inherited FastAPI object, the reduced visual module could then
+   replace the higher-order application public-root mount. Repair
+   f6efd048a89e701b2d9fffe6b4c79101b8259275 makes the reduced projection adopt
+   the already-installed application mount name when present before calling
+   project_runtime_os, preventing import-order downgrade of public-root
+   authority.
+
+2. The guarded-validator source regression searched for a quoted path beginning
+   immediately at /api/health, while the actual shell line correctly contains
+   the absolute candidate URL before that path. Repair
+   39065f0c9c93c3d11bbf141d87e894e44c3cfdd4 checks the stable path/output
+   fragment and preserves the same ordering assertions.
+
+Next validation target is the exact branch head after this checkpoint. Do not
+merge until Runtime OS Production Root, DigitalOcean PR contract, and Full
+Application IDE all pass on the same head.
