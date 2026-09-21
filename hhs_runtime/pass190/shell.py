@@ -293,7 +293,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         repository_root=namespace.repository_root,
         capability_secret=os.environ.get("HHS_PASS190_CAPABILITY_SECRET"),
     )
-    line = "hhs " + " ".join(namespace.command)
+    line = shlex.join(["hhs", *namespace.command])
     result = lower_shell_command(
         context,
         line,
