@@ -92,3 +92,44 @@ The white-paper workflow has been extended to run both the inherited white-paper
 2. Run the white-paper/documentation validation on the exact PR head.
 3. Repair forward only demonstrated documentation/evidence failures.
 4. Keep the PR unmerged unless explicitly authorized.
+
+## Dependency-scoped validation closure
+
+Draft PR:
+
+```text
+#532 Docs: expand Lane 5 mathematical white papers through 1.62
+```
+
+Validated executable/documentation head:
+
+```text
+0a9448ceaab35964dea3c977e3a69a3f1193d5c3
+```
+
+Exact PR workflow evidence:
+
+```text
+workflow = HHS Lane 5 Whitepapers v1
+run      = 35594355753
+job      = 106315676961
+result   = SUCCESS
+```
+
+The job successfully executed both:
+
+```text
+tests/docs/test_hhs_lane5_whitepapers_v1.py
+tests/docs/test_hhs_lane5_math_synthesis_20260921.py
+```
+
+This freezes the 44/44 Wolfram evidence, documentation links, required equation strings, source-provenance guards, and inherited white-paper assertions on the validated head.
+
+Current main remains:
+
+```text
+2dec42e192338cd1c1f7bb6d1994511be3bceeff
+```
+
+Only this restart-record closure follows the validated head; it does not alter mathematical content, evidence, tests, or workflow behavior. PR #532 remains draft and unmerged.
+
