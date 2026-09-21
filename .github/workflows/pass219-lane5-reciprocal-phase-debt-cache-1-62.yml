@@ -1,0 +1,204 @@
+name: Pass 219 Lane 5 Reciprocal Phase Debt Cache 1.62
+
+on:
+  push:
+    branches:
+      - pass219/lane5-reciprocal-phase-debt-cache-1-62
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_cache_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
+      - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
+      - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
+  pull_request:
+    branches:
+      - pass219/lane5-cloaked-tripartite-constraint-1-61
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_cache_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
+      - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
+      - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  lane5-phase-debt-extensive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped tools
+        run: python -m pip install --disable-pip-version-check pytest 'cryptography>=45.0,<47.0' fastapi httpx
+
+      - name: Build cumulative exact runtime
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit 1.62 exports and hidden authority
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          for symbol in             hhs_exact_pass219_lane5_phase_debt_version             hhs_exact_pass219_lane5_phase_debt_authority             hhs_exact_pass219_lane5_phase_debt_pair             hhs_exact_pass219_lane5_phase_debt_topology_verify             hhs_exact_pass219_lane5_phase_debt_operation64_encode             hhs_exact_pass219_lane5_phase_debt_operation64_decode             hhs_exact_pass219_lane5_phase_debt_cache_init             hhs_exact_pass219_lane5_phase_debt_cache_apply             hhs_exact_pass219_lane5_phase_debt_commit_status; do
+            grep -q " ${symbol}$" /tmp/hhs.symbols
+          done
+          grep -q ' hhs_exact_pass219_lane5_tripartite_verify$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_gateway_admit_raw5184$' /tmp/hhs.symbols
+          for forbidden in             hhs_exact_vm81_admit_uqcel             hhs_exact_pass219_admit_composed             hhs_exact_pass219_rna_admit_composed             hhs_exact_pass219_vm81_pqc_admit             hhs_exact_pass219_vm81_pqc_admit_signed; do
+            ! grep -q " ${forbidden}$" /tmp/hhs.symbols
+          done
+
+      - name: Static exact-integer and authority audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          paths = [
+              Path('hhs_runtime/include/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.h'),
+              Path('hhs_runtime/c/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.inc'),
+          ]
+          text = '\n'.join(path.read_text() for path in paths)
+          assert re.search(r'\b(float|double)\b', text) is None
+          assert 'hhs_bigint_t' not in text
+          assert 'hhs_hash216_generate_commit' not in text
+          assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_OUTER_PAIRS UINT32_C(40)' in text
+          assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_HALF_CYCLE UINT32_C(36)' in text
+          assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_ORBIT_STEP UINT32_C(16)' in text
+          assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_SERIALIZATION_CHARS UINT32_C(5184)' in text
+          assert 'validated_witness_may_skip_closure = 0U' in text
+          assert 'canonical_vm81_mutation_authority = 0U' in text
+          assert 'canonical_hash72_authority = 0U' in text
+          assert 'canonical_hash216_commit_authority = 0U' in text
+          assert 'canonical_persistence_authority = 0U' in text
+          print('phase_debt_static_authority_audit=PASS')
+          PY
+
+      - name: Compile and run 1.62 native conformance
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_reciprocal_phase_debt_cache_1_62.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t162
+          /tmp/t162
+
+      - name: Run recursive phase-debt stress
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t162-stress
+          /tmp/t162-stress
+
+      - name: Cross-check inherited G41 Lo Shu and operation64 witnesses
+        env:
+          PYTHONPATH: .
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q             tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py             tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py             tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py             tests/pass220/test_hhs_pass220_rna_operation64_c4_g41_radical_proof_v1.py
+
+      - name: Regress parent 1.61 and raw VM5184
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_cloaked_tripartite_constraint_1_61.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t161
+          /tmp/t161
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_raw_x86_vm5184_kernel_1_57.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t157
+          /tmp/t157
+
+      - name: Regress zero-bypass secure gateway
+        run: |
+          gcc -O2 -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_zero_bypass_secure_gateway_1_59.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t159
+          /tmp/t159
+
+      - name: Regress native RNA hidden-authority ABI
+        run: |
+          mkdir -p /tmp/pass219-rna
+          bash .github/scripts/build_pass219_exact_internal_archive.sh             /tmp/pass219-rna/libhhs_exact_internal.a /tmp/pass219-rna/objects
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_transcription_1_10.c             /tmp/pass219-rna/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread             -o /tmp/trna-c
+          /tmp/trna-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_rna_transcription_1_10.cpp             /tmp/pass219-rna/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread             -o /tmp/trna-cpp
+          /tmp/trna-cpp
+
+      - name: Regress VM81 PQC firewall reference boundary
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_vm81_pqc_firewall_1_30.cpp             -Lhhs_runtime/builds -lhhs_runtime             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/tpqc
+          /tmp/tpqc
+
+      - name: Run Lane 5 Python regression membrane
+        env:
+          PYTHONPATH: .
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q             tests/pass219/test_harmonicode_lane5_bigint_transcription_v1.py             tests/pass219/test_harmonicode_lane5_reciprocal_phase_boundary_v1.py             tests/pass219/test_harmonicode_lane5_ieee754_palindromic_pivot_v1.py             tests/pass219/test_harmonicode_lane5_t64_exhaustive_resolution_v1.py             tests/pass219/test_harmonicode_lane5_rna_self_ingestion_bytecode_v1.py             tests/pass219/test_pass219_lane5_thread_lineage_normalization_1_60.py             tests/pass219/test_lane5_linux_api_interposer_1_59.py             tests/pass219/test_lane5_zero_bypass_middleware_1_59.py             tests/test_hhs_pass219_fibonacci_compression_compliance.py
+
+      - name: Seal 1.62 validation summary
+        run: |
+          mkdir -p artifacts/pass219/1.62
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+
+          summary = {
+              'schema': 'HHS_PASS219_LANE5_RECIPROCAL_PHASE_DEBT_EVIDENCE_1_62',
+              'result': 'PASS',
+              'vm81_cells': 81,
+              'reciprocal_classes': 41,
+              'outer_reciprocal_pairs': 40,
+              'fixed_nucleus_classes': 1,
+              'fingerprint_cells': 9,
+              'pair_sum': 90,
+              'pair_mean': 45,
+              'normalization_offset': -45,
+              'normalized_pair_mean': 0,
+              'quantization_denominator': 9,
+              'quantization_numerator_min': -81,
+              'quantization_numerator_max': 81,
+              'phase_modulus': 72,
+              'half_cycle': 36,
+              'bidirectional_orbit_step': 16,
+              'operation64_states': 64,
+              'vm81_x_operation64': 5184,
+              'stress_accepted_events': 8256,
+              'stress_rejected_events': 200,
+              'stress_epochs': 100,
+              'stress_max_nested_depth': 128,
+              'validated_witness_may_skip_compute': True,
+              'validated_witness_may_skip_closure': False,
+              'exact_integer_only': True,
+              'candidate_only': True,
+              'canonical_vm81_mutation_authority': False,
+              'canonical_hash72_authority': False,
+              'canonical_hash216_commit_authority': False,
+              'canonical_persistence_authority': False,
+              'floating_point_canonical_authority': False,
+          }
+          canonical = json.dumps(summary, sort_keys=True, separators=(',', ':')).encode()
+          summary['receipt_sha256'] = sha256(canonical).hexdigest()
+          Path('artifacts/pass219/1.62/summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps(summary, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-reciprocal-phase-debt-cache-1-62
+          path: artifacts/pass219/1.62/
+          if-no-files-found: error
