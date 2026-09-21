@@ -13,6 +13,7 @@ on:
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
+      - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
       - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
   pull_request:
     branches:
@@ -26,6 +27,7 @@ on:
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
+      - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
       - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
   workflow_dispatch:
 
