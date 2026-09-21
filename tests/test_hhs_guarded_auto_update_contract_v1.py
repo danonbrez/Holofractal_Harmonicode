@@ -226,6 +226,7 @@ def test_candidate_gate_uses_prebuilt_bundle_in_production_and_retains_source_mo
         "candidate Runtime OS asset authority mismatch",
         "/api/system/status",
         "/api/interface/status",
+        "/api/runtime/repository/health",
         "HHS Visual Runtime OS Workspace",
         "/api/runtime/workspace/session",
     ]:
