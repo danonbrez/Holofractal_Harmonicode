@@ -60,6 +60,7 @@ class CommittedPhaseInput:
     lambda_increment: Fraction
     theta: Fraction
     phase_receipt_sha256: str
+    dark_density_source: Fraction
 
 
 @dataclass(frozen=True)
@@ -149,6 +150,7 @@ def make_phase_input(
     lambda_increment: int | Fraction,
     theta: int | Fraction,
     phase_receipt_sha256: str,
+    dark_density_source: int | Fraction = 0,
 ) -> CommittedPhaseInput:
     n = _i(transition_index, "transition_index")
     if n < 0:
@@ -161,6 +163,9 @@ def make_phase_input(
         theta=_positive_q(theta, "theta"),
         phase_receipt_sha256=_sha(
             phase_receipt_sha256, "phase_receipt_sha256"
+        ),
+        dark_density_source=_nonnegative_q(
+            dark_density_source, "dark_density_source"
         ),
     )
 
@@ -218,6 +223,10 @@ def _background_input_receipt(
         "transition_index": phase.transition_index,
         "sigma": sigma_lookup(phase.transition_index),
         "phase_receipt_sha256": phase.phase_receipt_sha256,
+        "dark_density_source": (
+            f"{phase.dark_density_source.numerator}/"
+            f"{phase.dark_density_source.denominator}"
+        ),
         "anchor_receipt_sha256": anchors.anchor_receipt_sha256,
         "previous_continuity_receipt_sha256": (
             state.previous_continuity_receipt_sha256
@@ -269,8 +278,11 @@ def advance_background_state(
     rho_b_next = _scaled_by_log_increment(
         state.rho_b, BARYON_EXPONENT, delta_log_scale
     )
-    rho_d_next = _scaled_by_log_increment(
-        state.rho_d, DARK_EXPONENT, delta_log_scale
+    rho_d_next = exact_add(
+        _scaled_by_log_increment(
+            state.rho_d, DARK_EXPONENT, delta_log_scale
+        ),
+        phase.dark_density_source,
     )
     rho_r_next = _scaled_by_log_increment(
         state.rho_r, RADIATION_EXPONENT, delta_log_scale
@@ -285,6 +297,10 @@ def advance_background_state(
         "transition_index": phase.transition_index,
         "sigma": sigma_lookup(phase.transition_index),
         "phase_receipt_sha256": phase.phase_receipt_sha256,
+        "dark_density_source": (
+            f"{phase.dark_density_source.numerator}/"
+            f"{phase.dark_density_source.denominator}"
+        ),
         "background_input_receipt_sha256": input_receipt[
             "receipt_sha256"
         ],
@@ -446,7 +462,11 @@ def background_contract_descriptor() -> dict[str, Any]:
             "rho_b,n+1=rho_b,n*ExpSym(-3*Deltaell_n)"
         ),
         "dark_continuity": (
-            "rho_D,n+1=rho_D,n*ExpSym(-3*Deltaell_n)"
+            "rho_D,n+1=rho_D,n*ExpSym(-3*Deltaell_n)+J_D,n"
+        ),
+        "dark_source_rule": (
+            "J_D,n is exact nonnegative density injection bound to the "
+            "committed phase/Hash receipt; J_D,n=0 is the conserved branch"
         ),
         "radiation_continuity": (
             "rho_r,n+1=rho_r,n*ExpSym(-4*Deltaell_n)"
