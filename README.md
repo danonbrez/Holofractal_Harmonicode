@@ -415,3 +415,18 @@ make -C native_projects/hhs_pass190_operation_fabric validate
 ```
 
 A path or environment failure should be repaired at the adapter or deployment layer. Invariant checks, receipt continuity, ordered identity, and replay requirements must not be weakened to make a test pass.
+
+### Pass 219 relational token manifold
+
+HARMONICODE now has an executable both-and relational-token reference surface:
+human language/logic/code/data/geometry remain distinct and composable, while
+the machine receives deterministic character-string mathematics over the same
+preserved source. The reference layer attaches Lo Shu coordinates,
+prime-modular fingerprints, exact UTF-8/BigInt projections, bounded context,
+recursive position, surface roles, provenance, and shared graph relations to
+each character without reducing the source to a token ID or replacing the
+canonical 5184-character BigInt serialization.
+
+See `docs/architecture/HHS_RELATIONAL_TOKEN_MANIFOLD_V1.md` and
+`contracts/pass219/PASS_219_RELATIONAL_TOKEN_MANIFOLD_1_0.json`.
+
