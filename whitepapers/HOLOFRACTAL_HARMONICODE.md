@@ -1256,3 +1256,60 @@ tensor fixed. A consolidated Wolfram audit completed 23/23 exact checks.
 
 Implementation and complete derivation:
 `whitepapers/HHS_PASS220_PALINDROMIC_ORDERED_PHASE_MIRROR_ALGEBRA_V1.md`.
+
+## 2026-09-21 mathematical closure expansion
+
+This revision incorporates the global `Delta` denominator theorem,
+HARMONICODE computability/translation closure, exact 5184 normalization
+geometry, and HHS-T5184-005 cellular kinematics.
+
+Canonical additions:
+
+```text
+(P = sqrt(pq + P^4/(AB))) / Delta
+K_Ppq := P(q-p)/(p+q)=P^2-pq
+c^2 K_Ppq = a^2+b^2 = K_Ppq m_D c^2/Delta
+Pi_Delta^(-1)(Pi_Delta(S))=S
+Computable_Delta(x)
+Delta e=0
+```
+
+The common `Delta` remains inherited by nested HARMONICODE objects and is not
+generically cancellable. The normalized Lo Shu surface is
+
+```text
+[[-1,4,-3],[-2,0,2],[3,-4,1]]
+```
+
+with nonzero spectrum `{-4,-3,-2,-1,1,2,3,4}`; the 1-2-3 layers
+`(1,2,3),(2,4,6),(3,6,9)` are bound to Lo Shu positional triangles.
+
+Exact carrier relations are
+
+```text
+5184=72^2=81*64=144*36=72*24*3
+648 bytes=5184 bits.
+```
+
+The fixed symbolic object remains exactly 5184 HARMONICODE
+rational-scientific characters arranged as 81 fixed 64-character cell tokens.
+The same carrier may be traversed as a 72-by-72 surface, while the Hash72
+address manifold remains `72^72` (72 ordered positions, 72 admissible states
+per position).
+
+HHS-T5184-005 adds the exact nine-phase orbit
+
+```text
+{8,24,40,56,72,16,32,48,64}
+e_k=8+16k (mod 72)
+```
+
+with `gcd(16,72)=8`, nine distinct residues, closure after nine steps, an
+80-degree phase step, and reciprocal complement pairs
+`(8,64),(24,48),(40,32),(56,16)`.
+
+Wolfram audit evidence is stored in
+`evidence/pass220/documentation_math_expansion_20260921.*`. Only explicitly
+licensed ordinary exact projections are externally verified; native
+noncommutative, denominator, infinity/reciprocal, `Delta e=0`, and kinematic
+operators retain their HARMONICODE semantics.
