@@ -188,9 +188,10 @@ path set:
 
 ## Validation remaining
 
-No 1.62 dependency-scoped implementation validation remains. Broad inherited
-repository workflows may continue independently; only a newly introduced
-1.62-caused failure should reopen this checkpoint.
+The P1 receipt-binding repair reopened dependency-scoped validation. The
+repaired exact head must rerun the complete 1.62 gate, including the new
+distinct-parent-stack collision regression, before this checkpoint can be
+closed again.
 
 ## Environment state
 
@@ -210,6 +211,70 @@ as part of 1.62 unless it becomes an actual dependency blocker.
 
 ## Next action
 
-Treat this branch as the restartable completed 1.62 checkpoint. Preserve the
-green dependency-scoped evidence, repair forward only newly impacted failures,
-and continue the next stacked Lane 5 integration cycle from PR #522.
+Run the exact-head 1.62 gate on the receipt-binding repair. If green, record the
+new head/run/artifact evidence here and on PR #522, mark the PR ready again,
+and preserve the repaired branch as the restartable 1.62 checkpoint.
+
+
+## P1 receipt-binding repair — 2026-09-20
+
+A new P1 finding reopened 1.62 after the earlier green checkpoint.
+
+Problem:
+
+- event receipt hashes bound the event and aggregate cache counters;
+- they did not bind the actual unresolved parent frame stack;
+- therefore two distinct unresolved debt histories with equal aggregates could
+  produce identical event receipt hashes for the same next event.
+
+Repair:
+
+- cache state now retains a deterministic Hash216 unresolved-stack root;
+- the root is recomputed from ordered unresolved frames using class,
+  orientation, opening phase, clock direction, exact n/9 numerator,
+  operation64, witness flag, lineage token, and canonical 9-cell Sudoku
+  fingerprint;
+- every event receipt now binds both parent_stack_root_hash216 and
+  unresolved_stack_root_hash216;
+- event receipt_hash216 commits both roots;
+- commit/status receipts bind the current unresolved stack root;
+- each apply/status operation recomputes the root from caller-provided frames
+  and fails closed if the cached root does not match;
+- rejected transitions bind the unchanged parent/result debt root;
+- no canonical Hash216 commit authority was added.
+
+New collision regression:
+
+tests/pass219/test_pass219_lane5_reciprocal_phase_debt_receipt_collision_1_62.c
+
+It creates two distinct live parent stacks with the same aggregate counters,
+depth, closed mask, lifted phase, and clock phase, then proves:
+
+- the same accepted child event yields different parent roots, result roots,
+  and event receipts;
+- the same rejected event also yields different receipts;
+- commit/status receipts differ while the unresolved stacks differ;
+- direct caller mutation of an unresolved frame is detected by root
+  recomputation and returns invariant failure.
+
+Repair commits:
+
+- 0f0fcbf190dcd84d71ba330708e23ff66c406eb7 — ABI root fields/authority
+- 6f1241cfe38222c4b2398d669d55fa8e6f8a9fa2 — runtime root computation/binding
+- d7a022a5ef6cbbe79acb714bb60054eaca6e2e91 — collision regression
+- 276f5b8166867cb461412a70530fb38708c5b336 — exact-head CI gate
+- 29ffb80b7e4a9c58e83a20a5f3c231fbb9b98b73 — native conformance assertions
+- 2724cc72023dc828e25ff5be8ae35233c4ec033e — contract repair
+
+PR #522 was returned to draft while this P1 repair is being revalidated.
+
+Validation required before re-closing 1.62:
+
+1. cumulative exact ABI build;
+2. native 1.62 conformance;
+3. recursive stress;
+4. new parent-stack collision regression;
+5. inherited Pass220 I001/I014/I020 cross-check;
+6. parent 1.61 / VM5184 / zero-bypass / RNA / PQC regressions;
+7. Lane 5 Python membrane;
+8. sealed evidence artifact on the exact repaired head.
