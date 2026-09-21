@@ -1,0 +1,202 @@
+name: Pass 220 Ubuntu Application VM Production
+
+on:
+  workflow_run:
+    workflows:
+      - DigitalOcean Production Exact Main
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hhs-pass220-ubuntu-application-vm-production
+  cancel-in-progress: true
+
+jobs:
+  deploy-application-vm:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '165.227.220.193' }}
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+      TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+    steps:
+      - name: Check out exact application VM source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+
+      - name: Set up dependency-scoped Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        shell: bash
+        run: python -m pip install fastapi uvicorn httpx pytest
+
+      - name: Validate production deployment surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            hhs_runtime/pass220/application_vm_control_plane.py \
+            hhs_runtime/pass220/application_vm_cli.py \
+            hhs_backend/application_vm_api_server.py \
+            deployment/ubuntu/application_vm/configure_production_nginx.py
+          bash -n deployment/ubuntu/application_vm/install.sh
+          bash -n deployment/ubuntu/application_vm/verify.sh
+          sh -n bin/hhs-vm
+          pytest -q tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
+
+      - name: Configure pinned SSH target
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${HHS_SSH_PRIVATE_KEY}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_SSH_PRIVATE_KEY"; exit 2; }
+          [[ -n "${HHS_PINNED_KNOWN_HOSTS}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_KNOWN_HOSTS"; exit 3; }
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null
+          cat > "$HOME/.ssh/config" <<EOF
+          Host ${HHS_PRODUCTION_HOST}
+            IdentityFile $HOME/.ssh/hhs-production
+            BatchMode yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile $HOME/.ssh/known_hosts
+            UpdateHostKeys no
+          EOF
+          chmod 0600 "$HOME/.ssh/config"
+
+      - name: Install and verify Ubuntu application VM backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=20 \
+            -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "TARGET_SHA='${TARGET_SHA}' HHS_PUBLIC_HOST='${HHS_PRODUCTION_HOST}' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          APP_ROOT=/opt/hhs/app
+          TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
+          HHS_PUBLIC_HOST=${HHS_PUBLIC_HOST:?missing public host}
+          deadline=$((SECONDS + 900))
+
+          [[ $EUID -eq 0 ]] || { echo "application VM deployment requires root" >&2; exit 10; }
+          [[ -d "$APP_ROOT/.git" ]] || { echo "production repository missing" >&2; exit 11; }
+
+          while :; do
+            deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD 2>/dev/null || true)
+            if [[ "$deployed_sha" == "$TARGET_SHA" ]] && systemctl is-active --quiet hhs.service; then
+              break
+            fi
+            if (( SECONDS >= deadline )); then
+              echo "exact-main production did not reach target $TARGET_SHA before application VM deployment" >&2
+              git -C "$APP_ROOT" rev-parse HEAD >&2 || true
+              systemctl status hhs.service --no-pager --full >&2 || true
+              exit 12
+            fi
+            sleep 5
+          done
+
+          [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
+            echo "production checkout is dirty before application VM install" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 13
+          }
+
+          REPO_ROOT="$APP_ROOT" \
+          HHS_APPLICATION_VM_REQUIRE_GUI=1 \
+          HHS_APPLICATION_VM_INSTALL_GUI=1 \
+            bash "$APP_ROOT/deployment/ubuntu/application_vm/install.sh"
+
+          python3 "$APP_ROOT/deployment/ubuntu/application_vm/configure_production_nginx.py" \
+            --repository-root "$APP_ROOT"
+
+          systemctl is-active --quiet hhs-application-vm.service
+          systemctl is-active --quiet nginx
+          systemctl cat hhs-application-vm.service | grep -Fq "WorkingDirectory=$APP_ROOT"
+          systemctl show hhs-application-vm.service -p ExecStart --value | grep -Fq 'hhs_backend.application_vm_api_server:app'
+
+          runuser -u hhs -- env \
+            HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env \
+            bash "$APP_ROOT/deployment/ubuntu/application_vm/verify.sh"
+
+          listener=$(ss -H -ltn 'sport = :8720')
+          [[ -n "$listener" ]]
+          if printf '%s\n' "$listener" | awk '{print $4}' | grep -Ev '^(127\.0\.0\.1|\[::1\]):' >/dev/null; then
+            echo "port 8720 is not loopback-only" >&2
+            printf '%s\n' "$listener" >&2
+            exit 14
+          fi
+
+          echo "HHS_APPLICATION_VM_PRODUCTION_HOST_VERIFIED=$TARGET_SHA"
+          REMOTE
+
+      - name: Verify public secure OpenAPI boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://${HHS_PRODUCTION_HOST}/vm-api"
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 \
+            "$BASE/health" >/tmp/hhs-application-vm-public-health.json
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 \
+            "$BASE/openapi.json" >/tmp/hhs-application-vm-public-openapi.json
+
+          unauth_code=$(curl --silent --show-error \
+            --output /tmp/hhs-application-vm-public-unauth.json \
+            --write-out '%{http_code}' \
+            "$BASE/v1/vm/status")
+          [[ "$unauth_code" == "401" ]]
+
+          token=$(ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "runuser -u hhs -- env HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env hhs-vm token issue --principal github-production-verifier --scope runtime.mutate --scope workspace:read --scope workspace:write --scope artifact:read --scope artifact:write --ttl 180" \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')
+
+          curl --fail --silent --show-error \
+            -H "Authorization: HHS-Capability $token" \
+            "$BASE/v1/vm/status" >/tmp/hhs-application-vm-public-status.json
+          unset token
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          health=json.loads(Path("/tmp/hhs-application-vm-public-health.json").read_text())
+          openapi=json.loads(Path("/tmp/hhs-application-vm-public-openapi.json").read_text())
+          status=json.loads(Path("/tmp/hhs-application-vm-public-status.json").read_text())
+          assert health["ok"] is True
+          assert health["security_configured"] is True
+          assert health["ubuntu"] is True
+          assert health["ubuntu_desktop_components_present"] is True
+          assert health["frontend_attached"] is False
+          assert openapi["x-hhs-application-vm"]["backend_first"] is True
+          assert openapi["x-hhs-application-vm"]["remote_token_issuance"] is False
+          assert "HhsCapabilityToken" in openapi["components"]["securitySchemes"]
+          assert status["single_vm81_authority_preserved"] is True
+          assert status["frontend_attached"] is False
+          print("HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED")
+          PY

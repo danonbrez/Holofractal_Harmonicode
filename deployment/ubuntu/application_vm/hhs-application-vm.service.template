@@ -9,7 +9,7 @@ User=hhs
 Group=hhs
 WorkingDirectory=@@REPOSITORY_ROOT@@
 EnvironmentFile=/etc/hhs/application-vm.env
-ExecStart=/usr/bin/python3 -m uvicorn hhs_backend.application_vm_api_server:app --host ${HHS_APPLICATION_VM_HOST} --port ${HHS_APPLICATION_VM_PORT} --proxy-headers --forwarded-allow-ips=127.0.0.1
+ExecStart=@@PYTHON_BIN@@ -m uvicorn hhs_backend.application_vm_api_server:app --host ${HHS_APPLICATION_VM_HOST} --port ${HHS_APPLICATION_VM_PORT} --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=on-failure
 RestartSec=3
 TimeoutStartSec=90

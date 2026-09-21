@@ -11,6 +11,7 @@ on:
       - "docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md"
       - "tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py"
       - ".github/workflows/pass220-ubuntu-application-vm.yml"
+      - ".github/workflows/pass220-ubuntu-application-vm-production.yml"
   workflow_dispatch:
 
 permissions:
@@ -29,7 +30,7 @@ jobs:
         run: python -m pip install fastapi uvicorn httpx pytest
       - name: Compile backend surfaces
         run: |
-          python -m py_compile             hhs_runtime/pass220/application_vm_control_plane.py             hhs_runtime/pass220/application_vm_cli.py             hhs_backend/application_vm_api_server.py             hhs_runtime/pass190/shell.py             tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
+          python -m py_compile             hhs_runtime/pass220/application_vm_control_plane.py             hhs_runtime/pass220/application_vm_cli.py             hhs_backend/application_vm_api_server.py             hhs_runtime/pass190/shell.py             deployment/ubuntu/application_vm/configure_production_nginx.py             tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
       - name: Validate shell deployment syntax
         run: |
           bash -n deployment/ubuntu/application_vm/install.sh

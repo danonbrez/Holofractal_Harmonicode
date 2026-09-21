@@ -52,7 +52,10 @@ def parser() -> argparse.ArgumentParser:
         prog="hhs-vm",
         description="HHS Ubuntu application VM backend control plane",
     )
-    root.add_argument("--env-file")
+    root.add_argument(
+        "--env-file",
+        default=os.environ.get("HHS_APPLICATION_VM_ENV_FILE"),
+    )
     root.add_argument("--repository-root")
     root.add_argument("--state-root")
     root.add_argument("--database")
