@@ -21,14 +21,14 @@ The web frontend is explicitly not part of this authority surface.
 ## Local Bash surface
 
 ```bash
-bin/hhs-vm status
-bin/hhs-vm doctor
-bin/hhs-vm capabilities
-bin/hhs-vm shell -- hhs status
-bin/hhs-vm invoke python.len '{"value":[1,2,3]}'
-bin/hhs-vm harmonicode 'Len(value=[1,2,3])'
-bin/hhs-vm receipts
-bin/hhs-vm replay <hash72>
+sh bin/hhs-vm status
+sh bin/hhs-vm doctor
+sh bin/hhs-vm capabilities
+sh bin/hhs-vm shell -- hhs status
+sh bin/hhs-vm invoke python.len '{"value":[1,2,3]}'
+sh bin/hhs-vm harmonicode 'Len(value=[1,2,3])'
+sh bin/hhs-vm receipts
+sh bin/hhs-vm replay <hash72>
 ```
 
 The inherited Pass 190 shell now reads `HHS_PASS190_CAPABILITY_SECRET` when
@@ -133,7 +133,7 @@ On an Ubuntu VM with the repository at
 ```bash
 sudo REPO_ROOT=/opt/holofractal-harmonicode \
   HHS_APPLICATION_VM_REQUIRE_GUI=1 \
-  deployment/ubuntu/application_vm/install.sh
+  bash deployment/ubuntu/application_vm/install.sh
 ```
 
 To install the required Ubuntu desktop packages when absent:
@@ -158,7 +158,7 @@ Verification:
 ```bash
 sudo -u hhs \
   HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env \
-  deployment/ubuntu/application_vm/verify.sh
+  bash deployment/ubuntu/application_vm/verify.sh
 ```
 
 ## Next boundary
