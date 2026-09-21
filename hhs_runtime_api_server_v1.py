@@ -10,6 +10,7 @@ application rather than constructing or exposing another public application.
 from __future__ import annotations
 
 import asyncio
+import os
 import time
 from pathlib import Path
 from typing import Any, Dict, List
@@ -50,7 +51,16 @@ from hhs_runtime.runtime_ws import (
 )
 
 APP_NAME = "HHS Runtime API Server v1"
-ARTIFACT_ROOT = Path("demo_reports/runtime_api")
+_CONFIGURED_ARTIFACT_ROOT = os.environ.get("HHS_RUNTIME_API_ARTIFACT_ROOT")
+_RUNTIME_OUTPUT_ROOT = os.environ.get("HHS_RUNTIME_OUTPUT_DIR")
+ARTIFACT_ROOT = Path(
+    _CONFIGURED_ARTIFACT_ROOT
+    or (
+        str(Path(_RUNTIME_OUTPUT_ROOT) / "runtime_api")
+        if _RUNTIME_OUTPUT_ROOT
+        else "demo_reports/runtime_api"
+    )
+)
 ARTIFACT_ROOT.mkdir(parents=True, exist_ok=True)
 
 RETIREMENT_CLASSIFICATION = "PASS170_LEGACY_RUNTIME_API_V1_CONSTRUCTOR_RETIRED_I181"
