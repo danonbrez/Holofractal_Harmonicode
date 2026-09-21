@@ -376,3 +376,12 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         assert token in workflow
     assert "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current" not in workflow
     assert "npm ci --no-audit --no-fund" not in workflow
+
+
+
+def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
+    source = read("install.sh")
+    assert "minimum_validate_timeout = 3600" in source
+    assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
+    assert "max(minimum_validate_timeout, current_validate_timeout)" in source
+    assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
