@@ -257,3 +257,27 @@ Repair commit:
 
 The next Pass 202 exact/synthetic run must reach the inherited deployment
 regressions and Pass 203 successor check before this reseal is accepted.
+
+### Current restartable validation checkpoint
+
+- PR: #528
+- branch: repair/pass202-successor-production-reseal
+- current head before this documentation commit:
+  2224e536937e29534143f6156b41c9deb9bc6442
+- compare to main: 0 behind at checkpoint creation
+
+First reseal run:
+- Pass 202 I122 run 35566022367: exact and synthetic reached current-successor
+  identity, C/C++ conformance, and no-new-authority checks successfully, then
+  exposed the inherited Pass209 dispatcher-token drift documented above.
+
+Repair-forward validation launched on 2224e536:
+- Pass 202 I122 exact/synthetic: run 35566166979 — queued;
+- DigitalOcean Production Exact Main PR contract: run 35566167038 — queued;
+- Validate HHS Runtime OS Production Root: run 35566166898 — queued;
+- Validate Full Application IDE: run 35566167020 — queued.
+
+Per the forward-progress policy, the repair is repository-visible and
+restartable without waiting indefinitely for external runners. Do not mark
+PR #528 ready or merge until all four runs are terminal green on the same PR
+head (or a repair-forward successor head).
