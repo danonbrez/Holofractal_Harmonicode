@@ -109,6 +109,9 @@ int main(void) {
     CHECK(authority.canonical_hash216_commit_authority == 0U);
     CHECK(authority.canonical_persistence_authority == 0U);
     CHECK(authority.floating_point_canonical_authority == 0U);
+    CHECK(authority.receipt_binds_parent_stack_root == 1U);
+    CHECK(authority.receipt_binds_result_stack_root == 1U);
+    CHECK(authority.deterministic_stack_root_recomputed_each_transition == 1U);
 
     memset(&topology, 0, sizeof(topology));
     topology.struct_size = (uint32_t)sizeof(topology);
@@ -174,6 +177,7 @@ int main(void) {
 
     CHECK(hhs_exact_pass219_lane5_phase_debt_cache_init(
               &cache, frames, 128U) == HHS_EXACT_STATUS_OK);
+    CHECK(strlen(cache.unresolved_stack_root_hash216) == 216U);
 
     /* Recursive debt: class 1 contains class 2. */
     reset_event(&event, HHS_EXACT_PASS219_LANE5_PHASE_DEBT_EVENT_OPEN,
@@ -182,6 +186,11 @@ int main(void) {
     CHECK(hhs_exact_pass219_lane5_phase_debt_cache_apply(
               &cache, &event, &receipt) == HHS_EXACT_STATUS_OK);
     CHECK(receipt.accepted == 1U);
+    CHECK(strlen(receipt.parent_stack_root_hash216) == 216U);
+    CHECK(strlen(receipt.unresolved_stack_root_hash216) == 216U);
+    CHECK(strcmp(
+              receipt.parent_stack_root_hash216,
+              receipt.unresolved_stack_root_hash216) != 0);
     CHECK(cache.depth == 1U);
     CHECK(cache.current_phase_index == 16U);
 
@@ -283,6 +292,7 @@ int main(void) {
     CHECK(commit.close_event_count == 40U);
     CHECK(commit.candidate_only == 1U);
     CHECK(commit.canonical_mutation_authority == 0U);
+    CHECK(strlen(commit.unresolved_stack_root_hash216) == 216U);
     CHECK(strlen(commit.receipt_hash216) == 216U);
 
     puts("PASS219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_PASS");
