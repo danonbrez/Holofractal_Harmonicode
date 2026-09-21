@@ -9,6 +9,7 @@ on:
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
+      - 'hhs_runtime/pass219/u72_h36_dynamic_scalar_optimizer.py'
       - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
       - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
@@ -16,6 +17,7 @@ on:
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py'
+      - 'tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py'
       - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
       - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
@@ -27,6 +29,7 @@ on:
       - 'hhs_runtime/pass219/nonary_qudit_bigint_assembly_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
       - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
+      - 'hhs_runtime/pass219/u72_h36_dynamic_scalar_optimizer.py'
       - 'hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h'
       - 'hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp'
       - 'tests/pass219/test_pass219_fold_primitive_probe.py'
@@ -34,6 +37,7 @@ on:
       - 'tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py'
       - 'tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py'
+      - 'tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py'
       - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
       - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
@@ -85,7 +89,8 @@ jobs:
             tests/pass219/test_pass219_platonic_multistate_fold_probe.py \
             tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py \
             tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py \
-            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py \
+            tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py
       - name: Emit exact combined fold probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.fold_primitive_probe
       - name: Emit exact Platonic multi-state probe
@@ -97,6 +102,11 @@ jobs:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe
+      - name: Emit exact u72 H36 dynamic scalar optimization report
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.u72_h36_dynamic_scalar_optimizer
 
   signed-environmental-admission:
     runs-on: ubuntu-24.04
@@ -172,9 +182,15 @@ jobs:
           HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
         run: |
           PYTHONPATH="$PWD" python -m pytest -q -s \
-            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py \
+            tests/pass219/test_pass219_u72_h36_dynamic_scalar_optimizer.py
       - name: Emit exact signed environmental admission report
         env:
           LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
           HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
         run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.vm81_rna_bigint_environment_admission_probe
+      - name: Emit signed u72 H36 dynamic scalar optimization report
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
+          HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
+        run: PYTHONPATH="$PWD" python -m hhs_runtime.pass219.u72_h36_dynamic_scalar_optimizer
