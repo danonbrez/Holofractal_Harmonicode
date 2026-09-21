@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_LANE5_MATHEMATICAL_SYNTHESIS_WOLFRAM_RECEIPT_20260921_V1",
+  "status": "PASS",
+  "main_base": "2dec42e192338cd1c1f7bb6d1994511be3bceeff",
+  "stacked_source_head": "d08572ef0f5d0a416637721322289cf3d686f26e",
+  "lane5_1_61_head": "a180c4b538d94214f5df1ead2aeb70879a093bd9",
+  "lane5_1_60_head": "57d9dff6173f4f462145264a684ddb35b2c63c86",
+  "lane5_1_59_head": "199a26df026ccfdf2dd9662f97d1584b40888d45",
+  "wolfram_status": "PASS",
+  "check_count": 44,
+  "pass_count": 44,
+  "source_git_blob": "72b0d9a442f63c9b6aed89856c5c31fc9ebf6ab3",
+  "output_git_blob": "f0b40c0ecdad93d36e390307db05b818ec41a9b9",
+  "authority": "DOCUMENTATION_WOLFRAM_AUDIT_ONLY",
+  "notes": [
+    "Does not merge stacked runtime code into main.",
+    "Held structural checks preserve ordered HARMONICODE carriers without granting commutation or Delta cancellation.",
+    "The phase-orbit corollary is documentation evidence unless and until a versioned canonical runtime contract adopts it."
+  ]
+}

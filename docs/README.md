@@ -163,3 +163,14 @@ canonical code / ABI / contract
 ```
 
 Source expressions designated as verbatim constraints must not be independently simplified, normalized, reordered, scalarized, or solved by documentation prose unless the applicable versioned contract explicitly authorizes that transformation.
+
+## Lane 5 mathematical extensions 1.50–1.62
+
+The current expanded mathematical reference is:
+
+- [HHS Lane 5 Mathematical Extensions 1.50–1.62](whitepapers/HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md)
+- [Pass 219 Appendix J](pass219/APPENDIX_J_LANE5_1_50_1_62_MATHEMATICAL_EXTENSIONS.md)
+
+The update includes the ordered noncommutative Brahmagupta correction, directed constraint orientation, fixed-width 5,184-character BigInt transcription, global non-cancellable Delta denominator, T64/operation64 geometry, exact IEEE pivot transcription, thread-lineage scope mathematics, the tripartite constraint surface, reciprocal VM81 phase-debt closure, and ordered Hash216 stack-root receipt binding.
+
+The connected Wolfram synthesis is 44/44 PASS and is preserved in evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.

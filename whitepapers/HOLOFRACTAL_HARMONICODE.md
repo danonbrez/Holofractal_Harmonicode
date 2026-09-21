@@ -1256,3 +1256,15 @@ tensor fixed. A consolidated Wolfram audit completed 23/23 exact checks.
 
 Implementation and complete derivation:
 `whitepapers/HHS_PASS220_PALINDROMIC_ORDERED_PHASE_MIRROR_ALGEBRA_V1.md`.
+
+## A.31 Lane 5 1.50–1.62 mathematical synthesis
+
+The repository now carries a dedicated mathematical extension paper:
+
+docs/whitepapers/HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md
+
+The paper consolidates the exact mathematics added after the earlier Lane 5 1.48 white-paper baseline: directed recursive constraint orientation; the ordered Brahmagupta correction; fixed-width 5,184-character BigInt transcription; G123/Lo Shu/H36 geometry; the non-cancellable global Delta boundary; exact IEEE palindromic pivoting; the T64 64-state ordered constructor manifold; typed RNA self-ingestion; VM5184 frame factorization; the zero-bypass admission topology; thread-lineage scope geometry; the Lane 5 1.61 tripartite exact surface; reciprocal phase-debt closure over 1+40*2 VM81 topology; ninth quantization; +36 reciprocal phase; ±16 clocking; and ordered unresolved-stack Hash216 receipt roots.
+
+A connected Wolfram Language synthesis executed 44 exact checks and returned 44/44 PASS. The source/output/receipt are stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
+
+The documentation distinguishes the latest main baseline from still-stacked runtime source and does not convert documentation evidence into canonical mutation authority.
