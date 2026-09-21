@@ -278,3 +278,63 @@ Validation required before re-closing 1.62:
 6. parent 1.61 / VM5184 / zero-bypass / RNA / PQC regressions;
 7. Lane 5 Python membrane;
 8. sealed evidence artifact on the exact repaired head.
+
+
+## Exact-green parent propagation — 2026-09-20
+
+The repaired parent stack has now been propagated through Lane 5 1.61:
+
+- PR #519 exact-green parent: 199a26df026ccfdf2dd9662f97d1584b40888d45
+- PR #520 exact-green 1.60 head: 57d9dff6173f4f462145264a684ddb35b2c63c86
+- PR #521 exact-green 1.61 head: a180c4b538d94214f5df1ead2aeb70879a093bd9
+- 1.61 run 35551582015: SUCCESS
+- 1.61 lane5-extensive: SUCCESS
+- 1.61 openssl-35-positive: SUCCESS
+- Universal Quantization run 35551581967: SUCCESS
+
+Sync PR #525 merged the exact-green 1.61 head into the repaired 1.62 branch,
+producing:
+
+- sync head: 77afde9145dbc14f924d62ee520131e3faae2e75
+- base: a180c4b538d94214f5df1ead2aeb70879a093bd9
+- parent divergence after sync: 0 behind
+
+The receipt-lineage P1 repair remains present after synchronization.
+
+### Same-head validation trigger closure
+
+A second repository-visible checkpoint commit:
+
+762886ba87692dfad01fdcbcb18ea9d23e5da371
+
+extends validation trigger coverage so the 1.62 exact head is tested by all
+three required gates:
+
+- Pass 219 Lane 5 Reciprocal Phase Debt Cache 1.62
+- Pass 219 Universal Quantization Constraint Audit
+- VM81 Native Development Level 0-1
+
+The VM81 workflow now directly recognizes the 1.62 branch and the 1.62 exact
+ABI/runtime surfaces. Universal Quantization tracks the 1.62 debt-cache runtime
+surfaces and the VM81 validation workflow. The 1.62 workflow tracks the UQ and
+VM81 workflow definitions. This is validation-surface wiring only; no VM81,
+Hash72, Hash216, quantization, phase-debt, RNA, or canonical mutation semantics
+are widened.
+
+Exact-head validation runs on
+762886ba87692dfad01fdcbcb18ea9d23e5da371:
+
+- 1.62: run 35554269256 — IN PROGRESS
+- Universal Quantization: run 35554269290 — IN PROGRESS
+- VM81 Native Development Level 0-1: run 35554269316 — IN PROGRESS
+
+At checkpoint time the VM81 run has already passed architecture discovery,
+authority/status classification, and resolver-contract evidence and is building
+the authoritative full runtime. The 1.62 and UQ runs have started their
+cumulative exact-runtime builds.
+
+Per the forward-progress rule, this repository-visible checkpoint is sufficient
+to return control without waiting indefinitely for external CI. Do not mark
+PR #522 ready until all three exact-head runs above complete successfully. If
+any fails, repair forward only the impacted dependency surface and rerun that
+same-head gate set.
