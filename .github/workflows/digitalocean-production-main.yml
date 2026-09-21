@@ -16,6 +16,9 @@ on:
       - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "hhs_runtime_api_server_v1.py"
+      - "tests/test_hhs_production_runtime_artifact_root_v1.py"
+      - "tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
       - "tests/test_runtime_os_production_root.py"
@@ -280,10 +283,15 @@ jobs:
               ss -H -ltnp 'sport = :8080' >&2 || true
               exit 16
             fi
-            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
+            CURRENT_HEAD_VALUE="$(git -C "$APP_ROOT" rev-parse HEAD)" \
+            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" \
+            REPO_ROOT_VALUE="$APP_ROOT" \
+            python3 - <<'PY'
           import json
           import os
+          import re
           from pathlib import Path
+
           path = Path(os.environ['RECEIPT_LOG_VALUE'])
           if not path.is_file():
               raise SystemExit('exact-main recovery requires guarded-update receipts')
@@ -296,8 +304,184 @@ jobs:
                   records.append(json.loads(line))
               except json.JSONDecodeError:
                   continue
-          if not records or records[-1].get('outcome') != 'ROLLBACK_HEALTH_FAILED':
-              raise SystemExit(f"exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
+          if not records:
+              raise SystemExit('exact-main recovery requires at least one valid guarded-update receipt')
+          receipt = records[-1]
+          if receipt.get('schema') != 'HHS_GUARDED_UPDATE_RECEIPT_V2':
+              raise SystemExit(f'exact-main recovery receipt schema mismatch: {receipt}')
+          if receipt.get('branch') != 'main':
+              raise SystemExit(f'exact-main recovery receipt branch mismatch: {receipt}')
+          if Path(str(receipt.get('repository_root', ''))).resolve() != Path(os.environ['REPO_ROOT_VALUE']).resolve():
+              raise SystemExit(f'exact-main recovery receipt repository mismatch: {receipt}')
+
+          outcome = receipt.get('outcome')
+          if outcome == 'ROLLBACK_HEALTH_FAILED':
+              print('HHS_EXACT_MAIN_ROLLBACK_RECOVERY_RECEIPT_VERIFIED=1')
+          elif outcome == 'VALIDATED':
+              if receipt.get('phase') != 'validation':
+                  raise SystemExit(f'exact-main VALIDATED recovery requires validation phase: {receipt}')
+              candidate = str(receipt.get('candidate_sha', ''))
+              previous = str(receipt.get('previous_sha', ''))
+              current = os.environ['CURRENT_HEAD_VALUE']
+              sha40 = re.compile(r'^[0-9a-f]{40}
+          fi
+
+          systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
+          install -d -m 0755 "$(dirname "$LOCK_FILE")"
+          exec 8>"$LOCK_FILE"
+          flock -w 10 8 || { echo "guarded updater lock remained held after service termination" >&2; exit 17; }
+          flock -u 8
+          echo "HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1"
+
+          cd "$APP_ROOT"
+          remote=$(git remote get-url origin)
+          case "$remote" in
+            *danonbrez/Holofractal_Harmonicode* ) ;;
+            * ) echo "unexpected origin: $remote" >&2; exit 18 ;;
+          esac
+          branch=$(git branch --show-current)
+          [[ "$branch" == "main" ]] || { echo "live checkout must be on main, found ${branch:-detached}" >&2; exit 19; }
+
+          git fetch --prune origin main
+          remote_sha=$(git rev-parse origin/main)
+          [[ "$remote_sha" == "$TARGET_SHA" ]] || {
+            echo "origin/main moved while deployment was starting: expected $TARGET_SHA got $remote_sha" >&2
+            exit 20
+          }
+          git cat-file -e "$TARGET_SHA^{commit}"
+
+          bootstrap_root=$(mktemp -d /tmp/hhs-production-bootstrap.XXXXXX)
+          git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
+
+          HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
+          HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime \
+          HHS_HOST_DRIFT_MODE=source \
+            bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh" "$APP_ROOT"
+          git -C "$APP_ROOT" update-index -q --refresh || true
+          if ! git -C "$APP_ROOT" diff-index --quiet HEAD -- || ! git -C "$APP_ROOT" diff --cached --quiet; then
+            echo "tracked host drift remains after audited reconciliation" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 21
+          fi
+
+          PROMOTION_HANDOFF=1
+          if ! REPO_ROOT="$APP_ROOT" \
+            SOURCE_ROOT="$bootstrap_root" \
+            HHS_RUNTIME_OS_BUNDLE_SHA="$TARGET_SHA" \
+            HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" \
+            HHS_INSTALL_ENABLE_PROMOTION=1 \
+            HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE" \
+            HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600 \
+              bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"; then
+            echo "=== EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS ===" >&2
+            systemctl status hhs.service --no-pager --full >&2 || true
+            systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
+            ss -ltnp | grep ':8080' >&2 || true
+            journalctl -u hhs.service -n 500 --no-pager >&2 || true
+            exit 24
+          fi
+
+          python3 - "$STATE_ROOT/last-success.json" "$TARGET_SHA" <<'PY'
+          import json, sys
+          from pathlib import Path
+          payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          expected = sys.argv[2]
+          if payload.get("candidate_sha") != expected or payload.get("runtime_os_bundle_sha") != expected:
+              raise SystemExit(f"promotion receipt identity mismatch: {payload}")
+          if payload.get("outcome") != "PROMOTED":
+              raise SystemExit(f"unexpected promotion outcome: {payload.get('outcome')}")
+          print(json.dumps(payload, sort_keys=True))
+          PY
+
+          deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD)
+          [[ "$deployed_sha" == "$TARGET_SHA" ]]
+          [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
+            echo "production checkout is dirty after promotion" >&2
+            git -C "$APP_ROOT" status --short >&2
+            exit 22
+          }
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-guarded-update.timer
+          runuser -u hhs -- test -x /opt
+          runuser -u hhs -- test -x /opt/hhs
+          runuser -u hhs -- test -x "$APP_ROOT"
+          runuser -u hhs -- test -x "$APP_ROOT/hhs_backend"
+          runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"
+          echo "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1"
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
+          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
+          systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
+          release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
+            --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
+          test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
+
+          listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
+          [[ "$listener_count" -eq 1 ]] || {
+            echo "expected exactly one production listener on 8080, found $listener_count" >&2
+            ss -H -ltnp 'sport = :8080' >&2 || true
+            exit 23
+          }
+
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
+          curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
+          EXPECTED_RUNTIME_OS_RELEASE="$release" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-exact-main-interface.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          actual = Path(str(payload.get('asset_root', ''))).resolve()
+          expected = Path(os.environ['EXPECTED_RUNTIME_OS_RELEASE']).resolve()
+          if actual != expected:
+              raise SystemExit(f'Runtime OS asset authority mismatch: actual={actual} expected={expected}')
+          PY
+
+          latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
+          if [[ -n "$latest_drift_manifest" ]]; then
+            printf 'HHS_DIGITALOCEAN_HOST_DRIFT_MANIFEST=%s\n' "$latest_drift_manifest"
+            sha256sum "$latest_drift_manifest"
+          fi
+          printf 'HHS_DIGITALOCEAN_EXACT_MAIN_PROMOTED=%s\n' "$TARGET_SHA"
+          printf 'HHS_DIGITALOCEAN_RUNTIME_OS_RELEASE=%s\n' "$release"
+          REMOTE
+
+      - name: Verify public HTTPS Runtime OS is reachable
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/system/status" >/tmp/hhs-public-system-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/interface/status" >/tmp/hhs-public-interface-status.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/" >/tmp/hhs-public-runtime-os.html
+          test -s /tmp/hhs-public-system-status.json
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-runtime-os.html
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-public-interface-status.json').read_text(encoding='utf-8'))
+          if payload.get('interface') != 'HHS_VISUAL_RUNTIME_OS_WORKSPACE': raise SystemExit(payload)
+          if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
+          if '/var/lib/hhs/runtime-os/releases/' not in str(payload.get('asset_root', '')):
+              raise SystemExit(f"public interface is not serving a versioned Runtime OS release: {payload}")
+          print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
+          PY
+)
+              if not sha40.fullmatch(candidate) or not sha40.fullmatch(previous):
+                  raise SystemExit(f'exact-main VALIDATED recovery requires exact candidate/previous SHAs: {receipt}')
+              if current not in {candidate, previous}:
+                  raise SystemExit(
+                      f'exact-main VALIDATED recovery checkout mismatch: current={current} candidate={candidate} previous={previous}'
+                  )
+              print('HHS_EXACT_MAIN_VALIDATED_DIRECT_RECOVERY_RECEIPT_VERIFIED=1')
+          else:
+              raise SystemExit(
+                  f'exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED or bounded VALIDATED receipt, found {receipt}'
+              )
           print('HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1')
           PY
             RECOVERY_MODE=1
