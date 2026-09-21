@@ -3,7 +3,7 @@
 **Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 1.48
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 1.48 baseline plus documented 1.50–1.62 mathematical extensions
 
 This index is the entry point for the evidence-focused HHS/Lane 5 white-paper set.
 
@@ -266,3 +266,26 @@ base main @ 9b36a5322dbb6a92c2879b4b8eb22f9da67a8c72
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
+
+## 10. Lane 5 mathematical extensions 1.50–1.62
+
+[HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md](HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md)
+
+This paper extends the equation set through the current stacked Lane 5 1.62 source while keeping latest main as the documentation base. It includes:
+
+- the exact ordered noncommutative Brahmagupta correction with Delta_D and Lambda_D;
+- the rational P-manifold unit-residue branch;
+- directed recursive constraint orientation;
+- G123 / Lo Shu / H36 / 5,184-character transcription geometry;
+- the universal non-cancellable Delta denominator;
+- IEEE dyadic/palindromic pivot mathematics;
+- the complete 64-state T64 ordered constructor surface;
+- typed and deliberately noncanonical RNA self-ingestion projections;
+- 648-byte = 5,184-bit VM5184 frame geometry;
+- thread-lineage scope monotonicity and pre-ranking authorization;
+- the exact three-equation Lane 5 1.61 tripartite surface;
+- 81=1+40*2 reciprocal phase-debt geometry;
+- q=n/9 quantization, +36 reciprocity, ±16 mod-72 clocking, and the nine-state lifted orbit;
+- ordered parent/result unresolved-stack Hash216 receipt binding.
+
+The connected 2026-09-21 Wolfram synthesis returned 44/44 PASS.
