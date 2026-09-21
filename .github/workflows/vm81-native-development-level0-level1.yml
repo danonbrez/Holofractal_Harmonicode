@@ -15,6 +15,7 @@ on:
       - hhs_runtime/src/hhs_hash216.c
       - hhs_runtime/include/hhs_hash216.h
       - .github/workflows/vm81-native-development-level0-level1.yml
+      - Makefile
 
 permissions:
   contents: read
@@ -62,6 +63,11 @@ jobs:
             tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_contract_freezes_exact_bounds_and_authority_partition \
             tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_closure_is_integrated_without_mutation_or_publication_promotion \
             tests/test_hhs_hash216_vector_resolver_v1.py::test_no_write_append_resize_or_release_api_is_exposed
+
+      - name: Build authoritative full runtime for public ABI consumers
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Execute exact VM81 public C ABI smoke program
         run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke

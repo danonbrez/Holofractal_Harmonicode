@@ -110,7 +110,7 @@ def _compile_and_run(
     tmp_path: Path,
     source: Path,
     implementation: Path,
-    include_dir: Path,
+    include_dirs: tuple[Path, ...],
     expected: str,
 ) -> None:
     compiler = shutil.which("cc") or shutil.which("gcc")
@@ -123,13 +123,60 @@ def _compile_and_run(
         "-O2",
         "-Wall",
         "-Wextra",
-        f"-I{include_dir}",
+    ]
+    for include_dir in include_dirs:
+        command.append(f"-I{include_dir}")
+    command.extend([
         str(source),
         str(implementation),
         "-lm",
         "-o",
         str(binary),
+    ])
+    compiled = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    assert compiled.returncode == 0, compiled.stdout + compiled.stderr
+    executed = subprocess.run([str(binary)], cwd=ROOT, text=True, capture_output=True)
+    assert executed.returncode == 0, executed.stdout + executed.stderr
+    assert expected in executed.stdout
+
+
+def _compile_and_run_public_runtime(
+    tmp_path: Path,
+    source: Path,
+    include_dirs: tuple[Path, ...],
+    expected: str,
+) -> None:
+    compiler = shutil.which("cc") or shutil.which("gcc")
+    if compiler is None:
+        pytest.skip("C compiler unavailable")
+    runtime_dir = ROOT / "hhs_runtime/builds"
+    runtime_lib = runtime_dir / "libhhs_runtime.so"
+    assert runtime_lib.is_file(), (
+        "authoritative public runtime missing; build it with 'make c-abi'"
+    )
+    binary = tmp_path / source.stem
+    command = [
+        compiler,
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
     ]
+    for include_dir in include_dirs:
+        command.append(f"-I{include_dir}")
+    command.extend(
+        [
+            str(source),
+            f"-L{runtime_dir}",
+            "-lhhs_runtime",
+            "-lcrypto",
+            "-lstdc++",
+            "-lm",
+            f"-Wl,-rpath,{runtime_dir}",
+            "-o",
+            str(binary),
+        ]
+    )
     compiled = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     assert compiled.returncode == 0, compiled.stdout + compiled.stderr
     executed = subprocess.run([str(binary)], cwd=ROOT, text=True, capture_output=True)
@@ -138,11 +185,13 @@ def _compile_and_run(
 
 
 def test_direct_c_abi_exact_foundation_smoke(tmp_path: Path):
-    _compile_and_run(
+    _compile_and_run_public_runtime(
         tmp_path,
         ROOT / "native_projects/hhs_vm81_native_development/c/hhs_vm81_level1_abi_smoke.c",
-        ROOT / "hhs_runtime/c/hhs_runtime_abi.c",
-        ROOT / "hhs_runtime/c",
+        (
+            ROOT / "hhs_runtime/c",
+            ROOT / "hhs_runtime/include",
+        ),
         "VM81_DIRECT_C_ABI_FOUNDATION_SMOKE_PASSED",
     )
 
@@ -152,6 +201,6 @@ def test_complete_hash72_hash216_linked_abi_smoke(tmp_path: Path):
         tmp_path,
         ROOT / "native_projects/hhs_vm81_native_development/c/hhs_hash216_level0_smoke.c",
         ROOT / "hhs_runtime/src/hhs_hash216.c",
-        ROOT / "hhs_runtime/include",
+        (ROOT / "hhs_runtime/include",),
         "HASH72_HASH216_COMPLETE_LINKED_ABI_SMOKE_PASSED",
     )
