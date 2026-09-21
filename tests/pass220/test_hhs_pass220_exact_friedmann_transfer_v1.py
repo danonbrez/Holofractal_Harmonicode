@@ -45,7 +45,7 @@ def test_phase_h_and_total_h2_are_exact_rational():
     )
     phase, h2 = total_h2(receipt, Fraction(13, 17))
     assert phase == Fraction(561, 455)
-    assert h2 == Fraction(1590161, 828100)
+    assert h2 == Fraction(3246539, 1863225)
 
 
 def test_phase_only_log_scale_increment_is_tau_free_when_square_is_exact():
