@@ -1,0 +1,46 @@
+name: Pass 220 I014 G41 Sudoku Fingerprint Algebra
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "whitepapers/HHS_PASS220_G41_SUDOKU_FINGERPRINT_CELL_ALGEBRA_V1.md"
+      - "docs/pass220/PASS_220_I014_G41_SUDOKU_FINGERPRINT_ALGEBRA.md"
+      - ".github/workflows/pass220-i014-g41-sudoku-fingerprint-algebra.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "whitepapers/HHS_PASS220_G41_SUDOKU_FINGERPRINT_CELL_ALGEBRA_V1.md"
+      - "docs/pass220/PASS_220_I014_G41_SUDOKU_FINGERPRINT_ALGEBRA.md"
+      - ".github/workflows/pass220-i014-g41-sudoku-fingerprint-algebra.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-g41:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run Pass 220 I014 exact fingerprint and inherited normalization tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py

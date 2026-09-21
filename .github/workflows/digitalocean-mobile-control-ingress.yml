@@ -6,9 +6,13 @@ on:
       - main
     paths:
       - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx'
+      - 'hhs_gui/scripts/workspace-source-verify.mjs'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
       - 'hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx'
       - 'hhs_gui/runtime_os/workspace/WorkspaceCommandClient.ts'
       - 'hhs_gui/scripts/live-gui-e2e-source-verify.mjs'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
       - '.github/workflows/digitalocean-production-main.yml'
       - '.github/workflows/digitalocean-mobile-control-ingress.yml'
   workflow_dispatch:
@@ -31,6 +35,8 @@ jobs:
       - name: Verify integrated source contracts
         working-directory: hhs_gui
         run: npm run test:e2e:source
+      - name: Verify Pass 219 acquisition source contracts
+        run: node hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs
       - name: Typecheck mobile production control
         working-directory: hhs_gui
         run: npm run typecheck
@@ -43,7 +49,23 @@ jobs:
           test -s hhs_gui/dist/index.html
           grep -R -q '/api/v1/pass174/sdlc/run' hhs_gui/dist/assets
           grep -R -q '/api/v1/pass174/hash216/query' hhs_gui/dist/assets
+          grep -R -q '/api/v1/pass174/acquisition/jobs' hhs_gui/dist/assets
           grep -R -q 'Hydrate vector store' hhs_gui/dist/assets
+          grep -R -q '/api/assistant/chat' hhs_gui/dist/assets
+          grep -R -q 'System instructions' hhs_gui/dist/assets
+          grep -R -q 'custom_system_instruction' hhs_gui/dist/assets
+          grep -R -q 'Assistant mode' hhs_gui/dist/assets
+          grep -R -q 'GENERAL_CHAT' hhs_gui/dist/assets
+          grep -R -q 'AGENTIC_APPLICATION_DEVELOPMENT' hhs_gui/dist/assets
+          grep -R -q 'Both' hhs_gui/dist/assets
+          grep -R -q 'Inspect technical JSON' hhs_gui/dist/assets
+          grep -R -q 'Use in chat' hhs_gui/dist/assets
+          grep -R -q 'Remove from chat' hhs_gui/dist/assets
+          grep -R -q 'Context attached by you' hhs_gui/dist/assets
+          grep -R -q 'explicit_user_attachment' hhs_gui/dist/assets
+          grep -R -q 'Paste' hhs_gui/dist/assets
+          grep -R -q 'Acquire + verify' hhs_gui/dist/assets
+          grep -R -q 'Replay offline' hhs_gui/dist/assets
           grep -Fq "165.227.220.193" .github/workflows/digitalocean-production-main.yml
           grep -Fq "StrictHostKeyChecking=yes" .github/workflows/digitalocean-production-main.yml
           grep -Fq "Stale pinned production SSH host key" .github/workflows/digitalocean-production-main.yml

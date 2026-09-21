@@ -13,9 +13,11 @@ PASS219_PQC_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30
 PASS219_PQC_CELL_WALL_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_vm81_pqc_cell_wall_1_30.o
 PASS219_RNA_VM5184_ABI_SRC := hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cpp
 PASS219_RNA_VM5184_ABI_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_rna_vm5184_abi_1_33.o
+PASS220_PHASE_LOCK_SRC := hhs_runtime/cpp/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.cpp
+PASS220_PHASE_LOCK_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.o
 PASS219_VM81_AUTHORITY_EXPORT_MAP := hhs_runtime/c/hhs_pass219_vm81_authority_exports.map
 
-PASS169_RUNTIME_BINDING_SRCS += $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ)
+PASS169_RUNTIME_BINDING_SRCS += $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ) $(PASS220_PHASE_LOCK_OBJ)
 LDFLAGS += -lstdc++ -pthread -Wl,--version-script=$(PASS219_VM81_AUTHORITY_EXPORT_MAP)
 
 $(PASS219_PQC_CELL_WALL_OBJ): $(PASS219_PQC_CELL_WALL_SRC) \
@@ -34,7 +36,13 @@ $(PASS219_RNA_VM5184_ABI_OBJ): $(PASS219_RNA_VM5184_ABI_SRC) \
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS219_RNA_VM5184_ABI_SRC) -o $@
 
-$(ABI_LIB): $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ) $(PASS219_VM81_AUTHORITY_EXPORT_MAP)
+$(PASS220_PHASE_LOCK_OBJ): $(PASS220_PHASE_LOCK_SRC) \
+		hhs_runtime/include/hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h \
+		hhs_runtime/include/hhs_pass219_rna_vm5184_abi_1_33.h | $(RUNTIME_BUILD_DIR)
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_PHASE_LOCK_SRC) -o $@
+
+$(ABI_LIB): $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ) $(PASS220_PHASE_LOCK_OBJ) $(PASS219_VM81_AUTHORITY_EXPORT_MAP)
 
 .PHONY: test-gfcc test-gfcc-negative test-gfcc-replay verify-gfcc package-pass-152 verify-pass-152 setup start setup-start benchmark-ledger
 

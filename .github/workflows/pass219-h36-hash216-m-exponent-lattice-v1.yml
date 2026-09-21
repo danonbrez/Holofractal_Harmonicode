@@ -1,0 +1,66 @@
+name: Pass 219 H36 Hash216 M Exponent Lattice v1
+
+on:
+  push:
+    branches:
+      - pass219/h36-hash216-m-exponent-lattice-v1
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c'
+      - 'contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md'
+      - 'docs/whitepapers/HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md'
+      - 'docs/operations/restart/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_*_20260917.md'
+      - '.github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c'
+      - 'contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md'
+      - 'docs/whitepapers/HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md'
+      - '.github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-m-exponent-lattice:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Strict exact ABI compile
+        run: |
+          mkdir -p /tmp/h36-m
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/h36-m/exact-abi.o
+
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/h36-m/link-support full
+
+      - name: Direct H36 Hash216 M exponent lattice conformance
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c \
+            /tmp/h36-m/exact-abi.o \
+            /tmp/h36-m/link-support/hhs_hash216.o \
+            /tmp/h36-m/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/h36-m/test-m-lattice
+          /tmp/h36-m/test-m-lattice

@@ -4233,6 +4233,342 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         boundedness_policy="TEN_FROZEN_JOINS_ALL_RESOLVED_NEXT_GATE_PASS169_VM81_EXACT_SYMBOLIC_CONSTRAINT_EXECUTION",
     )
 
+    registry.register_function(
+        name="pass220.g41_sudoku_fingerprint.self_test",
+        module="hhs_runtime.hhs_pass220_g41_sudoku_fingerprint_algebra_v1",
+        function="g41_fingerprint_self_test",
+        service_type="pass220_exact_reference_projection",
+        description=(
+            "Validate the exact 81-oriented/41-reciprocal-class nine-cell "
+            "Sudoku fingerprint algebra, four wrapped x/y/z/w direction "
+            "families, Lo Shu-relative bigint projection, and exhaustive "
+            "finite reachability codec without widening canonical mutation "
+            "or Hash72/Hash216 authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_G41_SURFACE_REACHABILITY_WITNESS_V1",
+        ],
+        validators=[
+            "validate_g41_surface_reachability",
+            "g41_fingerprint_self_test",
+        ],
+        guards=[
+            "exact_integer_cell_equations",
+            "reciprocal_fingerprint_involution",
+            "exhaustive_81_anchor_reachability",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G41_FINGERPRINT_CLASS_MISMATCH",
+            "REJECT_G41_REACHABILITY_ROUNDTRIP_FAILURE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_REFERENCE_WITNESS_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "EXHAUSTIVE_81_ANCHORS_41_RECIPROCAL_CLASSES"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.palindromic_ordered_phase.self_test",
+        module="hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1",
+        function="palindromic_ordered_phase_self_test",
+        service_type="pass220_exact_ordered_phase_projection",
+        description=(
+            "Validate the exact four-vector mirror, nine-symbol palindromic "
+            "x/y/z/w path, paired ordered-edge representatives, braid "
+            "consequence, Lo Shu/G41 reciprocal involution, and q=-1 "
+            "projection without commuting the typed ordered phase algebra."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_PALINDROMIC_ORDERED_PHASE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_PALINDROMIC_PHASE_CLOSURE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_palindromic_ordered_phase",
+            "palindromic_ordered_phase_self_test",
+        ],
+        guards=[
+            "ordered_edge_classes_preserved",
+            "palindromic_phase_path_exact",
+            "g41_combined_reciprocal_involution",
+            "conventional_scalar_projection_fail_closed",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_PALINDROMIC_PHASE_MIRROR_MISMATCH",
+            "REJECT_ORDERED_EDGE_CLASS_COLLAPSE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_ORDERED_PHASE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_9_SYMBOL_8_EDGE_81_ANCHOR_41_CLASS_EXACT_PROOF"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.multidimensional_constraint_manifold.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_multidimensional_constraint_manifold_v1"
+        ),
+        function="multidimensional_constraint_manifold_self_test",
+        service_type="pass220_exact_multidimensional_constraint_projection",
+        description=(
+            "Enforce the exact Pass 220 multidimensional constraint manifold: "
+            "72-phase periodic transport plus invariant 3x3 nucleus inside "
+            "3^4=81 geometry, symbolic 1D/2D/3D/4D phase lifts, ordered "
+            "xy/yx/zw/wz curvature, decimal 9+0 nesting, the algebraic "
+            "HASH72/Q/P/L projection, and inherited I014/I015 G41/palindromic "
+            "closure without floating-point, scalar-flattening, Hash72 mint, "
+            "Hash216 persistence, or VM81 mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_MANIFOLD_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_multidimensional_constraint_manifold",
+            "multidimensional_constraint_manifold_self_test",
+        ],
+        guards=[
+            "exact_72_phase_periodicity",
+            "exact_3_power_4_81_equals_72_plus_9_geometry",
+            "ordered_xy_yx_zw_wz_curvature_preserved",
+            "decimal_9_plus_0_nested_layer_closure",
+            "hash72_symbol_is_algebraic_projection_not_digest_mint",
+            "g41_joint_reciprocal_involution_preserved",
+            "palindromic_ordered_phase_preserved",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_MULTIDIMENSIONAL_CONSTRAINT_DRIFT",
+            "REJECT_ORDERED_CURVATURE_COLLAPSE",
+            "REJECT_HASH72_ALGEBRAIC_PROJECTION_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_EXACT_CONSTRAINT_ADMISSION_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_72_PHASE_81_ADDRESS_41_CLASS_EXACT_PROJECTION"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.h36_hash72_unit_bridge.self_test",
+        module="hhs_runtime.hhs_pass220_h36_hash72_unit_bridge_v1",
+        function="h36_hash72_unit_bridge_self_test",
+        service_type="pass220_exact_h36_hash72_unit_bridge_projection",
+        description=(
+            "Bind the inherited Pass 219 H36 exact identity and canonical "
+            "native universal-constraint source to the Pass 220 I017 "
+            "multidimensional manifold through the exact e/H36, mc2/u144, "
+            "P4 magnitude, and ordered xy+zw over q-p unit-ratio relation "
+            "without solving the native m symbol or minting Hash72 authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_H36_HASH72_UNIT_BRIDGE_V1",
+            "HHS_PASS_220_MULTIDIMENSIONAL_CONSTRAINT_MANIFOLD_V1",
+            "HHS_PASS219_DYNAMIC_PARADOX_PHASE_CYCLE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_H36_HASH72_UNIT_RATIO_WITNESS_V1",
+            "HHS_PASS219_H36_CLOSURE_IDENTITY_V1",
+        ],
+        validators=[
+            "validate_h36_hash72_unit_bridge",
+            "h36_hash72_unit_bridge_self_test",
+        ],
+        guards=[
+            "h36_exact_identity_36",
+            "u144_hash72_algebraic_projection_lock",
+            "p4_nonunit_boundary",
+            "xy_plus_zw_q_minus_p_unit_ratio",
+            "native_m_symbol_not_scalar_solved",
+            "canonical_universal_constraint_source_bound",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_H36_HASH72_UNIT_RATIO_DRIFT",
+            "REJECT_P4_NONUNIT_BOUNDARY",
+            "REJECT_UCE_SOURCE_DEPENDENCY_DRIFT",
+            "REJECT_NATIVE_M_SCALARIZATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_EXACT_H36_HASH72_UNIT_BRIDGE_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_EXACT_UNIT_RATIO_COMPOSITION_WITH_INHERITED_H36_UCE_I017"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.rna_hash72_dna_qudit_phase_lock.self_test",
+        module="hhs_runtime.hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1",
+        function="phase_lock_self_test",
+        service_type="pass220_exact_full_state_phase_lock_projection",
+        description=(
+            "Validate the complete 5184-character HARMONICODE state through "
+            "72x72 Hash72 chunk folding, bidirectional three-character RNA "
+            "windows, 81x64 qudit coordinates, ordered x/y/z/w Digital DNA, "
+            "and the H36 1/2/3 palindromic precision constructor."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1",
+            "HHS_PASS_220_LO_SHU_NORMALIZATION_V1",
+            "HHS_PASS_220_PALINDROMIC_ORDERED_PHASE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1_VALIDATION",
+        ],
+        validators=[
+            "validate_phase_locked_state",
+            "phase_lock_self_test",
+        ],
+        guards=[
+            "exact_5184_character_roundtrip",
+            "72x72_hash72_chunk_partition",
+            "72x24x3_rna_window_partition",
+            "81x64_qudit_coordinate_bijection",
+            "bidirectional_rna_double_reverse",
+            "123_246_369_palindromic_precision",
+            "h36_scaled_remainder_111_222_333_over_1000",
+            "ordered_xy_yx_zw_wz_phase_preserved",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_5184_SERIALIZATION_DRIFT",
+            "REJECT_RNA_WINDOW_PHASE_LOCK_DRIFT",
+            "REJECT_H36_PRECISION_PALINDROME_DRIFT",
+            "REJECT_XYZW_ORDER_COLLAPSE",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_FULL_STATE_PHASE_LOCK_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_5184_CHARACTER_72_CHUNK_1728_WINDOW_EXACT_SCAN"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.rna_operation64_c4_g41_radical_proof.self_test",
+        module="hhs_runtime.hhs_pass220_rna_operation64_c4_g41_radical_proof_v1",
+        function="i020_self_test",
+        service_type="pass220_exact_constructive_phase_geometry_proof",
+        description=(
+            "Prove the exact 4^3 RNA triplet to 8^2 operation64 address "
+            "bijection, the I011 dyadic C4 identity x_D^3=y_D, and the "
+            "constructive I014 reciprocal-class to Z_41 radical-factor bridge."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1",
+            "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1",
+            "HHS_PASS_220_G41_SUDOKU_FINGERPRINT_ALGEBRA_V1",
+            "HHS_PASS_220_MOBIUS_QUARTER_PHASE_HARMONIC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1_VALIDATION",
+        ],
+        validators=[
+            "validate_i020_proof",
+            "i020_self_test",
+        ],
+        guards=[
+            "rna_triplet_4cubed_operation64_8squared_bijection",
+            "ordered_triplet_identity_roundtrip",
+            "dyadic_C4_xD_cubed_equals_yD",
+            "genesis_radical_32_sqrt410_over9",
+            "i014_classes_biject_Z41",
+            "radicand_410_equals_10_times_41",
+            "i019_5184_coordinate_lock",
+            "no_float_canonical_authority",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_RNA_OPERATION64_CODEC_DRIFT",
+            "REJECT_DYADIC_C4_CUBIC_CONJUGATE_DRIFT",
+            "REJECT_GENESIS_RADICAL_IDENTITY_DRIFT",
+            "REJECT_G41_RADICAL_CLASS_BRIDGE_DRIFT",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_CONSTRUCTIVE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_EXHAUSTIVE_64_RNA_STATES_41_G41_CLASSES"
+        ),
+    )
+
     return registry
 
 

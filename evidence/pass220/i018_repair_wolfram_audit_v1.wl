@@ -1,0 +1,47 @@
+a2=1; b2=2; c2=3; p4=9; delta=1; qMinusP=2;
+sx=0; sz=0; xy=1; yx=-1; zw=1; wz=-1;
+a4=a2^2; b4=b2^2; b6=b2^3; c4=c2^2;
+u144Exponent=72*(b2/a4);
+u144Projection=(b6*c4)/(c2-a2);
+hash72Projection=b4*p4;
+mc2Projection=(a2+b2)^2*b4;
+h36Projection=u144Projection;
+orderedPhase={sx,sz,xy,yx,zw,wz};
+orderedExpected={0,0,1,-1,1,-1};
+energyRatio=h36Projection/36;
+mc2Ratio=mc2Projection/u144Projection;
+magnitudeRatio=(a2/p4)*(c2*(a2+b2));
+orderedRatio=(xy+zw)/qMinusP;
+checks=<|
+ "u144ExponentIs144"->(u144Exponent===144),
+ "u144ProjectionIs36"->(u144Projection===36),
+ "hash72ProjectionIs36"->(hash72Projection===36),
+ "u144EqualsHash72ByIndependentFormulas"->(u144Projection===hash72Projection),
+ "mc2ProjectionIs36"->(mc2Projection===36),
+ "mc2AndU144IndependentFormulasClose"->(mc2Projection===u144Projection),
+ "orderedPhaseComplete"->(orderedPhase===orderedExpected),
+ "xyIsPlusUnit"->(xy===a2),
+ "yxIsMinusUnit"->(yx===-a2),
+ "zwIsPlusUnit"->(zw===a2),
+ "wzIsMinusUnit"->(wz===-a2),
+ "energyRatioIs1"->(energyRatio===1),
+ "mc2RatioIs1"->(mc2Ratio===1),
+ "magnitudeRatioIs1"->(magnitudeRatio===1),
+ "orderedRatioIs1"->(orderedRatio===1)
+|>;
+audit=<|
+ "schema"->"HHS_PASS_220_I018_REPAIR_WOLFRAM_AUDIT_V1",
+ "inputs"-><|"a2"->a2,"b2"->b2,"c2"->c2,"P4"->p4,"P2MinusPQ"->delta,"qMinusP"->qMinusP|>,
+ "independentU144"-><|"exponent"->u144Exponent,"formula"->"b6*c4/(c2-a2)","value"->u144Projection|>,
+ "independentHash72"-><|"formula"->"b4*P4","value"->hash72Projection|>,
+ "independentMc2"-><|"formula"->"(a2+b2)^2*b4","value"->mc2Projection|>,
+ "orderedPhase"->orderedPhase,
+ "ratios"-><|"eOverH36"->energyRatio,"mc2OverU144"->mc2Ratio,"magnitude"->magnitudeRatio,"ordered"->orderedRatio|>,
+ "checks"->checks,
+ "checkCount"->Length[checks],
+ "passedCount"->Count[Values[checks],True],
+ "allPassed"->And@@Values[checks]
+|>;
+json=ExportString[audit,"RawJSON","Compact"->True];
+Export["evidence/pass220/i018_repair_wolfram_audit_v1.output.json",json,"String"];
+Print[json];

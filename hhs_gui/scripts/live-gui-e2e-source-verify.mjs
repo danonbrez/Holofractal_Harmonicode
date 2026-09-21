@@ -8,6 +8,7 @@ const files = {
   projectionPanel: "runtime_os/core/LiveRuntimeProjectionPanel.tsx",
   canonicalIDE: "runtime_os/core/CanonicalRuntimeIDE.tsx",
   product: "runtime_os/workspace/HHSProductWorkspace.tsx",
+  quickBuild: "runtime_os/workspace/MobileQuickBuildPanel.tsx",
   control: "runtime_os/workspace/ProductionMobileControlCenter.tsx",
   programmer: "runtime_os/workspace/RegistryVisualProgrammer.tsx",
   workspace: "runtime_os/workspace/HHSWorkspaceShell.tsx",
@@ -37,24 +38,41 @@ assert(content.projectionPanel.includes("runtimeOS.initialize()"), "Runtime tab 
 assert(content.projectionPanel.includes("runtimeOS.shutdown()"), "Runtime tab does not release transport")
 assert(content.canonicalIDE.includes("HHSProductWorkspace"), "CanonicalRuntimeIDE does not mount the product workspace")
 assert(content.product.includes("ProductionMobileControlCenter"), "product workspace does not expose the mobile production control center")
+assert(content.product.includes("MobileQuickBuildPanel"), "product workspace does not expose the mobile Quick Build pipeline")
 assert(content.product.includes('useState<ProductSurface>("control")'), "mobile control center is not the default production landing surface")
 assert(content.product.includes("RegistryVisualProgrammer"), "product workspace does not expose registry visual programming")
 assert(content.product.includes("HHSWorkspaceShell"), "product workspace removed the full conventional workspace")
 assert(content.product.includes("/api/product/health"), "product does not verify runtime and assistant execution authorities")
 assert(content.product.includes("const runtimeOnline = Boolean(runtimeHealth.ok)"), "product does not derive runtime readiness from product health")
-assert(content.product.includes('runtime {runtimeOnline ? "online" : "offline"}'), "product does not render runtime authority readiness")
+assert(content.product.includes('runtime {runtimeOnline ? "online" : "warming"}'), "product does not render warming-safe runtime readiness")
 assert(content.product.includes("const assistantOnline = Boolean(assistantHealth.online)"), "product does not derive assistant provider readiness")
-assert(content.product.includes('assistant {assistantOnline ? assistantMode.toLowerCase() : "offline"}'), "product does not render assistant provider readiness")
+assert(content.product.includes('assistant {assistantOnline ? assistantMode.toLowerCase() : "warming"}'), "product does not render warming-safe assistant readiness")
+assert(content.product.includes("Build controls remain available"), "product status errors still imply that the mobile builder is unusable")
 assert(content.canonicalIDE.includes("IntegratedRuntimeClient"), "CanonicalRuntimeIDE does not use integrated client")
 assert(!content.integratedClient.includes("RuntimeWindowManager"), "public client imports legacy window manager")
 assert(!content.canonicalIDE.includes("RuntimeCommandPanel"), "isolated runtime command panel remains public")
 assert(!content.canonicalIDE.includes("RuntimeMutationPanel"), "isolated runtime mutation panel remains public")
 
 for (const token of [
+  "Paste → build → run",
+  "/api/v1/pass174/sdlc/run",
+  "RUNTIME_OS_MOBILE_QUICK_BUILD",
+  "P174_MOBILE_APPLICATION_DEVELOPMENT_PIPELINE",
+  "Build & Run",
+  "TextEncoder",
+  "source_b64",
+  "sandbox=\"allow-scripts\"",
+  "Full workspace",
+]) {
+  assert(content.quickBuild.includes(token), `mobile Quick Build missing ${token}`)
+}
+
+for (const token of [
   "/health",
   "/api/v1/pass174/status",
   "/api/v1/pass174/sdlc/run",
   "/api/v1/pass174/hash216/query",
+  "Promise.allSettled",
   "source_b64",
   "persistent_vector_store",
   "Hydrate vector store",
@@ -64,6 +82,9 @@ for (const token of [
 ]) {
   assert(content.control.includes(token), `mobile production control missing ${token}`)
 }
+
+assert(content.control.includes("Runtime and Build controls remain usable"), "vector warming still blocks the primary mobile workflow")
+assert(content.control.includes("Advanced: open-source acquisition and replay"), "advanced acquisition is not progressively disclosed")
 
 for (const modality of ["HARMONICODE_SOURCE", "JSON", "YAML", "CSV", "PDF", "IMAGE", "AUDIO", "VIDEO", "CODE", "TEXT", "BINARY"]) {
   assert(content.control.includes(modality), `mobile file ingress missing ${modality}`)
@@ -123,8 +144,8 @@ assert(content.vite.indexOf('".ts"') < content.vite.indexOf('".tsx"'), "Vite mus
 assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vite websocket proxy missing")
 assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
 
-for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode", "visual_shell_only: true"]) {
-  const publicSources = `${content.canonicalIDE}\n${content.product}\n${content.control}\n${content.programmer}\n${content.workspace}\n${content.assistant}`
+for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode", "visual_shell_only: true", "signal is aborted without reason"]) {
+  const publicSources = `${content.canonicalIDE}\n${content.product}\n${content.quickBuild}\n${content.control}\n${content.programmer}\n${content.workspace}\n${content.assistant}`
   assert(!publicSources.includes(forbidden), `obsolete or shell-only public behavior leaked: ${forbidden}`)
 }
 

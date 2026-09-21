@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import OpenSourceAcquisitionPanel from "./OpenSourceAcquisitionPanel"
+import ProductionAssistantChat from "./ProductionAssistantChat"
 
 type Json = Record<string, any>
 type Surface = "program" | "workspace" | "authority"
 
 const MAX_INGRESS_BYTES = 24 * 1024 * 1024
+const MAX_ASSISTANT_CONTEXT_CHARS = 32768
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
 const short = (value: unknown): string => {
@@ -36,6 +39,11 @@ async function requestJson(url: string, init?: RequestInit, timeoutMs = 30000): 
       throw new Error(text(detail.classification ?? detail.detail ?? body.detail ?? body.error ?? body.status, `${response.status} ${response.statusText}`))
     }
     return body
+  } catch (reason) {
+    if (reason instanceof DOMException && reason.name === "AbortError") {
+      throw new Error(`${url} timed out after ${Math.round(timeoutMs / 1000)} seconds`)
+    }
+    throw reason
   } finally {
     window.clearTimeout(timeout)
   }
@@ -100,29 +108,42 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
   const [vectorStatus, setVectorStatus] = useState<Json>({})
   const [lastIngress, setLastIngress] = useState<Json>({})
   const [vectorQuery, setVectorQuery] = useState<Json>({})
+  const [assistantContext, setAssistantContext] = useState<Json | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [vectorWarning, setVectorWarning] = useState<string | null>(null)
 
   const selected = files[selectedIndex] ?? null
   const modality = selected ? modalityFor(selected) : "—"
   const persistentStore = record(vectorStatus.persistent_vector_store)
-  const runtimeReady = text(health.status).toLowerCase() === "healthy"
+  const runtimeReady = Boolean(health.ok ?? text(health.status).toLowerCase() === "healthy")
   const vectorReady = Boolean(vectorStatus.classification) && Boolean(vectorStatus.persistent_vector_store)
   const operationKey = useMemo(() => findOperationKey(lastIngress), [lastIngress])
 
   const refresh = async (): Promise<void> => {
-    const [healthResult, vectorResult] = await Promise.all([
+    const [healthResult, vectorResult] = await Promise.allSettled([
       requestJson("/health", undefined, 8000),
-      requestJson("/api/v1/pass174/status", undefined, 12000),
+      requestJson("/api/v1/pass174/status", undefined, 18000),
     ])
-    setHealth(healthResult)
-    setVectorStatus(vectorResult)
-    setError(null)
+
+    if (healthResult.status === "fulfilled") {
+      setHealth(healthResult.value)
+      setError(null)
+    } else {
+      setError(healthResult.reason instanceof Error ? healthResult.reason.message : String(healthResult.reason))
+    }
+
+    if (vectorResult.status === "fulfilled") {
+      setVectorStatus(vectorResult.value)
+      setVectorWarning(null)
+    } else {
+      setVectorWarning(vectorResult.reason instanceof Error ? vectorResult.reason.message : String(vectorResult.reason))
+    }
   }
 
   useEffect(() => {
-    void refresh().catch((reason) => setError(reason instanceof Error ? reason.message : String(reason)))
-    const interval = window.setInterval(() => void refresh().catch(() => undefined), 15000)
+    void refresh()
+    const interval = window.setInterval(() => void refresh(), 20000)
     return () => window.clearInterval(interval)
   }, [])
 
@@ -153,6 +174,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
     setSelectedIndex(0)
     setLastIngress({})
     setVectorQuery({})
+    setAssistantContext(null)
     setError(null)
   }
 
@@ -189,6 +211,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
       }, 90000)
       setLastIngress(result)
       setVectorQuery({})
+      setAssistantContext(null)
       await refresh()
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
@@ -213,27 +236,69 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
     }
   }
 
+  const attachSelectedContext = (): void => {
+    if (!selected || !operationKey || text(vectorQuery.classification) !== "HHS_PASS_174_VECTOR_QUERY_HIT") {
+      setError("Read the persisted vector before attaching this file to chat.")
+      return
+    }
+
+    const sourceIdentity = text(lastIngress.source_identity_sha256)
+    const lifecycleHash216 = text(lastIngress.lifecycle_hash216)
+    const decoded = previewText.trim()
+    const contextText = decoded
+      ? decoded.slice(0, MAX_ASSISTANT_CONTEXT_CHARS)
+      : [
+          "User-approved multimodal context metadata.",
+          `File: ${selected.name}`,
+          `Modality: ${modality}`,
+          `MIME: ${selected.type || "application/octet-stream"}`,
+          `Size bytes: ${selected.size}`,
+          `Persisted vector operation: ${operationKey}`,
+          "The binary payload itself is not decoded into natural language by this interface.",
+        ].join("\n")
+
+    setAssistantContext({
+      explicit_user_attachment: true,
+      source_name: selected.name,
+      modality,
+      source_identity_sha256: /^[0-9a-f]{64}$/i.test(sourceIdentity) ? sourceIdentity : null,
+      operation_key: operationKey,
+      lifecycle_hash216: /^[0-9a-f]{64}$/i.test(lifecycleHash216) ? lifecycleHash216 : null,
+      text: contextText,
+    })
+    setError(null)
+  }
+
   return (
     <main data-testid="production-mobile-control-center" className="mx-auto max-w-6xl space-y-3 p-3 pb-24 md:p-5">
-      <section className="rounded-3xl border border-cyan-950 bg-gradient-to-b from-cyan-950/30 to-neutral-950 p-4 shadow-2xl md:p-6">
+      <section className="rounded-3xl border border-neutral-800 bg-neutral-900/50 p-4 md:p-5">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production control</div>
-            <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS application server</h1>
-            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">One mobile surface for runtime health, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, and click-through application control.</p>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-500">Production assistant</div>
+            <h1 className="mt-1 text-xl font-semibold text-white md:text-2xl">HHS natural-language application server</h1>
+            <p className="mt-2 max-w-2xl text-xs leading-5 text-neutral-400">A mobile-first dark assistant surface for natural-language control, real file reading, governed multimodal ingress, persistent Hash216 vector hydration, and click-through application workflows.</p>
           </div>
-          <button type="button" onClick={() => void refresh().catch((reason) => setError(String(reason)))} className="runtime-button min-h-11 px-4 text-sm">Refresh server</button>
+          <button type="button" onClick={() => void refresh()} className="runtime-button min-h-11 px-4 text-sm">Refresh status</button>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
-          <StatusCard label="Runtime" value={runtimeReady ? "online" : "check"} ready={runtimeReady} />
-          <StatusCard label="Vector store" value={vectorReady ? "persistent" : "check"} ready={vectorReady} />
+          <StatusCard label="Runtime" value={runtimeReady ? "online" : "warming"} ready={runtimeReady} />
+          <StatusCard label="Vector store" value={vectorReady ? "persistent" : "warming"} ready={vectorReady} />
           <StatusCard label="Project" value={projectId ? short(projectId) : "auto-create"} ready={Boolean(projectId)} />
           <StatusCard label="Ingress" value={lastIngress.classification ? "hydrated" : "ready"} ready={Boolean(lastIngress.classification)} />
         </div>
       </section>
 
-      {error ? <section className="rounded-2xl border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{error}</section> : null}
+      {error ? <section className="rounded-2xl border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">Runtime liveness failed: {error}</section> : null}
+      {vectorWarning ? <section className="rounded-2xl border border-amber-900 bg-amber-950/20 p-3 text-xs text-amber-200">Vector-store status is still warming: {vectorWarning}. Runtime and Build controls remain usable.</section> : null}
+
+      <ProductionAssistantChat
+        projectId={projectId}
+        vectorContextId={(operationKey ?? text(lastIngress.lifecycle_hash216)) || null}
+        userContext={assistantContext}
+        onClearContext={() => setAssistantContext(null)}
+        onOpenFiles={() => fileInput.current?.click()}
+      />
 
       <section className="grid gap-2 sm:grid-cols-3">
         <LaunchCard title="Visual Program" detail="Registry canvas and executable application objects" onClick={() => onNavigate("program")} />
@@ -245,21 +310,21 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold text-cyan-200">Files → multimodal ingress → vector store</h2>
-            <p className="mt-1 text-[11px] leading-5 text-neutral-500">Files are read locally for preview, then transmitted as exact base64 source bytes through the Pass 174 SDLC route into the persistent encrypted Hash216 vector-store continuation.</p>
+            <p className="mt-1 text-[11px] leading-5 text-neutral-500">Read files locally for preview, then send exact source bytes through the Pass 174 SDLC pipeline into persistent Hash216 vector hydration.</p>
           </div>
           <button type="button" onClick={() => fileInput.current?.click()} className="runtime-button min-h-11 px-4 text-sm">Choose files</button>
           <input ref={fileInput} type="file" multiple className="hidden" onChange={(event) => { chooseFiles(event.currentTarget.files); event.currentTarget.value = "" }} />
         </header>
 
         {files.length === 0 ? (
-          <button type="button" onClick={() => fileInput.current?.click()} className="mt-4 min-h-40 w-full rounded-2xl border border-dashed border-neutral-700 bg-black/30 p-6 text-center text-sm text-neutral-400">
+          <button type="button" onClick={() => fileInput.current?.click()} className="mt-4 min-h-32 w-full rounded-2xl border border-dashed border-neutral-700 bg-black/30 p-6 text-center text-sm text-neutral-400">
             Tap to select text, source, JSON, CSV, PDF, image, audio, video, or binary files
           </button>
         ) : (
           <div className="mt-4 grid gap-3 lg:grid-cols-[260px_minmax(0,1fr)]">
             <aside className="space-y-2">
               {files.map((file, index) => (
-                <button key={`${file.name}:${file.size}:${index}`} type="button" onClick={() => setSelectedIndex(index)} className={`w-full rounded-xl border p-3 text-left ${index === selectedIndex ? "border-cyan-700 bg-cyan-950/30" : "border-neutral-800 bg-black/30"}`}>
+                <button key={`${file.name}:${file.size}:${index}`} type="button" onClick={() => { if (index !== selectedIndex) setAssistantContext(null); setSelectedIndex(index) }} className={`w-full rounded-xl border p-3 text-left ${index === selectedIndex ? "border-cyan-700 bg-cyan-950/30" : "border-neutral-800 bg-black/30"}`}>
                   <div className="truncate text-xs font-medium text-white">{file.name}</div>
                   <div className="mt-1 text-[10px] text-neutral-500">{modalityFor(file)} · {(file.size / 1024).toFixed(1)} KB</div>
                 </button>
@@ -273,7 +338,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                     <div className="truncate text-sm font-medium text-white">{selected?.name}</div>
                     <div className="mt-1 text-[10px] text-neutral-500">{modality} · {selected?.type || "application/octet-stream"} · {selected ? `${selected.size} bytes` : ""}</div>
                   </div>
-                  <button type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-10 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
+                  <button type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-11 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
                 </div>
 
                 <div className="mt-3 min-h-48 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
@@ -293,7 +358,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                       <div className="text-xs font-semibold text-emerald-300">{text(lastIngress.classification)}</div>
                       <div className="mt-1 font-mono text-[9px] text-neutral-500">source {short(lastIngress.source_identity_sha256)} · Hash216 {short(lastIngress.lifecycle_hash216)}</div>
                     </div>
-                    {operationKey ? <button type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-9 px-3 text-xs">Read persisted vector</button> : null}
+                    {operationKey ? <button type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-10 px-3 text-xs">Read persisted vector</button> : null}
                   </div>
                   {Array.isArray(lastIngress.stages) ? (
                     <div className="mt-3 grid grid-cols-2 gap-1 sm:grid-cols-4 lg:grid-cols-7">
@@ -304,10 +369,35 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
               ) : null}
 
               {Object.keys(vectorQuery).length > 0 ? (
-                <details open className="rounded-2xl border border-cyan-950 bg-black/40 p-3">
-                  <summary className="cursor-pointer text-xs font-medium text-cyan-300">Persisted vector readback</summary>
-                  <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[10px] text-neutral-400">{JSON.stringify(vectorQuery, null, 2)}</pre>
-                </details>
+                <section className="rounded-2xl border border-cyan-950 bg-cyan-950/10 p-3">
+                  <div className="text-xs font-semibold text-cyan-200">Persisted vector retrieved</div>
+                  <p className="mt-1 text-[11px] leading-5 text-neutral-400">
+                    The encrypted Hash216 vector-store record was read successfully for this hydration operation. Technical fields stay hidden unless you choose to inspect them.
+                  </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => assistantContext ? setAssistantContext(null) : attachSelectedContext()}
+                      className="runtime-button min-h-10 px-4 text-xs"
+                    >
+                      {assistantContext ? "Remove from chat" : "Use in chat"}
+                    </button>
+                    <span className="text-[10px] text-neutral-500">
+                      {assistantContext
+                        ? "This context will be sent only with assistant turns until removed."
+                        : "Nothing from this file is sent to the assistant until you choose Use in chat."}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-neutral-500">
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">status {text(vectorQuery.classification, "available")}</span>
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">operation {short(operationKey)}</span>
+                    <span className="rounded-full border border-neutral-800 bg-black/30 px-2 py-1">mutation authority {vectorQuery.mutation_authority ? "yes" : "no"}</span>
+                  </div>
+                  <details className="mt-3 rounded-xl border border-neutral-800 bg-black/40 p-3">
+                    <summary className="cursor-pointer text-xs font-medium text-neutral-300">Inspect technical JSON</summary>
+                    <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[10px] text-neutral-500">{JSON.stringify(vectorQuery, null, 2)}</pre>
+                  </details>
+                </section>
               ) : null}
             </div>
           </div>
@@ -318,9 +408,15 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         <div className="flex items-center justify-between gap-3"><h2 className="text-xs font-semibold text-cyan-200">Persistent vector-store status</h2><span className="text-[9px] text-neutral-500">Pass 174</span></div>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {Object.entries(persistentStore).slice(0, 8).map(([key, value]) => <div key={key} className="rounded-lg bg-black/40 p-2"><div className="truncate text-[9px] text-neutral-600">{key}</div><div className="mt-1 truncate font-mono text-[10px] text-neutral-300" title={String(value)}>{String(value)}</div></div>)}
-          {Object.keys(persistentStore).length === 0 ? <div className="col-span-2 text-xs text-neutral-600">Vector-store status has not loaded.</div> : null}
+          {Object.keys(persistentStore).length === 0 ? <div className="col-span-2 text-xs text-neutral-600">Vector-store status has not loaded yet.</div> : null}
         </div>
       </section>
+
+      <details className="rounded-3xl border border-indigo-950 bg-indigo-950/10 p-3 md:p-5">
+        <summary className="cursor-pointer text-sm font-semibold text-indigo-200">Advanced: open-source acquisition and replay</summary>
+        <p className="mt-2 text-[11px] leading-5 text-neutral-500">Immutable external source acquisition is separate from normal app building. Open this only when importing a pinned GitHub or Hugging Face artifact.</p>
+        <div className="mt-3"><OpenSourceAcquisitionPanel /></div>
+      </details>
     </main>
   )
 }

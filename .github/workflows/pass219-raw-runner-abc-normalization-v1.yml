@@ -1,0 +1,125 @@
+name: Pass 219 Raw Runner ABC Normalization v1
+
+on:
+  push:
+    branches:
+      - pass219/raw-runner-abc-normalization-v1
+    paths:
+      - 'benchmarks/pass219/hhs_lane5_raw_runner_abc_gradient_calibration_v1.c'
+      - 'tools/pass219/hhs_raw_runner_abc_calibration_analyze_v1.py'
+      - 'contracts/pass219/PASS_219_RAW_RUNNER_ABC_NORMALIZATION_V1.md'
+      - 'docs/operations/restart/PASS_219_RAW_RUNNER_ABC_NORMALIZATION_*_20260917.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_backend/runtime/hhs_lo_shu_harmonic_phase_energy_v1.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-raw-runner-abc-normalization-v1.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'benchmarks/pass219/hhs_lane5_raw_runner_abc_gradient_calibration_v1.c'
+      - 'tools/pass219/hhs_raw_runner_abc_calibration_analyze_v1.py'
+      - 'contracts/pass219/PASS_219_RAW_RUNNER_ABC_NORMALIZATION_V1.md'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc'
+      - 'hhs_backend/runtime/hhs_lo_shu_harmonic_phase_energy_v1.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-raw-runner-abc-normalization-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raw-runner-abc-normalization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Capture raw runner identity
+        run: |
+          mkdir -p /tmp/raw-runner-abc
+          {
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            echo "kernel=$(uname -srmo)"
+            echo "nproc=$(nproc)"
+            echo "gcc=$(gcc --version | head -n 1)"
+            echo "cpu_model=$(awk -F: '/model name/{gsub(/^ +/,"",$2); print $2; exit}' /proc/cpuinfo)"
+          } | tee /tmp/raw-runner-abc/runner.txt
+
+      - name: Compile aggregate exact ABI
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/raw-runner-abc/exact-abi.o
+
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/raw-runner-abc/link-support full
+
+      - name: Compile A:B:C benchmark
+        run: |
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/hhs_lane5_raw_runner_abc_gradient_calibration_v1.c \
+            /tmp/raw-runner-abc/exact-abi.o \
+            /tmp/raw-runner-abc/link-support/hhs_hash216.o \
+            /tmp/raw-runner-abc/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/raw-runner-abc/calibration
+
+      - name: Compile analyzer
+        run: python -m py_compile tools/pass219/hhs_raw_runner_abc_calibration_analyze_v1.py
+
+      - name: Run same-dataset raw runner normalization
+        run: |
+          /tmp/raw-runner-abc/calibration | tee /tmp/raw-runner-abc/native.jsonl
+
+      - name: Analyze exact A:B:C normalization
+        run: |
+          python tools/pass219/hhs_raw_runner_abc_calibration_analyze_v1.py \
+            /tmp/raw-runner-abc/native.jsonl \
+            /tmp/raw-runner-abc/result.json \
+            /tmp/raw-runner-abc/report.md
+          python - <<'PY'
+          import json
+          p='/tmp/raw-runner-abc/result.json'
+          x=json.load(open(p))
+          assert x['result']=='PASS'
+          assert x['triplet_phase_samples']==36
+          assert x['difficulty_ranks_seen']==list(range(1,10))
+          assert x['four_phase_coverage'] is True
+          assert x['same_dataset_verified'] is True
+          assert x['time_bound_verified'] is True
+          assert x['raw_arm_hhs_energy_authority'] is False
+          assert x['physical_energy_measured'] is False
+          assert x['translator_required'] is False
+          assert set(x['phase_summary'])=={'xy','yx','zw','wz'}
+          for key in ('ab_ratio','ac_ratio','bc_ratio'):
+              assert x['global'][key]['denominator'] > 0
+          print(json.dumps({
+              'result': x['result'],
+              'triplet_phase_samples': x['triplet_phase_samples'],
+              'difficulty_ranks_seen': x['difficulty_ranks_seen'],
+              'global': x['global'],
+          }, sort_keys=True))
+          PY
+          cat /tmp/raw-runner-abc/report.md
+
+      - name: Upload raw runner normalization evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-raw-runner-abc-normalization-v1
+          path: |
+            /tmp/raw-runner-abc/native.jsonl
+            /tmp/raw-runner-abc/result.json
+            /tmp/raw-runner-abc/report.md
+            /tmp/raw-runner-abc/runner.txt
+          if-no-files-found: error

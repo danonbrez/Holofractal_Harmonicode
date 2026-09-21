@@ -21,15 +21,16 @@ from fastapi.staticfiles import StaticFiles
 from hhs_backend import production_ide_server as inherited_ide
 from hhs_backend import production_server as inherited_production
 from hhs_backend.api.pass174_runtime_routes import get_runtime, router as pass174_router
+from hhs_backend.api.pass219_acquisition_routes import router as pass219_acquisition_router
 from hhs_backend.api import pass174_ws_routes as _pass174_ws_routes  # registers WebSocket routes
 
 app = inherited_ide.app
 app.title = "HHS Pass 174 Harmonic Visual SDLC Runtime"
-app.version = "4.0.2"
+app.version = "4.0.3"
 app.description = (
     "Append-only successor to every legacy HHS pass through Pass 173, with a "
     "64:72:81 phase-gear VM81 runtime, encrypted Hash216 retrieval, governed "
-    "multimodal SDLC execution, and front-and-center mobile Visual IDE."
+    "multimodal SDLC execution, Pass 219 acquisition/replay jobs, and a front-and-center mobile Visual IDE."
 )
 
 PASS174_BOOT_STATE: dict[str, Any] = {
@@ -76,6 +77,8 @@ app.router.routes = [
 
 if not _has_route_prefix("/api/v1/pass174"):
     app.include_router(pass174_router)
+if not _has_route_prefix("/api/v1/pass174/acquisition"):
+    app.include_router(pass219_acquisition_router)
 
 if _legacy_ide_root.is_dir():
     app.mount(
@@ -111,9 +114,13 @@ async def _pass174_readiness_probe() -> None:
         raise RuntimeError("HHS_P174_INHERITED_MULTIMODAL_ROUTE_MISSING")
     if not _has_route_prefix("/api/v1/pass174/ws/events"):
         raise RuntimeError("HHS_P174_LIVE_EVENT_ROUTE_MISSING")
+    if not _has_route_prefix("/api/v1/pass174/acquisition"):
+        raise RuntimeError("HHS_P219_ACQUISITION_ROUTE_MISSING")
     route_paths = [str(getattr(route, "path", "")) for route in app.router.routes]
     if _API_FALLBACK_PATH in route_paths and route_paths.index("/api/v1/pass174/status") > route_paths.index(_API_FALLBACK_PATH):
         raise RuntimeError("HHS_P174_API_ROUTE_SHADOWED_BY_FALLBACK")
+    if _API_FALLBACK_PATH in route_paths and route_paths.index("/api/v1/pass174/acquisition/status") > route_paths.index(_API_FALLBACK_PATH):
+        raise RuntimeError("HHS_P219_ACQUISITION_ROUTE_SHADOWED_BY_FALLBACK")
 
 
 async def initialize_pass174_overlay() -> bool:
@@ -173,6 +180,7 @@ async def initialize_pass174_overlay() -> bool:
         "legacy_ide_preserved": _legacy_ide_root.is_dir(),
         "inherited_route_count": len(app.router.routes),
         "api_fallback_deferred": bool(_deferred_api_fallback_routes),
+        "pass219_acquisition_service_route": True,
     })
     _emit_boot_event()
     return True

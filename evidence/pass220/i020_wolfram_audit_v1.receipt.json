@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS_220_I020_WOLFRAM_AUDIT_RECEIPT_V1",
+  "date": "2026-09-19",
+  "engine": "Wolfram Language",
+  "command": "wolframscript -file evidence/pass220/i020_wolfram_audit_v1.wl",
+  "input_path": "evidence/pass220/i020_wolfram_audit_v1.wl",
+  "output_path": "evidence/pass220/i020_wolfram_audit_v1.output.json",
+  "input_sha256": "906965253f042e9bcdc96db26dc2b815e2f05d2657fbca193ce3e8fd04e4016a",
+  "output_sha256": "123291427035ad44edf57fe8de820dc4ff53152add9d2b61ff5deb06b668e9e3",
+  "check_count": 18,
+  "passed_count": 18,
+  "all_passed": true,
+  "self_exports_output": true,
+  "rawjson_compact": true
+}

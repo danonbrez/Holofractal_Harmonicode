@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS_220_I018_REPAIR_WOLFRAM_AUDIT_RECEIPT_V1",
+  "date": "2026-09-19",
+  "engine": "Wolfram Language",
+  "command": "wolframscript -file evidence/pass220/i018_repair_wolfram_audit_v1.wl",
+  "input_path": "evidence/pass220/i018_repair_wolfram_audit_v1.wl",
+  "output_path": "evidence/pass220/i018_repair_wolfram_audit_v1.output.json",
+  "input_sha256": "8ea76e9af908298d7f3ffc1c28ca31376e6e2e7e0abfa24ddb2eccf375f67174",
+  "output_sha256": "2913595b48ea48d8ac5a9658c0ec19c55d52816fa64e61c660613272424cdbae",
+  "check_count": 15,
+  "passed_count": 15,
+  "all_passed": true,
+  "claims": [
+    "u^144 exponent independently derives as 72*(b^2/a^4)=144",
+    "u^144 projection independently evaluates to 36 through b^6*c^4/(c^2-a^2)",
+    "HASH72 projection independently evaluates to 36 through b^4*P^4",
+    "mc^2 projection independently evaluates to 36 through (a^2+b^2)^2*b^4",
+    "full ordered phase is (sx,sz,xy,yx,zw,wz)=(0,0,1,-1,1,-1)",
+    "all four I018 ratios close exactly to 1"
+  ],
+  "self_exports_output": true,
+  "rawjson_compact": true
+}

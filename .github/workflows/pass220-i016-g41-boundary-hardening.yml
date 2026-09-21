@@ -1,0 +1,51 @@
+name: Pass 220 I016 G41 Boundary Hardening
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
+      - ".github/workflows/pass220-i014-g41-sudoku-fingerprint-algebra.yml"
+      - ".github/workflows/pass220-i015-palindromic-ordered-phase.yml"
+      - ".github/workflows/pass220-i016-g41-boundary-hardening.yml"
+      - "docs/pass220/PASS_220_I016_G41_BOUNDARY_HARDENING.md"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
+      - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
+      - ".github/workflows/pass220-i014-g41-sudoku-fingerprint-algebra.yml"
+      - ".github/workflows/pass220-i015-palindromic-ordered-phase.yml"
+      - ".github/workflows/pass220-i016-g41-boundary-hardening.yml"
+      - "docs/pass220/PASS_220_I016_G41_BOUNDARY_HARDENING.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run I016 exact dependency surface
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py

@@ -1,0 +1,171 @@
+name: Pass 219 Isolated FullStack BaseABI PlainX86 Benchmark v2
+
+on:
+  push:
+    branches:
+      - pass219/isolated-fullstack-baseabi-plainx86-benchmark-v2
+    paths:
+      - 'benchmarks/pass219/isolated_stack_v2/**'
+      - 'tools/pass219/generate_isolated_stack_dataset_v2.py'
+      - 'tools/pass219/run_isolated_stack_benchmark_v2.py'
+      - 'tools/pass219/analyze_isolated_stack_benchmark_v2.py'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi_v1_1_base.h'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - '.github/workflows/pass219-isolated-fullstack-baseabi-plainx86-v2.yml'
+      - 'docs/operations/restart/PASS_219_ISOLATED_FULLSTACK_BASEABI_PLAINX86_BENCHMARK_V2_*_20260917.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'benchmarks/pass219/isolated_stack_v2/**'
+      - 'tools/pass219/generate_isolated_stack_dataset_v2.py'
+      - 'tools/pass219/run_isolated_stack_benchmark_v2.py'
+      - 'tools/pass219/analyze_isolated_stack_benchmark_v2.py'
+      - '.github/workflows/pass219-isolated-fullstack-baseabi-plainx86-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-stack-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Capture controlled runner identity
+        run: |
+          mkdir -p /tmp/isolated-stack-v2
+          test "$(uname -m)" = "x86_64"
+          {
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            echo "kernel=$(uname -srmo)"
+            echo "nproc=$(nproc)"
+            echo "gcc=$(gcc --version | head -n 1)"
+            echo "cpu_model=$(sed -n 's/^model name[[:space:]]*: //p' /proc/cpuinfo | head -n 1)"
+            echo "common_cflags=-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic"
+          } | tee /tmp/isolated-stack-v2/runner.txt
+
+      - name: Compile Python tooling
+        run: |
+          python -m py_compile \
+            tools/pass219/generate_isolated_stack_dataset_v2.py \
+            tools/pass219/run_isolated_stack_benchmark_v2.py \
+            tools/pass219/analyze_isolated_stack_benchmark_v2.py
+
+      - name: Generate one neutral dataset
+        run: |
+          python tools/pass219/generate_isolated_stack_dataset_v2.py \
+            /tmp/isolated-stack-v2/dataset.bin \
+            /tmp/isolated-stack-v2/manifest.json
+          sha256sum /tmp/isolated-stack-v2/dataset.bin | tee /tmp/isolated-stack-v2/dataset.sha256
+
+      - name: Compile A full optimization stack
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/isolated-stack-v2/aggregate-abi.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/isolated-stack-v2/link-support full
+          gcc $CFLAGS \
+            -Ihhs_runtime/include \
+            -Ibenchmarks/pass219/isolated_stack_v2 \
+            benchmarks/pass219/isolated_stack_v2/full_lane5_stack_v2.c \
+            /tmp/isolated-stack-v2/aggregate-abi.o \
+            /tmp/isolated-stack-v2/link-support/hhs_hash216.o \
+            /tmp/isolated-stack-v2/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/isolated-stack-v2/arm-a
+
+      - name: Compile B immutable base ABI only
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS -Ihhs_runtime/include -x c \
+            -c hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc \
+            -o /tmp/isolated-stack-v2/base-abi-only.o
+          gcc $CFLAGS \
+            -Ihhs_runtime/include \
+            -Ibenchmarks/pass219/isolated_stack_v2 \
+            benchmarks/pass219/isolated_stack_v2/base_abi_only_v2.c \
+            /tmp/isolated-stack-v2/base-abi-only.o \
+            -o /tmp/isolated-stack-v2/arm-b
+
+      - name: Compile C plain Ubuntu x86_64 only
+        run: |
+          CFLAGS='-O3 -std=c11 -Wall -Wextra -Werror -pedantic -march=x86-64 -mtune=generic'
+          gcc $CFLAGS \
+            -Ibenchmarks/pass219/isolated_stack_v2 \
+            benchmarks/pass219/isolated_stack_v2/plain_x86_ubuntu_v2.c \
+            -o /tmp/isolated-stack-v2/arm-c
+
+      - name: Prove binary isolation boundaries
+        run: |
+          nm -g --defined-only /tmp/isolated-stack-v2/base-abi-only.o | tee /tmp/isolated-stack-v2/baseabi-symbols.txt
+          if grep -E 'pass219|lane5|harmonic36|hash216' /tmp/isolated-stack-v2/baseabi-symbols.txt; then
+            echo 'B base ABI object contains forbidden optimization symbol' >&2
+            exit 1
+          fi
+          nm -a /tmp/isolated-stack-v2/arm-c | tee /tmp/isolated-stack-v2/plainx86-symbols.txt >/dev/null
+          if grep -E '[[:space:]]hhs_|[[:space:]]HHS_' /tmp/isolated-stack-v2/plainx86-symbols.txt; then
+            echo 'C plain x86 binary contains HHS symbol' >&2
+            exit 1
+          fi
+          ldd /tmp/isolated-stack-v2/arm-b | tee /tmp/isolated-stack-v2/baseabi-ldd.txt
+          ldd /tmp/isolated-stack-v2/arm-c | tee /tmp/isolated-stack-v2/plainx86-ldd.txt
+
+      - name: Execute same-dataset rotated A B C benchmark
+        run: |
+          python tools/pass219/run_isolated_stack_benchmark_v2.py \
+            /tmp/isolated-stack-v2/manifest.json \
+            /tmp/isolated-stack-v2/dataset.bin \
+            /tmp/isolated-stack-v2/arm-a \
+            /tmp/isolated-stack-v2/arm-b \
+            /tmp/isolated-stack-v2/arm-c \
+            /tmp/isolated-stack-v2/native.jsonl
+
+      - name: Analyze exact isolation-normalized ratios
+        run: |
+          python tools/pass219/analyze_isolated_stack_benchmark_v2.py \
+            /tmp/isolated-stack-v2/native.jsonl \
+            /tmp/isolated-stack-v2/result.json \
+            /tmp/isolated-stack-v2/report.md
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/isolated-stack-v2/result.json'))
+          assert x['result']=='PASS'
+          assert x['triplet_samples']==36
+          assert x['same_dataset_verified'] is True
+          assert x['isolation']['A_full_aggregate_lane5_m_stack'] is True
+          assert x['isolation']['B_immutable_v1_1_base_abi_only'] is True
+          assert x['isolation']['C_plain_x86_64_ubuntu_no_hhs'] is True
+          print(json.dumps({
+              'result': x['result'],
+              'dataset_sha256': x['dataset_sha256'],
+              'A_over_B': x['global']['A_over_B'],
+              'A_over_C': x['global']['A_over_C'],
+              'B_over_C': x['global']['B_over_C'],
+          }, sort_keys=True))
+          PY
+          cat /tmp/isolated-stack-v2/report.md
+
+      - name: Upload isolated benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-isolated-fullstack-baseabi-plainx86-v2
+          path: |
+            /tmp/isolated-stack-v2/dataset.bin
+            /tmp/isolated-stack-v2/manifest.json
+            /tmp/isolated-stack-v2/dataset.sha256
+            /tmp/isolated-stack-v2/native.jsonl
+            /tmp/isolated-stack-v2/result.json
+            /tmp/isolated-stack-v2/report.md
+            /tmp/isolated-stack-v2/runner.txt
+            /tmp/isolated-stack-v2/baseabi-symbols.txt
+            /tmp/isolated-stack-v2/plainx86-symbols.txt
+            /tmp/isolated-stack-v2/baseabi-ldd.txt
+            /tmp/isolated-stack-v2/plainx86-ldd.txt
+          if-no-files-found: error

@@ -1,6 +1,6 @@
 # HHS Lane 5 White-Paper Set — Version 1
 
-**Date:** 2026-09-16  
+**Date:** 2026-09-17  
 **Repository evidence baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
 **White-paper integration baseline:** `1c4787258b954b7ef700e7d1ea706da2c1f763b7`  
 **Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 1.48
@@ -128,7 +128,58 @@ The governing invariant is:
 
 This manuscript and contract are additive theorem/specification layers. Existing executable repository evidence remains authoritative for which operators have already been lowered into tested runtime behavior.
 
-## 8. Normative sources
+## 8. Phase-inverted Pythagorean entanglement and Lo Shu collapse geometry
+
+[`HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md`](HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md)
+
+This theorem formalizes the typed dependency geometry exposed by the phase-inverted Pythagorean constructor manifold without replacing the verbatim source. It adds:
+
+- the exact seed `a²=1`, `b²=2`, `c²=3` and licensed shared magnitude `c⁴=P⁴=9`;
+- self-reconstruction of `(c²-b²,c²-a²,a²+b²)` as `(a²,b²,c²)`;
+- reciprocal orientation pairs `(a,b):(b,a)`, `xy:yx`, `zw:wz`, and `p:q/q:p`;
+- the exact `p,q` orientation witness `(q-p)²=4`, `sigma²=1` on the licensed projection;
+- the Lo Shu finite-phase corner cycle `0/18/36/54` and `kappa(d)=10-d` half-turn involution;
+- the typed directional-collapse quotient `yx->xy`, `zw->wz` without global commutativity;
+- `72^72=5184^36` with the inherited exact Fibonacci square-state ladder;
+- the symbol `1` as both scalar unit and Lo Shu positional anchor while leaving its unprovided BigInt string-position index unresolved; and
+- the `10x10=100` carrier closure through agreement of all positive integer factor pairs of `100`.
+
+The first executable lowering and normative contract are:
+
+```text
+hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py
+contracts/pass219/PASS_219_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md
+tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
+.github/workflows/hhs-phase-inverted-pythagorean-theorem-v1.yml
+```
+
+The implementation remains projection-only and has no canonical VM81/Hash72/Hash216 admission authority.
+
+## 8A. H36 / Hash216 direct M-exponent lattice
+
+[`HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md`](HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md)
+
+This theorem lowers the shared `{2,3}` prime-exponent geometry directly into the inherited Harmonic36/Hash216 native 5,184-address binding. It formalizes:
+
+- `36 -> (2,2)`, `72 -> (3,2)`, `216 -> (3,3)`, `5184 -> (6,4)`, and `M -> (216,144)`;
+- exact closure `M=72^72=5184^36=2^216*3^144`;
+- H36-to-Hash72 as one binary exponent step and Hash72-to-Hash216 as one ternary exponent step;
+- the existing exact identity among `72x72`, `144x36`, and `81x64` address factorizations;
+- the Lo Shu local exponent surface `1:(0,0)`, `2:(1,0)`, `4:(2,0)`, `8:(3,0)`, `6:(1,1)`, `9:(0,2)`;
+- the licensed projection `AB=P^4=c^4=9` and `1=P^4/9`; and
+- a direct shared-state witness with `translator_required=0`, while retaining zero independent VM81/Hash72/Hash216/persistence/floating authority.
+
+The executable ABI, contract, exhaustive 216-occurrence test, and dedicated CI are:
+
+```text
+hhs_runtime/include/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.h
+hhs_runtime/c/hhs_pass219_harmonic36_hash216_m_exponent_lattice_1_0.inc
+contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md
+tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c
+.github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml
+```
+
+## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
 
@@ -139,6 +190,8 @@ contracts/pass219/PASS_219_LANE5_UNBOUNDED_REAL_WORLD_WORKLOAD_SCALING_1_48.md
 contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md
 contracts/pass219/PASS_219_NORMALIZED_OPTIMIZATION_CONTROL_V1.md
 contracts/pass219/PASS_219_ETHICAL_ALIGNMENT_THEOREM_V1.md
+contracts/pass219/PASS_219_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md
+contracts/pass219/PASS_219_H36_HASH216_M_EXPONENT_LATTICE_1_0.md
 docs/pass219/PASS_219_HASH216_FRACTAL_QUDIT_HYDRATION_1_45_EVIDENCE.md
 formal/lemmas/pass_144/LEMMA_CORPUS.json
 formal/coq/HHS_GFE_Field_Quotient.v
@@ -149,7 +202,7 @@ benchmarks/pass219/hhs_lane5_von_neumann_materialization_control_v1.c
 tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c
 ```
 
-## 9. Evidence classes
+## 10. Evidence classes
 
 The set uses these labels consistently:
 
@@ -172,7 +225,7 @@ FIRST_CLASS for comparative complexity/throughput analysis
 
 This separation prevents physical-hardware claims from being conflated with the shared mathematical language used to measure information density over time.
 
-## 10. Verified delivery identity
+## 11. Verified delivery identity
 
 The Lane 5 1.48 evidence baseline remains:
 
@@ -198,6 +251,18 @@ The ethical alignment theorem/manuscript integration is additive from:
 
 ```text
 base main @ 4c965d3c61402a708977941b3ae5fc5dcb324cc2
+```
+
+The phase-inverted Pythagorean theorem implementation begins from:
+
+```text
+base main @ 3ec0aa0c33a0b197dece135f00bf55c2518b9e27
+```
+
+The H36 / Hash216 direct M-exponent-lattice implementation begins from:
+
+```text
+base main @ 9b36a5322dbb6a92c2879b4b8eb22f9da67a8c72
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.

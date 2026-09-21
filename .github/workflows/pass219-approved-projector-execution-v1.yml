@@ -1,0 +1,110 @@
+name: Pass 219 Approved Projector Execution v1
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_approved_projector_execution_v1.py'
+      - 'hhs_backend/api/pass219_acquisition_routes.py'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
+      - 'tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py'
+      - 'contracts/pass219/PASS_219_APPROVED_PROJECTOR_EXECUTION_V1.md'
+      - '.github/workflows/pass219-approved-projector-execution-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass219_approved_projector_execution_v1.py'
+      - 'hhs_backend/api/pass219_acquisition_routes.py'
+      - 'hhs_gui/runtime_os/workspace/OpenSourceAcquisitionPanel.tsx'
+      - 'hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs'
+      - 'tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py'
+      - 'contracts/pass219/PASS_219_APPROVED_PROJECTOR_EXECUTION_V1.md'
+      - '.github/workflows/pass219-approved-projector-execution-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  approved-projector-execution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic
+      - name: Compile bounded projector surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_approved_projector_execution_v1.py
+          python -m py_compile hhs_backend/api/pass219_acquisition_routes.py
+          python -m py_compile tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py
+      - name: Run exact projector contract tests
+        run: pytest -q tests/pass219/test_hhs_pass219_approved_projector_execution_v1.py
+      - name: Verify production acquisition wiring
+        run: node hhs_gui/scripts/pass219-acquisition-job-ui-source-verify.mjs
+      - name: Install Runtime OS dependencies
+        working-directory: hhs_gui
+        run: npm install --no-audit --no-fund
+      - name: Typecheck and build mobile production surface
+        working-directory: hhs_gui
+        run: npm run build:strict
+
+  real-pinned-model-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned external projector runtime
+        run: python -m pip install --disable-pip-version-check 'sentence-transformers==5.1.1'
+      - name: Execute immutable multilingual MPNet projection
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from hhs_runtime.hhs_pass219_approved_projector_execution_v1 import (
+              ProjectionExecutionRequest,
+              SentenceTransformersRuntime,
+              execute_projection,
+          )
+
+          source = b"The weather is lovely today."
+          request = ProjectionExecutionRequest(
+              profile_id="MULTILINGUAL_MPNET_TEXT_V1",
+              source_bytes=source,
+              source_sha256=sha256(source).hexdigest(),
+              source_language="en",
+              source_modality="TEXT",
+              pivot_text="It's so sunny outside!",
+              pivot_language="en",
+              semantic_labels=("weather", "sunny"),
+              translation_chain=("en",),
+          )
+          result = execute_projection(request, SentenceTransformersRuntime(device="cpu"))
+          assert result["projector_id"] == "EXTERNAL_EVIDENCE_V1"
+          assert result["projector_profile_id"] == "MULTILINGUAL_MPNET_TEXT_V1"
+          assert result["model_repository"]["revision"] == "79f2382ceacceacdf38563d7c5d16b9ff8d725d6"
+          assert result["candidate_only"] is True
+          similarity = result["similarity"]
+          assert isinstance(similarity["numerator"], int)
+          assert isinstance(similarity["denominator"], int)
+          assert 0 <= similarity["numerator"] <= similarity["denominator"]
+          print(json.dumps({
+              "classification": "HHS_P219_REAL_PINNED_MPNET_PROJECTOR_SMOKE_PASS",
+              "profile_id": result["projector_profile_id"],
+              "model_revision": result["model_repository"]["revision"],
+              "similarity": similarity,
+              "execution_record_sha256": result["execution_record_sha256"],
+              "candidate_only": result["candidate_only"],
+          }, sort_keys=True))
+          PY
