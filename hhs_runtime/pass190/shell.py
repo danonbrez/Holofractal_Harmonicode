@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 import shlex
 from typing import Any, Optional, Sequence
@@ -291,9 +290,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     context = Pass190CompletionContext(
         database_path=namespace.database,
         repository_root=namespace.repository_root,
-        capability_secret=os.environ.get("HHS_PASS190_CAPABILITY_SECRET"),
+        capability_secret=None,
     )
-    line = shlex.join(["hhs", *namespace.command])
+    line = "hhs " + " ".join(namespace.command)
     result = lower_shell_command(
         context,
         line,
