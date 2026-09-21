@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS219_RELATIONAL_TOKEN_MANIFOLD_V1",
+  "contract_id": "HHS-P219-RELATIONAL-TOKEN-MANIFOLD",
+  "version": "1.0.0",
+  "pass": 219,
+  "status": "ADDITIVE_EXECUTABLE_CONTRACT",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "adopted_against_main": "064563352ea50676b91cdd07cbd3799e81e4b446",
+  "definition": "HARMONICODE is a both-and entangled reciprocal synthesis in which language, logic, code, geometry, data, and mathematics remain distinct and composable to the human while presenting to the machine as a mathematically structured character-and-symbol relational manifold operating across scale.",
+  "human_machine_resolution": {
+    "human": "SEMANTIC_MULTIPLICITY",
+    "machine": "MATHEMATICAL_UNITY",
+    "reductionist_binary_either_or_forbidden": true,
+    "both_and_composition_required": true
+  },
+  "machine_tokenization": {
+    "primary_unit": "UNICODE_CHARACTER",
+    "source_string_is_first_class": true,
+    "character_identity_is_preserved": true,
+    "token_to_integer_id_only_is_insufficient": true,
+    "metadata_dimensions": [
+      "lexical_character_identity",
+      "unicode_codepoint",
+      "utf8_exact_bytes",
+      "utf8_bigint_projection",
+      "lo_shu_geometric_address",
+      "prime_modular_fingerprint",
+      "recursive_nesting_path",
+      "local_context_window",
+      "surface_role_set",
+      "shared_knowledge_graph_edges",
+      "source_provenance"
+    ]
+  },
+  "projection_law": {
+    "human_surface_identity_preserved": true,
+    "machine_projection_exact": true,
+    "source_roundtrip_required": true,
+    "projection_does_not_replace_source": true,
+    "surface_roles_may_coexist": true,
+    "semantic_identity_may_not_be_inferred_from_character_identity_alone": true
+  },
+  "shared_knowledge_graph": {
+    "required": true,
+    "minimum_relations": [
+      "contains_character",
+      "previous_character",
+      "next_character"
+    ],
+    "context_is_graph_capable_not_sequence_only": true,
+    "future_relation_extensions_are_additive": true
+  },
+  "exactness": {
+    "floating_point_canonical_metadata_forbidden": true,
+    "prime_residue_basis": [2, 3, 5, 7, 11, 13, 17, 19],
+    "lo_shu_base_layout": [4, 9, 2, 3, 5, 7, 8, 1, 6],
+    "canonical_5184_bigint_serialization_is_not_silently_substituted_by_utf8_bigint": true,
+    "utf8_bigint_is_an_exact_projection_only": true
+  },
+  "authority_boundary": {
+    "layer": "RELATIONAL_METADATA_AND_GRAPH_PROJECTION",
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_mint": false,
+    "candidate_metadata_may_feed_lane5": true
+  },
+  "implementation": {
+    "runtime": "hhs_runtime/pass219/relational_token_manifold.py",
+    "validator": "tools/validate_pass219_relational_token_manifold.py",
+    "test": "tests/pass219/test_pass219_relational_token_manifold.py",
+    "documentation": "docs/architecture/HHS_RELATIONAL_TOKEN_MANIFOLD_V1.md"
+  },
+  "acceptance": [
+    "EXACT_UNICODE_ROUNDTRIP",
+    "INTEGER_ONLY_CANONICAL_METADATA",
+    "DETERMINISTIC_TOKEN_IDENTITIES",
+    "LO_SHU_ADDRESS_VERIFIED",
+    "PRIME_MODULAR_FINGERPRINT_VERIFIED",
+    "CONTEXT_HASHES_VERIFIED",
+    "KNOWLEDGE_GRAPH_EDGES_CLOSED",
+    "HUMAN_IDENTITY_PRESERVED",
+    "MACHINE_PROJECTION_EXACT",
+    "BOTH_AND_SEMANTICS_ENFORCED"
+  ]
+}
