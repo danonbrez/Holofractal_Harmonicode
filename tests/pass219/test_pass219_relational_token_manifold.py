@@ -1,6 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
 from hhs_runtime.pass219.relational_token_manifold import (
     LO_SHU_3X3,
