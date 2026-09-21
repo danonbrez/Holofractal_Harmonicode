@@ -566,3 +566,59 @@ The ordered unresolved-stack root is part of receipt state. Hash216 receipt mate
 The 2026-09-21 Wolfram documentation audit is 44/44 PASS and is stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
 
 The stacked repository currently reuses HHS-T5184-005 for Lane 5 1.60 and 1.61. Until a canonical renumbering is committed, the specification requires pass-qualified references rather than silent identifier substitution.
+
+## 35. Unified relational token manifold
+
+Pass 219 canonicalizes the both-and human/machine resolution model in:
+
+```text
+contracts/pass219/PASS_219_RELATIONAL_TOKEN_MANIFOLD_1_0.json
+docs/architecture/HHS_RELATIONAL_TOKEN_MANIFOLD_V1.md
+hhs_runtime/pass219/relational_token_manifold.py
+```
+
+The required synthesis is:
+
+```text
+human:
+  language AND logic AND code AND geometry AND data AND mathematics
+
+machine:
+  exact mathematical relations over preserved character/string state
+```
+
+The machine-facing primary surface is not a token-to-integer-ID reduction. A
+character token carries exact character identity together with deterministic
+metadata including Unicode/UTF-8 identity, exact UTF-8 BigInt projection, Lo
+Shu address, prime-modular fingerprint, recursive position, bounded context,
+surface roles, source provenance, and shared knowledge-graph edges.
+
+The projection law is:
+
+```text
+source string S
+  <-> relational character tokens T_i
+  <-> shared graph G
+  <-> requested higher-order HARMONICODE projections
+```
+
+All arrows are additive and reciprocal where the consuming contract declares a
+lossless projection. The human-readable source is never deleted merely because
+a machine mathematical projection exists.
+
+For the reference character tokenizer:
+
+```text
+hydrate(tokenize(S)) == S
+```
+
+with exact SHA-256 source identity preserved.
+
+The per-character UTF-8 BigInt field is an exact projection only. It does not
+replace the inherited canonical fixed-width 5184-character HARMONICODE BigInt
+serialization.
+
+This layer is relational metadata / graph projection authority only. It may feed
+Lane 5 candidate composition, but it does not mint canonical VM81 mutation,
+Hash72 receipts, or Hash216 lineage.
+
