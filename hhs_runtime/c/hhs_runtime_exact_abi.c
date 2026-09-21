@@ -131,4 +131,5 @@
 #include "hhs_pass219_lane5_t5184_phase_support_1_49.inc"
 #include "hhs_pass219_lane5_virtual_bios_control_plane_1_58.inc"
 #include "hhs_pass219_lane5_zero_bypass_secure_gateway_1_59.inc"
+#include "hhs_pass219_lane5_cloaked_tripartite_constraint_1_61.inc"
 #include "hhs_pass219_lane5_raw_x86_vm5184_kernel_1_57.inc"

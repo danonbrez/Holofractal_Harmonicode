@@ -112,6 +112,7 @@
 #include "hhs_pass219_lane5_t5184_phase_support_1_49.h"
 #include "hhs_pass219_lane5_virtual_bios_control_plane_1_58.h"
 #include "hhs_pass219_lane5_zero_bypass_secure_gateway_1_59.h"
+#include "hhs_pass219_lane5_cloaked_tripartite_constraint_1_61.h"
 #include "hhs_pass219_lane5_raw_x86_vm5184_kernel_1_57.h"
 #include "hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
 #endif
