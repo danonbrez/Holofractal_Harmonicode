@@ -33,6 +33,7 @@ on:
       - 'hhs_python/runtime/hhs_uqcel_ctypes_bridge.py'
       - 'hhs_python/runtime/hhs_pass219_composed_ctypes_bridge.py'
       - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
+      - 'native_projects/hhs_vm81_native_development/**'
       - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_*.py'
       - 'tests/pass219/test_pass219_cumulative_pass*_membrane_i*.py'
@@ -46,6 +47,7 @@ on:
       - 'tests/test_hhs_exact_runtime_abi_v1.py'
       - 'tests/test_hhs_vm81_native_development_v1.py'
       - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
+      - 'Makefile'
   workflow_dispatch:
 
 permissions:
