@@ -266,3 +266,24 @@ base main @ 9b36a5322dbb6a92c2879b4b8eb22f9da67a8c72
 ```
 
 Historical white papers remain valid under the repository state declared in their own headers. This set is additive and does not rewrite frozen prior evidence.
+
+## 2026-09-21 mathematical closure expansion
+
+## September 21 integrated theorem set
+
+1. [Global Delta, Computability, and 5184 Closure Theorem](../../whitepapers/HHS_PASS220_GLOBAL_DELTA_COMPUTABILITY_AND_5184_CLOSURE_V1.md)
+2. [HHS-T5184-005 — Cellular Kinematics, Orthogonal Gradients, and Static Boundary Alignment](../../whitepapers/HHS_T5184_005_CELLULAR_KINEMATICS_ORTHOGONAL_GRADIENTS_STATIC_BOUNDARY_ALIGNMENT_V1.md)
+
+The first consolidates the common-`Delta` boundary, exact residual coupling,
+inverse projection closure, Lo Shu/1-2-3 geometry, the fixed 5184 carrier,
+Hash72 `72^72` address semantics, atomic 648-byte frames, HARMONICODE
+computability, exact translation closure, and Hash216 identity topology.
+
+The second specializes that surface into three kinematic modes and formalizes
+the nine-state exponent orbit. Its Le Rhône 9C section is a mechanical
+correspondence model; external Smithsonian/FAA sources establish the engine
+facts used by the correspondence, while the HHS mapping remains the formal
+system's theorem.
+
+The accompanying Wolfram audit verifies only licensed ordinary exact
+projections and does not scalarize native HARMONICODE relations.
