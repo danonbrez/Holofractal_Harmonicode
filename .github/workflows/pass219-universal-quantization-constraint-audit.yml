@@ -13,6 +13,7 @@ on:
       - 'docs/pass219/APPENDIX_H_NATIVE_UNIVERSAL_CONSTRAINT_ENVELOPE.md'
       - 'docs/pass219/APPENDIX_I_NESTED_MODULAR_FIBONACCI_COMPRESSION.md'
       - 'docs/operations/restart/PASS_219B_I6_INHERITED_RUNTIME_CONFORMANCE_RESTART.md'
+      - 'docs/operations/restart/PASS_219_LANE5_STANDALONE_PUBLIC_C_ABI_REPAIR_20260920.md'
       - 'hhs_runtime/pass219_quantization_constraint_reference_v1.py'
       - 'hhs_runtime/pass219_native_universal_constraint_v1.py'
       - 'hhs_runtime/pass219_fibonacci_compression_reference_v1.py'
@@ -33,6 +34,7 @@ on:
       - 'hhs_python/runtime/hhs_uqcel_ctypes_bridge.py'
       - 'hhs_python/runtime/hhs_pass219_composed_ctypes_bridge.py'
       - 'native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**'
+      - 'native_projects/hhs_vm81_native_development/**'
       - 'tests/pass192_193/test_pass192_193_contract_invariants.py'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_*.py'
       - 'tests/pass219/test_pass219_cumulative_pass*_membrane_i*.py'
@@ -44,7 +46,10 @@ on:
       - 'tests/test_hhs_pass219_native_universal_constraint_negative_edges.py'
       - 'tests/test_hhs_pass219_fibonacci_compression_compliance.py'
       - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'tests/test_hhs_vm81_native_development_v1.py'
+      - 'tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py'
       - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
+      - 'Makefile'
   workflow_dispatch:
 
 permissions:
