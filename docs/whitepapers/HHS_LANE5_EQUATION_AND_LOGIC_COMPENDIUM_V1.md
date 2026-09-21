@@ -952,3 +952,132 @@ exact typed admission
 for canonical authority.
 
 The companion performance paper documents which equations have executable workload evidence and which remain semantic/reference surfaces.
+
+## 2026-09-21 mathematical closure expansion
+
+### Global common-denominator constraint
+
+Status: `HHS_NATIVE_SEMANTIC`.
+
+```text
+(P = sqrt(pq + (P^4/AB))) / Delta
+P = B x^5184 / Delta
+infinity Delta = B x^5184
+P != infinity
+(P/infinity)^(x^2) = P
+Delta = infinity^(x^2) / Delta
+P = P / Delta
+R(infinity)=Delta
+R(Delta)=x=u^((18/72 mod 72))u^36
+```
+
+The same `Delta` is inherited by nested tensor, rational, matrix, phase, and
+serialization objects. No scalar cancellation rule is inferred unless a typed
+projection explicitly supplies it.
+
+### Licensed exact branch
+
+Status: `EXECUTED_EXACT / WOLFRAM_VERIFIED`.
+
+```text
+Delta=1
+p=P-1
+q=P+1
+AB=P^4
+P>1
+```
+
+gives
+
+```text
+p+q=2P
+q-p=2
+pq=P^2-1
+P(q-p)/(p+q)=P^2-pq=1
+sqrt(pq+P^4/(AB))/Delta=P.
+```
+
+### Ordered residual and inverse closure
+
+```text
+K_Ppq := P(q-p)/(p+q)=P^2-pq
+c^2 K_Ppq = a^2+b^2 = K_Ppq m_D c^2/Delta
+Pi_Delta^(-1)(Pi_Delta(S))=S
+xy=-yx
+zw=-wz
+AB!=BA
+A/B!=B/A
+```
+
+The ordered residual is preserved as
+
+```text
+m_D n_D=A^2+B^2+Delta_D-Lambda_D
+Lambda_D=xwyz+yzxw-xzyw-ywxz
+Delta_D=x[x,z]z+x[x,w]w+y[y,z]z+y[y,w]w
+```
+
+and is not reduced to a commutative surrogate without a complete relation table.
+
+### Lo Shu / 5184 / 72^72 surface
+
+```text
+L0=[[-1,4,-3],[-2,0,2],[3,-4,1]]
+P8={-4,-3,-2,-1,1,2,3,4}
+R64=P8 x P8
+rho(si,sj)=(-si,-sj)
+rho^2=I
+T1=(1,2,3)
+T2=(2,4,6)
+T3=(3,6,9)
+5184=72^2=81*64=144*36=72*24*3
+648 bytes*8=5184 bits
+```
+
+Magnitude and Lo Shu cell-distance are one joint address surface. The canonical
+normalized BigInt object remains exactly 5184 characters in HARMONICODE
+rational-scientific notation, with 81 fixed 64-character cell tokens.
+
+The same carrier admits a 72-by-72 traversal; Hash72's internal address manifold
+is `72^72`, meaning 72 ordered positions with 72 admissible symbol states per
+position, not a materialized array of all states.
+
+### Computability and exact translation
+
+```text
+Computable_Delta(x)
+iff
+x has an exact contradiction-free HARMONICODE symbolic representation or
+admissible relational address and every required operation is exact and
+Delta-consistent.
+```
+
+For an admitted foreign exact translator `T_F`:
+
+```text
+T_F^(-1)(T_F(tau))=tau.
+```
+
+A failed first encoding is a representation failure, not a proof of
+noncomputability.
+
+### Typed terminal equilibrium
+
+```text
+Delta e=0
+```
+
+is reciprocal phase equilibrium on the declared epsilon manifold; it is not the
+unrestricted scalar inference `e=0`.
+
+### HHS-T5184-005 phase orbit
+
+```text
+F=(1,3,5,7,9,2,4,6,8)
+E=8F={8,24,40,56,72,16,32,48,64}
+e_k=8+16k (mod 72)
+```
+
+Wolfram verifies `gcd(16,72)=8`, orbit length `9`, distinct residues,
+closure after nine steps, an 80-degree phase step, and reciprocal complement
+pairs `(8,64),(24,48),(40,32),(56,16)`.
