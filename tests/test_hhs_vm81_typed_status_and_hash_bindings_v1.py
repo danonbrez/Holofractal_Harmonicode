@@ -52,6 +52,11 @@ def test_typed_status_and_rejection_state_preservation_native_smoke(tmp_path: Pa
     compiler = shutil.which("cc") or shutil.which("gcc")
     if compiler is None:
         pytest.skip("C compiler unavailable")
+    runtime_dir = ROOT / "hhs_runtime/builds"
+    runtime_lib = runtime_dir / "libhhs_runtime.so"
+    assert runtime_lib.is_file(), (
+        "authoritative public runtime missing; build it with 'make c-abi'"
+    )
     binary = tmp_path / "hhs_vm81_typed_status_smoke"
     command = [
         compiler,
@@ -60,11 +65,16 @@ def test_typed_status_and_rejection_state_preservation_native_smoke(tmp_path: Pa
         "-Wall",
         "-Wextra",
         f"-I{ROOT / 'hhs_runtime/c'}",
+        f"-I{ROOT / 'hhs_runtime/include'}",
         f"-I{ROOT / 'native_projects/hhs_vm81_native_development/c'}",
         str(ROOT / "native_projects/hhs_vm81_native_development/c/hhs_vm81_typed_status_smoke.c"),
         str(ROOT / "native_projects/hhs_vm81_native_development/c/hhs_vm81_native_dev_abi.c"),
-        str(ROOT / "hhs_runtime/c/hhs_runtime_abi.c"),
+        f"-L{runtime_dir}",
+        "-lhhs_runtime",
+        "-lcrypto",
+        "-lstdc++",
         "-lm",
+        f"-Wl,-rpath,{runtime_dir}",
         "-o",
         str(binary),
     ]
