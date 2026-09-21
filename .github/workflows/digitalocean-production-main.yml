@@ -8,6 +8,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/digitalocean-production-main.yml"
+      - ".github/workflows/pass219-cumulative-pass202-membrane-i122.yml"
+      - "hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py"
       - "hhs_gui/**"
       - "hhs_backend/runtime_os_projection.py"
       - "hhs_backend/runtime_os_visual_server.py"
