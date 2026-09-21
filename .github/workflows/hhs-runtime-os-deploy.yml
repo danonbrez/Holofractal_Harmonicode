@@ -25,6 +25,8 @@ on:
       - "bin/post_compile"
       - "Procfile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
+      - ".github/workflows/pass219-cumulative-pass202-membrane-i122.yml"
+      - "hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py"
   pull_request:
     branches: [main]
     paths:
@@ -49,6 +51,8 @@ on:
       - "bin/post_compile"
       - "Procfile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
+      - ".github/workflows/pass219-cumulative-pass202-membrane-i122.yml"
+      - "hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py"
   workflow_dispatch:
 
 permissions:
