@@ -501,3 +501,68 @@ The compiler is forbidden from accepting a program as executable unless:
 8. Global invariants hold.
 
 Failure emits quarantine, not implicit success.
+
+## 34. Lane 5 1.50–1.62 mathematical extension
+
+Normative documentation summary:
+
+docs/whitepapers/HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md
+
+Pass 219 compact appendix:
+
+docs/pass219/APPENDIX_J_LANE5_1_50_1_62_MATHEMATICAL_EXTENSIONS.md
+
+The extension preserves these system-internal constraints:
+
+~~~text
+RHS closure -> admissible LHS manifold -> local values/asymmetries
+
+AB != BA
+A/B != B/A
+xy != yx
+zw != wz
+
+(P=√(pq+(P⁴/AB)))/∆
+Cancel_∆(S)=forbidden
+
+81*64=5184=72^2=144*36=1296*4
+81=1+40*2
+~~~
+
+The exact ordered sum-of-two-squares correction is:
+
+~~~text
+m_D n_D = A^2 + B^2 + Delta_D - Lambda_D
+~~~
+
+with ordered-word defects defined in the linked paper. Scalar/commutative projection may annihilate the defect tensors but does not grant native commutation.
+
+The 1.61 tripartite scalar proof surface is:
+
+~~~text
+Gamma*P*(q-p)=Sigma*(p+q)
+Gamma*(P^2-pq)=Sigma
+(P^2-pq)*rho*Gamma=Sigma*Omega
+~~~
+
+with Omega and p+q fail-closed at zero.
+
+The reciprocal phase-debt surface preserves:
+
+~~~text
+q=n/9
+q*=-q
+phase modulus=72
+half-cycle=36
+clock step=±16
+all 40 reciprocal classes closed
+open_debt_depth=0
+~~~
+
+before candidate commit readiness.
+
+The ordered unresolved-stack root is part of receipt state. Hash216 receipt material remains non-authoritative for canonical commit.
+
+The 2026-09-21 Wolfram documentation audit is 44/44 PASS and is stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
+
+The stacked repository currently reuses HHS-T5184-005 for Lane 5 1.60 and 1.61. Until a canonical renumbering is committed, the specification requires pass-qualified references rather than silent identifier substitution.
