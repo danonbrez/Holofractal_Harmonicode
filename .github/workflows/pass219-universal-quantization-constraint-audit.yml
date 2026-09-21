@@ -44,6 +44,7 @@ on:
       - 'tests/test_hhs_pass219_native_universal_constraint_negative_edges.py'
       - 'tests/test_hhs_pass219_fibonacci_compression_compliance.py'
       - 'tests/test_hhs_exact_runtime_abi_v1.py'
+      - 'tests/test_hhs_vm81_native_development_v1.py'
       - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
   workflow_dispatch:
 
