@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_RECEIPT_V2",
+  "date": "2026-09-20",
+  "engine": "Wolfram Language",
+  "execution_surface": "connected Wolfram Language kernel",
+  "reproducible_command": "wolframscript -file evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl",
+  "semantics": "typed_geometric_non_scalar_coupled_chain",
+  "input_path": "evidence/pass219/hhs_geometric_i_pi_e_closure_v1.wl",
+  "input_sha256": "145059c5d08dbcd0781e50271276ceb2c517b9f70e7751992c42efdb996f102c",
+  "input_bytes": 4917,
+  "output_path": "evidence/pass219/hhs_geometric_i_pi_e_closure_v1.output.json",
+  "output_sha256": "c413e4ac0712e725b1ac12b7787de94a97bec4e5ba13f6d005927a7d6f1d6fc0",
+  "output_bytes": 2649,
+  "check_count": 23,
+  "passed_count": 23,
+  "all_passed": true,
+  "complete_coupled_chain_passed": true,
+  "chain_edge_count": 3,
+  "parent_head": "bb476d9c072e7cae633c281ea04eb512a437d040",
+  "floating_point_authority": false,
+  "canonical_state_authority": false
+}

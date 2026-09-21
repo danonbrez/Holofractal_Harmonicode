@@ -1,0 +1,98 @@
+{
+  "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_CONSTANTS_V1",
+  "status": "LOCKED_SYSTEM_INTERNAL_GEOMETRIC_CONSTANTS",
+  "semantics": "typed_geometric_non_scalar_coupled_chain",
+  "constants": {
+    "I_H": {
+      "type": "geometric_quarter_turn_operator",
+      "matrix": [
+        [
+          0,
+          -1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "defining_relation": "I_H^2=-Identity(2)",
+      "scalar_projection": "I"
+    },
+    "O": {
+      "type": "fundamental_half_turn_parameter",
+      "defining_relation": "MatrixExp[O*I_H]=-Identity(2)",
+      "branch": "0<O<2*Pi",
+      "wolfram_projection": "Pi"
+    },
+    "K": {
+      "type": "fundamental_positive_exponential_base",
+      "defining_relation": "MatrixExp[O*Log[K]*I_H]=-Identity(2)",
+      "branch": "K>0 && 0<Log[K]<2",
+      "wolfram_projection": "E"
+    },
+    "N_xy": {
+      "value": 4,
+      "derivation": "((a^2+c^2)^2)/(b^4)",
+      "assumptions": {
+        "a^2": 1,
+        "b^2": 2,
+        "c^2": 3
+      }
+    },
+    "N_yx": {
+      "value": 4,
+      "derivation": "(c^2*(b^2+c^2)+a^2)/(b^2+c^2-a^2)",
+      "assumptions": {
+        "a^2": 1,
+        "b^2": 2,
+        "c^2": 3
+      }
+    },
+    "MU_base": {
+      "exact": "2*Sqrt[6]",
+      "derivation": "(b*c)*b^2"
+    },
+    "MU_phase": {
+      "exact": "6",
+      "derivation": "b^2*c^2"
+    }
+  },
+  "coupled_chain": {
+    "candidate_state_id": "HHS-P219-GEO-I-PI-E-CANDIDATE-V2",
+    "term_count": 4,
+    "edge_count": 3,
+    "role_bindings": {
+      "generic_base": "K",
+      "generic_phase": "O",
+      "explicit_base": "K",
+      "explicit_phase": "O"
+    },
+    "resolved_value": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "nested_assert_required": true,
+    "all_edges_required": true
+  },
+  "membrane": {
+    "operator": "HMod",
+    "wolfram_builtin_mod_authority": false,
+    "required_covariance": "swap(x^2,y^2):R_xy->R_yx",
+    "scalar_flattening_canonical_authority": false
+  },
+  "audit": {
+    "schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_AUDIT_V2",
+    "receipt_schema": "HHS_PASS219_GEOMETRIC_I_PI_E_WOLFRAM_RECEIPT_V2",
+    "check_count": 23,
+    "passed_count": 23,
+    "all_passed": true,
+    "input_sha256": "145059c5d08dbcd0781e50271276ceb2c517b9f70e7751992c42efdb996f102c",
+    "output_sha256": "c413e4ac0712e725b1ac12b7787de94a97bec4e5ba13f6d005927a7d6f1d6fc0"
+  }
+}

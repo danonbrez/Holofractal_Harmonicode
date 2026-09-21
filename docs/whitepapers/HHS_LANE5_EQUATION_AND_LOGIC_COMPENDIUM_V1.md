@@ -952,3 +952,18 @@ exact typed admission
 for canonical authority.
 
 The companion performance paper documents which equations have executable workload evidence and which remain semantic/reference surfaces.
+
+# 51. Geometric I / O / K closure and anti-flattening law
+
+**Status:** `EXECUTED_EXACT` + `HHS_NATIVE_SEMANTIC`
+
+```text
+I_H^2=-Identity(2)
+MatrixExp[O*I_H]=-Identity(2), 0<O<2*Pi => O=Pi
+MatrixExp[O*Log[K]*I_H]=-Identity(2), K>0, 0<Log[K]<2 => K=E
+N_xy=N_yx=4 by independent derivations
+MU_base=2*Sqrt[6]
+MU_phase=6
+```
+
+`HMod` is typed geometric membrane authority for this proof; scalar `Mod` and pre-evaluation scalar flattening are non-authoritative. See `PASS_219_GEOMETRIC_I_PI_E_CONSTANTS_V1` and the 23/23 coupled-chain Wolfram audit. The audit executes all four chain terms, requires the nested `AssertEq` witness before `a²` normalization, verifies all three adjacent equality edges, and binds the source/output pair by SHA-256.
