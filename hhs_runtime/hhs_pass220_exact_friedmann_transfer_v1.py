@@ -52,7 +52,7 @@ class TransferReceipt:
     sigma: int
     lambda_increment: Fraction
     theta: Fraction
-    background_h2: Fraction
+    background_h2: ExactValue
     source_receipt_sha256: str
 
 
@@ -73,6 +73,18 @@ def _positive_q(value: Any, name: str) -> Fraction:
     if q <= 0:
         raise Pass220I023TransferError(f"{name} must be positive")
     return q
+
+
+def _exact(value: Any, name: str) -> ExactValue:
+    if isinstance(value, bool):
+        raise Pass220I023TransferError(f"{name} must be exact")
+    if isinstance(value, ExactExpr):
+        return value
+    if isinstance(value, (int, Fraction)):
+        return Fraction(value)
+    raise Pass220I023TransferError(
+        f"{name} must be int, Fraction, or ExactExpr"
+    )
 
 
 def _sha(value: Any, name: str = "source_receipt_sha256") -> str:
@@ -183,6 +195,41 @@ def _curvature_map(curvature_sign: int, dc: ExactValue) -> ExactValue:
     return ExactExpr("S_k", (Fraction(k), dc))
 
 
+def exact_data(value: ExactValue) -> Any:
+    return _expr_data(_exact(value, "value"))
+
+
+def exact_add(*values: ExactValue) -> ExactValue:
+    return _add(*(_exact(value, "value") for value in values))
+
+
+def exact_mul(*values: ExactValue) -> ExactValue:
+    return _mul(*(_exact(value, "value") for value in values))
+
+
+def exact_neg(value: ExactValue) -> ExactValue:
+    return _neg(_exact(value, "value"))
+
+
+def exact_sub(left: ExactValue, right: ExactValue) -> ExactValue:
+    return _sub(_exact(left, "left"), _exact(right, "right"))
+
+
+def exact_div(numerator: ExactValue, denominator: ExactValue) -> ExactValue:
+    return _div(
+        _exact(numerator, "numerator"),
+        _exact(denominator, "denominator"),
+    )
+
+
+def exact_sqrt(value: ExactValue) -> ExactValue:
+    return _sqrt(_exact(value, "value"))
+
+
+def exact_exp(value: ExactValue) -> ExactValue:
+    return _exp(_exact(value, "value"))
+
+
 def _receipt(payload: dict[str, Any]) -> dict[str, Any]:
     encoded = json.dumps(
         payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
@@ -197,7 +244,7 @@ def make_transfer_receipt(
     transition_index: int,
     lambda_increment: int | Fraction,
     theta: int | Fraction,
-    background_h2: int | Fraction,
+    background_h2: int | Fraction | ExactExpr,
     source_receipt_sha256: str,
 ) -> TransferReceipt:
     n = _i(transition_index, "transition_index")
@@ -206,7 +253,7 @@ def make_transfer_receipt(
         sigma=sigma_lookup(n),
         lambda_increment=_q(lambda_increment, "lambda_increment"),
         theta=_positive_q(theta, "theta"),
-        background_h2=_q(background_h2, "background_h2"),
+        background_h2=_exact(background_h2, "background_h2"),
         source_receipt_sha256=_sha(source_receipt_sha256),
     )
 
@@ -214,7 +261,7 @@ def make_transfer_receipt(
 def total_h2(
     receipt: TransferReceipt,
     tau: int | Fraction,
-) -> tuple[Fraction, Fraction]:
+) -> tuple[Fraction, ExactValue]:
     scale = _positive_q(tau, "tau")
     sample = make_transition(
         receipt.transition_index,
@@ -222,8 +269,8 @@ def total_h2(
         receipt.theta,
     )
     phase = h_p(sample, scale)
-    h2 = receipt.background_h2 + phase * phase
-    if h2 < 0:
+    h2 = _add(receipt.background_h2, phase * phase)
+    if isinstance(h2, Fraction) and h2 < 0:
         raise Pass220I023TransferError(
             "Friedmann H^2 is negative on the expanding branch"
         )
@@ -281,7 +328,7 @@ def build_exact_trajectory(
     physical_times: list[Fraction] = [Fraction(0)]
     raw_logs: list[ExactValue] = [Fraction(0)]
     phase_h_values: list[Fraction] = []
-    total_h2_values: list[Fraction] = []
+    total_h2_values: list[ExactValue] = []
     hubble_values: list[ExactValue] = []
 
     for receipt in receipts:
@@ -362,7 +409,12 @@ def build_exact_trajectory(
             "phase_h": (
                 f"{phase_h_value.numerator}/{phase_h_value.denominator}"
             ),
-            "total_h2": f"{h2.numerator}/{h2.denominator}",
+            "total_h2": (
+                f"{h2.numerator}/{h2.denominator}"
+                if isinstance(h2, Fraction)
+                else None
+            ),
+            "total_h2_exact": _expr_data(h2),
             "hubble": _expr_data(hubble),
             "raw_log_scale": _expr_data(raw_logs[i]),
             "normalized_log_scale": _expr_data(normalized_logs[i]),
@@ -419,6 +471,7 @@ def transfer_contract_descriptor() -> dict[str, Any]:
         ),
         "symbolic_exp_required": True,
         "symbolic_sqrt_required": True,
+        "symbolic_background_h2_allowed": True,
         "trapezoid_is_canonical": False,
         "g72_scalar_evaluation_allowed": False,
         "host_wall_clock_authority": False,
