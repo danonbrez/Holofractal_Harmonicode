@@ -18,6 +18,7 @@ PRODUCTION_HEALTH_TIMEOUT=${HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS:-600}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
+RECOVERY_CLASSIFIER=${HHS_PRODUCTION_RECOVERY_CLASSIFIER:-$SOURCE/recovery-state.py}
 NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
@@ -54,7 +55,10 @@ bash -n \
   "$SOURCE/preserve-host-drift.sh" \
   "$SOURCE/validate-candidate.sh" \
   "$SOURCE/install.sh"
-python3 -m py_compile "$SOURCE/runtime-os-bundle.py" "$SOURCE/normalize-service-permissions.py"
+python3 -m py_compile \
+  "$SOURCE/runtime-os-bundle.py" \
+  "$SOURCE/normalize-service-permissions.py" \
+  "$RECOVERY_CLASSIFIER"
 
 normalize_production_checkout() {
   python3 "$PERMISSION_TOOL" \
@@ -100,9 +104,10 @@ systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
 normalize_production_checkout
 
 # Exact-main takeover normally requires the live service to remain online.
-# Recovery is deliberately narrower: it is allowed only after the immediately
-# preceding guarded transaction recorded ROLLBACK_HEALTH_FAILED and only when
-# no process is already listening on the production port.
+# Recovery is deliberately narrow and receipt-bound. The side-effect-free
+# classifier accepts only a proven interrupted VALIDATED transaction whose
+# live checkout still equals previous_sha, or the existing
+# ROLLBACK_HEALTH_FAILED rollback boundary. Every other state fails closed.
 if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service; then
   if [[ "$RECOVERY_MODE" != "1" ]]; then
     echo "hhs.service is not active after prior guarded updater ownership ended; refusing a second promotion." >&2
@@ -115,36 +120,20 @@ if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service
     ss -H -ltnp 'sport = :8080' >&2 || true
     exit 8
   fi
-  RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
-import json
-import os
-from pathlib import Path
-path = Path(os.environ["RECEIPT_LOG_VALUE"])
-if not path.is_file():
-    raise SystemExit("Recovery mode requires an existing guarded-update receipt log")
-records = []
-for line in path.read_text(encoding="utf-8").splitlines():
-    line = line.strip()
-    if not line:
-        continue
-    try:
-        records.append(json.loads(line))
-    except json.JSONDecodeError:
-        continue
-if not records or records[-1].get("outcome") != "ROLLBACK_HEALTH_FAILED":
-    raise SystemExit(f"Recovery mode requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
-print("HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1")
-PY
+  live_sha=$(git -C "$REPO_ROOT" rev-parse HEAD)
+  python3 "$RECOVERY_CLASSIFIER" \
+    --receipt-log "$STATE_ROOT/receipts.jsonl" \
+    --live-sha "$live_sha"
   echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
   systemctl reset-failed hhs.service 2>/dev/null || true
   systemctl start hhs.service
   if ! wait_for_production_health; then
-    echo "Rollback boundary service failed health after permission normalization; refusing a new promotion." >&2
+    echo "Receipt-bound recovery service failed health after permission normalization; refusing a new promotion." >&2
     systemctl status hhs.service --no-pager --full >&2 || true
     journalctl -u hhs.service -n 300 --no-pager >&2 || true
     exit 8
   fi
-  echo "HHS_ROLLBACK_BOUNDARY_HEALTHY=1"
+  echo "HHS_RECOVERY_BOUNDARY_HEALTHY=1"
 elif [[ "$ENABLE_PROMOTION" == "1" ]]; then
   if ! wait_for_production_health; then
     echo "Existing production service is active but unhealthy; refusing promotion." >&2
@@ -161,6 +150,7 @@ install -m 0755 "$SOURCE/preserve-host-drift.sh" "$INSTALL_ROOT/preserve-host-dr
 install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidate.sh"
 install -m 0755 "$SOURCE/runtime-os-bundle.py" "$INSTALL_ROOT/runtime-os-bundle.py"
 install -m 0755 "$SOURCE/normalize-service-permissions.py" "$INSTALL_ROOT/normalize-service-permissions.py"
+install -m 0755 "$RECOVERY_CLASSIFIER" "$INSTALL_ROOT/recovery-state.py"
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
 
