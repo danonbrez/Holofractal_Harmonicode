@@ -44,6 +44,43 @@ class HHSExactX86InstructionBytes(Structure):
     ]
 
 
+class HHSExactLane5ZeroBypassGatewayDescriptor(Structure):
+    _fields_ = [
+        ("struct_size", c_uint32),
+        ("version", c_uint32),
+        ("frame_bytes", c_uint32),
+        ("frame_bits", c_uint32),
+        ("vm81_cells", c_uint32),
+        ("local_constructor_states", c_uint32),
+        ("hydration_lanes", c_uint32),
+        ("phase_modulus", c_uint32),
+        ("single_production_mutation_path", c_uint8),
+        ("linux_api_redirect_required", c_uint8),
+        ("raw_x86_ingress_allowed", c_uint8),
+        ("ieee754_payload_passthrough_allowed", c_uint8),
+        ("arbitrary_byte_payload_passthrough_allowed", c_uint8),
+        ("parametric_payload_identity", c_uint8),
+        ("order_preservation", c_uint8),
+        ("concatenation_preservation", c_uint8),
+        ("metadata_preservation_required", c_uint8),
+        ("cpp_rna_cell_wall_required", c_uint8),
+        ("lane5_bios_required", c_uint8),
+        ("pqc_environmental_firewall_required", c_uint8),
+        ("four_lane_hydration_required", c_uint8),
+        ("constraint_forced_execution", c_uint8),
+        ("policy_choice_authority", c_uint8),
+        ("hash216_composition_compute_fabric", c_uint8),
+        ("validated_scoped_reuse_only", c_uint8),
+        ("hash216_memory_carries_forward", c_uint8),
+        ("raw_transport_is_canonical_authority", c_uint8),
+        ("floating_point_canonical_authority", c_uint8),
+        ("host_instruction_execution_authority", c_uint8),
+        ("hash216_cache_commit_bypass_allowed", c_uint8),
+        ("legacy_direct_runtime_bypass_allowed", c_uint8),
+        ("reserved0", c_uint8 * 3),
+    ]
+
+
 class HHSExactABIDescriptor(Structure):
     _fields_ = [
         ("struct_size", c_uint32),
@@ -124,6 +161,17 @@ _RUNTIME_LIB.hhs_x86_64_egress_exact.restype = ctypes.c_int
 _RUNTIME_LIB.hhs_x86_64_bytecode_copy_exact.argtypes = [POINTER(c_uint8), c_size_t, POINTER(c_uint8), c_size_t, POINTER(c_size_t)]
 _RUNTIME_LIB.hhs_x86_64_bytecode_copy_exact.restype = ctypes.c_int
 
+_RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor.argtypes = [
+    POINTER(HHSExactLane5ZeroBypassGatewayDescriptor)
+]
+_RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor.restype = ctypes.c_int
+_RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_validate.argtypes = []
+_RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_validate.restype = ctypes.c_int
+_RUNTIME_LIB.hhs_exact_pass219_lane5_payload_roundtrip_exact.argtypes = [
+    POINTER(c_uint8), c_size_t, POINTER(c_uint8), c_size_t, POINTER(c_size_t)
+]
+_RUNTIME_LIB.hhs_exact_pass219_lane5_payload_roundtrip_exact.restype = ctypes.c_int
+
 
 class HHSExactRuntimeBridge:
     @staticmethod
@@ -137,6 +185,45 @@ class HHSExactRuntimeBridge:
         if status != HHS_EXACT_STATUS_OK:
             raise RuntimeError(f"exact ABI descriptor failed: {status}")
         return {name: int(getattr(value, name)) for name, _ in value._fields_}
+
+    @staticmethod
+    def lane5_zero_bypass_validate() -> bool:
+        return (
+            _RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_validate()
+            == HHS_EXACT_STATUS_OK
+        )
+
+    @staticmethod
+    def lane5_zero_bypass_descriptor() -> dict[str, int]:
+        value = HHSExactLane5ZeroBypassGatewayDescriptor()
+        status = _RUNTIME_LIB.hhs_exact_pass219_lane5_zero_bypass_gateway_descriptor(
+            ctypes.byref(value)
+        )
+        if status != HHS_EXACT_STATUS_OK:
+            raise RuntimeError(f"Lane 5 zero-bypass descriptor failed: {status}")
+        result: dict[str, int] = {}
+        for name, _ctype in value._fields_:
+            if name == "reserved0":
+                continue
+            result[name] = int(getattr(value, name))
+        return result
+
+    @staticmethod
+    def lane5_payload_roundtrip(raw: bytes) -> bytes:
+        if not raw:
+            return b""
+        source = (c_uint8 * len(raw)).from_buffer_copy(raw)
+        output = (c_uint8 * len(raw))()
+        written = c_size_t()
+        status = _RUNTIME_LIB.hhs_exact_pass219_lane5_payload_roundtrip_exact(
+            source, len(raw), output, len(output), ctypes.byref(written)
+        )
+        if status != HHS_EXACT_STATUS_OK:
+            raise RuntimeError(f"Lane 5 exact payload roundtrip failed: {status}")
+        result = bytes(output[: written.value])
+        if result != raw:
+            raise RuntimeError("Lane 5 exact payload identity failure")
+        return result
 
     @staticmethod
     def hash72_coord(position: int, symbol_index: int) -> int:
@@ -242,4 +329,5 @@ __all__ = [
     "HHSExactPhaseProduct",
     "HHSExactVM81Frame",
     "HHSExactX86InstructionBytes",
+    "HHSExactLane5ZeroBypassGatewayDescriptor",
 ]

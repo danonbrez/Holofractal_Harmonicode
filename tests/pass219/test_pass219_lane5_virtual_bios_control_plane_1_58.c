@@ -74,7 +74,7 @@ int main(void) {
     assert(written == sizeof(input));
     assert(memcmp(input, output, sizeof(input)) == 0);
     assert(receipt.exact_byte_identity == 1U);
-    assert(receipt.direct_vm81_kernel_execution == 1U);
+    assert(receipt.direct_vm81_kernel_execution == 0U);
 
     puts("PASS lane5 virtual BIOS control plane");
     return 0;

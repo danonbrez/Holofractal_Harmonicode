@@ -27,6 +27,9 @@ except ImportError:  # pragma: no cover - compatibility with older FastAPI relea
 from pydantic import BaseModel, Field
 
 from hhs_backend import server as production_base
+from hhs_backend.lane5_zero_bypass_middleware_1_59 import (
+    Lane5ZeroBypassRuntimeMiddleware,
+)
 from hhs_backend.pass168_parameter_circuit_routes import build_pass168_parameter_circuit_router
 from hhs_backend.pass169_algebra_routes import build_pass169_algebra_router
 from hhs_backend.pass170_audio_language_routes import build_pass170_audio_language_router
@@ -344,6 +347,10 @@ def _compose_pass170(
     authority_context: Pass190CompletionContext | None,
     registry_report: Mapping[str, Any],
 ) -> FastAPI:
+    if getattr(target.state, "hhs_lane5_zero_bypass_middleware", False) is not True:
+        target.add_middleware(Lane5ZeroBypassRuntimeMiddleware)
+        target.state.hhs_lane5_zero_bypass_middleware = True
+
     if authority_context is not None:
         target.state.hhs_pass170_authority_context = authority_context
 

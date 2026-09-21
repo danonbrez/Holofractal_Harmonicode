@@ -1,0 +1,77 @@
+name: Pass 219 Lane 5 Zero Bypass Secure Gateway 1.59
+on:
+  push:
+    branches: [pass219/lane5-zero-bypass-secure-gateway-1-59]
+  pull_request:
+    branches: [pass219/lane5-virtual-bios-control-plane-1-58]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: make c-abi
+      - name: Verify symbols
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_lane5_gateway_admit_raw5184$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q 'hhs_exact_pass219_vm81_environment_admit_signed_internal'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit$'
+      - name: Native conformance
+        run: |
+          gcc -O2 -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Ihhs_runtime/include tests/pass219/test_pass219_lane5_zero_bypass_secure_gateway_1_59.c -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t159
+          /tmp/t159
+
+      - name: Validate Linux bridge and API interposition
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python -m pip install --disable-pip-version-check pytest fastapi httpx
+          python - <<'PY'
+          from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactRuntimeBridge
+          assert HHSExactRuntimeBridge.lane5_zero_bypass_validate()
+          descriptor = HHSExactRuntimeBridge.lane5_zero_bypass_descriptor()
+          assert descriptor["single_production_mutation_path"] == 1
+          assert descriptor["linux_api_redirect_required"] == 1
+          assert descriptor["constraint_forced_execution"] == 1
+          assert descriptor["policy_choice_authority"] == 0
+          assert descriptor["pqc_environmental_firewall_required"] == 1
+          assert descriptor["hash216_memory_carries_forward"] == 1
+          assert descriptor["floating_point_canonical_authority"] == 0
+          PY
+          python -m pytest -q             tests/pass219/test_lane5_linux_api_interposer_1_59.py             tests/pass219/test_lane5_zero_bypass_middleware_1_59.py
+
+  openssl-35-positive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build OpenSSL 3.5.0
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          curl -fsSL --retry 3 --retry-delay 2 https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          LD_LIBRARY_PATH=/tmp/openssl35/lib /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+      - name: Prove full Lane 5 secure admission
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+          HHS_REQUIRE_PQC_PROVIDER: "1"
+        run: |
+          gcc -O2 -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Werror -Ihhs_runtime/include -I/tmp/openssl35/include tests/pass219/test_pass219_lane5_zero_bypass_secure_gateway_1_59.c -Lhhs_runtime/builds -lhhs_runtime -L/tmp/openssl35/lib -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -Wl,-rpath,/tmp/openssl35/lib -o /tmp/t159-pqc
+          /tmp/t159-pqc

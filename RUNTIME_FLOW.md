@@ -378,3 +378,27 @@ proposal
 ```
 
 The order is mandatory. Storage and caching preserve validated computation; they do not replace the authority that validates it.
+
+## 20. Lane 5 zero-bypass production path
+
+Pass 219 Lane 5 1.59 makes the Lane 5 BIOS/control plane the mandatory interposer for runtime execution without adding a payload transformation stage.
+
+```text
+raw x86_64 / Linux API / compatibility ABI
+→ Lane 5 zero-bypass interposition
+→ Lane 5 BIOS / tensor-qudit constraint fabric
+→ RNA C++ cell wall
+→ four-lane hydration
+→ environmental + instruction PQC admission
+→ singleton VM81 execution/admission
+→ Hash72 canonical transition/receipt
+→ validated Hash216 continuation/composition memory
+```
+
+Valid legacy traffic is redirected rather than given a parallel authority path. Invalid provenance or security context fails closed.
+
+Raw IEEE-754 words are permitted as exact payload bytes. The raw transport preserves their bit patterns but has no floating-point canonical authority and does not execute those bytes as host instructions.
+
+The Lane 5 optimizer does not choose a result. Its routing is constrained by the tensor/qudit geometry and inherited admission predicates. Hash216 reuses only validated scoped computations; a Hash216 hit cannot authorize a canonical commit.
+
+The inherited public 1.32 admission name is retained only as a compatibility redirect into the 1.59 gateway. Its original implementation is hidden. The inherited 1.57 raw step/stream surfaces are transport-only after 1.59 and cannot execute the dynamic circuit directly.

@@ -839,3 +839,47 @@ Experiment contract:
 ```text
 contracts/pass219/PASS_219_LANE5_RNA_SELF_INGESTION_BYTECODE_1_56.md
 ```
+
+---
+
+## 21. Lane 5 zero-bypass payload and execution closure
+
+Pass 219 Lane 5 1.59 establishes the production-path invariant:
+
+```text
+PublicRuntimeEntry
+  ⊆ Lane5ZeroBypass
+  → RNA_CPP_CELL_WALL
+  → FOUR_LANE_HYDRATION
+  → PQC_ENVIRONMENTAL_ADMISSION
+  → VM81_HASH72_CANONICAL_AUTHORITY
+  → HASH216_VALIDATED_CONTINUATION
+```
+
+The parametric payload membrane satisfies, for every admitted byte string B of length n:
+
+```text
+T_n^-1(T_n(B)) = B.
+```
+
+This is an exact byte identity law. IEEE-754 encodings are valid payload bit patterns but never gain floating-point canonical authority.
+
+Execution is constraint-forced:
+
+```text
+constraint_forced_execution = TRUE
+policy_choice_authority = FALSE
+```
+
+The Lane 5 BIOS configures/enforces traversal of the constraint manifold and does not transform the data model or select an unconstrained answer.
+
+Hash216 is validated computational memory:
+
+```text
+ValidatedScopedOperation(H) → reusable/composable continuation
+Hash216Hit(H) ↛ CanonicalCommit(H).
+```
+
+Only the inherited VM81/Hash72 authority can complete canonical admission. Lane 5, RNA/PQC membranes, caches, GPU/vector routing, APIs and compatibility aliases remain noncanonical.
+
+The public Linux/FastAPI operation surfaces are interposed by the Lane 5 zero-bypass control plane. Canonical mutation still enters the native 648-byte/5184-bit gateway and the existing RNA/PQC/VM81 chain.

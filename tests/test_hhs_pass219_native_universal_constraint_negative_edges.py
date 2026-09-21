@@ -6,6 +6,9 @@ from ctypes import POINTER, c_uint8
 from pathlib import Path
 
 from hhs_python.runtime import hhs_uqcel_ctypes_bridge as uqcel_mod
+from hhs_python.runtime.hhs_pass219_composed_ctypes_bridge import (
+    HHS_EXACT_STATUS_INVARIANT_FAILURE,
+)
 from hhs_python.runtime.hhs_uqcel_ctypes_bridge import (
     HHSExactUQCELAdmissionV1,
     HHSUQCELRuntimeBridge,
@@ -132,12 +135,12 @@ def test_invalid_previous_hash72_cannot_commit_candidate_frame() -> None:
         right_basis8=1,
         previous_hash72="~" * 72,
     )
-    assert result["status"] == HHS_EXACT_STATUS_CONSTRAINT_REJECTED
+    assert result["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
     assert result["admitted"] is False
     assert result["committed_frame"] == bytes(648)
 
 
-def test_private_uqcel_receipt_hashes_match_canonical_linked_hashes() -> None:
+def test_public_uqcel_compatibility_surface_cannot_mint_canonical_receipts() -> None:
     raw_frame = bytes((index * 17 + 3) & 0xFF for index in range(648))
     result = HHSUQCELRuntimeBridge.admit_vm81(
         raw_frame,
@@ -152,10 +155,18 @@ def test_private_uqcel_receipt_hashes_match_canonical_linked_hashes() -> None:
         right_basis8=0,
     )
     admission = result["admission"]
-    assert result["admitted"] is True
-    assert admission["change_hash72"] == _canonical_hash72(raw_frame)
-    triplet = admission["hash216_triplet"].encode("ascii")
-    assert admission["hash216_identity"] == _canonical_hash216(triplet)
+    assert result["status"] == HHS_EXACT_STATUS_INVARIANT_FAILURE
+    assert result["admitted"] is False
+    assert result["committed_frame"] == bytes(648)
+    assert admission["change_hash72"] == ""
+    assert admission["receipt_hash72"] == ""
+    assert admission["hash216_triplet"] == ""
+    assert admission["hash216_identity"] == ""
+
+    # Hash primitives remain available as deterministic transport utilities;
+    # they do not imply that the compatibility facade owns commit authority.
+    assert len(_canonical_hash72(raw_frame)) == 72
+    assert len(_canonical_hash216(b"0" * 216)) == 216
 
 
 def test_frozen_exact_v1_1_sources_are_original_git_blobs() -> None:

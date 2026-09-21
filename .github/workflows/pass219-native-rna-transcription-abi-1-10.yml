@@ -43,20 +43,20 @@ jobs:
                   raise SystemExit(f'floating authority token {match.group(1)!r} in {path}')
           PY
 
-      - name: Compile exact C ABI with strict warnings
+      - name: Build production ABI and internal hidden-authority regression archive
         run: |
           mkdir -p /tmp/pass219-rna
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-rna/hhs_runtime_exact_abi.o
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          bash .github/scripts/build_pass219_exact_internal_archive.sh \
+            /tmp/pass219-rna/libhhs_exact_internal.a /tmp/pass219-rna/objects
 
       - name: Run C conformance suite
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.c \
-            /tmp/pass219-rna/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna/test-c
           /tmp/pass219-rna/test-c
 
@@ -65,7 +65,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_transcription_1_10.cpp \
-            /tmp/pass219-rna/hhs_runtime_exact_abi.o \
+            /tmp/pass219-rna/libhhs_exact_internal.a -lcrypto -lstdc++ -lm -pthread \
             -o /tmp/pass219-rna/test-cpp
           /tmp/pass219-rna/test-cpp
 

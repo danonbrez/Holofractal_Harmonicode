@@ -541,7 +541,7 @@ static HHSExactStatus hhs_p219_env_gate(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
+HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed_internal(
     uint32_t pass_number,
     uint32_t signature_algorithm,
     const HHSExactUQCELInputV1 *input,
