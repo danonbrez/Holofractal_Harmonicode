@@ -2,7 +2,7 @@ from pathlib import Path
 
 from fastapi import HTTPException
 
-from hhs_backend.api.repository_history_routes import _catalog, repository_text_file
+from hhs_backend.api.repository_history_routes import _catalog, repository_history_health, repository_text_file
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -56,3 +56,22 @@ def test_main_surface_is_ide_not_history_landing_page() -> None:
     assert "sandbox = 'allow-scripts allow-forms allow-modals allow-downloads'" in source
     assert "PASS CONSTRAINTS + HISTORY" in source
     assert "The editor remains the primary product surface" in source
+
+
+
+def test_repository_health_is_bounded_and_does_not_force_catalog_scan() -> None:
+    _catalog.cache_clear()
+    before = _catalog.cache_info()
+    assert before.currsize == 0
+
+    payload = repository_history_health()
+
+    after = _catalog.cache_info()
+    assert after.currsize == 0
+    assert payload["schema"] == "HHS_REPOSITORY_HISTORY_LIVENESS_V1"
+    assert payload["ok"] is True
+    assert payload["repository_root_available"] is True
+    assert payload["catalog_cached"] is False
+    assert payload["read_only"] is True
+    assert payload["frontend_is_authority"] is False
+    assert payload["status_api"] == "/api/runtime/repository/status"

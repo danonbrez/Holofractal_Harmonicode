@@ -219,7 +219,7 @@ if [[ "$BOOT" == "1" ]]; then
   curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
   curl --max-time 15 --fail --silent "http://127.0.0.1:${PORT}/api/product/health" >/tmp/hhs-candidate-product-health.json || fail_with_log
   curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json || fail_with_log
-  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json || fail_with_log
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/health" >/tmp/hhs-candidate-repository.json || fail_with_log
   curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json || fail_with_log
   curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log
   curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/studio" >/tmp/hhs-candidate-pass205-studio.html || fail_with_log
@@ -252,6 +252,11 @@ if actual_asset_root != expected_asset_root:
     raise SystemExit(
         f"candidate Runtime OS asset authority mismatch: actual={actual_asset_root} expected={expected_asset_root}"
     )
+repository = json.loads(Path("/tmp/hhs-candidate-repository.json").read_text(encoding="utf-8"))
+if repository.get("schema") != "HHS_REPOSITORY_HISTORY_LIVENESS_V1":
+    raise SystemExit("candidate repository liveness route returned unexpected schema")
+if repository.get("ok") is not True or repository.get("frontend_is_authority") is not False:
+    raise SystemExit("candidate repository liveness route violated read-only authority boundary")
 workspace = json.loads(Path("/tmp/hhs-candidate-workspace.json").read_text(encoding="utf-8"))
 if "project" not in workspace and "objects" not in workspace:
     raise SystemExit("candidate workspace session route is not the production workspace surface")
