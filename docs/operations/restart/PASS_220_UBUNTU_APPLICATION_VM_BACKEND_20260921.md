@@ -33,9 +33,9 @@ The production Runtime OS/FastAPI frontend is intentionally unchanged.
 - Ubuntu systemd/nginx/install/verify deployment files
 - dependency-scoped Pass 220 test
 - dependency-scoped GitHub workflow
-- Pass 190 standalone shell now consumes
-  `HHS_PASS190_CAPABILITY_SECRET` instead of constructing an unusable
-  read-only context while accepting a token.
+- the additive Pass 220 CLI supplies the configured Pass 190 capability
+  context and preserves structured argv without modifying frozen Pass 190
+  source.
 
 ## Security/authority boundary
 
@@ -64,8 +64,7 @@ The production Runtime OS/FastAPI frontend is intentionally unchanged.
 
 - Pass 220 Ubuntu Application VM Control Plane workflow must execute on the
   current head;
-- inherited Pass 190 I136 dependency-scoped validation must remain green after
-  the shell-secret repair;
+- inherited Pass 190 I136 source identities remain byte-for-byte unchanged;
 - if either fails, repair only the affected surface;
 - after green validation, merge PR #535 and verify exact main;
 - install on the Ubuntu GUI VM and execute
