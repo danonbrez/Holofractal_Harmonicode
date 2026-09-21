@@ -95,7 +95,31 @@ library.
 - d301f0f0bb77de6b2f32e1a601ff192b6151c857 — UQ audit tracks native consumer
   build surfaces;
 - f2d7747f2d25b15311dd88313c2a119ceaf6f0f1 — UQ audit tracks this restart
-  evidence.
+  evidence;
+- 6b18db2856b2530d56414eddb5e03fd579698a1f — restartable checkpoint for the
+  consumer-link repair;
+- e1a890b63b3cd0208f0e1c48fb4da91e8932571e — typed VM81 native smoke also
+  stops compiling hhs_runtime_abi.c directly and links the authoritative
+  runtime;
+- f74b95c966aeeafc81a190e6e77d2476d7e8e91f — UQ audit tracks the typed VM81
+  consumer surface and is the current implementation head before this
+  documentation refresh.
+
+## Current validation state
+
+Dependency-scoped CI is queued on repair head
+f74b95c966aeeafc81a190e6e77d2476d7e8e91f:
+
+- Universal Quantization audit: run 35550225374 — queued;
+- VM81 Native Development Level 0-1: run 35550225331 — queued;
+- Lane 5 1.59: run 35550225385 — queued;
+- Native RNA: run 35550225295 — queued;
+- Generation Integrity: run 35550225357 — queued.
+
+Per forward-progress policy, the repository-visible repair checkpoint is frozen
+without waiting indefinitely for queued external CI. PR #520 must not be
+synchronized until the Universal Quantization audit proves the repaired
+historical public consumer and reaches standalone VM81 verification.
 
 ## Validation required
 
@@ -126,7 +150,7 @@ Actions. No local container result is claimed as authoritative.
 
 ## Next action
 
-Run the exact-head PR #519 workflows. Repair only failures caused by this
+Check runs 35550225374 and 35550225331. Repair only failures caused by this
 consumer-link change. When the Universal Quantization audit reaches and passes
 standalone VM81 verification, freeze the exact green PR #519 head and
 synchronize PR #520 to it.
