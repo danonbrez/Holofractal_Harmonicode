@@ -213,10 +213,12 @@ if [[ "$BOOT" == "1" ]]; then
 
   curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/" >/tmp/hhs-candidate-root.html || fail_with_log
   grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-candidate-root.html || fail_with_log
-  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/health" >/tmp/hhs-candidate-health.json || fail_with_log
+  # Probe bounded application liveness before aggregate diagnostic/status surfaces.
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/health" >/tmp/hhs-candidate-health.json || fail_with_log
+  # Verify final public-root authority before slower product/pass probes.
+  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
   curl --max-time 15 --fail --silent "http://127.0.0.1:${PORT}/api/product/health" >/tmp/hhs-candidate-product-health.json || fail_with_log
   curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json || fail_with_log
-  curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json || fail_with_log
   curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/repository/status" >/tmp/hhs-candidate-repository.json || fail_with_log
   curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/workspace/session" >/tmp/hhs-candidate-workspace.json || fail_with_log
   curl --max-time 30 --fail --silent "http://127.0.0.1:${PORT}/api/runtime/continuation/status" >/tmp/hhs-candidate-pass205.json || fail_with_log

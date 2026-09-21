@@ -9,8 +9,9 @@ TEMPLATES = (ROOT / "applications/holofractal_harmonizer/src/application-templat
 
 def test_lightweight_health_routes_precede_fallback_and_static_mount():
     assert '"/health"' in SERVER and '"/api/health"' in SERVER
-    assert "HHS_FULL_APPLICATION_IDE_LIVENESS_V1" in SERVER
-    assert SERVER.index('app.add_api_route(\n        "/health"') < SERVER.index("app.router.routes.extend(_deferred_api_fallback_routes)")
+    assert "HHS_FULL_APPLICATION_IDE_LIVENESS_V2" in SERVER
+    assert SERVER.index('app.add_api_route(\n    "/health"') < SERVER.index("app.router.routes.extend(_deferred_api_fallback_routes)")
+    assert 'for _liveness_path in ("/health", "/api/health")' in SERVER
     assert '"frontend_runtime_authority": False' in SERVER
 
 

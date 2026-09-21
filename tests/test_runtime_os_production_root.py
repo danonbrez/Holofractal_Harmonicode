@@ -328,3 +328,78 @@ def test_pass185_runtime_step_yields_asgi_loop_without_parallel_step_authority()
     assert "async with runtime_step_lock:" in source
     assert "await asyncio.to_thread(" in source
     assert "_execute_runtime_step_sync" in source
+
+
+
+def test_final_runtime_os_composition_owns_bounded_liveness_and_boot_metadata():
+    from hhs_backend import application_ide_server
+    from hhs_backend import pass174_server
+    from hhs_backend import runtime_os_application_server
+
+    routes = list(runtime_os_application_server.app.router.routes)
+    for path in ("/health", "/api/health"):
+        matches = [
+            route
+            for route in routes
+            if str(getattr(route, "path", "")) == path
+            and "GET" in (getattr(route, "methods", None) or set())
+        ]
+        assert len(matches) == 1
+        assert getattr(matches[0], "endpoint", None) is application_ide_server.application_ide_liveness
+
+    boot = pass174_server.PASS174_BOOT_STATE
+    assert boot["public_interface"] == "HHS_VISUAL_RUNTIME_OS_WORKSPACE"
+    assert Path(str(boot["public_asset_root"])).resolve() == runtime_os_application_server.RUNTIME_OS_ROOT
+    assert boot["application_ide_is_public_root"] is False
+    assert boot["runtime_os_is_public_root"] is True
+    assert boot["legacy_harmonizer_is_public_root"] is False
+
+
+def test_production_gateway_fails_closed_on_legacy_public_root_composition():
+    from hhs_backend import production_visual_server
+    from hhs_backend.runtime_os_projection import LEGACY_PUBLIC_ROOT_NAMES
+
+    assert production_visual_server.PRODUCTION_PUBLIC_PROJECTION_VERIFIED is True
+    routes = list(production_visual_server.authoritative_app.router.routes)
+    route_names = {str(getattr(route, "name", "")) for route in routes}
+
+    assert production_visual_server.PUBLIC_MOUNT_NAME in route_names
+    assert not (
+        (set(LEGACY_PUBLIC_ROOT_NAMES) - {production_visual_server.PUBLIC_MOUNT_NAME})
+        & route_names
+    )
+    assert any(
+        str(getattr(route, "path", "")) == "/api/interface/status"
+        for route in routes
+    )
+
+    health_index = next(
+        index
+        for index, route in enumerate(routes)
+        if str(getattr(route, "path", "")) == "/api/health"
+        and "GET" in (getattr(route, "methods", None) or set())
+    )
+    root_index = next(
+        index
+        for index, route in enumerate(routes)
+        if getattr(route, "name", None) == production_visual_server.PUBLIC_MOUNT_NAME
+    )
+    assert health_index < root_index
+
+
+def test_guarded_candidate_uses_bounded_liveness_before_slow_status_surfaces():
+    validator = Path(
+        "deployment/digitalocean/guarded_auto_update/validate-candidate.sh"
+    ).read_text(encoding="utf-8")
+
+    bounded = '"http://127.0.0.1:${PORT}/api/health" >/tmp/hhs-candidate-health.json'
+    interface = '"http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json'
+    product = '"http://127.0.0.1:${PORT}/api/product/health" >/tmp/hhs-candidate-product-health.json'
+    pass174 = '"http://127.0.0.1:${PORT}/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json'
+    inherited_heavy = '"http://127.0.0.1:${PORT}/health" >/tmp/hhs-candidate-health.json'
+
+    assert bounded in validator
+    assert validator.index(bounded) < validator.index(interface)
+    assert validator.index(interface) < validator.index(product)
+    assert validator.index(product) < validator.index(pass174)
+    assert inherited_heavy not in validator
