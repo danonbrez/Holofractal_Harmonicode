@@ -61,7 +61,7 @@ CURRENT_SUCCESSOR_BLOBS = {
     UPDATER_PATH: "1248ce5f9cc8c1a49a1ef83aab7f47d1bd4ad180",
     ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
     INSTALLER_PATH: "9832e410e9aadf2cdda6c8ce3bc70cfd9590f18f",
-    VALIDATOR_PATH: "4b31210535a863f7328040a0c2e0b35399bceb0f",
+    VALIDATOR_PATH: "0e74e2508c00507f7045dc8eecaab8a1a29f80ca",
     BUNDLE_PATH: "fd6973697a39b94b445c35f6af7dd0aa3f727728",
     NORMALIZER_PATH: "35ef0b50e92721bddf01aa9273edb58bbc12fdb3",
     LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
@@ -178,6 +178,7 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "/api/system/status",
         "/api/health",
         "/api/interface/status",
+        "/api/runtime/repository/health",
         "/api/runtime/workspace/session",
     )
     _require(DRIFT_PATH, "HHS_HOST_DRIFT_MODE", "host_edits_preserved_before_reset")
