@@ -403,3 +403,13 @@ def test_guarded_candidate_uses_bounded_liveness_before_slow_status_surfaces():
     assert validator.index(interface) < validator.index(product)
     assert validator.index(product) < validator.index(pass174)
     assert inherited_heavy not in validator
+
+
+
+def test_guarded_candidate_uses_bounded_repository_liveness_not_catalog_status():
+    validator = Path(
+        "deployment/digitalocean/guarded_auto_update/validate-candidate.sh"
+    ).read_text(encoding="utf-8")
+    assert "/api/runtime/repository/health" in validator
+    assert "/api/runtime/repository/status" not in validator
+    assert "HHS_REPOSITORY_HISTORY_LIVENESS_V1" in validator
