@@ -11,6 +11,7 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_cache_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_receipt_collision_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
       - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
@@ -25,6 +26,7 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_cache_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c'
+      - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_receipt_collision_1_62.c'
       - 'tests/pass219/test_pass219_lane5_reciprocal_phase_debt_crosscheck_1_62.py'
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
       - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
@@ -92,6 +94,11 @@ jobs:
           assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_ORBIT_STEP UINT32_C(16)' in text
           assert 'HHS_EXACT_PASS219_LANE5_PHASE_DEBT_SERIALIZATION_CHARS UINT32_C(5184)' in text
           assert 'validated_witness_may_skip_closure = 0U' in text
+          assert 'receipt_binds_parent_stack_root = 1U' in text
+          assert 'receipt_binds_result_stack_root = 1U' in text
+          assert 'deterministic_stack_root_recomputed_each_transition = 1U' in text
+          assert 'parent_stack_root_hash216' in text
+          assert 'unresolved_stack_root_hash216' in text
           assert 'canonical_vm81_mutation_authority = 0U' in text
           assert 'canonical_hash72_authority = 0U' in text
           assert 'canonical_hash216_commit_authority = 0U' in text
@@ -108,6 +115,11 @@ jobs:
         run: |
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_reciprocal_phase_debt_stress_1_62.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t162-stress
           /tmp/t162-stress
+
+      - name: Run receipt parent-stack collision regressions
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_reciprocal_phase_debt_receipt_collision_1_62.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm             -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/t162-collision
+          /tmp/t162-collision
 
       - name: Cross-check inherited G41 Lo Shu and operation64 witnesses
         env:
@@ -183,6 +195,10 @@ jobs:
               'stress_max_nested_depth': 128,
               'validated_witness_may_skip_compute': True,
               'validated_witness_may_skip_closure': False,
+              'receipt_binds_parent_stack_root': True,
+              'receipt_binds_result_stack_root': True,
+              'deterministic_stack_root_recomputed_each_transition': True,
+              'distinct_stack_history_collision_regression': True,
               'exact_integer_only': True,
               'candidate_only': True,
               'canonical_vm81_mutation_authority': False,
