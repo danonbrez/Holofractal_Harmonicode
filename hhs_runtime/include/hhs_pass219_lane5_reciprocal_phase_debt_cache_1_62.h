@@ -50,7 +50,8 @@ typedef enum HHSExactPass219Lane5PhaseDebtReasonV1 {
     HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_OPERATION64_IDENTITY_MISMATCH = 16,
     HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_BOUNDARY_MISMATCH = 17,
     HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_PHASE_ACCUMULATOR_OVERFLOW = 18,
-    HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_EVENT_KIND = 19
+    HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_EVENT_KIND = 19,
+    HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_STACK_ROOT_MISMATCH = 20
 } HHSExactPass219Lane5PhaseDebtReasonV1;
 
 typedef enum HHSExactPass219Lane5PhaseDebtEventKindV1 {
@@ -101,7 +102,10 @@ typedef struct HHSExactPass219Lane5PhaseDebtAuthorityV1 {
     uint8_t canonical_hash216_commit_authority;
     uint8_t canonical_persistence_authority;
     uint8_t floating_point_canonical_authority;
-    uint8_t reserved0[8];
+    uint8_t receipt_binds_parent_stack_root;
+    uint8_t receipt_binds_result_stack_root;
+    uint8_t deterministic_stack_root_recomputed_each_transition;
+    uint8_t reserved0[5];
 } HHSExactPass219Lane5PhaseDebtAuthorityV1;
 
 typedef struct HHSExactPass219Lane5PhaseDebtPairV1 {
@@ -200,6 +204,7 @@ typedef struct HHSExactPass219Lane5PhaseDebtCacheV1 {
     uint8_t candidate_only;
     uint8_t canonical_mutation_authority;
     uint8_t reserved0[3];
+    char unresolved_stack_root_hash216[HHS_HASH216_BYTES_STRLEN];
 } HHSExactPass219Lane5PhaseDebtCacheV1;
 
 typedef struct HHSExactPass219Lane5PhaseDebtEventReceiptV1 {
@@ -232,6 +237,8 @@ typedef struct HHSExactPass219Lane5PhaseDebtEventReceiptV1 {
     uint8_t canonical_hash72_authority;
     uint8_t canonical_hash216_commit_authority;
     uint8_t reserved0;
+    char parent_stack_root_hash216[HHS_HASH216_BYTES_STRLEN];
+    char unresolved_stack_root_hash216[HHS_HASH216_BYTES_STRLEN];
     char receipt_hash216[HHS_HASH216_BYTES_STRLEN];
 } HHSExactPass219Lane5PhaseDebtEventReceiptV1;
 
@@ -255,6 +262,7 @@ typedef struct HHSExactPass219Lane5PhaseDebtCommitReceiptV1 {
     uint8_t candidate_only;
     uint8_t canonical_mutation_authority;
     uint8_t reserved0[7];
+    char unresolved_stack_root_hash216[HHS_HASH216_BYTES_STRLEN];
     char receipt_hash216[HHS_HASH216_BYTES_STRLEN];
 } HHSExactPass219Lane5PhaseDebtCommitReceiptV1;
 
