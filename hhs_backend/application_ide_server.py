@@ -109,7 +109,13 @@ async def application_ide_liveness() -> dict[str, Any]:
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
-        "public_interface": "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE",
+        "public_interface": str(
+            boot.get("public_interface") or "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE"
+        ),
+        "public_asset_root": boot.get("public_asset_root"),
+        "legacy_harmonizer_is_public_root": bool(
+            boot.get("legacy_harmonizer_is_public_root", True)
+        ),
         "public_api": "/api/public",
         "public_api_catalog": "/api/public/catalog",
         "mainframe": "/api/runtime/mainframe/status",
