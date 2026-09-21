@@ -47,6 +47,7 @@ on:
       - 'tests/test_hhs_pass219_fibonacci_compression_compliance.py'
       - 'tests/test_hhs_exact_runtime_abi_v1.py'
       - 'tests/test_hhs_vm81_native_development_v1.py'
+      - 'tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py'
       - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
       - 'Makefile'
   workflow_dispatch:
