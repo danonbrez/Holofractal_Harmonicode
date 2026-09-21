@@ -118,10 +118,11 @@ if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service
     ss -H -ltnp 'sport = :8080' >&2 || true
     exit 8
   fi
-  CURRENT_HEAD_VALUE="$(git -C "$REPO_ROOT" rev-parse HEAD)" \
-  RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" \
-  REPO_ROOT_VALUE="$REPO_ROOT" \
-  RECOVERY_STRATEGY="$(python3 - <<'PY'
+  CURRENT_HEAD_VALUE="$(git -C "$REPO_ROOT" rev-parse HEAD)"
+  RECOVERY_STRATEGY="$(CURRENT_HEAD_VALUE="$CURRENT_HEAD_VALUE" \
+    RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" \
+    REPO_ROOT_VALUE="$REPO_ROOT" \
+    python3 - <<'PY'
 import json
 import os
 import re
