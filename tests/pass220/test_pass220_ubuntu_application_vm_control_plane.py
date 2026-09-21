@@ -136,7 +136,7 @@ def test_unconfigured_security_fails_closed(tmp_path: Path) -> None:
     assert response.status_code == 503
 
 
-def test_standalone_pass190_shell_reads_capability_secret_from_environment(
+def test_application_vm_cli_preserves_json_and_capability_boundaries(
     tmp_path: Path,
 ) -> None:
     control = make_control(tmp_path)
@@ -144,19 +144,25 @@ def test_standalone_pass190_shell_reads_capability_secret_from_environment(
     env = dict(os.environ)
     env["PYTHONPATH"] = str(ROOT)
     env["HHS_PASS190_CAPABILITY_SECRET"] = SECRET
-    database = tmp_path / "standalone-shell.sqlite3"
+    state_root = tmp_path / "standalone-vm"
+    database = state_root / "authority.sqlite3"
 
     completed = subprocess.run(
         [
             sys.executable,
             "-m",
-            "hhs_runtime.pass190.shell",
-            "--database",
-            str(database),
+            "hhs_runtime.pass220.application_vm_cli",
             "--repository-root",
             str(ROOT),
+            "--state-root",
+            str(state_root),
+            "--database",
+            str(database),
             "--capability-token",
             credential,
+            "shell",
+            "--",
+            "hhs",
             "invoke",
             "state.counter.advance",
             '{"delta":1}',
