@@ -27,7 +27,41 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
-from hhs_backend.runtime_os_application_server import app as authoritative_app
+from hhs_backend.runtime_os_application_server import (
+    PUBLIC_MOUNT_NAME,
+    RUNTIME_OS_ROOT,
+    app as authoritative_app,
+)
+from hhs_backend.runtime_os_projection import LEGACY_PUBLIC_ROOT_NAMES
+
+def _verify_production_runtime_os_projection() -> None:
+    """Fail closed if import side effects leave a legacy public root authoritative."""
+    routes = list(authoritative_app.router.routes)
+    route_names = {str(getattr(route, "name", "")) for route in routes}
+    if PUBLIC_MOUNT_NAME not in route_names:
+        raise RuntimeError("PRODUCTION_RUNTIME_OS_PUBLIC_MOUNT_MISSING")
+    legacy_roots = sorted(
+        name
+        for name in LEGACY_PUBLIC_ROOT_NAMES
+        if name != PUBLIC_MOUNT_NAME and name in route_names
+    )
+    if legacy_roots:
+        raise RuntimeError(
+            "PRODUCTION_LEGACY_PUBLIC_ROOT_REMAINS:" + ",".join(legacy_roots)
+        )
+    if not any(
+        str(getattr(route, "path", "")) == "/api/interface/status"
+        for route in routes
+    ):
+        raise RuntimeError("PRODUCTION_RUNTIME_OS_INTERFACE_STATUS_MISSING")
+    if not (RUNTIME_OS_ROOT / "index.html").is_file():
+        raise RuntimeError(
+            f"PRODUCTION_RUNTIME_OS_INDEX_MISSING:{RUNTIME_OS_ROOT / 'index.html'}"
+        )
+
+
+_verify_production_runtime_os_projection()
+PRODUCTION_PUBLIC_PROJECTION_VERIFIED = True
 
 PRODUCTION_STATUS_PATHS = (
     "/api/runtime/authority/status",
@@ -112,6 +146,7 @@ app = ProductionRuntimeBootstrapGateway(
 )
 
 __all__ = [
+    "PRODUCTION_PUBLIC_PROJECTION_VERIFIED",
     "PRODUCTION_STATUS_PATHS",
     "ProductionRuntimeBootstrapGateway",
     "app",
