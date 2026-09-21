@@ -236,3 +236,64 @@ Checkpoint 1 is intentionally projection-only:
 - no silent reinterpretation of ordered q=-1 operations as ordinary scalar multiplication.
 
 Next dependency-scoped integration should bind this zero-calibrated object to the existing three-lane VM81 qudit kernel and canonical Hash72 lineage, then test the 5184-character carrier through the actual Hash216 composition path without changing the scalar/offset closure invariant.
+
+## 2026-09-21 mathematical closure expansion
+
+## 1-2-3 triangular magnitude/distance binding
+
+The fractal magnitude layers are
+
+```text
+(1,2,3)
+(2,4,6)
+(3,6,9).
+```
+
+They are evaluated against Lo Shu position triangles so magnitude and cell
+distance remain one jointly addressable quantity.
+
+The zero-centered local Lo Shu matrix is
+
+```text
+[[-1, 4,-3],
+ [-2, 0, 2],
+ [ 3,-4, 1]]
+```
+
+with nonzero spectrum `{-4,-3,-2,-1,1,2,3,4}`. Ordered pairing yields
+`8*8=64` relations, and `rho(si,sj)=(-si,-sj)` is an involution.
+
+Exact carrier identities:
+
+```text
+5184=72^2=81*64=144*36=72*24*3
+648 bytes=5184 bits.
+```
+
+The canonical normalized object remains an exact 5184-character
+rational-scientific serialization of 81 fixed 64-character cells. The same
+carrier may be traversed as 72 rows of 72 characters; the Hash72 `72^72`
+quantity is the 72-position / 72-state address manifold, not a materialized
+state array.
+
+For atomic raw-frame scheduling,
+
+```text
+N=floor((R_max-R_guard)/648)
+R=648N<=R_max,
+```
+
+and no partial frame crosses the canonical commit boundary.
+
+## HHS-T5184-005 phase attachment
+
+The nine-state exponent orbit
+
+```text
+{8,24,40,56,72,16,32,48,64}
+```
+
+is a period-nine traversal of the period-72 carrier under `+16 mod 72`, with
+zero residue displayed as 72. The reciprocal pairs are
+`(8,64),(24,48),(40,32),(56,16)`, leaving `72` as the displayed closure
+pivot.

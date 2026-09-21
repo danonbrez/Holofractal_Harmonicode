@@ -415,3 +415,37 @@ make -C native_projects/hhs_pass190_operation_fabric validate
 ```
 
 A path or environment failure should be repaired at the adapter or deployment layer. Invariant checks, receipt continuity, ordered identity, and replay requirements must not be weakened to make a test pass.
+
+## 2026-09-21 mathematical closure expansion
+
+The September 20–21 formalization is now part of the repository documentation surface. The integrated sources are:
+
+- `whitepapers/HHS_PASS220_GLOBAL_DELTA_COMPUTABILITY_AND_5184_CLOSURE_V1.md`
+- `whitepapers/HHS_T5184_005_CELLULAR_KINEMATICS_ORTHOGONAL_GRADIENTS_STATIC_BOUNDARY_ALIGNMENT_V1.md`
+
+The new mathematical surface preserves the global common denominator
+
+```text
+(P = sqrt(pq + P^4/(AB))) / Delta
+```
+
+across nested HARMONICODE objects, defines
+
+```text
+K_Ppq := P(q-p)/(p+q) = P^2-pq
+Pi_Delta^(-1)(Pi_Delta(S)) = S
+Computable_Delta(x)
+```
+
+retains `xy=-yx`, `zw=-wz`, binds the zero-centered Lo Shu spectrum
+`{-4,-3,-2,-1,1,2,3,4}` to the 1-2-3 magnitude layers, and fixes the
+5184-character rational-scientific normalization carrier.
+
+Wolfram independently verifies only the licensed ordinary exact projections:
+the 5184 factorizations; 648 bytes = 5184 bits; the branch
+`p=P-1,q=P+1,AB=P^4,Delta=1`; `K_Ppq=1`; zero-centered Lo Shu row/column
+closure; 64 ordered phase pairs; reciprocal involution; the exact Pass 220
+radical; and the HHS-T5184-005 nine-state `+16 mod 72` orbit with an
+80-degree step. Native `Delta` non-cancellation, typed infinity/reciprocal
+relations, `Delta e=0`, noncommutative ordering, and theorem-native
+kinematic/observational operators remain HARMONICODE constraints.

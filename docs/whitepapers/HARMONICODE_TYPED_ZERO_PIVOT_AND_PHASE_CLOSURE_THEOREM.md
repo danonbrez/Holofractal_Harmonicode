@@ -142,3 +142,40 @@ The profile fails if:
 - a float/NaN/infinity sentinel mutates canonical state;
 - claimed reversible pivot transitions fail exact reconstruction;
 - formal and VM81 results disagree.
+
+## 2026-09-21 mathematical closure expansion
+
+## Shared Delta boundary and epsilon equilibrium
+
+The native global surface
+
+```text
+(P = sqrt(pq + (P^4/AB))) / Delta
+```
+
+is a shared boundary-condition relation. Nested objects inherit the same
+`Delta`; no ordinary scalar cancellation follows from a projection that
+temporarily selects `Delta=1`.
+
+The terminal relation
+
+```text
+Delta e=0
+```
+
+is a typed reciprocal phase-equilibrium condition. It preserves ordered phase
+witnesses such as `xy=-yx` and `zw=-wz`, and does not imply ordinary scalar
+`e=0`.
+
+This preserves the separation
+
+```text
+native boundary equilibrium
+!= ordinary scalar division/cancellation
+!= ordinary scalar zero.
+```
+
+HHS-T5184-005 uses this typed closure at the end of each cellular-kinematic
+cycle; the zero-friction, payload-bearing, and orthogonal-observation modes
+therefore share the same terminal closure type without being scalarized into
+one mode.

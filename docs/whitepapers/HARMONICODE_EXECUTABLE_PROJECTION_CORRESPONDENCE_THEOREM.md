@@ -131,3 +131,51 @@ test vectors
 counterexample/negative-test results
 benchmark evidence for performance claims.
 ```
+
+## 2026-09-21 mathematical closure expansion
+
+## Universal exact-translation correspondence
+
+For foreign exact object `tau` and HARMONICODE translator `T_F`, admission
+requires representation completeness, semantic preservation, operation
+preservation, information preservation, and `Delta` consistency, with
+
+```text
+T_F^(-1)(T_F(tau)) = tau.
+```
+
+The system-internal computability predicate is
+
+```text
+Computable_Delta(x)
+iff
+ExactRelationalAddress_Delta(x)
+AND ExactManipulationClosure_Delta(x).
+```
+
+Before declaring an object outside native scope, a bounded search may cover
+alternative exact representations, symbolic constructors, BigInt or
+rational-scientific encodings, recursive concatenation depth, phase addresses,
+admissible ingestion paths, and scale.
+
+Every exact projection participating in canonical reasoning must satisfy
+
+```text
+Pi_Delta^(-1)(Pi_Delta(S)) = S.
+```
+
+The authority chain is
+
+```text
+raw bytes
+-> RNA/PQC typed ingress
+-> hydration
+-> VM81/5184 exact state
+-> Hash72 canonical commit
+-> Hash216 downstream identity/index.
+```
+
+Lane 5 may rank, prune, or veto before commit; it does not replace VM81/Hash72
+canonical mutation authority. The raw frame is exactly 648 bytes / 5184 bits,
+while the normalized symbolic carrier is exactly 5184 characters. These widths
+are related projections but are not interchangeable.

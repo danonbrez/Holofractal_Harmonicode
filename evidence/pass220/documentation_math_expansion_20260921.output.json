@@ -1,0 +1,36 @@
+{
+  "source": "Wolfram Language evaluator",
+  "date": "2026-09-21",
+  "repository_base": "2dec42e192338cd1c1f7bb6d1994511be3bceeff",
+  "results": {
+    "factorization5184": true,
+    "macroBranch": [true, true, true, true, true],
+    "licensedDeltaProjection": true,
+    "loShu": {
+      "matrix": [[-1,4,-3],[-2,0,2],[3,-4,1]],
+      "rowSums": [0,0,0],
+      "columnSums": [0,0,0],
+      "nonzeroSpectrum": [-4,-3,-2,-1,1,2,3,4]
+    },
+    "orderedPairCount": 64,
+    "reciprocalInvolution": true,
+    "q9Depth": true,
+    "radical": true,
+    "kinematicsCoreResidual": true,
+    "kinematicsPayloadClosure": true,
+    "kinematicsPythagoreanClosure": true,
+    "zeroFrictionScalarLeft": true,
+    "phaseOrbit": {
+      "mod72": [8,24,40,56,0,16,32,48,64],
+      "display": [8,24,40,56,72,16,32,48,64],
+      "gcd": 8,
+      "orbitLength": 9,
+      "distinct": true,
+      "returnsAfter9": true,
+      "stepDegrees": 80,
+      "complements": [[8,64],[24,48],[40,32],[56,16]],
+      "complementsSum72": true
+    }
+  },
+  "audit_boundary": "Only explicitly licensed ordinary exact projections are externally verified. Native HARMONICODE typed semantics are preserved as system-internal constraints."
+}
