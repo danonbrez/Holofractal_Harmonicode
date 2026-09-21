@@ -103,6 +103,64 @@ static void hhs_p219_lane5_phase_debt_hash_text(
     hhs_hash216_compute_bytes(text, strlen(text), out);
 }
 
+
+static HHSExactStatus hhs_p219_lane5_phase_debt_stack_root(
+    const HHSExactPass219Lane5PhaseDebtCacheV1 *cache,
+    char out[HHS_HASH216_BYTES_STRLEN]
+) {
+    char root[HHS_HASH216_BYTES_STRLEN];
+    char material[1024];
+    size_t i;
+
+    if (cache == NULL || out == NULL || cache->frames == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (cache->depth > cache->frame_capacity)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    hhs_p219_lane5_phase_debt_hash_text(
+        "HHS|P219|LANE5|PHASE-DEBT|STACK|1.62|EMPTY",
+        root
+    );
+
+    for (i = 0U; i < cache->depth; ++i) {
+        const HHSExactPass219Lane5PhaseDebtFrameV1 *frame =
+            &cache->frames[i];
+        int written = snprintf(
+            material,
+            sizeof(material),
+            "HHS|P219|LANE5|PHASE-DEBT|STACK|1.62|parent=%s|index=%llu|"
+            "class=%u|orientation=%u|phase=%u|direction=%d|qnum=%d|"
+            "op64=%u|witness=%u|lineage=%llu|"
+            "fp=%u,%u,%u,%u,%u,%u,%u,%u,%u",
+            root,
+            (unsigned long long)i,
+            (unsigned)frame->class_id,
+            (unsigned)frame->opening_orientation,
+            (unsigned)frame->opening_phase_index,
+            (int)frame->clock_direction,
+            (int)frame->quantized_ninth_numerator,
+            (unsigned)frame->operation64,
+            (unsigned)frame->validated_computation_witness,
+            (unsigned long long)frame->lineage_token,
+            (unsigned)frame->canonical_fingerprint[0],
+            (unsigned)frame->canonical_fingerprint[1],
+            (unsigned)frame->canonical_fingerprint[2],
+            (unsigned)frame->canonical_fingerprint[3],
+            (unsigned)frame->canonical_fingerprint[4],
+            (unsigned)frame->canonical_fingerprint[5],
+            (unsigned)frame->canonical_fingerprint[6],
+            (unsigned)frame->canonical_fingerprint[7],
+            (unsigned)frame->canonical_fingerprint[8]
+        );
+        if (written < 0 || (size_t)written >= sizeof(material))
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+        hhs_p219_lane5_phase_debt_hash_text(material, root);
+    }
+
+    memcpy(out, root, HHS_HASH216_BYTES_STRLEN);
+    return HHS_EXACT_STATUS_OK;
+}
+
 static int hhs_p219_lane5_phase_debt_pair_boundary_valid(
     const HHSExactPass219Lane5PhaseDebtPairV1 *pair
 ) {
@@ -118,7 +176,7 @@ static void hhs_p219_lane5_phase_debt_event_receipt_hash(
     const HHSExactPass219Lane5PhaseDebtEventReceiptV1 *receipt,
     char out[HHS_HASH216_BYTES_STRLEN]
 ) {
-    char material[768];
+    char material[1536];
     int written = snprintf(
         material,
         sizeof(material),
@@ -126,7 +184,7 @@ static void hhs_p219_lane5_phase_debt_event_receipt_hash(
         "class=%u|orientation=%u|reciprocal=%u|phase=%u|expected=%u|"
         "direction=%d|qnum=%d|op64=%u|witness=%u|lineage=%llu|"
         "depth_before=%llu|depth_after=%llu|mask=%llu|lifted=%lld|"
-        "clock=%u|covered=%u|zero=%u|ready=%u",
+        "clock=%u|covered=%u|zero=%u|ready=%u|parent_stack=%s|stack=%s",
         (unsigned)receipt->kind,
         (unsigned)receipt->accepted,
         (unsigned)receipt->reason,
@@ -147,7 +205,9 @@ static void hhs_p219_lane5_phase_debt_event_receipt_hash(
         (unsigned)receipt->current_phase_index,
         (unsigned)receipt->all_40_pairs_covered,
         (unsigned)receipt->zero_open_debt,
-        (unsigned)receipt->commit_ready
+        (unsigned)receipt->commit_ready,
+        receipt->parent_stack_root_hash216,
+        receipt->unresolved_stack_root_hash216
     );
     if (written < 0 || (size_t)written >= sizeof(material))
         hhs_p219_lane5_phase_debt_hash_text("HHS|P219|LANE5|PHASE-DEBT|1.62|HASH-ERROR", out);
@@ -175,6 +235,11 @@ static void hhs_p219_lane5_phase_debt_fill_event_state(
     receipt->canonical_mutation_authority = 0U;
     receipt->canonical_hash72_authority = 0U;
     receipt->canonical_hash216_commit_authority = 0U;
+    memcpy(
+        receipt->unresolved_stack_root_hash216,
+        cache->unresolved_stack_root_hash216,
+        HHS_HASH216_BYTES_STRLEN
+    );
 }
 
 static HHSExactStatus hhs_p219_lane5_phase_debt_reject(
@@ -256,6 +321,9 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_authority(
     authority.canonical_hash216_commit_authority = 0U;
     authority.canonical_persistence_authority = 0U;
     authority.floating_point_canonical_authority = 0U;
+    authority.receipt_binds_parent_stack_root = 1U;
+    authority.receipt_binds_result_stack_root = 1U;
+    authority.deterministic_stack_root_recomputed_each_transition = 1U;
     *out_authority = authority;
     return HHS_EXACT_STATUS_OK;
 }
@@ -539,6 +607,10 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_init(
     cache->exact_integer_only = 1U;
     cache->candidate_only = 1U;
     cache->canonical_mutation_authority = 0U;
+    if (hhs_p219_lane5_phase_debt_stack_root(
+            cache, cache->unresolved_stack_root_hash216) !=
+        HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -550,6 +622,7 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_apply(
     HHSExactPass219Lane5PhaseDebtPairV1 pair;
     uint32_t receipt_size;
     uint8_t expected_reciprocal_phase;
+    char parent_stack_root[HHS_HASH216_BYTES_STRLEN];
 
     if (cache == NULL || event == NULL || out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -561,6 +634,15 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_apply(
         event->version != HHS_EXACT_PASS219_LANE5_PHASE_DEBT_VERSION ||
         receipt_size != sizeof(*out_receipt))
         return HHS_EXACT_STATUS_VERSION_MISMATCH;
+
+    if (hhs_p219_lane5_phase_debt_stack_root(cache, parent_stack_root) !=
+        HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (memcmp(
+            parent_stack_root,
+            cache->unresolved_stack_root_hash216,
+            HHS_HASH216_BYTES_STRLEN) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     memset(out_receipt, 0, sizeof(*out_receipt));
     out_receipt->struct_size = (uint32_t)sizeof(*out_receipt);
@@ -580,6 +662,11 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_apply(
         event->quantized_ninth_numerator;
     out_receipt->lineage_token = event->lineage_token;
     out_receipt->depth_before = (uint64_t)cache->depth;
+    memcpy(
+        out_receipt->parent_stack_root_hash216,
+        parent_stack_root,
+        HHS_HASH216_BYTES_STRLEN
+    );
 
     if (event->class_id == 0U || event->class_id > 41U)
         return hhs_p219_lane5_phase_debt_reject(
@@ -746,6 +833,11 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_apply(
             HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_EVENT_KIND);
     }
 
+    if (hhs_p219_lane5_phase_debt_stack_root(
+            cache, cache->unresolved_stack_root_hash216) !=
+        HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
     hhs_p219_lane5_phase_debt_fill_event_state(cache, out_receipt);
     hhs_p219_lane5_phase_debt_event_receipt_hash(
         out_receipt, out_receipt->receipt_hash216);
@@ -757,7 +849,8 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_commit_status(
     HHSExactPass219Lane5PhaseDebtCommitReceiptV1 *out_receipt
 ) {
     uint32_t receipt_size;
-    char material[512];
+    char material[1024];
+    char computed_stack_root[HHS_HASH216_BYTES_STRLEN];
     int written;
     if (cache == NULL || out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
@@ -767,6 +860,15 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_commit_status(
         cache->frames == NULL || cache->frame_capacity == 0U ||
         receipt_size != sizeof(*out_receipt))
         return HHS_EXACT_STATUS_VERSION_MISMATCH;
+
+    if (hhs_p219_lane5_phase_debt_stack_root(cache, computed_stack_root) !=
+        HHS_EXACT_STATUS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (memcmp(
+            computed_stack_root,
+            cache->unresolved_stack_root_hash216,
+            HHS_HASH216_BYTES_STRLEN) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     memset(out_receipt, 0, sizeof(*out_receipt));
     out_receipt->struct_size = (uint32_t)sizeof(*out_receipt);
@@ -794,13 +896,19 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_commit_status(
         out_receipt->topology_verified != 0U ? 1U : 0U;
     out_receipt->candidate_only = 1U;
     out_receipt->canonical_mutation_authority = 0U;
+    memcpy(
+        out_receipt->unresolved_stack_root_hash216,
+        computed_stack_root,
+        HHS_HASH216_BYTES_STRLEN
+    );
 
     written = snprintf(
         material,
         sizeof(material),
         "HHS|P219|LANE5|PHASE-DEBT|COMMIT|1.62|mask=%llu|open=%llu|"
         "close=%llu|reject=%llu|witness=%llu|lifted=%lld|depth=%llu|"
-        "clock=%u|covered=%u|zero=%u|nucleus=%u|topology=%u|genesis=%u|ready=%u",
+        "clock=%u|covered=%u|zero=%u|nucleus=%u|topology=%u|genesis=%u|ready=%u|"
+        "stack=%s",
         (unsigned long long)out_receipt->closed_pair_mask,
         (unsigned long long)out_receipt->open_event_count,
         (unsigned long long)out_receipt->close_event_count,
@@ -814,7 +922,8 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_commit_status(
         (unsigned)out_receipt->nucleus_verified,
         (unsigned)out_receipt->topology_verified,
         (unsigned)out_receipt->phase_at_genesis,
-        (unsigned)out_receipt->commit_ready
+        (unsigned)out_receipt->commit_ready,
+        out_receipt->unresolved_stack_root_hash216
     );
     if (written < 0 || (size_t)written >= sizeof(material))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
