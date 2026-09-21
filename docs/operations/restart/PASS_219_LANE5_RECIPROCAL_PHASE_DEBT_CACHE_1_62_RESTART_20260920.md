@@ -10,7 +10,7 @@ Date: 2026-09-20
 - Working branch: pass219/lane5-reciprocal-phase-debt-cache-1-62
 - Merge target: pass219/lane5-cloaked-tripartite-constraint-1-61
 - Parent PR: #521
-- New PR: not yet opened at initial checkpoint
+- New PR: #522 — Pass 219 Lane 5 1.62 — Reciprocal phase-debt constraint cache
 
 The base 1.61 dependency-scoped workflow is green, including both
 lane5-extensive and OpenSSL 3.5 positive jobs in run 35539303264.
@@ -125,33 +125,53 @@ floating-point authority is granted.
 
 ## Validation completed
 
-Repository inspection only. No 1.62 compile/test workflow has run yet.
+First exact-head dependency-scoped run:
 
-Verified before implementation:
+- validated head: 69a7e7db8dd2660126e2f548a120b2c6bc040bcf
+- workflow: Pass 219 Lane 5 Reciprocal Phase Debt Cache 1.62
+- run: 35546669335
+- job: 106173703105
+- result: SUCCESS
+- cumulative exact ABI build: PASS
+- new export/hidden-authority audit: PASS
+- static exact-integer/authority audit: PASS
+- native 1.62 conformance:
+  PASS219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_PASS
+- recursive stress:
+  PASS219_LANE5_RECIPROCAL_PHASE_DEBT_STRESS_1_62_PASS
+  accepted=8256 rejected=200 epochs=100 max_depth=128 witness_replays=1024
+- Pass220 I001/I014/I020 plus 1.62 cross-check membrane:
+  52 passed, 1 warning
+- inherited Lane 5 Python regression membrane:
+  53 passed, 2 warnings
+- parent 1.61 native regression: PASS
+- raw VM5184 regression: PASS
+- zero-bypass secure gateway: PASS
+- native RNA hidden-authority ABI: PASS
+- VM81 PQC firewall reference boundary: PASS
+
+Evidence seal:
+
+- summary schema: HHS_PASS219_LANE5_RECIPROCAL_PHASE_DEBT_EVIDENCE_1_62
+- summary receipt SHA-256:
+  5f29fdb32ffb74397ae122f90a8d0036f4a30b5c68c9efad76791fbe7e92fbf6
+- artifact ID: 10616509392
+- artifact digest:
+  sha256:c604cd2f0cd87e5e7f6e61f413316364783b502a611adb98a11d3711dca3d400
+- artifact expires: 2026-12-20
+
+Parent evidence remains green:
 
 - parent 1.61 exact-head run 35539303264 completed SUCCESS;
 - lane5-extensive SUCCESS;
-- openssl-35-positive SUCCESS;
-- existing Pass220 I014 exposes 41 classes = one fixed center + forty size-two
-  reciprocal classes;
-- existing Pass220 I020 exposes exact ordered 8x8 operation64;
-- existing I001 retains 5184-character exact normalization carrier.
+- openssl-35-positive SUCCESS.
 
 ## Validation remaining
 
-1. Add the 1.62 dependency-scoped workflow.
-2. Build cumulative exact ABI.
-3. Audit new public symbols and hidden authority.
-4. Run native 1.62 conformance.
-5. Run recursive stress and deep caller-workspace nesting.
-6. Run new Python cross-check.
-7. Regress Pass220 I001, I014, and I020.
-8. Regress Lane 5 1.61 and required reciprocal/RNA/VM5184/security membranes.
-9. Seal evidence artifact.
-10. Open stacked draft PR and inspect exact-head CI.
-11. Repair forward only impacted failures.
-12. Update this restart record with final exact head, run IDs, artifacts, and
-    any remaining inherited blockers.
+This documentation update and the workflow path registration that follows it
+must receive one final exact-head 1.62 run so the restart record itself is
+included in the validated repository-visible checkpoint. Repair forward only
+if that final exact-head run exposes a 1.62-caused failure.
 
 ## Environment state
 
@@ -171,5 +191,7 @@ as part of 1.62 unless it becomes an actual dependency blocker.
 
 ## Next action
 
-Add the exact-head 1.62 workflow, open the stacked draft PR, execute the
-dependency-scoped gate, and repair forward any 1.62-caused failures.
+Register this restart record in the 1.62 workflow path set, run one final
+exact-head dependency-scoped validation, then record final head/run evidence on
+PR #522. If green, the branch is a restartable completed 1.62 checkpoint ready
+for the next stacked integration cycle.
