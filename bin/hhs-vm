@@ -1,5 +1,49 @@
 #!/usr/bin/env sh
 set -eu
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+
+ENV_FILE="${HHS_APPLICATION_VM_ENV_FILE:-/etc/hhs/application-vm.env}"
+ROOT="${HHS_APPLICATION_VM_REPOSITORY_ROOT:-}"
+PYTHON="${PYTHON_BIN:-${HHS_APPLICATION_VM_PYTHON_BIN:-}}"
+
+if [ -z "$ROOT" ] && [ -r "$ENV_FILE" ]; then
+  ROOT=$(sed -n 's/^HHS_APPLICATION_VM_REPOSITORY_ROOT=//p' "$ENV_FILE" | tail -n 1)
+fi
+
+if [ -z "$ROOT" ]; then
+  SELF_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+  if [ -f "$SELF_ROOT/hhs_runtime/pass220/application_vm_cli.py" ]; then
+    ROOT="$SELF_ROOT"
+  fi
+fi
+
+if [ -z "$PYTHON" ] && [ -r "$ENV_FILE" ]; then
+  PYTHON=$(sed -n 's/^HHS_APPLICATION_VM_PYTHON_BIN=//p' "$ENV_FILE" | tail -n 1)
+fi
+
+if [ -z "$PYTHON" ] && [ -x /opt/hhs/venv/bin/python ]; then
+  PYTHON=/opt/hhs/venv/bin/python
+fi
+
+if [ -z "$PYTHON" ]; then
+  PYTHON=$(command -v python3 || true)
+fi
+
+[ -n "$ROOT" ] || {
+  echo "HHS_APPLICATION_VM_REPOSITORY_ROOT_UNRESOLVED" >&2
+  exit 2
+}
+[ -f "$ROOT/hhs_runtime/pass220/application_vm_cli.py" ] || {
+  echo "HHS_APPLICATION_VM_REPOSITORY_INVALID:$ROOT" >&2
+  exit 2
+}
+[ -n "$PYTHON" ] && [ -x "$PYTHON" ] || {
+  echo "HHS_APPLICATION_VM_PYTHON_UNRESOLVED" >&2
+  exit 2
+}
+
+export HHS_APPLICATION_VM_ENV_FILE="$ENV_FILE"
+export HHS_APPLICATION_VM_REPOSITORY_ROOT="$ROOT"
+export HHS_APPLICATION_VM_PYTHON_BIN="$PYTHON"
 export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
-exec "${PYTHON_BIN:-python3}" -m hhs_runtime.pass220.application_vm_cli "$@"
+
+exec "$PYTHON" -m hhs_runtime.pass220.application_vm_cli "$@"
