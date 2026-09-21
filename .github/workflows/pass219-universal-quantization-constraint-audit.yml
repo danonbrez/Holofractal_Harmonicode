@@ -18,6 +18,8 @@ on:
       - 'hhs_runtime/pass219_native_universal_constraint_v1.py'
       - 'hhs_runtime/pass219_fibonacci_compression_reference_v1.py'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.inc'
+      - 'hhs_runtime/include/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi_v1_1_base.inc'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_bigint.inc'
       - 'hhs_runtime/c/hhs_runtime_uqcel_1_8_validate.inc'
@@ -49,6 +51,7 @@ on:
       - 'tests/test_hhs_vm81_native_development_v1.py'
       - 'tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py'
       - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
+      - '.github/workflows/vm81-native-development-level0-level1.yml'
       - 'Makefile'
   workflow_dispatch:
 

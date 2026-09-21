@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - agent/vm81-native-dev-level0-level1
+      - pass219/lane5-reciprocal-phase-debt-cache-1-62
   pull_request:
     paths:
       - native_projects/hhs_vm81_native_development/**
@@ -12,10 +13,16 @@ on:
       - tests/test_hhs_hash216_vector_resolver_v1.py
       - hhs_runtime/c/hhs_runtime_abi.c
       - hhs_runtime/c/hhs_runtime_abi.h
+      - hhs_runtime/c/hhs_runtime_exact_abi.c
+      - hhs_runtime/include/hhs_runtime_exact_abi.h
+      - hhs_runtime/c/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.inc
+      - hhs_runtime/include/hhs_pass219_lane5_reciprocal_phase_debt_cache_1_62.h
       - hhs_runtime/src/hhs_hash216.c
       - hhs_runtime/include/hhs_hash216.h
       - .github/workflows/vm81-native-development-level0-level1.yml
       - Makefile
+
+  workflow_dispatch:
 
 permissions:
   contents: read

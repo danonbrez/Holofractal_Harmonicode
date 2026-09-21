@@ -16,6 +16,8 @@ on:
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
       - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
       - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
+      - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
+      - '.github/workflows/vm81-native-development-level0-level1.yml'
   pull_request:
     branches:
       - pass219/lane5-cloaked-tripartite-constraint-1-61
@@ -31,6 +33,8 @@ on:
       - 'contracts/pass219/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62.md'
       - 'docs/operations/restart/PASS_219_LANE5_RECIPROCAL_PHASE_DEBT_CACHE_1_62_RESTART_20260920.md'
       - '.github/workflows/pass219-lane5-reciprocal-phase-debt-cache-1-62.yml'
+      - '.github/workflows/pass219-universal-quantization-constraint-audit.yml'
+      - '.github/workflows/vm81-native-development-level0-level1.yml'
   workflow_dispatch:
 
 permissions:
