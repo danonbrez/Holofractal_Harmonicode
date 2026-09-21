@@ -392,13 +392,14 @@ def test_guarded_candidate_uses_bounded_liveness_before_slow_status_surfaces():
         "deployment/digitalocean/guarded_auto_update/validate-candidate.sh"
     ).read_text(encoding="utf-8")
 
-    bounded = '/api/health" >/tmp/hhs-candidate-health.json'
-    interface = '/api/interface/status" >/tmp/hhs-candidate-interface.json'
-    product = '/api/product/health" >/tmp/hhs-candidate-product-health.json'
-    pass174 = '/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json'
+    bounded = '"http://127.0.0.1:${PORT}/api/health" >/tmp/hhs-candidate-health.json'
+    interface = '"http://127.0.0.1:${PORT}/api/interface/status" >/tmp/hhs-candidate-interface.json'
+    product = '"http://127.0.0.1:${PORT}/api/product/health" >/tmp/hhs-candidate-product-health.json'
+    pass174 = '"http://127.0.0.1:${PORT}/api/v1/pass174/status" >/tmp/hhs-candidate-pass174.json'
+    inherited_heavy = '"http://127.0.0.1:${PORT}/health" >/tmp/hhs-candidate-health.json'
 
     assert bounded in validator
     assert validator.index(bounded) < validator.index(interface)
     assert validator.index(interface) < validator.index(product)
     assert validator.index(product) < validator.index(pass174)
-    assert '/health" >/tmp/hhs-candidate-health.json' not in validator
+    assert inherited_heavy not in validator
