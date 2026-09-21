@@ -519,6 +519,8 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_init(
     HHSExactPass219Lane5PhaseDebtTopologyReceiptV1 topology;
     if (cache == NULL || frames == NULL || frame_capacity == 0U)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (frame_capacity > SIZE_MAX / sizeof(*frames))
+        return HHS_EXACT_STATUS_RANGE_ERROR;
     if (hhs_exact_pass219_lane5_phase_debt_topology_verify(&topology) !=
             HHS_EXACT_STATUS_OK ||
         topology.topology_valid == 0U)
@@ -741,7 +743,7 @@ HHSExactStatus hhs_exact_pass219_lane5_phase_debt_cache_apply(
     } else {
         return hhs_p219_lane5_phase_debt_reject(
             cache, out_receipt,
-            HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_CLASS_RANGE);
+            HHS_EXACT_PASS219_LANE5_PHASE_DEBT_REASON_EVENT_KIND);
     }
 
     hhs_p219_lane5_phase_debt_fill_event_state(cache, out_receipt);
