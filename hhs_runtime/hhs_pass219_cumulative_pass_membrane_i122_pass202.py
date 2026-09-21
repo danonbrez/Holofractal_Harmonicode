@@ -60,10 +60,10 @@ CURRENT_SUCCESSOR_BLOBS = {
     TIMER_PATH: "3296ee9787544542697d3915e01569562ef30046",
     UPDATER_PATH: "1248ce5f9cc8c1a49a1ef83aab7f47d1bd4ad180",
     ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
-    INSTALLER_PATH: "9832e410e9aadf2cdda6c8ce3bc70cfd9590f18f",
+    INSTALLER_PATH: "f964e2daf6fad4dd716fb74613a02ddf2caf2f7c",
     VALIDATOR_PATH: "0e74e2508c00507f7045dc8eecaab8a1a29f80ca",
     BUNDLE_PATH: "fd6973697a39b94b445c35f6af7dd0aa3f727728",
-    NORMALIZER_PATH: "35ef0b50e92721bddf01aa9273edb58bbc12fdb3",
+    NORMALIZER_PATH: "6934f540060f36ca78b6e4dc2b2461d8327f54b9",
     LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
 }
 
@@ -157,6 +157,9 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "HHS_VALIDATE_TIMEOUT_SECONDS",
         "minimum_validate_timeout = 3600",
         "ROLLBACK_HEALTH_FAILED",
+        "VALIDATED",
+        "HHS_GUARDED_UPDATE_VALIDATED_DIRECT_RECOVERY=1",
+        "VALIDATED recovery checkout mismatch",
         "systemctl stop hhs-guarded-update.timer",
         "systemctl start hhs-guarded-update.service",
     )
