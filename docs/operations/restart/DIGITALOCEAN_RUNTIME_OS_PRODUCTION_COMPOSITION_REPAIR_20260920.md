@@ -159,3 +159,25 @@ the changed production files caused it.
 
 Per the forward-progress rule, the implementation is repository-visible and
 restartable while the two relevant deployment gates wait for runners.
+
+
+## Validation-timeout repair
+
+The failed exact-main transaction began candidate validation at approximately
+00:51:32 UTC and terminated at approximately 00:56:57 UTC. The current updater
+default is 3600 seconds, but install.sh previously preserved an existing
+HHS_VALIDATE_TIMEOUT_SECONDS value when /etc/hhs/guarded-update.env already
+existed. Therefore a historical shorter host override could continue governing
+new exact-main promotions indefinitely.
+
+Repair-forward commit:
+
+- c9d8846b4cd3deab4fb12bf49193bc39cac9eda9 — on promotion, normalize
+  HHS_VALIDATE_TIMEOUT_SECONDS to at least 3600 seconds while preserving any
+  larger operator-configured bound.
+- ed6932138ca2a71f19c2cc27ed8d69dccd386f62 — contract regression for the
+  timeout normalization.
+
+This does not weaken validation or convert timeout into success. It only ensures
+the current bounded validator receives its intended production budget rather
+than an inherited shorter deployment-era value.
