@@ -6,6 +6,9 @@ ROOT := ../..
 BUILD_DIR := .build
 RUNTIME_C := $(ROOT)/hhs_runtime/c
 RUNTIME_INCLUDE := $(ROOT)/hhs_runtime/include
+RUNTIME_BUILD := $(ROOT)/hhs_runtime/builds
+RUNTIME_LIB := $(RUNTIME_BUILD)/libhhs_runtime.so
+RUNTIME_LINK := -L$(RUNTIME_BUILD) -lhhs_runtime -lcrypto -lstdc++ -lm -Wl,-rpath,$(abspath $(RUNTIME_BUILD))
 DEV_C := c
 
 VM81_SMOKE := $(BUILD_DIR)/hhs_vm81_level1_abi_smoke
@@ -20,14 +23,19 @@ all: verify-native
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(VM81_SMOKE): $(DEV_C)/hhs_vm81_level1_abi_smoke.c $(RUNTIME_C)/hhs_runtime_abi.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(RUNTIME_C) $^ -lm -o $@
+$(RUNTIME_LIB):
+	$(MAKE) -C $(ROOT) c-abi
+
+$(VM81_SMOKE): $(DEV_C)/hhs_vm81_level1_abi_smoke.c $(RUNTIME_LIB) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -I$(RUNTIME_C) -I$(RUNTIME_INCLUDE) $(DEV_C)/hhs_vm81_level1_abi_smoke.c $(RUNTIME_LINK) -o $@
 
 $(HASH_SMOKE): $(DEV_C)/hhs_hash216_level0_smoke.c $(ROOT)/hhs_runtime/src/hhs_hash216.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -I$(RUNTIME_INCLUDE) $^ -o $@
 
-$(TYPED_SMOKE): $(DEV_C)/hhs_vm81_typed_status_smoke.c $(DEV_C)/hhs_vm81_native_dev_abi.c $(RUNTIME_C)/hhs_runtime_abi.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(RUNTIME_C) -I$(DEV_C) $^ -lm -o $@
+$(TYPED_SMOKE): $(DEV_C)/hhs_vm81_typed_status_smoke.c $(DEV_C)/hhs_vm81_native_dev_abi.c $(RUNTIME_LIB) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -I$(RUNTIME_C) -I$(RUNTIME_INCLUDE) -I$(DEV_C) \
+		$(DEV_C)/hhs_vm81_typed_status_smoke.c $(DEV_C)/hhs_vm81_native_dev_abi.c \
+		$(RUNTIME_LINK) -o $@
 
 $(RESOLVER_SMOKE): $(DEV_C)/hhs_hash216_vector_resolver_smoke.c $(DEV_C)/hhs_hash216_vector_resolver_v1.c $(ROOT)/hhs_runtime/src/hhs_hash216.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -I$(DEV_C) -I$(RUNTIME_INCLUDE) $^ -o $@
