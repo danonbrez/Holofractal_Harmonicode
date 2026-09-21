@@ -297,11 +297,11 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
     workflow_stop = workflow.index("systemctl stop hhs-guarded-update.timer", claim)
     ownership_witness = workflow.index("HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1", claim)
     git_fetch = workflow.index("git fetch --prune origin main", claim)
-    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", claim)
-    recovery = workflow.index("HHS_EXACT_MAIN_RECOVERY_MODE=1", drift)
-    handoff = workflow.index("PROMOTION_HANDOFF=1", recovery)
+    recovery = workflow.index("HHS_EXACT_MAIN_RECOVERY_MODE=1", git_fetch)
+    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", recovery)
+    handoff = workflow.index("PROMOTION_HANDOFF=1", drift)
     installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
-    assert claim < workflow_stop < ownership_witness < git_fetch < drift < recovery < handoff < installer_call
+    assert claim < workflow_stop < ownership_witness < git_fetch < recovery < drift < handoff < installer_call
     for token in [
         "verify-recovery-state.py",
         "SERVICE_INACTIVE=1",
