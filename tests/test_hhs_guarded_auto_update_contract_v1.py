@@ -30,6 +30,7 @@ def test_shell_and_python_deployment_assets_parse() -> None:
             "python3", "-m", "py_compile",
             str(BUNDLE_TOOL),
             str(DEPLOY / "normalize-service-permissions.py"),
+            str(DEPLOY / "verify-recovery-state.py"),
         ],
         check=True,
     )
@@ -162,6 +163,7 @@ def test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_at
         "runtime_os_bundle_sha",
         "normalize_service_permissions",
         "normalize-service-permissions.py",
+        "verify-recovery-state.py",
     ]
     for token in required:
         assert token in source
@@ -258,7 +260,7 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         "runtime-os-bundle.py",
         "promotion requires exact HHS_RUNTIME_OS_BUNDLE_SHA",
         "HHS_INSTALL_RECOVERY_MODE",
-        "ROLLBACK_HEALTH_FAILED",
+        "verify-recovery-state.py",
         "Recovery mode refused because another listener already owns port 8080",
         "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
         "HHS_ROLLBACK_BOUNDARY_HEALTHY=1",
@@ -293,15 +295,16 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
 
     claim = workflow.index("=== CLAIM EXACT-MAIN UPDATER OWNERSHIP ===")
     workflow_stop = workflow.index("systemctl stop hhs-guarded-update.timer", claim)
-    recovery = workflow.index("HHS_EXACT_MAIN_RECOVERY_MODE=1", claim)
     ownership_witness = workflow.index("HHS_EXACT_MAIN_UPDATER_OWNERSHIP_CLAIMED=1", claim)
     git_fetch = workflow.index("git fetch --prune origin main", claim)
-    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", claim)
-    handoff = workflow.index("PROMOTION_HANDOFF=1", claim)
+    recovery = workflow.index("HHS_EXACT_MAIN_RECOVERY_MODE=1", git_fetch)
+    drift = workflow.index("HHS_HOST_DRIFT_MODE=source", recovery)
+    handoff = workflow.index("PROMOTION_HANDOFF=1", drift)
     installer_call = workflow.index("HHS_INSTALL_ENABLE_PROMOTION=1", handoff)
-    assert claim < workflow_stop < recovery < ownership_witness < git_fetch < drift < handoff < installer_call
+    assert claim < workflow_stop < ownership_witness < git_fetch < recovery < drift < handoff < installer_call
     for token in [
-        "ROLLBACK_HEALTH_FAILED",
+        "verify-recovery-state.py",
+        "SERVICE_INACTIVE=1",
         'HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE"',
         "HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600",
         "EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS",
@@ -310,6 +313,102 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
         "systemctl start hhs-guarded-update.timer",
     ]:
         assert token in workflow
+
+
+def test_recovery_verifier_accepts_only_proven_safe_boundaries() -> None:
+    verifier = DEPLOY / "verify-recovery-state.py"
+    root = "/opt/hhs/app"
+    branch = "main"
+    promoted = "a" * 40
+    interrupted = "b" * 40
+    earlier = "c" * 40
+
+    def receipt(*, phase: str, outcome: str, previous: str, candidate: str, bundle: str) -> dict:
+        return {
+            "schema": "HHS_GUARDED_UPDATE_RECEIPT_V2",
+            "timestamp": "2026-09-21T00:00:00+00:00",
+            "phase": phase,
+            "outcome": outcome,
+            "detail": "test",
+            "repository_root": root,
+            "branch": branch,
+            "previous_sha": previous,
+            "candidate_sha": candidate,
+            "runtime_os_bundle_sha": bundle,
+        }
+
+    def run(rows: list[dict], head: str):
+        with tempfile.TemporaryDirectory(prefix="hhs-recovery-verifier-") as tmp:
+            path = Path(tmp) / "receipts.jsonl"
+            path.write_text(
+                "".join(json.dumps(row, sort_keys=True) + "\n" for row in rows),
+                encoding="utf-8",
+            )
+            return subprocess.run(
+                [
+                    "python3",
+                    str(verifier),
+                    "--receipt-log",
+                    str(path),
+                    "--current-head",
+                    head,
+                    "--repository-root",
+                    root,
+                    "--branch",
+                    branch,
+                ],
+                text=True,
+                capture_output=True,
+            )
+
+    promoted_row = receipt(
+        phase="promotion",
+        outcome="PROMOTED",
+        previous=earlier,
+        candidate=promoted,
+        bundle=promoted,
+    )
+    validated_row = receipt(
+        phase="validation",
+        outcome="VALIDATED",
+        previous=promoted,
+        candidate=interrupted,
+        bundle=interrupted,
+    )
+
+    safe = run([promoted_row, validated_row], promoted)
+    assert safe.returncode == 0, safe.stdout + safe.stderr
+    report = json.loads(safe.stdout)
+    assert report["classification"] == "VALIDATED_PREPROMOTION_INTERRUPTION"
+    assert report["rollback_boundary_sha"] == promoted
+    assert report["prior_promoted_boundary_verified"] is True
+    assert report["service_restart_before_new_promotion_required"] is True
+
+    no_prior_promotion = run([validated_row], promoted)
+    assert no_prior_promotion.returncode != 0
+    assert "HHS_RECOVERY_VALIDATED_PREVIOUS_SHA_NOT_PROVEN_PROMOTED" in no_prior_promotion.stdout
+
+    partially_advanced = run([promoted_row, validated_row], interrupted)
+    assert partially_advanced.returncode != 0
+    assert "HHS_RECOVERY_LIVE_HEAD_NOT_ROLLBACK_BOUNDARY" in partially_advanced.stdout
+
+    mismatch = dict(validated_row)
+    mismatch["runtime_os_bundle_sha"] = "d" * 40
+    bad_bundle = run([promoted_row, mismatch], promoted)
+    assert bad_bundle.returncode != 0
+    assert "HHS_RECOVERY_VALIDATED_CANDIDATE_BUNDLE_IDENTITY_MISMATCH" in bad_bundle.stdout
+
+    rollback_failed = receipt(
+        phase="rollback",
+        outcome="ROLLBACK_HEALTH_FAILED",
+        previous=promoted,
+        candidate=interrupted,
+        bundle=interrupted,
+    )
+    legacy_safe = run([rollback_failed], promoted)
+    assert legacy_safe.returncode == 0
+    legacy_report = json.loads(legacy_safe.stdout)
+    assert legacy_report["classification"] == "ROLLBACK_HEALTH_FAILED"
 
 
 def test_post_compile_uses_guarded_python_interpreter_contract() -> None:
