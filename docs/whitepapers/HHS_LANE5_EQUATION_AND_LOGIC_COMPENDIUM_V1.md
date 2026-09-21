@@ -2,8 +2,9 @@
 
 **Version:** 1.0  
 **Date:** 2026-09-16  
-**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.48  
-**Verified repository baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`
+**Scope:** Formal Corpus Pass 144 / Runtime Pass 219 / Lane 5 through 1.62 documented mathematics  
+**Original verified baseline:** `a8fc0646e21b2a67804468575f364fef1762ec6a`  
+**2026-09-21 documentation base:** `2dec42e192338cd1c1f7bb6d1994511be3bceeff`
 
 ---
 
@@ -952,3 +953,17 @@ exact typed admission
 for canonical authority.
 
 The companion performance paper documents which equations have executable workload evidence and which remain semantic/reference surfaces.
+
+# 18. Lane 5 1.50–1.62 mathematical synthesis
+
+**Status:** documentation synthesis over latest main plus the exact-green stacked mathematical source.
+
+The complete expansion is:
+
+[HHS Lane 5 Mathematical Extensions 1.50–1.62](HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md)
+
+It adds the exact ordered Brahmagupta correction, directed RHS-to-LHS constraint semantics, the fixed-width 5,184-character BigInt transcription law, the shared global Delta denominator, non-cancellable reciprocal phase boundary, exact IEEE palindromic pivot, T64 ordered constructor bijection, typed versus untyped RNA self-ingestion, VM5184 frame factorization, zero-bypass authority topology, thread-lineage scope intersection, the three-surface tripartite constraint, reciprocal 81=1+40*2 phase-debt topology, the +16 mod-72 nine-state lifted orbit, and ordered unresolved-stack Hash216 receipt roots.
+
+The 2026-09-21 connected Wolfram synthesis returned 44/44 PASS. Evidence is stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
+
+Important source-identity note: the stacked source currently uses HHS-T5184-005 for both Lane 5 1.60 and 1.61. This compendium qualifies those references by pass/version and does not silently renumber either source.

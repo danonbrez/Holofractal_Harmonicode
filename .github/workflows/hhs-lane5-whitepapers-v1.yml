@@ -7,6 +7,13 @@ on:
       - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
       - "docs/README.md"
       - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
+      - "tests/docs/test_hhs_lane5_math_synthesis_20260921.py"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.wl"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.output.json"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.receipt.json"
+      - "docs/pass219/APPENDIX_J_LANE5_1_50_1_62_MATHEMATICAL_EXTENSIONS.md"
+      - "docs/HARMONICODE_SPEC_v1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
       - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
       - "formal/lean/HHS_GFE_Field_Quotient.lean"
       - "formal/coq/HHS_GFE_Field_Quotient.v"
@@ -19,6 +26,13 @@ on:
       - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
       - "docs/README.md"
       - "tests/docs/test_hhs_lane5_whitepapers_v1.py"
+      - "tests/docs/test_hhs_lane5_math_synthesis_20260921.py"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.wl"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.output.json"
+      - "evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.receipt.json"
+      - "docs/pass219/APPENDIX_J_LANE5_1_50_1_62_MATHEMATICAL_EXTENSIONS.md"
+      - "docs/HARMONICODE_SPEC_v1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
       - "contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md"
       - "formal/lean/HHS_GFE_Field_Quotient.lean"
       - "formal/coq/HHS_GFE_Field_Quotient.v"
@@ -38,4 +52,7 @@ jobs:
       - name: Install pytest
         run: python -m pip install --disable-pip-version-check pytest
       - name: Validate exact equations, evidence constants, and claim boundaries
-        run: python -m pytest -q tests/docs/test_hhs_lane5_whitepapers_v1.py
+        run: >-
+          python -m pytest -q
+          tests/docs/test_hhs_lane5_whitepapers_v1.py
+          tests/docs/test_hhs_lane5_math_synthesis_20260921.py
