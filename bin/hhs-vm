@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+exec "${PYTHON_BIN:-python3}" -m hhs_runtime.pass220.application_vm_cli "$@"
