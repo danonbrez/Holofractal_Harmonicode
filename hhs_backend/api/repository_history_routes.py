@@ -258,6 +258,24 @@ def _github_commits(page: int, limit: int) -> tuple[list[dict[str, Any]], bool]:
     return commits, len(commits) == limit
 
 
+@router.get("/health")
+def repository_history_health() -> dict[str, Any]:
+    """Return bounded repository-surface liveness without forcing a catalog scan."""
+    cache = _catalog.cache_info()
+    return {
+        "schema": "HHS_REPOSITORY_HISTORY_LIVENESS_V1",
+        "ok": True,
+        "repository": REPOSITORY,
+        "repository_root_available": ROOT_DIR.is_dir(),
+        "catalog_cached": bool(cache.currsize),
+        "catalog_cache_entries": int(cache.currsize),
+        "status_api": "/api/runtime/repository/status",
+        "history_is_supporting_surface": True,
+        "read_only": True,
+        "frontend_is_authority": False,
+    }
+
+
 @router.get("/status")
 def repository_history_status() -> dict[str, Any]:
     catalog = _catalog()

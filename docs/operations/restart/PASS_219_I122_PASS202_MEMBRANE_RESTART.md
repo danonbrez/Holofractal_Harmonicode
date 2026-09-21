@@ -162,3 +162,122 @@ PR `#308` remains validation-only, draft, and unmerged. Canonical main remains u
 This documentation-inclusive commit is the final I122 seal candidate. Only the documentation-affected dedicated I122 exact/synthetic gate must be revalidated unless the seal reveals lineage or source-identity drift.
 
 After final seal success, the next reverse-census target is Pass 201 strictly from the frozen I122 checkpoint.
+
+
+## September 21, 2026 successor reseal — production Runtime OS repair
+
+The exact-main Runtime OS production-composition repair changed the supported
+guarded-deployment successor surfaces after the earlier Pass 220 reseal.
+
+Historical Pass 202 identity remains frozen and unchanged:
+
+- historical installer blob at commit 83b6fd89...:
+  97ab585e3e96122cbaded47e1a436fc0e143bac1
+- historical candidate-validator blob at commit 83b6fd89...:
+  82250c50fa9d20a82d0b957d2637398760b1c416
+
+The current successor-hardened identities are now:
+
+- installer:
+  9832e410e9aadf2cdda6c8ce3bc70cfd9590f18f
+- candidate validator:
+  4b31210535a863f7328040a0c2e0b35399bceb0f
+
+The installer successor adds the production validation-timeout floor while
+preserving larger operator bounds. The validator successor binds the exact
+production gateway, bounded /api/health liveness, /api/interface/status
+public-root proof, exact Runtime OS asset authority, workspace/product/Pass174
+surfaces, and the existing Pass205 continuation evidence.
+
+Repair branch:
+
+- repair/pass202-successor-production-reseal
+- base: ef11047ea64762c875434487362d490930c61775
+
+Repository-visible repair commits:
+
+- d62861aa8f5f15c9edb975036ebbf80599fefa26 — reseal workflow successor
+  installer/validator identities while preserving frozen historical hashes;
+- eeb9db03187240de26474395d0ce11b81c158a06 — reseal the Python membrane and
+  require the new timeout/liveness/interface production fragments;
+- c547ff30188e0c6bafeae12ef6bc7c95a697e550 — bind DigitalOcean PR validation
+  to Pass202 successor-integrity changes;
+- c9f8117a8364cf19b8f33791ad906e3cb387157f — bind Runtime OS production-root
+  validation to the same successor-integrity head;
+- e007468980474831adfd1b806990ac4de203c9ca — bind Full Application IDE
+  validation to the same successor-integrity head.
+
+Acceptance for this reseal requires one PR head to produce:
+
+1. Pass 219 Cumulative Pass 202 Membrane I122 exact job — SUCCESS;
+2. Pass 219 Cumulative Pass 202 Membrane I122 synthetic job — SUCCESS;
+3. DigitalOcean Production Exact Main PR contract — SUCCESS;
+4. Validate HHS Runtime OS Production Root — SUCCESS with production artifact
+   upload reached;
+5. Validate Full Application IDE — SUCCESS.
+
+Only CURRENT_SUCCESSOR_BLOBS and current-successor workflow expectations are
+advanced. HISTORICAL_BLOBS and the historical git-rev-parse proofs remain
+unchanged. No deployment authority, canonical mutation authority, persistence
+authority, Hash72/Hash216 authority, or VM81 mutation authority is added.
+
+After a green exact-head PR, merge this reseal to main and rerun the exact-main
+DigitalOcean promotion/public HTTPS verification. A production promotion is not
+claimed until the exact merged SHA receives a PROMOTED guarded-update receipt
+and the public HTTPS Runtime OS checks complete.
+
+### Repair-forward after first reseal run
+
+The first reseal run proved the historical and current Pass 202 blob identities,
+C/C++ conformance, and no-new-authority checks, then failed inside the inherited
+Pass 209 source membrane:
+
+PASS209_RUNTIME_OS_APPLICATION_DISPATCH_DRIFT:HHS_RUNTIME_OS_SOURCE_ONLY
+
+That token belonged to an older dispatcher representation. The current
+production dispatcher preserves the source-only boundary differently:
+
+- degraded source-only import requires an explicit
+  HHS_ALLOW_C_RUNTIME_DEGRADED_IMPORT or HHS_DISABLE_C_AUTOBUILD request;
+- _SOURCE_ONLY_DEGRADED additionally requires the native runtime library to be
+  absent;
+- full production dispatch imports runtime_os_application_server_full;
+- Pass170 application identity is checked before the full composition is
+  accepted;
+- the delegated source-only module retains
+  HHS_RUNTIME_OS_SOURCE_ONLY_PUBLIC_ROOT, source_only_degraded_mode=true, and
+  frontend_is_authority=false.
+
+Repair commit:
+
+- af07c76b7765435a2ed6fd193afe0813772b4226 — update only the Pass 209
+  read-only membrane source evidence to bind the current explicit degraded
+  dispatcher plus delegated source-only status surface. The frozen Pass 209
+  evidence dictionary and historical Pass 202 identities remain untouched.
+
+The next Pass 202 exact/synthetic run must reach the inherited deployment
+regressions and Pass 203 successor check before this reseal is accepted.
+
+### Current restartable validation checkpoint
+
+- PR: #528
+- branch: repair/pass202-successor-production-reseal
+- current head before this documentation commit:
+  2224e536937e29534143f6156b41c9deb9bc6442
+- compare to main: 0 behind at checkpoint creation
+
+First reseal run:
+- Pass 202 I122 run 35566022367: exact and synthetic reached current-successor
+  identity, C/C++ conformance, and no-new-authority checks successfully, then
+  exposed the inherited Pass209 dispatcher-token drift documented above.
+
+Repair-forward validation launched on 2224e536:
+- Pass 202 I122 exact/synthetic: run 35566166979 — queued;
+- DigitalOcean Production Exact Main PR contract: run 35566167038 — queued;
+- Validate HHS Runtime OS Production Root: run 35566166898 — queued;
+- Validate Full Application IDE: run 35566167020 — queued.
+
+Per the forward-progress policy, the repair is repository-visible and
+restartable without waiting indefinitely for external runners. Do not mark
+PR #528 ready or merge until all four runs are terminal green on the same PR
+head (or a repair-forward successor head).

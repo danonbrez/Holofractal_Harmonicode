@@ -219,6 +219,7 @@ bundle_root = os.environ["BUNDLE_ROOT_VALUE"]
 bundle_tool = os.environ["BUNDLE_TOOL_VALUE"]
 promotion = os.environ["ENABLE_PROMOTION_VALUE"] == "1"
 health_timeout = str(max(600, int(os.environ["PRODUCTION_HEALTH_TIMEOUT_VALUE"])))
+minimum_validate_timeout = 3600
 
 values = {}
 order = []
@@ -233,6 +234,13 @@ for line in lines:
     order.append((key, None))
 
 if promotion:
+    try:
+        current_validate_timeout = int(values.get("HHS_VALIDATE_TIMEOUT_SECONDS", "0"))
+    except ValueError:
+        current_validate_timeout = 0
+    values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(
+        max(minimum_validate_timeout, current_validate_timeout)
+    )
     values["HHS_RUNTIME_OS_BUNDLE_MODE"] = "prebuilt"
     values["HHS_RUNTIME_OS_BUNDLE_ROOT"] = bundle_root
     values["HHS_RUNTIME_OS_BUNDLE_TOOL"] = bundle_tool
@@ -252,6 +260,7 @@ for key, literal in order:
     result.append(f"{key}={values[key]}")
     emitted.add(key)
 for key in (
+    "HHS_VALIDATE_TIMEOUT_SECONDS",
     "HHS_HEALTH_TIMEOUT_SECONDS",
     "HHS_RUNTIME_OS_BUNDLE_MODE",
     "HHS_RUNTIME_OS_BUNDLE_ROOT",

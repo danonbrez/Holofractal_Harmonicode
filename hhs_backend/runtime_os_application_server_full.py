@@ -41,6 +41,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from hhs_backend import pass174_server as pass174
 from hhs_backend.api.pass184_runtime_routes import router as pass184_runtime_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.application_ide_server import app as inherited_app
@@ -480,6 +481,19 @@ PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I16_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I15_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)
+
+# The inherited application layer records its own historical Harmonizer
+# projection in PASS174_BOOT_STATE before this final Runtime OS projection runs.
+# Keep readiness/authority fields untouched, but make the public-interface
+# metadata describe the composition actually served by the production gateway.
+pass174.PASS174_BOOT_STATE.update({
+    "public_interface": "HHS_VISUAL_RUNTIME_OS_WORKSPACE",
+    "public_asset_root": str(RUNTIME_OS_ROOT),
+    "application_ide_is_public_root": False,
+    "runtime_os_is_public_root": True,
+    "legacy_harmonizer_is_public_root": False,
+    "runtime_os_public_mount_name": PUBLIC_MOUNT_NAME,
+})
 
 __all__ = [
     "PASS218_AUTHORITY_ACTION_PREPARE_PATH",

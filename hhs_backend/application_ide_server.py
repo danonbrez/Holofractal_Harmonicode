@@ -109,7 +109,13 @@ async def application_ide_liveness() -> dict[str, Any]:
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
-        "public_interface": "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE",
+        "public_interface": str(
+            boot.get("public_interface") or "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE"
+        ),
+        "public_asset_root": boot.get("public_asset_root"),
+        "legacy_harmonizer_is_public_root": bool(
+            boot.get("legacy_harmonizer_is_public_root", True)
+        ),
         "public_api": "/api/public",
         "public_api_catalog": "/api/public/catalog",
         "mainframe": "/api/runtime/mainframe/status",
@@ -136,22 +142,37 @@ async def application_ide_liveness() -> dict[str, Any]:
     }
 
 
-if not _has_exact_route("/health"):
-    app.add_api_route(
-        "/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-health",
-    )
-if not _has_exact_route("/api/health"):
-    app.add_api_route(
-        "/api/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-api-health",
-    )
+# The inherited canonical /health handler serializes a full emulator, graph,
+# runtime, websocket, and workflow status. That is useful as a diagnostic
+# surface but is not a bounded deployment liveness probe. FastAPI resolves the
+# first matching route, so merely adding a lightweight route when one is absent
+# leaves the historical heavy handler authoritative and can stall guarded
+# candidate validation. Production composition therefore owns these two exact
+# liveness paths and removes only inherited GET/HEAD handlers at the same paths.
+for _liveness_path in ("/health", "/api/health"):
+    app.router.routes = [
+        route
+        for route in app.router.routes
+        if not (
+            str(getattr(route, "path", "")) == _liveness_path
+            and bool({"GET", "HEAD"} & set(getattr(route, "methods", None) or set()))
+        )
+    ]
+
+app.add_api_route(
+    "/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-health",
+)
+app.add_api_route(
+    "/api/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-api-health",
+)
 
 if RUNTIME_CONSOLE_ROOT.is_dir():
     app.mount(

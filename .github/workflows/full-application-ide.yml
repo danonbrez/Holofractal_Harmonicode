@@ -18,6 +18,8 @@ on:
       - 'tests/test_hhs_full_application_ide_root_v1.py'
       - 'tests/test_hhs_repository_history_surface_v1.py'
       - '.github/workflows/full-application-ide.yml'
+      - '.github/workflows/pass219-cumulative-pass202-membrane-i122.yml'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py'
   push:
     branches: [main]
     paths:
@@ -35,6 +37,8 @@ on:
       - 'tests/test_hhs_full_application_ide_root_v1.py'
       - 'tests/test_hhs_repository_history_surface_v1.py'
       - '.github/workflows/full-application-ide.yml'
+      - '.github/workflows/pass219-cumulative-pass202-membrane-i122.yml'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py'
   workflow_dispatch:
 
 permissions:

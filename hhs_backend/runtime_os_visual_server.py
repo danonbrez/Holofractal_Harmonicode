@@ -19,7 +19,16 @@ from hhs_backend.runtime_os_projection import (
 )
 from hhs_backend.visual_server import app as inherited_app
 
-PUBLIC_MOUNT_NAME = DEFAULT_PUBLIC_MOUNT_NAME
+APPLICATION_PUBLIC_MOUNT_NAME = "hhs-runtime-os-application-home"
+_existing_public_mount_names = {
+    str(getattr(route, "name", ""))
+    for route in inherited_app.router.routes
+}
+PUBLIC_MOUNT_NAME = (
+    APPLICATION_PUBLIC_MOUNT_NAME
+    if APPLICATION_PUBLIC_MOUNT_NAME in _existing_public_mount_names
+    else DEFAULT_PUBLIC_MOUNT_NAME
+)
 
 app = inherited_app
 app.title = "HHS Visual Runtime OS"
