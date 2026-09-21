@@ -31,9 +31,9 @@ sh bin/hhs-vm receipts
 sh bin/hhs-vm replay <hash72>
 ```
 
-The inherited Pass 190 shell now reads `HHS_PASS190_CAPABILITY_SECRET` when
-used as a standalone CLI, so a supplied signed capability token can authorize
-the same mutation that the API authorizes.
+The Pass 220 `hhs-vm` wrapper supplies the environment-bound Pass 190
+capability context and preserves shell/JSON argv boundaries without modifying
+the frozen Pass 190 shell source.
 
 Local operator token issuance reuses the inherited Pass 190 HMAC capability
 format and issuer:
