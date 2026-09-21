@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
+import runpy
 import subprocess
 import sys
 
@@ -175,3 +177,92 @@ def test_application_vm_cli_preserves_json_and_capability_boundaries(
     )
     assert completed.returncode == 0, completed.stderr
     assert '"operation_id":"state.counter.advance"' in completed.stdout
+
+
+def test_installed_hhs_vm_wrapper_resolves_env_repository_and_python(
+    tmp_path: Path,
+) -> None:
+    state_root = tmp_path / "installed-state"
+    env_file = tmp_path / "application-vm.env"
+    env_file.write_text(
+        "\n".join(
+            (
+                f"HHS_APPLICATION_VM_REPOSITORY_ROOT={ROOT}",
+                f"HHS_APPLICATION_VM_STATE_ROOT={state_root}",
+                f"HHS_PASS190_DATABASE={state_root / 'authority.sqlite3'}",
+                f"HHS_PASS190_CAPABILITY_SECRET={SECRET}",
+                f"HHS_APPLICATION_VM_PYTHON_BIN={sys.executable}",
+            )
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    env = dict(os.environ)
+    env.pop("PYTHONPATH", None)
+    env["HHS_APPLICATION_VM_ENV_FILE"] = str(env_file)
+    env["HHS_APPLICATION_VM_PYTHON_BIN"] = sys.executable
+
+    completed = subprocess.run(
+        ["sh", "bin/hhs-vm", "status"],
+        cwd=ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["schema"] == "HHS_PASS_220_UBUNTU_APPLICATION_VM_CONTROL_PLANE_V1"
+    assert payload["security_configured"] is True
+    assert payload["frontend_attached"] is False
+
+
+def test_service_template_uses_deployment_python_runtime() -> None:
+    service = (
+        ROOT
+        / "deployment/ubuntu/application_vm/hhs-application-vm.service.template"
+    ).read_text(encoding="utf-8")
+    installer = (
+        ROOT / "deployment/ubuntu/application_vm/install.sh"
+    ).read_text(encoding="utf-8")
+
+    assert "ExecStart=@@PYTHON_BIN@@ -m uvicorn" in service
+    assert "HHS_APPLICATION_VM_PYTHON_BIN=$PYTHON_BIN" in installer
+    assert "systemctl restart hhs-application-vm.service" in installer
+
+
+def test_production_nginx_include_targets_only_tls_runtime_server() -> None:
+    namespace = runpy.run_path(
+        str(
+            ROOT
+            / "deployment/ubuntu/application_vm/configure_production_nginx.py"
+        )
+    )
+    inject = namespace["inject_application_vm_include"]
+    source = """
+server {
+    listen 80;
+    server_name 165.227.220.193;
+    return 308 https://165.227.220.193$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name 165.227.220.193;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+"""
+    updated, changed = inject(source)
+    assert changed is True
+    assert updated.count("include /etc/nginx/snippets/hhs-application-vm.conf;") == 1
+
+    http_block, tls_block = updated.split("server {", 2)[1:]
+    assert "hhs-application-vm.conf" not in http_block
+    assert "hhs-application-vm.conf" in tls_block
+
+    repeated, changed_again = inject(updated)
+    assert changed_again is False
+    assert repeated == updated
