@@ -3,6 +3,11 @@ name: Pass 220 I021 144-Cell Epsilon Lo Shu Closure
 on:
   push:
     paths:
+      - "GNUmakefile"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/include/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.h"
+      - "hhs_runtime/cpp/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.cpp"
+      - "tests/pass220/test_hhs_pass220_g72_epsilon_lo_shu_gear_native_v1.c"
       - "hhs_runtime/hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
       - "tests/pass220/test_hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
       - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
@@ -10,9 +15,16 @@ on:
       - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
       - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
       - "docs/pass220/PASS_220_I021_144CELL_EPSILON_LO_SHU_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I021_144CELL_EPSILON_LO_SHU_CLOSURE_RESTART.md"
+      - "evidence/pass220/i021_144cell_epsilon_lo_shu_closure_v1.receipt.json"
       - ".github/workflows/pass220-i021-144cell-epsilon-lo-shu-closure.yml"
   pull_request:
     paths:
+      - "GNUmakefile"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/include/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.h"
+      - "hhs_runtime/cpp/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.cpp"
+      - "tests/pass220/test_hhs_pass220_g72_epsilon_lo_shu_gear_native_v1.c"
       - "hhs_runtime/hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
       - "tests/pass220/test_hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
       - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
@@ -20,6 +32,8 @@ on:
       - "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py"
       - "tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py"
       - "docs/pass220/PASS_220_I021_144CELL_EPSILON_LO_SHU_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I021_144CELL_EPSILON_LO_SHU_CLOSURE_RESTART.md"
+      - "evidence/pass220/i021_144cell_epsilon_lo_shu_closure_v1.receipt.json"
       - ".github/workflows/pass220-i021-144cell-epsilon-lo-shu-closure.yml"
   workflow_dispatch:
 
@@ -29,16 +43,35 @@ permissions:
 jobs:
   exact-head:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install pytest
-        run: python -m pip install --disable-pip-version-check pytest
-      - name: Compile I021 exact surface
+      - name: Install native and Python test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest
+      - name: Reject algebraic preemption in native G72 source
+        run: |
+          ! grep -Eq '(^|[^[:alnum:]_])(pow|sqrt|exp)[[:space:]]*\(' hhs_runtime/cpp/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.cpp
+          ! grep -Eq '(^|[^[:alnum:]_])(double|float)([^[:alnum:]_]|$)' hhs_runtime/cpp/hhs_pass220_g72_epsilon_lo_shu_gear_1_0.cpp
+      - name: Compile Python I021 exact surface
         run: python -m py_compile hhs_runtime/hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py
+      - name: Build exact ABI with native G72 membrane
+        run: make -f GNUmakefile c-abi
+      - name: Verify native G72 symbols
+        run: |
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_g72_descriptor$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_g72_advance$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_g72_close$'
+      - name: Compile and run native G72 regression
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_g72_epsilon_lo_shu_gear_native_v1.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -o /tmp/pass220_i021_g72_native
+          LD_LIBRARY_PATH="$PWD/hhs_runtime/builds" /tmp/pass220_i021_g72_native
       - name: Run I021 and dependency-scoped inherited tests
         env:
           PYTHONPATH: .
