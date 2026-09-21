@@ -100,9 +100,12 @@ systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
 normalize_production_checkout
 
 # Exact-main takeover normally requires the live service to remain online.
-# Recovery is deliberately narrower: it is allowed only after the immediately
-# preceding guarded transaction recorded ROLLBACK_HEALTH_FAILED and only when
-# no process is already listening on the production port.
+# Recovery remains fail-closed and listener-free. A terminal
+# ROLLBACK_HEALTH_FAILED receipt uses the inherited predecessor-health path.
+# A terminal VALIDATED receipt may use direct promotion only when the receipt
+# belongs to this production repository/branch and the current checkout is
+# exactly the receipt candidate or predecessor. This covers an interrupted
+# validated transaction without pretending a known-broken predecessor is healthy.
 if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service; then
   if [[ "$RECOVERY_MODE" != "1" ]]; then
     echo "hhs.service is not active after prior guarded updater ownership ended; refusing a second promotion." >&2
@@ -115,10 +118,15 @@ if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service
     ss -H -ltnp 'sport = :8080' >&2 || true
     exit 8
   fi
-  RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
+  CURRENT_HEAD_VALUE="$(git -C "$REPO_ROOT" rev-parse HEAD)" \
+  RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" \
+  REPO_ROOT_VALUE="$REPO_ROOT" \
+  RECOVERY_STRATEGY="$(python3 - <<'PY'
 import json
 import os
+import re
 from pathlib import Path
+
 path = Path(os.environ["RECEIPT_LOG_VALUE"])
 if not path.is_file():
     raise SystemExit("Recovery mode requires an existing guarded-update receipt log")
@@ -131,20 +139,62 @@ for line in path.read_text(encoding="utf-8").splitlines():
         records.append(json.loads(line))
     except json.JSONDecodeError:
         continue
-if not records or records[-1].get("outcome") != "ROLLBACK_HEALTH_FAILED":
-    raise SystemExit(f"Recovery mode requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
-print("HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1")
+if not records:
+    raise SystemExit("Recovery mode requires at least one valid guarded-update receipt")
+receipt = records[-1]
+if receipt.get("schema") != "HHS_GUARDED_UPDATE_RECEIPT_V2":
+    raise SystemExit(f"Recovery receipt schema mismatch: {receipt}")
+if receipt.get("branch") != "main":
+    raise SystemExit(f"Recovery receipt branch mismatch: {receipt}")
+if Path(str(receipt.get("repository_root", ""))).resolve() != Path(os.environ["REPO_ROOT_VALUE"]).resolve():
+    raise SystemExit(f"Recovery receipt repository mismatch: {receipt}")
+
+outcome = receipt.get("outcome")
+if outcome == "ROLLBACK_HEALTH_FAILED":
+    print("rollback")
+elif outcome == "VALIDATED":
+    if receipt.get("phase") != "validation":
+        raise SystemExit(f"VALIDATED recovery requires validation phase: {receipt}")
+    candidate = str(receipt.get("candidate_sha", ""))
+    previous = str(receipt.get("previous_sha", ""))
+    current = os.environ["CURRENT_HEAD_VALUE"]
+    sha40 = re.compile(r"^[0-9a-f]{40}$")
+    if not sha40.fullmatch(candidate) or not sha40.fullmatch(previous):
+        raise SystemExit(f"VALIDATED recovery requires exact candidate/previous SHAs: {receipt}")
+    if current not in {candidate, previous}:
+        raise SystemExit(
+            f"VALIDATED recovery checkout mismatch: current={current} candidate={candidate} previous={previous}"
+        )
+    print("validated-direct")
+else:
+    raise SystemExit(
+        f"Recovery mode requires terminal ROLLBACK_HEALTH_FAILED or bounded VALIDATED receipt, found {receipt}"
+    )
 PY
-  echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
-  systemctl reset-failed hhs.service 2>/dev/null || true
-  systemctl start hhs.service
-  if ! wait_for_production_health; then
-    echo "Rollback boundary service failed health after permission normalization; refusing a new promotion." >&2
-    systemctl status hhs.service --no-pager --full >&2 || true
-    journalctl -u hhs.service -n 300 --no-pager >&2 || true
-    exit 8
-  fi
-  echo "HHS_ROLLBACK_BOUNDARY_HEALTHY=1"
+)"
+  case "$RECOVERY_STRATEGY" in
+    rollback)
+      echo "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1"
+      echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
+      systemctl reset-failed hhs.service 2>/dev/null || true
+      systemctl start hhs.service
+      if ! wait_for_production_health; then
+        echo "Rollback boundary service failed health after permission normalization; refusing a new promotion." >&2
+        systemctl status hhs.service --no-pager --full >&2 || true
+        journalctl -u hhs.service -n 300 --no-pager >&2 || true
+        exit 8
+      fi
+      echo "HHS_ROLLBACK_BOUNDARY_HEALTHY=1"
+      ;;
+    validated-direct)
+      echo "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1"
+      echo "HHS_GUARDED_UPDATE_VALIDATED_DIRECT_RECOVERY=1"
+      ;;
+    *)
+      echo "Unexpected guarded recovery strategy: $RECOVERY_STRATEGY" >&2
+      exit 8
+      ;;
+  esac
 elif [[ "$ENABLE_PROMOTION" == "1" ]]; then
   if ! wait_for_production_health; then
     echo "Existing production service is active but unhealthy; refusing promotion." >&2
