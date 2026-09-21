@@ -137,6 +137,41 @@ def test_zero_background_reduces_to_phase_only_i023_path():
     assert transfers[1].background_h2 == 0
 
 
+def test_dark_hash_source_is_explicit_receipt_bound_not_free_function():
+    phases = (
+        make_phase_input(
+            0,
+            1,
+            1,
+            PHASE_A,
+            dark_density_source=Fraction(2, 7),
+        ),
+        make_phase_input(
+            1,
+            1,
+            1,
+            PHASE_B,
+            dark_density_source=0,
+        ),
+    )
+    transfers, witness = derive_background_transfer_receipts(
+        phases,
+        _anchors(
+            rho_b_ref=0,
+            rho_r_ref=0,
+            rho_d_ref=0,
+            gravity_coupling=1,
+            curvature_sign=0,
+        ),
+        tau=1,
+        c0=1,
+    )
+    assert transfers[0].background_h2 == 0
+    assert transfers[1].background_h2 == Fraction(2, 7)
+    assert witness["phase_receipts"] == [PHASE_A, PHASE_B]
+    assert witness["free_background_function_authority"] is False
+
+
 def test_background_driven_trajectory_accepts_symbolic_background_receipts():
     result = build_background_driven_trajectory(
         _phases()[:2],
@@ -183,6 +218,8 @@ def test_contract_forbids_free_background_and_inverse_authority():
     descriptor = background_contract_descriptor()
     assert "rho_b,n+1" in descriptor["baryon_continuity"]
     assert "rho_D,n+1" in descriptor["dark_continuity"]
+    assert "+J_D,n" in descriptor["dark_continuity"]
+    assert "committed phase/Hash receipt" in descriptor["dark_source_rule"]
     assert "rho_r,n+1" in descriptor["radiation_continuity"]
     assert descriptor["curvature_reference"] == (
         "K_ref=-k*c0^2 at a_ref=1"
