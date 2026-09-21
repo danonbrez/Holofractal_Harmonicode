@@ -259,6 +259,9 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         "promotion requires exact HHS_RUNTIME_OS_BUNDLE_SHA",
         "HHS_INSTALL_RECOVERY_MODE",
         "ROLLBACK_HEALTH_FAILED",
+        "VALIDATED",
+        "HHS_GUARDED_UPDATE_VALIDATED_DIRECT_RECOVERY=1",
+        "VALIDATED recovery checkout mismatch",
         "Recovery mode refused because another listener already owns port 8080",
         "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
         "HHS_ROLLBACK_BOUNDARY_HEALTHY=1",
@@ -302,6 +305,9 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
     assert claim < workflow_stop < recovery < ownership_witness < git_fetch < drift < handoff < installer_call
     for token in [
         "ROLLBACK_HEALTH_FAILED",
+        "VALIDATED",
+        "HHS_EXACT_MAIN_VALIDATED_DIRECT_RECOVERY_RECEIPT_VERIFIED=1",
+        "VALIDATED recovery checkout mismatch",
         'HHS_INSTALL_RECOVERY_MODE="$RECOVERY_MODE"',
         "HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600",
         "EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS",
