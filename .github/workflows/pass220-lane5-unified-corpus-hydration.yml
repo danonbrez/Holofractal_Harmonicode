@@ -39,7 +39,10 @@ jobs:
           python-version: '3.12'
 
       - name: Install bounded test dependencies
-        run: python -m pip install --disable-pip-version-check pytest pytest-asyncio fastapi pydantic httpx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --disable-pip-version-check pytest pytest-asyncio fastapi pydantic httpx
 
       - name: Compile new orchestration surfaces
         run: |
