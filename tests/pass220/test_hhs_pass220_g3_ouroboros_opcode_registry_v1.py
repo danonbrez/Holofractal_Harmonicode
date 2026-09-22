@@ -1,6 +1,10 @@
 from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
     AUTHORITY_SCOPE,
+    MANDATORY_CONSTRUCTOR_CLASSES,
+    MANDATORY_LANE5_WITNESSES,
+    PIPELINE_STAGES,
     build_g3_opcode_registry,
+    build_lane5_g3_pipeline_contract,
     resolve_g3_opcode,
 )
 
@@ -25,13 +29,55 @@ def test_each_g3_opcode_has_distinct_root_and_witness():
     assert all(entry["compiler_may_synthesize"] is False for entry in entries)
 
 
-def test_ieee_and_bigint_authority_boundaries_are_explicit():
+def test_lane5_full_648_to_hash216_to_egress_pipeline_is_mandatory():
+    pipeline = build_lane5_g3_pipeline_contract()
+    assert pipeline["ingress_bytes"] == 648
+    assert pipeline["ingress_bits"] == 5184
+    assert pipeline["vm81_geometry"] == "81X64"
+    assert pipeline["hash72_geometry"] == "72X72"
+    assert pipeline["holo4_lane_count"] == 4
+    assert pipeline["g3_is_fifth_lane"] is False
+    assert pipeline["g3_is_parallel_service"] is False
+    assert pipeline["g3_role"] == "LANE5_CANDIDATE_MICROCODE_PROFILE"
+    assert pipeline["stages"] == list(PIPELINE_STAGES)
+    assert pipeline["stages"][0] == "RAW648_X86_64_INGRESS"
+    assert "HASH216_SELF_SOLVING_VALIDATION" in pipeline["stages"]
+    assert pipeline["stages"][-1] == "RAW648_X86_64_EGRESS"
+    assert pipeline["external_egress_requires_hash216_self_solving_validation"] is True
+    assert pipeline["candidate_ieee_egress_is_external_emission"] is False
+
+
+def test_successful_pr_benchmarks_and_proofs_are_mandatory_lane5_constructors():
+    pipeline = build_lane5_g3_pipeline_contract()
+    required = set(MANDATORY_CONSTRUCTOR_CLASSES)
+    assert pipeline["successful_pr_proof_benchmark_evidence_is_mandatory"] is True
+    assert set(pipeline["mandatory_constructor_classes"]) == required
+    assert {
+        "GREEN_MERGED_PR_IMPLEMENTATION",
+        "GREEN_EXACT_HEAD_WORKFLOW",
+        "CANONICAL_CONTRACT",
+        "CANONICAL_WHITEPAPER_PROOF",
+        "FORMAL_PROOF_RECEIPT",
+        "SUCCESSFUL_BENCHMARK_RECEIPT",
+        "REGISTERED_REPOSITORY_SERVICE",
+        "COMMIT_MERGE_LINEAGE",
+        "HASH216_VALIDATED_COMPOSITION",
+    } <= required
+    assert pipeline["mergeable_branch_evidence_visibility"] == (
+        "LANE5_BIOS_CANDIDATE_KNOWLEDGE"
+    )
+    assert pipeline["unmerged_evidence_canonical_authority"] is False
+
+
+def test_ieee_bigint_and_authority_boundaries_are_explicit():
     entries = build_g3_opcode_registry()["entries"]
     assert all(entry["ieee_is_boundary_only"] is True for entry in entries)
     assert all(
         entry["input_schema"]["floating_arithmetic_authority"] is False
         for entry in entries
     )
+    assert all(entry["input_schema"]["raw_ingress_bytes"] == 648 for entry in entries)
+    assert all(entry["input_schema"]["hydrated_width_bits"] == 5184 for entry in entries)
     assert all(
         entry["bigint_physical_5184_character_offset_resolved"] is False
         for entry in entries
@@ -41,20 +87,35 @@ def test_ieee_and_bigint_authority_boundaries_are_explicit():
         for entry in entries
     )
     assert all(
-        entry["bigint_native_cell_is_complete_serialized_object"] is False
-        for entry in entries
-    )
-    assert all(
         entry["authoritative_bigint_exactness_requirement"]
         == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
         for entry in entries
     )
+    assert all(entry["mutation_class"] == "CANDIDATE_ONLY_G3_VM81_TRANSITION" for entry in entries)
+    assert all(entry["candidate_ieee_egress_is_external_emission"] is False for entry in entries)
+
+
+def test_every_opcode_requires_lane5_holo4_green_constructor_context():
+    entries = build_g3_opcode_registry()["entries"]
+    required = set(MANDATORY_LANE5_WITNESSES)
+    for entry in entries:
+        assert required <= set(entry["pre_state_witness_requirements"])
+        assert entry["lane5_pipeline_required"] is True
+        assert entry["holo4_four_lane_hydration_required"] is True
+        assert entry["four_lane_hydration_relation"] == (
+            "MANDATORY_COORDINATED_TYPED_VIEW_SINGLE_VM81_CANDIDATE"
+        )
+        assert entry["successful_history_relation"] == (
+            "GREEN_PR_PROOF_BENCHMARKS_ARE_MANDATORY_CONSTRUCTORS"
+        )
+        assert entry["external_egress_requirement"] == (
+            "HASH216_SELF_SOLVING_VALIDATION_THEN_INVERSE_EGRESS_COMPILATION"
+        )
 
 
 def test_fused_opcode_requires_all_constituent_witnesses():
     fused = build_g3_opcode_registry()["entries"][-1]
     required = fused["pre_state_witness_requirements"]
-    assert len(required) == 11
     assert "G3_P4_C4_BOUND_NO_P2_BRANCH" in required
     assert "G3_C5_CONSTRAINT_BOUND" in required
     assert "G3_C7_CONSTRAINT_BOUND" in required
@@ -64,26 +125,39 @@ def test_fused_opcode_requires_all_constituent_witnesses():
     assert "IEEE_OUT_EQ_IEEE_IN_RAW_BITS" in required
 
 
-def test_resolver_requires_root_authority_lease_and_lane():
+def test_resolver_requires_root_authority_lease_and_complete_lane5_context():
     binding = build_g3_opcode_registry()["entries"][0]
     good = {
         "binding_root_hash72": binding["binding_root_hash72"],
         "authority_scope": AUTHORITY_SCOPE,
         "lease_status": "ACTIVE_VALIDATED",
         "vm81_lane_binding_status": "BOUND_WITNESSED",
+        "raw648_hydration_status": "I149_BOUND_WITNESSED",
+        "holo4_status": "FOUR_LANES_PREPARED",
+        "lane5_bios_status": "MEDIATED",
+        "constructor_graph_status": "MANDATORY_GREEN_HISTORY_BOUND",
     }
     resolved = resolve_g3_opcode(binding["native_opcode"], good)
     assert resolved["numeric_opcode"] == 24
     assert resolved["witness_class"] == "W_G3_IEEE_INGRESS"
+    assert resolved["canonical_mutation_authority"] is False
+    assert resolved["external_egress_authority"] is False
+    assert resolved["decision"] == (
+        "RESOLVED_FOR_LANE5_MEDIATED_VM81_CANDIDATE_MICROCODE"
+    )
 
-    for key, bad in (
-        ("binding_root_hash72", "bad"),
-        ("authority_scope", "bad"),
-        ("lease_status", "bad"),
-        ("vm81_lane_binding_status", "bad"),
+    for key in (
+        "binding_root_hash72",
+        "authority_scope",
+        "lease_status",
+        "vm81_lane_binding_status",
+        "raw648_hydration_status",
+        "holo4_status",
+        "lane5_bios_status",
+        "constructor_graph_status",
     ):
         request = dict(good)
-        request[key] = bad
+        request[key] = "bad"
         try:
             resolve_g3_opcode(binding["native_opcode"], request)
         except ValueError:
@@ -92,17 +166,12 @@ def test_resolver_requires_root_authority_lease_and_lane():
             raise AssertionError(f"{key} shortcut unexpectedly resolved")
 
 
-def test_multimodal_and_four_lane_surfaces_do_not_gain_authority():
+def test_multimodal_and_four_lane_surfaces_are_lane5_dimensions_not_authorities():
     registry = build_g3_opcode_registry()
-    assert registry["lane5_bios_relation"] == "OUROBOROS_MANIFOLD_ALGORITHM"
+    assert registry["lane5_bios_relation"] == "MANDATORY_GLOBAL_5184_CONSTRUCTOR_GRAPH"
     assert registry["four_lane_hydration_authority"] is False
     assert registry["graphics_projection_authority"] is False
     for entry in registry["entries"]:
-        assert (
-            entry["four_lane_hydration_relation"]
-            == "COORDINATED_TYPED_VIEW_NO_INDEPENDENT_CANONICAL_AUTHORITY"
-        )
-        assert (
-            entry["multimodal_geometry_relation"]
-            == "PLATONIC_COLOR_WHEEL_SPRITE_PROJECTION_DOWNSTREAM_ONLY"
+        assert entry["multimodal_geometry_relation"] == (
+            "LANE5_HASH216_KNOWLEDGE_GRAPH_HYDRATION_DIMENSION"
         )
