@@ -114,6 +114,18 @@ _ROWS = (
 
 
 def build_lane5_g3_pipeline_contract() -> dict[str, Any]:
+    constructor_graph = {
+        "schema": "HHS_PASS_220_I028_MANDATORY_CONSTRUCTOR_GRAPH_V1",
+        "classes": list(MANDATORY_CONSTRUCTOR_CLASSES),
+        "green_evidence_required": True,
+        "dependency_frontier_reuse_required": True,
+        "mergeable_branch_visibility": "CANDIDATE_KNOWLEDGE_ONLY",
+        "unmerged_canonical_authority": False,
+    }
+    constructor_graph["constructor_graph_root_hash72"] = product_root(
+        "pass220_i028_mandatory_constructor_graph_v1",
+        stable(constructor_graph),
+    )
     body = {
         "schema": PIPELINE_SCHEMA,
         "stages": list(PIPELINE_STAGES),
@@ -126,6 +138,10 @@ def build_lane5_g3_pipeline_contract() -> dict[str, Any]:
         "g3_is_parallel_service": False,
         "g3_role": "LANE5_CANDIDATE_MICROCODE_PROFILE",
         "mandatory_constructor_classes": list(MANDATORY_CONSTRUCTOR_CLASSES),
+        "mandatory_constructor_graph": stable(constructor_graph),
+        "mandatory_constructor_graph_root_hash72": (
+            constructor_graph["constructor_graph_root_hash72"]
+        ),
         "successful_pr_proof_benchmark_evidence_is_mandatory": True,
         "mergeable_branch_evidence_visibility": "LANE5_BIOS_CANDIDATE_KNOWLEDGE",
         "unmerged_evidence_canonical_authority": False,
@@ -274,13 +290,25 @@ def resolve_g3_opcode(opcode: str, request: dict[str, Any]) -> dict[str, Any]:
         if request.get(key) != expected:
             raise ValueError(f"REJECT_G3_{key.upper()}")
 
+    pipeline = registry["pipeline"]
+    if request.get("lane5_pipeline_root_hash72") != pipeline["pipeline_root_hash72"]:
+        raise ValueError("REJECT_G3_LANE5_PIPELINE_ROOT_MISMATCH")
+    if (
+        request.get("constructor_graph_root_hash72")
+        != pipeline["mandatory_constructor_graph_root_hash72"]
+    ):
+        raise ValueError("REJECT_G3_CONSTRUCTOR_GRAPH_ROOT_MISMATCH")
+
     return stable({
         "decision": "RESOLVED_FOR_LANE5_MEDIATED_VM81_CANDIDATE_MICROCODE",
         "native_opcode": opcode,
         "numeric_opcode": binding["numeric_opcode"],
         "binding_root_hash72": binding["binding_root_hash72"],
         "witness_class": binding["witness_class"],
-        "lane5_pipeline_root_hash72": registry["pipeline"]["pipeline_root_hash72"],
+        "lane5_pipeline_root_hash72": pipeline["pipeline_root_hash72"],
+        "constructor_graph_root_hash72": (
+            pipeline["mandatory_constructor_graph_root_hash72"]
+        ),
         "canonical_mutation_authority": False,
         "external_egress_authority": False,
         "invocation_not_executed": True,
