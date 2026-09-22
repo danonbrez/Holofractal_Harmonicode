@@ -1,0 +1,134 @@
+name: Pass 220 I024 Background Continuity
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_background_continuity_v1.py"
+      - "tests/pass220/test_hhs_pass220_background_continuity_v1.py"
+      - "hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "hhs_runtime/hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "docs/pass220/PASS_220_I024_BACKGROUND_CONTINUITY.md"
+      - "evidence/pass220/i024_background_continuity_wolfram_20260921_v2.wl"
+      - "evidence/pass220/i024_background_continuity_wolfram_20260921_v2.output.json"
+      - "docs/operations/restart/PASS_220_I024_BACKGROUND_CONTINUITY_RESTART.md"
+      - ".github/workflows/pass220-i024-background-continuity.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_background_continuity_v1.py"
+      - "tests/pass220/test_hhs_pass220_background_continuity_v1.py"
+      - "hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "hhs_runtime/hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "docs/pass220/PASS_220_I024_BACKGROUND_CONTINUITY.md"
+      - "evidence/pass220/i024_background_continuity_wolfram_20260921_v2.wl"
+      - "evidence/pass220/i024_background_continuity_wolfram_20260921_v2.output.json"
+      - "docs/operations/restart/PASS_220_I024_BACKGROUND_CONTINUITY_RESTART.md"
+      - ".github/workflows/pass220-i024-background-continuity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Verify exact-authority AST
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          paths = [
+              Path("hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py"),
+              Path("hhs_runtime/hhs_pass220_background_continuity_v1.py"),
+          ]
+          forbidden_imports = {
+              "time", "datetime", "decimal", "numpy", "scipy"
+          }
+          forbidden_calls = {
+              "float", "pow", "sqrt", "exp", "eval", "exec",
+              "perf_counter", "monotonic", "process_time", "time_ns",
+          }
+          violations = []
+
+          for path in paths:
+              tree = ast.parse(
+                  path.read_text(encoding="utf-8"), filename=str(path)
+              )
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          root = alias.name.split(".")[0]
+                          if root in forbidden_imports:
+                              violations.append(
+                                  f"{path}: forbidden import {alias.name} line {node.lineno}"
+                              )
+                  elif isinstance(node, ast.ImportFrom):
+                      root = (node.module or "").split(".")[0]
+                      if root in forbidden_imports:
+                          violations.append(
+                              f"{path}: forbidden import-from {node.module} line {node.lineno}"
+                          )
+                      if root == "math":
+                          imported = {alias.name for alias in node.names}
+                          if imported != {"isqrt"}:
+                              violations.append(
+                                  f"{path}: math import must be exact isqrt only line "
+                                  f"{node.lineno}: {sorted(imported)}"
+                              )
+                  elif isinstance(node, ast.Call):
+                      func = node.func
+                      if isinstance(func, ast.Name) and func.id in forbidden_calls:
+                          violations.append(
+                              f"{path}: forbidden call {func.id} line {node.lineno}"
+                          )
+                      elif isinstance(func, ast.Attribute):
+                          if func.attr in forbidden_calls:
+                              violations.append(
+                                  f"{path}: forbidden attribute call "
+                                  f"{ast.unparse(func)} line {node.lineno}"
+                              )
+
+          if violations:
+              raise SystemExit("\n".join(violations))
+          print("HHS_I024_AST_AUTHORITY_SCAN=PASS")
+          PY
+      - name: Compile exact I022-I024 surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass220_cosmological_clock_cadence_v1.py
+          python -m py_compile hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py
+          python -m py_compile hhs_runtime/hhs_pass220_background_continuity_v1.py
+      - name: Verify Wolfram continuity receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("evidence/pass220/i024_background_continuity_wolfram_20260921_v2.output.json")
+          data = json.loads(p.read_text())
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 10
+          assert data["failed"] == []
+          assert data["baryon_step_ratio"] == "E^(-3*dEll)"
+          assert data["dark_zero_source_step_ratio"] == "E^(-3*dEll)"
+          assert data["radiation_step_ratio"] == "E^(-4*dEll)"
+          assert data["curvature_step_ratio"] == "E^(-2*dEll)"
+          PY
+      - name: Run I024 and inherited exact regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_background_continuity_v1.py
+          tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py
+          tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py

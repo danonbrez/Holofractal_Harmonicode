@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_220_I024_COSMO_BACKGROUND_CONTINUITY_WOLFRAM_20260921_V2",
+  "status": "PASS",
+  "check_count": 10,
+  "pass_count": 10,
+  "failed": [],
+  "background_rule": "-((cLight^2*curvK)/E^(2*ell)) + (8*gN*Pi*(rhoB0/E^(3*ell) + rhoD0/E^(3*ell) + rhoR0/E^(4*ell)))/3",
+  "baryon_step_ratio": "E^(-3*dEll)",
+  "dark_sourced_step": "jD + E^(-3*dEll - 3*ell)*rhoD0",
+  "dark_zero_source_step_ratio": "E^(-3*dEll)",
+  "radiation_step_ratio": "E^(-4*dEll)",
+  "curvature_step_ratio": "E^(-2*dEll)",
+  "checks": {
+    "baryon_continuity_invariant": true,
+    "radiation_continuity_invariant": true,
+    "dark_zero_source_invariant": true,
+    "baryon_step_ratio": true,
+    "dark_sourced_step_law": true,
+    "dark_zero_source_step_ratio": true,
+    "radiation_step_ratio": true,
+    "curvature_step_ratio": true,
+    "background_explicit_no_free_function": true,
+    "friedmann_background_explicit": true
+  }
+}
