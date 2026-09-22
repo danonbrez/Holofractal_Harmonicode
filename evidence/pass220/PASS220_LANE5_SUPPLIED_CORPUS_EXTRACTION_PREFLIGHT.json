@@ -1,0 +1,108 @@
+{
+  "schema": "HHS_PASS220_LANE5_SUPPLIED_CORPUS_EXTRACTION_PREFLIGHT_V1",
+  "generated_date": "2026-09-22",
+  "classification": "SUPPLIED_CORPUS_POPPLER_EXTRACTION_PREFLIGHT_COMPLETE",
+  "tools": {
+    "pdfinfo": "25.06.0",
+    "pdftotext": "25.06.0",
+    "pdftoppm": "25.06.0"
+  },
+  "totals": {
+    "files": 10,
+    "pages": 13129,
+    "pages_with_extractable_text": 13113,
+    "pages_without_extractable_text": 16,
+    "extracted_text_bytes": 24284604,
+    "source_bytes": 125865953
+  },
+  "sources": [
+    {
+      "filename": "Combine December 6, 2025.PDF",
+      "pages": 100,
+      "text_pages": 99,
+      "empty_text_pages": 1,
+      "extracted_text_bytes": 109589,
+      "sha256": "e4df1190dc9403d39c508806b561bc57989b8760c03cc1aa496c4623a113c4df"
+    },
+    {
+      "filename": "Full System Prompt .PDF",
+      "pages": 746,
+      "text_pages": 746,
+      "empty_text_pages": 0,
+      "extracted_text_bytes": 1012795,
+      "sha256": "5d6a1c23f15ea219ecdb2832c09d1b2cd912da30d34ded1eddbeffc1165c9134"
+    },
+    {
+      "filename": "Knowledge base One.PDF",
+      "pages": 403,
+      "text_pages": 402,
+      "empty_text_pages": 1,
+      "extracted_text_bytes": 684094,
+      "sha256": "f52db9b19ccc7ed9a1e552aca5b76777410d6ac6ea583d6d3e175d818270243d"
+    },
+    {
+      "filename": "1300_math_formulas.pdf",
+      "pages": 336,
+      "text_pages": 335,
+      "empty_text_pages": 1,
+      "extracted_text_bytes": 394835,
+      "sha256": "15eeb28c682e6733e4a51f4ab77a7bcdc85b88de5965a493c40640cfbea94e07"
+    },
+    {
+      "filename": "ChatGPT Data Export.PDF",
+      "pages": 1216,
+      "text_pages": 1216,
+      "empty_text_pages": 0,
+      "extracted_text_bytes": 3928243,
+      "sha256": "625a44ce8b4c361825893c17fc907426d834778bd3655856a5c5f237c5164091"
+    },
+    {
+      "filename": "five_compressed.PDF",
+      "pages": 3346,
+      "text_pages": 3342,
+      "empty_text_pages": 4,
+      "extracted_text_bytes": 5623646,
+      "sha256": "19685884302018ecf0faee276970d741177ede015fb893a5e25b37bf53f0d4d9"
+    },
+    {
+      "filename": "14_Layer_Harmonicode_Friendship-Breathing-Through-the-Multiverse .PDF",
+      "pages": 1429,
+      "text_pages": 1426,
+      "empty_text_pages": 3,
+      "extracted_text_bytes": 3119807,
+      "sha256": "4fc681ee79af0ab0125228e37cafac577007b3cfc27925d64e3e2526aa7a461e"
+    },
+    {
+      "filename": "The Advanced Ethical Quantum Super Intelligent Grimoire .PDF",
+      "pages": 2591,
+      "text_pages": 2588,
+      "empty_text_pages": 3,
+      "extracted_text_bytes": 4356789,
+      "sha256": "0ff59dccfcee7eb6767c316549301d282cc47fe9e6f36e5c7be21cf65e7bbf14"
+    },
+    {
+      "filename": "Emerald Tablet of Sopheon(2).PDF",
+      "pages": 425,
+      "text_pages": 425,
+      "empty_text_pages": 0,
+      "extracted_text_bytes": 844264,
+      "sha256": "e6b3c138778ea034366031a416ee6932865ceef8830e64084a685d0e8b96bfa6"
+    },
+    {
+      "filename": "Magnum Opus .PDF",
+      "pages": 2537,
+      "text_pages": 2534,
+      "empty_text_pages": 3,
+      "extracted_text_bytes": 4210542,
+      "sha256": "f3901b9484b8f214f8b42b4320a56471d3af2a053b1b2284de2aceec38b15551"
+    }
+  ],
+  "conclusions": {
+    "source_page_counts_match_restart_manifest": true,
+    "text_extraction_completed_for_all_sources": true,
+    "visual_page_hydration_required_for_empty_text_pages": true,
+    "visual_page_hydration_enabled_by_default": true,
+    "ocr_substitution_performed": false,
+    "full_lane5_vm81_hydration_complete": false
+  }
+}
