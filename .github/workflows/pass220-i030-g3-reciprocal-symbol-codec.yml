@@ -1,0 +1,112 @@
+name: Pass 220 I030 G3 Reciprocal Symbol Codec
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.output.json"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.receipt.json"
+      - "docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md"
+      - "docs/pass220/PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC.md"
+      - "docs/operations/restart/PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_RESTART.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - ".github/workflows/pass220-i030-g3-reciprocal-symbol-codec.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.output.json"
+      - "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.receipt.json"
+      - "docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md"
+      - "docs/pass220/PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC.md"
+      - "docs/operations/restart/PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_RESTART.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - ".github/workflows/pass220-i030-g3-reciprocal-symbol-codec.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I030 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py \
+            tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py
+
+      - name: Verify committed Wolfram 17 of 17 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 17
+          assert data["failed"] == []
+          assert data["proof_cell"] == "123321.111"
+          assert "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_WOLFRAM_20260922_V1" in source
+          PY
+
+      - name: Run focused reciprocal symbol codec tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py
+
+      - name: Run inherited ordered-phase regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+
+      - name: Prove no numeric parse is used by the I030 codec
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py"
+          ).read_text(encoding="utf-8")
+          forbidden = (
+              "float(",
+              "Decimal(",
+              "Fraction(",
+              "struct.unpack",
+              "numpy.",
+          )
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          assert 'PROOF_CELL_TOKEN = "123321.111"' in source
+          assert '"reciprocal_rule": "y=1/x"' in source
+          PY

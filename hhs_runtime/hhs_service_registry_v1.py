@@ -4333,6 +4333,59 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.g3_reciprocal_symbol_codec.self_test",
+        module="hhs_runtime.hhs_pass220_g3_reciprocal_symbol_codec_v1",
+        function="reciprocal_symbol_codec_self_test",
+        service_type="pass220_exact_reciprocal_symbol_codec",
+        description=(
+            "Validate the exact G3 reciprocal symbol-string carrier: opaque "
+            "123321.111 proof cell, ordered x/y zero lock, y=1/x reciprocal "
+            "return phase, exact UTF-8 forward/reverse byte paths, Arabic "
+            "digit proof-cell lifts, and bounded single-path repair without "
+            "numeric parsing or canonical mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_WITNESS_V1",
+        ],
+        validators=[
+            "validate_reciprocal_symbol_codec",
+            "reciprocal_symbol_codec_self_test",
+        ],
+        guards=[
+            "ordered_phase_constructors_preserved",
+            "typed_zero_phase_lock_preserved",
+            "reciprocal_phase_involution",
+            "symbol_string_round_trip_exact",
+            "numeric_parse_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_RECIPROCAL_SYMBOL_PATH_MISMATCH",
+            "REJECT_PHASE_ZERO_LOCK_MISMATCH",
+            "REJECT_SYMBOL_PROVENANCE_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_RECIPROCAL_SYMBOL_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_UTF8_STRING_EXACT_ROUNDTRIP_AND_SINGLE_PATH_REPAIR"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."
