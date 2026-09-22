@@ -329,6 +329,20 @@ typedef struct {
     uint8_t rejected;
 } HHSG3State;
 
+/* G^3 is candidate microcode inside Lane 5, never an independent execution
+ * island.  These bits are supplied by the enclosing hydrated 648-byte/5184,
+ * Holo4, constructor-history and Hash216 pipeline.  They do not grant
+ * canonical mutation, Hash72 minting, Hash216 minting or persistence.
+ */
+typedef struct {
+    uint8_t raw648_hydrated;
+    uint8_t holo4_four_lane_prepared;
+    uint8_t lane5_mediated;
+    uint8_t mandatory_green_constructor_graph_bound;
+    uint8_t lane5_no_mutation_authority;
+    uint8_t external_egress_requires_hash216_validation;
+} HHSG3Lane5Context;
+
 typedef struct {
     // Canonical raw carrier: 81 x 64-bit x86_64-aligned words = 5184 bits.
     uint64_t cells[GRID_SIZE];
@@ -367,6 +381,7 @@ typedef struct {
        is intentionally not represented here; only the Lo Shu value-1 semantic
        register identity is canonical at this layer. */
     HHSG3State g3;
+    HHSG3Lane5Context g3_lane5;
 } VM81;
 
 _Static_assert(sizeof(((VM81 *)0)->cells) == VM81_FRAME_BYTES,
@@ -1010,7 +1025,39 @@ static int g3_reject(VM81 *vm) {
     return 0;
 }
 
+static void g3_bind_lane5_context(
+    VM81 *vm,
+    uint8_t raw648_hydrated,
+    uint8_t holo4_four_lane_prepared,
+    uint8_t lane5_mediated,
+    uint8_t mandatory_green_constructor_graph_bound,
+    uint8_t lane5_no_mutation_authority,
+    uint8_t external_egress_requires_hash216_validation
+) {
+    vm->g3_lane5.raw648_hydrated = raw648_hydrated ? 1u : 0u;
+    vm->g3_lane5.holo4_four_lane_prepared =
+        holo4_four_lane_prepared ? 1u : 0u;
+    vm->g3_lane5.lane5_mediated = lane5_mediated ? 1u : 0u;
+    vm->g3_lane5.mandatory_green_constructor_graph_bound =
+        mandatory_green_constructor_graph_bound ? 1u : 0u;
+    vm->g3_lane5.lane5_no_mutation_authority =
+        lane5_no_mutation_authority ? 1u : 0u;
+    vm->g3_lane5.external_egress_requires_hash216_validation =
+        external_egress_requires_hash216_validation ? 1u : 0u;
+}
+
+static int g3_lane5_context_valid(const VM81 *vm) {
+    return vm->g3_lane5.raw648_hydrated == 1u &&
+           vm->g3_lane5.holo4_four_lane_prepared == 1u &&
+           vm->g3_lane5.lane5_mediated == 1u &&
+           vm->g3_lane5.mandatory_green_constructor_graph_bound == 1u &&
+           vm->g3_lane5.lane5_no_mutation_authority == 1u &&
+           vm->g3_lane5.external_egress_requires_hash216_validation == 1u;
+}
+
 static int g3_ieee_ingress(VM81 *vm, uint64_t raw_bits) {
+    if (!g3_lane5_context_valid(vm))
+        return g3_reject(vm);
     memset(&vm->g3, 0, sizeof(vm->g3));
     vm->g3.ieee_in_bits = raw_bits;
     vm->g3.stage_mask = G3_STAGE_IEEE_INGRESS;
@@ -1101,7 +1148,11 @@ static int g3_rna_reverse(VM81 *vm) {
 }
 
 static int g3_ieee_egress(VM81 *vm) {
-    if (!g3_has(vm, G3_STAGE_RNA_REVERSE))
+    /* This is a candidate reverse-compilation identity witness only.
+       External emission remains outside this kernel and requires the enclosing
+       Lane 5 Hash216 self-solving validation and egress compiler. */
+    if (!g3_has(vm, G3_STAGE_RNA_REVERSE) ||
+        !g3_lane5_context_valid(vm))
         return g3_reject(vm);
     vm->g3.ieee_out_bits = vm->g3.reverse_rna;
     if (vm->g3.ieee_out_bits != vm->g3.ieee_in_bits)
@@ -1778,6 +1829,12 @@ static int verify_kernel_invariants(VM81 *vm) {
         return 0;
     if (g3_nucleus_zero_sum() != 0 ||
         !g3_zero_centered_lo_shu_selfcheck())
+        return 0;
+
+    /* A fresh VM has no Lane 5 mediation context; direct G^3 execution must
+       therefore remain fail-closed until the enclosing candidate pipeline
+       supplies the mandatory context. */
+    if (g3_lane5_context_valid(vm))
         return 0;
 
     return 1;
