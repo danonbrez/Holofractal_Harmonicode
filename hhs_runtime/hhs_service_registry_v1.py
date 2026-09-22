@@ -4439,6 +4439,59 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.g3_full_phase_ieee_transport.self_test",
+        module="hhs_runtime.hhs_pass220_g3_full_phase_ieee_transport_v1",
+        function="full_phase_ieee_transport_self_test",
+        service_type="pass220_exact_full_phase_ieee_transport",
+        description=(
+            "Validate exact IEEE scalar transport through the complete ordered "
+            "x/y/z/w G3 phase tensor: x marks ingress, y=1/x marks return, "
+            "all four phase carriers and xy/yx/zw/wz channels drive the "
+            "nine-slot internal logic, while the IEEE storage word remains "
+            "bit-identical across every internal phase cell."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I032_G3_FULL_PHASE_IEEE_TRANSPORT_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I032_G3_FULL_PHASE_IEEE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_full_phase_ieee_transport",
+            "full_phase_ieee_transport_self_test",
+        ],
+        guards=[
+            "full_xyzw_phase_coverage",
+            "ordered_xy_yx_zw_wz_channels_preserved",
+            "nine_slot_g3_logic_trace_complete",
+            "ieee_scalar_bits_immutable_in_every_phase_slot",
+            "reciprocal_phase_tensor_involution",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G3_FULL_PHASE_COVERAGE_MISMATCH",
+            "REJECT_G3_INTERNAL_SCALAR_MUTATION",
+            "REJECT_G3_RECIPROCAL_TENSOR_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_FULL_PHASE_IEEE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_9_SLOT_G3_TRACE_OVER_EXACT_IEEE_BINARY16_32_64_128"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."

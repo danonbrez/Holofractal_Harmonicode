@@ -1386,3 +1386,64 @@ Lane 5 bypass, RNA bypass, Holo4 bypass, or PQC/admission authority.
 
 Full derivation:
 `docs/whitepapers/HARMONICODE_G3_EXACT_IEEE_SCALAR_INVOLUTION_THEOREM.md`.
+
+
+## A.34 Pass 220 I032 — G³ full-phase IEEE transport
+
+Pass 220 I032 binds the exact IEEE scalar-state involution from I031 to the
+complete ordered HARMONICODE phase tensor. The external transport direction is
+still expressed by the reciprocal boundary pair
+
+~~~text
+x = ingress
+y = 1/x = egress
+~~~
+
+but the internal machine is not reduced to x/y alone. Internal logic is driven
+by the complete 3x3 G³ tensor over x/y/z/w, including all four ordered product
+channels:
+
+~~~text
+xy
+yx
+zw
+wz
+~~~
+
+with `xy != yx` and `zw != wz` preserved structurally.
+
+For an exact IEEE storage word `B`, every one of the nine G³ logic slots
+carries the same scalar bits together with its ordered forward phase expression
+and reciprocal return expression. The phase tensor changes internal logic
+orientation while the scalar payload remains invariant:
+
+~~~text
+phase changes
+scalar bits do not
+~~~
+
+The public reciprocal operation therefore has the typed form:
+
+~~~text
+B
+-> x-oriented full G3 carrier
+-> reciprocal x/y/z/w internal phase tensor
+-> y=1/x return boundary
+-> same B
+~~~
+
+and satisfies `T(T(B)) = B` at the exact storage boundary.
+
+The connected Wolfram formalization
+`evidence/pass220/i032_g3_full_phase_ieee_transport_wolfram_20260922_v1.wl`
+returns 22/22 PASS. It proves exact 3x3 dimensions, complete x/y/z/w coverage,
+all ordered product channels, reciprocal tensor involution, nine-slot scalar
+immutability, typed-zero reciprocity, and parametric IEEE field reconstruction
+for binary16/32/64/128.
+
+I032 remains a read-only proof/reference surface. It does not widen VM81
+mutation, Hash72/Hash216 mint, persistence, floating-point arithmetic, Lane 5,
+RNA, Holo4, PQC, or signed-admission authority.
+
+Full derivation:
+`docs/whitepapers/HARMONICODE_G3_FULL_PHASE_IEEE_TRANSPORT_THEOREM.md`.
