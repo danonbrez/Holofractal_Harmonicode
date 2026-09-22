@@ -19,7 +19,9 @@ fail() {
 # shellcheck disable=SC1091
 source /etc/os-release
 [[ "${ID:-}" == "ubuntu" ]] || fail "Ubuntu is required; detected ID=${ID:-unknown}"
-[[ -d "$REPO_ROOT/.git" ]] || fail "repository checkout missing at $REPO_ROOT"
+command -v git >/dev/null 2>&1 || fail "git is required to validate the repository release"
+git -C "$REPO_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+  || fail "repository checkout/worktree missing at $REPO_ROOT"
 [[ -f "$REPO_ROOT/hhs_backend/application_vm_api_server.py" ]] || fail "application VM API source missing"
 
 if [[ "$INSTALL_GUI" == "1" ]] && ! command -v gnome-shell >/dev/null 2>&1 && ! command -v ubuntu-session >/dev/null 2>&1; then
