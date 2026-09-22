@@ -149,3 +149,104 @@ repair, and require a fresh exact-head success before merge.
 After I028 merges, the next pass may build the reversible multimodal
 Platonic/color-wheel/sprite projection receipt over committed
 G³/VM81/Hash216 state.
+
+
+## Repair-forward update — mandatory Lane 5 constructor pipeline
+
+The first I028 implementation allowed the standalone VM81 G³ stage machine to
+execute without a repository-proven Lane 5/Holo4 context.  That was too weak
+for the cumulative Pass 219/220 architecture because it left the new opcode
+family technically callable as an execution island.
+
+Repair-forward commits:
+
+~~~text
+cab77c7f50984a2b2bf443ab3c87f9b36a757008
+  registry V2: full 648B -> 5184 -> Holo4 -> Lane5 -> Hash216 -> egress contract
+
+da3354dad240c5ac17d13569b1de06fb5cf3ef03
+  Python regressions for mandatory green-history constructors and Lane 5 context
+
+7833a587680bfb227bc1bb993c90573d88b81efc
+  native C fail-closed Lane 5 context gate
+
+f7f144f0bc70db77d5a72ad7fb983921dd345a36
+  native direct-invocation rejection regression
+
+0a759b9844680d724871ed0158f2a07e4f812644
+  canonical I028 documentation repair
+~~~
+
+### Enforced dataflow
+
+~~~text
+648-byte x86_64 ingress
+-> I149 hydrated raw5184
+-> exact IEEE/palindromic x,y,z,w RNA transcription
+-> I019 fixed-width 5,184-character carrier
+-> Holo4 four-lane prepared state
+-> Lane 5 mandatory constructor graph
+-> G3 candidate microcode
+-> Hash216 self-solving validation
+-> signed VM81 admission when mutation is requested
+-> Hash72/Hash216 successor lineage
+-> inverse egress compilation
+-> 648-byte x86_64 egress
+~~~
+
+G³ is explicitly:
+
+~~~text
+not a fifth hydration lane
+not a parallel service
+not canonical mutation authority
+not Hash72/Hash216 mint authority
+~~~
+
+### Mandatory constructor evidence
+
+Lane 5 must bind successful historical evidence as reusable constructors,
+including green merged PR implementations, green exact-head workflows,
+canonical contracts, canonical white-paper proofs, formal proof receipts,
+successful benchmark receipts, restart checkpoints, commit/merge lineage,
+registered repository services, and validated Hash216 compositions.
+
+Mergeable branch material may be visible to the BIOS as candidate knowledge,
+but visibility alone does not promote unmerged evidence to canonical authority.
+
+### Native fail-closed rule
+
+The embedded VM81 G³ state machine now requires all of:
+
+~~~text
+I149 raw648 hydration bound
+Holo4 four-lane prepared
+Lane 5 mediated
+mandatory green constructor graph bound
+Lane 5 no-mutation-authority preserved
+external egress requires later Hash216 validation
+~~~
+
+before OP_G3_IEEE_INGRESS may begin.
+
+A direct standalone opcode invocation without this context must set
+W_G3_REJECT + W_LEDGER_FROZEN and leave vm->step unchanged.
+
+OP_G3_IEEE_EGRESS remains a candidate reverse-compilation identity witness.
+It is not external output authority.  External emission belongs after Hash216
+self-solving validation and the enclosing inverse egress compiler.
+
+### Validation remaining after repair-forward
+
+The dedicated I028 exact-head gate must now additionally prove:
+
+1. direct G³ execution without Lane 5 context is rejected with no step advance;
+2. all 11 rooted opcode bindings require I149/Holo4/Lane5/constructor evidence;
+3. successful PR/proof/benchmark evidence is classified as mandatory Lane 5 constructors;
+4. G³ remains candidate-only and never a fifth lane;
+5. candidate IEEE egress cannot be interpreted as external emission;
+6. the full 648B -> 5184 -> Hash216 -> inverse-egress pipeline contract is deterministic and rooted.
+
+Per dependency-scoped policy, this repair changes the I028 executable frontier,
+so the earlier queued run cannot be accepted for the repaired head.  A fresh
+exact-head run must correspond to the current branch head before merge.
