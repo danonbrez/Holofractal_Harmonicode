@@ -43,7 +43,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+        run: python -m pip install --disable-pip-version-check pytest cryptography
 
       - name: Compile I026-I027 and Pass213 dependencies
         run: |
