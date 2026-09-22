@@ -52,6 +52,12 @@ def test_successful_pr_benchmarks_and_proofs_are_mandatory_lane5_constructors():
     required = set(MANDATORY_CONSTRUCTOR_CLASSES)
     assert pipeline["successful_pr_proof_benchmark_evidence_is_mandatory"] is True
     assert set(pipeline["mandatory_constructor_classes"]) == required
+    assert len(pipeline["pipeline_root_hash72"]) == 72
+    assert len(pipeline["mandatory_constructor_graph_root_hash72"]) == 72
+    assert (
+        pipeline["mandatory_constructor_graph"]["constructor_graph_root_hash72"]
+        == pipeline["mandatory_constructor_graph_root_hash72"]
+    )
     assert {
         "GREEN_MERGED_PR_IMPLEMENTATION",
         "GREEN_EXACT_HEAD_WORKFLOW",
@@ -126,7 +132,9 @@ def test_fused_opcode_requires_all_constituent_witnesses():
 
 
 def test_resolver_requires_root_authority_lease_and_complete_lane5_context():
-    binding = build_g3_opcode_registry()["entries"][0]
+    registry = build_g3_opcode_registry()
+    binding = registry["entries"][0]
+    pipeline = registry["pipeline"]
     good = {
         "binding_root_hash72": binding["binding_root_hash72"],
         "authority_scope": AUTHORITY_SCOPE,
@@ -136,12 +144,20 @@ def test_resolver_requires_root_authority_lease_and_complete_lane5_context():
         "holo4_status": "FOUR_LANES_PREPARED",
         "lane5_bios_status": "MEDIATED",
         "constructor_graph_status": "MANDATORY_GREEN_HISTORY_BOUND",
+        "lane5_pipeline_root_hash72": pipeline["pipeline_root_hash72"],
+        "constructor_graph_root_hash72": (
+            pipeline["mandatory_constructor_graph_root_hash72"]
+        ),
     }
     resolved = resolve_g3_opcode(binding["native_opcode"], good)
     assert resolved["numeric_opcode"] == 24
     assert resolved["witness_class"] == "W_G3_IEEE_INGRESS"
     assert resolved["canonical_mutation_authority"] is False
     assert resolved["external_egress_authority"] is False
+    assert resolved["lane5_pipeline_root_hash72"] == pipeline["pipeline_root_hash72"]
+    assert resolved["constructor_graph_root_hash72"] == (
+        pipeline["mandatory_constructor_graph_root_hash72"]
+    )
     assert resolved["decision"] == (
         "RESOLVED_FOR_LANE5_MEDIATED_VM81_CANDIDATE_MICROCODE"
     )
@@ -155,6 +171,8 @@ def test_resolver_requires_root_authority_lease_and_complete_lane5_context():
         "holo4_status",
         "lane5_bios_status",
         "constructor_graph_status",
+        "lane5_pipeline_root_hash72",
+        "constructor_graph_root_hash72",
     ):
         request = dict(good)
         request[key] = "bad"
