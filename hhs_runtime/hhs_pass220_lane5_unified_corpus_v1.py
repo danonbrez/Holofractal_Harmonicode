@@ -143,7 +143,7 @@ class ExtractedPage:
 
 class PDFExtractor(Protocol):
     def page_count(self, path: Path) -> int: ...
-    def iter_pages(self, path: Path) -> Iterator[ExtractedPage]: ...
+    def iter_pages(self, path: Path, *, start_page: int = 1) -> Iterator[ExtractedPage]: ...
 
 
 class PopplerPDFExtractor:
@@ -178,17 +178,21 @@ class PopplerPDFExtractor:
             raise UnifiedCorpusError("PASS220_PDF_PAGE_COUNT_UNAVAILABLE")
         return int(match.group(1))
 
-    def _texts(self, path: Path, count: int) -> list[str]:
-        raw = self._run(["pdftotext", "-layout", "-enc", "UTF-8", str(path), "-"])
+    def _texts(self, path: Path, count: int, *, start_page: int) -> list[str]:
+        expected = count - start_page + 1
+        raw = self._run([
+            "pdftotext", "-layout", "-enc", "UTF-8",
+            "-f", str(start_page), "-l", str(count), str(path), "-"
+        ])
         pages = raw.decode("utf-8", errors="strict").split("\f")
         if pages and pages[-1] == "":
             pages.pop()
-        if len(pages) < count:
-            pages.extend("" for _ in range(count - len(pages)))
-        if len(pages) > count:
-            if any(value.strip() for value in pages[count:]):
+        if len(pages) < expected:
+            pages.extend("" for _ in range(expected - len(pages)))
+        if len(pages) > expected:
+            if any(value.strip() for value in pages[expected:]):
                 raise UnifiedCorpusError("PASS220_PDF_TEXT_PAGE_COUNT_DRIFT")
-            pages = pages[:count]
+            pages = pages[:expected]
         return pages
 
     def _image(self, path: Path, page_number: int) -> bytes:
@@ -206,10 +210,14 @@ class PopplerPDFExtractor:
             raise UnifiedCorpusError(f"PASS220_PAGE_IMAGE_BOUND:{page_number}")
         return raw
 
-    def iter_pages(self, path: Path) -> Iterator[ExtractedPage]:
+    def iter_pages(self, path: Path, *, start_page: int = 1) -> Iterator[ExtractedPage]:
         count = self.page_count(path)
-        texts = self._texts(path, count)
-        for number, text in enumerate(texts, start=1):
+        if start_page < 1 or start_page > count + 1:
+            raise UnifiedCorpusError("PASS220_START_PAGE_INVALID")
+        if start_page == count + 1:
+            return
+        texts = self._texts(path, count, start_page=start_page)
+        for number, text in enumerate(texts, start=start_page):
             image = self._image(path, number) if self.render_images else None
             yield ExtractedPage(number, text, image)
 
@@ -440,6 +448,9 @@ class Lane5UnifiedCorpus:
 
         document = self.graph.add_node("DOCUMENT", {**asdict(entry), "verified_source": True})
         self.graph.add_edge(corpus_root, document, "CONTAINS_DOCUMENT")
+        document_key = f"document-complete:{entry.sha256}:{entry.pages}"
+        if document_key in self.graph.completed:
+            return document
 
         for chunk_index, offset, raw in iter_chunks(path):
             key = f"pdf-binary:{entry.sha256}:{chunk_index}:{_sha(raw)}"
@@ -456,8 +467,18 @@ class Lane5UnifiedCorpus:
         if observed != entry.pages:
             raise UnifiedCorpusError(f"PASS220_SOURCE_PAGE_COUNT_MISMATCH:{entry.source_id}")
 
-        seen = 0
-        for page in self.extractor.iter_pages(path):
+        start_page = 1
+        while (
+            start_page <= entry.pages
+            and f"page-complete:{entry.sha256}:{start_page}" in self.graph.completed
+        ):
+            start_page += 1
+        if start_page > entry.pages:
+            self.graph.complete(document_key, {"source_id": entry.source_id, "pages": entry.pages})
+            return document
+
+        seen = start_page - 1
+        for page in self.extractor.iter_pages(path, start_page=start_page):
             seen += 1
             if page.page_number != seen:
                 raise UnifiedCorpusError(f"PASS220_PAGE_ORDER_INVALID:{entry.source_id}")
@@ -531,8 +552,14 @@ class Lane5UnifiedCorpus:
                     self.graph.add_edge(page_identity, vector_node, "HAS_LANGUAGE_MODEL_VECTOR")
                     self.graph.complete(projector_key, {"source_id": entry.source_id, "page": page.page_number})
 
+            self.graph.complete(
+                f"page-complete:{entry.sha256}:{page.page_number}",
+                {"source_id": entry.source_id, "page": page.page_number},
+            )
+
         if seen != entry.pages:
             raise UnifiedCorpusError(f"PASS220_EXTRACTED_PAGE_COUNT_MISMATCH:{entry.source_id}")
+        self.graph.complete(document_key, {"source_id": entry.source_id, "pages": entry.pages})
         return document
 
     def run_manifest(self, manifest_path: Path, source_root: Path) -> dict[str, Any]:
