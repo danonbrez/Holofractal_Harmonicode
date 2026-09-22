@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 import pytest
 
 from hhs_backend.runtime.hhs_pass213_compiled_rom_v1 import (
@@ -123,8 +121,23 @@ def test_current_native_dispatch_boundary_fails_closed_not_mutated():
 
 
 def test_tampered_entry_cell_is_rejected_before_admission():
-    good = entry_for(4, 2)
-    bad = replace(good, vm81_cell_id=23)
+    address = collapse_address(4, 2)
+    bad = CompiledROMEntry.create(
+        operation_id=quantum_operation_id(address),
+        canonical_operation=quantum_canonical_operation(address),
+        constraints={"exact": True},
+        vm81_cell_id=23,
+        operation_slot=7,
+        g243_control_id=11,
+        native_dispatch_id=QUANTUM_NATIVE_DISPATCH_ID,
+        kernel_policy_hash216="3" * 64,
+        creation_group_sequence=1,
+        creation_open_boundary_hash216="4" * 64,
+        creation_close_boundary_hash216="5" * 64,
+        closure_path_root_hash216="6" * 64,
+        closure_position=0,
+        parent_hash216="7" * 64,
+    )
     with pytest.raises(
         Pass220I027CollapseAdmissionError,
         match="VM81 cell",
@@ -139,10 +152,25 @@ def test_tampered_entry_cell_is_rejected_before_admission():
 
 
 def test_tampered_semantic_domain_is_rejected():
-    good = entry_for(4, 2)
-    op = dict(good.canonical_operation)
+    address = collapse_address(4, 2)
+    op = quantum_canonical_operation(address)
     op["semantic_domain"] = "WRONG"
-    bad = replace(good, canonical_operation=op)
+    bad = CompiledROMEntry.create(
+        operation_id=quantum_operation_id(address),
+        canonical_operation=op,
+        constraints={"exact": True},
+        vm81_cell_id=address.vm81_cell_id,
+        operation_slot=7,
+        g243_control_id=11,
+        native_dispatch_id=QUANTUM_NATIVE_DISPATCH_ID,
+        kernel_policy_hash216="3" * 64,
+        creation_group_sequence=1,
+        creation_open_boundary_hash216="4" * 64,
+        creation_close_boundary_hash216="5" * 64,
+        closure_path_root_hash216="6" * 64,
+        closure_position=0,
+        parent_hash216="7" * 64,
+    )
     with pytest.raises(
         Pass220I027CollapseAdmissionError,
         match="semantic mismatch",
@@ -157,8 +185,23 @@ def test_tampered_semantic_domain_is_rejected():
 
 
 def test_wrong_native_dispatch_id_is_rejected():
-    good = entry_for(4, 2)
-    bad = replace(good, native_dispatch_id="hhs.native.u64.add.v1")
+    address = collapse_address(4, 2)
+    bad = CompiledROMEntry.create(
+        operation_id=quantum_operation_id(address),
+        canonical_operation=quantum_canonical_operation(address),
+        constraints={"exact": True},
+        vm81_cell_id=address.vm81_cell_id,
+        operation_slot=7,
+        g243_control_id=11,
+        native_dispatch_id="hhs.native.u64.add.v1",
+        kernel_policy_hash216="3" * 64,
+        creation_group_sequence=1,
+        creation_open_boundary_hash216="4" * 64,
+        creation_close_boundary_hash216="5" * 64,
+        closure_path_root_hash216="6" * 64,
+        closure_position=0,
+        parent_hash216="7" * 64,
+    )
     with pytest.raises(
         Pass220I027CollapseAdmissionError,
         match="quantum-collapse native dispatch",
