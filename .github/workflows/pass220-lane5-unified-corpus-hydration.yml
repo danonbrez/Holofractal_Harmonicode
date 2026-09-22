@@ -1,0 +1,69 @@
+name: Pass 220 Lane 5 Unified Corpus Hydration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - pass220/post-i028-repair-forward-ci-v1
+    paths:
+      - 'hhs_runtime/hhs_pass220_lane5_unified_corpus_v1.py'
+      - 'hhs_runtime/hhs_pass220_lane5_model_weight_hydration_v1.py'
+      - 'tools/pass220_lane5_unified_corpus_hydration.py'
+      - 'data/pass220/lane5_unified_corpus/**'
+      - 'tests/pass220/test_pass220_lane5_unified_corpus_hydration_v1.py'
+      - '.github/workflows/pass220-lane5-unified-corpus-hydration.yml'
+  push:
+    branches:
+      - pass220/lane5-unified-corpus-hydration-v1
+    paths:
+      - 'hhs_runtime/hhs_pass220_lane5_unified_corpus_v1.py'
+      - 'hhs_runtime/hhs_pass220_lane5_model_weight_hydration_v1.py'
+      - 'tools/pass220_lane5_unified_corpus_hydration.py'
+      - 'data/pass220/lane5_unified_corpus/**'
+      - 'tests/pass220/test_pass220_lane5_unified_corpus_hydration_v1.py'
+      - '.github/workflows/pass220-lane5-unified-corpus-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile new orchestration surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_lane5_unified_corpus_v1.py \
+            hhs_runtime/hhs_pass220_lane5_model_weight_hydration_v1.py \
+            tools/pass220_lane5_unified_corpus_hydration.py
+
+      - name: Validate manifests
+        run: |
+          python -m json.tool data/pass220/lane5_unified_corpus/source_manifest_v1.json >/dev/null
+          python -m json.tool data/pass220/lane5_unified_corpus/model_weight_manifest_v1.json >/dev/null
+
+      - name: Run unified corpus and weight regressions
+        run: python -m pytest -q tests/pass220/test_pass220_lane5_unified_corpus_hydration_v1.py
+
+      - name: Preserve inherited Pass 165 admission behavior
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass165_multimodal_ingress_v1.py \
+            tests/test_hhs_pass165_terminal_v1.py
+
+      - name: Enforce authority boundary
+        run: |
+          grep -Fq 'external_evidence_cannot_commit_vm81' hhs_runtime/hhs_pass220_lane5_unified_corpus_v1.py
+          grep -Fq 'canonical_learning_commit_invoked' hhs_runtime/hhs_pass220_lane5_model_weight_hydration_v1.py
+          ! grep -Eq 'commit_learning_epoch\(.*weight|submit_candidate\(.*weight' hhs_runtime/hhs_pass220_lane5_model_weight_hydration_v1.py
