@@ -35,12 +35,32 @@ I028 appends:
 Static assertions bind 23, 24, 34, and OP__COUNT=35 so accidental
 renumbering fails at compile time.
 
-## 2. Native register geometry
+## 2. Canonical Lane 5 dataflow and native register geometry
 
-The native path is:
+G³ is not a standalone execution island and is not a fifth hydration lane.
+Its opcodes are candidate microcode inside the inherited Lane 5 pipeline:
 
 ~~~text
-IEEE raw bits
+648-byte x86_64 binary
+-> I149 hydrated raw5184 / 81x64 VM81 carrier
+-> exact IEEE dyadic + palindromic x,y,z,w transcription
+-> I019 fixed 5,184-character RNA/BigInt carrier
+-> Holo4 four-lane hydration
+-> Lane 5 mandatory constructor composition
+   (green merged PRs + proofs + benchmarks + contracts + services + lineage)
+-> G3 candidate microcode
+   P4=C4 -> C5 -> C7 -> C1/a2 -> zero-sum
+-> Hash216 self-solving validation / continuation closure
+-> signed environmental VM81 admission when mutation is requested
+-> canonical Hash72/Hash216 successor lineage
+-> inverse egress compilation
+-> 648-byte x86_64 binary
+~~~
+
+Inside the G³ candidate microcode the local stage order remains:
+
+~~~text
+IEEE raw bits witness
 -> palindromic phase route
 -> RNA typed carrier
 -> P4=C4 carrier equality
@@ -49,7 +69,7 @@ IEEE raw bits
 -> C1/a2 semantic serialization register
 -> zero-sum closure
 -> reverse RNA typed carrier
--> IEEE raw bits
+-> candidate IEEE identity witness
 ~~~
 
 with the boundary identity:
@@ -251,7 +271,7 @@ Every primitive is therefore independently receipt-addressable.
 I028 adds a new Pass-220 registry:
 
 ~~~text
-HHS_PASS_220_I028_G3_OPCODE_REGISTRY_V1
+HHS_PASS_220_I028_G3_OPCODE_REGISTRY_V2
 ~~~
 
 It does not rewrite the historical Pass 079 registry and does not change its
@@ -281,6 +301,10 @@ exact binding root
 + exact authority scope
 + ACTIVE_VALIDATED lease
 + BOUND_WITNESSED VM81 lane
++ I149 raw648 hydration witness
++ Holo4 four-lane prepared witness
++ Lane 5 mediation witness
++ mandatory green-history constructor graph witness
 ~~~
 
 ## 12. Existing Ouroboros native symbol
@@ -340,34 +364,63 @@ The first draft of this Wolfram proof failed three coordinate checks because
 the fixture accidentally applied First twice to Position. That helper was
 corrected before evidence was committed; the authoritative receipt is 12/12.
 
-## 15. Lane 5 / four-lane hydration relationship
+## 15. Lane 5 / four-lane hydration / historical constructor relationship
 
-For Pass 219/220 integration, the Lane 5 BIOS relationship is recorded as:
-
-~~~text
-OUROBOROS_MANIFOLD_ALGORITHM
-~~~
-
-The inherited four hydration lanes remain coordinated typed views of one
-singleton VM81 admission architecture.
-
-The G³ registry does not grant them independent canonical authority.
-
-## 16. Multimodal Platonic color-wheel / holofractal sprite geometry
-
-The requested multimodal graphics geometry is downstream of this exact machine
-substrate.
-
-I028 records:
+Lane 5 is the mandatory execution substrate for G³.  The registry records:
 
 ~~~text
-PLATONIC_COLOR_WHEEL_SPRITE_PROJECTION_DOWNSTREAM_ONLY
-graphics_projection_authority = false
+lane5_bios_relation = MANDATORY_GLOBAL_5184_CONSTRUCTOR_GRAPH
+g3_role = LANE5_CANDIDATE_MICROCODE_PROFILE
+g3_is_fifth_lane = false
+g3_is_parallel_service = false
 ~~~
 
-A subsequent pass may project the exact G³/VM81/Hash state into color-wheel,
-sprite, vector, or other multimodal geometry, but those projections may not
-feed approximate values back into the canonical VM81 transition.
+The inherited four hydration lanes are mandatory coordinated views of the same
+singleton VM81 candidate.  G³ cannot resolve unless Holo4 has prepared those
+four views.
+
+The Lane 5 BIOS constructor graph must expose successful repository history as
+typed reusable constructors.  Required constructor classes include:
+
+~~~text
+green merged PR implementation
+green exact-head workflow
+canonical contract
+canonical white-paper proof
+formal proof receipt
+successful benchmark receipt
+restart checkpoint
+commit/merge lineage
+registered repository service
+validated Hash216 composition
+~~~
+
+Mergeable-branch evidence may be visible to Lane 5 as candidate knowledge, but
+unmerged evidence gains no canonical authority merely by being visible.
+
+Lane 5 itself retains zero canonical VM81 mutation authority and zero
+Hash72/Hash216 mint authority.
+
+## 16. Multimodal geometry and Hash216 knowledge hydration
+
+Platonic/color-wheel/holofractal-sprite metadata is a Lane 5 Hash216 knowledge
+graph hydration dimension of the same 5,184-state object, not a detached
+post-processing service.
+
+It may participate in retrieval, composition, candidate routing, reuse and
+latency optimization while retaining its exact provenance and typed projection
+identity.  It still has no independent canonical mutation authority and may not
+feed approximate values into VM81 authority.
+
+The candidate-stage OP_G3_IEEE_EGRESS is only a reversible identity witness.
+It is not permission to emit externally.  External egress requires:
+
+~~~text
+Hash216 self-solving validation
+-> required canonical admission/receipt closure
+-> inverse egress compilation
+-> 648-byte x86_64 output
+~~~
 
 ## 17. Files
 
@@ -383,17 +436,23 @@ Implemented:
 - dedicated I028 workflow
 - restart checkpoint
 
-## 18. Next boundary
+## 18. Current closure boundary
 
-Once I028 native compilation and regressions are green, the next useful
-projection boundary is:
+I028 closes only when the opcode family is proven subordinate to the complete
+Lane 5 circuit:
 
 ~~~text
-exact G3/Ouroboros VM81 receipts
-+ four-lane hydration coordinates
-+ Hash216 state identity
--> unified Platonic/color-wheel/sprite projection receipt
+648B ingress
+-> 5184 hydration
+-> palindromic x,y,z,w RNA
+-> Holo4
+-> mandatory green-history constructor graph
+-> G3 candidate microcode
+-> Hash216 self-solving validation
+-> inverse egress compilation
+-> 648B egress
 ~~~
 
-with the graphics surface remaining reversible/read-only until separately
-admitted.
+No direct G³ invocation outside Lane 5 is an admitted execution path.  The
+native regression must prove such an invocation freezes the ledger and advances
+neither VM81 logical time nor authoritative receipt state.
