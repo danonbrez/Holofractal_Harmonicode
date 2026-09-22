@@ -40,16 +40,26 @@ def test_ieee_and_bigint_authority_boundaries_are_explicit():
         entry["bigint_semantic_register"] == "LO_SHU_VALUE_1_A2"
         for entry in entries
     )
+    assert all(
+        entry["bigint_native_cell_is_complete_serialized_object"] is False
+        for entry in entries
+    )
+    assert all(
+        entry["authoritative_bigint_exactness_requirement"]
+        == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+        for entry in entries
+    )
 
 
 def test_fused_opcode_requires_all_constituent_witnesses():
     fused = build_g3_opcode_registry()["entries"][-1]
     required = fused["pre_state_witness_requirements"]
-    assert len(required) == 10
+    assert len(required) == 11
     assert "G3_P4_C4_BOUND_NO_P2_BRANCH" in required
     assert "G3_C5_CONSTRAINT_BOUND" in required
     assert "G3_C7_CONSTRAINT_BOUND" in required
-    assert "G3_EXACT_BIGINT_REGISTER_BOUND" in required
+    assert "G3_C1_BIGINT_SEMANTIC_REGISTER_BOUND" in required
+    assert "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS" in required
     assert "G3_NUCLEUS_ZERO_SUM_CLOSED" in required
     assert "IEEE_OUT_EQ_IEEE_IN_RAW_BITS" in required
 
