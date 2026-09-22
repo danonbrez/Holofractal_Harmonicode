@@ -1,0 +1,164 @@
+
+name: Pass 220 I028 G3 Ouroboros VM81 Opcodes
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/test_hhs_pass214_vm81_ir_adapter_v1.py"
+      - "scripts/run_pass214_vm81_ir_adapter_validation.sh"
+      - "docs/pass220/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES.md"
+      - "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json"
+      - "docs/operations/restart/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES_RESTART.md"
+      - ".github/workflows/pass220-i028-g3-ouroboros-vm81-opcodes.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/test_hhs_pass214_vm81_ir_adapter_v1.py"
+      - "scripts/run_pass214_vm81_ir_adapter_validation.sh"
+      - "docs/pass220/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES.md"
+      - "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json"
+      - "docs/operations/restart/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES_RESTART.md"
+      - ".github/workflows/pass220-i028-g3-ouroboros-vm81-opcodes.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: >
+          python -m pip install --disable-pip-version-check
+          pytest 'cryptography>=45.0,<47.0'
+
+      - name: Verify Wolfram 12 of 12 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i028_g3_ouroboros_wolfram_20260922_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 12
+          assert data["failed"] == []
+          assert data["opcode_values"] == list(range(24, 35))
+          assert data["lo_shu"] == [[4,9,2],[3,5,7],[8,1,6]]
+          assert data["schema"] in source
+          PY
+
+      - name: Reject floating arithmetic inside native G3 section
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+          ).read_text(encoding="utf-8")
+          start = source.index(
+              "G^3 PALINDROMIC RNA / OUROBOROS EXACT BOUNDARY"
+          )
+          end = source.index("static void tensor_push", start)
+          g3 = source[start:end]
+          forbidden = [
+              r"\bfloat\b",
+              r"\bdouble\b",
+              r"\blong\s+double\b",
+              r"\bstrtod\s*\(",
+              r"\bstrtof\s*\(",
+              r"\batof\s*\(",
+          ]
+          hits = [
+              pattern for pattern in forbidden if re.search(pattern, g3)
+          ]
+          if hits:
+              raise SystemExit(
+                  "G3_FLOATING_AUTHORITY_VIOLATION:" + ",".join(hits)
+              )
+          print("HHS_I028_G3_NO_FLOATING_AUTHORITY=PASS")
+          PY
+
+      - name: Strict compile standalone VM81 kernel
+        run: |
+          cc -std=c11 -O2 -Wall -Wextra -Werror             hhs_runtime/HARMONICODE_VM_RUNTIME.c             -o /tmp/hhs_vm81_i028
+          /tmp/hhs_vm81_i028 --verify
+
+      - name: Strict compile and execute native G3 regression
+        run: |
+          cc -std=c11 -O2 -Wall -Wextra -Werror             tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c             -o /tmp/test_hhs_i028_g3
+          /tmp/test_hhs_i028_g3
+
+      - name: Verify repository VM81 build target
+        run: make vm81
+
+      - name: Compile Python registry and Pass214 repair surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py             tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py             tests/test_hhs_pass214_vm81_ir_adapter_v1.py
+
+      - name: Run G3 rooted registry and inherited Pass079 regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py
+          tests/test_hhs_pass079_native_opcode_registry_v1.py
+
+      - name: Run Pass214 legacy-prefix repair-forward gate
+        env:
+          PYTHONPATH: .
+        run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
+
+      - name: Run inherited palindrome and RNA exact surfaces
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
