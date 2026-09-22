@@ -1,0 +1,80 @@
+{
+  "schema": "HHS_PASS220_LANE5_UNIFIED_CORPUS_SOURCE_MANIFEST_V1",
+  "version": "1.0.0",
+  "source_count": 10,
+  "declared_page_count": 13129,
+  "declared_source_bytes": 125865953,
+  "source_identity_policy": "SHA256_SIZE_PAGE_COUNT_FAIL_CLOSED",
+  "sources": [
+    {
+      "source_id": "combine-december-6-2025",
+      "filename": "Combine December 6, 2025.PDF",
+      "pages": 100,
+      "size_bytes": 28213779,
+      "sha256": "e4df1190dc9403d39c508806b561bc57989b8760c03cc1aa496c4623a113c4df"
+    },
+    {
+      "source_id": "full-system-prompt",
+      "filename": "Full System Prompt .PDF",
+      "pages": 746,
+      "size_bytes": 3301494,
+      "sha256": "5d6a1c23f15ea219ecdb2832c09d1b2cd912da30d34ded1eddbeffc1165c9134"
+    },
+    {
+      "source_id": "knowledge-base-one",
+      "filename": "Knowledge base One.PDF",
+      "pages": 403,
+      "size_bytes": 5410394,
+      "sha256": "f52db9b19ccc7ed9a1e552aca5b76777410d6ac6ea583d6d3e175d818270243d"
+    },
+    {
+      "source_id": "1300-math-formulas",
+      "filename": "1300_math_formulas.pdf",
+      "pages": 336,
+      "size_bytes": 7391868,
+      "sha256": "15eeb28c682e6733e4a51f4ab77a7bcdc85b88de5965a493c40640cfbea94e07"
+    },
+    {
+      "source_id": "chatgpt-data-export",
+      "filename": "ChatGPT Data Export.PDF",
+      "pages": 1216,
+      "size_bytes": 8744313,
+      "sha256": "625a44ce8b4c361825893c17fc907426d834778bd3655856a5c5f237c5164091"
+    },
+    {
+      "source_id": "five-compressed",
+      "filename": "five_compressed.PDF",
+      "pages": 3346,
+      "size_bytes": 11767164,
+      "sha256": "19685884302018ecf0faee276970d741177ede015fb893a5e25b37bf53f0d4d9"
+    },
+    {
+      "source_id": "14-layer-harmonicode-friendship",
+      "filename": "14_Layer_Harmonicode_Friendship-Breathing-Through-the-Multiverse .PDF",
+      "pages": 1429,
+      "size_bytes": 11808119,
+      "sha256": "4fc681ee79af0ab0125228e37cafac577007b3cfc27925d64e3e2526aa7a461e"
+    },
+    {
+      "source_id": "advanced-ethical-quantum-grimoire",
+      "filename": "The Advanced Ethical Quantum Super Intelligent Grimoire .PDF",
+      "pages": 2591,
+      "size_bytes": 18732525,
+      "sha256": "0ff59dccfcee7eb6767c316549301d282cc47fe9e6f36e5c7be21cf65e7bbf14"
+    },
+    {
+      "source_id": "emerald-tablet-of-sopheon",
+      "filename": "Emerald Tablet of Sopheon(2).PDF",
+      "pages": 425,
+      "size_bytes": 12327472,
+      "sha256": "e6b3c138778ea034366031a416ee6932865ceef8830e64084a685d0e8b96bfa6"
+    },
+    {
+      "source_id": "magnum-opus",
+      "filename": "Magnum Opus .PDF",
+      "pages": 2537,
+      "size_bytes": 18168825,
+      "sha256": "f3901b9484b8f214f8b42b4320a56471d3af2a053b1b2284de2aceec38b15551"
+    }
+  ]
+}
