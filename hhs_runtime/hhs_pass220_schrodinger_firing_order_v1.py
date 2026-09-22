@@ -141,6 +141,30 @@ def shift_permutation(size: int, step: int) -> tuple[int, ...]:
     )
 
 
+def _validate_permutation(
+    permutation: tuple[int, ...],
+    name: str = "permutation",
+) -> int:
+    n = len(permutation)
+    if n <= 0:
+        raise Pass220I025QuantumError(
+            f"{name} must be a nonempty exact permutation"
+        )
+    if any(
+        isinstance(label, bool) or not isinstance(label, int)
+        for label in permutation
+    ):
+        raise Pass220I025QuantumError(
+            f"{name} labels must be exact integers"
+        )
+    expected = set(range(1, n + 1))
+    if set(permutation) != expected:
+        raise Pass220I025QuantumError(
+            f"{name} must be an exact permutation"
+        )
+    return n
+
+
 def compose_permutations(
     left: tuple[int, ...],
     right: tuple[int, ...],
@@ -149,12 +173,8 @@ def compose_permutations(
         raise Pass220I025QuantumError(
             "permutations must have equal size"
         )
-    n = len(left)
-    expected = set(range(1, n + 1))
-    if set(left) != expected or set(right) != expected:
-        raise Pass220I025QuantumError(
-            "inputs must be exact permutations"
-        )
+    n = _validate_permutation(left, "left")
+    _validate_permutation(right, "right")
     return tuple(left[right[i] - 1] for i in range(n))
 
 
@@ -167,7 +187,7 @@ def permutation_power(
         raise Pass220I025QuantumError(
             "permutation power must be nonnegative"
         )
-    n = len(permutation)
+    n = _validate_permutation(permutation)
     result = tuple(range(1, n + 1))
     base = permutation
     exponent = p
@@ -182,11 +202,7 @@ def permutation_power(
 def permutation_cycles(
     permutation: tuple[int, ...],
 ) -> tuple[tuple[int, ...], ...]:
-    n = len(permutation)
-    if set(permutation) != set(range(1, n + 1)):
-        raise Pass220I025QuantumError(
-            "input must be an exact permutation"
-        )
+    n = _validate_permutation(permutation)
     seen: set[int] = set()
     cycles: list[tuple[int, ...]] = []
     for start in range(1, n + 1):
@@ -205,11 +221,7 @@ def permutation_cycles(
 def permutation_matrix(
     permutation: tuple[int, ...],
 ) -> tuple[tuple[int, ...], ...]:
-    n = len(permutation)
-    if set(permutation) != set(range(1, n + 1)):
-        raise Pass220I025QuantumError(
-            "input must be an exact permutation"
-        )
+    n = _validate_permutation(permutation)
     # Column j is mapped to row permutation[j].
     return tuple(
         tuple(
@@ -313,8 +325,12 @@ def exact_energy_levels() -> tuple[EnergyLevel, ...]:
 
 
 def exact_node_phase(k: int) -> Phase72:
-    level = exact_energy_levels()[_i(k, "k")]
-    return level.phase
+    mode = _i(k, "k")
+    if not 0 <= mode < MACROCYCLE_ORDER:
+        raise Pass220I025QuantumError(
+            f"k must satisfy 0 <= k < {MACROCYCLE_ORDER}"
+        )
+    return exact_energy_levels()[mode].phase
 
 
 def field_embedding_descriptor() -> dict[str, Any]:
@@ -448,7 +464,12 @@ def quantum_contract_descriptor() -> dict[str, Any]:
     return _receipt({
         "schema": SCHEMA,
         "profile": PROFILE,
-        "state_space": "Q(zeta72)^9",
+        "state_space": "Q(zeta72)^72",
+        "macrocycle_state_space": "Q(zeta72)^9",
+        "full_orbit_state_space": "Q(zeta72)^72",
+        "full_orbit_state_space_decomposition": (
+            "direct_sum_8_of_Q(zeta72)^9"
+        ),
         "macrocycle_operator": "shift_by_1_on_9",
         "full_operator": "shift_by_16_on_72",
         "full_cycle_decomposition": "8_cycles_x_9_states",
