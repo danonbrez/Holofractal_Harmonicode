@@ -33,7 +33,7 @@ jobs:
       matrix:
         target: [exact, synthetic]
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-i119.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-i119.sqlite3
       HHS_PASS208_GPU_ENABLED: '0'
       HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
       HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
