@@ -169,3 +169,14 @@ def test_self_test_closes_without_authority_expansion():
     result = genesis_law1_self_test()
     assert result["ok"] is True
     assert result["authority_expansion"] is False
+
+
+def test_default_service_registry_declares_i029_self_test():
+    import inspect
+
+    from hhs_runtime.hhs_service_registry_v1 import make_default_service_registry
+
+    source = inspect.getsource(make_default_service_registry)
+    assert "pass220.genesis_law1_global_substitution.self_test" in source
+    assert "hhs_runtime.hhs_pass220_genesis_law1_global_substitution_v1" in source
+    assert "READ_ONLY_GLOBAL_SUBSTITUTION_PROOF_NO_VM81_MUTATION" in source
