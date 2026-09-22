@@ -1833,8 +1833,25 @@ static int verify_kernel_invariants(VM81 *vm) {
 
     /* A fresh VM has no Lane 5 mediation context; direct G^3 execution must
        therefore remain fail-closed until the enclosing candidate pipeline
-       supplies the mandatory context. */
+       supplies the mandatory context.  Also exercise the dedicated binder in
+       standalone verification so the exact kernel proves both rejection and
+       successful formation of the complete candidate-only Lane 5 context. */
     if (g3_lane5_context_valid(vm))
+        return 0;
+    VM81 g3_context_copy = *vm;
+    g3_bind_lane5_context(
+        &g3_context_copy,
+        1u, /* exact raw648 hydration */
+        1u, /* Holo4 four-lane candidate prepared */
+        1u, /* Lane 5 mediated */
+        1u, /* mandatory green constructor graph bound */
+        1u, /* Lane 5 retains zero canonical mutation authority */
+        1u  /* external egress still requires Hash216 validation */
+    );
+    if (!g3_lane5_context_valid(&g3_context_copy))
+        return 0;
+    g3_context_copy.g3_lane5.lane5_mediated = 0u;
+    if (g3_lane5_context_valid(&g3_context_copy))
         return 0;
 
     return 1;

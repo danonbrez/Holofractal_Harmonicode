@@ -396,3 +396,30 @@ The dedicated I028 gate is extended to build the canonical `make c-abi`
 runtime, execute the bridge regression, and audit the dynamic symbol boundary.
 A new exact-head result for the repair commit is required before PR #547 may
 merge.
+
+
+## Repair-forward update — standalone Lane 5 context verification
+
+Exact-head run `35722356934` on head
+`92618421019add5131d7d7e4141f7481a8dcbab0` passed the Wolfram receipt and
+no-floating-authority gate, then failed at the standalone strict C11 compile:
+
+~~~text
+g3_bind_lane5_context defined but not used [-Werror=unused-function]
+~~~
+
+This was a standalone verification coverage defect, not a G3 semantic failure.
+The binder was already exercised by embedded adapter/native tests, but the
+standalone kernel's `--verify` path only checked the invalid empty context.
+
+The repair extends `verify_kernel_invariants` to prove all three states:
+
+~~~text
+fresh context                   -> invalid
+fully bound Lane5/Holo4 context -> valid
+one mandatory mediation bit lost -> invalid
+~~~
+
+No warning suppression, compiler relaxation, opcode change, or authority
+widening is introduced.  A fresh exact-head run for the repair commit is
+required before integration.
