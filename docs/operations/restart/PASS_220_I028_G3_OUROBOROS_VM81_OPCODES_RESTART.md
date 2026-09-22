@@ -423,3 +423,40 @@ one mandatory mediation bit lost -> invalid
 No warning suppression, compiler relaxation, opcode change, or authority
 widening is introduced.  A fresh exact-head run for the repair commit is
 required before integration.
+
+
+## Repair-forward update — inherited exact ABI link composition
+
+Exact-head run `35723258937` on head
+`a54e6aabea4fa793b855acaa6c709ac885551921` proved the standalone context
+binder repair: standalone strict compile, native G3 regression, repository
+VM81 build, rooted registry, Pass079 regression, and Pass214 repair gate all
+passed.
+
+The run then failed only while hand-linking the inherited candidate-adapter
+regression.  The direct `exact.o` executable omitted already-required
+dependencies including:
+
+~~~text
+OpenSSL EVP/HMAC/CRYPTO
+hhs_hash72_compute_bytes
+hhs_pass219_vm81_pqc_route_cpp_cell_wall
+~~~
+
+This is the inherited exact-ABI link-composition class already closed by the
+repository's canonical runtime build.  I028 therefore no longer reconstructs
+the cumulative exact ABI by hand.
+
+The candidate-adapter gate now:
+
+~~~text
+make c-abi
+-> compile adapter.o only
+-> link adapter regression against hhs_runtime/builds/libhhs_runtime.so
+-> -lcrypto -lstdc++ -pthread -lm
+-> execute with repository runtime rpath
+~~~
+
+This preserves the real C++ RNA/PQC dependency membrane instead of silently
+omitting it.  No runtime authority or candidate semantics are changed.  A new
+exact-head result is required.

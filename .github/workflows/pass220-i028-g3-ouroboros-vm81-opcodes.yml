@@ -148,12 +148,11 @@ jobs:
         run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
 
       - name: Run inherited candidate adapter ABI and reject generic G3 bypass
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
         run: |
           mkdir -p /tmp/pass220-i028-adapter
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass220-i028-adapter/exact.o
+          make c-abi
           gcc -O2 -std=c11 -Wall -Wextra -Werror \
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
@@ -162,7 +161,9 @@ jobs:
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
             /tmp/pass220-i028-adapter/adapter.o \
-            /tmp/pass220-i028-adapter/exact.o \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass220-i028-adapter/test-adapter
           /tmp/pass220-i028-adapter/test-adapter
 
