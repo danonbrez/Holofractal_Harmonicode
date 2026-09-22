@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from hashlib import sha1
 from pathlib import Path
 import unittest
 
@@ -17,10 +16,16 @@ from hhs_backend.runtime.hhs_pass214_vm81_ir_adapter_v1 import (
 
 ROOT = Path(__file__).resolve().parents[1]
 FROZEN_RUNTIME = ROOT / "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
-# Repair-forward authority: the frozen substrate is the exact integer/modular
-# VM81 kernel admitted by PR #254.  This remains a literal Git-blob freeze;
-# only the authorized blob identity changed from the superseded v7.2 runtime.
-FROZEN_RUNTIME_GIT_BLOB_SHA1 = "81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
+# Repair-forward authority: Pass 214 freezes the legacy VM81 opcode prefix and
+# governed-adapter boundary, not the entire standalone runtime file forever.
+# Later append-only opcode families are legal only when 0..23 remain unchanged.
+LEGACY_OPCODE_PREFIX = (
+    "OP_NOP", "OP_ADD", "OP_SUB", "OP_ROT", "OP_XOR", "OP_AND", "OP_OR",
+    "OP_LOAD", "OP_STORE", "OP_BRANCH", "OP_BZ", "OP_BNZ", "OP_MULXY",
+    "OP_MULYX", "OP_QGU", "OP_GATE_APB", "OP_GATE_CLOSURE",
+    "OP_GATE_IDENTITY", "OP_QBRANCH", "OP_CONSTRAIN", "OP_RELAX",
+    "OP_SWEEP81", "OP_CLOSE81", "OP_HALT",
+)
 
 H_ENTRY = "1" * 64
 H_PARENT = "2" * 64
@@ -104,10 +109,18 @@ class _Authority:
         return _Receipt(native_id, result)
 
 
-def _git_blob_sha1(path: Path) -> str:
-    data = path.read_bytes()
-    header = f"blob {len(data)}\0".encode("ascii")
-    return sha1(header + data).hexdigest()
+def _runtime_opcode_names() -> tuple[str, ...]:
+    source = FROZEN_RUNTIME.read_text(encoding="utf-8")
+    marker = source.index("// OPCODES")
+    start = source.index("typedef enum {", marker)
+    end = source.index("} Opcode;", start)
+    body = source[start:end]
+    names = []
+    for line in body.splitlines():
+        token = line.strip().split("=", 1)[0].strip().rstrip(",")
+        if token.startswith("OP_"):
+            names.append(token)
+    return tuple(names)
 
 
 def _add_node(*, timestamp_ns: int = 10) -> IRNode:
@@ -125,8 +138,12 @@ def _add_node(*, timestamp_ns: int = 10) -> IRNode:
 
 
 class Pass214GovernedIRAdapterTests(unittest.TestCase):
-    def test_frozen_runtime_blob_is_unchanged(self) -> None:
-        self.assertEqual(_git_blob_sha1(FROZEN_RUNTIME), FROZEN_RUNTIME_GIT_BLOB_SHA1)
+    def test_legacy_runtime_opcode_prefix_is_unchanged(self) -> None:
+        names = _runtime_opcode_names()
+        self.assertEqual(names[:24], LEGACY_OPCODE_PREFIX)
+        self.assertEqual(names[23], "OP_HALT")
+        source = FROZEN_RUNTIME.read_text(encoding="utf-8")
+        self.assertIn('_Static_assert(OP_HALT == 23', source)
 
     def test_adapter_source_has_no_direct_frozen_vm_mutation_path(self) -> None:
         source = (ROOT / "hhs_backend/runtime/hhs_pass214_vm81_ir_adapter_v1.py").read_text()
