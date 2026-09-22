@@ -184,6 +184,24 @@ int main(void) {
             return 20;
     }
 
+    /* The append-only opcode ABI must stay numerically aligned with the
+       embedded VM81 kernel while generic candidate execution remains unable
+       to invoke G^3 without the dedicated Lane 5 mediation context. */
+    if (HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS != 24 ||
+        HHS_EXACT_PASS219_VM81_OP_G3_OUROBOROS != 34 ||
+        HHS_EXACT_PASS219_VM81_OP_COUNT != 35)
+        return 21;
+
+    {
+        HHSExactPass219VM81ProgramV1 forged_g3 = program;
+        forged_g3.instructions[57].opcode =
+            HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS;
+        if (hhs_exact_pass219_vm81_execute_candidate(
+                &forged_g3, &candidate, &execution) !=
+            HHS_EXACT_STATUS_INVARIANT_FAILURE)
+            return 22;
+    }
+
     puts("PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3_OK_PROOF_STILL_FAIL_CLOSED");
     return 0;
 }
