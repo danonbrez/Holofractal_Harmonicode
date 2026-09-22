@@ -302,12 +302,13 @@ class UnifiedModelWeightHydrator:
             if not files:
                 raise UnifiedCorpusError(f"PASS220_HF_WEIGHT_FILES_EMPTY:{model_id}")
             for path in files:
-                resolved_snapshot = snapshot.resolve()
-                resolved_path = path.resolve()
                 try:
-                    relative = resolved_path.relative_to(resolved_snapshot).as_posix()
+                    relative_path = path.relative_to(snapshot)
                 except ValueError as exc:
                     raise UnifiedCorpusError("PASS220_HF_WEIGHT_PATH_ESCAPE") from exc
+                if ".." in relative_path.parts:
+                    raise UnifiedCorpusError("PASS220_HF_WEIGHT_PATH_ESCAPE")
+                relative = relative_path.as_posix()
                 nodes.append(
                     self.process_file(
                         path,
