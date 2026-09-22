@@ -141,3 +141,39 @@ Next action:
 3. allow the direct main push workflow to deploy the independent backend;
 4. inspect the production workflow and host receipt;
 5. only after the backend gate is green begin the frontend adapter cycle.
+
+## 2026-09-22 native runtime build repair
+
+A production deployment gap was confirmed at current main
+`86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f`:
+
+- each application-VM release is an exact Git worktree, so generated
+  `hhs_runtime/builds/libhhs_runtime.so` is absent in a fresh release;
+- the application-VM installer previously verified only Python FastAPI/uvicorn
+  dependencies and then restarted systemd;
+- it never invoked the canonical repository build target `make c-abi`;
+- the Python ctypes bridges can attempt an automatic build when the library is
+  absent, but production service execution runs as `hhs` against a
+  root-materialized release, so runtime autobuild is not an admissible
+  production build strategy;
+- this is the same failure class previously recorded in Pass 219 I146, where
+  C autobuild was disabled while `libhhs_runtime.so` had not been built.
+
+Repair contract:
+
+1. provision the native toolchain and OpenSSL development headers when absent;
+2. run `timeout 900s make -B c-abi` as the privileged installer before any
+   application-VM service restart;
+3. require a non-empty `hhs_runtime/builds/libhhs_runtime.so`;
+4. verify `hhs_runtime_init`, `hhs_validate_abi`,
+   `hhs_exact_abi_validate`, and `hhs_hash216_compute` exports;
+5. reject unresolved dynamic-library dependencies;
+6. persist `HHS_DISABLE_C_AUTOBUILD=1` for production;
+7. import both canonical ctypes bridges and the application-VM ASGI server with
+   autobuild disabled before systemd start;
+8. repeat native-library verification from the deployed verifier;
+9. build the native runtime explicitly in both the focused Pass 220 CI and the
+   production preflight, with tests running under disabled C autobuild.
+
+This makes the shared runtime library a build-time deployment prerequisite
+instead of an implicit side effect of Python import.
