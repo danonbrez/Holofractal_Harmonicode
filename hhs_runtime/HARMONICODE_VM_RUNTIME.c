@@ -971,6 +971,29 @@ static int g3_palindrome_phase_selfcheck(void) {
     return 1;
 }
 
+static int g3_zero_centered_lo_shu_selfcheck(void) {
+    int16_t centered[9];
+    for (int i = 0; i < 9; i++)
+        centered[i] = (int16_t)LOSHU[i] - 5;
+
+    for (int r = 0; r < 3; r++) {
+        int16_t row = 0;
+        int16_t col = 0;
+        for (int k = 0; k < 3; k++) {
+            row = (int16_t)(row + centered[r * 3 + k]);
+            col = (int16_t)(col + centered[k * 3 + r]);
+        }
+        if (row != 0 || col != 0)
+            return 0;
+    }
+
+    if ((int16_t)(centered[0] + centered[4] + centered[8]) != 0)
+        return 0;
+    if ((int16_t)(centered[2] + centered[4] + centered[6]) != 0)
+        return 0;
+    return 1;
+}
+
 static int16_t g3_nucleus_zero_sum(void) {
     int16_t sum = 0;
     for (int i = 0; i < 9; i++)
@@ -1059,7 +1082,8 @@ static int g3_zero_sum_close(VM81 *vm) {
         return g3_reject(vm);
 
     vm->g3.nucleus_zero_sum = g3_nucleus_zero_sum();
-    if (vm->g3.nucleus_zero_sum != 0)
+    if (vm->g3.nucleus_zero_sum != 0 ||
+        !g3_zero_centered_lo_shu_selfcheck())
         return g3_reject(vm);
 
     vm->g3.stage_mask |= G3_STAGE_ZERO_SUM;
@@ -1752,7 +1776,8 @@ static int verify_kernel_invariants(VM81 *vm) {
         g3_lo_shu_index_for_value(7u) != 5 ||
         g3_lo_shu_index_for_value(1u) != 7)
         return 0;
-    if (g3_nucleus_zero_sum() != 0)
+    if (g3_nucleus_zero_sum() != 0 ||
+        !g3_zero_centered_lo_shu_selfcheck())
         return 0;
 
     return 1;
