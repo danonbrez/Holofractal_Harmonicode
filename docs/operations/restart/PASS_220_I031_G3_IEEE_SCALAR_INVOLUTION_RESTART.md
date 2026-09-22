@@ -48,19 +48,37 @@ exact rational identity
 
 and the authoritative proof is 17/17.
 
+## Validation performed
+
+- focused branch exact-head workflow run `35763671385`: PASS at
+  `edbd8572889376b3332484329198c30aa804b387`;
+- exact IEEE scalar involution tests: PASS;
+- inherited I030 reciprocal symbol regression: PASS;
+- inherited I028 native G3 identity regression: PASS;
+- host-floating-arithmetic exclusion audit: PASS;
+- PR #554 opened against `main`.
+
 ## Validation remaining
 
-- focused branch exact-head workflow;
-- dependency-scoped repair-forward if needed;
-- PR creation/merge when focused validation is green;
-- verified-main inspection.
+- merge PR #554 under the repository forward-progress policy;
+- verify the resulting `main` commit and focused/main status;
+- handle unrelated queued/broad CI repair-forward rather than blocking this
+  dependency-scoped closure.
 
 ## Authority boundary
 
 No canonical mutation, Hash72/Hash216 mint, external persistence,
 floating-point execution authority, or Lane 5/RNA/Holo4/PQC bypass.
 
+## Pull request
+
+- PR: `#554`
+- title: `Pass 220 I031: exact IEEE scalar reciprocal involution`
+- branch code-validation head:
+  `edbd8572889376b3332484329198c30aa804b387`
+- focused run: `35763671385` — PASS
+
 ## Next action
 
-Run the focused I031 exact-head workflow. If green, open and merge the PR under
-the repository forward-progress policy, then verify main.
+Merge PR #554 and verify `main`. The documentation-only checkpoint update
+does not alter the already-green I031 runtime/test surfaces.
