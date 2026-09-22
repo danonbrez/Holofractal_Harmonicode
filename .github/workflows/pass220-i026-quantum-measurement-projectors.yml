@@ -1,0 +1,164 @@
+name: Pass 220 I026 Quantum Measurement Projectors
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_quantum_measurement_projectors_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_measurement_projectors_v1.py"
+      - "hhs_runtime/hhs_pass220_schrodinger_firing_order_v1.py"
+      - "tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py"
+      - "hhs_runtime/hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
+      - "docs/pass220/PASS_220_I026_QUANTUM_MEASUREMENT_PROJECTORS.md"
+      - "evidence/pass220/i026_quantum_measurement_wolfram_20260921_v1.wl"
+      - "evidence/pass220/i026_quantum_measurement_wolfram_20260921_v1.output.json"
+      - "docs/operations/restart/PASS_220_I026_QUANTUM_MEASUREMENT_PROJECTORS_RESTART.md"
+      - ".github/workflows/pass220-i026-quantum-measurement-projectors.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_quantum_measurement_projectors_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_measurement_projectors_v1.py"
+      - "hhs_runtime/hhs_pass220_schrodinger_firing_order_v1.py"
+      - "tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py"
+      - "hhs_runtime/hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
+      - "docs/pass220/PASS_220_I026_QUANTUM_MEASUREMENT_PROJECTORS.md"
+      - "evidence/pass220/i026_quantum_measurement_wolfram_20260921_v1.wl"
+      - "evidence/pass220/i026_quantum_measurement_wolfram_20260921_v1.output.json"
+      - "docs/operations/restart/PASS_220_I026_QUANTUM_MEASUREMENT_PROJECTORS_RESTART.md"
+      - ".github/workflows/pass220-i026-quantum-measurement-projectors.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify I026 exact-authority AST
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          path = Path(
+              "hhs_runtime/"
+              "hhs_pass220_quantum_measurement_projectors_v1.py"
+          )
+          tree = ast.parse(
+              path.read_text(encoding="utf-8"), filename=str(path)
+          )
+
+          forbidden_imports = {
+              "numpy", "scipy", "sympy", "decimal", "cmath",
+              "random", "secrets", "time", "datetime"
+          }
+          forbidden_calls = {
+              "float", "complex", "eval", "exec", "pow", "sqrt",
+              "exp", "choice", "choices", "random", "randint",
+          }
+          violations = []
+
+          for node in ast.walk(tree):
+              if isinstance(node, ast.Import):
+                  for alias in node.names:
+                      root = alias.name.split(".")[0]
+                      if root in forbidden_imports:
+                          violations.append(
+                              f"forbidden import {alias.name} "
+                              f"line {node.lineno}"
+                          )
+              elif isinstance(node, ast.ImportFrom):
+                  root = (node.module or "").split(".")[0]
+                  if root in forbidden_imports:
+                      violations.append(
+                          f"forbidden import-from {node.module} "
+                          f"line {node.lineno}"
+                      )
+              elif isinstance(node, ast.Call):
+                  func = node.func
+                  if (
+                      isinstance(func, ast.Name)
+                      and func.id in forbidden_calls
+                  ):
+                      violations.append(
+                          f"forbidden call {func.id} line {node.lineno}"
+                      )
+                  elif (
+                      isinstance(func, ast.Attribute)
+                      and func.attr in forbidden_calls
+                  ):
+                      violations.append(
+                          f"forbidden attribute call "
+                          f"{ast.unparse(func)} line {node.lineno}"
+                      )
+              elif isinstance(node, ast.BinOp) and isinstance(
+                  node.op, ast.Div
+              ):
+                  violations.append(
+                      f"bare division operator line {node.lineno}; "
+                      "use Fraction/exact carriers"
+                  )
+
+          if violations:
+              raise SystemExit("\n".join(violations))
+          print("HHS_I026_AST_AUTHORITY_SCAN=PASS")
+          PY
+
+      - name: Compile exact I025-I026 surfaces
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass220_schrodinger_firing_order_v1.py
+          python -m py_compile hhs_runtime/hhs_pass220_quantum_measurement_projectors_v1.py
+
+      - name: Verify Wolfram 12 of 12 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i026_quantum_measurement_wolfram_20260921_v1.wl"
+          ).read_text(encoding="utf-8")
+          p = Path(
+              "evidence/pass220/"
+              "i026_quantum_measurement_wolfram_20260921_v1.output.json"
+          )
+          data = json.loads(p.read_text())
+
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 12
+          assert data["failed"] == []
+          assert data["phi9"] == "1 + x^3 + x^6"
+          assert data["phi72"] == "1 - y^12 + y^24"
+          assert data["root_sums"] == [0] * 8
+          assert data["schema"] in source
+          assert "PolynomialRemainder" in source
+          PY
+
+      - name: Verify inherited Lo-Shu admission boundary remains explicit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_144cell_epsilon_lo_shu_closure_v1.py"
+          ).read_text(encoding="utf-8")
+          assert '"canonical_admission_authority": False' in source
+          PY
+
+      - name: Run I026 and inherited I025 regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_quantum_measurement_projectors_v1.py
+          tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py
