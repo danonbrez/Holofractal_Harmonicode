@@ -18,6 +18,19 @@ static void init_vm(VM81 *vm) {
     vm->halted = 0;
 }
 
+static void bind_lane5(VM81 *vm) {
+    g3_bind_lane5_context(
+        vm,
+        1u, /* I149 raw648 hydrated */
+        1u, /* Holo4 four lanes prepared */
+        1u, /* Lane 5 mediated */
+        1u, /* mandatory green PR/proof/benchmark constructor graph */
+        1u, /* Lane 5 remains candidate-only */
+        1u  /* external egress requires Hash216 validation */
+    );
+    assert(g3_lane5_context_valid(vm));
+}
+
 static void test_opcode_values(void) {
     assert(OP_HALT == 23);
     assert(OP_G3_IEEE_INGRESS == 24);
@@ -32,6 +45,19 @@ static void test_opcode_values(void) {
     assert(OP_G3_IEEE_EGRESS == 33);
     assert(OP_G3_OUROBOROS == 34);
     assert(OP__COUNT == 35);
+}
+
+static void test_direct_g3_without_lane5_context_is_rejected(void) {
+    VM81 vm;
+    init_vm(&vm);
+    vm.cells[0] = UINT64_C(0x3ff0000000000000);
+    add(&vm, OP_G3_IEEE_INGRESS, 0, 0, 10);
+    vm81_step(&vm);
+    assert(vm.step == 0u);
+    assert(vm.last_receipt.ledger_advanced == 0);
+    assert((vm.last_receipt.witness & W_G3_REJECT) != 0u);
+    assert((vm.last_receipt.witness & W_LEDGER_FROZEN) != 0u);
+    assert(!g3_lane5_context_valid(&vm));
 }
 
 static void test_sequential_path(void) {
@@ -51,6 +77,7 @@ static void test_sequential_path(void) {
     };
 
     init_vm(&vm);
+    bind_lane5(&vm);
     vm.cells[0] = raw;
     vm.cells[1] = 9u; /* P^4 */
     vm.cells[2] = 9u; /* c^4 */
@@ -96,6 +123,7 @@ static void test_c5_c7_c1_bypass_rejected_without_step(void) {
     assert((vm.last_receipt.witness & W_LEDGER_FROZEN) != 0u);
 
     init_vm(&vm);
+    bind_lane5(&vm);
     vm.cells[0] = UINT64_C(0x4000000000000000);
     vm.cells[1] = 9u;
     vm.cells[2] = 9u;
@@ -113,6 +141,7 @@ static void test_c5_c7_c1_bypass_rejected_without_step(void) {
     assert((vm.last_receipt.witness & W_G3_REJECT) != 0u);
 
     init_vm(&vm);
+    bind_lane5(&vm);
     vm.cells[0] = UINT64_C(0x4008000000000000);
     add(&vm, OP_G3_IEEE_INGRESS, 0, 0, 10);
     add(&vm, OP_G3_PAL_FOLD, 0, 0, 11);
@@ -132,6 +161,7 @@ static void test_fused_success_and_mismatch_rollback(void) {
     const uint64_t raw = UINT64_C(0x7ff8000000000001);
 
     init_vm(&vm);
+    bind_lane5(&vm);
     vm.cells[0] = raw;
     vm.cells[1] = 9u;
     vm.cells[2] = 9u;
@@ -147,6 +177,7 @@ static void test_fused_success_and_mismatch_rollback(void) {
     assert(vm.cells[0] == raw);
 
     init_vm(&vm);
+    bind_lane5(&vm);
     vm.cells[0] = raw;
     vm.cells[1] = 9u;
     vm.cells[2] = 8u;
@@ -162,6 +193,7 @@ static void test_fused_success_and_mismatch_rollback(void) {
 
 int main(void) {
     test_opcode_values();
+    test_direct_g3_without_lane5_context_is_rejected();
     test_sequential_path();
     test_c5_c7_c1_bypass_rejected_without_step();
     test_fused_success_and_mismatch_rollback();
