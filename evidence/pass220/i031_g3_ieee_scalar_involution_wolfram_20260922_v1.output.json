@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PASS_220_I031_G3_IEEE_SCALAR_INVOLUTION_WOLFRAM_20260922_V1",
+  "status": "PASS",
+  "check_count": 17,
+  "pass_count": 17,
+  "failed": [],
+  "proof_cell": "123321.111",
+  "binary64_0p1_hex": "3FB999999999999A",
+  "binary64_0p1_exact_dyadic": [
+    3602879701896397,
+    36028797018963968
+  ],
+  "binary64_0p1_minus_one_tenth": "1/180143985094819840",
+  "checks": {
+    "01_binary16_partition_parametric": true,
+    "02_binary32_partition_parametric": true,
+    "03_binary64_partition_parametric": true,
+    "04_binary128_partition_parametric": true,
+    "05_binary16_all_65536_rebuild": true,
+    "06_phase_swap_scalar_bits_invariant": true,
+    "07_phase_swap_is_involution": true,
+    "08_reciprocal_phase_is_y": true,
+    "09_signed_zero_bit_patterns_distinct": true,
+    "10_signed_zero_numeric_projection_can_coincide": true,
+    "11_nan_payload_field_rebuild_exact": true,
+    "12_positive_infinity_field_rebuild_exact": true,
+    "13_negative_infinity_field_rebuild_exact": true,
+    "14_binary64_tenth_storage_bit_rebuild_exact": true,
+    "15_binary64_tenth_exact_dyadic_diff_exact": true,
+    "16_proof_cell_opaque": true,
+    "17_no_scalar_inflation_under_phase_exchange": true
+  }
+}
