@@ -179,13 +179,16 @@ interaction Hamiltonians.
 Exact phase representation:
 
 ~~~text
-Q(zeta72)^9
+macrocycle: Q(zeta72)^9
+full orbit: Q(zeta72)^72
+full orbit decomposition: direct sum of 8 copies of Q(zeta72)^9
 zeta9 = zeta72^8
 i = zeta72^18
 ~~~
 
 The Python runtime stores multiplicative cyclotomic phases only as integer
-exponents modulo 72.
+exponents modulo 72. The machine contract now exposes macrocycle and full-orbit
+state spaces separately.
 
 ## Runtime implementation
 
@@ -237,6 +240,27 @@ No new:
 - physical particle-mass identification;
 - observational fitting authority.
 
+## PR #542 review repair-forward
+
+Automated review on head `1e023ba26644fbe7266560af4f25d556b6d5df8a`
+identified four boundary/provenance defects. They were repaired without changing
+the 25 exact theorem checks:
+
+1. `884557f6a4d3a595a4fad752d37bcc4f768094ec`
+   - permutation inputs validate before the zero-power identity path;
+   - exact mode labels reject k outside 0..8;
+   - full-orbit contract is explicitly 72-dimensional and separately exposes
+     the 9-dimensional macrocycle space.
+2. `c3531ef312ff86b99f40086164e8278d69d5ce6b`
+   - negative regressions cover invalid zero-power permutations and out-of-range
+     mode labels;
+   - contract regression checks both state-space dimensions.
+3. `939555dafde7717f1258eb21fb070466f1bc4635`
+   - the committed Wolfram script now emits
+     `corrections_from_initial_fixture`, matching the stored RawJSON evidence.
+4. `3526456c5927a1c132553ee1dc0c3c94dfde3ea0`
+   - theorem documentation records the exact full-orbit state-space split.
+
 ## Validation performed
 
 - I024 exact-head: SUCCESS;
@@ -251,15 +275,20 @@ No new:
 
 ## Validation remaining
 
-Dedicated I025 exact-head must:
+The pre-review I025 exact-head run `35674693986` was SUCCESS. Because the PR
+head changed during review repair-forward, the current head must receive a fresh
+exact-head run covering:
 
-1. AST-audit the I025 runtime;
-2. py_compile the exact runtime;
-3. validate the committed 25/25 Wolfram receipt;
-4. run I025 regression tests;
-5. rerun inherited I022 firing-order/cadence regressions.
+1. AST audit of the repaired I025 runtime;
+2. py_compile of the exact runtime;
+3. committed 25/25 Wolfram receipt validation, including emitted correction
+   provenance;
+4. repaired I025 regression tests, including fail-closed negatives;
+5. inherited I022 firing-order/cadence regressions.
 
-Queued/slow CI does not invalidate this restartable checkpoint.
+After that dependency-scoped gate is green, PR #542 is ready for merge and
+verified-main recheck. Queued/slow external CI does not invalidate this
+restartable checkpoint.
 
 ## Next theorem boundary
 
