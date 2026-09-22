@@ -250,3 +250,98 @@ The dedicated I028 exact-head gate must now additionally prove:
 Per dependency-scoped policy, this repair changes the I028 executable frontier,
 so the earlier queued run cannot be accepted for the repaired head.  A fresh
 exact-head run must correspond to the current branch head before merge.
+
+## Repair-forward update — executable Holo4 mediation and adapter ABI closure
+
+Additional dependency-scoped repair commits:
+
+~~~text
+3602a1adf52dc4755d27637e143aa461efbd56a9
+  append G3 identities to the inherited candidate-adapter opcode ABI
+
+bf961e05a361a297eba6b42109271b5f341b71f9
+  generic 1.21.3 adapter explicitly rejects all G3 opcodes
+
+64b3ee9f26f34e311c68ef756d556e3a1739d8ad
+  negative regression for generic-adapter G3 bypass
+
+76c806ea6cc6508317acbb3f08478bc0d04058a4
+  add candidate-adapter regression to the dedicated I028 exact-head gate
+
+2daf0b5cc0f5590cef6e0e268aedeed6d6fdb82a
+  correct the workflow dependency path frontier
+
+029beac7dba4d632ca697a9b97091509eb0c1ec4
+  expose the mediated Lane5/Holo4/G3 candidate ABI and witness records
+
+8b883d4a44423d11a2040ff3d123e148e4b94ae8
+  execute public I149 hydration + real Holo4 route + G3 on a local VM copy
+
+af503d343b7b8940791ced783648ad65aec7f23e
+  prove Holo4 mediation, constructor requirement, P4=C4 failure and no authority
+
+796345d3cd607daf1dc58ff685bef7f5edbed7a3
+  derive deterministic pipeline and constructor-graph Hash72 roots
+
+6c8652491de12ada6fb388e3f6b9f2224f830236
+  require exact rooted handoff in the Python resolver
+
+d4338b8aa1ad2e70367923673e4d36a1b3725f27
+  document the executable mediated ABI
+~~~
+
+### Native execution closure
+
+The new exported candidate surface is:
+
+~~~text
+hhs_exact_pass220_i028_lane5_g3_candidate
+~~~
+
+It executes the same exact frame through:
+
+~~~text
+public I149 648-byte export
+-> public I149 648-byte re-import
+-> exact frame equality
+-> inherited hhs_exact_pass219_holo4_route
+-> four-lane candidate/no-authority checks
+-> rooted mandatory Lane 5 constructor witness
+-> isolated G3 Ouroboros execution
+-> candidate evidence requiring later Hash216 self-solving validation
+~~~
+
+The function never calls a canonical VM81 admit/commit surface and emits:
+
+~~~text
+external_egress_authority = 0
+canonical_vm81_mutation_authority = 0
+canonical_hash72_authority = 0
+canonical_hash216_authority = 0
+canonical_persistence_authority = 0
+floating_point_authority = 0
+hash216_self_solving_validation_required = 1
+~~~
+
+### Mandatory constructor root binding
+
+The Python Lane 5 contract now deterministically roots both:
+
+~~~text
+pipeline_root_hash72
+mandatory_constructor_graph_root_hash72
+~~~
+
+and resolve_g3_opcode rejects either root if it does not exactly match the
+registered definition. The native constructor witness transports both roots
+into the mediated candidate evidence.
+
+### Validation status
+
+All implementation changes above are committed and restartable. The new
+dependency frontier includes the Pass 219 exact candidate adapter and the
+dedicated I028 gate now compiles/runs that inherited adapter regression.
+
+A fresh exact-head workflow result corresponding to the final branch head is
+still required before merge. Earlier queued runs from superseded heads are not
+acceptance evidence for this repaired implementation.
