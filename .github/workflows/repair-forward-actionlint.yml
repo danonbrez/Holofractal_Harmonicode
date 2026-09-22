@@ -24,3 +24,29 @@ jobs:
         run: go install github.com/rhysd/actionlint/cmd/actionlint@latest
       - name: Lint all GitHub Actions workflows
         run: '"$(go env GOPATH)/bin/actionlint" -color -shellcheck=""'
+
+  dependency-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx cryptography
+      - name: Verify deployment shell and Python syntax
+        run: |
+          bash -n deployment/ubuntu/application_vm/install.sh
+          bash -n deployment/digitalocean/guarded_auto_update/install.sh
+          bash -n deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+          python -m py_compile \
+            deployment/digitalocean/guarded_auto_update/verify-recovery-state.py \
+            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py
+      - name: Run production recovery and service-permission regressions
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_production_service_permissions_v2.py \
+            tests/test_hhs_guarded_auto_update_contract_v1.py
+      - name: Run Ubuntu application VM control-plane regressions
+        run: python -m pytest -q tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
