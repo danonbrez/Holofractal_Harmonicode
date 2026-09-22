@@ -80,19 +80,20 @@ jobs:
         run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
 
       - name: Validate Pass 219 I119 inherited Pass 205 exact ABI
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
         run: |
           mkdir -p /tmp/pass219-i119-pass205
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
-            -o /tmp/pass219-i119-pass205/exact.o
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.c \
-            /tmp/pass219-i119-pass205/exact.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-i119-pass205/pass205-c
           /tmp/pass219-i119-pass205/pass205-c
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
-            /tmp/pass219-i119-pass205/exact.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass219-i119-pass205/pass205-cpp
           /tmp/pass219-i119-pass205/pass205-cpp
 
