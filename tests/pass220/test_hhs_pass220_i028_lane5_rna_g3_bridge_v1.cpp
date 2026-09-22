@@ -117,10 +117,6 @@ int main() {
                &witness,
                0U, 1U, 2U,
                &result) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    for (const auto byte :
-         reinterpret_cast<const std::uint8_t*>(&result)) {
-        (void)byte;
-    }
     assert(result.struct_size == 0U);
     assert(result.canonical_admission_invoked == 0U);
 
