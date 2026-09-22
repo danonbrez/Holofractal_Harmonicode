@@ -109,13 +109,43 @@ canonical authority.
 Platonic color-wheel / holofractal sprite graphics remain downstream projection
 geometry only.
 
+## Current integration checkpoint
+
+PR:
+
+~~~text
+#547 — Pass 220 I028: append G3 Ouroboros VM81 opcode family
+~~~
+
+PR state at checkpoint:
+
+~~~text
+open
+mergeable
+branch behind main = 0
+~~~
+
+Dedicated exact-head workflow registered as:
+
+~~~text
+Pass 220 I028 G3 Ouroboros VM81 Opcodes
+run 35716658163
+state at observation = queued
+~~~
+
+The queued run is not treated as a blocker to recording this restartable
+implementation checkpoint. A later exact-head result must be associated with
+the then-current PR head before merge.
+
 ## Next action
 
-Open the I028 PR from this synchronized branch and run its dedicated exact-head
-gate.
+Read the dedicated I028 exact-head result for the current PR head.
 
-Repair forward only failures within the I028 dependency frontier.
+If green, merge PR #547 and verify main.
 
-After the latest I028 head is green, merge and verify main. The next pass may
-build the reversible multimodal Platonic/color-wheel/sprite projection receipt
-over committed G³/VM81/Hash216 state.
+If red, repair forward only the failing I028 dependency frontier, commit the
+repair, and require a fresh exact-head success before merge.
+
+After I028 merges, the next pass may build the reversible multimodal
+Platonic/color-wheel/sprite projection receipt over committed
+G³/VM81/Hash216 state.
