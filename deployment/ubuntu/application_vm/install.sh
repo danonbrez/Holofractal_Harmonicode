@@ -50,6 +50,9 @@ if ! id "$SERVICE_USER" >/dev/null 2>&1; then
   useradd --system --home /var/lib/hhs/application-vm --shell /usr/sbin/nologin "$SERVICE_USER"
 fi
 
+# The service runs as SERVICE_USER. Guarantee traversal through the shared HHS
+# state parent even when an older deployment created /var/lib/hhs as root-only.
+install -d -o root -g "$SERVICE_USER" -m 0750 /var/lib/hhs
 install -d -o "$SERVICE_USER" -g "$SERVICE_USER" -m 0750 /var/lib/hhs/application-vm
 install -d -o root -g "$SERVICE_USER" -m 0750 /etc/hhs
 
@@ -87,8 +90,14 @@ sed \
 
 install -m 0755 "$REPO_ROOT/bin/hhs-vm" /usr/local/bin/hhs-vm
 
+runuser -u "$SERVICE_USER" -- test -x "$REPO_ROOT" \
+  || fail "service user cannot traverse repository root: $REPO_ROOT"
+runuser -u "$SERVICE_USER" -- test -r "$REPO_ROOT/hhs_backend/application_vm_api_server.py" \
+  || fail "service user cannot read application VM API source"
+
 systemctl daemon-reload
 systemctl enable hhs-application-vm.service
+systemctl reset-failed hhs-application-vm.service >/dev/null 2>&1 || true
 systemctl restart hhs-application-vm.service
 
 for _ in $(seq 1 45); do
