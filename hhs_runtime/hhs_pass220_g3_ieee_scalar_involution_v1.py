@@ -206,24 +206,43 @@ def exact_dyadic(
 def _dyadic_record(
     dyadic: Optional[Tuple[int, int]],
 ) -> Optional[Dict[str, Any]]:
-    """Serialize an exact dyadic without forcing huge powers of two to decimal.
+    """Serialize an exact dyadic in compact power-of-two scientific form.
 
-    IEEE binary rationals always have a power-of-two denominator after
-    reduction.  binary128 subnormals can require a denominator whose decimal
-    spelling exceeds Python's guarded integer-string limit, so the canonical
-    record carries the power-of-two exponent.  A direct denominator integer is
-    included only when its decimal serialization is safely bounded.
+    Expanded binary128 numerators or denominators may require thousands of
+    decimal digits even though their exact binary representation is compact.
+    The canonical record therefore always stores
+
+        value = coefficient * 2^power2
+
+    with a small integer coefficient. Expanded numerator/denominator integers
+    are included only when both are bounded enough for safe JSON conversion.
     """
     if dyadic is None:
         return None
     numerator, denominator = dyadic
     if denominator <= 0 or denominator & (denominator - 1):
         raise Pass220IEEEExactError("dyadic denominator is not a power of two")
+
     denominator_power2 = denominator.bit_length() - 1
+    if numerator == 0:
+        coefficient = 0
+        numerator_power2 = 0
+    else:
+        magnitude = abs(numerator)
+        trailing_power2 = (magnitude & -magnitude).bit_length() - 1
+        coefficient = numerator >> trailing_power2
+        numerator_power2 = trailing_power2
+
+    power2 = numerator_power2 - denominator_power2
+    bounded = (
+        abs(numerator).bit_length() <= 4096
+        and denominator_power2 <= 4096
+    )
     return {
-        "numerator": numerator,
-        "denominator_power2": denominator_power2,
-        "denominator": denominator if denominator_power2 <= 4096 else None,
+        "coefficient": coefficient,
+        "power2": power2,
+        "numerator": numerator if bounded else None,
+        "denominator": denominator if bounded else None,
     }
 
 
