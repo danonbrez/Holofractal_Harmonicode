@@ -5,6 +5,12 @@ on:
   push:
     paths:
       - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
+      - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
+      - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
       - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
@@ -134,6 +140,25 @@ jobs:
         env:
           PYTHONPATH: .
         run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
+
+      - name: Run inherited candidate adapter ABI and reject generic G3 bypass
+        run: |
+          mkdir -p /tmp/pass220-i028-adapter
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass220-i028-adapter/exact.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/pass220-i028-adapter/adapter.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            /tmp/pass220-i028-adapter/adapter.o \
+            /tmp/pass220-i028-adapter/exact.o \
+            -o /tmp/pass220-i028-adapter/test-adapter
+          /tmp/pass220-i028-adapter/test-adapter
 
       - name: Run inherited palindrome and RNA exact surfaces
         env:
