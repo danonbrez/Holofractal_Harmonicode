@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONHASHSEED: '0'
-      HHS_PASS166_STORAGE_DIR: '${{ runner.temp }}/hhs-pass166-default'
+      HHS_PASS166_STORAGE_DIR: /tmp/hhs-pass166-default
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

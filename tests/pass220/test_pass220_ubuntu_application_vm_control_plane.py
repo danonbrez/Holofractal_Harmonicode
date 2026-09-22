@@ -228,6 +228,10 @@ def test_service_template_uses_deployment_python_runtime() -> None:
 
     assert "ExecStart=@@PYTHON_BIN@@ -m uvicorn" in service
     assert "HHS_APPLICATION_VM_PYTHON_BIN=$PYTHON_BIN" in installer
+    assert 'install -d -o root -g "$SERVICE_USER" -m 0750 /var/lib/hhs' in installer
+    assert 'runuser -u "$SERVICE_USER" -- test -x "$REPO_ROOT"' in installer
+    assert 'runuser -u "$SERVICE_USER" -- test -r "$REPO_ROOT/hhs_backend/application_vm_api_server.py"' in installer
+    assert "systemctl reset-failed hhs-application-vm.service" in installer
     assert "systemctl restart hhs-application-vm.service" in installer
 
 
