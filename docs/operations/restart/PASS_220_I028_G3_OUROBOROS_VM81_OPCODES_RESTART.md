@@ -345,3 +345,54 @@ dedicated I028 gate now compiles/runs that inherited adapter regression.
 A fresh exact-head workflow result corresponding to the final branch head is
 still required before merge. Earlier queued runs from superseded heads are not
 acceptance evidence for this repaired implementation.
+
+
+## Repair-forward update — Runtime OS surface to Lane 5 RNA/PQC no-bypass closure
+
+The executable Holo4 mediation checkpoint exposed one remaining boundary gap:
+the I028 candidate function proved the real Holo4 route but called
+`hhs_exact_pass219_holo4_route` directly.  That was semantically equivalent
+to the inherited C++ cell-wall route, but it did not itself prove that the
+Linux/API/ABI surface had traversed the public Pass 219 RNA VM5184 ABI.
+
+This cycle adds:
+
+~~~text
+hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h
+hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp
+tests/pass220/test_hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp
+~~~
+
+The bridge first invokes:
+
+~~~text
+hhs_exact_pass219_rna_vm5184_route
+~~~
+
+which enters the C++ `CoreHolographicRNACellWall`, then invokes the existing
+rooted Lane5/Holo4/G3 candidate surface from a fresh Holo4 state.  It requires
+the RNA-cell-wall and direct candidate Holo4 prepared/decision evidence to be
+exactly equivalent before returning candidate success.
+
+The bridge remains candidate-only.  It explicitly records that the inherited
+PQC environmental/instruction membrane and signed environmental VM81 authority
+are still required for mutation, while direct environmental opcode, public ABI,
+and direct VM81 bypass authority remain zero.
+
+The rooted Python pipeline contract now also records:
+
+~~~text
+Runtime OS surface role = LINEAR_VALIDATION_CONSTRUCTION_PROJECTION
+Lane 5 BIOS role        = GLOBAL_ORTHOGONAL_CONTROL_CONSTRAINT_MANIFOLD
+Linux/API/ABI ingress requires Lane 5 zero-bypass
+C++ RNA cell wall required before canonical VM81
+PQC environmental/instruction membrane required before canonical VM81
+direct Linux environmental opcode canonical authority = false
+direct public ABI VM81 commit authority = false
+raw legacy VM81 public dynamic symbol allowed = false
+~~~
+
+The dedicated I028 gate is extended to build the canonical `make c-abi`
+runtime, execute the bridge regression, and audit the dynamic symbol boundary.
+A new exact-head result for the repair commit is required before PR #547 may
+merge.

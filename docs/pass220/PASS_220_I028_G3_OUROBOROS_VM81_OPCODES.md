@@ -470,6 +470,59 @@ The Python rooted resolver derives those roots from the registered Lane 5
 pipeline/constructor definitions; the native ABI preserves and transports the
 roots while independently checking the executable I149/Holo4/G3 surfaces.
 
+## 15B. Runtime OS surface / Lane 5 BIOS / RNA-PQC no-bypass closure
+
+I028 now makes the inherited Pass 219 membrane explicit in executable
+candidate routing rather than relying only on architectural documentation.
+
+The Runtime OS / Linux API / compatibility ABI is the linear validation and
+construction projection of the system.  Lane 5 BIOS remains the global
+orthogonal control/constraint manifold.  A surface request does not acquire a
+second semantic engine or direct VM81 authority.
+
+The executable bridge is:
+
+~~~text
+hhs_exact_pass220_i028_lane5_rna_g3_route
+~~~
+
+and requires:
+
+~~~text
+Linux/API/ABI candidate
+-> public hhs_exact_pass219_rna_vm5184_route
+-> C++ CoreHolographicRNACellWall
+-> exact Holo4 prepared/decision evidence
+-> rooted Lane5/Holo4/G3 candidate route
+-> exact Holo4 evidence equivalence
+-> candidate only
+-> Hash216 self-solving validation
+-> Pass219 PQC environmental/instruction membrane
+-> signed environmental VM81 admission if mutation is requested
+~~~
+
+The bridge does not claim that PQC admission has already occurred.  It records
+that PQC plus signed environmental VM81 admission remain mandatory and emits:
+
+~~~text
+cpp_rna_cell_wall_routed = 1
+holo4_evidence_equivalent = 1
+pqc_firewall_required_for_canonical_admission = 1
+signed_environmental_vm81_required = 1
+direct_environmental_opcode_canonical_authority = 0
+direct_abi_canonical_authority = 0
+direct_vm81_bypass_authority = 0
+canonical_admission_invoked = 0
+external_egress_authority = 0
+~~~
+
+The dedicated exact-head workflow additionally audits the production dynamic
+symbol table: the public RNA VM5184 route and signed environmental authority
+must be visible, while the inherited raw VM81 admission and internal PQC
+admission symbols must remain non-public.  This prevents Linux opcodes, ctypes,
+plugins, or compatibility ABI callers from obtaining a canonical mutation
+shortcut beneath the Lane 5 / RNA / PQC membrane.
+
 ## 16. Multimodal geometry and Hash216 knowledge hydration
 
 Platonic/color-wheel/holofractal-sprite metadata is a Lane 5 Hash216 knowledge

@@ -7,7 +7,10 @@ on:
       - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
       - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
       - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
+      - "hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp"
       - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "tests/pass220/test_hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp"
       - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
@@ -23,7 +26,10 @@ on:
       - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
       - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
       - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
+      - "hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp"
       - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "tests/pass220/test_hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp"
       - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
@@ -159,6 +165,159 @@ jobs:
             /tmp/pass220-i028-adapter/exact.o \
             -o /tmp/pass220-i028-adapter/test-adapter
           /tmp/pass220-i028-adapter/test-adapter
+
+      - name: Prove Linux API ABI through C++ RNA cell wall before G3
+        run: |
+          make c-abi
+          nm -D hhs_runtime/builds/libhhs_runtime.so > /tmp/pass220-i028-symbols
+          grep ' hhs_exact_pass219_rna_vm5184_route        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
+ /tmp/pass220-i028-symbols
+          grep ' hhs_exact_pass219_vm81_environment_admit_signed        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
+ /tmp/pass220-i028-symbols
+          ! grep -q ' hhs_exact_vm81_admit_uqcel        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
+ /tmp/pass220-i028-symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
+ /tmp/pass220-i028-symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_palindromic_ordered_phase_v1.py
+          tests/pass220/test_hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py
+
+      - name: Verify C1 physical offset remains unresolved
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_g3_ouroboros_opcode_registry_v1 import (
+              build_g3_opcode_registry,
+          )
+          registry = build_g3_opcode_registry()
+          assert registry["registered_opcodes"] == 11
+          for entry in registry["entries"]:
+              assert (
+                  entry["bigint_physical_5184_character_offset_resolved"]
+                  is False
+              )
+              assert (
+                  entry["authoritative_bigint_exactness_requirement"]
+                  == "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+              )
+              assert entry["compiler_may_synthesize"] is False
+          PY
+ /tmp/pass220-i028-symbols
+          g++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp \
+            -o /tmp/pass220-i028-adapter/rna-g3-bridge.o
+          g++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp \
+            /tmp/pass220-i028-adapter/rna-g3-bridge.o \
+            /tmp/pass220-i028-adapter/adapter.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-i028-adapter/test-rna-g3-bridge
+          /tmp/pass220-i028-adapter/test-rna-g3-bridge
 
       - name: Run inherited palindrome and RNA exact surfaces
         env:

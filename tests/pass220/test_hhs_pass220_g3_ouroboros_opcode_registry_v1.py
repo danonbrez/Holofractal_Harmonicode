@@ -193,3 +193,34 @@ def test_multimodal_and_four_lane_surfaces_are_lane5_dimensions_not_authorities(
         assert entry["multimodal_geometry_relation"] == (
             "LANE5_HASH216_KNOWLEDGE_GRAPH_HYDRATION_DIMENSION"
         )
+
+
+def test_runtime_os_surface_is_projection_and_lane5_membrane_is_non_bypassable():
+    pipeline = build_lane5_g3_pipeline_contract()
+    assert pipeline["runtime_os_surface_role"] == (
+        "LINEAR_VALIDATION_CONSTRUCTION_PROJECTION"
+    )
+    assert pipeline["lane5_bios_system_role"] == (
+        "GLOBAL_ORTHOGONAL_CONTROL_CONSTRAINT_MANIFOLD"
+    )
+    assert pipeline["linux_api_abi_ingress_requires_lane5_zero_bypass"] is True
+    assert pipeline["cpp_rna_cell_wall_required_before_canonical_vm81"] is True
+    assert (
+        pipeline[
+            "pqc_environmental_instruction_membrane_required_before_canonical_vm81"
+        ]
+        is True
+    )
+    assert pipeline["direct_linux_environmental_opcode_canonical_authority"] is False
+    assert pipeline["direct_public_abi_vm81_commit_authority"] is False
+    assert pipeline["legacy_low_level_vm81_public_dynamic_symbol_allowed"] is False
+    assert pipeline["canonical_vm81_execution_requires_inherited_pass219_membrane"] is True
+    assert "PASS219_CPP_RNA_CELL_WALL" in pipeline["stages"]
+    assert "PASS219_PQC_ENVIRONMENTAL_INSTRUCTION_MEMBRANE" in pipeline["stages"]
+    assert pipeline["canonical_handoff_requirements"] == [
+        "PASS219_CPP_RNA_CELL_WALL_PATH_REQUIRED",
+        "VALID_PARENT_HASH216_ARRAY_REQUIRED",
+        "PASS219_PQC_PROVENANCE_REQUIRED",
+        "SIGNED_ENVIRONMENTAL_VM81_ADMISSION_REQUIRED",
+        "VALID_CHILD_HASH216_ARRAY_REQUIRED",
+    ]
