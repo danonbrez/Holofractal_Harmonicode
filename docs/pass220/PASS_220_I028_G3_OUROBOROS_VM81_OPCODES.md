@@ -401,6 +401,75 @@ unmerged evidence gains no canonical authority merely by being visible.
 Lane 5 itself retains zero canonical VM81 mutation authority and zero
 Hash72/Hash216 mint authority.
 
+## 15A. Executable Lane 5 → Holo4 → G³ candidate ABI
+
+I028 now binds the architecture in native code through:
+
+~~~text
+hhs_exact_pass220_i028_lane5_g3_candidate
+~~~
+
+The function accepts:
+
+~~~text
+HHSExactVM81Frame
++ predecessor HHSExactPass219Hash216TransitionViewV1
++ candidate-only HHSExactPass219Holo4StateV1
++ rooted HHSExactPass220I028Lane5ConstructorWitnessV1
++ typed VM81 coordinates for IEEE / P4 / c4 carriers
+~~~
+
+and executes, in order:
+
+~~~text
+public hhs_exact_vm81_frame_export_le
+-> exact 648-byte replay
+-> public hhs_exact_vm81_frame_import_le
+-> byte-identical I149 hydration verification
+-> hhs_exact_pass219_holo4_validate_state
+-> hhs_exact_pass219_holo4_route
+-> verify all four-lane candidate-only/no-authority witnesses
+-> bind Lane 5 G3 mediation context
+-> g3_run_ouroboros on an isolated VM81 copy
+-> emit HHSExactPass220I028Lane5G3CandidateV1
+~~~
+
+The resulting candidate explicitly carries:
+
+~~~text
+raw648_round_trip_exact = 1
+holo4_four_lane_prepared = 1
+mandatory_constructor_graph_bound = 1
+g3_ouroboros_closed = 1
+candidate_frame_unchanged = 1
+candidate_only = 1
+exact_integer_only = 1
+hash216_self_solving_validation_required = 1
+external_egress_authority = 0
+canonical_vm81_mutation_authority = 0
+canonical_hash72_authority = 0
+canonical_hash216_authority = 0
+canonical_persistence_authority = 0
+floating_point_authority = 0
+~~~
+
+The older generic Pass 219 1.21.3 candidate executor has its opcode enum
+extended append-only to 35 entries so it remains ABI-aligned with the embedded
+kernel, but it explicitly rejects every opcode at or above
+HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS. Thus merely learning the new
+numeric opcode values cannot bypass Lane 5 mediation.
+
+The mandatory constructor witness binds two deterministic Hash72 roots:
+
+~~~text
+pipeline_root_hash72
+constructor_graph_root_hash72
+~~~
+
+The Python rooted resolver derives those roots from the registered Lane 5
+pipeline/constructor definitions; the native ABI preserves and transports the
+roots while independently checking the executable I149/Holo4/G3 surfaces.
+
 ## 16. Multimodal geometry and Hash216 knowledge hydration
 
 Platonic/color-wheel/holofractal-sprite metadata is a Lane 5 Hash216 knowledge
@@ -428,6 +497,9 @@ Implemented:
 
 - hhs_runtime/HARMONICODE_VM_RUNTIME.c
 - hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py
+- hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h
+- hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
+- tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c
 - tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c
 - tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py
 - evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.wl
