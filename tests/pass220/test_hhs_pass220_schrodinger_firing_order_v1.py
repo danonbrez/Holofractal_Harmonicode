@@ -10,6 +10,7 @@ from hhs_runtime.hhs_pass220_schrodinger_firing_order_v1 import (
     characteristic_polynomial_from_cycles,
     cyclotomic_9_factor_product,
     exact_energy_levels,
+    exact_node_phase,
     firing_order,
     full_orbit_permutation,
     full_orbit_receipt,
@@ -123,6 +124,12 @@ def test_receipt_records_logarithm_branch_and_gate_boundary():
 def test_contract_does_not_conflate_finite_difference_with_exact_h():
     descriptor = quantum_contract_descriptor()
     assert descriptor["branch_required_for_unique_energy_labels"] is True
+    assert descriptor["state_space"] == "Q(zeta72)^72"
+    assert descriptor["macrocycle_state_space"] == "Q(zeta72)^9"
+    assert descriptor["full_orbit_state_space"] == "Q(zeta72)^72"
+    assert descriptor["full_orbit_state_space_decomposition"] == (
+        "direct_sum_8_of_Q(zeta72)^9"
+    )
     assert descriptor["eigenphase_for_positive_branch"] == "zeta9^(-k)"
     assert descriptor["level_degeneracy"] == 8
     assert descriptor[
@@ -137,5 +144,13 @@ def test_invalid_phase_and_permutation_inputs_fail_closed():
         Phase72(Fraction(1, 2))
     with pytest.raises(Pass220I025QuantumError):
         permutation_power((1, 1), 2)
+    with pytest.raises(Pass220I025QuantumError):
+        permutation_power((1, 1), 0)
+    with pytest.raises(Pass220I025QuantumError):
+        permutation_power((True, 2), 0)
+    with pytest.raises(Pass220I025QuantumError):
+        exact_node_phase(-1)
+    with pytest.raises(Pass220I025QuantumError):
+        exact_node_phase(MACROCYCLE_ORDER)
     with pytest.raises(Pass220I025QuantumError):
         characteristic_polynomial_from_cycles((0,))
