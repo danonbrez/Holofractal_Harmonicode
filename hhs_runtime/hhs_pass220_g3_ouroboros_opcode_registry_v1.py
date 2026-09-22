@@ -58,12 +58,12 @@ _ROWS = (
         "OP_G3_SERIALIZE_A2_C1", 30, "vm81.g3.serialize_a2_c1",
         "W_G3_SERIALIZE_A2_C1",
         ("G3_C7_CONSTRAINT_BOUND", "LO_SHU_VALUE_1_SEMANTIC_REGISTER"),
-        ("G3_EXACT_BIGINT_REGISTER_BOUND",),
+        ("G3_C1_BIGINT_SEMANTIC_REGISTER_BOUND",),
     ),
     (
         "OP_G3_ZERO_SUM_CLOSE", 31, "vm81.g3.zero_sum_close",
         "W_G3_ZERO_SUM_CLOSE",
-        ("G3_EXACT_BIGINT_REGISTER_BOUND", "LO_SHU_ZERO_CENTERED_SUM"),
+        ("G3_C1_BIGINT_SEMANTIC_REGISTER_BOUND", "LO_SHU_ZERO_CENTERED_SUM"),
         ("G3_NUCLEUS_ZERO_SUM_CLOSED",),
     ),
     (
@@ -88,7 +88,8 @@ _ROWS = (
             "G3_P4_C4_BOUND_NO_P2_BRANCH",
             "G3_C5_CONSTRAINT_BOUND",
             "G3_C7_CONSTRAINT_BOUND",
-            "G3_EXACT_BIGINT_REGISTER_BOUND",
+            "G3_C1_BIGINT_SEMANTIC_REGISTER_BOUND",
+            "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS",
             "G3_NUCLEUS_ZERO_SUM_CLOSED",
             "G3_RNA_REVERSE_IDENTITY",
             "IEEE_OUT_EQ_IEEE_IN_RAW_BITS",
@@ -148,6 +149,10 @@ def _binding(
         "ieee_is_boundary_only": True,
         "bigint_physical_5184_character_offset_resolved": False,
         "bigint_semantic_register": "LO_SHU_VALUE_1_A2",
+        "bigint_native_cell_is_complete_serialized_object": False,
+        "authoritative_bigint_exactness_requirement": (
+            "I019_EXACT_5184_CHARACTER_SERIALIZER_WITNESS"
+        ),
         "four_lane_hydration_relation": (
             "COORDINATED_TYPED_VIEW_NO_INDEPENDENT_CANONICAL_AUTHORITY"
         ),
