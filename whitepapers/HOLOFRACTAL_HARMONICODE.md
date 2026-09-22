@@ -1268,3 +1268,50 @@ The paper consolidates the exact mathematics added after the earlier Lane 5 1.48
 A connected Wolfram Language synthesis executed 44 exact checks and returned 44/44 PASS. The source/output/receipt are stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
 
 The documentation distinguishes the latest main baseline from still-stacked runtime source and does not convert documentation evidence into canonical mutation authority.
+
+
+## A.32 Pass 220 I030 — G³ reciprocal symbol-string codec
+
+Pass 220 I030 adds an exact constructor-level codec theorem for finite UTF-8
+symbol strings. The proof cell `123321.111` is retained as an opaque token,
+not parsed as a host decimal value. Arabic digits `1..9` are represented as
+scaled proof-cell instances, while digit `0` is represented by the ordered
+typed phase lock
+
+~~~text
+Zx = ODiv(OProd(Phase[x], Phase[y], ProofCell("123321.111")), Phase[x])
+~~~
+
+with reciprocal return orientation
+
+~~~text
+Zy = ODiv(OProd(Phase[y], Phase[x], ProofCell("123321.111")), Phase[y])
+y = 1/x
+~~~
+
+No x/y cancellation or commutation is introduced.
+
+The same reciprocal transform is used at both boundaries. For an admitted
+source string `s`, `T(s)` constructs the forward/reverse carrier and
+`T(T(s)) == s` reconstructs the exact original spelling. Consequently,
+binary text, IEEE-like float spellings, BigInt/scientific notation, equations,
+leading zeroes, and other textual projections remain distinct symbol states
+unless an explicitly authorized higher projection identifies them.
+
+The carrier stores the forward UTF-8 byte path, its exact reverse, an integrity
+digest, per-symbol provenance, the x-oriented zero lock, and its y-oriented
+return lock. A bounded repair path can reconstruct the source when exactly one
+redundant byte path is damaged and the other path, digest, and symbol manifest
+remain intact; inconsistent or doubly damaged carriers fail closed.
+
+The companion Wolfram Language formalization
+`evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl`
+returns 17/17 PASS. It proves constructor-level phase involution for the locked
+zero and full 3x3 G³ proof tensor, keeps `xy` distinct from `yx`, verifies
+all numeral proof-cell lifts, and checks exact binary/float/Unicode string
+round trips without importing conventional multiplicative cancellation.
+
+The implementation is read-only and does not widen VM81 mutation,
+Hash72/Hash216 mint, persistence, floating-point, Lane 5 bypass, RNA bypass,
+Holo4 bypass, or PQC/admission authority. Full derivation:
+`docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md`.
