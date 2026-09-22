@@ -203,6 +203,30 @@ def exact_dyadic(
     return (numerator // common, denominator // common)
 
 
+def _dyadic_record(
+    dyadic: Optional[Tuple[int, int]],
+) -> Optional[Dict[str, Any]]:
+    """Serialize an exact dyadic without forcing huge powers of two to decimal.
+
+    IEEE binary rationals always have a power-of-two denominator after
+    reduction.  binary128 subnormals can require a denominator whose decimal
+    spelling exceeds Python's guarded integer-string limit, so the canonical
+    record carries the power-of-two exponent.  A direct denominator integer is
+    included only when its decimal serialization is safely bounded.
+    """
+    if dyadic is None:
+        return None
+    numerator, denominator = dyadic
+    if denominator <= 0 or denominator & (denominator - 1):
+        raise Pass220IEEEExactError("dyadic denominator is not a power of two")
+    denominator_power2 = denominator.bit_length() - 1
+    return {
+        "numerator": numerator,
+        "denominator_power2": denominator_power2,
+        "denominator": denominator if denominator_power2 <= 4096 else None,
+    }
+
+
 def _phase_state(raw_hex: str, phase: str) -> Dict[str, Any]:
     return {
         "raw_bits_hex": raw_hex,
@@ -242,10 +266,7 @@ def encode_ieee_scalar(
         "raw_integer": bits,
         "fields": fields,
         "classification": classify_fields(fields, format_name),
-        "exact_dyadic": None if dyadic is None else {
-            "numerator": dyadic[0],
-            "denominator": dyadic[1],
-        },
+        "exact_dyadic": _dyadic_record(dyadic),
         "field_rebuild_integer": rebuilt,
         "field_rebuild_hex": bits_to_raw(
             rebuilt, format_name, byteorder=byteorder
@@ -311,10 +332,7 @@ def validate_ieee_scalar_carrier(carrier: Mapping[str, Any]) -> Dict[str, Any]:
         raise Pass220IEEEExactError("classification mismatch")
 
     dyadic = exact_dyadic(fields, format_name)
-    expected_dyadic = None if dyadic is None else {
-        "numerator": dyadic[0],
-        "denominator": dyadic[1],
-    }
+    expected_dyadic = _dyadic_record(dyadic)
     if carrier.get("exact_dyadic") != expected_dyadic:
         raise Pass220IEEEExactError("exact dyadic mismatch")
 
