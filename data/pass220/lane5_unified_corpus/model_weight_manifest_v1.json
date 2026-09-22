@@ -1,0 +1,48 @@
+{
+  "schema": "HHS_PASS220_LANE5_UNIFIED_MODEL_WEIGHT_MANIFEST_V1",
+  "version": "1.0.0",
+  "policy": {
+    "revision_pinned": true,
+    "raw_weight_bytes_candidate_only": true,
+    "tensor_metadata_preserves_dtype_shape_offsets": true,
+    "canonical_learning_commit_for_weights": false
+  },
+  "native_open_models": [
+    {
+      "model_id": "gemma4-12b",
+      "deployment_alias": "gemma4-12b",
+      "local_path_env": "HHS_PASS220_NATIVE_MODEL_PATH",
+      "expected_sha256": "58fd31b778ca2c21c80d634fb34fc5a89d11d563a38dfd3cbf1b40dbf252a8b6",
+      "expected_size_bytes": 6883278368,
+      "license_id": "apache-2.0",
+      "hugging_face_fallback": {
+        "provider": "HUGGING_FACE",
+        "repo_id": "litert-community/gemma-4-12B-it-litert-lm",
+        "revision": "161028364f396379d490ed64ff07c6ef0fcd02d9",
+        "filename": "gemma-4-12B-it.litertlm"
+      }
+    }
+  ],
+  "hugging_face_models": [
+    {
+      "model_id": "multilingual-mpnet-text-v1",
+      "provider": "HUGGING_FACE",
+      "repo_id": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+      "revision": "79f2382ceacceacdf38563d7c5d16b9ff8d725d6",
+      "license_id": "apache-2.0",
+      "allow_patterns": [
+        "*.safetensors"
+      ]
+    },
+    {
+      "model_id": "multilingual-clip-text-v1",
+      "provider": "HUGGING_FACE",
+      "repo_id": "sentence-transformers/clip-ViT-B-32-multilingual-v1",
+      "revision": "58edf8cada9e9f1df0dd8a8bc2ae891e7b1a983c",
+      "license_id": "apache-2.0",
+      "allow_patterns": [
+        "*.safetensors"
+      ]
+    }
+  ]
+}
