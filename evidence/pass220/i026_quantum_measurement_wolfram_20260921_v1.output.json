@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS_220_I026_QUANTUM_MEASUREMENT_WOLFRAM_20260921_V1",
+  "status": "PASS",
+  "check_count": 12,
+  "pass_count": 12,
+  "failed": [],
+  "phi9": "1 + x^3 + x^6",
+  "phi72": "1 - y^12 + y^24",
+  "root_sums": [0, 0, 0, 0, 0, 0, 0, 0],
+  "checks": {
+    "01_phi72_order72": true,
+    "02_phi72_minus_one": true,
+    "03_phi72_relation": true,
+    "04_zeta9_embeds_as_y8": true,
+    "05_i_embeds_as_y18": true,
+    "06_root_sums_zero": true,
+    "07_projector_completeness": true,
+    "08_projector_orthogonality": true,
+    "09_projector_hermitian": true,
+    "10_projector_idempotence": true,
+    "11_weight_sum_from_completeness": true,
+    "12_repeatable_exclusive_collapse": true
+  }
+}
