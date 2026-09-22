@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_WOLFRAM_RECEIPT_V1",
+  "date": "2026-09-22",
+  "engine": "Wolfram Language",
+  "execution_environment": "connected Wolfram Language kernel",
+  "repository_replay_command": "wolframscript -file evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl",
+  "input_path": "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl",
+  "output_path": "evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.output.json",
+  "status": "PASS",
+  "check_count": 17,
+  "pass_count": 17,
+  "failed": []
+}
