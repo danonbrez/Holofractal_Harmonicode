@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_220_I027_QUANTUM_COLLAPSE_ADDRESS_WOLFRAM_20260922_V1",
+  "status": "PASS",
+  "check_count": 8,
+  "pass_count": 8,
+  "failed": [],
+  "lo_shu_flat": [4,9,2,3,5,7,8,1,6],
+  "zero_centered_flat": [-1,4,-3,-2,0,2,3,-4,1],
+  "vm81_min": 0,
+  "vm81_max": 80,
+  "checks": {
+    "01_outcomes_nine": true,
+    "02_row_major_cover": true,
+    "03_lo_shu_flat_exact": true,
+    "04_zero_centered_flat_exact": true,
+    "05_trinary_sign_range": true,
+    "06_center_outcome_zero_sign": true,
+    "07_vm81_bijection": true,
+    "08_vm81_formula_bounds": true
+  }
+}
