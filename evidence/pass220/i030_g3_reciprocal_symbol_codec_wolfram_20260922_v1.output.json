@@ -1,0 +1,29 @@
+{
+  "schema": "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_WOLFRAM_20260922_V1",
+  "status": "PASS",
+  "check_count": 17,
+  "pass_count": 17,
+  "failed": [],
+  "forward_zero": "ODiv[OProd[Phase[x], Phase[y], ProofCell[\"123321.111\"]], Phase[x]]",
+  "return_zero": "ODiv[OProd[Phase[y], Phase[x], ProofCell[\"123321.111\"]], Phase[y]]",
+  "proof_cell": "123321.111",
+  "checks": {
+    "01_proof_cell_is_opaque_string": true,
+    "02_forward_zero_locked_syntax": true,
+    "03_return_is_same_operation_reciprocal_phase": true,
+    "04_phase_swap_is_involution_on_zero": true,
+    "05_phase_swap_is_involution_on_g3": true,
+    "06_ordered_xy_distinct_yx": true,
+    "07_no_builtin_multiplicative_cancellation_surface": true,
+    "08_nine_digit_cells_scaled_from_same_proof": true,
+    "09_zero_digit_is_phase_locked_not_blank": true,
+    "10_arbitrary_utf8_symbol_string_round_trip": true,
+    "11_binary_symbol_string_round_trip": true,
+    "12_float_text_round_trip": true,
+    "13_leading_zero_identity_preserved": true,
+    "14_distinct_scalar_spellings_remain_distinct": true,
+    "15_forward_and_return_byte_paths_are_reciprocal": true,
+    "16_g3_is_3_by_3": true,
+    "17_reciprocal_axiom_is_constructor_level": true
+  }
+}
