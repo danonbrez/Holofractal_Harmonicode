@@ -232,6 +232,9 @@ static int hhs219_program_valid(const HHSExactPass219VM81ProgramV1 *program) {
         if (instruction->struct_size < sizeof(*instruction) ||
             instruction->version != hhs219_adapter_version_word() ||
             instruction->opcode >= HHS_EXACT_PASS219_VM81_OP_COUNT ||
+            /* Generic 1.21.3 execution has no authority to synthesize the
+               Lane 5 mediation context required by the G^3 microcode. */
+            instruction->opcode >= HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS ||
             instruction->a >= HHS_EXACT_VM81_CELLS ||
             instruction->b >= HHS_EXACT_VM81_CELLS ||
             instruction->c >= HHS_EXACT_VM81_CELLS ||
