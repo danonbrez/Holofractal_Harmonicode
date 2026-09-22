@@ -291,3 +291,42 @@ def test_production_workflow_is_backend_first_and_frontend_independent() -> None
     assert "systemctl is-active --quiet hhs.service" not in workflow
     assert "HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED" in workflow
     assert "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1" in workflow
+
+
+def test_installer_prebuilds_native_runtime_before_service_restart() -> None:
+    installer = (
+        ROOT / "deployment/ubuntu/application_vm/install.sh"
+    ).read_text(encoding="utf-8")
+    verifier = (
+        ROOT / "deployment/ubuntu/application_vm/verify.sh"
+    ).read_text(encoding="utf-8")
+
+    build = 'timeout 900s make -B c-abi'
+    library = 'hhs_runtime/builds/libhhs_runtime.so'
+    restart = 'systemctl restart hhs-application-vm.service'
+
+    assert build in installer
+    assert library in installer
+    assert 'HHS_DISABLE_C_AUTOBUILD=1' in installer
+    assert 'HHS_APPLICATION_VM_PREBUILT_NATIVE_IMPORT_VERIFIED' in installer
+    assert installer.index(build) < installer.index(restart)
+
+    assert library in verifier
+    assert 'production C autobuild must be disabled after prebuild' in verifier
+    assert 'HHS_APPLICATION_VM_NATIVE_RUNTIME_LOAD_VERIFIED' in verifier
+
+
+def test_application_vm_workflows_require_prebuilt_native_runtime() -> None:
+    focused = (
+        ROOT / ".github/workflows/pass220-ubuntu-application-vm.yml"
+    ).read_text(encoding="utf-8")
+    production = (
+        ROOT / ".github/workflows/pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    for workflow in (focused, production):
+        assert "make -B c-abi" in workflow
+        assert "test -s hhs_runtime/builds/libhhs_runtime.so" in workflow
+        assert "HHS_DISABLE_C_AUTOBUILD=1" in workflow
+        assert "hhs_exact_abi_validate" in workflow
+        assert "hhs_hash216_compute" in workflow

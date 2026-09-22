@@ -52,7 +52,20 @@ jobs:
           bash -n deployment/ubuntu/application_vm/install.sh
           bash -n deployment/ubuntu/application_vm/verify.sh
           sh -n bin/hhs-vm
-          pytest -q tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
+          make -B c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_runtime_init$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_validate_abi$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_exact_abi_validate$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_hash216_compute$'
+          ! ldd hhs_runtime/builds/libhhs_runtime.so | grep -q 'not found'
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python - <<'PY'
+          import hhs_python.runtime.hhs_ctypes_bridge
+          import hhs_python.runtime.hhs_exact_ctypes_bridge
+          import hhs_backend.application_vm_api_server
+          print("HHS_APPLICATION_VM_PREBUILT_NATIVE_PRODUCTION_PREFLIGHT_VERIFIED")
+          PY
+          HHS_DISABLE_C_AUTOBUILD=1 pytest -q tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
 
       - name: Configure pinned SSH target
         shell: bash

@@ -46,6 +46,39 @@ fi
 import fastapi, uvicorn
 PY
 
+NATIVE_TOOLCHAIN_MISSING=0
+for tool in make gcc nm gzip; do
+  command -v "$tool" >/dev/null 2>&1 || NATIVE_TOOLCHAIN_MISSING=1
+done
+[[ -f /usr/include/openssl/evp.h ]] || NATIVE_TOOLCHAIN_MISSING=1
+
+if [[ "$NATIVE_TOOLCHAIN_MISSING" == "1" ]]; then
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update
+  apt-get install -y build-essential binutils gzip libssl-dev
+fi
+
+for tool in make gcc nm gzip; do
+  command -v "$tool" >/dev/null 2>&1 || fail "native runtime build tool missing: $tool"
+done
+[[ -f /usr/include/openssl/evp.h ]] || fail "OpenSSL development headers are required"
+
+RUNTIME_SO="$REPO_ROOT/hhs_runtime/builds/libhhs_runtime.so"
+(
+  cd "$REPO_ROOT"
+  timeout 900s make -B c-abi
+) || fail "native runtime shared library build failed"
+
+[[ -s "$RUNTIME_SO" ]] || fail "native runtime shared library missing after build: $RUNTIME_SO"
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_runtime_init$' || fail "native runtime export missing: hhs_runtime_init"
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_validate_abi$' || fail "native runtime export missing: hhs_validate_abi"
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_exact_abi_validate$' || fail "native runtime export missing: hhs_exact_abi_validate"
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_hash216_compute$' || fail "native runtime export missing: hhs_hash216_compute"
+if command -v ldd >/dev/null 2>&1 && ldd "$RUNTIME_SO" | grep -q 'not found'; then
+  ldd "$RUNTIME_SO" >&2 || true
+  fail "native runtime shared library has unresolved dependencies"
+fi
+
 if ! id "$SERVICE_USER" >/dev/null 2>&1; then
   useradd --system --home /var/lib/hhs/application-vm --shell /usr/sbin/nologin "$SERVICE_USER"
 fi
@@ -75,6 +108,7 @@ HHS_APPLICATION_VM_HOST=$HOST
 HHS_APPLICATION_VM_PORT=$PORT
 HHS_APPLICATION_VM_ROOT_PATH=$ROOT_PATH
 HHS_APPLICATION_VM_PYTHON_BIN=$PYTHON_BIN
+HHS_DISABLE_C_AUTOBUILD=1
 EOF
 chown root:"$SERVICE_USER" /etc/hhs/application-vm.env
 chmod 0640 /etc/hhs/application-vm.env
@@ -86,6 +120,18 @@ sed \
   > /etc/systemd/system/hhs-application-vm.service
 
 install -m 0755 "$REPO_ROOT/bin/hhs-vm" /usr/local/bin/hhs-vm
+
+set -a
+# shellcheck disable=SC1091
+source /etc/hhs/application-vm.env
+set +a
+PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" HHS_DISABLE_C_AUTOBUILD=1 "$PYTHON_BIN" - <<'PY' \
+  || fail "application VM import failed with C autobuild disabled"
+import hhs_python.runtime.hhs_ctypes_bridge
+import hhs_python.runtime.hhs_exact_ctypes_bridge
+import hhs_backend.application_vm_api_server
+print("HHS_APPLICATION_VM_PREBUILT_NATIVE_IMPORT_VERIFIED")
+PY
 
 systemctl daemon-reload
 systemctl enable hhs-application-vm.service

@@ -11,6 +11,30 @@ PORT="${HHS_APPLICATION_VM_PORT:-8720}"
 CLI="${HHS_APPLICATION_VM_CLI:-hhs-vm}"
 export HHS_APPLICATION_VM_ENV_FILE="$ENV_FILE"
 
+RUNTIME_SO="${HHS_APPLICATION_VM_REPOSITORY_ROOT:?missing repository root}/hhs_runtime/builds/libhhs_runtime.so"
+[[ "${HHS_DISABLE_C_AUTOBUILD:-}" == "1" ]] || {
+  echo "production C autobuild must be disabled after prebuild" >&2
+  exit 2
+}
+[[ -s "$RUNTIME_SO" ]] || {
+  echo "native runtime shared library missing: $RUNTIME_SO" >&2
+  exit 2
+}
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_runtime_init$'
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_validate_abi$'
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_exact_abi_validate$'
+nm -D "$RUNTIME_SO" | grep -Eq ' hhs_hash216_compute$'
+if command -v ldd >/dev/null 2>&1 && ldd "$RUNTIME_SO" | grep -q 'not found'; then
+  ldd "$RUNTIME_SO" >&2 || true
+  exit 2
+fi
+PYTHONPATH="$HHS_APPLICATION_VM_REPOSITORY_ROOT${PYTHONPATH:+:$PYTHONPATH}" HHS_DISABLE_C_AUTOBUILD=1 \
+  "${HHS_APPLICATION_VM_PYTHON_BIN:?missing Python runtime}" - <<'PY'
+import hhs_python.runtime.hhs_ctypes_bridge
+import hhs_python.runtime.hhs_exact_ctypes_bridge
+print("HHS_APPLICATION_VM_NATIVE_RUNTIME_LOAD_VERIFIED")
+PY
+
 command -v "$CLI" >/dev/null 2>&1 || { echo "hhs-vm CLI missing" >&2; exit 2; }
 command -v ss >/dev/null 2>&1 || { echo "ss command missing" >&2; exit 2; }
 
