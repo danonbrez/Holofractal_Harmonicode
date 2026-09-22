@@ -1315,3 +1315,74 @@ The implementation is read-only and does not widen VM81 mutation,
 Hash72/Hash216 mint, persistence, floating-point, Lane 5 bypass, RNA bypass,
 Holo4 bypass, or PQC/admission authority. Full derivation:
 `docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md`.
+
+
+## A.33 Pass 220 I031 — G³ exact IEEE scalar involution
+
+Pass 220 I031 strengthens the reciprocal symbol-string theorem to exact IEEE
+binary scalar storage identity. The scalar bit word is an invariant coordinate
+under reciprocal phase exchange:
+
+~~~text
+(B, x) -> (B, y), y=1/x
+(B, y) -> (B, x)
+~~~
+
+so the same reciprocal operation satisfies:
+
+~~~text
+T(T(B)) = B
+~~~
+
+for every admitted storage word.
+
+The implementation defines standard binary16, binary32, binary64, and
+binary128 layouts and proves their sign/exponent/fraction partition with exact
+integer arithmetic. For total width `1+e+f`, any storage integer `N` is
+reconstructed exactly from its disjoint fields:
+
+~~~text
+N = sign*2^(e+f) + exponent*2^f + fraction
+~~~
+
+The connected Wolfram proof establishes this parametrically for all four
+standard widths. It additionally exhausts all 65,536 binary16 storage states.
+
+Finite values receive an exact dyadic rational witness. For example, the
+binary64 storage pattern commonly rendered as `0.1` is:
+
+~~~text
+3FB999999999999A
+= 3602879701896397 / 36028797018963968
+~~~
+
+and differs exactly from mathematical `1/10` by
+`1/180143985094819840`. The transport theorem concerns the exact admitted
+IEEE scalar, so no decimal reparse or approximation step is used during the
+round trip.
+
+Signed zeros remain distinct because their storage sign bits are retained even
+though their rational projections both equal zero. Infinities and NaNs are
+preserved by complete bit identity rather than forced into finite rational
+semantics; NaN payload bits therefore round-trip exactly.
+
+The reciprocal phase layer changes only the x/y phase coordinate. It does not
+stretch, compress, round, rescale, or otherwise mutate the IEEE scalar
+coordinate. This gives the executable invariant:
+
+~~~text
+phase changes
+scalar bits do not
+~~~
+
+and aligns directly with the inherited I028 native G³ condition
+`ieee_out_bits == ieee_in_bits`.
+
+The Wolfram formalization
+`evidence/pass220/i031_g3_ieee_scalar_involution_wolfram_20260922_v1.wl`
+returns 17/17 PASS. The runtime and theorem remain read-only and do not widen
+VM81 mutation, Hash72/Hash216 mint, persistence, floating-point execution,
+Lane 5 bypass, RNA bypass, Holo4 bypass, or PQC/admission authority.
+
+Full derivation:
+`docs/whitepapers/HARMONICODE_G3_EXACT_IEEE_SCALAR_INVOLUTION_THEOREM.md`.

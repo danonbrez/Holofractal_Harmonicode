@@ -4386,6 +4386,59 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.g3_ieee_scalar_involution.self_test",
+        module="hhs_runtime.hhs_pass220_g3_ieee_scalar_involution_v1",
+        function="ieee_scalar_involution_self_test",
+        service_type="pass220_exact_ieee_scalar_involution",
+        description=(
+            "Validate exact IEEE binary16/32/64/128 scalar-state return: "
+            "integer-only field partition, exact finite dyadic projection, "
+            "signed-zero and NaN-payload bit identity, and reciprocal x/y "
+            "phase transport where phase changes but scalar bits do not."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I031_G3_IEEE_SCALAR_INVOLUTION_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I031_IEEE_SCALAR_INVOLUTION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_ieee_scalar_involution",
+            "ieee_scalar_involution_self_test",
+        ],
+        guards=[
+            "ieee_storage_bits_immutable",
+            "ieee_field_partition_exact",
+            "finite_dyadic_projection_exact",
+            "reciprocal_phase_scalar_invariant",
+            "signed_zero_identity_preserved",
+            "nan_payload_identity_preserved",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_IEEE_FIELD_REBUILD_MISMATCH",
+            "REJECT_IEEE_RECIPROCAL_SCALAR_MUTATION",
+            "REJECT_IEEE_STORAGE_IDENTITY_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_IEEE_SCALAR_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "BINARY16_EXHAUSTIVE_BINARY32_64_128_PARAMETRIC_AND_VECTOR_PROOF"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."
