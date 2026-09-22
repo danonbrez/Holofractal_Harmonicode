@@ -124,6 +124,19 @@ jobs:
           assert data["finite_difference_equalities_k1_to_8"] == (
               [False] * 8
           )
+          corrections = data["corrections_from_initial_fixture"]
+          assert corrections["U9_1_based_index"] == (
+              "j == Mod[i - 2, 9] + 1"
+          )
+          assert corrections["U72_1_based_index"] == (
+              "j == Mod[i - step - 1, 72] + 1"
+          )
+          script = Path(
+              "evidence/pass220/"
+              "i025_schrodinger_full_orbit_wolfram_20260921_v1.wl"
+          ).read_text()
+          assert '"corrections_from_initial_fixture"' in script
+          assert "correctionsFromInitialFixture" in script
           PY
 
       - name: Run I025 and inherited firing-order regressions
