@@ -12,6 +12,7 @@ historical runtime-blob expectation.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any, Dict, MutableMapping, Optional
@@ -46,9 +47,12 @@ PASS214_I8_RECORD_GIT_BLOB = "b8c565f4b443b139249dfded44a1b36c70b43e70"
 PASS214_SEMANTIC_REUSE_GIT_BLOB = "60ff714c1de5976bfb428ccf33c82f8a208d8fe4"
 PASS215_I1_CONTRACT_GIT_BLOB = "6ce1a0ea7ed2ca61597398b1197387fec8e3505d"
 PASS215_PROFILE_GIT_BLOB = "b458d674a75a4cfc64a32b9203dd693e3603576e"
-PASS214_VM81_REBIND_SCRIPT_GIT_BLOB = "4abd1387926c214ee8b07867aae05a1545ff7efe"
-PASS214_VM81_REBIND_TEST_GIT_BLOB = "8120feb77ad1c2adef05ef9857a779df6c9b8414"
-EXACT_VM81_RUNTIME_GIT_BLOB = "81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
+PASS214_FROZEN_VM81_REBIND_SCRIPT_GIT_BLOB = "4abd1387926c214ee8b07867aae05a1545ff7efe"
+PASS214_FROZEN_VM81_REBIND_TEST_GIT_BLOB = "8120feb77ad1c2adef05ef9857a779df6c9b8414"
+PASS214_FROZEN_EXACT_VM81_RUNTIME_GIT_BLOB = "81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
+PASS214_VM81_REBIND_SCRIPT_GIT_BLOB = "2c4d647f95ac3ae3873cd822d466397176710231"
+PASS214_VM81_REBIND_TEST_GIT_BLOB = "a879d0ba602de07fc5267d217167070e551d6784"
+EXACT_VM81_RUNTIME_GIT_BLOB = "92afd8d0e26119b6db6420740c05db25a37d389a"
 
 PASS214_VALIDATED_TERMINAL_HEAD = "fb167f0ae88346c7894d60b794eeba0e1967a971"
 PASS214_MERGE_COMMIT = "1114a50c677f3f205d5858bc09b1249d3d365842"
@@ -113,6 +117,12 @@ def _load_json(path: Path) -> Dict[str, Any]:
     if not isinstance(value, dict):
         raise RuntimeError("PASS214_AUTHORITY_OBJECT_REQUIRED")
     return value
+
+
+def _git_blob_sha1(path: Path) -> str:
+    data = (ROOT / path).read_bytes()
+    payload = f"blob {len(data)}\0".encode("ascii") + data
+    return hashlib.sha1(payload, usedforsecurity=False).hexdigest()
 
 
 def pass214_membrane_source_evidence() -> Dict[str, Any]:
@@ -240,10 +250,22 @@ def pass214_membrane_source_evidence() -> Dict[str, Any]:
 
     script_text = (ROOT / PASS214_VM81_REBIND_SCRIPT_PATH).read_text("utf-8")
     test_text = (ROOT / PASS214_VM81_REBIND_TEST_PATH).read_text("utf-8")
-    if EXACT_VM81_RUNTIME_GIT_BLOB not in script_text or EXACT_VM81_RUNTIME_GIT_BLOB not in test_text:
+    current_blobs = {
+        "vm81_rebind_script": _git_blob_sha1(PASS214_VM81_REBIND_SCRIPT_PATH),
+        "vm81_rebind_test": _git_blob_sha1(PASS214_VM81_REBIND_TEST_PATH),
+        "exact_vm81_runtime": _git_blob_sha1(EXACT_VM81_RUNTIME_PATH),
+    }
+    expected_current_blobs = {
+        "vm81_rebind_script": PASS214_VM81_REBIND_SCRIPT_GIT_BLOB,
+        "vm81_rebind_test": PASS214_VM81_REBIND_TEST_GIT_BLOB,
+        "exact_vm81_runtime": EXACT_VM81_RUNTIME_GIT_BLOB,
+    }
+    if current_blobs != expected_current_blobs:
         raise RuntimeError("PASS214_EXACT_VM81_REBIND_IDENTITY_DRIFT")
     if "PASS214_VM81_IR_ADAPTER_DIRECT_MUTATION_BYPASS" not in script_text:
         raise RuntimeError("PASS214_VM81_DIRECT_MUTATION_GUARD_DRIFT")
+    if "FROZEN_RUNTIME" not in test_text or "LEGACY_OPCODE_PREFIX" not in test_text:
+        raise RuntimeError("PASS214_VM81_LEGACY_PREFIX_GUARD_DRIFT")
 
     successor_manifest_contract = successor215["contract"]
     if successor_manifest_contract.get("pass") != 215:
@@ -272,6 +294,11 @@ def pass214_membrane_source_evidence() -> Dict[str, Any]:
         "exact_vm81_kernel_git_blob": EXACT_VM81_RUNTIME_GIT_BLOB,
         "vm81_rebind_script_commit": PASS214_VM81_REBIND_SCRIPT_COMMIT,
         "vm81_rebind_test_commit": PASS214_VM81_REBIND_TEST_COMMIT,
+        "frozen_git_blobs": {
+            "vm81_rebind_script": PASS214_FROZEN_VM81_REBIND_SCRIPT_GIT_BLOB,
+            "vm81_rebind_test": PASS214_FROZEN_VM81_REBIND_TEST_GIT_BLOB,
+            "exact_vm81_runtime": PASS214_FROZEN_EXACT_VM81_RUNTIME_GIT_BLOB,
+        },
         "git_blobs": {
             "authority": PASS214_AUTHORITY_GIT_BLOB,
             "contract": PASS214_CONTRACT_GIT_BLOB,
