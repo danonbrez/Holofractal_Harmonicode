@@ -43,10 +43,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest fastapi pydantic
 
       - name: Static exact-boundary authority gate
         run: |
