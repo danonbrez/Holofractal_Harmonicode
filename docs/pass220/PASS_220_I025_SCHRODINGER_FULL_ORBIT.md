@@ -143,8 +143,23 @@ The macrocycle state space is:
 Q(zeta_72)^9
 ~~~
 
-and the full 72-state space decomposes as eight 9-dimensional firing-cycle
-subspaces.
+The full operator acts on:
+
+~~~text
+Q(zeta_72)^72
+~~~
+
+with the exact cycle decomposition:
+
+~~~text
+Q(zeta_72)^72
+=
+direct sum of 8 copies of Q(zeta_72)^9
+~~~
+
+The runtime contract exposes the macrocycle and full-orbit spaces separately so
+a 9-component macrocycle vector cannot be mistaken for a 72-component
+full-operator vector.
 
 The exact embeddings are:
 
