@@ -24,6 +24,63 @@ static HHSExactVM81Frame build_candidate(void) {
     return frame;
 }
 
+
+static void fill_hash72_word(char out[HHS_EXACT_HASH72_STRLEN], uint8_t offset) {
+    size_t i;
+    for (i = 0U; i < HHS_EXACT_HASH72_LEN; ++i)
+        out[i] = HHS_EXACT_HASH72_ALPHABET[(i + offset) % HHS_EXACT_HASH72_LEN];
+    out[HHS_EXACT_HASH72_LEN] = '\0';
+}
+
+static void fill_hash216_identity(
+    char out[HHS_EXACT_UQCEL_HASH216_STRLEN],
+    uint8_t offset
+) {
+    size_t i;
+    for (i = 0U; i < HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN; ++i)
+        out[i] = HHS_EXACT_HASH72_ALPHABET[
+            (i * 7U + offset) % HHS_EXACT_HASH72_LEN];
+    out[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN] = '\0';
+}
+
+static HHSExactPass219Hash216TransitionViewV1 build_transition(void) {
+    HHSExactPass219Hash216TransitionViewV1 transition;
+    char previous[HHS_EXACT_HASH72_STRLEN];
+    char change[HHS_EXACT_HASH72_STRLEN];
+    char receipt[HHS_EXACT_HASH72_STRLEN];
+    char identity[HHS_EXACT_UQCEL_HASH216_STRLEN];
+    memset(&transition, 0, sizeof(transition));
+    fill_hash72_word(previous, 3U);
+    fill_hash72_word(change, 5U);
+    fill_hash72_word(receipt, 7U);
+    fill_hash216_identity(identity, 11U);
+    if (hhs_exact_pass219_hash216_transition_init(
+            previous, change, receipt, identity, &transition) !=
+        HHS_EXACT_STATUS_OK)
+        memset(&transition, 0, sizeof(transition));
+    return transition;
+}
+
+static HHSExactPass220I028Lane5ConstructorWitnessV1 build_constructor_witness(void) {
+    HHSExactPass220I028Lane5ConstructorWitnessV1 witness;
+    memset(&witness, 0, sizeof(witness));
+    witness.struct_size = (uint32_t)sizeof(witness);
+    witness.version = HHS_EXACT_PASS220_I028_LANE5_G3_VERSION;
+    fill_hash72_word(witness.pipeline_root_hash72, 13U);
+    fill_hash72_word(witness.constructor_graph_root_hash72, 17U);
+    witness.green_merged_pr_implementation = 1U;
+    witness.green_exact_head_workflow = 1U;
+    witness.canonical_contract = 1U;
+    witness.canonical_whitepaper_proof = 1U;
+    witness.formal_proof_receipt = 1U;
+    witness.successful_benchmark_receipt = 1U;
+    witness.restart_checkpoint = 1U;
+    witness.commit_merge_lineage = 1U;
+    witness.registered_repository_service = 1U;
+    witness.hash216_validated_composition = 1U;
+    return witness;
+}
+
 int main(void) {
     HHSExactPass219VM81ProgramV1 program;
     HHSExactPass219VM81ExecutionV1 execution;
@@ -200,6 +257,98 @@ int main(void) {
                 &forged_g3, &candidate, &execution) !=
             HHS_EXACT_STATUS_INVARIANT_FAILURE)
             return 22;
+    }
+
+    {
+        HHSExactVM81Frame lane5_frame = build_candidate();
+        HHSExactPass219Hash216TransitionViewV1 source_transition =
+            build_transition();
+        HHSExactPass219Holo4StateV1 holo4_state;
+        HHSExactPass220I028Lane5ConstructorWitnessV1 constructor_witness =
+            build_constructor_witness();
+        HHSExactPass220I028Lane5G3CandidateV1 g3_candidate;
+
+        lane5_frame.words[0] = UINT64_C(0x3ff0000000000000);
+        lane5_frame.words[1] = UINT64_C(9);
+        lane5_frame.words[2] = UINT64_C(9);
+
+        if (source_transition.struct_size != sizeof(source_transition) ||
+            hhs_exact_pass219_holo4_state_init(&holo4_state) !=
+                HHS_EXACT_STATUS_OK)
+            return 23;
+
+        memset(&g3_candidate, 0, sizeof(g3_candidate));
+        if (hhs_exact_pass220_i028_lane5_g3_candidate(
+                &lane5_frame,
+                &source_transition,
+                &holo4_state,
+                &constructor_witness,
+                0U, 1U, 2U,
+                &g3_candidate) != HHS_EXACT_STATUS_OK)
+            return 24;
+
+        if (g3_candidate.struct_size != sizeof(g3_candidate) ||
+            g3_candidate.version != HHS_EXACT_PASS220_I028_LANE5_G3_VERSION ||
+            g3_candidate.raw648_round_trip_exact != 1U ||
+            g3_candidate.holo4_four_lane_prepared != 1U ||
+            g3_candidate.mandatory_constructor_graph_bound != 1U ||
+            g3_candidate.g3_ouroboros_closed != 1U ||
+            g3_candidate.candidate_frame_unchanged != 1U ||
+            g3_candidate.candidate_only != 1U ||
+            g3_candidate.exact_integer_only != 1U ||
+            g3_candidate.hash216_self_solving_validation_required != 1U ||
+            g3_candidate.external_egress_authority != 0U ||
+            g3_candidate.canonical_vm81_mutation_authority != 0U ||
+            g3_candidate.canonical_hash72_authority != 0U ||
+            g3_candidate.canonical_hash216_authority != 0U ||
+            g3_candidate.canonical_persistence_authority != 0U ||
+            g3_candidate.floating_point_authority != 0U)
+            return 25;
+
+        if (g3_candidate.holo4_prepared.word_visits != 81U ||
+            g3_candidate.holo4_prepared.graph_edge_visits != 1620U ||
+            g3_candidate.holo4_decision.selected_lane >= 4U ||
+            memcmp(g3_candidate.source_transition_identity216,
+                   source_transition.transition_identity216,
+                   HHS_EXACT_UQCEL_HASH216_STRLEN) != 0 ||
+            memcmp(&g3_candidate.candidate_frame,
+                   &lane5_frame,
+                   sizeof(lane5_frame)) != 0 ||
+            g3_candidate.ieee_in_bits != lane5_frame.words[0] ||
+            g3_candidate.ieee_out_bits != lane5_frame.words[0] ||
+            g3_candidate.p4_value != 9U ||
+            g3_candidate.c4_value != 9U ||
+            g3_candidate.bigint_lo_shu_value != 1U ||
+            g3_candidate.bigint_lo_shu_local_index != 7U ||
+            g3_candidate.nucleus_zero_sum != 0)
+            return 26;
+
+        {
+            HHSExactPass220I028Lane5ConstructorWitnessV1 missing_benchmark =
+                constructor_witness;
+            missing_benchmark.successful_benchmark_receipt = 0U;
+            if (hhs_exact_pass220_i028_lane5_g3_candidate(
+                    &lane5_frame,
+                    &source_transition,
+                    &holo4_state,
+                    &missing_benchmark,
+                    0U, 1U, 2U,
+                    &g3_candidate) != HHS_EXACT_STATUS_CONSTRAINT_REJECTED)
+                return 27;
+        }
+
+        {
+            HHSExactVM81Frame mismatched = lane5_frame;
+            mismatched.words[2] = UINT64_C(8);
+            if (hhs_exact_pass220_i028_lane5_g3_candidate(
+                    &mismatched,
+                    &source_transition,
+                    &holo4_state,
+                    &constructor_witness,
+                    0U, 1U, 2U,
+                    &g3_candidate) != HHS_EXACT_STATUS_CONSTRAINT_REJECTED)
+                return 28;
+        }
     }
 
     puts("PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3_OK_PROOF_STILL_FAIL_CLOSED");
