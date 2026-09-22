@@ -1,11 +1,9 @@
 name: Pass 220 Ubuntu Application VM Production
 
 on:
-  workflow_run:
-    workflows:
-      - DigitalOcean Production Exact Main
-    types:
-      - completed
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -17,10 +15,6 @@ concurrency:
 
 jobs:
   deploy-application-vm:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
@@ -28,7 +22,7 @@ jobs:
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
       HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
-      TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      TARGET_SHA: ${{ github.sha }}
 
     steps:
       - name: Check out exact application VM source
@@ -46,7 +40,7 @@ jobs:
         shell: bash
         run: python -m pip install fastapi uvicorn httpx pytest
 
-      - name: Validate production deployment surfaces
+      - name: Validate backend-only production surfaces
         shell: bash
         run: |
           set -euo pipefail
@@ -82,7 +76,7 @@ jobs:
           EOF
           chmod 0600 "$HOME/.ssh/config"
 
-      - name: Install and verify Ubuntu application VM backend
+      - name: Deploy independent Ubuntu application VM release
         shell: bash
         run: |
           set -euo pipefail
@@ -94,52 +88,91 @@ jobs:
             -o ServerAliveCountMax=20 \
             -o StrictHostKeyChecking=yes \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
-            "TARGET_SHA='${TARGET_SHA}' HHS_PUBLIC_HOST='${HHS_PRODUCTION_HOST}' bash -s" <<'REMOTE'
+            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
           set -Eeuo pipefail
-          APP_ROOT=/opt/hhs/app
+          umask 027
+
+          SOURCE_REPO=/opt/hhs/app
+          STATE_ROOT=/var/lib/hhs/application-vm
+          RELEASE_ROOT="$STATE_ROOT/releases"
+          CURRENT_LINK="$STATE_ROOT/current"
+          LOCK_FILE=/run/lock/hhs-application-vm-deploy.lock
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
-          HHS_PUBLIC_HOST=${HHS_PUBLIC_HOST:?missing public host}
-          deadline=$((SECONDS + 900))
+          RELEASE="$RELEASE_ROOT/$TARGET_SHA"
+          PREVIOUS=""
 
           [[ $EUID -eq 0 ]] || { echo "application VM deployment requires root" >&2; exit 10; }
-          [[ -d "$APP_ROOT/.git" ]] || { echo "production repository missing" >&2; exit 11; }
+          git -C "$SOURCE_REPO" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+            || { echo "production source repository missing at $SOURCE_REPO" >&2; exit 11; }
 
-          while :; do
-            deployed_sha=$(git -C "$APP_ROOT" rev-parse HEAD 2>/dev/null || true)
-            if [[ "$deployed_sha" == "$TARGET_SHA" ]] && systemctl is-active --quiet hhs.service; then
-              break
-            fi
-            if (( SECONDS >= deadline )); then
-              echo "exact-main production did not reach target $TARGET_SHA before application VM deployment" >&2
-              git -C "$APP_ROOT" rev-parse HEAD >&2 || true
-              systemctl status hhs.service --no-pager --full >&2 || true
-              exit 12
-            fi
-            sleep 5
-          done
+          install -d -m 0755 "$(dirname "$LOCK_FILE")"
+          exec 8>"$LOCK_FILE"
+          flock -w 30 8 || { echo "application VM deployment lock is busy" >&2; exit 12; }
 
-          [[ -z "$(git -C "$APP_ROOT" status --porcelain=v1 --untracked-files=normal)" ]] || {
-            echo "production checkout is dirty before application VM install" >&2
-            git -C "$APP_ROOT" status --short >&2
-            exit 13
+          if [[ -L "$CURRENT_LINK" ]]; then
+            PREVIOUS="$(readlink -f "$CURRENT_LINK" || true)"
+          fi
+
+          git -C "$SOURCE_REPO" fetch --prune origin main
+          git -C "$SOURCE_REPO" cat-file -e "$TARGET_SHA^{commit}" \
+            || { echo "target commit unavailable after fetch: $TARGET_SHA" >&2; exit 13; }
+
+          install -d -o hhs -g hhs -m 0750 "$STATE_ROOT"
+          install -d -o root -g hhs -m 0755 "$RELEASE_ROOT"
+
+          if [[ -e "$RELEASE" ]]; then
+            if git -C "$RELEASE" rev-parse --verify HEAD >/dev/null 2>&1 \
+              && [[ "$(git -C "$RELEASE" rev-parse HEAD)" == "$TARGET_SHA" ]]; then
+              echo "HHS_APPLICATION_VM_RELEASE_REUSED=$RELEASE"
+            else
+              git -C "$SOURCE_REPO" worktree remove --force "$RELEASE" >/dev/null 2>&1 || rm -rf "$RELEASE"
+            fi
+          fi
+
+          if [[ ! -e "$RELEASE" ]]; then
+            git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"
+          fi
+
+          [[ "$(git -C "$RELEASE" rev-parse HEAD)" == "$TARGET_SHA" ]]
+          [[ -z "$(git -C "$RELEASE" status --porcelain=v1 --untracked-files=normal)" ]]
+
+          rollback() {
+            status=$?
+            trap - ERR
+            set +e
+            echo "HHS_APPLICATION_VM_DEPLOY_FAILED=$TARGET_SHA" >&2
+            systemctl status hhs-application-vm.service --no-pager --full >&2 || true
+            journalctl -u hhs-application-vm.service -n 300 --no-pager >&2 || true
+            if [[ -n "$PREVIOUS" && -d "$PREVIOUS" && "$PREVIOUS" != "$RELEASE" ]]; then
+              echo "HHS_APPLICATION_VM_ROLLBACK_TO=$PREVIOUS" >&2
+              REPO_ROOT="$PREVIOUS" \
+              HHS_APPLICATION_VM_REQUIRE_GUI=1 \
+              HHS_APPLICATION_VM_INSTALL_GUI=0 \
+                bash "$PREVIOUS/deployment/ubuntu/application_vm/install.sh" || true
+              python3 "$PREVIOUS/deployment/ubuntu/application_vm/configure_production_nginx.py" \
+                --repository-root "$PREVIOUS" || true
+            fi
+            exit "$status"
           }
+          trap rollback ERR
 
-          REPO_ROOT="$APP_ROOT" \
+          REPO_ROOT="$RELEASE" \
           HHS_APPLICATION_VM_REQUIRE_GUI=1 \
           HHS_APPLICATION_VM_INSTALL_GUI=1 \
-            bash "$APP_ROOT/deployment/ubuntu/application_vm/install.sh"
+            bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"
 
-          python3 "$APP_ROOT/deployment/ubuntu/application_vm/configure_production_nginx.py" \
-            --repository-root "$APP_ROOT"
+          python3 "$RELEASE/deployment/ubuntu/application_vm/configure_production_nginx.py" \
+            --repository-root "$RELEASE"
 
           systemctl is-active --quiet hhs-application-vm.service
           systemctl is-active --quiet nginx
-          systemctl cat hhs-application-vm.service | grep -Fq "WorkingDirectory=$APP_ROOT"
-          systemctl show hhs-application-vm.service -p ExecStart --value | grep -Fq 'hhs_backend.application_vm_api_server:app'
+          systemctl cat hhs-application-vm.service | grep -Fq "WorkingDirectory=$RELEASE"
+          systemctl show hhs-application-vm.service -p ExecStart --value \
+            | grep -Fq 'hhs_backend.application_vm_api_server:app'
 
           runuser -u hhs -- env \
             HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env \
-            bash "$APP_ROOT/deployment/ubuntu/application_vm/verify.sh"
+            bash "$RELEASE/deployment/ubuntu/application_vm/verify.sh"
 
           listener=$(ss -H -ltn 'sport = :8720')
           [[ -n "$listener" ]]
@@ -149,7 +182,10 @@ jobs:
             exit 14
           fi
 
-          echo "HHS_APPLICATION_VM_PRODUCTION_HOST_VERIFIED=$TARGET_SHA"
+          ln -sfnT "$RELEASE" "$CURRENT_LINK"
+          trap - ERR
+          echo "HHS_APPLICATION_VM_BACKEND_RELEASE_VERIFIED=$TARGET_SHA"
+          echo "HHS_APPLICATION_VM_BACKEND_RELEASE_PATH=$RELEASE"
           REMOTE
 
       - name: Verify public secure OpenAPI boundary
@@ -159,11 +195,14 @@ jobs:
           BASE="https://${HHS_PRODUCTION_HOST}/vm-api"
 
           curl --fail --silent --show-error --retry 5 --retry-delay 3 \
+            --connect-timeout 10 --max-time 30 \
             "$BASE/health" >/tmp/hhs-application-vm-public-health.json
           curl --fail --silent --show-error --retry 5 --retry-delay 3 \
+            --connect-timeout 10 --max-time 30 \
             "$BASE/openapi.json" >/tmp/hhs-application-vm-public-openapi.json
 
           unauth_code=$(curl --silent --show-error \
+            --connect-timeout 10 --max-time 30 \
             --output /tmp/hhs-application-vm-public-unauth.json \
             --write-out '%{http_code}' \
             "$BASE/v1/vm/status")
@@ -178,6 +217,7 @@ jobs:
             | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')
 
           curl --fail --silent --show-error \
+            --connect-timeout 10 --max-time 30 \
             -H "Authorization: HHS-Capability $token" \
             "$BASE/v1/vm/status" >/tmp/hhs-application-vm-public-status.json
           unset token
@@ -200,3 +240,46 @@ jobs:
           assert status["frontend_attached"] is False
           print("HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED")
           PY
+
+      - name: Seal backend deployment receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
+          set -euo pipefail
+          python3 - "$TARGET_SHA" <<'PY'
+          import json
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          sha = sys.argv[1]
+          state = Path("/var/lib/hhs/application-vm")
+          current = (state / "current").resolve()
+          if current.name != sha:
+              raise SystemExit(f"current application VM release mismatch: {current}")
+          payload = {
+              "schema": "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1",
+              "target_sha": sha,
+              "release": str(current),
+              "bash_cli": "/usr/local/bin/hhs-vm",
+              "loopback": "127.0.0.1:8720",
+              "public_openapi": "https://165.227.220.193/vm-api/openapi.json",
+              "frontend_attached": False,
+              "verified_at": datetime.now(timezone.utc).isoformat(),
+          }
+          tmp = state / "last-success.json.tmp"
+          final = state / "last-success.json"
+          tmp.write_text(
+              json.dumps(payload, sort_keys=True, indent=2) + "\\n",
+              encoding="utf-8",
+          )
+          tmp.replace(final)
+          print(json.dumps(payload, sort_keys=True))
+          PY
+          REMOTE

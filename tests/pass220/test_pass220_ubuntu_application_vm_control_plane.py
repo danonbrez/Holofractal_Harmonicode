@@ -266,3 +266,28 @@ server {
     repeated, changed_again = inject(updated)
     assert changed_again is False
     assert repeated == updated
+
+
+def test_installer_accepts_versioned_git_worktree_releases() -> None:
+    installer = (
+        ROOT / "deployment/ubuntu/application_vm/install.sh"
+    ).read_text(encoding="utf-8")
+
+    assert 'git -C "$REPO_ROOT" rev-parse --is-inside-work-tree' in installer
+    assert '[[ -d "$REPO_ROOT/.git" ]]' not in installer
+
+
+def test_production_workflow_is_backend_first_and_frontend_independent() -> None:
+    workflow = (
+        ROOT / ".github/workflows/pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "workflow_run:" not in workflow
+    assert "push:" in workflow
+    assert "SOURCE_REPO=/opt/hhs/app" in workflow
+    assert 'RELEASE_ROOT="$STATE_ROOT/releases"' in workflow
+    assert 'git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"' in workflow
+    assert "DigitalOcean Production Exact Main" not in workflow
+    assert "systemctl is-active --quiet hhs.service" not in workflow
+    assert "HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED" in workflow
+    assert "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1" in workflow
