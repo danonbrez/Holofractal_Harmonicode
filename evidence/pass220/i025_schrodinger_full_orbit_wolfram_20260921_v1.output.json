@@ -1,0 +1,50 @@
+{
+  "schema": "HHS_PASS_220_I025_SCHRODINGER_FULL_ORBIT_WOLFRAM_20260921_V1",
+  "status": "PASS",
+  "check_count": 25,
+  "pass_count": 25,
+  "failed": [],
+  "firing_order": [8, 24, 40, 56, 72, 16, 32, 48, 64],
+  "charpoly9": "(-1 + x)*(1 + x + x^2)*(1 + x^3 + x^6)",
+  "charpoly72": "(-1 + x)^8*(1 + x + x^2)^8*(1 + x^3 + x^6)^8",
+  "cycle_lengths": [9, 9, 9, 9, 9, 9, 9, 9],
+  "positive_energy_eigenphase": "zeta9^(-k)",
+  "finite_difference_equalities_k1_to_8": [
+    false, false, false, false, false, false, false, false
+  ],
+  "corrections_from_initial_fixture": {
+    "U9_1_based_index": "j == Mod[i - 2, 9] + 1",
+    "U72_1_based_index": "j == Mod[i - step - 1, 72] + 1",
+    "wolfram_monic_charpoly": "(-1)^n CharacteristicPolynomial[U,x]",
+    "standard_evolution_convention": "U=ExpSym(-i H Delta_t/u72)",
+    "positive_energy_eigenphase": "zeta9^(-k)",
+    "finite_difference_status": "coarse-grain only; not exact logarithmic Hermitian generator"
+  },
+  "checks": {
+    "01_firing_order_exact": true,
+    "02_period_9": true,
+    "03_order_from_gcd": true,
+    "04_u9_unitary": true,
+    "05_u9_nine_closure": true,
+    "06_u9_monic_charpoly": true,
+    "07_u72_unitary": true,
+    "08_u72_nine_closure": true,
+    "09_full_orbit_eight_cycles": true,
+    "10_u72_eightfold_charpoly": true,
+    "11_zeta9_embeds_in_zeta72": true,
+    "12_i_is_zeta72_power": true,
+    "13_all_9_fourier_modes": true,
+    "14_root_sum_orthogonality": true,
+    "15_positive_energy_branch_phase": true,
+    "16_fd_not_exact_log_generator": true,
+    "17_gold_plus_constructor": true,
+    "18_gold_minus_constructor": true,
+    "19_gold_polynomial_plus": true,
+    "20_flank_with_domain": true,
+    "21_idempotent_d_roots": true,
+    "22_pq_flank": true,
+    "23_sum_flank": true,
+    "24_lock_line": true,
+    "25_degeneracy_is_eight": true
+  }
+}
