@@ -182,7 +182,7 @@ jobs:
             exit 14
           fi
 
-          ln -sfn "$RELEASE" "$CURRENT_LINK"
+          ln -sfnT "$RELEASE" "$CURRENT_LINK"
           trap - ERR
           echo "HHS_APPLICATION_VM_BACKEND_RELEASE_VERIFIED=$TARGET_SHA"
           echo "HHS_APPLICATION_VM_BACKEND_RELEASE_PATH=$RELEASE"
@@ -250,30 +250,36 @@ jobs:
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
-            "TARGET_SHA='${TARGET_SHA}' python3 - <<'PY'
+            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
+          set -euo pipefail
+          python3 - "$TARGET_SHA" <<'PY'
           import json
-          import os
+          import sys
           from datetime import datetime, timezone
           from pathlib import Path
 
-          sha = os.environ['TARGET_SHA']
-          state = Path('/var/lib/hhs/application-vm')
-          current = (state / 'current').resolve()
+          sha = sys.argv[1]
+          state = Path("/var/lib/hhs/application-vm")
+          current = (state / "current").resolve()
           if current.name != sha:
-              raise SystemExit(f'current application VM release mismatch: {current}')
+              raise SystemExit(f"current application VM release mismatch: {current}")
           payload = {
-              'schema': 'HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1',
-              'target_sha': sha,
-              'release': str(current),
-              'bash_cli': '/usr/local/bin/hhs-vm',
-              'loopback': '127.0.0.1:8720',
-              'public_openapi': 'https://165.227.220.193/vm-api/openapi.json',
-              'frontend_attached': False,
-              'verified_at': datetime.now(timezone.utc).isoformat(),
+              "schema": "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1",
+              "target_sha": sha,
+              "release": str(current),
+              "bash_cli": "/usr/local/bin/hhs-vm",
+              "loopback": "127.0.0.1:8720",
+              "public_openapi": "https://165.227.220.193/vm-api/openapi.json",
+              "frontend_attached": False,
+              "verified_at": datetime.now(timezone.utc).isoformat(),
           }
-          tmp = state / 'last-success.json.tmp'
-          final = state / 'last-success.json'
-          tmp.write_text(json.dumps(payload, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          tmp = state / "last-success.json.tmp"
+          final = state / "last-success.json"
+          tmp.write_text(
+              json.dumps(payload, sort_keys=True, indent=2) + "\\n",
+              encoding="utf-8",
+          )
           tmp.replace(final)
           print(json.dumps(payload, sort_keys=True))
-          PY"
+          PY
+          REMOTE
