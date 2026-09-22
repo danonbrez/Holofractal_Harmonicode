@@ -8,9 +8,6 @@ on:
       - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
       - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
       - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
-      - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
-      - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
-      - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
       - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
@@ -24,6 +21,9 @@ on:
   pull_request:
     paths:
       - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h"
+      - "hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c"
+      - "tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c"
       - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
       - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
