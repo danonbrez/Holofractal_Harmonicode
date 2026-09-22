@@ -36,14 +36,34 @@ PASS
 failed = []
 ~~~
 
+## Validation performed
+
+- focused exact-head run `35787870207`: PASS at
+  `8f34455655dbe7cca18691432572a9ff6b57b3f3`;
+- I032 full-phase IEEE transport tests: PASS;
+- inherited I031 exact scalar involution tests: PASS;
+- inherited I030 reciprocal symbol tests: PASS;
+- inherited I028 native G3 identity regression: PASS;
+- host-floating-arithmetic exclusion audit: PASS;
+- PR #555 opened against `main`.
+
+The later branch commit `b1268d5f892f62587f79aae627a46013d3588db3`
+only adds the canonical white-paper appendix and does not change runtime or
+test surfaces validated by the green focused run.
+
 ## Validation remaining
 
-- focused exact-head CI;
-- dependency-scoped repair-forward if needed;
-- PR creation/merge;
-- verified-main inspection.
+- merge PR #555 under the repository forward-progress policy;
+- verify the resulting `main` commit;
+- handle queued or unrelated broad CI repair-forward instead of blocking this
+  dependency-scoped closure.
+
+## Pull request
+
+- PR: `#555`
+- title: `Pass 220 I032: full x/y/z/w IEEE transport`
+- green focused run: `35787870207`
 
 ## Next action
 
-Run the focused I032 workflow. If green, open and merge the PR, then verify
-main.
+Merge PR #555 and verify `main`.
