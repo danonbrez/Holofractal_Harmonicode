@@ -126,6 +126,18 @@ checks = <|
 
 failed = Keys @ Select[checks, # =!= True &];
 
+correctionsFromInitialFixture = <|
+  "U9_1_based_index" -> "j == Mod[i - 2, 9] + 1",
+  "U72_1_based_index" -> "j == Mod[i - step - 1, 72] + 1",
+  "wolfram_monic_charpoly" ->
+    "(-1)^n CharacteristicPolynomial[U,x]",
+  "standard_evolution_convention" ->
+    "U=ExpSym(-i H Delta_t/u72)",
+  "positive_energy_eigenphase" -> "zeta9^(-k)",
+  "finite_difference_status" ->
+    "coarse-grain only; not exact logarithmic Hermitian generator"
+|>;
+
 result = <|
   "schema" ->
     "HHS_PASS_220_I025_SCHRODINGER_FULL_ORBIT_WOLFRAM_20260921_V1",
@@ -139,6 +151,7 @@ result = <|
   "cycle_lengths" -> Sort[Length /@ cycleLists],
   "positive_energy_eigenphase" -> "zeta9^(-k)",
   "finite_difference_equalities_k1_to_8" -> fdEqualityChecks,
+  "corrections_from_initial_fixture" -> correctionsFromInitialFixture,
   "checks" -> checks
 |>;
 
