@@ -393,6 +393,16 @@ class Lane5UnifiedCorpus:
         self.service = DurableMultimodalLearningService(self.state_dir / "pass165")
         self.extractor = extractor or PopplerPDFExtractor()
         self.external_projector_runtime = external_projector_runtime
+        self.profile_hash216 = hash216(
+            "pass220-corpus-processing-profile",
+            canonical_bytes({
+                "version": VERSION,
+                "extractor": type(self.extractor).__name__,
+                "render_images": bool(getattr(self.extractor, "render_images", True)),
+                "dpi": getattr(self.extractor, "dpi", None),
+                "language_projector_enabled": self.external_projector_runtime is not None,
+            }),
+        )
 
     def _commit(self, raw: bytes, media: str, provenance: str) -> str:
         result = self.service.ingest_source(
@@ -448,7 +458,9 @@ class Lane5UnifiedCorpus:
 
         document = self.graph.add_node("DOCUMENT", {**asdict(entry), "verified_source": True})
         self.graph.add_edge(corpus_root, document, "CONTAINS_DOCUMENT")
-        document_key = f"document-complete:{entry.sha256}:{entry.pages}"
+        document_key = (
+            f"document-complete:{entry.sha256}:{entry.pages}:{self.profile_hash216}"
+        )
         if document_key in self.graph.completed:
             return document
 
@@ -470,7 +482,10 @@ class Lane5UnifiedCorpus:
         start_page = 1
         while (
             start_page <= entry.pages
-            and f"page-complete:{entry.sha256}:{start_page}" in self.graph.completed
+            and (
+                f"page-complete:{entry.sha256}:{start_page}:{self.profile_hash216}"
+                in self.graph.completed
+            )
         ):
             start_page += 1
         if start_page > entry.pages:
@@ -553,8 +568,15 @@ class Lane5UnifiedCorpus:
                     self.graph.complete(projector_key, {"source_id": entry.source_id, "page": page.page_number})
 
             self.graph.complete(
-                f"page-complete:{entry.sha256}:{page.page_number}",
-                {"source_id": entry.source_id, "page": page.page_number},
+                (
+                    f"page-complete:{entry.sha256}:{page.page_number}:"
+                    f"{self.profile_hash216}"
+                ),
+                {
+                    "source_id": entry.source_id,
+                    "page": page.page_number,
+                    "processing_profile_hash216": self.profile_hash216,
+                },
             )
 
         if seen != entry.pages:
@@ -599,6 +621,7 @@ class Lane5UnifiedCorpus:
             "completed_units": len(self.graph.completed),
             "pass165_status": self.service.status(),
             "one_vector_store_knowledge_graph": True,
+            "processing_profile_hash216": self.profile_hash216,
             "canonical_authority_widened": False,
         }
         receipt["receipt_hash216"] = hash216(
