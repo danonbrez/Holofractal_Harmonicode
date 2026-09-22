@@ -139,7 +139,7 @@ jobs:
       - name: Execute hosted Pass 205 production validation
         run: |
           mkdir -p evidence/pass205-ci
-          python scripts/pass205_production_validation.py \
+          PYTHONPATH="$PWD" python scripts/pass205_production_validation.py \
             --db "${HHS_PASS205_DB}" \
             --evidence evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
 
