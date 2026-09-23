@@ -356,11 +356,26 @@ class UbuntuGuestRuntime:
             return False
         try:
             os.kill(pid, 0)
-            return True
         except ProcessLookupError:
             return False
         except PermissionError:
-            return True
+            pass
+
+        # kill(pid, 0) succeeds for Linux zombies. Treat a zombie as stopped so
+        # lifecycle polling cannot preserve a dead QEMU process indefinitely.
+        proc_stat = Path(f"/proc/{pid}/stat")
+        try:
+            suffix = proc_stat.read_text(
+                encoding="utf-8", errors="replace"
+            ).rsplit(") ", 1)[1]
+            state = suffix.split(None, 1)[0]
+            if state == "Z":
+                return False
+        except (OSError, IndexError):
+            # /proc is Linux-specific and can race with process exit. The
+            # successful kill(0) probe remains the portable fallback.
+            pass
+        return True
 
     def status(self) -> dict[str, Any]:
         pid = self._pid()
