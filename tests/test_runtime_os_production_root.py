@@ -270,6 +270,8 @@ def test_digitalocean_service_uses_one_versioned_runtime_os_release():
     assert "Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current" in service
     assert "Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/dist" not in service
     assert "Environment=HHS_RUNTIME_OS_ROOT=" not in service
+    assert "Environment=HHS_DISABLE_C_AUTOBUILD=1" in service
+    assert "ExecStartPre=/usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh" in service
 
     assert 'HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT"' in validator
     assert 'env -u HHS_RUNTIME_OS_ROOT' in validator
