@@ -36,14 +36,29 @@ Date: 2026-09-23
 - service-registry declaration;
 - connected Wolfram proof: 44/44 PASS.
 
+## Validation completed
+
+- connected Wolfram proof: 44/44 PASS;
+- dependency-scoped I040 workflow added;
+- dedicated exact-head workflow run `35870856251`: SUCCESS;
+- exact tested implementation head:
+  `b9e6cdc9159e536ce0cc47ee3d5b2c660d687764`;
+- I040 tests plus I039, I038, and I037 dependency regressions passed;
+- explicit/fail-closed static boundary enforcement passed;
+- PR #564 opened against `main`.
+
+Unrelated legacy/global workflows on the branch reported failures or remained
+queued outside the I040 dependency scope. They are not I040 acceptance evidence
+and remain repair-forward obligations of their owning workstreams.
+
 ## Validation remaining
 
-- dependency-scoped I040 exact-head workflow;
-- I040 exact-head CI;
-- repair only impacted dependencies if required;
-- open PR;
-- merge after green exact-head evidence;
-- verify merged main.
+- merge PR #564;
+- verify merged `main` and the I040 runtime surface.
+
+This restart-record-only refresh does not modify executable I040 behavior, so
+the green exact-head evidence at `b9e6cdc...` remains the dependency-scoped
+implementation validation.
 
 ## Next mathematical boundary
 
