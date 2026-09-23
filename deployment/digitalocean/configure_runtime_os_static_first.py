@@ -105,20 +105,25 @@ def patch_nginx_text(text: str, runtime_root: Path) -> str:
 
 def discover_site(search_roots: Iterable[Path]) -> Path:
     matches: list[Path] = []
+    seen: set[Path] = set()
     for root in search_roots:
         if not root.exists():
             continue
         for candidate in sorted(root.rglob("*")):
-            if not candidate.is_file() or candidate.is_symlink():
+            if not candidate.is_file():
+                continue
+            resolved = candidate.resolve()
+            if resolved in seen:
                 continue
             try:
-                text = candidate.read_text(encoding="utf-8")
+                text = resolved.read_text(encoding="utf-8")
             except (UnicodeDecodeError, OSError):
                 continue
             if BACKEND_MARKER in text and re.search(
                 r"(?m)^\s*listen\s+(?:\[[^\]]+\]:)?443\b[^;]*;", text
             ):
-                matches.append(candidate)
+                matches.append(resolved)
+                seen.add(resolved)
     if len(matches) != 1:
         raise RuntimeError(
             "HHS_RUNTIME_OS_NGINX_SITE_COUNT_INVALID:"
