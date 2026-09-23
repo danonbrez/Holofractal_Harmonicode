@@ -4624,6 +4624,87 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.lane5_multimodal_shared_root.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_lane5_multimodal_shared_root_fabric_v1"
+        ),
+        function="lane5_multimodal_shared_root_self_test",
+        service_type="pass220_validated_multimodal_projection_constructor",
+        description=(
+            "Validate the I042 Lane 5 multimodal shared-root projection fabric: "
+            "language, image, audio, video, physics, and game modalities each "
+            "receive one deterministic Pass165 5,184-bit projection, Hash72 "
+            "witness, ordered Hash216 genome root, and the identical I041/I040/"
+            "I039 ancestry root. The exact 179971.179971 root seed and 1.001 "
+            "gate are rational-bound. All 30 directed cross-modal translations "
+            "preserve the shared root and both endpoint provenances. Pass166/"
+            "Pass218 language relations remain candidate-only; no model, "
+            "renderer, audio, vector, or modality path acquires canonical "
+            "mutation, Hash, learning, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I042_MULTIMODAL_SHARED_ROOT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_multimodal_knowledge_graph",
+            "lane5_multimodal_shared_root_self_test",
+        ],
+        guards=[
+            "one_exact_root_for_all_modalities",
+            "root_metadata_seed_179971_179971_exact_rational",
+            "invariant_gate_1_001_exact_rational",
+            "every_modality_exact_5184_bit_projection",
+            "every_modality_hash72_witness",
+            "every_modality_ordered_hash216_genome",
+            "language_exact_token_identities",
+            "pass166_relations_candidate_only",
+            "image_sprite216_q144_color_binding",
+            "audio_h36_exact_3_to_2_polyrhythm",
+            "video_exact_q144_timeline",
+            "physics_i040_projection_bound",
+            "game_i041_frame_bound",
+            "all_30_directed_cross_modal_translations",
+            "translation_shared_root_and_provenance_preserved",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "canonical_vm81_hash_learning_authority_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I042_SHARED_ROOT_SPLIT",
+            "REJECT_I042_5184_PROJECTION_LOSS",
+            "REJECT_I042_HASH216_GENOME_LOSS",
+            "REJECT_I042_MODALITY_PROVENANCE_LOSS",
+            "REJECT_I042_TRANSLATION_PAIR_GAP",
+            "REJECT_I042_LANGUAGE_AUTHORITY_ESCALATION",
+            "REJECT_I042_AUDIO_CLOCK_DRIFT",
+            "REJECT_I042_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I042_CANONICAL_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_MULTIMODAL_FABRIC_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "SIX_MODALITIES_X_5184_BITS_X_216_GENOME_POSITIONS_"
+            "WITH_30_DIRECTED_ROOT_PRESERVING_TRANSLATIONS"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.holofractal_relativistic_game_engine.self_test",
         module=(
             "hhs_runtime."
