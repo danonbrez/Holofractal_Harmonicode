@@ -350,6 +350,39 @@ tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
 evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl
 ```
 
+## 8G. Lane 5 multimodal shared-root projection fabric
+
+[`HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md`](HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md)
+
+Pass 220 I042 binds six modalities to one exact execution ancestry:
+
+- LANGUAGE, IMAGE, AUDIO, VIDEO, PHYSICS, and GAME each receive a deterministic
+  Pass165 token/chunk graph and 5,184-bit projection;
+- every modality carries a Hash72 witness and a 216-position ordered Hash216
+  genome root;
+- all six projections share one SHA-256 root over the exact
+  `179971.179971` seed, exact `1.001` gate, I041 cycle identity, I040
+  relativistic projection root, I039 shared quantum/relativistic root, and the
+  three equal 5,184 coordinate factorizations;
+- language binds the inherited Pass166 contract and Pass218
+  `REVISABLE_RELATIONAL_EVIDENCE` semantics without fabricating a live model;
+- image binds Sprite216/Q144 color/shader identity;
+- audio binds H36/Q144 and an exact 3:2 event clock on the 144-step cycle;
+- video binds an exact 144-frame `n/144` timeline;
+- physics binds the exact I040 projection;
+- game binds the exact I041 frame;
+- all `6*(6-1)=30` directed cross-modal translations retain one shared root
+  and both endpoint provenances;
+- no modality gains VM81, canonical Hash, learning-commit, model-weight, or
+  direct persistence authority.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
