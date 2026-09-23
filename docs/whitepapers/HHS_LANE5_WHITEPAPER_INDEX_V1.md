@@ -179,6 +179,33 @@ tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c
 .github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml
 ```
 
+## 8B. Mandatory 24D noncommutative qudit constraint spacetime
+
+[`HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md`](HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md)
+
+Pass 220 I037 binds the Lo Shu/q=-1 equation and proof surfaces directly into the executable local geometry:
+
+- one complete local carrier is `3 Lo Shu relational axes * 8 ordered phase channels = 24`;
+- three complete `-,0,+` qutrit copies form a redundant 72-position phase cover;
+- the ordered tensor `{yx,y+x,xy}`, `{yx-wz,x+y-z-w+xy+yx-zw-wz,zw-xy}`, `{wz,z+w,zw}` is retained verbatim;
+- full variable exchange `A:B/a:b/p:q/z:w <-> B:A/b:a/q:p/w:z` is an involutive constructor;
+- `P⁴=AB=c⁴=(a²+b²)²` and `A²+B²=P⁸={-,0,+}/∆` are carried as mandatory native constraint sources;
+- every 24D copy contains the complete mandatory equation and proof-lemma bundle rather than a partial slice;
+- every one of the 72 phase-cover positions carries an epsilon residue record retaining raw phase expression, normalized phase, reciprocal frames, fractal-scale source, and provenance;
+- I036 Genesis/magnitude/reverse-offset nucleus redundancy remains attached;
+- `3*24=72`, `72+9=81`, and `81*64=72²=5184` are exact finite closure lemmas;
+- the inherited Pass-217 Golay `[24,12,8]` surface is used only as the frozen 24-position carrier profile; no absent codec/decoder/physical-ROM authority is inferred.
+
+The executable constructor and evidence are:
+
+```text
+hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl
+```
+
+The phrase "24D noncommutative quantum-relativistic computational spacetime" is scoped here to the internal HHS software/qudit geometry. It does not by itself assert experimentally established physical quantum entanglement.
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
