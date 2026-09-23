@@ -14,6 +14,7 @@ EnvironmentFile=-/etc/hhs/pass196.env
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONPATH=/opt/hhs/app
 Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
+Environment=HHS_DISABLE_C_AUTOBUILD=1
 Environment=HHS_DATA_DIR=/var/lib/hhs/data
 Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime
 Environment=HHS_FILESYSTEM_LEDGER_PATH=/var/lib/hhs/data/runtime/hhs_filesystem_ledger.json
@@ -25,9 +26,15 @@ Environment=HHS_PASS199_STATE_ROOT=/var/lib/hhs/pass199
 Environment=HHS_PASS200A_STATE_ROOT=/var/lib/hhs/pass200a
 Environment=HHS_PASS200B_STATE_ROOT=/var/lib/hhs/pass200b
 Environment=HHS_PASS200C_STATE_ROOT=/var/lib/hhs/pass200c
+Environment=HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174
+Environment=HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194
 Environment=HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204
 Environment=HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3
+Environment=HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface
 Environment=HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218
+Environment=HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5
+Environment=HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap
+Environment=HHS_WARM_BOOT_MANIFEST_ROOT=/var/lib/hhs/warm-boot/releases
 Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
 Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
@@ -36,6 +43,7 @@ Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
 Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180\nEnvironment=HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
 Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90
 Environment=HHS_RUNTIME_STATUS_PROBE=1
+ExecStartPre=/opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify --repo-root /opt/hhs/app --manifest-root /var/lib/hhs/warm-boot/releases
 ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.production_visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
 RestartSec=2
