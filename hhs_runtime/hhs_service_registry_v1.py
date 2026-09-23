@@ -4624,6 +4624,77 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.q144_dyadic_gauge_phase_transport.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_q144_dyadic_gauge_phase_transport_v1"
+        ),
+        function="q144_dyadic_gauge_phase_transport_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I035 Q144 dyadic gauge phase transport constructor: "
+            "the exact 144-cell phase lattice decomposes as 72 ordered G72 "
+            "teeth times two half-steps; 2/144=1/72 binds the inherited I021 "
+            "G72 generator to the exact Q144 step 2^(1/144); modular P mod 144 "
+            "preserves wrapped coordinates without erasing unwrapped exponent "
+            "and turn provenance; a full phase cycle emits dyadic coefficient "
+            "2 while the I034 holographic metric remains 1 and transition "
+            "friction remains 7. No host-float or canonical authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_PHASE_TRANSPORT_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_TRANSPORT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_q144_dyadic_gauge_phase_transport",
+            "q144_dyadic_gauge_phase_transport_self_test",
+        ],
+        guards=[
+            "q144_exact_144_cell_phase_lattice",
+            "g72_exact_72_tooth_bridge",
+            "two_q144_half_steps_per_g72_tooth",
+            "two_over_144_equals_one_over_72",
+            "p_mod_144_wrap_preserves_unwrapped_provenance",
+            "full_q144_cycle_phase_coefficient_2",
+            "phase_coefficient_not_canonical_metric_inflation",
+            "i034_unit_gauge_lock_preserved",
+            "transition_friction_7_distinct_from_dyadic_base_2",
+            "i021_phase_matrix_closed",
+            "host_float_phase_evaluation_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I035_Q144_G72_BRIDGE_DRIFT",
+            "REJECT_I035_PHASE_ADDRESS_DRIFT",
+            "REJECT_I035_TURN_PROVENANCE_LOSS",
+            "REJECT_I035_PHASE_METRIC_CONFLATION",
+            "REJECT_I035_DYADIC_FRICTION_REBIND",
+            "REJECT_I035_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_Q144_DYADIC_GAUGE_CONSTRUCTOR_NO_VM81_MUTATION"
+        ),
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_INTEGER_P_Q144_WRAP_AND_NONNEGATIVE_BIGINT_GAUGE_DEPTH"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."
