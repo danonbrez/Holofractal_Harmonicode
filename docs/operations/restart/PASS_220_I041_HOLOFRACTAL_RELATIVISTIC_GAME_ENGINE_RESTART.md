@@ -41,14 +41,30 @@ Date: 2026-09-23
 - service-registry declaration;
 - connected Wolfram proof: 48/48 PASS.
 
+## Validation completed
+
+- connected Wolfram proof: 48/48 PASS;
+- dependency-scoped I041 workflow added;
+- dedicated exact-head workflow run `35873497870`: SUCCESS;
+- exact tested implementation head:
+  `4f0a8b64872e6c815308696889379aecd0e73cfc`;
+- I041 tests plus I040, I035, and I182 dependency regressions passed;
+- native H36 coordinate-formula mirror check passed;
+- exact/projection authority boundary enforcement passed;
+- PR #565 opened against `main`.
+
+Unrelated legacy/global branch workflows reported failures outside the I041
+dependency scope. They are not I041 acceptance evidence and remain
+repair-forward obligations of their owning workstreams.
+
 ## Validation remaining
 
-- dependency-scoped I041 exact-head workflow;
-- I041 exact-head CI;
-- repair only impacted dependencies if required;
-- open PR;
-- merge after green exact-head evidence;
-- verify merged main.
+- merge PR #565;
+- verify merged `main` and the I041 runtime surface.
+
+This restart-record-only refresh does not modify executable I041 behavior, so
+the green exact-head evidence at `4f0a8b6...` remains the dependency-scoped
+implementation validation.
 
 ## Restart instruction
 
