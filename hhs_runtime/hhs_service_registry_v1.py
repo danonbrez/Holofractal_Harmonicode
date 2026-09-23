@@ -4624,6 +4624,79 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.desi_lane5_parallel_exact_egress.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_desi_lane5_parallel_exact_egress_v1"
+        ),
+        function="desi_lane5_parallel_exact_egress_self_test",
+        service_type="pass220_validated_observational_egress_constructor",
+        description=(
+            "Validate the I038 DESI public-data exact observational egress: "
+            "released decimal strings remain exact rational source values while "
+            "an integer-only nearest-even binary64 image is carried in parallel "
+            "through the inherited palindromic symbolic/full-phase IEEE path, "
+            "the 5,184-character BigInt geometry, the I037 mandatory 24D "
+            "equation/proof bundle, and Lane 5 constructor composition. "
+            "Exact decimal-minus-IEEE residue is retained; measurement "
+            "uncertainty components are not converted into probability, "
+            "likelihood, MCMC, or implicit HHS-variable fitting."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I038_DESI_PUBLIC_RELEASE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_parallel_observation_carrier",
+            "validate_desi_dr2_lya_public_release_witness",
+            "desi_lane5_parallel_exact_egress_self_test",
+        ],
+        guards=[
+            "public_decimal_source_identity_preserved",
+            "integer_only_binary64_nearest_even",
+            "exact_decimal_ieee_residue_preserved",
+            "palindromic_symbolic_ieee_parallel_lane",
+            "bigint_5184_parallel_lane",
+            "i037_mandatory_equation_proof_bundle_bound",
+            "lane5_validated_constructor_composition_only",
+            "uncertainty_components_kept_separate",
+            "probability_likelihood_mcmc_forbidden_in_solve",
+            "implicit_desi_to_hhs_variable_mapping_forbidden",
+            "host_float_arithmetic_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I038_DECIMAL_SOURCE_DRIFT",
+            "REJECT_I038_IEEE_STORAGE_DRIFT",
+            "REJECT_I038_EXACT_RESIDUE_LOSS",
+            "REJECT_I038_BIGINT_5184_LOSS",
+            "REJECT_I038_I037_BUNDLE_DRIFT",
+            "REJECT_I038_PROBABILITY_PATH",
+            "REJECT_I038_IMPLICIT_VARIABLE_MAPPING",
+            "REJECT_I038_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_OBSERVATIONAL_EGRESS_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "FINITE_PUBLIC_OBSERVATION_EXACT_DECIMAL_IEEE_BIGINT_24D_PARALLEL_EGRESS"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.24d_mandatory_constraint_spacetime.self_test",
         module=(
             "hhs_runtime."

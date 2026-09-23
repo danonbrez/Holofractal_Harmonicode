@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_WOLFRAM_20260923_V1",
+  "status": "PASS",
+  "check_count": 40,
+  "pass_count": 40,
+  "failed": [],
+  "exact_values": {
+    "z_eff": "233/100",
+    "D_H_over_r_d": "1079/125",
+    "D_H_stat_sigma": "49/500",
+    "D_H_sys_sigma": "13/500",
+    "D_M_over_r_d": "3899/100",
+    "D_M_stat_sigma": "13/25",
+    "D_M_sys_sigma": "3/25"
+  },
+  "exact_residues": {
+    "z_eff": "-1/14073748835532800",
+    "D_H_over_r_d": "23/70368744177664000",
+    "D_H_stat_sigma": "-17/4503599627370496000",
+    "D_H_sys_sigma": "43/36028797018963968000",
+    "D_M_over_r_d": "-7/3518437208883200",
+    "D_M_stat_sigma": "-1/56294995342131200",
+    "D_M_sys_sigma": "1/225179981368524800"
+  },
+  "binary64_hex": {
+    "z_eff": "4002a3d70a3d70a4",
+    "D_H_over_r_d": "40214395810624dd",
+    "D_H_stat_sigma": "3fb916872b020c4a",
+    "D_H_sys_sigma": "3f9a9fbe76c8b439",
+    "D_M_over_r_d": "40437eb851eb851f",
+    "D_M_stat_sigma": "3fe0a3d70a3d70a4",
+    "D_M_sys_sigma": "3fbeb851eb851eb8"
+  }
+}

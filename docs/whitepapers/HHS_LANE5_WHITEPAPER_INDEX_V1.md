@@ -206,6 +206,42 @@ evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl
 
 The phrase "24D noncommutative quantum-relativistic computational spacetime" is scoped here to the internal HHS software/qudit geometry. It does not by itself assert experimentally established physical quantum entanglement.
 
+## 8C. DESI public-data parallel exact observational egress
+
+[`HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md`](HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md)
+
+Pass 220 I038 begins the T_COSMO-07 empirical boundary using public DESI DR2
+Ly-alpha BAO measurements while preserving the HHS exact-computation stack:
+
+- released decimal strings are retained as exact rational observation sources;
+- nearest-even IEEE binary64 storage is constructed with integer arithmetic only;
+- the raw IEEE state is carried through the inherited palindromic symbolic/full-phase I031/I032/I033 path;
+- decimal-to-IEEE drift remains an exact rational residue rather than being discarded;
+- the same observation carries the inherited 5,184-character BigInt geometry in parallel;
+- every observation binds the I037 mandatory 24D equation/proof bundle root;
+- Lane 5 receives the result as a validated constructor input;
+- statistical and systematic measurement components remain separate exact boundary metadata;
+- no probability, likelihood, MCMC, parameter refit, or implicit DESI-to-HHS variable assignment is used by the equation-solve boundary.
+
+Initial public fixture:
+
+```text
+z_eff = 2.33
+D_H/r_d = 8.632 ; stat = 0.098 ; sys = 0.026
+D_M/r_d = 38.99 ; stat = 0.52 ; sys = 0.12
+```
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl
+```
+
+The next empirical constructor must declare the DESI-to-HHS variable/relational
+projection explicitly before evaluating I037 equation closure.
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
