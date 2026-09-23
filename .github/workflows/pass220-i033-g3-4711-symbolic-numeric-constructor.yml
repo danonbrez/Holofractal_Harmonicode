@@ -1,0 +1,138 @@
+name: Pass 220 I033 G3 4711 Symbolic Numeric Constructor
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.output.json"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.receipt.json"
+      - "docs/pass220/PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_CONSTRUCTOR.md"
+      - "docs/whitepapers/HARMONICODE_G3_4711_MULTIREPRESENTATIONAL_CONSTRUCTOR_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_CONSTRUCTOR_RESTART.md"
+      - ".github/workflows/pass220-i033-g3-4711-symbolic-numeric-constructor.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.output.json"
+      - "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.receipt.json"
+      - "docs/pass220/PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_CONSTRUCTOR.md"
+      - "docs/whitepapers/HARMONICODE_G3_4711_MULTIREPRESENTATIONAL_CONSTRUCTOR_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_CONSTRUCTOR_RESTART.md"
+      - ".github/workflows/pass220-i033-g3-4711-symbolic-numeric-constructor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I033 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py \
+            tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py
+
+      - name: Verify connected Wolfram 15 of 15 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 15
+          assert data["failed"] == []
+          assert data["base"] == [1, 2, 3]
+          assert data["lifted"] == [4, 7, 11]
+          assert data["proof_cell"] == "123321.111"
+          assert data["schema"] in source
+          PY
+
+      - name: Run I033 constructor tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py
+
+      - name: Run inherited I032 full phase transport regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_full_phase_ieee_transport_v1.py
+
+      - name: Run inherited I031 scalar involution regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_ieee_scalar_involution_v1.py
+
+      - name: Run inherited I030 reciprocal symbol regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py
+
+      - name: Run inherited I001 BigInt normalization regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py
+
+      - name: Enforce I033 constructor authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+          ).read_text(encoding="utf-8")
+          required = (
+              '"contains_constraints": True',
+              '"canonical_service": False',
+              '"canonical_constraint_creation_authority": False',
+              '"canonical_constraint_enforcement_authority": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"reduction_policy": "NO_DISTINCT_INFORMATION_VIEW_DISCARDED"',
+          )
+          for token in required:
+              assert token in source, token
+          assert "serialize_offsets_5184" in source
+          assert "encode_full_phase_ieee" in source
+          assert "encode_symbol_string" in source
+          PY
