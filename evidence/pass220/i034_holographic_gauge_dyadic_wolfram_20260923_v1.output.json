@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_WOLFRAM_20260923_V1",
+  "status": "PASS",
+  "check_count": 21,
+  "pass_count": 21,
+  "failed": [],
+  "base": [1, 2, 3],
+  "lifted": [4, 7, 11],
+  "ratio": [1, 1],
+  "dyadic_base": 2,
+  "transition_friction": 7,
+  "q144": 144
+}
