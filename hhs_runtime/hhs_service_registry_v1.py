@@ -4624,6 +4624,85 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.24d_mandatory_constraint_spacetime.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_24d_mandatory_constraint_spacetime_v1"
+        ),
+        function="twentyfour_d_constraint_spacetime_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I037 mandatory 24D noncommutative constraint-spacetime "
+            "constructor: three Lo Shu relational axes times eight ordered phase "
+            "channels form each complete 24D carrier; -,0,+ produce three full "
+            "copies and a 72-position phase cover; every copy carries the full "
+            "native equation and proof-lemma bundle plus epsilon residue carriers, "
+            "reciprocal variable exchange, P4/P8 sources, I036 nucleus identity, "
+            "and the Golay24 profile claim boundary without codec authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I037_24D_SPACETIME_WITNESS_V1",
+        ],
+        validators=[
+            "validate_24d_constraint_spacetime_constructor",
+            "twentyfour_d_constraint_spacetime_self_test",
+        ],
+        guards=[
+            "mandatory_equation_constructor_bundle_complete",
+            "mandatory_proof_lemma_bundle_complete",
+            "three_complete_24d_qutrit_copies",
+            "trinary_phase_tensor_source_preserved",
+            "variable_exchange_involution_preserved",
+            "p4_ordered_invariant_source_preserved",
+            "p8_trinary_fractal_scale_source_preserved",
+            "epsilon_phase_residue_carriers_complete",
+            "raw_phase_expression_not_erased",
+            "direct_and_flipped_exchange_frames_co_resident",
+            "golay24_profile_only_no_codec_authority",
+            "i036_holographic_nucleus_preserved",
+            "three_times_24_equals_72",
+            "72_plus_9_equals_81",
+            "81_times_64_equals_72_squared_equals_5184",
+            "host_float_arithmetic_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I037_MANDATORY_EQUATION_LOSS",
+            "REJECT_I037_MANDATORY_LEMMA_LOSS",
+            "REJECT_I037_24D_CARRIER_DRIFT",
+            "REJECT_I037_TRINARY_COPY_LOSS",
+            "REJECT_I037_EPSILON_RESIDUE_LOSS",
+            "REJECT_I037_VARIABLE_EXCHANGE_DRIFT",
+            "REJECT_I037_GOLAY_AUTHORITY_ESCALATION",
+            "REJECT_I037_COMMUTATIVE_REORDER",
+            "REJECT_I037_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_24D_CONSTRAINT_SPACETIME_NO_VM81_MUTATION"
+        ),
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_THREE_BY_EIGHT_BY_THREE_PHASE_COVER_WITH_TYPED_SOURCE_CONSTRAINTS"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.genesis_reverse_offset_holographic_nucleus.self_test",
         module=(
             "hhs_runtime."

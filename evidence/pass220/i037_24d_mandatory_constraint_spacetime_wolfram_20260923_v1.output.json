@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME_WOLFRAM_20260923_V1",
+  "status": "PASS",
+  "check_count": 40,
+  "pass_count": 40,
+  "failed": [],
+  "dimensions_per_qutrit": 24,
+  "qutrit_copies": 3,
+  "phase_cover": 72,
+  "vm81": 81,
+  "vm5184": 5184,
+  "p4": 9,
+  "p8": 81
+}
