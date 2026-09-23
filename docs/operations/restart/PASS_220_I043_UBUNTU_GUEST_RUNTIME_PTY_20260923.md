@@ -97,3 +97,50 @@ AND dependency-scoped tests pass
 Implement the host guest runtime, host CLI, tests, and focused workflow. Run the
 focused workflow on the exact branch head, repair only impacted failures, then
 open the PR with this checkpoint updated with exact validation evidence.
+
+
+## Implementation checkpoint — 2026-09-23
+
+- pull request: #567
+- pre-validation implementation head: `67659adc5b9574956c1ea821c634b940530fa5b6`
+- focused workflow: `Pass 220 I043 Ubuntu Guest Runtime PTY`
+- workflow run: `35907495451`
+- focused job: `guest-runtime-frontier`
+- status when checkpoint updated: **in progress**
+- PR mergeability observed: **mergeable**
+
+### Implemented files
+
+```text
+hhs_runtime/pass220/ubuntu_guest_runtime.py
+hhs_runtime/pass220/ubuntu_guest_cli.py
+bin/hhs-guest
+tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py
+.github/workflows/pass220-i043-ubuntu-guest-runtime.yml
+docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md
+docs/operations/restart/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_20260923.md
+```
+
+### Validation state
+
+A direct local clone/test attempt from the task container could not run because
+that container could not resolve `github.com`. This is recorded as an execution
+environment/network limitation, not as passing or failing evidence for I043.
+
+The exact-head GitHub dependency-scoped workflow was started successfully and is
+the authoritative pending validation path. Do not claim I043 merged or production
+booted until its focused job completes successfully and the resulting head is
+reconciled with current `main`.
+
+### Remaining next action
+
+1. Read run `35907495451` / job `guest-runtime-frontier`.
+2. If the focused job fails, repair only the impacted I043 surface and rerun.
+3. If it succeeds, update this checkpoint with the exact validated head/run.
+4. Recheck branch divergence against current `main`.
+5. Merge PR #567 only if the exact head remains mergeable and dependency-scoped
+   validation is green.
+6. After merge, verify main contains the I043 files.
+7. A later integration cycle must supply a real digest-pinned Ubuntu image,
+   prove real QEMU boot + SSH reachability, install/verify the existing
+   `hhs-application-vm` service inside the guest, and only then attach the GUI.
