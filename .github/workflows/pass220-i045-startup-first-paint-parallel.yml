@@ -1,0 +1,57 @@
+name: Pass 220 I045 Startup First Paint Parallel
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "deployment/digitalocean/configure_runtime_os_static_first.py"
+      - "deployment/digitalocean/guarded_auto_update/install.sh"
+      - "deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer"
+      - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
+      - "hhs_backend/runtime_status_probe.py"
+      - "tests/pass220/test_pass220_i045_startup_first_paint_parallel.py"
+      - "docs/pass220/PASS_220_I045_STARTUP_FIRST_PAINT_PARALLEL_V1.md"
+      - "docs/operations/restart/PASS_220_I045_STARTUP_FIRST_PAINT_PARALLEL_20260923.md"
+      - ".github/workflows/pass220-i045-startup-first-paint-parallel.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  startup-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile modified Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime_status_probe.py \
+            deployment/digitalocean/configure_runtime_os_static_first.py \
+            tests/pass220/test_pass220_i045_startup_first_paint_parallel.py
+
+      - name: Validate production shell and unit contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n deployment/digitalocean/guarded_auto_update/install.sh
+          grep -Fq 'OnBootSec=10min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
+          ! grep -Fq 'OnBootSec=3min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
+          grep -Fq 'HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fq 'HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90' deploy/digitalocean/hhs-pass196-integrated-environment.service
+
+      - name: Run dependency-scoped startup regressions
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_runtime_status_probe_ledger_isolation_v1.py \
+            tests/pass220/test_pass220_i045_startup_first_paint_parallel.py

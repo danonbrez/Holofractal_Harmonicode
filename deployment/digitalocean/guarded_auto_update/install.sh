@@ -18,8 +18,7 @@ PRODUCTION_HEALTH_TIMEOUT=${HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS:-600}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
-RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
-NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
+RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}\nSTATIC_FIRST_CONFIGURATOR=${HHS_RUNTIME_OS_STATIC_FIRST_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_runtime_os_static_first.py}\nNATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
 [[ $EUID -eq 0 ]] || {
@@ -310,6 +309,14 @@ systemctl is-active --quiet hhs-guarded-update.timer || {
   echo "Guarded updater promotion succeeded but periodic follower timer did not activate." >&2
   exit 11
 }
+
+if [[ "$ENABLE_PROMOTION" == "1" ]]; then
+  [[ -f "$STATIC_FIRST_CONFIGURATOR" ]] || {
+    echo "Runtime OS static-first nginx configurator missing: $STATIC_FIRST_CONFIGURATOR" >&2
+    exit 12
+  }
+  python3 "$STATIC_FIRST_CONFIGURATOR" --runtime-os-root "$BUNDLE_ROOT/current"
+fi
 
 cat <<EOF_SUMMARY
 Guarded continuous deployment installed.

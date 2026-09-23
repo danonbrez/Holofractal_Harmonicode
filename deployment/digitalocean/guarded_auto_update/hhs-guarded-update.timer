@@ -2,7 +2,7 @@
 Description=Check the HHS main branch for guarded production updates
 
 [Timer]
-OnBootSec=3min
+OnBootSec=10min
 OnUnitActiveSec=5min
 RandomizedDelaySec=30s
 AccuracySec=15s
